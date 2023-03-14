@@ -27,7 +27,8 @@ private class RemoteFlowPassword extends HeuristicSource, RemoteFlowSource {
  * since it does not properly escape single quotes and dollar symbols.
  */
 private class JsonStringifyAsCommandInjectionSource extends HeuristicSource,
-  CommandInjection::Source instanceof JsonStringifyCall {
+  CommandInjection::Source instanceof JsonStringifyCall
+{
   override string getSourceType() { result = "a string from JSON.stringify" }
 }
 

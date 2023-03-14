@@ -182,4 +182,18 @@ public class A {
 
   public Object field1;
   public Object field2;
+
+  void foo4() {
+    Producer1Consumer3<Integer> pc = new Producer1Consumer3<Integer>() {
+      int cfield = 0;
+      @Override public Integer[] make() {
+        return new Integer[] { cfield };
+      }
+      @Override public void eat(Integer[] xs) {
+        cfield = xs[0];
+      }
+    };
+    applyConsumer3(new Integer[] { (Integer)source(21) }, pc);
+    sink(applyProducer1(pc)[0]); // $ flow=21
+  }
 }

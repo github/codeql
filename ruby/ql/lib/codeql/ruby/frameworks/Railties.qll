@@ -27,7 +27,8 @@ module Railties {
    * A call to `Rails::Generators::Actions#execute_command`.
    * This method concatenates its first and second arguments and executes the result as a shell command.
    */
-  private class ExecuteCommandCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
+  private class ExecuteCommandCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode
+  {
     ExecuteCommandCall() {
       this = generatorsActionsClass().getAnInstanceSelf().getAMethodCall("execute_command")
     }
@@ -40,7 +41,8 @@ module Railties {
   /**
    * A call to a method in `Rails::Generators::Actions` which delegates to `execute_command`.
    */
-  private class ExecuteCommandWrapperCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
+  private class ExecuteCommandWrapperCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode
+  {
     ExecuteCommandWrapperCall() {
       this =
         generatorsActionsClass()

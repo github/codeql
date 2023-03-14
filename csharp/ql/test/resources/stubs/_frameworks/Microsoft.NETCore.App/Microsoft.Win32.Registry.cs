@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Win32.Registry, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace Microsoft
 {
     namespace Win32
     {
-        // Generated from `Microsoft.Win32.Registry` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class Registry
         {
             public static Microsoft.Win32.RegistryKey ClassesRoot;
@@ -18,7 +18,6 @@ namespace Microsoft
             public static Microsoft.Win32.RegistryKey Users;
         }
 
-        // Generated from `Microsoft.Win32.RegistryHive` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum RegistryHive : int
         {
             ClassesRoot = -2147483648,
@@ -29,7 +28,6 @@ namespace Microsoft
             Users = -2147483645,
         }
 
-        // Generated from `Microsoft.Win32.RegistryKey` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class RegistryKey : System.MarshalByRefObject, System.IDisposable
         {
             public void Close() => throw null;
@@ -77,7 +75,6 @@ namespace Microsoft
             public Microsoft.Win32.RegistryView View { get => throw null; }
         }
 
-        // Generated from `Microsoft.Win32.RegistryKeyPermissionCheck` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum RegistryKeyPermissionCheck : int
         {
             Default = 0,
@@ -85,7 +82,6 @@ namespace Microsoft
             ReadWriteSubTree = 2,
         }
 
-        // Generated from `Microsoft.Win32.RegistryOptions` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
         public enum RegistryOptions : int
         {
@@ -93,7 +89,6 @@ namespace Microsoft
             Volatile = 1,
         }
 
-        // Generated from `Microsoft.Win32.RegistryValueKind` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum RegistryValueKind : int
         {
             Binary = 3,
@@ -106,7 +101,6 @@ namespace Microsoft
             Unknown = 0,
         }
 
-        // Generated from `Microsoft.Win32.RegistryValueOptions` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
         public enum RegistryValueOptions : int
         {
@@ -114,7 +108,6 @@ namespace Microsoft
             None = 0,
         }
 
-        // Generated from `Microsoft.Win32.RegistryView` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public enum RegistryView : int
         {
             Default = 0,
@@ -124,7 +117,6 @@ namespace Microsoft
 
         namespace SafeHandles
         {
-            // Generated from `Microsoft.Win32.SafeHandles.SafeRegistryHandle` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeRegistryHandle : Microsoft.Win32.SafeHandles.SafeHandleZeroOrMinusOneIsInvalid
             {
                 protected override bool ReleaseHandle() => throw null;
@@ -141,7 +133,6 @@ namespace System
     {
         namespace AccessControl
         {
-            // Generated from `System.Security.AccessControl.RegistryAccessRule` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RegistryAccessRule : System.Security.AccessControl.AccessRule
             {
                 public RegistryAccessRule(System.Security.Principal.IdentityReference identity, System.Security.AccessControl.RegistryRights registryRights, System.Security.AccessControl.AccessControlType type) : base(default(System.Security.Principal.IdentityReference), default(int), default(bool), default(System.Security.AccessControl.InheritanceFlags), default(System.Security.AccessControl.PropagationFlags), default(System.Security.AccessControl.AccessControlType)) => throw null;
@@ -151,7 +142,6 @@ namespace System
                 public System.Security.AccessControl.RegistryRights RegistryRights { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.RegistryAuditRule` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RegistryAuditRule : System.Security.AccessControl.AuditRule
             {
                 public RegistryAuditRule(System.Security.Principal.IdentityReference identity, System.Security.AccessControl.RegistryRights registryRights, System.Security.AccessControl.InheritanceFlags inheritanceFlags, System.Security.AccessControl.PropagationFlags propagationFlags, System.Security.AccessControl.AuditFlags flags) : base(default(System.Security.Principal.IdentityReference), default(int), default(bool), default(System.Security.AccessControl.InheritanceFlags), default(System.Security.AccessControl.PropagationFlags), default(System.Security.AccessControl.AuditFlags)) => throw null;
@@ -159,7 +149,6 @@ namespace System
                 public System.Security.AccessControl.RegistryRights RegistryRights { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.RegistryRights` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum RegistryRights : int
             {
@@ -179,7 +168,6 @@ namespace System
                 WriteKey = 131078,
             }
 
-            // Generated from `System.Security.AccessControl.RegistrySecurity` in `Microsoft.Win32.Registry, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RegistrySecurity : System.Security.AccessControl.NativeObjectSecurity
             {
                 public override System.Type AccessRightType { get => throw null; }

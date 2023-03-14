@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Diagnostics.Tracing, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Tracing
         {
-            // Generated from `System.Diagnostics.Tracing.DiagnosticCounter` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DiagnosticCounter : System.IDisposable
             {
                 public void AddMetadata(string key, string value) => throw null;
@@ -18,7 +18,6 @@ namespace System
                 public string Name { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventActivityOptions` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum EventActivityOptions : int
             {
@@ -28,7 +27,6 @@ namespace System
                 Recursive = 4,
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventAttribute` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventAttribute : System.Attribute
             {
                 public System.Diagnostics.Tracing.EventActivityOptions ActivityOptions { get => throw null; set => throw null; }
@@ -44,7 +42,6 @@ namespace System
                 public System.Byte Version { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventChannel` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum EventChannel : byte
             {
                 Admin = 16,
@@ -54,7 +51,6 @@ namespace System
                 Operational = 17,
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventCommand` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum EventCommand : int
             {
                 Disable = -3,
@@ -63,7 +59,6 @@ namespace System
                 Update = 0,
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventCommandEventArgs` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventCommandEventArgs : System.EventArgs
             {
                 public System.Collections.Generic.IDictionary<string, string> Arguments { get => throw null; }
@@ -72,7 +67,6 @@ namespace System
                 public bool EnableEvent(int eventId) => throw null;
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventCounter` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventCounter : System.Diagnostics.Tracing.DiagnosticCounter
             {
                 public EventCounter(string name, System.Diagnostics.Tracing.EventSource eventSource) => throw null;
@@ -81,14 +75,12 @@ namespace System
                 public void WriteMetric(float value) => throw null;
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventDataAttribute` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventDataAttribute : System.Attribute
             {
                 public EventDataAttribute() => throw null;
                 public string Name { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventFieldAttribute` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventFieldAttribute : System.Attribute
             {
                 public EventFieldAttribute() => throw null;
@@ -96,7 +88,6 @@ namespace System
                 public System.Diagnostics.Tracing.EventFieldTags Tags { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventFieldFormat` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum EventFieldFormat : int
             {
                 Boolean = 3,
@@ -108,20 +99,17 @@ namespace System
                 Xml = 11,
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventFieldTags` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum EventFieldTags : int
             {
                 None = 0,
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventIgnoreAttribute` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventIgnoreAttribute : System.Attribute
             {
                 public EventIgnoreAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventKeywords` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum EventKeywords : long
             {
@@ -137,7 +125,6 @@ namespace System
                 WdiDiagnostic = 1125899906842624,
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventLevel` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum EventLevel : int
             {
                 Critical = 1,
@@ -148,7 +135,6 @@ namespace System
                 Warning = 3,
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventListener` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class EventListener : System.IDisposable
             {
                 public void DisableEvents(System.Diagnostics.Tracing.EventSource eventSource) => throw null;
@@ -164,7 +150,6 @@ namespace System
                 protected internal virtual void OnEventWritten(System.Diagnostics.Tracing.EventWrittenEventArgs eventData) => throw null;
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventManifestOptions` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum EventManifestOptions : int
             {
@@ -175,7 +160,6 @@ namespace System
                 Strict = 1,
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventOpcode` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum EventOpcode : int
             {
                 DataCollectionStart = 3,
@@ -191,10 +175,8 @@ namespace System
                 Suspend = 8,
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventSource` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventSource : System.IDisposable
             {
-                // Generated from `System.Diagnostics.Tracing.EventSource+EventData` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 protected internal struct EventData
                 {
                     public System.IntPtr DataPointer { get => throw null; set => throw null; }
@@ -262,7 +244,6 @@ namespace System
                 // ERR: Stub generator didn't handle member: ~EventSource
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventSourceAttribute` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventSourceAttribute : System.Attribute
             {
                 public EventSourceAttribute() => throw null;
@@ -271,14 +252,12 @@ namespace System
                 public string Name { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventSourceCreatedEventArgs` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventSourceCreatedEventArgs : System.EventArgs
             {
                 public System.Diagnostics.Tracing.EventSource EventSource { get => throw null; }
                 public EventSourceCreatedEventArgs() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventSourceException` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventSourceException : System.Exception
             {
                 public EventSourceException() => throw null;
@@ -287,7 +266,6 @@ namespace System
                 public EventSourceException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventSourceOptions` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct EventSourceOptions
             {
                 public System.Diagnostics.Tracing.EventActivityOptions ActivityOptions { get => throw null; set => throw null; }
@@ -298,7 +276,6 @@ namespace System
                 public System.Diagnostics.Tracing.EventTags Tags { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventSourceSettings` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum EventSourceSettings : int
             {
@@ -308,20 +285,17 @@ namespace System
                 ThrowOnEventWriteErrors = 1,
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventTags` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum EventTags : int
             {
                 None = 0,
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventTask` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public enum EventTask : int
             {
                 None = 0,
             }
 
-            // Generated from `System.Diagnostics.Tracing.EventWrittenEventArgs` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class EventWrittenEventArgs : System.EventArgs
             {
                 public System.Guid ActivityId { get => throw null; }
@@ -343,7 +317,6 @@ namespace System
                 public System.Byte Version { get => throw null; }
             }
 
-            // Generated from `System.Diagnostics.Tracing.IncrementingEventCounter` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IncrementingEventCounter : System.Diagnostics.Tracing.DiagnosticCounter
             {
                 public System.TimeSpan DisplayRateTimeScale { get => throw null; set => throw null; }
@@ -352,7 +325,6 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Tracing.IncrementingPollingCounter` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IncrementingPollingCounter : System.Diagnostics.Tracing.DiagnosticCounter
             {
                 public System.TimeSpan DisplayRateTimeScale { get => throw null; set => throw null; }
@@ -360,13 +332,11 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Tracing.NonEventAttribute` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class NonEventAttribute : System.Attribute
             {
                 public NonEventAttribute() => throw null;
             }
 
-            // Generated from `System.Diagnostics.Tracing.PollingCounter` in `System.Diagnostics.Tracing, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PollingCounter : System.Diagnostics.Tracing.DiagnosticCounter
             {
                 public PollingCounter(string name, System.Diagnostics.Tracing.EventSource eventSource, System.Func<double> metricProvider) => throw null;

@@ -159,7 +159,8 @@ private module RestFramework {
    * known route setup.
    */
   class RestFrameworkFunctionBasedViewWithoutKnownRoute extends Http::Server::RequestHandler::Range,
-    PrivateDjango::DjangoRouteHandler instanceof RestFrameworkFunctionBasedView {
+    PrivateDjango::DjangoRouteHandler instanceof RestFrameworkFunctionBasedView
+  {
     RestFrameworkFunctionBasedViewWithoutKnownRoute() {
       not exists(PrivateDjango::DjangoRouteSetup setup | setup.getARequestHandler() = this)
     }
@@ -183,7 +184,8 @@ private module RestFramework {
    * request handler is invoked.
    */
   private class RestFrameworkRequestHandlerRequestParam extends Request::InstanceSource,
-    RemoteFlowSource::Range, DataFlow::ParameterNode {
+    RemoteFlowSource::Range, DataFlow::ParameterNode
+  {
     RestFrameworkRequestHandlerRequestParam() {
       // rest_framework.views.APIView subclass
       exists(RestFrameworkApiViewClass vc |
@@ -220,8 +222,8 @@ private module RestFramework {
      *
      * Use the predicate `Request::instance()` to get references to instances of `rest_framework.request.Request`.
      */
-    abstract class InstanceSource extends PrivateDjango::DjangoImpl::DjangoHttp::Request::HttpRequest::InstanceSource {
-    }
+    abstract class InstanceSource extends PrivateDjango::DjangoImpl::DjangoHttp::Request::HttpRequest::InstanceSource
+    { }
 
     /** A direct instantiation of `rest_framework.request.Request`. */
     private class ClassInstantiation extends InstanceSource, DataFlow::CallCfgNode {
@@ -297,7 +299,8 @@ private module RestFramework {
 
     /** A direct instantiation of `rest_framework.response.Response`. */
     private class ClassInstantiation extends PrivateDjango::DjangoImpl::DjangoHttp::Response::HttpResponse::InstanceSource,
-      DataFlow::CallCfgNode {
+      DataFlow::CallCfgNode
+    {
       ClassInstantiation() { this = classRef().getACall() }
 
       override DataFlow::Node getBody() { result in [this.getArg(0), this.getArgByName("data")] }
@@ -321,7 +324,8 @@ private module RestFramework {
   module ApiException {
     /** A direct instantiation of `rest_framework.exceptions.ApiException` or subclass. */
     private class ClassInstantiation extends Http::Server::HttpResponse::Range,
-      DataFlow::CallCfgNode {
+      DataFlow::CallCfgNode
+    {
       string className;
 
       ClassInstantiation() {

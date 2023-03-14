@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Diagnostics.HealthChecks, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,13 +7,11 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.HealthCheckServiceCollectionExtensions` in `Microsoft.Extensions.Diagnostics.HealthChecks, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HealthCheckServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder AddHealthChecks(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.HealthChecksBuilderAddCheckExtensions` in `Microsoft.Extensions.Diagnostics.HealthChecks, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HealthChecksBuilderAddCheckExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder AddCheck(this Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder builder, string name, Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck instance, Microsoft.Extensions.Diagnostics.HealthChecks.HealthStatus? failureStatus, System.Collections.Generic.IEnumerable<string> tags) => throw null;
@@ -25,7 +24,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder AddTypeActivatedCheck<T>(this Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder builder, string name, params object[] args) where T : class, Microsoft.Extensions.Diagnostics.HealthChecks.IHealthCheck => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.HealthChecksBuilderDelegateExtensions` in `Microsoft.Extensions.Diagnostics.HealthChecks, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HealthChecksBuilderDelegateExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder AddAsyncCheck(this Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder builder, string name, System.Func<System.Threading.CancellationToken, System.Threading.Tasks.Task<Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult>> check, System.Collections.Generic.IEnumerable<string> tags) => throw null;
@@ -38,7 +36,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder AddCheck(this Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder builder, string name, System.Func<Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckResult> check, System.Collections.Generic.IEnumerable<string> tags = default(System.Collections.Generic.IEnumerable<string>), System.TimeSpan? timeout = default(System.TimeSpan?)) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder` in `Microsoft.Extensions.Diagnostics.HealthChecks, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IHealthChecksBuilder
             {
                 Microsoft.Extensions.DependencyInjection.IHealthChecksBuilder Add(Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckRegistration registration);
@@ -50,7 +47,6 @@ namespace Microsoft
         {
             namespace HealthChecks
             {
-                // Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckPublisherOptions` in `Microsoft.Extensions.Diagnostics.HealthChecks, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HealthCheckPublisherOptions
                 {
                     public System.TimeSpan Delay { get => throw null; set => throw null; }
@@ -60,7 +56,6 @@ namespace Microsoft
                     public System.TimeSpan Timeout { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckService` in `Microsoft.Extensions.Diagnostics.HealthChecks, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class HealthCheckService
                 {
                     public System.Threading.Tasks.Task<Microsoft.Extensions.Diagnostics.HealthChecks.HealthReport> CheckHealthAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
@@ -68,7 +63,6 @@ namespace Microsoft
                     protected HealthCheckService() => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Diagnostics.HealthChecks.HealthCheckServiceOptions` in `Microsoft.Extensions.Diagnostics.HealthChecks, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HealthCheckServiceOptions
                 {
                     public HealthCheckServiceOptions() => throw null;

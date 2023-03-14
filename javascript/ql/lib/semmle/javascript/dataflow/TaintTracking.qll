@@ -1005,7 +1005,8 @@ module TaintTracking {
    * Note that the `includes` method is covered by `MembershipTestSanitizer`.
    */
   class WhitelistContainmentCallSanitizer extends AdditionalSanitizerGuardNode,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     WhitelistContainmentCallSanitizer() {
       this.getMethodName() = ["contains", "has", "hasOwnProperty", "hasOwn"]
     }

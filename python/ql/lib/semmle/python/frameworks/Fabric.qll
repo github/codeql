@@ -44,7 +44,8 @@ private module FabricV1 {
        * - https://docs.fabfile.org/en/1.14/api/core/operations.html#fabric.operations.sudo
        */
       private class FabricApiLocalRunSudoCall extends SystemCommandExecution::Range,
-        DataFlow::CallCfgNode {
+        DataFlow::CallCfgNode
+      {
         FabricApiLocalRunSudoCall() { this = api().getMember(["local", "run", "sudo"]).getACall() }
 
         override DataFlow::Node getCommand() {
@@ -153,7 +154,8 @@ private module FabricV2 {
      * - https://docs.fabfile.org/en/2.5/api/connection.html#fabric.connection.Connection.local
      */
     private class FabricConnectionRunSudoLocalCall extends SystemCommandExecution::Range,
-      DataFlow::CallCfgNode {
+      DataFlow::CallCfgNode
+    {
       FabricConnectionRunSudoLocalCall() {
         this.getFunction() = Fabric::Connection::ConnectionClass::instanceRunMethods()
       }
@@ -176,7 +178,8 @@ private module FabricV2 {
     }
 
     class FabricTaskFirstParamConnectionInstance extends Fabric::Connection::ConnectionClass::InstanceSource,
-      DataFlow::ParameterNode {
+      DataFlow::ParameterNode
+    {
       FabricTaskFirstParamConnectionInstance() {
         exists(Function func |
           func.getADecorator() = Fabric::Tasks::task().getAValueReachableFromSource().asExpr() and

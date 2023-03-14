@@ -74,7 +74,8 @@ private class NSUserDefaultsControllerStore extends CleartextStoragePreferencesS
 /**
  * An encryption sanitizer for cleartext preferences storage vulnerabilities.
  */
-private class CleartextStoragePreferencesEncryptionSanitizer extends CleartextStoragePreferencesSanitizer {
+private class CleartextStoragePreferencesEncryptionSanitizer extends CleartextStoragePreferencesSanitizer
+{
   CleartextStoragePreferencesEncryptionSanitizer() { this.asExpr() instanceof EncryptedExpr }
 }
 

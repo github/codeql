@@ -73,7 +73,8 @@ module RegExpInjection {
    * sanitizer-guard.
    */
   class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
-    StringConstArrayInclusionCallBarrier { }
+    StringConstArrayInclusionCallBarrier
+  { }
 
   /**
    * A call to `Regexp.escape` (or its alias, `Regexp.quote`), considered as a

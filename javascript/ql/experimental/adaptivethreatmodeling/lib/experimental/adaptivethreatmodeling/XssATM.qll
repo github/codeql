@@ -40,7 +40,8 @@ class DomBasedXssAtmConfig extends AtmConfig {
 private import semmle.javascript.security.dataflow.Xss::Shared as Shared
 
 private class PrefixStringSanitizerActivated extends TaintTracking::SanitizerGuardNode,
-  DomBasedXss::PrefixStringSanitizer {
+  DomBasedXss::PrefixStringSanitizer
+{
   PrefixStringSanitizerActivated() { this = this }
 }
 
@@ -52,6 +53,7 @@ private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::Quot
   QuoteGuard() { this = this }
 }
 
-private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard {
+private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard
+{
   ContainsHtmlGuard() { this = this }
 }

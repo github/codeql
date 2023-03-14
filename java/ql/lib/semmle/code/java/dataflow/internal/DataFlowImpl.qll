@@ -456,6 +456,7 @@ module Impl<FullStateConfigSig Config> {
      * The Boolean `cc` records whether the node is reached through an
      * argument in a call.
      */
+    pragma[assume_small_delta]
     private predicate fwdFlow(NodeEx node, Cc cc) {
       sourceNode(node, _) and
       if hasSourceCallCtx() then cc = true else cc = false
@@ -3156,7 +3157,7 @@ module Impl<FullStateConfigSig Config> {
   /**
    * Provides the query predicates needed to include a graph in a path-problem query.
    */
-  module PathGraph {
+  module PathGraph implements PathGraphSig<PathNode> {
     /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
     query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b }
 

@@ -93,7 +93,8 @@ private class ActionViewCookiesCall extends ActionViewContextCall, CookiesCallIm
  * A call to `render`, `render_to_body` or `render_to_string`, seen as an
  * `HttpResponse`.
  */
-private class RenderCallAsHttpResponse extends DataFlow::CallNode, Http::Server::HttpResponse::Range {
+private class RenderCallAsHttpResponse extends DataFlow::CallNode, Http::Server::HttpResponse::Range
+{
   RenderCallAsHttpResponse() {
     this.asExpr().getExpr() instanceof Rails::RenderCall or
     this.asExpr().getExpr() instanceof Rails::RenderToCall

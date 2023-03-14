@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Mvc.Razor, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -8,7 +9,6 @@ namespace Microsoft
         {
             namespace ApplicationParts
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationParts.CompiledRazorAssemblyApplicationPartFactory` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CompiledRazorAssemblyApplicationPartFactory : Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartFactory
                 {
                     public CompiledRazorAssemblyApplicationPartFactory() => throw null;
@@ -16,7 +16,6 @@ namespace Microsoft
                     public static System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPart> GetDefaultApplicationParts(System.Reflection.Assembly assembly) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationParts.CompiledRazorAssemblyPart` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class CompiledRazorAssemblyPart : Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPart, Microsoft.AspNetCore.Mvc.ApplicationParts.IRazorCompiledItemProvider
                 {
                     public System.Reflection.Assembly Assembly { get => throw null; }
@@ -25,14 +24,12 @@ namespace Microsoft
                     public override string Name { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationParts.ConsolidatedAssemblyApplicationPartFactory` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ConsolidatedAssemblyApplicationPartFactory : Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPartFactory
                 {
                     public ConsolidatedAssemblyApplicationPartFactory() => throw null;
                     public override System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPart> GetApplicationParts(System.Reflection.Assembly assembly) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.ApplicationParts.IRazorCompiledItemProvider` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IRazorCompiledItemProvider
                 {
                     System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Razor.Hosting.RazorCompiledItem> CompiledItems { get; }
@@ -41,7 +38,6 @@ namespace Microsoft
             }
             namespace Diagnostics
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.AfterViewPageEventData` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class AfterViewPageEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
@@ -54,7 +50,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Diagnostics.BeforeViewPageEventData` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class BeforeViewPageEventData : Microsoft.AspNetCore.Mvc.Diagnostics.EventData
                 {
                     public Microsoft.AspNetCore.Mvc.Abstractions.ActionDescriptor ActionDescriptor { get => throw null; }
@@ -70,7 +65,6 @@ namespace Microsoft
             }
             namespace Razor
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.HelperResult` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HelperResult : Microsoft.AspNetCore.Html.IHtmlContent
                 {
                     public HelperResult(System.Func<System.IO.TextWriter, System.Threading.Tasks.Task> asyncAction) => throw null;
@@ -78,12 +72,10 @@ namespace Microsoft
                     public virtual void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.IModelTypeProvider` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 internal interface IModelTypeProvider
                 {
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.IRazorPage` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IRazorPage
                 {
                     Microsoft.AspNetCore.Html.IHtmlContent BodyContent { get; set; }
@@ -97,19 +89,16 @@ namespace Microsoft
                     Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get; set; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.IRazorPageActivator` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IRazorPageActivator
                 {
                     void Activate(Microsoft.AspNetCore.Mvc.Razor.IRazorPage page, Microsoft.AspNetCore.Mvc.Rendering.ViewContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.IRazorPageFactoryProvider` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IRazorPageFactoryProvider
                 {
                     Microsoft.AspNetCore.Mvc.Razor.RazorPageFactoryResult CreateFactory(string relativePath);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.IRazorViewEngine` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IRazorViewEngine : Microsoft.AspNetCore.Mvc.ViewEngines.IViewEngine
                 {
                     Microsoft.AspNetCore.Mvc.Razor.RazorPageResult FindPage(Microsoft.AspNetCore.Mvc.ActionContext context, string pageName);
@@ -117,32 +106,27 @@ namespace Microsoft
                     Microsoft.AspNetCore.Mvc.Razor.RazorPageResult GetPage(string executingFilePath, string pagePath);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.ITagHelperActivator` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface ITagHelperActivator
                 {
                     TTagHelper Create<TTagHelper>(Microsoft.AspNetCore.Mvc.Rendering.ViewContext context) where TTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.ITagHelper;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.ITagHelperFactory` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface ITagHelperFactory
                 {
                     TTagHelper CreateTagHelper<TTagHelper>(Microsoft.AspNetCore.Mvc.Rendering.ViewContext context) where TTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.ITagHelper;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.ITagHelperInitializer<>` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface ITagHelperInitializer<TTagHelper> where TTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.ITagHelper
                 {
                     void Initialize(TTagHelper helper, Microsoft.AspNetCore.Mvc.Rendering.ViewContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.IViewLocationExpander` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IViewLocationExpander
                 {
                     System.Collections.Generic.IEnumerable<string> ExpandViewLocations(Microsoft.AspNetCore.Mvc.Razor.ViewLocationExpanderContext context, System.Collections.Generic.IEnumerable<string> viewLocations);
                     void PopulateValues(Microsoft.AspNetCore.Mvc.Razor.ViewLocationExpanderContext context);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpander` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class LanguageViewLocationExpander : Microsoft.AspNetCore.Mvc.Razor.IViewLocationExpander
                 {
                     public virtual System.Collections.Generic.IEnumerable<string> ExpandViewLocations(Microsoft.AspNetCore.Mvc.Razor.ViewLocationExpanderContext context, System.Collections.Generic.IEnumerable<string> viewLocations) => throw null;
@@ -151,14 +135,12 @@ namespace Microsoft
                     public void PopulateValues(Microsoft.AspNetCore.Mvc.Razor.ViewLocationExpanderContext context) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum LanguageViewLocationExpanderFormat : int
                 {
                     SubFolder = 0,
                     Suffix = 1,
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.RazorPage` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class RazorPage : Microsoft.AspNetCore.Mvc.Razor.RazorPageBase
                 {
                     public override void BeginContext(int position, int length, bool isLiteral) => throw null;
@@ -177,7 +159,6 @@ namespace Microsoft
                     public System.Threading.Tasks.Task<Microsoft.AspNetCore.Html.HtmlString> RenderSectionAsync(string name, bool required) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.RazorPage<>` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class RazorPage<TModel> : Microsoft.AspNetCore.Mvc.Razor.RazorPage
                 {
                     public TModel Model { get => throw null; }
@@ -185,14 +166,12 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.ViewFeatures.ViewDataDictionary<TModel> ViewData { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.RazorPageActivator` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RazorPageActivator : Microsoft.AspNetCore.Mvc.Razor.IRazorPageActivator
                 {
                     public void Activate(Microsoft.AspNetCore.Mvc.Razor.IRazorPage page, Microsoft.AspNetCore.Mvc.Rendering.ViewContext context) => throw null;
                     public RazorPageActivator(Microsoft.AspNetCore.Mvc.ModelBinding.IModelMetadataProvider metadataProvider, Microsoft.AspNetCore.Mvc.Routing.IUrlHelperFactory urlHelperFactory, Microsoft.AspNetCore.Mvc.Rendering.IJsonHelper jsonHelper, System.Diagnostics.DiagnosticSource diagnosticSource, System.Text.Encodings.Web.HtmlEncoder htmlEncoder, Microsoft.AspNetCore.Mvc.ViewFeatures.IModelExpressionProvider modelExpressionProvider) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.RazorPageBase` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public abstract class RazorPageBase : Microsoft.AspNetCore.Mvc.Razor.IRazorPage
                 {
                     public void AddHtmlAttributeValue(string prefix, int prefixOffset, object value, int valueOffset, int valueLength, bool isLiteral) => throw null;
@@ -238,7 +217,6 @@ namespace Microsoft
                     public virtual void WriteLiteral(string value) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.RazorPageFactoryResult` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct RazorPageFactoryResult
                 {
                     public System.Func<Microsoft.AspNetCore.Mvc.Razor.IRazorPage> RazorPageFactory { get => throw null; }
@@ -248,7 +226,6 @@ namespace Microsoft
                     public Microsoft.AspNetCore.Mvc.Razor.Compilation.CompiledViewDescriptor ViewDescriptor { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.RazorPageResult` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct RazorPageResult
                 {
                     public string Name { get => throw null; }
@@ -259,7 +236,6 @@ namespace Microsoft
                     public System.Collections.Generic.IEnumerable<string> SearchedLocations { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.RazorView` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RazorView : Microsoft.AspNetCore.Mvc.ViewEngines.IView
                 {
                     public string Path { get => throw null; }
@@ -269,7 +245,6 @@ namespace Microsoft
                     public System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Mvc.Razor.IRazorPage> ViewStartPages { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.RazorViewEngine` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RazorViewEngine : Microsoft.AspNetCore.Mvc.Razor.IRazorViewEngine, Microsoft.AspNetCore.Mvc.ViewEngines.IViewEngine
                 {
                     public Microsoft.AspNetCore.Mvc.Razor.RazorPageResult FindPage(Microsoft.AspNetCore.Mvc.ActionContext context, string pageName) => throw null;
@@ -283,7 +258,6 @@ namespace Microsoft
                     protected internal Microsoft.Extensions.Caching.Memory.IMemoryCache ViewLookupCache { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RazorViewEngineOptions
                 {
                     public System.Collections.Generic.IList<string> AreaPageViewLocationFormats { get => throw null; }
@@ -294,17 +268,14 @@ namespace Microsoft
                     public System.Collections.Generic.IList<string> ViewLocationFormats { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.RenderAsyncDelegate` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public delegate System.Threading.Tasks.Task RenderAsyncDelegate();
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.TagHelperInitializer<>` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TagHelperInitializer<TTagHelper> : Microsoft.AspNetCore.Mvc.Razor.ITagHelperInitializer<TTagHelper> where TTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.ITagHelper
                 {
                     public void Initialize(TTagHelper helper, Microsoft.AspNetCore.Mvc.Rendering.ViewContext context) => throw null;
                     public TagHelperInitializer(System.Action<TTagHelper, Microsoft.AspNetCore.Mvc.Rendering.ViewContext> action) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Razor.ViewLocationExpanderContext` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ViewLocationExpanderContext
                 {
                     public Microsoft.AspNetCore.Mvc.ActionContext ActionContext { get => throw null; }
@@ -319,7 +290,6 @@ namespace Microsoft
 
                 namespace Compilation
                 {
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.Compilation.CompiledViewDescriptor` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class CompiledViewDescriptor
                     {
                         public CompiledViewDescriptor() => throw null;
@@ -332,19 +302,16 @@ namespace Microsoft
                         public Microsoft.AspNetCore.Mvc.Razor.Compilation.RazorViewAttribute ViewAttribute { get => throw null; set => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.Compilation.IViewCompiler` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IViewCompiler
                     {
                         System.Threading.Tasks.Task<Microsoft.AspNetCore.Mvc.Razor.Compilation.CompiledViewDescriptor> CompileAsync(string relativePath);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.Compilation.IViewCompilerProvider` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface IViewCompilerProvider
                     {
                         Microsoft.AspNetCore.Mvc.Razor.Compilation.IViewCompiler GetCompiler();
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.Compilation.RazorViewAttribute` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class RazorViewAttribute : System.Attribute
                     {
                         public string Path { get => throw null; }
@@ -352,7 +319,6 @@ namespace Microsoft
                         public System.Type ViewType { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.Compilation.ViewsFeature` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ViewsFeature
                     {
                         public System.Collections.Generic.IList<Microsoft.AspNetCore.Mvc.Razor.Compilation.CompiledViewDescriptor> ViewDescriptors { get => throw null; }
@@ -362,7 +328,6 @@ namespace Microsoft
                 }
                 namespace Infrastructure
                 {
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.Infrastructure.TagHelperMemoryCacheProvider` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class TagHelperMemoryCacheProvider
                     {
                         public Microsoft.Extensions.Caching.Memory.IMemoryCache Cache { get => throw null; set => throw null; }
@@ -372,7 +337,6 @@ namespace Microsoft
                 }
                 namespace Internal
                 {
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.Internal.RazorInjectAttribute` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class RazorInjectAttribute : System.Attribute
                     {
                         public RazorInjectAttribute() => throw null;
@@ -381,31 +345,26 @@ namespace Microsoft
                 }
                 namespace TagHelpers
                 {
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.TagHelpers.BodyTagHelper` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class BodyTagHelper : Microsoft.AspNetCore.Mvc.Razor.TagHelpers.TagHelperComponentTagHelper
                     {
                         public BodyTagHelper(Microsoft.AspNetCore.Mvc.Razor.TagHelpers.ITagHelperComponentManager manager, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) : base(default(Microsoft.AspNetCore.Mvc.Razor.TagHelpers.ITagHelperComponentManager), default(Microsoft.Extensions.Logging.ILoggerFactory)) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.TagHelpers.HeadTagHelper` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class HeadTagHelper : Microsoft.AspNetCore.Mvc.Razor.TagHelpers.TagHelperComponentTagHelper
                     {
                         public HeadTagHelper(Microsoft.AspNetCore.Mvc.Razor.TagHelpers.ITagHelperComponentManager manager, Microsoft.Extensions.Logging.ILoggerFactory loggerFactory) : base(default(Microsoft.AspNetCore.Mvc.Razor.TagHelpers.ITagHelperComponentManager), default(Microsoft.Extensions.Logging.ILoggerFactory)) => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.TagHelpers.ITagHelperComponentManager` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface ITagHelperComponentManager
                     {
                         System.Collections.Generic.ICollection<Microsoft.AspNetCore.Razor.TagHelpers.ITagHelperComponent> Components { get; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.TagHelpers.ITagHelperComponentPropertyActivator` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public interface ITagHelperComponentPropertyActivator
                     {
                         void Activate(Microsoft.AspNetCore.Mvc.Rendering.ViewContext context, Microsoft.AspNetCore.Razor.TagHelpers.ITagHelperComponent tagHelperComponent);
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.TagHelpers.TagHelperComponentTagHelper` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public abstract class TagHelperComponentTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                     {
                         public override void Init(Microsoft.AspNetCore.Razor.TagHelpers.TagHelperContext context) => throw null;
@@ -415,14 +374,12 @@ namespace Microsoft
                         public Microsoft.AspNetCore.Mvc.Rendering.ViewContext ViewContext { get => throw null; set => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.TagHelpers.TagHelperFeature` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class TagHelperFeature
                     {
                         public TagHelperFeature() => throw null;
                         public System.Collections.Generic.IList<System.Reflection.TypeInfo> TagHelpers { get => throw null; }
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.TagHelpers.TagHelperFeatureProvider` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class TagHelperFeatureProvider : Microsoft.AspNetCore.Mvc.ApplicationParts.IApplicationFeatureProvider, Microsoft.AspNetCore.Mvc.ApplicationParts.IApplicationFeatureProvider<Microsoft.AspNetCore.Mvc.Razor.TagHelpers.TagHelperFeature>
                     {
                         protected virtual bool IncludePart(Microsoft.AspNetCore.Mvc.ApplicationParts.ApplicationPart part) => throw null;
@@ -431,7 +388,6 @@ namespace Microsoft
                         public TagHelperFeatureProvider() => throw null;
                     }
 
-                    // Generated from `Microsoft.AspNetCore.Mvc.Razor.TagHelpers.UrlResolutionTagHelper` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class UrlResolutionTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.TagHelper
                     {
                         protected System.Text.Encodings.Web.HtmlEncoder HtmlEncoder { get => throw null; }
@@ -453,7 +409,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.MvcRazorMvcBuilderExtensions` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MvcRazorMvcBuilderExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IMvcBuilder AddRazorOptions(this Microsoft.Extensions.DependencyInjection.IMvcBuilder builder, System.Action<Microsoft.AspNetCore.Mvc.Razor.RazorViewEngineOptions> setupAction) => throw null;
@@ -461,7 +416,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.DependencyInjection.IMvcBuilder InitializeTagHelper<TTagHelper>(this Microsoft.Extensions.DependencyInjection.IMvcBuilder builder, System.Action<TTagHelper, Microsoft.AspNetCore.Mvc.Rendering.ViewContext> initialize) where TTagHelper : Microsoft.AspNetCore.Razor.TagHelpers.ITagHelper => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.MvcRazorMvcCoreBuilderExtensions` in `Microsoft.AspNetCore.Mvc.Razor, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MvcRazorMvcCoreBuilderExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder AddRazorViewEngine(this Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder builder) => throw null;

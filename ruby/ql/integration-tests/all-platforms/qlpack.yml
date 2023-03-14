@@ -1,0 +1,3 @@
+dependencies:
+  codeql/ruby-all: '*'
+  codeql/ruby-queries: '*'
