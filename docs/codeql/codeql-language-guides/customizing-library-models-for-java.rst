@@ -10,14 +10,14 @@ Customizing Library Models for Java
 
 The Java analysis can be customized by adding library models (summaries, sinks and sources) in data extension files.
 A model is a definition of a behavior of a library element, such as a method, that is used to improve the data flow analysis precision by identifying more results.
-Most of the security related queries are *taint tracking* queries that tries to find paths from a *source* of untrusted input to a *sink* that represents a vulnerability.
+Most of the security related queries are *taint tracking* queries that try to find paths from a *source* of untrusted input to a *sink* that represents a vulnerability.
 Furthermore, the taint tracking queries also need to know how data can flow through elements that are not included in the source code - these are named *summaries*.
 
-That is
+That is:
 
 - **sources** are the starting points of a taint tracking data flow analysis.
 - **sinks** are the end points of a taint tracking data flow analysis.
-- **summaries** are models of elements that allows us to synthesize the elements flow behavior without having them in the source code. This is especially helpful when using a third party (or the standard) library.
+- **summaries** are models of elements that allow us to synthesize the elements flow behavior without having them in the source code. This is especially helpful when using a third party (or the standard) library.
 
 The models are defined using data extensions where each tuple constitutes a model.
 A data extension file for Java is a YAML file in the form:
@@ -35,7 +35,7 @@ A data extension file for Java is a YAML file in the form:
 
 Data extensions contribute to the extensible predicates defined in the CodeQL library. For more information on how to define data extensions and extensible predicates as well as how to wire them up, see the :ref:`data-extensions` documentation.
 
-The CodeQL library for Java expose the following extensible predicates:
+The CodeQL library for Java exposes the following extensible predicates:
 
 - **sourceModel**\(package, type, subtypes, name, signature, ext, output, kind, provenance). This is used for **source** models.
 - **sinkModel**\(package, type, subtypes, name, signature, ext, input, kind, provenance). This is used for **sink** models.
@@ -44,9 +44,9 @@ The CodeQL library for Java expose the following extensible predicates:
 
 The extensible predicates are populated using data extensions specified in YAML files.
 
-In the sections below, we will show by example how to add tuples to the different extensible predicates.
+In the sections below, we will provide examples of how to add tuples to the different extensible predicates.
 The extensible predicates are used to customize and improve the existing data flow queries, by providing sources, sinks, and flow through (summaries) for library elements.
-The :ref:`reference-material` section will provide details on the *mini DSLs* that define models for each extensible predicate.
+The :ref:`reference-material` section will provide details on the *mini DSLs* that defines models for each extensible predicate.
 
 Example: Taint sink in the **java.sql** package.
 ------------------------------------------------
@@ -84,11 +84,11 @@ The first five values identify the callable (in this case a method) to be modele
 - The fourth value **execute** is the method name.
 - The fifth value **(String)** is the method input type signature.
 
-For most practical purposes the sixth value is not relevant.
+The sixth value is only relevant internally and can be omitted in most use cases.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the sink.
 
 - The seventh value **Argument[0]** is the **access path** to the first argument passed to the method, which means that this is the location of the sink.
-- The eighth value **sql** is the kind of the sink. The sink kind is used to define the queries where the sink is in scope. In this case  - the SQL injection queries.
+- The eighth value **sql** is the kind of the sink. The sink kind is used to define the queries where the sink is in scope. In this case - the SQL injection queries.
 - The ninth value **manual** is the provenance of the sink, which is used to identify the origin of the sink.
  
 Example: Taint source from the **java.net** package.
@@ -122,7 +122,7 @@ The first five values identify the callable (in this case a method) to be modele
 
 - The first value **java.net** is the package name.
 - The second value **Socket** is the name of the class (type) that contains the source.
-- The third value **False** flag indicates whether or not the source also applies to all overrides of the method.
+- The third value **False** is a flag that indicates whether or not the source also applies to all overrides of the method.
 - The fourth value **getInputStream** is the method name.
 - The fifth value **()** is the method input type signature.
 
@@ -164,12 +164,12 @@ Since we are adding flow through a method, we need to add tuples to the **summar
 Each tuple defines flow from one argument to the return value.
 The first row defines flow from the qualifier (**s1** in the example) to the return value (**t** in the example) and the second row defines flow from the first argument (**s2** in the example) to the return value (**t** in the example).
 
-The first five values are used to identify the callable (in this case a method) which we are defining a summary for.
+The first five values identify the callable (in this case a method) to be modeled as a summary.
 These are the same for both of the rows above as we are adding two summaries for the same method.
 
 - The first value **java.lang** is the package name.
 - The second value **String** is the class (type) name.
-- The third value **False** is a flag indicating whether the summary also applies to all overrides of the method.
+- The third value **False** is a flag that indicates whether or not the summary also applies to all overrides of the method.
 - The fourth value **concat** is the method name.
 - The fifth value **(String)** is the method input type signature.
 
@@ -183,7 +183,7 @@ The remaining values are used to define the **access path**, the **kind**, and t
 
 Example: Add flow through the **map** method.
 ---------------------------------------------
-In this example, we will see a more complex example of modelling flow through a method.
+In this example, we will see a more complex example of modeling flow through a method.
 This pattern shows how to model flow through higher order methods and collection types.
 Please note that the flow through the **map** method is already added to the CodeQL Java analysis.
 
@@ -194,7 +194,7 @@ Please note that the flow through the **map** method is already added to the Cod
      ...
    }
 
-This can be achieved by adding the following data extension.
+This can be achieved by adding the following to a data extension file:
 
 .. code-block:: yaml
 
@@ -215,7 +215,7 @@ These are the same for both of the rows above as we are adding two summaries for
 
 - The first value **java.util.stream** is the package name.
 - The second value **Stream** is the class (type) name.
-- The third value **True** is a flag indicating whether the summary also applies to all overrides of the method.
+- The third value **True** is a flag that indicates whether or not the summary also applies to all overrides of the method.
 - The fourth value **map** is the method name.
 - The fifth value **Function** is the method input type signature.
 
@@ -245,7 +245,7 @@ That is, the first row models that there is value flow from the elements of the 
 Example: Add a **neutral** method.
 ----------------------------------
 In this example we will show how to model the **now** method as being neutral.
-This is purely for consistency and has no impact on the analysis.
+This is purely for completeness and has no impact on the analysis.
 A neutral model is used to define that there is no flow through a method.
 Please note that the neutral model for the **now** method is already added.
 
@@ -284,7 +284,7 @@ Reference material
 ------------------
 
 The following sections provide reference material for extensible predicates.
-This includes descriptions of each of the arguments (eg. access paths, kinds and provenance).
+This includes descriptions of each of the arguments (e.g. access paths, kinds and provenance).
 
 Extensible predicates
 ---------------------
@@ -299,7 +299,7 @@ The shared columns are:
 - **type**: Name of the type containing the element(s) to be modeled.
 - **subtypes**: A boolean flag indicating whether the model should also apply to all overrides of the selected element(s).
 - **name**: Name of the element (optional). If this is left blank, it means all elements matching the previous selection criteria.
-- **signature**: Type signature of the selected element (optional). If this is left blank it means all elements matching the previous selection criteria.
+- **signature**: Type signature of the selected element (optional). If this is left blank, it means all elements matching the previous selection criteria.
 - **ext**: Specifies additional API-graph-like edges (mostly empty) and out of scope for this document.
 - **provenance**: Provenance (origin) of the model definition.
 
@@ -417,12 +417,12 @@ The following values are supported:
 - **ai-generated**: The model was generated by AI and added to the extensible predicate.
 
 The provenance is used to distinguish between models that are manually added to the extensible predicate and models that are automatically generated.
-Furthermore, it impacts the data flow analysis in the following way
+Furthermore, it impacts the data flow analysis in the following way:
 
 - A **manual** model takes precedence over **generated** models. If a **manual** model exists for an element then all generated models are ignored.
-- A **generated** or **ai-generated** model is ignored during analysis, if the source code of the element it is modelling is available.
+- A **generated** or **ai-generated** model is ignored during analysis, if the source code of the element it is modeling is available.
 
-That is, generated models are less trusted than manual models and only used if neither source code or a manual model is available.
+That is, generated models are less trusted than manual models and only used if neither source code nor a manual model is available.
 
 
 .. include:: ../reusables/data-extensions.rst
