@@ -1,7 +1,7 @@
-var x = 42
+var def_int = 42
 
 struct Generic<T> {}
 
-var instantiated_generic = Generic<Int>()
+var def_instantiated_generic = Generic<Int>()
 
-func function(_: Int) -> Int { return 42 }
+func def_function(_: Int) -> Int { return 42 }
