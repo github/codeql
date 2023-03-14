@@ -23,6 +23,7 @@ SwiftMangledName initMangled(const swift::Decl* decl) {
   ret << swift::Decl::getKindName(decl->getKind()) << "Decl_";
   return ret;
 }
+
 }  // namespace
 
 SwiftMangledName SwiftMangler::mangleModuleName(std::string_view name) {
@@ -66,6 +67,16 @@ SwiftMangledName SwiftMangler::visitValueDecl(const swift::ValueDecl* decl) {
 
 SwiftMangledName SwiftMangler::visitModuleDecl(const swift::ModuleDecl* decl) {
   return mangleModuleName(decl->getRealName().str());
+}
+
+SwiftMangledName SwiftMangler::visitGenericTypeDecl(const swift::GenericTypeDecl* decl) {
+  if (auto context = decl->getDeclContext()->getAsDecl()) {
+    auto ret = initMangled(decl);
+    ret << dispatcher.fetchLabel(context);
+    ret << decl->getName().str();
+    return ret;
+  }
+  return {};
 }
 
 SwiftMangledName SwiftMangler::visitModuleType(const swift::ModuleType* type) {
