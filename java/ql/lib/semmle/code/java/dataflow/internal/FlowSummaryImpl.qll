@@ -262,7 +262,7 @@ module Public {
     /**
      * Holds if there exists a summary that applies to `this` that has provenance `provenance`.
      */
-    predicate hasProvenance(string provenance) { none() }
+    predicate hasProvenance(string provenance) { provenance = "manual" }
   }
 
   /** A callable where there is no flow via the callable. */
