@@ -775,7 +775,7 @@ private class ReactRouterLocationSource extends DOM::LocationSource::Range {
 private DataFlow::SourceNode higherOrderComponentBuilder() {
   // `memo(f)` returns a function that behaves as `f` but caches results
   // It is sometimes used to wrap an entire functional component.
-  result = react().getAPropertyRead("memo")
+  result = react().getAPropertyRead(["memo", "forwardRef"])
   or
   result = DataFlow::moduleMember("react-redux", "connect").getACall()
   or
