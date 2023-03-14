@@ -97,6 +97,21 @@ predicate argumentPositionMatch(DataFlowCall call, ArgNode arg, ParameterPositio
  * calls. For this reason, we cannot reuse the code from `DataFlowImpl.qll` directly.
  */
 private module LambdaFlow {
+  private newtype TLambdaCallContext =
+    TLambdaCallContextNoParam() or
+    TLambdaCallContextSomeParam() or
+    TLambdaCallContextParam(ParamNode p)
+
+  private class LambdaCallContext extends TLambdaCallContext {
+    string toString() {
+      this = TLambdaCallContextNoParam() and result = "NoParam"
+      or
+      this = TLambdaCallContextSomeParam() and result = "SomeParam"
+      or
+      exists(ParamNode p | this = TLambdaCallContextParam(p) | result = "Param(" + p + ")")
+    }
+  }
+
   pragma[noinline]
   private predicate viableParamNonLambda(DataFlowCall call, ParameterPosition ppos, ParamNode p) {
     p.isParameterOf(viableCallable(call), ppos)
@@ -104,20 +119,29 @@ private module LambdaFlow {
 
   pragma[noinline]
   private predicate viableParamLambda(DataFlowCall call, ParameterPosition ppos, ParamNode p) {
-    p.isParameterOf(viableCallableLambda(call, _), ppos)
+    p.isParameterOf(viableCallableLambdaRec(_, call, _), ppos)
   }
 
-  private predicate viableParamArgNonLambda(DataFlowCall call, ParamNode p, ArgNode arg) {
+  pragma[nomagic]
+  private predicate viableParamArgNonLambda(
+    DataFlowCall call, ArgNode arg, ParamNode p, DataFlowCallable c
+  ) {
     exists(ParameterPosition ppos |
       viableParamNonLambda(call, ppos, p) and
-      argumentPositionMatch(call, arg, ppos)
+      argumentPositionMatch(call, arg, ppos) and
+      c = getNodeEnclosingCallable(p)
     )
   }
 
-  private predicate viableParamArgLambda(DataFlowCall call, ParamNode p, ArgNode arg) {
+  pragma[nomagic]
+  private predicate viableParamArgLambda(
+    DataFlowCall call, ArgNode arg, ParamNode p, DataFlowCallable c
+  ) {
     exists(ParameterPosition ppos |
       viableParamLambda(call, ppos, p) and
-      argumentPositionMatch(call, arg, ppos)
+      argumentPositionMatch(call, arg, ppos) and
+      not lambdaCall(call, _, arg) and // no need to track flow of the lambda into itself
+      c = getNodeEnclosingCallable(p)
     )
   }
 
@@ -140,97 +164,89 @@ private module LambdaFlow {
   }
 
   pragma[nomagic]
-  private TReturnPositionSimple viableReturnPosLambda(
-    DataFlowCall call, DataFlowCallOption lastCall, ReturnKind kind
-  ) {
-    result = TReturnPositionSimple0(viableCallableLambda(call, lastCall), kind)
+  private TReturnPositionSimple viableReturnPosLambda(DataFlowCall call, ReturnKind kind) {
+    result = TReturnPositionSimple0(viableCallableLambdaRec(_, call, _), kind)
   }
 
-  private predicate viableReturnPosOutNonLambda(
-    DataFlowCall call, TReturnPositionSimple pos, OutNode out
-  ) {
-    exists(ReturnKind kind |
+  pragma[nomagic]
+  private predicate viableReturnPosOutNonLambda(TReturnPositionSimple pos, OutNode out) {
+    exists(DataFlowCall call, ReturnKind kind |
       pos = viableReturnPosNonLambda(call, kind) and
       out = getAnOutNode(call, kind)
     )
   }
 
-  private predicate viableReturnPosOutLambda(
-    DataFlowCall call, DataFlowCallOption lastCall, TReturnPositionSimple pos, OutNode out
-  ) {
-    exists(ReturnKind kind |
-      pos = viableReturnPosLambda(call, lastCall, kind) and
+  pragma[nomagic]
+  private predicate viableReturnPosOutLambda(TReturnPositionSimple pos, OutNode out) {
+    exists(DataFlowCall call, ReturnKind kind |
+      pos = viableReturnPosLambda(call, kind) and
       out = getAnOutNode(call, kind)
     )
   }
 
   /**
-   * Holds if data can flow (inter-procedurally) from `node` (of type `t`) to
-   * the lambda call `lambdaCall`.
+   * Holds if data can flow (inter-procedurally) from lambda creation `creation`
+   * (of type `t`) to `node`.
    *
-   * The parameter `toReturn` indicates whether the path from `node` to
-   * `lambdaCall` goes through a return, and `toJump` whether the path goes
-   * through a jump step.
-   *
-   * The call context `lastCall` records the last call on the path from `node`
-   * to `lambdaCall`, if any. That is, `lastCall` is able to target the enclosing
-   * callable of `lambdaCall`.
+   * The call context `ctx` records the last parameter on the path from `creation`
+   * to `node`, if any. That is, `ctx` is in the enclosing callable of `node`.
    */
   pragma[nomagic]
-  predicate revLambdaFlow(
-    DataFlowCall lambdaCall, LambdaCallKind kind, Node node, DataFlowType t, boolean toReturn,
-    boolean toJump, DataFlowCallOption lastCall
-  ) {
-    revLambdaFlow0(lambdaCall, kind, node, t, toReturn, toJump, lastCall) and
+  predicate fwdLambdaFlow(Node creation, Node node, DataFlowType t, LambdaCallContext ctx) {
+    fwdLambdaFlow0(creation, node, t, ctx) and
     not expectsContent(node, _) and
-    if castNode(node) or node instanceof ArgNode or node instanceof ReturnNode
-    then compatibleTypes(t, getNodeDataFlowType(node))
-    else any()
+    if node instanceof CastingNode then compatibleTypes(t, getNodeDataFlowType(node)) else any()
   }
 
   pragma[nomagic]
-  predicate revLambdaFlow0(
-    DataFlowCall lambdaCall, LambdaCallKind kind, Node node, DataFlowType t, boolean toReturn,
-    boolean toJump, DataFlowCallOption lastCall
-  ) {
-    lambdaCall(lambdaCall, kind, node) and
+  private predicate additionalLocalStep(Node node1, Node node2, boolean preservesValue) {
+    additionalLambdaFlowStep(node1, node2, preservesValue) and
+    getNodeEnclosingCallable(node1) = getNodeEnclosingCallable(node2)
+  }
+
+  pragma[nomagic]
+  private predicate additionalJumpStep(Node node1, Node node2, boolean preservesValue) {
+    additionalLambdaFlowStep(node1, node2, preservesValue) and
+    getNodeEnclosingCallable(node1) != getNodeEnclosingCallable(node2)
+  }
+
+  pragma[nomagic]
+  private predicate recordLambdaCallContext(DataFlowCallable c) {
+    exists(DataFlowCall call |
+      lambdaCall(call, _, _) and
+      c = call.getEnclosingCallable()
+    )
+  }
+
+  pragma[nomagic]
+  private predicate fwdLambdaFlow0(Node creation, Node node, DataFlowType t, LambdaCallContext ctx) {
+    lambdaCreation(creation, _, _) and
+    node = creation and
     t = getNodeDataFlowType(node) and
-    toReturn = false and
-    toJump = false and
-    lastCall = TDataFlowCallNone()
+    ctx = TLambdaCallContextNoParam()
     or
     // local flow
-    exists(Node mid, DataFlowType t0 |
-      revLambdaFlow(lambdaCall, kind, mid, t0, toReturn, toJump, lastCall)
-    |
-      simpleLocalFlowStep(node, mid) and
-      t = t0
-      or
-      exists(boolean preservesValue |
-        additionalLambdaFlowStep(node, mid, preservesValue) and
-        getNodeEnclosingCallable(node) = getNodeEnclosingCallable(mid)
-      |
-        preservesValue = false and
-        t = getNodeDataFlowType(node)
-        or
-        preservesValue = true and
-        t = t0
-      )
+    exists(Node mid |
+      fwdLambdaFlowLocalSource(creation, mid, t, ctx) and // non-linear recursion
+      fwdLambdaFlowLocalBigStep(mid, node) // non-linear recursion
+    )
+    or
+    // additional local flow
+    exists(Node mid |
+      fwdLambdaFlow(creation, mid, _, ctx) and
+      additionalLocalStep(mid, node, false) and
+      t = getNodeDataFlowType(node)
     )
     or
     // jump step
     exists(Node mid, DataFlowType t0 |
-      revLambdaFlow(lambdaCall, kind, mid, t0, _, _, lastCall) and
-      toReturn = false and
-      toJump = true
+      fwdLambdaFlow(creation, mid, t0, _) and
+      ctx = TLambdaCallContextNoParam()
     |
-      jumpStepCached(node, mid) and
+      jumpStepCached(mid, node) and
       t = t0
       or
-      exists(boolean preservesValue |
-        additionalLambdaFlowStep(node, mid, preservesValue) and
-        getNodeEnclosingCallable(node) != getNodeEnclosingCallable(mid)
-      |
+      exists(boolean preservesValue | additionalJumpStep(mid, node, preservesValue) |
         preservesValue = false and
         t = getNodeDataFlowType(node)
         or
@@ -240,61 +256,164 @@ private module LambdaFlow {
     )
     or
     // flow into a callable
-    exists(ParamNode p, DataFlowCallOption lastCall0, DataFlowCall call |
-      revLambdaFlowIn(lambdaCall, kind, p, t, toJump, lastCall0) and
-      (
-        if lastCall0 = TDataFlowCallNone() and toJump = false
-        then lastCall = TDataFlowCallSome(call)
-        else lastCall = lastCall0
-      ) and
-      toReturn = false
+    exists(DataFlowCall call, ArgNode arg, DataFlowCallable target |
+      if recordLambdaCallContext(target)
+      then ctx = TLambdaCallContextParam(node)
+      else ctx = TLambdaCallContextSomeParam()
     |
-      viableParamArgNonLambda(call, p, node)
+      // flow into non-lambda
+      fwdLambdaFlowIn(creation, arg, t) and
+      viableParamArgNonLambda(call, arg, node, target)
       or
-      viableParamArgLambda(call, p, node) // non-linear recursion
+      // flow into lambda
+      fwdLambdaFlowInLambdaCall(creation, arg, t) and // non-linear recursion
+      viableParamArgLambda(call, arg, node, target) // non-linear recursion
     )
     or
     // flow out of a callable
-    exists(TReturnPositionSimple pos |
-      revLambdaFlowOut(lambdaCall, kind, pos, t, toJump, lastCall) and
-      getReturnPositionSimple(node, node.(ReturnNode).getKind()) = pos and
-      toReturn = true
+    exists(TReturnPositionSimple pos | ctx = TLambdaCallContextNoParam() |
+      // flow out of non-lambda
+      fwdLambdaFlowOut(creation, pos, t) and
+      viableReturnPosOutNonLambda(pos, node)
+      or
+      // flow out of lambda
+      fwdLambdaFlowOutLambdaCall(creation, pos, t) and // non-linear recursion
+      viableReturnPosOutLambda(pos, node) // non-linear recursion
     )
   }
 
   pragma[nomagic]
-  predicate revLambdaFlowOutLambdaCall(
-    DataFlowCall lambdaCall, LambdaCallKind kind, OutNode out, DataFlowType t, boolean toJump,
-    DataFlowCall call, DataFlowCallOption lastCall
+  private predicate fwdLambdaFlowLocalSource(
+    Node creation, Node node, DataFlowType t, LambdaCallContext ctx
   ) {
-    revLambdaFlow(lambdaCall, kind, out, t, _, toJump, lastCall) and
-    exists(ReturnKindExt rk |
-      out = rk.getAnOutNode(call) and
+    fwdLambdaFlow(creation, node, t, ctx) and
+    (
+      lambdaCreation(node, _, _) or
+      jumpStepCached(_, node) or
+      additionalJumpStep(_, node, _) or
+      additionalLocalStep(_, node, false) or
+      node instanceof CastingNode
+    )
+  }
+
+  pragma[nomagic]
+  private predicate localStep(Node node1, Node node2) {
+    simpleLocalFlowStep(node1, node2) or
+    additionalLocalStep(node1, node2, true)
+  }
+
+  pragma[nomagic]
+  private predicate fwdLambdaFlowLocalPlus(Node node1, Node node2) {
+    fwdLambdaFlowLocalSource(_, node1, _, _) and
+    localStep(node1, node2)
+    or
+    exists(Node mid |
+      fwdLambdaFlowLocalPlus(node1, mid) and
+      localStep(mid, node2) and
+      not mid instanceof CastingNode
+    )
+  }
+
+  pragma[nomagic]
+  private predicate fwdLambdaFlowLocalBigStep(Node node1, Node node2) {
+    fwdLambdaFlowLocalPlus(node1, node2) and
+    (
+      lambdaCall(_, _, node2) or
+      node2 instanceof ArgNode or
+      node2 instanceof ReturnNode or
+      jumpStepCached(node2, _) or
+      additionalJumpStep(node2, _, _) or
+      additionalLocalStep(node2, _, false) or
+      node2 instanceof CastingNode
+    )
+  }
+
+  pragma[inline]
+  private predicate fwdLambdaFlowIn(Node creation, ArgNode arg, DataFlowType t) {
+    fwdLambdaFlow(creation, arg, t, _)
+  }
+
+  pragma[nomagic]
+  private predicate fwdLambdaFlowInLambdaCall(Node creation, ArgNode arg, DataFlowType t) {
+    fwdLambdaFlowIn(creation, arg, t) and
+    exists(DataFlowCall call |
+      arg.argumentOf(call, _) and
       lambdaCall(call, _, _)
     )
   }
 
-  pragma[nomagic]
-  predicate revLambdaFlowOut(
-    DataFlowCall lambdaCall, LambdaCallKind kind, TReturnPositionSimple pos, DataFlowType t,
-    boolean toJump, DataFlowCallOption lastCall
-  ) {
-    exists(DataFlowCall call, OutNode out |
-      revLambdaFlow(lambdaCall, kind, out, t, _, toJump, lastCall) and
-      viableReturnPosOutNonLambda(call, pos, out)
-      or
-      // non-linear recursion
-      revLambdaFlowOutLambdaCall(lambdaCall, kind, out, t, toJump, call, lastCall) and
-      viableReturnPosOutLambda(call, _, pos, out)
+  pragma[inline]
+  private predicate fwdLambdaFlowOut(Node creation, TReturnPositionSimple pos, DataFlowType t) {
+    exists(ReturnNode ret |
+      fwdLambdaFlow(creation, ret, t, TLambdaCallContextNoParam()) and
+      pos = getReturnPositionSimple(ret, ret.getKind())
     )
   }
 
   pragma[nomagic]
-  predicate revLambdaFlowIn(
-    DataFlowCall lambdaCall, LambdaCallKind kind, ParamNode p, DataFlowType t, boolean toJump,
-    DataFlowCallOption lastCall
+  private predicate fwdLambdaFlowOutLambdaCall(
+    Node creation, TReturnPositionSimple pos, DataFlowType t
   ) {
-    revLambdaFlow(lambdaCall, kind, p, t, false, toJump, lastCall)
+    fwdLambdaFlowOut(creation, pos, t) and
+    exists(DataFlowCallable c |
+      pos = TReturnPositionSimple0(c, _) and
+      lambdaCreation(_, _, c)
+    )
+  }
+
+  /**
+   * Gets a viable target for the lambda call `call`.
+   *
+   * Unlike `viableCallableLambda`, this predicate is used recursively
+   * in `fwdLambdaFlow`.
+   */
+  pragma[nomagic]
+  private DataFlowCallable viableCallableLambdaRec(
+    Node creation, DataFlowCall call, LambdaCallContext ctx
+  ) {
+    exists(Node receiver, LambdaCallKind kind |
+      LambdaFlow::fwdLambdaFlow(creation, receiver, _, ctx) and
+      lambdaCreation(creation, pragma[only_bind_into](kind), result) and
+      lambdaCall(call, pragma[only_bind_into](kind), receiver)
+    )
+  }
+
+  /**
+   * Gets a call with an argument `arg`, where lambda creation `creation` may
+   * reach `arg`, and `arg` matches parameter `p` via the call.
+   *
+   * By only using this predicate in `viableCallableLambda` and not
+   * `viableCallableLambdaRec`, we can avoid an extra layer of non-linear recursion.
+   */
+  pragma[nomagic]
+  private DataFlowCall getACallContext(Node creation, ParamNode p) {
+    exists(ArgNode arg, DataFlowCallable target | recordLambdaCallContext(target) |
+      fwdLambdaFlowIn(creation, arg, _) and
+      viableParamArgNonLambda(result, arg, p, target)
+      or
+      fwdLambdaFlowInLambdaCall(creation, arg, _) and
+      viableParamArgLambda(result, arg, p, target)
+    )
+  }
+
+  /**
+   * Gets a viable target for the lambda call `call`.
+   *
+   * `ctx` records the call required to reach `call` in order for the result
+   * to be a viable target, if any.
+   */
+  cached
+  DataFlowCallable viableCallableLambda(DataFlowCall call, DataFlowCallOption ctx) {
+    exists(Node creation, LambdaCallContext ctx0 |
+      result = viableCallableLambdaRec(creation, call, ctx0)
+    |
+      ctx0 = TLambdaCallContextNoParam() and ctx = TDataFlowCallNone()
+      or
+      exists(ParamNode p |
+        ctx0 = TLambdaCallContextParam(p) and
+        ctx = TDataFlowCallSome(getACallContext(creation, p))
+      )
+    )
   }
 }
 
@@ -392,19 +511,7 @@ private module Cached {
     isArgumentNode(n, call, pos)
   }
 
-  /**
-   * Gets a viable target for the lambda call `call`.
-   *
-   * `lastCall` records the call required to reach `call` in order for the result
-   * to be a viable target, if any.
-   */
-  cached
-  DataFlowCallable viableCallableLambda(DataFlowCall call, DataFlowCallOption lastCall) {
-    exists(Node creation, LambdaCallKind kind |
-      LambdaFlow::revLambdaFlow(call, kind, creation, _, _, _, lastCall) and
-      lambdaCreation(creation, kind, result)
-    )
-  }
+  predicate viableCallableLambda = LambdaFlow::viableCallableLambda/2;
 
   /**
    * Holds if `p` is the parameter of a viable dispatch target of `call`,
