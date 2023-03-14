@@ -43,6 +43,7 @@ lazy_static! {
     static ref CP_NUMBER: regex::Regex = regex::Regex::new("cp([0-9]+)").unwrap();
 }
 
+/// Returns the `encoding::Encoding` corresponding to the given encoding name, if one exists.
 fn encoding_from_name(encoding_name: &str) -> Option<&(dyn encoding::Encoding + Send + Sync)> {
     match encoding::label::encoding_from_whatwg_label(encoding_name) {
         s @ Some(_) => s,
