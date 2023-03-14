@@ -126,7 +126,7 @@ The first five values identify the callable (in this case a method) to be modele
 - The fourth value **getInputStream** is the method name.
 - The fifth value **()** is the method input type signature.
 
-For most practical purposes the sixth value is not relevant.
+The sixth value is only relevant internally and can be omitted in most use cases.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the source.
 
 - The seventh value **ReturnValue** is the access path to the return of the method, which means that it is the return value that should be considered a source of tainted input.
@@ -173,7 +173,7 @@ These are the same for both of the rows above as we are adding two summaries for
 - The fourth value **concat** is the method name.
 - The fifth value **(String)** is the method input type signature.
 
-For most practical purposes the sixth value is not relevant.
+The sixth value is only relevant internally and can be omitted in most use cases.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the summary.
 
 - The seventh value is the access path to the input (where data flows from). **Argument[-1]** is the access path to the qualifier (**s1** in the example) and **Argument[0]** is the access path to the first argument (**s2** in the example).
@@ -219,7 +219,7 @@ These are the same for both of the rows above as we are adding two summaries for
 - The fourth value **map** is the method name.
 - The fifth value **Function** is the method input type signature.
 
-For most practical purposes the sixth value is not relevant.
+The sixth value is only relevant internally and can be omitted in most use cases.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the summary definition.
 
 - The seventh value is the access path to the **input** (where data flows from).
@@ -361,6 +361,7 @@ The following sink kinds are supported:
 - **bean-validation**: ?
 - **ssti**: ?
 - **fragment-injection**: ?
+- **regex-use[**\ `arg`\ **]**: ?
 
 summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -380,7 +381,7 @@ The following kinds are supported:
 neutralModel(package, type, name, signature, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-No flow. This extensible predicate is used to model elements without flow.
+This extensible predicate is not typically needed externally, but included here for completeness.
 
 - **provenance**: Provenance (origin) of the flow through.
 
@@ -400,6 +401,7 @@ The following components are supported:
 - **ReturnValue** selects the return value.
 - **Field[**\ `name`\ **]** selects the field with the fully qualified name `name`.
 - **SyntheticField[**\ `name`\ **]** selects the synthetic field with name `name`.
+- **SyntheticGlobal[**\ `name`\ **]** selects the synthetic global with name `name`.
 - **ArrayElement** selects the elements of an array.
 - **Element** selects the elements of a collection-like container.
 - **MapKey** selects the element keys of a map.
