@@ -31,45 +31,41 @@ SwiftMangledName SwiftMangler::mangleModuleName(std::string_view name) {
   return ret;
 }
 
-SwiftMangledName SwiftMangler::mangleDecl(const swift::Decl& decl) {
-  if (!llvm::isa<swift::ValueDecl>(decl)) {
-    return {};
-  }
+SwiftMangledName SwiftMangler::visitValueDecl(const swift::ValueDecl* decl) {
   // We do not deduplicate local variables, but for the moment also non-local vars from non-swift
   // (PCM, clang modules) modules as the mangler crashes sometimes
-  if (decl.getKind() == swift::DeclKind::Var &&
-      (decl.getDeclContext()->isLocalContext() || decl.getModuleContext()->isNonSwiftModule())) {
+  if (decl->getKind() == swift::DeclKind::Var &&
+      (decl->getDeclContext()->isLocalContext() || decl->getModuleContext()->isNonSwiftModule())) {
     return {};
   }
 
   // we do not deduplicate GenericTypeParamDecl of extensions yet, as their mangling is ambiguous
-  if (decl.getKind() == swift::DeclKind::GenericTypeParam &&
-      decl.getDeclContext()->getContextKind() == swift::DeclContextKind::ExtensionDecl) {
+  if (decl->getKind() == swift::DeclKind::GenericTypeParam &&
+      decl->getDeclContext()->getContextKind() == swift::DeclContextKind::ExtensionDecl) {
     return {};
   }
 
-  if (decl.getKind() == swift::DeclKind::Module) {
-    return mangleModuleName(llvm::cast<swift::ModuleDecl>(decl).getRealName().str());
-  }
-
-  auto ret = initMangled(&decl);
-  const auto& valueDecl = llvm::cast<swift::ValueDecl>(decl);
+  auto ret = initMangled(decl);
   // stamp all declarations with an id-ref of the containing module
-  auto moduleLabel = dispatcher.fetchLabel(decl.getModuleContext());
+  auto moduleLabel = dispatcher.fetchLabel(decl->getModuleContext());
   ret << moduleLabel;
-  if (decl.getKind() == swift::DeclKind::TypeAlias) {
+  if (decl->getKind() == swift::DeclKind::TypeAlias) {
     // In cases like this (when coming from PCM)
     //  typealias CFXMLTree = CFTree
     //  typealias CFXMLTreeRef = CFXMLTree
     // mangleAnyDecl mangles both CFXMLTree and CFXMLTreeRef into 'So12CFXMLTreeRefa'
     // which is not correct and causes inconsistencies. mangleEntity makes these two distinct
     // prefix adds a couple of special symbols, we don't necessary need them
-    ret << mangler.mangleEntity(&valueDecl);
+    ret << mangler.mangleEntity(decl);
   } else {
     // prefix adds a couple of special symbols, we don't necessary need them
-    ret << mangler.mangleAnyDecl(&valueDecl, /* prefix = */ false);
+    ret << mangler.mangleAnyDecl(decl, /* prefix = */ false);
   }
   return ret;
+}
+
+SwiftMangledName SwiftMangler::visitModuleDecl(const swift::ModuleDecl* decl) {
+  return mangleModuleName(decl->getRealName().str());
 }
 
 SwiftMangledName SwiftMangler::visitModuleType(const swift::ModuleType* type) {
