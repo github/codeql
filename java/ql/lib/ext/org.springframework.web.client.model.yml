@@ -23,4 +23,3 @@ extensions:
       - ["org.springframework.web.client", "RestTemplate", False, "postForLocation", "", "", "Argument[0]", "open-url", "manual"]
       - ["org.springframework.web.client", "RestTemplate", False, "postForObject", "", "", "Argument[0]", "open-url", "manual"]
       - ["org.springframework.web.client", "RestTemplate", False, "put", "", "", "Argument[0]", "open-url", "manual"]
-      - ["org.springframework.web.client", "RestTemplate", True, "exchange", "(String,HttpMethod,HttpEntity,Class,Object[])", "", "Argument[0]", "open-url", "ai-generated"]
