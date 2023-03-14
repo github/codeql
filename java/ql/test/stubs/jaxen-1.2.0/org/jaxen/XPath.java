@@ -1,35 +1,28 @@
-// Generated automatically from org.dom4j.XPath for testing purposes
+// Generated automatically from org.jaxen.XPath for testing purposes
 
-package org.dom4j;
+package org.jaxen;
 
 import java.util.List;
-import java.util.Map;
-import org.dom4j.Node;
-import org.dom4j.NodeFilter;
 import org.jaxen.FunctionContext;
 import org.jaxen.NamespaceContext;
+import org.jaxen.Navigator;
 import org.jaxen.VariableContext;
 
-public interface XPath extends NodeFilter
+public interface XPath
 {
     FunctionContext getFunctionContext();
     List selectNodes(Object p0);
-    List selectNodes(Object p0, XPath p1);
-    List selectNodes(Object p0, XPath p1, boolean p2);
     NamespaceContext getNamespaceContext();
-    Node selectSingleNode(Object p0);
+    Navigator getNavigator();
     Number numberValueOf(Object p0);
     Object evaluate(Object p0);
-    Object selectObject(Object p0);
-    String getText();
+    Object selectSingleNode(Object p0);
+    String stringValueOf(Object p0);
     String valueOf(Object p0);
     VariableContext getVariableContext();
     boolean booleanValueOf(Object p0);
-    boolean matches(Node p0);
+    void addNamespace(String p0, String p1);
     void setFunctionContext(FunctionContext p0);
     void setNamespaceContext(NamespaceContext p0);
-    void setNamespaceURIs(Map p0);
     void setVariableContext(VariableContext p0);
-    void sort(List p0);
-    void sort(List p0, boolean p1);
 }

@@ -6,6 +6,7 @@ import java.net.URL;
 import java.net.URLClassLoader;
 import javax.servlet.http.HttpServletRequest;
 import javafx.scene.web.WebEngine;
+import org.apache.commons.jelly.JellyContext;
 import org.codehaus.cargo.container.installer.ZipURLInstaller;
 
 public class Test {
@@ -43,6 +44,18 @@ public class Test {
         new URLClassLoader((URL[]) source(), null, null); // $ SSRF
         // "java.net;URLClassLoader;false;newInstance;;;Argument[0];open-url;manual"
         URLClassLoader.newInstance((URL[]) source()); // $ SSRF
+        // "org.apache.commons.jelly;JellyContext;true;JellyContext;(JellyContext,URL,URL);;Argument[1];open-url;ai-generated"
+        new JellyContext(null, (URL) source(), null); // $ SSRF
+        // "org.apache.commons.jelly;JellyContext;true;JellyContext;(JellyContext,URL,URL);;Argument[2];open-url;ai-generated"
+        new JellyContext(null, null, (URL) source()); // $ SSRF
+        // "org.apache.commons.jelly;JellyContext;true;JellyContext;(JellyContext,URL);;Argument[1];open-url;ai-generated"
+        new JellyContext((JellyContext) null, (URL) source()); // $ SSRF
+        // "org.apache.commons.jelly;JellyContext;true;JellyContext;(URL,URL);;Argument[0];open-url;ai-generated"
+        new JellyContext((URL) source(), null); // $ SSRF
+        // "org.apache.commons.jelly;JellyContext;true;JellyContext;(URL,URL);;Argument[1];open-url;ai-generated"
+        new JellyContext((URL) null, (URL) source()); // $ SSRF
+        // "org.apache.commons.jelly;JellyContext;true;JellyContext;(URL);;Argument[0];open-url;ai-generated"
+        new JellyContext((URL) source()); // $ SSRF
     }
 
     public void test(WebEngine webEngine) {

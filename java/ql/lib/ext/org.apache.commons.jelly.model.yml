@@ -3,9 +3,9 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.commons.jelly", "JellyContext", True, "JellyContext", "(JellyContext,URL,URL)", "", "Argument[1]", "open-url", "ai-generated"] # @atorralba: double check
-      - ["org.apache.commons.jelly", "JellyContext", True, "JellyContext", "(JellyContext,URL,URL)", "", "Argument[2]", "open-url", "ai-generated"] # @atorralba: double check
-      - ["org.apache.commons.jelly", "JellyContext", True, "JellyContext", "(JellyContext,URL)", "", "Argument[1]", "open-url", "ai-generated"] # @atorralba: double check
-      - ["org.apache.commons.jelly", "JellyContext", True, "JellyContext", "(URL,URL)", "", "Argument[0]", "open-url", "ai-generated"] # @atorralba: double check
-      - ["org.apache.commons.jelly", "JellyContext", True, "JellyContext", "(URL,URL)", "", "Argument[1]", "open-url", "ai-generated"] # @atorralba: double check
-      - ["org.apache.commons.jelly", "JellyContext", True, "JellyContext", "(URL)", "", "Argument[0]", "open-url", "ai-generated"] # @atorralba: double check
+      - ["org.apache.commons.jelly", "JellyContext", True, "JellyContext", "(JellyContext,URL,URL)", "", "Argument[1]", "open-url", "ai-generated"]
+      - ["org.apache.commons.jelly", "JellyContext", True, "JellyContext", "(JellyContext,URL,URL)", "", "Argument[2]", "open-url", "ai-generated"]
+      - ["org.apache.commons.jelly", "JellyContext", True, "JellyContext", "(JellyContext,URL)", "", "Argument[1]", "open-url", "ai-generated"]
+      - ["org.apache.commons.jelly", "JellyContext", True, "JellyContext", "(URL,URL)", "", "Argument[0]", "open-url", "ai-generated"]
+      - ["org.apache.commons.jelly", "JellyContext", True, "JellyContext", "(URL,URL)", "", "Argument[1]", "open-url", "ai-generated"]
+      - ["org.apache.commons.jelly", "JellyContext", True, "JellyContext", "(URL)", "", "Argument[0]", "open-url", "ai-generated"]
