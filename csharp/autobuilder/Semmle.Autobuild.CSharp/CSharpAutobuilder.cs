@@ -104,7 +104,7 @@ namespace Semmle.Autobuild.CSharp
                         markdownMessage:
                             "CodeQL found multiple potential build scripts for your project and " +
                             $"attempted to run `{relScriptPath}`, which failed. " +
-                            "This may not be the right build script for your project. " +
+                            "This may not be the right build script for your project.\n\n" +
                             $"Set up a [manual build command]({buildCommandDocsUrl})."
                     ) :
                     new(
@@ -113,7 +113,7 @@ namespace Semmle.Autobuild.CSharp
                         "Unable to build project using build script",
                         markdownMessage:
                             "CodeQL attempted to build your project using a script located at " +
-                            $"`{relScriptPath}`, which failed. " +
+                            $"`{relScriptPath}`, which failed.\n\n" +
                             $"Set up a [manual build command]({buildCommandDocsUrl})."
                     );
 
