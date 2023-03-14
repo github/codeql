@@ -1,4 +1,6 @@
 | (Int) -> Int | FunctionType | def_function(_:) |
 | (Int) -> Int | FunctionType | use_function |
+| <A, B> (A, B) -> () | GenericFunctionType | def_generic_function(_:_:) |
+| <A, B> (A, B) -> () | GenericFunctionType | use_generic_function_type(_:_:) |
 | Generic<Int> | BoundGenericStructType | def_instantiated_generic, use_instantiated_generic |
 | Int | StructType | def_int, use_int |
