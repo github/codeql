@@ -570,7 +570,12 @@ fn main() -> std::io::Result<()> {
             node_types: tree_sitter_embedded_template::NODE_TYPES,
         },
     ];
-    let mut dbscheme_writer = LineWriter::new(File::create(dbscheme_path)?);
+
+    let dbscheme_file = File::create(dbscheme_path).map_err(|e| {
+        tracing::error!("Failed to create dbscheme file: {}", e);
+        e
+    })?;
+    let mut dbscheme_writer = LineWriter::new(dbscheme_file);
     write!(
         dbscheme_writer,
         "// CodeQL database schema for {}\n\
@@ -593,7 +598,11 @@ fn main() -> std::io::Result<()> {
         ],
     )?;
 
-    let mut ql_writer = LineWriter::new(File::create(ql_library_path)?);
+    let ql_library_file = File::create(ql_library_path).map_err(|e| {
+        tracing::error!("Failed to create ql library file: {}", e);
+        e
+    })?;
+    let mut ql_writer = LineWriter::new(ql_library_file);
     write!(
         ql_writer,
         "/**\n\
