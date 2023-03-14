@@ -182,6 +182,7 @@ private module LambdaFlow {
     boolean toJump, DataFlowCallOption lastCall
   ) {
     revLambdaFlow0(lambdaCall, kind, node, t, toReturn, toJump, lastCall) and
+    not expectsContent(node, _) and
     if castNode(node) or node instanceof ArgNode or node instanceof ReturnNode
     then compatibleTypes(t, getNodeDataFlowType(node))
     else any()
