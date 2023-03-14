@@ -51,7 +51,7 @@ where
     not positiveType instanceof NegativeSinkType and
     characteristic2.hasImplications(positiveType, true, confidence2)
   ) and
-  endpoint = getSampleFromSampleRate(0.01) and
+  endpoint = getSampleFromSampleRate(0.05) and
   message =
     characteristic + "\n" +
       // Extract the needed metadata for this endpoint.
