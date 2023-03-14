@@ -508,7 +508,7 @@ public class AutoBuild {
    * For use with the {@link #writeDiagnostics(String, JSDiagnosticKind)} method.
    */
   public static enum JSDiagnosticKind {
-    PARSE_ERROR("parse-error", "Parse error", DiagnosticLevel.Warning),
+    PARSE_ERROR("parse-error", "Could not process some files due to syntax errors", DiagnosticLevel.Warning),
     INTERNAL_ERROR("internal-error", "Internal error", DiagnosticLevel.Debug);
 
     private final String id;
