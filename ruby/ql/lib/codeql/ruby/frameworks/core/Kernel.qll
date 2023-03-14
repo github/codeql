@@ -198,6 +198,8 @@ module Kernel {
     }
   }
 
+  private import codeql.ruby.ast.internal.Module as Module
+
   /**
    * A call to `Array()`, that converts it's singular argument to an array.
    * This summary is based on https://ruby-doc.org/3.2.1/Kernel.html#method-i-Array
@@ -205,11 +207,12 @@ module Kernel {
   private class KernelArraySummary extends SummarizedCallable {
     KernelArraySummary() { this = "Array()" }
 
-    override MethodCall getACall() {
+    override MethodCall getACallSimple() {
       result.getMethodName() = "Array" and
       // I have to have a simplified "KernelMethodCall" implementation inlined here, because relying on `UnknownMethodCall` results in non-monotonic recursion (even if using `getACall`).
       (
-        result = API::getTopLevelMember("Kernel").getAMethodCall(_).asExpr().getExpr()
+        // similar to `getAStaticArrayCall` from Array.qll
+        Module::resolveConstantReadAccess(result.getReceiver()) = Module::TResolved("Kernel")
         or
         result.getReceiver() instanceof SelfVariableAccess
       )
