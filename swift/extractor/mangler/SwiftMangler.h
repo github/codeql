@@ -50,14 +50,20 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   // default fallback for not yet mangled types. This should never be called in normal situations
   // will just spawn a random name
   // TODO: make it assert once we mangle all types
-  static SwiftMangledName visitType(const swift::TypeBase* type) { return {}; }
+  SwiftMangledName visitType(const swift::TypeBase* type);
 
   SwiftMangledName visitModuleType(const swift::ModuleType* type);
   SwiftMangledName visitTupleType(const swift::TupleType* type);
   SwiftMangledName visitBuiltinType(const swift::BuiltinType* type);
   SwiftMangledName visitAnyGenericType(const swift::AnyGenericType* type);
 
-  SwiftMangledName visitBuiltinType(const swift::BuiltinType* type);
+  // shouldn't be required, but they forgot to link `NominalType` to its direct superclass
+  // in swift/AST/TypeNodes.def, so we need to chain the call manually
+  SwiftMangledName visitNominalType(const swift::NominalType* type) {
+    return visitAnyGenericType(type);
+  }
+
+  SwiftMangledName visitBoundGenericType(const swift::BoundGenericType* type);
 
  private:
   swift::Mangle::ASTMangler mangler;

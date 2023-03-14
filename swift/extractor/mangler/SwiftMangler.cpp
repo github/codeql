@@ -70,13 +70,17 @@ SwiftMangledName SwiftMangler::visitModuleDecl(const swift::ModuleDecl* decl) {
 }
 
 SwiftMangledName SwiftMangler::visitGenericTypeDecl(const swift::GenericTypeDecl* decl) {
-  if (auto context = decl->getDeclContext()->getAsDecl()) {
-    auto ret = initMangled(decl);
-    ret << dispatcher.fetchLabel(context);
-    ret << decl->getName().str();
-    return ret;
+  auto context = decl->getDeclContext();
+  if (context->isLocalContext()) {
+    return {};
   }
-  return {};
+  auto parent = (context->getContextKind() == swift::DeclContextKind::FileUnit)
+                    ? decl->getModuleContext()
+                    : context->getAsDecl();
+  auto ret = initMangled(decl);
+  ret << dispatcher.fetchLabel(parent);
+  ret << decl->getName().str();
+  return ret;
 }
 
 SwiftMangledName SwiftMangler::visitModuleType(const swift::ModuleType* type) {
@@ -110,5 +114,17 @@ SwiftMangledName SwiftMangler::visitBuiltinType(const swift::BuiltinType* type) 
 SwiftMangledName SwiftMangler::visitAnyGenericType(const swift::AnyGenericType* type) {
   auto ret = initMangled(type);
   ret << dispatcher.fetchLabel(type->getDecl());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitType(const swift::TypeBase* type) {
+  return {};
+}
+
+SwiftMangledName SwiftMangler::visitBoundGenericType(const swift::BoundGenericType* type) {
+  auto ret = visitAnyGenericType(type);
+  for (const auto param : type->getGenericArgs()) {
+    ret << dispatcher.fetchLabel(param);
+  }
   return ret;
 }
