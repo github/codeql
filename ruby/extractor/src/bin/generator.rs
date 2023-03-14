@@ -1,16 +1,13 @@
-mod dbscheme;
-mod language;
-mod ql;
-mod ql_gen;
-
 use clap::arg;
-use language::Language;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
 use std::fs::File;
 use std::io::LineWriter;
 use std::io::Write;
 use std::path::PathBuf;
+
+use ruby_extractor::generator::{dbscheme, language::Language, ql, ql_gen};
+use ruby_extractor::node_types;
 
 /// Given the name of the parent node, and its field information, returns a pair,
 /// the first of which is the field's type. The second is an optional dbscheme
@@ -573,7 +570,12 @@ fn main() -> std::io::Result<()> {
             node_types: tree_sitter_embedded_template::NODE_TYPES,
         },
     ];
-    let mut dbscheme_writer = LineWriter::new(File::create(dbscheme_path)?);
+
+    let dbscheme_file = File::create(dbscheme_path).map_err(|e| {
+        tracing::error!("Failed to create dbscheme file: {}", e);
+        e
+    })?;
+    let mut dbscheme_writer = LineWriter::new(dbscheme_file);
     write!(
         dbscheme_writer,
         "// CodeQL database schema for {}\n\
@@ -596,7 +598,11 @@ fn main() -> std::io::Result<()> {
         ],
     )?;
 
-    let mut ql_writer = LineWriter::new(File::create(ql_library_path)?);
+    let ql_library_file = File::create(ql_library_path).map_err(|e| {
+        tracing::error!("Failed to create ql library file: {}", e);
+        e
+    })?;
+    let mut ql_writer = LineWriter::new(ql_library_file);
     write!(
         ql_writer,
         "/**\n\

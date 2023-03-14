@@ -1,6 +1,8 @@
-use crate::ql;
 use std::collections::BTreeSet as Set;
 use std::fmt;
+
+use crate::generator::ql;
+
 /// Represents a distinct entry in the database schema.
 pub enum Entry<'a> {
     /// An entry defining a database table.
