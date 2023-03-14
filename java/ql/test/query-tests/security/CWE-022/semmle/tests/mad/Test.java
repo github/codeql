@@ -10,6 +10,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.xml.transform.stream.StreamResult;
+import org.apache.commons.io.FileUtils;
 import org.codehaus.cargo.container.installer.ZipURLInstaller;
 
 public class Test {
@@ -83,6 +84,8 @@ public class Test {
         Files.writeString((Path) source(), (CharSequence) null, (Charset) null);
         // "javax.xml.transform.stream;StreamResult";true;"StreamResult;(File);;Argument[0];create-file;ai-generated"
         new StreamResult((File) source());
+        // "org.apache.commons.io;FileUtils;true;openInputStream;(File);;Argument[0];read-file;ai-generated"
+        FileUtils.openInputStream((File) source());
         // "org.codehaus.cargo.container.installer;ZipURLInstaller;true;ZipURLInstaller;(URL,String,String);;Argument[1];create-file;ai-generated"
         new ZipURLInstaller((URL) null, (String) source(), "");
         // "org.codehaus.cargo.container.installer;ZipURLInstaller;true;ZipURLInstaller;(URL,String,String);;Argument[2];create-file;ai-generated"
