@@ -12,8 +12,8 @@ extensions:
       - ["java.nio.file", "Files", False, "createSymbolicLink", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "createTempDirectory", "(Path,String,FileAttribute[])", "", "Argument[0]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "createTempFile", "(Path,String,String,FileAttribute[])", "", "Argument[0]", "create-file", "manual"]
-# suggested label is not supported:      - ["java.nio.file", "Files", False, "delete", "(Path)", "", "Argument[0]", "delete-file", "ai-generated"]
-# suggested label is not supported:      - ["java.nio.file", "Files", False, "deleteIfExists", "(Path)", "", "Argument[0]", "delete-file", "ai-generated"]
+      - ["java.nio.file", "Files", False, "delete", "(Path)", "", "Argument[0]", "create-file", "ai-generated"] # should be delete-file
+      - ["java.nio.file", "Files", False, "deleteIfExists", "(Path)", "", "Argument[0]", "create-file", "ai-generated"] # should be delete-file
       - ["java.nio.file", "Files", False, "lines", "(Path,Charset)", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.nio.file", "Files", False, "move", "", "", "Argument[1]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "newBufferedReader", "(Path,Charset)", "", "Argument[0]", "read-file", "ai-generated"]
