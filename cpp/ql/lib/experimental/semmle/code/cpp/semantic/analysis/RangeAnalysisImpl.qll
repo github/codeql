@@ -6,7 +6,7 @@ private import experimental.semmle.code.cpp.semantic.SemanticBound as SemanticBo
 private import semmle.code.cpp.ir.IR as IR
 private import semmle.code.cpp.Location // TODO: SemLocation?
 
-private module ConstantBounds implements BoundSig<FloatDelta> {
+module ConstantBounds implements BoundSig<FloatDelta> {
   class SemBound instanceof SemanticBound::SemBound {
     SemBound() {
       this instanceof SemanticBound::SemZeroBound
