@@ -10,7 +10,7 @@
   "severity": "warning",
   "source": {
     "extractorName": "ruby",
-    "id": "ruby/unknown-character-encoding",
+    "id": "rb/unknown-character-encoding",
     "name": "Unknown character encoding"
   },
   "visibility": {
