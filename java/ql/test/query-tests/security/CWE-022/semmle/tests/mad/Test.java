@@ -13,6 +13,9 @@ import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.AntClassLoader;
 import org.apache.tools.ant.DirectoryScanner;
+import org.apache.tools.ant.taskdefs.Copy;
+import org.apache.tools.ant.taskdefs.Expand;
+import org.apache.tools.ant.types.FileSet;
 import org.codehaus.cargo.container.installer.ZipURLInstaller;
 
 public class Test {
@@ -108,5 +111,23 @@ public class Test {
     void test(DirectoryScanner ds) {
         // "org.apache.tools.ant;DirectoryScanner;true;setBasedir;(File);;Argument[0];read-file;ai-generated"
         ds.setBasedir((File) source());
+    }
+
+    void test(Copy cp) {
+        // "org.apache.tools.ant.taskdefs;Copy;true;addFileset;(FileSet);;Argument[0];read-file;ai-generated"
+        cp.addFileset((FileSet) source());
+        // "org.apache.tools.ant.taskdefs;Copy;true;setFile;(File);;Argument[0];read-file;ai-generated"
+        cp.setFile((File) source());
+        // "org.apache.tools.ant.taskdefs;Copy;true;setTodir;(File);;Argument[0];create-file;ai-generated"
+        cp.setTodir((File) source());
+        // "org.apache.tools.ant.taskdefs;Copy;true;setTofile;(File);;Argument[0];create-file;ai-generated"
+        cp.setTofile((File) source());
+    }
+
+    void test(Expand ex) {
+        // "org.apache.tools.ant.taskdefs;Expand;true;setDest;(File);;Argument[0];create-file;ai-generated"
+        ex.setDest((File) source());
+        // "org.apache.tools.ant.taskdefs;Expand;true;setSrc;(File);;Argument[0];read-file;ai-generated"
+        ex.setSrc((File) source());
     }
 }
