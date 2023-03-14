@@ -45,6 +45,7 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitValueDecl(const swift::ValueDecl* decl);
 
   SwiftMangledName visitModuleDecl(const swift::ModuleDecl* decl);
+  SwiftMangledName visitGenericTypeDecl(const swift::GenericTypeDecl* decl);
 
   // default fallback for not yet mangled types. This should never be called in normal situations
   // will just spawn a random name
