@@ -90,6 +90,10 @@ class FooController < ActionController::Base
     # BAD: executes `UPDATE "users" SET #{params[:fields]}`
     # where `params[:fields]` is unsanitized
     User.update_all(params[:fields])
+    
+    User.reorder(params[:direction])
+    
+    User.count_by_sql(params[:custom_sql_query])
   end
 end
 
@@ -149,5 +153,28 @@ class AnnotatedController < ActionController::Base
     name = params[:user_name]
     # BAD: user input passed into annotations are vulnerable to SQLi
     users = User.annotate("this is an unsafe annotation:#{params[:comment]}").find_by(user_name: name)
+  end
+end
+
+# A regression test
+
+class Regression < ActiveRecord::Base
+end
+
+class RegressionController < ActionController::Base
+  def index
+    my_params = permitted_params
+    query = "SELECT * FROM users WHERE id = #{my_params[:user_id]}"
+    result = Regression.find_by_sql(query)
+  end
+
+  
+  def permitted_params
+    params.require(:my_key).permit(:id, :user_id, :my_type)
+  end
+  
+  def show
+    ActiveRecord::Base.connection.execute("SELECT * FROM users WHERE id = #{permitted_params[:user_id]}")
+    Regression.connection.execute("SELECT * FROM users WHERE id = #{permitted_params[:user_id]}")
   end
 end
