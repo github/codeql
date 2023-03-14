@@ -28,7 +28,6 @@ extensions:
       extensible: summaryModel
     data:
       - ["java.nio.file", "FileSystem", True, "getPath", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.nio.file", "FileSystem", True, "getRootDirectories", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "getParent", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "normalize", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "resolve", "", "", "Argument[-1..0]", "ReturnValue", "taint", "manual"]
