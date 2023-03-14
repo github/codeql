@@ -568,7 +568,7 @@ public class AutoBuild {
     }
 
     // DiagnosticLevel level, String extractorName, String sourceId, String sourceName, String markdown
-    diagnostics.get().writeMarkdown(error.getLevel(), "javascript", "javascript/" + error.getId(), error.getName(),
+    diagnostics.get().writeMarkdown(error.getLevel(), "javascript", "js/" + error.getId(), error.getName(),
         message, location);
   }
 
