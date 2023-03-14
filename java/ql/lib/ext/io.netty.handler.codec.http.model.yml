@@ -62,8 +62,8 @@ extensions:
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "setInt", "(CharSequence,int)", "", "Argument[0]", "Argument[-1].Element.MapKey", "value", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "setShort", "(CharSequence,short)", "", "Argument[-1]", "ReturnValue", "value", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "setShort", "(CharSequence,short)", "", "Argument[0]", "Argument[-1].Element.MapKey", "value", "manual"]
-    - ["io.netty.handler.codec.http", "HttpHeaders", True, "valueStringIterator", "()", "", "Argument[-1].Element.MapValue", "ReturnValue.Element", "value", "manual"]
-    - ["io.netty.handler.codec.http", "HttpHeaders", True, "valueCharSequenceIterator", "()", "", "Argument[-1].Element.MapValue", "ReturnValue.Element", "taint", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "valueStringIterator", "(CharSequence)", "", "Argument[-1].Element.MapValue", "ReturnValue.Element", "value", "manual"]
+    - ["io.netty.handler.codec.http", "HttpHeaders", True, "valueCharSequenceIterator", "(CharSequence)", "", "Argument[-1].Element.MapValue", "ReturnValue.Element", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "toString", "", "", "Argument[-1].Element.MapKey", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "toString", "", "", "Argument[-1].Element.MapValue", "ReturnValue", "taint", "manual"]
     # Currently all write steps to http messages are taint flow. It may reduce FPs to use a synthetic field for headers instead. 

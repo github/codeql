@@ -35,7 +35,7 @@ extensions:
       - ["io.netty.handler.codec.http.multipart", "Attribute", True, "setValue", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["io.netty.handler.codec.http.multipart", "FileUpload", True, "getContentTransferEncoding", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["io.netty.handler.codec.http.multipart", "FileUpload", True, "getContentType", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["io.netty.handler.codec.http.multipart", "FileUpload", True, "getFilename", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["io.netty.handler.codec.http.multipart", "FileUpload", True, "getFilename", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["io.netty.handler.codec.http.multipart", "FileUpload", True, "setContentTransferEncoding", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["io.netty.handler.codec.http.multipart", "FileUpload", True, "setContentType", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["io.netty.handler.codec.http.multipart", "FileUpload", True, "setFilename", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]

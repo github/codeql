@@ -6,7 +6,7 @@ extensions:
     - ["io.netty.handler.codec.http.websocketx", "CloseWebSocketFrame", True, "CloseWebSocketFrame", "(boolean,int,ByteBuf)", "", "Argument[2]", "Argument[-1]", "taint", "manual"]
     - ["io.netty.handler.codec.http.websocketx", "CloseWebSocketFrame", True, "CloseWebSocketFrame", "(boolean,int,int,String)", "", "Argument[3]", "Argument[-1]", "taint", "manual"]
     - ["io.netty.handler.codec.http.websocketx", "CloseWebSocketFrame", True, "CloseWebSocketFrame", "(int,String)", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
-    - ["io.netty.handler.codec.http.websocketx", "CloseWebSocketFrame", True, "CloseWebSocketFrame", "(WebSocketCloseStatus,String)", "", "Argument[2]", "Argument[-1]", "taint", "manual"]
+    - ["io.netty.handler.codec.http.websocketx", "CloseWebSocketFrame", True, "CloseWebSocketFrame", "(WebSocketCloseStatus,String)", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
     - ["io.netty.handler.codec.http.websocketx", "CloseWebSocketFrame", True, "reasonText", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http.websocketx", "BinaryWebSocketFrame", True, "BinaryWebSocketFrame", "(boolean,int,ByteBuf)", "", "Argument[2]", "Argument[-1]", "taint", "manual"]
     - ["io.netty.handler.codec.http.websocketx", "BinaryWebSocketFrame", True, "BinaryWebSocketFrame", "(ByteBuf)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
