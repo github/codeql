@@ -116,9 +116,7 @@ private class DefaultUnsafeJsEvalAdditionalTaintStep extends UnsafeJsEvalAdditio
     )
     or
     exists(CallExpr ce, Expr self, AbstractClosureExpr closure |
-      ce.getStaticTarget()
-          .getName()
-          .matches(["withUnsafeBufferPointer(%)"]) and
+      ce.getStaticTarget().getName().matches("withUnsafeBufferPointer(%)") and
       self = ce.getQualifier() and
       ce.getArgument(0).getExpr() = closure
     |
