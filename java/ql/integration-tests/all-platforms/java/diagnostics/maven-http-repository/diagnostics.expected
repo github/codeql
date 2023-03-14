@@ -4,7 +4,7 @@
   "source": {
     "extractorName": "java",
     "id": "java/autobuilder/non-https-repository",
-    "name": "A non-https Maven repository access failed"
+    "name": "A non-HTTPS Maven repository access failed"
   },
   "visibility": {
     "cliSummaryTable": false,
@@ -18,7 +18,7 @@
   "source": {
     "extractorName": "java",
     "id": "java/autobuilder/non-https-repository",
-    "name": "A non-https Maven repository access failed"
+    "name": "A non-HTTPS Maven repository access failed"
   },
   "visibility": {
     "cliSummaryTable": false,
@@ -32,7 +32,7 @@
   "source": {
     "extractorName": "java",
     "id": "java/autobuilder/non-https-repository",
-    "name": "A non-https Maven repository access failed"
+    "name": "A non-HTTPS Maven repository access failed"
   },
   "visibility": {
     "cliSummaryTable": false,
@@ -46,7 +46,7 @@
   "source": {
     "extractorName": "java",
     "id": "java/autobuilder/non-https-repository",
-    "name": "A non-https Maven repository access failed"
+    "name": "A non-HTTPS Maven repository access failed"
   },
   "visibility": {
     "cliSummaryTable": true,
