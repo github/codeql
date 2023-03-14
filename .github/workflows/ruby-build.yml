@@ -116,21 +116,22 @@ jobs:
           key: ruby-build
       - name: Build Query Pack
         run: |
-          rm -rf query-packs
-          codeql pack create ../misc/suite-helpers --output query-packs
-          codeql pack create ../shared/regex --output query-packs
-          codeql pack create ../shared/ssa --output query-packs
-          codeql pack create ../shared/tutorial --output query-packs
-          codeql pack create ql/lib --output query-packs
-          codeql pack create -j0 ql/src --output query-packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
-          PACK_FOLDER=$(readlink -f query-packs/codeql/ruby-queries/*)
+          PACKS=${{ runner.temp }}/query-packs
+          rm -rf $PACKS
+          codeql pack create ../misc/suite-helpers --output $PACKS
+          codeql pack create ../shared/regex --output $PACKS
+          codeql pack create ../shared/ssa --output $PACKS
+          codeql pack create ../shared/tutorial --output $PACKS
+          codeql pack create ql/lib --output $PACKS
+          codeql pack create -j0 ql/src --output $PACKS --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+          PACK_FOLDER=$(readlink -f $PACKS/codeql/ruby-queries/*)
           codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
           (cd ql/src; find queries \( -name '*.qhelp' -o -name '*.rb' -o -name '*.erb' \) -exec bash -c 'mkdir -p "'"${PACK_FOLDER}"'/$(dirname "{}")"' \; -exec cp "{}" "${PACK_FOLDER}/{}" \;)
       - uses: actions/upload-artifact@v3
         with:
           name: codeql-ruby-queries
           path: |
-            ruby/query-packs/*
+            ${{ runner.temp }}/query-packs/*
           retention-days: 1
 
   package:
