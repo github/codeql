@@ -11,6 +11,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import javax.xml.transform.stream.StreamResult;
 import org.apache.commons.io.FileUtils;
+import org.apache.tools.ant.AntClassLoader;
+import org.apache.tools.ant.DirectoryScanner;
 import org.codehaus.cargo.container.installer.ZipURLInstaller;
 
 public class Test {
@@ -90,5 +92,21 @@ public class Test {
         new ZipURLInstaller((URL) null, (String) source(), "");
         // "org.codehaus.cargo.container.installer;ZipURLInstaller;true;ZipURLInstaller;(URL,String,String);;Argument[2];create-file;ai-generated"
         new ZipURLInstaller((URL) null, "", (String) source());
+    }
+
+    void test(AntClassLoader acl) {
+        // "org.apache.tools.ant;AntClassLoader;true;addPathComponent;(File);;Argument[0];read-file;ai-generated"
+        acl.addPathComponent((File) source());
+        // "org.apache.tools.ant;AntClassLoader;true;AntClassLoader;(ClassLoader,Project,Path,boolean);;Argument[2];read-file;ai-generated"
+        new AntClassLoader(null, null, (org.apache.tools.ant.types.Path) source(), false);
+        // "org.apache.tools.ant;AntClassLoader;true;AntClassLoader;(Project,Path,boolean);;Argument[1];read-file;ai-generated"
+        new AntClassLoader(null, (org.apache.tools.ant.types.Path) source(), false);
+        // "org.apache.tools.ant;AntClassLoader;true;AntClassLoader;(Project,Path);;Argument[1];read-file;ai-generated"
+        new AntClassLoader(null, (org.apache.tools.ant.types.Path) source());
+    }
+
+    void test(DirectoryScanner ds) {
+        // "org.apache.tools.ant;DirectoryScanner;true;setBasedir;(File);;Argument[0];read-file;ai-generated"
+        ds.setBasedir((File) source());
     }
 }

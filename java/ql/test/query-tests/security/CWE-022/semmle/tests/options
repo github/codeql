@@ -1,1 +1,1 @@
-// semmle-extractor-options: --javac-args -cp ${testdir}/../../../../../stubs/servlet-api-2.4:${testdir}/../../../../../stubs/apache-commons-io-2.6:${testdir}/../../../../../stubs/cargo
+// semmle-extractor-options: --javac-args -cp ${testdir}/../../../../../stubs/servlet-api-2.4:${testdir}/../../../../../stubs/apache-commons-io-2.6:${testdir}/../../../../../stubs/cargo:${testdir}/../../../../../stubs/apache-ant-1.10.13
