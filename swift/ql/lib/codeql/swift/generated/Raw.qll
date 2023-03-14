@@ -2143,7 +2143,7 @@ module Raw {
     /**
      * Gets the declaration of this any generic type.
      */
-    Decl getDeclaration() { any_generic_types(this, result) }
+    GenericTypeDecl getDeclaration() { any_generic_types(this, result) }
   }
 
   class AnyMetatypeType extends @any_metatype_type, Type { }

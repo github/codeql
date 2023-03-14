@@ -2028,7 +2028,7 @@ any_function_type_is_async(  //dir=type
 #keyset[id]
 any_generic_types(  //dir=type
   int id: @any_generic_type ref,
-  int declaration: @generic_type_decl_or_none ref
+  int declaration: @decl_or_none ref
 );
 
 #keyset[id]
@@ -2484,11 +2484,6 @@ variadic_sequence_types(  //dir=type
 
 @file_or_none =
   @file
-| @unspecified_element
-;
-
-@generic_type_decl_or_none =
-  @generic_type_decl
 | @unspecified_element
 ;
 
