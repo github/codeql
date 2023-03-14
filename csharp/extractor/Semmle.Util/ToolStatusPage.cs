@@ -151,7 +151,7 @@ namespace Semmle.Util
         /// </summary>
         public bool Internal { get; }
         public TspVisibility Visibility { get; }
-        public TspLocation Location { get; }
+        public TspLocation? Location { get; }
         /// <summary>
         /// Structured metadata about the diagnostic message.
         /// </summary>
@@ -173,7 +173,7 @@ namespace Semmle.Util
             this.Attributes = new Dictionary<string, object>();
             this.Severity = severity;
             this.Visibility = visibility ?? TspVisibility.All;
-            this.Location = location ?? new TspLocation();
+            this.Location = location;
             this.Internal = intrnl ?? false;
             this.MarkdownMessage = markdownMessage;
             this.PlaintextMessage = plaintextMessage;
