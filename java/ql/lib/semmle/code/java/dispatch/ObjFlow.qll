@@ -236,6 +236,10 @@ private VirtualMethodAccess objectToString(ObjNode n) {
   result.getQualifier() = n.asExpr() and sink(n)
 }
 
+/**
+ * Holds if `ma` is an `Object.toString()` call taking possibly improved type
+ * bounds into account.
+ */
 predicate objectToStringCall(VirtualMethodAccess ma) { ma = objectToString(_) }
 
 /**
