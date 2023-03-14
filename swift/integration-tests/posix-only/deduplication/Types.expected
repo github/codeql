@@ -1,8 +1,4 @@
-| (Int) -> Int | FunctionType | function(_:) |
+| (Int) -> Int | FunctionType | def_function(_:) |
 | (Int) -> Int | FunctionType | use_function |
-| <T> (Generic<T>.Type) -> () -> Generic<T> | GenericFunctionType | Generic<T>.init() |
-| Generic<Int> | BoundGenericStructType | instantiated_generic, use_instantiated_generic |
-| Generic<T> | BoundGenericStructType | self |
-| Generic<T>.Type | MetatypeType | Generic |
-| Int | StructType | _, use_x, x |
-| T.Type | MetatypeType | T |
+| Generic<Int> | BoundGenericStructType | def_instantiated_generic, use_instantiated_generic |
+| Int | StructType | def_int, use_int |
