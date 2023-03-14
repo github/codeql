@@ -95,3 +95,9 @@ SwiftMangledName SwiftMangler::visitBuiltinType(const swift::BuiltinType* type) 
   ret << buffer.str();
   return ret;
 }
+
+SwiftMangledName SwiftMangler::visitAnyGenericType(const swift::AnyGenericType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getDecl());
+  return ret;
+}
