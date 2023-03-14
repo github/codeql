@@ -9,6 +9,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import javax.xml.transform.stream.StreamResult;
 import org.codehaus.cargo.container.installer.ZipURLInstaller;
 
 public class Test {
@@ -80,6 +81,8 @@ public class Test {
         // "java.nio.file;Files;false;writeString;;;Argument[0];create-file;manual"
         Files.writeString((Path) source(), (CharSequence) null);
         Files.writeString((Path) source(), (CharSequence) null, (Charset) null);
+        // "javax.xml.transform.stream;StreamResult";true;"StreamResult;(File);;Argument[0];create-file;ai-generated"
+        new StreamResult((File) source());
         // "org.codehaus.cargo.container.installer;ZipURLInstaller;true;ZipURLInstaller;(URL,String,String);;Argument[1];create-file;ai-generated"
         new ZipURLInstaller((URL) null, (String) source(), "");
         // "org.codehaus.cargo.container.installer;ZipURLInstaller;true;ZipURLInstaller;(URL,String,String);;Argument[2];create-file;ai-generated"
