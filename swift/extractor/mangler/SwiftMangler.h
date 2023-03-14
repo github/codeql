@@ -54,6 +54,7 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitModuleType(const swift::ModuleType* type);
   SwiftMangledName visitTupleType(const swift::TupleType* type);
   SwiftMangledName visitBuiltinType(const swift::BuiltinType* type);
+  SwiftMangledName visitAnyGenericType(const swift::AnyGenericType* type);
 
   SwiftMangledName visitBuiltinType(const swift::BuiltinType* type);
 
