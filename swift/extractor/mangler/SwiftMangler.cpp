@@ -42,9 +42,9 @@ SwiftMangledName SwiftMangler::mangleDecl(const swift::Decl& decl) {
     return {};
   }
 
-  // we do not deduplicate GenericTypeParamDecl, as their mangling is ambiguous in the presence of
-  // extensions
-  if (decl.getKind() == swift::DeclKind::GenericTypeParam) {
+  // we do not deduplicate GenericTypeParamDecl of extensions yet, as their mangling is ambiguous
+  if (decl.getKind() == swift::DeclKind::GenericTypeParam &&
+      decl.getDeclContext()->getContextKind() == swift::DeclContextKind::ExtensionDecl) {
     return {};
   }
 
@@ -78,5 +78,24 @@ SwiftMangledName SwiftMangler::visitModuleType(const swift::ModuleType* type) {
   if (type->getModule()->isNonSwiftModule()) {
     ret << "|clang";
   }
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitTupleType(const swift::TupleType* type) {
+  auto ret = initMangled(type);
+  for (const auto& element : type->getElements()) {
+    if (element.hasName()) {
+      ret << element.getName().str();
+    }
+    ret << dispatcher.fetchLabel(element.getType());
+  }
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitBuiltinType(const swift::BuiltinType* type) {
+  auto ret = initMangled(type);
+  llvm::SmallString<32> buffer;
+  type->getTypeName(buffer);
+  ret << buffer.str();
   return ret;
 }
