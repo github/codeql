@@ -40,6 +40,21 @@ struct SwiftMangledName {
     std::get<std::string>(parts.back()) += std::forward<T>(arg);
     return *this;
   }
+
+  SwiftMangledName& operator<<(SwiftMangledName&& other) {
+    parts.reserve(parts.size() + other.parts.size());
+    for (auto& p : other.parts) {
+      parts.emplace_back(std::move(p));
+    }
+    other.parts.clear();
+    return *this;
+  }
+
+  SwiftMangledName& operator<<(const SwiftMangledName& other) {
+    parts.reserve(parts.size() + other.parts.size());
+    parts.insert(parts.end(), other.parts.begin(), other.parts.end());
+    return *this;
+  }
 };
 
 }  // namespace codeql

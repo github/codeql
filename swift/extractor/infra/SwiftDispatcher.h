@@ -153,6 +153,15 @@ class SwiftDispatcher {
     auto& stored = store[e];
     if (!stored.valid()) {
       auto inserted = fetching.insert(e);
+      if (!inserted.second) {
+        if constexpr (IsTypePointer<E>) {
+          std::string dump;
+          llvm::raw_string_ostream oss{dump};
+          e->dump(oss);
+          emitDebugInfo(dump);
+        }
+        return undefined_label;
+      }
       assert(inserted.second && "detected infinite fetchLabel recursion");
       stored = createLabel(e, type);
       fetching.erase(e);
