@@ -101,9 +101,4 @@ class Test {
 		new File(new URI(null, null, null, 0, t, null, null));
 	}
 
-	void doGet6(InetAddress address) throws IOException {
-		String t = address.getHostName();
-		// BAD: accessing local resource with user input
-		getClass().getModule().getResourceAsStream(t);
-	}
 }

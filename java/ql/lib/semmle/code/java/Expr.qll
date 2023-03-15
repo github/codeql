@@ -701,14 +701,6 @@ class StringLiteral extends Literal, @stringliteral {
    */
   override string getValue() { result = super.getValue() }
 
-  /**
-   * DEPRECATED: This predicate will be removed in a future version because
-   * it is just an alias for `getValue()`; that predicate should be used instead.
-   *
-   * Gets the literal string without the quotes.
-   */
-  deprecated string getRepresentedString() { result = this.getValue() }
-
   /** Holds if this string literal is a text block (`""" ... """`). */
   predicate isTextBlock() { this.getLiteral().matches("\"\"\"%") }
 

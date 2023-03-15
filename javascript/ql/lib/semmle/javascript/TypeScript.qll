@@ -8,13 +8,6 @@ import javascript
  */
 class NamespaceDefinition extends Stmt, @namespace_definition, AST::ValueNode {
   /**
-   * DEPRECATED: Use `getIdentifier()` instead.
-   *
-   * Gets the identifier naming the namespace.
-   */
-  deprecated Identifier getId() { result = this.getIdentifier() }
-
-  /**
    * Gets the identifier naming the namespace.
    */
   Identifier getIdentifier() { none() } // Overridden in subtypes.
@@ -189,13 +182,6 @@ class GlobalAugmentationDeclaration extends Stmt, StmtContainer, @global_augment
 
 /** A TypeScript "import-equals" declaration. */
 class ImportEqualsDeclaration extends Stmt, @import_equals_declaration {
-  /**
-   * DEPRECATED: Use `getIdentifier()` instead.
-   *
-   * Gets the name under which the imported entity is imported.
-   */
-  deprecated Identifier getId() { result = this.getIdentifier() }
-
   /** Gets the name under which the imported entity is imported. */
   Identifier getIdentifier() { result = this.getChildExpr(0) }
 

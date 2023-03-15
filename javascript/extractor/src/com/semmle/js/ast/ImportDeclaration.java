@@ -23,18 +23,21 @@ public class ImportDeclaration extends Statement implements INodeWithSymbol {
   /** The module from which declarations are imported. */
   private final Literal source;
 
+  private final Expression assertion;
+
   private int symbol = -1;
 
   private boolean hasTypeKeyword;
 
-  public ImportDeclaration(SourceLocation loc, List<ImportSpecifier> specifiers, Literal source) {
-    this(loc, specifiers, source, false);
+  public ImportDeclaration(SourceLocation loc, List<ImportSpecifier> specifiers, Literal source, Expression assertion) {
+    this(loc, specifiers, source, assertion, false);
   }
 
-  public ImportDeclaration(SourceLocation loc, List<ImportSpecifier> specifiers, Literal source, boolean hasTypeKeyword) {
+  public ImportDeclaration(SourceLocation loc, List<ImportSpecifier> specifiers, Literal source, Expression assertion, boolean hasTypeKeyword) {
     super("ImportDeclaration", loc);
     this.specifiers = specifiers;
     this.source = source;
+    this.assertion = assertion;
     this.hasTypeKeyword = hasTypeKeyword;
   }
 
@@ -44,6 +47,11 @@ public class ImportDeclaration extends Statement implements INodeWithSymbol {
 
   public List<ImportSpecifier> getSpecifiers() {
     return specifiers;
+  }
+
+  /** Returns the expression after the <code>assert</code> keyword, if any, such as <code>{ type: "json" }</code>. */
+  public Expression getAssertion() {
+    return assertion;
   }
 
   @Override

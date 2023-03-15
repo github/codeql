@@ -105,11 +105,6 @@ class XssVulnerableWriterSource extends MethodAccess {
 }
 
 /**
- * DEPRECATED: Use `XssVulnerableWriterSource` instead.
- */
-deprecated class ServletWriterSource = XssVulnerableWriterSource;
-
-/**
  * Holds if `s` is an HTTP Content-Type vulnerable to XSS.
  */
 bindingset[s]

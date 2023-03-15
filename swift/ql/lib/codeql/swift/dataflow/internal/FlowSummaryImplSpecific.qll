@@ -18,7 +18,7 @@ class SummarizedCallableBase = AbstractFunctionDecl;
 DataFlowCallable inject(SummarizedCallable c) { result.getUnderlyingCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
-ArgumentPosition instanceParameterPosition() { result instanceof ThisArgumentPosition }
+ArgumentPosition callbackSelfParameterPosition() { result instanceof ThisArgumentPosition }
 
 /** Gets the synthesized summary data-flow node for the given values. */
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
