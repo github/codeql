@@ -1,12 +1,15 @@
 import swift
 import Relevant
 
-from Type t, string decls
+from Type t, string decls, string canonical
 where
   decls =
     strictconcat(ValueDecl d |
-      relevant(d) and t = d.getInterfaceType() and d.toString().matches(["use_%", "def_%"])
+      relevant(d) and
+      t = [d.getInterfaceType(), d.getInterfaceType().getCanonicalType()] and
+      d.toString().matches(["use_%", "def_%"])
     |
       d.toString(), ", "
-    )
-select t, t.getPrimaryQlClasses(), decls, t.getCanonicalType()
+    ) and
+  if t = t.getCanonicalType() then canonical = "" else canonical = t.getCanonicalType().toString()
+select t, t.getPrimaryQlClasses(), decls, canonical

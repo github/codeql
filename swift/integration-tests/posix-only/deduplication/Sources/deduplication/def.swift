@@ -21,4 +21,12 @@ func def_async_function(_: Int) async {}
 func def_async_throwing_function(_: Int) async throws {}
 func def_async_rethrowing_function(_: () throws -> ()) async rethrows {}
 
-func def_generic_function<A, B>(_: A, _: B) {}
+func def_generic_function<A, B, C>(_: A, _: B, _: C) {}
+
+protocol Protocol1 {}
+protocol Protocol2 {
+    associatedtype Associated;
+}
+class Class {}
+
+func def_generic_function_with_conformance<A : Protocol1 & Protocol2, B : Class, C>(_: A, _: B, _: C) where C == A.Associated {}

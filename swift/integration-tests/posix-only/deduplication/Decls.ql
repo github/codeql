@@ -5,8 +5,11 @@ from Decl d, string type
 where
   relevant(d) and
   (
-    not d instanceof ValueDecl and type = "-"
+    not exists(d.(ValueDecl).getInterfaceType()) and type = "-"
     or
-    type = d.(ValueDecl).getInterfaceType().toString()
+    exists(Type t |
+      t = d.(ValueDecl).getInterfaceType() and
+      type = t.toString() + " [" + t.getPrimaryQlClasses() + "]"
+    )
   )
 select d, d.getPrimaryQlClasses(), type
