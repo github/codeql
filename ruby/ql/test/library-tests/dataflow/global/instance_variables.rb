@@ -27,11 +27,26 @@ class Foo
     def call_initialize(field)
         initialize(field)
     end
+
+    def self.bar x
+        new(taint(36))
+        new(x)
+    end
+
+    sink(new(taint(34)).get_field) # $ hasValueFlow=34
 end
+
+sink(Foo.bar(taint(35)).get_field) # $ hasValueFlow=35
 
 class Bar < Foo
     def self.new arg
         taint(32)
+    end
+end
+
+class Baz < Foo
+    def initialize x
+        sink x # $ hasValueFlow=36
     end
 end
 

@@ -632,9 +632,9 @@ private module ParamsSummaries {
         // dig doesn't always return a Parameters instance, but it will if the
         // given key refers to a nested hash parameter.
         "dig", "each", "each_key", "each_pair", "each_value", "except", "keep_if", "merge",
-        "merge!", "permit", "reject", "reject!", "reverse_merge", "reverse_merge!", "select",
-        "select!", "slice", "slice!", "transform_keys", "transform_keys!", "transform_values",
-        "transform_values!", "with_defaults", "with_defaults!"
+        "merge!", "permit", "reject", "reject!", "require", "reverse_merge", "reverse_merge!",
+        "select", "select!", "slice", "slice!", "transform_keys", "transform_keys!",
+        "transform_values", "transform_values!", "with_defaults", "with_defaults!"
       ]
   }
 

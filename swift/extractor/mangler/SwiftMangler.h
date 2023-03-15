@@ -3,6 +3,8 @@
 #include <swift/AST/ASTMangler.h>
 #include <swift/AST/Types.h>
 
+#include <optional>
+
 namespace codeql {
 class SwiftMangler {
  public:

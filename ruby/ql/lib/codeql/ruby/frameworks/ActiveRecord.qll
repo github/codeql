@@ -31,6 +31,18 @@ private predicate isBuiltInMethodForActiveRecordModelInstance(string methodName)
   methodName = objectInstanceMethodName()
 }
 
+private API::Node activeRecordClassApiNode() {
+  result =
+    // class Foo < ActiveRecord::Base
+    // class Bar < Foo
+    [
+      API::getTopLevelMember("ActiveRecord").getMember("Base"),
+      // In Rails applications `ApplicationRecord` typically extends `ActiveRecord::Base`, but we
+      // treat it separately in case the `ApplicationRecord` definition is not in the database.
+      API::getTopLevelMember("ApplicationRecord")
+    ].getASubclass()
+}
+
 /**
  * A `ClassDeclaration` for a class that inherits from `ActiveRecord::Base`. For example,
  *
@@ -45,15 +57,8 @@ private predicate isBuiltInMethodForActiveRecordModelInstance(string methodName)
  */
 class ActiveRecordModelClass extends ClassDeclaration {
   ActiveRecordModelClass() {
-    // class Foo < ActiveRecord::Base
-    // class Bar < Foo
     this.getSuperclassExpr() =
-      [
-        API::getTopLevelMember("ActiveRecord").getMember("Base"),
-        // In Rails applications `ApplicationRecord` typically extends `ActiveRecord::Base`, but we
-        // treat it separately in case the `ApplicationRecord` definition is not in the database.
-        API::getTopLevelMember("ApplicationRecord")
-      ].getASubclass().getAValueReachableFromSource().asExpr().getExpr()
+      activeRecordClassApiNode().getAValueReachableFromSource().asExpr().getExpr()
   }
 
   // Gets the class declaration for this class and all of its super classes
@@ -116,14 +121,14 @@ private Expr sqlFragmentArgument(MethodCall call) {
         [
           "delete_all", "delete_by", "destroy_all", "destroy_by", "exists?", "find_by", "find_by!",
           "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "find_by_sql", "from",
-          "group", "having", "joins", "lock", "not", "order", "pluck", "where", "rewhere", "select",
-          "reselect", "update_all"
+          "group", "having", "joins", "lock", "not", "order", "reorder", "pluck", "where",
+          "rewhere", "select", "reselect", "update_all"
         ] and
       result = call.getArgument(0)
       or
       methodName = "calculate" and result = call.getArgument(1)
       or
-      methodName in ["average", "count", "maximum", "minimum", "sum"] and
+      methodName in ["average", "count", "maximum", "minimum", "sum", "count_by_sql"] and
       result = call.getArgument(0)
       or
       // This format was supported until Rails 2.3.8
@@ -208,9 +213,16 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
     exists(PotentiallyUnsafeSqlExecutingMethodCall mc |
       this.asExpr().getNode() = mc.getSqlFragmentSinkArgument()
     )
+    or
+    this = activeRecordConnectionInstance().getAMethodCall("execute").getArgument(0) and
+    unsafeSqlExpr(this.asExpr().getExpr())
   }
 
   override DataFlow::Node getSql() { result = this }
+}
+
+private API::Node activeRecordConnectionInstance() {
+  result = activeRecordClassApiNode().getReturn("connection")
 }
 
 // TODO: model `ActiveRecord` sanitizers
