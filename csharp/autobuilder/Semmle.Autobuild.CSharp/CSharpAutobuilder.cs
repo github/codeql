@@ -135,7 +135,7 @@ namespace Semmle.Autobuild.CSharp
                     "no-projects-or-solutions",
                     "No project or solutions files found",
                     markdownMessage:
-                        "CodeQL could not find any project or solution files in your repository. " +
+                        "CodeQL could not find any project or solution files in your repository.\n\n" +
                         $"Set up a [manual build command]({buildCommandDocsUrl})."
                 ));
             }
