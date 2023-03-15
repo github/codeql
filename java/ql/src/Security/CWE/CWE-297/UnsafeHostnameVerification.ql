@@ -16,7 +16,6 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.Encryption
 import semmle.code.java.security.SecurityFlag
-import DataFlow::PathGraph
 private import semmle.code.java.dataflow.ExternalFlow
 
 /**
@@ -29,7 +28,7 @@ private predicate alwaysReturnsTrue(HostnameVerifierVerify m) {
 }
 
 /**
- * A class that overrides the `javax.net.ssl.HostnameVerifier.verify` method and **always** returns `true` (though it could also exit due to an uncaught exception), thus
+ * A class that s the `javax.net.ssl.HostnameVerifier.verify` method and **always** returns `true` (though it could also exit due to an uncaught exception), thus
  * accepting any certificate despite a hostname mismatch.
  */
 class TrustAllHostnameVerifier extends RefType {
@@ -45,16 +44,14 @@ class TrustAllHostnameVerifier extends RefType {
 /**
  * A configuration to model the flow of a `TrustAllHostnameVerifier` to a `set(Default)HostnameVerifier` call.
  */
-class TrustAllHostnameVerifierConfiguration extends DataFlow::Configuration {
-  TrustAllHostnameVerifierConfiguration() { this = "TrustAllHostnameVerifierConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
+private module TrustAllHostnameVerifierConfiguration implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source.asExpr().(ClassInstanceExpr).getConstructedType() instanceof TrustAllHostnameVerifier
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof HostnameVerifierSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof HostnameVerifierSink }
 
-  override predicate isBarrier(DataFlow::Node barrier) {
+  predicate isBarrier(DataFlow::Node barrier) {
     // ignore nodes that are in functions that intentionally disable hostname verification
     barrier
         .getEnclosingCallable()
@@ -79,6 +76,10 @@ class TrustAllHostnameVerifierConfiguration extends DataFlow::Configuration {
             "|(use|do|enable)insecure|(set|do|use)?no.*(check|validation|verify|verification)|disable).*$")
   }
 }
+
+module TrustAllHostnameVerifierFlow = DataFlow::Make<TrustAllHostnameVerifierConfiguration>;
+
+import TrustAllHostnameVerifierFlow::PathGraph
 
 /**
  * A sink that sets the `HostnameVerifier` on `HttpsURLConnection`.
@@ -114,10 +115,10 @@ private predicate isNodeGuardedByFlag(DataFlow::Node node) {
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, TrustAllHostnameVerifierConfiguration cfg,
+  TrustAllHostnameVerifierFlow::PathNode source, TrustAllHostnameVerifierFlow::PathNode sink,
   RefType verifier
 where
-  cfg.hasFlowPath(source, sink) and
+  TrustAllHostnameVerifierFlow::hasFlowPath(source, sink) and
   not isNodeGuardedByFlag(sink.getNode()) and
   verifier = source.getNode().asExpr().(ClassInstanceExpr).getConstructedType()
 select sink, source, sink,
