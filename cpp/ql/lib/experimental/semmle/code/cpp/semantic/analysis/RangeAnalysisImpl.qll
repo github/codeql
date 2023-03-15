@@ -4,7 +4,7 @@ private import experimental.semmle.code.cpp.semantic.analysis.FloatDelta
 private import RangeUtils
 private import experimental.semmle.code.cpp.semantic.SemanticBound as SemanticBound
 private import semmle.code.cpp.ir.IR as IR
-private import semmle.code.cpp.Location // TODO: SemLocation?
+private import experimental.semmle.code.cpp.semantic.SemanticLocation
 
 module ConstantBounds implements BoundSig<FloatDelta> {
   class SemBound instanceof SemanticBound::SemBound {
@@ -16,7 +16,7 @@ module ConstantBounds implements BoundSig<FloatDelta> {
 
     string toString() { result = super.toString() }
 
-    Location getLocation() { result = super.getLocation() }
+    SemLocation getLocation() { result = super.getLocation() }
 
     SemExpr getExpr(float delta) { result = super.getExpr(delta) }
   }
@@ -36,7 +36,7 @@ private module RelativeBounds implements BoundSig<FloatDelta> {
 
     string toString() { result = super.toString() }
 
-    Location getLocation() { result = super.getLocation() }
+    SemLocation getLocation() { result = super.getLocation() }
 
     SemExpr getExpr(float delta) { result = super.getExpr(delta) }
   }

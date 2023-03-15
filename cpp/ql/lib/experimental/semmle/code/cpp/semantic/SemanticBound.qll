@@ -5,7 +5,7 @@
 private import SemanticExpr
 private import SemanticExprSpecific::SemanticExprConfig as Specific
 private import SemanticSSA
-private import semmle.code.cpp.Location // TODO: SemLocation?
+private import SemanticLocation // TODO: SemLocation?
 
 /**
  * A valid base for an expression bound.
@@ -15,7 +15,7 @@ private import semmle.code.cpp.Location // TODO: SemLocation?
 class SemBound instanceof Specific::Bound {
   final string toString() { result = super.toString() }
 
-  final Location getLocation() { result = super.getLocation() }
+  final SemLocation getLocation() { result = super.getLocation() }
 
   final SemExpr getExpr(int delta) { result = Specific::getBoundExpr(this, delta) }
 }
