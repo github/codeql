@@ -48,6 +48,9 @@ jobs:
         run: |
           brew install gnu-tar
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
+      - name: Install cargo-cross
+        if: runner.os == 'Linux'
+        run: cargo install cross --version 0.2.1
       - uses: ./.github/actions/os-version
         id: os_version
       - name: Cache entire extractor
@@ -80,7 +83,15 @@ jobs:
         run: cd extractor && cargo test --verbose
       - name: Release build
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        run: cd extractor && cargo build --release
+        # On linux, build the extractor via cross in a centos7 container.
+        # This ensures we don't depend on glibc > 2.17.
+        run: |
+          if [[ "$RUNNER_OS" == "Linux" ]]; then
+            CARGO=cross
+          else
+            CARGO=cargo
+          fi
+          cd extractor && "$CARGO" build --release
       - name: Generate dbscheme
         if: ${{ matrix.os == 'ubuntu-latest' && steps.cache-extractor.outputs.cache-hit != 'true'}}
         run: extractor/target/release/generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
