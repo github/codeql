@@ -948,13 +948,13 @@ private predicate localStepsToSwitch(Node node) {
  * Holds if `node` is part of a path from a `ParameterNode` to an operand
  * of a `SwitchInstruction`.
  */
-private predicate localStepsFromParameter(Node node) {
+private predicate localStepsFromParameterToSwitch(Node node) {
   localStepsToSwitch(node) and
   (
     node instanceof ParameterNode
     or
     exists(Node prev |
-      localStepsFromParameter(prev) and
+      localStepsFromParameterToSwitch(prev) and
       localFlowStepWithSummaries(prev, node)
     )
   )
@@ -966,8 +966,8 @@ private predicate localStepsFromParameter(Node node) {
  * operand of a `SwitchInstruction`.
  */
 private predicate getAdditionalFlowIntoCallNodeTermStep(Node node1, Node node2) {
-  localStepsFromParameter(node1) and
-  localStepsFromParameter(node2) and
+  localStepsFromParameterToSwitch(node1) and
+  localStepsFromParameterToSwitch(node2) and
   localFlowStepWithSummaries(node1, node2)
 }
 
