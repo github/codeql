@@ -118,12 +118,20 @@ string getParameterPosition(ParameterPosition pos) {
   pos.isSelf() and result = "self"
   or
   exists(int i |
-    pos.isPositional(i) and
+    (
+      pos.isNormal(i, _)
+      or
+      pos.isPositionalOnly(i)
+    ) and
     result = i.toString()
   )
   or
   exists(string name |
-    pos.isKeyword(name) and
+    (
+      pos.isNormal(_, name)
+      or
+      pos.isKeywordOnly(name)
+    ) and
     result = name + ":"
   )
 }
@@ -262,12 +270,12 @@ ArgumentPosition parseParamBody(string s) {
 ParameterPosition parseArgBody(string s) {
   exists(int i |
     ParsePositions::isParsedPositionalArgumentPosition(s, i) and
-    result.isPositional(i)
+    result.isPositionalOnly(i)
   )
   or
   exists(string name |
     ParsePositions::isParsedKeywordArgumentPosition(s, name) and
-    result.isKeyword(name)
+    result.isKeywordOnly(name)
   )
   or
   s = "self" and

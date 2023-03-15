@@ -42,15 +42,27 @@ private import semmle.python.internal.CachedStages
 newtype TParameterPosition =
   /** Used for `self` in methods, and `cls` in classmethods. */
   TSelfParameterPosition() or
-  TPositionalParameterPosition(int index) {
-    index = any(Parameter p).getPosition()
+  TNormalParameterPosition(int index, string name) {
+    exists(Function f, Parameter p, int indexOffset |
+      p = f.getArg(index + indexOffset) and
+      p = f.getArgByName(name) and
+      indexOffset = any(DataFlowFunction dff | dff.getScope() = f).positionalOffset() and
+      // for things that will be considered a self parameter, we do not need to create a
+      // parameter position
+      index >= 0
+    )
+  } or
+  TPositionalOnlyParameterPosition(int index) {
+    index = any(Parameter p).getPosition() and
+    // TODO: implement this when we have proper support for positional only
+    none()
     or
     // since synthetic parameters are made for a synthetic summary callable, based on
     // what Argument positions they have flow for, we need to make sure we have such
     // parameter positions available.
     FlowSummaryImplSpecific::ParsePositions::isParsedPositionalArgumentPosition(_, index)
   } or
-  TKeywordParameterPosition(string name) {
+  TKeywordOnlyParameterPosition(string name) {
     name = any(Parameter p).getName()
     or
     // see comment for TPositionalParameterPosition
@@ -71,11 +83,14 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a `self`/`cls` parameter. */
   predicate isSelf() { this = TSelfParameterPosition() }
 
-  /** Holds if this position represents a positional parameter at (0-based) `index`. */
-  predicate isPositional(int index) { this = TPositionalParameterPosition(index) }
+  /** Holds if this position represents a normal parameter at (0-based) `index` with name `name`. */
+  predicate isNormal(int index, string name) { this = TNormalParameterPosition(index, name) }
 
-  /** Holds if this position represents a keyword parameter named `name`. */
-  predicate isKeyword(string name) { this = TKeywordParameterPosition(name) }
+  /** Holds if this position represents a positional only parameter at (0-based) `index`. */
+  predicate isPositionalOnly(int index) { this = TPositionalOnlyParameterPosition(index) }
+
+  /** Holds if this position represents a keyword only parameter named `name`. */
+  predicate isKeywordOnly(string name) { this = TKeywordOnlyParameterPosition(name) }
 
   /** Holds if this position represents a `*args` parameter at (0-based) `index`. */
   predicate isStarArgs(int index) { this = TStarArgsParameterPosition(index) }
@@ -96,9 +111,13 @@ class ParameterPosition extends TParameterPosition {
   string toString() {
     this.isSelf() and result = "self"
     or
-    exists(int index | this.isPositional(index) and result = "position " + index)
+    exists(int index, string name |
+      this.isNormal(index, name) and result = "positional " + index + " or keyword " + name
+    )
     or
-    exists(string name | this.isKeyword(name) and result = "keyword " + name)
+    exists(int index | this.isPositionalOnly(index) and result = "positional only " + index)
+    or
+    exists(string name | this.isKeywordOnly(name) and result = "keyword only " + name)
     or
     exists(int index | this.isStarArgs(index) and result = "*args at " + index)
     or
@@ -168,9 +187,11 @@ class ArgumentPosition extends TArgumentPosition {
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isSelf() and apos.isSelf()
   or
-  exists(int index | ppos.isPositional(index) and apos.isPositional(index))
+  exists(int index | apos.isPositional(index) |
+    ppos.isNormal(index, _) or ppos.isPositionalOnly(index)
+  )
   or
-  exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
+  exists(string name | apos.isKeyword(name) | ppos.isNormal(_, name) or ppos.isKeywordOnly(name))
   or
   exists(int index | ppos.isStarArgs(index) and apos.isStarArgs(index))
   or
@@ -297,11 +318,23 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
   int positionalOffset() { result = 0 }
 
   override ParameterNode getParameter(ParameterPosition ppos) {
-    exists(int index | ppos.isPositional(index) |
-      result.getParameter() = func.getArg(index + this.positionalOffset())
+    // normal
+    exists(int index, string name | ppos.isNormal(index, name) |
+      result.getParameter() = func.getArg(index + this.positionalOffset()) and
+      func.getArg(index + this.positionalOffset()) = func.getArgByName(name)
     )
     or
-    exists(string name | ppos.isKeyword(name) | result.getParameter() = func.getArgByName(name))
+    // positioanl only
+    exists(int index | ppos.isPositionalOnly(index) |
+      result.getParameter() = func.getArg(index + this.positionalOffset()) and
+      not func.getArg(index + this.positionalOffset()) = func.getArgByName(_)
+    )
+    or
+    // keyword only
+    exists(string name | ppos.isKeywordOnly(name) |
+      result.getParameter() = func.getArgByName(name) and
+      not func.getArgByName(name) = func.getArg(_)
+    )
     or
     // `*args`
     exists(int index |
@@ -1467,7 +1500,7 @@ class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
       pos.isDictSplat() and
       exists(ParameterPosition keywordPos |
         FlowSummaryImpl::Private::summaryParameterNodeRange(sc, keywordPos) and
-        keywordPos.isKeyword(_)
+        (keywordPos.isNormal(_, _) or keywordPos.isKeywordOnly(_))
       )
     )
   }
