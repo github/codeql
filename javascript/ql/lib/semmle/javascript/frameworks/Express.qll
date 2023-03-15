@@ -677,7 +677,21 @@ module Express {
 
     RequestInputAccess() {
       kind = "parameter" and
-      this = [queryRef(request), paramsRef(request)].getAPropertyRead()
+      (
+        // `req.query` / `req.params`.
+        // These are objects, so we prefer to use a property read if possible, otherwise we fall back to the object itself.
+        (
+          if exists(queryRef(request).getAPropertyRead())
+          then this = queryRef(request).getAPropertyRead()
+          else this = queryRef(request)
+        )
+        or
+        (
+          if exists(paramsRef(request).getAPropertyRead())
+          then this = paramsRef(request).getAPropertyRead()
+          else this = paramsRef(request)
+        )
+      )
       or
       exists(DataFlow::SourceNode ref | ref = request.ref() |
         kind = "parameter" and
