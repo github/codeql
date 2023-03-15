@@ -898,6 +898,55 @@ IRBlock getBasicBlock(Node node) {
 }
 
 /**
+ * A local flow relation that includes both local steps, read steps and
+ * argument-to-return flow through summarized functions.
+ */
+private predicate localFlowStepWithSummaries(Node node1, Node node2) {
+  localFlowStep(node1, node2)
+  or
+  readStep(node1, _, node2)
+  or
+  argumentValueFlowsThrough(node1, _, node2)
+}
+
+/** Holds if `node` flows to a node that is used in a `SwitchInstruction`. */
+private predicate localStepsToSwitch(Node node) {
+  node.asOperand() = any(SwitchInstruction switch).getExpressionOperand()
+  or
+  exists(Node succ |
+    localStepsToSwitch(succ) and
+    localFlowStepWithSummaries(node, succ)
+  )
+}
+
+/**
+ * Holds if `node` is part of a path from a `ParameterNode` to an operand
+ * of a `SwitchInstruction`.
+ */
+private predicate localStepsFromParameter(Node node) {
+  localStepsToSwitch(node) and
+  (
+    node instanceof ParameterNode
+    or
+    exists(Node prev |
+      localStepsFromParameter(prev) and
+      localFlowStepWithSummaries(prev, node)
+    )
+  )
+}
+
+/**
+ * The local flow relation `localFlowStepWithSummaries` pruned to only
+ * include steps that are part of a path from a `ParameterNode` to an
+ * operand of a `SwitchInstruction`.
+ */
+private predicate getAdditionalFlowIntoCallNodeTermStep(Node node1, Node node2) {
+  localStepsFromParameter(node1) and
+  localStepsFromParameter(node2) and
+  localFlowStepWithSummaries(node1, node2)
+}
+
+/**
  * Gets an additional term that is added to the `join` and `branch` computations to reflect
  * an additional forward or backwards branching factor that is not taken into account
  * when calculating the (virtual) dispatch cost.
@@ -910,7 +959,7 @@ int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) {
     viableParamArg(call, p, arg) and
     viableParamArg(call, switchee, _) and
     switch.getExpressionOperand() = op and
-    valueNumber(switchee.asInstruction()).getAUse() = op and
+    getAdditionalFlowIntoCallNodeTermStep+(switchee, operandNode(op)) and
     result = countNumberOfBranchesUsingParameter(switch, p)
   )
 }
