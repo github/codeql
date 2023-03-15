@@ -13,30 +13,33 @@
 
 import java
 import ArraySizing
-import DataFlow::PathGraph
+import semmle.code.java.dataflow.TaintTracking
 
-class BoundedFlowSourceConf extends DataFlow::Configuration {
-  BoundedFlowSourceConf() { this = "BoundedFlowSource" }
-
-  override predicate isSource(DataFlow::Node source) {
+private module BoundedFlowSourceConf implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source instanceof BoundedFlowSource and
     // There is not a fixed lower bound which is greater than zero.
     not source.(BoundedFlowSource).lowerBound() > 0
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     any(CheckableArrayAccess caa).canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), _)
   }
 }
 
+module BoundedFlowSourceFlow = DataFlow::Make<BoundedFlowSourceConf>;
+
+import BoundedFlowSourceFlow::PathGraph
+
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, BoundedFlowSource boundedsource,
-  Expr sizeExpr, ArrayCreationExpr arrayCreation, CheckableArrayAccess arrayAccess
+  BoundedFlowSourceFlow::PathNode source, BoundedFlowSourceFlow::PathNode sink,
+  BoundedFlowSource boundedsource, Expr sizeExpr, ArrayCreationExpr arrayCreation,
+  CheckableArrayAccess arrayAccess
 where
   arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sizeExpr, arrayCreation) and
   sizeExpr = sink.getNode().asExpr() and
   boundedsource = source.getNode() and
-  any(BoundedFlowSourceConf conf).hasFlowPath(source, sink)
+  BoundedFlowSourceFlow::hasFlowPath(source, sink)
 select arrayAccess.getIndexExpr(), source, sink,
   "This accesses the $@, but the array is initialized using $@ which may be zero.", arrayCreation,
   "array", boundedsource, boundedsource.getDescription().toLowerCase()

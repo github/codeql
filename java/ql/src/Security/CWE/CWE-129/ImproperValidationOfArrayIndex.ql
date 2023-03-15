@@ -13,24 +13,28 @@
 import java
 import ArraySizing
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "RemoteUserInputTocanThrowOutOfBoundsDueToEmptyArrayConfig" }
+private module ImproperValidationOfArrayIndexConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     any(CheckableArrayAccess caa).canThrowOutOfBounds(sink.asExpr())
   }
 
-  override predicate isSanitizer(DataFlow::Node node) { node.getType() instanceof BooleanType }
+  predicate isBarrier(DataFlow::Node node) { node.getType() instanceof BooleanType }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, CheckableArrayAccess arrayAccess
+module ImproperValidationOfArrayIndexFlow =
+  TaintTracking::Make<ImproperValidationOfArrayIndexConfig>;
+
+import ImproperValidationOfArrayIndexFlow::PathGraph
+
+from
+  ImproperValidationOfArrayIndexFlow::PathNode source,
+  ImproperValidationOfArrayIndexFlow::PathNode sink, CheckableArrayAccess arrayAccess
 where
   arrayAccess.canThrowOutOfBounds(sink.getNode().asExpr()) and
-  any(Conf conf).hasFlowPath(source, sink)
+  ImproperValidationOfArrayIndexFlow::hasFlowPath(source, sink)
 select arrayAccess.getIndexExpr(), source, sink,
   "This index depends on a $@ which can cause an ArrayIndexOutOfBoundsException.", source.getNode(),
   "user-provided value"
