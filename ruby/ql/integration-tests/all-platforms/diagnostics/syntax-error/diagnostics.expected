@@ -14,7 +14,7 @@
   "severity": "warning",
   "source": {
     "extractorName": "ruby",
-    "id": "rb/parse-error",
+    "id": "ruby/parse-error",
     "name": "Parse error"
   },
   "visibility": {
@@ -37,7 +37,7 @@
   "severity": "warning",
   "source": {
     "extractorName": "ruby",
-    "id": "rb/parse-error",
+    "id": "ruby/parse-error",
     "name": "Parse error"
   },
   "visibility": {

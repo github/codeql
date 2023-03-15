@@ -93,7 +93,7 @@ impl LogWriter {
         DiagnosticMessage {
             timestamp: chrono::Utc::now(),
             source: Source {
-                id: format!("rb/{}", id),
+                id: format!("{}/{}", self.extractor, id),
                 name: name.to_owned(),
                 extractor_name: Some(self.extractor.to_owned()),
             },
