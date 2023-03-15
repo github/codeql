@@ -140,9 +140,9 @@ extensions:
       - ["java.lang", "Class", "forName", "(String)", "manual"]
       - ["java.lang", "Class", "getCanonicalName", "()", "manual"]
       - ["java.lang", "Class", "getClassLoader", "()", "manual"]
-      - ["java.lang", "Class", "getDeclaredConstructor", "(Class[])", "manual"]
-      - ["java.lang", "Class", "getDeclaredField", "(String)", "manual"]
-      - ["java.lang", "Class", "getMethod", "(String,Class[])", "manual"]
+      - ["java.lang", "Class", "getDeclaredConstructor", "(Class[])", "manual"]  # This model may be changed to a taint step for an unsafe reflection query in the future.
+      - ["java.lang", "Class", "getDeclaredField", "(String)", "manual"]         # This model may be changed to a taint step for an unsafe reflection query in the future.
+      - ["java.lang", "Class", "getMethod", "(String,Class[])", "manual"]        # This model may be changed to a taint step for an unsafe reflection query in the future.
       - ["java.lang", "Class", "getName", "()", "manual"]
       - ["java.lang", "Class", "getResource", "(String)", "manual"]
       - ["java.lang", "Class", "getResourceAsStream", "(String)", "manual"]
