@@ -25,28 +25,27 @@ class UncontrolledStringBuilderSource extends DataFlow::ExprNode {
   }
 }
 
-class UncontrolledStringBuilderSourceFlowConfig extends TaintTracking::Configuration {
-  UncontrolledStringBuilderSourceFlowConfig() {
-    this = "SqlConcatenated::UncontrolledStringBuilderSourceFlowConfig"
-  }
+private module UncontrolledStringBuilderSourceFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof UncontrolledStringBuilderSource }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof UncontrolledStringBuilderSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
   }
 }
+
+module UncontrolledStringBuilderSourceFlow =
+  TaintTracking::Make<UncontrolledStringBuilderSourceFlowConfig>;
 
 from QueryInjectionSink query, Expr uncontrolled
 where
   (
     builtFromUncontrolledConcat(query.asExpr(), uncontrolled)
     or
-    exists(StringBuilderVar sbv, UncontrolledStringBuilderSourceFlowConfig conf |
+    exists(StringBuilderVar sbv |
       uncontrolledStringBuilderQuery(sbv, uncontrolled) and
-      conf.hasFlow(DataFlow::exprNode(sbv.getToStringCall()), query)
+      UncontrolledStringBuilderSourceFlow::hasFlow(DataFlow::exprNode(sbv.getToStringCall()), query)
     )
   ) and
   not queryTaintedBy(query, _, _)
