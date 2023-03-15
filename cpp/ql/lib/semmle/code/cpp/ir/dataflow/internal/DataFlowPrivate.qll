@@ -6,7 +6,6 @@ private import DataFlowImplConsistency
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
-private import semmle.code.cpp.ir.ValueNumbering
 
 cached
 private module Cached {
