@@ -5,33 +5,59 @@ private import DataFlowDispatch
 private import DataFlowImplConsistency
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
-private import DataFlowImplCommon
+private import DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.cpp.ir.ValueNumbering
 
 cached
 private module Cached {
   cached
-  newtype TIRDataFlowNode0 =
-    TInstructionNode0(Instruction i) {
-      not Ssa::ignoreInstruction(i) and
-      not exists(Operand op |
-        not Ssa::ignoreOperand(op) and i = Ssa::getIRRepresentationOfOperand(op)
-      ) and
-      // We exclude `void`-typed instructions because they cannot contain data.
-      // However, if the instruction is a glvalue, and their type is `void`, then the result
-      // type of the instruction is really `void*`, and thus we still want to have a dataflow
-      // node for it.
-      (not i.getResultType() instanceof VoidType or i.isGLValue())
-    } or
-    TMultipleUseOperandNode0(Operand op) {
-      not Ssa::ignoreOperand(op) and not exists(Ssa::getIRRepresentationOfOperand(op))
-    } or
-    TSingleUseOperandNode0(Operand op) {
-      not Ssa::ignoreOperand(op) and exists(Ssa::getIRRepresentationOfOperand(op))
-    }
+  module Nodes0 {
+    cached
+    newtype TIRDataFlowNode0 =
+      TInstructionNode0(Instruction i) {
+        not Ssa::ignoreInstruction(i) and
+        not exists(Operand op |
+          not Ssa::ignoreOperand(op) and i = Ssa::getIRRepresentationOfOperand(op)
+        ) and
+        // We exclude `void`-typed instructions because they cannot contain data.
+        // However, if the instruction is a glvalue, and their type is `void`, then the result
+        // type of the instruction is really `void*`, and thus we still want to have a dataflow
+        // node for it.
+        (not i.getResultType() instanceof VoidType or i.isGLValue())
+      } or
+      TMultipleUseOperandNode0(Operand op) {
+        not Ssa::ignoreOperand(op) and not exists(Ssa::getIRRepresentationOfOperand(op))
+      } or
+      TSingleUseOperandNode0(Operand op) {
+        not Ssa::ignoreOperand(op) and exists(Ssa::getIRRepresentationOfOperand(op))
+      }
+  }
+
+  /**
+   * Gets an additional term that is added to the `join` and `branch` computations to reflect
+   * an additional forward or backwards branching factor that is not taken into account
+   * when calculating the (virtual) dispatch cost.
+   *
+   * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+   */
+  pragma[nomagic]
+  cached
+  int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) {
+    DataFlowImplCommon::forceCachingInSameStage() and
+    exists(
+      ParameterNode switchee, SwitchInstruction switch, ConditionOperand op, DataFlowCall call
+    |
+      DataFlowImplCommon::viableParamArg(call, p, arg) and
+      DataFlowImplCommon::viableParamArg(call, switchee, _) and
+      switch.getExpressionOperand() = op and
+      getAdditionalFlowIntoCallNodeTermStep+(switchee, operandNode(op)) and
+      result = countNumberOfBranchesUsingParameter(switch, p)
+    )
+  }
 }
 
-private import Cached
+import Cached
+private import Nodes0
 
 class Node0Impl extends TIRDataFlowNode0 {
   /**
@@ -906,7 +932,7 @@ private predicate localFlowStepWithSummaries(Node node1, Node node2) {
   or
   readStep(node1, _, node2)
   or
-  argumentValueFlowsThrough(node1, _, node2)
+  DataFlowImplCommon::argumentValueFlowsThrough(node1, _, node2)
 }
 
 /** Holds if `node` flows to a node that is used in a `SwitchInstruction`. */
@@ -946,24 +972,6 @@ private predicate getAdditionalFlowIntoCallNodeTermStep(Node node1, Node node2) 
   localFlowStepWithSummaries(node1, node2)
 }
 
-/**
- * Gets an additional term that is added to the `join` and `branch` computations to reflect
- * an additional forward or backwards branching factor that is not taken into account
- * when calculating the (virtual) dispatch cost.
- *
- * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
- */
-pragma[nomagic]
-int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) {
-  exists(ParameterNode switchee, SwitchInstruction switch, ConditionOperand op, DataFlowCall call |
-    viableParamArg(call, p, arg) and
-    viableParamArg(call, switchee, _) and
-    switch.getExpressionOperand() = op and
-    getAdditionalFlowIntoCallNodeTermStep+(switchee, operandNode(op)) and
-    result = countNumberOfBranchesUsingParameter(switch, p)
-  )
-}
-
 /** Gets the `IRVariable` associated with the parameter node `p`. */
 pragma[nomagic]
 private IRVariable getIRVariableForParameterNode(ParameterNode p) {
@@ -992,7 +1000,7 @@ private EdgeKind caseOrDefaultEdge() {
 /**
  * Gets the number of switch branches that that read from (or write to) the parameter `p`.
  */
-int countNumberOfBranchesUsingParameter(SwitchInstruction switch, ParameterNode p) {
+private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, ParameterNode p) {
   exists(Ssa::SourceVariable sv |
     parameterNodeHasSourceVariable(p, sv) and
     // Count the number of cases that use the parameter. We do this by finding the phi node
