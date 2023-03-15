@@ -47,7 +47,9 @@ module ArithmeticUncontrolledUnderflowFlow =
   TaintTracking::Make<ArithmeticUncontrolledUnderflowConfig>;
 
 module Flow =
-  DataFlow::MergePathGraph<ArithmeticUncontrolledOverflowFlow::PathNode, ArithmeticUncontrolledUnderflowFlow::PathNode, ArithmeticUncontrolledOverflowFlow::PathGraph, ArithmeticUncontrolledUnderflowFlow::PathGraph>;
+  DataFlow::MergePathGraph<ArithmeticUncontrolledOverflowFlow::PathNode,
+    ArithmeticUncontrolledUnderflowFlow::PathNode, ArithmeticUncontrolledOverflowFlow::PathGraph,
+    ArithmeticUncontrolledUnderflowFlow::PathGraph>;
 
 import Flow::PathGraph
 
