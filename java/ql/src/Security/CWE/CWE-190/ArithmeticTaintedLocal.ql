@@ -15,35 +15,41 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import ArithmeticCommon
-import DataFlow::PathGraph
 
-class ArithmeticTaintedLocalOverflowConfig extends TaintTracking::Configuration {
-  ArithmeticTaintedLocalOverflowConfig() { this = "ArithmeticTaintedLocalOverflowConfig" }
+private module ArithmeticTaintedLocalOverflowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
+  predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
 
-  override predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
-
-  override predicate isSanitizer(DataFlow::Node n) { overflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
 }
 
-class ArithmeticTaintedLocalUnderflowConfig extends TaintTracking::Configuration {
-  ArithmeticTaintedLocalUnderflowConfig() { this = "ArithmeticTaintedLocalUnderflowConfig" }
+module ArithmeticTaintedLocalOverflowFlow =
+  TaintTracking::Make<ArithmeticTaintedLocalOverflowConfig>;
 
-  override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
+private module ArithmeticTaintedLocalUnderflowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
-  override predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
+  predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 
-  override predicate isSanitizer(DataFlow::Node n) { underflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, string effect
+module ArithmeticTaintedLocalUnderflowFlow =
+  TaintTracking::Make<ArithmeticTaintedLocalUnderflowConfig>;
+
+module Flow =
+  DataFlow::MergePathGraph<ArithmeticTaintedLocalOverflowFlow::PathNode, ArithmeticTaintedLocalUnderflowFlow::PathNode, ArithmeticTaintedLocalOverflowFlow::PathGraph, ArithmeticTaintedLocalUnderflowFlow::PathGraph>;
+
+import Flow::PathGraph
+
+from Flow::PathNode source, Flow::PathNode sink, ArithExpr exp, string effect
 where
-  any(ArithmeticTaintedLocalOverflowConfig c).hasFlowPath(source, sink) and
+  ArithmeticTaintedLocalOverflowFlow::hasFlowPath(source.asPathNode1(), sink.asPathNode1()) and
   overflowSink(exp, sink.getNode().asExpr()) and
   effect = "overflow"
   or
-  any(ArithmeticTaintedLocalUnderflowConfig c).hasFlowPath(source, sink) and
+  ArithmeticTaintedLocalUnderflowFlow::hasFlowPath(source.asPathNode2(), sink.asPathNode2()) and
   underflowSink(exp, sink.getNode().asExpr()) and
   effect = "underflow"
 select exp, source, sink,
