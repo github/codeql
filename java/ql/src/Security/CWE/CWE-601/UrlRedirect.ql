@@ -14,17 +14,18 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.UrlRedirect
-import DataFlow::PathGraph
 
-class UrlRedirectConfig extends TaintTracking::Configuration {
-  UrlRedirectConfig() { this = "UrlRedirectConfig" }
+private module UrlRedirectConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UrlRedirectSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof UrlRedirectSink }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, UrlRedirectConfig conf
-where conf.hasFlowPath(source, sink)
+module UrlRedirectFlow = TaintTracking::Make<UrlRedirectConfig>;
+
+import UrlRedirectFlow::PathGraph
+
+from UrlRedirectFlow::PathNode source, UrlRedirectFlow::PathNode sink
+where UrlRedirectFlow::hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "Untrusted URL redirection depends on a $@.", source.getNode(),
   "user-provided value"
