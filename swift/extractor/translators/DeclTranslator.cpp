@@ -4,6 +4,7 @@
 #include <swift/AST/ParameterList.h>
 #include "swift/extractor/infra/SwiftDiagnosticKind.h"
 #include <swift/AST/PropertyWrappers.h>
+#include <swift/AST/ASTMangler.h>
 
 namespace codeql {
 namespace {
@@ -104,6 +105,17 @@ codeql::PatternBindingDecl DeclTranslator::translatePatternBindingDecl(
 }
 
 codeql::ConcreteVarDecl DeclTranslator::translateVarDecl(const swift::VarDecl& decl) {
+  if (decl.getNameStr() == "capacity") {
+    std::string dump;
+    llvm::raw_string_ostream oss{dump};
+    decl.dump(oss);
+    oss << '\n';
+    decl.getDeclContext()->printContext(oss);
+    oss << '\n';
+    oss << "pointer: " << &decl << '\n';
+    oss << "mangling: " << swift::Mangle::ASTMangler().mangleAnyDecl(&decl, true);
+    dispatcher.emitDebugInfo(dump);
+  }
   auto entry = createEntry(decl);
   entry.introducer_int = static_cast<uint8_t>(decl.getIntroducer());
   fillVarDecl(decl, entry);

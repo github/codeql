@@ -6,3 +6,5 @@ func use_async_function_type(_: Int) async {}
 func use_throwing_function_type(_: Int) throws {}
 func use_async_throwing_function_type(_: Int) async throws {}
 func use_generic_function_with_conformance_type<AA, BB, CC>(_: AA, _: BB, _: CC) where AA: Protocol1, AA: Protocol2, BB: Class, CC == AA.Associated {}
+
+extension Class {}

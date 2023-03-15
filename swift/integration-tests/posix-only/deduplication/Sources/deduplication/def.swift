@@ -30,3 +30,5 @@ protocol Protocol2 {
 class Class {}
 
 func def_generic_function_with_conformance<A : Protocol1 & Protocol2, B : Class, C>(_: A, _: B, _: C) where C == A.Associated {}
+
+extension Class {}

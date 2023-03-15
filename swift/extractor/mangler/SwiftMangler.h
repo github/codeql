@@ -18,6 +18,9 @@ class SwiftDispatcher;
 
 class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
                      private swift::DeclVisitor<SwiftMangler, SwiftMangledName> {
+  using TypeVisitor = swift::TypeVisitor<SwiftMangler, SwiftMangledName>;
+  using DeclVisitor = swift::DeclVisitor<SwiftMangler, SwiftMangledName>;
+
  public:
   explicit SwiftMangler(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
 
@@ -25,18 +28,16 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
 
   // TODO actual visit
   SwiftMangledName mangleDecl(const swift::Decl& decl) {
-    return swift::DeclVisitor<SwiftMangler, SwiftMangledName>::visit(
-        const_cast<swift::Decl*>(&decl));
+    return DeclVisitor::visit(const_cast<swift::Decl*>(&decl));
   }
 
   SwiftMangledName mangleType(const swift::TypeBase& type) {
-    return swift::TypeVisitor<SwiftMangler, SwiftMangledName>::visit(
-        const_cast<swift::TypeBase*>(&type));
+    return TypeVisitor::visit(const_cast<swift::TypeBase*>(&type));
   }
 
  private:
-  friend class swift::TypeVisitor<SwiftMangler, SwiftMangledName>;
-  friend class swift::ASTVisitor<SwiftMangler, void, void, SwiftMangledName>;
+  friend TypeVisitor;
+  friend DeclVisitor;
 
   // assign no name by default
   static SwiftMangledName visitDecl(const swift::Decl* decl) { return {}; }
@@ -45,10 +46,13 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitValueDecl(const swift::ValueDecl* decl);
 
   SwiftMangledName visitModuleDecl(const swift::ModuleDecl* decl);
-  SwiftMangledName visitTypeDecl(const swift::TypeDecl* decl);
+  SwiftMangledName visitExtensionDecl(const swift::ExtensionDecl* decl);
+  SwiftMangledName visitAbstractFunctionDecl(const swift::AbstractFunctionDecl* decl);
+  SwiftMangledName visitSubscriptDecl(const swift::SubscriptDecl* decl);
+  SwiftMangledName visitVarDecl(const swift::VarDecl* decl);
+  SwiftMangledName visitGenericTypeDecl(const swift::GenericTypeDecl* decl);
 
   // default fallback for not yet mangled types. This should never be called in normal situations
-  // will just spawn a random name
   // TODO: make it assert once we mangle all types
   SwiftMangledName visitType(const swift::TypeBase* type);
 
@@ -69,8 +73,18 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitGenericTypeParamType(const swift::GenericTypeParamType* type);
   SwiftMangledName visitAnyMetatypeType(const swift::AnyMetatypeType* type);
   SwiftMangledName visitDependentMemberType(const swift::DependentMemberType* type);
+  SwiftMangledName visitInOutType(const swift::InOutType* type);
+  SwiftMangledName visitExistentialType(const swift::ExistentialType* type);
+  SwiftMangledName visitUnarySyntaxSugarType(const swift::UnarySyntaxSugarType* type);
+  SwiftMangledName visitDictionaryType(const swift::DictionaryType* type);
+  SwiftMangledName visitTypeAliasType(const swift::TypeAliasType* type);
+  SwiftMangledName visitArchetypeType(const swift::ArchetypeType* type);
 
  private:
+  static SwiftMangledName initMangled(const swift::TypeBase* type);
+  SwiftMangledName initMangled(const swift::Decl* decl);
+  SwiftMangledName visitTypeDiscriminatedValueDecl(const swift::ValueDecl* decl);
+
   swift::Mangle::ASTMangler mangler;
   SwiftDispatcher& dispatcher;
 };
