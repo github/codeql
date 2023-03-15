@@ -120,22 +120,20 @@ class GetMessageFlowSource extends MethodAccess {
   }
 }
 
-class GetMessageFlowSourceToHttpResponseSinkFlowConfig extends TaintTracking::Configuration {
-  GetMessageFlowSourceToHttpResponseSinkFlowConfig() {
-    this = "StackTraceExposure::GetMessageFlowSourceToHttpResponseSinkFlowConfig"
-  }
+private module GetMessageFlowSourceToHttpResponseSinkFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof GetMessageFlowSource }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof GetMessageFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
 }
+
+module GetMessageFlowSourceToHttpResponseSinkFlow =
+  TaintTracking::Make<GetMessageFlowSourceToHttpResponseSinkFlowConfig>;
 
 /**
  * A call to `getMessage()` that then flows to a servlet response.
  */
 predicate getMessageFlowsExternally(DataFlow::Node externalExpr, GetMessageFlowSource getMessage) {
-  any(GetMessageFlowSourceToHttpResponseSinkFlowConfig conf)
-      .hasFlow(DataFlow::exprNode(getMessage), externalExpr)
+  GetMessageFlowSourceToHttpResponseSinkFlow::hasFlow(DataFlow::exprNode(getMessage), externalExpr)
 }
 
 from Expr externalExpr, Expr errorInformation
