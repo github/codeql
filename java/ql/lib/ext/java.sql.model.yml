@@ -41,7 +41,7 @@ extensions:
       - ["java.sql", "ResultSet", "getInt", "(int)", "manual"]               # taint-numeric
       - ["java.sql", "ResultSet", "getInt", "(String)", "manual"]            # taint-numeric
       - ["java.sql", "ResultSet", "getLong", "(String)", "manual"]           # taint-numeric
-      - ["java.sql", "ResultSet", "getString", "(int)", "manual"]            # taint-numeric
+      - ["java.sql", "ResultSet", "getString", "(int)", "manual"]            # taint-numeric, potentially interesting for second order SQL injection
       - ["java.sql", "ResultSet", "getTimestamp", "(String)", "manual"]      # taint-numeric
       - ["java.sql", "Timestamp", "Timestamp", "(long)", "manual"]           # taint-numeric
       - ["java.sql", "Timestamp", "getTime", "()", "manual"]                 # taint-numeric
