@@ -955,7 +955,7 @@ class AnyFunctionType(Type):
 
 class AnyGenericType(Type):
     parent: optional[Type]
-    declaration: Decl
+    declaration: GenericTypeDecl
 
 class AnyMetatypeType(Type):
     pass
