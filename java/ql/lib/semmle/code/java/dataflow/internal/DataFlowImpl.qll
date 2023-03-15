@@ -418,6 +418,10 @@ module Impl<FullStateConfigSig Config> {
     )
   }
 
+  private predicate sourceCallCtx(CallContext cc) {
+    if hasSourceCallCtx() then cc instanceof CallContextSomeCall else cc instanceof CallContextAny
+  }
+
   private predicate hasSinkCallCtx() {
     exists(FlowFeature feature | feature = Config::getAFeature() |
       feature instanceof FeatureHasSinkCallContext or
@@ -2804,11 +2808,7 @@ module Impl<FullStateConfigSig Config> {
       // A PathNode is introduced by a source ...
       Stage5::revFlow(node, state) and
       sourceNode(node, state) and
-      (
-        if hasSourceCallCtx()
-        then cc instanceof CallContextSomeCall
-        else cc instanceof CallContextAny
-      ) and
+      sourceCallCtx(cc) and
       sc instanceof SummaryCtxNone and
       ap = TAccessPathNil(node.getDataFlowType())
       or
@@ -3214,11 +3214,7 @@ module Impl<FullStateConfigSig Config> {
 
     override predicate isSource() {
       sourceNode(node, state) and
-      (
-        if hasSourceCallCtx()
-        then cc instanceof CallContextSomeCall
-        else cc instanceof CallContextAny
-      ) and
+      sourceCallCtx(cc) and
       sc instanceof SummaryCtxNone and
       ap = TAccessPathNil(node.getDataFlowType())
     }
