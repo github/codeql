@@ -21,25 +21,23 @@ private import semmle.code.java.security.PathSanitizer
 
 /* TaintedPathConfig cannot be imported directly since it is defined in a .ql file. It is therefore copied here. */
 /* Copied from java/ql/src/Security/CWE/CWE-022/TaintedPath.ql */
-class TaintedPathConfig extends TaintTracking::Configuration {
-  TaintedPathConfig() { this = "TaintedPathConfig" }
+module TaintedPathConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PathCreation p).getAnInput()
     or
-    sinkNode(sink, "create-file")
+    sinkNode(sink, ["create-file", "read-file"])
   }
 
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
+  predicate isBarrier(DataFlow::Node sanitizer) {
     sanitizer.getType() instanceof BoxedType or
     sanitizer.getType() instanceof PrimitiveType or
     sanitizer.getType() instanceof NumberType or
     sanitizer instanceof PathInjectionSanitizer
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(TaintedPathAdditionalTaintStep s).step(n1, n2)
   }
 }
