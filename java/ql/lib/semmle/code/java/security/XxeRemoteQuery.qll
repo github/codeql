@@ -6,6 +6,8 @@ private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.XxeQuery
 
 /**
+ * DEPRECATED: Use `XxeFlow` instead.
+ *
  * A taint-tracking configuration for unvalidated remote user input that is used in XML external entity expansion.
  */
 deprecated class XxeConfig extends TaintTracking::Configuration {
