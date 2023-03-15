@@ -279,6 +279,11 @@
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRBlockImports.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRBlockImports.qll"
   ],
+  "C++ IR IRConsistencyImports": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRConsistencyImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRConsistencyImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRConsistencyImports.qll"
+  ],
   "C++ IR IRFunctionImports": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRFunctionImports.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRFunctionImports.qll",
