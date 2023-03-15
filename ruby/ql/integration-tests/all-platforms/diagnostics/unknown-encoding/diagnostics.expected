@@ -11,7 +11,7 @@
   "source": {
     "extractorName": "ruby",
     "id": "ruby/unknown-character-encoding",
-    "name": "Unknown character encoding"
+    "name": "Could not process some files due to an unknown character encoding"
   },
   "visibility": {
     "statusPage": true

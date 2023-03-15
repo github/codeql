@@ -255,7 +255,7 @@ impl<'a> Visitor<'a> {
         );
         let mut mesg = self
             .diagnostics_writer
-            .new_entry("parse-error", "Parse error");
+            .new_entry("parse-error", "Could not process some files due to syntax errors");
         &mesg
             .severity(diagnostics::Severity::Warning)
             .location(self.path, start_line, start_column, end_line, end_column)
@@ -367,7 +367,7 @@ impl<'a> Visitor<'a> {
                 self.record_parse_error(
                     loc,
                     self.diagnostics_writer
-                        .new_entry("parse-error", "Parse error")
+                        .new_entry("parse-error", "Could not process some files due to syntax errors")
                         .severity(diagnostics::Severity::Warning)
                         .location(self.path, start_line, start_column, end_line, end_column)
                         .message(

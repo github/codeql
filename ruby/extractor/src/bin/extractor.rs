@@ -223,7 +223,7 @@ fn main() -> std::io::Result<()> {
                         } else {
                             diagnostics_writer.write(
                                 diagnostics_writer
-                                    .new_entry("unknown-character-encoding", "Unknown character encoding")
+                                    .new_entry("unknown-character-encoding", "Could not process some files due to an unknown character encoding")
                                     .file(&file_paths::normalize_path(&path))
                                     .message(
                                         "Unknown character encoding {} in {} {}.",

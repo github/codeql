@@ -15,7 +15,7 @@
   "source": {
     "extractorName": "ruby",
     "id": "ruby/parse-error",
-    "name": "Parse error"
+    "name": "Could not process some files due to syntax errors"
   },
   "visibility": {
     "statusPage": true
@@ -38,7 +38,7 @@
   "source": {
     "extractorName": "ruby",
     "id": "ruby/parse-error",
-    "name": "Parse error"
+    "name": "Could not process some files due to syntax errors"
   },
   "visibility": {
     "statusPage": true
