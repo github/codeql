@@ -1,14 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: summaryModel
-    data:
-      - ["java.text", "Format", True, "format", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.text", "MessageFormat", False, "format", "(String,Object[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.text", "MessageFormat", False, "format", "(String,Object[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"]
-
-  - addsTo:
-      pack: codeql/java-all
       extensible: neutralModel
     data:
       # The below APIs have numeric flow and are currently being stored as neutral models.

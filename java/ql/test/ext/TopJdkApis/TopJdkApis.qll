@@ -310,6 +310,8 @@ class TopJdkApi extends SummarizedCallableBase {
    * `java.lang.System#getProperty(String)`: needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
    * `java.lang.System#setProperty(String,String)`: needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
    * `java.lang.Throwable#printStackTrace()`: should probably not be a general step, but there might be specialised queries that care
+   * `java.text.Format#format(Object)`: similar issue as `Object.toString`; depends on the object being passed as the argument
+   * `java.text.MessageFormat#format(String,Object[])`: similar issue as `Object.toString`; depends on the object being passed as the argument
    * `java.util.Comparator#comparing(Function)`: lambda flow
    * `java.util.function.BiConsumer#accept(Object,Object)`: specialized lambda flow
    * `java.util.function.BiFunction#apply(Object,Object)`: specialized lambda flow

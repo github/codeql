@@ -7,8 +7,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.text.Format;
-import java.text.MessageFormat;
 import java.util.EventObject;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -156,16 +154,6 @@ public class Test {
             // java.util
             EventObject eventObj = new EventObject(source());
             sink(eventObj.getSource()); // $hasValueFlow
-
-            // java.text
-            Format mf1 = new MessageFormat("test");
-            sink(mf1.format(source())); // $hasTaintFlow
-
-            String mf2 = MessageFormat.format((String)source(), null);
-            sink(mf2); // $hasTaintFlow
-
-            String mf3 = MessageFormat.format("test", source());
-            sink(mf3); // $hasTaintFlow
 
             // java.lang
             AssertionError assertErr = new AssertionError(source());
