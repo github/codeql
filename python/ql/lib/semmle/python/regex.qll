@@ -140,7 +140,11 @@ string mode_from_node(DataFlow::Node node) { node = re_flag_tracker(result) }
 
 /** A StrConst used as a regular expression */
 abstract class RegexString extends Expr {
-  RegexString() { (this instanceof Bytes or this instanceof Unicode) }
+  RegexString() {
+    (this instanceof Bytes or this instanceof Unicode) and
+    // is part of the user code
+    exists(this.getLocation().getFile().getRelativePath())
+  }
 
   /**
    * Helper predicate for `char_set_start(int start, int end)`.
