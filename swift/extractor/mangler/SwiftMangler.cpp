@@ -2,12 +2,25 @@
 #include "swift/extractor/infra/SwiftDispatcher.h"
 #include "swift/extractor/trap/generated/decl/TrapClasses.h"
 #include <swift/AST/Module.h>
+#include <swift/AST/ParameterList.h>
+#include <swift/AST/ASTContext.h>
+#include <swift/AST/GenericParamList.h>
 #include <sstream>
 
 using namespace codeql;
 
 namespace {
-SwiftMangledName initMangled(const swift::TypeBase* type) {
+const swift::Decl* getParent(const swift::Decl* decl) {
+  auto context = decl->getDeclContext();
+  if (context->getContextKind() == swift::DeclContextKind::FileUnit) {
+    return decl->getModuleContext();
+  }
+  return context->getAsDecl();
+}
+
+}  // namespace
+
+SwiftMangledName SwiftMangler::initMangled(const swift::TypeBase* type) {
   switch (type->getKind()) {
 #define TYPE(ID, PARENT)    \
   case swift::TypeKind::ID: \
@@ -18,13 +31,12 @@ SwiftMangledName initMangled(const swift::TypeBase* type) {
   }
 }
 
-SwiftMangledName initMangled(const swift::Decl* decl) {
+SwiftMangledName SwiftMangler::initMangled(const swift::Decl* decl) {
   SwiftMangledName ret;
   ret << swift::Decl::getKindName(decl->getKind()) << "Decl_";
+  ret << dispatcher.fetchLabel(getParent(decl));
   return ret;
 }
-
-}  // namespace
 
 SwiftMangledName SwiftMangler::mangleModuleName(std::string_view name) {
   SwiftMangledName ret = {{"ModuleDecl_"}};
@@ -32,63 +44,97 @@ SwiftMangledName SwiftMangler::mangleModuleName(std::string_view name) {
   return ret;
 }
 
-SwiftMangledName SwiftMangler::visitValueDecl(const swift::ValueDecl* decl) {
-  // We do not deduplicate local variables, but for the moment also non-local vars from non-swift
-  // (PCM, clang modules) modules as the mangler crashes sometimes
-  if (decl->getKind() == swift::DeclKind::Var &&
-      (decl->getDeclContext()->isLocalContext() || decl->getModuleContext()->isNonSwiftModule())) {
-    return {};
-  }
-
-  // we do not deduplicate GenericTypeParamDecl of extensions yet, as their mangling is ambiguous
-  if (decl->getKind() == swift::DeclKind::GenericTypeParam &&
-      decl->getDeclContext()->getContextKind() == swift::DeclContextKind::ExtensionDecl) {
-    return {};
-  }
-
-  auto ret = initMangled(decl);
-  // stamp all declarations with an id-ref of the containing module
-  auto moduleLabel = dispatcher.fetchLabel(decl->getModuleContext());
-  ret << moduleLabel;
-  if (decl->getKind() == swift::DeclKind::TypeAlias) {
-    // In cases like this (when coming from PCM)
-    //  typealias CFXMLTree = CFTree
-    //  typealias CFXMLTreeRef = CFXMLTree
-    // mangleAnyDecl mangles both CFXMLTree and CFXMLTreeRef into 'So12CFXMLTreeRefa'
-    // which is not correct and causes inconsistencies. mangleEntity makes these two distinct
-    // prefix adds a couple of special symbols, we don't necessary need them
-    ret << mangler.mangleEntity(decl);
-  } else {
-    // prefix adds a couple of special symbols, we don't necessary need them
-    ret << mangler.mangleAnyDecl(decl, /* prefix = */ false);
-  }
-  return ret;
-}
-
 SwiftMangledName SwiftMangler::visitModuleDecl(const swift::ModuleDecl* decl) {
-  return mangleModuleName(decl->getRealName().str());
+  auto ret = mangleModuleName(decl->getRealName().str());
+  if (decl->isNonSwiftModule()) {
+    ret << "|clang";
+  }
+  return ret;
 }
 
-SwiftMangledName SwiftMangler::visitTypeDecl(const swift::TypeDecl* decl) {
-  auto context = decl->getDeclContext();
-  if (context->isLocalContext()) {
+SwiftMangledName SwiftMangler::visitValueDecl(const swift::ValueDecl* decl) {
+  if (!decl->hasName() || decl->getDeclContext()->isLocalContext()) {
     return {};
   }
-  auto parent = (context->getContextKind() == swift::DeclContextKind::FileUnit)
-                    ? decl->getModuleContext()
-                    : context->getAsDecl();
   auto ret = initMangled(decl);
-  ret << dispatcher.fetchLabel(parent);
-  ret << decl->getNameStr();
+  std::string name;
+  llvm::raw_string_ostream oss{name};
+  decl->getName().print(oss);
+  ret << name;
+  if (decl->isStatic()) {
+    ret << "|static";
+  }
   return ret;
+}
+
+SwiftMangledName SwiftMangler::visitTypeDiscriminatedValueDecl(const swift::ValueDecl* decl) {
+  if (auto ret = visitValueDecl(decl)) {
+    ret << dispatcher.fetchLabel(decl->getInterfaceType()->getCanonicalType());
+    return ret;
+  }
+  return {};
+}
+
+SwiftMangledName SwiftMangler::visitAbstractFunctionDecl(const swift::AbstractFunctionDecl* decl) {
+  return visitTypeDiscriminatedValueDecl(decl);
+}
+
+SwiftMangledName SwiftMangler::visitSubscriptDecl(const swift::SubscriptDecl* decl) {
+  return visitTypeDiscriminatedValueDecl(decl);
+}
+
+SwiftMangledName SwiftMangler::visitVarDecl(const swift::VarDecl* decl) {
+  return visitTypeDiscriminatedValueDecl(decl);
+}
+
+SwiftMangledName SwiftMangler::visitExtensionDecl(const swift::ExtensionDecl* decl) {
+  if (decl->getDeclContext()->isLocalContext()) {
+    return {};
+  }
+  auto ret = initMangled(decl);
+  auto extended = decl->getExtendedNominal();
+  ret << dispatcher.fetchLabel(extended);
+  // get the index of all extensions of the same nominal type within this decl's module
+  auto index = 0u;
+  bool found = false;
+  for (auto ext : extended->getExtensions()) {
+    if (ext == decl) {
+      found = true;
+      break;
+    }
+    if (ext->getModuleContext() == decl->getModuleContext()) ++index;
+  }
+  assert(found && "extension not found within extended nominal type decl");
+  ret << index;
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitGenericTypeDecl(const swift::GenericTypeDecl* decl) {
+  if (auto ret = visitValueDecl(decl)) {
+    if (auto genericParams = decl->getGenericParams()) {
+      ret << '<' << genericParams->size() << '>';
+    }
+    // TODO: almost same code as for function type
+    if (!decl->getGenericRequirements().empty()) {
+      ret << "where_";
+      for (const auto& req : decl->getGenericRequirements()) {
+        ret << dispatcher.fetchLabel(req.getFirstType()->getCanonicalType());
+        ret << (req.getKind() == swift::RequirementKind::SameType ? '=' : ':');
+        if (req.getKind() == swift::RequirementKind::Layout) {
+          ret << '(' << req.getLayoutConstraint().getString() << ')';
+        } else {
+          ret << dispatcher.fetchLabel(req.getSecondType()->getCanonicalType());
+        }
+      }
+    }
+    return ret;
+  }
+  return {};
 }
 
 SwiftMangledName SwiftMangler::visitModuleType(const swift::ModuleType* type) {
   auto ret = initMangled(type);
-  ret << type->getModule()->getRealName().str();
-  if (type->getModule()->isNonSwiftModule()) {
-    ret << "|clang";
-  }
+  ret << dispatcher.fetchLabel(type->getModule());
   return ret;
 }
 
@@ -105,8 +151,9 @@ SwiftMangledName SwiftMangler::visitTupleType(const swift::TupleType* type) {
 
 SwiftMangledName SwiftMangler::visitBuiltinType(const swift::BuiltinType* type) {
   auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getASTContext().TheBuiltinModule);
   llvm::SmallString<32> buffer;
-  type->getTypeName(buffer);
+  type->getTypeName(buffer, /* prependBuiltinNamespace */ false);
   ret << buffer.str();
   return ret;
 }
@@ -118,6 +165,7 @@ SwiftMangledName SwiftMangler::visitAnyGenericType(const swift::AnyGenericType* 
 }
 
 SwiftMangledName SwiftMangler::visitType(const swift::TypeBase* type) {
+  dispatcher.emitDebugInfo(initMangled(type).str());
   return {};
 }
 
@@ -132,7 +180,16 @@ SwiftMangledName SwiftMangler::visitBoundGenericType(const swift::BoundGenericTy
 SwiftMangledName SwiftMangler::visitAnyFunctionType(const swift::AnyFunctionType* type) {
   auto ret = initMangled(type);
   for (const auto& param : type->getParams()) {
-    ret << dispatcher.fetchLabel(param.getOldType());
+    ret << dispatcher.fetchLabel(param.getPlainType());
+    if (param.isInOut()) {
+      ret << "_inout";
+    }
+    if (param.isOwned()) {
+      ret << "_owned";
+    }
+    if (param.isVariadic()) {
+      ret << "...";
+    }
   }
   ret << "->" << dispatcher.fetchLabel(type->getResult());
   if (type->isAsync()) {
@@ -140,6 +197,16 @@ SwiftMangledName SwiftMangler::visitAnyFunctionType(const swift::AnyFunctionType
   }
   if (type->isThrowing()) {
     ret << "_throws";
+  }
+  if (type->isSendable()) {
+    ret << "_sendable";
+  }
+  // TODO: see if this needs to be used in identifying types, if not it needs to be removed from
+  // type printing
+  assert(type->hasExtInfo() && "type must have ext info");
+  auto convention = type->getExtInfo().getSILRepresentation();
+  if (convention != swift::SILFunctionTypeRepresentation::Thick) {
+    ret << "_convention" << static_cast<unsigned>(convention);
   }
   return ret;
 }
@@ -185,6 +252,45 @@ SwiftMangledName SwiftMangler::visitAnyMetatypeType(const swift::AnyMetatypeType
 
 SwiftMangledName SwiftMangler::visitDependentMemberType(const swift::DependentMemberType* type) {
   auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getBase());
   ret << dispatcher.fetchLabel(type->getAssocType());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitInOutType(const swift::InOutType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getObjectType());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitExistentialType(const swift::ExistentialType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getConstraintType());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitUnarySyntaxSugarType(const swift::UnarySyntaxSugarType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getBaseType());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitDictionaryType(const swift::DictionaryType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getKeyType());
+  ret << dispatcher.fetchLabel(type->getValueType());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitTypeAliasType(const swift::TypeAliasType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getDecl());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitArchetypeType(const swift::ArchetypeType* type) {
+  auto ret = initMangled(type);
+  // TODO double-check this
+  ret << dispatcher.fetchLabel(type->getInterfaceType());
   return ret;
 }
