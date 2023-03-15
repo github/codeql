@@ -1,4 +1,5 @@
 uniqueEnclosingCallable
+uniqueCallEnclosingCallable
 uniqueType
 uniqueNodeLocation
 | BarrierGuard.cpp:2:11:2:13 | (unnamed parameter 0) | Node should have one location but has 6. |
