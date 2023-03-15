@@ -3,6 +3,7 @@ use std::io::Write;
 use std::path::PathBuf;
 /** SARIF severity */
 #[derive(Serialize)]
+#[serde(rename_all = "lowercase")]
 pub enum Severity {
     Error,
     Warning,

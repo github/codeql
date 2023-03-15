@@ -10,8 +10,8 @@
   "severity": "warning",
   "source": {
     "extractorName": "javascript",
-    "id": "javascript/parse-error",
-    "name": "Parse error"
+    "id": "js/parse-error",
+    "name": "Could not process some files due to syntax errors"
   },
   "visibility": {
     "cliSummaryTable": true,
