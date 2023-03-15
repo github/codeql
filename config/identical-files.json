@@ -28,8 +28,6 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl4.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl5.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl6.qll",
-    "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplForSerializability.qll",
-    "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplForOnActivityResult.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl1.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl3.qll",
