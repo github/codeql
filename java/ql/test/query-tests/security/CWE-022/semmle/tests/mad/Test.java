@@ -17,6 +17,7 @@ import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.taskdefs.Expand;
 import org.apache.tools.ant.types.FileSet;
 import org.codehaus.cargo.container.installer.ZipURLInstaller;
+import org.kohsuke.stapler.framework.io.LargeText;
 
 public class Test {
 
@@ -106,6 +107,8 @@ public class Test {
         new AntClassLoader(null, (org.apache.tools.ant.types.Path) source(), false);
         // "org.apache.tools.ant;AntClassLoader;true;AntClassLoader;(Project,Path);;Argument[1];read-file;ai-generated"
         new AntClassLoader(null, (org.apache.tools.ant.types.Path) source());
+        // "org.kohsuke.stapler.framework.io;LargeText;true;LargeText;(File,Charset,boolean,boolean);;Argument[0];read-file;ai-generated"
+        new LargeText((File) source(), null, false, false);
     }
 
     void test(DirectoryScanner ds) {
