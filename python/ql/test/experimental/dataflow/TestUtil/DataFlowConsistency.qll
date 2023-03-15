@@ -44,4 +44,8 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
       param = func.getArgByName(_)
     )
   }
+
+  override predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) {
+    not exists(call.getLocation().getFile().getRelativePath())
+  }
 }
