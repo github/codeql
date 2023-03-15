@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javafx.scene.web.WebEngine;
 import org.apache.commons.jelly.JellyContext;
 import org.codehaus.cargo.container.installer.ZipURLInstaller;
+import org.kohsuke.stapler.HttpResponses;
 
 public class Test {
 
@@ -66,6 +67,11 @@ public class Test {
     public void test(ZipURLInstaller zui) {
         // "org.codehaus.cargo.container.installer;ZipURLInstaller;true;ZipURLInstaller;(URL,String,String);;Argument[0];open-url:ai-generated"
         new ZipURLInstaller((URL) source(), "", ""); // $ SSRF
+    }
+
+    public void test(HttpResponses r) {
+        // "org.kohsuke.stapler;HttpResponses;true;staticResource;(URL);;Argument[0];open-url;ai-generated"
+        r.staticResource((URL) source()); // $ SSRF
     }
 
 }

@@ -4,7 +4,6 @@ package org.kohsuke.stapler;
 
 import java.lang.reflect.Type;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -53,7 +52,7 @@ public interface StaplerRequest extends HttpServletRequest
     StringBuffer getRequestURLWithQueryString();
     WebApp getWebApp();
     boolean checkIfModified(Calendar p0, StaplerResponse p1);
-    boolean checkIfModified(Date p0, StaplerResponse p1);
+    boolean checkIfModified(java.util.Date p0, StaplerResponse p1);
     boolean checkIfModified(long p0, StaplerResponse p1);
     boolean checkIfModified(long p0, StaplerResponse p1, long p2);
     boolean hasParameter(String p0);
