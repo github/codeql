@@ -18,6 +18,7 @@ import org.apache.tools.ant.taskdefs.Expand;
 import org.apache.tools.ant.types.FileSet;
 import org.codehaus.cargo.container.installer.ZipURLInstaller;
 import org.kohsuke.stapler.framework.io.LargeText;
+import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
 
 public class Test {
 
@@ -132,5 +133,10 @@ public class Test {
         ex.setDest((File) source());
         // "org.apache.tools.ant.taskdefs;Expand;true;setSrc;(File);;Argument[0];read-file;ai-generated"
         ex.setSrc((File) source());
+    }
+
+    void test(ChainedOptionsBuilder cob) {
+        // "org.openjdk.jmh.runner.options;ChainedOptionsBuilder;true;result;(String);;Argument[0];create-file;ai-generated"
+        cob.result((String) source());
     }
 }
