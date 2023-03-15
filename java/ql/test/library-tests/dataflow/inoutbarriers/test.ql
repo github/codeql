@@ -44,6 +44,8 @@ module Conf4 implements ConfigSig {
   predicate isBarrierIn(Node n) { src0(n) }
 
   predicate isBarrierOut(Node n) { sink0(n) }
+
+  DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSinkCallContext }
 }
 
 predicate flow(Node src, Node sink, string s) {
