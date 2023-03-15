@@ -1,50 +1,83 @@
 | Sources/deduplication/def.swift:1:1:1:15 | var ... = ... | PatternBindingDecl | - |
-| Sources/deduplication/def.swift:1:5:1:5 | def_int | ConcreteVarDecl | Int |
-| Sources/deduplication/def.swift:3:1:3:20 | Generic | StructDecl | Generic<T>.Type |
-| Sources/deduplication/def.swift:3:8:3:8 | Generic<T>.init() | Initializer | <T> (Generic<T>.Type) -> () -> Generic<T> |
-| Sources/deduplication/def.swift:3:8:3:8 | self | ParamDecl | Generic<T> |
-| Sources/deduplication/def.swift:3:16:3:16 | T | GenericTypeParamDecl | T.Type |
+| Sources/deduplication/def.swift:1:5:1:5 | def_int | ConcreteVarDecl | Int [StructType] |
+| Sources/deduplication/def.swift:3:1:3:20 | Generic | StructDecl | Generic<T>.Type [MetatypeType] |
+| Sources/deduplication/def.swift:3:8:3:8 | Generic<T>.init() | Initializer | <T> (Generic<T>.Type) -> () -> Generic<T> [GenericFunctionType] |
+| Sources/deduplication/def.swift:3:8:3:8 | self | ParamDecl | Generic<T> [BoundGenericStructType] |
+| Sources/deduplication/def.swift:3:16:3:16 | T | GenericTypeParamDecl | T.Type [MetatypeType] |
 | Sources/deduplication/def.swift:5:1:5:45 | var ... = ... | PatternBindingDecl | - |
-| Sources/deduplication/def.swift:5:5:5:5 | def_instantiated_generic | ConcreteVarDecl | Generic<Int> |
-| Sources/deduplication/def.swift:7:1:7:46 | def_function(_:) | NamedFunction | (Int) -> Int |
-| Sources/deduplication/def.swift:7:19:7:22 | _ | ParamDecl | Int |
-| Sources/deduplication/def.swift:9:1:9:77 | def_function_overloaded_on_return(_:_:) | NamedFunction | (Int, Double) -> Int |
-| Sources/deduplication/def.swift:9:40:9:43 | _ | ParamDecl | Int |
-| Sources/deduplication/def.swift:9:48:9:51 | _ | ParamDecl | Double |
-| Sources/deduplication/def.swift:10:1:10:82 | def_function_overloaded_on_return(_:_:) | NamedFunction | (Int, Double) -> Double |
-| Sources/deduplication/def.swift:10:40:10:43 | _ | ParamDecl | Int |
-| Sources/deduplication/def.swift:10:48:10:51 | _ | ParamDecl | Double |
-| Sources/deduplication/def.swift:12:1:12:57 | def_function_overloaded_on_parameter_type(_:) | NamedFunction | (Int) -> () |
-| Sources/deduplication/def.swift:12:48:12:51 | _ | ParamDecl | Int |
-| Sources/deduplication/def.swift:13:1:13:60 | def_function_overloaded_on_parameter_type(_:) | NamedFunction | (Double) -> () |
-| Sources/deduplication/def.swift:13:48:13:51 | _ | ParamDecl | Double |
-| Sources/deduplication/def.swift:15:1:15:62 | def_function_overloaded_on_parameter_label(one:) | NamedFunction | (Int) -> () |
-| Sources/deduplication/def.swift:15:49:15:56 | x | ParamDecl | Int |
-| Sources/deduplication/def.swift:16:1:16:62 | def_function_overloaded_on_parameter_label(two:) | NamedFunction | (Int) -> () |
-| Sources/deduplication/def.swift:16:49:16:56 | x | ParamDecl | Int |
-| Sources/deduplication/def.swift:18:1:18:44 | def_throwing_function(_:) | NamedFunction | (Int) throws -> () |
-| Sources/deduplication/def.swift:18:28:18:31 | _ | ParamDecl | Int |
-| Sources/deduplication/def.swift:19:1:19:60 | def_rethrowing_function(_:) | NamedFunction | (() throws -> ()) throws -> () |
-| Sources/deduplication/def.swift:19:30:19:47 | _ | ParamDecl | () throws -> () |
-| Sources/deduplication/def.swift:20:1:20:40 | def_async_function(_:) | NamedFunction | (Int) async -> () |
-| Sources/deduplication/def.swift:20:25:20:28 | _ | ParamDecl | Int |
-| Sources/deduplication/def.swift:21:1:21:56 | def_async_throwing_function(_:) | NamedFunction | (Int) async throws -> () |
-| Sources/deduplication/def.swift:21:34:21:37 | _ | ParamDecl | Int |
-| Sources/deduplication/def.swift:22:1:22:72 | def_async_rethrowing_function(_:) | NamedFunction | (() throws -> ()) async throws -> () |
-| Sources/deduplication/def.swift:22:36:22:53 | _ | ParamDecl | () throws -> () |
-| Sources/deduplication/def.swift:24:1:24:46 | def_generic_function(_:_:) | NamedFunction | <A, B> (A, B) -> () |
-| Sources/deduplication/def.swift:24:27:24:27 | A | GenericTypeParamDecl | A.Type |
-| Sources/deduplication/def.swift:24:30:24:30 | B | GenericTypeParamDecl | B.Type |
-| Sources/deduplication/def.swift:24:33:24:36 | _ | ParamDecl | A |
-| Sources/deduplication/def.swift:24:39:24:42 | _ | ParamDecl | B |
+| Sources/deduplication/def.swift:5:5:5:5 | def_instantiated_generic | ConcreteVarDecl | Generic<Int> [BoundGenericStructType] |
+| Sources/deduplication/def.swift:7:1:7:46 | def_function(_:) | NamedFunction | (Int) -> Int [FunctionType] |
+| Sources/deduplication/def.swift:7:19:7:22 | _ | ParamDecl | Int [StructType] |
+| Sources/deduplication/def.swift:9:1:9:77 | def_function_overloaded_on_return(_:_:) | NamedFunction | (Int, Double) -> Int [FunctionType] |
+| Sources/deduplication/def.swift:9:40:9:43 | _ | ParamDecl | Int [StructType] |
+| Sources/deduplication/def.swift:9:48:9:51 | _ | ParamDecl | Double [StructType] |
+| Sources/deduplication/def.swift:10:1:10:82 | def_function_overloaded_on_return(_:_:) | NamedFunction | (Int, Double) -> Double [FunctionType] |
+| Sources/deduplication/def.swift:10:40:10:43 | _ | ParamDecl | Int [StructType] |
+| Sources/deduplication/def.swift:10:48:10:51 | _ | ParamDecl | Double [StructType] |
+| Sources/deduplication/def.swift:12:1:12:57 | def_function_overloaded_on_parameter_type(_:) | NamedFunction | (Int) -> () [FunctionType] |
+| Sources/deduplication/def.swift:12:48:12:51 | _ | ParamDecl | Int [StructType] |
+| Sources/deduplication/def.swift:13:1:13:60 | def_function_overloaded_on_parameter_type(_:) | NamedFunction | (Double) -> () [FunctionType] |
+| Sources/deduplication/def.swift:13:48:13:51 | _ | ParamDecl | Double [StructType] |
+| Sources/deduplication/def.swift:15:1:15:62 | def_function_overloaded_on_parameter_label(one:) | NamedFunction | (Int) -> () [FunctionType] |
+| Sources/deduplication/def.swift:15:49:15:56 | x | ParamDecl | Int [StructType] |
+| Sources/deduplication/def.swift:16:1:16:62 | def_function_overloaded_on_parameter_label(two:) | NamedFunction | (Int) -> () [FunctionType] |
+| Sources/deduplication/def.swift:16:49:16:56 | x | ParamDecl | Int [StructType] |
+| Sources/deduplication/def.swift:18:1:18:44 | def_throwing_function(_:) | NamedFunction | (Int) throws -> () [FunctionType] |
+| Sources/deduplication/def.swift:18:28:18:31 | _ | ParamDecl | Int [StructType] |
+| Sources/deduplication/def.swift:19:1:19:60 | def_rethrowing_function(_:) | NamedFunction | (() throws -> ()) throws -> () [FunctionType] |
+| Sources/deduplication/def.swift:19:30:19:47 | _ | ParamDecl | () throws -> () [FunctionType] |
+| Sources/deduplication/def.swift:20:1:20:40 | def_async_function(_:) | NamedFunction | (Int) async -> () [FunctionType] |
+| Sources/deduplication/def.swift:20:25:20:28 | _ | ParamDecl | Int [StructType] |
+| Sources/deduplication/def.swift:21:1:21:56 | def_async_throwing_function(_:) | NamedFunction | (Int) async throws -> () [FunctionType] |
+| Sources/deduplication/def.swift:21:34:21:37 | _ | ParamDecl | Int [StructType] |
+| Sources/deduplication/def.swift:22:1:22:72 | def_async_rethrowing_function(_:) | NamedFunction | (() throws -> ()) async throws -> () [FunctionType] |
+| Sources/deduplication/def.swift:22:36:22:53 | _ | ParamDecl | () throws -> () [FunctionType] |
+| Sources/deduplication/def.swift:24:1:24:55 | def_generic_function(_:_:_:) | NamedFunction | <A, B, C> (A, B, C) -> () [GenericFunctionType] |
+| Sources/deduplication/def.swift:24:27:24:27 | A | GenericTypeParamDecl | A.Type [MetatypeType] |
+| Sources/deduplication/def.swift:24:30:24:30 | B | GenericTypeParamDecl | B.Type [MetatypeType] |
+| Sources/deduplication/def.swift:24:33:24:33 | C | GenericTypeParamDecl | C.Type [MetatypeType] |
+| Sources/deduplication/def.swift:24:36:24:39 | _ | ParamDecl | A [GenericTypeParamType] |
+| Sources/deduplication/def.swift:24:42:24:45 | _ | ParamDecl | B [GenericTypeParamType] |
+| Sources/deduplication/def.swift:24:48:24:51 | _ | ParamDecl | C [GenericTypeParamType] |
+| Sources/deduplication/def.swift:26:1:26:21 | Protocol1 | ProtocolDecl | Protocol1.Protocol [MetatypeType] |
+| Sources/deduplication/def.swift:27:1:29:1 | Protocol2 | ProtocolDecl | Protocol2.Protocol [MetatypeType] |
+| Sources/deduplication/def.swift:28:5:28:20 | Associated | AssociatedTypeDecl | Self.Associated.Type [MetatypeType] |
+| Sources/deduplication/def.swift:28:5:28:20 | Associated | AssociatedTypeDecl | \u03c4_0_0.Associated.Type [MetatypeType] |
+| Sources/deduplication/def.swift:30:1:30:14 | Class | ClassDecl | Class.Type [MetatypeType] |
+| Sources/deduplication/def.swift:30:7:30:7 | Class.deinit() | Deinitializer | (Class) -> () -> () [FunctionType] |
+| Sources/deduplication/def.swift:30:7:30:7 | Class.init() | Initializer | (Class.Type) -> () -> Class [FunctionType] |
+| Sources/deduplication/def.swift:30:7:30:7 | self | ParamDecl | Class [ClassType] |
+| Sources/deduplication/def.swift:30:7:30:7 | self | ParamDecl | Class [ClassType] |
+| Sources/deduplication/def.swift:32:1:32:128 | def_generic_function_with_conformance(_:_:_:) | NamedFunction | <A, B, C where A : Protocol1, A : Protocol2, B : Class, C == A.Associated> (A, B, C) -> () [GenericFunctionType] |
+| Sources/deduplication/def.swift:32:44:32:60 | A | GenericTypeParamDecl | A.Type [MetatypeType] |
+| Sources/deduplication/def.swift:32:71:32:75 | B | GenericTypeParamDecl | B.Type [MetatypeType] |
+| Sources/deduplication/def.swift:32:82:32:82 | C | GenericTypeParamDecl | C.Type [MetatypeType] |
+| Sources/deduplication/def.swift:32:85:32:88 | _ | ParamDecl | A [GenericTypeParamType] |
+| Sources/deduplication/def.swift:32:91:32:94 | _ | ParamDecl | B [GenericTypeParamType] |
+| Sources/deduplication/def.swift:32:97:32:100 | _ | ParamDecl | C [GenericTypeParamType] |
 | Sources/deduplication/use.swift:1:1:1:15 | var ... = ... | PatternBindingDecl | - |
-| Sources/deduplication/use.swift:1:5:1:5 | use_int | ConcreteVarDecl | Int |
+| Sources/deduplication/use.swift:1:5:1:5 | use_int | ConcreteVarDecl | Int [StructType] |
 | Sources/deduplication/use.swift:2:1:2:32 | var ... = ... | PatternBindingDecl | - |
-| Sources/deduplication/use.swift:2:5:2:5 | use_instantiated_generic | ConcreteVarDecl | Generic<Int> |
+| Sources/deduplication/use.swift:2:5:2:5 | use_instantiated_generic | ConcreteVarDecl | Generic<Int> [BoundGenericStructType] |
 | Sources/deduplication/use.swift:3:1:3:20 | var ... = ... | PatternBindingDecl | - |
-| Sources/deduplication/use.swift:3:5:3:5 | use_function | ConcreteVarDecl | (Int) -> Int |
-| Sources/deduplication/use.swift:4:1:4:51 | use_generic_function_type(_:_:) | NamedFunction | <A, B> (A, B) -> () |
-| Sources/deduplication/use.swift:4:32:4:32 | A | GenericTypeParamDecl | A.Type |
-| Sources/deduplication/use.swift:4:35:4:35 | B | GenericTypeParamDecl | B.Type |
-| Sources/deduplication/use.swift:4:38:4:41 | _ | ParamDecl | A |
-| Sources/deduplication/use.swift:4:44:4:47 | _ | ParamDecl | B |
+| Sources/deduplication/use.swift:3:5:3:5 | use_function | ConcreteVarDecl | (Int) -> Int [FunctionType] |
+| Sources/deduplication/use.swift:4:1:4:66 | use_generic_function_type(_:_:_:) | NamedFunction | <AA, BB, CC> (AA, BB, CC) -> () [GenericFunctionType] |
+| Sources/deduplication/use.swift:4:32:4:32 | AA | GenericTypeParamDecl | AA.Type [MetatypeType] |
+| Sources/deduplication/use.swift:4:36:4:36 | BB | GenericTypeParamDecl | BB.Type [MetatypeType] |
+| Sources/deduplication/use.swift:4:40:4:40 | CC | GenericTypeParamDecl | CC.Type [MetatypeType] |
+| Sources/deduplication/use.swift:4:44:4:47 | _ | ParamDecl | AA [GenericTypeParamType] |
+| Sources/deduplication/use.swift:4:51:4:54 | _ | ParamDecl | BB [GenericTypeParamType] |
+| Sources/deduplication/use.swift:4:58:4:61 | _ | ParamDecl | CC [GenericTypeParamType] |
+| Sources/deduplication/use.swift:5:1:5:45 | use_async_function_type(_:) | NamedFunction | (Int) async -> () [FunctionType] |
+| Sources/deduplication/use.swift:5:30:5:33 | _ | ParamDecl | Int [StructType] |
+| Sources/deduplication/use.swift:6:1:6:49 | use_throwing_function_type(_:) | NamedFunction | (Int) throws -> () [FunctionType] |
+| Sources/deduplication/use.swift:6:33:6:36 | _ | ParamDecl | Int [StructType] |
+| Sources/deduplication/use.swift:7:1:7:61 | use_async_throwing_function_type(_:) | NamedFunction | (Int) async throws -> () [FunctionType] |
+| Sources/deduplication/use.swift:7:39:7:42 | _ | ParamDecl | Int [StructType] |
+| Sources/deduplication/use.swift:8:1:8:150 | use_generic_function_with_conformance_type(_:_:_:) | NamedFunction | <AA, BB, CC where AA : Protocol1, AA : Protocol2, BB : Class, CC == AA.Associated> (AA, BB, CC) -> () [GenericFunctionType] |
+| Sources/deduplication/use.swift:8:49:8:49 | AA | GenericTypeParamDecl | AA.Type [MetatypeType] |
+| Sources/deduplication/use.swift:8:53:8:53 | BB | GenericTypeParamDecl | BB.Type [MetatypeType] |
+| Sources/deduplication/use.swift:8:57:8:57 | CC | GenericTypeParamDecl | CC.Type [MetatypeType] |
+| Sources/deduplication/use.swift:8:61:8:64 | _ | ParamDecl | AA [GenericTypeParamType] |
+| Sources/deduplication/use.swift:8:68:8:71 | _ | ParamDecl | BB [GenericTypeParamType] |
+| Sources/deduplication/use.swift:8:75:8:78 | _ | ParamDecl | CC [GenericTypeParamType] |

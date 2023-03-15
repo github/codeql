@@ -69,7 +69,7 @@ SwiftMangledName SwiftMangler::visitModuleDecl(const swift::ModuleDecl* decl) {
   return mangleModuleName(decl->getRealName().str());
 }
 
-SwiftMangledName SwiftMangler::visitGenericTypeDecl(const swift::GenericTypeDecl* decl) {
+SwiftMangledName SwiftMangler::visitTypeDecl(const swift::TypeDecl* decl) {
   auto context = decl->getDeclContext();
   if (context->isLocalContext()) {
     return {};
@@ -79,7 +79,7 @@ SwiftMangledName SwiftMangler::visitGenericTypeDecl(const swift::GenericTypeDecl
                     : context->getAsDecl();
   auto ret = initMangled(decl);
   ret << dispatcher.fetchLabel(parent);
-  ret << decl->getName().str();
+  ret << decl->getNameStr();
   return ret;
 }
 
@@ -126,5 +126,65 @@ SwiftMangledName SwiftMangler::visitBoundGenericType(const swift::BoundGenericTy
   for (const auto param : type->getGenericArgs()) {
     ret << dispatcher.fetchLabel(param);
   }
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitAnyFunctionType(const swift::AnyFunctionType* type) {
+  auto ret = initMangled(type);
+  for (const auto& param : type->getParams()) {
+    ret << dispatcher.fetchLabel(param.getOldType());
+  }
+  ret << "->" << dispatcher.fetchLabel(type->getResult());
+  if (type->isAsync()) {
+    ret << "_async";
+  }
+  if (type->isThrowing()) {
+    ret << "_throws";
+  }
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitGenericFunctionType(const swift::GenericFunctionType* type) {
+  auto ret = visitAnyFunctionType(type);
+  ret << '<';
+  for (auto paramType : type->getGenericParams()) {
+    ret << dispatcher.fetchLabel(paramType);
+  }
+  ret << '>';
+  if (!type->getRequirements().empty()) {
+    ret << "where_";
+    for (const auto& req : type->getRequirements()) {
+      ret << dispatcher.fetchLabel(req.getFirstType().getPointer());
+      ret << (req.getKind() == swift::RequirementKind::SameType ? '=' : ':');
+      if (req.getKind() == swift::RequirementKind::Layout) {
+        ret << '(' << req.getLayoutConstraint().getString() << ')';
+      } else {
+        ret << dispatcher.fetchLabel(req.getSecondType());
+      }
+    }
+  }
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitGenericTypeParamType(const swift::GenericTypeParamType* type) {
+  auto ret = initMangled(type);
+  if (auto decl = type->getDecl()) {
+    ret << dispatcher.fetchLabel(decl);
+  } else {
+    // type parameter is canonicalized to a depth/index coordinate
+    ret << type->getDepth() << '_' << type->getIndex();
+  }
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitAnyMetatypeType(const swift::AnyMetatypeType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getInstanceType());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitDependentMemberType(const swift::DependentMemberType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getAssocType());
   return ret;
 }
