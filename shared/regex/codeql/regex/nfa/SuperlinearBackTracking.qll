@@ -175,11 +175,53 @@ module Make<RegexTreeViewSig TreeImpl> {
    * Holds if there are transitions from the components of `q` to the corresponding
    * components of `r` labelled with `s1`, `s2`, and `s3`, respectively.
    */
-  pragma[noinline]
-  predicate step(StateTuple q, InputSymbol s1, InputSymbol s2, InputSymbol s3, StateTuple r) {
+  pragma[nomagic]
+  private predicate stepHelper(
+    StateTuple q, InputSymbol s1, InputSymbol s2, InputSymbol s3, StateTuple r
+  ) {
     exists(State r1, State r2, State r3 |
       step(q, s1, s2, s3, r1, r2, r3) and r = MkStateTuple(r1, r2, r3)
     )
+  }
+
+  /**
+   * Holds if there are transitions from the components of `q` to the corresponding
+   * components of `r` labelled with `s1`, `s2`, and `s3`, respectively.
+   *
+   * Additionally, a heuristic is used to avoid blowups in the case of complex regexps.
+   * For regular expressions with more than 100 states, we only look at all the characters
+   * for the transitions out of `q` and only consider transitions that use the lexographically
+   * smallest character.
+   */
+  pragma[noinline]
+  predicate step(StateTuple q, InputSymbol s1, InputSymbol s2, InputSymbol s3, StateTuple r) {
+    stepHelper(q, s1, s2, s3, r) and
+    (
+      countStates(any(State s | q.isTuple(s, _, _)).getRepr().getRootTerm()) < 100
+      or
+      // arbitrarily pick an edge out of `q` for complex regexps. This is a heuristic to avoid potential blowups.
+      exists(string char |
+        char =
+          min(string str, InputSymbol x1, InputSymbol x2, InputSymbol x3 |
+            stepHelper(q, x1, x2, x3, _) and str = getAStepChar(x1, x2, x3)
+          |
+            str
+          ) and
+        char = getAStepChar(s1, s2, s3)
+      )
+    )
+  }
+
+  // specialized version of `getAThreewayIntersect` to be used in `step` above.
+  pragma[noinline]
+  private string getAStepChar(InputSymbol s1, InputSymbol s2, InputSymbol s3) {
+    stepHelper(_, s1, s2, s3, _) and result = getAThreewayIntersect(s1, s2, s3)
+  }
+
+  /** Gets the number of states in the NFA for `root`. This is used to determine a complexity metric used in the `step` predicate above. */
+  private int countStates(RegExpTerm root) {
+    root.isRootTerm() and
+    result = count(State s | s.getRepr().getRootTerm() = root)
   }
 
   /**
