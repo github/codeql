@@ -109,6 +109,7 @@ module Public {
     }
 
     /** Gets the stack obtained by dropping the first `i` elements, if any. */
+    pragma[assume_small_delta]
     SummaryComponentStack drop(int i) {
       i = 0 and result = this
       or
