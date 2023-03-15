@@ -3,10 +3,7 @@
  */
 
 private import java as java
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.QueryInjection
 import semmle.code.java.security.PathCreation
-import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import experimental.adaptivethreatmodeling.EndpointTypes

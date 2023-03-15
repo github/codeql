@@ -8,7 +8,6 @@
  */
 
 private import java
-import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
 private import experimental.adaptivethreatmodeling.EndpointCharacteristics as EndpointCharacteristics
 private import experimental.adaptivethreatmodeling.EndpointTypes

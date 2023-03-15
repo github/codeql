@@ -12,10 +12,10 @@
  */
 
 private import java
+import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.ExternalFlow
 private import experimental.adaptivethreatmodeling.EndpointCharacteristics as EndpointCharacteristics
 private import experimental.adaptivethreatmodeling.EndpointTypes
-private import experimental.adaptivethreatmodeling.ATMConfigs // To import the configurations of all supported Java queries
 
 /**
  * Holds if the candidate sink `candidateSink` should be considered as a possible sink of type `sinkType`, and
