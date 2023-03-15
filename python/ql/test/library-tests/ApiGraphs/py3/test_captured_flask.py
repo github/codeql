@@ -21,6 +21,6 @@ def create_app():
       if not sid:
           return make_response(jsonify({'Error':'Token check failed: {0}'.format(sid)}))
       try:
-          user = Users.query.filter_by(id=id).first()  #$ MISSING: use=moduleImport("flask_sqlalchemy").getMember("SQLAlchemy").getReturn().getMember("Model").getASubclass().getMember("query").getMember("filter_by")
+          user = Users.query.filter_by(id=id).first()  #$ use=moduleImport("flask_sqlalchemy").getMember("SQLAlchemy").getReturn().getMember("Model").getASubclass().getMember("query").getMember("filter_by")
       except Exception as e:
           return make_response(jsonify({'error':str(e)}),500)
