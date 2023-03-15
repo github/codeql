@@ -171,7 +171,7 @@ public class Test {
             AssertionError assertErr = new AssertionError(source());
             sink((String)assertErr.getMessage()); // $hasValueFlow
 
-            sink(Test.class.cast(source())); // $hasTaintFlow
+            sink(Test.class.cast(source())); // $hasValueFlow
 
             Exception excep1 = new Exception((String)source(), (Throwable)source());
             sink((String)excep1.getMessage());  // $hasValueFlow
@@ -181,7 +181,7 @@ public class Test {
             sink((String)excep2.getMessage());  // $hasValueFlow
 
             StringBuilder sb = (StringBuilder)source();
-            sink(sb.delete(0, 1)); // $hasTaintFlow
+            sink(sb.delete(0, 1)); // $hasValueFlow
 
             Thread thread1 = new Thread((Runnable)source());
             sink(thread1); // $hasTaintFlow
