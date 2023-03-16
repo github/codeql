@@ -20,21 +20,12 @@ module Revel {
   }
 
   private class ParamsFixedSanitizer extends TaintTracking::DefaultTaintSanitizer,
-    DataFlow::FieldReadNode
-  {
+    DataFlow::FieldReadNode {
     ParamsFixedSanitizer() {
       exists(Field f |
         this.readsField(_, f) and
         f.hasQualifiedName(packagePath(), "Params", "Fixed")
       )
-    }
-  }
-
-  private class ParamsBind extends TaintTracking::FunctionModel, Method {
-    ParamsBind() { this.hasQualifiedName(packagePath(), "Params", ["Bind", "BindJSON"]) }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp.isParameter(0)
     }
   }
 
@@ -49,8 +40,7 @@ module Revel {
 
   /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
   private class UserControlledRequestField extends UntrustedFlowSource::Range,
-    DataFlow::FieldReadNode
-  {
+    DataFlow::FieldReadNode {
     UserControlledRequestField() {
       exists(string fieldName |
         this.getField().hasQualifiedName(packagePath(), "Request", fieldName)
@@ -63,8 +53,7 @@ module Revel {
   }
 
   private class UserControlledRequestMethod extends UntrustedFlowSource::Range,
-    DataFlow::MethodCallNode
-  {
+    DataFlow::MethodCallNode {
     UserControlledRequestMethod() {
       this.getTarget()
           .hasQualifiedName(packagePath(), "Request",
@@ -72,24 +61,6 @@ module Revel {
               "FormValue", "PostFormValue", "GetQuery", "GetForm", "GetMultipartForm", "GetBody",
               "Cookie", "GetHttpHeader", "GetRequestURI", "MultipartReader", "Referer", "UserAgent"
             ])
-    }
-  }
-
-  private class ServerCookieGetValue extends TaintTracking::FunctionModel, Method {
-    ServerCookieGetValue() { this.implements(packagePath(), "ServerCookie", "GetValue") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp.isResult()
-    }
-  }
-
-  private class ServerMultipartFormGetFiles extends TaintTracking::FunctionModel, Method {
-    ServerMultipartFormGetFiles() {
-      this.implements(packagePath(), "ServerMultipartForm", ["GetFiles", "GetValues"])
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp.isResult()
     }
   }
 
@@ -187,36 +158,6 @@ module Revel {
     override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
     override Http::ResponseWriter getResponseWriter() { none() }
-  }
-
-  /**
-   * The getter and setter methods of `revel.RevelHeader`.
-   *
-   * Note we currently don't implement `HeaderWrite` and related concepts, as they are currently only used
-   * to track content-type, and directly setting headers does not seem to be the usual way to set the response
-   * content-type for this framework. If and when the `HeaderWrite` concept has a more abstract idea of the
-   * relationship between header-writes and HTTP responses than looking for a particular `http.ResponseWriter`
-   * instance connecting the two, then we may implement it here for completeness.
-   */
-  private class RevelHeaderMethods extends TaintTracking::FunctionModel {
-    FunctionInput input;
-    FunctionOutput output;
-    string name;
-
-    RevelHeaderMethods() {
-      this.(Method).hasQualifiedName(packagePath(), "RevelHeader", name) and
-      (
-        name = ["Add", "Set"] and input.isParameter([0, 1]) and output.isReceiver()
-        or
-        name = ["Get", "GetAll"] and input.isReceiver() and output.isResult()
-        or
-        name = "SetCookie" and input.isParameter(0) and output.isReceiver()
-      )
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp = input and outp = output
-    }
   }
 
   /**

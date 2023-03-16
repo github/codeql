@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["gopkg.in/yaml.v1", "", False, "Marshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["gopkg.in/yaml.v1", "", False, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]

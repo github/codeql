@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["fmt", "", False, "Append", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Appendf", "", "", "Argument[0..2]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Appendln", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Errorf", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Fprint", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["fmt", "", False, "Fprintf", "", "", "Argument[1..2]", "Argument[0]", "taint", "manual"]
+      - ["fmt", "", False, "Fprintln", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["fmt", "", False, "Fscan", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["fmt", "", False, "Fscanf", "", "", "Argument[0..1]", "Argument[2]", "taint", "manual"]
+      - ["fmt", "", False, "Fscanln", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["fmt", "", False, "Sprint", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Sprintf", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Sprintln", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "", False, "Sscan", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["fmt", "", False, "Sscanf", "", "", "Argument[0..1]", "Argument[2]", "taint", "manual"]
+      - ["fmt", "", False, "Sscanln", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["fmt", "GoStringer", True, "GoString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "ScanState", True, "Token", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["fmt", "Stringer", True, "String", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
