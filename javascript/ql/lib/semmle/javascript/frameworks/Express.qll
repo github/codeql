@@ -683,13 +683,13 @@ module Express {
         (
           if exists(queryRef(request).getAPropertyRead())
           then this = queryRef(request).getAPropertyRead()
-          else this = queryRef(request)
+          else this = request.ref().getAPropertyRead("query")
         )
         or
         (
           if exists(paramsRef(request).getAPropertyRead())
           then this = paramsRef(request).getAPropertyRead()
-          else this = paramsRef(request)
+          else this = request.ref().getAPropertyRead("params")
         )
       )
       or
