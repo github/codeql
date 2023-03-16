@@ -756,16 +756,30 @@ module ExprNodes {
 
     override VariableAccess e;
 
-    final override VariableAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+    override VariableAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+
+    /** Gets the variable that is being accessed. */
+    Variable getVariable() { result = this.getExpr().getVariable() }
   }
 
   /** A control-flow node that wraps a `VariableReadAccess` AST expression. */
-  class VariableReadAccessCfgNode extends ExprCfgNode {
+  class VariableReadAccessCfgNode extends VariableAccessCfgNode {
     override string getAPrimaryQlClass() { result = "VariableReadAccessCfgNode" }
 
     override VariableReadAccess e;
 
-    final override VariableReadAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+    override VariableReadAccess getExpr() { result = VariableAccessCfgNode.super.getExpr() }
+  }
+
+  /** A control-flow node that wraps a `LocalVariableReadAccess` AST expression. */
+  class LocalVariableReadAccessCfgNode extends VariableReadAccessCfgNode {
+    override string getAPrimaryQlClass() { result = "LocalVariableReadAccessCfgNode" }
+
+    override LocalVariableReadAccess e;
+
+    final override LocalVariableReadAccess getExpr() { result = super.getExpr() }
+
+    final override LocalVariable getVariable() { result = super.getVariable() }
   }
 
   private class InstanceVariableAccessMapping extends ExprChildMapping, InstanceVariableAccess {
@@ -791,21 +805,57 @@ module ExprNodes {
   }
 
   /** A control-flow node that wraps a `SelfVariableAccess` AST expression. */
-  class SelfVariableAccessCfgNode extends ExprCfgNode {
+  class SelfVariableAccessCfgNode extends VariableAccessCfgNode {
     final override string getAPrimaryQlClass() { result = "SelfVariableAccessCfgNode" }
 
     override SelfVariableAccessMapping e;
 
-    override SelfVariableAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+    override SelfVariableAccess getExpr() { result = VariableAccessCfgNode.super.getExpr() }
+  }
+
+  private class VariableWriteAccessChildMapping extends ExprChildMapping, VariableWriteAccess {
+    override predicate relevantChild(AstNode n) { this.isExplicitWrite(n) }
   }
 
   /** A control-flow node that wraps a `VariableWriteAccess` AST expression. */
-  class VariableWriteAccessCfgNode extends ExprCfgNode {
+  class VariableWriteAccessCfgNode extends VariableAccessCfgNode {
+    /**
+     * Holds if this access is a write access belonging to the explicit
+     * assignment `assignment`. For example, in
+     *
+     * ```rb
+     * a = foo
+     * ```
+     *
+     * both `a` is write accesses belonging to the assignment `a = foo`.
+     */
+    predicate isExplicitWrite(AssignExprCfgNode assignment) { this = assignment.getLhs() }
+
+    /**
+     * Holds if this access is a write access belonging to an implicit assignment.
+     */
+    predicate isImplicitWrite() { e.isImplicitWrite() }
+
     override string getAPrimaryQlClass() { result = "VariableWriteAccessCfgNode" }
 
-    override VariableWriteAccess e;
+    override VariableWriteAccessChildMapping e;
 
-    final override VariableWriteAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+    override VariableWriteAccess getExpr() { result = VariableAccessCfgNode.super.getExpr() }
+  }
+
+  private class LocalVariableWriteAccessChildMapping extends VariableWriteAccessChildMapping,
+    LocalVariableWriteAccess
+  { }
+
+  /** A control-flow node that wraps a `LocalVariableWriteAccess` AST expression. */
+  class LocalVariableWriteAccessCfgNode extends VariableWriteAccessCfgNode {
+    override string getAPrimaryQlClass() { result = "LocalVariableWriteAccessCfgNode" }
+
+    override LocalVariableWriteAccessChildMapping e;
+
+    final override LocalVariableWriteAccess getExpr() { result = super.getExpr() }
+
+    final override LocalVariable getVariable() { result = super.getVariable() }
   }
 
   /** A control-flow node that wraps a `ConstantReadAccess` AST expression. */
