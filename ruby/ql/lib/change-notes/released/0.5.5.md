@@ -16,8 +16,8 @@
 ### Minor Analysis Improvements
 
 * Data flow through `initialize` methods is now taken into account also when the receiver of a `new` call is an (implicit or explicit) `self`.
-* The Active Record query methods `reorder` and `count_by_sql` are now recognised as SQL executions.
-* Calls to `ActiveRecord::Connection#execute`, including those via subclasses, are now recognised as SQL executions.
+* The Active Record query methods `reorder` and `count_by_sql` are now recognized as SQL executions.
+* Calls to `ActiveRecord::Connection#execute`, including those via subclasses, are now recognized as SQL executions.
 * Data flow through `ActionController::Parameters#require` is now tracked properly.
 * The severity of parse errors was reduced to warning (previously error). 
 * Deleted the deprecated `getQualifiedName` predicate from the `ConstantWriteAccess` class.
