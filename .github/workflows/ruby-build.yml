@@ -247,8 +247,14 @@ jobs:
     runs-on: ubuntu-latest
     container:
       image: centos:centos7
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     needs: [package]
     steps:
+      - name: Install gh cli
+        run: |
+          yum-config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
+          yum install -y gh
       - uses: actions/checkout@v3
       - name: Fetch CodeQL
         uses: ./.github/actions/fetch-codeql
