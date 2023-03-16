@@ -1,4 +1,5 @@
 uniqueEnclosingCallable
+uniqueCallEnclosingCallable
 uniqueType
 uniqueNodeLocation
 | E.cpp:15:31:15:33 | buf | Node should have one location but has 2. |

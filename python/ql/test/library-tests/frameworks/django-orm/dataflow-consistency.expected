@@ -1,4 +1,40 @@
 uniqueEnclosingCallable
+uniqueCallEnclosingCallable
+| testapp/orm_form_test.py:7:12:7:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_inheritance.py:30:13:30:44 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_inheritance.py:34:25:34:56 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_inheritance.py:35:33:35:64 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_inheritance.py:39:21:39:52 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_inheritance.py:40:33:40:64 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_inheritance.py:118:13:118:44 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_inheritance.py:122:25:122:56 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_inheritance.py:123:33:123:64 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_inheritance.py:127:21:127:52 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_inheritance.py:128:33:128:64 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_security_tests.py:16:12:16:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_security_tests.py:17:11:17:31 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_security_tests.py:93:12:93:65 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_security_tests.py:112:12:112:65 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:29:12:29:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:43:12:43:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:59:12:59:61 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:74:12:74:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:90:12:90:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:111:12:111:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:127:12:127:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:128:13:128:44 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:145:12:145:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:146:13:146:44 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:162:12:162:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:178:12:178:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:181:12:181:64 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:207:12:207:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:208:12:208:70 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:234:12:234:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:235:12:235:95 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:256:12:256:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:274:12:274:43 | Attribute() | Call should have one enclosing callable but has 0. |
+| testapp/orm_tests.py:295:12:295:43 | Attribute() | Call should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation
