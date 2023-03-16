@@ -3,6 +3,5 @@ members = [
     "autobuilder",
     "extractor",
     "generator",
-    "node-types",
     "buramu",
 ]

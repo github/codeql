@@ -1,41 +1,9 @@
-mod extractor;
-mod trap;
-
-extern crate num_cpus;
-
 use rayon::prelude::*;
 use std::fs;
 use std::io::BufRead;
 use std::path::{Path, PathBuf};
 
-/**
- * Gets the number of threads the extractor should use, by reading the
- * CODEQL_THREADS environment variable and using it as described in the
- * extractor spec:
- *
- * "If the number is positive, it indicates the number of threads that should
- * be used. If the number is negative or zero, it should be added to the number
- * of cores available on the machine to determine how many threads to use
- * (minimum of 1). If unspecified, should be considered as set to -1."
- */
-fn num_codeql_threads() -> usize {
-    let threads_str = std::env::var("CODEQL_THREADS").unwrap_or_else(|_| "-1".to_owned());
-    match threads_str.parse::<i32>() {
-        Ok(num) if num <= 0 => {
-            let reduction = -num as usize;
-            std::cmp::max(1, num_cpus::get() - reduction)
-        }
-        Ok(num) => num as usize,
-
-        Err(_) => {
-            tracing::error!(
-                "Unable to parse CODEQL_THREADS value '{}'; defaulting to 1 thread.",
-                &threads_str
-            );
-            1
-        }
-    }
-}
+use codeql_extractor::{diagnostics, extractor, node_types, trap};
 
 fn main() -> std::io::Result<()> {
     tracing_subscriber::fmt()
@@ -45,7 +13,23 @@ fn main() -> std::io::Result<()> {
         .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
         .init();
 
-    let num_threads = num_codeql_threads();
+    let diagnostics = diagnostics::DiagnosticLoggers::new("ql");
+    let mut main_thread_logger = diagnostics.logger();
+    let num_threads = match codeql_extractor::options::num_threads() {
+        Ok(num) => num,
+        Err(e) => {
+            main_thread_logger.write(
+                main_thread_logger
+                    .new_entry("configuration-error", "Configuration error")
+                    .message(
+                        "{}; defaulting to 1 thread.",
+                        &[diagnostics::MessageArg::Code(&e)],
+                    )
+                    .severity(diagnostics::Severity::Warning),
+            );
+            1
+        }
+    };
     tracing::info!(
         "Using {} {}",
         num_threads,
@@ -55,6 +39,20 @@ fn main() -> std::io::Result<()> {
             "threads"
         }
     );
+    let trap_compression = match trap::Compression::from_env("CODEQL_QL_TRAP_COMPRESSION") {
+        Ok(x) => x,
+        Err(e) => {
+            main_thread_logger.write(
+                main_thread_logger
+                    .new_entry("configuration-error", "Configuration error")
+                    .message("{}; using gzip.", &[diagnostics::MessageArg::Code(&e)])
+                    .severity(diagnostics::Severity::Warning),
+            );
+            trap::Compression::Gzip
+        }
+    };
+    drop(main_thread_logger);
+
     rayon::ThreadPoolBuilder::new()
         .num_threads(num_threads)
         .build_global()
@@ -79,7 +77,6 @@ fn main() -> std::io::Result<()> {
         .value_of("output-dir")
         .expect("missing --output-dir");
     let trap_dir = PathBuf::from(trap_dir);
-    let trap_compression = trap::Compression::from_env("CODEQL_QL_TRAP_COMPRESSION");
 
     let file_list = matches.value_of("file-list").expect("missing --file-list");
     let file_list = fs::File::open(file_list)?;
@@ -119,26 +116,29 @@ fn main() -> std::io::Result<()> {
             let source = std::fs::read(&path)?;
             let code_ranges = vec![];
             let mut trap_writer = trap::Writer::new();
+            let mut diagnostics_writer = diagnostics.logger();
             if line.ends_with(".dbscheme") {
                 extractor::extract(
                     dbscheme,
                     "dbscheme",
                     &dbscheme_schema,
+                    &mut diagnostics_writer,
                     &mut trap_writer,
                     &path,
                     &source,
                     &code_ranges,
-                )?
+                )
             } else if line.ends_with("qlpack.yml") {
                 extractor::extract(
                     yaml,
                     "yaml",
                     &yaml_schema,
+                    &mut diagnostics_writer,
                     &mut trap_writer,
                     &path,
                     &source,
                     &code_ranges,
-                )?
+                )
             } else if line.ends_with(".json")
                 || line.ends_with(".jsonl")
                 || line.ends_with(".jsonc")
@@ -147,31 +147,34 @@ fn main() -> std::io::Result<()> {
                     json,
                     "json",
                     &json_schema,
+                    &mut diagnostics_writer,
                     &mut trap_writer,
                     &path,
                     &source,
                     &code_ranges,
-                )?
+                )
             } else if line.ends_with(".blame") {
                 extractor::extract(
                     blame,
                     "blame",
                     &blame_schema,
+                    &mut diagnostics_writer,
                     &mut trap_writer,
                     &path,
                     &source,
                     &code_ranges,
-                )?
+                )
             } else {
                 extractor::extract(
                     language,
                     "ql",
                     &schema,
+                    &mut diagnostics_writer,
                     &mut trap_writer,
                     &path,
                     &source,
                     &code_ranges,
-                )?
+                )
             }
             std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
             std::fs::copy(&path, &src_archive_file)?;
