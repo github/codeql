@@ -1,4 +1,8 @@
 edges
+| file://:0:0:0:0 | self [first] :  | file://:0:0:0:0 | .first :  |
+| file://:0:0:0:0 | self [second] :  | file://:0:0:0:0 | .second :  |
+| file://:0:0:0:0 | value :  | file://:0:0:0:0 | [post] self [first] :  |
+| file://:0:0:0:0 | value :  | file://:0:0:0:0 | [post] self [second] :  |
 | simple.swift:12:17:12:24 | call to source() :  | simple.swift:12:13:12:24 | ... .+(_:_:) ... |
 | simple.swift:13:13:13:20 | call to source() :  | simple.swift:13:13:13:24 | ... .+(_:_:) ... |
 | simple.swift:14:17:14:24 | call to source() :  | simple.swift:14:13:14:24 | ... .-(_:_:) ... |
@@ -37,12 +41,47 @@ edges
 | simple.swift:84:13:84:20 | call to source() :  | simple.swift:84:13:84:25 | ... .>>(_:_:) ... |
 | simple.swift:85:13:85:20 | call to source() :  | simple.swift:85:13:85:26 | ... .&>>(_:_:) ... |
 | simple.swift:87:14:87:21 | call to source() :  | simple.swift:87:13:87:21 | call to ~(_:) |
+| stringinterpolation.swift:6:6:6:6 | self [first] :  | file://:0:0:0:0 | self [first] :  |
+| stringinterpolation.swift:6:6:6:6 | value :  | file://:0:0:0:0 | value :  |
+| stringinterpolation.swift:7:6:7:6 | self [second] :  | file://:0:0:0:0 | self [second] :  |
+| stringinterpolation.swift:7:6:7:6 | value :  | file://:0:0:0:0 | value :  |
+| stringinterpolation.swift:11:36:11:44 | pair [first] :  | stringinterpolation.swift:13:36:13:36 | pair [first] :  |
+| stringinterpolation.swift:13:3:13:3 | [post] &... :  | stringinterpolation.swift:11:11:14:2 | self[return] :  |
+| stringinterpolation.swift:13:36:13:36 | pair [first] :  | stringinterpolation.swift:6:6:6:6 | self [first] :  |
+| stringinterpolation.swift:13:36:13:36 | pair [first] :  | stringinterpolation.swift:13:36:13:41 | .first :  |
+| stringinterpolation.swift:13:36:13:41 | .first :  | stringinterpolation.swift:11:11:14:2 | self[return] :  |
+| stringinterpolation.swift:13:36:13:41 | .first :  | stringinterpolation.swift:13:3:13:3 | [post] &... :  |
+| stringinterpolation.swift:19:2:19:2 | [post] p1 [first] :  | stringinterpolation.swift:20:2:20:2 | p1 [first] :  |
+| stringinterpolation.swift:19:13:19:20 | call to source() :  | stringinterpolation.swift:6:6:6:6 | value :  |
+| stringinterpolation.swift:19:13:19:20 | call to source() :  | stringinterpolation.swift:19:2:19:2 | [post] p1 [first] :  |
+| stringinterpolation.swift:20:2:20:2 | p1 [first] :  | stringinterpolation.swift:22:21:22:21 | p1 [first] :  |
+| stringinterpolation.swift:20:2:20:2 | p1 [first] :  | stringinterpolation.swift:24:21:24:21 | p1 [first] :  |
+| stringinterpolation.swift:22:21:22:21 | p1 [first] :  | stringinterpolation.swift:6:6:6:6 | self [first] :  |
+| stringinterpolation.swift:22:21:22:21 | p1 [first] :  | stringinterpolation.swift:22:21:22:24 | .first :  |
+| stringinterpolation.swift:22:21:22:24 | .first :  | stringinterpolation.swift:22:12:22:12 | "..." |
+| stringinterpolation.swift:24:20:24:20 | [post] &... :  | stringinterpolation.swift:24:12:24:12 | "..." |
+| stringinterpolation.swift:24:21:24:21 | p1 [first] :  | stringinterpolation.swift:11:36:11:44 | pair [first] :  |
+| stringinterpolation.swift:24:21:24:21 | p1 [first] :  | stringinterpolation.swift:24:20:24:20 | [post] &... :  |
+| stringinterpolation.swift:28:2:28:2 | [post] p2 [second] :  | stringinterpolation.swift:31:21:31:21 | p2 [second] :  |
+| stringinterpolation.swift:28:14:28:21 | call to source() :  | stringinterpolation.swift:7:6:7:6 | value :  |
+| stringinterpolation.swift:28:14:28:21 | call to source() :  | stringinterpolation.swift:28:2:28:2 | [post] p2 [second] :  |
+| stringinterpolation.swift:31:21:31:21 | p2 [second] :  | stringinterpolation.swift:7:6:7:6 | self [second] :  |
+| stringinterpolation.swift:31:21:31:21 | p2 [second] :  | stringinterpolation.swift:31:21:31:24 | .second :  |
+| stringinterpolation.swift:31:21:31:24 | .second :  | stringinterpolation.swift:31:12:31:12 | "..." |
 | subscript.swift:13:15:13:22 | call to source() :  | subscript.swift:13:15:13:25 | ...[...] |
 | subscript.swift:14:15:14:23 | call to source2() :  | subscript.swift:14:15:14:26 | ...[...] |
 | try.swift:9:17:9:24 | call to source() :  | try.swift:9:13:9:24 | try ... |
 | try.swift:15:17:15:24 | call to source() :  | try.swift:15:12:15:24 | try! ... |
 | try.swift:18:18:18:25 | call to source() :  | try.swift:18:12:18:27 | ...! |
 nodes
+| file://:0:0:0:0 | .first :  | semmle.label | .first :  |
+| file://:0:0:0:0 | .second :  | semmle.label | .second :  |
+| file://:0:0:0:0 | [post] self [first] :  | semmle.label | [post] self [first] :  |
+| file://:0:0:0:0 | [post] self [second] :  | semmle.label | [post] self [second] :  |
+| file://:0:0:0:0 | self [first] :  | semmle.label | self [first] :  |
+| file://:0:0:0:0 | self [second] :  | semmle.label | self [second] :  |
+| file://:0:0:0:0 | value :  | semmle.label | value :  |
+| file://:0:0:0:0 | value :  | semmle.label | value :  |
 | simple.swift:12:13:12:24 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
 | simple.swift:12:17:12:24 | call to source() :  | semmle.label | call to source() :  |
 | simple.swift:13:13:13:20 | call to source() :  | semmle.label | call to source() :  |
@@ -114,6 +153,29 @@ nodes
 | simple.swift:85:13:85:26 | ... .&>>(_:_:) ... | semmle.label | ... .&>>(_:_:) ... |
 | simple.swift:87:13:87:21 | call to ~(_:) | semmle.label | call to ~(_:) |
 | simple.swift:87:14:87:21 | call to source() :  | semmle.label | call to source() :  |
+| stringinterpolation.swift:6:6:6:6 | self [first] :  | semmle.label | self [first] :  |
+| stringinterpolation.swift:6:6:6:6 | value :  | semmle.label | value :  |
+| stringinterpolation.swift:7:6:7:6 | self [second] :  | semmle.label | self [second] :  |
+| stringinterpolation.swift:7:6:7:6 | value :  | semmle.label | value :  |
+| stringinterpolation.swift:11:11:14:2 | self[return] :  | semmle.label | self[return] :  |
+| stringinterpolation.swift:11:36:11:44 | pair [first] :  | semmle.label | pair [first] :  |
+| stringinterpolation.swift:13:3:13:3 | [post] &... :  | semmle.label | [post] &... :  |
+| stringinterpolation.swift:13:36:13:36 | pair [first] :  | semmle.label | pair [first] :  |
+| stringinterpolation.swift:13:36:13:41 | .first :  | semmle.label | .first :  |
+| stringinterpolation.swift:19:2:19:2 | [post] p1 [first] :  | semmle.label | [post] p1 [first] :  |
+| stringinterpolation.swift:19:13:19:20 | call to source() :  | semmle.label | call to source() :  |
+| stringinterpolation.swift:20:2:20:2 | p1 [first] :  | semmle.label | p1 [first] :  |
+| stringinterpolation.swift:22:12:22:12 | "..." | semmle.label | "..." |
+| stringinterpolation.swift:22:21:22:21 | p1 [first] :  | semmle.label | p1 [first] :  |
+| stringinterpolation.swift:22:21:22:24 | .first :  | semmle.label | .first :  |
+| stringinterpolation.swift:24:12:24:12 | "..." | semmle.label | "..." |
+| stringinterpolation.swift:24:20:24:20 | [post] &... :  | semmle.label | [post] &... :  |
+| stringinterpolation.swift:24:21:24:21 | p1 [first] :  | semmle.label | p1 [first] :  |
+| stringinterpolation.swift:28:2:28:2 | [post] p2 [second] :  | semmle.label | [post] p2 [second] :  |
+| stringinterpolation.swift:28:14:28:21 | call to source() :  | semmle.label | call to source() :  |
+| stringinterpolation.swift:31:12:31:12 | "..." | semmle.label | "..." |
+| stringinterpolation.swift:31:21:31:21 | p2 [second] :  | semmle.label | p2 [second] :  |
+| stringinterpolation.swift:31:21:31:24 | .second :  | semmle.label | .second :  |
 | subscript.swift:13:15:13:22 | call to source() :  | semmle.label | call to source() :  |
 | subscript.swift:13:15:13:25 | ...[...] | semmle.label | ...[...] |
 | subscript.swift:14:15:14:23 | call to source2() :  | semmle.label | call to source2() :  |
@@ -125,6 +187,13 @@ nodes
 | try.swift:18:12:18:27 | ...! | semmle.label | ...! |
 | try.swift:18:18:18:25 | call to source() :  | semmle.label | call to source() :  |
 subpaths
+| stringinterpolation.swift:13:36:13:36 | pair [first] :  | stringinterpolation.swift:6:6:6:6 | self [first] :  | file://:0:0:0:0 | .first :  | stringinterpolation.swift:13:36:13:41 | .first :  |
+| stringinterpolation.swift:19:13:19:20 | call to source() :  | stringinterpolation.swift:6:6:6:6 | value :  | file://:0:0:0:0 | [post] self [first] :  | stringinterpolation.swift:19:2:19:2 | [post] p1 [first] :  |
+| stringinterpolation.swift:22:21:22:21 | p1 [first] :  | stringinterpolation.swift:6:6:6:6 | self [first] :  | file://:0:0:0:0 | .first :  | stringinterpolation.swift:22:21:22:24 | .first :  |
+| stringinterpolation.swift:24:21:24:21 | p1 [first] :  | stringinterpolation.swift:11:36:11:44 | pair [first] :  | stringinterpolation.swift:11:11:14:2 | self[return] :  | stringinterpolation.swift:24:20:24:20 | [post] &... :  |
+| stringinterpolation.swift:24:21:24:21 | p1 [first] :  | stringinterpolation.swift:11:36:11:44 | pair [first] :  | stringinterpolation.swift:13:3:13:3 | [post] &... :  | stringinterpolation.swift:24:20:24:20 | [post] &... :  |
+| stringinterpolation.swift:28:14:28:21 | call to source() :  | stringinterpolation.swift:7:6:7:6 | value :  | file://:0:0:0:0 | [post] self [second] :  | stringinterpolation.swift:28:2:28:2 | [post] p2 [second] :  |
+| stringinterpolation.swift:31:21:31:21 | p2 [second] :  | stringinterpolation.swift:7:6:7:6 | self [second] :  | file://:0:0:0:0 | .second :  | stringinterpolation.swift:31:21:31:24 | .second :  |
 #select
 | simple.swift:12:13:12:24 | ... .+(_:_:) ... | simple.swift:12:17:12:24 | call to source() :  | simple.swift:12:13:12:24 | ... .+(_:_:) ... | result |
 | simple.swift:13:13:13:24 | ... .+(_:_:) ... | simple.swift:13:13:13:20 | call to source() :  | simple.swift:13:13:13:24 | ... .+(_:_:) ... | result |
@@ -164,6 +233,9 @@ subpaths
 | simple.swift:84:13:84:25 | ... .>>(_:_:) ... | simple.swift:84:13:84:20 | call to source() :  | simple.swift:84:13:84:25 | ... .>>(_:_:) ... | result |
 | simple.swift:85:13:85:26 | ... .&>>(_:_:) ... | simple.swift:85:13:85:20 | call to source() :  | simple.swift:85:13:85:26 | ... .&>>(_:_:) ... | result |
 | simple.swift:87:13:87:21 | call to ~(_:) | simple.swift:87:14:87:21 | call to source() :  | simple.swift:87:13:87:21 | call to ~(_:) | result |
+| stringinterpolation.swift:22:12:22:12 | "..." | stringinterpolation.swift:19:13:19:20 | call to source() :  | stringinterpolation.swift:22:12:22:12 | "..." | result |
+| stringinterpolation.swift:24:12:24:12 | "..." | stringinterpolation.swift:19:13:19:20 | call to source() :  | stringinterpolation.swift:24:12:24:12 | "..." | result |
+| stringinterpolation.swift:31:12:31:12 | "..." | stringinterpolation.swift:28:14:28:21 | call to source() :  | stringinterpolation.swift:31:12:31:12 | "..." | result |
 | subscript.swift:13:15:13:25 | ...[...] | subscript.swift:13:15:13:22 | call to source() :  | subscript.swift:13:15:13:25 | ...[...] | result |
 | subscript.swift:14:15:14:26 | ...[...] | subscript.swift:14:15:14:23 | call to source2() :  | subscript.swift:14:15:14:26 | ...[...] | result |
 | try.swift:9:13:9:24 | try ... | try.swift:9:17:9:24 | call to source() :  | try.swift:9:13:9:24 | try ... | result |
