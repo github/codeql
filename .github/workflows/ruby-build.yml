@@ -254,7 +254,10 @@ jobs:
       - name: Install gh cli
         run: |
           yum-config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
-          yum install -y gh
+          # fetch-codeql requires unzip and jq
+          # jq is available in epel-release (https://docs.fedoraproject.org/en-US/epel/)
+          yum install -y gh unzip epel-release
+          yum install -y jq
       - uses: actions/checkout@v3
       - name: Fetch CodeQL
         uses: ./.github/actions/fetch-codeql
