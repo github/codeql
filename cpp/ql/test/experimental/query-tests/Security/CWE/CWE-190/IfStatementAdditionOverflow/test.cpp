@@ -52,6 +52,7 @@ void test()
 	if (c<=b+a) { a = c-b; } // BAD
 
 	if (a+b>d) a = d-b; // BAD
+	if (a+(double)b>c) a = c-b; // GOOD
 	if (a+(-x)>c) a = c-(-y); // GOOD
 	if (a+b>c) { b++; a = c-b; } // GOOD
 	if (a+d>c) a = c-d; // GOOD
