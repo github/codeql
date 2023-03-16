@@ -137,7 +137,7 @@ private class CleartextStorageDatabaseArrayAdditionalTaintStep extends Cleartext
     //  approximate; for example we might identify `passwordBox` as a source,
     //  whereas it is more accurate to say that `passwordBox.textField` is the
     //  true source).
-    nodeTo.asExpr().(LookupExpr).getBase() = nodeFrom.asExpr()
+    nodeTo.asExpr().(MemberRefExpr).getBase() = nodeFrom.asExpr()
   }
 }
 
