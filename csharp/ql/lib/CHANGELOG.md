@@ -18,7 +18,7 @@
 * Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
 * Deleted the deprecated `getAssertionIndex`, and `getAssertedParameter` predicates from the `AssertMethod` class.
 * Deleted the deprecated `OverridableMethod` and `OverridableAccessor` classes.
-* The `unsafe` predicate for `Modifiable` has been extended to cover delegate return types and identify pointer like types at any nest level. This is relevant for `unsafe` declarations extracted from assemblies.
+* The `unsafe` predicate for `Modifiable` has been extended to cover delegate return types and identify pointer-like types at any nest level. This is relevant for `unsafe` declarations extracted from assemblies.
 
 ## 0.5.4
 
