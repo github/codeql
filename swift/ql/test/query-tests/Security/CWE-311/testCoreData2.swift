@@ -91,4 +91,16 @@ func testCoreData2_3(dbObj: MyManagedObject2, maybeObj: MyManagedObject2?, conta
 	var a = bankAccountNo // sensitive
 	var b = a.value
 	dbObj.myValue = b // BAD
+
+	let c = bankAccountNo // sensitive
+	var d: MyContainer = MyContainer()
+	d.value = c.value
+	dbObj.myValue = d.value // BAD
+	dbObj.myValue = d.value2 // GOOD
+
+	let e = bankAccountNo // sensitive
+	var f: MyContainer?
+	f?.value = e.value
+	dbObj.myValue = e.value // BAD
+	dbObj.myValue = e.value2 // GOOD [FALSE POSITIVE]
 }
