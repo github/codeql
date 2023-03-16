@@ -6,8 +6,8 @@ use std::io::LineWriter;
 use std::io::Write;
 use std::path::PathBuf;
 
-use ruby_extractor::generator::{dbscheme, language::Language, ql, ql_gen};
-use ruby_extractor::node_types;
+use codeql_extractor::generator::{dbscheme, language::Language, ql, ql_gen};
+use codeql_extractor::node_types;
 
 /// Given the name of the parent node, and its field information, returns a pair,
 /// the first of which is the field's type. The second is an optional dbscheme
