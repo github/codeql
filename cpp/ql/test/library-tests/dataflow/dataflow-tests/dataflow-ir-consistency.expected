@@ -1,4 +1,5 @@
 uniqueEnclosingCallable
+uniqueCallEnclosingCallable
 uniqueType
 uniqueNodeLocation
 missingLocation
