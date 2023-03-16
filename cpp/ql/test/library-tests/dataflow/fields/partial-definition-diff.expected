@@ -1,7 +1,10 @@
 | A.cpp:25:13:25:13 | c | AST only |
 | A.cpp:27:28:27:28 | c | AST only |
+| A.cpp:28:29:28:29 | this | IR only |
 | A.cpp:31:14:31:21 | new | IR only |
 | A.cpp:40:15:40:21 | 0 | IR only |
+| A.cpp:40:15:40:21 | 0 | IR only |
+| A.cpp:41:15:41:21 | new | IR only |
 | A.cpp:41:15:41:21 | new | IR only |
 | A.cpp:41:15:41:21 | new | IR only |
 | A.cpp:47:12:47:18 | new | IR only |
@@ -41,6 +44,7 @@
 | A.cpp:161:29:161:35 | 0 | IR only |
 | A.cpp:162:18:162:40 | new | IR only |
 | A.cpp:162:29:162:35 | 0 | IR only |
+| A.cpp:167:47:167:50 | l | IR only |
 | A.cpp:183:7:183:10 | head | AST only |
 | A.cpp:184:13:184:16 | next | AST only |
 | B.cpp:7:16:7:35 | new | IR only |
@@ -54,12 +58,12 @@
 | B.cpp:46:13:46:16 | box1 | AST only |
 | C.cpp:18:12:18:18 | new | IR only |
 | C.cpp:24:11:24:12 | s3 | AST only |
-| C.cpp:30:10:30:11 | s2 | IR only |
 | C.cpp:30:10:30:11 | this | IR only |
-| C.cpp:32:10:32:11 | s4 | IR only |
 | D.cpp:9:21:9:24 | elem | AST only |
+| D.cpp:10:30:10:33 | this | IR only |
 | D.cpp:11:29:11:32 | elem | AST only |
 | D.cpp:16:21:16:23 | box | AST only |
+| D.cpp:17:30:17:32 | this | IR only |
 | D.cpp:18:29:18:31 | box | AST only |
 | D.cpp:29:15:29:41 | new | IR only |
 | D.cpp:29:24:29:40 | new | IR only |
@@ -88,60 +92,139 @@
 | aliasing.cpp:9:6:9:7 | m1 | AST only |
 | aliasing.cpp:13:5:13:6 | m1 | AST only |
 | aliasing.cpp:17:5:17:6 | m1 | AST only |
+| aliasing.cpp:29:11:29:12 | s1 | IR only |
+| aliasing.cpp:30:11:30:12 | s2 | IR only |
+| aliasing.cpp:31:11:31:12 | s3 | IR only |
 | aliasing.cpp:37:8:37:9 | m1 | AST only |
+| aliasing.cpp:38:11:38:12 | s1 | IR only |
 | aliasing.cpp:42:6:42:7 | m1 | AST only |
+| aliasing.cpp:43:13:43:14 | ref2 | IR only |
 | aliasing.cpp:49:9:49:10 | m1 | AST only |
+| aliasing.cpp:50:11:50:12 | s1 | IR only |
 | aliasing.cpp:54:6:54:7 | m1 | AST only |
+| aliasing.cpp:55:14:55:15 | copy2 | IR only |
 | aliasing.cpp:60:6:60:7 | m1 | AST only |
+| aliasing.cpp:62:14:62:15 | copy2 | IR only |
+| aliasing.cpp:71:11:71:11 | w | IR only |
 | aliasing.cpp:72:5:72:6 | m1 | AST only |
+| aliasing.cpp:73:10:73:10 | w | IR only |
+| aliasing.cpp:73:12:73:13 | s | IR only |
+| aliasing.cpp:78:13:78:13 | w | IR only |
 | aliasing.cpp:79:6:79:7 | m1 | AST only |
+| aliasing.cpp:80:10:80:10 | w | IR only |
+| aliasing.cpp:80:12:80:13 | s | IR only |
+| aliasing.cpp:85:12:85:12 | w | IR only |
 | aliasing.cpp:86:5:86:6 | m1 | AST only |
+| aliasing.cpp:87:10:87:10 | w | IR only |
+| aliasing.cpp:87:12:87:13 | s | IR only |
 | aliasing.cpp:92:7:92:8 | m1 | AST only |
+| aliasing.cpp:93:10:93:10 | w | IR only |
+| aliasing.cpp:93:12:93:13 | s | IR only |
 | aliasing.cpp:98:5:98:6 | m1 | AST only |
+| aliasing.cpp:101:21:101:22 | s_copy | IR only |
 | aliasing.cpp:106:3:106:5 | * ... | AST only |
+| aliasing.cpp:112:10:112:11 | s | IR only |
+| aliasing.cpp:143:10:143:13 | s | IR only |
+| aliasing.cpp:148:13:148:14 | access to array | IR only |
+| aliasing.cpp:159:11:159:14 | s | IR only |
+| aliasing.cpp:165:10:165:13 | s | IR only |
+| aliasing.cpp:176:11:176:11 | s2 | IR only |
+| aliasing.cpp:176:13:176:14 | s | IR only |
+| aliasing.cpp:182:11:182:11 | s2 | IR only |
+| aliasing.cpp:182:13:182:14 | s | IR only |
+| aliasing.cpp:189:13:189:13 | s2_2 | IR only |
+| aliasing.cpp:189:15:189:16 | s | IR only |
+| aliasing.cpp:196:13:196:13 | s2_2 | IR only |
+| aliasing.cpp:196:15:196:16 | s | IR only |
+| aliasing.cpp:201:13:201:13 | ps2 | IR only |
+| aliasing.cpp:201:15:201:16 | s | IR only |
+| aliasing.cpp:206:13:206:13 | ps2 | IR only |
+| aliasing.cpp:206:15:206:16 | s | IR only |
 | arrays.cpp:6:3:6:8 | access to array | AST only |
 | arrays.cpp:7:8:7:13 | access to array | IR only |
+| arrays.cpp:7:8:7:13 | access to array | IR only |
+| arrays.cpp:8:8:8:13 | access to array | IR only |
 | arrays.cpp:8:8:8:13 | access to array | IR only |
 | arrays.cpp:9:8:9:11 | * ... | IR only |
+| arrays.cpp:9:8:9:11 | * ... | IR only |
+| arrays.cpp:10:8:10:15 | * ... | IR only |
 | arrays.cpp:10:8:10:15 | * ... | IR only |
 | arrays.cpp:15:3:15:10 | * ... | AST only |
 | arrays.cpp:16:8:16:13 | access to array | IR only |
+| arrays.cpp:16:8:16:13 | access to array | IR only |
+| arrays.cpp:17:8:17:13 | access to array | IR only |
 | arrays.cpp:17:8:17:13 | access to array | IR only |
 | arrays.cpp:36:19:36:22 | data | AST only |
 | arrays.cpp:42:22:42:25 | data | AST only |
 | arrays.cpp:48:22:48:25 | data | AST only |
 | by_reference.cpp:12:8:12:8 | a | AST only |
 | by_reference.cpp:16:11:16:11 | a | AST only |
-| by_reference.cpp:40:12:40:15 | this | AST only |
-| by_reference.cpp:51:8:51:8 | s | AST only |
-| by_reference.cpp:57:8:57:8 | s | AST only |
-| by_reference.cpp:63:8:63:8 | s | AST only |
+| by_reference.cpp:32:15:32:15 | s | IR only |
+| by_reference.cpp:36:18:36:18 | this | IR only |
+| by_reference.cpp:44:26:44:29 | this | IR only |
+| by_reference.cpp:69:22:69:23 | & ... | IR only |
 | by_reference.cpp:84:10:84:10 | a | AST only |
 | by_reference.cpp:88:9:88:9 | a | AST only |
 | by_reference.cpp:92:3:92:5 | * ... | AST only |
 | by_reference.cpp:96:3:96:4 | pa | AST only |
+| complex.cpp:9:20:9:21 | this | IR only |
+| complex.cpp:10:20:10:21 | this | IR only |
 | complex.cpp:11:22:11:23 | a_ | AST only |
 | complex.cpp:12:22:12:23 | b_ | AST only |
 | conflated.cpp:10:3:10:7 | * ... | AST only |
+| conflated.cpp:11:12:11:12 | ra | IR only |
 | conflated.cpp:29:7:29:7 | x | AST only |
+| conflated.cpp:30:12:30:12 | pa | IR only |
 | conflated.cpp:36:7:36:7 | x | AST only |
+| conflated.cpp:37:12:37:12 | pa | IR only |
 | conflated.cpp:53:7:53:10 | next | AST only |
 | conflated.cpp:54:13:54:13 | y | AST only |
+| conflated.cpp:55:12:55:15 | ll | IR only |
+| conflated.cpp:55:18:55:18 | next | IR only |
 | conflated.cpp:59:20:59:39 | new | IR only |
 | conflated.cpp:60:13:60:13 | y | AST only |
+| conflated.cpp:61:12:61:15 | ll | IR only |
+| conflated.cpp:61:18:61:18 | next | IR only |
+| constructors.cpp:18:22:18:23 | this | IR only |
+| constructors.cpp:19:22:19:23 | this | IR only |
 | constructors.cpp:20:24:20:25 | a_ | AST only |
 | constructors.cpp:21:24:21:25 | b_ | AST only |
 | qualifiers.cpp:9:36:9:36 | a | AST only |
 | qualifiers.cpp:12:56:12:56 | a | AST only |
 | qualifiers.cpp:13:57:13:57 | a | AST only |
+| qualifiers.cpp:18:32:18:36 | this | IR only |
 | qualifiers.cpp:22:23:22:23 | a | AST only |
 | qualifiers.cpp:42:25:42:25 | a | AST only |
 | qualifiers.cpp:47:27:47:27 | a | AST only |
 | realistic.cpp:26:5:26:10 | offset | AST only |
 | realistic.cpp:49:20:49:22 | baz | AST only |
 | realistic.cpp:53:35:53:43 | bufferLen | AST only |
+| realistic.cpp:54:50:54:61 | call to user_input | IR only |
+| realistic.cpp:55:16:55:18 | foo | IR only |
+| realistic.cpp:55:23:55:25 | access to array | IR only |
+| realistic.cpp:55:28:55:36 | baz | IR only |
+| realistic.cpp:55:38:55:46 | userInput | IR only |
+| realistic.cpp:57:92:57:94 | foo | IR only |
+| realistic.cpp:57:99:57:101 | access to array | IR only |
+| realistic.cpp:57:104:57:112 | baz | IR only |
+| realistic.cpp:57:114:57:122 | userInput | IR only |
+| realistic.cpp:60:21:60:52 | buffer | IR only |
+| realistic.cpp:60:25:60:27 | foo | IR only |
+| realistic.cpp:60:32:60:34 | access to array | IR only |
+| realistic.cpp:60:37:60:45 | baz | IR only |
+| realistic.cpp:60:47:60:52 | userInput | IR only |
+| realistic.cpp:60:59:60:61 | foo | IR only |
+| realistic.cpp:60:66:60:68 | access to array | IR only |
+| realistic.cpp:60:71:60:79 | baz | IR only |
+| realistic.cpp:60:81:60:89 | userInput | IR only |
+| simple.cpp:18:22:18:23 | this | IR only |
+| simple.cpp:19:22:19:23 | this | IR only |
 | simple.cpp:20:24:20:25 | a_ | AST only |
 | simple.cpp:21:24:21:25 | b_ | AST only |
 | simple.cpp:65:7:65:7 | i | AST only |
+| simple.cpp:67:13:67:13 | a2 | IR only |
+| simple.cpp:79:16:79:17 | this | IR only |
+| simple.cpp:79:19:79:20 | f2 | IR only |
 | simple.cpp:83:12:83:13 | f1 | AST only |
 | simple.cpp:92:7:92:7 | i | AST only |
+| simple.cpp:94:13:94:13 | a2 | IR only |
