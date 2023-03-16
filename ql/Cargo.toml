@@ -1,7 +1,5 @@
 [workspace]
 members = [
-    "autobuilder",
     "extractor",
-    "generator",
     "buramu",
 ]

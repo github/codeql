@@ -513,10 +513,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ql-autobuilder"
-version = "0.1.0"
-
-[[package]]
 name = "ql-extractor"
 version = "0.1.0"
 dependencies = [
@@ -527,21 +523,6 @@ dependencies = [
  "tracing",
  "tracing-subscriber",
  "tree-sitter",
- "tree-sitter-blame",
- "tree-sitter-json",
- "tree-sitter-ql",
- "tree-sitter-ql-dbscheme",
- "tree-sitter-ql-yaml",
-]
-
-[[package]]
-name = "ql-generator"
-version = "0.1.0"
-dependencies = [
- "clap",
- "codeql-extractor",
- "tracing",
- "tracing-subscriber",
  "tree-sitter-blame",
  "tree-sitter-json",
  "tree-sitter-ql",
