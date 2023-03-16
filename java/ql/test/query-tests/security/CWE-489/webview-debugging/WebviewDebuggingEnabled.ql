@@ -1,15 +1,18 @@
 import java
-import TestUtilities.InlineFlowTest
-import semmle.code.java.security.WebviewDubuggingEnabledQuery
+import TestUtilities.InlineExpectationsTest
+import semmle.code.java.security.WebviewDebuggingEnabledQuery
 
-class EnableLegacy extends EnableLegacyConfiguration {
-  EnableLegacy() { exists(this) }
-}
+class HasFlowTest extends InlineExpectationsTest {
+  HasFlowTest() { this = "HasFlowTest" }
 
-class HasFlowTest extends InlineFlowTest {
-  override DataFlow::Configuration getTaintFlowConfig() { none() }
+  override string getARelevantTag() { result = "hasValueFlow" }
 
-  override DataFlow::Configuration getValueFlowConfig() {
-    result = any(WebviewDebugEnabledConfig c)
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    tag = "hasValueFlow" and
+    exists(DataFlow::Node sink | WebviewDebugEnabledFlow::hasFlowTo(sink) |
+      location = sink.getLocation() and
+      element = "sink" and
+      value = ""
+    )
   }
 }

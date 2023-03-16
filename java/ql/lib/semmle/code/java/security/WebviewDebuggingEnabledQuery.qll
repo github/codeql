@@ -18,8 +18,12 @@ private predicate isDebugCheck(Expr ex) {
   )
 }
 
-/** A configuration to find instances of `setWebContentDebuggingEnabled` called with `true` values. */
-class WebviewDebugEnabledConfig extends DataFlow::Configuration {
+/**
+ * DEPRECATED: Use `WebviewDebugEnabledFlow` instead.
+ *
+ * A configuration to find instances of `setWebContentDebuggingEnabled` called with `true` values.
+ */
+deprecated class WebviewDebugEnabledConfig extends DataFlow::Configuration {
   WebviewDebugEnabledConfig() { this = "WebviewDebugEnabledConfig" }
 
   override predicate isSource(DataFlow::Node node) {
@@ -39,3 +43,25 @@ class WebviewDebugEnabledConfig extends DataFlow::Configuration {
     node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
   }
 }
+
+/** A configuration to find instances of `setWebContentDebuggingEnabled` called with `true` values. */
+private module WebviewDebugEnabledConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    node.asExpr().(BooleanLiteral).getBooleanValue() = true
+  }
+
+  predicate isSink(DataFlow::Node node) {
+    exists(MethodAccess ma |
+      ma.getMethod().hasQualifiedName("android.webkit", "WebView", "setWebContentsDebuggingEnabled") and
+      node.asExpr() = ma.getArgument(0)
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    exists(Guard debug | isDebugCheck(debug) and debug.controls(node.asExpr().getBasicBlock(), _))
+    or
+    node.getEnclosingCallable().getDeclaringType() instanceof NonSecurityTestClass
+  }
+}
+
+module WebviewDebugEnabledFlow = DataFlow::Make<WebviewDebugEnabledConfig>;
