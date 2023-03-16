@@ -235,3 +235,42 @@ jobs:
         shell: bash
         run: |
           codeql database analyze --search-path "${{ runner.temp }}/ruby-bundle" --format=sarifv2.1.0 --output=out.sarif ../database ruby-code-scanning.qls
+
+  # This is a copy of the 'test' job that runs in a centos7 container.
+  # This tests that the extractor works correctly on systems with an old glibc.
+  test-centos7:
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
+    strategy:
+      fail-fast: false
+    runs-on: ubuntu-latest
+    container:
+      image: centos:centos7
+    needs: [package]
+    steps:
+      - uses: actions/checkout@v3
+      - name: Fetch CodeQL
+        uses: ./.github/actions/fetch-codeql
+
+      - name: Download Ruby bundle
+        uses: actions/download-artifact@v3
+        with:
+          name: codeql-ruby-bundle
+          path: ${{ runner.temp }}
+      - name: Unzip Ruby bundle
+        shell: bash
+        run: unzip -q -d "${{ runner.temp }}/ruby-bundle" "${{ runner.temp }}/codeql-ruby-bundle.zip"
+
+      - name: Run QL test
+        shell: bash
+        run: |
+          codeql test run --search-path "${{ runner.temp }}/ruby-bundle" --additional-packs "${{ runner.temp }}/ruby-bundle" ruby/ql/test/library-tests/ast/constants/
+      - name: Create database
+        shell: bash
+        run: |
+          codeql database create --search-path "${{ runner.temp }}/ruby-bundle" --language ruby --source-root ruby/ql/test/library-tests/ast/constants/ ../database
+      - name: Analyze database
+        shell: bash
+        run: |
+          codeql database analyze --search-path "${{ runner.temp }}/ruby-bundle" --format=sarifv2.1.0 --output=out.sarif ../database ruby-code-scanning.qls
