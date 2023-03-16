@@ -3,7 +3,6 @@
  */
 
 private import java as J
-private import semmle.code.java.dataflow.internal.DataFlowNodes
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.ContainerFlow as ContainerFlow
 private import semmle.code.java.dataflow.DataFlow as Df
