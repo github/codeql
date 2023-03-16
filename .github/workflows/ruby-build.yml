@@ -262,24 +262,29 @@ jobs:
       - name: Fetch CodeQL
         uses: ./.github/actions/fetch-codeql
 
+      # Due to a bug in Actions, we can't use runner.temp here.
+      # https://github.com/actions/runner/issues/2185
+      - name: Ensure temp directory exists
+        run: mkdir -p /tmp
+
       - name: Download Ruby bundle
         uses: actions/download-artifact@v3
         with:
           name: codeql-ruby-bundle
-          path: ${{ runner.temp }}
+          path: /tmp
       - name: Unzip Ruby bundle
         shell: bash
-        run: unzip -q -d "${{ runner.temp }}/ruby-bundle" "${{ runner.temp }}/codeql-ruby-bundle.zip"
+        run: unzip -q -d /tmp/ruby-bundle /tmp/codeql-ruby-bundle.zip
 
       - name: Run QL test
         shell: bash
         run: |
-          codeql test run --search-path "${{ runner.temp }}/ruby-bundle" --additional-packs "${{ runner.temp }}/ruby-bundle" ruby/ql/test/library-tests/ast/constants/
+          codeql test run --search-path /tmp/ruby-bundle --additional-packs /tmp/ruby-bundle ruby/ql/test/library-tests/ast/constants/
       - name: Create database
         shell: bash
         run: |
-          codeql database create --search-path "${{ runner.temp }}/ruby-bundle" --language ruby --source-root ruby/ql/test/library-tests/ast/constants/ ../database
+          codeql database create --search-path /tmp/ruby-bundle --language ruby --source-root ruby/ql/test/library-tests/ast/constants/ ../database
       - name: Analyze database
         shell: bash
         run: |
-          codeql database analyze --search-path "${{ runner.temp }}/ruby-bundle" --format=sarifv2.1.0 --output=out.sarif ../database ruby-code-scanning.qls
+          codeql database analyze --search-path /tmp/ruby-bundle --format=sarifv2.1.0 --output=out.sarif ../database ruby-code-scanning.qls
