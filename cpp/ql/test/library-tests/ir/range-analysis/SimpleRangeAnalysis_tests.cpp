@@ -119,6 +119,7 @@ int test9(int x, int y) {
     }
     range(x); // $ range=>=4
   }
+  range(x); // $ MISSING: range=>=4
   return x;
 }
 
