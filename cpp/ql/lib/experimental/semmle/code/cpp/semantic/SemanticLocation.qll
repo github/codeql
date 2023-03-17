@@ -6,9 +6,8 @@ class SemLocation instanceof Location {
    *
    * The format is "file://filePath:startLine:startColumn:endLine:endColumn".
    */
-  string toString() {
-    result = super.toString()
-  }
+  string toString() { result = super.toString() }
+
   /**
    * Holds if this element is at the specified location.
    * The location spans column `startcolumn` of line `startline` to

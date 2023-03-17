@@ -30,9 +30,7 @@ module ConstantBounds implements BoundSig<FloatDelta> {
 
 private module RelativeBounds implements BoundSig<FloatDelta> {
   class SemBound instanceof SemanticBound::SemBound {
-    SemBound() {
-      not this instanceof SemanticBound::SemZeroBound
-    }
+    SemBound() { not this instanceof SemanticBound::SemZeroBound }
 
     string toString() { result = super.toString() }
 
