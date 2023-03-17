@@ -30,4 +30,19 @@ module Yaml {
 
     override string getFormat() { result = "yaml" }
   }
+
+  // These models are not implemented using Models-as-Data because they represent reverse flow.
+  private class FunctionModels extends TaintTracking::FunctionModel {
+    FunctionInput inp;
+    FunctionOutput outp;
+
+    FunctionModels() {
+      this.hasQualifiedName(packagePath(), "NewEncoder") and
+      (inp.isResult() and outp.isParameter(0))
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input = inp and output = outp
+    }
+  }
 }

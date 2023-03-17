@@ -32,4 +32,20 @@ module EncodingJson {
 
     override string getFormat() { result = "JSON" }
   }
+
+  // These models are not implemented using Models-as-Data because they represent reverse flow.
+  private class FunctionModels extends TaintTracking::FunctionModel {
+    FunctionInput inp;
+    FunctionOutput outp;
+
+    FunctionModels() {
+      // signature: func NewEncoder(w io.Writer) *Encoder
+      this.hasQualifiedName("encoding/json", "NewEncoder") and
+      (inp.isResult() and outp.isParameter(0))
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input = inp and output = outp
+    }
+  }
 }

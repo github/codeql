@@ -38,4 +38,20 @@ module Log {
 
     override predicate mayReturnNormally() { none() }
   }
+
+  // These models are not implemented using Models-as-Data because they represent reverse flow.
+  private class FunctionModels extends TaintTracking::FunctionModel {
+    FunctionInput inp;
+    FunctionOutput outp;
+
+    FunctionModels() {
+      // signature: func New(out io.Writer, prefix string, flag int) *Logger
+      this.hasQualifiedName("log", "New") and
+      (inp.isResult() and outp.isParameter(0))
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input = inp and output = outp
+    }
+  }
 }
