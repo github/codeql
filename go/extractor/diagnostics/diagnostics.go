@@ -181,3 +181,14 @@ func EmitGoFilesFoundButNotProcessed() {
 		noLocation,
 	)
 }
+
+func EmitRelativeImportPaths() {
+	emitDiagnostic(
+		"go/autobuilder/relative-import-paths",
+		"Some imports use unsupported relative package paths",
+		"You should replace relative package paths (that contain `.` or `..`) with absolute paths. Alternatively you can [use a Go module](https://go.dev/blog/using-go-modules).",
+		severityError,
+		fullVisibility,
+		noLocation,
+	)
+}

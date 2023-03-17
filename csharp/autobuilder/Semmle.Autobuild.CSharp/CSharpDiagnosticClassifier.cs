@@ -84,8 +84,8 @@ namespace Semmle.Autobuild.CSharp
                 This may lead to subsequent failures. You can check for common causes for missing project files:
 
                 - Ensure that the project is built using the {runsOnDocsUrl.ToMarkdownLink("intended operating system")} and that filenames on case-sensitive platforms are correctly specified.
-                - If your repository uses Git submodules, ensure that those are {checkoutDocsUrl.ToMarkdownLink("checked out")} before the CodeQL action is run.
-                - If you auto-generate some project files as part of your build process, ensure that these are generated before the CodeQL action is run.
+                - If your repository uses Git submodules, ensure that those are {checkoutDocsUrl.ToMarkdownLink("checked out")} before the CodeQL Action is run.
+                - If you auto-generate some project files as part of your build process, ensure that these are generated before the CodeQL Action is run.
                 """
             );
         }

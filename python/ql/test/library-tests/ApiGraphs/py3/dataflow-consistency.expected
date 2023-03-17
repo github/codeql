@@ -1,4 +1,8 @@
 uniqueEnclosingCallable
+uniqueCallEnclosingCallable
+| test_captured.py:7:22:7:25 | p() | Call should have one enclosing callable but has 0. |
+| test_captured.py:7:22:7:25 | p() | Call should have one enclosing callable but has 0. |
+| test_captured.py:14:26:14:30 | pp() | Call should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation

@@ -8,6 +8,7 @@
 | consts.cpp:112:9:112:10 | v6 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | consts.cpp:116:9:116:13 | access to array | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | consts.cpp:121:9:121:10 | v8 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
+| consts.cpp:126:9:126:27 | call to nonConstFuncToArray | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | consts.cpp:130:9:130:10 | v9 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | consts.cpp:135:9:135:11 | v10 | The format string argument to printf should be constant to prevent security issues and other potential errors. |
 | consts.cpp:140:9:140:11 | v11 | The format string argument to printf should be constant to prevent security issues and other potential errors. |

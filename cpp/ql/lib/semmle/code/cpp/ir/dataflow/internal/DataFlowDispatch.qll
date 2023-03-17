@@ -1,8 +1,8 @@
 private import cpp
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.DataFlow
-private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
-private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
+private import DataFlowPrivate
+private import DataFlowUtil
 private import DataFlowImplCommon as DataFlowImplCommon
 
 /**
@@ -143,7 +143,7 @@ private module VirtualDispatch {
   private class DataSensitiveExprCall extends DataSensitiveCall {
     DataSensitiveExprCall() { not exists(this.getStaticCallTarget()) }
 
-    override DataFlow::Node getDispatchValue() { result.asInstruction() = this.getCallTarget() }
+    override DataFlow::Node getDispatchValue() { result.asOperand() = this.getCallTargetOperand() }
 
     override Function resolve() {
       exists(FunctionInstruction fi |
