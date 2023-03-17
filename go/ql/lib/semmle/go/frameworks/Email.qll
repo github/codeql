@@ -67,3 +67,34 @@ module EmailData {
     }
   }
 }
+
+// These models are not implemented using Models-as-Data because they represent reverse flow.
+/**
+ * A taint model of the `Writer.CreatePart` method from `mime/multipart`.
+ *
+ * If tainted data is written to the multipart section created by this method, the underlying writer
+ * should be considered tainted as well.
+ */
+private class MultipartWriterCreatePartModel extends TaintTracking::FunctionModel, Method {
+  MultipartWriterCreatePartModel() {
+    this.hasQualifiedName("mime/multipart", "Writer", "CreatePart")
+  }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isResult(0) and output.isReceiver()
+  }
+}
+
+/**
+ * A taint model of the `NewWriter` function from `mime/multipart`.
+ *
+ * If tainted data is written to the writer created by this function, the underlying writer
+ * should be considered tainted as well.
+ */
+private class MultipartNewWriterModel extends TaintTracking::FunctionModel {
+  MultipartNewWriterModel() { this.hasQualifiedName("mime/multipart", "NewWriter") }
+
+  override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+    input.isResult() and output.isParameter(0)
+  }
+}

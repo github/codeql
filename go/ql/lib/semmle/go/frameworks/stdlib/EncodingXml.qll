@@ -29,4 +29,20 @@ module EncodingXml {
 
     override string getFormat() { result = "XML" }
   }
+
+  // These models are not implemented using Models-as-Data because they represent reverse flow.
+  private class FunctionModels extends TaintTracking::FunctionModel {
+    FunctionInput inp;
+    FunctionOutput outp;
+
+    FunctionModels() {
+      // signature: func NewEncoder(w io.Writer) *Encoder
+      this.hasQualifiedName("encoding/xml", "NewEncoder") and
+      (inp.isResult() and outp.isParameter(0))
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input = inp and output = outp
+    }
+  }
 }

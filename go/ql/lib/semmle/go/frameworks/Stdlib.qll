@@ -3,21 +3,39 @@
  */
 
 import go
+import semmle.go.frameworks.stdlib.ArchiveTar
+import semmle.go.frameworks.stdlib.ArchiveZip
 import semmle.go.frameworks.stdlib.Bufio
+import semmle.go.frameworks.stdlib.CompressFlate
+import semmle.go.frameworks.stdlib.CompressGzip
+import semmle.go.frameworks.stdlib.CompressLzw
+import semmle.go.frameworks.stdlib.CompressZlib
+import semmle.go.frameworks.stdlib.CryptoTls
+import semmle.go.frameworks.stdlib.DatabaseSql
 import semmle.go.frameworks.stdlib.EncodingAsn1
+import semmle.go.frameworks.stdlib.EncodingCsv
+import semmle.go.frameworks.stdlib.EncodingGob
 import semmle.go.frameworks.stdlib.EncodingJson
 import semmle.go.frameworks.stdlib.EncodingPem
 import semmle.go.frameworks.stdlib.EncodingXml
 import semmle.go.frameworks.stdlib.Fmt
 import semmle.go.frameworks.stdlib.Html
 import semmle.go.frameworks.stdlib.HtmlTemplate
+import semmle.go.frameworks.stdlib.Io
 import semmle.go.frameworks.stdlib.IoFs
 import semmle.go.frameworks.stdlib.IoIoutil
 import semmle.go.frameworks.stdlib.Log
+import semmle.go.frameworks.stdlib.MimeMultipart
+import semmle.go.frameworks.stdlib.MimeQuotedprintable
+import semmle.go.frameworks.stdlib.Net
 import semmle.go.frameworks.stdlib.NetHttp
+import semmle.go.frameworks.stdlib.NetHttpHttputil
+import semmle.go.frameworks.stdlib.NetTextproto
 import semmle.go.frameworks.stdlib.Os
 import semmle.go.frameworks.stdlib.Regexp
 import semmle.go.frameworks.stdlib.Strconv
+import semmle.go.frameworks.stdlib.Syscall
+import semmle.go.frameworks.stdlib.TextTabwriter
 import semmle.go.frameworks.stdlib.TextTemplate
 
 /** Provides a class for modeling functions which convert strings into integers. */
