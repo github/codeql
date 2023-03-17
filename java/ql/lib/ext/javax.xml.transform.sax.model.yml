@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["javax.xml.transform.sax", "SAXSource", False, "SAXSource", "(InputSource)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["javax.xml.transform.sax", "SAXSource", False, "SAXSource", "(XMLReader,InputSource)", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
-      - ["javax.xml.transform.sax", "SAXSource", False, "getInputSource", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["javax.xml.transform.sax", "SAXSource", False, "SAXSource", "(InputSource)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["javax.xml.transform.sax", "SAXSource", False, "SAXSource", "(XMLReader,InputSource)", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["javax.xml.transform.sax", "SAXSource", False, "getInputSource", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["javax.xml.transform.sax", "SAXSource", False, "sourceToInputSource", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

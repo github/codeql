@@ -13,28 +13,28 @@ public class Test {
 
 	public void test() throws Exception {
 		{
-			// "org.apache.commons.compress.archivers.tar;TarArchiveEntry;true;TarArchiveEntry;(String);;Argument[0];Argument[-1];taint;ai-generated"
+			// "org.apache.commons.compress.archivers.tar;TarArchiveEntry;true;TarArchiveEntry;(String);;Argument[0];Argument[this];taint;ai-generated"
 			TarArchiveEntry out = null;
 			String in = (String) source();
 			out = new TarArchiveEntry(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.commons.compress.archivers.tar;TarArchiveEntry;true;TarArchiveEntry;(String,boolean);;Argument[0];Argument[-1];taint;ai-generated"
+			// "org.apache.commons.compress.archivers.tar;TarArchiveEntry;true;TarArchiveEntry;(String,boolean);;Argument[0];Argument[this];taint;ai-generated"
 			TarArchiveEntry out = null;
 			String in = (String) source();
 			out = new TarArchiveEntry(in, false);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.commons.compress.archivers.tar;TarArchiveEntry;true;TarArchiveEntry;(String,byte);;Argument[0];Argument[-1];taint;ai-generated"
+			// "org.apache.commons.compress.archivers.tar;TarArchiveEntry;true;TarArchiveEntry;(String,byte);;Argument[0];Argument[this];taint;ai-generated"
 			TarArchiveEntry out = null;
 			String in = (String) source();
 			out = new TarArchiveEntry(in, (byte) 0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "org.apache.commons.compress.archivers.tar;TarArchiveEntry;true;setLinkName;(String);;Argument[0];Argument[-1];taint;ai-generated"
+			// "org.apache.commons.compress.archivers.tar;TarArchiveEntry;true;setLinkName;(String);;Argument[0];Argument[this];taint;ai-generated"
 			TarArchiveEntry out = null;
 			String in = (String) source();
 			out.setLinkName(in);

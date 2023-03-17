@@ -14,7 +14,7 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "org.kohsuke.stapler.framework.adjunct;AdjunctManager;true;AdjunctManager;(ServletContext,ClassLoader,String,long);;Argument[2];Argument[-1].Field[org.kohsuke.stapler.framework.adjunct.AdjunctManager.rootURL];taint;ai-generated"
+			// "org.kohsuke.stapler.framework.adjunct;AdjunctManager;true;AdjunctManager;(ServletContext,ClassLoader,String,long);;Argument[2];Argument[this].Field[org.kohsuke.stapler.framework.adjunct.AdjunctManager.rootURL];taint;ai-generated"
 			AdjunctManager out = null;
 			String in = (String) source();
 			out = new AdjunctManager(null, null, in, 0L);
