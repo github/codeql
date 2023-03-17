@@ -2512,7 +2512,7 @@ module PrivateDjango {
           any(int i | i < routeHandler.getFirstPossibleRoutedParamIndex() | routeHandler.getArg(i))
       )
       or
-      exists(DjangoRouteHandler routeHandler, DjangoRouteRegex regexUse, Regex regex |
+      exists(DjangoRouteHandler routeHandler, DjangoRouteRegex regexUse, RegExp regex |
         regex.getAUse() = regexUse and
         routeHandler = this.getARequestHandler() and
         regexUse.getRouteSetup() = this

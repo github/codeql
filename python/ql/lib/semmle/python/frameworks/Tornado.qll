@@ -423,7 +423,7 @@ module Tornado {
         not result = requestHandler.getArg(0)
       )
       or
-      exists(Function requestHandler, TornadoRouteRegex regexUse, Regex regex |
+      exists(Function requestHandler, TornadoRouteRegex regexUse, RegExp regex |
         regex.getAUse() = regexUse and
         requestHandler = this.getARequestHandler() and
         regexUse.getRouteSetup() = this

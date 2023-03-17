@@ -22,16 +22,16 @@ RegExpTerm getParsedRegExp(StrConst re) { result.getRegex() = re and result.isRo
  */
 private newtype TRegExpParent =
   /** A string literal used as a regular expression */
-  TRegExpLiteral(Regex re) or
+  TRegExpLiteral(RegExp re) or
   /** A quantified term */
-  TRegExpQuantifier(Regex re, int start, int end) { re.qualifiedItem(start, end, _, _) } or
+  TRegExpQuantifier(RegExp re, int start, int end) { re.qualifiedItem(start, end, _, _) } or
   /** A sequence term */
-  TRegExpSequence(Regex re, int start, int end) {
+  TRegExpSequence(RegExp re, int start, int end) {
     re.sequence(start, end) and
     exists(seqChild(re, start, end, 1)) // if a sequence does not have more than one element, it should be treated as that element instead.
   } or
   /** An alternation term */
-  TRegExpAlt(Regex re, int start, int end) {
+  TRegExpAlt(RegExp re, int start, int end) {
     re.alternation(start, end) and
     exists(int part_end |
       re.alternationOption(start, end, start, part_end) and
@@ -39,30 +39,30 @@ private newtype TRegExpParent =
     ) // if an alternation does not have more than one element, it should be treated as that element instead.
   } or
   /** A character class term */
-  TRegExpCharacterClass(Regex re, int start, int end) { re.charSet(start, end) } or
+  TRegExpCharacterClass(RegExp re, int start, int end) { re.charSet(start, end) } or
   /** A character range term */
-  TRegExpCharacterRange(Regex re, int start, int end) { re.charRange(_, start, _, _, end) } or
+  TRegExpCharacterRange(RegExp re, int start, int end) { re.charRange(_, start, _, _, end) } or
   /** A group term */
-  TRegExpGroup(Regex re, int start, int end) { re.group(start, end) } or
+  TRegExpGroup(RegExp re, int start, int end) { re.group(start, end) } or
   /** A special character */
-  TRegExpSpecialChar(Regex re, int start, int end) { re.specialCharacter(start, end, _) } or
+  TRegExpSpecialChar(RegExp re, int start, int end) { re.specialCharacter(start, end, _) } or
   /** A normal character */
-  TRegExpNormalChar(Regex re, int start, int end) {
+  TRegExpNormalChar(RegExp re, int start, int end) {
     re.normalCharacterSequence(start, end)
     or
     re.escapedCharacter(start, end) and
     not re.specialCharacter(start, end, _)
   } or
   /** A back reference */
-  TRegExpBackRef(Regex re, int start, int end) { re.backreference(start, end) }
+  TRegExpBackRef(RegExp re, int start, int end) { re.backreference(start, end) }
 
 pragma[nomagic]
-private int seqChildEnd(Regex re, int start, int end, int i) {
+private int seqChildEnd(RegExp re, int start, int end, int i) {
   result = seqChild(re, start, end, i).getEnd()
 }
 
 // moved out so we can use it in the charpred
-private RegExpTerm seqChild(Regex re, int start, int end, int i) {
+private RegExpTerm seqChild(RegExp re, int start, int end, int i) {
   re.sequence(start, end) and
   (
     i = 0 and
@@ -106,12 +106,12 @@ module Impl implements RegexTreeViewSig {
     RegExpTerm getLastChild() { result = this.getChild(this.getNumChild() - 1) }
 
     /** Gets the associated regex. */
-    abstract Regex getRegex();
+    abstract RegExp getRegex();
   }
 
   /** A string literal used as a regular expression */
   class RegExpLiteral extends TRegExpLiteral, RegExpParent {
-    Regex re;
+    RegExp re;
 
     RegExpLiteral() { this = TRegExpLiteral(re) }
 
@@ -126,7 +126,7 @@ module Impl implements RegexTreeViewSig {
     /** Get a string representing all modes for this regex. */
     string getFlags() { result = concat(string mode | mode = re.getAMode() | mode, " | ") }
 
-    override Regex getRegex() { result = re }
+    override RegExp getRegex() { result = re }
 
     /** Gets the primary QL class for this regex. */
     string getPrimaryQLClass() { result = "RegExpLiteral" }
@@ -136,7 +136,7 @@ module Impl implements RegexTreeViewSig {
    * A regular expression term, that is, a syntactic part of a regular expression.
    */
   class RegExpTerm extends RegExpParent {
-    Regex re;
+    RegExp re;
     int start;
     int end;
 
@@ -206,7 +206,7 @@ module Impl implements RegexTreeViewSig {
      */
     RegExpParent getParent() { result.getAChild() = this }
 
-    override Regex getRegex() { result = re }
+    override RegExp getRegex() { result = re }
 
     /** Gets the offset at which this term starts. */
     int getStart() { result = start }
