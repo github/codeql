@@ -8,6 +8,7 @@ private import semmle.code.cpp.ir.IR
 private import experimental.semmle.code.cpp.semantic.SemanticBound
 private import experimental.semmle.code.cpp.semantic.SemanticExprSpecific
 private import RangeAnalysis
+private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
 /**
  * Gets the lower bound of the expression.
@@ -90,7 +91,7 @@ predicate defMightOverflow(RangeSsaDefinition def, StackVariable v) {
  * does not consider the possibility that the expression might overflow
  * due to a conversion.
  */
-predicate exprMightOverflowNegatively(Expr expr) { none() }
+predicate exprMightOverflowNegatively(Expr expr) { lowerBound(expr) < exprMinVal(expr) }
 
 /**
  * Holds if the expression might overflow negatively. Conversions
@@ -108,7 +109,7 @@ predicate convertedExprMightOverflowNegatively(Expr expr) {
  * does not consider the possibility that the expression might overflow
  * due to a conversion.
  */
-predicate exprMightOverflowPositively(Expr expr) { none() }
+predicate exprMightOverflowPositively(Expr expr) { upperBound(expr) > exprMaxVal(expr) }
 
 /**
  * Holds if the expression might overflow positively. Conversions
