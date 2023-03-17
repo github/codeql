@@ -1,5 +1,5 @@
 name: codeql/javascript-queries
-version: 0.5.5
+version: 0.5.6-dev
 groups: 
   - javascript
   - queries
