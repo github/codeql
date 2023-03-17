@@ -22,7 +22,7 @@ Consider the example given below, an untrusted HTTP parameter <code>name</code> 
 <sample src="examples/SSTIBad.rb" />
 
 <p>
-Here we have fixed the problem by including ERB/Slim syntax in the string, then the user input will be rendered but no evaluated.
+Here we have fixed the problem by including ERB/Slim syntax in the string, then the user input will be rendered but not evaluated.
 </p>
 <sample src="examples/SSTIGood.rb" />
 </example>
