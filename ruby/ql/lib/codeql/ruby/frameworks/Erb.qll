@@ -16,9 +16,7 @@ module Erb {
   private class TemplateSummary extends SummarizedCallable {
     TemplateSummary() { this = "ERB.new" }
 
-    override MethodCall getACall() {
-      result = any(ErbTemplateNewCall c).asExpr().getExpr()
-    }
+    override MethodCall getACall() { result = any(ErbTemplateNewCall c).asExpr().getExpr() }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[0]" and output = "ReturnValue" and preservesValue = false
