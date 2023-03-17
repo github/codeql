@@ -5,7 +5,7 @@
 private import SemanticExpr
 private import SemanticExprSpecific::SemanticExprConfig as Specific
 private import SemanticSSA
-private import SemanticLocation // TODO: SemLocation?
+private import SemanticLocation
 
 /**
  * A valid base for an expression bound.
