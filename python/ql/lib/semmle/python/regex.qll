@@ -2,6 +2,7 @@ import python
 private import semmle.python.ApiGraphs
 // Need to import since frameworks can extend the abstract `RegexString`
 private import semmle.python.Frameworks
+private import semmle.python.Concepts as Concepts
 
 /**
  * Gets the positional argument index containing the regular expression flags for the member of the
@@ -38,37 +39,37 @@ private API::Node relevant_re_member(string name) {
   name != "escape"
 }
 
-private import semmle.python.dataflow.new.internal.DataFlowImplForRegExp as RegData
-
-/** A data-flow configuration for tracking string-constants that are used as regular expressions. */
-private class RegexTracking extends RegData::Configuration {
-  RegexTracking() { this = "RegexTracking" }
-
-  override predicate isSource(RegData::Node node) {
-    node.asExpr() instanceof Bytes or
-    node.asExpr() instanceof Unicode
-  }
-
-  override predicate isSink(RegData::Node node) { used_as_regex_internal(node.asExpr(), _) }
-}
-
 /**
  * Holds if the expression `e` is used as a regex with the `re` module, with the regex-mode `mode` (if known).
  * If regex mode is not known, `mode` will be `"None"`.
  *
  * This predicate has not done any data-flow tracking.
  */
-private predicate used_as_regex_internal(Expr e, string mode) {
+// TODO: This thing should be refactored, along with removing RegexString.
+predicate used_as_regex_internal(Expr e, string mode) {
   /* Call to re.xxx(regex, ... [mode]) */
-  exists(DataFlow::CallCfgNode call, string name |
+  exists(DataFlow::CallCfgNode call |
+    call instanceof Concepts::RegexExecution and
+    e = call.(Concepts::RegexExecution).getRegex().asExpr()
+    or
     call.getArg(0).asExpr() = e and
-    call = relevant_re_member(name).getACall()
+    call = relevant_re_member(_).getACall()
   |
     mode = "None"
     or
-    mode = mode_from_node([call.getArg(re_member_flags_arg(name)), call.getArgByName("flags")])
+    exists(DataFlow::CallCfgNode callNode |
+      call = callNode and
+      mode =
+        mode_from_node([
+            callNode
+                .getArg(re_member_flags_arg(callNode.(DataFlow::MethodCallNode).getMethodName())),
+            callNode.getArgByName("flags")
+          ])
+    )
   )
 }
+
+private import regexp.internal.RegExpTracking as RegExpTracking
 
 /**
  * Holds if the string-constant `s` ends up being used as a regex with the `re` module, with the regex-mode `mode` (if known).
@@ -78,8 +79,8 @@ private predicate used_as_regex_internal(Expr e, string mode) {
  */
 predicate used_as_regex(Expr s, string mode) {
   (s instanceof Bytes or s instanceof Unicode) and
-  exists(RegexTracking t, RegData::Node source, RegData::Node sink |
-    t.hasFlow(source, sink) and
+  exists(DataFlow::Node source, DataFlow::Node sink |
+    source = RegExpTracking::regExpSource(sink) and
     used_as_regex_internal(sink.asExpr(), mode) and
     s = source.asExpr()
   )
@@ -90,7 +91,7 @@ private import semmle.python.RegexTreeView
 
 /** Gets a parsed regular expression term that is executed at `exec`. */
 RegExpTerm getTermForExecution(RegexExecution exec) {
-  exists(RegexTracking t, DataFlow::Node source | t.hasFlow(source, exec.getRegex()) |
+  exists(DataFlow::Node source | source = RegExpTracking::regExpSource(exec.getRegex()) |
     result.getRegex() = source.asExpr() and
     result.isRootTerm()
   )
