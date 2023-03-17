@@ -5,8 +5,8 @@
 | p;FluentAPI;false;returnsThis;(String);;Argument[this];ReturnValue;value;generated |
 | p;ImmutablePojo;false;ImmutablePojo;(String,int);;Argument[0];Argument[this];taint;generated |
 | p;ImmutablePojo;false;getValue;();;Argument[this];ReturnValue;taint;generated |
-| p;ImmutablePojo;false;or;(String);;Argument[this];ReturnValue;taint;generated |
 | p;ImmutablePojo;false;or;(String);;Argument[0];ReturnValue;taint;generated |
+| p;ImmutablePojo;false;or;(String);;Argument[this];ReturnValue;taint;generated |
 | p;InnerClasses$CaptureMe;true;yesCm;(String);;Argument[0];ReturnValue;taint;generated |
 | p;InnerClasses;true;yes;(String);;Argument[0];ReturnValue;taint;generated |
 | p;InnerHolder;false;append;(String);;Argument[0];Argument[this];taint;generated |
@@ -19,8 +19,8 @@
 | p;Joiner;false;Joiner;(CharSequence,CharSequence,CharSequence);;Argument[2];Argument[this];taint;generated |
 | p;Joiner;false;add;(CharSequence);;Argument[this];ReturnValue;value;generated |
 | p;Joiner;false;merge;(Joiner);;Argument[this];ReturnValue;value;generated |
-| p;Joiner;false;setEmptyValue;(CharSequence);;Argument[this];ReturnValue;value;generated |
 | p;Joiner;false;setEmptyValue;(CharSequence);;Argument[0];Argument[this];taint;generated |
+| p;Joiner;false;setEmptyValue;(CharSequence);;Argument[this];ReturnValue;value;generated |
 | p;Joiner;false;toString;();;Argument[this];ReturnValue;taint;generated |
 | p;MultipleImpls$Strat2;true;getValue;();;Argument[this];ReturnValue;taint;generated |
 | p;MultipleImpls$Strategy;true;doSomething;(String);;Argument[0];Argument[this];taint;generated |
