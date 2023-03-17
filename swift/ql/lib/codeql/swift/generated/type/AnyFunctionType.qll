@@ -52,23 +52,6 @@ module Generated {
     final int getNumberOfParamTypes() { result = count(int i | exists(getParamType(i))) }
 
     /**
-     * Gets the `index`th parameter label of this function type (0-based), if it exists.
-     */
-    string getParamLabel(int index) {
-      result = Synth::convertAnyFunctionTypeToRaw(this).(Raw::AnyFunctionType).getParamLabel(index)
-    }
-
-    /**
-     * Holds if `getParamLabel(index)` exists.
-     */
-    final predicate hasParamLabel(int index) { exists(getParamLabel(index)) }
-
-    /**
-     * Gets any of the parameter labels of this function type.
-     */
-    final string getAParamLabel() { result = getParamLabel(_) }
-
-    /**
      * Holds if this type refers to a throwing function.
      */
     predicate isThrowing() {

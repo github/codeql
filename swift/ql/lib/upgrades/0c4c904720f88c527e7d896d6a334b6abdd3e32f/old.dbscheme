@@ -2003,6 +2003,13 @@ any_function_type_param_types(  //dir=type
   int param_type: @type_or_none ref
 );
 
+#keyset[id, index]
+any_function_type_param_labels(  //dir=type
+  int id: @any_function_type ref,
+  int index: int ref,
+  string param_label: string ref
+);
+
 #keyset[id]
 any_function_type_is_throwing(  //dir=type
   int id: @any_function_type ref
