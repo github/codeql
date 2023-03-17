@@ -43,51 +43,51 @@ filterPatterns
 | app.rb:106:3:108:5 | call to before | app.rb:106:10:106:23 | "/protected/*" |
 | app.rb:111:3:113:5 | call to after | app.rb:111:9:111:23 | "/create/:slug" |
 additionalFlowSteps
-| app.rb:85:5:85:9 | [post] self | app.rb:2:22:4:5 | <captured> self |
-| app.rb:85:5:85:9 | [post] self | app.rb:10:21:13:5 | <captured> self |
-| app.rb:85:5:85:9 | [post] self | app.rb:15:23:18:5 | <captured> self |
-| app.rb:85:5:85:9 | [post] self | app.rb:24:26:26:5 | <captured> self |
-| app.rb:85:5:85:9 | [post] self | app.rb:37:16:42:5 | <captured> self |
-| app.rb:85:5:85:9 | [post] self | app.rb:44:53:46:5 | <captured> self |
-| app.rb:85:5:85:9 | [post] self | app.rb:56:32:58:5 | <captured> self |
-| app.rb:85:5:85:9 | [post] self | app.rb:60:48:62:5 | <captured> self |
-| app.rb:85:5:85:9 | [post] self | app.rb:74:11:77:5 | <captured> self |
-| app.rb:85:5:85:9 | [post] self | app.rb:79:11:82:5 | <captured> self |
-| app.rb:85:5:85:9 | [post] self | app.rb:89:16:92:5 | <captured> self |
-| app.rb:85:5:85:9 | [post] self | app.rb:94:15:96:5 | <captured> self |
-| app.rb:86:5:86:11 | [post] self | app.rb:2:22:4:5 | <captured> self |
-| app.rb:86:5:86:11 | [post] self | app.rb:10:21:13:5 | <captured> self |
-| app.rb:86:5:86:11 | [post] self | app.rb:15:23:18:5 | <captured> self |
-| app.rb:86:5:86:11 | [post] self | app.rb:24:26:26:5 | <captured> self |
-| app.rb:86:5:86:11 | [post] self | app.rb:37:16:42:5 | <captured> self |
-| app.rb:86:5:86:11 | [post] self | app.rb:44:53:46:5 | <captured> self |
-| app.rb:86:5:86:11 | [post] self | app.rb:56:32:58:5 | <captured> self |
-| app.rb:86:5:86:11 | [post] self | app.rb:60:48:62:5 | <captured> self |
-| app.rb:86:5:86:11 | [post] self | app.rb:74:11:77:5 | <captured> self |
-| app.rb:86:5:86:11 | [post] self | app.rb:79:11:82:5 | <captured> self |
-| app.rb:86:5:86:11 | [post] self | app.rb:89:16:92:5 | <captured> self |
-| app.rb:86:5:86:11 | [post] self | app.rb:94:15:96:5 | <captured> self |
-| app.rb:103:5:103:9 | [post] self | app.rb:2:22:4:5 | <captured> self |
-| app.rb:103:5:103:9 | [post] self | app.rb:10:21:13:5 | <captured> self |
-| app.rb:103:5:103:9 | [post] self | app.rb:15:23:18:5 | <captured> self |
-| app.rb:103:5:103:9 | [post] self | app.rb:24:26:26:5 | <captured> self |
-| app.rb:103:5:103:9 | [post] self | app.rb:37:16:42:5 | <captured> self |
-| app.rb:103:5:103:9 | [post] self | app.rb:44:53:46:5 | <captured> self |
-| app.rb:103:5:103:9 | [post] self | app.rb:56:32:58:5 | <captured> self |
-| app.rb:103:5:103:9 | [post] self | app.rb:60:48:62:5 | <captured> self |
-| app.rb:103:5:103:9 | [post] self | app.rb:74:11:77:5 | <captured> self |
-| app.rb:103:5:103:9 | [post] self | app.rb:79:11:82:5 | <captured> self |
-| app.rb:103:5:103:9 | [post] self | app.rb:89:16:92:5 | <captured> self |
-| app.rb:103:5:103:9 | [post] self | app.rb:94:15:96:5 | <captured> self |
-| app.rb:103:13:103:22 | [post] self | app.rb:2:22:4:5 | <captured> self |
-| app.rb:103:13:103:22 | [post] self | app.rb:10:21:13:5 | <captured> self |
-| app.rb:103:13:103:22 | [post] self | app.rb:15:23:18:5 | <captured> self |
-| app.rb:103:13:103:22 | [post] self | app.rb:24:26:26:5 | <captured> self |
-| app.rb:103:13:103:22 | [post] self | app.rb:37:16:42:5 | <captured> self |
-| app.rb:103:13:103:22 | [post] self | app.rb:44:53:46:5 | <captured> self |
-| app.rb:103:13:103:22 | [post] self | app.rb:56:32:58:5 | <captured> self |
-| app.rb:103:13:103:22 | [post] self | app.rb:60:48:62:5 | <captured> self |
-| app.rb:103:13:103:22 | [post] self | app.rb:74:11:77:5 | <captured> self |
-| app.rb:103:13:103:22 | [post] self | app.rb:79:11:82:5 | <captured> self |
-| app.rb:103:13:103:22 | [post] self | app.rb:89:16:92:5 | <captured> self |
-| app.rb:103:13:103:22 | [post] self | app.rb:94:15:96:5 | <captured> self |
+| app.rb:85:5:85:9 | [post] self | app.rb:2:22:4:5 | <captured entry> self |
+| app.rb:85:5:85:9 | [post] self | app.rb:10:21:13:5 | <captured entry> self |
+| app.rb:85:5:85:9 | [post] self | app.rb:15:23:18:5 | <captured entry> self |
+| app.rb:85:5:85:9 | [post] self | app.rb:24:26:26:5 | <captured entry> self |
+| app.rb:85:5:85:9 | [post] self | app.rb:37:16:42:5 | <captured entry> self |
+| app.rb:85:5:85:9 | [post] self | app.rb:44:53:46:5 | <captured entry> self |
+| app.rb:85:5:85:9 | [post] self | app.rb:56:32:58:5 | <captured entry> self |
+| app.rb:85:5:85:9 | [post] self | app.rb:60:48:62:5 | <captured entry> self |
+| app.rb:85:5:85:9 | [post] self | app.rb:74:11:77:5 | <captured entry> self |
+| app.rb:85:5:85:9 | [post] self | app.rb:79:11:82:5 | <captured entry> self |
+| app.rb:85:5:85:9 | [post] self | app.rb:89:16:92:5 | <captured entry> self |
+| app.rb:85:5:85:9 | [post] self | app.rb:94:15:96:5 | <captured entry> self |
+| app.rb:86:5:86:11 | [post] self | app.rb:2:22:4:5 | <captured entry> self |
+| app.rb:86:5:86:11 | [post] self | app.rb:10:21:13:5 | <captured entry> self |
+| app.rb:86:5:86:11 | [post] self | app.rb:15:23:18:5 | <captured entry> self |
+| app.rb:86:5:86:11 | [post] self | app.rb:24:26:26:5 | <captured entry> self |
+| app.rb:86:5:86:11 | [post] self | app.rb:37:16:42:5 | <captured entry> self |
+| app.rb:86:5:86:11 | [post] self | app.rb:44:53:46:5 | <captured entry> self |
+| app.rb:86:5:86:11 | [post] self | app.rb:56:32:58:5 | <captured entry> self |
+| app.rb:86:5:86:11 | [post] self | app.rb:60:48:62:5 | <captured entry> self |
+| app.rb:86:5:86:11 | [post] self | app.rb:74:11:77:5 | <captured entry> self |
+| app.rb:86:5:86:11 | [post] self | app.rb:79:11:82:5 | <captured entry> self |
+| app.rb:86:5:86:11 | [post] self | app.rb:89:16:92:5 | <captured entry> self |
+| app.rb:86:5:86:11 | [post] self | app.rb:94:15:96:5 | <captured entry> self |
+| app.rb:103:5:103:9 | [post] self | app.rb:2:22:4:5 | <captured entry> self |
+| app.rb:103:5:103:9 | [post] self | app.rb:10:21:13:5 | <captured entry> self |
+| app.rb:103:5:103:9 | [post] self | app.rb:15:23:18:5 | <captured entry> self |
+| app.rb:103:5:103:9 | [post] self | app.rb:24:26:26:5 | <captured entry> self |
+| app.rb:103:5:103:9 | [post] self | app.rb:37:16:42:5 | <captured entry> self |
+| app.rb:103:5:103:9 | [post] self | app.rb:44:53:46:5 | <captured entry> self |
+| app.rb:103:5:103:9 | [post] self | app.rb:56:32:58:5 | <captured entry> self |
+| app.rb:103:5:103:9 | [post] self | app.rb:60:48:62:5 | <captured entry> self |
+| app.rb:103:5:103:9 | [post] self | app.rb:74:11:77:5 | <captured entry> self |
+| app.rb:103:5:103:9 | [post] self | app.rb:79:11:82:5 | <captured entry> self |
+| app.rb:103:5:103:9 | [post] self | app.rb:89:16:92:5 | <captured entry> self |
+| app.rb:103:5:103:9 | [post] self | app.rb:94:15:96:5 | <captured entry> self |
+| app.rb:103:13:103:22 | [post] self | app.rb:2:22:4:5 | <captured entry> self |
+| app.rb:103:13:103:22 | [post] self | app.rb:10:21:13:5 | <captured entry> self |
+| app.rb:103:13:103:22 | [post] self | app.rb:15:23:18:5 | <captured entry> self |
+| app.rb:103:13:103:22 | [post] self | app.rb:24:26:26:5 | <captured entry> self |
+| app.rb:103:13:103:22 | [post] self | app.rb:37:16:42:5 | <captured entry> self |
+| app.rb:103:13:103:22 | [post] self | app.rb:44:53:46:5 | <captured entry> self |
+| app.rb:103:13:103:22 | [post] self | app.rb:56:32:58:5 | <captured entry> self |
+| app.rb:103:13:103:22 | [post] self | app.rb:60:48:62:5 | <captured entry> self |
+| app.rb:103:13:103:22 | [post] self | app.rb:74:11:77:5 | <captured entry> self |
+| app.rb:103:13:103:22 | [post] self | app.rb:79:11:82:5 | <captured entry> self |
+| app.rb:103:13:103:22 | [post] self | app.rb:89:16:92:5 | <captured entry> self |
+| app.rb:103:13:103:22 | [post] self | app.rb:94:15:96:5 | <captured entry> self |
