@@ -9,7 +9,7 @@ import javax.servlet.ServletResponse;
 
 public interface AsyncContext
 {
-    <T extends AsyncListener> T createListener(Class<T> p0);
+    <T extends AsyncListener> T createListener(java.lang.Class<T> p0);
     ServletRequest getRequest();
     ServletResponse getResponse();
     boolean hasOriginalRequestAndResponse();
