@@ -1,13 +1,13 @@
 /** Provides classes to reason about insecure LDAP authentication. */
 
 import java
-import semmle.code.java.frameworks.Networking
-import semmle.code.java.frameworks.Jndi
+private import semmle.code.java.frameworks.Networking
+private import semmle.code.java.frameworks.Jndi
 
 /**
  * An insecure (non-SSL, non-private) LDAP URL string literal.
  */
-class InsecureLdapUrlLiteral extends StringLiteral {
+private class InsecureLdapUrlLiteral extends StringLiteral {
   InsecureLdapUrlLiteral() {
     // Match connection strings with the LDAP protocol and without private IP addresses to reduce false positives.
     exists(string s | this.getValue() = s |
@@ -18,7 +18,7 @@ class InsecureLdapUrlLiteral extends StringLiteral {
 }
 
 /** The class `java.util.Hashtable`. */
-class TypeHashtable extends Class {
+private class TypeHashtable extends Class {
   TypeHashtable() { this.getSourceDeclaration().hasQualifiedName("java.util", "Hashtable") }
 }
 
@@ -86,7 +86,7 @@ predicate hasFieldValueEnv(MethodAccess ma, string fieldValue, string envValue) 
  * Holds if `ma` sets attribute name `fieldName` to `envValue` in some `Hashtable`.
  */
 bindingset[fieldName, envValue]
-predicate hasFieldNameEnv(MethodAccess ma, string fieldName, string envValue) {
+private predicate hasFieldNameEnv(MethodAccess ma, string fieldName, string envValue) {
   // environment.put(Context.SECURITY_AUTHENTICATION, "simple")
   ma.getMethod().getDeclaringType().getAnAncestor() instanceof TypeHashtable and
   ma.getMethod().hasName(["put", "setProperty"]) and
