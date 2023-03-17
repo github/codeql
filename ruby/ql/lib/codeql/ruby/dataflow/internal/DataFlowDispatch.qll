@@ -250,7 +250,8 @@ private predicate selfInToplevel(SelfVariable self, Module m) {
 private predicate asModulePattern(SsaDefinitionExtNode def, Module m) {
   exists(AsPattern ap |
     m = resolveConstantReadAccess(ap.getPattern()) and
-    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess() = ap.getVariableAccess()
+    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getNode() =
+      ap.getVariableAccess()
   )
 }
 

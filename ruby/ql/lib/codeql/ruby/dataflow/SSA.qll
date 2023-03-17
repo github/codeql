@@ -178,6 +178,9 @@ module Ssa {
 
     /** Gets the location of this SSA definition. */
     Location getLocation() { result = this.getControlFlowNode().getLocation() }
+
+    /** Gets the scope of this SSA definition. */
+    CfgScope getScope() { result = this.getBasicBlock().getScope() }
   }
 
   /**
@@ -189,7 +192,7 @@ module Ssa {
    * ```
    */
   class WriteDefinition extends Definition, SsaImpl::WriteDefinition {
-    private VariableWriteAccess write;
+    private VariableWriteAccessCfgNode write;
 
     WriteDefinition() {
       exists(BasicBlock bb, int i, Variable v |
@@ -199,7 +202,7 @@ module Ssa {
     }
 
     /** Gets the underlying write access. */
-    final VariableWriteAccess getWriteAccess() { result = write }
+    final VariableWriteAccessCfgNode getWriteAccess() { result = write }
 
     /**
      * Holds if this SSA definition represents a direct assignment of `value`
@@ -289,7 +292,7 @@ module Ssa {
       )
     }
 
-    final override string toString() { result = "<captured> " + this.getSourceVariable() }
+    final override string toString() { result = "<captured entry> " + this.getSourceVariable() }
 
     override Location getLocation() { result = this.getBasicBlock().getLocation() }
   }
@@ -342,7 +345,7 @@ module Ssa {
      */
     final Definition getPriorDefinition() { result = SsaImpl::uncertainWriteDefinitionInput(this) }
 
-    override string toString() { result = this.getControlFlowNode().toString() }
+    override string toString() { result = "<captured exit> " + this.getSourceVariable() }
   }
 
   /**
