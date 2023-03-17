@@ -26,7 +26,7 @@ predicate isSafeSecureCookieSetting(Expr e) {
   )
 }
 
-private module SecureCookieConfiguration implements DataFlow::ConfigSig {
+private module SecureCookieConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(MethodAccess ma, Method m | ma.getMethod() = m |
       m.getDeclaringType() instanceof TypeCookie and
@@ -47,7 +47,7 @@ private module SecureCookieConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module SecureCookieFlow = DataFlow::Make<SecureCookieConfiguration>;
+module SecureCookieFlow = DataFlow::Make<SecureCookieConfig>;
 
 from MethodAccess add
 where

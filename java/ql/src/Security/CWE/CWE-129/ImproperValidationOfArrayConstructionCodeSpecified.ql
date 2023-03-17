@@ -15,7 +15,7 @@ import java
 import ArraySizing
 import semmle.code.java.dataflow.TaintTracking
 
-private module BoundedFlowSourceConf implements DataFlow::ConfigSig {
+private module BoundedFlowSourceConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof BoundedFlowSource and
     // There is not a fixed lower bound which is greater than zero.
@@ -27,7 +27,7 @@ private module BoundedFlowSourceConf implements DataFlow::ConfigSig {
   }
 }
 
-module BoundedFlowSourceFlow = DataFlow::Make<BoundedFlowSourceConf>;
+module BoundedFlowSourceFlow = DataFlow::Make<BoundedFlowSourceConfig>;
 
 import BoundedFlowSourceFlow::PathGraph
 
