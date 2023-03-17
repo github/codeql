@@ -2,7 +2,7 @@
  * Provides classes for working with regular expressions.
  */
 
-private import semmle.python.RegexTreeView
+private import semmle.python.regexp.RegexTreeView
 private import semmle.python.regex
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.regexp.internal.RegExpTracking

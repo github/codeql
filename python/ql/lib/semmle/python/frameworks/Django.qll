@@ -2512,9 +2512,10 @@ module PrivateDjango {
           any(int i | i < routeHandler.getFirstPossibleRoutedParamIndex() | routeHandler.getArg(i))
       )
       or
-      exists(DjangoRouteHandler routeHandler, DjangoRouteRegex regex |
+      exists(DjangoRouteHandler routeHandler, DjangoRouteRegex regexUse, Regex regex |
+        regex.getAUse() = regexUse and
         routeHandler = this.getARequestHandler() and
-        regex.getRouteSetup() = this
+        regexUse.getRouteSetup() = this
       |
         // either using named capture groups (passed as keyword arguments) or using
         // unnamed capture groups (passed as positional arguments)
@@ -2533,14 +2534,12 @@ module PrivateDjango {
   /**
    * A regex that is used to set up a route.
    *
-   * Needs this subclass to be considered a RegexString.
+   * Needs this subclass to be considered a RegExpInterpretation.
    */
-  private class DjangoRouteRegex extends RegexString instanceof StrConst {
+  private class DjangoRouteRegex extends RegExpInterpretation::Range {
     DjangoRegexRouteSetup rePathCall;
 
-    DjangoRouteRegex() {
-      rePathCall.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this)
-    }
+    DjangoRouteRegex() { this = rePathCall.getUrlPatternArg() }
 
     DjangoRegexRouteSetup getRouteSetup() { result = rePathCall }
   }

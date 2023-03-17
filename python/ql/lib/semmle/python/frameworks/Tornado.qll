@@ -384,12 +384,12 @@ module Tornado {
   /**
    * A regex that is used to set up a route.
    *
-   * Needs this subclass to be considered a RegexString.
+   * Needs this subclass to be considered a RegExpInterpretation.
    */
-  private class TornadoRouteRegex extends RegexString instanceof StrConst {
+  private class TornadoRouteRegex extends RegExpInterpretation::Range {
     TornadoRouteSetup setup;
 
-    TornadoRouteRegex() { setup.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this) }
+    TornadoRouteRegex() { this = setup.getUrlPatternArg() }
 
     TornadoRouteSetup getRouteSetup() { result = setup }
   }
@@ -423,9 +423,10 @@ module Tornado {
         not result = requestHandler.getArg(0)
       )
       or
-      exists(Function requestHandler, TornadoRouteRegex regex |
+      exists(Function requestHandler, TornadoRouteRegex regexUse, Regex regex |
+        regex.getAUse() = regexUse and
         requestHandler = this.getARequestHandler() and
-        regex.getRouteSetup() = this
+        regexUse.getRouteSetup() = this
       |
         // first group will have group number 1
         result = requestHandler.getArg(regex.getGroupNumber(_, _))

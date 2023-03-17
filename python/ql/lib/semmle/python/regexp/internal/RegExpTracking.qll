@@ -26,8 +26,7 @@ private import semmle.python.regex as Regex
 DataFlow::Node regSink() {
   result = any(Concepts::RegexExecution exec).getRegex()
   or
-  // TODO: Refactor into something nicer, and remove the above import of `semmle.python.regex`
-  Regex::used_as_regex_internal(result.asExpr(), _)
+  result instanceof Regex::RegExpInterpretation::Range
 }
 
 /**

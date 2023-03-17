@@ -1,6 +1,6 @@
 import python
 private import semmle.python.ApiGraphs
-// Need to import since frameworks can extend the abstract `RegexString`
+// Need to import since frameworks can extend the abstract `RegExpInterpretation::Range`
 private import semmle.python.Frameworks
 private import semmle.python.Concepts as Concepts
 
@@ -45,7 +45,7 @@ private API::Node relevant_re_member(string name) {
  *
  * This predicate has not done any data-flow tracking.
  */
-// TODO: This thing should be refactored, along with removing RegexString.
+// TODO: This should only be used to get the `mode`, and nowhere else.
 predicate used_as_regex_internal(Expr e, string mode) {
   /* Call to re.xxx(regex, ... [mode]) */
   exists(DataFlow::CallCfgNode call |
@@ -70,24 +70,8 @@ predicate used_as_regex_internal(Expr e, string mode) {
 }
 
 private import regexp.internal.RegExpTracking as RegExpTracking
-
-/**
- * Holds if the string-constant `s` ends up being used as a regex with the `re` module, with the regex-mode `mode` (if known).
- * If regex mode is not known, `mode` will be `"None"`.
- *
- * This predicate has done data-flow tracking to find the string-constant that is used as a regex.
- */
-predicate used_as_regex(Expr s, string mode) {
-  (s instanceof Bytes or s instanceof Unicode) and
-  exists(DataFlow::Node source, DataFlow::Node sink |
-    source = RegExpTracking::regExpSource(sink) and
-    used_as_regex_internal(sink.asExpr(), mode) and
-    s = source.asExpr()
-  )
-}
-
 private import semmle.python.Concepts
-private import semmle.python.RegexTreeView
+private import semmle.python.regexp.RegexTreeView
 
 /** Gets a parsed regular expression term that is executed at `exec`. */
 RegExpTerm getTermForExecution(RegexExecution exec) {
@@ -137,16 +121,70 @@ private DataFlow::Node re_flag_tracker(string flag_name) {
 }
 
 /** Gets a regular expression mode flag associated with the given data flow node. */
+// TODO: Move this into a RegexFlag module, along with related code?
 string mode_from_node(DataFlow::Node node) { node = re_flag_tracker(result) }
 
+/** Provides a class for modeling regular expression interpretations. */
+module RegExpInterpretation {
+  /**
+   * A node that is not a regular expression literal, but is used in places that
+   * may interpret it as one. Instances of this class are typically strings that
+   * flow to method calls like `re.compile`.
+   */
+  abstract class Range extends DataFlow::Node { }
+}
+
+/**
+ * A node interpreted as a regular expression.
+ * Speficically nodes where string values are interpreted as regular expressions.
+ */
+class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
+  StdLibRegExpInterpretation() {
+    this =
+      API::moduleImport("re").getMember(any(string name | name != "escape")).getACall().getArg(0)
+  }
+}
+
 /** A StrConst used as a regular expression */
-abstract class RegexString extends Expr {
-  RegexString() {
+deprecated class RegexString extends Regex {
+  RegexString() { this = RegExpTracking::regExpSource(_).asExpr() }
+}
+
+/** A StrConst used as a regular expression */
+class Regex extends Expr {
+  DataFlow::Node sink;
+
+  Regex() {
     (this instanceof Bytes or this instanceof Unicode) and
+    this = RegExpTracking::regExpSource(sink).asExpr() and
     // is part of the user code
     exists(this.getLocation().getFile().getRelativePath())
   }
 
+  /** Gets a data-flow node where this string value is used as a regular expression. */
+  DataFlow::Node getAUse() { result = sink }
+
+  /**
+   * Gets a mode (if any) of this regular expression. Can be any of:
+   * DEBUG
+   * IGNORECASE
+   * LOCALE
+   * MULTILINE
+   * DOTALL
+   * UNICODE
+   * VERBOSE
+   */
+  string getAMode() {
+    exists(string mode |
+      used_as_regex_internal(sink.asExpr(), mode) and
+      result != "None" and
+      result = mode
+    )
+    or
+    result = this.getModeFromPrefix()
+  }
+
+  // TODO: Refactor all of the below into a regex parsing file, similar to Ruby.
   /**
    * Helper predicate for `char_set_start(int start, int end)`.
    *
@@ -1080,27 +1118,5 @@ abstract class RegexString extends Expr {
       this.charSet(start, end)
     ) and
     this.lastPart(start, end)
-  }
-}
-
-/** A StrConst used as a regular expression */
-class Regex extends RegexString {
-  Regex() { used_as_regex(this, _) }
-
-  /**
-   * Gets a mode (if any) of this regular expression. Can be any of:
-   * DEBUG
-   * IGNORECASE
-   * LOCALE
-   * MULTILINE
-   * DOTALL
-   * UNICODE
-   * VERBOSE
-   */
-  string getAMode() {
-    result != "None" and
-    used_as_regex(this, result)
-    or
-    result = this.getModeFromPrefix()
   }
 }
