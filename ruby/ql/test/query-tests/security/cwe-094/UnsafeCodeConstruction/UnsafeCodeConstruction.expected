@@ -4,7 +4,8 @@ edges
 | impl/unsafeCode.rb:12:12:12:12 | x :  | impl/unsafeCode.rb:13:33:13:33 | x |
 | impl/unsafeCode.rb:28:17:28:22 | my_arr :  | impl/unsafeCode.rb:29:10:29:15 | my_arr |
 | impl/unsafeCode.rb:32:21:32:21 | x :  | impl/unsafeCode.rb:33:12:33:12 | x :  |
-| impl/unsafeCode.rb:33:12:33:12 | x :  | impl/unsafeCode.rb:34:10:34:12 | arr |
+| impl/unsafeCode.rb:33:5:33:7 | arr [element 0] :  | impl/unsafeCode.rb:34:10:34:12 | arr |
+| impl/unsafeCode.rb:33:12:33:12 | x :  | impl/unsafeCode.rb:33:5:33:7 | arr [element 0] :  |
 | impl/unsafeCode.rb:37:15:37:15 | x :  | impl/unsafeCode.rb:39:14:39:14 | x :  |
 | impl/unsafeCode.rb:39:5:39:7 | [post] arr [element] :  | impl/unsafeCode.rb:40:10:40:12 | arr |
 | impl/unsafeCode.rb:39:5:39:7 | [post] arr [element] :  | impl/unsafeCode.rb:44:10:44:12 | arr |
@@ -13,10 +14,12 @@ edges
 | impl/unsafeCode.rb:54:21:54:21 | x :  | impl/unsafeCode.rb:55:22:55:22 | x |
 | impl/unsafeCode.rb:59:21:59:21 | x :  | impl/unsafeCode.rb:60:17:60:17 | x :  |
 | impl/unsafeCode.rb:59:24:59:24 | y :  | impl/unsafeCode.rb:63:30:63:30 | y :  |
-| impl/unsafeCode.rb:60:11:60:18 | call to Array [element 0] :  | impl/unsafeCode.rb:61:10:61:12 | arr |
+| impl/unsafeCode.rb:60:5:60:7 | arr [element 0] :  | impl/unsafeCode.rb:61:10:61:12 | arr |
+| impl/unsafeCode.rb:60:11:60:18 | call to Array [element 0] :  | impl/unsafeCode.rb:60:5:60:7 | arr [element 0] :  |
 | impl/unsafeCode.rb:60:17:60:17 | x :  | impl/unsafeCode.rb:60:11:60:18 | call to Array [element 0] :  |
+| impl/unsafeCode.rb:63:5:63:8 | arr2 [element 0] :  | impl/unsafeCode.rb:64:10:64:13 | arr2 |
 | impl/unsafeCode.rb:63:13:63:32 | call to Array [element 1] :  | impl/unsafeCode.rb:63:13:63:42 | call to join :  |
-| impl/unsafeCode.rb:63:13:63:42 | call to join :  | impl/unsafeCode.rb:64:10:64:13 | arr2 |
+| impl/unsafeCode.rb:63:13:63:42 | call to join :  | impl/unsafeCode.rb:63:5:63:8 | arr2 [element 0] :  |
 | impl/unsafeCode.rb:63:30:63:30 | y :  | impl/unsafeCode.rb:63:13:63:32 | call to Array [element 1] :  |
 nodes
 | impl/unsafeCode.rb:2:12:2:17 | target :  | semmle.label | target :  |
@@ -28,6 +31,7 @@ nodes
 | impl/unsafeCode.rb:28:17:28:22 | my_arr :  | semmle.label | my_arr :  |
 | impl/unsafeCode.rb:29:10:29:15 | my_arr | semmle.label | my_arr |
 | impl/unsafeCode.rb:32:21:32:21 | x :  | semmle.label | x :  |
+| impl/unsafeCode.rb:33:5:33:7 | arr [element 0] :  | semmle.label | arr [element 0] :  |
 | impl/unsafeCode.rb:33:12:33:12 | x :  | semmle.label | x :  |
 | impl/unsafeCode.rb:34:10:34:12 | arr | semmle.label | arr |
 | impl/unsafeCode.rb:37:15:37:15 | x :  | semmle.label | x :  |
@@ -41,9 +45,11 @@ nodes
 | impl/unsafeCode.rb:55:22:55:22 | x | semmle.label | x |
 | impl/unsafeCode.rb:59:21:59:21 | x :  | semmle.label | x :  |
 | impl/unsafeCode.rb:59:24:59:24 | y :  | semmle.label | y :  |
+| impl/unsafeCode.rb:60:5:60:7 | arr [element 0] :  | semmle.label | arr [element 0] :  |
 | impl/unsafeCode.rb:60:11:60:18 | call to Array [element 0] :  | semmle.label | call to Array [element 0] :  |
 | impl/unsafeCode.rb:60:17:60:17 | x :  | semmle.label | x :  |
 | impl/unsafeCode.rb:61:10:61:12 | arr | semmle.label | arr |
+| impl/unsafeCode.rb:63:5:63:8 | arr2 [element 0] :  | semmle.label | arr2 [element 0] :  |
 | impl/unsafeCode.rb:63:13:63:32 | call to Array [element 1] :  | semmle.label | call to Array [element 1] :  |
 | impl/unsafeCode.rb:63:13:63:42 | call to join :  | semmle.label | call to join :  |
 | impl/unsafeCode.rb:63:30:63:30 | y :  | semmle.label | y :  |
