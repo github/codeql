@@ -1,6 +1,7 @@
 /** Provides classes to reason about insecure LDAP authentication. */
 
 import java
+private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.frameworks.Networking
 private import semmle.code.java.frameworks.Jndi
 
@@ -112,4 +113,13 @@ predicate isBasicAuthEnv(MethodAccess ma) {
 predicate isSslEnv(MethodAccess ma) {
   hasFieldValueEnv(ma, "java.naming.security.protocol", "ssl") or
   hasFieldNameEnv(ma, "SECURITY_PROTOCOL", "ssl")
+}
+
+class InsecureLdapUrlSink extends DataFlow::Node {
+  InsecureLdapUrlSink() {
+    exists(ConstructorCall cc |
+      cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
+      this.asExpr() = cc.getArgument(0)
+    )
+  }
 }

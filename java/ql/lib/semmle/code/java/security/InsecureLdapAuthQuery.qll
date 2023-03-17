@@ -12,12 +12,7 @@ import semmle.code.java.security.InsecureLdapAuth
 private module InsecureLdapUrlConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof InsecureLdapUrl }
 
-  predicate isSink(DataFlow::Node sink) {
-    exists(ConstructorCall cc |
-      cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
-      sink.asExpr() = cc.getArgument(0)
-    )
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
 
   /** Method call of `env.put()`. */
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -37,16 +32,12 @@ module InsecureLdapUrlFlow = TaintTracking::Make<InsecureLdapUrlConfig>;
 private module BasicAuthConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
     exists(MethodAccess ma |
-      isBasicAuthEnv(ma) and ma.getQualifier() = src.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
+      isBasicAuthEnv(ma) and
+      ma.getQualifier() = src.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
     )
   }
 
-  predicate isSink(DataFlow::Node sink) {
-    exists(ConstructorCall cc |
-      cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
-      sink.asExpr() = cc.getArgument(0)
-    )
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
 }
 
 module BasicAuthFlow = DataFlow::Make<BasicAuthConfig>;
@@ -57,16 +48,12 @@ module BasicAuthFlow = DataFlow::Make<BasicAuthConfig>;
 private module RequiresSslConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
     exists(MethodAccess ma |
-      isSslEnv(ma) and ma.getQualifier() = src.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
+      isSslEnv(ma) and
+      ma.getQualifier() = src.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
     )
   }
 
-  predicate isSink(DataFlow::Node sink) {
-    exists(ConstructorCall cc |
-      cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
-      sink.asExpr() = cc.getArgument(0)
-    )
-  }
+  predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
 }
 
 module RequiresSslFlow = DataFlow::Make<RequiresSslConfig>;
