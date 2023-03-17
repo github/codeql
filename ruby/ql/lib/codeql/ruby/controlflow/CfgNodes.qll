@@ -282,7 +282,7 @@ module ExprNodes {
 
     override AssignExprChildMapping e;
 
-    final override AssignExpr getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override AssignExpr getExpr() { result = super.getExpr() }
 
     /** Gets the LHS of this assignment. */
     final LhsExprCfgNode getLhs() { e.hasCfgChild(e.getLeftOperand(), this, result) }
@@ -351,7 +351,7 @@ module ExprNodes {
 
     override BlockArgumentChildMapping e;
 
-    final override BlockArgument getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override BlockArgument getExpr() { result = super.getExpr() }
 
     /** Gets the value of this block argument. */
     final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
@@ -426,7 +426,7 @@ module ExprNodes {
 
     override CaseExprChildMapping e;
 
-    final override CaseExpr getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override CaseExpr getExpr() { result = super.getExpr() }
 
     /** Gets the expression being compared, if any. */
     final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
@@ -660,7 +660,7 @@ module ExprNodes {
 
     override ConditionalExprChildMapping e;
 
-    final override ConditionalExpr getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override ConditionalExpr getExpr() { result = super.getExpr() }
 
     /** Gets the condition expression. */
     final ExprCfgNode getCondition() { e.hasCfgChild(e.getCondition(), this, result) }
@@ -698,7 +698,7 @@ module ExprNodes {
 
     override StmtSequenceChildMapping e;
 
-    final override StmtSequence getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override StmtSequence getExpr() { result = super.getExpr() }
 
     /** Gets the last statement in this sequence, if any. */
     final ExprCfgNode getLastStmt() { e.hasCfgChild(e.getLastStmt(), this, result) }
@@ -714,7 +714,7 @@ module ExprNodes {
 
     override ForExprChildMapping e;
 
-    final override ForExpr getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override ForExpr getExpr() { result = super.getExpr() }
 
     /** Gets the value being iterated over. */
     final ExprCfgNode getValue() { e.hasCfgChild(e.getValue(), this, result) }
@@ -737,7 +737,7 @@ module ExprNodes {
 
     override PairChildMapping e;
 
-    final override Pair getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override Pair getExpr() { result = super.getExpr() }
 
     /**
      * Gets the key expression of this pair.
@@ -756,7 +756,7 @@ module ExprNodes {
 
     override VariableAccess e;
 
-    override VariableAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+    override VariableAccess getExpr() { result = super.getExpr() }
 
     /** Gets the variable that is being accessed. */
     Variable getVariable() { result = this.getExpr().getVariable() }
@@ -768,7 +768,7 @@ module ExprNodes {
 
     override VariableReadAccess e;
 
-    override VariableReadAccess getExpr() { result = VariableAccessCfgNode.super.getExpr() }
+    override VariableReadAccess getExpr() { result = super.getExpr() }
   }
 
   /** A control-flow node that wraps a `LocalVariableReadAccess` AST expression. */
@@ -792,7 +792,7 @@ module ExprNodes {
 
     override InstanceVariableAccessMapping e;
 
-    override InstanceVariableAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+    override InstanceVariableAccess getExpr() { result = super.getExpr() }
 
     /**
      * Gets the synthetic receiver (`self`) of this instance variable access.
@@ -810,7 +810,7 @@ module ExprNodes {
 
     override SelfVariableAccessMapping e;
 
-    override SelfVariableAccess getExpr() { result = VariableAccessCfgNode.super.getExpr() }
+    override SelfVariableAccess getExpr() { result = super.getExpr() }
   }
 
   private class VariableWriteAccessChildMapping extends ExprChildMapping, VariableWriteAccess {
@@ -840,7 +840,7 @@ module ExprNodes {
 
     override VariableWriteAccessChildMapping e;
 
-    override VariableWriteAccess getExpr() { result = VariableAccessCfgNode.super.getExpr() }
+    override VariableWriteAccess getExpr() { result = super.getExpr() }
   }
 
   private class LocalVariableWriteAccessChildMapping extends VariableWriteAccessChildMapping,
@@ -864,7 +864,7 @@ module ExprNodes {
 
     override ConstantReadAccess e;
 
-    final override ConstantReadAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override ConstantReadAccess getExpr() { result = super.getExpr() }
   }
 
   /** A control-flow node that wraps a `ConstantWriteAccess` AST expression. */
@@ -873,7 +873,7 @@ module ExprNodes {
 
     override ConstantWriteAccess e;
 
-    final override ConstantWriteAccess getExpr() { result = ExprCfgNode.super.getExpr() }
+    final override ConstantWriteAccess getExpr() { result = super.getExpr() }
   }
 
   /** A control-flow node that wraps an `InstanceVariableReadAccess` AST expression. */
@@ -882,9 +882,7 @@ module ExprNodes {
 
     override string getAPrimaryQlClass() { result = "InstanceVariableReadAccessCfgNode" }
 
-    final override InstanceVariableReadAccess getExpr() {
-      result = InstanceVariableAccessCfgNode.super.getExpr()
-    }
+    final override InstanceVariableReadAccess getExpr() { result = super.getExpr() }
   }
 
   /** A control-flow node that wraps an `InstanceVariableWriteAccess` AST expression. */
@@ -893,9 +891,7 @@ module ExprNodes {
 
     override string getAPrimaryQlClass() { result = "InstanceVariableWriteAccessCfgNode" }
 
-    final override InstanceVariableWriteAccess getExpr() {
-      result = InstanceVariableAccessCfgNode.super.getExpr()
-    }
+    final override InstanceVariableWriteAccess getExpr() { result = super.getExpr() }
   }
 
   /** A control-flow node that wraps a `StringInterpolationComponent` AST expression. */
