@@ -65,7 +65,7 @@ private newtype WebViewOrSettings =
   IsWebView() or
   IsSettings()
 
-private module WebViewDisallowContentAccessConfiguration implements DataFlow::StateConfigSig {
+private module WebViewDisallowContentAccessConfig implements DataFlow::StateConfigSig {
   class FlowState = WebViewOrSettings;
 
   predicate isSource(DataFlow::Node node, FlowState state) {
@@ -102,7 +102,7 @@ private module WebViewDisallowContentAccessConfiguration implements DataFlow::St
 }
 
 module WebViewDisallowContentAccessFlow =
-  TaintTracking::MakeWithState<WebViewDisallowContentAccessConfiguration>;
+  TaintTracking::MakeWithState<WebViewDisallowContentAccessConfig>;
 
 from Expr e
 where

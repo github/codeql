@@ -16,13 +16,13 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.XPath
 
-private module XPathInjectionConfiguration implements DataFlow::ConfigSig {
+private module XPathInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XPathInjectionSink }
 }
 
-module XPathInjectionFlow = TaintTracking::Make<XPathInjectionConfiguration>;
+module XPathInjectionFlow = TaintTracking::Make<XPathInjectionConfig>;
 
 import XPathInjectionFlow::PathGraph
 
