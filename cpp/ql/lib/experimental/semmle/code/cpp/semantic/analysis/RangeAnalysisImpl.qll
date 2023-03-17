@@ -3,15 +3,15 @@ private import RangeAnalysisSpecific
 private import experimental.semmle.code.cpp.semantic.analysis.FloatDelta
 private import RangeUtils
 private import experimental.semmle.code.cpp.semantic.SemanticBound as SemanticBound
-private import semmle.code.cpp.ir.IR as IR
 private import experimental.semmle.code.cpp.semantic.SemanticLocation
+private import experimental.semmle.code.cpp.semantic.SemanticSSA
 
 module ConstantBounds implements BoundSig<FloatDelta> {
   class SemBound instanceof SemanticBound::SemBound {
     SemBound() {
       this instanceof SemanticBound::SemZeroBound
       or
-      this.(SemanticBound::SemSsaBound).getExpr(0) instanceof IR::PhiInstruction
+      this.(SemanticBound::SemSsaBound).getAVariable() instanceof SemSsaPhiNode
     }
 
     string toString() { result = super.toString() }
