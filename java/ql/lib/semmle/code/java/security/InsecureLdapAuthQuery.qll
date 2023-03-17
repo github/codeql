@@ -1,9 +1,9 @@
 /** Provides dataflow configurations to reason about insecure LDAP authentication. */
 
 import java
-import DataFlow
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.TaintTracking
+import semmle.code.java.frameworks.Jndi
 import semmle.code.java.security.InsecureLdapAuth
 
 /**
@@ -37,7 +37,7 @@ module InsecureLdapUrlFlow = TaintTracking::Make<InsecureLdapUrlConfig>;
 private module BasicAuthConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
     exists(MethodAccess ma |
-      isBasicAuthEnv(ma) and ma.getQualifier() = src.(PostUpdateNode).getPreUpdateNode().asExpr()
+      isBasicAuthEnv(ma) and ma.getQualifier() = src.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
     )
   }
 
@@ -57,7 +57,7 @@ module BasicAuthFlow = DataFlow::Make<BasicAuthConfig>;
 private module RequiresSslConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
     exists(MethodAccess ma |
-      isSslEnv(ma) and ma.getQualifier() = src.(PostUpdateNode).getPreUpdateNode().asExpr()
+      isSslEnv(ma) and ma.getQualifier() = src.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
     )
   }
 
