@@ -6,6 +6,75 @@ private import semmle.code.java.frameworks.Networking
 private import semmle.code.java.frameworks.Jndi
 
 /**
+ * An expression that represents an insecure (non-SSL, non-private) LDAP URL.
+ */
+class InsecureLdapUrl extends Expr {
+  InsecureLdapUrl() {
+    this instanceof InsecureLdapUrlLiteral
+    or
+    // Concatentation of insecure protcol and non-private host:
+    // protocol + host + ...
+    exists(AddExpr e, CompileTimeConstantExpr protocol, Expr rest, Expr host |
+      e = this and
+      protocol = e.getLeftOperand() and
+      rest = e.getRightOperand() and
+      if rest instanceof AddExpr then host = rest.(AddExpr).getLeftOperand() else host = rest
+    |
+      protocol.getStringValue() = "ldap://" and
+      not exists(string hostString | hostString = getHostname(host) |
+        hostString.length() = 0 or // Empty host is loopback address
+        hostString instanceof PrivateHostName
+      )
+    )
+  }
+}
+
+/**
+ * A sink representing the construction of a `DirContextEnvironment`.
+ */
+class InsecureLdapUrlSink extends DataFlow::Node {
+  InsecureLdapUrlSink() {
+    exists(ConstructorCall cc |
+      cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
+      this.asExpr() = cc.getArgument(0)
+    )
+  }
+}
+
+/**
+ * Holds if `ma` sets `java.naming.security.authentication` (also known as `Context.SECURITY_AUTHENTICATION`) to `simple` in some `Hashtable`.
+ */
+predicate isBasicAuthEnv(MethodAccess ma) {
+  hasFieldValueEnv(ma, "java.naming.security.authentication", "simple") or
+  hasFieldNameEnv(ma, "SECURITY_AUTHENTICATION", "simple")
+}
+
+/**
+ * Holds if `ma` sets `java.naming.security.protocol` (also known as `Context.SECURITY_PROTOCOL`) to `ssl` in some `Hashtable`.
+ */
+predicate isSslEnv(MethodAccess ma) {
+  hasFieldValueEnv(ma, "java.naming.security.protocol", "ssl") or
+  hasFieldNameEnv(ma, "SECURITY_PROTOCOL", "ssl")
+}
+
+/**
+ * Holds if `ma` writes the `java.naming.provider.url` (also known as `Context.PROVIDER_URL`) key of a `Hashtable`.
+ */
+predicate isProviderUrlSetter(MethodAccess ma) {
+  ma.getMethod().getDeclaringType().getAnAncestor() instanceof TypeHashtable and
+  ma.getMethod().hasName(["put", "setProperty"]) and
+  (
+    ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "java.naming.provider.url"
+    or
+    exists(Field f |
+      ma.getArgument(0) = f.getAnAccess() and
+      f.hasName("PROVIDER_URL") and
+      f.getDeclaringType() instanceof TypeNamingContext
+    )
+  )
+}
+
+/**
  * An insecure (non-SSL, non-private) LDAP URL string literal.
  */
 private class InsecureLdapUrlLiteral extends StringLiteral {
@@ -31,51 +100,10 @@ private string getHostname(Expr expr) {
 }
 
 /**
- * An expression that represents an insecure (non-SSL, non-private) LDAP URL.
- */
-class InsecureLdapUrl extends Expr {
-  InsecureLdapUrl() {
-    this instanceof InsecureLdapUrlLiteral
-    or
-    // Concatentation of insecure protcol and non-private host:
-    // protocol + host + ...
-    exists(AddExpr e, CompileTimeConstantExpr protocol, Expr rest, Expr host |
-      e = this and
-      protocol = e.getLeftOperand() and
-      rest = e.getRightOperand() and
-      if rest instanceof AddExpr then host = rest.(AddExpr).getLeftOperand() else host = rest
-    |
-      protocol.getStringValue() = "ldap://" and
-      not exists(string hostString | hostString = getHostname(host) |
-        hostString.length() = 0 or // Empty host is loopback address
-        hostString instanceof PrivateHostName
-      )
-    )
-  }
-}
-
-/**
- * Holds if `ma` writes the `java.naming.provider.url` (also known as `Context.PROVIDER_URL`) key of a `Hashtable`.
- */
-predicate isProviderUrlSetter(MethodAccess ma) {
-  ma.getMethod().getDeclaringType().getAnAncestor() instanceof TypeHashtable and
-  ma.getMethod().hasName(["put", "setProperty"]) and
-  (
-    ma.getArgument(0).(CompileTimeConstantExpr).getStringValue() = "java.naming.provider.url"
-    or
-    exists(Field f |
-      ma.getArgument(0) = f.getAnAccess() and
-      f.hasName("PROVIDER_URL") and
-      f.getDeclaringType() instanceof TypeNamingContext
-    )
-  )
-}
-
-/**
  * Holds if `ma` sets `fieldValue` to `envValue` in some `Hashtable`.
  */
 bindingset[fieldValue, envValue]
-predicate hasFieldValueEnv(MethodAccess ma, string fieldValue, string envValue) {
+private predicate hasFieldValueEnv(MethodAccess ma, string fieldValue, string envValue) {
   // environment.put("java.naming.security.authentication", "simple")
   ma.getMethod().getDeclaringType().getAnAncestor() instanceof TypeHashtable and
   ma.getMethod().hasName(["put", "setProperty"]) and
@@ -97,29 +125,4 @@ private predicate hasFieldNameEnv(MethodAccess ma, string fieldName, string envV
     f.getDeclaringType() instanceof TypeNamingContext
   ) and
   ma.getArgument(1).(CompileTimeConstantExpr).getStringValue() = envValue
-}
-
-/**
- * Holds if `ma` sets `java.naming.security.authentication` (also known as `Context.SECURITY_AUTHENTICATION`) to `simple` in some `Hashtable`.
- */
-predicate isBasicAuthEnv(MethodAccess ma) {
-  hasFieldValueEnv(ma, "java.naming.security.authentication", "simple") or
-  hasFieldNameEnv(ma, "SECURITY_AUTHENTICATION", "simple")
-}
-
-/**
- * Holds if `ma` sets `java.naming.security.protocol` (also known as `Context.SECURITY_PROTOCOL`) to `ssl` in some `Hashtable`.
- */
-predicate isSslEnv(MethodAccess ma) {
-  hasFieldValueEnv(ma, "java.naming.security.protocol", "ssl") or
-  hasFieldNameEnv(ma, "SECURITY_PROTOCOL", "ssl")
-}
-
-class InsecureLdapUrlSink extends DataFlow::Node {
-  InsecureLdapUrlSink() {
-    exists(ConstructorCall cc |
-      cc.getConstructedType().getAnAncestor() instanceof TypeDirContext and
-      this.asExpr() = cc.getArgument(0)
-    )
-  }
 }
