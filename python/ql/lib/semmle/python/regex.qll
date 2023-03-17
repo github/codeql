@@ -3,72 +3,6 @@ private import semmle.python.ApiGraphs
 // Need to import since frameworks can extend the abstract `RegExpInterpretation::Range`
 private import semmle.python.Frameworks
 private import semmle.python.Concepts as Concepts
-
-/**
- * Gets the positional argument index containing the regular expression flags for the member of the
- * `re` module with the name `name`.
- */
-private int re_member_flags_arg(string name) {
-  name = "compile" and result = 1
-  or
-  name = "search" and result = 2
-  or
-  name = "match" and result = 2
-  or
-  name = "split" and result = 3
-  or
-  name = "findall" and result = 2
-  or
-  name = "finditer" and result = 2
-  or
-  name = "sub" and result = 4
-  or
-  name = "subn" and result = 4
-}
-
-/**
- * Gets the names and corresponding API nodes of members of the `re` module that are likely to be
- * methods taking regular expressions as arguments.
- *
- * This is a helper predicate that fixes a bad join order, and should not be inlined without checking
- * that this is safe.
- */
-pragma[nomagic]
-private API::Node relevant_re_member(string name) {
-  result = API::moduleImport("re").getMember(name) and
-  name != "escape"
-}
-
-/**
- * Holds if the expression `e` is used as a regex with the `re` module, with the regex-mode `mode` (if known).
- * If regex mode is not known, `mode` will be `"None"`.
- *
- * This predicate has not done any data-flow tracking.
- */
-// TODO: This should only be used to get the `mode`, and nowhere else.
-predicate used_as_regex_internal(Expr e, string mode) {
-  /* Call to re.xxx(regex, ... [mode]) */
-  exists(DataFlow::CallCfgNode call |
-    call instanceof Concepts::RegexExecution and
-    e = call.(Concepts::RegexExecution).getRegex().asExpr()
-    or
-    call.getArg(0).asExpr() = e and
-    call = relevant_re_member(_).getACall()
-  |
-    mode = "None"
-    or
-    exists(DataFlow::CallCfgNode callNode |
-      call = callNode and
-      mode =
-        mode_from_node([
-            callNode
-                .getArg(re_member_flags_arg(callNode.(DataFlow::MethodCallNode).getMethodName())),
-            callNode.getArgByName("flags")
-          ])
-    )
-  )
-}
-
 private import regexp.internal.RegExpTracking as RegExpTracking
 private import semmle.python.Concepts
 private import semmle.python.regexp.RegexTreeView
@@ -80,49 +14,6 @@ RegExpTerm getTermForExecution(RegexExecution exec) {
     result.isRootTerm()
   )
 }
-
-/**
- * Gets the canonical name for the API graph node corresponding to the `re` flag `flag`. For flags
- * that have multiple names, we pick the long-form name as a canonical representative.
- */
-private string canonical_name(API::Node flag) {
-  result in ["ASCII", "IGNORECASE", "LOCALE", "UNICODE", "MULTILINE", "TEMPLATE"] and
-  flag = API::moduleImport("re").getMember([result, result.prefix(1)])
-  or
-  flag = API::moduleImport("re").getMember(["DOTALL", "S"]) and result = "DOTALL"
-  or
-  flag = API::moduleImport("re").getMember(["VERBOSE", "X"]) and result = "VERBOSE"
-}
-
-/**
- * A type tracker for regular expression flag names. Holds if the result is a node that may refer
- * to the `re` flag with the canonical name `flag_name`
- */
-private DataFlow::TypeTrackingNode re_flag_tracker(string flag_name, DataFlow::TypeTracker t) {
-  t.start() and
-  exists(API::Node flag | flag_name = canonical_name(flag) and result = flag.asSource())
-  or
-  exists(BinaryExprNode binop, DataFlow::Node operand |
-    operand.getALocalSource() = re_flag_tracker(flag_name, t.continue()) and
-    operand.asCfgNode() = binop.getAnOperand() and
-    (binop.getOp() instanceof BitOr or binop.getOp() instanceof Add) and
-    result.asCfgNode() = binop
-  )
-  or
-  exists(DataFlow::TypeTracker t2 | result = re_flag_tracker(flag_name, t2).track(t2, t))
-}
-
-/**
- * A type tracker for regular expression flag names. Holds if the result is a node that may refer
- * to the `re` flag with the canonical name `flag_name`
- */
-private DataFlow::Node re_flag_tracker(string flag_name) {
-  re_flag_tracker(flag_name, DataFlow::TypeTracker::end()).flowsTo(result)
-}
-
-/** Gets a regular expression mode flag associated with the given data flow node. */
-// TODO: Move this into a RegexFlag module, along with related code?
-string mode_from_node(DataFlow::Node node) { node = re_flag_tracker(result) }
 
 /** Provides a class for modeling regular expression interpretations. */
 module RegExpInterpretation {
@@ -150,6 +41,102 @@ deprecated class RegexString extends Regex {
   RegexString() { this = RegExpTracking::regExpSource(_).asExpr() }
 }
 
+/** Utility predicates for finding the mode of a regex based on where it's used. */
+private module FindRegexMode {
+  // TODO: Movev this (and Regex) into a ParseRegExp file.
+  /**
+   * Gets the mode of the regex `regex` based on the context where it's used.
+   * Does not find the mode if it's in a prefix inside the regex itself (see `Regex::getAMode`).
+   */
+  string getAMode(Regex regex) {
+    exists(DataFlow::Node sink |
+      sink = regex.getAUse() and
+      /* Call to re.xxx(regex, ... [mode]) */
+      exists(DataFlow::CallCfgNode call |
+        call instanceof Concepts::RegexExecution and
+        sink = call.(Concepts::RegexExecution).getRegex()
+        or
+        call.getArg(_) = sink and
+        sink instanceof RegExpInterpretation::Range
+      |
+        exists(DataFlow::CallCfgNode callNode |
+          call = callNode and
+          result =
+            mode_from_node([
+                callNode
+                    .getArg(re_member_flags_arg(callNode.(DataFlow::MethodCallNode).getMethodName())),
+                callNode.getArgByName("flags")
+              ])
+        )
+      )
+    )
+  }
+
+  /**
+   * Gets the positional argument index containing the regular expression flags for the member of the
+   * `re` module with the name `name`.
+   */
+  private int re_member_flags_arg(string name) {
+    name = "compile" and result = 1
+    or
+    name = "search" and result = 2
+    or
+    name = "match" and result = 2
+    or
+    name = "split" and result = 3
+    or
+    name = "findall" and result = 2
+    or
+    name = "finditer" and result = 2
+    or
+    name = "sub" and result = 4
+    or
+    name = "subn" and result = 4
+  }
+
+  /**
+   * Gets the canonical name for the API graph node corresponding to the `re` flag `flag`. For flags
+   * that have multiple names, we pick the long-form name as a canonical representative.
+   */
+  private string canonical_name(API::Node flag) {
+    result in ["ASCII", "IGNORECASE", "LOCALE", "UNICODE", "MULTILINE", "TEMPLATE"] and
+    flag = API::moduleImport("re").getMember([result, result.prefix(1)])
+    or
+    flag = API::moduleImport("re").getMember(["DOTALL", "S"]) and result = "DOTALL"
+    or
+    flag = API::moduleImport("re").getMember(["VERBOSE", "X"]) and result = "VERBOSE"
+  }
+
+  /**
+   * A type tracker for regular expression flag names. Holds if the result is a node that may refer
+   * to the `re` flag with the canonical name `flag_name`
+   */
+  private DataFlow::TypeTrackingNode re_flag_tracker(string flag_name, DataFlow::TypeTracker t) {
+    t.start() and
+    exists(API::Node flag | flag_name = canonical_name(flag) and result = flag.asSource())
+    or
+    exists(BinaryExprNode binop, DataFlow::Node operand |
+      operand.getALocalSource() = re_flag_tracker(flag_name, t.continue()) and
+      operand.asCfgNode() = binop.getAnOperand() and
+      (binop.getOp() instanceof BitOr or binop.getOp() instanceof Add) and
+      result.asCfgNode() = binop
+    )
+    or
+    exists(DataFlow::TypeTracker t2 | result = re_flag_tracker(flag_name, t2).track(t2, t))
+  }
+
+  /**
+   * A type tracker for regular expression flag names. Holds if the result is a node that may refer
+   * to the `re` flag with the canonical name `flag_name`
+   */
+  private DataFlow::Node re_flag_tracker(string flag_name) {
+    re_flag_tracker(flag_name, DataFlow::TypeTracker::end()).flowsTo(result)
+  }
+
+  /** Gets a regular expression mode flag associated with the given data flow node. */
+  private string mode_from_node(DataFlow::Node node) { node = re_flag_tracker(result) }
+}
+
 /** A StrConst used as a regular expression */
 class Regex extends Expr {
   DataFlow::Node sink;
@@ -175,11 +162,7 @@ class Regex extends Expr {
    * VERBOSE
    */
   string getAMode() {
-    exists(string mode |
-      used_as_regex_internal(sink.asExpr(), mode) and
-      result != "None" and
-      result = mode
-    )
+    result = FindRegexMode::getAMode(this)
     or
     result = this.getModeFromPrefix()
   }
