@@ -215,7 +215,8 @@ module ActiveResource {
   }
 
   private class ModelClassMethodCallAsHttpRequest extends Http::Client::Request::Range,
-    ModelClassMethodCall {
+    ModelClassMethodCall
+  {
     ModelClass cls;
 
     ModelClassMethodCallAsHttpRequest() {
@@ -239,7 +240,8 @@ module ActiveResource {
   }
 
   private class ModelInstanceMethodCallAsHttpRequest extends Http::Client::Request::Range,
-    ModelInstanceMethodCall {
+    ModelInstanceMethodCall
+  {
     ModelClass cls;
 
     ModelInstanceMethodCallAsHttpRequest() {

@@ -1,4 +1,7 @@
 uniqueEnclosingCallable
+uniqueCallEnclosingCallable
+| datamodel.py:71:6:71:16 | classmethod() | Call should have one enclosing callable but has 0. |
+| datamodel.py:76:6:76:17 | staticmethod() | Call should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation

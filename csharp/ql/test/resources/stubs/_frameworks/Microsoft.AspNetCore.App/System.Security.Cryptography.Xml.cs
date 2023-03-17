@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Security.Cryptography.Xml, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 
 namespace System
 {
@@ -8,7 +9,6 @@ namespace System
         {
             namespace Xml
             {
-                // Generated from `System.Security.Cryptography.Xml.CipherData` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class CipherData
                 {
                     public CipherData() => throw null;
@@ -20,7 +20,6 @@ namespace System
                     public void LoadXml(System.Xml.XmlElement value) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.CipherReference` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class CipherReference : System.Security.Cryptography.Xml.EncryptedReference
                 {
                     public CipherReference() => throw null;
@@ -30,7 +29,6 @@ namespace System
                     public override void LoadXml(System.Xml.XmlElement value) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.DSAKeyValue` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class DSAKeyValue : System.Security.Cryptography.Xml.KeyInfoClause
                 {
                     public DSAKeyValue() => throw null;
@@ -40,7 +38,6 @@ namespace System
                     public override void LoadXml(System.Xml.XmlElement value) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.DataObject` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class DataObject
                 {
                     public System.Xml.XmlNodeList Data { get => throw null; set => throw null; }
@@ -53,7 +50,6 @@ namespace System
                     public string MimeType { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.DataReference` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class DataReference : System.Security.Cryptography.Xml.EncryptedReference
                 {
                     public DataReference() => throw null;
@@ -61,7 +57,6 @@ namespace System
                     public DataReference(string uri, System.Security.Cryptography.Xml.TransformChain transformChain) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.EncryptedData` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EncryptedData : System.Security.Cryptography.Xml.EncryptedType
                 {
                     public EncryptedData() => throw null;
@@ -69,7 +64,6 @@ namespace System
                     public override void LoadXml(System.Xml.XmlElement value) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.EncryptedKey` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EncryptedKey : System.Security.Cryptography.Xml.EncryptedType
                 {
                     public void AddReference(System.Security.Cryptography.Xml.DataReference dataReference) => throw null;
@@ -82,7 +76,6 @@ namespace System
                     public System.Security.Cryptography.Xml.ReferenceList ReferenceList { get => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.EncryptedReference` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class EncryptedReference
                 {
                     public void AddTransform(System.Security.Cryptography.Xml.Transform transform) => throw null;
@@ -97,7 +90,6 @@ namespace System
                     public string Uri { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.EncryptedType` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class EncryptedType
                 {
                     public void AddProperty(System.Security.Cryptography.Xml.EncryptionProperty ep) => throw null;
@@ -114,7 +106,6 @@ namespace System
                     public virtual string Type { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.EncryptedXml` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EncryptedXml
                 {
                     public void AddKeyNameMapping(string keyName, object keyObject) => throw null;
@@ -164,7 +155,6 @@ namespace System
                     public const string XmlEncTripleDESUrl = default;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.EncryptionMethod` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EncryptionMethod
                 {
                     public EncryptionMethod() => throw null;
@@ -175,7 +165,6 @@ namespace System
                     public void LoadXml(System.Xml.XmlElement value) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.EncryptionProperty` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EncryptionProperty
                 {
                     public EncryptionProperty() => throw null;
@@ -187,7 +176,6 @@ namespace System
                     public string Target { get => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.EncryptionPropertyCollection` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class EncryptionPropertyCollection : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
                 {
                     public int Add(System.Security.Cryptography.Xml.EncryptionProperty value) => throw null;
@@ -217,13 +205,11 @@ namespace System
                     public object SyncRoot { get => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.IRelDecryptor` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public interface IRelDecryptor
                 {
                     System.IO.Stream Decrypt(System.Security.Cryptography.Xml.EncryptionMethod encryptionMethod, System.Security.Cryptography.Xml.KeyInfo keyInfo, System.IO.Stream toDecrypt);
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.KeyInfo` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class KeyInfo : System.Collections.IEnumerable
                 {
                     public void AddClause(System.Security.Cryptography.Xml.KeyInfoClause clause) => throw null;
@@ -236,7 +222,6 @@ namespace System
                     public void LoadXml(System.Xml.XmlElement value) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.KeyInfoClause` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class KeyInfoClause
                 {
                     public abstract System.Xml.XmlElement GetXml();
@@ -244,7 +229,6 @@ namespace System
                     public abstract void LoadXml(System.Xml.XmlElement element);
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.KeyInfoEncryptedKey` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class KeyInfoEncryptedKey : System.Security.Cryptography.Xml.KeyInfoClause
                 {
                     public System.Security.Cryptography.Xml.EncryptedKey EncryptedKey { get => throw null; set => throw null; }
@@ -254,7 +238,6 @@ namespace System
                     public override void LoadXml(System.Xml.XmlElement value) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.KeyInfoName` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class KeyInfoName : System.Security.Cryptography.Xml.KeyInfoClause
                 {
                     public override System.Xml.XmlElement GetXml() => throw null;
@@ -264,7 +247,6 @@ namespace System
                     public string Value { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.KeyInfoNode` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class KeyInfoNode : System.Security.Cryptography.Xml.KeyInfoClause
                 {
                     public override System.Xml.XmlElement GetXml() => throw null;
@@ -274,7 +256,6 @@ namespace System
                     public System.Xml.XmlElement Value { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.KeyInfoRetrievalMethod` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class KeyInfoRetrievalMethod : System.Security.Cryptography.Xml.KeyInfoClause
                 {
                     public override System.Xml.XmlElement GetXml() => throw null;
@@ -286,7 +267,6 @@ namespace System
                     public string Uri { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.KeyInfoX509Data` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class KeyInfoX509Data : System.Security.Cryptography.Xml.KeyInfoClause
                 {
                     public void AddCertificate(System.Security.Cryptography.X509Certificates.X509Certificate certificate) => throw null;
@@ -307,7 +287,6 @@ namespace System
                     public System.Collections.ArrayList SubjectNames { get => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.KeyReference` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class KeyReference : System.Security.Cryptography.Xml.EncryptedReference
                 {
                     public KeyReference() => throw null;
@@ -315,7 +294,6 @@ namespace System
                     public KeyReference(string uri, System.Security.Cryptography.Xml.TransformChain transformChain) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.RSAKeyValue` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class RSAKeyValue : System.Security.Cryptography.Xml.KeyInfoClause
                 {
                     public override System.Xml.XmlElement GetXml() => throw null;
@@ -325,7 +303,6 @@ namespace System
                     public RSAKeyValue(System.Security.Cryptography.RSA key) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.Reference` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class Reference
                 {
                     public void AddTransform(System.Security.Cryptography.Xml.Transform transform) => throw null;
@@ -342,7 +319,6 @@ namespace System
                     public string Uri { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.ReferenceList` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class ReferenceList : System.Collections.ICollection, System.Collections.IEnumerable, System.Collections.IList
                 {
                     public int Add(object value) => throw null;
@@ -366,7 +342,6 @@ namespace System
                     public object SyncRoot { get => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.Signature` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class Signature
                 {
                     public void AddObject(System.Security.Cryptography.Xml.DataObject dataObject) => throw null;
@@ -380,7 +355,6 @@ namespace System
                     public System.Security.Cryptography.Xml.SignedInfo SignedInfo { get => throw null; set => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.SignedInfo` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class SignedInfo : System.Collections.ICollection, System.Collections.IEnumerable
                 {
                     public void AddReference(System.Security.Cryptography.Xml.Reference reference) => throw null;
@@ -401,7 +375,6 @@ namespace System
                     public object SyncRoot { get => throw null; }
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.SignedXml` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class SignedXml
                 {
                     public void AddObject(System.Security.Cryptography.Xml.DataObject dataObject) => throw null;
@@ -460,7 +433,6 @@ namespace System
                     protected string m_strSigningKeyName;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.Transform` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public abstract class Transform
                 {
                     public string Algorithm { get => throw null; set => throw null; }
@@ -479,7 +451,6 @@ namespace System
                     protected Transform() => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.TransformChain` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class TransformChain
                 {
                     public void Add(System.Security.Cryptography.Xml.Transform transform) => throw null;
@@ -489,7 +460,6 @@ namespace System
                     public TransformChain() => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.XmlDecryptionTransform` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class XmlDecryptionTransform : System.Security.Cryptography.Xml.Transform
                 {
                     public void AddExceptUri(string uri) => throw null;
@@ -505,7 +475,6 @@ namespace System
                     public XmlDecryptionTransform() => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.XmlDsigBase64Transform` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class XmlDsigBase64Transform : System.Security.Cryptography.Xml.Transform
                 {
                     protected override System.Xml.XmlNodeList GetInnerXml() => throw null;
@@ -518,7 +487,6 @@ namespace System
                     public XmlDsigBase64Transform() => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.XmlDsigC14NTransform` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class XmlDsigC14NTransform : System.Security.Cryptography.Xml.Transform
                 {
                     public override System.Byte[] GetDigestedOutput(System.Security.Cryptography.HashAlgorithm hash) => throw null;
@@ -533,13 +501,11 @@ namespace System
                     public XmlDsigC14NTransform(bool includeComments) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.XmlDsigC14NWithCommentsTransform` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class XmlDsigC14NWithCommentsTransform : System.Security.Cryptography.Xml.XmlDsigC14NTransform
                 {
                     public XmlDsigC14NWithCommentsTransform() => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.XmlDsigEnvelopedSignatureTransform` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class XmlDsigEnvelopedSignatureTransform : System.Security.Cryptography.Xml.Transform
                 {
                     protected override System.Xml.XmlNodeList GetInnerXml() => throw null;
@@ -553,7 +519,6 @@ namespace System
                     public XmlDsigEnvelopedSignatureTransform(bool includeComments) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.XmlDsigExcC14NTransform` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class XmlDsigExcC14NTransform : System.Security.Cryptography.Xml.Transform
                 {
                     public override System.Byte[] GetDigestedOutput(System.Security.Cryptography.HashAlgorithm hash) => throw null;
@@ -571,14 +536,12 @@ namespace System
                     public XmlDsigExcC14NTransform(string inclusiveNamespacesPrefixList) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.XmlDsigExcC14NWithCommentsTransform` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class XmlDsigExcC14NWithCommentsTransform : System.Security.Cryptography.Xml.XmlDsigExcC14NTransform
                 {
                     public XmlDsigExcC14NWithCommentsTransform() => throw null;
                     public XmlDsigExcC14NWithCommentsTransform(string inclusiveNamespacesPrefixList) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.XmlDsigXPathTransform` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class XmlDsigXPathTransform : System.Security.Cryptography.Xml.Transform
                 {
                     protected override System.Xml.XmlNodeList GetInnerXml() => throw null;
@@ -591,7 +554,6 @@ namespace System
                     public XmlDsigXPathTransform() => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.XmlDsigXsltTransform` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class XmlDsigXsltTransform : System.Security.Cryptography.Xml.Transform
                 {
                     protected override System.Xml.XmlNodeList GetInnerXml() => throw null;
@@ -605,7 +567,6 @@ namespace System
                     public XmlDsigXsltTransform(bool includeComments) => throw null;
                 }
 
-                // Generated from `System.Security.Cryptography.Xml.XmlLicenseTransform` in `System.Security.Cryptography.Xml, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public class XmlLicenseTransform : System.Security.Cryptography.Xml.Transform
                 {
                     public System.Security.Cryptography.Xml.IRelDecryptor Decryptor { get => throw null; set => throw null; }

@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Builder
         {
-            // Generated from `Microsoft.AspNetCore.Builder.ApplicationBuilder` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ApplicationBuilder : Microsoft.AspNetCore.Builder.IApplicationBuilder
             {
                 public ApplicationBuilder(System.IServiceProvider serviceProvider) => throw null;
@@ -22,7 +22,6 @@ namespace Microsoft
         }
         namespace Http
         {
-            // Generated from `Microsoft.AspNetCore.Http.BindingAddress` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class BindingAddress
             {
                 public BindingAddress() => throw null;
@@ -38,7 +37,6 @@ namespace Microsoft
                 public string UnixPipePath { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.DefaultHttpContext` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DefaultHttpContext : Microsoft.AspNetCore.Http.HttpContext
             {
                 public override void Abort() => throw null;
@@ -62,10 +60,8 @@ namespace Microsoft
                 public override Microsoft.AspNetCore.Http.WebSocketManager WebSockets { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.FormCollection` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class FormCollection : Microsoft.AspNetCore.Http.IFormCollection, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerable
             {
-                // Generated from `Microsoft.AspNetCore.Http.FormCollection+Enumerator` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> Current { get => throw null; }
@@ -90,7 +86,6 @@ namespace Microsoft
                 public bool TryGetValue(string key, out Microsoft.Extensions.Primitives.StringValues value) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.FormFile` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class FormFile : Microsoft.AspNetCore.Http.IFormFile
             {
                 public string ContentDisposition { get => throw null; set => throw null; }
@@ -105,7 +100,6 @@ namespace Microsoft
                 public System.IO.Stream OpenReadStream() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.FormFileCollection` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class FormFileCollection : System.Collections.Generic.List<Microsoft.AspNetCore.Http.IFormFile>, Microsoft.AspNetCore.Http.IFormFileCollection, System.Collections.Generic.IEnumerable<Microsoft.AspNetCore.Http.IFormFile>, System.Collections.Generic.IReadOnlyCollection<Microsoft.AspNetCore.Http.IFormFile>, System.Collections.Generic.IReadOnlyList<Microsoft.AspNetCore.Http.IFormFile>, System.Collections.IEnumerable
             {
                 public FormFileCollection() => throw null;
@@ -114,10 +108,8 @@ namespace Microsoft
                 public Microsoft.AspNetCore.Http.IFormFile this[string name] { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.HeaderDictionary` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HeaderDictionary : Microsoft.AspNetCore.Http.IHeaderDictionary, System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.Generic.IDictionary<string, Microsoft.Extensions.Primitives.StringValues>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerable
             {
-                // Generated from `Microsoft.AspNetCore.Http.HeaderDictionary+Enumerator` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> Current { get => throw null; }
@@ -153,14 +145,12 @@ namespace Microsoft
                 public System.Collections.Generic.ICollection<Microsoft.Extensions.Primitives.StringValues> Values { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.HttpContextAccessor` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HttpContextAccessor : Microsoft.AspNetCore.Http.IHttpContextAccessor
             {
                 public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; set => throw null; }
                 public HttpContextAccessor() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.HttpRequestRewindExtensions` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HttpRequestRewindExtensions
             {
                 public static void EnableBuffering(this Microsoft.AspNetCore.Http.HttpRequest request) => throw null;
@@ -169,7 +159,6 @@ namespace Microsoft
                 public static void EnableBuffering(this Microsoft.AspNetCore.Http.HttpRequest request, System.Int64 bufferLimit) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.MiddlewareFactory` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class MiddlewareFactory : Microsoft.AspNetCore.Http.IMiddlewareFactory
             {
                 public Microsoft.AspNetCore.Http.IMiddleware Create(System.Type middlewareType) => throw null;
@@ -177,10 +166,8 @@ namespace Microsoft
                 public void Release(Microsoft.AspNetCore.Http.IMiddleware middleware) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.QueryCollection` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class QueryCollection : Microsoft.AspNetCore.Http.IQueryCollection, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerable
             {
-                // Generated from `Microsoft.AspNetCore.Http.QueryCollection+Enumerator` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues>>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Collections.Generic.KeyValuePair<string, Microsoft.Extensions.Primitives.StringValues> Current { get => throw null; }
@@ -207,19 +194,16 @@ namespace Microsoft
                 public bool TryGetValue(string key, out Microsoft.Extensions.Primitives.StringValues value) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.RequestFormReaderExtensions` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RequestFormReaderExtensions
             {
                 public static System.Threading.Tasks.Task<Microsoft.AspNetCore.Http.IFormCollection> ReadFormAsync(this Microsoft.AspNetCore.Http.HttpRequest request, Microsoft.AspNetCore.Http.Features.FormOptions options, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.SendFileFallback` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class SendFileFallback
             {
                 public static System.Threading.Tasks.Task SendFileAsync(System.IO.Stream destination, string filePath, System.Int64 offset, System.Int64? count, System.Threading.CancellationToken cancellationToken) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.StreamResponseBodyFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class StreamResponseBodyFeature : Microsoft.AspNetCore.Http.Features.IHttpResponseBodyFeature
             {
                 public virtual System.Threading.Tasks.Task CompleteAsync() => throw null;
@@ -236,14 +220,12 @@ namespace Microsoft
 
             namespace Features
             {
-                // Generated from `Microsoft.AspNetCore.Http.Features.DefaultSessionFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class DefaultSessionFeature : Microsoft.AspNetCore.Http.Features.ISessionFeature
                 {
                     public DefaultSessionFeature() => throw null;
                     public Microsoft.AspNetCore.Http.ISession Session { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.FormFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FormFeature : Microsoft.AspNetCore.Http.Features.IFormFeature
                 {
                     public Microsoft.AspNetCore.Http.IFormCollection Form { get => throw null; set => throw null; }
@@ -256,7 +238,6 @@ namespace Microsoft
                     public System.Threading.Tasks.Task<Microsoft.AspNetCore.Http.IFormCollection> ReadFormAsync(System.Threading.CancellationToken cancellationToken) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.FormOptions` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class FormOptions
                 {
                     public bool BufferBody { get => throw null; set => throw null; }
@@ -276,7 +257,6 @@ namespace Microsoft
                     public int ValueLengthLimit { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.HttpConnectionFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HttpConnectionFeature : Microsoft.AspNetCore.Http.Features.IHttpConnectionFeature
                 {
                     public string ConnectionId { get => throw null; set => throw null; }
@@ -287,7 +267,6 @@ namespace Microsoft
                     public int RemotePort { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.HttpRequestFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HttpRequestFeature : Microsoft.AspNetCore.Http.Features.IHttpRequestFeature
                 {
                     public System.IO.Stream Body { get => throw null; set => throw null; }
@@ -302,14 +281,12 @@ namespace Microsoft
                     public string Scheme { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.HttpRequestIdentifierFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HttpRequestIdentifierFeature : Microsoft.AspNetCore.Http.Features.IHttpRequestIdentifierFeature
                 {
                     public HttpRequestIdentifierFeature() => throw null;
                     public string TraceIdentifier { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.HttpRequestLifetimeFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HttpRequestLifetimeFeature : Microsoft.AspNetCore.Http.Features.IHttpRequestLifetimeFeature
                 {
                     public void Abort() => throw null;
@@ -317,7 +294,6 @@ namespace Microsoft
                     public System.Threading.CancellationToken RequestAborted { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.HttpResponseFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HttpResponseFeature : Microsoft.AspNetCore.Http.Features.IHttpResponseFeature
                 {
                     public System.IO.Stream Body { get => throw null; set => throw null; }
@@ -330,20 +306,17 @@ namespace Microsoft
                     public int StatusCode { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.IHttpActivityFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IHttpActivityFeature
                 {
                     System.Diagnostics.Activity Activity { get; set; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.ItemsFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ItemsFeature : Microsoft.AspNetCore.Http.Features.IItemsFeature
                 {
                     public System.Collections.Generic.IDictionary<object, object> Items { get => throw null; set => throw null; }
                     public ItemsFeature() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.QueryFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class QueryFeature : Microsoft.AspNetCore.Http.Features.IQueryFeature
                 {
                     public Microsoft.AspNetCore.Http.IQueryCollection Query { get => throw null; set => throw null; }
@@ -351,14 +324,12 @@ namespace Microsoft
                     public QueryFeature(Microsoft.AspNetCore.Http.IQueryCollection query) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.RequestBodyPipeFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RequestBodyPipeFeature : Microsoft.AspNetCore.Http.Features.IRequestBodyPipeFeature
                 {
                     public System.IO.Pipelines.PipeReader Reader { get => throw null; }
                     public RequestBodyPipeFeature(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.RequestCookiesFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RequestCookiesFeature : Microsoft.AspNetCore.Http.Features.IRequestCookiesFeature
                 {
                     public Microsoft.AspNetCore.Http.IRequestCookieCollection Cookies { get => throw null; set => throw null; }
@@ -366,7 +337,6 @@ namespace Microsoft
                     public RequestCookiesFeature(Microsoft.AspNetCore.Http.IRequestCookieCollection cookies) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.RequestServicesFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RequestServicesFeature : Microsoft.AspNetCore.Http.Features.IServiceProvidersFeature, System.IAsyncDisposable, System.IDisposable
                 {
                     public void Dispose() => throw null;
@@ -375,7 +345,6 @@ namespace Microsoft
                     public RequestServicesFeature(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.Extensions.DependencyInjection.IServiceScopeFactory scopeFactory) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.ResponseCookiesFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ResponseCookiesFeature : Microsoft.AspNetCore.Http.Features.IResponseCookiesFeature
                 {
                     public Microsoft.AspNetCore.Http.IResponseCookies Cookies { get => throw null; }
@@ -383,21 +352,18 @@ namespace Microsoft
                     public ResponseCookiesFeature(Microsoft.AspNetCore.Http.Features.IFeatureCollection features, Microsoft.Extensions.ObjectPool.ObjectPool<System.Text.StringBuilder> builderPool) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.RouteValuesFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class RouteValuesFeature : Microsoft.AspNetCore.Http.Features.IRouteValuesFeature
                 {
                     public Microsoft.AspNetCore.Routing.RouteValueDictionary RouteValues { get => throw null; set => throw null; }
                     public RouteValuesFeature() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.ServiceProvidersFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ServiceProvidersFeature : Microsoft.AspNetCore.Http.Features.IServiceProvidersFeature
                 {
                     public System.IServiceProvider RequestServices { get => throw null; set => throw null; }
                     public ServiceProvidersFeature() => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.TlsConnectionFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class TlsConnectionFeature : Microsoft.AspNetCore.Http.Features.ITlsConnectionFeature
                 {
                     public System.Security.Cryptography.X509Certificates.X509Certificate2 ClientCertificate { get => throw null; set => throw null; }
@@ -407,7 +373,6 @@ namespace Microsoft
 
                 namespace Authentication
                 {
-                    // Generated from `Microsoft.AspNetCore.Http.Features.Authentication.HttpAuthenticationFeature` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class HttpAuthenticationFeature : Microsoft.AspNetCore.Http.Features.Authentication.IHttpAuthenticationFeature
                     {
                         public HttpAuthenticationFeature() => throw null;
@@ -422,7 +387,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.HttpServiceCollectionExtensions` in `Microsoft.AspNetCore.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HttpServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddHttpContextAccessor(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;

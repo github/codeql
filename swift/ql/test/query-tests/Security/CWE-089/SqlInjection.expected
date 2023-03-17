@@ -97,12 +97,23 @@ edges
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) :  | SQLite.swift:117:16:117:16 | unsafeQuery1 |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) :  | SQLite.swift:119:16:119:16 | unsafeQuery1 |
 | SQLite.swift:62:25:62:79 | call to String.init(contentsOf:) :  | SQLite.swift:132:20:132:20 | remoteString |
+| sqlite3_c_api.swift:15:2:15:71 | [summary param] this in copyBytes(to:count:) :  | file://:0:0:0:0 | [summary] to write: argument 0 in copyBytes(to:count:) :  |
+| sqlite3_c_api.swift:37:2:37:103 | [summary param] this in data(using:allowLossyConversion:) :  | file://:0:0:0:0 | [summary] to write: return (return) in data(using:allowLossyConversion:) :  |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:133:33:133:33 | unsafeQuery1 |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:134:33:134:33 | unsafeQuery2 |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:135:33:135:33 | unsafeQuery3 |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:145:26:145:26 | unsafeQuery3 |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:175:29:175:29 | unsafeQuery3 |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 |
+| sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:189:13:189:13 | unsafeQuery3 :  |
+| sqlite3_c_api.swift:189:13:189:13 | unsafeQuery3 :  | sqlite3_c_api.swift:37:2:37:103 | [summary param] this in data(using:allowLossyConversion:) :  |
+| sqlite3_c_api.swift:189:13:189:13 | unsafeQuery3 :  | sqlite3_c_api.swift:189:13:189:58 | call to data(using:allowLossyConversion:) :  |
+| sqlite3_c_api.swift:189:13:189:58 | call to data(using:allowLossyConversion:) :  | sqlite3_c_api.swift:190:2:190:2 | data :  |
+| sqlite3_c_api.swift:190:2:190:2 | data :  | sqlite3_c_api.swift:15:2:15:71 | [summary param] this in copyBytes(to:count:) :  |
+| sqlite3_c_api.swift:190:2:190:2 | data :  | sqlite3_c_api.swift:190:21:190:21 | [post] buffer :  |
+| sqlite3_c_api.swift:190:21:190:21 | [post] buffer :  | sqlite3_c_api.swift:194:28:194:28 | buffer |
+| sqlite3_c_api.swift:190:21:190:21 | [post] buffer :  | sqlite3_c_api.swift:202:31:202:31 | buffer |
+| sqlite3_c_api.swift:190:21:190:21 | [post] buffer :  | sqlite3_c_api.swift:210:31:210:31 | buffer |
 nodes
 | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
 | GRDB.swift:106:41:106:41 | remoteString | semmle.label | remoteString |
@@ -215,6 +226,10 @@ nodes
 | SQLite.swift:117:16:117:16 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:119:16:119:16 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | SQLite.swift:132:20:132:20 | remoteString | semmle.label | remoteString |
+| file://:0:0:0:0 | [summary] to write: argument 0 in copyBytes(to:count:) :  | semmle.label | [summary] to write: argument 0 in copyBytes(to:count:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in data(using:allowLossyConversion:) :  | semmle.label | [summary] to write: return (return) in data(using:allowLossyConversion:) :  |
+| sqlite3_c_api.swift:15:2:15:71 | [summary param] this in copyBytes(to:count:) :  | semmle.label | [summary param] this in copyBytes(to:count:) :  |
+| sqlite3_c_api.swift:37:2:37:103 | [summary param] this in data(using:allowLossyConversion:) :  | semmle.label | [summary param] this in data(using:allowLossyConversion:) :  |
 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
 | sqlite3_c_api.swift:133:33:133:33 | unsafeQuery1 | semmle.label | unsafeQuery1 |
 | sqlite3_c_api.swift:134:33:134:33 | unsafeQuery2 | semmle.label | unsafeQuery2 |
@@ -222,7 +237,16 @@ nodes
 | sqlite3_c_api.swift:145:26:145:26 | unsafeQuery3 | semmle.label | unsafeQuery3 |
 | sqlite3_c_api.swift:175:29:175:29 | unsafeQuery3 | semmle.label | unsafeQuery3 |
 | sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 | semmle.label | unsafeQuery3 |
+| sqlite3_c_api.swift:189:13:189:13 | unsafeQuery3 :  | semmle.label | unsafeQuery3 :  |
+| sqlite3_c_api.swift:189:13:189:58 | call to data(using:allowLossyConversion:) :  | semmle.label | call to data(using:allowLossyConversion:) :  |
+| sqlite3_c_api.swift:190:2:190:2 | data :  | semmle.label | data :  |
+| sqlite3_c_api.swift:190:21:190:21 | [post] buffer :  | semmle.label | [post] buffer :  |
+| sqlite3_c_api.swift:194:28:194:28 | buffer | semmle.label | buffer |
+| sqlite3_c_api.swift:202:31:202:31 | buffer | semmle.label | buffer |
+| sqlite3_c_api.swift:210:31:210:31 | buffer | semmle.label | buffer |
 subpaths
+| sqlite3_c_api.swift:189:13:189:13 | unsafeQuery3 :  | sqlite3_c_api.swift:37:2:37:103 | [summary param] this in data(using:allowLossyConversion:) :  | file://:0:0:0:0 | [summary] to write: return (return) in data(using:allowLossyConversion:) :  | sqlite3_c_api.swift:189:13:189:58 | call to data(using:allowLossyConversion:) :  |
+| sqlite3_c_api.swift:190:2:190:2 | data :  | sqlite3_c_api.swift:15:2:15:71 | [summary param] this in copyBytes(to:count:) :  | file://:0:0:0:0 | [summary] to write: argument 0 in copyBytes(to:count:) :  | sqlite3_c_api.swift:190:21:190:21 | [post] buffer :  |
 #select
 | GRDB.swift:106:41:106:41 | remoteString | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:106:41:106:41 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) | user-provided value |
 | GRDB.swift:108:41:108:41 | remoteString | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) :  | GRDB.swift:108:41:108:41 | remoteString | This query depends on a $@. | GRDB.swift:104:25:104:79 | call to String.init(contentsOf:) | user-provided value |
@@ -328,3 +352,6 @@ subpaths
 | sqlite3_c_api.swift:145:26:145:26 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:145:26:145:26 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
 | sqlite3_c_api.swift:175:29:175:29 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:175:29:175:29 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
 | sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:183:29:183:29 | unsafeQuery3 | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
+| sqlite3_c_api.swift:194:28:194:28 | buffer | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:194:28:194:28 | buffer | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
+| sqlite3_c_api.swift:202:31:202:31 | buffer | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:202:31:202:31 | buffer | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |
+| sqlite3_c_api.swift:210:31:210:31 | buffer | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) :  | sqlite3_c_api.swift:210:31:210:31 | buffer | This query depends on a $@. | sqlite3_c_api.swift:122:26:122:80 | call to String.init(contentsOf:) | user-provided value |

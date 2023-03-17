@@ -18,6 +18,9 @@ module Consistency {
     /** Holds if `n` should be excluded from the consistency test `uniqueEnclosingCallable`. */
     predicate uniqueEnclosingCallableExclude(Node n) { none() }
 
+    /** Holds if `call` should be excluded from the consistency test `uniqueCallEnclosingCallable`. */
+    predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) { none() }
+
     /** Holds if `n` should be excluded from the consistency test `uniqueNodeLocation`. */
     predicate uniqueNodeLocationExclude(Node n) { none() }
 
@@ -83,6 +86,15 @@ module Consistency {
       c != 1 and
       not any(ConsistencyConfiguration conf).uniqueEnclosingCallableExclude(n) and
       msg = "Node should have one enclosing callable but has " + c + "."
+    )
+  }
+
+  query predicate uniqueCallEnclosingCallable(DataFlowCall call, string msg) {
+    exists(int c |
+      c = count(call.getEnclosingCallable()) and
+      c != 1 and
+      not any(ConsistencyConfiguration conf).uniqueCallEnclosingCallableExclude(call) and
+      msg = "Call should have one enclosing callable but has " + c + "."
     )
   }
 

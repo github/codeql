@@ -47,7 +47,7 @@ module InsufficientPasswordHash {
         application.getAlgorithm().isWeak() or
         not application.getAlgorithm() instanceof PasswordHashingAlgorithm
       |
-        this = application.getInput()
+        this = application.getAnInput()
       )
     }
   }

@@ -51,8 +51,9 @@ class SetOptionsCall extends ProtocolRestriction, DataFlow::CallCfgNode {
   }
 }
 
-class UnspecificPyOpenSslContextCreation extends PyOpenSslContextCreation, UnspecificContextCreation {
-  UnspecificPyOpenSslContextCreation() { library instanceof PyOpenSsl }
+class UnspecificPyOpenSslContextCreation extends PyOpenSslContextCreation, UnspecificContextCreation
+{
+  // UnspecificPyOpenSslContextCreation() { library instanceof PyOpenSsl }
 }
 
 class PyOpenSsl extends TlsLibrary {

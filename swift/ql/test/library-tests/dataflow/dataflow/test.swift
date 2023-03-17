@@ -474,3 +474,42 @@ func testOptionalPropertyAccess(y: Int?) {
     guard let z2 = cy.x else { return }
     sink(arg: z2)
 }
+
+func testIdentityArithmetic() {
+  sink(arg: +source()) // $ flow=479
+  sink(arg: (source())) // $ flow=480
+}
+
+func sink(str: String) {}
+
+func source3() -> String { return "" }
+
+class MyClass {
+    var str: String
+    init(s: String) {
+      str = s
+    }
+}
+
+extension MyClass {
+    convenience init(contentsOfFile: String) {
+      self.init(s: source3()) 
+      sink(str: str) // $ flow=496
+    }
+}
+
+func extensionInits(path: String) {
+  sink(str: MyClass(s: source3()).str) // $ flow=502
+  sink(str: MyClass(contentsOfFile: path).str) // $ flow=496
+}
+
+class InoutConstructorClass {
+  init(_ n : inout Int) { n = source() }
+}
+
+func sink(arg: InoutConstructorClass) {}
+
+func inoutConstructor() {
+  var n = 0
+  sink(arg: InoutConstructorClass(&n))
+}

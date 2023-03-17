@@ -15,3 +15,4 @@ tree-sitter-ql = { git = "https://github.com/tree-sitter/tree-sitter-ql.git", re
 tree-sitter-ql-dbscheme = { git = "https://github.com/erik-krogh/tree-sitter-ql-dbscheme.git", rev = "63e1344353f63931e88bfbc2faa2e78e1421b213"}
 tree-sitter-ql-yaml = {git = "https://github.com/erik-krogh/tree-sitter-ql.git", rev = "cf704bf3671e1ae148e173464fb65a4d2bbf5f99"}
 tree-sitter-blame = {path = "../buramu/tree-sitter-blame"}
+tree-sitter-json = { git = "https://github.com/tausbn/tree-sitter-json.git", rev = "745663ee997f1576fe1e7187e6347e0db36ec7a9"}

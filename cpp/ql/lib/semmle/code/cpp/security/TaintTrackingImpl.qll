@@ -591,7 +591,8 @@ deprecated library class DataSensitiveExprCall extends DataSensitiveCallExpr, Ex
 
 /** Call to a virtual function. */
 deprecated library class DataSensitiveOverriddenFunctionCall extends DataSensitiveCallExpr,
-  FunctionCall {
+  FunctionCall
+{
   DataSensitiveOverriddenFunctionCall() {
     exists(getTarget().(VirtualFunction).getAnOverridingFunction())
   }

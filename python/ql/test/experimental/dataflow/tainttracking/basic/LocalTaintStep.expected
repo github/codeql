@@ -1,3 +1,4 @@
+| file://:0:0:0:0 | [summary] read: argument position 0.List element in builtins.reversed | file://:0:0:0:0 | [summary] to write: return (return).List element in builtins.reversed |
 | test.py:3:1:3:7 | GSSA Variable tainted | test.py:4:6:4:12 | ControlFlowNode for tainted |
 | test.py:3:11:3:16 | ControlFlowNode for SOURCE | test.py:3:1:3:7 | GSSA Variable tainted |
 | test.py:6:1:6:11 | ControlFlowNode for FunctionExpr | test.py:6:5:6:8 | GSSA Variable func |

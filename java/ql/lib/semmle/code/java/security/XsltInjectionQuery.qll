@@ -55,7 +55,8 @@ private predicate newTransformerOrTemplatesStep(DataFlow::Node n1, DataFlow::Nod
 /**
  * A data flow configuration for secure processing feature that is enabled on `TransformerFactory`.
  */
-private class TransformerFactoryWithSecureProcessingFeatureFlowConfig extends DataFlow2::Configuration {
+private class TransformerFactoryWithSecureProcessingFeatureFlowConfig extends DataFlow2::Configuration
+{
   TransformerFactoryWithSecureProcessingFeatureFlowConfig() {
     this = "TransformerFactoryWithSecureProcessingFeatureFlowConfig"
   }

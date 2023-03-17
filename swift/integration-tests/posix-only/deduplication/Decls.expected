@@ -1,0 +1,16 @@
+| Sources/deduplication/def.swift:1:1:1:9 | var ... = ... | PatternBindingDecl |
+| Sources/deduplication/def.swift:1:5:1:5 | x | ConcreteVarDecl |
+| Sources/deduplication/def.swift:3:1:3:20 | Generic | StructDecl |
+| Sources/deduplication/def.swift:3:8:3:8 | Generic<T>.init() | ConstructorDecl |
+| Sources/deduplication/def.swift:3:8:3:8 | self | ParamDecl |
+| Sources/deduplication/def.swift:3:16:3:16 | T | GenericTypeParamDecl |
+| Sources/deduplication/def.swift:5:1:5:41 | var ... = ... | PatternBindingDecl |
+| Sources/deduplication/def.swift:5:5:5:5 | instantiated_generic | ConcreteVarDecl |
+| Sources/deduplication/def.swift:7:1:7:42 | function(_:) | ConcreteFuncDecl |
+| Sources/deduplication/def.swift:7:15:7:18 | _ | ParamDecl |
+| Sources/deduplication/use.swift:1:1:1:13 | var ... = ... | PatternBindingDecl |
+| Sources/deduplication/use.swift:1:5:1:5 | use_x | ConcreteVarDecl |
+| Sources/deduplication/use.swift:2:1:2:32 | var ... = ... | PatternBindingDecl |
+| Sources/deduplication/use.swift:2:5:2:5 | use_instantiated_generic | ConcreteVarDecl |
+| Sources/deduplication/use.swift:3:1:3:20 | var ... = ... | PatternBindingDecl |
+| Sources/deduplication/use.swift:3:5:3:5 | use_function | ConcreteVarDecl |

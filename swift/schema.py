@@ -9,7 +9,7 @@ This file should be kept simple:
 For how documentation of generated QL code works, please read schema_documentation.md.
 """
 
-from swift.codegen.lib.schemadefs import *
+from misc.codegen.lib.schemadefs import *
 
 include("prefix.dbscheme")
 
@@ -955,7 +955,7 @@ class AnyFunctionType(Type):
 
 class AnyGenericType(Type):
     parent: optional[Type]
-    declaration: Decl
+    declaration: GenericTypeDecl
 
 class AnyMetatypeType(Type):
     pass

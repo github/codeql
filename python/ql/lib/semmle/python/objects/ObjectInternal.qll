@@ -216,7 +216,7 @@ class BuiltinOpaqueObjectInternal extends ObjectInternal, TBuiltinOpaqueObject {
   override Builtin getBuiltin() { this = TBuiltinOpaqueObject(result) }
 
   override string toString() {
-    Stages::DataFlow::ref() and
+    Stages::PointsTo::ref() and
     result = this.getBuiltin().getClass().getName() + " object"
   }
 

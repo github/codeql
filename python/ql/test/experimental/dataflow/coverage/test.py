@@ -697,8 +697,15 @@ def test_overflow_iteration():
   s = SOURCE
   iterate_star_args(NONSOURCE, NONSOURCE, SOURCE, s)
 
+@expects(6)
 def test_deep_callgraph():
     # port of python/ql/test/library-tests/taint/general/deep.py
+
+    # based on the fact that `test_deep_callgraph_defined_in_module` works the problem
+    # seems to be that we're defining these functions inside another function and that
+    # the flow of these function definitions DOESN'T flow into the body of the `f<n>`
+    # functions (they DO flow into the body of `test_deep_callgraph`, otherwise the
+    # `f1` call wouldn't work).
 
     def f1(arg):
         return arg
@@ -720,7 +727,50 @@ def test_deep_callgraph():
 
     x = f6(SOURCE)
     SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+    x = f5(SOURCE)
+    SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+    x = f4(SOURCE)
+    SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+    x = f3(SOURCE)
+    SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+    x = f2(SOURCE)
+    SINK(x) #$ MISSING:flow="SOURCE, l:-1 -> x"
+    x = f1(SOURCE)
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
 
+
+def wat_f1(arg):
+    return arg
+
+def wat_f2(arg):
+    return wat_f1(arg)
+
+def wat_f3(arg):
+    return wat_f2(arg)
+
+def wat_f4(arg):
+    return wat_f3(arg)
+
+def wat_f5(arg):
+    return wat_f4(arg)
+
+def wat_f6(arg):
+    return wat_f5(arg)
+
+@expects(6)
+def test_deep_callgraph_defined_in_module():
+    x = wat_f6(SOURCE)
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
+    x = wat_f5(SOURCE)
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
+    x = wat_f4(SOURCE)
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
+    x = wat_f3(SOURCE)
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
+    x = wat_f2(SOURCE)
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
+    x = wat_f1(SOURCE)
+    SINK(x) #$ flow="SOURCE, l:-1 -> x"
 
 @expects(2)
 def test_dynamic_tuple_creation_1():

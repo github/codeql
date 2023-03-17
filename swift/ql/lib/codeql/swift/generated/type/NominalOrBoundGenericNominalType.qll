@@ -5,5 +5,6 @@ import codeql.swift.elements.type.AnyGenericType
 
 module Generated {
   class NominalOrBoundGenericNominalType extends Synth::TNominalOrBoundGenericNominalType,
-    AnyGenericType { }
+    AnyGenericType
+  { }
 }

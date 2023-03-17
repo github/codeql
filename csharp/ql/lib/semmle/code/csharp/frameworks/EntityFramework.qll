@@ -86,6 +86,8 @@ module EntityFramework {
   abstract class EFSummarizedCallable extends SummarizedCallable {
     bindingset[this]
     EFSummarizedCallable() { any() }
+
+    override predicate hasProvenance(string provenance) { provenance = "manual" }
   }
 
   private class DbSetAddOrUpdateRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
@@ -430,7 +432,8 @@ module EntityFramework {
     }
   }
 
-  private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
+  private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack
+  {
     override predicate required(SummaryComponent head, SummaryComponentStack tail) {
       exists(Content c | head = SummaryComponent::content(c) |
         any(DbContextClass cls).requiresComponentStackIn(c, _, tail, _)

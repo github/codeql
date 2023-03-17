@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Threading.Channels, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Channels
         {
-            // Generated from `System.Threading.Channels.BoundedChannelFullMode` in `System.Threading.Channels, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum BoundedChannelFullMode : int
             {
                 DropNewest = 1,
@@ -15,7 +15,6 @@ namespace System
                 Wait = 0,
             }
 
-            // Generated from `System.Threading.Channels.BoundedChannelOptions` in `System.Threading.Channels, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class BoundedChannelOptions : System.Threading.Channels.ChannelOptions
             {
                 public BoundedChannelOptions(int capacity) => throw null;
@@ -23,7 +22,6 @@ namespace System
                 public System.Threading.Channels.BoundedChannelFullMode FullMode { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Threading.Channels.Channel` in `System.Threading.Channels, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class Channel
             {
                 public static System.Threading.Channels.Channel<T> CreateBounded<T>(System.Threading.Channels.BoundedChannelOptions options) => throw null;
@@ -33,7 +31,6 @@ namespace System
                 public static System.Threading.Channels.Channel<T> CreateUnbounded<T>(System.Threading.Channels.UnboundedChannelOptions options) => throw null;
             }
 
-            // Generated from `System.Threading.Channels.Channel<,>` in `System.Threading.Channels, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class Channel<TWrite, TRead>
             {
                 protected Channel() => throw null;
@@ -43,13 +40,11 @@ namespace System
                 public static implicit operator System.Threading.Channels.ChannelWriter<TWrite>(System.Threading.Channels.Channel<TWrite, TRead> channel) => throw null;
             }
 
-            // Generated from `System.Threading.Channels.Channel<>` in `System.Threading.Channels, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class Channel<T> : System.Threading.Channels.Channel<T, T>
             {
                 protected Channel() => throw null;
             }
 
-            // Generated from `System.Threading.Channels.ChannelClosedException` in `System.Threading.Channels, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class ChannelClosedException : System.InvalidOperationException
             {
                 public ChannelClosedException() => throw null;
@@ -59,7 +54,6 @@ namespace System
                 public ChannelClosedException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `System.Threading.Channels.ChannelOptions` in `System.Threading.Channels, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class ChannelOptions
             {
                 public bool AllowSynchronousContinuations { get => throw null; set => throw null; }
@@ -68,7 +62,6 @@ namespace System
                 public bool SingleWriter { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Threading.Channels.ChannelReader<>` in `System.Threading.Channels, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class ChannelReader<T>
             {
                 public virtual bool CanCount { get => throw null; }
@@ -83,7 +76,6 @@ namespace System
                 public abstract System.Threading.Tasks.ValueTask<bool> WaitToReadAsync(System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken));
             }
 
-            // Generated from `System.Threading.Channels.ChannelWriter<>` in `System.Threading.Channels, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public abstract class ChannelWriter<T>
             {
                 protected ChannelWriter() => throw null;
@@ -94,7 +86,6 @@ namespace System
                 public virtual System.Threading.Tasks.ValueTask WriteAsync(T item, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             }
 
-            // Generated from `System.Threading.Channels.UnboundedChannelOptions` in `System.Threading.Channels, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class UnboundedChannelOptions : System.Threading.Channels.ChannelOptions
             {
                 public UnboundedChannelOptions() => throw null;

@@ -19,5 +19,6 @@ import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.ir.dataflow.DataFlow2
 
 module TaintTracking {
+  import semmle.code.cpp.ir.dataflow.internal.tainttracking1.TaintTracking
   import semmle.code.cpp.ir.dataflow.internal.tainttracking1.TaintTrackingImpl
 }

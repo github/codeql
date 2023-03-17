@@ -78,11 +78,11 @@ func tests() {
     let k = String(format: tainted, locale: nil, arguments: []) // BAD
     let l = String.localizedStringWithFormat(tainted) // BAD
 
-    let m = NSString(format: NSString(string: tainted), "abc") // BAD [NOT DETECTED]
-    let n = NSString.localizedStringWithFormat(NSString(string: tainted)) // BAD [NOT DETECTED]
+    let m = NSString(format: NSString(string: tainted), "abc") // BAD
+    let n = NSString.localizedStringWithFormat(NSString(string: tainted)) // BAD
 
-    var o = NSMutableString(format: NSString(string: tainted), "abc") // BAD [NOT DETECTED]
-    var p = NSMutableString.localizedStringWithFormat(NSString(string: tainted)) // BAD [NOT DETECTED]
+    var o = NSMutableString(format: NSString(string: tainted), "abc") // BAD
+    var p = NSMutableString.localizedStringWithFormat(NSString(string: tainted)) // BAD
 
     NSLog("abc") // GOOD: not tainted
     NSLog(tainted) // BAD

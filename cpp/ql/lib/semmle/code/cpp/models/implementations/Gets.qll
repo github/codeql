@@ -14,7 +14,8 @@ import semmle.code.cpp.models.interfaces.FlowSource
  * The standard functions `fgets` and `fgetws`.
  */
 private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFunction, AliasFunction,
-  SideEffectFunction, RemoteFlowSourceFunction {
+  SideEffectFunction, RemoteFlowSourceFunction
+{
   FgetsFunction() {
     // fgets(str, num, stream)
     // fgetws(wstr, num, stream)
@@ -69,7 +70,8 @@ private class FgetsFunction extends DataFlowFunction, TaintFunction, ArrayFuncti
  * The standard functions `gets`.
  */
 private class GetsFunction extends DataFlowFunction, ArrayFunction, AliasFunction,
-  SideEffectFunction, LocalFlowSourceFunction {
+  SideEffectFunction, LocalFlowSourceFunction
+{
   GetsFunction() {
     // gets(str)
     this.hasGlobalOrStdOrBslName("gets")
@@ -97,10 +99,11 @@ private class GetsFunction extends DataFlowFunction, ArrayFunction, AliasFunctio
   }
 
   override predicate hasLocalFlowSource(FunctionOutput output, string description) {
-    output.isParameterDeref(0) and
-    description = "string read by " + this.getName()
-    or
-    output.isReturnValue() and
+    (
+      output.isParameterDeref(0) or
+      output.isReturnValue() or
+      output.isReturnValueDeref()
+    ) and
     description = "string read by " + this.getName()
   }
 

@@ -690,7 +690,8 @@ abstract private class CallWithAnalyzedParameters extends FunctionWithAnalyzedPa
 /**
  * Flow analysis for simple parameters of IIFEs.
  */
-private class IifeWithAnalyzedParameters extends CallWithAnalyzedParameters instanceof ImmediatelyInvokedFunctionExpr {
+private class IifeWithAnalyzedParameters extends CallWithAnalyzedParameters instanceof ImmediatelyInvokedFunctionExpr
+{
   IifeWithAnalyzedParameters() { super.getInvocationKind() = "direct" }
 
   override DataFlow::InvokeNode getAnInvocation() { result = super.getInvocation().flow() }
@@ -711,7 +712,8 @@ private class IifeWithAnalyzedParameters extends CallWithAnalyzedParameters inst
 /**
  * Enables inter-procedural type inference for `LocalFunction`.
  */
-private class LocalFunctionWithAnalyzedParameters extends CallWithAnalyzedParameters instanceof LocalFunction {
+private class LocalFunctionWithAnalyzedParameters extends CallWithAnalyzedParameters instanceof LocalFunction
+{
   override DataFlow::InvokeNode getAnInvocation() { result = LocalFunction.super.getAnInvocation() }
 
   override predicate isIncomplete(DataFlow::Incompleteness cause) { none() }

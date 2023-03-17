@@ -1,6 +1,6 @@
 private import cpp
-private import semmle.code.cpp.dataflow.internal.DataFlowPrivate
-private import semmle.code.cpp.dataflow.internal.DataFlowUtil
+private import DataFlowPrivate
+private import DataFlowUtil
 
 /**
  * Gets a function that might be called by `call`.

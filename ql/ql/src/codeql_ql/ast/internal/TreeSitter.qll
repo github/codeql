@@ -1856,3 +1856,156 @@ module Blame {
     final override string getAPrimaryQlClass() { result = "Number" }
   }
 }
+
+module JSON {
+  /** The base class for all AST nodes */
+  class AstNode extends @json_ast_node {
+    /** Gets a string representation of this element. */
+    string toString() { result = this.getAPrimaryQlClass() }
+
+    /** Gets the location of this element. */
+    final L::Location getLocation() { json_ast_node_info(this, _, _, result) }
+
+    predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    /** Gets the parent of this element. */
+    final AstNode getParent() { json_ast_node_info(this, result, _, _) }
+
+    /** Gets the index of this node among the children of its parent. */
+    final int getParentIndex() { json_ast_node_info(this, _, result, _) }
+
+    /** Gets a field or child node of this node. */
+    AstNode getAFieldOrChild() { none() }
+
+    /** Gets the name of the primary QL class for this element. */
+    string getAPrimaryQlClass() { result = "???" }
+
+    /** Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs. */
+    string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
+  }
+
+  /** A token. */
+  class Token extends @json_token, AstNode {
+    /** Gets the value of this token. */
+    final string getValue() { json_tokeninfo(this, _, result) }
+
+    /** Gets a string representation of this element. */
+    final override string toString() { result = this.getValue() }
+
+    /** Gets the name of the primary QL class for this element. */
+    override string getAPrimaryQlClass() { result = "Token" }
+  }
+
+  /** A reserved word. */
+  class ReservedWord extends @json_reserved_word, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "ReservedWord" }
+  }
+
+  /** A class representing `array` nodes. */
+  class Array extends @json_array, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Array" }
+
+    /** Gets the `i`th child of this node. */
+    final Value getChild(int i) { json_array_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { json_array_child(this, _, result) }
+  }
+
+  /** A class representing `comment` tokens. */
+  class Comment extends @json_token_comment, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Comment" }
+  }
+
+  /** A class representing `document` nodes. */
+  class Document extends @json_document, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Document" }
+
+    /** Gets the `i`th child of this node. */
+    final Value getChild(int i) { json_document_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { json_document_child(this, _, result) }
+  }
+
+  /** A class representing `false` tokens. */
+  class False extends @json_token_false, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "False" }
+  }
+
+  /** A class representing `null` tokens. */
+  class Null extends @json_token_null, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Null" }
+  }
+
+  /** A class representing `number` tokens. */
+  class Number extends @json_token_number, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Number" }
+  }
+
+  /** A class representing `object` nodes. */
+  class Object extends @json_object, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Object" }
+
+    /** Gets the `i`th child of this node. */
+    final Pair getChild(int i) { json_object_child(this, i, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { json_object_child(this, _, result) }
+  }
+
+  /** A class representing `pair` nodes. */
+  class Pair extends @json_pair, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "Pair" }
+
+    /** Gets the node corresponding to the field `key`. */
+    final AstNode getKey() { json_pair_def(this, result, _) }
+
+    /** Gets the node corresponding to the field `value`. */
+    final Value getValue() { json_pair_def(this, _, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      json_pair_def(this, result, _) or json_pair_def(this, _, result)
+    }
+  }
+
+  /** A class representing `string` nodes. */
+  class String extends @json_string__, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "String" }
+
+    /** Gets the child of this node. */
+    final StringContent getChild() { json_string_child(this, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() { json_string_child(this, result) }
+  }
+
+  /** A class representing `string_content` tokens. */
+  class StringContent extends @json_token_string_content, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "StringContent" }
+  }
+
+  /** A class representing `true` tokens. */
+  class True extends @json_token_true, Token {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "True" }
+  }
+
+  class Value extends @json_value, AstNode { }
+}

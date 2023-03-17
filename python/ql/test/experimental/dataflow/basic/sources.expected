@@ -1,12 +1,13 @@
-| file://:0:0:0:0 | [summary] read: argument 0.List element in builtins.reversed |
+| file://:0:0:0:0 | [summary] read: argument position 0.List element in builtins.reversed |
 | file://:0:0:0:0 | [summary] to write: return (return) in builtins.reversed |
 | file://:0:0:0:0 | [summary] to write: return (return).List element in builtins.reversed |
-| file://:0:0:0:0 | parameter 0 of builtins.reversed |
+| file://:0:0:0:0 | parameter position 0 of builtins.reversed |
 | test.py:0:0:0:0 | GSSA Variable __name__ |
 | test.py:0:0:0:0 | GSSA Variable __package__ |
 | test.py:0:0:0:0 | GSSA Variable b |
 | test.py:0:0:0:0 | SSA variable $ |
 | test.py:1:1:1:21 | ControlFlowNode for FunctionExpr |
+| test.py:1:1:1:21 | SynthDictSplatParameterNode |
 | test.py:1:5:1:17 | ControlFlowNode for obfuscated_id |
 | test.py:1:5:1:17 | GSSA Variable obfuscated_id |
 | test.py:1:19:1:19 | ControlFlowNode for x |
@@ -24,7 +25,9 @@
 | test.py:7:1:7:1 | ControlFlowNode for b |
 | test.py:7:1:7:1 | GSSA Variable b |
 | test.py:7:5:7:17 | ControlFlowNode for obfuscated_id |
+| test.py:7:5:7:17 | [post] ControlFlowNode for obfuscated_id |
 | test.py:7:5:7:20 | ControlFlowNode for obfuscated_id() |
 | test.py:7:5:7:20 | GSSA Variable a |
+| test.py:7:5:7:20 | [pre] ControlFlowNode for obfuscated_id() |
 | test.py:7:19:7:19 | ControlFlowNode for a |
-| test.py:7:19:7:19 | [post arg] ControlFlowNode for a |
+| test.py:7:19:7:19 | [post] ControlFlowNode for a |

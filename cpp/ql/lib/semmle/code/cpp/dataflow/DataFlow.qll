@@ -19,6 +19,11 @@
 
 import cpp
 
+/**
+ * Provides classes for performing local (intra-procedural) and
+ * global (inter-procedural) data flow analyses.
+ */
 module DataFlow {
-  import semmle.code.cpp.dataflow.internal.DataFlowImpl
+  import semmle.code.cpp.dataflow.internal.DataFlow
+  import semmle.code.cpp.dataflow.internal.DataFlowImpl1
 }

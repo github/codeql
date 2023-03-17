@@ -1,5 +1,43 @@
 failures
+| filter_flow.rb:21:10:21:13 | @foo | Unexpected result: hasTaintFlow= |
+| filter_flow.rb:38:10:38:13 | @foo | Unexpected result: hasTaintFlow= |
+| filter_flow.rb:55:10:55:13 | @foo | Unexpected result: hasTaintFlow= |
+| filter_flow.rb:71:10:71:17 | call to bar | Unexpected result: hasTaintFlow= |
+| filter_flow.rb:87:11:87:14 | @foo | Unexpected result: hasTaintFlow= |
 edges
+| filter_flow.rb:14:5:14:8 | [post] self [@foo] :  | filter_flow.rb:17:3:18:5 | self in b [@foo] :  |
+| filter_flow.rb:14:12:14:17 | call to params :  | filter_flow.rb:14:12:14:23 | ...[...] :  |
+| filter_flow.rb:14:12:14:23 | ...[...] :  | filter_flow.rb:14:5:14:8 | [post] self [@foo] :  |
+| filter_flow.rb:17:3:18:5 | self in b [@foo] :  | filter_flow.rb:20:3:22:5 | self in c [@foo] :  |
+| filter_flow.rb:20:3:22:5 | self in c [@foo] :  | filter_flow.rb:21:10:21:13 | self [@foo] :  |
+| filter_flow.rb:21:10:21:13 | self [@foo] :  | filter_flow.rb:21:10:21:13 | @foo |
+| filter_flow.rb:30:5:30:8 | [post] self [@foo] :  | filter_flow.rb:33:3:35:5 | self in b [@foo] :  |
+| filter_flow.rb:30:12:30:17 | call to params :  | filter_flow.rb:30:12:30:23 | ...[...] :  |
+| filter_flow.rb:30:12:30:23 | ...[...] :  | filter_flow.rb:30:5:30:8 | [post] self [@foo] :  |
+| filter_flow.rb:33:3:35:5 | self in b [@foo] :  | filter_flow.rb:37:3:39:5 | self in c [@foo] :  |
+| filter_flow.rb:37:3:39:5 | self in c [@foo] :  | filter_flow.rb:38:10:38:13 | self [@foo] :  |
+| filter_flow.rb:38:10:38:13 | self [@foo] :  | filter_flow.rb:38:10:38:13 | @foo |
+| filter_flow.rb:47:5:47:8 | [post] self [@foo] :  | filter_flow.rb:51:3:52:5 | self in b [@foo] :  |
+| filter_flow.rb:47:12:47:17 | call to params :  | filter_flow.rb:47:12:47:23 | ...[...] :  |
+| filter_flow.rb:47:12:47:23 | ...[...] :  | filter_flow.rb:47:5:47:8 | [post] self [@foo] :  |
+| filter_flow.rb:51:3:52:5 | self in b [@foo] :  | filter_flow.rb:54:3:56:5 | self in c [@foo] :  |
+| filter_flow.rb:54:3:56:5 | self in c [@foo] :  | filter_flow.rb:55:10:55:13 | self [@foo] :  |
+| filter_flow.rb:55:10:55:13 | self [@foo] :  | filter_flow.rb:55:10:55:13 | @foo |
+| filter_flow.rb:64:5:64:8 | [post] @foo [@bar] :  | filter_flow.rb:64:5:64:8 | [post] self [@foo, @bar] :  |
+| filter_flow.rb:64:5:64:8 | [post] self [@foo, @bar] :  | filter_flow.rb:67:3:68:5 | self in b [@foo, @bar] :  |
+| filter_flow.rb:64:16:64:21 | call to params :  | filter_flow.rb:64:16:64:27 | ...[...] :  |
+| filter_flow.rb:64:16:64:27 | ...[...] :  | filter_flow.rb:64:5:64:8 | [post] @foo [@bar] :  |
+| filter_flow.rb:67:3:68:5 | self in b [@foo, @bar] :  | filter_flow.rb:70:3:72:5 | self in c [@foo, @bar] :  |
+| filter_flow.rb:70:3:72:5 | self in c [@foo, @bar] :  | filter_flow.rb:71:10:71:13 | self [@foo, @bar] :  |
+| filter_flow.rb:71:10:71:13 | @foo [@bar] :  | filter_flow.rb:71:10:71:17 | call to bar |
+| filter_flow.rb:71:10:71:13 | self [@foo, @bar] :  | filter_flow.rb:71:10:71:13 | @foo [@bar] :  |
+| filter_flow.rb:80:5:80:8 | [post] self [@foo] :  | filter_flow.rb:83:3:84:5 | self in b [@foo] :  |
+| filter_flow.rb:83:3:84:5 | self in b [@foo] :  | filter_flow.rb:86:3:88:5 | self in c [@foo] :  |
+| filter_flow.rb:86:3:88:5 | self in c [@foo] :  | filter_flow.rb:87:11:87:14 | self [@foo] :  |
+| filter_flow.rb:87:11:87:14 | self [@foo] :  | filter_flow.rb:87:11:87:14 | @foo |
+| filter_flow.rb:91:5:91:8 | [post] self [@foo] :  | filter_flow.rb:80:5:80:8 | [post] self [@foo] :  |
+| filter_flow.rb:91:12:91:17 | call to params :  | filter_flow.rb:91:12:91:23 | ...[...] :  |
+| filter_flow.rb:91:12:91:23 | ...[...] :  | filter_flow.rb:91:5:91:8 | [post] self [@foo] :  |
 | params_flow.rb:3:10:3:15 | call to params :  | params_flow.rb:3:10:3:19 | ...[...] |
 | params_flow.rb:7:10:7:15 | call to params :  | params_flow.rb:7:10:7:23 | call to as_json |
 | params_flow.rb:15:10:15:15 | call to params :  | params_flow.rb:15:10:15:33 | call to permit |
@@ -52,6 +90,44 @@ edges
 | params_flow.rb:172:10:172:15 | call to params :  | params_flow.rb:172:10:172:19 | ...[...] |
 | params_flow.rb:176:10:176:15 | call to params :  | params_flow.rb:176:10:176:19 | ...[...] |
 nodes
+| filter_flow.rb:14:5:14:8 | [post] self [@foo] :  | semmle.label | [post] self [@foo] :  |
+| filter_flow.rb:14:12:14:17 | call to params :  | semmle.label | call to params :  |
+| filter_flow.rb:14:12:14:23 | ...[...] :  | semmle.label | ...[...] :  |
+| filter_flow.rb:17:3:18:5 | self in b [@foo] :  | semmle.label | self in b [@foo] :  |
+| filter_flow.rb:20:3:22:5 | self in c [@foo] :  | semmle.label | self in c [@foo] :  |
+| filter_flow.rb:21:10:21:13 | @foo | semmle.label | @foo |
+| filter_flow.rb:21:10:21:13 | self [@foo] :  | semmle.label | self [@foo] :  |
+| filter_flow.rb:30:5:30:8 | [post] self [@foo] :  | semmle.label | [post] self [@foo] :  |
+| filter_flow.rb:30:12:30:17 | call to params :  | semmle.label | call to params :  |
+| filter_flow.rb:30:12:30:23 | ...[...] :  | semmle.label | ...[...] :  |
+| filter_flow.rb:33:3:35:5 | self in b [@foo] :  | semmle.label | self in b [@foo] :  |
+| filter_flow.rb:37:3:39:5 | self in c [@foo] :  | semmle.label | self in c [@foo] :  |
+| filter_flow.rb:38:10:38:13 | @foo | semmle.label | @foo |
+| filter_flow.rb:38:10:38:13 | self [@foo] :  | semmle.label | self [@foo] :  |
+| filter_flow.rb:47:5:47:8 | [post] self [@foo] :  | semmle.label | [post] self [@foo] :  |
+| filter_flow.rb:47:12:47:17 | call to params :  | semmle.label | call to params :  |
+| filter_flow.rb:47:12:47:23 | ...[...] :  | semmle.label | ...[...] :  |
+| filter_flow.rb:51:3:52:5 | self in b [@foo] :  | semmle.label | self in b [@foo] :  |
+| filter_flow.rb:54:3:56:5 | self in c [@foo] :  | semmle.label | self in c [@foo] :  |
+| filter_flow.rb:55:10:55:13 | @foo | semmle.label | @foo |
+| filter_flow.rb:55:10:55:13 | self [@foo] :  | semmle.label | self [@foo] :  |
+| filter_flow.rb:64:5:64:8 | [post] @foo [@bar] :  | semmle.label | [post] @foo [@bar] :  |
+| filter_flow.rb:64:5:64:8 | [post] self [@foo, @bar] :  | semmle.label | [post] self [@foo, @bar] :  |
+| filter_flow.rb:64:16:64:21 | call to params :  | semmle.label | call to params :  |
+| filter_flow.rb:64:16:64:27 | ...[...] :  | semmle.label | ...[...] :  |
+| filter_flow.rb:67:3:68:5 | self in b [@foo, @bar] :  | semmle.label | self in b [@foo, @bar] :  |
+| filter_flow.rb:70:3:72:5 | self in c [@foo, @bar] :  | semmle.label | self in c [@foo, @bar] :  |
+| filter_flow.rb:71:10:71:13 | @foo [@bar] :  | semmle.label | @foo [@bar] :  |
+| filter_flow.rb:71:10:71:13 | self [@foo, @bar] :  | semmle.label | self [@foo, @bar] :  |
+| filter_flow.rb:71:10:71:17 | call to bar | semmle.label | call to bar |
+| filter_flow.rb:80:5:80:8 | [post] self [@foo] :  | semmle.label | [post] self [@foo] :  |
+| filter_flow.rb:83:3:84:5 | self in b [@foo] :  | semmle.label | self in b [@foo] :  |
+| filter_flow.rb:86:3:88:5 | self in c [@foo] :  | semmle.label | self in c [@foo] :  |
+| filter_flow.rb:87:11:87:14 | @foo | semmle.label | @foo |
+| filter_flow.rb:87:11:87:14 | self [@foo] :  | semmle.label | self [@foo] :  |
+| filter_flow.rb:91:5:91:8 | [post] self [@foo] :  | semmle.label | [post] self [@foo] :  |
+| filter_flow.rb:91:12:91:17 | call to params :  | semmle.label | call to params :  |
+| filter_flow.rb:91:12:91:23 | ...[...] :  | semmle.label | ...[...] :  |
 | params_flow.rb:3:10:3:15 | call to params :  | semmle.label | call to params :  |
 | params_flow.rb:3:10:3:19 | ...[...] | semmle.label | ...[...] |
 | params_flow.rb:7:10:7:15 | call to params :  | semmle.label | call to params :  |
@@ -152,6 +228,11 @@ nodes
 | params_flow.rb:176:10:176:19 | ...[...] | semmle.label | ...[...] |
 subpaths
 #select
+| filter_flow.rb:21:10:21:13 | @foo | filter_flow.rb:14:12:14:17 | call to params :  | filter_flow.rb:21:10:21:13 | @foo | $@ | filter_flow.rb:14:12:14:17 | call to params :  | call to params :  |
+| filter_flow.rb:38:10:38:13 | @foo | filter_flow.rb:30:12:30:17 | call to params :  | filter_flow.rb:38:10:38:13 | @foo | $@ | filter_flow.rb:30:12:30:17 | call to params :  | call to params :  |
+| filter_flow.rb:55:10:55:13 | @foo | filter_flow.rb:47:12:47:17 | call to params :  | filter_flow.rb:55:10:55:13 | @foo | $@ | filter_flow.rb:47:12:47:17 | call to params :  | call to params :  |
+| filter_flow.rb:71:10:71:17 | call to bar | filter_flow.rb:64:16:64:21 | call to params :  | filter_flow.rb:71:10:71:17 | call to bar | $@ | filter_flow.rb:64:16:64:21 | call to params :  | call to params :  |
+| filter_flow.rb:87:11:87:14 | @foo | filter_flow.rb:91:12:91:17 | call to params :  | filter_flow.rb:87:11:87:14 | @foo | $@ | filter_flow.rb:91:12:91:17 | call to params :  | call to params :  |
 | params_flow.rb:3:10:3:19 | ...[...] | params_flow.rb:3:10:3:15 | call to params :  | params_flow.rb:3:10:3:19 | ...[...] | $@ | params_flow.rb:3:10:3:15 | call to params :  | call to params :  |
 | params_flow.rb:7:10:7:23 | call to as_json | params_flow.rb:7:10:7:15 | call to params :  | params_flow.rb:7:10:7:23 | call to as_json | $@ | params_flow.rb:7:10:7:15 | call to params :  | call to params :  |
 | params_flow.rb:15:10:15:33 | call to permit | params_flow.rb:15:10:15:15 | call to params :  | params_flow.rb:15:10:15:33 | call to permit | $@ | params_flow.rb:15:10:15:15 | call to params :  | call to params :  |

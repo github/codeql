@@ -1,0 +1,28 @@
+{
+  "markdownMessage": "Building using Maven was skipped because there were multiple sibling build directories containing build files: [./maven-project-1,./maven-project-2]. If you want to use one of these, please [manually supply a build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language).",
+  "severity": "warning",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/multiple-candidate-build-directories",
+    "name": "Multiple candidate Maven build directories"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "Could not identify a unique top-level project to build. [Supply a manual build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language).",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/multiple-candidate-build-directories-fatal",
+    "name": "No build system could identify a unique top-level project"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

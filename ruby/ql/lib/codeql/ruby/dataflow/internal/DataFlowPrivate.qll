@@ -189,18 +189,6 @@ module LocalFlow {
   }
 
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
-    exists(DataFlowCallable c | nodeFrom = TSynthHashSplatParameterNode(c) |
-      exists(HashSplatParameter p |
-        p.getCallable() = c.asCallable() and
-        nodeTo = TNormalParameterNode(p)
-      )
-      or
-      exists(ParameterPosition pos |
-        nodeTo = TSummaryParameterNode(c.asLibraryCallable(), pos) and
-        pos.isHashSplat()
-      )
-    )
-    or
     localSsaFlowStep(nodeFrom, nodeTo)
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
@@ -648,9 +636,7 @@ private module ParameterNodes {
           )
         or
         parameter = callable.getAParameter().(HashSplatParameter) and
-        pos.isHashSplat() and
-        // avoid overlap with `SynthHashSplatParameterNode`
-        not callable.getAParameter() instanceof KeywordParameter
+        pos.isHashSplat()
         or
         parameter = callable.getParameter(0).(SplatParameter) and
         pos.isSplatAll()
@@ -780,7 +766,7 @@ private module ParameterNodes {
     final override Parameter getParameter() { none() }
 
     final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      c = callable and pos.isHashSplat()
+      c = callable and pos.isSynthHashSplat()
     }
 
     final override CfgScope getCfgScope() { result = callable.asCallable() }
@@ -802,16 +788,7 @@ private module ParameterNodes {
     override Parameter getParameter() { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      sc = c.asLibraryCallable() and
-      pos = pos_ and
-      // avoid overlap with `SynthHashSplatParameterNode`
-      not (
-        pos.isHashSplat() and
-        exists(ParameterPosition keywordPos |
-          FlowSummaryImpl::Private::summaryParameterNodeRange(sc, keywordPos) and
-          keywordPos.isKeyword(_)
-        )
-      )
+      sc = c.asLibraryCallable() and pos = pos_
     }
 
     override CfgScope getCfgScope() { none() }
@@ -1157,6 +1134,8 @@ predicate jumpStep(Node pred, Node succ) {
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
+  or
+  any(AdditionalJumpStep s).step(pred, succ)
 }
 
 private ContentSet getKeywordContent(string name) {
@@ -1484,3 +1463,24 @@ ContentApprox getContentApprox(Content c) {
   or
   result = TNonElementContentApprox(c)
 }
+
+/**
+ * A unit class for adding additional jump steps.
+ *
+ * Extend this class to add additional jump steps.
+ */
+class AdditionalJumpStep extends Unit {
+  /**
+   * Holds if data can flow from `pred` to `succ` in a way that discards call contexts.
+   */
+  abstract predicate step(Node pred, Node succ);
+}
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

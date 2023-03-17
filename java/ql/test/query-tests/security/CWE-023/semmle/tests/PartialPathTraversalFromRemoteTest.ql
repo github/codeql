@@ -2,6 +2,10 @@ import java
 import TestUtilities.InlineFlowTest
 import semmle.code.java.security.PartialPathTraversalQuery
 
+class EnableLegacy extends EnableLegacyConfiguration {
+  EnableLegacy() { exists(this) }
+}
+
 class TestRemoteSource extends RemoteFlowSource {
   TestRemoteSource() { this.asParameter().hasName(["dir", "path"]) }
 

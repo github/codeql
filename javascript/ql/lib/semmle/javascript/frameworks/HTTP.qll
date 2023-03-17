@@ -347,9 +347,6 @@ module Http {
        */
       abstract RouteHandler getRouteHandler();
 
-      /** DEPRECATED. Use `ref().flowsTo()` instead. */
-      deprecated predicate flowsTo(DataFlow::Node nd) { this.ref().flowsTo(nd) }
-
       private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
         t.start() and
         result = this
@@ -371,9 +368,6 @@ module Http {
        * Gets the route handler that provides this response.
        */
       abstract RouteHandler getRouteHandler();
-
-      /** DEPRECATED. Use `ref().flowsTo()` instead. */
-      deprecated predicate flowsTo(DataFlow::Node nd) { this.ref().flowsTo(nd) }
 
       private DataFlow::SourceNode ref(DataFlow::TypeTracker t) {
         t.start() and
@@ -436,7 +430,8 @@ module Http {
      * A standard header definition.
      */
     abstract class StandardHeaderDefinition extends ExplicitHeaderDefinition,
-      DataFlow::MethodCallNode {
+      DataFlow::MethodCallNode
+    {
       override predicate definesHeaderValue(string headerName, DataFlow::Node headerValue) {
         headerName = this.getNameNode().getStringValue().toLowerCase() and
         headerValue = this.getArgument(1)
@@ -571,7 +566,8 @@ module Http {
   /**
    * An object that contains one or more potential route handlers.
    */
-  class RouteHandlerCandidateContainer extends DataFlow::Node instanceof RouteHandlerCandidateContainer::Range {
+  class RouteHandlerCandidateContainer extends DataFlow::Node instanceof RouteHandlerCandidateContainer::Range
+  {
     /**
      * Gets the route handler in this container that is accessed at `access`.
      */
@@ -671,7 +667,8 @@ module Http {
      * A collection that contains one or more route potential handlers.
      */
     private class ContainerCollection extends Http::RouteHandlerCandidateContainer::Range,
-      DataFlow::NewNode {
+      DataFlow::NewNode
+    {
       ContainerCollection() {
         this = DataFlow::globalVarRef("Map").getAnInstantiation() and // restrict to Map for now
         exists(DataFlow::Node use |

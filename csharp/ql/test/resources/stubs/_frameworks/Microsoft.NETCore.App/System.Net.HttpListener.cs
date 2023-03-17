@@ -1,16 +1,14 @@
 // This file contains auto-generated code.
+// Generated from `System.Net.HttpListener, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 
 namespace System
 {
     namespace Net
     {
-        // Generated from `System.Net.AuthenticationSchemeSelector` in `System.Net.HttpListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate System.Net.AuthenticationSchemes AuthenticationSchemeSelector(System.Net.HttpListenerRequest httpRequest);
 
-        // Generated from `System.Net.HttpListener` in `System.Net.HttpListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class HttpListener : System.IDisposable
         {
-            // Generated from `System.Net.HttpListener+ExtendedProtectionSelector` in `System.Net.HttpListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public delegate System.Security.Authentication.ExtendedProtection.ExtendedProtectionPolicy ExtendedProtectionSelector(System.Net.HttpListenerRequest request);
 
 
@@ -38,14 +36,12 @@ namespace System
             public bool UnsafeConnectionNtlmAuthentication { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Net.HttpListenerBasicIdentity` in `System.Net.HttpListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class HttpListenerBasicIdentity : System.Security.Principal.GenericIdentity
         {
             public HttpListenerBasicIdentity(string username, string password) : base(default(System.Security.Principal.GenericIdentity)) => throw null;
             public virtual string Password { get => throw null; }
         }
 
-        // Generated from `System.Net.HttpListenerContext` in `System.Net.HttpListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class HttpListenerContext
         {
             public System.Threading.Tasks.Task<System.Net.WebSockets.HttpListenerWebSocketContext> AcceptWebSocketAsync(string subProtocol) => throw null;
@@ -57,7 +53,6 @@ namespace System
             public System.Security.Principal.IPrincipal User { get => throw null; }
         }
 
-        // Generated from `System.Net.HttpListenerException` in `System.Net.HttpListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class HttpListenerException : System.ComponentModel.Win32Exception
         {
             public override int ErrorCode { get => throw null; }
@@ -67,7 +62,6 @@ namespace System
             public HttpListenerException(int errorCode, string message) => throw null;
         }
 
-        // Generated from `System.Net.HttpListenerPrefixCollection` in `System.Net.HttpListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class HttpListenerPrefixCollection : System.Collections.Generic.ICollection<string>, System.Collections.Generic.IEnumerable<string>, System.Collections.IEnumerable
         {
             public void Add(string uriPrefix) => throw null;
@@ -83,7 +77,6 @@ namespace System
             public bool Remove(string uriPrefix) => throw null;
         }
 
-        // Generated from `System.Net.HttpListenerRequest` in `System.Net.HttpListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class HttpListenerRequest
         {
             public string[] AcceptTypes { get => throw null; }
@@ -121,7 +114,6 @@ namespace System
             public string[] UserLanguages { get => throw null; }
         }
 
-        // Generated from `System.Net.HttpListenerResponse` in `System.Net.HttpListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class HttpListenerResponse : System.IDisposable
         {
             public void Abort() => throw null;
@@ -148,7 +140,6 @@ namespace System
             public string StatusDescription { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Net.HttpListenerTimeoutManager` in `System.Net.HttpListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class HttpListenerTimeoutManager
         {
             public System.TimeSpan DrainEntityBody { get => throw null; set => throw null; }
@@ -161,7 +152,6 @@ namespace System
 
         namespace WebSockets
         {
-            // Generated from `System.Net.WebSockets.HttpListenerWebSocketContext` in `System.Net.HttpListener, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class HttpListenerWebSocketContext : System.Net.WebSockets.WebSocketContext
             {
                 public override System.Net.CookieCollection CookieCollection { get => throw null; }

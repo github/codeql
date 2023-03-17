@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Hosting, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,19 +7,16 @@ namespace Microsoft
     {
         namespace Hosting
         {
-            // Generated from `Microsoft.AspNetCore.Hosting.DelegateStartup` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DelegateStartup : Microsoft.AspNetCore.Hosting.StartupBase<Microsoft.Extensions.DependencyInjection.IServiceCollection>
             {
                 public override void Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
                 public DelegateStartup(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<Microsoft.Extensions.DependencyInjection.IServiceCollection> factory, System.Action<Microsoft.AspNetCore.Builder.IApplicationBuilder> configureApp) : base(default(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<Microsoft.Extensions.DependencyInjection.IServiceCollection>)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.HostingEnvironmentExtensions` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60; Microsoft.AspNetCore.Hosting.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static partial class HostingEnvironmentExtensions
             {
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.StartupBase` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class StartupBase : Microsoft.AspNetCore.Hosting.IStartup
             {
                 public abstract void Configure(Microsoft.AspNetCore.Builder.IApplicationBuilder app);
@@ -28,7 +26,6 @@ namespace Microsoft
                 protected StartupBase() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.StartupBase<>` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class StartupBase<TBuilder> : Microsoft.AspNetCore.Hosting.StartupBase
             {
                 public virtual void ConfigureContainer(TBuilder builder) => throw null;
@@ -36,7 +33,6 @@ namespace Microsoft
                 public StartupBase(Microsoft.Extensions.DependencyInjection.IServiceProviderFactory<TBuilder> factory) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.WebHostBuilder` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class WebHostBuilder : Microsoft.AspNetCore.Hosting.IWebHostBuilder
             {
                 public Microsoft.AspNetCore.Hosting.IWebHost Build() => throw null;
@@ -48,7 +44,6 @@ namespace Microsoft
                 public WebHostBuilder() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.WebHostBuilderExtensions` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class WebHostBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Hosting.IWebHostBuilder Configure(this Microsoft.AspNetCore.Hosting.IWebHostBuilder hostBuilder, System.Action<Microsoft.AspNetCore.Builder.IApplicationBuilder> configureApp) => throw null;
@@ -64,7 +59,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Hosting.IWebHostBuilder UseStaticWebAssets(this Microsoft.AspNetCore.Hosting.IWebHostBuilder builder) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Hosting.WebHostExtensions` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class WebHostExtensions
             {
                 public static void Run(this Microsoft.AspNetCore.Hosting.IWebHost host) => throw null;
@@ -76,14 +70,12 @@ namespace Microsoft
 
             namespace Builder
             {
-                // Generated from `Microsoft.AspNetCore.Hosting.Builder.ApplicationBuilderFactory` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ApplicationBuilderFactory : Microsoft.AspNetCore.Hosting.Builder.IApplicationBuilderFactory
                 {
                     public ApplicationBuilderFactory(System.IServiceProvider serviceProvider) => throw null;
                     public Microsoft.AspNetCore.Builder.IApplicationBuilder CreateBuilder(Microsoft.AspNetCore.Http.Features.IFeatureCollection serverFeatures) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Hosting.Builder.IApplicationBuilderFactory` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IApplicationBuilderFactory
                 {
                     Microsoft.AspNetCore.Builder.IApplicationBuilder CreateBuilder(Microsoft.AspNetCore.Http.Features.IFeatureCollection serverFeatures);
@@ -92,13 +84,11 @@ namespace Microsoft
             }
             namespace Infrastructure
             {
-                // Generated from `Microsoft.AspNetCore.Hosting.Infrastructure.ISupportsConfigureWebHost` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface ISupportsConfigureWebHost
                 {
                     Microsoft.Extensions.Hosting.IHostBuilder ConfigureWebHost(System.Action<Microsoft.AspNetCore.Hosting.IWebHostBuilder> configure, System.Action<Microsoft.Extensions.Hosting.WebHostBuilderOptions> configureOptions);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Hosting.Infrastructure.ISupportsStartup` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface ISupportsStartup
                 {
                     Microsoft.AspNetCore.Hosting.IWebHostBuilder Configure(System.Action<Microsoft.AspNetCore.Builder.IApplicationBuilder> configure);
@@ -112,7 +102,6 @@ namespace Microsoft
             {
                 namespace Features
                 {
-                    // Generated from `Microsoft.AspNetCore.Hosting.Server.Features.ServerAddressesFeature` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                     public class ServerAddressesFeature : Microsoft.AspNetCore.Hosting.Server.Features.IServerAddressesFeature
                     {
                         public System.Collections.Generic.ICollection<string> Addresses { get => throw null; }
@@ -124,7 +113,6 @@ namespace Microsoft
             }
             namespace StaticWebAssets
             {
-                // Generated from `Microsoft.AspNetCore.Hosting.StaticWebAssets.StaticWebAssetsLoader` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class StaticWebAssetsLoader
                 {
                     public StaticWebAssetsLoader() => throw null;
@@ -135,7 +123,6 @@ namespace Microsoft
         }
         namespace Http
         {
-            // Generated from `Microsoft.AspNetCore.Http.DefaultHttpContextFactory` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class DefaultHttpContextFactory : Microsoft.AspNetCore.Http.IHttpContextFactory
             {
                 public Microsoft.AspNetCore.Http.HttpContext Create(Microsoft.AspNetCore.Http.Features.IFeatureCollection featureCollection) => throw null;
@@ -149,14 +136,12 @@ namespace Microsoft
     {
         namespace Hosting
         {
-            // Generated from `Microsoft.Extensions.Hosting.GenericHostWebHostBuilderExtensions` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class GenericHostWebHostBuilderExtensions
             {
                 public static Microsoft.Extensions.Hosting.IHostBuilder ConfigureWebHost(this Microsoft.Extensions.Hosting.IHostBuilder builder, System.Action<Microsoft.AspNetCore.Hosting.IWebHostBuilder> configure) => throw null;
                 public static Microsoft.Extensions.Hosting.IHostBuilder ConfigureWebHost(this Microsoft.Extensions.Hosting.IHostBuilder builder, System.Action<Microsoft.AspNetCore.Hosting.IWebHostBuilder> configure, System.Action<Microsoft.Extensions.Hosting.WebHostBuilderOptions> configureWebHostBuilder) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Hosting.WebHostBuilderOptions` in `Microsoft.AspNetCore.Hosting, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class WebHostBuilderOptions
             {
                 public bool SuppressEnvironmentConfiguration { get => throw null; set => throw null; }

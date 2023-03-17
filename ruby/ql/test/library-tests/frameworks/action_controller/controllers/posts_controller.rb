@@ -10,6 +10,8 @@ class PostsController < ApplicationController
   before_action :set_user
 
   def index
+    PostsController.render(template: "posts/index")
+    PostsController.renderer.render(template: "posts/index", locals: { show_full_post: true }, assigns: { @posts => Post.all })
   end
 
   def show
@@ -28,3 +30,10 @@ class PostsController < ApplicationController
     Rails.logger.info("Post upvoted: #{@post.id}")
   end
 end
+
+class NotAController
+  def foo
+    PostsController.render(template: "posts/index")
+  end
+end
+

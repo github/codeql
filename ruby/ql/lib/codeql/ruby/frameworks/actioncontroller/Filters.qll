@@ -9,6 +9,7 @@ private import codeql.ruby.controlflow.CfgNodes::ExprNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import codeql.ruby.ast.internal.Constant
+private import codeql.ruby.ast.internal.Module
 
 /**
  * Provides modeling for ActionController filters.
@@ -32,6 +33,17 @@ module Filters {
       or
       this = TAroundKind() and result = "around"
     }
+  }
+
+  bindingset[call]
+  pragma[inline_late]
+  private ActionControllerActionMethod getADescendentAction(MethodCallCfgNode call) {
+    result = call.getExpr().getEnclosingModule().getAMethod()
+    or
+    exists(ModuleBase m |
+      m.getModule() = call.getExpr().getEnclosingModule().getModule().getAnImmediateDescendent+() and
+      result = m.getAMethod()
+    )
   }
 
   /**
@@ -64,14 +76,7 @@ module Filters {
         not exists(this.getOnlyArgument()) and
         forall(string except | except = this.getExceptArgument() | result.getName() != except)
       ) and
-      (
-        result = this.getExpr().getEnclosingModule().getAMethod()
-        or
-        exists(ModuleBase m |
-          m.getModule() = this.getExpr().getEnclosingModule().getModule().getADescendent() and
-          result = m.getAMethod()
-        )
-      )
+      result = getADescendentAction(this)
     }
 
     private string getOnlyArgument() {
@@ -104,8 +109,12 @@ module Filters {
 
     StringlikeLiteralCfgNode getFilterArgument() { result = this.getPositionalArgument(_) }
 
+    string getFilterArgumentName() {
+      result = this.getFilterArgument().getConstantValue().getStringlikeValue()
+    }
+
     /**
-     * Gets the callable that implements the filter with name `name`.
+     * Gets the callable that implements a filter registered by this call.
      * This currently only finds methods in the local class or superclass.
      * It doesn't handle:
      * - lambdas
@@ -122,10 +131,9 @@ module Filters {
      * end
      * ```
      */
-    Callable getFilterCallable(string name) {
-      result.(MethodBase).getName() = name and
-      result.getEnclosingModule().getModule() =
-        this.getExpr().getEnclosingModule().getModule().getAnAncestor()
+    Callable getAFilterCallable() {
+      result =
+        lookupMethod(this.getExpr().getEnclosingModule().getModule(), this.getFilterArgumentName())
     }
   }
 
@@ -321,7 +329,9 @@ module Filters {
 
     string getFilterName() { result = this.getConstantValue().getStringlikeValue() }
 
-    Callable getFilterCallable() { result = call.getFilterCallable(this.getFilterName()) }
+    Callable getFilterCallable() {
+      result = call.getAFilterCallable() and result.(MethodBase).getName() = this.getFilterName()
+    }
 
     ActionControllerActionMethod getAnAction() { result = call.getAnAction() }
   }
@@ -387,4 +397,62 @@ module Filters {
    * `pred` and `succ` may be methods bound to callbacks or controller actions.
    */
   predicate next(Method pred, Method succ) { next(_, pred, succ) }
+
+  /**
+   * Holds if `n` is a post-update node for `self` in method `m`.
+   */
+  private predicate selfPostUpdate(DataFlow::PostUpdateNode n, Method m) {
+    n.getPreUpdateNode().asExpr().getExpr() =
+      any(SelfVariableAccess self |
+        pragma[only_bind_into](m) = self.getEnclosingCallable() and
+        self.getVariable().getDeclaringScope() = m
+      )
+  }
+
+  /**
+   * Holds if `n` is the self parameter of method `m`.
+   */
+  private predicate selfParameter(DataFlowPrivate::SelfParameterNode n, Method m) {
+    m = n.getMethod()
+  }
+
+  /**
+   * A class defining additional jump steps arising from filters.
+   */
+  class FilterJumpStep extends DataFlowPrivate::AdditionalJumpStep {
+    /**
+     * Holds if data can flow from `pred` to `succ` via a callback chain.
+     * `pred` is the post-update node of the self parameter in a method, and
+     * `succ` is the self parameter of a subsequent method that is executed as
+     * part of the callback chain.
+     */
+    override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(Method predMethod, Method succMethod | next(predMethod, succMethod) |
+        // Flow from a post-update node of self  in `pred` to the self parameter of `succ`
+        //
+        // def a
+        //   foo() ---------+
+        //   @x = 1 ---+    |
+        // end         |    |
+        //             |    |
+        // def b  <----+----+
+        //  ...
+        //
+        selfPostUpdate(pred, predMethod) and
+        selfParameter(succ, succMethod)
+        or
+        // Flow from the self parameter of `pred` to the self parameter of `succ`
+        //
+        // def a ---+
+        //   ...    |
+        // end      |
+        //          |
+        // def b  <-+
+        //   ...
+        //
+        selfParameter(pred, predMethod) and
+        selfParameter(succ, succMethod)
+      )
+    }
+  }
 }

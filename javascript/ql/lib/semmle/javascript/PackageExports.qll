@@ -133,7 +133,9 @@ private DataFlow::Node getAValueExportedByPackage() {
     DataFlow::globalVarRef("define").getACall().getAnArgument() = factory.getALocalUse() and
     func.getFile() =
       min(int j, File f |
-        f = NodeModule::resolveMainModule(any(PackageJson pack | exists(pack.getPackageName())), j)
+        f =
+          NodeModule::resolveMainModule(any(PackageJson pack | exists(pack.getPackageName())), j,
+            ".")
       |
         f order by j
       )
