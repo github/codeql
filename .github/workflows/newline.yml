@@ -5,9 +5,9 @@ on:
 jobs:
   build:
     name: New line
-    runs-on: ubuntu-16.04
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - uses: Logerfo/newline-action@0.0.2
+      - uses: actions/checkout@v3
+      - uses: Logerfo/newline-action@d5cb021020d383c7f38802dce86ce4bf6f14a74f
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
