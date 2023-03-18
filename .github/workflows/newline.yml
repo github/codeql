@@ -8,6 +8,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: Logerfo/newline-action@d5cb021020d383c7f38802dce86ce4bf6f14a74f
+      - uses: Logerfo/newline-action@d994478bb3b285adf473adcc612693cbd08bd3a4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
