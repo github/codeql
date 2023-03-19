@@ -35,7 +35,7 @@ private predicate isCommandSubstitutionDisabled(FunctionCall fc) {
 /**
  * A configuration to track user-supplied data to the `wordexp` function.
  */
-module WordexpTaintConfiguration implements DataFlow::ConfigSig {
+module WordexpTaintConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
   predicate isSink(DataFlow::Node sink) {
@@ -50,7 +50,7 @@ module WordexpTaintConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module WordexpTaint = TaintTracking::Make<WordexpTaintConfiguration>;
+module WordexpTaint = TaintTracking::Make<WordexpTaintConfig>;
 
 from WordexpTaint::PathNode sourceNode, WordexpTaint::PathNode sinkNode
 where WordexpTaint::hasFlowPath(sourceNode, sinkNode)

@@ -18,7 +18,7 @@ import semmle.code.cpp.models.interfaces.FlowSource
 import ExposedSystemData::PathGraph
 import SystemData
 
-module ExposedSystemDataConfiguration implements DataFlow::ConfigSig {
+module ExposedSystemDataConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source = any(SystemData sd).getAnExpr() }
 
   predicate isSink(DataFlow::Node sink) {
@@ -30,7 +30,7 @@ module ExposedSystemDataConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module ExposedSystemData = TaintTracking::Make<ExposedSystemDataConfiguration>;
+module ExposedSystemData = TaintTracking::Make<ExposedSystemDataConfig>;
 
 from ExposedSystemData::PathNode source, ExposedSystemData::PathNode sink
 where

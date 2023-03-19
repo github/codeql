@@ -28,7 +28,7 @@ class BrokenAlgoLiteral extends ShortStringLiteral {
   }
 }
 
-module InsecureCryptoConfiguration implements ConfigSig {
+module InsecureCryptoConfig implements ConfigSig {
   predicate isSource(Node n) { n.asExpr() instanceof BrokenAlgoLiteral }
 
   predicate isSink(Node n) { exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec()) }
@@ -38,7 +38,7 @@ module InsecureCryptoConfiguration implements ConfigSig {
   }
 }
 
-module InsecureCryptoFlow = TaintTracking::Make<InsecureCryptoConfiguration>;
+module InsecureCryptoFlow = TaintTracking::Make<InsecureCryptoConfig>;
 
 import InsecureCryptoFlow::PathGraph
 

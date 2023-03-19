@@ -9,7 +9,7 @@ private import semmle.code.java.security.ArbitraryApkInstallation
  * A dataflow configuration for flow from an external source of an APK to the
  * `setData[AndType][AndNormalize]` method of an intent.
  */
-private module ApkInstallationConfiguration implements DataFlow::ConfigSig {
+private module ApkInstallationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof ExternalApkSource }
 
   predicate isSink(DataFlow::Node node) {
@@ -25,7 +25,7 @@ private module ApkInstallationConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module ApkInstallationFlow = DataFlow::Make<ApkInstallationConfiguration>;
+module ApkInstallationFlow = DataFlow::Make<ApkInstallationConfig>;
 
 private newtype ActionState =
   ActionUnset() or
@@ -37,7 +37,7 @@ private newtype ActionState =
  *
  * This is used to track if an intent is used to install an APK.
  */
-private module InstallPackageActionConfiguration implements DataFlow::StateConfigSig {
+private module InstallPackageActionConfig implements DataFlow::StateConfigSig {
   class FlowState = ActionState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
@@ -72,8 +72,7 @@ private module InstallPackageActionConfiguration implements DataFlow::StateConfi
   predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 }
 
-private module InstallPackageActionFlow =
-  TaintTracking::MakeWithState<InstallPackageActionConfiguration>;
+private module InstallPackageActionFlow = TaintTracking::MakeWithState<InstallPackageActionConfig>;
 
 private newtype MimeTypeState =
   MimeTypeUnset() or
@@ -84,7 +83,7 @@ private newtype MimeTypeState =
  * the `setType` or `setTypeAndNormalize` method of an intent, followed by a call
  * to `setData[AndType][AndNormalize]`.
  */
-private module PackageArchiveMimeTypeConfiguration implements DataFlow::StateConfigSig {
+private module PackageArchiveMimeTypeConfig implements DataFlow::StateConfigSig {
   class FlowState = MimeTypeState;
 
   predicate isSource(DataFlow::Node node, FlowState state) {
@@ -118,4 +117,4 @@ private module PackageArchiveMimeTypeConfiguration implements DataFlow::StateCon
 }
 
 private module PackageArchiveMimeTypeFlow =
-  TaintTracking::MakeWithState<PackageArchiveMimeTypeConfiguration>;
+  TaintTracking::MakeWithState<PackageArchiveMimeTypeConfig>;
