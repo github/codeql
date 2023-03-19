@@ -24,7 +24,8 @@ class DataFlowConfigModule extends Module {
 }
 
 /**
- * A file that is not part of the internal dataflow library.
+ * A file that is part of the internal dataflow library or dataflow library
+ * tests.
  */
 class DataFlowInternalFile extends File {
   DataFlowInternalFile() {
