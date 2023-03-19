@@ -26,7 +26,7 @@ deprecated class UnsafeContentResolutionConf extends TaintTracking::Configuratio
   }
 }
 
-private module UnsafeContentResolutionConf implements DataFlow::ConfigSig {
+private module UnsafeContentResolutionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ContentUriResolutionSink }
@@ -41,4 +41,4 @@ private module UnsafeContentResolutionConf implements DataFlow::ConfigSig {
 }
 
 /** Taint-tracking flow to find paths from remote sources to content URI resolutions. */
-module UnsafeContentResolutionFlow = TaintTracking::Make<UnsafeContentResolutionConf>;
+module UnsafeContentResolutionFlow = TaintTracking::Make<UnsafeContentResolutionConfig>;
