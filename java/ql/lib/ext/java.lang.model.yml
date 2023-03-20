@@ -37,6 +37,7 @@ extensions:
       - ["java.lang", "AbstractStringBuilder", True, "AbstractStringBuilder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.lang", "AbstractStringBuilder", True, "append", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
       - ["java.lang", "AbstractStringBuilder", True, "append", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      # When `WithoutElement` is implemented for Java, `java.lang.AbstractStringBuilder#delete` might require a `taint` step of the form `Argument[-1].WithoutElement -> Argument[-1]` in addition to the below `value` step.
       - ["java.lang", "AbstractStringBuilder", True, "delete", "(int,int)", "", "Argument[-1]", "ReturnValue", "value", "manual"]
       - ["java.lang", "AbstractStringBuilder", True, "getChars", "", "", "Argument[this]", "Argument[2]", "taint", "manual"]
       - ["java.lang", "AbstractStringBuilder", True, "insert", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
