@@ -15,7 +15,7 @@ import java
 import ArraySizing
 import semmle.code.java.dataflow.FlowSources
 
-private module ImproperValidationOfArrayIndexLocalConfig implements DataFlow::ConfigSig {
+module ImproperValidationOfArrayIndexLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) {

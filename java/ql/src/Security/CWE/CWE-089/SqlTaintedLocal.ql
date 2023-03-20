@@ -16,7 +16,7 @@ import semmle.code.java.Expr
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.SqlInjectionQuery
 
-private module LocalUserInputToQueryInjectionFlowConfig implements DataFlow::ConfigSig {
+module LocalUserInputToQueryInjectionFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }

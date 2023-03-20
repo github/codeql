@@ -120,7 +120,7 @@ class GetMessageFlowSource extends MethodAccess {
   }
 }
 
-private module GetMessageFlowSourceToHttpResponseSinkFlowConfig implements DataFlow::ConfigSig {
+module GetMessageFlowSourceToHttpResponseSinkFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof GetMessageFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }

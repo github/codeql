@@ -25,7 +25,7 @@ class UncontrolledStringBuilderSource extends DataFlow::ExprNode {
   }
 }
 
-private module UncontrolledStringBuilderSourceFlowConfig implements DataFlow::ConfigSig {
+module UncontrolledStringBuilderSourceFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof UncontrolledStringBuilderSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }

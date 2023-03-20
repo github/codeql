@@ -17,7 +17,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.ExternalProcess
 import semmle.code.java.security.CommandArguments
 
-private module LocalUserInputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
+module LocalUserInputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof ArgumentToExec }

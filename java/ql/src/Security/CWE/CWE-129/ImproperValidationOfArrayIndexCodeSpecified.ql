@@ -16,7 +16,7 @@ import ArraySizing
 import BoundingChecks
 import semmle.code.java.dataflow.TaintTracking
 
-private module BoundedFlowSourceConfig implements DataFlow::ConfigSig {
+module BoundedFlowSourceConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof BoundedFlowSource }
 
   predicate isSink(DataFlow::Node sink) {

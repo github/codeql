@@ -15,7 +15,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.XSS
 
-private module XssLocalConfig implements DataFlow::ConfigSig {
+module XssLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
