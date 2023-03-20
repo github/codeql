@@ -42,6 +42,11 @@ module Raw {
      * Gets the name of this file.
      */
     string getName() { files(this, result) }
+
+    /**
+     * Holds if this file is successfully extracted.
+     */
+    predicate isSuccessfullyExtracted() { file_is_successfully_extracted(this) }
   }
 
   class Locatable extends @locatable, Element {
