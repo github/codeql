@@ -9,7 +9,5 @@
 import swift
 
 from File f
-where
-  not exists(CompilerError e | e.getFile() = f) and
-  f.getBaseName().regexpMatch(".*\\.swift\\z")
+where f.isSuccessfullyExtracted()
 select f, "File successfully extracted."

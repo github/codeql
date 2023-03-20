@@ -72,11 +72,6 @@ files(
   string name: string ref
 );
 
-#keyset[id]
-file_is_successfully_extracted(
-  int id: @file ref
-);
-
 @locatable =
   @argument
 | @ast_node

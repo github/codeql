@@ -95,6 +95,14 @@ class Observer : public swift::FrontendObserver {
     codeql::extractExtractLazyDeclarations(state, compiler);
   }
 
+  void markSuccessfullyExtractedFiles() {
+    codeql::SwiftLocationExtractor locExtractor{invocationTrap};
+    for (const auto& src : state.sourceFiles) {
+      auto fileLabel = locExtractor.emitFile(src);
+      invocationTrap.emit(codeql::FileIsSuccessfullyExtractedTrap{fileLabel});
+    }
+  }
+
  private:
   codeql::SwiftExtractorState state;
   codeql::TrapDomain invocationTrap{invocationTrapDomain(state)};
@@ -194,6 +202,10 @@ int main(int argc, char** argv) {
   Observer observer(configuration);
   int frontend_rc = swift::performFrontend(configuration.frontendOptions, "swift-extractor",
                                            (void*)main, &observer);
+
+  if (frontend_rc == 0) {
+    observer.markSuccessfullyExtractedFiles();
+  }
 
   return frontend_rc;
 }

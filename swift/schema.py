@@ -20,6 +20,7 @@ class Element:
 @qltest.collapse_hierarchy
 class File(Element):
     name: string
+    is_successfully_extracted: predicate | cpp.skip
 
 @qltest.skip
 @qltest.collapse_hierarchy
