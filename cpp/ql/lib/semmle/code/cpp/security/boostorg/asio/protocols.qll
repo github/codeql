@@ -357,7 +357,7 @@ module BoostorgAsio {
    * Abstract class for flows of protocol values to the first argument of a context
    * constructor.
    */
-  abstract class SslContextCallAbstractConfig extends DataFlow::Configuration {
+  abstract deprecated class SslContextCallAbstractConfig extends DataFlow::Configuration {
     bindingset[this]
     SslContextCallAbstractConfig() { any() }
 
@@ -370,9 +370,46 @@ module BoostorgAsio {
   }
 
   /**
+   * Signature for flows of protocol values to the first argument of a context
+   * constructor.
+   */
+  signature module SslContextCallConfigSig {
+    /**
+     * Holds if `source` is a relevant data flow source.
+     */
+    predicate isSource(DataFlow::Node source);
+
+    /**
+     * Holds if `sink` is a relevant data flow sink.
+     */
+    default predicate isSink(DataFlow::Node sink) {
+      exists(ConstructorCall cc, SslContextClass c, Expr e | e = sink.asExpr() |
+        c.getAContructorCall() = cc and
+        cc.getArgument(0) = e
+      )
+    }
+  }
+
+  /**
+   * Constructs a standard data flow computation for protocol values to the first argument
+   * of a context constructor.
+   */
+  module SslContextCallMake<SslContextCallConfigSig Config> {
+    private module C implements DataFlow::ConfigSig {
+      predicate isSource = Config::isSource/1;
+
+      predicate isSink = Config::isSink/1;
+    }
+
+    module F = DataFlow::Make<C>;
+
+    import F
+  }
+
+  /**
    * Any protocol value that flows to the first argument of a context constructor.
    */
-  class SslContextCallConfig extends SslContextCallAbstractConfig {
+  deprecated class SslContextCallConfig extends SslContextCallAbstractConfig {
     SslContextCallConfig() { this = "SslContextCallConfig" }
 
     override predicate isSource(DataFlow::Node source) {
@@ -384,9 +421,23 @@ module BoostorgAsio {
   }
 
   /**
+   * Any protocol value that flows to the first argument of a context constructor.
+   */
+  private module SslContextCallConfig implements SslContextCallConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      exists(Expr e | e = source.asExpr() |
+        e.fromSource() and
+        not e.getLocation().getFile().toString().matches("%/boost/asio/%")
+      )
+    }
+  }
+
+  module SslContextCallFlow = SslContextCallMake<SslContextCallConfig>;
+
+  /**
    * A banned protocol value that flows to the first argument of a context constructor.
    */
-  class SslContextCallBannedProtocolConfig extends SslContextCallAbstractConfig {
+  deprecated class SslContextCallBannedProtocolConfig extends SslContextCallAbstractConfig {
     SslContextCallBannedProtocolConfig() { this = "SslContextCallBannedProtocolConfig" }
 
     override predicate isSource(DataFlow::Node source) {
@@ -399,9 +450,24 @@ module BoostorgAsio {
   }
 
   /**
+   * A banned protocol value that flows to the first argument of a context constructor.
+   */
+  private module SslContextCallBannedProtocolConfig implements SslContextCallConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      exists(Expr e | e = source.asExpr() |
+        e.fromSource() and
+        not e.getLocation().getFile().toString().matches("%/boost/asio/%") and
+        isExprBannedBoostProtocol(e)
+      )
+    }
+  }
+
+  module SslContextCallBannedProtocolFlow = SslContextCallMake<SslContextCallBannedProtocolConfig>;
+
+  /**
    * A TLS 1.2 protocol value that flows to the first argument of a context constructor.
    */
-  class SslContextCallTls12ProtocolConfig extends SslContextCallAbstractConfig {
+  deprecated class SslContextCallTls12ProtocolConfig extends SslContextCallAbstractConfig {
     SslContextCallTls12ProtocolConfig() { this = "SslContextCallTls12ProtocolConfig" }
 
     override predicate isSource(DataFlow::Node source) {
@@ -414,9 +480,24 @@ module BoostorgAsio {
   }
 
   /**
+   * A TLS 1.2 protocol value that flows to the first argument of a context constructor.
+   */
+  private module SslContextCallTls12ProtocolConfig implements SslContextCallConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      exists(Expr e | e = source.asExpr() |
+        e.fromSource() and
+        not e.getLocation().getFile().toString().matches("%/boost/asio/%") and
+        isExprTls12BoostProtocol(e)
+      )
+    }
+  }
+
+  module SslContextCallTls12ProtocolFlow = SslContextCallMake<SslContextCallTls12ProtocolConfig>;
+
+  /**
    * A TLS 1.3 protocol value that flows to the first argument of a context constructor.
    */
-  class SslContextCallTls13ProtocolConfig extends SslContextCallAbstractConfig {
+  deprecated class SslContextCallTls13ProtocolConfig extends SslContextCallAbstractConfig {
     SslContextCallTls13ProtocolConfig() { this = "SslContextCallTls12ProtocolConfig" }
 
     override predicate isSource(DataFlow::Node source) {
@@ -429,9 +510,24 @@ module BoostorgAsio {
   }
 
   /**
+   * A TLS 1.3 protocol value that flows to the first argument of a context constructor.
+   */
+  private module SslContextCallTls13ProtocolConfig implements SslContextCallConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      exists(Expr e | e = source.asExpr() |
+        e.fromSource() and
+        not e.getLocation().getFile().toString().matches("%/boost/asio/%") and
+        isExprTls13BoostProtocol(e)
+      )
+    }
+  }
+
+  module SslContextCallTls13ProtocolFlow = SslContextCallMake<SslContextCallTls13ProtocolConfig>;
+
+  /**
    * A generic TLS protocol value that flows to the first argument of a context constructor.
    */
-  class SslContextCallTlsProtocolConfig extends SslContextCallAbstractConfig {
+  deprecated class SslContextCallTlsProtocolConfig extends SslContextCallAbstractConfig {
     SslContextCallTlsProtocolConfig() { this = "SslContextCallTlsProtocolConfig" }
 
     override predicate isSource(DataFlow::Node source) {
@@ -444,9 +540,24 @@ module BoostorgAsio {
   }
 
   /**
+   * A generic TLS protocol value that flows to the first argument of a context constructor.
+   */
+  private module SslContextCallTlsProtocolConfig implements SslContextCallConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      exists(Expr e | e = source.asExpr() |
+        e.fromSource() and
+        not e.getLocation().getFile().toString().matches("%/boost/asio/%") and
+        isExprTlsBoostProtocol(e)
+      )
+    }
+  }
+
+  module SslContextCallTlsProtocolFlow = SslContextCallMake<SslContextCallTlsProtocolConfig>;
+
+  /**
    * A context constructor call that flows to a call to `SetOptions()`.
    */
-  class SslContextFlowsToSetOptionConfig extends DataFlow::Configuration {
+  deprecated class SslContextFlowsToSetOptionConfig extends DataFlow::Configuration {
     SslContextFlowsToSetOptionConfig() { this = "SslContextFlowsToSetOptionConfig" }
 
     override predicate isSource(DataFlow::Node source) {
@@ -468,9 +579,33 @@ module BoostorgAsio {
   }
 
   /**
+   * A context constructor call that flows to a call to `SetOptions()`.
+   */
+  private module SslContextFlowsToSetOptionConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      exists(SslContextClass c, ConstructorCall cc |
+        cc = source.asExpr() and
+        c.getAContructorCall() = cc
+      )
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(FunctionCall fc, SslSetOptionsFunction f, Variable v, VariableAccess va |
+        va = sink.asExpr()
+      |
+        f.getACallToThisFunction() = fc and
+        v.getAnAccess() = va and
+        va = fc.getQualifier()
+      )
+    }
+  }
+
+  module SslContextFlowsToSetOptionFlow = DataFlow::Make<SslContextFlowsToSetOptionConfig>;
+
+  /**
    * An option value that flows to the first parameter of a call to `SetOptions()`.
    */
-  class SslOptionConfig extends DataFlow::Configuration {
+  deprecated class SslOptionConfig extends DataFlow::Configuration {
     SslOptionConfig() { this = "SslOptionConfig" }
 
     override predicate isSource(DataFlow::Node source) {
@@ -488,4 +623,26 @@ module BoostorgAsio {
       )
     }
   }
+
+  /**
+   * An option value that flows to the first parameter of a call to `SetOptions()`.
+   */
+  private module SslOptionConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
+      exists(Expr e | e = source.asExpr() |
+        e.fromSource() and
+        not e.getLocation().getFile().toString().matches("%/boost/asio/%")
+      )
+    }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(SslSetOptionsFunction f, FunctionCall call |
+        sink.asExpr() = call.getArgument(0) and
+        f.getACallToThisFunction() = call and
+        not sink.getLocation().getFile().toString().matches("%/boost/asio/%")
+      )
+    }
+  }
+
+  module SslOptionFlow = DataFlow::Make<SslOptionConfig>;
 }
