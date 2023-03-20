@@ -1,188 +1,61 @@
-[VALUE_NOT_IN_TYPE] predicate value_decls(@value_decl id, @type_or_none interface_type): Value 11877 of field interface_type is not in type @type_or_none. Appears in tuple (11875,11877)
-[VALUE_NOT_IN_TYPE] predicate value_decls(@value_decl id, @type_or_none interface_type): Value 75244 of field interface_type is not in type @type_or_none. Appears in tuple (75239,75244)
-[VALUE_NOT_IN_TYPE] predicate value_decls(@value_decl id, @type_or_none interface_type): Value 75260 of field interface_type is not in type @type_or_none. Appears in tuple (75255,75260)
-[VALUE_NOT_IN_TYPE] predicate var_decls(@var_decl id, string name, @type_or_none type_): Value 11878 of field type_ is not in type @type_or_none. Appears in tuple (11875,"initializeNewElements",11878)
-[VALUE_NOT_IN_TYPE] predicate var_decls(@var_decl id, string name, @type_or_none type_): Value 75249 of field type_ is not in type @type_or_none. Appears in tuple (75239,"rescue",75249)
-[VALUE_NOT_IN_TYPE] predicate var_decls(@var_decl id, string name, @type_or_none type_): Value 75265 of field type_ is not in type @type_or_none. Appears in tuple (75255,"rescue",75265)
-[VALUE_NOT_IN_TYPE] predicate types(@type id, string name, @type_or_none canonical_type): Value 187436 of field canonical_type is not in type @type_or_none. Appears in tuple (187434,"@lvalue (La_x86_64_xmm, La_x86_64_xmm, La_x86_64_xmm, La_x86_64_xmm)",187436)
-[VALUE_NOT_IN_TYPE] predicate types(@type id, string name, @type_or_none canonical_type): Value 187436 of field canonical_type is not in type @type_or_none. Appears in tuple (187436,"@lvalue (SIMD4<Float>, SIMD4<Float>, SIMD4<Float>, SIMD4<Float>)",187436)
-[VALUE_NOT_IN_TYPE] predicate types(@type id, string name, @type_or_none canonical_type): Value 187448 of field canonical_type is not in type @type_or_none. Appears in tuple (187446,"@lvalue (La_x86_64_zmm)",187448)
-[VALUE_NOT_IN_TYPE] predicate types(@type id, string name, @type_or_none canonical_type): Value 187448 of field canonical_type is not in type @type_or_none. Appears in tuple (187448,"@lvalue SIMD8<Double>",187448)
-[VALUE_NOT_IN_TYPE] predicate types(@type id, string name, @type_or_none canonical_type): Value 187460 of field canonical_type is not in type @type_or_none. Appears in tuple (187458,"@lvalue (La_x86_64_ymm, La_x86_64_ymm)",187460)
-[VALUE_NOT_IN_TYPE] predicate types(@type id, string name, @type_or_none canonical_type): More errors, not displayed. There are 6 values of field canonical_type that are not in type @type_or_none for a relation of size 53022
-[VALUE_NOT_IN_TYPE] predicate any_function_type_param_types(@any_function_type id, int index, @type_or_none param_type): Value 75244 of field param_type is not in type @type_or_none. Appears in tuple (75245,3,75244)
-	Relevant element: id=75245
-		Full ID for 75245: @"FunctionType_(74805)(73276)(75243)(75244)->(75242)_throws". The ID may expand to @"FunctionType_{@"FunctionType_{@"ClassType_{@"ClassDecl_(73271)DispatchWorkItem"}"}->{@"TupleType_"}"}{@"StructType_{@"StructDecl_{@"ModuleDecl_Dispatch"}DispatchWorkItemFlags"}"}{@"FunctionType_->{@"GenericTypeParamType_(75241)"}_throws"}(75244)->{@"GenericTypeParamType_(75241)"}_throws"
-[VALUE_NOT_IN_TYPE] predicate any_function_type_param_types(@any_function_type id, int index, @type_or_none param_type): Value 75260 of field param_type is not in type @type_or_none. Appears in tuple (75261,2,75260)
-	Relevant element: id=75261
-		Full ID for 75261: @"FunctionType_(73407)(75259)(75260)->(75258)_throws". The ID may expand to @"FunctionType_{@"FunctionType_{@"FunctionType_->{@"TupleType_"}"}->{@"TupleType_"}"}{@"FunctionType_->{@"GenericTypeParamType_(75257)"}_throws"}(75260)->{@"GenericTypeParamType_(75257)"}_throws"
-[VALUE_NOT_IN_TYPE] predicate unary_syntax_sugar_types(@unary_syntax_sugar_type id, @type_or_none base_type): Value 60578 of field base_type is not in type @type_or_none. Appears in tuple (60579,60578)
-	Relevant element: id=60579
-		Full ID for 60579: @"OptionalType_(60578)"
-[VALUE_NOT_IN_TYPE] predicate unary_syntax_sugar_types(@unary_syntax_sugar_type id, @type_or_none base_type): Value 60584 of field base_type is not in type @type_or_none. Appears in tuple (60585,60584)
-	Relevant element: id=60585
-		Full ID for 60585: @"OptionalType_(60584)"
-[VALUE_NOT_IN_TYPE] predicate unary_syntax_sugar_types(@unary_syntax_sugar_type id, @type_or_none base_type): Value 63098 of field base_type is not in type @type_or_none. Appears in tuple (63099,63098)
-	Relevant element: id=63099
-		Full ID for 63099: @"OptionalType_(63098)"
-[VALUE_NOT_IN_TYPE] predicate unary_syntax_sugar_types(@unary_syntax_sugar_type id, @type_or_none base_type): Value 63104 of field base_type is not in type @type_or_none. Appears in tuple (63105,63104)
-	Relevant element: id=63105
-		Full ID for 63105: @"OptionalType_(63104)"
-[VALUE_NOT_IN_TYPE] predicate unary_syntax_sugar_types(@unary_syntax_sugar_type id, @type_or_none base_type): Value 78440 of field base_type is not in type @type_or_none. Appears in tuple (78441,78440)
-	Relevant element: id=78441
-		Full ID for 78441: @"OptionalType_(78440)"
-[VALUE_NOT_IN_TYPE] predicate unary_syntax_sugar_types(@unary_syntax_sugar_type id, @type_or_none base_type): More errors, not displayed. There are 6 values of field base_type that are not in type @type_or_none for a relation of size 1397
-[VALUE_NOT_IN_TYPE] predicate types(@type id, string name, @type_or_none canonical_type): Value 187436 of field id is not in type @type. Appears in tuple (187436,"@lvalue (SIMD4<Float>, SIMD4<Float>, SIMD4<Float>, SIMD4<Float>)",187436)
-[VALUE_NOT_IN_TYPE] predicate types(@type id, string name, @type_or_none canonical_type): Value 187448 of field id is not in type @type. Appears in tuple (187448,"@lvalue SIMD8<Double>",187448)
-[VALUE_NOT_IN_TYPE] predicate types(@type id, string name, @type_or_none canonical_type): Value 187460 of field id is not in type @type. Appears in tuple (187460,"@lvalue (SIMD8<Float>, SIMD8<Float>)",187460)
-[INVALID_KEY_SET] predicate types(@type id, string name, @type_or_none canonical_type): The key set {id} does not functionally determine all fields.
-Here is a pair of tuples that agree on the key set but differ at index 2:
-Tuple 1 in row 765: (1991,"Array<Element>._Buffer",1979)
-Tuple 2 in row 766: (1991,"Array<Element>._Buffer",1996)
-	Relevant element: Tuple 1: id=1991
-		Full ID for 1991: @"TypeAliasType_(1976)". The ID may expand to @"TypeAliasType_{@"TypeAliasDecl_{@"StructDecl_{@"ModuleDecl_Swift"}Array<1>"}_Buffer"}"
-	Relevant element: Tuple 2: id=1991
-		Full ID for 1991: @"TypeAliasType_(1976)". The ID may expand to @"TypeAliasType_{@"TypeAliasDecl_{@"StructDecl_{@"ModuleDecl_Swift"}Array<1>"}_Buffer"}"
-	Relevant element: Tuple 1: canonical_type=1979
-		Full ID for 1979: @"BoundGenericStructType_(1978)(319)". The ID may expand to @"BoundGenericStructType_{@"StructDecl_{@"ModuleDecl_Swift"}_ContiguousArrayBuffer<1>"}{@"GenericTypeParamType_0_0"}"
-	Relevant element: Tuple 2: canonical_type=1996
-		Full ID for 1996: @"BoundGenericStructType_(1978)(1994)". The ID may expand to @"BoundGenericStructType_{@"StructDecl_{@"ModuleDecl_Swift"}_ContiguousArrayBuffer<1>"}{@"PrimaryArchetypeType_{@"GenericTypeParamType_{@"GenericTypeParamDecl_(1931)Element"}"}"}"
 [INVALID_KEY_SET] predicate types(@type id, string name, @type_or_none canonical_type): The key set {id} does not functionally determine all fields.
 Here is a pair of tuples that agree on the key set but differ at index 1:
-Tuple 1 in row 813: (2080,"<τ_0_0> (_unchecked: Int) -> τ_0_0",2080)
-Tuple 2 in row 814: (2080,"<τ_0_0> (Int) -> τ_0_0",2080)
-	Relevant element: Tuple 1: id=2080
-		Full ID for 2080: @"GenericFunctionType_(401)->(319)<(319)>". The ID may expand to @"GenericFunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Int"}"}->{@"GenericTypeParamType_0_0"}<{@"GenericTypeParamType_0_0"}>"
-	Relevant element: Tuple 2: id=2080
-		Full ID for 2080: @"GenericFunctionType_(401)->(319)<(319)>". The ID may expand to @"GenericFunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Int"}"}->{@"GenericTypeParamType_0_0"}<{@"GenericTypeParamType_0_0"}>"
-	Relevant element: Tuple 1: canonical_type=2080
-		Full ID for 2080: @"GenericFunctionType_(401)->(319)<(319)>". The ID may expand to @"GenericFunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Int"}"}->{@"GenericTypeParamType_0_0"}<{@"GenericTypeParamType_0_0"}>"
-	Relevant element: Tuple 2: canonical_type=2080
-		Full ID for 2080: @"GenericFunctionType_(401)->(319)<(319)>". The ID may expand to @"GenericFunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Int"}"}->{@"GenericTypeParamType_0_0"}<{@"GenericTypeParamType_0_0"}>"
+Tuple 1 in row 813: (2081,"<τ_0_0> (_unchecked: Int) -> τ_0_0",2081)
+Tuple 2 in row 814: (2081,"<τ_0_0> (Int) -> τ_0_0",2081)
+	Relevant element: Tuple 1: id=2081
+		Full ID for 2081: @"GenericFunctionType_(401)->(319)<(319)>". The ID may expand to @"GenericFunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Int"}"}->{@"GenericTypeParamType_0_0"}<{@"GenericTypeParamType_0_0"}>"
+	Relevant element: Tuple 2: id=2081
+		Full ID for 2081: @"GenericFunctionType_(401)->(319)<(319)>". The ID may expand to @"GenericFunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Int"}"}->{@"GenericTypeParamType_0_0"}<{@"GenericTypeParamType_0_0"}>"
+	Relevant element: Tuple 1: canonical_type=2081
+		Full ID for 2081: @"GenericFunctionType_(401)->(319)<(319)>". The ID may expand to @"GenericFunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Int"}"}->{@"GenericTypeParamType_0_0"}<{@"GenericTypeParamType_0_0"}>"
+	Relevant element: Tuple 2: canonical_type=2081
+		Full ID for 2081: @"GenericFunctionType_(401)->(319)<(319)>". The ID may expand to @"GenericFunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Int"}"}->{@"GenericTypeParamType_0_0"}<{@"GenericTypeParamType_0_0"}>"
 [INVALID_KEY_SET] predicate types(@type id, string name, @type_or_none canonical_type): The key set {id} does not functionally determine all fields.
-Here is a pair of tuples that agree on the key set but differ at index 2:
-Tuple 1 in row 841: (2284,"AnyObject",2110)
-Tuple 2 in row 842: (2284,"AnyObject",60163)
-	Relevant element: Tuple 1: id=2284
-		Full ID for 2284: @"TypeAliasType_(2283)". The ID may expand to @"TypeAliasType_{@"TypeAliasDecl_{@"ModuleDecl_Swift"}AnyObject"}"
-	Relevant element: Tuple 2: id=2284
-		Full ID for 2284: @"TypeAliasType_(2283)". The ID may expand to @"TypeAliasType_{@"TypeAliasDecl_{@"ModuleDecl_Swift"}AnyObject"}"
+Here is a pair of tuples that agree on the key set but differ at index 1:
+Tuple 1 in row 971: (2709,"<Element> (Int) -> Element",2081)
+Tuple 2 in row 972: (2709,"<Element> (_unchecked: Int) -> Element",2081)
+	Relevant element: Tuple 1: id=2709
+		Full ID for 2709: @"GenericFunctionType_(401)->(2649)<(2607)>". The ID may expand to @"GenericFunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Int"}"}->{@"GenericTypeParamType_{@"GenericTypeParamDecl_{@"ExtensionDecl_(5)(2052)0"}Element"}"}<{@"GenericTypeParamType_{@"GenericTypeParamDecl_{@"StructDecl_(5)UnsafeMutableBufferPointer<1>"}Element"}"}>"
+	Relevant element: Tuple 2: id=2709
+		Full ID for 2709: @"GenericFunctionType_(401)->(2649)<(2607)>". The ID may expand to @"GenericFunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Int"}"}->{@"GenericTypeParamType_{@"GenericTypeParamDecl_{@"ExtensionDecl_(5)(2052)0"}Element"}"}<{@"GenericTypeParamType_{@"GenericTypeParamDecl_{@"StructDecl_(5)UnsafeMutableBufferPointer<1>"}Element"}"}>"
+	Relevant element: Tuple 1: canonical_type=2081
+		Full ID for 2081: @"GenericFunctionType_(401)->(319)<(319)>". The ID may expand to @"GenericFunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Int"}"}->{@"GenericTypeParamType_0_0"}<{@"GenericTypeParamType_0_0"}>"
+	Relevant element: Tuple 2: canonical_type=2081
+		Full ID for 2081: @"GenericFunctionType_(401)->(319)<(319)>". The ID may expand to @"GenericFunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Int"}"}->{@"GenericTypeParamType_0_0"}<{@"GenericTypeParamType_0_0"}>"
 [INVALID_KEY_SET] predicate types(@type id, string name, @type_or_none canonical_type): The key set {id} does not functionally determine all fields.
-Here is a pair of tuples that agree on the key set but differ at index 2:
-Tuple 1 in row 843: (2284,"AnyObject",63922)
-Tuple 2 in row 844: (2284,"AnyObject",75931)
-	Relevant element: Tuple 1: id=2284
-		Full ID for 2284: @"TypeAliasType_(2283)". The ID may expand to @"TypeAliasType_{@"TypeAliasDecl_{@"ModuleDecl_Swift"}AnyObject"}"
-	Relevant element: Tuple 2: id=2284
-		Full ID for 2284: @"TypeAliasType_(2283)". The ID may expand to @"TypeAliasType_{@"TypeAliasDecl_{@"ModuleDecl_Swift"}AnyObject"}"
+Here is a pair of tuples that agree on the key set but differ at index 1:
+Tuple 1 in row 4339: (12488,"Unicode.ASCII.EncodedScalar",12453)
+Tuple 2 in row 4340: (12488,"Unicode.ASCII.Parser.Encoding.EncodedScalar",12453)
+	Relevant element: Tuple 1: id=12488
+		Full ID for 12488: @"TypeAliasType_(12450)". The ID may expand to @"TypeAliasType_{@"TypeAliasDecl_{@"ExtensionDecl_{@"ModuleDecl_Swift"}{@"EnumDecl_(12442)ASCII"}0"}EncodedScalar"}"
+	Relevant element: Tuple 2: id=12488
+		Full ID for 12488: @"TypeAliasType_(12450)". The ID may expand to @"TypeAliasType_{@"TypeAliasDecl_{@"ExtensionDecl_{@"ModuleDecl_Swift"}{@"EnumDecl_(12442)ASCII"}0"}EncodedScalar"}"
+	Relevant element: Tuple 1: canonical_type=12453
+		Full ID for 12453: @"BoundGenericStructType_(12452)(1736)". The ID may expand to @"BoundGenericStructType_{@"StructDecl_{@"ModuleDecl_Swift"}CollectionOfOne<1>"}{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}UInt8"}"}"
+	Relevant element: Tuple 2: canonical_type=12453
+		Full ID for 12453: @"BoundGenericStructType_(12452)(1736)". The ID may expand to @"BoundGenericStructType_{@"StructDecl_{@"ModuleDecl_Swift"}CollectionOfOne<1>"}{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}UInt8"}"}"
 [INVALID_KEY_SET] predicate types(@type id, string name, @type_or_none canonical_type): The key set {id} does not functionally determine all fields.
-Here is a pair of tuples that agree on the key set but differ at index 2:
-Tuple 1 in row 845: (2285,"AnyObject",2111)
-Tuple 2 in row 846: (2285,"AnyObject",60249)
-	Relevant element: Tuple 1: id=2285
-		Full ID for 2285: @"ExistentialType_(2284)". The ID may expand to @"ExistentialType_{@"TypeAliasType_{@"TypeAliasDecl_{@"ModuleDecl_Swift"}AnyObject"}"}"
-	Relevant element: Tuple 2: id=2285
-		Full ID for 2285: @"ExistentialType_(2284)". The ID may expand to @"ExistentialType_{@"TypeAliasType_{@"TypeAliasDecl_{@"ModuleDecl_Swift"}AnyObject"}"}"
-	Relevant element: Tuple 1: canonical_type=2111
-		Full ID for 2111: @"ExistentialType_(2110)"
-	Relevant element: Tuple 2: canonical_type=60249
-		Full ID for 60249: @"ExistentialType_(60163)"
-[INVALID_KEY_SET] predicate types(@type id, string name, @type_or_none canonical_type): More errors, not displayed. There are 209 pairs of tuples not satisfying the key dependency for a relation of size 53022
-[INVALID_KEY_SET] predicate any_function_type_param_labels(@any_function_type id, int index, string param_label): The key set {id, index} does not functionally determine all fields.
-Here is a pair of tuples that agree on the key set but differ at index 2:
-Tuple 1 in row 18: (1020,0,"to")
-Tuple 2 in row 19: (1020,0,"by")
-	Relevant element: Tuple 1: id=1020
-		Full ID for 1020: @"FunctionType_(972)->(972)". The ID may expand to @"FunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Float"}"}->{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Float"}"}"
-	Relevant element: Tuple 2: id=1020
-		Full ID for 1020: @"FunctionType_(972)->(972)". The ID may expand to @"FunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Float"}"}->{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Float"}"}"
-[INVALID_KEY_SET] predicate any_function_type_param_labels(@any_function_type id, int index, string param_label): The key set {id, index} does not functionally determine all fields.
-Here is a pair of tuples that agree on the key set but differ at index 2:
-Tuple 1 in row 21: (1025,0,"to")
-Tuple 2 in row 22: (1025,0,"by")
-	Relevant element: Tuple 1: id=1025
-		Full ID for 1025: @"FunctionType_(1024)->(1024)". The ID may expand to @"FunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Float80"}"}->{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Float80"}"}"
-	Relevant element: Tuple 2: id=1025
-		Full ID for 1025: @"FunctionType_(1024)->(1024)". The ID may expand to @"FunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Float80"}"}->{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Float80"}"}"
-[INVALID_KEY_SET] predicate any_function_type_param_labels(@any_function_type id, int index, string param_label): The key set {id, index} does not functionally determine all fields.
-Here is a pair of tuples that agree on the key set but differ at index 2:
-Tuple 1 in row 30: (1368,0,"booleanLiteral")
-Tuple 2 in row 31: (1368,0,"isUTF8")
-	Relevant element: Tuple 1: id=1368
-		Full ID for 1368: @"FunctionType_(989)->(989)". The ID may expand to @"FunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Bool"}"}->{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Bool"}"}"
-	Relevant element: Tuple 2: id=1368
-		Full ID for 1368: @"FunctionType_(989)->(989)". The ID may expand to @"FunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Bool"}"}->{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}Bool"}"}"
-[INVALID_KEY_SET] predicate any_function_type_param_labels(@any_function_type id, int index, string param_label): The key set {id, index} does not functionally determine all fields.
-Here is a pair of tuples that agree on the key set but differ at index 2:
-Tuple 1 in row 40: (1435,0,"by")
-Tuple 2 in row 41: (1435,0,"dividingBy")
-	Relevant element: Tuple 1: id=1435
-		Full ID for 1435: @"FunctionType_(1382)->(1434)". The ID may expand to @"FunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}UInt64"}"}->{@"TupleType_partialValue{@"StructType_{@"StructDecl_(5)UInt64"}"}overflow{@"StructType_{@"StructDecl_(5)Bool"}"}"}"
-	Relevant element: Tuple 2: id=1435
-		Full ID for 1435: @"FunctionType_(1382)->(1434)". The ID may expand to @"FunctionType_{@"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}UInt64"}"}->{@"TupleType_partialValue{@"StructType_{@"StructDecl_(5)UInt64"}"}overflow{@"StructType_{@"StructDecl_(5)Bool"}"}"}"
-[INVALID_KEY_SET] predicate any_function_type_param_labels(@any_function_type id, int index, string param_label): The key set {id, index} does not functionally determine all fields.
-Here is a pair of tuples that agree on the key set but differ at index 2:
-Tuple 1 in row 45: (1488,0,"exactly")
-Tuple 2 in row 46: (1488,0,"codingKey")
-	Relevant element: Tuple 1: id=1488
-		Full ID for 1488: @"FunctionType_(1486)->(1487)". The ID may expand to @"FunctionType_{@"GenericTypeParamType_1_0"}->{@"BoundGenericEnumType_{@"EnumDecl_{@"ModuleDecl_Swift"}Optional<1>"}{@"GenericTypeParamType_0_0"}"}"
-	Relevant element: Tuple 2: id=1488
-		Full ID for 1488: @"FunctionType_(1486)->(1487)". The ID may expand to @"FunctionType_{@"GenericTypeParamType_1_0"}->{@"BoundGenericEnumType_{@"EnumDecl_{@"ModuleDecl_Swift"}Optional<1>"}{@"GenericTypeParamType_0_0"}"}"
-[INVALID_KEY_SET] predicate any_function_type_param_labels(@any_function_type id, int index, string param_label): More errors, not displayed. There are 540 pairs of tuples not satisfying the key dependency for a relation of size 12088
-[INVALID_KEY_SET] predicate any_generic_type_parents(@any_generic_type id, @type_or_none parent): The key set {id} does not functionally determine all fields.
 Here is a pair of tuples that agree on the key set but differ at index 1:
-Tuple 1 in row 44: (19209,1203)
-Tuple 2 in row 45: (19209,64575)
-	Relevant element: Tuple 1: id=19209
-		Full ID for 19209: @"StructType_(19208)". The ID may expand to @"StructType_{@"StructDecl_{@"ExtensionDecl_{@"ModuleDecl_Swift"}{@"StructDecl_(5)String"}33"}Index"}"
-	Relevant element: Tuple 2: id=19209
-		Full ID for 19209: @"StructType_(19208)". The ID may expand to @"StructType_{@"StructDecl_{@"ExtensionDecl_{@"ModuleDecl_Swift"}{@"StructDecl_(5)String"}33"}Index"}"
-	Relevant element: Tuple 1: parent=1203
-		Full ID for 1203: @"StructType_(1202)". The ID may expand to @"StructType_{@"StructDecl_{@"ModuleDecl_Swift"}String"}"
-	Relevant element: Tuple 2: parent=64575
-		Full ID for 64575: @"TypeAliasType_(64574)". The ID may expand to @"TypeAliasType_{@"TypeAliasDecl_{@"StructDecl_{@"ModuleDecl__StringProcessing"}Processor"}Input"}"
-[INVALID_KEY_SET] predicate any_generic_type_parents(@any_generic_type id, @type_or_none parent): The key set {id} does not functionally determine all fields.
+Tuple 1 in row 4993: (14194,"<τ_0_0, τ_0_1> (of: τ_0_0) -> τ_0_1",14194)
+Tuple 2 in row 4994: (14194,"<τ_0_0, τ_0_1> (τ_0_0) -> τ_0_1",14194)
+	Relevant element: Tuple 1: id=14194
+		Full ID for 14194: @"GenericFunctionType_(319)->(331)<(319)(331)>". The ID may expand to @"GenericFunctionType_{@"GenericTypeParamType_0_0"}->{@"GenericTypeParamType_0_1"}<{@"GenericTypeParamType_0_0"}{@"GenericTypeParamType_0_1"}>"
+	Relevant element: Tuple 2: id=14194
+		Full ID for 14194: @"GenericFunctionType_(319)->(331)<(319)(331)>". The ID may expand to @"GenericFunctionType_{@"GenericTypeParamType_0_0"}->{@"GenericTypeParamType_0_1"}<{@"GenericTypeParamType_0_0"}{@"GenericTypeParamType_0_1"}>"
+	Relevant element: Tuple 1: canonical_type=14194
+		Full ID for 14194: @"GenericFunctionType_(319)->(331)<(319)(331)>". The ID may expand to @"GenericFunctionType_{@"GenericTypeParamType_0_0"}->{@"GenericTypeParamType_0_1"}<{@"GenericTypeParamType_0_0"}{@"GenericTypeParamType_0_1"}>"
+	Relevant element: Tuple 2: canonical_type=14194
+		Full ID for 14194: @"GenericFunctionType_(319)->(331)<(319)(331)>". The ID may expand to @"GenericFunctionType_{@"GenericTypeParamType_0_0"}->{@"GenericTypeParamType_0_1"}<{@"GenericTypeParamType_0_0"}{@"GenericTypeParamType_0_1"}>"
+[INVALID_KEY_SET] predicate types(@type id, string name, @type_or_none canonical_type): The key set {id} does not functionally determine all fields.
 Here is a pair of tuples that agree on the key set but differ at index 1:
-Tuple 1 in row 51: (21624,21605)
-Tuple 2 in row 52: (21624,21607)
-	Relevant element: Tuple 1: id=21624
-		Full ID for 21624: @"StructType_(21623)". The ID may expand to @"StructType_{@"StructDecl_{@"ExtensionDecl_{@"ModuleDecl_Swift"}{@"StructDecl_(5)EmptyCollection<1>"}0"}Iterator"}"
-	Relevant element: Tuple 2: id=21624
-		Full ID for 21624: @"StructType_(21623)". The ID may expand to @"StructType_{@"StructDecl_{@"ExtensionDecl_{@"ModuleDecl_Swift"}{@"StructDecl_(5)EmptyCollection<1>"}0"}Iterator"}"
-	Relevant element: Tuple 2: parent=21607
-		Full ID for 21607: @"BoundGenericStructType_(21604)(319)". The ID may expand to @"BoundGenericStructType_{@"StructDecl_{@"ModuleDecl_Swift"}EmptyCollection<1>"}{@"GenericTypeParamType_0_0"}"
-[INVALID_KEY_SET] predicate any_generic_type_parents(@any_generic_type id, @type_or_none parent): The key set {id} does not functionally determine all fields.
-Here is a pair of tuples that agree on the key set but differ at index 1:
-Tuple 1 in row 53: (21624,21613)
-Tuple 2 in row 54: (21624,21619)
-	Relevant element: Tuple 1: id=21624
-		Full ID for 21624: @"StructType_(21623)". The ID may expand to @"StructType_{@"StructDecl_{@"ExtensionDecl_{@"ModuleDecl_Swift"}{@"StructDecl_(5)EmptyCollection<1>"}0"}Iterator"}"
-	Relevant element: Tuple 2: id=21624
-		Full ID for 21624: @"StructType_(21623)". The ID may expand to @"StructType_{@"StructDecl_{@"ExtensionDecl_{@"ModuleDecl_Swift"}{@"StructDecl_(5)EmptyCollection<1>"}0"}Iterator"}"
-	Relevant element: Tuple 1: parent=21613
-		Full ID for 21613: @"BoundGenericStructType_(21604)(21612)". The ID may expand to @"BoundGenericStructType_{@"StructDecl_{@"ModuleDecl_Swift"}EmptyCollection<1>"}{@"GenericTypeParamType_{@"GenericTypeParamDecl_{@"StructDecl_(5)EmptyCollection<1>"}Element"}"}"
-	Relevant element: Tuple 2: parent=21619
-		Full ID for 21619: @"BoundGenericStructType_(21604)(21618)". The ID may expand to @"BoundGenericStructType_{@"StructDecl_{@"ModuleDecl_Swift"}EmptyCollection<1>"}{@"PrimaryArchetypeType_{@"GenericTypeParamType_{@"GenericTypeParamDecl_(21604)Element"}"}"}"
-[INVALID_KEY_SET] predicate any_generic_type_parents(@any_generic_type id, @type_or_none parent): The key set {id} does not functionally determine all fields.
-Here is a pair of tuples that agree on the key set but differ at index 1:
-Tuple 1 in row 94: (41193,12508)
-Tuple 2 in row 95: (41193,12512)
-	Relevant element: Tuple 1: id=41193
-		Full ID for 41193: @"StructType_(41192)". The ID may expand to @"StructType_{@"StructDecl_{@"ExtensionDecl_{@"ModuleDecl_Swift"}{@"StructDecl_(5)CollectionOfOne<1>"}0"}Iterator"}"
-	Relevant element: Tuple 2: id=41193
-		Full ID for 41193: @"StructType_(41192)". The ID may expand to @"StructType_{@"StructDecl_{@"ExtensionDecl_{@"ModuleDecl_Swift"}{@"StructDecl_(5)CollectionOfOne<1>"}0"}Iterator"}"
-	Relevant element: Tuple 2: parent=12512
-		Full ID for 12512: @"BoundGenericStructType_(12425)(319)". The ID may expand to @"BoundGenericStructType_{@"StructDecl_{@"ModuleDecl_Swift"}CollectionOfOne<1>"}{@"GenericTypeParamType_0_0"}"
-[INVALID_KEY_SET] predicate any_generic_type_parents(@any_generic_type id, @type_or_none parent): The key set {id} does not functionally determine all fields.
-Here is a pair of tuples that agree on the key set but differ at index 1:
-Tuple 1 in row 96: (41193,12518)
-Tuple 2 in row 97: (41193,12525)
-	Relevant element: Tuple 1: id=41193
-		Full ID for 41193: @"StructType_(41192)". The ID may expand to @"StructType_{@"StructDecl_{@"ExtensionDecl_{@"ModuleDecl_Swift"}{@"StructDecl_(5)CollectionOfOne<1>"}0"}Iterator"}"
-	Relevant element: Tuple 2: id=41193
-		Full ID for 41193: @"StructType_(41192)". The ID may expand to @"StructType_{@"StructDecl_{@"ExtensionDecl_{@"ModuleDecl_Swift"}{@"StructDecl_(5)CollectionOfOne<1>"}0"}Iterator"}"
-	Relevant element: Tuple 1: parent=12518
-		Full ID for 12518: @"BoundGenericStructType_(12425)(12517)". The ID may expand to @"BoundGenericStructType_{@"StructDecl_{@"ModuleDecl_Swift"}CollectionOfOne<1>"}{@"GenericTypeParamType_{@"GenericTypeParamDecl_{@"StructDecl_(5)CollectionOfOne<1>"}Element"}"}"
-	Relevant element: Tuple 2: parent=12525
-		Full ID for 12525: @"BoundGenericStructType_(12425)(12524)". The ID may expand to @"BoundGenericStructType_{@"StructDecl_{@"ModuleDecl_Swift"}CollectionOfOne<1>"}{@"PrimaryArchetypeType_{@"GenericTypeParamType_{@"GenericTypeParamDecl_(12425)Element"}"}"}"
-[INVALID_KEY_SET] predicate any_generic_type_parents(@any_generic_type id, @type_or_none parent): More errors, not displayed. There are 54 pairs of tuples not satisfying the key dependency for a relation of size 745
+Tuple 1 in row 5002: (14206,"<τ_0_0, τ_0_1> (τ_0_0, do: (τ_0_0) throws -> τ_0_1) throws -> τ_0_1",14206)
+Tuple 2 in row 5003: (14206,"<τ_0_0, τ_0_1> (τ_0_0, (τ_0_0) throws -> τ_0_1) throws -> τ_0_1",14206)
+	Relevant element: Tuple 1: id=14206
+		Full ID for 14206: @"GenericFunctionType_(319)(14205)->(331)_throws<(319)(331)>". The ID may expand to @"GenericFunctionType_{@"GenericTypeParamType_0_0"}{@"FunctionType_{@"GenericTypeParamType_0_0"}->{@"GenericTypeParamType_0_1"}_throws"}->{@"GenericTypeParamType_0_1"}_throws<{@"GenericTypeParamType_0_0"}{@"GenericTypeParamType_0_1"}>"
+	Relevant element: Tuple 2: id=14206
+		Full ID for 14206: @"GenericFunctionType_(319)(14205)->(331)_throws<(319)(331)>". The ID may expand to @"GenericFunctionType_{@"GenericTypeParamType_0_0"}{@"FunctionType_{@"GenericTypeParamType_0_0"}->{@"GenericTypeParamType_0_1"}_throws"}->{@"GenericTypeParamType_0_1"}_throws<{@"GenericTypeParamType_0_0"}{@"GenericTypeParamType_0_1"}>"
+	Relevant element: Tuple 1: canonical_type=14206
+		Full ID for 14206: @"GenericFunctionType_(319)(14205)->(331)_throws<(319)(331)>". The ID may expand to @"GenericFunctionType_{@"GenericTypeParamType_0_0"}{@"FunctionType_{@"GenericTypeParamType_0_0"}->{@"GenericTypeParamType_0_1"}_throws"}->{@"GenericTypeParamType_0_1"}_throws<{@"GenericTypeParamType_0_0"}{@"GenericTypeParamType_0_1"}>"
+	Relevant element: Tuple 2: canonical_type=14206
+		Full ID for 14206: @"GenericFunctionType_(319)(14205)->(331)_throws<(319)(331)>". The ID may expand to @"GenericFunctionType_{@"GenericTypeParamType_0_0"}{@"FunctionType_{@"GenericTypeParamType_0_0"}->{@"GenericTypeParamType_0_1"}_throws"}->{@"GenericTypeParamType_0_1"}_throws<{@"GenericTypeParamType_0_0"}{@"GenericTypeParamType_0_1"}>"
+[INVALID_KEY_SET] predicate types(@type id, string name, @type_or_none canonical_type): More errors, not displayed. There are 27 pairs of tuples not satisfying the key dependency for a relation of size 52810
