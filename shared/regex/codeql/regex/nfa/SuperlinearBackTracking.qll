@@ -190,7 +190,7 @@ module Make<RegexTreeViewSig TreeImpl> {
    *
    * Additionally, a heuristic is used to avoid blowups in the case of complex regexps.
    * For regular expressions with more than 100 states, we only look at all the characters
-   * for the transitions out of `q` and only consider transitions that use the lexographically
+   * for the transitions out of `q` and only consider transitions that use the lexicographically
    * smallest character.
    */
   pragma[noinline]
