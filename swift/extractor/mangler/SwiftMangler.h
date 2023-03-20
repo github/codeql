@@ -79,6 +79,12 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitDictionaryType(const swift::DictionaryType* type);
   SwiftMangledName visitTypeAliasType(const swift::TypeAliasType* type);
   SwiftMangledName visitArchetypeType(const swift::ArchetypeType* type);
+  SwiftMangledName visitProtocolCompositionType(const swift::ProtocolCompositionType* type);
+  SwiftMangledName visitParenType(const swift::ParenType* type);
+  SwiftMangledName visitLValueType(const swift::LValueType* type);
+  SwiftMangledName visitDynamicSelfType(const swift::DynamicSelfType* type);
+  SwiftMangledName visitUnboundGenericType(const swift::UnboundGenericType* type);
+  SwiftMangledName visitReferenceStorageType(const swift::ReferenceStorageType* type);
 
  private:
   static SwiftMangledName initMangled(const swift::TypeBase* type);
