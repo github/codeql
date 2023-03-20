@@ -1144,20 +1144,13 @@ module Impl<FullStateConfigSig Config> {
     module Stage<StageParam Param> implements StageSig {
       import Param
 
-      /* Begin: Stage logic. */
-      // use an alias as a workaround for bad functionality-induced joins
-      pragma[nomagic]
-      private predicate revFlowApAlias(NodeEx node, ApApprox apa) {
-        PrevStage::revFlowAp(node, apa)
-      }
-
       pragma[nomagic]
       private predicate flowIntoCallApa(
         DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, ApApprox apa
       ) {
         flowIntoCall(call, arg, p, allowsFieldFlow) and
         PrevStage::revFlowAp(p, pragma[only_bind_into](apa)) and
-        revFlowApAlias(arg, pragma[only_bind_into](apa))
+        PrevStage::revFlowAp(arg, pragma[only_bind_into](apa))
       }
 
       pragma[nomagic]
@@ -1167,7 +1160,7 @@ module Impl<FullStateConfigSig Config> {
       ) {
         flowOutOfCall(call, ret, kind, out, allowsFieldFlow) and
         PrevStage::revFlowAp(out, pragma[only_bind_into](apa)) and
-        revFlowApAlias(ret, pragma[only_bind_into](apa))
+        PrevStage::revFlowAp(ret, pragma[only_bind_into](apa))
       }
 
       pragma[nomagic]
