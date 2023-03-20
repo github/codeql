@@ -5,7 +5,7 @@ def topLevel():
 
     def bar():
         nonlocal foo
-        print(foo)  # FP
+        print(foo)
         foo = 4
 
     bar()
