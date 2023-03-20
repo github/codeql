@@ -9,7 +9,7 @@ class ConditionalBypassTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasConditionalBypassTest" and
-    exists(DataFlow::Node sink, ConditionalBypassFlowConfig conf | conf.hasFlowTo(sink) |
+    exists(DataFlow::Node sink | ConditionalBypassFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""
