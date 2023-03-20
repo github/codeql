@@ -109,9 +109,6 @@ public class Test {
             File f3 = (File)source();
             sink(f3.listFiles()); // $hasTaintFlow
 
-            FileInputStream fis = new FileInputStream((File)source());
-            sink(fis); // $hasTaintFlow
-
             StringWriter sw = (StringWriter)source();
             sink(sw.toString()); // $hasTaintFlow
 

@@ -75,7 +75,6 @@ extensions:
       - ["java.io", "File", True, "toPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toURI", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["java.io", "FileInputStream", False, "FileInputStream", "(File)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.io", "FilterOutputStream", True, "FilterOutputStream", "(OutputStream)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.io", "InputStream", True, "read", "(byte[])", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["java.io", "InputStream", True, "read", "(byte[],int,int)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
@@ -107,6 +106,7 @@ extensions:
       - ["java.io", "File", "length", "()", "manual"]
       - ["java.io", "File", "isDirectory", "()", "manual"]
       - ["java.io", "File", "mkdirs", "()", "manual"]
+      - ["java.io", "FileInputStream", "FileInputStream", "(File)", "manual"]
       - ["java.io", "InputStream", "close", "()", "manual"]
       - ["java.io", "OutputStream", "flush", "()", "manual"]
 
