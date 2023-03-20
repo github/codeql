@@ -161,6 +161,9 @@ SwiftMangledName SwiftMangler::visitBuiltinType(const swift::BuiltinType* type) 
 SwiftMangledName SwiftMangler::visitAnyGenericType(const swift::AnyGenericType* type) {
   auto ret = initMangled(type);
   ret << dispatcher.fetchLabel(type->getDecl());
+  if (auto parent = type->getParent()) {
+    ret << dispatcher.fetchLabel(parent);
+  }
   return ret;
 }
 
@@ -285,6 +288,9 @@ SwiftMangledName SwiftMangler::visitDictionaryType(const swift::DictionaryType* 
 SwiftMangledName SwiftMangler::visitTypeAliasType(const swift::TypeAliasType* type) {
   auto ret = initMangled(type);
   ret << dispatcher.fetchLabel(type->getDecl());
+  for (auto replacement : type->getSubstitutionMap().getReplacementTypes()) {
+    ret << dispatcher.fetchLabel(replacement);
+  }
   return ret;
 }
 
@@ -292,5 +298,47 @@ SwiftMangledName SwiftMangler::visitArchetypeType(const swift::ArchetypeType* ty
   auto ret = initMangled(type);
   // TODO double-check this
   ret << dispatcher.fetchLabel(type->getInterfaceType());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitProtocolCompositionType(
+    const swift::ProtocolCompositionType* type) {
+  auto ret = initMangled(type);
+  for (auto composed : type->getMembers()) {
+    ret << dispatcher.fetchLabel(composed);
+  }
+  if (type->hasExplicitAnyObject()) {
+    ret << "&AnyObject";
+  }
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitParenType(const swift::ParenType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getUnderlyingType());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitLValueType(const swift::LValueType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getObjectType());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitDynamicSelfType(const swift::DynamicSelfType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getSelfType());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitUnboundGenericType(const swift::UnboundGenericType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getDecl());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitReferenceStorageType(const swift::ReferenceStorageType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getReferentType());
   return ret;
 }
