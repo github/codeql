@@ -17,13 +17,12 @@ import DataFlow::PathGraph
 
 from
   StringLengthConflationConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  StringLengthConflationFlowState sourceFlowState, StringLengthConflationFlowState sinkFlowstate,
-  string message
+  StringType sourceType, StringType sinkType, string message
 where
   config.hasFlowPath(source, sink) and
-  config.isSource(source.getNode(), sourceFlowState) and
-  config.isSinkImpl(sink.getNode(), sinkFlowstate) and
+  config.isSource(source.getNode(), sourceType) and
+  sinkType = sink.getNode().(StringLengthConflationSink).getCorrectStringType() and
   message =
-    "This " + sourceFlowState + " length is used in " + sinkFlowstate.getSingular() +
+    "This " + sourceType + " length is used in " + sinkType.getSingular() +
       ", but it may not be equivalent."
 select sink.getNode(), source, sink, message
