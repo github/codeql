@@ -445,11 +445,7 @@ module Impl<FullStateConfigSig Config> {
   }
 
   private module Stage1 implements StageSig {
-    class Ap extends int {
-      // workaround for bad functionality-induced joins (happens when using `Unit`)
-      pragma[nomagic]
-      Ap() { this in [0 .. 1] and this < 1 }
-    }
+    class Ap = Unit;
 
     private class Cc = boolean;
 
