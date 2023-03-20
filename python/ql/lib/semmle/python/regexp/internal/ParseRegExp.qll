@@ -1,3 +1,7 @@
+/**
+ * Library for parsing for Python regular expressions.
+ */
+
 import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts as Concepts
