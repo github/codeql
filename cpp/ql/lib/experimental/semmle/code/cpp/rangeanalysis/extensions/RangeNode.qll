@@ -1,3 +1,13 @@
+/**
+ * This module implements subclasses for various DataFlow nodes that extends
+ * their `toString()` predicates with range information, if applicable. By
+ * including this module in a `path-problem` query, this range information
+ * will be displayed at each step in the query results.
+ *
+ * This is currently implemented for `DataFlow::ExprNode` and `DataFlow::DefinitionByReferenceNode`,
+ * but it is not yet implemented for `DataFlow::ParameterNode`.
+ */
+
 private import cpp
 private import semmle.code.cpp.dataflow.DataFlow
 private import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
@@ -39,9 +49,7 @@ predicate hasIntegralOrReferenceIntegralType(Locatable e) {
       // This will cover variables, parameters, type declarations, etc.
       t = e.(DeclarationEntry).getUnspecifiedType()
     ) and
-    isIntegralType(t)
-    or
-    isIntegralReferenceType(t)
+    (isIntegralType(t) or isIntegralReferenceType(t))
   )
 }
 
@@ -68,27 +76,24 @@ private class ExprRangeNode extends DataFlow::ExprNode {
 
   private string getOperationBounds(Operation e) {
     result =
-      getExprBoundAsString(e) + " = " + getExprBoundAsString(getLOp(e)) +
-        e.(Operation).getOperator() + getExprBoundAsString(getROp(e))
+      getExprBoundAsString(e) + " = " + getExprBoundAsString(getLOp(e)) + e.getOperator() +
+        getExprBoundAsString(getROp(e))
   }
 
   private string getCallBounds(Call e) {
     result =
       getExprBoundAsString(e) + "(" +
-        concat(Expr arg, int i |
-          arg = e.(Call).getArgument(i)
-        |
-          getIntegralBounds(arg) order by i, ","
-        ) + ")"
+        concat(Expr arg, int i | arg = e.getArgument(i) | getIntegralBounds(arg) order by i, ",") +
+        ")"
   }
 
   override string toString() {
     exists(Expr e | e = getExpr() |
       if hasIntegralOrReferenceIntegralType(e)
       then
-        exists(getOperationBounds(e)) and result = super.toString() + ": " + getOperationBounds(e)
+        result = super.toString() + ": " + getOperationBounds(e)
         or
-        exists(getCallBounds(e)) and result = super.toString() + ": " + getCallBounds(e)
+        result = super.toString() + ": " + getCallBounds(e)
         or
         not exists(getOperationBounds(e)) and
         not exists(getCallBounds(e)) and
@@ -108,4 +113,3 @@ private class ReferenceArgumentRangeNode extends DataFlow::DefinitionByReference
     else result = super.toString()
   }
 }
-// TODO: Show ranges for DataFlow::ExplicitParameterNode
