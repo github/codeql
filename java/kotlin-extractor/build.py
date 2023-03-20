@@ -11,8 +11,6 @@ import os
 import os.path
 import sys
 import shlex
-import distutils
-from distutils import dir_util
 
 
 def parse_args():
@@ -203,7 +201,7 @@ def compile(jars, java_jars, dependency_folder, transform_to_embeddable, output,
                 version.replace('.', '_')
             if os.path.exists(d):
                 # copy and overwrite files from the version folder to the include folder
-                distutils.dir_util.copy_tree(d, include_version_folder)
+                shutil.copytree(d, include_version_folder, dirs_exist_ok=True)
 
     # remove all version folders:
     for version in kotlin_plugin_versions.many_versions:
