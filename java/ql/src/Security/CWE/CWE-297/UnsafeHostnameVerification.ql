@@ -28,7 +28,7 @@ private predicate alwaysReturnsTrue(HostnameVerifierVerify m) {
 }
 
 /**
- * A class that s the `javax.net.ssl.HostnameVerifier.verify` method and **always** returns `true` (though it could also exit due to an uncaught exception), thus
+ * A class that overrides the `javax.net.ssl.HostnameVerifier.verify` method and **always** returns `true` (though it could also exit due to an uncaught exception), thus
  * accepting any certificate despite a hostname mismatch.
  */
 class TrustAllHostnameVerifier extends RefType {
