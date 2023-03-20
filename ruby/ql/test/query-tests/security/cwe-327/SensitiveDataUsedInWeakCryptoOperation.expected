@@ -1,0 +1,16 @@
+edges
+| sensitive_data.rb:18:5:18:14 | call to secret_key :  | sensitive_data.rb:23:13:23:13 | k |
+| sensitive_data.rb:18:5:18:14 | call to secret_key :  | sensitive_data.rb:30:13:30:13 | k |
+nodes
+| sensitive_data.rb:13:13:13:24 | call to get_password | semmle.label | call to get_password |
+| sensitive_data.rb:15:13:15:22 | call to secret_key | semmle.label | call to secret_key |
+| sensitive_data.rb:16:9:16:18 | call to secret_key | semmle.label | call to secret_key |
+| sensitive_data.rb:18:5:18:14 | call to secret_key :  | semmle.label | call to secret_key :  |
+| sensitive_data.rb:23:13:23:13 | k | semmle.label | k |
+| sensitive_data.rb:30:13:30:13 | k | semmle.label | k |
+subpaths
+#select
+| sensitive_data.rb:15:13:15:22 | call to secret_key | sensitive_data.rb:15:13:15:22 | call to secret_key | sensitive_data.rb:15:13:15:22 | call to secret_key | A broken or weak cryptographic algorithm depends on $@. | sensitive_data.rb:15:13:15:22 | call to secret_key | sensitive data froma call to secret_key |
+| sensitive_data.rb:16:9:16:18 | call to secret_key | sensitive_data.rb:16:9:16:18 | call to secret_key | sensitive_data.rb:16:9:16:18 | call to secret_key | A broken or weak cryptographic algorithm depends on $@. | sensitive_data.rb:16:9:16:18 | call to secret_key | sensitive data froma call to secret_key |
+| sensitive_data.rb:23:13:23:13 | k | sensitive_data.rb:18:5:18:14 | call to secret_key :  | sensitive_data.rb:23:13:23:13 | k | A broken or weak cryptographic algorithm depends on $@. | sensitive_data.rb:18:5:18:14 | call to secret_key | sensitive data froma call to secret_key |
+| sensitive_data.rb:30:13:30:13 | k | sensitive_data.rb:18:5:18:14 | call to secret_key :  | sensitive_data.rb:30:13:30:13 | k | A broken or weak cryptographic algorithm depends on $@. | sensitive_data.rb:18:5:18:14 | call to secret_key | sensitive data froma call to secret_key |
