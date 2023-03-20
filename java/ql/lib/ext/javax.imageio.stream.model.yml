@@ -4,4 +4,4 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["javax.imageio.stream", "FileCacheImageInputStream", True, "FileCacheImageInputStream", "(InputStream,File)", "", "Argument[0]", "Argument[-1].Element", "taint", "ai-generated"]
+      - ["javax.imageio.stream", "FileCacheImageInputStream", True, "FileCacheImageInputStream", "(InputStream,File)", "", "Argument[0]", "Argument[this].Element", "taint", "ai-generated"]

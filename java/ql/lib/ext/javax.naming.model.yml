@@ -14,4 +14,4 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["javax.naming", "StringRefAddr", True, "StringRefAddr", "(String,String)", "", "Argument[1]", "Argument[-1]", "taint", "ai-generated"]
+      - ["javax.naming", "StringRefAddr", True, "StringRefAddr", "(String,String)", "", "Argument[1]", "Argument[this]", "taint", "ai-generated"]
