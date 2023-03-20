@@ -4,5 +4,5 @@ extensions:
       extensible: sinkModel
     data:
       - ["hudson.util.jna", "GNUCLibrary", True, "open", "(String,int)", "", "Argument[0]", "read-file", "ai-generated"]
-# suggested label is not supported:      - ["hudson.util.jna", "Kernel32", True, "MoveFileExA", "(String,String,int)", "", "Argument[0]", "delete-file", "ai-generated"]
+      - ["hudson.util.jna", "Kernel32", True, "MoveFileExA", "(String,String,int)", "", "Argument[0]", "delete-file", "ai-generated"] # should be delete-file
       - ["hudson.util.jna", "Kernel32", True, "MoveFileExA", "(String,String,int)", "", "Argument[1]", "create-file", "ai-generated"]

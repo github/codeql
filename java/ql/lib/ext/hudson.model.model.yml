@@ -10,5 +10,5 @@ extensions:
     data:
       - ["hudson.model", "DirectoryBrowserSupport", False, "DirectoryBrowserSupport", "(ModelObject,FilePath,String,String,boolean)", "", "Argument[1]", "read-file", "ai-generated"]
       - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "download", "(DownloadJob,URL)", "", "Argument[1]", "open-url", "ai-generated"]
-# suggested label is not supported:      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "install", "(DownloadJob,File,File)", "", "Argument[1]", "delete-file", "ai-generated"]
+      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "install", "(DownloadJob,File,File)", "", "Argument[1]", "create-file", "ai-generated"] # should be delete-file
       - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "install", "(DownloadJob,File,File)", "", "Argument[2]", "create-file", "ai-generated"]
