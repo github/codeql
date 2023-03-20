@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.netty.util.internal", "PlatformDependent", False, "createTempFile", "(String,String,File)", "", "Argument[2]", "create-file", "ai-generated"]
+      - ["io.netty.util.internal", "SocketUtils", False, "connect", "(Socket,SocketAddress,int)", "", "Argument[1]", "open-url", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.netty.util.internal", "SocketUtils", False, "addressByName", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["io.netty.util.internal", "SocketUtils", False, "allAddressesByName", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
