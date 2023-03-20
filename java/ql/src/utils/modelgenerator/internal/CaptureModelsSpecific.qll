@@ -189,7 +189,7 @@ predicate isRelevantType(J::Type t) {
 /**
  * Gets the CSV string representation of the qualifier.
  */
-string qualifierString() { result = "Argument[-1]" }
+string qualifierString() { result = "Argument[this]" }
 
 private string parameterAccess(J::Parameter p) {
   if
