@@ -159,7 +159,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;DefaultUriBuilderFactory;false;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;DefaultUriBuilderFactory;false;expand;;;Argument[0];ReturnValue;taint;manual"
 			URI out = null;
 			String in = (String)source();
 			DefaultUriBuilderFactory instance = null;
@@ -167,7 +167,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;DefaultUriBuilderFactory;false;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;DefaultUriBuilderFactory;false;expand;;;Argument[0];ReturnValue;taint;manual"
 			URI out = null;
 			String in = (String)source();
 			DefaultUriBuilderFactory instance = null;
@@ -175,14 +175,14 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;DefaultUriBuilderFactory;false;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;DefaultUriBuilderFactory;false;expand;;;Argument[this];ReturnValue;taint;manual"
 			URI out = null;
 			DefaultUriBuilderFactory in = (DefaultUriBuilderFactory)source();
 			out = in.expand((String)null, (Object[])null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;DefaultUriBuilderFactory;false;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;DefaultUriBuilderFactory;false;expand;;;Argument[this];ReturnValue;taint;manual"
 			URI out = null;
 			DefaultUriBuilderFactory in = (DefaultUriBuilderFactory)source();
 			out = in.expand((String)null, (Map)null);
@@ -1267,14 +1267,14 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriBuilderFactory;true;uriString;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriBuilderFactory;true;uriString;;;Argument[this];ReturnValue;taint;manual"
 			UriBuilder out = null;
 			UriBuilderFactory in = (UriBuilderFactory)source();
 			out = in.uriString(null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriBuilderFactory;true;uriString;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriBuilderFactory;true;uriString;;;Argument[0];ReturnValue;taint;manual"
 			UriBuilder out = null;
 			String in = (String)source();
 			UriBuilderFactory instance = null;
@@ -1282,7 +1282,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriBuilderFactory;true;uriString;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriBuilderFactory;true;uriString;;;Argument[0];ReturnValue;taint;manual"
 			UriBuilder out = null;
 			String in = (String)source();
 			DefaultUriBuilderFactory instance = null;
@@ -1290,7 +1290,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriBuilderFactory;true;uriString;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriBuilderFactory;true;uriString;;;Argument[this];ReturnValue;taint;manual"
 			UriBuilder out = null;
 			DefaultUriBuilderFactory in = (DefaultUriBuilderFactory)source();
 			out = in.uriString(null);
@@ -2041,21 +2041,21 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[this];ReturnValue;taint;manual"
 			URI out = null;
 			UriTemplateHandler in = (UriTemplateHandler)source();
 			out = in.expand((String)null, (Object[])null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[this];ReturnValue;taint;manual"
 			URI out = null;
 			UriTemplateHandler in = (UriTemplateHandler)source();
 			out = in.expand((String)null, (Map)null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[0];ReturnValue;taint;manual"
 			URI out = null;
 			String in = (String)source();
 			UriTemplateHandler instance = null;
@@ -2063,7 +2063,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[0];ReturnValue;taint;manual"
 			URI out = null;
 			String in = (String)source();
 			UriTemplateHandler instance = null;
@@ -2071,7 +2071,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[0];ReturnValue;taint;manual"
 			URI out = null;
 			String in = (String)source();
 			DefaultUriBuilderFactory instance = null;
@@ -2079,7 +2079,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[0];ReturnValue;taint;manual"
 			URI out = null;
 			String in = (String)source();
 			DefaultUriBuilderFactory instance = null;
@@ -2087,7 +2087,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[0];ReturnValue;taint;manual"
 			URI out = null;
 			String in = (String)source();
 			AbstractUriTemplateHandler instance = null;
@@ -2095,7 +2095,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[0];ReturnValue;taint;manual"
 			URI out = null;
 			String in = (String)source();
 			AbstractUriTemplateHandler instance = null;
@@ -2103,28 +2103,28 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[this];ReturnValue;taint;manual"
 			URI out = null;
 			DefaultUriBuilderFactory in = (DefaultUriBuilderFactory)source();
 			out = in.expand((String)null, (Object[])null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[this];ReturnValue;taint;manual"
 			URI out = null;
 			DefaultUriBuilderFactory in = (DefaultUriBuilderFactory)source();
 			out = in.expand((String)null, (Map)null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[this];ReturnValue;taint;manual"
 			URI out = null;
 			AbstractUriTemplateHandler in = (AbstractUriTemplateHandler)source();
 			out = in.expand((String)null, (Object[])null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "org.springframework.web.util;UriTemplateHandler;true;expand;;;Argument[this];ReturnValue;taint;manual"
 			URI out = null;
 			AbstractUriTemplateHandler in = (AbstractUriTemplateHandler)source();
 			out = in.expand((String)null, (Map)null);
