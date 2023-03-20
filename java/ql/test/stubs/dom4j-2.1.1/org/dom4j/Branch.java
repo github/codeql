@@ -1,54 +1,41 @@
-/*
- * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * This software is open source.
- * See the bottom of this file for the licence.
- */
-
-/*
- * Adapted from DOM4J version 2.1.1 as available at
- *   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
- * Only relevant stubs of this file have been retained for test purposes.
- */
+// Generated automatically from org.dom4j.Branch for testing purposes
 
 package org.dom4j;
 
-public interface Branch extends Node {
-}
+import java.util.Iterator;
+import java.util.List;
+import org.dom4j.Comment;
+import org.dom4j.Element;
+import org.dom4j.Node;
+import org.dom4j.ProcessingInstruction;
+import org.dom4j.QName;
 
-/*
- * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided that the
- * following conditions are met:
- * 
- * 1. Redistributions of source code must retain copyright statements and
- * notices. Redistributions must also contain a copy of this document.
- * 
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.
- * 
- * 3. The name "DOM4J" must not be used to endorse or promote products derived
- * from this Software without prior written permission of MetaStuff, Ltd. For
- * written permission, please contact dom4j-info@metastuff.com.
- * 
- * 4. Products derived from this Software may not be called "DOM4J" nor may
- * "DOM4J" appear in their names without prior written permission of MetaStuff,
- * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
- * 
- * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
- * 
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- * 
- * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
- */
+public interface Branch extends Node
+{
+    Element addElement(QName p0);
+    Element addElement(String p0);
+    Element addElement(String p0, String p1);
+    Element elementByID(String p0);
+    Iterator nodeIterator();
+    List content();
+    List processingInstructions();
+    List processingInstructions(String p0);
+    Node node(int p0);
+    ProcessingInstruction processingInstruction(String p0);
+    boolean remove(Comment p0);
+    boolean remove(Element p0);
+    boolean remove(Node p0);
+    boolean remove(ProcessingInstruction p0);
+    boolean removeProcessingInstruction(String p0);
+    int indexOf(Node p0);
+    int nodeCount();
+    void add(Comment p0);
+    void add(Element p0);
+    void add(Node p0);
+    void add(ProcessingInstruction p0);
+    void appendContent(Branch p0);
+    void clearContent();
+    void normalize();
+    void setContent(List p0);
+    void setProcessingInstructions(List p0);
+}

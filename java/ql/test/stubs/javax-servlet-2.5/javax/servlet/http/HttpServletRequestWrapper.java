@@ -12,12 +12,14 @@ import javax.servlet.http.HttpServletMapping;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpUpgradeHandler;
 import javax.servlet.http.Part;
 import javax.servlet.http.PushBuilder;
 
 public class HttpServletRequestWrapper extends ServletRequestWrapper implements HttpServletRequest
 {
     protected HttpServletRequestWrapper() {}
+    public <T extends HttpUpgradeHandler> T upgrade(java.lang.Class<T> p0){ return null; }
     public Collection<Part> getParts(){ return null; }
     public Cookie[] getCookies(){ return null; }
     public Enumeration<String> getHeaderNames(){ return null; }

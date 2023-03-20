@@ -57,6 +57,13 @@ nodes
 | express.js:155:18:155:23 | target |
 | express.js:160:18:160:23 | target |
 | express.js:160:18:160:23 | target |
+| express.js:164:7:164:54 | myThing |
+| express.js:164:17:164:41 | JSON.st ... .query) |
+| express.js:164:17:164:54 | JSON.st ... (1, -1) |
+| express.js:164:32:164:40 | req.query |
+| express.js:164:32:164:40 | req.query |
+| express.js:165:16:165:22 | myThing |
+| express.js:165:16:165:22 | myThing |
 | koa.js:6:6:6:27 | url |
 | koa.js:6:12:6:27 | ctx.query.target |
 | koa.js:6:12:6:27 | ctx.query.target |
@@ -153,6 +160,12 @@ edges
 | express.js:150:7:150:34 | target | express.js:160:18:160:23 | target |
 | express.js:150:16:150:34 | req.param("target") | express.js:150:7:150:34 | target |
 | express.js:150:16:150:34 | req.param("target") | express.js:150:7:150:34 | target |
+| express.js:164:7:164:54 | myThing | express.js:165:16:165:22 | myThing |
+| express.js:164:7:164:54 | myThing | express.js:165:16:165:22 | myThing |
+| express.js:164:17:164:41 | JSON.st ... .query) | express.js:164:17:164:54 | JSON.st ... (1, -1) |
+| express.js:164:17:164:54 | JSON.st ... (1, -1) | express.js:164:7:164:54 | myThing |
+| express.js:164:32:164:40 | req.query | express.js:164:17:164:41 | JSON.st ... .query) |
+| express.js:164:32:164:40 | req.query | express.js:164:17:164:41 | JSON.st ... .query) |
 | koa.js:6:6:6:27 | url | koa.js:7:15:7:17 | url |
 | koa.js:6:6:6:27 | url | koa.js:7:15:7:17 | url |
 | koa.js:6:6:6:27 | url | koa.js:8:18:8:20 | url |
@@ -214,6 +227,7 @@ edges
 | express.js:146:16:146:24 | query.foo | express.js:146:16:146:24 | query.foo | express.js:146:16:146:24 | query.foo | Untrusted URL redirection depends on a $@. | express.js:146:16:146:24 | query.foo | user-provided value |
 | express.js:155:18:155:23 | target | express.js:150:16:150:34 | req.param("target") | express.js:155:18:155:23 | target | Untrusted URL redirection depends on a $@. | express.js:150:16:150:34 | req.param("target") | user-provided value |
 | express.js:160:18:160:23 | target | express.js:150:16:150:34 | req.param("target") | express.js:160:18:160:23 | target | Untrusted URL redirection depends on a $@. | express.js:150:16:150:34 | req.param("target") | user-provided value |
+| express.js:165:16:165:22 | myThing | express.js:164:32:164:40 | req.query | express.js:165:16:165:22 | myThing | Untrusted URL redirection depends on a $@. | express.js:164:32:164:40 | req.query | user-provided value |
 | koa.js:7:15:7:17 | url | koa.js:6:12:6:27 | ctx.query.target | koa.js:7:15:7:17 | url | Untrusted URL redirection depends on a $@. | koa.js:6:12:6:27 | ctx.query.target | user-provided value |
 | koa.js:8:15:8:26 | `${url}${x}` | koa.js:6:12:6:27 | ctx.query.target | koa.js:8:15:8:26 | `${url}${x}` | Untrusted URL redirection depends on a $@. | koa.js:6:12:6:27 | ctx.query.target | user-provided value |
 | koa.js:14:16:14:18 | url | koa.js:6:12:6:27 | ctx.query.target | koa.js:14:16:14:18 | url | Untrusted URL redirection depends on a $@. | koa.js:6:12:6:27 | ctx.query.target | user-provided value |

@@ -87,9 +87,7 @@ extensions:
       - ["java.io", "OutputStream", True, "write", "(byte[],int,int)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.io", "OutputStream", True, "write", "(int)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.io", "Reader", True, "read", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
-      - ["java.io", "Reader", True, "read", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "StringReader", False, "StringReader", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["java.io", "Writer", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "Writer", True, "write", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
   - addsTo:
       pack: codeql/java-all
