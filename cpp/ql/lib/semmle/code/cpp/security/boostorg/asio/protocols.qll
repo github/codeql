@@ -396,14 +396,10 @@ module BoostorgAsio {
    */
   module SslContextCallMake<SslContextCallConfigSig Config> {
     private module C implements DataFlow::ConfigSig {
-      predicate isSource = Config::isSource/1;
-
-      predicate isSink = Config::isSink/1;
+      import Config
     }
 
-    module F = DataFlow::Make<C>;
-
-    import F
+    import DataFlow::Make<C>
   }
 
   /**
