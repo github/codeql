@@ -34,7 +34,7 @@ class ArchiveEntryNameMethod extends Method {
   }
 }
 
-module ZipSlipConfiguration implements DataFlow::ConfigSig {
+module ZipSlipConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.asExpr().(MethodAccess).getMethod() instanceof ArchiveEntryNameMethod
   }
@@ -44,7 +44,7 @@ module ZipSlipConfiguration implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof PathInjectionSanitizer }
 }
 
-module ZipSlipFlow = TaintTracking::Make<ZipSlipConfiguration>;
+module ZipSlipFlow = TaintTracking::Make<ZipSlipConfig>;
 
 import ZipSlipFlow::PathGraph
 
