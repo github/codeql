@@ -6,7 +6,6 @@ groups:
 dependencies:
   codeql/python-all: ${workspace}
   codeql/suite-helpers: ${workspace}
-  codeql/util: ${workspace}
 suites: codeql-suites
 extractor: python
 defaultSuiteFile: codeql-suites/python-code-scanning.qls
