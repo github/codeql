@@ -1144,6 +1144,7 @@ module Impl<FullStateConfigSig Config> {
     module Stage<StageParam Param> implements StageSig {
       import Param
 
+      /* Begin: Stage logic. */
       pragma[nomagic]
       private predicate flowIntoCallApa(
         DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, ApApprox apa
