@@ -1,22 +1,26 @@
 package com.semmle.js.extractor;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Reader;
 import java.lang.ProcessBuilder.Redirect;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.DirectoryNotEmptyException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.FileVisitor;
 import java.nio.file.Files;
 import java.nio.file.InvalidPathException;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -27,6 +31,7 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -41,11 +46,16 @@ import com.semmle.js.extractor.FileExtractor.FileType;
 import com.semmle.js.extractor.trapcache.DefaultTrapCache;
 import com.semmle.js.extractor.trapcache.DummyTrapCache;
 import com.semmle.js.extractor.trapcache.ITrapCache;
+import com.semmle.js.parser.ParseError;
 import com.semmle.js.parser.ParsedProject;
 import com.semmle.ts.extractor.TypeExtractor;
 import com.semmle.ts.extractor.TypeScriptParser;
+import com.semmle.ts.extractor.TypeScriptWrapperOOMError;
 import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
+import com.semmle.util.diagnostic.DiagnosticLevel;
+import com.semmle.util.diagnostic.DiagnosticLocation;
+import com.semmle.util.diagnostic.DiagnosticWriter;
 import com.semmle.util.exception.CatastrophicError;
 import com.semmle.util.exception.Exceptions;
 import com.semmle.util.exception.ResourceError;
@@ -444,33 +454,141 @@ public class AutoBuild {
 
   /** Perform extraction. */
   public int run() throws IOException {
-    startThreadPool();
-    try {
-      CompletableFuture<?> sourceFuture = extractSource();
-      sourceFuture.join(); // wait for source extraction to complete
-      if (hasSeenCode()) { // don't bother with the externs if no code was seen
-        extractExterns();
+      startThreadPool();
+      try {
+        CompletableFuture<?> sourceFuture = extractSource();
+        sourceFuture.join(); // wait for source extraction to complete
+        if (hasSeenCode()) { // don't bother with the externs if no code was seen
+          extractExterns();
+        }
+        extractXml();
+      } catch (OutOfMemoryError oom) {
+        System.err.println("Out of memory while extracting the project.");
+        return 137; // the CodeQL CLI will interpret this as an out-of-memory error
+        // purpusely not doing anything else (printing stack, etc.), as the JVM
+        // basically guarantees nothing after an OOM
+      } catch (TypeScriptWrapperOOMError oom) {
+        System.err.println("Out of memory while extracting the project.");
+        System.err.println(oom.getMessage());
+        oom.printStackTrace(System.err);
+        return 137;
+      } catch (RuntimeException | IOException e) {
+        writeDiagnostics("Internal error: " + e, JSDiagnosticKind.INTERNAL_ERROR);
+        e.printStackTrace(System.err);
+        return 1;
+      } finally {
+        shutdownThreadPool();
+        diagnosticsToClose.forEach(DiagnosticWriter::close);
       }
-      extractXml();
-    } finally {
-      shutdownThreadPool();
-    }
-    if (!hasSeenCode()) {
-      if (seenFiles) {
-        warn("Only found JavaScript or TypeScript files that were empty or contained syntax errors.");
-      } else {
-        warn("No JavaScript or TypeScript code found.");
+
+      if (!hasSeenCode()) {
+        if (seenFiles) {
+          warn("Only found JavaScript or TypeScript files that were empty or contained syntax errors.");
+        } else {
+          warn("No JavaScript or TypeScript code found.");
+        }
+        // ensuring that the finalize steps detects that no code was seen.
+        Path srcFolder = Paths.get(EnvironmentVariables.getWipDatabase(), "src");
+        try {
+          // Non-recursive delete because "src/" should be empty.
+          FileUtil8.delete(srcFolder);
+        } catch (NoSuchFileException e) {
+          Exceptions.ignore(e, "the directory did not exist");
+        } catch (DirectoryNotEmptyException e) {
+          Exceptions.ignore(e, "just leave the directory if it is not empty");
+        }
+        return 0;
       }
-      // ensuring that the finalize steps detects that no code was seen. 
-      Path srcFolder = Paths.get(EnvironmentVariables.getWipDatabase(), "src");
-      // check that the srcFolder is empty
-      if (Files.list(srcFolder).count() == 0) {
-        // Non-recursive delete because "src/" should be empty.
-        FileUtil8.delete(srcFolder);
-      }
-      return 0;
-    }
     return 0;
+  }
+
+  /**
+   * A kind of error that can happen during extraction of JavaScript or TypeScript
+   * code.
+   * For use with the {@link #writeDiagnostics(String, JSDiagnosticKind)} method.
+   */
+  public static enum JSDiagnosticKind {
+    PARSE_ERROR("parse-error", "Could not process some files due to syntax errors", DiagnosticLevel.Warning),
+    INTERNAL_ERROR("internal-error", "Internal error", DiagnosticLevel.Debug);
+
+    private final String id;
+    private final String name;
+    private final DiagnosticLevel level;
+
+    private JSDiagnosticKind(String id, String name, DiagnosticLevel level) {
+      this.id = id;
+      this.name = name;
+      this.level = level;
+    }
+
+    public String getId() {
+      return id;
+    }
+
+    public String getName() {
+      return name;
+    }
+
+    public DiagnosticLevel getLevel() {
+      return level;
+    }
+  }
+
+  private AtomicInteger diagnosticCount = new AtomicInteger(0);
+  private List<DiagnosticWriter> diagnosticsToClose = Collections.synchronizedList(new ArrayList<>());
+  private ThreadLocal<DiagnosticWriter> diagnostics = new ThreadLocal<DiagnosticWriter>(){
+        @Override protected DiagnosticWriter initialValue() {
+            DiagnosticWriter result = initDiagnosticsWriter(diagnosticCount.incrementAndGet());
+            diagnosticsToClose.add(result);
+            return result;
+        }
+  };
+
+  /**
+   * Persist a diagnostic message to a file in the diagnostics directory.
+   * See {@link JSDiagnosticKind} for the kinds of errors that can be reported,
+   * and see
+   * {@link DiagnosticWriter} for more details.
+   */
+  public void writeDiagnostics(String message, JSDiagnosticKind error) throws IOException {
+    writeDiagnostics(message, error, null);
+  }
+
+
+  /**
+   * Persist a diagnostic message with a location to a file in the diagnostics directory.
+   * See {@link JSDiagnosticKind} for the kinds of errors that can be reported,
+   * and see
+   * {@link DiagnosticWriter} for more details.
+   */
+  public void writeDiagnostics(String message, JSDiagnosticKind error, DiagnosticLocation location) throws IOException {
+    if (diagnostics.get() == null) {
+      warn("No diagnostics directory, so not writing diagnostic: " + message);
+      return;
+    }
+
+    // DiagnosticLevel level, String extractorName, String sourceId, String sourceName, String markdown
+    diagnostics.get().writeMarkdown(error.getLevel(), "javascript", "js/" + error.getId(), error.getName(),
+        message, location);
+  }
+
+  private DiagnosticWriter initDiagnosticsWriter(int count) {
+    String diagnosticsDir = System.getenv("CODEQL_EXTRACTOR_JAVASCRIPT_DIAGNOSTIC_DIR");
+
+    if (diagnosticsDir != null) {
+      File diagnosticsDirFile = new File(diagnosticsDir);
+      if (!diagnosticsDirFile.isDirectory()) {
+        warn("Diagnostics directory " + diagnosticsDir + " does not exist");
+      } else {
+        File diagnosticsFile = new File(diagnosticsDirFile, "autobuilder-" + count + ".jsonl");
+        try {
+          return new DiagnosticWriter(diagnosticsFile);
+        } catch (FileNotFoundException e) {
+          warn("Failed to open diagnostics file " + diagnosticsFile);
+        }
+      }
+    }
+    return null;
   }
 
   private void startThreadPool() {
@@ -1113,13 +1231,39 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
 
     try {
       long start = logBeginProcess("Extracting " + file);
-      Integer loc = extractor.extract(f, state);
-      if (!extractor.getConfig().isExterns() && (loc == null || loc != 0)) seenCode = true;
+      ParseResultInfo loc = extractor.extract(f, state);
+      if (!extractor.getConfig().isExterns() && (loc == null || loc.getLinesOfCode() != 0)) seenCode = true;
       if (!extractor.getConfig().isExterns()) seenFiles = true;
+      List<ParseError> errors = loc == null ? Collections.emptyList() : loc.getParseErrors();
+      for (ParseError err : errors) {
+        String msg = "A parse error occurred: " + StringUtil.escapeMarkdown(err.getMessage())
+            + ". Check the syntax of the file. If the file is invalid, correct the error or [exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.";
+        // file, relative to the source root
+        String relativeFilePath = null;
+        if (file.startsWith(LGTM_SRC)) {
+          relativeFilePath = file.subpath(LGTM_SRC.getNameCount(), file.getNameCount()).toString();
+        }
+        DiagnosticLocation diagLoc = DiagnosticLocation.builder()
+            .setFile(relativeFilePath)
+            .setStartLine(err.getPosition().getLine())
+            .setStartColumn(err.getPosition().getColumn())
+            .setEndLine(err.getPosition().getLine())
+            .setEndColumn(err.getPosition().getColumn())
+            .build();
+        writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR, diagLoc);
+      }
       logEndProcess(start, "Done extracting " + file);
+    } catch (OutOfMemoryError oom) {
+      System.err.println("Out of memory while extracting a file.");
+      System.exit(137); // caught by the CodeQL CLI
     } catch (Throwable t) {
       System.err.println("Exception while extracting " + file + ".");
       t.printStackTrace(System.err);
+      try {
+        writeDiagnostics("Internal error: " + t, JSDiagnosticKind.INTERNAL_ERROR);
+      } catch (IOException ignored) {
+        Exceptions.ignore(ignored, "we are already crashing");
+      }
       System.exit(1);
     }
   }

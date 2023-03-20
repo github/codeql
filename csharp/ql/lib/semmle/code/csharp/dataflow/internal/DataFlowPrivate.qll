@@ -1215,7 +1215,8 @@ private module ArgumentNodes {
    * ```
    */
   class ImplicitCapturedArgumentNode extends ArgumentNodeImpl, NodeImpl,
-    TImplicitCapturedArgumentNode {
+    TImplicitCapturedArgumentNode
+  {
     private LocalScopeVariable v;
     private ControlFlow::Nodes::ElementNode cfn;
 
@@ -2034,7 +2035,8 @@ private module PostUpdateNodes {
    * a pre-update node for the `ObjectCreationNode`.
    */
   class ObjectInitializerNode extends PostUpdateNode, NodeImpl, ArgumentNodeImpl,
-    TObjectInitializerNode {
+    TObjectInitializerNode
+  {
     private ObjectCreation oc;
     private ControlFlow::Nodes::ElementNode cfn;
 
@@ -2374,3 +2376,12 @@ module Csv {
     )
   }
 }
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

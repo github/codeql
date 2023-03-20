@@ -3,9 +3,14 @@
 package javax.servlet.annotation;
 
 import java.lang.annotation.Annotation;
+import java.lang.annotation.Documented;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import javax.servlet.annotation.ServletSecurity;
 
-public interface HttpConstraint extends Annotation
+@Documented
+@Retention(value=java.lang.annotation.RetentionPolicy.RUNTIME)
+public @interface HttpConstraint
 {
     ServletSecurity.EmptyRoleSemantic value();
     ServletSecurity.TransportGuarantee transportGuarantee();

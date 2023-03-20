@@ -318,14 +318,14 @@ func taintThroughInterpolatedStrings() {
   harmless.getCharacters(ptr1, range: myRange)
   sink(arg: ptr1)
   sourceNSString().getCharacters(ptr1, range: myRange)
-  sink(arg: ptr1) // $ MISSING: tainted=
+  sink(arg: ptr1) // $ tainted=320
 
   var ptr2 = (nil as UnsafeMutablePointer<unichar>?)!
   sink(arg: ptr2)
   harmless.getCharacters(ptr2)
   sink(arg: ptr2)
   sourceNSString().getCharacters(ptr2)
-  sink(arg: ptr2) // $ MISSING: tainted=
+  sink(arg: ptr2) // $ tainted=327
 
   var ptr3 = (nil as UnsafeMutableRawPointer?)!
   sink(arg: ptr3)
@@ -339,14 +339,14 @@ func taintThroughInterpolatedStrings() {
   harmless.getCString(ptr4, maxLength: 128, encoding: 0)
   sink(arg: ptr4)
   sourceNSString().getCString(ptr4, maxLength: 128, encoding: 0)
-  sink(arg: ptr4) // $ MISSING: tainted=
+  sink(arg: ptr4) // $ tainted=341
 
   var ptr5 = (nil as UnsafeMutablePointer<CChar>?)!
   sink(arg: ptr5)
   harmless.getCString(ptr5)
   sink(arg: ptr5)
   sourceNSString().getCString(ptr5)
-  sink(arg: ptr5) // $ MISSING: tainted=
+  sink(arg: ptr5) // $ tainted=348
 
   sink(arg: harmless.enumerateLines({
     line, stop in
@@ -363,10 +363,10 @@ func taintThroughInterpolatedStrings() {
   var outLongest = (nil as AutoreleasingUnsafeMutablePointer<NSString?>?)!
   var outArray = (nil as AutoreleasingUnsafeMutablePointer<NSArray?>?)!
   if (str10.completePath(into: outLongest, caseSensitive: false, matchesInto: outArray, filterTypes: nil) > 0) {
-    sink(arg: outLongest) // $ MISSING: tainted=
+    sink(arg: outLongest) // $ tainted=362
     sink(arg: outLongest.pointee) // $ MISSING: tainted=
     sink(arg: outLongest.pointee!) // $ MISSING: tainted=
-    sink(arg: outArray) // $ MISSING: tainted=
+    sink(arg: outArray) // $ tainted=362
     sink(arg: outArray.pointee) // $ MISSING: tainted=
     sink(arg: outArray.pointee!) // $ MISSING: tainted=
   }
@@ -374,7 +374,7 @@ func taintThroughInterpolatedStrings() {
   var str11 = sourceNSString()
   var outBuffer = (nil as UnsafeMutablePointer<CChar>?)!
   if (str11.getFileSystemRepresentation(outBuffer, maxLength: 256)) {
-    sink(arg: outBuffer) // $ MISSING: tainted=
+    sink(arg: outBuffer) // $ tainted=374
     sink(arg: outBuffer.pointee) // $ MISSING: tainted=
   }
 

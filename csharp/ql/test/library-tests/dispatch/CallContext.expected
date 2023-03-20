@@ -23,3 +23,6 @@ mayBenefitFromCallContext
 | ViableCallable.cs:411:9:411:18 | call to method M<Int32> |
 | ViableCallable.cs:455:9:455:30 | call to method M2<T> |
 | ViableCallable.cs:461:9:461:30 | call to method M2<T> |
+| ViableCallable.cs:563:18:563:22 | call to operator / |
+| ViableCallable.cs:566:26:566:30 | call to operator checked / |
+| ViableCallable.cs:572:9:572:15 | call to method M12 |

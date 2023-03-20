@@ -4,6 +4,8 @@ edges
 | UrlRedirect.java:36:58:36:89 | getParameter(...) : String | UrlRedirect.java:36:25:36:89 | ... + ... |
 | UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:14 | input : String |
 | UrlRedirect.java:46:10:46:14 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String |
+| mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:31:14:38 | source(...) : String |
+| mad/Test.java:14:31:14:38 | source(...) : String | mad/Test.java:14:22:14:38 | (...)... |
 nodes
 | UrlRedirect.java:23:25:23:54 | getParameter(...) | semmle.label | getParameter(...) |
 | UrlRedirect.java:32:25:32:67 | weakCleanup(...) | semmle.label | weakCleanup(...) |
@@ -15,6 +17,9 @@ nodes
 | UrlRedirect.java:45:28:45:39 | input : String | semmle.label | input : String |
 | UrlRedirect.java:46:10:46:14 | input : String | semmle.label | input : String |
 | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | semmle.label | replaceAll(...) : String |
+| mad/Test.java:9:16:9:41 | getParameter(...) : String | semmle.label | getParameter(...) : String |
+| mad/Test.java:14:22:14:38 | (...)... | semmle.label | (...)... |
+| mad/Test.java:14:31:14:38 | source(...) : String | semmle.label | source(...) : String |
 subpaths
 | UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) |
 #select
@@ -23,3 +28,4 @@ subpaths
 | UrlRedirect.java:36:25:36:89 | ... + ... | UrlRedirect.java:36:58:36:89 | getParameter(...) : String | UrlRedirect.java:36:25:36:89 | ... + ... | Untrusted URL redirection depends on a $@. | UrlRedirect.java:36:58:36:89 | getParameter(...) | user-provided value |
 | UrlRedirect.java:39:34:39:63 | getParameter(...) | UrlRedirect.java:39:34:39:63 | getParameter(...) | UrlRedirect.java:39:34:39:63 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:39:34:39:63 | getParameter(...) | user-provided value |
 | UrlRedirect.java:42:43:42:72 | getParameter(...) | UrlRedirect.java:42:43:42:72 | getParameter(...) | UrlRedirect.java:42:43:42:72 | getParameter(...) | Untrusted URL redirection depends on a $@. | UrlRedirect.java:42:43:42:72 | getParameter(...) | user-provided value |
+| mad/Test.java:14:22:14:38 | (...)... | mad/Test.java:9:16:9:41 | getParameter(...) : String | mad/Test.java:14:22:14:38 | (...)... | Untrusted URL redirection depends on a $@. | mad/Test.java:9:16:9:41 | getParameter(...) | user-provided value |

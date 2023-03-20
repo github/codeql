@@ -30,10 +30,15 @@ void SwiftLocationExtractor::attachLocation(const swift::SourceManager& sourceMa
   trap.emit(LocatableLocationsTrap{locatableLabel, entry.id});
 }
 
-void SwiftLocationExtractor::emitFile(swift::SourceFile* file) {
+TrapLabel<FileTag> SwiftLocationExtractor::emitFile(swift::SourceFile* file) {
   if (file) {
-    fetchFileLabel(resolvePath(file->getFilename()));
+    return emitFile(std::string_view{file->getFilename()});
   }
+  return undefined_label;
+}
+
+TrapLabel<FileTag> SwiftLocationExtractor::emitFile(const std::filesystem::path& file) {
+  return fetchFileLabel(resolvePath(file));
 }
 
 void SwiftLocationExtractor::attachLocation(const swift::SourceManager& sourceManager,

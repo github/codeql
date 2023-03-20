@@ -470,7 +470,8 @@ module Koa {
   /**
    * An invocation of the `redirect` method of an HTTP response object.
    */
-  private class RedirectInvocation extends Http::RedirectInvocation instanceof DataFlow::MethodCallNode {
+  private class RedirectInvocation extends Http::RedirectInvocation instanceof DataFlow::MethodCallNode
+  {
     RouteHandler rh;
 
     RedirectInvocation() { super.calls(rh.getAResponseOrContextNode(), "redirect") }

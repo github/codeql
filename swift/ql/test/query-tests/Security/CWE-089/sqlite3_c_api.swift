@@ -191,7 +191,7 @@ func test_sqlite3_c_api(db: OpaquePointer?, buffer: UnsafeMutablePointer<UInt8>)
 
 	var stmt6: OpaquePointer?
 
-	if (sqlite3_prepare16(db, buffer, Int32(data.count), &stmt6, nil) == SQLITE_OK) { // BAD [NOT DETECTED]
+	if (sqlite3_prepare16(db, buffer, Int32(data.count), &stmt6, nil) == SQLITE_OK) { // BAD
 		let result = sqlite3_step(stmt6)
 		// ...
 	}
@@ -199,7 +199,7 @@ func test_sqlite3_c_api(db: OpaquePointer?, buffer: UnsafeMutablePointer<UInt8>)
 
 	var stmt7: OpaquePointer?
 
-	if (sqlite3_prepare16_v2(db, buffer, Int32(data.count), &stmt7, nil) == SQLITE_OK) { // BAD [NOT DETECTED]
+	if (sqlite3_prepare16_v2(db, buffer, Int32(data.count), &stmt7, nil) == SQLITE_OK) { // BAD
 		let result = sqlite3_step(stmt7)
 		// ...
 	}
@@ -207,7 +207,7 @@ func test_sqlite3_c_api(db: OpaquePointer?, buffer: UnsafeMutablePointer<UInt8>)
 
 	var stmt8: OpaquePointer?
 
-	if (sqlite3_prepare16_v3(db, buffer, Int32(data.count), 0, &stmt8, nil) == SQLITE_OK) { // BAD [NOT DETECTED]
+	if (sqlite3_prepare16_v3(db, buffer, Int32(data.count), 0, &stmt8, nil) == SQLITE_OK) { // BAD
 		let result = sqlite3_step(stmt8)
 		// ...
 	}

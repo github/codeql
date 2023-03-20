@@ -129,7 +129,8 @@ private class NsStringSummaries extends SummaryModelCsv {
  * tainted.
  */
 private class NsStringFieldsInheritTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
+  DataFlow::Content::FieldContent
+{
   NsStringFieldsInheritTaint() {
     exists(FieldDecl f | this.getField() = f |
       (

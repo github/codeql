@@ -406,3 +406,26 @@ char *my_string_copy() {
 	*ptr++ = 0;
 	return DST_STRING;
 }
+
+void scan_and_write() {
+	{
+		int i;
+		if (scanf("%d", &i) < 1) {
+			i = 0;
+		}
+		use(i);  // GOOD [FALSE POSITIVE]: variable is overwritten with a default value when scanf fails
+	}
+	{
+		int i;
+		if (scanf("%d", &i) != 1) {
+			i = 0;
+		}
+		use(i);  // GOOD [FALSE POSITIVE]: variable is overwritten with a default value when scanf fails
+	}
+}
+
+void scan_and_static_variable() {
+	static int i;
+	scanf("%d", &i);
+	use(i);  // GOOD [FALSE POSITIVE]: static variables are always 0-initialized
+}

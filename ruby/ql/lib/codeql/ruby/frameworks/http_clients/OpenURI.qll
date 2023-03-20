@@ -62,7 +62,8 @@ class OpenUriRequest extends Http::Client::Request::Range, DataFlow::CallNode {
  * Kernel.open("http://example.com").read
  * ```
  */
-class OpenUriKernelOpenRequest extends Http::Client::Request::Range, DataFlow::CallNode instanceof KernelMethodCall {
+class OpenUriKernelOpenRequest extends Http::Client::Request::Range, DataFlow::CallNode instanceof KernelMethodCall
+{
   OpenUriKernelOpenRequest() { this.getMethodName() = "open" }
 
   override DataFlow::Node getAUrlPart() { result = this.getArgument(0) }
@@ -102,7 +103,8 @@ class OpenUriKernelOpenRequest extends Http::Client::Request::Range, DataFlow::C
 }
 
 /** A configuration to track values that can disable certificate validation for OpenURI. */
-private class OpenUriDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration {
+private class OpenUriDisablesCertificateValidationConfiguration extends DataFlowImplForHttpClientLibraries::Configuration
+{
   OpenUriDisablesCertificateValidationConfiguration() {
     this = "OpenUriDisablesCertificateValidationConfiguration"
   }

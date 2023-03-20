@@ -3,15 +3,18 @@ private import DataFlowImplSpecific::Public
 import Cached
 
 module DataFlowImplCommonPublic {
-  /** A state value to track during data flow. */
-  class FlowState = string;
+  /** Provides `FlowState = string`. */
+  module FlowStateString {
+    /** A state value to track during data flow. */
+    class FlowState = string;
 
-  /**
-   * The default state, which is used when the state is unspecified for a source
-   * or a sink.
-   */
-  class FlowStateEmpty extends FlowState {
-    FlowStateEmpty() { this = "" }
+    /**
+     * The default state, which is used when the state is unspecified for a source
+     * or a sink.
+     */
+    class FlowStateEmpty extends FlowState {
+      FlowStateEmpty() { this = "" }
+    }
   }
 
   private newtype TFlowFeature =
@@ -179,6 +182,7 @@ private module LambdaFlow {
     boolean toJump, DataFlowCallOption lastCall
   ) {
     revLambdaFlow0(lambdaCall, kind, node, t, toReturn, toJump, lastCall) and
+    not expectsContent(node, _) and
     if castNode(node) or node instanceof ArgNode or node instanceof ReturnNode
     then compatibleTypes(t, getNodeDataFlowType(node))
     else any()

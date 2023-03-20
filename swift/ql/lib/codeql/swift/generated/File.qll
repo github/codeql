@@ -9,5 +9,12 @@ module Generated {
      * Gets the name of this file.
      */
     string getName() { result = Synth::convertFileToRaw(this).(Raw::File).getName() }
+
+    /**
+     * Holds if this file is successfully extracted.
+     */
+    predicate isSuccessfullyExtracted() {
+      Synth::convertFileToRaw(this).(Raw::File).isSuccessfullyExtracted()
+    }
   }
 }

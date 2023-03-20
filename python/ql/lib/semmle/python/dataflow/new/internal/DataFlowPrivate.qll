@@ -110,7 +110,8 @@ class SyntheticPreUpdateNode extends Node, TSyntheticPreUpdateNode {
  * func(1, 2, 3)
  */
 class SynthStarArgsElementParameterNode extends ParameterNodeImpl,
-  TSynthStarArgsElementParameterNode {
+  TSynthStarArgsElementParameterNode
+{
   DataFlowCallable callable;
 
   SynthStarArgsElementParameterNode() { this = TSynthStarArgsElementParameterNode(callable) }
@@ -181,11 +182,7 @@ private predicate synthDictSplatArgumentNodeStoreStep(
 private predicate dictSplatParameterNodeClearStep(ParameterNode n, DictionaryElementContent c) {
   exists(DataFlowCallable callable, ParameterPosition dictSplatPos, ParameterPosition keywordPos |
     dictSplatPos.isDictSplat() and
-    (
-      n.getParameter() = callable.(DataFlowFunction).getScope().getKwarg()
-      or
-      n = TSummaryParameterNode(callable.asLibraryCallable(), dictSplatPos)
-    ) and
+    n = callable.getParameter(dictSplatPos) and
     exists(callable.getParameter(keywordPos)) and
     keywordPos.isKeyword(c.getKey())
   )
@@ -234,28 +231,6 @@ class SynthDictSplatParameterNode extends ParameterNodeImpl, TSynthDictSplatPara
   override Location getLocation() { result = callable.getLocation() }
 
   override Parameter getParameter() { none() }
-}
-
-/**
- * Flow step from the synthetic `**kwargs` parameter to the real `**kwargs` parameter.
- * Due to restriction in dataflow library, we can only give one of them as result for
- * `DataFlowCallable.getParameter`, so this is a workaround to ensure there is flow to
- * _both_ of them.
- */
-private predicate dictSplatParameterNodeFlowStep(
-  ParameterNodeImpl nodeFrom, ParameterNodeImpl nodeTo
-) {
-  exists(DataFlowCallable callable |
-    nodeFrom = TSynthDictSplatParameterNode(callable) and
-    (
-      nodeTo.getParameter() = callable.(DataFlowFunction).getScope().getKwarg()
-      or
-      exists(ParameterPosition pos |
-        nodeTo = TSummaryParameterNode(callable.asLibraryCallable(), pos) and
-        pos.isDictSplat()
-      )
-    )
-  )
 }
 
 /**
@@ -403,8 +378,6 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   simpleLocalFlowStepForTypetracking(nodeFrom, nodeTo)
   or
   summaryFlowSteps(nodeFrom, nodeTo)
-  or
-  dictSplatParameterNodeFlowStep(nodeFrom, nodeTo)
 }
 
 /**
@@ -1008,3 +981,12 @@ class ContentApprox = Unit;
 /** Gets an approximated value for content `c`. */
 pragma[inline]
 ContentApprox getContentApprox(Content c) { any() }
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

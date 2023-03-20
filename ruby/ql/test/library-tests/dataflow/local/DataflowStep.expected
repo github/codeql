@@ -2425,7 +2425,7 @@
 | local_dataflow.rb:9:9:9:15 | call to [] | local_dataflow.rb:9:1:9:15 | ... = ... |
 | local_dataflow.rb:9:9:9:15 | call to [] | local_dataflow.rb:9:1:9:15 | ... = ... |
 | local_dataflow.rb:10:5:13:3 | ... = ... | local_dataflow.rb:12:5:12:5 | x |
-| local_dataflow.rb:10:5:13:3 | <captured> self | local_dataflow.rb:11:1:11:2 | self |
+| local_dataflow.rb:10:5:13:3 | <captured entry> self | local_dataflow.rb:11:1:11:2 | self |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | ... = ... |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | ... = ... |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | __synth__0__1 |
@@ -2464,7 +2464,7 @@
 | local_dataflow.rb:45:10:45:10 | 6 | local_dataflow.rb:45:3:45:10 | return |
 | local_dataflow.rb:49:1:53:3 | [post] self | local_dataflow.rb:55:1:55:14 | self |
 | local_dataflow.rb:49:1:53:3 | self | local_dataflow.rb:55:1:55:14 | self |
-| local_dataflow.rb:49:3:53:3 | <captured> x | local_dataflow.rb:50:18:50:18 | x |
+| local_dataflow.rb:49:3:53:3 | <captured entry> x | local_dataflow.rb:50:18:50:18 | x |
 | local_dataflow.rb:50:8:50:13 | "next" | local_dataflow.rb:50:3:50:13 | next |
 | local_dataflow.rb:50:18:50:18 | [post] x | local_dataflow.rb:51:20:51:20 | x |
 | local_dataflow.rb:50:18:50:18 | x | local_dataflow.rb:51:20:51:20 | x |
@@ -2631,7 +2631,7 @@
 | local_dataflow.rb:118:3:118:11 | [post] self | local_dataflow.rb:119:3:119:31 | self |
 | local_dataflow.rb:118:3:118:11 | call to source | local_dataflow.rb:118:3:118:31 | call to tap |
 | local_dataflow.rb:118:3:118:11 | self | local_dataflow.rb:119:3:119:31 | self |
-| local_dataflow.rb:118:17:118:31 | <captured> self | local_dataflow.rb:118:23:118:29 | self |
+| local_dataflow.rb:118:17:118:31 | <captured entry> self | local_dataflow.rb:118:23:118:29 | self |
 | local_dataflow.rb:118:20:118:20 | x | local_dataflow.rb:118:20:118:20 | x |
 | local_dataflow.rb:118:20:118:20 | x | local_dataflow.rb:118:28:118:28 | x |
 | local_dataflow.rb:119:3:119:31 | [post] self | local_dataflow.rb:119:8:119:16 | self |
@@ -2645,7 +2645,7 @@
 | local_dataflow.rb:123:8:123:16 | call to source | local_dataflow.rb:123:8:123:20 | call to dup |
 | local_dataflow.rb:123:8:123:20 | call to dup | local_dataflow.rb:123:8:123:45 | call to tap |
 | local_dataflow.rb:123:8:123:45 | call to tap | local_dataflow.rb:123:8:123:49 | call to dup |
-| local_dataflow.rb:123:26:123:45 | <captured> self | local_dataflow.rb:123:32:123:43 | self |
+| local_dataflow.rb:123:26:123:45 | <captured entry> self | local_dataflow.rb:123:32:123:43 | self |
 | local_dataflow.rb:126:1:128:3 | self (use) | local_dataflow.rb:127:3:127:8 | self |
 | local_dataflow.rb:126:1:128:3 | self in use | local_dataflow.rb:126:1:128:3 | self (use) |
 | local_dataflow.rb:130:1:150:3 | self (use_use_madness) | local_dataflow.rb:132:6:132:11 | self |

@@ -2807,6 +2807,7 @@ class FunctionBindExpr extends @bind_expr, Expr {
  *
  * ```
  * import("fs")
+ * import("foo", { assert: { type: "json" }})
  * ```
  */
 class DynamicImportExpr extends @dynamic_import, Expr, Import {
@@ -2818,6 +2819,16 @@ class DynamicImportExpr extends @dynamic_import, Expr, Import {
   }
 
   override PathExpr getImportedPath() { result = this.getSource() }
+
+  /**
+   * Gets the second "argument" to the import expression, that is, the `Y` in `import(X, Y)`.
+   *
+   * For example, gets the `{ assert: { type: "json" }}` expression in the following:
+   * ```js
+   * import('foo', { assert: { type: "json" }})
+   * ```
+   */
+  Expr getImportAttributes() { result = this.getChildExpr(1) }
 
   override Module getEnclosingModule() { result = this.getTopLevel() }
 

@@ -689,14 +689,22 @@ nodes
 | translate.js:9:27:9:50 | searchP ... 'term') |
 | translate.js:9:27:9:50 | searchP ... 'term') |
 | translate.js:9:27:9:50 | searchP ... 'term') |
-| trusted-types.js:2:66:2:66 | x |
-| trusted-types.js:2:66:2:66 | x |
-| trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:3:24:3:34 | window.name |
-| trusted-types.js:3:24:3:34 | window.name |
-| trusted-types.js:3:24:3:34 | window.name |
+| trusted-types-lib.js:1:28:1:28 | x |
+| trusted-types-lib.js:1:28:1:28 | x |
+| trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types.js:3:62:3:62 | x |
+| trusted-types.js:3:62:3:62 | x |
+| trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:4:20:4:30 | window.name |
+| trusted-types.js:4:20:4:30 | window.name |
+| trusted-types.js:4:20:4:30 | window.name |
+| trusted-types.js:13:20:13:30 | window.name |
+| trusted-types.js:13:20:13:30 | window.name |
+| trusted-types.js:13:20:13:30 | window.name |
 | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) |
 | tst3.js:2:23:2:74 | decodeU ... str(1)) |
 | tst3.js:2:42:2:63 | window. ... .search |
@@ -1818,14 +1826,22 @@ edges
 | translate.js:9:27:9:38 | searchParams | translate.js:9:27:9:50 | searchP ... 'term') |
 | translate.js:9:27:9:38 | searchParams | translate.js:9:27:9:50 | searchP ... 'term') |
 | translate.js:9:27:9:38 | searchParams | translate.js:9:27:9:50 | searchP ... 'term') |
-| trusted-types.js:2:66:2:66 | x | trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:2:66:2:66 | x | trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:2:66:2:66 | x | trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:2:66:2:66 | x | trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:66:2:66 | x |
-| trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:66:2:66 | x |
-| trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:66:2:66 | x |
-| trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:66:2:66 | x |
+| trusted-types-lib.js:1:28:1:28 | x | trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types-lib.js:1:28:1:28 | x | trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types-lib.js:1:28:1:28 | x | trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types-lib.js:1:28:1:28 | x | trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types.js:3:62:3:62 | x | trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:3:62:3:62 | x | trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:3:62:3:62 | x | trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:3:62:3:62 | x | trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:4:20:4:30 | window.name | trusted-types.js:3:62:3:62 | x |
+| trusted-types.js:4:20:4:30 | window.name | trusted-types.js:3:62:3:62 | x |
+| trusted-types.js:4:20:4:30 | window.name | trusted-types.js:3:62:3:62 | x |
+| trusted-types.js:4:20:4:30 | window.name | trusted-types.js:3:62:3:62 | x |
+| trusted-types.js:13:20:13:30 | window.name | trusted-types-lib.js:1:28:1:28 | x |
+| trusted-types.js:13:20:13:30 | window.name | trusted-types-lib.js:1:28:1:28 | x |
+| trusted-types.js:13:20:13:30 | window.name | trusted-types-lib.js:1:28:1:28 | x |
+| trusted-types.js:13:20:13:30 | window.name | trusted-types-lib.js:1:28:1:28 | x |
 | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:4:25:4:28 | data |
 | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:5:26:5:29 | data |
 | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:7:32:7:35 | data |
@@ -2382,7 +2398,8 @@ edges
 | tooltip.jsx:10:25:10:30 | source | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:10:25:10:30 | source | Cross-site scripting vulnerability due to $@. | tooltip.jsx:6:20:6:30 | window.name | user-provided value |
 | tooltip.jsx:11:25:11:30 | source | tooltip.jsx:6:20:6:30 | window.name | tooltip.jsx:11:25:11:30 | source | Cross-site scripting vulnerability due to $@. | tooltip.jsx:6:20:6:30 | window.name | user-provided value |
 | translate.js:9:27:9:50 | searchP ... 'term') | translate.js:6:16:6:39 | documen ... .search | translate.js:9:27:9:50 | searchP ... 'term') | Cross-site scripting vulnerability due to $@. | translate.js:6:16:6:39 | documen ... .search | user-provided value |
-| trusted-types.js:2:71:2:71 | x | trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:71:2:71 | x | Cross-site scripting vulnerability due to $@. | trusted-types.js:3:24:3:34 | window.name | user-provided value |
+| trusted-types-lib.js:2:12:2:12 | x | trusted-types.js:13:20:13:30 | window.name | trusted-types-lib.js:2:12:2:12 | x | Cross-site scripting vulnerability due to $@. | trusted-types.js:13:20:13:30 | window.name | user-provided value |
+| trusted-types.js:3:67:3:67 | x | trusted-types.js:4:20:4:30 | window.name | trusted-types.js:3:67:3:67 | x | Cross-site scripting vulnerability due to $@. | trusted-types.js:4:20:4:30 | window.name | user-provided value |
 | tst3.js:4:25:4:32 | data.src | tst3.js:2:42:2:63 | window. ... .search | tst3.js:4:25:4:32 | data.src | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:63 | window. ... .search | user-provided value |
 | tst3.js:5:26:5:31 | data.p | tst3.js:2:42:2:63 | window. ... .search | tst3.js:5:26:5:31 | data.p | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:63 | window. ... .search | user-provided value |
 | tst3.js:7:32:7:37 | data.p | tst3.js:2:42:2:63 | window. ... .search | tst3.js:7:32:7:37 | data.p | Cross-site scripting vulnerability due to $@. | tst3.js:2:42:2:63 | window. ... .search | user-provided value |

@@ -6,13 +6,7 @@ edges
 | tst.go:10:13:10:35 | call to FormValue | tst.go:24:66:24:72 | tainted |
 | tst.go:10:13:10:35 | call to FormValue | tst.go:27:11:27:29 | ...+... |
 | tst.go:10:13:10:35 | call to FormValue | tst.go:29:11:29:40 | ...+... |
-| tst.go:10:13:10:35 | call to FormValue | tst.go:36:2:36:2 | implicit dereference |
 | tst.go:10:13:10:35 | call to FormValue | tst.go:37:11:37:20 | call to String |
-| tst.go:35:2:35:2 | definition of u [pointer] | tst.go:36:2:36:2 | u [pointer] |
-| tst.go:36:2:36:2 | implicit dereference | tst.go:35:2:35:2 | definition of u [pointer] |
-| tst.go:36:2:36:2 | implicit dereference | tst.go:36:2:36:2 | implicit dereference |
-| tst.go:36:2:36:2 | implicit dereference | tst.go:37:11:37:20 | call to String |
-| tst.go:36:2:36:2 | u [pointer] | tst.go:36:2:36:2 | implicit dereference |
 | websocket.go:60:21:60:31 | call to Referer | websocket.go:65:27:65:40 | untrustedInput |
 | websocket.go:74:21:74:31 | call to Referer | websocket.go:78:36:78:49 | untrustedInput |
 | websocket.go:88:21:88:31 | call to Referer | websocket.go:91:31:91:44 | untrustedInput |
@@ -32,9 +26,6 @@ nodes
 | tst.go:24:66:24:72 | tainted | semmle.label | tainted |
 | tst.go:27:11:27:29 | ...+... | semmle.label | ...+... |
 | tst.go:29:11:29:40 | ...+... | semmle.label | ...+... |
-| tst.go:35:2:35:2 | definition of u [pointer] | semmle.label | definition of u [pointer] |
-| tst.go:36:2:36:2 | implicit dereference | semmle.label | implicit dereference |
-| tst.go:36:2:36:2 | u [pointer] | semmle.label | u [pointer] |
 | tst.go:37:11:37:20 | call to String | semmle.label | call to String |
 | websocket.go:60:21:60:31 | call to Referer | semmle.label | call to Referer |
 | websocket.go:65:27:65:40 | untrustedInput | semmle.label | untrustedInput |

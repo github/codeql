@@ -124,7 +124,8 @@ module Cryptography {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `CryptographicOperation::Range` instead.
    */
-  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range {
+  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range
+  {
     /**
      * DEPRECATED. This predicate has been renamed to `getAnInput`.
      *

@@ -1,30 +1,73 @@
 edges
-| test.cpp:11:26:11:28 | url | test.cpp:15:30:15:32 | url |
-| test.cpp:28:10:28:29 | http://example.com | test.cpp:11:26:11:28 | url |
-| test.cpp:35:23:35:42 | http://example.com | test.cpp:39:11:39:15 | url_l |
-| test.cpp:36:26:36:45 | http://example.com | test.cpp:40:11:40:17 | access to array |
-| test.cpp:39:11:39:15 | url_l | test.cpp:11:26:11:28 | url |
-| test.cpp:40:11:40:17 | access to array | test.cpp:11:26:11:28 | url |
-| test.cpp:46:18:46:26 | http:// | test.cpp:49:11:49:16 | buffer |
-| test.cpp:49:11:49:16 | buffer | test.cpp:11:26:11:28 | url |
-| test.cpp:110:21:110:40 | http://example.com | test.cpp:121:11:121:13 | ptr |
-| test.cpp:121:11:121:13 | ptr | test.cpp:11:26:11:28 | url |
+| test.cpp:11:26:11:28 | url indirection | test.cpp:15:30:15:32 | url indirection |
+| test.cpp:11:26:11:28 | url indirection | test.cpp:15:30:15:32 | url indirection |
+| test.cpp:24:13:24:17 | url_g indirection | test.cpp:38:11:38:15 | url_g indirection |
+| test.cpp:24:21:24:40 | http://example.com indirection | test.cpp:24:13:24:17 | url_g indirection |
+| test.cpp:24:21:24:40 | http://example.com indirection | test.cpp:24:13:24:17 | url_g indirection |
+| test.cpp:28:10:28:29 | http://example.com indirection | test.cpp:11:26:11:28 | url indirection |
+| test.cpp:28:10:28:29 | http://example.com indirection | test.cpp:28:10:28:29 | http://example.com indirection |
+| test.cpp:35:23:35:42 | http://example.com indirection | test.cpp:39:11:39:15 | url_l indirection |
+| test.cpp:35:23:35:42 | http://example.com indirection | test.cpp:39:11:39:15 | url_l indirection |
+| test.cpp:36:26:36:45 | http://example.com indirection | test.cpp:40:11:40:17 | access to array indirection |
+| test.cpp:36:26:36:45 | http://example.com indirection | test.cpp:40:11:40:17 | access to array indirection |
+| test.cpp:38:11:38:15 | url_g indirection | test.cpp:11:26:11:28 | url indirection |
+| test.cpp:39:11:39:15 | url_l indirection | test.cpp:11:26:11:28 | url indirection |
+| test.cpp:40:11:40:17 | access to array indirection | test.cpp:11:26:11:28 | url indirection |
+| test.cpp:46:18:46:26 | http:// indirection | test.cpp:49:11:49:16 | buffer indirection |
+| test.cpp:46:18:46:26 | http:// indirection | test.cpp:49:11:49:16 | buffer indirection |
+| test.cpp:49:11:49:16 | buffer indirection | test.cpp:11:26:11:28 | url indirection |
+| test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:121:11:121:13 | ptr indirection |
+| test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:121:11:121:13 | ptr indirection |
+| test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:121:11:121:13 | ptr indirection |
+| test.cpp:121:11:121:13 | ptr indirection | test.cpp:11:26:11:28 | url indirection |
 nodes
-| test.cpp:11:26:11:28 | url | semmle.label | url |
-| test.cpp:15:30:15:32 | url | semmle.label | url |
-| test.cpp:28:10:28:29 | http://example.com | semmle.label | http://example.com |
-| test.cpp:35:23:35:42 | http://example.com | semmle.label | http://example.com |
-| test.cpp:36:26:36:45 | http://example.com | semmle.label | http://example.com |
-| test.cpp:39:11:39:15 | url_l | semmle.label | url_l |
-| test.cpp:40:11:40:17 | access to array | semmle.label | access to array |
-| test.cpp:46:18:46:26 | http:// | semmle.label | http:// |
-| test.cpp:49:11:49:16 | buffer | semmle.label | buffer |
-| test.cpp:110:21:110:40 | http://example.com | semmle.label | http://example.com |
-| test.cpp:121:11:121:13 | ptr | semmle.label | ptr |
+| test.cpp:11:26:11:28 | url indirection | semmle.label | url indirection |
+| test.cpp:15:30:15:32 | url indirection | semmle.label | url indirection |
+| test.cpp:15:30:15:32 | url indirection | semmle.label | url indirection |
+| test.cpp:24:13:24:17 | url_g indirection | semmle.label | url_g indirection |
+| test.cpp:24:21:24:40 | http://example.com indirection | semmle.label | http://example.com indirection |
+| test.cpp:24:21:24:40 | http://example.com indirection | semmle.label | http://example.com indirection |
+| test.cpp:28:10:28:29 | http://example.com indirection | semmle.label | http://example.com indirection |
+| test.cpp:28:10:28:29 | http://example.com indirection | semmle.label | http://example.com indirection |
+| test.cpp:35:23:35:42 | http://example.com indirection | semmle.label | http://example.com indirection |
+| test.cpp:35:23:35:42 | http://example.com indirection | semmle.label | http://example.com indirection |
+| test.cpp:36:26:36:45 | http://example.com indirection | semmle.label | http://example.com indirection |
+| test.cpp:36:26:36:45 | http://example.com indirection | semmle.label | http://example.com indirection |
+| test.cpp:38:11:38:15 | url_g indirection | semmle.label | url_g indirection |
+| test.cpp:39:11:39:15 | url_l indirection | semmle.label | url_l indirection |
+| test.cpp:40:11:40:17 | access to array indirection | semmle.label | access to array indirection |
+| test.cpp:46:18:46:26 | http:// indirection | semmle.label | http:// indirection |
+| test.cpp:46:18:46:26 | http:// indirection | semmle.label | http:// indirection |
+| test.cpp:49:11:49:16 | buffer indirection | semmle.label | buffer indirection |
+| test.cpp:110:21:110:40 | http://example.com indirection | semmle.label | http://example.com indirection |
+| test.cpp:110:21:110:40 | http://example.com indirection | semmle.label | http://example.com indirection |
+| test.cpp:110:21:110:40 | http://example.com indirection | semmle.label | http://example.com indirection |
+| test.cpp:121:11:121:13 | ptr indirection | semmle.label | ptr indirection |
 subpaths
 #select
-| test.cpp:28:10:28:29 | http://example.com | test.cpp:28:10:28:29 | http://example.com | test.cpp:15:30:15:32 | url | This URL may be constructed with the HTTP protocol. |
-| test.cpp:35:23:35:42 | http://example.com | test.cpp:35:23:35:42 | http://example.com | test.cpp:15:30:15:32 | url | This URL may be constructed with the HTTP protocol. |
-| test.cpp:36:26:36:45 | http://example.com | test.cpp:36:26:36:45 | http://example.com | test.cpp:15:30:15:32 | url | This URL may be constructed with the HTTP protocol. |
-| test.cpp:46:18:46:26 | http:// | test.cpp:46:18:46:26 | http:// | test.cpp:15:30:15:32 | url | This URL may be constructed with the HTTP protocol. |
-| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com | test.cpp:15:30:15:32 | url | This URL may be constructed with the HTTP protocol. |
+| test.cpp:24:21:24:40 | http://example.com | test.cpp:24:21:24:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:24:21:24:40 | http://example.com | test.cpp:24:21:24:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:24:21:24:40 | http://example.com | test.cpp:24:21:24:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:24:21:24:40 | http://example.com | test.cpp:24:21:24:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:28:10:28:29 | http://example.com | test.cpp:28:10:28:29 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:28:10:28:29 | http://example.com | test.cpp:28:10:28:29 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:28:10:28:29 | http://example.com | test.cpp:28:10:28:29 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:28:10:28:29 | http://example.com | test.cpp:28:10:28:29 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:35:23:35:42 | http://example.com | test.cpp:35:23:35:42 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:35:23:35:42 | http://example.com | test.cpp:35:23:35:42 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:35:23:35:42 | http://example.com | test.cpp:35:23:35:42 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:35:23:35:42 | http://example.com | test.cpp:35:23:35:42 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:36:26:36:45 | http://example.com | test.cpp:36:26:36:45 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:36:26:36:45 | http://example.com | test.cpp:36:26:36:45 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:36:26:36:45 | http://example.com | test.cpp:36:26:36:45 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:36:26:36:45 | http://example.com | test.cpp:36:26:36:45 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:46:18:46:26 | http:// | test.cpp:46:18:46:26 | http:// indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:46:18:46:26 | http:// | test.cpp:46:18:46:26 | http:// indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:46:18:46:26 | http:// | test.cpp:46:18:46:26 | http:// indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:46:18:46:26 | http:// | test.cpp:46:18:46:26 | http:// indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
+| test.cpp:110:21:110:40 | http://example.com | test.cpp:110:21:110:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |
