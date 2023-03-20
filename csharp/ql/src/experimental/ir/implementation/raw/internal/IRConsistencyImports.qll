@@ -1,2 +1,1 @@
-import experimental.ir.IRConfiguration as IRConfiguration
 import experimental.ir.internal.IRCSharpLanguageDebug as LanguageDebug
