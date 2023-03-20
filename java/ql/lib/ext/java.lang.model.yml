@@ -52,7 +52,7 @@ extensions:
       - ["java.lang", "CharSequence", True, "charAt", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "CharSequence", True, "subSequence", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "CharSequence", True, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["java.lang", "Class", False, "cast", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.lang", "Class", False, "cast", "(Object)", "", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Exception", False, "Exception", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "Exception", False, "Exception", "(String,Throwable)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "Exception", False, "Exception", "(String,Throwable)", "", "Argument[1]", "Argument[-1].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
