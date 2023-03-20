@@ -92,7 +92,7 @@ extensions:
       - ["java.io", "OutputStream", True, "write", "(int)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.io", "Reader", True, "read", "", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["java.io", "StringReader", False, "StringReader", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
-      - ["java.io", "StringWriter", False, "toString", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"] # ! keep an eye on this one for FP flow, already modeled in `taintPreservingQualifierToMethod` predicate?
+      - ["java.io", "StringWriter", False, "toString", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "UncheckedIOException", False, "UncheckedIOException", "(IOException)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
       - ["java.io", "Writer", True, "write", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
   - addsTo:

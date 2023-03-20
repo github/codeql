@@ -123,7 +123,7 @@ extensions:
       - ["java.lang", "Throwable", True, "getCause", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Throwable", True, "getMessage", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Throwable", True, "getLocalizedMessage", "()", "", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "value", "manual"]
-      - ["java.lang", "Throwable", True, "toString", "()", "", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "taint", "manual"] # ! watch for FPs
+      - ["java.lang", "Throwable", True, "toString", "()", "", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "taint", "manual"]
 
   - addsTo:
       pack: codeql/java-all
