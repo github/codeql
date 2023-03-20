@@ -250,7 +250,8 @@ private predicate selfInToplevel(SelfVariable self, Module m) {
 private predicate asModulePattern(SsaDefinitionExtNode def, Module m) {
   exists(AsPattern ap |
     m = resolveConstantReadAccess(ap.getPattern()) and
-    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess() = ap.getVariableAccess()
+    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getNode() =
+      ap.getVariableAccess()
   )
 }
 
@@ -443,6 +444,13 @@ private module Cached {
       FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
     } or
     THashSplatParameterPosition() or
+    // To get flow from a hash-splat argument to a keyword parameter, we add a read-step
+    // from a synthetic hash-splat parameter. We need this separate synthetic ParameterNode,
+    // since we clear content of the normal hash-splat parameter for the names that
+    // correspond to normal keyword parameters. Since we cannot re-use the same parameter
+    // position for multiple parameter nodes in the same callable, we introduce this
+    // synthetic parameter position.
+    TSynthHashSplatParameterPosition() or
     TSplatAllParameterPosition() or
     TAnyParameterPosition() or
     TAnyKeywordParameterPosition()
@@ -1249,6 +1257,8 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a hash-splat parameter. */
   predicate isHashSplat() { this = THashSplatParameterPosition() }
 
+  predicate isSynthHashSplat() { this = TSynthHashSplatParameterPosition() }
+
   predicate isSplatAll() { this = TSplatAllParameterPosition() }
 
   /**
@@ -1273,6 +1283,8 @@ class ParameterPosition extends TParameterPosition {
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
     or
     this.isHashSplat() and result = "**"
+    or
+    this.isSynthHashSplat() and result = "synthetic **"
     or
     this.isSplatAll() and result = "*"
     or
@@ -1355,6 +1367,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
   or
   ppos.isHashSplat() and apos.isHashSplat()
+  or
+  ppos.isSynthHashSplat() and apos.isHashSplat()
   or
   ppos.isSplatAll() and apos.isSplatAll()
   or

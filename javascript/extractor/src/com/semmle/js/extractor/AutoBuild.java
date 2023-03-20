@@ -53,9 +53,9 @@ import com.semmle.ts.extractor.TypeScriptParser;
 import com.semmle.ts.extractor.TypeScriptWrapperOOMError;
 import com.semmle.ts.extractor.TypeTable;
 import com.semmle.util.data.StringUtil;
-import com.semmle.util.diagnostics.DiagnosticLevel;
-import com.semmle.util.diagnostics.DiagnosticWriter;
-import com.semmle.util.diagnostics.DiagnosticLocation;
+import com.semmle.util.diagnostic.DiagnosticLevel;
+import com.semmle.util.diagnostic.DiagnosticLocation;
+import com.semmle.util.diagnostic.DiagnosticWriter;
 import com.semmle.util.exception.CatastrophicError;
 import com.semmle.util.exception.Exceptions;
 import com.semmle.util.exception.ResourceError;
@@ -508,7 +508,7 @@ public class AutoBuild {
    * For use with the {@link #writeDiagnostics(String, JSDiagnosticKind)} method.
    */
   public static enum JSDiagnosticKind {
-    PARSE_ERROR("parse-error", "Parse error", DiagnosticLevel.Warning),
+    PARSE_ERROR("parse-error", "Could not process some files due to syntax errors", DiagnosticLevel.Warning),
     INTERNAL_ERROR("internal-error", "Internal error", DiagnosticLevel.Debug);
 
     private final String id;
@@ -568,7 +568,7 @@ public class AutoBuild {
     }
 
     // DiagnosticLevel level, String extractorName, String sourceId, String sourceName, String markdown
-    diagnostics.get().writeMarkdown(error.getLevel(), "javascript", "javascript/" + error.getId(), error.getName(),
+    diagnostics.get().writeMarkdown(error.getLevel(), "javascript", "js/" + error.getId(), error.getName(),
         message, location);
   }
 

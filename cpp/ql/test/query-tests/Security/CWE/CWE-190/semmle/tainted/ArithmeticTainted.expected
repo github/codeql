@@ -1,11 +1,13 @@
 edges
-| test5.cpp:5:5:5:17 | ReturnValue | test5.cpp:17:6:17:18 | call to getTaintedInt |
-| test5.cpp:5:5:5:17 | ReturnValue | test5.cpp:17:6:17:18 | call to getTaintedInt |
-| test5.cpp:9:7:9:9 | buf | test5.cpp:5:5:5:17 | ReturnValue |
-| test5.cpp:9:7:9:9 | gets output argument | test5.cpp:5:5:5:17 | ReturnValue |
+| test5.cpp:5:5:5:17 | getTaintedInt indirection | test5.cpp:17:6:17:18 | call to getTaintedInt |
+| test5.cpp:5:5:5:17 | getTaintedInt indirection | test5.cpp:17:6:17:18 | call to getTaintedInt |
+| test5.cpp:9:7:9:9 | buf | test5.cpp:5:5:5:17 | getTaintedInt indirection |
+| test5.cpp:9:7:9:9 | buf | test5.cpp:5:5:5:17 | getTaintedInt indirection |
+| test5.cpp:9:7:9:9 | gets output argument | test5.cpp:5:5:5:17 | getTaintedInt indirection |
 subpaths
 nodes
-| test5.cpp:5:5:5:17 | ReturnValue | semmle.label | ReturnValue |
+| test5.cpp:5:5:5:17 | getTaintedInt indirection | semmle.label | getTaintedInt indirection |
+| test5.cpp:9:7:9:9 | buf | semmle.label | buf |
 | test5.cpp:9:7:9:9 | buf | semmle.label | buf |
 | test5.cpp:9:7:9:9 | gets output argument | semmle.label | gets output argument |
 | test5.cpp:17:6:17:18 | call to getTaintedInt | semmle.label | call to getTaintedInt |

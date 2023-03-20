@@ -42,6 +42,11 @@ module Raw {
      * Gets the name of this file.
      */
     string getName() { files(this, result) }
+
+    /**
+     * Holds if this file is successfully extracted.
+     */
+    predicate isSuccessfullyExtracted() { file_is_successfully_extracted(this) }
   }
 
   class Locatable extends @locatable, Element {
@@ -2117,11 +2122,6 @@ module Raw {
      * Gets the `index`th parameter type of this function type (0-based).
      */
     Type getParamType(int index) { any_function_type_param_types(this, index, result) }
-
-    /**
-     * Gets the `index`th parameter label of this function type (0-based), if it exists.
-     */
-    string getParamLabel(int index) { any_function_type_param_labels(this, index, result) }
 
     /**
      * Holds if this type refers to a throwing function.

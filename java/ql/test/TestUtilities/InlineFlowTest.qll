@@ -47,7 +47,7 @@ private predicate defaultSource(DataFlow::Node src) {
   src.asExpr().(MethodAccess).getMethod().getName() = ["source", "taint"]
 }
 
-module DefaultFlowConf implements DataFlow::ConfigSig {
+module DefaultFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { defaultSource(n) }
 
   predicate isSink(DataFlow::Node n) {
@@ -57,9 +57,9 @@ module DefaultFlowConf implements DataFlow::ConfigSig {
   int fieldFlowBranchLimit() { result = 1000 }
 }
 
-private module DefaultValueFlow = DataFlow::Make<DefaultFlowConf>;
+private module DefaultValueFlow = DataFlow::Make<DefaultFlowConfig>;
 
-private module DefaultTaintFlow = TaintTracking::Make<DefaultFlowConf>;
+private module DefaultTaintFlow = TaintTracking::Make<DefaultFlowConfig>;
 
 class DefaultValueFlowConf extends DataFlow::Configuration {
   DefaultValueFlowConf() { this = "qltest:defaultValueFlowConf" }

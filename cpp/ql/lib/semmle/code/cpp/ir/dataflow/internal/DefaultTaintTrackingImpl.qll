@@ -19,6 +19,7 @@ private import semmle.code.cpp.ir.dataflow.TaintTracking
 private import semmle.code.cpp.ir.dataflow.TaintTracking2
 private import semmle.code.cpp.ir.dataflow.TaintTracking3
 private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
 
 /**
  * A predictable instruction is one where an external user can predict
@@ -75,6 +76,20 @@ private DataFlow::Node getNodeForExpr(Expr node) {
   not argv(node.(VariableAccess).getTarget())
 }
 
+private predicate conflatePointerAndPointee(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  // Flow from `op` to `*op`.
+  exists(Operand operand, int indirectionIndex |
+    nodeHasOperand(nodeFrom, operand, indirectionIndex) and
+    nodeHasOperand(nodeTo, operand, indirectionIndex - 1)
+  )
+  or
+  // Flow from `instr` to `*instr`.
+  exists(Instruction instr, int indirectionIndex |
+    nodeHasInstruction(nodeFrom, instr, indirectionIndex) and
+    nodeHasInstruction(nodeTo, instr, indirectionIndex - 1)
+  )
+}
+
 private class DefaultTaintTrackingCfg extends TaintTracking::Configuration {
   DefaultTaintTrackingCfg() { this = "DefaultTaintTrackingCfg" }
 
@@ -85,6 +100,10 @@ private class DefaultTaintTrackingCfg extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) { nodeIsBarrier(node) }
 
   override predicate isSanitizerIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    conflatePointerAndPointee(nodeFrom, nodeTo)
+  }
 }
 
 private class ToGlobalVarTaintTrackingCfg extends TaintTracking::Configuration {
@@ -168,16 +187,18 @@ private predicate hasUpperBoundsCheck(Variable var) {
 private predicate nodeIsBarrierEqualityCandidate(
   DataFlow::Node node, Operand access, Variable checkedVar
 ) {
-  readsVariable(node.asInstruction(), checkedVar) and
-  any(IRGuardCondition guard).ensuresEq(access, _, _, node.asInstruction().getBlock(), true)
+  exists(Instruction instr | instr = node.asOperand().getDef() |
+    readsVariable(instr, checkedVar) and
+    any(IRGuardCondition guard).ensuresEq(access, _, _, instr.getBlock(), true)
+  )
 }
 
 cached
 private module Cached {
   cached
   predicate nodeIsBarrier(DataFlow::Node node) {
-    exists(Variable checkedVar |
-      readsVariable(node.asInstruction(), checkedVar) and
+    exists(Variable checkedVar, Instruction instr | instr = node.asOperand().getDef() |
+      readsVariable(instr, checkedVar) and
       hasUpperBoundsCheck(checkedVar)
     )
     or
@@ -284,7 +305,7 @@ private module Cached {
   cached
   predicate additionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
     exists(CallInstruction call, Function func, FunctionInput modelIn, FunctionOutput modelOut |
-      n1.asOperand() = callInput(call, modelIn) and
+      n1 = callInput(call, modelIn) and
       (
         func.(TaintFunction).hasTaintFlow(modelIn, modelOut)
         or
@@ -415,6 +436,8 @@ module TaintedWithPath {
     }
 
     override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+      conflatePointerAndPointee(n1, n2)
+      or
       // Steps into and out of global variables
       exists(TaintTrackingConfiguration cfg | cfg.taintThroughGlobals() |
         writesVariable(n1.asInstruction(), n2.asVariable().(GlobalOrNamespaceVariable))
@@ -622,6 +645,8 @@ module TaintedWithPath {
 
   private predicate isGlobalVariablePathNode(WrapPathNode n) {
     n.inner().getNode().asVariable() instanceof GlobalOrNamespaceVariable
+    or
+    n.inner().getNode().asIndirectVariable() instanceof GlobalOrNamespaceVariable
   }
 
   private predicate edgesWithoutGlobals(PathNode a, PathNode b) {
