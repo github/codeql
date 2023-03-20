@@ -16,7 +16,7 @@
 
 import cpp
 private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
-import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
+private import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
 private import semmle.code.cpp.commons.Exclusions
 
 from RelationalOperation ro, AddExpr add, Expr expr1, Expr expr2

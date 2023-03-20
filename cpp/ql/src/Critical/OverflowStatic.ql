@@ -15,8 +15,8 @@
 
 import cpp
 import semmle.code.cpp.commons.Buffer
-import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
 import semmle.code.cpp.ir.dataflow.DataFlow
+import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
 import LoopBounds
 
 private predicate staticBufferBase(VariableAccess access, Variable v) {
