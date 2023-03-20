@@ -11,4 +11,5 @@
 | UninitializedLocal.py:163:7:163:7 | x | Local variable 'x' may be used before it is initialized. |
 | UninitializedLocal.py:176:16:176:16 | x | Local variable 'x' may be used before it is initialized. |
 | UninitializedLocal.py:178:16:178:16 | y | Local variable 'y' may be used before it is initialized. |
+| captured.py:8:15:8:17 | foo | Local variable 'foo' may be used before it is initialized. |
 | odasa3987.py:11:8:11:10 | var | Local variable 'var' may be used before it is initialized. |
