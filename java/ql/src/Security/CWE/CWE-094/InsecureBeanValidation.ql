@@ -55,7 +55,7 @@ class SetMessageInterpolatorCall extends MethodAccess {
  * Taint tracking BeanValidationConfiguration describing the flow of data from user input
  * to the argument of a method that builds constraint error messages.
  */
-private module BeanValidationConfig implements DataFlow::ConfigSig {
+module BeanValidationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof BeanValidationSink }

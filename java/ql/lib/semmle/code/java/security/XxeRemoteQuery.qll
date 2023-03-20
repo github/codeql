@@ -24,7 +24,7 @@ deprecated class XxeConfig extends TaintTracking::Configuration {
   }
 }
 
-private module XxeConfig implements DataFlow::ConfigSig {
+module XxeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XxeSink }

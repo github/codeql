@@ -20,7 +20,7 @@ import semmle.code.java.security.PathCreation
 import semmle.code.java.security.PathSanitizer
 import TaintedPathCommon
 
-private module TaintedPathLocalConfig implements DataFlow::ConfigSig {
+module TaintedPathLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) {

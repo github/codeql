@@ -52,7 +52,7 @@ class WCPermissionConstruction extends ClassInstanceExpr, PermissionsConstructio
   override Expr getInput() { result = this.getArgument(0) }
 }
 
-private module TaintedPermissionsCheckFlowConfig implements DataFlow::ConfigSig {
+module TaintedPermissionsCheckFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof UserInput }
 
   predicate isSink(DataFlow::Node sink) {

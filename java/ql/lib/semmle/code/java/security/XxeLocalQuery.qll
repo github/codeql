@@ -24,7 +24,7 @@ deprecated class XxeLocalConfig extends TaintTracking::Configuration {
   }
 }
 
-private module XxeLocalConfig implements DataFlow::ConfigSig {
+module XxeLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof XxeSink }

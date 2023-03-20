@@ -14,7 +14,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.StringFormat
 
-private module ExternallyControlledFormatStringLocalConfig implements DataFlow::ConfigSig {
+module ExternallyControlledFormatStringLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) {

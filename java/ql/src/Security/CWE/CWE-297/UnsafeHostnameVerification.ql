@@ -44,7 +44,7 @@ class TrustAllHostnameVerifier extends RefType {
 /**
  * A configuration to model the flow of a `TrustAllHostnameVerifier` to a `set(Default)HostnameVerifier` call.
  */
-private module TrustAllHostnameVerifierConfig implements DataFlow::ConfigSig {
+module TrustAllHostnameVerifierConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.asExpr().(ClassInstanceExpr).getConstructedType() instanceof TrustAllHostnameVerifier
   }

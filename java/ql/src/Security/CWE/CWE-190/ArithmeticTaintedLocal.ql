@@ -16,7 +16,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import ArithmeticCommon
 
-private module ArithmeticTaintedLocalOverflowConfig implements DataFlow::ConfigSig {
+module ArithmeticTaintedLocalOverflowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
@@ -27,7 +27,7 @@ private module ArithmeticTaintedLocalOverflowConfig implements DataFlow::ConfigS
 module ArithmeticTaintedLocalOverflowFlow =
   TaintTracking::Make<ArithmeticTaintedLocalOverflowConfig>;
 
-private module ArithmeticTaintedLocalUnderflowConfig implements DataFlow::ConfigSig {
+module ArithmeticTaintedLocalUnderflowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }

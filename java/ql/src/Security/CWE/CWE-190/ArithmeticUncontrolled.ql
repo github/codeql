@@ -24,7 +24,7 @@ class TaintSource extends DataFlow::ExprNode {
   }
 }
 
-private module ArithmeticUncontrolledOverflowConfig implements DataFlow::ConfigSig {
+module ArithmeticUncontrolledOverflowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
 
   predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
@@ -35,7 +35,7 @@ private module ArithmeticUncontrolledOverflowConfig implements DataFlow::ConfigS
 module ArithmeticUncontrolledOverflowFlow =
   TaintTracking::Make<ArithmeticUncontrolledOverflowConfig>;
 
-private module ArithmeticUncontrolledUnderflowConfig implements DataFlow::ConfigSig {
+module ArithmeticUncontrolledUnderflowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
 
   predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }

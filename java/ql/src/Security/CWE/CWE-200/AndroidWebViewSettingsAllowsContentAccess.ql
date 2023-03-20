@@ -65,7 +65,7 @@ private newtype WebViewOrSettings =
   IsWebView() or
   IsSettings()
 
-private module WebViewDisallowContentAccessConfig implements DataFlow::StateConfigSig {
+module WebViewDisallowContentAccessConfig implements DataFlow::StateConfigSig {
   class FlowState = WebViewOrSettings;
 
   predicate isSource(DataFlow::Node node, FlowState state) {

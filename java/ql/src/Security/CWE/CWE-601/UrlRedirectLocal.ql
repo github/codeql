@@ -15,7 +15,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.UrlRedirect
 
-private module UrlRedirectLocalConfig implements DataFlow::ConfigSig {
+module UrlRedirectLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UrlRedirectSink }
