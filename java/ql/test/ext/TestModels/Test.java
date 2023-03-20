@@ -1,3 +1,5 @@
+package generatedtest; // for java.util.ResourceBundle.getString test
+
 import java.awt.*;
 import java.io.*;
 import java.math.BigDecimal;
@@ -8,7 +10,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.EventObject;
-import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.StringJoiner;
 import java.util.concurrent.*;
@@ -24,6 +25,8 @@ public class Test {
     void sink(Object o) { }
 
     Object source() { return null; }
+
+    Object newWithMapValueDefault(Object element) { return null; } // for java.util.ResourceBundle.getString test
 
     public void test() throws Exception {
 
@@ -155,6 +158,12 @@ public class Test {
             EventObject eventObj = new EventObject(source());
             sink(eventObj.getSource()); // $hasValueFlow
 
+            // "java.util;ResourceBundle;true;getString;(String);;Argument[-1].MapValue;ReturnValue;value;manual"
+            String out = null;
+            ResourceBundle in = (ResourceBundle)newWithMapValueDefault(source());
+            out = in.getString(null);
+            sink(out); // $ hasValueFlow
+
             // java.lang
             AssertionError assertErr = new AssertionError(source());
             sink((String)assertErr.getMessage()); // $hasValueFlow
@@ -186,5 +195,4 @@ public class Test {
             sink(th.toString()); // $hasTaintFlow
         }
     }
-
 }
