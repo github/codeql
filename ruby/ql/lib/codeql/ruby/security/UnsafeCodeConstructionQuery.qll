@@ -34,8 +34,6 @@ class Configuration extends TaintTracking::Configuration {
   override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet set) {
     // allow implicit reads of array elements
     this.isSink(node) and
-    set.isKnownOrUnknownElement(any(DataFlow::Content::KnownElementContent content |
-        content.getIndex().getValueType() = "int"
-      ))
+    set.isElementOfTypeOrUnknown("int")
   }
 }
