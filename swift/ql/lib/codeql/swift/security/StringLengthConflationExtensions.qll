@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A type of Swift string encoding. This class is used as a flow state for
@@ -13,31 +14,50 @@ import codeql.swift.dataflow.DataFlow
 class StringType extends string {
   string singular;
   string equivClass;
+  string csvLabel;
 
   StringType() {
-    this = "String" and singular = "a String" and equivClass = "String"
+    this = "String" and
+    singular = "a String" and
+    equivClass = "String" and
+    csvLabel = "string-length"
     or
-    this = "NSString" and singular = "an NSString" and equivClass = "NSString"
+    this = "NSString" and
+    singular = "an NSString" and
+    equivClass = "NSString" and
+    csvLabel = "nsstring-length"
     or
-    this = "String.utf8" and singular = "a String.utf8" and equivClass = "String.utf8"
+    this = "String.utf8" and
+    singular = "a String.utf8" and
+    equivClass = "String.utf8" and
+    csvLabel = "string-utf8-length"
     or
-    this = "String.utf16" and singular = "a String.utf16" and equivClass = "NSString"
+    this = "String.utf16" and
+    singular = "a String.utf16" and
+    equivClass = "NSString" and
+    csvLabel = "string-utf16-length"
     or
     this = "String.unicodeScalars" and
     singular = "a String.unicodeScalars" and
-    equivClass = "String.unicodeScalars"
+    equivClass = "String.unicodeScalars" and
+    csvLabel = "string-unicodescalars-length"
   }
 
   /**
-   * Gets the equivalence class for this flow state. If these are equal,
+   * Gets the equivalence class for this string type. If these are equal,
    * they should be treated as equivalent.
    */
   string getEquivClass() { result = equivClass }
 
   /**
-   * Gets text for the singular form of this flow state.
+   * Gets text for the singular form of this string type.
    */
   string getSingular() { result = singular }
+
+  /**
+   * Gets the label for this string type in CSV models.
+   */
+  string getCsvLabel() { result = csvLabel }
 }
 
 /**
@@ -115,83 +135,41 @@ private class DefaultStringLengthConflationSource extends StringLengthConflation
   override StringType getStringType() { result = stringType }
 }
 
+/**
+ * A sink defined in a CSV model.
+ */
 private class DefaultStringLengthConflationSink extends StringLengthConflationSink {
-  StringType correctStringType;
+  StringType stringType;
 
-  DefaultStringLengthConflationSink() {
-    exists(AbstractFunctionDecl funcDecl, CallExpr call, string funcName, int arg |
-      (
-        // arguments to method calls...
-        exists(string className, ClassOrStructDecl c |
-          (
-            // `NSRange.init`
-            className = "NSRange" and
-            funcName = "init(location:length:)" and
-            arg = [0, 1]
-            or
-            // `NSString.character`
-            className = ["NSString", "NSMutableString"] and
-            funcName = "character(at:)" and
-            arg = 0
-            or
-            // `NSString.character`
-            className = ["NSString", "NSMutableString"] and
-            funcName = "substring(from:)" and
-            arg = 0
-            or
-            // `NSString.character`
-            className = ["NSString", "NSMutableString"] and
-            funcName = "substring(to:)" and
-            arg = 0
-            or
-            // `NSMutableString.insert`
-            className = "NSMutableString" and
-            funcName = "insert(_:at:)" and
-            arg = 1
-          ) and
-          c.getName() = className and
-          c.getABaseTypeDecl*().(ClassOrStructDecl).getAMember() = funcDecl and
-          call.getStaticTarget() = funcDecl and
-          correctStringType = "NSString"
-        )
-        or
-        // arguments to function calls...
-        // `NSMakeRange`
-        funcName = "NSMakeRange(_:_:)" and
-        arg = [0, 1] and
-        call.getStaticTarget() = funcDecl and
-        correctStringType = "NSString"
-        or
-        // arguments to method calls...
-        (
-          // `String.dropFirst`, `String.dropLast`, `String.removeFirst`, `String.removeLast`
-          funcName = ["dropFirst(_:)", "dropLast(_:)", "removeFirst(_:)", "removeLast(_:)"] and
-          arg = 0
-          or
-          // `String.prefix`, `String.suffix`
-          funcName = ["prefix(_:)", "suffix(_:)"] and
-          arg = 0
-          or
-          // `String.Index.init`
-          funcName = "init(encodedOffset:)" and
-          arg = 0
-          or
-          // `String.index`
-          funcName = ["index(_:offsetBy:)", "index(_:offsetBy:limitBy:)"] and
-          arg = [0, 1]
-          or
-          // `String.formIndex`
-          funcName = ["formIndex(_:offsetBy:)", "formIndex(_:offsetBy:limitBy:)"] and
-          arg = [0, 1]
-        ) and
-        call.getStaticTarget() = funcDecl and
-        correctStringType = "String"
-      ) and
-      // match up `funcName`, `arg`, `node`.
-      funcDecl.getName() = funcName and
-      call.getArgument(arg).getExpr() = this.asExpr()
-    )
+  DefaultStringLengthConflationSink() { sinkNode(this, stringType.getCsvLabel()) }
+
+  override StringType getCorrectStringType() { result = stringType }
+}
+
+private class StringLengthConflationSinks extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        ";Sequence;true;dropFirst(_:);;;Argument[0];string-length",
+        ";Sequence;true;dropLast(_:);;;Argument[0];string-length",
+        ";Sequence;true;prefix(_:);;;Argument[0];string-length",
+        ";Sequence;true;suffix(_:);;;Argument[0];string-length",
+        ";Collection;true;formIndex(_:offsetBy:);;;Argument[0..1];string-length",
+        ";Collection;true;formIndex(_:offsetBy:limitBy:);;;Argument[0..1];string-length",
+        ";Collection;true;removeFirst(_:);;;Argument[0];string-length",
+        ";RangeReplaceableCollection;true;removeLast(_:);;;Argument[0];string-length",
+        ";String;true;index(_:offsetBy:);;;Argument[0..1];string-length",
+        ";String;true;index(_:offsetBy:limitBy:);;;Argument[0..1];string-length",
+        ";String.Index;true;init(encodedOffset:);;;Argument[0];string-length",
+        ";NSRange;true;init(location:length:);;;Argument[0..1];nsstring-length",
+        ";NSString;true;character(at:);;;Argument[0];nsstring-length",
+        ";NSString;true;substring(from:);;;Argument[0];nsstring-length",
+        ";NSString;true;substring(to:);;;Argument[0];nsstring-length",
+        ";NSMutableString;true;character(at:);;;Argument[0];nsstring-length",
+        ";NSMutableString;true;substring(from:);;;Argument[0];nsstring-length",
+        ";NSMutableString;true;substring(to:);;;Argument[0];nsstring-length",
+        ";NSMutableString;true;insert(_:at:);;;Argument[1];nsstring-length",
+        ";;false;NSMakeRange(_:_:);;;Argument[0..1];nsstring-length",
+      ]
   }
-
-  override StringType getCorrectStringType() { result = correctStringType }
 }
