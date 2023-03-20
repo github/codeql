@@ -26,7 +26,8 @@ extensions:
       - ["java.nio.file", "Files", True, "move", "(Path,Path,CopyOption[])", "", "Argument[1]", "create-file", "ai-generated"]
       - ["java.nio.file", "Files", True, "move", "(Path,Path,CopyOption[])", "", "Argument[0]", "create-file", "ai-generated"] # should be delete-file
       - ["java.nio.file", "Files", True, "delete", "(Path)", "", "Argument[0]", "create-file", "ai-generated"] # should be delete-file
-      - ["java.nio.file", "Files", True, "newInputStream", "(Path,OpenOption[])", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["java.nio.file", "Files", True, "newInputStream", "(Path,OpenOption[])", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.nio.file", "Files", True, "newOutputStream", "(Path,OpenOption[])", "", "Argument[0]", "create-file", "ai-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
