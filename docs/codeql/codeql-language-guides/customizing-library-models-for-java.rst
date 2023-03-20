@@ -155,7 +155,7 @@ This means that we want to add tuples to the **summaryModel**\(package, type, su
          pack: codeql/java-all
          extensible: summaryModel
        data:
-         - ["java.lang", "String", False, "concat", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+         - ["java.lang", "String", False, "concat", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
          - ["java.lang", "String", False, "concat", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
 
 Reasoning:
@@ -176,7 +176,7 @@ These are the same for both of the rows above as we are adding two summaries for
 The sixth value is only relevant internally and can be omitted in most use cases.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the summary.
 
-- The seventh value is the access path to the input (where data flows from). **Argument[-1]** is the access path to the qualifier (**s1** in the example) and **Argument[0]** is the access path to the first argument (**s2** in the example).
+- The seventh value is the access path to the input (where data flows from). **Argument[this]** is the access path to the qualifier (**s1** in the example) and **Argument[0]** is the access path to the first argument (**s2** in the example).
 - The eighth value **ReturnValue** is the access path to the output (where data flows to), in this case **ReturnValue**, which means that the input flows to the return value.
 - The ninth value **taint** is the kind of the flow. **taint** means that taint is propagated through the call.
 - The tenth value **manual** is the provenance of the summary, which is used to identify the origin of the summary.
@@ -203,7 +203,7 @@ This can be achieved by adding the following to a data extension file:
          pack: codeql/java-all
          extensible: summaryModel
        data:
-         - ["java.util.stream", "Stream", True, "map", "(Function)", "", "Argument[-1].Element", "Argument[0].Parameter[0]", "value", "manual"]
+         - ["java.util.stream", "Stream", True, "map", "(Function)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
          - ["java.util.stream", "Stream", True, "map", "(Function)", "", "Argument[0].ReturnValue", "ReturnValue.Element", "value", "manual"]
 
 Reasoning:
@@ -227,7 +227,7 @@ The remaining values are used to define the **access path**, the **kind**, and t
 
 For the first row the
 
-- The seventh value is **Argument[-1].Element**, which is the access path to the elements of the qualifier (the elements of the stream **s** in the example).
+- The seventh value is **Argument[this].Element**, which is the access path to the elements of the qualifier (the elements of the stream **s** in the example).
 - The eight value is **Argument[0].Parameter[0]**, which is the access path to the first parameter of the **Function** argument of **map** (the lambda parameter **e** in the example).
 
 For the second row the
@@ -394,7 +394,7 @@ The **input**, and **output** columns consist of a **.**-separated list of compo
 The following components are supported:
 
 - **Argument[**\ `n`\ **]** selects the argument at index `n` (zero-indexed).
-- **Argument[**\ `-1`\ **]** selects the qualifier (instance parameter).
+- **Argument[**\ `this`\ **]** selects the qualifier (instance parameter).
 - **Argument[**\ `n1..n2`\ **]** selects the arguments in the given range (both ends included).
 - **Parameter[**\ `n`\ **]** selects the parameter at index `n` (zero-indexed).
 - **Parameter[**\ `n1..n2`\ **]** selects the parameters in the given range (both ends included).
