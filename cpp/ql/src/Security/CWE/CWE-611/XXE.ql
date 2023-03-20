@@ -19,7 +19,7 @@ import XxeFlow::PathGraph
 /**
  * A configuration for tracking XML objects and their states.
  */
-module XxeConfiguration implements DataFlow::StateConfigSig {
+module XxeConfig implements DataFlow::StateConfigSig {
   class FlowState = TXxeFlowState;
 
   predicate isSource(DataFlow::Node node, FlowState flowstate) {
@@ -45,7 +45,7 @@ module XxeConfiguration implements DataFlow::StateConfigSig {
   }
 }
 
-module XxeFlow = DataFlow::MakeWithState<XxeConfiguration>;
+module XxeFlow = DataFlow::MakeWithState<XxeConfig>;
 
 from XxeFlow::PathNode source, XxeFlow::PathNode sink
 where XxeFlow::hasFlowPath(source, sink)

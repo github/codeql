@@ -39,7 +39,7 @@ predicate step(Node n1, Node n2, string s1, string s2) {
 
 predicate checkNode(Node n) { n.asExpr().(Argument).getCall().getCallee().hasName("check") }
 
-module Conf implements DataFlow::StateConfigSig {
+module Config implements DataFlow::StateConfigSig {
   class FlowState = string;
 
   predicate isSource(Node n, FlowState s) { src(n, s) }
@@ -55,7 +55,7 @@ module Conf implements DataFlow::StateConfigSig {
 
 int explorationLimit() { result = 0 }
 
-module Flow = TaintTracking::MakeWithState<Conf>;
+module Flow = TaintTracking::MakeWithState<Config>;
 
 module PartialFlow = Flow::FlowExploration<explorationLimit/0>;
 

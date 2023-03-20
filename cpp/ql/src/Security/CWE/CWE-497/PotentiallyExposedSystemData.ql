@@ -31,7 +31,7 @@ import semmle.code.cpp.security.OutputWrite
 import PotentiallyExposedSystemData::PathGraph
 import SystemData
 
-module PotentiallyExposedSystemDataConfiguration implements DataFlow::ConfigSig {
+module PotentiallyExposedSystemDataConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source = any(SystemData sd | sd.isSensitive()).getAnExpr()
   }
@@ -51,8 +51,7 @@ module PotentiallyExposedSystemDataConfiguration implements DataFlow::ConfigSig 
   }
 }
 
-module PotentiallyExposedSystemData =
-  TaintTracking::Make<PotentiallyExposedSystemDataConfiguration>;
+module PotentiallyExposedSystemData = TaintTracking::Make<PotentiallyExposedSystemDataConfig>;
 
 from PotentiallyExposedSystemData::PathNode source, PotentiallyExposedSystemData::PathNode sink
 where PotentiallyExposedSystemData::hasFlowPath(source, sink)

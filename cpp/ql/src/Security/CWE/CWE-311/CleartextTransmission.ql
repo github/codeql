@@ -234,7 +234,7 @@ predicate isSourceImpl(DataFlow::Node source) {
  * A taint flow configuration for flow from a sensitive expression to a network
  * operation.
  */
-module FromSensitiveConfiguration implements DataFlow::ConfigSig {
+module FromSensitiveConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSourceImpl(source) }
 
   predicate isSink(DataFlow::Node sink) { isSinkSendRecv(sink, _) }
@@ -250,12 +250,12 @@ module FromSensitiveConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module FromSensitiveFlow = TaintTracking::Make<FromSensitiveConfiguration>;
+module FromSensitiveFlow = TaintTracking::Make<FromSensitiveConfig>;
 
 /**
  * A taint flow configuration for flow from a sensitive expression to an encryption operation.
  */
-module ToEncryptionConfiguration implements DataFlow::ConfigSig {
+module ToEncryptionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { FromSensitiveFlow::hasFlow(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isSinkEncrypt(sink, _) }
@@ -271,12 +271,12 @@ module ToEncryptionConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module ToEncryptionFlow = TaintTracking::Make<ToEncryptionConfiguration>;
+module ToEncryptionFlow = TaintTracking::Make<ToEncryptionConfig>;
 
 /**
  * A taint flow configuration for flow from an encryption operation to a network operation.
  */
-module FromEncryptionConfiguration implements DataFlow::ConfigSig {
+module FromEncryptionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSinkEncrypt(source, _) }
 
   predicate isSink(DataFlow::Node sink) { FromSensitiveFlow::hasFlowTo(sink) }
@@ -286,7 +286,7 @@ module FromEncryptionConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module FromEncryptionFlow = TaintTracking::Make<FromEncryptionConfiguration>;
+module FromEncryptionFlow = TaintTracking::Make<FromEncryptionConfig>;
 
 from
   FromSensitiveFlow::PathNode source, FromSensitiveFlow::PathNode sink,

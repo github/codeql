@@ -97,7 +97,7 @@ predicate isBarrierImpl(DataFlow::Node node) {
  * given sink. This avoids a cartesian product between all sinks and all `ExecState`s in
  * `ExecTaintConfiguration::isSink`.
  */
-module ExecStateConfiguration implements DataFlow::ConfigSig {
+module ExecStateConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { any(ExecState state).getOutgoingNode() = source }
 
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _, _) }
@@ -109,9 +109,9 @@ module ExecStateConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module ExecState = TaintTracking::Make<ExecStateConfiguration>;
+module ExecState = TaintTracking::Make<ExecStateConfig>;
 
-module ExecTaintConfiguration implements DataFlow::StateConfigSig {
+module ExecTaintConfig implements DataFlow::StateConfigSig {
   class FlowState = TState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {
@@ -120,7 +120,7 @@ module ExecTaintConfiguration implements DataFlow::StateConfigSig {
   }
 
   predicate isSink(DataFlow::Node sink, FlowState state) {
-    ExecStateConfiguration::isSink(sink) and
+    ExecStateConfig::isSink(sink) and
     state.(ExecState).isFeasibleForSink(sink)
   }
 
@@ -141,7 +141,7 @@ module ExecTaintConfiguration implements DataFlow::StateConfigSig {
   }
 }
 
-module ExecTaint = TaintTracking::MakeWithState<ExecTaintConfiguration>;
+module ExecTaint = TaintTracking::MakeWithState<ExecTaintConfig>;
 
 from
   ExecTaint::PathNode sourceNode, ExecTaint::PathNode sinkNode, string taintCause, string callChain,

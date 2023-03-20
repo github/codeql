@@ -54,7 +54,7 @@ predicate nodeIsBarrierEqualityCandidate(DataFlow::Node node, Operand access, Va
 
 predicate isFlowSource(FlowSource source, string sourceType) { sourceType = source.getSourceType() }
 
-module TaintedAllocationSizeConfiguration implements DataFlow::ConfigSig {
+module TaintedAllocationSizeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isFlowSource(source, _) }
 
   predicate isSink(DataFlow::Node sink) { allocSink(_, sink) }
@@ -95,7 +95,7 @@ module TaintedAllocationSizeConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module TaintedAllocationSize = TaintTracking::Make<TaintedAllocationSizeConfiguration>;
+module TaintedAllocationSize = TaintTracking::Make<TaintedAllocationSizeConfig>;
 
 from
   Expr alloc, TaintedAllocationSize::PathNode source, TaintedAllocationSize::PathNode sink,

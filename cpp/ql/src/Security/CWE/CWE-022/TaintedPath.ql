@@ -70,7 +70,7 @@ predicate hasUpperBoundsCheck(Variable var) {
   )
 }
 
-module TaintedPathConfiguration implements DataFlow::ConfigSig {
+module TaintedPathConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
 
   predicate isSink(DataFlow::Node node) {
@@ -90,7 +90,7 @@ module TaintedPathConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module TaintedPath = TaintTracking::Make<TaintedPathConfiguration>;
+module TaintedPath = TaintTracking::Make<TaintedPathConfig>;
 
 from
   FileFunction fileFunction, Expr taintedArg, FlowSource taintSource,
