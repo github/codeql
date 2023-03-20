@@ -18,7 +18,5 @@ import semmle.code.java.security.UnsafeCertTrustQuery
 from Expr unsafeTrust
 where
   unsafeTrust instanceof RabbitMQEnableHostnameVerificationNotSet or
-  exists(SslEndpointIdentificationFlowConfig config |
-    config.hasFlowTo(DataFlow::exprNode(unsafeTrust))
-  )
+  SslEndpointIdentificationFlow::flowTo(DataFlow::exprNode(unsafeTrust))
 select unsafeTrust, "Unsafe configuration of trusted certificates."
