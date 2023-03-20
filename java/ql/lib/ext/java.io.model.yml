@@ -71,7 +71,7 @@ extensions:
       - ["java.io", "File", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getParentFile", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getPath", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["java.io", "File", True, "listFiles", "()", "", "Argument[-1]", "ReturnValue.ArrayElement", "taint", "manual"]
+      - ["java.io", "File", True, "listFiles", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toURI", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
