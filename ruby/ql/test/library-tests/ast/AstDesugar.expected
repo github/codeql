@@ -946,6 +946,33 @@ operations/operations.rb:
 #  103|     getAnOperand/getRightOperand: [LogicalOrExpr] ... || ...
 #  103|       getAnOperand/getLeftOperand/getReceiver: [ConstantReadAccess] CONSTANT4
 #  103|       getAnOperand/getArgument/getRightOperand: [IntegerLiteral] 7
+#  104| [AssignExpr] ... = ...
+#  104|   getDesugared: [StmtSequence] ...
+#  104|     getStmt: [AssignExpr] ... = ...
+#  104|       getAnOperand/getLeftOperand: [ConstantAssignment] FOO
+#  104|       getAnOperand/getRightOperand: [MethodCall] call to []
+#  104|         getReceiver: [LocalVariableAccess] __synth__3
+#  104|         getArgument: [IntegerLiteral] 0
+#  104|     getStmt: [AssignExpr] ... = ...
+#  104|       getAnOperand/getLeftOperand: [ConstantAssignment] BAR
+#  104|       getAnOperand/getRightOperand: [MethodCall] call to []
+#  104|         getReceiver: [LocalVariableAccess] __synth__3
+#  104|         getArgument: [IntegerLiteral] 1
+#  104|     getStmt: [AssignExpr] ... = ...
+#  104|       getAnOperand/getLeftOperand: [ConstantAssignment] FOO
+#  104|         getScopeExpr: [LocalVariableAccess] foo
+#  104|       getAnOperand/getRightOperand: [MethodCall] call to []
+#  104|         getReceiver: [LocalVariableAccess] __synth__3
+#  104|         getArgument: [IntegerLiteral] 2
+#  104|     getStmt: [AssignExpr] ... = ...
+#  104|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__3
+#  104|       getAnOperand/getRightOperand: [SplatExpr] * ...
+#  104|         getAnOperand/getOperand/getReceiver: [ArrayLiteral] [...]
+#  104|           getDesugared: [MethodCall] call to []
+#  104|             getReceiver: [ConstantReadAccess] Array
+#  104|             getArgument: [IntegerLiteral] 1
+#  104|             getArgument: [IntegerLiteral] 2
+#  104|             getArgument: [IntegerLiteral] 3
 params/params.rb:
 #    8| [HashLiteral] {...}
 #    8|   getDesugared: [MethodCall] call to []
