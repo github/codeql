@@ -14,6 +14,8 @@ int getPointedSize(Type t) {
  * BufferWrite differ.
  */
 abstract class BufferAccess extends Expr {
+  BufferAccess() { not this.isUnevaluated() }
+
   abstract string getName();
 
   /**
