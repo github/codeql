@@ -95,40 +95,43 @@ class StringLengthConflationAdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
+/**
+ * A source defined in a CSV model.
+ */
 private class DefaultStringLengthConflationSource extends StringLengthConflationSource {
   StringType stringType;
 
-  DefaultStringLengthConflationSource() {
-    exists(MemberRefExpr memberRef, string className, string varName |
-      memberRef.getBase().getType().(NominalType).getABaseType*().getName() = className and
-      memberRef.getMember().(VarDecl).getName() = varName and
+  DefaultStringLengthConflationSource() { sourceNode(this, stringType.getCsvLabel()) }
+
+  override StringType getStringType() { result = stringType }
+}
+
+private class StringLengthConflationSources extends SourceModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        ";String;true;count;;;;string-length",
+        ";String.UTF8View;true;count;;;;string-utf8-length",
+        ";String.UTF16View;true;count;;;;string-utf16-length",
+        ";NSString;true;length;;;;nsstring-length",
+        ";NSMutableString;true;length;;;;nsstring-length",
+      ]
+  }
+}
+
+/**
+ * An extra source that don't currently fit into the CSV scheme.
+ */
+private class ExtraStringLengthConflationSource extends StringLengthConflationSource {
+  StringType stringType;
+
+  ExtraStringLengthConflationSource() {
+    exists(MemberRefExpr memberRef |
+      // result of a call to `String.unicodeScalars.count`
+      memberRef.getBase().getType().(NominalType).getName() = "String.UnicodeScalarView" and
+      memberRef.getMember().(VarDecl).getName() = "count" and
       this.asExpr() = memberRef and
-      (
-        // result of a call to `String.count`
-        className = "String" and
-        varName = "count" and
-        stringType = "String"
-        or
-        // result of a call to `NSString.length`
-        className = ["NSString", "NSMutableString"] and
-        varName = "length" and
-        stringType = "NSString"
-        or
-        // result of a call to `String.utf8.count`
-        className = "String.UTF8View" and
-        varName = "count" and
-        stringType = "String.utf8"
-        or
-        // result of a call to `String.utf16.count`
-        className = "String.UTF16View" and
-        varName = "count" and
-        stringType = "String.utf16"
-        or
-        // result of a call to `String.unicodeScalars.count`
-        className = "String.UnicodeScalarView" and
-        varName = "count" and
-        stringType = "String.unicodeScalars"
-      )
+      stringType = "String.unicodeScalars"
     )
   }
 
