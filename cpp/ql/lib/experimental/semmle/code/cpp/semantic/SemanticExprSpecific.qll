@@ -79,7 +79,7 @@ module SemanticExprConfig {
     string toString() { result = this.getUnconverted().toString() }
 
     /** Gets the basic block of this expression. */
-    IR::IRBlock getBlock() { result = getInstruction(0).getBlock() }
+    IR::IRBlock getBlock() { result = this.getUnconverted().getBlock() }
 
     /** Gets the unconverted instruction associated with this expression. */
     IR::Instruction getUnconverted() { result = this.getInstruction(0) }
