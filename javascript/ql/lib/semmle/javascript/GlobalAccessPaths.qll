@@ -316,7 +316,7 @@ module AccessPath {
           i < j
         )
         or
-        otherAccess.getBasicBlock() = getASuccessorBBThatReadsVar(write) // more manual magic - outlined into a helper predicate.
+        otherAccess.getBasicBlock() = getASuccessorBBThatReadsVar(write)
       )
     }
 
@@ -378,10 +378,10 @@ module AccessPath {
         getAVariableRef(var) = baseExpr and
         var = getARelevantVariable() and
         writeNode = write.getWriteNode() and
-        result.getImmediateDominator+() = writeNode.getBasicBlock() and
-        // manual magic.
-        result = getAnAccessInContainer(getARelevantVariable(), _, false).getBasicBlock()
+        result.getImmediateDominator() = writeNode.getBasicBlock()
       )
+      or
+      result.getImmediateDominator() = getASuccessorBBThatReadsVar(write) // more manual magic - outlined into a helper predicate.
     }
   }
 
