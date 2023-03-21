@@ -9,3 +9,7 @@ class Conf extends DefaultTaintFlowConf {
     node instanceof RemoteFlowSource
   }
 }
+
+class LegacyConfig extends EnableLegacyConfiguration {
+  LegacyConfig() { this instanceof Unit }
+}
