@@ -9,7 +9,6 @@ import cpp
 import semmle.code.cpp.security.Security
 private import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
-private import semmle.code.cpp.ir.dataflow.DataFlow3
 private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.ir.dataflow.ResolveCall
 private import semmle.code.cpp.controlflow.IRGuards
@@ -90,64 +89,63 @@ private predicate conflatePointerAndPointee(DataFlow::Node nodeFrom, DataFlow::N
   )
 }
 
-private class DefaultTaintTrackingCfg extends TaintTracking::Configuration {
-  DefaultTaintTrackingCfg() { this = "DefaultTaintTrackingCfg" }
+private module DefaultTaintTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
 
-  override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
+  predicate isSink(DataFlow::Node sink) { exists(adjustedSink(sink)) }
 
-  override predicate isSink(DataFlow::Node sink) { exists(adjustedSink(sink)) }
+  predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
 
-  override predicate isSanitizer(DataFlow::Node node) { nodeIsBarrier(node) }
+  predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 
-  override predicate isSanitizerIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     conflatePointerAndPointee(nodeFrom, nodeTo)
   }
 }
 
-private class ToGlobalVarTaintTrackingCfg extends TaintTracking::Configuration {
-  ToGlobalVarTaintTrackingCfg() { this = "GlobalVarTaintTrackingCfg" }
+private module DefaultTaintTrackingFlow = TaintTracking::Make<DefaultTaintTrackingConfig>;
 
-  override predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
+private module ToGlobalVarTaintTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink.asVariable() instanceof GlobalOrNamespaceVariable
-  }
+  predicate isSink(DataFlow::Node sink) { sink.asVariable() instanceof GlobalOrNamespaceVariable }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     writesVariable(n1.asInstruction(), n2.asVariable().(GlobalOrNamespaceVariable))
     or
     readsVariable(n2.asInstruction(), n1.asVariable().(GlobalOrNamespaceVariable))
   }
 
-  override predicate isSanitizer(DataFlow::Node node) { nodeIsBarrier(node) }
+  predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
 
-  override predicate isSanitizerIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
+  predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
-private class FromGlobalVarTaintTrackingCfg extends TaintTracking2::Configuration {
-  FromGlobalVarTaintTrackingCfg() { this = "FromGlobalVarTaintTrackingCfg" }
+private module ToGlobalVarTaintTrackingFlow = TaintTracking::Make<ToGlobalVarTaintTrackingConfig>;
 
-  override predicate isSource(DataFlow::Node source) {
+private module FromGlobalVarTaintTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     // This set of sources should be reasonably small, which is good for
     // performance since the set of sinks is very large.
-    exists(ToGlobalVarTaintTrackingCfg otherCfg | otherCfg.hasFlowTo(source))
+    ToGlobalVarTaintTrackingFlow::hasFlowTo(source)
   }
 
-  override predicate isSink(DataFlow::Node sink) { exists(adjustedSink(sink)) }
+  predicate isSink(DataFlow::Node sink) { exists(adjustedSink(sink)) }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     // Additional step for flow out of variables. There is no flow _into_
     // variables in this configuration, so this step only serves to take flow
     // out of a variable that's a source.
     readsVariable(n2.asInstruction(), n1.asVariable())
   }
 
-  override predicate isSanitizer(DataFlow::Node node) { nodeIsBarrier(node) }
+  predicate isBarrier(DataFlow::Node node) { nodeIsBarrier(node) }
 
-  override predicate isSanitizerIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
+  predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
+
+private module FromGlobalVarTaintTrackingFlow =
+  TaintTracking::Make<FromGlobalVarTaintTrackingConfig>;
 
 private predicate readsVariable(LoadInstruction load, Variable var) {
   load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
@@ -332,8 +330,8 @@ private import Cached
  */
 cached
 predicate tainted(Expr source, Element tainted) {
-  exists(DefaultTaintTrackingCfg cfg, DataFlow::Node sink |
-    cfg.hasFlow(getNodeForSource(source), sink) and
+  exists(DataFlow::Node sink |
+    DefaultTaintTrackingFlow::hasFlow(getNodeForSource(source), sink) and
     tainted = adjustedSink(sink)
   )
 }
@@ -359,12 +357,11 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
   globalVar = ""
   or
   exists(
-    ToGlobalVarTaintTrackingCfg toCfg, FromGlobalVarTaintTrackingCfg fromCfg,
     DataFlow::VariableNode variableNode, GlobalOrNamespaceVariable global, DataFlow::Node sink
   |
     global = variableNode.getVariable() and
-    toCfg.hasFlow(getNodeForSource(source), variableNode) and
-    fromCfg.hasFlow(variableNode, sink) and
+    ToGlobalVarTaintTrackingFlow::hasFlow(getNodeForSource(source), variableNode) and
+    FromGlobalVarTaintTrackingFlow::hasFlow(variableNode, sink) and
     tainted = adjustedSink(sink) and
     global = globalVarFromId(globalVar)
   )
@@ -422,20 +419,18 @@ module TaintedWithPath {
     string toString() { result = "TaintTrackingConfiguration" }
   }
 
-  private class AdjustedConfiguration extends TaintTracking3::Configuration {
-    AdjustedConfiguration() { this = "AdjustedConfiguration" }
-
-    override predicate isSource(DataFlow::Node source) {
+  private module AdjustedConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       exists(TaintTrackingConfiguration cfg, Expr e |
         cfg.isSource(e) and source = getNodeForExpr(e)
       )
     }
 
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
       exists(TaintTrackingConfiguration cfg | cfg.isSink(adjustedSink(sink)))
     }
 
-    override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
       conflatePointerAndPointee(n1, n2)
       or
       // Steps into and out of global variables
@@ -448,12 +443,14 @@ module TaintedWithPath {
       additionalTaintStep(n1, n2)
     }
 
-    override predicate isSanitizer(DataFlow::Node node) {
+    predicate isBarrier(DataFlow::Node node) {
       exists(TaintTrackingConfiguration cfg, Expr e | cfg.isBarrier(e) and node = getNodeForExpr(e))
     }
 
-    override predicate isSanitizerIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
+    predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
   }
+
+  private module AdjustedFlow = TaintTracking::Make<AdjustedConfig>;
 
   /*
    * A sink `Element` may map to multiple `DataFlowX::PathNode`s via (the
@@ -470,12 +467,12 @@ module TaintedWithPath {
    */
 
   private newtype TPathNode =
-    TWrapPathNode(DataFlow3::PathNode n) or
+    TWrapPathNode(AdjustedFlow::PathNode n) or
     // There's a single newtype constructor for both sources and sinks since
     // that makes it easiest to deal with the case where source = sink.
     TEndpointPathNode(Element e) {
-      exists(AdjustedConfiguration cfg, DataFlow3::Node sourceNode, DataFlow3::Node sinkNode |
-        cfg.hasFlow(sourceNode, sinkNode)
+      exists(DataFlow::Node sourceNode, DataFlow::Node sinkNode |
+        AdjustedFlow::hasFlow(sourceNode, sinkNode)
       |
         sourceNode = getNodeForExpr(e) and
         exists(TaintTrackingConfiguration ttCfg | ttCfg.isSource(e))
@@ -524,7 +521,7 @@ module TaintedWithPath {
   }
 
   private class WrapPathNode extends PathNode, TWrapPathNode {
-    DataFlow3::PathNode inner() { this = TWrapPathNode(result) }
+    AdjustedFlow::PathNode inner() { this = TWrapPathNode(result) }
 
     override string toString() { result = this.inner().toString() }
 
@@ -561,25 +558,25 @@ module TaintedWithPath {
 
   /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
   query predicate edges(PathNode a, PathNode b) {
-    DataFlow3::PathGraph::edges(a.(WrapPathNode).inner(), b.(WrapPathNode).inner())
+    AdjustedFlow::PathGraph::edges(a.(WrapPathNode).inner(), b.(WrapPathNode).inner())
     or
     // To avoid showing trivial-looking steps, we _replace_ the last node instead
     // of adding an edge out of it.
     exists(WrapPathNode sinkNode |
-      DataFlow3::PathGraph::edges(a.(WrapPathNode).inner(), sinkNode.inner()) and
+      AdjustedFlow::PathGraph::edges(a.(WrapPathNode).inner(), sinkNode.inner()) and
       b.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
     )
     or
     // Same for the first node
     exists(WrapPathNode sourceNode |
-      DataFlow3::PathGraph::edges(sourceNode.inner(), b.(WrapPathNode).inner()) and
+      AdjustedFlow::PathGraph::edges(sourceNode.inner(), b.(WrapPathNode).inner()) and
       sourceNode.inner().getNode() = getNodeForExpr(a.(InitialPathNode).inner())
     )
     or
     // Finally, handle the case where the path goes directly from a source to a
     // sink, meaning that they both need to be translated.
     exists(WrapPathNode sinkNode, WrapPathNode sourceNode |
-      DataFlow3::PathGraph::edges(sourceNode.inner(), sinkNode.inner()) and
+      AdjustedFlow::PathGraph::edges(sourceNode.inner(), sinkNode.inner()) and
       sourceNode.inner().getNode() = getNodeForExpr(a.(InitialPathNode).inner()) and
       b.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
     )
@@ -590,20 +587,20 @@ module TaintedWithPath {
    * from `par` to `ret` within it, in the graph of data flow path explanations.
    */
   query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
-    DataFlow3::PathGraph::subpaths(arg.(WrapPathNode).inner(), par.(WrapPathNode).inner(),
+    AdjustedFlow::PathGraph::subpaths(arg.(WrapPathNode).inner(), par.(WrapPathNode).inner(),
       ret.(WrapPathNode).inner(), out.(WrapPathNode).inner())
     or
     // To avoid showing trivial-looking steps, we _replace_ the last node instead
     // of adding an edge out of it.
     exists(WrapPathNode sinkNode |
-      DataFlow3::PathGraph::subpaths(arg.(WrapPathNode).inner(), par.(WrapPathNode).inner(),
+      AdjustedFlow::PathGraph::subpaths(arg.(WrapPathNode).inner(), par.(WrapPathNode).inner(),
         ret.(WrapPathNode).inner(), sinkNode.inner()) and
       out.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
     )
     or
     // Same for the first node
     exists(WrapPathNode sourceNode |
-      DataFlow3::PathGraph::subpaths(sourceNode.inner(), par.(WrapPathNode).inner(),
+      AdjustedFlow::PathGraph::subpaths(sourceNode.inner(), par.(WrapPathNode).inner(),
         ret.(WrapPathNode).inner(), out.(WrapPathNode).inner()) and
       sourceNode.inner().getNode() = getNodeForExpr(arg.(InitialPathNode).inner())
     )
@@ -611,7 +608,7 @@ module TaintedWithPath {
     // Finally, handle the case where the path goes directly from a source to a
     // sink, meaning that they both need to be translated.
     exists(WrapPathNode sinkNode, WrapPathNode sourceNode |
-      DataFlow3::PathGraph::subpaths(sourceNode.inner(), par.(WrapPathNode).inner(),
+      AdjustedFlow::PathGraph::subpaths(sourceNode.inner(), par.(WrapPathNode).inner(),
         ret.(WrapPathNode).inner(), sinkNode.inner()) and
       sourceNode.inner().getNode() = getNodeForExpr(arg.(InitialPathNode).inner()) and
       out.(FinalPathNode).inner() = adjustedSink(sinkNode.inner().getNode())
@@ -634,10 +631,10 @@ module TaintedWithPath {
    * the computation.
    */
   predicate taintedWithPath(Expr source, Element tainted, PathNode sourceNode, PathNode sinkNode) {
-    exists(AdjustedConfiguration cfg, DataFlow3::Node flowSource, DataFlow3::Node flowSink |
+    exists(DataFlow::Node flowSource, DataFlow::Node flowSink |
       source = sourceNode.(InitialPathNode).inner() and
       flowSource = getNodeForExpr(source) and
-      cfg.hasFlow(flowSource, flowSink) and
+      AdjustedFlow::hasFlow(flowSource, flowSink) and
       tainted = adjustedSink(flowSink) and
       tainted = sinkNode.(FinalPathNode).inner()
     )
@@ -660,8 +657,8 @@ module TaintedWithPath {
    * through a global variable.
    */
   predicate taintedWithoutGlobals(Element tainted) {
-    exists(AdjustedConfiguration cfg, PathNode sourceNode, FinalPathNode sinkNode |
-      cfg.isSource(sourceNode.(WrapPathNode).inner().getNode()) and
+    exists(PathNode sourceNode, FinalPathNode sinkNode |
+      AdjustedConfig::isSource(sourceNode.(WrapPathNode).inner().getNode()) and
       edgesWithoutGlobals+(sourceNode, sinkNode) and
       tainted = sinkNode.inner()
     )

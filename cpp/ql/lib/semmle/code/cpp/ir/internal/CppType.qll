@@ -1,5 +1,4 @@
 private import cpp
-private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.IRType
 private import semmle.code.cpp.ir.implementation.raw.internal.IRConstruction::Raw as Raw
 
@@ -538,12 +537,14 @@ CppType getCanonicalOpaqueType(Type tag, int byteSize) {
 }
 
 /**
- * Gets a string that uniquely identifies an `IROpaqueType` tag. This may be different from the usual
- * `toString()` of the tag in order to ensure uniqueness.
+ * Gets a string that uniquely identifies an `IROpaqueType` tag. Using `toString` here might
+ * not be sufficient to ensure uniqueness, but suffices for our current debugging purposes.
+ * To ensure uniqueness `getOpaqueTagIdentityString` from `semmle.code.cpp.Print` could be used,
+ * but that comes at the cost of importing all the `Dump` classes defined in that library.
  */
 string getOpaqueTagIdentityString(Type tag) {
   hasOpaqueType(tag, _) and
-  result = getTypeIdentityString(tag)
+  result = tag.toString()
 }
 
 module LanguageTypeConsistency {

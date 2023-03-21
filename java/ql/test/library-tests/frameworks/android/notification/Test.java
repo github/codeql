@@ -44,28 +44,28 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "android.app;Notification$Action$Builder;true;Builder;(Action);;Argument[0];Argument[-1];taint;manual"
+			// "android.app;Notification$Action$Builder;true;Builder;(Action);;Argument[0];Argument[this];taint;manual"
 			Notification.Action.Builder out = null;
 			Notification.Action in = (Notification.Action) source();
 			out = new Notification.Action.Builder(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Action$Builder;true;Builder;(Icon,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual"
+			// "android.app;Notification$Action$Builder;true;Builder;(Icon,CharSequence,PendingIntent);;Argument[2];Argument[this];taint;manual"
 			Notification.Action.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out = new Notification.Action.Builder((Icon) null, (CharSequence) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Action$Builder;true;Builder;(int,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual"
+			// "android.app;Notification$Action$Builder;true;Builder;(int,CharSequence,PendingIntent);;Argument[2];Argument[this];taint;manual"
 			Notification.Action.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out = new Notification.Action.Builder(0, (CharSequence) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Action$Builder;true;addExtras;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Action$Builder;true;addExtras;;;Argument[this];ReturnValue;value;manual"
 			Notification.Action.Builder out = null;
 			Notification.Action.Builder in = (Notification.Action.Builder) source();
 			out = in.addExtras(null);
@@ -74,7 +74,7 @@ public class Test {
 		{
 			// "android.app;Notification$Action$Builder;true;addExtras;;;MapKey of
 			// Argument[0];MapKey of SyntheticField[android.content.Intent.extras] of
-			// Argument[-1];value;manual"
+			// Argument[this];value;manual"
 			Notification.Action.Builder out = null;
 			Bundle in = (Bundle) newWithMapKeyDefault(source());
 			out.addExtras(in);
@@ -83,21 +83,21 @@ public class Test {
 		{
 			// "android.app;Notification$Action$Builder;true;addExtras;;;MapValue of
 			// Argument[0];MapValue of SyntheticField[android.content.Intent.extras]
-			// of Argument[-1];value;manual"
+			// of Argument[this];value;manual"
 			Notification.Action.Builder out = null;
 			Bundle in = (Bundle) newWithMapValueDefault(source());
 			out.addExtras(in);
 			sink(getMapValueDefault(out.getExtras())); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Action$Builder;true;addRemoteInput;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Action$Builder;true;addRemoteInput;;;Argument[this];ReturnValue;value;manual"
 			Notification.Action.Builder out = null;
 			Notification.Action.Builder in = (Notification.Action.Builder) source();
 			out = in.addRemoteInput(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Action$Builder;true;build;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.app;Notification$Action$Builder;true;build;;;Argument[this];ReturnValue;taint;manual"
 			Notification.Action out = null;
 			Notification.Action.Builder in = (Notification.Action.Builder) source();
 			out = in.build();
@@ -105,7 +105,7 @@ public class Test {
 		}
 		{
 			// "android.app;Notification$Action$Builder;true;build;;;SyntheticField[android.content.Intent.extras]
-			// of Argument[-1];SyntheticField[android.content.Intent.extras] of
+			// of Argument[this];SyntheticField[android.content.Intent.extras] of
 			// ReturnValue;value;manual"
 			Notification.Action out = null;
 			Notification.Action.Builder builder = null;
@@ -115,7 +115,7 @@ public class Test {
 			sink(getMapValueDefault(out.getExtras())); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Action$Builder;true;extend;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Action$Builder;true;extend;;;Argument[this];ReturnValue;value;manual"
 			Notification.Action.Builder out = null;
 			Notification.Action.Builder in = (Notification.Action.Builder) source();
 			out = in.extend(null);
@@ -123,77 +123,77 @@ public class Test {
 		}
 		{
 			// "android.app;Notification$Action$Builder;true;getExtras;;;SyntheticField[android.content.Intent.extras]
-			// of Argument[-1];ReturnValue;value;manual"
+			// of Argument[this];ReturnValue;value;manual"
 			Bundle out = null;
 			Notification.Action.Builder in = (Notification.Action.Builder) source();
 			out = in.getExtras();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Action$Builder;true;setAllowGeneratedReplies;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Action$Builder;true;setAllowGeneratedReplies;;;Argument[this];ReturnValue;value;manual"
 			Notification.Action.Builder out = null;
 			Notification.Action.Builder in = (Notification.Action.Builder) source();
 			out = in.setAllowGeneratedReplies(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Action$Builder;true;setAuthenticationRequired;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Action$Builder;true;setAuthenticationRequired;;;Argument[this];ReturnValue;value;manual"
 			Notification.Action.Builder out = null;
 			Notification.Action.Builder in = (Notification.Action.Builder) source();
 			out = in.setAuthenticationRequired(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Action$Builder;true;setContextual;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Action$Builder;true;setContextual;;;Argument[this];ReturnValue;value;manual"
 			Notification.Action.Builder out = null;
 			Notification.Action.Builder in = (Notification.Action.Builder) source();
 			out = in.setContextual(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Action$Builder;true;setSemanticAction;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Action$Builder;true;setSemanticAction;;;Argument[this];ReturnValue;value;manual"
 			Notification.Action.Builder out = null;
 			Notification.Action.Builder in = (Notification.Action.Builder) source();
 			out = in.setSemanticAction(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Action;true;Action;(int,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual"
+			// "android.app;Notification$Action;true;Action;(int,CharSequence,PendingIntent);;Argument[2];Argument[this];taint;manual"
 			Notification.Action out = null;
 			PendingIntent in = (PendingIntent) source();
 			out = new Notification.Action(0, null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;addAction;(Action);;Argument[0];Argument[-1];taint;manual"
+			// "android.app;Notification$Builder;true;addAction;(Action);;Argument[0];Argument[this];taint;manual"
 			Notification.Builder out = null;
 			Notification.Action in = (Notification.Action) source();
 			out.addAction(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;addAction;(int,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual"
+			// "android.app;Notification$Builder;true;addAction;(int,CharSequence,PendingIntent);;Argument[2];Argument[this];taint;manual"
 			Notification.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out.addAction(0, null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;addAction;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;addAction;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.addAction(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;addAction;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;addAction;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.addAction(0, null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;addExtras;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;addExtras;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.addExtras(null);
@@ -201,7 +201,7 @@ public class Test {
 		}
 		{
 			// "android.app;Notification$Builder;true;addExtras;;;MapKey of Argument[0];MapKey of
-			// SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Notification.Builder out = null;
 			Bundle in = (Bundle) newWithMapKeyDefault(source());
 			out.addExtras(in);
@@ -209,28 +209,28 @@ public class Test {
 		}
 		{
 			// "android.app;Notification$Builder;true;addExtras;;;MapValue of Argument[0];MapValue
-			// of SyntheticField[android.content.Intent.extras] of Argument[-1];value;manual"
+			// of SyntheticField[android.content.Intent.extras] of Argument[this];value;manual"
 			Notification.Builder out = null;
 			Bundle in = (Bundle) newWithMapValueDefault(source());
 			out.addExtras(in);
 			sink(getMapValueDefault(out.getExtras())); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;addPerson;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;addPerson;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.addPerson((String) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;addPerson;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;addPerson;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.addPerson((Person) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;build;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.app;Notification$Builder;true;build;;;Argument[this];ReturnValue;taint;manual"
 			Notification out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.build();
@@ -238,7 +238,7 @@ public class Test {
 		}
 		{
 			// "android.app;Notification$Builder;true;build;;;SyntheticField[android.content.Intent.extras]
-			// of Argument[-1];Field[android.app.Notification.extras] of ReturnValue;value;manual"
+			// of Argument[this];Field[android.app.Notification.extras] of ReturnValue;value;manual"
 			Notification out = null;
 			Notification.Builder builder = null;
 			Bundle in = (Bundle) newWithMapValueDefault(source());
@@ -247,7 +247,7 @@ public class Test {
 			sink(getMapValueDefault(out.extras)); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;extend;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;extend;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.extend(null);
@@ -255,7 +255,7 @@ public class Test {
 		}
 		{
 			// "android.app;Notification$Builder;true;getExtras;;;SyntheticField[android.content.Intent.extras]
-			// of Argument[-1];ReturnValue;value;manual"
+			// of Argument[this];ReturnValue;value;manual"
 			Bundle out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.getExtras();
@@ -269,7 +269,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setActions;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setActions;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setActions((Notification.Action[]) null);
@@ -277,7 +277,7 @@ public class Test {
 		}
 		{
 			// "android.app;Notification$Builder;true;setActions;;;ArrayElement of
-			// Argument[0];Argument[-1];taint;manual"
+			// Argument[0];Argument[this];taint;manual"
 			Notification.Builder out = null;
 			Notification.Action[] in = (Notification.Action[]) new Notification.Action[] {
 					(Notification.Action) source()};
@@ -285,140 +285,140 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setAutoCancel;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setAutoCancel;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setAutoCancel(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setBadgeIconType;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setBadgeIconType;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setBadgeIconType(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setBubbleMetadata;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setBubbleMetadata;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setBubbleMetadata(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setCategory;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setCategory;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setCategory(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setChannelId;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setChannelId;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setChannelId(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setChronometerCountDown;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setChronometerCountDown;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setChronometerCountDown(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setColor;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setColor;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setColor(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setColorized;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setColorized;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setColorized(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setContent;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setContent;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setContent(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setContentInfo;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setContentInfo;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setContentInfo(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setContentIntent;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setContentIntent;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setContentIntent(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setContentIntent;;;Argument[0];Argument[-1];taint;manual"
+			// "android.app;Notification$Builder;true;setContentIntent;;;Argument[0];Argument[this];taint;manual"
 			Notification.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out.setContentIntent(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setContentText;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setContentText;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setContentText(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setContentTitle;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setContentTitle;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setContentTitle(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setCustomBigContentView;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setCustomBigContentView;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setCustomBigContentView(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setCustomHeadsUpContentView;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setCustomHeadsUpContentView;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setCustomHeadsUpContentView(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setDefaults;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setDefaults;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setDefaults(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setDeleteIntent;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setDeleteIntent;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setDeleteIntent(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setDeleteIntent;;;Argument[0];Argument[-1];taint;manual"
+			// "android.app;Notification$Builder;true;setDeleteIntent;;;Argument[0];Argument[this];taint;manual"
 			Notification.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out.setDeleteIntent(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setExtras;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setExtras;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setExtras(null);
@@ -426,448 +426,448 @@ public class Test {
 		}
 		{
 			// "android.app;Notification$Builder;true;setExtras;;;Argument[0];SyntheticField[android.content.Intent.extras]
-			// of Argument[-1];value;manual"
+			// of Argument[this];value;manual"
 			Notification.Builder out = null;
 			Bundle in = (Bundle) source();
 			out.setExtras(in);
 			sink(out.getExtras()); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setFlag;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setFlag;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setFlag(0, false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setForegroundServiceBehavior;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setForegroundServiceBehavior;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setForegroundServiceBehavior(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setFullScreenIntent;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setFullScreenIntent;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setFullScreenIntent(null, false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setGroup;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setGroup;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setGroup(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setGroupAlertBehavior;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setGroupAlertBehavior;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setGroupAlertBehavior(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setGroupSummary;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setGroupSummary;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setGroupSummary(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setLargeIcon;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setLargeIcon;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setLargeIcon((Icon) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setLargeIcon;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setLargeIcon;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setLargeIcon((Bitmap) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setLights;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setLights;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setLights(0, 0, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setLocalOnly;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setLocalOnly;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setLocalOnly(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setLocusId;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setLocusId;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setLocusId(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setNumber;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setNumber;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setNumber(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setOngoing;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setOngoing;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setOngoing(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setOnlyAlertOnce;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setOnlyAlertOnce;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setOnlyAlertOnce(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setPriority;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setPriority;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setPriority(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setProgress;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setProgress;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setProgress(0, 0, false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setPublicVersion;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setPublicVersion;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setPublicVersion(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setPublicVersion;;;Argument[0];Argument[-1];taint;manual"
+			// "android.app;Notification$Builder;true;setPublicVersion;;;Argument[0];Argument[this];taint;manual"
 			Notification.Builder out = null;
 			Notification in = (Notification) source();
 			out.setPublicVersion(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setRemoteInputHistory;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setRemoteInputHistory;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setRemoteInputHistory(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setSettingsText;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setSettingsText;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setSettingsText(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setShortcutId;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setShortcutId;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setShortcutId(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setShowWhen;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setShowWhen;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setShowWhen(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setSmallIcon;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setSmallIcon;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setSmallIcon(0, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setSmallIcon;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setSmallIcon;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setSmallIcon(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setSmallIcon;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setSmallIcon;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setSmallIcon((Icon) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setSortKey;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setSortKey;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setSortKey(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setSound;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setSound;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setSound(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setSound;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setSound;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setSound((Uri) null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setSound;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setSound;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setSound((Uri) null, (AudioAttributes) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setStyle;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setStyle;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setStyle(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setSubText;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setSubText;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setSubText(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setTicker;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setTicker;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setTicker(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setTicker;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setTicker;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setTicker(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setTimeoutAfter;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setTimeoutAfter;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setTimeoutAfter(0L);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setUsesChronometer;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setUsesChronometer;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setUsesChronometer(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setVibrate;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setVibrate;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setVibrate(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setVisibility;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setVisibility;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setVisibility(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Builder;true;setWhen;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$Builder;true;setWhen;;;Argument[this];ReturnValue;value;manual"
 			Notification.Builder out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = in.setWhen(0L);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$Style;true;build;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.app;Notification$Style;true;build;;;Argument[this];ReturnValue;taint;manual"
 			Notification out = null;
 			Notification.Style in = (Notification.Style) source();
 			out = in.build();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$BigPictureStyle;true;BigPictureStyle;(Builder);;Argument[0];Argument[-1];taint;manual"
+			// "android.app;Notification$BigPictureStyle;true;BigPictureStyle;(Builder);;Argument[0];Argument[this];taint;manual"
 			Notification.BigPictureStyle out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = new Notification.BigPictureStyle(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$BigPictureStyle;true;bigLargeIcon;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$BigPictureStyle;true;bigLargeIcon;;;Argument[this];ReturnValue;value;manual"
 			Notification.BigPictureStyle in = (Notification.BigPictureStyle) source();
 			Notification.BigPictureStyle out = in.bigLargeIcon((Icon) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$BigPictureStyle;true;bigPicture;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$BigPictureStyle;true;bigPicture;;;Argument[this];ReturnValue;value;manual"
 			Notification.BigPictureStyle in = (Notification.BigPictureStyle) source();
 			Notification.BigPictureStyle out = in.bigPicture((Bitmap) null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$BigPictureStyle;true;setBigContentTitle;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$BigPictureStyle;true;setBigContentTitle;;;Argument[this];ReturnValue;value;manual"
 			Notification.BigPictureStyle in = (Notification.BigPictureStyle) source();
 			Notification.BigPictureStyle out = in.setBigContentTitle(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$BigPictureStyle;true;setContentDescription;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$BigPictureStyle;true;setContentDescription;;;Argument[this];ReturnValue;value;manual"
 			Notification.BigPictureStyle in = (Notification.BigPictureStyle) source();
 			Notification.BigPictureStyle out = in.setContentDescription(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$BigPictureStyle;true;setSummaryText;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$BigPictureStyle;true;setSummaryText;;;Argument[this];ReturnValue;value;manual"
 			Notification.BigPictureStyle in = (Notification.BigPictureStyle) source();
 			Notification.BigPictureStyle out = in.setSummaryText(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$BigPictureStyle;true;showBigPictureWhenCollapsed;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$BigPictureStyle;true;showBigPictureWhenCollapsed;;;Argument[this];ReturnValue;value;manual"
 			Notification.BigPictureStyle in = (Notification.BigPictureStyle) source();
 			Notification.BigPictureStyle out = in.showBigPictureWhenCollapsed(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$BigTextStyle;true;BigTextStyle;(Builder);;Argument[0];Argument[-1];taint;manual"
+			// "android.app;Notification$BigTextStyle;true;BigTextStyle;(Builder);;Argument[0];Argument[this];taint;manual"
 			Notification.BigTextStyle out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = new Notification.BigTextStyle(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$BigTextStyle;true;bigText;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$BigTextStyle;true;bigText;;;Argument[this];ReturnValue;value;manual"
 			Notification.BigTextStyle in = (Notification.BigTextStyle) source();
 			Notification.BigTextStyle out = in.bigText(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$BigTextStyle;true;setBigContentTitle;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$BigTextStyle;true;setBigContentTitle;;;Argument[this];ReturnValue;value;manual"
 			Notification.BigTextStyle in = (Notification.BigTextStyle) source();
 			Notification.BigTextStyle out = in.setBigContentTitle(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$BigTextStyle;true;setSummaryText;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$BigTextStyle;true;setSummaryText;;;Argument[this];ReturnValue;value;manual"
 			Notification.BigTextStyle in = (Notification.BigTextStyle) source();
 			Notification.BigTextStyle out = in.setSummaryText(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$InboxStyle;true;InboxStyle;(Builder);;Argument[0];Argument[-1];taint;manual"
+			// "android.app;Notification$InboxStyle;true;InboxStyle;(Builder);;Argument[0];Argument[this];taint;manual"
 			Notification.InboxStyle out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = new Notification.InboxStyle(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$InboxStyle;true;addLine;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$InboxStyle;true;addLine;;;Argument[this];ReturnValue;value;manual"
 			Notification.InboxStyle in = (Notification.InboxStyle) source();
 			Notification.InboxStyle out = in.addLine(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$InboxStyle;true;setBigContentTitle;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$InboxStyle;true;setBigContentTitle;;;Argument[this];ReturnValue;value;manual"
 			Notification.InboxStyle in = (Notification.InboxStyle) source();
 			Notification.InboxStyle out = in.setBigContentTitle(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$InboxStyle;true;setSummaryText;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$InboxStyle;true;setSummaryText;;;Argument[this];ReturnValue;value;manual"
 			Notification.InboxStyle in = (Notification.InboxStyle) source();
 			Notification.InboxStyle out = in.setSummaryText(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$MediaStyle;true;MediaStyle;(Builder);;Argument[0];Argument[-1];taint;manual"
+			// "android.app;Notification$MediaStyle;true;MediaStyle;(Builder);;Argument[0];Argument[this];taint;manual"
 			Notification.MediaStyle out = null;
 			Notification.Builder in = (Notification.Builder) source();
 			out = new Notification.MediaStyle(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.app;Notification$MediaStyle;true;setMediaSession;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$MediaStyle;true;setMediaSession;;;Argument[this];ReturnValue;value;manual"
 			Notification.MediaStyle in = (Notification.MediaStyle) source();
 			Notification.MediaStyle out = in.setMediaSession(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.app;Notification$MediaStyle;true;setShowActionsInCompactView;;;Argument[-1];ReturnValue;value;manual"
+			// "android.app;Notification$MediaStyle;true;setShowActionsInCompactView;;;Argument[this];ReturnValue;value;manual"
 			Notification.MediaStyle in = (Notification.MediaStyle) source();
 			Notification.MediaStyle out = in.setShowActionsInCompactView(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;Builder;(Action);;Argument[0];Argument[-1];taint;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;Builder;(Action);;Argument[0];Argument[this];taint;manual"
 			NotificationCompat.Action.Builder out = null;
 			NotificationCompat.Action in = (NotificationCompat.Action) source();
 			out = new NotificationCompat.Action.Builder(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;Builder;(IconCompat,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;Builder;(IconCompat,CharSequence,PendingIntent);;Argument[2];Argument[this];taint;manual"
 			NotificationCompat.Action.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out = new NotificationCompat.Action.Builder((IconCompat) null, (CharSequence) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;Builder;(int,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;Builder;(int,CharSequence,PendingIntent);;Argument[2];Argument[this];taint;manual"
 			NotificationCompat.Action.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out = new NotificationCompat.Action.Builder(0, (CharSequence) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;addExtras;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;addExtras;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Action.Builder out = null;
 			NotificationCompat.Action.Builder in = (NotificationCompat.Action.Builder) source();
 			out = in.addExtras(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;addExtras;;;Argument[0].MapKey;Argument[-1].SyntheticField[android.content.Intent.extras].MapKey;value;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;addExtras;;;Argument[0].MapKey;Argument[this].SyntheticField[android.content.Intent.extras].MapKey;value;manual"
 			NotificationCompat.Action.Builder out = null;
 			Bundle in = (Bundle) newWithMapKeyDefault(source());
 			out.addExtras(in);
 			sink(getMapKeyDefault(out.getExtras())); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;addExtras;;;Argument[0].MapValue;Argument[-1].SyntheticField[android.content.Intent.extras].MapValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;addExtras;;;Argument[0].MapValue;Argument[this].SyntheticField[android.content.Intent.extras].MapValue;value;manual"
 			NotificationCompat.Action.Builder out = null;
 			Bundle in = (Bundle) newWithMapValueDefault(source());
 			out.addExtras(in);
 			sink(getMapValueDefault(out.getExtras())); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;addRemoteInput;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;addRemoteInput;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Action.Builder out = null;
 			NotificationCompat.Action.Builder in = (NotificationCompat.Action.Builder) source();
 			out = in.addRemoteInput(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;build;;;Argument[-1].SyntheticField[android.content.Intent.extras];ReturnValue.SyntheticField[android.content.Intent.extras];value;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;build;;;Argument[this].SyntheticField[android.content.Intent.extras];ReturnValue.SyntheticField[android.content.Intent.extras];value;manual"
 			NotificationCompat.Action out = null;
 			NotificationCompat.Action.Builder builder = null;
 			Bundle in = (Bundle) newWithMapValueDefault(source());
@@ -876,175 +876,175 @@ public class Test {
 			sink(getMapValueDefault(out.getExtras())); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;build;;;Argument[-1];ReturnValue;taint;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;build;;;Argument[this];ReturnValue;taint;manual"
 			NotificationCompat.Action out = null;
 			NotificationCompat.Action.Builder in = (NotificationCompat.Action.Builder) source();
 			out = in.build();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;extend;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;extend;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Action.Builder out = null;
 			NotificationCompat.Action.Builder in = (NotificationCompat.Action.Builder) source();
 			out = in.extend(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;getExtras;;;Argument[-1].SyntheticField[android.content.Intent.extras];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;getExtras;;;Argument[this].SyntheticField[android.content.Intent.extras];ReturnValue;value;manual"
 			Bundle out = null;
 			NotificationCompat.Action.Builder in = (NotificationCompat.Action.Builder) source();
 			out = in.getExtras();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;setAllowGeneratedReplies;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;setAllowGeneratedReplies;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Action.Builder out = null;
 			NotificationCompat.Action.Builder in = (NotificationCompat.Action.Builder) source();
 			out = in.setAllowGeneratedReplies(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;setContextual;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;setContextual;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Action.Builder out = null;
 			NotificationCompat.Action.Builder in = (NotificationCompat.Action.Builder) source();
 			out = in.setContextual(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action$Builder;true;setSemanticAction;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Action$Builder;true;setSemanticAction;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Action.Builder out = null;
 			NotificationCompat.Action.Builder in = (NotificationCompat.Action.Builder) source();
 			out = in.setSemanticAction(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action;true;Action;(IconCompat,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual"
+			// "androidx.core.app;NotificationCompat$Action;true;Action;(IconCompat,CharSequence,PendingIntent);;Argument[2];Argument[this];taint;manual"
 			NotificationCompat.Action out = null;
 			PendingIntent in = (PendingIntent) source();
 			out = new NotificationCompat.Action((IconCompat) null, (CharSequence) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action;true;Action;(int,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual"
+			// "androidx.core.app;NotificationCompat$Action;true;Action;(int,CharSequence,PendingIntent);;Argument[2];Argument[this];taint;manual"
 			NotificationCompat.Action out = null;
 			PendingIntent in = (PendingIntent) source();
 			out = new NotificationCompat.Action(0, (CharSequence) null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Action;true;getExtras;;;Argument[-1].SyntheticField[android.content.Intent.extras];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Action;true;getExtras;;;Argument[this].SyntheticField[android.content.Intent.extras];ReturnValue;value;manual"
 			Bundle out = null;
 			NotificationCompat.Action in = (NotificationCompat.Action) source();
 			out = in.getExtras();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$BigPictureStyle;true;bigLargeIcon;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$BigPictureStyle;true;bigLargeIcon;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.BigPictureStyle out = null;
 			NotificationCompat.BigPictureStyle in = (NotificationCompat.BigPictureStyle) source();
 			out = in.bigLargeIcon(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$BigPictureStyle;true;bigPicture;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$BigPictureStyle;true;bigPicture;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.BigPictureStyle out = null;
 			NotificationCompat.BigPictureStyle in = (NotificationCompat.BigPictureStyle) source();
 			out = in.bigPicture(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$BigPictureStyle;true;setBigContentTitle;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$BigPictureStyle;true;setBigContentTitle;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.BigPictureStyle out = null;
 			NotificationCompat.BigPictureStyle in = (NotificationCompat.BigPictureStyle) source();
 			out = in.setBigContentTitle(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$BigPictureStyle;true;setSummaryText;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$BigPictureStyle;true;setSummaryText;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.BigPictureStyle out = null;
 			NotificationCompat.BigPictureStyle in = (NotificationCompat.BigPictureStyle) source();
 			out = in.setSummaryText(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$BigTextStyle;true;bigText;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$BigTextStyle;true;bigText;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.BigTextStyle out = null;
 			NotificationCompat.BigTextStyle in = (NotificationCompat.BigTextStyle) source();
 			out = in.bigText(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$BigTextStyle;true;setBigContentTitle;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$BigTextStyle;true;setBigContentTitle;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.BigTextStyle out = null;
 			NotificationCompat.BigTextStyle in = (NotificationCompat.BigTextStyle) source();
 			out = in.setBigContentTitle(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$BigTextStyle;true;setSummaryText;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$BigTextStyle;true;setSummaryText;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.BigTextStyle out = null;
 			NotificationCompat.BigTextStyle in = (NotificationCompat.BigTextStyle) source();
 			out = in.setSummaryText(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;addAction;(Action);;Argument[0];Argument[-1];taint;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;addAction;(Action);;Argument[0];Argument[this];taint;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Action in = (NotificationCompat.Action) source();
 			out.addAction(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;addAction;(int,CharSequence,PendingIntent);;Argument[2];Argument[-1];taint;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;addAction;(int,CharSequence,PendingIntent);;Argument[2];Argument[this];taint;manual"
 			NotificationCompat.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out.addAction(0, null, in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;addAction;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;addAction;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.addAction(0, null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;addAction;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;addAction;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.addAction(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;addExtras;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;addExtras;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.addExtras(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;addExtras;;;Argument[0].MapKey;Argument[-1].SyntheticField[android.content.Intent.extras].MapKey;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;addExtras;;;Argument[0].MapKey;Argument[this].SyntheticField[android.content.Intent.extras].MapKey;value;manual"
 			NotificationCompat.Builder out = null;
 			Bundle in = (Bundle) newWithMapKeyDefault(source());
 			out.addExtras(in);
 			sink(getMapKeyDefault(out.getExtras())); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;addExtras;;;Argument[0].MapValue;Argument[-1].SyntheticField[android.content.Intent.extras].MapValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;addExtras;;;Argument[0].MapValue;Argument[this].SyntheticField[android.content.Intent.extras].MapValue;value;manual"
 			NotificationCompat.Builder out = null;
 			Bundle in = (Bundle) newWithMapValueDefault(source());
 			out.addExtras(in);
 			sink(getMapValueDefault(out.getExtras())); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;addPerson;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;addPerson;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.addPerson(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;build;;;Argument[-1].SyntheticField[android.content.Intent.extras];ReturnValue.Field[android.app.Notification.extras];value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;build;;;Argument[this].SyntheticField[android.content.Intent.extras];ReturnValue.Field[android.app.Notification.extras];value;manual"
 			Notification out = null;
 			NotificationCompat.Builder builder = null;
 			Bundle in = (Bundle) newWithMapValueDefault(source());
@@ -1053,406 +1053,406 @@ public class Test {
 			sink(getMapValueDefault(out.extras)); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;build;;;Argument[-1];ReturnValue;taint;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;build;;;Argument[this];ReturnValue;taint;manual"
 			Notification out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.build();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;extend;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;extend;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.extend(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;getExtras;;;Argument[-1].SyntheticField[android.content.Intent.extras];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;getExtras;;;Argument[this].SyntheticField[android.content.Intent.extras];ReturnValue;value;manual"
 			Bundle out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.getExtras();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setAutoCancel;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setAutoCancel;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setAutoCancel(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setBadgeIconType;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setBadgeIconType;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setBadgeIconType(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setBubbleMetadata;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setBubbleMetadata;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setBubbleMetadata(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setCategory;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setCategory;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setCategory(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setChannelId;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setChannelId;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setChannelId(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setChronometerCountDown;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setChronometerCountDown;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setChronometerCountDown(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setColor;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setColor;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setColor(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setColorized;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setColorized;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setColorized(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setContent;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setContent;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setContent(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setContentInfo;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setContentInfo;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setContentInfo(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setContentIntent;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setContentIntent;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setContentIntent(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setContentIntent;;;Argument[0];Argument[-1];taint;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setContentIntent;;;Argument[0];Argument[this];taint;manual"
 			NotificationCompat.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out.setContentIntent(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setContentText;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setContentText;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setContentText(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setContentTitle;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setContentTitle;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setContentTitle(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setCustomBigContentView;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setCustomBigContentView;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setCustomBigContentView(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setCustomHeadsUpContentView;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setCustomHeadsUpContentView;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setCustomHeadsUpContentView(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setDefaults;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setDefaults;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setDefaults(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setDeleteIntent;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setDeleteIntent;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setDeleteIntent(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setDeleteIntent;;;Argument[0];Argument[-1];taint;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setDeleteIntent;;;Argument[0];Argument[this];taint;manual"
 			NotificationCompat.Builder out = null;
 			PendingIntent in = (PendingIntent) source();
 			out.setDeleteIntent(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setExtras;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setExtras;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setExtras(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setExtras;;;Argument[0];Argument[-1].SyntheticField[android.content.Intent.extras];value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setExtras;;;Argument[0];Argument[this].SyntheticField[android.content.Intent.extras];value;manual"
 			NotificationCompat.Builder out = null;
 			Bundle in = (Bundle) source();
 			out.setExtras(in);
 			sink(out.getExtras()); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setFullScreenIntent;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setFullScreenIntent;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setFullScreenIntent(null, false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setGroup;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setGroup;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setGroup(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setGroupAlertBehavior;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setGroupAlertBehavior;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setGroupAlertBehavior(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setGroupSummary;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setGroupSummary;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setGroupSummary(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setLargeIcon;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setLargeIcon;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setLargeIcon(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setLights;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setLights;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setLights(0, 0, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setLocalOnly;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setLocalOnly;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setLocalOnly(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setNumber;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setNumber;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setNumber(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setOngoing;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setOngoing;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setOngoing(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setOnlyAlertOnce;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setOnlyAlertOnce;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setOnlyAlertOnce(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setPriority;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setPriority;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setPriority(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setProgress;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setProgress;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setProgress(0, 0, false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setPublicVersion;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setPublicVersion;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setPublicVersion(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setPublicVersion;;;Argument[0];Argument[-1];taint;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setPublicVersion;;;Argument[0];Argument[this];taint;manual"
 			NotificationCompat.Builder out = null;
 			Notification in = (Notification) source();
 			out.setPublicVersion(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setRemoteInputHistory;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setRemoteInputHistory;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setRemoteInputHistory(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setShortcutId;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setShortcutId;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setShortcutId(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setShowWhen;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setShowWhen;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setShowWhen(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setSmallIcon;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setSmallIcon;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setSmallIcon(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setSmallIcon;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setSmallIcon;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setSmallIcon(0, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setSortKey;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setSortKey;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setSortKey(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setSound;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setSound;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setSound(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setSound;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setSound;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setSound(null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setStyle;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setStyle;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setStyle(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setSubText;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setSubText;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setSubText(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setTicker;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setTicker;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setTicker(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setTicker;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setTicker;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setTicker(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setTimeoutAfter;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setTimeoutAfter;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setTimeoutAfter(0L);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setUsesChronometer;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setUsesChronometer;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setUsesChronometer(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setVibrate;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setVibrate;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setVibrate(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setVisibility;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setVisibility;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setVisibility(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$Builder;true;setWhen;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$Builder;true;setWhen;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.Builder out = null;
 			NotificationCompat.Builder in = (NotificationCompat.Builder) source();
 			out = in.setWhen(0L);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$InboxStyle;true;addLine;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$InboxStyle;true;addLine;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.InboxStyle out = null;
 			NotificationCompat.InboxStyle in = (NotificationCompat.InboxStyle) source();
 			out = in.addLine(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$InboxStyle;true;setBigContentTitle;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$InboxStyle;true;setBigContentTitle;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.InboxStyle out = null;
 			NotificationCompat.InboxStyle in = (NotificationCompat.InboxStyle) source();
 			out = in.setBigContentTitle(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "androidx.core.app;NotificationCompat$InboxStyle;true;setSummaryText;;;Argument[-1];ReturnValue;value;manual"
+			// "androidx.core.app;NotificationCompat$InboxStyle;true;setSummaryText;;;Argument[this];ReturnValue;value;manual"
 			NotificationCompat.InboxStyle out = null;
 			NotificationCompat.InboxStyle in = (NotificationCompat.InboxStyle) source();
 			out = in.setSummaryText(null);

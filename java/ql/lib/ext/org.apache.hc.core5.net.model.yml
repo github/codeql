@@ -3,5 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.hc.core5.net", "URIAuthority", True, "getHostName", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.hc.core5.net", "URIAuthority", True, "toString", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.hc.core5.net", "URIAuthority", True, "getHostName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.hc.core5.net", "URIAuthority", True, "toString", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

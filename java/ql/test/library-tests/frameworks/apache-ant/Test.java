@@ -14,7 +14,7 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "org.apache.tools.zip;ZipEntry;true;ZipEntry;(String);;Argument[0];Argument[-1];taint;ai-generated"
+			// "org.apache.tools.zip;ZipEntry;true;ZipEntry;(String);;Argument[0];Argument[this];taint;ai-generated"
 			ZipEntry out = null;
 			String in = (String) source();
 			out = new ZipEntry(in);

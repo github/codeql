@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.hc.core5.function", "Supplier", True, "get", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.hc.core5.function", "Supplier", True, "get", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
