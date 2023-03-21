@@ -7,9 +7,11 @@ import semmle.code.java.security.XmlParsers
 import semmle.code.java.security.XsltInjection
 
 /**
+ * DEPRECATED: Use `XsltInjectionFlow` instead.
+ *
  * A taint-tracking configuration for unvalidated user input that is used in XSLT transformation.
  */
-class XsltInjectionFlowConfig extends TaintTracking::Configuration {
+deprecated class XsltInjectionFlowConfig extends TaintTracking::Configuration {
   XsltInjectionFlowConfig() { this = "XsltInjectionFlowConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
@@ -24,6 +26,28 @@ class XsltInjectionFlowConfig extends TaintTracking::Configuration {
     any(XsltInjectionAdditionalTaintStep c).step(node1, node2)
   }
 }
+
+/**
+ * A taint-tracking configuration for unvalidated user input that is used in XSLT transformation.
+ */
+private module XsltInjectionFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof XsltInjectionSink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(XsltInjectionAdditionalTaintStep c).step(node1, node2)
+  }
+}
+
+/**
+ * Tracks flow from unvalidated user input to XSLT transformation.
+ */
+module XsltInjectionFlow = TaintTracking::Make<XsltInjectionFlowConfig>;
 
 /**
  * A set of additional taint steps to consider when taint tracking XSLT related data flows.
@@ -46,22 +70,17 @@ private predicate newTransformerOrTemplatesStep(DataFlow::Node n1, DataFlow::Nod
     n2.asExpr() = ma and
     m.getDeclaringType() instanceof TransformerFactory and
     m.hasName(["newTransformer", "newTemplates"]) and
-    not exists(TransformerFactoryWithSecureProcessingFeatureFlowConfig conf |
-      conf.hasFlowToExpr(ma.getQualifier())
-    )
+    not TransformerFactoryWithSecureProcessingFeatureFlow::hasFlowToExpr(ma.getQualifier())
   )
 }
 
 /**
  * A data flow configuration for secure processing feature that is enabled on `TransformerFactory`.
  */
-private class TransformerFactoryWithSecureProcessingFeatureFlowConfig extends DataFlow2::Configuration
+private module TransformerFactoryWithSecureProcessingFeatureFlowConfig implements
+  DataFlow::ConfigSig
 {
-  TransformerFactoryWithSecureProcessingFeatureFlowConfig() {
-    this = "TransformerFactoryWithSecureProcessingFeatureFlowConfig"
-  }
-
-  override predicate isSource(DataFlow::Node src) {
+  predicate isSource(DataFlow::Node src) {
     exists(Variable v | v = src.asExpr().(VarAccess).getVariable() |
       exists(TransformerFactoryFeatureConfig config | config.getQualifier() = v.getAnAccess() |
         config.enables(configSecureProcessing())
@@ -69,15 +88,18 @@ private class TransformerFactoryWithSecureProcessingFeatureFlowConfig extends Da
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
       sink.asExpr() = ma.getQualifier() and
       ma.getMethod().getDeclaringType() instanceof TransformerFactory
     )
   }
 
-  override int fieldFlowBranchLimit() { result = 0 }
+  int fieldFlowBranchLimit() { result = 0 }
 }
+
+private module TransformerFactoryWithSecureProcessingFeatureFlow =
+  DataFlow::Make<TransformerFactoryWithSecureProcessingFeatureFlowConfig>;
 
 /** A `ParserConfig` specific to `TransformerFactory`. */
 private class TransformerFactoryFeatureConfig extends ParserConfig {
