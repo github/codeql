@@ -5,9 +5,11 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.OgnlInjection
 
 /**
+ * DEPRECATED: Use `OgnlInjectionFlow` instead.
+ *
  * A taint-tracking configuration for unvalidated user input that is used in OGNL EL evaluation.
  */
-class OgnlInjectionFlowConfig extends TaintTracking::Configuration {
+deprecated class OgnlInjectionFlowConfig extends TaintTracking::Configuration {
   OgnlInjectionFlowConfig() { this = "OgnlInjectionFlowConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
@@ -22,3 +24,23 @@ class OgnlInjectionFlowConfig extends TaintTracking::Configuration {
     any(OgnlInjectionAdditionalTaintStep c).step(node1, node2)
   }
 }
+
+/**
+ * A taint-tracking configuration for unvalidated user input that is used in OGNL EL evaluation.
+ */
+private module OgnlInjectionFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof OgnlInjectionSink }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(OgnlInjectionAdditionalTaintStep c).step(node1, node2)
+  }
+}
+
+/** Tracks flow of unvalidated user input that is used in OGNL EL evaluation. */
+module OgnlInjectionFlow = TaintTracking::Make<OgnlInjectionFlowConfig>;
