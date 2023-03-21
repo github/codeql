@@ -62,7 +62,8 @@ module MinValueFlowConfig implements DataFlow::ConfigSig {
 module MinValueFlow = DataFlow::Make<MinValueFlowConfig>;
 
 module Flow =
-  DataFlow::MergePathGraph<MaxValueFlow::PathNode, MinValueFlow::PathNode, MaxValueFlow::PathGraph, MinValueFlow::PathGraph>;
+  DataFlow::MergePathGraph<MaxValueFlow::PathNode, MinValueFlow::PathNode, MaxValueFlow::PathGraph,
+    MinValueFlow::PathGraph>;
 
 import Flow::PathGraph
 

@@ -39,7 +39,9 @@ module ArithmeticTaintedLocalUnderflowFlow =
   TaintTracking::Make<ArithmeticTaintedLocalUnderflowConfig>;
 
 module Flow =
-  DataFlow::MergePathGraph<ArithmeticTaintedLocalOverflowFlow::PathNode, ArithmeticTaintedLocalUnderflowFlow::PathNode, ArithmeticTaintedLocalOverflowFlow::PathGraph, ArithmeticTaintedLocalUnderflowFlow::PathGraph>;
+  DataFlow::MergePathGraph<ArithmeticTaintedLocalOverflowFlow::PathNode,
+    ArithmeticTaintedLocalUnderflowFlow::PathNode, ArithmeticTaintedLocalOverflowFlow::PathGraph,
+    ArithmeticTaintedLocalUnderflowFlow::PathGraph>;
 
 import Flow::PathGraph
 
