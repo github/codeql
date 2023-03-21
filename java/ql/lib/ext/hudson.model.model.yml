@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["hudson.model", "DirectoryBrowserSupport$Path", False, "Path", "(String,String,boolean,long,boolean,long)", "", "Argument[0]", "Argument[-1].SyntheticField[hudson.model.DirectoryBrowserSupport$Path.href]", "taint", "ai-generated"]
+      - ["hudson.model", "DirectoryBrowserSupport$Path", False, "Path", "(String,String,boolean,long,boolean,long)", "", "Argument[0]", "Argument[this].SyntheticField[hudson.model.DirectoryBrowserSupport$Path.href]", "taint", "ai-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: sinkModel
