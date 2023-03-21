@@ -19,7 +19,7 @@ import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
-import DataFlow::PathGraph
+import StringSizeFlow::PathGraph1
 
 pragma[nomagic]
 Instruction getABoundIn(SemBound b, IRFunction func) {
@@ -77,12 +77,13 @@ predicate isSinkPairImpl(
   )
 }
 
-class StringSizeConfiguration extends ProductFlow::Configuration {
-  StringSizeConfiguration() { this = "StringSizeConfiguration" }
+module StringSizeConfig implements ProductFlow::StateConfigSig {
+  class FlowState1 = string;
 
-  override predicate isSourcePair(
-    DataFlow::Node bufSource, DataFlow::FlowState state1, DataFlow::Node sizeSource,
-    DataFlow::FlowState state2
+  class FlowState2 = string;
+
+  predicate isSourcePair(
+    DataFlow::Node bufSource, FlowState1 state1, DataFlow::Node sizeSource, FlowState2 state2
   ) {
     // In the case of an allocation like
     // ```cpp
@@ -94,9 +95,8 @@ class StringSizeConfiguration extends ProductFlow::Configuration {
     hasSize(bufSource.asConvertedExpr(), sizeSource, state2)
   }
 
-  override predicate isSinkPair(
-    DataFlow::Node bufSink, DataFlow::FlowState state1, DataFlow::Node sizeSink,
-    DataFlow::FlowState state2
+  predicate isSinkPair(
+    DataFlow::Node bufSink, FlowState1 state1, DataFlow::Node sizeSink, FlowState2 state2
   ) {
     state1 instanceof DataFlow::FlowStateEmpty and
     state2 = [-32 .. 32].toString() and // An arbitrary bound because we need to bound `state2`
@@ -106,9 +106,18 @@ class StringSizeConfiguration extends ProductFlow::Configuration {
     )
   }
 
-  override predicate isAdditionalFlowStep2(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
+  predicate isBarrier1(DataFlow::Node node, FlowState1 state) { none() }
+
+  predicate isBarrier2(DataFlow::Node node, FlowState2 state) { none() }
+
+  predicate isAdditionalFlowStep1(
+    DataFlow::Node node1, FlowState1 state1, DataFlow::Node node2, FlowState2 state2
+  ) {
+    none()
+  }
+
+  predicate isAdditionalFlowStep2(
+    DataFlow::Node node1, FlowState1 state1, DataFlow::Node node2, FlowState2 state2
   ) {
     exists(AddInstruction add, Operand op, int delta, int s1, int s2 |
       s1 = [-32 .. 32] and // An arbitrary bound because we need to bound `state`
@@ -122,12 +131,14 @@ class StringSizeConfiguration extends ProductFlow::Configuration {
   }
 }
 
+module StringSizeFlow = ProductFlow::MakeWithState<StringSizeConfig>;
+
 from
-  StringSizeConfiguration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
-  DataFlow::PathNode sink1, DataFlow2::PathNode sink2, int overflow, int sinkState,
+  StringSizeFlow::PathNode1 source1, StringSizeFlow::PathNode2 source2,
+  StringSizeFlow::PathNode1 sink1, StringSizeFlow::PathNode2 sink2, int overflow, int sinkState,
   CallInstruction c, DataFlow::Node sourceNode, Expr buffer, string element
 where
-  conf.hasFlowPath(source1, source2, sink1, sink2) and
+  StringSizeFlow::hasFlowPath(source1, source2, sink1, sink2) and
   sinkState = sink2.getState().toInt() and
   isSinkPairImpl(c, sink1.getNode(), sink2.getNode(), overflow + sinkState, buffer) and
   overflow > 0 and
