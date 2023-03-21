@@ -12,7 +12,7 @@ class RangeAnalysisTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(SemExpr e, IR::CallInstruction call |
-      call.getArgument(0) = e and
+      getSemanticExpr(call.getArgument(0)) = e and
       call.getStaticCallTarget().hasName("range") and
       tag = "range" and
       element = e.toString() and

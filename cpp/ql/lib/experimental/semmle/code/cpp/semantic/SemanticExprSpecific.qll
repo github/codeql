@@ -105,7 +105,7 @@ module SemanticExprConfig {
   SemBasicBlock getExprBasicBlock(Expr e) { result = getSemanticBasicBlock(e.getBlock()) }
 
   private predicate anyConstantExpr(Expr expr, SemType type, string value) {
-    exists(IR::ConstantInstruction instr | instr = expr |
+    exists(IR::ConstantInstruction instr | getSemanticExpr(instr) = expr |
       type = getSemanticType(instr.getResultIRType()) and
       value = instr.getValue()
     )
@@ -146,41 +146,46 @@ module SemanticExprConfig {
   predicate nullLiteral(Expr expr, SemAddressType type) { anyConstantExpr(expr, type, _) }
 
   predicate stringLiteral(Expr expr, SemType type, string value) {
-    anyConstantExpr(expr, type, value) and expr instanceof IR::StringConstantInstruction
+    anyConstantExpr(expr, type, value) and
+    expr.getUnconverted() instanceof IR::StringConstantInstruction
   }
 
   predicate binaryExpr(Expr expr, Opcode opcode, SemType type, Expr leftOperand, Expr rightOperand) {
-    exists(IR::BinaryInstruction instr | instr = expr |
+    exists(IR::BinaryInstruction instr |
+      instr = expr.getUnconverted() and
       type = getSemanticType(instr.getResultIRType()) and
-      leftOperand = instr.getLeft() and
-      rightOperand = instr.getRight() and
+      leftOperand = getSemanticExpr(instr.getLeft()) and
+      rightOperand = getSemanticExpr(instr.getRight()) and
       // REVIEW: Merge the two `Opcode` types.
       opcode.toString() = instr.getOpcode().toString()
     )
   }
 
   predicate unaryExpr(Expr expr, Opcode opcode, SemType type, Expr operand) {
-    type = getSemanticType(expr.getResultIRType()) and
-    (
-      exists(IR::UnaryInstruction instr | instr = expr |
-        operand = instr.getUnary() and
-        // REVIEW: Merge the two operand types.
-        opcode.toString() = instr.getOpcode().toString()
-      )
-      or
-      exists(IR::StoreInstruction instr | instr = expr |
-        operand = instr.getSourceValue() and
-        opcode instanceof Opcode::Store
-      )
+    exists(IR::UnaryInstruction instr | instr = expr.getUnconverted() |
+      type = getSemanticType(instr.getResultIRType()) and
+      operand = getSemanticExpr(instr.getUnary()) and
+      // REVIEW: Merge the two operand types.
+      opcode.toString() = instr.getOpcode().toString()
+    )
+    or
+    exists(IR::StoreInstruction instr | instr = expr.getUnconverted() |
+      type = getSemanticType(instr.getResultIRType()) and
+      operand = getSemanticExpr(instr.getSourceValue()) and
+      opcode instanceof Opcode::Store
     )
   }
 
   predicate nullaryExpr(Expr expr, Opcode opcode, SemType type) {
-    type = getSemanticType(expr.getResultIRType()) and
-    (
-      expr instanceof IR::LoadInstruction and opcode instanceof Opcode::Load
-      or
-      expr instanceof IR::InitializeParameterInstruction and
+    exists(IR::LoadInstruction load |
+      load = expr.getUnconverted() and
+      type = getSemanticType(load.getResultIRType()) and
+      opcode instanceof Opcode::Load
+    )
+    or
+    exists(IR::InitializeParameterInstruction init |
+      init = expr.getUnconverted() and
+      type = getSemanticType(init.getResultIRType()) and
       opcode instanceof Opcode::InitializeParameter
     )
   }
@@ -267,7 +272,9 @@ module SemanticExprConfig {
     final override IR::Operand asOperand() { result = op }
   }
 
-  predicate explicitUpdate(SsaVariable v, Expr sourceExpr) { v.asInstruction() = sourceExpr }
+  predicate explicitUpdate(SsaVariable v, Expr sourceExpr) {
+    getSemanticExpr(v.asInstruction()) = sourceExpr
+  }
 
   predicate phi(SsaVariable v) { v.asInstruction() instanceof IR::PhiInstruction }
 
@@ -280,9 +287,9 @@ module SemanticExprConfig {
   }
 
   Expr getAUse(SsaVariable v) {
-    result.(IR::LoadInstruction).getSourceValue() = v.asInstruction()
+    result.getUnconverted().(IR::LoadInstruction).getSourceValue() = v.asInstruction()
     or
-    result = valueNumber(v.asPointerArithGuard()).getAnInstruction()
+    result.getUnconverted() = valueNumber(v.asPointerArithGuard()).getAnInstruction()
   }
 
   SemType getSsaVariableType(SsaVariable v) {
@@ -391,17 +398,21 @@ module SemanticExprConfig {
   }
 
   Expr getBoundExpr(Bound bound, int delta) {
-    result = bound.(IRBound::Bound).getInstruction(delta)
+    result = getSemanticExpr(bound.(IRBound::Bound).getInstruction(delta))
   }
 
   class Guard = IRGuards::IRGuardCondition;
 
   predicate guard(Guard guard, BasicBlock block) { block = guard.getBlock() }
 
-  Expr getGuardAsExpr(Guard guard) { result = guard }
+  Expr getGuardAsExpr(Guard guard) { result = getSemanticExpr(guard) }
 
   predicate equalityGuard(Guard guard, Expr e1, Expr e2, boolean polarity) {
-    guard.comparesEq(e1.getAUse(), e2.getAUse(), 0, true, polarity)
+    exists(IR::Instruction left, IR::Instruction right |
+      getSemanticExpr(left) = e1 and
+      getSemanticExpr(right) = e2 and
+      guard.comparesEq(left.getAUse(), right.getAUse(), 0, true, polarity)
+    )
   }
 
   predicate guardDirectlyControlsBlock(Guard guard, BasicBlock controlled, boolean branch) {
@@ -412,16 +423,17 @@ module SemanticExprConfig {
     guard.controlsEdge(bb1, bb2, branch)
   }
 
-  Guard comparisonGuard(Expr e) { result = e }
+  Guard comparisonGuard(Expr e) { getSemanticExpr(result) = e }
 
   predicate implies_v2(Guard g1, boolean b1, Guard g2, boolean b2) {
     none() // TODO
   }
+
+  /** Gets the expression associated with `instr`. */
+  SemExpr getSemanticExpr(IR::Instruction instr) { result = Equiv::getEquivalenceClass(instr) }
 }
 
-SemExpr getSemanticExpr(IR::Instruction instr) { result = instr }
-
-IR::Instruction getCppInstruction(SemExpr e) { e = result }
+predicate getSemanticExpr = SemanticExprConfig::getSemanticExpr/1;
 
 SemBasicBlock getSemanticBasicBlock(IR::IRBlock block) { result = block }
 
