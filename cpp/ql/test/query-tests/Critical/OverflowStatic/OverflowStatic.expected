@@ -14,3 +14,4 @@
 | test.cpp:24:27:24:27 | 4 | Potential buffer-overflow: 'buffer1' has size 3 not 4. |
 | test.cpp:26:27:26:27 | 4 | Potential buffer-overflow: 'buffer2' has size 3 not 4. |
 | test.cpp:40:22:40:27 | amount | Potential buffer-overflow: 'buffer' has size 100 not 101. |
+| test.cpp:62:33:62:43 | access to array | Potential buffer-overflow: 'buffer' has size 100 but 'buffer[101]' may be accessed here. |

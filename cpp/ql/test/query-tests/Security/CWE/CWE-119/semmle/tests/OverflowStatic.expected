@@ -5,4 +5,5 @@
 | tests.cpp:245:42:245:42 | 6 | Potential buffer-overflow: 'global_array_5' has size 5 not 6. |
 | tests.cpp:349:2:349:14 | access to array | Potential buffer-overflow: 'charArray' has size 10 but 'charArray[10]' may be accessed here. |
 | tests.cpp:350:17:350:29 | access to array | Potential buffer-overflow: 'charArray' has size 10 but 'charArray[10]' may be accessed here. |
+| tests.cpp:608:33:608:43 | access to array | Potential buffer-overflow: 'buffer' has size 100 but 'buffer[101]' may be accessed here. |
 | var_size_struct.cpp:103:39:103:41 | 129 | Potential buffer-overflow: 'str' has size 128 not 129. |
