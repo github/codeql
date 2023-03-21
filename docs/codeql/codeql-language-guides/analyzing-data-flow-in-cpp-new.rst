@@ -2,7 +2,7 @@
 
 .. pull-quote:: Note
 
-   The data flow library described here is available from CodeQL 2.12.5 onwards. For information on the previous version of the library, see :ref:`Analyzing data flow in C and C++ <analyzing-data-flow-in-cpp>` for the library available in earlier versions.
+   The data flow library described here is available from CodeQL 2.12.5 onwards. For information on the previous version of the library, see :ref:`Analyzing data flow in C and C++ <analyzing-data-flow-in-cpp>`.
 
 Analyzing data flow in C and C++ (new)
 ======================================
