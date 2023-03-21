@@ -50,7 +50,6 @@
 | tests.cpp:546:6:546:10 | call to fread | This 'fread' operation may access 400 bytes but the $@ is only 100 bytes. | tests.cpp:532:7:532:16 | charBuffer | destination buffer |
 | tests.cpp:569:6:569:15 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:565:7:565:12 | buffer | array |
 | tests.cpp:577:7:577:13 | access to array | This array indexing operation accesses a negative index -1 on the $@. | tests.cpp:565:7:565:12 | buffer | array |
-| tests.cpp:608:33:608:43 | access to array | This array indexing operation accesses byte offset 101 but the $@ is only 100 bytes. | tests.cpp:607:7:607:12 | buffer | array |
 | tests_restrict.c:12:2:12:7 | call to memcpy | This 'memcpy' operation accesses 2 bytes but the $@ is only 1 byte. | tests_restrict.c:7:6:7:13 | smallbuf | source buffer |
 | unions.cpp:26:2:26:7 | call to memset | This 'memset' operation accesses 200 bytes but the $@ is only 100 bytes. | unions.cpp:21:10:21:11 | mu | destination buffer |
 | unions.cpp:27:2:27:7 | call to memset | This 'memset' operation accesses 100 bytes but the $@ is only 10 bytes. | unions.cpp:15:7:15:11 | small | destination buffer |

@@ -605,7 +605,7 @@ void test22(bool b, const char* source) {
 
 int test23() {
 	char buffer[100];
-	return sizeof(buffer) / sizeof(buffer[101]); // GOOD [FALSE POSITIVE]
+	return sizeof(buffer) / sizeof(buffer[101]); // GOOD
 }
 
 int tests_main(int argc, char *argv[])
