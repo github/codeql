@@ -64,6 +64,7 @@ class UnimplementedEquals extends EqualsMethod {
 
 from EqualsMethod m
 where
+  m.getFile().isJavaSourceFile() and
   exists(m.getBody()) and
   exists(Parameter p | p = m.getAParameter() |
     // The parameter has no type test

@@ -6,6 +6,7 @@
  * @precision high
  * @id java/unvalidated-cors-origin-set
  * @tags security
+ *       experimental
  *       external/cwe/cwe-346
  */
 

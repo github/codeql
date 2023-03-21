@@ -1,1 +1,16 @@
-| pam_test.py:48:18:48:44 | ControlFlowNode for pam_authenticate() | This PAM authentication call may lead to an authorization bypass, since 'pam_acct_mgmt' is not called afterwards. |
+edges
+| pam_test.py:0:0:0:0 | ModuleVariableNode for pam_test.request | pam_test.py:71:16:71:22 | ControlFlowNode for request |
+| pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | pam_test.py:4:26:4:32 | GSSA Variable request |
+| pam_test.py:4:26:4:32 | GSSA Variable request | pam_test.py:0:0:0:0 | ModuleVariableNode for pam_test.request |
+| pam_test.py:71:16:71:22 | ControlFlowNode for request | pam_test.py:71:16:71:27 | ControlFlowNode for Attribute |
+| pam_test.py:71:16:71:27 | ControlFlowNode for Attribute | pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() |
+nodes
+| pam_test.py:0:0:0:0 | ModuleVariableNode for pam_test.request | semmle.label | ModuleVariableNode for pam_test.request |
+| pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
+| pam_test.py:4:26:4:32 | GSSA Variable request | semmle.label | GSSA Variable request |
+| pam_test.py:71:16:71:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
+| pam_test.py:71:16:71:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | semmle.label | ControlFlowNode for pam_authenticate() |
+subpaths
+#select
+| pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | pam_test.py:76:14:76:40 | ControlFlowNode for pam_authenticate() | This PAM authentication depends on a $@, and 'pam_acct_mgmt' is not called afterwards. | pam_test.py:4:26:4:32 | ControlFlowNode for ImportMember | user-provided value |

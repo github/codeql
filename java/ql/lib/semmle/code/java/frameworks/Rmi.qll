@@ -1,4 +1,5 @@
-/* Remote Method Invocation. */
+/** Remote Method Invocation. */
+
 import java
 
 /** The interface `java.rmi.Remote`. */

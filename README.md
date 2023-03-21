@@ -10,6 +10,8 @@ There is [extensive documentation](https://codeql.github.com/docs/) on getting s
 
 We welcome contributions to our standard library and standard checks. Do you have an idea for a new check, or how to improve an existing query? Then please go ahead and open a pull request! Before you do, though, please take the time to read our [contributing guidelines](CONTRIBUTING.md). You can also consult our [style guides](https://github.com/github/codeql/tree/main/docs) to learn how to format your code for consistency and clarity, how to write query metadata, and how to write query help documentation for your query.
 
+For information on contributing to CodeQL documentation, see the "[contributing guide](docs/codeql/CONTRIBUTING.md)" for docs.
+
 ## License
 
 The code in this repository is licensed under the [MIT License](LICENSE) by [GitHub](https://github.com).

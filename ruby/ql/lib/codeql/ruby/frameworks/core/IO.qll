@@ -114,7 +114,7 @@ module IO {
    * ```
    * Ruby documentation: https://docs.ruby-lang.org/en/3.1/IO.html#method-c-popen
    */
-  class POpenCall extends SystemCommandExecution::Range, DataFlow::CallNode {
+  class POpenCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
     POpenCall() { this = API::getTopLevelMember("IO").getAMethodCall("popen") }
 
     override DataFlow::Node getAnArgument() { this.argument(result, _) }
@@ -131,7 +131,7 @@ module IO {
         not n instanceof ExprNodes::ArrayLiteralCfgNode and
         (
           // IO.popen({var: "a"}, "cmd", {some: :opt})
-          arg = this.getArgument([0, 1]) and
+          arg = super.getArgument([0, 1]) and
           // We over-approximate by assuming a subshell if the argument isn't an array or "-".
           // This increases the sensitivity of the CommandInjection query at the risk of some FPs.
           if n.getConstantValue().getString() = "-" then shell = false else shell = true
@@ -139,7 +139,7 @@ module IO {
           // IO.popen([{var: "b"}, "cmd", "arg1", "arg2", {some: :opt}])
           // IO.popen({var: "a"}, ["cmd", "arg1", "arg2", {some: :opt}])
           shell = false and
-          exists(ExprNodes::ArrayLiteralCfgNode arr | this.getArgument([0, 1]).asExpr() = arr |
+          exists(ExprNodes::ArrayLiteralCfgNode arr | super.getArgument([0, 1]).asExpr() = arr |
             n = arr.getAnArgument()
             or
             // IO.popen([{var: "b"}, ["cmd", "argv0"], "arg1", "arg2", {some: :opt}])

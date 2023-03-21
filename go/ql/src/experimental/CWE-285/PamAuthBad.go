@@ -1,4 +1,9 @@
-func bad() error {
+package main
+
+import "fmt"
+
+func bad() (string, error) {
+	// ...
 	t, err := pam.StartFunc("", "username", func(s pam.Style, msg string) (string, error) {
 		switch s {
 		case pam.PromptEchoOff:

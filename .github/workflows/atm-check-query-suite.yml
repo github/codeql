@@ -13,7 +13,7 @@ on:
 
 jobs:
   atm-check-query-suite:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest-xl
 
     steps:
       - uses: actions/checkout@v3
@@ -22,6 +22,12 @@ jobs:
         uses: ./.github/actions/fetch-codeql
         with:
           channel: release
+
+      - name: Cache compilation cache
+        id: query-cache
+        uses: ./.github/actions/cache-query-compilation
+        with: 
+          key: atm-suite
 
       - name: Install ATM model
         run: |
@@ -50,10 +56,13 @@ jobs:
           echo "SARIF_PATH=${SARIF_PATH}" >> "${GITHUB_ENV}"
 
           codeql database analyze \
+            --threads=0 \
+            --ram 50000 \
             --format sarif-latest \
             --output "${SARIF_PATH}" \
             --sarif-group-rules-by-pack \
             -vv \
+            --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}" \
             -- \
             "${DB_PATH}" \
             "${QUERY_PACK}/${QUERY_SUITE}"

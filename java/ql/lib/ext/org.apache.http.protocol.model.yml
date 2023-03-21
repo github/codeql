@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.http.protocol", "HttpRequestHandler", True, "handle", "(HttpRequest,HttpResponse,HttpContext)", "", "Parameter[0]", "remote", "manual"]

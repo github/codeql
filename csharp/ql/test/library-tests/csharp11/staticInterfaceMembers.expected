@@ -1,0 +1,59 @@
+interfacemembers
+| INumber<> | StaticInterfaceMembers.cs:3:32:3:33 | ++ | abstract |
+| INumber<> | StaticInterfaceMembers.cs:3:32:3:33 | ++ | public |
+| INumber<> | StaticInterfaceMembers.cs:3:32:3:33 | ++ | static |
+| INumber<> | StaticInterfaceMembers.cs:5:31:5:32 | -- | public |
+| INumber<> | StaticInterfaceMembers.cs:5:31:5:32 | -- | static |
+| INumber<> | StaticInterfaceMembers.cs:5:31:5:32 | -- | virtual |
+| INumber<> | StaticInterfaceMembers.cs:7:32:7:32 | + | abstract |
+| INumber<> | StaticInterfaceMembers.cs:7:32:7:32 | + | public |
+| INumber<> | StaticInterfaceMembers.cs:7:32:7:32 | + | static |
+| INumber<> | StaticInterfaceMembers.cs:9:31:9:31 | - | public |
+| INumber<> | StaticInterfaceMembers.cs:9:31:9:31 | - | static |
+| INumber<> | StaticInterfaceMembers.cs:9:31:9:31 | - | virtual |
+| INumber<> | StaticInterfaceMembers.cs:11:30:11:37 | explicit conversion | abstract |
+| INumber<> | StaticInterfaceMembers.cs:11:30:11:37 | explicit conversion | public |
+| INumber<> | StaticInterfaceMembers.cs:11:30:11:37 | explicit conversion | static |
+| INumber<> | StaticInterfaceMembers.cs:13:30:13:37 | explicit conversion | abstract |
+| INumber<> | StaticInterfaceMembers.cs:13:30:13:37 | explicit conversion | public |
+| INumber<> | StaticInterfaceMembers.cs:13:30:13:37 | explicit conversion | static |
+| INumber<> | StaticInterfaceMembers.cs:15:23:15:25 | Inc | abstract |
+| INumber<> | StaticInterfaceMembers.cs:15:23:15:25 | Inc | public |
+| INumber<> | StaticInterfaceMembers.cs:15:23:15:25 | Inc | static |
+| INumber<> | StaticInterfaceMembers.cs:17:22:17:24 | Dec | public |
+| INumber<> | StaticInterfaceMembers.cs:17:22:17:24 | Dec | static |
+| INumber<> | StaticInterfaceMembers.cs:17:22:17:24 | Dec | virtual |
+| INumber<> | StaticInterfaceMembers.cs:19:23:19:25 | Add | abstract |
+| INumber<> | StaticInterfaceMembers.cs:19:23:19:25 | Add | public |
+| INumber<> | StaticInterfaceMembers.cs:19:23:19:25 | Add | static |
+| INumber<> | StaticInterfaceMembers.cs:21:22:21:29 | Subtract | public |
+| INumber<> | StaticInterfaceMembers.cs:21:22:21:29 | Subtract | static |
+| INumber<> | StaticInterfaceMembers.cs:21:22:21:29 | Subtract | virtual |
+| INumber<> | StaticInterfaceMembers.cs:23:14:23:17 | Zero | public |
+| INumber<> | StaticInterfaceMembers.cs:23:14:23:17 | Zero | static |
+implements
+| StaticInterfaceMembers.cs:35:36:35:37 | ++ | StaticInterfaceMembers.cs:3:32:3:33 | ++ |
+| StaticInterfaceMembers.cs:38:36:38:37 | -- | StaticInterfaceMembers.cs:5:31:5:32 | -- |
+| StaticInterfaceMembers.cs:41:46:41:46 | + | StaticInterfaceMembers.cs:7:32:7:32 | + |
+| StaticInterfaceMembers.cs:44:46:44:46 | - | StaticInterfaceMembers.cs:9:31:9:31 | - |
+| StaticInterfaceMembers.cs:47:28:47:35 | explicit conversion | StaticInterfaceMembers.cs:11:30:11:37 | explicit conversion |
+| StaticInterfaceMembers.cs:49:38:49:45 | explicit conversion | StaticInterfaceMembers.cs:13:30:13:37 | explicit conversion |
+| StaticInterfaceMembers.cs:51:37:51:39 | Inc | StaticInterfaceMembers.cs:15:23:15:25 | Inc |
+| StaticInterfaceMembers.cs:54:37:54:39 | Dec | StaticInterfaceMembers.cs:17:22:17:24 | Dec |
+| StaticInterfaceMembers.cs:57:27:57:29 | Add | StaticInterfaceMembers.cs:19:23:19:25 | Add |
+| StaticInterfaceMembers.cs:60:27:60:34 | Subtract | StaticInterfaceMembers.cs:21:22:21:29 | Subtract |
+publicmembers
+| StaticInterfaceMembers.cs:28:19:28:22 | Real |
+| StaticInterfaceMembers.cs:29:19:29:27 | Imaginary |
+| StaticInterfaceMembers.cs:31:12:31:18 | Complex |
+| StaticInterfaceMembers.cs:33:27:33:30 | Zero |
+| StaticInterfaceMembers.cs:35:36:35:37 | ++ |
+| StaticInterfaceMembers.cs:38:36:38:37 | -- |
+| StaticInterfaceMembers.cs:41:46:41:46 | + |
+| StaticInterfaceMembers.cs:44:46:44:46 | - |
+| StaticInterfaceMembers.cs:47:28:47:35 | explicit conversion |
+| StaticInterfaceMembers.cs:49:38:49:45 | explicit conversion |
+| StaticInterfaceMembers.cs:51:37:51:39 | Inc |
+| StaticInterfaceMembers.cs:54:37:54:39 | Dec |
+| StaticInterfaceMembers.cs:57:27:57:29 | Add |
+| StaticInterfaceMembers.cs:60:27:60:34 | Subtract |

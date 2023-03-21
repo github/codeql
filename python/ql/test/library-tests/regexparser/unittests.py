@@ -11,7 +11,7 @@ re.compile(r'(?:.|\n)*b', re.DOTALL) # Has ReDoS.
 # minimal example constructed by @erik-krogh
 baz = re.compile(r'\+0')
 
-# exerpts from LGTM.com
+# exerpts from real-world results
 re.compile(r'\+0x')
 re.compile(r'\+0x.*')
 re.compile(r'+\-0+\.')

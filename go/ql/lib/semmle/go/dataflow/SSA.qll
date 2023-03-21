@@ -344,7 +344,7 @@ class SsaWithFields extends TSsaWithFields {
   SsaVariable getBaseVariable() {
     this = TRoot(result)
     or
-    exists(SsaWithFields base, Field f | this = TStep(base, f) | result = base.getBaseVariable())
+    exists(SsaWithFields base | this = TStep(base, _) | result = base.getBaseVariable())
   }
 
   /** Gets a use that refers to this SSA variable with fields. */

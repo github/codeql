@@ -4,7 +4,7 @@ import csharp
 
 /** The `Moq.Language` Namespace. */
 class MoqLanguageNamespace extends Namespace {
-  MoqLanguageNamespace() { this.hasQualifiedName("Moq.Language") }
+  MoqLanguageNamespace() { this.getFullName() = "Moq.Language" }
 }
 
 /**

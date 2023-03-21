@@ -2,7 +2,6 @@
 
 import semmle.code.csharp.Type
 private import semmle.code.csharp.frameworks.System
-private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** The `System.Diagnostics` namespace. */
 class SystemDiagnosticsNamespace extends Namespace {
@@ -75,58 +74,9 @@ class SystemDiagnosticsProcessClass extends SystemDiagnosticsClass {
 }
 
 /** The `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute` class. */
-class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAttributeClass extends SystemDiagnosticsCodeAnalysisClass {
+class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAttributeClass extends SystemDiagnosticsCodeAnalysisClass
+{
   SystemDiagnosticsCodeAnalysisDoesNotReturnIfAttributeClass() {
     this.hasName("DoesNotReturnIfAttribute")
-  }
-}
-
-/** Data flow for `System.Diagnostics.ActivityTagsCollection`. */
-private class SystemDiagnosticsActivityTagsCollectionFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Diagnostics;ActivityTagsCollection;false;ActivityTagsCollection;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
-        "System.Diagnostics;ActivityTagsCollection;false;ActivityTagsCollection;(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<System.String,System.Object>>);;Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
-        "System.Diagnostics;ActivityTagsCollection;false;Add;(System.Collections.Generic.KeyValuePair<System.String,System.Object>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Key];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key];value;manual",
-        "System.Diagnostics;ActivityTagsCollection;false;Add;(System.Collections.Generic.KeyValuePair<System.String,System.Object>);;Argument[0].Property[System.Collections.Generic.KeyValuePair<,>.Value];Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Value];value;manual",
-        "System.Diagnostics;ActivityTagsCollection;false;GetEnumerator;();;Argument[this].Element;ReturnValue.Property[System.Diagnostics.ActivityTagsCollection+Enumerator.Current];value;manual",
-      ]
-  }
-}
-
-/** Data flow for `System.Diagnostics.TraceListenerCollection`. */
-private class SystemDiagnosticsTraceListenerCollectionFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Diagnostics;TraceListenerCollection;false;Add;(System.Diagnostics.TraceListener);;Argument[0];Argument[this].Element;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;AddRange;(System.Diagnostics.TraceListenerCollection);;Argument[0].Element;Argument[this].Element;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;AddRange;(System.Diagnostics.TraceListener[]);;Argument[0].Element;Argument[this].Element;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;CopyTo;(System.Diagnostics.TraceListener[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;Insert;(System.Int32,System.Diagnostics.TraceListener);;Argument[1];Argument[this].Element;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;get_Item;(System.Int32);;Argument[this].Element;ReturnValue;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;get_Item;(System.String);;Argument[this].Element;ReturnValue;value;manual",
-        "System.Diagnostics;TraceListenerCollection;false;set_Item;(System.Int32,System.Diagnostics.TraceListener);;Argument[1];Argument[this].Element;value;manual",
-      ]
-  }
-}
-
-/** Data flow for `System.Diagnostics.ProcessModuleCollection`. */
-private class SystemDiagnosticsProcessModuleCollectionFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      "System.Diagnostics;ProcessModuleCollection;false;CopyTo;(System.Diagnostics.ProcessModule[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual"
-  }
-}
-
-/** Data flow for `System.Diagnostics.ProcessThreadCollection`. */
-private class SystemDiagnosticsProcessThreadCollectionFlowModelCsv extends SummaryModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "System.Diagnostics;ProcessThreadCollection;false;Add;(System.Diagnostics.ProcessThread);;Argument[0];Argument[this].Element;value;manual",
-        "System.Diagnostics;ProcessThreadCollection;false;CopyTo;(System.Diagnostics.ProcessThread[],System.Int32);;Argument[this].Element;Argument[0].Element;value;manual",
-      ]
   }
 }

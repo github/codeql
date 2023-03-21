@@ -23,9 +23,7 @@ module SqlInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of remote user input, considered as a flow source for string based query injection. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /** An SQL expression passed to an API call that executes SQL. */
   class SqlInjectionExprSink extends Sink instanceof SQL::SqlString { }
@@ -36,9 +34,7 @@ module SqlInjection {
   }
 
   /** An GraphQL expression passed to an API call that executes GraphQL. */
-  class GraphqlInjectionSink extends Sink {
-    GraphqlInjectionSink() { this instanceof GraphQL::GraphQLString }
-  }
+  class GraphqlInjectionSink extends Sink instanceof GraphQL::GraphQLString { }
 
   /**
    * An LDAPjs sink.
@@ -63,7 +59,8 @@ module SqlInjection {
    * For simplicity it's used as a sanitizer for all of `js/sql-injection`.
    */
   class LdapStringSanitizer extends Sanitizer,
-    IncompleteBlacklistSanitizer::StringReplaceCallSequence {
+    IncompleteBlacklistSanitizer::StringReplaceCallSequence
+  {
     LdapStringSanitizer() {
       forall(string char | char = ["*", "(", ")", "\\", "/"] |
         this.getAMember().getAReplacedString() = char

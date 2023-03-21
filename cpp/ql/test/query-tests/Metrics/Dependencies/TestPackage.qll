@@ -3,10 +3,8 @@ import Metrics.Dependencies.ExternalDependencies
 /**
  * Count directories as libraries for testing purposes.
  */
-class TestPackage extends LibraryElement {
-  TestPackage() { this instanceof Folder }
-
-  override string getName() { result = this.(Folder).getBaseName() }
+class TestPackage extends LibraryElement instanceof Folder {
+  override string getName() { result = super.getBaseName() }
 
   override string getVersion() { result = "1.0" }
 

@@ -1,9 +1,16 @@
 .. _codeql-for-java:
 
-CodeQL for Java
-===============
+CodeQL for Java and Kotlin
+==========================
 
-Experiment and learn how to write effective and efficient queries for CodeQL databases generated from Java codebases.
+Experiment and learn how to write effective and efficient queries for CodeQL databases generated from Java and Kotlin codebases.
+
+.. include:: ../reusables/kotlin-beta-note.rst
+
+
+.. pull-quote:: Enabling Kotlin support
+
+   CodeQL treats Java and Kotlin as parts of the same language, so to enable Kotlin support you should enable ``java`` as a language.
 
 .. toctree::
    :hidden:
@@ -19,7 +26,7 @@ Experiment and learn how to write effective and efficient queries for CodeQL dat
    working-with-source-locations
    abstract-syntax-tree-classes-for-working-with-java-programs
 
--  :doc:`Basic query for Java code <basic-query-for-java-code>`: Learn to write and run a simple CodeQL query using LGTM.
+-  :doc:`Basic query for Java code <basic-query-for-java-code>`: Learn to write and run a simple CodeQL query.
 
 -  :doc:`CodeQL library for Java <codeql-library-for-java>`: When analyzing Java code, you can use the large collection of classes in the CodeQL library for Java.
 

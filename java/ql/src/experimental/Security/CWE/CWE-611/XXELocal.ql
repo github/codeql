@@ -10,6 +10,7 @@
  * @precision medium
  * @id java/xxe-local-experimental-sinks
  * @tags security
+ *       experimental
  *       external/cwe/cwe-611
  */
 

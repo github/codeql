@@ -1,0 +1,23 @@
+module Raw {
+  {{#classes}}
+  class {{name}} extends {{db_id}}{{#bases}}, {{.}}{{/bases}} {
+    {{#root}}string toString() { none() }{{/root}}
+    {{#final}}override string toString() { result = "{{name}}" }{{/final}}
+
+    {{#properties}}
+    /**
+     * {{>ql_property_doc}}     *
+    {{#has_description}}
+    {{#description}}
+     * {{.}}
+    {{/description}}
+    {{/has_description}}
+     */
+    {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
+      {{tablename}}({{#tableparams}}{{^first}}, {{/first}}{{param}}{{/tableparams}})
+    }
+    {{/properties}}
+  }
+
+  {{/classes}}
+}

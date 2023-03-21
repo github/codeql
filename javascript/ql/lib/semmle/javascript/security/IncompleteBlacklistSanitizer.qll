@@ -38,9 +38,8 @@ string describeCharacters(string rep) {
  * A local sequence of calls to `String.prototype.replace`,
  * represented by the last call.
  */
-class StringReplaceCallSequence extends DataFlow::CallNode {
+class StringReplaceCallSequence extends DataFlow::CallNode instanceof StringReplaceCall {
   StringReplaceCallSequence() {
-    this instanceof StringReplaceCall and
     not exists(getAStringReplaceMethodCall(this)) // terminal
   }
 
@@ -121,7 +120,8 @@ module HtmlSanitization {
   /**
    * An incomplete sanitizer for HTML-relevant characters.
    */
-  class IncompleteSanitizer extends IncompleteBlacklistSanitizer instanceof StringReplaceCallSequence {
+  class IncompleteSanitizer extends IncompleteBlacklistSanitizer instanceof StringReplaceCallSequence
+  {
     string unsanitized;
 
     IncompleteSanitizer() {

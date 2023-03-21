@@ -1,8 +1,13 @@
 import cpp
 import experimental.semmle.code.cpp.semantic.analysis.SignAnalysisCommon
 import experimental.semmle.code.cpp.semantic.Semantic
+import experimental.semmle.code.cpp.semantic.analysis.RangeUtils
+import experimental.semmle.code.cpp.semantic.analysis.FloatDelta
+import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysisSpecific
 import semmle.code.cpp.ir.IR as IR
 import TestUtilities.InlineExpectationsTest
+
+module SignAnalysisInstantiated = SignAnalysis<FloatDelta, RangeUtil<FloatDelta, CppLangImpl>>;
 
 class SignAnalysisTest extends InlineExpectationsTest {
   SignAnalysisTest() { this = "SignAnalysisTest" }
@@ -21,4 +26,6 @@ class SignAnalysisTest extends InlineExpectationsTest {
   }
 }
 
-private string getASignString(SemExpr e) { result = strictconcat(semExprSign(e).toString(), "") }
+private string getASignString(SemExpr e) {
+  result = strictconcat(SignAnalysisInstantiated::semExprSign(e).toString(), "")
+}

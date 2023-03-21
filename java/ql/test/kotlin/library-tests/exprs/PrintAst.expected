@@ -171,7 +171,7 @@ delegatedProperties.kt:
 #    7|                         0: [ExprStmt] <Expr>;
 #    7|                           0: [MethodAccess] println(...)
 #    7|                             -1: [TypeAccess] ConsoleKt
-#    7|                             0: [StringLiteral] init
+#    7|                             0: [StringLiteral] "init"
 #    8|                         1: [ReturnStmt] return ...
 #    8|                           0: [IntegerLiteral] 5
 #    6|                   -3: [TypeAccess] Function0<Integer>
@@ -1944,17 +1944,17 @@ exprs.kt:
 #   15|               1: [VarAccess] y
 #   16|         5: [LocalVariableDeclStmt] var ...;
 #   16|           1: [LocalVariableDeclExpr] i6
-#   16|             0: [LShiftExpr] ... << ...
+#   16|             0: [LeftShiftExpr] ... << ...
 #   16|               0: [VarAccess] x
 #   16|               1: [VarAccess] y
 #   17|         6: [LocalVariableDeclStmt] var ...;
 #   17|           1: [LocalVariableDeclExpr] i7
-#   17|             0: [RShiftExpr] ... >> ...
+#   17|             0: [RightShiftExpr] ... >> ...
 #   17|               0: [VarAccess] x
 #   17|               1: [VarAccess] y
 #   18|         7: [LocalVariableDeclStmt] var ...;
 #   18|           1: [LocalVariableDeclExpr] i8
-#   18|             0: [URShiftExpr] ... >>> ...
+#   18|             0: [UnsignedRightShiftExpr] ... >>> ...
 #   18|               0: [VarAccess] x
 #   18|               1: [VarAccess] y
 #   19|         8: [LocalVariableDeclStmt] var ...;
@@ -2236,17 +2236,17 @@ exprs.kt:
 #   72|               1: [VarAccess] ly
 #   73|         59: [LocalVariableDeclStmt] var ...;
 #   73|           1: [LocalVariableDeclExpr] l6
-#   73|             0: [LShiftExpr] ... << ...
+#   73|             0: [LeftShiftExpr] ... << ...
 #   73|               0: [VarAccess] lx
 #   73|               1: [VarAccess] y
 #   74|         60: [LocalVariableDeclStmt] var ...;
 #   74|           1: [LocalVariableDeclExpr] l7
-#   74|             0: [RShiftExpr] ... >> ...
+#   74|             0: [RightShiftExpr] ... >> ...
 #   74|               0: [VarAccess] lx
 #   74|               1: [VarAccess] y
 #   75|         61: [LocalVariableDeclStmt] var ...;
 #   75|           1: [LocalVariableDeclExpr] l8
-#   75|             0: [URShiftExpr] ... >>> ...
+#   75|             0: [UnsignedRightShiftExpr] ... >>> ...
 #   75|               0: [VarAccess] lx
 #   75|               1: [VarAccess] y
 #   76|         62: [LocalVariableDeclStmt] var ...;
@@ -2459,10 +2459,10 @@ exprs.kt:
 #  123|             0: [CharacterLiteral] x
 #  124|         106: [LocalVariableDeclStmt] var ...;
 #  124|           1: [LocalVariableDeclExpr] str
-#  124|             0: [StringLiteral] string lit
+#  124|             0: [StringLiteral] "string lit"
 #  125|         107: [LocalVariableDeclStmt] var ...;
 #  125|           1: [LocalVariableDeclExpr] strWithQuote
-#  125|             0: [StringLiteral] string " lit
+#  125|             0: [StringLiteral] "string \" lit"
 #  126|         108: [LocalVariableDeclStmt] var ...;
 #  126|           1: [LocalVariableDeclExpr] b6
 #  126|             0: [InstanceOfExpr] ...instanceof...
@@ -2480,34 +2480,34 @@ exprs.kt:
 #  128|               1: [VarAccess] b7
 #  129|         111: [LocalVariableDeclStmt] var ...;
 #  129|           1: [LocalVariableDeclExpr] str1
-#  129|             0: [StringLiteral] string lit
+#  129|             0: [StringLiteral] "string lit"
 #  130|         112: [LocalVariableDeclStmt] var ...;
 #  130|           1: [LocalVariableDeclExpr] str2
-#  130|             0: [StringLiteral] string lit
+#  130|             0: [StringLiteral] "string lit"
 #  131|         113: [LocalVariableDeclStmt] var ...;
 #  131|           1: [LocalVariableDeclExpr] str3
 #  131|             0: [NullLiteral] null
 #  132|         114: [LocalVariableDeclStmt] var ...;
 #  132|           1: [LocalVariableDeclExpr] str4
 #  132|             0: [StringTemplateExpr] "..."
-#  132|               0: [StringLiteral] foo 
+#  132|               0: [StringLiteral] "foo "
 #  132|               1: [VarAccess] str1
-#  132|               2: [StringLiteral]  bar 
+#  132|               2: [StringLiteral] " bar "
 #  132|               3: [VarAccess] str2
-#  132|               4: [StringLiteral]  baz
+#  132|               4: [StringLiteral] " baz"
 #  133|         115: [LocalVariableDeclStmt] var ...;
 #  133|           1: [LocalVariableDeclExpr] str5
 #  133|             0: [StringTemplateExpr] "..."
-#  133|               0: [StringLiteral] foo 
+#  133|               0: [StringLiteral] "foo "
 #  133|               1: [AddExpr] ... + ...
 #  133|                 0: [VarAccess] str1
 #  133|                 1: [VarAccess] str2
-#  133|               2: [StringLiteral]  bar 
+#  133|               2: [StringLiteral] " bar "
 #  133|               3: [MethodAccess] stringPlus(...)
 #  133|                 -1: [TypeAccess] Intrinsics
 #  133|                 0: [VarAccess] str2
 #  133|                 1: [VarAccess] str1
-#  133|               4: [StringLiteral]  baz
+#  133|               4: [StringLiteral] " baz"
 #  134|         116: [LocalVariableDeclStmt] var ...;
 #  134|           1: [LocalVariableDeclExpr] str6
 #  134|             0: [AddExpr] ... + ...
@@ -3531,12 +3531,12 @@ exprs.kt:
 #  215|           1: [LocalVariableDeclExpr] d0
 #  215|             0: [MethodAccess] valueOf(...)
 #  215|               -1: [TypeAccess] Color
-#  215|               0: [StringLiteral] GREEN
+#  215|               0: [StringLiteral] "GREEN"
 #  216|         8: [LocalVariableDeclStmt] var ...;
 #  216|           1: [LocalVariableDeclExpr] d1
 #  216|             0: [MethodAccess] valueOf(...)
 #  216|               -1: [TypeAccess] Color
-#  216|               0: [StringLiteral] GREEN
+#  216|               0: [StringLiteral] "GREEN"
 #  224|   11: [Class] SomeClass1
 #  224|     1: [Constructor] SomeClass1
 #  224|       5: [BlockStmt] { ... }
@@ -4468,7 +4468,7 @@ funcExprs.kt:
 #   36|                       0: [TypeAccess] int
 #   36|                   5: [BlockStmt] { ... }
 #   36|                     0: [ReturnStmt] return ...
-#   36|                       0: [StringLiteral] 
+#   36|                       0: [StringLiteral] ""
 #   36|               -3: [TypeAccess] FunctionN<String>
 #   36|                 0: [TypeAccess] String
 #   38|         14: [ExprStmt] <Expr>;
@@ -5316,7 +5316,7 @@ funcExprs.kt:
 #   90|                       0: [TypeAccess] int
 #   90|                   5: [BlockStmt] { ... }
 #   90|                     0: [ReturnStmt] return ...
-#   90|                       0: [StringLiteral] 
+#   90|                       0: [StringLiteral] ""
 #   90|               -3: [TypeAccess] FunctionN<String>
 #   90|                 0: [TypeAccess] String
 #   91|         5: [ExprStmt] <Expr>;
@@ -5407,7 +5407,7 @@ funcExprs.kt:
 #   94|                       0: [TypeAccess] int
 #   94|                   5: [BlockStmt] { ... }
 #   94|                     0: [ReturnStmt] return ...
-#   94|                       0: [StringLiteral] 
+#   94|                       0: [StringLiteral] ""
 #   94|               -3: [TypeAccess] Function22<Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,Integer,String>
 #   94|                 0: [TypeAccess] Integer
 #   94|                 1: [TypeAccess] Integer
@@ -5599,7 +5599,7 @@ funcExprs.kt:
 #   70|           0: [TypeAccess] int
 #   70|       5: [BlockStmt] { ... }
 #   70|         0: [ReturnStmt] return ...
-#   70|           0: [StringLiteral] 
+#   70|           0: [StringLiteral] ""
 #   73|   4: [Class] Class3
 #   73|     3: [Constructor] Class3
 #   73|       5: [BlockStmt] { ... }
@@ -5625,7 +5625,7 @@ funcExprs.kt:
 #   75|                           0: [TypeAccess] Integer
 #   75|                   5: [BlockStmt] { ... }
 #   75|                     0: [ReturnStmt] return ...
-#   75|                       0: [StringLiteral] a
+#   75|                       0: [StringLiteral] "a"
 #   75|               -3: [TypeAccess] Function1<Generic<Generic<Integer>>,String>
 #   75|                 0: [TypeAccess] Generic<Generic<Integer>>
 #   75|                   0: [TypeAccess] Generic<Integer>
@@ -6014,7 +6014,7 @@ samConversion.kt:
 #    7|                         0: [ReturnStmt] return ...
 #    7|                           0: [ValueEQExpr] ... (value equals) ...
 #    7|                             0: [ExtensionReceiverAccess] this
-#    7|                             1: [StringLiteral] 
+#    7|                             1: [StringLiteral] ""
 #    7|                   -3: [TypeAccess] Function2<String,Integer,Boolean>
 #    7|                     0: [TypeAccess] String
 #    7|                     1: [TypeAccess] Integer
@@ -7058,7 +7058,7 @@ whenExpr.kt:
 #    6|                     1: [ThrowStmt] throw ...
 #    6|                       0: [ClassInstanceExpr] new Exception(...)
 #    6|                         -3: [TypeAccess] Exception
-#    6|                         0: [StringLiteral] No threes please
+#    6|                         0: [StringLiteral] "No threes please"
 #    7|                   4: [WhenBranch] ... -> ...
 #    7|                     0: [BooleanLiteral] true
 #    7|                     1: [ExprStmt] <Expr>;

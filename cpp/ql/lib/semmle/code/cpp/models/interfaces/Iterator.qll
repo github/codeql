@@ -29,5 +29,17 @@ abstract class GetIteratorFunction extends Function {
 
 /**
  * A type which can be used as an iterator.
+ *
+ * Note: Do _not_ `extend` when inheriting from this class in queries. Always use `instanceof`:
+ * ```
+ * class MyIterator instanceof Iterator { ... }
+ * ```
  */
-abstract class Iterator extends Type { }
+abstract class Iterator extends Type {
+  /**
+   * Gets the value type of this iterator, if any.
+   *
+   * For example, the value type of a `std::vector<int>::iterator` is `int`.
+   */
+  Type getValueType() { none() }
+}

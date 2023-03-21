@@ -3,16 +3,16 @@
     /// <summary>
     /// Execute the build_command rule.
     /// </summary>
-    public class BuildCommandRule : IBuildRule
+    public class BuildCommandRule : IBuildRule<AutobuildOptionsShared>
     {
-        private readonly WithDotNet withDotNet;
+        private readonly WithDotNet<AutobuildOptionsShared> withDotNet;
 
-        public BuildCommandRule(WithDotNet withDotNet)
+        public BuildCommandRule(WithDotNet<AutobuildOptionsShared> withDotNet)
         {
             this.withDotNet = withDotNet;
         }
 
-        public BuildScript Analyse(Autobuilder builder, bool auto)
+        public BuildScript Analyse(IAutobuilder<AutobuildOptionsShared> builder, bool auto)
         {
             if (builder.Options.BuildCommand is null)
                 return BuildScript.Failure;

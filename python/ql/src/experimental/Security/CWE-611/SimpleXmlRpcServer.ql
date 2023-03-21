@@ -6,6 +6,7 @@
  * @precision high
  * @id py/simple-xml-rpc-server-dos
  * @tags security
+ *       experimental
  *       external/cwe/cwe-776
  */
 

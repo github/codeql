@@ -222,7 +222,7 @@ size_t get_bounded_size()
 }
 
 void *my_alloc(size_t s) {
-	void *ptr = malloc(s); // [UNHELPFUL RESULT]
+	void *ptr = malloc(s);
 
 	return ptr;
 }
@@ -242,7 +242,7 @@ void more_cases() {
 	malloc(get_bounded_size()); // GOOD
 
 	my_alloc(100); // GOOD
-	my_alloc(local_size); // BAD [NOT DETECTED IN CORRECT LOCATION]
+	my_alloc(local_size); // BAD
 	my_func(100); // GOOD
 	my_func(local_size); // GOOD
 }
@@ -332,4 +332,26 @@ void ptr_diff_case() {
 	char* admin_begin_pos = strstr(user, "ADMIN");
 	int offset = admin_begin_pos ? user - admin_begin_pos : 0; 
 	malloc(offset); // GOOD
+}
+
+void equality_barrier() {
+	int size1 = atoi(getenv("USER"));
+	int size2 = atoi(getenv("USER"));
+
+	if (size1 == size2) {
+		int* a = (int*)malloc(size1 * sizeof(int)); // GOOD
+	}
+}
+
+// --- custom allocators ---
+ 
+void *MyMalloc1(size_t size) { return malloc(size); }
+void *MyMalloc2(size_t size);
+
+void customAllocatorTests()
+{
+	int size = atoi(getenv("USER"));
+
+	char *chars1 = (char *)MyMalloc1(size); // BAD
+	char *chars2 = (char *)MyMalloc2(size); // BAD
 }

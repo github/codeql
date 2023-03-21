@@ -1,8 +1,6 @@
 import java
 
-predicate isEmpty(Block block) {
-  block.getNumStmt() = 0
-}
+predicate isEmpty(Block block) { block.getNumStmt() = 0 }
 
 from IfStmt ifstmt
 where isEmpty(ifstmt.getThen())

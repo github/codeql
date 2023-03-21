@@ -7,6 +7,7 @@ private import codeql.swift.dataflow.Ssa
 private import codeql.swift.controlflow.BasicBlocks
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
+private import codeql.swift.frameworks.StandardLibrary.PointerTypes
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -86,7 +87,7 @@ private module Cached {
       hasExprNode(n,
         [
           any(Argument arg | modifiable(arg)).getExpr(), any(MemberRefExpr ref).getBase(),
-          any(ApplyExpr apply).getQualifier()
+          any(ApplyExpr apply).getQualifier(), any(TupleElementExpr te).getSubExpr()
         ])
     }
 
@@ -148,10 +149,31 @@ private module Cached {
     // flow through `!`
     nodeFrom.asExpr() = nodeTo.asExpr().(ForceValueExpr).getSubExpr()
     or
-    // flow through `?`
+    // flow through `?` and `?.`
     nodeFrom.asExpr() = nodeTo.asExpr().(BindOptionalExpr).getSubExpr()
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(OptionalEvaluationExpr).getSubExpr()
+    or
+    // flow through unary `+` (which does nothing)
+    nodeFrom.asExpr() = nodeTo.asExpr().(UnaryPlusExpr).getOperand()
+    or
+    // flow through nil-coalescing operator `??`
+    exists(BinaryExpr nco |
+      nco.getOperator().(FreeFunctionDecl).getName() = "??(_:_:)" and
+      nodeTo.asExpr() = nco
+    |
+      // value argument
+      nodeFrom.asExpr() = nco.getAnOperand()
+      or
+      // unpack closure (the second argument is an `AutoClosureExpr` argument)
+      nodeFrom.asExpr() = nco.getAnOperand().(AutoClosureExpr).getExpr()
+    )
+    or
+    // flow through ternary operator `? :`
+    exists(IfExpr ie |
+      nodeTo.asExpr() = ie and
+      nodeFrom.asExpr() = ie.getBranch(_)
+    )
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
@@ -177,7 +199,9 @@ private module Cached {
   newtype TContentSet = TSingletonContent(Content c)
 
   cached
-  newtype TContent = TFieldContent(FieldDecl f)
+  newtype TContent =
+    TFieldContent(FieldDecl f) or
+    TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) }
 }
 
 /**
@@ -187,7 +211,7 @@ private module Cached {
 private predicate modifiable(Argument arg) {
   arg.getExpr() instanceof InOutExpr
   or
-  arg.getExpr().getType() instanceof NominalType
+  arg.getExpr().getType() instanceof NominalOrBoundGenericNominalType
 }
 
 predicate modifiableParam(ParamDecl param) {
@@ -376,6 +400,19 @@ private module ReturnNodes {
     override ReturnKind getKind() { result instanceof NormalReturnKind }
   }
 
+  /**
+   * A data-flow node that represents the `self` value in a constructor being
+   * implicitly returned as the newly-constructed object
+   */
+  class SelfReturnNode extends InoutReturnNodeImpl {
+    SelfReturnNode() {
+      exit.getScope() instanceof ConstructorDecl and
+      param instanceof SelfParamDecl
+    }
+
+    override ReturnKind getKind() { result instanceof NormalReturnKind }
+  }
+
   class InoutReturnNodeImpl extends ReturnNode, TInoutReturnNode, NodeImpl {
     ParamDecl param;
     ControlFlowNode exit;
@@ -498,11 +535,27 @@ predicate jumpStep(Node pred, Node succ) {
 }
 
 predicate storeStep(Node node1, ContentSet c, Node node2) {
+  // assignment to a member variable `obj.member = value`
   exists(MemberRefExpr ref, AssignExpr assign |
     ref = assign.getDest() and
     node1.asExpr() = assign.getSource() and
     node2.(PostUpdateNode).getPreUpdateNode().asExpr() = ref.getBase() and
     c.isSingleton(any(Content::FieldContent ct | ct.getField() = ref.getMember()))
+  )
+  or
+  // creation of a tuple `(v1, v2)`
+  exists(TupleExpr tuple, int pos |
+    node1.asExpr() = tuple.getElement(pos) and
+    node2.asExpr() = tuple and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = pos))
+  )
+  or
+  // assignment to a tuple member `tuple.index = value`
+  exists(TupleElementExpr tuple, AssignExpr assign |
+    tuple = assign.getDest() and
+    node1.asExpr() = assign.getSource() and
+    node2.(PostUpdateNode).getPreUpdateNode().asExpr() = tuple.getSubExpr() and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
@@ -511,11 +564,19 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
 predicate isLValue(Expr e) { any(AssignExpr assign).getDest() = e }
 
 predicate readStep(Node node1, ContentSet c, Node node2) {
+  // read of a member variable `obj.member`
   exists(MemberRefExpr ref |
     not isLValue(ref) and
     node1.asExpr() = ref.getBase() and
     node2.asExpr() = ref and
     c.isSingleton(any(Content::FieldContent ct | ct.getField() = ref.getMember()))
+  )
+  or
+  // read of a tuple member `tuple.index`
+  exists(TupleElementExpr tuple |
+    node1.asExpr() = tuple.getSubExpr() and
+    node2.asExpr() = tuple and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
   )
 }
 
@@ -642,3 +703,19 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  * by default as a heuristic.
  */
 predicate allowParameterReturnInSelf(ParameterNode p) { none() }
+
+/** An approximated `Content`. */
+class ContentApprox = Unit;
+
+/** Gets an approximated value for content `c`. */
+pragma[inline]
+ContentApprox getContentApprox(Content c) { any() }
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

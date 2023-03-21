@@ -11,11 +11,10 @@
 | Interop.Sys.LockOperations | int |
 | Interop.Sys.NodeType | int |
 | Interop.Sys.OpenFlags | int |
-| Interop.Sys.Permissions | int |
 | Interop.Sys.SeekWhence | int |
 | Interop.Sys.SysConfName | int |
 | Interop.Sys.SysLogPriority | int |
-| Interop.Sys.UnixFileSystemTypes | long |
+| Interop.Sys.UnixFileSystemTypes | uint |
 | Microsoft.Win32.SafeHandles.SafeFileHandle.NullableBool | int |
 | Microsoft.Win32.SafeHandles.SafeFileHandle.ThreadPoolValueTaskSource.Operation | byte |
 | System.AttributeTargets | int |
@@ -75,6 +74,7 @@
 | System.ExceptionArgument | int |
 | System.ExceptionResource | int |
 | System.GC.EndNoGCRegionStatus | int |
+| System.GC.GCConfigurationType | int |
 | System.GC.GC_ALLOC_FLAGS | int |
 | System.GC.StartNoGCRegionStatus | int |
 | System.GCCollectionMode | int |
@@ -122,6 +122,7 @@
 | System.IO.SearchOption | int |
 | System.IO.SearchTarget | int |
 | System.IO.SeekOrigin | int |
+| System.IO.UnixFileMode | int |
 | System.LazyState | int |
 | System.LoaderOptimization | int |
 | System.MidpointRounding | int |
@@ -132,6 +133,8 @@
 | System.PlatformID | int |
 | System.Reflection.AssemblyContentType | int |
 | System.Reflection.AssemblyNameFlags | int |
+| System.Reflection.AssemblyNameParser.AttributeKind | int |
+| System.Reflection.AssemblyNameParser.Token | int |
 | System.Reflection.Associates.Attributes | int |
 | System.Reflection.BindingFlags | int |
 | System.Reflection.CallingConventions | int |
@@ -153,8 +156,8 @@
 | System.Reflection.ExceptionHandlingClauseOptions | int |
 | System.Reflection.FieldAttributes | int |
 | System.Reflection.GenericParameterAttributes | int |
-| System.Reflection.INVOCATION_FLAGS | uint |
 | System.Reflection.ImageFileMachine | int |
+| System.Reflection.InvocationFlags | uint |
 | System.Reflection.MdSigCallingConvention | byte |
 | System.Reflection.MemberTypes | int |
 | System.Reflection.MetadataTokenType | int |
@@ -165,6 +168,7 @@
 | System.Reflection.NullabilityState | int |
 | System.Reflection.PInvokeAttributes | int |
 | System.Reflection.ParameterAttributes | int |
+| System.Reflection.ParameterCopyBackAction | byte |
 | System.Reflection.PortableExecutableKinds | int |
 | System.Reflection.ProcessorArchitecture | int |
 | System.Reflection.PropertyAttributes | int |
@@ -183,6 +187,7 @@
 | System.Runtime.GCLargeObjectHeapCompactionMode | int |
 | System.Runtime.GCLatencyMode | int |
 | System.Runtime.GCSettings.SetLatencyModeStatus | int |
+| System.Runtime.InteropServices.Architecture | int |
 | System.Runtime.InteropServices.CallingConvention | int |
 | System.Runtime.InteropServices.CharSet | int |
 | System.Runtime.InteropServices.ClassInterfaceType | int |
@@ -210,8 +215,10 @@
 | System.Runtime.InteropServices.DllImportSearchPath | int |
 | System.Runtime.InteropServices.GCHandleType | int |
 | System.Runtime.InteropServices.LayoutKind | int |
+| System.Runtime.InteropServices.Marshalling.MarshalMode | int |
 | System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.MessageSendFunction | int |
 | System.Runtime.InteropServices.PosixSignal | int |
+| System.Runtime.InteropServices.StringMarshalling | int |
 | System.Runtime.InteropServices.UnmanagedType | int |
 | System.Runtime.InteropServices.VarEnum | int |
 | System.Runtime.Intrinsics.X86.FloatComparisonMode | byte |
@@ -220,6 +227,7 @@
 | System.Runtime.Versioning.ComponentGuaranteesOptions | int |
 | System.Runtime.Versioning.ResourceScope | int |
 | System.Runtime.Versioning.SxSRequirements | int |
+| System.RuntimeType.CheckValueStatus | int |
 | System.RuntimeType.MemberListType | int |
 | System.RuntimeType.RuntimeTypeCache.CacheType | int |
 | System.Security.PartialTrustVisibilityLevel | int |

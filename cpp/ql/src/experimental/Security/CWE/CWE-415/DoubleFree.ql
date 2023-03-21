@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @precision medium
  * @tags security
+ *       experimental
  *       external/cwe/cwe-415
  */
 
@@ -13,8 +14,8 @@ import cpp
 
 from FunctionCall fc, FunctionCall fc2, LocalScopeVariable v
 where
-  freeCall(fc, v.getAnAccess()) and
-  freeCall(fc2, v.getAnAccess()) and
+  fc.(DeallocationExpr).getFreedExpr() = v.getAnAccess() and
+  fc2.(DeallocationExpr).getFreedExpr() = v.getAnAccess() and
   fc != fc2 and
   fc.getASuccessor*() = fc2 and
   not exists(Expr exptmp |

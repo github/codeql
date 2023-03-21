@@ -385,10 +385,7 @@ class Array extends RefType, @array {
  */
 class RefType extends Type, Annotatable, Modifiable, @reftype {
   /** Gets the package in which this type is declared. */
-  Package getPackage() {
-    classes(this, _, result, _) or
-    interfaces(this, _, result, _)
-  }
+  Package getPackage() { classes_or_interfaces(this, _, result, _) }
 
   /** Gets the type in which this reference type is enclosed, if any. */
   RefType getEnclosingType() { enclInReftype(this, result) }
@@ -416,7 +413,7 @@ class RefType extends Type, Annotatable, Modifiable, @reftype {
 
   /**
    * Gets a direct or indirect supertype of this type.
-   * This does not including itself, unless this type is part of a cycle
+   * This does not include itself, unless this type is part of a cycle
    * in the type hierarchy.
    */
   RefType getAStrictAncestor() { result = this.getASupertype().getAnAncestor() }
@@ -685,11 +682,11 @@ class SrcRefType extends RefType {
 }
 
 /** A class declaration. */
-class Class extends ClassOrInterface, @class {
+class Class extends ClassOrInterface {
+  Class() { not isInterface(this) }
+
   /** Holds if this class is an anonymous class. */
   predicate isAnonymous() { isAnonymClass(this.getSourceDeclaration(), _) }
-
-  override RefType getSourceDeclaration() { classes(this, _, _, result) }
 
   /**
    * Gets an annotation that applies to this class.
@@ -742,10 +739,10 @@ class Record extends Class {
 }
 
 /** An intersection type. */
-class IntersectionType extends RefType, @class {
+class IntersectionType extends RefType, @classorinterface {
   IntersectionType() {
     exists(string shortname |
-      classes(this, shortname, _, _) and
+      classes_or_interfaces(this, shortname, _, _) and
       shortname.matches("% & ...")
     )
   }
@@ -828,12 +825,6 @@ class LocalClassOrInterface extends NestedType, ClassOrInterface {
   /** Gets the statement that declares this local class. */
   LocalTypeDeclStmt getLocalTypeDeclStmt() { isLocalClassOrInterface(this, result) }
 
-  /**
-   * DEPRECATED: renamed `getLocalTypeDeclStmt` to reflect the fact that
-   * as of Java 16 interfaces can also be declared locally.
-   */
-  deprecated LocalTypeDeclStmt getLocalClassDeclStmt() { result = this.getLocalTypeDeclStmt() }
-
   override string getAPrimaryQlClass() { result = "LocalClassOrInterface" }
 }
 
@@ -848,7 +839,7 @@ class LocalClass extends LocalClassOrInterface, NestedClass {
 class TopLevelType extends RefType {
   TopLevelType() {
     not enclInReftype(this, _) and
-    (this instanceof Class or this instanceof Interface)
+    this instanceof ClassOrInterface
   }
 }
 
@@ -946,8 +937,8 @@ class InnerClass extends NestedClass {
 }
 
 /** An interface. */
-class Interface extends ClassOrInterface, @interface {
-  override RefType getSourceDeclaration() { interfaces(this, _, _, result) }
+class Interface extends ClassOrInterface {
+  Interface() { isInterface(this) }
 
   override predicate isAbstract() {
     // JLS 9.1.1.1: "Every interface is implicitly abstract"
@@ -959,6 +950,8 @@ class Interface extends ClassOrInterface, @interface {
 
 /** A class or interface. */
 class ClassOrInterface extends RefType, @classorinterface {
+  override RefType getSourceDeclaration() { classes_or_interfaces(this, _, _, result) }
+
   /** Holds if this class or interface is local. */
   predicate isLocal() { isLocalClassOrInterface(this.getSourceDeclaration(), _) }
 

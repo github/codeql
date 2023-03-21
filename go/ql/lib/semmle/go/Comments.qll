@@ -208,12 +208,8 @@ class BuildConstraintComment extends LineComment {
       this = getInitialComment(f, i) and
       not getInitialComment(f, [0 .. i - 1]) instanceof BlockComment
     ) and
-    (
-      // comment text starts with `+build` or `go:build`
-      this.getText().regexpMatch("\\s*\\+build.*")
-      or
-      this.getText().regexpMatch("\\s*go:build.*")
-    )
+    // comment text starts with `+build` or `go:build`
+    this.getText().regexpMatch("\\s*(\\+|go:)build.*")
   }
 
   override string getAPrimaryQlClass() { result = "BuildConstraintComment" }

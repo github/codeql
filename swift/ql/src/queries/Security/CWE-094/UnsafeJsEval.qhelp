@@ -1,0 +1,32 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Evaluating JavaScript that contains a substring from a remote origin may lead to remote code execution. Code written by an attacker can execute unauthorized actions, including exfiltration of local data through a third party web service.</p>
+
+</overview>
+<recommendation>
+
+<p>When loading JavaScript into a web view, evaluate only known, locally-defined source code. If part of the input comes from a remote source, do not inject it into the JavaScript code to be evaluated. Instead, send it to the web view as data using an API such as <code>WKWebView.callAsyncJavaScript</code> with the <code>arguments</code> dictionary to pass remote data objects.</p>
+
+</recommendation>
+<example>
+
+<p>In the following (bad) example, a call to <code>WKWebView.evaluateJavaScript</code> evaluates JavaScript source code that is tainted with remote data, potentially introducing a code injection vulnerability.</p>
+
+<sample src="UnsafeJsEvalBad.swift" />
+
+<p>In the following (good) example, we sanitize the remote data by passing it using the <code>arguments</code> dictionary of <code>WKWebView.callAsyncJavaScript</code>. This ensures that untrusted data cannot be evaluated as JavaScript source code.</p>
+
+<sample src="UnsafeJsEvalGood.swift" />
+
+</example>
+<references>
+
+<li>
+  Apple Developer Documentation: <a href="https://developer.apple.com/documentation/webkit/wkwebview/3824703-callasyncjavascript">WKWebView.callAsyncJavaScript(_:arguments:in:contentWorld:)</a>
+</li>
+
+</references>
+</qhelp>

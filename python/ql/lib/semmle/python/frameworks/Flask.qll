@@ -447,7 +447,8 @@ module Flask {
   // ---------------------------------------------------------------------------
   // Implicit response from returns of flask request handlers
   // ---------------------------------------------------------------------------
-  private class FlaskRouteHandlerReturn extends Http::Server::HttpResponse::Range, DataFlow::CfgNode {
+  private class FlaskRouteHandlerReturn extends Http::Server::HttpResponse::Range, DataFlow::CfgNode
+  {
     FlaskRouteHandlerReturn() {
       exists(Function routeHandler |
         routeHandler = any(FlaskRouteSetup rs).getARequestHandler() and
@@ -471,7 +472,8 @@ module Flask {
    * See https://flask.palletsprojects.com/en/1.1.x/api/#flask.redirect
    */
   private class FlaskRedirectCall extends Http::Server::HttpRedirectResponse::Range,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     FlaskRedirectCall() { this = API::moduleImport("flask").getMember("redirect").getACall() }
 
     override DataFlow::Node getRedirectLocation() {
@@ -499,7 +501,8 @@ module Flask {
    * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.set_cookie
    */
   class FlaskResponseSetCookieCall extends Http::Server::CookieWrite::Range,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     FlaskResponseSetCookieCall() { this.calls(Flask::Response::instance(), "set_cookie") }
 
     override DataFlow::Node getHeaderArg() { none() }
@@ -515,7 +518,8 @@ module Flask {
    * See https://flask.palletsprojects.com/en/2.0.x/api/#flask.Response.delete_cookie
    */
   class FlaskResponseDeleteCookieCall extends Http::Server::CookieWrite::Range,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     FlaskResponseDeleteCookieCall() { this.calls(Flask::Response::instance(), "delete_cookie") }
 
     override DataFlow::Node getHeaderArg() { none() }

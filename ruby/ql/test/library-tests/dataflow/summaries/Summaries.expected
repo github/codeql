@@ -534,8 +534,8 @@ invalidSpecComponent
 | summaries.rb:150:39:150:45 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:150:39:150:45 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
 | summaries.rb:150:39:150:45 | tainted | summaries.rb:1:20:1:36 | call to source :  | summaries.rb:150:39:150:45 | tainted | $@ | summaries.rb:1:20:1:36 | call to source :  | call to source :  |
 warning
-| CSV type row should have 5 columns but has 2: test;TooFewColumns |
-| CSV type row should have 5 columns but has 8: test;TooManyColumns;;;Member[Foo].Instance;too;many;columns |
+| CSV type row should have 3 columns but has 1: TooFewColumns |
+| CSV type row should have 3 columns but has 6: TooManyColumns;;Member[Foo].Instance;too;many;columns |
 | Invalid argument '0-1' in token 'Argument[0-1]' in access path: Method[foo].Argument[0-1] |
 | Invalid argument '*' in token 'Argument[*]' in access path: Method[foo].Argument[*] |
 | Invalid token 'Argument' is missing its arguments, in access path: Method[foo].Argument |

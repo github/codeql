@@ -7,3 +7,4 @@ defaultSuiteFile: codeql-suites/ql-code-scanning.qls
 extractor: ql
 dependencies:
   codeql/typos: ${workspace}
+  codeql/util: ${workspace}

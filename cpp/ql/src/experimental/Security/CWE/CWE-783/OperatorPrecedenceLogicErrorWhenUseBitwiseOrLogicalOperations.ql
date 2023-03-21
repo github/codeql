@@ -8,6 +8,7 @@
  * @precision medium
  * @tags maintainability
  *       readability
+ *       experimental
  *       external/cwe/cwe-783
  *       external/cwe/cwe-480
  */

@@ -82,9 +82,9 @@ private predicate relevantExport(ES2015Module m, string x) {
     x = id.getASpecifier().getImportedName()
   )
   or
-  exists(ReExportDeclaration rexp, string y |
+  exists(ReExportDeclaration rexp |
     rexp.getReExportedModule() = m and
-    reExportsAs(rexp, x, y)
+    reExportsAs(rexp, x, _)
   )
 }
 

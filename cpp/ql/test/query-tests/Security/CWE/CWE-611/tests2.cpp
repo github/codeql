@@ -44,3 +44,16 @@ void test2_4(InputSource &data) {
 	p->setDisableDefaultEntityResolution(v);
 	p->parse(data); // GOOD
 }
+
+void test2_5(InputSource &data) {
+	SAXParser p;
+
+	p.parse(data); // BAD (parser not correctly configured)
+}
+
+void test2_6(InputSource &data) {
+	SAXParser p;
+
+	p.setDisableDefaultEntityResolution(true);
+	p.parse(data); // GOOD
+}

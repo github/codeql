@@ -11,13 +11,13 @@ As computational power increases, the ability to break ciphers grows and keys ne
 <p>
 The three main asymmetric key algorithms currently in use are Rivest–Shamir–Adleman (RSA) cryptography, Digital Signature Algorithm (DSA), and Elliptic-curve cryptography (ECC).
 With current technology, key sizes of 2048 bits for RSA and DSA,
-or 224 bits for ECC, are regarded as unbreakable.
+or 256 bits for ECC, are regarded as unbreakable.
 </p>
 </overview>
 
 <recommendation>
 <p>
-Increase the key size to the recommended amount or larger. For RSA or DSA this is at least 2048 bits, for ECC this is at least 224 bits.
+Increase the key size to the recommended amount or larger. For RSA or DSA this is at least 2048 bits, for ECC this is at least 256 bits.
 </p>
 </recommendation>
 
@@ -45,4 +45,3 @@ Recommendation for Transitioning the Use of Cryptographic Algorithms and Key Len
 </li>
 </references>
 </qhelp>
-

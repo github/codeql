@@ -12,39 +12,28 @@ private import codeql.ruby.DataFlow
  * Modeling for `railties`.
  */
 module Railties {
-  private class IncludeOrPrependCall extends MethodCall {
-    IncludeOrPrependCall() { this.getMethodName() = ["include", "prepend"] }
+  private DataFlow::ConstRef generatorsActionsConst() {
+    result = DataFlow::getConstant("Rails").getConstant("Generators").getConstant("Actions")
   }
 
   /**
-   * A class which `include`s `Rails::Generators::Actions`.
+   * Gets a class which is a descendent of `Rails::Generators::Actions`.
    */
-  private class GeneratorsActionsContext extends ClassDeclaration {
-    GeneratorsActionsContext() {
-      exists(IncludeOrPrependCall i |
-        i.getEnclosingModule() = this and
-        i.getArgument(0) =
-          API::getTopLevelMember("Rails")
-              .getMember("Generators")
-              .getMember("Actions")
-              .getAValueReachableFromSource()
-              .asExpr()
-              .getExpr()
-      )
-    }
+  private DataFlow::ClassNode generatorsActionsClass() {
+    result = generatorsActionsConst().getADescendentModule()
   }
 
   /**
    * A call to `Rails::Generators::Actions#execute_command`.
    * This method concatenates its first and second arguments and executes the result as a shell command.
    */
-  private class ExecuteCommandCall extends SystemCommandExecution::Range, DataFlow::CallNode {
+  private class ExecuteCommandCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode
+  {
     ExecuteCommandCall() {
-      this.asExpr().getExpr().getEnclosingModule() instanceof GeneratorsActionsContext and
-      this.getMethodName() = "execute_command"
+      this = generatorsActionsClass().getAnInstanceSelf().getAMethodCall("execute_command")
     }
 
-    override DataFlow::Node getAnArgument() { result = this.getArgument([0, 1]) }
+    override DataFlow::Node getAnArgument() { result = super.getArgument([0, 1]) }
 
     override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
   }
@@ -52,13 +41,16 @@ module Railties {
   /**
    * A call to a method in `Rails::Generators::Actions` which delegates to `execute_command`.
    */
-  private class ExecuteCommandWrapperCall extends SystemCommandExecution::Range, DataFlow::CallNode {
+  private class ExecuteCommandWrapperCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode
+  {
     ExecuteCommandWrapperCall() {
-      this.asExpr().getExpr().getEnclosingModule() instanceof GeneratorsActionsContext and
-      this.getMethodName() = ["rake", "rails_command", "git"]
+      this =
+        generatorsActionsClass()
+            .getAnInstanceSelf()
+            .getAMethodCall(["rake", "rails_command", "git"])
     }
 
-    override DataFlow::Node getAnArgument() { result = this.getArgument(0) }
+    override DataFlow::Node getAnArgument() { result = super.getArgument(0) }
 
     override predicate isShellInterpreted(DataFlow::Node arg) { arg = this.getAnArgument() }
   }

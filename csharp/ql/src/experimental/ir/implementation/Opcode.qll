@@ -30,6 +30,7 @@ private newtype TOpcode =
   TNegate() or
   TShiftLeft() or
   TShiftRight() or
+  TUnsignedShiftRight() or
   TBitAnd() or
   TBitOr() or
   TBitXor() or
@@ -653,6 +654,15 @@ module Opcode {
   }
 
   /**
+   * The `Opcode` for a `UnsignedShiftRightInstruction`.
+   *
+   * See the `UnsignedShiftRightInstruction` documentation for more details.
+   */
+  class UnsignedShiftRight extends BinaryBitwiseOpcode, TUnsignedShiftRight {
+    final override string toString() { result = "UnsignedShiftRight" }
+  }
+
+  /**
    * The `Opcode` for a `BitAndInstruction`.
    *
    * See the `BitAndInstruction` documentation for more details.
@@ -1072,7 +1082,8 @@ module Opcode {
    * See the `CallSideEffectInstruction` documentation for more details.
    */
   class CallSideEffect extends WriteSideEffectOpcode, EscapedWriteOpcode, MayWriteOpcode,
-    ReadSideEffectOpcode, EscapedReadOpcode, MayReadOpcode, TCallSideEffect {
+    ReadSideEffectOpcode, EscapedReadOpcode, MayReadOpcode, TCallSideEffect
+  {
     final override string toString() { result = "CallSideEffect" }
   }
 
@@ -1082,7 +1093,8 @@ module Opcode {
    * See the `CallReadSideEffectInstruction` documentation for more details.
    */
   class CallReadSideEffect extends ReadSideEffectOpcode, EscapedReadOpcode, MayReadOpcode,
-    TCallReadSideEffect {
+    TCallReadSideEffect
+  {
     final override string toString() { result = "CallReadSideEffect" }
   }
 
@@ -1092,7 +1104,8 @@ module Opcode {
    * See the `IndirectReadSideEffectInstruction` documentation for more details.
    */
   class IndirectReadSideEffect extends ReadSideEffectOpcode, IndirectReadOpcode,
-    TIndirectReadSideEffect {
+    TIndirectReadSideEffect
+  {
     final override string toString() { result = "IndirectReadSideEffect" }
   }
 
@@ -1102,7 +1115,8 @@ module Opcode {
    * See the `IndirectMustWriteSideEffectInstruction` documentation for more details.
    */
   class IndirectMustWriteSideEffect extends WriteSideEffectOpcode, IndirectWriteOpcode,
-    TIndirectMustWriteSideEffect {
+    TIndirectMustWriteSideEffect
+  {
     final override string toString() { result = "IndirectMustWriteSideEffect" }
   }
 
@@ -1112,7 +1126,8 @@ module Opcode {
    * See the `IndirectMayWriteSideEffectInstruction` documentation for more details.
    */
   class IndirectMayWriteSideEffect extends WriteSideEffectOpcode, IndirectWriteOpcode,
-    MayWriteOpcode, TIndirectMayWriteSideEffect {
+    MayWriteOpcode, TIndirectMayWriteSideEffect
+  {
     final override string toString() { result = "IndirectMayWriteSideEffect" }
   }
 
@@ -1122,7 +1137,8 @@ module Opcode {
    * See the `BufferReadSideEffectInstruction` documentation for more details.
    */
   class BufferReadSideEffect extends ReadSideEffectOpcode, UnsizedBufferReadOpcode,
-    TBufferReadSideEffect {
+    TBufferReadSideEffect
+  {
     final override string toString() { result = "BufferReadSideEffect" }
   }
 
@@ -1132,7 +1148,8 @@ module Opcode {
    * See the `BufferMustWriteSideEffectInstruction` documentation for more details.
    */
   class BufferMustWriteSideEffect extends WriteSideEffectOpcode, UnsizedBufferWriteOpcode,
-    TBufferMustWriteSideEffect {
+    TBufferMustWriteSideEffect
+  {
     final override string toString() { result = "BufferMustWriteSideEffect" }
   }
 
@@ -1142,7 +1159,8 @@ module Opcode {
    * See the `BufferMayWriteSideEffectInstruction` documentation for more details.
    */
   class BufferMayWriteSideEffect extends WriteSideEffectOpcode, UnsizedBufferWriteOpcode,
-    MayWriteOpcode, TBufferMayWriteSideEffect {
+    MayWriteOpcode, TBufferMayWriteSideEffect
+  {
     final override string toString() { result = "BufferMayWriteSideEffect" }
   }
 
@@ -1152,7 +1170,8 @@ module Opcode {
    * See the `SizedBufferReadSideEffectInstruction` documentation for more details.
    */
   class SizedBufferReadSideEffect extends ReadSideEffectOpcode, SizedBufferReadOpcode,
-    TSizedBufferReadSideEffect {
+    TSizedBufferReadSideEffect
+  {
     final override string toString() { result = "SizedBufferReadSideEffect" }
   }
 
@@ -1162,7 +1181,8 @@ module Opcode {
    * See the `SizedBufferMustWriteSideEffectInstruction` documentation for more details.
    */
   class SizedBufferMustWriteSideEffect extends WriteSideEffectOpcode, SizedBufferWriteOpcode,
-    TSizedBufferMustWriteSideEffect {
+    TSizedBufferMustWriteSideEffect
+  {
     final override string toString() { result = "SizedBufferMustWriteSideEffect" }
   }
 
@@ -1172,7 +1192,8 @@ module Opcode {
    * See the `SizedBufferMayWriteSideEffectInstruction` documentation for more details.
    */
   class SizedBufferMayWriteSideEffect extends WriteSideEffectOpcode, SizedBufferWriteOpcode,
-    MayWriteOpcode, TSizedBufferMayWriteSideEffect {
+    MayWriteOpcode, TSizedBufferMayWriteSideEffect
+  {
     final override string toString() { result = "SizedBufferMayWriteSideEffect" }
   }
 
@@ -1182,7 +1203,8 @@ module Opcode {
    * See the `InitializeDynamicAllocationInstruction` documentation for more details.
    */
   class InitializeDynamicAllocation extends SideEffectOpcode, EntireAllocationWriteOpcode,
-    TInitializeDynamicAllocation {
+    TInitializeDynamicAllocation
+  {
     final override string toString() { result = "InitializeDynamicAllocation" }
   }
 
@@ -1211,7 +1233,8 @@ module Opcode {
    * See the `InlineAsmInstruction` documentation for more details.
    */
   class InlineAsm extends Opcode, EscapedWriteOpcode, MayWriteOpcode, EscapedReadOpcode,
-    MayReadOpcode, TInlineAsm {
+    MayReadOpcode, TInlineAsm
+  {
     final override string toString() { result = "InlineAsm" }
 
     final override predicate hasOperandInternal(OperandTag tag) {

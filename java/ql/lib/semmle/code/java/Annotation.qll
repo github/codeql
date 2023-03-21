@@ -37,7 +37,9 @@ class Annotation extends @annotation, Expr {
   }
 
   /** Gets the annotation type declaration for this annotation. */
-  override AnnotationType getType() { result = Expr.super.getType() }
+  override AnnotationType getType() {
+    result = Expr.super.getType().(Interface).getSourceDeclaration()
+  }
 
   /** Gets the annotation element with the specified `name`. */
   AnnotationElement getAnnotationElement(string name) {
@@ -249,7 +251,7 @@ private predicate filteredAnnotValue(Annotation a, Method m, Expr val) {
 
 private predicate sourceAnnotValue(Annotation a, Method m, Expr val) {
   annotValue(a, m, val) and
-  val.getFile().getExtension() = "java"
+  val.getFile().isSourceFile()
 }
 
 /** An abstract representation of language elements that can be annotated. */

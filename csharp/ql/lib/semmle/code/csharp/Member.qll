@@ -90,12 +90,29 @@ class Modifiable extends Declaration, @modifiable {
   /** Holds if this declaration is `const`. */
   predicate isConst() { this.hasModifier("const") }
 
+  /** Holds if this declaration has the modifier `required`. */
+  predicate isRequired() { this.hasModifier("required") }
+
+  /** Holds if this declaration is `file` local. */
+  predicate isFile() { this.hasModifier("file") }
+
   /** Holds if this declaration is `unsafe`. */
   predicate isUnsafe() {
-    this.hasModifier("unsafe") or
-    this.(Parameterizable).getAParameter().getType() instanceof PointerType or
-    this.(Property).getType() instanceof PointerType or
-    this.(Callable).getReturnType() instanceof PointerType
+    this.hasModifier("unsafe")
+    or
+    exists(Type t, Type child |
+      t = this.(Parameterizable).getAParameter().getType() or
+      t = this.(Property).getType() or
+      t = this.(Callable).getReturnType() or
+      t = this.(DelegateType).getReturnType()
+    |
+      child = t.getAChild*() and
+      (
+        child instanceof PointerType
+        or
+        child instanceof FunctionPointerType
+      )
+    )
   }
 
   /** Holds if this declaration is `async`. */
@@ -178,13 +195,17 @@ class Member extends DotNet::Member, Modifiable, @member {
   override predicate isAbstract() { Modifiable.super.isAbstract() }
 
   override predicate isStatic() { Modifiable.super.isStatic() }
+
+  override predicate isRequired() { Modifiable.super.isRequired() }
+
+  override predicate isFile() { Modifiable.super.isFile() }
 }
 
 private class TOverridable = @virtualizable or @callable_accessor;
 
 /**
  * A declaration that can be overridden or implemented. That is, a method,
- * a property, an indexer, an event, or an accessor.
+ * a property, an indexer, an event, an accessor, or an operator.
  *
  * Unlike `Virtualizable`, this class includes accessors.
  */
@@ -360,7 +381,7 @@ class Overridable extends Declaration, TOverridable {
 
 /**
  * A member where the `virtual` modifier is valid. That is, a method,
- * a property, an indexer, or an event.
+ * a property, an indexer, an event, or an operator.
  *
  * Equivalently, these are the members that can be defined in an interface.
  *

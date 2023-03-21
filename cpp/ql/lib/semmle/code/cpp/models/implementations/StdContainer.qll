@@ -6,37 +6,52 @@ import semmle.code.cpp.models.interfaces.Taint
 import semmle.code.cpp.models.interfaces.Iterator
 
 /**
+ * A sequence container template class (for example, `std::vector`) from the
+ * standard library.
+ */
+abstract class StdSequenceContainer extends Class {
+  Type getElementType() { result = this.getTemplateArgument(0) }
+}
+
+/**
  * The `std::array` template class.
  */
-private class Array extends Class {
+private class Array extends StdSequenceContainer {
   Array() { this.hasQualifiedName(["std", "bsl"], "array") }
+}
+
+/**
+ * The `std::string` template class.
+ */
+private class String extends StdSequenceContainer {
+  String() { this.hasQualifiedName(["std", "bsl"], "basic_string") }
 }
 
 /**
  * The `std::deque` template class.
  */
-private class Deque extends Class {
+private class Deque extends StdSequenceContainer {
   Deque() { this.hasQualifiedName(["std", "bsl"], "deque") }
 }
 
 /**
  * The `std::forward_list` template class.
  */
-private class ForwardList extends Class {
+private class ForwardList extends StdSequenceContainer {
   ForwardList() { this.hasQualifiedName(["std", "bsl"], "forward_list") }
 }
 
 /**
  * The `std::list` template class.
  */
-private class List extends Class {
+private class List extends StdSequenceContainer {
   List() { this.hasQualifiedName(["std", "bsl"], "list") }
 }
 
 /**
  * The `std::vector` template class.
  */
-private class Vector extends Class {
+private class Vector extends StdSequenceContainer {
   Vector() { this.hasQualifiedName(["std", "bsl"], "vector") }
 }
 

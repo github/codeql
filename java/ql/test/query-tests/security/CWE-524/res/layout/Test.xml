@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <EditText
+        android:id="@+id/test1_password"
+        android:inputType="text"/> <!-- $hasResult -->
+
+    <EditText
+        android:id="@+id/test2_safe"
+        android:inputType="text"/> 
+
+    <EditText
+        android:id="@+id/test3_password"
+        android:inputType="textNoSuggestions"/>  
+
+    <EditText
+        android:id="@+id/test4_password"
+        android:inputType="textPassword"/> 
+
+    <EditText
+        android:id="@+id/test5_bank_account_name"
+        android:inputType="textMultiLine"/> <!-- $hasResult -->
+
+    <EditText
+        android:id="@+id/test6_password"/> <!-- $hasResult -->
+
+    <EditText
+        android:id="@+id/test7_password"/>  
+
+    <EditText
+        android:id="@+id/test8_password"/>  
+</LinearLayout>

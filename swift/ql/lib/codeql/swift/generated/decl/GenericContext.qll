@@ -34,6 +34,8 @@ module Generated {
     /**
      * Gets the number of generic type parameters of this generic context.
      */
-    final int getNumberOfGenericTypeParams() { result = count(getAGenericTypeParam()) }
+    final int getNumberOfGenericTypeParams() {
+      result = count(int i | exists(getGenericTypeParam(i)))
+    }
   }
 }

@@ -1,0 +1,28 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: experimentalSourceModel
+    data:
+      - ["com.jfinal.core", "Controller", True, "get", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getBoolean", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getCookie", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getCookieObject", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getCookieObjects", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getCookieToInt", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getCookieToLong", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getDate", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getFile", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getFiles", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getHeader", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getInt", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getKv", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getLong", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getPara", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getParaMap", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getParaToBoolean", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getParaToDate", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getParaToInt", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getParaToLong", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getParaValues", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getParaValuesToInt", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
+      - ["com.jfinal.core", "Controller", True, "getParaValuesToLong", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]

@@ -1,4 +1,4 @@
-/*
+/**
  * CodeQL library for Ruby
  * Automatically generated from the tree-sitter grammar; do not edit
  */
@@ -875,10 +875,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "HashSplatArgument" }
 
     /** Gets the child of this node. */
-    final UnderscoreArg getChild() { ruby_hash_splat_argument_def(this, result) }
+    final UnderscoreArg getChild() { ruby_hash_splat_argument_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_hash_splat_argument_def(this, result) }
+    final override AstNode getAFieldOrChild() { ruby_hash_splat_argument_child(this, result) }
   }
 
   /** A class representing `hash_splat_nil` tokens. */
@@ -1123,6 +1123,23 @@ module Ruby {
   class Line extends @ruby_token_line, Token {
     /** Gets the name of the primary QL class for this element. */
     final override string getAPrimaryQlClass() { result = "Line" }
+  }
+
+  /** A class representing `match_pattern` nodes. */
+  class MatchPattern extends @ruby_match_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "MatchPattern" }
+
+    /** Gets the node corresponding to the field `pattern`. */
+    final UnderscorePatternTopExprBody getPattern() { ruby_match_pattern_def(this, result, _) }
+
+    /** Gets the node corresponding to the field `value`. */
+    final UnderscoreArg getValue() { ruby_match_pattern_def(this, _, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      ruby_match_pattern_def(this, result, _) or ruby_match_pattern_def(this, _, result)
+    }
   }
 
   /** A class representing `method` nodes. */
@@ -1572,10 +1589,10 @@ module Ruby {
     final override string getAPrimaryQlClass() { result = "SplatArgument" }
 
     /** Gets the child of this node. */
-    final UnderscoreArg getChild() { ruby_splat_argument_def(this, result) }
+    final UnderscoreArg getChild() { ruby_splat_argument_child(this, result) }
 
     /** Gets a field or child node of this node. */
-    final override AstNode getAFieldOrChild() { ruby_splat_argument_def(this, result) }
+    final override AstNode getAFieldOrChild() { ruby_splat_argument_child(this, result) }
   }
 
   /** A class representing `splat_parameter` nodes. */
@@ -1660,6 +1677,23 @@ module Ruby {
 
     /** Gets a field or child node of this node. */
     final override AstNode getAFieldOrChild() { ruby_symbol_array_child(this, _, result) }
+  }
+
+  /** A class representing `test_pattern` nodes. */
+  class TestPattern extends @ruby_test_pattern, AstNode {
+    /** Gets the name of the primary QL class for this element. */
+    final override string getAPrimaryQlClass() { result = "TestPattern" }
+
+    /** Gets the node corresponding to the field `pattern`. */
+    final UnderscorePatternTopExprBody getPattern() { ruby_test_pattern_def(this, result, _) }
+
+    /** Gets the node corresponding to the field `value`. */
+    final UnderscoreArg getValue() { ruby_test_pattern_def(this, _, result) }
+
+    /** Gets a field or child node of this node. */
+    final override AstNode getAFieldOrChild() {
+      ruby_test_pattern_def(this, result, _) or ruby_test_pattern_def(this, _, result)
+    }
   }
 
   /** A class representing `then` nodes. */

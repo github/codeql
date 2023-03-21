@@ -23,7 +23,7 @@ namespace Semmle.Extraction.CSharp.Entities
         {
             var info = Context.GetModel(node).GetSymbolInfo(node.Name);
 
-            if (node.StaticKeyword.Kind() == SyntaxKind.None)
+            if (node.StaticKeyword.IsKind(SyntaxKind.None))
             {
                 // A normal using
                 if (info.Symbol is INamespaceSymbol namespaceSymbol)
@@ -47,7 +47,7 @@ namespace Semmle.Extraction.CSharp.Entities
                 trapFile.using_directive_location(this, Context.CreateLocation(ReportingLocation));
             }
 
-            if (node.GlobalKeyword.Kind() == SyntaxKind.GlobalKeyword)
+            if (node.GlobalKeyword.IsKind(SyntaxKind.GlobalKeyword))
             {
                 trapFile.using_global(this);
             }

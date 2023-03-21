@@ -24,7 +24,7 @@ class XssTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "xss" and
-    exists(DataFlow::Node src, DataFlow::Node sink, XssConfig conf | conf.hasFlow(src, sink) |
+    exists(DataFlow::Node sink, XssConfig conf | conf.hasFlowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

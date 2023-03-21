@@ -7,6 +7,7 @@
  * @id cpp/overrun-write
  * @tags reliability
  *       security
+ *       experimental
  *       external/cwe/cwe-119
  *       external/cwe/cwe-131
  */

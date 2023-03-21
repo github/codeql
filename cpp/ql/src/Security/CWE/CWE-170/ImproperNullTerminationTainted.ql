@@ -12,7 +12,7 @@
 
 import cpp
 import semmle.code.cpp.commons.NullTermination
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 
 /** A user-controlled expression that may not be null terminated. */
 class TaintSource extends VariableAccess {

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.CodeAnalysis;
-using System.IO;
+﻿using System.Collections.Generic;
 
 namespace Semmle.Extraction.CIL.Entities
 {
@@ -37,6 +34,11 @@ namespace Semmle.Extraction.CIL.Entities
                 {
                     t = mt.Unmodified;
                     yield return Tuples.cil_custom_modifiers(this, mt.Modifier, mt.IsRequired);
+                }
+                if (t is ByRefType brt)
+                {
+                    t = brt.ElementType;
+                    yield return Tuples.cil_type_annotation(this, TypeAnnotation.Ref);
                 }
                 yield return Tuples.cil_field(this, DeclaringType, Name, t);
             }

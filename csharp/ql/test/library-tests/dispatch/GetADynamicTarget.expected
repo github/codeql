@@ -471,3 +471,21 @@
 | ViableCallable.cs:461:9:461:30 | call to method M2<T> | C17.M2<T>(Func<T>) |
 | ViableCallable.cs:478:9:478:14 | call to method M1 | C18.M1() |
 | ViableCallable.cs:481:9:481:14 | call to method M2 | I2.M2() |
+| ViableCallable.cs:495:18:495:22 | call to operator + | C19.+(C19, C19) |
+| ViableCallable.cs:498:26:498:30 | call to operator checked + | C19.checked +(C19, C19) |
+| ViableCallable.cs:501:18:501:23 | call to operator explicit conversion | C19.explicit conversion(C19) |
+| ViableCallable.cs:504:26:504:31 | call to operator checked explicit conversion | C19.checked explicit conversion(C19) |
+| ViableCallable.cs:545:18:545:22 | call to operator + | C20.+(C20, C20) |
+| ViableCallable.cs:548:26:548:30 | call to operator checked + | C20.checked +(C20, C20) |
+| ViableCallable.cs:551:18:551:22 | call to operator - | C20.-(C20, C20) |
+| ViableCallable.cs:554:26:554:30 | call to operator checked - | I3<T>.checked -(T, T) |
+| ViableCallable.cs:557:18:557:22 | call to operator * | I3<T>.*(T, T) |
+| ViableCallable.cs:560:26:560:30 | call to operator checked * | I3<T>.checked *(T, T) |
+| ViableCallable.cs:563:18:563:22 | call to operator / | C20./(C20, C20) |
+| ViableCallable.cs:563:18:563:22 | call to operator / | I3<T>./(T, T) |
+| ViableCallable.cs:566:26:566:30 | call to operator checked / | C20.checked /(C20, C20) |
+| ViableCallable.cs:566:26:566:30 | call to operator checked / | I3<T>.checked /(T, T) |
+| ViableCallable.cs:569:9:569:15 | call to method M11 | C20.M11() |
+| ViableCallable.cs:572:9:572:15 | call to method M12 | C20.M12() |
+| ViableCallable.cs:572:9:572:15 | call to method M12 | I3<T>.M12() |
+| ViableCallable.cs:575:9:575:15 | call to method M13 | I3<T>.M13() |

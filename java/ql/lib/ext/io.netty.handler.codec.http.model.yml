@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["io.netty.handler.codec.http", "DefaultFullHttpRequest", True, "DefaultFullHttpRequest", "(HttpVersion,HttpMethod,String,ByteBuf)", "", "Argument[2]", "open-url", "ai-generated"]
+      - ["io.netty.handler.codec.http", "DefaultHttpRequest", True, "DefaultHttpRequest", "(HttpVersion,HttpMethod,String)", "", "Argument[2]", "open-url", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["io.netty.handler.codec.http", "QueryStringEncoder", True, "QueryStringEncoder", "(String)", "", "Argument[0]", "Argument[-1]", "taint", "ai-generated"]

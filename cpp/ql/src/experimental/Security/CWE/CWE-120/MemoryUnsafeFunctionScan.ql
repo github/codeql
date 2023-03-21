@@ -6,6 +6,7 @@
  * @id cpp/memory-unsafe-function-scan
  * @tags reliability
  *       security
+ *       experimental
  *       external/cwe/cwe-120
  */
 

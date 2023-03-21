@@ -43,3 +43,27 @@ void processRequest3()
     isServer = 1;
   }
 }
+
+void processRequest4() 
+{
+  const char *address = getenv("SERVERIP");
+  bool cond = false;
+
+  if (strcmp(address, "127.0.0.1")) { cond = true; } // BAD
+  if (strcmp(address, "127_0_0_1")) { cond = true; } // GOOD (not an IP)
+  if (strcmp(address, "127.0.0")) { cond = true; } // GOOD (not an IP)
+  if (strcmp(address, "127.0.0.0.1")) { cond = true; } // GOOD (not an IP)
+  if (strcmp(address, "http://mycompany")) { cond = true; } // BAD
+  if (strcmp(address, "http_//mycompany")) { cond = true; } // GOOD (not an address)
+  if (strcmp(address, "htt://mycompany")) { cond = true; } // GOOD (not an address)
+  if (strcmp(address, "httpp://mycompany")) { cond = true; } // GOOD (not an address)
+  if (strcmp(address, "mycompany.com")) { cond = true; } // BAD
+  if (strcmp(address, "mycompany_com")) { cond = true; } // GOOD (not an address)
+  if (strcmp(address, "mycompany.c")) { cond = true; } // GOOD (not an address)
+  if (strcmp(address, "mycompany.comm")) { cond = true; } // GOOD (not an address)
+
+  if (cond) {
+    isServer = 1;
+  }
+}
+

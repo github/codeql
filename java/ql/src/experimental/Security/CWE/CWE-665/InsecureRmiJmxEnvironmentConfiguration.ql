@@ -4,6 +4,7 @@
  * @kind problem
  * @problem.severity error
  * @tags security
+ *       experimental
  *       external/cwe/cwe-665
  * @precision high
  * @id java/insecure-rmi-jmx-server-initialization

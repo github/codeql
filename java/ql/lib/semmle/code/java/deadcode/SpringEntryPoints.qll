@@ -50,9 +50,7 @@ class SpringBeanAnnotatedMethod extends CallableEntryPoint {
 /**
  * A live entry point within a Spring controller.
  */
-class SpringControllerEntryPoint extends CallableEntryPoint {
-  SpringControllerEntryPoint() { this instanceof SpringControllerMethod }
-}
+class SpringControllerEntryPoint extends CallableEntryPoint instanceof SpringControllerMethod { }
 
 /**
  * A method that is accessible in a response, because it is part of the returned model,

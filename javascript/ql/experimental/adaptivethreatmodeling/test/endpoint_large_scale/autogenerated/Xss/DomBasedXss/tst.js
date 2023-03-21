@@ -431,3 +431,62 @@ function nonGlobalSanitizer() {
 
   $("#foo").html(target.replace(/<|>/g, '')); // OK
 }
+
+function mootools(){
+	var source = document.location.search;
+
+	new Element("div"); // OK
+	new Element("div", {text: source}); // OK
+	new Element("div", {html: source}); // NOT OK
+	new Element("div").set("html", source); // NOT OK
+	new Element("div").set({"html": source}); // NOT OK
+	new Element("div").setProperty("html", source); // NOT OK
+	new Element("div").setProperties({"html": source}); // NOT OK
+	new Element("div").appendHtml(source); // NOT OK
+}
+
+
+const Convert = require('ansi-to-html');
+const ansiToHtml = new Convert();
+
+function ansiToHTML() {
+  var source = document.location.search;
+
+  $("#foo").html(source); // NOT OK
+  $("#foo").html(ansiToHtml.toHtml(source)); // NOT OK
+}
+
+function domMethods() {
+	var source = document.location.search;
+
+  let table = document.getElementById('mytable');
+  table.innerHTML = source; // NOT OK
+  let row = table.insertRow(-1);
+  row.innerHTML = source; // NOT OK
+  let cell = row.insertCell();
+  cell.innerHTML = source; // NOT OK
+}
+
+function urlStuff() {
+  var url = document.location.search.substr(1);
+
+  $("<a>", {href: url}).appendTo("body"); // NOT OK
+  $("#foo").attr("href", url); // NOT OK
+  $("#foo").attr({href: url}); // NOT OK
+  $("<img>", {src: url}).appendTo("body"); // NOT OK
+  $("<a>", {href: win.location.href}).appendTo("body"); // OK
+
+  $("<img>", {src: "http://google.com/" + url}).appendTo("body"); // OK
+
+  $("<img>", {src: ["http://google.com", url].join("/")}).appendTo("body"); // OK
+
+  if (url.startsWith("https://")) {
+    $("<img>", {src: url}).appendTo("body"); // OK
+  } else {
+    $("<img>", {src: url}).appendTo("body"); // NOT OK
+  }
+
+  window.open(location.hash.substr(1)); // OK - any JavaScript is executed in another context
+
+  navigation.navigate(location.hash.substr(1)); // NOT OK
+}

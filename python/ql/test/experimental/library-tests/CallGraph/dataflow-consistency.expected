@@ -1,0 +1,56 @@
+uniqueEnclosingCallable
+uniqueCallEnclosingCallable
+| code/bound_method_arg.py:5:6:5:16 | classmethod() | Call should have one enclosing callable but has 0. |
+| code/callable_as_argument.py:37:6:37:17 | staticmethod() | Call should have one enclosing callable but has 0. |
+| code/callable_as_argument.py:49:10:49:21 | staticmethod() | Call should have one enclosing callable but has 0. |
+| code/class_construction.py:13:6:13:16 | classmethod() | Call should have one enclosing callable but has 0. |
+| code/class_properties.py:9:6:9:13 | property() | Call should have one enclosing callable but has 0. |
+| code/class_properties.py:11:9:11:32 | print() | Call should have one enclosing callable but has 0. |
+| code/class_properties.py:14:6:14:15 | Attribute() | Call should have one enclosing callable but has 0. |
+| code/class_properties.py:19:6:19:16 | Attribute() | Call should have one enclosing callable but has 0. |
+| code/class_properties.py:36:12:36:62 | property() | Call should have one enclosing callable but has 0. |
+| code/class_properties.py:38:6:38:13 | property() | Call should have one enclosing callable but has 0. |
+| code/class_properties.py:40:9:40:38 | print() | Call should have one enclosing callable but has 0. |
+| code/class_subclass.py:10:6:10:17 | staticmethod() | Call should have one enclosing callable but has 0. |
+| code/class_subclass.py:14:6:14:16 | classmethod() | Call should have one enclosing callable but has 0. |
+| code/class_subclass.py:104:6:104:17 | staticmethod() | Call should have one enclosing callable but has 0. |
+| code/class_subclass.py:108:6:108:16 | classmethod() | Call should have one enclosing callable but has 0. |
+| code/class_subclass.py:112:6:112:17 | staticmethod() | Call should have one enclosing callable but has 0. |
+| code/class_subclass.py:116:6:116:16 | classmethod() | Call should have one enclosing callable but has 0. |
+| code/class_subclass.py:120:6:120:16 | classmethod() | Call should have one enclosing callable but has 0. |
+| code/class_subclass.py:149:6:149:17 | staticmethod() | Call should have one enclosing callable but has 0. |
+| code/class_subclass.py:153:6:153:16 | classmethod() | Call should have one enclosing callable but has 0. |
+| code/class_super.py:13:6:13:16 | classmethod() | Call should have one enclosing callable but has 0. |
+| code/class_super.py:28:6:28:17 | staticmethod() | Call should have one enclosing callable but has 0. |
+| code/class_super.py:36:6:36:16 | classmethod() | Call should have one enclosing callable but has 0. |
+| code/class_super.py:40:6:40:16 | classmethod() | Call should have one enclosing callable but has 0. |
+| code/func_defined_outside_class.py:17:18:17:41 | staticmethod() | Call should have one enclosing callable but has 0. |
+| code/func_defined_outside_class.py:18:18:18:40 | classmethod() | Call should have one enclosing callable but has 0. |
+| code/func_defined_outside_class.py:38:11:38:21 | _gen() | Call should have one enclosing callable but has 0. |
+| code/func_defined_outside_class.py:39:11:39:21 | _gen() | Call should have one enclosing callable but has 0. |
+| code/nested_class.py:3:10:3:21 | staticmethod() | Call should have one enclosing callable but has 0. |
+| code/nested_class.py:7:10:7:21 | staticmethod() | Call should have one enclosing callable but has 0. |
+| code/self_passing.py:60:6:60:16 | classmethod() | Call should have one enclosing callable but has 0. |
+uniqueType
+uniqueNodeLocation
+missingLocation
+uniqueNodeToString
+missingToString
+parameterCallable
+localFlowIsLocal
+readStepIsLocal
+storeStepIsLocal
+compatibleTypesReflexive
+unreachableNodeCCtx
+localCallNodes
+postIsNotPre
+postHasUniquePre
+uniquePostUpdate
+postIsInSameCallable
+reverseRead
+argHasPostUpdate
+postWithInFlow
+viableImplInCallContextTooLarge
+uniqueParameterNodeAtPosition
+uniqueParameterNodePosition
+uniqueContentApprox

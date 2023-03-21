@@ -7,7 +7,7 @@ import DataFlow
 class TokenValidationParametersPropertySensitiveValidation extends Property {
   TokenValidationParametersPropertySensitiveValidation() {
     exists(Class c |
-      c.hasQualifiedName("Microsoft.IdentityModel.Tokens.TokenValidationParameters")
+      c.hasQualifiedName("Microsoft.IdentityModel.Tokens", "TokenValidationParameters")
     |
       c.getAProperty() = this and
       this.getName() in [
@@ -21,7 +21,8 @@ class TokenValidationParametersPropertySensitiveValidation extends Property {
 /**
  * A dataflow from a `false` value to a write sensitive property for `TokenValidationParameters`.
  */
-class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation extends DataFlow::Configuration {
+class FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation extends DataFlow::Configuration
+{
   FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation() {
     this = "FalseValueFlowsToTokenValidationParametersPropertyWriteToBypassValidation"
   }
@@ -52,8 +53,10 @@ predicate isAssemblyOlderVersion(string assemblyName, string ver) {
  */
 class JsonWebTokenHandlerValidateTokenMethod extends Method {
   JsonWebTokenHandlerValidateTokenMethod() {
-    this.hasQualifiedName("Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateToken") or
-    this.hasQualifiedName("Microsoft.AzureAD.DeviceIdentification.Common.Tokens.JwtValidator.ValidateEncryptedToken")
+    this.hasQualifiedName("Microsoft.IdentityModel.JsonWebTokens", "JsonWebTokenHandler",
+      "ValidateToken") or
+    this.hasQualifiedName("Microsoft.AzureAD.DeviceIdentification.Common.Tokens", "JwtValidator",
+      "ValidateEncryptedToken")
   }
 }
 
@@ -99,7 +102,7 @@ private class FlowsToTokenValidationResultIsValidCall extends DataFlow::Configur
 class TokenValidationParametersProperty extends Property {
   TokenValidationParametersProperty() {
     exists(Class c |
-      c.hasQualifiedName("Microsoft.IdentityModel.Tokens.TokenValidationParameters")
+      c.hasQualifiedName("Microsoft.IdentityModel.Tokens", "TokenValidationParameters")
     |
       c.getAProperty() = this and
       this.getName() in [
@@ -158,7 +161,7 @@ class CallableAlwaysReturnsTrue extends Callable {
  */
 predicate callableOnlyThrowsArgumentNullException(Callable c) {
   forall(ThrowElement thre | c = thre.getEnclosingCallable() |
-    thre.getThrownExceptionType().hasQualifiedName("System.ArgumentNullException")
+    thre.getThrownExceptionType().hasQualifiedName("System", "ArgumentNullException")
   )
 }
 
@@ -217,7 +220,8 @@ class CallableAlwaysReturnsParameter0 extends CallableReturnsStringAndArg0IsStri
 /**
  * A Callable that always return the 1st argument, both of `string` type. Higher precision
  */
-class CallableAlwaysReturnsParameter0MayThrowExceptions extends CallableReturnsStringAndArg0IsString {
+class CallableAlwaysReturnsParameter0MayThrowExceptions extends CallableReturnsStringAndArg0IsString
+{
   CallableAlwaysReturnsParameter0MayThrowExceptions() {
     forex(Expr ret | this.canReturn(ret) |
       ret = this.getParameter(0).getAnAccess()

@@ -34,5 +34,11 @@ class UsersController < ActionController::Base
 
     # Taint via string interpolation
     printf("A log message: #{params[:format]}", arg) # BAD
+
+    # Using String#
+    "A log message #{params[:format]} %{foo}" % {foo: "foo"} # BAD
+
+    # String# with an array
+    "A log message #{params[:format]} %08x" % ["foo"] # BAD
   end
 end

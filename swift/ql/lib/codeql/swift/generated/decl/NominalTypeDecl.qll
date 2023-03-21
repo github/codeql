@@ -2,11 +2,10 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.GenericTypeDecl
-import codeql.swift.elements.decl.IterableDeclContext
 import codeql.swift.elements.type.Type
 
 module Generated {
-  class NominalTypeDecl extends Synth::TNominalTypeDecl, GenericTypeDecl, IterableDeclContext {
+  class NominalTypeDecl extends Synth::TNominalTypeDecl, GenericTypeDecl {
     /**
      * Gets the type of this nominal type declaration.
      *

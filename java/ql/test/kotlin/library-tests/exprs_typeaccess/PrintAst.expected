@@ -27,7 +27,7 @@ A.kt:
 #   10|         2: [ExprStmt] <Expr>;
 #   10|           0: [MethodAccess] println(...)
 #   10|             -1: [TypeAccess] ConsoleKt
-#   10|             0: [StringLiteral] 
+#   10|             0: [StringLiteral] ""
 #   13|     6: [Method] getProp
 #   13|       3: [TypeAccess] int
 #   13|       5: [BlockStmt] { ... }

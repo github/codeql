@@ -6,6 +6,7 @@
  * @precision medium
  * @id java/tomcat-disabled-httponly
  * @tags security
+ *       experimental
  *       external/cwe/cwe-1004
  */
 

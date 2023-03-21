@@ -37,26 +37,6 @@ abstract class AssertMethod extends Method {
   /** Gets the index of a parameter being asserted. */
   abstract int getAnAssertionIndex();
 
-  /**
-   * DEPRECATED: Use `getAnAssertionIndex()` instead.
-   *
-   * Gets the index of a parameter being asserted.
-   */
-  deprecated final int getAssertionIndex() { result = this.getAnAssertionIndex() }
-
-  /** Gets the parameter at position `i` being asserted. */
-  final Parameter getAssertedParameter(int i) {
-    result = this.getParameter(i) and
-    i = this.getAnAssertionIndex()
-  }
-
-  /**
-   * DEPRECATED: Use `getAssertedParameter(_)` instead.
-   *
-   * Gets a parameter being asserted.
-   */
-  deprecated final Parameter getAssertedParameter() { result = this.getAssertedParameter(_) }
-
   /** Gets the failure type if the assertion fails for argument `i`, if any. */
   abstract AssertionFailure getAssertionFailure(int i);
 }
@@ -172,7 +152,8 @@ private predicate isDoesNotReturnIfAttributeParameter(Parameter p, boolean value
  * A method with a parameter that is annotated with
  * `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute(false)`.
  */
-class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod extends BooleanAssertMethod {
+class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod extends BooleanAssertMethod
+{
   private int i_;
 
   SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod() {
@@ -190,7 +171,8 @@ class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertTrueMethod exte
  * A method with a parameter that is annotated with
  * `System.Diagnostics.CodeAnalysis.DoesNotReturnIfAttribute(true)`.
  */
-class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod extends BooleanAssertMethod {
+class SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod extends BooleanAssertMethod
+{
   private int i_;
 
   SystemDiagnosticsCodeAnalysisDoesNotReturnIfAnnotatedAssertFalseMethod() {
@@ -368,40 +350,32 @@ private Stmt getAnAssertingStmt(Assertion a) {
 }
 
 /** A method that forwards to a Boolean assertion method. */
-class ForwarderBooleanAssertMethod extends BooleanAssertMethod {
-  private ForwarderAssertMethod forwarder;
+class ForwarderBooleanAssertMethod extends BooleanAssertMethod instanceof ForwarderAssertMethod {
   private BooleanAssertMethod underlying;
 
-  ForwarderBooleanAssertMethod() {
-    forwarder = this and
-    underlying = forwarder.getUnderlyingAssertMethod()
-  }
+  ForwarderBooleanAssertMethod() { underlying = super.getUnderlyingAssertMethod() }
 
   override int getAnAssertionIndex(boolean b) {
-    forwarder.getAForwarderAssertionIndex(result) = underlying.getAnAssertionIndex(b)
+    super.getAForwarderAssertionIndex(result) = underlying.getAnAssertionIndex(b)
   }
 
   override AssertionFailure getAssertionFailure(int i) {
-    result = underlying.getAssertionFailure(forwarder.getAForwarderAssertionIndex(i))
+    result = underlying.getAssertionFailure(super.getAForwarderAssertionIndex(i))
   }
 }
 
 /** A method that forwards to a nullness assertion method. */
-class ForwarderNullnessAssertMethod extends NullnessAssertMethod {
-  private ForwarderAssertMethod forwarder;
+class ForwarderNullnessAssertMethod extends NullnessAssertMethod instanceof ForwarderAssertMethod {
   private NullnessAssertMethod underlying;
 
-  ForwarderNullnessAssertMethod() {
-    forwarder = this and
-    underlying = forwarder.getUnderlyingAssertMethod()
-  }
+  ForwarderNullnessAssertMethod() { underlying = super.getUnderlyingAssertMethod() }
 
   override int getAnAssertionIndex(boolean b) {
-    forwarder.getAForwarderAssertionIndex(result) = underlying.getAnAssertionIndex(b)
+    super.getAForwarderAssertionIndex(result) = underlying.getAnAssertionIndex(b)
   }
 
   override AssertionFailure getAssertionFailure(int i) {
-    result = underlying.getAssertionFailure(forwarder.getAForwarderAssertionIndex(i))
+    result = underlying.getAssertionFailure(super.getAForwarderAssertionIndex(i))
   }
 }
 

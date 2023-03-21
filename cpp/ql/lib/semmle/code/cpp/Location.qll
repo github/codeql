@@ -10,12 +10,14 @@ import semmle.code.cpp.File
  */
 class Location extends @location {
   /** Gets the container corresponding to this location. */
+  pragma[nomagic]
   Container getContainer() { this.fullLocationInfo(result, _, _, _, _) }
 
   /** Gets the file corresponding to this location, if any. */
   File getFile() { result = this.getContainer() }
 
   /** Gets the 1-based line number (inclusive) where this location starts. */
+  pragma[nomagic]
   int getStartLine() { this.fullLocationInfo(_, result, _, _, _) }
 
   /** Gets the 1-based column number (inclusive) where this location starts. */

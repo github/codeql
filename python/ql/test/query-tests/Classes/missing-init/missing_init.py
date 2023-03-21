@@ -39,7 +39,7 @@ class UVT(UT, PU):
 class IUVT(IUT, UVT):
     pass
 
-#False positive observed on LGTM
+#False positive
 class M1(object):
     def __init__(self):
         print("A")

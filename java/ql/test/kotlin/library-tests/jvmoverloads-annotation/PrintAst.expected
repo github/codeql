@@ -5,31 +5,8 @@ test.kt:
 #    1|       3: [TypeAccess] String
 #    1|       5: [BlockStmt] { ... }
 #    1|         0: [ReturnStmt] return ...
-#    1|           0: [StringLiteral] Hello world
+#    1|           0: [StringLiteral] "Hello world"
 #   45|     2: [ExtensionMethod] testExtensionFunction
-#   45|       3: [TypeAccess] int
-#-----|       4: (Parameters)
-#   45|         0: [Parameter] <this>
-#   45|           0: [TypeAccess] Test
-#   45|         1: [Parameter] a
-#   45|           0: [TypeAccess] int
-#   45|         2: [Parameter] c
-#   45|           0: [TypeAccess] double
-#   45|         3: [Parameter] e
-#   45|           0: [TypeAccess] boolean
-#   45|       5: [BlockStmt] { ... }
-#   45|         0: [ReturnStmt] return ...
-#   45|           0: [MethodAccess] testExtensionFunction$default(...)
-#   45|             -1: [TypeAccess] TestKt
-#    0|             0: [ExtensionReceiverAccess] this
-#    0|             1: [VarAccess] a
-#    1|             2: [NullLiteral] null
-#    0|             3: [VarAccess] c
-#    1|             4: [FloatLiteral] 0.0
-#    0|             5: [VarAccess] e
-#    1|             6: [IntegerLiteral] 21
-#    1|             7: [NullLiteral] null
-#   45|     3: [ExtensionMethod] testExtensionFunction
 #   45|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   45|         0: [Parameter] <this>
@@ -54,7 +31,9 @@ test.kt:
 #    0|             5: [VarAccess] e
 #    1|             6: [IntegerLiteral] 23
 #    1|             7: [NullLiteral] null
-#   45|     4: [ExtensionMethod] testExtensionFunction
+#   45|     3: [ExtensionMethod] testExtensionFunction
+#-----|       1: (Annotations)
+#   44|         1: [Annotation] JvmOverloads
 #   45|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   45|         0: [Parameter] <this>
@@ -72,7 +51,30 @@ test.kt:
 #   45|       5: [BlockStmt] { ... }
 #   45|         0: [ReturnStmt] return ...
 #   45|           0: [VarAccess] a
-#   45|     5: [Method] testExtensionFunction$default
+#   45|     4: [ExtensionMethod] testExtensionFunction
+#   45|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#   45|         0: [Parameter] <this>
+#   45|           0: [TypeAccess] Test
+#   45|         1: [Parameter] a
+#   45|           0: [TypeAccess] int
+#   45|         2: [Parameter] c
+#   45|           0: [TypeAccess] double
+#   45|         3: [Parameter] e
+#   45|           0: [TypeAccess] boolean
+#   45|       5: [BlockStmt] { ... }
+#   45|         0: [ReturnStmt] return ...
+#   45|           0: [MethodAccess] testExtensionFunction$default(...)
+#   45|             -1: [TypeAccess] TestKt
+#    0|             0: [ExtensionReceiverAccess] this
+#    0|             1: [VarAccess] a
+#    1|             2: [NullLiteral] null
+#    0|             3: [VarAccess] c
+#    1|             4: [FloatLiteral] 0.0
+#    0|             5: [VarAccess] e
+#    1|             6: [IntegerLiteral] 21
+#    1|             7: [NullLiteral] null
+#   45|     5: [ExtensionMethod] testExtensionFunction$default
 #   45|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   45|         0: [Parameter] p0
@@ -116,7 +118,7 @@ test.kt:
 #   45|         2: [ReturnStmt] return ...
 #   45|           0: [MethodAccess] testExtensionFunction(...)
 #   45|             -1: [TypeAccess] TestKt
-#   45|             0: [VarAccess] p0
+#   45|             0: [ExtensionReceiverAccess] this
 #   45|             1: [VarAccess] p1
 #   45|             2: [VarAccess] p2
 #   45|             3: [VarAccess] p3
@@ -128,26 +130,6 @@ test.kt:
 #    3|         0: [SuperConstructorInvocationStmt] super(...)
 #    3|         1: [BlockStmt] { ... }
 #    6|     2: [Method] testStaticFunction
-#    6|       3: [TypeAccess] int
-#-----|       4: (Parameters)
-#    6|         0: [Parameter] a
-#    6|           0: [TypeAccess] int
-#    6|         1: [Parameter] c
-#    6|           0: [TypeAccess] double
-#    6|         2: [Parameter] e
-#    6|           0: [TypeAccess] boolean
-#    6|       5: [BlockStmt] { ... }
-#    6|         0: [ReturnStmt] return ...
-#    6|           0: [MethodAccess] testStaticFunction$default(...)
-#    6|             -1: [TypeAccess] Test
-#    0|             0: [VarAccess] a
-#    1|             1: [NullLiteral] null
-#    0|             2: [VarAccess] c
-#    1|             3: [FloatLiteral] 0.0
-#    0|             4: [VarAccess] e
-#    1|             5: [IntegerLiteral] 21
-#    1|             6: [NullLiteral] null
-#    6|     3: [Method] testStaticFunction
 #    6|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #    6|         0: [Parameter] a
@@ -169,7 +151,10 @@ test.kt:
 #    0|             4: [VarAccess] e
 #    1|             5: [IntegerLiteral] 23
 #    1|             6: [NullLiteral] null
-#    6|     4: [Method] testStaticFunction
+#    6|     3: [Method] testStaticFunction
+#-----|       1: (Annotations)
+#    5|         1: [Annotation] JvmOverloads
+#    5|         2: [Annotation] JvmStatic
 #    6|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #    6|         0: [Parameter] a
@@ -185,6 +170,26 @@ test.kt:
 #    6|       5: [BlockStmt] { ... }
 #    6|         0: [ReturnStmt] return ...
 #    6|           0: [VarAccess] a
+#    6|     4: [Method] testStaticFunction
+#    6|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#    6|         0: [Parameter] a
+#    6|           0: [TypeAccess] int
+#    6|         1: [Parameter] c
+#    6|           0: [TypeAccess] double
+#    6|         2: [Parameter] e
+#    6|           0: [TypeAccess] boolean
+#    6|       5: [BlockStmt] { ... }
+#    6|         0: [ReturnStmt] return ...
+#    6|           0: [MethodAccess] testStaticFunction$default(...)
+#    6|             -1: [TypeAccess] Test
+#    0|             0: [VarAccess] a
+#    1|             1: [NullLiteral] null
+#    0|             2: [VarAccess] c
+#    1|             3: [FloatLiteral] 0.0
+#    0|             4: [VarAccess] e
+#    1|             5: [IntegerLiteral] 21
+#    1|             6: [NullLiteral] null
 #    6|     5: [Method] testStaticFunction$default
 #    6|       3: [TypeAccess] int
 #-----|       4: (Parameters)
@@ -237,27 +242,6 @@ test.kt:
 #-----|       4: (Parameters)
 #    9|         0: [Parameter] a
 #    9|           0: [TypeAccess] int
-#    9|         1: [Parameter] c
-#    9|           0: [TypeAccess] double
-#    9|         2: [Parameter] e
-#    9|           0: [TypeAccess] boolean
-#    9|       5: [BlockStmt] { ... }
-#    9|         0: [ReturnStmt] return ...
-#    9|           0: [MethodAccess] testMemberFunction$default(...)
-#    9|             -1: [TypeAccess] Test
-#    0|             0: [ThisAccess] this
-#    0|             1: [VarAccess] a
-#    1|             2: [NullLiteral] null
-#    0|             3: [VarAccess] c
-#    1|             4: [FloatLiteral] 0.0
-#    0|             5: [VarAccess] e
-#    1|             6: [IntegerLiteral] 21
-#    1|             7: [NullLiteral] null
-#    9|     7: [Method] testMemberFunction
-#    9|       3: [TypeAccess] int
-#-----|       4: (Parameters)
-#    9|         0: [Parameter] a
-#    9|           0: [TypeAccess] int
 #    9|         1: [Parameter] b
 #    9|           0: [TypeAccess] String
 #    9|         2: [Parameter] c
@@ -276,7 +260,9 @@ test.kt:
 #    0|             5: [VarAccess] e
 #    1|             6: [IntegerLiteral] 23
 #    1|             7: [NullLiteral] null
-#    9|     8: [Method] testMemberFunction
+#    9|     7: [Method] testMemberFunction
+#-----|       1: (Annotations)
+#    8|         1: [Annotation] JvmOverloads
 #    9|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #    9|         0: [Parameter] a
@@ -292,6 +278,27 @@ test.kt:
 #    9|       5: [BlockStmt] { ... }
 #    9|         0: [ReturnStmt] return ...
 #    9|           0: [VarAccess] a
+#    9|     8: [Method] testMemberFunction
+#    9|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#    9|         0: [Parameter] a
+#    9|           0: [TypeAccess] int
+#    9|         1: [Parameter] c
+#    9|           0: [TypeAccess] double
+#    9|         2: [Parameter] e
+#    9|           0: [TypeAccess] boolean
+#    9|       5: [BlockStmt] { ... }
+#    9|         0: [ReturnStmt] return ...
+#    9|           0: [MethodAccess] testMemberFunction$default(...)
+#    9|             -1: [TypeAccess] Test
+#    0|             0: [ThisAccess] this
+#    0|             1: [VarAccess] a
+#    1|             2: [NullLiteral] null
+#    0|             3: [VarAccess] c
+#    1|             4: [FloatLiteral] 0.0
+#    0|             5: [VarAccess] e
+#    1|             6: [IntegerLiteral] 21
+#    1|             7: [NullLiteral] null
 #    9|     9: [Method] testMemberFunction$default
 #    9|       3: [TypeAccess] int
 #-----|       4: (Parameters)
@@ -348,31 +355,6 @@ test.kt:
 #   12|           0: [TypeAccess] Test2
 #   12|         1: [Parameter] a
 #   12|           0: [TypeAccess] int
-#   12|         2: [Parameter] c
-#   12|           0: [TypeAccess] double
-#   12|         3: [Parameter] e
-#   12|           0: [TypeAccess] boolean
-#   12|       5: [BlockStmt] { ... }
-#   12|         0: [ReturnStmt] return ...
-#   12|           0: [MethodAccess] testMemberExtensionFunction$default(...)
-#   12|             -1: [TypeAccess] Test
-#    0|             0: [ExtensionReceiverAccess] this
-#    0|             1: [ThisAccess] Test.this
-#    0|               0: [TypeAccess] Test
-#    0|             2: [VarAccess] a
-#    1|             3: [NullLiteral] null
-#    0|             4: [VarAccess] c
-#    1|             5: [FloatLiteral] 0.0
-#    0|             6: [VarAccess] e
-#    1|             7: [IntegerLiteral] 21
-#    1|             8: [NullLiteral] null
-#   12|     11: [ExtensionMethod] testMemberExtensionFunction
-#   12|       3: [TypeAccess] int
-#-----|       4: (Parameters)
-#   12|         0: [Parameter] <this>
-#   12|           0: [TypeAccess] Test2
-#   12|         1: [Parameter] a
-#   12|           0: [TypeAccess] int
 #   12|         2: [Parameter] b
 #   12|           0: [TypeAccess] String
 #   12|         3: [Parameter] c
@@ -383,9 +365,9 @@ test.kt:
 #   12|         0: [ReturnStmt] return ...
 #   12|           0: [MethodAccess] testMemberExtensionFunction$default(...)
 #   12|             -1: [TypeAccess] Test
-#    0|             0: [ExtensionReceiverAccess] this
-#    0|             1: [ThisAccess] Test.this
+#    0|             0: [ThisAccess] Test.this
 #    0|               0: [TypeAccess] Test
+#    0|             1: [ExtensionReceiverAccess] this
 #    0|             2: [VarAccess] a
 #    0|             3: [VarAccess] b
 #    0|             4: [VarAccess] c
@@ -393,7 +375,9 @@ test.kt:
 #    0|             6: [VarAccess] e
 #    1|             7: [IntegerLiteral] 23
 #    1|             8: [NullLiteral] null
-#   12|     12: [ExtensionMethod] testMemberExtensionFunction
+#   12|     11: [ExtensionMethod] testMemberExtensionFunction
+#-----|       1: (Annotations)
+#   11|         1: [Annotation] JvmOverloads
 #   12|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   12|         0: [Parameter] <this>
@@ -411,13 +395,38 @@ test.kt:
 #   12|       5: [BlockStmt] { ... }
 #   12|         0: [ReturnStmt] return ...
 #   12|           0: [VarAccess] a
-#   12|     13: [Method] testMemberExtensionFunction$default
+#   12|     12: [ExtensionMethod] testMemberExtensionFunction
+#   12|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#   12|         0: [Parameter] <this>
+#   12|           0: [TypeAccess] Test2
+#   12|         1: [Parameter] a
+#   12|           0: [TypeAccess] int
+#   12|         2: [Parameter] c
+#   12|           0: [TypeAccess] double
+#   12|         3: [Parameter] e
+#   12|           0: [TypeAccess] boolean
+#   12|       5: [BlockStmt] { ... }
+#   12|         0: [ReturnStmt] return ...
+#   12|           0: [MethodAccess] testMemberExtensionFunction$default(...)
+#   12|             -1: [TypeAccess] Test
+#    0|             0: [ThisAccess] Test.this
+#    0|               0: [TypeAccess] Test
+#    0|             1: [ExtensionReceiverAccess] this
+#    0|             2: [VarAccess] a
+#    1|             3: [NullLiteral] null
+#    0|             4: [VarAccess] c
+#    1|             5: [FloatLiteral] 0.0
+#    0|             6: [VarAccess] e
+#    1|             7: [IntegerLiteral] 21
+#    1|             8: [NullLiteral] null
+#   12|     13: [ExtensionMethod] testMemberExtensionFunction$default
 #   12|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   12|         0: [Parameter] p0
-#   12|           0: [TypeAccess] Test2
-#   12|         1: [Parameter] p1
 #   12|           0: [TypeAccess] Test
+#   12|         1: [Parameter] p1
+#   12|           0: [TypeAccess] Test2
 #   12|         2: [Parameter] p2
 #   12|           0: [TypeAccess] int
 #   12|         3: [Parameter] p3
@@ -456,8 +465,8 @@ test.kt:
 #   12|               1: [FloatLiteral] 1.0
 #   12|         2: [ReturnStmt] return ...
 #   12|           0: [MethodAccess] testMemberExtensionFunction(...)
-#   12|             -1: [VarAccess] p1
-#   12|             0: [VarAccess] p0
+#   12|             -1: [VarAccess] p0
+#   12|             0: [ExtensionReceiverAccess] this
 #   12|             1: [VarAccess] p2
 #   12|             2: [VarAccess] p3
 #   12|             3: [VarAccess] p4
@@ -465,23 +474,6 @@ test.kt:
 #   12|             5: [VarAccess] p6
 #   16|   3: [Class] Test2
 #   16|     1: [Constructor] Test2
-#-----|       4: (Parameters)
-#   16|         0: [Parameter] a
-#   16|           0: [TypeAccess] int
-#   16|         1: [Parameter] c
-#   16|           0: [TypeAccess] double
-#   16|         2: [Parameter] e
-#   16|           0: [TypeAccess] boolean
-#   16|       5: [BlockStmt] { ... }
-#   16|         0: [ThisConstructorInvocationStmt] this(...)
-#    0|           0: [VarAccess] a
-#    1|           1: [NullLiteral] null
-#    0|           2: [VarAccess] c
-#    1|           3: [FloatLiteral] 0.0
-#    0|           4: [VarAccess] e
-#    1|           5: [IntegerLiteral] 21
-#    1|           6: [NullLiteral] null
-#   16|     2: [Constructor] Test2
 #-----|       4: (Parameters)
 #   16|         0: [Parameter] a
 #   16|           0: [TypeAccess] int
@@ -500,7 +492,9 @@ test.kt:
 #    0|           4: [VarAccess] e
 #    1|           5: [IntegerLiteral] 23
 #    1|           6: [NullLiteral] null
-#   16|     3: [Constructor] Test2
+#   16|     2: [Constructor] Test2
+#-----|       1: (Annotations)
+#   16|         1: [Annotation] JvmOverloads
 #-----|       4: (Parameters)
 #   16|         0: [Parameter] a
 #   16|           0: [TypeAccess] int
@@ -515,7 +509,7 @@ test.kt:
 #   16|       5: [BlockStmt] { ... }
 #   16|         0: [SuperConstructorInvocationStmt] super(...)
 #   16|         1: [BlockStmt] { ... }
-#   16|     4: [Constructor] Test2
+#   16|     3: [Constructor] Test2
 #-----|       4: (Parameters)
 #   16|         0: [Parameter] p0
 #   16|           0: [TypeAccess] int
@@ -559,33 +553,29 @@ test.kt:
 #   16|           2: [VarAccess] p2
 #   16|           3: [VarAccess] p3
 #   16|           4: [VarAccess] p4
+#   16|     4: [Constructor] Test2
+#-----|       4: (Parameters)
+#   16|         0: [Parameter] a
+#   16|           0: [TypeAccess] int
+#   16|         1: [Parameter] c
+#   16|           0: [TypeAccess] double
+#   16|         2: [Parameter] e
+#   16|           0: [TypeAccess] boolean
+#   16|       5: [BlockStmt] { ... }
+#   16|         0: [ThisConstructorInvocationStmt] this(...)
+#    0|           0: [VarAccess] a
+#    1|           1: [NullLiteral] null
+#    0|           2: [VarAccess] c
+#    1|           3: [FloatLiteral] 0.0
+#    0|           4: [VarAccess] e
+#    1|           5: [IntegerLiteral] 21
+#    1|           6: [NullLiteral] null
 #   18|     5: [Class] Companion
 #   18|       1: [Constructor] Companion
 #   18|         5: [BlockStmt] { ... }
 #   18|           0: [SuperConstructorInvocationStmt] super(...)
 #   18|           1: [BlockStmt] { ... }
 #   21|       2: [Method] testCompanionFunction
-#   21|         3: [TypeAccess] int
-#-----|         4: (Parameters)
-#   21|           0: [Parameter] a
-#   21|             0: [TypeAccess] int
-#   21|           1: [Parameter] c
-#   21|             0: [TypeAccess] double
-#   21|           2: [Parameter] e
-#   21|             0: [TypeAccess] boolean
-#   21|         5: [BlockStmt] { ... }
-#   21|           0: [ReturnStmt] return ...
-#   21|             0: [MethodAccess] testCompanionFunction$default(...)
-#   21|               -1: [TypeAccess] Companion
-#    0|               0: [ThisAccess] this
-#    0|               1: [VarAccess] a
-#    1|               2: [NullLiteral] null
-#    0|               3: [VarAccess] c
-#    1|               4: [FloatLiteral] 0.0
-#    0|               5: [VarAccess] e
-#    1|               6: [IntegerLiteral] 21
-#    1|               7: [NullLiteral] null
-#   21|       3: [Method] testCompanionFunction
 #   21|         3: [TypeAccess] int
 #-----|         4: (Parameters)
 #   21|           0: [Parameter] a
@@ -608,7 +598,9 @@ test.kt:
 #    0|               5: [VarAccess] e
 #    1|               6: [IntegerLiteral] 23
 #    1|               7: [NullLiteral] null
-#   21|       4: [Method] testCompanionFunction
+#   21|       3: [Method] testCompanionFunction
+#-----|         1: (Annotations)
+#   20|           1: [Annotation] JvmOverloads
 #   21|         3: [TypeAccess] int
 #-----|         4: (Parameters)
 #   21|           0: [Parameter] a
@@ -624,6 +616,27 @@ test.kt:
 #   21|         5: [BlockStmt] { ... }
 #   21|           0: [ReturnStmt] return ...
 #   21|             0: [VarAccess] a
+#   21|       4: [Method] testCompanionFunction
+#   21|         3: [TypeAccess] int
+#-----|         4: (Parameters)
+#   21|           0: [Parameter] a
+#   21|             0: [TypeAccess] int
+#   21|           1: [Parameter] c
+#   21|             0: [TypeAccess] double
+#   21|           2: [Parameter] e
+#   21|             0: [TypeAccess] boolean
+#   21|         5: [BlockStmt] { ... }
+#   21|           0: [ReturnStmt] return ...
+#   21|             0: [MethodAccess] testCompanionFunction$default(...)
+#   21|               -1: [TypeAccess] Companion
+#    0|               0: [ThisAccess] this
+#    0|               1: [VarAccess] a
+#    1|               2: [NullLiteral] null
+#    0|               3: [VarAccess] c
+#    1|               4: [FloatLiteral] 0.0
+#    0|               5: [VarAccess] e
+#    1|               6: [IntegerLiteral] 21
+#    1|               7: [NullLiteral] null
 #   21|       5: [Method] testCompanionFunction$default
 #   21|         3: [TypeAccess] int
 #-----|         4: (Parameters)
@@ -678,27 +691,6 @@ test.kt:
 #-----|         4: (Parameters)
 #   24|           0: [Parameter] a
 #   24|             0: [TypeAccess] int
-#   24|           1: [Parameter] c
-#   24|             0: [TypeAccess] double
-#   24|           2: [Parameter] e
-#   24|             0: [TypeAccess] boolean
-#   24|         5: [BlockStmt] { ... }
-#   24|           0: [ReturnStmt] return ...
-#   24|             0: [MethodAccess] testStaticCompanionFunction$default(...)
-#   24|               -1: [TypeAccess] Companion
-#    0|               0: [ThisAccess] this
-#    0|               1: [VarAccess] a
-#    1|               2: [NullLiteral] null
-#    0|               3: [VarAccess] c
-#    1|               4: [FloatLiteral] 0.0
-#    0|               5: [VarAccess] e
-#    1|               6: [IntegerLiteral] 21
-#    1|               7: [NullLiteral] null
-#   24|       7: [Method] testStaticCompanionFunction
-#   24|         3: [TypeAccess] int
-#-----|         4: (Parameters)
-#   24|           0: [Parameter] a
-#   24|             0: [TypeAccess] int
 #   24|           1: [Parameter] b
 #   24|             0: [TypeAccess] String
 #   24|           2: [Parameter] c
@@ -717,7 +709,10 @@ test.kt:
 #    0|               5: [VarAccess] e
 #    1|               6: [IntegerLiteral] 23
 #    1|               7: [NullLiteral] null
-#   24|       8: [Method] testStaticCompanionFunction
+#   24|       7: [Method] testStaticCompanionFunction
+#-----|         1: (Annotations)
+#   23|           1: [Annotation] JvmOverloads
+#   23|           2: [Annotation] JvmStatic
 #   24|         3: [TypeAccess] int
 #-----|         4: (Parameters)
 #   24|           0: [Parameter] a
@@ -733,6 +728,27 @@ test.kt:
 #   24|         5: [BlockStmt] { ... }
 #   24|           0: [ReturnStmt] return ...
 #   24|             0: [VarAccess] a
+#   24|       8: [Method] testStaticCompanionFunction
+#   24|         3: [TypeAccess] int
+#-----|         4: (Parameters)
+#   24|           0: [Parameter] a
+#   24|             0: [TypeAccess] int
+#   24|           1: [Parameter] c
+#   24|             0: [TypeAccess] double
+#   24|           2: [Parameter] e
+#   24|             0: [TypeAccess] boolean
+#   24|         5: [BlockStmt] { ... }
+#   24|           0: [ReturnStmt] return ...
+#   24|             0: [MethodAccess] testStaticCompanionFunction$default(...)
+#   24|               -1: [TypeAccess] Companion
+#    0|               0: [ThisAccess] this
+#    0|               1: [VarAccess] a
+#    1|               2: [NullLiteral] null
+#    0|               3: [VarAccess] c
+#    1|               4: [FloatLiteral] 0.0
+#    0|               5: [VarAccess] e
+#    1|               6: [IntegerLiteral] 21
+#    1|               7: [NullLiteral] null
 #   24|       9: [Method] testStaticCompanionFunction$default
 #   24|         3: [TypeAccess] int
 #-----|         4: (Parameters)
@@ -787,27 +803,6 @@ test.kt:
 #-----|       4: (Parameters)
 #   24|         0: [Parameter] a
 #   24|           0: [TypeAccess] int
-#   24|         1: [Parameter] c
-#   24|           0: [TypeAccess] double
-#   24|         2: [Parameter] e
-#   24|           0: [TypeAccess] boolean
-#   24|       5: [BlockStmt] { ... }
-#   24|         0: [ReturnStmt] return ...
-#   24|           0: [MethodAccess] testStaticCompanionFunction$default(...)
-#   24|             -1: [TypeAccess] Companion
-#    0|             0: [ThisAccess] this
-#    0|             1: [VarAccess] a
-#    1|             2: [NullLiteral] null
-#    0|             3: [VarAccess] c
-#    1|             4: [FloatLiteral] 0.0
-#    0|             5: [VarAccess] e
-#    1|             6: [IntegerLiteral] 21
-#    1|             7: [NullLiteral] null
-#   24|     7: [Method] testStaticCompanionFunction
-#   24|       3: [TypeAccess] int
-#-----|       4: (Parameters)
-#   24|         0: [Parameter] a
-#   24|           0: [TypeAccess] int
 #   24|         1: [Parameter] b
 #   24|           0: [TypeAccess] String
 #   24|         2: [Parameter] c
@@ -826,7 +821,7 @@ test.kt:
 #    0|             5: [VarAccess] e
 #    1|             6: [IntegerLiteral] 23
 #    1|             7: [NullLiteral] null
-#   24|     8: [Method] testStaticCompanionFunction
+#   24|     7: [Method] testStaticCompanionFunction
 #   24|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   24|         0: [Parameter] a
@@ -849,6 +844,27 @@ test.kt:
 #   24|             2: [VarAccess] c
 #   24|             3: [VarAccess] d
 #   24|             4: [VarAccess] e
+#   24|     8: [Method] testStaticCompanionFunction
+#   24|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#   24|         0: [Parameter] a
+#   24|           0: [TypeAccess] int
+#   24|         1: [Parameter] c
+#   24|           0: [TypeAccess] double
+#   24|         2: [Parameter] e
+#   24|           0: [TypeAccess] boolean
+#   24|       5: [BlockStmt] { ... }
+#   24|         0: [ReturnStmt] return ...
+#   24|           0: [MethodAccess] testStaticCompanionFunction$default(...)
+#   24|             -1: [TypeAccess] Companion
+#    0|             0: [ThisAccess] this
+#    0|             1: [VarAccess] a
+#    1|             2: [NullLiteral] null
+#    0|             3: [VarAccess] c
+#    1|             4: [FloatLiteral] 0.0
+#    0|             5: [VarAccess] e
+#    1|             6: [IntegerLiteral] 21
+#    1|             7: [NullLiteral] null
 #   30|   4: [Class,GenericType,ParameterizedType] GenericTest
 #-----|     -2: (Generic Parameters)
 #   30|       0: [TypeVariable] T
@@ -867,35 +883,6 @@ test.kt:
 #    1|           4: [IntegerLiteral] 10
 #    1|           5: [NullLiteral] null
 #   30|     2: [Constructor] GenericTest
-#-----|       4: (Parameters)
-#   30|         0: [Parameter] a
-#   30|           0: [TypeAccess] int
-#   30|         1: [Parameter] b
-#   30|           0: [TypeAccess] T
-#   30|         2: [Parameter] d
-#   30|           0: [TypeAccess] T
-#   30|       5: [BlockStmt] { ... }
-#   30|         0: [ThisConstructorInvocationStmt] this(...)
-#    0|           0: [VarAccess] a
-#    0|           1: [VarAccess] b
-#    1|           2: [NullLiteral] null
-#    0|           3: [VarAccess] d
-#    1|           4: [IntegerLiteral] 11
-#    1|           5: [NullLiteral] null
-#   30|     3: [Constructor] GenericTest
-#-----|       4: (Parameters)
-#   30|         0: [Parameter] a
-#   30|           0: [TypeAccess] int
-#   30|         1: [Parameter] b
-#   30|           0: [TypeAccess] T
-#   30|         2: [Parameter] c
-#   30|           0: [TypeAccess] String
-#   30|         3: [Parameter] d
-#   30|           0: [TypeAccess] T
-#   30|       5: [BlockStmt] { ... }
-#   30|         0: [SuperConstructorInvocationStmt] super(...)
-#   30|         1: [BlockStmt] { ... }
-#   30|     4: [Constructor] GenericTest
 #-----|       4: (Parameters)
 #   30|         0: [Parameter] p0
 #   30|           0: [TypeAccess] int
@@ -929,12 +916,43 @@ test.kt:
 #   30|           1: [ExprStmt] <Expr>;
 #   30|             0: [AssignExpr] ...=...
 #   30|               0: [VarAccess] p2
-#   30|               1: [StringLiteral] Hello world
+#   30|               1: [StringLiteral] "Hello world"
 #   30|         2: [ThisConstructorInvocationStmt] this(...)
 #   30|           0: [VarAccess] p0
 #   30|           1: [VarAccess] p1
 #   30|           2: [VarAccess] p2
 #   30|           3: [VarAccess] p3
+#   30|     3: [Constructor] GenericTest
+#-----|       1: (Annotations)
+#   30|         1: [Annotation] JvmOverloads
+#-----|       4: (Parameters)
+#   30|         0: [Parameter] a
+#   30|           0: [TypeAccess] int
+#   30|         1: [Parameter] b
+#   30|           0: [TypeAccess] T
+#   30|         2: [Parameter] c
+#   30|           0: [TypeAccess] String
+#   30|         3: [Parameter] d
+#   30|           0: [TypeAccess] T
+#   30|       5: [BlockStmt] { ... }
+#   30|         0: [SuperConstructorInvocationStmt] super(...)
+#   30|         1: [BlockStmt] { ... }
+#   30|     4: [Constructor] GenericTest
+#-----|       4: (Parameters)
+#   30|         0: [Parameter] a
+#   30|           0: [TypeAccess] int
+#   30|         1: [Parameter] b
+#   30|           0: [TypeAccess] T
+#   30|         2: [Parameter] d
+#   30|           0: [TypeAccess] T
+#   30|       5: [BlockStmt] { ... }
+#   30|         0: [ThisConstructorInvocationStmt] this(...)
+#    0|           0: [VarAccess] a
+#    0|           1: [VarAccess] b
+#    1|           2: [NullLiteral] null
+#    0|           3: [VarAccess] d
+#    1|           4: [IntegerLiteral] 11
+#    1|           5: [NullLiteral] null
 #   33|     5: [Method] testMemberFunction
 #   33|       3: [TypeAccess] int
 #-----|       4: (Parameters)
@@ -954,6 +972,22 @@ test.kt:
 #    1|             5: [IntegerLiteral] 10
 #    1|             6: [NullLiteral] null
 #   33|     6: [Method] testMemberFunction
+#-----|       1: (Annotations)
+#   32|         1: [Annotation] JvmOverloads
+#   33|       3: [TypeAccess] int
+#-----|       4: (Parameters)
+#   33|         0: [Parameter] a
+#   33|           0: [TypeAccess] int
+#   33|         1: [Parameter] b
+#   33|           0: [TypeAccess] T
+#   33|         2: [Parameter] c
+#   33|           0: [TypeAccess] String
+#   33|         3: [Parameter] d
+#   33|           0: [TypeAccess] T
+#   33|       5: [BlockStmt] { ... }
+#   33|         0: [ReturnStmt] return ...
+#   33|           0: [VarAccess] a
+#   33|     7: [Method] testMemberFunction
 #   33|       3: [TypeAccess] int
 #-----|       4: (Parameters)
 #   33|         0: [Parameter] a
@@ -973,20 +1007,6 @@ test.kt:
 #    0|             4: [VarAccess] d
 #    1|             5: [IntegerLiteral] 11
 #    1|             6: [NullLiteral] null
-#   33|     7: [Method] testMemberFunction
-#   33|       3: [TypeAccess] int
-#-----|       4: (Parameters)
-#   33|         0: [Parameter] a
-#   33|           0: [TypeAccess] int
-#   33|         1: [Parameter] b
-#   33|           0: [TypeAccess] T
-#   33|         2: [Parameter] c
-#   33|           0: [TypeAccess] String
-#   33|         3: [Parameter] d
-#   33|           0: [TypeAccess] T
-#   33|       5: [BlockStmt] { ... }
-#   33|         0: [ReturnStmt] return ...
-#   33|           0: [VarAccess] a
 #   33|     8: [Method] testMemberFunction$default
 #   33|       3: [TypeAccess] int
 #-----|       4: (Parameters)
@@ -1024,7 +1044,7 @@ test.kt:
 #   33|           1: [ExprStmt] <Expr>;
 #   33|             0: [AssignExpr] ...=...
 #   33|               0: [VarAccess] p3
-#   33|               1: [StringLiteral] Hello world
+#   33|               1: [StringLiteral] "Hello world"
 #   33|         2: [ReturnStmt] return ...
 #   33|           0: [MethodAccess] testMemberFunction(...)
 #   33|             -1: [VarAccess] p0
@@ -1049,7 +1069,7 @@ test.kt:
 #   37|               -1: [VarAccess] spec1
 #   37|               0: [IntegerLiteral] 1
 #   37|               1: [FloatLiteral] 1.0
-#   37|               2: [StringLiteral] Hello world
+#   37|               2: [StringLiteral] "Hello world"
 #   37|               3: [FloatLiteral] 2.0
 #   38|         1: [ExprStmt] <Expr>;
 #   38|           0: [ImplicitCoercionToUnitExpr] <implicit coercion to unit>
@@ -1058,5 +1078,5 @@ test.kt:
 #   38|               -1: [VarAccess] spec2
 #   38|               0: [IntegerLiteral] 1
 #   38|               1: [DoubleLiteral] 1.0
-#   38|               2: [StringLiteral] Hello world
+#   38|               2: [StringLiteral] "Hello world"
 #   38|               3: [DoubleLiteral] 2.0

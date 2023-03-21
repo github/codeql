@@ -71,6 +71,11 @@ class LocalScopeVariable extends Variable, @local_scope_variable {
    */
   predicate isRef() { none() }
 
+  /**
+   * Holds if this local variable or parameter is `scoped`.
+   */
+  predicate isScoped() { scoped_annotation(this, _) }
+
   override predicate hasQualifiedName(string qualifier, string name) { none() }
 }
 
@@ -85,7 +90,8 @@ class LocalScopeVariable extends Variable, @local_scope_variable {
  * ```
  */
 class Parameter extends DotNet::Parameter, LocalScopeVariable, Attributable, TopLevelExprParent,
-  @parameter {
+  @parameter
+{
   /**
    * Gets the position of this parameter. For example, the position of `x` is
    * 0 and the position of `y` is 1 in
@@ -371,7 +377,8 @@ class LocalConstant extends LocalVariable, @local_constant {
  * ```
  */
 class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent, DotNet::Field,
-  @field {
+  @field
+{
   /**
    * Gets the initial value of this field, if any. For example, the initial
    * value of `F` on line 2 is `20` in
@@ -398,6 +405,12 @@ class Field extends Variable, AssignableMember, Attributable, TopLevelExprParent
 
   /** Holds if this field is `volatile`. */
   predicate isVolatile() { this.hasModifier("volatile") }
+
+  /** Holds if this is a `ref` field. */
+  predicate isRef() { this.getAnnotatedType().isRef() }
+
+  /** Holds if this is a `ref readonly` field. */
+  predicate isReadonlyRef() { this.getAnnotatedType().isReadonlyRef() }
 
   /** Holds if this field is `readonly`. */
   predicate isReadOnly() { this.hasModifier("readonly") }

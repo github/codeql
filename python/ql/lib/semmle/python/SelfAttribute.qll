@@ -78,8 +78,8 @@ private predicate attr_assigned_in_method_arg_n(FunctionObject method, string na
       attr.isStore()
     )
     or
-    exists(CallNode call, FunctionObject callee, int m |
-      callee.getArgumentForCall(call, m) = param.getAUse() and
+    exists(FunctionObject callee, int m |
+      callee.getArgumentForCall(_, m) = param.getAUse() and
       attr_assigned_in_method_arg_n(callee, name, m)
     )
   )

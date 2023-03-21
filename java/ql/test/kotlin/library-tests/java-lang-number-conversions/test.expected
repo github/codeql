@@ -28,6 +28,7 @@
 | kotlin.Byte | describeConstable |
 | kotlin.Byte | div |
 | kotlin.Byte | doubleValue |
+| kotlin.Byte | equals |
 | kotlin.Byte | floatValue |
 | kotlin.Byte | inc |
 | kotlin.Byte | intValue |
@@ -35,10 +36,12 @@
 | kotlin.Byte | minus |
 | kotlin.Byte | plus |
 | kotlin.Byte | rangeTo |
+| kotlin.Byte | rangeUntil |
 | kotlin.Byte | rem |
 | kotlin.Byte | shortValue |
 | kotlin.Byte | times |
 | kotlin.Byte | toChar |
+| kotlin.Byte | toString |
 | kotlin.Byte | unaryMinus |
 | kotlin.Byte | unaryPlus |
 | kotlin.Number | byteValue |

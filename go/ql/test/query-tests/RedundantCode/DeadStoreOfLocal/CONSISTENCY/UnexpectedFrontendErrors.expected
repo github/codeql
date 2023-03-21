@@ -1,1 +1,1 @@
-| main.go:36:9:36:9 | undeclared name: unknownFunction |
+| main.go:36:9:36:9 | undefined: unknownFunction |

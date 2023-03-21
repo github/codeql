@@ -51,7 +51,7 @@ We could then write this query to find all ``@SuppressWarnings`` annotations att
        anntp.hasQualifiedName("java.lang", "SuppressWarnings")
    select ann, ann.getValue("value")
 
-➤ `See the full query in the query console on LGTM.com <https://lgtm.com/query/1775658606775222283/>`__. Several of the LGTM.com demo projects use the ``@SuppressWarnings`` annotation. Looking at the ``value``\ s of the annotation element returned by the query, we can see that the *apache/activemq* project uses the ``"rawtypes"`` value described above.
+If the codebase you are analyzing uses the ``@SuppressWarnings`` annotation, you can check the ``value``\ s of the annotation element returned by the query. They should use the ``"rawtypes"`` value described above.
 
 As another example, this query finds all annotation types that only have a single annotation element, which has name ``value``:
 
@@ -65,8 +65,6 @@ As another example, this query finds all annotation types that only have a singl
        elt.getName() = "value"
    )
    select anntp
-
-➤ `See the full query in the query console on LGTM.com <https://lgtm.com/query/2145264152490258283/>`__.
 
 Example: Finding missing ``@Override`` annotations
 --------------------------------------------------
@@ -124,7 +122,7 @@ This makes it very easy to write our query for finding methods that override ano
        not overriding.getAnAnnotation() instanceof OverrideAnnotation
    select overriding, "Method overrides another method, but does not have an @Override annotation."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/7419756266089837339/>`__. In practice, this query may yield many results from compiled library code, which aren't very interesting. It's therefore a good idea to add another conjunct ``overriding.fromSource()`` to restrict the result to only report methods for which source code is available.
+In practice, this query may yield many results from compiled library code, which aren't very interesting. It's therefore a good idea to add another conjunct ``overriding.fromSource()`` to restrict the result to only report methods for which source code is available.
 
 Example: Finding calls to deprecated methods
 --------------------------------------------
@@ -187,7 +185,7 @@ For more information about the class ``Call``, see ":doc:`Navigating the call gr
 Improvements
 ~~~~~~~~~~~~
 
-The Java standard library provides another annotation type ``java.lang.SupressWarnings`` that can be used to suppress certain categories of warnings. In particular, it can be used to turn off warnings about calls to deprecated methods. Therefore, it makes sense to improve our query to ignore calls to deprecated methods from inside methods that are marked with ``@SuppressWarnings("deprecated")``.
+The Java standard library provides another annotation type ``java.lang.SupressWarnings`` that can be used to suppress certain categories of warnings. In particular, it can be used to turn off warnings about calls to deprecated methods. Therefore, it makes sense to improve our query to ignore calls to deprecated methods from inside methods that are marked with ``@SuppressWarnings("deprecation")``.
 
 For instance, consider this slightly updated example:
 
@@ -200,7 +198,7 @@ For instance, consider this slightly updated example:
            m();
        }
 
-       @SuppressWarnings("deprecated")
+       @SuppressWarnings("deprecation")
        void r() {
            m();
        }
@@ -208,7 +206,7 @@ For instance, consider this slightly updated example:
 
 Here, the programmer has explicitly suppressed warnings about deprecated calls in ``A.r``, so our query should not flag the call to ``A.m`` any more.
 
-To do so, we first introduce a class for representing all ``@SuppressWarnings`` annotations where the string ``deprecated`` occurs among the list of warnings to suppress:
+To do so, we first introduce a class for representing all ``@SuppressWarnings`` annotations where the string ``deprecation`` occurs among the list of warnings to suppress:
 
 .. code-block:: ql
 
@@ -237,7 +235,7 @@ Now we can extend our query to filter out calls in methods carrying a ``Suppress
        and not call.getCaller().getAnAnnotation() instanceof SuppressDeprecationWarningAnnotation
    select call, "This call invokes a deprecated method."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/8706367340403790260/>`__. It's fairly common for projects to contain calls to methods that appear to be deprecated.
+It's fairly common for projects to contain calls to methods that appear to be deprecated.
 
 Further reading
 ---------------

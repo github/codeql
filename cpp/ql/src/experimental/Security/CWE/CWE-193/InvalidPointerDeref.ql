@@ -8,6 +8,7 @@
  * @id cpp/invalid-pointer-deref
  * @tags reliability
  *       security
+ *       experimental
  *       external/cwe/cwe-119
  *       external/cwe/cwe-125
  *       external/cwe/cwe-193
@@ -16,7 +17,7 @@
 
 import cpp
 import experimental.semmle.code.cpp.dataflow.ProductFlow
-import experimental.semmle.code.cpp.ir.dataflow.DataFlow3
+import semmle.code.cpp.ir.dataflow.DataFlow3
 import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysis
 import experimental.semmle.code.cpp.semantic.SemanticBound
 import experimental.semmle.code.cpp.semantic.SemanticExprSpecific

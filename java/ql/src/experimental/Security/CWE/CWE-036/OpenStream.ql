@@ -7,6 +7,7 @@
  * @precision medium
  * @id java/openstream-called-on-tainted-url
  * @tags security
+ *       experimental
  *       external/cwe/cwe-036
  */
 

@@ -1,6 +1,5 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.ExternalFlow
 
 class Conf extends TaintTracking::Configuration {
   Conf() { this = "qltest:extension-method" }

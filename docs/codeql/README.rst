@@ -12,6 +12,8 @@ see https://docutils.sourceforge.io/rst.html.
 
 For more information on Sphinx, see https://www.sphinx-doc.org.
 
+For information on contributing to CodeQL documentation, see the `contributing guide </CONTRIBUTING.md>`__.
+
 Project structure
 *****************
 
@@ -42,9 +44,10 @@ For more information, see
 Building and previewing the CodeQL documentation
 ************************************************
 
-To build and preview the documentation and training presentations locally, you need to 
-install Sphinx 1.7.9. More recent versions of Sphinx do not work with hieroglyph, 
-the Sphinx extension that we use to generate HTML slides, as explained below. 
+To build and preview the documentation and training presentations locally, you need to
+install Sphinx 1.7.9 using Python 2 (for example: `pip install sphinx==1.7.9`).
+More recent versions of Sphinx do not work with hieroglyph,
+the Sphinx extension that we use to generate HTML slides, as explained below.
 For installation options, see https://github.com/sphinx-doc/sphinx.
 
 

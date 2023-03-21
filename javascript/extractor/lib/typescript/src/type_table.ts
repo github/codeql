@@ -947,7 +947,7 @@ export class TypeTable {
    * Returns a unique string for the given call/constructor signature.
    */
   private getSignatureString(kind: ts.SignatureKind, signature: AugmentedSignature): string {
-    let modifiers  = signature.getDeclaration()?.modifiers;
+    let modifiers = signature.getDeclaration() ? ts.getModifiers(signature.getDeclaration() as ts.MethodSignature) : [];
     let isAbstract = modifiers && modifiers.filter(modifier => modifier.kind == ts.SyntaxKind.AbstractKeyword).length > 0
 
     let parameters = signature.getParameters();

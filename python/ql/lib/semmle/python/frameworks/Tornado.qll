@@ -200,7 +200,8 @@ module Tornado {
           override string getAsyncMethodName() { none() }
         }
 
-        private class RequestAttrAccess extends TornadoModule::HttpUtil::HttpServerRequest::InstanceSource {
+        private class RequestAttrAccess extends TornadoModule::HttpUtil::HttpServerRequest::InstanceSource
+        {
           RequestAttrAccess() {
             this.(DataFlow::AttrRead).getObject() = instance() and
             this.(DataFlow::AttrRead).getAttributeName() = "request"
@@ -385,13 +386,10 @@ module Tornado {
    *
    * Needs this subclass to be considered a RegexString.
    */
-  private class TornadoRouteRegex extends RegexString {
+  private class TornadoRouteRegex extends RegexString instanceof StrConst {
     TornadoRouteSetup setup;
 
-    TornadoRouteRegex() {
-      this instanceof StrConst and
-      setup.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this)
-    }
+    TornadoRouteRegex() { setup.getUrlPatternArg().getALocalSource() = DataFlow::exprNode(this) }
 
     TornadoRouteSetup getRouteSetup() { result = setup }
   }
@@ -466,7 +464,8 @@ module Tornado {
    * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.redirect
    */
   private class TornadoRequestHandlerRedirectCall extends Http::Server::HttpRedirectResponse::Range,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     TornadoRequestHandlerRedirectCall() {
       this.getFunction() = TornadoModule::Web::RequestHandler::redirectMethod()
     }
@@ -488,7 +487,8 @@ module Tornado {
    * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.write
    */
   private class TornadoRequestHandlerWriteCall extends Http::Server::HttpResponse::Range,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     TornadoRequestHandlerWriteCall() {
       this.getFunction() = TornadoModule::Web::RequestHandler::writeMethod()
     }
@@ -506,7 +506,8 @@ module Tornado {
    * See https://www.tornadoweb.org/en/stable/web.html#tornado.web.RequestHandler.set_cookie
    */
   class TornadoRequestHandlerSetCookieCall extends Http::Server::CookieWrite::Range,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     TornadoRequestHandlerSetCookieCall() {
       this.calls(TornadoModule::Web::RequestHandler::instance(), "set_cookie")
     }

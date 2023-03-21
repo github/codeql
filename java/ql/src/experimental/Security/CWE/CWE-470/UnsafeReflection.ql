@@ -7,6 +7,7 @@
  * @precision high
  * @id java/unsafe-reflection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-470
  */
 

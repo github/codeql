@@ -5,13 +5,13 @@ edges
 | testapp/orm_security_tests.py:15:1:15:27 | [orm-model] Class Person [Attribute name] | testapp/orm_security_tests.py:47:14:47:53 | ControlFlowNode for Attribute() [Attribute name] |
 | testapp/orm_security_tests.py:19:12:19:18 | ControlFlowNode for request | testapp/orm_security_tests.py:22:23:22:34 | ControlFlowNode for Attribute |
 | testapp/orm_security_tests.py:19:12:19:18 | ControlFlowNode for request | testapp/orm_security_tests.py:23:22:23:33 | ControlFlowNode for Attribute |
-| testapp/orm_security_tests.py:22:9:22:14 | [post store] ControlFlowNode for person [Attribute name] | testapp/orm_security_tests.py:23:9:23:14 | ControlFlowNode for person [Attribute name] |
+| testapp/orm_security_tests.py:22:9:22:14 | [post] ControlFlowNode for person [Attribute name] | testapp/orm_security_tests.py:23:9:23:14 | ControlFlowNode for person [Attribute name] |
 | testapp/orm_security_tests.py:22:23:22:34 | ControlFlowNode for Attribute | testapp/orm_security_tests.py:22:23:22:42 | ControlFlowNode for Subscript |
-| testapp/orm_security_tests.py:22:23:22:42 | ControlFlowNode for Subscript | testapp/orm_security_tests.py:22:9:22:14 | [post store] ControlFlowNode for person [Attribute name] |
+| testapp/orm_security_tests.py:22:23:22:42 | ControlFlowNode for Subscript | testapp/orm_security_tests.py:22:9:22:14 | [post] ControlFlowNode for person [Attribute name] |
 | testapp/orm_security_tests.py:23:9:23:14 | ControlFlowNode for person [Attribute name] | testapp/orm_security_tests.py:28:9:28:14 | ControlFlowNode for person [Attribute name] |
-| testapp/orm_security_tests.py:23:9:23:14 | [post store] ControlFlowNode for person [Attribute age] | testapp/orm_security_tests.py:28:9:28:14 | ControlFlowNode for person [Attribute age] |
+| testapp/orm_security_tests.py:23:9:23:14 | [post] ControlFlowNode for person [Attribute age] | testapp/orm_security_tests.py:28:9:28:14 | ControlFlowNode for person [Attribute age] |
 | testapp/orm_security_tests.py:23:22:23:33 | ControlFlowNode for Attribute | testapp/orm_security_tests.py:23:22:23:40 | ControlFlowNode for Subscript |
-| testapp/orm_security_tests.py:23:22:23:40 | ControlFlowNode for Subscript | testapp/orm_security_tests.py:23:9:23:14 | [post store] ControlFlowNode for person [Attribute age] |
+| testapp/orm_security_tests.py:23:22:23:40 | ControlFlowNode for Subscript | testapp/orm_security_tests.py:23:9:23:14 | [post] ControlFlowNode for person [Attribute age] |
 | testapp/orm_security_tests.py:28:9:28:14 | ControlFlowNode for person [Attribute age] | testapp/orm_security_tests.py:15:1:15:27 | [orm-model] Class Person [Attribute age] |
 | testapp/orm_security_tests.py:28:9:28:14 | ControlFlowNode for person [Attribute name] | testapp/orm_security_tests.py:15:1:15:27 | [orm-model] Class Person [Attribute name] |
 | testapp/orm_security_tests.py:42:13:42:18 | SSA variable person [Attribute age] | testapp/orm_security_tests.py:43:62:43:67 | ControlFlowNode for person [Attribute age] |
@@ -48,11 +48,11 @@ nodes
 | testapp/orm_security_tests.py:15:1:15:27 | [orm-model] Class Person [Attribute age] | semmle.label | [orm-model] Class Person [Attribute age] |
 | testapp/orm_security_tests.py:15:1:15:27 | [orm-model] Class Person [Attribute name] | semmle.label | [orm-model] Class Person [Attribute name] |
 | testapp/orm_security_tests.py:19:12:19:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
-| testapp/orm_security_tests.py:22:9:22:14 | [post store] ControlFlowNode for person [Attribute name] | semmle.label | [post store] ControlFlowNode for person [Attribute name] |
+| testapp/orm_security_tests.py:22:9:22:14 | [post] ControlFlowNode for person [Attribute name] | semmle.label | [post] ControlFlowNode for person [Attribute name] |
 | testapp/orm_security_tests.py:22:23:22:34 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | testapp/orm_security_tests.py:22:23:22:42 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | testapp/orm_security_tests.py:23:9:23:14 | ControlFlowNode for person [Attribute name] | semmle.label | ControlFlowNode for person [Attribute name] |
-| testapp/orm_security_tests.py:23:9:23:14 | [post store] ControlFlowNode for person [Attribute age] | semmle.label | [post store] ControlFlowNode for person [Attribute age] |
+| testapp/orm_security_tests.py:23:9:23:14 | [post] ControlFlowNode for person [Attribute age] | semmle.label | [post] ControlFlowNode for person [Attribute age] |
 | testapp/orm_security_tests.py:23:22:23:33 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | testapp/orm_security_tests.py:23:22:23:40 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | testapp/orm_security_tests.py:28:9:28:14 | ControlFlowNode for person [Attribute age] | semmle.label | ControlFlowNode for person [Attribute age] |

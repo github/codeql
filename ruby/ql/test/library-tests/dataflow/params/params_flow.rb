@@ -58,3 +58,9 @@ posargs(taint(23), *args)
 
 args = [taint(24), taint(25)]
 posargs(*args)
+
+args = taint(26)
+def splatstuff(*x)
+    sink x[0] # $ hasValueFlow=26
+end
+splatstuff(*args)

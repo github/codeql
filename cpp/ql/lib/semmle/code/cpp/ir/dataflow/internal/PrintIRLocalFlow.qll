@@ -97,23 +97,23 @@ private string getNodeProperty(DataFlow::Node node, string key) {
     |
       kind, ", "
     )
-  or
-  // Is there partial flow from a source to this node?
-  // This property will only be emitted if partial flow is enabled by overriding
-  // `DataFlow::Configuration::explorationLimit()`.
-  key = "pflow" and
-  result =
-    strictconcat(DataFlow::PartialPathNode sourceNode, DataFlow::PartialPathNode destNode, int dist,
-      int order1, int order2 |
-      any(DataFlow::Configuration cfg).hasPartialFlow(sourceNode, destNode, dist) and
-      destNode.getNode() = node and
-      // Only print flow from a source in the same function.
-      sourceNode.getNode().getEnclosingCallable() = node.getEnclosingCallable()
-    |
-      nodeId(sourceNode.getNode(), order1, order2) + "+" + dist.toString(), ", "
-      order by
-        order1, order2, dist desc
-    )
+  // or
+  // // Is there partial flow from a source to this node?
+  // // This property will only be emitted if partial flow is enabled by overriding
+  // // `DataFlow::Configuration::explorationLimit()`.
+  // key = "pflow" and
+  // result =
+  //   strictconcat(DataFlow::PartialPathNode sourceNode, DataFlow::PartialPathNode destNode, int dist,
+  //     int order1, int order2 |
+  //     any(DataFlow::Configuration cfg).hasPartialFlow(sourceNode, destNode, dist) and
+  //     destNode.getNode() = node and
+  //     // Only print flow from a source in the same function.
+  //     sourceNode.getNode().getEnclosingCallable() = node.getEnclosingCallable()
+  //   |
+  //     nodeId(sourceNode.getNode(), order1, order2) + "+" + dist.toString(), ", "
+  //     order by
+  //       order1, order2, dist desc
+  //   )
 }
 
 /**

@@ -105,7 +105,7 @@ private predicate evenlyDivisibleExpr(Expr e, int factor) {
   exists(ConstantIntegerExpr c, int k | k = c.getIntValue() |
     e.(MulExpr).getAnOperand() = c and factor = k.abs() and factor >= 2
     or
-    e.(LShiftExpr).getRhs() = c and factor = 2.pow(k) and k > 0
+    e.(LeftShiftExpr).getRhs() = c and factor = 2.pow(k) and k > 0
     or
     e.(BitwiseAndExpr).getAnOperand() = c and factor = max(int f | andmaskFactor(k, f))
   )

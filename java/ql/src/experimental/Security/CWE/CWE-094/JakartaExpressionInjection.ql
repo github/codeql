@@ -7,6 +7,7 @@
  * @precision high
  * @id java/javaee-expression-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-094
  */
 

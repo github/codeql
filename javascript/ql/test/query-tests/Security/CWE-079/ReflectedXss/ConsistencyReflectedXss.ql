@@ -1,3 +1,3 @@
 import javascript
 import testUtilities.ConsistencyChecking
-import semmle.javascript.security.dataflow.ReflectedXss as ReflectedXss
+import semmle.javascript.security.dataflow.ReflectedXssQuery as ReflectedXss

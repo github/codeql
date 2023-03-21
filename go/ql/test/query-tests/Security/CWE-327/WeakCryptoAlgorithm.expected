@@ -1,17 +1,17 @@
 edges
-| Crypto.go:16:9:16:16 | password : slice type | Crypto.go:19:25:19:27 | buf |
-| Crypto.go:16:9:16:16 | password : slice type | Crypto.go:22:10:22:12 | buf |
-| Crypto.go:16:9:16:16 | password : slice type | Crypto.go:25:16:25:18 | buf |
-| Crypto.go:16:9:16:16 | password : slice type | Crypto.go:28:11:28:13 | buf |
+| Crypto.go:16:9:16:16 | password | Crypto.go:19:25:19:27 | buf |
+| Crypto.go:16:9:16:16 | password | Crypto.go:22:10:22:12 | buf |
+| Crypto.go:16:9:16:16 | password | Crypto.go:25:16:25:18 | buf |
+| Crypto.go:16:9:16:16 | password | Crypto.go:28:11:28:13 | buf |
 nodes
-| Crypto.go:16:9:16:16 | password : slice type | semmle.label | password : slice type |
+| Crypto.go:16:9:16:16 | password | semmle.label | password |
 | Crypto.go:19:25:19:27 | buf | semmle.label | buf |
 | Crypto.go:22:10:22:12 | buf | semmle.label | buf |
 | Crypto.go:25:16:25:18 | buf | semmle.label | buf |
 | Crypto.go:28:11:28:13 | buf | semmle.label | buf |
 subpaths
 #select
-| Crypto.go:19:25:19:27 | buf | Crypto.go:16:9:16:16 | password : slice type | Crypto.go:19:25:19:27 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:16:9:16:16 | password | Sensitive data |
-| Crypto.go:22:10:22:12 | buf | Crypto.go:16:9:16:16 | password : slice type | Crypto.go:22:10:22:12 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:16:9:16:16 | password | Sensitive data |
-| Crypto.go:25:16:25:18 | buf | Crypto.go:16:9:16:16 | password : slice type | Crypto.go:25:16:25:18 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:16:9:16:16 | password | Sensitive data |
-| Crypto.go:28:11:28:13 | buf | Crypto.go:16:9:16:16 | password : slice type | Crypto.go:28:11:28:13 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:16:9:16:16 | password | Sensitive data |
+| Crypto.go:19:25:19:27 | buf | Crypto.go:16:9:16:16 | password | Crypto.go:19:25:19:27 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:16:9:16:16 | password | Sensitive data |
+| Crypto.go:22:10:22:12 | buf | Crypto.go:16:9:16:16 | password | Crypto.go:22:10:22:12 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:16:9:16:16 | password | Sensitive data |
+| Crypto.go:25:16:25:18 | buf | Crypto.go:16:9:16:16 | password | Crypto.go:25:16:25:18 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:16:9:16:16 | password | Sensitive data |
+| Crypto.go:28:11:28:13 | buf | Crypto.go:16:9:16:16 | password | Crypto.go:28:11:28:13 | buf | $@ is used in a weak cryptographic algorithm. | Crypto.go:16:9:16:16 | password | Sensitive data |

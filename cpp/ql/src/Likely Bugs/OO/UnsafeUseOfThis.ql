@@ -22,37 +22,40 @@ import PathGraph
 class UnsafeUseOfThisConfig extends MustFlowConfiguration {
   UnsafeUseOfThisConfig() { this = "UnsafeUseOfThisConfig" }
 
-  override predicate isSource(DataFlow::Node source) { isSource(source, _, _) }
+  override predicate isSource(Instruction source) { isSource(source, _, _) }
 
-  override predicate isSink(DataFlow::Node sink) { isSink(sink, _) }
+  override predicate isSink(Operand sink) { isSink(sink, _) }
 }
 
-/** Holds if `instr` is a `this` pointer used by the call instruction `call`. */
-predicate isSink(DataFlow::Node sink, CallInstruction call) {
+/** Holds if `sink` is a `this` pointer used by the call instruction `call`. */
+predicate isSink(Operand sink, CallInstruction call) {
   exists(PureVirtualFunction func |
     call.getStaticCallTarget() = func and
-    call.getThisArgument() = sink.asInstruction() and
+    call.getThisArgumentOperand() = sink and
     // Weed out implicit calls to destructors of a base class
     not func instanceof Destructor
   )
 }
 
-/** Holds if `init` initializes the `this` pointer in class `c`. */
-predicate isSource(DataFlow::Node source, string msg, Class c) {
-  exists(InitializeParameterInstruction init | init = source.asInstruction() |
-    (
-      exists(Constructor func |
-        not func instanceof CopyConstructor and
-        not func instanceof MoveConstructor and
-        func = init.getEnclosingFunction() and
-        msg = "construction"
-      )
-      or
-      init.getEnclosingFunction() instanceof Destructor and msg = "destruction"
-    ) and
-    init.getIRVariable() instanceof IRThisVariable and
-    init.getEnclosingFunction().getDeclaringType() = c
-  )
+/**
+ * Holds if `source` initializes the `this` pointer in class `c`.
+ *
+ * The string `msg` describes whether the enclosing function is a
+ * constructor or destructor.
+ */
+predicate isSource(InitializeParameterInstruction source, string msg, Class c) {
+  (
+    exists(Constructor func |
+      not func instanceof CopyConstructor and
+      not func instanceof MoveConstructor and
+      func = source.getEnclosingFunction() and
+      msg = "construction"
+    )
+    or
+    source.getEnclosingFunction() instanceof Destructor and msg = "destruction"
+  ) and
+  source.getIRVariable() instanceof IRThisVariable and
+  source.getEnclosingFunction().getDeclaringType() = c
 }
 
 /**
@@ -68,8 +71,8 @@ predicate flows(
 ) {
   exists(UnsafeUseOfThisConfig conf |
     conf.hasFlowPath(source, sink) and
-    isSource(source.getNode(), msg, sourceClass) and
-    isSink(sink.getNode(), call)
+    isSource(source.getInstruction(), msg, sourceClass) and
+    isSink(sink.getInstruction().getAUse(), call)
   )
 }
 

@@ -1,0 +1,22 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>If a <code>ResultReceiver</code> is obtained from an untrusted source, such as an <code>Intent</code> received by an exported component, 
+    do not send it sensitive data. Otherwise, the information may be leaked to a malicious application.</p>
+  </overview>
+
+  <recommendation>
+    <p> 
+      Do not send sensitive data to an untrusted <code>ResultReceiver</code>.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>In the following (bad) example, sensitive data is sent to an untrusted <code>ResultReceiver</code>. </p>
+    <sample src="SensitiveResultReceiver.java" />
+  </example>
+
+  <references>
+  </references>
+</qhelp>

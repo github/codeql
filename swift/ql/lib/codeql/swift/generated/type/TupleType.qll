@@ -31,7 +31,7 @@ module Generated {
     /**
      * Gets the number of types of this tuple type.
      */
-    final int getNumberOfTypes() { result = count(getAType()) }
+    final int getNumberOfTypes() { result = count(int i | exists(getType(i))) }
 
     /**
      * Gets the `index`th name of this tuple type (0-based), if it exists.

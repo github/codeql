@@ -14,7 +14,6 @@
  */
 
 import python
-import semmle.python.security.regexp.SuperlinearBackTracking
 import semmle.python.security.dataflow.PolynomialReDoSQuery
 import DataFlow::PathGraph
 

@@ -674,7 +674,7 @@ abstract class FunctionValue extends CallableValue {
   /** Gets the maximum number of parameters that can be correctly passed to this function */
   abstract int maxParameters();
 
-  predicate isOverridingMethod() { exists(Value f | this.overrides(f)) }
+  predicate isOverridingMethod() { this.overrides(_) }
 
   predicate isOverriddenMethod() { exists(Value f | f.overrides(this)) }
 

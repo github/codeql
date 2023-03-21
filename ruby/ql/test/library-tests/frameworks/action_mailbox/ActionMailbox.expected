@@ -1,0 +1,12 @@
+messageInstances
+| action_mailbox.rb:3:5:3:8 | call to mail |
+| action_mailbox.rb:4:5:4:8 | call to mail |
+| action_mailbox.rb:6:5:6:10 | call to mail |
+| action_mailbox.rb:10:5:10:8 | call to mail |
+| action_mailbox.rb:16:9:16:12 | call to mail |
+remoteFlowSources
+| action_mailbox.rb:3:5:3:13 | call to body |
+| action_mailbox.rb:4:5:4:11 | call to to |
+| action_mailbox.rb:6:5:6:13 | call to to |
+| action_mailbox.rb:10:5:10:18 | call to text_part |
+| action_mailbox.rb:16:9:16:23 | call to raw_source |

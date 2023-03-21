@@ -6,6 +6,7 @@
  * @precision medium
  * @id java/insecure-ldap-auth
  * @tags security
+ *       experimental
  *       external/cwe/cwe-522
  *       external/cwe/cwe-319
  */

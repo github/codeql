@@ -1,0 +1,108 @@
+[
+  {
+    "type": "blame_entry",
+    "named": true,
+    "fields": {
+      "date": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "date",
+            "named": true
+          }
+        ]
+      },
+      "line": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "number",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "blame_info",
+    "named": true,
+    "fields": {
+      "file_entry": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "file_entry",
+            "named": true
+          }
+        ]
+      },
+      "today": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "date",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "file_entry",
+    "named": true,
+    "fields": {
+      "blame_entry": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "blame_entry",
+            "named": true
+          }
+        ]
+      },
+      "file_name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "filename",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "\n",
+    "named": false
+  },
+  {
+    "type": "date",
+    "named": true
+  },
+  {
+    "type": "file: ",
+    "named": false
+  },
+  {
+    "type": "filename",
+    "named": true
+  },
+  {
+    "type": "last_modified:",
+    "named": false
+  },
+  {
+    "type": "number",
+    "named": true
+  },
+  {
+    "type": "today:",
+    "named": false
+  }
+]

@@ -15,6 +15,7 @@ import CloseType
 
 from CloseableInitExpr cie, RefType t
 where
+  cie.getFile().isJavaSourceFile() and
   badCloseableInit(cie) and
   cie.getType() = t and
   sqlType(t) and

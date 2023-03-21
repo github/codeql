@@ -18,6 +18,11 @@
 import semmle.code.cpp.dataflow.DataFlow
 import semmle.code.cpp.dataflow.DataFlow2
 
+/**
+ * Provides classes for performing local (intra-procedural) and
+ * global (inter-procedural) taint-tracking analyses.
+ */
 module TaintTracking {
+  import semmle.code.cpp.dataflow.internal.tainttracking1.TaintTracking
   import semmle.code.cpp.dataflow.internal.tainttracking1.TaintTrackingImpl
 }

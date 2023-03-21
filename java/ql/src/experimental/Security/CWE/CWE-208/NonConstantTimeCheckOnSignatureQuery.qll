@@ -177,10 +177,8 @@ class CryptoOperationSource extends DataFlow::Node {
 
   /** Holds if remote user input was used in the cryptographic operation. */
   predicate includesUserInput() {
-    exists(
-      DataFlow2::PathNode source, DataFlow2::PathNode sink, UserInputInCryptoOperationConfig config
-    |
-      config.hasFlowPath(source, sink)
+    exists(DataFlow2::PathNode sink, UserInputInCryptoOperationConfig config |
+      config.hasFlowPath(_, sink)
     |
       sink.getNode().asExpr() = call.getQualifier()
     )

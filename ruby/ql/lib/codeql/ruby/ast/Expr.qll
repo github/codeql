@@ -22,9 +22,6 @@ class Expr extends Stmt, TExpr {
   ConstantValue getConstantValue() { result = getConstantValueExpr(this) }
 }
 
-/** DEPRECATED: Use `SelfVariableAccess` instead. */
-deprecated class Self = SelfVariableAccess;
-
 /**
  * A sequence of expressions in the right-hand side of an assignment or
  * a `return`, `break` or `next` statement.

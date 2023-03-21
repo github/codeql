@@ -19,3 +19,10 @@
 | test.py:10:6:10:18 | test.py:10 | ControlFlowNode for Subscript | import | file://:0:0:0:0 | _Optional()[builtin-class int] |
 | test.py:10:15:10:17 | test.py:10 | ControlFlowNode for int | import | file://:0:0:0:0 | builtin-class int |
 | test.py:10:20:10:22 | test.py:10 | ControlFlowNode for int | import | file://:0:0:0:0 | builtin-class int |
+| test.py:12:1:12:12 | test.py:12 | ControlFlowNode for ClassExpr | import | test.py:12:1:12:12 | class baz |
+| test.py:15:7:15:10 | test.py:15 | ControlFlowNode for True | import | file://:0:0:0:0 | bool True |
+| test.py:16:11:16:13 | test.py:16 | ControlFlowNode for baz | import | file://:0:0:0:0 | class baz[class baz] |
+| test.py:16:11:16:13 | test.py:16 | ControlFlowNode for baz | import | test.py:12:1:12:12 | class baz |
+| test.py:16:11:16:18 | test.py:16 | ControlFlowNode for Subscript | import | file://:0:0:0:0 | class baz[class baz] |
+| test.py:16:15:16:17 | test.py:16 | ControlFlowNode for baz | import | file://:0:0:0:0 | class baz[class baz] |
+| test.py:16:15:16:17 | test.py:16 | ControlFlowNode for baz | import | test.py:12:1:12:12 | class baz |

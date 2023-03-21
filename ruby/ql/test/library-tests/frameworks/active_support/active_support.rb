@@ -298,3 +298,36 @@ def m_try(method)
     x.try!(:upcase).try!(:downcase)
     x.try!(method)
 end
+
+def m_json_escape
+  a = source "a"
+  b = json_escape a
+  sink b # $hasTaintFlow=a
+end
+
+def m_json_encode
+    x = source "a"
+    sink ActiveSupport::JSON.encode(x) # $hasTaintFlow=a
+end
+
+def m_json_decode
+    x = source "a"
+    sink ActiveSupport::JSON.decode(x) # $hasTaintFlow=a
+end
+
+def m_json_dump
+    x = source "a"
+    sink ActiveSupport::JSON.dump(x) # $hasTaintFlow=a
+end
+
+def m_json_load
+    x = source "a"
+    sink ActiveSupport::JSON.load(x) # $hasTaintFlow=a
+end
+
+def m_to_json
+    x = source "a"
+    y = [x]
+    sink x.to_json # $hasTaintFlow=a
+    sink y.to_json # $hasTaintFlow=a
+end

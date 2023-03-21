@@ -61,6 +61,14 @@ class StringReplaceSanitizer extends Sanitizer {
 }
 
 /**
+ * A call to `Object#inspect`, considered as a sanitizer.
+ * This is because `inspect` will replace newlines in strings with `\n`.
+ */
+class InspectSanitizer extends Sanitizer {
+  InspectSanitizer() { this.(DataFlow::CallNode).getMethodName() = "inspect" }
+}
+
+/**
  * A call to an HTML escape method is considered to sanitize its input.
  */
 class HtmlEscapingAsSanitizer extends Sanitizer {

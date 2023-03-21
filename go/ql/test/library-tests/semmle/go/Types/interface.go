@@ -107,28 +107,32 @@ type i20 interface {
 	StringB() string
 }
 
-type testComparable[T comparable] struct{}            // $ implementsComparable
-type testComparable0[T0 i0] struct{}                  // $ implementsComparable
-type testComparable1[T1 i1] struct{}                  // $ implementsComparable
-type testComparable2[T2 i2] struct{}                  // $ implementsComparable
-type testComparable3[T3 i3] struct{}                  // $ implementsComparable
-type testComparable4[T4 i4] struct{}                  // $ implementsComparable
-type testComparable5[T5 i5] struct{}                  // does not implement comparable
-type testComparable6[T6 i6] struct{}                  // does not implement comparable
-type testComparable7[T7 i7] struct{}                  // $ implementsComparable
-type testComparable8[T8 i8] struct{}                  // does not implement comparable
-type testComparable9[T9 i9] struct{}                  // does not implement comparable
-type testComparable10[T10 i10] struct{}               // $ implementsComparable
-type testComparable11[T11 i11] struct{}               // $ implementsComparable
-type testComparable12[T12 i12] struct{}               // does not implement comparable
-type testComparable13[T13 i13] struct{}               // does not implement comparable
-type testComparable14[T14 i14] struct{}               // $ implementsComparable
-type testComparable15[T15 i15] struct{}               // $ implementsComparable
-type testComparable16[T16 i16] struct{}               // does not implement comparable
-type testComparable17[T17 i17] struct{}               // does not implement comparable
-type testComparable18[T18 i18] struct{}               // $ implementsComparable
-type testComparable19[T19 i19] struct{}               // does not implement comparable
-type testComparable20[T20 i20] struct{}               // $ implementsComparable
-type testComparable21[T21 ~[]byte | string] struct{}  // does not implement comparable
-type testComparable22[T22 any] struct{}               // does not implement comparable
-type testComparable23[T23 ~[5]byte | string] struct{} // $ implementsComparable
+// These used to distinguish strictly-comparable interfaces (i.e. those which will not panic at runtime on attempting a comparison),
+// which were required to satisfy the `comparable` type constraint in Go <1.20. Now they all match `comparable` as all interfaces
+// are accepted. I mark those which are also strictly comparable for the future in case we want to expose that concept in QL.
+
+type testComparable[T comparable] struct{}            // $ implementsComparable isStrictlyComparable
+type testComparable0[T0 i0] struct{}                  // $ implementsComparable isStrictlyComparable
+type testComparable1[T1 i1] struct{}                  // $ implementsComparable isStrictlyComparable
+type testComparable2[T2 i2] struct{}                  // $ implementsComparable isStrictlyComparable
+type testComparable3[T3 i3] struct{}                  // $ implementsComparable isStrictlyComparable
+type testComparable4[T4 i4] struct{}                  // $ implementsComparable isStrictlyComparable
+type testComparable5[T5 i5] struct{}                  // $ implementsComparable
+type testComparable6[T6 i6] struct{}                  // $ implementsComparable
+type testComparable7[T7 i7] struct{}                  // $ implementsComparable isStrictlyComparable
+type testComparable8[T8 i8] struct{}                  // $ implementsComparable
+type testComparable9[T9 i9] struct{}                  // $ implementsComparable
+type testComparable10[T10 i10] struct{}               // $ implementsComparable isStrictlyComparable
+type testComparable11[T11 i11] struct{}               // $ implementsComparable isStrictlyComparable
+type testComparable12[T12 i12] struct{}               // $ implementsComparable
+type testComparable13[T13 i13] struct{}               // $ implementsComparable
+type testComparable14[T14 i14] struct{}               // $ implementsComparable isStrictlyComparable
+type testComparable15[T15 i15] struct{}               // $ implementsComparable isStrictlyComparable
+type testComparable16[T16 i16] struct{}               // $ implementsComparable
+type testComparable17[T17 i17] struct{}               // $ implementsComparable
+type testComparable18[T18 i18] struct{}               // $ implementsComparable isStrictlyComparable
+type testComparable19[T19 i19] struct{}               // $ implementsComparable
+type testComparable20[T20 i20] struct{}               // $ implementsComparable isStrictlyComparable
+type testComparable21[T21 ~[]byte | string] struct{}  // $ implementsComparable
+type testComparable22[T22 any] struct{}               // $ implementsComparable
+type testComparable23[T23 ~[5]byte | string] struct{} // $ implementsComparable isStrictlyComparable

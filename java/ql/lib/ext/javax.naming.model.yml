@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.naming", "Context", True, "list", "", "", "Argument[0]", "jndi-injection", "manual"]
+      - ["javax.naming", "Context", True, "listBindings", "", "", "Argument[0]", "jndi-injection", "manual"]
+      - ["javax.naming", "Context", True, "lookup", "", "", "Argument[0]", "jndi-injection", "manual"]
+      - ["javax.naming", "Context", True, "lookupLink", "", "", "Argument[0]", "jndi-injection", "manual"]
+      - ["javax.naming", "Context", True, "rename", "", "", "Argument[0]", "jndi-injection", "manual"]
+      - ["javax.naming", "InitialContext", True, "doLookup", "", "", "Argument[0]", "jndi-injection", "manual"]

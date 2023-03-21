@@ -8,11 +8,6 @@ private import semmle.javascript.security.TaintedUrlSuffix
 import DomBasedXssCustomizations::DomBasedXss
 private import Xss::Shared as Shared
 
-/**
- * DEPRECATED. Use `Vue::VHtmlSourceWrite` instead.
- */
-deprecated class VHtmlSourceWrite = Vue::VHtmlSourceWrite;
-
 /** DEPRECATED. Use `Configuration`. */
 deprecated class HtmlInjectionConfiguration = Configuration;
 
@@ -131,7 +126,8 @@ class Configuration extends TaintTracking::Configuration {
 }
 
 private class PrefixStringSanitizerActivated extends TaintTracking::SanitizerGuardNode,
-  PrefixStringSanitizer {
+  PrefixStringSanitizer
+{
   PrefixStringSanitizerActivated() { this = this }
 }
 
@@ -143,6 +139,7 @@ private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::Quot
   QuoteGuard() { this = this }
 }
 
-private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard {
+private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard
+{
   ContainsHtmlGuard() { this = this }
 }

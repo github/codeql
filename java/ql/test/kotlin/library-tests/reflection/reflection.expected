@@ -1,26 +1,26 @@
 variableInitializerType
-| reflection.kt:7:9:7:54 | KFunction<Double> ref | file://<external>/KFunction.class:0:0:0:0 | KFunction<Double> | reflection.kt:7:49:7:54 | new Function2<Ccc,Integer,Double>(...) { ... } | file://<external>/Function2.class:0:0:0:0 | Function2<Ccc,Integer,Double> | true |
-| reflection.kt:7:9:7:54 | KFunction<Double> ref | file://<external>/KFunction.class:0:0:0:0 | KFunction<Double> | reflection.kt:7:49:7:54 | new Function2<Ccc,Integer,Double>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference | true |
-| reflection.kt:10:9:10:42 | KProperty1<C,Integer> x0 | file://<external>/KProperty1.class:0:0:0:0 | KProperty1<C,Integer> | reflection.kt:10:38:10:42 | new KProperty1<C,Integer>(...) { ... } | file://<external>/KProperty1.class:0:0:0:0 | KProperty1<C,Integer> | true |
-| reflection.kt:10:9:10:42 | KProperty1<C,Integer> x0 | file://<external>/KProperty1.class:0:0:0:0 | KProperty1<C,Integer> | reflection.kt:10:38:10:42 | new KProperty1<C,Integer>(...) { ... } | file://<external>/PropertyReference.class:0:0:0:0 | PropertyReference | true |
-| reflection.kt:13:9:13:53 | Getter<C,Integer> x3 | file://<external>/KProperty1$Getter.class:0:0:0:0 | Getter<C,Integer> | file://<external>/KProperty1$Getter.class:0:0:0:0 | Getter<C,Integer> | file://<external>/Function1.class:0:0:0:0 | Function1<C,Integer> | true |
-| reflection.kt:13:9:13:53 | Getter<C,Integer> x3 | file://<external>/KProperty1$Getter.class:0:0:0:0 | Getter<C,Integer> | file://<external>/KProperty1$Getter.class:0:0:0:0 | Getter<C,Integer> | file://<external>/KProperty$Getter.class:0:0:0:0 | Getter<Integer> | true |
-| reflection.kt:14:9:14:44 | KFunction<Integer> x4 | file://<external>/KFunction.class:0:0:0:0 | KFunction<Integer> | reflection.kt:14:38:14:44 | new Function1<C,Integer>(...) { ... } | file://<external>/Function1.class:0:0:0:0 | Function1<C,Integer> | true |
-| reflection.kt:14:9:14:44 | KFunction<Integer> x4 | file://<external>/KFunction.class:0:0:0:0 | KFunction<Integer> | reflection.kt:14:38:14:44 | new Function1<C,Integer>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference | true |
-| reflection.kt:15:9:15:41 | KProperty0<Integer> x5 | file://<external>/KProperty0.class:0:0:0:0 | KProperty0<Integer> | reflection.kt:15:35:15:41 | new KProperty0<Integer>(...) { ... } | file://<external>/KProperty0.class:0:0:0:0 | KProperty0<Integer> | true |
-| reflection.kt:15:9:15:41 | KProperty0<Integer> x5 | file://<external>/KProperty0.class:0:0:0:0 | KProperty0<Integer> | reflection.kt:15:35:15:41 | new KProperty0<Integer>(...) { ... } | file://<external>/PropertyReference.class:0:0:0:0 | PropertyReference | true |
-| reflection.kt:17:9:17:49 | KMutableProperty1<C,Integer> y0 | file://<external>/KMutableProperty1.class:0:0:0:0 | KMutableProperty1<C,Integer> | reflection.kt:17:45:17:49 | new KMutableProperty1<C,Integer>(...) { ... } | file://<external>/KMutableProperty1.class:0:0:0:0 | KMutableProperty1<C,Integer> | true |
-| reflection.kt:17:9:17:49 | KMutableProperty1<C,Integer> y0 | file://<external>/KMutableProperty1.class:0:0:0:0 | KMutableProperty1<C,Integer> | reflection.kt:17:45:17:49 | new KMutableProperty1<C,Integer>(...) { ... } | file://<external>/PropertyReference.class:0:0:0:0 | PropertyReference | true |
-| reflection.kt:20:9:20:60 | Setter<C,Integer> y3 | file://<external>/KMutableProperty1$Setter.class:0:0:0:0 | Setter<C,Integer> | file://<external>/KMutableProperty1$Setter.class:0:0:0:0 | Setter<C,Integer> | file://<external>/Function2.class:0:0:0:0 | Function2<C,Integer,Unit> | true |
-| reflection.kt:20:9:20:60 | Setter<C,Integer> y3 | file://<external>/KMutableProperty1$Setter.class:0:0:0:0 | Setter<C,Integer> | file://<external>/KMutableProperty1$Setter.class:0:0:0:0 | Setter<C,Integer> | file://<external>/KMutableProperty$Setter.class:0:0:0:0 | Setter<Integer> | true |
-| reflection.kt:21:9:21:50 | KFunction<Unit> y4 | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:21:44:21:50 | new Function2<C,Integer,Unit>(...) { ... } | file://<external>/Function2.class:0:0:0:0 | Function2<C,Integer,Unit> | true |
-| reflection.kt:21:9:21:50 | KFunction<Unit> y4 | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:21:44:21:50 | new Function2<C,Integer,Unit>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference | true |
-| reflection.kt:22:9:22:48 | KMutableProperty0<Integer> y5 | file://<external>/KMutableProperty0.class:0:0:0:0 | KMutableProperty0<Integer> | reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | file://<external>/KMutableProperty0.class:0:0:0:0 | KMutableProperty0<Integer> | true |
-| reflection.kt:22:9:22:48 | KMutableProperty0<Integer> y5 | file://<external>/KMutableProperty0.class:0:0:0:0 | KMutableProperty0<Integer> | reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | file://<external>/PropertyReference.class:0:0:0:0 | PropertyReference | true |
-| reflection.kt:24:9:24:91 | KProperty2<C,Integer,Integer> prop | file://<external>/KProperty2.class:0:0:0:0 | KProperty2<C,Integer,Integer> | file://<external>/KProperty2.class:0:0:0:0 | KProperty2<C,Integer,Integer> | file://<external>/Function2.class:0:0:0:0 | Function2<C,Integer,Integer> | true |
-| reflection.kt:24:9:24:91 | KProperty2<C,Integer,Integer> prop | file://<external>/KProperty2.class:0:0:0:0 | KProperty2<C,Integer,Integer> | file://<external>/KProperty2.class:0:0:0:0 | KProperty2<C,Integer,Integer> | file://<external>/KProperty.class:0:0:0:0 | KProperty<Integer> | true |
-| reflection.kt:116:9:116:44 | KFunction<Unit> x | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | file://<external>/Function1.class:0:0:0:0 | Function1<Integer,Unit> | true |
-| reflection.kt:116:9:116:44 | KFunction<Unit> x | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference | true |
+| reflection.kt:7:13:7:15 | KFunction<Double> ref | file://<external>/KFunction.class:0:0:0:0 | KFunction<Double> | reflection.kt:7:49:7:54 | new Function2<Ccc,Integer,Double>(...) { ... } | file://<external>/Function2.class:0:0:0:0 | Function2<Ccc,Integer,Double> | true |
+| reflection.kt:7:13:7:15 | KFunction<Double> ref | file://<external>/KFunction.class:0:0:0:0 | KFunction<Double> | reflection.kt:7:49:7:54 | new Function2<Ccc,Integer,Double>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference | true |
+| reflection.kt:10:13:10:14 | KProperty1<C,Integer> x0 | file://<external>/KProperty1.class:0:0:0:0 | KProperty1<C,Integer> | reflection.kt:10:38:10:42 | new KProperty1<C,Integer>(...) { ... } | file://<external>/KProperty1.class:0:0:0:0 | KProperty1<C,Integer> | true |
+| reflection.kt:10:13:10:14 | KProperty1<C,Integer> x0 | file://<external>/KProperty1.class:0:0:0:0 | KProperty1<C,Integer> | reflection.kt:10:38:10:42 | new KProperty1<C,Integer>(...) { ... } | file://<external>/PropertyReference.class:0:0:0:0 | PropertyReference | true |
+| reflection.kt:13:13:13:14 | Getter<C,Integer> x3 | file://<external>/KProperty1$Getter.class:0:0:0:0 | Getter<C,Integer> | file://<external>/KProperty1$Getter.class:0:0:0:0 | Getter<C,Integer> | file://<external>/Function1.class:0:0:0:0 | Function1<C,Integer> | true |
+| reflection.kt:13:13:13:14 | Getter<C,Integer> x3 | file://<external>/KProperty1$Getter.class:0:0:0:0 | Getter<C,Integer> | file://<external>/KProperty1$Getter.class:0:0:0:0 | Getter<C,Integer> | file://<external>/KProperty$Getter.class:0:0:0:0 | Getter<Integer> | true |
+| reflection.kt:14:13:14:14 | KFunction<Integer> x4 | file://<external>/KFunction.class:0:0:0:0 | KFunction<Integer> | reflection.kt:14:38:14:44 | new Function1<C,Integer>(...) { ... } | file://<external>/Function1.class:0:0:0:0 | Function1<C,Integer> | true |
+| reflection.kt:14:13:14:14 | KFunction<Integer> x4 | file://<external>/KFunction.class:0:0:0:0 | KFunction<Integer> | reflection.kt:14:38:14:44 | new Function1<C,Integer>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference | true |
+| reflection.kt:15:13:15:14 | KProperty0<Integer> x5 | file://<external>/KProperty0.class:0:0:0:0 | KProperty0<Integer> | reflection.kt:15:35:15:41 | new KProperty0<Integer>(...) { ... } | file://<external>/KProperty0.class:0:0:0:0 | KProperty0<Integer> | true |
+| reflection.kt:15:13:15:14 | KProperty0<Integer> x5 | file://<external>/KProperty0.class:0:0:0:0 | KProperty0<Integer> | reflection.kt:15:35:15:41 | new KProperty0<Integer>(...) { ... } | file://<external>/PropertyReference.class:0:0:0:0 | PropertyReference | true |
+| reflection.kt:17:13:17:14 | KMutableProperty1<C,Integer> y0 | file://<external>/KMutableProperty1.class:0:0:0:0 | KMutableProperty1<C,Integer> | reflection.kt:17:45:17:49 | new KMutableProperty1<C,Integer>(...) { ... } | file://<external>/KMutableProperty1.class:0:0:0:0 | KMutableProperty1<C,Integer> | true |
+| reflection.kt:17:13:17:14 | KMutableProperty1<C,Integer> y0 | file://<external>/KMutableProperty1.class:0:0:0:0 | KMutableProperty1<C,Integer> | reflection.kt:17:45:17:49 | new KMutableProperty1<C,Integer>(...) { ... } | file://<external>/PropertyReference.class:0:0:0:0 | PropertyReference | true |
+| reflection.kt:20:13:20:14 | Setter<C,Integer> y3 | file://<external>/KMutableProperty1$Setter.class:0:0:0:0 | Setter<C,Integer> | file://<external>/KMutableProperty1$Setter.class:0:0:0:0 | Setter<C,Integer> | file://<external>/Function2.class:0:0:0:0 | Function2<C,Integer,Unit> | true |
+| reflection.kt:20:13:20:14 | Setter<C,Integer> y3 | file://<external>/KMutableProperty1$Setter.class:0:0:0:0 | Setter<C,Integer> | file://<external>/KMutableProperty1$Setter.class:0:0:0:0 | Setter<C,Integer> | file://<external>/KMutableProperty$Setter.class:0:0:0:0 | Setter<Integer> | true |
+| reflection.kt:21:13:21:14 | KFunction<Unit> y4 | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:21:44:21:50 | new Function2<C,Integer,Unit>(...) { ... } | file://<external>/Function2.class:0:0:0:0 | Function2<C,Integer,Unit> | true |
+| reflection.kt:21:13:21:14 | KFunction<Unit> y4 | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:21:44:21:50 | new Function2<C,Integer,Unit>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference | true |
+| reflection.kt:22:13:22:14 | KMutableProperty0<Integer> y5 | file://<external>/KMutableProperty0.class:0:0:0:0 | KMutableProperty0<Integer> | reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | file://<external>/KMutableProperty0.class:0:0:0:0 | KMutableProperty0<Integer> | true |
+| reflection.kt:22:13:22:14 | KMutableProperty0<Integer> y5 | file://<external>/KMutableProperty0.class:0:0:0:0 | KMutableProperty0<Integer> | reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | file://<external>/PropertyReference.class:0:0:0:0 | PropertyReference | true |
+| reflection.kt:24:13:24:16 | KProperty2<C,Integer,Integer> prop | file://<external>/KProperty2.class:0:0:0:0 | KProperty2<C,Integer,Integer> | file://<external>/KProperty2.class:0:0:0:0 | KProperty2<C,Integer,Integer> | file://<external>/Function2.class:0:0:0:0 | Function2<C,Integer,Integer> | true |
+| reflection.kt:24:13:24:16 | KProperty2<C,Integer,Integer> prop | file://<external>/KProperty2.class:0:0:0:0 | KProperty2<C,Integer,Integer> | file://<external>/KProperty2.class:0:0:0:0 | KProperty2<C,Integer,Integer> | file://<external>/KProperty.class:0:0:0:0 | KProperty<Integer> | true |
+| reflection.kt:116:13:116:13 | KFunction<Unit> x | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | file://<external>/Function1.class:0:0:0:0 | Function1<Integer,Unit> | true |
+| reflection.kt:116:13:116:13 | KFunction<Unit> x | file://<external>/KFunction.class:0:0:0:0 | KFunction<Unit> | reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | file://<external>/FunctionReference.class:0:0:0:0 | FunctionReference | true |
 invocation
 | reflection.kt:8:17:8:24 | getName(...) | file://<external>/KCallable.class:0:0:0:0 | getName |
 | reflection.kt:11:23:11:33 | get(...) | file://<external>/KProperty1.class:0:0:0:0 | get |
@@ -269,6 +269,11 @@ compGenerated
 | file://<external>/CharRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
 | file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
+| file://<external>/EnumEntries.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | parallelStream | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | stream | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | toArray | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
@@ -282,23 +287,58 @@ compGenerated
 | file://<external>/LongRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/LongRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/String.class:0:0:0:0 | isEmpty | Forwarder for a Kotlin class inheriting an interface default method |
+| reflection.kt:7:49:7:54 | new Function2<Ccc,Integer,Double>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:10:38:10:42 | new KProperty1<C,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:14:38:14:44 | new Function1<C,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:15:35:15:41 | new KProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:17:45:17:49 | new KMutableProperty1<C,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:21:44:21:50 | new Function2<C,Integer,Unit>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:22:42:22:48 | new KMutableProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:24:46:24:64 | new Function1<KCallable<?>,Boolean>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:33:9:33:23 | getP0 | Default property accessor |
 | reflection.kt:34:9:34:23 | getP1 | Default property accessor |
 | reflection.kt:34:9:34:23 | setP1 | Default property accessor |
+| reflection.kt:50:13:50:28 | new KProperty1<String,Character>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:51:13:51:28 | new KProperty0<Character>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:60:17:60:32 | new Function2<Generic<Integer>,Integer,String>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:61:17:61:34 | new Function1<Integer,String>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:62:17:62:34 | new Function1<Generic<Integer>,String>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:63:17:63:36 | new Function0<String>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:64:17:64:34 | new Function1<Generic<Integer>,String>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:65:17:65:36 | new Function0<String>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:67:17:67:32 | new KMutableProperty1<Generic<Integer>,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:68:17:68:34 | new KMutableProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:70:17:70:30 | new KProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:71:17:71:34 | new KProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:72:17:72:35 | new KMutableProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:83:17:83:28 | getValue | Default property accessor |
+| reflection.kt:90:18:90:24 | new Function1<String,Inner<String>>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:97:14:97:21 | new Function1<String,Class2<String>>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:98:14:98:17 | new Function1<String,Unit>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:99:14:99:29 | new Function1<String,Inner<String>>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:105:18:105:31 | getProp1 | Default property accessor |
 | reflection.kt:105:18:105:31 | setProp1 | Default property accessor |
+| reflection.kt:109:17:109:27 | new KMutableProperty0<Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
+| reflection.kt:115:9:115:27 |  | The class around a local function, a lambda, or a function reference |
+| reflection.kt:116:40:116:44 | new Function1<Integer,Unit>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:126:9:126:13 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:126:9:126:13 | new Function0<Unit>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:131:1:131:50 | takesOptionalParam$default | Forwarder for Kotlin calls that need default arguments filling in |
 | reflection.kt:134:21:134:40 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:134:21:134:40 | new Function1<Integer,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:140:5:140:54 | takesOptionalParam$default | Forwarder for Kotlin calls that need default arguments filling in |
 | reflection.kt:144:21:144:41 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:144:21:144:41 | new Function1<Integer,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:145:32:145:70 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:145:32:145:70 | new Function2<MemberOptionalsTest,Integer,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:150:1:150:60 | extTakesOptionalParam$default | Forwarder for Kotlin calls that need default arguments filling in |
 | reflection.kt:153:21:153:44 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:153:21:153:44 | new Function1<Integer,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:154:33:154:61 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:154:33:154:61 | new Function2<String,Integer,Integer>(...) { ... } | The class around a local function, a lambda, or a function reference |
 | reflection.kt:157:1:157:49 | ConstructorOptional | Forwarder for Kotlin calls that need default arguments filling in |
 | reflection.kt:162:25:162:45 |  | Declaring classes of adapter functions in Kotlin |
+| reflection.kt:162:25:162:45 | new Function1<Integer,ConstructorOptional>(...) { ... } | The class around a local function, a lambda, or a function reference |
 propertyReferenceOverrides
 | reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | get | kotlin.reflect.KProperty1<C,Integer>.get(Reflection.C) |
 | reflection.kt:10:38:10:42 | ...::... | reflection.kt:10:38:10:42 | invoke | kotlin.jvm.functions.Function1<C,Integer>.invoke(Reflection.C) |

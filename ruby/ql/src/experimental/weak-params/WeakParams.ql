@@ -7,6 +7,7 @@
  * @precision medium
  * @id rb/weak-params
  * @tags security
+ *       experimental
  */
 
 import codeql.ruby.AST
@@ -17,18 +18,11 @@ import codeql.ruby.frameworks.ActionController
 import DataFlow::PathGraph
 
 /**
- * A call to `request` in an ActionController controller class.
+ * Gets a call to `request` in an ActionController controller class.
  * This probably refers to the incoming HTTP request object.
  */
-class ActionControllerRequest extends DataFlow::Node {
-  ActionControllerRequest() {
-    exists(DataFlow::CallNode c |
-      c.asExpr().getExpr().getEnclosingModule() instanceof ActionControllerControllerClass and
-      c.getMethodName() = "request"
-    |
-      c.flowsTo(this)
-    )
-  }
+DataFlow::LocalSourceNode request() {
+  result = any(ActionControllerClass cls).getSelf().getAMethodCall("request")
 }
 
 /**
@@ -36,9 +30,11 @@ class ActionControllerRequest extends DataFlow::Node {
  */
 class WeakParams extends DataFlow::CallNode {
   WeakParams() {
-    this.getReceiver() instanceof ActionControllerRequest and
-    this.getMethodName() =
-      ["path_parameters", "query_parameters", "request_parameters", "GET", "POST"]
+    this =
+      request()
+          .getAMethodCall([
+              "path_parameters", "query_parameters", "request_parameters", "GET", "POST"
+            ])
   }
 }
 

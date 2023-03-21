@@ -163,12 +163,12 @@ stmts.kt:
 #   41|           2: [BlockStmt] { ... }
 #   41|             0: [LocalVariableDeclStmt] var ...;
 #   41|               1: [LocalVariableDeclExpr] v
-#   41|                 0: [MethodAccess] component1(...)
+#    0|                 0: [MethodAccess] component1(...)
 #   41|                   -1: [VarAccess] tmp3_loop_parameter
 #   41|             1: [LocalVariableDeclStmt] var ...;
 #   41|               1: [LocalVariableDeclExpr] i
-#   41|                 0: [MethodAccess] component2(...)
-#   41|                   -1: [VarAccess] tmp3_loop_parameter
+#    0|                 0: [MethodAccess] component2(...)
+#    0|                   -1: [VarAccess] tmp3_loop_parameter
 #   41|             2: [BlockStmt] { ... }
 #   42|               0: [ExprStmt] <Expr>;
 #   42|                 0: [WhenExpr] when ...
@@ -188,7 +188,7 @@ stmts.kt:
 #   48|             0: [ThrowStmt] throw ...
 #   48|               0: [ClassInstanceExpr] new Exception(...)
 #   48|                 -3: [TypeAccess] Exception
-#   48|                 0: [StringLiteral] Foo
+#   48|                 0: [StringLiteral] "Foo"
 #   50|           0: [CatchClause] catch (...)
 #-----|             0: (Single Local Variable Declaration)
 #   50|               0: [TypeAccess] Exception

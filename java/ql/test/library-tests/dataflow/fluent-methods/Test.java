@@ -42,31 +42,31 @@ public class Test {
   public static void test1() {
     Test t = new Test();
     t.fluentNoop().fluentSet(source()).fluentNoop();
-    sink(t.get()); // $hasTaintFlow
+    sink(t.get()); // $hasValueFlow
   }
 
   public static void test2() {
     Test t = new Test();
     Test.identity(t).fluentNoop().fluentSet(source()).fluentNoop();
-    sink(t.get()); // $hasTaintFlow
+    sink(t.get()); // $hasValueFlow
   }
 
   public static void test3() {
     Test t = new Test();
     t.indirectlyFluentNoop().fluentSet(source()).fluentNoop();
-    sink(t.get()); // $hasTaintFlow
+    sink(t.get()); // $hasValueFlow
   }
 
   public static void testModel1() {
     Test t = new Test();
     t.indirectlyFluentNoop().modelledFluentMethod().fluentSet(source()).fluentNoop();
-    sink(t.get()); // $hasTaintFlow
+    sink(t.get()); // $hasValueFlow
   }
 
   public static void testModel2() {
     Test t = new Test();
     Test.modelledIdentity(t).indirectlyFluentNoop().modelledFluentMethod().fluentSet(source()).fluentNoop();
-    sink(t.get()); // $hasTaintFlow
+    sink(t.get()); // $hasValueFlow
   }
 
 }

@@ -1,0 +1,11 @@
+load("@codegen_deps//:requirements.bzl", "requirement")
+
+py_library(
+    name = "lib",
+    srcs = glob(["*.py"]),
+    visibility = ["//misc/codegen:__subpackages__"],
+    deps = [
+        requirement("pystache"),
+        requirement("inflection"),
+    ],
+)

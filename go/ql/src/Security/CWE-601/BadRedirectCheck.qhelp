@@ -7,7 +7,7 @@ Redirect URLs should be checked to ensure that user input cannot cause a site to
 to arbitrary domains. This is often done with a check that the redirect URL begins with a slash,
 which most of the time is an absolute redirect on the same host. However, browsers interpret URLs
 beginning with <code>//</code> or <code>/\</code> as absolute URLs. For example, a redirect to
-<code>//lgtm.com</code> will redirect to <code>https://lgtm.com</code>. Thus, redirect checks must
+<code>//example.com</code> will redirect to <code>https://example.com</code>. Thus, redirect checks must
 also check the second character of redirect URLs.
 </p>
 </overview>

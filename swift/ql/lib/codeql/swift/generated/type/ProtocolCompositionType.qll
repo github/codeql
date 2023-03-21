@@ -33,6 +33,6 @@ module Generated {
     /**
      * Gets the number of members of this protocol composition type.
      */
-    final int getNumberOfMembers() { result = count(getAMember()) }
+    final int getNumberOfMembers() { result = count(int i | exists(getMember(i))) }
   }
 }

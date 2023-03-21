@@ -7,6 +7,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.FlowSummary
 import core.BasicObject::BasicObject
 import core.Object::Object
+import core.Gem::Gem
 import core.Kernel::Kernel
 import core.Module
 import core.Array
@@ -15,6 +16,7 @@ import core.String
 import core.Regexp
 import core.IO
 import core.Digest
+import core.Base64
 
 /**
  * A system command executed via subshell literal syntax.

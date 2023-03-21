@@ -84,5 +84,15 @@ class Test {
 			response.addCookie(cookie);
 		}
 
+		{
+			// GOOD: set secure flag in call to `createSecureCookie`
+			response.addCookie(createSecureCookie());
+		}
+	}
+	
+	private static Cookie createSecureCookie() {
+		Cookie cookie = new Cookie("secret", "fakesecret");
+		cookie.setSecure(constTrue);
+		return cookie;
 	}
 }

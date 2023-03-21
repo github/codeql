@@ -1,0 +1,7 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.net.ssl", "HttpsURLConnection", True, "setDefaultHostnameVerifier", "", "", "Argument[0]", "set-hostname-verifier", "manual"]
+      - ["javax.net.ssl", "HttpsURLConnection", True, "setHostnameVerifier", "", "", "Argument[0]", "set-hostname-verifier", "manual"]

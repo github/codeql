@@ -1,6 +1,0 @@
-| method_refs.swift:7:13:7:13 | .baz(_:) | getBase: | file://:0:0:0:0 | self |
-| method_refs.swift:11:1:11:3 | .foo(_:_:) | getBase: | method_refs.swift:11:1:11:1 | X.Type |
-| method_refs.swift:12:1:12:3 | .bar() | getBase: | method_refs.swift:12:1:12:1 | X.Type |
-| method_refs.swift:13:1:13:5 | .baz(_:) | getBase: | method_refs.swift:13:1:13:3 | call to init() |
-| method_refs.swift:15:11:15:11 | .bar() | getBase: | file://:0:0:0:0 | self |
-| method_refs.swift:16:13:16:13 | .baz(_:) | getBase: | file://:0:0:0:0 | self |

@@ -195,6 +195,9 @@ class TypeVariable extends BoundedType, Modifiable, @typevariable {
     result = this.getASuppliedType().(TypeVariable).getAnUltimatelySuppliedType()
   }
 
+  /** Gets the index of `this` type variable. */
+  int getIndex() { typeVars(this, _, result, _, _) }
+
   override string getAPrimaryQlClass() { result = "TypeVariable" }
 }
 

@@ -8,12 +8,13 @@
  * @precision medium
  * @tags correctness
  *       security
+ *       experimental
  *       external/cwe/cwe-788
  */
 
 import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 
 from StrlenCall fc, AssignExpr expr, ArrayExpr exprarr
 where

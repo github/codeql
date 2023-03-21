@@ -19,6 +19,16 @@ abstract class SafeExternalApiFunction extends Function { }
 /** DEPRECATED: Alias for SafeExternalApiFunction */
 deprecated class SafeExternalAPIFunction = SafeExternalApiFunction;
 
+/**
+ * A `Function` with one or more arguments that are considered "safe" from a security perspective.
+ */
+abstract class SafeExternalApiArgument extends Function {
+  /**
+   * Holds if `i` is a safe argument to this function.
+   */
+  abstract predicate isSafeArgument(int i);
+}
+
 private predicate isDefaultSafePackage(Package package) {
   package.getPath() in ["time", "unicode/utf8", package("gopkg.in/go-playground/validator", "")]
 }
@@ -42,6 +52,16 @@ private class DefaultSafeExternalApiFunction extends SafeExternalApiFunction {
     this.hasQualifiedName("crypto/md5", "Sum") or
     this.hasQualifiedName("crypto/sha1", "Sum")
   }
+}
+
+private class DefaultSafeExternalApiFunctionArgument extends SafeExternalApiArgument {
+  int index;
+
+  DefaultSafeExternalApiFunctionArgument() {
+    this.(Method).hasQualifiedName("net/http", "Header", ["Set", "Del"]) and index = -1
+  }
+
+  override predicate isSafeArgument(int i) { i = index }
 }
 
 /** Holds if `callNode` is a local function pointer. */
@@ -75,9 +95,11 @@ class ExternalApiDataNode extends DataFlow::Node {
     // Not defined in a test file
     not call.getFile() instanceof TestFile and
     // Not already modeled as a taint step
-    not exists(DataFlow::Node next | TaintTracking::localTaintStep(this, next)) and
+    not TaintTracking::localTaintStep(this, _) and
     // Not a call to a known safe external API
-    not call.getTarget() instanceof SafeExternalApiFunction
+    not call.getTarget() instanceof SafeExternalApiFunction and
+    // Not a known safe argument to an external API
+    not any(SafeExternalApiArgument seaa).isSafeArgument(i)
   }
 
   /** Gets the called API `Function`. */

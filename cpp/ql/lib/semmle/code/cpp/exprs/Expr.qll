@@ -53,7 +53,7 @@ class Expr extends StmtParent, @expr {
   Declaration getEnclosingDeclaration() { result = exprEnclosingElement(this) }
 
   /** Gets a child of this expression. */
-  Expr getAChild() { exists(int n | result = this.getChild(n)) }
+  Expr getAChild() { result = this.getChild(_) }
 
   /** Gets the parent of this expression, if any. */
   Element getParent() { exprparents(underlyingElement(this), _, unresolveElement(result)) }
@@ -718,13 +718,6 @@ class ReferenceToExpr extends Conversion, @reference_to {
  */
 class PointerDereferenceExpr extends UnaryOperation, @indirect {
   override string getAPrimaryQlClass() { result = "PointerDereferenceExpr" }
-
-  /**
-   * DEPRECATED: Use getOperand() instead.
-   *
-   * Gets the expression that is being dereferenced.
-   */
-  deprecated Expr getExpr() { result = this.getOperand() }
 
   override string getOperator() { result = "*" }
 

@@ -72,62 +72,6 @@ private class ProviderUrlJndiInjectionSink extends JndiInjectionSink, DataFlow::
   }
 }
 
-/** CSV sink models representing methods susceptible to JNDI injection attacks. */
-private class DefaultJndiInjectionSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "javax.naming;Context;true;lookup;;;Argument[0];jndi-injection;manual",
-        "javax.naming;Context;true;lookupLink;;;Argument[0];jndi-injection;manual",
-        "javax.naming;Context;true;rename;;;Argument[0];jndi-injection;manual",
-        "javax.naming;Context;true;list;;;Argument[0];jndi-injection;manual",
-        "javax.naming;Context;true;listBindings;;;Argument[0];jndi-injection;manual",
-        "javax.naming;InitialContext;true;doLookup;;;Argument[0];jndi-injection;manual",
-        "javax.management.remote;JMXConnector;true;connect;;;Argument[-1];jndi-injection;manual",
-        "javax.management.remote;JMXConnectorFactory;false;connect;;;Argument[0];jndi-injection;manual",
-        // Spring
-        "org.springframework.jndi;JndiTemplate;false;lookup;;;Argument[0];jndi-injection;manual",
-        // spring-ldap 1.2.x and newer
-        "org.springframework.ldap.core;LdapOperations;true;lookup;(Name);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;lookup;(Name,ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;lookup;(Name,String[],ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;lookup;(String);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;lookup;(String,ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;lookup;(String,String[],ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;lookupContext;;;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;findByDn;;;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;rename;;;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;list;;;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;listBindings;;;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;search;(Name,String,ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;search;(Name,String,int,ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;search;(Name,String,int,String[],ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;search;(String,String,ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;search;(String,String,int,ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;search;(String,String,int,String[],ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;searchForObject;(Name,String,ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap.core;LdapOperations;true;searchForObject;(String,String,ContextMapper);;Argument[0];jndi-injection;manual",
-        // spring-ldap 1.1.x
-        "org.springframework.ldap;LdapOperations;true;lookup;;;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap;LdapOperations;true;lookupContext;;;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap;LdapOperations;true;findByDn;;;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap;LdapOperations;true;rename;;;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap;LdapOperations;true;list;;;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap;LdapOperations;true;listBindings;;;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap;LdapOperations;true;search;(Name,String,ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap;LdapOperations;true;search;(Name,String,int,ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap;LdapOperations;true;search;(Name,String,int,String[],ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap;LdapOperations;true;search;(String,String,ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap;LdapOperations;true;search;(String,String,int,ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap;LdapOperations;true;search;(String,String,int,String[],ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap;LdapOperations;true;searchForObject;(Name,String,ContextMapper);;Argument[0];jndi-injection;manual",
-        "org.springframework.ldap;LdapOperations;true;searchForObject;(String,String,ContextMapper);;Argument[0];jndi-injection;manual",
-        // Shiro
-        "org.apache.shiro.jndi;JndiTemplate;false;lookup;;;Argument[0];jndi-injection;manual"
-      ]
-  }
-}
-
 /** A set of additional taint steps to consider when taint tracking JNDI injection related data flows. */
 private class DefaultJndiInjectionAdditionalTaintStep extends JndiInjectionAdditionalTaintStep {
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {

@@ -182,6 +182,12 @@ basicBlock
 | tst2.ts:13:39:13:38 | super | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | super(...args) | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
 | tst2.ts:13:39:13:38 | this | tst2.ts:13:39:13:38 | entry node of (...arg ... rgs); } |
+| tst2.ts:15:5:15:7 | nd2 | tst2.ts:1:1:1:0 | entry node of <toplevel> |
+| tst2.ts:15:5:15:30 | nd2 = A ...  number | tst2.ts:1:1:1:0 | entry node of <toplevel> |
+| tst2.ts:15:11:15:11 | A | tst2.ts:1:1:1:0 | entry node of <toplevel> |
+| tst2.ts:15:11:15:13 | A.x | tst2.ts:1:1:1:0 | entry node of <toplevel> |
+| tst2.ts:15:11:15:30 | A.x satisfies number | tst2.ts:1:1:1:0 | entry node of <toplevel> |
+| tst2.ts:15:13:15:13 | x | tst2.ts:1:1:1:0 | entry node of <toplevel> |
 | tst.js:1:1:1:0 | this | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:1:1:1:1 | x | tst.js:1:1:1:0 | entry node of <toplevel> |
 | tst.js:1:1:1:24 | import  ... m 'fs'; | tst.js:1:1:1:0 | entry node of <toplevel> |
@@ -674,6 +680,12 @@ enclosingExpr
 | tst2.ts:13:39:13:38 | constructor | tst2.ts:13:39:13:38 | constructor |
 | tst2.ts:13:39:13:38 | super | tst2.ts:13:39:13:38 | super |
 | tst2.ts:13:39:13:38 | super(...args) | tst2.ts:13:39:13:38 | super(...args) |
+| tst2.ts:15:5:15:7 | nd2 | tst2.ts:15:5:15:7 | nd2 |
+| tst2.ts:15:5:15:30 | nd2 = A ...  number | tst2.ts:15:5:15:30 | nd2 = A ...  number |
+| tst2.ts:15:11:15:11 | A | tst2.ts:15:11:15:11 | A |
+| tst2.ts:15:11:15:13 | A.x | tst2.ts:15:11:15:13 | A.x |
+| tst2.ts:15:11:15:30 | A.x satisfies number | tst2.ts:15:11:15:30 | A.x satisfies number |
+| tst2.ts:15:13:15:13 | x | tst2.ts:15:13:15:13 | x |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
@@ -973,6 +985,7 @@ flowStep
 | tst2.ts:1:1:1:1 | A | tst2.ts:1:18:1:18 | A |
 | tst2.ts:1:8:5:1 | A | tst2.ts:1:18:1:18 | A |
 | tst2.ts:1:8:5:1 | A | tst2.ts:11:11:11:11 | A |
+| tst2.ts:1:8:5:1 | A | tst2.ts:15:11:15:11 | A |
 | tst2.ts:1:8:5:1 | namespa ... lysed\\n} | tst2.ts:1:8:5:1 | A |
 | tst2.ts:1:18:1:18 | A | tst2.ts:7:1:7:0 | A |
 | tst2.ts:2:14:2:19 | x | tst2.ts:4:3:4:3 | x |
@@ -985,6 +998,7 @@ flowStep
 | tst2.ts:13:26:13:29 | List | tst2.ts:13:26:13:37 | List<string> |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
+| tst2.ts:15:11:15:13 | A.x | tst2.ts:15:11:15:30 | A.x satisfies number |
 | tst.js:1:1:1:1 | x | tst.js:3:5:3:5 | x |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:7:1:7:2 | fs |
@@ -1159,6 +1173,7 @@ getImmediatePredecessor
 | sources.js:11:14:11:16 | key | sources.js:11:12:11:18 | key |
 | tst2.ts:1:1:1:1 | A | tst2.ts:1:18:1:18 | A |
 | tst2.ts:1:8:5:1 | A | tst2.ts:11:11:11:11 | A |
+| tst2.ts:1:8:5:1 | A | tst2.ts:15:11:15:11 | A |
 | tst2.ts:1:8:5:1 | namespa ... lysed\\n} | tst2.ts:1:8:5:1 | A |
 | tst2.ts:2:14:2:19 | x | tst2.ts:4:3:4:3 | x |
 | tst2.ts:2:18:2:19 | 42 | tst2.ts:2:14:2:19 | x |
@@ -1170,6 +1185,7 @@ getImmediatePredecessor
 | tst2.ts:13:26:13:29 | List | tst2.ts:13:26:13:37 | List<string> |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
 | tst2.ts:13:39:13:38 | args | tst2.ts:13:39:13:38 | args |
+| tst2.ts:15:11:15:13 | A.x | tst2.ts:15:11:15:30 | A.x satisfies number |
 | tst.js:1:10:1:11 | fs | tst.js:1:10:1:11 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:7:1:7:2 | fs |
 | tst.js:1:10:1:11 | fs | tst.js:22:24:22:25 | fs |
@@ -1340,6 +1356,7 @@ incomplete
 | tst2.ts:13:39:13:38 | exceptional return of super(...args) | call |
 | tst2.ts:13:39:13:38 | super | call |
 | tst2.ts:13:39:13:38 | super(...args) | call |
+| tst2.ts:15:11:15:13 | A.x | heap |
 | tst.js:1:10:1:11 | fs | import |
 | tst.js:16:1:20:9 | exceptional return of (functi ... ("arg") | call |
 | tst.js:16:2:20:1 | exceptional return of function f | call |
@@ -1504,6 +1521,7 @@ sources
 | tst2.ts:13:39:13:38 | return of default constructor of class StringList |
 | tst2.ts:13:39:13:38 | super(...args) |
 | tst2.ts:13:39:13:38 | this |
+| tst2.ts:15:11:15:13 | A.x |
 | tst.js:1:1:1:0 | this |
 | tst.js:1:1:1:24 | import  ... m 'fs'; |
 | tst.js:1:10:1:11 | fs |

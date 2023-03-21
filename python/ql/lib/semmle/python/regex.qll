@@ -38,20 +38,61 @@ private API::Node relevant_re_member(string name) {
   name != "escape"
 }
 
+private import semmle.python.dataflow.new.internal.DataFlowImplForRegExp as RegData
+
+/** A data-flow configuration for tracking string-constants that are used as regular expressions. */
+private class RegexTracking extends RegData::Configuration {
+  RegexTracking() { this = "RegexTracking" }
+
+  override predicate isSource(RegData::Node node) {
+    node.asExpr() instanceof Bytes or
+    node.asExpr() instanceof Unicode
+  }
+
+  override predicate isSink(RegData::Node node) { used_as_regex_internal(node.asExpr(), _) }
+}
+
 /**
- * Holds if `s` is used as a regex with the `re` module, with the regex-mode `mode` (if known).
+ * Holds if the expression `e` is used as a regex with the `re` module, with the regex-mode `mode` (if known).
  * If regex mode is not known, `mode` will be `"None"`.
+ *
+ * This predicate has not done any data-flow tracking.
  */
-predicate used_as_regex(Expr s, string mode) {
-  (s instanceof Bytes or s instanceof Unicode) and
+private predicate used_as_regex_internal(Expr e, string mode) {
   /* Call to re.xxx(regex, ... [mode]) */
   exists(DataFlow::CallCfgNode call, string name |
-    call.getArg(0).asExpr() = s and
+    call.getArg(0).asExpr() = e and
     call = relevant_re_member(name).getACall()
   |
     mode = "None"
     or
     mode = mode_from_node([call.getArg(re_member_flags_arg(name)), call.getArgByName("flags")])
+  )
+}
+
+/**
+ * Holds if the string-constant `s` ends up being used as a regex with the `re` module, with the regex-mode `mode` (if known).
+ * If regex mode is not known, `mode` will be `"None"`.
+ *
+ * This predicate has done data-flow tracking to find the string-constant that is used as a regex.
+ */
+predicate used_as_regex(Expr s, string mode) {
+  (s instanceof Bytes or s instanceof Unicode) and
+  exists(RegexTracking t, RegData::Node source, RegData::Node sink |
+    t.hasFlow(source, sink) and
+    used_as_regex_internal(sink.asExpr(), mode) and
+    s = source.asExpr()
+  )
+}
+
+private import semmle.python.Concepts
+private import semmle.python.RegexTreeView
+
+/** Gets a parsed regular expression term that is executed at `exec`. */
+RegExpTerm getTermForExecution(RegexExecution exec) {
+  exists(RegexTracking t, DataFlow::Node source | t.hasFlow(source, exec.getRegex()) |
+    result.getRegex() = source.asExpr() and
+    result.isRootTerm()
   )
 }
 
@@ -99,7 +140,11 @@ string mode_from_node(DataFlow::Node node) { node = re_flag_tracker(result) }
 
 /** A StrConst used as a regular expression */
 abstract class RegexString extends Expr {
-  RegexString() { (this instanceof Bytes or this instanceof Unicode) }
+  RegexString() {
+    (this instanceof Bytes or this instanceof Unicode) and
+    // is part of the user code
+    exists(this.getLocation().getFile().getRelativePath())
+  }
 
   /**
    * Helper predicate for `char_set_start(int start, int end)`.
@@ -994,10 +1039,8 @@ abstract class RegexString extends Expr {
       this.specialCharacter(end, y, ["$", "\\Z"])
     )
     or
-    exists(int x |
-      this.lastPart(x, end) and
-      this.item(start, end)
-    )
+    this.lastPart(_, end) and
+    this.item(start, end)
     or
     exists(int y | this.lastPart(start, y) | this.qualifiedPart(start, end, y, _, _))
     or

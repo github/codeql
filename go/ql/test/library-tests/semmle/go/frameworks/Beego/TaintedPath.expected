@@ -1,18 +1,18 @@
 edges
-| test.go:209:15:209:26 | call to Data : map type | test.go:210:18:210:26 | untrusted |
-| test.go:209:15:209:26 | call to Data : map type | test.go:211:10:211:18 | untrusted |
-| test.go:209:15:209:26 | call to Data : map type | test.go:212:35:212:43 | untrusted |
-| test.go:318:17:318:37 | selection of RequestBody : slice type | test.go:320:35:320:43 | untrusted |
+| test.go:209:15:209:26 | call to Data | test.go:210:18:210:26 | untrusted |
+| test.go:209:15:209:26 | call to Data | test.go:211:10:211:18 | untrusted |
+| test.go:209:15:209:26 | call to Data | test.go:212:35:212:43 | untrusted |
+| test.go:318:17:318:37 | selection of RequestBody | test.go:320:35:320:43 | untrusted |
 nodes
-| test.go:209:15:209:26 | call to Data : map type | semmle.label | call to Data : map type |
+| test.go:209:15:209:26 | call to Data | semmle.label | call to Data |
 | test.go:210:18:210:26 | untrusted | semmle.label | untrusted |
 | test.go:211:10:211:18 | untrusted | semmle.label | untrusted |
 | test.go:212:35:212:43 | untrusted | semmle.label | untrusted |
-| test.go:318:17:318:37 | selection of RequestBody : slice type | semmle.label | selection of RequestBody : slice type |
+| test.go:318:17:318:37 | selection of RequestBody | semmle.label | selection of RequestBody |
 | test.go:320:35:320:43 | untrusted | semmle.label | untrusted |
 subpaths
 #select
-| test.go:210:18:210:26 | untrusted | test.go:209:15:209:26 | call to Data : map type | test.go:210:18:210:26 | untrusted | This path depends on a $@. | test.go:209:15:209:26 | call to Data | user-provided value |
-| test.go:211:10:211:18 | untrusted | test.go:209:15:209:26 | call to Data : map type | test.go:211:10:211:18 | untrusted | This path depends on a $@. | test.go:209:15:209:26 | call to Data | user-provided value |
-| test.go:212:35:212:43 | untrusted | test.go:209:15:209:26 | call to Data : map type | test.go:212:35:212:43 | untrusted | This path depends on a $@. | test.go:209:15:209:26 | call to Data | user-provided value |
-| test.go:320:35:320:43 | untrusted | test.go:318:17:318:37 | selection of RequestBody : slice type | test.go:320:35:320:43 | untrusted | This path depends on a $@. | test.go:318:17:318:37 | selection of RequestBody | user-provided value |
+| test.go:210:18:210:26 | untrusted | test.go:209:15:209:26 | call to Data | test.go:210:18:210:26 | untrusted | This path depends on a $@. | test.go:209:15:209:26 | call to Data | user-provided value |
+| test.go:211:10:211:18 | untrusted | test.go:209:15:209:26 | call to Data | test.go:211:10:211:18 | untrusted | This path depends on a $@. | test.go:209:15:209:26 | call to Data | user-provided value |
+| test.go:212:35:212:43 | untrusted | test.go:209:15:209:26 | call to Data | test.go:212:35:212:43 | untrusted | This path depends on a $@. | test.go:209:15:209:26 | call to Data | user-provided value |
+| test.go:320:35:320:43 | untrusted | test.go:318:17:318:37 | selection of RequestBody | test.go:320:35:320:43 | untrusted | This path depends on a $@. | test.go:318:17:318:37 | selection of RequestBody | user-provided value |

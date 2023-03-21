@@ -18,7 +18,6 @@
 | B.java:15:21:15:27 | taint(...) | B.java:51:10:51:21 | fluentConcat |
 | B.java:15:21:15:27 | taint(...) | B.java:68:10:68:13 | cond |
 | B.java:15:21:15:27 | taint(...) | B.java:71:10:71:14 | logic |
-| B.java:15:21:15:27 | taint(...) | B.java:73:10:73:39 | endsWith(...) |
 | B.java:15:21:15:27 | taint(...) | B.java:76:10:76:14 | logic |
 | B.java:15:21:15:27 | taint(...) | B.java:79:10:79:14 | logic |
 | B.java:15:21:15:27 | taint(...) | B.java:87:10:87:16 | trimmed |

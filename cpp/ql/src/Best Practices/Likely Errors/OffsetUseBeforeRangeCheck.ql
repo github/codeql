@@ -15,6 +15,7 @@
 
 import cpp
 
+pragma[nomagic]
 predicate beforeArrayAccess(Variable v, ArrayExpr access, Expr before) {
   exists(LogicalAndExpr andexpr |
     access.getArrayOffset() = v.getAnAccess() and
@@ -23,6 +24,7 @@ predicate beforeArrayAccess(Variable v, ArrayExpr access, Expr before) {
   )
 }
 
+pragma[nomagic]
 predicate afterArrayAccess(Variable v, ArrayExpr access, Expr after) {
   exists(LogicalAndExpr andexpr |
     access.getArrayOffset() = v.getAnAccess() and

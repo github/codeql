@@ -34,7 +34,8 @@ private class DefaultRequestForgeryAdditionalTaintStep extends RequestForgeryAdd
   }
 }
 
-private class TypePropertiesRequestForgeryAdditionalTaintStep extends RequestForgeryAdditionalTaintStep {
+private class TypePropertiesRequestForgeryAdditionalTaintStep extends RequestForgeryAdditionalTaintStep
+{
   override predicate propagatesTaint(DataFlow::Node pred, DataFlow::Node succ) {
     exists(MethodAccess ma |
       // Properties props = new Properties();

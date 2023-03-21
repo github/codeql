@@ -39,45 +39,29 @@ namespace Semmle.Extraction.CSharp.Entities
             trapFile.compilation_assembly(this, assembly);
 
             // Arguments
-            var index = 0;
-            foreach (var arg in Compilation.Settings.Args)
-            {
-                trapFile.compilation_args(this, index++, arg);
-            }
+            Compilation.Settings.Args.ForEach((arg, index) => trapFile.compilation_args(this, index, arg));
 
             // Files
-            index = 0;
-            foreach (var file in Context.Compilation.SyntaxTrees.Select(tree => File.Create(Context, tree.FilePath)))
-            {
-                trapFile.compilation_compiling_files(this, index++, file);
-            }
+            Context.Compilation.SyntaxTrees.Select(tree => File.Create(Context, tree.FilePath)).ForEach((file, index) => trapFile.compilation_compiling_files(this, index, file));
 
             // References
-            index = 0;
-            foreach (var file in Context.Compilation.References
+            Context.Compilation.References
                 .OfType<PortableExecutableReference>()
                 .Where(r => r.FilePath is not null)
-                .Select(r => File.Create(Context, r.FilePath!)))
-            {
-                trapFile.compilation_referencing_files(this, index++, file);
-            }
+                .Select(r => File.Create(Context, r.FilePath!))
+                .ForEach((file, index) => trapFile.compilation_referencing_files(this, index, file));
 
             // Diagnostics
-            index = 0;
-            foreach (var diag in Context.Compilation.GetDiagnostics().Select(d => new Diagnostic(Context, d)))
-            {
-                trapFile.diagnostic_for(diag, this, 0, index++);
-            }
+            Context.Compilation
+                .GetDiagnostics()
+                .Select(d => new Diagnostic(Context, d))
+                .ForEach((diag, index) => trapFile.diagnostic_for(diag, this, 0, index));
         }
 
         public void PopulatePerformance(PerformanceMetrics p)
         {
             var trapFile = Context.TrapWriter.Writer;
-            var index = 0;
-            foreach (var metric in p.Metrics)
-            {
-                trapFile.compilation_time(this, -1, index++, metric);
-            }
+            p.Metrics.ForEach((metric, index) => trapFile.compilation_time(this, -1, index, metric));
             trapFile.compilation_finished(this, (float)p.Total.Cpu.TotalSeconds, (float)p.Total.Elapsed.TotalSeconds);
         }
 

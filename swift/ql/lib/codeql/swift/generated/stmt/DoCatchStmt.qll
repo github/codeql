@@ -51,6 +51,6 @@ module Generated {
     /**
      * Gets the number of catches of this do catch statement.
      */
-    final int getNumberOfCatches() { result = count(getACatch()) }
+    final int getNumberOfCatches() { result = count(int i | exists(getCatch(i))) }
   }
 }

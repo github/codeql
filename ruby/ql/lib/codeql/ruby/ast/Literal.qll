@@ -199,7 +199,8 @@ class StringTextComponent extends StringComponent instanceof StringTextComponent
 /**
  * An escape sequence component of a string or string-like literal.
  */
-class StringEscapeSequenceComponent extends StringComponent instanceof StringEscapeSequenceComponentImpl {
+class StringEscapeSequenceComponent extends StringComponent instanceof StringEscapeSequenceComponentImpl
+{
   final override string getAPrimaryQlClass() { result = "StringEscapeSequenceComponent" }
 
   /** Gets the text of this component as it appears in the source code. */
@@ -209,7 +210,8 @@ class StringEscapeSequenceComponent extends StringComponent instanceof StringEsc
 /**
  * An interpolation expression component of a string or string-like literal.
  */
-class StringInterpolationComponent extends StringComponent, StmtSequence instanceof StringInterpolationComponentImpl {
+class StringInterpolationComponent extends StringComponent, StmtSequence instanceof StringInterpolationComponentImpl
+{
   private Ruby::Interpolation g;
 
   StringInterpolationComponent() { this = TStringInterpolationComponentNonRegexp(g) }
@@ -249,14 +251,16 @@ class RegExpTextComponent extends RegExpComponent instanceof RegExpTextComponent
 /**
  * An escape sequence component of a regex literal.
  */
-class RegExpEscapeSequenceComponent extends RegExpComponent instanceof RegExpEscapeSequenceComponentImpl {
+class RegExpEscapeSequenceComponent extends RegExpComponent instanceof RegExpEscapeSequenceComponentImpl
+{
   final override string getAPrimaryQlClass() { result = "RegExpEscapeSequenceComponent" }
 }
 
 /**
  * An interpolation expression component of a regex literal.
  */
-class RegExpInterpolationComponent extends RegExpComponent, StmtSequence instanceof RegExpComponentImpl {
+class RegExpInterpolationComponent extends RegExpComponent, StmtSequence instanceof RegExpComponentImpl
+{
   private Ruby::Interpolation g;
 
   RegExpInterpolationComponent() { this = TStringInterpolationComponentRegexp(g) }

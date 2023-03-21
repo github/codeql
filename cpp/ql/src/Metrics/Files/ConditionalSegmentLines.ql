@@ -54,7 +54,7 @@ private PreprocessorDirective next(PreprocessorDirective ppd) {
 
 private int level(PreprocessorDirective ppd) {
   relevantDirective(ppd, _, _) and
-  not exists(PreprocessorDirective previous | ppd = next(previous)) and
+  not ppd = next(_) and
   result = 0
   or
   exists(PreprocessorDirective previous |
@@ -101,8 +101,8 @@ predicate headerGuard(PreprocessorDirective notdef, File f) {
 }
 
 predicate headerGuardChild(PreprocessorDirective open) {
-  exists(File f, PreprocessorDirective headerGuard |
-    headerGuard(headerGuard, f) and
+  exists(File f |
+    headerGuard(_, f) and
     openWithDepth(1, f, open, _)
   )
 }

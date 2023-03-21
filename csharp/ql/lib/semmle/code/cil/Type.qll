@@ -4,6 +4,7 @@
 
 import CIL
 private import dotnet
+private import semmle.code.csharp.commons.QualifiedName
 
 /**
  * Something that contains other types.
@@ -19,7 +20,7 @@ class TypeContainer extends DotNet::NamedElement, @cil_type_container {
 
 /** A namespace. */
 class Namespace extends DotNet::Namespace, TypeContainer, @namespace {
-  override string toString() { result = this.getQualifiedName() }
+  override string toString() { result = this.getFullName() }
 
   override Namespace getParent() { result = this.getParentNamespace() }
 
@@ -52,7 +53,9 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
 
   override predicate hasQualifiedName(string qualifier, string name) {
     name = this.getName() and
-    qualifier = this.getParent().getQualifiedName()
+    exists(string pqualifier, string pname | this.getParent().hasQualifiedName(pqualifier, pname) |
+      qualifier = getQualifiedName(pqualifier, pname)
+    )
   }
 
   override Location getALocation() { cil_type_location(this.getUnboundDeclaration(), result) }
@@ -65,8 +68,7 @@ class Type extends DotNet::Type, Declaration, TypeContainer, @cil_type {
 
   /**
    * Holds if this type is a member of the `System` namespace and has the name
-   * `name`. This is the same as `getQualifiedName() = "System.<name>"`, but is
-   * faster to compute.
+   * `name`.
    */
   predicate isSystemType(string name) {
     exists(Namespace system | this.getParent() = system |

@@ -76,17 +76,11 @@ module Express {
     result = "del"
   }
 
-  private class RouterRange extends Routing::Router::Range {
-    RouterDefinition def;
-
-    RouterRange() { this = def }
-
-    override DataFlow::SourceNode getAReference() { result = def.ref() }
+  private class RouterRange extends Routing::Router::Range instanceof RouterDefinition {
+    override DataFlow::SourceNode getAReference() { result = super.ref() }
   }
 
-  private class RoutingTreeSetup extends Routing::RouteSetup::MethodCall {
-    RoutingTreeSetup() { this instanceof RouteSetup }
-
+  private class RoutingTreeSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup {
     override string getRelativePath() {
       not this.getMethodName() = "param" and // do not treat parameter name as a path
       result = this.getArgument(0).getStringValue()
@@ -286,7 +280,8 @@ module Express {
    * The callback given to passport in PassportRouteSetup.
    */
   private class PassportRouteHandler extends RouteHandler, Http::Servers::StandardRouteHandler,
-    DataFlow::FunctionNode {
+    DataFlow::FunctionNode
+  {
     PassportRouteHandler() { this = any(PassportRouteSetup setup).getARouteHandler() }
 
     override DataFlow::ParameterNode getRouteHandlerParameter(string kind) {
@@ -502,7 +497,8 @@ module Express {
    * An Express route handler installed by a route setup.
    */
   class StandardRouteHandler extends RouteHandler, Http::Servers::StandardRouteHandler,
-    DataFlow::FunctionNode {
+    DataFlow::FunctionNode
+  {
     RouteSetup routeSetup;
 
     StandardRouteHandler() { this = routeSetup.getARouteHandler() }
@@ -681,7 +677,21 @@ module Express {
 
     RequestInputAccess() {
       kind = "parameter" and
-      this = [queryRef(request), paramsRef(request)].getAPropertyRead()
+      (
+        // `req.query` / `req.params`.
+        // These are objects, so we prefer to use a property read if possible, otherwise we fall back to the object itself.
+        (
+          if exists(queryRef(request).getAPropertyRead())
+          then this = queryRef(request).getAPropertyRead()
+          else this = request.ref().getAPropertyRead("query")
+        )
+        or
+        (
+          if exists(paramsRef(request).getAPropertyRead())
+          then this = paramsRef(request).getAPropertyRead()
+          else this = request.ref().getAPropertyRead("params")
+        )
+      )
       or
       exists(DataFlow::SourceNode ref | ref = request.ref() |
         kind = "parameter" and
@@ -1020,7 +1030,8 @@ module Express {
 
   /** A call to `response.sendFile`, considered as a file system access. */
   private class ResponseSendFileAsFileSystemAccess extends FileSystemReadAccess,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     ResponseSendFileAsFileSystemAccess() {
       exists(string name | name = "sendFile" or name = "sendfile" |
         this.calls(any(ResponseNode res), name)
@@ -1044,7 +1055,8 @@ module Express {
    * A function that flows to a route setup.
    */
   private class TrackedRouteHandlerCandidateWithSetup extends RouteHandler,
-    Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+    Http::Servers::StandardRouteHandler, DataFlow::FunctionNode
+  {
     RouteSetup routeSetup;
 
     TrackedRouteHandlerCandidateWithSetup() { this = routeSetup.getARouteHandler() }
@@ -1119,7 +1131,8 @@ module Express {
    * A call to the Express `res.render()` method, seen as a template instantiation.
    */
   private class RenderCallAsTemplateInstantiation extends Templating::TemplateInstantiation::Range,
-    DataFlow::CallNode {
+    DataFlow::CallNode
+  {
     ResponseSource res;
 
     RenderCallAsTemplateInstantiation() { this = res.ref().getAMethodCall("render") }

@@ -8,6 +8,7 @@
  * @precision high
  * @id cs/web/cookie-secure-not-set
  * @tags security
+ *       experimental
  *       external/cwe/cwe-319
  *       external/cwe/cwe-614
  */
@@ -29,22 +30,15 @@ where
         getAValueForCookiePolicyProp("Secure").getValue() = "1"
       ) and
       // there is no callback `OnAppendCookie` that sets `Secure` to true
-      not exists(
-        OnAppendCookieSecureTrackingConfig config, DataFlow::Node source, DataFlow::Node sink
-      |
-        config.hasFlow(source, sink)
-      ) and
+      not exists(OnAppendCookieSecureTrackingConfig config | config.hasFlowTo(_)) and
       (
         // `Secure` property in `CookieOptions` passed to IResponseCookies.Append(...) wasn't set
         exists(ObjectCreation oc |
           oc = c and
           oc.getType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
           not isPropertySet(oc, "Secure") and
-          exists(
-            CookieOptionsTrackingConfiguration cookieTracking, DataFlow::Node creation,
-            DataFlow::Node append
-          |
-            cookieTracking.hasFlow(creation, append) and
+          exists(CookieOptionsTrackingConfiguration cookieTracking, DataFlow::Node creation |
+            cookieTracking.hasFlow(creation, _) and
             creation.asExpr() = oc
           )
         )
@@ -86,17 +80,10 @@ where
           or
           oc.getType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
           // there is no callback `OnAppendCookie` that sets `Secure` to true
-          not exists(
-            OnAppendCookieSecureTrackingConfig config, DataFlow::Node source, DataFlow::Node sink
-          |
-            config.hasFlow(source, sink)
-          ) and
+          not exists(OnAppendCookieSecureTrackingConfig config | config.hasFlowTo(_)) and
           // the cookie option is passed to `Append`
-          exists(
-            CookieOptionsTrackingConfiguration cookieTracking, DataFlow::Node creation,
-            DataFlow::Node append
-          |
-            cookieTracking.hasFlow(creation, append) and
+          exists(CookieOptionsTrackingConfiguration cookieTracking, DataFlow::Node creation |
+            cookieTracking.hasFlow(creation, _) and
             creation.asExpr() = oc
           )
         )

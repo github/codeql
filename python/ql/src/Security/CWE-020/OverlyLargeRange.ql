@@ -12,8 +12,9 @@
  *       external/cwe/cwe-020
  */
 
-import semmle.python.security.OverlyLargeRangeQuery
+private import semmle.python.RegexTreeView::RegexTreeView as TreeView
+import codeql.regex.OverlyLargeRangeQuery::Make<TreeView>
 
-from RegExpCharacterRange range, string reason
+from TreeView::RegExpCharacterRange range, string reason
 where problem(range, reason)
 select range, "Suspicious character range that " + reason + "."

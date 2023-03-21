@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Mvc.Localization, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -8,7 +9,6 @@ namespace Microsoft
         {
             namespace Localization
             {
-                // Generated from `Microsoft.AspNetCore.Mvc.Localization.HtmlLocalizer` in `Microsoft.AspNetCore.Mvc.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HtmlLocalizer : Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer
                 {
                     public virtual System.Collections.Generic.IEnumerable<Microsoft.Extensions.Localization.LocalizedString> GetAllStrings(bool includeParentCultures) => throw null;
@@ -21,7 +21,6 @@ namespace Microsoft
                     protected virtual Microsoft.AspNetCore.Mvc.Localization.LocalizedHtmlString ToHtmlString(Microsoft.Extensions.Localization.LocalizedString result, object[] arguments) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Localization.HtmlLocalizer<>` in `Microsoft.AspNetCore.Mvc.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HtmlLocalizer<TResource> : Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer, Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer<TResource>
                 {
                     public virtual System.Collections.Generic.IEnumerable<Microsoft.Extensions.Localization.LocalizedString> GetAllStrings(bool includeParentCultures) => throw null;
@@ -32,7 +31,6 @@ namespace Microsoft
                     public virtual Microsoft.AspNetCore.Mvc.Localization.LocalizedHtmlString this[string name] { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Localization.HtmlLocalizerExtensions` in `Microsoft.AspNetCore.Mvc.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class HtmlLocalizerExtensions
                 {
                     public static System.Collections.Generic.IEnumerable<Microsoft.Extensions.Localization.LocalizedString> GetAllStrings(this Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer htmlLocalizer) => throw null;
@@ -40,7 +38,6 @@ namespace Microsoft
                     public static Microsoft.AspNetCore.Mvc.Localization.LocalizedHtmlString GetHtml(this Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer htmlLocalizer, string name, params object[] arguments) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Localization.HtmlLocalizerFactory` in `Microsoft.AspNetCore.Mvc.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class HtmlLocalizerFactory : Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizerFactory
                 {
                     public virtual Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer Create(System.Type resourceSource) => throw null;
@@ -48,7 +45,6 @@ namespace Microsoft
                     public HtmlLocalizerFactory(Microsoft.Extensions.Localization.IStringLocalizerFactory localizerFactory) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer` in `Microsoft.AspNetCore.Mvc.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IHtmlLocalizer
                 {
                     System.Collections.Generic.IEnumerable<Microsoft.Extensions.Localization.LocalizedString> GetAllStrings(bool includeParentCultures);
@@ -58,24 +54,20 @@ namespace Microsoft
                     Microsoft.AspNetCore.Mvc.Localization.LocalizedHtmlString this[string name] { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer<>` in `Microsoft.AspNetCore.Mvc.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IHtmlLocalizer<TResource> : Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer
                 {
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizerFactory` in `Microsoft.AspNetCore.Mvc.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IHtmlLocalizerFactory
                 {
                     Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer Create(System.Type resourceSource);
                     Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer Create(string baseName, string location);
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer` in `Microsoft.AspNetCore.Mvc.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IViewLocalizer : Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer
                 {
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Localization.LocalizedHtmlString` in `Microsoft.AspNetCore.Mvc.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class LocalizedHtmlString : Microsoft.AspNetCore.Html.IHtmlContent
                 {
                     public bool IsResourceNotFound { get => throw null; }
@@ -87,7 +79,6 @@ namespace Microsoft
                     public void WriteTo(System.IO.TextWriter writer, System.Text.Encodings.Web.HtmlEncoder encoder) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Mvc.Localization.ViewLocalizer` in `Microsoft.AspNetCore.Mvc.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class ViewLocalizer : Microsoft.AspNetCore.Mvc.Localization.IHtmlLocalizer, Microsoft.AspNetCore.Mvc.Localization.IViewLocalizer, Microsoft.AspNetCore.Mvc.ViewFeatures.IViewContextAware
                 {
                     public void Contextualize(Microsoft.AspNetCore.Mvc.Rendering.ViewContext viewContext) => throw null;
@@ -106,7 +97,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.MvcLocalizationMvcBuilderExtensions` in `Microsoft.AspNetCore.Mvc.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MvcLocalizationMvcBuilderExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IMvcBuilder AddMvcLocalization(this Microsoft.Extensions.DependencyInjection.IMvcBuilder builder) => throw null;
@@ -123,7 +113,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.DependencyInjection.IMvcBuilder AddViewLocalization(this Microsoft.Extensions.DependencyInjection.IMvcBuilder builder, Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat format, System.Action<Microsoft.Extensions.Localization.LocalizationOptions> setupAction) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.MvcLocalizationMvcCoreBuilderExtensions` in `Microsoft.AspNetCore.Mvc.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MvcLocalizationMvcCoreBuilderExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder AddMvcLocalization(this Microsoft.Extensions.DependencyInjection.IMvcCoreBuilder builder) => throw null;

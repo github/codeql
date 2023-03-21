@@ -6,11 +6,6 @@ import java
 private import internal.FlowSummaryImpl as Impl
 private import internal.DataFlowUtil
 
-// import all instances of SummarizedCallable below
-private module Summaries {
-  private import semmle.code.java.dataflow.ExternalFlow
-}
-
 class SummaryComponent = Impl::Public::SummaryComponent;
 
 /** Provides predicates for constructing summary components. */
@@ -102,6 +97,14 @@ abstract class SyntheticCallable extends string {
   Type getReturnType() { none() }
 }
 
+/**
+ * A module for importing frameworks that define synthetic callables.
+ */
+private module SyntheticCallables {
+  private import semmle.code.java.frameworks.android.Intent
+  private import semmle.code.java.frameworks.Stream
+}
+
 private newtype TSummarizedCallableBase =
   TSimpleCallable(Callable c) { c.isSourceDeclaration() } or
   TSyntheticCallable(SyntheticCallable c)
@@ -167,6 +170,8 @@ class SummarizedCallableBase extends TSummarizedCallableBase {
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
+
+class NeutralCallable = Impl::Public::NeutralCallable;
 
 /**
  * An adapter class to add the flow summaries specified on `SyntheticCallable`

@@ -10,5 +10,6 @@ import semmle.go.dataflow.DataFlow
  * global (inter-procedural) taint-tracking analyses.
  */
 module TaintTracking {
+  import semmle.go.dataflow.internal.tainttracking1.TaintTracking
   import semmle.go.dataflow.internal.tainttracking1.TaintTrackingImpl
 }

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Semmle.Util;
 
 namespace Semmle.Autobuild.Shared
 {
@@ -20,13 +21,13 @@ namespace Semmle.Autobuild.Shared
         IEnumerable<IProjectOrSolution> IncludedProjects { get; }
     }
 
-    public abstract class ProjectOrSolution : IProjectOrSolution
+    public abstract class ProjectOrSolution<TAutobuildOptions> : IProjectOrSolution where TAutobuildOptions : AutobuildOptionsShared
     {
         public string FullPath { get; }
 
         public string DirectoryName { get; }
 
-        protected ProjectOrSolution(Autobuilder builder, string path)
+        protected ProjectOrSolution(Autobuilder<TAutobuildOptions> builder, string path)
         {
             FullPath = builder.Actions.GetFullPath(path);
             DirectoryName = builder.Actions.GetDirectoryName(path) ?? "";

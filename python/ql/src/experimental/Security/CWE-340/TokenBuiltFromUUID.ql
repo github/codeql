@@ -8,6 +8,7 @@
  * @security-severity 5
  * @id py/predictable-token
  * @tags security
+ *       experimental
  *       external/cwe/cwe-340
  */
 

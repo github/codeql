@@ -13,9 +13,9 @@
 import csharp
 import semmle.code.csharp.commons.Assertions
 
-private predicate propertyOverrides(Property p, string baseClass, string property) {
+private predicate propertyOverrides(Property p, string qualifier, string baseClass, string property) {
   exists(Property p2 |
-    p2.getUnboundDeclaration().getDeclaringType().hasQualifiedName(baseClass) and
+    p2.getUnboundDeclaration().getDeclaringType().hasQualifiedName(qualifier, baseClass) and
     p2.hasName(property)
   |
     p.overridesOrImplementsOrEquals(p2)
@@ -24,16 +24,16 @@ private predicate propertyOverrides(Property p, string baseClass, string propert
 
 private predicate containerSizeAccess(PropertyAccess pa, string containerKind) {
   (
-    propertyOverrides(pa.getTarget(), "System.Collections.Generic.ICollection<>", "Count") or
-    propertyOverrides(pa.getTarget(), "System.Collections.Generic.IReadOnlyCollection<>", "Count") or
-    propertyOverrides(pa.getTarget(), "System.Collections.ICollection", "Count")
+    propertyOverrides(pa.getTarget(), "System.Collections.Generic", "ICollection<>", "Count") or
+    propertyOverrides(pa.getTarget(), "System.Collections.Generic", "IReadOnlyCollection<>", "Count") or
+    propertyOverrides(pa.getTarget(), "System.Collections", "ICollection", "Count")
   ) and
   containerKind = "a collection"
   or
   (
-    propertyOverrides(pa.getTarget(), "System.String", "Length") and containerKind = "a string"
+    propertyOverrides(pa.getTarget(), "System", "String", "Length") and containerKind = "a string"
     or
-    propertyOverrides(pa.getTarget(), "System.Array", "Length") and containerKind = "an array"
+    propertyOverrides(pa.getTarget(), "System", "Array", "Length") and containerKind = "an array"
   )
 }
 

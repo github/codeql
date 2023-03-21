@@ -27,14 +27,11 @@ module StoredXss {
   }
 
   /** A file name, considered as a flow source for stored XSS. */
-  class FileNameSourceAsSource extends Source {
-    FileNameSourceAsSource() { this instanceof FileNameSource }
-  }
+  class FileNameSourceAsSource extends Source instanceof FileNameSource { }
 
   /** An instance of user-controlled torrent information, considered as a flow source for stored XSS. */
-  class UserControlledTorrentInfoAsSource extends Source {
-    UserControlledTorrentInfoAsSource() { this instanceof ParseTorrent::UserControlledTorrentInfo }
-  }
+  class UserControlledTorrentInfoAsSource extends Source instanceof ParseTorrent::UserControlledTorrentInfo
+  { }
 
   /**
    * A regexp replacement involving an HTML meta-character, viewed as a sanitizer for
@@ -47,8 +44,8 @@ module StoredXss {
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
-  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer {
-  }
+  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer
+  { }
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
 }

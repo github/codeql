@@ -1,0 +1,13 @@
+| test.py:32:8:32:23 | CrosstalkTestX() | test.py:9:5:9:23 | Function __init__ | test.py:32:8:32:23 | [pre] ControlFlowNode for CrosstalkTestX() | self |
+| test.py:33:8:33:23 | CrosstalkTestY() | test.py:21:5:21:23 | Function __init__ | test.py:33:8:33:23 | [pre] ControlFlowNode for CrosstalkTestY() | self |
+| test.py:43:1:43:8 | func() | test.py:13:5:13:26 | Function setx | test.py:36:12:36:15 | ControlFlowNode for objx | self |
+| test.py:43:1:43:8 | func() | test.py:13:5:13:26 | Function setx | test.py:43:6:43:7 | ControlFlowNode for IntegerLiteral | position 0 |
+| test.py:43:1:43:8 | func() | test.py:25:5:25:26 | Function sety | test.py:38:12:38:15 | ControlFlowNode for objy | self |
+| test.py:43:1:43:8 | func() | test.py:25:5:25:26 | Function sety | test.py:43:6:43:7 | ControlFlowNode for IntegerLiteral | position 0 |
+| test.py:51:1:51:8 | func() | test.py:16:5:16:30 | Function setvalue | test.py:47:12:47:15 | ControlFlowNode for objx | self |
+| test.py:51:1:51:8 | func() | test.py:16:5:16:30 | Function setvalue | test.py:51:6:51:7 | ControlFlowNode for IntegerLiteral | position 0 |
+| test.py:51:1:51:8 | func() | test.py:28:5:28:30 | Function setvalue | test.py:49:12:49:15 | ControlFlowNode for objy | self |
+| test.py:51:1:51:8 | func() | test.py:28:5:28:30 | Function setvalue | test.py:51:6:51:7 | ControlFlowNode for IntegerLiteral | position 0 |
+| test.py:70:1:70:8 | func() | test.py:58:5:58:33 | Function foo | test.py:63:12:63:12 | ControlFlowNode for a | self |
+| test.py:70:1:70:8 | func() | test.py:58:5:58:33 | Function foo | test.py:70:6:70:7 | ControlFlowNode for IntegerLiteral | position 0 |
+| test.py:70:1:70:8 | func() | test.py:58:5:58:33 | Function foo | test.py:70:6:70:7 | ControlFlowNode for IntegerLiteral | self |

@@ -45,6 +45,10 @@ getMethod
 | calls.rb:531:1:544:3 | ProtectedMethods | bar | calls.rb:534:15:536:7 | bar |
 | calls.rb:531:1:544:3 | ProtectedMethods | baz | calls.rb:538:5:543:7 | baz |
 | calls.rb:550:1:555:3 | ProtectedMethodsSub | baz | calls.rb:551:5:554:7 | baz |
+| calls.rb:618:1:624:3 | Included | bar | calls.rb:622:5:623:7 | bar |
+| calls.rb:618:1:624:3 | Included | foo | calls.rb:619:5:621:7 | foo |
+| calls.rb:626:1:631:3 | IncludesIncluded | bar | calls.rb:628:5:630:7 | bar |
+| calls.rb:641:1:649:3 | CustomNew2 | instance | calls.rb:646:5:648:7 | instance |
 | hello.rb:1:1:8:3 | EnglishWords | hello | hello.rb:2:5:4:7 | hello |
 | hello.rb:1:1:8:3 | EnglishWords | world | hello.rb:5:5:7:7 | world |
 | hello.rb:11:1:16:3 | Greeting | message | hello.rb:13:5:15:7 | message |
@@ -478,6 +482,51 @@ lookupMethod
 | calls.rb:605:1:612:3 | SingletonC | private_on_main | calls.rb:185:1:186:3 | private_on_main |
 | calls.rb:605:1:612:3 | SingletonC | puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:605:1:612:3 | SingletonC | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:618:1:624:3 | Included | bar | calls.rb:622:5:623:7 | bar |
+| calls.rb:618:1:624:3 | Included | foo | calls.rb:619:5:621:7 | foo |
+| calls.rb:626:1:631:3 | IncludesIncluded | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:626:1:631:3 | IncludesIncluded | bar | calls.rb:628:5:630:7 | bar |
+| calls.rb:626:1:631:3 | IncludesIncluded | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:626:1:631:3 | IncludesIncluded | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:626:1:631:3 | IncludesIncluded | create | calls.rb:278:1:286:3 | create |
+| calls.rb:626:1:631:3 | IncludesIncluded | foo | calls.rb:619:5:621:7 | foo |
+| calls.rb:626:1:631:3 | IncludesIncluded | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:626:1:631:3 | IncludesIncluded | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:626:1:631:3 | IncludesIncluded | new | calls.rb:117:5:117:16 | new |
+| calls.rb:626:1:631:3 | IncludesIncluded | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:626:1:631:3 | IncludesIncluded | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:626:1:631:3 | IncludesIncluded | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:626:1:631:3 | IncludesIncluded | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:626:1:631:3 | IncludesIncluded | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:633:1:637:3 | CustomNew1 | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:633:1:637:3 | CustomNew1 | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:633:1:637:3 | CustomNew1 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:633:1:637:3 | CustomNew1 | create | calls.rb:278:1:286:3 | create |
+| calls.rb:633:1:637:3 | CustomNew1 | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:633:1:637:3 | CustomNew1 | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:633:1:637:3 | CustomNew1 | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:633:1:637:3 | CustomNew1 | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:633:1:637:3 | CustomNew1 | new | calls.rb:117:5:117:16 | new |
+| calls.rb:633:1:637:3 | CustomNew1 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:633:1:637:3 | CustomNew1 | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:633:1:637:3 | CustomNew1 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:633:1:637:3 | CustomNew1 | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:633:1:637:3 | CustomNew1 | to_s | calls.rb:172:5:173:7 | to_s |
+| calls.rb:641:1:649:3 | CustomNew2 | add_singleton | calls.rb:367:1:371:3 | add_singleton |
+| calls.rb:641:1:649:3 | CustomNew2 | call_block | calls.rb:81:1:83:3 | call_block |
+| calls.rb:641:1:649:3 | CustomNew2 | call_instance_m | calls.rb:39:1:41:3 | call_instance_m |
+| calls.rb:641:1:649:3 | CustomNew2 | create | calls.rb:278:1:286:3 | create |
+| calls.rb:641:1:649:3 | CustomNew2 | foo | calls.rb:1:1:3:3 | foo |
+| calls.rb:641:1:649:3 | CustomNew2 | foo | calls.rb:85:1:89:3 | foo |
+| calls.rb:641:1:649:3 | CustomNew2 | funny | calls.rb:140:1:142:3 | funny |
+| calls.rb:641:1:649:3 | CustomNew2 | indirect | calls.rb:158:1:160:3 | indirect |
+| calls.rb:641:1:649:3 | CustomNew2 | instance | calls.rb:646:5:648:7 | instance |
+| calls.rb:641:1:649:3 | CustomNew2 | new | calls.rb:117:5:117:16 | new |
+| calls.rb:641:1:649:3 | CustomNew2 | optional_arg | calls.rb:76:1:79:3 | optional_arg |
+| calls.rb:641:1:649:3 | CustomNew2 | pattern_dispatch | calls.rb:343:1:359:3 | pattern_dispatch |
+| calls.rb:641:1:649:3 | CustomNew2 | private_on_main | calls.rb:185:1:186:3 | private_on_main |
+| calls.rb:641:1:649:3 | CustomNew2 | puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:641:1:649:3 | CustomNew2 | to_s | calls.rb:172:5:173:7 | to_s |
 | file://:0:0:0:0 | Class | include | calls.rb:108:5:110:7 | include |
 | file://:0:0:0:0 | Class | module_eval | calls.rb:107:5:107:24 | module_eval |
 | file://:0:0:0:0 | Class | new | calls.rb:117:5:117:16 | new |
@@ -638,7 +687,7 @@ enclosingMethod
 | calls.rb:55:9:55:19 | self | calls.rb:51:5:57:7 | baz |
 | calls.rb:56:9:56:12 | self | calls.rb:51:5:57:7 | baz |
 | calls.rb:56:9:56:24 | call to singleton_m | calls.rb:51:5:57:7 | baz |
-| calls.rb:67:9:67:13 | call to super | calls.rb:66:5:68:7 | baz |
+| calls.rb:67:9:67:13 | super call to baz | calls.rb:66:5:68:7 | baz |
 | calls.rb:76:18:76:18 | a | calls.rb:76:1:79:3 | optional_arg |
 | calls.rb:76:18:76:18 | a | calls.rb:76:1:79:3 | optional_arg |
 | calls.rb:76:22:76:22 | 4 | calls.rb:76:1:79:3 | optional_arg |
@@ -965,6 +1014,17 @@ enclosingMethod
 | calls.rb:601:9:601:18 | self | calls.rb:600:5:602:7 | call_singleton1 |
 | calls.rb:610:9:610:18 | call to singleton1 | calls.rb:609:5:611:7 | call_singleton1 |
 | calls.rb:610:9:610:18 | self | calls.rb:609:5:611:7 | call_singleton1 |
+| calls.rb:620:9:620:12 | self | calls.rb:619:5:621:7 | foo |
+| calls.rb:620:9:620:16 | call to bar | calls.rb:619:5:621:7 | foo |
+| calls.rb:629:9:629:13 | super call to bar | calls.rb:628:5:630:7 | bar |
+| calls.rb:635:9:635:10 | C1 | calls.rb:634:5:636:7 | new |
+| calls.rb:635:9:635:14 | call to new | calls.rb:634:5:636:7 | new |
+| calls.rb:643:9:643:12 | self | calls.rb:642:5:644:7 | new |
+| calls.rb:643:9:643:21 | call to allocate | calls.rb:642:5:644:7 | new |
+| calls.rb:647:9:647:34 | call to puts | calls.rb:646:5:648:7 | instance |
+| calls.rb:647:9:647:34 | self | calls.rb:646:5:648:7 | instance |
+| calls.rb:647:14:647:34 | "CustomNew2#instance" | calls.rb:646:5:648:7 | instance |
+| calls.rb:647:15:647:33 | CustomNew2#instance | calls.rb:646:5:648:7 | instance |
 | hello.rb:3:9:3:22 | return | hello.rb:2:5:4:7 | hello |
 | hello.rb:3:16:3:22 | "hello" | hello.rb:2:5:4:7 | hello |
 | hello.rb:3:17:3:21 | hello | hello.rb:2:5:4:7 | hello |
@@ -975,7 +1035,7 @@ enclosingMethod
 | hello.rb:14:16:14:20 | call to hello | hello.rb:13:5:15:7 | message |
 | hello.rb:14:16:14:20 | self | hello.rb:13:5:15:7 | message |
 | hello.rb:20:9:20:40 | return | hello.rb:19:5:21:7 | message |
-| hello.rb:20:16:20:20 | call to super | hello.rb:19:5:21:7 | message |
+| hello.rb:20:16:20:20 | super call to message | hello.rb:19:5:21:7 | message |
 | hello.rb:20:16:20:26 | ... + ... | hello.rb:19:5:21:7 | message |
 | hello.rb:20:16:20:34 | ... + ... | hello.rb:19:5:21:7 | message |
 | hello.rb:20:16:20:40 | ... + ... | hello.rb:19:5:21:7 | message |

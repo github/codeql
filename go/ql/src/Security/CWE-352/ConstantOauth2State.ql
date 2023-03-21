@@ -31,7 +31,7 @@ class AuthCodeUrl extends Method {
 class ConstantStateFlowConf extends DataFlow::Configuration {
   ConstantStateFlowConf() { this = "ConstantStateFlowConf" }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::CallNode call) {
+  predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
     exists(AuthCodeUrl m | call = m.getACall() | sink = call.getArgument(0))
   }
 
@@ -46,7 +46,7 @@ class ConstantStateFlowConf extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSinkCall(sink, _) }
 }
 
 /**
@@ -109,11 +109,11 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
     any(Fmt::AppenderOrSprinter s).taintStep(pred, succ)
   }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::CallNode call) {
+  predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
     exists(AuthCodeUrl m | call = m.getACall() | sink = call.getReceiver())
   }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSinkCall(sink, _) }
 }
 
 /**
@@ -126,7 +126,7 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
 predicate privateUrlFlowsToAuthCodeUrlCall(DataFlow::CallNode call) {
   exists(PrivateUrlFlowsToAuthCodeUrlCall flowConfig, DataFlow::Node receiver |
     flowConfig.hasFlowTo(receiver) and
-    flowConfig.isSink(receiver, call)
+    flowConfig.isSinkCall(receiver, call)
   )
 }
 
@@ -134,7 +134,7 @@ predicate privateUrlFlowsToAuthCodeUrlCall(DataFlow::CallNode call) {
 class FlowToPrint extends DataFlow::Configuration {
   FlowToPrint() { this = "FlowToPrint" }
 
-  predicate isSink(DataFlow::Node sink, DataFlow::CallNode call) {
+  predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
     exists(LoggerCall logCall | call = logCall | sink = logCall.getAMessageComponent())
   }
 
@@ -142,13 +142,13 @@ class FlowToPrint extends DataFlow::Configuration {
     source = any(AuthCodeUrl m).getACall().getResult()
   }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { this.isSinkCall(sink, _) }
 }
 
 /** Holds if the provided `CallNode`'s result flows to an argument of a printer call. */
 predicate resultFlowsToPrinter(DataFlow::CallNode authCodeUrlCall) {
-  exists(FlowToPrint cfg, DataFlow::PathNode source, DataFlow::PathNode sink |
-    cfg.hasFlowPath(source, sink) and
+  exists(FlowToPrint cfg, DataFlow::PathNode source |
+    cfg.hasFlowPath(source, _) and
     authCodeUrlCall.getResult() = source.getNode()
   )
 }
@@ -198,7 +198,7 @@ from
   DataFlow::CallNode sinkCall
 where
   cfg.hasFlowPath(source, sink) and
-  cfg.isSink(sink.getNode(), sinkCall) and
+  cfg.isSinkCall(sink.getNode(), sinkCall) and
   // Exclude cases that seem to be oauth flows done from within a terminal:
   not seemsLikeDoneWithinATerminal(sinkCall) and
   not privateUrlFlowsToAuthCodeUrlCall(sinkCall)

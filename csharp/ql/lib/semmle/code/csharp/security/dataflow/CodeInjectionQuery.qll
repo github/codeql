@@ -38,14 +38,10 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
 }
 
 /** A source of remote user input. */
-class RemoteSource extends Source {
-  RemoteSource() { this instanceof RemoteFlowSource }
-}
+class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /** A source of local user input. */
-class LocalSource extends Source {
-  LocalSource() { this instanceof LocalFlowSource }
-}
+class LocalSource extends Source instanceof LocalFlowSource { }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 

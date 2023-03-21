@@ -20,7 +20,7 @@ module PosixSpawn {
   /**
    * A call to `POSIX::Spawn::Child.new` or `POSIX::Spawn::Child.build`.
    */
-  class ChildCall extends SystemCommandExecution::Range, DataFlow::CallNode {
+  class ChildCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
     ChildCall() {
       this =
         [
@@ -30,7 +30,7 @@ module PosixSpawn {
     }
 
     override DataFlow::Node getAnArgument() {
-      result = this.getArgument(_) and not result.asExpr() instanceof ExprNodes::PairCfgNode
+      result = super.getArgument(_) and not result.asExpr() instanceof ExprNodes::PairCfgNode
     }
 
     override predicate isShellInterpreted(DataFlow::Node arg) { none() }
@@ -39,7 +39,7 @@ module PosixSpawn {
   /**
    * A call to `POSIX::Spawn.spawn` or a related method.
    */
-  class SystemCall extends SystemCommandExecution::Range, DataFlow::CallNode {
+  class SystemCall extends SystemCommandExecution::Range instanceof DataFlow::CallNode {
     SystemCall() {
       this =
         posixSpawnModule()
@@ -71,7 +71,7 @@ module PosixSpawn {
     }
 
     private predicate argument(DataFlow::Node arg) {
-      arg = this.getArgument(_) and
+      arg = super.getArgument(_) and
       not arg.asExpr() instanceof ExprNodes::HashLiteralCfgNode and
       not arg.asExpr() instanceof ExprNodes::ArrayLiteralCfgNode and
       not arg.asExpr() instanceof ExprNodes::PairCfgNode

@@ -28,37 +28,6 @@ class IntentRedirectionAdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
 }
 
-private class DefaultIntentRedirectionSinkModel extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "android.app;Activity;true;bindService;;;Argument[0];intent-start;manual",
-        "android.app;Activity;true;bindServiceAsUser;;;Argument[0];intent-start;manual",
-        "android.app;Activity;true;startActivityAsCaller;;;Argument[0];intent-start;manual",
-        "android.app;Activity;true;startActivityForResult;(Intent,int);;Argument[0];intent-start;manual",
-        "android.app;Activity;true;startActivityForResult;(Intent,int,Bundle);;Argument[0];intent-start;manual",
-        "android.app;Activity;true;startActivityForResult;(String,Intent,int,Bundle);;Argument[1];intent-start;manual",
-        "android.app;Activity;true;startActivityForResultAsUser;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;startActivities;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;startActivity;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;startActivityAsUser;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;startActivityFromChild;;;Argument[1];intent-start;manual",
-        "android.content;Context;true;startActivityFromFragment;;;Argument[1];intent-start;manual",
-        "android.content;Context;true;startActivityIfNeeded;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;startForegroundService;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;startService;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;startServiceAsUser;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;sendBroadcast;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;sendBroadcastAsUser;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;sendBroadcastWithMultiplePermissions;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;sendStickyBroadcast;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;sendStickyBroadcastAsUser;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;sendStickyOrderedBroadcast;;;Argument[0];intent-start;manual",
-        "android.content;Context;true;sendStickyOrderedBroadcastAsUser;;;Argument[0];intent-start;manual"
-      ]
-  }
-}
-
 /** Default sink for Intent redirection vulnerabilities. */
 private class DefaultIntentRedirectionSink extends IntentRedirectionSink {
   DefaultIntentRedirectionSink() { sinkNode(this, "intent-start") }

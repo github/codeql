@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["github.com/nonexistent/test", "", False, "FunctionWithParameter", "", "", "Argument[0]", "ReturnValue", "value", "manual"]
+      - ["github.com/nonexistent/test", "", False, "FunctionWithSliceParameter", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"]
+      - ["github.com/nonexistent/test", "", False, "FunctionWithVarArgsParameter", "", "", "Argument[0].ArrayElement", "ReturnValue", "value", "manual"]
+      - ["github.com/nonexistent/test", "", False, "FunctionWithSliceOfStructsParameter", "", "", "Argument[0].ArrayElement.Field[github.com/nonexistent/test.A.Field]", "ReturnValue", "value", "manual"]
+      - ["github.com/nonexistent/test", "", False, "FunctionWithVarArgsOfStructsParameter", "", "", "Argument[0].ArrayElement.Field[github.com/nonexistent/test.A.Field]", "ReturnValue", "value", "manual"]

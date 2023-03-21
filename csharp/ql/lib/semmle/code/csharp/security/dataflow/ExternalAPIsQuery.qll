@@ -4,6 +4,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.commons.QualifiedName
 private import semmle.code.csharp.dataflow.flowsources.Remote
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.dataflow.FlowSummary
@@ -16,8 +17,7 @@ abstract class SafeExternalApiCallable extends Callable { }
 /** DEPRECATED: Alias for SafeExternalApiCallable */
 deprecated class SafeExternalAPICallable = SafeExternalApiCallable;
 
-private class SummarizedCallableSafe extends SafeExternalApiCallable {
-  SummarizedCallableSafe() { this instanceof SummarizedCallable }
+private class SummarizedCallableSafe extends SafeExternalApiCallable instanceof SummarizedCallable {
 }
 
 /** The default set of "safe" external APIs. */
@@ -70,8 +70,21 @@ class ExternalApiDataNode extends DataFlow::Node {
   /** Gets the index which is passed untrusted data (where -1 indicates the qualifier). */
   int getIndex() { result = i }
 
-  /** Gets the description of the callable being called. */
-  string getCallableDescription() { result = this.getCallable().getQualifiedName() }
+  /** Holds if the callable being use has name `name` and has qualifier `qualifier`. */
+  predicate hasQualifiedName(string qualifier, string name) {
+    this.getCallable().hasQualifiedName(qualifier, name)
+  }
+
+  /**
+   * DEPRECATED: Use hasQualifiedName/2 instead.
+   *
+   * Gets the description of the callable being called.
+   */
+  deprecated string getCallableDescription() {
+    exists(string qualifier, string name |
+      this.hasQualifiedName(qualifier, name) and result = getQualifiedName(qualifier, name)
+    )
+  }
 }
 
 /** DEPRECATED: Alias for ExternalApiDataNode */

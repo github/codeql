@@ -1,3 +1,7 @@
+/**
+ * Provides models for the `URLSession` Swift class.
+ */
+
 private import codeql.swift.dataflow.ExternalFlow
 
 private class UrlSessionSummaries extends SummaryModelCsv {

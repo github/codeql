@@ -76,7 +76,7 @@ class BadDynamicOperatorCall extends BadDynamicCall, DynamicOperatorCall {
     exists(int i |
       pt = possibleBadTypeForRelevantSource(v, i, pts) and
       not pt.containsTypeParameters() and
-      not exists(Operator o, Type paramType | paramType = getADynamicParameterType(o, i) |
+      not exists(Type paramType | paramType = getADynamicParameterType(_, i) |
         pt.isImplicitlyConvertibleTo(paramType)
         or
         // If either the argument type or the parameter type contains type parameters,

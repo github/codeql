@@ -19,6 +19,10 @@
 | ConstantIfCondition.cs:11:17:11:29 | ... == ... | Condition always evaluates to 'true'. |
 | ConstantIfCondition.cs:14:17:14:21 | false | Condition always evaluates to 'false'. |
 | ConstantIfCondition.cs:17:17:17:26 | ... == ... | Condition always evaluates to 'true'. |
+| ConstantIsNullOrEmpty.cs:10:21:10:54 | call to method IsNullOrEmpty | Condition always evaluates to 'false'. |
+| ConstantIsNullOrEmpty.cs:46:21:46:46 | call to method IsNullOrEmpty | Condition always evaluates to 'true'. |
+| ConstantIsNullOrEmpty.cs:50:21:50:44 | call to method IsNullOrEmpty | Condition always evaluates to 'true'. |
+| ConstantIsNullOrEmpty.cs:54:21:54:45 | call to method IsNullOrEmpty | Condition always evaluates to 'false'. |
 | ConstantNullCoalescingLeftHandOperand.cs:11:24:11:34 | access to constant NULL_OBJECT | Expression is never 'null'. |
 | ConstantNullCoalescingLeftHandOperand.cs:12:24:12:27 | null | Expression is always 'null'. |
 | ConstantWhileCondition.cs:12:20:12:32 | ... == ... | Condition always evaluates to 'true'. |

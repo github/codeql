@@ -6,5 +6,6 @@
 import csharp
 
 module DataFlow {
-  import semmle.code.csharp.dataflow.internal.DataFlowImpl
+  import semmle.code.csharp.dataflow.internal.DataFlow
+  import semmle.code.csharp.dataflow.internal.DataFlowImpl1
 }

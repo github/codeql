@@ -170,6 +170,24 @@ module ConstantValue {
 
   /** A constant `nil` value. */
   class ConstantNilValue extends ConstantValue, TNil { }
+
+  /** Gets the integer constant `x`. */
+  ConstantValue fromInt(int x) { result.getInt() = x }
+
+  /** Gets the float constant `x`. */
+  ConstantValue fromFloat(float x) { result.getFloat() = x }
+
+  /** Gets the string constant `x`. */
+  ConstantValue fromString(string x) { result.getString() = x }
+
+  /** Gets the symbol constant `x`. */
+  ConstantValue fromSymbol(string x) { result.getSymbol() = x }
+
+  /** Gets the regexp constant `x`. */
+  ConstantValue fromRegExp(string x) { result.getRegExp() = x }
+
+  /** Gets the string, symbol, or regexp constant `x`. */
+  ConstantValue fromStringlikeValue(string x) { result.getStringlikeValue() = x }
 }
 
 /** An access to a constant. */
@@ -380,12 +398,6 @@ class ConstantWriteAccess extends ConstantAccess {
    * constant can be ambiguous from just statically looking at the AST.
    */
   string getAQualifiedName() { result = resolveConstantWrite(this) }
-
-  /**
-   * Gets a qualified name for this constant. Deprecated in favor of
-   * `getAQualifiedName` because this can return more than one value
-   */
-  deprecated string getQualifiedName() { result = this.getAQualifiedName() }
 }
 
 /**

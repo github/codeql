@@ -5,6 +5,11 @@ import codeql.swift.elements.expr.ApplyExpr
 import codeql.swift.elements.expr.Expr
 
 module Generated {
+  /**
+   * INTERNAL: Do not use.
+   * An internal raw instance of method lookups like `x.foo` in `x.foo()`.
+   * This is completely replaced by the synthesized type `MethodLookupExpr`.
+   */
   class SelfApplyExpr extends Synth::TSelfApplyExpr, ApplyExpr {
     /**
      * Gets the base of this self apply expression.

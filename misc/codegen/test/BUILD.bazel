@@ -1,0 +1,28 @@
+load("@codegen_deps//:requirements.bzl", "requirement")
+
+py_library(
+    name = "utils",
+    testonly = True,
+    srcs = ["utils.py"],
+    deps = [
+        "//misc/codegen/lib",
+        requirement("pytest"),
+    ],
+)
+
+[
+    py_test(
+        name = src[:-len(".py")],
+        size = "small",
+        srcs = [src],
+        deps = [
+            ":utils",
+            "//misc/codegen/generators",
+        ],
+    )
+    for src in glob(["test_*.py"])
+]
+
+test_suite(
+    name = "test",
+)

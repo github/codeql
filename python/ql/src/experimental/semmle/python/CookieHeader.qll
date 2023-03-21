@@ -28,7 +28,6 @@ import experimental.semmle.python.Concepts
  */
 class CookieHeader extends Cookie::Range instanceof HeaderDeclaration {
   CookieHeader() {
-    this instanceof HeaderDeclaration and
     exists(StrConst str |
       str.getText() = "Set-Cookie" and
       DataFlow::exprNode(str)

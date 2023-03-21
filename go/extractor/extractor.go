@@ -22,6 +22,7 @@ import (
 	"time"
 
 	"github.com/github/codeql-go/extractor/dbscheme"
+	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/srcarchive"
 	"github.com/github/codeql-go/extractor/trap"
 	"github.com/github/codeql-go/extractor/util"
@@ -97,18 +98,35 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 	if len(pkgs) == 0 {
 		log.Println("No packages found.")
+
+		wd, err := os.Getwd()
+		if err != nil {
+			log.Printf("Warning: failed to get working directory: %s\n", err.Error())
+		} else if util.FindGoFiles(wd) {
+			diagnostics.EmitGoFilesFoundButNotProcessed()
+		}
 	}
 
 	log.Println("Extracting universe scope.")
 	extractUniverseScope()
 	log.Println("Done extracting universe scope.")
 
-	// a map of package path to package root directory (currently the module root or the source directory)
-	pkgRoots := make(map[string]string)
-	// a map of package path to source code directory
-	pkgDirs := make(map[string]string)
+	// a map of package path to source directory and module root directory
+	pkgInfos := make(map[string]util.PkgInfo)
 	// root directories of packages that we want to extract
 	wantedRoots := make(map[string]bool)
+
+	if os.Getenv("CODEQL_EXTRACTOR_GO_FAST_PACKAGE_INFO") != "" {
+		log.Printf("Running go list to resolve package and module directories.")
+		// get all packages information
+		pkgInfos, err = util.GetPkgsInfo(patterns, true, modFlags...)
+		if err != nil {
+			log.Fatalf("Error getting dependency package or module directories: %v.", err)
+		}
+		log.Printf("Done running go list deps: resolved %d packages.", len(pkgInfos))
+	}
+
+	pkgsNotFound := make([]string, 0, len(pkgs))
 
 	// Do a post-order traversal and extract the package scope of each package
 	packages.Visit(pkgs, func(pkg *packages.Package) bool {
@@ -116,16 +134,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 	}, func(pkg *packages.Package) {
 		log.Printf("Processing package %s.", pkg.PkgPath)
 
-		if _, ok := pkgRoots[pkg.PkgPath]; !ok {
-			mdir := util.GetModDir(pkg.PkgPath, modFlags...)
-			pdir := util.GetPkgDir(pkg.PkgPath, modFlags...)
-			// GetModDir returns the empty string if the module directory cannot be determined, e.g. if the package
-			// is not using modules. If this is the case, fall back to the package directory
-			if mdir == "" {
-				mdir = pdir
-			}
-			pkgRoots[pkg.PkgPath] = mdir
-			pkgDirs[pkg.PkgPath] = pdir
+		if _, ok := pkgInfos[pkg.PkgPath]; !ok {
+			pkgInfos[pkg.PkgPath] = util.GetPkgInfo(pkg.PkgPath, modFlags...)
 		}
 
 		log.Printf("Extracting types for package %s.", pkg.PkgPath)
@@ -144,19 +154,36 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		if len(pkg.Errors) != 0 {
 			log.Printf("Warning: encountered errors extracting package `%s`:", pkg.PkgPath)
 			for i, err := range pkg.Errors {
-				log.Printf("  %s", err.Error())
+				errString := err.Error()
+				log.Printf("  %s", errString)
+
+				if strings.Contains(errString, "build constraints exclude all Go files in ") {
+					// `err` is a NoGoError from the package cmd/go/internal/load, which we cannot access as it is internal
+					diagnostics.EmitPackageDifferentOSArchitecture(pkg.PkgPath)
+				} else if strings.Contains(errString, "cannot find package") ||
+					strings.Contains(errString, "no required module provides package") {
+					pkgsNotFound = append(pkgsNotFound, pkg.PkgPath)
+				}
 				extraction.extractError(tw, err, lbl, i)
 			}
 		}
+
 		log.Printf("Done extracting types for package %s.", pkg.PkgPath)
 	})
 
+	if len(pkgsNotFound) > 0 {
+		diagnostics.EmitCannotFindPackages(pkgsNotFound)
+	}
+
 	for _, pkg := range pkgs {
-		if pkgRoots[pkg.PkgPath] == "" {
+		pkgInfo, ok := pkgInfos[pkg.PkgPath]
+		if !ok || pkgInfo.PkgDir == "" {
 			log.Fatalf("Unable to get a source directory for input package %s.", pkg.PkgPath)
 		}
-		wantedRoots[pkgRoots[pkg.PkgPath]] = true
-		wantedRoots[pkgDirs[pkg.PkgPath]] = true
+		wantedRoots[pkgInfo.PkgDir] = true
+		if pkgInfo.ModDir != "" {
+			wantedRoots[pkgInfo.ModDir] = true
+		}
 	}
 
 	log.Println("Done processing dependencies.")
@@ -174,7 +201,8 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 		return true
 	}, func(pkg *packages.Package) {
 		for root, _ := range wantedRoots {
-			relDir, err := filepath.Rel(root, pkgDirs[pkg.PkgPath])
+			pkgInfo := pkgInfos[pkg.PkgPath]
+			relDir, err := filepath.Rel(root, pkgInfo.PkgDir)
 			if err != nil || noExtractRe.MatchString(relDir) {
 				// if the path can't be made relative or matches the noExtract regexp skip it
 				continue
@@ -182,8 +210,12 @@ func ExtractWithFlags(buildFlags []string, patterns []string) error {
 
 			extraction.extractPackage(pkg)
 
-			if pkgRoots[pkg.PkgPath] != "" {
-				modPath := filepath.Join(pkgRoots[pkg.PkgPath], "go.mod")
+			modDir := pkgInfo.ModDir
+			if modDir == "" {
+				modDir = pkgInfo.PkgDir
+			}
+			if modDir != "" {
+				modPath := filepath.Join(modDir, "go.mod")
 				if util.FileExists(modPath) {
 					log.Printf("Extracting %s", modPath)
 					start := time.Now()

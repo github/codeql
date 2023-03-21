@@ -19,7 +19,37 @@ class Foo
     @foo = taint("7")
     sink(@foo) # $ hasValueFlow=7
 
+    def initialize(field = nil)
+        @field = field
+        taint(31)
+    end
+
+    def call_initialize(field)
+        initialize(field)
+    end
+
+    def self.bar x
+        new(taint(36))
+        new(x)
+    end
+
+    sink(new(taint(34)).get_field) # $ hasValueFlow=34
 end
+
+sink(Foo.bar(taint(35)).get_field) # $ hasValueFlow=35
+
+class Bar < Foo
+    def self.new arg
+        taint(32)
+    end
+end
+
+class Baz < Foo
+    def initialize x
+        sink x # $ hasValueFlow=36
+    end
+end
+
 foo = Foo.new
 foo.set_field(taint(42))
 sink(foo.get_field) # $ hasValueFlow=42
@@ -82,3 +112,12 @@ foo13 = Foo.new
 foo14 = Foo.new
 set_field_on(foo14 = foo13)
 sink(foo13.get_field) # $ hasValueFlow=28
+
+foo15 = Foo.new(taint(29))
+sink(foo15.get_field) # $ hasValueFlow=29
+foo16 = Foo.new
+sink(foo16.call_initialize(taint(30))) # $ hasValueFlow=31
+sink(foo16.get_field) # $ hasValueFlow=30
+bar = Bar.new(taint(33))
+sink(bar) # $ hasValueFlow=32
+sink(bar.get_field)

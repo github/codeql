@@ -5,3 +5,18 @@
 | var_decls.swift:20:7:20:7 | wrappedValue | var_decls.swift:20:7:20:21 | ... as ... |
 | var_decls.swift:24:15:24:15 | _wrapped | var_decls.swift:24:15:24:15 | ... as ... |
 | var_decls.swift:24:15:24:15 | wrapped | var_decls.swift:24:15:24:25 | ... as ... |
+| var_decls.swift:28:7:28:7 | wrappedValue | var_decls.swift:28:7:28:22 | ... as ... |
+| var_decls.swift:34:7:34:7 | wrappedValue | var_decls.swift:34:7:34:22 | ... as ... |
+| var_decls.swift:35:7:35:7 | projectedValue | var_decls.swift:35:7:35:24 | ... as ... |
+| var_decls.swift:39:7:39:7 | wrappedValue | var_decls.swift:39:7:39:22 | ... as ... |
+| var_decls.swift:40:7:40:7 | projectedValue | var_decls.swift:40:7:40:24 | ... as ... |
+| var_decls.swift:54:10:54:10 | _w1 | var_decls.swift:54:10:54:10 | ... as ... |
+| var_decls.swift:54:10:54:10 | w1 | var_decls.swift:54:10:54:10 | w1 |
+| var_decls.swift:55:24:55:24 | _w2 | var_decls.swift:55:24:55:24 | ... as ... |
+| var_decls.swift:55:24:55:24 | w2 | var_decls.swift:55:24:55:24 | w2 |
+| var_decls.swift:56:29:56:29 | $w3 | var_decls.swift:56:29:56:29 | ... as ... |
+| var_decls.swift:56:29:56:29 | _w3 | var_decls.swift:56:29:56:29 | ... as ... |
+| var_decls.swift:56:29:56:29 | w3 | var_decls.swift:56:29:56:29 | w3 |
+| var_decls.swift:57:36:57:36 | $w4 | var_decls.swift:57:36:57:36 | ... as ... |
+| var_decls.swift:57:36:57:36 | _w4 | var_decls.swift:57:36:57:36 | ... as ... |
+| var_decls.swift:57:36:57:36 | w4 | var_decls.swift:57:36:57:36 | w4 |

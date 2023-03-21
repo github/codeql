@@ -384,3 +384,85 @@ module TS48 {
 
     let [a, b, c] = chooseRandomly([42, true, "hi!"], [0, false, "bye!"]);    
 }
+
+/////////////////
+
+module TS49 {
+  type Colors = "red" | "green" | "blue";
+
+  type RGB = [red: number, green: number, blue: number];
+
+  const palette = {
+    red: [255, 0, 0],
+    green: "#00ff00",
+    bleu: [0, 0, 255],
+  } satisfies Record<Colors, string | RGB>;
+
+  // Both of these methods are still accessible!
+  const redComponent = palette.red.at(0);
+
+  interface RGBObj {
+    red: number;
+  }
+
+  interface HSVObj {
+    hue: number;
+  }
+
+  function setColor(color: RGBObj | HSVObj) {
+    if ("hue" in color) {
+      let h = color; // <- HSVObj
+    }
+  }
+
+  // auto-accessors
+  class Person {
+    accessor name: string; // behaves as a normal field for our purposes
+
+    constructor(name: string) {
+      this.name = name;
+    }
+  }
+}
+
+/////////////////
+
+module TS50 {
+    function loggedMethod<This, Args extends any[], Return>(
+        target: (this: This, ...args: Args) => Return,
+        context: ClassMethodDecoratorContext<This, (this: This, ...args: Args) => Return>
+    ) {
+        const methodName = String(context.name);
+    
+        function replacementMethod(this: This, ...args: Args): Return {
+            console.log(`LOG: Entering method '${methodName}'.`)
+            const result = target.call(this, ...args);
+            console.log(`LOG: Exiting method '${methodName}'.`)
+            return result;
+        }
+    
+        return replacementMethod;
+    }
+
+    class Person {
+        name: string;
+        constructor(name: string) {
+            this.name = name;
+        }
+    
+        @loggedMethod("")
+        greet() {
+            console.log(`Hello, my name is ${this.name}.`);
+            return 2;
+        }
+    }
+
+    const p = new Person("John").greet(); // <- number, part of well-typed decorators in TS 5.0.
+
+    declare function myConstIdFunction<const T extends readonly string[]>(args: T): T;
+
+    // foo is readonly ["a", "b", "c"]
+    const foo = myConstIdFunction(["a", "b" ,"c"]);
+    
+    const b = foo[1]; // <- "b"
+}

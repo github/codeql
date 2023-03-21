@@ -9,7 +9,8 @@ private string packagePath() { result = package("github.com/json-iterator/go", "
 
 /** A model of json-iterator's `Unmarshal` function, propagating taint from the JSON input to the decoded object. */
 private class JsonIteratorUnmarshalFunction extends TaintTracking::FunctionModel,
-  UnmarshalingFunction::Range {
+  UnmarshalingFunction::Range
+{
   JsonIteratorUnmarshalFunction() {
     this.hasQualifiedName(packagePath(), ["Unmarshal", "UnmarshalFromString"])
     or

@@ -5,7 +5,7 @@ import csharp
 private class WaitCall extends MethodCall {
   WaitCall() {
     this.getTarget().hasName("Wait") and
-    this.getTarget().getDeclaringType().hasQualifiedName("System.Threading.Monitor")
+    this.getTarget().getDeclaringType().hasQualifiedName("System.Threading", "Monitor")
   }
 
   Expr getExpr() { result = this.getArgument(0) }
@@ -30,12 +30,12 @@ class WaitStmt extends ExprStmt {
 
 private class SynchronizedMethodAttribute extends Attribute {
   SynchronizedMethodAttribute() {
-    this.getType().hasQualifiedName("System.Runtime.CompilerServices.MethodImplAttribute") and
+    this.getType().hasQualifiedName("System.Runtime.CompilerServices", "MethodImplAttribute") and
     exists(MemberConstantAccess a, MemberConstant mc |
       a = this.getArgument(0) and
       a.getTarget() = mc and
       mc.hasName("Synchronized") and
-      mc.getDeclaringType().hasQualifiedName("System.Runtime.CompilerServices.MethodImplOptions")
+      mc.getDeclaringType().hasQualifiedName("System.Runtime.CompilerServices", "MethodImplOptions")
     )
   }
 }
