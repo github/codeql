@@ -1,7 +1,7 @@
 package,sink,source,summary,sink:bean-validation,sink:create-file,sink:fragment-injection,sink:groovy,sink:header-splitting,sink:information-leak,sink:intent-start,sink:jdbc-url,sink:jexl,sink:jndi-injection,sink:ldap,sink:logging,sink:mvel,sink:ognl-injection,sink:open-url,sink:pending-intent-sent,sink:read-file,sink:regex-use,sink:regex-use[-1],sink:regex-use[0],sink:regex-use[],sink:regex-use[f-1],sink:regex-use[f1],sink:regex-use[f],sink:set-hostname-verifier,sink:sql,sink:ssti,sink:url-open-stream,sink:url-redirect,sink:write-file,sink:xpath,sink:xslt,sink:xss,source:android-external-storage-dir,source:android-widget,source:contentprovider,source:remote,summary:taint,summary:value
 android.app,35,,103,,,11,,,,7,,,,,,,,,17,,,,,,,,,,,,,,,,,,,,,,18,85
 android.content,24,31,154,,,,,,,16,,,,,,,,,,,,,,,,,,,8,,,,,,,,4,,27,,63,91
-android.database,59,,39,,,,,,,,,,,,,,,,,,,,,,,,,,59,,,,,,,,,,,,39,
+android.database,59,,41,,,,,,,,,,,,,,,,,,,,,,,,,,59,,,,,,,,,,,,41,
 android.net,,,60,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,45,15
 android.os,,2,122,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2,,,,41,81
 android.support.v4.app,11,,,,,11,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -16,7 +16,7 @@ com.esotericsoftware.kryo.io,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,
 com.esotericsoftware.kryo5.io,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,
 com.fasterxml.jackson.core,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,
 com.fasterxml.jackson.databind,,,6,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,6,
-com.google.common.base,4,,85,,,,,,,,,,,,,,,,,,,,3,1,,,,,,,,,,,,,,,,,62,23
+com.google.common.base,4,,87,,,,,,,,,,,,,,,,,,,,3,1,,,,,,,,,,,,,,,,,63,24
 com.google.common.cache,,,17,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,17
 com.google.common.collect,,,553,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2,551
 com.google.common.flogger,29,,,,,,,,,,,,,,29,,,,,,,,,,,,,,,,,,,,,,,,,,,
@@ -33,8 +33,17 @@ freemarker.cache,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,,,,,,,,,,,,
 freemarker.template,7,,,,,,,,,,,,,,,,,,,,,,,,,,,,,7,,,,,,,,,,,,
 groovy.lang,26,,,,,,26,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 groovy.util,5,,,,,,5,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+hudson.model,4,,1,,2,,,,,,,,,,,,,1,,1,,,,,,,,,,,,,,,,,,,,,1,
+hudson.os,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,
 hudson.remoting,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,
+hudson.util,4,,1,,3,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,,,,,,,,1,
+io.netty.bootstrap,3,,,,,,,,,,,,,,,,,3,,,,,,,,,,,,,,,,,,,,,,,,
+io.netty.channel,9,,,,,,,,,,,,,,,,,9,,,,,,,,,,,,,,,,,,,,,,,,
+io.netty.handler.codec.http,3,,1,,,,,,,,,,,,,,,2,,1,,,,,,,,,,,,,,,,,,,,,1,
+io.netty.handler.ssl,2,,,,,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,,,,,,,,,
+io.netty.handler.stream,1,,,,,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,,,,,,,,,
 io.netty.resolver,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,
+io.netty.util.internal,2,,2,,1,,,,,,,,,,,,,1,,,,,,,,,,,,,,,,,,,,,,,2,
 jakarta.faces.context,2,7,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,2,,,,7,,
 jakarta.json,,,123,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,100,23
 jakarta.ws.rs.client,1,,,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,,,,,,,,,,,
@@ -44,7 +53,7 @@ java.beans,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,
 java.io,42,,40,,17,,,,,,,,,,,,,,,3,,,,,,,,,,,,,22,,,,,,,,39,1
 java.lang,16,,76,,,,,,,,,,,,8,,,,,3,,4,,,1,,,,,,,,,,,,,,,,53,23
 java.net,12,3,16,,,,,,,,,,,,,,,12,,,,,,,,,,,,,,,,,,,,,,3,16,
-java.nio,20,,15,,15,,,,,,,,,,,,,,,3,,,,,,,,,,,,,2,,,,,,,,15,
+java.nio,20,,16,,15,,,,,,,,,,,,,,,3,,,,,,,,,,,,,2,,,,,,,,16,
 java.sql,13,,2,,,,,,,,4,,,,,,,,,,,,,,,,,,9,,,,,,,,,,,,1,1
 java.util,44,,465,,,,,,,,,,,,34,,,,,,,,5,2,,1,2,,,,,,,,,,,,,,38,427
 javafx.scene.web,1,,,,,,,,,,,,,,,,,1,,,,,,,,,,,,,,,,,,,,,,,,
@@ -114,7 +123,7 @@ org.springframework.boot.jdbc,1,,,,,,,,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 org.springframework.cache,,,13,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,13
 org.springframework.context,,,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,3,
 org.springframework.data.repository,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1
-org.springframework.http,14,,70,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,,,,,,,,,,60,10
+org.springframework.http,14,,71,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,,,,,,,,,,61,10
 org.springframework.jdbc.core,10,,,,,,,,,,,,,,,,,,,,,,,,,,,,10,,,,,,,,,,,,,
 org.springframework.jdbc.datasource,4,,,,,,,,,,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 org.springframework.jdbc.object,9,,,,,,,,,,,,,,,,,,,,,,,,,,,,9,,,,,,,,,,,,,
@@ -128,7 +137,7 @@ org.springframework.web.client,13,3,,,,,,,,,,,,,,,,13,,,,,,,,,,,,,,,,,,,,,,3,,
 org.springframework.web.context.request,,8,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,8,,
 org.springframework.web.multipart,,12,13,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,12,13,
 org.springframework.web.reactive.function.client,2,,,,,,,,,,,,,,,,,2,,,,,,,,,,,,,,,,,,,,,,,,
-org.springframework.web.util,,,163,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,138,25
+org.springframework.web.util,,,165,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,140,25
 org.thymeleaf,2,,2,,,,,,,,,,,,,,,,,,,,,,,,,,,2,,,,,,,,,,,2,
 org.xml.sax,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1,
 org.xmlpull.v1,,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,3,,
