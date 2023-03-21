@@ -20,7 +20,8 @@ TranslatedMicrosoftTryExceptHandler getTranslatedMicrosoftTryExceptHandler(
 }
 
 class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
-  TTranslatedMicrosoftTryExceptHandler {
+  TTranslatedMicrosoftTryExceptHandler
+{
   MicrosoftTryExceptStmt tryExcept;
 
   TranslatedMicrosoftTryExceptHandler() { this = TTranslatedMicrosoftTryExceptHandler(tryExcept) }

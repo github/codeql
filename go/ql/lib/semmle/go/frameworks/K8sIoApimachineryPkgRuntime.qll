@@ -85,7 +85,8 @@ module K8sIoApimachineryPkgRuntime {
   }
 
   private class CacheableObjectCacheEncode extends TaintTracking::FunctionModel, Method,
-    MarshalingFunction::Range {
+    MarshalingFunction::Range
+  {
     CacheableObjectCacheEncode() {
       this.implements(packagePath(), "CacheableObject", "CacheEncode")
     }
@@ -113,7 +114,8 @@ module K8sIoApimachineryPkgRuntime {
   }
 
   private class DecoderDecode extends TaintTracking::FunctionModel, Method,
-    UnmarshalingFunction::Range {
+    UnmarshalingFunction::Range
+  {
     DecoderDecode() {
       this.implements(packagePath(), "Decoder", "Decode") or
       this.hasQualifiedName(packagePath(), "WithoutVersionDecoder", "Decode")
@@ -134,7 +136,8 @@ module K8sIoApimachineryPkgRuntime {
   }
 
   private class EncoderEncode extends TaintTracking::FunctionModel, Method,
-    MarshalingFunction::Range {
+    MarshalingFunction::Range
+  {
     EncoderEncode() {
       this.implements(packagePath(), "Encoder", "Encode") or
       this.hasQualifiedName(packagePath(), "WithVersionEncoder", "Encode")
@@ -240,7 +243,8 @@ module K8sIoApimachineryPkgRuntime {
   }
 
   private class ParameterCodecDecodeParameters extends TaintTracking::FunctionModel, Method,
-    UnmarshalingFunction::Range {
+    UnmarshalingFunction::Range
+  {
     ParameterCodecDecodeParameters() {
       this.implements(packagePath(), "ParameterCodec", "DecodeParameters")
     }
@@ -260,7 +264,8 @@ module K8sIoApimachineryPkgRuntime {
   }
 
   private class ParameterCodecEncodeParameters extends TaintTracking::FunctionModel, Method,
-    MarshalingFunction::Range {
+    MarshalingFunction::Range
+  {
     ParameterCodecEncodeParameters() {
       this.implements(packagePath(), "ParameterCodec", "EncodeParameters")
     }
@@ -280,7 +285,8 @@ module K8sIoApimachineryPkgRuntime {
   }
 
   private class ProtobufMarshallerMarshalTo extends TaintTracking::FunctionModel, Method,
-    MarshalingFunction::Range {
+    MarshalingFunction::Range
+  {
     ProtobufMarshallerMarshalTo() {
       this.implements(packagePath(), "ProtobufMarshaller", "MarshalTo") or
       this.implements(packagePath(), "ProtobufReverseMarshaller", "MarshalToSizedBuffer")
@@ -316,7 +322,8 @@ module K8sIoApimachineryPkgRuntime {
   }
 
   private class RawExtensionMarshal extends TaintTracking::FunctionModel, Method,
-    MarshalingFunction::Range {
+    MarshalingFunction::Range
+  {
     RawExtensionMarshal() { this.hasQualifiedName(packagePath(), "RawExtension", "Marshal") }
 
     override DataFlow::FunctionInput getAnInput() { result.isReceiver() }
@@ -331,7 +338,8 @@ module K8sIoApimachineryPkgRuntime {
   }
 
   private class RawExtensionUnmarshal extends TaintTracking::FunctionModel, Method,
-    UnmarshalingFunction::Range {
+    UnmarshalingFunction::Range
+  {
     RawExtensionUnmarshal() { this.hasQualifiedName(packagePath(), "RawExtension", "Unmarshal") }
 
     override DataFlow::FunctionInput getAnInput() { result.isReceiver() }
@@ -364,7 +372,8 @@ module K8sIoApimachineryPkgRuntime {
   }
 
   private class UnknownMarshal extends TaintTracking::FunctionModel, Method,
-    MarshalingFunction::Range {
+    MarshalingFunction::Range
+  {
     string methodName;
 
     UnknownMarshal() {
@@ -388,7 +397,8 @@ module K8sIoApimachineryPkgRuntime {
   }
 
   private class UnknownUnmarshal extends TaintTracking::FunctionModel, Method,
-    UnmarshalingFunction::Range {
+    UnmarshalingFunction::Range
+  {
     UnknownUnmarshal() { this.hasQualifiedName(packagePath(), "Unknown", "Unmarshal") }
 
     override DataFlow::FunctionInput getAnInput() { result.isReceiver() }

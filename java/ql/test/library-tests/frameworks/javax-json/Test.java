@@ -238,14 +238,14 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArray;false;getBoolean;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonArray;false;getBoolean;;;Argument[this];ReturnValue;taint;manual"
 			boolean out = false;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
 			out = in.getBoolean(0, false);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArray;false;getBoolean;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonArray;false;getBoolean;;;Argument[this];ReturnValue;taint;manual"
 			boolean out = false;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
 			out = in.getBoolean(0);
@@ -260,14 +260,14 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArray;false;getInt;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonArray;false;getInt;;;Argument[this];ReturnValue;taint;manual"
 			int out = 0;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
 			out = in.getInt(0, 0);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArray;false;getInt;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonArray;false;getInt;;;Argument[this];ReturnValue;taint;manual"
 			int out = 0;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
 			out = in.getInt(0);
@@ -282,42 +282,42 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArray;false;getJsonArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonArray;false;getJsonArray;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonArray out = null;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
 			out = in.getJsonArray(0);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArray;false;getJsonNumber;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonArray;false;getJsonNumber;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonNumber out = null;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
 			out = in.getJsonNumber(0);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArray;false;getJsonObject;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonArray;false;getJsonObject;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonObject out = null;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
 			out = in.getJsonObject(0);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArray;false;getJsonString;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonArray;false;getJsonString;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonString out = null;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
 			out = in.getJsonString(0);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArray;false;getString;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonArray;false;getString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
 			out = in.getString(0, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArray;false;getString;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonArray;false;getString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
 			out = in.getString(0);
@@ -332,490 +332,490 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArray;false;getValuesAs;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonArray;false;getValuesAs;;;Argument[this];ReturnValue;taint;manual"
 			List out = null;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
 			out = in.getValuesAs((Function)null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArray;false;getValuesAs;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonArray;false;getValuesAs;;;Argument[this];ReturnValue;taint;manual"
 			List out = null;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
 			out = in.getValuesAs((Class)null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(BigDecimal);;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(BigDecimal);;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			BigDecimal in = (BigDecimal)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(BigInteger);;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(BigInteger);;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			BigInteger in = (BigInteger)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(JsonArrayBuilder);;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(JsonArrayBuilder);;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(JsonObjectBuilder);;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(JsonObjectBuilder);;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(JsonValue);;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(JsonValue);;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonValue in = (jakarta.json.JsonValue)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(String);;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(String);;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			String in = (String)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(boolean);;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(boolean);;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			boolean in = (boolean)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(double);;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(double);;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			double in = (double)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(int);;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(int);;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			int in = (int)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(int,BigDecimal);;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(int,BigDecimal);;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			BigDecimal in = (BigDecimal)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(int,BigInteger);;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(int,BigInteger);;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			BigInteger in = (BigInteger)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(int,JsonArrayBuilder);;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(int,JsonArrayBuilder);;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(int,JsonObjectBuilder);;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(int,JsonObjectBuilder);;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(int,JsonValue);;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(int,JsonValue);;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonValue in = (jakarta.json.JsonValue)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(int,String);;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(int,String);;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			String in = (String)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(int,boolean);;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(int,boolean);;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			boolean in = (boolean)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(int,double);;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(int,double);;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			double in = (double)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(int,int);;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(int,int);;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			int in = (int)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(int,long);;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(int,long);;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			long in = (long)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;(long);;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;(long);;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			long in = (long)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(0L);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(0.0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(0, false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(0, 0L);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(0, 0.0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(0, 0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(0, (jakarta.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(0, (jakarta.json.JsonObjectBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(0, (jakarta.json.JsonArrayBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(0, (String)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(0, (BigInteger)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(0, (BigDecimal)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add(0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add((jakarta.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add((jakarta.json.JsonObjectBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add((jakarta.json.JsonArrayBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add((String)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add((BigInteger)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.add((BigDecimal)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;addAll;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;addAll;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.addAll(null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;addAll;;;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;addAll;;;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out.addAll(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;addNull;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;addNull;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.addNull(0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;addNull;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;addNull;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.addNull();
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;build;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;build;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonArray out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.build();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;remove;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;remove;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.remove(0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.set(0, false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.set(0, 0L);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.set(0, 0.0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.set(0, 0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.set(0, (jakarta.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.set(0, (jakarta.json.JsonObjectBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.set(0, (jakarta.json.JsonArrayBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.set(0, (String)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.set(0, (BigInteger)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.set(0, (BigDecimal)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			long in = (long)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonValue in = (jakarta.json.JsonValue)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			int in = (int)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			double in = (double)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			boolean in = (boolean)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			String in = (String)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			BigInteger in = (BigInteger)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			BigDecimal in = (BigDecimal)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonArrayBuilder;false;setNull;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonArrayBuilder;false;setNull;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonArrayBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out = in.setNull(0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonMergePatch;false;apply;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonMergePatch;false;apply;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonValue out = null;
 			jakarta.json.JsonMergePatch in = (jakarta.json.JsonMergePatch)source();
 			out = in.apply(null);
@@ -830,84 +830,84 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonMergePatch;false;toJsonValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonMergePatch;false;toJsonValue;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonValue out = null;
 			jakarta.json.JsonMergePatch in = (jakarta.json.JsonMergePatch)source();
 			out = in.toJsonValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonNumber;false;bigDecimalValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonNumber;false;bigDecimalValue;;;Argument[this];ReturnValue;taint;manual"
 			BigDecimal out = null;
 			jakarta.json.JsonNumber in = (jakarta.json.JsonNumber)source();
 			out = in.bigDecimalValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonNumber;false;bigIntegerValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonNumber;false;bigIntegerValue;;;Argument[this];ReturnValue;taint;manual"
 			BigInteger out = null;
 			jakarta.json.JsonNumber in = (jakarta.json.JsonNumber)source();
 			out = in.bigIntegerValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonNumber;false;bigIntegerValueExact;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonNumber;false;bigIntegerValueExact;;;Argument[this];ReturnValue;taint;manual"
 			BigInteger out = null;
 			jakarta.json.JsonNumber in = (jakarta.json.JsonNumber)source();
 			out = in.bigIntegerValueExact();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonNumber;false;doubleValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonNumber;false;doubleValue;;;Argument[this];ReturnValue;taint;manual"
 			double out = 0.0;
 			jakarta.json.JsonNumber in = (jakarta.json.JsonNumber)source();
 			out = in.doubleValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonNumber;false;intValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonNumber;false;intValue;;;Argument[this];ReturnValue;taint;manual"
 			int out = 0;
 			jakarta.json.JsonNumber in = (jakarta.json.JsonNumber)source();
 			out = in.intValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonNumber;false;intValueExact;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonNumber;false;intValueExact;;;Argument[this];ReturnValue;taint;manual"
 			int out = 0;
 			jakarta.json.JsonNumber in = (jakarta.json.JsonNumber)source();
 			out = in.intValueExact();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonNumber;false;longValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonNumber;false;longValue;;;Argument[this];ReturnValue;taint;manual"
 			long out = 0L;
 			jakarta.json.JsonNumber in = (jakarta.json.JsonNumber)source();
 			out = in.longValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonNumber;false;longValueExact;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonNumber;false;longValueExact;;;Argument[this];ReturnValue;taint;manual"
 			long out = 0L;
 			jakarta.json.JsonNumber in = (jakarta.json.JsonNumber)source();
 			out = in.longValueExact();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonNumber;false;numberValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonNumber;false;numberValue;;;Argument[this];ReturnValue;taint;manual"
 			Number out = null;
 			jakarta.json.JsonNumber in = (jakarta.json.JsonNumber)source();
 			out = in.numberValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObject;false;getBoolean;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonObject;false;getBoolean;;;Argument[this];ReturnValue;taint;manual"
 			boolean out = false;
 			jakarta.json.JsonObject in = (jakarta.json.JsonObject)source();
 			out = in.getBoolean(null, false);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObject;false;getBoolean;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonObject;false;getBoolean;;;Argument[this];ReturnValue;taint;manual"
 			boolean out = false;
 			jakarta.json.JsonObject in = (jakarta.json.JsonObject)source();
 			out = in.getBoolean(null);
@@ -922,14 +922,14 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObject;false;getInt;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonObject;false;getInt;;;Argument[this];ReturnValue;taint;manual"
 			int out = 0;
 			jakarta.json.JsonObject in = (jakarta.json.JsonObject)source();
 			out = in.getInt(null, 0);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObject;false;getInt;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonObject;false;getInt;;;Argument[this];ReturnValue;taint;manual"
 			int out = 0;
 			jakarta.json.JsonObject in = (jakarta.json.JsonObject)source();
 			out = in.getInt(null);
@@ -944,42 +944,42 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObject;false;getJsonArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonObject;false;getJsonArray;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonArray out = null;
 			jakarta.json.JsonObject in = (jakarta.json.JsonObject)source();
 			out = in.getJsonArray(null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObject;false;getJsonNumber;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonObject;false;getJsonNumber;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonNumber out = null;
 			jakarta.json.JsonObject in = (jakarta.json.JsonObject)source();
 			out = in.getJsonNumber(null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObject;false;getJsonObject;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonObject;false;getJsonObject;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonObject out = null;
 			jakarta.json.JsonObject in = (jakarta.json.JsonObject)source();
 			out = in.getJsonObject(null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObject;false;getJsonString;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonObject;false;getJsonString;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonString out = null;
 			jakarta.json.JsonObject in = (jakarta.json.JsonObject)source();
 			out = in.getJsonString(null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObject;false;getString;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonObject;false;getString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			jakarta.json.JsonObject in = (jakarta.json.JsonObject)source();
 			out = in.getString(null, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObject;false;getString;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonObject;false;getString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			jakarta.json.JsonObject in = (jakarta.json.JsonObject)source();
 			out = in.getString(null);
@@ -994,147 +994,147 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.add((String)null, false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.add((String)null, 0L);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.add((String)null, 0.0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.add((String)null, 0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.add((String)null, (jakarta.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.add((String)null, (jakarta.json.JsonObjectBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.add((String)null, (jakarta.json.JsonArrayBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.add((String)null, (String)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.add((String)null, (BigInteger)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.add((String)null, (BigDecimal)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			long in = (long)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonValue in = (jakarta.json.JsonValue)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonArrayBuilder in = (jakarta.json.JsonArrayBuilder)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			int in = (int)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			double in = (double)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			boolean in = (boolean)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			String in = (String)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			BigInteger in = (BigInteger)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "jakarta.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			BigDecimal in = (BigDecimal)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;addAll;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonObjectBuilder;false;addAll;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.addAll(null);
@@ -1149,28 +1149,28 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;addNull;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonObjectBuilder;false;addNull;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.addNull(null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;build;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonObjectBuilder;false;build;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonObject out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.build();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonObjectBuilder;false;remove;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonObjectBuilder;false;remove;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonObjectBuilder out = null;
 			jakarta.json.JsonObjectBuilder in = (jakarta.json.JsonObjectBuilder)source();
 			out = in.remove(null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonPatch;false;apply;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonPatch;false;apply;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonStructure out = null;
 			jakarta.json.JsonPatch in = (jakarta.json.JsonPatch)source();
 			out = in.apply(null);
@@ -1185,35 +1185,35 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonPatch;false;toJsonArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonPatch;false;toJsonArray;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonArray out = null;
 			jakarta.json.JsonPatch in = (jakarta.json.JsonPatch)source();
 			out = in.toJsonArray();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.add((String)null, false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.add((String)null, 0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.add((String)null, (jakarta.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.add((String)null, (String)null);
@@ -1284,14 +1284,14 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;build;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonPatchBuilder;false;build;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonPatch out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.build();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;copy;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;copy;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.copy(null, null);
@@ -1314,7 +1314,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;move;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;move;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.move(null, null);
@@ -1337,7 +1337,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;remove;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;remove;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.remove(null);
@@ -1352,28 +1352,28 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;replace;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;replace;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.replace((String)null, false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;replace;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;replace;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.replace((String)null, 0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;replace;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;replace;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.replace((String)null, (jakarta.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;replace;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;replace;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.replace((String)null, (String)null);
@@ -1444,28 +1444,28 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;test;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;test;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.test((String)null, false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;test;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;test;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.test((String)null, 0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;test;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;test;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.test((String)null, (jakarta.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "jakarta.json;JsonPatchBuilder;false;test;;;Argument[-1];ReturnValue;value;manual"
+			// "jakarta.json;JsonPatchBuilder;false;test;;;Argument[this];ReturnValue;value;manual"
 			jakarta.json.JsonPatchBuilder out = null;
 			jakarta.json.JsonPatchBuilder in = (jakarta.json.JsonPatchBuilder)source();
 			out = in.test((String)null, (String)null);
@@ -1536,7 +1536,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonPointer;false;add;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonPointer;false;add;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonStructure out = null;
 			jakarta.json.JsonPointer in = (jakarta.json.JsonPointer)source();
 			out = in.add(null, null);
@@ -1591,35 +1591,35 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonPointer;false;toString;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonPointer;false;toString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			jakarta.json.JsonPointer in = (jakarta.json.JsonPointer)source();
 			out = in.toString();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonReader;false;read;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonReader;false;read;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonStructure out = null;
 			jakarta.json.JsonReader in = (jakarta.json.JsonReader)source();
 			out = in.read();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonReader;false;readArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonReader;false;readArray;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonArray out = null;
 			jakarta.json.JsonReader in = (jakarta.json.JsonReader)source();
 			out = in.readArray();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonReader;false;readObject;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonReader;false;readObject;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonObject out = null;
 			jakarta.json.JsonReader in = (jakarta.json.JsonReader)source();
 			out = in.readObject();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonReader;false;readValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonReader;false;readValue;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonValue out = null;
 			jakarta.json.JsonReader in = (jakarta.json.JsonReader)source();
 			out = in.readValue();
@@ -1650,98 +1650,98 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonString;false;getChars;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonString;false;getChars;;;Argument[this];ReturnValue;taint;manual"
 			CharSequence out = null;
 			jakarta.json.JsonString in = (jakarta.json.JsonString)source();
 			out = in.getChars();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonString;false;getString;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonString;false;getString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			jakarta.json.JsonString in = (jakarta.json.JsonString)source();
 			out = in.getString();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonStructure;true;getValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonStructure;true;getValue;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonValue out = null;
 			jakarta.json.JsonStructure in = (jakarta.json.JsonStructure)source();
 			out = in.getValue(null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonValue;true;asJsonArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonValue;true;asJsonArray;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonArray out = null;
 			jakarta.json.JsonValue in = (jakarta.json.JsonValue)source();
 			out = in.asJsonArray();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonValue;true;asJsonObject;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonValue;true;asJsonObject;;;Argument[this];ReturnValue;taint;manual"
 			jakarta.json.JsonObject out = null;
 			jakarta.json.JsonValue in = (jakarta.json.JsonValue)source();
 			out = in.asJsonObject();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonValue;true;toString;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonValue;true;toString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			jakarta.json.JsonValue in = (jakarta.json.JsonValue)source();
 			out = in.toString();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonValue;true;toString;;;Argument[-1];ReturnValue;taint;manual"
+			// "jakarta.json;JsonValue;true;toString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			jakarta.json.JsonNumber in = (jakarta.json.JsonNumber)source();
 			out = in.toString();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonWriter;false;write;;;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonWriter;false;write;;;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonWriter out = null;
 			jakarta.json.JsonValue in = (jakarta.json.JsonValue)source();
 			out.write(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonWriter;false;write;;;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonWriter;false;write;;;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonWriter out = null;
 			jakarta.json.JsonStructure in = (jakarta.json.JsonStructure)source();
 			out.write(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonWriter;false;writeArray;;;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonWriter;false;writeArray;;;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonWriter out = null;
 			jakarta.json.JsonArray in = (jakarta.json.JsonArray)source();
 			out.writeArray(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonWriter;false;writeObject;;;Argument[0];Argument[-1];taint;manual"
+			// "jakarta.json;JsonWriter;false;writeObject;;;Argument[0];Argument[this];taint;manual"
 			jakarta.json.JsonWriter out = null;
 			jakarta.json.JsonObject in = (jakarta.json.JsonObject)source();
 			out.writeObject(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonWriterFactory;false;createWriter;;;Argument[-1];Argument[0];taint;manual"
+			// "jakarta.json;JsonWriterFactory;false;createWriter;;;Argument[this];Argument[0];taint;manual"
 			Writer out = null;
 			jakarta.json.JsonWriterFactory in = (jakarta.json.JsonWriterFactory)source();
 			in.createWriter(out);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonWriterFactory;false;createWriter;;;Argument[-1];Argument[0];taint;manual"
+			// "jakarta.json;JsonWriterFactory;false;createWriter;;;Argument[this];Argument[0];taint;manual"
 			OutputStream out = null;
 			jakarta.json.JsonWriterFactory in = (jakarta.json.JsonWriterFactory)source();
 			in.createWriter(out, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "jakarta.json;JsonWriterFactory;false;createWriter;;;Argument[-1];Argument[0];taint;manual"
+			// "jakarta.json;JsonWriterFactory;false;createWriter;;;Argument[this];Argument[0];taint;manual"
 			OutputStream out = null;
 			jakarta.json.JsonWriterFactory in = (jakarta.json.JsonWriterFactory)source();
 			in.createWriter(out);
@@ -1963,14 +1963,14 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArray;false;getBoolean;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonArray;false;getBoolean;;;Argument[this];ReturnValue;taint;manual"
 			boolean out = false;
 			javax.json.JsonArray in = (javax.json.JsonArray)source();
 			out = in.getBoolean(0, false);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArray;false;getBoolean;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonArray;false;getBoolean;;;Argument[this];ReturnValue;taint;manual"
 			boolean out = false;
 			javax.json.JsonArray in = (javax.json.JsonArray)source();
 			out = in.getBoolean(0);
@@ -1985,14 +1985,14 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArray;false;getInt;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonArray;false;getInt;;;Argument[this];ReturnValue;taint;manual"
 			int out = 0;
 			javax.json.JsonArray in = (javax.json.JsonArray)source();
 			out = in.getInt(0, 0);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArray;false;getInt;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonArray;false;getInt;;;Argument[this];ReturnValue;taint;manual"
 			int out = 0;
 			javax.json.JsonArray in = (javax.json.JsonArray)source();
 			out = in.getInt(0);
@@ -2007,42 +2007,42 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArray;false;getJsonArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonArray;false;getJsonArray;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonArray out = null;
 			javax.json.JsonArray in = (javax.json.JsonArray)source();
 			out = in.getJsonArray(0);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArray;false;getJsonNumber;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonArray;false;getJsonNumber;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonNumber out = null;
 			javax.json.JsonArray in = (javax.json.JsonArray)source();
 			out = in.getJsonNumber(0);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArray;false;getJsonObject;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonArray;false;getJsonObject;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonObject out = null;
 			javax.json.JsonArray in = (javax.json.JsonArray)source();
 			out = in.getJsonObject(0);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArray;false;getJsonString;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonArray;false;getJsonString;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonString out = null;
 			javax.json.JsonArray in = (javax.json.JsonArray)source();
 			out = in.getJsonString(0);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArray;false;getString;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonArray;false;getString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			javax.json.JsonArray in = (javax.json.JsonArray)source();
 			out = in.getString(0, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArray;false;getString;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonArray;false;getString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			javax.json.JsonArray in = (javax.json.JsonArray)source();
 			out = in.getString(0);
@@ -2057,490 +2057,490 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArray;false;getValuesAs;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonArray;false;getValuesAs;;;Argument[this];ReturnValue;taint;manual"
 			List out = null;
 			javax.json.JsonArray in = (javax.json.JsonArray)source();
 			out = in.getValuesAs((Function)null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArray;false;getValuesAs;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonArray;false;getValuesAs;;;Argument[this];ReturnValue;taint;manual"
 			List out = null;
 			javax.json.JsonArray in = (javax.json.JsonArray)source();
 			out = in.getValuesAs((Class)null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(BigDecimal);;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(BigDecimal);;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			BigDecimal in = (BigDecimal)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(BigInteger);;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(BigInteger);;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			BigInteger in = (BigInteger)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(JsonArrayBuilder);;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(JsonArrayBuilder);;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(JsonObjectBuilder);;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(JsonObjectBuilder);;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(JsonValue);;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(JsonValue);;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonValue in = (javax.json.JsonValue)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(String);;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(String);;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			String in = (String)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(boolean);;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(boolean);;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			boolean in = (boolean)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(double);;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(double);;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			double in = (double)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(int);;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(int);;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			int in = (int)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(int,BigDecimal);;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(int,BigDecimal);;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			BigDecimal in = (BigDecimal)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(int,BigInteger);;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(int,BigInteger);;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			BigInteger in = (BigInteger)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(int,JsonArrayBuilder);;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(int,JsonArrayBuilder);;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(int,JsonObjectBuilder);;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(int,JsonObjectBuilder);;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(int,JsonValue);;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(int,JsonValue);;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonValue in = (javax.json.JsonValue)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(int,String);;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(int,String);;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			String in = (String)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(int,boolean);;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(int,boolean);;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			boolean in = (boolean)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(int,double);;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(int,double);;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			double in = (double)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(int,int);;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(int,int);;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			int in = (int)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(int,long);;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(int,long);;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			long in = (long)source();
 			out.add(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;(long);;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;add;(long);;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			long in = (long)source();
 			out.add(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(0L);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(0.0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(0, false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(0, 0L);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(0, 0.0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(0, 0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(0, (javax.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(0, (javax.json.JsonObjectBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(0, (javax.json.JsonArrayBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(0, (String)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(0, (BigInteger)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(0, (BigDecimal)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add(0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add((javax.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add((javax.json.JsonObjectBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add((javax.json.JsonArrayBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add((String)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add((BigInteger)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.add((BigDecimal)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;addAll;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;addAll;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.addAll(null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;addAll;;;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;addAll;;;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out.addAll(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;addNull;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;addNull;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.addNull(0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;addNull;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;addNull;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.addNull();
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;build;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonArrayBuilder;false;build;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonArray out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.build();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;remove;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;remove;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.remove(0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.set(0, false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.set(0, 0L);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.set(0, 0.0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.set(0, 0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.set(0, (javax.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.set(0, (javax.json.JsonObjectBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.set(0, (javax.json.JsonArrayBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.set(0, (String)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.set(0, (BigInteger)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.set(0, (BigDecimal)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			long in = (long)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonValue in = (javax.json.JsonValue)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			int in = (int)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			double in = (double)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			boolean in = (boolean)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			String in = (String)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			BigInteger in = (BigInteger)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonArrayBuilder;false;set;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonArrayBuilder out = null;
 			BigDecimal in = (BigDecimal)source();
 			out.set(0, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonArrayBuilder;false;setNull;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonArrayBuilder;false;setNull;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonArrayBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out = in.setNull(0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonMergePatch;false;apply;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonMergePatch;false;apply;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonValue out = null;
 			javax.json.JsonMergePatch in = (javax.json.JsonMergePatch)source();
 			out = in.apply(null);
@@ -2555,84 +2555,84 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonMergePatch;false;toJsonValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonMergePatch;false;toJsonValue;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonValue out = null;
 			javax.json.JsonMergePatch in = (javax.json.JsonMergePatch)source();
 			out = in.toJsonValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonNumber;false;bigDecimalValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonNumber;false;bigDecimalValue;;;Argument[this];ReturnValue;taint;manual"
 			BigDecimal out = null;
 			javax.json.JsonNumber in = (javax.json.JsonNumber)source();
 			out = in.bigDecimalValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonNumber;false;bigIntegerValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonNumber;false;bigIntegerValue;;;Argument[this];ReturnValue;taint;manual"
 			BigInteger out = null;
 			javax.json.JsonNumber in = (javax.json.JsonNumber)source();
 			out = in.bigIntegerValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonNumber;false;bigIntegerValueExact;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonNumber;false;bigIntegerValueExact;;;Argument[this];ReturnValue;taint;manual"
 			BigInteger out = null;
 			javax.json.JsonNumber in = (javax.json.JsonNumber)source();
 			out = in.bigIntegerValueExact();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonNumber;false;doubleValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonNumber;false;doubleValue;;;Argument[this];ReturnValue;taint;manual"
 			double out = 0.0;
 			javax.json.JsonNumber in = (javax.json.JsonNumber)source();
 			out = in.doubleValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonNumber;false;intValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonNumber;false;intValue;;;Argument[this];ReturnValue;taint;manual"
 			int out = 0;
 			javax.json.JsonNumber in = (javax.json.JsonNumber)source();
 			out = in.intValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonNumber;false;intValueExact;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonNumber;false;intValueExact;;;Argument[this];ReturnValue;taint;manual"
 			int out = 0;
 			javax.json.JsonNumber in = (javax.json.JsonNumber)source();
 			out = in.intValueExact();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonNumber;false;longValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonNumber;false;longValue;;;Argument[this];ReturnValue;taint;manual"
 			long out = 0L;
 			javax.json.JsonNumber in = (javax.json.JsonNumber)source();
 			out = in.longValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonNumber;false;longValueExact;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonNumber;false;longValueExact;;;Argument[this];ReturnValue;taint;manual"
 			long out = 0L;
 			javax.json.JsonNumber in = (javax.json.JsonNumber)source();
 			out = in.longValueExact();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonNumber;false;numberValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonNumber;false;numberValue;;;Argument[this];ReturnValue;taint;manual"
 			Number out = null;
 			javax.json.JsonNumber in = (javax.json.JsonNumber)source();
 			out = in.numberValue();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObject;false;getBoolean;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonObject;false;getBoolean;;;Argument[this];ReturnValue;taint;manual"
 			boolean out = false;
 			javax.json.JsonObject in = (javax.json.JsonObject)source();
 			out = in.getBoolean(null, false);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObject;false;getBoolean;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonObject;false;getBoolean;;;Argument[this];ReturnValue;taint;manual"
 			boolean out = false;
 			javax.json.JsonObject in = (javax.json.JsonObject)source();
 			out = in.getBoolean(null);
@@ -2647,14 +2647,14 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObject;false;getInt;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonObject;false;getInt;;;Argument[this];ReturnValue;taint;manual"
 			int out = 0;
 			javax.json.JsonObject in = (javax.json.JsonObject)source();
 			out = in.getInt(null, 0);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObject;false;getInt;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonObject;false;getInt;;;Argument[this];ReturnValue;taint;manual"
 			int out = 0;
 			javax.json.JsonObject in = (javax.json.JsonObject)source();
 			out = in.getInt(null);
@@ -2669,42 +2669,42 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObject;false;getJsonArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonObject;false;getJsonArray;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonArray out = null;
 			javax.json.JsonObject in = (javax.json.JsonObject)source();
 			out = in.getJsonArray(null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObject;false;getJsonNumber;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonObject;false;getJsonNumber;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonNumber out = null;
 			javax.json.JsonObject in = (javax.json.JsonObject)source();
 			out = in.getJsonNumber(null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObject;false;getJsonObject;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonObject;false;getJsonObject;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonObject out = null;
 			javax.json.JsonObject in = (javax.json.JsonObject)source();
 			out = in.getJsonObject(null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObject;false;getJsonString;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonObject;false;getJsonString;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonString out = null;
 			javax.json.JsonObject in = (javax.json.JsonObject)source();
 			out = in.getJsonString(null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObject;false;getString;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonObject;false;getString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			javax.json.JsonObject in = (javax.json.JsonObject)source();
 			out = in.getString(null, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObject;false;getString;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonObject;false;getString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			javax.json.JsonObject in = (javax.json.JsonObject)source();
 			out = in.getString(null);
@@ -2719,147 +2719,147 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.add((String)null, false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.add((String)null, 0L);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.add((String)null, 0.0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.add((String)null, 0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.add((String)null, (javax.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.add((String)null, (javax.json.JsonObjectBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.add((String)null, (javax.json.JsonArrayBuilder)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.add((String)null, (String)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.add((String)null, (BigInteger)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.add((String)null, (BigDecimal)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonObjectBuilder out = null;
 			long in = (long)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonValue in = (javax.json.JsonValue)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonArrayBuilder in = (javax.json.JsonArrayBuilder)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonObjectBuilder out = null;
 			int in = (int)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonObjectBuilder out = null;
 			double in = (double)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonObjectBuilder out = null;
 			boolean in = (boolean)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonObjectBuilder out = null;
 			String in = (String)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonObjectBuilder out = null;
 			BigInteger in = (BigInteger)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[-1];taint;manual"
+			// "javax.json;JsonObjectBuilder;false;add;;;Argument[1];Argument[this];taint;manual"
 			javax.json.JsonObjectBuilder out = null;
 			BigDecimal in = (BigDecimal)source();
 			out.add((String)null, in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;addAll;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonObjectBuilder;false;addAll;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.addAll(null);
@@ -2874,28 +2874,28 @@ public class Test {
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;addNull;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonObjectBuilder;false;addNull;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.addNull(null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;build;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonObjectBuilder;false;build;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonObject out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.build();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonObjectBuilder;false;remove;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonObjectBuilder;false;remove;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonObjectBuilder out = null;
 			javax.json.JsonObjectBuilder in = (javax.json.JsonObjectBuilder)source();
 			out = in.remove(null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonPatch;false;apply;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonPatch;false;apply;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonStructure out = null;
 			javax.json.JsonPatch in = (javax.json.JsonPatch)source();
 			out = in.apply(null);
@@ -2910,35 +2910,35 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonPatch;false;toJsonArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonPatch;false;toJsonArray;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonArray out = null;
 			javax.json.JsonPatch in = (javax.json.JsonPatch)source();
 			out = in.toJsonArray();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.add((String)null, false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.add((String)null, 0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.add((String)null, (javax.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;add;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;add;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.add((String)null, (String)null);
@@ -3009,14 +3009,14 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;build;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonPatchBuilder;false;build;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonPatch out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.build();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;copy;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;copy;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.copy(null, null);
@@ -3039,7 +3039,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;move;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;move;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.move(null, null);
@@ -3062,7 +3062,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;remove;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;remove;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.remove(null);
@@ -3077,28 +3077,28 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;replace;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;replace;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.replace((String)null, false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;replace;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;replace;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.replace((String)null, 0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;replace;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;replace;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.replace((String)null, (javax.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;replace;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;replace;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.replace((String)null, (String)null);
@@ -3169,28 +3169,28 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;test;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;test;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.test((String)null, false);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;test;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;test;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.test((String)null, 0);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;test;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;test;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.test((String)null, (javax.json.JsonValue)null);
 			sink(out); // $hasValueFlow
 		}
 		{
-			// "javax.json;JsonPatchBuilder;false;test;;;Argument[-1];ReturnValue;value;manual"
+			// "javax.json;JsonPatchBuilder;false;test;;;Argument[this];ReturnValue;value;manual"
 			javax.json.JsonPatchBuilder out = null;
 			javax.json.JsonPatchBuilder in = (javax.json.JsonPatchBuilder)source();
 			out = in.test((String)null, (String)null);
@@ -3261,7 +3261,7 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonPointer;false;add;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonPointer;false;add;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonStructure out = null;
 			javax.json.JsonPointer in = (javax.json.JsonPointer)source();
 			out = in.add(null, null);
@@ -3316,28 +3316,28 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonReader;false;read;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonReader;false;read;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonStructure out = null;
 			javax.json.JsonReader in = (javax.json.JsonReader)source();
 			out = in.read();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonReader;false;readArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonReader;false;readArray;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonArray out = null;
 			javax.json.JsonReader in = (javax.json.JsonReader)source();
 			out = in.readArray();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonReader;false;readObject;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonReader;false;readObject;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonObject out = null;
 			javax.json.JsonReader in = (javax.json.JsonReader)source();
 			out = in.readObject();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonReader;false;readValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonReader;false;readValue;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonValue out = null;
 			javax.json.JsonReader in = (javax.json.JsonReader)source();
 			out = in.readValue();
@@ -3368,98 +3368,98 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonString;false;getChars;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonString;false;getChars;;;Argument[this];ReturnValue;taint;manual"
 			CharSequence out = null;
 			javax.json.JsonString in = (javax.json.JsonString)source();
 			out = in.getChars();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonString;false;getString;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonString;false;getString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			javax.json.JsonString in = (javax.json.JsonString)source();
 			out = in.getString();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonStructure;true;getValue;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonStructure;true;getValue;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonValue out = null;
 			javax.json.JsonStructure in = (javax.json.JsonStructure)source();
 			out = in.getValue(null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonValue;true;asJsonArray;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonValue;true;asJsonArray;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonArray out = null;
 			javax.json.JsonValue in = (javax.json.JsonValue)source();
 			out = in.asJsonArray();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonValue;true;asJsonObject;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonValue;true;asJsonObject;;;Argument[this];ReturnValue;taint;manual"
 			javax.json.JsonObject out = null;
 			javax.json.JsonValue in = (javax.json.JsonValue)source();
 			out = in.asJsonObject();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonValue;true;toString;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonValue;true;toString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			javax.json.JsonValue in = (javax.json.JsonValue)source();
 			out = in.toString();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonValue;true;toString;;;Argument[-1];ReturnValue;taint;manual"
+			// "javax.json;JsonValue;true;toString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			javax.json.JsonNumber in = (javax.json.JsonNumber)source();
 			out = in.toString();
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonWriter;false;write;;;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonWriter;false;write;;;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonWriter out = null;
 			javax.json.JsonValue in = (javax.json.JsonValue)source();
 			out.write(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonWriter;false;write;;;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonWriter;false;write;;;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonWriter out = null;
 			javax.json.JsonStructure in = (javax.json.JsonStructure)source();
 			out.write(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonWriter;false;writeArray;;;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonWriter;false;writeArray;;;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonWriter out = null;
 			javax.json.JsonArray in = (javax.json.JsonArray)source();
 			out.writeArray(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonWriter;false;writeObject;;;Argument[0];Argument[-1];taint;manual"
+			// "javax.json;JsonWriter;false;writeObject;;;Argument[0];Argument[this];taint;manual"
 			javax.json.JsonWriter out = null;
 			javax.json.JsonObject in = (javax.json.JsonObject)source();
 			out.writeObject(in);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonWriterFactory;false;createWriter;;;Argument[-1];Argument[0];taint;manual"
+			// "javax.json;JsonWriterFactory;false;createWriter;;;Argument[this];Argument[0];taint;manual"
 			Writer out = null;
 			javax.json.JsonWriterFactory in = (javax.json.JsonWriterFactory)source();
 			in.createWriter(out);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonWriterFactory;false;createWriter;;;Argument[-1];Argument[0];taint;manual"
+			// "javax.json;JsonWriterFactory;false;createWriter;;;Argument[this];Argument[0];taint;manual"
 			OutputStream out = null;
 			javax.json.JsonWriterFactory in = (javax.json.JsonWriterFactory)source();
 			in.createWriter(out, null);
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "javax.json;JsonWriterFactory;false;createWriter;;;Argument[-1];Argument[0];taint;manual"
+			// "javax.json;JsonWriterFactory;false;createWriter;;;Argument[this];Argument[0];taint;manual"
 			OutputStream out = null;
 			javax.json.JsonWriterFactory in = (javax.json.JsonWriterFactory)source();
 			in.createWriter(out);

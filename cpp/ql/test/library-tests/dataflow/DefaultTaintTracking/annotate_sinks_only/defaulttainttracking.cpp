@@ -7,7 +7,7 @@ int main() {
 
   char untainted_buf[100] = "";
   char buf[100] = "VAR = ";
-  sink(strcat(buf, getenv("VAR"))); // $ ast MISSING: ir
+  sink(strcat(buf, getenv("VAR"))); // $ ast,ir
 
   sink(buf); // $ ast,ir
   sink(untainted_buf); // the two buffers would be conflated if we added flow through all partial chi inputs

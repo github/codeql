@@ -28,7 +28,8 @@ module K8sIoApiCoreV1 {
   }
 
   private class SecretMarshal extends TaintTracking::FunctionModel, Method,
-    MarshalingFunction::Range {
+    MarshalingFunction::Range
+  {
     SecretMarshal() { this.hasQualifiedName(packagePath(), ["Secret", "SecretList"], "Marshal") }
 
     override DataFlow::FunctionInput getAnInput() { result.isReceiver() }
@@ -43,7 +44,8 @@ module K8sIoApiCoreV1 {
   }
 
   private class SecretUnmarshal extends TaintTracking::FunctionModel, Method,
-    UnmarshalingFunction::Range {
+    UnmarshalingFunction::Range
+  {
     SecretUnmarshal() {
       this.hasQualifiedName(packagePath(), ["Secret", "SecretList"], "Unmarshal")
     }

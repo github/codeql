@@ -44,7 +44,8 @@ private class CollectionSummaries extends SummaryModelCsv {
  * tainted.
  */
 private class CollectionFieldsInheritTaint extends TaintInheritingContent,
-  DataFlow::Content::FieldContent {
+  DataFlow::Content::FieldContent
+{
   CollectionFieldsInheritTaint() {
     exists(FieldDecl f | this.getField() = f |
       (

@@ -7,6 +7,7 @@ edges
 | test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:9:32:9:35 | ControlFlowNode for text |
 | test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:12:17:12:20 | ControlFlowNode for text |
 | test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:18:28:18:31 | ControlFlowNode for text |
+| test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:21:18:21:21 | ControlFlowNode for text |
 | test.py:14:33:14:39 | ControlFlowNode for my_text | test.py:16:24:16:30 | ControlFlowNode for my_text |
 | test.py:18:28:18:31 | ControlFlowNode for text | test.py:14:33:14:39 | ControlFlowNode for my_text |
 nodes
@@ -21,6 +22,7 @@ nodes
 | test.py:14:33:14:39 | ControlFlowNode for my_text | semmle.label | ControlFlowNode for my_text |
 | test.py:16:24:16:30 | ControlFlowNode for my_text | semmle.label | ControlFlowNode for my_text |
 | test.py:18:28:18:31 | ControlFlowNode for text | semmle.label | ControlFlowNode for text |
+| test.py:21:18:21:21 | ControlFlowNode for text | semmle.label | ControlFlowNode for text |
 subpaths
 #select
 | test.py:8:30:8:33 | ControlFlowNode for text | test.py:2:26:2:32 | ControlFlowNode for ImportMember | test.py:8:30:8:33 | ControlFlowNode for text | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | test.py:8:21:8:23 | \\s+ | regular expression | test.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |

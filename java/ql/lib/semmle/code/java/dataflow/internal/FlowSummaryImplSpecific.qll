@@ -24,7 +24,7 @@ private module SyntheticGlobals {
 DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
-ArgumentPosition instanceParameterPosition() { result = -1 }
+ArgumentPosition callbackSelfParameterPosition() { result = -1 }
 
 /** Gets the synthesized summary data-flow node for the given values. */
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSummaryNode(c, state) }
@@ -196,11 +196,16 @@ string getComponentSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
 }
 
+bindingset[pos]
+private string positionToString(int pos) {
+  if pos = -1 then result = "this" else result = pos.toString()
+}
+
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
-string getParameterPosition(ParameterPosition pos) { result = pos.toString() }
+string getParameterPosition(ParameterPosition pos) { result = positionToString(pos) }
 
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
-string getArgumentPosition(ArgumentPosition pos) { result = pos.toString() }
+string getArgumentPosition(ArgumentPosition pos) { result = positionToString(pos) }
 
 /** Holds if input specification component `c` needs a reference. */
 predicate inputNeedsReferenceSpecific(string c) { none() }
@@ -314,8 +319,16 @@ predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) {
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[s]
-ArgumentPosition parseParamBody(string s) { result = AccessPath::parseInt(s) }
+ArgumentPosition parseParamBody(string s) {
+  result = AccessPath::parseInt(s)
+  or
+  s = "this" and result = -1
+}
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
 bindingset[s]
-ParameterPosition parseArgBody(string s) { result = AccessPath::parseInt(s) }
+ParameterPosition parseArgBody(string s) {
+  result = AccessPath::parseInt(s)
+  or
+  s = "this" and result = -1
+}

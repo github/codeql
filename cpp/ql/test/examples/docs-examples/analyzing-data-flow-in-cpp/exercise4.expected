@@ -1,0 +1,2 @@
+| gethostbyname.cpp:7:30:7:35 | call to getenv | gethostbyname.cpp:13:23:13:35 | call to gethostbyname |
+| gethostbyname.cpp:12:37:12:42 | call to getenv | gethostbyname.cpp:12:23:12:35 | call to gethostbyname |

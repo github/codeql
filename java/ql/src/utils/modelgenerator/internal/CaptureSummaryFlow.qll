@@ -37,8 +37,8 @@ private class Activate extends ActiveConfiguration {
  * ```
  * Captured Models:
  * ```
- * p;Foo;true;returnsTainted;;Argument[-1];ReturnValue;taint
- * p;Foo;true;putsTaintIntoParameter;(List);Argument[-1];Argument[0];taint
+ * p;Foo;true;returnsTainted;;Argument[this];ReturnValue;taint
+ * p;Foo;true;putsTaintIntoParameter;(List);Argument[this];Argument[0];taint
  * ```
  *
  * ```java
@@ -49,7 +49,7 @@ private class Activate extends ActiveConfiguration {
  *  }
  * ```
  * Captured Model:
- * ```p;Foo;true;doSomething;(String);Argument[0];Argument[-1];taint```
+ * ```p;Foo;true;doSomething;(String);Argument[0];Argument[this];taint```
  *
  * ```java
  * public class Foo {

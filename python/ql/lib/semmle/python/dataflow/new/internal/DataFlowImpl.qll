@@ -418,6 +418,10 @@ module Impl<FullStateConfigSig Config> {
     )
   }
 
+  private predicate sourceCallCtx(CallContext cc) {
+    if hasSourceCallCtx() then cc instanceof CallContextSomeCall else cc instanceof CallContextAny
+  }
+
   private predicate hasSinkCallCtx() {
     exists(FlowFeature feature | feature = Config::getAFeature() |
       feature instanceof FeatureHasSinkCallContext or
@@ -456,6 +460,7 @@ module Impl<FullStateConfigSig Config> {
      * The Boolean `cc` records whether the node is reached through an
      * argument in a call.
      */
+    pragma[assume_small_delta]
     private predicate fwdFlow(NodeEx node, Cc cc) {
       sourceNode(node, _) and
       if hasSourceCallCtx() then cc = true else cc = false
@@ -1140,19 +1145,13 @@ module Impl<FullStateConfigSig Config> {
       import Param
 
       /* Begin: Stage logic. */
-      // use an alias as a workaround for bad functionality-induced joins
-      pragma[nomagic]
-      private predicate revFlowApAlias(NodeEx node, ApApprox apa) {
-        PrevStage::revFlowAp(node, apa)
-      }
-
       pragma[nomagic]
       private predicate flowIntoCallApa(
         DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, ApApprox apa
       ) {
         flowIntoCall(call, arg, p, allowsFieldFlow) and
         PrevStage::revFlowAp(p, pragma[only_bind_into](apa)) and
-        revFlowApAlias(arg, pragma[only_bind_into](apa))
+        PrevStage::revFlowAp(arg, pragma[only_bind_into](apa))
       }
 
       pragma[nomagic]
@@ -1162,7 +1161,7 @@ module Impl<FullStateConfigSig Config> {
       ) {
         flowOutOfCall(call, ret, kind, out, allowsFieldFlow) and
         PrevStage::revFlowAp(out, pragma[only_bind_into](apa)) and
-        revFlowApAlias(ret, pragma[only_bind_into](apa))
+        PrevStage::revFlowAp(ret, pragma[only_bind_into](apa))
       }
 
       pragma[nomagic]
@@ -1690,16 +1689,6 @@ module Impl<FullStateConfigSig Config> {
       pragma[nomagic]
       predicate revFlowAp(NodeEx node, Ap ap) { revFlow(node, _, _, _, ap) }
 
-      // use an alias as a workaround for bad functionality-induced joins
-      pragma[nomagic]
-      additional predicate revFlowAlias(NodeEx node) { revFlow(node, _, _, _, _) }
-
-      // use an alias as a workaround for bad functionality-induced joins
-      pragma[nomagic]
-      additional predicate revFlowAlias(NodeEx node, FlowState state, Ap ap) {
-        revFlow(node, state, ap)
-      }
-
       private predicate fwdConsCand(TypedContent tc, Ap ap) { storeStepFwd(_, ap, tc, _, _) }
 
       private predicate revConsCand(TypedContent tc, Ap ap) { storeStepCand(_, ap, tc, _, _) }
@@ -1973,7 +1962,7 @@ module Impl<FullStateConfigSig Config> {
   ) {
     flowOutOfCallNodeCand1(call, node1, kind, node2, allowsFieldFlow) and
     Stage2::revFlow(node2) and
-    Stage2::revFlowAlias(node1)
+    Stage2::revFlow(node1)
   }
 
   pragma[nomagic]
@@ -1982,7 +1971,7 @@ module Impl<FullStateConfigSig Config> {
   ) {
     flowIntoCallNodeCand1(call, node1, node2, allowsFieldFlow) and
     Stage2::revFlow(node2) and
-    Stage2::revFlowAlias(node1)
+    Stage2::revFlow(node1)
   }
 
   private module LocalFlowBigStep {
@@ -2064,11 +2053,11 @@ module Impl<FullStateConfigSig Config> {
       additionalLocalFlowStepNodeCand1(node1, node2) and
       state1 = state2 and
       Stage2::revFlow(node1, pragma[only_bind_into](state1), false) and
-      Stage2::revFlowAlias(node2, pragma[only_bind_into](state2), false)
+      Stage2::revFlow(node2, pragma[only_bind_into](state2), false)
       or
       additionalLocalStateStep(node1, state1, node2, state2) and
       Stage2::revFlow(node1, state1, false) and
-      Stage2::revFlowAlias(node2, state2, false)
+      Stage2::revFlow(node2, state2, false)
     }
 
     /**
@@ -2261,7 +2250,7 @@ module Impl<FullStateConfigSig Config> {
     ) {
       localFlowBigStep(node1, state1, node2, state2, preservesValue, ap.getType(), _) and
       PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
-      PrevStage::revFlowAlias(node2, pragma[only_bind_into](state2), _) and
+      PrevStage::revFlow(node2, pragma[only_bind_into](state2), _) and
       exists(lcc)
     }
 
@@ -2272,7 +2261,7 @@ module Impl<FullStateConfigSig Config> {
       exists(FlowState state |
         flowOutOfCallNodeCand2(call, node1, kind, node2, allowsFieldFlow) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state), _) and
-        PrevStage::revFlowAlias(node1, pragma[only_bind_into](state), _)
+        PrevStage::revFlow(node1, pragma[only_bind_into](state), _)
       )
     }
 
@@ -2283,7 +2272,7 @@ module Impl<FullStateConfigSig Config> {
       exists(FlowState state |
         flowIntoCallNodeCand2(call, node1, node2, allowsFieldFlow) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state), _) and
-        PrevStage::revFlowAlias(node1, pragma[only_bind_into](state), _)
+        PrevStage::revFlow(node1, pragma[only_bind_into](state), _)
       )
     }
 
@@ -2585,7 +2574,7 @@ module Impl<FullStateConfigSig Config> {
     ) {
       localFlowBigStep(node1, state1, node2, state2, preservesValue, ap.getType(), lcc) and
       PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
-      PrevStage::revFlowAlias(node2, pragma[only_bind_into](state2), _)
+      PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
     }
 
     pragma[nomagic]
@@ -2595,7 +2584,7 @@ module Impl<FullStateConfigSig Config> {
       exists(FlowState state |
         flowOutOfCallNodeCand2(call, node1, kind, node2, allowsFieldFlow) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state), _) and
-        PrevStage::revFlowAlias(node1, pragma[only_bind_into](state), _)
+        PrevStage::revFlow(node1, pragma[only_bind_into](state), _)
       )
     }
 
@@ -2606,7 +2595,7 @@ module Impl<FullStateConfigSig Config> {
       exists(FlowState state |
         flowIntoCallNodeCand2(call, node1, node2, allowsFieldFlow) and
         PrevStage::revFlow(node2, pragma[only_bind_into](state), _) and
-        PrevStage::revFlowAlias(node1, pragma[only_bind_into](state), _)
+        PrevStage::revFlow(node1, pragma[only_bind_into](state), _)
       )
     }
 
@@ -2803,11 +2792,7 @@ module Impl<FullStateConfigSig Config> {
       // A PathNode is introduced by a source ...
       Stage5::revFlow(node, state) and
       sourceNode(node, state) and
-      (
-        if hasSourceCallCtx()
-        then cc instanceof CallContextSomeCall
-        else cc instanceof CallContextAny
-      ) and
+      sourceCallCtx(cc) and
       sc instanceof SummaryCtxNone and
       ap = TAccessPathNil(node.getDataFlowType())
       or
@@ -3156,7 +3141,7 @@ module Impl<FullStateConfigSig Config> {
   /**
    * Provides the query predicates needed to include a graph in a path-problem query.
    */
-  module PathGraph {
+  module PathGraph implements PathGraphSig<PathNode> {
     /** Holds if `(a,b)` is an edge in the graph of data flow path explanations. */
     query predicate edges(PathNode a, PathNode b) { a.getASuccessor() = b }
 
@@ -3213,11 +3198,7 @@ module Impl<FullStateConfigSig Config> {
 
     override predicate isSource() {
       sourceNode(node, state) and
-      (
-        if hasSourceCallCtx()
-        then cc instanceof CallContextSomeCall
-        else cc instanceof CallContextAny
-      ) and
+      sourceCallCtx(cc) and
       sc instanceof SummaryCtxNone and
       ap = TAccessPathNil(node.getDataFlowType())
     }

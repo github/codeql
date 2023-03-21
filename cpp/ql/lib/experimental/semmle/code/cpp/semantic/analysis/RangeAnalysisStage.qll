@@ -73,6 +73,7 @@ import experimental.semmle.code.cpp.semantic.SemanticCFG
 import experimental.semmle.code.cpp.semantic.SemanticType
 import experimental.semmle.code.cpp.semantic.SemanticOpcode
 private import ConstantAnalysis
+import experimental.semmle.code.cpp.semantic.SemanticLocation
 
 /**
  * Holds if `typ` is a small integral type with the given lower and upper bounds.
@@ -228,6 +229,10 @@ signature module UtilSig<DeltaSig DeltaParam> {
 
 signature module BoundSig<DeltaSig D> {
   class SemBound {
+    string toString();
+
+    SemLocation getLocation();
+
     SemExpr getExpr(D::Delta delta);
   }
 
@@ -937,6 +942,15 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
   }
 
   /**
+   * Computes a normal form of `x` where -0.0 has changed to +0.0. This can be
+   * needed on the lesser side of a floating-point comparison or on both sides of
+   * a floating point equality because QL does not follow IEEE in floating-point
+   * comparisons but instead defines -0.0 to be less than and distinct from 0.0.
+   */
+  bindingset[x]
+  private float normalizeFloatUp(float x) { result = x + 0.0 }
+
+  /**
    * Holds if `b + delta` is a valid bound for `e`.
    * - `upper = true`  : `e <= b + delta`
    * - `upper = false` : `e >= b + delta`
@@ -1019,6 +1033,15 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
         upper = true and delta = D::fromFloat(D::toFloat(d1).maximum(D::toFloat(d2)))
         or
         upper = false and delta = D::fromFloat(D::toFloat(d1).minimum(D::toFloat(d2)))
+      )
+      or
+      exists(SemExpr mid, D::Delta d, float f |
+        e.(SemNegateExpr).getOperand() = mid and
+        b instanceof SemZeroBound and
+        bounded(mid, b, d, upper.booleanNot(), fromBackEdge, origdelta, reason) and
+        f = normalizeFloatUp(-D::toFloat(d)) and
+        delta = D::fromFloat(f) and
+        if semPositive(e) then f >= 0 else any()
       )
     )
   }

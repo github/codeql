@@ -71,7 +71,8 @@ class TypeTestGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNo
 private import semmle.javascript.security.dataflow.Xss::Shared as Shared
 
 private class PrefixStringSanitizer extends TaintTracking::SanitizerGuardNode,
-  DomBasedXss::PrefixStringSanitizer {
+  DomBasedXss::PrefixStringSanitizer
+{
   PrefixStringSanitizer() { this = this }
 }
 
@@ -83,6 +84,7 @@ private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::Quot
   QuoteGuard() { this = this }
 }
 
-private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard {
+private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard
+{
   ContainsHtmlGuard() { this = this }
 }

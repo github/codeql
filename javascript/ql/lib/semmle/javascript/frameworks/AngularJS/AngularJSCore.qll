@@ -1013,7 +1013,8 @@ private class RouteInstantiatedController extends Controller instanceof RouteSet
 /**
  * Dataflow for the arguments of AngularJS dependency-injected functions.
  */
-private class DependencyInjectedArgumentInitializer extends DataFlow::AnalyzedNode instanceof DataFlow::ParameterNode {
+private class DependencyInjectedArgumentInitializer extends DataFlow::AnalyzedNode instanceof DataFlow::ParameterNode
+{
   DataFlow::AnalyzedNode service;
 
   DependencyInjectedArgumentInitializer() {

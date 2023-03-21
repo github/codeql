@@ -59,7 +59,8 @@ module AiohttpWebModel {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `AiohttpRouteSetup::Range` instead.
    */
-  class AiohttpRouteSetup extends Http::Server::RouteSetup::Range instanceof AiohttpRouteSetup::Range {
+  class AiohttpRouteSetup extends Http::Server::RouteSetup::Range instanceof AiohttpRouteSetup::Range
+  {
     override Parameter getARoutedParameter() { none() }
 
     override string getFramework() { result = "aiohttp.web" }
@@ -252,7 +253,8 @@ module AiohttpWebModel {
   }
 
   /** A request handler defined in an `aiohttp.web` view class, that has no known route. */
-  private class AiohttpViewClassRequestHandlerWithoutKnownRoute extends Http::Server::RequestHandler::Range {
+  private class AiohttpViewClassRequestHandlerWithoutKnownRoute extends Http::Server::RequestHandler::Range
+  {
     AiohttpViewClassRequestHandlerWithoutKnownRoute() {
       exists(AiohttpViewClass vc | vc.getARequestHandler() = this) and
       not exists(AiohttpRouteSetup setup | setup.getARequestHandler() = this)
@@ -440,7 +442,8 @@ module AiohttpWebModel {
    * handler is invoked.
    */
   class AiohttpRequestHandlerRequestParam extends Request::InstanceSource, RemoteFlowSource::Range,
-    DataFlow::ParameterNode {
+    DataFlow::ParameterNode
+  {
     AiohttpRequestHandlerRequestParam() {
       exists(Function requestHandler |
         requestHandler = any(AiohttpCoroutineRouteSetup setup).getARequestHandler() and
@@ -470,7 +473,8 @@ module AiohttpWebModel {
    * which is the request being processed currently.
    */
   class AiohttpViewClassRequestAttributeRead extends Request::InstanceSource,
-    RemoteFlowSource::Range, DataFlow::Node {
+    RemoteFlowSource::Range, DataFlow::Node
+  {
     AiohttpViewClassRequestAttributeRead() {
       this.(DataFlow::AttrRead).getObject() = any(AiohttpViewClass vc).getASelfRef() and
       this.(DataFlow::AttrRead).getAttributeName() = "request"
@@ -494,7 +498,8 @@ module AiohttpWebModel {
    * - https://docs.aiohttp.org/en/stable/web_quickstart.html#aiohttp-web-exceptions
    */
   class AiohttpWebResponseInstantiation extends Http::Server::HttpResponse::Range,
-    Response::InstanceSource, DataFlow::CallCfgNode {
+    Response::InstanceSource, DataFlow::CallCfgNode
+  {
     API::Node apiNode;
 
     AiohttpWebResponseInstantiation() {
@@ -562,7 +567,8 @@ module AiohttpWebModel {
    * See the part about redirects at https://docs.aiohttp.org/en/stable/web_quickstart.html#aiohttp-web-exceptions
    */
   class AiohttpRedirectExceptionInstantiation extends AiohttpWebResponseInstantiation,
-    Http::Server::HttpRedirectResponse::Range {
+    Http::Server::HttpRedirectResponse::Range
+  {
     AiohttpRedirectExceptionInstantiation() {
       exists(string httpRedirectExceptionClassName |
         httpRedirectExceptionClassName in [
@@ -585,7 +591,8 @@ module AiohttpWebModel {
   /**
    * A call to `set_cookie` on a HTTP Response.
    */
-  class AiohttpResponseSetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::CallCfgNode {
+  class AiohttpResponseSetCookieCall extends Http::Server::CookieWrite::Range, DataFlow::CallCfgNode
+  {
     AiohttpResponseSetCookieCall() {
       this = aiohttpResponseInstance().getMember("set_cookie").getACall()
     }
@@ -600,7 +607,8 @@ module AiohttpWebModel {
   /**
    * A call to `del_cookie` on a HTTP Response.
    */
-  class AiohttpResponseDelCookieCall extends Http::Server::CookieWrite::Range, DataFlow::CallCfgNode {
+  class AiohttpResponseDelCookieCall extends Http::Server::CookieWrite::Range, DataFlow::CallCfgNode
+  {
     AiohttpResponseDelCookieCall() {
       this = aiohttpResponseInstance().getMember("del_cookie").getACall()
     }

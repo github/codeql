@@ -51,7 +51,8 @@ class TaintedPathAtmConfig extends AtmConfig {
  * of barrier guards, we port the barrier guards for the boosted query from the standard library to
  * sanitizer guards here.
  */
-private class BarrierGuardNodeAsSanitizerGuardNode extends TaintTracking::LabeledSanitizerGuardNode instanceof TaintedPath::BarrierGuardNode {
+private class BarrierGuardNodeAsSanitizerGuardNode extends TaintTracking::LabeledSanitizerGuardNode instanceof TaintedPath::BarrierGuardNode
+{
   override predicate sanitizes(boolean outcome, Expr e) {
     blocks(outcome, e) or blocks(outcome, e, _)
   }

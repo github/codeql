@@ -7,6 +7,9 @@ import com.semmle.util.locations.LineTable;
 import com.semmle.util.trap.TrapWriter;
 import com.semmle.util.trap.TrapWriter.Label;
 import com.semmle.util.trap.TrapWriter.Table;
+
+import java.util.Collections;
+
 import org.yaml.snakeyaml.composer.Composer;
 import org.yaml.snakeyaml.error.Mark;
 import org.yaml.snakeyaml.error.MarkedYAMLException;
@@ -104,7 +107,7 @@ public class YAMLExtractor implements IExtractor {
   }
 
   @Override
-  public LoCInfo extract(TextualExtractor textualExtractor) {
+  public ParseResultInfo extract(TextualExtractor textualExtractor) {
     this.textualExtractor = textualExtractor;
     locationManager = textualExtractor.getLocationManager();
     trapWriter = textualExtractor.getTrapwriter();
@@ -137,7 +140,7 @@ public class YAMLExtractor implements IExtractor {
       // ReaderExceptions
     }
 
-    return new LoCInfo(0, 0);
+    return new ParseResultInfo(0, 0, Collections.emptyList());
   }
 
   /** Check whether the parser has encountered the end of the YAML input stream. */

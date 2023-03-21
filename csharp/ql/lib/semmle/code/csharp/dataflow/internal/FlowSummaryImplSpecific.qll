@@ -22,7 +22,7 @@ class SummarizedCallableBase extends Callable {
 DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
-ArgumentPosition instanceParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
+ArgumentPosition callbackSelfParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
 
 /** Gets the synthesized summary data-flow node for the given values. */
 Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }

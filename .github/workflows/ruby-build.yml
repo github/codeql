@@ -55,12 +55,12 @@ jobs:
         id: cache-extractor
         with:
           path: |
-            ruby/target/release/ruby-autobuilder
-            ruby/target/release/ruby-autobuilder.exe
-            ruby/target/release/ruby-extractor
-            ruby/target/release/ruby-extractor.exe
-            ruby/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
-          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-extractor-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}--${{ hashFiles('ruby/**/*.rs') }}
+            ruby/extractor/target/release/autobuilder
+            ruby/extractor/target/release/autobuilder.exe
+            ruby/extractor/target/release/extractor
+            ruby/extractor/target/release/extractor.exe
+            ruby/extractor/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-extractor-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/extractor/Cargo.lock') }}--${{ hashFiles('ruby/extractor/**/*.rs') }}
       - uses: actions/cache@v3
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         with:
@@ -68,22 +68,22 @@ jobs:
             ~/.cargo/registry
             ~/.cargo/git
             ruby/target
-          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-rust-cargo-${{ hashFiles('ruby/rust-toolchain.toml', 'ruby/**/Cargo.lock') }}
+          key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-rust-cargo-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/extractor/**/Cargo.lock') }}
       - name: Check formatting
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        run: cargo fmt --all -- --check
+        run: cd extractor && cargo fmt --all -- --check
       - name: Build
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        run: cargo build --verbose
+        run: cd extractor && cargo build --verbose
       - name: Run tests
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        run: cargo test --verbose
+        run: cd extractor && cargo test --verbose
       - name: Release build
         if: steps.cache-extractor.outputs.cache-hit != 'true'
-        run: cargo build --release
+        run: cd extractor && cargo build --release
       - name: Generate dbscheme
         if: ${{ matrix.os == 'ubuntu-latest' && steps.cache-extractor.outputs.cache-hit != 'true'}}
-        run: target/release/ruby-generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+        run: extractor/target/release/generator --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
       - uses: actions/upload-artifact@v3
         if: ${{ matrix.os == 'ubuntu-latest' }}
         with:
@@ -98,10 +98,10 @@ jobs:
         with:
           name: extractor-${{ matrix.os }}
           path: |
-            ruby/target/release/ruby-autobuilder
-            ruby/target/release/ruby-autobuilder.exe
-            ruby/target/release/ruby-extractor
-            ruby/target/release/ruby-extractor.exe
+            ruby/extractor/target/release/autobuilder
+            ruby/extractor/target/release/autobuilder.exe
+            ruby/extractor/target/release/extractor
+            ruby/extractor/target/release/extractor.exe
           retention-days: 1
   compile-queries:
     runs-on: ubuntu-latest-xl
@@ -116,21 +116,22 @@ jobs:
           key: ruby-build
       - name: Build Query Pack
         run: |
-          rm -rf target/packs
-          codeql pack create ../misc/suite-helpers --output target/packs
-          codeql pack create ../shared/regex --output target/packs
-          codeql pack create ../shared/ssa --output target/packs
-          codeql pack create ../shared/tutorial --output target/packs
-          codeql pack create ql/lib --output target/packs
-          codeql pack create -j0 ql/src --output target/packs --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
-          PACK_FOLDER=$(readlink -f target/packs/codeql/ruby-queries/*)
+          PACKS=${{ runner.temp }}/query-packs
+          rm -rf $PACKS
+          codeql pack create ../misc/suite-helpers --output "$PACKS"
+          codeql pack create ../shared/regex --output "$PACKS"
+          codeql pack create ../shared/ssa --output "$PACKS"
+          codeql pack create ../shared/tutorial --output "$PACKS"
+          codeql pack create ql/lib --output "$PACKS"
+          codeql pack create -j0 ql/src --output "$PACKS" --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}"
+          PACK_FOLDER=$(readlink -f "$PACKS"/codeql/ruby-queries/*)
           codeql generate query-help --format=sarifv2.1.0 --output="${PACK_FOLDER}/rules.sarif" ql/src
           (cd ql/src; find queries \( -name '*.qhelp' -o -name '*.rb' -o -name '*.erb' \) -exec bash -c 'mkdir -p "'"${PACK_FOLDER}"'/$(dirname "{}")"' \; -exec cp "{}" "${PACK_FOLDER}/{}" \;)
       - uses: actions/upload-artifact@v3
         with:
           name: codeql-ruby-queries
           path: |
-            ruby/target/packs/*
+            ${{ runner.temp }}/query-packs/*
           retention-days: 1
 
   package:
@@ -158,12 +159,12 @@ jobs:
           mkdir -p ruby
           cp -r codeql-extractor.yml tools ql/lib/ruby.dbscheme.stats ruby/
           mkdir -p ruby/tools/{linux64,osx64,win64}
-          cp linux64/ruby-autobuilder ruby/tools/linux64/autobuilder
-          cp osx64/ruby-autobuilder ruby/tools/osx64/autobuilder
-          cp win64/ruby-autobuilder.exe ruby/tools/win64/autobuilder.exe
-          cp linux64/ruby-extractor ruby/tools/linux64/extractor
-          cp osx64/ruby-extractor ruby/tools/osx64/extractor
-          cp win64/ruby-extractor.exe ruby/tools/win64/extractor.exe
+          cp linux64/autobuilder ruby/tools/linux64/autobuilder
+          cp osx64/autobuilder ruby/tools/osx64/autobuilder
+          cp win64/autobuilder.exe ruby/tools/win64/autobuilder.exe
+          cp linux64/extractor ruby/tools/linux64/extractor
+          cp osx64/extractor ruby/tools/osx64/extractor
+          cp win64/extractor.exe ruby/tools/win64/extractor.exe
           chmod +x ruby/tools/{linux64,osx64}/{autobuilder,extractor}
           zip -rq codeql-ruby.zip ruby
       - uses: actions/upload-artifact@v3

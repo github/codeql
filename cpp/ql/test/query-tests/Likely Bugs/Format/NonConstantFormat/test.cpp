@@ -48,7 +48,7 @@ int main(int argc, char **argv) {
   printf(choose_message(argc - 1), argc - 1); // GOOD
   printf(messages[1]); // GOOD
   printf(message); // GOOD
-  printf(make_message(argc - 1)); // BAD
+  printf(make_message(argc - 1)); // BAD  [NOT DETECTED]
   printf("Hello, World\n"); // GOOD
   printf(_("Hello, World\n")); // GOOD
   {
@@ -97,7 +97,7 @@ int main(int argc, char **argv) {
     const char *hello = "Hello, World\n";
     const char **p = &hello;
     (*p)++;
-    printf(hello); // BAD [NOT DETECTED]
+    printf(hello); // BAD
   }
   {
     // Same as above block but through a C++ reference
@@ -112,7 +112,7 @@ int main(int argc, char **argv) {
   {
     const char *hello = "Hello, World\n";
     const char *const *p = &hello; // harmless reference to const pointer
-    printf(hello); // GOOD
+    printf(hello); // GOOD [FALSE POSITIVE]
     hello++; // modification comes after use and so does no harm
   }
   printf(argc > 2 ? "More than one\n" : _("Only one\n")); // GOOD

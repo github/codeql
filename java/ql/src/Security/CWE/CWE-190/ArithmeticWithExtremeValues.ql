@@ -16,7 +16,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import ArithmeticCommon
-import DataFlow::PathGraph
 
 abstract class ExtremeValueField extends Field {
   ExtremeValueField() { this.getType() instanceof IntegralType }
@@ -34,43 +33,48 @@ class ExtremeSource extends VarAccess {
   ExtremeSource() { this.getVariable() instanceof ExtremeValueField }
 }
 
-class MaxValueFlowConfig extends DataFlow::Configuration {
-  MaxValueFlowConfig() { this = "MaxValueFlowConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+private module MaxValueFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source.asExpr().(ExtremeSource).getVariable() instanceof MaxValueField
   }
 
-  override predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
+  predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
 
-  override predicate isBarrierIn(DataFlow::Node n) { this.isSource(n) }
+  predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
 
-  override predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
 }
 
-class MinValueFlowConfig extends DataFlow::Configuration {
-  MinValueFlowConfig() { this = "MinValueFlowConfig" }
+module MaxValueFlow = DataFlow::Make<MaxValueFlowConfig>;
 
-  override predicate isSource(DataFlow::Node source) {
+private module MinValueFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source.asExpr().(ExtremeSource).getVariable() instanceof MinValueField
   }
 
-  override predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
+  predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 
-  override predicate isBarrierIn(DataFlow::Node n) { this.isSource(n) }
+  predicate isBarrierIn(DataFlow::Node n) { isSource(n) }
 
-  override predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
 }
 
+module MinValueFlow = DataFlow::Make<MinValueFlowConfig>;
+
+module Flow =
+  DataFlow::MergePathGraph<MaxValueFlow::PathNode, MinValueFlow::PathNode, MaxValueFlow::PathGraph, MinValueFlow::PathGraph>;
+
+import Flow::PathGraph
+
 predicate query(
-  DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, string effect, Type srctyp
+  Flow::PathNode source, Flow::PathNode sink, ArithExpr exp, string effect, Type srctyp
 ) {
   (
-    any(MaxValueFlowConfig c).hasFlowPath(source, sink) and
+    MaxValueFlow::hasFlowPath(source.asPathNode1(), sink.asPathNode1()) and
     overflowSink(exp, sink.getNode().asExpr()) and
     effect = "overflow"
     or
-    any(MinValueFlowConfig c).hasFlowPath(source, sink) and
+    MinValueFlow::hasFlowPath(source.asPathNode2(), sink.asPathNode2()) and
     underflowSink(exp, sink.getNode().asExpr()) and
     effect = "underflow"
   ) and
@@ -78,7 +82,7 @@ predicate query(
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, Variable v, ExtremeSource s,
+  Flow::PathNode source, Flow::PathNode sink, ArithExpr exp, Variable v, ExtremeSource s,
   string effect, Type srctyp
 where
   query(source, sink, exp, effect, srctyp) and

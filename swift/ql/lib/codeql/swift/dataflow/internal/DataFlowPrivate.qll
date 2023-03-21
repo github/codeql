@@ -400,6 +400,19 @@ private module ReturnNodes {
     override ReturnKind getKind() { result instanceof NormalReturnKind }
   }
 
+  /**
+   * A data-flow node that represents the `self` value in a constructor being
+   * implicitly returned as the newly-constructed object
+   */
+  class SelfReturnNode extends InoutReturnNodeImpl {
+    SelfReturnNode() {
+      exit.getScope() instanceof ConstructorDecl and
+      param instanceof SelfParamDecl
+    }
+
+    override ReturnKind getKind() { result instanceof NormalReturnKind }
+  }
+
   class InoutReturnNodeImpl extends ReturnNode, TInoutReturnNode, NodeImpl {
     ParamDecl param;
     ControlFlowNode exit;
