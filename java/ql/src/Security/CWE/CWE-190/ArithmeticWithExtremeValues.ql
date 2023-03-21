@@ -33,7 +33,7 @@ class ExtremeSource extends VarAccess {
   ExtremeSource() { this.getVariable() instanceof ExtremeValueField }
 }
 
-private module MaxValueFlowConfig implements DataFlow::ConfigSig {
+module MaxValueFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.asExpr().(ExtremeSource).getVariable() instanceof MaxValueField
   }
@@ -47,7 +47,7 @@ private module MaxValueFlowConfig implements DataFlow::ConfigSig {
 
 module MaxValueFlow = DataFlow::Make<MaxValueFlowConfig>;
 
-private module MinValueFlowConfig implements DataFlow::ConfigSig {
+module MinValueFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.asExpr().(ExtremeSource).getVariable() instanceof MinValueField
   }
