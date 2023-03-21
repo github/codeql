@@ -24,7 +24,7 @@ import DataFlow::PathGraph
 
 pragma[nomagic]
 Instruction getABoundIn(SemBound b, IRFunction func) {
-  result = b.getExpr(0) and
+  getSemanticExpr(result) = b.getExpr(0) and
   result.getEnclosingIRFunction() = func
 }
 
@@ -110,7 +110,7 @@ class StringSizeConfiguration extends ProductFlow::Configuration {
       state1 = s1.toString() and
       state2 = s2.toString() and
       add.hasOperands(node1.asOperand(), op) and
-      semBounded(op.getDef(), any(SemZeroBound zero), delta, true, _) and
+      semBounded(getSemanticExpr(op.getDef()), any(SemZeroBound zero), delta, true, _) and
       node2.asInstruction() = add and
       s1 = s2 + delta
     )
