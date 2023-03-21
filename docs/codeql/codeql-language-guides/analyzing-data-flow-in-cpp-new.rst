@@ -2,9 +2,9 @@
 
 .. pull-quote:: Note
 
-   The data flow library described here is available from CodeQL 2.12.5 onwards. See :ref:`here <analyzing-data-flow-in-cpp>` for the library available in earlier versions.
+   The data flow library described here is available from CodeQL 2.12.5 onwards. For information on the previous version of the library, see :ref:`Analyzing data flow in C and C++ <analyzing-data-flow-in-cpp>`.
 
-Analyzing data flow in C and C++ (New)
+Analyzing data flow in C and C++ (new)
 ======================================
 
 You can use data flow analysis to track the flow of potentially malicious or insecure data that can cause vulnerabilities in your codebase.
