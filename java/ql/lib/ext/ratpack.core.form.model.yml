@@ -3,6 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["ratpack.core.form", "Form", True, "file", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["ratpack.core.form", "Form", True, "files", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["ratpack.core.form", "UploadedFile", True, "getFileName", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["ratpack.core.form", "Form", True, "file", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["ratpack.core.form", "Form", True, "files", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["ratpack.core.form", "UploadedFile", True, "getFileName", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]

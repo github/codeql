@@ -3,8 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.util.concurrent.atomic", "AtomicReference", False, "AtomicReference", "(Object)", "", "Argument[0]", "Argument[-1].SyntheticField[java.util.concurrent.atomic.AtomicReference.value]", "value", "manual"]
-      - ["java.util.concurrent.atomic", "AtomicReference", False, "get", "()", "", "Argument[-1].SyntheticField[java.util.concurrent.atomic.AtomicReference.value]", "ReturnValue", "value", "manual"]
+      - ["java.util.concurrent.atomic", "AtomicReference", False, "AtomicReference", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[java.util.concurrent.atomic.AtomicReference.value]", "value", "manual"]
+      - ["java.util.concurrent.atomic", "AtomicReference", False, "get", "()", "", "Argument[this].SyntheticField[java.util.concurrent.atomic.AtomicReference.value]", "ReturnValue", "value", "manual"]
 
   - addsTo:
       pack: codeql/java-all

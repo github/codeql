@@ -41,4 +41,4 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.util.logging", "LogRecord", False, "LogRecord", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["java.util.logging", "LogRecord", False, "LogRecord", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]

@@ -3,8 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.hc.core5.http.message", "RequestLine", True, "RequestLine", "(HttpRequest)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["org.apache.hc.core5.http.message", "RequestLine", True, "RequestLine", "(String,String,ProtocolVersion)", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
-      - ["org.apache.hc.core5.http.message", "RequestLine", True, "getMethod", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.hc.core5.http.message", "RequestLine", True, "getUri", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.hc.core5.http.message", "RequestLine", True, "toString", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.hc.core5.http.message", "RequestLine", True, "RequestLine", "(HttpRequest)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["org.apache.hc.core5.http.message", "RequestLine", True, "RequestLine", "(String,String,ProtocolVersion)", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["org.apache.hc.core5.http.message", "RequestLine", True, "getMethod", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.hc.core5.http.message", "RequestLine", True, "getUri", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.hc.core5.http.message", "RequestLine", True, "toString", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

@@ -26,28 +26,28 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.nio.file;Path;false;toFile;;;Argument[-1];ReturnValue;taint;manual"
+			// "java.nio.file;Path;false;toFile;;;Argument[this];ReturnValue;taint;manual"
 			File out = null;
 			Path in = (Path) source();
 			out = in.toFile();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.nio.file;Path;true;getParent;;;Argument[-1];ReturnValue;taint;manual"
+			// "java.nio.file;Path;true;getParent;;;Argument[this];ReturnValue;taint;manual"
 			Path out = null;
 			Path in = (Path) source();
 			out = in.getParent();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.nio.file;Path;true;normalize;;;Argument[-1];ReturnValue;taint;manual"
+			// "java.nio.file;Path;true;normalize;;;Argument[this];ReturnValue;taint;manual"
 			Path out = null;
 			Path in = (Path) source();
 			out = in.normalize();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "java.nio.file;Path;true;resolve;;;Argument[0];ReturnValue;taint;manual"
 			Path out = null;
 			Path in = (Path) source();
 			Path instance = null;
@@ -55,21 +55,21 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "java.nio.file;Path;true;resolve;;;Argument[this];ReturnValue;taint;manual"
 			Path out = null;
 			Path in = (Path) source();
 			out = in.resolve((Path) null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "java.nio.file;Path;true;resolve;;;Argument[this];ReturnValue;taint;manual"
 			Path out = null;
 			Path in = (Path) source();
 			out = in.resolve((String) null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.nio.file;Path;true;resolve;;;Argument[-1..0];ReturnValue;taint;manual"
+			// "java.nio.file;Path;true;resolve;;;Argument[0];ReturnValue;taint;manual"
 			Path out = null;
 			String in = (String) source();
 			Path instance = null;
@@ -77,21 +77,21 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.nio.file;Path;true;toAbsolutePath;;;Argument[-1];ReturnValue;taint;manual"
+			// "java.nio.file;Path;true;toAbsolutePath;;;Argument[this];ReturnValue;taint;manual"
 			Path out = null;
 			Path in = (Path) source();
 			out = in.toAbsolutePath();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.nio.file;Path;true;toString;;;Argument[-1];ReturnValue;taint;manual"
+			// "java.nio.file;Path;true;toString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			Path in = (Path) source();
 			out = in.toString();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.nio.file;Path;true;toUri;;;Argument[-1];ReturnValue;taint;manual"
+			// "java.nio.file;Path;true;toUri;;;Argument[this];ReturnValue;taint;manual"
 			URI out = null;
 			Path in = (Path) source();
 			out = in.toUri();
