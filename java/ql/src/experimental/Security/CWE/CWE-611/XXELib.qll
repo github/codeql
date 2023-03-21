@@ -232,9 +232,7 @@ class SaxTransformerFactoryNewTransformerHandler extends XmlParserCall {
 
   override Expr getSink() { result = this.getArgument(0) }
 
-  override predicate isSafe() {
-    exists(SafeTransformerFactoryFlowConfig stf | stf.hasFlowToExpr(this.getQualifier()))
-  }
+  override predicate isSafe() { SafeTransformerFactoryFlow::flowToExpr(this.getQualifier()) }
 }
 
 /** DEPRECATED: Alias for SaxTransformerFactoryNewTransformerHandler */
