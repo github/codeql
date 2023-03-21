@@ -20,6 +20,7 @@ import experimental.semmle.code.cpp.dataflow.ProductFlow
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR
+import codeql.util.Unit
 
 pragma[nomagic]
 Instruction getABoundIn(SemBound b, IRFunction func) {
@@ -51,14 +52,14 @@ predicate bounded2(Instruction i, Instruction b, int delta) { boundedImpl(i, b, 
  * Holds if the combination of `n` and `state` represents an appropriate
  * source for the expression `e` suitable for use-use flow.
  */
-private predicate hasSizeImpl(Expr e, DataFlow::Node n, string state) {
+private predicate hasSizeImpl(Expr e, DataFlow::Node n, int state) {
   // The simple case: If the size is a variable access with no qualifier we can just use the
   // dataflow node for that expression and no state.
   exists(VariableAccess va |
     va = e and
     not va instanceof FieldAccess and
     n.asConvertedExpr() = va.getFullyConverted() and
-    state = "0"
+    state = 0
   )
   or
   // If the size is a choice between two expressions we allow both to be nodes representing the size.
@@ -68,13 +69,13 @@ private predicate hasSizeImpl(Expr e, DataFlow::Node n, string state) {
   // remember the constant in the state.
   exists(Expr const, Expr nonconst |
     e.(AddExpr).hasOperands(const, nonconst) and
-    state = const.getValue() and
+    state = const.getValue().toInt() and
     hasSizeImpl(nonconst, n, _)
   )
   or
   exists(Expr const, Expr nonconst |
     e.(SubExpr).hasOperands(const, nonconst) and
-    state = "-" + const.getValue() and
+    state = -const.getValue().toInt() and
     hasSizeImpl(nonconst, n, _)
   )
 }
@@ -83,7 +84,7 @@ private predicate hasSizeImpl(Expr e, DataFlow::Node n, string state) {
  * Holds if `(n, state)` pair represents the source of flow for the size
  * expression associated with `alloc`.
  */
-predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, string state) {
+predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
   hasSizeImpl(alloc.getSizeExpr(), n, state)
 }
 
@@ -108,9 +109,9 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, string state)
  * is non-strictly upper-bounded by `end` (which in this case is `*p`).
  */
 module AllocToInvalidPointerConfig implements ProductFlow::StateConfigSig {
-  class FlowState1 = string;
+  class FlowState1 = Unit;
 
-  class FlowState2 = string;
+  class FlowState2 = int;
 
   predicate isSourcePair(
     DataFlow::Node source1, FlowState1 state1, DataFlow::Node source2, FlowState2 state2
@@ -121,19 +122,19 @@ module AllocToInvalidPointerConfig implements ProductFlow::StateConfigSig {
     // ```
     // we use `state2` to remember that there was an offset (in this case an offset of `1`) added
     // to the size of the allocation. This state is then checked in `isSinkPair`.
-    state1 = "" and
+    exists(state1) and
     hasSize(source1.asConvertedExpr(), source2, state2)
   }
 
   predicate isSinkPair(
     DataFlow::Node sink1, FlowState1 state1, DataFlow::Node sink2, FlowState2 state2
   ) {
-    state1 = "" and
+    exists(state1) and
     // We check that the delta computed by the range analysis matches the
     // state value that we set in `isSourcePair`.
     exists(int delta |
       isSinkImpl(_, sink1, sink2, delta) and
-      state2 = delta.toString()
+      state2 = delta
     )
   }
 
