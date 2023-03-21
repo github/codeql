@@ -12,7 +12,95 @@ private import semmle.code.cpp.ir.ValueNumbering
 module SemanticExprConfig {
   class Location = Cpp::Location;
 
-  class Expr = IR::Instruction;
+  /** A `ConvertInstruction` or a `CopyValueInstruction`. */
+  private class Conversion extends IR::UnaryInstruction {
+    Conversion() {
+      this instanceof IR::CopyValueInstruction
+      or
+      this instanceof IR::ConvertInstruction
+    }
+
+    /** Holds if this instruction converts a value of type `tFrom` to a value of type `tTo`. */
+    predicate converts(SemType tFrom, SemType tTo) {
+      exists(IR::ConvertInstruction convert |
+        this = convert and
+        tFrom = getSemanticType(convert.getUnary().getResultIRType()) and
+        tTo = getSemanticType(convert.getResultIRType())
+      )
+      or
+      exists(IR::CopyValueInstruction copy |
+        this = copy and
+        tFrom = getSemanticType(copy.getUnary().getResultIRType()) and
+        tTo = getSemanticType(copy.getResultIRType())
+      )
+    }
+  }
+
+  /**
+   * Gets a conversion-like instruction that consumes `op`, and
+   * which is guaranteed to not overflow.
+   */
+  private IR::Instruction safeConversion(IR::Operand op) {
+    exists(Conversion conv, SemType tFrom, SemType tTo |
+      conv.converts(tFrom, tTo) and
+      conversionCannotOverflow(tFrom, tTo) and
+      conv.getUnaryOperand() = op and
+      result = conv
+    )
+  }
+
+  /** Holds if `i1 = i2` or if `i2` is a safe conversion that consumes `i1`. */
+  private predicate idOrSafeConversion(IR::Instruction i1, IR::Instruction i2) {
+    not i1.getResultIRType() instanceof IR::IRVoidType and
+    (
+      i1 = i2
+      or
+      i2 = safeConversion(i1.getAUse())
+    )
+  }
+
+  module Equiv = QlBuiltins::EquivalenceRelation<IR::Instruction, idOrSafeConversion/2>;
+
+  /**
+   * The expressions on which we perform range analysis.
+   */
+  class Expr extends Equiv::EquivalenceClass {
+    /** Gets the n'th instruction in this equivalence class. */
+    private IR::Instruction getInstruction(int n) {
+      result =
+        rank[n + 1](IR::Instruction instr, int i, IR::IRBlock block |
+          this = Equiv::getEquivalenceClass(instr) and block.getInstruction(i) = instr
+        |
+          instr order by i
+        )
+    }
+
+    /** Gets a textual representation of this element. */
+    string toString() { result = this.getUnconverted().toString() }
+
+    /** Gets the basic block of this expression. */
+    IR::IRBlock getBlock() { result = getInstruction(0).getBlock() }
+
+    /** Gets the unconverted instruction associated with this expression. */
+    IR::Instruction getUnconverted() { result = this.getInstruction(0) }
+
+    /**
+     * Gets the final instruction associated with this expression. This
+     * represents the result after applying all the safe conversions.
+     */
+    IR::Instruction getConverted() {
+      exists(int n |
+        result = this.getInstruction(n) and
+        not exists(this.getInstruction(n + 1))
+      )
+    }
+
+    /** Gets the type of the result produced by this instruction. */
+    IR::IRType getResultIRType() { result = this.getConverted().getResultIRType() }
+
+    /** Gets the location of the source code for this expression. */
+    Location getLocation() { result = this.getUnconverted().getLocation() }
+  }
 
   SemBasicBlock getExprBasicBlock(Expr e) { result = getSemanticBasicBlock(e.getBlock()) }
 
