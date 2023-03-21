@@ -4,16 +4,46 @@ edges
 | builtin.go:97:21:97:31 | call to Referer | builtin.go:101:36:101:49 | untrustedInput |
 | builtin.go:111:21:111:31 | call to Referer | builtin.go:114:15:114:28 | untrustedInput |
 | builtin.go:129:21:129:31 | call to Referer | builtin.go:132:38:132:51 | untrustedInput |
-| new-tests.go:26:26:26:30 | &... | new-tests.go:31:11:31:57 | call to Sprintf |
-| new-tests.go:26:26:26:30 | &... | new-tests.go:32:11:32:57 | call to Sprintf |
-| new-tests.go:26:26:26:30 | &... | new-tests.go:35:12:35:58 | call to Sprintf |
+| file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll |
+| file://:0:0:0:0 | parameter 0 of TrimPrefix | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimPrefix |
+| file://:0:0:0:0 | parameter 0 of Unmarshal | file://:0:0:0:0 | [summary] to write: argument 1 in Unmarshal |
+| file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf |
+| file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
+| file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query |
+| new-tests.go:26:26:26:30 | &... | new-tests.go:31:48:31:56 | selection of word |
+| new-tests.go:26:26:26:30 | &... | new-tests.go:32:48:32:56 | selection of safe |
+| new-tests.go:26:26:26:30 | &... | new-tests.go:35:49:35:57 | selection of word |
+| new-tests.go:31:48:31:56 | selection of word | file://:0:0:0:0 | parameter 1 of Sprintf |
+| new-tests.go:31:48:31:56 | selection of word | new-tests.go:31:11:31:57 | call to Sprintf |
+| new-tests.go:32:48:32:56 | selection of safe | file://:0:0:0:0 | parameter 1 of Sprintf |
+| new-tests.go:32:48:32:56 | selection of safe | new-tests.go:32:11:32:57 | call to Sprintf |
+| new-tests.go:35:49:35:57 | selection of word | file://:0:0:0:0 | parameter 1 of Sprintf |
+| new-tests.go:35:49:35:57 | selection of word | new-tests.go:35:12:35:58 | call to Sprintf |
 | new-tests.go:39:18:39:30 | call to Param | new-tests.go:47:11:47:46 | ...+... |
 | new-tests.go:49:18:49:30 | call to Query | new-tests.go:50:11:50:46 | ...+... |
-| new-tests.go:62:31:62:38 | selection of Body | new-tests.go:68:11:68:57 | call to Sprintf |
-| new-tests.go:62:31:62:38 | selection of Body | new-tests.go:69:11:69:57 | call to Sprintf |
-| new-tests.go:62:31:62:38 | selection of Body | new-tests.go:74:12:74:58 | call to Sprintf |
-| new-tests.go:78:18:78:24 | selection of URL | new-tests.go:79:11:79:46 | ...+... |
-| new-tests.go:81:37:81:43 | selection of URL | new-tests.go:82:11:82:46 | ...+... |
+| new-tests.go:62:2:62:39 | ... := ...[0] | new-tests.go:63:17:63:23 | reqBody |
+| new-tests.go:62:31:62:38 | selection of Body | file://:0:0:0:0 | parameter 0 of ReadAll |
+| new-tests.go:62:31:62:38 | selection of Body | new-tests.go:62:2:62:39 | ... := ...[0] |
+| new-tests.go:63:17:63:23 | reqBody | file://:0:0:0:0 | parameter 0 of Unmarshal |
+| new-tests.go:63:17:63:23 | reqBody | new-tests.go:63:26:63:30 | &... |
+| new-tests.go:63:26:63:30 | &... | new-tests.go:68:48:68:56 | selection of word |
+| new-tests.go:63:26:63:30 | &... | new-tests.go:69:48:69:56 | selection of safe |
+| new-tests.go:63:26:63:30 | &... | new-tests.go:74:49:74:57 | selection of word |
+| new-tests.go:68:48:68:56 | selection of word | file://:0:0:0:0 | parameter 1 of Sprintf |
+| new-tests.go:68:48:68:56 | selection of word | new-tests.go:68:11:68:57 | call to Sprintf |
+| new-tests.go:69:48:69:56 | selection of safe | file://:0:0:0:0 | parameter 1 of Sprintf |
+| new-tests.go:69:48:69:56 | selection of safe | new-tests.go:69:11:69:57 | call to Sprintf |
+| new-tests.go:74:49:74:57 | selection of word | file://:0:0:0:0 | parameter 1 of Sprintf |
+| new-tests.go:74:49:74:57 | selection of word | new-tests.go:74:12:74:58 | call to Sprintf |
+| new-tests.go:78:18:78:24 | selection of URL | file://:0:0:0:0 | parameter -1 of Query |
+| new-tests.go:78:18:78:24 | selection of URL | new-tests.go:78:18:78:32 | call to Query |
+| new-tests.go:78:18:78:32 | call to Query | file://:0:0:0:0 | parameter -1 of Get |
+| new-tests.go:78:18:78:32 | call to Query | new-tests.go:78:18:78:46 | call to Get |
+| new-tests.go:78:18:78:46 | call to Get | new-tests.go:79:11:79:46 | ...+... |
+| new-tests.go:81:18:81:67 | call to TrimPrefix | new-tests.go:82:11:82:46 | ...+... |
+| new-tests.go:81:37:81:43 | selection of URL | new-tests.go:81:37:81:48 | selection of Path |
+| new-tests.go:81:37:81:48 | selection of Path | file://:0:0:0:0 | parameter 0 of TrimPrefix |
+| new-tests.go:81:37:81:48 | selection of Path | new-tests.go:81:18:81:67 | call to TrimPrefix |
 | new-tests.go:86:10:86:20 | call to Vars | new-tests.go:88:11:88:46 | ...+... |
 | new-tests.go:95:18:95:45 | call to URLParam | new-tests.go:96:11:96:46 | ...+... |
 nodes
@@ -27,27 +57,63 @@ nodes
 | builtin.go:114:15:114:28 | untrustedInput | semmle.label | untrustedInput |
 | builtin.go:129:21:129:31 | call to Referer | semmle.label | call to Referer |
 | builtin.go:132:38:132:51 | untrustedInput | semmle.label | untrustedInput |
+| file://:0:0:0:0 | [summary] to write: argument 1 in Unmarshal | semmle.label | [summary] to write: argument 1 in Unmarshal |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | semmle.label | [summary] to write: return (return[0]) in Get |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | semmle.label | [summary] to write: return (return[0]) in Query |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | semmle.label | [summary] to write: return (return[0]) in ReadAll |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | semmle.label | [summary] to write: return (return[0]) in Sprintf |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimPrefix | semmle.label | [summary] to write: return (return[0]) in TrimPrefix |
+| file://:0:0:0:0 | parameter 0 of ReadAll | semmle.label | parameter 0 of ReadAll |
+| file://:0:0:0:0 | parameter 0 of TrimPrefix | semmle.label | parameter 0 of TrimPrefix |
+| file://:0:0:0:0 | parameter 0 of Unmarshal | semmle.label | parameter 0 of Unmarshal |
+| file://:0:0:0:0 | parameter 1 of Sprintf | semmle.label | parameter 1 of Sprintf |
+| file://:0:0:0:0 | parameter -1 of Get | semmle.label | parameter -1 of Get |
+| file://:0:0:0:0 | parameter -1 of Query | semmle.label | parameter -1 of Query |
 | new-tests.go:26:26:26:30 | &... | semmle.label | &... |
 | new-tests.go:31:11:31:57 | call to Sprintf | semmle.label | call to Sprintf |
+| new-tests.go:31:48:31:56 | selection of word | semmle.label | selection of word |
 | new-tests.go:32:11:32:57 | call to Sprintf | semmle.label | call to Sprintf |
+| new-tests.go:32:48:32:56 | selection of safe | semmle.label | selection of safe |
 | new-tests.go:35:12:35:58 | call to Sprintf | semmle.label | call to Sprintf |
+| new-tests.go:35:49:35:57 | selection of word | semmle.label | selection of word |
 | new-tests.go:39:18:39:30 | call to Param | semmle.label | call to Param |
 | new-tests.go:47:11:47:46 | ...+... | semmle.label | ...+... |
 | new-tests.go:49:18:49:30 | call to Query | semmle.label | call to Query |
 | new-tests.go:50:11:50:46 | ...+... | semmle.label | ...+... |
+| new-tests.go:62:2:62:39 | ... := ...[0] | semmle.label | ... := ...[0] |
 | new-tests.go:62:31:62:38 | selection of Body | semmle.label | selection of Body |
+| new-tests.go:63:17:63:23 | reqBody | semmle.label | reqBody |
+| new-tests.go:63:26:63:30 | &... | semmle.label | &... |
 | new-tests.go:68:11:68:57 | call to Sprintf | semmle.label | call to Sprintf |
+| new-tests.go:68:48:68:56 | selection of word | semmle.label | selection of word |
 | new-tests.go:69:11:69:57 | call to Sprintf | semmle.label | call to Sprintf |
+| new-tests.go:69:48:69:56 | selection of safe | semmle.label | selection of safe |
 | new-tests.go:74:12:74:58 | call to Sprintf | semmle.label | call to Sprintf |
+| new-tests.go:74:49:74:57 | selection of word | semmle.label | selection of word |
 | new-tests.go:78:18:78:24 | selection of URL | semmle.label | selection of URL |
+| new-tests.go:78:18:78:32 | call to Query | semmle.label | call to Query |
+| new-tests.go:78:18:78:46 | call to Get | semmle.label | call to Get |
 | new-tests.go:79:11:79:46 | ...+... | semmle.label | ...+... |
+| new-tests.go:81:18:81:67 | call to TrimPrefix | semmle.label | call to TrimPrefix |
 | new-tests.go:81:37:81:43 | selection of URL | semmle.label | selection of URL |
+| new-tests.go:81:37:81:48 | selection of Path | semmle.label | selection of Path |
 | new-tests.go:82:11:82:46 | ...+... | semmle.label | ...+... |
 | new-tests.go:86:10:86:20 | call to Vars | semmle.label | call to Vars |
 | new-tests.go:88:11:88:46 | ...+... | semmle.label | ...+... |
 | new-tests.go:95:18:95:45 | call to URLParam | semmle.label | call to URLParam |
 | new-tests.go:96:11:96:46 | ...+... | semmle.label | ...+... |
 subpaths
+| new-tests.go:31:48:31:56 | selection of word | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | new-tests.go:31:11:31:57 | call to Sprintf |
+| new-tests.go:32:48:32:56 | selection of safe | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | new-tests.go:32:11:32:57 | call to Sprintf |
+| new-tests.go:35:49:35:57 | selection of word | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | new-tests.go:35:12:35:58 | call to Sprintf |
+| new-tests.go:62:31:62:38 | selection of Body | file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | new-tests.go:62:2:62:39 | ... := ...[0] |
+| new-tests.go:63:17:63:23 | reqBody | file://:0:0:0:0 | parameter 0 of Unmarshal | file://:0:0:0:0 | [summary] to write: argument 1 in Unmarshal | new-tests.go:63:26:63:30 | &... |
+| new-tests.go:68:48:68:56 | selection of word | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | new-tests.go:68:11:68:57 | call to Sprintf |
+| new-tests.go:69:48:69:56 | selection of safe | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | new-tests.go:69:11:69:57 | call to Sprintf |
+| new-tests.go:74:49:74:57 | selection of word | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | new-tests.go:74:12:74:58 | call to Sprintf |
+| new-tests.go:78:18:78:24 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | new-tests.go:78:18:78:32 | call to Query |
+| new-tests.go:78:18:78:32 | call to Query | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | new-tests.go:78:18:78:46 | call to Get |
+| new-tests.go:81:37:81:48 | selection of Path | file://:0:0:0:0 | parameter 0 of TrimPrefix | file://:0:0:0:0 | [summary] to write: return (return[0]) in TrimPrefix | new-tests.go:81:18:81:67 | call to TrimPrefix |
 #select
 | builtin.go:22:12:22:63 | call to Get | builtin.go:19:12:19:34 | call to FormValue | builtin.go:22:21:22:62 | ...+... | The URL of this request depends on a user-provided value. |
 | builtin.go:88:12:88:53 | call to Dial | builtin.go:83:21:83:31 | call to Referer | builtin.go:88:27:88:40 | untrustedInput | The URL of this request depends on a user-provided value. |
