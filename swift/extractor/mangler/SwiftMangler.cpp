@@ -196,6 +196,9 @@ SwiftMangledName SwiftMangler::visitAnyFunctionType(const swift::AnyFunctionType
     if (param.isShared()) {
       ret << "_shared";
     }
+    if (param.isIsolated()) {
+      ret << "_isolated";
+    }
     if (param.isVariadic()) {
       ret << "...";
     }
