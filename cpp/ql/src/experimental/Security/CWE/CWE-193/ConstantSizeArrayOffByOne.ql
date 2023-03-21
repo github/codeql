@@ -15,8 +15,7 @@ import experimental.semmle.code.cpp.semantic.SemanticBound
 import experimental.semmle.code.cpp.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.DataFlow
-import semmle.code.cpp.ir.dataflow.DataFlow2
-import DataFlow2::PathGraph
+import PointerArithmeticToDerefFlow::PathGraph
 
 pragma[nomagic]
 Instruction getABoundIn(SemBound b, IRFunction func) {
@@ -36,15 +35,15 @@ predicate bounded(Instruction i, Instruction b, int delta) {
   )
 }
 
-class FieldAddressToPointerArithmeticConf extends DataFlow::Configuration {
-  FieldAddressToPointerArithmeticConf() { this = "FieldAddressToPointerArithmeticConf" }
+module FieldAddressToPointerArithmeticConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isFieldAddressSource(_, source) }
 
-  override predicate isSource(DataFlow::Node source) { isFieldAddressSource(_, source) }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(PointerAddInstruction pai | pai.getLeft() = sink.asInstruction())
   }
 }
+
+module FieldAddressToPointerArithmeticFlow = DataFlow::Make<FieldAddressToPointerArithmeticConfig>;
 
 predicate isFieldAddressSource(Field f, DataFlow::Node source) {
   source.asInstruction().(FieldAddressInstruction).getField() = f
@@ -70,11 +69,8 @@ predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string o
 }
 
 predicate isConstantSizeOverflowSource(Field f, PointerAddInstruction pai, int delta) {
-  exists(
-    int size, int bound, FieldAddressToPointerArithmeticConf conf, DataFlow::Node source,
-    DataFlow::InstructionNode sink
-  |
-    conf.hasFlow(source, sink) and
+  exists(int size, int bound, DataFlow::Node source, DataFlow::InstructionNode sink |
+    FieldAddressToPointerArithmeticFlow::hasFlow(source, sink) and
     isFieldAddressSource(f, source) and
     pai.getLeft() = sink.asInstruction() and
     f.getUnspecifiedType().(ArrayType).getArraySize() = size and
@@ -86,21 +82,21 @@ predicate isConstantSizeOverflowSource(Field f, PointerAddInstruction pai, int d
   )
 }
 
-class PointerArithmeticToDerefConf extends DataFlow2::Configuration {
-  PointerArithmeticToDerefConf() { this = "PointerArithmeticToDerefConf" }
-
-  override predicate isSource(DataFlow::Node source) {
+module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     isConstantSizeOverflowSource(_, source.asInstruction(), _)
   }
 
-  override predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _) }
+  predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _) }
 }
 
+module PointerArithmeticToDerefFlow = DataFlow::Make<PointerArithmeticToDerefConfig>;
+
 from
-  Field f, DataFlow2::PathNode source, DataFlow2::PathNode sink, Instruction deref,
-  PointerArithmeticToDerefConf conf, string operation, int delta
+  Field f, PointerArithmeticToDerefFlow::PathNode source,
+  PointerArithmeticToDerefFlow::PathNode sink, Instruction deref, string operation, int delta
 where
-  conf.hasFlowPath(source, sink) and
+  PointerArithmeticToDerefFlow::hasFlowPath(source, sink) and
   isInvalidPointerDerefSink(sink.getNode(), deref, operation) and
   isConstantSizeOverflowSource(f, source.getNode().asInstruction(), delta)
 select source, source, sink,

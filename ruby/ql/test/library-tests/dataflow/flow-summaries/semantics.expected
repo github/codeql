@@ -248,6 +248,26 @@ edges
 | semantics.rb:221:14:221:14 | h [element 2] :  | semantics.rb:221:10:221:15 | call to s27 |
 | semantics.rb:221:14:221:14 | h [element] :  | semantics.rb:221:10:221:15 | call to s27 |
 | semantics.rb:221:14:221:14 | h [element] :  | semantics.rb:221:10:221:15 | call to s27 |
+| semantics.rb:225:9:225:18 | call to source :  | semantics.rb:226:13:226:13 | a :  |
+| semantics.rb:225:9:225:18 | call to source :  | semantics.rb:226:13:226:13 | a :  |
+| semantics.rb:226:9:226:14 | call to s28 [element] :  | semantics.rb:227:10:227:10 | x [element] :  |
+| semantics.rb:226:9:226:14 | call to s28 [element] :  | semantics.rb:227:10:227:10 | x [element] :  |
+| semantics.rb:226:9:226:14 | call to s28 [element] :  | semantics.rb:228:10:228:10 | x [element] :  |
+| semantics.rb:226:9:226:14 | call to s28 [element] :  | semantics.rb:228:10:228:10 | x [element] :  |
+| semantics.rb:226:9:226:14 | call to s28 [element] :  | semantics.rb:229:10:229:10 | x [element] :  |
+| semantics.rb:226:9:226:14 | call to s28 [element] :  | semantics.rb:229:10:229:10 | x [element] :  |
+| semantics.rb:226:9:226:14 | call to s28 [element] :  | semantics.rb:230:10:230:10 | x [element] :  |
+| semantics.rb:226:9:226:14 | call to s28 [element] :  | semantics.rb:230:10:230:10 | x [element] :  |
+| semantics.rb:226:13:226:13 | a :  | semantics.rb:226:9:226:14 | call to s28 [element] :  |
+| semantics.rb:226:13:226:13 | a :  | semantics.rb:226:9:226:14 | call to s28 [element] :  |
+| semantics.rb:227:10:227:10 | x [element] :  | semantics.rb:227:10:227:13 | ...[...] |
+| semantics.rb:227:10:227:10 | x [element] :  | semantics.rb:227:10:227:13 | ...[...] |
+| semantics.rb:228:10:228:10 | x [element] :  | semantics.rb:228:10:228:13 | ...[...] |
+| semantics.rb:228:10:228:10 | x [element] :  | semantics.rb:228:10:228:13 | ...[...] |
+| semantics.rb:229:10:229:10 | x [element] :  | semantics.rb:229:10:229:13 | ...[...] |
+| semantics.rb:229:10:229:10 | x [element] :  | semantics.rb:229:10:229:13 | ...[...] |
+| semantics.rb:230:10:230:10 | x [element] :  | semantics.rb:230:10:230:13 | ...[...] |
+| semantics.rb:230:10:230:10 | x [element] :  | semantics.rb:230:10:230:13 | ...[...] |
 | semantics.rb:235:9:235:18 | call to source :  | semantics.rb:240:5:240:5 | [post] h [element 1] :  |
 | semantics.rb:235:9:235:18 | call to source :  | semantics.rb:240:5:240:5 | [post] h [element 1] :  |
 | semantics.rb:236:9:236:18 | call to source :  | semantics.rb:241:5:241:5 | [post] h [element 2] :  |
@@ -1206,6 +1226,28 @@ nodes
 | semantics.rb:221:14:221:14 | h [element 2] :  | semmle.label | h [element 2] :  |
 | semantics.rb:221:14:221:14 | h [element] :  | semmle.label | h [element] :  |
 | semantics.rb:221:14:221:14 | h [element] :  | semmle.label | h [element] :  |
+| semantics.rb:225:9:225:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:225:9:225:18 | call to source :  | semmle.label | call to source :  |
+| semantics.rb:226:9:226:14 | call to s28 [element] :  | semmle.label | call to s28 [element] :  |
+| semantics.rb:226:9:226:14 | call to s28 [element] :  | semmle.label | call to s28 [element] :  |
+| semantics.rb:226:13:226:13 | a :  | semmle.label | a :  |
+| semantics.rb:226:13:226:13 | a :  | semmle.label | a :  |
+| semantics.rb:227:10:227:10 | x [element] :  | semmle.label | x [element] :  |
+| semantics.rb:227:10:227:10 | x [element] :  | semmle.label | x [element] :  |
+| semantics.rb:227:10:227:13 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:227:10:227:13 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:228:10:228:10 | x [element] :  | semmle.label | x [element] :  |
+| semantics.rb:228:10:228:10 | x [element] :  | semmle.label | x [element] :  |
+| semantics.rb:228:10:228:13 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:228:10:228:13 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:229:10:229:10 | x [element] :  | semmle.label | x [element] :  |
+| semantics.rb:229:10:229:10 | x [element] :  | semmle.label | x [element] :  |
+| semantics.rb:229:10:229:13 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:229:10:229:13 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:230:10:230:10 | x [element] :  | semmle.label | x [element] :  |
+| semantics.rb:230:10:230:10 | x [element] :  | semmle.label | x [element] :  |
+| semantics.rb:230:10:230:13 | ...[...] | semmle.label | ...[...] |
+| semantics.rb:230:10:230:13 | ...[...] | semmle.label | ...[...] |
 | semantics.rb:235:9:235:18 | call to source :  | semmle.label | call to source :  |
 | semantics.rb:235:9:235:18 | call to source :  | semmle.label | call to source :  |
 | semantics.rb:236:9:236:18 | call to source :  | semmle.label | call to source :  |
