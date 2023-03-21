@@ -25,7 +25,7 @@ predicate isUnsafeClientSideAzureStorageEncryptionViaAttributes(Call call, AttrN
   |
     s1 in ["key_encryption_key", "key_resolver_function"] and
     s2 in ["ContainerClient", "BlobClient", "BlobServiceClient"] and
-    s3 in ["upload_blob"] and
+    s3 = "upload_blob" and
     n = API::moduleImport("azure").getMember("storage").getMember("blob").getMember(s2).getAMember() and
     startingNode = n.getACall().getReturn().getAValueReachableFromSource().asExpr().getAFlowNode() and
     startingNode.strictlyReaches(ctrlFlowNode) and
