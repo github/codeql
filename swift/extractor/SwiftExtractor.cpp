@@ -62,6 +62,13 @@ static std::string mangledDeclName(const swift::Decl& decl) {
     // prefix adds a couple of special symbols, we don't necessary need them
     return mangler.mangleEntity(&valueDecl);
   }
+  if (decl.getKind() == swift::DeclKind::GenericTypeParam) {
+    // internal mangling does not distinguish generic type parameters with the same name and
+    // position of different functions. We prepend the context (that is, the function) to
+    // circumvent that
+    return mangledDeclName(*decl.getDeclContext()->getAsDecl()) +
+           mangler.mangleAnyDecl(&valueDecl, /* prefix = */ false);
+  }
   return mangler.mangleAnyDecl(&valueDecl, /* prefix = */ false);
 }
 
@@ -72,6 +79,8 @@ static fs::path getFilename(swift::ModuleDecl& module,
     return resolvePath(primaryFile->getFilename());
   }
   if (lazyDeclaration) {
+    //    static int i;
+    //    return mangledDeclName(*lazyDeclaration) + std::to_string(i++);
     return mangledDeclName(*lazyDeclaration);
   }
   // PCM clang module

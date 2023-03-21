@@ -43,7 +43,7 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   static SwiftMangledName visitDecl(const swift::Decl* decl) { return {}; }
 
   // current default, falling back to internal mangling
-  SwiftMangledName visitValueDecl(const swift::ValueDecl* decl);
+  SwiftMangledName visitValueDecl(const swift::ValueDecl* decl, bool force = false);
 
   SwiftMangledName visitModuleDecl(const swift::ModuleDecl* decl);
   SwiftMangledName visitExtensionDecl(const swift::ExtensionDecl* decl);
@@ -51,6 +51,8 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitSubscriptDecl(const swift::SubscriptDecl* decl);
   SwiftMangledName visitVarDecl(const swift::VarDecl* decl);
   SwiftMangledName visitGenericTypeDecl(const swift::GenericTypeDecl* decl);
+  SwiftMangledName visitAbstractTypeParamDecl(const swift::AbstractTypeParamDecl* decl);
+  SwiftMangledName visitGenericTypeParamDecl(const swift::GenericTypeParamDecl* decl);
 
   // default fallback for not yet mangled types. This should never be called in normal situations
   // TODO: make it assert once we mangle all types
@@ -79,6 +81,7 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitDictionaryType(const swift::DictionaryType* type);
   SwiftMangledName visitTypeAliasType(const swift::TypeAliasType* type);
   SwiftMangledName visitArchetypeType(const swift::ArchetypeType* type);
+  SwiftMangledName visitOpaqueTypeArchetypeType(const swift::OpaqueTypeArchetypeType* type);
   SwiftMangledName visitProtocolCompositionType(const swift::ProtocolCompositionType* type);
   SwiftMangledName visitParenType(const swift::ParenType* type);
   SwiftMangledName visitLValueType(const swift::LValueType* type);

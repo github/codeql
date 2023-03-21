@@ -31,6 +31,7 @@ class UntypedTrapLabel {
   explicit operator bool() const { return valid(); }
 
   std::string str() const {
+    assert(valid() && "outputting an undefined label!");
     char buffer[1 + 2 * sizeof(id_) + 1] = "#";
     std::to_chars(buffer + 1, buffer + sizeof(buffer), id_, 16);
     return buffer;
