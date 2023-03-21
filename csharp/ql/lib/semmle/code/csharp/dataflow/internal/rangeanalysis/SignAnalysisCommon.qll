@@ -45,10 +45,6 @@ private Sign certainExprSign(Expr e) {
 private predicate unknownSign(Expr e) {
   not exists(certainExprSign(e)) and
   (
-    exists(IntegerLiteral lit | lit = e and not exists(lit.getValue().toInt()))
-    or
-    exists(LongLiteral lit | lit = e and not exists(lit.getValue().toFloat()))
-    or
     exists(CastingExpr cast, Type fromtyp |
       cast = e and
       fromtyp = cast.getSourceType() and
