@@ -68,6 +68,7 @@ assignments
 | operations.rb:104:1:104:3 | ... = ... | = | operations.rb:104:1:104:3 | FOO | operations.rb:104:1:104:3 | call to [] | AssignExpr |
 | operations.rb:104:1:104:32 | ... = ... | = | operations.rb:104:1:104:20 | (..., ...) | operations.rb:104:24:104:32 | [...] | AssignExpr |
 | operations.rb:104:6:104:10 | ... = ... | = | operations.rb:104:6:104:10 | BAR | operations.rb:104:6:104:10 | call to [] | AssignExpr |
+| operations.rb:104:13:104:15 | ... = ... | = | operations.rb:104:13:104:15 | __synth__2 | operations.rb:104:13:104:15 | foo | AssignExpr |
 | operations.rb:104:13:104:20 | ... = ... | = | operations.rb:104:13:104:20 | FOO | operations.rb:104:13:104:20 | call to [] | AssignExpr |
 | operations.rb:104:24:104:32 | ... = ... | = | operations.rb:104:24:104:32 | __synth__3 | operations.rb:104:24:104:32 | * ... | AssignExpr |
 assignOperations

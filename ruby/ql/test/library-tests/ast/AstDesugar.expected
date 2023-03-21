@@ -959,8 +959,11 @@ operations/operations.rb:
 #  104|         getReceiver: [LocalVariableAccess] __synth__3
 #  104|         getArgument: [IntegerLiteral] 1
 #  104|     getStmt: [AssignExpr] ... = ...
+#  104|       getAnOperand/getRightOperand: [LocalVariableAccess] foo
+#  104|       getAnOperand/getLeftOperand: [LocalVariableAccess] __synth__2
+#  104|     getStmt: [AssignExpr] ... = ...
 #  104|       getAnOperand/getLeftOperand: [ConstantAssignment] FOO
-#  104|         getScopeExpr: [LocalVariableAccess] foo
+#  104|         getScopeExpr: [LocalVariableAccess] __synth__2
 #  104|       getAnOperand/getRightOperand: [MethodCall] call to []
 #  104|         getReceiver: [LocalVariableAccess] __synth__3
 #  104|         getArgument: [IntegerLiteral] 2
