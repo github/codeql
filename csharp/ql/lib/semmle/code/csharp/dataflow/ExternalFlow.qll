@@ -248,7 +248,7 @@ module ModelValidation {
       not ext.regexpMatch("|Attribute") and
       result = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
       or
-      not provenance = ["manual", "generated"] and
+      invalidProvenance(provenance) and
       result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
   }
