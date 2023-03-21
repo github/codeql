@@ -21,6 +21,7 @@ struct SwiftMangledName {
   // streaming labels or ints into a SwiftMangledName just appends them
   template <typename Tag>
   SwiftMangledName& operator<<(TrapLabel<Tag> label) {
+    assert(label && "using undefined label in mangled name");
     parts.emplace_back(label);
     return *this;
   }

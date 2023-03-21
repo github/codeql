@@ -44,6 +44,7 @@ class UntypedTrapLabel {
   }
 
   std::string str() const {
+    assert(valid() && "outputting an undefined label!");
     std::string ret(strSize(), '\0');
     ret[0] = '#';
     std::to_chars(ret.data() + 1, ret.data() + ret.size(), id_, 16);
