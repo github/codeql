@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: experimentalSummaryModel
     data:
-      - ["org.apache.logging.log4j.message", "MapMessage", True, "put", "", "", "Argument[1]", "Argument[-1]", "taint", "manual", "log4j-injection"]
-      - ["org.apache.logging.log4j.message", "MapMessage", True, "putAll", "", "", "Argument[0].MapValue", "Argument[-1]", "taint", "manual", "log4j-injection"]
-      - ["org.apache.logging.log4j.message", "MapMessage", True, "with", "", "", "Argument[-1]", "ReturnValue", "value", "manual", "log4j-injection"]
-      - ["org.apache.logging.log4j.message", "MapMessage", True, "with", "", "", "Argument[1]", "Argument[-1]", "taint", "manual", "log4j-injection"]
+      - ["org.apache.logging.log4j.message", "MapMessage", True, "put", "", "", "Argument[1]", "Argument[this]", "taint", "manual", "log4j-injection"]
+      - ["org.apache.logging.log4j.message", "MapMessage", True, "putAll", "", "", "Argument[0].MapValue", "Argument[this]", "taint", "manual", "log4j-injection"]
+      - ["org.apache.logging.log4j.message", "MapMessage", True, "with", "", "", "Argument[this]", "ReturnValue", "value", "manual", "log4j-injection"]
+      - ["org.apache.logging.log4j.message", "MapMessage", True, "with", "", "", "Argument[1]", "Argument[this]", "taint", "manual", "log4j-injection"]

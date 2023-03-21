@@ -42,203 +42,203 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "android.content;ContentProviderClient;true;applyBatch;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderClient;true;applyBatch;;;Argument[this];ReturnValue;taint;manual"
 			ContentProviderResult[] out = null;
 			ContentProviderClient in = (ContentProviderClient) source();
 			out = in.applyBatch(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderClient;true;applyBatch;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderClient;true;applyBatch;;;Argument[this];ReturnValue;taint;manual"
 			ContentProviderResult[] out = null;
 			ContentProviderClient in = (ContentProviderClient) source();
 			out = in.applyBatch(null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderClient;true;call;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderClient;true;call;;;Argument[this];ReturnValue;taint;manual"
 			Bundle out = null;
 			ContentProviderClient in = (ContentProviderClient) source();
 			out = in.call(null, null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderClient;true;call;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderClient;true;call;;;Argument[this];ReturnValue;taint;manual"
 			Bundle out = null;
 			ContentProviderClient in = (ContentProviderClient) source();
 			out = in.call(null, null, null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderClient;true;canonicalize;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderClient;true;canonicalize;;;Argument[this];ReturnValue;taint;manual"
 			Uri out = null;
 			ContentProviderClient in = (ContentProviderClient) source();
 			out = in.canonicalize(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderClient;true;getLocalContentProvider;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderClient;true;getLocalContentProvider;;;Argument[this];ReturnValue;taint;manual"
 			ContentProvider out = null;
 			ContentProviderClient in = (ContentProviderClient) source();
 			out = in.getLocalContentProvider();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderClient;true;getStreamTypes;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderClient;true;getStreamTypes;;;Argument[this];ReturnValue;taint;manual"
 			String[] out = null;
 			ContentProviderClient in = (ContentProviderClient) source();
 			out = in.getStreamTypes(null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderClient;true;insert;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderClient;true;insert;;;Argument[this];ReturnValue;taint;manual"
 			Uri out = null;
 			ContentProviderClient in = (ContentProviderClient) source();
 			out = in.insert(null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderClient;true;insert;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderClient;true;insert;;;Argument[this];ReturnValue;taint;manual"
 			Uri out = null;
 			ContentProviderClient in = (ContentProviderClient) source();
 			out = in.insert(null, null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderClient;true;query;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderClient;true;query;;;Argument[this];ReturnValue;taint;manual"
 			Cursor out = null;
 			ContentProviderClient in = (ContentProviderClient) source();
 			out = in.query(null, null, null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderClient;true;query;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderClient;true;query;;;Argument[this];ReturnValue;taint;manual"
 			Cursor out = null;
 			ContentProviderClient in = (ContentProviderClient) source();
 			out = in.query(null, null, null, null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderClient;true;query;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderClient;true;query;;;Argument[this];ReturnValue;taint;manual"
 			Cursor out = null;
 			ContentProviderClient in = (ContentProviderClient) source();
 			out = in.query(null, null, null, null, null, null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderClient;true;uncanonicalize;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderClient;true;uncanonicalize;;;Argument[this];ReturnValue;taint;manual"
 			Uri out = null;
 			ContentProviderClient in = (ContentProviderClient) source();
 			out = in.uncanonicalize(null);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;build;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderOperation$Builder;false;build;;;Argument[this];ReturnValue;taint;manual"
 			ContentProviderOperation out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.build();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withExceptionAllowed;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withExceptionAllowed;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withExceptionAllowed(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withExpectedCount;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withExpectedCount;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withExpectedCount(0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withExtra;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withExtra;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withExtra(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withExtraBackReference;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withExtraBackReference;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withExtraBackReference(null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withExtraBackReference;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withExtraBackReference;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withExtraBackReference(null, 0, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withExtras;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withExtras;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withExtras(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withSelection;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withSelection;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withSelection(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withSelectionBackReference;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withSelectionBackReference;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withSelectionBackReference(0, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withSelectionBackReference;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withSelectionBackReference;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withSelectionBackReference(0, 0, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withValue;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withValue;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withValue(null, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withValueBackReference;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withValueBackReference;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withValueBackReference(null, 0);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withValueBackReference;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withValueBackReference;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withValueBackReference(null, 0, null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withValues;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withValues;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withValues(null);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation$Builder;false;withYieldAllowed;;;Argument[-1];ReturnValue;value;manual"
+			// "android.content;ContentProviderOperation$Builder;false;withYieldAllowed;;;Argument[this];ReturnValue;value;manual"
 			ContentProviderOperation.Builder out = null;
 			ContentProviderOperation.Builder in = (ContentProviderOperation.Builder) source();
 			out = in.withYieldAllowed(false);
 			sink(out); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderOperation;false;apply;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderOperation;false;apply;;;Argument[this];ReturnValue;taint;manual"
 			ContentProviderResult out = null;
 			ContentProviderOperation in = (ContentProviderOperation) source();
 			out = in.apply(null, null, 0);
@@ -253,7 +253,7 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderOperation;false;getUri;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.content;ContentProviderOperation;false;getUri;;;Argument[this];ReturnValue;taint;manual"
 			Uri out = null;
 			ContentProviderOperation in = (ContentProviderOperation) source();
 			out = in.getUri();
@@ -319,28 +319,28 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderResult;false;ContentProviderResult;(Bundle);;Argument[0];Argument[-1].Field[android.content.ContentProviderResult.extras];value;manual"
+			// "android.content;ContentProviderResult;false;ContentProviderResult;(Bundle);;Argument[0];Argument[this].Field[android.content.ContentProviderResult.extras];value;manual"
 			ContentProviderResult out = null;
 			Bundle in = (Bundle) source();
 			out = new ContentProviderResult(in);
 			sink(out.extras); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderResult;false;ContentProviderResult;(Parcel);;Argument[0];Argument[-1];taint;manual"
+			// "android.content;ContentProviderResult;false;ContentProviderResult;(Parcel);;Argument[0];Argument[this];taint;manual"
 			ContentProviderResult out = null;
 			Parcel in = (Parcel) source();
 			out = new ContentProviderResult(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentProviderResult;false;ContentProviderResult;(Throwable);;Argument[0];Argument[-1].Field[android.content.ContentProviderResult.exception];value;manual"
+			// "android.content;ContentProviderResult;false;ContentProviderResult;(Throwable);;Argument[0];Argument[this].Field[android.content.ContentProviderResult.exception];value;manual"
 			ContentProviderResult out = null;
 			Throwable in = (Throwable) source();
 			out = new ContentProviderResult(in);
 			sink(out.exception); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentProviderResult;false;ContentProviderResult;(Uri);;Argument[0];Argument[-1].Field[android.content.ContentProviderResult.uri];value;manual"
+			// "android.content;ContentProviderResult;false;ContentProviderResult;(Uri);;Argument[0];Argument[this].Field[android.content.ContentProviderResult.uri];value;manual"
 			ContentProviderResult out = null;
 			Uri in = (Uri) source();
 			out = new ContentProviderResult(in);
@@ -489,203 +489,203 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[0];Argument[-1].MapKey;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[0];Argument[this].MapKey;value;manual"
 			ContentValues out = null;
 			String in = (String) source();
 			out.put(in, (Boolean) null);
 			sink(getMapKeyDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[0];Argument[-1].MapKey;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[0];Argument[this].MapKey;value;manual"
 			ContentValues out = null;
 			String in = (String) source();
 			out.put(in, (Byte) null);
 			sink(getMapKeyDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[0];Argument[-1].MapKey;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[0];Argument[this].MapKey;value;manual"
 			ContentValues out = null;
 			String in = (String) source();
 			out.put(in, (Double) null);
 			sink(getMapKeyDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[0];Argument[-1].MapKey;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[0];Argument[this].MapKey;value;manual"
 			ContentValues out = null;
 			String in = (String) source();
 			out.put(in, (Float) null);
 			sink(getMapKeyDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[0];Argument[-1].MapKey;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[0];Argument[this].MapKey;value;manual"
 			ContentValues out = null;
 			String in = (String) source();
 			out.put(in, (Integer) null);
 			sink(getMapKeyDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[0];Argument[-1].MapKey;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[0];Argument[this].MapKey;value;manual"
 			ContentValues out = null;
 			String in = (String) source();
 			out.put(in, (Long) null);
 			sink(getMapKeyDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[0];Argument[-1].MapKey;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[0];Argument[this].MapKey;value;manual"
 			ContentValues out = null;
 			String in = (String) source();
 			out.put(in, (Short) null);
 			sink(getMapKeyDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[0];Argument[-1].MapKey;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[0];Argument[this].MapKey;value;manual"
 			ContentValues out = null;
 			String in = (String) source();
 			out.put(in, (String) null);
 			sink(getMapKeyDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[0];Argument[-1].MapKey;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[0];Argument[this].MapKey;value;manual"
 			ContentValues out = null;
 			String in = (String) source();
 			out.put(in, (byte[]) null);
 			sink(getMapKeyDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[1];Argument[-1].MapValue;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[1];Argument[this].MapValue;value;manual"
 			ContentValues out = null;
 			Boolean in = (Boolean) source();
 			out.put((String) null, in);
 			sink(getMapValueDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[1];Argument[-1].MapValue;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[1];Argument[this].MapValue;value;manual"
 			ContentValues out = null;
 			Byte in = (Byte) source();
 			out.put((String) null, in);
 			sink(getMapValueDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[1];Argument[-1].MapValue;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[1];Argument[this].MapValue;value;manual"
 			ContentValues out = null;
 			Double in = (Double) source();
 			out.put((String) null, in);
 			sink(getMapValueDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[1];Argument[-1].MapValue;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[1];Argument[this].MapValue;value;manual"
 			ContentValues out = null;
 			Float in = (Float) source();
 			out.put((String) null, in);
 			sink(getMapValueDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[1];Argument[-1].MapValue;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[1];Argument[this].MapValue;value;manual"
 			ContentValues out = null;
 			Integer in = (Integer) source();
 			out.put((String) null, in);
 			sink(getMapValueDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[1];Argument[-1].MapValue;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[1];Argument[this].MapValue;value;manual"
 			ContentValues out = null;
 			Long in = (Long) source();
 			out.put((String) null, in);
 			sink(getMapValueDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[1];Argument[-1].MapValue;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[1];Argument[this].MapValue;value;manual"
 			ContentValues out = null;
 			Short in = (Short) source();
 			out.put((String) null, in);
 			sink(getMapValueDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[1];Argument[-1].MapValue;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[1];Argument[this].MapValue;value;manual"
 			ContentValues out = null;
 			String in = (String) source();
 			out.put((String) null, in);
 			sink(getMapValueDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;put;;;Argument[1];Argument[-1].MapValue;value;manual"
+			// "android.content;ContentValues;false;put;;;Argument[1];Argument[this].MapValue;value;manual"
 			ContentValues out = null;
 			byte[] in = (byte[]) source();
 			out.put((String) null, in);
 			sink(getMapValueDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;putAll;;;Argument[0].MapKey;Argument[-1].MapKey;value;manual"
+			// "android.content;ContentValues;false;putAll;;;Argument[0].MapKey;Argument[this].MapKey;value;manual"
 			ContentValues out = null;
 			ContentValues in = (ContentValues) newWithMapKeyDefault(source());
 			out.putAll(in);
 			sink(getMapKeyDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.content;ContentValues;false;putAll;;;Argument[0].MapValue;Argument[-1].MapValue;value;manual"
+			// "android.content;ContentValues;false;putAll;;;Argument[0].MapValue;Argument[this].MapValue;value;manual"
 			ContentValues out = null;
 			ContentValues in = (ContentValues) newWithMapValueDefault(source());
 			out.putAll(in);
 			sink(getMapValueDefault(out)); // $ hasValueFlow
 		}
 		{
-			// "android.database;Cursor;true;copyStringToBuffer;;;Argument[-1];Argument[1];taint;manual"
+			// "android.database;Cursor;true;copyStringToBuffer;;;Argument[this];Argument[1];taint;manual"
 			CharArrayBuffer out = null;
 			Cursor in = (Cursor) source();
 			in.copyStringToBuffer(0, out);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.database;Cursor;true;getBlob;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.database;Cursor;true;getBlob;;;Argument[this];ReturnValue;taint;manual"
 			byte[] out = null;
 			Cursor in = (Cursor) source();
 			out = in.getBlob(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.database;Cursor;true;getColumnName;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.database;Cursor;true;getColumnName;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			Cursor in = (Cursor) source();
 			out = in.getColumnName(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.database;Cursor;true;getColumnNames;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.database;Cursor;true;getColumnNames;;;Argument[this];ReturnValue;taint;manual"
 			String[] out = null;
 			Cursor in = (Cursor) source();
 			out = in.getColumnNames();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.database;Cursor;true;getExtras;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.database;Cursor;true;getExtras;;;Argument[this];ReturnValue;taint;manual"
 			Bundle out = null;
 			Cursor in = (Cursor) source();
 			out = in.getExtras();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.database;Cursor;true;getNotificationUri;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.database;Cursor;true;getNotificationUri;;;Argument[this];ReturnValue;taint;manual"
 			Uri out = null;
 			Cursor in = (Cursor) source();
 			out = in.getNotificationUri();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.database;Cursor;true;getNotificationUris;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.database;Cursor;true;getNotificationUris;;;Argument[this];ReturnValue;taint;manual"
 			List out = null;
 			Cursor in = (Cursor) source();
 			out = in.getNotificationUris();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.database;Cursor;true;getString;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.database;Cursor;true;getString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			Cursor in = (Cursor) source();
 			out = in.getString(0);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "android.database;Cursor;true;respond;;;Argument[-1];ReturnValue;taint;manual"
+			// "android.database;Cursor;true;respond;;;Argument[this];ReturnValue;taint;manual"
 			Bundle out = null;
 			Cursor in = (Cursor) source();
 			out = in.respond(null);

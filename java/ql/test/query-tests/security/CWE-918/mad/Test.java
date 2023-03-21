@@ -24,11 +24,11 @@ public class Test {
     }
 
     public void test(URL url) throws Exception {
-        // "java.net;URL;false;openConnection;(Proxy);:Argument[-1]:open-url;manual"
+        // "java.net;URL;false;openConnection;(Proxy);:Argument[this]:open-url;manual"
         ((URL) source()).openConnection(); // $ SSRF
         // "java.net;URL;false;openConnection;(Proxy);:Argument[0]:open-url;ai-generated"
         url.openConnection((Proxy) source()); // $ SSRF
-        // "java.net;URL;false;openStream;;:Argument[-1]:open-url;manual"
+        // "java.net;URL;false;openStream;;:Argument[this]:open-url;manual"
         ((URL) source()).openStream(); // $ SSRF
     }
 

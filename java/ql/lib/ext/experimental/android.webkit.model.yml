@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: experimentalSummaryModel
     data:
-      - ["android.webkit", "WebResourceRequest", False, "getUrl", "", "", "Argument[-1]", "ReturnValue", "taint", "manual", "android-web-resource-response"]
+      - ["android.webkit", "WebResourceRequest", False, "getUrl", "", "", "Argument[this]", "ReturnValue", "taint", "manual", "android-web-resource-response"]

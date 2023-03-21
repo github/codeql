@@ -30,5 +30,5 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["javax.servlet.http", "Cookie", False, "Cookie", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["javax.servlet.http", "Cookie", False, "Cookie", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["javax.servlet.http", "Cookie", False, "Cookie", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["javax.servlet.http", "Cookie", False, "Cookie", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
