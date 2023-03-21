@@ -33,6 +33,8 @@ class TypeDecl extends Generated::TypeDecl {
     or
     result = this.getEnclosingDecl().(TypeDecl).getFullName() + "." + this.getName()
     or
-    result = this.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getFullName() + "." + this.getName()
+    result =
+      this.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getFullName() + "." +
+        this.getName()
   }
 }
