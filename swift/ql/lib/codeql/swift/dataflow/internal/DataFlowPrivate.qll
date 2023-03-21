@@ -184,6 +184,16 @@ private module Cached {
       nodeFrom.asExpr() = ie.getBranch(_)
     )
     or
+    // flow from Expr to Pattern
+    exists(Expr e, Pattern p |
+      nodeFrom.asExpr() = e and
+      nodeTo.asPattern() = p and
+      p.getImmediateMatchingExpr() = e
+    )
+    or
+    // flow from Pattern to an identity-preserving sub-Pattern:
+    nodeFrom.asPattern() = nodeTo.asPattern().getIdentityPreservingEnclosingPattern()
+    or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
@@ -580,6 +590,13 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::EnumContent ec | ec.getParam() = enum.getElement().getParam(pos)))
   )
   or
+  // creation of an optional via implicit conversion
+  exists(InjectIntoOptionalExpr e, OptionalSomeDecl someDecl |
+    e.convertsFrom(node1.asExpr()) and
+    node2 = node1 and // HACK: we should ideally have a separate Node case for the (hidden) InjectIntoOptionalExpr
+    c.isSingleton(any(Content::EnumContent ec | ec.getParam() = someDecl.getParam(0)))
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
 }
 
@@ -602,17 +619,31 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   // read of an enum member via `case let .variant(v1, v2)` pattern matching
-  exists(Expr enumExpr, ParamDecl enumParam, VarDecl boundVar |
-    node1.asExpr() = enumExpr and
-    node2.asDefinition().getSourceVariable() = boundVar and
+  exists(EnumElementPattern enumPat, ParamDecl enumParam, Pattern subPat |
+    node1.asPattern() = enumPat and
+    node2.asPattern() = subPat and
     c.isSingleton(any(Content::EnumContent ec | ec.getParam() = enumParam))
   |
-    exists(EnumElementPattern enumPat, NamedPattern namePat, int idx |
-      enumPat.getMatchingExpr() = enumExpr and
+    exists(int idx |
       enumPat.getElement().getParam(idx) = enumParam and
-      namePat.getImmediateIdentityPreservingEnclosingPattern*() = enumPat.getSubPattern(idx) and
-      namePat.getVarDecl() = boundVar
+      enumPat.getSubPattern(idx) = subPat
     )
+  )
+  or
+  // read of a tuple member via `case let (v1, v2)` pattern matching
+  exists(TuplePattern tupPat, int idx, Pattern subPat |
+    node1.asPattern() = tupPat and
+    node2.asPattern() = subPat and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = idx))
+  |
+    tupPat.getElement(idx) = subPat
+  )
+  or
+  // read of an optional .some member via `let x: T = y: T?` pattern matching
+  exists(OptionalSomePattern pat, OptionalSomeDecl someDecl |
+    node1.asPattern() = pat and
+    node2.asPattern() = pat.getSubPattern() and
+    c.isSingleton(any(Content::EnumContent ec | ec.getParam() = someDecl.getParam(0)))
   )
 }
 
@@ -630,6 +661,20 @@ predicate clearsContent(Node n, ContentSet c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) { none() }
+
+/**
+ * The global singleton `Optional.some` enum element.
+ */
+private class OptionalSomeDecl extends EnumElementDecl {
+  OptionalSomeDecl() {
+    exists(EnumDecl enum |
+      this.getName() = "some" and
+      this.getDeclaringDecl() = enum and
+      enum.getName() = "Optional" and
+      enum.getModule().getName() = "Swift"
+    )
+  }
+}
 
 private newtype TDataFlowType = TODO_DataFlowType()
 

@@ -312,7 +312,7 @@ func test_optionals(y: Int?) {
 
     switch x {
     case .some(let z):
-        sink(arg: z) // $ MISSING: flow=259
+        sink(arg: z) // $ flow=259
     case .none:
         ()
     }
@@ -360,8 +360,8 @@ func testTuples2() {
     sink(arg: t2.x) // $ flow=351
     sink(arg: t2.y) // $ flow=351
     sink(arg: t2.z)
-    sink(arg: a) // $ MISSING: flow=351
-    sink(arg: b) // $ MISSING: flow=351
+    sink(arg: a) // $ flow=351
+    sink(arg: b) // $ flow=351
     sink(arg: c)
 }
 
@@ -452,7 +452,7 @@ func testEnums() {
     case let .myCons(a, .myPair(b, c)):
         sink(arg: a)
         sink(arg: b)
-        sink(arg: c) // $ MISSING: flow=420
+        sink(arg: c) // $ flow=420
     case let .myCons(a, _):
         sink(arg: a)
     }
@@ -465,7 +465,7 @@ func testEnums() {
         sink(arg: y)
     }
     if case let .myCons(_, .myPair(_, c)) = b {
-        sink(arg: c) // $ MISSING: flow=420
+        sink(arg: c) // $ flow=420
     }
 
     switch (a, b) {
@@ -474,7 +474,7 @@ func testEnums() {
         sink(arg: b) // $ flow=420
         sink(arg: c)
         sink(arg: d)
-        sink(arg: e) // $ MISSING: flow=420
+        sink(arg: e) // $ flow=420
     default:
         ()
     }
@@ -493,7 +493,7 @@ func testOptionals2(y: Int?) {
     let tuple1 = (x, y)
     switch tuple1 {
     case (.some(let a), .some(let b)):
-        sink(arg: a) // $ MISSING: flow=259
+        sink(arg: a) // $ flow=259
         sink(arg: b)
     default:
         ()

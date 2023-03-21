@@ -20,12 +20,12 @@ private import codeql.swift.generated.ParentChild
 
 class Pattern extends Generated::Pattern {
   /**
-   * Gets the expression that this pattern is matched against, if any.
+   * Gets the expression that this top-level pattern is matched against, if any.
    *
    * For example, in `switch e { case p: ... }`, the pattern `p`
-   * is matched against the expression `e`.
+   * is immediately matched against the expression `e`.
    */
-  Expr getMatchingExpr() {
+  Expr getImmediateMatchingExpr() {
     exists(ConditionElement c |
       c.getPattern() = this and
       result = c.getInitializer()
@@ -40,6 +40,18 @@ class Pattern extends Generated::Pattern {
       v.getPattern(i) = this and
       result = v.getInit(i)
     )
+  }
+
+  /**
+   * Gets the expression that this pattern is matched against, if any.
+   * The expression and the pattern need not be top-level children of
+   * a pattern-matching construct, but they must match each other syntactically.
+   *
+   * For example, in `switch .some(e) { case let .some(p): ... }`, the pattern `p`
+   * is matched against the expression `e`.
+   */
+  Expr getMatchingExpr() {
+    result = this.getImmediateMatchingExpr()
     or
     exists(Pattern p | p.getMatchingExpr() = result |
       this = p.(IsPattern).getSubPattern()
