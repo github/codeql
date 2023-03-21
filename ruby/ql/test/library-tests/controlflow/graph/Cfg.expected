@@ -4004,6 +4004,9 @@ desugar.rb:
 #   14| call to foo
 #-----|  -> ... = ...
 
+#   14| __synth__1
+#-----|  -> call to count=
+
 #   14| call to count
 #-----|  -> 1
 
@@ -4024,9 +4027,6 @@ desugar.rb:
 
 #   14| __synth__1
 #-----|  -> __synth__0
-
-#   14| __synth__1
-#-----|  -> call to count=
 
 #   14| 1
 #-----|  -> ... + ...
@@ -4065,6 +4065,9 @@ desugar.rb:
 
 #   18| call to foo
 #-----|  -> ... = ...
+
+#   18| __synth__4
+#-----|  -> call to []=
 
 #   18| call to []
 #-----|  -> 1
@@ -4143,9 +4146,6 @@ desugar.rb:
 
 #   18| __synth__4
 #-----|  -> __synth__0
-
-#   18| __synth__4
-#-----|  -> call to []=
 
 #   18| 1
 #-----|  -> ... + ...
