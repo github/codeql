@@ -212,10 +212,14 @@ SwiftMangledName SwiftMangler::visitAnyFunctionType(const swift::AnyFunctionType
   if (type->isNoEscape()) {
     ret << "_noescape";
   }
+  if (type->hasGlobalActor()) {
+    ret << "_actor" << dispatcher.fetchLabel(type->getGlobalActor());
+  }
   // TODO: see if this needs to be used in identifying types, if not it needs to be removed from
   // type printing
   assert(type->hasExtInfo() && "type must have ext info");
-  auto convention = type->getExtInfo().getSILRepresentation();
+  auto info = type->getExtInfo();
+  auto convention = info.getSILRepresentation();
   if (convention != swift::SILFunctionTypeRepresentation::Thick) {
     ret << "_convention" << static_cast<unsigned>(convention);
   }
@@ -318,6 +322,14 @@ SwiftMangledName SwiftMangler::visitOpaqueTypeArchetypeType(
     const swift::OpaqueTypeArchetypeType* type) {
   auto ret = visitArchetypeType(type);
   ret << dispatcher.fetchLabel(type->getDecl());
+  return ret;
+}
+
+SwiftMangledName SwiftMangler::visitOpenedArchetypeType(const swift::OpenedArchetypeType* type) {
+  auto ret = visitArchetypeType(type);
+  llvm::SmallVector<char> uuid;
+  type->getOpenedExistentialID().toString(uuid);
+  ret << std::string_view(uuid.data(), uuid.size());
   return ret;
 }
 
