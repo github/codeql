@@ -84,6 +84,16 @@ class Compilation extends @compilation {
   string getArgument(int i) { compilation_args(this, i, result) }
 
   /**
+   * Gets an expanded argument passed to the extractor on this invocation.
+   */
+  string getAnExpandedArgument() { result = getExpandedArgument(_) }
+
+  /**
+   * Gets the `i`th expanded argument passed to the extractor on this invocation.
+   */
+  string getExpandedArgument(int i) { compilation_expanded_args(this, i, result) }
+
+  /**
    * Gets the total amount of CPU time spent processing all the files in the
    * compiler.
    */
