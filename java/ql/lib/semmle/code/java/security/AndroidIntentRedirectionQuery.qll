@@ -28,7 +28,8 @@ deprecated class IntentRedirectionConfiguration extends TaintTracking::Configura
   }
 }
 
-private module IntentRedirectionConfig implements DataFlow::ConfigSig {
+/** A taint tracking configuration for tainted Intents being used to start Android components. */
+module IntentRedirectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof IntentRedirectionSink }
@@ -40,7 +41,7 @@ private module IntentRedirectionConfig implements DataFlow::ConfigSig {
   }
 }
 
-/** A taint tracking configuration for tainted Intents being used to start Android components. */
+/** Tracks the flow of tainted Intents being used to start Android components. */
 module IntentRedirectionFlow = TaintTracking::Make<IntentRedirectionConfig>;
 
 /**

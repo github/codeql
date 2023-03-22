@@ -23,7 +23,10 @@ deprecated class FetchUntrustedResourceConfiguration extends TaintTracking::Conf
   }
 }
 
-private module FetchUntrustedResourceConfig implements DataFlow::ConfigSig {
+/**
+ * A taint configuration tracking flow from untrusted inputs to a resource fetching call.
+ */
+module FetchUntrustedResourceConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UrlResourceSink }
@@ -31,4 +34,7 @@ private module FetchUntrustedResourceConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof RequestForgerySanitizer }
 }
 
+/**
+ * Detects taint flow from untrusted inputs to a resource fetching call.
+ */
 module FetchUntrustedResourceFlow = TaintTracking::Make<FetchUntrustedResourceConfig>;
