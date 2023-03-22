@@ -4,14 +4,14 @@ extensions:
       extensible: summaryModel
     data:
       # Note that when lambdas are supported we should have more models for TransformedMultiValuedMap
-      - ["org.apache.commons.collections.multimap", "ArrayListValuedHashMap", True, "ArrayListValuedHashMap", "(Map)", "", "Argument[0].MapKey", "Argument[-1].MapKey", "value", "manual"]
-      - ["org.apache.commons.collections.multimap", "ArrayListValuedHashMap", True, "ArrayListValuedHashMap", "(Map)", "", "Argument[0].MapValue", "Argument[-1].MapValue.Element", "value", "manual"]
-      - ["org.apache.commons.collections.multimap", "ArrayListValuedHashMap", True, "ArrayListValuedHashMap", "(MultiValuedMap)", "", "Argument[0].MapKey", "Argument[-1].MapKey", "value", "manual"]
-      - ["org.apache.commons.collections.multimap", "ArrayListValuedHashMap", True, "ArrayListValuedHashMap", "(MultiValuedMap)", "", "Argument[0].MapValue.Element", "Argument[-1].MapValue.Element", "value", "manual"]
-      - ["org.apache.commons.collections.multimap", "HashSetValuedHashMap", True, "HashSetValuedHashMap", "(Map)", "", "Argument[0].MapKey", "Argument[-1].MapKey", "value", "manual"]
-      - ["org.apache.commons.collections.multimap", "HashSetValuedHashMap", True, "HashSetValuedHashMap", "(Map)", "", "Argument[0].MapValue", "Argument[-1].MapValue.Element", "value", "manual"]
-      - ["org.apache.commons.collections.multimap", "HashSetValuedHashMap", True, "HashSetValuedHashMap", "(MultiValuedMap)", "", "Argument[0].MapKey", "Argument[-1].MapKey", "value", "manual"]
-      - ["org.apache.commons.collections.multimap", "HashSetValuedHashMap", True, "HashSetValuedHashMap", "(MultiValuedMap)", "", "Argument[0].MapValue.Element", "Argument[-1].MapValue.Element", "value", "manual"]
+      - ["org.apache.commons.collections.multimap", "ArrayListValuedHashMap", True, "ArrayListValuedHashMap", "(Map)", "", "Argument[0].MapKey", "Argument[this].MapKey", "value", "manual"]
+      - ["org.apache.commons.collections.multimap", "ArrayListValuedHashMap", True, "ArrayListValuedHashMap", "(Map)", "", "Argument[0].MapValue", "Argument[this].MapValue.Element", "value", "manual"]
+      - ["org.apache.commons.collections.multimap", "ArrayListValuedHashMap", True, "ArrayListValuedHashMap", "(MultiValuedMap)", "", "Argument[0].MapKey", "Argument[this].MapKey", "value", "manual"]
+      - ["org.apache.commons.collections.multimap", "ArrayListValuedHashMap", True, "ArrayListValuedHashMap", "(MultiValuedMap)", "", "Argument[0].MapValue.Element", "Argument[this].MapValue.Element", "value", "manual"]
+      - ["org.apache.commons.collections.multimap", "HashSetValuedHashMap", True, "HashSetValuedHashMap", "(Map)", "", "Argument[0].MapKey", "Argument[this].MapKey", "value", "manual"]
+      - ["org.apache.commons.collections.multimap", "HashSetValuedHashMap", True, "HashSetValuedHashMap", "(Map)", "", "Argument[0].MapValue", "Argument[this].MapValue.Element", "value", "manual"]
+      - ["org.apache.commons.collections.multimap", "HashSetValuedHashMap", True, "HashSetValuedHashMap", "(MultiValuedMap)", "", "Argument[0].MapKey", "Argument[this].MapKey", "value", "manual"]
+      - ["org.apache.commons.collections.multimap", "HashSetValuedHashMap", True, "HashSetValuedHashMap", "(MultiValuedMap)", "", "Argument[0].MapValue.Element", "Argument[this].MapValue.Element", "value", "manual"]
       - ["org.apache.commons.collections.multimap", "TransformedMultiValuedMap", True, "transformingMap", "", "", "Argument[0].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["org.apache.commons.collections.multimap", "TransformedMultiValuedMap", True, "transformingMap", "", "", "Argument[0].MapValue.Element", "ReturnValue.MapValue.Element", "value", "manual"]
       - ["org.apache.commons.collections.multimap", "UnmodifiableMultiValuedMap", True, "unmodifiableMultiValuedMap", "(MultiValuedMap)", "", "Argument[0].MapKey", "ReturnValue.MapKey", "value", "manual"]

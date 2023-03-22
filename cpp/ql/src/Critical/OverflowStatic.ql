@@ -22,7 +22,8 @@ import LoopBounds
 private predicate staticBufferBase(VariableAccess access, Variable v) {
   v.getType().(ArrayType).getBaseType() instanceof CharType and
   access = v.getAnAccess() and
-  not memberMayBeVarSize(_, v)
+  not memberMayBeVarSize(_, v) and
+  not access.isUnevaluated()
 }
 
 predicate staticBuffer(VariableAccess access, Variable v, int size) {

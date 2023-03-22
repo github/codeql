@@ -534,6 +534,21 @@ class ContentSet extends TContentSet {
     this = TElementLowerBoundContent(lower, true)
   }
 
+  /**
+   * Holds if this content set represents all `KnownElementContent`s where
+   * the index is of type `type`, as per `ConstantValue::getValueType/0`.
+   */
+  predicate isElementOfType(string type) { this = TElementContentOfTypeContent(type, false) }
+
+  /**
+   * Holds if this content set represents `UnknownElementContent` unioned with
+   * all `KnownElementContent`s where the index is of type `type`, as per
+   * `ConstantValue::getValueType/0`.
+   */
+  predicate isElementOfTypeOrUnknown(string type) {
+    this = TElementContentOfTypeContent(type, true)
+  }
+
   /** Gets a textual representation of this content set. */
   string toString() {
     exists(Content c |
@@ -558,6 +573,16 @@ class ContentSet extends TContentSet {
       includeUnknown = true and
       result = lower + ".."
     )
+    or
+    exists(string type, boolean includeUnknown |
+      this = TElementContentOfTypeContent(type, includeUnknown)
+    |
+      includeUnknown = false and
+      result = "any(" + type + ")!"
+      or
+      includeUnknown = true and
+      result = "any(" + type + ")"
+    )
   }
 
   /** Gets a content that may be stored into when storing into this set. */
@@ -576,7 +601,14 @@ class ContentSet extends TContentSet {
     // step that store only into `1`
     this.isKnownOrUnknownElement(result)
     or
-    this.isElementLowerBound(_) and
+    // These reverse stores are not as accurate as they could be, but making
+    // them more accurate would result in a large fan-out
+    (
+      this.isElementLowerBound(_) or
+      this.isElementLowerBoundOrUnknown(_) or
+      this.isElementOfType(_) or
+      this.isElementOfTypeOrUnknown(_)
+    ) and
     result = TUnknownElementContent()
   }
 
@@ -599,6 +631,15 @@ class ContentSet extends TContentSet {
         result.(Content::KnownElementContent).getIndex().isInt(i) and
         i >= lower
       )
+      or
+      includeUnknown = true and
+      result = TUnknownElementContent()
+    )
+    or
+    exists(string type, boolean includeUnknown |
+      this = TElementContentOfTypeContent(type, includeUnknown)
+    |
+      type = result.(Content::KnownElementContent).getIndex().getValueType()
       or
       includeUnknown = true and
       result = TUnknownElementContent()

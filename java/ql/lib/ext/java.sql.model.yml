@@ -20,8 +20,8 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.sql", "PreparedStatement", True, "setString", "(int,String)", "", "Argument[1]", "Argument[-1]", "value", "manual"]
-      - ["java.sql", "ResultSet", True, "getString", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.sql", "PreparedStatement", True, "setString", "(int,String)", "", "Argument[1]", "Argument[this]", "value", "manual"]
+      - ["java.sql", "ResultSet", True, "getString", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel

@@ -405,7 +405,7 @@ module KindPredicatesLog {
           or
           cand.(InLayer).getComputeRecursiveEvent() = recursive
         ) and
-        cand.hasLocationInfo(filepath, startline, _, _, _)
+        cand.getLocation().hasLocationInfo(filepath, startline, _, _, _)
       |
         cand order by filepath, startline
       )

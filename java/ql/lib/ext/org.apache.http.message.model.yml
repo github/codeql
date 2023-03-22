@@ -13,4 +13,4 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.http.message", "BasicRequestLine", False, "BasicRequestLine", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["org.apache.http.message", "BasicRequestLine", False, "BasicRequestLine", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
