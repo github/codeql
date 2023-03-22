@@ -223,6 +223,7 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    aioch, Database
    aiomysql, Database
    aiopg, Database
+   aiosqlite, Database
    asyncpg, Database
    cassandra-driver, Database
    clickhouse-driver, Database

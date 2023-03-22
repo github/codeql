@@ -52,7 +52,9 @@ module PEP249 {
     result in ["sql", "statement", "operation", "query", "query_string", "sql_script"]
   }
 
-  private string getExecuteMethodName() { result in ["execute", "executemany", "executescript"] }
+  private string getExecuteMethodName() {
+    result in ["execute", "executemany", "executescript", "execute_insert", "execute_fetchall"]
+  }
 
   /**
    * A call to an execute method on a database cursor or a connection, such as `execute`
