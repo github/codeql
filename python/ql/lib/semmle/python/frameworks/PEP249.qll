@@ -52,6 +52,8 @@ module PEP249 {
     result in ["sql", "statement", "operation", "query", "query_string", "sql_script"]
   }
 
+  private string getExecuteMethodName() { result in ["execute", "executemany", "executescript"] }
+
   /**
    * A call to an execute method on a database cursor or a connection, such as `execute`
    * or `executemany`.
@@ -68,13 +70,89 @@ module PEP249 {
       exists(API::Node start |
         start instanceof DatabaseCursor or start instanceof DatabaseConnection
       |
-        this = start.getMember(["execute", "executemany", "executescript"]).getACall()
+        this = start.getMember(getExecuteMethodName()).getACall()
       )
     }
 
     override DataFlow::Node getSql() {
       result in [this.getArg(0), this.getArgByName(getSqlKwargName()),]
     }
+  }
+
+  // ---------------------------------------------------------------------------
+  // asyncio implementations
+  // ---------------------------------------------------------------------------
+  //
+  // we differentiate between normal and asyncio implementations, since we model the
+  // `execute` call differently -- as a SqlExecution vs SqlConstruction, since the SQL
+  // is only executed in asyncio after being awaited (which might happen in something
+  // like `asyncio.gather`)
+  /**
+   * An API graph node representing a module that implements PEP 249 using asyncio.
+   */
+  abstract class AsyncPEP249ModuleApiNode extends API::Node {
+    /** Gets a string representation of this element. */
+    override string toString() { result = this.(API::Node).toString() }
+  }
+
+  /**
+   * An API graph node representing a asyncio database connection (after being awaited).
+   */
+  abstract class AsyncDatabaseConnection extends API::Node {
+    /** Gets a string representation of this element. */
+    override string toString() { result = this.(API::Node).toString() }
+  }
+
+  private class DefaultAsyncDatabaseConnection extends AsyncDatabaseConnection {
+    DefaultAsyncDatabaseConnection() {
+      this = any(AsyncPEP249ModuleApiNode mod).getMember("connect").getReturn().getAwaited()
+    }
+  }
+
+  /**
+   * An API graph node representing a asyncio database cursor (after being awaited).
+   */
+  abstract class AsyncDatabaseCursor extends API::Node {
+    /** Gets a string representation of this element. */
+    override string toString() { result = this.(API::Node).toString() }
+  }
+
+  private class DefaultAsyncDatabaseCursor extends AsyncDatabaseCursor {
+    DefaultAsyncDatabaseCursor() {
+      this = any(AsyncDatabaseConnection conn).getMember("cursor").getReturn().getAwaited()
+    }
+  }
+
+  /**
+   * A call to an execute method on an asyncio database cursor or an asyncio connection,
+   * such as `execute` or `executemany`.
+   *
+   * (This is not an SqlExecution, since that only happens when the coroutine is
+   * awaited)
+   *
+   * See ExecuteMethodCall for more details.
+   */
+  private class AsyncExecuteMethodCall extends SqlConstruction::Range, API::CallNode {
+    AsyncExecuteMethodCall() {
+      exists(API::Node start |
+        start instanceof AsyncDatabaseCursor or start instanceof AsyncDatabaseConnection
+      |
+        this = start.getMember(getExecuteMethodName()).getACall()
+      )
+    }
+
+    override DataFlow::Node getSql() {
+      result in [this.getArg(0), this.getArgByName(getSqlKwargName()),]
+    }
+  }
+
+  /** Actual execution of the AsyncExecuteMethodCall coroutine. */
+  private class AwaitedAsyncExecuteMethodCall extends SqlExecution::Range {
+    AsyncExecuteMethodCall execute;
+
+    AwaitedAsyncExecuteMethodCall() { this = execute.getReturn().getAwaited().asSource() }
+
+    override DataFlow::Node getSql() { result = execute.getSql() }
   }
 
   // ---------------------------------------------------------------------------
