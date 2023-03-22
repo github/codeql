@@ -495,7 +495,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
       SemSsaVariable v2, SemGuard guardEq, boolean eqIsTrue, D::Delta d1, D::Delta d2,
       D::Delta oldDelta
     |
-      guardEq = semEqFlowCond(v, semSsaRead(v2, d1), d2, true, eqIsTrue) and
+      guardEq = semEqFlowCond(v, semSsaRead(pragma[only_bind_into](v2), d1), d2, true, eqIsTrue) and
       result = boundFlowCond(v2, e, oldDelta, upper, testIsTrue) and
       // guardEq needs to control guard
       guardEq.directlyControls(result.getBasicBlock(), eqIsTrue) and
