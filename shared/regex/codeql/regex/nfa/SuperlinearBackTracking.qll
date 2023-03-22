@@ -51,16 +51,26 @@ module Make<RegexTreeViewSig TreeImpl> {
   private State getRootState() { result = mkMatch(any(RegExpRoot r)) }
 
   private newtype TStateTuple =
-    MkStateTuple(State q1, State q2, State q3) {
+    /**
+     * A tuple of states `(q1, q2, q3)` in the product automaton that is reachable from `(pivot, pivot, succ)`.
+     */
+    MkStateTuple(State pivot, State succ, State q1, State q2, State q3) {
       // starts at (pivot, pivot, succ)
-      isStartLoops(q1, q3) and q1 = q2
+      isStartLoops(q1, q3) and
+      q1 = q2 and
+      pivot = q1 and
+      succ = q3
       or
-      step(_, _, _, _, q1, q2, q3) and FeasibleTuple::isFeasibleTuple(q1, q2, q3)
+      // recurse: any transition out where all 3 edges share a char (and the resulting tuple isn't obviously infeasible)
+      exists(StateTuple prev |
+        prev = MkStateTuple(pivot, succ, _, _, _) and
+        hasCommonStep(prev, _, _, _, q1, q2, q3) and
+        FeasibleTuple::isFeasibleTuple(pivot, succ, q1, q2, q3)
+      )
     }
 
   /**
-   * A state in the product automaton.
-   * The product automaton contains 3-tuples of states.
+   * A state `(q1, q2, q3)` in the product automaton, that is reachable from `(pivot, pivot, succ)`.
    *
    * We lazily only construct those states that we are actually
    * going to need.
@@ -72,11 +82,13 @@ module Make<RegexTreeViewSig TreeImpl> {
    * of the elements matter.
    */
   class StateTuple extends TStateTuple {
+    State pivot;
+    State succ;
     State q1;
     State q2;
     State q3;
 
-    StateTuple() { this = MkStateTuple(q1, q2, q3) }
+    StateTuple() { this = MkStateTuple(pivot, succ, q1, q2, q3) }
 
     /**
      * Gest a string representation of this tuple.
@@ -88,6 +100,39 @@ module Make<RegexTreeViewSig TreeImpl> {
      */
     pragma[noinline]
     predicate isTuple(State r1, State r2, State r3) { r1 = q1 and r2 = q2 and r3 = q3 }
+
+    /**
+     * Gets the first state of the tuple.
+     */
+    State getFirst() { result = q1 }
+
+    /**
+     * Gets the second state of the tuple.
+     */
+    State getSecond() { result = q2 }
+
+    /**
+     * Gets the third state of the tuple.
+     */
+    State getThird() { result = q3 }
+
+    /**
+     * Gets the pivot state.
+     */
+    State getPivot() { result = pivot }
+
+    /**
+     * Gets the succ state.
+     */
+    State getSucc() { result = succ }
+
+    /**
+     * Holds if the pivot state has the specified location.
+     * This location has been chosen arbitrarily, and is only useful for debugging.
+     */
+    predicate hasLocationInfo(string file, int line, int column, int endLine, int endColumn) {
+      pivot.hasLocationInfo(file, line, column, endLine, endColumn)
+    }
   }
 
   /**
@@ -97,21 +142,36 @@ module Make<RegexTreeViewSig TreeImpl> {
    */
   private module FeasibleTuple {
     /**
-     * Holds if the tuple `(r1, r2, r3)` might be on path from a start-state to an end-state in the product automaton.
+     * Holds if the tuple `(r1, r2, r3)` might be on path from a start-state `(pivot, pivot, succ)` to an end-state `(pivot, succ, succ)` in the product automaton.
      */
-    pragma[inline]
-    predicate isFeasibleTuple(State r1, State r2, State r3) {
+    bindingset[pivot, succ, r1, r2, r3]
+    pragma[inline_late]
+    predicate isFeasibleTuple(State pivot, State succ, State r1, State r2, State r3) {
+      isStartLoops(pivot, succ) and
+      // r1 can reach the pivot state
+      reachesBeginning(r1, pivot) and
+      // r2 and r3 can reach the succ state
+      reachesEnd(r2, succ) and
+      reachesEnd(r3, succ) and
       // The first element is either inside a repetition (or the start state itself)
       isRepetitionOrStart(r1) and
       // The last element is inside a repetition
       stateInsideRepetition(r3) and
       // The states are reachable in the NFA in the order r1 -> r2 -> r3
       delta+(r1) = r2 and
-      delta+(r2) = r3 and
-      // The first element can reach a beginning (the "pivot" state in a `(pivot, succ)` pair).
-      canReachABeginning(r1) and
-      // The last element can reach a target (the "succ" state in a `(pivot, succ)` pair).
-      canReachATarget(r3)
+      delta+(r2) = r3
+    }
+
+    pragma[noinline]
+    private predicate reachesBeginning(State s, State pivot) {
+      isStartLoops(pivot, _) and
+      delta+(s) = pivot
+    }
+
+    pragma[noinline]
+    private predicate reachesEnd(State s, State succ) {
+      isStartLoops(_, succ) and
+      delta+(s) = succ
     }
 
     /**
@@ -128,24 +188,6 @@ module Make<RegexTreeViewSig TreeImpl> {
     pragma[noinline]
     private predicate stateInsideRepetition(State s) {
       s.getRepr().getParent*() instanceof InfiniteRepetitionQuantifier
-    }
-
-    /**
-     * Holds if there exists a path in the NFA from `s` to a "pivot" state
-     * (from a `(pivot, succ)` pair that starts the search).
-     */
-    pragma[noinline]
-    private predicate canReachABeginning(State s) {
-      delta+(s) = any(State pivot | isStartLoops(pivot, _))
-    }
-
-    /**
-     * Holds if there exists a path in the NFA from `s` to a "succ" state
-     * (from a `(pivot, succ)` pair that starts the search).
-     */
-    pragma[noinline]
-    private predicate canReachATarget(State s) {
-      delta+(s) = any(State succ | isStartLoops(_, succ))
     }
   }
 
@@ -174,62 +216,25 @@ module Make<RegexTreeViewSig TreeImpl> {
   /**
    * Holds if there are transitions from the components of `q` to the corresponding
    * components of `r` labelled with `s1`, `s2`, and `s3`, respectively.
+   * Where the edges `s1`, `s2`, and `s3` all share at least one character.
    */
   pragma[nomagic]
-  private predicate stepHelper(
-    StateTuple q, InputSymbol s1, InputSymbol s2, InputSymbol s3, StateTuple r
-  ) {
+  private predicate step(StateTuple q, InputSymbol s1, InputSymbol s2, InputSymbol s3, StateTuple r) {
     exists(State r1, State r2, State r3 |
-      step(q, s1, s2, s3, r1, r2, r3) and r = MkStateTuple(r1, r2, r3)
+      hasCommonStep(q, s1, s2, s3, r1, r2, r3) and
+      r =
+        MkStateTuple(pragma[only_bind_out](q.getPivot()), pragma[only_bind_out](q.getSucc()),
+          pragma[only_bind_out](r1), pragma[only_bind_out](r2), pragma[only_bind_out](r3))
     )
-  }
-
-  /**
-   * Holds if there are transitions from the components of `q` to the corresponding
-   * components of `r` labelled with `s1`, `s2`, and `s3`, respectively.
-   *
-   * Additionally, a heuristic is used to avoid blowups in the case of complex regexps.
-   * For regular expressions with more than 100 states, we only look at all the characters
-   * for the transitions out of `q` and only consider transitions that use the lexicographically
-   * smallest character.
-   */
-  pragma[noinline]
-  predicate step(StateTuple q, InputSymbol s1, InputSymbol s2, InputSymbol s3, StateTuple r) {
-    stepHelper(q, s1, s2, s3, r) and
-    (
-      countStates(any(State s | q.isTuple(s, _, _)).getRepr().getRootTerm()) < 100
-      or
-      // arbitrarily pick an edge out of `q` for complex regexps. This is a heuristic to avoid potential blowups.
-      exists(string char |
-        char =
-          min(string str, InputSymbol x1, InputSymbol x2, InputSymbol x3 |
-            stepHelper(q, x1, x2, x3, _) and str = getAStepChar(x1, x2, x3)
-          |
-            str
-          ) and
-        char = getAStepChar(s1, s2, s3)
-      )
-    )
-  }
-
-  // specialized version of `getAThreewayIntersect` to be used in `step` above.
-  pragma[noinline]
-  private string getAStepChar(InputSymbol s1, InputSymbol s2, InputSymbol s3) {
-    stepHelper(_, s1, s2, s3, _) and result = getAThreewayIntersect(s1, s2, s3)
-  }
-
-  /** Gets the number of states in the NFA for `root`. This is used to determine a complexity metric used in the `step` predicate above. */
-  private int countStates(RegExpTerm root) {
-    root.isRootTerm() and
-    result = count(State s | s.getRepr().getRootTerm() = root)
   }
 
   /**
    * Holds if there are transitions from the components of `q` to `r1`, `r2`, and `r3
    * labelled with `s1`, `s2`, and `s3`, respectively.
+   * Where `s1`, `s2`, and `s3` all share at least one character.
    */
   pragma[noopt]
-  predicate step(
+  predicate hasCommonStep(
     StateTuple q, InputSymbol s1, InputSymbol s2, InputSymbol s3, State r1, State r2, State r3
   ) {
     exists(State q1, State q2, State q3 | q.isTuple(q1, q2, q3) |
@@ -264,41 +269,59 @@ module Make<RegexTreeViewSig TreeImpl> {
     result = [min(intersect(a, b)), max(intersect(a, b))]
   }
 
-  private newtype TTrace =
-    Nil() or
-    Step(InputSymbol s1, InputSymbol s2, InputSymbol s3, TTrace t) {
-      isReachableFromStartTuple(_, _, t, s1, s2, s3, _, _)
-    }
+  /** Gets a tuple reachable in a forwards exploratory search from the start state `(pivot, pivot, pivot)`. */
+  private StateTuple getReachableFromStartStateForwards(State pivot, State succ) {
+    // base case.
+    isStartLoops(pivot, succ) and
+    result = MkStateTuple(pivot, succ, pivot, pivot, succ)
+    or
+    // recursive case
+    exists(StateTuple p |
+      p = getReachableFromStartStateForwards(pivot, succ) and
+      step(p, _, _, _, result)
+    )
+  }
 
   /**
-   * A list of tuples of input symbols that describe a path in the product automaton
-   * starting from some start state.
+   * Gets a tuple tuple reachable from the end state `(succ, succ, succ)` in a backwards exploratory search.
+   * Where the end state was reachable from a forwards search from the start state `(pivot, pivot, pivot)`.
+   * The resulting tuples are exactly those that are on a path from the start state to the end state.
    */
-  class Trace extends TTrace {
-    /**
-     * Gets a string representation of this Trace that can be used for debug purposes.
-     */
-    string toString() {
-      this = Nil() and result = "Nil()"
-      or
-      exists(InputSymbol s1, InputSymbol s2, InputSymbol s3, Trace t | this = Step(s1, s2, s3, t) |
-        result = "Step(" + s1 + ", " + s2 + ", " + s3 + ", " + t + ")"
-      )
-    }
+  private StateTuple getARelevantStateTuple(State pivot, State succ) {
+    // base case.
+    isStartLoops(pivot, succ) and
+    result = MkStateTuple(pivot, succ, pivot, succ, succ) and
+    result = getReachableFromStartStateForwards(pivot, succ)
+    or
+    // recursive case
+    exists(StateTuple p |
+      p = getARelevantStateTuple(pivot, succ) and
+      step(result, _, _, _, p) and
+      pragma[only_bind_out](result) = getReachableFromStartStateForwards(pivot, succ) // was reachable in the forwards pass.
+    )
   }
 
   /**
    * Holds if there exists a transition from `r` to `q` in the product automaton.
+   * Where `r` and `q` are both on a path from a start state to an end state.
    * Notice that the arguments are flipped, and thus the direction is backwards.
    */
   pragma[noinline]
-  predicate tupleDeltaBackwards(StateTuple q, StateTuple r) { step(r, _, _, _, q) }
+  predicate tupleDeltaBackwards(StateTuple q, StateTuple r) {
+    step(r, _, _, _, q) and
+    // `step` ensures that `r` and `q` have the same pivot and succ.
+    r = getARelevantStateTuple(_, _) and
+    q = getARelevantStateTuple(_, _)
+  }
 
   /**
-   * Holds if `tuple` is an end state in our search.
+   * Holds if `tuple` is an end state in our search, and `tuple` is on a path from a start state to an end state.
    * That means there exists a pair of loops `(pivot, succ)` such that `tuple = (pivot, succ, succ)`.
    */
-  predicate isEndTuple(StateTuple tuple) { tuple = getAnEndTuple(_, _) }
+  predicate isEndTuple(StateTuple tuple) {
+    tuple = getEndTuple(_, _) and
+    tuple = getARelevantStateTuple(_, _)
+  }
 
   /**
    * Gets the minimum length of a path from `r` to some an end state `end`.
@@ -311,64 +334,128 @@ module Make<RegexTreeViewSig TreeImpl> {
     shortestDistances(isEndTuple/1, tupleDeltaBackwards/2)(end, r, result)
 
   /**
-   * Holds if there exists a pair of repetitions `(pivot, succ)` in the regular expression such that:
-   * `tuple` is reachable from `(pivot, pivot, succ)` in the product automaton,
-   * and there is a distance of `dist` from `tuple` to the nearest end-tuple `(pivot, succ, succ)`,
-   * and a path from a start-state to `tuple` follows the transitions in `trace`.
+   * Holds if there is a step from `q` to `r` in the product automaton labeled with `s1`, `s2`, and `s3`.
+   * Where the step is on a path from a start state to an end state.
    */
-  private predicate isReachableFromStartTuple(
-    State pivot, State succ, StateTuple tuple, Trace trace, int dist
+  private predicate isStepOnPath(
+    StateTuple q, InputSymbol s1, InputSymbol s2, InputSymbol s3, StateTuple r
   ) {
-    exists(InputSymbol s1, InputSymbol s2, InputSymbol s3, Trace v |
-      isReachableFromStartTuple(pivot, succ, v, s1, s2, s3, tuple, dist) and
-      trace = Step(s1, s2, s3, v)
+    step(q, s1, s2, s3, r) and
+    exists(State pivot, State succ, StateTuple end |
+      end = MkStateTuple(pivot, succ, pivot, succ, succ) and
+      pragma[only_bind_out](distBackFromEnd(q, end)) =
+        pragma[only_bind_out](distBackFromEnd(r, end)) + 1
     )
   }
 
-  private predicate isReachableFromStartTuple(
-    State pivot, State succ, Trace trace, InputSymbol s1, InputSymbol s2, InputSymbol s3,
-    StateTuple tuple, int dist
+  /**
+   * Gets a unique number for a `state`.
+   * Is used to create an ordering of states and tuples of states.
+   */
+  private int rankState(State state) {
+    state =
+      rank[result](State s |
+        exists(StateTuple tuple |
+          tuple = getARelevantStateTuple(_, _) and
+          s = [tuple.getFirst(), tuple.getSecond(), tuple.getThird()]
+        )
+      |
+        s order by getTermLocationString(s.getRepr())
+      )
+  }
+
+  /**
+   * Holds if there is a step from `q` to `r` in the product automaton labeled with `s1`, `s2`, and `s3`.
+   * Where the step is on a path from a start state to an end state.
+   * And the step is a uniquely chosen step from out of `q`.
+   */
+  pragma[nomagic]
+  private predicate isUniqueMinStepOnPath(
+    StateTuple q, InputSymbol s1, InputSymbol s2, InputSymbol s3, StateTuple r
   ) {
-    // base case.
-    isStartLoops(pivot, succ) and
-    step(MkStateTuple(pivot, pivot, succ), s1, s2, s3, tuple) and
-    tuple = MkStateTuple(_, _, _) and
-    trace = Nil() and
-    dist = distBackFromEnd(tuple, MkStateTuple(pivot, succ, succ))
-    or
-    // recursive case
-    exists(StateTuple p |
-      isReachableFromStartTuple(pivot, succ, p, trace, dist + 1) and
-      dist = distBackFromEnd(tuple, MkStateTuple(pivot, succ, succ)) and
-      step(p, s1, s2, s3, tuple)
-    )
+    isStepOnPath(q, s1, s2, s3, r) and
+    r =
+      min(StateTuple cand |
+        isStepOnPath(q, _, _, _, cand)
+      |
+        cand
+        order by
+          rankState(cand.getFirst()), rankState(cand.getSecond()), rankState(cand.getThird())
+      )
+  }
+
+  private newtype TTrace =
+    Nil(State pivot, State succ) {
+      isStartLoops(pivot, succ) and
+      getStartTuple(pivot, succ) = getARelevantStateTuple(pivot, succ)
+    } or
+    Step(TTrace prev, StateTuple nextTuple) {
+      exists(StateTuple prevTuple, State pivot, State succ |
+        prev = Nil(pivot, succ) and
+        prevTuple = getStartTuple(pivot, succ)
+        or
+        prev = Step(_, prevTuple)
+      |
+        isUniqueMinStepOnPath(prevTuple, _, _, _, nextTuple)
+      )
+    }
+
+  /**
+   * A list of tuples of input symbols that describe a path in the product automaton
+   * starting from a start state `(pivot, pivot, succ)`.
+   */
+  class Trace extends TTrace {
+    /**
+     * Gets a string representation of this Trace that can be used for debug purposes.
+     */
+    string toString() { result = "a trace" }
+
+    /** Gets a trace where the head has been removed. */
+    Trace getPrev() { this = Step(result, _) }
+
+    /** Gets the tuple at the head of this trace. */
+    StateTuple getTuple() {
+      this = Step(_, result)
+      or
+      exists(State prev, State succ |
+        this = Nil(prev, succ) and
+        result = getStartTuple(prev, succ)
+      )
+    }
   }
 
   /**
    * Gets the tuple `(pivot, succ, succ)` from the product automaton.
    */
-  StateTuple getAnEndTuple(State pivot, State succ) {
+  StateTuple getEndTuple(State pivot, State succ) {
     isStartLoops(pivot, succ) and
-    result = MkStateTuple(pivot, succ, succ)
+    result = MkStateTuple(pivot, succ, pivot, succ, succ)
+  }
+
+  /**
+   * Gets the tuple `(pivot, pivot, succ)` from the product automaton.
+   */
+  StateTuple getStartTuple(State pivot, State succ) {
+    isStartLoops(pivot, succ) and
+    result = MkStateTuple(pivot, succ, pivot, pivot, succ)
   }
 
   /** An implementation of a chain containing chars for use by `Concretizer`. */
   private module CharTreeImpl implements CharTree {
     class CharNode = Trace;
 
-    CharNode getPrev(CharNode t) { t = Step(_, _, _, result) }
+    CharNode getPrev(CharNode t) { result = t.getPrev() }
 
-    /** Holds if `n` is used in `isPumpable`. */
-    predicate isARelevantEnd(CharNode n) {
-      exists(State pivot, State succ |
-        isReachableFromStartTuple(pivot, succ, getAnEndTuple(pivot, succ), n, _)
-      )
-    }
+    predicate isARelevantEnd(CharNode n) { n.getTuple() = getEndTuple(_, _) }
 
     string getChar(CharNode t) {
-      exists(InputSymbol s1, InputSymbol s2, InputSymbol s3 | t = Step(s1, s2, s3, _) |
-        result = getAThreewayIntersect(s1, s2, s3)
-      )
+      result =
+        min(string c, InputSymbol s1, InputSymbol s2, InputSymbol s3 |
+          isUniqueMinStepOnPath(t.getPrev().getTuple(), s1, s2, s3, t.getTuple()) and
+          c = getAThreewayIntersect(s1, s2, s3)
+        |
+          c
+        )
     }
   }
 
@@ -386,8 +473,8 @@ module Make<RegexTreeViewSig TreeImpl> {
    */
   predicate isPumpable(State pivot, State succ, string pump) {
     exists(StateTuple q, Trace t |
-      isReachableFromStartTuple(pivot, succ, q, t, _) and
-      q = getAnEndTuple(pivot, succ) and
+      q = getEndTuple(pivot, succ) and
+      q = t.getTuple() and
       pump = Concretizer<CharTreeImpl>::concretize(t)
     )
   }

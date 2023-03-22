@@ -851,6 +851,10 @@ module Make<RegexTreeViewSig TreeImpl> {
      * Gets the term represented by this state.
      */
     RegExpTerm getRepr() { result = repr }
+
+    predicate hasLocationInfo(string file, int line, int column, int endline, int endcolumn) {
+      repr.hasLocationInfo(file, line, column, endline, endcolumn)
+    }
   }
 
   /**
