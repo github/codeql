@@ -49,11 +49,12 @@ module PEP249 {
   }
 
   private string getSqlKwargName() {
-    result in ["sql", "statement", "operation", "query", "query_string"]
+    result in ["sql", "statement", "operation", "query", "query_string", "sql_script"]
   }
 
   /**
-   * A call to `execute` or  `executemany` method on a database cursor or a connection.
+   * A call to an execute method on a database cursor or a connection, such as `execute`
+   * or `executemany`.
    *
    * See
    * - https://peps.python.org/pep-0249/#execute
@@ -67,7 +68,7 @@ module PEP249 {
       exists(API::Node start |
         start instanceof DatabaseCursor or start instanceof DatabaseConnection
       |
-        this = start.getMember(["execute", "executemany"]).getACall()
+        this = start.getMember(["execute", "executemany", "executescript"]).getACall()
       )
     }
 
