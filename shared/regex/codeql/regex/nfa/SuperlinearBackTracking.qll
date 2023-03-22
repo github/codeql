@@ -390,9 +390,11 @@ module Make<RegexTreeViewSig TreeImpl> {
       getStartTuple(pivot, succ) = getARelevantStateTuple(pivot, succ)
     } or
     Step(TTrace prev, StateTuple nextTuple) {
-      exists(StateTuple prevTuple, State pivot, State succ |
-        prev = Nil(pivot, succ) and
-        prevTuple = getStartTuple(pivot, succ)
+      exists(StateTuple prevTuple |
+        exists(State pivot, State succ |
+          prev = Nil(pivot, succ) and
+          prevTuple = getStartTuple(pivot, succ)
+        )
         or
         prev = Step(_, prevTuple)
       |
