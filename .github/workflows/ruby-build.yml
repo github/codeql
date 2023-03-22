@@ -50,7 +50,7 @@ jobs:
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
       - name: Install cargo-cross
         if: runner.os == 'Linux'
-        run: cargo install cross --version 0.2.1
+        run: cargo install cross --version 0.2.5
       - uses: ./.github/actions/os-version
         id: os_version
       - name: Cache entire extractor
