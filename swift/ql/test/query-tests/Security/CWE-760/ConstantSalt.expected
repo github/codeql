@@ -15,8 +15,6 @@ edges
 | rncryptor.swift:60:29:60:29 | 0 :  | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  |
 | rncryptor.swift:60:29:60:29 | 0 :  | rncryptor.swift:60:24:60:30 | call to Data.init(_:) :  |
 | test.swift:43:35:43:130 | [...] :  | test.swift:51:49:51:49 | constantSalt |
-| test.swift:43:35:43:130 | [...] :  | test.swift:56:59:56:59 | constantSalt |
-| test.swift:43:35:43:130 | [...] :  | test.swift:62:59:62:59 | constantSalt |
 | test.swift:43:35:43:130 | [...] :  | test.swift:67:53:67:53 | constantSalt |
 nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | semmle.label | [summary] to write: return (return) in Data.init(_:) :  |
@@ -37,8 +35,6 @@ nodes
 | rncryptor.swift:79:160:79:160 | myConstantSalt2 | semmle.label | myConstantSalt2 |
 | test.swift:43:35:43:130 | [...] :  | semmle.label | [...] :  |
 | test.swift:51:49:51:49 | constantSalt | semmle.label | constantSalt |
-| test.swift:56:59:56:59 | constantSalt | semmle.label | constantSalt |
-| test.swift:62:59:62:59 | constantSalt | semmle.label | constantSalt |
 | test.swift:67:53:67:53 | constantSalt | semmle.label | constantSalt |
 subpaths
 | rncryptor.swift:59:29:59:29 | abcdef123456 :  | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | rncryptor.swift:59:24:59:43 | call to Data.init(_:) :  |
@@ -55,6 +51,4 @@ subpaths
 | rncryptor.swift:78:135:78:135 | myConstantSalt1 | rncryptor.swift:59:29:59:29 | abcdef123456 :  | rncryptor.swift:78:135:78:135 | myConstantSalt1 | The value 'abcdef123456' is used as a constant salt, which is insecure for hashing passwords. |
 | rncryptor.swift:79:160:79:160 | myConstantSalt2 | rncryptor.swift:60:29:60:29 | 0 :  | rncryptor.swift:79:160:79:160 | myConstantSalt2 | The value '0' is used as a constant salt, which is insecure for hashing passwords. |
 | test.swift:51:49:51:49 | constantSalt | test.swift:43:35:43:130 | [...] :  | test.swift:51:49:51:49 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:56:59:56:59 | constantSalt | test.swift:43:35:43:130 | [...] :  | test.swift:56:59:56:59 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
-| test.swift:62:59:62:59 | constantSalt | test.swift:43:35:43:130 | [...] :  | test.swift:62:59:62:59 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
 | test.swift:67:53:67:53 | constantSalt | test.swift:43:35:43:130 | [...] :  | test.swift:67:53:67:53 | constantSalt | The value '[...]' is used as a constant salt, which is insecure for hashing passwords. |
