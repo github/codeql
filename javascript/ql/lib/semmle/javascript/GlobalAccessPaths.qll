@@ -381,7 +381,7 @@ module AccessPath {
         result.getImmediateDominator() = writeNode.getBasicBlock()
       )
       or
-      result.getImmediateDominator() = getASuccessorBBThatReadsVar(write) // more manual magic - outlined into a helper predicate.
+      result.getImmediateDominator() = getASuccessorBBThatReadsVar(write)
     }
   }
 
