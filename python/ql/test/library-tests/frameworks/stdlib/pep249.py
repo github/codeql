@@ -6,6 +6,8 @@ db.execute("some sql", (42,))  # $ getSql="some sql"
 
 cursor = db.cursor()
 cursor.execute("some sql", (42,))  # $ getSql="some sql"
+cursor.executescript("sql")  # $ MISSING: getSql="sql"
+cursor.executescript(sql_script="sql") # $ MISSING: getSql="sql"
 
 import sqlite3.dbapi2
 conn = sqlite3.dbapi2.connect()
