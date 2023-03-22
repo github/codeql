@@ -215,7 +215,7 @@ module SemanticExprConfig {
   newtype TSsaVariable =
     TSsaInstruction(IR::Instruction instr) { instr.hasMemoryResult() } or
     TSsaOperand(IR::Operand op) { op.isDefinitionInexact() } or
-    TSsaPointerArithmeticGuard(IR::PointerArithmeticInstruction instr) {
+    TSsaPointerArithmeticGuard(ValueNumber instr) {
       exists(Guard g, IR::Operand use | use = instr.getAUse() |
         g.comparesLt(use, _, _, _, _) or
         g.comparesLt(_, use, _, _, _) or
@@ -231,7 +231,7 @@ module SemanticExprConfig {
 
     IR::Instruction asInstruction() { none() }
 
-    IR::PointerArithmeticInstruction asPointerArithGuard() { none() }
+    ValueNumber asPointerArithGuard() { none() }
 
     IR::Operand asOperand() { none() }
   }
@@ -249,15 +249,15 @@ module SemanticExprConfig {
   }
 
   class SsaPointerArithmeticGuard extends SsaVariable, TSsaPointerArithmeticGuard {
-    IR::PointerArithmeticInstruction instr;
+    ValueNumber vn;
 
-    SsaPointerArithmeticGuard() { this = TSsaPointerArithmeticGuard(instr) }
+    SsaPointerArithmeticGuard() { this = TSsaPointerArithmeticGuard(vn) }
 
-    final override string toString() { result = instr.toString() }
+    final override string toString() { result = vn.toString() }
 
-    final override Location getLocation() { result = instr.getLocation() }
+    final override Location getLocation() { result = vn.getLocation() }
 
-    final override IR::PointerArithmeticInstruction asPointerArithGuard() { result = instr }
+    final override ValueNumber asPointerArithGuard() { result = vn }
   }
 
   class SsaOperand extends SsaVariable, TSsaOperand {
@@ -289,7 +289,7 @@ module SemanticExprConfig {
   Expr getAUse(SsaVariable v) {
     result.getUnconverted().(IR::LoadInstruction).getSourceValue() = v.asInstruction()
     or
-    result.getUnconverted() = valueNumber(v.asPointerArithGuard()).getAnInstruction()
+    result.getUnconverted() = v.asPointerArithGuard().getAnInstruction()
   }
 
   SemType getSsaVariableType(SsaVariable v) {
@@ -331,7 +331,7 @@ module SemanticExprConfig {
     final override predicate hasRead(SsaVariable v) {
       exists(IR::Operand operand |
         operand.getDef() = v.asInstruction() or
-        operand.getDef() = valueNumber(v.asPointerArithGuard()).getAnInstruction()
+        operand.getDef() = v.asPointerArithGuard().getAnInstruction()
       |
         not operand instanceof IR::PhiInputOperand and
         operand.getUse().getBlock() = block
@@ -352,7 +352,7 @@ module SemanticExprConfig {
     final override predicate hasRead(SsaVariable v) {
       exists(IR::PhiInputOperand operand |
         operand.getDef() = v.asInstruction() or
-        operand.getDef() = valueNumber(v.asPointerArithGuard()).getAnInstruction()
+        operand.getDef() = v.asPointerArithGuard().getAnInstruction()
       |
         operand.getPredecessorBlock() = pred and
         operand.getUse().getBlock() = succ
