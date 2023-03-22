@@ -22,6 +22,67 @@ module PEP249 {
     override string toString() { result = this.(API::Node).toString() }
   }
 
+  /**
+   * An API graph node representing a database connection.
+   */
+  abstract class DatabaseConnection extends API::Node {
+    /** Gets a string representation of this element. */
+    override string toString() { result = this.(API::Node).toString() }
+  }
+
+  private class DefaultDatabaseConnection extends DatabaseConnection {
+    DefaultDatabaseConnection() {
+      this = any(PEP249ModuleApiNode mod).getMember("connect").getReturn()
+    }
+  }
+
+  /**
+   * An API graph node representing a database cursor.
+   */
+  abstract class DatabaseCursor extends API::Node {
+    /** Gets a string representation of this element. */
+    override string toString() { result = this.(API::Node).toString() }
+  }
+
+  private class DefaultDatabaseCursor extends DatabaseCursor {
+    DefaultDatabaseCursor() { this = any(DatabaseConnection conn).getMember("cursor").getReturn() }
+  }
+
+  private string getSqlKwargName() {
+    result in ["sql", "statement", "operation", "query", "query_string"]
+  }
+
+  /**
+   * A call to `execute` or  `executemany` method on a database cursor or a connection.
+   *
+   * See
+   * - https://peps.python.org/pep-0249/#execute
+   * - https://peps.python.org/pep-0249/#executemany
+   *
+   * Note: While `execute` method on a connection is not part of PEP249, if it is used, we
+   * recognize it as an alias for constructing a cursor and calling `execute` on it.
+   */
+  private class ExecuteMethodCall extends SqlExecution::Range, API::CallNode {
+    ExecuteMethodCall() {
+      exists(API::Node start |
+        start instanceof DatabaseCursor or start instanceof DatabaseConnection
+      |
+        this = start.getMember(["execute", "executemany"]).getACall()
+      )
+    }
+
+    override DataFlow::Node getSql() {
+      result in [this.getArg(0), this.getArgByName(getSqlKwargName()),]
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // old impl
+  // ---------------------------------------------------------------------------
+  // the goal is to deprecate it in favour of the API graph version, but currently this
+  // requires a rewrite of the Peewee modeling, which depends on rewriting the
+  // instance/instance-source stuff to use API graphs instead.
+  // so is postponed for now.
   /** Gets a reference to the `connect` function of a module that implements PEP 249. */
   DataFlow::Node connect() {
     result = any(PEP249ModuleApiNode a).getMember("connect").getAValueReachableFromSource()
@@ -147,7 +208,10 @@ module PEP249 {
    * recognize it as an alias for constructing a cursor and calling `execute` on it.
    */
   private class ExecuteCall extends SqlExecution::Range, DataFlow::CallCfgNode {
-    ExecuteCall() { this.getFunction() = execute() }
+    ExecuteCall() {
+      this.getFunction() = execute() and
+      not this instanceof ExecuteMethodCall
+    }
 
     override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("sql")] }
   }
@@ -170,8 +234,13 @@ module PEP249 {
    * recognize it as an alias for constructing a cursor and calling `executemany` on it.
    */
   private class ExecutemanyCall extends SqlExecution::Range, DataFlow::CallCfgNode {
-    ExecutemanyCall() { this.getFunction() = executemany() }
+    ExecutemanyCall() {
+      this.getFunction() = executemany() and
+      not this instanceof ExecuteMethodCall
+    }
 
-    override DataFlow::Node getSql() { result in [this.getArg(0), this.getArgByName("sql")] }
+    override DataFlow::Node getSql() {
+      result in [this.getArg(0), this.getArgByName(getSqlKwargName())]
+    }
   }
 }
