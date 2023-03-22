@@ -272,7 +272,6 @@ jobs:
           path: ${{ runner.temp }}
       - name: Unzip Ruby bundle
         shell: bash
-        run: unzip -q -d /tmp/ruby-bundle /tmp/codeql-ruby-bundle.zip
         run: unzip -q -d "$RUNNER_TEMP"/ruby-bundle "$RUNNER_TEMP"/codeql-ruby-bundle.zip
 
       - name: Run QL test
