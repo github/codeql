@@ -81,4 +81,33 @@ module InsecureRandomness {
   /** Gets a package that implements hash algorithms. */
   bindingset[result]
   private string getAHashPkg() { result.regexpMatch("crypto/(md5|sha(1|256|512)|rand)") }
+
+  /**
+   * A function that hashes input, which is considered as a taint propagator for use of
+   * cryptographically insecure random values.
+   */
+  class HashAlgorithm extends TaintTracking::FunctionModel {
+    HashAlgorithm() {
+      exists(Method m | this = m |
+        m.implements("hash", "Hash", "Sum")
+        or
+        m.implements("hash", "Hash32", "Sum32")
+        or
+        m.implements("hash", "Hash64", "Sum64")
+      )
+      or
+      exists(string pkg, string name | this.hasQualifiedName(pkg, name) |
+        pkg = getAHashPkg() and name.matches("Sum%")
+      )
+    }
+
+    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+      if this instanceof Method
+      then (
+        inp.isReceiver() and outp.isResult()
+      ) else (
+        inp.isParameter(0) and outp.isResult()
+      )
+    }
+  }
 }
