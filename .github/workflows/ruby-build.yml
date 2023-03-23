@@ -60,8 +60,10 @@ jobs:
           path: |
             ruby/extractor/target/release/autobuilder
             ruby/extractor/target/release/autobuilder.exe
+            ruby/extractor/target/x86_64-unknown-linux-gnu/release/autobuilder
             ruby/extractor/target/release/extractor
             ruby/extractor/target/release/extractor.exe
+            ruby/extractor/target/x86_64-unknown-linux-gnu/release/extractor
             ruby/extractor/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-extractor-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/extractor/Cargo.lock') }}--${{ hashFiles('ruby/extractor/**/*.rs') }}
       - uses: actions/cache@v3
@@ -85,7 +87,12 @@ jobs:
       # This ensures we don't depend on glibc > 2.17.
       - name: Release build (linux)
         if: steps.cache-extractor.outputs.cache-hit != 'true' && runner.os == 'Linux'
-        run: cd extractor && cross build --release
+        run: |
+          cd extractor
+          cross build --release
+          mv target/x86_64-unknown-linux-gnu/release/extractor target/release/
+          mv target/x86_64-unknown-linux-gnu/release/autobuilder target/release/
+          mv target/x86_64-unknown-linux-gnu/release/generator target/release/
       - name: Release build (windows and macos)
         if: steps.cache-extractor.outputs.cache-hit != 'true' && runner.os != 'Linux'
         run: cd extractor && cargo build --release
