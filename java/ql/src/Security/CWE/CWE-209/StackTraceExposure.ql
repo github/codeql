@@ -104,8 +104,7 @@ predicate printsStackExternally(MethodAccess call, Expr stackTrace) {
 predicate stringifiedStackFlowsExternally(DataFlow::Node externalExpr, Expr stackTrace) {
   exists(MethodAccess stackTraceString |
     stackTraceExpr(stackTrace, stackTraceString) and
-    StackTraceStringToHttpResponseSinkFlow::flow(DataFlow::exprNode(stackTraceString),
-      externalExpr)
+    StackTraceStringToHttpResponseSinkFlow::flow(DataFlow::exprNode(stackTraceString), externalExpr)
   )
 }
 

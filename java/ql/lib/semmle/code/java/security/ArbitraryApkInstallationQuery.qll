@@ -72,7 +72,8 @@ private module InstallPackageActionConfig implements DataFlow::StateConfigSig {
   predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 }
 
-private module InstallPackageActionFlow = TaintTracking::GlobalWithState<InstallPackageActionConfig>;
+private module InstallPackageActionFlow =
+  TaintTracking::GlobalWithState<InstallPackageActionConfig>;
 
 private newtype MimeTypeState =
   MimeTypeUnset() or

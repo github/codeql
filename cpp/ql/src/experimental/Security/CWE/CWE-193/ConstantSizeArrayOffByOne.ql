@@ -43,7 +43,8 @@ module FieldAddressToPointerArithmeticConfig implements DataFlow::ConfigSig {
   }
 }
 
-module FieldAddressToPointerArithmeticFlow = DataFlow::Global<FieldAddressToPointerArithmeticConfig>;
+module FieldAddressToPointerArithmeticFlow =
+  DataFlow::Global<FieldAddressToPointerArithmeticConfig>;
 
 predicate isFieldAddressSource(Field f, DataFlow::Node source) {
   source.asInstruction().(FieldAddressInstruction).getField() = f

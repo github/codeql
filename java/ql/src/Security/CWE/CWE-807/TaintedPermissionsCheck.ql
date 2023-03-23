@@ -67,7 +67,6 @@ import TaintedPermissionsCheckFlow::PathGraph
 from
   TaintedPermissionsCheckFlow::PathNode source, TaintedPermissionsCheckFlow::PathNode sink,
   PermissionsConstruction p
-where
-  sink.getNode().asExpr() = p.getInput() and TaintedPermissionsCheckFlow::flowPath(source, sink)
+where sink.getNode().asExpr() = p.getInput() and TaintedPermissionsCheckFlow::flowPath(source, sink)
 select p, source, sink, "Permissions check depends on a $@.", source.getNode(),
   "user-controlled value"
