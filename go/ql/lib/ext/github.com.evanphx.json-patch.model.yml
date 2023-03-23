@@ -11,3 +11,7 @@ extensions:
       - ["github.com/evanphx/json-patch/$ANYVERSION", "Patch", True, "Apply", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["github.com/evanphx/json-patch/$ANYVERSION", "Patch", True, "ApplyIndent", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
       - ["github.com/evanphx/json-patch/$ANYVERSION", "Patch", True, "ApplyIndent", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/evanphx/json-patch/$ANYVERSION", "Patch", True, "ApplyWithOptions", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/evanphx/json-patch/$ANYVERSION", "Patch", True, "ApplyWithOptions", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/evanphx/json-patch/$ANYVERSION", "Patch", True, "ApplyIndentWithOptions", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["github.com/evanphx/json-patch/$ANYVERSION", "Patch", True, "ApplyIndentWithOptions", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
