@@ -280,8 +280,10 @@ fn scan_erb(
             }
         }
     }
+
     if result.is_empty() {
         let root = tree.root_node();
+
         // Add an empty range at the end of the file
         result.push(Range {
             start_byte: root.end_byte(),
