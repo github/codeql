@@ -261,7 +261,9 @@ module InsecureMethodPathGraph implements DataFlow::PathGraphSig<MethodAccessIns
 }
 
 module Flow =
-  DataFlow::MergePathGraph<TempDirSystemGetPropertyToCreate::PathNode, MethodAccessInsecureFileCreation, TempDirSystemGetPropertyToCreate::PathGraph, InsecureMethodPathGraph>;
+  DataFlow::MergePathGraph<TempDirSystemGetPropertyToCreate::PathNode,
+    MethodAccessInsecureFileCreation, TempDirSystemGetPropertyToCreate::PathGraph,
+    InsecureMethodPathGraph>;
 
 import Flow::PathGraph
 

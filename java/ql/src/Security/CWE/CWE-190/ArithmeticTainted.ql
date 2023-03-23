@@ -37,7 +37,8 @@ module RemoteUserInputOverflow = TaintTracking::Make<RemoteUserInputOverflowConf
 module RemoteUserInputUnderflow = TaintTracking::Make<RemoteUserInputUnderflowConfig>;
 
 module Flow =
-  DataFlow::MergePathGraph<RemoteUserInputOverflow::PathNode, RemoteUserInputUnderflow::PathNode, RemoteUserInputOverflow::PathGraph, RemoteUserInputUnderflow::PathGraph>;
+  DataFlow::MergePathGraph<RemoteUserInputOverflow::PathNode, RemoteUserInputUnderflow::PathNode,
+    RemoteUserInputOverflow::PathGraph, RemoteUserInputUnderflow::PathGraph>;
 
 import Flow::PathGraph
 
