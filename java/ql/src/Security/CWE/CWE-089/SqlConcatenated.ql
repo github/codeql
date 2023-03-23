@@ -36,7 +36,7 @@ module UncontrolledStringBuilderSourceFlowConfig implements DataFlow::ConfigSig 
 }
 
 module UncontrolledStringBuilderSourceFlow =
-  TaintTracking::Make<UncontrolledStringBuilderSourceFlowConfig>;
+  TaintTracking::Global<UncontrolledStringBuilderSourceFlowConfig>;
 
 from QueryInjectionSink query, Expr uncontrolled
 where
@@ -45,7 +45,7 @@ where
     or
     exists(StringBuilderVar sbv |
       uncontrolledStringBuilderQuery(sbv, uncontrolled) and
-      UncontrolledStringBuilderSourceFlow::hasFlow(DataFlow::exprNode(sbv.getToStringCall()), query)
+      UncontrolledStringBuilderSourceFlow::flow(DataFlow::exprNode(sbv.getToStringCall()), query)
     )
   ) and
   not queryTaintedBy(query, _, _)

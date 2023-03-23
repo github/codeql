@@ -28,7 +28,7 @@ class OnActivityResultIncomingIntent extends DataFlow::Node {
    */
   predicate isRemoteSource() {
     exists(RefType startingType, Expr startActivityForResultArg |
-      ImplicitStartActivityForResult::hasFlowToExpr(startActivityForResultArg) and
+      ImplicitStartActivityForResult::flowToExpr(startActivityForResultArg) and
       // startingType is the class enclosing the method that calls `startActivityForResult`.
       startingType = startActivityForResultArg.getEnclosingCallable().getDeclaringType()
     |
@@ -104,7 +104,7 @@ private module ImplicitStartActivityForResultConfig implements DataFlow::ConfigS
 }
 
 private module ImplicitStartActivityForResult =
-  DataFlow::Make<ImplicitStartActivityForResultConfig>;
+  DataFlow::Global<ImplicitStartActivityForResultConfig>;
 
 /** An Android Activity or Fragment. */
 private class ActivityOrFragment extends Class {

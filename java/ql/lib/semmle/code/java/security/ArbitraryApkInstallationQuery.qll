@@ -17,15 +17,15 @@ private module ApkInstallationConfig implements DataFlow::ConfigSig {
       ma.getMethod() instanceof SetDataMethod and
       ma.getArgument(0) = node.asExpr() and
       (
-        PackageArchiveMimeTypeFlow::hasFlowToExpr(ma.getQualifier())
+        PackageArchiveMimeTypeFlow::flowToExpr(ma.getQualifier())
         or
-        InstallPackageActionFlow::hasFlowToExpr(ma.getQualifier())
+        InstallPackageActionFlow::flowToExpr(ma.getQualifier())
       )
     )
   }
 }
 
-module ApkInstallationFlow = DataFlow::Make<ApkInstallationConfig>;
+module ApkInstallationFlow = DataFlow::Global<ApkInstallationConfig>;
 
 private newtype ActionState =
   ActionUnset() or
@@ -72,7 +72,7 @@ private module InstallPackageActionConfig implements DataFlow::StateConfigSig {
   predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 }
 
-private module InstallPackageActionFlow = TaintTracking::MakeWithState<InstallPackageActionConfig>;
+private module InstallPackageActionFlow = TaintTracking::GlobalWithState<InstallPackageActionConfig>;
 
 private newtype MimeTypeState =
   MimeTypeUnset() or
@@ -117,4 +117,4 @@ private module PackageArchiveMimeTypeConfig implements DataFlow::StateConfigSig 
 }
 
 private module PackageArchiveMimeTypeFlow =
-  TaintTracking::MakeWithState<PackageArchiveMimeTypeConfig>;
+  TaintTracking::GlobalWithState<PackageArchiveMimeTypeConfig>;

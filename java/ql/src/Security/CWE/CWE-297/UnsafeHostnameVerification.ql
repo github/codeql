@@ -77,7 +77,7 @@ module TrustAllHostnameVerifierConfig implements DataFlow::ConfigSig {
   }
 }
 
-module TrustAllHostnameVerifierFlow = DataFlow::Make<TrustAllHostnameVerifierConfig>;
+module TrustAllHostnameVerifierFlow = DataFlow::Global<TrustAllHostnameVerifierConfig>;
 
 import TrustAllHostnameVerifierFlow::PathGraph
 
@@ -118,7 +118,7 @@ from
   TrustAllHostnameVerifierFlow::PathNode source, TrustAllHostnameVerifierFlow::PathNode sink,
   RefType verifier
 where
-  TrustAllHostnameVerifierFlow::hasFlowPath(source, sink) and
+  TrustAllHostnameVerifierFlow::flowPath(source, sink) and
   not isNodeGuardedByFlag(sink.getNode()) and
   verifier = source.getNode().asExpr().(ClassInstanceExpr).getConstructedType()
 select sink, source, sink,

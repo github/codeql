@@ -17,6 +17,6 @@ import LdapInjectionLib
 import LdapInjectionFlow::PathGraph
 
 from LdapInjectionFlow::PathNode source, LdapInjectionFlow::PathNode sink
-where LdapInjectionFlow::hasFlowPath(source, sink)
+where LdapInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This LDAP query depends on a $@.", source.getNode(),
   "user-provided value"
