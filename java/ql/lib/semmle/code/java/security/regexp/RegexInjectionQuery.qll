@@ -23,7 +23,7 @@ deprecated class RegexInjectionConfiguration extends TaintTracking::Configuratio
 /**
  * A taint-tracking configuration for untrusted user input used to construct regular expressions.
  */
-private module RegexInjectionConfig implements DataFlow::ConfigSig {
+module RegexInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof RegexInjectionSink }

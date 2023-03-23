@@ -42,7 +42,7 @@ deprecated class TemplateInjectionFlowConfig extends TaintTracking::Configuratio
 }
 
 /** A taint tracking configuration to reason about server-side template injection (SST) vulnerabilities */
-private module TemplateInjectionFlowConfig implements DataFlow::StateConfigSig {
+module TemplateInjectionFlowConfig implements DataFlow::StateConfigSig {
   class FlowState = DataFlow::FlowState;
 
   predicate isSource(DataFlow::Node source, FlowState state) {

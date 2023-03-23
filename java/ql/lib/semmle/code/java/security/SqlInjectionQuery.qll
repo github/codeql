@@ -36,7 +36,7 @@ deprecated class QueryInjectionFlowConfig extends TaintTracking::Configuration {
 /**
  * A taint-tracking configuration for unvalidated user input that is used in SQL queries.
  */
-private module QueryInjectionFlowConfig implements DataFlow::ConfigSig {
+module QueryInjectionFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
