@@ -287,7 +287,7 @@ SourceOrSinkElement interpretElement(
     exists(Method m | m.hasQualifiedName(interpretPackage(pkg), type, name) |
       result.asEntity() = m
       or
-      subtypes = true and result.asEntity().(Method).implements(m)
+      subtypes = true and result.asEntity().(Method).implementsIncludingInterfaceMethods(m)
     )
     or
     type = "" and
