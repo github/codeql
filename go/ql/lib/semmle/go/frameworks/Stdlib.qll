@@ -44,6 +44,20 @@ import semmle.go.frameworks.stdlib.TextTabwriter
 import semmle.go.frameworks.stdlib.TextTemplate
 import semmle.go.frameworks.stdlib.Unsafe
 
+// This is modelled using TaintTracking::FunctionModel because it doesn't have a real type signature,
+// and therefore currently has an InvalidType, not a SignatureType, which breaks Models as Data.
+/**
+ * A model of the built-in `append` function, which propagates taint from its arguments to its
+ * result.
+ */
+private class AppendFunction extends TaintTracking::FunctionModel {
+  AppendFunction() { this = Builtin::append() }
+
+  override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+    inp.isParameter(_) and outp.isResult()
+  }
+}
+
 /** Provides a class for modeling functions which convert strings into integers. */
 module IntegerParser {
   /**
