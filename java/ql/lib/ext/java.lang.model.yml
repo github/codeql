@@ -58,6 +58,7 @@ extensions:
       - ["java.lang", "Iterable", True, "forEach", "(Consumer)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["java.lang", "Iterable", True, "iterator", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.lang", "Iterable", True, "spliterator", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
+      - ["java.lang", "NullPointerException", False, "NullPointerException", "(String)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
       - ["java.lang", "Object", True, "clone", "", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.lang", "Object", True, "clone", "", "", "Argument[this].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["java.lang", "Object", True, "clone", "", "", "Argument[this].MapValue", "ReturnValue.MapValue", "value", "manual"]
@@ -107,50 +108,69 @@ extensions:
       - ["java.lang", "StringBuffer", True, "StringBuffer", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.lang", "StringBuilder", True, "StringBuilder", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.lang", "System", False, "arraycopy", "", "", "Argument[0]", "Argument[2]", "taint", "manual"]
+      - ["java.lang", "ThreadLocal", True, "get", "()", "", "Argument[-1].SyntheticField[java.lang.ThreadLocal.value]", "ReturnValue", "value", "manual"] # ! not sure if this model is correct, and if should be neutral model instead
       - ["java.lang", "Throwable", False, "Throwable", "(Throwable)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
       - ["java.lang", "Throwable", True, "getCause", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Throwable", True, "getMessage", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "value", "manual"]
+      - ["java.lang", "Throwable", True, "toString", "()", "", "Argument[-1].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "taint", "manual"] # ! little unsure about this one...
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
     data:
       - ["java.lang", "AbstractStringBuilder", "length", "()", "manual"]
       - ["java.lang", "Boolean", "equals", "(Object)", "manual"]
+      - ["java.lang", "Class", "getCanonicalName", "()", "manual"]
       - ["java.lang", "Class", "getClassLoader", "()", "manual"]
       - ["java.lang", "Class", "getName", "()", "manual"]
       - ["java.lang", "Class", "getSimpleName", "()", "manual"]
       - ["java.lang", "Class", "isAssignableFrom", "(Class)", "manual"]
       - ["java.lang", "Enum", "Enum", "(String,int)", "manual"]
       - ["java.lang", "Enum", "equals", "(Object)", "manual"]
+      - ["java.lang", "Enum", "hashCode", "()", "manual"]
       - ["java.lang", "Enum", "name", "()", "manual"]
+      - ["java.lang", "Enum", "ordinal", "()", "manual"]
       - ["java.lang", "Enum", "toString", "()", "manual"]
+      - ["java.lang", "Integer", "equals", "(Object)", "manual"]
       - ["java.lang", "Long", "equals", "(Object)", "manual"]
       - ["java.lang", "Object", "equals", "(Object)", "manual"]
       - ["java.lang", "Object", "getClass", "()", "manual"]
       - ["java.lang", "Object", "hashCode", "()", "manual"]
       - ["java.lang", "Object", "toString", "()", "manual"]
+      - ["java.lang", "Runnable", "run", "()", "manual"]
+      - ["java.lang", "String", "compareTo", "(String)", "manual"]
       - ["java.lang", "String", "contains", "(CharSequence)", "manual"]
       - ["java.lang", "String", "endsWith", "(String)", "manual"]
       - ["java.lang", "String", "equals", "(Object)", "manual"]
       - ["java.lang", "String", "equalsIgnoreCase", "(String)", "manual"]
       - ["java.lang", "String", "hashCode", "()", "manual"]
+      - ["java.lang", "String", "indexOf", "(int)", "manual"]
       - ["java.lang", "String", "indexOf", "(String)", "manual"]
       - ["java.lang", "String", "isEmpty", "()", "manual"]
       - ["java.lang", "String", "length", "()", "manual"]
       - ["java.lang", "String", "startsWith", "(String)", "manual"]
       - ["java.lang", "System", "currentTimeMillis", "()", "manual"]
+      - ["java.lang", "System", "lineSeparator", "()", "manual"] # ! double-check...
       - ["java.lang", "System", "nanoTime", "()", "manual"]
       - ["java.lang", "Thread", "currentThread", "()", "manual"]
       - ["java.lang", "Thread", "sleep", "(long)", "manual"]
+      - ["java.lang", "Thread", "start", "()", "manual"]
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.lang", "Integer", "intValue", "()", "manual"]       # taint-numeric
-      - ["java.lang", "Integer", "parseInt", "(String)", "manual"] # taint-numeric
-      - ["java.lang", "Integer", "toString", "(int)", "manual"]    # taint-numeric
-      - ["java.lang", "Integer", "valueOf", "(int)", "manual"]     # taint-numeric
-      - ["java.lang", "Long", "longValue", "()", "manual"]         # taint-numeric
-      - ["java.lang", "Long", "parseLong", "(String)", "manual"]   # taint-numeric
-      - ["java.lang", "Long", "toString", "()", "manual"]          # taint-numeric
-      - ["java.lang", "Math", "min", "(int,int)", "manual"]        # value-numeric
-      - ["java.lang", "String", "valueOf", "(int)", "manual"]      # taint-numeric
-      - ["java.lang", "String", "valueOf", "(long)", "manual"]     # taint-numeric
+      - ["java.lang", "Boolean", "booleanValue", "()", "manual"]       # taint-numeric
+      - ["java.lang", "Boolean", "parseBoolean", "(String)", "manual"] # taint-numeric
+      - ["java.lang", "Integer", "Integer", "(int)", "manual"]         # taint-numeric
+      - ["java.lang", "Integer", "intValue", "()", "manual"]           # taint-numeric
+      - ["java.lang", "Integer", "parseInt", "(String)", "manual"]     # taint-numeric
+      - ["java.lang", "Integer", "toString", "(int)", "manual"]        # taint-numeric
+      - ["java.lang", "Integer", "valueOf", "(int)", "manual"]         # taint-numeric
+      - ["java.lang", "Integer", "valueOf", "(String)", "manual"]      # taint-numeric # ! should probably make this and others like it have a "" signature instead...
+      - ["java.lang", "Long", "longValue", "()", "manual"]             # taint-numeric
+      - ["java.lang", "Long", "parseLong", "(String)", "manual"]       # taint-numeric
+      - ["java.lang", "Long", "toString", "()", "manual"]              # taint-numeric
+      - ["java.lang", "Long", "toString", "(long)", "manual"]          # taint-numeric
+      - ["java.lang", "Long", "valueOf", "(long)", "manual"]           # taint-numeric
+      - ["java.lang", "Long", "valueOf", "(String)", "manual"]         # taint-numeric
+      - ["java.lang", "Math", "max", "(int,int)", "manual"]            # value-numeric
+      - ["java.lang", "Math", "min", "(int,int)", "manual"]            # value-numeric
+      - ["java.lang", "String", "valueOf", "(int)", "manual"]          # taint-numeric
+      - ["java.lang", "String", "valueOf", "(long)", "manual"]         # taint-numeric

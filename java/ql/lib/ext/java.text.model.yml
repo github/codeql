@@ -1,6 +1,12 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.text", "DateFormat", True, "parse", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! maybe not interesting flow and should be neutral model?
+
+  - addsTo:
+      pack: codeql/java-all
       extensible: neutralModel
     data:
       # The below APIs have numeric flow and are currently being stored as neutral models.

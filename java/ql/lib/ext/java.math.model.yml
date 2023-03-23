@@ -7,6 +7,9 @@ extensions:
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.math", "BigDecimal", "BigDecimal", "(int)", "manual"]    # taint-numeric
       - ["java.math", "BigDecimal", "BigDecimal", "(String)", "manual"] # taint-numeric
+      - ["java.math", "BigDecimal", "add", "(BigDecimal)", "manual"]    # taint-numeric
       - ["java.math", "BigDecimal", "valueOf", "(double)", "manual"]    # taint-numeric
       - ["java.math", "BigDecimal", "valueOf", "(long)", "manual"]      # taint-numeric
+      - ["java.math", "BigInteger", "valueOf", "(long)", "manual"]      # taint-numeric

@@ -198,6 +198,7 @@ class TopJdkApi extends SummarizedCallableBase {
    * Note: the following top JDK APIs are not modeled with MaD:
    * `java.lang.String#valueOf(Object)`: a complex case; an alias for `Object.toString`, except the dispatch is hidden
    * `java.lang.System#getProperty(String)`: needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
+   * `java.lang.System#setProperty(String,String)`: needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
    * `java.lang.Throwable#printStackTrace()`: should probably not be a general step, but there might be specialised queries that care
    * `java.util.function.Consumer#accept(Object)`: specialized lambda flow
    * `java.util.function.Function#apply(Object)`: specialized lambda flow

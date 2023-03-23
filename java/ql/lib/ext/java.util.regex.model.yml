@@ -24,3 +24,9 @@ extensions:
       - ["java.util.regex", "Pattern", False, "matcher", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.util.regex", "Pattern", False, "quote", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.util.regex", "Pattern", False, "split", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.util.regex", "Matcher", "find", "()", "manual"]

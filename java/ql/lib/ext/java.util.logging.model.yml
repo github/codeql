@@ -42,3 +42,9 @@ extensions:
       extensible: summaryModel
     data:
       - ["java.util.logging", "LogRecord", False, "LogRecord", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.util.logging", "Logger", "isLoggable", "(Level)", "manual"]

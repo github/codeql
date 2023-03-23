@@ -59,9 +59,11 @@ extensions:
       - ["java.io", "CharArrayReader", False, "CharArrayReader", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.io", "CharArrayWriter", True, "toCharArray", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "DataInput", True, "readFully", "", "", "Argument[this]", "Argument[0]", "taint", "manual"]
+      - ["java.io", "DataInput", True, "readInt", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "DataInput", True, "readLine", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "DataInput", True, "readUTF", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "DataInputStream", False, "DataInputStream", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.io", "DataOutput", True, "writeInt", "(int)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.io", "File", False, "File", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.io", "File", False, "File", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
       - ["java.io", "File", True, "getAbsoluteFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
@@ -72,6 +74,7 @@ extensions:
       - ["java.io", "File", True, "toPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toURI", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.io", "FileInputStream", False, "FileInputStream", "(File)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.io", "FilterOutputStream", True, "FilterOutputStream", "(OutputStream)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.io", "InputStream", True, "read", "(byte[])", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["java.io", "InputStream", True, "read", "(byte[],int,int)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
@@ -93,4 +96,5 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.io", "File", "delete", "()", "manual"]
       - ["java.io", "File", "exists", "()", "manual"]

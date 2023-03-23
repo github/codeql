@@ -9,6 +9,7 @@ extensions:
       - ["java.util.stream", "BaseStream", True, "sequential", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util.stream", "BaseStream", True, "spliterator", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util.stream", "BaseStream", True, "unordered", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
+      - ["java.util.stream", "IntStream", False, "range", "(int,int)", "", "Argument[0..1]", "ReturnValue.Element", "value", "manual"] # ! this one is a bit odd, is it correct to have it as a summary model?
       - ["java.util.stream", "Stream", True, "allMatch", "(Predicate)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["java.util.stream", "Stream", True, "anyMatch", "(Predicate)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["java.util.stream", "Stream", True, "collect", "(Supplier,BiConsumer,BiConsumer)", "", "Argument[this].Element", "Argument[1].Parameter[1]", "value", "manual"]
