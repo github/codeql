@@ -45,7 +45,7 @@ deprecated class WebviewDebugEnabledConfig extends DataFlow::Configuration {
 }
 
 /** A configuration to find instances of `setWebContentDebuggingEnabled` called with `true` values. */
-private module WebviewDebugEnabledConfig implements DataFlow::ConfigSig {
+module WebviewDebugEnabledConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     node.asExpr().(BooleanLiteral).getBooleanValue() = true
   }
@@ -64,4 +64,7 @@ private module WebviewDebugEnabledConfig implements DataFlow::ConfigSig {
   }
 }
 
+/**
+ * Tracks instances of `setWebContentDebuggingEnabled` with `true` values.
+ */
 module WebviewDebugEnabledFlow = DataFlow::Make<WebviewDebugEnabledConfig>;
