@@ -28,11 +28,14 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.sql", "PreparedStatement", "executeUpdate", "()", "manual"]
       - ["java.sql", "ResultSet", "next", "()", "manual"]
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.sql", "PreparedStatement", "setInt", "(int,int)", "manual"] # value-numeric
-      - ["java.sql", "ResultSet", "getInt", "(String)", "manual"]          # taint-numeric
-      - ["java.sql", "ResultSet", "getLong", "(String)", "manual"]         # taint-numeric
-      - ["java.sql", "ResultSet", "getString", "(int)", "manual"]          # taint-numeric
-      - ["java.sql", "Timestamp", "Timestamp", "(long)", "manual"]         # taint-numeric
+      - ["java.sql", "PreparedStatement", "setInt", "(int,int)", "manual"]   # value-numeric
+      - ["java.sql", "PreparedStatement", "setLong", "(int,long)", "manual"] # value-numeric
+      - ["java.sql", "ResultSet", "getInt", "(String)", "manual"]            # taint-numeric
+      - ["java.sql", "ResultSet", "getLong", "(String)", "manual"]           # taint-numeric
+      - ["java.sql", "ResultSet", "getString", "(int)", "manual"]            # taint-numeric
+      - ["java.sql", "Timestamp", "Timestamp", "(long)", "manual"]           # taint-numeric
+      - ["java.sql", "Timestamp", "getTime", "()", "manual"]                 # taint-numeric

@@ -21,6 +21,7 @@ extensions:
       - ["java.util.regex", "Matcher", False, "replaceAll", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.util.regex", "Matcher", False, "replaceFirst", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.util.regex", "Matcher", False, "replaceFirst", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.util.regex", "Pattern", False, "compile", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.util.regex", "Pattern", False, "matcher", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.util.regex", "Pattern", False, "quote", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.util.regex", "Pattern", False, "split", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

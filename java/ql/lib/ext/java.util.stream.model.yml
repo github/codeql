@@ -95,3 +95,4 @@ extensions:
     data:
       - ["java.util.stream", "Collectors", "toList", "()", "manual"]
       - ["java.util.stream", "Collectors", "toSet", "()", "manual"]
+      - ["java.util.stream", "Stream", "count", "()", "manual"]

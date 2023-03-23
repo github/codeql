@@ -61,3 +61,9 @@ extensions:
       # - ["java.nio.file", "Files", True, "walkFileTree", "(Path,FileVisitor)", "", "Argument[0]", "Argument[1].Method[preVisitDirectory(Path,BasicFileAttributes)].Parameter[0]", "taint", "ai-generated"]
       # - ["java.nio.file", "Files", True, "walkFileTree", "(Path,FileVisitor)", "", "Argument[0]" "Argument[1].Method[visitFile(Path,BasicFileAttributes)].Parameter[0]", "taint", "ai-generated"]
       # - ["java.nio.file", "Files", True, "walkFileTree", "(Path,FileVisitor)", "", "Argument[0]", "Argument[1].Method[visitFileFailed(Path,IOException)].Parameter[0]", "taint", "ai-generated"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.nio.file", "Files", "exists", "(Path,LinkOption[])", "manual"]

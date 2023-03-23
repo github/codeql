@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["java.time.format", "DateTimeFormatter", False, "ofPattern", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! neutral?

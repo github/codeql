@@ -6,3 +6,10 @@ extensions:
       - ["java.nio", "ByteBuffer", False, "array", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.nio", "ByteBuffer", False, "get", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.nio", "ByteBuffer", False, "wrap", "(byte[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.nio", "Buffer", "remaining", "()", "manual"]
+      - ["java.nio", "ByteBuffer", "allocate", "(int)", "manual"]

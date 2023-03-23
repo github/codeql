@@ -13,7 +13,13 @@ extensions:
       - ["java.time", "LocalDate", "now", "()", "manual"]
       - ["java.time", "LocalDateTime", "now", "()", "manual"]
       - ["java.time", "ZonedDateTime", "now", "()", "manual"]
+      - ["java.time", "ZoneId", "of", "(String)", "manual"]
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.time", "LocalDate", "of", "(int,int,int)", "manual"] # taint-numeric
+      - ["java.time", "Duration", "ofMillis", "(long)", "manual"]                   # taint-numeric
+      - ["java.time", "Duration", "ofMinutes", "(long)", "manual"]                  # taint-numeric
+      - ["java.time", "Duration", "toMillis", "()", "manual"]                       # taint-numeric
+      - ["java.time", "Instant", "toEpochMilli", "()", "manual"]                    # taint-numeric
+      - ["java.time", "LocalDate", "of", "(int,int,int)", "manual"]                 # taint-numeric
+      - ["java.time", "LocalDateTime", "of", "(int,int,int,int,int,int)", "manual"] # taint-numeric

@@ -41,6 +41,7 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
+      - ["java.util.logging", "Logger", False, "getLogger", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[java.util.logging.Logger.name]", "value", "manual"] # ! not sure if using SyntheticField here is correct...
       - ["java.util.logging", "LogRecord", False, "LogRecord", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
 
   - addsTo:

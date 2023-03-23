@@ -3,6 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
+      - ["java.lang.reflect", "Constructor", False, "newInstance", "(Object[])", "", "Argument[0].ArrayElement", "ReturnValue.Parameter", "value", "manual"] # ! unsure about input/output
       - ["java.lang.reflect", "Method", False, "invoke", "(Object,Object[])", "", "Argument[1].ArrayElement", "Argument[-1].Parameter[0]", "value", "manual"] # ! very unsure if this model is correct...
 
   - addsTo:
