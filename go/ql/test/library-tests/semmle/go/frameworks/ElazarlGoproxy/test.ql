@@ -47,3 +47,32 @@ class LoggerTest extends InlineExpectationsTest {
     )
   }
 }
+
+class Config extends TaintTracking::Configuration {
+  Config() { this = "goproxy config" }
+
+  override predicate isSource(DataFlow::Node n) {
+    n = any(DataFlow::CallNode c | c.getCalleeName().matches("tainted%")).getResult()
+  }
+
+  override predicate isSink(DataFlow::Node n) {
+    n = any(DataFlow::CallNode cn | cn.getTarget().getName() = "sink").getAnArgument()
+  }
+}
+
+class TaintFlow extends InlineExpectationsTest {
+  TaintFlow() { this = "goproxy flow" }
+
+  override string getARelevantTag() { result = "taintflow" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    tag = "taintflow" and
+    value = "" and
+    element = "" and
+    exists(Config c, DataFlow::Node fromNode, DataFlow::Node toNode |
+      toNode.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      c.hasFlow(fromNode, toNode)
+    )
+  }
+}
