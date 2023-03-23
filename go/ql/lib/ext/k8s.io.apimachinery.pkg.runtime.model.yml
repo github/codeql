@@ -17,7 +17,6 @@ extensions:
       - ["k8s.io/apimachinery/pkg/runtime", "", False, "DeepCopyJSONValue", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["k8s.io/apimachinery/pkg/runtime", "", False, "Encode", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]
       - ["k8s.io/apimachinery/pkg/runtime", "", False, "EncodeOrDie", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
-      - ["k8s.io/apimachinery/pkg/runtime", "", False, "EncodeOrDie", "", "", "Argument[1]", "ReturnValue[0]", "taint", "manual"]
       - ["k8s.io/apimachinery/pkg/runtime", "", False, "Field", "", "", "Argument[0]", "Argument[2]", "taint", "manual"]
       - ["k8s.io/apimachinery/pkg/runtime", "", False, "FieldPtr", "", "", "Argument[0]", "Argument[2]", "taint", "manual"]
       - ["k8s.io/apimachinery/pkg/runtime", "", False, "NewEncodable", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
