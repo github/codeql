@@ -25,7 +25,8 @@ module TextTemplate {
   }
 
   private class TextTemplateInstantiation extends TemplateInstantiation::Range,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     int dataArg;
 
     TextTemplateInstantiation() {
