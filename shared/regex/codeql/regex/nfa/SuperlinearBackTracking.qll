@@ -283,7 +283,7 @@ module Make<RegexTreeViewSig TreeImpl> {
   }
 
   /**
-   * Gets a tuple tuple reachable from the end state `(succ, succ, succ)` in a backwards exploratory search.
+   * Gets a state tuple that can reach the end state `(succ, succ, succ)`, found via a backwards exploratory search.
    * Where the end state was reachable from a forwards search from the start state `(pivot, pivot, pivot)`.
    * The resulting tuples are exactly those that are on a path from the start state to the end state.
    */
@@ -302,16 +302,16 @@ module Make<RegexTreeViewSig TreeImpl> {
   }
 
   /**
-   * Holds if there exists a transition from `r` to `q` in the product automaton.
-   * Where `r` and `q` are both on a path from a start state to an end state.
+   * Holds if there exists a transition from `src` to `dst` in the product automaton.
+   * Where `src` and `dst` are both on a path from a start state to an end state.
    * Notice that the arguments are flipped, and thus the direction is backwards.
    */
   pragma[noinline]
-  predicate tupleDeltaBackwards(StateTuple q, StateTuple r) {
-    step(r, _, _, _, q) and
-    // `step` ensures that `r` and `q` have the same pivot and succ.
-    r = getARelevantStateTuple(_, _) and
-    q = getARelevantStateTuple(_, _)
+  predicate tupleDeltaBackwards(StateTuple dst, StateTuple src) {
+    step(src, _, _, _, dst) and
+    // `step` ensures that `src` and `dst` have the same pivot and succ.
+    src = getARelevantStateTuple(_, _) and
+    dst = getARelevantStateTuple(_, _)
   }
 
   /**
