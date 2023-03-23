@@ -91,24 +91,26 @@ SwiftMangledName SwiftMangler::visitExtensionDecl(const swift::ExtensionDecl* de
   if (decl->getDeclContext()->isLocalContext()) {
     return {};
   }
-  auto extended = decl->getExtendedNominal();
-  if (!extended) {
-    // may happen in incomplete ASTs
-    return {};
+
+  auto parent = getParent(decl);
+  unsigned index = 0;
+  if (auto parentModule = llvm::dyn_cast<swift::ModuleDecl>(parent)) {
+    llvm::SmallVector<swift::Decl*> parentDecls;
+    parentModule->getTopLevelDecls(parentDecls);
+    auto found = std::find(std::begin(parentDecls), std::end(parentDecls), decl);
+    assert(found != std::end(parentDecls));
+    index = found - std::begin(parentDecls);
+  } else if (auto iterableParent = llvm::dyn_cast<swift::IterableDeclContext>(parent)) {
+    auto parentDecls = iterableParent->getAllMembers();
+    auto found = std::find(std::begin(parentDecls), std::end(parentDecls), decl);
+    assert(found != std::end(parentDecls));
+    index = found - std::begin(parentDecls);
+  } else {
+    assert(false && "non-local context must be module or iterable decl context");
   }
+
   auto ret = initMangled(decl);
-  ret << dispatcher.fetchLabel(extended);
-  // get the index of all extensions of the same nominal type within this decl's module
-  auto index = 0u;
-  bool found = false;
-  for (auto ext : extended->getExtensions()) {
-    if (ext == decl) {
-      found = true;
-      break;
-    }
-    if (ext->getModuleContext() == decl->getModuleContext()) ++index;
-  }
-  assert(found && "extension not found within extended nominal type decl");
+  ret << dispatcher.fetchLabel(parent);
   ret << index;
   return ret;
 }
