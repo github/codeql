@@ -1,4 +1,5 @@
 import semmle.code.cpp.ir.dataflow.DataFlow
+private import codeql.util.Unit
 
 module ProductFlow {
   signature module ConfigSig {
@@ -68,33 +69,33 @@ module ProductFlow {
 
   module Make<ConfigSig Config> {
     private module StateConfig implements StateConfigSig {
-      class FlowState1 = DataFlow::FlowState;
+      class FlowState1 = Unit;
 
-      class FlowState2 = DataFlow::FlowState;
+      class FlowState2 = Unit;
 
       predicate isSourcePair(
         DataFlow::Node source1, FlowState1 state1, DataFlow::Node source2, FlowState2 state2
       ) {
-        state1 instanceof DataFlow::FlowStateEmpty and
-        state2 instanceof DataFlow::FlowStateEmpty and
+        exists(state1) and
+        exists(state2) and
         Config::isSourcePair(source1, source2)
       }
 
       predicate isSinkPair(
         DataFlow::Node sink1, FlowState1 state1, DataFlow::Node sink2, FlowState2 state2
       ) {
-        state1 instanceof DataFlow::FlowStateEmpty and
-        state2 instanceof DataFlow::FlowStateEmpty and
+        exists(state1) and
+        exists(state2) and
         Config::isSinkPair(sink1, sink2)
       }
 
       predicate isBarrier1(DataFlow::Node node, FlowState1 state) {
-        state instanceof DataFlow::FlowStateEmpty and
+        exists(state) and
         Config::isBarrier1(node)
       }
 
       predicate isBarrier2(DataFlow::Node node, FlowState2 state) {
-        state instanceof DataFlow::FlowStateEmpty and
+        exists(state) and
         Config::isBarrier2(node)
       }
 
@@ -111,8 +112,8 @@ module ProductFlow {
       predicate isAdditionalFlowStep1(
         DataFlow::Node node1, FlowState1 state1, DataFlow::Node node2, FlowState1 state2
       ) {
-        state1 instanceof DataFlow::FlowStateEmpty and
-        state2 instanceof DataFlow::FlowStateEmpty and
+        exists(state1) and
+        exists(state2) and
         Config::isAdditionalFlowStep1(node1, node2)
       }
 
@@ -121,8 +122,8 @@ module ProductFlow {
       predicate isAdditionalFlowStep2(
         DataFlow::Node node1, FlowState2 state1, DataFlow::Node node2, FlowState2 state2
       ) {
-        state1 instanceof DataFlow::FlowStateEmpty and
-        state2 instanceof DataFlow::FlowStateEmpty and
+        exists(state1) and
+        exists(state2) and
         Config::isAdditionalFlowStep2(node1, node2)
       }
 
