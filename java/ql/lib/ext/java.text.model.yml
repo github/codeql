@@ -4,6 +4,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["java.text", "DateFormat", True, "parse", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! maybe not interesting flow and should be neutral model?
+      - ["java.text", "Format", True, "format", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! would cover DateFormat.format below through subtyping...
       - ["java.text", "MessageFormat", False, "format", "(String,Object[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]              # ! not sure I did this right
       - ["java.text", "MessageFormat", False, "format", "(String,Object[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"] # ! not sure I did this right
 

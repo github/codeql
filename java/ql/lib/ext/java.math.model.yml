@@ -11,9 +11,14 @@ extensions:
       - ["java.math", "BigDecimal", "BigDecimal", "(String)", "manual"]         # taint-numeric
       - ["java.math", "BigDecimal", "add", "(BigDecimal)", "manual"]            # taint-numeric
       - ["java.math", "BigDecimal", "doubleValue", "()", "manual"]              # taint-numeric
+      - ["java.math", "BigDecimal", "intValue", "()", "manual"]                 # taint-numeric
+      - ["java.math", "BigDecimal", "multiply", "(BigDecimal)", "manual"]       # taint-numeric
       - ["java.math", "BigDecimal", "setScale", "(int,RoundingMode)", "manual"] # taint-numeric
+      - ["java.math", "BigDecimal", "subtract", "(BigDecimal)", "manual"]       # taint-numeric
+      - ["java.math", "BigDecimal", "toBigInteger", "()", "manual"]             # taint-numeric
       - ["java.math", "BigDecimal", "toString", "()", "manual"]                 # taint-numeric
       - ["java.math", "BigDecimal", "valueOf", "(double)", "manual"]            # taint-numeric
       - ["java.math", "BigDecimal", "valueOf", "(long)", "manual"]              # taint-numeric
+      - ["java.math", "BigInteger", "BigInteger", "(String)", "manual"]         # taint-numeric
       - ["java.math", "BigInteger", "or", "(BigInteger)", "manual"]             # taint-numeric
       - ["java.math", "BigInteger", "valueOf", "(long)", "manual"]              # taint-numeric

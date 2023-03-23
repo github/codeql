@@ -12,6 +12,7 @@ extensions:
       extensible: neutralModel
     data:
       - ["java.util.concurrent.atomic", "AtomicBoolean", "AtomicBoolean", "(boolean)", "manual"]
+      - ["java.util.concurrent.atomic", "AtomicBoolean", "compareAndSet", "(boolean,boolean)", "manual"]
       - ["java.util.concurrent.atomic", "AtomicBoolean", "get", "()", "manual"]
       - ["java.util.concurrent.atomic", "AtomicBoolean", "set", "(boolean)", "manual"]
 
@@ -23,3 +24,4 @@ extensions:
       - ["java.util.concurrent.atomic", "AtomicLong", "AtomicLong", "(long)", "manual"]      # value-numeric # ! this is supposedly already supported per the telemetry query, LOOK INTO WHY/HOW
       - ["java.util.concurrent.atomic", "AtomicLong", "addAndGet", "(long)", "manual"]       # taint-numeric
       - ["java.util.concurrent.atomic", "AtomicLong", "get", "()", "manual"]                 # value-numeric
+      - ["java.util.concurrent.atomic", "AtomicLong", "incrementAndGet", "()", "manual"]     # taint-numeric

@@ -124,6 +124,7 @@ extensions:
       - ["java.util", "EnumMap", False, "EnumMap", "(Map)", "", "Argument[0].MapValue", "Argument[this].MapValue", "value", "manual"]
       - ["java.util", "Enumeration", True, "asIterator", "", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util", "Enumeration", True, "nextElement", "", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["java.util", "EventObject", True, "getSource", "()", "", "Argument[-1].Field[java.util.EventObject.source]", "ReturnValue", "value", "manual"] # ! double-check
       - ["java.util", "HashMap", False, "HashMap", "(Map)", "", "Argument[0].MapKey", "Argument[this].MapKey", "value", "manual"]
       - ["java.util", "HashMap", False, "HashMap", "(Map)", "", "Argument[0].MapValue", "Argument[this].MapValue", "value", "manual"]
       - ["java.util", "HashSet", False, "HashSet", "(Collection)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
@@ -160,6 +161,7 @@ extensions:
       - ["java.util", "ListIterator", True, "add", "(Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["java.util", "ListIterator", True, "previous", "", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["java.util", "ListIterator", True, "set", "(Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["java.util", "Locale", False, "forLanguageTag", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! neutral?
       - ["java.util", "Map", True, "computeIfAbsent", "", "", "Argument[this].MapValue", "ReturnValue", "value", "manual"]
       - ["java.util", "Map", True, "computeIfAbsent", "", "", "Argument[1].ReturnValue", "Argument[this].MapValue", "value", "manual"]
       - ["java.util", "Map", True, "computeIfAbsent", "", "", "Argument[1].ReturnValue", "ReturnValue", "value", "manual"]
@@ -377,11 +379,14 @@ extensions:
       - ["java.util", "Collections", "emptyList", "()", "manual"]
       - ["java.util", "Collections", "emptyMap", "()", "manual"]
       - ["java.util", "Collections", "emptySet", "()", "manual"]
+      - ["java.util", "Collections", "sort", "(List)", "manual"] # ! summary model instead?
       - ["java.util", "Collections", "sort", "(List,Comparator)", "manual"] # ! summary model instead?
       - ["java.util", "Comparator", "comparing", "(Function)", "manual"] # ! seems complex (functional interface), should maybe not have any model?
       - ["java.util", "Enumeration", "hasMoreElements", "()", "manual"]
       - ["java.util", "HashMap", "containsKey", "(Object)", "manual"]
       - ["java.util", "HashMap", "HashMap", "(int)", "manual"]
+      - ["java.util", "HashMap", "size", "()", "manual"]
+      - ["java.util", "HashSet", "HashSet", "(int)", "manual"]
       - ["java.util", "Iterator", "hasNext", "()", "manual"]
       - ["java.util", "Iterator", "remove", "()", "manual"] # ! WithoutElement comment? (double-check if it returns anything, etc.)
       - ["java.util", "List", "contains", "(Object)", "manual"]
@@ -408,9 +413,12 @@ extensions:
       - ["java.util", "Set", "contains", "(Object)", "manual"]
       - ["java.util", "Set", "isEmpty", "()", "manual"]
       - ["java.util", "Set", "remove", "(Object)", "manual"] # ! WithoutElement comment? (double-check if it returns anything, etc.)
+      - ["java.util", "Set", "removeAll", "(Collection)", "manual"] # ! WithoutElement comment? (double-check if it returns anything, etc.)
       - ["java.util", "Set", "size", "()", "manual"]
+      - ["java.util", "UUID", "equals", "(Object)", "manual"]
       - ["java.util", "UUID", "randomUUID", "()", "manual"]
       - ["java.util", "UUID", "toString", "()", "manual"]
+      - ["java.util", "TimeZone", "getTimeZone", "(String)", "manual"]
       - ["java.util", "Vector", "size", "()", "manual"]
 
       # The below APIs are currently being stored as neutral models since `WithoutElement` has not yet been implemented for Java.
@@ -421,9 +429,13 @@ extensions:
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.util", "Calendar", "add", "(int,int)", "manual"]      # taint-numeric
       - ["java.util", "Calendar", "get", "(int)", "manual"]          # value-numeric
       - ["java.util", "Calendar", "getTime", "()", "manual"]         # taint-numeric
       - ["java.util", "Calendar", "getTimeInMillis", "()", "manual"] # taint-numeric
       - ["java.util", "Calendar", "set", "(int,int)", "manual"]      # value-numeric
+      - ["java.util", "Calendar", "setTime", "(Date)", "manual"]     # taint-numeric
       - ["java.util", "Date", "Date", "(long)", "manual"]            # taint-numeric
       - ["java.util", "Date", "getTime", "()", "manual"]             # taint-numeric
+      - ["java.util", "Date", "from", "(Instant)", "manual"]         # taint-numeric
+      - ["java.util", "Date", "toInstant", "()", "manual"]           # taint-numeric

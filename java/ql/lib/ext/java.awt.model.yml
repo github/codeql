@@ -5,3 +5,11 @@ extensions:
     data:
       - ["java.awt", "Container", True, "add", "(Component)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"] # ! signature as "" instead?
       - ["java.awt", "Container", True, "add", "(Component,Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.awt", "Insets", "Insets", "(int,int,int,int)", "manual"] # value-numeric

@@ -3,4 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.util.concurrent.locks", "Lock", "lock", "()", "manual"]
       - ["java.util.concurrent.locks", "Lock", "unlock", "()", "manual"]

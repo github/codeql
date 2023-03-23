@@ -59,11 +59,9 @@ extensions:
       - ["java.io", "CharArrayReader", False, "CharArrayReader", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.io", "CharArrayWriter", True, "toCharArray", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "DataInput", True, "readFully", "", "", "Argument[this]", "Argument[0]", "taint", "manual"]
-      - ["java.io", "DataInput", True, "readInt", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.io", "DataInput", True, "readLine", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "DataInput", True, "readUTF", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "DataInputStream", False, "DataInputStream", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
-      - ["java.io", "DataOutput", True, "writeInt", "(int)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["java.io", "File", False, "File", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.io", "File", False, "File", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
       - ["java.io", "File", True, "getAbsoluteFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
@@ -99,7 +97,21 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.io", "Closeable", "close", "()", "manual"]
       - ["java.io", "File", "delete", "()", "manual"]
       - ["java.io", "File", "exists", "()", "manual"]
+      - ["java.io", "File", "getParentFile", "()", "manual"] # ! little unsure about this as a neutral
+      - ["java.io", "File", "isFile", "()", "manual"]
+      - ["java.io", "File", "length", "()", "manual"]
+      - ["java.io", "File", "listFiles", "()", "manual"] # ! little unsure about this as a neutral
       - ["java.io", "File", "isDirectory", "()", "manual"]
       - ["java.io", "File", "mkdirs", "()", "manual"]
+      - ["java.io", "InputStream", "close", "()", "manual"]
+      - ["java.io", "OutputStream", "flush", "()", "manual"] # ! little unsure about this as a neutral, but not sure how to represent output if summary model...
+
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.io", "DataInput", "readInt", "()", "manual"]         # taint-numeric
+      - ["java.io", "DataInput", "readLong", "()", "manual"]        # taint-numeric
+      - ["java.io", "DataOutput", "writeInt", "(int)", "manual"]    # taint-numeric
+      - ["java.io", "DataOutput", "writeLong", "(long)", "manual"]  # taint-numeric
