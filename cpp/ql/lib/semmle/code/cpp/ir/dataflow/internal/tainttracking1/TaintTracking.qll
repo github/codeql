@@ -35,7 +35,7 @@ private module AddTaintDefaults<DataFlowInternal::FullStateConfigSig Config> imp
 /**
  * Constructs a standard taint tracking computation.
  */
-module Global<DataFlow::ConfigSig Config> implements DataFlow::DataFlowSig {
+module Global<DataFlow::ConfigSig Config> implements DataFlow::GlobalFlowSig {
   private module Config0 implements DataFlowInternal::FullStateConfigSig {
     import DataFlowInternal::DefaultState<Config>
     import Config
@@ -49,14 +49,14 @@ module Global<DataFlow::ConfigSig Config> implements DataFlow::DataFlowSig {
 }
 
 /** DEPRECATED: Use `Global` instead. */
-deprecated module Make<DataFlow::ConfigSig Config> implements DataFlow::DataFlowSig {
+deprecated module Make<DataFlow::ConfigSig Config> implements DataFlow::GlobalFlowSig {
   import Global<Config>
 }
 
 /**
  * Constructs a taint tracking computation using flow state.
  */
-module GlobalWithState<DataFlow::StateConfigSig Config> implements DataFlow::DataFlowSig {
+module GlobalWithState<DataFlow::StateConfigSig Config> implements DataFlow::GlobalFlowSig {
   private module Config0 implements DataFlowInternal::FullStateConfigSig {
     import Config
   }
@@ -69,6 +69,6 @@ module GlobalWithState<DataFlow::StateConfigSig Config> implements DataFlow::Dat
 }
 
 /** DEPRECATED: Use `GlobalWithState` instead. */
-deprecated module MakeWithState<DataFlow::StateConfigSig Config> implements DataFlow::DataFlowSig {
+deprecated module MakeWithState<DataFlow::StateConfigSig Config> implements DataFlow::GlobalFlowSig {
   import GlobalWithState<Config>
 }

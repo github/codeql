@@ -188,9 +188,9 @@ signature module StateConfigSig {
 signature int explorationLimitSig();
 
 /**
- * The output of a data flow computation.
+ * The output of a global data flow computation.
  */
-signature module DataFlowSig {
+signature module GlobalFlowSig {
   /**
    * A `Node` augmented with a call context (except for sinks) and an access path.
    * Only those `PathNode`s that are reachable from a source, and which can reach a sink, are generated.
@@ -224,7 +224,7 @@ signature module DataFlowSig {
 /**
  * Constructs a standard data flow computation.
  */
-module Global<ConfigSig Config> implements DataFlowSig {
+module Global<ConfigSig Config> implements GlobalFlowSig {
   private module C implements FullStateConfigSig {
     import DefaultState<Config>
     import Config
@@ -234,14 +234,14 @@ module Global<ConfigSig Config> implements DataFlowSig {
 }
 
 /** DEPRECATED: Use `Global` instead. */
-deprecated module Make<ConfigSig Config> implements DataFlowSig {
+deprecated module Make<ConfigSig Config> implements GlobalFlowSig {
   import Global<Config>
 }
 
 /**
  * Constructs a data flow computation using flow state.
  */
-module GlobalWithState<StateConfigSig Config> implements DataFlowSig {
+module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
   private module C implements FullStateConfigSig {
     import Config
   }
@@ -250,7 +250,7 @@ module GlobalWithState<StateConfigSig Config> implements DataFlowSig {
 }
 
 /** DEPRECATED: Use `GlobalWithState` instead. */
-deprecated module MakeWithState<StateConfigSig Config> implements DataFlowSig {
+deprecated module MakeWithState<StateConfigSig Config> implements GlobalFlowSig {
   import GlobalWithState<Config>
 }
 
