@@ -82,6 +82,9 @@ abstract class StringLengthConflationSink extends DataFlow::Node {
   abstract StringType getCorrectStringType();
 }
 
+/**
+ * A sanitizer for string length conflation vulnerabilities.
+ */
 abstract class StringLengthConflationSanitizer extends DataFlow::Node { }
 
 /**
@@ -110,8 +113,7 @@ private class StringLengthConflationSources extends SourceModelCsv {
   override predicate row(string row) {
     row =
       [
-        ";String;true;count;;;;string-length",
-        ";String.UTF8View;true;count;;;;string-utf8-length",
+        ";String;true;count;;;;string-length", ";String.UTF8View;true;count;;;;string-utf8-length",
         ";String.UTF16View;true;count;;;;string-utf16-length",
         ";NSString;true;length;;;;nsstring-length",
         ";NSMutableString;true;length;;;;nsstring-length",
