@@ -42,7 +42,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["java.util.logging", "Logger", False, "getLogger", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[java.util.logging.Logger.name]", "value", "manual"]
-      - ["java.util.logging", "Logger", False, "getName", "()", "", "Argument[-1].SyntheticField[java.util.logging.Logger.name]", "ReturnValue", "value", "manual"]
+      - ["java.util.logging", "Logger", False, "getName", "()", "", "Argument[this].SyntheticField[java.util.logging.Logger.name]", "ReturnValue", "value", "manual"]
       - ["java.util.logging", "LogRecord", False, "LogRecord", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
 
   - addsTo:

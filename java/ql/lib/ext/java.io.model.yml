@@ -69,9 +69,9 @@ extensions:
       - ["java.io", "File", True, "getCanonicalFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getCanonicalPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["java.io", "File", True, "getParentFile", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["java.io", "File", True, "getPath", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["java.io", "File", True, "listFiles", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.io", "File", True, "getParentFile", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.io", "File", True, "getPath", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.io", "File", True, "listFiles", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toURI", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
@@ -91,8 +91,8 @@ extensions:
       - ["java.io", "OutputStream", True, "write", "(int)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.io", "Reader", True, "read", "", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["java.io", "StringReader", False, "StringReader", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
-      - ["java.io", "StringWriter", False, "toString", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["java.io", "UncheckedIOException", False, "UncheckedIOException", "(IOException)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
+      - ["java.io", "StringWriter", False, "toString", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.io", "UncheckedIOException", False, "UncheckedIOException", "(IOException)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
       - ["java.io", "Writer", True, "write", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
   - addsTo:
       pack: codeql/java-all
