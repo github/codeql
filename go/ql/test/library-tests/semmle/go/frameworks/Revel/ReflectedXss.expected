@@ -1,13 +1,26 @@
 edges
-| EndToEnd.go:36:18:36:25 | selection of Params | EndToEnd.go:37:24:37:26 | buf |
-| EndToEnd.go:69:22:69:29 | selection of Params | EndToEnd.go:69:22:69:51 | call to Get |
+| EndToEnd.go:35:2:35:4 | definition of buf | EndToEnd.go:37:24:37:26 | buf |
+| EndToEnd.go:36:18:36:25 | selection of Params | EndToEnd.go:36:18:36:30 | selection of Form |
+| EndToEnd.go:36:18:36:30 | selection of Form | EndToEnd.go:36:18:36:47 | call to Get |
+| EndToEnd.go:36:18:36:30 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
+| EndToEnd.go:36:18:36:47 | call to Get | EndToEnd.go:35:2:35:4 | definition of buf |
+| EndToEnd.go:36:18:36:47 | call to Get | file://:0:0:0:0 | parameter 0 of WriteString |
+| EndToEnd.go:69:22:69:29 | selection of Params | EndToEnd.go:69:22:69:34 | selection of Form |
+| EndToEnd.go:69:22:69:34 | selection of Form | EndToEnd.go:69:22:69:51 | call to Get |
+| EndToEnd.go:69:22:69:34 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | Revel.go:70:22:70:29 | selection of Params | Revel.go:70:22:70:35 | selection of Query |
 | examples/booking/app/init.go:36:44:36:48 | selection of URL | examples/booking/app/init.go:36:44:36:53 | selection of Path |
 | examples/booking/app/init.go:40:49:40:53 | selection of URL | examples/booking/app/init.go:40:49:40:58 | selection of Path |
+| file://:0:0:0:0 | parameter 0 of WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString |
+| file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
 nodes
+| EndToEnd.go:35:2:35:4 | definition of buf | semmle.label | definition of buf |
 | EndToEnd.go:36:18:36:25 | selection of Params | semmle.label | selection of Params |
+| EndToEnd.go:36:18:36:30 | selection of Form | semmle.label | selection of Form |
+| EndToEnd.go:36:18:36:47 | call to Get | semmle.label | call to Get |
 | EndToEnd.go:37:24:37:26 | buf | semmle.label | buf |
 | EndToEnd.go:69:22:69:29 | selection of Params | semmle.label | selection of Params |
+| EndToEnd.go:69:22:69:34 | selection of Form | semmle.label | selection of Form |
 | EndToEnd.go:69:22:69:51 | call to Get | semmle.label | call to Get |
 | Revel.go:70:22:70:29 | selection of Params | semmle.label | selection of Params |
 | Revel.go:70:22:70:35 | selection of Query | semmle.label | selection of Query |
@@ -15,7 +28,14 @@ nodes
 | examples/booking/app/init.go:36:44:36:53 | selection of Path | semmle.label | selection of Path |
 | examples/booking/app/init.go:40:49:40:53 | selection of URL | semmle.label | selection of URL |
 | examples/booking/app/init.go:40:49:40:58 | selection of Path | semmle.label | selection of Path |
+| file://:0:0:0:0 | [summary] to write: argument -1 in WriteString | semmle.label | [summary] to write: argument -1 in WriteString |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | semmle.label | [summary] to write: return (return[0]) in Get |
+| file://:0:0:0:0 | parameter 0 of WriteString | semmle.label | parameter 0 of WriteString |
+| file://:0:0:0:0 | parameter -1 of Get | semmle.label | parameter -1 of Get |
 subpaths
+| EndToEnd.go:36:18:36:30 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | EndToEnd.go:36:18:36:47 | call to Get |
+| EndToEnd.go:36:18:36:47 | call to Get | file://:0:0:0:0 | parameter 0 of WriteString | file://:0:0:0:0 | [summary] to write: argument -1 in WriteString | EndToEnd.go:35:2:35:4 | definition of buf |
+| EndToEnd.go:69:22:69:34 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | EndToEnd.go:69:22:69:51 | call to Get |
 #select
 | EndToEnd.go:37:24:37:26 | buf | EndToEnd.go:36:18:36:25 | selection of Params | EndToEnd.go:37:24:37:26 | buf | Cross-site scripting vulnerability due to $@. | EndToEnd.go:36:18:36:25 | selection of Params | user-provided value | EndToEnd.go:0:0:0:0 | EndToEnd.go |  |
 | EndToEnd.go:69:22:69:51 | call to Get | EndToEnd.go:69:22:69:29 | selection of Params | EndToEnd.go:69:22:69:51 | call to Get | Cross-site scripting vulnerability due to $@. | EndToEnd.go:69:22:69:29 | selection of Params | user-provided value | EndToEnd.go:0:0:0:0 | EndToEnd.go |  |

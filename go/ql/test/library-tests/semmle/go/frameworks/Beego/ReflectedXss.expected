@@ -1,8 +1,6 @@
 edges
-| file://:0:0:0:0 | parameter 0 of GetDisplayString | file://:0:0:0:0 | [summary] to write: return (return[0]) in GetDisplayString |
 | file://:0:0:0:0 | parameter 0 of HTML2str | file://:0:0:0:0 | [summary] to write: return (return[0]) in HTML2str |
 | file://:0:0:0:0 | parameter 0 of Htmlunquote | file://:0:0:0:0 | [summary] to write: return (return[0]) in Htmlunquote |
-| file://:0:0:0:0 | parameter 0 of MapGet | file://:0:0:0:0 | [summary] to write: return (return[0]) in MapGet |
 | file://:0:0:0:0 | parameter 0 of ParseForm | file://:0:0:0:0 | [summary] to write: argument 1 in ParseForm |
 | file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll |
 | file://:0:0:0:0 | parameter 0 of SliceChunk | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceChunk |
@@ -44,7 +42,7 @@ edges
 | test.go:137:23:137:42 | call to Data | test.go:137:23:137:62 | type assertion |
 | test.go:193:15:193:26 | call to Data | test.go:194:36:194:53 | type assertion |
 | test.go:193:15:193:26 | call to Data | test.go:195:39:195:56 | type assertion |
-| test.go:193:15:193:26 | call to Data | test.go:196:28:196:56 | type assertion |
+| test.go:193:15:193:26 | call to Data | test.go:197:14:197:28 | type assertion |
 | test.go:193:15:193:26 | call to Data | test.go:198:36:198:53 | type assertion |
 | test.go:193:15:193:26 | call to Data | test.go:199:34:199:51 | type assertion |
 | test.go:194:21:194:54 | call to HTML2str | test.go:194:14:194:55 | type conversion |
@@ -53,9 +51,6 @@ edges
 | test.go:195:21:195:57 | call to Htmlunquote | test.go:195:14:195:58 | type conversion |
 | test.go:195:39:195:56 | type assertion | file://:0:0:0:0 | parameter 0 of Htmlunquote |
 | test.go:195:39:195:56 | type assertion | test.go:195:21:195:57 | call to Htmlunquote |
-| test.go:196:2:196:68 | ... := ...[0] | test.go:197:14:197:28 | type assertion |
-| test.go:196:28:196:56 | type assertion | file://:0:0:0:0 | parameter 0 of MapGet |
-| test.go:196:28:196:56 | type assertion | test.go:196:2:196:68 | ... := ...[0] |
 | test.go:198:21:198:54 | call to Str2html | test.go:198:14:198:55 | type conversion |
 | test.go:198:36:198:53 | type assertion | file://:0:0:0:0 | parameter 0 of Str2html |
 | test.go:198:36:198:53 | type assertion | test.go:198:21:198:54 | call to Str2html |
@@ -78,7 +73,7 @@ edges
 | test.go:240:15:240:36 | call to GetString | test.go:243:21:243:29 | untrusted |
 | test.go:253:23:253:44 | call to GetCookie | test.go:253:16:253:45 | type conversion |
 | test.go:264:62:264:83 | call to GetCookie | test.go:264:55:264:84 | type conversion |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:277:44:277:60 | selection of Filename |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:277:21:277:61 | call to GetDisplayString |
 | test.go:269:2:269:40 | ... := ...[0] | test.go:278:38:278:49 | genericFiles |
 | test.go:269:2:269:40 | ... := ...[0] | test.go:279:37:279:48 | genericFiles |
 | test.go:269:2:269:40 | ... := ...[0] | test.go:285:4:285:15 | genericFiles |
@@ -92,8 +87,6 @@ edges
 | test.go:269:2:269:40 | ... := ...[0] | test.go:295:39:295:50 | genericFiles |
 | test.go:269:2:269:40 | ... := ...[0] | test.go:296:40:296:51 | genericFiles |
 | test.go:269:2:269:40 | ... := ...[0] | test.go:297:39:297:50 | genericFiles |
-| test.go:277:44:277:60 | selection of Filename | file://:0:0:0:0 | parameter 0 of GetDisplayString |
-| test.go:277:44:277:60 | selection of Filename | test.go:277:21:277:61 | call to GetDisplayString |
 | test.go:278:21:278:53 | call to SliceChunk | test.go:278:21:278:92 | selection of Filename |
 | test.go:278:38:278:49 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceChunk |
 | test.go:278:38:278:49 | genericFiles | test.go:278:21:278:53 | call to SliceChunk |
@@ -148,11 +141,9 @@ nodes
 | file://:0:0:0:0 | [summary] to write: argument 1 in ParseForm | semmle.label | [summary] to write: argument 1 in ParseForm |
 | file://:0:0:0:0 | [summary] to write: argument -1 in Set | semmle.label | [summary] to write: argument -1 in Set |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | semmle.label | [summary] to write: return (return[0]) in Get |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in GetDisplayString | semmle.label | [summary] to write: return (return[0]) in GetDisplayString |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in HTML2str | semmle.label | [summary] to write: return (return[0]) in HTML2str |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Htmlunquote | semmle.label | [summary] to write: return (return[0]) in Htmlunquote |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Items | semmle.label | [summary] to write: return (return[0]) in Items |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in MapGet | semmle.label | [summary] to write: return (return[0]) in MapGet |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | semmle.label | [summary] to write: return (return[0]) in ReadAll |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceChunk | semmle.label | [summary] to write: return (return[0]) in SliceChunk |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceDiff | semmle.label | [summary] to write: return (return[0]) in SliceDiff |
@@ -169,10 +160,8 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceUnique | semmle.label | [summary] to write: return (return[0]) in SliceUnique |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Str2html | semmle.label | [summary] to write: return (return[0]) in Str2html |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Substr | semmle.label | [summary] to write: return (return[0]) in Substr |
-| file://:0:0:0:0 | parameter 0 of GetDisplayString | semmle.label | parameter 0 of GetDisplayString |
 | file://:0:0:0:0 | parameter 0 of HTML2str | semmle.label | parameter 0 of HTML2str |
 | file://:0:0:0:0 | parameter 0 of Htmlunquote | semmle.label | parameter 0 of Htmlunquote |
-| file://:0:0:0:0 | parameter 0 of MapGet | semmle.label | parameter 0 of MapGet |
 | file://:0:0:0:0 | parameter 0 of ParseForm | semmle.label | parameter 0 of ParseForm |
 | file://:0:0:0:0 | parameter 0 of ReadAll | semmle.label | parameter 0 of ReadAll |
 | file://:0:0:0:0 | parameter 0 of SliceChunk | semmle.label | parameter 0 of SliceChunk |
@@ -236,8 +225,6 @@ nodes
 | test.go:195:14:195:58 | type conversion | semmle.label | type conversion |
 | test.go:195:21:195:57 | call to Htmlunquote | semmle.label | call to Htmlunquote |
 | test.go:195:39:195:56 | type assertion | semmle.label | type assertion |
-| test.go:196:2:196:68 | ... := ...[0] | semmle.label | ... := ...[0] |
-| test.go:196:28:196:56 | type assertion | semmle.label | type assertion |
 | test.go:197:14:197:28 | type assertion | semmle.label | type assertion |
 | test.go:198:14:198:55 | type conversion | semmle.label | type conversion |
 | test.go:198:21:198:54 | call to Str2html | semmle.label | call to Str2html |
@@ -274,7 +261,6 @@ nodes
 | test.go:264:62:264:83 | call to GetCookie | semmle.label | call to GetCookie |
 | test.go:269:2:269:40 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:277:21:277:61 | call to GetDisplayString | semmle.label | call to GetDisplayString |
-| test.go:277:44:277:60 | selection of Filename | semmle.label | selection of Filename |
 | test.go:278:21:278:53 | call to SliceChunk | semmle.label | call to SliceChunk |
 | test.go:278:21:278:92 | selection of Filename | semmle.label | selection of Filename |
 | test.go:278:38:278:49 | genericFiles | semmle.label | genericFiles |
@@ -326,12 +312,10 @@ nodes
 subpaths
 | test.go:194:36:194:53 | type assertion | file://:0:0:0:0 | parameter 0 of HTML2str | file://:0:0:0:0 | [summary] to write: return (return[0]) in HTML2str | test.go:194:21:194:54 | call to HTML2str |
 | test.go:195:39:195:56 | type assertion | file://:0:0:0:0 | parameter 0 of Htmlunquote | file://:0:0:0:0 | [summary] to write: return (return[0]) in Htmlunquote | test.go:195:21:195:57 | call to Htmlunquote |
-| test.go:196:28:196:56 | type assertion | file://:0:0:0:0 | parameter 0 of MapGet | file://:0:0:0:0 | [summary] to write: return (return[0]) in MapGet | test.go:196:2:196:68 | ... := ...[0] |
 | test.go:198:36:198:53 | type assertion | file://:0:0:0:0 | parameter 0 of Str2html | file://:0:0:0:0 | [summary] to write: return (return[0]) in Str2html | test.go:198:21:198:54 | call to Str2html |
 | test.go:199:34:199:51 | type assertion | file://:0:0:0:0 | parameter 0 of Substr | file://:0:0:0:0 | [summary] to write: return (return[0]) in Substr | test.go:199:21:199:58 | call to Substr |
 | test.go:202:18:202:33 | selection of Form | file://:0:0:0:0 | parameter 0 of ParseForm | file://:0:0:0:0 | [summary] to write: argument 1 in ParseForm | test.go:201:6:201:6 | definition of s |
 | test.go:219:31:219:31 | f | file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | test.go:219:2:219:32 | ... := ...[0] |
-| test.go:277:44:277:60 | selection of Filename | file://:0:0:0:0 | parameter 0 of GetDisplayString | file://:0:0:0:0 | [summary] to write: return (return[0]) in GetDisplayString | test.go:277:21:277:61 | call to GetDisplayString |
 | test.go:278:38:278:49 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceChunk | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceChunk | test.go:278:21:278:53 | call to SliceChunk |
 | test.go:279:37:279:48 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceDiff | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceDiff | test.go:279:21:279:60 | call to SliceDiff |
 | test.go:285:4:285:15 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceFilter | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceFilter | test.go:284:3:286:44 | call to SliceFilter |
