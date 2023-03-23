@@ -3,6 +3,8 @@
  */
 
 import go
+private import semmle.go.dataflow.FlowSummary
+private import semmle.go.dataflow.internal.DataFlowPrivate
 
 /** Provides models of commonly used functions in the `net/http` package. */
 module NetHttp {
@@ -121,6 +123,18 @@ module NetHttp {
     }
   }
 
+  private DataFlow::Node getSummaryInputOrOutputNode(
+    DataFlow::CallNode call, SummaryComponentStack stack
+  ) {
+    exists(int n |
+      stack = SummaryComponentStack::argument(n) and
+      result = call.getArgument(n)
+    )
+    or
+    stack = SummaryComponentStack::argument(-1) and
+    result = call.getReceiver()
+  }
+
   private class ResponseBody extends Http::ResponseBody::Range, DataFlow::ArgumentNode {
     DataFlow::Node responseWriter;
 
@@ -132,11 +146,28 @@ module NetHttp {
         responseWriter = call.(DataFlow::MethodCallNode).getReceiver()
       )
       or
-      // FIXME
       exists(TaintTracking::FunctionModel model |
         // A modeled function conveying taint from some input to the response writer,
         // e.g. `io.Copy(responseWriter, someTaintedReader)`
         model.taintStep(this, responseWriter) and
+        responseWriter.getType().implements("net/http", "ResponseWriter")
+      )
+      or
+      exists(
+        SummarizedCallable callable, DataFlow::CallNode call, SummaryComponentStack input,
+        SummaryComponentStack output
+      |
+        callable = call.getACalleeIncludingExternals() and callable.propagatesFlow(input, output, _)
+      |
+        // A modeled function conveying taint from some input to the response writer,
+        // e.g. `io.Copy(responseWriter, someTaintedReader)`
+        // NB. SummarizedCallables do not implement a direct call-site-crossing flow step; instead
+        // they are implemented by a function body with internal dataflow nodes, so we mimic the
+        // one-step style for the particular case of taint propagation direct from an argument or receiver
+        // to another argument, receiver or return value without an
+        this = getSummaryInputOrOutputNode(call, input) and
+        responseWriter.(DataFlow::PostUpdateNode).getPreUpdateNode() =
+          getSummaryInputOrOutputNode(call, output) and
         responseWriter.getType().implements("net/http", "ResponseWriter")
       )
     }
