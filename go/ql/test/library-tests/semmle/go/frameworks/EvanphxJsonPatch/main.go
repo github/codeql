@@ -61,4 +61,18 @@ func main() {
 
 	b11, _ := getTaintedPatch().ApplyIndent(untaintedByteArray, "  ")
 	sinkByteArray(b11) // $ taintflow
+
+	// func (p Patch) ApplyWithOptions(doc []byte, options *ApplyOptions) ([]byte, error)
+	b12, _ := untaintedPatch.ApplyWithOptions(getTaintedByteArray(), nil)
+	sinkByteArray(b12) // $ taintflow
+
+	b13, _ := getTaintedPatch().ApplyWithOptions(untaintedByteArray, nil)
+	sinkByteArray(b13) // $ taintflow
+
+	// func (p Patch) ApplyIndentWithOptions(doc []byte, indent string, options *ApplyOptions) ([]byte, error)
+	b14, _ := untaintedPatch.ApplyIndentWithOptions(getTaintedByteArray(), "  ", nil)
+	sinkByteArray(b14) // $ taintflow
+
+	b15, _ := getTaintedPatch().ApplyIndentWithOptions(untaintedByteArray, "  ", nil)
+	sinkByteArray(b15) // $ taintflow
 }
