@@ -1,11 +1,37 @@
 edges
 | OpenUrlRedirect.go:10:23:10:28 | selection of Form | OpenUrlRedirect.go:10:23:10:42 | call to Get |
+| OpenUrlRedirect.go:10:23:10:28 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
+| file://:0:0:0:0 | parameter 0 of ParseRequestURI | file://:0:0:0:0 | [summary] to write: return (return[0]) in ParseRequestURI |
+| file://:0:0:0:0 | parameter -1 of EscapedPath | file://:0:0:0:0 | [summary] to write: return (return[0]) in EscapedPath |
+| file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
+| file://:0:0:0:0 | parameter -1 of RequestURI | file://:0:0:0:0 | [summary] to write: return (return[0]) in RequestURI |
+| file://:0:0:0:0 | parameter -1 of RequestURI | file://:0:0:0:0 | [summary] to write: return (return[0]) in RequestURI |
+| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
+| stdlib.go:13:13:13:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
+| stdlib.go:13:13:13:18 | selection of Form | stdlib.go:13:13:13:32 | call to Get |
 | stdlib.go:13:13:13:18 | selection of Form | stdlib.go:15:30:15:35 | target |
+| stdlib.go:13:13:13:32 | call to Get | stdlib.go:15:30:15:35 | target |
+| stdlib.go:22:13:22:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
+| stdlib.go:22:13:22:18 | selection of Form | stdlib.go:22:13:22:32 | call to Get |
 | stdlib.go:22:13:22:18 | selection of Form | stdlib.go:24:30:24:35 | target |
+| stdlib.go:22:13:22:32 | call to Get | stdlib.go:24:30:24:35 | target |
+| stdlib.go:31:13:31:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
+| stdlib.go:31:13:31:18 | selection of Form | stdlib.go:31:13:31:32 | call to Get |
 | stdlib.go:31:13:31:18 | selection of Form | stdlib.go:35:30:35:39 | ...+... |
+| stdlib.go:31:13:31:32 | call to Get | stdlib.go:35:30:35:39 | ...+... |
+| stdlib.go:44:13:44:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
+| stdlib.go:44:13:44:18 | selection of Form | stdlib.go:44:13:44:32 | call to Get |
 | stdlib.go:44:13:44:18 | selection of Form | stdlib.go:46:23:46:28 | target |
+| stdlib.go:44:13:44:32 | call to Get | stdlib.go:46:23:46:28 | target |
+| stdlib.go:64:13:64:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
+| stdlib.go:64:13:64:18 | selection of Form | stdlib.go:64:13:64:32 | call to Get |
 | stdlib.go:64:13:64:18 | selection of Form | stdlib.go:67:23:67:40 | ...+... |
+| stdlib.go:64:13:64:32 | call to Get | stdlib.go:67:23:67:40 | ...+... |
+| stdlib.go:89:13:89:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
+| stdlib.go:89:13:89:18 | selection of Form | stdlib.go:89:13:89:32 | call to Get |
 | stdlib.go:89:13:89:18 | selection of Form | stdlib.go:92:23:92:28 | target |
+| stdlib.go:89:13:89:32 | call to Get | stdlib.go:92:23:92:28 | target |
 | stdlib.go:107:54:107:54 | definition of r [pointer, URL, pointer] | stdlib.go:112:4:112:4 | r [pointer, URL, pointer] |
 | stdlib.go:107:54:107:54 | definition of r [pointer, URL, pointer] | stdlib.go:112:4:112:4 | r [pointer, URL, pointer] |
 | stdlib.go:107:54:107:54 | definition of r [pointer, URL] | stdlib.go:112:4:112:4 | r [pointer, URL] |
@@ -44,30 +70,73 @@ edges
 | stdlib.go:113:24:113:24 | implicit dereference [URL] | stdlib.go:113:24:113:28 | selection of URL |
 | stdlib.go:113:24:113:24 | r [pointer, URL] | stdlib.go:113:24:113:24 | implicit dereference [URL] |
 | stdlib.go:113:24:113:24 | r [pointer, URL] | stdlib.go:113:24:113:24 | implicit dereference [URL] |
+| stdlib.go:113:24:113:28 | selection of URL | file://:0:0:0:0 | parameter -1 of String |
+| stdlib.go:113:24:113:28 | selection of URL | file://:0:0:0:0 | parameter -1 of String |
 | stdlib.go:113:24:113:28 | selection of URL | stdlib.go:113:24:113:37 | call to String |
 | stdlib.go:113:24:113:28 | selection of URL | stdlib.go:113:24:113:37 | call to String |
+| stdlib.go:146:13:146:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
+| stdlib.go:146:13:146:18 | selection of Form | stdlib.go:146:13:146:32 | call to Get |
 | stdlib.go:146:13:146:18 | selection of Form | stdlib.go:152:23:152:28 | target |
+| stdlib.go:146:13:146:32 | call to Get | stdlib.go:152:23:152:28 | target |
+| stdlib.go:159:11:159:15 | selection of URL | stdlib.go:162:24:162:26 | url |
+| stdlib.go:159:11:159:15 | selection of URL | stdlib.go:162:24:162:26 | url |
 | stdlib.go:159:11:159:15 | selection of URL | stdlib.go:162:24:162:35 | call to String |
-| stdlib.go:159:11:159:15 | selection of URL | stdlib.go:162:24:162:35 | call to String |
+| stdlib.go:162:24:162:26 | url | file://:0:0:0:0 | parameter -1 of String |
+| stdlib.go:162:24:162:26 | url | file://:0:0:0:0 | parameter -1 of String |
+| stdlib.go:162:24:162:26 | url | stdlib.go:162:24:162:35 | call to String |
+| stdlib.go:162:24:162:26 | url | stdlib.go:162:24:162:35 | call to String |
+| stdlib.go:173:35:173:39 | selection of URL | file://:0:0:0:0 | parameter -1 of RequestURI |
+| stdlib.go:173:35:173:39 | selection of URL | file://:0:0:0:0 | parameter -1 of RequestURI |
 | stdlib.go:173:35:173:39 | selection of URL | stdlib.go:173:24:173:52 | ...+... |
-| stdlib.go:173:35:173:39 | selection of URL | stdlib.go:173:24:173:52 | ...+... |
+| stdlib.go:173:35:173:39 | selection of URL | stdlib.go:173:35:173:52 | call to RequestURI |
+| stdlib.go:173:35:173:39 | selection of URL | stdlib.go:173:35:173:52 | call to RequestURI |
+| stdlib.go:173:35:173:52 | call to RequestURI | stdlib.go:173:24:173:52 | ...+... |
+| stdlib.go:173:35:173:52 | call to RequestURI | stdlib.go:173:24:173:52 | ...+... |
 | stdlib.go:182:13:182:33 | call to FormValue | stdlib.go:184:23:184:28 | target |
+| stdlib.go:190:3:190:57 | ... := ...[0] | stdlib.go:192:23:192:33 | selection of Path |
+| stdlib.go:190:3:190:57 | ... := ...[0] | stdlib.go:194:23:194:28 | target |
+| stdlib.go:190:3:190:57 | ... := ...[0] | stdlib.go:194:23:194:42 | call to EscapedPath |
+| stdlib.go:190:36:190:56 | call to FormValue | file://:0:0:0:0 | parameter 0 of ParseRequestURI |
+| stdlib.go:190:36:190:56 | call to FormValue | stdlib.go:190:3:190:57 | ... := ...[0] |
 | stdlib.go:190:36:190:56 | call to FormValue | stdlib.go:192:23:192:33 | selection of Path |
+| stdlib.go:190:36:190:56 | call to FormValue | stdlib.go:194:23:194:28 | target |
 | stdlib.go:190:36:190:56 | call to FormValue | stdlib.go:194:23:194:42 | call to EscapedPath |
+| stdlib.go:194:23:194:28 | target | file://:0:0:0:0 | parameter -1 of EscapedPath |
+| stdlib.go:194:23:194:28 | target | stdlib.go:194:23:194:42 | call to EscapedPath |
 nodes
 | OpenUrlRedirect.go:10:23:10:28 | selection of Form | semmle.label | selection of Form |
 | OpenUrlRedirect.go:10:23:10:42 | call to Get | semmle.label | call to Get |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in EscapedPath | semmle.label | [summary] to write: return (return[0]) in EscapedPath |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | semmle.label | [summary] to write: return (return[0]) in Get |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in ParseRequestURI | semmle.label | [summary] to write: return (return[0]) in ParseRequestURI |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in RequestURI | semmle.label | [summary] to write: return (return[0]) in RequestURI |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in RequestURI | semmle.label | [summary] to write: return (return[0]) in RequestURI |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in String | semmle.label | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in String | semmle.label | [summary] to write: return (return[0]) in String |
+| file://:0:0:0:0 | parameter 0 of ParseRequestURI | semmle.label | parameter 0 of ParseRequestURI |
+| file://:0:0:0:0 | parameter -1 of EscapedPath | semmle.label | parameter -1 of EscapedPath |
+| file://:0:0:0:0 | parameter -1 of Get | semmle.label | parameter -1 of Get |
+| file://:0:0:0:0 | parameter -1 of RequestURI | semmle.label | parameter -1 of RequestURI |
+| file://:0:0:0:0 | parameter -1 of RequestURI | semmle.label | parameter -1 of RequestURI |
+| file://:0:0:0:0 | parameter -1 of String | semmle.label | parameter -1 of String |
+| file://:0:0:0:0 | parameter -1 of String | semmle.label | parameter -1 of String |
 | stdlib.go:13:13:13:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:13:13:13:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:15:30:15:35 | target | semmle.label | target |
 | stdlib.go:22:13:22:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:22:13:22:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:24:30:24:35 | target | semmle.label | target |
 | stdlib.go:31:13:31:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:31:13:31:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:35:30:35:39 | ...+... | semmle.label | ...+... |
 | stdlib.go:44:13:44:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:44:13:44:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:46:23:46:28 | target | semmle.label | target |
 | stdlib.go:64:13:64:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:64:13:64:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:67:23:67:40 | ...+... | semmle.label | ...+... |
 | stdlib.go:89:13:89:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:89:13:89:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:92:23:92:28 | target | semmle.label | target |
 | stdlib.go:107:54:107:54 | definition of r [pointer, URL, pointer] | semmle.label | definition of r [pointer, URL, pointer] |
 | stdlib.go:107:54:107:54 | definition of r [pointer, URL, pointer] | semmle.label | definition of r [pointer, URL, pointer] |
@@ -96,21 +165,44 @@ nodes
 | stdlib.go:113:24:113:37 | call to String | semmle.label | call to String |
 | stdlib.go:113:24:113:37 | call to String | semmle.label | call to String |
 | stdlib.go:146:13:146:18 | selection of Form | semmle.label | selection of Form |
+| stdlib.go:146:13:146:32 | call to Get | semmle.label | call to Get |
 | stdlib.go:152:23:152:28 | target | semmle.label | target |
 | stdlib.go:159:11:159:15 | selection of URL | semmle.label | selection of URL |
 | stdlib.go:159:11:159:15 | selection of URL | semmle.label | selection of URL |
+| stdlib.go:162:24:162:26 | url | semmle.label | url |
+| stdlib.go:162:24:162:26 | url | semmle.label | url |
 | stdlib.go:162:24:162:35 | call to String | semmle.label | call to String |
 | stdlib.go:162:24:162:35 | call to String | semmle.label | call to String |
 | stdlib.go:173:24:173:52 | ...+... | semmle.label | ...+... |
 | stdlib.go:173:24:173:52 | ...+... | semmle.label | ...+... |
 | stdlib.go:173:35:173:39 | selection of URL | semmle.label | selection of URL |
 | stdlib.go:173:35:173:39 | selection of URL | semmle.label | selection of URL |
+| stdlib.go:173:35:173:52 | call to RequestURI | semmle.label | call to RequestURI |
+| stdlib.go:173:35:173:52 | call to RequestURI | semmle.label | call to RequestURI |
 | stdlib.go:182:13:182:33 | call to FormValue | semmle.label | call to FormValue |
 | stdlib.go:184:23:184:28 | target | semmle.label | target |
+| stdlib.go:190:3:190:57 | ... := ...[0] | semmle.label | ... := ...[0] |
 | stdlib.go:190:36:190:56 | call to FormValue | semmle.label | call to FormValue |
 | stdlib.go:192:23:192:33 | selection of Path | semmle.label | selection of Path |
+| stdlib.go:194:23:194:28 | target | semmle.label | target |
 | stdlib.go:194:23:194:42 | call to EscapedPath | semmle.label | call to EscapedPath |
 subpaths
+| OpenUrlRedirect.go:10:23:10:28 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | OpenUrlRedirect.go:10:23:10:42 | call to Get |
+| stdlib.go:13:13:13:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | stdlib.go:13:13:13:32 | call to Get |
+| stdlib.go:22:13:22:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | stdlib.go:22:13:22:32 | call to Get |
+| stdlib.go:31:13:31:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | stdlib.go:31:13:31:32 | call to Get |
+| stdlib.go:44:13:44:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | stdlib.go:44:13:44:32 | call to Get |
+| stdlib.go:64:13:64:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | stdlib.go:64:13:64:32 | call to Get |
+| stdlib.go:89:13:89:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | stdlib.go:89:13:89:32 | call to Get |
+| stdlib.go:113:24:113:28 | selection of URL | file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String | stdlib.go:113:24:113:37 | call to String |
+| stdlib.go:113:24:113:28 | selection of URL | file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String | stdlib.go:113:24:113:37 | call to String |
+| stdlib.go:146:13:146:18 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | stdlib.go:146:13:146:32 | call to Get |
+| stdlib.go:162:24:162:26 | url | file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String | stdlib.go:162:24:162:35 | call to String |
+| stdlib.go:162:24:162:26 | url | file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String | stdlib.go:162:24:162:35 | call to String |
+| stdlib.go:173:35:173:39 | selection of URL | file://:0:0:0:0 | parameter -1 of RequestURI | file://:0:0:0:0 | [summary] to write: return (return[0]) in RequestURI | stdlib.go:173:35:173:52 | call to RequestURI |
+| stdlib.go:173:35:173:39 | selection of URL | file://:0:0:0:0 | parameter -1 of RequestURI | file://:0:0:0:0 | [summary] to write: return (return[0]) in RequestURI | stdlib.go:173:35:173:52 | call to RequestURI |
+| stdlib.go:190:36:190:56 | call to FormValue | file://:0:0:0:0 | parameter 0 of ParseRequestURI | file://:0:0:0:0 | [summary] to write: return (return[0]) in ParseRequestURI | stdlib.go:190:3:190:57 | ... := ...[0] |
+| stdlib.go:194:23:194:28 | target | file://:0:0:0:0 | parameter -1 of EscapedPath | file://:0:0:0:0 | [summary] to write: return (return[0]) in EscapedPath | stdlib.go:194:23:194:42 | call to EscapedPath |
 #select
 | OpenUrlRedirect.go:10:23:10:42 | call to Get | OpenUrlRedirect.go:10:23:10:28 | selection of Form | OpenUrlRedirect.go:10:23:10:42 | call to Get | This path to an untrusted URL redirection depends on a $@. | OpenUrlRedirect.go:10:23:10:28 | selection of Form | user-provided value |
 | stdlib.go:15:30:15:35 | target | stdlib.go:13:13:13:18 | selection of Form | stdlib.go:15:30:15:35 | target | This path to an untrusted URL redirection depends on a $@. | stdlib.go:13:13:13:18 | selection of Form | user-provided value |

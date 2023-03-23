@@ -1,5 +1,7 @@
 edges
+| file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
 | klog.go:20:30:20:37 | selection of Header | klog.go:22:15:22:20 | header |
+| klog.go:28:13:28:20 | selection of Header | file://:0:0:0:0 | parameter -1 of Get |
 | klog.go:28:13:28:20 | selection of Header | klog.go:28:13:28:41 | call to Get |
 | main.go:21:19:21:26 | password | main.go:22:29:22:34 | fields |
 | overrides.go:9:9:9:16 | password | overrides.go:13:14:13:23 | call to String |
@@ -15,6 +17,10 @@ edges
 | passwords.go:107:34:107:41 | password | passwords.go:107:16:107:41 | ...+... |
 | passwords.go:112:33:112:40 | password | passwords.go:112:15:112:40 | ...+... |
 | passwords.go:116:28:116:36 | password1 | passwords.go:116:14:116:45 | ...+... |
+| passwords.go:116:28:116:36 | password1 | passwords.go:116:28:116:45 | call to String |
+| passwords.go:116:28:116:36 | password1 | util.go:71:7:71:7 | definition of s |
+| passwords.go:116:28:116:36 | password1 | util.go:71:21:71:26 | parameter -1 of String |
+| passwords.go:116:28:116:45 | call to String | passwords.go:116:14:116:45 | ...+... |
 | passwords.go:118:12:123:2 | struct literal [x] | passwords.go:126:14:126:19 | config [x] |
 | passwords.go:118:12:123:2 | struct literal [y] | passwords.go:127:14:127:19 | config [y] |
 | passwords.go:119:13:119:13 | x | passwords.go:125:14:125:19 | config |
@@ -35,7 +41,11 @@ edges
 | protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description |
 | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | protos/query/query.pb.go:119:10:119:10 | implicit dereference [Description] |
 | util.go:16:9:16:18 | selection of password | passwords.go:28:14:28:28 | call to getPassword |
+| util.go:71:7:71:7 | definition of s | util.go:71:21:71:26 | [summary] to write: return (return[0]) in String |
+| util.go:71:21:71:26 | parameter -1 of String | util.go:71:21:71:26 | [summary] to write: return (return[0]) in String |
 nodes
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | semmle.label | [summary] to write: return (return[0]) in Get |
+| file://:0:0:0:0 | parameter -1 of Get | semmle.label | parameter -1 of Get |
 | klog.go:20:30:20:37 | selection of Header | semmle.label | selection of Header |
 | klog.go:22:15:22:20 | header | semmle.label | header |
 | klog.go:28:13:28:20 | selection of Header | semmle.label | selection of Header |
@@ -77,6 +87,7 @@ nodes
 | passwords.go:112:33:112:40 | password | semmle.label | password |
 | passwords.go:116:14:116:45 | ...+... | semmle.label | ...+... |
 | passwords.go:116:28:116:36 | password1 | semmle.label | password1 |
+| passwords.go:116:28:116:45 | call to String | semmle.label | call to String |
 | passwords.go:118:12:123:2 | struct literal [x] | semmle.label | struct literal [x] |
 | passwords.go:118:12:123:2 | struct literal [y] | semmle.label | struct literal [y] |
 | passwords.go:119:13:119:13 | x | semmle.label | x |
@@ -98,7 +109,14 @@ nodes
 | protos/query/query.pb.go:119:10:119:10 | x [pointer, Description] | semmle.label | x [pointer, Description] |
 | protos/query/query.pb.go:119:10:119:22 | selection of Description | semmle.label | selection of Description |
 | util.go:16:9:16:18 | selection of password | semmle.label | selection of password |
+| util.go:71:7:71:7 | definition of s | semmle.label | definition of s |
+| util.go:71:21:71:26 | [summary] to write: return (return[0]) in String | semmle.label | [summary] to write: return (return[0]) in String |
+| util.go:71:21:71:26 | [summary] to write: return (return[0]) in String | semmle.label | [summary] to write: return (return[0]) in String |
+| util.go:71:21:71:26 | parameter -1 of String | semmle.label | parameter -1 of String |
 subpaths
+| klog.go:28:13:28:20 | selection of Header | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | klog.go:28:13:28:41 | call to Get |
+| passwords.go:116:28:116:36 | password1 | util.go:71:7:71:7 | definition of s | util.go:71:21:71:26 | [summary] to write: return (return[0]) in String | passwords.go:116:28:116:45 | call to String |
+| passwords.go:116:28:116:36 | password1 | util.go:71:21:71:26 | parameter -1 of String | util.go:71:21:71:26 | [summary] to write: return (return[0]) in String | passwords.go:116:28:116:45 | call to String |
 | protobuf.go:14:14:14:18 | query [pointer, Description] | protos/query/query.pb.go:117:7:117:7 | definition of x [pointer, Description] | protos/query/query.pb.go:119:10:119:22 | selection of Description | protobuf.go:14:14:14:35 | call to GetDescription |
 #select
 | klog.go:22:15:22:20 | header | klog.go:20:30:20:37 | selection of Header | klog.go:22:15:22:20 | header | $@ flows to a logging call. | klog.go:20:30:20:37 | selection of Header | Sensitive data returned by HTTP request headers |
