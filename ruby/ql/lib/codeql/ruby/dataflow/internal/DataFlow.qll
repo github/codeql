@@ -2,7 +2,7 @@
  * Provides an implementation of global (interprocedural) data flow. This file
  * re-exports the local (intraprocedural) data flow analysis from
  * `DataFlowImplSpecific::Public` and adds a global analysis, mainly exposed
- * through the `Make` and `MakeWithState` modules.
+ * through the `Global` and `GlobalWithState` modules.
  */
 
 private import DataFlowImplCommon
@@ -73,10 +73,10 @@ signature module ConfigSig {
    */
   default FlowFeature getAFeature() { none() }
 
-  /** Holds if sources should be grouped in the result of `hasFlowPath`. */
+  /** Holds if sources should be grouped in the result of `flowPath`. */
   default predicate sourceGrouping(Node source, string sourceGroup) { none() }
 
-  /** Holds if sinks should be grouped in the result of `hasFlowPath`. */
+  /** Holds if sinks should be grouped in the result of `flowPath`. */
   default predicate sinkGrouping(Node sink, string sinkGroup) { none() }
 
   /**
@@ -166,10 +166,10 @@ signature module StateConfigSig {
    */
   default FlowFeature getAFeature() { none() }
 
-  /** Holds if sources should be grouped in the result of `hasFlowPath`. */
+  /** Holds if sources should be grouped in the result of `flowPath`. */
   default predicate sourceGrouping(Node source, string sourceGroup) { none() }
 
-  /** Holds if sinks should be grouped in the result of `hasFlowPath`. */
+  /** Holds if sinks should be grouped in the result of `flowPath`. */
   default predicate sinkGrouping(Node sink, string sinkGroup) { none() }
 
   /**
@@ -182,7 +182,7 @@ signature module StateConfigSig {
 }
 
 /**
- * Gets the exploration limit for `hasPartialFlow` and `hasPartialFlowRev`
+ * Gets the exploration limit for `partialFlow` and `partialFlowRev`
  * measured in approximate number of interprocedural steps.
  */
 signature int explorationLimitSig();
@@ -203,28 +203,28 @@ signature module DataFlowSig {
    * The corresponding paths are generated from the end-points and the graph
    * included in the module `PathGraph`.
    */
-  predicate hasFlowPath(PathNode source, PathNode sink);
+  predicate flowPath(PathNode source, PathNode sink);
 
   /**
    * Holds if data can flow from `source` to `sink`.
    */
-  predicate hasFlow(Node source, Node sink);
+  predicate flow(Node source, Node sink);
 
   /**
    * Holds if data can flow from some source to `sink`.
    */
-  predicate hasFlowTo(Node sink);
+  predicate flowTo(Node sink);
 
   /**
    * Holds if data can flow from some source to `sink`.
    */
-  predicate hasFlowToExpr(DataFlowExpr sink);
+  predicate flowToExpr(DataFlowExpr sink);
 }
 
 /**
  * Constructs a standard data flow computation.
  */
-module Make<ConfigSig Config> implements DataFlowSig {
+module Global<ConfigSig Config> implements DataFlowSig {
   private module C implements FullStateConfigSig {
     import DefaultState<Config>
     import Config
@@ -233,15 +233,25 @@ module Make<ConfigSig Config> implements DataFlowSig {
   import Impl<C>
 }
 
+/** DEPRECATED: Use `Global` instead. */
+deprecated module Make<ConfigSig Config> implements DataFlowSig {
+  import Global<Config>
+}
+
 /**
  * Constructs a data flow computation using flow state.
  */
-module MakeWithState<StateConfigSig Config> implements DataFlowSig {
+module GlobalWithState<StateConfigSig Config> implements DataFlowSig {
   private module C implements FullStateConfigSig {
     import Config
   }
 
   import Impl<C>
+}
+
+/** DEPRECATED: Use `GlobalWithState` instead. */
+deprecated module MakeWithState<StateConfigSig Config> implements DataFlowSig {
+  import GlobalWithState<Config>
 }
 
 signature class PathNodeSig {
