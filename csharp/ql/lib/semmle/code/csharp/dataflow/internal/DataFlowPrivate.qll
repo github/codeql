@@ -19,6 +19,7 @@ private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import semmle.code.cil.Ssa::Ssa as CilSsa
 private import semmle.code.cil.internal.SsaImpl as CilSsaImpl
+import codeql.util.Unit
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallableImpl() }
@@ -2163,15 +2164,6 @@ int accessPathLimit() { result = 5 }
  */
 predicate forceHighPrecision(Content c) { c instanceof ElementContent }
 
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
-
 class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a delegate for `c`. */
@@ -2183,7 +2175,7 @@ predicate lambdaCreation(ExprNode creation, LambdaCallKind kind, DataFlowCallabl
         e.(AddressOfExpr).getOperand().(CallableAccess).getTarget().getUnboundDeclaration()
       ]
   ) and
-  kind = TMkUnit()
+  exists(kind)
 }
 
 private class LambdaConfiguration extends ControlFlowReachabilityConfiguration {
@@ -2214,7 +2206,7 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
     or
     receiver = call.(SummaryCall).getReceiver()
   ) and
-  kind = TMkUnit()
+  exists(kind)
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */
