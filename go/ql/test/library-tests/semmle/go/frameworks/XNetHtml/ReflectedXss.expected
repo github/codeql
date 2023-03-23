@@ -1,5 +1,6 @@
 edges
 | file://:0:0:0:0 | parameter 0 of NewTokenizer | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewTokenizer |
+| file://:0:0:0:0 | parameter 0 of NewTokenizerFragment | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewTokenizerFragment |
 | file://:0:0:0:0 | parameter 0 of Parse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse |
 | file://:0:0:0:0 | parameter 0 of ParseFragment | file://:0:0:0:0 | [summary] to write: return (return[0]) in ParseFragment |
 | file://:0:0:0:0 | parameter 0 of ParseFragmentWithOptions | file://:0:0:0:0 | [summary] to write: return (return[0]) in ParseFragmentWithOptions |
@@ -46,9 +47,15 @@ edges
 | test.go:36:22:36:30 | tokenizer | file://:0:0:0:0 | parameter -1 of Token |
 | test.go:36:22:36:30 | tokenizer | test.go:36:22:36:38 | call to Token |
 | test.go:36:22:36:38 | call to Token | test.go:36:15:36:44 | type conversion |
+| test.go:38:23:38:77 | call to NewTokenizerFragment | test.go:39:15:39:31 | tokenizerFragment |
+| test.go:38:49:38:60 | selection of Body | file://:0:0:0:0 | parameter 0 of NewTokenizerFragment |
+| test.go:38:49:38:60 | selection of Body | test.go:38:23:38:77 | call to NewTokenizerFragment |
+| test.go:39:15:39:31 | tokenizerFragment | file://:0:0:0:0 | parameter -1 of Buffered |
+| test.go:39:15:39:31 | tokenizerFragment | test.go:39:15:39:42 | call to Buffered |
 nodes
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Buffered | semmle.label | [summary] to write: return (return[0]) in Buffered |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewTokenizer | semmle.label | [summary] to write: return (return[0]) in NewTokenizer |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in NewTokenizerFragment | semmle.label | [summary] to write: return (return[0]) in NewTokenizerFragment |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse | semmle.label | [summary] to write: return (return[0]) in Parse |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in ParseFragment | semmle.label | [summary] to write: return (return[0]) in ParseFragment |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in ParseFragmentWithOptions | semmle.label | [summary] to write: return (return[0]) in ParseFragmentWithOptions |
@@ -59,6 +66,7 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in UnescapeString | semmle.label | [summary] to write: return (return[0]) in UnescapeString |
 | file://:0:0:0:0 | [summary] to write: return (return[1]) in TagAttr | semmle.label | [summary] to write: return (return[1]) in TagAttr |
 | file://:0:0:0:0 | parameter 0 of NewTokenizer | semmle.label | parameter 0 of NewTokenizer |
+| file://:0:0:0:0 | parameter 0 of NewTokenizerFragment | semmle.label | parameter 0 of NewTokenizerFragment |
 | file://:0:0:0:0 | parameter 0 of Parse | semmle.label | parameter 0 of Parse |
 | file://:0:0:0:0 | parameter 0 of ParseFragment | semmle.label | parameter 0 of ParseFragment |
 | file://:0:0:0:0 | parameter 0 of ParseFragmentWithOptions | semmle.label | parameter 0 of ParseFragmentWithOptions |
@@ -100,6 +108,10 @@ nodes
 | test.go:36:15:36:44 | type conversion | semmle.label | type conversion |
 | test.go:36:22:36:30 | tokenizer | semmle.label | tokenizer |
 | test.go:36:22:36:38 | call to Token | semmle.label | call to Token |
+| test.go:38:23:38:77 | call to NewTokenizerFragment | semmle.label | call to NewTokenizerFragment |
+| test.go:38:49:38:60 | selection of Body | semmle.label | selection of Body |
+| test.go:39:15:39:31 | tokenizerFragment | semmle.label | tokenizerFragment |
+| test.go:39:15:39:42 | call to Buffered | semmle.label | call to Buffered |
 subpaths
 | test.go:14:42:14:53 | selection of Value | file://:0:0:0:0 | parameter 0 of UnescapeString | file://:0:0:0:0 | [summary] to write: return (return[0]) in UnescapeString | test.go:14:22:14:54 | call to UnescapeString |
 | test.go:16:24:16:35 | selection of Body | file://:0:0:0:0 | parameter 0 of Parse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse | test.go:16:2:16:36 | ... := ...[0] |
@@ -112,6 +124,8 @@ subpaths
 | test.go:33:17:33:25 | tokenizer | file://:0:0:0:0 | parameter -1 of TagAttr | file://:0:0:0:0 | [summary] to write: return (return[1]) in TagAttr | test.go:33:2:33:35 | ... := ...[1] |
 | test.go:35:15:35:23 | tokenizer | file://:0:0:0:0 | parameter -1 of Text | file://:0:0:0:0 | [summary] to write: return (return[0]) in Text | test.go:35:15:35:30 | call to Text |
 | test.go:36:22:36:30 | tokenizer | file://:0:0:0:0 | parameter -1 of Token | file://:0:0:0:0 | [summary] to write: return (return[0]) in Token | test.go:36:22:36:38 | call to Token |
+| test.go:38:49:38:60 | selection of Body | file://:0:0:0:0 | parameter 0 of NewTokenizerFragment | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewTokenizerFragment | test.go:38:23:38:77 | call to NewTokenizerFragment |
+| test.go:39:15:39:31 | tokenizerFragment | file://:0:0:0:0 | parameter -1 of Buffered | file://:0:0:0:0 | [summary] to write: return (return[0]) in Buffered | test.go:39:15:39:42 | call to Buffered |
 #select
 | test.go:14:15:14:55 | type conversion | test.go:10:2:10:42 | ... := ...[0] | test.go:14:15:14:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:10:2:10:42 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:17:15:17:31 | type conversion | test.go:16:24:16:35 | selection of Body | test.go:17:15:17:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:16:24:16:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
@@ -124,3 +138,4 @@ subpaths
 | test.go:34:15:34:19 | value | test.go:30:33:30:44 | selection of Body | test.go:34:15:34:19 | value | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:35:15:35:30 | call to Text | test.go:30:33:30:44 | selection of Body | test.go:35:15:35:30 | call to Text | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:36:15:36:44 | type conversion | test.go:30:33:30:44 | selection of Body | test.go:36:15:36:44 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:39:15:39:42 | call to Buffered | test.go:38:49:38:60 | selection of Body | test.go:39:15:39:42 | call to Buffered | Cross-site scripting vulnerability due to $@. | test.go:38:49:38:60 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |

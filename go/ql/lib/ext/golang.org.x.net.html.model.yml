@@ -4,6 +4,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["golang.org/x/net/html", "", False, "NewTokenizer", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "NewTokenizerFragment", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["golang.org/x/net/html", "", False, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["golang.org/x/net/html", "", False, "ParseFragment", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["golang.org/x/net/html", "", False, "ParseFragmentWithOptions", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
