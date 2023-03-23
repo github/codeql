@@ -20,7 +20,7 @@ class SummarizedCallableBase = Callable;
 DataFlowCallable inject(SummarizedCallable c) { result.asCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
-ArgumentPosition instanceParameterPosition() { result = -1 }
+ArgumentPosition callbackSelfParameterPosition() { result = -1 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
 string getParameterPosition(ParameterPosition pos) { result = pos.toString() }

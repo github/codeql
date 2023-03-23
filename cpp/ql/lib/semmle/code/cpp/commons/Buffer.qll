@@ -1,5 +1,5 @@
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
+private import semmle.code.cpp.ir.dataflow.DataFlow
 
 /**
  * Holds if `v` is a member variable of `c` that looks like it might be variable sized
@@ -25,10 +25,12 @@ predicate memberMayBeVarSize(Class c, MemberVariable v) {
 }
 
 /**
- * Get the size in bytes of the buffer pointed to by an expression (if this can be determined).
+ * Holds if `bufferExpr` is an allocation-like expression.
+ *
+ * This includes both actual allocations, as well as various operations that return a pointer to
+ * stack-allocated objects.
  */
-language[monotonicAggregates]
-int getBufferSize(Expr bufferExpr, Element why) {
+private int isSource(Expr bufferExpr, Element why) {
   exists(Variable bufferVar | bufferVar = bufferExpr.(VariableAccess).getTarget() |
     // buffer is a fixed size array
     result = bufferVar.getUnspecifiedType().(ArrayType).getSize() and
@@ -46,41 +48,11 @@ int getBufferSize(Expr bufferExpr, Element why) {
     ) and
     result = why.(Expr).getType().(ArrayType).getSize() and
     not exists(bufferVar.getUnspecifiedType().(ArrayType).getSize())
-    or
-    exists(Class parentClass, VariableAccess parentPtr, int bufferSize |
-      // buffer is the parentPtr->bufferVar of a 'variable size struct'
-      memberMayBeVarSize(parentClass, bufferVar) and
-      why = bufferVar and
-      parentPtr = bufferExpr.(VariableAccess).getQualifier() and
-      parentPtr.getTarget().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
-      (
-        if exists(bufferVar.getType().getSize())
-        then bufferSize = bufferVar.getType().getSize()
-        else bufferSize = 0
-      ) and
-      result = getBufferSize(parentPtr, _) + bufferSize - parentClass.getSize()
-    )
   )
   or
   // buffer is a fixed size dynamic allocation
   result = bufferExpr.(AllocationExpr).getSizeBytes() and
   why = bufferExpr
-  or
-  exists(DataFlow::ExprNode bufferExprNode |
-    // dataflow (all sources must be the same size)
-    bufferExprNode = DataFlow::exprNode(bufferExpr) and
-    result =
-      unique(Expr def |
-        DataFlow::localFlowStep(DataFlow::exprNode(def), bufferExprNode)
-      |
-        getBufferSize(def, _)
-      ) and
-    // find reason
-    exists(Expr def | DataFlow::localFlowStep(DataFlow::exprNode(def), bufferExprNode) |
-      why = def or
-      exists(getBufferSize(def, why))
-    )
-  )
   or
   exists(Type bufferType |
     // buffer is the address of a variable
@@ -99,4 +71,31 @@ int getBufferSize(Expr bufferExpr, Element why) {
     bufferType.getAMemberVariable() = why and
     result = bufferType.getSize()
   )
+}
+
+/**
+ * Get the size in bytes of the buffer pointed to by an expression (if this can be determined).
+ */
+language[monotonicAggregates]
+int getBufferSize(Expr bufferExpr, Element why) {
+  result = isSource(bufferExpr, why)
+  or
+  exists(Class parentClass, VariableAccess parentPtr, int bufferSize, Variable bufferVar |
+    bufferVar = bufferExpr.(VariableAccess).getTarget() and
+    // buffer is the parentPtr->bufferVar of a 'variable size struct'
+    memberMayBeVarSize(parentClass, bufferVar) and
+    why = bufferVar and
+    parentPtr = bufferExpr.(VariableAccess).getQualifier() and
+    parentPtr.getTarget().getUnspecifiedType().(PointerType).getBaseType() = parentClass and
+    result = getBufferSize(parentPtr, _) + bufferSize - parentClass.getSize()
+  |
+    if exists(bufferVar.getType().getSize())
+    then bufferSize = bufferVar.getType().getSize()
+    else bufferSize = 0
+  )
+  or
+  // dataflow (all sources must be the same size)
+  result = unique(Expr def | DataFlow::localExprFlowStep(def, bufferExpr) | getBufferSize(def, _)) and
+  // find reason
+  exists(Expr def | DataFlow::localExprFlowStep(def, bufferExpr) | exists(getBufferSize(def, why)))
 }

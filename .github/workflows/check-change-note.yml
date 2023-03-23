@@ -8,6 +8,7 @@ on:
       - "*/ql/src/**/*.qll"
       - "*/ql/lib/**/*.ql"
       - "*/ql/lib/**/*.qll"
+      - "*/ql/lib/**/*.yml"
       - "!**/experimental/**"
       - "!ql/**"
       - "!swift/**"

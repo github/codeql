@@ -250,7 +250,8 @@ private predicate selfInToplevel(SelfVariable self, Module m) {
 private predicate asModulePattern(SsaDefinitionExtNode def, Module m) {
   exists(AsPattern ap |
     m = resolveConstantReadAccess(ap.getPattern()) and
-    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess() = ap.getVariableAccess()
+    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getNode() =
+      ap.getVariableAccess()
   )
 }
 
@@ -299,10 +300,7 @@ private Callable viableSourceCallableNonInit(RelevantCall call) {
   not call.getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
 }
 
-private Callable viableSourceCallableInit(RelevantCall call) {
-  result = getInitializeTarget(call) and
-  not isUserDefinedNew(getTarget(call))
-}
+private Callable viableSourceCallableInit(RelevantCall call) { result = getInitializeTarget(call) }
 
 /** Holds if `call` may resolve to the returned source-code method. */
 private Callable viableSourceCallable(RelevantCall call) {
@@ -374,9 +372,14 @@ private module Cached {
    */
   cached
   Method getInitializeTarget(RelevantCall new) {
-    exists(Module m |
-      moduleFlowsToMethodCallReceiver(new, m, "new") and
-      result = lookupMethod(m, "initialize")
+    exists(Module m, boolean exact |
+      isStandardNewCall(new, m, exact) and
+      result = lookupMethod(m, "initialize", exact) and
+      // In the case where `exact = false`, we need to check that there is
+      // no user-defined `new` method in between `m` and the enclosing module
+      // of the `initialize` method (`isStandardNewCall` already checks that
+      // there is no user-defined `new` method in `m` or any of `m`'s ancestors)
+      not hasUserDefinedNew(result.getEnclosingModule().getModule())
     )
   }
 
@@ -441,6 +444,13 @@ private module Cached {
       FlowSummaryImplSpecific::ParsePositions::isParsedKeywordArgumentPosition(_, name)
     } or
     THashSplatParameterPosition() or
+    // To get flow from a hash-splat argument to a keyword parameter, we add a read-step
+    // from a synthetic hash-splat parameter. We need this separate synthetic ParameterNode,
+    // since we clear content of the normal hash-splat parameter for the names that
+    // correspond to normal keyword parameters. Since we cannot re-use the same parameter
+    // position for multiple parameter nodes in the same callable, we introduce this
+    // synthetic parameter position.
+    TSynthHashSplatParameterPosition() or
     TSplatAllParameterPosition() or
     TAnyParameterPosition() or
     TAnyKeywordParameterPosition()
@@ -478,6 +488,35 @@ private predicate hasUserDefinedNew(Module m) {
     // not `getAnAncestor` because singleton methods cannot be included
     singletonMethodOnModule(method.asCallableAstNode(), "new", m.getSuperClass*()) and
     not method.getSelfParameter().getAMethodCall("allocate").flowsTo(method.getAReturningNode())
+  )
+}
+
+/**
+ * Holds if `new` is a call to `new`, targeting a class of type `m` (or a
+ * sub class, when `exact = false`), where there is no user-defined
+ * `self.new` on `m`.
+ */
+pragma[nomagic]
+private predicate isStandardNewCall(RelevantCall new, Module m, boolean exact) {
+  exists(DataFlow::LocalSourceNode sourceNode |
+    flowsToMethodCallReceiver(new, sourceNode, "new") and
+    // `m` should not have a user-defined `self.new` method
+    not hasUserDefinedNew(m)
+  |
+    // `C.new`
+    sourceNode = trackModuleAccess(m) and
+    exact = true
+    or
+    // `self.new` inside a module
+    selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), m) and
+    exact = true
+    or
+    // `self.new` inside a singleton method
+    exists(MethodBase caller |
+      selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), caller, m) and
+      singletonMethod(caller, _, _) and
+      exact = false
+    )
   )
 }
 
@@ -535,27 +574,7 @@ private predicate isInstance(DataFlow::Node n, Module tp, boolean exact) {
   tp = TResolved("Proc") and
   exact = true
   or
-  exists(RelevantCall call, DataFlow::LocalSourceNode sourceNode |
-    flowsToMethodCallReceiver(call, sourceNode, "new") and
-    n.asExpr() = call and
-    // `tp` should not have a user-defined `self.new` method
-    not hasUserDefinedNew(tp)
-  |
-    // `C.new`
-    sourceNode = trackModuleAccess(tp) and
-    exact = true
-    or
-    // `self.new` inside a module
-    selfInModule(sourceNode.(SsaSelfDefinitionNode).getVariable(), tp) and
-    exact = true
-    or
-    // `self.new` inside a singleton method
-    exists(MethodBase caller |
-      selfInMethod(sourceNode.(SsaSelfDefinitionNode).getVariable(), caller, tp) and
-      singletonMethod(caller, _, _) and
-      exact = false
-    )
-  )
+  isStandardNewCall(n.asExpr(), tp, exact)
   or
   // `self` reference in method or top-level (but not in module or singleton method,
   // where instance methods cannot be called; only singleton methods)
@@ -1238,6 +1257,8 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a hash-splat parameter. */
   predicate isHashSplat() { this = THashSplatParameterPosition() }
 
+  predicate isSynthHashSplat() { this = TSynthHashSplatParameterPosition() }
+
   predicate isSplatAll() { this = TSplatAllParameterPosition() }
 
   /**
@@ -1262,6 +1283,8 @@ class ParameterPosition extends TParameterPosition {
     exists(string name | this.isKeyword(name) and result = "keyword " + name)
     or
     this.isHashSplat() and result = "**"
+    or
+    this.isSynthHashSplat() and result = "synthetic **"
     or
     this.isSplatAll() and result = "*"
     or
@@ -1344,6 +1367,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   exists(string name | ppos.isKeyword(name) and apos.isKeyword(name))
   or
   ppos.isHashSplat() and apos.isHashSplat()
+  or
+  ppos.isSynthHashSplat() and apos.isHashSplat()
   or
   ppos.isSplatAll() and apos.isSplatAll()
   or

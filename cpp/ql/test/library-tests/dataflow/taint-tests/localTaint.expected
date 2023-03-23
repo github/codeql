@@ -8090,20 +8090,20 @@
 | vector.cpp:520:25:520:31 | call to vector | vector.cpp:523:8:523:9 | vs |  |
 | vector.cpp:520:25:520:31 | call to vector | vector.cpp:524:8:524:9 | vs |  |
 | vector.cpp:520:25:520:31 | call to vector | vector.cpp:526:8:526:9 | vs |  |
-| vector.cpp:520:25:520:31 | call to vector | vector.cpp:532:8:532:9 | vs |  |
-| vector.cpp:520:25:520:31 | call to vector | vector.cpp:533:2:533:2 | vs |  |
+| vector.cpp:520:25:520:31 | call to vector | vector.cpp:539:8:539:9 | vs |  |
+| vector.cpp:520:25:520:31 | call to vector | vector.cpp:540:2:540:2 | vs |  |
 | vector.cpp:520:30:520:30 | 0 | vector.cpp:520:25:520:31 | call to vector | TAINT |
 | vector.cpp:523:8:523:9 | ref arg vs | vector.cpp:524:8:524:9 | vs |  |
 | vector.cpp:523:8:523:9 | ref arg vs | vector.cpp:526:8:526:9 | vs |  |
-| vector.cpp:523:8:523:9 | ref arg vs | vector.cpp:532:8:532:9 | vs |  |
-| vector.cpp:523:8:523:9 | ref arg vs | vector.cpp:533:2:533:2 | vs |  |
+| vector.cpp:523:8:523:9 | ref arg vs | vector.cpp:539:8:539:9 | vs |  |
+| vector.cpp:523:8:523:9 | ref arg vs | vector.cpp:540:2:540:2 | vs |  |
 | vector.cpp:523:8:523:9 | vs | vector.cpp:523:10:523:10 | call to operator[] | TAINT |
 | vector.cpp:524:8:524:9 | ref arg vs | vector.cpp:526:8:526:9 | vs |  |
-| vector.cpp:524:8:524:9 | ref arg vs | vector.cpp:532:8:532:9 | vs |  |
-| vector.cpp:524:8:524:9 | ref arg vs | vector.cpp:533:2:533:2 | vs |  |
+| vector.cpp:524:8:524:9 | ref arg vs | vector.cpp:539:8:539:9 | vs |  |
+| vector.cpp:524:8:524:9 | ref arg vs | vector.cpp:540:2:540:2 | vs |  |
 | vector.cpp:524:8:524:9 | vs | vector.cpp:524:10:524:10 | call to operator[] | TAINT |
-| vector.cpp:526:8:526:9 | ref arg vs | vector.cpp:532:8:532:9 | vs |  |
-| vector.cpp:526:8:526:9 | ref arg vs | vector.cpp:533:2:533:2 | vs |  |
+| vector.cpp:526:8:526:9 | ref arg vs | vector.cpp:539:8:539:9 | vs |  |
+| vector.cpp:526:8:526:9 | ref arg vs | vector.cpp:540:2:540:2 | vs |  |
 | vector.cpp:526:8:526:9 | vs | vector.cpp:526:11:526:15 | call to begin | TAINT |
 | vector.cpp:526:11:526:15 | call to begin | vector.cpp:526:3:526:17 | ... = ... |  |
 | vector.cpp:526:11:526:15 | call to begin | vector.cpp:527:9:527:10 | it |  |
@@ -8128,5 +8128,5 @@
 | vector.cpp:530:3:530:4 | ref arg it | vector.cpp:531:9:531:10 | it |  |
 | vector.cpp:530:9:530:14 | call to source | vector.cpp:530:3:530:4 | ref arg it | TAINT |
 | vector.cpp:531:9:531:10 | it | vector.cpp:531:8:531:8 | call to operator* | TAINT |
-| vector.cpp:532:8:532:9 | ref arg vs | vector.cpp:533:2:533:2 | vs |  |
-| vector.cpp:532:8:532:9 | vs | vector.cpp:532:10:532:10 | call to operator[] | TAINT |
+| vector.cpp:539:8:539:9 | ref arg vs | vector.cpp:540:2:540:2 | vs |  |
+| vector.cpp:539:8:539:9 | vs | vector.cpp:539:10:539:10 | call to operator[] | TAINT |

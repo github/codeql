@@ -48,7 +48,7 @@ class Libxml2BadOption extends EnumConstant {
 class LibXml2Library extends XmlLibrary {
   LibXml2Library() { this = "LibXml2Library" }
 
-  override predicate configurationSource(DataFlow::Node node, string flowstate) {
+  override predicate configurationSource(DataFlow::Node node, TXxeFlowState flowstate) {
     // source is an `options` argument on a libxml2 parse call that specifies
     // at least one unsafe option.
     //
@@ -59,7 +59,7 @@ class LibXml2Library extends XmlLibrary {
     exists(Libxml2ParseCall call, Expr options |
       options = call.getOptions() and
       node.asExpr() = options and
-      flowstate = "libxml2" and
+      flowstate instanceof TLibXml2FlowState and
       exists(Libxml2BadOption opt |
         globalValueNumber(options).getAnExpr().getValue().toInt().bitAnd(opt.getValue().toInt()) !=
           0
@@ -67,12 +67,12 @@ class LibXml2Library extends XmlLibrary {
     )
   }
 
-  override predicate configurationSink(DataFlow::Node node, string flowstate) {
+  override predicate configurationSink(DataFlow::Node node, TXxeFlowState flowstate) {
     // sink is the `options` argument on a `libxml2` parse call.
     exists(Libxml2ParseCall call, Expr options |
       options = call.getOptions() and
       node.asExpr() = options and
-      flowstate = "libxml2"
+      flowstate instanceof TLibXml2FlowState
     )
   }
 }

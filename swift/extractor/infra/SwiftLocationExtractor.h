@@ -18,7 +18,8 @@ class SwiftLocationExtractor {
  public:
   explicit SwiftLocationExtractor(TrapDomain& trap) : trap(trap) {}
 
-  void emitFile(swift::SourceFile* file);
+  TrapLabel<FileTag> emitFile(swift::SourceFile* file);
+  TrapLabel<FileTag> emitFile(const std::filesystem::path& file);
 
   template <typename Locatable>
   void attachLocation(const swift::SourceManager& sourceManager,

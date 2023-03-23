@@ -314,7 +314,8 @@ public class ESNextParser extends JSXParser {
         this.parseExportSpecifiersMaybe(specifiers, exports);
       }
       Literal source = (Literal) this.parseExportFrom(specifiers, null, true);
-      return this.finishNode(new ExportNamedDeclaration(exportStart, null, specifiers, source));
+      Expression assertion = this.parseImportOrExportAssertionAndSemicolon();
+      return this.finishNode(new ExportNamedDeclaration(exportStart, null, specifiers, source, assertion));
     }
 
     return super.parseExportRest(exportStart, exports);
@@ -330,7 +331,8 @@ public class ESNextParser extends JSXParser {
       List<ExportSpecifier> specifiers = CollectionUtil.makeList(nsSpec);
       this.parseExportSpecifiersMaybe(specifiers, exports);
       Literal source = (Literal) this.parseExportFrom(specifiers, null, true);
-      return this.finishNode(new ExportNamedDeclaration(exportStart, null, specifiers, source));
+      Expression assertion = this.parseImportOrExportAssertionAndSemicolon();
+      return this.finishNode(new ExportNamedDeclaration(exportStart, null, specifiers, source, assertion));
     }
 
     return super.parseExportAll(exportStart, starLoc, exports);
@@ -435,8 +437,15 @@ public class ESNextParser extends JSXParser {
    */
   private DynamicImport parseDynamicImport(Position startLoc) {
     Expression source = parseMaybeAssign(false, null, null);
+    Expression attributes = null;
+    if (this.eat(TokenType.comma)) {
+      if (this.type != TokenType.parenR) { // Skip if the comma was a trailing comma
+        attributes = this.parseMaybeAssign(false, null, null);
+        this.eat(TokenType.comma); // Allow trailing comma
+      }
+    }
     this.expect(TokenType.parenR);
-    DynamicImport di = this.finishNode(new DynamicImport(new SourceLocation(startLoc), source));
+    DynamicImport di = this.finishNode(new DynamicImport(new SourceLocation(startLoc), source, attributes));
     return di;
   }
 

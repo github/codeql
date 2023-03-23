@@ -5,9 +5,9 @@ extensions:
     data:
       - ["my.qltest", "C", False, "stepArgRes", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["my.qltest", "C", False, "stepArgArg", "(Object,Object)", "", "Argument[0]", "Argument[1]", "taint", "manual"]
-      - ["my.qltest", "C", False, "stepArgQual", "(Object)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["my.qltest", "C", False, "stepQualRes", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["my.qltest", "C", False, "stepQualArg", "(Object)", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["my.qltest", "C", False, "stepArgQual", "(Object)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["my.qltest", "C", False, "stepQualRes", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["my.qltest", "C", False, "stepQualArg", "(Object)", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["my.qltest", "C", False, "stepArgResGenerated", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "generated"]
       - ["my.qltest", "C", False, "stepArgResGeneratedIgnored", "(Object,Object)", "", "Argument[0]", "ReturnValue", "taint", "generated"]
       - ["my.qltest", "C", False, "stepArgResGeneratedIgnored", "(Object,Object)", "", "Argument[1]", "ReturnValue", "taint", "manual"]

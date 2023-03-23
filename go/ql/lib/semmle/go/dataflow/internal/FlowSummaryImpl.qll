@@ -109,6 +109,7 @@ module Public {
     }
 
     /** Gets the stack obtained by dropping the first `i` elements, if any. */
+    pragma[assume_small_delta]
     SummaryComponentStack drop(int i) {
       i = 0 and result = this
       or
@@ -301,8 +302,8 @@ module Private {
     TWithoutContentSummaryComponent(ContentSet c) or
     TWithContentSummaryComponent(ContentSet c)
 
-  private TParameterSummaryComponent thisParam() {
-    result = TParameterSummaryComponent(instanceParameterPosition())
+  private TParameterSummaryComponent callbackSelfParam() {
+    result = TParameterSummaryComponent(callbackSelfParameterPosition())
   }
 
   newtype TSummaryComponentStack =
@@ -311,7 +312,7 @@ module Private {
       any(RequiredSummaryComponentStack x).required(head, tail)
       or
       any(RequiredSummaryComponentStack x).required(TParameterSummaryComponent(_), tail) and
-      head = thisParam()
+      head = callbackSelfParam()
       or
       derivedFluentFlowPush(_, _, _, head, tail, _)
     }
@@ -336,7 +337,7 @@ module Private {
       callbackRef = s.drop(_) and
       (isCallbackParameter(callbackRef) or callbackRef.head() = TReturnSummaryComponent(_)) and
       input = callbackRef.tail() and
-      output = TConsSummaryComponentStack(thisParam(), input) and
+      output = TConsSummaryComponentStack(callbackSelfParam(), input) and
       preservesValue = true
     )
     or
@@ -439,6 +440,9 @@ module Private {
       out.head() = TParameterSummaryComponent(_) and
       s = out.tail()
     )
+    or
+    // Add the post-update node corresponding to the requested argument node
+    outputState(c, s) and isCallbackParameter(s)
   }
 
   private newtype TSummaryNodeState =
@@ -1012,7 +1016,7 @@ module Private {
       private predicate relevantSummaryElementGenerated(
         AccessPath inSpec, AccessPath outSpec, string kind
       ) {
-        summaryElement(this, inSpec, outSpec, kind, "generated") and
+        summaryElement(this, inSpec, outSpec, kind, ["generated", "ai-generated"]) and
         not summaryElement(this, _, _, _, "manual")
       }
 
@@ -1045,6 +1049,16 @@ module Private {
     predicate invalidSpecComponent(AccessPath spec, string c) {
       c = spec.getToken(_) and
       not exists(interpretComponent(c))
+    }
+
+    /**
+     * Holds if token `part` of specification `spec` has an invalid index.
+     * E.g., `Argument[-1]`.
+     */
+    predicate invalidIndexComponent(AccessPath spec, AccessPathToken part) {
+      part = spec.getToken(_) and
+      part.getName() = ["Parameter", "Argument"] and
+      AccessPath::parseInt(part.getArgumentList()) < 0
     }
 
     private predicate inputNeedsReference(AccessPathToken c) {

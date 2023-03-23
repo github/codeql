@@ -13,25 +13,29 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.StringFormat
-import DataFlow::PathGraph
 
-class ExternallyControlledFormatStringConfig extends TaintTracking::Configuration {
-  ExternallyControlledFormatStringConfig() { this = "ExternallyControlledFormatStringConfig" }
+module ExternallyControlledFormatStringConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(StringFormat formatCall).getFormatArgument()
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.getType() instanceof NumericType or node.getType() instanceof BooleanType
   }
 }
 
+module ExternallyControlledFormatStringFlow =
+  TaintTracking::Make<ExternallyControlledFormatStringConfig>;
+
+import ExternallyControlledFormatStringFlow::PathGraph
+
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, StringFormat formatCall,
-  ExternallyControlledFormatStringConfig conf
-where conf.hasFlowPath(source, sink) and sink.getNode().asExpr() = formatCall.getFormatArgument()
+  ExternallyControlledFormatStringFlow::PathNode source,
+  ExternallyControlledFormatStringFlow::PathNode sink, StringFormat formatCall
+where
+  ExternallyControlledFormatStringFlow::hasFlowPath(source, sink) and
+  sink.getNode().asExpr() = formatCall.getFormatArgument()
 select formatCall.getFormatArgument(), source, sink, "Format string depends on a $@.",
   source.getNode(), "user-provided value"

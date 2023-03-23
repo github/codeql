@@ -5,6 +5,7 @@ uniqueEnclosingCallable
 | C.cpp:10:20:10:29 | new | Node should have one enclosing callable but has 0. |
 | C.cpp:35:24:35:33 | 0 | Node should have one enclosing callable but has 0. |
 | C.cpp:35:24:35:33 | new | Node should have one enclosing callable but has 0. |
+uniqueCallEnclosingCallable
 uniqueType
 uniqueNodeLocation
 missingLocation

@@ -82,7 +82,9 @@ module IRTest {
     TestAllocationConfig() { this = "TestAllocationConfig" }
 
     override predicate isSource(DataFlow::Node source) {
-      source.asConvertedExpr().(FunctionCall).getTarget().getName() = "source"
+      source.asExpr().(FunctionCall).getTarget().getName() = "source"
+      or
+      source.asIndirectExpr().(FunctionCall).getTarget().getName() = "source"
       or
       source.asParameter().getName().matches("source%")
       or
@@ -95,12 +97,18 @@ module IRTest {
     override predicate isSink(DataFlow::Node sink) {
       exists(FunctionCall call |
         call.getTarget().getName() = "sink" and
-        sink.asExpr() = call.getAnArgument()
+        [sink.asExpr(), sink.asIndirectExpr()] = call.getAnArgument()
       )
     }
 
     override predicate isSanitizer(DataFlow::Node barrier) {
       barrier.asExpr().(VariableAccess).getTarget().hasName("sanitizer")
+    }
+
+    override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+      // allow arbitrary reads at sinks
+      this.isSink(node) and
+      c.(DataFlow::FieldContent).getField().getDeclaringType() = node.getType().getUnspecifiedType()
     }
   }
 }

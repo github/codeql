@@ -75,13 +75,6 @@ class SubBasicBlock extends ControlFlowNodeBase {
     )
   }
 
-  /**
-   * DEPRECATED: use `getRankInBasicBlock` instead. Note that this predicate
-   * returns a 0-based position, while `getRankInBasicBlock` returns a 1-based
-   * position.
-   */
-  deprecated int getPosInBasicBlock(BasicBlock bb) { result = this.getRankInBasicBlock(bb) - 1 }
-
   pragma[noinline]
   private int getIndexInBasicBlock(BasicBlock bb) { this = bb.getNode(result) }
 

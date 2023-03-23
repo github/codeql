@@ -35,6 +35,13 @@ class Configuration extends TaintTracking::Configuration {
     guard instanceof LocalUrlSanitizingGuard or
     guard instanceof HostnameSanitizerGuard
   }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+    exists(HtmlSanitizerCall call |
+      pred = call.getInput() and
+      succ = call
+    )
+  }
 }
 
 /**

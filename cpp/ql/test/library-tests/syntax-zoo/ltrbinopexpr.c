@@ -1,4 +1,4 @@
-void f() {
+static void f() {
     int i, j;
     int* p, q;
     

@@ -20,6 +20,7 @@ class Element:
 @qltest.collapse_hierarchy
 class File(Element):
     name: string
+    is_successfully_extracted: predicate | cpp.skip
 
 @qltest.skip
 @qltest.collapse_hierarchy
@@ -949,13 +950,12 @@ class TypeRepr(AstNode):
 class AnyFunctionType(Type):
     result: Type
     param_types: list[Type]
-    param_labels: list[optional[string]]
     is_throwing: predicate | doc("this type refers to a throwing function")
     is_async: predicate | doc("this type refers to an `async` function")
 
 class AnyGenericType(Type):
     parent: optional[Type]
-    declaration: Decl
+    declaration: GenericTypeDecl
 
 class AnyMetatypeType(Type):
     pass

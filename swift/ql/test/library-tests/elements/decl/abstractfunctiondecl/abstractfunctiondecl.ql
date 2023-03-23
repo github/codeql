@@ -19,6 +19,10 @@ string describe(AbstractFunctionDecl f) {
     f.(MethodDecl).hasQualifiedName(a, b, c) and
     result = "hasQualifiedName(3):" + a + "." + b + "." + c
   )
+  or
+  exists(Decl td | td.getAMember() = f |
+    result = "memberOf:" + td.asNominalTypeDecl().getFullName()
+  )
 }
 
 from AbstractFunctionDecl f
