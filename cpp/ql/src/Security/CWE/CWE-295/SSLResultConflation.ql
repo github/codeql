@@ -33,14 +33,14 @@ module VerifyResultConfig implements DataFlow::ConfigSig {
   }
 }
 
-module VerifyResult = DataFlow::Make<VerifyResultConfig>;
+module VerifyResult = DataFlow::Global<VerifyResultConfig>;
 
 from
   DataFlow::Node source, DataFlow::Node sink1, DataFlow::Node sink2, GuardCondition guard, Expr c1,
   Expr c2, boolean testIsTrue
 where
-  VerifyResult::hasFlow(source, sink1) and
-  VerifyResult::hasFlow(source, sink2) and
+  VerifyResult::flow(source, sink1) and
+  VerifyResult::flow(source, sink2) and
   guard.comparesEq(sink1.asExpr(), c1, 0, false, testIsTrue) and // (value != c1) => testIsTrue
   guard.comparesEq(sink2.asExpr(), c2, 0, false, testIsTrue) and // (value != c2) => testIsTrue
   c1.getValue().toInt() = 0 and

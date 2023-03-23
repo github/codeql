@@ -43,7 +43,7 @@ module FieldAddressToPointerArithmeticConfig implements DataFlow::ConfigSig {
   }
 }
 
-module FieldAddressToPointerArithmeticFlow = DataFlow::Make<FieldAddressToPointerArithmeticConfig>;
+module FieldAddressToPointerArithmeticFlow = DataFlow::Global<FieldAddressToPointerArithmeticConfig>;
 
 predicate isFieldAddressSource(Field f, DataFlow::Node source) {
   source.asInstruction().(FieldAddressInstruction).getField() = f
@@ -70,7 +70,7 @@ predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string o
 
 predicate isConstantSizeOverflowSource(Field f, PointerAddInstruction pai, int delta) {
   exists(int size, int bound, DataFlow::Node source, DataFlow::InstructionNode sink |
-    FieldAddressToPointerArithmeticFlow::hasFlow(source, sink) and
+    FieldAddressToPointerArithmeticFlow::flow(source, sink) and
     isFieldAddressSource(f, source) and
     pai.getLeft() = sink.asInstruction() and
     f.getUnspecifiedType().(ArrayType).getArraySize() = size and
@@ -90,13 +90,13 @@ module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _) }
 }
 
-module PointerArithmeticToDerefFlow = DataFlow::Make<PointerArithmeticToDerefConfig>;
+module PointerArithmeticToDerefFlow = DataFlow::Global<PointerArithmeticToDerefConfig>;
 
 from
   Field f, PointerArithmeticToDerefFlow::PathNode source,
   PointerArithmeticToDerefFlow::PathNode sink, Instruction deref, string operation, int delta
 where
-  PointerArithmeticToDerefFlow::hasFlowPath(source, sink) and
+  PointerArithmeticToDerefFlow::flowPath(source, sink) and
   isInvalidPointerDerefSink(sink.getNode(), deref, operation) and
   isConstantSizeOverflowSource(f, source.getNode().asInstruction(), delta)
 select source, source, sink,

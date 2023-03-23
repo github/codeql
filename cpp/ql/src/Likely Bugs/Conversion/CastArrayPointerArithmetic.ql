@@ -80,9 +80,9 @@ predicate introducesNewField(Class derived, Class base) {
   )
 }
 
-module CastToPointerArithFlow = DataFlow::MakeWithState<CastToPointerArithFlowConfig>;
+module CastToPointerArithFlow = DataFlow::GlobalWithState<CastToPointerArithFlowConfig>;
 
 from CastToPointerArithFlow::PathNode source, CastToPointerArithFlow::PathNode sink
-where CastToPointerArithFlow::hasFlowPath(source, sink)
+where CastToPointerArithFlow::flowPath(source, sink)
 select sink, source, sink, "This pointer arithmetic may be done with the wrong type because of $@.",
   source, "this cast"

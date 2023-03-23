@@ -14,12 +14,12 @@ import semmle.code.cpp.security.boostorg.asio.protocols
 
 from Expr protocolSource, Expr protocolSink, ConstructorCall cc
 where
-  BoostorgAsio::SslContextCallFlow::hasFlow(DataFlow::exprNode(protocolSource),
+  BoostorgAsio::SslContextCallFlow::flow(DataFlow::exprNode(protocolSource),
     DataFlow::exprNode(protocolSink)) and
-  not BoostorgAsio::SslContextCallTlsProtocolFlow::hasFlow(DataFlow::exprNode(protocolSource),
+  not BoostorgAsio::SslContextCallTlsProtocolFlow::flow(DataFlow::exprNode(protocolSource),
     DataFlow::exprNode(protocolSink)) and
   cc.getArgument(0) = protocolSink and
-  BoostorgAsio::SslContextCallBannedProtocolFlow::hasFlow(DataFlow::exprNode(protocolSource),
+  BoostorgAsio::SslContextCallBannedProtocolFlow::flow(DataFlow::exprNode(protocolSource),
     DataFlow::exprNode(protocolSink))
 select protocolSink, "Usage of $@ specifying a deprecated hardcoded protocol $@ in function $@.",
   cc, "boost::asio::ssl::context::context", protocolSource, protocolSource.toString(),

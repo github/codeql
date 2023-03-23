@@ -16,11 +16,11 @@ module GetenvToGethostbynameConfig implements DataFlow::ConfigSig {
   }
 }
 
-module GetenvToGethostbynameFlow = DataFlow::Make<GetenvToGethostbynameConfig>;
+module GetenvToGethostbynameFlow = DataFlow::Global<GetenvToGethostbynameConfig>;
 
 from Expr getenv, FunctionCall fc, DataFlow::Node source, DataFlow::Node sink
 where
   source.asIndirectExpr(1) = getenv and
   sink.asIndirectExpr(1) = fc.getArgument(0) and
-  GetenvToGethostbynameFlow::hasFlow(source, sink)
+  GetenvToGethostbynameFlow::flow(source, sink)
 select getenv, fc
