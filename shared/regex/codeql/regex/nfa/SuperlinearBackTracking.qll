@@ -354,13 +354,13 @@ module Make<RegexTreeViewSig TreeImpl> {
    */
   private int rankState(State state) {
     state =
-      rank[result](State s |
-        exists(StateTuple tuple |
-          tuple = getARelevantStateTuple(_, _) and
-          s = [tuple.getFirst(), tuple.getSecond(), tuple.getThird()]
+      rank[result](State s, int startLine, int endLine, int startColumn, int endColumn |
+        exists(StateTuple tuple | tuple = getARelevantStateTuple(_, _) |
+          s = [tuple.getFirst(), tuple.getSecond(), tuple.getThird()] and
+          s.getRepr().hasLocationInfo(_, startLine, startColumn, endLine, endColumn)
         )
       |
-        s order by getTermLocationString(s.getRepr())
+        s order by startLine, startColumn, endLine, endColumn
       )
   }
 

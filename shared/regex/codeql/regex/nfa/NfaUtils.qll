@@ -147,6 +147,8 @@ module Make<RegexTreeViewSig TreeImpl> {
   /**
    * Gets a string for the full location of `t`.
    */
+  bindingset[t]
+  pragma[inline_late]
   string getTermLocationString(RegExpTerm t) {
     exists(string file, int startLine, int startColumn, int endLine, int endColumn |
       t.hasLocationInfo(file, startLine, startColumn, endLine, endColumn) and
