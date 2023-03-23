@@ -3,6 +3,7 @@
 private import AST
 private import TreeSitter
 private import codeql.ruby.ast.internal.Call
+private import codeql.ruby.ast.internal.Constant
 private import codeql.ruby.ast.internal.Expr
 private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.ast.internal.Pattern
@@ -964,24 +965,12 @@ private module DestructuredAssignDesugar {
     }
   }
 
-  private class LhsScopedConstant extends LhsWithReceiver, TScopeResolutionConstantAccess {
-    private Ruby::AstNode receiver;
-    private string name;
+  private class LhsScopedConstant extends LhsWithReceiver, ScopeResolutionConstantAccess {
+    LhsScopedConstant() { exists(this.getScopeExpr()) }
 
-    LhsScopedConstant() {
-      exists(Ruby::ScopeResolution e, Ruby::Constant c |
-        this = TScopeResolutionConstantAccess(e, c)
-      |
-        receiver = e.getScope() and
-        name = c.getValue()
-      )
-    }
+    final override Expr getReceiver() { result = this.getScopeExpr() }
 
-    final string getName() { result = name }
-
-    final override Expr getReceiver() { toGenerated(result) = receiver }
-
-    final override SynthKind getSynthKind() { result = ConstantWriteAccessKind(name) }
+    final override SynthKind getSynthKind() { result = ConstantWriteAccessKind(this.getName()) }
   }
 
   pragma[nomagic]
