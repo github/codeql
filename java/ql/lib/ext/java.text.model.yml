@@ -3,10 +3,9 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.text", "DateFormat", True, "parse", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! maybe not interesting flow and should be neutral model?
-      - ["java.text", "Format", True, "format", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! would cover DateFormat.format below through subtyping...
-      - ["java.text", "MessageFormat", False, "format", "(String,Object[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]              # ! not sure I did this right
-      - ["java.text", "MessageFormat", False, "format", "(String,Object[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"] # ! not sure I did this right
+      - ["java.text", "Format", True, "format", "(Object)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.text", "MessageFormat", False, "format", "(String,Object[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.text", "MessageFormat", False, "format", "(String,Object[])", "", "Argument[1].ArrayElement", "ReturnValue", "taint", "manual"]
 
   - addsTo:
       pack: codeql/java-all
@@ -15,4 +14,5 @@ extensions:
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
       - ["java.text", "DateFormat", "format", "(Date)", "manual"]                   # taint-numeric
+      - ["java.text", "DateFormat", "parse", "(String)", "manual"]                  # taint-numeric
       - ["java.text", "SimpleDateFormat", "SimpleDateFormat", "(String)", "manual"] # taint-numeric

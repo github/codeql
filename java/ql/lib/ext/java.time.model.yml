@@ -1,14 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: summaryModel
-    data:
-      - ["java.time", "Duration", False, "ofSeconds", "(long)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! maybe not interesting flow and should be neutral model?
-      - ["java.time", "Instant", False, "parse", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! mmaybe should be neutral since time-related?
-      - ["java.time", "LocalDate", False, "parse", "(CharSequence)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-
-  - addsTo:
-      pack: codeql/java-all
       extensible: neutralModel
     data:
       - ["java.time", "Instant", "now", "()", "manual"]
@@ -22,9 +14,12 @@ extensions:
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
       - ["java.time", "Duration", "ofMillis", "(long)", "manual"]                   # taint-numeric
       - ["java.time", "Duration", "ofMinutes", "(long)", "manual"]                  # taint-numeric
+      - ["java.time", "Duration", "ofSeconds", "(long)", "manual"]                  # taint-numeric
       - ["java.time", "Duration", "toMillis", "()", "manual"]                       # taint-numeric
       - ["java.time", "Instant", "ofEpochMilli", "(long)", "manual"]                # taint-numeric
+      - ["java.time", "Instant", "parse", "(CharSequence)", "manual"]               # taint-numeric
       - ["java.time", "Instant", "toEpochMilli", "()", "manual"]                    # taint-numeric
       - ["java.time", "LocalDate", "plusDays", "(long)", "manual"]                  # taint-numeric
       - ["java.time", "LocalDate", "of", "(int,int,int)", "manual"]                 # taint-numeric
+      - ["java.time", "LocalDate", "parse", "(CharSequence)", "manual"]             # taint-numeric
       - ["java.time", "LocalDateTime", "of", "(int,int,int,int,int,int)", "manual"] # taint-numeric

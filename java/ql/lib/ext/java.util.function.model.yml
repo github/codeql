@@ -9,6 +9,4 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.util.function", "BiConsumer", "accept", "(Object,Object)", "manual"] # ! remove this model?
-      - ["java.util.function", "BiFunction", "apply", "(Object,Object)", "manual"] # ! remove this model?
-      - ["java.util.function", "Function", "identity", "()", "manual"]  # ! remove this model?
+      - ["java.util.function", "Function", "identity", "()", "manual"]

@@ -21,7 +21,7 @@ extensions:
       - ["java.util.concurrent.atomic", "AtomicInteger", "AtomicInteger", "(int)", "manual"] # value-numeric
       - ["java.util.concurrent.atomic", "AtomicInteger", "get", "()", "manual"]              # value-numeric
       - ["java.util.concurrent.atomic", "AtomicInteger", "incrementAndGet", "()", "manual"]  # taint-numeric
-      - ["java.util.concurrent.atomic", "AtomicLong", "AtomicLong", "(long)", "manual"]      # value-numeric # ! this is supposedly already supported per the telemetry query, LOOK INTO WHY/HOW
+      - ["java.util.concurrent.atomic", "AtomicLong", "AtomicLong", "(long)", "manual"]      # value-numeric
       - ["java.util.concurrent.atomic", "AtomicLong", "addAndGet", "(long)", "manual"]       # taint-numeric
       - ["java.util.concurrent.atomic", "AtomicLong", "get", "()", "manual"]                 # value-numeric
       - ["java.util.concurrent.atomic", "AtomicLong", "incrementAndGet", "()", "manual"]     # taint-numeric

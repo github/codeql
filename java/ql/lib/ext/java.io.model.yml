@@ -69,7 +69,9 @@ extensions:
       - ["java.io", "File", True, "getCanonicalFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getCanonicalPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "getName", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["java.io", "File", False, "getPath", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"] # ! True versus False (maybe it's private/hidden?).. (and neutral instead?)
+      - ["java.io", "File", True, "getParentFile", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.io", "File", True, "getPath", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.io", "File", True, "listFiles", "()", "", "Argument[-1]", "ReturnValue.ArrayElement", "taint", "manual"]
       - ["java.io", "File", True, "toPath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.io", "File", True, "toURI", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
@@ -90,7 +92,7 @@ extensions:
       - ["java.io", "OutputStream", True, "write", "(int)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.io", "Reader", True, "read", "", "", "Argument[this]", "Argument[0]", "taint", "manual"]
       - ["java.io", "StringReader", False, "StringReader", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
-      - ["java.io", "StringWriter", False, "toString", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"] # ! currently supported by taintPreservingQualifierToMethod?
+      - ["java.io", "StringWriter", False, "toString", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"] # ! keep an eye on this one for FP flow, already modeled in `taintPreservingQualifierToMethod` predicate?
       - ["java.io", "UncheckedIOException", False, "UncheckedIOException", "(IOException)", "", "Argument[0]", "Argument[-1].SyntheticField[java.lang.Throwable.cause]", "value", "manual"]
       - ["java.io", "Writer", True, "write", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
   - addsTo:
@@ -98,16 +100,15 @@ extensions:
       extensible: neutralModel
     data:
       - ["java.io", "Closeable", "close", "()", "manual"]
+      - ["java.io", "DataOutput", "writeBoolean", "(boolean)", "manual"]
       - ["java.io", "File", "delete", "()", "manual"]
       - ["java.io", "File", "exists", "()", "manual"]
-      - ["java.io", "File", "getParentFile", "()", "manual"] # ! little unsure about this as a neutral
       - ["java.io", "File", "isFile", "()", "manual"]
       - ["java.io", "File", "length", "()", "manual"]
-      - ["java.io", "File", "listFiles", "()", "manual"] # ! little unsure about this as a neutral
       - ["java.io", "File", "isDirectory", "()", "manual"]
       - ["java.io", "File", "mkdirs", "()", "manual"]
       - ["java.io", "InputStream", "close", "()", "manual"]
-      - ["java.io", "OutputStream", "flush", "()", "manual"] # ! little unsure about this as a neutral, but not sure how to represent output if summary model...
+      - ["java.io", "OutputStream", "flush", "()", "manual"]
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.

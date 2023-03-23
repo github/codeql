@@ -3,7 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.awt", "Container", True, "add", "(Component)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"] # ! signature as "" instead?
+      - ["java.awt", "Container", True, "add", "(Component)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
+      - ["java.awt", "Container", True, "add", "(Component)", "", "Argument[0]", "ReturnValue", "value", "manual"]
       - ["java.awt", "Container", True, "add", "(Component,Object)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"]
 
   - addsTo:

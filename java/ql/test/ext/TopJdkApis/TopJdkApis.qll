@@ -273,7 +273,8 @@ predicate topJdkApiName(string apiName) {
       "java.lang.Number#intValue()", "java.io.File#length()",
       "java.lang.AbstractStringBuilder#setCharAt(int,char)", "java.util.Set#removeAll(Collection)",
       "java.io.File#listFiles()", "java.lang.ClassLoader#getResourceAsStream(String)",
-      "java.util.Date#toInstant()", "java.util.Queue#add(Object)", "java.io.File#isFile()"
+      "java.util.Date#toInstant()", "java.util.Queue#add(Object)", "java.io.File#isFile()",
+      "java.sql.Statement#close()", "java.io.DataOutput#writeBoolean(boolean)"
     ]
 }
 
@@ -309,6 +310,9 @@ class TopJdkApi extends SummarizedCallableBase {
    * `java.lang.System#getProperty(String)`: needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
    * `java.lang.System#setProperty(String,String)`: needs to be modeled by regular CodeQL matching the get and set keys to reduce FPs
    * `java.lang.Throwable#printStackTrace()`: should probably not be a general step, but there might be specialised queries that care
+   * `java.util.Comparator#comparing(Function)`: lambda flow
+   * `java.util.function.BiConsumer#accept(Object,Object)`: specialized lambda flow
+   * `java.util.function.BiFunction#apply(Object,Object)`: specialized lambda flow
    * `java.util.function.Consumer#accept(Object)`: specialized lambda flow
    * `java.util.function.Function#apply(Object)`: specialized lambda flow
    * `java.util.function.Supplier#get()`: lambda flow

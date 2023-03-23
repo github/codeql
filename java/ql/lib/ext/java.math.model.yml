@@ -7,8 +7,7 @@ extensions:
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.math", "BigDecimal", "BigDecimal", "(int)", "manual"]            # taint-numeric
-      - ["java.math", "BigDecimal", "BigDecimal", "(String)", "manual"]         # taint-numeric
+      - ["java.math", "BigDecimal", "BigDecimal", "", "manual"]                 # taint-numeric
       - ["java.math", "BigDecimal", "add", "(BigDecimal)", "manual"]            # taint-numeric
       - ["java.math", "BigDecimal", "doubleValue", "()", "manual"]              # taint-numeric
       - ["java.math", "BigDecimal", "intValue", "()", "manual"]                 # taint-numeric
@@ -17,8 +16,7 @@ extensions:
       - ["java.math", "BigDecimal", "subtract", "(BigDecimal)", "manual"]       # taint-numeric
       - ["java.math", "BigDecimal", "toBigInteger", "()", "manual"]             # taint-numeric
       - ["java.math", "BigDecimal", "toString", "()", "manual"]                 # taint-numeric
-      - ["java.math", "BigDecimal", "valueOf", "(double)", "manual"]            # taint-numeric
-      - ["java.math", "BigDecimal", "valueOf", "(long)", "manual"]              # taint-numeric
+      - ["java.math", "BigDecimal", "valueOf", "", "manual"]                    # taint-numeric
       - ["java.math", "BigInteger", "BigInteger", "(String)", "manual"]         # taint-numeric
       - ["java.math", "BigInteger", "or", "(BigInteger)", "manual"]             # taint-numeric
       - ["java.math", "BigInteger", "valueOf", "(long)", "manual"]              # taint-numeric

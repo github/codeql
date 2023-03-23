@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: summaryModel
+      extensible: neutralModel
     data:
-      - ["java.nio.charset", "Charset", False, "name", "()", "", "Argument[-1].SyntheticField[java.nio.charset.Charset.canonicalName]", "ReturnValue", "value", "manual"]
+      - ["java.nio.charset", "Charset", "name", "()", "manual"]

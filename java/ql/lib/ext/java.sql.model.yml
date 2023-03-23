@@ -21,10 +21,8 @@ extensions:
       extensible: summaryModel
     data:
       - ["java.sql", "Connection", True, "nativeSQL", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.sql", "PreparedStatement", True, "executeQuery", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"] # ! this should maybe be a neutral model, not sure if this really counts as "flow through"...
       - ["java.sql", "PreparedStatement", True, "setString", "(int,String)", "", "Argument[1]", "Argument[this]", "value", "manual"]
       - ["java.sql", "ResultSet", True, "getString", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-      - ["java.sql", "ResultSet", True, "getTimestamp", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
 
   - addsTo:
       pack: codeql/java-all
@@ -32,7 +30,10 @@ extensions:
     data:
       - ["java.sql", "Connection", "createStatement", "()", "manual"]
       - ["java.sql", "PreparedStatement", "executeUpdate", "()", "manual"]
+      - ["java.sql", "PreparedStatement", "executeQuery", "()", "manual"]
       - ["java.sql", "ResultSet", "next", "()", "manual"]
+      - ["java.sql", "Statement", "close", "()", "manual"]
+
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
       - ["java.sql", "PreparedStatement", "setInt", "(int,int)", "manual"]   # value-numeric
@@ -41,5 +42,6 @@ extensions:
       - ["java.sql", "ResultSet", "getInt", "(String)", "manual"]            # taint-numeric
       - ["java.sql", "ResultSet", "getLong", "(String)", "manual"]           # taint-numeric
       - ["java.sql", "ResultSet", "getString", "(int)", "manual"]            # taint-numeric
+      - ["java.sql", "ResultSet", "getTimestamp", "(String)", "manual"]      # taint-numeric
       - ["java.sql", "Timestamp", "Timestamp", "(long)", "manual"]           # taint-numeric
       - ["java.sql", "Timestamp", "getTime", "()", "manual"]                 # taint-numeric

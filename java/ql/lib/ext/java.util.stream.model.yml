@@ -9,8 +9,7 @@ extensions:
       - ["java.util.stream", "BaseStream", True, "sequential", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util.stream", "BaseStream", True, "spliterator", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util.stream", "BaseStream", True, "unordered", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
-      - ["java.util.stream", "IntStream", False, "range", "(int,int)", "", "Argument[0..1]", "ReturnValue.Element", "value", "manual"] # ! this one is a bit odd, is it correct to have it as a summary model?; not interesting because Int stream?=neutral?
-      - ["java.util.stream", "Stream", True, "allMatch", "(Predicate)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"] # ! neutral instead?
+      - ["java.util.stream", "Stream", True, "allMatch", "(Predicate)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["java.util.stream", "Stream", True, "anyMatch", "(Predicate)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
       - ["java.util.stream", "Stream", True, "collect", "(Supplier,BiConsumer,BiConsumer)", "", "Argument[this].Element", "Argument[1].Parameter[1]", "value", "manual"]
       - ["java.util.stream", "Stream", True, "collect", "(Supplier,BiConsumer,BiConsumer)", "", "Argument[0].ReturnValue", "Argument[1].Parameter[0]", "value", "manual"]
@@ -95,5 +94,9 @@ extensions:
     data:
       - ["java.util.stream", "Collectors", "toList", "()", "manual"]
       - ["java.util.stream", "Collectors", "toSet", "()", "manual"]
-      - ["java.util.stream", "IntStream", "mapToObj", "(IntFunction)", "manual"]
       - ["java.util.stream", "Stream", "count", "()", "manual"]
+
+      # The below APIs have numeric flow and are currently being stored as neutral models.
+      # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
+      - ["java.util.stream", "IntStream", "mapToObj", "(IntFunction)", "manual"] # taint-numeric
+      - ["java.util.stream", "IntStream", "range", "(int,int)", "manual"]        # taint-numeric

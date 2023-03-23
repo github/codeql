@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: summaryModel
+      extensible: neutralModel
     data:
-      - ["java.time.format", "DateTimeFormatter", False, "format", "(TemporalAccessor)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! neutral?
-      - ["java.time.format", "DateTimeFormatter", False, "ofPattern", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! neutral?
+      - ["java.time.format", "DateTimeFormatter", "format", "(TemporalAccessor)", "manual"]
+      - ["java.time.format", "DateTimeFormatter", "ofPattern", "(String)", "manual"]

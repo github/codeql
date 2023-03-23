@@ -17,14 +17,13 @@ extensions:
       - ["java.util.concurrent", "BlockingQueue", True, "poll", "(long,TimeUnit)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["java.util.concurrent", "BlockingQueue", True, "put", "(Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["java.util.concurrent", "BlockingQueue", True, "take", "()", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
-      - ["java.util.concurrent", "CompletableFuture", False, "complete", "(Object)", "", "Argument[0]", "Argument[-1].SyntheticField[java.util.concurrent.CompletableFuture.value]", "value", "manual"] # ! not sure about CompleteableFuture ones
-      - ["java.util.concurrent", "CompletableFuture", False, "completedFuture", "(Object)", "", "Argument[0]", "ReturnValue.SyntheticField[java.util.concurrent.CompletableFuture.value]", "value", "manual"]
-      - ["java.util.concurrent", "CompletableFuture", False, "get", "()", "", "Argument[-1].SyntheticField[java.util.concurrent.CompletableFuture.value]", "ReturnValue", "value", "manual"] # ! not sure if using SyntheticField is correct here; also, should prbly remove this for `Future.get` below's subtyping to handle.
-      - ["java.util.concurrent", "CompletableFuture", False, "join", "()", "", "Argument[-1].SyntheticField[java.util.concurrent.CompletableFuture.value]", "ReturnValue", "value", "manual"] # ! not sure if using SyntheticField is correct here
+      - ["java.util.concurrent", "CompletableFuture", False, "complete", "(Object)", "", "Argument[0]", "Argument[-1].SyntheticField[java.util.concurrent.Future.value]", "value", "manual"]
+      - ["java.util.concurrent", "CompletableFuture", False, "completedFuture", "(Object)", "", "Argument[0]", "ReturnValue.SyntheticField[java.util.concurrent.Future.value]", "value", "manual"]
+      - ["java.util.concurrent", "CompletableFuture", False, "join", "()", "", "Argument[-1].SyntheticField[java.util.concurrent.Future.value]", "ReturnValue", "value", "manual"]
       - ["java.util.concurrent", "CompletionStage", False, "toCompletableFuture", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["java.util.concurrent", "ConcurrentHashMap", True, "elements", "()", "", "Argument[this].MapValue", "ReturnValue.Element", "value", "manual"]
       - ["java.util.concurrent", "ExecutorService", True, "submit", "(Runnable)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.util.concurrent", "Future", True, "get", "()", "", "Argument[-1].SyntheticField[java.util.concurrent.Future.value]", "ReturnValue", "value", "manual"] # ! not sure if using SyntheticField is correct here
+      - ["java.util.concurrent", "Future", True, "get", "()", "", "Argument[-1].SyntheticField[java.util.concurrent.Future.value]", "ReturnValue", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "transfer", "(Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "tryTransfer", "(Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "tryTransfer", "(Object,long,TimeUnit)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
@@ -33,10 +32,9 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.util.concurrent", "CompletableFuture", "completeExceptionally", "(Throwable)", "manual"] # ! summary?
+      - ["java.util.concurrent", "CompletableFuture", "completeExceptionally", "(Throwable)", "manual"]
       - ["java.util.concurrent", "CompletableFuture", "isDone", "()", "manual"]
-      - ["java.util.concurrent", "CountDownLatch", "await", "()", "manual"] # ! combine with below, "" as signature
-      - ["java.util.concurrent", "CountDownLatch", "await", "(long,TimeUnit)", "manual"]
+      - ["java.util.concurrent", "CountDownLatch", "await", "", "manual"]
       - ["java.util.concurrent", "CountDownLatch", "countDown", "()", "manual"]
       - ["java.util.concurrent", "Executor", "execute", "(Runnable)", "manual"]
       - ["java.util.concurrent", "ExecutorService", "shutdown", "()", "manual"]

@@ -124,7 +124,8 @@ extensions:
       - ["java.util", "EnumMap", False, "EnumMap", "(Map)", "", "Argument[0].MapValue", "Argument[this].MapValue", "value", "manual"]
       - ["java.util", "Enumeration", True, "asIterator", "", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util", "Enumeration", True, "nextElement", "", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
-      - ["java.util", "EventObject", True, "getSource", "()", "", "Argument[-1].Field[java.util.EventObject.source]", "ReturnValue", "value", "manual"] # ! double-check
+      - ["java.util", "EventObject", False, "EventObject", "(Object)", "", "Argument[0]", "Argument[-1].Field[java.util.EventObject.source]", "value", "manual"]
+      - ["java.util", "EventObject", True, "getSource", "()", "", "Argument[-1].Field[java.util.EventObject.source]", "ReturnValue", "value", "manual"]
       - ["java.util", "HashMap", False, "HashMap", "(Map)", "", "Argument[0].MapKey", "Argument[this].MapKey", "value", "manual"]
       - ["java.util", "HashMap", False, "HashMap", "(Map)", "", "Argument[0].MapValue", "Argument[this].MapValue", "value", "manual"]
       - ["java.util", "HashSet", False, "HashSet", "(Collection)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
@@ -161,7 +162,6 @@ extensions:
       - ["java.util", "ListIterator", True, "add", "(Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["java.util", "ListIterator", True, "previous", "", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["java.util", "ListIterator", True, "set", "(Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
-      - ["java.util", "Locale", False, "forLanguageTag", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # ! neutral?
       - ["java.util", "Map", True, "computeIfAbsent", "", "", "Argument[this].MapValue", "ReturnValue", "value", "manual"]
       - ["java.util", "Map", True, "computeIfAbsent", "", "", "Argument[1].ReturnValue", "Argument[this].MapValue", "value", "manual"]
       - ["java.util", "Map", True, "computeIfAbsent", "", "", "Argument[1].ReturnValue", "ReturnValue", "value", "manual"]
@@ -178,7 +178,6 @@ extensions:
       - ["java.util", "Map", True, "getOrDefault", "", "", "Argument[1]", "ReturnValue", "value", "manual"]
       - ["java.util", "Map", True, "keySet", "()", "", "Argument[this].MapKey", "ReturnValue.Element", "value", "manual"]
       - ["java.util", "Map", True, "merge", "(Object,Object,BiFunction)", "", "Argument[1]", "Argument[this].MapValue", "value", "manual"]
-      # ! difference between formatting of below versus `List.of` above?
       - ["java.util", "Map", False, "of", "", "", "Argument[0]", "ReturnValue.MapKey", "value", "manual"]
       - ["java.util", "Map", False, "of", "", "", "Argument[10]", "ReturnValue.MapKey", "value", "manual"]
       - ["java.util", "Map", False, "of", "", "", "Argument[11]", "ReturnValue.MapValue", "value", "manual"]
@@ -350,7 +349,6 @@ extensions:
       - ["java.util", "TreeMap", False, "TreeMap", "(SortedMap)", "", "Argument[0].MapValue", "Argument[this].MapValue", "value", "manual"]
       - ["java.util", "TreeSet", False, "TreeSet", "(Collection)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
       - ["java.util", "TreeSet", False, "TreeSet", "(SortedSet)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
-      - ["java.util", "UUID", False, "fromString", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.util", "Vector", False, "Vector", "(Collection)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
       - ["java.util", "Vector", True, "addElement", "(Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["java.util", "Vector", True, "copyInto", "(Object[])", "", "Argument[this].Element", "Argument[0].ArrayElement", "value", "manual"]
@@ -370,34 +368,30 @@ extensions:
       - ["java.util", "ArrayList", "ArrayList", "(int)", "manual"]
       - ["java.util", "ArrayList", "isEmpty", "()", "manual"]
       - ["java.util", "ArrayList", "size", "()", "manual"]
-      - ["java.util", "Arrays", "toString", "(Object[])", "manual"] # ! should this have a summary model after all? (or unwanted model due to too much FP flow?)
+      - ["java.util", "Arrays", "toString", "(Object[])", "manual"]
       - ["java.util", "Calendar", "getInstance", "()", "manual"]
       - ["java.util", "Collection", "contains", "(Object)", "manual"]
       - ["java.util", "Collection", "isEmpty", "()", "manual"]
-      - ["java.util", "Collection", "removeIf", "(Predicate)", "manual"] # ! WithoutElement comment? (double-check if it returns anything, etc.)
       - ["java.util", "Collection", "size", "()", "manual"]
       - ["java.util", "Collections", "emptyList", "()", "manual"]
       - ["java.util", "Collections", "emptyMap", "()", "manual"]
       - ["java.util", "Collections", "emptySet", "()", "manual"]
-      - ["java.util", "Collections", "sort", "(List)", "manual"] # ! summary model instead?
-      - ["java.util", "Collections", "sort", "(List,Comparator)", "manual"] # ! summary model instead?
-      - ["java.util", "Comparator", "comparing", "(Function)", "manual"] # ! seems complex (functional interface), should maybe not have any model?
+      - ["java.util", "Collections", "sort", "", "manual"]
       - ["java.util", "Enumeration", "hasMoreElements", "()", "manual"]
       - ["java.util", "HashMap", "containsKey", "(Object)", "manual"]
       - ["java.util", "HashMap", "HashMap", "(int)", "manual"]
       - ["java.util", "HashMap", "size", "()", "manual"]
       - ["java.util", "HashSet", "HashSet", "(int)", "manual"]
       - ["java.util", "Iterator", "hasNext", "()", "manual"]
-      - ["java.util", "Iterator", "remove", "()", "manual"] # ! WithoutElement comment? (double-check if it returns anything, etc.)
       - ["java.util", "List", "contains", "(Object)", "manual"]
       - ["java.util", "List", "equals", "(Object)", "manual"]
       - ["java.util", "List", "hashCode", "()", "manual"]
       - ["java.util", "List", "indexOf", "(Object)", "manual"]
       - ["java.util", "List", "isEmpty", "()", "manual"]
       - ["java.util", "List", "of", "()", "manual"]
-      - ["java.util", "List", "sort", "(Comparator)", "manual"] # ! summary model instead?
-      - ["java.util", "List", "remove", "(Object)", "manual"] # ! WithoutElement comment? (actually, see above, is this already modeled for a different signature?)
+      - ["java.util", "List", "sort", "(Comparator)", "manual"]
       - ["java.util", "List", "size", "()", "manual"]
+      - ["java.util", "Locale", "forLanguageTag", "(String)", "manual"]
       - ["java.util", "Map", "containsKey", "(Object)", "manual"]
       - ["java.util", "Map", "isEmpty", "()", "manual"]
       - ["java.util", "Map", "size", "()", "manual"]
@@ -412,10 +406,9 @@ extensions:
       - ["java.util", "Random", "nextInt", "(int)", "manual"]
       - ["java.util", "Set", "contains", "(Object)", "manual"]
       - ["java.util", "Set", "isEmpty", "()", "manual"]
-      - ["java.util", "Set", "remove", "(Object)", "manual"] # ! WithoutElement comment? (double-check if it returns anything, etc.)
-      - ["java.util", "Set", "removeAll", "(Collection)", "manual"] # ! WithoutElement comment? (double-check if it returns anything, etc.)
       - ["java.util", "Set", "size", "()", "manual"]
       - ["java.util", "UUID", "equals", "(Object)", "manual"]
+      - ["java.util", "UUID", "fromString", "(String)", "manual"]
       - ["java.util", "UUID", "randomUUID", "()", "manual"]
       - ["java.util", "UUID", "toString", "()", "manual"]
       - ["java.util", "TimeZone", "getTimeZone", "(String)", "manual"]
@@ -423,9 +416,14 @@ extensions:
 
       # The below APIs are currently being stored as neutral models since `WithoutElement` has not yet been implemented for Java.
       # When `WithoutElement` is implemented, these should be changed to summary models of the form `Argument[this].WithoutElement -> Argument[this]`.
+      - ["java.util", "Collection", "removeIf", "(Predicate)", "manual"]
+      - ["java.util", "Iterator", "remove", "()", "manual"]
       - ["java.util", "List", "clear", "()", "manual"]
+      - ["java.util", "List", "remove", "(Object)", "manual"]
       - ["java.util", "Map", "clear", "()", "manual"]
       - ["java.util", "Set", "clear", "()", "manual"]
+      - ["java.util", "Set", "remove", "(Object)", "manual"]
+      - ["java.util", "Set", "removeAll", "(Collection)", "manual"]
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.

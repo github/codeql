@@ -1,14 +1,9 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: summaryModel
-    data:
-      - ["java.lang.reflect", "Constructor", False, "newInstance", "(Object[])", "", "Argument[0].ArrayElement", "ReturnValue.Parameter", "value", "manual"] # ! unsure about input/output
-      - ["java.lang.reflect", "Field", False, "get", "(Object)", "", "Argument[0].Field", "ReturnValue", "value", "manual"] # ! very unsure about
-      - ["java.lang.reflect", "Method", False, "invoke", "(Object,Object[])", "", "Argument[1].ArrayElement", "Argument[-1].Parameter[0]", "value", "manual"] # ! very unsure if this model is correct...
-
-  - addsTo:
-      pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.lang.reflect", "Method", "getName", "()", "manual"] # ! seems uninteresting flow to me, but maybe double-check
+      - ["java.lang.reflect", "Constructor", "newInstance", "(Object[])", "manual"]
+      - ["java.lang.reflect", "Field", "get", "(Object)", "manual"]
+      - ["java.lang.reflect", "Method", "getName", "()", "manual"]
+      - ["java.lang.reflect", "Method", "invoke", "(Object,Object[])", "manual"]

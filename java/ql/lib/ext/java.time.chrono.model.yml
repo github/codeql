@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: summaryModel
+      extensible: neutralModel
     data:
-      - ["java.time.chrono", "ChronoZonedDateTime", False, "toInstant", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"] # ! neutral?
+      - ["java.time.chrono", "ChronoZonedDateTime", "toInstant", "()", "manual"]
