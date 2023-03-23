@@ -9,16 +9,16 @@
  * Theorem 3 from the paper describes the basic idea.
  *
  * The following explains the idea using variables and predicate names that are used in the implementation:
- * We consider a pair of repetitions, which we will call `pivot` and `succ`.
+ * We consider a pair of repetitions, which we will call `pivot` and `pumpEnd`.
  *
  * We create a product automaton of 3-tuples of states (see `StateTuple`).
  * There exists a transition `(a,b,c) -> (d,e,f)` in the product automaton
  * iff there exists three transitions in the NFA `a->d, b->e, c->f` where those three
  * transitions all match a shared character `char`. (see `getAThreewayIntersect`)
  *
- * We start a search in the product automaton at `(pivot, pivot, succ)`,
+ * We start a search in the product automaton at `(pivot, pivot, pumpEnd)`,
  * and search for a series of transitions (a `Trace`), such that we end
- * at `(pivot, succ, succ)` (see `isReachableFromStartTuple`).
+ * at `(pivot, pumpEnd, pumpEnd)` (see `isReachableFromStartTuple`).
  *
  * For example, consider the regular expression `/^\d*5\w*$/`.
  * The search will start at the tuple `(\d*, \d*, \w*)` and search
@@ -52,29 +52,29 @@ module Make<RegexTreeViewSig TreeImpl> {
 
   private newtype TStateTuple =
     /**
-     * A tuple of states `(q1, q2, q3)` in the product automaton that is reachable from `(pivot, pivot, succ)`.
+     * A tuple of states `(q1, q2, q3)` in the product automaton that is reachable from `(pivot, pivot, pumpEnd)`.
      */
-    MkStateTuple(State pivot, State succ, State q1, State q2, State q3) {
-      // starts at (pivot, pivot, succ)
+    MkStateTuple(State pivot, State pumpEnd, State q1, State q2, State q3) {
+      // starts at (pivot, pivot, pumpEnd)
       isStartLoops(q1, q3) and
       q1 = q2 and
       pivot = q1 and
-      succ = q3
+      pumpEnd = q3
       or
       // recurse: any transition out where all 3 edges share a char (and the resulting tuple isn't obviously infeasible)
       exists(StateTuple prev |
-        prev = MkStateTuple(pivot, succ, _, _, _) and
+        prev = MkStateTuple(pivot, pumpEnd, _, _, _) and
         hasCommonStep(prev, _, _, _, q1, q2, q3) and
-        FeasibleTuple::isFeasibleTuple(pivot, succ, q1, q2, q3)
+        FeasibleTuple::isFeasibleTuple(pivot, pumpEnd, q1, q2, q3)
       )
     }
 
   /**
-   * A state `(q1, q2, q3)` in the product automaton, that is reachable from `(pivot, pivot, succ)`.
+   * A state `(q1, q2, q3)` in the product automaton, that is reachable from `(pivot, pivot, pumpEnd)`.
    *
    * We lazily only construct those states that we are actually
    * going to need.
-   * Either a start state `(pivot, pivot, succ)`, or a state
+   * Either a start state `(pivot, pivot, pumpEnd)`, or a state
    * where there exists a transition from an already existing state.
    *
    * The exponential variant of this query (`js/redos`) uses an optimization
@@ -83,12 +83,12 @@ module Make<RegexTreeViewSig TreeImpl> {
    */
   class StateTuple extends TStateTuple {
     State pivot;
-    State succ;
+    State pumpEnd;
     State q1;
     State q2;
     State q3;
 
-    StateTuple() { this = MkStateTuple(pivot, succ, q1, q2, q3) }
+    StateTuple() { this = MkStateTuple(pivot, pumpEnd, q1, q2, q3) }
 
     /**
      * Gest a string representation of this tuple.
@@ -122,9 +122,9 @@ module Make<RegexTreeViewSig TreeImpl> {
     State getPivot() { result = pivot }
 
     /**
-     * Gets the succ state.
+     * Gets the pumpEnd state.
      */
-    State getSucc() { result = succ }
+    State getPumpEnd() { result = pumpEnd }
 
     /**
      * Holds if the pivot state has the specified location.
@@ -142,17 +142,17 @@ module Make<RegexTreeViewSig TreeImpl> {
    */
   private module FeasibleTuple {
     /**
-     * Holds if the tuple `(r1, r2, r3)` might be on path from a start-state `(pivot, pivot, succ)` to an end-state `(pivot, succ, succ)` in the product automaton.
+     * Holds if the tuple `(r1, r2, r3)` might be on path from a start-state `(pivot, pivot, pumpEnd)` to an end-state `(pivot, pumpEnd, pumpEnd)` in the product automaton.
      */
-    bindingset[pivot, succ, r1, r2, r3]
+    bindingset[pivot, pumpEnd, r1, r2, r3]
     pragma[inline_late]
-    predicate isFeasibleTuple(State pivot, State succ, State r1, State r2, State r3) {
-      isStartLoops(pivot, succ) and
+    predicate isFeasibleTuple(State pivot, State pumpEnd, State r1, State r2, State r3) {
+      isStartLoops(pivot, pumpEnd) and
       // r1 can reach the pivot state
       reachesBeginning(r1, pivot) and
-      // r2 and r3 can reach the succ state
-      reachesEnd(r2, succ) and
-      reachesEnd(r3, succ) and
+      // r2 and r3 can reach the pumpEnd state
+      reachesEnd(r2, pumpEnd) and
+      reachesEnd(r3, pumpEnd) and
       // The first element is either inside a repetition (or the start state itself)
       isRepetitionOrStart(r1) and
       // The last element is inside a repetition
@@ -169,9 +169,9 @@ module Make<RegexTreeViewSig TreeImpl> {
     }
 
     pragma[noinline]
-    private predicate reachesEnd(State s, State succ) {
-      isStartLoops(_, succ) and
-      delta+(s) = succ
+    private predicate reachesEnd(State s, State pumpEnd) {
+      isStartLoops(_, pumpEnd) and
+      delta+(s) = pumpEnd
     }
 
     /**
@@ -192,15 +192,15 @@ module Make<RegexTreeViewSig TreeImpl> {
   }
 
   /**
-   * Holds if `pivot` and `succ` are a pair of loops that could be the beginning of a quadratic blowup.
+   * Holds if `pivot` and `pumpEnd` are a pair of loops that could be the beginning of a quadratic blowup.
    *
-   * There is a slight implementation difference compared to the paper: this predicate requires that `pivot != succ`.
-   * The case where `pivot = succ` causes exponential backtracking and is handled by the `js/redos` query.
+   * There is a slight implementation difference compared to the paper: this predicate requires that `pivot != pumpEnd`.
+   * The case where `pivot = pumpEnd` causes exponential backtracking and is handled by the `js/redos` query.
    */
-  predicate isStartLoops(State pivot, State succ) {
-    pivot != succ and
-    succ.getRepr() instanceof InfiniteRepetitionQuantifier and
-    delta+(pivot) = succ and
+  predicate isStartLoops(State pivot, State pumpEnd) {
+    pivot != pumpEnd and
+    pumpEnd.getRepr() instanceof InfiniteRepetitionQuantifier and
+    delta+(pivot) = pumpEnd and
     (
       pivot.getRepr() instanceof InfiniteRepetitionQuantifier
       or
@@ -223,7 +223,7 @@ module Make<RegexTreeViewSig TreeImpl> {
     exists(State r1, State r2, State r3 |
       hasCommonStep(q, s1, s2, s3, r1, r2, r3) and
       r =
-        MkStateTuple(pragma[only_bind_out](q.getPivot()), pragma[only_bind_out](q.getSucc()),
+        MkStateTuple(pragma[only_bind_out](q.getPivot()), pragma[only_bind_out](q.getPumpEnd()),
           pragma[only_bind_out](r1), pragma[only_bind_out](r2), pragma[only_bind_out](r3))
     )
   }
@@ -270,34 +270,34 @@ module Make<RegexTreeViewSig TreeImpl> {
   }
 
   /** Gets a tuple reachable in a forwards exploratory search from the start state `(pivot, pivot, pivot)`. */
-  private StateTuple getReachableFromStartStateForwards(State pivot, State succ) {
+  private StateTuple getReachableFromStartStateForwards(State pivot, State pumpEnd) {
     // base case.
-    isStartLoops(pivot, succ) and
-    result = MkStateTuple(pivot, succ, pivot, pivot, succ)
+    isStartLoops(pivot, pumpEnd) and
+    result = MkStateTuple(pivot, pumpEnd, pivot, pivot, pumpEnd)
     or
     // recursive case
     exists(StateTuple p |
-      p = getReachableFromStartStateForwards(pivot, succ) and
+      p = getReachableFromStartStateForwards(pivot, pumpEnd) and
       step(p, _, _, _, result)
     )
   }
 
   /**
-   * Gets a state tuple that can reach the end state `(succ, succ, succ)`, found via a backwards exploratory search.
-   * Where the end state was reachable from a forwards search from the start state `(pivot, pivot, pivot)`.
+   * Gets a state tuple that can reach the end state `(pivot, pumpEnd, pumpEnd)`, found via a backwards exploratory search.
+   * Where the end state was reachable from a forwards search from the start state `(pivot, pivot, pumpEnd)`.
    * The resulting tuples are exactly those that are on a path from the start state to the end state.
    */
-  private StateTuple getARelevantStateTuple(State pivot, State succ) {
+  private StateTuple getARelevantStateTuple(State pivot, State pumpEnd) {
     // base case.
-    isStartLoops(pivot, succ) and
-    result = MkStateTuple(pivot, succ, pivot, succ, succ) and
-    result = getReachableFromStartStateForwards(pivot, succ)
+    isStartLoops(pivot, pumpEnd) and
+    result = MkStateTuple(pivot, pumpEnd, pivot, pumpEnd, pumpEnd) and
+    result = getReachableFromStartStateForwards(pivot, pumpEnd)
     or
     // recursive case
     exists(StateTuple p |
-      p = getARelevantStateTuple(pivot, succ) and
+      p = getARelevantStateTuple(pivot, pumpEnd) and
       step(result, _, _, _, p) and
-      pragma[only_bind_out](result) = getReachableFromStartStateForwards(pivot, succ) // was reachable in the forwards pass.
+      pragma[only_bind_out](result) = getReachableFromStartStateForwards(pivot, pumpEnd) // was reachable in the forwards pass.
     )
   }
 
@@ -309,14 +309,14 @@ module Make<RegexTreeViewSig TreeImpl> {
   pragma[noinline]
   predicate tupleDeltaBackwards(StateTuple dst, StateTuple src) {
     step(src, _, _, _, dst) and
-    // `step` ensures that `src` and `dst` have the same pivot and succ.
+    // `step` ensures that `src` and `dst` have the same pivot and pumpEnd.
     src = getARelevantStateTuple(_, _) and
     dst = getARelevantStateTuple(_, _)
   }
 
   /**
    * Holds if `tuple` is an end state in our search, and `tuple` is on a path from a start state to an end state.
-   * That means there exists a pair of loops `(pivot, succ)` such that `tuple = (pivot, succ, succ)`.
+   * That means there exists a pair of loops `(pivot, pumpEnd)` such that `tuple = (pivot, pumpEnd, pumpEnd)`.
    */
   predicate isEndTuple(StateTuple tuple) {
     tuple = getEndTuple(_, _) and
@@ -341,8 +341,8 @@ module Make<RegexTreeViewSig TreeImpl> {
     StateTuple q, InputSymbol s1, InputSymbol s2, InputSymbol s3, StateTuple r
   ) {
     step(q, s1, s2, s3, r) and
-    exists(State pivot, State succ, StateTuple end |
-      end = MkStateTuple(pivot, succ, pivot, succ, succ) and
+    exists(State pivot, State pumpEnd, StateTuple end |
+      end = MkStateTuple(pivot, pumpEnd, pivot, pumpEnd, pumpEnd) and
       pragma[only_bind_out](distBackFromEnd(q, end)) =
         pragma[only_bind_out](distBackFromEnd(r, end)) + 1
     )
@@ -385,15 +385,15 @@ module Make<RegexTreeViewSig TreeImpl> {
   }
 
   private newtype TTrace =
-    Nil(State pivot, State succ) {
-      isStartLoops(pivot, succ) and
-      getStartTuple(pivot, succ) = getARelevantStateTuple(pivot, succ)
+    Nil(State pivot, State pumpEnd) {
+      isStartLoops(pivot, pumpEnd) and
+      getStartTuple(pivot, pumpEnd) = getARelevantStateTuple(pivot, pumpEnd)
     } or
     Step(TTrace prev, StateTuple nextTuple) {
       exists(StateTuple prevTuple |
-        exists(State pivot, State succ |
-          prev = Nil(pivot, succ) and
-          prevTuple = getStartTuple(pivot, succ)
+        exists(State pivot, State pumpEnd |
+          prev = Nil(pivot, pumpEnd) and
+          prevTuple = getStartTuple(pivot, pumpEnd)
         )
         or
         prev = Step(_, prevTuple)
@@ -404,7 +404,7 @@ module Make<RegexTreeViewSig TreeImpl> {
 
   /**
    * A list of tuples of input symbols that describe a path in the product automaton
-   * starting from a start state `(pivot, pivot, succ)`.
+   * starting from a start state `(pivot, pivot, pumpEnd)`.
    */
   class Trace extends TTrace {
     /**
@@ -419,27 +419,27 @@ module Make<RegexTreeViewSig TreeImpl> {
     StateTuple getTuple() {
       this = Step(_, result)
       or
-      exists(State prev, State succ |
-        this = Nil(prev, succ) and
-        result = getStartTuple(prev, succ)
+      exists(State prev, State pumpEnd |
+        this = Nil(prev, pumpEnd) and
+        result = getStartTuple(prev, pumpEnd)
       )
     }
   }
 
   /**
-   * Gets the tuple `(pivot, succ, succ)` from the product automaton.
+   * Gets the tuple `(pivot, pumpEnd, pumpEnd)` from the product automaton.
    */
-  StateTuple getEndTuple(State pivot, State succ) {
-    isStartLoops(pivot, succ) and
-    result = MkStateTuple(pivot, succ, pivot, succ, succ)
+  StateTuple getEndTuple(State pivot, State pumpEnd) {
+    isStartLoops(pivot, pumpEnd) and
+    result = MkStateTuple(pivot, pumpEnd, pivot, pumpEnd, pumpEnd)
   }
 
   /**
-   * Gets the tuple `(pivot, pivot, succ)` from the product automaton.
+   * Gets the tuple `(pivot, pivot, pumpEnd)` from the product automaton.
    */
-  StateTuple getStartTuple(State pivot, State succ) {
-    isStartLoops(pivot, succ) and
-    result = MkStateTuple(pivot, succ, pivot, pivot, succ)
+  StateTuple getStartTuple(State pivot, State pumpEnd) {
+    isStartLoops(pivot, pumpEnd) and
+    result = MkStateTuple(pivot, pumpEnd, pivot, pivot, pumpEnd)
   }
 
   /** An implementation of a chain containing chars for use by `Concretizer`. */
@@ -464,8 +464,8 @@ module Make<RegexTreeViewSig TreeImpl> {
   /**
    * Holds if matching repetitions of `pump` can:
    * 1) Transition from `pivot` back to `pivot`.
-   * 2) Transition from `pivot` to `succ`.
-   * 3) Transition from `succ` to `succ`.
+   * 2) Transition from `pivot` to `pumpEnd`.
+   * 3) Transition from `pumpEnd` to `pumpEnd`.
    *
    * From theorem 3 in the paper linked in the top of this file we can therefore conclude that
    * the regular expression has polynomial backtracking - if a rejecting suffix exists.
@@ -473,9 +473,9 @@ module Make<RegexTreeViewSig TreeImpl> {
    * This predicate is used by `SuperLinearReDoSConfiguration`, and the final results are
    * available in the `hasReDoSResult` predicate.
    */
-  predicate isPumpable(State pivot, State succ, string pump) {
+  predicate isPumpable(State pivot, State pumpEnd, string pump) {
     exists(StateTuple q, Trace t |
-      q = getEndTuple(pivot, succ) and
+      q = getEndTuple(pivot, pumpEnd) and
       q = t.getTuple() and
       pump = Concretizer<CharTreeImpl>::concretize(t)
     )
