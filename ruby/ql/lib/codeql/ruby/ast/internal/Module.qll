@@ -407,7 +407,6 @@ private module ResolveImpl {
    */
   string getAnAssumedGlobalConst() {
     exists(ConstantAccess access |
-      not exists(access.getScopeExpr()) and
       result = access.getName() and
       isToplevel(access)
     )
