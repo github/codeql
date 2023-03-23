@@ -17,8 +17,8 @@ class JndiInjectionFlowConfig extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) { sink instanceof JndiInjectionSink }
 
   override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType 
-    or
+    node.getType() instanceof PrimitiveType or
+    node.getType() instanceof BoxedType or
     node instanceof JndiInjectionSanitizer
   }
 
@@ -26,12 +26,6 @@ class JndiInjectionFlowConfig extends TaintTracking::Configuration {
     any(JndiInjectionAdditionalTaintStep c).step(node1, node2)
   }
 }
-
-/**
- * A Class to be extended for Sanitizer Customizations 
- */
-
-abstract class JndiInjectionSanitizer extends DataFlow::Node { }
 
 /**
  * A method that does a JNDI lookup when it receives a `SearchControls` argument with `setReturningObjFlag` = `true`
