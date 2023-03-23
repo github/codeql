@@ -265,6 +265,15 @@ private string paramsStringPart(Function f, int i) {
  */
 string paramsString(Function f) { result = concat(int i | | paramsStringPart(f, i) order by i) }
 
+bindingset[p]
+private string interpretPackage(string p) {
+  exists(string r | r = "([^$]+)([./]\\$ANYVERSION(/|$)(.*))?" |
+    if exists(p.regexpCapture(r, 4))
+    then result = package(p.regexpCapture(r, 1), p.regexpCapture(r, 4))
+    else result = p
+  )
+}
+
 /** Gets the source/sink/summary element corresponding to the supplied parameters. */
 SourceOrSinkElement interpretElement(
   string pkg, string type, boolean subtypes, string name, string signature, string ext
@@ -273,16 +282,16 @@ SourceOrSinkElement interpretElement(
   // Go does not need to distinguish functions with signature
   signature = "" and
   (
-    exists(Field f | f.hasQualifiedName(pkg, type, name) | result.asEntity() = f)
+    exists(Field f | f.hasQualifiedName(interpretPackage(pkg), type, name) | result.asEntity() = f)
     or
-    exists(Method m | m.hasQualifiedName(pkg, type, name) |
+    exists(Method m | m.hasQualifiedName(interpretPackage(pkg), type, name) |
       result.asEntity() = m
       or
       subtypes = true and result.asEntity().(Method).implements(m)
     )
     or
     type = "" and
-    exists(Entity e | e.hasQualifiedName(pkg, name) | result.asEntity() = e)
+    exists(Entity e | e.hasQualifiedName(interpretPackage(pkg), name) | result.asEntity() = e)
   )
 }
 

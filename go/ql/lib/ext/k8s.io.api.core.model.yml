@@ -1,0 +1,15 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["k8s.io/api/core/$ANYVERSION", "Secret", True, "DeepCopy", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["k8s.io/api/core/$ANYVERSION", "Secret", True, "DeepCopyInto", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["k8s.io/api/core/$ANYVERSION", "Secret", True, "DeepCopyObject", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["k8s.io/api/core/$ANYVERSION", "Secret", True, "Marshal", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["k8s.io/api/core/$ANYVERSION", "Secret", True, "Unmarshal", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["k8s.io/api/core/$ANYVERSION", "SecretList", True, "DeepCopy", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["k8s.io/api/core/$ANYVERSION", "SecretList", True, "DeepCopyInto", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["k8s.io/api/core/$ANYVERSION", "SecretList", True, "DeepCopyObject", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["k8s.io/api/core/$ANYVERSION", "SecretList", True, "Marshal", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["k8s.io/api/core/$ANYVERSION", "SecretList", True, "Unmarshal", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
