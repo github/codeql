@@ -37,6 +37,7 @@ import semmle.go.frameworks.stdlib.Strconv
 import semmle.go.frameworks.stdlib.Syscall
 import semmle.go.frameworks.stdlib.TextTabwriter
 import semmle.go.frameworks.stdlib.TextTemplate
+import semmle.go.frameworks.stdlib.Unsafe
 
 /** Provides a class for modeling functions which convert strings into integers. */
 module IntegerParser {
