@@ -7,7 +7,6 @@ extensions:
       - ["io", "", False, "CopyBuffer", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
       - ["io", "", False, "CopyN", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
       - ["io", "", False, "LimitReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["io", "", False, "MultiReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["io", "", False, "NewSectionReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["io", "", False, "NopCloser", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["io", "", False, "ReadAll", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]

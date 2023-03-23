@@ -3,7 +3,6 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["github.com/astaxie/beego/utils", "", False, "GetDisplayString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["github.com/astaxie/beego/utils", "", False, "SliceChunk", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["github.com/astaxie/beego/utils", "", False, "SliceDiff", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["github.com/astaxie/beego/utils", "", False, "SliceFilter", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

@@ -9,7 +9,6 @@ extensions:
       - ["go.uber.org/zap", "", False, "ByteStrings", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
       - ["go.uber.org/zap", "", False, "Error", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["go.uber.org/zap", "", False, "Errors", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
-      - ["go.uber.org/zap", "", False, "Fields", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["go.uber.org/zap", "", False, "NamedError", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
       - ["go.uber.org/zap", "", False, "Reflect", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
       - ["go.uber.org/zap", "", False, "String", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]

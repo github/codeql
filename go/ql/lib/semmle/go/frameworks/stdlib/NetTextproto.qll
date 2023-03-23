@@ -4,7 +4,7 @@
 
 import go
 
-// These models are not implemented using Models-as-Data because they represent reverse flow.
+// These models are not implemented using Models-as-Data because they represent reverse flow or are variadic.
 /** Provides models of commonly used functions in the `net/textproto` package. */
 module NetTextproto {
   private class FunctionModels extends TaintTracking::FunctionModel {
@@ -34,6 +34,10 @@ module NetTextproto {
       // signature: func (*Writer) DotWriter() io.WriteCloser
       hasQualifiedName("net/textproto", "Writer", "DotWriter") and
       (inp.isResult() and outp.isReceiver())
+      or
+      // signature: func (*Writer) PrintfLine(format string, args ...interface{}) error
+      hasQualifiedName("net/textproto", "Writer", "PrintfLine") and
+      (inp.isParameter(_) and outp.isReceiver())
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
