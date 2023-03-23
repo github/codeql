@@ -35,4 +35,7 @@ func test(request *http.Request, writer http.ResponseWriter) {
 	writer.Write(tokenizer.Text())               // BAD: writing unescaped HTML data
 	writer.Write([]byte(tokenizer.Token().Data)) // BAD: writing unescaped HTML data
 
+	tokenizerFragment := html.NewTokenizerFragment(request.Body, "some context")
+	writer.Write(tokenizerFragment.Buffered()) // BAD: writing unescaped HTML data
+
 }
