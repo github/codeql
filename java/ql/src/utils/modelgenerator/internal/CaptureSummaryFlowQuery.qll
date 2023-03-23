@@ -33,8 +33,8 @@ private import CaptureModels
  * ```
  * Captured Models:
  * ```
- * p;Foo;true;returnsTainted;;Argument[this];ReturnValue;taint
- * p;Foo;true;putsTaintIntoParameter;(List);Argument[this];Argument[0];taint
+ * p;Foo;true;returnsTainted;;Argument[this];ReturnValue;taint;df-generated
+ * p;Foo;true;putsTaintIntoParameter;(List);Argument[this];Argument[0];taint;df-generated
  * ```
  *
  * ```java
@@ -45,7 +45,7 @@ private import CaptureModels
  *  }
  * ```
  * Captured Model:
- * ```p;Foo;true;doSomething;(String);Argument[0];Argument[this];taint```
+ * ```p;Foo;true;doSomething;(String);Argument[0];Argument[this];taint;df-generated```
  *
  * ```java
  * public class Foo {
@@ -55,7 +55,7 @@ private import CaptureModels
  * }
  * ```
  * Captured Model:
- * ```p;Foo;true;returnData;;Argument[0];ReturnValue;taint```
+ * ```p;Foo;true;returnData;;Argument[0];ReturnValue;taint;df-generated```
  *
  * ```java
  * public class Foo {
@@ -65,7 +65,7 @@ private import CaptureModels
  * }
  * ```
  * Captured Model:
- * ```p;Foo;true;addToList;;Argument[0];Argument[1];taint```
+ * ```p;Foo;true;addToList;;Argument[0];Argument[1];taint;df-generated```
  */
 string captureFlow(DataFlowTargetApi api) {
   result = captureQualifierFlow(api) or
