@@ -90,6 +90,16 @@ func TaintStepTest_MimeMultipartWriterWriteField_B0I1O0(sourceCQL interface{}) i
 	return intoWriter409
 }
 
+func TaintStepTest_MimeMultipartPartFileName(sourceCQL interface{}) interface{} {
+	fromPart520 := sourceCQL.(multipart.Part)
+	return fromPart520.FileName()
+}
+
+func TaintStepTest_MimeMultipartPartFormName(sourceCQL interface{}) interface{} {
+	fromPart520 := sourceCQL.(multipart.Part)
+	return fromPart520.FormName()
+}
+
 func RunAllTaints_MimeMultipart() {
 	{
 		source := newSource(0)
@@ -150,5 +160,15 @@ func RunAllTaints_MimeMultipart() {
 		source := newSource(11)
 		out := TaintStepTest_MimeMultipartWriterWriteField_B0I1O0(source)
 		sink(11, out)
+	}
+	{
+		source := newSource(12)
+		out := TaintStepTest_MimeMultipartPartFileName(source)
+		sink(12, out)
+	}
+	{
+		source := newSource(13)
+		out := TaintStepTest_MimeMultipartPartFormName(source)
+		sink(13, out)
 	}
 }
