@@ -171,7 +171,8 @@ class SummarizedCallableBase extends TSummarizedCallableBase {
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
 
-// class NeutralCallable = Impl::Public::NeutralCallable;
+class NeutralCallable = Impl::Public::NeutralCallable;
+
 /**
  * An adapter class to add the flow summaries specified on `SyntheticCallable`
  * to `SummarizedCallable`.
