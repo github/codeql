@@ -3,15 +3,6 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["log", "Logger", True, "Fatal", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["log", "Logger", True, "Fatalf", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
-      - ["log", "Logger", True, "Fatalln", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["log", "Logger", True, "Panic", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["log", "Logger", True, "Panicf", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
-      - ["log", "Logger", True, "Panicln", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["log", "Logger", True, "Print", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["log", "Logger", True, "Printf", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
-      - ["log", "Logger", True, "Println", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["log", "Logger", True, "SetOutput", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
       - ["log", "Logger", True, "SetPrefix", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["log", "Logger", True, "Writer", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

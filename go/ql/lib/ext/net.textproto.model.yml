@@ -22,4 +22,3 @@ extensions:
       - ["net/textproto", "Reader", True, "ReadLineBytes", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
       - ["net/textproto", "Reader", True, "ReadMIMEHeader", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
       - ["net/textproto", "Reader", True, "ReadResponse", "", "", "Argument[-1]", "ReturnValue[1]", "taint", "manual"]
-      - ["net/textproto", "Writer", True, "PrintfLine", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]

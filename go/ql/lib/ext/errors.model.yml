@@ -4,6 +4,5 @@ extensions:
       extensible: summaryModel
     data:
       - ["errors", "", False, "As", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
-      - ["errors", "", False, "Join", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["errors", "", False, "New", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["errors", "", False, "Unwrap", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

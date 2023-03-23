@@ -54,4 +54,52 @@ module Log {
       input = inp and output = outp
     }
   }
+
+  // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.
+  private class MethodModels extends TaintTracking::FunctionModel, Method {
+    FunctionInput inp;
+    FunctionOutput outp;
+
+    MethodModels() {
+      // signature: func (*Logger) Fatal(v ...interface{})
+      this.hasQualifiedName("log", "Logger", "Fatal") and
+      (inp.isParameter(_) and outp.isReceiver())
+      or
+      // signature: func (*Logger) Fatalf(format string, v ...interface{})
+      this.hasQualifiedName("log", "Logger", "Fatalf") and
+      (inp.isParameter(_) and outp.isReceiver())
+      or
+      // signature: func (*Logger) Fatalln(v ...interface{})
+      this.hasQualifiedName("log", "Logger", "Fatalln") and
+      (inp.isParameter(_) and outp.isReceiver())
+      or
+      // signature: func (*Logger) Panic(v ...interface{})
+      this.hasQualifiedName("log", "Logger", "Panic") and
+      (inp.isParameter(_) and outp.isReceiver())
+      or
+      // signature: func (*Logger) Panicf(format string, v ...interface{})
+      this.hasQualifiedName("log", "Logger", "Panicf") and
+      (inp.isParameter(_) and outp.isReceiver())
+      or
+      // signature: func (*Logger) Panicln(v ...interface{})
+      this.hasQualifiedName("log", "Logger", "Panicln") and
+      (inp.isParameter(_) and outp.isReceiver())
+      or
+      // signature: func (*Logger) Print(v ...interface{})
+      this.hasQualifiedName("log", "Logger", "Print") and
+      (inp.isParameter(_) and outp.isReceiver())
+      or
+      // signature: func (*Logger) Printf(format string, v ...interface{})
+      this.hasQualifiedName("log", "Logger", "Printf") and
+      (inp.isParameter(_) and outp.isReceiver())
+      or
+      // signature: func (*Logger) Println(v ...interface{})
+      this.hasQualifiedName("log", "Logger", "Println") and
+      (inp.isParameter(_) and outp.isReceiver())
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input = inp and output = outp
+    }
+  }
 }

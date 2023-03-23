@@ -8,7 +8,6 @@ extensions:
       - ["strings", "", False, "Join", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
       - ["strings", "", False, "Map", "", "", "Argument[1]", "ReturnValue", "taint", "manual"]
       - ["strings", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["strings", "", False, "NewReplacer", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["strings", "", False, "Repeat", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["strings", "", False, "Replace", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["strings", "", False, "Replace", "", "", "Argument[2]", "ReturnValue", "taint", "manual"]

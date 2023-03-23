@@ -107,4 +107,24 @@ module DatabaseSql {
       )
     }
   }
+
+  // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.
+  private class SqlMethodModels extends TaintTracking::FunctionModel, Method {
+    FunctionInput inp;
+    FunctionOutput outp;
+
+    SqlMethodModels() {
+      // signature: func (*Row) Scan(dest ...interface{}) error
+      this.hasQualifiedName("database/sql", "Row", "Scan") and
+      (inp.isReceiver() and outp.isParameter(_))
+      or
+      // signature: func (*Rows) Scan(dest ...interface{}) error
+      this.hasQualifiedName("database/sql", "Rows", "Scan") and
+      (inp.isReceiver() and outp.isParameter(_))
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input = inp and output = outp
+    }
+  }
 }

@@ -3,7 +3,6 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["reflect", "", False, "Append", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
       - ["reflect", "", False, "AppendSlice", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
       - ["reflect", "", False, "Copy", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
       - ["reflect", "", False, "Indirect", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

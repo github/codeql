@@ -4,7 +4,7 @@
 
 import go
 
-// These models are not implemented using Models-as-Data because they represent reverse flow.
+// These models are not implemented using Models-as-Data because they represent reverse flow, or are variadic.
 /** Provides models of commonly used functions in the `io` package. */
 module Io {
   private class FunctionModels extends TaintTracking::FunctionModel {
@@ -12,6 +12,10 @@ module Io {
     FunctionOutput outp;
 
     FunctionModels() {
+      // signature: func MultiReader(readers ...Reader) Reader
+      hasQualifiedName("io", "MultiReader") and
+      (inp.isParameter(_) and outp.isResult())
+      or
       // signature: func MultiWriter(writers ...Writer) Writer
       hasQualifiedName("io", "MultiWriter") and
       (inp.isResult() and outp.isParameter(_))

@@ -43,4 +43,28 @@ module TextTemplate {
 
     override DataFlow::Node getADataArgument() { result = this.getArgument(dataArg) }
   }
+
+  // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.
+  private class FunctionModels extends TaintTracking::FunctionModel {
+    FunctionInput inp;
+    FunctionOutput outp;
+
+    FunctionModels() {
+      // signature: func HTMLEscaper(args ...interface{}) string
+      this.hasQualifiedName("text/template", "HTMLEscaper") and
+      (inp.isParameter(_) and outp.isResult())
+      or
+      // signature: func JSEscaper(args ...interface{}) string
+      this.hasQualifiedName("text/template", "JSEscaper") and
+      (inp.isParameter(_) and outp.isResult())
+      or
+      // signature: func URLQueryEscaper(args ...interface{}) string
+      this.hasQualifiedName("text/template", "URLQueryEscaper") and
+      (inp.isParameter(_) and outp.isResult())
+    }
+
+    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
+      input = inp and output = outp
+    }
+  }
 }

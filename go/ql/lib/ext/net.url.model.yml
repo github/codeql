@@ -3,7 +3,6 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["net/url", "", False, "JoinPath", "", "", "Argument[0..1]", "ReturnValue[0]", "taint", "manual"]
       - ["net/url", "", False, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["net/url", "", False, "ParseQuery", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["net/url", "", False, "ParseRequestURI", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
@@ -15,8 +14,6 @@ extensions:
       - ["net/url", "", False, "UserPassword", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
       - ["net/url", "URL", True, "EscapedPath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["net/url", "URL", True, "Hostname", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["net/url", "URL", True, "JoinPath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["net/url", "URL", True, "JoinPath", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["net/url", "URL", True, "MarshalBinary", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
       - ["net/url", "URL", True, "Parse", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
       - ["net/url", "URL", True, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]

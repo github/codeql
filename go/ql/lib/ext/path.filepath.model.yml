@@ -11,7 +11,6 @@ extensions:
       - ["path/filepath", "", False, "Ext", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["path/filepath", "", False, "FromSlash", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["path/filepath", "", False, "Glob", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["path/filepath", "", False, "Join", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["path/filepath", "", False, "Rel", "", "", "Argument[0..1]", "ReturnValue[0]", "taint", "manual"]
       - ["path/filepath", "", False, "Split", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["path/filepath", "", False, "Split", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
