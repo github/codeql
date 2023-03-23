@@ -533,9 +533,20 @@ class Method extends Function {
    * implement themselves.
    */
   predicate implements(Method m) {
+    if this.isInterfaceMethod() then this = m else implementsIncludingInterfaceMethods(m)
+  }
+
+  /**
+   * Holds if this method implements the method `m`, that is, if `m` is a method
+   * on an interface, and this is a method with the same name on a type that
+   * implements that interface.
+   *
+   * Note that all methods implement themselves, and that unlike the predicate `implements`
+   * this does allow interface methods to implement other interfaces.
+   */
+  predicate implementsIncludingInterfaceMethods(Method m) {
     this = m
     or
-    not this.isInterfaceMethod() and
     exists(Type t |
       this = t.getMethod(m.getName()) and
       t.implements(m.getReceiverType().getUnderlyingType())
