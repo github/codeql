@@ -44,8 +44,8 @@ import semmle.go.frameworks.stdlib.TextTabwriter
 import semmle.go.frameworks.stdlib.TextTemplate
 import semmle.go.frameworks.stdlib.Unsafe
 
-// This is modelled using TaintTracking::FunctionModel because it doesn't have a real type signature,
-// and therefore currently has an InvalidType, not a SignatureType, which breaks Models as Data.
+// These are modelled using TaintTracking::FunctionModel because they doesn't have real type signatures,
+// and therefore currently have an InvalidType, not a SignatureType, which breaks Models as Data.
 /**
  * A model of the built-in `append` function, which propagates taint from its arguments to its
  * result.
@@ -55,6 +55,18 @@ private class AppendFunction extends TaintTracking::FunctionModel {
 
   override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
     inp.isParameter(_) and outp.isResult()
+  }
+}
+
+/**
+ * A model of the built-in `copy` function, which propagates taint from its second argument
+ * to its first.
+ */
+private class CopyFunction extends TaintTracking::FunctionModel {
+  CopyFunction() { this = Builtin::copy() }
+
+  override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
+    inp.isParameter(1) and outp.isParameter(0)
   }
 }
 
