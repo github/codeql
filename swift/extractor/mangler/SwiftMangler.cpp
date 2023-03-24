@@ -379,3 +379,15 @@ SwiftMangledName SwiftMangler::visitReferenceStorageType(const swift::ReferenceS
   ret << dispatcher.fetchLabel(type->getReferentType());
   return ret;
 }
+
+SwiftMangledName SwiftMangler::visitParametrizedProtocolType(
+    const swift::ParameterizedProtocolType* type) {
+  auto ret = initMangled(type);
+  ret << dispatcher.fetchLabel(type->getBaseType());
+  ret << '<';
+  for (auto arg : type->getArgs()) {
+    ret << dispatcher.fetchLabel(arg);
+  }
+  ret << '>';
+  return ret;
+}
