@@ -18,23 +18,21 @@ struct SwiftMangledName {
 
   std::string str() const;
 
-  // streaming labels or ints into a SwiftMangledName just appends them
-  template <typename Tag>
-  SwiftMangledName& operator<<(TrapLabel<Tag> label) {
-    assert(label && "using undefined label in mangled name");
-    parts.emplace_back(label);
-    return *this;
-  }
+  // let's avoid copying as long as we don't need it
+  SwiftMangledName() = default;
+  SwiftMangledName(const SwiftMangledName&) = delete;
+  SwiftMangledName& operator=(const SwiftMangledName&) = delete;
+  SwiftMangledName(SwiftMangledName&&) = default;
+  SwiftMangledName& operator=(SwiftMangledName&&) = default;
 
-  SwiftMangledName& operator<<(unsigned i) {
-    parts.emplace_back(i);
-    return *this;
-  }
+  // streaming labels or ints into a SwiftMangledName just appends them
+  SwiftMangledName& operator<<(UntypedTrapLabel label) &;
+  SwiftMangledName& operator<<(unsigned i) &;
 
   // streaming string-like stuff will add a new part it only if strictly required, otherwise it will
   // append to the last part if it is a string
   template <typename T>
-  SwiftMangledName& operator<<(T&& arg) {
+  SwiftMangledName& operator<<(T&& arg) & {
     if (parts.empty() || !std::holds_alternative<std::string>(parts.back())) {
       parts.emplace_back("");
     }
@@ -42,19 +40,12 @@ struct SwiftMangledName {
     return *this;
   }
 
-  SwiftMangledName& operator<<(SwiftMangledName&& other) {
-    parts.reserve(parts.size() + other.parts.size());
-    for (auto& p : other.parts) {
-      parts.emplace_back(std::move(p));
-    }
-    other.parts.clear();
-    return *this;
-  }
+  SwiftMangledName& operator<<(SwiftMangledName&& other) &;
+  SwiftMangledName& operator<<(const SwiftMangledName& other) &;
 
-  SwiftMangledName& operator<<(const SwiftMangledName& other) {
-    parts.reserve(parts.size() + other.parts.size());
-    parts.insert(parts.end(), other.parts.begin(), other.parts.end());
-    return *this;
+  template <typename T>
+  SwiftMangledName&& operator<<(T&& arg) && {
+    return std::move(operator<<(std::forward<T>(arg)));
   }
 };
 
