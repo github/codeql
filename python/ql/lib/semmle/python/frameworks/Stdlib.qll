@@ -3015,13 +3015,11 @@ private module StdlibPrivate {
     override string getKind() { result = Escaping::getRegexKind() }
   }
 
-  private import semmle.python.regex as Regex
-
   /**
    * A node interpreted as a regular expression.
    * Speficically nodes where string values are interpreted as regular expressions.
    */
-  class StdLibRegExpInterpretation extends Regex::RegExpInterpretation::Range {
+  private class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
     StdLibRegExpInterpretation() {
       this =
         API::moduleImport("re").getMember("compile").getACall().getParameter(0, "pattern").asSink()

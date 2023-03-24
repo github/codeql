@@ -23,7 +23,7 @@ private import semmle.python.regex as Regex
 DataFlow::Node regSink() {
   result = any(Concepts::RegexExecution exec).getRegex()
   or
-  result instanceof Regex::RegExpInterpretation::Range
+  result instanceof Concepts::RegExpInterpretation
 }
 
 /**

@@ -15,16 +15,6 @@ RegExpTerm getTermForExecution(Concepts::RegexExecution exec) {
   )
 }
 
-/** Provides a class for modeling regular expression interpretations. */
-module RegExpInterpretation {
-  /**
-   * A node that is not a regular expression literal, but is used in places that
-   * may interpret it as one. Instances of this class are typically strings that
-   * flow to method calls like `re.compile`.
-   */
-  abstract class Range extends DataFlow::Node { }
-}
-
 /** A StrConst used as a regular expression */
 deprecated class RegexString extends Regex {
   RegexString() { this = RegExpTracking::regExpSource(_).asExpr() }

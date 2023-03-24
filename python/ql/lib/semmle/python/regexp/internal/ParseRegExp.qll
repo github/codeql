@@ -24,7 +24,7 @@ private module FindRegexMode {
         sink = call.(Concepts::RegexExecution).getRegex()
         or
         call.getArg(_) = sink and
-        sink instanceof RegExpInterpretation::Range
+        sink instanceof Concepts::RegExpInterpretation::Range
       |
         exists(DataFlow::CallCfgNode callNode |
           call = callNode and
