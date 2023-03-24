@@ -118,7 +118,7 @@ private module UntrustedUrlConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) { node instanceof MissingPinningSink }
 }
 
-private module UntrustedUrlFlow = TaintTracking::Make<UntrustedUrlConfig>;
+private module UntrustedUrlFlow = TaintTracking::Global<UntrustedUrlConfig>;
 
 /** Holds if `node` is a network communication call for which certificate pinning is not implemented. */
 predicate missingPinning(DataFlow::Node node, string domain) {
@@ -128,7 +128,7 @@ predicate missingPinning(DataFlow::Node node, string domain) {
     not trustedDomain(_) and domain = ""
     or
     exists(DataFlow::Node src |
-      UntrustedUrlFlow::hasFlow(src, node) and
+      UntrustedUrlFlow::flow(src, node) and
       domain = getDomain(src.asExpr())
     )
   )

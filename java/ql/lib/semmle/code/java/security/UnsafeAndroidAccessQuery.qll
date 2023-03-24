@@ -37,4 +37,4 @@ module FetchUntrustedResourceConfig implements DataFlow::ConfigSig {
 /**
  * Detects taint flow from untrusted inputs to a resource fetching call.
  */
-module FetchUntrustedResourceFlow = TaintTracking::Make<FetchUntrustedResourceConfig>;
+module FetchUntrustedResourceFlow = TaintTracking::Global<FetchUntrustedResourceConfig>;

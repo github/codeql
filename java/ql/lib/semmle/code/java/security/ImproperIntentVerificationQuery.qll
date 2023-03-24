@@ -27,12 +27,12 @@ private module VerifiedIntentConfig implements DataFlow::ConfigSig {
   }
 }
 
-private module VerifiedIntentFlow = DataFlow::Make<VerifiedIntentConfig>;
+private module VerifiedIntentFlow = DataFlow::Global<VerifiedIntentConfig>;
 
 /** An `onReceive` method that doesn't verify the action of the intent it receives. */
 private class UnverifiedOnReceiveMethod extends OnReceiveMethod {
   UnverifiedOnReceiveMethod() {
-    not VerifiedIntentFlow::hasFlow(DataFlow::parameterNode(this.getIntentParameter()), _)
+    not VerifiedIntentFlow::flow(DataFlow::parameterNode(this.getIntentParameter()), _)
   }
 }
 

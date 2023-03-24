@@ -106,7 +106,7 @@ private module GoodInputTypeConfig implements DataFlow::ConfigSig {
   }
 }
 
-private module GoodInputTypeFlow = DataFlow::Make<GoodInputTypeConfig>;
+private module GoodInputTypeFlow = DataFlow::Global<GoodInputTypeConfig>;
 
 /** Gets a regex indicating that an input field may contain sensitive data. */
 private string getInputSensitiveInfoRegex() {
@@ -131,7 +131,7 @@ AndroidEditableXmlElement getASensitiveCachedInput() {
   (
     not inputTypeNotCached(result.getInputType()) and
     not exists(DataFlow::Node sink |
-      GoodInputTypeFlow::hasFlowTo(sink) and
+      GoodInputTypeFlow::flowTo(sink) and
       sink.asExpr() = setInputTypeForId(result.getId())
     )
   )

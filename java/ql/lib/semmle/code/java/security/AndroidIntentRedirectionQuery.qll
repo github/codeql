@@ -42,14 +42,14 @@ module IntentRedirectionConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks the flow of tainted Intents being used to start Android components. */
-module IntentRedirectionFlow = TaintTracking::Make<IntentRedirectionConfig>;
+module IntentRedirectionFlow = TaintTracking::Global<IntentRedirectionConfig>;
 
 /**
  * A sanitizer for sinks that receive the original incoming Intent,
  * since its component cannot be arbitrarily set.
  */
 private class OriginalIntentSanitizer extends IntentRedirectionSanitizer {
-  OriginalIntentSanitizer() { SameIntentBeingRelaunchedFlow::hasFlowTo(this) }
+  OriginalIntentSanitizer() { SameIntentBeingRelaunchedFlow::flowTo(this) }
 }
 
 /**
@@ -77,14 +77,14 @@ private module SameIntentBeingRelaunchedConfig implements DataFlow::ConfigSig {
   }
 }
 
-private module SameIntentBeingRelaunchedFlow = DataFlow::Make<SameIntentBeingRelaunchedConfig>;
+private module SameIntentBeingRelaunchedFlow = DataFlow::Global<SameIntentBeingRelaunchedConfig>;
 
 /** An `Intent` with a tainted component. */
 private class IntentWithTaintedComponent extends DataFlow::Node {
   IntentWithTaintedComponent() {
     exists(IntentSetComponent setExpr |
       setExpr.getQualifier() = this.asExpr() and
-      TaintedIntentComponentFlow::hasFlowTo(DataFlow::exprNode(setExpr.getSink()))
+      TaintedIntentComponentFlow::flowTo(DataFlow::exprNode(setExpr.getSink()))
     )
   }
 }
@@ -100,7 +100,7 @@ private module TaintedIntentComponentConfig implements DataFlow::ConfigSig {
   }
 }
 
-private module TaintedIntentComponentFlow = TaintTracking::Make<TaintedIntentComponentConfig>;
+private module TaintedIntentComponentFlow = TaintTracking::Global<TaintedIntentComponentConfig>;
 
 /** A call to a method that changes the component of an `Intent`. */
 private class IntentSetComponent extends MethodAccess {
