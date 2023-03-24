@@ -5,4 +5,4 @@ image = "centos/devtoolset-7-toolchain-centos7"
 # Provide the path to the shared extractor
 # Cross mounts this directory as a volume, so builds inside the docker container
 # can see it.
-volumes = ["__CODEQL-EXTRACTOR=../../shared/extractor"]
+volumes = ["__CODEQL-EXTRACTOR=../../shared/tree-sitter-extractor"]
