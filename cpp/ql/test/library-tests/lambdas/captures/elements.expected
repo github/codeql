@@ -1,4 +1,3 @@
-| captures.cpp:0:0:0:0 | captures.cpp |
 | captures.cpp:1:8:1:8 | declaration of operator= |
 | captures.cpp:1:8:1:8 | declaration of operator= |
 | captures.cpp:1:8:1:8 | operator= |
@@ -166,7 +165,6 @@
 | captures.cpp:26:10:26:17 | myLambda |
 | captures.cpp:26:18:26:18 | call to operator() |
 | captures.cpp:26:19:26:22 | 1000 |
-| end_pos.cpp:0:0:0:0 | end_pos.cpp |
 | end_pos.cpp:2:1:2:14 | #define OPEN { |
 | end_pos.cpp:3:6:3:10 | definition of igFun |
 | end_pos.cpp:3:6:3:10 | igFun |
@@ -211,108 +209,3 @@
 | end_pos.cpp:10:9:10:17 | return ... |
 | end_pos.cpp:10:16:10:16 | 1 |
 | end_pos.cpp:12:1:12:1 | return ... |
-| file://:0:0:0:0 |  |
-| file://:0:0:0:0 | (global namespace) |
-| file://:0:0:0:0 | (reference to) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | (unnamed parameter 0) |
-| file://:0:0:0:0 | ..()(..) |
-| file://:0:0:0:0 | ..()(..) |
-| file://:0:0:0:0 | ..(*)(..) |
-| file://:0:0:0:0 | ..(*)(..) |
-| file://:0:0:0:0 | ..(*)(..) |
-| file://:0:0:0:0 | ..(..) |
-| file://:0:0:0:0 | __super |
-| file://:0:0:0:0 | __va_list_tag |
-| file://:0:0:0:0 | __va_list_tag & |
-| file://:0:0:0:0 | __va_list_tag && |
-| file://:0:0:0:0 | auto |
-| file://:0:0:0:0 | const __va_list_tag |
-| file://:0:0:0:0 | const __va_list_tag & |
-| file://:0:0:0:0 | const foo |
-| file://:0:0:0:0 | const foo & |
-| file://:0:0:0:0 | const lambda [] type at line 3, col. 5 |
-| file://:0:0:0:0 | const lambda [] type at line 3, col. 5 & |
-| file://:0:0:0:0 | const lambda [] type at line 3, col. 5 * |
-| file://:0:0:0:0 | const lambda [] type at line 9, col. 5 |
-| file://:0:0:0:0 | const lambda [] type at line 9, col. 5 & |
-| file://:0:0:0:0 | const lambda [] type at line 9, col. 5 * |
-| file://:0:0:0:0 | const lambda [] type at line 9, col. 15 |
-| file://:0:0:0:0 | const lambda [] type at line 9, col. 15 & |
-| file://:0:0:0:0 | const lambda [] type at line 9, col. 15 * |
-| file://:0:0:0:0 | const lambda [] type at line 15, col. 5 |
-| file://:0:0:0:0 | const lambda [] type at line 15, col. 5 & |
-| file://:0:0:0:0 | const lambda [] type at line 15, col. 5 * |
-| file://:0:0:0:0 | const lambda [] type at line 22, col. 19 |
-| file://:0:0:0:0 | const lambda [] type at line 22, col. 19 & |
-| file://:0:0:0:0 | const lambda [] type at line 22, col. 19 * |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | declaration of 1st parameter |
-| file://:0:0:0:0 | decltype([...](...){...}) |
-| file://:0:0:0:0 | decltype([...](...){...}) |
-| file://:0:0:0:0 | decltype([...](...){...}) |
-| file://:0:0:0:0 | decltype([...](...){...}) |
-| file://:0:0:0:0 | decltype([...](...){...}) |
-| file://:0:0:0:0 | definition of fp_offset |
-| file://:0:0:0:0 | definition of gp_offset |
-| file://:0:0:0:0 | definition of overflow_arg_area |
-| file://:0:0:0:0 | definition of reg_save_area |
-| file://:0:0:0:0 | foo & |
-| file://:0:0:0:0 | foo && |
-| file://:0:0:0:0 | foo * |
-| file://:0:0:0:0 | foo *const |
-| file://:0:0:0:0 | fp_offset |
-| file://:0:0:0:0 | gp_offset |
-| file://:0:0:0:0 | int & |
-| file://:0:0:0:0 | lambda [] type at line 3, col. 5 & |
-| file://:0:0:0:0 | lambda [] type at line 3, col. 5 && |
-| file://:0:0:0:0 | lambda [] type at line 3, col. 5 * |
-| file://:0:0:0:0 | lambda [] type at line 9, col. 5 & |
-| file://:0:0:0:0 | lambda [] type at line 9, col. 5 && |
-| file://:0:0:0:0 | lambda [] type at line 9, col. 5 * |
-| file://:0:0:0:0 | lambda [] type at line 9, col. 15 & |
-| file://:0:0:0:0 | lambda [] type at line 9, col. 15 && |
-| file://:0:0:0:0 | lambda [] type at line 9, col. 15 * |
-| file://:0:0:0:0 | lambda [] type at line 15, col. 5 & |
-| file://:0:0:0:0 | lambda [] type at line 15, col. 5 && |
-| file://:0:0:0:0 | lambda [] type at line 15, col. 5 * |
-| file://:0:0:0:0 | lambda [] type at line 22, col. 19 & |
-| file://:0:0:0:0 | lambda [] type at line 22, col. 19 && |
-| file://:0:0:0:0 | lambda [] type at line 22, col. 19 * |
-| file://:0:0:0:0 | operator= |
-| file://:0:0:0:0 | operator= |
-| file://:0:0:0:0 | overflow_arg_area |
-| file://:0:0:0:0 | reg_save_area |
-| file://:0:0:0:0 | void * |

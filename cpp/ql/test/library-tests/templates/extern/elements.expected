@@ -1,4 +1,3 @@
-| extern.cpp:0:0:0:0 | extern.cpp |
 | extern.cpp:1:20:1:20 | T |
 | extern.cpp:1:20:1:20 | definition of T |
 | extern.cpp:2:5:2:5 | declaration of f |

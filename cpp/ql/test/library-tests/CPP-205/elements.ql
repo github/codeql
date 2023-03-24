@@ -18,6 +18,6 @@ string describe(Element e) {
 
 from Element e
 where
-  not e.getLocation() instanceof UnknownLocation and
+  e.getLocation().getFile().getBaseName() != "" and
   not e instanceof Folder
 select e, concat(describe(e), ", ")

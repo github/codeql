@@ -2,7 +2,6 @@ import cpp
 
 from Element e
 where
-  not e instanceof BuiltInType and
-  not e instanceof Specifier and
-  not e instanceof Folder
+  e.getLocation().getFile().getBaseName() != "" and
+  not e instanceof Container
 select e
