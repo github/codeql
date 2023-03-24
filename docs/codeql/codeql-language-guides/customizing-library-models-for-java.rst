@@ -10,14 +10,9 @@ Customizing Library Models for Java
 
 The Java analysis can be customized by adding library models (summaries, sinks and sources) in data extension files.
 A model is a definition of a behavior of a library element, such as a method, that is used to improve the data flow analysis precision by identifying more results.
-Most of the security related queries are *taint tracking* queries that try to find paths from a *source* of untrusted input to a *sink* that represents a vulnerability.
-Furthermore, the taint tracking queries also need to know how data can flow through elements that are not included in the source code - these are named *summaries*.
+Most of the security related queries are taint tracking queries that try to find paths from a source of untrusted input to a sink that represents a vulnerability. Sources are the starting points of a taint tracking data flow analysis, and sinks are the end points of a taint tracking data flow analysis.
 
-That is:
-
-- **sources** are the starting points of a taint tracking data flow analysis.
-- **sinks** are the end points of a taint tracking data flow analysis.
-- **summaries** are models of elements that allow us to synthesize the elements flow behavior without having them in the source code. This is especially helpful when using a third party (or the standard) library.
+Furthermore, the taint tracking queries also need to know how data can flow through elements that are not included in the source code. These are named summaries: they are models of elements that allow us to synthesize the elements flow behavior without having them in the source code. This is especially helpful when using a third party (or the standard) library.
 
 The models are defined using data extensions where each tuple constitutes a model.
 A data extension file for Java is a YAML file in the form:
@@ -46,9 +41,9 @@ The extensible predicates are populated using data extensions specified in YAML 
 
 In the sections below, we will provide examples of how to add tuples to the different extensible predicates.
 The extensible predicates are used to customize and improve the existing data flow queries, by providing sources, sinks, and flow through (summaries) for library elements.
-The :ref:`reference-material` section will provide details on the *mini DSLs* that defines models for each extensible predicate.
+The :ref:`reference-material` section will provide details on the *mini DSLs* that define models for each extensible predicate.
 
-Example: Taint sink in the **java.sql** package.
+Example: Taint sink in the **java.sql** package
 ------------------------------------------------
 
 In this example we will show how to model the argument of the **execute** method as a SQL injection sink.
@@ -62,7 +57,7 @@ Please note that this sink is already added to the CodeQL Java analysis.
        stmt.execute(query); // The argument to this method is a SQL injection sink.
    }
 
-This means that we want to add a tuple to the **sinkModel**\(package, type, subtypes, name, signature, ext, input, kind, provenance) extensible predicate, which can be achieved by adding the following to a data extension file:
+We need to add a tuple to the **sinkModel**\(package, type, subtypes, name, signature, ext, input, kind, provenance) extensible predicate. To do this, add the following to a data extension file:
 
 .. code-block:: yaml
 
@@ -73,7 +68,6 @@ This means that we want to add a tuple to the **sinkModel**\(package, type, subt
        data:
          - ["java.sql", "Statement", True, "execute", "(String)", "", "Argument[0]", "sql", "manual"]
 
-Reasoning:
 
 Since we are adding a new sink, we need to add a tuple to the **sinkModel** extensible predicate.
 The first five values identify the callable (in this case a method) to be modeled as a sink.
@@ -91,7 +85,7 @@ The remaining values are used to define the **access path**, the **kind**, and t
 - The eighth value **sql** is the kind of the sink. The sink kind is used to define the queries where the sink is in scope. In this case - the SQL injection queries.
 - The ninth value **manual** is the provenance of the sink, which is used to identify the origin of the sink.
  
-Example: Taint source from the **java.net** package.
+Example: Taint source from the **java.net** package
 ----------------------------------------------------
 In this example we show how to model the return value from the **getInputStream** method as a **remote** source.
 This is the **getInputStream** method in the **Socket** class, which is located in the **java.net** package.
@@ -104,7 +98,7 @@ Please note that this source is already added to the CodeQL Java analysis.
        ...
    }
 
-This means that we want to add a tuple to the **sourceModel**\(package, type, subtypes, name, signature, ext, output, kind, provenance) extensible predicate, which can be achieved by adding the following to a data extension file:
+We need to add a tuple to the **sourceModel**\(package, type, subtypes, name, signature, ext, output, kind, provenance) extensible predicate. To do this, add the following to a data extension file:
 
 .. code-block:: yaml
 
@@ -115,7 +109,6 @@ This means that we want to add a tuple to the **sourceModel**\(package, type, su
        data:
          - ["java.net", "Socket", False, "getInputStream", "()", "", "ReturnValue", "remote", "manual"]
 
-Reasoning:
 
 Since we are adding a new source, we need to add a tuple to the **sourceModel** extensible predicate.
 The first five values identify the callable (in this case a method) to be modeled as a source.
@@ -133,7 +126,7 @@ The remaining values are used to define the **access path**, the **kind**, and t
 - The eighth value **remote** is the kind of the source. The source kind is used to define the queries where the source is in scope. **remote** applies to many of the security related queries as it means a remote source of untrusted data. As an example the SQL injection query uses **remote** sources.
 - The ninth value **manual** is the provenance of the source, which is used to identify the origin of the source.
 
-Example: Add flow through the **concat** method.
+Example: Add flow through the **concat** method
 ------------------------------------------------
 In this example we show how to model flow through a method for a simple case.
 This pattern covers many of the cases where we need to define flow through a method.
@@ -146,7 +139,7 @@ Please note that the flow through the **concat** method is already added to the 
        ...
    }
 
-This means that we want to add tuples to the **summaryModel**\(package, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate, which can be achieved by adding the following to a data extension file:
+We need to add tuples to the **summaryModel**\(package, type, subtypes, name, signature, ext, input, output, kind, provenance) extensible predicate. To do this, add the following to a data extension file:
 
 .. code-block:: yaml
 
@@ -181,7 +174,7 @@ The remaining values are used to define the **access path**, the **kind**, and t
 - The ninth value **taint** is the kind of the flow. **taint** means that taint is propagated through the call.
 - The tenth value **manual** is the provenance of the summary, which is used to identify the origin of the summary.
 
-Example: Add flow through the **map** method.
+Example: Add flow through the **map** method
 ---------------------------------------------
 In this example, we will see a more complex example of modeling flow through a method.
 This pattern shows how to model flow through higher order methods and collection types.
@@ -194,7 +187,7 @@ Please note that the flow through the **map** method is already added to the Cod
      ...
    }
 
-This can be achieved by adding the following to a data extension file:
+To do this, add the following to a data extension file:
 
 .. code-block:: yaml
 
@@ -206,7 +199,6 @@ This can be achieved by adding the following to a data extension file:
          - ["java.util.stream", "Stream", True, "map", "(Function)", "", "Argument[this].Element", "Argument[0].Parameter[0]", "value", "manual"]
          - ["java.util.stream", "Stream", True, "map", "(Function)", "", "Argument[0].ReturnValue", "ReturnValue.Element", "value", "manual"]
 
-Reasoning:
 
 Since we are adding flow through a method, we need to add tuples to the **summaryModel** extensible predicate.
 Each tuple defines part of the flow that comprises the total flow through the **map** method.
@@ -225,24 +217,24 @@ The remaining values are used to define the **access path**, the **kind**, and t
 - The seventh value is the access path to the **input** (where data flows from).
 - The eighth value is the access path to the **output** (where data flows to).
 
-For the first row the
+For the first row:
 
 - The seventh value is **Argument[this].Element**, which is the access path to the elements of the qualifier (the elements of the stream **s** in the example).
 - The eight value is **Argument[0].Parameter[0]**, which is the access path to the first parameter of the **Function** argument of **map** (the lambda parameter **e** in the example).
 
-For the second row the
+For the second row:
 
 - The seventh value is **Argument[0].ReturnValue**, which is the access path to the return value of the **Function** argument of **map** (the return value of the lambda in the example).
 - The eighth value is **ReturnValue.Element**, which is the access path to the elements of the return value of **map** (the elements of the stream **l** in the example).
 
-The remaining values for both rows
+For the remaining values for both rows:
 
 - The ninth value **value** is the kind of the flow. **value** means that the value is preserved.
 - The tenth value **manual** is the provenance of the summary, which is used to identify the origin of the summary.
 
-That is, the first row models that there is value flow from the elements of the qualifier stream into the first argument of the Function provided to **map** and the second row models that there is value flow from the return value of the Function to the elements of the stream returned from **map**.
+That is, the first row models that there is value flow from the elements of the qualifier stream into the first argument of the function provided to **map** and the second row models that there is value flow from the return value of the function to the elements of the stream returned from **map**.
 
-Example: Add a **neutral** method.
+Example: Add a **neutral** method
 ----------------------------------
 In this example we will show how to model the **now** method as being neutral.
 This is purely for completeness and has no impact on the analysis.
@@ -256,7 +248,7 @@ Please note that the neutral model for the **now** method is already added.
        ...
    }
 
-This means that we want to add a tuple to the **neutralModel**\(package, type, name, signature, provenance) extensible predicate, which can be achieved by adding the following to a data extension file:
+We need to add a tuple to the **neutralModel**\(package, type, name, signature, provenance) extensible predicate. To do this, add the following to a data extension file:
 
 .. code-block:: yaml
 
@@ -267,7 +259,6 @@ This means that we want to add a tuple to the **neutralModel**\(package, type, n
      data:
        - ["java.time", "Instant", "now", "()", "manual"]
 
-Reasoning:
 
 Since we are adding a neutral model, we need to add tuples to the **neutralModel** extensible predicate.
 The first five values identify the callable (in this case a method) to be modeled as a neutral and the fifth value is the provenance (origin) of the neutral.
@@ -290,7 +281,7 @@ Extensible predicates
 ---------------------
 
 Below is a description of the columns for each extensible predicate.
-Sources, Sinks, Summaries and Neutrals are commonly known as Models.
+Sources, sinks, summaries and neutrals are commonly known as models.
 The semantics of many of the columns of the extensible predicates are shared.
 
 The shared columns are:
