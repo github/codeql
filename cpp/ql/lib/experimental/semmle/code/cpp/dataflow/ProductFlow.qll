@@ -295,14 +295,14 @@ module ProductFlow {
       predicate isSource(DataFlow::Node source, FlowState state) {
         exists(Flow1::PathNode source1 |
           Config::isSourcePair(source1.getNode(), source1.getState(), source, state) and
-          Flow1::hasFlowPath(source1, _)
+          Flow1::flowPath(source1, _)
         )
       }
 
       predicate isSink(DataFlow::Node sink, FlowState state) {
         exists(Flow1::PathNode sink1 |
           Config::isSinkPair(sink1.getNode(), sink1.getState(), sink, state) and
-          Flow1::hasFlowPath(_, sink1)
+          Flow1::flowPath(_, sink1)
         )
       }
 
