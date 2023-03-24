@@ -1,7 +1,8 @@
 edges
 | app/controllers/users_controller.rb:4:11:4:16 | call to params :  | app/controllers/users_controller.rb:4:11:4:27 | ...[...] |
+| app/controllers/users_controller.rb:9:5:9:12 | password :  | app/controllers/users_controller.rb:10:42:10:49 | password |
 | app/controllers/users_controller.rb:9:16:9:21 | call to params :  | app/controllers/users_controller.rb:9:16:9:27 | ...[...] :  |
-| app/controllers/users_controller.rb:9:16:9:27 | ...[...] :  | app/controllers/users_controller.rb:10:42:10:49 | password |
+| app/controllers/users_controller.rb:9:16:9:27 | ...[...] :  | app/controllers/users_controller.rb:9:5:9:12 | password :  |
 | app/controllers/users_controller.rb:14:5:14:13 | [post] self [@password] :  | app/controllers/users_controller.rb:15:42:15:50 | self [@password] :  |
 | app/controllers/users_controller.rb:14:17:14:22 | call to params :  | app/controllers/users_controller.rb:14:17:14:28 | ...[...] :  |
 | app/controllers/users_controller.rb:14:17:14:28 | ...[...] :  | app/controllers/users_controller.rb:14:5:14:13 | [post] self [@password] :  |
@@ -9,6 +10,7 @@ edges
 nodes
 | app/controllers/users_controller.rb:4:11:4:16 | call to params :  | semmle.label | call to params :  |
 | app/controllers/users_controller.rb:4:11:4:27 | ...[...] | semmle.label | ...[...] |
+| app/controllers/users_controller.rb:9:5:9:12 | password :  | semmle.label | password :  |
 | app/controllers/users_controller.rb:9:16:9:21 | call to params :  | semmle.label | call to params :  |
 | app/controllers/users_controller.rb:9:16:9:27 | ...[...] :  | semmle.label | ...[...] :  |
 | app/controllers/users_controller.rb:10:42:10:49 | password | semmle.label | password |

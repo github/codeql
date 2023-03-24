@@ -1,34 +1,45 @@
 edges
-| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:6:20:6:27 | password |
-| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:8:21:8:28 | password |
-| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:10:21:10:28 | password |
-| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:12:21:12:28 | password |
-| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:14:23:14:30 | password |
-| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:16:20:16:27 | password |
-| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:19:33:19:40 | password |
-| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:21:44:21:51 | password |
-| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:23:33:23:40 | password |
-| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:26:18:26:34 | "pw: #{...}" |
-| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:28:26:28:33 | password |
-| logging.rb:30:20:30:53 | "aec5058e61f7f122998b1a30ee2c66b6" :  | logging.rb:38:20:38:23 | hsh1 [element :password] :  |
+| logging.rb:3:1:3:8 | password :  | logging.rb:6:20:6:27 | password |
+| logging.rb:3:1:3:8 | password :  | logging.rb:8:21:8:28 | password |
+| logging.rb:3:1:3:8 | password :  | logging.rb:10:21:10:28 | password |
+| logging.rb:3:1:3:8 | password :  | logging.rb:12:21:12:28 | password |
+| logging.rb:3:1:3:8 | password :  | logging.rb:14:23:14:30 | password |
+| logging.rb:3:1:3:8 | password :  | logging.rb:16:20:16:27 | password |
+| logging.rb:3:1:3:8 | password :  | logging.rb:19:33:19:40 | password |
+| logging.rb:3:1:3:8 | password :  | logging.rb:21:44:21:51 | password |
+| logging.rb:3:1:3:8 | password :  | logging.rb:23:33:23:40 | password |
+| logging.rb:3:1:3:8 | password :  | logging.rb:26:18:26:34 | "pw: #{...}" |
+| logging.rb:3:1:3:8 | password :  | logging.rb:28:26:28:33 | password |
+| logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | logging.rb:3:1:3:8 | password :  |
+| logging.rb:30:1:30:4 | hsh1 [element :password] :  | logging.rb:38:20:38:23 | hsh1 [element :password] :  |
+| logging.rb:30:20:30:53 | "aec5058e61f7f122998b1a30ee2c66b6" :  | logging.rb:30:1:30:4 | hsh1 [element :password] :  |
+| logging.rb:34:1:34:4 | [post] hsh2 [element :password] :  | logging.rb:35:1:35:4 | hsh3 [element :password] :  |
 | logging.rb:34:1:34:4 | [post] hsh2 [element :password] :  | logging.rb:40:20:40:23 | hsh2 [element :password] :  |
-| logging.rb:34:1:34:4 | [post] hsh2 [element :password] :  | logging.rb:42:20:42:23 | hsh3 [element :password] :  |
 | logging.rb:34:19:34:52 | "beeda625d7306b45784d91ea0336e201" :  | logging.rb:34:1:34:4 | [post] hsh2 [element :password] :  |
+| logging.rb:35:1:35:4 | hsh3 [element :password] :  | logging.rb:42:20:42:23 | hsh3 [element :password] :  |
 | logging.rb:38:20:38:23 | hsh1 [element :password] :  | logging.rb:38:20:38:34 | ...[...] |
 | logging.rb:40:20:40:23 | hsh2 [element :password] :  | logging.rb:40:20:40:34 | ...[...] |
 | logging.rb:42:20:42:23 | hsh3 [element :password] :  | logging.rb:42:20:42:34 | ...[...] |
-| logging.rb:64:35:64:68 | "ca497451f5e883662fb1a37bc9ec7838" :  | logging.rb:68:35:68:65 | password_masked_ineffective_sub :  |
-| logging.rb:65:38:65:71 | "ca497451f5e883662fb1a37bc9ec7838" :  | logging.rb:78:20:78:53 | password_masked_ineffective_sub_ex |
-| logging.rb:66:36:66:69 | "a7e3747b19930d4f4b8181047194832f" :  | logging.rb:70:36:70:67 | password_masked_ineffective_gsub :  |
-| logging.rb:67:39:67:72 | "a7e3747b19930d4f4b8181047194832f" :  | logging.rb:80:20:80:54 | password_masked_ineffective_gsub_ex |
+| logging.rb:64:1:64:31 | password_masked_ineffective_sub :  | logging.rb:68:35:68:65 | password_masked_ineffective_sub :  |
+| logging.rb:64:35:64:68 | "ca497451f5e883662fb1a37bc9ec7838" :  | logging.rb:64:1:64:31 | password_masked_ineffective_sub :  |
+| logging.rb:65:1:65:34 | password_masked_ineffective_sub_ex :  | logging.rb:78:20:78:53 | password_masked_ineffective_sub_ex |
+| logging.rb:65:38:65:71 | "ca497451f5e883662fb1a37bc9ec7838" :  | logging.rb:65:1:65:34 | password_masked_ineffective_sub_ex :  |
+| logging.rb:66:1:66:32 | password_masked_ineffective_gsub :  | logging.rb:70:36:70:67 | password_masked_ineffective_gsub :  |
+| logging.rb:66:36:66:69 | "a7e3747b19930d4f4b8181047194832f" :  | logging.rb:66:1:66:32 | password_masked_ineffective_gsub :  |
+| logging.rb:67:1:67:35 | password_masked_ineffective_gsub_ex :  | logging.rb:80:20:80:54 | password_masked_ineffective_gsub_ex |
+| logging.rb:67:39:67:72 | "a7e3747b19930d4f4b8181047194832f" :  | logging.rb:67:1:67:35 | password_masked_ineffective_gsub_ex :  |
+| logging.rb:68:1:68:31 | password_masked_ineffective_sub :  | logging.rb:74:20:74:50 | password_masked_ineffective_sub |
 | logging.rb:68:35:68:65 | password_masked_ineffective_sub :  | logging.rb:68:35:68:88 | call to sub :  |
-| logging.rb:68:35:68:88 | call to sub :  | logging.rb:74:20:74:50 | password_masked_ineffective_sub |
+| logging.rb:68:35:68:88 | call to sub :  | logging.rb:68:1:68:31 | password_masked_ineffective_sub :  |
+| logging.rb:70:1:70:32 | password_masked_ineffective_gsub :  | logging.rb:76:20:76:51 | password_masked_ineffective_gsub |
 | logging.rb:70:36:70:67 | password_masked_ineffective_gsub :  | logging.rb:70:36:70:86 | call to gsub :  |
-| logging.rb:70:36:70:86 | call to gsub :  | logging.rb:76:20:76:51 | password_masked_ineffective_gsub |
+| logging.rb:70:36:70:86 | call to gsub :  | logging.rb:70:1:70:32 | password_masked_ineffective_gsub :  |
 | logging.rb:82:9:82:16 | password :  | logging.rb:84:15:84:22 | password |
-| logging.rb:87:16:87:49 | "65f2950df2f0e2c38d7ba2ccca767291" :  | logging.rb:88:5:88:16 | password_arg :  |
+| logging.rb:87:1:87:12 | password_arg :  | logging.rb:88:5:88:16 | password_arg :  |
+| logging.rb:87:16:87:49 | "65f2950df2f0e2c38d7ba2ccca767291" :  | logging.rb:87:1:87:12 | password_arg :  |
 | logging.rb:88:5:88:16 | password_arg :  | logging.rb:82:9:82:16 | password :  |
 nodes
+| logging.rb:3:1:3:8 | password :  | semmle.label | password :  |
 | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" :  | semmle.label | "043697b96909e03ca907599d6420555f" :  |
 | logging.rb:6:20:6:27 | password | semmle.label | password |
 | logging.rb:8:21:8:28 | password | semmle.label | password |
@@ -41,21 +52,29 @@ nodes
 | logging.rb:23:33:23:40 | password | semmle.label | password |
 | logging.rb:26:18:26:34 | "pw: #{...}" | semmle.label | "pw: #{...}" |
 | logging.rb:28:26:28:33 | password | semmle.label | password |
+| logging.rb:30:1:30:4 | hsh1 [element :password] :  | semmle.label | hsh1 [element :password] :  |
 | logging.rb:30:20:30:53 | "aec5058e61f7f122998b1a30ee2c66b6" :  | semmle.label | "aec5058e61f7f122998b1a30ee2c66b6" :  |
 | logging.rb:34:1:34:4 | [post] hsh2 [element :password] :  | semmle.label | [post] hsh2 [element :password] :  |
 | logging.rb:34:19:34:52 | "beeda625d7306b45784d91ea0336e201" :  | semmle.label | "beeda625d7306b45784d91ea0336e201" :  |
+| logging.rb:35:1:35:4 | hsh3 [element :password] :  | semmle.label | hsh3 [element :password] :  |
 | logging.rb:38:20:38:23 | hsh1 [element :password] :  | semmle.label | hsh1 [element :password] :  |
 | logging.rb:38:20:38:34 | ...[...] | semmle.label | ...[...] |
 | logging.rb:40:20:40:23 | hsh2 [element :password] :  | semmle.label | hsh2 [element :password] :  |
 | logging.rb:40:20:40:34 | ...[...] | semmle.label | ...[...] |
 | logging.rb:42:20:42:23 | hsh3 [element :password] :  | semmle.label | hsh3 [element :password] :  |
 | logging.rb:42:20:42:34 | ...[...] | semmle.label | ...[...] |
+| logging.rb:64:1:64:31 | password_masked_ineffective_sub :  | semmle.label | password_masked_ineffective_sub :  |
 | logging.rb:64:35:64:68 | "ca497451f5e883662fb1a37bc9ec7838" :  | semmle.label | "ca497451f5e883662fb1a37bc9ec7838" :  |
+| logging.rb:65:1:65:34 | password_masked_ineffective_sub_ex :  | semmle.label | password_masked_ineffective_sub_ex :  |
 | logging.rb:65:38:65:71 | "ca497451f5e883662fb1a37bc9ec7838" :  | semmle.label | "ca497451f5e883662fb1a37bc9ec7838" :  |
+| logging.rb:66:1:66:32 | password_masked_ineffective_gsub :  | semmle.label | password_masked_ineffective_gsub :  |
 | logging.rb:66:36:66:69 | "a7e3747b19930d4f4b8181047194832f" :  | semmle.label | "a7e3747b19930d4f4b8181047194832f" :  |
+| logging.rb:67:1:67:35 | password_masked_ineffective_gsub_ex :  | semmle.label | password_masked_ineffective_gsub_ex :  |
 | logging.rb:67:39:67:72 | "a7e3747b19930d4f4b8181047194832f" :  | semmle.label | "a7e3747b19930d4f4b8181047194832f" :  |
+| logging.rb:68:1:68:31 | password_masked_ineffective_sub :  | semmle.label | password_masked_ineffective_sub :  |
 | logging.rb:68:35:68:65 | password_masked_ineffective_sub :  | semmle.label | password_masked_ineffective_sub :  |
 | logging.rb:68:35:68:88 | call to sub :  | semmle.label | call to sub :  |
+| logging.rb:70:1:70:32 | password_masked_ineffective_gsub :  | semmle.label | password_masked_ineffective_gsub :  |
 | logging.rb:70:36:70:67 | password_masked_ineffective_gsub :  | semmle.label | password_masked_ineffective_gsub :  |
 | logging.rb:70:36:70:86 | call to gsub :  | semmle.label | call to gsub :  |
 | logging.rb:74:20:74:50 | password_masked_ineffective_sub | semmle.label | password_masked_ineffective_sub |
@@ -64,6 +83,7 @@ nodes
 | logging.rb:80:20:80:54 | password_masked_ineffective_gsub_ex | semmle.label | password_masked_ineffective_gsub_ex |
 | logging.rb:82:9:82:16 | password :  | semmle.label | password :  |
 | logging.rb:84:15:84:22 | password | semmle.label | password |
+| logging.rb:87:1:87:12 | password_arg :  | semmle.label | password_arg :  |
 | logging.rb:87:16:87:49 | "65f2950df2f0e2c38d7ba2ccca767291" :  | semmle.label | "65f2950df2f0e2c38d7ba2ccca767291" :  |
 | logging.rb:88:5:88:16 | password_arg :  | semmle.label | password_arg :  |
 subpaths
