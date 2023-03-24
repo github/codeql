@@ -9,6 +9,5 @@ predicate interesting(Element e) {
 }
 
 from Element e
-where
-  interesting(e.getEnclosingElement*())
+where interesting(e.getEnclosingElement*())
 select e
