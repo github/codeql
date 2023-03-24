@@ -30,19 +30,12 @@ private import codeql.ruby.ast.internal.Literal
 cached
 private DataFlow::Node stringConstCompareAndOverwrite() {
   exists(
-    CfgNodes::AstCfgNode guard, ExprCfgNode testedNode, boolean branch,
-    Ssa::WriteDefinition overwrite, Ssa::PhiNode phi
+    CfgNodes::AstCfgNode guard, ExprCfgNode testedNode, boolean branch, Ssa::PhiNode phi,
+    Ssa::WriteDefinition overwrite
   |
     stringConstCompare(guard, testedNode, branch) and
-    overwrite.getSourceVariable() = testedNode.getExpr().(VariableReadAccess).getVariable() and
-    exists(ExprCfgNode value | overwrite.assigns(value) |
-      value.getConstantValue().isStringlikeValue(_)
-    ) and
-    exists(ConditionBlock conditionBlock, SuccessorTypes::ConditionalSuccessor s |
-      guard = conditionBlock.getLastNode() and
-      s.getValue() = branch.booleanNot() and
-      conditionBlock.controls(overwrite.getBasicBlock(), s)
-    ) and
+    variableOverwrite(testedNode, overwrite) and
+    guardControlsDef(overwrite, guard, branch.booleanNot()) and
     phi.getAnInput() = overwrite and
     result.asExpr() = phi.getARead()
   )
@@ -64,21 +57,39 @@ private DataFlow::Node stringConstCompareAndOverwrite() {
 cached
 private DataFlow::Node stringConstArrayInclusionAndOverwrite() {
   exists(
-    CfgNodes::AstCfgNode guard, ExprCfgNode testedNode, boolean branch,
-    Ssa::WriteDefinition overwrite, Ssa::PhiNode phi
+    CfgNodes::AstCfgNode guard, ExprCfgNode testedNode, boolean branch, Ssa::PhiNode phi,
+    Ssa::WriteDefinition overwrite
   |
     stringConstArrayInclusionCall(guard, testedNode, branch) and
-    overwrite.getSourceVariable() = testedNode.getExpr().(VariableReadAccess).getVariable() and
-    exists(ExprCfgNode value | overwrite.assigns(value) |
-      value.getConstantValue().isStringlikeValue(_)
-    ) and
-    exists(ConditionBlock conditionBlock, SuccessorTypes::ConditionalSuccessor s |
-      guard = conditionBlock.getLastNode() and
-      s.getValue() = branch.booleanNot() and
-      conditionBlock.controls(overwrite.getBasicBlock(), s)
-    ) and
+    variableOverwrite(testedNode, overwrite) and
+    guardControlsDef(overwrite, guard, branch.booleanNot()) and
     phi.getAnInput() = overwrite and
     result.asExpr() = phi.getARead()
+  )
+}
+
+/**
+ * Holds if `variableRead` is a read of a variable which is overwritten with a
+ * constant string value in `overwrite`.
+ */
+private predicate variableOverwrite(ExprCfgNode variableRead, Ssa::WriteDefinition overwrite) {
+  overwrite.getSourceVariable() = variableRead.getExpr().(VariableReadAccess).getVariable() and
+  exists(ExprCfgNode value | overwrite.assigns(value) |
+    value.getConstantValue().isStringlikeValue(_)
+  )
+}
+
+/**
+ * Holds if `guard` is a control flow branch, and control flow reaches `def`
+ * when `guard` evaluates to `branch`.
+ */
+private predicate guardControlsDef(
+  Ssa::WriteDefinition def, CfgNodes::AstCfgNode guard, boolean branch
+) {
+  exists(ConditionBlock conditionBlock, SuccessorTypes::BooleanSuccessor s |
+    guard = conditionBlock.getLastNode() and
+    s.getValue() = branch and
+    conditionBlock.controls(def.getBasicBlock(), s)
   )
 }
 

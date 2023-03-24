@@ -358,6 +358,13 @@ controls
 | barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:316:1:316:36 | ... unless ... | match |
 | barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:320:1:322:3 | if ... | match |
 | barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:321:5:321:7 | foo | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:326:1:330:3 | case ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:327:1:327:10 | [match] when ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:327:1:327:10 | [no-match] when ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:328:1:329:15 | [match] when ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:328:1:329:15 | [no-match] when ... | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:328:7:328:9 | bar | match |
+| barrier-guards.rb:250:4:250:8 | "foo" | barrier-guards.rb:329:5:329:7 | foo | match |
 | barrier-guards.rb:254:4:254:28 | ... == ... | barrier-guards.rb:255:5:255:7 | foo | true |
 | barrier-guards.rb:259:4:259:16 | ... == ... | barrier-guards.rb:260:5:260:7 | foo | true |
 | barrier-guards.rb:264:4:264:16 | ... == ... | barrier-guards.rb:265:5:265:7 | foo | true |
@@ -378,3 +385,19 @@ controls
 | barrier-guards.rb:310:8:310:24 | call to include? | barrier-guards.rb:311:5:311:7 | foo | false |
 | barrier-guards.rb:316:20:316:36 | call to include? | barrier-guards.rb:316:1:316:3 | foo | false |
 | barrier-guards.rb:320:4:320:20 | call to include? | barrier-guards.rb:321:5:321:7 | foo | true |
+| barrier-guards.rb:327:1:327:10 | [no-match] when ... | barrier-guards.rb:326:1:330:3 | case ... | no-match |
+| barrier-guards.rb:327:1:327:10 | [no-match] when ... | barrier-guards.rb:328:1:329:15 | [match] when ... | no-match |
+| barrier-guards.rb:327:1:327:10 | [no-match] when ... | barrier-guards.rb:328:1:329:15 | [no-match] when ... | no-match |
+| barrier-guards.rb:327:1:327:10 | [no-match] when ... | barrier-guards.rb:328:7:328:9 | bar | no-match |
+| barrier-guards.rb:327:1:327:10 | [no-match] when ... | barrier-guards.rb:329:5:329:7 | foo | no-match |
+| barrier-guards.rb:327:6:327:10 | "foo" | barrier-guards.rb:326:1:330:3 | case ... | no-match |
+| barrier-guards.rb:327:6:327:10 | "foo" | barrier-guards.rb:327:1:327:10 | [match] when ... | match |
+| barrier-guards.rb:327:6:327:10 | "foo" | barrier-guards.rb:327:1:327:10 | [no-match] when ... | no-match |
+| barrier-guards.rb:327:6:327:10 | "foo" | barrier-guards.rb:328:1:329:15 | [match] when ... | no-match |
+| barrier-guards.rb:327:6:327:10 | "foo" | barrier-guards.rb:328:1:329:15 | [no-match] when ... | no-match |
+| barrier-guards.rb:327:6:327:10 | "foo" | barrier-guards.rb:328:7:328:9 | bar | no-match |
+| barrier-guards.rb:327:6:327:10 | "foo" | barrier-guards.rb:329:5:329:7 | foo | no-match |
+| barrier-guards.rb:328:1:329:15 | [match] when ... | barrier-guards.rb:329:5:329:7 | foo | match |
+| barrier-guards.rb:328:6:328:10 | "bar" | barrier-guards.rb:328:1:329:15 | [match] when ... | match |
+| barrier-guards.rb:328:6:328:10 | "bar" | barrier-guards.rb:328:1:329:15 | [no-match] when ... | no-match |
+| barrier-guards.rb:328:6:328:10 | "bar" | barrier-guards.rb:329:5:329:7 | foo | match |

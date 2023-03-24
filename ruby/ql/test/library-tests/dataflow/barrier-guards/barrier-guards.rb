@@ -321,3 +321,11 @@ if foos.include? foo
     foo = "bar"
 end
 foo # not guarded - the overwrite happens in the wrong branch.
+
+foo = some_call()
+case foo
+when "foo"
+when "bar"
+    foo = "foo"
+end
+foo # not guarded
