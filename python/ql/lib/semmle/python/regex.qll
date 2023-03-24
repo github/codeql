@@ -4,6 +4,7 @@ private import semmle.python.Frameworks
 private import regexp.internal.RegExpTracking as RegExpTracking
 private import semmle.python.Concepts as Concepts
 private import semmle.python.regexp.RegexTreeView
+private import semmle.python.dataflow.new.DataFlow
 import regexp.internal.ParseRegExp
 
 /** Gets a parsed regular expression term that is executed at `exec`. */
@@ -22,19 +23,6 @@ module RegExpInterpretation {
    * flow to method calls like `re.compile`.
    */
   abstract class Range extends DataFlow::Node { }
-}
-
-private import semmle.python.ApiGraphs
-
-/**
- * A node interpreted as a regular expression.
- * Speficically nodes where string values are interpreted as regular expressions.
- */
-class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
-  StdLibRegExpInterpretation() {
-    this =
-      API::moduleImport("re").getMember("compile").getACall().getParameter(0, "pattern").asSink()
-  }
 }
 
 /** A StrConst used as a regular expression */
