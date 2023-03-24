@@ -161,4 +161,4 @@ private module NetworkToBufferSizeConfig implements DataFlow::ConfigSig {
   }
 }
 
-module NetworkToBufferSizeFlow = DataFlow::Make<NetworkToBufferSizeConfig>;
+module NetworkToBufferSizeFlow = DataFlow::Global<NetworkToBufferSizeConfig>;

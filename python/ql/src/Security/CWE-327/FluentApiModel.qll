@@ -112,7 +112,7 @@ module InsecureContextConfiguration2 implements DataFlow::StateConfigSig {
   }
 }
 
-private module InsecureContextFlow = DataFlow::MakeWithState<InsecureContextConfiguration2>;
+private module InsecureContextFlow = DataFlow::GlobalWithState<InsecureContextConfiguration2>;
 
 /**
  * Holds if `conectionCreation` marks the creation of a connection based on the contex
@@ -127,7 +127,7 @@ predicate unsafe_connection_creation_with_context(
 ) {
   // Connection created from a context allowing `insecure_version`.
   exists(InsecureContextFlow::PathNode src, InsecureContextFlow::PathNode sink |
-    InsecureContextFlow::hasFlowPath(src, sink) and
+    InsecureContextFlow::flowPath(src, sink) and
     src.getNode() = contextOrigin and
     sink.getNode() = connectionCreation and
     sink.getState().allowsInsecureVersion(insecure_version) and

@@ -140,10 +140,8 @@ private module LambdaFlow {
   }
 
   pragma[nomagic]
-  private TReturnPositionSimple viableReturnPosLambda(
-    DataFlowCall call, DataFlowCallOption lastCall, ReturnKind kind
-  ) {
-    result = TReturnPositionSimple0(viableCallableLambda(call, lastCall), kind)
+  private TReturnPositionSimple viableReturnPosLambda(DataFlowCall call, ReturnKind kind) {
+    result = TReturnPositionSimple0(viableCallableLambda(call, _), kind)
   }
 
   private predicate viableReturnPosOutNonLambda(
@@ -155,11 +153,12 @@ private module LambdaFlow {
     )
   }
 
+  pragma[nomagic]
   private predicate viableReturnPosOutLambda(
-    DataFlowCall call, DataFlowCallOption lastCall, TReturnPositionSimple pos, OutNode out
+    DataFlowCall call, TReturnPositionSimple pos, OutNode out
   ) {
     exists(ReturnKind kind |
-      pos = viableReturnPosLambda(call, lastCall, kind) and
+      pos = viableReturnPosLambda(call, kind) and
       out = getAnOutNode(call, kind)
     )
   }
@@ -188,6 +187,7 @@ private module LambdaFlow {
     else any()
   }
 
+  pragma[assume_small_delta]
   pragma[nomagic]
   predicate revLambdaFlow0(
     DataFlowCall lambdaCall, LambdaCallKind kind, Node node, DataFlowType t, boolean toReturn,
@@ -274,6 +274,7 @@ private module LambdaFlow {
     )
   }
 
+  pragma[assume_small_delta]
   pragma[nomagic]
   predicate revLambdaFlowOut(
     DataFlowCall lambdaCall, LambdaCallKind kind, TReturnPositionSimple pos, DataFlowType t,
@@ -285,7 +286,7 @@ private module LambdaFlow {
       or
       // non-linear recursion
       revLambdaFlowOutLambdaCall(lambdaCall, kind, out, t, toJump, call, lastCall) and
-      viableReturnPosOutLambda(call, _, pos, out)
+      viableReturnPosOutLambda(call, pos, out)
     )
   }
 

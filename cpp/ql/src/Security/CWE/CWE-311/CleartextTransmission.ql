@@ -250,13 +250,13 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
   }
 }
 
-module FromSensitiveFlow = TaintTracking::Make<FromSensitiveConfig>;
+module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;
 
 /**
  * A taint flow configuration for flow from a sensitive expression to an encryption operation.
  */
 module ToEncryptionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { FromSensitiveFlow::hasFlow(source, _) }
+  predicate isSource(DataFlow::Node source) { FromSensitiveFlow::flow(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isSinkEncrypt(sink, _) }
 
@@ -271,7 +271,7 @@ module ToEncryptionConfig implements DataFlow::ConfigSig {
   }
 }
 
-module ToEncryptionFlow = TaintTracking::Make<ToEncryptionConfig>;
+module ToEncryptionFlow = TaintTracking::Global<ToEncryptionConfig>;
 
 /**
  * A taint flow configuration for flow from an encryption operation to a network operation.
@@ -279,25 +279,25 @@ module ToEncryptionFlow = TaintTracking::Make<ToEncryptionConfig>;
 module FromEncryptionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSinkEncrypt(source, _) }
 
-  predicate isSink(DataFlow::Node sink) { FromSensitiveFlow::hasFlowTo(sink) }
+  predicate isSink(DataFlow::Node sink) { FromSensitiveFlow::flowTo(sink) }
 
   predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
 }
 
-module FromEncryptionFlow = TaintTracking::Make<FromEncryptionConfig>;
+module FromEncryptionFlow = TaintTracking::Global<FromEncryptionConfig>;
 
 from
   FromSensitiveFlow::PathNode source, FromSensitiveFlow::PathNode sink,
   NetworkSendRecv networkSendRecv, string msg
 where
   // flow from sensitive -> network data
-  FromSensitiveFlow::hasFlowPath(source, sink) and
+  FromSensitiveFlow::flowPath(source, sink) and
   isSinkSendRecv(sink.getNode(), networkSendRecv) and
   // no flow from sensitive -> evidence of encryption
-  not ToEncryptionFlow::hasFlow(source.getNode(), _) and
-  not FromEncryptionFlow::hasFlowTo(sink.getNode()) and
+  not ToEncryptionFlow::flow(source.getNode(), _) and
+  not FromEncryptionFlow::flowTo(sink.getNode()) and
   // construct result
   if networkSendRecv instanceof NetworkSend
   then

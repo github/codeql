@@ -1,3 +1,9 @@
+## 0.5.5
+
+### New Queries
+
+* Added a new query, `java/android/arbitrary-apk-installation`, to detect installation of APKs from untrusted sources.
+
 ## 0.5.4
 
 No user-facing changes.

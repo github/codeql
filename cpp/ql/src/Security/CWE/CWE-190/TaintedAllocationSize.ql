@@ -95,14 +95,14 @@ module TaintedAllocationSizeConfig implements DataFlow::ConfigSig {
   }
 }
 
-module TaintedAllocationSize = TaintTracking::Make<TaintedAllocationSizeConfig>;
+module TaintedAllocationSize = TaintTracking::Global<TaintedAllocationSizeConfig>;
 
 from
   Expr alloc, TaintedAllocationSize::PathNode source, TaintedAllocationSize::PathNode sink,
   string taintCause
 where
   isFlowSource(source.getNode(), taintCause) and
-  TaintedAllocationSize::hasFlowPath(source, sink) and
+  TaintedAllocationSize::flowPath(source, sink) and
   allocSink(alloc, sink.getNode())
 select alloc, source, sink, "This allocation size is derived from $@ and might overflow.",
   source.getNode(), "user input (" + taintCause + ")"

@@ -20,10 +20,10 @@ activeRecordInstances
 | ActiveRecord.rb:76:5:76:66 | call to create |
 | ActiveRecord.rb:80:5:80:68 | call to create |
 | ActiveRecord.rb:84:5:84:16 | call to create |
-| associations.rb:19:1:19:20 | ... = ... |
+| associations.rb:19:1:19:7 | author1 |
 | associations.rb:19:1:19:20 | ... = ... |
 | associations.rb:19:11:19:20 | call to new |
-| associations.rb:21:1:21:28 | ... = ... |
+| associations.rb:21:1:21:5 | post1 |
 | associations.rb:21:1:21:28 | ... = ... |
 | associations.rb:21:9:21:15 | author1 |
 | associations.rb:21:9:21:21 | call to posts |
@@ -32,11 +32,11 @@ activeRecordInstances
 | associations.rb:23:12:23:16 | post1 |
 | associations.rb:23:12:23:25 | call to comments |
 | associations.rb:23:12:23:32 | call to create |
-| associations.rb:25:1:25:22 | ... = ... |
+| associations.rb:25:1:25:7 | author2 |
 | associations.rb:25:1:25:22 | ... = ... |
 | associations.rb:25:11:25:15 | post1 |
 | associations.rb:25:11:25:22 | call to author |
-| associations.rb:27:1:27:28 | ... = ... |
+| associations.rb:27:1:27:5 | post2 |
 | associations.rb:27:1:27:28 | ... = ... |
 | associations.rb:27:9:27:15 | author2 |
 | associations.rb:27:9:27:21 | call to posts |
@@ -50,7 +50,7 @@ activeRecordInstances
 | associations.rb:31:1:31:12 | call to author= |
 | associations.rb:31:1:31:22 | ... |
 | associations.rb:31:16:31:22 | ... = ... |
-| associations.rb:31:16:31:22 | ... = ... |
+| associations.rb:31:16:31:22 | __synth__0 |
 | associations.rb:31:16:31:22 | author2 |
 | associations.rb:35:1:35:5 | post2 |
 | associations.rb:35:1:35:14 | call to comments |

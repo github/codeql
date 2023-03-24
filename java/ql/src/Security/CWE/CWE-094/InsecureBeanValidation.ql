@@ -61,7 +61,7 @@ module BeanValidationConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof BeanValidationSink }
 }
 
-module BeanValidationFlow = TaintTracking::Make<BeanValidationConfig>;
+module BeanValidationFlow = TaintTracking::Global<BeanValidationConfig>;
 
 import BeanValidationFlow::PathGraph
 
@@ -80,6 +80,6 @@ where
     or
     exists(SetMessageInterpolatorCall c | not c.isSafe())
   ) and
-  BeanValidationFlow::hasFlowPath(source, sink)
+  BeanValidationFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Custom constraint error message contains an unsanitized $@.",
   source, "user-provided value"

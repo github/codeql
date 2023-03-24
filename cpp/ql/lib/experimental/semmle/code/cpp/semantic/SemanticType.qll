@@ -250,15 +250,25 @@ SemType getSemanticType(Specific::Type type) {
   Specific::unknownType(type) and result = TSemUnknownType()
 }
 
+private class SemNumericOrBooleanType extends SemSizedType {
+  SemNumericOrBooleanType() {
+    this instanceof SemNumericType
+    or
+    this instanceof SemBooleanType
+  }
+}
+
 /**
  * Holds if the conversion from `fromType` to `toType` can never overflow or underflow.
  */
-predicate conversionCannotOverflow(SemNumericType fromType, SemNumericType toType) {
+predicate conversionCannotOverflow(SemNumericOrBooleanType fromType, SemNumericOrBooleanType toType) {
   // Identity cast
   fromType = toType
   or
   // Treat any cast to an FP type as safe. It can lose precision, but not overflow.
   toType instanceof SemFloatingPointType and fromType = any(SemNumericType n)
+  or
+  fromType instanceof SemBooleanType and toType instanceof SemIntegerType
   or
   exists(SemIntegerType fromInteger, SemIntegerType toInteger, int fromSize, int toSize |
     fromInteger = fromType and

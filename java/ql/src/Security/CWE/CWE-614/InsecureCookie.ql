@@ -26,10 +26,8 @@ predicate isSafeSecureCookieSetting(Expr e) {
   )
 }
 
-class SecureCookieConfiguration extends DataFlow::Configuration {
-  SecureCookieConfiguration() { this = "SecureCookieConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
+module SecureCookieConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(MethodAccess ma, Method m | ma.getMethod() = m |
       m.getDeclaringType() instanceof TypeCookie and
       m.getName() = "setSecure" and
@@ -43,14 +41,16 @@ class SecureCookieConfiguration extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink.asExpr() =
       any(MethodAccess add | add.getMethod() instanceof ResponseAddCookieMethod).getArgument(0)
   }
 }
 
+module SecureCookieFlow = DataFlow::Global<SecureCookieConfig>;
+
 from MethodAccess add
 where
   add.getMethod() instanceof ResponseAddCookieMethod and
-  not any(SecureCookieConfiguration df).hasFlowToExpr(add.getArgument(0))
+  not SecureCookieFlow::flowToExpr(add.getArgument(0))
 select add, "Cookie is added to response without the 'secure' flag being set."

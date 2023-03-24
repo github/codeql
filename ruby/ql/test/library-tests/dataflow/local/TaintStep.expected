@@ -1,107 +1,107 @@
 | UseUseExplosion.rb:18:5:22:7 | self (m) | UseUseExplosion.rb:20:13:20:17 | self |
 | UseUseExplosion.rb:18:5:22:7 | self in m | UseUseExplosion.rb:18:5:22:7 | self (m) |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2081:20:2116 | SSA phi read(x) |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2111:20:2111 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2127:20:2127 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2143:20:2143 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2159:20:2159 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2175:20:2175 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2191:20:2191 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2207:20:2207 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2223:20:2223 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2239:20:2239 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2255:20:2255 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2271:20:2271 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2287:20:2287 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2303:20:2303 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2319:20:2319 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2335:20:2335 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2351:20:2351 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2367:20:2367 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2383:20:2383 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2399:20:2399 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2415:20:2415 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2431:20:2431 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2447:20:2447 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2463:20:2463 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2479:20:2479 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2495:20:2495 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2511:20:2511 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2527:20:2527 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2543:20:2543 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2559:20:2559 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2575:20:2575 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2591:20:2591 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2607:20:2607 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2623:20:2623 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2639:20:2639 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2655:20:2655 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2671:20:2671 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2687:20:2687 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2703:20:2703 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2719:20:2719 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2735:20:2735 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2751:20:2751 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2767:20:2767 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2783:20:2783 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2799:20:2799 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2815:20:2815 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2831:20:2831 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2847:20:2847 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2863:20:2863 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2879:20:2879 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2895:20:2895 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2911:20:2911 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2927:20:2927 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2943:20:2943 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2959:20:2959 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2975:20:2975 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:2991:20:2991 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3007:20:3007 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3023:20:3023 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3039:20:3039 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3055:20:3055 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3071:20:3071 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3087:20:3087 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3103:20:3103 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3119:20:3119 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3135:20:3135 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3151:20:3151 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3167:20:3167 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3183:20:3183 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3199:20:3199 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3215:20:3215 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3231:20:3231 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3247:20:3247 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3263:20:3263 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3279:20:3279 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3295:20:3295 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3311:20:3311 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3327:20:3327 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3343:20:3343 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3359:20:3359 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3375:20:3375 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3391:20:3391 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3407:20:3407 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3423:20:3423 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3439:20:3439 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3455:20:3455 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3471:20:3471 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3487:20:3487 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3503:20:3503 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3519:20:3519 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3535:20:3535 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3551:20:3551 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3567:20:3567 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3583:20:3583 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3599:20:3599 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3615:20:3615 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3631:20:3631 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3647:20:3647 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3663:20:3663 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3679:20:3679 | x |
-| UseUseExplosion.rb:19:9:19:13 | ... = ... | UseUseExplosion.rb:20:3695:20:3695 | x |
-| UseUseExplosion.rb:19:13:19:13 | 0 | UseUseExplosion.rb:19:9:19:13 | ... = ... |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2081:20:2116 | SSA phi read(x) |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2111:20:2111 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2127:20:2127 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2143:20:2143 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2159:20:2159 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2175:20:2175 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2191:20:2191 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2207:20:2207 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2223:20:2223 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2239:20:2239 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2255:20:2255 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2271:20:2271 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2287:20:2287 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2303:20:2303 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2319:20:2319 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2335:20:2335 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2351:20:2351 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2367:20:2367 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2383:20:2383 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2399:20:2399 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2415:20:2415 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2431:20:2431 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2447:20:2447 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2463:20:2463 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2479:20:2479 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2495:20:2495 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2511:20:2511 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2527:20:2527 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2543:20:2543 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2559:20:2559 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2575:20:2575 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2591:20:2591 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2607:20:2607 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2623:20:2623 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2639:20:2639 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2655:20:2655 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2671:20:2671 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2687:20:2687 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2703:20:2703 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2719:20:2719 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2735:20:2735 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2751:20:2751 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2767:20:2767 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2783:20:2783 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2799:20:2799 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2815:20:2815 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2831:20:2831 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2847:20:2847 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2863:20:2863 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2879:20:2879 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2895:20:2895 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2911:20:2911 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2927:20:2927 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2943:20:2943 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2959:20:2959 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2975:20:2975 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:2991:20:2991 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3007:20:3007 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3023:20:3023 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3039:20:3039 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3055:20:3055 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3071:20:3071 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3087:20:3087 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3103:20:3103 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3119:20:3119 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3135:20:3135 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3151:20:3151 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3167:20:3167 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3183:20:3183 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3199:20:3199 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3215:20:3215 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3231:20:3231 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3247:20:3247 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3263:20:3263 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3279:20:3279 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3295:20:3295 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3311:20:3311 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3327:20:3327 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3343:20:3343 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3359:20:3359 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3375:20:3375 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3391:20:3391 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3407:20:3407 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3423:20:3423 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3439:20:3439 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3455:20:3455 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3471:20:3471 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3487:20:3487 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3503:20:3503 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3519:20:3519 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3535:20:3535 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3551:20:3551 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3567:20:3567 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3583:20:3583 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3599:20:3599 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3615:20:3615 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3631:20:3631 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3647:20:3647 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3663:20:3663 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3679:20:3679 | x |
+| UseUseExplosion.rb:19:9:19:9 | x | UseUseExplosion.rb:20:3695:20:3695 | x |
+| UseUseExplosion.rb:19:13:19:13 | 0 | UseUseExplosion.rb:19:9:19:9 | x |
 | UseUseExplosion.rb:19:13:19:13 | 0 | UseUseExplosion.rb:19:9:19:13 | ... = ... |
 | UseUseExplosion.rb:20:9:20:3700 | SSA phi read(self) | UseUseExplosion.rb:21:13:21:17 | self |
 | UseUseExplosion.rb:20:9:20:3700 | SSA phi read(x) | UseUseExplosion.rb:21:2111:21:2111 | x |
@@ -2833,8 +2833,8 @@
 | local_dataflow.rb:1:1:150:3 | self (local_dataflow.rb) | local_dataflow.rb:49:1:53:3 | self |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:1:9:1:9 | a |
 | local_dataflow.rb:1:9:1:9 | a | local_dataflow.rb:2:7:2:7 | a |
-| local_dataflow.rb:2:3:2:7 | ... = ... | local_dataflow.rb:3:13:3:13 | b |
-| local_dataflow.rb:2:7:2:7 | a | local_dataflow.rb:2:3:2:7 | ... = ... |
+| local_dataflow.rb:2:3:2:3 | b | local_dataflow.rb:3:13:3:13 | b |
+| local_dataflow.rb:2:7:2:7 | a | local_dataflow.rb:2:3:2:3 | b |
 | local_dataflow.rb:2:7:2:7 | a | local_dataflow.rb:2:3:2:7 | ... = ... |
 | local_dataflow.rb:2:7:2:7 | a | local_dataflow.rb:3:10:3:10 | a |
 | local_dataflow.rb:3:7:3:14 | ( ... ) | local_dataflow.rb:3:3:3:14 | ... = ... |
@@ -2854,33 +2854,33 @@
 | local_dataflow.rb:6:8:6:13 | ... = ... | local_dataflow.rb:6:7:6:14 | ( ... ) |
 | local_dataflow.rb:6:10:6:11 | ... + ... | local_dataflow.rb:6:8:6:13 | ... = ... |
 | local_dataflow.rb:6:13:6:13 | b | local_dataflow.rb:6:10:6:11 | ... + ... |
-| local_dataflow.rb:9:1:9:15 | ... = ... | local_dataflow.rb:10:14:10:18 | array |
+| local_dataflow.rb:9:1:9:5 | array | local_dataflow.rb:10:14:10:18 | array |
 | local_dataflow.rb:9:9:9:15 | Array | local_dataflow.rb:9:9:9:15 | call to [] |
+| local_dataflow.rb:9:9:9:15 | call to [] | local_dataflow.rb:9:1:9:5 | array |
 | local_dataflow.rb:9:9:9:15 | call to [] | local_dataflow.rb:9:1:9:15 | ... = ... |
-| local_dataflow.rb:9:9:9:15 | call to [] | local_dataflow.rb:9:1:9:15 | ... = ... |
-| local_dataflow.rb:10:5:13:3 | ... = ... | local_dataflow.rb:12:5:12:5 | x |
 | local_dataflow.rb:10:5:13:3 | <captured entry> self | local_dataflow.rb:11:1:11:2 | self |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | ... = ... |
-| local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | ... = ... |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | __synth__0__1 |
 | local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:5:13:3 | __synth__0__1 |
+| local_dataflow.rb:10:5:13:3 | __synth__0__1 | local_dataflow.rb:10:9:10:9 | x |
 | local_dataflow.rb:10:5:13:3 | call to each | local_dataflow.rb:10:1:13:3 | ... = ... |
+| local_dataflow.rb:10:9:10:9 | x | local_dataflow.rb:12:5:12:5 | x |
 | local_dataflow.rb:10:14:10:18 | [post] array | local_dataflow.rb:15:10:15:14 | array |
 | local_dataflow.rb:10:14:10:18 | array | local_dataflow.rb:15:10:15:14 | array |
 | local_dataflow.rb:11:1:11:2 | [post] self | local_dataflow.rb:12:3:12:5 | self |
 | local_dataflow.rb:11:1:11:2 | self | local_dataflow.rb:12:3:12:5 | self |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:1:17:3 | ... = ... |
-| local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:1:17:3 | ... = ... |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:1:17:3 | __synth__0__1 |
 | local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:1:17:3 | __synth__0__1 |
+| local_dataflow.rb:15:1:17:3 | __synth__0__1 | local_dataflow.rb:15:5:15:5 | x |
 | local_dataflow.rb:15:10:15:14 | [post] array | local_dataflow.rb:19:10:19:14 | array |
 | local_dataflow.rb:15:10:15:14 | array | local_dataflow.rb:19:10:19:14 | array |
 | local_dataflow.rb:16:9:16:10 | 10 | local_dataflow.rb:16:3:16:10 | break |
-| local_dataflow.rb:19:1:21:3 | ... = ... | local_dataflow.rb:20:6:20:6 | x |
-| local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:1:21:3 | ... = ... |
 | local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:1:21:3 | ... = ... |
 | local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:1:21:3 | __synth__0__1 |
 | local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:1:21:3 | __synth__0__1 |
+| local_dataflow.rb:19:1:21:3 | __synth__0__1 | local_dataflow.rb:19:5:19:5 | x |
+| local_dataflow.rb:19:5:19:5 | x | local_dataflow.rb:20:6:20:6 | x |
 | local_dataflow.rb:20:6:20:6 | x | local_dataflow.rb:20:6:20:10 | ... > ... |
 | local_dataflow.rb:20:10:20:10 | 1 | local_dataflow.rb:20:6:20:10 | ... > ... |
 | local_dataflow.rb:24:2:24:8 | break | local_dataflow.rb:23:1:25:3 | while ... |
@@ -2889,7 +2889,7 @@
 | local_dataflow.rb:28:15:28:22 | "module" | local_dataflow.rb:28:5:28:26 | M |
 | local_dataflow.rb:30:5:30:24 | C | local_dataflow.rb:30:1:30:24 | ... = ... |
 | local_dataflow.rb:30:14:30:20 | "class" | local_dataflow.rb:30:5:30:24 | C |
-| local_dataflow.rb:32:5:32:25 | bar | local_dataflow.rb:32:1:32:25 | ... = ... |
+| local_dataflow.rb:32:5:32:25 | bar | local_dataflow.rb:32:1:32:1 | x |
 | local_dataflow.rb:32:5:32:25 | bar | local_dataflow.rb:32:1:32:25 | ... = ... |
 | local_dataflow.rb:34:7:34:7 | x | local_dataflow.rb:34:7:34:7 | x |
 | local_dataflow.rb:34:7:34:7 | x | local_dataflow.rb:35:6:35:6 | x |
@@ -2943,9 +2943,9 @@
 | local_dataflow.rb:73:7:73:7 | x | local_dataflow.rb:72:7:73:7 | then ... |
 | local_dataflow.rb:74:3:75:6 | else ... | local_dataflow.rb:69:7:76:5 | case ... |
 | local_dataflow.rb:75:6:75:6 | x | local_dataflow.rb:74:3:75:6 | else ... |
-| local_dataflow.rb:78:3:88:5 | ... = ... | local_dataflow.rb:89:8:89:8 | z |
+| local_dataflow.rb:78:3:78:3 | z | local_dataflow.rb:89:8:89:8 | z |
 | local_dataflow.rb:78:7:88:5 | SSA phi read(self) | local_dataflow.rb:89:3:89:9 | self |
-| local_dataflow.rb:78:7:88:5 | case ... | local_dataflow.rb:78:3:88:5 | ... = ... |
+| local_dataflow.rb:78:7:88:5 | case ... | local_dataflow.rb:78:3:78:3 | z |
 | local_dataflow.rb:78:7:88:5 | case ... | local_dataflow.rb:78:3:88:5 | ... = ... |
 | local_dataflow.rb:78:12:78:20 | [post] self | local_dataflow.rb:79:20:79:26 | self |
 | local_dataflow.rb:78:12:78:20 | [post] self | local_dataflow.rb:80:24:80:30 | self |
@@ -3000,18 +3000,18 @@
 | local_dataflow.rb:87:29:87:29 | x | local_dataflow.rb:87:15:87:48 | then ... |
 | local_dataflow.rb:92:1:109:3 | self (and_or) | local_dataflow.rb:93:7:93:15 | self |
 | local_dataflow.rb:92:1:109:3 | self in and_or | local_dataflow.rb:92:1:109:3 | self (and_or) |
-| local_dataflow.rb:93:3:93:28 | ... = ... | local_dataflow.rb:94:8:94:8 | a |
+| local_dataflow.rb:93:3:93:3 | a | local_dataflow.rb:94:8:94:8 | a |
 | local_dataflow.rb:93:7:93:15 | [post] self | local_dataflow.rb:93:20:93:28 | self |
 | local_dataflow.rb:93:7:93:15 | call to source | local_dataflow.rb:93:7:93:28 | ... \|\| ... |
 | local_dataflow.rb:93:7:93:15 | self | local_dataflow.rb:93:20:93:28 | self |
-| local_dataflow.rb:93:7:93:28 | ... \|\| ... | local_dataflow.rb:93:3:93:28 | ... = ... |
+| local_dataflow.rb:93:7:93:28 | ... \|\| ... | local_dataflow.rb:93:3:93:3 | a |
 | local_dataflow.rb:93:7:93:28 | ... \|\| ... | local_dataflow.rb:93:3:93:28 | ... = ... |
 | local_dataflow.rb:93:7:93:28 | SSA phi read(self) | local_dataflow.rb:94:3:94:9 | self |
 | local_dataflow.rb:93:20:93:28 | call to source | local_dataflow.rb:93:7:93:28 | ... \|\| ... |
 | local_dataflow.rb:94:3:94:9 | [post] self | local_dataflow.rb:95:8:95:16 | self |
 | local_dataflow.rb:94:3:94:9 | self | local_dataflow.rb:95:8:95:16 | self |
-| local_dataflow.rb:95:3:95:30 | ... = ... | local_dataflow.rb:96:8:96:8 | b |
-| local_dataflow.rb:95:7:95:30 | ( ... ) | local_dataflow.rb:95:3:95:30 | ... = ... |
+| local_dataflow.rb:95:3:95:3 | b | local_dataflow.rb:96:8:96:8 | b |
+| local_dataflow.rb:95:7:95:30 | ( ... ) | local_dataflow.rb:95:3:95:3 | b |
 | local_dataflow.rb:95:7:95:30 | ( ... ) | local_dataflow.rb:95:3:95:30 | ... = ... |
 | local_dataflow.rb:95:8:95:16 | [post] self | local_dataflow.rb:95:21:95:29 | self |
 | local_dataflow.rb:95:8:95:16 | call to source | local_dataflow.rb:95:8:95:29 | ... or ... |
@@ -3021,18 +3021,18 @@
 | local_dataflow.rb:95:21:95:29 | call to source | local_dataflow.rb:95:8:95:29 | ... or ... |
 | local_dataflow.rb:96:3:96:9 | [post] self | local_dataflow.rb:98:7:98:15 | self |
 | local_dataflow.rb:96:3:96:9 | self | local_dataflow.rb:98:7:98:15 | self |
-| local_dataflow.rb:98:3:98:28 | ... = ... | local_dataflow.rb:99:8:99:8 | a |
+| local_dataflow.rb:98:3:98:3 | a | local_dataflow.rb:99:8:99:8 | a |
 | local_dataflow.rb:98:7:98:15 | [post] self | local_dataflow.rb:98:20:98:28 | self |
 | local_dataflow.rb:98:7:98:15 | call to source | local_dataflow.rb:98:7:98:28 | ... && ... |
 | local_dataflow.rb:98:7:98:15 | self | local_dataflow.rb:98:20:98:28 | self |
-| local_dataflow.rb:98:7:98:28 | ... && ... | local_dataflow.rb:98:3:98:28 | ... = ... |
+| local_dataflow.rb:98:7:98:28 | ... && ... | local_dataflow.rb:98:3:98:3 | a |
 | local_dataflow.rb:98:7:98:28 | ... && ... | local_dataflow.rb:98:3:98:28 | ... = ... |
 | local_dataflow.rb:98:7:98:28 | SSA phi read(self) | local_dataflow.rb:99:3:99:9 | self |
 | local_dataflow.rb:98:20:98:28 | call to source | local_dataflow.rb:98:7:98:28 | ... && ... |
 | local_dataflow.rb:99:3:99:9 | [post] self | local_dataflow.rb:100:8:100:16 | self |
 | local_dataflow.rb:99:3:99:9 | self | local_dataflow.rb:100:8:100:16 | self |
-| local_dataflow.rb:100:3:100:31 | ... = ... | local_dataflow.rb:101:8:101:8 | b |
-| local_dataflow.rb:100:7:100:31 | ( ... ) | local_dataflow.rb:100:3:100:31 | ... = ... |
+| local_dataflow.rb:100:3:100:3 | b | local_dataflow.rb:101:8:101:8 | b |
+| local_dataflow.rb:100:7:100:31 | ( ... ) | local_dataflow.rb:100:3:100:3 | b |
 | local_dataflow.rb:100:7:100:31 | ( ... ) | local_dataflow.rb:100:3:100:31 | ... = ... |
 | local_dataflow.rb:100:8:100:16 | [post] self | local_dataflow.rb:100:22:100:30 | self |
 | local_dataflow.rb:100:8:100:16 | call to source | local_dataflow.rb:100:8:100:30 | ... and ... |
@@ -3042,27 +3042,27 @@
 | local_dataflow.rb:100:22:100:30 | call to source | local_dataflow.rb:100:8:100:30 | ... and ... |
 | local_dataflow.rb:101:3:101:9 | [post] self | local_dataflow.rb:103:7:103:15 | self |
 | local_dataflow.rb:101:3:101:9 | self | local_dataflow.rb:103:7:103:15 | self |
-| local_dataflow.rb:103:3:103:15 | ... = ... | local_dataflow.rb:104:3:104:3 | a |
+| local_dataflow.rb:103:3:103:3 | a | local_dataflow.rb:104:3:104:3 | a |
 | local_dataflow.rb:103:7:103:15 | [post] self | local_dataflow.rb:104:9:104:17 | self |
-| local_dataflow.rb:103:7:103:15 | call to source | local_dataflow.rb:103:3:103:15 | ... = ... |
+| local_dataflow.rb:103:7:103:15 | call to source | local_dataflow.rb:103:3:103:3 | a |
 | local_dataflow.rb:103:7:103:15 | call to source | local_dataflow.rb:103:3:103:15 | ... = ... |
 | local_dataflow.rb:103:7:103:15 | self | local_dataflow.rb:104:9:104:17 | self |
 | local_dataflow.rb:104:3:104:3 | a | local_dataflow.rb:104:5:104:7 | ... \|\| ... |
-| local_dataflow.rb:104:3:104:17 | ... = ... | local_dataflow.rb:105:8:105:8 | a |
-| local_dataflow.rb:104:5:104:7 | ... \|\| ... | local_dataflow.rb:104:3:104:17 | ... = ... |
+| local_dataflow.rb:104:3:104:3 | a | local_dataflow.rb:105:8:105:8 | a |
+| local_dataflow.rb:104:5:104:7 | ... \|\| ... | local_dataflow.rb:104:3:104:3 | a |
 | local_dataflow.rb:104:5:104:7 | ... \|\| ... | local_dataflow.rb:104:3:104:17 | ... = ... |
 | local_dataflow.rb:104:5:104:7 | SSA phi read(self) | local_dataflow.rb:105:3:105:9 | self |
 | local_dataflow.rb:104:9:104:17 | call to source | local_dataflow.rb:104:5:104:7 | ... \|\| ... |
 | local_dataflow.rb:105:3:105:9 | [post] self | local_dataflow.rb:106:7:106:15 | self |
 | local_dataflow.rb:105:3:105:9 | self | local_dataflow.rb:106:7:106:15 | self |
-| local_dataflow.rb:106:3:106:15 | ... = ... | local_dataflow.rb:107:3:107:3 | b |
+| local_dataflow.rb:106:3:106:3 | b | local_dataflow.rb:107:3:107:3 | b |
 | local_dataflow.rb:106:7:106:15 | [post] self | local_dataflow.rb:107:9:107:17 | self |
-| local_dataflow.rb:106:7:106:15 | call to source | local_dataflow.rb:106:3:106:15 | ... = ... |
+| local_dataflow.rb:106:7:106:15 | call to source | local_dataflow.rb:106:3:106:3 | b |
 | local_dataflow.rb:106:7:106:15 | call to source | local_dataflow.rb:106:3:106:15 | ... = ... |
 | local_dataflow.rb:106:7:106:15 | self | local_dataflow.rb:107:9:107:17 | self |
 | local_dataflow.rb:107:3:107:3 | b | local_dataflow.rb:107:5:107:7 | ... && ... |
-| local_dataflow.rb:107:3:107:17 | ... = ... | local_dataflow.rb:108:8:108:8 | b |
-| local_dataflow.rb:107:5:107:7 | ... && ... | local_dataflow.rb:107:3:107:17 | ... = ... |
+| local_dataflow.rb:107:3:107:3 | b | local_dataflow.rb:108:8:108:8 | b |
+| local_dataflow.rb:107:5:107:7 | ... && ... | local_dataflow.rb:107:3:107:3 | b |
 | local_dataflow.rb:107:5:107:7 | ... && ... | local_dataflow.rb:107:3:107:17 | ... = ... |
 | local_dataflow.rb:107:5:107:7 | SSA phi read(self) | local_dataflow.rb:108:3:108:9 | self |
 | local_dataflow.rb:107:9:107:17 | call to source | local_dataflow.rb:107:5:107:7 | ... && ... |
@@ -3106,8 +3106,8 @@
 | local_dataflow.rb:126:1:128:3 | self in use | local_dataflow.rb:126:1:128:3 | self (use) |
 | local_dataflow.rb:130:1:150:3 | self (use_use_madness) | local_dataflow.rb:132:6:132:11 | self |
 | local_dataflow.rb:130:1:150:3 | self in use_use_madness | local_dataflow.rb:130:1:150:3 | self (use_use_madness) |
-| local_dataflow.rb:131:3:131:8 | ... = ... | local_dataflow.rb:132:10:132:10 | x |
-| local_dataflow.rb:131:7:131:8 | "" | local_dataflow.rb:131:3:131:8 | ... = ... |
+| local_dataflow.rb:131:3:131:3 | x | local_dataflow.rb:132:10:132:10 | x |
+| local_dataflow.rb:131:7:131:8 | "" | local_dataflow.rb:131:3:131:3 | x |
 | local_dataflow.rb:131:7:131:8 | "" | local_dataflow.rb:131:3:131:8 | ... = ... |
 | local_dataflow.rb:132:6:132:11 | [post] self | local_dataflow.rb:133:8:133:13 | self |
 | local_dataflow.rb:132:6:132:11 | self | local_dataflow.rb:133:8:133:13 | self |
