@@ -1,6 +1,6 @@
 /**
  * @name Insecure LDAP authentication
- * @description LDAP authentication with credentials sent in cleartext.
+ * @description LDAP authentication with credentials sent in cleartext makes sensitive information vulnerable to remote attackers
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 8.8
