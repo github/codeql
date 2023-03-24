@@ -44,7 +44,7 @@ module ZipSlipConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof PathInjectionSanitizer }
 }
 
-module ZipSlipFlow = TaintTracking::Make<ZipSlipConfig>;
+module ZipSlipFlow = TaintTracking::Global<ZipSlipConfig>;
 
 import ZipSlipFlow::PathGraph
 
@@ -56,7 +56,7 @@ private class FileCreationSink extends DataFlow::Node {
 }
 
 from ZipSlipFlow::PathNode source, ZipSlipFlow::PathNode sink
-where ZipSlipFlow::hasFlowPath(source, sink)
+where ZipSlipFlow::flowPath(source, sink)
 select source.getNode(), source, sink,
   "Unsanitized archive entry, which may contain '..', is used in a $@.", sink.getNode(),
   "file system operation"

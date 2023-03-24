@@ -21,10 +21,10 @@ private module TypeLiteralToParseAsFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-private module TypeLiteralToParseAsFlow = DataFlow::Make<TypeLiteralToParseAsFlowConfig>;
+private module TypeLiteralToParseAsFlow = DataFlow::Global<TypeLiteralToParseAsFlowConfig>;
 
 private TypeLiteral getSourceWithFlowToParseAs() {
-  TypeLiteralToParseAsFlow::hasFlow(DataFlow::exprNode(result), _)
+  TypeLiteralToParseAsFlow::flow(DataFlow::exprNode(result), _)
 }
 
 /** A field that is deserialized by `HttpResponse.parseAs`. */

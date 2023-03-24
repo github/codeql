@@ -20,4 +20,4 @@ tracing = "0.1"
 tracing-subscriber = { version = "0.3.16", features = ["env-filter"] }
 rayon = "1.7.0"
 num_cpus = "1.14.0"
-regex = "1.7.1"
+regex = "1.7.2"

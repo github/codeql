@@ -1,216 +1,290 @@
 failures
 edges
-| pathname_flow.rb:4:10:4:33 | call to new :  | pathname_flow.rb:5:10:5:11 | pn |
+| pathname_flow.rb:4:5:4:6 | pn :  | pathname_flow.rb:5:10:5:11 | pn |
+| pathname_flow.rb:4:10:4:33 | call to new :  | pathname_flow.rb:4:5:4:6 | pn :  |
 | pathname_flow.rb:4:23:4:32 | call to source :  | pathname_flow.rb:4:10:4:33 | call to new :  |
-| pathname_flow.rb:9:7:9:30 | call to new :  | pathname_flow.rb:11:8:11:12 | ... + ... |
+| pathname_flow.rb:9:3:9:3 | a :  | pathname_flow.rb:11:8:11:12 | ... + ... |
+| pathname_flow.rb:9:7:9:30 | call to new :  | pathname_flow.rb:9:3:9:3 | a :  |
 | pathname_flow.rb:9:20:9:29 | call to source :  | pathname_flow.rb:9:7:9:30 | call to new :  |
-| pathname_flow.rb:10:7:10:30 | call to new :  | pathname_flow.rb:11:8:11:12 | ... + ... |
+| pathname_flow.rb:10:3:10:3 | b :  | pathname_flow.rb:11:8:11:12 | ... + ... |
+| pathname_flow.rb:10:7:10:30 | call to new :  | pathname_flow.rb:10:3:10:3 | b :  |
 | pathname_flow.rb:10:20:10:29 | call to source :  | pathname_flow.rb:10:7:10:30 | call to new :  |
-| pathname_flow.rb:15:8:15:31 | call to new :  | pathname_flow.rb:16:8:16:9 | pn :  |
+| pathname_flow.rb:15:3:15:4 | pn :  | pathname_flow.rb:16:8:16:9 | pn :  |
+| pathname_flow.rb:15:8:15:31 | call to new :  | pathname_flow.rb:15:3:15:4 | pn :  |
 | pathname_flow.rb:15:21:15:30 | call to source :  | pathname_flow.rb:15:8:15:31 | call to new :  |
 | pathname_flow.rb:16:8:16:9 | pn :  | pathname_flow.rb:16:8:16:17 | call to dirname |
-| pathname_flow.rb:20:7:20:30 | call to new :  | pathname_flow.rb:21:3:21:3 | a :  |
+| pathname_flow.rb:20:3:20:3 | a :  | pathname_flow.rb:21:3:21:3 | a :  |
+| pathname_flow.rb:20:7:20:30 | call to new :  | pathname_flow.rb:20:3:20:3 | a :  |
 | pathname_flow.rb:20:20:20:29 | call to source :  | pathname_flow.rb:20:7:20:30 | call to new :  |
 | pathname_flow.rb:21:3:21:3 | a :  | pathname_flow.rb:21:23:21:23 | x :  |
 | pathname_flow.rb:21:23:21:23 | x :  | pathname_flow.rb:22:10:22:10 | x |
-| pathname_flow.rb:27:7:27:30 | call to new :  | pathname_flow.rb:28:8:28:8 | a :  |
+| pathname_flow.rb:27:3:27:3 | a :  | pathname_flow.rb:28:8:28:8 | a :  |
+| pathname_flow.rb:27:7:27:30 | call to new :  | pathname_flow.rb:27:3:27:3 | a :  |
 | pathname_flow.rb:27:20:27:29 | call to source :  | pathname_flow.rb:27:7:27:30 | call to new :  |
 | pathname_flow.rb:28:8:28:8 | a :  | pathname_flow.rb:28:8:28:22 | call to expand_path |
-| pathname_flow.rb:32:7:32:30 | call to new :  | pathname_flow.rb:35:8:35:8 | a :  |
+| pathname_flow.rb:32:3:32:3 | a :  | pathname_flow.rb:35:8:35:8 | a :  |
+| pathname_flow.rb:32:7:32:30 | call to new :  | pathname_flow.rb:32:3:32:3 | a :  |
 | pathname_flow.rb:32:20:32:29 | call to source :  | pathname_flow.rb:32:7:32:30 | call to new :  |
-| pathname_flow.rb:34:7:34:30 | call to new :  | pathname_flow.rb:35:18:35:18 | c :  |
+| pathname_flow.rb:34:3:34:3 | c :  | pathname_flow.rb:35:18:35:18 | c :  |
+| pathname_flow.rb:34:7:34:30 | call to new :  | pathname_flow.rb:34:3:34:3 | c :  |
 | pathname_flow.rb:34:20:34:29 | call to source :  | pathname_flow.rb:34:7:34:30 | call to new :  |
 | pathname_flow.rb:35:8:35:8 | a :  | pathname_flow.rb:35:8:35:19 | call to join |
 | pathname_flow.rb:35:18:35:18 | c :  | pathname_flow.rb:35:8:35:19 | call to join |
-| pathname_flow.rb:39:7:39:30 | call to new :  | pathname_flow.rb:40:8:40:8 | a :  |
+| pathname_flow.rb:39:3:39:3 | a :  | pathname_flow.rb:40:8:40:8 | a :  |
+| pathname_flow.rb:39:7:39:30 | call to new :  | pathname_flow.rb:39:3:39:3 | a :  |
 | pathname_flow.rb:39:20:39:29 | call to source :  | pathname_flow.rb:39:7:39:30 | call to new :  |
 | pathname_flow.rb:40:8:40:8 | a :  | pathname_flow.rb:40:8:40:17 | call to parent |
-| pathname_flow.rb:44:7:44:30 | call to new :  | pathname_flow.rb:45:8:45:8 | a :  |
+| pathname_flow.rb:44:3:44:3 | a :  | pathname_flow.rb:45:8:45:8 | a :  |
+| pathname_flow.rb:44:7:44:30 | call to new :  | pathname_flow.rb:44:3:44:3 | a :  |
 | pathname_flow.rb:44:20:44:29 | call to source :  | pathname_flow.rb:44:7:44:30 | call to new :  |
 | pathname_flow.rb:45:8:45:8 | a :  | pathname_flow.rb:45:8:45:19 | call to realpath |
-| pathname_flow.rb:49:7:49:30 | call to new :  | pathname_flow.rb:50:8:50:8 | a :  |
+| pathname_flow.rb:49:3:49:3 | a :  | pathname_flow.rb:50:8:50:8 | a :  |
+| pathname_flow.rb:49:7:49:30 | call to new :  | pathname_flow.rb:49:3:49:3 | a :  |
 | pathname_flow.rb:49:20:49:29 | call to source :  | pathname_flow.rb:49:7:49:30 | call to new :  |
 | pathname_flow.rb:50:8:50:8 | a :  | pathname_flow.rb:50:8:50:39 | call to relative_path_from |
-| pathname_flow.rb:54:7:54:30 | call to new :  | pathname_flow.rb:55:8:55:8 | a :  |
+| pathname_flow.rb:54:3:54:3 | a :  | pathname_flow.rb:55:8:55:8 | a :  |
+| pathname_flow.rb:54:7:54:30 | call to new :  | pathname_flow.rb:54:3:54:3 | a :  |
 | pathname_flow.rb:54:20:54:29 | call to source :  | pathname_flow.rb:54:7:54:30 | call to new :  |
 | pathname_flow.rb:55:8:55:8 | a :  | pathname_flow.rb:55:8:55:16 | call to to_path |
-| pathname_flow.rb:59:7:59:30 | call to new :  | pathname_flow.rb:60:8:60:8 | a :  |
+| pathname_flow.rb:59:3:59:3 | a :  | pathname_flow.rb:60:8:60:8 | a :  |
+| pathname_flow.rb:59:7:59:30 | call to new :  | pathname_flow.rb:59:3:59:3 | a :  |
 | pathname_flow.rb:59:20:59:29 | call to source :  | pathname_flow.rb:59:7:59:30 | call to new :  |
 | pathname_flow.rb:60:8:60:8 | a :  | pathname_flow.rb:60:8:60:13 | call to to_s |
-| pathname_flow.rb:64:7:64:30 | call to new :  | pathname_flow.rb:66:8:66:8 | b |
+| pathname_flow.rb:64:3:64:3 | a :  | pathname_flow.rb:65:3:65:3 | b :  |
+| pathname_flow.rb:64:7:64:30 | call to new :  | pathname_flow.rb:64:3:64:3 | a :  |
 | pathname_flow.rb:64:20:64:29 | call to source :  | pathname_flow.rb:64:7:64:30 | call to new :  |
-| pathname_flow.rb:70:7:70:30 | call to new :  | pathname_flow.rb:72:8:72:8 | b |
+| pathname_flow.rb:65:3:65:3 | b :  | pathname_flow.rb:66:8:66:8 | b |
+| pathname_flow.rb:70:3:70:3 | a :  | pathname_flow.rb:71:3:71:3 | b :  |
+| pathname_flow.rb:70:7:70:30 | call to new :  | pathname_flow.rb:70:3:70:3 | a :  |
 | pathname_flow.rb:70:20:70:29 | call to source :  | pathname_flow.rb:70:7:70:30 | call to new :  |
-| pathname_flow.rb:76:7:76:30 | call to new :  | pathname_flow.rb:77:7:77:7 | a :  |
+| pathname_flow.rb:71:3:71:3 | b :  | pathname_flow.rb:72:8:72:8 | b |
+| pathname_flow.rb:76:3:76:3 | a :  | pathname_flow.rb:77:7:77:7 | a :  |
+| pathname_flow.rb:76:7:76:30 | call to new :  | pathname_flow.rb:76:3:76:3 | a :  |
 | pathname_flow.rb:76:20:76:29 | call to source :  | pathname_flow.rb:76:7:76:30 | call to new :  |
+| pathname_flow.rb:77:3:77:3 | b :  | pathname_flow.rb:78:8:78:8 | b |
 | pathname_flow.rb:77:7:77:7 | a :  | pathname_flow.rb:77:7:77:16 | call to basename :  |
-| pathname_flow.rb:77:7:77:16 | call to basename :  | pathname_flow.rb:78:8:78:8 | b |
-| pathname_flow.rb:82:7:82:30 | call to new :  | pathname_flow.rb:83:7:83:7 | a :  |
+| pathname_flow.rb:77:7:77:16 | call to basename :  | pathname_flow.rb:77:3:77:3 | b :  |
+| pathname_flow.rb:82:3:82:3 | a :  | pathname_flow.rb:83:7:83:7 | a :  |
+| pathname_flow.rb:82:7:82:30 | call to new :  | pathname_flow.rb:82:3:82:3 | a :  |
 | pathname_flow.rb:82:20:82:29 | call to source :  | pathname_flow.rb:82:7:82:30 | call to new :  |
+| pathname_flow.rb:83:3:83:3 | b :  | pathname_flow.rb:84:8:84:8 | b |
 | pathname_flow.rb:83:7:83:7 | a :  | pathname_flow.rb:83:7:83:17 | call to cleanpath :  |
-| pathname_flow.rb:83:7:83:17 | call to cleanpath :  | pathname_flow.rb:84:8:84:8 | b |
-| pathname_flow.rb:88:7:88:30 | call to new :  | pathname_flow.rb:89:7:89:7 | a :  |
+| pathname_flow.rb:83:7:83:17 | call to cleanpath :  | pathname_flow.rb:83:3:83:3 | b :  |
+| pathname_flow.rb:88:3:88:3 | a :  | pathname_flow.rb:89:7:89:7 | a :  |
+| pathname_flow.rb:88:7:88:30 | call to new :  | pathname_flow.rb:88:3:88:3 | a :  |
 | pathname_flow.rb:88:20:88:29 | call to source :  | pathname_flow.rb:88:7:88:30 | call to new :  |
+| pathname_flow.rb:89:3:89:3 | b :  | pathname_flow.rb:90:8:90:8 | b |
 | pathname_flow.rb:89:7:89:7 | a :  | pathname_flow.rb:89:7:89:25 | call to sub :  |
-| pathname_flow.rb:89:7:89:25 | call to sub :  | pathname_flow.rb:90:8:90:8 | b |
-| pathname_flow.rb:94:7:94:30 | call to new :  | pathname_flow.rb:95:7:95:7 | a :  |
+| pathname_flow.rb:89:7:89:25 | call to sub :  | pathname_flow.rb:89:3:89:3 | b :  |
+| pathname_flow.rb:94:3:94:3 | a :  | pathname_flow.rb:95:7:95:7 | a :  |
+| pathname_flow.rb:94:7:94:30 | call to new :  | pathname_flow.rb:94:3:94:3 | a :  |
 | pathname_flow.rb:94:20:94:29 | call to source :  | pathname_flow.rb:94:7:94:30 | call to new :  |
+| pathname_flow.rb:95:3:95:3 | b :  | pathname_flow.rb:96:8:96:8 | b |
 | pathname_flow.rb:95:7:95:7 | a :  | pathname_flow.rb:95:7:95:23 | call to sub_ext :  |
-| pathname_flow.rb:95:7:95:23 | call to sub_ext :  | pathname_flow.rb:96:8:96:8 | b |
-| pathname_flow.rb:101:7:101:30 | call to new :  | pathname_flow.rb:104:8:104:8 | b :  |
-| pathname_flow.rb:101:7:101:30 | call to new :  | pathname_flow.rb:107:8:107:8 | c :  |
-| pathname_flow.rb:101:7:101:30 | call to new :  | pathname_flow.rb:109:7:109:7 | a :  |
-| pathname_flow.rb:101:7:101:30 | call to new :  | pathname_flow.rb:112:7:112:7 | a :  |
-| pathname_flow.rb:101:7:101:30 | call to new :  | pathname_flow.rb:115:7:115:7 | a :  |
-| pathname_flow.rb:101:7:101:30 | call to new :  | pathname_flow.rb:118:7:118:7 | a :  |
-| pathname_flow.rb:101:7:101:30 | call to new :  | pathname_flow.rb:121:7:121:7 | a :  |
-| pathname_flow.rb:101:7:101:30 | call to new :  | pathname_flow.rb:124:7:124:7 | a :  |
-| pathname_flow.rb:101:7:101:30 | call to new :  | pathname_flow.rb:127:7:127:7 | a :  |
-| pathname_flow.rb:101:7:101:30 | call to new :  | pathname_flow.rb:130:7:130:7 | a :  |
-| pathname_flow.rb:101:7:101:30 | call to new :  | pathname_flow.rb:133:7:133:7 | a :  |
+| pathname_flow.rb:95:7:95:23 | call to sub_ext :  | pathname_flow.rb:95:3:95:3 | b :  |
+| pathname_flow.rb:101:3:101:3 | a :  | pathname_flow.rb:103:3:103:3 | b :  |
+| pathname_flow.rb:101:3:101:3 | a :  | pathname_flow.rb:106:3:106:3 | c :  |
+| pathname_flow.rb:101:3:101:3 | a :  | pathname_flow.rb:109:7:109:7 | a :  |
+| pathname_flow.rb:101:3:101:3 | a :  | pathname_flow.rb:112:7:112:7 | a :  |
+| pathname_flow.rb:101:3:101:3 | a :  | pathname_flow.rb:115:7:115:7 | a :  |
+| pathname_flow.rb:101:3:101:3 | a :  | pathname_flow.rb:118:7:118:7 | a :  |
+| pathname_flow.rb:101:3:101:3 | a :  | pathname_flow.rb:121:7:121:7 | a :  |
+| pathname_flow.rb:101:3:101:3 | a :  | pathname_flow.rb:124:7:124:7 | a :  |
+| pathname_flow.rb:101:3:101:3 | a :  | pathname_flow.rb:127:7:127:7 | a :  |
+| pathname_flow.rb:101:3:101:3 | a :  | pathname_flow.rb:130:7:130:7 | a :  |
+| pathname_flow.rb:101:3:101:3 | a :  | pathname_flow.rb:133:7:133:7 | a :  |
+| pathname_flow.rb:101:7:101:30 | call to new :  | pathname_flow.rb:101:3:101:3 | a :  |
 | pathname_flow.rb:101:20:101:29 | call to source :  | pathname_flow.rb:101:7:101:30 | call to new :  |
+| pathname_flow.rb:103:3:103:3 | b :  | pathname_flow.rb:104:8:104:8 | b :  |
 | pathname_flow.rb:104:8:104:8 | b :  | pathname_flow.rb:104:8:104:17 | call to realpath |
+| pathname_flow.rb:106:3:106:3 | c :  | pathname_flow.rb:107:8:107:8 | c :  |
 | pathname_flow.rb:107:8:107:8 | c :  | pathname_flow.rb:107:8:107:17 | call to realpath |
+| pathname_flow.rb:109:3:109:3 | d :  | pathname_flow.rb:110:8:110:8 | d :  |
 | pathname_flow.rb:109:7:109:7 | a :  | pathname_flow.rb:109:7:109:16 | call to basename :  |
-| pathname_flow.rb:109:7:109:16 | call to basename :  | pathname_flow.rb:110:8:110:8 | d :  |
+| pathname_flow.rb:109:7:109:16 | call to basename :  | pathname_flow.rb:109:3:109:3 | d :  |
 | pathname_flow.rb:110:8:110:8 | d :  | pathname_flow.rb:110:8:110:17 | call to realpath |
+| pathname_flow.rb:112:3:112:3 | e :  | pathname_flow.rb:113:8:113:8 | e :  |
 | pathname_flow.rb:112:7:112:7 | a :  | pathname_flow.rb:112:7:112:17 | call to cleanpath :  |
-| pathname_flow.rb:112:7:112:17 | call to cleanpath :  | pathname_flow.rb:113:8:113:8 | e :  |
+| pathname_flow.rb:112:7:112:17 | call to cleanpath :  | pathname_flow.rb:112:3:112:3 | e :  |
 | pathname_flow.rb:113:8:113:8 | e :  | pathname_flow.rb:113:8:113:17 | call to realpath |
+| pathname_flow.rb:115:3:115:3 | f :  | pathname_flow.rb:116:8:116:8 | f :  |
 | pathname_flow.rb:115:7:115:7 | a :  | pathname_flow.rb:115:7:115:19 | call to expand_path :  |
-| pathname_flow.rb:115:7:115:19 | call to expand_path :  | pathname_flow.rb:116:8:116:8 | f :  |
+| pathname_flow.rb:115:7:115:19 | call to expand_path :  | pathname_flow.rb:115:3:115:3 | f :  |
 | pathname_flow.rb:116:8:116:8 | f :  | pathname_flow.rb:116:8:116:17 | call to realpath |
+| pathname_flow.rb:118:3:118:3 | g :  | pathname_flow.rb:119:8:119:8 | g :  |
 | pathname_flow.rb:118:7:118:7 | a :  | pathname_flow.rb:118:7:118:19 | call to join :  |
-| pathname_flow.rb:118:7:118:19 | call to join :  | pathname_flow.rb:119:8:119:8 | g :  |
+| pathname_flow.rb:118:7:118:19 | call to join :  | pathname_flow.rb:118:3:118:3 | g :  |
 | pathname_flow.rb:119:8:119:8 | g :  | pathname_flow.rb:119:8:119:17 | call to realpath |
+| pathname_flow.rb:121:3:121:3 | h :  | pathname_flow.rb:122:8:122:8 | h :  |
 | pathname_flow.rb:121:7:121:7 | a :  | pathname_flow.rb:121:7:121:16 | call to realpath :  |
-| pathname_flow.rb:121:7:121:16 | call to realpath :  | pathname_flow.rb:122:8:122:8 | h :  |
+| pathname_flow.rb:121:7:121:16 | call to realpath :  | pathname_flow.rb:121:3:121:3 | h :  |
 | pathname_flow.rb:122:8:122:8 | h :  | pathname_flow.rb:122:8:122:17 | call to realpath |
+| pathname_flow.rb:124:3:124:3 | i :  | pathname_flow.rb:125:8:125:8 | i :  |
 | pathname_flow.rb:124:7:124:7 | a :  | pathname_flow.rb:124:7:124:38 | call to relative_path_from :  |
-| pathname_flow.rb:124:7:124:38 | call to relative_path_from :  | pathname_flow.rb:125:8:125:8 | i :  |
+| pathname_flow.rb:124:7:124:38 | call to relative_path_from :  | pathname_flow.rb:124:3:124:3 | i :  |
 | pathname_flow.rb:125:8:125:8 | i :  | pathname_flow.rb:125:8:125:17 | call to realpath |
+| pathname_flow.rb:127:3:127:3 | j :  | pathname_flow.rb:128:8:128:8 | j :  |
 | pathname_flow.rb:127:7:127:7 | a :  | pathname_flow.rb:127:7:127:25 | call to sub :  |
-| pathname_flow.rb:127:7:127:25 | call to sub :  | pathname_flow.rb:128:8:128:8 | j :  |
+| pathname_flow.rb:127:7:127:25 | call to sub :  | pathname_flow.rb:127:3:127:3 | j :  |
 | pathname_flow.rb:128:8:128:8 | j :  | pathname_flow.rb:128:8:128:17 | call to realpath |
+| pathname_flow.rb:130:3:130:3 | k :  | pathname_flow.rb:131:8:131:8 | k :  |
 | pathname_flow.rb:130:7:130:7 | a :  | pathname_flow.rb:130:7:130:23 | call to sub_ext :  |
-| pathname_flow.rb:130:7:130:23 | call to sub_ext :  | pathname_flow.rb:131:8:131:8 | k :  |
+| pathname_flow.rb:130:7:130:23 | call to sub_ext :  | pathname_flow.rb:130:3:130:3 | k :  |
 | pathname_flow.rb:131:8:131:8 | k :  | pathname_flow.rb:131:8:131:17 | call to realpath |
+| pathname_flow.rb:133:3:133:3 | l :  | pathname_flow.rb:134:8:134:8 | l :  |
 | pathname_flow.rb:133:7:133:7 | a :  | pathname_flow.rb:133:7:133:15 | call to to_path :  |
-| pathname_flow.rb:133:7:133:15 | call to to_path :  | pathname_flow.rb:134:8:134:8 | l :  |
+| pathname_flow.rb:133:7:133:15 | call to to_path :  | pathname_flow.rb:133:3:133:3 | l :  |
 | pathname_flow.rb:134:8:134:8 | l :  | pathname_flow.rb:134:8:134:17 | call to realpath |
 nodes
+| pathname_flow.rb:4:5:4:6 | pn :  | semmle.label | pn :  |
 | pathname_flow.rb:4:10:4:33 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:4:23:4:32 | call to source :  | semmle.label | call to source :  |
 | pathname_flow.rb:5:10:5:11 | pn | semmle.label | pn |
+| pathname_flow.rb:9:3:9:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:9:7:9:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:9:20:9:29 | call to source :  | semmle.label | call to source :  |
+| pathname_flow.rb:10:3:10:3 | b :  | semmle.label | b :  |
 | pathname_flow.rb:10:7:10:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:10:20:10:29 | call to source :  | semmle.label | call to source :  |
 | pathname_flow.rb:11:8:11:12 | ... + ... | semmle.label | ... + ... |
+| pathname_flow.rb:15:3:15:4 | pn :  | semmle.label | pn :  |
 | pathname_flow.rb:15:8:15:31 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:15:21:15:30 | call to source :  | semmle.label | call to source :  |
 | pathname_flow.rb:16:8:16:9 | pn :  | semmle.label | pn :  |
 | pathname_flow.rb:16:8:16:17 | call to dirname | semmle.label | call to dirname |
+| pathname_flow.rb:20:3:20:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:20:7:20:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:20:20:20:29 | call to source :  | semmle.label | call to source :  |
 | pathname_flow.rb:21:3:21:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:21:23:21:23 | x :  | semmle.label | x :  |
 | pathname_flow.rb:22:10:22:10 | x | semmle.label | x |
+| pathname_flow.rb:27:3:27:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:27:7:27:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:27:20:27:29 | call to source :  | semmle.label | call to source :  |
 | pathname_flow.rb:28:8:28:8 | a :  | semmle.label | a :  |
 | pathname_flow.rb:28:8:28:22 | call to expand_path | semmle.label | call to expand_path |
+| pathname_flow.rb:32:3:32:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:32:7:32:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:32:20:32:29 | call to source :  | semmle.label | call to source :  |
+| pathname_flow.rb:34:3:34:3 | c :  | semmle.label | c :  |
 | pathname_flow.rb:34:7:34:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:34:20:34:29 | call to source :  | semmle.label | call to source :  |
 | pathname_flow.rb:35:8:35:8 | a :  | semmle.label | a :  |
 | pathname_flow.rb:35:8:35:19 | call to join | semmle.label | call to join |
 | pathname_flow.rb:35:18:35:18 | c :  | semmle.label | c :  |
+| pathname_flow.rb:39:3:39:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:39:7:39:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:39:20:39:29 | call to source :  | semmle.label | call to source :  |
 | pathname_flow.rb:40:8:40:8 | a :  | semmle.label | a :  |
 | pathname_flow.rb:40:8:40:17 | call to parent | semmle.label | call to parent |
+| pathname_flow.rb:44:3:44:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:44:7:44:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:44:20:44:29 | call to source :  | semmle.label | call to source :  |
 | pathname_flow.rb:45:8:45:8 | a :  | semmle.label | a :  |
 | pathname_flow.rb:45:8:45:19 | call to realpath | semmle.label | call to realpath |
+| pathname_flow.rb:49:3:49:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:49:7:49:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:49:20:49:29 | call to source :  | semmle.label | call to source :  |
 | pathname_flow.rb:50:8:50:8 | a :  | semmle.label | a :  |
 | pathname_flow.rb:50:8:50:39 | call to relative_path_from | semmle.label | call to relative_path_from |
+| pathname_flow.rb:54:3:54:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:54:7:54:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:54:20:54:29 | call to source :  | semmle.label | call to source :  |
 | pathname_flow.rb:55:8:55:8 | a :  | semmle.label | a :  |
 | pathname_flow.rb:55:8:55:16 | call to to_path | semmle.label | call to to_path |
+| pathname_flow.rb:59:3:59:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:59:7:59:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:59:20:59:29 | call to source :  | semmle.label | call to source :  |
 | pathname_flow.rb:60:8:60:8 | a :  | semmle.label | a :  |
 | pathname_flow.rb:60:8:60:13 | call to to_s | semmle.label | call to to_s |
+| pathname_flow.rb:64:3:64:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:64:7:64:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:64:20:64:29 | call to source :  | semmle.label | call to source :  |
+| pathname_flow.rb:65:3:65:3 | b :  | semmle.label | b :  |
 | pathname_flow.rb:66:8:66:8 | b | semmle.label | b |
+| pathname_flow.rb:70:3:70:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:70:7:70:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:70:20:70:29 | call to source :  | semmle.label | call to source :  |
+| pathname_flow.rb:71:3:71:3 | b :  | semmle.label | b :  |
 | pathname_flow.rb:72:8:72:8 | b | semmle.label | b |
+| pathname_flow.rb:76:3:76:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:76:7:76:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:76:20:76:29 | call to source :  | semmle.label | call to source :  |
+| pathname_flow.rb:77:3:77:3 | b :  | semmle.label | b :  |
 | pathname_flow.rb:77:7:77:7 | a :  | semmle.label | a :  |
 | pathname_flow.rb:77:7:77:16 | call to basename :  | semmle.label | call to basename :  |
 | pathname_flow.rb:78:8:78:8 | b | semmle.label | b |
+| pathname_flow.rb:82:3:82:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:82:7:82:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:82:20:82:29 | call to source :  | semmle.label | call to source :  |
+| pathname_flow.rb:83:3:83:3 | b :  | semmle.label | b :  |
 | pathname_flow.rb:83:7:83:7 | a :  | semmle.label | a :  |
 | pathname_flow.rb:83:7:83:17 | call to cleanpath :  | semmle.label | call to cleanpath :  |
 | pathname_flow.rb:84:8:84:8 | b | semmle.label | b |
+| pathname_flow.rb:88:3:88:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:88:7:88:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:88:20:88:29 | call to source :  | semmle.label | call to source :  |
+| pathname_flow.rb:89:3:89:3 | b :  | semmle.label | b :  |
 | pathname_flow.rb:89:7:89:7 | a :  | semmle.label | a :  |
 | pathname_flow.rb:89:7:89:25 | call to sub :  | semmle.label | call to sub :  |
 | pathname_flow.rb:90:8:90:8 | b | semmle.label | b |
+| pathname_flow.rb:94:3:94:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:94:7:94:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:94:20:94:29 | call to source :  | semmle.label | call to source :  |
+| pathname_flow.rb:95:3:95:3 | b :  | semmle.label | b :  |
 | pathname_flow.rb:95:7:95:7 | a :  | semmle.label | a :  |
 | pathname_flow.rb:95:7:95:23 | call to sub_ext :  | semmle.label | call to sub_ext :  |
 | pathname_flow.rb:96:8:96:8 | b | semmle.label | b |
+| pathname_flow.rb:101:3:101:3 | a :  | semmle.label | a :  |
 | pathname_flow.rb:101:7:101:30 | call to new :  | semmle.label | call to new :  |
 | pathname_flow.rb:101:20:101:29 | call to source :  | semmle.label | call to source :  |
+| pathname_flow.rb:103:3:103:3 | b :  | semmle.label | b :  |
 | pathname_flow.rb:104:8:104:8 | b :  | semmle.label | b :  |
 | pathname_flow.rb:104:8:104:17 | call to realpath | semmle.label | call to realpath |
+| pathname_flow.rb:106:3:106:3 | c :  | semmle.label | c :  |
 | pathname_flow.rb:107:8:107:8 | c :  | semmle.label | c :  |
 | pathname_flow.rb:107:8:107:17 | call to realpath | semmle.label | call to realpath |
+| pathname_flow.rb:109:3:109:3 | d :  | semmle.label | d :  |
 | pathname_flow.rb:109:7:109:7 | a :  | semmle.label | a :  |
 | pathname_flow.rb:109:7:109:16 | call to basename :  | semmle.label | call to basename :  |
 | pathname_flow.rb:110:8:110:8 | d :  | semmle.label | d :  |
 | pathname_flow.rb:110:8:110:17 | call to realpath | semmle.label | call to realpath |
+| pathname_flow.rb:112:3:112:3 | e :  | semmle.label | e :  |
 | pathname_flow.rb:112:7:112:7 | a :  | semmle.label | a :  |
 | pathname_flow.rb:112:7:112:17 | call to cleanpath :  | semmle.label | call to cleanpath :  |
 | pathname_flow.rb:113:8:113:8 | e :  | semmle.label | e :  |
 | pathname_flow.rb:113:8:113:17 | call to realpath | semmle.label | call to realpath |
+| pathname_flow.rb:115:3:115:3 | f :  | semmle.label | f :  |
 | pathname_flow.rb:115:7:115:7 | a :  | semmle.label | a :  |
 | pathname_flow.rb:115:7:115:19 | call to expand_path :  | semmle.label | call to expand_path :  |
 | pathname_flow.rb:116:8:116:8 | f :  | semmle.label | f :  |
 | pathname_flow.rb:116:8:116:17 | call to realpath | semmle.label | call to realpath |
+| pathname_flow.rb:118:3:118:3 | g :  | semmle.label | g :  |
 | pathname_flow.rb:118:7:118:7 | a :  | semmle.label | a :  |
 | pathname_flow.rb:118:7:118:19 | call to join :  | semmle.label | call to join :  |
 | pathname_flow.rb:119:8:119:8 | g :  | semmle.label | g :  |
 | pathname_flow.rb:119:8:119:17 | call to realpath | semmle.label | call to realpath |
+| pathname_flow.rb:121:3:121:3 | h :  | semmle.label | h :  |
 | pathname_flow.rb:121:7:121:7 | a :  | semmle.label | a :  |
 | pathname_flow.rb:121:7:121:16 | call to realpath :  | semmle.label | call to realpath :  |
 | pathname_flow.rb:122:8:122:8 | h :  | semmle.label | h :  |
 | pathname_flow.rb:122:8:122:17 | call to realpath | semmle.label | call to realpath |
+| pathname_flow.rb:124:3:124:3 | i :  | semmle.label | i :  |
 | pathname_flow.rb:124:7:124:7 | a :  | semmle.label | a :  |
 | pathname_flow.rb:124:7:124:38 | call to relative_path_from :  | semmle.label | call to relative_path_from :  |
 | pathname_flow.rb:125:8:125:8 | i :  | semmle.label | i :  |
 | pathname_flow.rb:125:8:125:17 | call to realpath | semmle.label | call to realpath |
+| pathname_flow.rb:127:3:127:3 | j :  | semmle.label | j :  |
 | pathname_flow.rb:127:7:127:7 | a :  | semmle.label | a :  |
 | pathname_flow.rb:127:7:127:25 | call to sub :  | semmle.label | call to sub :  |
 | pathname_flow.rb:128:8:128:8 | j :  | semmle.label | j :  |
 | pathname_flow.rb:128:8:128:17 | call to realpath | semmle.label | call to realpath |
+| pathname_flow.rb:130:3:130:3 | k :  | semmle.label | k :  |
 | pathname_flow.rb:130:7:130:7 | a :  | semmle.label | a :  |
 | pathname_flow.rb:130:7:130:23 | call to sub_ext :  | semmle.label | call to sub_ext :  |
 | pathname_flow.rb:131:8:131:8 | k :  | semmle.label | k :  |
 | pathname_flow.rb:131:8:131:17 | call to realpath | semmle.label | call to realpath |
+| pathname_flow.rb:133:3:133:3 | l :  | semmle.label | l :  |
 | pathname_flow.rb:133:7:133:7 | a :  | semmle.label | a :  |
 | pathname_flow.rb:133:7:133:15 | call to to_path :  | semmle.label | call to to_path :  |
 | pathname_flow.rb:134:8:134:8 | l :  | semmle.label | l :  |

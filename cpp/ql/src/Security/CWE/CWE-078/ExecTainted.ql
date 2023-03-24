@@ -76,7 +76,7 @@ class ExecState extends TExecState {
   DataFlow::Node getOutgoingNode() { result = outgoing }
 
   /** Holds if this is a possible `ExecState` for `sink`. */
-  predicate isFeasibleForSink(DataFlow::Node sink) { ExecState::hasFlow(outgoing, sink) }
+  predicate isFeasibleForSink(DataFlow::Node sink) { ExecState::flow(outgoing, sink) }
 
   string toString() { result = "ExecState" }
 }
@@ -109,7 +109,7 @@ module ExecStateConfig implements DataFlow::ConfigSig {
   }
 }
 
-module ExecState = TaintTracking::Make<ExecStateConfig>;
+module ExecState = TaintTracking::Global<ExecStateConfig>;
 
 module ExecTaintConfig implements DataFlow::StateConfigSig {
   class FlowState = TState;
@@ -141,13 +141,13 @@ module ExecTaintConfig implements DataFlow::StateConfigSig {
   }
 }
 
-module ExecTaint = TaintTracking::MakeWithState<ExecTaintConfig>;
+module ExecTaint = TaintTracking::GlobalWithState<ExecTaintConfig>;
 
 from
   ExecTaint::PathNode sourceNode, ExecTaint::PathNode sinkNode, string taintCause, string callChain,
   DataFlow::Node concatResult, Expr command
 where
-  ExecTaint::hasFlowPath(sourceNode, sinkNode) and
+  ExecTaint::flowPath(sourceNode, sinkNode) and
   taintCause = sourceNode.getNode().(FlowSource).getSourceType() and
   isSinkImpl(sinkNode.getNode(), command, callChain) and
   concatResult = sinkNode.getState().(ExecState).getOutgoingNode()

@@ -1,28 +1,30 @@
 edges
+| app/controllers/users_controller.rb:15:5:15:15 | unsanitized :  | app/controllers/users_controller.rb:16:19:16:29 | unsanitized |
+| app/controllers/users_controller.rb:15:5:15:15 | unsanitized :  | app/controllers/users_controller.rb:17:19:17:41 | ... + ... |
+| app/controllers/users_controller.rb:15:5:15:15 | unsanitized :  | app/controllers/users_controller.rb:23:20:23:30 | unsanitized :  |
 | app/controllers/users_controller.rb:15:19:15:24 | call to params :  | app/controllers/users_controller.rb:15:19:15:30 | ...[...] :  |
-| app/controllers/users_controller.rb:15:19:15:30 | ...[...] :  | app/controllers/users_controller.rb:16:19:16:29 | unsanitized |
-| app/controllers/users_controller.rb:15:19:15:30 | ...[...] :  | app/controllers/users_controller.rb:17:19:17:41 | ... + ... |
-| app/controllers/users_controller.rb:15:19:15:30 | ...[...] :  | app/controllers/users_controller.rb:23:20:23:30 | unsanitized :  |
-| app/controllers/users_controller.rb:23:5:23:44 | ... = ... :  | app/controllers/users_controller.rb:25:7:25:18 | unsanitized2 |
+| app/controllers/users_controller.rb:15:19:15:30 | ...[...] :  | app/controllers/users_controller.rb:15:5:15:15 | unsanitized :  |
+| app/controllers/users_controller.rb:23:5:23:16 | unsanitized2 :  | app/controllers/users_controller.rb:25:7:25:18 | unsanitized2 |
+| app/controllers/users_controller.rb:23:5:23:16 | unsanitized2 :  | app/controllers/users_controller.rb:27:16:27:39 | ... + ... |
 | app/controllers/users_controller.rb:23:20:23:30 | unsanitized :  | app/controllers/users_controller.rb:23:20:23:44 | call to sub :  |
-| app/controllers/users_controller.rb:23:20:23:44 | call to sub :  | app/controllers/users_controller.rb:23:5:23:44 | ... = ... :  |
-| app/controllers/users_controller.rb:23:20:23:44 | call to sub :  | app/controllers/users_controller.rb:27:16:27:39 | ... + ... |
-| app/controllers/users_controller.rb:33:5:33:31 | ... = ... :  | app/controllers/users_controller.rb:34:33:34:43 | unsanitized |
-| app/controllers/users_controller.rb:33:5:33:31 | ... = ... :  | app/controllers/users_controller.rb:35:33:35:55 | ... + ... |
+| app/controllers/users_controller.rb:23:20:23:44 | call to sub :  | app/controllers/users_controller.rb:23:5:23:16 | unsanitized2 :  |
+| app/controllers/users_controller.rb:33:5:33:15 | unsanitized :  | app/controllers/users_controller.rb:34:33:34:43 | unsanitized |
+| app/controllers/users_controller.rb:33:5:33:15 | unsanitized :  | app/controllers/users_controller.rb:35:33:35:55 | ... + ... |
 | app/controllers/users_controller.rb:33:19:33:25 | call to cookies :  | app/controllers/users_controller.rb:33:19:33:31 | ...[...] :  |
-| app/controllers/users_controller.rb:33:19:33:31 | ...[...] :  | app/controllers/users_controller.rb:33:5:33:31 | ... = ... :  |
+| app/controllers/users_controller.rb:33:19:33:31 | ...[...] :  | app/controllers/users_controller.rb:33:5:33:15 | unsanitized :  |
 | app/controllers/users_controller.rb:49:19:49:24 | call to params :  | app/controllers/users_controller.rb:49:19:49:30 | ...[...] |
 nodes
+| app/controllers/users_controller.rb:15:5:15:15 | unsanitized :  | semmle.label | unsanitized :  |
 | app/controllers/users_controller.rb:15:19:15:24 | call to params :  | semmle.label | call to params :  |
 | app/controllers/users_controller.rb:15:19:15:30 | ...[...] :  | semmle.label | ...[...] :  |
 | app/controllers/users_controller.rb:16:19:16:29 | unsanitized | semmle.label | unsanitized |
 | app/controllers/users_controller.rb:17:19:17:41 | ... + ... | semmle.label | ... + ... |
-| app/controllers/users_controller.rb:23:5:23:44 | ... = ... :  | semmle.label | ... = ... :  |
+| app/controllers/users_controller.rb:23:5:23:16 | unsanitized2 :  | semmle.label | unsanitized2 :  |
 | app/controllers/users_controller.rb:23:20:23:30 | unsanitized :  | semmle.label | unsanitized :  |
 | app/controllers/users_controller.rb:23:20:23:44 | call to sub :  | semmle.label | call to sub :  |
 | app/controllers/users_controller.rb:25:7:25:18 | unsanitized2 | semmle.label | unsanitized2 |
 | app/controllers/users_controller.rb:27:16:27:39 | ... + ... | semmle.label | ... + ... |
-| app/controllers/users_controller.rb:33:5:33:31 | ... = ... :  | semmle.label | ... = ... :  |
+| app/controllers/users_controller.rb:33:5:33:15 | unsanitized :  | semmle.label | unsanitized :  |
 | app/controllers/users_controller.rb:33:19:33:25 | call to cookies :  | semmle.label | call to cookies :  |
 | app/controllers/users_controller.rb:33:19:33:31 | ...[...] :  | semmle.label | ...[...] :  |
 | app/controllers/users_controller.rb:34:33:34:43 | unsanitized | semmle.label | unsanitized |
