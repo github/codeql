@@ -48,7 +48,7 @@ Example: Taint sink in the **java.sql** package
 
 In this example we will show how to model the argument of the **execute** method as a SQL injection sink.
 This is the **execute** method in the **Statement** class, which is located in the **java.sql** package.
-Please note that this sink is already added to the CodeQL Java analysis.
+Note that this sink is already added to the CodeQL Java analysis.
 
 .. code-block:: java
 
@@ -89,7 +89,7 @@ Example: Taint source from the **java.net** package
 ----------------------------------------------------
 In this example we show how to model the return value from the **getInputStream** method as a **remote** source.
 This is the **getInputStream** method in the **Socket** class, which is located in the **java.net** package.
-Please note that this source is already added to the CodeQL Java analysis.
+Note that this source is already added to the CodeQL Java analysis.
 
 .. code-block:: java
 
@@ -130,7 +130,7 @@ Example: Add flow through the **concat** method
 ------------------------------------------------
 In this example we show how to model flow through a method for a simple case.
 This pattern covers many of the cases where we need to define flow through a method.
-Please note that the flow through the **concat** method is already added to the CodeQL Java analysis.
+Note that the flow through the **concat** method is already added to the CodeQL Java analysis.
 
 .. code-block:: java
 
@@ -178,7 +178,7 @@ Example: Add flow through the **map** method
 ---------------------------------------------
 In this example, we will see a more complex example of modeling flow through a method.
 This pattern shows how to model flow through higher order methods and collection types.
-Please note that the flow through the **map** method is already added to the CodeQL Java analysis.
+Note that the flow through the **map** method is already added to the CodeQL Java analysis.
 
 .. code-block:: java
 
@@ -238,7 +238,7 @@ Example: Add a **neutral** method
 ----------------------------------
 In this example we will show how to model the **now** method as being neutral.
 A neutral model is used to define that there is no flow through a method.
-Please note that the neutral model for the **now** method is already added to the CodeQL Java analysis.
+Note that the neutral model for the **now** method is already added to the CodeQL Java analysis.
 
 .. code-block:: java
    
