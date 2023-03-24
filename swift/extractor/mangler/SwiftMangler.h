@@ -54,8 +54,9 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitAbstractTypeParamDecl(const swift::AbstractTypeParamDecl* decl);
   SwiftMangledName visitGenericTypeParamDecl(const swift::GenericTypeParamDecl* decl);
 
-  // default fallback for not yet mangled types. This should never be called in normal situations
-  // TODO: make it assert once we mangle all types
+  // default fallback for non mangled types. This covers types that should not appear in normal
+  // successful extractor runs, like ErrorType
+  // TODO: log this properly once we have logging infrastructure
   SwiftMangledName visitType(const swift::TypeBase* type);
 
   SwiftMangledName visitModuleType(const swift::ModuleType* type);
@@ -92,6 +93,9 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitParametrizedProtocolType(const swift::ParameterizedProtocolType* type);
 
  private:
+  template <typename E>
+  UntypedTrapLabel fetch(E&& e);
+
   static SwiftMangledName initMangled(const swift::TypeBase* type);
   SwiftMangledName initMangled(const swift::Decl* decl);
   SwiftMangledName visitTypeDiscriminatedValueDecl(const swift::ValueDecl* decl);
