@@ -37,7 +37,7 @@ We'll explain how to use these using a few examples, and provide some reference 
 Example: Taint sink in the 'execa' package
 ------------------------------------------
 
-In this example, we'll show how to add the argument passed to **execa** below as a command-line injection sink:
+In this example, we'll show how to add the following argument, passed to **execa**, as a command-line injection sink:
 
 .. code-block:: js
 
