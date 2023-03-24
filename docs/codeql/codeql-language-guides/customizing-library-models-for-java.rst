@@ -311,9 +311,10 @@ As most sources are used by all taint tracking queries there are only a few diff
 The following source kinds are supported:
 
 - **remote**: A remote source of possibly tainted data. This is the most common kind for a source. Sources of this kind are used for almost all taint tracking queries.
-- **contentprovider**: ?
-- **android-widget**: ?
-- **android-external-storage-dir**: ?
+
+Below is an enumeration of the remaining source kinds, but they are out of scope for this documentation:
+
+- **contentprovider**, **android-widget**, **android-external-storage-dir**.
 
 sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -325,33 +326,18 @@ Taint sink. As opposed to source kinds, there are many different kinds of sinks 
 
 The following sink kinds are supported:
 
-- **open-url**: ?
-- **jndi-injection**: ?
-- **ldap**: ?
-- **sql**: ?
-- **jdbc-url**: ?
-- **logging**: ?
-- **mvel**: ?
-- **xpath**: ?
-- **groovy**: ?
-- **xss**: ?
-- **ognl-injection**: ?
-- **intent-start**: ?
-- **pending-intent-sent**: ?
-- **url-open-stream**: ?
-- **url-redirect**: ?
-- **create-file**: ?
-- **read-file**: ?
-- **write-file**: ?
-- **set-hostname-verifier**: ?
-- **header-splitting**: ?
-- **information-leak**: ?
-- **xslt**: ?
-- **jexl**: ?
-- **bean-validation**: ?
-- **ssti**: ?
-- **fragment-injection**: ?
-- **regex-use[**\ `arg`\ **]**: ?
+- **sql**: A SQL injection vulnerability sink.
+- **xss**: A cross-site scripting vulnerability sink.
+- **logging**: A log output sink.
+
+Below is an enumeration of the remaining sinks, but they are out of scope for this documentation:
+
+- **open-url**, **jndi-injection**, **ldap**, **jdbc-url**
+- **mvel**, **xpath**, **groovy**, **ognl-injection**
+- **intent-start**, **pending-intent-sent**, **url-open-stream**, **url-redirect**
+- **create-file**, **read-file**, **write-file**, **set-hostname-verifier**
+- **header-splitting**, **information-leak**, **xslt**, **jexl**
+- **bean-validation**, **ssti**, **fragment-injection**, **regex-use[**\ `arg`\ **]**
 
 summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
