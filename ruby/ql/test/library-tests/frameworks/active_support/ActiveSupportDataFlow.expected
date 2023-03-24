@@ -1,122 +1,178 @@
 failures
 | hash_extensions.rb:126:10:126:19 | call to sole | Unexpected result: hasValueFlow=b |
 edges
-| active_support.rb:10:9:10:18 | call to source :  | active_support.rb:11:10:11:10 | x :  |
+| active_support.rb:10:5:10:5 | x :  | active_support.rb:11:10:11:10 | x :  |
+| active_support.rb:10:9:10:18 | call to source :  | active_support.rb:10:5:10:5 | x :  |
 | active_support.rb:11:10:11:10 | x :  | active_support.rb:11:10:11:19 | call to at |
-| active_support.rb:15:9:15:18 | call to source :  | active_support.rb:16:10:16:10 | x :  |
+| active_support.rb:15:5:15:5 | x :  | active_support.rb:16:10:16:10 | x :  |
+| active_support.rb:15:9:15:18 | call to source :  | active_support.rb:15:5:15:5 | x :  |
 | active_support.rb:16:10:16:10 | x :  | active_support.rb:16:10:16:19 | call to camelize |
-| active_support.rb:20:9:20:18 | call to source :  | active_support.rb:21:10:21:10 | x :  |
+| active_support.rb:20:5:20:5 | x :  | active_support.rb:21:10:21:10 | x :  |
+| active_support.rb:20:9:20:18 | call to source :  | active_support.rb:20:5:20:5 | x :  |
 | active_support.rb:21:10:21:10 | x :  | active_support.rb:21:10:21:20 | call to camelcase |
-| active_support.rb:25:9:25:18 | call to source :  | active_support.rb:26:10:26:10 | x :  |
+| active_support.rb:25:5:25:5 | x :  | active_support.rb:26:10:26:10 | x :  |
+| active_support.rb:25:9:25:18 | call to source :  | active_support.rb:25:5:25:5 | x :  |
 | active_support.rb:26:10:26:10 | x :  | active_support.rb:26:10:26:19 | call to classify |
-| active_support.rb:30:9:30:18 | call to source :  | active_support.rb:31:10:31:10 | x :  |
+| active_support.rb:30:5:30:5 | x :  | active_support.rb:31:10:31:10 | x :  |
+| active_support.rb:30:9:30:18 | call to source :  | active_support.rb:30:5:30:5 | x :  |
 | active_support.rb:31:10:31:10 | x :  | active_support.rb:31:10:31:20 | call to dasherize |
-| active_support.rb:35:9:35:18 | call to source :  | active_support.rb:36:10:36:10 | x :  |
+| active_support.rb:35:5:35:5 | x :  | active_support.rb:36:10:36:10 | x :  |
+| active_support.rb:35:9:35:18 | call to source :  | active_support.rb:35:5:35:5 | x :  |
 | active_support.rb:36:10:36:10 | x :  | active_support.rb:36:10:36:24 | call to deconstantize |
-| active_support.rb:40:9:40:18 | call to source :  | active_support.rb:41:10:41:10 | x :  |
+| active_support.rb:40:5:40:5 | x :  | active_support.rb:41:10:41:10 | x :  |
+| active_support.rb:40:9:40:18 | call to source :  | active_support.rb:40:5:40:5 | x :  |
 | active_support.rb:41:10:41:10 | x :  | active_support.rb:41:10:41:21 | call to demodulize |
-| active_support.rb:45:9:45:18 | call to source :  | active_support.rb:46:10:46:10 | x :  |
+| active_support.rb:45:5:45:5 | x :  | active_support.rb:46:10:46:10 | x :  |
+| active_support.rb:45:9:45:18 | call to source :  | active_support.rb:45:5:45:5 | x :  |
 | active_support.rb:46:10:46:10 | x :  | active_support.rb:46:10:46:19 | call to first |
-| active_support.rb:50:9:50:18 | call to source :  | active_support.rb:51:10:51:10 | x :  |
+| active_support.rb:50:5:50:5 | x :  | active_support.rb:51:10:51:10 | x :  |
+| active_support.rb:50:9:50:18 | call to source :  | active_support.rb:50:5:50:5 | x :  |
 | active_support.rb:51:10:51:10 | x :  | active_support.rb:51:10:51:22 | call to foreign_key |
-| active_support.rb:55:9:55:18 | call to source :  | active_support.rb:56:10:56:10 | x :  |
+| active_support.rb:55:5:55:5 | x :  | active_support.rb:56:10:56:10 | x :  |
+| active_support.rb:55:9:55:18 | call to source :  | active_support.rb:55:5:55:5 | x :  |
 | active_support.rb:56:10:56:10 | x :  | active_support.rb:56:10:56:18 | call to from |
-| active_support.rb:60:9:60:18 | call to source :  | active_support.rb:61:10:61:10 | x :  |
+| active_support.rb:60:5:60:5 | x :  | active_support.rb:61:10:61:10 | x :  |
+| active_support.rb:60:9:60:18 | call to source :  | active_support.rb:60:5:60:5 | x :  |
 | active_support.rb:61:10:61:10 | x :  | active_support.rb:61:10:61:20 | call to html_safe |
-| active_support.rb:65:9:65:18 | call to source :  | active_support.rb:66:10:66:10 | x :  |
+| active_support.rb:65:5:65:5 | x :  | active_support.rb:66:10:66:10 | x :  |
+| active_support.rb:65:9:65:18 | call to source :  | active_support.rb:65:5:65:5 | x :  |
 | active_support.rb:66:10:66:10 | x :  | active_support.rb:66:10:66:19 | call to humanize |
-| active_support.rb:70:9:70:18 | call to source :  | active_support.rb:71:10:71:10 | x :  |
+| active_support.rb:70:5:70:5 | x :  | active_support.rb:71:10:71:10 | x :  |
+| active_support.rb:70:9:70:18 | call to source :  | active_support.rb:70:5:70:5 | x :  |
 | active_support.rb:71:10:71:10 | x :  | active_support.rb:71:10:71:20 | call to indent |
-| active_support.rb:75:9:75:18 | call to source :  | active_support.rb:76:10:76:10 | x :  |
+| active_support.rb:75:5:75:5 | x :  | active_support.rb:76:10:76:10 | x :  |
+| active_support.rb:75:9:75:18 | call to source :  | active_support.rb:75:5:75:5 | x :  |
 | active_support.rb:76:10:76:10 | x :  | active_support.rb:76:10:76:21 | call to indent! |
-| active_support.rb:80:9:80:18 | call to source :  | active_support.rb:81:10:81:10 | x :  |
+| active_support.rb:80:5:80:5 | x :  | active_support.rb:81:10:81:10 | x :  |
+| active_support.rb:80:9:80:18 | call to source :  | active_support.rb:80:5:80:5 | x :  |
 | active_support.rb:81:10:81:10 | x :  | active_support.rb:81:10:81:18 | call to inquiry |
-| active_support.rb:85:9:85:18 | call to source :  | active_support.rb:86:10:86:10 | x :  |
+| active_support.rb:85:5:85:5 | x :  | active_support.rb:86:10:86:10 | x :  |
+| active_support.rb:85:9:85:18 | call to source :  | active_support.rb:85:5:85:5 | x :  |
 | active_support.rb:86:10:86:10 | x :  | active_support.rb:86:10:86:18 | call to last |
-| active_support.rb:90:9:90:18 | call to source :  | active_support.rb:91:10:91:10 | x :  |
+| active_support.rb:90:5:90:5 | x :  | active_support.rb:91:10:91:10 | x :  |
+| active_support.rb:90:9:90:18 | call to source :  | active_support.rb:90:5:90:5 | x :  |
 | active_support.rb:91:10:91:10 | x :  | active_support.rb:91:10:91:19 | call to mb_chars |
-| active_support.rb:95:9:95:18 | call to source :  | active_support.rb:96:10:96:10 | x :  |
+| active_support.rb:95:5:95:5 | x :  | active_support.rb:96:10:96:10 | x :  |
+| active_support.rb:95:9:95:18 | call to source :  | active_support.rb:95:5:95:5 | x :  |
 | active_support.rb:96:10:96:10 | x :  | active_support.rb:96:10:96:23 | call to parameterize |
-| active_support.rb:100:9:100:18 | call to source :  | active_support.rb:101:10:101:10 | x :  |
+| active_support.rb:100:5:100:5 | x :  | active_support.rb:101:10:101:10 | x :  |
+| active_support.rb:100:9:100:18 | call to source :  | active_support.rb:100:5:100:5 | x :  |
 | active_support.rb:101:10:101:10 | x :  | active_support.rb:101:10:101:20 | call to pluralize |
-| active_support.rb:105:9:105:18 | call to source :  | active_support.rb:106:10:106:10 | x :  |
+| active_support.rb:105:5:105:5 | x :  | active_support.rb:106:10:106:10 | x :  |
+| active_support.rb:105:9:105:18 | call to source :  | active_support.rb:105:5:105:5 | x :  |
 | active_support.rb:106:10:106:10 | x :  | active_support.rb:106:10:106:24 | call to remove |
-| active_support.rb:110:9:110:18 | call to source :  | active_support.rb:111:10:111:10 | x :  |
+| active_support.rb:110:5:110:5 | x :  | active_support.rb:111:10:111:10 | x :  |
+| active_support.rb:110:9:110:18 | call to source :  | active_support.rb:110:5:110:5 | x :  |
 | active_support.rb:111:10:111:10 | x :  | active_support.rb:111:10:111:25 | call to remove! |
-| active_support.rb:115:9:115:18 | call to source :  | active_support.rb:116:10:116:10 | x :  |
+| active_support.rb:115:5:115:5 | x :  | active_support.rb:116:10:116:10 | x :  |
+| active_support.rb:115:9:115:18 | call to source :  | active_support.rb:115:5:115:5 | x :  |
 | active_support.rb:116:10:116:10 | x :  | active_support.rb:116:10:116:22 | call to singularize |
-| active_support.rb:120:9:120:18 | call to source :  | active_support.rb:121:10:121:10 | x :  |
+| active_support.rb:120:5:120:5 | x :  | active_support.rb:121:10:121:10 | x :  |
+| active_support.rb:120:9:120:18 | call to source :  | active_support.rb:120:5:120:5 | x :  |
 | active_support.rb:121:10:121:10 | x :  | active_support.rb:121:10:121:17 | call to squish |
-| active_support.rb:125:9:125:18 | call to source :  | active_support.rb:126:10:126:10 | x :  |
+| active_support.rb:125:5:125:5 | x :  | active_support.rb:126:10:126:10 | x :  |
+| active_support.rb:125:9:125:18 | call to source :  | active_support.rb:125:5:125:5 | x :  |
 | active_support.rb:126:10:126:10 | x :  | active_support.rb:126:10:126:18 | call to squish! |
-| active_support.rb:130:9:130:18 | call to source :  | active_support.rb:131:10:131:10 | x :  |
+| active_support.rb:130:5:130:5 | x :  | active_support.rb:131:10:131:10 | x :  |
+| active_support.rb:130:9:130:18 | call to source :  | active_support.rb:130:5:130:5 | x :  |
 | active_support.rb:131:10:131:10 | x :  | active_support.rb:131:10:131:24 | call to strip_heredoc |
-| active_support.rb:135:9:135:18 | call to source :  | active_support.rb:136:10:136:10 | x :  |
+| active_support.rb:135:5:135:5 | x :  | active_support.rb:136:10:136:10 | x :  |
+| active_support.rb:135:9:135:18 | call to source :  | active_support.rb:135:5:135:5 | x :  |
 | active_support.rb:136:10:136:10 | x :  | active_support.rb:136:10:136:19 | call to tableize |
-| active_support.rb:140:9:140:18 | call to source :  | active_support.rb:141:10:141:10 | x :  |
+| active_support.rb:140:5:140:5 | x :  | active_support.rb:141:10:141:10 | x :  |
+| active_support.rb:140:9:140:18 | call to source :  | active_support.rb:140:5:140:5 | x :  |
 | active_support.rb:141:10:141:10 | x :  | active_support.rb:141:10:141:20 | call to titlecase |
-| active_support.rb:145:9:145:18 | call to source :  | active_support.rb:146:10:146:10 | x :  |
+| active_support.rb:145:5:145:5 | x :  | active_support.rb:146:10:146:10 | x :  |
+| active_support.rb:145:9:145:18 | call to source :  | active_support.rb:145:5:145:5 | x :  |
 | active_support.rb:146:10:146:10 | x :  | active_support.rb:146:10:146:19 | call to titleize |
-| active_support.rb:150:9:150:18 | call to source :  | active_support.rb:151:10:151:10 | x :  |
+| active_support.rb:150:5:150:5 | x :  | active_support.rb:151:10:151:10 | x :  |
+| active_support.rb:150:9:150:18 | call to source :  | active_support.rb:150:5:150:5 | x :  |
 | active_support.rb:151:10:151:10 | x :  | active_support.rb:151:10:151:16 | call to to |
-| active_support.rb:155:9:155:18 | call to source :  | active_support.rb:156:10:156:10 | x :  |
+| active_support.rb:155:5:155:5 | x :  | active_support.rb:156:10:156:10 | x :  |
+| active_support.rb:155:9:155:18 | call to source :  | active_support.rb:155:5:155:5 | x :  |
 | active_support.rb:156:10:156:10 | x :  | active_support.rb:156:10:156:22 | call to truncate |
-| active_support.rb:160:9:160:18 | call to source :  | active_support.rb:161:10:161:10 | x :  |
+| active_support.rb:160:5:160:5 | x :  | active_support.rb:161:10:161:10 | x :  |
+| active_support.rb:160:9:160:18 | call to source :  | active_support.rb:160:5:160:5 | x :  |
 | active_support.rb:161:10:161:10 | x :  | active_support.rb:161:10:161:28 | call to truncate_bytes |
-| active_support.rb:165:9:165:18 | call to source :  | active_support.rb:166:10:166:10 | x :  |
+| active_support.rb:165:5:165:5 | x :  | active_support.rb:166:10:166:10 | x :  |
+| active_support.rb:165:9:165:18 | call to source :  | active_support.rb:165:5:165:5 | x :  |
 | active_support.rb:166:10:166:10 | x :  | active_support.rb:166:10:166:28 | call to truncate_words |
-| active_support.rb:170:9:170:18 | call to source :  | active_support.rb:171:10:171:10 | x :  |
+| active_support.rb:170:5:170:5 | x :  | active_support.rb:171:10:171:10 | x :  |
+| active_support.rb:170:9:170:18 | call to source :  | active_support.rb:170:5:170:5 | x :  |
 | active_support.rb:171:10:171:10 | x :  | active_support.rb:171:10:171:21 | call to underscore |
-| active_support.rb:175:9:175:18 | call to source :  | active_support.rb:176:10:176:10 | x :  |
+| active_support.rb:175:5:175:5 | x :  | active_support.rb:176:10:176:10 | x :  |
+| active_support.rb:175:9:175:18 | call to source :  | active_support.rb:175:5:175:5 | x :  |
 | active_support.rb:176:10:176:10 | x :  | active_support.rb:176:10:176:23 | call to upcase_first |
-| active_support.rb:180:10:180:17 | call to source :  | active_support.rb:181:9:181:9 | x [element 0] :  |
-| active_support.rb:180:10:180:17 | call to source :  | active_support.rb:181:9:181:9 | x [element 0] :  |
+| active_support.rb:180:5:180:5 | x [element 0] :  | active_support.rb:181:9:181:9 | x [element 0] :  |
+| active_support.rb:180:5:180:5 | x [element 0] :  | active_support.rb:181:9:181:9 | x [element 0] :  |
+| active_support.rb:180:10:180:17 | call to source :  | active_support.rb:180:5:180:5 | x [element 0] :  |
+| active_support.rb:180:10:180:17 | call to source :  | active_support.rb:180:5:180:5 | x [element 0] :  |
+| active_support.rb:181:5:181:5 | y [element] :  | active_support.rb:182:10:182:10 | y [element] :  |
+| active_support.rb:181:5:181:5 | y [element] :  | active_support.rb:182:10:182:10 | y [element] :  |
 | active_support.rb:181:9:181:9 | x [element 0] :  | active_support.rb:181:9:181:23 | call to compact_blank [element] :  |
 | active_support.rb:181:9:181:9 | x [element 0] :  | active_support.rb:181:9:181:23 | call to compact_blank [element] :  |
-| active_support.rb:181:9:181:23 | call to compact_blank [element] :  | active_support.rb:182:10:182:10 | y [element] :  |
-| active_support.rb:181:9:181:23 | call to compact_blank [element] :  | active_support.rb:182:10:182:10 | y [element] :  |
+| active_support.rb:181:9:181:23 | call to compact_blank [element] :  | active_support.rb:181:5:181:5 | y [element] :  |
+| active_support.rb:181:9:181:23 | call to compact_blank [element] :  | active_support.rb:181:5:181:5 | y [element] :  |
 | active_support.rb:182:10:182:10 | y [element] :  | active_support.rb:182:10:182:13 | ...[...] |
 | active_support.rb:182:10:182:10 | y [element] :  | active_support.rb:182:10:182:13 | ...[...] |
-| active_support.rb:186:10:186:18 | call to source :  | active_support.rb:187:9:187:9 | x [element 0] :  |
-| active_support.rb:186:10:186:18 | call to source :  | active_support.rb:187:9:187:9 | x [element 0] :  |
+| active_support.rb:186:5:186:5 | x [element 0] :  | active_support.rb:187:9:187:9 | x [element 0] :  |
+| active_support.rb:186:5:186:5 | x [element 0] :  | active_support.rb:187:9:187:9 | x [element 0] :  |
+| active_support.rb:186:10:186:18 | call to source :  | active_support.rb:186:5:186:5 | x [element 0] :  |
+| active_support.rb:186:10:186:18 | call to source :  | active_support.rb:186:5:186:5 | x [element 0] :  |
+| active_support.rb:187:5:187:5 | y [element] :  | active_support.rb:188:10:188:10 | y [element] :  |
+| active_support.rb:187:5:187:5 | y [element] :  | active_support.rb:188:10:188:10 | y [element] :  |
 | active_support.rb:187:9:187:9 | x [element 0] :  | active_support.rb:187:9:187:21 | call to excluding [element] :  |
 | active_support.rb:187:9:187:9 | x [element 0] :  | active_support.rb:187:9:187:21 | call to excluding [element] :  |
-| active_support.rb:187:9:187:21 | call to excluding [element] :  | active_support.rb:188:10:188:10 | y [element] :  |
-| active_support.rb:187:9:187:21 | call to excluding [element] :  | active_support.rb:188:10:188:10 | y [element] :  |
+| active_support.rb:187:9:187:21 | call to excluding [element] :  | active_support.rb:187:5:187:5 | y [element] :  |
+| active_support.rb:187:9:187:21 | call to excluding [element] :  | active_support.rb:187:5:187:5 | y [element] :  |
 | active_support.rb:188:10:188:10 | y [element] :  | active_support.rb:188:10:188:13 | ...[...] |
 | active_support.rb:188:10:188:10 | y [element] :  | active_support.rb:188:10:188:13 | ...[...] |
-| active_support.rb:192:10:192:18 | call to source :  | active_support.rb:193:9:193:9 | x [element 0] :  |
-| active_support.rb:192:10:192:18 | call to source :  | active_support.rb:193:9:193:9 | x [element 0] :  |
+| active_support.rb:192:5:192:5 | x [element 0] :  | active_support.rb:193:9:193:9 | x [element 0] :  |
+| active_support.rb:192:5:192:5 | x [element 0] :  | active_support.rb:193:9:193:9 | x [element 0] :  |
+| active_support.rb:192:10:192:18 | call to source :  | active_support.rb:192:5:192:5 | x [element 0] :  |
+| active_support.rb:192:10:192:18 | call to source :  | active_support.rb:192:5:192:5 | x [element 0] :  |
+| active_support.rb:193:5:193:5 | y [element] :  | active_support.rb:194:10:194:10 | y [element] :  |
+| active_support.rb:193:5:193:5 | y [element] :  | active_support.rb:194:10:194:10 | y [element] :  |
 | active_support.rb:193:9:193:9 | x [element 0] :  | active_support.rb:193:9:193:19 | call to without [element] :  |
 | active_support.rb:193:9:193:9 | x [element 0] :  | active_support.rb:193:9:193:19 | call to without [element] :  |
-| active_support.rb:193:9:193:19 | call to without [element] :  | active_support.rb:194:10:194:10 | y [element] :  |
-| active_support.rb:193:9:193:19 | call to without [element] :  | active_support.rb:194:10:194:10 | y [element] :  |
+| active_support.rb:193:9:193:19 | call to without [element] :  | active_support.rb:193:5:193:5 | y [element] :  |
+| active_support.rb:193:9:193:19 | call to without [element] :  | active_support.rb:193:5:193:5 | y [element] :  |
 | active_support.rb:194:10:194:10 | y [element] :  | active_support.rb:194:10:194:13 | ...[...] |
 | active_support.rb:194:10:194:10 | y [element] :  | active_support.rb:194:10:194:13 | ...[...] |
-| active_support.rb:198:10:198:18 | call to source :  | active_support.rb:199:9:199:9 | x [element 0] :  |
-| active_support.rb:198:10:198:18 | call to source :  | active_support.rb:199:9:199:9 | x [element 0] :  |
+| active_support.rb:198:5:198:5 | x [element 0] :  | active_support.rb:199:9:199:9 | x [element 0] :  |
+| active_support.rb:198:5:198:5 | x [element 0] :  | active_support.rb:199:9:199:9 | x [element 0] :  |
+| active_support.rb:198:10:198:18 | call to source :  | active_support.rb:198:5:198:5 | x [element 0] :  |
+| active_support.rb:198:10:198:18 | call to source :  | active_support.rb:198:5:198:5 | x [element 0] :  |
+| active_support.rb:199:5:199:5 | y [element] :  | active_support.rb:200:10:200:10 | y [element] :  |
+| active_support.rb:199:5:199:5 | y [element] :  | active_support.rb:200:10:200:10 | y [element] :  |
 | active_support.rb:199:9:199:9 | x [element 0] :  | active_support.rb:199:9:199:37 | call to in_order_of [element] :  |
 | active_support.rb:199:9:199:9 | x [element 0] :  | active_support.rb:199:9:199:37 | call to in_order_of [element] :  |
-| active_support.rb:199:9:199:37 | call to in_order_of [element] :  | active_support.rb:200:10:200:10 | y [element] :  |
-| active_support.rb:199:9:199:37 | call to in_order_of [element] :  | active_support.rb:200:10:200:10 | y [element] :  |
+| active_support.rb:199:9:199:37 | call to in_order_of [element] :  | active_support.rb:199:5:199:5 | y [element] :  |
+| active_support.rb:199:9:199:37 | call to in_order_of [element] :  | active_support.rb:199:5:199:5 | y [element] :  |
 | active_support.rb:200:10:200:10 | y [element] :  | active_support.rb:200:10:200:13 | ...[...] |
 | active_support.rb:200:10:200:10 | y [element] :  | active_support.rb:200:10:200:13 | ...[...] |
-| active_support.rb:204:10:204:18 | call to source :  | active_support.rb:205:9:205:9 | a [element 0] :  |
-| active_support.rb:204:10:204:18 | call to source :  | active_support.rb:205:9:205:9 | a [element 0] :  |
-| active_support.rb:204:10:204:18 | call to source :  | active_support.rb:206:10:206:10 | a [element 0] :  |
-| active_support.rb:204:10:204:18 | call to source :  | active_support.rb:206:10:206:10 | a [element 0] :  |
+| active_support.rb:204:5:204:5 | a [element 0] :  | active_support.rb:205:9:205:9 | a [element 0] :  |
+| active_support.rb:204:5:204:5 | a [element 0] :  | active_support.rb:205:9:205:9 | a [element 0] :  |
+| active_support.rb:204:5:204:5 | a [element 0] :  | active_support.rb:206:10:206:10 | a [element 0] :  |
+| active_support.rb:204:5:204:5 | a [element 0] :  | active_support.rb:206:10:206:10 | a [element 0] :  |
+| active_support.rb:204:10:204:18 | call to source :  | active_support.rb:204:5:204:5 | a [element 0] :  |
+| active_support.rb:204:10:204:18 | call to source :  | active_support.rb:204:5:204:5 | a [element 0] :  |
+| active_support.rb:205:5:205:5 | b [element 0] :  | active_support.rb:208:10:208:10 | b [element 0] :  |
+| active_support.rb:205:5:205:5 | b [element 0] :  | active_support.rb:208:10:208:10 | b [element 0] :  |
+| active_support.rb:205:5:205:5 | b [element] :  | active_support.rb:208:10:208:10 | b [element] :  |
+| active_support.rb:205:5:205:5 | b [element] :  | active_support.rb:208:10:208:10 | b [element] :  |
+| active_support.rb:205:5:205:5 | b [element] :  | active_support.rb:209:10:209:10 | b [element] :  |
+| active_support.rb:205:5:205:5 | b [element] :  | active_support.rb:209:10:209:10 | b [element] :  |
+| active_support.rb:205:5:205:5 | b [element] :  | active_support.rb:210:10:210:10 | b [element] :  |
+| active_support.rb:205:5:205:5 | b [element] :  | active_support.rb:210:10:210:10 | b [element] :  |
+| active_support.rb:205:5:205:5 | b [element] :  | active_support.rb:211:10:211:10 | b [element] :  |
+| active_support.rb:205:5:205:5 | b [element] :  | active_support.rb:211:10:211:10 | b [element] :  |
 | active_support.rb:205:9:205:9 | a [element 0] :  | active_support.rb:205:9:205:41 | call to including [element 0] :  |
 | active_support.rb:205:9:205:9 | a [element 0] :  | active_support.rb:205:9:205:41 | call to including [element 0] :  |
-| active_support.rb:205:9:205:41 | call to including [element 0] :  | active_support.rb:208:10:208:10 | b [element 0] :  |
-| active_support.rb:205:9:205:41 | call to including [element 0] :  | active_support.rb:208:10:208:10 | b [element 0] :  |
-| active_support.rb:205:9:205:41 | call to including [element] :  | active_support.rb:208:10:208:10 | b [element] :  |
-| active_support.rb:205:9:205:41 | call to including [element] :  | active_support.rb:208:10:208:10 | b [element] :  |
-| active_support.rb:205:9:205:41 | call to including [element] :  | active_support.rb:209:10:209:10 | b [element] :  |
-| active_support.rb:205:9:205:41 | call to including [element] :  | active_support.rb:209:10:209:10 | b [element] :  |
-| active_support.rb:205:9:205:41 | call to including [element] :  | active_support.rb:210:10:210:10 | b [element] :  |
-| active_support.rb:205:9:205:41 | call to including [element] :  | active_support.rb:210:10:210:10 | b [element] :  |
-| active_support.rb:205:9:205:41 | call to including [element] :  | active_support.rb:211:10:211:10 | b [element] :  |
-| active_support.rb:205:9:205:41 | call to including [element] :  | active_support.rb:211:10:211:10 | b [element] :  |
+| active_support.rb:205:9:205:41 | call to including [element 0] :  | active_support.rb:205:5:205:5 | b [element 0] :  |
+| active_support.rb:205:9:205:41 | call to including [element 0] :  | active_support.rb:205:5:205:5 | b [element 0] :  |
+| active_support.rb:205:9:205:41 | call to including [element] :  | active_support.rb:205:5:205:5 | b [element] :  |
+| active_support.rb:205:9:205:41 | call to including [element] :  | active_support.rb:205:5:205:5 | b [element] :  |
 | active_support.rb:205:21:205:29 | call to source :  | active_support.rb:205:9:205:41 | call to including [element] :  |
 | active_support.rb:205:21:205:29 | call to source :  | active_support.rb:205:9:205:41 | call to including [element] :  |
 | active_support.rb:205:32:205:40 | call to source :  | active_support.rb:205:9:205:41 | call to including [element] :  |
@@ -133,130 +189,202 @@ edges
 | active_support.rb:210:10:210:10 | b [element] :  | active_support.rb:210:10:210:13 | ...[...] |
 | active_support.rb:211:10:211:10 | b [element] :  | active_support.rb:211:10:211:13 | ...[...] |
 | active_support.rb:211:10:211:10 | b [element] :  | active_support.rb:211:10:211:13 | ...[...] |
-| active_support.rb:215:7:215:16 | call to source :  | active_support.rb:216:34:216:34 | x :  |
-| active_support.rb:216:7:216:35 | call to new :  | active_support.rb:217:8:217:8 | y |
+| active_support.rb:215:3:215:3 | x :  | active_support.rb:216:34:216:34 | x :  |
+| active_support.rb:215:7:215:16 | call to source :  | active_support.rb:215:3:215:3 | x :  |
+| active_support.rb:216:3:216:3 | y :  | active_support.rb:217:8:217:8 | y |
+| active_support.rb:216:7:216:35 | call to new :  | active_support.rb:216:3:216:3 | y :  |
 | active_support.rb:216:34:216:34 | x :  | active_support.rb:216:7:216:35 | call to new :  |
-| active_support.rb:222:7:222:16 | call to source :  | active_support.rb:223:21:223:21 | b :  |
-| active_support.rb:223:7:223:22 | call to safe_concat :  | active_support.rb:224:8:224:8 | y |
+| active_support.rb:222:3:222:3 | b :  | active_support.rb:223:21:223:21 | b :  |
+| active_support.rb:222:7:222:16 | call to source :  | active_support.rb:222:3:222:3 | b :  |
+| active_support.rb:223:3:223:3 | y :  | active_support.rb:224:8:224:8 | y |
+| active_support.rb:223:7:223:22 | call to safe_concat :  | active_support.rb:223:3:223:3 | y :  |
 | active_support.rb:223:21:223:21 | b :  | active_support.rb:223:7:223:22 | call to safe_concat :  |
-| active_support.rb:229:7:229:16 | call to source :  | active_support.rb:230:17:230:17 | b :  |
+| active_support.rb:229:3:229:3 | b :  | active_support.rb:230:17:230:17 | b :  |
+| active_support.rb:229:7:229:16 | call to source :  | active_support.rb:229:3:229:3 | b :  |
 | active_support.rb:230:3:230:3 | [post] x :  | active_support.rb:231:8:231:8 | x |
 | active_support.rb:230:17:230:17 | b :  | active_support.rb:230:3:230:3 | [post] x :  |
-| active_support.rb:235:7:235:16 | call to source :  | active_support.rb:237:34:237:34 | a :  |
-| active_support.rb:237:7:237:35 | call to new :  | active_support.rb:238:7:238:7 | x :  |
+| active_support.rb:235:3:235:3 | a :  | active_support.rb:237:34:237:34 | a :  |
+| active_support.rb:235:7:235:16 | call to source :  | active_support.rb:235:3:235:3 | a :  |
+| active_support.rb:237:3:237:3 | x :  | active_support.rb:238:7:238:7 | x :  |
+| active_support.rb:237:7:237:35 | call to new :  | active_support.rb:237:3:237:3 | x :  |
 | active_support.rb:237:34:237:34 | a :  | active_support.rb:237:7:237:35 | call to new :  |
+| active_support.rb:238:3:238:3 | y :  | active_support.rb:239:8:239:8 | y |
 | active_support.rb:238:7:238:7 | x :  | active_support.rb:238:7:238:17 | call to concat :  |
-| active_support.rb:238:7:238:17 | call to concat :  | active_support.rb:239:8:239:8 | y |
-| active_support.rb:243:7:243:16 | call to source :  | active_support.rb:245:34:245:34 | a :  |
-| active_support.rb:245:7:245:35 | call to new :  | active_support.rb:246:7:246:7 | x :  |
+| active_support.rb:238:7:238:17 | call to concat :  | active_support.rb:238:3:238:3 | y :  |
+| active_support.rb:243:3:243:3 | a :  | active_support.rb:245:34:245:34 | a :  |
+| active_support.rb:243:7:243:16 | call to source :  | active_support.rb:243:3:243:3 | a :  |
+| active_support.rb:245:3:245:3 | x :  | active_support.rb:246:7:246:7 | x :  |
+| active_support.rb:245:7:245:35 | call to new :  | active_support.rb:245:3:245:3 | x :  |
 | active_support.rb:245:34:245:34 | a :  | active_support.rb:245:7:245:35 | call to new :  |
+| active_support.rb:246:3:246:3 | y :  | active_support.rb:247:8:247:8 | y |
 | active_support.rb:246:7:246:7 | x :  | active_support.rb:246:7:246:20 | call to insert :  |
-| active_support.rb:246:7:246:20 | call to insert :  | active_support.rb:247:8:247:8 | y |
-| active_support.rb:251:7:251:16 | call to source :  | active_support.rb:253:34:253:34 | a :  |
-| active_support.rb:253:7:253:35 | call to new :  | active_support.rb:254:7:254:7 | x :  |
+| active_support.rb:246:7:246:20 | call to insert :  | active_support.rb:246:3:246:3 | y :  |
+| active_support.rb:251:3:251:3 | a :  | active_support.rb:253:34:253:34 | a :  |
+| active_support.rb:251:7:251:16 | call to source :  | active_support.rb:251:3:251:3 | a :  |
+| active_support.rb:253:3:253:3 | x :  | active_support.rb:254:7:254:7 | x :  |
+| active_support.rb:253:7:253:35 | call to new :  | active_support.rb:253:3:253:3 | x :  |
 | active_support.rb:253:34:253:34 | a :  | active_support.rb:253:7:253:35 | call to new :  |
+| active_support.rb:254:3:254:3 | y :  | active_support.rb:255:8:255:8 | y |
 | active_support.rb:254:7:254:7 | x :  | active_support.rb:254:7:254:18 | call to prepend :  |
-| active_support.rb:254:7:254:18 | call to prepend :  | active_support.rb:255:8:255:8 | y |
-| active_support.rb:259:7:259:16 | call to source :  | active_support.rb:260:34:260:34 | a :  |
-| active_support.rb:260:7:260:35 | call to new :  | active_support.rb:261:7:261:7 | x :  |
+| active_support.rb:254:7:254:18 | call to prepend :  | active_support.rb:254:3:254:3 | y :  |
+| active_support.rb:259:3:259:3 | a :  | active_support.rb:260:34:260:34 | a :  |
+| active_support.rb:259:7:259:16 | call to source :  | active_support.rb:259:3:259:3 | a :  |
+| active_support.rb:260:3:260:3 | x :  | active_support.rb:261:7:261:7 | x :  |
+| active_support.rb:260:7:260:35 | call to new :  | active_support.rb:260:3:260:3 | x :  |
 | active_support.rb:260:34:260:34 | a :  | active_support.rb:260:7:260:35 | call to new :  |
+| active_support.rb:261:3:261:3 | y :  | active_support.rb:262:8:262:8 | y |
 | active_support.rb:261:7:261:7 | x :  | active_support.rb:261:7:261:12 | call to to_s :  |
-| active_support.rb:261:7:261:12 | call to to_s :  | active_support.rb:262:8:262:8 | y |
-| active_support.rb:266:7:266:16 | call to source :  | active_support.rb:267:34:267:34 | a :  |
-| active_support.rb:267:7:267:35 | call to new :  | active_support.rb:268:7:268:7 | x :  |
+| active_support.rb:261:7:261:12 | call to to_s :  | active_support.rb:261:3:261:3 | y :  |
+| active_support.rb:266:3:266:3 | a :  | active_support.rb:267:34:267:34 | a :  |
+| active_support.rb:266:7:266:16 | call to source :  | active_support.rb:266:3:266:3 | a :  |
+| active_support.rb:267:3:267:3 | x :  | active_support.rb:268:7:268:7 | x :  |
+| active_support.rb:267:7:267:35 | call to new :  | active_support.rb:267:3:267:3 | x :  |
 | active_support.rb:267:34:267:34 | a :  | active_support.rb:267:7:267:35 | call to new :  |
+| active_support.rb:268:3:268:3 | y :  | active_support.rb:269:8:269:8 | y |
 | active_support.rb:268:7:268:7 | x :  | active_support.rb:268:7:268:16 | call to to_param :  |
-| active_support.rb:268:7:268:16 | call to to_param :  | active_support.rb:269:8:269:8 | y |
-| active_support.rb:273:7:273:16 | call to source :  | active_support.rb:274:20:274:20 | a :  |
-| active_support.rb:274:7:274:21 | call to new :  | active_support.rb:275:7:275:7 | x :  |
+| active_support.rb:268:7:268:16 | call to to_param :  | active_support.rb:268:3:268:3 | y :  |
+| active_support.rb:273:3:273:3 | a :  | active_support.rb:274:20:274:20 | a :  |
+| active_support.rb:273:7:273:16 | call to source :  | active_support.rb:273:3:273:3 | a :  |
+| active_support.rb:274:3:274:3 | x :  | active_support.rb:275:7:275:7 | x :  |
+| active_support.rb:274:7:274:21 | call to new :  | active_support.rb:274:3:274:3 | x :  |
 | active_support.rb:274:20:274:20 | a :  | active_support.rb:274:7:274:21 | call to new :  |
+| active_support.rb:275:3:275:3 | y :  | active_support.rb:276:8:276:8 | y |
+| active_support.rb:275:3:275:3 | y :  | active_support.rb:277:7:277:7 | y :  |
 | active_support.rb:275:7:275:7 | x :  | active_support.rb:275:7:275:17 | call to existence :  |
-| active_support.rb:275:7:275:17 | call to existence :  | active_support.rb:276:8:276:8 | y |
-| active_support.rb:275:7:275:17 | call to existence :  | active_support.rb:277:7:277:7 | y :  |
+| active_support.rb:275:7:275:17 | call to existence :  | active_support.rb:275:3:275:3 | y :  |
+| active_support.rb:277:3:277:3 | z :  | active_support.rb:278:8:278:8 | z |
 | active_support.rb:277:7:277:7 | y :  | active_support.rb:277:7:277:17 | call to existence :  |
-| active_support.rb:277:7:277:17 | call to existence :  | active_support.rb:278:8:278:8 | z |
-| active_support.rb:282:7:282:16 | call to source :  | active_support.rb:283:8:283:8 | x :  |
-| active_support.rb:282:7:282:16 | call to source :  | active_support.rb:283:8:283:8 | x :  |
+| active_support.rb:277:7:277:17 | call to existence :  | active_support.rb:277:3:277:3 | z :  |
+| active_support.rb:282:3:282:3 | x :  | active_support.rb:283:8:283:8 | x :  |
+| active_support.rb:282:3:282:3 | x :  | active_support.rb:283:8:283:8 | x :  |
+| active_support.rb:282:7:282:16 | call to source :  | active_support.rb:282:3:282:3 | x :  |
+| active_support.rb:282:7:282:16 | call to source :  | active_support.rb:282:3:282:3 | x :  |
 | active_support.rb:283:8:283:8 | x :  | active_support.rb:283:8:283:17 | call to presence |
 | active_support.rb:283:8:283:8 | x :  | active_support.rb:283:8:283:17 | call to presence |
-| active_support.rb:285:7:285:16 | call to source :  | active_support.rb:286:8:286:8 | y :  |
-| active_support.rb:285:7:285:16 | call to source :  | active_support.rb:286:8:286:8 | y :  |
+| active_support.rb:285:3:285:3 | y :  | active_support.rb:286:8:286:8 | y :  |
+| active_support.rb:285:3:285:3 | y :  | active_support.rb:286:8:286:8 | y :  |
+| active_support.rb:285:7:285:16 | call to source :  | active_support.rb:285:3:285:3 | y :  |
+| active_support.rb:285:7:285:16 | call to source :  | active_support.rb:285:3:285:3 | y :  |
 | active_support.rb:286:8:286:8 | y :  | active_support.rb:286:8:286:17 | call to presence |
 | active_support.rb:286:8:286:8 | y :  | active_support.rb:286:8:286:17 | call to presence |
-| active_support.rb:290:7:290:16 | call to source :  | active_support.rb:291:8:291:8 | x :  |
-| active_support.rb:290:7:290:16 | call to source :  | active_support.rb:291:8:291:8 | x :  |
+| active_support.rb:290:3:290:3 | x :  | active_support.rb:291:8:291:8 | x :  |
+| active_support.rb:290:3:290:3 | x :  | active_support.rb:291:8:291:8 | x :  |
+| active_support.rb:290:7:290:16 | call to source :  | active_support.rb:290:3:290:3 | x :  |
+| active_support.rb:290:7:290:16 | call to source :  | active_support.rb:290:3:290:3 | x :  |
 | active_support.rb:291:8:291:8 | x :  | active_support.rb:291:8:291:17 | call to deep_dup |
 | active_support.rb:291:8:291:8 | x :  | active_support.rb:291:8:291:17 | call to deep_dup |
-| active_support.rb:303:7:303:16 | call to source :  | active_support.rb:304:19:304:19 | a :  |
-| active_support.rb:304:7:304:19 | call to json_escape :  | active_support.rb:305:8:305:8 | b |
+| active_support.rb:303:3:303:3 | a :  | active_support.rb:304:19:304:19 | a :  |
+| active_support.rb:303:7:303:16 | call to source :  | active_support.rb:303:3:303:3 | a :  |
+| active_support.rb:304:3:304:3 | b :  | active_support.rb:305:8:305:8 | b |
+| active_support.rb:304:7:304:19 | call to json_escape :  | active_support.rb:304:3:304:3 | b :  |
 | active_support.rb:304:19:304:19 | a :  | active_support.rb:304:7:304:19 | call to json_escape :  |
-| active_support.rb:309:9:309:18 | call to source :  | active_support.rb:310:37:310:37 | x :  |
+| active_support.rb:309:5:309:5 | x :  | active_support.rb:310:37:310:37 | x :  |
+| active_support.rb:309:9:309:18 | call to source :  | active_support.rb:309:5:309:5 | x :  |
 | active_support.rb:310:37:310:37 | x :  | active_support.rb:310:10:310:38 | call to encode |
-| active_support.rb:314:9:314:18 | call to source :  | active_support.rb:315:37:315:37 | x :  |
+| active_support.rb:314:5:314:5 | x :  | active_support.rb:315:37:315:37 | x :  |
+| active_support.rb:314:9:314:18 | call to source :  | active_support.rb:314:5:314:5 | x :  |
 | active_support.rb:315:37:315:37 | x :  | active_support.rb:315:10:315:38 | call to decode |
-| active_support.rb:319:9:319:18 | call to source :  | active_support.rb:320:35:320:35 | x :  |
+| active_support.rb:319:5:319:5 | x :  | active_support.rb:320:35:320:35 | x :  |
+| active_support.rb:319:9:319:18 | call to source :  | active_support.rb:319:5:319:5 | x :  |
 | active_support.rb:320:35:320:35 | x :  | active_support.rb:320:10:320:36 | call to dump |
-| active_support.rb:324:9:324:18 | call to source :  | active_support.rb:325:35:325:35 | x :  |
+| active_support.rb:324:5:324:5 | x :  | active_support.rb:325:35:325:35 | x :  |
+| active_support.rb:324:9:324:18 | call to source :  | active_support.rb:324:5:324:5 | x :  |
 | active_support.rb:325:35:325:35 | x :  | active_support.rb:325:10:325:36 | call to load |
-| active_support.rb:329:9:329:18 | call to source :  | active_support.rb:330:10:330:10 | x :  |
-| active_support.rb:329:9:329:18 | call to source :  | active_support.rb:331:10:331:10 | x :  |
-| active_support.rb:330:10:330:10 | x :  | active_support.rb:332:10:332:10 | y [element 0] :  |
+| active_support.rb:329:5:329:5 | x :  | active_support.rb:330:10:330:10 | x :  |
+| active_support.rb:329:5:329:5 | x :  | active_support.rb:331:10:331:10 | x :  |
+| active_support.rb:329:9:329:18 | call to source :  | active_support.rb:329:5:329:5 | x :  |
+| active_support.rb:330:5:330:5 | y [element 0] :  | active_support.rb:332:10:332:10 | y [element 0] :  |
+| active_support.rb:330:10:330:10 | x :  | active_support.rb:330:5:330:5 | y [element 0] :  |
 | active_support.rb:331:10:331:10 | x :  | active_support.rb:331:10:331:18 | call to to_json |
 | active_support.rb:332:10:332:10 | y [element 0] :  | active_support.rb:332:10:332:18 | call to to_json |
-| hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
-| hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
+| hash_extensions.rb:2:5:2:5 | h [element :a] :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
+| hash_extensions.rb:2:5:2:5 | h [element :a] :  | hash_extensions.rb:3:9:3:9 | h [element :a] :  |
+| hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:2:5:2:5 | h [element :a] :  |
+| hash_extensions.rb:2:14:2:24 | call to source :  | hash_extensions.rb:2:5:2:5 | h [element :a] :  |
+| hash_extensions.rb:3:5:3:5 | x [element] :  | hash_extensions.rb:4:10:4:10 | x [element] :  |
+| hash_extensions.rb:3:5:3:5 | x [element] :  | hash_extensions.rb:4:10:4:10 | x [element] :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | hash_extensions.rb:3:9:3:24 | call to stringify_keys [element] :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | hash_extensions.rb:3:9:3:24 | call to stringify_keys [element] :  |
-| hash_extensions.rb:3:9:3:24 | call to stringify_keys [element] :  | hash_extensions.rb:4:10:4:10 | x [element] :  |
-| hash_extensions.rb:3:9:3:24 | call to stringify_keys [element] :  | hash_extensions.rb:4:10:4:10 | x [element] :  |
+| hash_extensions.rb:3:9:3:24 | call to stringify_keys [element] :  | hash_extensions.rb:3:5:3:5 | x [element] :  |
+| hash_extensions.rb:3:9:3:24 | call to stringify_keys [element] :  | hash_extensions.rb:3:5:3:5 | x [element] :  |
 | hash_extensions.rb:4:10:4:10 | x [element] :  | hash_extensions.rb:4:10:4:14 | ...[...] |
 | hash_extensions.rb:4:10:4:10 | x [element] :  | hash_extensions.rb:4:10:4:14 | ...[...] |
-| hash_extensions.rb:10:14:10:24 | call to source :  | hash_extensions.rb:11:9:11:9 | h [element :a] :  |
-| hash_extensions.rb:10:14:10:24 | call to source :  | hash_extensions.rb:11:9:11:9 | h [element :a] :  |
+| hash_extensions.rb:10:5:10:5 | h [element :a] :  | hash_extensions.rb:11:9:11:9 | h [element :a] :  |
+| hash_extensions.rb:10:5:10:5 | h [element :a] :  | hash_extensions.rb:11:9:11:9 | h [element :a] :  |
+| hash_extensions.rb:10:14:10:24 | call to source :  | hash_extensions.rb:10:5:10:5 | h [element :a] :  |
+| hash_extensions.rb:10:14:10:24 | call to source :  | hash_extensions.rb:10:5:10:5 | h [element :a] :  |
+| hash_extensions.rb:11:5:11:5 | x [element] :  | hash_extensions.rb:12:10:12:10 | x [element] :  |
+| hash_extensions.rb:11:5:11:5 | x [element] :  | hash_extensions.rb:12:10:12:10 | x [element] :  |
 | hash_extensions.rb:11:9:11:9 | h [element :a] :  | hash_extensions.rb:11:9:11:20 | call to to_options [element] :  |
 | hash_extensions.rb:11:9:11:9 | h [element :a] :  | hash_extensions.rb:11:9:11:20 | call to to_options [element] :  |
-| hash_extensions.rb:11:9:11:20 | call to to_options [element] :  | hash_extensions.rb:12:10:12:10 | x [element] :  |
-| hash_extensions.rb:11:9:11:20 | call to to_options [element] :  | hash_extensions.rb:12:10:12:10 | x [element] :  |
+| hash_extensions.rb:11:9:11:20 | call to to_options [element] :  | hash_extensions.rb:11:5:11:5 | x [element] :  |
+| hash_extensions.rb:11:9:11:20 | call to to_options [element] :  | hash_extensions.rb:11:5:11:5 | x [element] :  |
 | hash_extensions.rb:12:10:12:10 | x [element] :  | hash_extensions.rb:12:10:12:14 | ...[...] |
 | hash_extensions.rb:12:10:12:10 | x [element] :  | hash_extensions.rb:12:10:12:14 | ...[...] |
-| hash_extensions.rb:18:14:18:24 | call to source :  | hash_extensions.rb:19:9:19:9 | h [element :a] :  |
-| hash_extensions.rb:18:14:18:24 | call to source :  | hash_extensions.rb:19:9:19:9 | h [element :a] :  |
+| hash_extensions.rb:18:5:18:5 | h [element :a] :  | hash_extensions.rb:19:9:19:9 | h [element :a] :  |
+| hash_extensions.rb:18:5:18:5 | h [element :a] :  | hash_extensions.rb:19:9:19:9 | h [element :a] :  |
+| hash_extensions.rb:18:14:18:24 | call to source :  | hash_extensions.rb:18:5:18:5 | h [element :a] :  |
+| hash_extensions.rb:18:14:18:24 | call to source :  | hash_extensions.rb:18:5:18:5 | h [element :a] :  |
+| hash_extensions.rb:19:5:19:5 | x [element] :  | hash_extensions.rb:20:10:20:10 | x [element] :  |
+| hash_extensions.rb:19:5:19:5 | x [element] :  | hash_extensions.rb:20:10:20:10 | x [element] :  |
 | hash_extensions.rb:19:9:19:9 | h [element :a] :  | hash_extensions.rb:19:9:19:24 | call to symbolize_keys [element] :  |
 | hash_extensions.rb:19:9:19:9 | h [element :a] :  | hash_extensions.rb:19:9:19:24 | call to symbolize_keys [element] :  |
-| hash_extensions.rb:19:9:19:24 | call to symbolize_keys [element] :  | hash_extensions.rb:20:10:20:10 | x [element] :  |
-| hash_extensions.rb:19:9:19:24 | call to symbolize_keys [element] :  | hash_extensions.rb:20:10:20:10 | x [element] :  |
+| hash_extensions.rb:19:9:19:24 | call to symbolize_keys [element] :  | hash_extensions.rb:19:5:19:5 | x [element] :  |
+| hash_extensions.rb:19:9:19:24 | call to symbolize_keys [element] :  | hash_extensions.rb:19:5:19:5 | x [element] :  |
 | hash_extensions.rb:20:10:20:10 | x [element] :  | hash_extensions.rb:20:10:20:14 | ...[...] |
 | hash_extensions.rb:20:10:20:10 | x [element] :  | hash_extensions.rb:20:10:20:14 | ...[...] |
-| hash_extensions.rb:26:14:26:24 | call to source :  | hash_extensions.rb:27:9:27:9 | h [element :a] :  |
-| hash_extensions.rb:26:14:26:24 | call to source :  | hash_extensions.rb:27:9:27:9 | h [element :a] :  |
+| hash_extensions.rb:26:5:26:5 | h [element :a] :  | hash_extensions.rb:27:9:27:9 | h [element :a] :  |
+| hash_extensions.rb:26:5:26:5 | h [element :a] :  | hash_extensions.rb:27:9:27:9 | h [element :a] :  |
+| hash_extensions.rb:26:14:26:24 | call to source :  | hash_extensions.rb:26:5:26:5 | h [element :a] :  |
+| hash_extensions.rb:26:14:26:24 | call to source :  | hash_extensions.rb:26:5:26:5 | h [element :a] :  |
+| hash_extensions.rb:27:5:27:5 | x [element] :  | hash_extensions.rb:28:10:28:10 | x [element] :  |
+| hash_extensions.rb:27:5:27:5 | x [element] :  | hash_extensions.rb:28:10:28:10 | x [element] :  |
 | hash_extensions.rb:27:9:27:9 | h [element :a] :  | hash_extensions.rb:27:9:27:29 | call to deep_stringify_keys [element] :  |
 | hash_extensions.rb:27:9:27:9 | h [element :a] :  | hash_extensions.rb:27:9:27:29 | call to deep_stringify_keys [element] :  |
-| hash_extensions.rb:27:9:27:29 | call to deep_stringify_keys [element] :  | hash_extensions.rb:28:10:28:10 | x [element] :  |
-| hash_extensions.rb:27:9:27:29 | call to deep_stringify_keys [element] :  | hash_extensions.rb:28:10:28:10 | x [element] :  |
+| hash_extensions.rb:27:9:27:29 | call to deep_stringify_keys [element] :  | hash_extensions.rb:27:5:27:5 | x [element] :  |
+| hash_extensions.rb:27:9:27:29 | call to deep_stringify_keys [element] :  | hash_extensions.rb:27:5:27:5 | x [element] :  |
 | hash_extensions.rb:28:10:28:10 | x [element] :  | hash_extensions.rb:28:10:28:14 | ...[...] |
 | hash_extensions.rb:28:10:28:10 | x [element] :  | hash_extensions.rb:28:10:28:14 | ...[...] |
-| hash_extensions.rb:34:14:34:24 | call to source :  | hash_extensions.rb:35:9:35:9 | h [element :a] :  |
-| hash_extensions.rb:34:14:34:24 | call to source :  | hash_extensions.rb:35:9:35:9 | h [element :a] :  |
+| hash_extensions.rb:34:5:34:5 | h [element :a] :  | hash_extensions.rb:35:9:35:9 | h [element :a] :  |
+| hash_extensions.rb:34:5:34:5 | h [element :a] :  | hash_extensions.rb:35:9:35:9 | h [element :a] :  |
+| hash_extensions.rb:34:14:34:24 | call to source :  | hash_extensions.rb:34:5:34:5 | h [element :a] :  |
+| hash_extensions.rb:34:14:34:24 | call to source :  | hash_extensions.rb:34:5:34:5 | h [element :a] :  |
+| hash_extensions.rb:35:5:35:5 | x [element] :  | hash_extensions.rb:36:10:36:10 | x [element] :  |
+| hash_extensions.rb:35:5:35:5 | x [element] :  | hash_extensions.rb:36:10:36:10 | x [element] :  |
 | hash_extensions.rb:35:9:35:9 | h [element :a] :  | hash_extensions.rb:35:9:35:29 | call to deep_symbolize_keys [element] :  |
 | hash_extensions.rb:35:9:35:9 | h [element :a] :  | hash_extensions.rb:35:9:35:29 | call to deep_symbolize_keys [element] :  |
-| hash_extensions.rb:35:9:35:29 | call to deep_symbolize_keys [element] :  | hash_extensions.rb:36:10:36:10 | x [element] :  |
-| hash_extensions.rb:35:9:35:29 | call to deep_symbolize_keys [element] :  | hash_extensions.rb:36:10:36:10 | x [element] :  |
+| hash_extensions.rb:35:9:35:29 | call to deep_symbolize_keys [element] :  | hash_extensions.rb:35:5:35:5 | x [element] :  |
+| hash_extensions.rb:35:9:35:29 | call to deep_symbolize_keys [element] :  | hash_extensions.rb:35:5:35:5 | x [element] :  |
 | hash_extensions.rb:36:10:36:10 | x [element] :  | hash_extensions.rb:36:10:36:14 | ...[...] |
 | hash_extensions.rb:36:10:36:10 | x [element] :  | hash_extensions.rb:36:10:36:14 | ...[...] |
-| hash_extensions.rb:42:14:42:24 | call to source :  | hash_extensions.rb:43:9:43:9 | h [element :a] :  |
-| hash_extensions.rb:42:14:42:24 | call to source :  | hash_extensions.rb:43:9:43:9 | h [element :a] :  |
+| hash_extensions.rb:42:5:42:5 | h [element :a] :  | hash_extensions.rb:43:9:43:9 | h [element :a] :  |
+| hash_extensions.rb:42:5:42:5 | h [element :a] :  | hash_extensions.rb:43:9:43:9 | h [element :a] :  |
+| hash_extensions.rb:42:14:42:24 | call to source :  | hash_extensions.rb:42:5:42:5 | h [element :a] :  |
+| hash_extensions.rb:42:14:42:24 | call to source :  | hash_extensions.rb:42:5:42:5 | h [element :a] :  |
+| hash_extensions.rb:43:5:43:5 | x [element] :  | hash_extensions.rb:44:10:44:10 | x [element] :  |
+| hash_extensions.rb:43:5:43:5 | x [element] :  | hash_extensions.rb:44:10:44:10 | x [element] :  |
 | hash_extensions.rb:43:9:43:9 | h [element :a] :  | hash_extensions.rb:43:9:43:33 | call to with_indifferent_access [element] :  |
 | hash_extensions.rb:43:9:43:9 | h [element :a] :  | hash_extensions.rb:43:9:43:33 | call to with_indifferent_access [element] :  |
-| hash_extensions.rb:43:9:43:33 | call to with_indifferent_access [element] :  | hash_extensions.rb:44:10:44:10 | x [element] :  |
-| hash_extensions.rb:43:9:43:33 | call to with_indifferent_access [element] :  | hash_extensions.rb:44:10:44:10 | x [element] :  |
+| hash_extensions.rb:43:9:43:33 | call to with_indifferent_access [element] :  | hash_extensions.rb:43:5:43:5 | x [element] :  |
+| hash_extensions.rb:43:9:43:33 | call to with_indifferent_access [element] :  | hash_extensions.rb:43:5:43:5 | x [element] :  |
 | hash_extensions.rb:44:10:44:10 | x [element] :  | hash_extensions.rb:44:10:44:14 | ...[...] |
 | hash_extensions.rb:44:10:44:10 | x [element] :  | hash_extensions.rb:44:10:44:14 | ...[...] |
-| hash_extensions.rb:50:14:50:23 | call to taint :  | hash_extensions.rb:51:9:51:9 | h [element :a] :  |
-| hash_extensions.rb:50:14:50:23 | call to taint :  | hash_extensions.rb:51:9:51:9 | h [element :a] :  |
-| hash_extensions.rb:50:29:50:38 | call to taint :  | hash_extensions.rb:51:9:51:9 | h [element :b] :  |
-| hash_extensions.rb:50:29:50:38 | call to taint :  | hash_extensions.rb:51:9:51:9 | h [element :b] :  |
-| hash_extensions.rb:50:52:50:61 | call to taint :  | hash_extensions.rb:51:9:51:9 | h [element :d] :  |
-| hash_extensions.rb:50:52:50:61 | call to taint :  | hash_extensions.rb:51:9:51:9 | h [element :d] :  |
+| hash_extensions.rb:50:5:50:5 | h [element :a] :  | hash_extensions.rb:51:9:51:9 | h [element :a] :  |
+| hash_extensions.rb:50:5:50:5 | h [element :a] :  | hash_extensions.rb:51:9:51:9 | h [element :a] :  |
+| hash_extensions.rb:50:5:50:5 | h [element :b] :  | hash_extensions.rb:51:9:51:9 | h [element :b] :  |
+| hash_extensions.rb:50:5:50:5 | h [element :b] :  | hash_extensions.rb:51:9:51:9 | h [element :b] :  |
+| hash_extensions.rb:50:5:50:5 | h [element :d] :  | hash_extensions.rb:51:9:51:9 | h [element :d] :  |
+| hash_extensions.rb:50:5:50:5 | h [element :d] :  | hash_extensions.rb:51:9:51:9 | h [element :d] :  |
+| hash_extensions.rb:50:14:50:23 | call to taint :  | hash_extensions.rb:50:5:50:5 | h [element :a] :  |
+| hash_extensions.rb:50:14:50:23 | call to taint :  | hash_extensions.rb:50:5:50:5 | h [element :a] :  |
+| hash_extensions.rb:50:29:50:38 | call to taint :  | hash_extensions.rb:50:5:50:5 | h [element :b] :  |
+| hash_extensions.rb:50:29:50:38 | call to taint :  | hash_extensions.rb:50:5:50:5 | h [element :b] :  |
+| hash_extensions.rb:50:52:50:61 | call to taint :  | hash_extensions.rb:50:5:50:5 | h [element :d] :  |
+| hash_extensions.rb:50:52:50:61 | call to taint :  | hash_extensions.rb:50:5:50:5 | h [element :d] :  |
+| hash_extensions.rb:51:5:51:5 | x [element :a] :  | hash_extensions.rb:58:10:58:10 | x [element :a] :  |
+| hash_extensions.rb:51:5:51:5 | x [element :a] :  | hash_extensions.rb:58:10:58:10 | x [element :a] :  |
+| hash_extensions.rb:51:5:51:5 | x [element :b] :  | hash_extensions.rb:59:10:59:10 | x [element :b] :  |
+| hash_extensions.rb:51:5:51:5 | x [element :b] :  | hash_extensions.rb:59:10:59:10 | x [element :b] :  |
 | hash_extensions.rb:51:9:51:9 | [post] h [element :d] :  | hash_extensions.rb:56:10:56:10 | h [element :d] :  |
 | hash_extensions.rb:51:9:51:9 | [post] h [element :d] :  | hash_extensions.rb:56:10:56:10 | h [element :d] :  |
 | hash_extensions.rb:51:9:51:9 | h [element :a] :  | hash_extensions.rb:51:9:51:29 | call to extract! [element :a] :  |
@@ -265,22 +393,32 @@ edges
 | hash_extensions.rb:51:9:51:9 | h [element :b] :  | hash_extensions.rb:51:9:51:29 | call to extract! [element :b] :  |
 | hash_extensions.rb:51:9:51:9 | h [element :d] :  | hash_extensions.rb:51:9:51:9 | [post] h [element :d] :  |
 | hash_extensions.rb:51:9:51:9 | h [element :d] :  | hash_extensions.rb:51:9:51:9 | [post] h [element :d] :  |
-| hash_extensions.rb:51:9:51:29 | call to extract! [element :a] :  | hash_extensions.rb:58:10:58:10 | x [element :a] :  |
-| hash_extensions.rb:51:9:51:29 | call to extract! [element :a] :  | hash_extensions.rb:58:10:58:10 | x [element :a] :  |
-| hash_extensions.rb:51:9:51:29 | call to extract! [element :b] :  | hash_extensions.rb:59:10:59:10 | x [element :b] :  |
-| hash_extensions.rb:51:9:51:29 | call to extract! [element :b] :  | hash_extensions.rb:59:10:59:10 | x [element :b] :  |
+| hash_extensions.rb:51:9:51:29 | call to extract! [element :a] :  | hash_extensions.rb:51:5:51:5 | x [element :a] :  |
+| hash_extensions.rb:51:9:51:29 | call to extract! [element :a] :  | hash_extensions.rb:51:5:51:5 | x [element :a] :  |
+| hash_extensions.rb:51:9:51:29 | call to extract! [element :b] :  | hash_extensions.rb:51:5:51:5 | x [element :b] :  |
+| hash_extensions.rb:51:9:51:29 | call to extract! [element :b] :  | hash_extensions.rb:51:5:51:5 | x [element :b] :  |
 | hash_extensions.rb:56:10:56:10 | h [element :d] :  | hash_extensions.rb:56:10:56:14 | ...[...] |
 | hash_extensions.rb:56:10:56:10 | h [element :d] :  | hash_extensions.rb:56:10:56:14 | ...[...] |
 | hash_extensions.rb:58:10:58:10 | x [element :a] :  | hash_extensions.rb:58:10:58:14 | ...[...] |
 | hash_extensions.rb:58:10:58:10 | x [element :a] :  | hash_extensions.rb:58:10:58:14 | ...[...] |
 | hash_extensions.rb:59:10:59:10 | x [element :b] :  | hash_extensions.rb:59:10:59:14 | ...[...] |
 | hash_extensions.rb:59:10:59:10 | x [element :b] :  | hash_extensions.rb:59:10:59:14 | ...[...] |
-| hash_extensions.rb:67:15:67:25 | call to source :  | hash_extensions.rb:68:9:68:14 | values [element 0] :  |
-| hash_extensions.rb:67:15:67:25 | call to source :  | hash_extensions.rb:68:9:68:14 | values [element 0] :  |
-| hash_extensions.rb:67:28:67:38 | call to source :  | hash_extensions.rb:68:9:68:14 | values [element 1] :  |
-| hash_extensions.rb:67:28:67:38 | call to source :  | hash_extensions.rb:68:9:68:14 | values [element 1] :  |
-| hash_extensions.rb:67:41:67:51 | call to source :  | hash_extensions.rb:68:9:68:14 | values [element 2] :  |
-| hash_extensions.rb:67:41:67:51 | call to source :  | hash_extensions.rb:68:9:68:14 | values [element 2] :  |
+| hash_extensions.rb:67:5:67:10 | values [element 0] :  | hash_extensions.rb:68:9:68:14 | values [element 0] :  |
+| hash_extensions.rb:67:5:67:10 | values [element 0] :  | hash_extensions.rb:68:9:68:14 | values [element 0] :  |
+| hash_extensions.rb:67:5:67:10 | values [element 1] :  | hash_extensions.rb:68:9:68:14 | values [element 1] :  |
+| hash_extensions.rb:67:5:67:10 | values [element 1] :  | hash_extensions.rb:68:9:68:14 | values [element 1] :  |
+| hash_extensions.rb:67:5:67:10 | values [element 2] :  | hash_extensions.rb:68:9:68:14 | values [element 2] :  |
+| hash_extensions.rb:67:5:67:10 | values [element 2] :  | hash_extensions.rb:68:9:68:14 | values [element 2] :  |
+| hash_extensions.rb:67:15:67:25 | call to source :  | hash_extensions.rb:67:5:67:10 | values [element 0] :  |
+| hash_extensions.rb:67:15:67:25 | call to source :  | hash_extensions.rb:67:5:67:10 | values [element 0] :  |
+| hash_extensions.rb:67:28:67:38 | call to source :  | hash_extensions.rb:67:5:67:10 | values [element 1] :  |
+| hash_extensions.rb:67:28:67:38 | call to source :  | hash_extensions.rb:67:5:67:10 | values [element 1] :  |
+| hash_extensions.rb:67:41:67:51 | call to source :  | hash_extensions.rb:67:5:67:10 | values [element 2] :  |
+| hash_extensions.rb:67:41:67:51 | call to source :  | hash_extensions.rb:67:5:67:10 | values [element 2] :  |
+| hash_extensions.rb:68:5:68:5 | h [element] :  | hash_extensions.rb:73:10:73:10 | h [element] :  |
+| hash_extensions.rb:68:5:68:5 | h [element] :  | hash_extensions.rb:73:10:73:10 | h [element] :  |
+| hash_extensions.rb:68:5:68:5 | h [element] :  | hash_extensions.rb:74:10:74:10 | h [element] :  |
+| hash_extensions.rb:68:5:68:5 | h [element] :  | hash_extensions.rb:74:10:74:10 | h [element] :  |
 | hash_extensions.rb:68:9:68:14 | values [element 0] :  | hash_extensions.rb:68:9:71:7 | call to index_by [element] :  |
 | hash_extensions.rb:68:9:68:14 | values [element 0] :  | hash_extensions.rb:68:9:71:7 | call to index_by [element] :  |
 | hash_extensions.rb:68:9:68:14 | values [element 0] :  | hash_extensions.rb:68:29:68:33 | value :  |
@@ -293,32 +431,38 @@ edges
 | hash_extensions.rb:68:9:68:14 | values [element 2] :  | hash_extensions.rb:68:9:71:7 | call to index_by [element] :  |
 | hash_extensions.rb:68:9:68:14 | values [element 2] :  | hash_extensions.rb:68:29:68:33 | value :  |
 | hash_extensions.rb:68:9:68:14 | values [element 2] :  | hash_extensions.rb:68:29:68:33 | value :  |
-| hash_extensions.rb:68:9:71:7 | call to index_by [element] :  | hash_extensions.rb:73:10:73:10 | h [element] :  |
-| hash_extensions.rb:68:9:71:7 | call to index_by [element] :  | hash_extensions.rb:73:10:73:10 | h [element] :  |
-| hash_extensions.rb:68:9:71:7 | call to index_by [element] :  | hash_extensions.rb:74:10:74:10 | h [element] :  |
-| hash_extensions.rb:68:9:71:7 | call to index_by [element] :  | hash_extensions.rb:74:10:74:10 | h [element] :  |
+| hash_extensions.rb:68:9:71:7 | call to index_by [element] :  | hash_extensions.rb:68:5:68:5 | h [element] :  |
+| hash_extensions.rb:68:9:71:7 | call to index_by [element] :  | hash_extensions.rb:68:5:68:5 | h [element] :  |
 | hash_extensions.rb:68:29:68:33 | value :  | hash_extensions.rb:69:14:69:18 | value |
 | hash_extensions.rb:68:29:68:33 | value :  | hash_extensions.rb:69:14:69:18 | value |
 | hash_extensions.rb:73:10:73:10 | h [element] :  | hash_extensions.rb:73:10:73:16 | ...[...] |
 | hash_extensions.rb:73:10:73:10 | h [element] :  | hash_extensions.rb:73:10:73:16 | ...[...] |
 | hash_extensions.rb:74:10:74:10 | h [element] :  | hash_extensions.rb:74:10:74:16 | ...[...] |
 | hash_extensions.rb:74:10:74:10 | h [element] :  | hash_extensions.rb:74:10:74:16 | ...[...] |
-| hash_extensions.rb:80:15:80:25 | call to source :  | hash_extensions.rb:81:9:81:14 | values [element 0] :  |
-| hash_extensions.rb:80:15:80:25 | call to source :  | hash_extensions.rb:81:9:81:14 | values [element 0] :  |
-| hash_extensions.rb:80:28:80:38 | call to source :  | hash_extensions.rb:81:9:81:14 | values [element 1] :  |
-| hash_extensions.rb:80:28:80:38 | call to source :  | hash_extensions.rb:81:9:81:14 | values [element 1] :  |
-| hash_extensions.rb:80:41:80:51 | call to source :  | hash_extensions.rb:81:9:81:14 | values [element 2] :  |
-| hash_extensions.rb:80:41:80:51 | call to source :  | hash_extensions.rb:81:9:81:14 | values [element 2] :  |
+| hash_extensions.rb:80:5:80:10 | values [element 0] :  | hash_extensions.rb:81:9:81:14 | values [element 0] :  |
+| hash_extensions.rb:80:5:80:10 | values [element 0] :  | hash_extensions.rb:81:9:81:14 | values [element 0] :  |
+| hash_extensions.rb:80:5:80:10 | values [element 1] :  | hash_extensions.rb:81:9:81:14 | values [element 1] :  |
+| hash_extensions.rb:80:5:80:10 | values [element 1] :  | hash_extensions.rb:81:9:81:14 | values [element 1] :  |
+| hash_extensions.rb:80:5:80:10 | values [element 2] :  | hash_extensions.rb:81:9:81:14 | values [element 2] :  |
+| hash_extensions.rb:80:5:80:10 | values [element 2] :  | hash_extensions.rb:81:9:81:14 | values [element 2] :  |
+| hash_extensions.rb:80:15:80:25 | call to source :  | hash_extensions.rb:80:5:80:10 | values [element 0] :  |
+| hash_extensions.rb:80:15:80:25 | call to source :  | hash_extensions.rb:80:5:80:10 | values [element 0] :  |
+| hash_extensions.rb:80:28:80:38 | call to source :  | hash_extensions.rb:80:5:80:10 | values [element 1] :  |
+| hash_extensions.rb:80:28:80:38 | call to source :  | hash_extensions.rb:80:5:80:10 | values [element 1] :  |
+| hash_extensions.rb:80:41:80:51 | call to source :  | hash_extensions.rb:80:5:80:10 | values [element 2] :  |
+| hash_extensions.rb:80:41:80:51 | call to source :  | hash_extensions.rb:80:5:80:10 | values [element 2] :  |
+| hash_extensions.rb:81:5:81:5 | h [element] :  | hash_extensions.rb:86:10:86:10 | h [element] :  |
+| hash_extensions.rb:81:5:81:5 | h [element] :  | hash_extensions.rb:86:10:86:10 | h [element] :  |
+| hash_extensions.rb:81:5:81:5 | h [element] :  | hash_extensions.rb:87:10:87:10 | h [element] :  |
+| hash_extensions.rb:81:5:81:5 | h [element] :  | hash_extensions.rb:87:10:87:10 | h [element] :  |
 | hash_extensions.rb:81:9:81:14 | values [element 0] :  | hash_extensions.rb:81:31:81:33 | key :  |
 | hash_extensions.rb:81:9:81:14 | values [element 0] :  | hash_extensions.rb:81:31:81:33 | key :  |
 | hash_extensions.rb:81:9:81:14 | values [element 1] :  | hash_extensions.rb:81:31:81:33 | key :  |
 | hash_extensions.rb:81:9:81:14 | values [element 1] :  | hash_extensions.rb:81:31:81:33 | key :  |
 | hash_extensions.rb:81:9:81:14 | values [element 2] :  | hash_extensions.rb:81:31:81:33 | key :  |
 | hash_extensions.rb:81:9:81:14 | values [element 2] :  | hash_extensions.rb:81:31:81:33 | key :  |
-| hash_extensions.rb:81:9:84:7 | call to index_with [element] :  | hash_extensions.rb:86:10:86:10 | h [element] :  |
-| hash_extensions.rb:81:9:84:7 | call to index_with [element] :  | hash_extensions.rb:86:10:86:10 | h [element] :  |
-| hash_extensions.rb:81:9:84:7 | call to index_with [element] :  | hash_extensions.rb:87:10:87:10 | h [element] :  |
-| hash_extensions.rb:81:9:84:7 | call to index_with [element] :  | hash_extensions.rb:87:10:87:10 | h [element] :  |
+| hash_extensions.rb:81:9:84:7 | call to index_with [element] :  | hash_extensions.rb:81:5:81:5 | h [element] :  |
+| hash_extensions.rb:81:9:84:7 | call to index_with [element] :  | hash_extensions.rb:81:5:81:5 | h [element] :  |
 | hash_extensions.rb:81:31:81:33 | key :  | hash_extensions.rb:82:14:82:16 | key |
 | hash_extensions.rb:81:31:81:33 | key :  | hash_extensions.rb:82:14:82:16 | key |
 | hash_extensions.rb:83:9:83:19 | call to source :  | hash_extensions.rb:81:9:84:7 | call to index_with [element] :  |
@@ -327,28 +471,34 @@ edges
 | hash_extensions.rb:86:10:86:10 | h [element] :  | hash_extensions.rb:86:10:86:16 | ...[...] |
 | hash_extensions.rb:87:10:87:10 | h [element] :  | hash_extensions.rb:87:10:87:16 | ...[...] |
 | hash_extensions.rb:87:10:87:10 | h [element] :  | hash_extensions.rb:87:10:87:16 | ...[...] |
-| hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | hash_extensions.rb:91:10:91:10 | j [element] :  |
-| hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | hash_extensions.rb:91:10:91:10 | j [element] :  |
-| hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | hash_extensions.rb:92:10:92:10 | j [element] :  |
-| hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | hash_extensions.rb:92:10:92:10 | j [element] :  |
+| hash_extensions.rb:89:5:89:5 | j [element] :  | hash_extensions.rb:91:10:91:10 | j [element] :  |
+| hash_extensions.rb:89:5:89:5 | j [element] :  | hash_extensions.rb:91:10:91:10 | j [element] :  |
+| hash_extensions.rb:89:5:89:5 | j [element] :  | hash_extensions.rb:92:10:92:10 | j [element] :  |
+| hash_extensions.rb:89:5:89:5 | j [element] :  | hash_extensions.rb:92:10:92:10 | j [element] :  |
+| hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | hash_extensions.rb:89:5:89:5 | j [element] :  |
+| hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | hash_extensions.rb:89:5:89:5 | j [element] :  |
 | hash_extensions.rb:89:27:89:37 | call to source :  | hash_extensions.rb:89:9:89:38 | call to index_with [element] :  |
 | hash_extensions.rb:89:27:89:37 | call to source :  | hash_extensions.rb:89:9:89:38 | call to index_with [element] :  |
 | hash_extensions.rb:91:10:91:10 | j [element] :  | hash_extensions.rb:91:10:91:16 | ...[...] |
 | hash_extensions.rb:91:10:91:10 | j [element] :  | hash_extensions.rb:91:10:91:16 | ...[...] |
 | hash_extensions.rb:92:10:92:10 | j [element] :  | hash_extensions.rb:92:10:92:16 | ...[...] |
 | hash_extensions.rb:92:10:92:10 | j [element] :  | hash_extensions.rb:92:10:92:16 | ...[...] |
-| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:99:10:99:15 | values [element 0, element :id] :  |
-| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:99:10:99:15 | values [element 0, element :id] :  |
-| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:101:10:101:15 | values [element 0, element :id] :  |
-| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:101:10:101:15 | values [element 0, element :id] :  |
-| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:104:10:104:15 | values [element 0, element :id] :  |
-| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:104:10:104:15 | values [element 0, element :id] :  |
-| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:100:10:100:15 | values [element 0, element :name] :  |
-| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:100:10:100:15 | values [element 0, element :name] :  |
-| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:102:10:102:15 | values [element 0, element :name] :  |
-| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:102:10:102:15 | values [element 0, element :name] :  |
-| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:103:10:103:15 | values [element 0, element :name] :  |
-| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:103:10:103:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :id] :  | hash_extensions.rb:99:10:99:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :id] :  | hash_extensions.rb:99:10:99:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :id] :  | hash_extensions.rb:101:10:101:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :id] :  | hash_extensions.rb:101:10:101:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :id] :  | hash_extensions.rb:104:10:104:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :id] :  | hash_extensions.rb:104:10:104:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :name] :  | hash_extensions.rb:100:10:100:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :name] :  | hash_extensions.rb:100:10:100:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :name] :  | hash_extensions.rb:102:10:102:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :name] :  | hash_extensions.rb:102:10:102:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :name] :  | hash_extensions.rb:103:10:103:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :name] :  | hash_extensions.rb:103:10:103:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:98:5:98:10 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:21:98:31 | call to source :  | hash_extensions.rb:98:5:98:10 | values [element 0, element :id] :  |
+| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:98:5:98:10 | values [element 0, element :name] :  |
+| hash_extensions.rb:98:40:98:54 | call to source :  | hash_extensions.rb:98:5:98:10 | values [element 0, element :name] :  |
 | hash_extensions.rb:99:10:99:15 | values [element 0, element :id] :  | hash_extensions.rb:99:10:99:25 | call to pick |
 | hash_extensions.rb:99:10:99:15 | values [element 0, element :id] :  | hash_extensions.rb:99:10:99:25 | call to pick |
 | hash_extensions.rb:100:10:100:15 | values [element 0, element :name] :  | hash_extensions.rb:100:10:100:27 | call to pick |
@@ -369,26 +519,34 @@ edges
 | hash_extensions.rb:104:10:104:15 | values [element 0, element :id] :  | hash_extensions.rb:104:10:104:32 | call to pick [element 1] :  |
 | hash_extensions.rb:104:10:104:32 | call to pick [element 1] :  | hash_extensions.rb:104:10:104:35 | ...[...] |
 | hash_extensions.rb:104:10:104:32 | call to pick [element 1] :  | hash_extensions.rb:104:10:104:35 | ...[...] |
-| hash_extensions.rb:110:21:110:31 | call to source :  | hash_extensions.rb:112:10:112:15 | values [element 0, element :id] :  |
-| hash_extensions.rb:110:21:110:31 | call to source :  | hash_extensions.rb:112:10:112:15 | values [element 0, element :id] :  |
-| hash_extensions.rb:110:21:110:31 | call to source :  | hash_extensions.rb:115:10:115:15 | values [element 0, element :id] :  |
-| hash_extensions.rb:110:21:110:31 | call to source :  | hash_extensions.rb:115:10:115:15 | values [element 0, element :id] :  |
-| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:111:10:111:15 | values [element 0, element :name] :  |
-| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:111:10:111:15 | values [element 0, element :name] :  |
-| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:113:10:113:15 | values [element 0, element :name] :  |
-| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:113:10:113:15 | values [element 0, element :name] :  |
-| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:114:10:114:15 | values [element 0, element :name] :  |
-| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:114:10:114:15 | values [element 0, element :name] :  |
-| hash_extensions.rb:110:65:110:75 | call to source :  | hash_extensions.rb:112:10:112:15 | values [element 1, element :id] :  |
-| hash_extensions.rb:110:65:110:75 | call to source :  | hash_extensions.rb:112:10:112:15 | values [element 1, element :id] :  |
-| hash_extensions.rb:110:65:110:75 | call to source :  | hash_extensions.rb:115:10:115:15 | values [element 1, element :id] :  |
-| hash_extensions.rb:110:65:110:75 | call to source :  | hash_extensions.rb:115:10:115:15 | values [element 1, element :id] :  |
-| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:111:10:111:15 | values [element 1, element :name] :  |
-| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:111:10:111:15 | values [element 1, element :name] :  |
-| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:113:10:113:15 | values [element 1, element :name] :  |
-| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:113:10:113:15 | values [element 1, element :name] :  |
-| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:114:10:114:15 | values [element 1, element :name] :  |
-| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:114:10:114:15 | values [element 1, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :id] :  | hash_extensions.rb:112:10:112:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :id] :  | hash_extensions.rb:112:10:112:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :id] :  | hash_extensions.rb:115:10:115:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :id] :  | hash_extensions.rb:115:10:115:15 | values [element 0, element :id] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :name] :  | hash_extensions.rb:111:10:111:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :name] :  | hash_extensions.rb:111:10:111:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :name] :  | hash_extensions.rb:113:10:113:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :name] :  | hash_extensions.rb:113:10:113:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :name] :  | hash_extensions.rb:114:10:114:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :name] :  | hash_extensions.rb:114:10:114:15 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :id] :  | hash_extensions.rb:112:10:112:15 | values [element 1, element :id] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :id] :  | hash_extensions.rb:112:10:112:15 | values [element 1, element :id] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :id] :  | hash_extensions.rb:115:10:115:15 | values [element 1, element :id] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :id] :  | hash_extensions.rb:115:10:115:15 | values [element 1, element :id] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :name] :  | hash_extensions.rb:111:10:111:15 | values [element 1, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :name] :  | hash_extensions.rb:111:10:111:15 | values [element 1, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :name] :  | hash_extensions.rb:113:10:113:15 | values [element 1, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :name] :  | hash_extensions.rb:113:10:113:15 | values [element 1, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :name] :  | hash_extensions.rb:114:10:114:15 | values [element 1, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :name] :  | hash_extensions.rb:114:10:114:15 | values [element 1, element :name] :  |
+| hash_extensions.rb:110:21:110:31 | call to source :  | hash_extensions.rb:110:5:110:10 | values [element 0, element :id] :  |
+| hash_extensions.rb:110:21:110:31 | call to source :  | hash_extensions.rb:110:5:110:10 | values [element 0, element :id] :  |
+| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:110:5:110:10 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:40:110:54 | call to source :  | hash_extensions.rb:110:5:110:10 | values [element 0, element :name] :  |
+| hash_extensions.rb:110:65:110:75 | call to source :  | hash_extensions.rb:110:5:110:10 | values [element 1, element :id] :  |
+| hash_extensions.rb:110:65:110:75 | call to source :  | hash_extensions.rb:110:5:110:10 | values [element 1, element :id] :  |
+| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:110:5:110:10 | values [element 1, element :name] :  |
+| hash_extensions.rb:110:84:110:99 | call to source :  | hash_extensions.rb:110:5:110:10 | values [element 1, element :name] :  |
 | hash_extensions.rb:111:10:111:15 | values [element 0, element :name] :  | hash_extensions.rb:111:10:111:28 | call to pluck [element] :  |
 | hash_extensions.rb:111:10:111:15 | values [element 0, element :name] :  | hash_extensions.rb:111:10:111:28 | call to pluck [element] :  |
 | hash_extensions.rb:111:10:111:15 | values [element 1, element :name] :  | hash_extensions.rb:111:10:111:28 | call to pluck [element] :  |
@@ -427,119 +585,161 @@ edges
 | hash_extensions.rb:115:10:115:33 | call to pluck [element, element 1] :  | hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  |
 | hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  | hash_extensions.rb:115:10:115:39 | ...[...] |
 | hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  | hash_extensions.rb:115:10:115:39 | ...[...] |
-| hash_extensions.rb:122:15:122:25 | call to source :  | hash_extensions.rb:125:10:125:15 | single [element 0] :  |
-| hash_extensions.rb:122:15:122:25 | call to source :  | hash_extensions.rb:125:10:125:15 | single [element 0] :  |
-| hash_extensions.rb:123:14:123:24 | call to source :  | hash_extensions.rb:126:10:126:14 | multi [element 0] :  |
-| hash_extensions.rb:123:14:123:24 | call to source :  | hash_extensions.rb:126:10:126:14 | multi [element 0] :  |
+| hash_extensions.rb:122:5:122:10 | single [element 0] :  | hash_extensions.rb:125:10:125:15 | single [element 0] :  |
+| hash_extensions.rb:122:5:122:10 | single [element 0] :  | hash_extensions.rb:125:10:125:15 | single [element 0] :  |
+| hash_extensions.rb:122:15:122:25 | call to source :  | hash_extensions.rb:122:5:122:10 | single [element 0] :  |
+| hash_extensions.rb:122:15:122:25 | call to source :  | hash_extensions.rb:122:5:122:10 | single [element 0] :  |
+| hash_extensions.rb:123:5:123:9 | multi [element 0] :  | hash_extensions.rb:126:10:126:14 | multi [element 0] :  |
+| hash_extensions.rb:123:5:123:9 | multi [element 0] :  | hash_extensions.rb:126:10:126:14 | multi [element 0] :  |
+| hash_extensions.rb:123:14:123:24 | call to source :  | hash_extensions.rb:123:5:123:9 | multi [element 0] :  |
+| hash_extensions.rb:123:14:123:24 | call to source :  | hash_extensions.rb:123:5:123:9 | multi [element 0] :  |
 | hash_extensions.rb:125:10:125:15 | single [element 0] :  | hash_extensions.rb:125:10:125:20 | call to sole |
 | hash_extensions.rb:125:10:125:15 | single [element 0] :  | hash_extensions.rb:125:10:125:20 | call to sole |
 | hash_extensions.rb:126:10:126:14 | multi [element 0] :  | hash_extensions.rb:126:10:126:19 | call to sole |
 | hash_extensions.rb:126:10:126:14 | multi [element 0] :  | hash_extensions.rb:126:10:126:19 | call to sole |
 nodes
+| active_support.rb:10:5:10:5 | x :  | semmle.label | x :  |
 | active_support.rb:10:9:10:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:11:10:11:10 | x :  | semmle.label | x :  |
 | active_support.rb:11:10:11:19 | call to at | semmle.label | call to at |
+| active_support.rb:15:5:15:5 | x :  | semmle.label | x :  |
 | active_support.rb:15:9:15:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:16:10:16:10 | x :  | semmle.label | x :  |
 | active_support.rb:16:10:16:19 | call to camelize | semmle.label | call to camelize |
+| active_support.rb:20:5:20:5 | x :  | semmle.label | x :  |
 | active_support.rb:20:9:20:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:21:10:21:10 | x :  | semmle.label | x :  |
 | active_support.rb:21:10:21:20 | call to camelcase | semmle.label | call to camelcase |
+| active_support.rb:25:5:25:5 | x :  | semmle.label | x :  |
 | active_support.rb:25:9:25:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:26:10:26:10 | x :  | semmle.label | x :  |
 | active_support.rb:26:10:26:19 | call to classify | semmle.label | call to classify |
+| active_support.rb:30:5:30:5 | x :  | semmle.label | x :  |
 | active_support.rb:30:9:30:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:31:10:31:10 | x :  | semmle.label | x :  |
 | active_support.rb:31:10:31:20 | call to dasherize | semmle.label | call to dasherize |
+| active_support.rb:35:5:35:5 | x :  | semmle.label | x :  |
 | active_support.rb:35:9:35:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:36:10:36:10 | x :  | semmle.label | x :  |
 | active_support.rb:36:10:36:24 | call to deconstantize | semmle.label | call to deconstantize |
+| active_support.rb:40:5:40:5 | x :  | semmle.label | x :  |
 | active_support.rb:40:9:40:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:41:10:41:10 | x :  | semmle.label | x :  |
 | active_support.rb:41:10:41:21 | call to demodulize | semmle.label | call to demodulize |
+| active_support.rb:45:5:45:5 | x :  | semmle.label | x :  |
 | active_support.rb:45:9:45:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:46:10:46:10 | x :  | semmle.label | x :  |
 | active_support.rb:46:10:46:19 | call to first | semmle.label | call to first |
+| active_support.rb:50:5:50:5 | x :  | semmle.label | x :  |
 | active_support.rb:50:9:50:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:51:10:51:10 | x :  | semmle.label | x :  |
 | active_support.rb:51:10:51:22 | call to foreign_key | semmle.label | call to foreign_key |
+| active_support.rb:55:5:55:5 | x :  | semmle.label | x :  |
 | active_support.rb:55:9:55:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:56:10:56:10 | x :  | semmle.label | x :  |
 | active_support.rb:56:10:56:18 | call to from | semmle.label | call to from |
+| active_support.rb:60:5:60:5 | x :  | semmle.label | x :  |
 | active_support.rb:60:9:60:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:61:10:61:10 | x :  | semmle.label | x :  |
 | active_support.rb:61:10:61:20 | call to html_safe | semmle.label | call to html_safe |
+| active_support.rb:65:5:65:5 | x :  | semmle.label | x :  |
 | active_support.rb:65:9:65:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:66:10:66:10 | x :  | semmle.label | x :  |
 | active_support.rb:66:10:66:19 | call to humanize | semmle.label | call to humanize |
+| active_support.rb:70:5:70:5 | x :  | semmle.label | x :  |
 | active_support.rb:70:9:70:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:71:10:71:10 | x :  | semmle.label | x :  |
 | active_support.rb:71:10:71:20 | call to indent | semmle.label | call to indent |
+| active_support.rb:75:5:75:5 | x :  | semmle.label | x :  |
 | active_support.rb:75:9:75:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:76:10:76:10 | x :  | semmle.label | x :  |
 | active_support.rb:76:10:76:21 | call to indent! | semmle.label | call to indent! |
+| active_support.rb:80:5:80:5 | x :  | semmle.label | x :  |
 | active_support.rb:80:9:80:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:81:10:81:10 | x :  | semmle.label | x :  |
 | active_support.rb:81:10:81:18 | call to inquiry | semmle.label | call to inquiry |
+| active_support.rb:85:5:85:5 | x :  | semmle.label | x :  |
 | active_support.rb:85:9:85:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:86:10:86:10 | x :  | semmle.label | x :  |
 | active_support.rb:86:10:86:18 | call to last | semmle.label | call to last |
+| active_support.rb:90:5:90:5 | x :  | semmle.label | x :  |
 | active_support.rb:90:9:90:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:91:10:91:10 | x :  | semmle.label | x :  |
 | active_support.rb:91:10:91:19 | call to mb_chars | semmle.label | call to mb_chars |
+| active_support.rb:95:5:95:5 | x :  | semmle.label | x :  |
 | active_support.rb:95:9:95:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:96:10:96:10 | x :  | semmle.label | x :  |
 | active_support.rb:96:10:96:23 | call to parameterize | semmle.label | call to parameterize |
+| active_support.rb:100:5:100:5 | x :  | semmle.label | x :  |
 | active_support.rb:100:9:100:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:101:10:101:10 | x :  | semmle.label | x :  |
 | active_support.rb:101:10:101:20 | call to pluralize | semmle.label | call to pluralize |
+| active_support.rb:105:5:105:5 | x :  | semmle.label | x :  |
 | active_support.rb:105:9:105:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:106:10:106:10 | x :  | semmle.label | x :  |
 | active_support.rb:106:10:106:24 | call to remove | semmle.label | call to remove |
+| active_support.rb:110:5:110:5 | x :  | semmle.label | x :  |
 | active_support.rb:110:9:110:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:111:10:111:10 | x :  | semmle.label | x :  |
 | active_support.rb:111:10:111:25 | call to remove! | semmle.label | call to remove! |
+| active_support.rb:115:5:115:5 | x :  | semmle.label | x :  |
 | active_support.rb:115:9:115:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:116:10:116:10 | x :  | semmle.label | x :  |
 | active_support.rb:116:10:116:22 | call to singularize | semmle.label | call to singularize |
+| active_support.rb:120:5:120:5 | x :  | semmle.label | x :  |
 | active_support.rb:120:9:120:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:121:10:121:10 | x :  | semmle.label | x :  |
 | active_support.rb:121:10:121:17 | call to squish | semmle.label | call to squish |
+| active_support.rb:125:5:125:5 | x :  | semmle.label | x :  |
 | active_support.rb:125:9:125:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:126:10:126:10 | x :  | semmle.label | x :  |
 | active_support.rb:126:10:126:18 | call to squish! | semmle.label | call to squish! |
+| active_support.rb:130:5:130:5 | x :  | semmle.label | x :  |
 | active_support.rb:130:9:130:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:131:10:131:10 | x :  | semmle.label | x :  |
 | active_support.rb:131:10:131:24 | call to strip_heredoc | semmle.label | call to strip_heredoc |
+| active_support.rb:135:5:135:5 | x :  | semmle.label | x :  |
 | active_support.rb:135:9:135:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:136:10:136:10 | x :  | semmle.label | x :  |
 | active_support.rb:136:10:136:19 | call to tableize | semmle.label | call to tableize |
+| active_support.rb:140:5:140:5 | x :  | semmle.label | x :  |
 | active_support.rb:140:9:140:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:141:10:141:10 | x :  | semmle.label | x :  |
 | active_support.rb:141:10:141:20 | call to titlecase | semmle.label | call to titlecase |
+| active_support.rb:145:5:145:5 | x :  | semmle.label | x :  |
 | active_support.rb:145:9:145:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:146:10:146:10 | x :  | semmle.label | x :  |
 | active_support.rb:146:10:146:19 | call to titleize | semmle.label | call to titleize |
+| active_support.rb:150:5:150:5 | x :  | semmle.label | x :  |
 | active_support.rb:150:9:150:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:151:10:151:10 | x :  | semmle.label | x :  |
 | active_support.rb:151:10:151:16 | call to to | semmle.label | call to to |
+| active_support.rb:155:5:155:5 | x :  | semmle.label | x :  |
 | active_support.rb:155:9:155:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:156:10:156:10 | x :  | semmle.label | x :  |
 | active_support.rb:156:10:156:22 | call to truncate | semmle.label | call to truncate |
+| active_support.rb:160:5:160:5 | x :  | semmle.label | x :  |
 | active_support.rb:160:9:160:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:161:10:161:10 | x :  | semmle.label | x :  |
 | active_support.rb:161:10:161:28 | call to truncate_bytes | semmle.label | call to truncate_bytes |
+| active_support.rb:165:5:165:5 | x :  | semmle.label | x :  |
 | active_support.rb:165:9:165:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:166:10:166:10 | x :  | semmle.label | x :  |
 | active_support.rb:166:10:166:28 | call to truncate_words | semmle.label | call to truncate_words |
+| active_support.rb:170:5:170:5 | x :  | semmle.label | x :  |
 | active_support.rb:170:9:170:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:171:10:171:10 | x :  | semmle.label | x :  |
 | active_support.rb:171:10:171:21 | call to underscore | semmle.label | call to underscore |
+| active_support.rb:175:5:175:5 | x :  | semmle.label | x :  |
 | active_support.rb:175:9:175:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:176:10:176:10 | x :  | semmle.label | x :  |
 | active_support.rb:176:10:176:23 | call to upcase_first | semmle.label | call to upcase_first |
+| active_support.rb:180:5:180:5 | x [element 0] :  | semmle.label | x [element 0] :  |
+| active_support.rb:180:5:180:5 | x [element 0] :  | semmle.label | x [element 0] :  |
 | active_support.rb:180:10:180:17 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:180:10:180:17 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:181:5:181:5 | y [element] :  | semmle.label | y [element] :  |
+| active_support.rb:181:5:181:5 | y [element] :  | semmle.label | y [element] :  |
 | active_support.rb:181:9:181:9 | x [element 0] :  | semmle.label | x [element 0] :  |
 | active_support.rb:181:9:181:9 | x [element 0] :  | semmle.label | x [element 0] :  |
 | active_support.rb:181:9:181:23 | call to compact_blank [element] :  | semmle.label | call to compact_blank [element] :  |
@@ -548,8 +748,12 @@ nodes
 | active_support.rb:182:10:182:10 | y [element] :  | semmle.label | y [element] :  |
 | active_support.rb:182:10:182:13 | ...[...] | semmle.label | ...[...] |
 | active_support.rb:182:10:182:13 | ...[...] | semmle.label | ...[...] |
+| active_support.rb:186:5:186:5 | x [element 0] :  | semmle.label | x [element 0] :  |
+| active_support.rb:186:5:186:5 | x [element 0] :  | semmle.label | x [element 0] :  |
 | active_support.rb:186:10:186:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:186:10:186:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:187:5:187:5 | y [element] :  | semmle.label | y [element] :  |
+| active_support.rb:187:5:187:5 | y [element] :  | semmle.label | y [element] :  |
 | active_support.rb:187:9:187:9 | x [element 0] :  | semmle.label | x [element 0] :  |
 | active_support.rb:187:9:187:9 | x [element 0] :  | semmle.label | x [element 0] :  |
 | active_support.rb:187:9:187:21 | call to excluding [element] :  | semmle.label | call to excluding [element] :  |
@@ -558,8 +762,12 @@ nodes
 | active_support.rb:188:10:188:10 | y [element] :  | semmle.label | y [element] :  |
 | active_support.rb:188:10:188:13 | ...[...] | semmle.label | ...[...] |
 | active_support.rb:188:10:188:13 | ...[...] | semmle.label | ...[...] |
+| active_support.rb:192:5:192:5 | x [element 0] :  | semmle.label | x [element 0] :  |
+| active_support.rb:192:5:192:5 | x [element 0] :  | semmle.label | x [element 0] :  |
 | active_support.rb:192:10:192:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:192:10:192:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:193:5:193:5 | y [element] :  | semmle.label | y [element] :  |
+| active_support.rb:193:5:193:5 | y [element] :  | semmle.label | y [element] :  |
 | active_support.rb:193:9:193:9 | x [element 0] :  | semmle.label | x [element 0] :  |
 | active_support.rb:193:9:193:9 | x [element 0] :  | semmle.label | x [element 0] :  |
 | active_support.rb:193:9:193:19 | call to without [element] :  | semmle.label | call to without [element] :  |
@@ -568,8 +776,12 @@ nodes
 | active_support.rb:194:10:194:10 | y [element] :  | semmle.label | y [element] :  |
 | active_support.rb:194:10:194:13 | ...[...] | semmle.label | ...[...] |
 | active_support.rb:194:10:194:13 | ...[...] | semmle.label | ...[...] |
+| active_support.rb:198:5:198:5 | x [element 0] :  | semmle.label | x [element 0] :  |
+| active_support.rb:198:5:198:5 | x [element 0] :  | semmle.label | x [element 0] :  |
 | active_support.rb:198:10:198:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:198:10:198:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:199:5:199:5 | y [element] :  | semmle.label | y [element] :  |
+| active_support.rb:199:5:199:5 | y [element] :  | semmle.label | y [element] :  |
 | active_support.rb:199:9:199:9 | x [element 0] :  | semmle.label | x [element 0] :  |
 | active_support.rb:199:9:199:9 | x [element 0] :  | semmle.label | x [element 0] :  |
 | active_support.rb:199:9:199:37 | call to in_order_of [element] :  | semmle.label | call to in_order_of [element] :  |
@@ -578,8 +790,14 @@ nodes
 | active_support.rb:200:10:200:10 | y [element] :  | semmle.label | y [element] :  |
 | active_support.rb:200:10:200:13 | ...[...] | semmle.label | ...[...] |
 | active_support.rb:200:10:200:13 | ...[...] | semmle.label | ...[...] |
+| active_support.rb:204:5:204:5 | a [element 0] :  | semmle.label | a [element 0] :  |
+| active_support.rb:204:5:204:5 | a [element 0] :  | semmle.label | a [element 0] :  |
 | active_support.rb:204:10:204:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:204:10:204:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:205:5:205:5 | b [element 0] :  | semmle.label | b [element 0] :  |
+| active_support.rb:205:5:205:5 | b [element 0] :  | semmle.label | b [element 0] :  |
+| active_support.rb:205:5:205:5 | b [element] :  | semmle.label | b [element] :  |
+| active_support.rb:205:5:205:5 | b [element] :  | semmle.label | b [element] :  |
 | active_support.rb:205:9:205:9 | a [element 0] :  | semmle.label | a [element 0] :  |
 | active_support.rb:205:9:205:9 | a [element 0] :  | semmle.label | a [element 0] :  |
 | active_support.rb:205:9:205:41 | call to including [element 0] :  | semmle.label | call to including [element 0] :  |
@@ -612,99 +830,141 @@ nodes
 | active_support.rb:211:10:211:10 | b [element] :  | semmle.label | b [element] :  |
 | active_support.rb:211:10:211:13 | ...[...] | semmle.label | ...[...] |
 | active_support.rb:211:10:211:13 | ...[...] | semmle.label | ...[...] |
+| active_support.rb:215:3:215:3 | x :  | semmle.label | x :  |
 | active_support.rb:215:7:215:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:216:3:216:3 | y :  | semmle.label | y :  |
 | active_support.rb:216:7:216:35 | call to new :  | semmle.label | call to new :  |
 | active_support.rb:216:34:216:34 | x :  | semmle.label | x :  |
 | active_support.rb:217:8:217:8 | y | semmle.label | y |
+| active_support.rb:222:3:222:3 | b :  | semmle.label | b :  |
 | active_support.rb:222:7:222:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:223:3:223:3 | y :  | semmle.label | y :  |
 | active_support.rb:223:7:223:22 | call to safe_concat :  | semmle.label | call to safe_concat :  |
 | active_support.rb:223:21:223:21 | b :  | semmle.label | b :  |
 | active_support.rb:224:8:224:8 | y | semmle.label | y |
+| active_support.rb:229:3:229:3 | b :  | semmle.label | b :  |
 | active_support.rb:229:7:229:16 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:230:3:230:3 | [post] x :  | semmle.label | [post] x :  |
 | active_support.rb:230:17:230:17 | b :  | semmle.label | b :  |
 | active_support.rb:231:8:231:8 | x | semmle.label | x |
+| active_support.rb:235:3:235:3 | a :  | semmle.label | a :  |
 | active_support.rb:235:7:235:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:237:3:237:3 | x :  | semmle.label | x :  |
 | active_support.rb:237:7:237:35 | call to new :  | semmle.label | call to new :  |
 | active_support.rb:237:34:237:34 | a :  | semmle.label | a :  |
+| active_support.rb:238:3:238:3 | y :  | semmle.label | y :  |
 | active_support.rb:238:7:238:7 | x :  | semmle.label | x :  |
 | active_support.rb:238:7:238:17 | call to concat :  | semmle.label | call to concat :  |
 | active_support.rb:239:8:239:8 | y | semmle.label | y |
+| active_support.rb:243:3:243:3 | a :  | semmle.label | a :  |
 | active_support.rb:243:7:243:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:245:3:245:3 | x :  | semmle.label | x :  |
 | active_support.rb:245:7:245:35 | call to new :  | semmle.label | call to new :  |
 | active_support.rb:245:34:245:34 | a :  | semmle.label | a :  |
+| active_support.rb:246:3:246:3 | y :  | semmle.label | y :  |
 | active_support.rb:246:7:246:7 | x :  | semmle.label | x :  |
 | active_support.rb:246:7:246:20 | call to insert :  | semmle.label | call to insert :  |
 | active_support.rb:247:8:247:8 | y | semmle.label | y |
+| active_support.rb:251:3:251:3 | a :  | semmle.label | a :  |
 | active_support.rb:251:7:251:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:253:3:253:3 | x :  | semmle.label | x :  |
 | active_support.rb:253:7:253:35 | call to new :  | semmle.label | call to new :  |
 | active_support.rb:253:34:253:34 | a :  | semmle.label | a :  |
+| active_support.rb:254:3:254:3 | y :  | semmle.label | y :  |
 | active_support.rb:254:7:254:7 | x :  | semmle.label | x :  |
 | active_support.rb:254:7:254:18 | call to prepend :  | semmle.label | call to prepend :  |
 | active_support.rb:255:8:255:8 | y | semmle.label | y |
+| active_support.rb:259:3:259:3 | a :  | semmle.label | a :  |
 | active_support.rb:259:7:259:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:260:3:260:3 | x :  | semmle.label | x :  |
 | active_support.rb:260:7:260:35 | call to new :  | semmle.label | call to new :  |
 | active_support.rb:260:34:260:34 | a :  | semmle.label | a :  |
+| active_support.rb:261:3:261:3 | y :  | semmle.label | y :  |
 | active_support.rb:261:7:261:7 | x :  | semmle.label | x :  |
 | active_support.rb:261:7:261:12 | call to to_s :  | semmle.label | call to to_s :  |
 | active_support.rb:262:8:262:8 | y | semmle.label | y |
+| active_support.rb:266:3:266:3 | a :  | semmle.label | a :  |
 | active_support.rb:266:7:266:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:267:3:267:3 | x :  | semmle.label | x :  |
 | active_support.rb:267:7:267:35 | call to new :  | semmle.label | call to new :  |
 | active_support.rb:267:34:267:34 | a :  | semmle.label | a :  |
+| active_support.rb:268:3:268:3 | y :  | semmle.label | y :  |
 | active_support.rb:268:7:268:7 | x :  | semmle.label | x :  |
 | active_support.rb:268:7:268:16 | call to to_param :  | semmle.label | call to to_param :  |
 | active_support.rb:269:8:269:8 | y | semmle.label | y |
+| active_support.rb:273:3:273:3 | a :  | semmle.label | a :  |
 | active_support.rb:273:7:273:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:274:3:274:3 | x :  | semmle.label | x :  |
 | active_support.rb:274:7:274:21 | call to new :  | semmle.label | call to new :  |
 | active_support.rb:274:20:274:20 | a :  | semmle.label | a :  |
+| active_support.rb:275:3:275:3 | y :  | semmle.label | y :  |
 | active_support.rb:275:7:275:7 | x :  | semmle.label | x :  |
 | active_support.rb:275:7:275:17 | call to existence :  | semmle.label | call to existence :  |
 | active_support.rb:276:8:276:8 | y | semmle.label | y |
+| active_support.rb:277:3:277:3 | z :  | semmle.label | z :  |
 | active_support.rb:277:7:277:7 | y :  | semmle.label | y :  |
 | active_support.rb:277:7:277:17 | call to existence :  | semmle.label | call to existence :  |
 | active_support.rb:278:8:278:8 | z | semmle.label | z |
+| active_support.rb:282:3:282:3 | x :  | semmle.label | x :  |
+| active_support.rb:282:3:282:3 | x :  | semmle.label | x :  |
 | active_support.rb:282:7:282:16 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:282:7:282:16 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:283:8:283:8 | x :  | semmle.label | x :  |
 | active_support.rb:283:8:283:8 | x :  | semmle.label | x :  |
 | active_support.rb:283:8:283:17 | call to presence | semmle.label | call to presence |
 | active_support.rb:283:8:283:17 | call to presence | semmle.label | call to presence |
+| active_support.rb:285:3:285:3 | y :  | semmle.label | y :  |
+| active_support.rb:285:3:285:3 | y :  | semmle.label | y :  |
 | active_support.rb:285:7:285:16 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:285:7:285:16 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:286:8:286:8 | y :  | semmle.label | y :  |
 | active_support.rb:286:8:286:8 | y :  | semmle.label | y :  |
 | active_support.rb:286:8:286:17 | call to presence | semmle.label | call to presence |
 | active_support.rb:286:8:286:17 | call to presence | semmle.label | call to presence |
+| active_support.rb:290:3:290:3 | x :  | semmle.label | x :  |
+| active_support.rb:290:3:290:3 | x :  | semmle.label | x :  |
 | active_support.rb:290:7:290:16 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:290:7:290:16 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:291:8:291:8 | x :  | semmle.label | x :  |
 | active_support.rb:291:8:291:8 | x :  | semmle.label | x :  |
 | active_support.rb:291:8:291:17 | call to deep_dup | semmle.label | call to deep_dup |
 | active_support.rb:291:8:291:17 | call to deep_dup | semmle.label | call to deep_dup |
+| active_support.rb:303:3:303:3 | a :  | semmle.label | a :  |
 | active_support.rb:303:7:303:16 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:304:3:304:3 | b :  | semmle.label | b :  |
 | active_support.rb:304:7:304:19 | call to json_escape :  | semmle.label | call to json_escape :  |
 | active_support.rb:304:19:304:19 | a :  | semmle.label | a :  |
 | active_support.rb:305:8:305:8 | b | semmle.label | b |
+| active_support.rb:309:5:309:5 | x :  | semmle.label | x :  |
 | active_support.rb:309:9:309:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:310:10:310:38 | call to encode | semmle.label | call to encode |
 | active_support.rb:310:37:310:37 | x :  | semmle.label | x :  |
+| active_support.rb:314:5:314:5 | x :  | semmle.label | x :  |
 | active_support.rb:314:9:314:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:315:10:315:38 | call to decode | semmle.label | call to decode |
 | active_support.rb:315:37:315:37 | x :  | semmle.label | x :  |
+| active_support.rb:319:5:319:5 | x :  | semmle.label | x :  |
 | active_support.rb:319:9:319:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:320:10:320:36 | call to dump | semmle.label | call to dump |
 | active_support.rb:320:35:320:35 | x :  | semmle.label | x :  |
+| active_support.rb:324:5:324:5 | x :  | semmle.label | x :  |
 | active_support.rb:324:9:324:18 | call to source :  | semmle.label | call to source :  |
 | active_support.rb:325:10:325:36 | call to load | semmle.label | call to load |
 | active_support.rb:325:35:325:35 | x :  | semmle.label | x :  |
+| active_support.rb:329:5:329:5 | x :  | semmle.label | x :  |
 | active_support.rb:329:9:329:18 | call to source :  | semmle.label | call to source :  |
+| active_support.rb:330:5:330:5 | y [element 0] :  | semmle.label | y [element 0] :  |
 | active_support.rb:330:10:330:10 | x :  | semmle.label | x :  |
 | active_support.rb:331:10:331:10 | x :  | semmle.label | x :  |
 | active_support.rb:331:10:331:18 | call to to_json | semmle.label | call to to_json |
 | active_support.rb:332:10:332:10 | y [element 0] :  | semmle.label | y [element 0] :  |
 | active_support.rb:332:10:332:18 | call to to_json | semmle.label | call to to_json |
+| hash_extensions.rb:2:5:2:5 | h [element :a] :  | semmle.label | h [element :a] :  |
+| hash_extensions.rb:2:5:2:5 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:2:14:2:24 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:3:5:3:5 | x [element] :  | semmle.label | x [element] :  |
+| hash_extensions.rb:3:5:3:5 | x [element] :  | semmle.label | x [element] :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:3:9:3:9 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:3:9:3:24 | call to stringify_keys [element] :  | semmle.label | call to stringify_keys [element] :  |
@@ -713,8 +973,12 @@ nodes
 | hash_extensions.rb:4:10:4:10 | x [element] :  | semmle.label | x [element] :  |
 | hash_extensions.rb:4:10:4:14 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:4:10:4:14 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:10:5:10:5 | h [element :a] :  | semmle.label | h [element :a] :  |
+| hash_extensions.rb:10:5:10:5 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:10:14:10:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:10:14:10:24 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:11:5:11:5 | x [element] :  | semmle.label | x [element] :  |
+| hash_extensions.rb:11:5:11:5 | x [element] :  | semmle.label | x [element] :  |
 | hash_extensions.rb:11:9:11:9 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:11:9:11:9 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:11:9:11:20 | call to to_options [element] :  | semmle.label | call to to_options [element] :  |
@@ -723,8 +987,12 @@ nodes
 | hash_extensions.rb:12:10:12:10 | x [element] :  | semmle.label | x [element] :  |
 | hash_extensions.rb:12:10:12:14 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:12:10:12:14 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:18:5:18:5 | h [element :a] :  | semmle.label | h [element :a] :  |
+| hash_extensions.rb:18:5:18:5 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:18:14:18:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:18:14:18:24 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:19:5:19:5 | x [element] :  | semmle.label | x [element] :  |
+| hash_extensions.rb:19:5:19:5 | x [element] :  | semmle.label | x [element] :  |
 | hash_extensions.rb:19:9:19:9 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:19:9:19:9 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:19:9:19:24 | call to symbolize_keys [element] :  | semmle.label | call to symbolize_keys [element] :  |
@@ -733,8 +1001,12 @@ nodes
 | hash_extensions.rb:20:10:20:10 | x [element] :  | semmle.label | x [element] :  |
 | hash_extensions.rb:20:10:20:14 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:20:10:20:14 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:26:5:26:5 | h [element :a] :  | semmle.label | h [element :a] :  |
+| hash_extensions.rb:26:5:26:5 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:26:14:26:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:26:14:26:24 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:27:5:27:5 | x [element] :  | semmle.label | x [element] :  |
+| hash_extensions.rb:27:5:27:5 | x [element] :  | semmle.label | x [element] :  |
 | hash_extensions.rb:27:9:27:9 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:27:9:27:9 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:27:9:27:29 | call to deep_stringify_keys [element] :  | semmle.label | call to deep_stringify_keys [element] :  |
@@ -743,8 +1015,12 @@ nodes
 | hash_extensions.rb:28:10:28:10 | x [element] :  | semmle.label | x [element] :  |
 | hash_extensions.rb:28:10:28:14 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:28:10:28:14 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:34:5:34:5 | h [element :a] :  | semmle.label | h [element :a] :  |
+| hash_extensions.rb:34:5:34:5 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:34:14:34:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:34:14:34:24 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:35:5:35:5 | x [element] :  | semmle.label | x [element] :  |
+| hash_extensions.rb:35:5:35:5 | x [element] :  | semmle.label | x [element] :  |
 | hash_extensions.rb:35:9:35:9 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:35:9:35:9 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:35:9:35:29 | call to deep_symbolize_keys [element] :  | semmle.label | call to deep_symbolize_keys [element] :  |
@@ -753,8 +1029,12 @@ nodes
 | hash_extensions.rb:36:10:36:10 | x [element] :  | semmle.label | x [element] :  |
 | hash_extensions.rb:36:10:36:14 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:36:10:36:14 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:42:5:42:5 | h [element :a] :  | semmle.label | h [element :a] :  |
+| hash_extensions.rb:42:5:42:5 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:42:14:42:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:42:14:42:24 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:43:5:43:5 | x [element] :  | semmle.label | x [element] :  |
+| hash_extensions.rb:43:5:43:5 | x [element] :  | semmle.label | x [element] :  |
 | hash_extensions.rb:43:9:43:9 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:43:9:43:9 | h [element :a] :  | semmle.label | h [element :a] :  |
 | hash_extensions.rb:43:9:43:33 | call to with_indifferent_access [element] :  | semmle.label | call to with_indifferent_access [element] :  |
@@ -763,12 +1043,22 @@ nodes
 | hash_extensions.rb:44:10:44:10 | x [element] :  | semmle.label | x [element] :  |
 | hash_extensions.rb:44:10:44:14 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:44:10:44:14 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:50:5:50:5 | h [element :a] :  | semmle.label | h [element :a] :  |
+| hash_extensions.rb:50:5:50:5 | h [element :a] :  | semmle.label | h [element :a] :  |
+| hash_extensions.rb:50:5:50:5 | h [element :b] :  | semmle.label | h [element :b] :  |
+| hash_extensions.rb:50:5:50:5 | h [element :b] :  | semmle.label | h [element :b] :  |
+| hash_extensions.rb:50:5:50:5 | h [element :d] :  | semmle.label | h [element :d] :  |
+| hash_extensions.rb:50:5:50:5 | h [element :d] :  | semmle.label | h [element :d] :  |
 | hash_extensions.rb:50:14:50:23 | call to taint :  | semmle.label | call to taint :  |
 | hash_extensions.rb:50:14:50:23 | call to taint :  | semmle.label | call to taint :  |
 | hash_extensions.rb:50:29:50:38 | call to taint :  | semmle.label | call to taint :  |
 | hash_extensions.rb:50:29:50:38 | call to taint :  | semmle.label | call to taint :  |
 | hash_extensions.rb:50:52:50:61 | call to taint :  | semmle.label | call to taint :  |
 | hash_extensions.rb:50:52:50:61 | call to taint :  | semmle.label | call to taint :  |
+| hash_extensions.rb:51:5:51:5 | x [element :a] :  | semmle.label | x [element :a] :  |
+| hash_extensions.rb:51:5:51:5 | x [element :a] :  | semmle.label | x [element :a] :  |
+| hash_extensions.rb:51:5:51:5 | x [element :b] :  | semmle.label | x [element :b] :  |
+| hash_extensions.rb:51:5:51:5 | x [element :b] :  | semmle.label | x [element :b] :  |
 | hash_extensions.rb:51:9:51:9 | [post] h [element :d] :  | semmle.label | [post] h [element :d] :  |
 | hash_extensions.rb:51:9:51:9 | [post] h [element :d] :  | semmle.label | [post] h [element :d] :  |
 | hash_extensions.rb:51:9:51:9 | h [element :a] :  | semmle.label | h [element :a] :  |
@@ -793,12 +1083,20 @@ nodes
 | hash_extensions.rb:59:10:59:10 | x [element :b] :  | semmle.label | x [element :b] :  |
 | hash_extensions.rb:59:10:59:14 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:59:10:59:14 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:67:5:67:10 | values [element 0] :  | semmle.label | values [element 0] :  |
+| hash_extensions.rb:67:5:67:10 | values [element 0] :  | semmle.label | values [element 0] :  |
+| hash_extensions.rb:67:5:67:10 | values [element 1] :  | semmle.label | values [element 1] :  |
+| hash_extensions.rb:67:5:67:10 | values [element 1] :  | semmle.label | values [element 1] :  |
+| hash_extensions.rb:67:5:67:10 | values [element 2] :  | semmle.label | values [element 2] :  |
+| hash_extensions.rb:67:5:67:10 | values [element 2] :  | semmle.label | values [element 2] :  |
 | hash_extensions.rb:67:15:67:25 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:67:15:67:25 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:67:28:67:38 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:67:28:67:38 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:67:41:67:51 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:67:41:67:51 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:68:5:68:5 | h [element] :  | semmle.label | h [element] :  |
+| hash_extensions.rb:68:5:68:5 | h [element] :  | semmle.label | h [element] :  |
 | hash_extensions.rb:68:9:68:14 | values [element 0] :  | semmle.label | values [element 0] :  |
 | hash_extensions.rb:68:9:68:14 | values [element 0] :  | semmle.label | values [element 0] :  |
 | hash_extensions.rb:68:9:68:14 | values [element 1] :  | semmle.label | values [element 1] :  |
@@ -819,12 +1117,20 @@ nodes
 | hash_extensions.rb:74:10:74:10 | h [element] :  | semmle.label | h [element] :  |
 | hash_extensions.rb:74:10:74:16 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:74:10:74:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:80:5:80:10 | values [element 0] :  | semmle.label | values [element 0] :  |
+| hash_extensions.rb:80:5:80:10 | values [element 0] :  | semmle.label | values [element 0] :  |
+| hash_extensions.rb:80:5:80:10 | values [element 1] :  | semmle.label | values [element 1] :  |
+| hash_extensions.rb:80:5:80:10 | values [element 1] :  | semmle.label | values [element 1] :  |
+| hash_extensions.rb:80:5:80:10 | values [element 2] :  | semmle.label | values [element 2] :  |
+| hash_extensions.rb:80:5:80:10 | values [element 2] :  | semmle.label | values [element 2] :  |
 | hash_extensions.rb:80:15:80:25 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:80:15:80:25 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:80:28:80:38 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:80:28:80:38 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:80:41:80:51 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:80:41:80:51 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:81:5:81:5 | h [element] :  | semmle.label | h [element] :  |
+| hash_extensions.rb:81:5:81:5 | h [element] :  | semmle.label | h [element] :  |
 | hash_extensions.rb:81:9:81:14 | values [element 0] :  | semmle.label | values [element 0] :  |
 | hash_extensions.rb:81:9:81:14 | values [element 0] :  | semmle.label | values [element 0] :  |
 | hash_extensions.rb:81:9:81:14 | values [element 1] :  | semmle.label | values [element 1] :  |
@@ -847,6 +1153,8 @@ nodes
 | hash_extensions.rb:87:10:87:10 | h [element] :  | semmle.label | h [element] :  |
 | hash_extensions.rb:87:10:87:16 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:87:10:87:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:89:5:89:5 | j [element] :  | semmle.label | j [element] :  |
+| hash_extensions.rb:89:5:89:5 | j [element] :  | semmle.label | j [element] :  |
 | hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | semmle.label | call to index_with [element] :  |
 | hash_extensions.rb:89:9:89:38 | call to index_with [element] :  | semmle.label | call to index_with [element] :  |
 | hash_extensions.rb:89:27:89:37 | call to source :  | semmle.label | call to source :  |
@@ -859,6 +1167,10 @@ nodes
 | hash_extensions.rb:92:10:92:10 | j [element] :  | semmle.label | j [element] :  |
 | hash_extensions.rb:92:10:92:16 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:92:10:92:16 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:98:5:98:10 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
 | hash_extensions.rb:98:21:98:31 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:98:21:98:31 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:98:40:98:54 | call to source :  | semmle.label | call to source :  |
@@ -895,6 +1207,14 @@ nodes
 | hash_extensions.rb:104:10:104:32 | call to pick [element 1] :  | semmle.label | call to pick [element 1] :  |
 | hash_extensions.rb:104:10:104:35 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:104:10:104:35 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :id] :  | semmle.label | values [element 0, element :id] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 0, element :name] :  | semmle.label | values [element 0, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :id] :  | semmle.label | values [element 1, element :id] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :id] :  | semmle.label | values [element 1, element :id] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :name] :  | semmle.label | values [element 1, element :name] :  |
+| hash_extensions.rb:110:5:110:10 | values [element 1, element :name] :  | semmle.label | values [element 1, element :name] :  |
 | hash_extensions.rb:110:21:110:31 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:110:21:110:31 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:110:40:110:54 | call to source :  | semmle.label | call to source :  |
@@ -951,8 +1271,12 @@ nodes
 | hash_extensions.rb:115:10:115:36 | ...[...] [element 1] :  | semmle.label | ...[...] [element 1] :  |
 | hash_extensions.rb:115:10:115:39 | ...[...] | semmle.label | ...[...] |
 | hash_extensions.rb:115:10:115:39 | ...[...] | semmle.label | ...[...] |
+| hash_extensions.rb:122:5:122:10 | single [element 0] :  | semmle.label | single [element 0] :  |
+| hash_extensions.rb:122:5:122:10 | single [element 0] :  | semmle.label | single [element 0] :  |
 | hash_extensions.rb:122:15:122:25 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:122:15:122:25 | call to source :  | semmle.label | call to source :  |
+| hash_extensions.rb:123:5:123:9 | multi [element 0] :  | semmle.label | multi [element 0] :  |
+| hash_extensions.rb:123:5:123:9 | multi [element 0] :  | semmle.label | multi [element 0] :  |
 | hash_extensions.rb:123:14:123:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:123:14:123:24 | call to source :  | semmle.label | call to source :  |
 | hash_extensions.rb:125:10:125:15 | single [element 0] :  | semmle.label | single [element 0] :  |

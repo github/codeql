@@ -1,17 +1,19 @@
 edges
+| KernelOpen.rb:3:5:3:8 | file :  | KernelOpen.rb:4:10:4:13 | file |
+| KernelOpen.rb:3:5:3:8 | file :  | KernelOpen.rb:5:13:5:16 | file |
+| KernelOpen.rb:3:5:3:8 | file :  | KernelOpen.rb:6:14:6:17 | file |
+| KernelOpen.rb:3:5:3:8 | file :  | KernelOpen.rb:7:16:7:19 | file |
+| KernelOpen.rb:3:5:3:8 | file :  | KernelOpen.rb:8:17:8:20 | file |
+| KernelOpen.rb:3:5:3:8 | file :  | KernelOpen.rb:9:16:9:19 | file |
+| KernelOpen.rb:3:5:3:8 | file :  | KernelOpen.rb:10:18:10:21 | file |
+| KernelOpen.rb:3:5:3:8 | file :  | KernelOpen.rb:11:14:11:17 | file |
+| KernelOpen.rb:3:5:3:8 | file :  | KernelOpen.rb:13:23:13:26 | file :  |
+| KernelOpen.rb:3:5:3:8 | file :  | KernelOpen.rb:26:10:26:13 | file |
 | KernelOpen.rb:3:12:3:17 | call to params :  | KernelOpen.rb:3:12:3:24 | ...[...] :  |
-| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:4:10:4:13 | file |
-| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:5:13:5:16 | file |
-| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:6:14:6:17 | file |
-| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:7:16:7:19 | file |
-| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:8:17:8:20 | file |
-| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:9:16:9:19 | file |
-| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:10:18:10:21 | file |
-| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:11:14:11:17 | file |
-| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:13:23:13:26 | file :  |
-| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:26:10:26:13 | file |
+| KernelOpen.rb:3:12:3:24 | ...[...] :  | KernelOpen.rb:3:5:3:8 | file :  |
 | KernelOpen.rb:13:23:13:26 | file :  | KernelOpen.rb:13:13:13:31 | call to join |
 nodes
+| KernelOpen.rb:3:5:3:8 | file :  | semmle.label | file :  |
 | KernelOpen.rb:3:12:3:17 | call to params :  | semmle.label | call to params :  |
 | KernelOpen.rb:3:12:3:24 | ...[...] :  | semmle.label | ...[...] :  |
 | KernelOpen.rb:4:10:4:13 | file | semmle.label | file |

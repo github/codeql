@@ -20,7 +20,7 @@ import IntentUriPermissionManipulationFlow::PathGraph
 from
   IntentUriPermissionManipulationFlow::PathNode source,
   IntentUriPermissionManipulationFlow::PathNode sink
-where IntentUriPermissionManipulationFlow::hasFlowPath(source, sink)
+where IntentUriPermissionManipulationFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "This Intent can be set with arbitrary flags from a $@, " +
     "and used to give access to internal content providers.", source.getNode(),

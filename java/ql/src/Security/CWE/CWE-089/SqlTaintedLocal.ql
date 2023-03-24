@@ -31,13 +31,13 @@ module LocalUserInputToQueryInjectionFlowConfig implements DataFlow::ConfigSig {
 }
 
 module LocalUserInputToQueryInjectionFlow =
-  TaintTracking::Make<LocalUserInputToQueryInjectionFlowConfig>;
+  TaintTracking::Global<LocalUserInputToQueryInjectionFlowConfig>;
 
 import LocalUserInputToQueryInjectionFlow::PathGraph
 
 from
   LocalUserInputToQueryInjectionFlow::PathNode source,
   LocalUserInputToQueryInjectionFlow::PathNode sink
-where LocalUserInputToQueryInjectionFlow::hasFlowPath(source, sink)
+where LocalUserInputToQueryInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This query depends on a $@.", source.getNode(),
   "user-provided value"

@@ -30,9 +30,9 @@ module NetworkToBufferSizeConfig implements DataFlow::ConfigSig {
   }
 }
 
-module NetworkToBufferSizeFlow = TaintTracking::Make<NetworkToBufferSizeConfig>;
+module NetworkToBufferSizeFlow = TaintTracking::Global<NetworkToBufferSizeConfig>;
 
 from DataFlow::Node ntohl, DataFlow::Node offset
-where NetworkToBufferSizeFlow::hasFlow(ntohl, offset)
+where NetworkToBufferSizeFlow::flow(ntohl, offset)
 select offset, "This array offset may be influenced by $@.", ntohl,
   "converted data from the network"

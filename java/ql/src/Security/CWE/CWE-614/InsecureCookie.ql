@@ -47,10 +47,10 @@ module SecureCookieConfig implements DataFlow::ConfigSig {
   }
 }
 
-module SecureCookieFlow = DataFlow::Make<SecureCookieConfig>;
+module SecureCookieFlow = DataFlow::Global<SecureCookieConfig>;
 
 from MethodAccess add
 where
   add.getMethod() instanceof ResponseAddCookieMethod and
-  not SecureCookieFlow::hasFlowToExpr(add.getArgument(0))
+  not SecureCookieFlow::flowToExpr(add.getArgument(0))
 select add, "Cookie is added to response without the 'secure' flag being set."

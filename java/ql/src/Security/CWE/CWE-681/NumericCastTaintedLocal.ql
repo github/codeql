@@ -32,7 +32,7 @@ module NumericCastFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module NumericCastFlow = TaintTracking::Make<NumericCastFlowConfig>;
+module NumericCastFlow = TaintTracking::Global<NumericCastFlowConfig>;
 
 import NumericCastFlow::PathGraph
 
@@ -42,7 +42,7 @@ from
 where
   exp.getExpr() = tainted and
   sink.getNode().asExpr() = tainted and
-  NumericCastFlow::hasFlowPath(source, sink) and
+  NumericCastFlow::flowPath(source, sink) and
   not exists(RightShiftOp e | e.getShiftedVariable() = tainted.getVariable())
 select exp, source, sink,
   "This cast to a narrower type depends on a $@, potentially causing truncation.", source.getNode(),

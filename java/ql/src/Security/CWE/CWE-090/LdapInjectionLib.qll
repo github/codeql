@@ -17,4 +17,4 @@ module LdapInjectionFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module LdapInjectionFlow = TaintTracking::Make<LdapInjectionFlowConfig>;
+module LdapInjectionFlow = TaintTracking::Global<LdapInjectionFlowConfig>;

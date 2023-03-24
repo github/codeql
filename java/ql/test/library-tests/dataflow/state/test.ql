@@ -55,7 +55,7 @@ module Config implements DataFlow::StateConfigSig {
 
 int explorationLimit() { result = 0 }
 
-module Flow = TaintTracking::MakeWithState<Config>;
+module Flow = TaintTracking::GlobalWithState<Config>;
 
 module PartialFlow = Flow::FlowExploration<explorationLimit/0>;
 
@@ -67,7 +67,7 @@ class HasFlowTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "flow" and
     exists(Flow::PathNode src, Flow::PathNode sink |
-      Flow::hasFlowPath(src, sink) and
+      Flow::flowPath(src, sink) and
       sink.getNode().getLocation() = location and
       element = sink.toString() and
       value = src.getState()
@@ -75,7 +75,7 @@ class HasFlowTest extends InlineExpectationsTest {
     or
     tag = "pFwd" and
     exists(PartialFlow::PartialPathNode src, PartialFlow::PartialPathNode node |
-      PartialFlow::hasPartialFlow(src, node, _) and
+      PartialFlow::partialFlow(src, node, _) and
       checkNode(node.getNode()) and
       node.getNode().getLocation() = location and
       element = node.toString() and
@@ -84,7 +84,7 @@ class HasFlowTest extends InlineExpectationsTest {
     or
     tag = "pRev" and
     exists(PartialFlow::PartialPathNode node, PartialFlow::PartialPathNode sink |
-      PartialFlow::hasPartialFlowRev(node, sink, _) and
+      PartialFlow::partialFlowRev(node, sink, _) and
       checkNode(node.getNode()) and
       node.getNode().getLocation() = location and
       element = node.toString() and

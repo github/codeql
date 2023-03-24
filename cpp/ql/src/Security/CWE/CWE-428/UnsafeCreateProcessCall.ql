@@ -64,7 +64,7 @@ module NullAppNameCreateProcessFunctionConfig implements DataFlow::ConfigSig {
   }
 }
 
-module NullAppNameCreateProcessFunction = DataFlow::Make<NullAppNameCreateProcessFunctionConfig>;
+module NullAppNameCreateProcessFunction = DataFlow::Global<NullAppNameCreateProcessFunctionConfig>;
 
 /**
  * Dataflow that detects a call to CreateProcess with an unquoted commandLine argument
@@ -85,7 +85,7 @@ module QuotedCommandInCreateProcessFunctionConfig implements DataFlow::ConfigSig
 }
 
 module QuotedCommandInCreateProcessFunction =
-  DataFlow::Make<QuotedCommandInCreateProcessFunctionConfig>;
+  DataFlow::Global<QuotedCommandInCreateProcessFunctionConfig>;
 
 bindingset[s]
 predicate isQuotedOrNoSpaceApplicationNameOnCmd(string s) {
@@ -98,12 +98,12 @@ from CreateProcessFunctionCall call, string msg1, string msg2
 where
   exists(Expr appName |
     appName = call.getArgument(call.getApplicationNameArgumentId()) and
-    NullAppNameCreateProcessFunction::hasFlowToExpr(appName) and
+    NullAppNameCreateProcessFunction::flowToExpr(appName) and
     msg1 = call.toString() + " with lpApplicationName == NULL (" + appName + ")"
   ) and
   exists(Expr cmd |
     cmd = call.getArgument(call.getCommandLineArgumentId()) and
-    QuotedCommandInCreateProcessFunction::hasFlowToExpr(cmd) and
+    QuotedCommandInCreateProcessFunction::flowToExpr(cmd) and
     msg2 =
       " and with an unquoted lpCommandLine (" + cmd +
         ") introduces a security vulnerability if the path contains spaces."

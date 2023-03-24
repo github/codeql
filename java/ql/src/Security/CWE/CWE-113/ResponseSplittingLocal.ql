@@ -26,12 +26,12 @@ module ResponseSplittingLocalConfig implements DataFlow::ConfigSig {
   }
 }
 
-module ResponseSplitting = TaintTracking::Make<ResponseSplittingLocalConfig>;
+module ResponseSplitting = TaintTracking::Global<ResponseSplittingLocalConfig>;
 
 import ResponseSplitting::PathGraph
 
 from ResponseSplitting::PathNode source, ResponseSplitting::PathNode sink
-where ResponseSplitting::hasFlowPath(source, sink)
+where ResponseSplitting::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "This header depends on a $@, which may cause a response-splitting vulnerability.",
   source.getNode(), "user-provided value"

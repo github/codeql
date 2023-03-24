@@ -21,12 +21,12 @@ module TaintReachConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node node) { any() }
 }
 
-module TaintReachFlow = TaintTracking::Make<TaintReachConfig>;
+module TaintReachFlow = TaintTracking::Global<TaintReachConfig>;
 
 /**
  * Gets the total number of dataflow nodes that taint reaches (from any source).
  */
-int taintedNodesCount() { result = count(DataFlow::Node n | TaintReachFlow::hasFlowTo(n)) }
+int taintedNodesCount() { result = count(DataFlow::Node n | TaintReachFlow::flowTo(n)) }
 
 /**
  * Gets the proportion of dataflow nodes that taint reaches (from any source),

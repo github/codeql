@@ -210,7 +210,7 @@ module ThroughFlowConfig implements DataFlow::StateConfigSig {
   }
 }
 
-private module ThroughFlow = TaintTracking::MakeWithState<ThroughFlowConfig>;
+private module ThroughFlow = TaintTracking::GlobalWithState<ThroughFlowConfig>;
 
 /**
  * Gets the summary model(s) of `api`, if there is flow from parameters to return value or parameter.
@@ -220,7 +220,7 @@ string captureThroughFlow(DataFlowTargetApi api) {
     DataFlow::ParameterNode p, DataFlowImplCommon::ReturnNodeExt returnNodeExt, string input,
     string output
   |
-    ThroughFlow::hasFlow(p, returnNodeExt) and
+    ThroughFlow::flow(p, returnNodeExt) and
     returnNodeExt.getEnclosingCallable() = api and
     input = parameterNodeAsInput(p) and
     output = returnNodeAsOutput(returnNodeExt) and
@@ -253,14 +253,14 @@ module FromSourceConfig implements DataFlow::ConfigSig {
   }
 }
 
-private module FromSource = TaintTracking::Make<FromSourceConfig>;
+private module FromSource = TaintTracking::Global<FromSourceConfig>;
 
 /**
  * Gets the source model(s) of `api`, if there is flow from an existing known source to the return of `api`.
  */
 string captureSource(DataFlowTargetApi api) {
   exists(DataFlow::Node source, DataFlow::Node sink, string kind |
-    FromSource::hasFlow(source, sink) and
+    FromSource::flow(source, sink) and
     ExternalFlow::sourceNode(source, kind) and
     api = sink.getEnclosingCallable() and
     isRelevantSourceKind(kind) and
@@ -285,14 +285,14 @@ module PropagateToSinkConfig implements DataFlow::ConfigSig {
   DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 }
 
-private module PropagateToSink = TaintTracking::Make<PropagateToSinkConfig>;
+private module PropagateToSink = TaintTracking::Global<PropagateToSinkConfig>;
 
 /**
  * Gets the sink model(s) of `api`, if there is flow from a parameter to an existing known sink.
  */
 string captureSink(DataFlowTargetApi api) {
   exists(DataFlow::Node src, DataFlow::Node sink, string kind |
-    PropagateToSink::hasFlow(src, sink) and
+    PropagateToSink::flow(src, sink) and
     ExternalFlow::sinkNode(sink, kind) and
     api = src.getEnclosingCallable() and
     isRelevantSinkKind(kind) and

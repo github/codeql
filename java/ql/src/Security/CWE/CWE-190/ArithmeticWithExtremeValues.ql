@@ -45,7 +45,7 @@ module MaxValueFlowConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
 }
 
-module MaxValueFlow = DataFlow::Make<MaxValueFlowConfig>;
+module MaxValueFlow = DataFlow::Global<MaxValueFlowConfig>;
 
 module MinValueFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
@@ -59,7 +59,7 @@ module MinValueFlowConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
 }
 
-module MinValueFlow = DataFlow::Make<MinValueFlowConfig>;
+module MinValueFlow = DataFlow::Global<MinValueFlowConfig>;
 
 module Flow =
   DataFlow::MergePathGraph<MaxValueFlow::PathNode, MinValueFlow::PathNode, MaxValueFlow::PathGraph,
@@ -71,11 +71,11 @@ predicate query(
   Flow::PathNode source, Flow::PathNode sink, ArithExpr exp, string effect, Type srctyp
 ) {
   (
-    MaxValueFlow::hasFlowPath(source.asPathNode1(), sink.asPathNode1()) and
+    MaxValueFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
     overflowSink(exp, sink.getNode().asExpr()) and
     effect = "overflow"
     or
-    MinValueFlow::hasFlowPath(source.asPathNode2(), sink.asPathNode2()) and
+    MinValueFlow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
     underflowSink(exp, sink.getNode().asExpr()) and
     effect = "underflow"
   ) and
