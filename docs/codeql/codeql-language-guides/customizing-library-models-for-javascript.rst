@@ -396,7 +396,7 @@ Types
 -----
 
 A type is a string that identifies a set of values.
-In each of the extensible predicates mentioned above, the first column is always the name of a type.
+In each of the extensible predicates mentioned in previous section, the first column is always the name of a type.
 A type can be defined by adding **typeModel** tuples for that type. Additionally, the following built-in types are available:
 
 - The name of an NPM package matches imports of that package. For example, the type **express** matches the expression **require("express")**. If the package name includes dots, it must be surrounded by single quotes, such as in **'lodash.escape'**.
