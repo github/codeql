@@ -1,7 +1,6 @@
 import cpp
 
-from Element e
+from Declaration d
 where
-  e.getLocation().getFile().getBaseName() != "" and
-  not e instanceof Container
-select e
+  d.getLocation().getFile().getBaseName() != ""
+select d
