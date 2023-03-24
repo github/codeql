@@ -9,6 +9,8 @@ Learn more about how CodeQL works, the languages and libraries supported by Code
 
 - :doc:`Supported languages and frameworks <supported-languages-and-frameworks>`: View the languages, libraries, and frameworks supported in the latest version of CodeQL.
 
+- :doc:`System requirements <system-requirements>`: View the system requirements for running the latest version of CodeQL.
+
 - :doc:`CodeQL tools <codeql-tools>`: GitHub provides the CodeQL command-line interface and CodeQL for Visual Studio Code for performing CodeQL analysis on open source codebases.
 
 - :doc:`CodeQL glossary <codeql-glossary>`: An overview of the technical terms and concepts in CodeQL. 
@@ -19,6 +21,7 @@ Learn more about how CodeQL works, the languages and libraries supported by Code
 
    about-codeql
    supported-languages-and-frameworks
+   system-requirements
    codeql-tools
    codeql-glossary
 

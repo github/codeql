@@ -29,14 +29,17 @@ private module Cached {
 
   cached
   predicate bestImplementation(MethodImplementation mi) {
-    not assemblyIsStubImpl(mi.getLocation()) and
-    not exists(MethodImplementation better | mi.getMethod() = better.getMethod() |
-      mi.getNumberOfInstructions() < better.getNumberOfInstructions()
-      or
-      mi.getNumberOfInstructions() = better.getNumberOfInstructions() and
-      mi.getLocation().getFile().toString() > better.getLocation().getFile().toString()
-    ) and
-    exists(mi.getAnInstruction())
+    exists(Assembly asm |
+      asm = mi.getLocation() and
+      (assemblyIsStubImpl(asm) implies asm.getFile().extractedQlTest()) and
+      not exists(MethodImplementation better | mi.getMethod() = better.getMethod() |
+        mi.getNumberOfInstructions() < better.getNumberOfInstructions()
+        or
+        mi.getNumberOfInstructions() = better.getNumberOfInstructions() and
+        asm.getFile().toString() > better.getLocation().getFile().toString()
+      ) and
+      exists(mi.getAnInstruction())
+    )
   }
 }
 

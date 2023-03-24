@@ -27,4 +27,4 @@ where
     definitionUsePair(v, other, unchecked)
   )
 select unchecked,
-  "This dereference is not guarded by a non-null check, whereas other dereferences are guarded"
+  "This dereference is not guarded by a non-null check, whereas other dereferences are guarded."

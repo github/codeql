@@ -42,14 +42,10 @@ module CopyFile {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `CopyFile::Range` instead.
  */
-class CopyFile extends DataFlow::Node {
-  CopyFile::Range range;
+class CopyFile extends DataFlow::Node instanceof CopyFile::Range {
+  DataFlow::Node getAPathArgument() { result = super.getAPathArgument() }
 
-  CopyFile() { this = range }
-
-  DataFlow::Node getAPathArgument() { result = range.getAPathArgument() }
-
-  DataFlow::Node getfsrcArgument() { result = range.getfsrcArgument() }
+  DataFlow::Node getfsrcArgument() { result = super.getfsrcArgument() }
 }
 
 /** Provides classes for modeling log related APIs. */
@@ -74,12 +70,8 @@ module LogOutput {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `LogOutput::Range` instead.
  */
-class LogOutput extends DataFlow::Node {
-  LogOutput::Range range;
-
-  LogOutput() { this = range }
-
-  DataFlow::Node getAnInput() { result = range.getAnInput() }
+class LogOutput extends DataFlow::Node instanceof LogOutput::Range {
+  DataFlow::Node getAnInput() { result = super.getAnInput() }
 }
 
 /** Provides classes for modeling LDAP query execution-related APIs. */
@@ -107,15 +99,11 @@ deprecated module LDAPQuery = LdapQuery;
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `LDAPQuery::Range` instead.
  */
-class LdapQuery extends DataFlow::Node {
-  LdapQuery::Range range;
-
-  LdapQuery() { this = range }
-
+class LdapQuery extends DataFlow::Node instanceof LdapQuery::Range {
   /**
    * Gets the argument containing the executed expression.
    */
-  DataFlow::Node getQuery() { result = range.getQuery() }
+  DataFlow::Node getQuery() { result = super.getQuery() }
 }
 
 /** DEPRECATED: Alias for LdapQuery */
@@ -146,15 +134,11 @@ deprecated module LDAPEscape = LdapEscape;
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `LDAPEscape::Range` instead.
  */
-class LdapEscape extends DataFlow::Node {
-  LdapEscape::Range range;
-
-  LdapEscape() { this = range }
-
+class LdapEscape extends DataFlow::Node instanceof LdapEscape::Range {
   /**
    * Gets the argument containing the escaped expression.
    */
-  DataFlow::Node getAnInput() { result = range.getAnInput() }
+  DataFlow::Node getAnInput() { result = super.getAnInput() }
 }
 
 /** DEPRECATED: Alias for LdapEscape */
@@ -182,7 +166,10 @@ module LdapBind {
     /**
      * Holds if the binding process use SSL.
      */
-    abstract predicate useSSL();
+    abstract predicate useSsl();
+
+    /** DEPRECATED: Alias for useSsl */
+    deprecated predicate useSSL() { useSsl() }
   }
 }
 
@@ -195,25 +182,24 @@ deprecated module LDAPBind = LdapBind;
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `LDAPBind::Range` instead.
  */
-class LdapBind extends DataFlow::Node {
-  LdapBind::Range range;
-
-  LdapBind() { this = range }
-
+class LdapBind extends DataFlow::Node instanceof LdapBind::Range {
   /**
    * Gets the argument containing the binding host.
    */
-  DataFlow::Node getHost() { result = range.getHost() }
+  DataFlow::Node getHost() { result = super.getHost() }
 
   /**
    * Gets the argument containing the binding expression.
    */
-  DataFlow::Node getPassword() { result = range.getPassword() }
+  DataFlow::Node getPassword() { result = super.getPassword() }
 
   /**
    * Holds if the binding process use SSL.
    */
-  predicate useSSL() { range.useSSL() }
+  predicate useSsl() { super.useSsl() }
+
+  /** DEPRECATED: Alias for useSsl */
+  deprecated predicate useSSL() { useSsl() }
 }
 
 /** DEPRECATED: Alias for LdapBind */
@@ -244,15 +230,11 @@ deprecated module SQLEscape = SqlEscape;
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SQLEscape::Range` instead.
  */
-class SqlEscape extends DataFlow::Node {
-  SqlEscape::Range range;
-
-  SqlEscape() { this = range }
-
+class SqlEscape extends DataFlow::Node instanceof SqlEscape::Range {
   /**
    * Gets the argument containing the raw SQL statement.
    */
-  DataFlow::Node getAnInput() { result = range.getAnInput() }
+  DataFlow::Node getAnInput() { result = super.getAnInput() }
 }
 
 /** DEPRECATED: Alias for SqlEscape */
@@ -281,13 +263,9 @@ deprecated module NoSQLQuery = NoSqlQuery;
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `NoSQLQuery::Range` instead.
  */
-class NoSqlQuery extends DataFlow::Node {
-  NoSqlQuery::Range range;
-
-  NoSqlQuery() { this = range }
-
+class NoSqlQuery extends DataFlow::Node instanceof NoSqlQuery::Range {
   /** Gets the argument that specifies the NoSql query to be executed. */
-  DataFlow::Node getQuery() { result = range.getQuery() }
+  DataFlow::Node getQuery() { result = super.getQuery() }
 }
 
 /** DEPRECATED: Alias for NoSqlQuery */
@@ -316,13 +294,9 @@ deprecated module NoSQLSanitizer = NoSqlSanitizer;
  * Extend this class to model new APIs. If you want to refine existing API models,
  * extend `NoSQLSanitizer::Range` instead.
  */
-class NoSqlSanitizer extends DataFlow::Node {
-  NoSqlSanitizer::Range range;
-
-  NoSqlSanitizer() { this = range }
-
+class NoSqlSanitizer extends DataFlow::Node instanceof NoSqlSanitizer::Range {
   /** Gets the argument that specifies the NoSql query to be sanitized. */
-  DataFlow::Node getAnInput() { result = range.getAnInput() }
+  DataFlow::Node getAnInput() { result = super.getAnInput() }
 }
 
 /** DEPRECATED: Alias for NoSqlSanitizer */
@@ -355,20 +329,16 @@ module HeaderDeclaration {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `HeaderDeclaration::Range` instead.
  */
-class HeaderDeclaration extends DataFlow::Node {
-  HeaderDeclaration::Range range;
-
-  HeaderDeclaration() { this = range }
-
+class HeaderDeclaration extends DataFlow::Node instanceof HeaderDeclaration::Range {
   /**
    * Gets the argument containing the header name.
    */
-  DataFlow::Node getNameArg() { result = range.getNameArg() }
+  DataFlow::Node getNameArg() { result = super.getNameArg() }
 
   /**
    * Gets the argument containing the header value.
    */
-  DataFlow::Node getValueArg() { result = range.getValueArg() }
+  DataFlow::Node getValueArg() { result = super.getValueArg() }
 }
 
 /** Provides classes for modeling Csv writer APIs. */
@@ -393,15 +363,11 @@ module CsvWriter {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `CsvWriter::Range` instead.
  */
-class CsvWriter extends DataFlow::Node {
-  CsvWriter::Range range;
-
-  CsvWriter() { this = range }
-
+class CsvWriter extends DataFlow::Node instanceof CsvWriter::Range {
   /**
    * Get the parameter value of the csv writer function.
    */
-  DataFlow::Node getAnInput() { result = range.getAnInput() }
+  DataFlow::Node getAnInput() { result = super.getAnInput() }
 }
 
 /**
@@ -410,7 +376,7 @@ class CsvWriter extends DataFlow::Node {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `Cookie::Range` instead.
  */
-class Cookie extends HTTP::Server::CookieWrite instanceof Cookie::Range {
+class Cookie extends Http::Server::CookieWrite instanceof Cookie::Range {
   /**
    * Holds if this cookie is secure.
    */
@@ -435,7 +401,7 @@ module Cookie {
    * Extend this class to model new APIs. If you want to refine existing API models,
    * extend `Cookie` instead.
    */
-  abstract class Range extends HTTP::Server::CookieWrite::Range {
+  abstract class Range extends Http::Server::CookieWrite::Range {
     /**
      * Holds if this cookie is secure.
      */

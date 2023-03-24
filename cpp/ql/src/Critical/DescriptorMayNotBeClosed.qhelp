@@ -19,7 +19,7 @@ This can occur when an operation performed on the open descriptor fails, and the
 
 <example>
 <p>In the example below, the <code>sockfd</code> socket may remain open if an error is triggered. 
-The code should be updated to ensure that the socket is always closed when when the function ends.
+The code should be updated to ensure that the socket is always closed when the function ends.
 </p>
 <sample src="DescriptorMayNotBeClosed.cpp" />
 </example>

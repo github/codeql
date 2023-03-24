@@ -232,6 +232,7 @@ predicate guardControls_v2(Guard guard, BasicBlock controlled, boolean branch) {
   )
 }
 
+pragma[nomagic]
 private predicate guardControls_v3(Guard guard, BasicBlock controlled, boolean branch) {
   guard.directlyControls(controlled, branch)
   or

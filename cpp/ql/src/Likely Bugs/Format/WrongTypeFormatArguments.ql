@@ -173,4 +173,4 @@ where
   not actual.getUnspecifiedType() instanceof ErroneousType
 select arg,
   "This argument should be of type '" + expected.getName() + "' but is of type '" +
-    actual.getUnspecifiedType().getName() + "'"
+    actual.getUnspecifiedType().getName() + "'."

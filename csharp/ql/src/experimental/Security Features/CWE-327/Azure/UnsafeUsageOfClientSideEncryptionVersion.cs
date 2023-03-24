@@ -17,7 +17,7 @@ var client = new BlobClient(myConnectionString, new SpecializedBlobClientOptions
     {
         KeyEncryptionKey = myKey,
         KeyResolver = myKeyResolver,
-        KeyWrapAlgorihm = myKeyWrapAlgorithm
+        KeyWrapAlgorithm = myKeyWrapAlgorithm
     }
 });
 
@@ -28,7 +28,7 @@ var client = new BlobClient(myConnectionString, new SpecializedBlobClientOptions
     {
         KeyEncryptionKey = myKey,
         KeyResolver = myKeyResolver,
-        KeyWrapAlgorihm = myKeyWrapAlgorithm
+        KeyWrapAlgorithm = myKeyWrapAlgorithm
     }
 });
 
@@ -39,6 +39,6 @@ var client = new BlobClient(myConnectionString, new SpecializedBlobClientOptions
     {
         KeyEncryptionKey = myKey,
         KeyResolver = myKeyResolver,
-        KeyWrapAlgorihm = myKeyWrapAlgorithm
+        KeyWrapAlgorithm = myKeyWrapAlgorithm
     }
 });

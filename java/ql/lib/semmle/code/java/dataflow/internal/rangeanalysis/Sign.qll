@@ -18,9 +18,9 @@ newtype TBinarySignOperation =
   TBitAndOp() or
   TBitOrOp() or
   TBitXorOp() or
-  TLShiftOp() or
-  TRShiftOp() or
-  TURShiftOp()
+  TLeftShiftOp() or
+  TRightShiftOp() or
+  TUnsignedRightShiftOp()
 
 /** Class representing expression signs (+, -, 0). */
 class Sign extends TSign {
@@ -271,10 +271,10 @@ class Sign extends TSign {
     or
     op = TBitXorOp() and result = bitxor(s)
     or
-    op = TLShiftOp() and result = lshift(s)
+    op = TLeftShiftOp() and result = lshift(s)
     or
-    op = TRShiftOp() and result = rshift(s)
+    op = TRightShiftOp() and result = rshift(s)
     or
-    op = TURShiftOp() and result = urshift(s)
+    op = TUnsignedRightShiftOp() and result = urshift(s)
   }
 }

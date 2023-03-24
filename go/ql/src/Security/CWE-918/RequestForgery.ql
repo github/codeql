@@ -23,5 +23,5 @@ where
   request = sink.getNode().(Sink).getARequest() and
   // this excludes flow from safe parts of request URLs, for example the full URL
   not scfg.hasFlow(_, sink.getNode())
-select request, source, sink, "The $@ of this request depends on $@.", sink.getNode(),
-  sink.getNode().(Sink).getKind(), source, "a user-provided value"
+select request, source, sink, "The $@ of this request depends on a $@.", sink.getNode(),
+  sink.getNode().(Sink).getKind(), source, "user-provided value"

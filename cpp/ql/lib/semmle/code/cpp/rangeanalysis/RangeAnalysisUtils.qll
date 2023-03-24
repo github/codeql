@@ -173,7 +173,7 @@ predicate eqOpWithSwapAndNegate(EqualityOperation cmp, Expr a, Expr b, boolean i
 
 /**
  * Holds if `cmp` is an unconverted conversion of `a` to a Boolean that
- * evalutes to `isEQ` iff `a` is 0.
+ * evaluates to `isEQ` iff `a` is 0.
  *
  * Note that `a` can be `cmp` itself or a conversion thereof.
  */

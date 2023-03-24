@@ -16,7 +16,7 @@
 import cpp
 import semmle.code.cpp.security.FunctionWithWrappers
 import semmle.code.cpp.security.Security
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 import TaintedWithPath
 
 class Configuration extends TaintTrackingConfiguration {
@@ -37,4 +37,4 @@ where
   isUserInput(userValue, cause)
 select arg, sourceNode, sinkNode,
   "The value of this argument may come from $@ and is being used as a formatting argument to " +
-    printfFunction, userValue, cause
+    printfFunction + ".", userValue, cause

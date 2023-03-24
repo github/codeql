@@ -16,8 +16,7 @@ module ContentDataFlow {
 
   class ContentSet = DF::ContentSet;
 
-  predicate stageStats = DF::stageStats/8;
-
+  // predicate stageStats = DF::stageStats/8;
   /**
    * A configuration of interprocedural data flow analysis. This defines
    * sources, sinks, and any other configurable aspect of the analysis. Each
@@ -222,18 +221,14 @@ module ContentDataFlow {
     )
   }
 
-  private class ConfigurationAdapter extends DF::Configuration {
-    private Configuration c;
-
-    ConfigurationAdapter() { this = c }
-
+  private class ConfigurationAdapter extends DF::Configuration instanceof Configuration {
     final override predicate isSource(Node source, DF::FlowState state) {
-      c.isSource(source) and
+      Configuration.super.isSource(source) and
       state.(InitState).decode(true)
     }
 
     final override predicate isSink(Node sink, DF::FlowState state) {
-      c.isSink(sink) and
+      Configuration.super.isSink(sink) and
       (
         state instanceof InitState or
         state instanceof StoreState or
@@ -249,9 +244,9 @@ module ContentDataFlow {
       additionalStep(node1, state1, node2, state2, this)
     }
 
-    final override predicate isBarrier(Node node) { c.isBarrier(node) }
+    final override predicate isBarrier(Node node) { Configuration.super.isBarrier(node) }
 
-    final override FlowFeature getAFeature() { result = c.getAFeature() }
+    final override FlowFeature getAFeature() { result = Configuration.super.getAFeature() }
 
     // needed to record reads/stores inside summarized callables
     final override predicate includeHiddenNodes() { any() }

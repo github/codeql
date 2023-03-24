@@ -1,12 +1,9 @@
 import java
 
 class EmptyBlock extends Block {
-  EmptyBlock() {
-    this.getNumStmt() = 0
-  }
+  EmptyBlock() { this.getNumStmt() = 0 }
 }
 
 from IfStmt ifstmt
-where ifstmt.getThen() instanceof
-      EmptyBlock
+where ifstmt.getThen() instanceof EmptyBlock
 select ifstmt

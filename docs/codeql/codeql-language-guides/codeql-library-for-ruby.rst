@@ -1,4 +1,4 @@
-.. codeql-library-for-ruby:
+.. _codeql-library-for-ruby:
 
 CodeQL library for Ruby
 =======================
@@ -18,7 +18,7 @@ library by beginning your query with:
 
 .. code-block:: ql
 
-   import ruby
+   import codeql.ruby.AST
 
 The CodeQL libraries model various aspects of Ruby code, depending on the type of query you want to write.
 For example the abstract syntax tree (AST) library is used for locating program elements, to match syntactic
@@ -138,7 +138,7 @@ The following example lists all methods in the class `ApiController`:
 
 .. code-block:: ql
 
-   import ruby
+   import codeql.ruby.AST
 
    from ClassDeclaration m
    where m.getName() = "ApiController"
@@ -223,7 +223,7 @@ Example
 
 .. code-block:: ql
 
-   import ruby
+   import codeql.ruby.AST
 
    from Method m
    where m.getName() = "show"
@@ -274,7 +274,7 @@ The following example finds all literals that are returned by a `return` stateme
 
 .. code-block:: ql
 
-   import ruby
+   import codeql.ruby.AST
 
    from ReturnStmt return, Literal lit
    where lit.getParent() = return 
@@ -421,7 +421,7 @@ The following example finds "chained assignments" (of the form ``A=B=C``):
 
 .. code-block:: ql
 
-   import ruby
+   import codeql.ruby.AST
    
    from Assignment op
    where op.getRightOperand() instanceof Assignment
@@ -460,7 +460,7 @@ The following example finds all method calls to a method called `delete`.
 
 .. code-block:: ql
 
-   import ruby
+   import codeql.ruby.AST
 
    from MethodCall call
    where call.getMethodName() = "delete"
@@ -517,7 +517,7 @@ The following example finds `if`-expressions that are missing a `then` branch.
 
 .. code-block:: ql
    
-   import ruby
+   import codeql.ruby.AST
 
    from IfExpr expr
    where not exists(expr.getThen())
@@ -559,7 +559,7 @@ The following example finds all class variables in the class `StaticController`:
 
 .. code-block:: ql
 
-   import ruby
+   import codeql.ruby.AST
 
    from ClassDeclaration cd, ClassVariable v
    where
@@ -612,7 +612,7 @@ The following example finds writes to class variables in the class `StaticContro
 
 .. code-block:: ql
 
-   import ruby
+   import codeql.ruby.AST
 
    from ClassVariableWriteAccess write, ClassDeclaration cd, ClassVariable v
    where

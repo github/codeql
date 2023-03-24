@@ -131,7 +131,8 @@ abstract class TranslatedCoreExpr extends TranslatedExpr {
 }
 
 class TranslatedConditionValue extends TranslatedCoreExpr, ConditionContext,
-  TTranslatedConditionValue {
+  TTranslatedConditionValue
+{
   TranslatedConditionValue() { this = TTranslatedConditionValue(expr) }
 
   override TranslatedElement getChild(int id) { id = 0 and result = this.getCondition() }
@@ -326,7 +327,8 @@ class TranslatedLoad extends TranslatedValueCategoryAdjustment, TTranslatedLoad 
  * from the AST.
  */
 class TranslatedSyntheticTemporaryObject extends TranslatedValueCategoryAdjustment,
-  TTranslatedSyntheticTemporaryObject {
+  TTranslatedSyntheticTemporaryObject
+{
   TranslatedSyntheticTemporaryObject() { this = TTranslatedSyntheticTemporaryObject(expr) }
 
   override string toString() { result = "Temporary materialization of " + expr.toString() }
@@ -1450,8 +1452,6 @@ class TranslatedAssignExpr extends TranslatedNonConstantExpr {
       result = this.getLeftOperand().getResult()
   }
 
-  abstract Instruction getStoredValue();
-
   final TranslatedExpr getLeftOperand() {
     result = getTranslatedExpr(expr.getLValue().getFullyConverted())
   }
@@ -1489,6 +1489,75 @@ class TranslatedAssignExpr extends TranslatedNonConstantExpr {
       or
       operandTag instanceof StoreValueOperandTag and
       result = this.getRightOperand().getResult()
+    )
+  }
+}
+
+class TranslatedBlockAssignExpr extends TranslatedNonConstantExpr {
+  override BlockAssignExpr expr;
+
+  final override TranslatedElement getChild(int id) {
+    id = 0 and result = this.getLeftOperand()
+    or
+    id = 1 and result = this.getRightOperand()
+  }
+
+  final override Instruction getFirstInstruction() {
+    // The operand evaluation order should not matter since block assignments behave like memcpy.
+    result = this.getLeftOperand().getFirstInstruction()
+  }
+
+  final override Instruction getResult() { result = this.getInstruction(AssignmentStoreTag()) }
+
+  final TranslatedExpr getLeftOperand() {
+    result = getTranslatedExpr(expr.getLValue().getFullyConverted())
+  }
+
+  final TranslatedExpr getRightOperand() {
+    result = getTranslatedExpr(expr.getRValue().getFullyConverted())
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = LoadTag() and
+    result = this.getInstruction(AssignmentStoreTag()) and
+    kind instanceof GotoEdge
+    or
+    tag = AssignmentStoreTag() and
+    result = this.getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getLeftOperand() and
+    result = this.getRightOperand().getFirstInstruction()
+    or
+    child = this.getRightOperand() and
+    result = this.getInstruction(LoadTag())
+  }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    tag = LoadTag() and
+    opcode instanceof Opcode::Load and
+    resultType = getTypeForPRValue(expr.getRValue().getType())
+    or
+    tag = AssignmentStoreTag() and
+    opcode instanceof Opcode::Store and
+    // The frontend specifies that the relevant type is the one of the source.
+    resultType = getTypeForPRValue(expr.getRValue().getType())
+  }
+
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = LoadTag() and
+    operandTag instanceof AddressOperandTag and
+    result = this.getRightOperand().getResult()
+    or
+    tag = AssignmentStoreTag() and
+    (
+      operandTag instanceof AddressOperandTag and
+      result = this.getLeftOperand().getResult()
+      or
+      operandTag instanceof StoreValueOperandTag and
+      result = this.getInstruction(LoadTag())
     )
   }
 }
@@ -2110,7 +2179,7 @@ abstract class TranslatedConditionalExpr extends TranslatedNonConstantExpr {
 /**
  * The IR translation of the ternary conditional operator (`a ? b : c`).
  * For this version, we expand the condition as a `TranslatedCondition`, rather than a
- * `TranslatedExpr`, to simplify the control flow in the presence of short-ciruit logical operators.
+ * `TranslatedExpr`, to simplify the control flow in the presence of short-circuit logical operators.
  */
 class TranslatedTernaryConditionalExpr extends TranslatedConditionalExpr, ConditionContext {
   TranslatedTernaryConditionalExpr() { not expr.isTwoOperand() }
@@ -2235,7 +2304,8 @@ class TranslatedBinaryConditionalExpr extends TranslatedConditionalExpr {
  * its initializer.
  */
 class TranslatedTemporaryObjectExpr extends TranslatedNonConstantExpr,
-  TranslatedVariableInitialization {
+  TranslatedVariableInitialization
+{
   override TemporaryObjectExpr expr;
 
   final override predicate hasTempVariable(TempVariableTag tag, CppType type) {

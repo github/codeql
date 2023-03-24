@@ -8,6 +8,7 @@
  * @precision medium
  * @id java/incorrect-url-verification
  * @tags security
+ *       experimental
  *       external/cwe/cwe-939
  */
 
@@ -90,4 +91,4 @@ class HostVerificationMethodAccess extends MethodAccess {
 
 from UriGetHostMethod um, MethodAccess uma, HostVerificationMethodAccess hma
 where hma.getQualifier() = uma and uma.getMethod() = um
-select hma, "Method has potentially $@ ", hma.getArgument(0), "improper URL verification"
+select hma, "Method has potentially $@.", hma.getArgument(0), "improper URL verification"

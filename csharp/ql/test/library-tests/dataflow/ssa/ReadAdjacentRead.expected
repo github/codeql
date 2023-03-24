@@ -111,4 +111,13 @@
 | Test.cs:9:13:9:13 | y | Test.cs:25:20:25:20 | access to local variable y | Test.cs:43:20:43:20 | access to local variable y |
 | Test.cs:34:18:34:18 | i | Test.cs:34:25:34:25 | access to local variable i | Test.cs:36:18:36:18 | access to local variable i |
 | Test.cs:34:18:34:18 | i | Test.cs:36:18:36:18 | access to local variable i | Test.cs:34:33:34:33 | access to local variable i |
+| Test.cs:78:13:78:13 | x | Test.cs:82:17:82:17 | access to local variable x | Test.cs:92:17:92:17 | access to local variable x |
+| Test.cs:78:13:78:13 | x | Test.cs:82:17:82:17 | access to local variable x | Test.cs:96:17:96:17 | access to local variable x |
+| Test.cs:78:13:78:13 | x | Test.cs:82:17:82:17 | access to local variable x | Test.cs:99:13:99:13 | access to local variable x |
+| Test.cs:78:13:78:13 | x | Test.cs:86:17:86:17 | access to local variable x | Test.cs:92:17:92:17 | access to local variable x |
+| Test.cs:78:13:78:13 | x | Test.cs:86:17:86:17 | access to local variable x | Test.cs:96:17:96:17 | access to local variable x |
+| Test.cs:78:13:78:13 | x | Test.cs:86:17:86:17 | access to local variable x | Test.cs:99:13:99:13 | access to local variable x |
+| Test.cs:78:13:78:13 | x | Test.cs:92:17:92:17 | access to local variable x | Test.cs:99:13:99:13 | access to local variable x |
+| Test.cs:78:13:78:13 | x | Test.cs:96:17:96:17 | access to local variable x | Test.cs:99:13:99:13 | access to local variable x |
+| Test.cs:78:13:78:13 | x | Test.cs:99:13:99:13 | access to local variable x | Test.cs:104:17:104:17 | access to local variable x |
 | Tuples.cs:25:13:25:13 | t | Tuples.cs:26:17:26:17 | access to local variable t | Tuples.cs:28:13:28:13 | access to local variable t |

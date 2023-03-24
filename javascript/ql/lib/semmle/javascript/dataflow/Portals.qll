@@ -196,18 +196,14 @@ private module NpmPackagePortal {
 
   /** Holds if `imp` is an import of package `pkgName`. */
   predicate imports(DataFlow::SourceNode imp, string pkgName) {
-    exists(NpmPackage pkg |
-      imp = getAModuleImport(pkg, pkgName) and
-      pkgName.regexpMatch("[^./].*")
-    )
+    imp = getAModuleImport(_, pkgName) and
+    pkgName.regexpMatch("[^./].*")
   }
 
   /** Holds if `imp` imports `member` from package `pkgName`. */
   predicate imports(DataFlow::SourceNode imp, string pkgName, string member) {
-    exists(NpmPackage pkg |
-      imp = getAModuleMemberImport(pkg, pkgName, member) and
-      pkgName.regexpMatch("[^./].*")
-    )
+    imp = getAModuleMemberImport(_, pkgName, member) and
+    pkgName.regexpMatch("[^./].*")
   }
 
   /** Gets the main module of package `pkgName`. */
@@ -404,7 +400,7 @@ private module InstancePortal {
    * right-hand side of that definition.
    */
   predicate instanceMemberDef(Portal base, string name, DataFlow::Node rhs, boolean escapes) {
-    exists(AbstractInstance i, DataFlow::SourceNode ctor | isInstance(base, ctor, i, escapes) |
+    exists(DataFlow::SourceNode ctor | isInstance(base, ctor, _, escapes) |
       // ES2015 instance method
       exists(MemberDefinition mem |
         mem = ctor.getAstNode().(ClassDefinition).getAMember() and

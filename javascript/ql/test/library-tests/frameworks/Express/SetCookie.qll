@@ -1,5 +1,5 @@
 import javascript
 
-query predicate test_SetCookie(HTTP::CookieDefinition cookiedef, Express::RouteHandler rh) {
+query predicate test_SetCookie(Http::CookieDefinition cookiedef, Express::RouteHandler rh) {
   rh = cookiedef.getRouteHandler()
 }

@@ -7,7 +7,6 @@ import java
 import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.security.CleartextStorageQuery
-import semmle.code.java.security.Files
 import semmle.code.xml.AndroidManifest
 
 private class AndroidFilesystemCleartextStorageSink extends CleartextStorageSink {

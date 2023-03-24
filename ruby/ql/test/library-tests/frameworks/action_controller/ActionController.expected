@@ -1,0 +1,372 @@
+actionControllerControllerClasses
+| controllers/application_controller.rb:1:1:13:3 | ApplicationController |
+| controllers/comments_controller.rb:1:1:104:3 | CommentsController |
+| controllers/foo/bars_controller.rb:3:1:46:3 | BarsController |
+| controllers/photos_controller.rb:1:1:10:3 | PhotosController |
+| controllers/posts_controller.rb:1:1:32:3 | PostsController |
+| controllers/tags_controller.rb:1:1:2:3 | TagsController |
+| controllers/users/notifications_controller.rb:2:3:5:5 | Users::NotificationsController |
+| filter_flow.rb:9:1:23:3 | OneController |
+| filter_flow.rb:25:1:40:3 | TwoController |
+| filter_flow.rb:42:1:57:3 | ThreeController |
+| filter_flow.rb:59:1:73:3 | FourController |
+| filter_flow.rb:75:1:93:3 | FiveController |
+| input_access.rb:1:1:50:3 | UsersController |
+| params_flow.rb:1:1:162:3 | MyController |
+| params_flow.rb:170:1:178:3 | Subclass |
+actionControllerActionMethods
+| controllers/comments_controller.rb:17:3:51:5 | index |
+| controllers/comments_controller.rb:53:3:54:5 | create |
+| controllers/comments_controller.rb:56:3:62:5 | show |
+| controllers/comments_controller.rb:64:3:66:5 | photo |
+| controllers/comments_controller.rb:68:3:70:5 | destroy |
+| controllers/foo/bars_controller.rb:5:3:7:5 | index |
+| controllers/foo/bars_controller.rb:9:3:18:5 | show_debug |
+| controllers/foo/bars_controller.rb:20:3:24:5 | show |
+| controllers/foo/bars_controller.rb:26:3:28:5 | go_back |
+| controllers/foo/bars_controller.rb:30:3:32:5 | go_back_2 |
+| controllers/foo/bars_controller.rb:34:3:39:5 | show_2 |
+| controllers/photos_controller.rb:3:3:6:5 | show |
+| controllers/photos_controller.rb:8:3:9:5 | foo |
+| controllers/posts_controller.rb:12:3:15:5 | index |
+| controllers/posts_controller.rb:17:3:18:5 | show |
+| controllers/posts_controller.rb:20:3:21:5 | upvote |
+| controllers/users/notifications_controller.rb:3:5:4:7 | mark_as_read |
+| filter_flow.rb:13:3:15:5 | a |
+| filter_flow.rb:17:3:18:5 | b |
+| filter_flow.rb:20:3:22:5 | c |
+| filter_flow.rb:29:3:31:5 | a |
+| filter_flow.rb:33:3:35:5 | b |
+| filter_flow.rb:37:3:39:5 | c |
+| filter_flow.rb:46:3:49:5 | a |
+| filter_flow.rb:51:3:52:5 | b |
+| filter_flow.rb:54:3:56:5 | c |
+| filter_flow.rb:63:3:65:5 | a |
+| filter_flow.rb:67:3:68:5 | b |
+| filter_flow.rb:70:3:72:5 | c |
+| filter_flow.rb:79:3:81:5 | a |
+| filter_flow.rb:83:3:84:5 | b |
+| filter_flow.rb:86:3:88:5 | c |
+| filter_flow.rb:90:3:92:5 | taint_foo |
+| input_access.rb:2:3:49:5 | index |
+| logging.rb:2:5:8:7 | index |
+| params_flow.rb:2:3:4:5 | m1 |
+| params_flow.rb:6:3:8:5 | m2 |
+| params_flow.rb:10:3:12:5 | m2 |
+| params_flow.rb:14:3:16:5 | m3 |
+| params_flow.rb:18:3:20:5 | m4 |
+| params_flow.rb:22:3:24:5 | m5 |
+| params_flow.rb:26:3:28:5 | m6 |
+| params_flow.rb:30:3:32:5 | m7 |
+| params_flow.rb:34:3:36:5 | m8 |
+| params_flow.rb:38:3:40:5 | m9 |
+| params_flow.rb:42:3:44:5 | m10 |
+| params_flow.rb:46:3:48:5 | m11 |
+| params_flow.rb:50:3:52:5 | m12 |
+| params_flow.rb:54:3:56:5 | m13 |
+| params_flow.rb:58:3:60:5 | m14 |
+| params_flow.rb:62:3:64:5 | m15 |
+| params_flow.rb:66:3:68:5 | m16 |
+| params_flow.rb:70:3:72:5 | m17 |
+| params_flow.rb:74:3:76:5 | m18 |
+| params_flow.rb:78:3:80:5 | m19 |
+| params_flow.rb:82:3:84:5 | m20 |
+| params_flow.rb:86:3:88:5 | m21 |
+| params_flow.rb:90:3:92:5 | m22 |
+| params_flow.rb:94:3:96:5 | m23 |
+| params_flow.rb:98:3:100:5 | m24 |
+| params_flow.rb:102:3:104:5 | m25 |
+| params_flow.rb:106:3:108:5 | m26 |
+| params_flow.rb:110:3:113:5 | m27 |
+| params_flow.rb:115:3:118:5 | m28 |
+| params_flow.rb:120:3:123:5 | m29 |
+| params_flow.rb:125:3:132:5 | m30 |
+| params_flow.rb:134:3:141:5 | m31 |
+| params_flow.rb:143:3:150:5 | m32 |
+| params_flow.rb:152:3:159:5 | m33 |
+| params_flow.rb:165:3:167:5 | m34 |
+| params_flow.rb:171:3:173:5 | m35 |
+paramsCalls
+| controllers/comments_controller.rb:80:36:80:41 | call to params |
+| controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
+| controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
+| controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
+| controllers/foo/bars_controller.rb:22:10:22:15 | call to params |
+| controllers/posts_controller.rb:26:23:26:28 | call to params |
+| filter_flow.rb:14:12:14:17 | call to params |
+| filter_flow.rb:30:12:30:17 | call to params |
+| filter_flow.rb:47:12:47:17 | call to params |
+| filter_flow.rb:64:16:64:21 | call to params |
+| filter_flow.rb:91:12:91:17 | call to params |
+| params_flow.rb:3:10:3:15 | call to params |
+| params_flow.rb:7:10:7:15 | call to params |
+| params_flow.rb:11:10:11:15 | call to params |
+| params_flow.rb:15:10:15:15 | call to params |
+| params_flow.rb:19:10:19:15 | call to params |
+| params_flow.rb:23:10:23:15 | call to params |
+| params_flow.rb:27:10:27:15 | call to params |
+| params_flow.rb:31:10:31:15 | call to params |
+| params_flow.rb:35:10:35:15 | call to params |
+| params_flow.rb:39:10:39:15 | call to params |
+| params_flow.rb:43:10:43:15 | call to params |
+| params_flow.rb:47:10:47:15 | call to params |
+| params_flow.rb:51:10:51:15 | call to params |
+| params_flow.rb:55:10:55:15 | call to params |
+| params_flow.rb:59:10:59:15 | call to params |
+| params_flow.rb:63:10:63:15 | call to params |
+| params_flow.rb:67:10:67:15 | call to params |
+| params_flow.rb:71:10:71:15 | call to params |
+| params_flow.rb:75:10:75:15 | call to params |
+| params_flow.rb:79:10:79:15 | call to params |
+| params_flow.rb:83:10:83:15 | call to params |
+| params_flow.rb:87:10:87:15 | call to params |
+| params_flow.rb:91:10:91:15 | call to params |
+| params_flow.rb:95:10:95:15 | call to params |
+| params_flow.rb:99:10:99:15 | call to params |
+| params_flow.rb:103:10:103:15 | call to params |
+| params_flow.rb:107:10:107:15 | call to params |
+| params_flow.rb:111:10:111:15 | call to params |
+| params_flow.rb:112:23:112:28 | call to params |
+| params_flow.rb:116:10:116:15 | call to params |
+| params_flow.rb:117:31:117:36 | call to params |
+| params_flow.rb:121:10:121:15 | call to params |
+| params_flow.rb:122:31:122:36 | call to params |
+| params_flow.rb:126:10:126:15 | call to params |
+| params_flow.rb:127:24:127:29 | call to params |
+| params_flow.rb:130:14:130:19 | call to params |
+| params_flow.rb:135:10:135:15 | call to params |
+| params_flow.rb:136:32:136:37 | call to params |
+| params_flow.rb:139:22:139:27 | call to params |
+| params_flow.rb:144:10:144:15 | call to params |
+| params_flow.rb:145:32:145:37 | call to params |
+| params_flow.rb:148:22:148:27 | call to params |
+| params_flow.rb:153:10:153:15 | call to params |
+| params_flow.rb:154:32:154:37 | call to params |
+| params_flow.rb:157:22:157:27 | call to params |
+| params_flow.rb:166:10:166:15 | call to params |
+| params_flow.rb:172:10:172:15 | call to params |
+| params_flow.rb:176:10:176:15 | call to params |
+paramsSources
+| controllers/comments_controller.rb:80:36:80:41 | call to params |
+| controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
+| controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
+| controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
+| controllers/foo/bars_controller.rb:22:10:22:15 | call to params |
+| controllers/posts_controller.rb:26:23:26:28 | call to params |
+| filter_flow.rb:14:12:14:17 | call to params |
+| filter_flow.rb:30:12:30:17 | call to params |
+| filter_flow.rb:47:12:47:17 | call to params |
+| filter_flow.rb:64:16:64:21 | call to params |
+| filter_flow.rb:91:12:91:17 | call to params |
+| params_flow.rb:3:10:3:15 | call to params |
+| params_flow.rb:7:10:7:15 | call to params |
+| params_flow.rb:11:10:11:15 | call to params |
+| params_flow.rb:15:10:15:15 | call to params |
+| params_flow.rb:19:10:19:15 | call to params |
+| params_flow.rb:23:10:23:15 | call to params |
+| params_flow.rb:27:10:27:15 | call to params |
+| params_flow.rb:31:10:31:15 | call to params |
+| params_flow.rb:35:10:35:15 | call to params |
+| params_flow.rb:39:10:39:15 | call to params |
+| params_flow.rb:43:10:43:15 | call to params |
+| params_flow.rb:47:10:47:15 | call to params |
+| params_flow.rb:51:10:51:15 | call to params |
+| params_flow.rb:55:10:55:15 | call to params |
+| params_flow.rb:59:10:59:15 | call to params |
+| params_flow.rb:63:10:63:15 | call to params |
+| params_flow.rb:67:10:67:15 | call to params |
+| params_flow.rb:71:10:71:15 | call to params |
+| params_flow.rb:75:10:75:15 | call to params |
+| params_flow.rb:79:10:79:15 | call to params |
+| params_flow.rb:83:10:83:15 | call to params |
+| params_flow.rb:87:10:87:15 | call to params |
+| params_flow.rb:91:10:91:15 | call to params |
+| params_flow.rb:95:10:95:15 | call to params |
+| params_flow.rb:99:10:99:15 | call to params |
+| params_flow.rb:103:10:103:15 | call to params |
+| params_flow.rb:107:10:107:15 | call to params |
+| params_flow.rb:111:10:111:15 | call to params |
+| params_flow.rb:112:23:112:28 | call to params |
+| params_flow.rb:116:10:116:15 | call to params |
+| params_flow.rb:117:31:117:36 | call to params |
+| params_flow.rb:121:10:121:15 | call to params |
+| params_flow.rb:122:31:122:36 | call to params |
+| params_flow.rb:126:10:126:15 | call to params |
+| params_flow.rb:127:24:127:29 | call to params |
+| params_flow.rb:130:14:130:19 | call to params |
+| params_flow.rb:135:10:135:15 | call to params |
+| params_flow.rb:136:32:136:37 | call to params |
+| params_flow.rb:139:22:139:27 | call to params |
+| params_flow.rb:144:10:144:15 | call to params |
+| params_flow.rb:145:32:145:37 | call to params |
+| params_flow.rb:148:22:148:27 | call to params |
+| params_flow.rb:153:10:153:15 | call to params |
+| params_flow.rb:154:32:154:37 | call to params |
+| params_flow.rb:157:22:157:27 | call to params |
+| params_flow.rb:166:10:166:15 | call to params |
+| params_flow.rb:172:10:172:15 | call to params |
+| params_flow.rb:176:10:176:15 | call to params |
+httpInputAccesses
+| controllers/application_controller.rb:11:53:11:64 | call to path | ActionDispatch::Request#path |
+| controllers/comments_controller.rb:18:5:18:18 | call to params | ActionDispatch::Request#params |
+| controllers/comments_controller.rb:19:5:19:22 | call to parameters | ActionDispatch::Request#parameters |
+| controllers/comments_controller.rb:20:5:20:15 | call to GET | ActionDispatch::Request#GET |
+| controllers/comments_controller.rb:21:5:21:16 | call to POST | ActionDispatch::Request#POST |
+| controllers/comments_controller.rb:22:5:22:28 | call to query_parameters | ActionDispatch::Request#query_parameters |
+| controllers/comments_controller.rb:23:5:23:30 | call to request_parameters | ActionDispatch::Request#request_parameters |
+| controllers/comments_controller.rb:24:5:24:31 | call to filtered_parameters | ActionDispatch::Request#filtered_parameters |
+| controllers/comments_controller.rb:69:12:69:30 | call to body_stream | ActionDispatch::Request#body_stream |
+| controllers/comments_controller.rb:80:36:80:41 | call to params | ActionController::Metal#params |
+| controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies | ActionController::Metal#cookies |
+| controllers/foo/bars_controller.rb:13:21:13:26 | call to params | ActionController::Metal#params |
+| controllers/foo/bars_controller.rb:14:10:14:15 | call to params | ActionController::Metal#params |
+| controllers/foo/bars_controller.rb:21:21:21:26 | call to params | ActionController::Metal#params |
+| controllers/foo/bars_controller.rb:22:10:22:15 | call to params | ActionController::Metal#params |
+| controllers/posts_controller.rb:26:23:26:28 | call to params | ActionController::Metal#params |
+| filter_flow.rb:14:12:14:17 | call to params | ActionController::Metal#params |
+| filter_flow.rb:30:12:30:17 | call to params | ActionController::Metal#params |
+| filter_flow.rb:47:12:47:17 | call to params | ActionController::Metal#params |
+| filter_flow.rb:64:16:64:21 | call to params | ActionController::Metal#params |
+| filter_flow.rb:91:12:91:17 | call to params | ActionController::Metal#params |
+| input_access.rb:3:5:3:18 | call to params | ActionDispatch::Request#params |
+| input_access.rb:4:5:4:22 | call to parameters | ActionDispatch::Request#parameters |
+| input_access.rb:5:5:5:15 | call to GET | ActionDispatch::Request#GET |
+| input_access.rb:6:5:6:16 | call to POST | ActionDispatch::Request#POST |
+| input_access.rb:7:5:7:28 | call to query_parameters | ActionDispatch::Request#query_parameters |
+| input_access.rb:8:5:8:30 | call to request_parameters | ActionDispatch::Request#request_parameters |
+| input_access.rb:9:5:9:31 | call to filtered_parameters | ActionDispatch::Request#filtered_parameters |
+| input_access.rb:11:5:11:25 | call to authorization | ActionDispatch::Request#authorization |
+| input_access.rb:12:5:12:23 | call to script_name | ActionDispatch::Request#script_name |
+| input_access.rb:13:5:13:21 | call to path_info | ActionDispatch::Request#path_info |
+| input_access.rb:14:5:14:22 | call to user_agent | ActionDispatch::Request#user_agent |
+| input_access.rb:15:5:15:19 | call to referer | ActionDispatch::Request#referer |
+| input_access.rb:16:5:16:20 | call to referrer | ActionDispatch::Request#referrer |
+| input_access.rb:17:5:17:26 | call to host_authority | ActionDispatch::Request#host_authority |
+| input_access.rb:18:5:18:24 | call to content_type | ActionDispatch::Request#content_type |
+| input_access.rb:19:5:19:16 | call to host | ActionDispatch::Request#host |
+| input_access.rb:20:5:20:20 | call to hostname | ActionDispatch::Request#hostname |
+| input_access.rb:21:5:21:27 | call to accept_encoding | ActionDispatch::Request#accept_encoding |
+| input_access.rb:22:5:22:27 | call to accept_language | ActionDispatch::Request#accept_language |
+| input_access.rb:23:5:23:25 | call to if_none_match | ActionDispatch::Request#if_none_match |
+| input_access.rb:24:5:24:31 | call to if_none_match_etags | ActionDispatch::Request#if_none_match_etags |
+| input_access.rb:25:5:25:29 | call to content_mime_type | ActionDispatch::Request#content_mime_type |
+| input_access.rb:27:5:27:21 | call to authority | ActionDispatch::Request#authority |
+| input_access.rb:28:5:28:16 | call to host | ActionDispatch::Request#host |
+| input_access.rb:29:5:29:26 | call to host_authority | ActionDispatch::Request#host_authority |
+| input_access.rb:30:5:30:26 | call to host_with_port | ActionDispatch::Request#host_with_port |
+| input_access.rb:31:5:31:20 | call to hostname | ActionDispatch::Request#hostname |
+| input_access.rb:32:5:32:25 | call to forwarded_for | ActionDispatch::Request#forwarded_for |
+| input_access.rb:33:5:33:26 | call to forwarded_host | ActionDispatch::Request#forwarded_host |
+| input_access.rb:34:5:34:16 | call to port | ActionDispatch::Request#port |
+| input_access.rb:35:5:35:26 | call to forwarded_port | ActionDispatch::Request#forwarded_port |
+| input_access.rb:37:5:37:22 | call to media_type | ActionDispatch::Request#media_type |
+| input_access.rb:38:5:38:29 | call to media_type_params | ActionDispatch::Request#media_type_params |
+| input_access.rb:39:5:39:27 | call to content_charset | ActionDispatch::Request#content_charset |
+| input_access.rb:40:5:40:20 | call to base_url | ActionDispatch::Request#base_url |
+| input_access.rb:42:5:42:16 | call to body | ActionDispatch::Request#body |
+| input_access.rb:43:5:43:20 | call to raw_post | ActionDispatch::Request#raw_post |
+| input_access.rb:45:5:45:30 | ...[...] | ActionDispatch::Request#env[] |
+| input_access.rb:47:5:47:39 | ...[...] | ActionDispatch::Request#env[] |
+| logging.rb:5:22:5:35 | call to params | ActionDispatch::Request#params |
+| params_flow.rb:3:10:3:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:7:10:7:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:11:10:11:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:15:10:15:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:19:10:19:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:23:10:23:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:27:10:27:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:31:10:31:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:35:10:35:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:39:10:39:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:43:10:43:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:47:10:47:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:51:10:51:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:55:10:55:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:59:10:59:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:63:10:63:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:67:10:67:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:71:10:71:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:75:10:75:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:79:10:79:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:83:10:83:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:87:10:87:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:91:10:91:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:95:10:95:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:99:10:99:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:103:10:103:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:107:10:107:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:111:10:111:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:112:23:112:28 | call to params | ActionController::Metal#params |
+| params_flow.rb:116:10:116:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:117:31:117:36 | call to params | ActionController::Metal#params |
+| params_flow.rb:121:10:121:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:122:31:122:36 | call to params | ActionController::Metal#params |
+| params_flow.rb:126:10:126:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:127:24:127:29 | call to params | ActionController::Metal#params |
+| params_flow.rb:130:14:130:19 | call to params | ActionController::Metal#params |
+| params_flow.rb:135:10:135:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:136:32:136:37 | call to params | ActionController::Metal#params |
+| params_flow.rb:139:22:139:27 | call to params | ActionController::Metal#params |
+| params_flow.rb:144:10:144:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:145:32:145:37 | call to params | ActionController::Metal#params |
+| params_flow.rb:148:22:148:27 | call to params | ActionController::Metal#params |
+| params_flow.rb:153:10:153:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:154:32:154:37 | call to params | ActionController::Metal#params |
+| params_flow.rb:157:22:157:27 | call to params | ActionController::Metal#params |
+| params_flow.rb:166:10:166:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:172:10:172:15 | call to params | ActionController::Metal#params |
+| params_flow.rb:176:10:176:15 | call to params | ActionController::Metal#params |
+cookiesCalls
+| controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies |
+cookiesSources
+| controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies |
+redirectToCalls
+| controllers/comments_controller.rb:58:21:58:49 | call to redirect_to |
+| controllers/foo/bars_controller.rb:17:5:17:30 | call to redirect_to |
+| controllers/foo/bars_controller.rb:27:5:27:39 | call to redirect_back_or_to |
+| controllers/foo/bars_controller.rb:31:5:31:56 | call to redirect_back |
+renderCalls
+| controllers/comments_controller.rb:60:21:60:64 | call to render |
+| controllers/comments_controller.rb:76:5:76:68 | call to render |
+| controllers/foo/bars_controller.rb:6:5:6:37 | call to render |
+| controllers/foo/bars_controller.rb:23:5:23:76 | call to render |
+| controllers/foo/bars_controller.rb:35:5:35:33 | call to render |
+| controllers/foo/bars_controller.rb:38:5:38:50 | call to render |
+| controllers/foo/bars_controller.rb:44:5:44:17 | call to render |
+| controllers/posts_controller.rb:13:5:13:51 | call to render |
+| controllers/posts_controller.rb:14:5:14:127 | call to render |
+| controllers/posts_controller.rb:36:5:36:51 | call to render |
+httpResponses
+| controllers/comments_controller.rb:26:5:26:17 | call to body= | controllers/comments_controller.rb:26:21:26:34 | ... = ... |
+| controllers/comments_controller.rb:36:5:36:37 | call to send_file | controllers/comments_controller.rb:36:24:36:36 | "my-file.ext" |
+| controllers/comments_controller.rb:65:5:65:20 | call to send_data | controllers/comments_controller.rb:65:15:65:20 | @photo |
+| controllers/foo/bars_controller.rb:15:16:15:97 | call to render_to_string | controllers/foo/bars_controller.rb:15:33:15:47 | "foo/bars/show" |
+| controllers/foo/bars_controller.rb:23:5:23:76 | call to render | controllers/foo/bars_controller.rb:23:12:23:26 | "foo/bars/show" |
+| controllers/foo/bars_controller.rb:35:5:35:33 | call to render | controllers/foo/bars_controller.rb:35:18:35:33 | call to [] |
+| controllers/foo/bars_controller.rb:36:12:36:67 | call to render_to_string | controllers/foo/bars_controller.rb:36:29:36:33 | @user |
+| controllers/foo/bars_controller.rb:38:5:38:50 | call to render | controllers/foo/bars_controller.rb:38:12:38:22 | call to backtrace |
+| controllers/foo/bars_controller.rb:44:5:44:17 | call to render | controllers/foo/bars_controller.rb:44:12:44:17 | "show" |
+actionControllerHelperMethods
+getAssociatedControllerClasses
+controllerTemplateFiles
+headerWriteAccesses
+| controllers/comments_controller.rb:30:5:30:35 | call to []= | content-type | controllers/comments_controller.rb:30:39:30:49 | ... = ... |
+| controllers/comments_controller.rb:31:5:31:46 | call to set_header | content-length | controllers/comments_controller.rb:31:43:31:45 | 100 |
+| controllers/comments_controller.rb:32:5:32:39 | call to []= | x-custom-header | controllers/comments_controller.rb:32:43:32:46 | ... = ... |
+| controllers/comments_controller.rb:33:5:33:39 | call to []= | x-another-custom-header | controllers/comments_controller.rb:33:43:33:47 | ... = ... |
+| controllers/comments_controller.rb:34:5:34:49 | call to add_header | x-yet-another | controllers/comments_controller.rb:34:42:34:49 | "indeed" |
+| controllers/comments_controller.rb:40:5:40:21 | call to location= | location | controllers/comments_controller.rb:40:25:40:36 | ... = ... |
+| controllers/comments_controller.rb:41:5:41:26 | call to cache_control= | cache-control | controllers/comments_controller.rb:41:30:41:36 | ... = ... |
+| controllers/comments_controller.rb:42:5:42:27 | call to _cache_control= | cache-control | controllers/comments_controller.rb:42:31:42:37 | ... = ... |
+| controllers/comments_controller.rb:43:5:43:17 | call to etag= | etag | controllers/comments_controller.rb:43:21:43:27 | ... = ... |
+| controllers/comments_controller.rb:44:5:44:20 | call to charset= | content-type | controllers/comments_controller.rb:44:24:44:30 | ... = ... |
+| controllers/comments_controller.rb:45:5:45:25 | call to content_type= | content-type | controllers/comments_controller.rb:45:29:45:35 | ... = ... |
+| controllers/comments_controller.rb:47:5:47:17 | call to date= | date | controllers/comments_controller.rb:47:21:47:30 | ... = ... |
+| controllers/comments_controller.rb:48:5:48:26 | call to last_modified= | last-modified | controllers/comments_controller.rb:48:30:48:43 | ... = ... |
+| controllers/comments_controller.rb:49:5:49:22 | call to weak_etag= | etag | controllers/comments_controller.rb:49:26:49:32 | ... = ... |
+| controllers/comments_controller.rb:50:5:50:24 | call to strong_etag= | etag | controllers/comments_controller.rb:50:28:50:34 | ... = ... |
+loggingCalls
+| logging.rb:3:9:3:31 | call to info | logging.rb:3:21:3:31 | "some info" |
+| logging.rb:4:9:4:31 | call to warn | logging.rb:4:21:4:31 | "a warning" |
+| logging.rb:5:9:5:35 | call to debug | logging.rb:5:22:5:35 | call to params |
+| logging.rb:7:9:7:26 | call to info | logging.rb:7:16:7:26 | "more info" |

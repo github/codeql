@@ -19,5 +19,5 @@ import DataFlow::PathGraph
 from Configuration dataflow, DataFlow::PathNode source, DataFlow::PathNode sink
 where dataflow.hasFlowPath(source, sink)
 select sink, source, sink,
-  "Iterating over user-controlled object with a potentially unbounded .length property from $@.",
-  source, "here"
+  "Iteration over a user-controlled object with a potentially unbounded .length property from a $@.",
+  source, "user-provided value"

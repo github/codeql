@@ -1,6 +1,5 @@
-| list.kt:6:23:6:23 | a | list.kt:7:14:7:14 | l |
-| list.kt:6:23:6:23 | a | list.kt:8:14:8:17 | get(...) |
-| list.kt:6:23:6:23 | a | list.kt:10:18:10:18 | s |
-| list.kt:13:32:13:32 | a | list.kt:14:14:14:14 | a |
-| list.kt:13:32:13:32 | a | list.kt:15:14:15:17 | ...[...] |
-| list.kt:13:32:13:32 | a | list.kt:17:18:17:18 | s |
+| test.kt:28:14:28:21 | getSecond(...) | Unexpected result: hasTaintFlow=a |
+| test.kt:35:14:35:27 | component1(...) | Unexpected result: hasTaintFlow=d |
+| test.kt:41:14:41:22 | getSecond(...) | Unexpected result: hasTaintFlow=e |
+| test.kt:53:14:53:24 | getDuration(...) | Unexpected result: hasTaintFlow=f |
+| test.kt:58:14:58:29 | component2(...) | Unexpected result: hasTaintFlow=g |

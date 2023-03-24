@@ -308,6 +308,30 @@ edges
 | C.cs:25:14:25:15 | this access [field s3] : Elem | C.cs:25:14:25:15 | access to field s3 |
 | C.cs:27:14:27:15 | this access [property s5] : Elem | C.cs:27:14:27:15 | access to property s5 |
 | C.cs:27:14:27:15 | this access [property s5] : Elem | C.cs:27:14:27:15 | access to property s5 |
+| C_ctor.cs:3:18:3:19 | [post] this access [field s1] : Elem | C_ctor.cs:7:23:7:37 | object creation of type C_no_ctor [field s1] : Elem |
+| C_ctor.cs:3:18:3:19 | [post] this access [field s1] : Elem | C_ctor.cs:7:23:7:37 | object creation of type C_no_ctor [field s1] : Elem |
+| C_ctor.cs:3:23:3:42 | call to method Source<Elem> : Elem | C_ctor.cs:3:18:3:19 | [post] this access [field s1] : Elem |
+| C_ctor.cs:3:23:3:42 | call to method Source<Elem> : Elem | C_ctor.cs:3:18:3:19 | [post] this access [field s1] : Elem |
+| C_ctor.cs:7:23:7:37 | object creation of type C_no_ctor [field s1] : Elem | C_ctor.cs:8:9:8:9 | access to local variable c [field s1] : Elem |
+| C_ctor.cs:7:23:7:37 | object creation of type C_no_ctor [field s1] : Elem | C_ctor.cs:8:9:8:9 | access to local variable c [field s1] : Elem |
+| C_ctor.cs:8:9:8:9 | access to local variable c [field s1] : Elem | C_ctor.cs:11:17:11:18 | this [field s1] : Elem |
+| C_ctor.cs:8:9:8:9 | access to local variable c [field s1] : Elem | C_ctor.cs:11:17:11:18 | this [field s1] : Elem |
+| C_ctor.cs:11:17:11:18 | this [field s1] : Elem | C_ctor.cs:13:19:13:20 | this access [field s1] : Elem |
+| C_ctor.cs:11:17:11:18 | this [field s1] : Elem | C_ctor.cs:13:19:13:20 | this access [field s1] : Elem |
+| C_ctor.cs:13:19:13:20 | this access [field s1] : Elem | C_ctor.cs:13:19:13:20 | access to field s1 |
+| C_ctor.cs:13:19:13:20 | this access [field s1] : Elem | C_ctor.cs:13:19:13:20 | access to field s1 |
+| C_ctor.cs:19:18:19:19 | [post] this access [field s1] : Elem | C_ctor.cs:23:25:23:41 | object creation of type C_with_ctor [field s1] : Elem |
+| C_ctor.cs:19:18:19:19 | [post] this access [field s1] : Elem | C_ctor.cs:23:25:23:41 | object creation of type C_with_ctor [field s1] : Elem |
+| C_ctor.cs:19:23:19:42 | call to method Source<Elem> : Elem | C_ctor.cs:19:18:19:19 | [post] this access [field s1] : Elem |
+| C_ctor.cs:19:23:19:42 | call to method Source<Elem> : Elem | C_ctor.cs:19:18:19:19 | [post] this access [field s1] : Elem |
+| C_ctor.cs:23:25:23:41 | object creation of type C_with_ctor [field s1] : Elem | C_ctor.cs:24:9:24:9 | access to local variable c [field s1] : Elem |
+| C_ctor.cs:23:25:23:41 | object creation of type C_with_ctor [field s1] : Elem | C_ctor.cs:24:9:24:9 | access to local variable c [field s1] : Elem |
+| C_ctor.cs:24:9:24:9 | access to local variable c [field s1] : Elem | C_ctor.cs:29:17:29:18 | this [field s1] : Elem |
+| C_ctor.cs:24:9:24:9 | access to local variable c [field s1] : Elem | C_ctor.cs:29:17:29:18 | this [field s1] : Elem |
+| C_ctor.cs:29:17:29:18 | this [field s1] : Elem | C_ctor.cs:31:19:31:20 | this access [field s1] : Elem |
+| C_ctor.cs:29:17:29:18 | this [field s1] : Elem | C_ctor.cs:31:19:31:20 | this access [field s1] : Elem |
+| C_ctor.cs:31:19:31:20 | this access [field s1] : Elem | C_ctor.cs:31:19:31:20 | access to field s1 |
+| C_ctor.cs:31:19:31:20 | this access [field s1] : Elem | C_ctor.cs:31:19:31:20 | access to field s1 |
 | D.cs:8:9:8:11 | this [field trivialPropField] : Object | D.cs:8:22:8:25 | this access [field trivialPropField] : Object |
 | D.cs:8:9:8:11 | this [field trivialPropField] : Object | D.cs:8:22:8:25 | this access [field trivialPropField] : Object |
 | D.cs:8:22:8:25 | this access [field trivialPropField] : Object | D.cs:8:22:8:42 | access to field trivialPropField : Object |
@@ -894,6 +918,14 @@ edges
 | J.cs:106:14:106:15 | access to local variable a3 [property X] : Object | J.cs:106:14:106:17 | access to property X |
 | J.cs:107:14:107:15 | access to local variable a3 [property Y] : Object | J.cs:107:14:107:17 | access to property Y |
 | J.cs:107:14:107:15 | access to local variable a3 [property Y] : Object | J.cs:107:14:107:17 | access to property Y |
+| J.cs:119:13:119:13 | [post] access to local variable a [element] : Int32 | J.cs:125:14:125:14 | access to local variable a [element] : Int32 |
+| J.cs:119:13:119:13 | [post] access to local variable a [element] : Int32 | J.cs:125:14:125:14 | access to local variable a [element] : Int32 |
+| J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | J.cs:119:13:119:13 | [post] access to local variable a [element] : Int32 |
+| J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | J.cs:119:13:119:13 | [post] access to local variable a [element] : Int32 |
+| J.cs:125:14:125:14 | access to local variable a [element] : Int32 | J.cs:125:14:125:17 | access to array element : Int32 |
+| J.cs:125:14:125:14 | access to local variable a [element] : Int32 | J.cs:125:14:125:17 | access to array element : Int32 |
+| J.cs:125:14:125:17 | access to array element : Int32 | J.cs:125:14:125:17 | (...) ... |
+| J.cs:125:14:125:17 | access to array element : Int32 | J.cs:125:14:125:17 | (...) ... |
 nodes
 | A.cs:5:17:5:28 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
 | A.cs:5:17:5:28 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
@@ -1235,6 +1267,34 @@ nodes
 | C.cs:27:14:27:15 | this access [property s5] : Elem | semmle.label | this access [property s5] : Elem |
 | C.cs:28:14:28:15 | access to property s6 | semmle.label | access to property s6 |
 | C.cs:28:14:28:15 | access to property s6 | semmle.label | access to property s6 |
+| C_ctor.cs:3:18:3:19 | [post] this access [field s1] : Elem | semmle.label | [post] this access [field s1] : Elem |
+| C_ctor.cs:3:18:3:19 | [post] this access [field s1] : Elem | semmle.label | [post] this access [field s1] : Elem |
+| C_ctor.cs:3:23:3:42 | call to method Source<Elem> : Elem | semmle.label | call to method Source<Elem> : Elem |
+| C_ctor.cs:3:23:3:42 | call to method Source<Elem> : Elem | semmle.label | call to method Source<Elem> : Elem |
+| C_ctor.cs:7:23:7:37 | object creation of type C_no_ctor [field s1] : Elem | semmle.label | object creation of type C_no_ctor [field s1] : Elem |
+| C_ctor.cs:7:23:7:37 | object creation of type C_no_ctor [field s1] : Elem | semmle.label | object creation of type C_no_ctor [field s1] : Elem |
+| C_ctor.cs:8:9:8:9 | access to local variable c [field s1] : Elem | semmle.label | access to local variable c [field s1] : Elem |
+| C_ctor.cs:8:9:8:9 | access to local variable c [field s1] : Elem | semmle.label | access to local variable c [field s1] : Elem |
+| C_ctor.cs:11:17:11:18 | this [field s1] : Elem | semmle.label | this [field s1] : Elem |
+| C_ctor.cs:11:17:11:18 | this [field s1] : Elem | semmle.label | this [field s1] : Elem |
+| C_ctor.cs:13:19:13:20 | access to field s1 | semmle.label | access to field s1 |
+| C_ctor.cs:13:19:13:20 | access to field s1 | semmle.label | access to field s1 |
+| C_ctor.cs:13:19:13:20 | this access [field s1] : Elem | semmle.label | this access [field s1] : Elem |
+| C_ctor.cs:13:19:13:20 | this access [field s1] : Elem | semmle.label | this access [field s1] : Elem |
+| C_ctor.cs:19:18:19:19 | [post] this access [field s1] : Elem | semmle.label | [post] this access [field s1] : Elem |
+| C_ctor.cs:19:18:19:19 | [post] this access [field s1] : Elem | semmle.label | [post] this access [field s1] : Elem |
+| C_ctor.cs:19:23:19:42 | call to method Source<Elem> : Elem | semmle.label | call to method Source<Elem> : Elem |
+| C_ctor.cs:19:23:19:42 | call to method Source<Elem> : Elem | semmle.label | call to method Source<Elem> : Elem |
+| C_ctor.cs:23:25:23:41 | object creation of type C_with_ctor [field s1] : Elem | semmle.label | object creation of type C_with_ctor [field s1] : Elem |
+| C_ctor.cs:23:25:23:41 | object creation of type C_with_ctor [field s1] : Elem | semmle.label | object creation of type C_with_ctor [field s1] : Elem |
+| C_ctor.cs:24:9:24:9 | access to local variable c [field s1] : Elem | semmle.label | access to local variable c [field s1] : Elem |
+| C_ctor.cs:24:9:24:9 | access to local variable c [field s1] : Elem | semmle.label | access to local variable c [field s1] : Elem |
+| C_ctor.cs:29:17:29:18 | this [field s1] : Elem | semmle.label | this [field s1] : Elem |
+| C_ctor.cs:29:17:29:18 | this [field s1] : Elem | semmle.label | this [field s1] : Elem |
+| C_ctor.cs:31:19:31:20 | access to field s1 | semmle.label | access to field s1 |
+| C_ctor.cs:31:19:31:20 | access to field s1 | semmle.label | access to field s1 |
+| C_ctor.cs:31:19:31:20 | this access [field s1] : Elem | semmle.label | this access [field s1] : Elem |
+| C_ctor.cs:31:19:31:20 | this access [field s1] : Elem | semmle.label | this access [field s1] : Elem |
 | D.cs:8:9:8:11 | this [field trivialPropField] : Object | semmle.label | this [field trivialPropField] : Object |
 | D.cs:8:9:8:11 | this [field trivialPropField] : Object | semmle.label | this [field trivialPropField] : Object |
 | D.cs:8:22:8:25 | this access [field trivialPropField] : Object | semmle.label | this access [field trivialPropField] : Object |
@@ -1873,6 +1933,16 @@ nodes
 | J.cs:107:14:107:15 | access to local variable a3 [property Y] : Object | semmle.label | access to local variable a3 [property Y] : Object |
 | J.cs:107:14:107:17 | access to property Y | semmle.label | access to property Y |
 | J.cs:107:14:107:17 | access to property Y | semmle.label | access to property Y |
+| J.cs:119:13:119:13 | [post] access to local variable a [element] : Int32 | semmle.label | [post] access to local variable a [element] : Int32 |
+| J.cs:119:13:119:13 | [post] access to local variable a [element] : Int32 | semmle.label | [post] access to local variable a [element] : Int32 |
+| J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | semmle.label | call to method Source<Int32> : Int32 |
+| J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | semmle.label | call to method Source<Int32> : Int32 |
+| J.cs:125:14:125:14 | access to local variable a [element] : Int32 | semmle.label | access to local variable a [element] : Int32 |
+| J.cs:125:14:125:14 | access to local variable a [element] : Int32 | semmle.label | access to local variable a [element] : Int32 |
+| J.cs:125:14:125:17 | (...) ... | semmle.label | (...) ... |
+| J.cs:125:14:125:17 | (...) ... | semmle.label | (...) ... |
+| J.cs:125:14:125:17 | access to array element : Int32 | semmle.label | access to array element : Int32 |
+| J.cs:125:14:125:17 | access to array element : Int32 | semmle.label | access to array element : Int32 |
 subpaths
 | A.cs:6:24:6:24 | access to local variable c : C | A.cs:147:32:147:32 | c : C | A.cs:149:20:149:27 | object creation of type B [field c] : C | A.cs:6:17:6:25 | call to method Make [field c] : C |
 | A.cs:6:24:6:24 | access to local variable c : C | A.cs:147:32:147:32 | c : C | A.cs:149:20:149:27 | object creation of type B [field c] : C | A.cs:6:17:6:25 | call to method Make [field c] : C |
@@ -1998,6 +2068,8 @@ subpaths
 | C.cs:26:14:26:15 | access to field s4 | C.cs:6:30:6:44 | call to method Source<Elem> : Elem | C.cs:26:14:26:15 | access to field s4 | $@ | C.cs:6:30:6:44 | call to method Source<Elem> : Elem | call to method Source<Elem> : Elem |
 | C.cs:27:14:27:15 | access to property s5 | C.cs:7:37:7:51 | call to method Source<Elem> : Elem | C.cs:27:14:27:15 | access to property s5 | $@ | C.cs:7:37:7:51 | call to method Source<Elem> : Elem | call to method Source<Elem> : Elem |
 | C.cs:28:14:28:15 | access to property s6 | C.cs:8:30:8:44 | call to method Source<Elem> : Elem | C.cs:28:14:28:15 | access to property s6 | $@ | C.cs:8:30:8:44 | call to method Source<Elem> : Elem | call to method Source<Elem> : Elem |
+| C_ctor.cs:13:19:13:20 | access to field s1 | C_ctor.cs:3:23:3:42 | call to method Source<Elem> : Elem | C_ctor.cs:13:19:13:20 | access to field s1 | $@ | C_ctor.cs:3:23:3:42 | call to method Source<Elem> : Elem | call to method Source<Elem> : Elem |
+| C_ctor.cs:31:19:31:20 | access to field s1 | C_ctor.cs:19:23:19:42 | call to method Source<Elem> : Elem | C_ctor.cs:31:19:31:20 | access to field s1 | $@ | C_ctor.cs:19:23:19:42 | call to method Source<Elem> : Elem | call to method Source<Elem> : Elem |
 | D.cs:32:14:32:23 | access to property AutoProp | D.cs:29:17:29:33 | call to method Source<Object> : Object | D.cs:32:14:32:23 | access to property AutoProp | $@ | D.cs:29:17:29:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | D.cs:39:14:39:26 | access to property TrivialProp | D.cs:37:26:37:42 | call to method Source<Object> : Object | D.cs:39:14:39:26 | access to property TrivialProp | $@ | D.cs:37:26:37:42 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | D.cs:40:14:40:31 | access to field trivialPropField | D.cs:37:26:37:42 | call to method Source<Object> : Object | D.cs:40:14:40:31 | access to field trivialPropField | $@ | D.cs:37:26:37:42 | call to method Source<Object> : Object | call to method Source<Object> : Object |
@@ -2047,3 +2119,4 @@ subpaths
 | J.cs:102:14:102:17 | access to property X | J.cs:97:17:97:33 | call to method Source<Object> : Object | J.cs:102:14:102:17 | access to property X | $@ | J.cs:97:17:97:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | J.cs:106:14:106:17 | access to property X | J.cs:97:17:97:33 | call to method Source<Object> : Object | J.cs:106:14:106:17 | access to property X | $@ | J.cs:97:17:97:33 | call to method Source<Object> : Object | call to method Source<Object> : Object |
 | J.cs:107:14:107:17 | access to property Y | J.cs:105:32:105:48 | call to method Source<Object> : Object | J.cs:107:14:107:17 | access to property Y | $@ | J.cs:105:32:105:48 | call to method Source<Object> : Object | call to method Source<Object> : Object |
+| J.cs:125:14:125:17 | (...) ... | J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | J.cs:125:14:125:17 | (...) ... | $@ | J.cs:119:20:119:34 | call to method Source<Int32> : Int32 | call to method Source<Int32> : Int32 |

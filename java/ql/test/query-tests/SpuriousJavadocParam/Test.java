@@ -119,4 +119,6 @@ public class Test<V> {
    * @param <X> does not exist
    */
   interface GenericInterface<T> {}
+
+  // Diagnostic Matches: Incomplete inheritance relation for type java.lang.Object and supertype none
 }

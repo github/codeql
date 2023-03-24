@@ -59,6 +59,19 @@ namespace Semmle.Extraction.CSharp.Entities
             }
         }
 
+        protected void PopulateScopedKind(TextWriter trapFile, ScopedKind kind)
+        {
+            switch (kind)
+            {
+                case ScopedKind.ScopedRef:
+                    trapFile.scoped_annotation(this, Kinds.ScopedAnnotation.ScopedRef);
+                    break;
+                case ScopedKind.ScopedValue:
+                    trapFile.scoped_annotation(this, Kinds.ScopedAnnotation.ScopedValue);
+                    break;
+            }
+        }
+
         protected void ExtractCompilerGenerated(TextWriter trapFile)
         {
             if (Symbol.IsImplicitlyDeclared)
@@ -66,7 +79,7 @@ namespace Semmle.Extraction.CSharp.Entities
         }
 
         /// <summary>
-        /// The location which is stored in the database and is used when highlighing source code.
+        /// The location which is stored in the database and is used when highlighting source code.
         /// It's generally short, e.g. a method name.
         /// </summary>
         public override Microsoft.CodeAnalysis.Location? ReportingLocation => Symbol.Locations.FirstOrDefault();

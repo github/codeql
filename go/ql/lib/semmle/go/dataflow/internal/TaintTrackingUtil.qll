@@ -9,12 +9,14 @@ private import FlowSummaryImpl as FlowSummaryImpl
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localTaint(DataFlow::Node src, DataFlow::Node sink) { localTaintStep*(src, sink) }
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
  * local (intra-procedural) steps.
  */
+pragma[inline]
 predicate localExprTaint(Expr src, Expr sink) {
   localTaint(DataFlow::exprNode(src), DataFlow::exprNode(sink))
 }
@@ -27,7 +29,7 @@ predicate localTaintStep(DataFlow::Node src, DataFlow::Node sink) {
   localAdditionalTaintStep(src, sink) or
   // Simple flow through library code is included in the exposed local
   // step relation, even though flow is technically inter-procedural
-  FlowSummaryImpl::Private::Steps::summaryThroughStep(src, sink, false)
+  FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(src, sink, _)
 }
 
 private Type getElementType(Type containerType) {
@@ -157,8 +159,6 @@ predicate elementStep(DataFlow::Node pred, DataFlow::Node succ) {
     succ.asInstruction() = IR::extractTupleElement(nextEntry, 1)
   )
 }
-
-deprecated predicate arrayStep = elementStep/2;
 
 /** Holds if taint flows from `pred` to `succ` via an extract tuple operation. */
 predicate tupleStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -368,10 +368,8 @@ predicate functionEnsuresInputIsConstant(
       ri.getReturnStmt().getAnExpr() = ret.asExpr() and
       ret.asExpr() = Builtin::nil().getAReference()
     |
-      exists(DataFlow::Node exprNode |
-        DataFlow::localFlow(inp.getExitNode(fd), exprNode) and
-        mustPassConstantCaseTestToReach(ri, inp.getExitNode(fd))
-      )
+      DataFlow::localFlow(inp.getExitNode(fd), _) and
+      mustPassConstantCaseTestToReach(ri, inp.getExitNode(fd))
     )
   )
 }

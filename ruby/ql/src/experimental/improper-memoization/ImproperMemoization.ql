@@ -5,10 +5,11 @@
  * @problem.severity warning
  * @precision high
  * @tags security
+ *       experimental
  * @id rb/improper-memoization
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.security.ImproperMemoizationQuery
 
 from Method m, Parameter p, AssignLogicalOrExpr s

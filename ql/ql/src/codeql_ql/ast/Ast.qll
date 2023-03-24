@@ -5,6 +5,7 @@ private import codeql_ql.ast.internal.Predicate
 import codeql_ql.ast.internal.Type
 private import codeql_ql.ast.internal.Variable
 private import codeql_ql.ast.internal.Builtins
+private import internal.AstMocks as Mocks
 
 bindingset[name]
 private string directMember(string name) { result = name + "()" }
@@ -23,7 +24,11 @@ class AstNode extends TAstNode {
 
   /** Gets the location of the AST node. */
   cached
-  Location getLocation() { result = this.getFullLocation() } // overriden in some subclasses
+  Location getLocation() { result = this.getFullLocation() } // overridden in some subclasses
+
+  /** Gets the file containing this AST node. */
+  cached
+  File getFile() { result = this.getFullLocation().getFile() }
 
   /** Gets the location that spans the entire AST node. */
   cached
@@ -32,6 +37,10 @@ class AstNode extends TAstNode {
       node = toQL(this) and
       result = node.getLocation()
     )
+    or
+    result = toGenerateYaml(this).getLocation()
+    or
+    result = toDbscheme(this).getLocation()
   }
 
   predicate hasLocationInfo(
@@ -82,7 +91,9 @@ class AstNode extends TAstNode {
   /** Gets an annotation of this AST node. */
   Annotation getAnAnnotation() {
     not this instanceof Annotation and // avoid cyclic parent-child relationship
-    toQL(this).getParent() = pragma[only_bind_out](toQL(result)).getParent()
+    toQL(this).getParent() = pragma[only_bind_out](toQL(result)).getParent() and
+    // special case that is handled in `NewTypeBranch`
+    not any(QL::DatatypeBranch branch) = pragma[only_bind_out](toQL(result)).getParent()
   }
 
   /**
@@ -111,7 +122,7 @@ class TopLevel extends TTopLevel, AstNode {
   ModuleMember getAMember() { result = this.getMember(_) }
 
   /** Gets the `i`'th member of this top-level module. */
-  ModuleMember getMember(int i) { toQL(result) = file.getChild(i).(QL::ModuleMember).getChild(_) }
+  ModuleMember getMember(int i) { toQL(result) = file.getChild(i).getChild(_) }
 
   /** Gets a top-level import in this module. */
   Import getAnImport() { result = this.getAMember() }
@@ -148,34 +159,90 @@ class TopLevel extends TTopLevel, AstNode {
   }
 
   QLDoc getQLDocFor(ModuleMember m) {
-    exists(int i | i > 0 and result = this.getMember(i) and m = this.getMember(i + 1))
+    exists(int i | result = this.getMember(i) and m = this.getMember(i + 1)) and
+    (
+      m instanceof ClasslessPredicate
+      or
+      m instanceof Class
+      or
+      m instanceof Module
+    )
   }
 
   override string getAPrimaryQlClass() { result = "TopLevel" }
 
-  override QLDoc getQLDoc() { result = this.getMember(0) }
+  override QLDoc getQLDoc() {
+    result = this.getMember(0) and
+    // it's not the QLDoc for a module member
+    not this.getQLDocFor(_) = result and
+    result.getLocation().getStartLine() = 1 // this might not hold if there is a block comment above, and that's the point.
+  }
 }
 
-class QLDoc extends TQLDoc, AstNode {
+abstract class Comment extends AstNode, TComment {
+  abstract string getContents();
+}
+
+class QLDoc extends TQLDoc, Comment {
   QL::Qldoc qldoc;
 
   QLDoc() { this = TQLDoc(qldoc) }
 
-  string getContents() { result = qldoc.getValue() }
+  override string getContents() { result = qldoc.getValue() }
 
   override string getAPrimaryQlClass() { result = "QLDoc" }
 
   override AstNode getParent() { result.getQLDoc() = this }
 }
 
-class BlockComment extends TBlockComment, AstNode {
+/** The QLDoc for a query (i.e. the top comment in a .ql file). */
+class QueryDoc extends QLDoc {
+  QueryDoc() {
+    this.getLocation().getFile().getExtension() = "ql" and
+    this = any(TopLevel t).getQLDoc()
+  }
+
+  override string getAPrimaryQlClass() { result = "QueryDoc" }
+
+  /** Gets the @kind for the query */
+  string getQueryKind() {
+    result = this.getContents().regexpCapture("(?s).*@kind ([\\w-]+)\\s.*", 1)
+  }
+
+  /** Gets the @name for the query */
+  string getQueryName() {
+    result = this.getContents().regexpCapture("(?s).*@name ([\\w-\\s]+)(?=\\n).*", 1)
+  }
+
+  /** Gets the id part (without language) of the @id */
+  string getQueryId() {
+    result = this.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-]+)\\s.*", 2)
+  }
+
+  /** Gets the language of the @id */
+  string getQueryLanguage() {
+    result = this.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-]+)\\s.*", 1)
+  }
+}
+
+class BlockComment extends TBlockComment, Comment {
   QL::BlockComment comment;
 
   BlockComment() { this = TBlockComment(comment) }
 
-  string getContents() { result = comment.getValue() }
+  override string getContents() { result = comment.getValue() }
 
   override string getAPrimaryQlClass() { result = "BlockComment" }
+}
+
+class LineComment extends TLineComment, Comment {
+  QL::LineComment comment;
+
+  LineComment() { this = TLineComment(comment) }
+
+  override string getContents() { result = comment.getValue() }
+
+  override string getAPrimaryQlClass() { result = "LineComment" }
 }
 
 /**
@@ -201,6 +268,12 @@ class Select extends TSelect, AstNode {
    */
   Expr getExpr(int i) { toQL(result) = sel.getChild(_).(QL::AsExprs).getChild(i) }
 
+  Expr getMessage() {
+    if this.getQueryDoc().getQueryKind() = "path-problem"
+    then result = this.getExpr(3)
+    else result = this.getExpr(1)
+  }
+
   // TODO: This gets the `i`th order-by, but some expressions might not have an order-by.
   Expr getOrderBy(int i) { toQL(result) = sel.getChild(_).(QL::OrderBys).getChild(i).getChild(0) }
 
@@ -219,6 +292,8 @@ class Select extends TSelect, AstNode {
   }
 
   override string getAPrimaryQlClass() { result = "Select" }
+
+  QueryDoc getQueryDoc() { result.getLocation().getFile() = this.getLocation().getFile() }
 }
 
 class PredicateOrBuiltin extends TPredOrBuiltin, AstNode {
@@ -335,7 +410,7 @@ class Predicate extends TPredicate, AstNode, PredicateOrBuiltin, Declaration {
  * A relation in the database.
  */
 class Relation extends TDBRelation, AstNode, Declaration {
-  QL::DbTable table;
+  Dbscheme::Table table;
 
   Relation() { this = TDBRelation(table) }
 
@@ -344,9 +419,9 @@ class Relation extends TDBRelation, AstNode, Declaration {
    */
   override string getName() { result = table.getTableName().getChild().getValue() }
 
-  private QL::DbColumn getColumn(int i) {
+  private Dbscheme::Column getColumn(int i) {
     result =
-      rank[i + 1](QL::DbColumn column, int child |
+      rank[i + 1](Dbscheme::Column column, int child |
         table.getChild(child) = column
       |
         column order by child
@@ -359,7 +434,7 @@ class Relation extends TDBRelation, AstNode, Declaration {
   /** Gets the `i`th parameter type */
   string getParameterType(int i) {
     // TODO: This is just using the name of the type, not the actual type. Checkout Type.qll
-    result = this.getColumn(i).getColType().getChild().(QL::Token).getValue()
+    result = this.getColumn(i).getColType().getChild().(Dbscheme::Token).getValue()
   }
 
   /**
@@ -432,11 +507,11 @@ class PredicateExpr extends TPredicateExpr, AstNode {
  * A classless predicate.
  */
 class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclaration {
-  QL::ClasslessPredicate pred;
+  Mocks::ClasslessPredicateOrMock pred;
 
   ClasslessPredicate() { this = TClasslessPredicate(pred) }
 
-  override Location getLocation() { result = pred.getName().getLocation() }
+  override Location getLocation() { result = pred.asLeft().getName().getLocation() }
 
   /**
    * Gets the aliased value if this predicate is an alias
@@ -445,25 +520,39 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
    */
   final AstNode getAlias() {
     exists(QL::PredicateAliasBody alias |
-      alias.getParent() = pred and
+      alias.getParent() = pred.asLeft() and
       toQL(result).getParent() = alias
     )
     or
-    toQL(result) = pred.getChild(_).(QL::HigherOrderTerm)
+    toQL(result) = pred.asLeft().getChild(_).(QL::HigherOrderTerm)
   }
 
   override string getAPrimaryQlClass() { result = "ClasslessPredicate" }
 
-  override Formula getBody() { toQL(result) = pred.getChild(_).(QL::Body).getChild() }
+  override Formula getBody() { toQL(result) = pred.asLeft().getChild(_).(QL::Body).getChild() }
 
-  override string getName() { result = pred.getName().getValue() }
+  override string getName() {
+    result = pred.asLeft().getName().getValue()
+    or
+    result = pred.asRight().getName()
+  }
 
   override VarDecl getParameter(int i) {
     toQL(result) =
-      rank[i + 1](QL::VarDecl decl, int index | decl = pred.getChild(index) | decl order by index)
+      rank[i + 1](QL::VarDecl decl, int index |
+        decl = pred.asLeft().getChild(index)
+      |
+        decl order by index
+      )
+    or
+    toMock(result) = pred.asRight().getParameter(i)
   }
 
-  override TypeExpr getReturnTypeExpr() { toQL(result) = pred.getReturnType() }
+  override TypeExpr getReturnTypeExpr() {
+    toQL(result) = pred.asLeft().getReturnType()
+    or
+    toMock(result) = pred.asRight().getReturnTypeExpr()
+  }
 
   override AstNode getAChild(string pred_name) {
     result = Predicate.super.getAChild(pred_name)
@@ -478,6 +567,15 @@ class ClasslessPredicate extends TClasslessPredicate, Predicate, ModuleDeclarati
   }
 
   override predicate isPrivate() { Predicate.super.isPrivate() }
+
+  /** Holds if this classless predicate is a signature predicate with no body. */
+  predicate isSignature() { not exists(this.getBody()) }
+
+  override QLDoc getQLDoc() {
+    result = any(TopLevel m).getQLDocFor(this)
+    or
+    result = any(Module m).getQLDocFor(this)
+  }
 }
 
 /**
@@ -573,11 +671,15 @@ class VarDef extends TVarDef, AstNode {
  * A variable declaration, with a type and a name.
  */
 class VarDecl extends TVarDecl, VarDef, Declaration {
-  QL::VarDecl var;
+  Mocks::VarDeclOrMock var;
 
   VarDecl() { this = TVarDecl(var) }
 
-  override string getName() { result = var.getChild(1).(QL::VarName).getChild().getValue() }
+  override string getName() {
+    result = var.asLeft().getChild(1).(QL::VarName).getChild().getValue()
+    or
+    result = var.asRight().getName()
+  }
 
   override Type getType() { result = this.getTypeExpr().getResolvedType() }
 
@@ -586,14 +688,18 @@ class VarDecl extends TVarDecl, VarDef, Declaration {
   /**
    * Gets the type part of this variable declaration.
    */
-  TypeExpr getTypeExpr() { toQL(result) = var.getChild(0) }
+  TypeExpr getTypeExpr() {
+    toQL(result) = var.asLeft().getChild(0)
+    or
+    toMock(result) = var.asRight().getType()
+  }
 
   /**
    * Holds if this variable declaration is a private field on a class.
    */
   predicate isPrivate() {
     exists(QL::ClassMember member |
-      var = member.getChild(_).(QL::Field).getChild() and
+      var.asLeft() = member.getChild(_).(QL::Field).getChild() and
       member.getAFieldOrChild().(QL::Annotation).getName().getValue() = "private"
     )
   }
@@ -647,7 +753,7 @@ class FieldDecl extends TFieldDecl, AstNode {
  * A type reference, such as `DataFlow::Node`.
  */
 class TypeExpr extends TType, TypeRef {
-  QL::TypeExpr type;
+  Mocks::TypeExprOrMock type;
 
   TypeExpr() { this = TType(type) }
 
@@ -660,28 +766,30 @@ class TypeExpr extends TType, TypeRef {
    * or db-types such as `@locateable`.
    */
   string getClassName() {
-    result = type.getName().getValue()
+    result = type.asLeft().getName().getValue()
     or
-    result = type.getChild().(QL::PrimitiveType).getValue()
+    result = type.asLeft().getChild().(QL::PrimitiveType).getValue()
     or
-    result = type.getChild().(QL::Dbtype).getValue()
+    result = type.asLeft().getChild().(QL::Dbtype).getValue()
+    or
+    result = type.asRight().getClassName()
   }
 
   /**
    * Holds if this type is a primitive such as `string` or `int`.
    */
-  predicate isPrimitive() { type.getChild() instanceof QL::PrimitiveType }
+  predicate isPrimitive() { type.asLeft().getChild() instanceof QL::PrimitiveType }
 
   /**
    * Holds if this type is a db-type.
    */
-  predicate isDBType() { type.getChild() instanceof QL::Dbtype }
+  predicate isDBType() { type.asLeft().getChild() instanceof QL::Dbtype }
 
   /**
    * Gets the module of the type, if it exists.
    * E.g. `DataFlow` in `DataFlow::Node`.
    */
-  ModuleExpr getModule() { toQL(result) = type.getQualifier() }
+  ModuleExpr getModule() { toQL(result) = type.asLeft().getQualifier() }
 
   /** Gets the type that this type reference refers to. */
   override Type getResolvedType() {
@@ -703,32 +811,44 @@ class TypeExpr extends TType, TypeRef {
  * A QL module.
  */
 class Module extends TModule, ModuleDeclaration {
-  QL::Module mod;
+  Mocks::ModuleOrMock mod;
 
   Module() { this = TModule(mod) }
 
-  override Location getLocation() { result = mod.getName().getLocation() }
+  override Location getLocation() { result = mod.asLeft().getName().getLocation() }
 
   override string getAPrimaryQlClass() { result = "Module" }
 
-  override string getName() { result = mod.getName().getChild().getValue() }
+  override string getName() {
+    result = mod.asLeft().getName().getChild().getValue()
+    or
+    result = mod.asRight().getName()
+  }
 
   /**
    * Gets a member of the module.
    */
-  AstNode getAMember() { toQL(result) = mod.getChild(_).(QL::ModuleMember).getChild(_) }
+  AstNode getAMember() { result = this.getMember(_) }
 
-  AstNode getMember(int i) { toQL(result) = mod.getChild(i).(QL::ModuleMember).getChild(_) }
+  AstNode getMember(int i) {
+    toQL(result) = mod.asLeft().getChild(i).(QL::ModuleMember).getChild(_)
+    or
+    toMock(result) = mod.asRight().getMember(i)
+  }
 
   QLDoc getQLDocFor(AstNode m) {
     exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
   }
 
   /** Gets a ref to the module that this module implements. */
-  TypeExpr getImplements(int i) { toQL(result) = mod.getImplements(i).getTypeExpr() }
+  TypeRef getImplements(int i) {
+    exists(SignatureExpr sig | sig.toQL() = mod.asLeft().getImplements(i) | result = sig.asType())
+  }
 
   /** Gets the module expression that this module is an alias for, if any. */
-  ModuleExpr getAlias() { toQL(result) = mod.getAFieldOrChild().(QL::ModuleAliasBody).getChild() }
+  ModuleExpr getAlias() {
+    toQL(result) = mod.asLeft().getAFieldOrChild().(QL::ModuleAliasBody).getChild()
+  }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)
@@ -745,10 +865,12 @@ class Module extends TModule, ModuleDeclaration {
   /** Holds if the `i`th parameter of this module has `name` and type `sig`. */
   predicate hasParameter(int i, string name, SignatureExpr sig) {
     exists(QL::ModuleParam param |
-      param = mod.getParameter(i) and
+      param = mod.asLeft().getParameter(i) and
       name = param.getParameter().getValue() and
       sig.toQL() = param.getSignature()
     )
+    or
+    mod.asRight().hasTypeParam(i, toMock(sig), name)
   }
 }
 
@@ -774,8 +896,6 @@ class Declaration extends TDeclaration, AstNode {
     or
     result = any(Class c).getQLDocFor(this)
   }
-
-  override AstNode getAChild(string pred) { result = super.getAChild(pred) }
 }
 
 /** An entity that can be declared in a module. */
@@ -788,22 +908,26 @@ class TypeDeclaration extends TTypeDeclaration, Declaration { }
  * A QL class.
  */
 class Class extends TClass, TypeDeclaration, ModuleDeclaration {
-  QL::Dataclass cls;
+  Mocks::ClassOrMock cls;
 
   Class() { this = TClass(cls) }
 
-  override Location getLocation() { result = cls.getName().getLocation() }
+  override Location getLocation() { result = cls.asLeft().getName().getLocation() }
 
   override string getAPrimaryQlClass() { result = "Class" }
 
-  override string getName() { result = cls.getName().getValue() }
+  override string getName() {
+    result = cls.asLeft().getName().getValue()
+    or
+    result = cls.asRight().getName()
+  }
 
   /**
-   * Gets the charateristic predicate for this class.
+   * Gets the characteristic predicate for this class.
    */
-  CharPred getCharPred() { toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_) }
+  CharPred getCharPred() { toQL(result) = cls.asLeft().getChild(_).(QL::ClassMember).getChild(_) }
 
-  AstNode getMember(int i) { toQL(result) = cls.getChild(i).(QL::ClassMember).getChild(_) }
+  AstNode getMember(int i) { toQL(result) = cls.asLeft().getChild(i).(QL::ClassMember).getChild(_) }
 
   QLDoc getQLDocFor(AstNode m) {
     exists(int i | result = this.getMember(i) and m = this.getMember(i + 1))
@@ -813,7 +937,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
    * Gets a predicate in this class.
    */
   ClassPredicate getAClassPredicate() {
-    toQL(result) = cls.getChild(_).(QL::ClassMember).getChild(_)
+    toQL(result) = cls.asLeft().getChild(_).(QL::ClassMember).getChild(_)
   }
 
   /**
@@ -832,18 +956,20 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   /**
    * Gets a super-type referenced in the `extends` part of the class declaration.
    */
-  TypeExpr getASuperType() { toQL(result) = cls.getExtends(_) }
+  TypeExpr getASuperType() { toQL(result) = cls.asLeft().getExtends(_) }
 
   /**
    * Gets a type referenced in the `instanceof` part of the class declaration.
    */
-  TypeExpr getAnInstanceofType() { toQL(result) = cls.getInstanceof(_) }
+  TypeExpr getAnInstanceofType() { toQL(result) = cls.asLeft().getInstanceof(_) }
 
   /** Gets the type that this class is defined to be an alias of. */
-  TypeExpr getAliasType() { toQL(result) = cls.getChild(_).(QL::TypeAliasBody).getChild() }
+  TypeExpr getAliasType() { toQL(result) = cls.asLeft().getChild(_).(QL::TypeAliasBody).getChild() }
 
   /** Gets the type of one of the members that this class is defined to be a union of. */
-  TypeExpr getUnionMember() { toQL(result) = cls.getChild(_).(QL::TypeUnionBody).getChild(_) }
+  TypeExpr getUnionMember() {
+    toQL(result) = cls.asLeft().getChild(_).(QL::TypeUnionBody).getChild(_)
+  }
 
   /** Gets the class type defined by this class declaration. */
   Type getType() { result.getDeclaration() = this }
@@ -925,6 +1051,8 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
 
   override NewTypeBranchType getReturnType() { result.getDeclaration() = this }
 
+  override Annotation getAnAnnotation() { toQL(this).getAFieldOrChild() = toQL(result) }
+
   override Type getParameterType(int i) { result = this.getField(i).getType() }
 
   override int getArity() { result = count(this.getField(_)) }
@@ -955,7 +1083,7 @@ class NewTypeBranch extends TNewTypeBranch, Predicate, TypeDeclaration {
 class Call extends TCall, Expr, Formula {
   /** Gets the `i`th argument of this call. */
   Expr getArgument(int i) {
-    none() // overridden in sublcasses.
+    none() // overridden in subclasses.
   }
 
   /** Gets an argument of this call, if any. */
@@ -1081,8 +1209,6 @@ class NoneCall extends TNoneCall, Call, Formula {
   NoneCall() { this = TNoneCall(call) }
 
   override string getAPrimaryQlClass() { result = "NoneCall" }
-
-  override AstNode getParent() { result = Call.super.getParent() }
 }
 
 /**
@@ -1157,13 +1283,27 @@ class Import extends TImport, ModuleMember, TypeRef {
   string importedAs() { result = imp.getChild(1).(QL::ModuleName).getChild().getValue() }
 
   /**
-   * Gets the `i`th selected name from the imported module.
+   * Gets the qualified name of the module selected in the import statement.
    * E.g. for
    * `import foo.bar::Baz::Qux`
-   * It is true that `getSelectionName(0) = "Baz"` and `getSelectionName(1) = "Qux"`.
+   * It is true that `getSelectionName() = "Baz::Qux"`.
+   *
+   * Does NOT include type arguments!
    */
-  string getSelectionName(int i) {
-    result = imp.getChild(0).(QL::ImportModuleExpr).getName(i).getValue()
+  string getSelectionName() { result = this.getModuleExpr().getQualifiedName() }
+
+  /**
+   * Gets the module expression selected in the import statement.
+   * E.g. for
+   * `import foo.Bar::Baz::Qux`
+   * The module expression is the `Bar::Baz::Qux` part.
+   */
+  ModuleExpr getModuleExpr() { toQL(result) = imp.getChild(0).(QL::ImportModuleExpr).getChild() }
+
+  override AstNode getAChild(string pred) {
+    result = super.getAChild(pred)
+    or
+    pred = directMember("getModuleExpr") and result = this.getModuleExpr()
   }
 
   /**
@@ -1173,27 +1313,25 @@ class Import extends TImport, ModuleMember, TypeRef {
    * It is true that `getQualifiedName(0) = "foo"` and `getQualifiedName(1) = "bar"`.
    */
   string getQualifiedName(int i) {
-    result = imp.getChild(0).(QL::ImportModuleExpr).getChild().getName(i).getValue()
+    result = imp.getChild(0).(QL::ImportModuleExpr).getQualName(i).getValue()
   }
 
   /**
-   * Gets the full string specifying the module being imported.
+   * Gets a full string specifying the module being imported.
+   *
+   * Does NOT include type arguments!
    */
   string getImportString() {
-    exists(string selec |
-      not exists(this.getSelectionName(_)) and selec = ""
+    exists(string qual |
+      not exists(this.getQualifiedName(_)) and qual = ""
       or
-      selec =
-        "::" + strictconcat(int i, string q | q = this.getSelectionName(i) | q, "::" order by i)
+      qual = strictconcat(int i, string q | q = this.getQualifiedName(i) | q, "." order by i) + "."
     |
-      result =
-        strictconcat(int i, string q | q = this.getQualifiedName(i) | q, "." order by i) + selec
+      result = qual + this.getSelectionName()
     )
   }
 
-  override Type getResolvedType() {
-    exists(FileOrModule mod | resolve(this, mod) | result = mod.toType())
-  }
+  override Type getResolvedType() { result = this.getModuleExpr().getResolvedType() }
 }
 
 /** A formula, such as `x = 6 and y < 5`. */
@@ -1346,6 +1484,14 @@ class ComparisonFormula extends TComparisonFormula, Formula {
     pred = directMember("getLeftOperand") and result = this.getLeftOperand()
     or
     pred = directMember("getRightOperand") and result = this.getRightOperand()
+  }
+
+  /** Holds if this comparison has the operands `a` and `b` (in any order). */
+  pragma[noinline]
+  predicate hasOperands(Expr a, Expr b) {
+    this.getLeftOperand() = a and this.getRightOperand() = b
+    or
+    this.getLeftOperand() = b and this.getRightOperand() = a
   }
 }
 
@@ -1662,7 +1808,7 @@ class FullAggregate extends TFullAggregate, Aggregate {
 
   /**
    * Gets the kind of aggregate.
-   * E.g. for `min(int i | foo(i))` the result is "foo".
+   * E.g. for `min(int i | foo(i))` the result is "min".
    */
   override string getKind() { result = kind }
 
@@ -2263,31 +2409,48 @@ class ModuleExpr extends TModuleExpr, TypeRef {
 
   /**
    * Gets the `i`th type argument if this module is a module instantiation.
-   * The result is either a `PredicateExpr` or a `TypeExpr`.
+   * The result is either a `PredicateExpr`, `TypeExpr`, or `ModuleExpr`.
    */
   SignatureExpr getArgument(int i) {
     result.toQL() = me.getAFieldOrChild().(QL::ModuleInstantiation).getChild(i)
   }
+
+  /**
+   * Gets the qualified name for this module expression, which does not include the type arguments.
+   */
+  string getQualifiedName() {
+    exists(string qual |
+      not exists(this.getQualifier()) and qual = ""
+      or
+      qual = this.getQualifier().getQualifiedName() + "::"
+    |
+      result = qual + this.getName()
+    )
+  }
 }
 
-/** A signature expression, either a `PredicateExpr` or a `TypeExpr`. */
+/** A signature expression, either a `PredicateExpr`, a `TypeExpr`, or a `ModuleExpr`. */
 class SignatureExpr extends TSignatureExpr, AstNode {
-  QL::SignatureExpr sig;
+  Mocks::SignatureExprOrMock sig;
 
   SignatureExpr() {
-    toQL(this) = sig.getPredicate()
+    toQL(this) = sig.asLeft().getPredicate()
     or
-    toQL(this) = sig.getTypeExpr()
+    toQL(this) = sig.asLeft().getTypeExpr()
+    or
+    toMock(this) = sig.asRight()
+    or
+    toQL(this) = sig.asLeft().getModExpr()
   }
 
   /** Gets the generated AST node that contains this signature expression. */
-  QL::SignatureExpr toQL() { result = sig }
+  QL::SignatureExpr toQL() { result = sig.asLeft() }
 
   /** Gets this signature expression if it represents a predicate expression. */
   PredicateExpr asPredicate() { result = this }
 
-  /** Gets this signature expression if it represents a type expression. */
-  TypeExpr asType() { result = this }
+  /** Gets this signature expression if it represents a type expression (either a `TypeExpr` or a `ModuleExpr`). */
+  TypeRef asType() { result = this }
 }
 
 /** An argument to an annotation. */
@@ -2306,6 +2469,8 @@ private class AnnotationArg extends TAnnotationArg, AstNode {
   }
 
   override string toString() { result = this.getValue() }
+
+  override string getAPrimaryQlClass() { result = "AnnotationArg" }
 }
 
 private class NoInlineArg extends AnnotationArg {
@@ -2409,16 +2574,21 @@ class BindingSet extends Annotation {
  */
 module YAML {
   /** A node in a YAML file */
-  class YAMLNode extends TYamlNode, AstNode {
+  class YamlNode extends TYamlNode, AstNode {
     /** Holds if the predicate is a root node (has no parent) */
     predicate isRoot() { not exists(this.getParent()) }
+
+    override AstNode getParent() { toGenerateYaml(result) = toGenerateYaml(this).getParent() }
   }
 
-  /** A YAML comment. */
-  class YamlComment extends TYamlCommemt, YAMLNode {
-    QL::YamlComment yamlcomment;
+  /** DEPRECATED: Alias for YamlNode */
+  deprecated class YAMLNode = YamlNode;
 
-    YamlComment() { this = TYamlCommemt(yamlcomment) }
+  /** A YAML comment. */
+  class YamlComment extends TYamlComment, YamlNode {
+    Yaml::Comment yamlcomment;
+
+    YamlComment() { this = TYamlComment(yamlcomment) }
 
     override string getAPrimaryQlClass() { result = "YamlComment" }
   }
@@ -2427,24 +2597,24 @@ module YAML {
   deprecated class YAMLComment = YamlComment;
 
   /** A YAML entry. */
-  class YamlEntry extends TYamlEntry, YAMLNode {
-    QL::YamlEntry yamle;
+  class YamlEntry extends TYamlEntry, YamlNode {
+    Yaml::Entry yamle;
 
     YamlEntry() { this = TYamlEntry(yamle) }
 
     /** Gets the key of this YAML entry. */
     YamlKey getKey() {
-      exists(QL::YamlKeyvaluepair pair |
+      exists(Yaml::Keyvaluepair pair |
         pair.getParent() = yamle and
         result = TYamlKey(pair.getKey())
       )
     }
 
-    YamlListItem getListItem() { toQL(result).getParent() = yamle }
+    YamlListItem getListItem() { toGenerateYaml(result).getParent() = yamle }
 
     /** Gets the value of this YAML entry. */
-    YAMLValue getValue() {
-      exists(QL::YamlKeyvaluepair pair |
+    YamlValue getValue() {
+      exists(Yaml::Keyvaluepair pair |
         pair.getParent() = yamle and
         result = TYamlValue(pair.getValue())
       )
@@ -2457,16 +2627,16 @@ module YAML {
   deprecated class YAMLEntry = YamlEntry;
 
   /** A YAML key. */
-  class YamlKey extends TYamlKey, YAMLNode {
-    QL::YamlKey yamlkey;
+  class YamlKey extends TYamlKey, YamlNode {
+    Yaml::Key yamlkey;
 
     YamlKey() { this = TYamlKey(yamlkey) }
 
     /**
      * Gets the value of this YAML key.
      */
-    YAMLValue getValue() {
-      exists(QL::YamlKeyvaluepair pair |
+    YamlValue getValue() {
+      exists(Yaml::Keyvaluepair pair |
         pair.getKey() = yamlkey and result = TYamlValue(pair.getValue())
       )
     }
@@ -2475,7 +2645,7 @@ module YAML {
 
     /** Gets the value of this YAML value. */
     string getNamePart(int i) {
-      i = 0 and result = yamlkey.getChild(0).(QL::SimpleId).getValue()
+      i = 0 and result = yamlkey.getChild(0).(Yaml::SimpleId).getValue()
       or
       exists(YamlKey child |
         child = TYamlKey(yamlkey.getChild(1)) and
@@ -2496,15 +2666,15 @@ module YAML {
   deprecated class YAMLKey = YamlKey;
 
   /** A YAML list item. */
-  class YamlListItem extends TYamlListitem, YAMLNode {
-    QL::YamlListitem yamllistitem;
+  class YamlListItem extends TYamlListitem, YamlNode {
+    Yaml::Listitem yamllistitem;
 
     YamlListItem() { this = TYamlListitem(yamllistitem) }
 
     /**
      * Gets the value of this YAML list item.
      */
-    YAMLValue getValue() { result = TYamlValue(yamllistitem.getChild()) }
+    YamlValue getValue() { result = TYamlValue(yamllistitem.getChild()) }
 
     override string getAPrimaryQlClass() { result = "YamlListItem" }
   }
@@ -2513,12 +2683,12 @@ module YAML {
   deprecated class YAMLListItem = YamlListItem;
 
   /** A YAML value. */
-  class YAMLValue extends TYamlValue, YAMLNode {
-    QL::YamlValue yamlvalue;
+  class YamlValue extends TYamlValue, YamlNode {
+    Yaml::Value yamlvalue;
 
-    YAMLValue() { this = TYamlValue(yamlvalue) }
+    YamlValue() { this = TYamlValue(yamlvalue) }
 
-    override string getAPrimaryQlClass() { result = "YAMLValue" }
+    override string getAPrimaryQlClass() { result = "YamlValue" }
 
     /** Gets the value of this YAML value. */
     string getValue() { result = yamlvalue.getValue() }
@@ -2621,7 +2791,7 @@ module YAML {
     Location getLocation() {
       // hacky, just pick the first node in the file.
       result =
-        min(YAMLNode entry, Location l, File f |
+        min(YamlNode entry, Location l, File f |
           entry.getLocation().getFile() = file and
           f = file and
           l = entry.getLocation()

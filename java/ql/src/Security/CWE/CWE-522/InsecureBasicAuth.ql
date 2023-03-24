@@ -20,5 +20,5 @@ import DataFlow::PathGraph
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, BasicAuthFlowConfig config
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Insecure basic authentication from $@.", source.getNode(),
+select sink.getNode(), source, sink, "Insecure basic authentication from a $@.", source.getNode(),
   "HTTP URL"

@@ -11,11 +11,12 @@
  * @problem.severity warning
  * @security-severity 7.5
  * @tags security
+ *       experimental
  *       external/cwe/cwe-020
  */
 
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 
 /**
  * A Linux system call.
@@ -87,4 +88,4 @@ class ExploitableUserModePtrParam extends SystemCallSource {
 }
 
 from ExploitableUserModePtrParam p
-select p, "unsafe_put_user write user-mode pointer $@ without check.", p, p.toString()
+select p, "This 'unsafe_put_user' writes a user-mode pointer without a security check."

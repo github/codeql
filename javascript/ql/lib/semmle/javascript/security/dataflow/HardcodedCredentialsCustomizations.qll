@@ -33,12 +33,10 @@ module HardcodedCredentials {
   }
 
   /**
-   * A subclass of `Sink` that includes every `CredentialsExpr`
+   * A subclass of `Sink` that includes every `CredentialsNode`
    * as a credentials sink.
    */
-  class DefaultCredentialsSink extends Sink, DataFlow::ValueNode {
-    override CredentialsExpr astNode;
-
-    override string getKind() { result = astNode.getCredentialsKind() }
+  class DefaultCredentialsSink extends Sink instanceof CredentialsNode {
+    override string getKind() { result = super.getCredentialsKind() }
   }
 }

@@ -1,12 +1,13 @@
-private import codeql.Locations
 private import codeql.ruby.AST
+private import Scope as Scope
 
 // Names of built-in modules and classes
 private string builtin() {
   result =
     [
       "Object", "Kernel", "BasicObject", "Class", "Module", "NilClass", "FalseClass", "TrueClass",
-      "Numeric", "Integer", "Float", "Rational", "Complex", "Array", "Hash", "Symbol", "Proc"
+      "Numeric", "Integer", "Float", "Rational", "Complex", "Array", "Hash", "String", "Symbol",
+      "Proc",
     ]
 }
 
@@ -16,6 +17,8 @@ private module Cached {
   newtype TModule =
     TResolved(string qName) {
       qName = builtin()
+      or
+      qName = getAnAssumedGlobalConst()
       or
       qName = namespaceDeclaration(_)
     } or
@@ -39,7 +42,10 @@ private module Cached {
   Module getSuperClass(Module cls) {
     cls = TResolved("Object") and result = TResolved("BasicObject")
     or
-    cls = TResolved(["Module", "Numeric", "Array", "Hash", "FalseClass", "TrueClass", "NilClass"]) and
+    cls =
+      TResolved([
+          "Module", "Numeric", "Array", "Hash", "FalseClass", "TrueClass", "NilClass", "String"
+        ]) and
     result = TResolved("Object")
     or
     cls = TResolved(["Integer", "Float", "Rational", "Complex"]) and
@@ -59,6 +65,12 @@ private module Cached {
       forex(ClassDeclaration d | d = cls.getADeclaration() |
         not exists(resolveConstantReadAccess(d.getSuperclassExpr()))
       )
+      or
+      // If a module is used as a base class of another class, but we don't see its class declaration
+      // treat it as a class extending Object, so its subclasses transitively extend Object.
+      result = TResolved("Object") and
+      not cls.getADeclaration() instanceof ClassDeclaration and
+      cls = resolveConstantReadAccess(any(ClassDeclaration d).getSuperclassExpr())
     )
   }
 
@@ -66,7 +78,7 @@ private module Cached {
     (
       m = resolveConstantReadAccess(c.getReceiver())
       or
-      m = enclosingModule(c).getModule() and
+      m = enclosingModuleNoBlock(c).getModule() and
       c.getReceiver() instanceof SelfVariableAccess
     ) and
     result = resolveConstantReadAccess(c.getAnArgument())
@@ -137,7 +149,27 @@ private module Cached {
   }
 
   cached
+  string resolveConstantWrite(ConstantWriteAccess c) { result = resolveConstantWriteAccess(c) }
+
+  /**
+   * Gets a method named `name` that is available in module `m`. This includes methods
+   * that are included/prepended into `m` and methods available on base classes of `m`.
+   */
+  cached
   Method lookupMethod(Module m, string name) { TMethod(result) = lookupMethodOrConst(m, name) }
+
+  /**
+   * Gets a method named `name` that is available in a sub class of module `m`. This
+   * includes methods that are included/prepended into any of the sub classes of `m`,
+   * but not methods inherited from base classes.
+   */
+  cached
+  Method lookupMethodInSubClasses(Module m, string name) {
+    exists(Module sub | sub.getAnImmediateAncestor() = m |
+      TMethod(result) = lookupMethodOrConst0(sub, name) or
+      result = lookupMethodInSubClasses(sub, name)
+    )
+  }
 
   cached
   Expr lookupConst(Module m, string name) {
@@ -369,11 +401,23 @@ private module ResolveImpl {
     result = resolveConstantWriteAccessRec(c, _, _)
   }
 
+  /**
+   * Gets the name of a constant `C` that we assume to be defined in the top-level because
+   * it is referenced in a way that can only resolve to a top-level constant.
+   */
+  string getAnAssumedGlobalConst() {
+    exists(ConstantAccess access |
+      not exists(access.getScopeExpr()) and
+      result = access.getName() and
+      isToplevel(access)
+    )
+  }
+
   pragma[nomagic]
   private string isDefinedConstantNonRec(string container, string name) {
     result = resolveConstantWriteAccessNonRec(_, container, name)
     or
-    result = builtin() and
+    result = [builtin(), getAnAssumedGlobalConst()] and
     name = result and
     container = "Object"
   }
@@ -392,7 +436,7 @@ private module ResolveImpl {
 
   /**
    * The qualified names of the ancestors of a class/module. The ancestors should be an ordered list
-   * of the ancestores of `prepend`ed modules, the module itself , the ancestors or `include`d modules
+   * of the ancestors of `prepend`ed modules, the module itself , the ancestors or `include`d modules
    * and the ancestors of the super class. The priority value only distinguishes the kind of ancestor,
    * it does not order the ancestors within a group of the same kind. This is an over-approximation, however,
    * computing the precise order is tricky because it depends on the evaluation/file loading order.
@@ -428,7 +472,7 @@ private module ResolveImpl {
       result = resolveConstantReadAccess(this.getReceiver(), _)
       or
       exists(ModuleBase encl |
-        encl = enclosingModule(this) and
+        encl = enclosingModuleNoBlock(this) and
         result = [qualifiedModuleNameNonRec(encl, _, _), qualifiedModuleNameRec(encl, _, _)]
       |
         this.getReceiver() instanceof SelfVariableAccess
@@ -473,10 +517,23 @@ private module ResolveImpl {
   }
 }
 
-import ResolveImpl
+private import ResolveImpl
 
 /**
- * A variant of AstNode::getEnclosingModule that excludes
+ * Gets an enclosing scope of `scope`, stopping at the first module or block.
+ *
+ * Includes `scope` itself and the final module/block.
+ */
+private Scope enclosingScopesNoBlock(Scope scope) {
+  result = scope
+  or
+  not scope instanceof ModuleBase and
+  not scope instanceof Block and
+  result = enclosingScopesNoBlock(scope.getOuterScope())
+}
+
+/**
+ * A variant of `AstNode::getEnclosingModule` that excludes
  * results that are enclosed in a block. This is a bit wrong because
  * it could lead to false negatives. However, `include` statements in
  * blocks are very rare in normal code. The majority of cases are in calls
@@ -484,12 +541,10 @@ import ResolveImpl
  * methods evaluate the block in the context of some other module/class instead of
  * the enclosing one.
  */
-private ModuleBase enclosingModule(AstNode node) { result = parent*(node).getParent() }
-
-private AstNode parent(AstNode n) {
-  result = n.getParent() and
-  not result instanceof ModuleBase and
-  not result instanceof Block
+private ModuleBase enclosingModuleNoBlock(Stmt node) {
+  // Note: don't rely on AstNode.getParent() here.
+  // Instead use Scope.getOuterScope() to correctly handle the scoping of things like Namespace.getScopeExpr().
+  result = enclosingScopesNoBlock(Scope::scopeOfInclSynth(node))
 }
 
 private Module getAncestors(Module m) {
@@ -519,9 +574,9 @@ module ExposedForTestingOnly {
 private TMethodOrExpr lookupMethodOrConst0(Module m, string name) {
   result = lookupMethodOrConst0(m.getAPrependedModule(), name)
   or
-  not exists(getMethodOrConst(getAncestors(m.getAPrependedModule()), name)) and
+  not exists(getMethodOrConst(getAncestors(m.getAPrependedModule()), pragma[only_bind_into](name))) and
   (
-    result = getMethodOrConst(m, name)
+    result = getMethodOrConst(m, pragma[only_bind_into](name))
     or
     not exists(getMethodOrConst(m, name)) and
     result = lookupMethodOrConst0(m.getAnIncludedModule(), name)

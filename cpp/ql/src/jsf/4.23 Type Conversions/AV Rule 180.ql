@@ -104,4 +104,4 @@ where
   not lic.getUnderlyingTargetType() instanceof BoolType
 select lic,
   "AV Rule 180: implicit conversion from " + lic.getUnderlyingSourceType().toString() + " to " +
-    lic.getUnderlyingTargetType().toString() + " may lose information"
+    lic.getUnderlyingTargetType().toString() + " may lose information."

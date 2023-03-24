@@ -1,3 +1,4 @@
+require "active_job"
 require "base64"
 require "json"
 require "oj"
@@ -72,5 +73,34 @@ class UsersController < ActionController::Base
   def route9
     json_data = params[:key]
     object = Oj.safe_load json_data
+  end
+
+  # BAD - `Hash.from_trusted_xml` will deserialize elements with the
+  # `type="yaml"` attribute as YAML.
+  def route10
+    xml = params[:key]
+    hash = Hash.from_trusted_xml(xml)
+  end
+
+  # BAD
+  def route11
+    yaml_data = params[:key]
+    object = Psych.load yaml_data
+  end
+
+  def stdin
+    object = YAML.load $stdin.read
+
+    # STDIN
+    object = YAML.load STDIN.gets
+
+    # ARGF
+    object = YAML.load ARGF.read
+
+    # Kernel.gets
+    object = YAML.load gets
+
+    # Kernel.readlines
+    object = YAML.load readlines
   end
 end

@@ -49,12 +49,10 @@ module HardcodedDataInterpretedAsCode {
   /**
    * A code injection sink; hard-coded data should not flow here.
    */
-  private class DefaultCodeInjectionSink extends Sink {
-    DefaultCodeInjectionSink() { this instanceof CodeInjection::Sink }
-
+  private class DefaultCodeInjectionSink extends Sink instanceof CodeInjection::Sink {
     override DataFlow::FlowLabel getLabel() { result.isTaint() }
 
-    override string getKind() { result = "code" }
+    override string getKind() { result = "Code" }
   }
 
   /**
@@ -65,6 +63,6 @@ module HardcodedDataInterpretedAsCode {
 
     override DataFlow::FlowLabel getLabel() { result.isDataOrTaint() }
 
-    override string getKind() { result = "an import path" }
+    override string getKind() { result = "An import path" }
   }
 }

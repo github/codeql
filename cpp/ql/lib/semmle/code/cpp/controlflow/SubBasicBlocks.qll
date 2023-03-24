@@ -54,7 +54,7 @@ class SubBasicBlock extends ControlFlowNodeBase {
    * only condition under which a `SubBasicBlock` may have multiple
    * predecessors.
    */
-  predicate firstInBB() { exists(BasicBlock bb | this.getRankInBasicBlock(bb) = 1) }
+  predicate firstInBB() { this.getRankInBasicBlock(_) = 1 }
 
   /**
    * Holds if this `SubBasicBlock` comes last in its basic block. This is the
@@ -74,13 +74,6 @@ class SubBasicBlock extends ControlFlowNodeBase {
       thisIndexInBB = rank[result](int i | i = any(SubBasicBlock n).getIndexInBasicBlock(bb))
     )
   }
-
-  /**
-   * DEPRECATED: use `getRankInBasicBlock` instead. Note that this predicate
-   * returns a 0-based position, while `getRankInBasicBlock` returns a 1-based
-   * position.
-   */
-  deprecated int getPosInBasicBlock(BasicBlock bb) { result = this.getRankInBasicBlock(bb) - 1 }
 
   pragma[noinline]
   private int getIndexInBasicBlock(BasicBlock bb) { this = bb.getNode(result) }

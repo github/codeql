@@ -40,17 +40,6 @@ abstract class ExpensiveRouteHandler extends DataFlow::Node {
   abstract predicate explain(string explanation, DataFlow::Node reference, string referenceLabel);
 }
 
-/**
- * DEPRECATED. Use `RateLimitingMiddleware` instead.
- *
- * A route handler expression that is guarded by a rate limiter.
- */
-deprecated class RateLimitedRouteHandlerExpr extends Express::RouteHandlerExpr {
-  RateLimitedRouteHandlerExpr() {
-    Routing::getNode(this.flow()).isGuardedBy(any(RateLimitingMiddleware m))
-  }
-}
-
 // default implementations
 /**
  * A route handler that performs an expensive action, and hence should be rate-limited.
@@ -80,51 +69,24 @@ abstract class ExpensiveAction extends DataFlow::Node {
 }
 
 /** A call to an authorization function, considered as an expensive action. */
-class AuthorizationCallAsExpensiveAction extends ExpensiveAction {
-  AuthorizationCallAsExpensiveAction() { this instanceof AuthorizationCall }
-
+class AuthorizationCallAsExpensiveAction extends ExpensiveAction instanceof AuthorizationCall {
   override string describe() { result = "authorization" }
 }
 
 /** A file system access, considered as an expensive action. */
-class FileSystemAccessAsExpensiveAction extends ExpensiveAction {
-  FileSystemAccessAsExpensiveAction() { this instanceof FileSystemAccess }
-
+class FileSystemAccessAsExpensiveAction extends ExpensiveAction instanceof FileSystemAccess {
   override string describe() { result = "a file system access" }
 }
 
 /** A system command execution, considered as an expensive action. */
-class SystemCommandExecutionAsExpensiveAction extends ExpensiveAction {
-  SystemCommandExecutionAsExpensiveAction() { this instanceof SystemCommandExecution }
-
+class SystemCommandExecutionAsExpensiveAction extends ExpensiveAction instanceof SystemCommandExecution
+{
   override string describe() { result = "a system command" }
 }
 
 /** A database access, considered as an expensive action. */
-class DatabaseAccessAsExpensiveAction extends ExpensiveAction {
-  DatabaseAccessAsExpensiveAction() { this instanceof DatabaseAccess }
-
+class DatabaseAccessAsExpensiveAction extends ExpensiveAction instanceof DatabaseAccess {
   override string describe() { result = "a database access" }
-}
-
-/**
- * DEPRECATED. Use the `Routing::Node` API instead.
- *
- * A route handler expression that is rate-limited by a rate-limiting middleware.
- */
-deprecated class RouteHandlerExpressionWithRateLimiter extends Expr {
-  RouteHandlerExpressionWithRateLimiter() {
-    Routing::getNode(this.flow()).isGuardedBy(any(RateLimitingMiddleware m))
-  }
-}
-
-/**
- * DEPRECATED. Use `RateLimitingMiddleware` instead.
- *
- * A middleware that acts as a rate limiter.
- */
-deprecated class RateLimiter extends Express::RouteHandlerExpr {
-  RateLimiter() { any(RateLimitingMiddleware m).ref().flowsToExpr(this) }
 }
 
 /**
@@ -208,7 +170,7 @@ class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
       rateLimiterClassName.matches("RateLimiter%") and
       rateLimiterClass = API::moduleImport("rate-limiter-flexible").getMember(rateLimiterClassName) and
       rateLimiterConsume = rateLimiterClass.getInstance().getMember("consume") and
-      request.getParameter() = getRouteHandlerParameter(this.getFunction(), "request") and
+      request = getRouteHandlerParameter(this, "request") and
       request.getAPropertyRead().flowsTo(rateLimiterConsume.getAParameter().asSink())
     )
   }
@@ -217,9 +179,8 @@ class RateLimiterFlexibleRateLimiter extends DataFlow::FunctionNode {
 /**
  * A route-handler expression that is rate-limited by the `rate-limiter-flexible` package.
  */
-class RouteHandlerLimitedByRateLimiterFlexible extends RateLimitingMiddleware {
-  RouteHandlerLimitedByRateLimiterFlexible() { this instanceof RateLimiterFlexibleRateLimiter }
-}
+class RouteHandlerLimitedByRateLimiterFlexible extends RateLimitingMiddleware instanceof RateLimiterFlexibleRateLimiter
+{ }
 
 private class FastifyRateLimiter extends RateLimitingMiddleware {
   FastifyRateLimiter() { this = DataFlow::moduleImport("fastify-rate-limit") }

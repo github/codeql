@@ -28,7 +28,7 @@ def f(): pass
 is equivalent to f = dec(x)(f)
 but in a context-insensitive context.
 Need a method:
-Object decoratored_function(Object decorator, Object undecorated);
+Object decorated_function(Object decorator, Object undecorated);
 But what is the decorator and what object is available as a result?
 Need to create an object for each decorator of a class or function.
 That should be the actual Object.

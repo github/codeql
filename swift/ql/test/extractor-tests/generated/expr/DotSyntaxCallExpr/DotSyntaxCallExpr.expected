@@ -1,2 +1,0 @@
-| dot_syntax_call.swift:6:1:6:3 | call to foo(_:_:) | getFunction: | dot_syntax_call.swift:6:3:6:3 | foo(_:_:) | getBaseExpr: | dot_syntax_call.swift:6:1:6:1 | X.Type |
-| dot_syntax_call.swift:7:1:7:3 | call to bar() | getFunction: | dot_syntax_call.swift:7:3:7:3 | bar() | getBaseExpr: | dot_syntax_call.swift:7:1:7:1 | X.Type |

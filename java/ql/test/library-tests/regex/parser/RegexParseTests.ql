@@ -1,10 +1,12 @@
 import java
-import semmle.code.java.regex.RegexTreeView
-import semmle.code.java.regex.regex
+import semmle.code.java.regex.RegexTreeView as RegexTreeView
+import semmle.code.java.regex.regex as Regex
 
-string getQLClases(RegExpTerm t) { result = "[" + strictconcat(t.getPrimaryQLClass(), ",") + "]" }
+string getQLClases(RegexTreeView::RegExpTerm t) {
+  result = "[" + strictconcat(t.getPrimaryQLClass(), ",") + "]"
+}
 
-query predicate parseFailures(Regex r, int i) { r.failedToParse(i) }
+query predicate parseFailures(Regex::Regex r, int i) { r.failedToParse(i) }
 
-from RegExpTerm t
+from RegexTreeView::RegExpTerm t
 select t, getQLClases(t)

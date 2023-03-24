@@ -1,3 +1,3 @@
 import javascript
 import testUtilities.ConsistencyChecking
-import semmle.javascript.security.dataflow.StoredXss as StoredXss
+import semmle.javascript.security.dataflow.StoredXssQuery as StoredXss

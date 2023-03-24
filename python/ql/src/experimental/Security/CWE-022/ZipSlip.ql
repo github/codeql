@@ -9,6 +9,7 @@
  * @security-severity 7.5
  * @precision high
  * @tags security
+ *       experimental
  *       external/cwe/cwe-022
  */
 
@@ -18,5 +19,6 @@ import DataFlow::PathGraph
 
 from ZipSlipConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Extraction of zipfile from $@", source.getNode(),
-  "a potentially untrusted source"
+select source.getNode(), source, sink,
+  "This unsanitized archive entry, which may contain '..', is used in a $@.", sink.getNode(),
+  "file system operation"

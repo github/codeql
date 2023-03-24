@@ -2,7 +2,7 @@
  * @name Linux kernel double-fetch vulnerability detection
  * @description Double-fetch is a very common vulnerability pattern
  *              in linux kernel, attacker can exploit double-fetch
- *              issues to obatain root privilege.
+ *              issues to obtain root privilege.
  *              Double-fetch is caused by fetching data from user
  *              mode by calling copy_from_user twice, CVE-2016-6480
  *              is quite a good example for your information.
@@ -11,6 +11,7 @@
  * @problem.severity warning
  * @security-severity 7.5
  * @tags security
+ *       experimental
  *       external/cwe/cwe-362
  */
 

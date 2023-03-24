@@ -14,7 +14,7 @@
 
 import javascript
 
-from MethodCallExpr mce, AngularJS::BuiltinServiceReference service
+from DataFlow::MethodCallNode mce, AngularJS::BuiltinServiceReference service
 where
   service.getName() = "$sceProvider" and
   mce = service.getAMethodCall("enabled") and

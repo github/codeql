@@ -8,10 +8,10 @@ import default
  * A JSF "application configuration resources file", typically called `faces-config.xml`, which
  * contains the configuration for a JSF application
  */
-class FacesConfigXmlFile extends XMLFile {
+class FacesConfigXmlFile extends XmlFile {
   FacesConfigXmlFile() {
     // Contains a single top-level XML node named "faces-Config".
-    count(XMLElement e | e = this.getAChild()) = 1 and
+    count(XmlElement e | e = this.getAChild()) = 1 and
     this.getAChild().getName() = "faces-config"
   }
 }
@@ -22,7 +22,7 @@ deprecated class FacesConfigXMLFile = FacesConfigXmlFile;
 /**
  * An XML element in a `FacesConfigXMLFile`.
  */
-class FacesConfigXmlElement extends XMLElement {
+class FacesConfigXmlElement extends XmlElement {
   FacesConfigXmlElement() { this.getFile() instanceof FacesConfigXmlFile }
 
   /**

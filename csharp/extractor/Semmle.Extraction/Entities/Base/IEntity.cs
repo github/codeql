@@ -26,7 +26,7 @@ namespace Semmle.Extraction
         Label Label { get; set; }
 
         /// <summary>
-        /// Writes the unique identifier of this entitiy to a trap file.
+        /// Writes the unique identifier of this entity to a trap file.
         /// </summary>
         /// <param name="trapFile">The trapfile to write to.</param>
         void WriteId(EscapingTextWriter trapFile);

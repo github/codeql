@@ -3,7 +3,6 @@
  */
 
 import go
-private import semmle.go.StringOps
 
 /**
  * Provides models of commonly used functions in the `github.com/davecgh/go-spew/spew` package.

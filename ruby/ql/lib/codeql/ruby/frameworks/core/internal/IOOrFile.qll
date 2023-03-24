@@ -2,7 +2,7 @@
  * Provides modeling for concepts shared across `File` and `IO`.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.Files

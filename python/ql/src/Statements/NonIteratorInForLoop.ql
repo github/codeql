@@ -22,4 +22,5 @@ where
   not t.failedInference(_) and
   not v = Value::named("None") and
   not t.isDescriptorType()
-select loop, "$@ of class '$@' may be used in for-loop.", origin, "Non-iterable", t, t.getName()
+select loop, "This for-loop may attempt to iterate over a $@ of class $@.", origin,
+  "non-iterable instance", t, t.getName()

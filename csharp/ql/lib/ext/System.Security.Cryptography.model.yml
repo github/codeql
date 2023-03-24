@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: sinkModel
+    data:
+      - ["System.Security.Cryptography", "SymmetricAlgorithm", True, "CreateDecryptor", "(System.Byte[],System.Byte[])", "", "Argument[0]", "encryption-decryptor", "manual"]
+      - ["System.Security.Cryptography", "SymmetricAlgorithm", True, "CreateEncryptor", "(System.Byte[],System.Byte[])", "", "Argument[0]", "encryption-encryptor", "manual"]
+      - ["System.Security.Cryptography", "SymmetricAlgorithm", True, "set_Key", "(System.Byte[])", "", "Argument[0]", "encryption-keyprop", "manual"]
+  - addsTo:
+      pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Security.Cryptography", "AsnEncodedDataCollection", False, "Add", "(System.Security.Cryptography.AsnEncodedData)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Security.Cryptography", "AsnEncodedDataCollection", False, "CopyTo", "(System.Security.Cryptography.AsnEncodedData[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
+      - ["System.Security.Cryptography", "AsnEncodedDataCollection", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Security.Cryptography.AsnEncodedDataEnumerator.Current]", "value", "manual"]
+      - ["System.Security.Cryptography", "OidCollection", False, "Add", "(System.Security.Cryptography.Oid)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Security.Cryptography", "OidCollection", False, "CopyTo", "(System.Security.Cryptography.Oid[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
+      - ["System.Security.Cryptography", "OidCollection", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Security.Cryptography.OidEnumerator.Current]", "value", "manual"]

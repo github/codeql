@@ -56,29 +56,26 @@ class VarargsFunction extends Function {
     result = strictcount(FunctionCall fc | fc = this.getACallToThisFunction())
   }
 
-  string normalTerminator(int cnt) {
+  string normalTerminator(int cnt, int totalCount) {
+    // the terminator is 0 or -1
     result = ["0", "-1"] and
+    // at least 80% of calls have the terminator
     cnt = this.trailingArgValueCount(result) and
-    2 * cnt > this.totalCount() and
-    not exists(FunctionCall fc, int index |
-      // terminator value is used in a non-terminating position
-      this.nonTrailingVarArgValue(fc, index) = result
-    )
+    totalCount = this.totalCount() and
+    100 * cnt / totalCount >= 80 and
+    // terminator value is not used in a non-terminating position
+    not this.nonTrailingVarArgValue(_, _) = result
   }
 
-  predicate isWhitelisted() {
-    this.hasGlobalName("open") or
-    this.hasGlobalName("fcntl") or
-    this.hasGlobalName("ptrace")
-  }
+  predicate isWhitelisted() { this.hasGlobalName(["open", "fcntl", "ptrace", "mremap"]) }
 }
 
-from VarargsFunction f, FunctionCall fc, string terminator, int cnt
+from VarargsFunction f, FunctionCall fc, string terminator, int cnt, int totalCount
 where
-  terminator = f.normalTerminator(cnt) and
+  terminator = f.normalTerminator(cnt, totalCount) and
   fc = f.getACallToThisFunction() and
   not normalisedExprValue(f.trailingArgumentIn(fc)) = terminator and
   not f.isWhitelisted()
 select fc,
-  "Calls to $@ should use the value " + terminator + " as a terminator (" + cnt + " calls do).", f,
-  f.getQualifiedName()
+  "Calls to $@ should use the value " + terminator + " as a terminator (" + cnt + " of " +
+    totalCount + " calls do).", f, f.getQualifiedName()

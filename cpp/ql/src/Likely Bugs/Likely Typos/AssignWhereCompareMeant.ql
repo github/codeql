@@ -68,7 +68,7 @@ class BooleanControllingAssignmentInExpr extends BooleanControllingAssignment {
     // if((a = b) && use_value(a)) { ... }
     // ```
     // where the assignment is meant to update the value of `a` before it's used in some other boolean
-    // subexpression that is guarenteed to be evaluate _after_ the assignment.
+    // subexpression that is guaranteed to be evaluate _after_ the assignment.
     this.isParenthesised() and
     exists(LogicalAndExpr parent, Variable var, VariableAccess access |
       var = this.getLValue().(VariableAccess).getTarget() and

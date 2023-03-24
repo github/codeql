@@ -40,7 +40,7 @@ From context, it appears that the second binding should have been for variable <
 <sample src="examples/NonLinearPatternGood.js" />
 
 <p>
-This can sometimes happen in TypeScript, due to the apparant similarity between property patterns
+This can sometimes happen in TypeScript, due to the apparent similarity between property patterns
 and type annotations. In the following example, the function uses a pattern parameter with properties <code>x</code>
 and <code>y</code>. These appear to have type <code>number</code>, but are in fact untyped properties both stored in a variable named <code>number</code>.
 </p>

@@ -6,6 +6,12 @@ predicate isSafeCheck(DataFlow::GuardNode g, ControlFlowNode node, boolean branc
   branch = true
 }
 
+predicate isUnsafeCheck(DataFlow::GuardNode g, ControlFlowNode node, boolean branch) {
+  g.(CallNode).getNode().getFunc().(Name).getId() in ["is_unsafe", "emulated_is_unsafe"] and
+  node = g.(CallNode).getAnArg() and
+  branch = false
+}
+
 class CustomSanitizerOverrides extends TestTaintTrackingConfiguration {
   override predicate isSanitizer(DataFlow::Node node) {
     exists(Call call |
@@ -16,6 +22,8 @@ class CustomSanitizerOverrides extends TestTaintTrackingConfiguration {
     node.asExpr().(Call).getFunc().(Name).getId() = "emulated_escaping"
     or
     node = DataFlow::BarrierGuard<isSafeCheck/3>::getABarrierNode()
+    or
+    node = DataFlow::BarrierGuard<isUnsafeCheck/3>::getABarrierNode()
   }
 }
 

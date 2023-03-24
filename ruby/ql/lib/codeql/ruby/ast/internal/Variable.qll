@@ -1,5 +1,4 @@
 private import TreeSitter
-private import codeql.Locations
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.AST
 private import codeql.ruby.ast.internal.Parameter
@@ -200,17 +199,17 @@ private module Cached {
     or
     i = any(Ruby::Binary x).getRight()
     or
-    i = any(Ruby::Block x).getChild(_)
-    or
     i = any(Ruby::BlockArgument x).getChild()
+    or
+    i = any(Ruby::BlockBody x).getChild(_)
+    or
+    i = any(Ruby::BodyStatement x).getChild(_)
     or
     i = any(Ruby::Call x).getReceiver()
     or
     i = any(Ruby::Case x).getValue()
     or
     i = any(Ruby::CaseMatch x).getValue()
-    or
-    i = any(Ruby::Class x).getChild(_)
     or
     i = any(Ruby::Conditional x).getCondition()
     or
@@ -219,8 +218,6 @@ private module Cached {
     i = any(Ruby::Conditional x).getAlternative()
     or
     i = any(Ruby::Do x).getChild(_)
-    or
-    i = any(Ruby::DoBlock x).getChild(_)
     or
     i = any(Ruby::ElementReference x).getChild(_)
     or
@@ -250,9 +247,9 @@ private module Cached {
     or
     i = any(Ruby::KeywordParameter x).getValue()
     or
-    i = any(Ruby::Method x).getChild(_)
+    i = any(Ruby::MatchPattern x).getValue()
     or
-    i = any(Ruby::Module x).getChild(_)
+    i = any(Ruby::Method x).getBody()
     or
     i = any(Ruby::OperatorAssignment x).getRight()
     or
@@ -282,15 +279,15 @@ private module Cached {
     or
     i = any(Ruby::SingletonClass x).getValue()
     or
-    i = any(Ruby::SingletonClass x).getChild(_)
-    or
-    i = any(Ruby::SingletonMethod x).getChild(_)
+    i = any(Ruby::SingletonMethod x).getBody()
     or
     i = any(Ruby::SingletonMethod x).getObject()
     or
     i = any(Ruby::SplatArgument x).getChild()
     or
     i = any(Ruby::Superclass x).getChild()
+    or
+    i = any(Ruby::TestPattern x).getValue()
     or
     i = any(Ruby::Then x).getChild(_)
     or
@@ -610,7 +607,8 @@ private class GlobalVariableAccessReal extends GlobalVariableAccessImpl, TGlobal
   final override string toString() { result = g.getValue() }
 }
 
-private class GlobalVariableAccessSynth extends GlobalVariableAccessImpl, TGlobalVariableAccessSynth {
+private class GlobalVariableAccessSynth extends GlobalVariableAccessImpl, TGlobalVariableAccessSynth
+{
   private GlobalVariable v;
 
   GlobalVariableAccessSynth() { this = TGlobalVariableAccessSynth(_, _, v) }
@@ -627,7 +625,8 @@ module InstanceVariableAccess {
 abstract class InstanceVariableAccessImpl extends VariableAccessImpl, TInstanceVariableAccess { }
 
 private class InstanceVariableAccessReal extends InstanceVariableAccessImpl,
-  TInstanceVariableAccessReal {
+  TInstanceVariableAccessReal
+{
   private Ruby::InstanceVariable g;
   private InstanceVariable v;
 
@@ -639,7 +638,8 @@ private class InstanceVariableAccessReal extends InstanceVariableAccessImpl,
 }
 
 private class InstanceVariableAccessSynth extends InstanceVariableAccessImpl,
-  TInstanceVariableAccessSynth {
+  TInstanceVariableAccessSynth
+{
   private InstanceVariable v;
 
   InstanceVariableAccessSynth() { this = TInstanceVariableAccessSynth(_, _, v) }
@@ -667,7 +667,8 @@ private class ClassVariableAccessReal extends ClassVariableAccessRealImpl, TClas
 }
 
 private class ClassVariableAccessSynth extends ClassVariableAccessRealImpl,
-  TClassVariableAccessSynth {
+  TClassVariableAccessSynth
+{
   private ClassVariable v;
 
   ClassVariableAccessSynth() { this = TClassVariableAccessSynth(_, _, v) }
@@ -683,7 +684,9 @@ private class SelfVariableAccessReal extends SelfVariableAccessImpl, TSelfReal {
   private SelfVariable var;
 
   SelfVariableAccessReal() {
-    exists(Ruby::Self self | this = TSelfReal(self) and var = TSelfVariable(scopeOf(self)))
+    exists(Ruby::Self self |
+      this = TSelfReal(self) and var = TSelfVariable(scopeOf(self).getEnclosingSelfScope())
+    )
   }
 
   final override SelfVariable getVariableImpl() { result = var }

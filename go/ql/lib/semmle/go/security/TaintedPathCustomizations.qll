@@ -61,13 +61,20 @@ module TaintedPath {
   }
 
   /** A source of untrusted data, considered as a taint source for path traversal. */
-  class UntrustedFlowAsSource extends Source {
-    UntrustedFlowAsSource() { this instanceof UntrustedFlowSource }
-  }
+  class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
 
   /** A path expression, considered as a taint sink for path traversal. */
   class PathAsSink extends Sink {
     PathAsSink() { this = any(FileSystemAccess fsa).getAPathArgument() }
+  }
+
+  /**
+   * A numeric- or boolean-typed node, considered a sanitizer for path traversal.
+   */
+  class NumericOrBooleanSanitizer extends Sanitizer {
+    NumericOrBooleanSanitizer() {
+      this.getType() instanceof NumericType or this.getType() instanceof BoolType
+    }
   }
 
   /**

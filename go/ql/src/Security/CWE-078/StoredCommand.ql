@@ -17,5 +17,5 @@ import DataFlow::PathGraph
 
 from StoredCommand::Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
 where cfg.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "This command depends on $@.", source.getNode(),
-  "a stored value"
+select sink.getNode(), source, sink, "This command depends on a $@.", source.getNode(),
+  "stored value"

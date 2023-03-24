@@ -85,7 +85,7 @@ module Starlette {
     }
 
     /** An attribute read on a `starlette.websockets.WebSocket` instance that is a `starlette.requests.URL` instance. */
-    private class UrlInstances extends URL::InstanceSource {
+    private class UrlInstances extends Url::InstanceSource {
       UrlInstances() {
         this.(DataFlow::AttrRead).getObject() = instance() and
         this.(DataFlow::AttrRead).getAttributeName() = "url"
@@ -98,7 +98,7 @@ module Starlette {
    *
    * See the URL part of https://www.starlette.io/websockets/.
    */
-  module URL {
+  module Url {
     /** Gets a reference to the `starlette.requests.URL` class. */
     private API::Node classRef() {
       result = API::moduleImport("starlette").getMember("requests").getMember("URL")
@@ -152,11 +152,15 @@ module Starlette {
     }
 
     /** An attribute read on a `starlette.requests.URL` instance that is a `urllib.parse.SplitResult` instance. */
-    private class UrlSplitInstances extends Stdlib::SplitResult::InstanceSource instanceof DataFlow::AttrRead {
+    private class UrlSplitInstances extends Stdlib::SplitResult::InstanceSource instanceof DataFlow::AttrRead
+    {
       UrlSplitInstances() {
         super.getObject() = instance() and
         super.getAttributeName() = "components"
       }
     }
   }
+
+  /** DEPRECATED: Alias for Url */
+  deprecated module URL = Url;
 }

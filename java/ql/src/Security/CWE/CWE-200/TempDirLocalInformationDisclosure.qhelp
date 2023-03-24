@@ -43,7 +43,7 @@ For example: <code>PosixFilePermissions.asFileAttribute(EnumSet.of(PosixFilePerm
 </example>
 
 <references>
-    <li>OSWAP: <a href="https://owasp.org/www-community/vulnerabilities/Insecure_Temporary_File">Insecure Temporary File</a>.</li>
+    <li>OWASP: <a href="https://owasp.org/www-community/vulnerabilities/Insecure_Temporary_File">Insecure Temporary File</a>.</li>
     <li>CERT: <a href="https://wiki.sei.cmu.edu/confluence/display/java/FIO00-J.+Do+not+operate+on+files+in+shared+directories">FIO00-J. Do not operate on files in shared directories</a>.</li>
 </references>
 </qhelp>

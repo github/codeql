@@ -3,6 +3,7 @@
  * @description Flow from a function retrieving process name to a hash function.
  * @kind path-problem
  * @tags security
+ *       experimental
  *       solorigate
  * @problem.severity warning
  * @precision medium
@@ -44,11 +45,11 @@ predicate isGetHash(Expr arg) {
 }
 
 predicate isSuspiciousPropertyName(PropertyRead pr) {
-  pr.getTarget().getQualifiedName() = "System.Diagnostics.Process.ProcessName"
+  pr.getTarget().hasQualifiedName("System.Diagnostics", "Process", "ProcessName")
 }
 
 from DataFlow::PathNode src, DataFlow::PathNode sink, DataFlowFromMethodToHash conf
 where conf.hasFlow(src.getNode(), sink.getNode())
 select src.getNode(), src, sink,
-  "The hash is calculated on the process name $@, may be related to a backdoor. Please review the code for possible malicious intent.",
-  sink.getNode(), "here"
+  "The hash is calculated on $@, may be related to a backdoor. Please review the code for possible malicious intent.",
+  sink.getNode(), "this process name"

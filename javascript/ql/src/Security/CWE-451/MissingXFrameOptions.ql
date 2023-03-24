@@ -15,6 +15,6 @@
 import javascript
 import semmle.javascript.frameworks.HTTP
 
-from HTTP::ServerDefinition server
+from Http::ServerDefinition server
 where not exists(server.getARouteHandler().getAResponseHeader("x-frame-options"))
 select server, "This server never sets the 'X-Frame-Options' HTTP header."

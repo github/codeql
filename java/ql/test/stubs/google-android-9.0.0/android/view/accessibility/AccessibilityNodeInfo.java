@@ -230,6 +230,9 @@ public class AccessibilityNodeInfo implements Parcelable
         public static AccessibilityNodeInfo.AccessibilityAction ACTION_COPY = null;
         public static AccessibilityNodeInfo.AccessibilityAction ACTION_CUT = null;
         public static AccessibilityNodeInfo.AccessibilityAction ACTION_DISMISS = null;
+        public static AccessibilityNodeInfo.AccessibilityAction ACTION_DRAG_CANCEL = null;
+        public static AccessibilityNodeInfo.AccessibilityAction ACTION_DRAG_DROP = null;
+        public static AccessibilityNodeInfo.AccessibilityAction ACTION_DRAG_START = null;
         public static AccessibilityNodeInfo.AccessibilityAction ACTION_EXPAND = null;
         public static AccessibilityNodeInfo.AccessibilityAction ACTION_FOCUS = null;
         public static AccessibilityNodeInfo.AccessibilityAction ACTION_HIDE_TOOLTIP = null;

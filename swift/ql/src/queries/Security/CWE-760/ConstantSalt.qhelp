@@ -1,0 +1,21 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>Constant salts should not be used for password hashing. Data hashed using constant salts are vulnerable to dictionary attacks, enabling attackers to recover the original input.</p>
+  </overview>
+
+  <recommendation>
+    <p>Use randomly generated salts to securely hash input data.</p>
+  </recommendation>
+
+  <example>
+    <p>The following example shows a few cases of hashing input data. In the 'BAD' cases, the salt is constant, making the generated hashes vulnerable to dictionary attacks.  In the 'GOOD' cases, the salt is randomly generated, which protects the hashed data against recovery.</p>
+    <sample src="ConstantSalt.swift" />
+  </example>
+
+  <references>
+    <li><a href="https://www.okta.com/blog/2019/03/what-are-salted-passwords-and-password-hashing/">What are Salted Passwords and Password Hashing?</a></li>
+  </references>
+</qhelp>

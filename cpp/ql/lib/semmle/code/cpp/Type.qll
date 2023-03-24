@@ -816,6 +816,12 @@ private predicate floatingPointTypeMapping(
   or
   // _Float128x
   kind = 50 and base = 2 and domain = TRealDomain() and realKind = 50 and extended = true
+  or
+  // _Float16
+  kind = 52 and base = 2 and domain = TRealDomain() and realKind = 52 and extended = false
+  or
+  // _Complex _Float16
+  kind = 53 and base = 2 and domain = TComplexDomain() and realKind = 52 and extended = false
 }
 
 /**

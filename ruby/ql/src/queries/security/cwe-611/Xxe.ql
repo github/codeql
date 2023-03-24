@@ -13,7 +13,7 @@
  *       external/cwe/cwe-827
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.dataflow.RemoteFlowSources
 import codeql.ruby.TaintTracking
 import codeql.ruby.Concepts
@@ -39,5 +39,6 @@ class XxeConfig extends TaintTracking::Configuration {
 
 from DataFlow::PathNode source, DataFlow::PathNode sink, XxeConfig conf
 where conf.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Unsafe parsing of XML file from $@.", source.getNode(),
-  "user input"
+select sink.getNode(), source, sink,
+  "XML parsing depends on a $@ without guarding against external entity expansion.",
+  source.getNode(), "user-provided value"

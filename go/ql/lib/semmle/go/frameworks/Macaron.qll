@@ -5,7 +5,7 @@
 import go
 
 private module Macaron {
-  private class Context extends HTTP::ResponseWriter::Range {
+  private class Context extends Http::ResponseWriter::Range {
     SsaWithFields v;
 
     Context() {
@@ -18,13 +18,13 @@ private module Macaron {
     override DataFlow::Node getANode() { result = v.similar().getAUse().getASuccessor*() }
   }
 
-  private class RedirectCall extends HTTP::Redirect::Range, DataFlow::MethodCallNode {
+  private class RedirectCall extends Http::Redirect::Range, DataFlow::MethodCallNode {
     RedirectCall() {
       this.getTarget().hasQualifiedName("gopkg.in/macaron.v1", "Context", "Redirect")
     }
 
     override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
   }
 }

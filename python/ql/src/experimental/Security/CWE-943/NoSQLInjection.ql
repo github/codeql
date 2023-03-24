@@ -6,6 +6,7 @@
  * @problem.severity error
  * @id py/nosql-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-943
  */
 
@@ -15,5 +16,5 @@ import DataFlow::PathGraph
 
 from NoSqlInjection::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink, source, sink, "$@ NoSQL query contains an unsanitized $@", sink, "This", source,
+select sink, source, sink, "This NoSQL query contains an unsanitized $@.", source,
   "user-provided value"

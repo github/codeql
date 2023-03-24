@@ -12,11 +12,7 @@ module XPath {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `XPath::XPathExpressionString::Range` instead.
    */
-  class XPathExpressionString extends DataFlow::Node {
-    XPathExpressionString::Range self;
-
-    XPathExpressionString() { this = self }
-  }
+  class XPathExpressionString extends DataFlow::Node instanceof XPathExpressionString::Range { }
 
   /** Provides classes for working with XPath expression strings. */
   module XPathExpressionString {

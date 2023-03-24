@@ -24,6 +24,8 @@ module AstTest {
       or
       source.asParameter().getName().matches("source%")
       or
+      source.asExpr().(FunctionCall).getTarget().getName() = "indirect_source"
+      or
       source.(DataFlow::DefinitionByReferenceNode).getParameter().getName().matches("ref_source%")
       or
       // Track uninitialized variables
@@ -67,37 +69,28 @@ module IRTest {
     override predicate isSource(DataFlow::Node source) {
       source.asExpr().(FunctionCall).getTarget().getName() = "source"
       or
+      source.asIndirectExpr(1).(FunctionCall).getTarget().getName() = "indirect_source"
+      or
       source.asParameter().getName().matches("source%")
+      or
+      source.(DataFlow::DefinitionByReferenceNode).getParameter().getName().matches("ref_source%")
+      or
+      exists(source.asUninitialized())
     }
 
     override predicate isSink(DataFlow::Node sink) {
       exists(FunctionCall call |
         call.getTarget().getName() = "sink" and
-        sink.asExpr() = call.getAnArgument()
-      )
-    }
-
-    override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-      exists(GlobalOrNamespaceVariable var | var.getName().matches("flowTestGlobal%") |
-        writesVariable(n1.asInstruction(), var) and
-        var = n2.asVariable()
-        or
-        readsVariable(n2.asInstruction(), var) and
-        var = n1.asVariable()
+        call.getAnArgument() in [sink.asExpr(), sink.asIndirectExpr()]
       )
     }
 
     override predicate isBarrier(DataFlow::Node barrier) {
-      barrier.asExpr().(VariableAccess).getTarget().hasName("barrier") or
+      exists(Expr barrierExpr | barrierExpr in [barrier.asExpr(), barrier.asIndirectExpr()] |
+        barrierExpr.(VariableAccess).getTarget().hasName("barrier")
+      )
+      or
       barrier = DataFlow::InstructionBarrierGuard<testBarrierGuard/3>::getABarrierNode()
     }
-  }
-
-  private predicate readsVariable(LoadInstruction load, Variable var) {
-    load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
-  }
-
-  private predicate writesVariable(StoreInstruction store, Variable var) {
-    store.getDestinationAddress().(VariableAddressInstruction).getAstVariable() = var
   }
 }

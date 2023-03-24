@@ -68,18 +68,14 @@ module PrototypePollution {
    * Note that values from this type of source will need to flow through a `JSON.parse` call
    * in order to be flagged for prototype pollution.
    */
-  private class RemoteFlowAsSource extends Source {
-    RemoteFlowAsSource() { this instanceof RemoteFlowSource }
-
+  private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource {
     override DataFlow::FlowLabel getAFlowLabel() { result.isTaint() }
   }
 
   /**
    * A source of user-controlled objects.
    */
-  private class TaintedObjectSource extends Source {
-    TaintedObjectSource() { this instanceof TaintedObject::Source }
-
+  private class TaintedObjectSource extends Source instanceof TaintedObject::Source {
     override DataFlow::FlowLabel getAFlowLabel() { result = TaintedObject::label() }
   }
 

@@ -3,7 +3,7 @@
  * @description The `matches` builtin predicate takes a special pattern format as an input, not a regular expression.
  * @kind problem
  * @problem.severity warning
- * @id ql/rexexp-pattern
+ * @id ql/regex-pattern
  * @precision medium
  */
 
@@ -33,5 +33,5 @@ where
   c.getArgument(0) = arg and
   arg.getValue().regexpMatch(getALikelyRegExpPattern())
 select c,
-  "Argument \"$@\" looks like a reguar expression, but will be interpreted as a SQL 'LIKE' pattern.",
+  "Argument \"$@\" looks like a regular expression, but will be interpreted as a SQL 'LIKE' pattern.",
   arg, arg.getValue()

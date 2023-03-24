@@ -92,7 +92,8 @@ namespace Semmle.Extraction.CIL.Entities
                         yield return Tuples.cil_parameter_out(pe);
                     if (p.Attributes.HasFlag(ParameterAttributes.In))
                         yield return Tuples.cil_parameter_in(pe);
-                    Attribute.Populate(Context, pe, p.GetCustomAttributes());
+                    foreach (var c in Attribute.Populate(Context, pe, p.GetCustomAttributes()))
+                        yield return c;
                 }
 
                 yield return Tuples.metadata_handle(this, Context.Assembly, MetadataTokens.GetToken(handle));
@@ -205,7 +206,8 @@ namespace Semmle.Extraction.CIL.Entities
                     yield return Tuples.cil_newslot(this);
 
                 // Populate attributes
-                Attribute.Populate(Context, this, md.GetCustomAttributes());
+                foreach (var c in Attribute.Populate(Context, this, md.GetCustomAttributes()))
+                    yield return c;
             }
         }
 

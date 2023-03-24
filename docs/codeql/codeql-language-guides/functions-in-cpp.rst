@@ -40,8 +40,6 @@ It might be more interesting to find functions that are not called, using the st
    where not exists(FunctionCall fc | fc.getTarget() = f)
    select f, "This function is never called."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505891246456/>`__
-
 The new query finds functions that are not the target of any ``FunctionCall``—in other words, functions that are never called. You may be surprised by how many results the query finds. However, if you examine the results, you can see that many of the functions it finds are used indirectly. To create a query that finds only unused functions, we need to refine the query and exclude other ways of using a function.
 
 Excluding functions that are referenced with a function pointer
@@ -58,13 +56,11 @@ You can modify the query to remove functions where a function pointer is used to
      and not exists(FunctionAccess fa | fa.getTarget() = f)
    select f, "This function is never called, or referenced with a function pointer."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505890446605/>`__
-
 This query returns fewer results. However, if you examine the results then you can probably still find potential refinements.
 
-For example, there is a more complicated LGTM `query <https://lgtm.com/rules/2152580467/>`__ that finds unused static functions. To see the code for this query, click **Open in query console** at the top of the page.
+For example, there is a more complicated standard query, `Unused static function <https://codeql.github.com/codeql-query-help/cpp/cpp-unused-static-function/>`__, that finds unused static functions.
 
-   You can explore the definition of an element in the standard libraries and see what predicates are available. Use the keyboard **F3** button to open the definition of any element. Alternatively, hover over the element and click **Jump to definition** in the tooltip displayed. The library file is opened in a new tab with the definition highlighted.
+   You can explore the definition of an element in the standard libraries and see what predicates are available. Right-click the element to display the context menu, and click **Go to Definition**. The library file is opened in a new tab with the definition of the element highlighted.
 
 Finding a specific function
 ---------------------------
@@ -80,8 +76,6 @@ This query uses ``Function`` and ``FunctionCall`` to find calls to the function 
      and not fc.getArgument(1) instanceof StringLiteral
    select fc, "sprintf called with variable format string."
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505889506751/>`__
-
 This uses:
 
 -  ``Declaration.getQualifiedName()`` to identify calls to the specific function ``sprintf``.
@@ -89,7 +83,7 @@ This uses:
 
 Note that we could have used ``Declaration.getName()``, but ``Declaration.getQualifiedName()`` is a better choice because it includes the namespace. For example: ``getName()`` would return ``vector`` where ``getQualifiedName`` would return ``std::vector``.
 
-The LGTM version of this query is considerably more complicated, but if you look carefully you will find that its structure is the same. See `Non-constant format string <https://lgtm.com/rules/2152810612/>`__ and click **Open in query console** at the top of the page.
+The published version of this query is considerably more complicated, but if you look carefully you will find that its structure is the same. See `Non-constant format string <https://codeql.github.com/codeql-query-help/cpp/cpp-non-constant-format/>`__.
 
 Further reading
 ---------------

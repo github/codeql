@@ -4,7 +4,7 @@
 <qhelp>
 	<overview>
 		<p>
-			Downloading executeables or other sensitive files over an unencrypted connection 
+			Downloading executables or other sensitive files over an unencrypted connection 
 			can leave a server open to man-in-the-middle attacks (MITM). 
 			Such an attack can allow an attacker to insert arbitrary content 
 			into the downloaded file, and in the worst case, allow the attacker to execute 

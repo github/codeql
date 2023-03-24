@@ -6,6 +6,7 @@
  * @precision high
  * @id java/credentials-in-properties
  * @tags security
+ *       experimental
  *       external/cwe/cwe-555
  *       external/cwe/cwe-256
  *       external/cwe/cwe-260

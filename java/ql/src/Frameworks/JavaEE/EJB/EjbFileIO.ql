@@ -5,7 +5,6 @@
  *              for enterprise components.
  * @kind problem
  * @problem.severity error
- * @security-severity 5.8
  * @precision low
  * @id java/ejb/file-io
  * @tags reliability

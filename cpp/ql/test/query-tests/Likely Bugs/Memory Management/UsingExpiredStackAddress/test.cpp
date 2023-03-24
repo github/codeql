@@ -210,3 +210,60 @@ int field_indirect_maybe_bad(bool b) {
   escape1();
   return maybe_deref_p(b);
 }
+
+// These next tests cover subsequent stores to the same address in the same basic block.
+
+static struct S100 s102;
+
+void not_escape1() {
+  int x;
+  s102.p = &x;
+  s102.p = nullptr;
+}
+
+void calls_not_escape1() {
+  not_escape1();
+  int x = *s102.p; // GOOD
+}
+
+static struct S100 s103;
+
+void escape2() {
+  int x;
+  s103.p = nullptr;
+  s103.p = &x;
+}
+
+void calls_escape2() {
+  escape2();
+  int x = *s103.p; // BAD
+}
+
+bool unknown();
+static struct S100 s104;
+
+void not_escape2() {
+  int x;
+  s104.p = &x;
+  if(unknown()) { }
+  s104.p = nullptr;
+}
+
+void calls_not_escape2() {
+  not_escape2();
+  int x = *s104.p; // GOOD
+}
+
+static struct S100 s105;
+
+void escape3() {
+  int x;
+  s105.p = nullptr;
+  if(unknown()) { }
+  s105.p = &x;
+}
+
+void calls_escape3() {
+  escape3();
+  int x = *s105.p; // BAD
+}

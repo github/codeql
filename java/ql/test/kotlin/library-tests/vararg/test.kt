@@ -1,6 +1,6 @@
 
 fun sink(sunk: Int) {
-    
+
 }
 
 open class HasVarargConstructor {
@@ -43,4 +43,14 @@ fun myFun() {
     SuperclassHasVarargConstructor(91)
     HasVarargConstructor(*array)
     HasVarargConstructor("foo", *array)
+}
+
+open class X(
+    i: Int,
+    public vararg val s: String
+) { }
+
+fun fn(sl: List<String>) {
+    // reordered args:
+    val x = X(s = sl.toTypedArray(), i = 1)
 }

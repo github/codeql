@@ -23,7 +23,7 @@ class HeaderWriteTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "headerwrite" and
-    exists(HTTP::HeaderWrite hw, string name, string val | element = hw.toString() |
+    exists(Http::HeaderWrite hw, string name, string val | element = hw.toString() |
       hw.definesHeader(name, val) and
       value = name + ":" + val and
       hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),

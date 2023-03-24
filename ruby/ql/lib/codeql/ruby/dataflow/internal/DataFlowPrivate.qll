@@ -1,4 +1,5 @@
-private import ruby
+private import codeql.util.Boolean
+private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
 private import codeql.ruby.dataflow.SSA
@@ -43,55 +44,119 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override string toStringImpl() { result = this.getExprNode().toString() }
 }
 
+/**
+ * Gets a node that may execute last in `n`, and which, when it executes last,
+ * will be the value of `n`.
+ */
+private CfgNodes::ExprCfgNode getALastEvalNode(CfgNodes::ExprCfgNode n) {
+  result = n.(CfgNodes::ExprNodes::StmtSequenceCfgNode).getLastStmt()
+  or
+  result = n.(CfgNodes::ExprNodes::ConditionalExprCfgNode).getBranch(_)
+  or
+  result = n.(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
+  or
+  exists(CfgNodes::AstCfgNode branch |
+    branch = n.(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
+  |
+    result = branch.(CfgNodes::ExprNodes::InClauseCfgNode).getBody()
+    or
+    result = branch.(CfgNodes::ExprNodes::WhenClauseCfgNode).getBody()
+    or
+    result = branch
+  )
+}
+
+/** Gets a node for which to construct a post-update node for argument `arg`. */
+CfgNodes::ExprCfgNode getAPostUpdateNodeForArg(Argument arg) {
+  result = getALastEvalNode*(arg) and
+  not exists(getALastEvalNode(result))
+}
+
 /** Provides predicates related to local data flow. */
 module LocalFlow {
   private import codeql.ruby.dataflow.internal.SsaImpl
 
+  /** An SSA definition into which another SSA definition may flow. */
+  private class SsaInputDefinitionExtNode extends SsaDefinitionExtNode {
+    SsaInputDefinitionExtNode() {
+      def instanceof Ssa::PhiNode
+      or
+      def instanceof SsaImpl::PhiReadNode
+      //TODO: or def instanceof LocalFlow::UncertainExplicitSsaDefinition
+    }
+  }
+
   /**
-   * Holds if `nodeFrom` is a last node referencing SSA definition `def`, which
+   * Holds if `nodeFrom` is a node for SSA definition `def`, which can reach `next`.
+   */
+  private predicate localFlowSsaInputFromDef(
+    SsaDefinitionExtNode nodeFrom, SsaImpl::DefinitionExt def, SsaInputDefinitionExtNode next
+  ) {
+    exists(BasicBlock bb, int i |
+      lastRefBeforeRedefExt(def, bb, i, next.getDefinitionExt()) and
+      def = nodeFrom.getDefinitionExt() and
+      def.definesAt(_, bb, i, _)
+    )
+  }
+
+  /**
+   * Holds if `exprFrom` is a last read of SSA definition `def`, which
    * can reach `next`.
    */
-  private predicate localFlowSsaInput(Node nodeFrom, Ssa::Definition def, Ssa::Definition next) {
-    exists(BasicBlock bb, int i | lastRefBeforeRedef(def, bb, i, next) |
-      def = nodeFrom.(SsaDefinitionNode).getDefinition() and
-      def.definesAt(_, bb, i)
-      or
-      exists(CfgNodes::ExprCfgNode e |
-        e = nodeFrom.asExpr() and
-        e = bb.getNode(i) and
-        e.getExpr() instanceof VariableReadAccess
-      )
+  predicate localFlowSsaInputFromRead(
+    CfgNodes::ExprCfgNode exprFrom, SsaImpl::DefinitionExt def, SsaInputDefinitionExtNode next
+  ) {
+    exists(BasicBlock bb, int i |
+      SsaImpl::lastRefBeforeRedefExt(def, bb, i, next.getDefinitionExt()) and
+      exprFrom = bb.getNode(i) and
+      exprFrom.getExpr() instanceof VariableReadAccess
     )
   }
 
   /** Gets the SSA definition node corresponding to parameter `p`. */
-  SsaDefinitionNode getParameterDefNode(NamedParameter p) {
+  SsaDefinitionExtNode getParameterDefNode(NamedParameter p) {
     exists(BasicBlock bb, int i |
       bb.getNode(i).getNode() = p.getDefiningAccess() and
-      result.getDefinition().definesAt(_, bb, i)
+      result.getDefinitionExt().definesAt(_, bb, i, _)
     )
   }
 
   /** Gets the SSA definition node corresponding to the implicit `self` parameter for `m`. */
-  private SsaDefinitionNode getSelfParameterDefNode(MethodBase m) {
-    result.getDefinition().(Ssa::SelfDefinition).getSourceVariable().getDeclaringScope() = m
+  private SsaDefinitionExtNode getSelfParameterDefNode(MethodBase m) {
+    result.getDefinitionExt().(Ssa::SelfDefinition).getSourceVariable().getDeclaringScope() = m
   }
 
   /**
    * Holds if `nodeFrom` is a parameter node, and `nodeTo` is a corresponding SSA node.
    */
   predicate localFlowSsaParamInput(Node nodeFrom, Node nodeTo) {
-    nodeTo = getParameterDefNode(nodeFrom.(ParameterNode).getParameter())
+    nodeTo = getParameterDefNode(nodeFrom.(ParameterNodeImpl).getParameter())
     or
     nodeTo = getSelfParameterDefNode(nodeFrom.(SelfParameterNode).getMethod())
+  }
+
+  /**
+   * Holds if `nodeFrom -> nodeTo` is a step from a parameter to a capture entry node for
+   * that parameter.
+   *
+   * This is intended to recover from flow not currently recognised by ordinary capture flow.
+   */
+  predicate localFlowSsaParamCaptureInput(Node nodeFrom, Node nodeTo) {
+    exists(Ssa::CapturedEntryDefinition def |
+      nodeFrom.asParameter().(NamedParameter).getVariable() = def.getSourceVariable()
+      or
+      nodeFrom.(SelfParameterNode).getSelfVariable() = def.getSourceVariable()
+    |
+      nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def
+    )
   }
 
   /**
    * Holds if there is a local use-use flow step from `nodeFrom` to `nodeTo`
    * involving SSA definition `def`.
    */
-  predicate localSsaFlowStepUseUse(Ssa::Definition def, Node nodeFrom, Node nodeTo) {
-    def.hasAdjacentReads(nodeFrom.asExpr(), nodeTo.asExpr())
+  predicate localSsaFlowStepUseUse(SsaImpl::DefinitionExt def, Node nodeFrom, Node nodeTo) {
+    SsaImpl::adjacentReadPairExt(def, nodeFrom.asExpr(), nodeTo.asExpr())
   }
 
   /**
@@ -99,24 +164,20 @@ module LocalFlow {
    * SSA definition `def`.
    */
   private predicate localSsaFlowStep(Node nodeFrom, Node nodeTo) {
-    exists(Ssa::Definition def |
+    exists(SsaImpl::DefinitionExt def |
       // Flow from assignment into SSA definition
       def.(Ssa::WriteDefinition).assigns(nodeFrom.asExpr()) and
-      nodeTo.(SsaDefinitionNode).getDefinition() = def
+      nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def
       or
       // Flow from SSA definition to first read
-      def = nodeFrom.(SsaDefinitionNode).getDefinition() and
-      nodeTo.asExpr() = def.getAFirstRead()
+      def = nodeFrom.(SsaDefinitionExtNode).getDefinitionExt() and
+      firstReadExt(def, nodeTo.asExpr())
       or
       // Flow from read to next read
       localSsaFlowStepUseUse(def, nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
       or
-      // Flow into phi node
-      exists(Ssa::PhiNode phi |
-        localFlowSsaInput(nodeFrom, def, phi) and
-        phi = nodeTo.(SsaDefinitionNode).getDefinition() and
-        def = phi.getAnInput()
-      )
+      // Flow into phi (read) SSA definition node from def
+      localFlowSsaInputFromDef(nodeFrom, def, nodeTo)
     )
     // TODO
     // or
@@ -131,23 +192,9 @@ module LocalFlow {
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
     localSsaFlowStep(nodeFrom, nodeTo)
     or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::AssignExprCfgNode).getRhs()
-    or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
     or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::StmtSequenceCfgNode).getLastStmt()
-    or
-    nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::ConditionalExprCfgNode).getBranch(_)
-    or
-    exists(CfgNodes::AstCfgNode branch |
-      branch = nodeTo.asExpr().(CfgNodes::ExprNodes::CaseExprCfgNode).getBranch(_)
-    |
-      nodeFrom.asExpr() = branch.(CfgNodes::ExprNodes::InClauseCfgNode).getBody()
-      or
-      nodeFrom.asExpr() = branch.(CfgNodes::ExprNodes::WhenClauseCfgNode).getBody()
-      or
-      nodeFrom.asExpr() = branch
-    )
+    nodeFrom.asExpr() = getALastEvalNode(nodeTo.asExpr())
     or
     exists(CfgNodes::ExprCfgNode exprTo, ReturningStatementNode n |
       nodeFrom = n and
@@ -166,6 +213,12 @@ module LocalFlow {
           exists(for.getAPredecessor(s))
         ) and
         nodeFrom.asExpr() = for.getValue()
+      )
+    or
+    nodeTo.asExpr() =
+      any(CfgNodes::ExprNodes::BinaryOperationCfgNode op |
+        op.getExpr() instanceof BinaryLogicalOperation and
+        nodeFrom.asExpr() = op.getAnOperand()
       )
   }
 }
@@ -195,6 +248,10 @@ private class Argument extends CfgNodes::ExprCfgNode {
     this = call.getAnArgument() and
     this.getExpr() instanceof HashSplatExpr and
     arg.isHashSplat()
+    or
+    this = call.getArgument(0) and
+    this.getExpr() instanceof SplatExpr and
+    arg.isSplatAll()
   }
 
   /** Holds if this expression is the `i`th argument of `c`. */
@@ -203,10 +260,17 @@ private class Argument extends CfgNodes::ExprCfgNode {
   }
 }
 
+/** Holds if `n` is not a constant expression. */
+predicate isNonConstantExpr(CfgNodes::ExprCfgNode n) {
+  not exists(n.getConstantValue()) and
+  not n.getExpr() instanceof ConstantAccess
+}
+
 /** A collection of cached types and predicates to be evaluated in the same stage. */
 cached
 private module Cached {
   private import TaintTrackingPrivate as TaintTrackingPrivate
+  private import codeql.ruby.typetracking.TypeTrackerSpecific as TypeTrackerSpecific
 
   cached
   newtype TNode =
@@ -218,18 +282,27 @@ private module Cached {
         ret.getKind() = kind
       )
     } or
-    TSsaDefinitionNode(Ssa::Definition def) or
+    TSsaDefinitionExtNode(SsaImpl::DefinitionExt def) or
     TNormalParameterNode(Parameter p) {
       p instanceof SimpleParameter or
       p instanceof OptionalParameter or
       p instanceof KeywordParameter or
-      p instanceof HashSplatParameter
+      p instanceof HashSplatParameter or
+      p instanceof SplatParameter
     } or
     TSelfParameterNode(MethodBase m) or
     TBlockParameterNode(MethodBase m) or
+    TSynthHashSplatParameterNode(DataFlowCallable c) {
+      isParameterNode(_, c, any(ParameterPosition p | p.isKeyword(_)))
+    } or
     TExprPostUpdateNode(CfgNodes::ExprCfgNode n) {
-      n instanceof Argument or
-      n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
+      // filter out nodes that clearly don't need post-update nodes
+      isNonConstantExpr(n) and
+      (
+        n = getAPostUpdateNodeForArg(_)
+        or
+        n = any(CfgNodes::ExprNodes::InstanceVariableAccessCfgNode v).getReceiver()
+      )
     } or
     TSummaryNode(
       FlowSummaryImpl::Public::SummarizedCallable c,
@@ -240,18 +313,27 @@ private module Cached {
     TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
       FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
     } or
-    THashSplatArgumentsNode(CfgNodes::ExprNodes::CallCfgNode c) {
+    TSynthHashSplatArgumentNode(CfgNodes::ExprNodes::CallCfgNode c) {
       exists(Argument arg | arg.isArgumentOf(c, any(ArgumentPosition pos | pos.isKeyword(_))))
+      or
+      c.getAnArgument() instanceof CfgNodes::ExprNodes::PairCfgNode
     }
 
   class TParameterNode =
-    TNormalParameterNode or TBlockParameterNode or TSelfParameterNode or TSummaryParameterNode;
+    TNormalParameterNode or TBlockParameterNode or TSelfParameterNode or
+        TSynthHashSplatParameterNode or TSummaryParameterNode;
 
   private predicate defaultValueFlow(NamedParameter p, ExprNode e) {
     p.(OptionalParameter).getDefaultValue() = e.getExprNode().getExpr()
     or
     p.(KeywordParameter).getDefaultValue() = e.getExprNode().getExpr()
   }
+
+  cached
+  Location getLocation(NodeImpl n) { result = n.getLocationImpl() }
+
+  cached
+  string toString(NodeImpl n) { result = n.toStringImpl() }
 
   /**
    * This is the local flow predicate that is used as a building block in global
@@ -261,7 +343,7 @@ private module Cached {
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
-    defaultValueFlow(nodeTo.(ParameterNode).getParameter(), nodeFrom)
+    defaultValueFlow(nodeTo.(ParameterNodeImpl).getParameter(), nodeFrom)
     or
     LocalFlow::localFlowSsaParamInput(nodeFrom, nodeTo)
     or
@@ -269,6 +351,16 @@ private module Cached {
     or
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo) and
     not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
+    or
+    // Flow into phi node from read
+    exists(CfgNodes::ExprCfgNode exprFrom |
+      LocalFlow::localFlowSsaInputFromRead(exprFrom, _, nodeTo)
+    |
+      exprFrom = nodeFrom.asExpr() and
+      not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
+      or
+      exprFrom = nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr()
+    )
     or
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
@@ -278,7 +370,7 @@ private module Cached {
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
-    defaultValueFlow(nodeTo.(ParameterNode).getParameter(), nodeFrom)
+    defaultValueFlow(nodeTo.(ParameterNodeImpl).getParameter(), nodeFrom)
     or
     LocalFlow::localFlowSsaParamInput(nodeFrom, nodeTo)
     or
@@ -289,7 +381,12 @@ private module Cached {
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(nodeFrom, nodeTo, _)
   }
 
-  /** This is the local flow predicate that is used in type tracking. */
+  /**
+   * This is the local flow predicate that is used in type tracking.
+   *
+   * This needs to exclude `localFlowSsaParamInput` due to a performance trick
+   * in type tracking, where such steps are treated as call steps.
+   */
   cached
   predicate localFlowStepTypeTracker(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
@@ -300,12 +397,18 @@ private module Cached {
     )
     or
     LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
+    or
+    // Flow into phi node from read
+    exists(CfgNodes::ExprCfgNode exprFrom |
+      LocalFlow::localFlowSsaInputFromRead(exprFrom, _, nodeTo) and
+      exprFrom = [nodeFrom.asExpr(), nodeFrom.(PostUpdateNode).getPreUpdateNode().asExpr()]
+    )
   }
 
-  private predicate entrySsaDefinition(SsaDefinitionNode n) {
+  private predicate entrySsaDefinition(SsaDefinitionExtNode n) {
     n = LocalFlow::getParameterDefNode(_)
     or
-    exists(Ssa::Definition def | def = n.getDefinition() |
+    exists(SsaImpl::DefinitionExt def | def = n.getDefinitionExt() |
       def instanceof Ssa::SelfDefinition
       or
       def instanceof Ssa::CapturedEntryDefinition
@@ -328,37 +431,55 @@ private module Cached {
 
   cached
   predicate isLocalSourceNode(Node n) {
-    n instanceof ParameterNode
+    n instanceof TParameterNode
     or
-    n instanceof PostUpdateNodes::ExprPostUpdateNode
-    or
-    // Nodes that can't be reached from another entry definition or expression.
+    // Expressions that can't be reached from another entry definition or expression
+    n instanceof ExprNode and
     not reachedFromExprOrEntrySsaDef(n)
     or
     // Ensure all entry SSA definitions are local sources -- for parameters, this
-    // is needed by type tracking. Note that when the parameter has a default value,
-    // it will be reachable from an expression (the default value) and therefore
-    // won't be caught by the rule above.
+    // is needed by type tracking
     entrySsaDefinition(n)
+    or
+    // Needed for flow out in type tracking
+    n instanceof SynthReturnNode
+    or
+    // Needed for stores in type tracking
+    TypeTrackerSpecific::storeStepIntoSourceNode(_, n, _)
   }
 
   cached
-  newtype TContentSet =
+  newtype TOptionalContentSet =
     TSingletonContent(Content c) or
     TAnyElementContent() or
-    TElementLowerBoundContent(int lower) {
-      FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, lower)
-    }
+    TKnownOrUnknownElementContent(Content::KnownElementContent c) or
+    TElementLowerBoundContent(int lower, boolean includeUnknown) {
+      FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, includeUnknown,
+        lower)
+    } or
+    TElementContentOfTypeContent(string type, Boolean includeUnknown) {
+      type = any(Content::KnownElementContent content).getIndex().getValueType()
+    } or
+    TNoContentSet() // Only used by type-tracking
+
+  cached
+  class TContentSet =
+    TSingletonContent or TAnyElementContent or TKnownOrUnknownElementContent or
+        TElementLowerBoundContent or TElementContentOfTypeContent;
+
+  private predicate trackKnownValue(ConstantValue cv) {
+    not cv.isFloat(_) and
+    not cv.isComplex(_, _) and
+    (
+      not cv.isInt(_) or
+      cv.getInt() in [0 .. 10]
+    )
+  }
 
   cached
   newtype TContent =
-    TKnownElementContent(ConstantValue cv) {
-      not cv.isInt(_) or
-      cv.getInt() in [0 .. 10]
-    } or
+    TKnownElementContent(ConstantValue cv) { trackKnownValue(cv) } or
     TUnknownElementContent() or
-    TKnownPairValueContent(ConstantValue cv) or
-    TUnknownPairValueContent() or
     TFieldContent(string name) {
       name = any(InstanceVariable v).getName()
       or
@@ -370,11 +491,13 @@ private module Cached {
       // external model data. This, unfortunately, does not included any field names used
       // in models defined in QL code.
       exists(string input, string output |
-        ModelOutput::relevantSummaryModel(_, _, _, input, output, _)
+        ModelOutput::relevantSummaryModel(_, _, input, output, _)
       |
         name = [input, output].regexpFind("(?<=(^|\\.)Field\\[)[^\\]]+(?=\\])", _, _).trim()
       )
-    }
+    } or
+    // Only used by type-tracking
+    TAttributeName(string name) { name = any(SetterMethodCall c).getTargetName() }
 
   /**
    * Holds if `e` is an `ExprNode` that may be returned by a call to `c`.
@@ -389,20 +512,23 @@ private module Cached {
       )
     )
   }
+
+  cached
+  newtype TContentApprox =
+    TUnknownElementContentApprox() or
+    TKnownIntegerElementContentApprox() or
+    TKnownElementContentApprox(string approx) { approx = approxKnownElementIndex(_) } or
+    TNonElementContentApprox(Content c) { not c instanceof Content::ElementContent }
 }
 
 class TElementContent = TKnownElementContent or TUnknownElementContent;
-
-class TPairValueContent = TKnownPairValueContent or TUnknownPairValueContent;
 
 import Cached
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
-  exists(Ssa::Definition def | def = n.(SsaDefinitionNode).getDefinition() |
-    def instanceof Ssa::PhiNode or
-    def instanceof Ssa::CapturedEntryDefinition or
-    def instanceof Ssa::CapturedCallDefinition
+  exists(SsaImpl::DefinitionExt def | def = n.(SsaDefinitionExtNode).getDefinitionExt() |
+    not def instanceof Ssa::WriteDefinition
   )
   or
   n = LocalFlow::getParameterDefNode(_)
@@ -415,17 +541,22 @@ predicate nodeIsHidden(Node n) {
   or
   n instanceof SynthReturnNode
   or
-  n instanceof HashSplatArgumentsNode
+  n instanceof SynthHashSplatParameterNode
+  or
+  n instanceof SynthHashSplatArgumentNode
 }
 
 /** An SSA definition, viewed as a node in a data flow graph. */
-class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
-  Ssa::Definition def;
+class SsaDefinitionExtNode extends NodeImpl, TSsaDefinitionExtNode {
+  SsaImpl::DefinitionExt def;
 
-  SsaDefinitionNode() { this = TSsaDefinitionNode(def) }
+  SsaDefinitionExtNode() { this = TSsaDefinitionExtNode(def) }
 
   /** Gets the underlying SSA definition. */
-  Ssa::Definition getDefinition() { result = def }
+  SsaImpl::DefinitionExt getDefinitionExt() { result = def }
+
+  /** Gets the underlying variable. */
+  Variable getVariable() { result = def.getSourceVariable() }
 
   override CfgScope getCfgScope() { result = def.getBasicBlock().getScope() }
 
@@ -435,7 +566,7 @@ class SsaDefinitionNode extends NodeImpl, TSsaDefinitionNode {
 }
 
 /** An SSA definition for a `self` variable. */
-class SsaSelfDefinitionNode extends LocalSourceNode, SsaDefinitionNode {
+class SsaSelfDefinitionNode extends LocalSourceNode, SsaDefinitionExtNode {
   private SelfVariable self;
 
   SsaSelfDefinitionNode() { self = def.getSourceVariable() }
@@ -470,10 +601,13 @@ private module ParameterNodes {
   abstract class ParameterNodeImpl extends NodeImpl {
     abstract Parameter getParameter();
 
-    abstract predicate isSourceParameterOf(Callable c, ParameterPosition pos);
+    abstract predicate isParameterOf(DataFlowCallable c, ParameterPosition pos);
 
-    predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      this.isSourceParameterOf(c.asCallable(), pos)
+    final predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
+      exists(DataFlowCallable callable |
+        this.isParameterOf(callable, pos) and
+        c = callable.asCallable()
+      )
     }
   }
 
@@ -488,21 +622,26 @@ private module ParameterNodes {
 
     override Parameter getParameter() { result = parameter }
 
-    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
-      exists(int i | pos.isPositional(i) and c.getParameter(i) = parameter |
-        parameter instanceof SimpleParameter
-        or
-        parameter instanceof OptionalParameter
-      )
-      or
-      parameter =
-        any(KeywordParameter kp |
-          c.getAParameter() = kp and
-          pos.isKeyword(kp.getName())
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      exists(Callable callable | callable = c.asCallable() |
+        exists(int i | pos.isPositional(i) and callable.getParameter(i) = parameter |
+          parameter instanceof SimpleParameter
+          or
+          parameter instanceof OptionalParameter
         )
-      or
-      parameter = c.getAParameter().(HashSplatParameter) and
-      pos.isHashSplat()
+        or
+        parameter =
+          any(KeywordParameter kp |
+            callable.getAParameter() = kp and
+            pos.isKeyword(kp.getName())
+          )
+        or
+        parameter = callable.getAParameter().(HashSplatParameter) and
+        pos.isHashSplat()
+        or
+        parameter = callable.getParameter(0).(SplatParameter) and
+        pos.isSplatAll()
+      )
     }
 
     override CfgScope getCfgScope() { result = parameter.getCallable() }
@@ -523,10 +662,13 @@ private module ParameterNodes {
 
     final MethodBase getMethod() { result = method }
 
+    /** Gets the underlying `self` variable. */
+    final SelfVariable getSelfVariable() { result.getDeclaringScope() = method }
+
     override Parameter getParameter() { none() }
 
-    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
-      method = c and pos.isSelf()
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      method = c.asCallable() and pos.isSelf()
     }
 
     override CfgScope getCfgScope() { result = method }
@@ -551,8 +693,8 @@ private module ParameterNodes {
       result = method.getAParameter() and result instanceof BlockParameter
     }
 
-    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) {
-      c = method and pos.isBlock()
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c.asCallable() = method and pos.isBlock()
     }
 
     override CfgScope getCfgScope() { result = method }
@@ -570,6 +712,73 @@ private module ParameterNodes {
     }
   }
 
+  /**
+   * For all methods containing keyword parameters, we construct a synthesized
+   * (hidden) parameter node to contain all keyword arguments. This allows us
+   * to handle cases like
+   *
+   * ```rb
+   * def foo(p1:, p2:)
+   *   sink(p1)
+   *   sink(p2)
+   * end
+   *
+   * args = {:p1 => taint(1), :p2 => taint(2) }
+   * foo(**args)
+   * ```
+   *
+   * by adding read steps out of the synthesized parameter node to the relevant
+   * keyword parameters.
+   *
+   * Note that this will introduce a bit of redundancy in cases like
+   *
+   * ```rb
+   * foo(p1: taint(1), p2: taint(2))
+   * ```
+   *
+   * where direct keyword matching is possible, since we construct a synthesized hash
+   * splat argument (`SynthHashSplatArgumentNode`) at the call site, which means that
+   * `taint(1)` will flow into `p1` both via normal keyword matching and via the synthesized
+   * nodes (and similarly for `p2`). However, this redundancy is OK since
+   *  (a) it means that type-tracking through keyword arguments also works in most cases,
+   *  (b) read/store steps can be avoided when direct keyword matching is possible, and
+   *      hence access path limits are not a concern, and
+   *  (c) since the synthesized nodes are hidden, the reported data-flow paths will be
+   *      collapsed anyway.
+   */
+  class SynthHashSplatParameterNode extends ParameterNodeImpl, TSynthHashSplatParameterNode {
+    private DataFlowCallable callable;
+
+    SynthHashSplatParameterNode() { this = TSynthHashSplatParameterNode(callable) }
+
+    /**
+     * Gets a keyword parameter that will be the result of reading `c` out of this
+     * synthesized node.
+     */
+    ParameterNode getAKeywordParameter(ContentSet c) {
+      exists(string name |
+        isParameterNode(result, callable, any(ParameterPosition p | p.isKeyword(name)))
+      |
+        c = getKeywordContent(name) or
+        c.isSingleton(TUnknownElementContent())
+      )
+    }
+
+    final override Parameter getParameter() { none() }
+
+    final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c = callable and pos.isSynthHashSplat()
+    }
+
+    final override CfgScope getCfgScope() { result = callable.asCallable() }
+
+    final override DataFlowCallable getEnclosingCallable() { result = callable }
+
+    final override Location getLocationImpl() { result = callable.getLocation() }
+
+    final override string toStringImpl() { result = "**kwargs" }
+  }
+
   /** A parameter for a library callable with a flow summary. */
   class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
     private FlowSummaryImpl::Public::SummarizedCallable sc;
@@ -578,8 +787,6 @@ private module ParameterNodes {
     SummaryParameterNode() { this = TSummaryParameterNode(sc, pos_) }
 
     override Parameter getParameter() { none() }
-
-    override predicate isSourceParameterOf(Callable c, ParameterPosition pos) { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       sc = c.asLibraryCallable() and pos = pos_
@@ -599,10 +806,13 @@ import ParameterNodes
 
 /** A data-flow node used to model flow summaries. */
 class SummaryNode extends NodeImpl, TSummaryNode {
-  private FlowSummaryImpl::Public::SummarizedCallable c;
-  private FlowSummaryImpl::Private::SummaryNodeState state;
+  FlowSummaryImpl::Public::SummarizedCallable c;
+  FlowSummaryImpl::Private::SummaryNodeState state;
 
   SummaryNode() { this = TSummaryNode(c, state) }
+
+  /** Gets the summarized callable that this node belongs to. */
+  FlowSummaryImpl::Public::SummarizedCallable getSummarizedCallable() { result = c }
 
   override CfgScope getCfgScope() { none() }
 
@@ -661,8 +871,8 @@ private module ArgumentNodes {
       (
         this.asExpr() = call.getBlock()
         or
-        exists(CfgNodes::ExprCfgNode arg, int n |
-          arg = call.getArgument(n) and
+        exists(CfgNodes::ExprCfgNode arg |
+          arg = call.getAnArgument() and
           this.asExpr() = arg and
           arg.getExpr() instanceof BlockArgument
         )
@@ -689,10 +899,10 @@ private module ArgumentNodes {
    * part of the method signature, such that those cannot end up in the hash-splat
    * parameter.
    */
-  class HashSplatArgumentsNode extends ArgumentNode, THashSplatArgumentsNode {
+  class SynthHashSplatArgumentNode extends ArgumentNode, TSynthHashSplatArgumentNode {
     CfgNodes::ExprNodes::CallCfgNode c;
 
-    HashSplatArgumentsNode() { this = THashSplatArgumentsNode(c) }
+    SynthHashSplatArgumentNode() { this = TSynthHashSplatArgumentNode(c) }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
       this.sourceArgumentOf(call.asCall(), pos)
@@ -704,10 +914,10 @@ private module ArgumentNodes {
     }
   }
 
-  private class HashSplatArgumentsNodeImpl extends NodeImpl, THashSplatArgumentsNode {
+  private class SynthHashSplatArgumentNodeImpl extends NodeImpl, TSynthHashSplatArgumentNode {
     CfgNodes::ExprNodes::CallCfgNode c;
 
-    HashSplatArgumentsNodeImpl() { this = THashSplatArgumentsNode(c) }
+    SynthHashSplatArgumentNodeImpl() { this = TSynthHashSplatArgumentNode(c) }
 
     override CfgScope getCfgScope() { result = c.getExpr().getCfgScope() }
 
@@ -718,6 +928,11 @@ private module ArgumentNodes {
 }
 
 import ArgumentNodes
+
+/** A call to `new`. */
+private class NewCall extends DataFlowCall {
+  NewCall() { this.asCall().getExpr().(MethodCall).getMethodName() = "new" }
+}
 
 /** A data-flow node that represents a value syntactically returned by a callable. */
 abstract class ReturningNode extends Node {
@@ -762,7 +977,12 @@ private module ReturnNodes {
     override ReturnKind getKind() {
       if n.getNode() instanceof BreakStmt
       then result instanceof BreakReturnKind
-      else result instanceof NormalReturnKind
+      else
+        exists(CfgScope scope | scope = this.getCfgScope() |
+          if isUserDefinedNew(scope)
+          then result instanceof NewReturnKind
+          else result instanceof NormalReturnKind
+        )
     }
   }
 
@@ -786,7 +1006,42 @@ private module ReturnNodes {
   class ExprReturnNode extends ReturningNode, ExprNode {
     ExprReturnNode() { exists(Callable c | implicitReturn(c, this) = c.getAStmt()) }
 
-    override ReturnKind getKind() { result instanceof NormalReturnKind }
+    override ReturnKind getKind() {
+      exists(CfgScope scope | scope = this.(NodeImpl).getCfgScope() |
+        if isUserDefinedNew(scope)
+        then result instanceof NewReturnKind
+        else result instanceof NormalReturnKind
+      )
+    }
+  }
+
+  /**
+   * A `self` node inside an `initialize` method through which data may return.
+   *
+   * For example, in
+   *
+   * ```rb
+   * class C
+   *   def initialize(x)
+   *     @x = x
+   *   end
+   * end
+   * ```
+   *
+   * the implicit `self` reference in `@x` will return data stored in the field
+   * `x` out to the call `C.new`.
+   */
+  class InitializeReturnNode extends ExprPostUpdateNode, ReturningNode {
+    InitializeReturnNode() {
+      exists(Method initialize |
+        this.getCfgScope() = initialize and
+        initialize.getName() = "initialize" and
+        initialize = any(ClassDeclaration c).getAMethod() and
+        this.getPreUpdateNode().asExpr().getExpr() instanceof SelfVariableReadAccess
+      )
+    }
+
+    override ReturnKind getKind() { result instanceof NewReturnKind }
   }
 
   /**
@@ -822,7 +1077,14 @@ private module ReturnNodes {
 
     SummaryReturnNode() { FlowSummaryImpl::Private::summaryReturnNode(this, rk) }
 
-    override ReturnKind getKind() { result = rk }
+    override ReturnKind getKind() {
+      result = rk
+      or
+      exists(NewCall new |
+        TLibraryCallable(c) = viableLibraryCallable(new) and
+        result instanceof NewReturnKind
+      )
+    }
   }
 }
 
@@ -846,7 +1108,9 @@ private module OutNodes {
 
     override DataFlowCall getCall(ReturnKind kind) {
       result = call and
-      kind instanceof NormalReturnKind
+      if call instanceof NewCall
+      then kind instanceof NewReturnKind
+      else kind instanceof NormalReturnKind
     }
   }
 
@@ -862,19 +1126,48 @@ private module OutNodes {
 import OutNodes
 
 predicate jumpStep(Node pred, Node succ) {
-  SsaImpl::captureFlowIn(_, pred.(SsaDefinitionNode).getDefinition(),
-    succ.(SsaDefinitionNode).getDefinition())
+  SsaImpl::captureFlowIn(_, pred.(SsaDefinitionExtNode).getDefinitionExt(),
+    succ.(SsaDefinitionExtNode).getDefinitionExt())
   or
-  SsaImpl::captureFlowOut(_, pred.(SsaDefinitionNode).getDefinition(),
-    succ.(SsaDefinitionNode).getDefinition())
+  SsaImpl::captureFlowOut(_, pred.(SsaDefinitionExtNode).getDefinitionExt(),
+    succ.(SsaDefinitionExtNode).getDefinitionExt())
   or
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
+  or
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
+  or
+  any(AdditionalJumpStep s).step(pred, succ)
 }
 
 private ContentSet getKeywordContent(string name) {
   exists(ConstantValue::ConstantSymbolValue key |
     result.isSingleton(TKnownElementContent(key)) and
     key.isSymbol(name)
+  )
+}
+
+/**
+ * Subset of `storeStep` that should be shared with type-tracking.
+ */
+predicate storeStepCommon(Node node1, ContentSet c, Node node2) {
+  // Wrap all key-value arguments in a synthesized hash-splat argument node
+  exists(CfgNodes::ExprNodes::CallCfgNode call | node2 = TSynthHashSplatArgumentNode(call) |
+    // symbol key
+    exists(ArgumentPosition keywordPos, string name |
+      node1.asExpr().(Argument).isArgumentOf(call, keywordPos) and
+      keywordPos.isKeyword(name) and
+      c = getKeywordContent(name)
+    )
+    or
+    // non-symbol key
+    exists(CfgNodes::ExprNodes::PairCfgNode pair, CfgNodes::ExprCfgNode key, ConstantValue cv |
+      node1.asExpr() = pair.getValue() and
+      pair = call.getAnArgument() and
+      key = pair.getKey() and
+      cv = key.getConstantValue() and
+      not cv.isSymbol(_) and
+      c.isSingleton(TKnownElementContent(cv))
+    )
   )
 }
 
@@ -908,32 +1201,7 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
   or
-  // Needed for pairs passed into method calls where the key is not a symbol,
-  // that is, where it is not a keyword argument.
-  node2.asExpr() =
-    any(CfgNodes::ExprNodes::PairCfgNode pair |
-      exists(CfgNodes::ExprCfgNode key |
-        key = pair.getKey() and
-        pair.getValue() = node1.asExpr()
-      |
-        exists(ConstantValue cv |
-          cv = key.getConstantValue() and
-          not cv.isSymbol(_) and // handled as a keyword argument
-          c.isSingleton(TKnownPairValueContent(cv))
-        )
-        or
-        not exists(key.getConstantValue()) and
-        c.isSingleton(TUnknownPairValueContent())
-      )
-    )
-  or
-  // Wrap all keyword arguments in a synthesized hash-splat argument node
-  exists(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition keywordPos, string name |
-    node2 = THashSplatArgumentsNode(call) and
-    node1.asExpr().(Argument).isArgumentOf(call, keywordPos) and
-    keywordPos.isKeyword(name) and
-    c = getKeywordContent(name)
-  )
+  storeStepCommon(node1, c, node2)
 }
 
 /**
@@ -955,12 +1223,15 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   // (instance variable assignment or setter method call).
   node2.asExpr() =
     any(CfgNodes::ExprNodes::MethodCallCfgNode call |
-      node1.asExpr() = call.getReceiver() and
+      node1.asExpr() =
+        any(CfgNodes::ExprCfgNode e | e = call.getReceiver() and isNonConstantExpr(e)) and
       call.getNumberOfArguments() = 0 and
       c.isSingleton(any(Content::FieldContent ct |
           ct.getName() = "@" + call.getExpr().getMethodName()
         ))
     )
+  or
+  node2 = node1.(SynthHashSplatParameterNode).getAKeywordParameter(c)
   or
   FlowSummaryImpl::Private::Steps::summaryReadStep(node1, c, node2)
 }
@@ -976,11 +1247,11 @@ predicate clearsContent(Node n, ContentSet c) {
   // Filter out keyword arguments that are part of the method signature from
   // the hash-splat parameter
   exists(
-    DataFlowCallable callable, ParameterPosition hashSplatPos, ParameterNodeImpl keywordParam,
+    DataFlowCallable callable, HashSplatParameter hashSplatParam, ParameterNodeImpl keywordParam,
     ParameterPosition keywordPos, string name
   |
-    n.(ParameterNodes::NormalParameterNode).isParameterOf(callable, hashSplatPos) and
-    hashSplatPos.isHashSplat() and
+    n = TNormalParameterNode(hashSplatParam) and
+    callable.asCallable() = hashSplatParam.getCallable() and
     keywordParam.isParameterOf(callable, keywordPos) and
     keywordPos.isKeyword(name) and
     c = getKeywordContent(name)
@@ -1027,7 +1298,18 @@ private module PostUpdateNodes {
 
     ExprPostUpdateNode() { this = TExprPostUpdateNode(e) }
 
-    override ExprNode getPreUpdateNode() { e = result.getExprNode() }
+    override ExprNode getPreUpdateNode() {
+      // For compound arguments, such as `m(if b then x else y)`, we want the leaf nodes
+      // `[post] x` and `[post] y` to have two pre-update nodes: (1) the compound argument,
+      // `if b then x else y`; and the (2) the underlying expressions; `x` and `y`,
+      // respectively.
+      //
+      // This ensures that we get flow out of the call into both leafs (1), while still
+      // maintaining the invariant that the underlying expression is a pre-update node (2).
+      e = getAPostUpdateNodeForArg(result.getExprNode())
+      or
+      e = result.getExprNode()
+    }
 
     override CfgScope getCfgScope() { result = e.getExpr().getCfgScope() }
 
@@ -1049,7 +1331,13 @@ private import PostUpdateNodes
 
 /** A node that performs a type cast. */
 class CastNode extends Node {
-  CastNode() { this instanceof ReturningNode }
+  CastNode() {
+    // ensure that actual return nodes are included in the path graph
+    this instanceof ReturningNode
+    or
+    // ensure that all variable assignments are included in the path graph
+    this.(SsaDefinitionExtNode).getDefinitionExt() instanceof Ssa::WriteDefinition
+  }
 }
 
 class DataFlowExpr = CfgNodes::ExprCfgNode;
@@ -1092,7 +1380,7 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
     creation.asExpr() =
       any(CfgNodes::ExprNodes::MethodCallCfgNode mc |
         c.asCallable() = mc.getBlock().getExpr() and
-        mc.getExpr().getMethodName() = "lambda"
+        mc.getExpr().getMethodName() = ["lambda", "proc"]
       )
   )
 }
@@ -1129,3 +1417,79 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
 }
+
+/** An approximated `Content`. */
+class ContentApprox extends TContentApprox {
+  string toString() {
+    this = TUnknownElementContentApprox() and
+    result = "element"
+    or
+    this = TKnownIntegerElementContentApprox() and
+    result = "approximated integer element"
+    or
+    exists(string approx |
+      this = TKnownElementContentApprox(approx) and
+      result = "approximated element " + approx
+    )
+    or
+    exists(Content c |
+      this = TNonElementContentApprox(c) and
+      result = c.toString()
+    )
+  }
+}
+
+/**
+ * Gets a string for approximating known element indices.
+ *
+ * We take two characters from the serialized index as the projection,
+ * since for symbols this will include the first character.
+ */
+private string approxKnownElementIndex(Content::KnownElementContent c) {
+  not c.getIndex().isInt(_) and
+  exists(string s | s = c.getIndex().serialize() |
+    s.length() < 2 and
+    result = s
+    or
+    result = s.prefix(2)
+    or
+    // workaround for `prefix` not working with Unicode characters
+    s.length() >= 2 and
+    not exists(s.prefix(2)) and
+    result = s
+  )
+}
+
+/** Gets an approximated value for content `c`. */
+ContentApprox getContentApprox(Content c) {
+  c instanceof Content::UnknownElementContent and
+  result = TUnknownElementContentApprox()
+  or
+  c.(Content::KnownElementContent).getIndex().isInt(_) and
+  result = TKnownIntegerElementContentApprox()
+  or
+  result = TKnownElementContentApprox(approxKnownElementIndex(c))
+  or
+  result = TNonElementContentApprox(c)
+}
+
+/**
+ * A unit class for adding additional jump steps.
+ *
+ * Extend this class to add additional jump steps.
+ */
+class AdditionalJumpStep extends Unit {
+  /**
+   * Holds if data can flow from `pred` to `succ` in a way that discards call contexts.
+   */
+  abstract predicate step(Node pred, Node succ);
+}
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

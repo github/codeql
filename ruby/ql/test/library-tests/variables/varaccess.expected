@@ -279,6 +279,23 @@ variableAccess
 | ssa.rb:84:6:86:8 | self | ssa.rb:81:1:88:3 | self | ssa.rb:81:1:88:3 | m11 |
 | ssa.rb:85:10:85:22 | self | ssa.rb:81:1:88:3 | self | ssa.rb:81:1:88:3 | m11 |
 | ssa.rb:85:15:85:22 | captured | ssa.rb:82:3:82:10 | captured | ssa.rb:81:1:88:3 | m11 |
+| ssa.rb:90:9:90:10 | b1 | ssa.rb:90:9:90:10 | b1 | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:90:13:90:14 | b2 | ssa.rb:90:13:90:14 | b2 | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:90:17:90:18 | b3 | ssa.rb:90:17:90:18 | b3 | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:90:21:90:22 | b4 | ssa.rb:90:21:90:22 | b4 | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:91:3:91:3 | x | ssa.rb:91:3:91:3 | x | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:92:7:92:8 | b1 | ssa.rb:90:9:90:10 | b1 | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:93:5:93:10 | self | ssa.rb:90:1:103:3 | self | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:93:10:93:10 | x | ssa.rb:91:3:91:3 | x | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:94:10:94:11 | b2 | ssa.rb:90:13:90:14 | b2 | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:95:5:95:10 | self | ssa.rb:90:1:103:3 | self | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:95:10:95:10 | x | ssa.rb:91:3:91:3 | x | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:98:7:98:8 | b3 | ssa.rb:90:17:90:18 | b3 | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:99:5:99:10 | self | ssa.rb:90:1:103:3 | self | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:99:10:99:10 | x | ssa.rb:91:3:91:3 | x | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:100:10:100:11 | b4 | ssa.rb:90:21:90:22 | b4 | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:101:5:101:10 | self | ssa.rb:90:1:103:3 | self | ssa.rb:90:1:103:3 | m12 |
+| ssa.rb:101:10:101:10 | x | ssa.rb:91:3:91:3 | x | ssa.rb:90:1:103:3 | m12 |
 explicitWrite
 | class_variables.rb:1:1:1:3 | @@x | class_variables.rb:1:1:1:8 | ... = ... |
 | class_variables.rb:19:3:19:5 | @@x | class_variables.rb:19:3:19:10 | ... = ... |
@@ -349,6 +366,7 @@ explicitWrite
 | ssa.rb:69:5:69:12 | captured | ssa.rb:69:5:69:17 | ... = ... |
 | ssa.rb:75:3:75:10 | captured | ssa.rb:75:3:75:14 | ... = ... |
 | ssa.rb:82:3:82:10 | captured | ssa.rb:82:3:82:14 | ... = ... |
+| ssa.rb:91:3:91:3 | x | ssa.rb:91:3:91:7 | ... = ... |
 implicitWrite
 | nested_scopes.rb:15:23:15:23 | a |
 | nested_scopes.rb:16:26:16:26 | x |
@@ -390,6 +408,10 @@ implicitWrite
 | ssa.rb:53:8:53:10 | foo |
 | ssa.rb:64:8:64:8 | a |
 | ssa.rb:66:15:66:15 | a |
+| ssa.rb:90:9:90:10 | b1 |
+| ssa.rb:90:13:90:14 | b2 |
+| ssa.rb:90:17:90:18 | b3 |
+| ssa.rb:90:21:90:22 | b4 |
 readAccess
 | class_variables.rb:3:1:3:5 | self |
 | class_variables.rb:3:3:3:5 | @@x |
@@ -582,3 +604,15 @@ readAccess
 | ssa.rb:84:6:86:8 | self |
 | ssa.rb:85:10:85:22 | self |
 | ssa.rb:85:15:85:22 | captured |
+| ssa.rb:92:7:92:8 | b1 |
+| ssa.rb:93:5:93:10 | self |
+| ssa.rb:93:10:93:10 | x |
+| ssa.rb:94:10:94:11 | b2 |
+| ssa.rb:95:5:95:10 | self |
+| ssa.rb:95:10:95:10 | x |
+| ssa.rb:98:7:98:8 | b3 |
+| ssa.rb:99:5:99:10 | self |
+| ssa.rb:99:10:99:10 | x |
+| ssa.rb:100:10:100:11 | b4 |
+| ssa.rb:101:5:101:10 | self |
+| ssa.rb:101:10:101:10 | x |

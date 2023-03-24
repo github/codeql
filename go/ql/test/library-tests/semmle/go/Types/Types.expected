@@ -1,99 +1,99 @@
-| A | A |
-| A2 | A2 |
-| AC | AC |
-| AEmbedded | AEmbedded |
-| AExtended | AExtended |
-| B | B |
-| Bar | Bar |
-| Baz | Baz |
-| C | C |
-| CircularGenericStruct1 | CircularGenericStruct1 |
-| CircularGenericStruct2 | CircularGenericStruct2 |
-| EmbedsBaz | EmbedsBaz |
-| Foo | Foo |
-| G | G |
-| GenericArray | GenericArray |
-| GenericChannel | GenericChannel |
-| GenericInterface | GenericInterface |
-| GenericMap1 | GenericMap1 |
-| GenericMap2 | GenericMap2 |
-| GenericNamed | GenericNamed |
-| GenericPointer | GenericPointer |
-| GenericSignature | GenericSignature |
-| GenericSlice | GenericSlice |
-| GenericStruct1 | GenericStruct1 |
-| GenericStruct2 | GenericStruct2 |
-| GenericStruct2b | GenericStruct2b |
-| HasBlankTypeParam | HasBlankTypeParam |
-| HasBlankTypeParams | HasBlankTypeParams |
-| MyFuncType1 | MyFuncType1 |
-| MyFuncType2 | MyFuncType2 |
-| MyInterface | MyInterface |
-| MyMapType | MyMapType |
-| Qux | Qux |
-| T | T |
-| T | T |
-| T2 | T2 |
-| T3 | T3 |
-| T4 | T4 |
-| UsesCircularGenericStruct1 | UsesCircularGenericStruct1 |
-| a | a |
-| b | b |
-| base | base |
-| c | c |
-| d | d |
-| embedder | embedder |
-| embedder2 | embedder2 |
-| embedder3 | embedder3 |
-| embedder4 | embedder4 |
-| i0 | i0 |
-| i1 | i1 |
-| i2 | i2 |
-| i3 | i3 |
-| i4 | i4 |
-| i5 | i5 |
-| i6 | i6 |
-| i7 | i7 |
-| i8 | i8 |
-| i9 | i9 |
-| i10 | i10 |
-| i11 | i11 |
-| i12 | i12 |
-| i13 | i13 |
-| i14 | i14 |
-| i15 | i15 |
-| i16 | i16 |
-| i17 | i17 |
-| i18 | i18 |
-| i19 | i19 |
-| i20 | i20 |
-| ptrembedder | ptrembedder |
-| s | s |
-| t | t |
-| testComparable | testComparable |
-| testComparable0 | testComparable0 |
-| testComparable1 | testComparable1 |
-| testComparable2 | testComparable2 |
-| testComparable3 | testComparable3 |
-| testComparable4 | testComparable4 |
-| testComparable5 | testComparable5 |
-| testComparable6 | testComparable6 |
-| testComparable7 | testComparable7 |
-| testComparable8 | testComparable8 |
-| testComparable9 | testComparable9 |
-| testComparable10 | testComparable10 |
-| testComparable11 | testComparable11 |
-| testComparable12 | testComparable12 |
-| testComparable13 | testComparable13 |
-| testComparable14 | testComparable14 |
-| testComparable15 | testComparable15 |
-| testComparable16 | testComparable16 |
-| testComparable17 | testComparable17 |
-| testComparable18 | testComparable18 |
-| testComparable19 | testComparable19 |
-| testComparable20 | testComparable20 |
-| testComparable21 | testComparable21 |
-| testComparable22 | testComparable22 |
-| testComparable23 | testComparable23 |
-| u | u |
-| v | v |
+| cyclic.go:3:6:3:6 | s | s |
+| cyclic.go:7:6:7:6 | t | t |
+| cyclic.go:12:6:12:6 | u | u |
+| cyclic.go:16:6:16:6 | v | v |
+| depth.go:5:6:5:6 | a | a |
+| depth.go:10:6:10:6 | b | b |
+| depth.go:14:6:14:6 | c | c |
+| depth.go:18:6:18:6 | d | d |
+| embedded.go:3:6:3:8 | Baz | Baz |
+| embedded.go:7:6:7:8 | Qux | Qux |
+| embedded.go:12:6:12:14 | EmbedsBaz | EmbedsBaz |
+| generic.go:3:6:3:19 | GenericStruct1 | GenericStruct1 |
+| generic.go:11:6:11:27 | CircularGenericStruct1 | CircularGenericStruct1 |
+| generic.go:15:6:15:31 | UsesCircularGenericStruct1 | UsesCircularGenericStruct1 |
+| generic.go:19:6:19:19 | GenericStruct2 | GenericStruct2 |
+| generic.go:24:6:24:20 | GenericStruct2b | GenericStruct2b |
+| generic.go:28:6:28:27 | CircularGenericStruct2 | CircularGenericStruct2 |
+| generic.go:32:6:32:21 | GenericInterface | GenericInterface |
+| generic.go:36:6:36:17 | GenericArray | GenericArray |
+| generic.go:37:6:37:19 | GenericPointer | GenericPointer |
+| generic.go:38:6:38:17 | GenericSlice | GenericSlice |
+| generic.go:39:6:39:16 | GenericMap1 | GenericMap1 |
+| generic.go:40:6:40:16 | GenericMap2 | GenericMap2 |
+| generic.go:41:6:41:19 | GenericChannel | GenericChannel |
+| generic.go:42:6:42:14 | MyMapType | MyMapType |
+| generic.go:43:6:43:17 | GenericNamed | GenericNamed |
+| generic.go:44:6:44:16 | MyFuncType1 | MyFuncType1 |
+| generic.go:45:6:45:16 | MyFuncType2 | MyFuncType2 |
+| generic.go:47:6:47:16 | MyInterface | MyInterface |
+| generic.go:67:6:67:22 | HasBlankTypeParam | HasBlankTypeParam |
+| generic.go:68:6:68:23 | HasBlankTypeParams | HasBlankTypeParams |
+| generic.go:84:6:84:21 | GenericSignature | GenericSignature |
+| interface.go:3:6:3:7 | i0 | i0 |
+| interface.go:5:6:5:7 | i1 | i1 |
+| interface.go:9:6:9:7 | i2 | i2 |
+| interface.go:13:6:13:7 | i3 | i3 |
+| interface.go:18:6:18:7 | i4 | i4 |
+| interface.go:23:6:23:7 | i5 | i5 |
+| interface.go:28:6:28:7 | i6 | i6 |
+| interface.go:34:6:34:7 | i7 | i7 |
+| interface.go:41:6:41:7 | i8 | i8 |
+| interface.go:47:6:47:7 | i9 | i9 |
+| interface.go:52:6:52:8 | i10 | i10 |
+| interface.go:57:6:57:8 | i11 | i11 |
+| interface.go:63:6:63:8 | i12 | i12 |
+| interface.go:69:6:69:8 | i13 | i13 |
+| interface.go:75:6:75:8 | i14 | i14 |
+| interface.go:81:6:81:8 | i15 | i15 |
+| interface.go:87:6:87:8 | i16 | i16 |
+| interface.go:91:6:91:8 | i17 | i17 |
+| interface.go:95:6:95:8 | i18 | i18 |
+| interface.go:101:6:101:8 | i19 | i19 |
+| interface.go:105:6:105:8 | i20 | i20 |
+| interface.go:114:6:114:19 | testComparable | testComparable |
+| interface.go:115:6:115:20 | testComparable0 | testComparable0 |
+| interface.go:116:6:116:20 | testComparable1 | testComparable1 |
+| interface.go:117:6:117:20 | testComparable2 | testComparable2 |
+| interface.go:118:6:118:20 | testComparable3 | testComparable3 |
+| interface.go:119:6:119:20 | testComparable4 | testComparable4 |
+| interface.go:120:6:120:20 | testComparable5 | testComparable5 |
+| interface.go:121:6:121:20 | testComparable6 | testComparable6 |
+| interface.go:122:6:122:20 | testComparable7 | testComparable7 |
+| interface.go:123:6:123:20 | testComparable8 | testComparable8 |
+| interface.go:124:6:124:20 | testComparable9 | testComparable9 |
+| interface.go:125:6:125:21 | testComparable10 | testComparable10 |
+| interface.go:126:6:126:21 | testComparable11 | testComparable11 |
+| interface.go:127:6:127:21 | testComparable12 | testComparable12 |
+| interface.go:128:6:128:21 | testComparable13 | testComparable13 |
+| interface.go:129:6:129:21 | testComparable14 | testComparable14 |
+| interface.go:130:6:130:21 | testComparable15 | testComparable15 |
+| interface.go:131:6:131:21 | testComparable16 | testComparable16 |
+| interface.go:132:6:132:21 | testComparable17 | testComparable17 |
+| interface.go:133:6:133:21 | testComparable18 | testComparable18 |
+| interface.go:134:6:134:21 | testComparable19 | testComparable19 |
+| interface.go:135:6:135:21 | testComparable20 | testComparable20 |
+| interface.go:136:6:136:21 | testComparable21 | testComparable21 |
+| interface.go:137:6:137:21 | testComparable22 | testComparable22 |
+| interface.go:138:6:138:21 | testComparable23 | testComparable23 |
+| pkg1/embedding.go:8:6:8:9 | base | base |
+| pkg1/embedding.go:19:6:19:13 | embedder | embedder |
+| pkg1/embedding.go:22:6:22:16 | ptrembedder | ptrembedder |
+| pkg1/embedding.go:25:6:25:14 | embedder2 | embedder2 |
+| pkg1/embedding.go:28:6:28:14 | embedder3 | embedder3 |
+| pkg1/embedding.go:35:6:35:14 | embedder4 | embedder4 |
+| pkg1/interfaces.go:3:6:3:6 | A | A |
+| pkg1/interfaces.go:7:6:7:6 | B | B |
+| pkg1/interfaces.go:12:6:12:6 | C | C |
+| pkg1/interfaces.go:17:6:17:14 | AEmbedded | AEmbedded |
+| pkg1/interfaces.go:21:6:21:7 | AC | AC |
+| pkg1/interfaces.go:26:6:26:14 | AExtended | AExtended |
+| pkg1/interfaces.go:31:6:31:7 | A2 | A2 |
+| pkg1/tst.go:3:6:3:6 | T | T |
+| pkg1/tst.go:9:6:9:7 | T2 | T2 |
+| pkg1/tst.go:14:6:14:7 | T3 | T3 |
+| pkg1/tst.go:19:6:19:7 | T4 | T4 |
+| pkg1/tst.go:24:6:24:8 | Foo | Foo |
+| pkg1/tst.go:29:6:29:8 | Bar | Bar |
+| pkg2/tst.go:3:6:3:6 | T | T |
+| pkg2/tst.go:7:6:7:6 | G | G |

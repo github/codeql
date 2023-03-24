@@ -54,6 +54,6 @@ edges
 | build-leaks.js:41:67:41:84 | JSON.stringify(pw) | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } |
 | build-leaks.js:41:82:41:83 | pw | build-leaks.js:41:67:41:84 | JSON.stringify(pw) |
 #select
-| build-leaks.js:4:39:6:1 | { // NO ... .env)\\n} | build-leaks.js:5:35:5:45 | process.env | build-leaks.js:4:39:6:1 | { // NO ... .env)\\n} | Sensitive data returned by $@ is stored in a build artifact here. | build-leaks.js:5:35:5:45 | process.env | process environment |
-| build-leaks.js:34:26:34:57 | getEnv( ... ngified | build-leaks.js:15:24:15:34 | process.env | build-leaks.js:34:26:34:57 | getEnv( ... ngified | Sensitive data returned by $@ is stored in a build artifact here. | build-leaks.js:15:24:15:34 | process.env | process environment |
-| build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | build-leaks.js:40:14:40:60 | url.par ... assword | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | Sensitive data returned by $@ is stored in a build artifact here. | build-leaks.js:40:14:40:60 | url.par ... assword | an access to current_password |
+| build-leaks.js:4:39:6:1 | { // NO ... .env)\\n} | build-leaks.js:5:35:5:45 | process.env | build-leaks.js:4:39:6:1 | { // NO ... .env)\\n} | This creates a build artifact that depends on $@. | build-leaks.js:5:35:5:45 | process.env | sensitive data returned byprocess environment |
+| build-leaks.js:34:26:34:57 | getEnv( ... ngified | build-leaks.js:15:24:15:34 | process.env | build-leaks.js:34:26:34:57 | getEnv( ... ngified | This creates a build artifact that depends on $@. | build-leaks.js:15:24:15:34 | process.env | sensitive data returned byprocess environment |
+| build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | build-leaks.js:40:14:40:60 | url.par ... assword | build-leaks.js:41:43:41:86 | { "proc ... y(pw) } | This creates a build artifact that depends on $@. | build-leaks.js:40:14:40:60 | url.par ... assword | sensitive data returned byan access to current_password |

@@ -59,9 +59,7 @@ class Configuration extends TaintTracking::Configuration {
 }
 
 /** A node representing data being passed to an external API. */
-class ExternalApiDataNode extends DataFlow::Node {
-  ExternalApiDataNode() { this instanceof Sink }
-}
+class ExternalApiDataNode extends DataFlow::Node instanceof Sink { }
 
 /** DEPRECATED: Alias for ExternalApiDataNode */
 deprecated class ExternalAPIDataNode = ExternalApiDataNode;
@@ -81,6 +79,7 @@ deprecated class UntrustedExternalAPIDataNode = UntrustedExternalApiDataNode;
  * Name of an external API sink, boxed in a newtype for consistency with other languages.
  */
 private newtype TExternalApi =
+  /** An external API sink with `name`. */
   MkExternalApiNode(string name) {
     exists(Sink sink |
       any(Configuration c).hasFlow(_, sink) and

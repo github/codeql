@@ -46,6 +46,7 @@ import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
+import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
@@ -522,7 +523,7 @@ public class NodeCopier implements Visitor<Void, INode> {
 
   @Override
   public ExportAllDeclaration visit(ExportAllDeclaration nd, Void c) {
-    return new ExportAllDeclaration(visit(nd.getLoc()), copy(nd.getSource()));
+    return new ExportAllDeclaration(visit(nd.getLoc()), copy(nd.getSource()), copy(nd.getAssertion()));
   }
 
   @Override
@@ -536,7 +537,8 @@ public class NodeCopier implements Visitor<Void, INode> {
         visit(nd.getLoc()),
         copy(nd.getDeclaration()),
         copy(nd.getSpecifiers()),
-        copy(nd.getSource()));
+        copy(nd.getSource()),
+        copy(nd.getAssertion()));
   }
 
   @Override
@@ -557,7 +559,7 @@ public class NodeCopier implements Visitor<Void, INode> {
   @Override
   public ImportDeclaration visit(ImportDeclaration nd, Void c) {
     return new ImportDeclaration(
-        visit(nd.getLoc()), copy(nd.getSpecifiers()), copy(nd.getSource()));
+        visit(nd.getLoc()), copy(nd.getSpecifiers()), copy(nd.getSource()), copy(nd.getAssertion()), nd.hasTypeKeyword());
   }
 
   @Override
@@ -677,7 +679,7 @@ public class NodeCopier implements Visitor<Void, INode> {
 
   @Override
   public INode visit(DynamicImport nd, Void c) {
-    return new DynamicImport(visit(nd.getLoc()), copy(nd.getSource()));
+    return new DynamicImport(visit(nd.getLoc()), copy(nd.getSource()), copy(nd.getAttributes()));
   }
 
   @Override
@@ -780,6 +782,14 @@ public class NodeCopier implements Visitor<Void, INode> {
         copy(nd.getExpression()),
         copy(nd.getTypeAnnotation()),
         nd.isAsExpression());
+  }
+
+  @Override
+  public INode visit(SatisfiesExpr nd, Void c) {
+    return new SatisfiesExpr(
+        visit(nd.getLoc()),
+        copy(nd.getExpression()),
+        copy(nd.getTypeAnnotation()));
   }
 
   @Override

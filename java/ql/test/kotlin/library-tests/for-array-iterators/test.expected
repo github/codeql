@@ -1,9 +1,0 @@
-| test.kt:5:14:5:14 | hasNext(...) |
-| test.kt:5:14:5:14 | iterator(...) |
-| test.kt:5:14:5:14 | next(...) |
-| test.kt:6:14:6:14 | hasNext(...) |
-| test.kt:6:14:6:14 | iterator(...) |
-| test.kt:6:14:6:14 | next(...) |
-| test.kt:7:14:7:14 | hasNext(...) |
-| test.kt:7:14:7:14 | iterator(...) |
-| test.kt:7:14:7:14 | next(...) |

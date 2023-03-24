@@ -89,3 +89,62 @@ def test_case x
   sink(z) # $ hasTaintFlow=1
 end
 
+def and_or
+  a = source(1) || source(2)
+  sink(a) # $ hasValueFlow=1 hasValueFlow=2
+  b = (source(1) or source(2))
+  sink(b) # $ hasValueFlow=1 hasValueFlow=2
+  
+  a = source(1) && source(2)
+  sink(a) # $ hasValueFlow=1 hasValueFlow=2
+  b = (source(1) and source(2))
+  sink(b) # $ hasValueFlow=1 hasValueFlow=2
+
+  a = source(5)
+  a ||= source(6)
+  sink(a) # $ hasValueFlow=5 hasValueFlow=6
+  b = source(7)
+  b &&= source(8)
+  sink(b) # $ hasValueFlow=7 hasValueFlow=8
+end
+
+def object_dup
+  sink(source(1).dup) # $ hasValueFlow=1
+  sink(source(1).dup.dup) # $ hasValueFlow=1
+end
+
+def kernel_tap
+  sink(source(1).tap {}) # $ hasValueFlow=1
+  source(1).tap { |x| sink(x) } # $ hasValueFlow=1
+  sink(source(1).tap {}.tap {}) # $ hasValueFlow=1
+end
+
+def dup_tap
+  sink(source(1).dup.tap { |x| puts "hello" }.dup)  # $ hasValueFlow=1
+end
+
+def use x
+  rand()
+end
+
+def use_use_madness
+  x = ""
+  if use(x)
+    if use(x) || use(x)
+      use(x)
+    else
+      use(x)
+      if use(x) && !use(x)
+      end
+    end
+
+    if !use(x) || (use(x) && !use(x))
+      nil
+    elsif use(x) || use(x)
+          use(x)
+    end
+
+    use(x)
+    use(x)
+  end
+end

@@ -5,21 +5,6 @@ private import semmle.code.java.security.FileReadWrite
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 
-private class ExternalStorageDirSourceModel extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        //"package;type;overrides;name;signature;ext;spec;kind"
-        "android.content;Context;true;getExternalFilesDir;(String);;ReturnValue;android-external-storage-dir;manual",
-        "android.content;Context;true;getExternalFilesDirs;(String);;ReturnValue;android-external-storage-dir;manual",
-        "android.content;Context;true;getExternalCacheDir;();;ReturnValue;android-external-storage-dir;manual",
-        "android.content;Context;true;getExternalCacheDirs;();;ReturnValue;android-external-storage-dir;manual",
-        "android.os;Environment;false;getExternalStorageDirectory;();;ReturnValue;android-external-storage-dir;manual",
-        "android.os;Environment;false;getExternalStoragePublicDirectory;(String);;ReturnValue;android-external-storage-dir;manual",
-      ]
-  }
-}
-
 private predicate externalStorageFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
   DataFlow::localFlowStep(node1, node2)
   or

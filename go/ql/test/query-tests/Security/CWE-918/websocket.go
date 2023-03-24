@@ -96,7 +96,7 @@ func test() {
 	http.HandleFunc("/ex5", func(w http.ResponseWriter, r *http.Request) {
 		untrustedInput := r.Referer()
 
-		// good as input is tested againt regex
+		// good as input is tested against regex
 		if m, _ := regexp.MatchString("ws://localhost:12345/*", untrustedInput); m {
 			nhooyr.Dial(context.TODO(), untrustedInput, nil)
 		}

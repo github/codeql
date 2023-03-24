@@ -5,4 +5,4 @@ nodes
 | TaintedPermissionsCheckTest.java:15:27:15:53 | ... + ... | semmle.label | ... + ... |
 subpaths
 #select
-| TaintedPermissionsCheckTest.java:15:7:15:54 | isPermitted(...) | TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) : String | TaintedPermissionsCheckTest.java:15:27:15:53 | ... + ... | Permissions check uses user-controlled $@. | TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) | data |
+| TaintedPermissionsCheckTest.java:15:7:15:54 | isPermitted(...) | TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) : String | TaintedPermissionsCheckTest.java:15:27:15:53 | ... + ... | Permissions check depends on a $@. | TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) | user-controlled value |

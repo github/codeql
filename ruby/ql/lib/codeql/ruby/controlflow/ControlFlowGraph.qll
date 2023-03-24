@@ -1,6 +1,5 @@
 /** Provides classes representing the control flow graph. */
 
-private import codeql.Locations
 private import codeql.ruby.AST
 private import codeql.ruby.controlflow.BasicBlocks
 private import SuccessorTypes
@@ -8,7 +7,14 @@ private import internal.ControlFlowGraphImpl
 private import internal.Splitting
 private import internal.Completion
 
-/** An AST node with an associated control-flow graph. */
+/**
+ * An AST node with an associated control-flow graph.
+ *
+ * Top-levels, methods, blocks, and lambdas are all CFG scopes.
+ *
+ * Note that module declarations are not themselves CFG scopes, as they are part of
+ * the CFG of the enclosing top-level or callable.
+ */
 class CfgScope extends Scope instanceof CfgScopeImpl {
   /** Gets the CFG scope that this scope is nested under, if any. */
   final CfgScope getOuterCfgScope() {
@@ -44,7 +50,7 @@ class CfgNode extends TCfgNode {
   final File getFile() { result = this.getLocation().getFile() }
 
   /** Holds if this control flow node has conditional successors. */
-  final predicate isCondition() { exists(this.getASuccessor(any(BooleanSuccessor bs))) }
+  final predicate isCondition() { exists(this.getASuccessor(any(ConditionalSuccessor bs))) }
 
   /** Gets the scope of this node. */
   final CfgScope getScope() { result = getNodeCfgScope(this) }

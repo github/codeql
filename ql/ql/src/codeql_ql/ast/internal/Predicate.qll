@@ -3,6 +3,7 @@ private import Builtins
 private import codeql_ql.ast.internal.Module
 private import codeql_ql.ast.internal.AstNodes
 
+pragma[nomagic]
 private predicate definesPredicate(
   FileOrModule m, string name, int arity, Predicate p, boolean public
 ) {
@@ -156,7 +157,7 @@ private module Cached {
     )
   }
 
-  private predicate resolveBuildinPredicateCall(PredicateCall call, BuiltinClassless pred) {
+  private predicate resolveBuiltinPredicateCall(PredicateCall call, BuiltinClassless pred) {
     call.getNumberOfArguments() = pred.getArity() and
     call.getPredicateName() = pred.getName()
   }
@@ -166,7 +167,7 @@ private module Cached {
     resolvePredicateCall(c, p)
     or
     not resolvePredicateCall(c, _) and
-    resolveBuildinPredicateCall(c, p)
+    resolveBuiltinPredicateCall(c, p)
     or
     resolveMemberCall(c, p)
     or
@@ -208,7 +209,11 @@ module PredConsistency {
         not exists(p0.getAlias())
       ) and
     c > 1 and
-    resolvePredicateExpr(pe, p)
+    resolvePredicateExpr(pe, p) and
+    // parameterized modules are expected to resolve to multiple.
+    not exists(Predicate sig | sig.getParent*().hasAnnotation("signature") |
+      resolvePredicateExpr(pe, sig)
+    )
   }
 
   query predicate multipleResolveCall(Call call, int c, PredicateOrBuiltin p) {
@@ -224,6 +229,6 @@ module PredConsistency {
     c > 1 and
     resolveCall(call, p) and
     // parameterized modules are expected to resolve to multiple.
-    not exists(Predicate sig | not exists(sig.getBody()) and resolveCall(call, sig))
+    not exists(Predicate sig | sig.getParent*().hasAnnotation("signature") | resolveCall(call, sig))
   }
 }

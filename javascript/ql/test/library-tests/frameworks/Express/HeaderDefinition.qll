@@ -1,5 +1,5 @@
 import javascript
 
-query predicate test_HeaderDefinition(HTTP::HeaderDefinition hd, Express::RouteHandler rh) {
+query predicate test_HeaderDefinition(Http::HeaderDefinition hd, Express::RouteHandler rh) {
   rh = hd.getRouteHandler()
 }

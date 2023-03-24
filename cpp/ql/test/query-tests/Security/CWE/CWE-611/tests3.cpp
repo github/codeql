@@ -22,7 +22,7 @@ public:
 void test3_1(InputSource &data) {
 	SAX2XMLReader *p = XMLReaderFactory::createXMLReader();
 
-	p->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
+	p->parse(data); // BAD (parser not correctly configured)
 }
 
 void test3_2(InputSource &data) {
@@ -35,7 +35,7 @@ void test3_2(InputSource &data) {
 SAX2XMLReader *p_3_3 = XMLReaderFactory::createXMLReader();
 
 void test3_3(InputSource &data) {
-	p_3_3->parse(data); // BAD (parser not correctly configured) [NOT DETECTED]
+	p_3_3->parse(data); // BAD (parser not correctly configured)
 }
 
 SAX2XMLReader *p_3_4 = XMLReaderFactory::createXMLReader();
@@ -53,7 +53,7 @@ void test3_5_init() {
 
 void test3_5(InputSource &data) {
 	test3_5_init();
-	p_3_5->parse(data); // GOOD
+	p_3_5->parse(data); // GOOD [FALSE POSITIVE]
 }
 
 void test3_6(InputSource &data) {

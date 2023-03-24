@@ -12,7 +12,3 @@ class IdentityModel extends ValuePreservingMethod {
 
   override predicate returnsValue(int arg) { arg = 0 }
 }
-
-class HasFlowTest extends InlineFlowTest {
-  override DataFlow::Configuration getValueFlowConfig() { none() }
-}

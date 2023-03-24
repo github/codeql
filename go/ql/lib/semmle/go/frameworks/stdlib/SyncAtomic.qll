@@ -69,13 +69,15 @@ module SyncAtomic {
     FunctionOutput outp;
 
     MethodModels() {
-      // signature: func (*Value) Load() (x interface{})
-      hasQualifiedName("sync/atomic", "Value", "Load") and
-      (inp.isReceiver() and outp.isResult())
-      or
-      // signature: func (*Value) Store(x interface{})
-      hasQualifiedName("sync/atomic", "Value", "Store") and
-      (inp.isParameter(0) and outp.isReceiver())
+      exists(string containerType | containerType = ["Value", "Pointer", "Uintptr"] |
+        // signature: func (*Containertype) Load/Swap() (x containedtype)
+        hasQualifiedName("sync/atomic", containerType, ["Load", "Swap"]) and
+        (inp.isReceiver() and outp.isResult())
+        or
+        // signature: func (*Containertype) Store/Swap(x containedtype) [(x containedtype)]
+        hasQualifiedName("sync/atomic", containerType, ["Store", "Swap"]) and
+        (inp.isParameter(0) and outp.isReceiver())
+      )
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

@@ -34,6 +34,5 @@ where
   not exists(ExternalGlobalDecl egd | egd.getName() = f.getName()) and
   // don't flag if the invocation could refer to a property introduced by `with`
   not exists(WithStmt with | with.mayAffect(invk.getCallee()))
-select invk,
-  "'" + f.getName() + "' references an undeclared global variable, " +
-    "not the variable exported $@.", export, "here"
+select invk, "'" + f.getName() + "' references an undeclared global variable, " + "not $@.", export,
+  "the variable of the same name that is exported"

@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.xmlpull.v1", "XmlPullParser", False, "getName", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.xmlpull.v1", "XmlPullParser", False, "getNamespace", "()", "", "ReturnValue", "remote", "manual"]
+      - ["org.xmlpull.v1", "XmlPullParser", False, "getText", "()", "", "ReturnValue", "remote", "manual"]

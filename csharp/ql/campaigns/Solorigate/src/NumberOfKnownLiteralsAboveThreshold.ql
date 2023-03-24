@@ -29,5 +29,5 @@ where
   isSolorigateLiteral(l) and
   total > threshold
 select l,
-  "The literal $@ may be related to the Solorigate campaign. Total count = " + total +
-    " is above the threshold " + threshold + ".", l, l.getValue()
+  "This literal may be related to the Solorigate campaign. Total count = " + total +
+    " is above the threshold " + threshold + "."

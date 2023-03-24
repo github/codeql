@@ -146,7 +146,7 @@ class TextStringBuilderTest {
 
         // Test all fluent methods are passing taint through to their result:
         TextStringBuilder fluentAllMethodsTest = new TextStringBuilder(taint());
-        sink(fluentAllMethodsTest // $hasTaintFlow
+        sink(fluentAllMethodsTest
         .append("text")
         .appendAll("text")
         .appendFixedWidthPadLeft("text", 4, ' ')
@@ -172,7 +172,7 @@ class TextStringBuilderTest {
         .setLength(500)
         .setNewLineText("newline")
         .setNullText("NULL")
-        .trim());
+        .trim()); // $hasTaintFlow
 
         // Test all fluent methods are passing taint back to their qualifier:
         TextStringBuilder fluentAllMethodsTest2 = new TextStringBuilder();

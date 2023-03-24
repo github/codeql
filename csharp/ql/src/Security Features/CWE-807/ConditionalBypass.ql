@@ -19,6 +19,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode().(Sink).getSensitiveMethodCall(), source, sink,
-  "Sensitive method may not be executed depending on $@, which flows from $@.", sink.getNode(),
-  "this condition", source.getNode(), "user input"
+select sink.getNode(), source, sink, "This condition guards a sensitive $@, but a $@ controls it.",
+  sink.getNode().(Sink).getSensitiveMethodCall(), "action", source.getNode(), "user-provided value"

@@ -2,7 +2,7 @@
  * Provides classes and predicates for working with the Java JDBC API.
  */
 
-private import semmle.code.java.dataflow.ExternalFlow
+import java
 
 /*--- Types ---*/
 /** The interface `java.sql.Connection`. */
@@ -32,35 +32,5 @@ class ResultSetGetStringMethod extends Method {
     getDeclaringType() instanceof TypeResultSet and
     hasName("getString") and
     getReturnType() instanceof TypeString
-  }
-}
-
-/*--- Other definitions ---*/
-private class SqlSinkCsv extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        //"package;type;overrides;name;signature;ext;spec;kind"
-        "java.sql;Connection;true;prepareStatement;;;Argument[0];sql;manual",
-        "java.sql;Connection;true;prepareCall;;;Argument[0];sql;manual",
-        "java.sql;Statement;true;execute;;;Argument[0];sql;manual",
-        "java.sql;Statement;true;executeQuery;;;Argument[0];sql;manual",
-        "java.sql;Statement;true;executeUpdate;;;Argument[0];sql;manual",
-        "java.sql;Statement;true;executeLargeUpdate;;;Argument[0];sql;manual",
-        "java.sql;Statement;true;addBatch;;;Argument[0];sql;manual"
-      ]
-  }
-}
-
-private class SsrfSinkCsv extends SinkModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        //"package;type;overrides;name;signature;ext;spec;kind"
-        "java.sql;DriverManager;false;getConnection;(String);;Argument[0];jdbc-url;manual",
-        "java.sql;DriverManager;false;getConnection;(String,Properties);;Argument[0];jdbc-url;manual",
-        "java.sql;DriverManager;false;getConnection;(String,String,String);;Argument[0];jdbc-url;manual",
-        "java.sql;Driver;false;connect;(String,Properties);;Argument[0];jdbc-url;manual"
-      ]
   }
 }

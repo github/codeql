@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"io/ioutil"
 	"log"
@@ -15,6 +16,7 @@ import (
 	"golang.org/x/mod/semver"
 
 	"github.com/github/codeql-go/extractor/autobuilder"
+	"github.com/github/codeql-go/extractor/diagnostics"
 	"github.com/github/codeql-go/extractor/util"
 )
 
@@ -56,9 +58,21 @@ func getEnvGoVersion() string {
 		if err != nil {
 			log.Fatalf("Unable to run the go command, is it installed?\nError: %s", err.Error())
 		}
-		goVersion = strings.Fields(string(gover))[2]
+		goVersion = parseGoVersion(string(gover))
 	}
 	return goVersion
+}
+
+// The 'go version' command may output warnings on separate lines before
+// the actual version string is printed. This function parses the output
+// to retrieve just the version string.
+func parseGoVersion(data string) string {
+	var lastLine string
+	sc := bufio.NewScanner(strings.NewReader(data))
+	for sc.Scan() {
+		lastLine = sc.Text()
+	}
+	return strings.Fields(lastLine)[2]
 }
 
 // Returns the current Go version in semver format, e.g. v1.14.4
@@ -190,7 +204,7 @@ func (m ModMode) argsForGoVersion(version string) []string {
 }
 
 // addVersionToMod add a go version directive, e.g. `go 1.14` to a `go.mod` file.
-func addVersionToMod(goMod []byte, version string) bool {
+func addVersionToMod(version string) bool {
 	cmd := exec.Command("go", "mod", "edit", "-go="+version)
 	return util.RunCmd(cmd)
 }
@@ -236,12 +250,29 @@ func main() {
 	depMode := GoGetNoModules
 	modMode := ModUnset
 	needGopath := true
+	goDirectiveFound := false
 	if _, present := os.LookupEnv("GO111MODULE"); !present {
 		os.Setenv("GO111MODULE", "auto")
 	}
 	if util.FileExists("go.mod") {
 		depMode = GoGetWithModules
 		needGopath = false
+		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+)$`)
+		goMod, err := ioutil.ReadFile("go.mod")
+		if err != nil {
+			log.Println("Failed to read go.mod to check for missing Go version")
+		} else {
+			matches := versionRe.FindSubmatch(goMod)
+			if matches != nil {
+				goDirectiveFound = true
+				if len(matches) > 1 {
+					goDirectiveVersion := "v" + string(matches[1])
+					if semver.Compare(goDirectiveVersion, getEnvGoSemVer()) >= 0 {
+						diagnostics.EmitNewerGoVersionNeeded()
+					}
+				}
+			}
+		}
 		log.Println("Found go.mod, enabling go modules")
 	} else if util.FileExists("Gopkg.toml") {
 		depMode = Dep
@@ -270,10 +301,7 @@ func main() {
 		// we work around this by adding an explicit go version of 1.13, which is the last version
 		// where this is not an issue
 		if depMode == GoGetWithModules {
-			goMod, err := ioutil.ReadFile("go.mod")
-			if err != nil {
-				log.Println("Failed to read go.mod to check for missing Go version")
-			} else if versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+[0-9]+\.[0-9]+$`); !versionRe.Match(goMod) {
+			if !goDirectiveFound {
 				// if the go.mod does not contain a version line
 				modulesTxt, err := ioutil.ReadFile("vendor/modules.txt")
 				if err != nil {
@@ -281,7 +309,7 @@ func main() {
 				} else if explicitRe := regexp.MustCompile("(?m)^## explicit$"); !explicitRe.Match(modulesTxt) {
 					// and the modules.txt does not contain an explicit annotation
 					log.Println("Adding a version directive to the go.mod file as the modules.txt does not have explicit annotations")
-					if !addVersionToMod(goMod, "1.13") {
+					if !addVersionToMod("1.13") {
 						log.Println("Failed to add a version to the go.mod file to fix explicitly required package bug; not using vendored dependencies")
 						modMode = ModMod
 					}

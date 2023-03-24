@@ -66,3 +66,21 @@
 | url.go:50:25:50:25 | q | url.go:50:2:50:26 | ... := ...[0] |
 | url.go:51:14:51:14 | v | url.go:51:14:51:23 | call to Encode |
 | url.go:52:14:52:14 | v | url.go:52:14:52:26 | call to Get |
+| url.go:57:16:57:39 | call to JoinPath | url.go:57:2:57:39 | ... := ...[0] |
+| url.go:57:16:57:39 | call to JoinPath | url.go:57:2:57:39 | ... := ...[1] |
+| url.go:57:29:57:29 | q | url.go:57:2:57:39 | ... := ...[0] |
+| url.go:57:32:57:38 | "clean" | url.go:57:2:57:39 | ... := ...[0] |
+| url.go:58:16:58:45 | call to JoinPath | url.go:58:2:58:45 | ... := ...[0] |
+| url.go:58:16:58:45 | call to JoinPath | url.go:58:2:58:45 | ... := ...[1] |
+| url.go:58:29:58:35 | "clean" | url.go:58:2:58:45 | ... := ...[0] |
+| url.go:58:38:58:44 | joined1 | url.go:58:2:58:45 | ... := ...[0] |
+| url.go:59:14:59:31 | call to Parse | url.go:59:2:59:31 | ... := ...[0] |
+| url.go:59:14:59:31 | call to Parse | url.go:59:2:59:31 | ... := ...[1] |
+| url.go:59:24:59:30 | joined2 | url.go:59:2:59:31 | ... := ...[0] |
+| url.go:60:15:60:19 | asUrl | url.go:60:15:60:37 | call to JoinPath |
+| url.go:60:30:60:36 | "clean" | url.go:60:15:60:37 | call to JoinPath |
+| url.go:65:17:65:48 | call to Parse | url.go:65:2:65:48 | ... := ...[0] |
+| url.go:65:17:65:48 | call to Parse | url.go:65:2:65:48 | ... := ...[1] |
+| url.go:65:27:65:47 | "http://harmless.org" | url.go:65:2:65:48 | ... := ...[0] |
+| url.go:66:9:66:16 | cleanUrl | url.go:66:9:66:28 | call to JoinPath |
+| url.go:66:27:66:27 | q | url.go:66:9:66:28 | call to JoinPath |

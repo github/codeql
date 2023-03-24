@@ -216,7 +216,7 @@ struct Visitor<'a> {
     schema: &'a NodeTypeMap,
     /// A stack for gathering information from child nodes. Whenever a node is
     /// entered the parent's [Label], child counter, and an empty list is pushed.
-    /// All children append their data to the the list. When the visitor leaves a
+    /// All children append their data to the list. When the visitor leaves a
     /// node the list containing the child data is popped from the stack and
     /// matched against the dbscheme for the node. If the expectations are met
     /// the corresponding row definitions are added to the trap_output.

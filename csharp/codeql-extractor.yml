@@ -4,12 +4,10 @@ version: 1.22.1
 column_kind: "utf16"
 extra_env_vars:
   DOTNET_GENERATE_ASPNET_CERTIFICATE: "false"
-  COR_ENABLE_PROFILING: "1"
-  COR_PROFILER: "{A3C70A64-7D41-4A94-A3F6-FD47D9259997}"
-  COR_PROFILER_PATH_64: "${env.CODEQL_EXTRACTOR_CSHARP_ROOT}/tools/${env.CODEQL_PLATFORM}/clrtracer64${env.CODEQL_PLATFORM_DLL_EXTENSION}"
-  CORECLR_ENABLE_PROFILING: "1"
-  CORECLR_PROFILER: "{A3C70A64-7D41-4A94-A3F6-FD47D9259997}"
-  CORECLR_PROFILER_PATH_64: "${env.CODEQL_EXTRACTOR_CSHARP_ROOT}/tools/${env.CODEQL_PLATFORM}/clrtracer64${env.CODEQL_PLATFORM_DLL_EXTENSION}"
+github_api_languages:
+  - C#
+scc_languages:
+  - C#
 file_types:
   - name: cs
     display_name: C# sources
@@ -39,5 +37,12 @@ options:
       Note that buildless extraction will generally yield less accurate analysis results,
       and should only be used in cases where it is not possible to build
       the code (for example if it uses inaccessible dependencies).
+    type: string
+    pattern: "^(false|true)$"
+  cil:
+    title: Whether to enable CIL extraction.
+    description: >
+      A value indicating, whether CIL extraction should be enabled.
+      The default is 'true'.
     type: string
     pattern: "^(false|true)$"

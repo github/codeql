@@ -7,7 +7,7 @@ import javascript
 /**
  * Provides classes implementing data-flow for Immutable.
  *
- * The implemention rely on the flowsteps implemented in `Collections.qll`.
+ * The implementation rely on the flowsteps implemented in `Collections.qll`.
  */
 private module Immutable {
   /**

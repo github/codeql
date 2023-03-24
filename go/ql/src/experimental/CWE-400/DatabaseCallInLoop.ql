@@ -6,6 +6,8 @@
  * @problem.severity warning
  * @precision high
  * @id go/examples/database-call-in-loop
+ * @tags security
+ *       experimental
  */
 
 import go
@@ -66,4 +68,5 @@ query predicate edges(CallGraphNode pred, CallGraphNode succ) {
 
 from LoopStmt loop, DatabaseAccess dbAccess
 where edges*(loop, dbAccess.asExpr())
-select dbAccess, loop, dbAccess, "$@ is called in $@", dbAccess, dbAccess.toString(), loop, "a loop"
+select dbAccess, loop, dbAccess.asExpr(), "This calls " + dbAccess.toString() + " in a $@.", loop,
+  "loop"

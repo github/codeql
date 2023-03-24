@@ -1,17 +1,17 @@
 import go
 import TestUtilities.InlineExpectationsTest
 
-class SQLTest extends InlineExpectationsTest {
-  SQLTest() { this = "SQLTest" }
+class SqlTest extends InlineExpectationsTest {
+  SqlTest() { this = "SQLTest" }
 
   override string getARelevantTag() { result = "query" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "query" and
-    exists(SQL::Query q, SQL::QueryString qs, string qsFile, int qsLine | qs = q.getAQueryString() |
+    exists(SQL::Query q, SQL::QueryString qs, int qsLine | qs = q.getAQueryString() |
       q.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
-      qs.hasLocationInfo(qsFile, qsLine, _, _, _) and
+      qs.hasLocationInfo(_, qsLine, _, _, _) and
       element = q.toString() and
       value = qs.toString()
     )

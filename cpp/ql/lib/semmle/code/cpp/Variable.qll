@@ -144,7 +144,7 @@ class Variable extends Declaration, @variable {
    * `Variable.getInitializer()` to get the variable's initializer,
    * or use `Variable.getAnAssignedValue()` to get an expression that
    * is the right-hand side of an assignment or an initialization of
-   * the varible.
+   * the variable.
    */
   Assignment getAnAssignment() { result.getLValue() = this.getAnAccess() }
 
@@ -173,7 +173,7 @@ class Variable extends Declaration, @variable {
   }
 
   /**
-   * Holds if this variable is declated as part of a structured binding
+   * Holds if this variable is declared as part of a structured binding
    * declaration. For example, `x` in `auto [x, y] = ...`.
    */
   predicate isStructuredBinding() { is_structured_binding(underlyingElement(this)) }
@@ -398,6 +398,8 @@ class LocalVariable extends LocalScopeVariable, @localvariable {
     exists(DeclStmt s | s.getADeclaration() = this and s.getEnclosingFunction() = result)
     or
     exists(ConditionDeclExpr e | e.getVariable() = this and e.getEnclosingFunction() = result)
+    or
+    orphaned_variables(underlyingElement(this), unresolveElement(result))
   }
 }
 
@@ -471,6 +473,9 @@ class GlobalOrNamespaceVariable extends Variable, @globalvariable {
   override Type getType() { globalvariables(underlyingElement(this), unresolveElement(result), _) }
 
   override Element getEnclosingElement() { none() }
+
+  /** Gets a link target which compiled or referenced this global or namespace variable. */
+  LinkTarget getALinkTarget() { this = result.getAGlobalOrNamespaceVariable() }
 }
 
 /**

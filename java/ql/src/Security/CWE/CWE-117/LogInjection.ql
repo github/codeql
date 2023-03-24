@@ -13,9 +13,9 @@
 
 import java
 import semmle.code.java.security.LogInjectionQuery
-import DataFlow::PathGraph
+import LogInjectionFlow::PathGraph
 
-from LogInjectionConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
-select source.getNode(), source, sink, "This user-provided value flows to a $@.", sink.getNode(),
-  "log entry"
+from LogInjectionFlow::PathNode source, LogInjectionFlow::PathNode sink
+where LogInjectionFlow::flowPath(source, sink)
+select sink.getNode(), source, sink, "This log entry depends on a $@.", source.getNode(),
+  "user-provided value"

@@ -11,7 +11,8 @@ import semmle.code.cpp.models.interfaces.SideEffect
 
 /** The function `recv` and its assorted variants */
 private class Recv extends AliasFunction, ArrayFunction, SideEffectFunction,
-  RemoteFlowSourceFunction {
+  RemoteFlowSourceFunction
+{
   Recv() {
     this.hasGlobalName([
         "recv", // recv(socket, dest, len, flags)
@@ -83,7 +84,7 @@ private class Recv extends AliasFunction, ArrayFunction, SideEffectFunction,
       or
       this.hasGlobalName("recvfrom") and output.isParameterDeref([4, 5])
     ) and
-    description = "Buffer read by " + this.getName()
+    description = "buffer read by " + this.getName()
   }
 
   override predicate hasSocketInput(FunctionInput input) { input.isParameter(0) }

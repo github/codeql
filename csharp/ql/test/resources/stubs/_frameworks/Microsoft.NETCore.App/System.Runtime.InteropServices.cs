@@ -1,8 +1,8 @@
 // This file contains auto-generated code.
+// Generated from `System.Runtime.InteropServices, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
-    // Generated from `System.DataMisalignedException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class DataMisalignedException : System.SystemException
     {
         public DataMisalignedException() => throw null;
@@ -10,7 +10,6 @@ namespace System
         public DataMisalignedException(string message, System.Exception innerException) => throw null;
     }
 
-    // Generated from `System.DllNotFoundException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class DllNotFoundException : System.TypeLoadException
     {
         public DllNotFoundException() => throw null;
@@ -21,7 +20,6 @@ namespace System
 
     namespace IO
     {
-        // Generated from `System.IO.UnmanagedMemoryAccessor` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class UnmanagedMemoryAccessor : System.IDisposable
         {
             public bool CanRead { get => throw null; }
@@ -71,14 +69,12 @@ namespace System
     {
         namespace CompilerServices
         {
-            // Generated from `System.Runtime.CompilerServices.IDispatchConstantAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IDispatchConstantAttribute : System.Runtime.CompilerServices.CustomConstantAttribute
             {
                 public IDispatchConstantAttribute() => throw null;
                 public override object Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.CompilerServices.IUnknownConstantAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class IUnknownConstantAttribute : System.Runtime.CompilerServices.CustomConstantAttribute
             {
                 public IUnknownConstantAttribute() => throw null;
@@ -88,14 +84,12 @@ namespace System
         }
         namespace InteropServices
         {
-            // Generated from `System.Runtime.InteropServices.AllowReversePInvokeCallsAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AllowReversePInvokeCallsAttribute : System.Attribute
             {
                 public AllowReversePInvokeCallsAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.ArrayWithOffset` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public struct ArrayWithOffset
+            public struct ArrayWithOffset : System.IEquatable<System.Runtime.InteropServices.ArrayWithOffset>
             {
                 public static bool operator !=(System.Runtime.InteropServices.ArrayWithOffset a, System.Runtime.InteropServices.ArrayWithOffset b) => throw null;
                 public static bool operator ==(System.Runtime.InteropServices.ArrayWithOffset a, System.Runtime.InteropServices.ArrayWithOffset b) => throw null;
@@ -108,14 +102,12 @@ namespace System
                 public int GetOffset() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.AutomationProxyAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class AutomationProxyAttribute : System.Attribute
             {
                 public AutomationProxyAttribute(bool val) => throw null;
                 public bool Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.BStrWrapper` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class BStrWrapper
             {
                 public BStrWrapper(object value) => throw null;
@@ -123,7 +115,6 @@ namespace System
                 public string WrappedObject { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.BestFitMappingAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class BestFitMappingAttribute : System.Attribute
             {
                 public bool BestFitMapping { get => throw null; }
@@ -131,7 +122,18 @@ namespace System
                 public bool ThrowOnUnmappableChar;
             }
 
-            // Generated from `System.Runtime.InteropServices.COMException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public struct CLong : System.IEquatable<System.Runtime.InteropServices.CLong>
+            {
+                // Stub generator skipped constructor 
+                public CLong(System.IntPtr value) => throw null;
+                public CLong(int value) => throw null;
+                public bool Equals(System.Runtime.InteropServices.CLong other) => throw null;
+                public override bool Equals(object o) => throw null;
+                public override int GetHashCode() => throw null;
+                public override string ToString() => throw null;
+                public System.IntPtr Value { get => throw null; }
+            }
+
             public class COMException : System.Runtime.InteropServices.ExternalException
             {
                 public COMException() => throw null;
@@ -142,17 +144,27 @@ namespace System
                 public override string ToString() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.CallingConvention` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CallingConvention
+            public struct CULong : System.IEquatable<System.Runtime.InteropServices.CULong>
             {
-                Cdecl,
-                FastCall,
-                StdCall,
-                ThisCall,
-                Winapi,
+                // Stub generator skipped constructor 
+                public CULong(System.UIntPtr value) => throw null;
+                public CULong(System.UInt32 value) => throw null;
+                public bool Equals(System.Runtime.InteropServices.CULong other) => throw null;
+                public override bool Equals(object o) => throw null;
+                public override int GetHashCode() => throw null;
+                public override string ToString() => throw null;
+                public System.UIntPtr Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.ClassInterfaceAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum CallingConvention : int
+            {
+                Cdecl = 2,
+                FastCall = 5,
+                StdCall = 3,
+                ThisCall = 4,
+                Winapi = 1,
+            }
+
             public class ClassInterfaceAttribute : System.Attribute
             {
                 public ClassInterfaceAttribute(System.Runtime.InteropServices.ClassInterfaceType classInterfaceType) => throw null;
@@ -160,35 +172,32 @@ namespace System
                 public System.Runtime.InteropServices.ClassInterfaceType Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.ClassInterfaceType` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ClassInterfaceType
+            public enum ClassInterfaceType : int
             {
-                AutoDispatch,
-                AutoDual,
-                None,
+                AutoDispatch = 1,
+                AutoDual = 2,
+                None = 0,
             }
 
-            // Generated from `System.Runtime.InteropServices.CoClassAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CoClassAttribute : System.Attribute
             {
                 public System.Type CoClass { get => throw null; }
                 public CoClassAttribute(System.Type coClass) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.CollectionsMarshal` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class CollectionsMarshal
             {
                 public static System.Span<T> AsSpan<T>(System.Collections.Generic.List<T> list) => throw null;
+                public static TValue GetValueRefOrAddDefault<TKey, TValue>(System.Collections.Generic.Dictionary<TKey, TValue> dictionary, TKey key, out bool exists) => throw null;
+                public static TValue GetValueRefOrNullRef<TKey, TValue>(System.Collections.Generic.Dictionary<TKey, TValue> dictionary, TKey key) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.ComAliasNameAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComAliasNameAttribute : System.Attribute
             {
                 public ComAliasNameAttribute(string alias) => throw null;
                 public string Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.ComAwareEventInfo` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComAwareEventInfo : System.Reflection.EventInfo
             {
                 public override void AddEventHandler(object target, System.Delegate handler) => throw null;
@@ -210,7 +219,6 @@ namespace System
                 public override void RemoveEventHandler(object target, System.Delegate handler) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.ComCompatibleVersionAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComCompatibleVersionAttribute : System.Attribute
             {
                 public int BuildNumber { get => throw null; }
@@ -220,20 +228,17 @@ namespace System
                 public int RevisionNumber { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.ComConversionLossAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComConversionLossAttribute : System.Attribute
             {
                 public ComConversionLossAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.ComDefaultInterfaceAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComDefaultInterfaceAttribute : System.Attribute
             {
                 public ComDefaultInterfaceAttribute(System.Type defaultInterface) => throw null;
                 public System.Type Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.ComEventInterfaceAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComEventInterfaceAttribute : System.Attribute
             {
                 public ComEventInterfaceAttribute(System.Type SourceInterface, System.Type EventProvider) => throw null;
@@ -241,43 +246,37 @@ namespace System
                 public System.Type SourceInterface { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.ComEventsHelper` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class ComEventsHelper
             {
                 public static void Combine(object rcw, System.Guid iid, int dispid, System.Delegate d) => throw null;
                 public static System.Delegate Remove(object rcw, System.Guid iid, int dispid, System.Delegate d) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.ComImportAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComImportAttribute : System.Attribute
             {
                 public ComImportAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.ComInterfaceType` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ComInterfaceType
+            public enum ComInterfaceType : int
             {
-                InterfaceIsDual,
-                InterfaceIsIDispatch,
-                InterfaceIsIInspectable,
-                InterfaceIsIUnknown,
+                InterfaceIsDual = 0,
+                InterfaceIsIDispatch = 2,
+                InterfaceIsIInspectable = 3,
+                InterfaceIsIUnknown = 1,
             }
 
-            // Generated from `System.Runtime.InteropServices.ComMemberType` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum ComMemberType
+            public enum ComMemberType : int
             {
-                Method,
-                PropGet,
-                PropSet,
+                Method = 0,
+                PropGet = 1,
+                PropSet = 2,
             }
 
-            // Generated from `System.Runtime.InteropServices.ComRegisterFunctionAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComRegisterFunctionAttribute : System.Attribute
             {
                 public ComRegisterFunctionAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.ComSourceInterfacesAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComSourceInterfacesAttribute : System.Attribute
             {
                 public ComSourceInterfacesAttribute(System.Type sourceInterface) => throw null;
@@ -288,16 +287,13 @@ namespace System
                 public string Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.ComUnregisterFunctionAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ComUnregisterFunctionAttribute : System.Attribute
             {
                 public ComUnregisterFunctionAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.ComWrappers` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class ComWrappers
             {
-                // Generated from `System.Runtime.InteropServices.ComWrappers+ComInterfaceDispatch` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ComInterfaceDispatch
                 {
                     // Stub generator skipped constructor 
@@ -306,7 +302,6 @@ namespace System
                 }
 
 
-                // Generated from `System.Runtime.InteropServices.ComWrappers+ComInterfaceEntry` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ComInterfaceEntry
                 {
                     // Stub generator skipped constructor 
@@ -322,30 +317,30 @@ namespace System
                 public System.IntPtr GetOrCreateComInterfaceForObject(object instance, System.Runtime.InteropServices.CreateComInterfaceFlags flags) => throw null;
                 public object GetOrCreateObjectForComInstance(System.IntPtr externalComObject, System.Runtime.InteropServices.CreateObjectFlags flags) => throw null;
                 public object GetOrRegisterObjectForComInstance(System.IntPtr externalComObject, System.Runtime.InteropServices.CreateObjectFlags flags, object wrapper) => throw null;
+                public object GetOrRegisterObjectForComInstance(System.IntPtr externalComObject, System.Runtime.InteropServices.CreateObjectFlags flags, object wrapper, System.IntPtr inner) => throw null;
                 public static void RegisterForMarshalling(System.Runtime.InteropServices.ComWrappers instance) => throw null;
                 public static void RegisterForTrackerSupport(System.Runtime.InteropServices.ComWrappers instance) => throw null;
                 protected abstract void ReleaseObjects(System.Collections.IEnumerable objects);
             }
 
-            // Generated from `System.Runtime.InteropServices.CreateComInterfaceFlags` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CreateComInterfaceFlags
+            public enum CreateComInterfaceFlags : int
             {
-                CallerDefinedIUnknown,
-                None,
-                TrackerSupport,
+                CallerDefinedIUnknown = 1,
+                None = 0,
+                TrackerSupport = 2,
             }
 
-            // Generated from `System.Runtime.InteropServices.CreateObjectFlags` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum CreateObjectFlags
+            public enum CreateObjectFlags : int
             {
-                None,
-                TrackerObject,
-                UniqueInstance,
+                Aggregation = 4,
+                None = 0,
+                TrackerObject = 1,
+                UniqueInstance = 2,
+                Unwrap = 8,
             }
 
-            // Generated from `System.Runtime.InteropServices.CurrencyWrapper` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CurrencyWrapper
             {
                 public CurrencyWrapper(System.Decimal obj) => throw null;
@@ -353,57 +348,49 @@ namespace System
                 public System.Decimal WrappedObject { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.CustomQueryInterfaceMode` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CustomQueryInterfaceMode
+            public enum CustomQueryInterfaceMode : int
             {
-                Allow,
-                Ignore,
+                Allow = 1,
+                Ignore = 0,
             }
 
-            // Generated from `System.Runtime.InteropServices.CustomQueryInterfaceResult` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum CustomQueryInterfaceResult
+            public enum CustomQueryInterfaceResult : int
             {
-                Failed,
-                Handled,
-                NotHandled,
+                Failed = 2,
+                Handled = 0,
+                NotHandled = 1,
             }
 
-            // Generated from `System.Runtime.InteropServices.DefaultCharSetAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DefaultCharSetAttribute : System.Attribute
             {
                 public System.Runtime.InteropServices.CharSet CharSet { get => throw null; }
                 public DefaultCharSetAttribute(System.Runtime.InteropServices.CharSet charSet) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.DefaultDllImportSearchPathsAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DefaultDllImportSearchPathsAttribute : System.Attribute
             {
                 public DefaultDllImportSearchPathsAttribute(System.Runtime.InteropServices.DllImportSearchPath paths) => throw null;
                 public System.Runtime.InteropServices.DllImportSearchPath Paths { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.DefaultParameterValueAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DefaultParameterValueAttribute : System.Attribute
             {
                 public DefaultParameterValueAttribute(object value) => throw null;
                 public object Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.DispIdAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DispIdAttribute : System.Attribute
             {
                 public DispIdAttribute(int dispId) => throw null;
                 public int Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.DispatchWrapper` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DispatchWrapper
             {
                 public DispatchWrapper(object obj) => throw null;
                 public object WrappedObject { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.DllImportAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DllImportAttribute : System.Attribute
             {
                 public bool BestFitMapping;
@@ -418,29 +405,25 @@ namespace System
                 public string Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.DllImportResolver` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public delegate System.IntPtr DllImportResolver(string libraryName, System.Reflection.Assembly assembly, System.Runtime.InteropServices.DllImportSearchPath? searchPath);
 
-            // Generated from `System.Runtime.InteropServices.DllImportSearchPath` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum DllImportSearchPath
+            public enum DllImportSearchPath : int
             {
-                ApplicationDirectory,
-                AssemblyDirectory,
-                LegacyBehavior,
-                SafeDirectories,
-                System32,
-                UseDllDirectoryForDependencies,
-                UserDirectories,
+                ApplicationDirectory = 512,
+                AssemblyDirectory = 2,
+                LegacyBehavior = 0,
+                SafeDirectories = 4096,
+                System32 = 2048,
+                UseDllDirectoryForDependencies = 256,
+                UserDirectories = 1024,
             }
 
-            // Generated from `System.Runtime.InteropServices.DynamicInterfaceCastableImplementationAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DynamicInterfaceCastableImplementationAttribute : System.Attribute
             {
                 public DynamicInterfaceCastableImplementationAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.ErrorWrapper` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ErrorWrapper
             {
                 public int ErrorCode { get => throw null; }
@@ -449,14 +432,12 @@ namespace System
                 public ErrorWrapper(object errorCode) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.GuidAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class GuidAttribute : System.Attribute
             {
                 public GuidAttribute(string guid) => throw null;
                 public string Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.HandleCollector` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class HandleCollector
             {
                 public void Add() => throw null;
@@ -469,7 +450,6 @@ namespace System
                 public void Remove() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.HandleRef` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public struct HandleRef
             {
                 public System.IntPtr Handle { get => throw null; }
@@ -480,19 +460,16 @@ namespace System
                 public static explicit operator System.IntPtr(System.Runtime.InteropServices.HandleRef value) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.ICustomAdapter` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ICustomAdapter
             {
                 object GetUnderlyingObject();
             }
 
-            // Generated from `System.Runtime.InteropServices.ICustomFactory` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ICustomFactory
             {
                 System.MarshalByRefObject CreateInstance(System.Type serverType);
             }
 
-            // Generated from `System.Runtime.InteropServices.ICustomMarshaler` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ICustomMarshaler
             {
                 void CleanUpManagedData(object ManagedObj);
@@ -502,27 +479,23 @@ namespace System
                 object MarshalNativeToManaged(System.IntPtr pNativeData);
             }
 
-            // Generated from `System.Runtime.InteropServices.ICustomQueryInterface` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface ICustomQueryInterface
             {
                 System.Runtime.InteropServices.CustomQueryInterfaceResult GetInterface(ref System.Guid iid, out System.IntPtr ppv);
             }
 
-            // Generated from `System.Runtime.InteropServices.IDynamicInterfaceCastable` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public interface IDynamicInterfaceCastable
             {
                 System.RuntimeTypeHandle GetInterfaceImplementation(System.RuntimeTypeHandle interfaceType);
                 bool IsInterfaceImplemented(System.RuntimeTypeHandle interfaceType, bool throwIfNotImplemented);
             }
 
-            // Generated from `System.Runtime.InteropServices.ImportedFromTypeLibAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ImportedFromTypeLibAttribute : System.Attribute
             {
                 public ImportedFromTypeLibAttribute(string tlbFile) => throw null;
                 public string Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.InterfaceTypeAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class InterfaceTypeAttribute : System.Attribute
             {
                 public InterfaceTypeAttribute(System.Runtime.InteropServices.ComInterfaceType interfaceType) => throw null;
@@ -530,7 +503,6 @@ namespace System
                 public System.Runtime.InteropServices.ComInterfaceType Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.InvalidComObjectException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class InvalidComObjectException : System.SystemException
             {
                 public InvalidComObjectException() => throw null;
@@ -539,7 +511,6 @@ namespace System
                 public InvalidComObjectException(string message, System.Exception inner) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.InvalidOleVariantTypeException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class InvalidOleVariantTypeException : System.SystemException
             {
                 public InvalidOleVariantTypeException() => throw null;
@@ -548,14 +519,22 @@ namespace System
                 public InvalidOleVariantTypeException(string message, System.Exception inner) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.LCIDConversionAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class LCIDConversionAttribute : System.Attribute
             {
                 public LCIDConversionAttribute(int lcid) => throw null;
                 public int Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.ManagedToNativeComInteropStubAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class LibraryImportAttribute : System.Attribute
+            {
+                public string EntryPoint { get => throw null; set => throw null; }
+                public LibraryImportAttribute(string libraryName) => throw null;
+                public string LibraryName { get => throw null; }
+                public bool SetLastError { get => throw null; set => throw null; }
+                public System.Runtime.InteropServices.StringMarshalling StringMarshalling { get => throw null; set => throw null; }
+                public System.Type StringMarshallingCustomType { get => throw null; set => throw null; }
+            }
+
             public class ManagedToNativeComInteropStubAttribute : System.Attribute
             {
                 public System.Type ClassType { get => throw null; }
@@ -563,7 +542,6 @@ namespace System
                 public string MethodName { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.Marshal` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Marshal
             {
                 public static int AddRef(System.IntPtr pUnk) => throw null;
@@ -620,6 +598,9 @@ namespace System
                 public static int GetHRForLastWin32Error() => throw null;
                 public static System.IntPtr GetIDispatchForObject(object o) => throw null;
                 public static System.IntPtr GetIUnknownForObject(object o) => throw null;
+                public static int GetLastPInvokeError() => throw null;
+                public static string GetLastPInvokeErrorMessage() => throw null;
+                public static int GetLastSystemError() => throw null;
                 public static int GetLastWin32Error() => throw null;
                 public static void GetNativeVariantForObject(object obj, System.IntPtr pDstNativeVariant) => throw null;
                 public static void GetNativeVariantForObject<T>(T obj, System.IntPtr pDstNativeVariant) => throw null;
@@ -628,11 +609,13 @@ namespace System
                 public static T GetObjectForNativeVariant<T>(System.IntPtr pSrcNativeVariant) => throw null;
                 public static object[] GetObjectsForNativeVariants(System.IntPtr aSrcNativeVariant, int cVars) => throw null;
                 public static T[] GetObjectsForNativeVariants<T>(System.IntPtr aSrcNativeVariant, int cVars) => throw null;
+                public static string GetPInvokeErrorMessage(int error) => throw null;
                 public static int GetStartComSlot(System.Type t) => throw null;
                 public static System.Type GetTypeFromCLSID(System.Guid clsid) => throw null;
                 public static string GetTypeInfoName(System.Runtime.InteropServices.ComTypes.ITypeInfo typeInfo) => throw null;
                 public static object GetTypedObjectForIUnknown(System.IntPtr pUnk, System.Type t) => throw null;
                 public static object GetUniqueObjectForIUnknown(System.IntPtr unknown) => throw null;
+                public static void InitHandle(System.Runtime.InteropServices.SafeHandle safeHandle, System.IntPtr handle) => throw null;
                 public static bool IsComObject(object o) => throw null;
                 public static bool IsTypeVisibleFromCom(System.Type t) => throw null;
                 public static System.IntPtr OffsetOf(System.Type t, string fieldName) => throw null;
@@ -678,6 +661,8 @@ namespace System
                 public static System.IntPtr SecureStringToGlobalAllocAnsi(System.Security.SecureString s) => throw null;
                 public static System.IntPtr SecureStringToGlobalAllocUnicode(System.Security.SecureString s) => throw null;
                 public static bool SetComObjectData(object obj, object key, object data) => throw null;
+                public static void SetLastPInvokeError(int error) => throw null;
+                public static void SetLastSystemError(int error) => throw null;
                 public static int SizeOf(System.Type t) => throw null;
                 public static int SizeOf(object structure) => throw null;
                 public static int SizeOf<T>() => throw null;
@@ -724,7 +709,6 @@ namespace System
                 public static void ZeroFreeGlobalAllocUnicode(System.IntPtr s) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.MarshalAsAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MarshalAsAttribute : System.Attribute
             {
                 public System.Runtime.InteropServices.UnmanagedType ArraySubType;
@@ -741,7 +725,6 @@ namespace System
                 public System.Runtime.InteropServices.UnmanagedType Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.MarshalDirectiveException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class MarshalDirectiveException : System.SystemException
             {
                 public MarshalDirectiveException() => throw null;
@@ -750,11 +733,234 @@ namespace System
                 public MarshalDirectiveException(string message, System.Exception inner) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.NativeLibrary` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public struct NFloat : System.IComparable, System.IComparable<System.Runtime.InteropServices.NFloat>, System.IEquatable<System.Runtime.InteropServices.NFloat>, System.IFormattable, System.IParsable<System.Runtime.InteropServices.NFloat>, System.ISpanFormattable, System.ISpanParsable<System.Runtime.InteropServices.NFloat>, System.Numerics.IAdditionOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>, System.Numerics.IAdditiveIdentity<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>, System.Numerics.IBinaryFloatingPointIeee754<System.Runtime.InteropServices.NFloat>, System.Numerics.IBinaryNumber<System.Runtime.InteropServices.NFloat>, System.Numerics.IBitwiseOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>, System.Numerics.IComparisonOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, bool>, System.Numerics.IDecrementOperators<System.Runtime.InteropServices.NFloat>, System.Numerics.IDivisionOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>, System.Numerics.IEqualityOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, bool>, System.Numerics.IExponentialFunctions<System.Runtime.InteropServices.NFloat>, System.Numerics.IFloatingPoint<System.Runtime.InteropServices.NFloat>, System.Numerics.IFloatingPointConstants<System.Runtime.InteropServices.NFloat>, System.Numerics.IFloatingPointIeee754<System.Runtime.InteropServices.NFloat>, System.Numerics.IHyperbolicFunctions<System.Runtime.InteropServices.NFloat>, System.Numerics.IIncrementOperators<System.Runtime.InteropServices.NFloat>, System.Numerics.ILogarithmicFunctions<System.Runtime.InteropServices.NFloat>, System.Numerics.IMinMaxValue<System.Runtime.InteropServices.NFloat>, System.Numerics.IModulusOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>, System.Numerics.IMultiplicativeIdentity<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>, System.Numerics.IMultiplyOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>, System.Numerics.INumber<System.Runtime.InteropServices.NFloat>, System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>, System.Numerics.IPowerFunctions<System.Runtime.InteropServices.NFloat>, System.Numerics.IRootFunctions<System.Runtime.InteropServices.NFloat>, System.Numerics.ISignedNumber<System.Runtime.InteropServices.NFloat>, System.Numerics.ISubtractionOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>, System.Numerics.ITrigonometricFunctions<System.Runtime.InteropServices.NFloat>, System.Numerics.IUnaryNegationOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>, System.Numerics.IUnaryPlusOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>
+            {
+                static bool System.Numerics.IEqualityOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, bool>.operator !=(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IModulusOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator %(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IBitwiseOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator &(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IMultiplyOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator *(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IUnaryPlusOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator +(System.Runtime.InteropServices.NFloat value) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IAdditionOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator +(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IIncrementOperators<System.Runtime.InteropServices.NFloat>.operator ++(System.Runtime.InteropServices.NFloat value) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IUnaryNegationOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator -(System.Runtime.InteropServices.NFloat value) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.ISubtractionOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator -(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IDecrementOperators<System.Runtime.InteropServices.NFloat>.operator --(System.Runtime.InteropServices.NFloat value) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IDivisionOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator /(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static bool System.Numerics.IComparisonOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, bool>.operator <(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static bool System.Numerics.IComparisonOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, bool>.operator <=(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static bool System.Numerics.IEqualityOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, bool>.operator ==(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static bool System.Numerics.IComparisonOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, bool>.operator >(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static bool System.Numerics.IComparisonOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, bool>.operator >=(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                public static System.Runtime.InteropServices.NFloat Abs(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static System.Runtime.InteropServices.NFloat Acos(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat AcosPi(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Acosh(System.Runtime.InteropServices.NFloat x) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IAdditiveIdentity<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.AdditiveIdentity { get => throw null; }
+                static System.Runtime.InteropServices.NFloat System.Numerics.IBinaryNumber<System.Runtime.InteropServices.NFloat>.AllBitsSet { get => throw null; }
+                public static System.Runtime.InteropServices.NFloat Asin(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat AsinPi(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Asinh(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Atan(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Atan2(System.Runtime.InteropServices.NFloat y, System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Atan2Pi(System.Runtime.InteropServices.NFloat y, System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat AtanPi(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Atanh(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat BitDecrement(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat BitIncrement(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Cbrt(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Ceiling(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Clamp(System.Runtime.InteropServices.NFloat value, System.Runtime.InteropServices.NFloat min, System.Runtime.InteropServices.NFloat max) => throw null;
+                public int CompareTo(System.Runtime.InteropServices.NFloat other) => throw null;
+                public int CompareTo(object obj) => throw null;
+                public static System.Runtime.InteropServices.NFloat CopySign(System.Runtime.InteropServices.NFloat value, System.Runtime.InteropServices.NFloat sign) => throw null;
+                public static System.Runtime.InteropServices.NFloat Cos(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat CosPi(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Cosh(System.Runtime.InteropServices.NFloat x) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.CreateChecked<TOther>(TOther value) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.CreateSaturating<TOther>(TOther value) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.CreateTruncating<TOther>(TOther value) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IFloatingPointConstants<System.Runtime.InteropServices.NFloat>.E { get => throw null; }
+                static System.Runtime.InteropServices.NFloat System.Numerics.IFloatingPointIeee754<System.Runtime.InteropServices.NFloat>.Epsilon { get => throw null; }
+                public bool Equals(System.Runtime.InteropServices.NFloat other) => throw null;
+                public override bool Equals(object obj) => throw null;
+                public static System.Runtime.InteropServices.NFloat Exp(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Exp10(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Exp10M1(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Exp2(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Exp2M1(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat ExpM1(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Floor(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat FusedMultiplyAdd(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right, System.Runtime.InteropServices.NFloat addend) => throw null;
+                int System.Numerics.IFloatingPoint<System.Runtime.InteropServices.NFloat>.GetExponentByteCount() => throw null;
+                int System.Numerics.IFloatingPoint<System.Runtime.InteropServices.NFloat>.GetExponentShortestBitLength() => throw null;
+                public override int GetHashCode() => throw null;
+                int System.Numerics.IFloatingPoint<System.Runtime.InteropServices.NFloat>.GetSignificandBitLength() => throw null;
+                int System.Numerics.IFloatingPoint<System.Runtime.InteropServices.NFloat>.GetSignificandByteCount() => throw null;
+                public static System.Runtime.InteropServices.NFloat Hypot(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
+                public static int ILogB(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Ieee754Remainder(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                public static bool IsCanonical(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsComplexNumber(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsEvenInteger(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsFinite(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsImaginaryNumber(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsInfinity(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsInteger(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsNaN(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsNegative(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsNegativeInfinity(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsNormal(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsOddInteger(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsPositive(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsPositiveInfinity(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsPow2(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsRealNumber(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsSubnormal(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static bool IsZero(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static System.Runtime.InteropServices.NFloat Log(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Log(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat newBase) => throw null;
+                public static System.Runtime.InteropServices.NFloat Log10(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Log10P1(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Log2(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static System.Runtime.InteropServices.NFloat Log2P1(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat LogP1(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Max(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
+                public static System.Runtime.InteropServices.NFloat MaxMagnitude(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
+                public static System.Runtime.InteropServices.NFloat MaxMagnitudeNumber(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
+                public static System.Runtime.InteropServices.NFloat MaxNumber(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IMinMaxValue<System.Runtime.InteropServices.NFloat>.MaxValue { get => throw null; }
+                public static System.Runtime.InteropServices.NFloat Min(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
+                public static System.Runtime.InteropServices.NFloat MinMagnitude(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
+                public static System.Runtime.InteropServices.NFloat MinMagnitudeNumber(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
+                public static System.Runtime.InteropServices.NFloat MinNumber(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IMinMaxValue<System.Runtime.InteropServices.NFloat>.MinValue { get => throw null; }
+                static System.Runtime.InteropServices.NFloat System.Numerics.IMultiplicativeIdentity<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.MultiplicativeIdentity { get => throw null; }
+                // Stub generator skipped constructor 
+                public NFloat(double value) => throw null;
+                public NFloat(float value) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IFloatingPointIeee754<System.Runtime.InteropServices.NFloat>.NaN { get => throw null; }
+                static System.Runtime.InteropServices.NFloat System.Numerics.IFloatingPointIeee754<System.Runtime.InteropServices.NFloat>.NegativeInfinity { get => throw null; }
+                static System.Runtime.InteropServices.NFloat System.Numerics.ISignedNumber<System.Runtime.InteropServices.NFloat>.NegativeOne { get => throw null; }
+                static System.Runtime.InteropServices.NFloat System.Numerics.IFloatingPointIeee754<System.Runtime.InteropServices.NFloat>.NegativeZero { get => throw null; }
+                static System.Runtime.InteropServices.NFloat System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.One { get => throw null; }
+                public static System.Runtime.InteropServices.NFloat Parse(System.ReadOnlySpan<System.Char> s, System.IFormatProvider provider) => throw null;
+                public static System.Runtime.InteropServices.NFloat Parse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style = default(System.Globalization.NumberStyles), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+                public static System.Runtime.InteropServices.NFloat Parse(string s) => throw null;
+                public static System.Runtime.InteropServices.NFloat Parse(string s, System.IFormatProvider provider) => throw null;
+                public static System.Runtime.InteropServices.NFloat Parse(string s, System.Globalization.NumberStyles style) => throw null;
+                public static System.Runtime.InteropServices.NFloat Parse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IFloatingPointConstants<System.Runtime.InteropServices.NFloat>.Pi { get => throw null; }
+                static System.Runtime.InteropServices.NFloat System.Numerics.IFloatingPointIeee754<System.Runtime.InteropServices.NFloat>.PositiveInfinity { get => throw null; }
+                public static System.Runtime.InteropServices.NFloat Pow(System.Runtime.InteropServices.NFloat x, System.Runtime.InteropServices.NFloat y) => throw null;
+                static int System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.Radix { get => throw null; }
+                public static System.Runtime.InteropServices.NFloat ReciprocalEstimate(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat ReciprocalSqrtEstimate(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat RootN(System.Runtime.InteropServices.NFloat x, int n) => throw null;
+                public static System.Runtime.InteropServices.NFloat Round(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Round(System.Runtime.InteropServices.NFloat x, System.MidpointRounding mode) => throw null;
+                public static System.Runtime.InteropServices.NFloat Round(System.Runtime.InteropServices.NFloat x, int digits) => throw null;
+                public static System.Runtime.InteropServices.NFloat Round(System.Runtime.InteropServices.NFloat x, int digits, System.MidpointRounding mode) => throw null;
+                public static System.Runtime.InteropServices.NFloat ScaleB(System.Runtime.InteropServices.NFloat x, int n) => throw null;
+                public static int Sign(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static System.Runtime.InteropServices.NFloat Sin(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static (System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat) SinCos(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static (System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat) SinCosPi(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat SinPi(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Sinh(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static int Size { get => throw null; }
+                public static System.Runtime.InteropServices.NFloat Sqrt(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Tan(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat TanPi(System.Runtime.InteropServices.NFloat x) => throw null;
+                public static System.Runtime.InteropServices.NFloat Tanh(System.Runtime.InteropServices.NFloat x) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IFloatingPointConstants<System.Runtime.InteropServices.NFloat>.Tau { get => throw null; }
+                public override string ToString() => throw null;
+                public string ToString(System.IFormatProvider provider) => throw null;
+                public string ToString(string format) => throw null;
+                public string ToString(string format, System.IFormatProvider provider) => throw null;
+                public static System.Runtime.InteropServices.NFloat Truncate(System.Runtime.InteropServices.NFloat x) => throw null;
+                static bool System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.TryConvertFromChecked<TOther>(TOther value, out System.Runtime.InteropServices.NFloat result) => throw null;
+                static bool System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.TryConvertFromSaturating<TOther>(TOther value, out System.Runtime.InteropServices.NFloat result) => throw null;
+                static bool System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.TryConvertFromTruncating<TOther>(TOther value, out System.Runtime.InteropServices.NFloat result) => throw null;
+                static bool System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.TryConvertToChecked<TOther>(System.Runtime.InteropServices.NFloat value, out TOther result) => throw null;
+                static bool System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.TryConvertToSaturating<TOther>(System.Runtime.InteropServices.NFloat value, out TOther result) => throw null;
+                static bool System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.TryConvertToTruncating<TOther>(System.Runtime.InteropServices.NFloat value, out TOther result) => throw null;
+                public bool TryFormat(System.Span<System.Char> destination, out int charsWritten, System.ReadOnlySpan<System.Char> format = default(System.ReadOnlySpan<System.Char>), System.IFormatProvider provider = default(System.IFormatProvider)) => throw null;
+                public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.IFormatProvider provider, out System.Runtime.InteropServices.NFloat result) => throw null;
+                public static bool TryParse(System.ReadOnlySpan<System.Char> s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Runtime.InteropServices.NFloat result) => throw null;
+                public static bool TryParse(System.ReadOnlySpan<System.Char> s, out System.Runtime.InteropServices.NFloat result) => throw null;
+                public static bool TryParse(string s, System.IFormatProvider provider, out System.Runtime.InteropServices.NFloat result) => throw null;
+                public static bool TryParse(string s, System.Globalization.NumberStyles style, System.IFormatProvider provider, out System.Runtime.InteropServices.NFloat result) => throw null;
+                public static bool TryParse(string s, out System.Runtime.InteropServices.NFloat result) => throw null;
+                bool System.Numerics.IFloatingPoint<System.Runtime.InteropServices.NFloat>.TryWriteExponentBigEndian(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
+                bool System.Numerics.IFloatingPoint<System.Runtime.InteropServices.NFloat>.TryWriteExponentLittleEndian(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
+                bool System.Numerics.IFloatingPoint<System.Runtime.InteropServices.NFloat>.TryWriteSignificandBigEndian(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
+                bool System.Numerics.IFloatingPoint<System.Runtime.InteropServices.NFloat>.TryWriteSignificandLittleEndian(System.Span<System.Byte> destination, out int bytesWritten) => throw null;
+                public double Value { get => throw null; }
+                static System.Runtime.InteropServices.NFloat System.Numerics.INumberBase<System.Runtime.InteropServices.NFloat>.Zero { get => throw null; }
+                static System.Runtime.InteropServices.NFloat System.Numerics.IBitwiseOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator ^(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IMultiplyOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator checked *(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IAdditionOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator checked +(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IIncrementOperators<System.Runtime.InteropServices.NFloat>.operator checked ++(System.Runtime.InteropServices.NFloat value) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IUnaryNegationOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator checked -(System.Runtime.InteropServices.NFloat value) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.ISubtractionOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator checked -(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IDecrementOperators<System.Runtime.InteropServices.NFloat>.operator checked --(System.Runtime.InteropServices.NFloat value) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IDivisionOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator checked /(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                public static explicit operator checked System.Byte(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator checked System.Char(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator checked System.Int128(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator checked System.Int16(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator checked System.Int64(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator checked System.IntPtr(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator checked System.SByte(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator checked System.UInt128(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator checked System.UInt16(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator checked System.UInt32(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator checked System.UInt64(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator checked System.UIntPtr(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator checked int(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.Runtime.InteropServices.NFloat(System.Int128 value) => throw null;
+                public static explicit operator System.Byte(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.Char(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.Decimal(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.Half(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.Int128(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.Int16(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.Int64(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.IntPtr(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.SByte(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.UInt128(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.UInt16(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.UInt32(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.UInt64(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.UIntPtr(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator float(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator int(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static explicit operator System.Runtime.InteropServices.NFloat(System.UInt128 value) => throw null;
+                public static explicit operator System.Runtime.InteropServices.NFloat(System.Decimal value) => throw null;
+                public static explicit operator System.Runtime.InteropServices.NFloat(double value) => throw null;
+                public static implicit operator System.Runtime.InteropServices.NFloat(System.Half value) => throw null;
+                public static implicit operator System.Runtime.InteropServices.NFloat(System.IntPtr value) => throw null;
+                public static implicit operator double(System.Runtime.InteropServices.NFloat value) => throw null;
+                public static implicit operator System.Runtime.InteropServices.NFloat(System.UIntPtr value) => throw null;
+                public static implicit operator System.Runtime.InteropServices.NFloat(System.Byte value) => throw null;
+                public static implicit operator System.Runtime.InteropServices.NFloat(System.Char value) => throw null;
+                public static implicit operator System.Runtime.InteropServices.NFloat(float value) => throw null;
+                public static implicit operator System.Runtime.InteropServices.NFloat(int value) => throw null;
+                public static implicit operator System.Runtime.InteropServices.NFloat(System.Int64 value) => throw null;
+                public static implicit operator System.Runtime.InteropServices.NFloat(System.SByte value) => throw null;
+                public static implicit operator System.Runtime.InteropServices.NFloat(System.Int16 value) => throw null;
+                public static implicit operator System.Runtime.InteropServices.NFloat(System.UInt32 value) => throw null;
+                public static implicit operator System.Runtime.InteropServices.NFloat(System.UInt64 value) => throw null;
+                public static implicit operator System.Runtime.InteropServices.NFloat(System.UInt16 value) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IBitwiseOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator |(System.Runtime.InteropServices.NFloat left, System.Runtime.InteropServices.NFloat right) => throw null;
+                static System.Runtime.InteropServices.NFloat System.Numerics.IBitwiseOperators<System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat, System.Runtime.InteropServices.NFloat>.operator ~(System.Runtime.InteropServices.NFloat value) => throw null;
+            }
+
             public static class NativeLibrary
             {
                 public static void Free(System.IntPtr handle) => throw null;
                 public static System.IntPtr GetExport(System.IntPtr handle, string name) => throw null;
+                public static System.IntPtr GetMainProgramHandle() => throw null;
                 public static System.IntPtr Load(string libraryPath) => throw null;
                 public static System.IntPtr Load(string libraryName, System.Reflection.Assembly assembly, System.Runtime.InteropServices.DllImportSearchPath? searchPath) => throw null;
                 public static void SetDllImportResolver(System.Reflection.Assembly assembly, System.Runtime.InteropServices.DllImportResolver resolver) => throw null;
@@ -763,19 +969,60 @@ namespace System
                 public static bool TryLoad(string libraryPath, out System.IntPtr handle) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.OptionalAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public static class NativeMemory
+            {
+                unsafe public static void* AlignedAlloc(System.UIntPtr byteCount, System.UIntPtr alignment) => throw null;
+                unsafe public static void AlignedFree(void* ptr) => throw null;
+                unsafe public static void* AlignedRealloc(void* ptr, System.UIntPtr byteCount, System.UIntPtr alignment) => throw null;
+                unsafe public static void* Alloc(System.UIntPtr byteCount) => throw null;
+                unsafe public static void* Alloc(System.UIntPtr elementCount, System.UIntPtr elementSize) => throw null;
+                unsafe public static void* AllocZeroed(System.UIntPtr byteCount) => throw null;
+                unsafe public static void* AllocZeroed(System.UIntPtr elementCount, System.UIntPtr elementSize) => throw null;
+                unsafe public static void Clear(void* ptr, System.UIntPtr byteCount) => throw null;
+                unsafe public static void Copy(void* source, void* destination, System.UIntPtr byteCount) => throw null;
+                unsafe public static void Fill(void* ptr, System.UIntPtr byteCount, System.Byte value) => throw null;
+                unsafe public static void Free(void* ptr) => throw null;
+                unsafe public static void* Realloc(void* ptr, System.UIntPtr byteCount) => throw null;
+            }
+
             public class OptionalAttribute : System.Attribute
             {
                 public OptionalAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.PreserveSigAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum PosixSignal : int
+            {
+                SIGCHLD = -5,
+                SIGCONT = -6,
+                SIGHUP = -1,
+                SIGINT = -2,
+                SIGQUIT = -3,
+                SIGTERM = -4,
+                SIGTSTP = -10,
+                SIGTTIN = -8,
+                SIGTTOU = -9,
+                SIGWINCH = -7,
+            }
+
+            public class PosixSignalContext
+            {
+                public bool Cancel { get => throw null; set => throw null; }
+                public PosixSignalContext(System.Runtime.InteropServices.PosixSignal signal) => throw null;
+                public System.Runtime.InteropServices.PosixSignal Signal { get => throw null; }
+            }
+
+            public class PosixSignalRegistration : System.IDisposable
+            {
+                public static System.Runtime.InteropServices.PosixSignalRegistration Create(System.Runtime.InteropServices.PosixSignal signal, System.Action<System.Runtime.InteropServices.PosixSignalContext> handler) => throw null;
+                public void Dispose() => throw null;
+                // ERR: Stub generator didn't handle member: ~PosixSignalRegistration
+            }
+
             public class PreserveSigAttribute : System.Attribute
             {
                 public PreserveSigAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.PrimaryInteropAssemblyAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class PrimaryInteropAssemblyAttribute : System.Attribute
             {
                 public int MajorVersion { get => throw null; }
@@ -783,14 +1030,12 @@ namespace System
                 public PrimaryInteropAssemblyAttribute(int major, int minor) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.ProgIdAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class ProgIdAttribute : System.Attribute
             {
                 public ProgIdAttribute(string progId) => throw null;
                 public string Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.RuntimeEnvironment` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class RuntimeEnvironment
             {
                 public static bool FromGlobalAccessCache(System.Reflection.Assembly a) => throw null;
@@ -801,7 +1046,6 @@ namespace System
                 public static string SystemConfigurationFile { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.SEHException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SEHException : System.Runtime.InteropServices.ExternalException
             {
                 public virtual bool CanResume() => throw null;
@@ -811,7 +1055,6 @@ namespace System
                 public SEHException(string message, System.Exception inner) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.SafeArrayRankMismatchException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeArrayRankMismatchException : System.SystemException
             {
                 public SafeArrayRankMismatchException() => throw null;
@@ -820,7 +1063,6 @@ namespace System
                 public SafeArrayRankMismatchException(string message, System.Exception inner) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.SafeArrayTypeMismatchException` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class SafeArrayTypeMismatchException : System.SystemException
             {
                 public SafeArrayTypeMismatchException() => throw null;
@@ -829,13 +1071,18 @@ namespace System
                 public SafeArrayTypeMismatchException(string message, System.Exception inner) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.StandardOleMarshalObject` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class StandardOleMarshalObject : System.MarshalByRefObject
             {
                 protected StandardOleMarshalObject() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.TypeIdentifierAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public enum StringMarshalling : int
+            {
+                Custom = 0,
+                Utf16 = 2,
+                Utf8 = 1,
+            }
+
             public class TypeIdentifierAttribute : System.Attribute
             {
                 public string Identifier { get => throw null; }
@@ -844,7 +1091,6 @@ namespace System
                 public TypeIdentifierAttribute(string scope, string identifier) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.TypeLibFuncAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TypeLibFuncAttribute : System.Attribute
             {
                 public TypeLibFuncAttribute(System.Runtime.InteropServices.TypeLibFuncFlags flags) => throw null;
@@ -852,33 +1098,30 @@ namespace System
                 public System.Runtime.InteropServices.TypeLibFuncFlags Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.TypeLibFuncFlags` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum TypeLibFuncFlags
+            public enum TypeLibFuncFlags : int
             {
-                FBindable,
-                FDefaultBind,
-                FDefaultCollelem,
-                FDisplayBind,
-                FHidden,
-                FImmediateBind,
-                FNonBrowsable,
-                FReplaceable,
-                FRequestEdit,
-                FRestricted,
-                FSource,
-                FUiDefault,
-                FUsesGetLastError,
+                FBindable = 4,
+                FDefaultBind = 32,
+                FDefaultCollelem = 256,
+                FDisplayBind = 16,
+                FHidden = 64,
+                FImmediateBind = 4096,
+                FNonBrowsable = 1024,
+                FReplaceable = 2048,
+                FRequestEdit = 8,
+                FRestricted = 1,
+                FSource = 2,
+                FUiDefault = 512,
+                FUsesGetLastError = 128,
             }
 
-            // Generated from `System.Runtime.InteropServices.TypeLibImportClassAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TypeLibImportClassAttribute : System.Attribute
             {
                 public TypeLibImportClassAttribute(System.Type importClass) => throw null;
                 public string Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.TypeLibTypeAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TypeLibTypeAttribute : System.Attribute
             {
                 public TypeLibTypeAttribute(System.Runtime.InteropServices.TypeLibTypeFlags flags) => throw null;
@@ -886,27 +1129,25 @@ namespace System
                 public System.Runtime.InteropServices.TypeLibTypeFlags Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.TypeLibTypeFlags` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum TypeLibTypeFlags
+            public enum TypeLibTypeFlags : int
             {
-                FAggregatable,
-                FAppObject,
-                FCanCreate,
-                FControl,
-                FDispatchable,
-                FDual,
-                FHidden,
-                FLicensed,
-                FNonExtensible,
-                FOleAutomation,
-                FPreDeclId,
-                FReplaceable,
-                FRestricted,
-                FReverseBind,
+                FAggregatable = 1024,
+                FAppObject = 1,
+                FCanCreate = 2,
+                FControl = 32,
+                FDispatchable = 4096,
+                FDual = 64,
+                FHidden = 16,
+                FLicensed = 4,
+                FNonExtensible = 128,
+                FOleAutomation = 256,
+                FPreDeclId = 8,
+                FReplaceable = 2048,
+                FRestricted = 512,
+                FReverseBind = 8192,
             }
 
-            // Generated from `System.Runtime.InteropServices.TypeLibVarAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TypeLibVarAttribute : System.Attribute
             {
                 public TypeLibVarAttribute(System.Runtime.InteropServices.TypeLibVarFlags flags) => throw null;
@@ -914,26 +1155,24 @@ namespace System
                 public System.Runtime.InteropServices.TypeLibVarFlags Value { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.TypeLibVarFlags` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
-            public enum TypeLibVarFlags
+            public enum TypeLibVarFlags : int
             {
-                FBindable,
-                FDefaultBind,
-                FDefaultCollelem,
-                FDisplayBind,
-                FHidden,
-                FImmediateBind,
-                FNonBrowsable,
-                FReadOnly,
-                FReplaceable,
-                FRequestEdit,
-                FRestricted,
-                FSource,
-                FUiDefault,
+                FBindable = 4,
+                FDefaultBind = 32,
+                FDefaultCollelem = 256,
+                FDisplayBind = 16,
+                FHidden = 64,
+                FImmediateBind = 4096,
+                FNonBrowsable = 1024,
+                FReadOnly = 1,
+                FReplaceable = 2048,
+                FRequestEdit = 8,
+                FRestricted = 128,
+                FSource = 2,
+                FUiDefault = 512,
             }
 
-            // Generated from `System.Runtime.InteropServices.TypeLibVersionAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class TypeLibVersionAttribute : System.Attribute
             {
                 public int MajorVersion { get => throw null; }
@@ -941,14 +1180,18 @@ namespace System
                 public TypeLibVersionAttribute(int major, int minor) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.UnknownWrapper` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UnknownWrapper
             {
                 public UnknownWrapper(object obj) => throw null;
                 public object WrappedObject { get => throw null; }
             }
 
-            // Generated from `System.Runtime.InteropServices.UnmanagedCallersOnlyAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
+            public class UnmanagedCallConvAttribute : System.Attribute
+            {
+                public System.Type[] CallConvs;
+                public UnmanagedCallConvAttribute() => throw null;
+            }
+
             public class UnmanagedCallersOnlyAttribute : System.Attribute
             {
                 public System.Type[] CallConvs;
@@ -956,7 +1199,6 @@ namespace System
                 public UnmanagedCallersOnlyAttribute() => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.UnmanagedFunctionPointerAttribute` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class UnmanagedFunctionPointerAttribute : System.Attribute
             {
                 public bool BestFitMapping;
@@ -967,99 +1209,54 @@ namespace System
                 public UnmanagedFunctionPointerAttribute(System.Runtime.InteropServices.CallingConvention callingConvention) => throw null;
             }
 
-            // Generated from `System.Runtime.InteropServices.UnmanagedType` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum UnmanagedType
+            public enum VarEnum : int
             {
-                AnsiBStr,
-                AsAny,
-                BStr,
-                Bool,
-                ByValArray,
-                ByValTStr,
-                Currency,
-                CustomMarshaler,
-                Error,
-                FunctionPtr,
-                HString,
-                I1,
-                I2,
-                I4,
-                I8,
-                IDispatch,
-                IInspectable,
-                IUnknown,
-                Interface,
-                LPArray,
-                LPStr,
-                LPStruct,
-                LPTStr,
-                LPUTF8Str,
-                LPWStr,
-                R4,
-                R8,
-                SafeArray,
-                Struct,
-                SysInt,
-                SysUInt,
-                TBStr,
-                U1,
-                U2,
-                U4,
-                U8,
-                VBByRefStr,
-                VariantBool,
+                VT_ARRAY = 8192,
+                VT_BLOB = 65,
+                VT_BLOB_OBJECT = 70,
+                VT_BOOL = 11,
+                VT_BSTR = 8,
+                VT_BYREF = 16384,
+                VT_CARRAY = 28,
+                VT_CF = 71,
+                VT_CLSID = 72,
+                VT_CY = 6,
+                VT_DATE = 7,
+                VT_DECIMAL = 14,
+                VT_DISPATCH = 9,
+                VT_EMPTY = 0,
+                VT_ERROR = 10,
+                VT_FILETIME = 64,
+                VT_HRESULT = 25,
+                VT_I1 = 16,
+                VT_I2 = 2,
+                VT_I4 = 3,
+                VT_I8 = 20,
+                VT_INT = 22,
+                VT_LPSTR = 30,
+                VT_LPWSTR = 31,
+                VT_NULL = 1,
+                VT_PTR = 26,
+                VT_R4 = 4,
+                VT_R8 = 5,
+                VT_RECORD = 36,
+                VT_SAFEARRAY = 27,
+                VT_STORAGE = 67,
+                VT_STORED_OBJECT = 69,
+                VT_STREAM = 66,
+                VT_STREAMED_OBJECT = 68,
+                VT_UI1 = 17,
+                VT_UI2 = 18,
+                VT_UI4 = 19,
+                VT_UI8 = 21,
+                VT_UINT = 23,
+                VT_UNKNOWN = 13,
+                VT_USERDEFINED = 29,
+                VT_VARIANT = 12,
+                VT_VECTOR = 4096,
+                VT_VOID = 24,
             }
 
-            // Generated from `System.Runtime.InteropServices.VarEnum` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-            public enum VarEnum
-            {
-                VT_ARRAY,
-                VT_BLOB,
-                VT_BLOB_OBJECT,
-                VT_BOOL,
-                VT_BSTR,
-                VT_BYREF,
-                VT_CARRAY,
-                VT_CF,
-                VT_CLSID,
-                VT_CY,
-                VT_DATE,
-                VT_DECIMAL,
-                VT_DISPATCH,
-                VT_EMPTY,
-                VT_ERROR,
-                VT_FILETIME,
-                VT_HRESULT,
-                VT_I1,
-                VT_I2,
-                VT_I4,
-                VT_I8,
-                VT_INT,
-                VT_LPSTR,
-                VT_LPWSTR,
-                VT_NULL,
-                VT_PTR,
-                VT_R4,
-                VT_R8,
-                VT_RECORD,
-                VT_SAFEARRAY,
-                VT_STORAGE,
-                VT_STORED_OBJECT,
-                VT_STREAM,
-                VT_STREAMED_OBJECT,
-                VT_UI1,
-                VT_UI2,
-                VT_UI4,
-                VT_UI8,
-                VT_UINT,
-                VT_UNKNOWN,
-                VT_USERDEFINED,
-                VT_VARIANT,
-                VT_VECTOR,
-                VT_VOID,
-            }
-
-            // Generated from `System.Runtime.InteropServices.VariantWrapper` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class VariantWrapper
             {
                 public VariantWrapper(object obj) => throw null;
@@ -1068,20 +1265,18 @@ namespace System
 
             namespace ComTypes
             {
-                // Generated from `System.Runtime.InteropServices.ComTypes.ADVF` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum ADVF
+                public enum ADVF : int
                 {
-                    ADVFCACHE_FORCEBUILTIN,
-                    ADVFCACHE_NOHANDLER,
-                    ADVFCACHE_ONSAVE,
-                    ADVF_DATAONSTOP,
-                    ADVF_NODATA,
-                    ADVF_ONLYONCE,
-                    ADVF_PRIMEFIRST,
+                    ADVFCACHE_FORCEBUILTIN = 16,
+                    ADVFCACHE_NOHANDLER = 8,
+                    ADVFCACHE_ONSAVE = 32,
+                    ADVF_DATAONSTOP = 64,
+                    ADVF_NODATA = 1,
+                    ADVF_ONLYONCE = 4,
+                    ADVF_PRIMEFIRST = 2,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.BINDPTR` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct BINDPTR
                 {
                     // Stub generator skipped constructor 
@@ -1090,7 +1285,6 @@ namespace System
                     public System.IntPtr lpvardesc;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.BIND_OPTS` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct BIND_OPTS
                 {
                     // Stub generator skipped constructor 
@@ -1100,22 +1294,20 @@ namespace System
                     public int grfMode;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.CALLCONV` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum CALLCONV
+                public enum CALLCONV : int
                 {
-                    CC_CDECL,
-                    CC_MACPASCAL,
-                    CC_MAX,
-                    CC_MPWCDECL,
-                    CC_MPWPASCAL,
-                    CC_MSCPASCAL,
-                    CC_PASCAL,
-                    CC_RESERVED,
-                    CC_STDCALL,
-                    CC_SYSCALL,
+                    CC_CDECL = 1,
+                    CC_MACPASCAL = 3,
+                    CC_MAX = 9,
+                    CC_MPWCDECL = 7,
+                    CC_MPWPASCAL = 8,
+                    CC_MSCPASCAL = 2,
+                    CC_PASCAL = 2,
+                    CC_RESERVED = 5,
+                    CC_STDCALL = 4,
+                    CC_SYSCALL = 6,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.CONNECTDATA` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct CONNECTDATA
                 {
                     // Stub generator skipped constructor 
@@ -1123,25 +1315,22 @@ namespace System
                     public object pUnk;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.DATADIR` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum DATADIR
+                public enum DATADIR : int
                 {
-                    DATADIR_GET,
-                    DATADIR_SET,
+                    DATADIR_GET = 1,
+                    DATADIR_SET = 2,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.DESCKIND` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum DESCKIND
+                public enum DESCKIND : int
                 {
-                    DESCKIND_FUNCDESC,
-                    DESCKIND_IMPLICITAPPOBJ,
-                    DESCKIND_MAX,
-                    DESCKIND_NONE,
-                    DESCKIND_TYPECOMP,
-                    DESCKIND_VARDESC,
+                    DESCKIND_FUNCDESC = 1,
+                    DESCKIND_IMPLICITAPPOBJ = 4,
+                    DESCKIND_MAX = 5,
+                    DESCKIND_NONE = 0,
+                    DESCKIND_TYPECOMP = 3,
+                    DESCKIND_VARDESC = 2,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.DISPPARAMS` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct DISPPARAMS
                 {
                     // Stub generator skipped constructor 
@@ -1151,20 +1340,17 @@ namespace System
                     public System.IntPtr rgvarg;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.DVASPECT` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum DVASPECT
+                public enum DVASPECT : int
                 {
-                    DVASPECT_CONTENT,
-                    DVASPECT_DOCPRINT,
-                    DVASPECT_ICON,
-                    DVASPECT_THUMBNAIL,
+                    DVASPECT_CONTENT = 1,
+                    DVASPECT_DOCPRINT = 8,
+                    DVASPECT_ICON = 4,
+                    DVASPECT_THUMBNAIL = 2,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.ELEMDESC` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct ELEMDESC
                 {
-                    // Generated from `System.Runtime.InteropServices.ComTypes.ELEMDESC+DESCUNION` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public struct DESCUNION
                     {
                         // Stub generator skipped constructor 
@@ -1178,7 +1364,6 @@ namespace System
                     public System.Runtime.InteropServices.ComTypes.TYPEDESC tdesc;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.EXCEPINFO` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct EXCEPINFO
                 {
                     // Stub generator skipped constructor 
@@ -1193,7 +1378,6 @@ namespace System
                     public System.Int16 wReserved;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.FILETIME` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct FILETIME
                 {
                     // Stub generator skipped constructor 
@@ -1201,7 +1385,6 @@ namespace System
                     public int dwLowDateTime;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.FORMATETC` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct FORMATETC
                 {
                     // Stub generator skipped constructor 
@@ -1212,7 +1395,6 @@ namespace System
                     public System.Runtime.InteropServices.ComTypes.TYMED tymed;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.FUNCDESC` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct FUNCDESC
                 {
                     // Stub generator skipped constructor 
@@ -1230,36 +1412,33 @@ namespace System
                     public System.Int16 wFuncFlags;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.FUNCFLAGS` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum FUNCFLAGS
+                public enum FUNCFLAGS : short
                 {
-                    FUNCFLAG_FBINDABLE,
-                    FUNCFLAG_FDEFAULTBIND,
-                    FUNCFLAG_FDEFAULTCOLLELEM,
-                    FUNCFLAG_FDISPLAYBIND,
-                    FUNCFLAG_FHIDDEN,
-                    FUNCFLAG_FIMMEDIATEBIND,
-                    FUNCFLAG_FNONBROWSABLE,
-                    FUNCFLAG_FREPLACEABLE,
-                    FUNCFLAG_FREQUESTEDIT,
-                    FUNCFLAG_FRESTRICTED,
-                    FUNCFLAG_FSOURCE,
-                    FUNCFLAG_FUIDEFAULT,
-                    FUNCFLAG_FUSESGETLASTERROR,
+                    FUNCFLAG_FBINDABLE = 4,
+                    FUNCFLAG_FDEFAULTBIND = 32,
+                    FUNCFLAG_FDEFAULTCOLLELEM = 256,
+                    FUNCFLAG_FDISPLAYBIND = 16,
+                    FUNCFLAG_FHIDDEN = 64,
+                    FUNCFLAG_FIMMEDIATEBIND = 4096,
+                    FUNCFLAG_FNONBROWSABLE = 1024,
+                    FUNCFLAG_FREPLACEABLE = 2048,
+                    FUNCFLAG_FREQUESTEDIT = 8,
+                    FUNCFLAG_FRESTRICTED = 1,
+                    FUNCFLAG_FSOURCE = 2,
+                    FUNCFLAG_FUIDEFAULT = 512,
+                    FUNCFLAG_FUSESGETLASTERROR = 128,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.FUNCKIND` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum FUNCKIND
+                public enum FUNCKIND : int
                 {
-                    FUNC_DISPATCH,
-                    FUNC_NONVIRTUAL,
-                    FUNC_PUREVIRTUAL,
-                    FUNC_STATIC,
-                    FUNC_VIRTUAL,
+                    FUNC_DISPATCH = 4,
+                    FUNC_NONVIRTUAL = 2,
+                    FUNC_PUREVIRTUAL = 1,
+                    FUNC_STATIC = 3,
+                    FUNC_VIRTUAL = 0,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IAdviseSink` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IAdviseSink
                 {
                     void OnClose();
@@ -1269,7 +1448,6 @@ namespace System
                     void OnViewChange(int aspect, int index);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IBindCtx` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IBindCtx
                 {
                     void EnumObjectParam(out System.Runtime.InteropServices.ComTypes.IEnumString ppenum);
@@ -1284,7 +1462,6 @@ namespace System
                     void SetBindOptions(ref System.Runtime.InteropServices.ComTypes.BIND_OPTS pbindopts);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IConnectionPoint` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IConnectionPoint
                 {
                     void Advise(object pUnkSink, out int pdwCookie);
@@ -1294,14 +1471,12 @@ namespace System
                     void Unadvise(int dwCookie);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IConnectionPointContainer` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IConnectionPointContainer
                 {
                     void EnumConnectionPoints(out System.Runtime.InteropServices.ComTypes.IEnumConnectionPoints ppEnum);
                     void FindConnectionPoint(ref System.Guid riid, out System.Runtime.InteropServices.ComTypes.IConnectionPoint ppCP);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IDLDESC` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct IDLDESC
                 {
                     // Stub generator skipped constructor 
@@ -1309,18 +1484,16 @@ namespace System
                     public System.Runtime.InteropServices.ComTypes.IDLFLAG wIDLFlags;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IDLFLAG` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum IDLFLAG
+                public enum IDLFLAG : short
                 {
-                    IDLFLAG_FIN,
-                    IDLFLAG_FLCID,
-                    IDLFLAG_FOUT,
-                    IDLFLAG_FRETVAL,
-                    IDLFLAG_NONE,
+                    IDLFLAG_FIN = 1,
+                    IDLFLAG_FLCID = 4,
+                    IDLFLAG_FOUT = 2,
+                    IDLFLAG_FRETVAL = 8,
+                    IDLFLAG_NONE = 0,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IDataObject` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IDataObject
                 {
                     int DAdvise(ref System.Runtime.InteropServices.ComTypes.FORMATETC pFormatetc, System.Runtime.InteropServices.ComTypes.ADVF advf, System.Runtime.InteropServices.ComTypes.IAdviseSink adviseSink, out int connection);
@@ -1334,7 +1507,6 @@ namespace System
                     void SetData(ref System.Runtime.InteropServices.ComTypes.FORMATETC formatIn, ref System.Runtime.InteropServices.ComTypes.STGMEDIUM medium, bool release);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IEnumConnectionPoints` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IEnumConnectionPoints
                 {
                     void Clone(out System.Runtime.InteropServices.ComTypes.IEnumConnectionPoints ppenum);
@@ -1343,7 +1515,6 @@ namespace System
                     int Skip(int celt);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IEnumConnections` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IEnumConnections
                 {
                     void Clone(out System.Runtime.InteropServices.ComTypes.IEnumConnections ppenum);
@@ -1352,7 +1523,6 @@ namespace System
                     int Skip(int celt);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IEnumFORMATETC` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IEnumFORMATETC
                 {
                     void Clone(out System.Runtime.InteropServices.ComTypes.IEnumFORMATETC newEnum);
@@ -1361,7 +1531,6 @@ namespace System
                     int Skip(int celt);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IEnumMoniker` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IEnumMoniker
                 {
                     void Clone(out System.Runtime.InteropServices.ComTypes.IEnumMoniker ppenum);
@@ -1370,7 +1539,6 @@ namespace System
                     int Skip(int celt);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IEnumSTATDATA` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IEnumSTATDATA
                 {
                     void Clone(out System.Runtime.InteropServices.ComTypes.IEnumSTATDATA newEnum);
@@ -1379,7 +1547,6 @@ namespace System
                     int Skip(int celt);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IEnumString` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IEnumString
                 {
                     void Clone(out System.Runtime.InteropServices.ComTypes.IEnumString ppenum);
@@ -1388,7 +1555,6 @@ namespace System
                     int Skip(int celt);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IEnumVARIANT` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IEnumVARIANT
                 {
                     System.Runtime.InteropServices.ComTypes.IEnumVARIANT Clone();
@@ -1397,17 +1563,15 @@ namespace System
                     int Skip(int celt);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IMPLTYPEFLAGS` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum IMPLTYPEFLAGS
+                public enum IMPLTYPEFLAGS : int
                 {
-                    IMPLTYPEFLAG_FDEFAULT,
-                    IMPLTYPEFLAG_FDEFAULTVTABLE,
-                    IMPLTYPEFLAG_FRESTRICTED,
-                    IMPLTYPEFLAG_FSOURCE,
+                    IMPLTYPEFLAG_FDEFAULT = 1,
+                    IMPLTYPEFLAG_FDEFAULTVTABLE = 8,
+                    IMPLTYPEFLAG_FRESTRICTED = 4,
+                    IMPLTYPEFLAG_FSOURCE = 2,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IMoniker` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IMoniker
                 {
                     void BindToObject(System.Runtime.InteropServices.ComTypes.IBindCtx pbc, System.Runtime.InteropServices.ComTypes.IMoniker pmkToLeft, ref System.Guid riidResult, out object ppvResult);
@@ -1432,17 +1596,15 @@ namespace System
                     void Save(System.Runtime.InteropServices.ComTypes.IStream pStm, bool fClearDirty);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.INVOKEKIND` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum INVOKEKIND
+                public enum INVOKEKIND : int
                 {
-                    INVOKE_FUNC,
-                    INVOKE_PROPERTYGET,
-                    INVOKE_PROPERTYPUT,
-                    INVOKE_PROPERTYPUTREF,
+                    INVOKE_FUNC = 1,
+                    INVOKE_PROPERTYGET = 2,
+                    INVOKE_PROPERTYPUT = 4,
+                    INVOKE_PROPERTYPUTREF = 8,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IPersistFile` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IPersistFile
                 {
                     void GetClassID(out System.Guid pClassID);
@@ -1453,7 +1615,6 @@ namespace System
                     void SaveCompleted(string pszFileName);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IRunningObjectTable` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IRunningObjectTable
                 {
                     void EnumRunning(out System.Runtime.InteropServices.ComTypes.IEnumMoniker ppenumMoniker);
@@ -1465,7 +1626,6 @@ namespace System
                     void Revoke(int dwRegister);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.IStream` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface IStream
                 {
                     void Clone(out System.Runtime.InteropServices.ComTypes.IStream ppstm);
@@ -1481,14 +1641,12 @@ namespace System
                     void Write(System.Byte[] pv, int cb, System.IntPtr pcbWritten);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.ITypeComp` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface ITypeComp
                 {
                     void Bind(string szName, int lHashVal, System.Int16 wFlags, out System.Runtime.InteropServices.ComTypes.ITypeInfo ppTInfo, out System.Runtime.InteropServices.ComTypes.DESCKIND pDescKind, out System.Runtime.InteropServices.ComTypes.BINDPTR pBindPtr);
                     void BindType(string szName, int lHashVal, out System.Runtime.InteropServices.ComTypes.ITypeInfo ppTInfo, out System.Runtime.InteropServices.ComTypes.ITypeComp ppTComp);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.ITypeInfo` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface ITypeInfo
                 {
                     void AddressOfMember(int memid, System.Runtime.InteropServices.ComTypes.INVOKEKIND invKind, out System.IntPtr ppv);
@@ -1512,7 +1670,6 @@ namespace System
                     void ReleaseVarDesc(System.IntPtr pVarDesc);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.ITypeInfo2` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface ITypeInfo2 : System.Runtime.InteropServices.ComTypes.ITypeInfo
                 {
                     void AddressOfMember(int memid, System.Runtime.InteropServices.ComTypes.INVOKEKIND invKind, out System.IntPtr ppv);
@@ -1551,7 +1708,6 @@ namespace System
                     void ReleaseVarDesc(System.IntPtr pVarDesc);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.ITypeLib` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface ITypeLib
                 {
                     void FindName(string szNameBuf, int lHashVal, System.Runtime.InteropServices.ComTypes.ITypeInfo[] ppTInfo, int[] rgMemId, ref System.Int16 pcFound);
@@ -1566,7 +1722,6 @@ namespace System
                     void ReleaseTLibAttr(System.IntPtr pTLibAttr);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.ITypeLib2` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public interface ITypeLib2 : System.Runtime.InteropServices.ComTypes.ITypeLib
                 {
                     void FindName(string szNameBuf, int lHashVal, System.Runtime.InteropServices.ComTypes.ITypeInfo[] ppTInfo, int[] rgMemId, ref System.Int16 pcFound);
@@ -1585,17 +1740,15 @@ namespace System
                     void ReleaseTLibAttr(System.IntPtr pTLibAttr);
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.LIBFLAGS` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum LIBFLAGS
+                public enum LIBFLAGS : short
                 {
-                    LIBFLAG_FCONTROL,
-                    LIBFLAG_FHASDISKIMAGE,
-                    LIBFLAG_FHIDDEN,
-                    LIBFLAG_FRESTRICTED,
+                    LIBFLAG_FCONTROL = 2,
+                    LIBFLAG_FHASDISKIMAGE = 8,
+                    LIBFLAG_FHIDDEN = 4,
+                    LIBFLAG_FRESTRICTED = 1,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.PARAMDESC` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct PARAMDESC
                 {
                     // Stub generator skipped constructor 
@@ -1603,21 +1756,19 @@ namespace System
                     public System.Runtime.InteropServices.ComTypes.PARAMFLAG wParamFlags;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.PARAMFLAG` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum PARAMFLAG
+                public enum PARAMFLAG : short
                 {
-                    PARAMFLAG_FHASCUSTDATA,
-                    PARAMFLAG_FHASDEFAULT,
-                    PARAMFLAG_FIN,
-                    PARAMFLAG_FLCID,
-                    PARAMFLAG_FOPT,
-                    PARAMFLAG_FOUT,
-                    PARAMFLAG_FRETVAL,
-                    PARAMFLAG_NONE,
+                    PARAMFLAG_FHASCUSTDATA = 64,
+                    PARAMFLAG_FHASDEFAULT = 32,
+                    PARAMFLAG_FIN = 1,
+                    PARAMFLAG_FLCID = 4,
+                    PARAMFLAG_FOPT = 16,
+                    PARAMFLAG_FOUT = 2,
+                    PARAMFLAG_FRETVAL = 8,
+                    PARAMFLAG_NONE = 0,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.STATDATA` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct STATDATA
                 {
                     // Stub generator skipped constructor 
@@ -1627,7 +1778,6 @@ namespace System
                     public System.Runtime.InteropServices.ComTypes.FORMATETC formatetc;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.STATSTG` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct STATSTG
                 {
                     // Stub generator skipped constructor 
@@ -1644,7 +1794,6 @@ namespace System
                     public int type;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.STGMEDIUM` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct STGMEDIUM
                 {
                     // Stub generator skipped constructor 
@@ -1653,30 +1802,27 @@ namespace System
                     public System.IntPtr unionmember;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.SYSKIND` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum SYSKIND
+                public enum SYSKIND : int
                 {
-                    SYS_MAC,
-                    SYS_WIN16,
-                    SYS_WIN32,
-                    SYS_WIN64,
+                    SYS_MAC = 2,
+                    SYS_WIN16 = 0,
+                    SYS_WIN32 = 1,
+                    SYS_WIN64 = 3,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.TYMED` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum TYMED
+                public enum TYMED : int
                 {
-                    TYMED_ENHMF,
-                    TYMED_FILE,
-                    TYMED_GDI,
-                    TYMED_HGLOBAL,
-                    TYMED_ISTORAGE,
-                    TYMED_ISTREAM,
-                    TYMED_MFPICT,
-                    TYMED_NULL,
+                    TYMED_ENHMF = 64,
+                    TYMED_FILE = 2,
+                    TYMED_GDI = 16,
+                    TYMED_HGLOBAL = 1,
+                    TYMED_ISTORAGE = 8,
+                    TYMED_ISTREAM = 4,
+                    TYMED_MFPICT = 32,
+                    TYMED_NULL = 0,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.TYPEATTR` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct TYPEATTR
                 {
                     public const int MEMBER_ID_NIL = default;
@@ -1701,7 +1847,6 @@ namespace System
                     public System.Runtime.InteropServices.ComTypes.TYPEFLAGS wTypeFlags;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.TYPEDESC` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct TYPEDESC
                 {
                     // Stub generator skipped constructor 
@@ -1709,42 +1854,39 @@ namespace System
                     public System.Int16 vt;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.TYPEFLAGS` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum TYPEFLAGS
+                public enum TYPEFLAGS : short
                 {
-                    TYPEFLAG_FAGGREGATABLE,
-                    TYPEFLAG_FAPPOBJECT,
-                    TYPEFLAG_FCANCREATE,
-                    TYPEFLAG_FCONTROL,
-                    TYPEFLAG_FDISPATCHABLE,
-                    TYPEFLAG_FDUAL,
-                    TYPEFLAG_FHIDDEN,
-                    TYPEFLAG_FLICENSED,
-                    TYPEFLAG_FNONEXTENSIBLE,
-                    TYPEFLAG_FOLEAUTOMATION,
-                    TYPEFLAG_FPREDECLID,
-                    TYPEFLAG_FPROXY,
-                    TYPEFLAG_FREPLACEABLE,
-                    TYPEFLAG_FRESTRICTED,
-                    TYPEFLAG_FREVERSEBIND,
+                    TYPEFLAG_FAGGREGATABLE = 1024,
+                    TYPEFLAG_FAPPOBJECT = 1,
+                    TYPEFLAG_FCANCREATE = 2,
+                    TYPEFLAG_FCONTROL = 32,
+                    TYPEFLAG_FDISPATCHABLE = 4096,
+                    TYPEFLAG_FDUAL = 64,
+                    TYPEFLAG_FHIDDEN = 16,
+                    TYPEFLAG_FLICENSED = 4,
+                    TYPEFLAG_FNONEXTENSIBLE = 128,
+                    TYPEFLAG_FOLEAUTOMATION = 256,
+                    TYPEFLAG_FPREDECLID = 8,
+                    TYPEFLAG_FPROXY = 16384,
+                    TYPEFLAG_FREPLACEABLE = 2048,
+                    TYPEFLAG_FRESTRICTED = 512,
+                    TYPEFLAG_FREVERSEBIND = 8192,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.TYPEKIND` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum TYPEKIND
+                public enum TYPEKIND : int
                 {
-                    TKIND_ALIAS,
-                    TKIND_COCLASS,
-                    TKIND_DISPATCH,
-                    TKIND_ENUM,
-                    TKIND_INTERFACE,
-                    TKIND_MAX,
-                    TKIND_MODULE,
-                    TKIND_RECORD,
-                    TKIND_UNION,
+                    TKIND_ALIAS = 6,
+                    TKIND_COCLASS = 5,
+                    TKIND_DISPATCH = 4,
+                    TKIND_ENUM = 0,
+                    TKIND_INTERFACE = 3,
+                    TKIND_MAX = 8,
+                    TKIND_MODULE = 2,
+                    TKIND_RECORD = 1,
+                    TKIND_UNION = 7,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.TYPELIBATTR` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct TYPELIBATTR
                 {
                     // Stub generator skipped constructor 
@@ -1756,10 +1898,8 @@ namespace System
                     public System.Int16 wMinorVerNum;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.VARDESC` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 public struct VARDESC
                 {
-                    // Generated from `System.Runtime.InteropServices.ComTypes.VARDESC+DESCUNION` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                     public struct DESCUNION
                     {
                         // Stub generator skipped constructor 
@@ -1777,32 +1917,182 @@ namespace System
                     public System.Int16 wVarFlags;
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.VARFLAGS` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
                 [System.Flags]
-                public enum VARFLAGS
+                public enum VARFLAGS : short
                 {
-                    VARFLAG_FBINDABLE,
-                    VARFLAG_FDEFAULTBIND,
-                    VARFLAG_FDEFAULTCOLLELEM,
-                    VARFLAG_FDISPLAYBIND,
-                    VARFLAG_FHIDDEN,
-                    VARFLAG_FIMMEDIATEBIND,
-                    VARFLAG_FNONBROWSABLE,
-                    VARFLAG_FREADONLY,
-                    VARFLAG_FREPLACEABLE,
-                    VARFLAG_FREQUESTEDIT,
-                    VARFLAG_FRESTRICTED,
-                    VARFLAG_FSOURCE,
-                    VARFLAG_FUIDEFAULT,
+                    VARFLAG_FBINDABLE = 4,
+                    VARFLAG_FDEFAULTBIND = 32,
+                    VARFLAG_FDEFAULTCOLLELEM = 256,
+                    VARFLAG_FDISPLAYBIND = 16,
+                    VARFLAG_FHIDDEN = 64,
+                    VARFLAG_FIMMEDIATEBIND = 4096,
+                    VARFLAG_FNONBROWSABLE = 1024,
+                    VARFLAG_FREADONLY = 1,
+                    VARFLAG_FREPLACEABLE = 2048,
+                    VARFLAG_FREQUESTEDIT = 8,
+                    VARFLAG_FRESTRICTED = 128,
+                    VARFLAG_FSOURCE = 2,
+                    VARFLAG_FUIDEFAULT = 512,
                 }
 
-                // Generated from `System.Runtime.InteropServices.ComTypes.VARKIND` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
-                public enum VARKIND
+                public enum VARKIND : int
                 {
-                    VAR_CONST,
-                    VAR_DISPATCH,
-                    VAR_PERINSTANCE,
-                    VAR_STATIC,
+                    VAR_CONST = 2,
+                    VAR_DISPATCH = 3,
+                    VAR_PERINSTANCE = 0,
+                    VAR_STATIC = 1,
+                }
+
+            }
+            namespace Marshalling
+            {
+                public static class AnsiStringMarshaller
+                {
+                    public struct ManagedToUnmanagedIn
+                    {
+                        public static int BufferSize { get => throw null; }
+                        public void Free() => throw null;
+                        public void FromManaged(string managed, System.Span<System.Byte> buffer) => throw null;
+                        // Stub generator skipped constructor 
+                        unsafe public System.Byte* ToUnmanaged() => throw null;
+                    }
+
+
+                    unsafe public static string ConvertToManaged(System.Byte* unmanaged) => throw null;
+                    unsafe public static System.Byte* ConvertToUnmanaged(string managed) => throw null;
+                    unsafe public static void Free(System.Byte* unmanaged) => throw null;
+                }
+
+                public static class ArrayMarshaller<T, TUnmanagedElement> where TUnmanagedElement : unmanaged
+                {
+                    public struct ManagedToUnmanagedIn
+                    {
+                        public static int BufferSize { get => throw null; }
+                        public void Free() => throw null;
+                        public void FromManaged(T[] array, System.Span<TUnmanagedElement> buffer) => throw null;
+                        public System.ReadOnlySpan<T> GetManagedValuesSource() => throw null;
+                        public TUnmanagedElement GetPinnableReference() => throw null;
+                        public static T GetPinnableReference(T[] array) => throw null;
+                        public System.Span<TUnmanagedElement> GetUnmanagedValuesDestination() => throw null;
+                        // Stub generator skipped constructor 
+                        unsafe public TUnmanagedElement* ToUnmanaged() => throw null;
+                    }
+
+
+                    unsafe public static T[] AllocateContainerForManagedElements(TUnmanagedElement* unmanaged, int numElements) => throw null;
+                    unsafe public static TUnmanagedElement* AllocateContainerForUnmanagedElements(T[] managed, out int numElements) => throw null;
+                    unsafe public static void Free(TUnmanagedElement* unmanaged) => throw null;
+                    public static System.Span<T> GetManagedValuesDestination(T[] managed) => throw null;
+                    public static System.ReadOnlySpan<T> GetManagedValuesSource(T[] managed) => throw null;
+                    unsafe public static System.Span<TUnmanagedElement> GetUnmanagedValuesDestination(TUnmanagedElement* unmanaged, int numElements) => throw null;
+                    unsafe public static System.ReadOnlySpan<TUnmanagedElement> GetUnmanagedValuesSource(TUnmanagedElement* unmanagedValue, int numElements) => throw null;
+                }
+
+                public static class BStrStringMarshaller
+                {
+                    public struct ManagedToUnmanagedIn
+                    {
+                        public static int BufferSize { get => throw null; }
+                        public void Free() => throw null;
+                        public void FromManaged(string managed, System.Span<System.Byte> buffer) => throw null;
+                        // Stub generator skipped constructor 
+                        unsafe public System.UInt16* ToUnmanaged() => throw null;
+                    }
+
+
+                    unsafe public static string ConvertToManaged(System.UInt16* unmanaged) => throw null;
+                    unsafe public static System.UInt16* ConvertToUnmanaged(string managed) => throw null;
+                    unsafe public static void Free(System.UInt16* unmanaged) => throw null;
+                }
+
+                public class MarshalUsingAttribute : System.Attribute
+                {
+                    public int ConstantElementCount { get => throw null; set => throw null; }
+                    public string CountElementName { get => throw null; set => throw null; }
+                    public int ElementIndirectionDepth { get => throw null; set => throw null; }
+                    public MarshalUsingAttribute() => throw null;
+                    public MarshalUsingAttribute(System.Type nativeType) => throw null;
+                    public System.Type NativeType { get => throw null; }
+                    public const string ReturnsCountValue = default;
+                }
+
+                public static class PointerArrayMarshaller<T, TUnmanagedElement> where T : unmanaged where TUnmanagedElement : unmanaged
+                {
+                    public struct ManagedToUnmanagedIn
+                    {
+                        public static int BufferSize { get => throw null; }
+                        public void Free() => throw null;
+                        unsafe public void FromManaged(T*[] array, System.Span<TUnmanagedElement> buffer) => throw null;
+                        public System.ReadOnlySpan<System.IntPtr> GetManagedValuesSource() => throw null;
+                        public TUnmanagedElement GetPinnableReference() => throw null;
+                        unsafe public static System.Byte GetPinnableReference(T*[] array) => throw null;
+                        public System.Span<TUnmanagedElement> GetUnmanagedValuesDestination() => throw null;
+                        // Stub generator skipped constructor 
+                        unsafe public TUnmanagedElement* ToUnmanaged() => throw null;
+                    }
+
+
+                    unsafe public static T*[] AllocateContainerForManagedElements(TUnmanagedElement* unmanaged, int numElements) => throw null;
+                    unsafe public static TUnmanagedElement* AllocateContainerForUnmanagedElements(T*[] managed, out int numElements) => throw null;
+                    unsafe public static void Free(TUnmanagedElement* unmanaged) => throw null;
+                    unsafe public static System.Span<System.IntPtr> GetManagedValuesDestination(T*[] managed) => throw null;
+                    unsafe public static System.ReadOnlySpan<System.IntPtr> GetManagedValuesSource(T*[] managed) => throw null;
+                    unsafe public static System.Span<TUnmanagedElement> GetUnmanagedValuesDestination(TUnmanagedElement* unmanaged, int numElements) => throw null;
+                    unsafe public static System.ReadOnlySpan<TUnmanagedElement> GetUnmanagedValuesSource(TUnmanagedElement* unmanagedValue, int numElements) => throw null;
+                }
+
+                public static class Utf16StringMarshaller
+                {
+                    unsafe public static string ConvertToManaged(System.UInt16* unmanaged) => throw null;
+                    unsafe public static System.UInt16* ConvertToUnmanaged(string managed) => throw null;
+                    unsafe public static void Free(System.UInt16* unmanaged) => throw null;
+                    public static System.Char GetPinnableReference(string str) => throw null;
+                }
+
+                public static class Utf8StringMarshaller
+                {
+                    public struct ManagedToUnmanagedIn
+                    {
+                        public static int BufferSize { get => throw null; }
+                        public void Free() => throw null;
+                        public void FromManaged(string managed, System.Span<System.Byte> buffer) => throw null;
+                        // Stub generator skipped constructor 
+                        unsafe public System.Byte* ToUnmanaged() => throw null;
+                    }
+
+
+                    unsafe public static string ConvertToManaged(System.Byte* unmanaged) => throw null;
+                    unsafe public static System.Byte* ConvertToUnmanaged(string managed) => throw null;
+                    unsafe public static void Free(System.Byte* unmanaged) => throw null;
+                }
+
+            }
+            namespace ObjectiveC
+            {
+                public static class ObjectiveCMarshal
+                {
+                    public enum MessageSendFunction : int
+                    {
+                        MsgSend = 0,
+                        MsgSendFpret = 1,
+                        MsgSendStret = 2,
+                        MsgSendSuper = 3,
+                        MsgSendSuperStret = 4,
+                    }
+
+
+                    unsafe public delegate delegate* unmanaged<System.IntPtr, void> UnhandledExceptionPropagationHandler(System.Exception exception, System.RuntimeMethodHandle lastMethod, out System.IntPtr context);
+
+
+                    public static System.Runtime.InteropServices.GCHandle CreateReferenceTrackingHandle(object obj, out System.Span<System.IntPtr> taggedMemory) => throw null;
+                    unsafe public static void Initialize(delegate* unmanaged<void> beginEndCallback, delegate* unmanaged<System.IntPtr, int> isReferencedCallback, delegate* unmanaged<System.IntPtr, void> trackedObjectEnteredFinalization, System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.UnhandledExceptionPropagationHandler unhandledExceptionPropagationHandler) => throw null;
+                    public static void SetMessageSendCallback(System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.MessageSendFunction msgSendFunction, System.IntPtr func) => throw null;
+                    public static void SetMessageSendPendingException(System.Exception exception) => throw null;
+                }
+
+                public class ObjectiveCTrackedTypeAttribute : System.Attribute
+                {
+                    public ObjectiveCTrackedTypeAttribute() => throw null;
                 }
 
             }
@@ -1810,7 +2100,6 @@ namespace System
     }
     namespace Security
     {
-        // Generated from `System.Security.SecureString` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class SecureString : System.IDisposable
         {
             public void AppendChar(System.Char c) => throw null;
@@ -1827,7 +2116,6 @@ namespace System
             public void SetAt(int index, System.Char c) => throw null;
         }
 
-        // Generated from `System.Security.SecureStringMarshal` in `System.Runtime.InteropServices, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class SecureStringMarshal
         {
             public static System.IntPtr SecureStringToCoTaskMemAnsi(System.Security.SecureString s) => throw null;

@@ -1,4 +1,3 @@
-private import codeql.Locations
 private import codeql.ruby.AST
 private import internal.Erb
 private import internal.TreeSitter
@@ -38,6 +37,7 @@ class ErbTemplate extends TTemplate, ErbAstNode {
 
   final override string getAPrimaryQlClass() { result = "ErbTemplate" }
 
+  /** Gets a child node, if any. */
   ErbAstNode getAChildNode() { toGenerated(result) = g.getChild(_) }
 }
 

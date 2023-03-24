@@ -1,0 +1,1 @@
+codeql-extractor-kotlin-options: -no-jdk -no-reflect -no-stdlib -Xallow-kotlin-package

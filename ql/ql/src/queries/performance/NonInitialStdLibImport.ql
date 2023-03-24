@@ -27,4 +27,4 @@ Import importBefore(Import i) {
 
 from Import i
 where isStdLibImport(i, _) and exists(importBefore(i))
-select i, "This import may cause reevaluation to occur, as there are other imports preceding it"
+select i, "This import may cause reevaluation to occur, as there are other imports preceding it."

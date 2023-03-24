@@ -6,7 +6,7 @@ import csharp
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.text.RegularExpressions
-private import semmle.code.csharp.security.xml.InsecureXMLQuery as InsecureXML
+private import semmle.code.csharp.security.xml.InsecureXMLQuery as InsecureXml
 private import semmle.code.csharp.security.Sanitizers
 
 /**
@@ -14,9 +14,7 @@ private import semmle.code.csharp.security.Sanitizers
  */
 abstract class Source extends DataFlow::Node { }
 
-private class RemoteSource extends Source {
-  RemoteSource() { this instanceof RemoteFlowSource }
-}
+private class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /**
  * A data flow sink for untrusted user input used in XML processing.
@@ -32,7 +30,7 @@ private class InsecureXmlSink extends Sink {
   private string reason;
 
   InsecureXmlSink() {
-    exists(InsecureXML::InsecureXmlProcessing r | r.isUnsafe(reason) |
+    exists(InsecureXml::InsecureXmlProcessing r | r.isUnsafe(reason) |
       this.getExpr() = r.getAnArgument()
     )
   }

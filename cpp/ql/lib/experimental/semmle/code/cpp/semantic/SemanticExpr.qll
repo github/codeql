@@ -178,11 +178,11 @@ class SemRelationalExpr extends SemBinaryExpr {
 }
 
 class SemAddExpr extends SemBinaryExpr {
-  SemAddExpr() { opcode instanceof Opcode::Add }
+  SemAddExpr() { opcode instanceof Opcode::Add or opcode instanceof Opcode::PointerAdd }
 }
 
 class SemSubExpr extends SemBinaryExpr {
-  SemSubExpr() { opcode instanceof Opcode::Sub }
+  SemSubExpr() { opcode instanceof Opcode::Sub or opcode instanceof Opcode::PointerSub }
 }
 
 class SemMulExpr extends SemBinaryExpr {

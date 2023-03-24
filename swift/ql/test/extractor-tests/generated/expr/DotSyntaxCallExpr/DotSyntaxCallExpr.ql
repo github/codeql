@@ -2,10 +2,13 @@
 import codeql.swift.elements
 import TestUtils
 
-from DotSyntaxCallExpr x, Expr getFunction, Expr getBaseExpr
+from DotSyntaxCallExpr x, string hasType, Expr getFunction, int getNumberOfArguments, Expr getBase
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getFunction = x.getFunction() and
-  getBaseExpr = x.getBaseExpr()
-select x, "getFunction:", getFunction, "getBaseExpr:", getBaseExpr
+  getNumberOfArguments = x.getNumberOfArguments() and
+  getBase = x.getBase()
+select x, "hasType:", hasType, "getFunction:", getFunction, "getNumberOfArguments:",
+  getNumberOfArguments, "getBase:", getBase

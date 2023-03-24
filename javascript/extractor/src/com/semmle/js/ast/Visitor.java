@@ -43,6 +43,7 @@ import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
+import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
@@ -275,6 +276,8 @@ public interface Visitor<C, R> {
   public R visit(FunctionTypeExpr nd, C c);
 
   public R visit(TypeAssertion nd, C c);
+
+  public R visit(SatisfiesExpr nd, C c);
 
   public R visit(MappedTypeExpr nd, C c);
 

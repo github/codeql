@@ -23,7 +23,7 @@ predicate isResourceUrlWhitelist(
 ) {
   exists(AngularJS::ServiceReference service |
     service.getName() = "$sceDelegateProvider" and
-    setupCall.asExpr() = service.getAMethodCall("resourceUrlWhitelist") and
+    setupCall = service.getAMethodCall("resourceUrlWhitelist") and
     list.flowsTo(setupCall.getArgument(0))
   )
 }
@@ -78,5 +78,5 @@ from ResourceUrlWhitelistEntry entry, DataFlow::MethodCallNode setupCall, string
 where
   entry.isInsecure(explanation) and
   setupCall = entry.getSetupCall()
-select setupCall, "'$@' is not a secure whitelist entry, because " + explanation + ".", entry,
+select setupCall, "$@ is not a secure whitelist entry, because " + explanation + ".", entry,
   entry.toString()

@@ -35,4 +35,4 @@ where
   access = cast.getAChild() and
   access.getTarget().getDeclaringElement() = access.getEnclosingCallable() and
   nodeBeforeParameterAccess(access.getAControlFlowNode())
-select cast, "Missing type-check before casting parameter to 'Equals'."
+select cast, "Equals() method does not check argument type."

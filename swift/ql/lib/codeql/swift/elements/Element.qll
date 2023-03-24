@@ -1,9 +1,9 @@
 private import codeql.swift.generated.Element
 
-class Element extends ElementBase {
+class Element extends Generated::Element {
   private predicate resolvesFrom(Element e) { e.getResolveStep() = this }
 
-  override string toString() { result = getPrimaryQlClasses() }
+  override string toString() { result = this.getPrimaryQlClasses() }
 
   Element getFullyUnresolved() {
     not this.resolvesFrom(_) and result = this
@@ -16,5 +16,5 @@ class Element extends ElementBase {
 }
 
 class UnknownElement extends Element {
-  UnknownElement() { isUnknown() }
+  UnknownElement() { this.isUnknown() }
 }

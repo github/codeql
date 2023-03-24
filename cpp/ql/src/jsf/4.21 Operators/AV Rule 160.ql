@@ -41,4 +41,4 @@ where
   not ae.getParent() instanceof ExprStmt and
   not ae instanceof ForStmtSideEffectExpr
 select ae,
-  "AV Rule 160: An assignment expression shall be used only as the exprression in an expression statement."
+  "AV Rule 160: An assignment expression shall be used only as the expression in an expression statement."

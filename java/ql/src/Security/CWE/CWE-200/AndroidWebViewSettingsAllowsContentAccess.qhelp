@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC
+ "-//Semmle//qhelp//EN"
+ "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>Android can provide access to content providers within a WebView using
+    the <code>setAllowContentAccess</code> setting.</p>
+
+    <p>Allowing access to content providers via <code>content://</code> URLs
+    may allow JavaScript to access protected content.</p>
+  </overview>
+
+  <recommendation>
+    <p>
+      If your app does not require access to the <code>content://</code> URL
+      functionality, you should explicitly disable the setting by
+      calling <code>setAllowContentAccess(false)</code> on the settings of the
+      WebView.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>In the following (bad) example, access to <code>content://</code> URLs is explicitly allowed.</p>
+
+    <sample src="ContentAccessEnabled.java"/>
+
+    <p>In the following (good) example, access to <code>content://</code> URLs is explicitly denied.</p>
+
+    <sample src="ContentAccessDisabled.java"/>
+  </example>
+
+  <references>
+    <li>
+      Android Documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowContentAccess(boolean)">setAllowContentAccess</a>.
+    </li>
+  </references>
+
+</qhelp>

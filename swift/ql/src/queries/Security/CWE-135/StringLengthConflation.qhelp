@@ -5,6 +5,8 @@
 <overview>
 <p>Using a length value from an <code>NSString</code> in a <code>String</code>, or a count from a <code>String</code> in an <code>NSString</code>, may cause unexpected behavior including (in some cases) buffer overwrites. This is because certain unicode sequences are represented as one character in a <code>String</code> but as a sequence of multiple characters in an <code>NSString</code>. For example, a 'thumbs up' emoji with a skin tone modifier (&#x1F44D;&#x1F3FF;) is represented as U+1F44D (&#x1F44D;) then the modifier U+1F3FF.</p>
 
+<p>This issue can also arise from using the values of <code>String.utf8.count</code>, <code>String.utf16.count</code> or <code>String.unicodeScalars.count</code> in an unsuitable place.</p>
+
 </overview>
 <recommendation>
 

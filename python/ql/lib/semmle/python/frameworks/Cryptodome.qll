@@ -23,7 +23,8 @@ private module CryptodomeModel {
    * See https://pycryptodome.readthedocs.io/en/latest/src/public_key/rsa.html#Crypto.PublicKey.RSA.generate
    */
   class CryptodomePublicKeyRsaGenerateCall extends Cryptography::PublicKey::KeyGeneration::RsaRange,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     CryptodomePublicKeyRsaGenerateCall() {
       this =
         API::moduleImport(["Crypto", "Cryptodome"])
@@ -44,7 +45,8 @@ private module CryptodomeModel {
    * See https://pycryptodome.readthedocs.io/en/latest/src/public_key/dsa.html#Crypto.PublicKey.DSA.generate
    */
   class CryptodomePublicKeyDsaGenerateCall extends Cryptography::PublicKey::KeyGeneration::DsaRange,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     CryptodomePublicKeyDsaGenerateCall() {
       this =
         API::moduleImport(["Crypto", "Cryptodome"])
@@ -65,7 +67,8 @@ private module CryptodomeModel {
    * See https://pycryptodome.readthedocs.io/en/latest/src/public_key/ecc.html#Crypto.PublicKey.ECC.generate
    */
   class CryptodomePublicKeyEccGenerateCall extends Cryptography::PublicKey::KeyGeneration::EccRange,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     CryptodomePublicKeyEccGenerateCall() {
       this =
         API::moduleImport(["Crypto", "Cryptodome"])
@@ -105,7 +108,8 @@ private module CryptodomeModel {
    * A cryptographic operation on an instance from the `Cipher` subpackage of `Cryptodome`/`Crypto`.
    */
   class CryptodomeGenericCipherOperation extends Cryptography::CryptographicOperation::Range,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     string methodName;
     string cipherName;
     API::CallNode newCall;
@@ -175,7 +179,8 @@ private module CryptodomeModel {
    * A cryptographic operation on an instance from the `Signature` subpackage of `Cryptodome`/`Crypto`.
    */
   class CryptodomeGenericSignatureOperation extends Cryptography::CryptographicOperation::Range,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     string methodName;
     string signatureName;
 
@@ -214,7 +219,8 @@ private module CryptodomeModel {
    * A cryptographic operation on an instance from the `Hash` subpackage of `Cryptodome`/`Crypto`.
    */
   class CryptodomeGenericHashOperation extends Cryptography::CryptographicOperation::Range,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     string hashName;
 
     CryptodomeGenericHashOperation() {

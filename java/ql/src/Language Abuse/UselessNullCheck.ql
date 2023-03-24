@@ -21,10 +21,11 @@ where
   e = clearlyNotNullExpr(reason) and
   (
     if reason instanceof Guard
-    then msg = "This check is useless, $@ cannot be null here, since it is guarded by $@."
+    then msg = "This check is useless. $@ cannot be null at this check, since it is guarded by $@."
     else
       if reason != e
-      then msg = "This check is useless, $@ cannot be null here, since $@ always is non-null."
+      then
+        msg = "This check is useless. $@ cannot be null at this check, since $@ always is non-null."
       else msg = "This check is useless, since $@ always is non-null."
   )
 select guard, msg, e, e.toString(), reason, reason.toString()

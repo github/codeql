@@ -12,9 +12,9 @@
 import javascript
 import semmle.javascript.RestrictedLocations
 
-from AngularJS::InjectableFunction f, AstNode explicitInjection
+from AngularJS::InjectableFunction f, DataFlow::Node explicitInjection
 where
   count(f.getAnExplicitDependencyInjection()) > 1 and
   explicitInjection = f.getAnExplicitDependencyInjection()
-select f.asFunction().(FirstLineOf), "This function has $@ defined in multiple places.",
-  explicitInjection, "dependency injections"
+select f.asFunction().getFunction().(FirstLineOf),
+  "This function has $@ defined in multiple places.", explicitInjection, "dependency injections"

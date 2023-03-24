@@ -5,7 +5,7 @@
   <overview>
     <p>
     Comparisons which always yield the same result are unnecessary and may indicate a bug in the
-    logic. This can can happen when the data type of one of the operands has a limited range of values.
+    logic. This can happen when the data type of one of the operands has a limited range of values.
     For example unsigned integers are always greater than or equal to zero, and <code>byte</code>
     values are always less than 256.
     </p>

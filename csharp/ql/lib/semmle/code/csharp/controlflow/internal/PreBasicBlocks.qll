@@ -3,7 +3,7 @@
  *
  * Provides a basic block implementation on control flow elements. That is,
  * a "pre-CFG" where the nodes are (unsplit) control flow elements and the
- * successor releation is `succ = succ(pred, _)`.
+ * successor relation is `succ = succ(pred, _)`.
  *
  * The logic is duplicated from the implementation in `BasicBlocks.qll`, and
  * being an internal class, all predicate documentation has been removed.

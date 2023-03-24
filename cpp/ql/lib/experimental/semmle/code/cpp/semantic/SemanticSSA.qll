@@ -10,7 +10,7 @@ class SemSsaVariable instanceof Specific::SsaVariable {
 
   final Specific::Location getLocation() { result = super.getLocation() }
 
-  final SemLoadExpr getAUse() { result = Specific::getAUse(this) }
+  final SemExpr getAUse() { result = Specific::getAUse(this) }
 
   final SemType getType() { result = Specific::getSsaVariableType(this) }
 

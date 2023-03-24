@@ -16,10 +16,12 @@ FileWithExtractionMetrics getACacheHit(FileWithExtractionMetrics f) {
   result.isFromCache()
 }
 
-from FileWithExtractionMetrics file, boolean fromCache
-where (if file.isFromCache() then fromCache = true else fromCache = false)
-select file.getAbsolutePath() as FILE, file.getCpuTime() as CPU_NANO,
-  file.getNumberOfLines() as LINES, count(Locatable n | n.getFile() = file) as LOCATABLES,
-  count(TypeAnnotation n | n.getFile() = file) as TYPES, file.getLength() as LENGTH,
-  fromCache as FROM_CACHE, count(getACacheMember(file.getCacheFile())) as CACHE_MEMBERS,
-  count(getACacheHit(file)) as CACHE_HITS, file.getCacheFile() as CACHE_FILE
+from FileWithExtractionMetrics fileWithMetrics, boolean fromCache
+where (if fileWithMetrics.isFromCache() then fromCache = true else fromCache = false)
+select fileWithMetrics.getAbsolutePath() as file, fileWithMetrics.getCpuTime() as cpu_nano,
+  fileWithMetrics.getNumberOfLines() as lines,
+  count(Locatable n | n.getFile() = fileWithMetrics) as locatables,
+  count(TypeAnnotation n | n.getFile() = fileWithMetrics) as types,
+  fileWithMetrics.getLength() as length, fromCache as from_cache,
+  count(getACacheMember(fileWithMetrics.getCacheFile())) as cache_members,
+  count(getACacheHit(fileWithMetrics)) as cache_hits, fileWithMetrics.getCacheFile() as cache_file

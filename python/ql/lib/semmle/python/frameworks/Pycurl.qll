@@ -36,7 +36,7 @@ private module Pycurl {
      *
      * See http://pycurl.io/docs/latest/curlobject.html#pycurl.Curl.setopt.
      */
-    private class OutgoingRequestCall extends HTTP::Client::Request::Range, DataFlow::CallCfgNode {
+    private class OutgoingRequestCall extends Http::Client::Request::Range, DataFlow::CallCfgNode {
       OutgoingRequestCall() {
         this = instance().getMember("setopt").getACall() and
         this.getArg(0).asCfgNode().(AttrNode).getName() = "URL"

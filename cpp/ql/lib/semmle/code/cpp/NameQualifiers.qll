@@ -159,7 +159,8 @@ class NameQualifyingElement extends Element, @namequalifyingelement {
  * A special name-qualifying element. For example: `__super`.
  */
 library class SpecialNameQualifyingElement extends NameQualifyingElement,
-  @specialnamequalifyingelement {
+  @specialnamequalifyingelement
+{
   /** Gets the name of this special qualifying element. */
   override string getName() { specialnamequalifyingelements(underlyingElement(this), result) }
 

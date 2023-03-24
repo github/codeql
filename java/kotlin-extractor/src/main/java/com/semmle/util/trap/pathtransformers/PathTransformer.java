@@ -14,7 +14,15 @@ public abstract class PathTransformer {
 	 * canonical, absolute, strings and normalises away Unix/Windows differences.
 	 */
 	public String fileAsDatabaseString(File file) {
-		String path;
+		String path = file.getPath();
+		// For /!unknown-binary-location/... and /modules/...
+		// paths, on Windows the standard code wants to
+		// normalise them to e.g. C:/!unknown-binary-location/...
+		// which is particularly annoying for cross-platform test
+		// output. We therefore handle them specially here.
+		if (path.matches("^[/\\\\](!unknown-binary-location|modules)[/\\\\].*")) {
+			return path.replace('\\', '/');
+		}
 		if (Boolean.valueOf(Env.systemEnv().get(Var.SEMMLE_PRESERVE_SYMLINKS)))
 			path = FileUtil.simplifyPath(file);
 		else

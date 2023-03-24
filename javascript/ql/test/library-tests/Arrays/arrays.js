@@ -82,4 +82,7 @@
   }
 
   sink(arr.at(-1)); // NOT OK
+
+  sink(["source"].filter((x) => x)); // NOT OK
+  sink(["source"].filter((x) => !!x)); // NOT OK
 });

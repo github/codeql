@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @id cs/backdoor/potential-time-bomb
  * @tags security
+ *       experimental
  *       solorigate
  */
 
@@ -45,10 +46,8 @@ query predicate edges(DataFlow::PathNode a, DataFlow::PathNode b) {
  */
 class GetLastWriteTimeMethod extends Method {
   GetLastWriteTimeMethod() {
-    this.getQualifiedName() in [
-        "System.IO.File.GetLastWriteTime", "System.IO.File.GetFileCreationTime",
-        "System.IO.File.GetCreationTimeUtc", "System.IO.File.GetLastAccessTimeUtc"
-      ]
+    this.hasQualifiedName("System.IO.File",
+      ["GetLastWriteTime", "GetFileCreationTime", "GetCreationTimeUtc", "GetLastAccessTimeUtc"])
   }
 }
 
@@ -56,12 +55,12 @@ class GetLastWriteTimeMethod extends Method {
  * Abstracts `System.DateTime` structure
  */
 class DateTimeStruct extends Struct {
-  DateTimeStruct() { this.getQualifiedName() = "System.DateTime" }
+  DateTimeStruct() { this.hasQualifiedName("System", "DateTime") }
 
   /**
    * holds if the Callable is used for DateTime arithmetic operations
    */
-  Callable getATimeSpanArtithmeticCallable() {
+  Callable getATimeSpanArithmeticCallable() {
     (result = this.getAnOperator() or result = this.getAMethod()) and
     result.getName() in [
         "Add", "AddDays", "AddHours", "AddMilliseconds", "AddMinutes", "AddMonths", "AddSeconds",
@@ -81,7 +80,8 @@ class DateTimeStruct extends Struct {
 /**
  * Dataflow configuration to find flow from a GetLastWriteTime source to a DateTime arithmetic operation
  */
-private class FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable extends TaintTracking::Configuration {
+private class FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable extends TaintTracking::Configuration
+{
   FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable() {
     this = "FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable"
   }
@@ -96,7 +96,7 @@ private class FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable extend
   override predicate isSink(DataFlow::Node sink) {
     exists(Call call, DateTimeStruct dateTime |
       call.getAChild*() = sink.asExpr() and
-      call = dateTime.getATimeSpanArtithmeticCallable().getACall()
+      call = dateTime.getATimeSpanArithmeticCallable().getACall()
     )
   }
 }
@@ -104,14 +104,15 @@ private class FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable extend
 /**
  * Dataflow configuration to find flow from a DateTime arithmetic operation to a DateTime comparison operation
  */
-private class FlowsFromTimeSpanArithmeticToTimeComparisonCallable extends TaintTracking::Configuration {
+private class FlowsFromTimeSpanArithmeticToTimeComparisonCallable extends TaintTracking::Configuration
+{
   FlowsFromTimeSpanArithmeticToTimeComparisonCallable() {
     this = "FlowsFromTimeSpanArithmeticToTimeComparisonCallable"
   }
 
   override predicate isSource(DataFlow::Node source) {
     exists(DateTimeStruct dateTime, Call call | source.asExpr() = call |
-      call = dateTime.getATimeSpanArtithmeticCallable().getACall()
+      call = dateTime.getATimeSpanArithmeticCallable().getACall()
     )
   }
 
@@ -126,7 +127,8 @@ private class FlowsFromTimeSpanArithmeticToTimeComparisonCallable extends TaintT
 /**
  * Dataflow configuration to find flow from a DateTime comparison operation to a Selection Statement (such as an If)
  */
-private class FlowsFromTimeComparisonCallableToSelectionStatementCondition extends TaintTracking::Configuration {
+private class FlowsFromTimeComparisonCallableToSelectionStatementCondition extends TaintTracking::Configuration
+{
   FlowsFromTimeComparisonCallableToSelectionStatementCondition() {
     this = "FlowsFromTimeComparisonCallableToSelectionStatementCondition"
   }
@@ -157,7 +159,7 @@ predicate isPotentialTimeBomb(
   |
     pathSource.getNode() = exprNode(getLastWriteTimeMethodCall) and
     config1.hasFlow(exprNode(getLastWriteTimeMethodCall), sink) and
-    timeArithmeticCall = dateTime.getATimeSpanArtithmeticCallable().getACall() and
+    timeArithmeticCall = dateTime.getATimeSpanArithmeticCallable().getACall() and
     timeArithmeticCall.getAChild*() = sink.asExpr() and
     config2.hasFlow(exprNode(timeArithmeticCall), sink2) and
     timeComparisonCall = dateTime.getAComparisonCallable().getACall() and
@@ -175,6 +177,6 @@ where
   isPotentialTimeBomb(source, sink, getLastWriteTimeMethodCall, timeArithmeticCall,
     timeComparisonCall, selStatement)
 select selStatement, source, sink,
-  "Possible TimeBomb logic triggered by $@ that takes into account $@ from the $@ as part of the potential trigger.",
-  timeComparisonCall, timeComparisonCall.toString(), timeArithmeticCall, "an offset",
+  "Possible TimeBomb logic triggered by an $@ that takes into account $@ from the $@ as part of the potential trigger.",
+  timeComparisonCall, timeComparisonCall.toString(), timeArithmeticCall, "offset",
   getLastWriteTimeMethodCall, "last modification time of a file"

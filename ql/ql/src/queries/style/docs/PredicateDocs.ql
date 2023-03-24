@@ -18,6 +18,7 @@ string docLines(Predicate pred) {
 from Predicate pred, string message
 where
   not pred.isPrivate() and
+  not pred.hasAnnotation("deprecated") and
   // only considering qldocs that look like a class-doc, to avoid reporting way too much.
   docLines(pred).matches(["A", "An", "The"] + " %") and // looks like a class doc.
   not pred instanceof NewTypeBranch and // <- these are actually kinda class-like.

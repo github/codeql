@@ -13,4 +13,4 @@ where
   n.fromSource() and
   c = n.getMetrics().getAbstractness() and
   c = 0
-select n as Namespace, c as Abstractness order by Abstractness desc
+select n as namespace, c as abstractness order by abstractness desc

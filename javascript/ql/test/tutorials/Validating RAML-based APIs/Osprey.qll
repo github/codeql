@@ -1,4 +1,5 @@
-/* Model of Osprey API implementations. */
+/** Model of Osprey API implementations. */
+
 import javascript
 import HTTP
 

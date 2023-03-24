@@ -18,5 +18,5 @@ where
   input = s.getAnInput() and
   store = s.getAStore() and
   data.flowsTo(input)
-select store, "'Properties' class $@ containing $@ is stored here. Data was added $@.", s,
-  s.toString(), data, "sensitive data", input, "here"
+select store, "This stores 'Properties' class $@ containing $@ which was $@.", s, s.toString(),
+  data, "sensitive data", input, "previously added"

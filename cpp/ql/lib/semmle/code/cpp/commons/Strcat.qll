@@ -6,7 +6,7 @@ import cpp
  * A function that concatenates the string from its second argument
  * to the string from its first argument, for example `strcat`.
  */
-class StrcatFunction extends Function {
+deprecated class StrcatFunction extends Function {
   StrcatFunction() {
     getName() =
       [

@@ -48,7 +48,7 @@ module ReflectedXss {
    */
   class ServerHttpResponseBodyAsSink extends Sink {
     ServerHttpResponseBodyAsSink() {
-      exists(HTTP::Server::HttpResponse response |
+      exists(Http::Server::HttpResponse response |
         response.getMimetype().toLowerCase() = "text/html" and
         this = response.getBody()
       )

@@ -17,7 +17,7 @@ private string normalize(string path) {
  * to retrieve child XML elements named "groupId", "artifactId"
  * and "version", typically contained in Maven POM XML files.
  */
-class ProtoPom extends XMLElement {
+class ProtoPom extends XmlElement {
   /** Gets a child XML element named "groupId". */
   Group getGroup() { result = this.getAChild() }
 
@@ -280,7 +280,7 @@ class PomDependency extends Dependency {
  * An XML element that provides access to its value string
  * in the context of Maven POM XML files.
  */
-class PomElement extends XMLElement {
+class PomElement extends XmlElement {
   /**
    * Gets the value associated with this element. If the value contains a placeholder only, it will be resolved.
    */
@@ -381,6 +381,15 @@ class DeclaredRepository extends PomElement {
    * be the string contents of that tag.
    */
   string getRepositoryUrl() { result = this.getAChild("url").(PomElement).getValue() }
+
+  /**
+   * Holds if this repository is disabled in both the `releases` and `snapshots` policies.
+   */
+  predicate isDisabled() {
+    forex(PomElement policy | policy = this.getAChild(["releases", "snapshots"]) |
+      policy.getAChild("enabled").(PomElement).getValue() = "false"
+    )
+  }
 }
 
 /**
@@ -446,19 +455,9 @@ class MavenRepoJar extends File {
   }
 
   /**
-   * DEPRECATED: name changed to `getGroupId` for consistent use of camel-case.
-   */
-  deprecated string getGroupID() { result = this.getGroupId() }
-
-  /**
    * Gets the `artifactId` of this jar.
    */
   string getArtifactId() { result = this.getParentContainer().getParentContainer().getBaseName() }
-
-  /**
-   * DEPRECATED: name changed to `getArtifactId` for consistent casing and consistent spelling with Maven.
-   */
-  deprecated string getArtefactID() { result = this.getArtifactId() }
 
   /**
    * Gets the artifact version string of this jar.
@@ -472,11 +471,6 @@ class MavenRepoJar extends File {
     pom.getGroup().getValue() = this.getGroupId() and
     pom.getArtifact().getValue() = this.getArtifactId()
   }
-
-  /**
-   * DEPRECATED: name changed to `artifactMatches` for consistent spelling with Maven.
-   */
-  deprecated predicate artefactMatches(ProtoPom pom) { this.artifactMatches(pom) }
 
   /**
    * Holds if this jar is both an artifact for the POM, and has a version string that matches the POM

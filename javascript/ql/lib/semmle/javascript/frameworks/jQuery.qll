@@ -281,7 +281,7 @@ private module JQueryClientRequest {
               .getParameter(0)
         or
         result =
-          getAResponseNodeFromAnXHRObject(this.getOptionArgument([0 .. 1],
+          getAResponseNodeFromAnXhrObject(this.getOptionArgument([0 .. 1],
               any(string method | method = "error" or method = "complete"))
                 .getALocalSource()
                 .(DataFlow::FunctionNode)
@@ -303,15 +303,15 @@ private module JQueryClientRequest {
           .getParameter(0)
     or
     result =
-      getAResponseNodeFromAnXHRObject(request.getAMemberCall("fail").getCallback(0).getParameter(0))
+      getAResponseNodeFromAnXhrObject(request.getAMemberCall("fail").getCallback(0).getParameter(0))
   }
 
   /**
    * Gets a node referring to the response contained in an `jqXHR` object.
    */
-  private DataFlow::SourceNode getAResponseNodeFromAnXHRObject(DataFlow::SourceNode jqXHR) {
+  private DataFlow::SourceNode getAResponseNodeFromAnXhrObject(DataFlow::SourceNode jqXhr) {
     result =
-      jqXHR
+      jqXhr
           .getAPropertyRead(any(string s |
               s = "responseText" or
               s = "responseXML"
@@ -540,9 +540,9 @@ module JQuery {
       JQuery::isMethodArgumentInterpretedAsHtml(name) and
       node = this.getAnArgument()
       or
-      // for `$, it's only the first one
+      // for `$, it's only the first one, or an "html" option
       name = "$" and
-      node = this.getArgument(0)
+      node = [this.getArgument(0), this.getOptionArgument(1, "html")]
     }
 
     /**

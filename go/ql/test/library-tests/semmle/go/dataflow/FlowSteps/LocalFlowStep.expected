@@ -2,9 +2,15 @@
 | file://:0:0:0:0 | function EscapedPath | url.go:28:14:28:26 | selection of EscapedPath |
 | file://:0:0:0:0 | function Get | url.go:52:14:52:18 | selection of Get |
 | file://:0:0:0:0 | function Hostname | url.go:29:14:29:23 | selection of Hostname |
+| file://:0:0:0:0 | function JoinPath | url.go:57:16:57:27 | selection of JoinPath |
+| file://:0:0:0:0 | function JoinPath | url.go:58:16:58:27 | selection of JoinPath |
+| file://:0:0:0:0 | function JoinPath | url.go:60:15:60:28 | selection of JoinPath |
+| file://:0:0:0:0 | function JoinPath | url.go:66:9:66:25 | selection of JoinPath |
 | file://:0:0:0:0 | function MarshalBinary | url.go:30:11:30:25 | selection of MarshalBinary |
 | file://:0:0:0:0 | function Parse | url.go:23:10:23:18 | selection of Parse |
 | file://:0:0:0:0 | function Parse | url.go:32:9:32:15 | selection of Parse |
+| file://:0:0:0:0 | function Parse | url.go:59:14:59:22 | selection of Parse |
+| file://:0:0:0:0 | function Parse | url.go:65:17:65:25 | selection of Parse |
 | file://:0:0:0:0 | function ParseQuery | url.go:50:10:50:23 | selection of ParseQuery |
 | file://:0:0:0:0 | function ParseRequestURI | url.go:27:9:27:27 | selection of ParseRequestURI |
 | file://:0:0:0:0 | function Password | url.go:43:11:43:21 | selection of Password |
@@ -60,10 +66,8 @@
 | main.go:11:14:11:14 | z | main.go:11:9:11:15 | type conversion |
 | main.go:14:6:14:10 | function test2 | main.go:34:8:34:12 | test2 |
 | main.go:14:6:14:10 | function test2 | main.go:34:19:34:23 | test2 |
-| main.go:15:2:15:4 | definition of acc | main.go:16:9:16:9 | capture variable acc |
 | main.go:15:9:15:9 | 0 | main.go:15:2:15:4 | definition of acc |
 | main.go:16:9:16:9 | capture variable acc | main.go:17:3:17:5 | acc |
-| main.go:17:3:17:7 | definition of acc | main.go:16:9:16:9 | capture variable acc |
 | main.go:17:3:17:7 | definition of acc | main.go:18:10:18:12 | acc |
 | main.go:17:3:17:7 | rhs of increment statement | main.go:17:3:17:7 | definition of acc |
 | main.go:22:12:22:12 | argument corresponding to b | main.go:22:12:22:12 | definition of b |
@@ -166,3 +170,17 @@
 | url.go:50:2:50:2 | definition of v | url.go:52:14:52:14 | v |
 | url.go:50:2:50:2 | definition of v | url.go:53:9:53:9 | v |
 | url.go:50:2:50:26 | ... := ...[0] | url.go:50:2:50:2 | definition of v |
+| url.go:56:12:56:12 | argument corresponding to q | url.go:56:12:56:12 | definition of q |
+| url.go:56:12:56:12 | definition of q | url.go:57:29:57:29 | q |
+| url.go:57:2:57:8 | definition of joined1 | url.go:58:38:58:44 | joined1 |
+| url.go:57:2:57:39 | ... := ...[0] | url.go:57:2:57:8 | definition of joined1 |
+| url.go:58:2:58:8 | definition of joined2 | url.go:59:24:59:30 | joined2 |
+| url.go:58:2:58:45 | ... := ...[0] | url.go:58:2:58:8 | definition of joined2 |
+| url.go:59:2:59:6 | definition of asUrl | url.go:60:15:60:19 | asUrl |
+| url.go:59:2:59:31 | ... := ...[0] | url.go:59:2:59:6 | definition of asUrl |
+| url.go:60:2:60:10 | definition of joinedUrl | url.go:61:9:61:17 | joinedUrl |
+| url.go:60:15:60:37 | call to JoinPath | url.go:60:2:60:10 | definition of joinedUrl |
+| url.go:64:13:64:13 | argument corresponding to q | url.go:64:13:64:13 | definition of q |
+| url.go:64:13:64:13 | definition of q | url.go:66:27:66:27 | q |
+| url.go:65:2:65:9 | definition of cleanUrl | url.go:66:9:66:16 | cleanUrl |
+| url.go:65:2:65:48 | ... := ...[0] | url.go:65:2:65:9 | definition of cleanUrl |

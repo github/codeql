@@ -16,4 +16,4 @@ import semmle.code.csharp.dataflow.Nullness
 
 from Dereference d, Ssa::SourceVariable v
 where d.isFirstAlwaysNull(v)
-select d, "Variable $@ is always null here.", v, v.toString()
+select d, "Variable $@ is always null at this dereference.", v, v.toString()

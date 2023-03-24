@@ -1,2 +1,2 @@
-| test.cpp:466:10:466:15 | buffer | $@ flows to here and may not be null terminated. | test.cpp:465:18:465:23 | buffer | User-provided value |
-| test.cpp:481:10:481:15 | buffer | $@ flows to here and may not be null terminated. | test.cpp:480:9:480:14 | buffer | User-provided value |
+| test.cpp:466:10:466:15 | buffer | String operation depends on a $@ that may not be null terminated. | test.cpp:465:18:465:23 | buffer | user-provided value |
+| test.cpp:481:10:481:15 | buffer | String operation depends on a $@ that may not be null terminated. | test.cpp:480:9:480:14 | buffer | user-provided value |

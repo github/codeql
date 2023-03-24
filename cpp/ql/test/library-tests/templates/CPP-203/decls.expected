@@ -15,6 +15,7 @@
 | test.cpp:3:8:3:8 | operator= |
 | test.cpp:3:8:3:10 | Str<T> |
 | test.cpp:3:8:3:10 | Str<int> |
+| test.cpp:7:16:7:16 | T |
 | test.cpp:8:11:8:21 | val |
 | test.cpp:8:19:8:19 | val |
 | test.cpp:10:6:10:6 | f |

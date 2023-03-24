@@ -56,7 +56,6 @@ namespace Semmle.Extraction.CSharp.Standalone
             CSharp.Extractor.SetInvariantCulture();
 
             var options = Options.Create(args);
-            // options.CIL = true;  // To do: Enable this
 
             if (options.Help)
             {

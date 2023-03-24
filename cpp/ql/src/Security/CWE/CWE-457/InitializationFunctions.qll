@@ -149,7 +149,7 @@ newtype Evidence =
    * The function is externally defined, but the parameter has an `_out` SAL annotation which
    * suggests that it is initialized in the function.
    */
-  SuggestiveSALAnnotation() or
+  SuggestiveSalAnnotation() or
   /**
    * We have been given a CSV file which indicates this parameter is conditionally initialized.
    */
@@ -198,8 +198,8 @@ class InitializationFunction extends Function {
     or
     // If we have no definition, we look at SAL annotations
     not this.hasDefinition() and
-    this.getParameter(i).(SALParameter).isOut() and
-    evidence = SuggestiveSALAnnotation()
+    this.getParameter(i).(SalParameter).isOut() and
+    evidence = SuggestiveSalAnnotation()
     or
     // We have some external information that this function conditionally initializes
     not this.hasDefinition() and

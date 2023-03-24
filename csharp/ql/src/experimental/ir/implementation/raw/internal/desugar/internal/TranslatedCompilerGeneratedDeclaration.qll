@@ -16,13 +16,10 @@ private import experimental.ir.internal.CSharpType
 private import experimental.ir.internal.IRCSharpLanguage as Language
 
 abstract class TranslatedCompilerGeneratedDeclaration extends LocalVariableDeclarationBase,
-  TranslatedCompilerGeneratedElement {
+  TranslatedCompilerGeneratedElement
+{
   final override string toString() {
     result = "compiler generated declaration (" + generatedBy.toString() + ")"
-  }
-
-  override TranslatedElement getChild(int id) {
-    result = LocalVariableDeclarationBase.super.getChild(id)
   }
 
   override Instruction getChildSuccessor(TranslatedElement child) {

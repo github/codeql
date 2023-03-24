@@ -1,8 +1,8 @@
 name: codeql/ruby-tests
 groups: [ruby, test]
 dependencies:
-  codeql/ruby-queries: "*"
-  codeql/ruby-examples: "*"
-  codeql/ruby-all: "*"
+  codeql/ruby-queries: ${workspace}
+  codeql/ruby-examples: ${workspace}
+  codeql/ruby-all: ${workspace}
 extractor: ruby
 tests: .

@@ -1,0 +1,24 @@
+today: 2023-02-16
+file: go/ql/lib/semmle/go/security/FlowSources.qll
+    blame: 33 2022-12-19
+file: python/ql/lib/semmle/python/security/BadTagFilterQuery.qll
+    blame: 7 2022-11-01
+file: csharp/ql/lib/semmle/code/csharp/Assignable.qll
+    blame: 128 2022-10-12
+    blame: 499 2022-10-12
+file: python/ql/lib/semmle/python/frameworks/Starlette.qll
+    blame: 164 2022-09-09
+file: ql/ql/src/queries/style/docs/PredicateDocs.ql
+    blame: 21 2022-08-15
+file: java/ql/lib/semmle/code/java/dispatch/VirtualDispatch.qll
+    blame: 308 2022-09-07
+file: javascript/ql/lib/semmle/javascript/frameworks/AngularJS/AngularJSCore.qll
+    blame: 627 2022-03-30
+    blame: 633 2022-03-30
+    blame: 636 2022-03-30
+    blame: 639 2022-03-30
+file: javascript/ql/lib/semmle/javascript/frameworks/Testing.qll
+    blame: 41 2022-08-24
+file: javascript/ql/lib/semmle/javascript/dataflow/DataFlow.qll
+    blame: 145 2022-03-30
+    blame: 1821 2022-03-13

@@ -8,6 +8,7 @@ def main():
 
 # bad
 app.run(debug=True)
+app.run('host', 8080, True)
 
 # okay
 app.run()

@@ -1,1 +1,1 @@
-module.exports = CustomEntryPoint.foo; /* use=getASuccessor(Label::entryPoint("CustomEntryPoint")) */
+module.exports = CustomEntryPoint.foo; /* use=entryPoint("CustomEntryPoint") */

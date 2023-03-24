@@ -1,0 +1,60 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Parsing untrusted XML files with a weakly configured XML parser may be vulnerable to
+denial-of-service (DoS) attacks exploiting uncontrolled internal entity expansion.
+</p>
+<p>
+In XML, so-called <i>internal entities</i> are a mechanism for introducing an abbreviation
+for a piece of text or part of a document. When a parser that has been configured
+to expand entities encounters a reference to an internal entity, it replaces the entity
+by the data it represents. The replacement text may itself contain other entity references,
+which are expanded recursively. This means that entity expansion can increase document size
+dramatically.
+</p>
+<p>
+If untrusted XML is parsed with entity expansion enabled, a malicious attacker could
+submit a document that contains very deeply nested entity definitions, causing the parser
+to take a very long time or use large amounts of memory. This is sometimes called an
+<i>XML bomb</i> attack.
+</p>
+</overview>
+
+<recommendation>
+<p>
+The safest way to prevent XML bomb attacks is to disable entity expansion when parsing untrusted
+data. How this is done depends on the library being used. Note that some libraries, such as
+recent versions of <code>libxmljs</code> (though not its SAX parser API), disable entity expansion
+by default, so unless you have explicitly enabled entity expansion, no further action is needed.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses the XML parser provided by the <code>node-expat</code> package to
+parse a string <code>xmlSrc</code>. If that string is from an untrusted source, this code may be
+vulnerable to a DoS attack, since <code>node-expat</code> expands internal entities by default:
+</p>
+<sample src="examples/XmlBomb.js"/>
+
+<p>
+At the time of writing, <code>node-expat</code> does not provide a way of controlling entity
+expansion, but the example could be rewritten to use the <code>sax</code> package instead,
+which only expands standard entities such as <code>&amp;amp;</code>:
+</p>
+<sample src="examples/XmlBombGood.js"/>
+</example>
+
+<references>
+<li>
+Wikipedia:
+<a href="https://en.wikipedia.org/wiki/Billion_laughs">Billion Laughs</a>.
+</li>
+<li>
+Bryan Sullivan:
+<a href="https://msdn.microsoft.com/en-us/magazine/ee335713.aspx">Security Briefs - XML Denial of Service Attacks and Defenses</a>.
+</li>
+</references>
+</qhelp>

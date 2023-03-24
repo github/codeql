@@ -146,8 +146,6 @@ Finally we can simplify the query by using the transitive closure operator. In t
        and exists(c.getBlock())
    select c, "Constructor does not initialize fields $@.", f, f.getName()
 
-➤ `See this in the query console on LGTM.com <https://lgtm.com/query/1505896968215/>`__
-
 Further reading
 ---------------
 

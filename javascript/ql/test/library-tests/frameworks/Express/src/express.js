@@ -34,12 +34,12 @@ app.post('/some/other/path', function(req, res) {
 app.get('/', require('./exportedHandler.js').handler);
 
 function getHandler() {
-    return function (req, res){}
+  return function(req, res) { }
 }
 app.use(getHandler());
 
 function getArrowHandler() {
-    return (req, res) => f();
+  return (req, res) => f();
 }
 app.use(getArrowHandler());
 
@@ -48,4 +48,22 @@ app.post('/headers', function(req, res) {
   req.host;
   req.hostname;
   req.headers[config.headerName];
+});
+
+app.get('/some/xss1', function(req, res) {
+  res.header("Content-Type", "text/html");
+  res.send(req.params.foo)
+  foo(res);
+});
+
+app.get('/some/xss2', function(req, res) {
+  res.header("Content-Type", "application/xml");
+  res.send(req.params.foo)
+  foo(res);
+});
+
+app.get('/some/non-xss1', function(req, res) {
+  res.header("Content-Type", "text/plain");
+  res.send(req.params.foo)
+  foo(res);
 });

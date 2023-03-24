@@ -11,9 +11,9 @@
  *       external/cwe/cwe-352
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Concepts
 
-from CSRFProtectionSetting s
+from CsrfProtectionSetting s
 where s.getVerificationSetting() = false
 select s, "Potential CSRF vulnerability due to forgery protection being disabled or weakened."

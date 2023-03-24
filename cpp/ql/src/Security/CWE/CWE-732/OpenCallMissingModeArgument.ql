@@ -16,4 +16,4 @@ import FilePermissions
 from FileCreationWithOptionalModeExpr fc
 where not fc.hasModeArgument()
 select fc,
-  "A file is created here without providing a mode argument, which may leak bits from the stack."
+  "This creates a file without providing a mode argument, which may leak bits from the stack."

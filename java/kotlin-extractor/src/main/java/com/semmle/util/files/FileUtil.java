@@ -1033,11 +1033,11 @@ public class FileUtil
 	}
 
 	/**
-	 * Santize path string To handle windows drive letters and cross-platform builds.
+	 * Sanitize path string To handle windows drive letters and cross-platform builds.
 	 * @param pathString to be sanitized
 	 * @return sanitized path string
 	 */
-	private static String santizePathString(String pathString) {
+	private static String sanitizePathString(String pathString) {
 		// Replace ':' by '_', as the extractor does - to handle Windows drive letters
 		pathString = pathString.replace(':', '_');
 
@@ -1059,7 +1059,7 @@ public class FileUtil
 	 */
 	public static File appendAbsolutePath (File root, String absolutePath)
 	{
-		absolutePath = santizePathString(absolutePath);
+		absolutePath = sanitizePathString(absolutePath);
 
 		return new File(root, absolutePath).getAbsoluteFile();
 	}
@@ -1075,7 +1075,7 @@ public class FileUtil
 	 */
 	public static Path appendAbsolutePath(Path root, String absolutePathString){
 
-		absolutePathString = santizePathString(absolutePathString);
+		absolutePathString = sanitizePathString(absolutePathString);
 
 		Path path = Paths.get(absolutePathString);
 

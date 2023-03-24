@@ -7,6 +7,7 @@
  * @precision high
  * @id java/unsafe-eval
  * @tags security
+ *       experimental
  *       external/cwe/cwe-094
  */
 

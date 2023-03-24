@@ -4,7 +4,7 @@
 <qhelp>
 <overview>
 <p>ECB should not be used as a mode for encryption. It has dangerous weaknesses. Data is encrypted the same way every time 
-meaning the same plaintext input will always produce the same cyphertext. This makes encrypted messages vulnerable 
+meaning the same plaintext input will always produce the same ciphertext. This makes encrypted messages vulnerable 
 to replay attacks.</p>
 
 </overview>

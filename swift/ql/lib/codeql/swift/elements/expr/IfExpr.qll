@@ -1,6 +1,6 @@
 private import codeql.swift.generated.expr.IfExpr
 
-class IfExpr extends IfExprBase {
+class IfExpr extends Generated::IfExpr {
   Expr getBranch(boolean b) {
     b = true and
     result = this.getThenExpr()

@@ -72,7 +72,7 @@ class AstNodeNode extends Node, MkAstNodeNode {
 }
 
 /**
- * Gets the data-flow node correspoinding to the given AST node.
+ * Gets the data-flow node corresponding to the given AST node.
  */
 pragma[inline]
 Node astNode(AstNode node) { result = MkAstNodeNode(node) }

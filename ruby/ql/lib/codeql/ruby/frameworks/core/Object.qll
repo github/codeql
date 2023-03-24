@@ -3,6 +3,7 @@
  */
 
 private import codeql.ruby.AST
+private import codeql.ruby.dataflow.FlowSummary
 
 /**
  * Provides modeling for the `Object` class.
@@ -30,5 +31,15 @@ module Object {
         "shortest_abbreviation", "singleton_class", "singleton_method", "singleton_methods",
         "taint", "tainted?", "to_enum", "to_s", "trust", "untaint", "untrust", "untrusted?"
       ]
+  }
+
+  private class DupSummary extends SimpleSummarizedCallable {
+    DupSummary() { this = "dup" }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self]" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
   }
 }

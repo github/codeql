@@ -111,5 +111,5 @@ predicate declaredInsideLoop(ForeachStmt loop, LocalVariable v) {
 
 from LambdaDataFlowConfiguration c, AnonymousFunctionExpr lambda, Variable loopVar, Element storage
 where c.capturesLoopVarAndIsStoredIn(lambda, loopVar, storage)
-select lambda, "Function which may be stored in $@ captures variable $@", storage,
+select lambda, "Function which may be stored in $@ captures variable $@.", storage,
   storage.toString(), loopVar, loopVar.getName()

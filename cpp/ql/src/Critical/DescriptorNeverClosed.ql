@@ -29,4 +29,4 @@ from Expr alloc
 where
   allocateDescriptorCall(alloc) and
   not exists(ClosedExpr closed | closed.pointsTo() = alloc)
-select alloc, "This file descriptor is never closed"
+select alloc, "This file descriptor is never closed."

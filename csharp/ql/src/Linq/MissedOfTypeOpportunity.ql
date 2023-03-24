@@ -16,5 +16,5 @@ import Linq.Helpers
 from ForeachStmt fes, LocalVariableDeclStmt s
 where missedOfTypeOpportunity(fes, s)
 select fes,
-  "This foreach loop immediately uses 'as' to coerce its iteration variable to another type $@ - consider using '.OfType(...)' instead.",
-  s, "here"
+  "This foreach loop immediately uses 'as' to $@ - consider using '.OfType(...)' instead.", s,
+  "coerce its iteration variable to another type"

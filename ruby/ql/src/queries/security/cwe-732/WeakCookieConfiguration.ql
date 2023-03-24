@@ -11,7 +11,7 @@
  * @precision high
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Concepts
 import codeql.ruby.Frameworks
 

@@ -49,7 +49,7 @@ pointer overflow.
 
 <p>
 While it's not the subject of this query, the expression <code>ptr + i &lt;
-ptr_end</code> is also an invalid range check. It's undefined behavor in
+ptr_end</code> is also an invalid range check. It's undefined behavior in
 C/C++ to create a pointer that points more than one past the end of an
 allocation.
 </p>

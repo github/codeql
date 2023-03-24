@@ -40,12 +40,10 @@ private module JsonWebToken {
   }
 
   /**
-   * The private key for a JWT as a `CredentialsExpr`.
+   * The private key for a JWT as a `CredentialsNode`.
    */
-  private class JwtKey extends CredentialsExpr {
-    JwtKey() {
-      this = DataFlow::moduleMember("jsonwebtoken", "sign").getACall().getArgument(1).asExpr()
-    }
+  private class JwtKey extends CredentialsNode {
+    JwtKey() { this = DataFlow::moduleMember("jsonwebtoken", "sign").getACall().getArgument(1) }
 
     override string getCredentialsKind() { result = "key" }
   }

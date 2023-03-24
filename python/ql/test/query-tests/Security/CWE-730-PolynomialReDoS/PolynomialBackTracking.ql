@@ -1,5 +1,6 @@
 import python
-import semmle.python.security.performance.SuperlinearBackTracking
+private import semmle.python.RegexTreeView::RegexTreeView as TreeView
+import codeql.regex.nfa.SuperlinearBackTracking::Make<TreeView>
 
 from PolynomialBackTrackingTerm t
-select t.getRegex(), t, t.getReason()
+select t.(TreeView::RegExpTerm).getRegex(), t, t.getReason()

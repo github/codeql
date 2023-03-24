@@ -1,4 +1,4 @@
-/*
+/**
  * FunctionBodyFeatures.qll
  *
  * Contains logic relating to the `enclosingFunctionBody` and `enclosingFunctionName` features.
@@ -151,7 +151,7 @@ private int getMaxChars() { result = 1000000 }
  */
 string getBodyTokensFeature(Function function) {
   // Performance optimization: If a function has more than 256 body subtokens, then featurize it as
-  // absent. This approximates the behavior of the classifer on non-generic body features where
+  // absent. This approximates the behavior of the classifier on non-generic body features where
   // large body features are replaced by the absent token.
   //
   // We count nodes instead of tokens because tokens are often not unique.

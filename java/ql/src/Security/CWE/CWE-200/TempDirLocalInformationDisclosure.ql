@@ -14,8 +14,7 @@
 import java
 import semmle.code.java.os.OSCheck
 import TempDirUtils
-import DataFlow::PathGraph
-import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.TaintTracking
 
 abstract private class MethodFileSystemFileCreation extends Method {
   MethodFileSystemFileCreation() { this.getDeclaringType() instanceof TypeFile }
@@ -127,19 +126,17 @@ private class IsSpecificWindowsSanitizer extends WindowsOsSanitizer {
  * A taint tracking configuration tracking the access of the system temporary directory
  * flowing to the creation of files or directories.
  */
-private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Configuration {
-  TempDirSystemGetPropertyToCreateConfig() { this = "TempDirSystemGetPropertyToCreateConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+module TempDirSystemGetPropertyToCreateConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source.asExpr() instanceof ExprSystemGetPropertyTempDirTainted
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink instanceof FileCreationSink and
-    not any(TempDirSystemGetPropertyDirectlyToMkdirConfig config).hasFlowTo(sink)
+    not TempDirSystemGetPropertyDirectlyToMkdir::flowTo(sink)
   }
 
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
+  predicate isBarrier(DataFlow::Node sanitizer) {
     exists(FilesSanitizingCreationMethodAccess sanitisingMethodAccess |
       sanitizer.asExpr() = sanitisingMethodAccess.getArgument(0)
     )
@@ -147,6 +144,9 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
     sanitizer instanceof WindowsOsSanitizer
   }
 }
+
+module TempDirSystemGetPropertyToCreate =
+  TaintTracking::Global<TempDirSystemGetPropertyToCreateConfig>;
 
 /**
  * Configuration that tracks calls to to `mkdir` or `mkdirs` that are are directly on the temp directory system property.
@@ -158,12 +158,8 @@ private class TempDirSystemGetPropertyToCreateConfig extends TaintTracking::Conf
  * As such, this code pattern is filtered out as an explicit vulnerability in
  * `TempDirSystemGetPropertyToCreateConfig::isSink`.
  */
-private class TempDirSystemGetPropertyDirectlyToMkdirConfig extends TaintTracking2::Configuration {
-  TempDirSystemGetPropertyDirectlyToMkdirConfig() {
-    this = "TempDirSystemGetPropertyDirectlyToMkdirConfig"
-  }
-
-  override predicate isSource(DataFlow::Node node) {
+module TempDirSystemGetPropertyDirectlyToMkdirConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
     exists(ExprSystemGetPropertyTempDirTainted propertyGetExpr, DataFlow::Node callSite |
       DataFlow::localFlow(DataFlow::exprNode(propertyGetExpr), callSite)
     |
@@ -171,16 +167,19 @@ private class TempDirSystemGetPropertyDirectlyToMkdirConfig extends TaintTrackin
     )
   }
 
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     exists(MethodAccess ma | ma.getMethod() instanceof MethodFileDirectoryCreation |
       ma.getQualifier() = node.asExpr()
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
+  predicate isBarrier(DataFlow::Node sanitizer) {
     isFileConstructorArgument(sanitizer.asExpr(), _, _)
   }
 }
+
+module TempDirSystemGetPropertyDirectlyToMkdir =
+  TaintTracking::Global<TempDirSystemGetPropertyDirectlyToMkdirConfig>;
 
 //
 // Begin configuration for tracking single-method calls that are vulnerable.
@@ -193,6 +192,8 @@ abstract class MethodAccessInsecureFileCreation extends MethodAccess {
    * Gets the type of entity created (e.g. `file`, `directory`, ...).
    */
   abstract string getFileSystemEntityType();
+
+  DataFlow::Node getNode() { result.asExpr() = this }
 }
 
 /**
@@ -235,39 +236,49 @@ class MethodAccessInsecureGuavaFilesCreateTempFile extends MethodAccessInsecureF
 }
 
 /**
- * A hack: we include use of inherently insecure methods, which don't have any associated
+ * We include use of inherently insecure methods, which don't have any associated
  * flow path, in with results describing a path from reading `java.io.tmpdir` or similar to use
  * in a file creation op.
  *
- * We achieve this by making inherently-insecure method invocations both a source and a sink in
- * this configuration, resulting in a zero-length path which is type-compatible with the actual
- * path-flow results.
+ * We achieve this by making inherently-insecure method invocations into an edge-less graph,
+ * resulting in a zero-length paths.
  */
-class InsecureMethodPseudoConfiguration extends DataFlow::Configuration {
-  InsecureMethodPseudoConfiguration() { this = "InsecureMethodPseudoConfiguration" }
-
-  override predicate isSource(DataFlow::Node node) {
-    node.asExpr() instanceof MethodAccessInsecureFileCreation
+module InsecureMethodPathGraph implements DataFlow::PathGraphSig<MethodAccessInsecureFileCreation> {
+  predicate edges(MethodAccessInsecureFileCreation n1, MethodAccessInsecureFileCreation n2) {
+    none()
   }
 
-  override predicate isSink(DataFlow::Node node) {
-    node.asExpr() instanceof MethodAccessInsecureFileCreation
+  predicate nodes(MethodAccessInsecureFileCreation n, string key, string val) {
+    key = "semmle.label" and val = n.toString()
+  }
+
+  predicate subpaths(
+    MethodAccessInsecureFileCreation n1, MethodAccessInsecureFileCreation n2,
+    MethodAccessInsecureFileCreation n3, MethodAccessInsecureFileCreation n4
+  ) {
+    none()
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, string message
+module Flow =
+  DataFlow::MergePathGraph<TempDirSystemGetPropertyToCreate::PathNode,
+    MethodAccessInsecureFileCreation, TempDirSystemGetPropertyToCreate::PathGraph,
+    InsecureMethodPathGraph>;
+
+import Flow::PathGraph
+
+from Flow::PathNode source, Flow::PathNode sink, string message
 where
   (
-    any(TempDirSystemGetPropertyToCreateConfig conf).hasFlowPath(source, sink) and
+    TempDirSystemGetPropertyToCreate::flowPath(source.asPathNode1(), sink.asPathNode1()) and
     message =
       "Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users."
     or
-    any(InsecureMethodPseudoConfiguration conf).hasFlowPath(source, sink) and
+    source = sink and
     // Note this message has no "$@" placeholder, so the "system temp directory" template parameter below is not used.
     message =
       "Local information disclosure vulnerability due to use of " +
-        source.getNode().asExpr().(MethodAccessInsecureFileCreation).getFileSystemEntityType() +
-        " readable by other local users."
+        source.asPathNode2().getFileSystemEntityType() + " readable by other local users."
   ) and
   not isPermissionsProtectedTempDirUse(sink.getNode())
 select source.getNode(), source, sink, message, source.getNode(), "system temp directory"

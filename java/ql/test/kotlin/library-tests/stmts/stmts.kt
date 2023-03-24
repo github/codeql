@@ -27,6 +27,20 @@ fun loops(x: Int, y: Int) {
     }
     while(x > y)
         continue
+
+    for (i in x..y) {
+        if (x > y) break
+    }
+
+    forLoop@for (i in x..y) {
+        do  {
+            if (x > y) break@forLoop
+        } while (y > 100)
+    }
+
+    for ((v,i) in (x..y).withIndex()) {
+        if (x > y) break
+    }
 }
 
 fun exceptions(): Int {
@@ -40,3 +54,5 @@ fun exceptions(): Int {
         return 2
     }
 }
+
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Int.rangeTo in java.lang.Integer%

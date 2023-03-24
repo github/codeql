@@ -12,7 +12,7 @@
 import java
 
 class OverridingMethod extends Method {
-  OverridingMethod() { exists(Method m | this.overrides(m)) }
+  OverridingMethod() { this.overrides(_) }
 
   predicate isOverrideAnnotated() { this.getAnAnnotation() instanceof OverrideAnnotation }
 }
@@ -23,6 +23,8 @@ where
   m.overrides(overridden) and
   not m.hasModifier("override") and
   not m.isOverrideAnnotated() and
-  not exists(FunctionalExpr mref | mref.asMethod() = m)
+  not exists(FunctionalExpr mref | mref.asMethod() = m) and
+  // Ignore generated constructs, such as <clinit> functions extracted from Kotlin code:
+  not m.isCompilerGenerated()
 select m, "This method overrides $@; it is advisable to add an Override annotation.", overridden,
   overridden.getDeclaringType() + "." + overridden.getName()

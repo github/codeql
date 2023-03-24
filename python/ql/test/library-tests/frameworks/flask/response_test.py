@@ -66,8 +66,8 @@ def html8():  # $requestHandler
 
 @app.route("/jsonify")  # $routeSetup="/jsonify"
 def jsonify_route():  # $requestHandler
-    data = {"foo": "bar"}
-    resp = jsonify(data)  # $ MISSING: HttpResponse mimetype=application/json responseBody=data
+    x = "x"; y = "y"; z = "z"
+    resp = jsonify(x, y, z=z)  # $ HttpResponse mimetype=application/json responseBody=x responseBody=y responseBody=z
     return resp  # $ SPURIOUS: HttpResponse mimetype=text/html responseBody=resp
 
 ################################################################################

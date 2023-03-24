@@ -18,7 +18,7 @@ possibly causing a divide-by-zero panic.
         </p>
         <sample src="DivideByZeroBad.go" />
         <p>
-This can be fixed by testing the divisor against against zero:
+This can be fixed by testing the divisor against zero:
         </p>
         <sample src="DivideByZeroGood.go" />
     </example>

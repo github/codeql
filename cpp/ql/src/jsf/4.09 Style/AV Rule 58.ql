@@ -37,4 +37,4 @@ where
   f.hasDefinition() and
   not valid(f)
 select f,
-  "AV Rule 58: functions with more than two parameters will conform to style rules for declaring parameters"
+  "AV Rule 58: functions with more than two parameters will conform to style rules for declaring parameters."

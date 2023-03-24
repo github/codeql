@@ -5,4 +5,4 @@ nodes
 | InsecureBeanValidation.java:11:64:11:68 | value | semmle.label | value |
 subpaths
 #select
-| InsecureBeanValidation.java:11:64:11:68 | value | InsecureBeanValidation.java:7:28:7:40 | object : String | InsecureBeanValidation.java:11:64:11:68 | value | Custom constraint error message contains unsanitized user data |
+| InsecureBeanValidation.java:11:64:11:68 | value | InsecureBeanValidation.java:7:28:7:40 | object : String | InsecureBeanValidation.java:11:64:11:68 | value | Custom constraint error message contains an unsanitized $@. | InsecureBeanValidation.java:7:28:7:40 | object : String | user-provided value |

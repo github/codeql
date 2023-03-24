@@ -22,5 +22,5 @@ where
   fileVariable.getAnAccess() = setWorldWritable.getFileVarAccess() and
   // If the file variable is a parameter, the result should be reported in the caller.
   not fileVariable instanceof Parameter
-select setWorldWritable, "A file is set to be world writable here, but is read from $@.", readFrom,
+select setWorldWritable, "This sets a file is as world writable, but is read from $@.", readFrom,
   "statement"

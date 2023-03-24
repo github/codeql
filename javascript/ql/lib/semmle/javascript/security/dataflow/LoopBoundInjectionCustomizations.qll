@@ -122,10 +122,10 @@ module LoopBoundInjection {
         "flattenDeep", "flattenDepth", "initial", "intersection", "intersectionBy",
         "intersectionWith", "join", "remove", "reverse", "slice", "sortedUniq", "sortedUniqBy",
         "tail", "union", "unionBy", "unionWith", "uniqBy", "unzip", "unzipWith", "without", "zip",
-        "zipObject", "zipObjectDeep", "zipWith", "countBy", "each", "forEach", "eachRight",
-        "forEachRight", "filter", "find", "findLast", "flatMap", "flatMapDeep", "flatMapDepth",
-        "forEach", "forEachRight", "groupBy", "invokeMap", "keyBy", "map", "orderBy", "partition",
-        "reduce", "reduceRight", "reject", "sortBy"
+        "zipObject", "zipObjectDeep", "zipWith", "countBy", "each", "eachRight", "forEachRight",
+        "filter", "find", "findLast", "flatMap", "flatMapDeep", "flatMapDepth", "forEach",
+        "groupBy", "invokeMap", "keyBy", "map", "orderBy", "partition", "reduce", "reduceRight",
+        "reject", "sortBy"
       ]
   }
 
@@ -169,9 +169,7 @@ module LoopBoundInjection {
   /**
    * A source of remote user input objects.
    */
-  class TaintedObjectSource extends Source {
-    TaintedObjectSource() { this instanceof TaintedObject::Source }
-  }
+  class TaintedObjectSource extends Source instanceof TaintedObject::Source { }
 
   /**
    * A sanitizer that blocks taint flow if the array is checked to be an array using an `isArray` function.
@@ -192,7 +190,8 @@ module LoopBoundInjection {
    * A sanitizer that blocks taint flow if the array is checked to be an array using an `X instanceof Array` check.
    */
   class InstanceofArraySanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
-    DataFlow::ValueNode {
+    DataFlow::ValueNode
+  {
     override BinaryExpr astNode;
 
     InstanceofArraySanitizerGuard() {
@@ -213,7 +212,8 @@ module LoopBoundInjection {
    * Also implicitly makes sure that only the first DoS-prone loop is selected by the query (as the .length test has outcome=false when exiting the loop).
    */
   class LengthCheckSanitizerGuard extends TaintTracking::LabeledSanitizerGuardNode,
-    DataFlow::ValueNode {
+    DataFlow::ValueNode
+  {
     override RelationalComparison astNode;
     DataFlow::PropRead propRead;
 

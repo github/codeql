@@ -7,13 +7,12 @@
  * @id cpp/inconsistent-loop-direction
  * @tags correctness
  *       external/cwe/cwe-835
- *       external/microsoft/6293
  * @msrc.severity important
  */
 
 import cpp
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 
 /**
  * A `for` statement whose update is a crement operation on a variable.
@@ -47,12 +46,12 @@ predicate illDefinedDecrForStmt(
     candidateDecrForStmt(forstmt, v, lesserOperand, terminalCondition) and
     // `initialCondition` is a value of `v` in the for loop
     v.getAnAssignedValue() = initialCondition and
-    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(lesserOperand)) and
+    DataFlow::localFlowStep+(DataFlow::exprNode(initialCondition), DataFlow::exprNode(lesserOperand)) and
     // `initialCondition` < `terminalCondition`
     (
       upperBound(initialCondition) < lowerBound(terminalCondition) and
       (
-        // exclude cases where the loop counter is `unsigned` (where wrapping behaviour can be used deliberately)
+        // exclude cases where the loop counter is `unsigned` (where wrapping behavior can be used deliberately)
         v.getUnspecifiedType().(IntegralType).isSigned() or
         initialCondition.getValue().toInt() = 0
       )
@@ -83,7 +82,8 @@ predicate illDefinedIncrForStmt(
     candidateIncrForStmt(forstmt, v, greaterOperand, terminalCondition) and
     // `initialCondition` is a value of `v` in the for loop
     v.getAnAssignedValue() = initialCondition and
-    DataFlow::localFlowStep(DataFlow::exprNode(initialCondition), DataFlow::exprNode(greaterOperand)) and
+    DataFlow::localFlowStep+(DataFlow::exprNode(initialCondition),
+      DataFlow::exprNode(greaterOperand)) and
     // `terminalCondition` < `initialCondition`
     (
       upperBound(terminalCondition) < lowerBound(initialCondition)

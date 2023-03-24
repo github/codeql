@@ -1,2 +1,0 @@
-| dotself.swift:4:9:4:14 | .self | getSubExpr: | dotself.swift:4:9:4:9 | self |
-| dotself.swift:4:9:4:21 | .self | getSubExpr: | dotself.swift:4:9:4:19 | .x |

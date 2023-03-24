@@ -50,9 +50,7 @@ You start asking some creative questions and making notes of the answers so you 
 
 There is too much information to search through by hand, so you decide to use your newly acquired QL skills to help you with your investigation...
 
-#. Open the `query console on LGTM.com <https://lgtm.com/query>`__ to get started.
-#. Select a language and a demo project. For this tutorial, any language and project will do.
-#. Delete the default code ``import <language> select "hello world"``.
+.. include:: ../reusables/codespaces-template-note.rst
 
 QL libraries
 ------------
@@ -209,13 +207,7 @@ Hints
 
 Once you have finished, you will have a list of possible suspects. One of those people must be the thief!
 
-➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/1505743955992/>`__
-
-.. pull-quote::
-
-   Note
-
-   In the answer, we used ``/*`` and ``*/`` to label the different parts of the query. Any text surrounded by ``/*`` and ``*/`` is not evaluated as part of the QL code, but is just a *comment*.
+➤ `Check your answer <#exercise-1>`__
 
 You are getting closer to solving the mystery! Unfortunately, you still have quite a long list of suspects... To find out which of your suspects is the thief, you must gather more information and refine your query in the next step.
 
@@ -291,9 +283,59 @@ You can now translate the remaining questions into QL:
 
 Have you found the thief?
 
-➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/1505744186085/>`__
+➤ `Check your answer <#exercise-2>`__
 
 Further reading
 ---------------
 
 .. include:: ../reusables/codeql-ref-tools-further-reading.rst
+
+
+--------------
+
+Answers
+-------
+
+In these answers, we use ``/*`` and ``*/`` to label the different parts of the query. Any text surrounded by ``/*`` and ``*/`` is not evaluated as part of the QL code, but is treated as a *comment*.
+
+Exercise 1
+^^^^^^^^^^
+
+.. code-block:: ql
+
+   import tutorial
+
+   from Person t
+   where
+   /* 1 */ t.getHeight() > 150 and
+   /* 2 */ not t.getHairColor() = "blond" and
+   /* 3 */ exists (string c | t.getHairColor() = c) and
+   /* 4 */ not t.getAge() < 30 and
+   /* 5 */ t.getLocation() = "east" and
+   /* 6 */ (t.getHairColor() = "black" or t.getHairColor() = "brown") and
+   /* 7 */ not (t.getHeight() > 180 and t.getHeight() < 190) and
+   /* 8 */ exists(Person p | p.getAge() > t.getAge())
+   select t
+
+Exercise 2
+^^^^^^^^^^
+
+.. code-block:: ql
+
+   import tutorial
+
+   from Person t
+   where
+   /* 1 */ t.getHeight() > 150 and
+   /* 2 */ not t.getHairColor() = "blond" and
+   /* 3 */ exists (string c | t.getHairColor() = c) and
+   /* 4 */ not t.getAge() < 30 and
+   /* 5 */ t.getLocation() = "east" and
+   /* 6 */ (t.getHairColor() = "black" or t.getHairColor() = "brown") and
+   /* 7 */ not (t.getHeight() > 180 and t.getHeight() < 190) and
+   /* 8 */ exists(Person p | p.getAge() > t.getAge()) and
+   /* 9 */ not t = max(Person p | | p order by p.getHeight()) and
+   /* 10 */ t.getHeight() < avg(float i | exists(Person p | p.getHeight() = i) | i) and
+   /* 11 */ t = max(Person p | p.getLocation() = "east" | p order by p.getAge())
+   select "The thief is " + t + "!"
+   

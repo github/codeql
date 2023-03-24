@@ -20,7 +20,8 @@ module Revel {
   }
 
   private class ParamsFixedSanitizer extends TaintTracking::DefaultTaintSanitizer,
-    DataFlow::FieldReadNode {
+    DataFlow::FieldReadNode
+  {
     ParamsFixedSanitizer() {
       exists(Field f |
         this.readsField(_, f) and
@@ -48,7 +49,8 @@ module Revel {
 
   /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
   private class UserControlledRequestField extends UntrustedFlowSource::Range,
-    DataFlow::FieldReadNode {
+    DataFlow::FieldReadNode
+  {
     UserControlledRequestField() {
       exists(string fieldName |
         this.getField().hasQualifiedName(packagePath(), "Request", fieldName)
@@ -61,7 +63,8 @@ module Revel {
   }
 
   private class UserControlledRequestMethod extends UntrustedFlowSource::Range,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     UserControlledRequestMethod() {
       this.getTarget()
           .hasQualifiedName(packagePath(), "Request",
@@ -91,7 +94,7 @@ module Revel {
   }
 
   private string contentTypeFromFilename(DataFlow::Node filename) {
-    if filename.getStringValue().toLowerCase().matches(["%.htm", "%.html"])
+    if filename.getStringValue().regexpMatch("(?i).*\\.html?")
     then result = "text/html"
     else result = "application/octet-stream"
     // Actually Revel can figure out a variety of other content-types, but none of our analyses care to
@@ -114,7 +117,7 @@ module Revel {
    * We look particularly for html file extensions, since these are the only ones we currently have special rules
    * for (in particular, detecting XSS vulnerabilities).
    */
-  private class ControllerRenderMethods extends HTTP::ResponseBody::Range {
+  private class ControllerRenderMethods extends Http::ResponseBody::Range {
     string contentType;
 
     ControllerRenderMethods() {
@@ -149,7 +152,7 @@ module Revel {
       )
     }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
 
     override string getAContentType() { result = contentType }
   }
@@ -174,7 +177,7 @@ module Revel {
    * It is currently assumed that a tainted `value` in `Redirect(url, value)`, which calls `Sprintf(url, value)`
    * internally, cannot lead to an open redirect vulnerability.
    */
-  private class ControllerRedirectMethod extends HTTP::Redirect::Range, DataFlow::CallNode {
+  private class ControllerRedirectMethod extends Http::Redirect::Range, DataFlow::CallNode {
     ControllerRedirectMethod() {
       exists(Method m | m.hasQualifiedName(packagePath(), "Controller", "Redirect") |
         this = m.getACall()
@@ -183,7 +186,7 @@ module Revel {
 
     override DataFlow::Node getUrl() { result = this.getArgument(0) }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
   }
 
   /**
@@ -226,7 +229,7 @@ module Revel {
   /**
    * A write to a template argument field that is read raw inside of a template.
    */
-  private class RawTemplateArgument extends HTTP::TemplateResponseBody::Range {
+  private class RawTemplateArgument extends Http::TemplateResponseBody::Range {
     RawTemplateRead read;
 
     RawTemplateArgument() {
@@ -261,7 +264,7 @@ module Revel {
 
     override string getAContentType() { result = "text/html" }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
 
     override HtmlTemplate::TemplateRead getRead() { result = read }
   }

@@ -1,0 +1,5 @@
+| test.cpp:49:2:49:8 | (void)... | The indentation level may be misleading for some tab sizes. |
+| test.cpp:52:2:52:15 | (void)... | The indentation level may be misleading for some tab sizes. |
+| test.cpp:160:3:160:9 | (void)... | The indentation level may be misleading for some tab sizes. |
+| test.cpp:166:5:166:7 | ... ++ | The indentation level may be misleading for some tab sizes. |
+| test.cpp:176:6:178:6 | ... ? ... : ... | The indentation level may be misleading for some tab sizes. |

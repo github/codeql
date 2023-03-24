@@ -1,0 +1,4 @@
+| (Int, Int, Int, Int, Int) | getName: | (Int, Int, Int, Int, Int) | getCanonicalType: | (Int, Int, Int, Int, Int) | getNumberOfTypes: | 5 |
+| (Int, String, Double) | getName: | (Int, String, Double) | getCanonicalType: | (Int, String, Double) | getNumberOfTypes: | 3 |
+| (Int, s: String, Double) | getName: | (Int, s: String, Double) | getCanonicalType: | (Int, s: String, Double) | getNumberOfTypes: | 3 |
+| (x: Int, y: Int) | getName: | (x: Int, y: Int) | getCanonicalType: | (x: Int, y: Int) | getNumberOfTypes: | 2 |

@@ -11,11 +11,9 @@
 import javascript
 import CandidateTracking
 
-from HTTP::RouteSetupCandidate setup
+from Http::RouteSetupCandidate setup
 where
-  not setup.asExpr() instanceof HTTP::RouteSetup and
-  exists(HTTP::RouteHandlerCandidate rh |
-    track(rh, DataFlow::TypeTracker::end()).flowsTo(setup.getARouteHandlerArg())
-  )
+  not setup instanceof Http::RouteSetup and
+  track(_, DataFlow::TypeTracker::end()).flowsTo(setup.getARouteHandlerArg())
 select setup,
   "A `RouteSetupCandidate` that did not get promoted to `RouteSetup`, and it is using at least one `RouteHandlerCandidate`."

@@ -53,4 +53,4 @@ from Express::RouteSetup setup
 where
   isLoginSetup(setup) and
   not regeneratesSession(setup)
-select setup, "Route handler does not invalidate session following login"
+select setup, "Route handler does not invalidate session following login."

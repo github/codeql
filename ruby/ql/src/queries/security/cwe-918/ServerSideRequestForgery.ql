@@ -10,12 +10,12 @@
  *       external/cwe/cwe-918
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.DataFlow
 import codeql.ruby.security.ServerSideRequestForgeryQuery
 import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "The URL of this request depends on $@.", source.getNode(),
-  "a user-provided value"
+select sink.getNode(), source, sink, "The URL of this request depends on a $@.", source.getNode(),
+  "user-provided value"

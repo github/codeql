@@ -1,5 +1,4 @@
 import java
-import semmle.code.java.dataflow.internal.DataFlowPrivate
 
 // Stop external filepaths from appearing in the results
 class ClassOrInterfaceLocation extends ClassOrInterface {
@@ -30,9 +29,9 @@ query predicate variableInitializerType(
   decl.getInitializer().getType() = t2 and
   t2.extendsOrImplements(t3) and
   (
-    compatible = true and compatibleTypes(t1, t2)
+    compatible = true and haveIntersection(t1, t2)
     or
-    compatible = false and not compatibleTypes(t1, t2)
+    compatible = false and notHaveIntersection(t1, t2)
   )
 }
 
@@ -87,4 +86,25 @@ query predicate modifiers(ClassInstanceExpr e, Method m, string modifier) {
   m.hasModifier(modifier)
 }
 
-query predicate compGenerated(Element e, int i) { compiler_generated(e, i) }
+query predicate compGenerated(Element e, string reason) { reason = e.compilerGeneratedReason() }
+
+query predicate propertyReferenceOverrides(PropertyRefExpr e, Method m, string overridden) {
+  e.getAnonymousClass().getAMember() = m and
+  exists(Method n |
+    m.overrides(n) and
+    overridden = n.getDeclaringType().getQualifiedName() + "." + n.getSignature()
+  )
+}
+
+query predicate notImplementedInterfaceMembers(PropertyRefExpr e, string interfaceMember) {
+  exists(Interface i, Method interfaceMethod |
+    e.getAnonymousClass().extendsOrImplements+(i) and
+    i.getAMethod() = interfaceMethod and
+    interfaceMember = i.getQualifiedName() + "." + interfaceMethod.getSignature() and
+    not exists(Class c, Method classMethod |
+      e.getAnonymousClass().extendsOrImplements*(c) and
+      c.getAMethod() = classMethod and
+      classMethod.overrides(interfaceMethod)
+    )
+  )
+}

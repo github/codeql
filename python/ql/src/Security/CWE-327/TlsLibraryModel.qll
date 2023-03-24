@@ -15,18 +15,45 @@ class ProtocolVersion extends string {
     or
     this = "TLSv1" and version = ["TLSv1_1", "TLSv1_2", "TLSv1_3"]
     or
-    this = ["TLSv1", "TLSv1_1"] and version = ["TLSv1_2", "TLSv1_3"]
+    this = "TLSv1_1" and version = ["TLSv1_2", "TLSv1_3"]
     or
-    this = ["TLSv1", "TLSv1_1", "TLSv1_2"] and version = "TLSv1_3"
+    this = "TLSv1_2" and version = "TLSv1_3"
   }
 
   /** Holds if this protocol version is known to be insecure. */
   predicate isInsecure() { this in ["SSLv2", "SSLv3", "TLSv1", "TLSv1_1"] }
+
+  /** Gets the bit mask for this protocol version. */
+  int getBit() {
+    this = "SSLv2" and result = 1
+    or
+    this = "SSLv3" and result = 2
+    or
+    this = "TLSv1" and result = 4
+    or
+    this = "TLSv1_1" and result = 8
+    or
+    this = "TLSv1_2" and result = 16
+    or
+    this = "TLSv1_3" and result = 32
+  }
+
+  /** Gets the protocol family for this protocol version. */
+  ProtocolFamily getFamily() {
+    result = "SSLv23" and this in ["SSLv2", "SSLv3"]
+    or
+    result = "TLS" and this in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
+  }
 }
 
 /** An unspecific protocol version */
 class ProtocolFamily extends string {
   ProtocolFamily() { this in ["SSLv23", "TLS"] }
+
+  /** Gets the bit mask for this protocol family. */
+  int getBits() {
+    result = sum(ProtocolVersion version | version.getFamily() = this | version.getBit())
+  }
 }
 
 /** The creation of a context. */
@@ -63,21 +90,14 @@ abstract class ProtocolUnrestriction extends DataFlow::Node {
  * A context is being created with a range of allowed protocols.
  * This also serves as unrestricting these protocols.
  */
-abstract class UnspecificContextCreation extends ContextCreation, ProtocolUnrestriction {
-  TlsLibrary library;
-  ProtocolFamily family;
-
-  UnspecificContextCreation() { this.getProtocol() = family }
-
-  override DataFlow::CfgNode getContext() { result = this }
-
-  override ProtocolVersion getUnrestriction() {
-    // There is only one family, the two names are aliases in OpenSSL.
-    // see https://github.com/openssl/openssl/blob/13888e797c5a3193e91d71e5f5a196a2d68d266f/include/openssl/ssl.h.in#L1953-L1955
-    family in ["SSLv23", "TLS"] and
-    // see https://docs.python.org/3/library/ssl.html#ssl-contexts
-    result in ["SSLv2", "SSLv3", "TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
-  }
+abstract class UnspecificContextCreation extends ContextCreation {
+  // override ProtocolVersion getUnrestriction() {
+  //   // There is only one family, the two names are aliases in OpenSSL.
+  //   // see https://github.com/openssl/openssl/blob/13888e797c5a3193e91d71e5f5a196a2d68d266f/include/openssl/ssl.h.in#L1953-L1955
+  //   family in ["SSLv23", "TLS"] and
+  //   // see https://docs.python.org/3/library/ssl.html#ssl-contexts
+  //   result in ["SSLv2", "SSLv3", "TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
+  // }
 }
 
 /** A model of a SSL/TLS library. */

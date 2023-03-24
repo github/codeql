@@ -6,10 +6,12 @@
  * @security-severity 7.8
  * @precision medium
  * @id rb/user-controlled-file-decompression
- * @tags security external/cwe/cwe-409
+ * @tags security
+ *       experimental
+ *       external/cwe/cwe-409
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.ApiGraphs
 import codeql.ruby.DataFlow
 import codeql.ruby.dataflow.RemoteFlowSources

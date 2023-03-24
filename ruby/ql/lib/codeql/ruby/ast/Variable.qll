@@ -36,7 +36,7 @@ class LocalVariable extends Variable, TLocalVariable {
   /** Gets the access where this local variable is first introduced. */
   VariableAccess getDefiningAccess() {
     result = this.(LocalVariableReal).getDefiningAccessImpl() or
-    synthChild(any(BlockParameter p | this = p.getVariable()), 0, result)
+    synthChild(any(NamedParameter p | this = p.getVariable()), 0, result)
   }
 
   /**
@@ -63,7 +63,7 @@ class GlobalVariable extends Variable instanceof GlobalVariableImpl {
 
 /** An instance variable. */
 class InstanceVariable extends Variable instanceof InstanceVariableImpl {
-  /** Holds is this variable is a class instance variable. */
+  /** Holds if this variable is a class instance variable. */
   final predicate isClassInstanceVariable() { super.isClassInstanceVariable() }
 
   final override InstanceVariableAccess getAnAccess() { result.getVariable() = this }
@@ -120,10 +120,8 @@ class VariableAccess extends Expr instanceof VariableAccessImpl {
     or
     this = any(HashPattern p).getValue(_)
     or
-    synthChild(any(BlockParameter p), 0, this)
+    synthChild(any(NamedParameter p), 0, this)
   }
-
-  final override string toString() { result = VariableAccessImpl.super.toString() }
 }
 
 /** An access to a variable where the value is updated. */

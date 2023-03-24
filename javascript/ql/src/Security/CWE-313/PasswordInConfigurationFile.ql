@@ -27,9 +27,9 @@ where
     not val.regexpMatch("\\$.*|%.*%") and
     not PasswordHeuristics::isDummyPassword(val)
     or
-    key.toLowerCase() != "readme" and
-    // look for `password=...`, but exclude `password=;`, `password="$(...)"`,
+    not key.toLowerCase() = ["readme", "run"] and
+    // look for `password=...`, but exclude `password=;`, `password="$(...)"`, `password=foo()`
     // `password=%s` and `password==`
-    pwd = val.regexpCapture("(?is).*password\\s*=\\s*(?!;|\"?[$`]|%s|=)(\\S+).*", 1)
+    pwd = val.regexpCapture("(?is).*password\\s*=\\s*(?!;|\"?[$`]|%s|=|\\w+\\(.+\\))(\\S+).*", 1)
   )
 select valElement.(FirstLineOf), "Hard-coded password '" + pwd + "' in configuration file."

@@ -3,9 +3,9 @@ import TestUtilities.InlineFlowTest
 import semmle.code.java.security.IntentUriPermissionManipulationQuery
 
 class IntentUriPermissionManipulationTest extends InlineFlowTest {
-  override DataFlow::Configuration getValueFlowConfig() { none() }
+  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
 
-  override TaintTracking::Configuration getTaintFlowConfig() {
-    result instanceof IntentUriPermissionManipulationConf
+  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
+    IntentUriPermissionManipulationFlow::flow(src, sink)
   }
 }

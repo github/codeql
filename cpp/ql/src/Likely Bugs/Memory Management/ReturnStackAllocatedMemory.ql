@@ -26,11 +26,11 @@ predicate intentionallyReturnsStackPointer(Function f) {
 class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
   ReturnStackAllocatedMemoryConfig() { this = "ReturnStackAllocatedMemoryConfig" }
 
-  override predicate isSource(DataFlow::Node source) {
+  override predicate isSource(Instruction source) {
     // Holds if `source` is a node that represents the use of a stack variable
     exists(VariableAddressInstruction var, Function func |
-      var = source.asInstruction() and
-      func = var.getEnclosingFunction() and
+      var = source and
+      func = source.getEnclosingFunction() and
       var.getAstVariable() instanceof StackVariable and
       // Pointer-to-member types aren't properly handled in the dbscheme.
       not var.getResultType() instanceof PointerToMemberType and
@@ -40,17 +40,29 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  override predicate isSink(Operand sink) {
     // Holds if `sink` is a node that represents the `StoreInstruction` that is subsequently used in
     // a `ReturnValueInstruction`.
     // We use the `StoreInstruction` instead of the instruction that defines the
-    // `ReturnValueInstruction`'s source value oprand because the former has better location information.
+    // `ReturnValueInstruction`'s source value operand because the former has better location information.
     exists(StoreInstruction store |
       store.getDestinationAddress().(VariableAddressInstruction).getIRVariable() instanceof
         IRReturnVariable and
-      sink.asOperand() = store.getSourceValueOperand()
+      sink = store.getSourceValueOperand()
     )
   }
+
+  //  We disable flow into callables in this query as we'd otherwise get a result on this piece of code:
+  //   ```cpp
+  //  int* id(int* px) {
+  //   return px; // this returns the local variable `x`, but it's fine as the local variable isn't declared in this scope.
+  //  }
+  //  void f() {
+  //   int x;
+  //   int* px = id(&x);
+  //  }
+  //   ```
+  override predicate allowInterproceduralFlow() { none() }
 
   /**
    * This configuration intentionally conflates addresses of fields and their object, and pointer offsets
@@ -65,10 +77,10 @@ class ReturnStackAllocatedMemoryConfig extends MustFlowConfiguration {
    * }
    * ```
    */
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    node2.asInstruction().(FieldAddressInstruction).getObjectAddressOperand() = node1.asOperand()
+  override predicate isAdditionalFlowStep(Operand node1, Instruction node2) {
+    node2.(FieldAddressInstruction).getObjectAddressOperand() = node1
     or
-    node2.asInstruction().(PointerOffsetInstruction).getLeftOperand() = node1.asOperand()
+    node2.(PointerOffsetInstruction).getLeftOperand() = node1
   }
 }
 
@@ -77,9 +89,6 @@ from
   ReturnStackAllocatedMemoryConfig conf
 where
   conf.hasFlowPath(pragma[only_bind_into](source), pragma[only_bind_into](sink)) and
-  source.getNode().asInstruction() = var and
-  // Only raise an alert if we're returning from the _same_ callable as the on that
-  // declared the stack variable.
-  var.getEnclosingFunction() = sink.getNode().getEnclosingCallable()
-select sink.getNode(), source, sink, "May return stack-allocated memory from $@.", var.getAst(),
-  var.getAst().toString()
+  source.getInstruction() = var
+select sink.getInstruction(), source, sink, "May return stack-allocated memory from $@.",
+  var.getAst(), var.getAst().toString()

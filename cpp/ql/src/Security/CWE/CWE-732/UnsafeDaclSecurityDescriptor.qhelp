@@ -5,7 +5,7 @@
 
 <overview>
   <p>This query indicates that a call is setting the DACL field in a <code>SECURITY_DESCRIPTOR</code> to null.</p>
-  <p>When using <code>SetSecurityDescriptorDacl</code> to set a discretionary access control (DACL), setting the <code>bDaclPresent</code> argument to <code>TRUE</code> indicates the prescence of a DACL in the security description in the argument <code>pDacl</code>.</p>
+  <p>When using <code>SetSecurityDescriptorDacl</code> to set a discretionary access control (DACL), setting the <code>bDaclPresent</code> argument to <code>TRUE</code> indicates the presence of a DACL in the security description in the argument <code>pDacl</code>.</p>
   <p>When the <code>pDacl</code> parameter does not point to a DACL (i.e. it is <code>NULL</code>) and the <code>bDaclPresent</code> flag is <code>TRUE</code>, a <code>NULL DACL</code> is specified.</p>
   <p>A <code>NULL DACL</code> grants full access to any user who requests it; normal security checking is not performed with respect to the object.</p>
 </overview>

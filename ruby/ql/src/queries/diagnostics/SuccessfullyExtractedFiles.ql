@@ -4,9 +4,10 @@
  *   without encountering an error in the file.
  * @kind diagnostic
  * @id rb/diagnostics/successfully-extracted-files
+ * @tags successfully-extracted-files
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Diagnostics
 
 from File f

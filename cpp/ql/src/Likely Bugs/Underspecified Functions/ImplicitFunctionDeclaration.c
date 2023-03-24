@@ -1,4 +1,4 @@
-/* '#include <stdlib.h>' was forgotton */
+/* '#include <stdlib.h>' was forgotten */
 
 int main(void) {
 	/* 'int malloc()' assumed */

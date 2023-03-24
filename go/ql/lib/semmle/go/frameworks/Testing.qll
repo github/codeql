@@ -8,11 +8,7 @@ import go
  * Extend this class to refine existing models of testing frameworks. If you want to model new
  * frameworks, extend `TestCase::Range` instead.
  */
-class TestCase extends AstNode {
-  TestCase::Range self;
-
-  TestCase() { this = self }
-}
+class TestCase extends AstNode instanceof TestCase::Range { }
 
 /** Provides classes for working with test cases. */
 module TestCase {
@@ -47,11 +43,7 @@ module TestCase {
  * Extend this class to refine existing models of testing frameworks. If you want to model new
  * frameworks, extend `TestFile::Range` instead.
  */
-class TestFile extends File {
-  TestFile::Range self;
-
-  TestFile() { this = self }
-}
+class TestFile extends File instanceof TestFile::Range { }
 
 /** Provides classes for working with test files. */
 module TestFile {

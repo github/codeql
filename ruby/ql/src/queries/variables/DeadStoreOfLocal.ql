@@ -10,7 +10,7 @@
  * @precision low
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.dataflow.SSA
 
 class RelevantLocalVariableWriteAccess extends LocalVariableWriteAccess {
@@ -24,5 +24,5 @@ from RelevantLocalVariableWriteAccess write, LocalVariable v
 where
   v = write.getVariable() and
   exists(write.getAControlFlowNode()) and
-  not exists(Ssa::WriteDefinition def | def.getWriteAccess() = write)
+  not exists(Ssa::WriteDefinition def | def.getWriteAccess().getNode() = write)
 select write, "This assignment to $@ is useless, since its value is never read.", v, v.getName()

@@ -17,4 +17,4 @@ where
   n = f.getMetrics().getNumberOfCalls() and
   n > 99 and
   not f.isMultiplyDefined()
-select f as Function, "This function makes too many calls (" + n.toString() + ")"
+select f as function, "This function makes too many calls (" + n.toString() + ")."

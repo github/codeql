@@ -1,8 +1,9 @@
 private import swift
-private import codeql.swift.generated.GetImmediateParent
+private import codeql.swift.generated.ParentChild
+private import codeql.swift.generated.Synth
 
 module CallableBase {
-  class TypeRange = @abstract_function_decl or @key_path_expr or @closure_expr;
+  class TypeRange = Synth::TAbstractFunctionDecl or Synth::TKeyPathExpr or Synth::TClosureExpr;
 
   class Range extends Scope::Range, TypeRange { }
 }

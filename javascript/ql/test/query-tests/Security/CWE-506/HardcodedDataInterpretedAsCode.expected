@@ -41,7 +41,7 @@ edges
 | tst.js:7:8:7:11 | test | tst.js:7:8:7:15 | test+"n" |
 | tst.js:7:8:7:11 | test | tst.js:7:8:7:15 | test+"n" |
 #select
-| event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") | event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" | event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") | Hard-coded data from $@ is interpreted as an import path. | event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" | here |
-| event-stream.js:9:11:9:37 | e("2e2f ... 17461") | event-stream.js:9:13:9:36 | "2e2f74 ... 617461" | event-stream.js:9:11:9:37 | e("2e2f ... 17461") | Hard-coded data from $@ is interpreted as an import path. | event-stream.js:9:13:9:36 | "2e2f74 ... 617461" | here |
-| tst.js:2:6:2:57 | Buffer. ... tring() | tst.js:1:29:1:88 | '636f6e ... 6e2729' | tst.js:2:6:2:57 | Buffer. ... tring() | Hard-coded data from $@ is interpreted as code. | tst.js:1:29:1:88 | '636f6e ... 6e2729' | here |
-| tst.js:7:8:7:15 | test+"n" | tst.js:5:12:5:23 | "0123456789" | tst.js:7:8:7:15 | test+"n" | Hard-coded data from $@ is interpreted as code. | tst.js:5:12:5:23 | "0123456789" | here |
+| event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") | event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" | event-stream-orig.js:96:15:96:41 | e("2e2f ... 17461") | $@ is interpreted as An import path. | event-stream-orig.js:96:17:96:40 | "2e2f74 ... 617461" | Hard-coded data |
+| event-stream.js:9:11:9:37 | e("2e2f ... 17461") | event-stream.js:9:13:9:36 | "2e2f74 ... 617461" | event-stream.js:9:11:9:37 | e("2e2f ... 17461") | $@ is interpreted as An import path. | event-stream.js:9:13:9:36 | "2e2f74 ... 617461" | Hard-coded data |
+| tst.js:2:6:2:57 | Buffer. ... tring() | tst.js:1:29:1:88 | '636f6e ... 6e2729' | tst.js:2:6:2:57 | Buffer. ... tring() | $@ is interpreted as Code. | tst.js:1:29:1:88 | '636f6e ... 6e2729' | Hard-coded data |
+| tst.js:7:8:7:15 | test+"n" | tst.js:5:12:5:23 | "0123456789" | tst.js:7:8:7:15 | test+"n" | $@ is interpreted as Code. | tst.js:5:12:5:23 | "0123456789" | Hard-coded data |

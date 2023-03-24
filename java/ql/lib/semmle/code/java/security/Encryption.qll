@@ -4,14 +4,17 @@
 
 import java
 
-class SSLClass extends RefType {
-  SSLClass() {
+class SslClass extends RefType {
+  SslClass() {
     exists(Class c | this.getAnAncestor() = c |
       c.hasQualifiedName("javax.net.ssl", _) or
       c.hasQualifiedName("javax.rmi.ssl", _)
     )
   }
 }
+
+/** DEPRECATED: Alias for SslClass */
+deprecated class SSLClass = SslClass;
 
 class X509TrustManager extends RefType {
   X509TrustManager() { this.hasQualifiedName("javax.net.ssl", "X509TrustManager") }
@@ -25,33 +28,51 @@ class HttpsUrlConnection extends RefType {
 /** DEPRECATED: Alias for HttpsUrlConnection */
 deprecated class HttpsURLConnection = HttpsUrlConnection;
 
-class SSLSocketFactory extends RefType {
-  SSLSocketFactory() { this.hasQualifiedName("javax.net.ssl", "SSLSocketFactory") }
+class SslSocketFactory extends RefType {
+  SslSocketFactory() { this.hasQualifiedName("javax.net.ssl", "SSLSocketFactory") }
 }
 
-class SSLContext extends RefType {
-  SSLContext() { this.hasQualifiedName("javax.net.ssl", "SSLContext") }
+/** DEPRECATED: Alias for SslSocketFactory */
+deprecated class SSLSocketFactory = SslSocketFactory;
+
+class SslContext extends RefType {
+  SslContext() { this.hasQualifiedName("javax.net.ssl", "SSLContext") }
 }
 
-/** The `javax.net.ssl.SSLSession` class. */
-class SSLSession extends RefType {
-  SSLSession() { this.hasQualifiedName("javax.net.ssl", "SSLSession") }
+/** DEPRECATED: Alias for SslContext */
+deprecated class SSLContext = SslContext;
+
+/** The `javax.net.ssl.SslSession` class. */
+class SslSession extends RefType {
+  SslSession() { this.hasQualifiedName("javax.net.ssl", "SSLSession") }
 }
 
-/** The `javax.net.ssl.SSLEngine` class. */
-class SSLEngine extends RefType {
-  SSLEngine() { this.hasQualifiedName("javax.net.ssl", "SSLEngine") }
+/** DEPRECATED: Alias for SslSession */
+deprecated class SSLSession = SslSession;
+
+/** The `javax.net.ssl.SslEngine` class. */
+class SslEngine extends RefType {
+  SslEngine() { this.hasQualifiedName("javax.net.ssl", "SSLEngine") }
 }
 
-/** The `javax.net.ssl.SSLSocket` class. */
-class SSLSocket extends RefType {
-  SSLSocket() { this.hasQualifiedName("javax.net.ssl", "SSLSocket") }
+/** DEPRECATED: Alias for SslEngine */
+deprecated class SSLEngine = SslEngine;
+
+/** The `javax.net.ssl.SslSocket` class. */
+class SslSocket extends RefType {
+  SslSocket() { this.hasQualifiedName("javax.net.ssl", "SSLSocket") }
 }
 
-/** The `javax.net.ssl.SSLParameters` class. */
-class SSLParameters extends RefType {
-  SSLParameters() { this.hasQualifiedName("javax.net.ssl", "SSLParameters") }
+/** DEPRECATED: Alias for SslSocket */
+deprecated class SSLSocket = SslSocket;
+
+/** The `javax.net.ssl.SslParameters` class. */
+class SslParameters extends RefType {
+  SslParameters() { this.hasQualifiedName("javax.net.ssl", "SSLParameters") }
 }
+
+/** DEPRECATED: Alias for SslParameters */
+deprecated class SSLParameters = SslParameters;
 
 class HostnameVerifier extends RefType {
   HostnameVerifier() { this.hasQualifiedName("javax.net.ssl", "HostnameVerifier") }
@@ -67,13 +88,29 @@ class KeyPairGenerator extends RefType {
   KeyPairGenerator() { this.hasQualifiedName("java.security", "KeyPairGenerator") }
 }
 
+/** The `init` method declared in `javax.crypto.KeyGenerator`. */
+class KeyGeneratorInitMethod extends Method {
+  KeyGeneratorInitMethod() {
+    this.getDeclaringType() instanceof KeyGenerator and
+    this.hasName("init")
+  }
+}
+
+/** The `initialize` method declared in `java.security.KeyPairGenerator`. */
+class KeyPairGeneratorInitMethod extends Method {
+  KeyPairGeneratorInitMethod() {
+    this.getDeclaringType() instanceof KeyPairGenerator and
+    this.hasName("initialize")
+  }
+}
+
 /** The `verify` method of the class `javax.net.ssl.HostnameVerifier`. */
 class HostnameVerifierVerify extends Method {
   HostnameVerifierVerify() {
     this.hasName("verify") and
     this.getDeclaringType().getAnAncestor() instanceof HostnameVerifier and
     this.getParameterType(0) instanceof TypeString and
-    this.getParameterType(1) instanceof SSLSession
+    this.getParameterType(1) instanceof SslSession
   }
 }
 
@@ -87,28 +124,37 @@ class TrustManagerCheckMethod extends Method {
 class CreateSocket extends Method {
   CreateSocket() {
     this.hasName("createSocket") and
-    this.getDeclaringType() instanceof SSLSocketFactory
+    this.getDeclaringType() instanceof SslSocketFactory
   }
 }
 
 class GetSocketFactory extends Method {
   GetSocketFactory() {
     this.hasName("getSocketFactory") and
-    this.getDeclaringType() instanceof SSLContext
+    this.getDeclaringType() instanceof SslContext
   }
 }
 
-/** The `createSSLEngine` method of the class `javax.net.ssl.SSLContext`. */
+/** The `createSSLEngine` method of the class `javax.net.ssl.SslContext`. */
 class CreateSslEngineMethod extends Method {
   CreateSslEngineMethod() {
     this.hasName("createSSLEngine") and
-    this.getDeclaringType() instanceof SSLContext
+    this.getDeclaringType() instanceof SslContext
   }
 }
 
+/** The `setConnectionFactory` method of the class `javax.net.ssl.HttpsURLConnection`. */
 class SetConnectionFactoryMethod extends Method {
   SetConnectionFactoryMethod() {
     this.hasName("setSSLSocketFactory") and
+    this.getDeclaringType().getAnAncestor() instanceof HttpsUrlConnection
+  }
+}
+
+/** The `setDefaultConnectionFactory` method of the class `javax.net.ssl.HttpsURLConnection`. */
+class SetDefaultConnectionFactoryMethod extends Method {
+  SetDefaultConnectionFactoryMethod() {
+    this.hasName("setDefaultSSLSocketFactory") and
     this.getDeclaringType().getAnAncestor() instanceof HttpsUrlConnection
   }
 }
@@ -128,35 +174,35 @@ class SetDefaultHostnameVerifierMethod extends Method {
   }
 }
 
-/** The `beginHandshake` method of the class `javax.net.ssl.SSLEngine`. */
+/** The `beginHandshake` method of the class `javax.net.ssl.SslEngine`. */
 class BeginHandshakeMethod extends Method {
   BeginHandshakeMethod() {
     this.hasName("beginHandshake") and
-    this.getDeclaringType().getAnAncestor() instanceof SSLEngine
+    this.getDeclaringType().getAnAncestor() instanceof SslEngine
   }
 }
 
-/** The `wrap` method of the class `javax.net.ssl.SSLEngine`. */
+/** The `wrap` method of the class `javax.net.ssl.SslEngine`. */
 class SslWrapMethod extends Method {
   SslWrapMethod() {
     this.hasName("wrap") and
-    this.getDeclaringType().getAnAncestor() instanceof SSLEngine
+    this.getDeclaringType().getAnAncestor() instanceof SslEngine
   }
 }
 
-/** The `unwrap` method of the class `javax.net.ssl.SSLEngine`. */
+/** The `unwrap` method of the class `javax.net.ssl.SslEngine`. */
 class SslUnwrapMethod extends Method {
   SslUnwrapMethod() {
     this.hasName("unwrap") and
-    this.getDeclaringType().getAnAncestor() instanceof SSLEngine
+    this.getDeclaringType().getAnAncestor() instanceof SslEngine
   }
 }
 
-/** The `getSession` method of the class `javax.net.ssl.SSLSession`. */
+/** The `getSession` method of the class `javax.net.ssl.SslSession`. */
 class GetSslSessionMethod extends Method {
   GetSslSessionMethod() {
     this.hasName("getSession") and
-    this.getDeclaringType().getAnAncestor() instanceof SSLSession
+    this.getDeclaringType().getAnAncestor() instanceof SslSession
   }
 }
 
@@ -253,9 +299,7 @@ string getSecureAlgorithmRegex() {
  * algorithm. For example, methods returning ciphers, decryption methods,
  * constructors of cipher classes, etc.
  */
-abstract class CryptoAlgoSpec extends Top {
-  CryptoAlgoSpec() { this instanceof Call }
-
+abstract class CryptoAlgoSpec extends Top instanceof Call {
   abstract Expr getAlgoSpec();
 }
 
@@ -346,8 +390,8 @@ class JavaSecuritySignature extends JavaSecurityAlgoSpec {
   override Expr getAlgoSpec() { result = this.(ConstructorCall).getArgument(0) }
 }
 
-/** A method call to the Java class `java.security.KeyPairGenerator`. */
-class JavaSecurityKeyPairGenerator extends JavaxCryptoAlgoSpec {
+/** A call to the `getInstance` method declared in `java.security.KeyPairGenerator`. */
+class JavaSecurityKeyPairGenerator extends JavaSecurityAlgoSpec {
   JavaSecurityKeyPairGenerator() {
     exists(Method m | m.getAReference() = this |
       m.getDeclaringType() instanceof KeyPairGenerator and
@@ -356,4 +400,54 @@ class JavaSecurityKeyPairGenerator extends JavaxCryptoAlgoSpec {
   }
 
   override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+}
+
+/** The Java class `java.security.AlgorithmParameterGenerator`. */
+class AlgorithmParameterGenerator extends RefType {
+  AlgorithmParameterGenerator() {
+    this.hasQualifiedName("java.security", "AlgorithmParameterGenerator")
+  }
+}
+
+/** The `init` method declared in `java.security.AlgorithmParameterGenerator`. */
+class AlgoParamGeneratorInitMethod extends Method {
+  AlgoParamGeneratorInitMethod() {
+    this.getDeclaringType() instanceof AlgorithmParameterGenerator and
+    this.hasName("init")
+  }
+}
+
+/** A call to the `getInstance` method declared in `java.security.AlgorithmParameterGenerator`. */
+class JavaSecurityAlgoParamGenerator extends JavaSecurityAlgoSpec {
+  JavaSecurityAlgoParamGenerator() {
+    exists(Method m | m.getAReference() = this |
+      m.getDeclaringType() instanceof AlgorithmParameterGenerator and
+      m.getName() = "getInstance"
+    )
+  }
+
+  override Expr getAlgoSpec() { result = this.(MethodAccess).getArgument(0) }
+}
+
+/** An implementation of the `java.security.spec.AlgorithmParameterSpec` interface. */
+abstract class AlgorithmParameterSpec extends RefType { }
+
+/** The Java class `java.security.spec.ECGenParameterSpec`. */
+class EcGenParameterSpec extends AlgorithmParameterSpec {
+  EcGenParameterSpec() { this.hasQualifiedName("java.security.spec", "ECGenParameterSpec") }
+}
+
+/** The Java class `java.security.spec.RSAKeyGenParameterSpec`. */
+class RsaKeyGenParameterSpec extends AlgorithmParameterSpec {
+  RsaKeyGenParameterSpec() { this.hasQualifiedName("java.security.spec", "RSAKeyGenParameterSpec") }
+}
+
+/** The Java class `java.security.spec.DSAGenParameterSpec`. */
+class DsaGenParameterSpec extends AlgorithmParameterSpec {
+  DsaGenParameterSpec() { this.hasQualifiedName("java.security.spec", "DSAGenParameterSpec") }
+}
+
+/** The Java class `javax.crypto.spec.DHGenParameterSpec`. */
+class DhGenParameterSpec extends AlgorithmParameterSpec {
+  DhGenParameterSpec() { this.hasQualifiedName("javax.crypto.spec", "DHGenParameterSpec") }
 }

@@ -1,59 +1,27 @@
 edges
-| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate : string | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join |
-| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] : pointer type | UnsafeUnzipSymlinkGood.go:76:24:76:29 | implicit dereference : Header |
-| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] : pointer type | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname : string |
-| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] : pointer type | UnsafeUnzipSymlinkGood.go:76:70:76:75 | implicit dereference : Header |
-| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] : pointer type | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name : string |
-| UnsafeUnzipSymlinkGood.go:76:24:76:29 | implicit dereference : Header | UnsafeUnzipSymlinkGood.go:76:24:76:29 | implicit dereference : Header |
-| UnsafeUnzipSymlinkGood.go:76:24:76:29 | implicit dereference : Header | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname : string |
-| UnsafeUnzipSymlinkGood.go:76:24:76:29 | implicit dereference : Header | UnsafeUnzipSymlinkGood.go:76:70:76:75 | implicit dereference : Header |
-| UnsafeUnzipSymlinkGood.go:76:24:76:29 | implicit dereference : Header | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name : string |
-| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname : string | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate : string |
-| UnsafeUnzipSymlinkGood.go:76:70:76:75 | implicit dereference : Header | UnsafeUnzipSymlinkGood.go:76:24:76:29 | implicit dereference : Header |
-| UnsafeUnzipSymlinkGood.go:76:70:76:75 | implicit dereference : Header | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname : string |
-| UnsafeUnzipSymlinkGood.go:76:70:76:75 | implicit dereference : Header | UnsafeUnzipSymlinkGood.go:76:70:76:75 | implicit dereference : Header |
-| UnsafeUnzipSymlinkGood.go:76:70:76:75 | implicit dereference : Header | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name : string |
-| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name : string | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate : string |
-| ZipSlip.go:11:2:15:2 | range statement[1] : pointer type | ZipSlip.go:12:24:12:24 | implicit dereference : File |
-| ZipSlip.go:11:2:15:2 | range statement[1] : pointer type | ZipSlip.go:12:24:12:24 | implicit read of field FileHeader : FileHeader |
-| ZipSlip.go:11:2:15:2 | range statement[1] : pointer type | ZipSlip.go:14:20:14:20 | p |
-| ZipSlip.go:12:24:12:24 | implicit dereference : File | ZipSlip.go:12:24:12:24 | implicit dereference : File |
-| ZipSlip.go:12:24:12:24 | implicit dereference : File | ZipSlip.go:12:24:12:24 | implicit read of field FileHeader : FileHeader |
-| ZipSlip.go:12:24:12:24 | implicit dereference : File | ZipSlip.go:14:20:14:20 | p |
-| ZipSlip.go:12:24:12:24 | implicit read of field FileHeader : FileHeader | ZipSlip.go:14:20:14:20 | p |
-| tarslip.go:15:2:15:30 | ... := ...[0] : pointer type | tarslip.go:16:14:16:34 | call to Dir |
-| tarslip.go:15:2:15:30 | ... := ...[0] : pointer type | tarslip.go:16:23:16:28 | implicit dereference : Header |
-| tarslip.go:16:23:16:28 | implicit dereference : Header | tarslip.go:16:14:16:34 | call to Dir |
-| tarslip.go:16:23:16:28 | implicit dereference : Header | tarslip.go:16:23:16:28 | implicit dereference : Header |
-| tst.go:23:2:43:2 | range statement[1] : pointer type | tst.go:24:11:24:11 | implicit dereference : File |
-| tst.go:23:2:43:2 | range statement[1] : pointer type | tst.go:24:11:24:11 | implicit read of field FileHeader : FileHeader |
-| tst.go:23:2:43:2 | range statement[1] : pointer type | tst.go:29:20:29:23 | path |
-| tst.go:24:11:24:11 | implicit dereference : File | tst.go:24:11:24:11 | implicit dereference : File |
-| tst.go:24:11:24:11 | implicit dereference : File | tst.go:24:11:24:11 | implicit read of field FileHeader : FileHeader |
-| tst.go:24:11:24:11 | implicit dereference : File | tst.go:29:20:29:23 | path |
-| tst.go:24:11:24:11 | implicit read of field FileHeader : FileHeader | tst.go:29:20:29:23 | path |
+| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join |
+| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname |
+| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name |
+| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate |
+| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate |
+| ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:14:20:14:20 | p |
+| tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:16:14:16:34 | call to Dir |
+| tst.go:23:2:43:2 | range statement[1] | tst.go:29:20:29:23 | path |
 nodes
-| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate : string | semmle.label | definition of candidate : string |
+| UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | semmle.label | definition of candidate |
 | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | semmle.label | call to Join |
-| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
-| UnsafeUnzipSymlinkGood.go:76:24:76:29 | implicit dereference : Header | semmle.label | implicit dereference : Header |
-| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname : string | semmle.label | selection of Linkname : string |
-| UnsafeUnzipSymlinkGood.go:76:70:76:75 | implicit dereference : Header | semmle.label | implicit dereference : Header |
-| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name : string | semmle.label | selection of Name : string |
-| ZipSlip.go:11:2:15:2 | range statement[1] : pointer type | semmle.label | range statement[1] : pointer type |
-| ZipSlip.go:12:24:12:24 | implicit dereference : File | semmle.label | implicit dereference : File |
-| ZipSlip.go:12:24:12:24 | implicit read of field FileHeader : FileHeader | semmle.label | implicit read of field FileHeader : FileHeader |
+| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | semmle.label | ... := ...[0] |
+| UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | semmle.label | selection of Linkname |
+| UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | semmle.label | selection of Name |
+| ZipSlip.go:11:2:15:2 | range statement[1] | semmle.label | range statement[1] |
 | ZipSlip.go:14:20:14:20 | p | semmle.label | p |
-| tarslip.go:15:2:15:30 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| tarslip.go:15:2:15:30 | ... := ...[0] | semmle.label | ... := ...[0] |
 | tarslip.go:16:14:16:34 | call to Dir | semmle.label | call to Dir |
-| tarslip.go:16:23:16:28 | implicit dereference : Header | semmle.label | implicit dereference : Header |
-| tst.go:23:2:43:2 | range statement[1] : pointer type | semmle.label | range statement[1] : pointer type |
-| tst.go:24:11:24:11 | implicit dereference : File | semmle.label | implicit dereference : File |
-| tst.go:24:11:24:11 | implicit read of field FileHeader : FileHeader | semmle.label | implicit read of field FileHeader : FileHeader |
+| tst.go:23:2:43:2 | range statement[1] | semmle.label | range statement[1] |
 | tst.go:29:20:29:23 | path | semmle.label | path |
 subpaths
 #select
-| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] : pointer type | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | Unsanitized archive entry, which may contain '..', is used in a $@. | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | file system operation |
-| ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:11:2:15:2 | range statement[1] : pointer type | ZipSlip.go:14:20:14:20 | p | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.go:14:20:14:20 | p | file system operation |
-| tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:15:2:15:30 | ... := ...[0] : pointer type | tarslip.go:16:14:16:34 | call to Dir | Unsanitized archive entry, which may contain '..', is used in a $@. | tarslip.go:16:14:16:34 | call to Dir | file system operation |
-| tst.go:23:2:43:2 | range statement[1] | tst.go:23:2:43:2 | range statement[1] : pointer type | tst.go:29:20:29:23 | path | Unsanitized archive entry, which may contain '..', is used in a $@. | tst.go:29:20:29:23 | path | file system operation |
+| UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | Unsanitized archive entry, which may contain '..', is used in a $@. | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | file system operation |
+| ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:14:20:14:20 | p | Unsanitized archive entry, which may contain '..', is used in a $@. | ZipSlip.go:14:20:14:20 | p | file system operation |
+| tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:16:14:16:34 | call to Dir | Unsanitized archive entry, which may contain '..', is used in a $@. | tarslip.go:16:14:16:34 | call to Dir | file system operation |
+| tst.go:23:2:43:2 | range statement[1] | tst.go:23:2:43:2 | range statement[1] | tst.go:29:20:29:23 | path | Unsanitized archive entry, which may contain '..', is used in a $@. | tst.go:29:20:29:23 | path | file system operation |

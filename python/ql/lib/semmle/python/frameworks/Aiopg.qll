@@ -98,10 +98,10 @@ private module Aiopg {
    * See https://aiopg.readthedocs.io/en/stable/sa.html#aiopg.sa.SAConnection.execute
    */
   class AwaitedSAConnectionExecuteCall extends SqlExecution::Range {
-    SAConnectionExecuteCall excute;
+    SAConnectionExecuteCall execute;
 
-    AwaitedSAConnectionExecuteCall() { this = excute.getReturn().getAwaited().asSource() }
+    AwaitedSAConnectionExecuteCall() { this = execute.getReturn().getAwaited().asSource() }
 
-    override DataFlow::Node getSql() { result = excute.getSql() }
+    override DataFlow::Node getSql() { result = execute.getSql() }
   }
 }

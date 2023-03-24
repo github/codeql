@@ -103,18 +103,8 @@ module HeuristicNames {
    */
   string notSensitiveRegexp() {
     result =
-      "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|random|((?<!un)(en))?(crypt|code)|certain|concert|secretar|accountant|accountab).*"
+      "(?is).*([^\\w$.-]|redact|censor|obfuscate|hash|md5|sha|random|((?<!un)(en))?(crypt|(?<!pass)code)|certain|concert|secretar|accountant|accountab).*"
   }
-
-  /**
-   * DEPRECATED: Use `maybeSensitiveRegexp` instead.
-   */
-  deprecated predicate maybeSensitive = maybeSensitiveRegexp/1;
-
-  /**
-   * DEPRECATED: Use `notSensitiveRegexp` instead.
-   */
-  deprecated predicate notSensitive = notSensitiveRegexp/0;
 
   /**
    * Holds if `name` may indicate the presence of sensitive data, and

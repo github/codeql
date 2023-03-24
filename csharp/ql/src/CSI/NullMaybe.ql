@@ -19,4 +19,5 @@ import PathGraph
 from
   Dereference d, PathNode source, PathNode sink, Ssa::SourceVariable v, string msg, Element reason
 where d.isFirstMaybeNull(v.getAnSsaDefinition(), source, sink, msg, reason)
-select d, source, sink, "Variable $@ may be null here " + msg + ".", v, v.toString(), reason, "this"
+select d, source, sink, "Variable $@ may be null at this access " + msg + ".", v, v.toString(),
+  reason, "this"

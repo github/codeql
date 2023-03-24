@@ -27,7 +27,7 @@ class UnsafeTlsVersionConfig extends TaintTracking::Configuration {
 class SslContextGetInstanceSink extends DataFlow::ExprNode {
   SslContextGetInstanceSink() {
     exists(StaticMethodAccess ma, Method m | m = ma.getMethod() |
-      m.getDeclaringType() instanceof SSLContext and
+      m.getDeclaringType() instanceof SslContext and
       m.hasName("getInstance") and
       ma.getArgument(0) = asExpr()
     )
@@ -40,7 +40,7 @@ class SslContextGetInstanceSink extends DataFlow::ExprNode {
  */
 class CreateSslParametersSink extends DataFlow::ExprNode {
   CreateSslParametersSink() {
-    exists(ConstructorCall cc | cc.getConstructedType() instanceof SSLParameters |
+    exists(ConstructorCall cc | cc.getConstructedType() instanceof SslParameters |
       cc.getArgument(1) = asExpr()
     )
   }
@@ -53,7 +53,7 @@ class CreateSslParametersSink extends DataFlow::ExprNode {
 class SslParametersSetProtocolsSink extends DataFlow::ExprNode {
   SslParametersSetProtocolsSink() {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      m.getDeclaringType() instanceof SSLParameters and
+      m.getDeclaringType() instanceof SslParameters and
       m.hasName("setProtocols") and
       ma.getArgument(0) = asExpr()
     )
@@ -70,9 +70,9 @@ class SetEnabledProtocolsSink extends DataFlow::ExprNode {
       m = ma.getMethod() and type = m.getDeclaringType()
     |
       (
-        type instanceof SSLSocket or
-        type instanceof SSLServerSocket or
-        type instanceof SSLEngine
+        type instanceof SslSocket or
+        type instanceof SslServerSocket or
+        type instanceof SslEngine
       ) and
       m.hasName("setEnabledProtocols") and
       ma.getArgument(0) = asExpr()
@@ -94,6 +94,6 @@ class UnsafeTlsVersion extends StringLiteral {
   }
 }
 
-class SSLServerSocket extends RefType {
-  SSLServerSocket() { hasQualifiedName("javax.net.ssl", "SSLServerSocket") }
+class SslServerSocket extends RefType {
+  SslServerSocket() { hasQualifiedName("javax.net.ssl", "SSLServerSocket") }
 }

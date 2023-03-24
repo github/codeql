@@ -1,0 +1,65 @@
+<!DOCTYPE qhelp PUBLIC
+ "-//Semmle//qhelp//EN"
+ "qhelp.dtd">
+<qhelp>
+  <overview>
+    <p>
+      Allowing file access in an Android WebView can expose a device's file system to
+      the JavaScript running in that WebView. If the JavaScript contains
+      vulnerabilities or the WebView loads untrusted content, file access
+      allows an attacker to steal the user's data.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>When possible, do not allow file access. The file access settings
+    are disabled by default. You can explicitly disable file access by setting the
+    following settings to <code>false</code>:</p>
+
+    <ul>
+      <li><code>setAllowFileAccess</code></li>
+      <li><code>setAllowFileAccessFromFileURLs</code></li>
+      <li><code>setAllowUniversalAccessFromFileURLs</code></li>
+    </ul>
+
+    <p>If your application requires access to the file system, it is best to
+    avoid using <code>file://</code> URLs. Instead, use an alternative that
+    loads files via HTTPS, such
+    as <code>androidx.webkit.WebViewAssetLoader</code>.</p>
+  </recommendation>
+
+  <example>
+    <p>In the following (bad) example, the WebView is configured with settings
+    that allow local file access.</p>
+
+    <sample src="WebViewFileAccessUnsafe.java"/>
+
+    <p>In the following (good) example, the WebView is configured to disallow file access.</p>
+
+    <sample src="WebViewFileAccessSafe.java"/>
+
+    <p>
+      As mentioned previously, asset loaders can load files without file system 
+      access. In the following (good) example, an asset loader is configured to 
+      load assets over HTTPS.
+    </p>
+
+    <sample src="AssetLoaderExample.java"/>
+  </example>
+
+  <references>
+    <li>
+      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowFileAccess(boolean)">WebSettings.setAllowFileAccess</a>.
+    </li>
+    <li>
+      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowFileAccessFromFileURLs(boolean)">WebSettings.setAllowFileAccessFromFileURLs</a>.
+    </li>
+    <li>
+      Android documentation: <a href="https://developer.android.com/reference/android/webkit/WebSettings#setAllowUniversalAccessFromFileURLs(boolean)">WebSettings.setAllowUniversalAccessFromFileURLs</a>.
+    </li>
+    <li>
+      Android documentation: <a href="https://developer.android.com/reference/androidx/webkit/WebViewAssetLoader">WebViewAssetLoader</a>.
+    </li>
+  </references>
+
+</qhelp>

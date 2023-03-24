@@ -12,7 +12,7 @@ to execute arbitrary code.
 <recommendation>
 <p>
 Avoid deserialization of untrusted data if possible. If the architecture permits
-it, use serialization formats that cannot represent arbitarary objects. For
+it, use serialization formats that cannot represent arbitrary objects. For
 libraries that support it, such as the Ruby standard library's <code>JSON</code>
 module, ensure that the parser is configured to disable
 deserialization of arbitrary objects.

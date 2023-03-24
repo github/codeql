@@ -3,7 +3,7 @@
  * @description Loading a .NET assembly based on a path constructed from user-controlled sources
  *              may allow a malicious user to load code which modifies the program in unintended
  *              ways.
- * @kind problem
+ * @kind path-problem
  * @id cs/assembly-path-injection
  * @problem.severity error
  * @security-severity 8.2
@@ -15,6 +15,7 @@
 import csharp
 import semmle.code.csharp.security.dataflow.flowsources.Remote
 import semmle.code.csharp.commons.Util
+import DataFlow::PathGraph
 
 /**
  * A taint-tracking configuration for untrusted user input used to load a DLL.
@@ -33,7 +34,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
       mc.getTarget()
           .getDeclaringType()
           .getABaseType*()
-          .hasQualifiedName("System.Reflection.Assembly") and
+          .hasQualifiedName("System.Reflection", "Assembly") and
       mc.getArgument(arg) = sink.asExpr()
     |
       name = "LoadFrom" and arg = 0 and mc.getNumberOfArguments() = [1 .. 2]
@@ -47,7 +48,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from TaintTrackingConfiguration c, DataFlow::Node source, DataFlow::Node sink
-where c.hasFlow(source, sink)
-select sink, "$@ flows to here and is used as the path to dynamically load an assembly.", source,
-  "User-provided value"
+from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
+where c.hasFlowPath(source, sink)
+select sink.getNode(), source, sink, "This assembly path depends on a $@.", source,
+  "user-provided value"

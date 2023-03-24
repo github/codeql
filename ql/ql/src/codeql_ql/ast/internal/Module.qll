@@ -78,7 +78,7 @@ private class Folder_ extends ContainerOrModule, TFolder {
 
   override ContainerOrModule getEnclosing() {
     result = TFolder(f.getParentContainer()) and
-    // if this the the root, then we stop.
+    // if this the root, then we stop.
     not exists(f.getFile("qlpack.yml"))
   }
 
@@ -120,7 +120,7 @@ class Module_ extends FileOrModule, TModule {
   }
 }
 
-private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
+private predicate resolveImportQualifier(Import imp, ContainerOrModule m, int i) {
   not m = TFile(any(File f | f.getExtension() = "ql")) and
   exists(string q | q = imp.getQualifiedName(i) |
     i = 0 and
@@ -139,7 +139,6 @@ private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
         m = TFolder(c)
       )
       or
-      q = imp.getQualifiedName(i) and
       exists(ContainerOrModule container | container = getEnclosingModule(imp).getEnclosing+() |
         definesModule(container, q, m, _) and
         (
@@ -154,25 +153,18 @@ private predicate resolveQualifiedName(Import imp, ContainerOrModule m, int i) {
     )
     or
     exists(Folder_ mid |
-      resolveQualifiedName(imp, mid, i - 1) and
+      resolveImportQualifier(imp, mid, i - 1) and
       m.getEnclosing() = mid and
       q = m.getName()
     )
   )
 }
 
-private predicate resolveSelectionName(Import imp, ContainerOrModule m, int i) {
+private predicate resolveImportQualifier(Import imp, ContainerOrModule m) {
   (m.(File_).getFile().getExtension() = "qll" or not m instanceof File_) and
   exists(int last |
-    resolveQualifiedName(imp, m, last) and
-    last = count(int j | exists(imp.getQualifiedName(j))) - 1
-  ) and
-  not m instanceof Folder_ and
-  i = -1
-  or
-  exists(ContainerOrModule mid |
-    resolveSelectionName(imp, mid, i - 1) and
-    definesModule(mid, imp.getSelectionName(i), m, true)
+    last = max(int j | exists(imp.getQualifiedName(j))) and
+    resolveImportQualifier(imp, m, last)
   )
 }
 
@@ -202,18 +194,12 @@ private module Cached {
       TModule(Module m)
   }
 
-  /** Holds if import statement `imp` resolves to `m`. */
-  cached
-  predicate resolve(Import imp, FileOrModule m) {
-    exists(int last |
-      resolveSelectionName(imp, m, last) and
-      last = count(int j | exists(imp.getSelectionName(j))) - 1
-    )
-  }
+  private import codeql_ql.ast.internal.Builtins as Builtins
 
   /** Holds if module expression `me` resolves to `m`. */
   cached
   predicate resolveModuleRef(TypeRef me, FileOrModule m) {
+    // base case, resolving a typeref without a qualifier (only moduleexpr can have qualifiers)
     not m = TFile(any(File f | f.getExtension() = "ql")) and
     not exists(me.(ModuleExpr).getQualifier()) and
     exists(ContainerOrModule enclosing, string name | resolveModuleRefHelper(me, enclosing, name) |
@@ -234,17 +220,75 @@ private module Cached {
       )
     )
     or
+    // recursive case, resolving the qualifier.
     exists(FileOrModule mid |
       resolveModuleRef(me.(ModuleExpr).getQualifier(), mid) and
       definesModule(mid, me.(ModuleExpr).getName(), m, true)
+    )
+    or
+    // The buildin `QlBuiltins` module, implemented as a mock AST node.
+    me instanceof ModuleExpr and
+    not exists(me.(ModuleExpr).getQualifier()) and
+    me.(ModuleExpr).getName() = "QlBuiltins" and
+    AstNodes::toMock(m.asModule()).getId() instanceof Builtins::QlBuiltinsMocks::QlBuiltinsModule
+  }
+
+  /**
+   * Gets the module that the lookup for `ref` should start at.
+   * For most type references this will simply be the enclosing module.
+   *
+   * However, for module expressions inside imports, this will be determined
+   * by the qualified name of the import (everything before the module expression).
+   *
+   * E.g. for an import `import foo.Bar::Baz`, the qualified name of the import is "foo",
+   * and the module expression is "Bar::Baz".
+   */
+  private ContainerOrModule getStartModule(TypeRef ref) {
+    if isInsideImport(ref)
+    then
+      exists(Import i | ref = i.getModuleExpr().getQualifier*() |
+        resolveImportQualifier(i, result)
+        or
+        not exists(i.getQualifiedName(_)) and
+        (
+          result = getEnclosingModule(ref)
+          or
+          exists(YAML::QLPack pack |
+            pack.getAFileInPack() = ref.getLocation().getFile() and
+            result = TFolder(pack.getADependency*().getFile().getParentContainer())
+          )
+        )
+      )
+    else result = getEnclosingModule(ref)
+  }
+
+  /** Holds of `me` is part of an import statement. */
+  pragma[noinline]
+  private predicate isInsideImport(ModuleExpr me) {
+    me = any(Import i).getModuleExpr().getQualifier*()
+  }
+
+  /** Gets the enclosing module/container, but stops after the first folder (so no folder -> folder step). */
+  private ContainerOrModule getEnclosingModuleNoFolderStep(ContainerOrModule m) {
+    result = m.getEnclosing() and
+    not (
+      result instanceof Folder_ and
+      m instanceof Folder_
     )
   }
 
   pragma[noinline]
   private predicate resolveModuleRefHelper(TypeRef me, ContainerOrModule enclosing, string name) {
-    enclosing = getEnclosingModule(me).getEnclosing*() and
+    // The scope is all enclosing modules, the immediately containing folder, not the parent folders.
+    enclosing = getEnclosingModuleNoFolderStep*(getStartModule(me)) and
     name = [me.(ModuleExpr).getName(), me.(TypeExpr).getClassName()] and
-    (not me instanceof ModuleExpr or not enclosing instanceof Folder_) // module expressions are not imports, so they can't resolve to a file (which is contained in a folder).
+    not exists(me.(ModuleExpr).getQualifier()) and
+    (
+      // module expressions are not imports, so they can't resolve to a file (which is contained in a folder).
+      (not me instanceof ModuleExpr or not enclosing instanceof Folder_)
+      or
+      isInsideImport(me) // unless it actually is an import.
+    )
   }
 }
 
@@ -277,8 +321,8 @@ private predicate definesModule(
     m = TModule(any(Module mod | public = getPublicBool(mod)))
   )
   or
-  // signature module in a paramertized module
-  exists(Module mod, SignatureExpr sig, TypeExpr ty, int i |
+  // signature module in a parameterized module
+  exists(Module mod, SignatureExpr sig, TypeRef ty, int i |
     mod = container.asModule() and
     mod.hasParameter(i, name, sig) and
     public = false and
@@ -296,7 +340,7 @@ private predicate definesModule(
   // import X
   exists(Import imp, ContainerOrModule m0 |
     container = getEnclosingModule(imp) and
-    resolve(imp, m0) and
+    resolveModuleRef(imp.getModuleExpr(), m0) and
     not exists(imp.importedAs()) and
     definesModule(m0, name, m, true) and
     public = getPublicBool(imp)
@@ -306,7 +350,7 @@ private predicate definesModule(
   exists(Import imp |
     container = getEnclosingModule(imp) and
     name = imp.importedAs() and
-    resolve(imp, m) and
+    resolveModuleRef(imp.getModuleExpr(), m) and
     public = getPublicBool(imp)
   )
   or
@@ -320,24 +364,6 @@ private predicate definesModule(
 }
 
 module ModConsistency {
-  query predicate noResolve(Import imp) {
-    not resolve(imp, _) and
-    not imp.getLocation()
-        .getFile()
-        .getAbsolutePath()
-        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
-  }
-
-  query predicate multipleResolve(Import imp, int c, ContainerOrModule m) {
-    c = strictcount(ContainerOrModule m0 | resolve(imp, m0)) and
-    c > 1 and
-    resolve(imp, m) and
-    not imp.getLocation()
-        .getFile()
-        .getAbsolutePath()
-        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
-  }
-
   // This can happen with parameterized modules.
   /*
    * query predicate multipleResolveModuleRef(ModuleExpr me, int c, ContainerOrModule m) {
@@ -361,5 +387,29 @@ module ModConsistency {
     or
     mod instanceof ModuleExpr and
     count(mod.(ModuleExpr).getName()) >= 2
+  }
+
+  query predicate uniqueResolve(Import i) {
+    count(FileOrModule mod |
+      mod = i.getResolvedModule() and
+      // don't count the alias reference, only the resolved.
+      not exists(mod.asModule().getAlias())
+    ) >= 2 and
+    // paramerized modules are not treated nicely, so we ignore them here.
+    not i.getResolvedModule().getEnclosing*().asModule().hasParameter(_, _, _) and
+    not i.getResolvedModule().asModule().hasAnnotation("signature") and
+    not i.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
+  }
+
+  // not a query predicate, because this fails when running qltests, but it passes on the real thing (so it's used in EmptyConsistencies.ql)
+  predicate noResolve(Import i) {
+    not exists(i.getResolvedModule()) and
+    not i.getLocation()
+        .getFile()
+        .getAbsolutePath()
+        .regexpMatch(".*/(test|examples|ql-training|recorded-call-graph-metrics)/.*")
   }
 }

@@ -469,6 +469,10 @@
 <v>5610</v>
 </e>
 <e>
+<k>@py_ExceptGroupStmt</k>
+<v>1000</v>
+</e>
+<e>
 <k>@py_Expr_stmt</k>
 <v>76750</v>
 </e>

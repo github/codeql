@@ -15,6 +15,8 @@ import semmle.code.java.deadcode.DeadCode
 
 from DeadField f, Element origin, string reason
 where
+  not f.getFile().isKotlinSourceFile() and
+  not origin.getFile().isKotlinSourceFile() and
   not f.isInDeadScope() and
   if f.getAnAccess() instanceof FieldRead
   then (

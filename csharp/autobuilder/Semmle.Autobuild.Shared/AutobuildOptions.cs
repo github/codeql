@@ -2,16 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using Semmle.Util;
 
 namespace Semmle.Autobuild.Shared
 {
     /// <summary>
-    /// Encapsulates build options.
+    /// Encapsulates build options shared between C# and C++.
     /// </summary>
-    public class AutobuildOptions
+    public abstract class AutobuildOptionsShared
     {
-        private const string lgtmPrefix = "LGTM_INDEX_";
-        private const string extractorOptionPrefix = "CODEQL_EXTRACTOR_CSHARP_OPTION_";
+        protected const string lgtmPrefix = "LGTM_INDEX_";
+
 
         public int SearchDepth { get; } = 3;
         public string RootDirectory { get; }
@@ -25,16 +26,16 @@ namespace Semmle.Autobuild.Shared
         public string? BuildCommand { get; }
         public IEnumerable<string> Solution { get; }
         public bool IgnoreErrors { get; }
-        public bool Buildless { get; }
+
         public bool AllSolutions { get; }
         public bool NugetRestore { get; }
-        public Language Language { get; }
+        public abstract Language Language { get; }
 
         /// <summary>
         /// Reads options from environment variables.
         /// Throws ArgumentOutOfRangeException for invalid arguments.
         /// </summary>
-        public AutobuildOptions(IBuildActions actions, Language language)
+        public AutobuildOptionsShared(IBuildActions actions)
         {
             RootDirectory = actions.GetCurrentDirectory();
             VsToolsVersion = actions.GetEnvironmentVariable(lgtmPrefix + "VSTOOLS_VERSION");
@@ -48,12 +49,8 @@ namespace Semmle.Autobuild.Shared
             Solution = actions.GetEnvironmentVariable(lgtmPrefix + "SOLUTION").AsListWithExpandedEnvVars(actions, Array.Empty<string>());
 
             IgnoreErrors = actions.GetEnvironmentVariable(lgtmPrefix + "IGNORE_ERRORS").AsBool("ignore_errors", false);
-            Buildless = actions.GetEnvironmentVariable(lgtmPrefix + "BUILDLESS").AsBool("buildless", false) ||
-                actions.GetEnvironmentVariable(extractorOptionPrefix + "BUILDLESS").AsBool("buildless", false);
             AllSolutions = actions.GetEnvironmentVariable(lgtmPrefix + "ALL_SOLUTIONS").AsBool("all_solutions", false);
             NugetRestore = actions.GetEnvironmentVariable(lgtmPrefix + "NUGET_RESTORE").AsBool("nuget_restore", true);
-
-            Language = language;
         }
     }
 

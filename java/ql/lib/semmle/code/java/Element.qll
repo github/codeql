@@ -63,6 +63,16 @@ class Element extends @element, Top {
       i = 7 and result = "Setter for a Kotlin delegated property"
       or
       i = 8 and result = "Proxy static method for a @JvmStatic-annotated function or property"
+      or
+      i = 9 and result = "Forwarder for a @JvmOverloads-annotated function"
+      or
+      i = 10 and result = "Forwarder for Kotlin calls that need default arguments filling in"
+      or
+      i = 11 and result = "Forwarder for a Kotlin class inheriting an interface default method"
+      or
+      i = 12 and result = "Argument for enum constructor call"
+      or
+      i = 13 and result = "The class around a local function, a lambda, or a function reference"
     )
   }
 }
@@ -73,7 +83,18 @@ class Element extends @element, Top {
 private predicate hasChildElement(Element parent, Element e) {
   cupackage(e, parent)
   or
-  enclInReftype(e, parent)
+  enclInReftype(e, parent) and
+  not e instanceof LocalClassOrInterface
+  or
+  // Reasoning: any specialised instance of a local class is supposed to belong to the general
+  // case of its enclosing method because we don't instantiate specialised variants of either generic
+  // functions or function bodies, and therefore the local class cannot be specialised with respect
+  // to its enclosing reftypes.
+  e.(LocalClassOrInterface)
+      .getSourceDeclaration()
+      .(LocalClassOrInterface)
+      .getLocalTypeDeclStmt()
+      .getEnclosingCallable() = parent
   or
   not enclInReftype(e, _) and
   e.(Class).getCompilationUnit() = parent

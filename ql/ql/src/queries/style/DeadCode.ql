@@ -12,4 +12,4 @@ import codeql_ql.style.DeadCodeQuery
 
 from AstNode node
 where isDead(node)
-select node, "Code is dead"
+select node, "This code is never used, and it's not publicly exported."

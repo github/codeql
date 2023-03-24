@@ -45,10 +45,6 @@ private Sign certainExprSign(Expr e) {
 private predicate unknownSign(Expr e) {
   not exists(certainExprSign(e)) and
   (
-    exists(IntegerLiteral lit | lit = e and not exists(lit.getValue().toInt()))
-    or
-    exists(LongLiteral lit | lit = e and not exists(lit.getValue().toFloat()))
-    or
     exists(CastingExpr cast, Type fromtyp |
       cast = e and
       fromtyp = cast.getSourceType() and
@@ -292,12 +288,12 @@ Sign exprSign(Expr e) {
       exists(SsaVariable v | getARead(v) = e |
         s = ssaSign(v, any(SsaReadPositionBlock bb | getAnExpression(bb) = e))
         or
-        not exists(SsaReadPositionBlock bb | getAnExpression(bb) = e) and
+        not getAnExpression(_) = e and
         s = ssaDefSign(v)
       )
       or
       exists(VarAccess access | access = e |
-        not exists(SsaVariable v | getARead(v) = access) and
+        not getARead(_) = access and
         (
           s = fieldSign(getField(access.(FieldAccess)))
           or

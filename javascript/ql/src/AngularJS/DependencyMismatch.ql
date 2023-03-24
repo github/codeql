@@ -14,7 +14,7 @@
 
 import javascript
 
-from AngularJS::InjectableFunction f, SimpleParameter p, string msg
+from AngularJS::InjectableFunction f, DataFlow::ParameterNode p, string msg
 where
   p = f.asFunction().getAParameter() and
   (

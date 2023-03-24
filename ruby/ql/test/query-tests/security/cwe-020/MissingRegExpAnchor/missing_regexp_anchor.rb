@@ -51,3 +51,11 @@ foo.sub!(/www\.example\.com/, "bar") # GOOD
 
 /^foo|bar|baz$/ # BAD
 /^foo|%/ # OK
+
+REGEXP = /foo/
+REGEXP.match? "http://example.com" # GOOD: the url is the text not the regexp
+REGEXP.match "http://example.com" # GOOD: the url is the text not the regexp
+"http://example.com".match? REGEXP  # GOOD: the url is the text not the regexp
+"http://example.com".match REGEXP  # GOOD: the url is the text not the regexp
+"some text".match? "http://example.com" # BAD
+"some text".match "http://example.com" # BAD

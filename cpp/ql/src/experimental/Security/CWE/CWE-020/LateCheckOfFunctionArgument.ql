@@ -9,6 +9,7 @@
  * @precision medium
  * @tags correctness
  *       security
+ *       experimental
  *       external/cwe/cwe-20
  */
 
@@ -61,6 +62,5 @@ where
     dominates(ifc1, fc) and
     globalValueNumber(fc.getArgument(na)) = globalValueNumber(ifc1.getCondition().getAChild*())
   )
-select fc,
-  "The value of argument '$@' appears to be checked after the call, rather than before it.",
+select fc, "The value of argument $@ appears to be checked after the call, rather than before it.",
   fc.getArgument(na), fc.getArgument(na).toString()

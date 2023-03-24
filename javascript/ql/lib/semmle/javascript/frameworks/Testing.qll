@@ -27,8 +27,8 @@ class QUnitTest extends Test, @call_expr {
  * that is, an invocation of a function named `it` where the first argument
  * is a string and the second argument is a function.
  */
-class BDDTest extends Test, @call_expr {
-  BDDTest() {
+class BddTest extends Test, @call_expr {
+  BddTest() {
     exists(CallExpr call | call = this |
       call.getCallee().(VarAccess).getName() = "it" and
       exists(call.getArgument(0).getStringValue()) and
@@ -36,6 +36,9 @@ class BDDTest extends Test, @call_expr {
     )
   }
 }
+
+/** DEPRECATED: Alias for BddTest */
+deprecated class BDDTest = BddTest;
 
 /**
  * Gets the test file for `f` with stem extension `stemExt`, where `stemExt` is "test" or "spec".

@@ -45,7 +45,7 @@ The valid YAML properties in the metadata are:
 After the `---` line following the metadata, the rest of the markdown file is the user-visible content of the change note. This should usually be a single markdown bullet list entry (starting with `*`), although it is acceptable to have multiple bullet entries in the same change note if there are multiple changes that are closely related and have the same category metadata.
 
 ## Change categories
-Each change note must specifiy a `category` property in its metadata. This category servers two purposes: It determines how the change affects the version number of the next release of the pack, and it is used to group related changes in the final changelog. There is one set of available categories for query packs, and another set of available categories for library packs.
+Each change note must specify a `category` property in its metadata. This category servers two purposes: It determines how the change affects the version number of the next release of the pack, and it is used to group related changes in the final changelog. There is one set of available categories for query packs, and another set of available categories for library packs.
 
 ### Query pack change categories
 | Category       | SemVer effect      | Description |

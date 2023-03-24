@@ -168,20 +168,9 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
         }
     }
 
-    // Number of conditional type expressions the visitor is currently inside.
-    // We disable type extraction inside such type expressions, to avoid complications
-    // with `infer` types.
-    let insideConditionalTypes = 0;
-
     visitAstNode(ast);
     function visitAstNode(node: AugmentedNode) {
-        if (node.kind === ts.SyntaxKind.ConditionalType) {
-            ++insideConditionalTypes;
-        }
         ts.forEachChild(node, visitAstNode);
-        if (node.kind === ts.SyntaxKind.ConditionalType) {
-            --insideConditionalTypes;
-        }
 
         // fill in line/column info
         if ("pos" in node) {
@@ -202,7 +191,7 @@ export function augmentAst(ast: AugmentedSourceFile, code: string, project: Proj
             }
         }
 
-        if (typeChecker != null && insideConditionalTypes === 0) {
+        if (typeChecker != null) {
             if (isTypedNode(node)) {
                 let contextualType = isContextuallyTypedNode(node)
                     ? typeChecker.getContextualType(node)
@@ -328,6 +317,7 @@ function isTypedNode(node: ts.Node): boolean {
         case ts.SyntaxKind.ArrayLiteralExpression:
         case ts.SyntaxKind.ArrowFunction:
         case ts.SyntaxKind.AsExpression:
+        case ts.SyntaxKind.SatisfiesExpression:
         case ts.SyntaxKind.AwaitExpression:
         case ts.SyntaxKind.BinaryExpression:
         case ts.SyntaxKind.CallExpression:

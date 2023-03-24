@@ -34,6 +34,7 @@ import com.semmle.js.extractor.ASTExtractor.IdContext;
 import com.semmle.ts.ast.DecoratorList;
 import com.semmle.ts.ast.ExpressionWithTypeArguments;
 import com.semmle.ts.ast.TypeAssertion;
+import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.util.exception.CatastrophicError;
 
 /** Map from SpiderMonkey expression types to the numeric kinds used in the DB scheme. */
@@ -281,6 +282,11 @@ public class ExprKinds {
               @Override
               public Integer visit(TypeAssertion nd, Void c) {
                 return nd.isAsExpression() ? 102 : 101;
+              }
+
+              @Override
+              public Integer visit(SatisfiesExpr nd, Void c) {
+                return 121;
               }
 
               @Override

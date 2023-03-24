@@ -8,9 +8,17 @@ private predicate isKnownAccessorKind(AccessorDecl decl, string kind) {
   decl.isWillSet() and kind = "willSet"
   or
   decl.isDidSet() and kind = "didSet"
+  or
+  decl.isRead() and kind = "_read"
+  or
+  decl.isModify() and kind = "_modify"
+  or
+  decl.isUnsafeAddress() and kind = "unsafeAddress"
+  or
+  decl.isUnsafeMutableAddress() and kind = "unsafeMutableAddress"
 }
 
-class AccessorDecl extends AccessorDeclBase {
+class AccessorDecl extends Generated::AccessorDecl {
   predicate isPropertyObserver() {
     this instanceof WillSetObserver or this instanceof DidSetObserver
   }

@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 query predicate blockArguments(BlockArgument a, Expr e) { e = a.getValue() }
 

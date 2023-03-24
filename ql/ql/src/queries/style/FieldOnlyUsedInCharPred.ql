@@ -22,4 +22,4 @@ where
       call.getEnclosingPredicate() = c.getCharPred() and call.getTarget() instanceof NewTypeBranch
     ).getAnArgument() and
   not f.getVarDecl().overrides(_)
-select f, "Field is only used in CharPred"
+select f, "Field is only used in CharPred."

@@ -11,12 +11,45 @@ class Node = DataFlowPublic::Node;
 
 class TypeTrackingNode = DataFlowPublic::TypeTrackingNode;
 
-predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStep/2;
+/** A content name for use by type trackers, or the empty string. */
+class OptionalTypeTrackerContent extends string {
+  OptionalTypeTrackerContent() {
+    this = ""
+    or
+    this = getPossibleContentName()
+  }
+}
+
+/** A content name for use by type trackers. */
+class TypeTrackerContent extends OptionalTypeTrackerContent {
+  TypeTrackerContent() { this != "" }
+}
+
+/** Gets the content string representing no value. */
+OptionalTypeTrackerContent noContent() { result = "" }
+
+/**
+ * A label to use for `WithContent` and `WithoutContent` steps, restricting
+ * which `ContentSet` may pass through. Not currently used in Python.
+ */
+class ContentFilter extends Unit {
+  TypeTrackerContent getAMatchingContent() { none() }
+}
+
+pragma[inline]
+predicate compatibleContents(TypeTrackerContent storeContent, TypeTrackerContent loadContent) {
+  storeContent = loadContent
+}
+
+predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStepForTypetracking/2;
 
 predicate jumpStep = DataFlowPrivate::jumpStepSharedWithTypeTracker/2;
 
-/** Holds if there is a level step from `pred` to `succ`. */
-predicate levelStep(Node pred, Node succ) { none() }
+/** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
+predicate levelStepCall(Node nodeFrom, Node nodeTo) { none() }
+
+/** Holds if there is a level step from `nodeFrom` to `nodeTo`, which does not depend on the call graph. */
+predicate levelStepNoCall(Node nodeFrom, Node nodeTo) { none() }
 
 /**
  * Gets the name of a possible piece of content. For Python, this is currently only attribute names,
@@ -28,34 +61,29 @@ string getPossibleContentName() {
 }
 
 /**
- * Gets a callable for the call where `nodeFrom` is used as the `i`'th argument.
+ * Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call.
  *
- * Helper predicate to avoid bad join order experienced in `callStep`.
- * This happened when `isParameterOf` was joined _before_ `getCallable`.
+ * Flow into summarized library methods is not included, as that will lead to negative
+ * recursion (or, at best, terrible performance), since identifying calls to library
+ * methods is done using API graphs (which uses type tracking).
  */
-pragma[nomagic]
-private DataFlowPrivate::DataFlowCallable getCallableForArgument(
-  DataFlowPublic::ArgumentNode nodeFrom, int i
-) {
-  exists(DataFlowPrivate::DataFlowCall call |
-    nodeFrom.argumentOf(call, i) and
-    result = call.getCallable()
-  )
-}
-
-/** Holds if `nodeFrom` steps to `nodeTo` by being passed as a parameter in a call. */
 predicate callStep(DataFlowPublic::ArgumentNode nodeFrom, DataFlowPublic::ParameterNode nodeTo) {
-  // TODO: Support special methods?
-  exists(DataFlowPrivate::DataFlowCallable callable, int i |
-    callable = getCallableForArgument(nodeFrom, i) and
-    nodeTo.isParameterOf(callable, i)
+  exists(
+    DataFlowPrivate::DataFlowCall call, DataFlowPrivate::DataFlowCallable callable,
+    DataFlowPrivate::ArgumentPosition apos, DataFlowPrivate::ParameterPosition ppos
+  |
+    nodeFrom = call.getArgument(apos) and
+    nodeTo = callable.getParameter(ppos) and
+    DataFlowPrivate::parameterMatch(ppos, apos) and
+    callable = call.getCallable()
   )
 }
 
 /** Holds if `nodeFrom` steps to `nodeTo` by being returned from a call. */
 predicate returnStep(DataFlowPrivate::ReturnNode nodeFrom, Node nodeTo) {
-  exists(DataFlowPrivate::DataFlowCall call |
-    nodeFrom.getEnclosingCallable() = call.getCallable() and nodeTo.asCfgNode() = call.getNode()
+  exists(DataFlowPrivate::ExtractedDataFlowCall call |
+    nodeFrom.getEnclosingCallable() = call.getCallable() and
+    nodeTo.(DataFlowPublic::CfgNode).getNode() = call.getNode()
   )
 }
 
@@ -80,6 +108,23 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, string content) {
     nodeTo = a
   )
 }
+
+/**
+ * Holds if the `loadContent` of `nodeFrom` is stored in the `storeContent` of `nodeTo`.
+ */
+predicate basicLoadStoreStep(Node nodeFrom, Node nodeTo, string loadContent, string storeContent) {
+  none()
+}
+
+/**
+ * Holds if type-tracking should step from `nodeFrom` to `nodeTo` but block flow of contents matched by `filter` through here.
+ */
+predicate basicWithoutContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter) { none() }
+
+/**
+ * Holds if type-tracking should step from `nodeFrom` to `nodeTo` if inside a content matched by `filter`.
+ */
+predicate basicWithContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter) { none() }
 
 /**
  * A utility class that is equivalent to `boolean` but does not require type joining.

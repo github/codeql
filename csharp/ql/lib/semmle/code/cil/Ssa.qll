@@ -8,13 +8,12 @@ private import CIL
  * Provides classes for working with static single assignment (SSA) form.
  */
 module Ssa {
-  private import internal.SsaImplCommon as SsaImpl
-  private import internal.SsaImpl
+  private import internal.SsaImpl as SsaImpl
 
   /** An SSA definition. */
   class Definition extends SsaImpl::Definition {
     /** Gets a read of this SSA definition. */
-    final ReadAccess getARead() { result = getARead(this) }
+    final ReadAccess getARead() { result = SsaImpl::getARead(this) }
 
     /** Gets the underlying variable update, if any. */
     final VariableUpdate getVariableUpdate() {
@@ -25,11 +24,11 @@ module Ssa {
     }
 
     /** Gets a first read of this SSA definition. */
-    final ReadAccess getAFirstRead() { result = getAFirstRead(this) }
+    deprecated final ReadAccess getAFirstRead() { result = SsaImpl::getAFirstRead(this) }
 
     /** Holds if `first` and `second` are adjacent reads of this SSA definition. */
-    final predicate hasAdjacentReads(ReadAccess first, ReadAccess second) {
-      hasAdjacentReads(this, first, second)
+    deprecated final predicate hasAdjacentReads(ReadAccess first, ReadAccess second) {
+      SsaImpl::hasAdjacentReads(this, first, second)
     }
 
     private Definition getAPhiInput() { result = this.(PhiNode).getAnInput() }
@@ -52,15 +51,16 @@ module Ssa {
     final override Location getLocation() { result = this.getBasicBlock().getLocation() }
 
     /** Gets an input to this phi node. */
-    final Definition getAnInput() { result = getAPhiInput(this) }
+    final Definition getAnInput() { result = SsaImpl::getAPhiInput(this) }
 
     /**
      * Holds if if `def` is an input to this phi node, and a reference to `def` at
      * index `i` in basic block `bb` can reach this phi node without going through
      * other references.
      */
-    final predicate hasLastInputRef(Definition def, BasicBlock bb, int i) {
-      hasLastInputRef(this, def, bb, i)
+    deprecated final predicate hasLastInputRef(Definition def, BasicBlock bb, int i) {
+      SsaImpl::lastRefRedef(def, bb, i, this) and
+      def = SsaImpl::getAPhiInput(this)
     }
   }
 }

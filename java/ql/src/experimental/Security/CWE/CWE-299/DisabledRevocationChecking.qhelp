@@ -23,7 +23,7 @@ then revocation checking is not going to happen.</p>
 </overview>
 <recommendation>
 
-<p>An application should not disable the default revocationg checking mechanism
+<p>An application should not disable the default revocation checking mechanism
 unless it provides a custom revocation checker.</p>
 
 </recommendation>

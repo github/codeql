@@ -28,4 +28,4 @@ where
     readaccess.getEnclosingCallable() = getter and
     not exists(LockStmt readlock | readlock.getAChildStmt+().getAChildExpr+() = readaccess)
   )
-select p, "Field '$@' is guarded by a lock in the setter but not in the getter.", f, f.getName()
+select p, "Field $@ is guarded by a lock in the setter but not in the getter.", f, f.getName()

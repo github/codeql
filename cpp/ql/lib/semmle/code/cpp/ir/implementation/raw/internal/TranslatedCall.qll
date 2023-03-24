@@ -511,7 +511,8 @@ abstract class TranslatedArgumentSideEffect extends TranslatedSideEffect {
  * calls other than constructor calls.
  */
 class TranslatedArgumentExprSideEffect extends TranslatedArgumentSideEffect,
-  TTranslatedArgumentExprSideEffect {
+  TTranslatedArgumentExprSideEffect
+{
   Expr arg;
 
   TranslatedArgumentExprSideEffect() {
@@ -542,11 +543,12 @@ class TranslatedArgumentExprSideEffect extends TranslatedArgumentSideEffect,
  * The IR translation of an argument side effect for `*this` on a call, where there is no `Expr`
  * object that represents the `this` argument.
  *
- * The applies only to constructor calls, as the AST has explioit qualifier `Expr`s for all other
+ * The applies only to constructor calls, as the AST has exploit qualifier `Expr`s for all other
  * calls to non-static member functions.
  */
 class TranslatedStructorQualifierSideEffect extends TranslatedArgumentSideEffect,
-  TTranslatedStructorQualifierSideEffect {
+  TTranslatedStructorQualifierSideEffect
+{
   TranslatedStructorQualifierSideEffect() {
     this = TTranslatedStructorQualifierSideEffect(call, sideEffectOpcode) and
     index = -1

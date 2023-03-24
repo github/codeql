@@ -21,4 +21,4 @@ where
     FloatingPointType and
   not ro.getAnOperand().isConstant() and // comparisons to constants generate too many false positives
   not left.(VariableAccess).getTarget() = right.(VariableAccess).getTarget() // skip self comparison
-select ro, "Equality test on floating point values may not behave as expected."
+select ro, "Equality checks on floating point values can yield unexpected results."

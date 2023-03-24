@@ -120,7 +120,7 @@
 | scopes.rb:43:2:43:4 | foo |
 | scopes.rb:46:5:46:8 | var2 |
 | ssa.rb:1:1:16:3 | self |
-| ssa.rb:1:1:88:3 | self |
+| ssa.rb:1:1:103:3 | self |
 | ssa.rb:1:7:1:7 | b |
 | ssa.rb:2:3:2:3 | i |
 | ssa.rb:18:1:23:3 | self |
@@ -152,3 +152,9 @@
 | ssa.rb:75:3:75:10 | captured |
 | ssa.rb:81:1:88:3 | self |
 | ssa.rb:82:3:82:10 | captured |
+| ssa.rb:90:1:103:3 | self |
+| ssa.rb:90:9:90:10 | b1 |
+| ssa.rb:90:13:90:14 | b2 |
+| ssa.rb:90:17:90:18 | b3 |
+| ssa.rb:90:21:90:22 | b4 |
+| ssa.rb:91:3:91:3 | x |

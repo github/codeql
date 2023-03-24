@@ -88,4 +88,23 @@ public class Test {
     Properties clean = new Properties();
     sink(clean.getProperty("key", tainted)); // Flow
   }
+
+  public void run5() {
+    Properties p = new Properties();
+    p.setProperty("key", tainted);
+    sink(p.getProperty("key")); // Flow
+    sink(p.getProperty("key", "defaultValue")); // Flow
+  }
+
+  public void run6() {
+    Properties p = new Properties();
+    sink(p.put("key", tainted)); // No flow
+    sink(p.put("key", "notTainted")); // Flow
+  }
+
+  public void run7() {
+    Properties p = new Properties();
+    sink(p.setProperty("key", tainted)); // No flow
+    sink(p.setProperty("key", "notTainted")); // Flow
+  }
 }

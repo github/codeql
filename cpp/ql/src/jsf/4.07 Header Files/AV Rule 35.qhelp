@@ -5,12 +5,12 @@
 <overview>
 <p>
 Some header files, such as those which define structures or classes, cannot be included more than once within a translation unit, as doing so would
-cause a redefinition error. Such headers must be guarded to prevent ill-effects from multiple inclusion. Simlarly, if header files include other
+cause a redefinition error. Such headers must be guarded to prevent ill-effects from multiple inclusion. Similarly, if header files include other
 header files, and this inclusion graph contains a cycle, then at least one file within the cycle must contain header guards in order to break the
 cycle. Because of cases like these, all headers should be guarded as a matter of good practice, even if they do not strictly need to be.
 </p>
 <p>
-Furthermore, most modern compilers contain optimisations which are triggered by header guards. If the header guard strictly conforms to the pattern
+Furthermore, most modern compilers contain optimizations which are triggered by header guards. If the header guard strictly conforms to the pattern
 that compilers expect, then inclusions of that header other than the first have absolutely no effect: the file isn't re-read from disk, nor is it
 re-tokenised or re-preprocessed. This can result in a noticeable, albeit minor, improvement to compilation time.
 </p>

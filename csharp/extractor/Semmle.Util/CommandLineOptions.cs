@@ -17,7 +17,7 @@ namespace Semmle.Util
         bool HandleOption(string key, string value);
 
         /// <summary>
-        /// Handle a flag of the form "--cil" or "--nocil"
+        /// Handle a flag of the form "--cache" or "--nocache"
         /// </summary>
         /// <param name="key">The name of the flag. This is case sensitive.</param>
         /// <param name="value">True if set, or false if prefixed by "--no"</param>
@@ -40,6 +40,7 @@ namespace Semmle.Util
 
     public static class OptionsExtensions
     {
+        private static readonly string[] ExtractorOptions = new[] { "trap_compression", "cil" };
         private static string? GetExtractorOption(string name) =>
             Environment.GetEnvironmentVariable($"CODEQL_EXTRACTOR_CSHARP_OPTION_{name.ToUpper()}");
 
@@ -47,12 +48,14 @@ namespace Semmle.Util
         {
             var extractorOptions = new List<string>();
 
-            var trapCompression = GetExtractorOption("trap_compression");
-            if (!string.IsNullOrEmpty(trapCompression))
+            foreach (var option in ExtractorOptions)
             {
-                extractorOptions.Add($"--trap_compression:{trapCompression}");
+                var value = GetExtractorOption(option);
+                if (!string.IsNullOrEmpty(value))
+                {
+                    extractorOptions.Add($"--{option}:{value}");
+                }
             }
-
             return extractorOptions;
         }
 

@@ -8,4 +8,4 @@ class A < B
   prepend B
 end
 
-prepend A
+prepend A # NoMethodError

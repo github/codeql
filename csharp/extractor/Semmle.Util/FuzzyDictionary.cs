@@ -17,7 +17,7 @@ namespace Semmle.Util
     /// The algorithm locates the closest match to a string based on a "distance function".
     ///
     /// Whilst many distance functions are possible, a bespoke algorithm is used here,
-    /// for efficiency and suitablility for the domain.
+    /// for efficiency and suitability for the domain.
     ///
     /// The distance is defined as the Hamming Distance of the numbers in the string.
     /// Each string is split into the base "form" (stripped of numbers) and a vector of

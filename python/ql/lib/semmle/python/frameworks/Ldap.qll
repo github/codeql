@@ -13,13 +13,13 @@ private import semmle.python.ApiGraphs
  *
  * See https://www.python-ldap.org/en/python-ldap-3.3.0/index.html
  */
-private module Ldap {
+private module PythonLdap {
   /**
    * The execution of an `ldap` query.
    *
    * See https://www.python-ldap.org/en/python-ldap-3.3.0/reference/ldap.html#functions
    */
-  private class LdapQueryExecution extends DataFlow::CallCfgNode, LDAP::LdapExecution::Range {
+  private class LdapQueryExecution extends DataFlow::CallCfgNode, Ldap::LdapExecution::Range {
     LdapQueryExecution() {
       this =
         API::moduleImport("ldap")

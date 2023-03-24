@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: experimentalSinkModel
+    data:
+      - ["java.lang", "Thread", True, "sleep", "", "", "Argument[0]", "thread-pause", "manual", "thread-resource-abuse"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: experimentalSummaryModel
+    data:
+      - ["java.lang", "Math", False, "max", "", "", "Argument[0..1]", "ReturnValue", "value", "manual", "thread-resource-abuse"]
+      - ["java.lang", "Math", False, "min", "", "", "Argument[0..1]", "ReturnValue", "value", "manual", "thread-resource-abuse"]

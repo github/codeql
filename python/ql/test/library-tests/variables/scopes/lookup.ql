@@ -15,4 +15,4 @@ where
     not n.isNonLocal() and
     l = "none"
   )
-select n.getLocation().getStartLine(), n.toString(), l
+select n, l

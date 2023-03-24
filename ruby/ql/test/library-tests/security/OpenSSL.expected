@@ -1,4 +1,4 @@
-weakOpenSSLCipherAlgorithms
+weakOpenSslCipherAlgorithms
 | AES-128-CBC-HMAC-SHA1 |
 | AES-128-CBC-HMAC-SHA1 |
 | AES-128-ECB |
@@ -93,7 +93,7 @@ weakOpenSSLCipherAlgorithms
 | SM4-ECB |
 | SM4-ECB |
 | gost89-ecb |
-strongOpenSSLCipherAlgorithms
+strongOpenSslCipherAlgorithms
 | AES-128-CBC |
 | AES-128-CBC |
 | AES-128-CBC |
@@ -271,4 +271,4 @@ strongOpenSSLCipherAlgorithms
 | id-aes256-CCM |
 | id-aes256-GCM |
 | id-aes256-GCM |
-missingOpenSSLCipherAlgorithms
+missingOpenSslCipherAlgorithms

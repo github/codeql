@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["javax.naming.directory", "DirContext", True, "search", "", "", "Argument[0..1]", "ldap", "manual"]

@@ -12,13 +12,9 @@ module SQL {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `SQL::Query::Range` instead.
    */
-  class Query extends DataFlow::Node {
-    Query::Range self;
-
-    Query() { this = self }
-
+  class Query extends DataFlow::Node instanceof Query::Range {
     /** Gets a result of this query execution. */
-    DataFlow::Node getAResult() { result = self.getAResult() }
+    DataFlow::Node getAResult() { result = super.getAResult() }
 
     /**
      * Gets a query string that is used as (part of) this SQL query.
@@ -26,7 +22,7 @@ module SQL {
      * Note that this may not resolve all `QueryString`s that should be associated with this
      * query due to data flow.
      */
-    QueryString getAQueryString() { result = self.getAQueryString() }
+    QueryString getAQueryString() { result = super.getAQueryString() }
   }
 
   /**
@@ -59,11 +55,7 @@ module SQL {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `SQL::QueryString::Range` instead.
    */
-  class QueryString extends DataFlow::Node {
-    QueryString::Range self;
-
-    QueryString() { this = self }
-  }
+  class QueryString extends DataFlow::Node instanceof QueryString::Range { }
 
   /** Provides classes for working with SQL query strings. */
   module QueryString {
@@ -111,6 +103,14 @@ module SQL {
     /** A string that might identify package `go-pg/pg/orm` or a specific version of it. */
     private string gopgorm() { result = package("github.com/go-pg/pg", "orm") }
 
+    /** A string that might identify package `github.com/rqlite/gorqlite` or `github.com/raindog308/gorqlite` or a specific version of it. */
+    private string gorqlite() {
+      result = package(["github.com/rqlite/gorqlite", "github.com/raindog308/gorqlite"], "")
+    }
+
+    /** A string that might identify package `github.com/gogf/gf/database/gdb` or a specific version of it. */
+    private string gogf() { result = package("github.com/gogf/gf", "database/gdb") }
+
     /**
      * A string argument to an API of `go-pg/pg` that is directly interpreted as SQL without
      * taking syntactic structure into account.
@@ -156,6 +156,65 @@ module SQL {
           )
         |
           this = f.getACall().getArgument(arg)
+        )
+      }
+    }
+
+    /**
+     * A string argument to an API of `github.com/rqlite/gorqlite`, or a specific version of it, that is directly interpreted as SQL without
+     * taking syntactic structure into account.
+     */
+    private class GorqliteQueryString extends Range {
+      GorqliteQueryString() {
+        // func (conn *Connection) Query(sqlStatements []string) (results []QueryResult, err error)
+        // func (conn *Connection) QueryOne(sqlStatement string) (qr QueryResult, err error)
+        // func (conn *Connection) Queue(sqlStatements []string) (seq int64, err error)
+        // func (conn *Connection) QueueOne(sqlStatement string) (seq int64, err error)
+        // func (conn *Connection) Write(sqlStatements []string) (results []WriteResult, err error)
+        // func (conn *Connection) WriteOne(sqlStatement string) (wr WriteResult, err error)
+        exists(Method m, string name | m.hasQualifiedName(gorqlite(), "Connection", name) |
+          name = ["Query", "QueryOne", "Queue", "QueueOne", "Write", "WriteOne"] and
+          this = m.getACall().getArgument(0)
+        )
+      }
+    }
+
+    /**
+     * A string argument to an API of `github.com/gogf/gf/database/gdb`, or a specific version of it, that is directly interpreted as SQL without
+     * taking syntactic structure into account.
+     */
+    private class GogfQueryString extends Range {
+      GogfQueryString() {
+        exists(Method m, string name | m.implements(gogf(), ["DB", "Core", "TX"], name) |
+          // func (c *Core) Exec(sql string, args ...interface{}) (result sql.Result, err error)
+          // func (c *Core) GetAll(sql string, args ...interface{}) (Result, error)
+          // func (c *Core) GetArray(sql string, args ...interface{}) ([]Value, error)
+          // func (c *Core) GetCount(sql string, args ...interface{}) (int, error)
+          // func (c *Core) GetOne(sql string, args ...interface{}) (Record, error)
+          // func (c *Core) GetValue(sql string, args ...interface{}) (Value, error)
+          // func (c *Core) Prepare(sql string, execOnMaster ...bool) (*Stmt, error)
+          // func (c *Core) Query(sql string, args ...interface{}) (rows *sql.Rows, err error)
+          // func (c *Core) Raw(rawSql string, args ...interface{}) *Model
+          name =
+            [
+              "Query", "Exec", "Prepare", "GetAll", "GetOne", "GetValue", "GetArray", "GetCount",
+              "Raw"
+            ] and
+          this = m.getACall().getArgument(0)
+          or
+          // func (c *Core) GetScan(pointer interface{}, sql string, args ...interface{}) error
+          // func (c *Core) GetStruct(pointer interface{}, sql string, args ...interface{}) error
+          // func (c *Core) GetStructs(pointer interface{}, sql string, args ...interface{}) error
+          name = ["GetScan", "GetStruct", "GetStructs"] and
+          this = m.getACall().getArgument(1)
+          or
+          // func (c *Core) DoCommit(ctx context.Context, link Link, sql string, args []interface{}) (newSql string, newArgs []interface{}, err error)
+          // func (c *Core) DoExec(ctx context.Context, link Link, sql string, args ...interface{}) (result sql.Result, err error)
+          // func (c *Core) DoGetAll(ctx context.Context, link Link, sql string, args ...interface{}) (result Result, err error)
+          // func (c *Core) DoPrepare(ctx context.Context, link Link, sql string) (*Stmt, error)
+          // func (c *Core) DoQuery(ctx context.Context, link Link, sql string, args ...interface{}) (rows *sql.Rows, err error)
+          name = ["DoGetAll", "DoQuery", "DoExec", "DoCommit", "DoPrepare"] and
+          this = m.getACall().getArgument(2)
         )
       }
     }

@@ -14,4 +14,4 @@ import FileClosed
 
 from Expr alloc
 where fopenCall(alloc) and not fopenCallMayBeClosed(alloc)
-select alloc, "The file is never closed"
+select alloc, "The file is never closed."

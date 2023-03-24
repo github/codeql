@@ -1,6 +1,0 @@
-| if_config.swift:1:1:1:1 | IfConfigClause | isActive: | no |
-| if_config.swift:4:1:4:1 | IfConfigClause | isActive: | no |
-| if_config.swift:7:1:7:1 | IfConfigClause | isActive: | yes |
-| if_config_active.swift:3:1:3:1 | IfConfigClause | isActive: | yes |
-| if_config_active.swift:6:1:6:1 | IfConfigClause | isActive: | no |
-| if_config_active.swift:9:1:9:1 | IfConfigClause | isActive: | no |

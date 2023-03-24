@@ -41,7 +41,12 @@ predicate gapInChildren(Element e, int i) {
   // -1 can be skipped (type arguments from -2 down, no qualifier at -1,
   // then arguments from 0).
   // Can we also skip arguments, e.g. due to defaults for parameters?
-  not (e instanceof MethodAccess and e.getFile().isKotlinSourceFile())
+  not (e instanceof MethodAccess and e.getFile().isKotlinSourceFile()) and
+  // Kotlin-extracted annotations can have missing children where a default
+  // value should be, because kotlinc doesn't load annotation defaults and we
+  // want to leave a space for another extractor to fill in the default if it
+  // is able.
+  not e instanceof Annotation
 }
 
 predicate lateFirstChild(Element e, int i) {
@@ -59,7 +64,12 @@ predicate lateFirstChild(Element e, int i) {
   not (e instanceof LocalVariableDeclStmt and i = 1 and not exists(nthChildOf(e, 2))) and
   // For statements may or may not declare a new variable (child 0), or
   // have a condition (child 1).
-  not (e instanceof ForStmt and i = [1, 2])
+  not (e instanceof ForStmt and i = [1, 2]) and
+  // Kotlin-extracted annotations can have missing children where a default
+  // value should be, because kotlinc doesn't load annotation defaults and we
+  // want to leave a space for another extractor to fill in the default if it
+  // is able.
+  not e instanceof Annotation
 }
 
 from Element e, int i, string problem

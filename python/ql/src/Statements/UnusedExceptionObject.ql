@@ -17,4 +17,4 @@ where
   call.getFunc().pointsTo(ex) and
   ex.getASuperType() = ClassValue::exception() and
   exists(ExprStmt s | s.getValue() = call)
-select call, "Instantiating an exception, but not raising it, has no effect"
+select call, "Instantiating an exception, but not raising it, has no effect."

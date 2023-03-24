@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.controlflow.CfgNodes
 
 query predicate exprValue(Expr e, ConstantValue v, string t) {

@@ -137,7 +137,7 @@ abstract class BoundedType extends RefType, @boundedtype {
  * For example, `T` is a type parameter in
  * `class X<T> { }` and in `<T> void m() { }`.
  */
-class TypeVariable extends BoundedType, @typevariable {
+class TypeVariable extends BoundedType, Modifiable, @typevariable {
   /** Gets the generic type that is parameterized by this type parameter, if any. */
   GenericType getGenericType() { typeVars(this, _, _, _, result) }
 
@@ -194,6 +194,9 @@ class TypeVariable extends BoundedType, @typevariable {
     or
     result = this.getASuppliedType().(TypeVariable).getAnUltimatelySuppliedType()
   }
+
+  /** Gets the index of `this` type variable. */
+  int getIndex() { typeVars(this, _, result, _, _) }
 
   override string getAPrimaryQlClass() { result = "TypeVariable" }
 }

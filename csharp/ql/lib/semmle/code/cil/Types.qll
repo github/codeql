@@ -302,14 +302,13 @@ class SystemType extends ValueOrRefType {
  * ```
  */
 class FunctionPointerType extends Type, CustomModifierReceiver, Parameterizable,
-  @cil_function_pointer_type {
+  @cil_function_pointer_type
+{
   /** Gets the return type of this function pointer. */
   Type getReturnType() { cil_function_pointer_return_type(this, result) }
 
   /** Gets the calling convention. */
   int getCallingConvention() { cil_function_pointer_calling_conventions(this, result) }
-
-  override string toString() { result = Type.super.toString() }
 
   /** Holds if the return type is `void`. */
   predicate returnsVoid() { this.getReturnType() instanceof VoidType }

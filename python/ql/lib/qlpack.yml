@@ -1,7 +1,13 @@
 name: codeql/python-all
-version: 0.5.2-dev
+version: 0.8.3-dev
 groups: python
 dbscheme: semmlecode.python.dbscheme
 extractor: python
 library: true
 upgrades: upgrades
+dependencies:
+  codeql/regex: ${workspace}
+  codeql/util: ${workspace}
+  codeql/tutorial: ${workspace}
+dataExtensions:
+  - semmle/python/frameworks/**/model.yml

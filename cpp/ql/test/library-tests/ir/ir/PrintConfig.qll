@@ -15,7 +15,7 @@ predicate locationIsInStandardHeaders(Location loc) {
 predicate shouldDumpFunction(Declaration decl) {
   not locationIsInStandardHeaders(decl.getLocation()) and
   (
-    not decl instanceof Variable
+    decl instanceof Function
     or
     decl.(GlobalOrNamespaceVariable).hasInitializer()
   )

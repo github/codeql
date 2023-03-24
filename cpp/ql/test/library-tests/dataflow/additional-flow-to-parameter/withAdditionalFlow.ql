@@ -1,21 +1,19 @@
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 
-class TestConfig extends DataFlow::Configuration {
-  TestConfig() { this = "TestConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+module TestConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source.asExpr().(FunctionCall).getTarget().getName() = "source"
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(FunctionCall call |
       call.getTarget().getName() = "sink" and
       sink.asExpr() = call.getAnArgument()
     )
   }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     // Send all arguments of function-pointer-calls to a function with a
     // special name
     exists(Call call, Function target, int i |
@@ -27,6 +25,8 @@ class TestConfig extends DataFlow::Configuration {
   }
 }
 
-from DataFlow::Node sink, DataFlow::Node source, TestConfig cfg
-where cfg.hasFlow(source, sink)
+module TestFlow = DataFlow::Global<TestConfig>;
+
+from DataFlow::Node sink, DataFlow::Node source
+where TestFlow::flow(source, sink)
 select sink, source

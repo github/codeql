@@ -1,11 +1,14 @@
 import semmle.code.cpp.Macro
 
 /** A macro defining NULL. */
-class NULLMacro extends Macro {
-  NULLMacro() { this.getHead() = "NULL" }
+class NullMacro extends Macro {
+  NullMacro() { this.getHead() = "NULL" }
 }
+
+/** DEPRECATED: Alias for NullMacro */
+deprecated class NULLMacro = NullMacro;
 
 /** A use of the NULL macro. */
 class NULL extends Literal {
-  NULL() { exists(NULLMacro nm | this = nm.getAnInvocation().getAnExpandedElement()) }
+  NULL() { exists(NullMacro nm | this = nm.getAnInvocation().getAnExpandedElement()) }
 }

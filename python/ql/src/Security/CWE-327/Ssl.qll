@@ -7,8 +7,8 @@ private import python
 private import semmle.python.ApiGraphs
 import TlsLibraryModel
 
-class SSLContextCreation extends ContextCreation, DataFlow::CallCfgNode {
-  SSLContextCreation() { this = API::moduleImport("ssl").getMember("SSLContext").getACall() }
+class SslContextCreation extends ContextCreation, DataFlow::CallCfgNode {
+  SslContextCreation() { this = API::moduleImport("ssl").getMember("SSLContext").getACall() }
 
   override string getProtocol() {
     exists(DataFlow::Node protocolArg, Ssl ssl |
@@ -27,8 +27,8 @@ class SSLContextCreation extends ContextCreation, DataFlow::CallCfgNode {
   }
 }
 
-class SSLDefaultContextCreation extends ContextCreation {
-  SSLDefaultContextCreation() {
+class SslDefaultContextCreation extends ContextCreation {
+  SslDefaultContextCreation() {
     this = API::moduleImport("ssl").getMember("create_default_context").getACall()
   }
 
@@ -161,24 +161,22 @@ class ContextSetVersion extends ProtocolRestriction, ProtocolUnrestriction, Data
   }
 }
 
-class UnspecificSSLContextCreation extends SSLContextCreation, UnspecificContextCreation {
-  UnspecificSSLContextCreation() { library instanceof Ssl }
-
-  override ProtocolVersion getUnrestriction() {
-    result = UnspecificContextCreation.super.getUnrestriction() and
-    // These are turned off by default since Python 3.6
-    // see https://docs.python.org/3.6/library/ssl.html#ssl.SSLContext
-    not result in ["SSLv2", "SSLv3"]
-  }
+class UnspecificSslContextCreation extends SslContextCreation, UnspecificContextCreation {
+  // UnspecificSslContextCreation() { library instanceof Ssl }
+  // override ProtocolVersion getUnrestriction() {
+  //   result = UnspecificContextCreation.super.getUnrestriction() and
+  //   // These are turned off by default since Python 3.6
+  //   // see https://docs.python.org/3.6/library/ssl.html#ssl.SSLContext
+  //   not result in ["SSLv2", "SSLv3"]
+  // }
 }
 
-class UnspecificSSLDefaultContextCreation extends SSLDefaultContextCreation, ProtocolUnrestriction {
-  override DataFlow::Node getContext() { result = this }
-
-  // see https://docs.python.org/3/library/ssl.html#ssl.create_default_context
-  override ProtocolVersion getUnrestriction() {
-    result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
-  }
+class UnspecificSslDefaultContextCreation extends SslDefaultContextCreation {
+  // override DataFlow::Node getContext() { result = this }
+  // // see https://docs.python.org/3/library/ssl.html#ssl.create_default_context
+  // override ProtocolVersion getUnrestriction() {
+  //   result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
+  // }
 }
 
 class Ssl extends TlsLibrary {
@@ -195,10 +193,10 @@ class Ssl extends TlsLibrary {
   override API::Node version_constants() { result = API::moduleImport("ssl") }
 
   override ContextCreation default_context_creation() {
-    result instanceof SSLDefaultContextCreation
+    result instanceof SslDefaultContextCreation
   }
 
-  override ContextCreation specific_context_creation() { result instanceof SSLContextCreation }
+  override ContextCreation specific_context_creation() { result instanceof SslContextCreation }
 
   override DataFlow::CallCfgNode insecure_connection_creation(ProtocolVersion version) {
     result = API::moduleImport("ssl").getMember("wrap_socket").getACall() and
@@ -220,8 +218,8 @@ class Ssl extends TlsLibrary {
     or
     result instanceof ContextSetVersion
     or
-    result instanceof UnspecificSSLContextCreation
+    result instanceof UnspecificSslContextCreation
     or
-    result instanceof UnspecificSSLDefaultContextCreation
+    result instanceof UnspecificSslDefaultContextCreation
   }
 }

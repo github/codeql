@@ -2,7 +2,6 @@
 
 import java
 private import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.frameworks.spring.SpringExpression
 
 /** A data flow sink for unvalidated user input that is used to construct SpEL expressions. */
@@ -22,7 +21,8 @@ class SpelExpressionInjectionAdditionalTaintStep extends Unit {
 }
 
 /** A set of additional taint steps to consider when taint tracking SpEL related data flows. */
-private class DefaultSpelExpressionInjectionAdditionalTaintStep extends SpelExpressionInjectionAdditionalTaintStep {
+private class DefaultSpelExpressionInjectionAdditionalTaintStep extends SpelExpressionInjectionAdditionalTaintStep
+{
   override predicate step(DataFlow::Node node1, DataFlow::Node node2) {
     expressionParsingStep(node1, node2)
   }

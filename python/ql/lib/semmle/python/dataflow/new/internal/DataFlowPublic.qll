@@ -9,6 +9,7 @@ import Attributes
 import LocalSources
 private import semmle.python.essa.SsaCompute
 private import semmle.python.dataflow.new.internal.ImportStar
+private import FlowSummaryImpl as FlowSummaryImpl
 
 /**
  * IPA type for data flow nodes.
@@ -30,10 +31,44 @@ newtype TNode =
     or
     node.getNode() instanceof Pattern
   } or
-  /** A synthetic node representing the value of an object before a state change */
-  TSyntheticPreUpdateNode(NeedsSyntheticPreUpdateNode post) or
-  /** A synthetic node representing the value of an object after a state change. */
-  TSyntheticPostUpdateNode(NeedsSyntheticPostUpdateNode pre) or
+  /**
+   * A synthetic node representing the value of an object before a state change.
+   *
+   * For class calls we pass a synthetic self argument, so attribute writes in
+   * `__init__` is reflected on the resulting object (we need special logic for this
+   * since there is no `return` in `__init__`)
+   */
+  // NOTE: since we can't rely on the call graph, but we want to have synthetic
+  // pre-update nodes for class calls, we end up getting synthetic pre-update nodes for
+  // ALL calls :|
+  TSyntheticPreUpdateNode(CallNode call) or
+  /**
+   * A synthetic node representing the value of an object after a state change.
+   * See QLDoc for `PostUpdateNode`.
+   */
+  TSyntheticPostUpdateNode(ControlFlowNode node) {
+    exists(CallNode call |
+      node = call.getArg(_)
+      or
+      node = call.getArgByName(_)
+      or
+      // `self` argument when handling class instance calls (`__call__` special method))
+      node = call.getFunction()
+    )
+    or
+    node = any(AttrNode a).getObject()
+    or
+    node = any(SubscriptNode s).getObject()
+    or
+    // self parameter when used implicitly in `super()`
+    exists(Class cls, Function func, ParameterDefinition def |
+      func = cls.getAMethod() and
+      not isStaticmethod(func) and
+      // this matches what we do in ExtractedParameterNode
+      def.getDefiningNode() = node and
+      def.getParameter() = func.getArg(0)
+    )
+  } or
   /** A node representing a global (module-level) variable in a specific module. */
   TModuleVariableNode(Module m, GlobalVariable v) {
     v.getScope() = m and
@@ -43,37 +78,6 @@ newtype TNode =
       isAccessedThroughImportStar(m) and
       ImportStar::globalNameDefinedInModule(v.getId(), m)
     )
-  } or
-  /**
-   * A node representing the overflow positional arguments to a call.
-   * That is, `call` contains more positional arguments than there are
-   * positional parameters in `callable`. The extra ones are passed as
-   * a tuple to a starred parameter; this synthetic node represents that tuple.
-   */
-  TPosOverflowNode(CallNode call, CallableValue callable) {
-    exists(getPositionalOverflowArg(call, callable, _))
-  } or
-  /**
-   * A node representing the overflow keyword arguments to a call.
-   * That is, `call` contains keyword arguments for keys that do not have
-   * keyword parameters in `callable`. These extra ones are passed as
-   * a dictionary to a doubly starred parameter; this synthetic node
-   * represents that dictionary.
-   */
-  TKwOverflowNode(CallNode call, CallableValue callable) {
-    exists(getKeywordOverflowArg(call, callable, _))
-    or
-    ArgumentPassing::connects(call, callable) and
-    exists(call.getNode().getKwargs()) and
-    callable.getScope().hasKwArg()
-  } or
-  /**
-   * A node representing an unpacked element of a dictionary argument.
-   * That is, `call` contains argument `**{"foo": bar}` which is passed
-   * to parameter `foo` of `callable`.
-   */
-  TKwUnpackedNode(CallNode call, CallableValue callable, string name) {
-    call_unpacks(call, _, callable, name, _)
   } or
   /**
    * A synthetic node representing that an iterable sequence flows to consumer.
@@ -100,7 +104,25 @@ newtype TNode =
   //
   // So for now we live with having these synthetic ORM nodes for _all_ classes, which
   // is a bit wasteful, but we don't think it will hurt too much.
-  TSyntheticOrmModelNode(Class cls)
+  TSyntheticOrmModelNode(Class cls) or
+  TSummaryNode(
+    FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state
+  ) {
+    FlowSummaryImpl::Private::summaryNodeRange(c, state)
+  } or
+  TSummaryParameterNode(FlowSummaryImpl::Public::SummarizedCallable c, ParameterPosition pos) {
+    FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
+  } or
+  /** A synthetic node to capture positional arguments that are passed to a `*args` parameter. */
+  TSynthStarArgsElementParameterNode(DataFlowCallable callable) {
+    exists(ParameterPosition ppos | ppos.isStarArgs(_) | exists(callable.getParameter(ppos)))
+  } or
+  /** A synthetic node to capture keyword arguments that are passed to a `**kwargs` parameter. */
+  TSynthDictSplatArgumentNode(CallNode call) { exists(call.getArgByName(_)) } or
+  /** A synthetic node to allow flow to keyword parameters from a `**kwargs` argument. */
+  TSynthDictSplatParameterNode(DataFlowCallable callable) {
+    exists(ParameterPosition ppos | ppos.isKeyword(_) | exists(callable.getParameter(ppos)))
+  }
 
 /** Helper for `Node::getEnclosingCallable`. */
 private DataFlowCallable getCallableScope(Scope s) {
@@ -277,40 +299,54 @@ ExprNode exprNode(DataFlowExpr e) { result.getNode().getNode() = e }
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends CfgNode, LocalSourceNode {
-  ParameterDefinition def;
-
-  ParameterNode() {
-    node = def.getDefiningNode() and
-    // Disregard parameters that we cannot resolve
-    // TODO: Make this unnecessary
-    exists(DataFlowCallable c | node = c.getParameter(_))
-  }
-
-  /**
-   * Holds if this node is the parameter of callable `c` at the
-   * (zero-based) index `i`.
-   */
-  predicate isParameterOf(DataFlowCallable c, int i) { node = c.getParameter(i) }
-
-  override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
-
-  /** Gets the `Parameter` this `ParameterNode` represents. */
-  Parameter getParameter() { result = def.getParameter() }
+class ParameterNode extends Node instanceof ParameterNodeImpl {
+  /** Gets the parameter corresponding to this node, if any. */
+  final Parameter getParameter() { result = super.getParameter() }
 }
 
+/** A parameter node found in the source code (not in a summary). */
+class ExtractedParameterNode extends ParameterNodeImpl, CfgNode {
+  //, LocalSourceNode {
+  ParameterDefinition def;
+
+  ExtractedParameterNode() { node = def.getDefiningNode() }
+
+  override Parameter getParameter() { result = def.getParameter() }
+}
+
+class LocalSourceParameterNode extends ExtractedParameterNode, LocalSourceNode { }
+
 /** Gets a node corresponding to parameter `p`. */
-ParameterNode parameterNode(Parameter p) { result.getParameter() = p }
+ExtractedParameterNode parameterNode(Parameter p) { result.getParameter() = p }
 
 /** A data flow node that represents a call argument. */
-class ArgumentNode extends Node {
-  ArgumentNode() { this = any(DataFlowCall c).getArg(_) }
-
+abstract class ArgumentNode extends Node {
   /** Holds if this argument occurs at the given position in the given call. */
-  predicate argumentOf(DataFlowCall call, int pos) { this = call.getArg(pos) }
+  abstract predicate argumentOf(DataFlowCall call, ArgumentPosition pos);
 
-  /** Gets the call in which this node is an argument. */
-  final DataFlowCall getCall() { this.argumentOf(result, _) }
+  /** Gets the call in which this node is an argument, if any. */
+  final ExtractedDataFlowCall getCall() { this.argumentOf(result, _) }
+}
+
+/**
+ * A data flow node that represents a call argument found in the source code.
+ */
+class ExtractedArgumentNode extends ArgumentNode {
+  ExtractedArgumentNode() {
+    // for resolved calls, we need to allow all argument nodes
+    getCallArg(_, _, _, this, _)
+    or
+    // for potential summaries we allow all normal call arguments
+    normalCallArg(_, this, _)
+    or
+    // and self arguments
+    this.asCfgNode() = any(CallNode c).getFunction().(AttrNode).getObject()
+  }
+
+  final override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+    this = call.getArgument(pos) and
+    call instanceof ExtractedDataFlowCall
+  }
 }
 
 /**
@@ -318,16 +354,17 @@ class ArgumentNode extends Node {
  * changed its state.
  *
  * This can be either the argument to a callable after the callable returns
- * (which might have mutated the argument), or the qualifier of a field after
- * an update to the field.
+ * (which might have mutated the argument), the qualifier of a field after
+ * an update to the field, or a container such as a list/dictionary after an element
+ * update.
  *
  * Nodes corresponding to AST elements, for example `ExprNode`s, usually refer
- * to the value before the update with the exception of `ObjectCreationNode`s,
+ * to the value before the update with the exception of class calls,
  * which represents the value _after_ the constructor has run.
  */
-abstract class PostUpdateNode extends Node {
+class PostUpdateNode extends Node instanceof PostUpdateNodeImpl {
   /** Gets the node before the state update. */
-  abstract Node getPreUpdateNode();
+  Node getPreUpdateNode() { result = super.getPreUpdateNode() }
 }
 
 /**
@@ -390,7 +427,16 @@ class ModuleVariableNode extends Node, TModuleVariableNode {
 
   /** Gets an `EssaNode` that corresponds to an assignment of this global variable. */
   EssaNode getAWrite() {
-    result.asVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
+    result.getVar().getDefinition().(EssaNodeDefinition).definedBy(var, any(DefinitionNode defn))
+  }
+
+  /** Gets the possible values of the variable at the end of import time */
+  CfgNode getADefiningWrite() {
+    exists(SsaVariable def |
+      def = any(SsaVariable ssa_var).getAnUltimateDefinition() and
+      def.getDefinition() = result.asCfgNode() and
+      def.getVariable() = var
+    )
   }
 
   override DataFlowCallable getEnclosingCallable() { result.(DataFlowModuleScope).getScope() = mod }
@@ -410,70 +456,6 @@ private predicate resolved_import_star_module(Module m, string name, Node n) {
     ImportStar::importStarResolvesTo(pragma[only_bind_into](nn), m) and
     nn.getId() = name
   )
-}
-
-/**
- * The node holding the extra positional arguments to a call. This node is passed as a tuple
- * to the starred parameter of the callable.
- */
-class PosOverflowNode extends Node, TPosOverflowNode {
-  CallNode call;
-
-  PosOverflowNode() { this = TPosOverflowNode(call, _) }
-
-  override string toString() { result = "PosOverflowNode for " + call.getNode().toString() }
-
-  override DataFlowCallable getEnclosingCallable() {
-    exists(Node node |
-      node = TCfgNode(call) and
-      result = node.getEnclosingCallable()
-    )
-  }
-
-  override Location getLocation() { result = call.getLocation() }
-}
-
-/**
- * The node holding the extra keyword arguments to a call. This node is passed as a dictionary
- * to the doubly starred parameter of the callable.
- */
-class KwOverflowNode extends Node, TKwOverflowNode {
-  CallNode call;
-
-  KwOverflowNode() { this = TKwOverflowNode(call, _) }
-
-  override string toString() { result = "KwOverflowNode for " + call.getNode().toString() }
-
-  override DataFlowCallable getEnclosingCallable() {
-    exists(Node node |
-      node = TCfgNode(call) and
-      result = node.getEnclosingCallable()
-    )
-  }
-
-  override Location getLocation() { result = call.getLocation() }
-}
-
-/**
- * The node representing the synthetic argument of a call that is unpacked from a dictionary
- * argument.
- */
-class KwUnpackedNode extends Node, TKwUnpackedNode {
-  CallNode call;
-  string name;
-
-  KwUnpackedNode() { this = TKwUnpackedNode(call, _, name) }
-
-  override string toString() { result = "KwUnpacked " + name }
-
-  override DataFlowCallable getEnclosingCallable() {
-    exists(Node node |
-      node = TCfgNode(call) and
-      result = node.getEnclosingCallable()
-    )
-  }
-
-  override Location getLocation() { result = call.getLocation() }
 }
 
 /**
@@ -528,15 +510,54 @@ class StarPatternElementNode extends Node, TStarPatternElementNode {
 }
 
 /**
+ * Gets a node that controls whether other nodes are evaluated.
+ *
+ * In the base case, this is the last node of `conditionBlock`, and `flipped` is `false`.
+ * This definition accounts for (short circuting) `and`- and `or`-expressions, as the structure
+ * of basic blocks will reflect their semantics.
+ *
+ * However, in the program
+ * ```python
+ * if not is_safe(path):
+ *   return
+ * ```
+ * the last node in the `ConditionBlock` is `not is_safe(path)`.
+ *
+ * We would like to consider also `is_safe(path)` a guard node, albeit with `flipped` being `true`.
+ * Thus we recurse through `not`-expressions.
+ */
+ControlFlowNode guardNode(ConditionBlock conditionBlock, boolean flipped) {
+  // Base case: the last node truly does determine which successor is chosen
+  result = conditionBlock.getLastNode() and
+  flipped = false
+  or
+  // Recursive case: if a guard node is a `not`-expression,
+  // the operand is also a guard node, but with inverted polarity.
+  exists(UnaryExprNode notNode |
+    result = notNode.getOperand() and
+    notNode.getNode().getOp() instanceof Not
+  |
+    notNode = guardNode(conditionBlock, flipped.booleanNot())
+  )
+}
+
+/**
  * A node that controls whether other nodes are evaluated.
+ *
+ * The field `flipped` allows us to match `GuardNode`s underneath
+ * `not`-expressions and still choose the appropriate branch.
  */
 class GuardNode extends ControlFlowNode {
   ConditionBlock conditionBlock;
+  boolean flipped;
 
-  GuardNode() { this = conditionBlock.getLastNode() }
+  GuardNode() { this = guardNode(conditionBlock, flipped) }
 
   /** Holds if this guard controls block `b` upon evaluating to `branch`. */
-  predicate controlsBlock(BasicBlock b, boolean branch) { conditionBlock.controls(b, branch) }
+  predicate controlsBlock(BasicBlock b, boolean branch) {
+    branch in [true, false] and
+    conditionBlock.controls(b, branch.booleanXor(flipped))
+  }
 }
 
 /**

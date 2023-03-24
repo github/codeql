@@ -29,5 +29,5 @@ where
     sink.getNode() instanceof ExponentialRegexSink
   )
 select sink.getNode(), source, sink,
-  "$@ flows to regular expression operation with dangerous regex.", source.getNode(),
-  "User-provided value"
+  "This regex operation with dangerous complexity depends on a $@.", source.getNode(),
+  "user-provided value"

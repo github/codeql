@@ -4,4 +4,4 @@
 | test.cpp:24:6:24:13 | ... \| ... | Expression ranges do not match operation precedence. |
 | test.cpp:28:6:28:13 | ... ^ ... | Expression ranges do not match operation precedence. |
 | test.cpp:33:6:33:13 | ... \| ... | Expression ranges do not match operation precedence. |
-| test.cpp:38:6:38:13 | ... \| ... | specify the priority with parentheses. |
+| test.cpp:38:6:38:13 | ... \| ... | Specify the priority with parentheses. |

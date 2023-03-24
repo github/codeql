@@ -15,7 +15,7 @@ import semmle.python.dataflow.new.DataFlow
 import FluentApiModel
 
 // Helper for pretty printer `configName`.
-// This is a consequence of missing pretty priting.
+// This is a consequence of missing pretty printing.
 // We do not want to evaluate our bespoke pretty printer
 // for all `DataFlow::Node`s so we define a sub class of interesting ones.
 class ProtocolConfiguration extends DataFlow::Node {
@@ -31,7 +31,7 @@ class ProtocolConfiguration extends DataFlow::Node {
 }
 
 // Helper for pretty printer `callName`.
-// This is a consequence of missing pretty priting.
+// This is a consequence of missing pretty printing.
 // We do not want to evaluate our bespoke pretty printer
 // for all `DataFlow::Node`s so we define a sub class of interesting ones.
 class Nameable extends DataFlow::Node {
@@ -79,5 +79,5 @@ where
   connectionCreation = protocolConfiguration and
   specific = true
 select connectionCreation,
-  "Insecure SSL/TLS protocol version " + insecure_version + " " + verb(specific) + " by $@ ",
+  "Insecure SSL/TLS protocol version " + insecure_version + " " + verb(specific) + " by $@.",
   protocolConfiguration, configName(protocolConfiguration)

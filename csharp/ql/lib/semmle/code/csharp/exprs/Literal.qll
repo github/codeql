@@ -102,12 +102,27 @@ class DecimalLiteral extends RealLiteral, @decimal_literal_expr {
 }
 
 /**
- * A `string` literal, for example `"Hello, World!"`.
+ * A `string` literal. Either a `string` literal (`StringLiteralUtf16`),
+ * or a `u8` literal (`StringLiteralUtf8`).
  */
 class StringLiteral extends DotNet::StringLiteral, Literal, @string_literal_expr {
   override string toString() { result = "\"" + this.getValue().replaceAll("\"", "\\\"") + "\"" }
 
   override string getAPrimaryQlClass() { result = "StringLiteral" }
+}
+
+/**
+ * A `string` literal, for example `"Hello, World!"`.
+ */
+class StringLiteralUtf16 extends StringLiteral, @utf16_string_literal_expr {
+  override string getAPrimaryQlClass() { result = "StringLiteralUtf16" }
+}
+
+/**
+ * A `u8` literal, for example `"AUTH"u8`
+ */
+class StringLiteralUtf8 extends StringLiteral, @utf8_string_literal_expr {
+  override string getAPrimaryQlClass() { result = "StringLiteralUtf8" }
 }
 
 /**

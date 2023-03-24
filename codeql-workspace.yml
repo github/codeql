@@ -4,6 +4,7 @@ provide:
   - "*/ql/test/qlpack.yml"
   - "*/ql/examples/qlpack.yml"
   - "*/ql/consistency-queries/qlpack.yml"
+  - "shared/*/qlpack.yml"
   - "cpp/ql/test/query-tests/Security/CWE/CWE-190/semmle/tainted/qlpack.yml"
   - "go/ql/config/legacy-support/qlpack.yml"
   - "go/build/codeql-extractor-go/codeql-extractor.yml"
@@ -16,6 +17,7 @@ provide:
   # - "javascript/ql/experimental/adaptivethreatmodeling/model/qlpack.yml"
   - "javascript/ql/experimental/adaptivethreatmodeling/modelbuilding/qlpack.yml"
   - "javascript/ql/experimental/adaptivethreatmodeling/src/qlpack.yml"
+  - "javascript/ql/experimental/adaptivethreatmodeling/test/qlpack.yml"
   - "csharp/ql/campaigns/Solorigate/lib/qlpack.yml"
   - "csharp/ql/campaigns/Solorigate/src/qlpack.yml"
   - "csharp/ql/campaigns/Solorigate/test/qlpack.yml"
@@ -23,7 +25,8 @@ provide:
   - "misc/suite-helpers/qlpack.yml"
   - "ruby/extractor-pack/codeql-extractor.yml"
   - "swift/extractor-pack/codeql-extractor.yml"
-  - "ql/extractor-pack/codeql-extractor.ym"
+  - "swift/integration-tests/qlpack.yml"
+  - "ql/extractor-pack/codeql-extractor.yml"
 
 versionPolicies:
   default:

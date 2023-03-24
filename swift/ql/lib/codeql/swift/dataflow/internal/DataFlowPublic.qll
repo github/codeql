@@ -70,7 +70,15 @@ class ExprNode extends Node, TExprNode {
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParameterNode extends Node, SsaDefinitionNode instanceof ParameterNodeImpl { }
+class ParameterNode extends Node instanceof ParameterNodeImpl {
+  override ControlFlowNode getCfgNode() { result = this.(ParameterNodeImpl).getCfgNode() }
+
+  DataFlowCallable getDeclaringFunction() {
+    result = this.(ParameterNodeImpl).getEnclosingCallable()
+  }
+
+  ParamDecl getParameter() { result = this.(ParameterNodeImpl).getParameter() }
+}
 
 /**
  */
@@ -108,7 +116,7 @@ ExprNode exprNode(DataFlowExpr e) { result.asExpr() = e }
 /**
  * Gets the node corresponding to the value of parameter `p` at function entry.
  */
-ParameterNode parameterNode(DataFlowParameter p) { none() }
+ParameterNode parameterNode(DataFlowParameter p) { result.getParameter() = p }
 
 /**
  * Holds if data flows from `nodeFrom` to `nodeTo` in exactly one local
@@ -139,18 +147,55 @@ class Content extends TContent {
   Location getLocation() { none() }
 }
 
+module Content {
+  /** A field of an object, for example an instance variable. */
+  class FieldContent extends Content, TFieldContent {
+    private FieldDecl f;
+
+    FieldContent() { this = TFieldContent(f) }
+
+    /** Gets the name of the field. */
+    FieldDecl getField() { result = f }
+
+    override string toString() { result = f.toString() }
+  }
+
+  /** An element of a tuple at a specific index. */
+  class TupleContent extends Content, TTupleContent {
+    private int index;
+
+    TupleContent() { this = TTupleContent(index) }
+
+    /** Gets the index for this tuple element. */
+    int getIndex() { result = index }
+
+    override string toString() { result = "Tuple element at index " + index.toString() }
+  }
+}
+
 /**
  * An entity that represents a set of `Content`s.
  *
  * The set may be interpreted differently depending on whether it is
  * stored into (`getAStoreContent`) or read from (`getAReadContent`).
  */
-class ContentSet extends Content {
+class ContentSet extends TContentSet {
+  /** Holds if this content set is the singleton `{c}`. */
+  predicate isSingleton(Content c) { this = TSingletonContent(c) }
+
+  /** Gets a textual representation of this content set. */
+  string toString() {
+    exists(Content c |
+      this.isSingleton(c) and
+      result = c.toString()
+    )
+  }
+
   /** Gets a content that may be stored into when storing into this set. */
-  Content getAStoreContent() { result = this }
+  Content getAStoreContent() { this.isSingleton(result) }
 
   /** Gets a content that may be read from when reading from this set. */
-  Content getAReadContent() { result = this }
+  Content getAReadContent() { this.isSingleton(result) }
 }
 
 /**

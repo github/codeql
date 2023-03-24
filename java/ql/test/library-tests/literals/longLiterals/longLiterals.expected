@@ -18,7 +18,7 @@
 | LongLiterals.java:23:3:23:24 | 0xffff_ffff_ffff_ffffL | -1 |
 | LongLiterals.java:24:3:24:31 | 017_7777_7777_7777_7777_7777L | -1 |
 | LongLiterals.java:25:3:25:84 | 0b1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111_1111L | -1 |
-| LongLiterals.java:27:8:27:14 | 0\\u004C | 0 |
+| LongLiterals.java:27:3:27:14 | \\u0030\\u004C | 0 |
 | LongLiterals.java:32:4:32:5 | 0L | 0 |
 | LongLiterals.java:33:4:33:5 | 0L | 0 |
 | LongLiterals.java:34:4:34:5 | 1L | 1 |

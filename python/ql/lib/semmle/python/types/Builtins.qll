@@ -111,11 +111,7 @@ class Builtin extends @py_cobject {
 }
 
 module Builtin {
-  Builtin builtinModule() {
-    py_special_objects(result, "builtin_module_2") and major_version() = 2
-    or
-    py_special_objects(result, "builtin_module_3") and major_version() = 3
-  }
+  Builtin builtinModule() { py_special_objects(result, "builtin_module") }
 
   Builtin builtin(string name) { result = builtinModule().getMember(name) }
 

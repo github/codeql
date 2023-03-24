@@ -9,4 +9,4 @@ nodes
 | Test.java:39:25:39:30 | format | semmle.label | format |
 subpaths
 #select
-| Test.java:39:25:39:30 | format | Test.java:33:30:33:74 | getParameter(...) : String | Test.java:39:25:39:30 | format | $@ flows to here and is used in a format string. | Test.java:33:30:33:74 | getParameter(...) | User-provided value |
+| Test.java:39:25:39:30 | format | Test.java:33:30:33:74 | getParameter(...) : String | Test.java:39:25:39:30 | format | Format string depends on a $@. | Test.java:33:30:33:74 | getParameter(...) | user-provided value |

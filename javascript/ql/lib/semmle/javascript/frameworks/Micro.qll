@@ -42,47 +42,55 @@ private module Micro {
   /**
    * A function passed to `micro` or `micro.run`.
    */
-  class MicroRouteHandler extends HTTP::Servers::StandardRouteHandler, DataFlow::FunctionNode {
+  class MicroRouteHandler extends Http::Servers::StandardRouteHandler, DataFlow::FunctionNode {
     MicroRouteHandler() { this = microRouteHandler().getAFunctionValue() }
   }
 
-  class MicroRequestSource extends HTTP::Servers::RequestSource {
+  class MicroRequestSource extends Http::Servers::RequestSource {
     MicroRouteHandler h;
 
     MicroRequestSource() { this = h.getParameter(0) }
 
-    override HTTP::RouteHandler getRouteHandler() { result = h }
+    override Http::RouteHandler getRouteHandler() { result = h }
   }
 
-  class MicroResponseSource extends HTTP::Servers::ResponseSource {
+  class MicroResponseSource extends Http::Servers::ResponseSource {
     MicroRouteHandler h;
 
     MicroResponseSource() { this = h.getParameter(1) }
 
-    override HTTP::RouteHandler getRouteHandler() { result = h }
+    override Http::RouteHandler getRouteHandler() { result = h }
   }
 
-  class MicroRequestExpr extends NodeJSLib::RequestExpr {
+  deprecated class MicroRequestExpr extends NodeJSLib::RequestExpr {
     override MicroRequestSource src;
   }
 
-  class MicroReseponseExpr extends NodeJSLib::ResponseExpr {
+  class MicroRequestNode extends NodeJSLib::RequestNode {
+    override MicroRequestSource src;
+  }
+
+  deprecated class MicroReseponseExpr extends NodeJSLib::ResponseExpr {
     override MicroResponseSource src;
   }
 
-  private HTTP::RouteHandler getRouteHandlerFromReqRes(DataFlow::Node node) {
-    exists(HTTP::Servers::RequestSource src |
+  class MicroResponseNode extends NodeJSLib::ResponseNode {
+    override MicroResponseSource src;
+  }
+
+  private Http::RouteHandler getRouteHandlerFromReqRes(DataFlow::Node node) {
+    exists(Http::Servers::RequestSource src |
       src.ref().flowsTo(node) and
       result = src.getRouteHandler()
     )
     or
-    exists(HTTP::Servers::ResponseSource src |
+    exists(Http::Servers::ResponseSource src |
       src.ref().flowsTo(node) and
       result = src.getRouteHandler()
     )
   }
 
-  class MicroBodyParserCall extends HTTP::RequestInputAccess, DataFlow::CallNode {
+  class MicroBodyParserCall extends Http::RequestInputAccess, DataFlow::CallNode {
     string name;
 
     MicroBodyParserCall() {
@@ -92,22 +100,22 @@ private module Micro {
 
     override string getKind() { result = "body" }
 
-    override HTTP::RouteHandler getRouteHandler() {
+    override Http::RouteHandler getRouteHandler() {
       result = getRouteHandlerFromReqRes(getArgument(0))
     }
 
     override predicate isUserControlledObject() { name = "json" }
   }
 
-  class MicroSendArgument extends HTTP::ResponseSendArgument {
+  class MicroSendArgument extends Http::ResponseSendArgument {
     CallNode send;
 
     MicroSendArgument() {
       send = moduleMember("micro", ["send", "sendError"]).getACall() and
-      this = send.getLastArgument().asExpr()
+      this = send.getLastArgument()
     }
 
-    override HTTP::RouteHandler getRouteHandler() {
+    override Http::RouteHandler getRouteHandler() {
       result = getRouteHandlerFromReqRes(send.getArgument([0, 1]))
     }
   }

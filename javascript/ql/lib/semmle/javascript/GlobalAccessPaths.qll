@@ -233,6 +233,8 @@ module AccessPath {
       baseName = fromReference(write.getBase(), root)
       or
       baseName = fromRhs(write.getBase(), root)
+      or
+      baseName = fromRhs(GetLaterAccess::getLaterBaseAccess(write), root)
     )
     or
     exists(GlobalVariable var |
@@ -264,6 +266,123 @@ module AccessPath {
       result = decl.getIdentifier().(GlobalVarDecl).getName() and
       root.isGlobal()
     )
+  }
+
+  /** A module for computing an access to a variable that happens after a property has been written onto it */
+  private module GetLaterAccess {
+    /**
+     * Gets an reference to the SSA variable `variable`.
+     * Either the definition or a use of the SSA variable
+     */
+    private VarRef getAVariableRef(SsaVariable variable) {
+      (
+        result = variable.getAUse()
+        or
+        result = variable.getDefinition().(SsaExplicitDefinition).getDef().getTarget()
+      ) and
+      variable = getARelevantVariableSimple()
+    }
+
+    /**
+     * Gets an access to a variable that is written to in `write`, where the access is after the write.
+     *
+     * This allows `fromRhs` to compute an access path for e.g. the below example:
+     * ```JavaScript
+     * function foo(x) {
+     *  var obj = {
+     *    bar: x // `x` has the access path "foo.bar" starting from the root `this`.
+     *  };
+     *  this.foo = obj;
+     * }
+     * ```
+     */
+    pragma[noopt]
+    DataFlow::Node getLaterBaseAccess(DataFlow::PropWrite write) {
+      exists(
+        ControlFlowNode writeNode, BindingPattern access, VarRef otherAccess, SsaVariable variable,
+        StmtContainer container
+      |
+        access = getBaseVar(write) and
+        writeNode = write.getWriteNode() and
+        access = getAnAccessInContainer(variable, container, true) and
+        variable = getARelevantVariable() and // manual magic
+        otherAccess = getAnAccessInContainer(variable, container, false) and
+        access != otherAccess and
+        result.asExpr() = otherAccess
+      |
+        exists(BasicBlock bb, int i, int j |
+          bb.getNode(i) = writeNode and
+          bb.getNode(j) = otherAccess and
+          i < j
+        )
+        or
+        otherAccess.getBasicBlock() = getASuccessorBBThatReadsVar(write)
+      )
+    }
+
+    /** Gets a variable ref that `write` writes a property to. */
+    VarRef getBaseVar(DataFlow::PropWrite write) {
+      result = write.getBase().asExpr()
+      or
+      exists(Assignment assign |
+        write.getBase().asExpr() = assign.getRhs() and
+        result = assign.getLhs()
+      )
+      or
+      exists(VariableDeclarator decl |
+        write.getBase().asExpr() = decl.getInit() and
+        result = decl.getBindingPattern()
+      )
+    }
+
+    /** Gets an access to `var` inside `container` where `usedInWrite` indicates whether the access is the base of a property write. */
+    private VarRef getAnAccessInContainer(
+      SsaVariable var, StmtContainer container, boolean usedInWrite
+    ) {
+      result = getAVariableRef(var) and
+      result.getContainer() = container and
+      if result = getBaseVar(_) then usedInWrite = true else usedInWrite = false
+    }
+
+    /**
+     * Gets a variable that is relevant for the computations in the `GetLaterAccess` module.
+     * This predicate restricts as much as it can, but without depending on `getAVariableRef`.
+     */
+    pragma[inline]
+    private SsaVariable getARelevantVariableSimple() {
+      // The variable might be used where `getLaterBaseAccess()` is called.
+      exists(DataFlow::Node node |
+        exists(fromRhs(node, _)) and
+        node.asExpr() = result.getAUse()
+      )
+    }
+
+    /**
+     * Gets a variable that is relevant for the computations in the `GetLaterAccess` module.
+     * This predicate depends on `getAVariableRef`, which in turn depends on `getARelevantVariableSimple`.
+     */
+    private SsaVariable getARelevantVariable() {
+      // There is a write that writes to the variable.
+      getBaseVar(_) = getAVariableRef(result) and
+      // There is both a "write" and "read" in the same container of the variable.
+      exists(StmtContainer container |
+        exists(getAnAccessInContainer(result, container, true)) and // a "write", an access to the variable that is the base of a property reference.
+        exists(getAnAccessInContainer(result, container, false)) // a "read", an access to the variable that is not the base of a property reference.
+      )
+    }
+
+    /** Gets a basic-block that has a read of the variable that is written to by `write`, where the basicblock occurs after `start`. */
+    private ReachableBasicBlock getASuccessorBBThatReadsVar(DataFlow::PropWrite write) {
+      exists(VarRef baseExpr, SsaVariable var, ControlFlowNode writeNode |
+        baseExpr = getBaseVar(write) and
+        getAVariableRef(var) = baseExpr and
+        var = getARelevantVariable() and
+        writeNode = write.getWriteNode() and
+        result.getImmediateDominator() = writeNode.getBasicBlock()
+      )
+      or
+      result.getImmediateDominator() = getASuccessorBBThatReadsVar(write)
+    }
   }
 
   /**

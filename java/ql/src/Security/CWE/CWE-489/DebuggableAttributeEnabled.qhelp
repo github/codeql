@@ -1,0 +1,50 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The Android manifest file defines configuration settings for Android applications.
+In this file, the <code>android:debuggable</code> attribute of the <code>application</code> element can be used to
+define whether or not the application can be debugged. When set to <code>true</code>, this attribute will allow the
+application to be debugged even when running on a device in user mode.</p>
+
+<p>When a debugger is enabled, it could allow for entry points in the application or reveal sensitive information.
+As a result, <code>android:debuggable</code> should only be enabled during development and should be disabled in
+production builds.</p>
+
+</overview>
+<recommendation>
+
+<p>In Android applications, either set the <code>android:debuggable</code> attribute to <code>false</code>,
+or do not include it in the manifest. The default value, when not included, is <code>false</code>.</p>
+
+</recommendation>
+<example>
+
+<p>In the example below, the <code>android:debuggable</code> attribute is set to <code>true</code>.</p>
+
+<sample src="DebuggableTrue.xml" />
+
+<p>The corrected version sets the <code>android:debuggable</code> attribute to <code>false</code>.</p>
+
+<sample src="DebuggableFalse.xml" />
+
+</example>
+<references>
+
+<li>
+  Android Developers:
+  <a href="https://developer.android.com/guide/topics/manifest/manifest-intro">App Manifest Overview</a>.
+</li>
+<li>
+  Android Developers:
+  <a href="https://developer.android.com/guide/topics/manifest/application-element#debug">The android:debuggable attribute</a>.
+</li>
+<li>
+  Android Developers:
+  <a href="https://developer.android.com/studio/debug#enable-debug">Enable debugging</a>.
+</li>
+
+</references>
+</qhelp>

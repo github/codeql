@@ -20,4 +20,4 @@ where
   m.fromSource() and
   isDeadMethod(m) and
   not m.getDeclaringType().isPartial()
-select m, "Unused method (or method called from dead method only)"
+select m, "Unused method (or method called from dead method only)."

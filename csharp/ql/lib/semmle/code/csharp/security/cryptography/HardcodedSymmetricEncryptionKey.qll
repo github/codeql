@@ -4,6 +4,7 @@
  */
 
 import csharp
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 module HardcodedSymmetricEncryptionKey {
   private import semmle.code.csharp.frameworks.system.security.cryptography.SymmetricAlgorithm
@@ -38,45 +39,20 @@ module HardcodedSymmetricEncryptionKey {
     StringLiteralSource() { this.asExpr() instanceof StringLiteral }
   }
 
-  private class SymmetricEncryptionKeyPropertySink extends Sink {
-    SymmetricEncryptionKeyPropertySink() {
-      this.asExpr() = any(SymmetricAlgorithm sa).getKeyProperty().getAnAssignedValue()
+  private class SymmetricAlgorithmSink extends Sink {
+    private string kind;
+
+    SymmetricAlgorithmSink() { sinkNode(this, kind) and kind.matches("encryption%") }
+
+    override string getDescription() {
+      kind = "encryption-encryptor" and result = "Encryptor(rgbKey, IV)"
+      or
+      kind = "encryption-decryptor" and result = "Decryptor(rgbKey, IV)"
+      or
+      kind = "encryption-symmetrickey" and result = "CreateSymmetricKey(IBuffer keyMaterial)"
+      or
+      kind = "encryption-keyprop" and result = "'Key' property assignment"
     }
-
-    override string getDescription() { result = "'Key' property assignment" }
-  }
-
-  private class SymmetricEncryptionCreateEncryptorSink extends Sink {
-    SymmetricEncryptionCreateEncryptorSink() {
-      exists(SymmetricAlgorithm ag, MethodCall mc | mc = ag.getASymmetricEncryptor() |
-        this.asExpr() = mc.getArgumentForName("rgbKey")
-      )
-    }
-
-    override string getDescription() { result = "Encryptor(rgbKey, IV)" }
-  }
-
-  private class SymmetricEncryptionCreateDecryptorSink extends Sink {
-    SymmetricEncryptionCreateDecryptorSink() {
-      exists(SymmetricAlgorithm ag, MethodCall mc | mc = ag.getASymmetricDecryptor() |
-        this.asExpr() = mc.getArgumentForName("rgbKey")
-      )
-    }
-
-    override string getDescription() { result = "Decryptor(rgbKey, IV)" }
-  }
-
-  private class CreateSymmetricKeySink extends Sink {
-    CreateSymmetricKeySink() {
-      exists(MethodCall mc, Method m |
-        mc.getTarget() = m and
-        m.hasQualifiedName("Windows.Security.Cryptography.Core.SymmetricKeyAlgorithmProvider",
-          "CreateSymmetricKey") and
-        this.asExpr() = mc.getArgumentForName("keyMaterial")
-      )
-    }
-
-    override string getDescription() { result = "CreateSymmetricKey(IBuffer keyMaterial)" }
   }
 
   private class CryptographicBuffer extends Class {

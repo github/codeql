@@ -1,12 +1,14 @@
 private import codeql.swift.generated.Locatable
 private import codeql.swift.elements.File
+private import codeql.swift.elements.UnknownLocation
 
-class Locatable extends LocatableBase {
+class Locatable extends Generated::Locatable {
   pragma[nomagic]
-  override Location getLocation() {
-    result = LocatableBase.super.getLocation()
+  override Location getImmediateLocation() {
+    result = Generated::Locatable.super.getImmediateLocation()
     or
-    not exists(LocatableBase.super.getLocation()) and result instanceof UnknownLocation
+    not exists(Generated::Locatable.super.getImmediateLocation()) and
+    result instanceof UnknownLocation
   }
 
   /**

@@ -3,9 +3,11 @@
  * @description Detects insecure SSL client configurations with an implementation of the `HostKeyCallback` that accepts all host keys.
  * @kind path-problem
  * @problem.severity warning
+ * @security-severity 8.2
  * @precision high
  * @id go/insecure-hostkeycallback
  * @tags security
+ *       external/cwe/cwe-322
  */
 
 import go
@@ -64,14 +66,14 @@ class HostKeyCallbackAssignmentConfig extends DataFlow::Configuration {
   /**
    * Holds if `sink` is a value written by `write` to a field `ClientConfig.HostKeyCallback`.
    */
-  predicate isSink(DataFlow::Node sink, Write write) {
+  predicate writeIsSink(DataFlow::Node sink, Write write) {
     exists(Field f |
       f.hasQualifiedName(CryptoSsh::packagePath(), "ClientConfig", "HostKeyCallback") and
       write.writesField(_, f, sink)
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { this.writeIsSink(sink, _) }
 }
 
 /**
@@ -90,8 +92,8 @@ predicate hostCheckReachesSink(DataFlow::PathNode sink) {
         SsaWithFields sinkAccessPath, SsaWithFields otherSinkAccessPath
       |
         config.hasFlowPath(source, otherSink) and
-        config.isSink(sink.getNode(), sinkWrite) and
-        config.isSink(otherSink.getNode(), otherSinkWrite) and
+        config.writeIsSink(sink.getNode(), sinkWrite) and
+        config.writeIsSink(otherSink.getNode(), otherSinkWrite) and
         sinkWrite.writesField(sinkAccessPath.getAUse(), _, sink.getNode()) and
         otherSinkWrite.writesField(otherSinkAccessPath.getAUse(), _, otherSink.getNode()) and
         otherSinkAccessPath = sinkAccessPath.similar()

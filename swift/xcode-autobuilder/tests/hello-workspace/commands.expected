@@ -1,0 +1,1 @@
+/usr/bin/xcodebuild build -workspace ./Hello.xcworkspace -scheme hello-workspace CODE_SIGNING_REQUIRED=NO CODE_SIGNING_ALLOWED=NO

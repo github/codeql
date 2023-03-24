@@ -13,7 +13,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts
 private import meta.MetaMetrics
 
-from HTTP::Server::RequestHandler requestHandler, string title
+from Http::Server::RequestHandler requestHandler, string title
 where
   not requestHandler.getLocation().getFile() instanceof IgnoredFile and
   if requestHandler.isMethod()

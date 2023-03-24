@@ -1,160 +1,174 @@
-/*
- * Copyright 2018 The Android Open Source Project
- *
- * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except
- * in compliance with the License. You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software distributed under the License
- * is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
- * or implied. See the License for the specific language governing permissions and limitations under
- * the License.
- */
+// Generated automatically from androidx.fragment.app.FragmentManager for testing purposes
 
 package androidx.fragment.app;
 
-import java.util.List;
-import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
+import androidx.fragment.app.BackStackRecord;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentFactory;
+import androidx.fragment.app.FragmentTransaction;
+import java.io.FileDescriptor;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
-public abstract class FragmentManager {
-  public static void enableDebugLogging(boolean enabled) {}
+abstract public class FragmentManager {
+    abstract static public class FragmentLifecycleCallbacks {
+        public FragmentLifecycleCallbacks() {}
 
-  public static boolean isLoggingEnabled(int level) {
-    return false;
-  }
+        public void onFragmentActivityCreated(FragmentManager p0, Fragment p1, Bundle p2) {}
 
-  public interface BackStackEntry {
-    int getId();
+        public void onFragmentAttached(FragmentManager p0, Fragment p1, Context p2) {}
 
-    String getName();
+        public void onFragmentCreated(FragmentManager p0, Fragment p1, Bundle p2) {}
 
-    int getBreadCrumbTitleRes();
+        public void onFragmentDestroyed(FragmentManager p0, Fragment p1) {}
 
-    int getBreadCrumbShortTitleRes();
+        public void onFragmentDetached(FragmentManager p0, Fragment p1) {}
 
-    CharSequence getBreadCrumbTitle();
+        public void onFragmentPaused(FragmentManager p0, Fragment p1) {}
 
-    CharSequence getBreadCrumbShortTitle();
+        public void onFragmentPreAttached(FragmentManager p0, Fragment p1, Context p2) {}
 
-  }
-  public interface OnBackStackChangedListener {
-    void onBackStackChanged();
+        public void onFragmentPreCreated(FragmentManager p0, Fragment p1, Bundle p2) {}
 
-  }
-  public abstract static class FragmentLifecycleCallbacks {
-    public void onFragmentPreAttached(FragmentManager fm, Fragment f, Context context) {}
+        public void onFragmentResumed(FragmentManager p0, Fragment p1) {}
 
-    public void onFragmentAttached(FragmentManager fm, Fragment f, Context context) {}
+        public void onFragmentSaveInstanceState(FragmentManager p0, Fragment p1, Bundle p2) {}
 
-    public void onFragmentPreCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {}
+        public void onFragmentStarted(FragmentManager p0, Fragment p1) {}
 
-    public void onFragmentCreated(FragmentManager fm, Fragment f, Bundle savedInstanceState) {}
+        public void onFragmentStopped(FragmentManager p0, Fragment p1) {}
 
-    public void onFragmentActivityCreated(FragmentManager fm, Fragment f,
-        Bundle savedInstanceState) {}
+        public void onFragmentViewCreated(FragmentManager p0, Fragment p1, View p2, Bundle p3) {}
 
-    public void onFragmentViewCreated(FragmentManager fm, Fragment f, View v,
-        Bundle savedInstanceState) {}
+        public void onFragmentViewDestroyed(FragmentManager p0, Fragment p1) {}
+    }
 
-    public void onFragmentStarted(FragmentManager fm, Fragment f) {}
+    public Fragment findFragmentById(int p0) {
+        return null;
+    }
 
-    public void onFragmentResumed(FragmentManager fm, Fragment f) {}
+    public Fragment findFragmentByTag(String p0) {
+        return null;
+    }
 
-    public void onFragmentPaused(FragmentManager fm, Fragment f) {}
+    public Fragment getFragment(Bundle p0, String p1) {
+        return null;
+    }
 
-    public void onFragmentStopped(FragmentManager fm, Fragment f) {}
+    public Fragment getPrimaryNavigationFragment() {
+        return null;
+    }
 
-    public void onFragmentSaveInstanceState(FragmentManager fm, Fragment f, Bundle outState) {}
+    public Fragment.SavedState saveFragmentInstanceState(Fragment p0) {
+        return null;
+    }
 
-    public void onFragmentViewDestroyed(FragmentManager fm, Fragment f) {}
+    public FragmentFactory getFragmentFactory() {
+        return null;
+    }
 
-    public void onFragmentDestroyed(FragmentManager fm, Fragment f) {}
+    public FragmentManager() {}
 
-    public void onFragmentDetached(FragmentManager fm, Fragment f) {}
+    public FragmentManager.BackStackEntry getBackStackEntryAt(int p0) {
+        return null;
+    }
 
-  }
+    public FragmentTransaction beginTransaction() {
+        return null;
+    }
 
-  public FragmentTransaction openTransaction() {
-    return null;
-  }
+    public FragmentTransaction openTransaction() {
+        return null;
+    }
 
-  public FragmentTransaction beginTransaction() {
-    return null;
-  }
+    public List<Fragment> getFragments() {
+        return null;
+    }
 
-  public boolean executePendingTransactions() {
-    return false;
-  }
+    public String toString() {
+        return null;
+    }
 
-  public void restoreBackStack(String name) {}
+    public boolean executePendingTransactions() {
+        return false;
+    }
 
-  public void saveBackStack(String name) {}
+    public boolean isDestroyed() {
+        return false;
+    }
 
-  public void popBackStack() {}
+    public boolean isStateSaved() {
+        return false;
+    }
 
-  public boolean popBackStackImmediate() {
-    return false;
-  }
+    public boolean popBackStackImmediate() {
+        return false;
+    }
 
-  public void popBackStack(final String name, final int flags) {}
+    public boolean popBackStackImmediate(String p0, int p1) {
+        return false;
+    }
 
-  public boolean popBackStackImmediate(String name, int flags) {
-    return false;
-  }
+    public boolean popBackStackImmediate(int p0, int p1) {
+        return false;
+    }
 
-  public void popBackStack(final int id, final int flags) {}
+    public int getBackStackEntryCount() {
+        return 0;
+    }
 
-  public boolean popBackStackImmediate(int id, int flags) {
-    return false;
-  }
+    public static <F extends Fragment> F findFragment(View p0) {
+        return null;
+    }
 
-  public int getBackStackEntryCount() {
-    return 0;
-  }
+    public static int POP_BACK_STACK_INCLUSIVE = 0;
 
-  public BackStackEntry getBackStackEntryAt(int index) {
-    return null;
-  }
+    public static void enableDebugLogging(boolean p0) {}
 
-  public void addOnBackStackChangedListener(OnBackStackChangedListener listener) {}
+    public void addOnBackStackChangedListener(FragmentManager.OnBackStackChangedListener p0) {}
 
-  public void removeOnBackStackChangedListener(OnBackStackChangedListener listener) {}
+    public void dump(String p0, FileDescriptor p1, PrintWriter p2, String[] p3) {}
 
-  public final void setFragmentResult(String requestKey, Bundle result) {}
+    public void popBackStack() {}
 
-  public final void clearFragmentResult(String requestKey) {}
+    public void popBackStack(String p0, int p1) {}
 
-  public final void clearFragmentResultListener(String requestKey) {}
+    public void popBackStack(int p0, int p1) {}
 
-  public void putFragment(Bundle bundle, String key, Fragment fragment) {}
+    public void putFragment(Bundle p0, String p1, Fragment p2) {}
 
-  public Fragment getFragment(Bundle bundle, String key) {
-    return null;
-  }
+    public void registerFragmentLifecycleCallbacks(FragmentManager.FragmentLifecycleCallbacks p0,
+            boolean p1) {}
 
-  public static <F extends Fragment> F findFragment(View view) {
-    return null;
-  }
+    public void removeOnBackStackChangedListener(FragmentManager.OnBackStackChangedListener p0) {}
 
-  public List<Fragment> getFragments() {
-    return null;
-  }
+    public void setFragmentFactory(FragmentFactory p0) {}
 
-  public Fragment.SavedState saveFragmentInstanceState(Fragment fragment) {
-    return null;
-  }
+    public void unregisterFragmentLifecycleCallbacks(
+            FragmentManager.FragmentLifecycleCallbacks p0) {}
 
-  public boolean isDestroyed() {
-    return false;
-  }
+    static public interface BackStackEntry {
+        CharSequence getBreadCrumbShortTitle();
 
-  @Override
-  public String toString() {
-    return null;
-  }
+        CharSequence getBreadCrumbTitle();
 
+        String getName();
+
+        int getBreadCrumbShortTitleRes();
+
+        int getBreadCrumbTitleRes();
+
+        int getId();
+    }
+    static public interface OnBackStackChangedListener {
+        void onBackStackChanged();
+    }
+
+    static public interface OpGenerator {
+        boolean generateOps(ArrayList<BackStackRecord> records, ArrayList<Boolean> isRecordPop);
+    }
 }

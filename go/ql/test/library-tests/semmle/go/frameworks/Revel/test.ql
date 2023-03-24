@@ -39,7 +39,7 @@ class HttpResponseBodyTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "responsebody" and
-    exists(HTTP::ResponseBody rb |
+    exists(Http::ResponseBody rb |
       rb.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = rb.toString() and

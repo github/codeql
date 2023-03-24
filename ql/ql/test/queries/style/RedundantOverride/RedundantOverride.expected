@@ -1,0 +1,11 @@
+| RedundantOverride.qll:9:18:9:21 | ClassPredicate pred | Redundant override of $@. | RedundantOverride.qll:5:9:5:12 | ClassPredicate pred | this predicate |
+| RedundantOverride.qll:21:18:21:21 | ClassPredicate pred | Redundant override of $@. | RedundantOverride.qll:17:9:17:12 | ClassPredicate pred | this predicate |
+| RedundantOverride.qll:110:24:110:27 | ClassPredicate pred | Redundant override of $@. | RedundantOverride.qll:106:15:106:18 | ClassPredicate pred | this predicate |
+| RedundantOverride.qll:124:18:124:21 | ClassPredicate pred | Redundant override of $@. | RedundantOverride.qll:118:9:118:12 | ClassPredicate pred | this predicate |
+| RedundantOverride.qll:128:18:128:21 | ClassPredicate pred | Redundant override of $@. | RedundantOverride.qll:118:9:118:12 | ClassPredicate pred | this predicate |
+| RedundantOverride.qll:132:18:132:21 | ClassPredicate pred | Redundant override of $@. | RedundantOverride.qll:128:18:128:21 | ClassPredicate pred | this predicate |
+| RedundantOverride.qll:150:18:150:21 | ClassPredicate pred | Redundant override of $@. | RedundantOverride.qll:140:9:140:12 | ClassPredicate pred | this predicate |
+| RedundantOverride.qll:164:18:164:21 | ClassPredicate pred | Redundant override of $@. | RedundantOverride.qll:158:9:158:12 | ClassPredicate pred | this predicate |
+| RedundantOverride.qll:168:18:168:21 | ClassPredicate pred | Redundant override of $@. | RedundantOverride.qll:158:9:158:12 | ClassPredicate pred | this predicate |
+| RedundantOverride.qll:172:18:172:21 | ClassPredicate pred | Redundant override of $@. | RedundantOverride.qll:168:18:168:21 | ClassPredicate pred | this predicate |
+| RedundantOverride.qll:176:18:176:21 | ClassPredicate pred | Redundant override of $@. | RedundantOverride.qll:168:18:168:21 | ClassPredicate pred | this predicate |

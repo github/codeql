@@ -1,9 +1,5 @@
 import java
 
-predicate initializedToField(LocalVariableDecl d, Field f) {
-  exists(LocalVariableDeclExpr e | e.getVariable() = d and f.getAnAccess() = e.getInit())
-}
-
 predicate getterFor(Method m, Field f) {
   m.getName().matches("get%") and
   m.getDeclaringType() = f.getDeclaringType() and

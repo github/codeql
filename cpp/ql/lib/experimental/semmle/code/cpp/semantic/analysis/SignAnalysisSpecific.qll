@@ -11,7 +11,7 @@ private import experimental.semmle.code.cpp.semantic.Semantic
 predicate ignoreTypeRestrictions(SemExpr e) { none() }
 
 /**
- * Workaround to track the sign of cetain expressions even if the type of the expression is not
+ * Workaround to track the sign of certain expressions even if the type of the expression is not
  * numeric.
  */
 predicate trackUnknownNonNumericExpr(SemExpr e) { none() }

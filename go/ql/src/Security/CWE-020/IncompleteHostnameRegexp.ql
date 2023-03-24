@@ -28,12 +28,12 @@ predicate isIncompleteHostNameRegexpPattern(string pattern, string hostPart) {
             "(?<!\\\\)[.]" +
             // immediately followed by a sequence of subdomains, perhaps with some regex characters mixed in,
             // followed by a known TLD
-            "(([():|?a-z0-9-]+(\\\\)?[.])?" + commonTLD() + ")" + ".*", 1)
+            "(([():|?a-z0-9-]+(\\\\)?[.])?" + commonTld() + ")" + ".*", 1)
 }
 
 /** Holds if `b` sets the HTTP status code (represented by a pseudo-header named  `status`) */
 predicate writesHttpError(ReachableBasicBlock b) {
-  forex(HTTP::HeaderWrite hw |
+  forex(Http::HeaderWrite hw |
     hw.getHeaderName() = "status" and hw.asInstruction().getBasicBlock() = b
   |
     exists(string code | code.matches("4__") or code.matches("5__") |
@@ -65,7 +65,7 @@ DataFlow::Node getASafeHandler() {
 }
 
 /** Holds if `regexp` is used in a check before `handler` is called. */
-predicate regexpGuardsHandler(RegexpPattern regexp, HTTP::RequestHandler handler) {
+predicate regexpGuardsHandler(RegexpPattern regexp, Http::RequestHandler handler) {
   handler.guardedBy(DataFlow::exprNode(regexp.getAUse().asExpr().getParent*()))
 }
 
@@ -83,7 +83,7 @@ predicate regexpGuardsError(RegexpPattern regexp) {
 class Config extends DataFlow::Configuration {
   Config() { this = "IncompleteHostNameRegexp::Config" }
 
-  predicate isSource(DataFlow::Node source, string hostPart) {
+  predicate isSourceString(DataFlow::Node source, string hostPart) {
     exists(Expr e |
       e = source.asExpr() and
       isIncompleteHostNameRegexpPattern(e.getStringValue(), hostPart)
@@ -95,11 +95,11 @@ class Config extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSource(DataFlow::Node source) { isSource(source, _) }
+  override predicate isSource(DataFlow::Node source) { isSourceString(source, _) }
 
   override predicate isSink(DataFlow::Node sink) {
     sink instanceof RegexpPattern and
-    forall(HTTP::RequestHandler handler | regexpGuardsHandler(sink, handler) |
+    forall(Http::RequestHandler handler | regexpGuardsHandler(sink, handler) |
       not handler = getASafeHandler()
     ) and
     not regexpGuardsError(sink)
@@ -107,7 +107,7 @@ class Config extends DataFlow::Configuration {
 }
 
 from Config c, DataFlow::PathNode source, DataFlow::PathNode sink, string hostPart
-where c.hasFlowPath(source, sink) and c.isSource(source.getNode(), hostPart)
+where c.hasFlowPath(source, sink) and c.isSourceString(source.getNode(), hostPart)
 select source, source, sink,
   "This regular expression has an unescaped dot before '" + hostPart + "', " +
-    "so it might match more hosts than expected when used $@.", sink, "here"
+    "so it might match more hosts than expected when $@.", sink, "the regular expression is used"

@@ -47,3 +47,12 @@ class C: # lgtm class
 
 "" # lgtm[py/line-too-long] and lgtm[py/non-callable-called]
 "" # lgtm[py/line-too-long]; lgtm
+
+#CodeQL comments
+# codeql[py/line-too-long]
+""
+#CODEQL[py/line-too-long]
+""
+# codeql[py/line-too-long] -- because I know better than codeql
+""
+"" # codeql[py/line-too-long]

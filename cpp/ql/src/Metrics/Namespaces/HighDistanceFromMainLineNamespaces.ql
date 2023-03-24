@@ -15,4 +15,4 @@ where
   n.fromSource() and
   c = n.getMetrics().getDistanceFromMain() and
   c > 0.7
-select n as Namespace, c as DistanceFromMainline order by DistanceFromMainline desc
+select n as namespace, c as distanceFromMainline order by distanceFromMainline desc

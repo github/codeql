@@ -34,4 +34,4 @@ where
   not t1.(ArrayType).getBaseType() = t2.(PointerType).getBaseType()
 select e,
   "AV Rule 182: illegal cast from type " + t1.toString() + " to type " + t2.toString() +
-    ". Casting to or from pointers shall not be used"
+    ". Casting to or from pointers shall not be used."

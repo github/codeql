@@ -12,7 +12,7 @@ private import internal.ConstantExprs
  * relation). The refinement manifests itself in two changes:
  *
  * - The successor relation on `BasicBlock`s uses `successors_adapted`
- * (instead of `successors_extended` used by `PrimtiveBasicBlock`s). Consequently,
+ * (instead of `successors_extended` used by `PrimitiveBasicBlock`s). Consequently,
  * some edges between `BasicBlock`s may be removed. Example:
  * ```
  * x = 1;      // s1
@@ -231,7 +231,7 @@ class BasicBlock extends ControlFlowNodeBase {
     exists(Function f | f.getBlock() = this)
     or
     exists(TryStmt t, BasicBlock tryblock |
-      // a `Handler` preceeds the `CatchBlock`, and is always the beginning
+      // a `Handler` precedes the `CatchBlock`, and is always the beginning
       // of a new `BasicBlock` (see `primitive_basic_block_entry_node`).
       this.(Handler).getTryStmt() = t and
       tryblock.isReachable() and

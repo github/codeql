@@ -6,9 +6,9 @@ import semmle.code.java.frameworks.spring.SpringBean
  *
  * This class includes methods to access attributes of the `<beans>` element.
  */
-class SpringBeanFile extends XMLFile {
+class SpringBeanFile extends XmlFile {
   SpringBeanFile() {
-    count(XMLElement e | e = this.getAChild()) = 1 and
+    count(XmlElement e | e = this.getAChild()) = 1 and
     this.getAChild().getName() = "beans"
   }
 
@@ -24,7 +24,7 @@ class SpringBeanFile extends XMLFile {
   SpringBean getABean() { exists(SpringBean b | b.getFile() = this and result = b) }
 
   /** Gets the `<beans>` element of the file. */
-  XMLElement getBeansElement() {
+  XmlElement getBeansElement() {
     result = this.getAChild() and
     result.getName() = "beans"
   }
@@ -85,7 +85,7 @@ class SpringBeanFile extends XMLFile {
 
   /** Holds if `default-lazy-init` is specified to be `true` for this file. */
   predicate isDefaultLazyInit() {
-    exists(XMLAttribute a |
+    exists(XmlAttribute a |
       this.getBeansElement().getAttribute("default-lazy-init") = a and
       a.getValue() = "true"
     )
@@ -93,7 +93,7 @@ class SpringBeanFile extends XMLFile {
 
   /** Holds if `default-merge` is specified to be `true` for this file. */
   predicate isDefaultMerge() {
-    exists(XMLAttribute a |
+    exists(XmlAttribute a |
       this.getBeansElement().getAttribute("default-merge") = a and
       a.getValue() = "true"
     )

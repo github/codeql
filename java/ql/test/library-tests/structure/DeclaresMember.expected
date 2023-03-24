@@ -13,6 +13,8 @@
 | D | D |
 | Diamond1 | Diamond1 |
 | Diamond2 | Diamond2 |
+| DoublyLocalClass | DoublyLocalClass |
+| DoublyLocalClass | doublyLocalClassMethod |
 | I1 | m1 |
 | I1other | m1 |
 | I2 | f |
@@ -26,6 +28,7 @@
 | ITop | f2 |
 | ITop | f3 |
 | LocalClass | LocalClass |
+| LocalClass | localClassMethod |
 | LocalClass | n |
 | MemberClass | MemberClass |
 | Object | Object |

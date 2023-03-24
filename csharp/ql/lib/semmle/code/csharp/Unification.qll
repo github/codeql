@@ -434,8 +434,8 @@ module Gvn {
 
   pragma[nomagic]
   private predicate unifiable(ConstructedGvnType t1, ConstructedGvnType t2, boolean subsumes) {
-    exists(CompoundTypeKind k, GvnTypeArgument arg1, GvnTypeArgument arg2 |
-      unifiableSingle0(k, t2, arg1, arg2, subsumes) and
+    exists(CompoundTypeKind k, GvnTypeArgument arg1 |
+      unifiableSingle0(k, t2, arg1, _, subsumes) and
       arg1 = getTypeArgument(k, t1, 0)
     )
     or

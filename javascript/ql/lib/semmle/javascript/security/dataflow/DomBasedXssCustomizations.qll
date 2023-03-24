@@ -31,7 +31,7 @@ module DomBasedXss {
       )
       or
       // call to an Angular method that interprets its argument as HTML
-      any(AngularJS::AngularJSCall call).interpretsArgumentAsHtml(this.asExpr())
+      any(AngularJS::AngularJSCallNode call).interpretsArgumentAsHtml(this)
       or
       // call to a WinJS function that interprets its argument as HTML
       exists(DataFlow::MethodCallNode mcn, string m |
@@ -130,12 +130,12 @@ module DomBasedXss {
   class DomSink extends Sink {
     DomSink() {
       // Call to a DOM function that inserts its argument into the DOM
-      any(DomMethodCallExpr call).interpretsArgumentsAsHtml(this.asExpr())
+      any(DomMethodCallNode call).interpretsArgumentsAsHtml(this)
       or
       // Assignment to a dangerous DOM property
-      exists(DomPropWriteNode pw |
+      exists(DomPropertyWrite pw |
         pw.interpretsValueAsHtml() and
-        this = DataFlow::valueNode(pw.getRhs())
+        this = pw.getRhs()
       )
       or
       // `html` or `source.html` properties of React Native `WebView`
@@ -159,7 +159,7 @@ module DomBasedXss {
       )
       or
       exists(DataFlow::MethodCallNode ccf |
-        isDomValue(ccf.getReceiver().asExpr()) and
+        isDomNode(ccf.getReceiver()) and
         ccf.getMethodName() = "createContextualFragment" and
         this = ccf.getArgument(0)
       )
@@ -282,10 +282,12 @@ module DomBasedXss {
 
   private class UriEncodingSanitizer extends Sanitizer, Shared::UriEncodingSanitizer { }
 
-  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer {
-  }
+  private class SerializeJavascriptSanitizer extends Sanitizer, Shared::SerializeJavascriptSanitizer
+  { }
 
   private class IsEscapedInSwitchSanitizer extends Sanitizer, Shared::IsEscapedInSwitchSanitizer { }
+
+  private class HtmlSanitizerAsSanitizer extends Sanitizer instanceof HtmlSanitizerCall { }
 
   /**
    * Holds if there exists two dataflow edges to `succ`, where one edges is sanitized, and the other edge starts with `pred`.
@@ -318,9 +320,7 @@ module DomBasedXss {
   }
 
   /** A source of remote user input, considered as a flow source for DOM-based XSS. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * A flow-label representing tainted values where the prefix is attacker controlled.
@@ -335,11 +335,16 @@ module DomBasedXss {
   /**
    * A sanitizer that blocks the `PrefixString` label when the start of the string is being tested as being of a particular prefix.
    */
-  abstract class PrefixStringSanitizer extends TaintTracking::LabeledSanitizerGuardNode instanceof StringOps::StartsWith {
+  abstract class PrefixStringSanitizer extends TaintTracking::LabeledSanitizerGuardNode instanceof StringOps::StartsWith
+  {
     override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       e = super.getBaseString().asExpr() and
       label = prefixLabel() and
       outcome = super.getPolarity()
     }
+  }
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("html-injection").asSink() }
   }
 }

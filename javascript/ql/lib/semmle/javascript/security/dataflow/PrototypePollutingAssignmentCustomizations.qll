@@ -57,9 +57,7 @@ module PrototypePollutingAssignment {
   }
 
   /** A remote flow source or location.{hash,search} as a taint source. */
-  private class DefaultSource extends Source {
-    DefaultSource() { this instanceof RemoteFlowSource }
-
+  private class DefaultSource extends Source instanceof RemoteFlowSource {
     override string describe() { result = "user controlled input" }
   }
 
@@ -68,7 +66,7 @@ module PrototypePollutingAssignment {
   /**
    * A parameter of an exported function, seen as a source prototype-polluting assignment.
    */
-  class ExternalInputSource extends Source, DataFlow::SourceNode {
+  class ExternalInputSource extends Source {
     ExternalInputSource() { this = Exports::getALibraryInputParameter() }
 
     override string describe() { result = "library input" }

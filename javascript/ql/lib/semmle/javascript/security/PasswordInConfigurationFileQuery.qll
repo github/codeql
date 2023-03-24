@@ -21,11 +21,11 @@ predicate config(string key, string val, Locatable valElement) {
       val = valElement.(JsonString).getValue()
     )
     or
-    exists(YAMLMapping m, YAMLString keyElement |
+    exists(YamlMapping m, YamlString keyElement |
       m.maps(keyElement, valElement) and
       key = keyElement.getValue() and
       (
-        val = valElement.(YAMLString).getValue()
+        val = valElement.(YamlString).getValue()
         or
         valElement.toString() = "" and
         val = ""

@@ -30,10 +30,8 @@ module BrokenCryptoAlgorithm {
    * A sensitive expression, viewed as a data flow source for sensitive information
    * in broken or weak cryptographic algorithms.
    */
-  class SensitiveExprSource extends Source, DataFlow::ValueNode {
-    override SensitiveExpr astNode;
-
-    override string describe() { result = astNode.describe() }
+  class SensitiveExprSource extends Source instanceof SensitiveNode {
+    override string describe() { result = SensitiveNode.super.describe() }
   }
 
   /**
@@ -42,8 +40,12 @@ module BrokenCryptoAlgorithm {
   class WeakCryptographicOperationSink extends Sink {
     WeakCryptographicOperationSink() {
       exists(CryptographicOperation application |
-        application.getAlgorithm().isWeak() and
-        this.asExpr() = application.getInput()
+        (
+          application.getAlgorithm().isWeak()
+          or
+          application.getBlockMode().isWeak()
+        ) and
+        this = application.getAnInput()
       )
     }
   }

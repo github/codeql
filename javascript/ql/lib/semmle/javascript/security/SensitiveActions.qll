@@ -13,9 +13,25 @@ import javascript
 import semmle.javascript.security.internal.SensitiveDataHeuristics
 private import HeuristicNames
 
+/**
+ * DEPRECATED: Use `SensitiveNode` instead.
+ * An expression that might contain sensitive data.
+ */
+deprecated class SensitiveExpr extends Expr {
+  SensitiveNode node;
+
+  SensitiveExpr() { node.asExpr() = this }
+
+  /** Gets a human-readable description of this expression for use in alert messages. */
+  deprecated string describe() { result = node.describe() }
+
+  /** Gets a classification of the kind of sensitive data this expression might contain. */
+  deprecated SensitiveDataClassification getClassification() { result = node.getClassification() }
+}
+
 /** An expression that might contain sensitive data. */
 cached
-abstract class SensitiveExpr extends Expr {
+abstract class SensitiveNode extends DataFlow::Node {
   /** Gets a human-readable description of this expression for use in alert messages. */
   cached
   abstract string describe();
@@ -25,52 +41,34 @@ abstract class SensitiveExpr extends Expr {
   abstract SensitiveDataClassification getClassification();
 }
 
-/** DEPRECATED: Use `SensitiveDataClassification` and helpers instead. */
-deprecated module SensitiveExpr {
-  /** DEPRECATED: Use `SensitiveDataClassification` instead. */
-  deprecated class Classification = SensitiveDataClassification;
-
-  /** DEPRECATED: Use `SensitiveDataClassification::secret` instead. */
-  deprecated predicate secret = SensitiveDataClassification::secret/0;
-
-  /** DEPRECATED: Use `SensitiveDataClassification::id` instead. */
-  deprecated predicate id = SensitiveDataClassification::id/0;
-
-  /** DEPRECATED: Use `SensitiveDataClassification::password` instead. */
-  deprecated predicate password = SensitiveDataClassification::password/0;
-
-  /** DEPRECATED: Use `SensitiveDataClassification::certificate` instead. */
-  deprecated predicate certificate = SensitiveDataClassification::certificate/0;
-}
-
 /** A function call that might produce sensitive data. */
-class SensitiveCall extends SensitiveExpr, InvokeExpr {
+class SensitiveCall extends SensitiveNode instanceof DataFlow::InvokeNode {
   SensitiveDataClassification classification;
 
   SensitiveCall() {
-    classification = this.getCalleeName().(SensitiveDataFunctionName).getClassification()
+    classification = super.getCalleeName().(SensitiveDataFunctionName).getClassification()
     or
     // This is particularly to pick up methods with an argument like "password", which
     // may indicate a lookup.
-    exists(string s | this.getAnArgument().mayHaveStringValue(s) |
+    exists(string s | super.getAnArgument().mayHaveStringValue(s) |
       nameIndicatesSensitiveData(s, classification)
     )
   }
 
-  override string describe() { result = "a call to " + this.getCalleeName() }
+  override string describe() { result = "a call to " + super.getCalleeName() }
 
   override SensitiveDataClassification getClassification() { result = classification }
 }
 
 /** An access to a variable or property that might contain sensitive data. */
-abstract class SensitiveVariableAccess extends SensitiveExpr {
+abstract class SensitiveVariableAccess extends SensitiveNode {
   string name;
 
   SensitiveVariableAccess() {
-    this.(VarAccess).getName() = name
+    this.asExpr().(VarAccess).getName() = name
     or
     exists(DataFlow::PropRead pr |
-      this = pr.asExpr() and
+      this = pr and
       pr.getPropertyName() = name
     )
   }
@@ -98,7 +96,7 @@ private predicate writesProperty(DataFlow::Node node, string name) {
   exists(VarDef v | v.getAVariable().getName() = name |
     if exists(v.getSource())
     then v.getSource() = node.asExpr()
-    else node = DataFlow::ssaDefinitionNode(SSA::definition(v))
+    else node = DataFlow::ssaDefinitionNode(Ssa::definition(v))
   )
 }
 
@@ -191,10 +189,8 @@ class ProtectCall extends DataFlow::CallNode {
 }
 
 /** An expression that might contain a clear-text password. */
-class CleartextPasswordExpr extends SensitiveExpr {
-  CleartextPasswordExpr() {
-    this.(SensitiveExpr).getClassification() = SensitiveDataClassification::password()
-  }
+class CleartextPasswordExpr extends SensitiveNode {
+  CleartextPasswordExpr() { this.getClassification() = SensitiveDataClassification::password() }
 
   override string describe() { none() }
 
@@ -217,6 +213,9 @@ module PasswordHeuristics {
       normalized
           .regexpMatch(".*(pass|test|sample|example|secret|root|admin|user|change|auth|fake|(my(token|password))|string|foo|bar|baz|qux|1234|3141|abcd).*")
     )
+    or
+    // repeats the same char more than 10 times
+    password.regexpMatch(".*([a-zA-Z0-9])\\1{10,}.*")
   }
 
   /**

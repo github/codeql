@@ -1,6 +1,6 @@
 import go
 import semmle.go.dataflow.ExternalFlow
-import CsvValidation
+import ModelValidation
 // import DataFlow::PartialPathGraph
 import TestUtilities.InlineExpectationsTest
 
@@ -41,8 +41,6 @@ class DataConfiguration extends DataFlow::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     sink = any(DataFlow::CallNode c | c.getCalleeName() = "sink").getArgument(0)
   }
-
-  override int explorationLimit() { result = 10 } // this is different!
 }
 
 class DataFlowTest extends InlineExpectationsTest {
@@ -71,8 +69,6 @@ class TaintConfiguration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink) {
     sink = any(DataFlow::CallNode c | c.getCalleeName() = "sink").getArgument(0)
   }
-
-  override int explorationLimit() { result = 10 } // this is different!
 }
 
 class TaintFlowTest extends InlineExpectationsTest {

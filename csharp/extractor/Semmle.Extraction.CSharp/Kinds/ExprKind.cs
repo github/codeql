@@ -15,7 +15,7 @@ namespace Semmle.Extraction.Kinds
         ULONG_LITERAL = 7,
         FLOAT_LITERAL = 8,
         DOUBLE_LITERAL = 9,
-        STRING_LITERAL = 10,
+        UTF16_STRING_LITERAL = 10,
         NULL_LITERAL = 11,
         THIS_ACCESS = 12,
         BASE_ACCESS = 13,
@@ -125,6 +125,11 @@ namespace Semmle.Extraction.Kinds
         OR_PATTERN = 128,
         FUNCTION_POINTER_INVOCATION = 129,
         WITH = 130,
-        DEFINE_SYMBOL = 999
+        LIST_PATTERN = 131,
+        SLICE_PATTERN = 132,
+        URSHIFT = 133,
+        ASSIGN_URSHIFT = 134,
+        UTF8_STRING_LITERAL = 135,
+        DEFINE_SYMBOL = 999,
     }
 }

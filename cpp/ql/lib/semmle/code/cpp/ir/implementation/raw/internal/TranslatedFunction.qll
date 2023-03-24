@@ -566,7 +566,8 @@ private TranslatedConstructorInitList getTranslatedConstructorInitList(Function 
  * instances for constructors can actually contain initializers.
  */
 class TranslatedConstructorInitList extends TranslatedElement, InitializationContext,
-  TTranslatedConstructorInitList {
+  TTranslatedConstructorInitList
+{
   Function func;
 
   TranslatedConstructorInitList() { this = TTranslatedConstructorInitList(func) }
@@ -637,7 +638,8 @@ private TranslatedDestructorDestructionList getTranslatedDestructorDestructionLi
  * destructions.
  */
 class TranslatedDestructorDestructionList extends TranslatedElement,
-  TTranslatedDestructorDestructionList {
+  TTranslatedDestructorDestructionList
+{
   Function func;
 
   TranslatedDestructorDestructionList() { this = TTranslatedDestructorDestructionList(func) }

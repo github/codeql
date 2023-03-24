@@ -26,3 +26,10 @@ doFilters(filters)
 
 var strip = '<script([^>]*)>([\\S\\s]*?)<\/script([^>]*)>';  // OK - it's used with the ignorecase flag
 new RegExp(strip, 'gi');
+
+var moreFilters = [
+    /-->/g, // NOT OK - doesn't match --!>
+    /^>|^->|<!--|-->|--!>|<!-$/g, // OK
+];
+
+doFilters(moreFilters);

@@ -221,10 +221,8 @@ pragma[noinline]
 private predicate module_and_name_for_import_star(
   ModuleObject mod, string name, ImportStarRefinement def
 ) {
-  exists(ImportStarNode im_star |
-    module_and_name_for_import_star_helper(mod, name, im_star, def) and
-    mod.exports(name)
-  )
+  module_and_name_for_import_star_helper(mod, name, _, def) and
+  mod.exports(name)
 }
 
 pragma[noinline]
@@ -484,9 +482,9 @@ class NiceLocationExpr extends Expr {
    */
   predicate hasLocationInfo(string f, int bl, int bc, int el, int ec) {
     /* Attribute location for x.y is that of 'y' so that url does not overlap with that of 'x' */
-    exists(int abl, int abc | this.(Attribute).getLocation().hasLocationInfo(f, abl, abc, el, ec) |
-      bl = el and bc = ec - this.(Attribute).getName().length() + 1
-    )
+    this.(Attribute).getLocation().hasLocationInfo(f, _, _, el, ec) and
+    bl = el and
+    bc = ec - this.(Attribute).getName().length() + 1
     or
     this.(Name).getLocation().hasLocationInfo(f, bl, bc, el, ec)
     or

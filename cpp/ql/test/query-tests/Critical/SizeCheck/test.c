@@ -58,3 +58,14 @@ void test_union() {
 	MyUnion *a = malloc(sizeof(MyUnion)); // GOOD
 	MyUnion *b = malloc(sizeof(MyStruct)); // BAD (too small)
 }
+
+// --- custom allocators ---
+ 
+void *MyMalloc1(size_t size) { return malloc(size); }
+void *MyMalloc2(size_t size);
+
+void customAllocatorTests()
+{
+    float *fptr1 = MyMalloc1(3); // BAD (too small) [NOT DETECTED]
+    float *fptr2 = MyMalloc2(3); // BAD (too small) [NOT DETECTED]
+}

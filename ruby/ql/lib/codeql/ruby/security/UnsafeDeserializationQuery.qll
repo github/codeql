@@ -6,7 +6,7 @@
  * `UnsafeDeserializationCustomizations` should be imported instead.
  */
 
-private import ruby
+private import codeql.ruby.AST
 private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking
 import UnsafeDeserializationCustomizations
@@ -26,9 +26,5 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) {
     super.isSanitizer(node) or
     node instanceof UnsafeDeserialization::Sanitizer
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    UnsafeDeserialization::isAdditionalTaintStep(fromNode, toNode)
   }
 }

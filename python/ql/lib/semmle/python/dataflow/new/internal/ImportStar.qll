@@ -2,6 +2,8 @@
 
 private import python
 private import semmle.python.dataflow.new.internal.Builtins
+private import semmle.python.dataflow.new.internal.ImportResolution
+private import semmle.python.dataflow.new.DataFlow
 
 cached
 module ImportStar {
@@ -71,8 +73,10 @@ module ImportStar {
    */
   cached
   Module getStarImported(Module m) {
-    exists(ImportStar i |
-      i.getScope() = m and result = i.getModule().pointsTo().(ModuleValue).getScope()
+    exists(ImportStar i, DataFlow::CfgNode imported_module |
+      imported_module.getNode().getNode() = i.getModule() and
+      i.getScope() = m and
+      result = ImportResolution::getModuleImportedByImportStar(i)
     )
   }
 

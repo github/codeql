@@ -5,4 +5,4 @@ nodes
 | CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:52:20:52:23 | data | semmle.label | data |
 subpaths
 #select
-| CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:52:20:52:23 | data | CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:30:19:30:29 | fgets output argument | CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:52:20:52:23 | data | $@ flows to here and is used in an array indexing expression, potentially causing an invalid access. | CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:30:19:30:29 | fgets output argument | String read by fgets |
+| CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:52:20:52:23 | data | CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:30:19:30:29 | fgets output argument | CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:52:20:52:23 | data | An array indexing expression depends on $@ that might be outside the bounds of the array. | CWE122_Heap_Based_Buffer_Overflow__c_CWE129_fgets_01.c:30:19:30:29 | fgets output argument | string read by fgets |

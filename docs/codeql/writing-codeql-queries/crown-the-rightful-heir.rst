@@ -129,7 +129,7 @@ Here is one way to define ``relativeOf()``:
 
 Don't forget to use the predicate ``isDeceased()`` to find relatives that are still alive.
 
-➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/6710025057257064639/>`__
+➤ `Check your answer <#exercise-1>`__
 
 Select the true heir
 --------------------
@@ -142,7 +142,7 @@ To decide who should inherit the king's fortune, the villagers carefully read th
 
 As your final challenge, define a predicate ``hasCriminalRecord`` so that ``hasCriminalRecord(p)`` holds if ``p`` is any of the criminals you unmasked earlier (in the ":doc:`Find the thief <find-the-thief>`" and ":doc:`Catch the fire starter <catch-the-fire-starter>`" tutorials).
 
-➤ `See the answer in the query console on LGTM.com <https://lgtm.com/query/1820692755164273290/>`__
+➤ `Check your answer <#exercise-2>`__
 
 Experimental explorations
 -------------------------
@@ -164,3 +164,47 @@ Further reading
 ---------------
 
 .. include:: ../reusables/codeql-ref-tools-further-reading.rst
+
+--------------
+
+Answers
+-------
+
+In these answers, we use ``/*`` and ``*/`` to label the different parts of the query. Any text surrounded by ``/*`` and ``*/`` is not evaluated as part of the QL code, but is treated as a *comment*.
+
+Exercise 1
+~~~~~~~~~~
+
+.. code-block:: ql
+
+   import tutorial
+
+   Person relativeOf(Person p) { parentOf*(result) = parentOf*(p) }
+
+   from Person p
+   where
+   not p.isDeceased() and
+   p = relativeOf("King Basil")
+   select p
+
+Exercise 2
+~~~~~~~~~~
+
+.. code-block:: ql
+
+   import tutorial
+
+   Person relativeOf(Person p) { parentOf*(result) = parentOf*(p) }
+
+   predicate hasCriminalRecord(Person p) {
+   p = "Hester" or
+   p = "Hugh" or
+   p = "Charlie"
+   }
+
+   from Person p
+   where
+   not p.isDeceased() and
+   p = relativeOf("King Basil") and
+   not hasCriminalRecord(p)
+   select p

@@ -24,15 +24,13 @@ module Xxe {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of remote user input, considered as a flow source for XXE vulnerabilities. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * An access to `document.location`, considered as a flow source for XXE vulnerabilities.
    */
-  class LocationAsSource extends Source, DataFlow::ValueNode {
-    LocationAsSource() { isLocation(astNode) }
+  class LocationAsSource extends Source {
+    LocationAsSource() { isLocationNode(this) }
   }
 
   /**

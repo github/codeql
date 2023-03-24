@@ -41,7 +41,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
    * `min<int>(int, int) -> int`, and the full signature of the uninstantiated
    * template on the first line would be `min<T>(T, T) -> T`.
    */
-  string getFullSignature() {
+  deprecated string getFullSignature() {
     exists(string name, string templateArgs, string args |
       result = name + templateArgs + args + " -> " + this.getType().toString() and
       name = this.getQualifiedName() and
@@ -318,7 +318,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   MetricFunction getMetrics() { result = this }
 
   /** Holds if this function calls the function `f`. */
-  predicate calls(Function f) { exists(Locatable l | this.calls(f, l)) }
+  predicate calls(Function f) { this.calls(f, _) }
 
   /**
    * Holds if this function calls the function `f` in the `FunctionCall`
@@ -335,7 +335,7 @@ class Function extends Declaration, ControlFlowNode, AccessHolder, @function {
   }
 
   /** Holds if this function accesses a function or variable or enumerator `a`. */
-  predicate accesses(Declaration a) { exists(Locatable l | this.accesses(a, l)) }
+  predicate accesses(Declaration a) { this.accesses(a, _) }
 
   /**
    * Holds if this function accesses a function or variable or enumerator `a`

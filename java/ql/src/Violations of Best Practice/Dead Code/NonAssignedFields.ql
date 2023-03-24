@@ -86,5 +86,5 @@ where
   ) and
   // Exclude special VM classes.
   not isVMObserver(f.getDeclaringType())
-select f, "Field " + f.getName() + " never assigned non-null value, yet it is read at $@.", fr,
-  fr.getFile().getStem() + ".java:" + fr.getLocation().getStartLine()
+select f, "The field '" + f.getName() + "' is never explicitly assigned a value, yet $@.", fr,
+  "the field is read"

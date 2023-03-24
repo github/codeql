@@ -18,4 +18,4 @@ from MethodCall mc
 where
   mc instanceof ImplicitToStringExpr and
   mc.getTarget() instanceof ToStringMethod
-select mc, "Redundant call to 'ToString'."
+select mc, "Redundant call to 'ToString' on a String object."

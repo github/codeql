@@ -7,20 +7,22 @@
 
 import regexp.RegExpTreeView // re-export
 private import regexp.internal.ParseRegExp
-private import codeql.ruby.ast.Literal as AST
+private import regexp.internal.RegExpTracking as RegExpTracking
+private import codeql.ruby.AST as Ast
+private import codeql.ruby.CFG
 private import codeql.ruby.DataFlow
-private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.dataflow.internal.tainttrackingforlibraries.TaintTrackingImpl
+private import codeql.ruby.Concepts
 
 /**
  * Provides utility predicates related to regular expressions.
  */
-module RegExpPatterns {
+deprecated module RegExpPatterns {
   /**
    * Gets a pattern that matches common top-level domain names in lower case.
+   * DEPRECATED: use the similarly named predicate from `HostnameRegex` from the `regex` pack instead.
    */
-  string getACommonTld() {
+  deprecated string getACommonTld() {
     // according to ranking by http://google.com/search?q=site:.<<TLD>>
     result = "(?:com|org|edu|gov|uk|net|io)(?![a-z0-9])"
   }
@@ -47,7 +49,7 @@ abstract class RegExpPatternSource extends DataFlow::Node {
  * A regular expression literal, viewed as the pattern source for itself.
  */
 private class RegExpLiteralPatternSource extends RegExpPatternSource {
-  private AST::RegExpLiteral astNode;
+  private Ast::RegExpLiteral astNode;
 
   RegExpLiteralPatternSource() { astNode = this.asExpr().getExpr() }
 
@@ -63,14 +65,18 @@ private class RegExpLiteralPatternSource extends RegExpPatternSource {
 private class StringRegExpPatternSource extends RegExpPatternSource {
   private DataFlow::Node parse;
 
-  StringRegExpPatternSource() { this = regExpSource(parse) }
+  StringRegExpPatternSource() {
+    this = regExpSource(parse) and
+    // `regExpSource()` tracks both strings and regex literals, narrow it down to strings.
+    this.asExpr().getConstantValue().isString(_)
+  }
 
   override DataFlow::Node getAParse() { result = parse }
 
   override RegExpTerm getRegExpTerm() { result.getRegExp() = this.asExpr().getExpr() }
 }
 
-private class RegExpLiteralRegExp extends RegExp, AST::RegExpLiteral {
+private class RegExpLiteralRegExp extends RegExp, Ast::RegExpLiteral {
   override predicate isDotAll() { this.hasMultilineFlag() }
 
   override predicate isIgnoreCase() { this.hasCaseInsensitiveFlag() }
@@ -92,45 +98,112 @@ private class ParsedStringRegExp extends RegExp {
   override string getFlags() { none() }
 }
 
+/** Provides a class for modeling regular expression interpretations. */
+module RegExpInterpretation {
+  /**
+   * A node that is not a regular expression literal, but is used in places that
+   * may interpret it as one. Instances of this class are typically strings that
+   * flow to method calls like `RegExp.new`.
+   */
+  abstract class Range extends DataFlow::Node { }
+}
+
 /**
- * Holds if `source` may be interpreted as a regular expression.
+ * A node interpreted as a regular expression.
+ * Speficically nodes where string values are interpreted as regular expressions.
  */
-private predicate isInterpretedAsRegExp(DataFlow::Node source) {
-  // The first argument to an invocation of `Regexp.new` or `Regexp.compile`.
-  source = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"]).getArgument(0)
+class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
+  StdLibRegExpInterpretation() {
+    // The first argument to an invocation of `Regexp.new` or `Regexp.compile`.
+    this = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"]).getArgument(0)
+    or
+    // The argument of a call that coerces the argument to a regular expression.
+    exists(DataFlow::CallNode mce |
+      mce.getMethodName() = ["match", "match?"] and
+      this = mce.getArgument(0) and
+      // exclude https://ruby-doc.org/core-2.4.0/Regexp.html#method-i-match
+      not mce.getReceiver() = RegExpTracking::trackRegexpType()
+    )
+  }
+}
+
+/**
+ * Holds if `exec` is a node where `regexp` is interpreted as a regular expression and
+ * tested against the string value of `input`.
+ * `name` describes the regexp execution, typically the name of the method being called.
+ */
+private predicate regexExecution(
+  DataFlow::Node exec, DataFlow::Node input, DataFlow::Node regexp, string name
+) {
+  // `=~` or `!~`
+  exists(CfgNodes::ExprNodes::BinaryOperationCfgNode op |
+    name = op.getOperator() and
+    exec.asExpr() = op and
+    (
+      op.getExpr() instanceof Ast::RegExpMatchExpr or
+      op.getExpr() instanceof Ast::NoRegExpMatchExpr
+    ) and
+    (
+      input.asExpr() = op.getLeftOperand() and regexp.asExpr() = op.getRightOperand()
+      or
+      input.asExpr() = op.getRightOperand() and regexp.asExpr() = op.getLeftOperand()
+    )
+  )
   or
-  // The argument of a call that coerces the argument to a regular expression.
-  exists(DataFlow::CallNode mce |
-    mce.getMethodName() = ["match", "match?"] and
-    source = mce.getArgument(0) and
-    // exclude https://ruby-doc.org/core-2.4.0/Regexp.html#method-i-match
-    not mce.getReceiver().asExpr().getExpr() instanceof AST::RegExpLiteral
+  // Any of the methods on `String` that take a regexp.
+  exists(DataFlow::CallNode call | exec = call |
+    name = "String#" + call.getMethodName() and
+    call.getMethodName() =
+      [
+        "[]", "gsub", "gsub!", "index", "match", "match?", "partition", "rindex", "rpartition",
+        "scan", "slice!", "split", "sub", "sub!"
+      ] and
+    input = call.getReceiver() and
+    regexp = call.getArgument(0) and
+    // exclude https://ruby-doc.org/core-2.4.0/Regexp.html#method-i-match, they are handled on the next case of this disjunction
+    // also see `StdLibRegExpInterpretation`
+    not (
+      call.getMethodName() = ["match", "match?"] and
+      call.getReceiver() = RegExpTracking::trackRegexpType()
+    )
+  )
+  or
+  // A call to `match` or `match?` where the regexp is the receiver.
+  exists(DataFlow::CallNode call | exec = call |
+    name = "Regexp#" + call.getMethodName() and
+    call.getMethodName() = ["match", "match?"] and
+    regexp = call.getReceiver() and
+    input = call.getArgument(0)
+  )
+  or
+  // a case-when statement
+  exists(CfgNodes::ExprNodes::CaseExprCfgNode caseExpr |
+    exec.asExpr() = caseExpr and
+    input.asExpr() = caseExpr.getValue()
+  |
+    name = "case-when" and
+    regexp.asExpr() = caseExpr.getBranch(_).(CfgNodes::ExprNodes::WhenClauseCfgNode).getPattern(_)
+    or
+    name = "case-in" and
+    regexp.asExpr() = caseExpr.getBranch(_).(CfgNodes::ExprNodes::InClauseCfgNode).getPattern()
   )
 }
 
-private class RegExpConfiguration extends Configuration {
-  RegExpConfiguration() { this = "RegExpConfiguration" }
+/**
+ * An execution of a regular expression by the standard library.
+ */
+private class StdRegexpExecution extends RegexExecution::Range {
+  DataFlow::Node regexp;
+  DataFlow::Node input;
+  string name;
 
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() =
-      any(ExprCfgNode e |
-        e.getConstantValue().isString(_) and
-        not e instanceof ExprNodes::VariableReadAccessCfgNode and
-        not e instanceof ExprNodes::ConstantReadAccessCfgNode
-      )
-  }
+  StdRegexpExecution() { regexExecution(this, input, regexp, name) }
 
-  override predicate isSink(DataFlow::Node sink) { isInterpretedAsRegExp(sink) }
+  override DataFlow::Node getRegex() { result = regexp }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    // stop flow if `node` is receiver of
-    // https://ruby-doc.org/core-2.4.0/String.html#method-i-match
-    exists(DataFlow::CallNode mce |
-      mce.getMethodName() = ["match", "match?"] and
-      node = mce.getReceiver() and
-      mce.getArgument(0).asExpr().getExpr() instanceof AST::RegExpLiteral
-    )
-  }
+  override DataFlow::Node getString() { result = input }
+
+  override string getName() { result = name }
 }
 
 /**
@@ -138,6 +211,11 @@ private class RegExpConfiguration extends Configuration {
  * as a part of a regular expression.
  */
 cached
-DataFlow::Node regExpSource(DataFlow::Node re) {
-  exists(RegExpConfiguration c | c.hasFlow(result, re))
+DataFlow::Node regExpSource(DataFlow::Node re) { result = RegExpTracking::regExpSource(re) }
+
+/** Gets a parsed regular expression term that is executed at `exec`. */
+RegExpTerm getTermForExecution(RegexExecution exec) {
+  exists(RegExpPatternSource source | source = regExpSource(exec.getRegex()) |
+    result = source.getRegExpTerm()
+  )
 }

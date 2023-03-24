@@ -17,4 +17,4 @@ nodes
 | Test.java:21:22:21:25 | data | semmle.label | data |
 subpaths
 #select
-| Test.java:21:17:21:25 | (...)... | Test.java:11:28:11:36 | System.in : InputStream | Test.java:21:22:21:25 | data | $@ flows to here and is cast to a narrower type, potentially causing truncation. | Test.java:11:28:11:36 | System.in | User-provided value |
+| Test.java:21:17:21:25 | (...)... | Test.java:11:28:11:36 | System.in : InputStream | Test.java:21:22:21:25 | data | This cast to a narrower type depends on a $@, potentially causing truncation. | Test.java:11:28:11:36 | System.in | user-provided value |

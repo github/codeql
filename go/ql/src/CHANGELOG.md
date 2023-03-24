@@ -1,3 +1,90 @@
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+### Minor Analysis Improvements
+
+* The query `go/incorrect-integer-conversion` now correctly recognizes guards of the form `if val <= x` to protect a conversion `uintX(val)` when `x` is in the range `(math.MaxIntX, math.MaxUintX]`.
+
+## 0.4.3
+
+### New Queries
+
+* Added a new query, `go/unhandled-writable-file-close`, to detect instances where writable file handles are closed without appropriate checks for errors.
+
+### Query Metadata Changes
+
+* The precision of the `go/log-injection` query was decreased from `high` to `medium`, since it may not be able to identify every way in which log data may be sanitized. This also aligns it with the precision of comparable queries for other languages.
+
+## 0.4.2
+
+No user-facing changes.
+
+## 0.4.1
+
+### Minor Analysis Improvements
+
+* Replacing "\r" or "\n" using the functions `strings.ReplaceAll`, `strings.Replace`, `strings.Replacer.Replace` and `strings.Replacer.WriteString` has been added as a sanitizer for the queries "Log entries created from user input".
+* The functions `strings.Replacer.Replace` and `strings.Replacer.WriteString` have been added as sanitizers for the query "Potentially unsafe quoting".
+
+## 0.4.0
+
+### Minor Analysis Improvements
+
+* The `AlertSuppression.ql` query has been updated to support the new `// codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy `// lgtm` and `// lgtm[query-id]` comments can now also be placed on the line before an alert.
+
+## 0.3.6
+
+No user-facing changes.
+
+## 0.3.5
+
+No user-facing changes.
+
+## 0.3.4
+
+No user-facing changes.
+
+## 0.3.3
+
+### Minor Analysis Improvements
+
+* Query `go/clear-text-logging` now excludes `GetX` methods of protobuf `Message` structs, except where taint is specifically known to belong to the right field. This is to avoid FPs where taint is written to one field and then spuriously read from another.
+
+## 0.3.2
+
+### Minor Analysis Improvements
+
+* The alert messages of many queries were changed to better follow the style guide and make the messages consistent with other languages.
+
+## 0.3.1
+
+No user-facing changes.
+
+## 0.3.0
+
+### Query Metadata Changes
+
+* Added the `security-severity` tag and CWE tag to the `go/insecure-hostkeycallback` query.
+
+### Minor Analysis Improvements
+
+* The alert message of many queries have been changed to make the message consistent with other languages.
+
+## 0.2.5
+
+## 0.2.4
+
+## 0.2.3
+
+### Minor Analysis Improvements
+
+* The query `go/path-injection` no longer considers user-controlled numeric or boolean-typed data as potentially dangerous.
+
+## 0.2.2
+
 ## 0.2.1
 
 ## 0.2.0

@@ -42,7 +42,7 @@ methods.cs:
 #   21|           0: [MethodCall] call to method WriteLine
 #   21|             -1: [TypeAccess] access to type Console
 #   21|               0: [TypeMention] Console
-#   21|             0: [StringLiteral] "{0} {1}"
+#   21|             0: [StringLiteralUtf16] "{0} {1}"
 #   21|             1: [CastExpr] (...) ...
 #   21|               1: [LocalVariableAccess] access to local variable i
 #   21|             2: [CastExpr] (...) ...
@@ -51,7 +51,7 @@ methods.cs:
 #   22|           0: [MethodCall] call to method WriteLine
 #   22|             -1: [TypeAccess] access to type Console
 #   22|               0: [TypeMention] Console
-#   22|             0: [StringLiteral] "{0} {1}"
+#   22|             0: [StringLiteralUtf16] "{0} {1}"
 #   22|             1: [CastExpr] (...) ...
 #   22|               1: [LocalVariableAccess] access to local variable i
 #   22|             2: [CastExpr] (...) ...
@@ -99,7 +99,7 @@ methods.cs:
 #   39|           0: [MethodCall] call to method WriteLine
 #   39|             -1: [TypeAccess] access to type Console
 #   39|               0: [TypeMention] Console
-#   39|             0: [StringLiteral] "{0} {1}"
+#   39|             0: [StringLiteralUtf16] "{0} {1}"
 #   39|             1: [CastExpr] (...) ...
 #   39|               1: [LocalVariableAccess] access to local variable res
 #   39|             2: [CastExpr] (...) ...
@@ -131,7 +131,7 @@ methods.cs:
 #   55|           0: [MethodCall] call to method WriteLine
 #   55|             -1: [TypeAccess] access to type Console
 #   55|               0: [TypeMention] Console
-#   55|             0: [StringLiteral] "F()"
+#   55|             0: [StringLiteralUtf16] "F()"
 #   58|     6: [Method] F
 #   58|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
@@ -142,7 +142,7 @@ methods.cs:
 #   60|           0: [MethodCall] call to method WriteLine
 #   60|             -1: [TypeAccess] access to type Console
 #   60|               0: [TypeMention] Console
-#   60|             0: [StringLiteral] "F(object)"
+#   60|             0: [StringLiteralUtf16] "F(object)"
 #   63|     7: [Method] F
 #   63|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
@@ -153,7 +153,7 @@ methods.cs:
 #   65|           0: [MethodCall] call to method WriteLine
 #   65|             -1: [TypeAccess] access to type Console
 #   65|               0: [TypeMention] Console
-#   65|             0: [StringLiteral] "F(int)"
+#   65|             0: [StringLiteralUtf16] "F(int)"
 #   68|     8: [Method] F
 #   68|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
@@ -164,7 +164,7 @@ methods.cs:
 #   70|           0: [MethodCall] call to method WriteLine
 #   70|             -1: [TypeAccess] access to type Console
 #   70|               0: [TypeMention] Console
-#   70|             0: [StringLiteral] "F(double)"
+#   70|             0: [StringLiteralUtf16] "F(double)"
 #   73|     9: [Method] F<>
 #   73|       -1: [TypeMention] Void
 #-----|       1: (Type parameters)
@@ -177,7 +177,7 @@ methods.cs:
 #   75|           0: [MethodCall] call to method WriteLine
 #   75|             -1: [TypeAccess] access to type Console
 #   75|               0: [TypeMention] Console
-#   75|             0: [StringLiteral] "F<T>(T)"
+#   75|             0: [StringLiteralUtf16] "F<T>(T)"
 #   78|     12: [Method] F
 #   78|       -1: [TypeMention] Void
 #-----|       2: (Parameters)
@@ -190,7 +190,7 @@ methods.cs:
 #   80|           0: [MethodCall] call to method WriteLine
 #   80|             -1: [TypeAccess] access to type Console
 #   80|               0: [TypeMention] Console
-#   80|             0: [StringLiteral] "F(double, double)"
+#   80|             0: [StringLiteralUtf16] "F(double, double)"
 #   83|     13: [Method] Main
 #   83|       -1: [TypeMention] Void
 #   84|       4: [BlockStmt] {...}
@@ -204,7 +204,7 @@ methods.cs:
 #   87|             0: [DoubleLiteral] 1
 #   88|         3: [ExprStmt] ...;
 #   88|           0: [MethodCall] call to method F<String>
-#   88|             0: [StringLiteral] "abc"
+#   88|             0: [StringLiteralUtf16] "abc"
 #   89|         4: [ExprStmt] ...;
 #   89|           0: [MethodCall] call to method F
 #   89|             0: [CastExpr] (...) ...
@@ -307,7 +307,7 @@ methods.cs:
 #  119|     8: [Method] CallToInt32
 #  119|       -1: [TypeMention] int
 #  119|       4: [MethodCall] call to method ToInt32
-#  119|         0: [StringLiteral] "0"
+#  119|         0: [StringLiteralUtf16] "0"
 #  122|   6: [Class] TestExtensions
 #  125|     4: [Method] Main
 #  125|       -1: [TypeMention] Void
@@ -319,10 +319,10 @@ methods.cs:
 #  127|             0: [LocalVariableAccess] access to local variable strings
 #  127|             1: [ArrayCreation] array creation of type String[]
 #  127|               -1: [ArrayInitializer] { ..., ... }
-#  127|                 0: [StringLiteral] "1"
-#  127|                 1: [StringLiteral] "22"
-#  127|                 2: [StringLiteral] "333"
-#  127|                 3: [StringLiteral] "4444"
+#  127|                 0: [StringLiteralUtf16] "1"
+#  127|                 1: [StringLiteralUtf16] "22"
+#  127|                 2: [StringLiteralUtf16] "333"
+#  127|                 3: [StringLiteralUtf16] "4444"
 #  128|         1: [ForeachStmt] foreach (... ... in ...) ...
 #  128|           0: [LocalVariableDeclExpr] String s
 #  128|             0: [TypeMention] string
@@ -341,12 +341,12 @@ methods.cs:
 #  133|           0: [MethodCall] call to method ToInt32
 #  133|             -1: [TypeAccess] access to type Extensions
 #  133|               0: [TypeMention] Extensions
-#  133|             0: [StringLiteral] ""
+#  133|             0: [StringLiteralUtf16] ""
 #  135|         3: [ExprStmt] ...;
 #  135|           0: [MethodCall] call to method ToBool
 #  135|             -1: [TypeAccess] access to type Extensions
 #  135|               0: [TypeMention] Extensions
-#  135|             0: [StringLiteral] "true"
+#  135|             0: [StringLiteralUtf16] "true"
 #  135|             1: [ImplicitDelegateCreation] delegate creation of type Func<String,Boolean>
 #  135|               0: [MethodAccess] access to method Parse
 #  135|                 -1: [TypeAccess] access to type Boolean
@@ -376,8 +376,8 @@ methods.cs:
 #  146|         4: [Parameter] e
 #  146|           -1: [TypeMention] string
 #  146|           1: [AddExpr] ... + ...
-#  146|             0: [StringLiteral] "a"
-#  146|             1: [StringLiteral] "b"
+#  146|             0: [StringLiteralUtf16] "a"
+#  146|             1: [StringLiteralUtf16] "b"
 #  147|       4: [BlockStmt] {...}
 #  150|     6: [InstanceConstructor] TestDefaultParameters
 #-----|       2: (Parameters)
@@ -388,7 +388,7 @@ methods.cs:
 #-----|       2: (Parameters)
 #  154|         0: [Parameter] x
 #  154|           -1: [TypeMention] string
-#  154|           1: [StringLiteral] "abc"
+#  154|           1: [StringLiteralUtf16] "abc"
 #  154|         1: [Parameter] y
 #  154|           -1: [TypeMention] double
 #  154|           1: [ObjectCreation] object creation of type Double

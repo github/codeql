@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Configuration.KeyPerFile, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,18 +7,16 @@ namespace Microsoft
     {
         namespace Configuration
         {
-            // Generated from `Microsoft.Extensions.Configuration.KeyPerFileConfigurationBuilderExtensions` in `Microsoft.Extensions.Configuration.KeyPerFile, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class KeyPerFileConfigurationBuilderExtensions
             {
-                public static Microsoft.Extensions.Configuration.IConfigurationBuilder AddKeyPerFile(this Microsoft.Extensions.Configuration.IConfigurationBuilder builder, string directoryPath, bool optional, bool reloadOnChange) => throw null;
-                public static Microsoft.Extensions.Configuration.IConfigurationBuilder AddKeyPerFile(this Microsoft.Extensions.Configuration.IConfigurationBuilder builder, string directoryPath, bool optional) => throw null;
-                public static Microsoft.Extensions.Configuration.IConfigurationBuilder AddKeyPerFile(this Microsoft.Extensions.Configuration.IConfigurationBuilder builder, string directoryPath) => throw null;
                 public static Microsoft.Extensions.Configuration.IConfigurationBuilder AddKeyPerFile(this Microsoft.Extensions.Configuration.IConfigurationBuilder builder, System.Action<Microsoft.Extensions.Configuration.KeyPerFile.KeyPerFileConfigurationSource> configureSource) => throw null;
+                public static Microsoft.Extensions.Configuration.IConfigurationBuilder AddKeyPerFile(this Microsoft.Extensions.Configuration.IConfigurationBuilder builder, string directoryPath) => throw null;
+                public static Microsoft.Extensions.Configuration.IConfigurationBuilder AddKeyPerFile(this Microsoft.Extensions.Configuration.IConfigurationBuilder builder, string directoryPath, bool optional) => throw null;
+                public static Microsoft.Extensions.Configuration.IConfigurationBuilder AddKeyPerFile(this Microsoft.Extensions.Configuration.IConfigurationBuilder builder, string directoryPath, bool optional, bool reloadOnChange) => throw null;
             }
 
             namespace KeyPerFile
             {
-                // Generated from `Microsoft.Extensions.Configuration.KeyPerFile.KeyPerFileConfigurationProvider` in `Microsoft.Extensions.Configuration.KeyPerFile, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class KeyPerFileConfigurationProvider : Microsoft.Extensions.Configuration.ConfigurationProvider, System.IDisposable
                 {
                     public void Dispose() => throw null;
@@ -26,7 +25,6 @@ namespace Microsoft
                     public override string ToString() => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Configuration.KeyPerFile.KeyPerFileConfigurationSource` in `Microsoft.Extensions.Configuration.KeyPerFile, Version=5.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class KeyPerFileConfigurationSource : Microsoft.Extensions.Configuration.IConfigurationSource
                 {
                     public Microsoft.Extensions.Configuration.IConfigurationProvider Build(Microsoft.Extensions.Configuration.IConfigurationBuilder builder) => throw null;
@@ -37,6 +35,7 @@ namespace Microsoft
                     public bool Optional { get => throw null; set => throw null; }
                     public int ReloadDelay { get => throw null; set => throw null; }
                     public bool ReloadOnChange { get => throw null; set => throw null; }
+                    public string SectionDelimiter { get => throw null; set => throw null; }
                 }
 
             }

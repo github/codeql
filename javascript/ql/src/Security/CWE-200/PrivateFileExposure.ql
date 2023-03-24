@@ -76,7 +76,7 @@ Folder getAPackageJsonFolder() { result = any(PackageJson json).getFile().getPar
  * the current working folder, or the root folder.
  * All of these might cause information to be leaked.
  *
- * For the first case it is assumed that the presence of a `package.json` file means that a `node_modules` folder can also exist.
+ * For the first case it is assumed that the presence of a `package.json` file means that a "node_modules" folder can also exist.
  *
  * For the root/home/working folder, they contain so much information that they must leak information somehow (e.g. ssh keys in the `~/.ssh` folder).
  */
@@ -135,7 +135,7 @@ DataFlow::CallNode servesAPrivateFolder(string description) {
  */
 Express::RouteSetup getAnExposingExpressSetup(string path) {
   result.isUseCall() and
-  result.getArgument([0 .. 1]) = servesAPrivateFolder(path).getEnclosingExpr()
+  result.getArgument([0 .. 1]) = servesAPrivateFolder(path)
 }
 
 /**
@@ -149,7 +149,7 @@ DataFlow::CallNode getAnExposingServeSetup(string path) {
 
 from DataFlow::Node node, string path
 where
-  node = getAnExposingExpressSetup(path).flow()
+  node = getAnExposingExpressSetup(path)
   or
   node = getAnExposingServeSetup(path)
 select node, "Serves " + path + ", which can contain private information."

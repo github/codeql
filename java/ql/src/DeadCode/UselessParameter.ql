@@ -14,4 +14,4 @@ import semmle.code.java.deadcode.DeadCode
 
 from RootdefCallable c
 where not c.whitelisted()
-select c.unusedParameter() as p, "The parameter " + p + " is unused."
+select c.unusedParameter() as p, "The parameter '" + p + "' is never used."

@@ -1,0 +1,55 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>The Android manifest file defines configuration settings for Android applications.
+In this file, components can be declared with intent filters which specify what the components can do and what types
+of intents the components can respond to. If the <code>android:exported</code> attribute is omitted from the component
+when an intent filter is included, then the component will be implicitly exported.</p>
+
+<p>An implicitly exported component could allow for improper access to the component and its data.</p>
+
+</overview>
+<recommendation>
+
+<p>Explicitly set the <code>android:exported</code> attribute for every component or use permissions to limit access to the component.</p>
+
+</recommendation>
+<example>
+
+<p>In the example below, the <code>android:exported</code> attribute is omitted when an intent filter is used.</p>
+
+<sample src="ExampleBad.xml" />
+
+<p>A corrected version sets the <code>android:exported</code> attribute to <code>false</code>.</p>
+
+<sample src="ExampleGood.xml" />
+
+</example>
+<references>
+
+<li>
+  Android Developers:
+  <a href="https://developer.android.com/guide/topics/manifest/manifest-intro">App Manifest Overview</a>.
+</li>
+<li>
+  Android Developers:
+  <a href="https://developer.android.com/guide/topics/manifest/intent-filter-element">The &lt;intent-filter&gt; element</a>.
+</li>
+<li>
+  Android Developers:
+  <a href="https://developer.android.com/guide/topics/manifest/activity-element#exported">The android:exported attribute</a>.
+</li>
+<li>
+  Android Developers:
+  <a href="https://developer.android.com/guide/topics/manifest/activity-element#prmsn">The android:permission attribute</a>.
+</li>
+<li>
+  Android Developers:
+  <a href="https://developer.android.com/about/versions/12/behavior-changes-12#exported">Safer component exporting</a>.
+</li>
+
+</references>
+</qhelp>

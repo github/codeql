@@ -1,19 +1,41 @@
 using Semmle.Util.Logging;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Semmle.Autobuild.Shared
 {
+    internal static class MsBuildCommandExtensions
+    {
+        /// <summary>
+        /// Appends a call to msbuild.
+        /// </summary>
+        /// <param name="cmdBuilder"></param>
+        /// <param name="builder"></param>
+        /// <returns></returns>
+        public static CommandBuilder MsBuildCommand(this CommandBuilder cmdBuilder, IAutobuilder<AutobuildOptionsShared> builder)
+        {
+            var isArmMac = builder.Actions.IsMacOs() && builder.Actions.IsArm();
+
+            // mono doesn't ship with `msbuild` on Arm-based Macs, but we can fall back to
+            // msbuild that ships with `dotnet` which can be invoked with `dotnet msbuild`
+            // perhaps we should do this on all platforms?
+            return isArmMac ?
+                cmdBuilder.RunCommand("dotnet").Argument("msbuild") :
+                cmdBuilder.RunCommand("msbuild");
+        }
+    }
+
     /// <summary>
     /// A build rule using msbuild.
     /// </summary>
-    public class MsBuildRule : IBuildRule
+    public class MsBuildRule : IBuildRule<AutobuildOptionsShared>
     {
         /// <summary>
-        /// The name of the msbuild command.
+        /// A list of solutions or projects which failed to build.
         /// </summary>
-        private const string msBuild = "msbuild";
+        public readonly List<IProjectOrSolution> FailedProjectsOrSolutions = new();
 
-        public BuildScript Analyse(Autobuilder builder, bool auto)
+        public BuildScript Analyse(IAutobuilder<AutobuildOptionsShared> builder, bool auto)
         {
             if (!builder.ProjectsOrSolutionsToBuild.Any())
                 return BuildScript.Failure;
@@ -27,8 +49,8 @@ namespace Semmle.Autobuild.Shared
             {
                 var firstSolution = builder.ProjectsOrSolutionsToBuild.OfType<ISolution>().FirstOrDefault();
                 vsTools = firstSolution is not null
-                                ? BuildTools.FindCompatibleVcVars(builder.Actions, firstSolution)
-                                : BuildTools.VcVarsAllBatFiles(builder.Actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault();
+                                        ? BuildTools.FindCompatibleVcVars(builder.Actions, firstSolution)
+                                        : BuildTools.VcVarsAllBatFiles(builder.Actions).OrderByDescending(b => b.ToolsVersion).FirstOrDefault();
             }
 
             if (vsTools is null && builder.Actions.IsWindows())
@@ -57,7 +79,7 @@ namespace Semmle.Autobuild.Shared
                             Script;
                     var nugetRestore = GetNugetRestoreScript();
                     var msbuildRestoreCommand = new CommandBuilder(builder.Actions).
-                        RunCommand(msBuild).
+                        MsBuildCommand(builder).
                         Argument("/t:restore").
                         QuoteArgument(projectOrSolution.FullPath);
 
@@ -95,10 +117,8 @@ namespace Semmle.Autobuild.Shared
                     command.RunCommand("set Platform=&& type NUL", quoteExe: false);
                 }
 
-                command.RunCommand(msBuild);
+                command.MsBuildCommand(builder);
                 command.QuoteArgument(projectOrSolution.FullPath);
-
-                command.Argument("/p:UseSharedCompilation=false");
 
                 var target = builder.Options.MsBuildTarget ?? "rebuild";
                 var platform = builder.Options.MsBuildPlatform ?? (projectOrSolution is ISolution s1 ? s1.DefaultPlatformName : null);
@@ -109,11 +129,16 @@ namespace Semmle.Autobuild.Shared
                     command.Argument(string.Format("/p:Platform=\"{0}\"", platform));
                 if (configuration is not null)
                     command.Argument(string.Format("/p:Configuration=\"{0}\"", configuration));
-                command.Argument("/p:MvcBuildViews=true");
 
                 command.Argument(builder.Options.MsBuildArguments);
 
-                ret &= command.Script;
+                // append the build script which invokes msbuild to the overall build script `ret`;
+                // we insert a check that building the current project or solution was successful:
+                // if it was not successful, we add it to `FailedProjectsOrSolutions`
+                ret &= BuildScript.OnFailure(command.Script, ret =>
+                {
+                    FailedProjectsOrSolutions.Add(projectOrSolution);
+                });
             }
 
             return ret;
@@ -126,7 +151,7 @@ namespace Semmle.Autobuild.Shared
         ///
         /// Returns <code>null</code> when no version is specified.
         /// </summary>
-        public static VcVarsBatFile? GetVcVarsBatFile(Autobuilder builder)
+        public static VcVarsBatFile? GetVcVarsBatFile<TAutobuildOptions>(IAutobuilder<TAutobuildOptions> builder) where TAutobuildOptions : AutobuildOptionsShared
         {
             VcVarsBatFile? vsTools = null;
 
@@ -157,7 +182,7 @@ namespace Semmle.Autobuild.Shared
         /// <summary>
         /// Returns a script for downloading `nuget.exe` from nuget.org.
         /// </summary>
-        private static BuildScript DownloadNugetExe(Autobuilder builder, string path) =>
+        private static BuildScript DownloadNugetExe<TAutobuildOptions>(IAutobuilder<TAutobuildOptions> builder, string path) where TAutobuildOptions : AutobuildOptionsShared =>
             BuildScript.Create(_ =>
             {
                 builder.Log(Severity.Info, "Attempting to download nuget.exe");

@@ -3,6 +3,7 @@
  */
 
 import go
+private import semmle.go.dataflow.DataFlowForStringsNewReplacer
 
 /** Provides predicates and classes for working with string operations. */
 module StringOps {
@@ -12,20 +13,16 @@ module StringOps {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `StringOps::HasPrefix::Range` instead.
    */
-  class HasPrefix extends DataFlow::Node {
-    HasPrefix::Range range;
-
-    HasPrefix() { range = this }
-
+  class HasPrefix extends DataFlow::Node instanceof HasPrefix::Range {
     /**
      * Gets the `A` in `strings.HasPrefix(A, B)`.
      */
-    DataFlow::Node getBaseString() { result = range.getBaseString() }
+    DataFlow::Node getBaseString() { result = super.getBaseString() }
 
     /**
      * Gets the `B` in `strings.HasPrefix(A, B)`.
      */
-    DataFlow::Node getSubstring() { result = range.getSubstring() }
+    DataFlow::Node getSubstring() { result = super.getSubstring() }
 
     /**
      * Gets the polarity of the check.
@@ -33,7 +30,7 @@ module StringOps {
      * If the polarity is `false` the check returns `true` if the string does not start
      * with the given substring.
      */
-    boolean getPolarity() { result = range.getPolarity() }
+    boolean getPolarity() { result = super.getPolarity() }
   }
 
   class StartsWith = HasPrefix;
@@ -166,6 +163,115 @@ module StringOps {
     }
   }
 
+  /**
+   * An expression that is equivalent to `strings.ReplaceAll(s, old, new)`.
+   *
+   * Extend this class to refine existing API models. If you want to model new APIs,
+   * extend `StringOps::ReplaceAll::Range` instead.
+   */
+  class ReplaceAll extends DataFlow::Node instanceof ReplaceAll::Range {
+    /**
+     * Gets the `old` in `strings.ReplaceAll(s, old, new)`.
+     */
+    string getReplacedString() { result = super.getReplacedString() }
+  }
+
+  /** Provides predicates and classes for working with prefix checks. */
+  module ReplaceAll {
+    /**
+     * An expression that is equivalent to `strings.ReplaceAll(s, old, new)`.
+     *
+     * Extend this class to model new APIs. If you want to refine existing API models, extend
+     * `StringOps::ReplaceAll` instead.
+     */
+    abstract class Range extends DataFlow::Node {
+      /**
+       * Gets the `old` in `strings.ReplaceAll(s, old, new)`.
+       */
+      abstract string getReplacedString();
+    }
+
+    /**
+     * A call to `strings.ReplaceAll`  or `strings.Replace` with a negative `n`
+     * so that all instances are replaced.
+     */
+    private class StringsReplaceAll extends Range, DataFlow::CallNode {
+      StringsReplaceAll() {
+        exists(string name | this.getTarget().hasQualifiedName("strings", name) |
+          name = "ReplaceAll"
+          or
+          name = "Replace" and
+          this.getArgument(3).getNumericValue() < 0
+        )
+      }
+
+      override string getReplacedString() { result = this.getArgument(1).getStringValue() }
+    }
+
+    /**
+     * A call to `strings.NewReplacer`.
+     */
+    private class StringsNewReplacerCall extends DataFlow::CallNode {
+      StringsNewReplacerCall() { this.getTarget().hasQualifiedName("strings", "NewReplacer") }
+
+      /**
+       * Gets an argument to this call corresponding to a string that will be
+       * replaced.
+       */
+      DataFlow::Node getAReplacedArgument() {
+        exists(int n | n % 2 = 0 and result = this.getArgument(n))
+      }
+    }
+
+    /**
+     * A configuration for tracking flow from a call to `strings.NewReplacer` to
+     * the receiver of a call to `strings.Replacer.Replace` or
+     * `strings.Replacer.WriteString`.
+     */
+    private class StringsNewReplacerConfiguration extends DataFlowForStringsNewReplacer::Configuration
+    {
+      StringsNewReplacerConfiguration() { this = "StringsNewReplacerConfiguration" }
+
+      override predicate isSource(DataFlow::Node source) {
+        source instanceof StringsNewReplacerCall
+      }
+
+      override predicate isSink(DataFlow::Node sink) {
+        exists(DataFlow::MethodCallNode call |
+          sink = call.getReceiver() and
+          call.getTarget().hasQualifiedName("strings", "Replacer", ["Replace", "WriteString"])
+        )
+      }
+    }
+
+    /**
+     * A call to `strings.Replacer.Replace` or `strings.Replacer.WriteString`.
+     */
+    private class StringsReplacerReplaceOrWriteString extends Range {
+      string replacedString;
+
+      StringsReplacerReplaceOrWriteString() {
+        exists(
+          StringsNewReplacerConfiguration config, StringsNewReplacerCall source,
+          DataFlow::Node sink, DataFlow::MethodCallNode call
+        |
+          config.hasFlow(source, sink) and
+          sink = call.getReceiver() and
+          replacedString = source.getAReplacedArgument().getStringValue() and
+          (
+            call.getTarget().hasQualifiedName("strings", "Replacer", "Replace") and
+            this = call.getResult()
+            or
+            call.getTarget().hasQualifiedName("strings", "Replacer", "WriteString") and
+            this = call.getArgument(1)
+          )
+        )
+      }
+
+      override string getReplacedString() { result = replacedString }
+    }
+  }
+
   /** Provides predicates and classes for working with Printf-style formatters. */
   module Formatting {
     /**
@@ -241,25 +347,21 @@ module StringOps {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `StringOps::Concatenation::Range` instead.
    */
-  class Concatenation extends DataFlow::Node {
-    Concatenation::Range self;
-
-    Concatenation() { this = self }
-
+  class Concatenation extends DataFlow::Node instanceof Concatenation::Range {
     /**
      * Gets the `n`th operand of this string concatenation, if there is a data-flow node for it.
      */
-    DataFlow::Node getOperand(int n) { result = self.getOperand(n) }
+    DataFlow::Node getOperand(int n) { result = super.getOperand(n) }
 
     /**
      * Gets the string value of the `n`th operand of this string concatenation, if it is a constant.
      */
-    string getOperandStringValue(int n) { result = self.getOperandStringValue(n) }
+    string getOperandStringValue(int n) { result = super.getOperandStringValue(n) }
 
     /**
      * Gets the number of operands of this string concatenation.
      */
-    int getNumOperand() { result = self.getNumOperand() }
+    int getNumOperand() { result = super.getNumOperand() }
   }
 
   /** Provides predicates and classes for working with string concatenations. */

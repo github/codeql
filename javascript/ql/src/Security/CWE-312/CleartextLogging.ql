@@ -38,5 +38,5 @@ where
   cfg.hasFlowPath(source, sink) and
   // ignore logging to the browser console (even though it is not a good practice)
   not inBrowserEnvironment(sink.getNode().asExpr().getTopLevel())
-select sink.getNode(), source, sink, "Sensitive data returned by $@ is logged here.",
+select sink.getNode(), source, sink, "This logs sensitive data returned by $@ as clear text.",
   source.getNode(), source.getNode().(Source).describe()

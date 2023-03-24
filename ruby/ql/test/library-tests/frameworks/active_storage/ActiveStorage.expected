@@ -1,0 +1,47 @@
+attachmentInstances
+| active_storage.rb:11:1:11:11 | user_avatar |
+| active_storage.rb:11:1:11:25 | ... = ... |
+| active_storage.rb:11:15:11:25 | call to avatar |
+| active_storage.rb:13:1:13:11 | user_avatar |
+| active_storage.rb:14:1:14:11 | user_avatar |
+| active_storage.rb:15:1:15:11 | user_avatar |
+| active_storage.rb:17:1:17:11 | call to avatar |
+| active_storage.rb:19:1:19:10 | attachment |
+| active_storage.rb:19:1:19:42 | ... = ... |
+| active_storage.rb:19:14:19:42 | call to new |
+| active_storage.rb:23:11:23:20 | attachment |
+| active_storage.rb:24:11:24:20 | attachment |
+| active_storage.rb:25:18:25:27 | attachment |
+| active_storage.rb:42:5:42:15 | call to images |
+| active_storage.rb:73:1:73:10 | attachment |
+| active_storage.rb:74:1:74:10 | attachment |
+httpRequests
+| active_storage.rb:50:1:50:74 | call to create_after_unfurling! | activestorage | active_storage.rb:50:1:50:74 | call to create_after_unfurling! |
+| active_storage.rb:51:8:51:76 | call to create_and_upload! | activestorage | active_storage.rb:51:8:51:76 | call to create_and_upload! |
+| active_storage.rb:53:1:53:11 | call to upload | activestorage | active_storage.rb:53:1:53:11 | call to upload |
+| active_storage.rb:54:1:54:29 | call to upload_without_unfurling | activestorage | active_storage.rb:54:1:54:29 | call to upload_without_unfurling |
+| active_storage.rb:55:1:55:13 | call to download | activestorage | active_storage.rb:55:1:55:13 | call to download |
+| active_storage.rb:56:1:56:19 | call to download_chunk | activestorage | active_storage.rb:56:1:56:19 | call to download_chunk |
+| active_storage.rb:57:1:57:11 | call to delete | activestorage | active_storage.rb:57:1:57:11 | call to delete |
+| active_storage.rb:58:1:58:10 | call to purge | activestorage | active_storage.rb:58:1:58:10 | call to purge |
+| active_storage.rb:61:1:61:11 | call to upload | activestorage | active_storage.rb:61:1:61:11 | call to upload |
+| active_storage.rb:65:1:65:11 | call to upload | activestorage | active_storage.rb:65:1:65:11 | call to upload |
+| active_storage.rb:68:1:68:11 | call to upload | activestorage | active_storage.rb:68:1:68:11 | call to upload |
+| active_storage.rb:71:1:71:11 | call to upload | activestorage | active_storage.rb:71:1:71:11 | call to upload |
+| active_storage.rb:73:1:73:22 | call to upload | activestorage | active_storage.rb:73:1:73:22 | call to upload |
+| active_storage.rb:74:1:74:17 | call to upload | activestorage | active_storage.rb:74:1:74:17 | call to upload |
+commandExecutions
+| active_storage.rb:17:1:17:48 | call to variant | active_storage.rb:17:21:17:47 | Pair |
+| active_storage.rb:23:11:23:57 | call to variant | active_storage.rb:23:30:23:56 | Pair |
+| active_storage.rb:24:11:24:44 | call to preview | active_storage.rb:24:30:24:43 | Pair |
+| active_storage.rb:25:18:25:59 | call to representation | active_storage.rb:25:44:25:58 | Pair |
+| active_storage.rb:28:1:28:25 | call to transformations= | active_storage.rb:28:29:28:43 | ... = ... |
+| active_storage.rb:30:15:30:90 | call to new | active_storage.rb:30:75:30:89 | transformations |
+| active_storage.rb:31:11:31:53 | call to new | active_storage.rb:31:38:31:52 | transformations |
+| active_storage.rb:32:11:32:63 | call to new | active_storage.rb:32:48:32:62 | transformations |
+| active_storage.rb:34:1:34:19 | call to paths= | active_storage.rb:34:23:34:60 | ... = ... |
+| active_storage.rb:35:1:35:37 | call to video_preview_arguments= | active_storage.rb:35:41:35:59 | ... = ... |
+codeExecutions
+| active_storage.rb:37:1:37:31 | call to variant_processor= | active_storage.rb:37:35:37:50 | ... = ... |
+pathSanitizations
+| active_storage.rb:48:1:48:18 | call to sanitized |

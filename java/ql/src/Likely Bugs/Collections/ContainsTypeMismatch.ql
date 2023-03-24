@@ -118,7 +118,7 @@ class MismatchedContainerAccess extends MethodAccess {
       containerAccess(package, type, p, this.getCallee().getSignature(), i)
     |
       t = this.getCallee().getDeclaringType() and
-      t.getAnAncestor().getSourceDeclaration() = g and
+      t.getASourceSupertype*().getSourceDeclaration() = g and
       g.hasQualifiedName(package, type) and
       indirectlyInstantiates(t, g, p, result)
     )
@@ -139,7 +139,7 @@ from MismatchedContainerAccess ma, RefType typearg, RefType argtype, int idx
 where
   typearg = ma.getReceiverElementType(idx).getSourceDeclaration() and
   argtype = ma.getArgumentType(idx) and
-  not haveIntersection(typearg, argtype)
+  notHaveIntersection(typearg, argtype)
 select ma.getArgument(idx),
   "Actual argument type '" + argtype.getName() + "'" +
     " is incompatible with expected argument type '" + typearg.getName() + "'."

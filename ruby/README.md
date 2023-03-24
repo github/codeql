@@ -1,7 +1,7 @@
 # Ruby analysis support for CodeQL
 
 This directory contains the extractor, CodeQL libraries, and queries that power Ruby
-support in [LGTM](https://lgtm.com) and the other CodeQL products that [GitHub](https://github.com)
+support in CodeQL products that [GitHub](https://github.com)
 makes available to its customers worldwide.
 
 It contains two major components:

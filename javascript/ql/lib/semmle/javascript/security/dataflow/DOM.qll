@@ -21,14 +21,28 @@ class DomGlobalVariable extends GlobalVariable {
 /** DEPRECATED: Alias for DomGlobalVariable */
 deprecated class DOMGlobalVariable = DomGlobalVariable;
 
-/** Holds if `e` could hold a value that comes from the DOM. */
-predicate isDomValue(Expr e) { DOM::domValueRef().flowsToExpr(e) }
+/**
+ * DEPRECATED: Use `isDomNode` instead.
+ * Holds if `e` could hold a value that comes from the DOM.
+ */
+deprecated predicate isDomValue(Expr e) { isDomNode(e.flow()) }
+
+/**
+ * Holds if `e` could hold a value that comes from the DOM.
+ */
+predicate isDomNode(DataFlow::Node e) { DOM::domValueRef().flowsTo(e) }
+
+/**
+ * DEPRECATED: Use `isLocationNode` instead.
+ * Holds if `e` could refer to the `location` property of a DOM node.
+ */
+deprecated predicate isLocation(Expr e) { isLocationNode(e.flow()) }
 
 /** Holds if `e` could refer to the `location` property of a DOM node. */
-predicate isLocation(Expr e) {
-  e = DOM::domValueRef().getAPropertyReference("location").asExpr()
+predicate isLocationNode(DataFlow::Node e) {
+  e = DOM::domValueRef().getAPropertyReference("location")
   or
-  e.accessesGlobal("location")
+  e = DataFlow::globalVarRef("location")
 }
 
 /**
@@ -67,15 +81,38 @@ deprecated predicate isSafeLocationProperty(PropAccess pacc) {
 }
 
 /**
+ * DEPRECATED: Use `DomMethodCallNode` instead.
  * A call to a DOM method.
  */
-class DomMethodCallExpr extends MethodCallExpr {
-  DomMethodCallExpr() { isDomValue(this.getReceiver()) }
+deprecated class DomMethodCallExpr extends MethodCallExpr {
+  DomMethodCallNode node;
+
+  DomMethodCallExpr() { this.flow() = node }
+
+  /** Holds if `arg` is an argument that is interpreted as HTML. */
+  deprecated predicate interpretsArgumentsAsHtml(Expr arg) {
+    node.interpretsArgumentsAsHtml(arg.flow())
+  }
+
+  /** Holds if `arg` is an argument that is used as an URL. */
+  deprecated predicate interpretsArgumentsAsURL(Expr arg) {
+    node.interpretsArgumentsAsURL(arg.flow())
+  }
+
+  /** DEPRECATED: Alias for interpretsArgumentsAsHtml */
+  deprecated predicate interpretsArgumentsAsHTML(Expr arg) { this.interpretsArgumentsAsHtml(arg) }
+}
+
+/**
+ * A call to a DOM method.
+ */
+class DomMethodCallNode extends DataFlow::MethodCallNode {
+  DomMethodCallNode() { isDomNode(this.getReceiver()) }
 
   /**
    * Holds if `arg` is an argument that is interpreted as HTML.
    */
-  predicate interpretsArgumentsAsHtml(Expr arg) {
+  predicate interpretsArgumentsAsHtml(DataFlow::Node arg) {
     exists(int argPos, string name |
       arg = this.getArgument(argPos) and
       name = this.getMethodName()
@@ -100,7 +137,7 @@ class DomMethodCallExpr extends MethodCallExpr {
   /**
    * Holds if `arg` is an argument that is used as an URL.
    */
-  predicate interpretsArgumentsAsURL(Expr arg) {
+  predicate interpretsArgumentsAsUrl(DataFlow::Node arg) {
     exists(int argPos, string name |
       arg = this.getArgument(argPos) and
       name = this.getMethodName()
@@ -117,28 +154,30 @@ class DomMethodCallExpr extends MethodCallExpr {
     )
   }
 
+  /** DEPRECATED: Alias for interpretsArgumentsAsUrl */
+  deprecated predicate interpretsArgumentsAsURL(DataFlow::Node arg) {
+    this.interpretsArgumentsAsUrl(arg)
+  }
+
   /** DEPRECATED: Alias for interpretsArgumentsAsHtml */
-  deprecated predicate interpretsArgumentsAsHTML(Expr arg) { this.interpretsArgumentsAsHtml(arg) }
+  deprecated predicate interpretsArgumentsAsHTML(DataFlow::Node arg) {
+    this.interpretsArgumentsAsHtml(arg)
+  }
 }
 
 /**
+ * DEPRECATED: Use `DomPropertyWrite` instead.
  * An assignment to a property of a DOM object.
  */
-class DomPropWriteNode extends Assignment {
-  PropAccess lhs;
+deprecated class DomPropWriteNode extends Assignment {
+  DomPropertyWrite node;
 
-  DomPropWriteNode() {
-    lhs = this.getLhs() and
-    isDomValue(lhs.getBase())
-  }
+  DomPropWriteNode() { this.flow() = node }
 
   /**
    * Holds if the assigned value is interpreted as HTML.
    */
-  predicate interpretsValueAsHtml() {
-    lhs.getPropertyName() = "innerHTML" or
-    lhs.getPropertyName() = "outerHTML"
-  }
+  predicate interpretsValueAsHtml() { node.interpretsValueAsHtml() }
 
   /** DEPRECATED: Alias for interpretsValueAsHtml */
   deprecated predicate interpretsValueAsHTML() { this.interpretsValueAsHtml() }
@@ -146,25 +185,54 @@ class DomPropWriteNode extends Assignment {
   /**
    * Holds if the assigned value is interpreted as JavaScript via javascript: protocol.
    */
+  predicate interpretsValueAsJavaScriptUrl() { node.interpretsValueAsJavaScriptUrl() }
+}
+
+/**
+ * An assignment to a property of a DOM object.
+ */
+class DomPropertyWrite extends DataFlow::Node instanceof DataFlow::PropWrite {
+  DomPropertyWrite() { isDomNode(super.getBase()) }
+
+  /**
+   * Holds if the assigned value is interpreted as HTML.
+   */
+  predicate interpretsValueAsHtml() {
+    super.getPropertyName() = "innerHTML" or
+    super.getPropertyName() = "outerHTML"
+  }
+
+  /**
+   * Holds if the assigned value is interpreted as JavaScript via javascript: protocol.
+   */
   predicate interpretsValueAsJavaScriptUrl() {
-    lhs.getPropertyName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl()
+    super.getPropertyName() = DOM::getAPropertyNameInterpretedAsJavaScriptUrl()
+  }
+
+  /**
+   * Gets the data flow node corresponding to the value being written.
+   */
+  DataFlow::Node getRhs() {
+    result = super.getRhs()
+    or
+    result = super.getWriteNode().(AssignAddExpr).getRhs().flow()
   }
 }
 
 /**
  * A value written to web storage, like `localStorage` or `sessionStorage`.
  */
-class WebStorageWrite extends Expr {
+class WebStorageWrite extends DataFlow::Node {
   WebStorageWrite() {
     exists(DataFlow::SourceNode webStorage |
       webStorage = DataFlow::globalVarRef("localStorage") or
       webStorage = DataFlow::globalVarRef("sessionStorage")
     |
       // an assignment to `window.localStorage[someProp]`
-      this = webStorage.getAPropertyWrite().getRhs().asExpr()
+      this = webStorage.getAPropertyWrite().getRhs()
       or
       // an invocation of `window.localStorage.setItem`
-      this = webStorage.getAMethodCall("setItem").getArgument(1).asExpr()
+      this = webStorage.getAMethodCall("setItem").getArgument(1)
     )
   }
 }

@@ -19,9 +19,9 @@ app.get('/check-with-axios', req => {
   axios.get('test.com/' + req.query.tainted); // SSRF
   axios.get('test.com/' + Number(req.query.tainted)); // OK
   axios.get('test.com/' + req.user.id); // OK
-  axios.get('test.com/' + encodeURIComponent(req.query.tainted)); // SSRF
+  axios.get('test.com/' + encodeURIComponent(req.query.tainted)); // OK
   axios.get(`/addresses/${req.query.tainted}`); // SSRF
-  axios.get(`/addresses/${encodeURIComponent(req.query.tainted)}`); // SSRF
+  axios.get(`/addresses/${encodeURIComponent(req.query.tainted)}`); // OK
   
   if (Number.isInteger(req.query.tainted)) {
     axios.get('test.com/' + req.query.tainted); // OK

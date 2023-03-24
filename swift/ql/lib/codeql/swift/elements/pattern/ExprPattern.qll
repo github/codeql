@@ -1,5 +1,5 @@
 private import codeql.swift.generated.pattern.ExprPattern
 
-class ExprPattern extends ExprPatternBase {
-  override string toString() { result = this.getSubExpr().toString() }
+class ExprPattern extends Generated::ExprPattern {
+  override string toString() { result = "=~ ..." }
 }

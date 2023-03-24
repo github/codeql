@@ -13,4 +13,4 @@ import codeql_ql.style.RedundantCastQuery
 
 from AstNode node, TypeExpr type
 where redundantCast(node, type)
-select node, "Redundant cast to $@", type, type.getResolvedType().getName()
+select node, "Redundant cast to $@.", type, type.getResolvedType().getName()

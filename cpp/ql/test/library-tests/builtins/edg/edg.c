@@ -1,4 +1,4 @@
-
+// semmle-extractor-options: --clang
 struct mystruct {
     int f1;
     int f2;
@@ -13,3 +13,6 @@ void f(void) {
     int i2 = edg_offsetof(struct mystruct,f2);
 }
 
+void g(void) {
+    double f = __builtin_bit_cast(double,42l);
+}

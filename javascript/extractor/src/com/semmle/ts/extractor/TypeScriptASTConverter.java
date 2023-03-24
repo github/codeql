@@ -149,6 +149,7 @@ import com.semmle.ts.ast.TemplateLiteralTypeExpr;
 import com.semmle.ts.ast.TupleTypeExpr;
 import com.semmle.ts.ast.TypeAliasDeclaration;
 import com.semmle.ts.ast.TypeAssertion;
+import com.semmle.ts.ast.SatisfiesExpr;
 import com.semmle.ts.ast.TypeParameter;
 import com.semmle.ts.ast.TypeofTypeExpr;
 import com.semmle.ts.ast.UnaryTypeExpr;
@@ -176,6 +177,7 @@ public class TypeScriptASTConverter {
   private static final Pattern EXPORT_DECL_START =
       Pattern.compile("^export" + "(" + WHITESPACE_CHAR + "+default)?" + WHITESPACE_CHAR + "+");
   private static final Pattern TYPEOF_START = Pattern.compile("^typeof" + WHITESPACE_CHAR + "+");
+  private static final Pattern ASSERT_START = Pattern.compile("^assert" + WHITESPACE_CHAR + "+");
   private static final Pattern WHITESPACE_END_PAREN =
       Pattern.compile("^" + WHITESPACE_CHAR + "*\\)");
 
@@ -341,6 +343,12 @@ public class TypeScriptASTConverter {
         return convertArrowFunction(node, loc);
       case "AsExpression":
         return convertTypeAssertionExpression(node, loc);
+      case "AssertClause":
+        return convertAssertClause(node, loc);
+      case "AssertEntry":
+        return convertAssertEntry(node, loc);
+      case "SatisfiesExpression":
+        return convertSatisfiesExpression(node, loc);
       case "AwaitExpression":
         return convertAwaitExpression(node, loc);
       case "BigIntKeyword":
@@ -884,8 +892,8 @@ public class TypeScriptASTConverter {
 
   private Node convertCallExpression(JsonObject node, SourceLocation loc) throws ParseError {
     List<Expression> arguments = convertChildren(node, "arguments");
-    if (arguments.size() == 1 && hasKind(node.get("expression"), "ImportKeyword")) {
-      return new DynamicImport(loc, arguments.get(0));
+    if (arguments.size() >= 1 && hasKind(node.get("expression"), "ImportKeyword")) {
+      return new DynamicImport(loc, arguments.get(0), arguments.size() > 1 ? arguments.get(1) : null);
     }
     Expression callee = convertChild(node, "expression");
     List<ITypeExpression> typeArguments = convertChildrenAsTypes(node, "typeArguments");
@@ -976,8 +984,9 @@ public class TypeScriptASTConverter {
             hasDeclareKeyword,
             hasAbstractKeyword);
     attachSymbolInformation(classDecl.getClassDef(), node);
-    if (node.has("decorators")) {
-      classDecl.addDecorators(convertChildren(node, "decorators"));
+    List<Decorator> decorators = getDecorators(node);
+    if (!decorators.isEmpty()) {
+      classDecl.addDecorators(decorators);
       advanceUntilAfter(loc, classDecl.getDecorators());
     }
     Node exportedDecl = fixExports(loc, classDecl);
@@ -987,6 +996,17 @@ public class TypeScriptASTConverter {
           exportedDecl.getLoc(), new ClassExpression(classDecl.getLoc(), classDecl.getClassDef()));
     }
     return exportedDecl;
+  }
+
+  List<Decorator> getDecorators(JsonObject node) throws ParseError {
+    List<Decorator> result = new ArrayList<>();
+    for (JsonElement elt : getChildIterable(node, "modifiers")) {
+      JsonObject modifier = elt.getAsJsonObject();
+      if (hasKind(modifier, "Decorator")) {
+        result.add((Decorator) convertNode(modifier));
+      }
+    }
+    return result;
   }
 
   private Node convertCommaListExpression(JsonObject node, SourceLocation loc) throws ParseError {
@@ -1041,7 +1061,7 @@ public class TypeScriptASTConverter {
   private List<DecoratorList> convertParameterDecorators(JsonObject function) throws ParseError {
     List<DecoratorList> decoratorLists = new ArrayList<>();
     for (JsonElement parameter : getProperParameters(function)) {
-      decoratorLists.add(makeDecoratorList(parameter.getAsJsonObject().get("decorators")));
+      decoratorLists.add(makeDecoratorList(parameter.getAsJsonObject().get("modifiers")));
     }
     return decoratorLists;
   }
@@ -1139,7 +1159,7 @@ public class TypeScriptASTConverter {
             loc,
             hasModifier(node, "ConstKeyword"),
             hasModifier(node, "DeclareKeyword"),
-            convertChildrenNotNull(node, "decorators"),
+            getDecorators(node),
             convertChild(node, "name"),
             convertChildren(node, "members"));
     attachSymbolInformation(enumDeclaration, node);
@@ -1178,15 +1198,16 @@ public class TypeScriptASTConverter {
 
   private Node convertExportDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     Literal source = tryConvertChild(node, "moduleSpecifier", Literal.class);
+    Expression assertion = convertChild(node, "assertClause");
     if (hasChild(node, "exportClause")) {
       boolean hasTypeKeyword = node.get("isTypeOnly").getAsBoolean();
       List<ExportSpecifier> specifiers =
           hasKind(node.get("exportClause"), "NamespaceExport")
               ? Collections.singletonList(convertChild(node, "exportClause"))
               : convertChildren(node.get("exportClause").getAsJsonObject(), "elements");
-      return new ExportNamedDeclaration(loc, null, specifiers, source, hasTypeKeyword);
+      return new ExportNamedDeclaration(loc, null, specifiers, source, assertion, hasTypeKeyword);
     } else {
-      return new ExportAllDeclaration(loc, source);
+      return new ExportAllDeclaration(loc, source, assertion);
     }
   }
 
@@ -1368,6 +1389,7 @@ public class TypeScriptASTConverter {
 
   private Node convertImportDeclaration(JsonObject node, SourceLocation loc) throws ParseError {
     Literal src = tryConvertChild(node, "moduleSpecifier", Literal.class);
+    Expression assertion = convertChild(node, "assertClause");
     List<ImportSpecifier> specifiers = new ArrayList<>();
     boolean hasTypeKeyword = false;
     if (hasChild(node, "importClause")) {
@@ -1385,7 +1407,7 @@ public class TypeScriptASTConverter {
       }
       hasTypeKeyword = importClause.get("isTypeOnly").getAsBoolean();
     }
-    ImportDeclaration importDecl = new ImportDeclaration(loc, specifiers, src, hasTypeKeyword);
+    ImportDeclaration importDecl = new ImportDeclaration(loc, specifiers, src, assertion, hasTypeKeyword);
     attachSymbolInformation(importDecl, node);
     return importDecl;
   }
@@ -1664,8 +1686,9 @@ public class TypeScriptASTConverter {
     FunctionExpression method = convertImplicitFunction(node, loc);
     MethodDefinition methodDefinition =
         new MethodDefinition(loc, flags, methodKind, convertChild(node, "name"), method);
-    if (node.has("decorators")) {
-      methodDefinition.addDecorators(convertChildren(node, "decorators"));
+    List<Decorator> decorators = getDecorators(node);
+    if (!decorators.isEmpty()) {
+      methodDefinition.addDecorators(decorators);
       advanceUntilAfter(loc, methodDefinition.getDecorators());
     }
     return methodDefinition;
@@ -1730,7 +1753,7 @@ public class TypeScriptASTConverter {
     if (hasFlag(node, "NestedNamespace")) {
       // In a nested namespace declaration `namespace A.B`, the nested namespace `B`
       // is implicitly exported.
-      return new ExportNamedDeclaration(loc, decl, new ArrayList<>(), null);
+      return new ExportNamedDeclaration(loc, decl, new ArrayList<>(), null, null);
     } else {
       return fixExports(loc, decl);
     }
@@ -2079,8 +2102,9 @@ public class TypeScriptASTConverter {
             convertChild(node, "name"),
             convertChild(node, "initializer"),
             convertChildAsType(node, "type"));
-    if (node.has("decorators")) {
-      fieldDefinition.addDecorators(convertChildren(node, "decorators"));
+    List<Decorator> decorators = getDecorators(node);
+    if (!decorators.isEmpty()) {
+      fieldDefinition.addDecorators(decorators);
       advanceUntilAfter(loc, fieldDefinition.getDecorators());
     }
     return fieldDefinition;
@@ -2259,6 +2283,34 @@ public class TypeScriptASTConverter {
     return new TypeAssertion(loc, convertChild(node, "expression"), type, false);
   }
 
+  private Node convertAssertClause(JsonObject node, SourceLocation loc) throws ParseError {
+    List<Property> properties = new ArrayList<>();
+    for (INode child : convertChildren(node, "elements")) {
+      properties.add((Property)child);
+    }
+    // Adjust location to skip over the `assert` keyword.
+    Matcher m = ASSERT_START.matcher(loc.getSource());
+    if (m.find()) {
+      advance(loc, m.group(0));
+    }
+    return new ObjectExpression(loc, properties);
+  }
+
+  private Node convertAssertEntry(JsonObject node, SourceLocation loc) throws ParseError {
+    return new Property(
+        loc,
+        convertChild(node, "key"),
+        convertChild(node, "value"),
+        "init",
+        false,
+        false);
+  }
+
+  private Node convertSatisfiesExpression(JsonObject node, SourceLocation loc) throws ParseError {
+    ITypeExpression type = convertChildAsType(node, "type");
+    return new SatisfiesExpr(loc, convertChild(node, "expression"), type);
+  }
+
   private Node convertTypeLiteral(JsonObject obj, SourceLocation loc) throws ParseError {
     return new InterfaceTypeExpr(loc, convertChildren(obj, "members"));
   }
@@ -2433,7 +2485,7 @@ public class TypeScriptASTConverter {
       advance(loc, skipped);
       // capture group 1 is `default`, if present
       if (m.group(1) == null)
-        return new ExportNamedDeclaration(outerLoc, (Statement) decl, new ArrayList<>(), null);
+        return new ExportNamedDeclaration(outerLoc, (Statement) decl, new ArrayList<>(), null, null);
       return new ExportDefaultDeclaration(outerLoc, decl);
     }
     return decl;

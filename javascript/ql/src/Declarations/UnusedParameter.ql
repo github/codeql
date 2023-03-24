@@ -13,4 +13,4 @@ import UnusedParameter
 
 from Parameter p
 where isAnAccidentallyUnusedParameter(p)
-select p, "Unused parameter " + p.getAVariable().getName() + "."
+select p, "The parameter '" + p.getVariable().getName() + "' is never used."

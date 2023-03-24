@@ -47,14 +47,14 @@ void do_source()
 void do_sink()
 {
 	sink(global1);
-	sink(global2); // $ MISSING: ast,ir
-	sink(global3); // $ MISSING: ast,ir
-	sink(global4); // $ MISSING: ast,ir
+	sink(global2); // $ ir MISSING: ast
+	sink(global3); // $ ir MISSING: ast
+	sink(global4); // $ ir MISSING: ast
 	sink(global5);
 	sink(global6);
-	sink(global7); // $ MISSING: ast,ir
-	sink(global8); // $ MISSING: ast,ir
-	sink(global9); // $ MISSING: ast,ir
+	sink(global7); // $ ir MISSING: ast
+	sink(global8); // $ ir MISSING: ast
+	sink(global9); // $ ir MISSING: ast
 	sink(global10);
 }
 
@@ -87,11 +87,11 @@ void class_field_test() {
 
 	sink(mc1.a);
 	sink(mc1.b); // $ ast,ir
-	sink(mc1.c); // $ ast MISSING: ir
+	sink(mc1.c); // $ ast,ir
 	sink(mc1.d); // $ ast,ir
 	sink(mc2.a);
 	sink(mc2.b); // $ ast,ir
-	sink(mc2.c); // $ ast MISSING: ir
+	sink(mc2.c); // $ ast,ir
 	sink(mc2.d);
 }
 
@@ -448,9 +448,9 @@ void test_qualifiers()
 	sink(b);
 	sink(b.getMember());
 	b.member = source();
-	sink(b); // $ MISSING: ast,ir
+	sink(b); // $ ir MISSING: ast
 	sink(b.member); // $ ast,ir
-	sink(b.getMember()); // $ MISSING: ast,ir
+	sink(b.getMember()); // $ ir MISSING: ast
 
 	c = new MyClass2(0);
 
@@ -574,8 +574,8 @@ void test__mbsncat_l(unsigned char* dest1, unsigned const char* ptr, unsigned ch
 	unsigned char* dest2 = _mbsncat_l(dest1, ptr, n, source);
 	sink(dest1); // $ SPURIOUS: ast,ir
 	sink(*dest1); // $ ast,ir
-	sink(dest2); // $ SPURIOUS: ir
-	sink(*dest2); // $ ir
+	sink(dest2); // $ SPURIOUS: ast,ir
+	sink(*dest2); // $ ast,ir
 
 	unsigned char* dest4 = _mbsncat_l(dest3, ptr, n, clean);
 	sink(dest3);
@@ -677,7 +677,7 @@ public:
 void test_with_const_member(char* source) {
   C_const_member_function c;
   memcpy(c.data(), source, 16);
-  sink(c.data()); // $ ast MISSING: ir
+  sink(c.data()); // $ ast,ir
 }
 
 void argument_source(void*);
@@ -690,7 +690,7 @@ void test_argument_source_field_to_obj() {
 	two_members s;
 	argument_source(s.x);
 
-	sink(s); // $ SPURIOUS: ast
+	sink(s); // $ SPURIOUS: ast,ir
 	sink(s.x); // $ ast,ir
 	sink(s.y); // clean
 }

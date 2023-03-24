@@ -52,7 +52,7 @@
 | Unneeded defensive code | More true positive and fewer false positive results | This query now recognizes additional defensive code patterns. |
 | Unsafe dynamic method access              | Fewer false positive results | This query no longer flags concatenated strings as unsafe method names. |
 | Unused parameter                           | Fewer false positive results | This query no longer flags parameters with leading underscore. |
-| Unused variable, import, function or class | Fewer false positive results | This query now flags fewer variables that are implictly used by JSX elements. It no longer flags variables with a leading underscore and variables in dead code. |
+| Unused variable, import, function or class | Fewer false positive results | This query now flags fewer variables that are implicitly used by JSX elements. It no longer flags variables with a leading underscore and variables in dead code. |
 | Unvalidated dynamic method call           | More true positive results | This query now flags concatenated strings as unvalidated method names in more cases. |
 | Useless assignment to property. | Fewer false positive results | This query now treats assignments with complex right-hand sides correctly. |
 | Useless conditional | Fewer results | Additional defensive coding patterns are now ignored. |

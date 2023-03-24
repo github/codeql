@@ -48,4 +48,4 @@ string scope_type(Scope s) {
 
 from Scope s
 where needs_docstring(s) and not exists(s.getDocString())
-select s, scope_type(s) + " " + s.getName() + " does not have a docstring"
+select s, scope_type(s) + " " + s.getName() + " does not have a docstring."

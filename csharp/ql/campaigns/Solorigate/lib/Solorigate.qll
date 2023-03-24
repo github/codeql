@@ -1,4 +1,4 @@
-/*
+/**
  * Provides reusable predicates related to Solorigate
  */
 
@@ -124,7 +124,7 @@ string solorigateSuspiciousLiterals() {
       "fc00::", "fe00::", "fec0::", "ffc0::", "ff00::", "HKCC", "HKCR", "HKCU", "HKDD",
       "HKEY_CLASSES_ROOT", "HKEY_CURRENT_CONFIG", "HKEY_CURRENT_USER", "HKEY_DYN_DATA",
       "HKEY_LOCAL_MACHINE", "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Cryptography",
-      "HKEY_PERFOMANCE_DATA", "HKEY_USERS", "HKLM", "HKPD", "HKU", "If-None-Match",
+      "HKEY_PERFORMANCE_DATA", "HKEY_USERS", "HKLM", "HKPD", "HKU", "If-None-Match",
       "Microsoft-CryptoAPI/", "Nodes", "Volumes", "Interfaces", "Components", "opensans",
       "Organization", "OSArchitecture", "ParentProcessID", "PathName", "ReportWatcherPostpone",
       "ReportWatcherRetry", "S-1-5-", "SeRestorePrivilege", "SeShutdownPrivilege",

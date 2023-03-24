@@ -3,7 +3,6 @@
  */
 
 import go
-private import semmle.go.StringOps
 
 /**
  * Provides classes for working with concepts relating to the [github.com/elazarl/goproxy](https://pkg.go.dev/github.com/elazarl/goproxy) package.
@@ -12,7 +11,7 @@ module ElazarlGoproxy {
   /** Gets the package name. */
   string packagePath() { result = package("github.com/elazarl/goproxy", "") }
 
-  private class NewResponse extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+  private class NewResponse extends Http::HeaderWrite::Range, DataFlow::CallNode {
     NewResponse() { this.getTarget().hasQualifiedName(packagePath(), "NewResponse") }
 
     override string getHeaderName() { this.definesHeader(result, _) }
@@ -29,21 +28,21 @@ module ElazarlGoproxy {
       header = "content-type" and value = this.getArgument(1).getStringValue()
     }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
   }
 
   /** A body argument to a `NewResponse` call. */
-  private class NewResponseBody extends HTTP::ResponseBody::Range {
+  private class NewResponseBody extends Http::ResponseBody::Range {
     NewResponse call;
 
     NewResponseBody() { this = call.getArgument(3) }
 
     override DataFlow::Node getAContentTypeNode() { result = call.getArgument(1) }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
   }
 
-  private class TextResponse extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+  private class TextResponse extends Http::HeaderWrite::Range, DataFlow::CallNode {
     TextResponse() { this.getTarget().hasQualifiedName(packagePath(), "TextResponse") }
 
     override string getHeaderName() { this.definesHeader(result, _) }
@@ -60,22 +59,22 @@ module ElazarlGoproxy {
       header = "content-type" and value = "text/plain"
     }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
   }
 
   /** A body argument to a `TextResponse` call. */
-  private class TextResponseBody extends HTTP::ResponseBody::Range, TextResponse {
+  private class TextResponseBody extends Http::ResponseBody::Range, TextResponse {
     TextResponse call;
 
     TextResponseBody() { this = call.getArgument(2) }
 
     override DataFlow::Node getAContentTypeNode() { result = call.getArgument(1) }
 
-    override HTTP::ResponseWriter getResponseWriter() { none() }
+    override Http::ResponseWriter getResponseWriter() { none() }
   }
 
   /** A handler attached to a goproxy proxy type. */
-  private class ProxyHandler extends HTTP::RequestHandler::Range {
+  private class ProxyHandler extends Http::RequestHandler::Range {
     DataFlow::MethodCallNode handlerReg;
 
     ProxyHandler() {

@@ -12,7 +12,7 @@
  *       external/cwe/cwe-807
  */
 
-import semmle.code.cpp.security.TaintTracking
+import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 import TaintedWithPath
 
 predicate sensitiveCondition(Expr condition, Expr raise) {
@@ -37,5 +37,5 @@ from Expr source, Expr condition, Expr raise, PathNode sourceNode, PathNode sink
 where
   taintedWithPath(source, condition, sourceNode, sinkNode) and
   sensitiveCondition(condition, raise)
-select condition, sourceNode, sinkNode, "Reliance on untrusted input $@ to raise privilege at $@",
+select condition, sourceNode, sinkNode, "Reliance on untrusted input $@ to raise privilege at $@.",
   source, source.toString(), raise, raise.toString()

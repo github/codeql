@@ -20,5 +20,5 @@ import DataFlow::PathGraph
 from DataFlow::PathNode source, DataFlow::PathNode sink
 where any(ImplicitPendingIntentStartConf conf).hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "An implicit Intent is created $@ and sent to an unspecified third party through a PendingIntent.",
-  source.getNode(), "here"
+  "$@ and sent to an unspecified third party through a PendingIntent.", source.getNode(),
+  "An implicit Intent is created"

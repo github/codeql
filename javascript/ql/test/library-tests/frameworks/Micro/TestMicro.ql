@@ -1,17 +1,17 @@
 import javascript
 
-query HTTP::RouteHandler routeHandler() { any() }
+query Http::RouteHandler routeHandler() { any() }
 
-query HTTP::Servers::RequestSource requestSource() { any() }
+query Http::Servers::RequestSource requestSource() { any() }
 
-query HTTP::Servers::ResponseSource responseSource() { any() }
+query Http::Servers::ResponseSource responseSource() { any() }
 
-query HTTP::RequestInputAccess requestInputAccess(string kind) { kind = result.getKind() }
+query Http::RequestInputAccess requestInputAccess(string kind) { kind = result.getKind() }
 
-query HTTP::RequestInputAccess userControlledObject() { result.isUserControlledObject() }
+query Http::RequestInputAccess userControlledObject() { result.isUserControlledObject() }
 
-query HTTP::ResponseSendArgument responseSendArgument() { any() }
+query Http::ResponseSendArgument responseSendArgument() { any() }
 
-query HTTP::ResponseSendArgument responseSendArgumentHandler(HTTP::RouteHandler h) {
+query Http::ResponseSendArgument responseSendArgumentHandler(Http::RouteHandler h) {
   h = result.getRouteHandler()
 }

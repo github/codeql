@@ -23,4 +23,4 @@ where
     hasNext.getDeclaringType().getSourceDeclaration().getAnAncestor() = i and
     hasNext.hasName("hasNext")
   )
-select m, "next() called from within an Iterator method."
+select m, "This calls 'next()' from within an Iterator method."

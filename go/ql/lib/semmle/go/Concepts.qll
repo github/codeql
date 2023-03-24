@@ -16,16 +16,12 @@ import semmle.go.concepts.GeneratedFile
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SystemCommandExecution::Range` instead.
  */
-class SystemCommandExecution extends DataFlow::Node {
-  SystemCommandExecution::Range self;
-
-  SystemCommandExecution() { this = self }
-
+class SystemCommandExecution extends DataFlow::Node instanceof SystemCommandExecution::Range {
   /** Gets the argument that specifies the command to be executed. */
-  DataFlow::Node getCommandName() { result = self.getCommandName() }
+  DataFlow::Node getCommandName() { result = super.getCommandName() }
 
   /** Holds if this node is sanitized whenever it follows `--` in an argument list. */
-  predicate doubleDashIsSanitizing() { self.doubleDashIsSanitizing() }
+  predicate doubleDashIsSanitizing() { super.doubleDashIsSanitizing() }
 }
 
 /** Provides a class for modeling new system-command execution APIs. */
@@ -52,22 +48,18 @@ module SystemCommandExecution {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `TemplateInstantiation::Range` instead.
  */
-class TemplateInstantiation extends DataFlow::Node {
-  TemplateInstantiation::Range self;
-
-  TemplateInstantiation() { this = self }
-
+class TemplateInstantiation extends DataFlow::Node instanceof TemplateInstantiation::Range {
   /**
    * Gets the argument to this template instantiation that is the template being
    * instantiated.
    */
-  DataFlow::Node getTemplateArgument() { result = self.getTemplateArgument() }
+  DataFlow::Node getTemplateArgument() { result = super.getTemplateArgument() }
 
   /**
    * Gets an argument to this template instantiation that is data being inserted
    * into the template.
    */
-  DataFlow::Node getADataArgument() { result = self.getADataArgument() }
+  DataFlow::Node getADataArgument() { result = super.getADataArgument() }
 }
 
 /** Provides a class for modeling new template-instantiation APIs. */
@@ -100,13 +92,9 @@ module TemplateInstantiation {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `FileSystemAccess::Range` instead.
  */
-class FileSystemAccess extends DataFlow::Node {
-  FileSystemAccess::Range self;
-
-  FileSystemAccess() { this = self }
-
+class FileSystemAccess extends DataFlow::Node instanceof FileSystemAccess::Range {
   /** Gets an argument to this file system access that is interpreted as a path. */
-  DataFlow::Node getAPathArgument() { result = self.getAPathArgument() }
+  DataFlow::Node getAPathArgument() { result = super.getAPathArgument() }
 }
 
 /** Provides a class for modeling new file-system access APIs. */
@@ -125,17 +113,13 @@ module FileSystemAccess {
 }
 
 /** A function that escapes meta-characters to prevent injection attacks. */
-class EscapeFunction extends Function {
-  EscapeFunction::Range self;
-
-  EscapeFunction() { this = self }
-
+class EscapeFunction extends Function instanceof EscapeFunction::Range {
   /**
    * The context that this function escapes for.
    *
    * Currently, this can be "js", "html", or "url".
    */
-  string kind() { result = self.kind() }
+  string kind() { result = super.kind() }
 }
 
 /** Provides a class for modeling new escape-function APIs. */
@@ -161,7 +145,7 @@ module EscapeFunction {
  * JavaScript string literal.
  */
 class JsEscapeFunction extends EscapeFunction {
-  JsEscapeFunction() { self.kind() = "js" }
+  JsEscapeFunction() { super.kind() = "js" }
 }
 
 /**
@@ -170,7 +154,7 @@ class JsEscapeFunction extends EscapeFunction {
  * `<p>{}</p>`.
  */
 class HtmlEscapeFunction extends EscapeFunction {
-  HtmlEscapeFunction() { self.kind() = "html" }
+  HtmlEscapeFunction() { super.kind() = "html" }
 }
 
 /**
@@ -178,7 +162,7 @@ class HtmlEscapeFunction extends EscapeFunction {
  * of a URL.
  */
 class UrlEscapeFunction extends EscapeFunction {
-  UrlEscapeFunction() { self.kind() = "url" }
+  UrlEscapeFunction() { super.kind() = "url" }
 }
 
 /**
@@ -187,27 +171,23 @@ class UrlEscapeFunction extends EscapeFunction {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `RegexpPattern::Range` instead.
  */
-class RegexpPattern extends DataFlow::Node {
-  RegexpPattern::Range self;
-
-  RegexpPattern() { this = self }
-
+class RegexpPattern extends DataFlow::Node instanceof RegexpPattern::Range {
   /**
    * Gets the node where this pattern is parsed as a part of a regular
    * expression.
    */
-  DataFlow::Node getAParse() { result = self.getAParse() }
+  DataFlow::Node getAParse() { result = super.getAParse() }
 
   /**
    * Gets this regexp pattern as a string.
    */
-  string getPattern() { result = self.getPattern() }
+  string getPattern() { result = super.getPattern() }
 
   /**
    * Gets a use of this pattern, either as itself in an argument to a function or as a compiled
    * regexp object.
    */
-  DataFlow::Node getAUse() { result = self.getAUse() }
+  DataFlow::Node getAUse() { result = super.getAUse() }
 }
 
 /** Provides a class for modeling new regular-expression APIs. */
@@ -244,15 +224,11 @@ module RegexpPattern {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `RegexpMatchFunction::Range` instead.
  */
-class RegexpMatchFunction extends Function {
-  RegexpMatchFunction::Range self;
-
-  RegexpMatchFunction() { this = self }
-
+class RegexpMatchFunction extends Function instanceof RegexpMatchFunction::Range {
   /**
    * Gets the function input that is the regexp being matched.
    */
-  FunctionInput getRegexpArg() { result = self.getRegexpArg() }
+  FunctionInput getRegexpArg() { result = super.getRegexpArg() }
 
   /**
    * Gets the regexp pattern that is used in the call to this function `call`.
@@ -264,12 +240,12 @@ class RegexpMatchFunction extends Function {
   /**
    * Gets the function input that is the string being matched against.
    */
-  FunctionInput getValue() { result = self.getValue() }
+  FunctionInput getValue() { result = super.getValue() }
 
   /**
    * Gets the function output that is the Boolean result of the match function.
    */
-  FunctionOutput getResult() { result = self.getResult() }
+  FunctionOutput getResult() { result = super.getResult() }
 }
 
 /** Provides a class for modeling new regular-expression matcher APIs. */
@@ -304,15 +280,11 @@ module RegexpMatchFunction {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `RegexpReplaceFunction::Range` instead.
  */
-class RegexpReplaceFunction extends Function {
-  RegexpReplaceFunction::Range self;
-
-  RegexpReplaceFunction() { this = self }
-
+class RegexpReplaceFunction extends Function instanceof RegexpReplaceFunction::Range {
   /**
    * Gets the function input that is the regexp that matches text to replace.
    */
-  FunctionInput getRegexpArg() { result = self.getRegexpArg() }
+  FunctionInput getRegexpArg() { result = super.getRegexpArg() }
 
   /**
    * Gets the regexp pattern that is used to match patterns to replace in the call to this function
@@ -326,13 +298,13 @@ class RegexpReplaceFunction extends Function {
    * Gets the function input corresponding to the source value, that is, the value that is having
    * its contents replaced.
    */
-  FunctionInput getSource() { result = self.getSource() }
+  FunctionInput getSource() { result = super.getSource() }
 
   /**
    * Gets the function output corresponding to the result, that is, the value after replacement has
    * occurred.
    */
-  FunctionOutput getResult() { result = self.getResult() }
+  FunctionOutput getResult() { result = super.getResult() }
 }
 
 /** Provides a class for modeling new regular-expression replacer APIs. */
@@ -369,13 +341,9 @@ module RegexpReplaceFunction {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `LoggerCall::Range` instead.
  */
-class LoggerCall extends DataFlow::Node {
-  LoggerCall::Range self;
-
-  LoggerCall() { this = self }
-
+class LoggerCall extends DataFlow::Node instanceof LoggerCall::Range {
   /** Gets a node that is a part of the logged message. */
-  DataFlow::Node getAMessageComponent() { result = self.getAMessageComponent() }
+  DataFlow::Node getAMessageComponent() { result = super.getAMessageComponent() }
 }
 
 /** Provides a class for modeling new logging APIs. */
@@ -398,19 +366,15 @@ module LoggerCall {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `MarshalingFunction::Range` instead.
  */
-class MarshalingFunction extends Function {
-  MarshalingFunction::Range self;
-
-  MarshalingFunction() { this = self }
-
+class MarshalingFunction extends Function instanceof MarshalingFunction::Range {
   /** Gets an input that is encoded by this function. */
-  FunctionInput getAnInput() { result = self.getAnInput() }
+  FunctionInput getAnInput() { result = super.getAnInput() }
 
   /** Gets the output that contains the encoded data produced by this function. */
-  FunctionOutput getOutput() { result = self.getOutput() }
+  FunctionOutput getOutput() { result = super.getOutput() }
 
   /** Gets an identifier for the format this function encodes into, such as "JSON". */
-  string getFormat() { result = self.getFormat() }
+  string getFormat() { result = super.getFormat() }
 }
 
 /** Provides a class for modeling new marshaling APIs. */
@@ -439,19 +403,15 @@ module MarshalingFunction {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `UnmarshalingFunction::Range` instead.
  */
-class UnmarshalingFunction extends Function {
-  UnmarshalingFunction::Range self;
-
-  UnmarshalingFunction() { this = self }
-
+class UnmarshalingFunction extends Function instanceof UnmarshalingFunction::Range {
   /** Gets an input that is decoded by this function. */
-  FunctionInput getAnInput() { result = self.getAnInput() }
+  FunctionInput getAnInput() { result = super.getAnInput() }
 
   /** Gets the output that contains the decoded data produced by this function. */
-  FunctionOutput getOutput() { result = self.getOutput() }
+  FunctionOutput getOutput() { result = super.getOutput() }
 
   /** Gets an identifier for the format this function decodes from, such as "JSON". */
-  string getFormat() { result = self.getFormat() }
+  string getFormat() { result = super.getFormat() }
 }
 
 /** Provides a class for modeling new unmarshaling APIs. */

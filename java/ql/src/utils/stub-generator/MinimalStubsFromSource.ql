@@ -20,6 +20,8 @@ class UsedInSource extends GeneratedDeclaration {
       this = any(RefType t | t.fromSource())
       or
       this = any(TypeAccess ta | ta.fromSource())
+      or
+      this = any(Annotation a | a.getAnnotatedElement().fromSource()).getType()
     )
   }
 }

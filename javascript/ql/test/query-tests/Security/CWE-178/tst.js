@@ -59,3 +59,37 @@ app.use(/\/foo\/([0-9]+)/i, (req, res) => { // OK - not middleware (also case in
 
 app.get('/foo/:param', (req, res) => { // OK - not a middleware
 });
+
+app.get(
+    new RegExp('^/bar(.*)?'), // NOT OK - case sensitive
+    unknown(),
+    function(req, res, next) {
+        if (req.params.blah) {
+            next();
+        }
+    }
+);
+
+app.get('/bar/*', (req, res) => { // OK - not a middleware
+});
+
+app.use(/\/baz\/bla/, unknown()); // NOT OK - case sensitive
+app.get('/baz/bla', (req, resp) => {
+  resp.send({ test: 123 });
+});
+
+app.use(/\/[Bb][Aa][Zz]2\/[aA]/, unknown()); // OK - not case sensitive
+app.get('/baz2/a', (req, resp) => {
+  resp.send({ test: 123 });
+});
+
+app.use(/\/[Bb][Aa][Zz]3\/[a]/, unknown()); // NOT OK - case sensitive
+app.get('/baz3/a', (req, resp) => {
+  resp.send({ test: 123 });
+});
+
+app.use(/\/summonerByName|\/currentGame/,apiLimit1, apiLimit2);
+
+app.get('/currentGame', function (req, res) {
+    res.send("FOO");
+});

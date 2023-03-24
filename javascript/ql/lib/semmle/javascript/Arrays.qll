@@ -36,12 +36,18 @@ module ArrayTaintTracking {
       succ = call
     )
     or
-    // `array.filter(x => x)` keeps the taint
+    // `array.filter(x => x)` and `array.filter(x => !!x)` keeps the taint
     call.(DataFlow::MethodCallNode).getMethodName() = "filter" and
     pred = call.getReceiver() and
     succ = call and
-    exists(DataFlow::FunctionNode callback | callback = call.getArgument(0).getAFunctionValue() |
-      callback.getParameter(0).getALocalUse() = callback.getAReturn()
+    exists(DataFlow::FunctionNode callback, DataFlow::Node param, DataFlow::Node ret |
+      callback = call.getArgument(0).getAFunctionValue() and
+      param = callback.getParameter(0).getALocalUse() and
+      ret = callback.getAReturn()
+    |
+      param = ret
+      or
+      param = DataFlow::exprNode(ret.asExpr().(LogNotExpr).getOperand().(LogNotExpr).getOperand())
     )
     or
     // `array.reduce` with tainted value in callback
@@ -255,14 +261,12 @@ private module ArrayDataFlow {
   /**
    * A step for creating an array and storing the elements in the array.
    */
-  private class ArrayCreationStep extends DataFlow::SharedFlowStep {
+  private class ArrayCreationStep extends PreCallGraphStep {
     override predicate storeStep(DataFlow::Node element, DataFlow::SourceNode obj, string prop) {
       exists(DataFlow::ArrayCreationNode array, int i |
         element = array.getElement(i) and
         obj = array and
-        if array = any(PromiseAllCreation c).getArrayNode()
-        then prop = arrayElement(i)
-        else prop = arrayElement()
+        prop = arrayElement(i)
       )
     }
   }
@@ -340,6 +344,14 @@ private module ArrayLibraries {
     result = DataFlow::globalVarRef("Array").getAMemberCall("from")
     or
     result = DataFlow::moduleImport("array-from").getACall()
+    or
+    // Array.prototype.slice.call acts the same as Array.from, and is sometimes used with e.g. the arguments object.
+    result =
+      DataFlow::globalVarRef("Array")
+          .getAPropertyRead("prototype")
+          .getAPropertyRead("slice")
+          .getAMethodCall("call") and
+    result.getNumArgument() = 1
   }
 
   /**

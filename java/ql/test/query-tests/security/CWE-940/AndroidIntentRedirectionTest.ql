@@ -9,9 +9,7 @@ class HasAndroidIntentRedirectionTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasAndroidIntentRedirection" and
-    exists(DataFlow::Node src, DataFlow::Node sink, IntentRedirectionConfiguration conf |
-      conf.hasFlow(src, sink)
-    |
+    exists(DataFlow::Node sink, IntentRedirectionConfiguration conf | conf.hasFlowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

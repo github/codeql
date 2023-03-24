@@ -15,4 +15,4 @@ where
   n.fromSource() and
   c = n.getMetrics().getAfferentCoupling() and
   c > 20
-select n as Namespace, c as AfferentCoupling order by AfferentCoupling desc
+select n as namespace, c as afferentCoupling order by afferentCoupling desc

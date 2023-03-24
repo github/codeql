@@ -7,6 +7,7 @@
  * @precision high
  * @id cs/webclient-path-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-099
  *       external/cwe/cwe-023
  *       external/cwe/cwe-036
@@ -19,5 +20,5 @@ import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "$@ flows to here and is used in a method of WebClient.",
-  source.getNode(), "User-provided value"
+select sink.getNode(), source, sink, "A method of WebClient depepends on a $@.", source.getNode(),
+  "user-provided value"

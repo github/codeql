@@ -44,6 +44,15 @@ predicate boundedArrayAccess(ArrayAccess aa, int k) {
       )
     )
   )
+  or
+  exists(Field arr, Expr index, int delta, int arrlen |
+    aa.getIndexExpr() = index and
+    aa.getArray() = arr.getAnAccess() and
+    bounded(index, any(ZeroBound z), delta, true, _) and
+    arr.isFinal() and
+    arr.getInitializer().(ArrayCreationExpr).getFirstDimensionSize() = arrlen and
+    k = delta - arrlen
+  )
 }
 
 /**

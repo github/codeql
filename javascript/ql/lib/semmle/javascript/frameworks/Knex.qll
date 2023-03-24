@@ -43,7 +43,7 @@ module Knex {
 
   /** A SQL string passed to a raw Knex method. */
   private class RawKnexSqlString extends SQL::SqlString {
-    RawKnexSqlString() { this = any(RawKnexCall call).getArgument(0).asExpr() }
+    RawKnexSqlString() { this = any(RawKnexCall call).getArgument(0) }
   }
 
   /** A call that triggers a SQL query submission by calling then/stream/asCallback. */

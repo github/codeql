@@ -8,6 +8,7 @@
  * @precision medium
  * @tags correctness
  *       security
+ *       experimental
  *       external/cwe/cwe-401
  */
 
@@ -58,4 +59,4 @@ class ReallocCallLeak extends FunctionCall {
 
 from ReallocCallLeak rcl
 where not rcl.mayHandleByTermination()
-select rcl, "possible loss of original pointer on unsuccessful call realloc"
+select rcl, "Possible loss of original pointer on unsuccessful call to 'realloc'."

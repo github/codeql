@@ -12,6 +12,8 @@ Type getAMentionedType(RefType type) {
   result = getAMentionedType(type).(InstantiatedType).getATypeArgument()
   or
   result = getAMentionedType(type).(NestedType).getEnclosingType()
+  or
+  result = getAMentionedType(type).(Wildcard).getATypeBound().getType()
 }
 
 Type getATypeUsedInClass(RefType type) {

@@ -7,6 +7,6 @@ byte[] encrypted = cipher.doFinal(input.getBytes("UTF-8"));
 // ...
 
 // GOOD: AES is a strong algorithm
-Cipher des = Cipher.getInstance("AES");
+Cipher aes = Cipher.getInstance("AES");
 
 // ...

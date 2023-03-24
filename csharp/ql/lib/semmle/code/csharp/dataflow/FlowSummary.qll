@@ -97,7 +97,7 @@ module SummaryComponentStack {
     result = push(SummaryComponent::element(), container)
   }
 
-  /** Gets a stack representing a propery `p` of `object`. */
+  /** Gets a stack representing a property `p` of `object`. */
   SummaryComponentStack propertyOf(Property p, SummaryComponentStack object) {
     result = push(SummaryComponent::property(p), object)
   }
@@ -137,11 +137,14 @@ private class RecordConstructorFlow extends SummarizedCallable {
       preservesValue = true
     )
   }
+
+  override predicate hasProvenance(string provenance) { provenance = "manual" }
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
 
-private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
+private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack
+{
   override predicate required(SummaryComponent head, SummaryComponentStack tail) {
     exists(Property p |
       recordConstructorFlow(_, _, p) and

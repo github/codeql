@@ -31,7 +31,7 @@ module Aioch {
   }
 
   /**
-   * A call to any of the the execute methods on a `aioch.Client`, which are just async
+   * A call to any of the execute methods on a `aioch.Client`, which are just async
    * versions of the methods in the `clickhouse-driver` PyPI package.
    *
    * See

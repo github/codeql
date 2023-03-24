@@ -6,7 +6,7 @@
 <overview>
 <p>For special use cases some applications may implement a custom service which handles JMX-RMI connections.</p>
 
-<p>When creating such a custom service, a developer should pass a certain environment configuration to the JMX-RMI server initalisation, 
+<p>When creating such a custom service, a developer should pass a certain environment configuration to the JMX-RMI server initialization, 
 as otherwise the JMX-RMI service is susceptible to an unsafe deserialization vulnerability.</p>
 
 <p>This is because the JMX-RMI service allows attackers to supply arbitrary objects to the service authentication 
@@ -41,11 +41,11 @@ For this reason an initialization with a <code>null</code> environment is also v
 
 <p>The first example shows how an JMX server is initialized securely with the <code>JMXConnectorServerFactory.newJMXConnectorServer()</code> call.</p>
 
-<sample src="CorrectJMXConnectorServerFactoryEnvironmentInitialisation.java" />
+<sample src="CorrectJMXConnectorServerFactoryEnvironmentInitialization.java" />
 
 <p>The second example shows how a JMX Server is initialized securely if the <code>RMIConnectorServer</code> class is used.</p>
 
-<sample src="CorrectRMIConnectorServerEnvironmentInitalisation.java" />
+<sample src="CorrectRMIConnectorServerEnvironmentInitialization.java" />
 
 </example>
 

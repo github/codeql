@@ -103,7 +103,7 @@ module RangeAnalysis {
    * the given increment/decrement expression.
    */
   private DataFlow::Node updateExprResult(UpdateExpr expr) {
-    result = DataFlow::ssaDefinitionNode(SSA::definition(expr))
+    result = DataFlow::ssaDefinitionNode(Ssa::definition(expr))
     or
     expr.isPrefix() and
     result = expr.flow()
@@ -113,7 +113,7 @@ module RangeAnalysis {
    * Gets a data flow node holding the result of the given componund assignment.
    */
   private DataFlow::Node compoundAssignResult(CompoundAssignExpr expr) {
-    result = DataFlow::ssaDefinitionNode(SSA::definition(expr))
+    result = DataFlow::ssaDefinitionNode(Ssa::definition(expr))
     or
     result = expr.flow()
   }

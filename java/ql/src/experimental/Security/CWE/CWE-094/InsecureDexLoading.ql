@@ -7,6 +7,7 @@
  * @precision high
  * @id java/android-insecure-dex-loading
  * @tags security
+ *       experimental
  *       external/cwe/cwe-094
  */
 

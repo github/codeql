@@ -6,7 +6,6 @@
  * @treemap.warnOn lowValues
  * @metricType file
  * @metricAggregate avg sum max
- * @precision very-high
  * @id go/lines-of-comments-in-files
  * @tags documentation
  */

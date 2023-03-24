@@ -119,4 +119,4 @@ predicate potentialViolation(InputBuffer source, FormatBuffer dest) {
 
 from InputBuffer source, FormatBuffer dest
 where potentialViolation(source, dest)
-select dest.getFile() as File, dest as FormatString
+select dest.getFile() as file, dest as formatString

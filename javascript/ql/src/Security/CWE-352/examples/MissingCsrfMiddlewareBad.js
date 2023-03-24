@@ -1,11 +1,16 @@
-var app = require("express")(),
+const app = require("express")(),
   cookieParser = require("cookie-parser"),
-  passport = require("passport");
+  bodyParser = require("body-parser"),
+  session = require("express-session");
 
 app.use(cookieParser());
-app.use(passport.authorize({ session: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({ secret: process.env['SECRET'], cookie: { maxAge: 60000 } }));
+
+// ...
 
 app.post("/changeEmail", function(req, res) {
-  let newEmail = req.cookies["newEmail"];
-  // ...
+  const userId = req.session.id;
+  const email = req.body["email"];
+  // ... update email associated with userId
 });

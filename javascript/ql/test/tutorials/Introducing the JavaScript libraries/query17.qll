@@ -20,9 +20,7 @@ class PasswordTracker extends DataFlow::Configuration {
 }
 
 query predicate test_query17(DataFlow::Node sink, string res) {
-  exists(PasswordTracker pt, DataFlow::Node source, Variable v |
-    pt.hasFlow(source, sink) and pt.passwordVarAssign(v, sink)
-  |
+  exists(PasswordTracker pt, Variable v | pt.hasFlow(_, sink) and pt.passwordVarAssign(v, sink) |
     res = "Password variable " + v.toString() + " is assigned a constant string."
   )
 }

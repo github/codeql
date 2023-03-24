@@ -1,7 +1,6 @@
 /** Provides models of commonly used functions in the `github.com/sirupsen/logrus` package. */
 
 import go
-private import semmle.go.StringOps
 
 /** Provides models of commonly used functions in the `github.com/sirupsen/logrus` package. */
 module Logrus {
@@ -12,10 +11,7 @@ module Logrus {
 
   bindingset[result]
   private string getALogResultName() {
-    result
-        .matches([
-            "Debug%", "Error%", "Fatal%", "Info%", "Log%", "Panic%", "Print%", "Trace%", "Warn%"
-          ])
+    result.regexpMatch("(Debug|Error|Fatal|Info|Log|Panic|Print|Trace|Warn).*")
   }
 
   bindingset[result]

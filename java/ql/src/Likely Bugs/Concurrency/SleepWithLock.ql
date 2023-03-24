@@ -23,4 +23,4 @@ where
     ma.getEnclosingStmt().getEnclosingStmt*() instanceof SynchronizedStmt or
     ma.getEnclosingCallable().isSynchronized()
   )
-select ma, "sleep() with lock held."
+select ma, "This calls 'Thread.sleep()' with a lock held."

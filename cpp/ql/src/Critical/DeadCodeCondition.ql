@@ -64,5 +64,5 @@ where
   ) and
   (if context = test then testresult = "succeed" else testresult = "fail")
 select cond,
-  "Variable '" + v.getName() + "' is always " + context + " here, this check will always " +
-    testresult + "."
+  "Variable '" + v.getName() + "' is always " + context + ", this check will always " + testresult +
+    "."

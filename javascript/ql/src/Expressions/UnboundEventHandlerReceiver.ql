@@ -98,5 +98,5 @@ where
   unbound.getBinder() = callback.getBody() and
   not isBoundInMethod(callback)
 select attribute,
-  "The receiver of this event handler call is unbound, `$@` will be `undefined` in the call to $@",
+  "The receiver of this event handler call is unbound, `$@` will be `undefined` in the call to $@.",
   unbound, "this", callback, callback.getName()

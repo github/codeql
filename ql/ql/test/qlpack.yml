@@ -1,7 +1,7 @@
 name: codeql/ql-tests
 groups: [ql, test]
 dependencies:
-    codeql/ql: "*"
-    codeql/ql-examples: "*"
+    codeql/ql: ${workspace}
+    codeql/ql-examples: ${workspace}
 extractor: ql
 tests: .

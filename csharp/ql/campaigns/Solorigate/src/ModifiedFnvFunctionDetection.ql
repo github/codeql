@@ -15,7 +15,7 @@ import experimental.code.csharp.Cryptography.NonCryptographicHashes
 
 from Variable v, Literal l, LoopStmt loop, Expr additional_xor
 where
-  maybeUsedInFNVFunction(v, _, _, loop) and
+  maybeUsedInFnvFunction(v, _, _, loop) and
   (
     exists(BitwiseXorExpr xor2 | xor2.getAnOperand() = l and additional_xor = xor2 |
       loop.getAControlFlowExitNode().getASuccessor*() = xor2.getAControlFlowNode() and
@@ -27,6 +27,5 @@ where
       xor2.getAnOperand() = v.getAnAccess()
     )
   )
-select l,
-  "The variable $@ seems to be used as part of a FNV-like hash calculation, that is modified by an additional $@ expression using literal $@.",
-  v, v.toString(), additional_xor, "xor", l, l.toString()
+select l, "This literal is used in an $@ after an FNV-like hash calculation with variable $@.",
+  additional_xor, "additional xor", v, v.toString()

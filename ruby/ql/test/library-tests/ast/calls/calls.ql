@@ -1,4 +1,4 @@
-import ruby
+import codeql.ruby.AST
 
 private string getMethodName(Call c) {
   result = c.(MethodCall).getMethodName()

@@ -1,4 +1,4 @@
 import go
 
-from HTTP::Redirect redir
+from Http::Redirect redir
 select redir, redir.getResponseWriter()

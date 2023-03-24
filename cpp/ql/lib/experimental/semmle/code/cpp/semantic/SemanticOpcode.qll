@@ -65,8 +65,16 @@ module Opcode {
     override string toString() { result = "Add" }
   }
 
+  class PointerAdd extends Opcode, TPointerAdd {
+    override string toString() { result = "PointerAdd" }
+  }
+
   class Sub extends Opcode, TSub {
     override string toString() { result = "Sub" }
+  }
+
+  class PointerSub extends Opcode, TPointerSub {
+    override string toString() { result = "PointerSub" }
   }
 
   class Mul extends Opcode, TMul {

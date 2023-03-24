@@ -1,25 +1,23 @@
 // This file contains auto-generated code.
+// Generated from `System.Net.ServicePoint, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 
 namespace System
 {
     namespace Net
     {
-        // Generated from `System.Net.BindIPEndPoint` in `System.Net.ServicePoint, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public delegate System.Net.IPEndPoint BindIPEndPoint(System.Net.ServicePoint servicePoint, System.Net.IPEndPoint remoteEndPoint, int retryCount);
 
-        // Generated from `System.Net.SecurityProtocolType` in `System.Net.ServicePoint, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         [System.Flags]
-        public enum SecurityProtocolType
+        public enum SecurityProtocolType : int
         {
-            Ssl3,
-            SystemDefault,
-            Tls,
-            Tls11,
-            Tls12,
-            Tls13,
+            Ssl3 = 48,
+            SystemDefault = 0,
+            Tls = 192,
+            Tls11 = 768,
+            Tls12 = 3072,
+            Tls13 = 12288,
         }
 
-        // Generated from `System.Net.ServicePoint` in `System.Net.ServicePoint, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class ServicePoint
         {
             public System.Uri Address { get => throw null; }
@@ -41,7 +39,6 @@ namespace System
             public bool UseNagleAlgorithm { get => throw null; set => throw null; }
         }
 
-        // Generated from `System.Net.ServicePointManager` in `System.Net.ServicePoint, Version=5.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
         public class ServicePointManager
         {
             public static bool CheckCertificateRevocationList { get => throw null; set => throw null; }

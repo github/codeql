@@ -71,4 +71,4 @@ where
   not neededImport(i) and
   not i instanceof ImportStaticOnDemand and
   not i instanceof ImportStaticTypeMember
-select i, "The statement '" + i + "' is unnecessary."
+select i, "Import of '" + i + "' is not used."

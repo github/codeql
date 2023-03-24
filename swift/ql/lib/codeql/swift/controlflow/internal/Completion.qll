@@ -70,7 +70,8 @@ abstract class Completion extends TCompletion {
   predicate isValidFor(ControlFlowElement n) {
     this.isValidForSpecific(n)
     or
-    mayHaveThrowCompletion(n, this)
+    this instanceof ThrowCompletion and
+    mayHaveThrowCompletion(n)
     or
     not any(Completion c).isValidForSpecific(n) and
     this = TSimpleCompletion()
@@ -94,7 +95,7 @@ private predicate isBooleanConstant(ControlFlowElement n, boolean value) {
   mustHaveBooleanCompletion(n) and
   value = n.asAstNode().(BooleanLiteralExpr).getValue()
   or
-  // Boolean consants hidden inside conversions are also
+  // Boolean constants hidden inside conversions are also
   // constants that resolve to the same value.
   exists(ControlFlowElement parent |
     parent.asAstNode() = n.asAstNode().getResolveStep() and
@@ -120,6 +121,8 @@ private predicate inBooleanContext(ControlFlowElement n) {
 
 private predicate astInBooleanContext(AstNode n) {
   n = any(ConditionElement condElem).getBoolean().getFullyUnresolved()
+  or
+  n = any(ConditionElement condElem).getAvailability().getFullyUnresolved()
   or
   n = any(StmtCondition stmtCond).getFullyUnresolved()
   or
@@ -320,7 +323,7 @@ private predicate mustHaveThrowCompletion(ThrowStmt throw, ThrowCompletion c) { 
 
 private predicate isThrowingType(AnyFunctionType type) { type.isThrowing() }
 
-private predicate mayHaveThrowCompletion(ControlFlowElement n, ThrowCompletion c) {
+private predicate mayHaveThrowCompletion(ControlFlowElement n) {
   // An AST expression that may throw.
   isThrowingType(n.asAstNode().(ApplyExpr).getFunction().getType())
   or

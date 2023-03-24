@@ -23,5 +23,5 @@ where
   c.hasFlowPath(source, sink) and
   // No global timeout set
   not exists(RegexGlobalTimeout r)
-select sink.getNode(), source, sink, "$@ flows to the construction of a regular expression.",
-  source.getNode(), "User-provided value"
+select sink.getNode(), source, sink, "This regular expression is constructed from a $@.",
+  source.getNode(), "user-provided value"

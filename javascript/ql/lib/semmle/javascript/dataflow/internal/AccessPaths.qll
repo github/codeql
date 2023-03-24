@@ -45,6 +45,8 @@ private PropAccess namedPropAccess(AccessPath base, PropertyName name, BasicBloc
 
 private SsaVariable getRefinedVariable(SsaVariable variable) {
   result = variable.getDefinition().(SsaRefinementNode).getAnInput()
+  or
+  result = variable.getDefinition().(SsaPhiNode).getRephinedVariable()
 }
 
 private SsaVariable getARefinementOf(SsaVariable variable) { variable = getRefinedVariable(result) }

@@ -12,7 +12,10 @@ class UnresolvedCallExpectations extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(location.getFile().getRelativePath()) and
     exists(CallNode call |
-      not exists(DataFlowPrivate::DataFlowCall dfc | dfc.getNode() = call) and
+      not exists(DataFlowPrivate::DataFlowCall dfc |
+        exists(dfc.getCallable()) and dfc.getNode() = call
+      ) and
+      not DataFlowPrivate::resolveClassCall(call, _) and
       not call = API::builtin(_).getACall().asCfgNode() and
       location = call.getLocation() and
       tag = "unresolved_call" and

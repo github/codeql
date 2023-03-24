@@ -36,4 +36,4 @@ where
   right.asExpr() = s.getRight() and
   left.getALocalSource() = square() and
   right.getALocalSource() = square()
-select c, "Pythagorean calculation with sub-optimal numerics"
+select c, "Pythagorean calculation with sub-optimal numerics."

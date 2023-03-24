@@ -2,6 +2,7 @@
  * @name Incomplete switch over enum
  * @description A switch statement of enum type should explicitly reference each
  *   of the members of that enum.
+ * @severity warning
  * @kind problem
  * @id go/examples/incomplete-switch
  */

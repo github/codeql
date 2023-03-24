@@ -120,3 +120,20 @@ function uid() {
     var UUID = Math.random(); // NOT OK
     var MY_UID = Math.random(); // NOK OK
 }
+
+function buildPass(opts, length) {
+    const digits = '0123456789'.split('');
+    const letters = 'abcdefghijklmnopqrstuvwxyz'.split('');
+    const specials = '!@#$%^&*()_+{}|:"<>?[];\',./`~'.split('');
+
+    const chars = [];
+    opts.digits && chars.push(...digits);
+    opts.letters && chars.push(...letters);
+    opts.specials && chars.push(...specials);
+
+    const password = "";
+    for (let i = 0; i < length; i++) {
+        password += chars[Math.floor(Math.random() * chars.length)]; // NOT OK
+    }
+    return password;
+}

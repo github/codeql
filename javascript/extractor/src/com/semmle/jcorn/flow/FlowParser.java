@@ -830,7 +830,7 @@ public class FlowParser extends ESNextParser {
 
   /** Should Flow syntax be allowed? */
   private boolean flow() {
-    return options.esnext();
+    return options.allowFlowTypes();
   }
 
   @Override
@@ -943,10 +943,12 @@ public class FlowParser extends ESNextParser {
           // `export type { foo, bar };`
           List<ExportSpecifier> specifiers = this.parseExportSpecifiers(exports);
           this.parseExportFrom(specifiers, null, false);
+          this.parseImportOrExportAssertionAndSemicolon();
           return null;
         } else if (this.eat(TokenType.star)) {
           if (this.eatContextual("as")) this.parseIdent(true);
           this.parseExportFrom(null, null, true);
+          this.parseImportOrExportAssertionAndSemicolon();
           return null;
         } else {
           // `export type Foo = Bar;`

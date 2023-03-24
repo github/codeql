@@ -25,4 +25,4 @@ where
   then cfg.isSinkWithHighlight(sink.getNode(), highlight)
   else highlight = sink.getNode()
 select highlight, source, sink, "This command depends on an unsanitized $@.", source.getNode(),
-  "command-line argument"
+  source.getNode().(Source).describe()

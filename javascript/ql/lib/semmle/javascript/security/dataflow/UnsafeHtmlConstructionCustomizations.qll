@@ -22,7 +22,7 @@ module UnsafeHtmlConstruction {
   /**
    * A parameter of an exported function, seen as a source for usnafe HTML constructed from input.
    */
-  class ExternalInputSource extends Source, DataFlow::ParameterNode {
+  class ExternalInputSource extends Source {
     ExternalInputSource() {
       this = Exports::getALibraryInputParameter() and
       // An AMD-style module sometimes loads the jQuery library in a way which looks like library input.
@@ -178,20 +178,21 @@ module UnsafeHtmlConstruction {
       )
     }
 
-    override string describe() { result = "Markdown rendering" }
+    override string describe() { result = "markdown rendering" }
   }
 
   /** A test for the value of `typeof x`, restricting the potential types of `x`. */
-  class TypeTestGuard extends TaintTracking::SanitizerGuardNode, DataFlow::ValueNode {
+  class TypeTestGuard extends TaintTracking::LabeledSanitizerGuardNode, DataFlow::ValueNode {
     override EqualityTest astNode;
     Expr operand;
     boolean polarity;
 
     TypeTestGuard() { TaintTracking::isStringTypeGuard(astNode, operand, polarity) }
 
-    override predicate sanitizes(boolean outcome, Expr e) {
+    override predicate sanitizes(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
       polarity = outcome and
-      e = operand
+      e = operand and
+      lbl.isTaint()
     }
   }
 }

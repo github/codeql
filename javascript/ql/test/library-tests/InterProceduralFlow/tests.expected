@@ -14,6 +14,7 @@ dataFlow
 | callback.js:16:14:16:21 | "source" | callback.js:13:14:13:14 | x |
 | callback.js:17:15:17:23 | "source2" | callback.js:13:14:13:14 | x |
 | callback.js:27:15:27:23 | "source3" | callback.js:13:14:13:14 | x |
+| destructuring.js:2:16:2:24 | "tainted" | destructuring.js:5:14:5:20 | tainted |
 | destructuring.js:2:16:2:24 | "tainted" | destructuring.js:9:15:9:22 | tainted2 |
 | destructuring.js:19:15:19:23 | "tainted" | destructuring.js:14:15:14:15 | p |
 | destructuring.js:20:15:20:28 | "also tainted" | destructuring.js:15:15:15:15 | r |
@@ -201,6 +202,7 @@ germanFlow
 | callback.js:17:15:17:23 | "source2" | callback.js:13:14:13:14 | x |
 | callback.js:27:15:27:23 | "source3" | callback.js:13:14:13:14 | x |
 | custom.js:1:14:1:26 | "verschmutzt" | custom.js:2:15:2:20 | quelle |
+| destructuring.js:2:16:2:24 | "tainted" | destructuring.js:5:14:5:20 | tainted |
 | destructuring.js:2:16:2:24 | "tainted" | destructuring.js:9:15:9:22 | tainted2 |
 | destructuring.js:19:15:19:23 | "tainted" | destructuring.js:14:15:14:15 | p |
 | destructuring.js:20:15:20:28 | "also tainted" | destructuring.js:15:15:15:15 | r |

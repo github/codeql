@@ -6,6 +6,7 @@
  * @precision medium
  * @id java/main-method-in-enterprise-bean
  * @tags security
+ *       experimental
  *       external/cwe/cwe-489
  */
 

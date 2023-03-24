@@ -7,6 +7,7 @@
  * @precision medium
  * @tags correctness
  *       security
+ *       experimental
  *       external/cwe/cwe-670
  */
 
@@ -30,4 +31,4 @@ where
     fc.getASuccessor+() = fctmp and
     fctmp.getASuccessor+() = fc1
   )
-select fc, "You need to handle the return value SSL_shutdown"
+select fc, "You need to handle the return value 'SSL_shutdown'."

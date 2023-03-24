@@ -1,0 +1,8 @@
+<manifest ... >
+    <!-- GOOD: 'android:debuggable' set to 'false' -->
+    <application
+        android:debuggable="false">
+        <activity ... >
+        </activity>
+    </application>
+</manifest>

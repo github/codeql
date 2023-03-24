@@ -3,29 +3,13 @@
  */
 
 import go
-private import semmle.go.dataflow.ExternalFlow
-
-private class FlowSources extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "net/http;Request;true;Cookie;;;ReturnValue[0];remote",
-        "net/http;Request;true;Cookies;;;ReturnValue.ArrayElement;remote",
-        "net/http;Request;true;FormFile;;;ReturnValue[0..1];remote",
-        "net/http;Request;true;FormValue;;;ReturnValue;remote",
-        "net/http;Request;true;MultipartReader;;;ReturnValue[0];remote",
-        "net/http;Request;true;PostFormValue;;;ReturnValue;remote",
-        "net/http;Request;true;Referer;;;ReturnValue;remote",
-        "net/http;Request;true;UserAgent;;;ReturnValue;remote"
-      ]
-  }
-}
 
 /** Provides models of commonly used functions in the `net/http` package. */
 module NetHttp {
   /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
   private class UserControlledRequestField extends UntrustedFlowSource::Range,
-    DataFlow::FieldReadNode {
+    DataFlow::FieldReadNode
+  {
     UserControlledRequestField() {
       exists(string fieldName | this.getField().hasQualifiedName("net/http", "Request", fieldName) |
         fieldName =
@@ -35,7 +19,7 @@ module NetHttp {
   }
 
   /** The declaration of a variable which either is or has a field that implements the http.ResponseWriter type */
-  private class StdlibResponseWriter extends HTTP::ResponseWriter::Range {
+  private class StdlibResponseWriter extends Http::ResponseWriter::Range {
     SsaWithFields v;
 
     StdlibResponseWriter() {
@@ -52,7 +36,7 @@ module NetHttp {
     }
   }
 
-  private class HeaderWriteCall extends HTTP::HeaderWrite::Range, DataFlow::MethodCallNode {
+  private class HeaderWriteCall extends Http::HeaderWrite::Range, DataFlow::MethodCallNode {
     HeaderWriteCall() {
       this.getTarget().hasQualifiedName("net/http", "Header", "Add") or
       this.getTarget().hasQualifiedName("net/http", "Header", "Set")
@@ -62,7 +46,7 @@ module NetHttp {
 
     override DataFlow::Node getValue() { result = this.getArgument(1) }
 
-    override HTTP::ResponseWriter getResponseWriter() {
+    override Http::ResponseWriter getResponseWriter() {
       // find `v` in
       // ```
       // header := v.Header()
@@ -72,7 +56,7 @@ module NetHttp {
     }
   }
 
-  private class MapWrite extends HTTP::HeaderWrite::Range, DataFlow::Node {
+  private class MapWrite extends Http::HeaderWrite::Range, DataFlow::Node {
     Write write;
     DataFlow::Node index;
     DataFlow::Node rhs;
@@ -86,7 +70,7 @@ module NetHttp {
 
     override DataFlow::Node getValue() { result = rhs }
 
-    override HTTP::ResponseWriter getResponseWriter() {
+    override Http::ResponseWriter getResponseWriter() {
       // find `v` in
       // ```
       // header := v.Header()
@@ -96,7 +80,7 @@ module NetHttp {
     }
   }
 
-  private class ResponseWriteHeaderCall extends HTTP::HeaderWrite::Range, DataFlow::MethodCallNode {
+  private class ResponseWriteHeaderCall extends Http::HeaderWrite::Range, DataFlow::MethodCallNode {
     ResponseWriteHeaderCall() {
       this.getTarget().implements("net/http", "ResponseWriter", "WriteHeader")
     }
@@ -107,10 +91,10 @@ module NetHttp {
 
     override DataFlow::Node getValue() { result = this.getArgument(0) }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getReceiver() }
   }
 
-  private class ResponseErrorCall extends HTTP::HeaderWrite::Range, DataFlow::CallNode {
+  private class ResponseErrorCall extends Http::HeaderWrite::Range, DataFlow::CallNode {
     ResponseErrorCall() { this.getTarget().hasQualifiedName("net/http", "Error") }
 
     override string getHeaderName() { result = "status" }
@@ -119,10 +103,10 @@ module NetHttp {
 
     override DataFlow::Node getValue() { result = this.getArgument(2) }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getArgument(0) }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getArgument(0) }
   }
 
-  private class RequestBody extends HTTP::RequestBody::Range, DataFlow::ExprNode {
+  private class RequestBody extends Http::RequestBody::Range, DataFlow::ExprNode {
     RequestBody() {
       exists(Function newRequest |
         newRequest.hasQualifiedName("net/http", "NewRequest") and
@@ -137,7 +121,7 @@ module NetHttp {
     }
   }
 
-  private class ResponseBody extends HTTP::ResponseBody::Range, DataFlow::ArgumentNode {
+  private class ResponseBody extends Http::ResponseBody::Range, DataFlow::ArgumentNode {
     DataFlow::Node responseWriter;
 
     ResponseBody() {
@@ -149,26 +133,26 @@ module NetHttp {
       )
       or
       exists(TaintTracking::FunctionModel model |
-        // A modelled function conveying taint from some input to the response writer,
+        // A modeled function conveying taint from some input to the response writer,
         // e.g. `io.Copy(responseWriter, someTaintedReader)`
         model.taintStep(this, responseWriter) and
         responseWriter.getType().implements("net/http", "ResponseWriter")
       )
     }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = responseWriter }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = responseWriter }
   }
 
-  private class RedirectCall extends HTTP::Redirect::Range, DataFlow::CallNode {
+  private class RedirectCall extends Http::Redirect::Range, DataFlow::CallNode {
     RedirectCall() { this.getTarget().hasQualifiedName("net/http", "Redirect") }
 
     override DataFlow::Node getUrl() { result = this.getArgument(2) }
 
-    override HTTP::ResponseWriter getResponseWriter() { result.getANode() = this.getArgument(0) }
+    override Http::ResponseWriter getResponseWriter() { result.getANode() = this.getArgument(0) }
   }
 
   /** A call to a function in the `net/http` package that performs an HTTP request to a URL. */
-  private class RequestCall extends HTTP::ClientRequest::Range, DataFlow::CallNode {
+  private class RequestCall extends Http::ClientRequest::Range, DataFlow::CallNode {
     RequestCall() {
       exists(string functionName |
         (
@@ -185,7 +169,7 @@ module NetHttp {
   }
 
   /** A call to the Client.Do function in the `net/http` package. */
-  private class ClientDo extends HTTP::ClientRequest::Range, DataFlow::MethodCallNode {
+  private class ClientDo extends Http::ClientRequest::Range, DataFlow::MethodCallNode {
     ClientDo() { this.getTarget().hasQualifiedName("net/http", "Client", "Do") }
 
     override DataFlow::Node getUrl() {
@@ -212,7 +196,7 @@ module NetHttp {
   }
 
   /** A call to the `Transport.RoundTrip` function in the `net/http` package. */
-  private class TransportRoundTrip extends HTTP::ClientRequest::Range, DataFlow::MethodCallNode {
+  private class TransportRoundTrip extends Http::ClientRequest::Range, DataFlow::MethodCallNode {
     TransportRoundTrip() { this.getTarget().hasQualifiedName("net/http", "Transport", "RoundTrip") }
 
     override DataFlow::Node getUrl() {
@@ -239,7 +223,7 @@ module NetHttp {
   }
 
   /** Fields and methods of `net/http.Request` that are not generally exploitable in an open-redirect attack. */
-  private class RedirectUnexploitableRequestFields extends HTTP::Redirect::UnexploitableSource {
+  private class RedirectUnexploitableRequestFields extends Http::Redirect::UnexploitableSource {
     RedirectUnexploitableRequestFields() {
       exists(Field f, string fieldName |
         f.hasQualifiedName("net/http", "Request", fieldName) and
@@ -257,7 +241,7 @@ module NetHttp {
     }
   }
 
-  private class Handler extends HTTP::RequestHandler::Range {
+  private class Handler extends Http::RequestHandler::Range {
     DataFlow::CallNode handlerReg;
 
     Handler() {

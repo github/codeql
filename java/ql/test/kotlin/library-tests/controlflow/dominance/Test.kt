@@ -98,3 +98,5 @@ TODO
 	}
 
 }
+
+// Diagnostic Matches: % Couldn't find a Java equivalent function to kotlin.Int.dec in java.lang.Integer  ...while extracting a call (<no name>) at %Test.kt:40:4:40:6%

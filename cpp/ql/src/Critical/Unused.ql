@@ -30,4 +30,4 @@ where
   not v.getType().getUnderlyingType() instanceof ReferenceType and
   not exists(ScopeUtilityClass util | def = util.getAUse()) and
   not def.isInMacroExpansion()
-select def, "Variable '" + v.getName() + "' is assigned a value that is never used"
+select def, "Variable '" + v.getName() + "' is assigned a value that is never used."

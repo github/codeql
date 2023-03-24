@@ -1,3 +1,4 @@
 name: ql-other-pack-thing
 version: 0.1.0
-libraryPathDependencies: ql-testing-src-pack
+dependencies:
+  ql-testing-src-pack: '*'

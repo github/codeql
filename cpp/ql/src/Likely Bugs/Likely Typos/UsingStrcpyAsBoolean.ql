@@ -7,13 +7,12 @@
  * @problem.severity error
  * @precision high
  * @id cpp/string-copy-return-value-as-boolean
- * @tags external/microsoft/C6324
- *       correctness
+ * @tags correctness
  */
 
 import cpp
 import semmle.code.cpp.models.implementations.Strcpy
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 
 /**
  * A string copy function that returns a string, rather than an error code (for

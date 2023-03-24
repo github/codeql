@@ -1,0 +1,25 @@
+py_library(
+    name = "utils",
+    srcs = ["utils.py"],
+)
+
+[
+    py_test(
+        name = "test_%s" % test[:test.find("/")],
+        size = "small",
+        srcs = [test],
+        args = [
+            "$(location //swift/tools:qltest)",
+        ],
+        data = [
+            "//swift/tools:qltest",
+        ] + glob([test.replace("test.py", "*")]),
+        main = test,
+        deps = [":utils"],
+    )
+    for test in glob(["*/test.py"])
+]
+
+test_suite(
+    name = "qltest",
+)

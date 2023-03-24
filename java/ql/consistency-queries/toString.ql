@@ -7,7 +7,7 @@ string topToString(Top t) {
   result = t.(TypeBound).toString()
   or
   // XMLLocatable doesn't extend Top (but probably should); part of Kotlin #6
-  result = t.(XMLLocatable).toString()
+  result = t.(XmlLocatable).toString()
   or
   // Java #142
   t instanceof FieldDeclaration and not exists(t.toString()) and result = "<FieldDeclaration>"

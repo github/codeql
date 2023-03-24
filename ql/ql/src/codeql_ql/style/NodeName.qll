@@ -9,18 +9,18 @@ string getName(AstNode node, string kind) {
   or
   // not including CharPreds or db relations. The remaining are: classlessPredicate, classPredicate, newTypeBranch.
   result = node.(ClasslessPredicate).getName() and
-  kind = "classlessPredicate"
+  kind = "predicate"
   or
   result = node.(ClassPredicate).getName() and
-  kind = "classPredicate"
+  kind = "predicate"
   or
   result = node.(NewTypeBranch).getName() and
-  kind = "newtypeBranch"
+  kind = "newtype"
   or
   result = node.(NewType).getName() and
   kind = "newtype"
   or
-  result = node.(VarDecl).getName() and
+  result = node.(VarDef).getName() and
   kind = "variable" and
   not node = any(FieldDecl f).getVarDecl()
   or
@@ -28,5 +28,5 @@ string getName(AstNode node, string kind) {
   or
   result = node.(Module).getName() and kind = "module"
   or
-  result = node.(Import).importedAs() and kind = "import"
+  result = node.(Import).importedAs() and kind = "module"
 }

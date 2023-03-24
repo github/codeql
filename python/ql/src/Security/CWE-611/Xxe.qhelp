@@ -38,7 +38,7 @@ default parser</a> from <code>lxml.etree</code> allows local external entities t
 <p>
 To guard against XXE attacks with the <code>lxml</code> library, you should create a
 parser with <code>resolve_entities</code> set to <code>false</code>. This means that no
-entity expansion is undertaken, althuogh standard predefined entities such as
+entity expansion is undertaken, although standard predefined entities such as
 <code>&amp;gt;</code>, for writing <code>&gt;</code> inside the text of an XML element,
 are still allowed.
 </p>

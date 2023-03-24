@@ -15,13 +15,15 @@
 
 import cpp
 import semmle.code.cpp.commons.Buffer
+import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
 import LoopBounds
 
 private predicate staticBufferBase(VariableAccess access, Variable v) {
   v.getType().(ArrayType).getBaseType() instanceof CharType and
   access = v.getAnAccess() and
-  not memberMayBeVarSize(_, v)
+  not memberMayBeVarSize(_, v) and
+  not access.isUnevaluated()
 }
 
 predicate staticBuffer(VariableAccess access, Variable v, int size) {

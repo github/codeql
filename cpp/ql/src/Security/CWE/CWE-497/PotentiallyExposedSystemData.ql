@@ -28,24 +28,32 @@ import cpp
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.models.interfaces.FlowSource
 import semmle.code.cpp.security.OutputWrite
-import DataFlow::PathGraph
+import PotentiallyExposedSystemData::PathGraph
 import SystemData
 
-class PotentiallyExposedSystemDataConfiguration extends TaintTracking::Configuration {
-  PotentiallyExposedSystemDataConfiguration() { this = "PotentiallyExposedSystemDataConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
+module PotentiallyExposedSystemDataConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source = any(SystemData sd | sd.isSensitive()).getAnExpr()
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(OutputWrite ow | ow.getASource().getAChild*() = sink.asExpr())
+  predicate isSink(DataFlow::Node sink) {
+    exists(OutputWrite ow, Expr child | child = ow.getASource().getAChild*() |
+      // Most sinks receive a pointer as an argument (for example `printf`),
+      // and we use an indirect sink for those.
+      // However, some sinks (for example `puts`) receive a single character
+      // as an argument. For those we have to use a direct sink.
+      if
+        child.getUnspecifiedType() instanceof PointerType or
+        child.getUnspecifiedType() instanceof ArrayType
+      then child = sink.asIndirectExpr()
+      else child = sink.asExpr()
+    )
   }
 }
 
-from
-  PotentiallyExposedSystemDataConfiguration config, DataFlow::PathNode source,
-  DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+module PotentiallyExposedSystemData = TaintTracking::Global<PotentiallyExposedSystemDataConfig>;
+
+from PotentiallyExposedSystemData::PathNode source, PotentiallyExposedSystemData::PathNode sink
+where PotentiallyExposedSystemData::flowPath(source, sink)
 select sink, source, sink, "This operation potentially exposes sensitive system data from $@.",
   source, source.getNode().toString()

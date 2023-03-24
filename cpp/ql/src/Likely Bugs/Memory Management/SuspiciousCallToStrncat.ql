@@ -24,7 +24,7 @@ import semmle.code.cpp.valuenumbering.GlobalValueNumbering
  * Holds if `call` is a call to `strncat` such that `sizeArg` and `destArg` are the size and
  * destination arguments, respectively.
  */
-predicate interestringCallWithArgs(Call call, Expr sizeArg, Expr destArg) {
+predicate interestingCallWithArgs(Call call, Expr sizeArg, Expr destArg) {
   exists(StrcatFunction strcat |
     strcat = call.getTarget() and
     sizeArg = call.getArgument(strcat.getParamSize()) and
@@ -37,7 +37,7 @@ predicate interestringCallWithArgs(Call call, Expr sizeArg, Expr destArg) {
  * argument `destArg`, and `destArg` is the size of the buffer pointed to by `destArg`.
  */
 predicate case1(FunctionCall fc, Expr sizeArg, VariableAccess destArg) {
-  interestringCallWithArgs(fc, sizeArg, destArg) and
+  interestingCallWithArgs(fc, sizeArg, destArg) and
   exists(VariableAccess va |
     va = sizeArg.(BufferSizeExpr).getArg() and
     destArg.getTarget() = va.getTarget()
@@ -49,7 +49,7 @@ predicate case1(FunctionCall fc, Expr sizeArg, VariableAccess destArg) {
  * argument `destArg`, and `sizeArg` computes the value `sizeof (dest) - strlen (dest)`.
  */
 predicate case2(FunctionCall fc, Expr sizeArg, VariableAccess destArg) {
-  interestringCallWithArgs(fc, sizeArg, destArg) and
+  interestingCallWithArgs(fc, sizeArg, destArg) and
   exists(SubExpr sub, int n |
     // The destination buffer is an array of size n
     destArg.getUnspecifiedType().(ArrayType).getSize() = n and

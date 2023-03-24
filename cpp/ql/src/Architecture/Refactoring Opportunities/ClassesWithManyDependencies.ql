@@ -16,4 +16,4 @@ where
   t.fromSource() and
   n = t.getMetrics().getEfferentSourceCoupling() and
   n > 10
-select t as Class, "This class has too many dependencies (" + n.toString() + ")"
+select t as class_, "This class has too many dependencies (" + n.toString() + ")."

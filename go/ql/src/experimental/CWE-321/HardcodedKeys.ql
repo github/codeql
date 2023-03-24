@@ -5,6 +5,7 @@
  * @problem.severity error
  * @id go/hardcoded-key
  * @tags security
+ *       experimental
  *       external/cwe/cwe-321
  */
 

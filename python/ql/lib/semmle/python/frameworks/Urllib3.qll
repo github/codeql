@@ -49,7 +49,7 @@ private module Urllib3 {
      * - https://urllib3.readthedocs.io/en/stable/reference/urllib3.request.html#urllib3.request.RequestMethods
      * - https://urllib3.readthedocs.io/en/stable/reference/urllib3.connectionpool.html#urllib3.HTTPConnectionPool.urlopen
      */
-    private class RequestCall extends HTTP::Client::Request::Range, API::CallNode {
+    private class RequestCall extends Http::Client::Request::Range, API::CallNode {
       RequestCall() {
         this =
           classRef()

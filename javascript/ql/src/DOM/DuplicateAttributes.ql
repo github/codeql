@@ -28,4 +28,4 @@ predicate duplicate(DOM::AttributeDefinition earlier, DOM::AttributeDefinition l
 
 from DOM::AttributeDefinition earlier, DOM::AttributeDefinition later
 where duplicate(earlier, later) and not duplicate(_, earlier)
-select earlier, "This attribute is duplicated $@.", later, "here"
+select earlier, "This attribute $@.", later, "is duplicated later"

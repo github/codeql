@@ -42,7 +42,7 @@ private module NotExposed {
   // Implementation below
   // ---------------------------------------------------------------------------
   //
-  // We are looking to find all subclassed of the already modelled classes, and ideally
+  // We are looking to find all subclassed of the already modeled classes, and ideally
   // we would identify an `API::Node` for each (then `toString` would give the API
   // path).
   //
@@ -68,9 +68,9 @@ private module NotExposed {
   // modeling. See https://github.com/github/codeql/pull/5632 for more discussion.
   //
   //
-  bindingset[fullyQaulified]
-  string fullyQualifiedToApiGraphPath(string fullyQaulified) {
-    result = "moduleImport(\"" + fullyQaulified.replaceAll(".", "\").getMember(\"") + "\")"
+  bindingset[fullyQualified]
+  string fullyQualifiedToApiGraphPath(string fullyQualified) {
+    result = "moduleImport(\"" + fullyQualified.replaceAll(".", "\").getMember(\"") + "\")"
   }
 
   /** DEPRECATED: Alias for fullyQualifiedToApiGraphPath */

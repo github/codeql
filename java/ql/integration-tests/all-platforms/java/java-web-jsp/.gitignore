@@ -1,0 +1,22 @@
+#Eclipse
+.classpath
+.project
+test-output
+.settings
+
+#IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea/
+
+#Gradle
+.gradle
+
+#Build directories
+bin/
+build/
+target/
+
+#Maven
+*.versionsBackup

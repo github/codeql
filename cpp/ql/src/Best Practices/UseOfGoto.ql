@@ -16,7 +16,7 @@ import cpp
 class JumpTarget extends Stmt {
   JumpTarget() { exists(GotoStmt g | g.getTarget() = this) }
 
-  FunctionDeclarationEntry getFDE() { result.getBlock() = this.getParentStmt+() }
+  FunctionDeclarationEntry getFde() { result.getBlock() = this.getParentStmt+() }
 
   predicate isForward() {
     exists(GotoStmt g | g.getTarget() = this |
@@ -33,8 +33,8 @@ class JumpTarget extends Stmt {
 
 from FunctionDeclarationEntry fde, int nforward, int nbackward
 where
-  nforward = strictcount(JumpTarget t | t.getFDE() = fde and t.isForward()) and
-  nbackward = strictcount(JumpTarget t | t.getFDE() = fde and t.isBackward()) and
+  nforward = strictcount(JumpTarget t | t.getFde() = fde and t.isForward()) and
+  nbackward = strictcount(JumpTarget t | t.getFde() = fde and t.isBackward()) and
   nforward != 1 and
   nbackward != 1
 select fde,

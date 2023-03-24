@@ -1,5 +1,5 @@
 private import codeql.swift.generated.expr.EnumIsCaseExpr
 
-class EnumIsCaseExpr extends EnumIsCaseExprBase {
+class EnumIsCaseExpr extends Generated::EnumIsCaseExpr {
   override string toString() { result = "... is " + this.getElement().toString() }
 }

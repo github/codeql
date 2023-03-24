@@ -1,72 +1,72 @@
 edges
 nodes
-| test.go:147:14:147:21 | password | semmle.label | password |
-| test.go:148:17:148:24 | password | semmle.label | password |
-| test.go:149:14:149:21 | password | semmle.label | password |
-| test.go:150:18:150:25 | password | semmle.label | password |
-| test.go:151:14:151:21 | password | semmle.label | password |
-| test.go:152:13:152:20 | password | semmle.label | password |
-| test.go:153:22:153:29 | password | semmle.label | password |
-| test.go:154:15:154:22 | password | semmle.label | password |
-| test.go:155:14:155:21 | password | semmle.label | password |
-| test.go:156:13:156:20 | password | semmle.label | password |
-| test.go:157:16:157:23 | password | semmle.label | password |
-| test.go:158:13:158:20 | password | semmle.label | password |
-| test.go:159:16:159:23 | password | semmle.label | password |
-| test.go:160:13:160:20 | password | semmle.label | password |
-| test.go:161:17:161:24 | password | semmle.label | password |
-| test.go:162:13:162:20 | password | semmle.label | password |
-| test.go:163:12:163:19 | password | semmle.label | password |
-| test.go:164:21:164:28 | password | semmle.label | password |
-| test.go:165:14:165:21 | password | semmle.label | password |
-| test.go:166:13:166:20 | password | semmle.label | password |
-| test.go:167:12:167:19 | password | semmle.label | password |
-| test.go:168:15:168:22 | password | semmle.label | password |
+| test.go:148:14:148:21 | password | semmle.label | password |
+| test.go:149:17:149:24 | password | semmle.label | password |
+| test.go:150:14:150:21 | password | semmle.label | password |
+| test.go:151:18:151:25 | password | semmle.label | password |
+| test.go:152:14:152:21 | password | semmle.label | password |
+| test.go:153:13:153:20 | password | semmle.label | password |
+| test.go:154:22:154:29 | password | semmle.label | password |
+| test.go:155:15:155:22 | password | semmle.label | password |
+| test.go:156:14:156:21 | password | semmle.label | password |
+| test.go:157:13:157:20 | password | semmle.label | password |
+| test.go:158:16:158:23 | password | semmle.label | password |
+| test.go:159:13:159:20 | password | semmle.label | password |
+| test.go:160:16:160:23 | password | semmle.label | password |
+| test.go:161:13:161:20 | password | semmle.label | password |
+| test.go:162:17:162:24 | password | semmle.label | password |
+| test.go:163:13:163:20 | password | semmle.label | password |
+| test.go:164:12:164:19 | password | semmle.label | password |
+| test.go:165:21:165:28 | password | semmle.label | password |
+| test.go:166:14:166:21 | password | semmle.label | password |
+| test.go:167:13:167:20 | password | semmle.label | password |
+| test.go:168:12:168:19 | password | semmle.label | password |
 | test.go:169:15:169:22 | password | semmle.label | password |
-| test.go:170:18:170:25 | password | semmle.label | password |
-| test.go:171:15:171:22 | password | semmle.label | password |
-| test.go:172:19:172:26 | password | semmle.label | password |
-| test.go:173:15:173:22 | password | semmle.label | password |
-| test.go:174:14:174:21 | password | semmle.label | password |
-| test.go:175:23:175:30 | password | semmle.label | password |
-| test.go:176:16:176:23 | password | semmle.label | password |
-| test.go:177:15:177:22 | password | semmle.label | password |
-| test.go:178:14:178:21 | password | semmle.label | password |
-| test.go:179:17:179:24 | password | semmle.label | password |
-| test.go:180:16:180:23 | password | semmle.label | password |
+| test.go:170:15:170:22 | password | semmle.label | password |
+| test.go:171:18:171:25 | password | semmle.label | password |
+| test.go:172:15:172:22 | password | semmle.label | password |
+| test.go:173:19:173:26 | password | semmle.label | password |
+| test.go:174:15:174:22 | password | semmle.label | password |
+| test.go:175:14:175:21 | password | semmle.label | password |
+| test.go:176:23:176:30 | password | semmle.label | password |
+| test.go:177:16:177:23 | password | semmle.label | password |
+| test.go:178:15:178:22 | password | semmle.label | password |
+| test.go:179:14:179:21 | password | semmle.label | password |
+| test.go:180:17:180:24 | password | semmle.label | password |
+| test.go:181:16:181:23 | password | semmle.label | password |
 subpaths
 #select
-| test.go:147:14:147:21 | password | test.go:147:14:147:21 | password | test.go:147:14:147:21 | password | Sensitive data returned by $@ is logged here. | test.go:147:14:147:21 | password | an access to password |
-| test.go:148:17:148:24 | password | test.go:148:17:148:24 | password | test.go:148:17:148:24 | password | Sensitive data returned by $@ is logged here. | test.go:148:17:148:24 | password | an access to password |
-| test.go:149:14:149:21 | password | test.go:149:14:149:21 | password | test.go:149:14:149:21 | password | Sensitive data returned by $@ is logged here. | test.go:149:14:149:21 | password | an access to password |
-| test.go:150:18:150:25 | password | test.go:150:18:150:25 | password | test.go:150:18:150:25 | password | Sensitive data returned by $@ is logged here. | test.go:150:18:150:25 | password | an access to password |
-| test.go:151:14:151:21 | password | test.go:151:14:151:21 | password | test.go:151:14:151:21 | password | Sensitive data returned by $@ is logged here. | test.go:151:14:151:21 | password | an access to password |
-| test.go:152:13:152:20 | password | test.go:152:13:152:20 | password | test.go:152:13:152:20 | password | Sensitive data returned by $@ is logged here. | test.go:152:13:152:20 | password | an access to password |
-| test.go:153:22:153:29 | password | test.go:153:22:153:29 | password | test.go:153:22:153:29 | password | Sensitive data returned by $@ is logged here. | test.go:153:22:153:29 | password | an access to password |
-| test.go:154:15:154:22 | password | test.go:154:15:154:22 | password | test.go:154:15:154:22 | password | Sensitive data returned by $@ is logged here. | test.go:154:15:154:22 | password | an access to password |
-| test.go:155:14:155:21 | password | test.go:155:14:155:21 | password | test.go:155:14:155:21 | password | Sensitive data returned by $@ is logged here. | test.go:155:14:155:21 | password | an access to password |
-| test.go:156:13:156:20 | password | test.go:156:13:156:20 | password | test.go:156:13:156:20 | password | Sensitive data returned by $@ is logged here. | test.go:156:13:156:20 | password | an access to password |
-| test.go:157:16:157:23 | password | test.go:157:16:157:23 | password | test.go:157:16:157:23 | password | Sensitive data returned by $@ is logged here. | test.go:157:16:157:23 | password | an access to password |
-| test.go:158:13:158:20 | password | test.go:158:13:158:20 | password | test.go:158:13:158:20 | password | Sensitive data returned by $@ is logged here. | test.go:158:13:158:20 | password | an access to password |
-| test.go:159:16:159:23 | password | test.go:159:16:159:23 | password | test.go:159:16:159:23 | password | Sensitive data returned by $@ is logged here. | test.go:159:16:159:23 | password | an access to password |
-| test.go:160:13:160:20 | password | test.go:160:13:160:20 | password | test.go:160:13:160:20 | password | Sensitive data returned by $@ is logged here. | test.go:160:13:160:20 | password | an access to password |
-| test.go:161:17:161:24 | password | test.go:161:17:161:24 | password | test.go:161:17:161:24 | password | Sensitive data returned by $@ is logged here. | test.go:161:17:161:24 | password | an access to password |
-| test.go:162:13:162:20 | password | test.go:162:13:162:20 | password | test.go:162:13:162:20 | password | Sensitive data returned by $@ is logged here. | test.go:162:13:162:20 | password | an access to password |
-| test.go:163:12:163:19 | password | test.go:163:12:163:19 | password | test.go:163:12:163:19 | password | Sensitive data returned by $@ is logged here. | test.go:163:12:163:19 | password | an access to password |
-| test.go:164:21:164:28 | password | test.go:164:21:164:28 | password | test.go:164:21:164:28 | password | Sensitive data returned by $@ is logged here. | test.go:164:21:164:28 | password | an access to password |
-| test.go:165:14:165:21 | password | test.go:165:14:165:21 | password | test.go:165:14:165:21 | password | Sensitive data returned by $@ is logged here. | test.go:165:14:165:21 | password | an access to password |
-| test.go:166:13:166:20 | password | test.go:166:13:166:20 | password | test.go:166:13:166:20 | password | Sensitive data returned by $@ is logged here. | test.go:166:13:166:20 | password | an access to password |
-| test.go:167:12:167:19 | password | test.go:167:12:167:19 | password | test.go:167:12:167:19 | password | Sensitive data returned by $@ is logged here. | test.go:167:12:167:19 | password | an access to password |
-| test.go:168:15:168:22 | password | test.go:168:15:168:22 | password | test.go:168:15:168:22 | password | Sensitive data returned by $@ is logged here. | test.go:168:15:168:22 | password | an access to password |
-| test.go:169:15:169:22 | password | test.go:169:15:169:22 | password | test.go:169:15:169:22 | password | Sensitive data returned by $@ is logged here. | test.go:169:15:169:22 | password | an access to password |
-| test.go:170:18:170:25 | password | test.go:170:18:170:25 | password | test.go:170:18:170:25 | password | Sensitive data returned by $@ is logged here. | test.go:170:18:170:25 | password | an access to password |
-| test.go:171:15:171:22 | password | test.go:171:15:171:22 | password | test.go:171:15:171:22 | password | Sensitive data returned by $@ is logged here. | test.go:171:15:171:22 | password | an access to password |
-| test.go:172:19:172:26 | password | test.go:172:19:172:26 | password | test.go:172:19:172:26 | password | Sensitive data returned by $@ is logged here. | test.go:172:19:172:26 | password | an access to password |
-| test.go:173:15:173:22 | password | test.go:173:15:173:22 | password | test.go:173:15:173:22 | password | Sensitive data returned by $@ is logged here. | test.go:173:15:173:22 | password | an access to password |
-| test.go:174:14:174:21 | password | test.go:174:14:174:21 | password | test.go:174:14:174:21 | password | Sensitive data returned by $@ is logged here. | test.go:174:14:174:21 | password | an access to password |
-| test.go:175:23:175:30 | password | test.go:175:23:175:30 | password | test.go:175:23:175:30 | password | Sensitive data returned by $@ is logged here. | test.go:175:23:175:30 | password | an access to password |
-| test.go:176:16:176:23 | password | test.go:176:16:176:23 | password | test.go:176:16:176:23 | password | Sensitive data returned by $@ is logged here. | test.go:176:16:176:23 | password | an access to password |
-| test.go:177:15:177:22 | password | test.go:177:15:177:22 | password | test.go:177:15:177:22 | password | Sensitive data returned by $@ is logged here. | test.go:177:15:177:22 | password | an access to password |
-| test.go:178:14:178:21 | password | test.go:178:14:178:21 | password | test.go:178:14:178:21 | password | Sensitive data returned by $@ is logged here. | test.go:178:14:178:21 | password | an access to password |
-| test.go:179:17:179:24 | password | test.go:179:17:179:24 | password | test.go:179:17:179:24 | password | Sensitive data returned by $@ is logged here. | test.go:179:17:179:24 | password | an access to password |
-| test.go:180:16:180:23 | password | test.go:180:16:180:23 | password | test.go:180:16:180:23 | password | Sensitive data returned by $@ is logged here. | test.go:180:16:180:23 | password | an access to password |
+| test.go:148:14:148:21 | password | test.go:148:14:148:21 | password | test.go:148:14:148:21 | password | $@ flows to a logging call. | test.go:148:14:148:21 | password | Sensitive data returned by an access to password |
+| test.go:149:17:149:24 | password | test.go:149:17:149:24 | password | test.go:149:17:149:24 | password | $@ flows to a logging call. | test.go:149:17:149:24 | password | Sensitive data returned by an access to password |
+| test.go:150:14:150:21 | password | test.go:150:14:150:21 | password | test.go:150:14:150:21 | password | $@ flows to a logging call. | test.go:150:14:150:21 | password | Sensitive data returned by an access to password |
+| test.go:151:18:151:25 | password | test.go:151:18:151:25 | password | test.go:151:18:151:25 | password | $@ flows to a logging call. | test.go:151:18:151:25 | password | Sensitive data returned by an access to password |
+| test.go:152:14:152:21 | password | test.go:152:14:152:21 | password | test.go:152:14:152:21 | password | $@ flows to a logging call. | test.go:152:14:152:21 | password | Sensitive data returned by an access to password |
+| test.go:153:13:153:20 | password | test.go:153:13:153:20 | password | test.go:153:13:153:20 | password | $@ flows to a logging call. | test.go:153:13:153:20 | password | Sensitive data returned by an access to password |
+| test.go:154:22:154:29 | password | test.go:154:22:154:29 | password | test.go:154:22:154:29 | password | $@ flows to a logging call. | test.go:154:22:154:29 | password | Sensitive data returned by an access to password |
+| test.go:155:15:155:22 | password | test.go:155:15:155:22 | password | test.go:155:15:155:22 | password | $@ flows to a logging call. | test.go:155:15:155:22 | password | Sensitive data returned by an access to password |
+| test.go:156:14:156:21 | password | test.go:156:14:156:21 | password | test.go:156:14:156:21 | password | $@ flows to a logging call. | test.go:156:14:156:21 | password | Sensitive data returned by an access to password |
+| test.go:157:13:157:20 | password | test.go:157:13:157:20 | password | test.go:157:13:157:20 | password | $@ flows to a logging call. | test.go:157:13:157:20 | password | Sensitive data returned by an access to password |
+| test.go:158:16:158:23 | password | test.go:158:16:158:23 | password | test.go:158:16:158:23 | password | $@ flows to a logging call. | test.go:158:16:158:23 | password | Sensitive data returned by an access to password |
+| test.go:159:13:159:20 | password | test.go:159:13:159:20 | password | test.go:159:13:159:20 | password | $@ flows to a logging call. | test.go:159:13:159:20 | password | Sensitive data returned by an access to password |
+| test.go:160:16:160:23 | password | test.go:160:16:160:23 | password | test.go:160:16:160:23 | password | $@ flows to a logging call. | test.go:160:16:160:23 | password | Sensitive data returned by an access to password |
+| test.go:161:13:161:20 | password | test.go:161:13:161:20 | password | test.go:161:13:161:20 | password | $@ flows to a logging call. | test.go:161:13:161:20 | password | Sensitive data returned by an access to password |
+| test.go:162:17:162:24 | password | test.go:162:17:162:24 | password | test.go:162:17:162:24 | password | $@ flows to a logging call. | test.go:162:17:162:24 | password | Sensitive data returned by an access to password |
+| test.go:163:13:163:20 | password | test.go:163:13:163:20 | password | test.go:163:13:163:20 | password | $@ flows to a logging call. | test.go:163:13:163:20 | password | Sensitive data returned by an access to password |
+| test.go:164:12:164:19 | password | test.go:164:12:164:19 | password | test.go:164:12:164:19 | password | $@ flows to a logging call. | test.go:164:12:164:19 | password | Sensitive data returned by an access to password |
+| test.go:165:21:165:28 | password | test.go:165:21:165:28 | password | test.go:165:21:165:28 | password | $@ flows to a logging call. | test.go:165:21:165:28 | password | Sensitive data returned by an access to password |
+| test.go:166:14:166:21 | password | test.go:166:14:166:21 | password | test.go:166:14:166:21 | password | $@ flows to a logging call. | test.go:166:14:166:21 | password | Sensitive data returned by an access to password |
+| test.go:167:13:167:20 | password | test.go:167:13:167:20 | password | test.go:167:13:167:20 | password | $@ flows to a logging call. | test.go:167:13:167:20 | password | Sensitive data returned by an access to password |
+| test.go:168:12:168:19 | password | test.go:168:12:168:19 | password | test.go:168:12:168:19 | password | $@ flows to a logging call. | test.go:168:12:168:19 | password | Sensitive data returned by an access to password |
+| test.go:169:15:169:22 | password | test.go:169:15:169:22 | password | test.go:169:15:169:22 | password | $@ flows to a logging call. | test.go:169:15:169:22 | password | Sensitive data returned by an access to password |
+| test.go:170:15:170:22 | password | test.go:170:15:170:22 | password | test.go:170:15:170:22 | password | $@ flows to a logging call. | test.go:170:15:170:22 | password | Sensitive data returned by an access to password |
+| test.go:171:18:171:25 | password | test.go:171:18:171:25 | password | test.go:171:18:171:25 | password | $@ flows to a logging call. | test.go:171:18:171:25 | password | Sensitive data returned by an access to password |
+| test.go:172:15:172:22 | password | test.go:172:15:172:22 | password | test.go:172:15:172:22 | password | $@ flows to a logging call. | test.go:172:15:172:22 | password | Sensitive data returned by an access to password |
+| test.go:173:19:173:26 | password | test.go:173:19:173:26 | password | test.go:173:19:173:26 | password | $@ flows to a logging call. | test.go:173:19:173:26 | password | Sensitive data returned by an access to password |
+| test.go:174:15:174:22 | password | test.go:174:15:174:22 | password | test.go:174:15:174:22 | password | $@ flows to a logging call. | test.go:174:15:174:22 | password | Sensitive data returned by an access to password |
+| test.go:175:14:175:21 | password | test.go:175:14:175:21 | password | test.go:175:14:175:21 | password | $@ flows to a logging call. | test.go:175:14:175:21 | password | Sensitive data returned by an access to password |
+| test.go:176:23:176:30 | password | test.go:176:23:176:30 | password | test.go:176:23:176:30 | password | $@ flows to a logging call. | test.go:176:23:176:30 | password | Sensitive data returned by an access to password |
+| test.go:177:16:177:23 | password | test.go:177:16:177:23 | password | test.go:177:16:177:23 | password | $@ flows to a logging call. | test.go:177:16:177:23 | password | Sensitive data returned by an access to password |
+| test.go:178:15:178:22 | password | test.go:178:15:178:22 | password | test.go:178:15:178:22 | password | $@ flows to a logging call. | test.go:178:15:178:22 | password | Sensitive data returned by an access to password |
+| test.go:179:14:179:21 | password | test.go:179:14:179:21 | password | test.go:179:14:179:21 | password | $@ flows to a logging call. | test.go:179:14:179:21 | password | Sensitive data returned by an access to password |
+| test.go:180:17:180:24 | password | test.go:180:17:180:24 | password | test.go:180:17:180:24 | password | $@ flows to a logging call. | test.go:180:17:180:24 | password | Sensitive data returned by an access to password |
+| test.go:181:16:181:23 | password | test.go:181:16:181:23 | password | test.go:181:16:181:23 | password | $@ flows to a logging call. | test.go:181:16:181:23 | password | Sensitive data returned by an access to password |

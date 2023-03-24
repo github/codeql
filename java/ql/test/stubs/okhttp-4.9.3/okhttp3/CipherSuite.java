@@ -4,17 +4,11 @@ package okhttp3;
 
 import java.util.Comparator;
 
-public class CipherSuite {
+public class CipherSuite
+{
     protected CipherSuite() {}
-
-    public String toString() {
-        return null;
-    }
-
-    public final String javaName() {
-        return null;
-    }
-
+    public String toString(){ return null; }
+    public final String javaName(){ return null; }
     public static CipherSuite TLS_AES_128_CCM_8_SHA256 = null;
     public static CipherSuite TLS_AES_128_CCM_SHA256 = null;
     public static CipherSuite TLS_AES_128_GCM_SHA256 = null;
@@ -134,22 +128,12 @@ public class CipherSuite {
     public static CipherSuite TLS_RSA_WITH_RC4_128_MD5 = null;
     public static CipherSuite TLS_RSA_WITH_RC4_128_SHA = null;
     public static CipherSuite TLS_RSA_WITH_SEED_CBC_SHA = null;
-
-    public static CipherSuite forJavaName(String p0) {
-        return null;
-    }
-
+    public static CipherSuite forJavaName(String p0){ return null; }
     public static CipherSuite.Companion Companion = null;
-
-    static public class Companion {
+    static public class Companion
+    {
         protected Companion() {}
-
-        public final CipherSuite forJavaName(String p0) {
-            return null;
-        }
-
-        public final Comparator<String> getORDER_BY_NAME$okhttp() {
-            return null;
-        }
+        public final CipherSuite forJavaName(String p0){ return null; }
+        public final Comparator<String> getORDER_BY_NAME$okhttp(){ return null; }
     }
 }

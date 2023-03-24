@@ -10,7 +10,7 @@ import java.util.Stack
 import org.jetbrains.kotlin.ir.IrElement
 
 class LogCounter() {
-    public val diagnosticCounts = mutableMapOf<String, Int>()
+    public val diagnosticInfo = mutableMapOf<String, Pair<Severity, Int>>()
     public val diagnosticLimit: Int
     init {
         diagnosticLimit = System.getenv("CODEQL_EXTRACTOR_KOTLIN_DIAGNOSTIC_LIMIT")?.toIntOrNull() ?: 100
@@ -114,12 +114,23 @@ open class LoggerBase(val logCounter: LogCounter) {
             if(diagnosticLoc == null) {
                 "    Missing caller information.\n"
             } else {
-                val count = logCounter.diagnosticCounts.getOrDefault(diagnosticLoc, 0) + 1
-                logCounter.diagnosticCounts[diagnosticLoc] = count
+                val oldInfo = logCounter.diagnosticInfo.getOrDefault(diagnosticLoc, Pair(severity, 0))
+                if(severity != oldInfo.first) {
+                    // We don't want to get in a loop, so just emit this
+                    // directly without going through the diagnostic
+                    // counting machinery
+                    if (verbosity >= 1) {
+                        val message = "Severity mismatch ($severity vs ${oldInfo.first}) at $diagnosticLoc"
+                        emitDiagnostic(tw, Severity.Error, "Inconsistency", message, message)
+                    }
+                }
+                val newCount = oldInfo.second + 1
+                val newInfo = Pair(severity, newCount)
+                logCounter.diagnosticInfo[diagnosticLoc] = newInfo
                 when {
                     logCounter.diagnosticLimit <= 0 -> ""
-                    count == logCounter.diagnosticLimit -> "    Limit reached for diagnostics from $diagnosticLoc.\n"
-                    count > logCounter.diagnosticLimit -> return
+                    newCount == logCounter.diagnosticLimit -> "    Limit reached for diagnostics from $diagnosticLoc.\n"
+                    newCount > logCounter.diagnosticLimit -> return
                     else -> ""
                 }
             }
@@ -138,6 +149,10 @@ open class LoggerBase(val logCounter: LogCounter) {
         fullMsgBuilder.append(suffix)
 
         val fullMsg = fullMsgBuilder.toString()
+        emitDiagnostic(tw, severity, diagnosticLocStr, msg, fullMsg, locationString, mkLocationId)
+    }
+
+    private fun emitDiagnostic(tw: TrapWriter, severity: Severity, diagnosticLocStr: String, msg: String, fullMsg: String, locationString: String? = null, mkLocationId: () -> Label<DbLocation> = { tw.unknownLocation }) {
         val locStr = if (locationString == null) "" else "At " + locationString + ": "
         val kind = if (severity <= Severity.WarnHigh) "WARN" else "ERROR"
         val logMessage = LogMessage(kind, "Diagnostic($diagnosticLocStr): $locStr$fullMsg")
@@ -185,14 +200,17 @@ open class LoggerBase(val logCounter: LogCounter) {
     }
 
     fun printLimitedDiagnosticCounts(tw: TrapWriter) {
-        for((caller, count) in logCounter.diagnosticCounts) {
+        for((caller, info) in logCounter.diagnosticInfo) {
+            val severity = info.first
+            val count = info.second
             if(count >= logCounter.diagnosticLimit) {
                 // We don't know if this location relates to an error
                 // or a warning, so we just declare hitting the limit
                 // to be an error regardless.
-                val logMessage = LogMessage("ERROR", "Total of $count diagnostics from $caller.")
-                tw.writeComment(logMessage.toText())
-                logStream.write(logMessage.toJsonLine())
+                val message = "Total of $count diagnostics (reached limit of ${logCounter.diagnosticLimit}) from $caller."
+                if (verbosity >= 1) {
+                    emitDiagnostic(tw, severity, "Limit", message, message)
+                }
             }
         }
     }
@@ -248,15 +266,15 @@ open class Logger(val loggerBase: LoggerBase, open val tw: TrapWriter) {
 }
 
 class FileLogger(loggerBase: LoggerBase, override val tw: FileTrapWriter): Logger(loggerBase, tw) {
-    fun warnElement(msg: String, element: IrElement) {
+    fun warnElement(msg: String, element: IrElement, exn: Throwable? = null) {
         val locationString = tw.getLocationString(element)
         val mkLocationId = { tw.getLocation(element) }
-        loggerBase.diagnostic(tw, Severity.Warn, msg, null, locationString, mkLocationId)
+        loggerBase.diagnostic(tw, Severity.Warn, msg, exn?.stackTraceToString(), locationString, mkLocationId)
     }
 
-    fun errorElement(msg: String, element: IrElement) {
+    fun errorElement(msg: String, element: IrElement, exn: Throwable? = null) {
         val locationString = tw.getLocationString(element)
         val mkLocationId = { tw.getLocation(element) }
-        loggerBase.diagnostic(tw, Severity.Error, msg, null, locationString, mkLocationId)
+        loggerBase.diagnostic(tw, Severity.Error, msg, exn?.stackTraceToString(), locationString, mkLocationId)
     }
 }

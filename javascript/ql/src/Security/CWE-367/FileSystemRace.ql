@@ -18,32 +18,44 @@ import javascript
  * A call that checks a property of some file.
  */
 class FileCheck extends DataFlow::CallNode {
+  string member;
+
   FileCheck() {
-    this =
-      NodeJSLib::FS::moduleMember([
-          "open", "openSync", "exists", "existsSync", "stat", "statSync", "lstat", "lstatSync",
-          "fstat", "fstatSync", "access", "accessSync"
-        ]).getACall()
+    member =
+      [
+        "open", "openSync", "exists", "existsSync", "stat", "statSync", "lstat", "lstatSync",
+        "fstat", "fstatSync", "access", "accessSync"
+      ] and
+    this = NodeJSLib::FS::moduleMember(member).getACall()
   }
 
   DataFlow::Node getPathArgument() { result = this.getArgument(0) }
+
+  /** Holds if this call is a simple existence check for a file. */
+  predicate isExistsCheck() { member = ["exists", "existsSync"] }
 }
 
 /**
  * A call that modifies or otherwise interacts with a file.
  */
 class FileUse extends DataFlow::CallNode {
+  string member;
+
   FileUse() {
-    this =
-      NodeJSLib::FS::moduleMember([
-          // these are the six methods that accept file paths and file descriptors
-          "readFile", "readFileSync", "writeFile", "writeFileSync", "appendFile", "appendFileSync",
-          // don't use "open" after e.g. "access"
-          "open", "openSync"
-        ]).getACall()
+    member =
+      [
+        // these are the six methods that accept file paths and file descriptors
+        "readFile", "readFileSync", "writeFile", "writeFileSync", "appendFile", "appendFileSync",
+        // don't use "open" after e.g. "access"
+        "open", "openSync"
+      ] and
+    this = NodeJSLib::FS::moduleMember(member).getACall()
   }
 
   DataFlow::Node getPathArgument() { result = this.getArgument(0) }
+
+  /** Holds if this call reads from a file. */
+  predicate isFileRead() { member = ["readFile", "readFileSync"] }
 }
 
 /**
@@ -94,12 +106,13 @@ predicate useAfterCheck(FileCheck check, FileUse use) {
     )
   )
   or
-  check.getBasicBlock().getASuccessor+() = use.getBasicBlock()
+  check.getBasicBlock().(ReachableBasicBlock).strictlyDominates(use.getBasicBlock())
 }
 
 from FileCheck check, FileUse use
 where
   checkAndUseOnSame(check, use) and
   useAfterCheck(check, use) and
+  not (check.isExistsCheck() and use.isFileRead()) and // a read after an exists check is fine
   not getAFileHandle(DataFlow::TypeTracker::end()).flowsTo(use.getPathArgument())
 select use, "The file may have changed since it $@.", check, "was checked"

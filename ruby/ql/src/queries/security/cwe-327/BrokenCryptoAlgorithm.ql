@@ -10,13 +10,17 @@
  *       external/cwe/cwe-327
  */
 
-import ruby
+import codeql.ruby.AST
 import codeql.ruby.Concepts
 
 from Cryptography::CryptographicOperation operation, string msgPrefix
 where
-  operation.getAlgorithm().isWeak() and
-  msgPrefix = "The cryptographic algorithm " + operation.getAlgorithm().getName()
+  exists(Cryptography::CryptographicAlgorithm algorithm |
+    algorithm = operation.getAlgorithm() and
+    algorithm.isWeak() and
+    msgPrefix = "The cryptographic algorithm " + algorithm.getName() and
+    not algorithm instanceof Cryptography::HashingAlgorithm
+  )
   or
   operation.getBlockMode().isWeak() and msgPrefix = "The block mode " + operation.getBlockMode()
 select operation, msgPrefix + " is broken or weak, and should not be used."

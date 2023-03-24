@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.fasterxml.jackson.databind", "ObjectMapper", True, "convertValue", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["com.fasterxml.jackson.databind", "ObjectMapper", False, "createParser", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["com.fasterxml.jackson.databind", "ObjectMapper", True, "valueToTree", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["com.fasterxml.jackson.databind", "ObjectMapper", True, "valueToTree", "", "", "Argument[0].MapValue", "ReturnValue", "taint", "manual"]
+      - ["com.fasterxml.jackson.databind", "ObjectMapper", True, "valueToTree", "", "", "Argument[0].MapValue.Element", "ReturnValue", "taint", "manual"]
+      - ["com.fasterxml.jackson.databind", "ObjectReader", False, "createParser", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

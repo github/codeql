@@ -25,5 +25,5 @@ string getSourceType(DataFlow::Node node) {
 
 from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
 where c.hasFlowPath(source, sink)
-select sink.getNode(), source, sink, "Query might include code from $@.", source,
+select sink.getNode(), source, sink, "This query depends on $@.", source,
   ("this " + getSourceType(source.getNode()))

@@ -139,4 +139,13 @@ const cashDom = require("cash-dom");
     const src = document.getElementById("#link").src;
 	cash("#id").html(src); // NOT OK.
     cashDom("#id").html(src); // NOT OK
+
+    var DOMPurify = {
+        sanitize: function (src) {
+            return src; // to model spuriously finding an edge. The below is still OK.
+        }
+    };
+    cashDom("#id").html(DOMPurify ? DOMPurify.sanitize(src) : src); // OK
+
+    $("<a />", { html: src }).appendTo("#id"); // NOT OK
 })();

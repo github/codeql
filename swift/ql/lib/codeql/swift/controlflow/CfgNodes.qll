@@ -91,6 +91,21 @@ class CfgNode extends ControlFlowNode, TElementNode {
 
   /** Gets a split for this control flow node, if any. */
   final Split getASplit() { result = splits.getASplit() }
+
+  /** Gets the AST representation of this control flow node, if any. */
+  Expr getAst() {
+    result = n.asAstNode()
+    or
+    result = n.(PropertyGetterElement).getRef()
+    or
+    result = n.(PropertySetterElement).getAssignExpr()
+    or
+    result = n.(PropertyObserverElement).getAssignExpr()
+    or
+    result = n.(ClosureElement).getAst()
+    or
+    result = n.(KeyPathElement).getAst()
+  }
 }
 
 /** A control-flow node that wraps an AST expression. */
@@ -108,6 +123,10 @@ class PropertyGetterCfgNode extends CfgNode {
   override PropertyGetterElement n;
 
   Expr getRef() { result = n.getRef() }
+
+  CfgNode getBase() { result.getAst() = n.getBase() }
+
+  AccessorDecl getAccessorDecl() { result = n.getAccessorDecl() }
 }
 
 /** A control-flow node that wraps a property setter. */
@@ -115,16 +134,36 @@ class PropertySetterCfgNode extends CfgNode {
   override PropertySetterElement n;
 
   AssignExpr getAssignExpr() { result = n.getAssignExpr() }
+
+  CfgNode getBase() { result.getAst() = n.getBase() }
+
+  CfgNode getSource() { result.getAst() = n.getAssignExpr().getSource() }
+
+  AccessorDecl getAccessorDecl() { result = n.getAccessorDecl() }
+}
+
+class PropertyObserverCfgNode extends CfgNode {
+  override PropertyObserverElement n;
+
+  AssignExpr getAssignExpr() { result = n.getAssignExpr() }
+
+  CfgNode getBase() { result.getAst() = n.getBase() }
+
+  CfgNode getSource() { result.getAst() = n.getAssignExpr().getSource() }
+
+  AccessorDecl getAccessorDecl() { result = n.getObserver() }
 }
 
 class ApplyExprCfgNode extends ExprCfgNode {
   override ApplyExpr e;
 
-  ExprCfgNode getArgument(int index) {
-    result.getNode().asAstNode() = e.getArgument(index).getExpr()
-  }
+  CfgNode getArgument(int index) { result.getAst() = e.getArgument(index).getExpr() }
+
+  CfgNode getQualifier() { result.getAst() = e.getQualifier() }
 
   AbstractFunctionDecl getStaticTarget() { result = e.getStaticTarget() }
+
+  Expr getFunction() { result = e.getFunction() }
 }
 
 class CallExprCfgNode extends ApplyExprCfgNode {

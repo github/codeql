@@ -9,3 +9,10 @@ fun fn(x:Any?, y: Any?) {
         println("y not null")
     }
 }
+
+fun fn0(o: Any?) {
+    if (o != null) {
+        o?.toString()
+        o.toString()
+    }
+}

@@ -1,0 +1,15 @@
+| 0 | -Xallow-no-source-files |
+| 1 | -classpath |
+| 2 | <PATH> |
+| 3 | -d |
+| 4 | app/build/classes/kotlin/main |
+| 5 | -jdk-home |
+| 6 | <PATH> |
+| 7 | -module-name |
+| 8 | app |
+| 9 | -no-reflect |
+| 10 | -no-stdlib |
+| 11 | <PLUGINS> |
+| 12 | app/src/main/kotlin/testProject/App.kt |
+| 13 | -jvm-target |
+| 14 | 1.8 |

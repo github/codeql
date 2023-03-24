@@ -53,6 +53,19 @@
 | GlobalDataFlow.cs:427:41:427:46 | access to local variable sink20 |
 | GlobalDataFlow.cs:478:15:478:20 | access to local variable sink45 |
 | GlobalDataFlow.cs:486:32:486:32 | access to parameter s |
+| GlobalDataFlow.cs:508:15:508:22 | access to field field |
+| GlobalDataFlow.cs:509:15:509:22 | access to field field |
+| GlobalDataFlow.cs:515:15:515:22 | access to field field |
+| GlobalDataFlow.cs:516:15:516:22 | access to field field |
+| GlobalDataFlow.cs:517:15:517:22 | access to field field |
+| GlobalDataFlow.cs:526:15:526:21 | access to field field |
+| GlobalDataFlow.cs:533:15:533:21 | access to field field |
+| GlobalDataFlow.cs:534:15:534:21 | access to field field |
+| GlobalDataFlow.cs:548:15:548:21 | access to field field |
+| GlobalDataFlow.cs:549:15:549:21 | access to field field |
+| GlobalDataFlow.cs:550:15:550:21 | access to field field |
+| GlobalDataFlow.cs:556:15:556:22 | access to field field |
+| GlobalDataFlow.cs:564:15:564:21 | access to field field |
 | Splitting.cs:9:15:9:15 | [b (line 3): false] access to local variable x |
 | Splitting.cs:9:15:9:15 | [b (line 3): true] access to local variable x |
 | Splitting.cs:11:19:11:19 | access to local variable x |

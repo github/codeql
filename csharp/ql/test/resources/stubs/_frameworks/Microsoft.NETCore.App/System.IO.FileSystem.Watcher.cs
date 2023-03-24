@@ -1,20 +1,18 @@
 // This file contains auto-generated code.
+// Generated from `System.IO.FileSystem.Watcher, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace IO
     {
-        // Generated from `System.IO.ErrorEventArgs` in `System.IO.FileSystem.Watcher, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class ErrorEventArgs : System.EventArgs
         {
             public ErrorEventArgs(System.Exception exception) => throw null;
             public virtual System.Exception GetException() => throw null;
         }
 
-        // Generated from `System.IO.ErrorEventHandler` in `System.IO.FileSystem.Watcher, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void ErrorEventHandler(object sender, System.IO.ErrorEventArgs e);
 
-        // Generated from `System.IO.FileSystemEventArgs` in `System.IO.FileSystem.Watcher, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class FileSystemEventArgs : System.EventArgs
         {
             public System.IO.WatcherChangeTypes ChangeType { get => throw null; }
@@ -23,10 +21,8 @@ namespace System
             public string Name { get => throw null; }
         }
 
-        // Generated from `System.IO.FileSystemEventHandler` in `System.IO.FileSystem.Watcher, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void FileSystemEventHandler(object sender, System.IO.FileSystemEventArgs e);
 
-        // Generated from `System.IO.FileSystemWatcher` in `System.IO.FileSystem.Watcher, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class FileSystemWatcher : System.ComponentModel.Component, System.ComponentModel.ISupportInitialize
         {
             public void BeginInit() => throw null;
@@ -55,10 +51,10 @@ namespace System
             public override System.ComponentModel.ISite Site { get => throw null; set => throw null; }
             public System.ComponentModel.ISynchronizeInvoke SynchronizingObject { get => throw null; set => throw null; }
             public System.IO.WaitForChangedResult WaitForChanged(System.IO.WatcherChangeTypes changeType) => throw null;
+            public System.IO.WaitForChangedResult WaitForChanged(System.IO.WatcherChangeTypes changeType, System.TimeSpan timeout) => throw null;
             public System.IO.WaitForChangedResult WaitForChanged(System.IO.WatcherChangeTypes changeType, int timeout) => throw null;
         }
 
-        // Generated from `System.IO.InternalBufferOverflowException` in `System.IO.FileSystem.Watcher, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class InternalBufferOverflowException : System.SystemException
         {
             public InternalBufferOverflowException() => throw null;
@@ -67,21 +63,19 @@ namespace System
             public InternalBufferOverflowException(string message, System.Exception inner) => throw null;
         }
 
-        // Generated from `System.IO.NotifyFilters` in `System.IO.FileSystem.Watcher, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum NotifyFilters
+        public enum NotifyFilters : int
         {
-            Attributes,
-            CreationTime,
-            DirectoryName,
-            FileName,
-            LastAccess,
-            LastWrite,
-            Security,
-            Size,
+            Attributes = 4,
+            CreationTime = 64,
+            DirectoryName = 2,
+            FileName = 1,
+            LastAccess = 32,
+            LastWrite = 16,
+            Security = 256,
+            Size = 8,
         }
 
-        // Generated from `System.IO.RenamedEventArgs` in `System.IO.FileSystem.Watcher, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public class RenamedEventArgs : System.IO.FileSystemEventArgs
         {
             public string OldFullPath { get => throw null; }
@@ -89,10 +83,8 @@ namespace System
             public RenamedEventArgs(System.IO.WatcherChangeTypes changeType, string directory, string name, string oldName) : base(default(System.IO.WatcherChangeTypes), default(string), default(string)) => throw null;
         }
 
-        // Generated from `System.IO.RenamedEventHandler` in `System.IO.FileSystem.Watcher, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public delegate void RenamedEventHandler(object sender, System.IO.RenamedEventArgs e);
 
-        // Generated from `System.IO.WaitForChangedResult` in `System.IO.FileSystem.Watcher, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public struct WaitForChangedResult
         {
             public System.IO.WatcherChangeTypes ChangeType { get => throw null; set => throw null; }
@@ -102,15 +94,14 @@ namespace System
             // Stub generator skipped constructor 
         }
 
-        // Generated from `System.IO.WatcherChangeTypes` in `System.IO.FileSystem.Watcher, Version=5.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         [System.Flags]
-        public enum WatcherChangeTypes
+        public enum WatcherChangeTypes : int
         {
-            All,
-            Changed,
-            Created,
-            Deleted,
-            Renamed,
+            All = 15,
+            Changed = 4,
+            Created = 1,
+            Deleted = 2,
+            Renamed = 8,
         }
 
     }

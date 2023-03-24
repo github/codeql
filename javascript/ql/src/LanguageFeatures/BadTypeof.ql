@@ -56,5 +56,5 @@ where
       "bigint"
     ]
 select typeof,
-  "The result of this 'typeof' expression is compared to '$@', but the two can never be equal.",
-  str, str.getStringValue()
+  "The result of this 'typeof' expression is compared to $@, but the two can never be equal.", str,
+  str.getStringValue()

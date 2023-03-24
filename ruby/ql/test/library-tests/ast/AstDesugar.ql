@@ -8,7 +8,7 @@ import codeql.ruby.ast.internal.Synthesis
 
 class DesugarPrintAstConfiguration extends PrintAstConfiguration {
   override predicate shouldPrintNode(AstNode n) {
-    isInDesugeredContext(n)
+    isInDesugaredContext(n)
     or
     exists(n.getDesugared())
   }

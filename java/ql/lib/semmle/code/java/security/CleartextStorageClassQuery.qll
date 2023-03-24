@@ -49,7 +49,7 @@ private class Serializable extends ClassStore {
 
 /** The instantiation of a marshallable class, which can be stored to disk as XML. */
 private class Marshallable extends ClassStore {
-  Marshallable() { this.getConstructor().getDeclaringType() instanceof JAXBElement }
+  Marshallable() { this.getConstructor().getDeclaringType() instanceof JaxbElement }
 
   /** Gets a store, for example `marshaller.marshal(instance)`. */
   override Expr getAStore() {
@@ -69,7 +69,7 @@ private Expr getInstanceInput(DataFlow::Node instance, RefType t) {
     fa.getField().getDeclaringType() = t
   |
     t.getASourceSupertype*() instanceof TypeSerializable or
-    t instanceof JAXBElement
+    t instanceof JaxbElement
   )
 }
 
@@ -98,7 +98,7 @@ private predicate serializableStore(DataFlow::Node instance, Expr store) {
 private predicate marshallableStore(DataFlow::Node instance, Expr store) {
   exists(MethodAccess m |
     store = m and
-    m.getMethod() instanceof JAXBMarshalMethod and
+    m.getMethod() instanceof JaxbMarshalMethod and
     instance.asExpr() = m.getArgument(0)
   )
 }

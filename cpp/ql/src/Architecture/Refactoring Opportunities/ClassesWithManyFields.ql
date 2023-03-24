@@ -63,17 +63,17 @@ class VariableDeclarationLine extends TVariableDeclarationInfo {
   /**
    * Gets a `VariableDeclarationEntry` on this line.
    */
-  VariableDeclarationEntry getAVDE() { vdeInfo(result, c, f, line) }
+  VariableDeclarationEntry getAVde() { vdeInfo(result, c, f, line) }
 
   /**
    * Gets the start column of the first `VariableDeclarationEntry` on this line.
    */
-  int getStartColumn() { result = min(this.getAVDE().getLocation().getStartColumn()) }
+  int getStartColumn() { result = min(this.getAVde().getLocation().getStartColumn()) }
 
   /**
    * Gets the end column of the last `VariableDeclarationEntry` on this line.
    */
-  int getEndColumn() { result = max(this.getAVDE().getLocation().getEndColumn()) }
+  int getEndColumn() { result = max(this.getAVde().getLocation().getEndColumn()) }
 
   /**
    * Gets the rank of this `VariableDeclarationLine` in its file and class
@@ -134,13 +134,13 @@ class VariableDeclarationGroup extends VariableDeclarationLine {
       count(VariableDeclarationLine l |
         l = this.getProximateNext*()
       |
-        l.getAVDE().getVariable().getName()
+        l.getAVde().getVariable().getName()
       )
   }
 
   override string toString() {
     this.getCount() = 1 and
-    result = "declaration of " + this.getAVDE().getVariable().getName()
+    result = "declaration of " + this.getAVde().getVariable().getName()
     or
     this.getCount() > 1 and
     result = "group of " + this.getCount() + " fields here"

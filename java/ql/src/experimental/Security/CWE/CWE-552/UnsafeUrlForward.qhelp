@@ -43,6 +43,12 @@ file exposure attacks. It also shows how to remedy the problem by validating the
 
 <sample src="UnsafeResourceGet.java" />
 
+<p>The following examples show an HTTP request parameter being used directly to retrieve a resource
+  of a Java Spring application without validating the input, which allows sensitive file exposure
+  attacks. It also shows how to remedy the problem by validating the user input.
+  </p>
+
+  <sample src="UnsafeLoadSpringResource.java" />
 </example>
 <references>
 <li>File Disclosure:
@@ -56,6 +62,9 @@ file exposure attacks. It also shows how to remedy the problem by validating the
 </li>
 <li>CVE-2015-5174:
   <a href="https://vuldb.com/?id.81084">Apache Tomcat 6.0/7.0/8.0/9.0 Servletcontext getResource/getResourceAsStream/getResourcePaths Path Traversal</a>
+</li>
+<li>CVE-2019-3799:
+  <a href="https://github.com/mpgn/CVE-2019-3799">CVE-2019-3799 - Spring-Cloud-Config-Server Directory Traversal &lt; 2.1.2, 2.0.4, 1.4.6</a>
 </li>
 </references>
 </qhelp>

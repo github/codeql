@@ -384,16 +384,11 @@ module DefensiveExpressionTest {
    *
    * Example: `typeof x === "undefined"'.
    */
-  class TypeofUndefinedTest extends UndefinedNullTest {
-    TypeofTest test;
+  class TypeofUndefinedTest extends UndefinedNullTest instanceof TypeofTest {
+    TypeofUndefinedTest() { super.getTag() = "undefined" }
 
-    TypeofUndefinedTest() {
-      this = test and
-      test.getTag() = "undefined"
-    }
+    override boolean getTheTestResult() { result = TypeofTest.super.getTheTestResult() }
 
-    override boolean getTheTestResult() { result = test.getTheTestResult() }
-
-    override Expr getOperand() { result = test.getOperand() }
+    override Expr getOperand() { result = TypeofTest.super.getOperand() }
   }
 }

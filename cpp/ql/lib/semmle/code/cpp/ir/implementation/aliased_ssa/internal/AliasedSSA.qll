@@ -1,9 +1,9 @@
 import AliasAnalysis
+import semmle.code.cpp.Location
 import semmle.code.cpp.ir.internal.Overlap
 private import semmle.code.cpp.ir.internal.IRCppLanguage as Language
-private import semmle.code.cpp.Print
 private import semmle.code.cpp.ir.implementation.unaliased_ssa.IR
-private import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.SSAConstruction as OldSSA
+private import semmle.code.cpp.ir.implementation.unaliased_ssa.internal.SSAConstruction as OldSsa
 private import semmle.code.cpp.ir.internal.IntegerConstant as Ints
 private import semmle.code.cpp.ir.internal.IntegerInterval as Interval
 private import semmle.code.cpp.ir.implementation.internal.OperandTag
@@ -246,7 +246,8 @@ class VariableMemoryLocation extends TVariableMemoryLocation, AllocationMemoryLo
 }
 
 class EntireAllocationMemoryLocation extends TEntireAllocationMemoryLocation,
-  AllocationMemoryLocation {
+  AllocationMemoryLocation
+{
   EntireAllocationMemoryLocation() { this = TEntireAllocationMemoryLocation(var, isMayAccess) }
 
   final override string toStringInternal() { result = var.toString() }
@@ -572,7 +573,7 @@ private Overlap getVariableMemoryLocationOverlap(
  * Holds if the def/use information for the result of `instr` can be reused from the previous
  * iteration of the IR.
  */
-predicate canReuseSsaForOldResult(Instruction instr) { OldSSA::canReuseSsaForMemoryResult(instr) }
+predicate canReuseSsaForOldResult(Instruction instr) { OldSsa::canReuseSsaForMemoryResult(instr) }
 
 /** DEPRECATED: Alias for canReuseSsaForOldResult */
 deprecated predicate canReuseSSAForOldResult = canReuseSsaForOldResult/1;

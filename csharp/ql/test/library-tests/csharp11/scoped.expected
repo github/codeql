@@ -1,0 +1,7 @@
+| Scoped.cs:9:38:9:39 | x1 | Parameter |
+| Scoped.cs:16:38:16:39 | x2 | Parameter |
+| Scoped.cs:24:34:24:35 | x3 | Parameter |
+| Scoped.cs:30:32:30:33 | x4 | Parameter |
+| Scoped.cs:36:28:36:29 | x5 | Parameter |
+| Scoped.cs:43:32:43:33 | x6 | Parameter |
+| Scoped.cs:52:19:52:20 | x7 | LocalVariable |

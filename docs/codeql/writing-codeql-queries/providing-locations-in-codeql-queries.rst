@@ -11,7 +11,7 @@ CodeQL includes mechanisms for extracting the location of elements in a codebase
 About locations
 ---------------
 
-When displaying information to the user, LGTM needs to be able to extract location information from the results of a query. In order to do this, all QL classes which can provide location information should do this by using one of the following mechanisms:
+When displaying information to the user, applications need to be able to extract location information from the results of a query. In order to do this, all QL classes which can provide location information should do this by using one of the following mechanisms:
 
 -  `Providing URLs <#providing-urls>`__
 -  `Providing location information <#providing-location-information>`__
@@ -49,7 +49,7 @@ A custom URL can be provided by defining a QL predicate returning ``string`` wit
 File URLs
 ^^^^^^^^^
 
-LGTM supports the display of URLs which define a line and column in a source file.
+The CodeQL extension for Visual Studio Code and the code scanning views in GitHub support the display of URLs which define a line and column in a source file.
 
 The schema is ``file://``, which is followed by the absolute path to a file, followed by four numbers separated by colons. The numbers denote start line, start column, end line and end column. Both line and column numbers are **1-based**, for example:
 
@@ -57,12 +57,12 @@ The schema is ``file://``, which is followed by the absolute path to a file, fol
 -  ``file:///opt/src/my/file.java:1:1:2:1`` denotes the location that starts at the beginning of the file and extends to the first character of the second line (the range is inclusive).
 -  ``file:///opt/src/my/file.java:1:0:1:0`` is taken, by convention, to denote the entire first line of the file.
 
-By convention, the location of an entire file may also be denoted by a ``file://`` URL without trailing numbers. Optionally, the location within a file can be denoted using three numbers to define the start line number, character offset and character length of the location respectively. Results of these types are not displayed in LGTM.
+By convention, the location of an entire file may also be denoted by a ``file://`` URL without trailing numbers. Optionally, the location within a file can be denoted using three numbers to define the start line number, character offset and character length of the location respectively. Results of these types are not displayed as code scanning alerts.
 
 Other types of URL
 ^^^^^^^^^^^^^^^^^^
 
-The following, less-common types of URL are valid but are not supported by LGTM and will be omitted from any results:
+The following, less-common types of URL are valid but are not interpreted as code scanning alerts and will be omitted from any results:
 
 -  **HTTP URLs** are supported in some client applications. For an example, see the code snippet above.
 -  **Folder URLs** can be useful, for example to provide folder-level metrics. They may use a file URL, for example ``file:///opt/src:0:0:0:0``, but they may also start with a scheme of ``folder://``, and no trailing numbers, for example ``folder:///opt/src``.

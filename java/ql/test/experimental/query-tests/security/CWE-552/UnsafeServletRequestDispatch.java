@@ -100,7 +100,10 @@ public class UnsafeServletRequestDispatch extends HttpServlet {
 		}
 	}
 
-	// BAD: Request dispatcher with negation check and path normalization, but without URL decoding
+	// FN: Request dispatcher with negation check and path normalization, but without URL decoding
+	// When promoting this query, consider using FlowStates to make `getRequestDispatcher` a sink
+	// only if a URL-decoding step has NOT been crossed (i.e. make URLDecoder.decode change the
+	// state to a different value than the one required at the sink).
 	protected void doHead5(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String path = request.getParameter("path");

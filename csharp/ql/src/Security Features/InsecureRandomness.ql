@@ -117,5 +117,5 @@ from
   DataFlow::PathNode sink
 where randomTracking.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Cryptographically insecure random number is generated at $@ and used here in a security context.",
+  "This uses a cryptographically insecure random number generated at $@ in a security context.",
   source.getNode(), source.getNode().toString()

@@ -18,8 +18,12 @@ fn main() -> std::io::Result<()> {
         .arg("--include-extension=.ql")
         .arg("--include-extension=.qll")
         .arg("--include-extension=.dbscheme")
+        .arg("--include-extension=.json")
+        .arg("--include-extension=.jsonc")
+        .arg("--include-extension=.jsonl")
         .arg("--include=**/qlpack.yml")
-        .arg("--size-limit=5m")
+        .arg("--include=deprecated.blame")
+        .arg("--size-limit=10m")
         .arg("--language=ql")
         .arg("--working-dir=.")
         .arg(db);

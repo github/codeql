@@ -38,7 +38,7 @@ predicate accessWithConversions(Expr e, Variable v) {
 }
 
 /**
- * A comment containing the word "NaN".
+ * Holds if `c` is a comment containing the word "NaN".
  */
 predicate isNaNComment(Comment c, string filePath, int startLine) {
   c.getText().matches("%NaN%") and

@@ -23,7 +23,7 @@ DoStmt getAFalseLoop() {
 /**
  * Gets a `do` ... `while` loop surrounding a statement.  This is blocked by a
  * `switch` statement, since a `continue` inside a `switch` inside a loop may be
- * jusitifed (`continue` breaks out of the loop whereas `break` only escapes the
+ * justified (`continue` breaks out of the loop whereas `break` only escapes the
  * `switch`).
  */
 DoStmt enclosingLoop(Stmt s) {

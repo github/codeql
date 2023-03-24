@@ -41,7 +41,7 @@ class Node extends TNode {
 
   /** Gets the enclosing callable of this node. */
   final Callable getEnclosingCallable() {
-    result = this.(NodeImpl).getEnclosingCallableImpl().getUnderlyingCallable()
+    result = this.(NodeImpl).getEnclosingCallableImpl().asCallable()
   }
 
   /** Gets the control flow node corresponding to this node, if any. */
@@ -103,7 +103,7 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
   DotNet::Parameter getParameter() {
     exists(DataFlowCallable c, ParameterPosition ppos |
       super.isParameterOf(c, ppos) and
-      result = c.getUnderlyingCallable().getParameter(ppos.getPosition())
+      result = c.asCallable().getParameter(ppos.getPosition())
     )
   }
 
@@ -119,10 +119,10 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
 }
 
 /** A definition, viewed as a node in a data flow graph. */
-class AssignableDefinitionNode extends Node, TSsaDefinitionNode {
+class AssignableDefinitionNode extends Node, TSsaDefinitionExtNode {
   private Ssa::ExplicitDefinition edef;
 
-  AssignableDefinitionNode() { this = TSsaDefinitionNode(edef) }
+  AssignableDefinitionNode() { this = TSsaDefinitionExtNode(edef) }
 
   /** Gets the underlying definition. */
   AssignableDefinition getDefinition() { result = this.getDefinitionAtNode(_) }
@@ -161,7 +161,7 @@ predicate localFlow(Node source, Node sink) { localFlowStep*(source, sink) }
  * local (intra-procedural) steps.
  */
 pragma[inline]
-predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
+predicate localExprFlow(DotNet::Expr e1, DotNet::Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 /**
  * A data flow node that jumps between callables. This can be extended in

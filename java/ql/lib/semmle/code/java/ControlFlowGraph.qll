@@ -365,6 +365,7 @@ private module ControlFlowGraphImpl {
   /**
    * Gets a non-overridable method that always throws an exception or calls `exit`.
    */
+  pragma[assume_small_delta]
   private Method nonReturningMethod() {
     result instanceof MethodExit
     or
@@ -381,6 +382,7 @@ private module ControlFlowGraphImpl {
   /**
    * Gets a virtual method that always throws an exception or calls `exit`.
    */
+  pragma[assume_small_delta]
   private EffectivelyNonVirtualMethod likelyNonReturningMethod() {
     result.getReturnType() instanceof VoidType and
     not exists(ReturnStmt ret | ret.getEnclosingCallable() = result) and
@@ -400,6 +402,7 @@ private module ControlFlowGraphImpl {
   /**
    * Gets a statement that always throws an exception or calls `exit`.
    */
+  pragma[assume_small_delta]
   private Stmt nonReturningStmt() {
     result instanceof ThrowStmt
     or
@@ -421,6 +424,7 @@ private module ControlFlowGraphImpl {
   /**
    * Gets an expression that always throws an exception or calls `exit`.
    */
+  pragma[assume_small_delta]
   private Expr nonReturningExpr() {
     result = nonReturningMethodAccess()
     or

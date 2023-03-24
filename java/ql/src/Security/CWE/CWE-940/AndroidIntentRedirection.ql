@@ -20,5 +20,5 @@ import DataFlow::PathGraph
 from DataFlow::PathNode source, DataFlow::PathNode sink, IntentRedirectionConfiguration conf
 where conf.hasFlowPath(source, sink)
 select sink.getNode(), source, sink,
-  "Arbitrary Android activities or services can be started from $@.", source.getNode(),
-  "this user input"
+  "Arbitrary Android activities or services can be started from a $@.", source.getNode(),
+  "user-provided value"

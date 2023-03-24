@@ -8,6 +8,7 @@
  * @precision high
  * @id java/unsafe-deserialization-spring-exporter-in-xml-configuration
  * @tags security
+ *       experimental
  *       external/cwe/cwe-502
  */
 
@@ -17,4 +18,4 @@ import UnsafeSpringExporterLib
 
 from SpringBean bean
 where isRemoteInvocationSerializingExporter(bean.getClass())
-select bean, "Unsafe deserialization in a Spring exporter bean '" + bean.getBeanIdentifier() + "'"
+select bean, "Unsafe deserialization in a Spring exporter bean '" + bean.getBeanIdentifier() + "'."

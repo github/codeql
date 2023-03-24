@@ -7,6 +7,7 @@
  * @precision high
  * @id py/ip-address-spoofing
  * @tags security
+ *       experimental
  *       external/cwe/cwe-348
  */
 

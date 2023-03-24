@@ -152,4 +152,7 @@ class Field extends DotNet::Field, Variable, Member, CustomModifierReceiver, @ci
   override ValueOrRefType getDeclaringType() { cil_field(this, result, _, _) }
 
   override Location getLocation() { result = this.getDeclaringType().getLocation() }
+
+  /** Holds if this declaration is `ref`. */
+  predicate isRef() { cil_type_annotation(this, 32) }
 }

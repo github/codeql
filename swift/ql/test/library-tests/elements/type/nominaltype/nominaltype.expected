@@ -1,0 +1,13 @@
+| nominaltype.swift:35:6:35:6 | a | A | A |  |
+| nominaltype.swift:36:6:36:6 | a_alias | A_alias | A_alias |  |
+| nominaltype.swift:37:6:37:6 | a_optional_alias | A_optional_alias | A_optional_alias |  |
+| nominaltype.swift:38:6:38:6 | b1 | B1 | B1 | getABaseType:A |
+| nominaltype.swift:39:6:39:6 | b2 | B2 | B2 | getABaseType:A_alias |
+| nominaltype.swift:40:6:40:6 | b1_alias | B1_alias | B1_alias |  |
+| nominaltype.swift:41:6:41:6 | b2_alias | B2_alias | B2_alias |  |
+| nominaltype.swift:42:6:42:6 | p | P | P |  |
+| nominaltype.swift:43:6:43:6 | p_alias | P_alias | P_alias |  |
+| nominaltype.swift:44:6:44:6 | c1 | C1 | C1 | getABaseType:P |
+| nominaltype.swift:45:6:45:6 | c2 | C2 | C2 | getABaseType:P_alias |
+| nominaltype.swift:46:6:46:6 | c1_alias | C1_alias | C1_alias |  |
+| nominaltype.swift:47:6:47:6 | c2_alias | C2_alias | C2_alias |  |

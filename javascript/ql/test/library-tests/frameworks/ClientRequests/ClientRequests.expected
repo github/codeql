@@ -5,6 +5,8 @@ test_ClientRequest
 | apollo.js:17:1:17:34 | new Pre ... yurl"}) |
 | apollo.js:20:1:20:77 | createN ... phql'}) |
 | apollo.js:23:1:23:31 | new Web ... wsUri}) |
+| axiosTest.js:4:5:7:6 | axios({ ... \\n    }) |
+| axiosTest.js:12:5:17:6 | axios({ ... \\n    }) |
 | puppeteer.ts:6:11:6:42 | page.go ... e.com') |
 | puppeteer.ts:8:5:8:61 | page.ad ... css" }) |
 | puppeteer.ts:18:30:18:50 | page.go ... estUrl) |
@@ -90,6 +92,8 @@ test_ClientRequest
 | tst.js:296:5:299:6 | axios({ ... \\n    }) |
 | tst.js:312:12:312:36 | fetchPo ... o/bar') |
 test_getADataNode
+| axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:15:18:15:55 | { 'Cont ... json' } |
+| axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:16:15:16:35 | {x: 'te ... 'test'} |
 | tst.js:53:5:53:23 | axios({data: data}) | tst.js:53:18:53:21 | data |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:19:57:23 | data1 |
 | tst.js:57:5:57:39 | axios.p ... data2}) | tst.js:57:33:57:37 | data2 |
@@ -143,6 +147,10 @@ test_getUrl
 | apollo.js:17:1:17:34 | new Pre ... yurl"}) | apollo.js:17:26:17:32 | "myurl" |
 | apollo.js:20:1:20:77 | createN ... phql'}) | apollo.js:20:30:20:75 | 'https: ... raphql' |
 | apollo.js:23:1:23:31 | new Web ... wsUri}) | apollo.js:23:25:23:29 | wsUri |
+| axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | axiosTest.js:4:11:7:5 | {\\n      ... ,\\n    } |
+| axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | axiosTest.js:6:14:6:16 | url |
+| axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:12:11:17:5 | {\\n      ... }\\n    } |
+| axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:14:14:14:16 | url |
 | puppeteer.ts:6:11:6:42 | page.go ... e.com') | puppeteer.ts:6:21:6:41 | 'https: ... le.com' |
 | puppeteer.ts:8:5:8:61 | page.ad ... css" }) | puppeteer.ts:8:29:8:58 | "http:/ ... le.css" |
 | puppeteer.ts:18:30:18:50 | page.go ... estUrl) | puppeteer.ts:18:40:18:49 | requestUrl |
@@ -233,6 +241,8 @@ test_getUrl
 | tst.js:296:5:299:6 | axios({ ... \\n    }) | tst.js:298:14:298:44 | "http:/ ... -axios" |
 | tst.js:312:12:312:36 | fetchPo ... o/bar') | tst.js:312:26:312:35 | '/foo/bar' |
 test_getAResponseDataNode
+| axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | axiosTest.js:4:5:7:6 | axios({ ... \\n    }) | json | true |
+| axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | axiosTest.js:12:5:17:6 | axios({ ... \\n    }) | json | true |
 | tst.js:19:5:19:23 | requestPromise(url) | tst.js:19:5:19:23 | requestPromise(url) | text | true |
 | tst.js:21:5:21:23 | superagent.get(url) | tst.js:21:5:21:23 | superagent.get(url) | stream | true |
 | tst.js:25:5:25:14 | axios(url) | tst.js:25:5:25:14 | axios(url) |  | true |
