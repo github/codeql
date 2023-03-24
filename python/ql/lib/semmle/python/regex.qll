@@ -33,7 +33,7 @@ private import semmle.python.ApiGraphs
 class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
   StdLibRegExpInterpretation() {
     this =
-      API::moduleImport("re").getMember(any(string name | name != "escape")).getACall().getArg(0)
+      API::moduleImport("re").getMember("compile").getACall().getParameter(0, "pattern").asSink()
   }
 }
 
