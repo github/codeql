@@ -10,7 +10,7 @@ Customizing Library Models for JavaScript
 
 The JavaScript analysis can be customized by adding library models in data extension files.
 
-A data extension for JavaScript is a YAML file of form:
+A data extension for JavaScript is a YAML file of the form:
 
 .. code-block:: yaml
 
@@ -23,7 +23,7 @@ A data extension for JavaScript is a YAML file of form:
         - <tuple2>
         - ...
 
-The data extension can contribute to the following extension points:
+The CodeQL library for JavaScript exposes the following extensible predicates:
 
 - **sourceModel**\(type, path, kind)
 - **sinkModel**\(type, path, kind)
@@ -57,7 +57,6 @@ This can be achieved with the following data extension:
       data:
         - ["execa", "Member[shell].Argument[0]", "command-line-injection"]
 
-To break this down:
 
 - Since we're adding a new sink, we add a tuple to the **sinkModel** extension point.
 - The first column, **"execa"**, identifies a set of values from which to begin the search for the sink.
@@ -95,7 +94,6 @@ This source is already known by the CodeQL JS analysis, but we'll show how it co
             "remote",
           ]
 
-To break this down:
 
 - Since we're adding a new taint source, we add a tuple to the **sourceModel** extension point.
 - The first column, **"global"**, begins the search at references to the global object (also known as **window** in browser contexts). This is a special JavaScript object that contains all global variables and methods.
@@ -159,7 +157,6 @@ We can recognize this using the following extension:
       data:
         - ["mysql.Connection", "Member[query].Argument[0]", "sql-injection"]
 
-To break this down:
 
 - The first column, **"mysql.Connection"**, begins the search at any expression whose value is known to be an instance of
   the **Connection** type from the **mysql** package. This will select the **connection** parameter above because of its type annotation.
@@ -167,9 +164,9 @@ To break this down:
 - **Argument[0]** selects the first argument of a call to that member.
 - **sql-injection** indicates that this is considered a sink for the SQL injection query.
 
-This works for the example above because the **connection** parameter has a type annotation that matches what the model is looking for.
+This works in this example because the **connection** parameter has a type annotation that matches what the model is looking for.
 
-In the next section, we'll show how to generalize the model to handle the absense of type annotations.
+In the next section, we'll show how to generalize the model to handle the absence of type annotations.
 
 Continued example: Dealing with untyped code
 --------------------------------------------
@@ -194,7 +191,6 @@ Using a **typeModel** tuple we can tell our model that this function returns an 
       data:
         - ["mysql.Connection", "@example/db", "Member[getConnection].ReturnValue"]
 
-To break this down:
 
 - Since we're providing type information, we add a tuple to the **typeModel** extension point.
 - The first column, **"mysql.Connection"**, names the type that we're adding a new definition for.
@@ -239,9 +235,8 @@ This flow is already recognized by the CodeQL JS analysis, but this is how it co
             "taint",
           ]
 
-To break this down:
 
-- Since we're adding flow *through* a function call, we add a tuple to the **summaryModel** extension point.
+- Since we're adding flow through a function call, we add a tuple to the **summaryModel** extension point.
 - The first column, **"global"**, begins the search for relevant calls at references to the global object.
   In JavaScript, global variables are properties of the global object, so this lets us access global variables or functions.
 - The second column, **Member[decodeURIComponent]**, is a path leading to the function calls we wish to model.
@@ -250,7 +245,7 @@ To break this down:
 - The third column, **Argument[0]**, indicates the input of the flow. In this case, the first argument to the function call.
 - The fourth column, **ReturnValue**, indicates the output of the flow. In this case, the return value of the function call.
 - The last column, **taint**, indicates the kind of flow to add. The value **taint** means the output is not necessarily equal
-  to the input, but was was derived from the input in a taint-preserving way.
+  to the input, but was derived from the input in a taint-preserving way.
 
 Example: Adding flow through 'underscore.forEach'
 -------------------------------------------------
@@ -278,9 +273,8 @@ This flow is already recognized by the CodeQL JS analysis, but we'll show how it
             "value",
           ]
 
-To break this down:
 
-- Since we're adding flow *through* a function call, we add a tuple to the **summaryModel** extension point.
+- Since we're adding flow through a function call, we add a tuple to the **summaryModel** extension point.
 - The first column, **"underscore"**, begins the search for relevant calls at places where the **underscore** package is imported.
 - The second column, **Member[forEach]**, selects references to the **forEach** member from the **underscore** package.
 - The third column specifies the input of the flow:
@@ -327,7 +321,7 @@ Example:
 sinkModel(type, path, kind)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Adds a new taint sink. Sinks are query-specific and will usually affect one or two queries.
+Adds a new taint sink. Sinks are query-specific and will typically affect one or two queries.
 
 - **type**: Name of a type from which to evaluate **path**.
 - **path**: Access path leading to the sink.
@@ -410,7 +404,7 @@ A type can be defined by adding **typeModel** tuples for that type. Additionally
 Access paths
 ------------
 
-The **path**, **input**, and **output** columns consist of a **.**-separated list of components, which is evaluted from left to right, with each step selecting a new set of values derived from the previous set of values.
+The **path**, **input**, and **output** columns consist of a **.**-separated list of components, which is evaluated from left to right, with each step selecting a new set of values derived from the previous set of values.
 
 The following components are supported:
 
@@ -438,7 +432,7 @@ Components related to decorators:
 - **DecoratedParameter** selects a parameter that is decorated by the current value.
 - **DecoratedMember** selects a method, field, or accessor that is decorated by the current value.
 
-Some additional notes about the syntax of operands:
+Additional notes about the syntax of operands:
 
 - Multiple operands may be given to a single component, as a shorthand for the union of the operands. For example, **Member[foo,bar]** matches the union of **Member[foo]** and **Member[bar]**.
 - Numeric operands to **Argument**, **Parameter**, and **WithArity** may be given as an interval. For example, **Argument[0..2]** matches argument 0, 1, or 2.
@@ -455,11 +449,11 @@ Source kinds
 Sink kinds
 ~~~~~~~~~~
 
-Unlike sources, sinks tend to be highly query-specific, rarely affecting more than one or two queries. Not every query supports customizable sinks. If there is no suitable sink kind below, it is best to add a new query instead.
+Unlike sources, sinks tend to be highly query-specific, rarely affecting more than one or two queries. Not every query supports customizable sinks. If the following sinks are not suitable for your use case, you should add a new query.
 
 - **code-injection**: A sink that can be used to inject code, such as in calls to **eval**.
 - **command-line-injection**: A sink that can be used to inject shell commands, such as in calls to **child_process.spawn**.
-- **path-injection**: A sink that can be used for path injection in a file system access, such as in a calls to **fs.readFile**.
+- **path-injection**: A sink that can be used for path injection in a file system access, such as in calls to **fs.readFile**.
 - **sql-injection**: A sink that can be used for SQL injection, such as in a MySQL **query** call.
 - **nosql-injection**: A sink that can be used for NoSQL injection, such as in a MongoDB **findOne** call.
 - **html-injection**: A sink that can be used for HTML injection, such as in a jQuery **$()** call.
