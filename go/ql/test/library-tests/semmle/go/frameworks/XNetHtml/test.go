@@ -38,4 +38,14 @@ func test(request *http.Request, writer http.ResponseWriter) {
 	tokenizerFragment := html.NewTokenizerFragment(request.Body, "some context")
 	writer.Write(tokenizerFragment.Buffered()) // BAD: writing unescaped HTML data
 
+	var cleanNode html.Node
+	taintedNode, _ := html.Parse(request.Body)
+	cleanNode.AppendChild(taintedNode)
+	html.Render(writer, &cleanNode) // BAD: writing unescaped HTML data
+
+	var cleanNode2 html.Node
+	taintedNode2, _ := html.Parse(request.Body)
+	cleanNode2.InsertBefore(taintedNode2, &cleanNode2)
+	html.Render(writer, &cleanNode2) // BAD: writing unescaped HTML data
+
 }
