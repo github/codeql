@@ -89,6 +89,7 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitDynamicSelfType(const swift::DynamicSelfType* type);
   SwiftMangledName visitUnboundGenericType(const swift::UnboundGenericType* type);
   SwiftMangledName visitReferenceStorageType(const swift::ReferenceStorageType* type);
+  SwiftMangledName visitParametrizedProtocolType(const swift::ParameterizedProtocolType* type);
 
  private:
   static SwiftMangledName initMangled(const swift::TypeBase* type);
