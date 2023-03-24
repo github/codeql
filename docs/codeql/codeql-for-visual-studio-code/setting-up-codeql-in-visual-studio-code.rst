@@ -72,7 +72,7 @@ To use the starter workspace:
     * Make sure you include the submodules, either by using ``git clone --recursive``, or using by ``git submodule update --init --remote`` after cloning.
     * Use ``git submodule update --remote`` regularly to keep the submodules up to date.
 
-#. In VS Code, use the **File** > **Open Workspace** option to open the ``vscode-codeql-starter.code-workspace`` file from your checkout of the workspace repository.
+#. In VS Code, use the **File** > **Open Workspace from File** option to open the ``vscode-codeql-starter.code-workspace`` file from your checkout of the workspace repository.
 
 .. _existing-workspace:
 
