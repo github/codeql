@@ -1,4 +1,6 @@
 edges
+| file://:0:0:0:0 | parameter 0 of AppendChild | file://:0:0:0:0 | [summary] to write: argument -1 in AppendChild |
+| file://:0:0:0:0 | parameter 0 of InsertBefore | file://:0:0:0:0 | [summary] to write: argument -1 in InsertBefore |
 | file://:0:0:0:0 | parameter 0 of NewTokenizer | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewTokenizer |
 | file://:0:0:0:0 | parameter 0 of NewTokenizerFragment | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewTokenizerFragment |
 | file://:0:0:0:0 | parameter 0 of Parse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse |
@@ -52,7 +54,39 @@ edges
 | test.go:38:49:38:60 | selection of Body | test.go:38:23:38:77 | call to NewTokenizerFragment |
 | test.go:39:15:39:31 | tokenizerFragment | file://:0:0:0:0 | parameter -1 of Buffered |
 | test.go:39:15:39:31 | tokenizerFragment | test.go:39:15:39:42 | call to Buffered |
+| test.go:41:6:41:14 | definition of cleanNode | test.go:44:22:44:31 | &... |
+| test.go:41:6:41:14 | definition of cleanNode | test.go:44:22:44:31 | &... |
+| test.go:41:6:41:14 | definition of cleanNode | test.go:44:23:44:31 | cleanNode |
+| test.go:42:2:42:43 | ... := ...[0] | test.go:43:24:43:34 | taintedNode |
+| test.go:42:31:42:42 | selection of Body | file://:0:0:0:0 | parameter 0 of Parse |
+| test.go:42:31:42:42 | selection of Body | test.go:42:2:42:43 | ... := ...[0] |
+| test.go:43:24:43:34 | taintedNode | file://:0:0:0:0 | parameter 0 of AppendChild |
+| test.go:43:24:43:34 | taintedNode | test.go:41:6:41:14 | definition of cleanNode |
+| test.go:44:22:44:31 | &... | test.go:44:22:44:31 | &... |
+| test.go:44:22:44:31 | &... | test.go:44:22:44:31 | &... |
+| test.go:44:22:44:31 | &... | test.go:44:23:44:31 | cleanNode |
+| test.go:44:22:44:31 | &... [pointer] | test.go:44:22:44:31 | &... |
+| test.go:44:22:44:31 | &... [pointer] | test.go:44:22:44:31 | &... |
+| test.go:44:22:44:31 | &... [pointer] | test.go:44:23:44:31 | cleanNode |
+| test.go:44:23:44:31 | cleanNode | test.go:44:22:44:31 | &... [pointer] |
+| test.go:46:6:46:15 | definition of cleanNode2 | test.go:49:22:49:32 | &... |
+| test.go:46:6:46:15 | definition of cleanNode2 | test.go:49:22:49:32 | &... |
+| test.go:46:6:46:15 | definition of cleanNode2 | test.go:49:23:49:32 | cleanNode2 |
+| test.go:47:2:47:44 | ... := ...[0] | test.go:48:26:48:37 | taintedNode2 |
+| test.go:47:32:47:43 | selection of Body | file://:0:0:0:0 | parameter 0 of Parse |
+| test.go:47:32:47:43 | selection of Body | test.go:47:2:47:44 | ... := ...[0] |
+| test.go:48:26:48:37 | taintedNode2 | file://:0:0:0:0 | parameter 0 of InsertBefore |
+| test.go:48:26:48:37 | taintedNode2 | test.go:46:6:46:15 | definition of cleanNode2 |
+| test.go:49:22:49:32 | &... | test.go:49:22:49:32 | &... |
+| test.go:49:22:49:32 | &... | test.go:49:22:49:32 | &... |
+| test.go:49:22:49:32 | &... | test.go:49:23:49:32 | cleanNode2 |
+| test.go:49:22:49:32 | &... [pointer] | test.go:49:22:49:32 | &... |
+| test.go:49:22:49:32 | &... [pointer] | test.go:49:22:49:32 | &... |
+| test.go:49:22:49:32 | &... [pointer] | test.go:49:23:49:32 | cleanNode2 |
+| test.go:49:23:49:32 | cleanNode2 | test.go:49:22:49:32 | &... [pointer] |
 nodes
+| file://:0:0:0:0 | [summary] to write: argument -1 in AppendChild | semmle.label | [summary] to write: argument -1 in AppendChild |
+| file://:0:0:0:0 | [summary] to write: argument -1 in InsertBefore | semmle.label | [summary] to write: argument -1 in InsertBefore |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Buffered | semmle.label | [summary] to write: return (return[0]) in Buffered |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewTokenizer | semmle.label | [summary] to write: return (return[0]) in NewTokenizer |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewTokenizerFragment | semmle.label | [summary] to write: return (return[0]) in NewTokenizerFragment |
@@ -65,6 +99,8 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Token | semmle.label | [summary] to write: return (return[0]) in Token |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in UnescapeString | semmle.label | [summary] to write: return (return[0]) in UnescapeString |
 | file://:0:0:0:0 | [summary] to write: return (return[1]) in TagAttr | semmle.label | [summary] to write: return (return[1]) in TagAttr |
+| file://:0:0:0:0 | parameter 0 of AppendChild | semmle.label | parameter 0 of AppendChild |
+| file://:0:0:0:0 | parameter 0 of InsertBefore | semmle.label | parameter 0 of InsertBefore |
 | file://:0:0:0:0 | parameter 0 of NewTokenizer | semmle.label | parameter 0 of NewTokenizer |
 | file://:0:0:0:0 | parameter 0 of NewTokenizerFragment | semmle.label | parameter 0 of NewTokenizerFragment |
 | file://:0:0:0:0 | parameter 0 of Parse | semmle.label | parameter 0 of Parse |
@@ -112,6 +148,22 @@ nodes
 | test.go:38:49:38:60 | selection of Body | semmle.label | selection of Body |
 | test.go:39:15:39:31 | tokenizerFragment | semmle.label | tokenizerFragment |
 | test.go:39:15:39:42 | call to Buffered | semmle.label | call to Buffered |
+| test.go:41:6:41:14 | definition of cleanNode | semmle.label | definition of cleanNode |
+| test.go:42:2:42:43 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:42:31:42:42 | selection of Body | semmle.label | selection of Body |
+| test.go:43:24:43:34 | taintedNode | semmle.label | taintedNode |
+| test.go:44:22:44:31 | &... | semmle.label | &... |
+| test.go:44:22:44:31 | &... | semmle.label | &... |
+| test.go:44:22:44:31 | &... [pointer] | semmle.label | &... [pointer] |
+| test.go:44:23:44:31 | cleanNode | semmle.label | cleanNode |
+| test.go:46:6:46:15 | definition of cleanNode2 | semmle.label | definition of cleanNode2 |
+| test.go:47:2:47:44 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:47:32:47:43 | selection of Body | semmle.label | selection of Body |
+| test.go:48:26:48:37 | taintedNode2 | semmle.label | taintedNode2 |
+| test.go:49:22:49:32 | &... | semmle.label | &... |
+| test.go:49:22:49:32 | &... | semmle.label | &... |
+| test.go:49:22:49:32 | &... [pointer] | semmle.label | &... [pointer] |
+| test.go:49:23:49:32 | cleanNode2 | semmle.label | cleanNode2 |
 subpaths
 | test.go:14:42:14:53 | selection of Value | file://:0:0:0:0 | parameter 0 of UnescapeString | file://:0:0:0:0 | [summary] to write: return (return[0]) in UnescapeString | test.go:14:22:14:54 | call to UnescapeString |
 | test.go:16:24:16:35 | selection of Body | file://:0:0:0:0 | parameter 0 of Parse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse | test.go:16:2:16:36 | ... := ...[0] |
@@ -126,6 +178,10 @@ subpaths
 | test.go:36:22:36:30 | tokenizer | file://:0:0:0:0 | parameter -1 of Token | file://:0:0:0:0 | [summary] to write: return (return[0]) in Token | test.go:36:22:36:38 | call to Token |
 | test.go:38:49:38:60 | selection of Body | file://:0:0:0:0 | parameter 0 of NewTokenizerFragment | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewTokenizerFragment | test.go:38:23:38:77 | call to NewTokenizerFragment |
 | test.go:39:15:39:31 | tokenizerFragment | file://:0:0:0:0 | parameter -1 of Buffered | file://:0:0:0:0 | [summary] to write: return (return[0]) in Buffered | test.go:39:15:39:42 | call to Buffered |
+| test.go:42:31:42:42 | selection of Body | file://:0:0:0:0 | parameter 0 of Parse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse | test.go:42:2:42:43 | ... := ...[0] |
+| test.go:43:24:43:34 | taintedNode | file://:0:0:0:0 | parameter 0 of AppendChild | file://:0:0:0:0 | [summary] to write: argument -1 in AppendChild | test.go:41:6:41:14 | definition of cleanNode |
+| test.go:47:32:47:43 | selection of Body | file://:0:0:0:0 | parameter 0 of Parse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse | test.go:47:2:47:44 | ... := ...[0] |
+| test.go:48:26:48:37 | taintedNode2 | file://:0:0:0:0 | parameter 0 of InsertBefore | file://:0:0:0:0 | [summary] to write: argument -1 in InsertBefore | test.go:46:6:46:15 | definition of cleanNode2 |
 #select
 | test.go:14:15:14:55 | type conversion | test.go:10:2:10:42 | ... := ...[0] | test.go:14:15:14:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:10:2:10:42 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:17:15:17:31 | type conversion | test.go:16:24:16:35 | selection of Body | test.go:17:15:17:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:16:24:16:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
@@ -139,3 +195,5 @@ subpaths
 | test.go:35:15:35:30 | call to Text | test.go:30:33:30:44 | selection of Body | test.go:35:15:35:30 | call to Text | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:36:15:36:44 | type conversion | test.go:30:33:30:44 | selection of Body | test.go:36:15:36:44 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:30:33:30:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:39:15:39:42 | call to Buffered | test.go:38:49:38:60 | selection of Body | test.go:39:15:39:42 | call to Buffered | Cross-site scripting vulnerability due to $@. | test.go:38:49:38:60 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:44:22:44:31 | &... | test.go:42:31:42:42 | selection of Body | test.go:44:22:44:31 | &... | Cross-site scripting vulnerability due to $@. | test.go:42:31:42:42 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:49:22:49:32 | &... | test.go:47:32:47:43 | selection of Body | test.go:49:22:49:32 | &... | Cross-site scripting vulnerability due to $@. | test.go:47:32:47:43 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
