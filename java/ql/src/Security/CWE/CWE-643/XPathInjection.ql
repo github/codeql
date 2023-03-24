@@ -22,11 +22,11 @@ module XPathInjectionConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof XPathInjectionSink }
 }
 
-module XPathInjectionFlow = TaintTracking::Make<XPathInjectionConfig>;
+module XPathInjectionFlow = TaintTracking::Global<XPathInjectionConfig>;
 
 import XPathInjectionFlow::PathGraph
 
 from XPathInjectionFlow::PathNode source, XPathInjectionFlow::PathNode sink
-where XPathInjectionFlow::hasFlowPath(source, sink)
+where XPathInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "XPath expression depends on a $@.", source.getNode(),
   "user-provided value"

@@ -32,7 +32,7 @@ module LocalUserInputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
 }
 
 module LocalUserInputToArgumentToExecFlow =
-  TaintTracking::Make<LocalUserInputToArgumentToExecFlowConfig>;
+  TaintTracking::Global<LocalUserInputToArgumentToExecFlowConfig>;
 
 import LocalUserInputToArgumentToExecFlow::PathGraph
 
@@ -40,7 +40,7 @@ from
   LocalUserInputToArgumentToExecFlow::PathNode source,
   LocalUserInputToArgumentToExecFlow::PathNode sink, ArgumentToExec execArg
 where
-  LocalUserInputToArgumentToExecFlow::hasFlowPath(source, sink) and
+  LocalUserInputToArgumentToExecFlow::flowPath(source, sink) and
   sink.getNode().asExpr() = execArg
 select execArg, source, sink, "This command line depends on a $@.", source.getNode(),
   "user-provided value"

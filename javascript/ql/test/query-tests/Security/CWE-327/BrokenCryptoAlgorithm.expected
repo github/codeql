@@ -26,8 +26,8 @@ edges
 | tst.js:19:17:19:24 | password | tst.js:19:17:19:24 | password |
 | tst.js:22:21:22:30 | secretText | tst.js:22:21:22:30 | secretText |
 #select
-| tst.js:11:17:11:26 | secretText | tst.js:3:18:3:24 | trusted | tst.js:11:17:11:26 | secretText | A broken or weak cryptographic algorithm depends on $@. | tst.js:3:18:3:24 | trusted | sensitive data froman access to trusted |
-| tst.js:11:17:11:26 | secretText | tst.js:11:17:11:26 | secretText | tst.js:11:17:11:26 | secretText | A broken or weak cryptographic algorithm depends on $@. | tst.js:11:17:11:26 | secretText | sensitive data froman access to secretText |
-| tst.js:17:17:17:25 | o.trusted | tst.js:17:17:17:25 | o.trusted | tst.js:17:17:17:25 | o.trusted | A broken or weak cryptographic algorithm depends on $@. | tst.js:17:17:17:25 | o.trusted | sensitive data froman access to trusted |
-| tst.js:22:21:22:30 | secretText | tst.js:3:18:3:24 | trusted | tst.js:22:21:22:30 | secretText | A broken or weak cryptographic algorithm depends on $@. | tst.js:3:18:3:24 | trusted | sensitive data froman access to trusted |
-| tst.js:22:21:22:30 | secretText | tst.js:22:21:22:30 | secretText | tst.js:22:21:22:30 | secretText | A broken or weak cryptographic algorithm depends on $@. | tst.js:22:21:22:30 | secretText | sensitive data froman access to secretText |
+| tst.js:11:17:11:26 | secretText | tst.js:3:18:3:24 | trusted | tst.js:11:17:11:26 | secretText | A broken or weak cryptographic algorithm depends on $@. | tst.js:3:18:3:24 | trusted | sensitive data from an access to trusted |
+| tst.js:11:17:11:26 | secretText | tst.js:11:17:11:26 | secretText | tst.js:11:17:11:26 | secretText | A broken or weak cryptographic algorithm depends on $@. | tst.js:11:17:11:26 | secretText | sensitive data from an access to secretText |
+| tst.js:17:17:17:25 | o.trusted | tst.js:17:17:17:25 | o.trusted | tst.js:17:17:17:25 | o.trusted | A broken or weak cryptographic algorithm depends on $@. | tst.js:17:17:17:25 | o.trusted | sensitive data from an access to trusted |
+| tst.js:22:21:22:30 | secretText | tst.js:3:18:3:24 | trusted | tst.js:22:21:22:30 | secretText | A broken or weak cryptographic algorithm depends on $@. | tst.js:3:18:3:24 | trusted | sensitive data from an access to trusted |
+| tst.js:22:21:22:30 | secretText | tst.js:22:21:22:30 | secretText | tst.js:22:21:22:30 | secretText | A broken or weak cryptographic algorithm depends on $@. | tst.js:22:21:22:30 | secretText | sensitive data from an access to secretText |

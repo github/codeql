@@ -53,4 +53,4 @@ private module IntentUriPermissionManipulationConfig implements DataFlow::Config
  * Taint tracking flow for user-provided Intents being returned to third party apps.
  */
 module IntentUriPermissionManipulationFlow =
-  TaintTracking::Make<IntentUriPermissionManipulationConfig>;
+  TaintTracking::Global<IntentUriPermissionManipulationConfig>;

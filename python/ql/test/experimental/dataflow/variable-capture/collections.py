@@ -31,7 +31,7 @@ def SINK_F(x):
         print("OK")
 
 l = [NONSOURCE]
-SINK_F(l_mod[0])
+SINK_F(l[0])
 
 l_mod = [SOURCE for x in l]
 SINK(l_mod[0]) #$ captured

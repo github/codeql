@@ -6,5 +6,6 @@
 | java.net.URL#openConnection() | 1 |
 | java.net.URL#openStream() | 1 |
 | java.net.URLConnection#getInputStream() | 1 |
+| java.time.Duration#ofMillis(long) | 1 |
 | java.util.Map#put(Object,Object) | 1 |
 | org.apache.commons.io.FileUtils#deleteDirectory(File) | 1 |

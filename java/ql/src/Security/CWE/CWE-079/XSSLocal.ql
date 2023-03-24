@@ -21,11 +21,11 @@ module XssLocalConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof XssSink }
 }
 
-module XssLocalFlow = TaintTracking::Make<XssLocalConfig>;
+module XssLocalFlow = TaintTracking::Global<XssLocalConfig>;
 
 import XssLocalFlow::PathGraph
 
 from XssLocalFlow::PathNode source, XssLocalFlow::PathNode sink
-where XssLocalFlow::hasFlowPath(source, sink)
+where XssLocalFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to $@.",
   source.getNode(), "user-provided value"

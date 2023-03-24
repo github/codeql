@@ -19,7 +19,7 @@ import semmle.code.java.security.XxeRemoteQuery
 import XxeFlow::PathGraph
 
 from XxeFlow::PathNode source, XxeFlow::PathNode sink
-where XxeFlow::hasFlowPath(source, sink)
+where XxeFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "XML parsing depends on a $@ without guarding against external entity expansion.",
   source.getNode(), "user-provided value"

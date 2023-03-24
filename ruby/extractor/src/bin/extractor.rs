@@ -320,6 +320,8 @@ fn scan_erb(
     (result, line_breaks)
 }
 
+/// Advance `index` to the next non-whitespace character.
+/// Newlines are **not** considered whitespace.
 fn skip_space(content: &[u8], index: usize) -> usize {
     let mut index = index;
     while index < content.len() {

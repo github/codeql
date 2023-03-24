@@ -17,11 +17,11 @@ module EnvironmentToFileConfig implements DataFlow::ConfigSig {
   }
 }
 
-module EnvironmentToFileFlow = DataFlow::Make<EnvironmentToFileConfig>;
+module EnvironmentToFileFlow = DataFlow::Global<EnvironmentToFileConfig>;
 
 from Expr getenv, Expr fopen, DataFlow::Node source, DataFlow::Node sink
 where
   source.asIndirectExpr(1) = getenv and
   sink.asIndirectExpr(1) = fopen and
-  EnvironmentToFileFlow::hasFlow(source, sink)
+  EnvironmentToFileFlow::flow(source, sink)
 select fopen, "This 'fopen' uses data from $@.", getenv, "call to 'getenv'"

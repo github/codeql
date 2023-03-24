@@ -102,7 +102,7 @@ module WebViewDisallowContentAccessConfig implements DataFlow::StateConfigSig {
 }
 
 module WebViewDisallowContentAccessFlow =
-  TaintTracking::MakeWithState<WebViewDisallowContentAccessConfig>;
+  TaintTracking::GlobalWithState<WebViewDisallowContentAccessConfig>;
 
 from Expr e
 where
@@ -116,7 +116,7 @@ where
   // implicit: no setAllowContentAccess(false)
   exists(WebViewSource source |
     source.asExpr() = e and
-    not WebViewDisallowContentAccessFlow::hasFlow(source, _)
+    not WebViewDisallowContentAccessFlow::flow(source, _)
   )
 select e,
   "Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView."
