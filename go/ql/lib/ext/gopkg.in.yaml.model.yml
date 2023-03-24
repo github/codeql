@@ -3,12 +3,12 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["gopkg.in/yaml.$ANYVERSION", "", False, "Marshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["gopkg.in/yaml.$ANYVERSION", "", False, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
-      - ["gopkg.in/yaml.$ANYVERSION", "", False, "UnmarshalStrict", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
-      - ["gopkg.in/yaml.$ANYVERSION", "", False, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["gopkg.in/yaml.$ANYVERSION", "Decoder", True, "Decode", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
-      - ["gopkg.in/yaml.$ANYVERSION", "Encoder", True, "Encode", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["gopkg.in/yaml.$ANYVERSION", "Node", True, "Decode", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
-      - ["gopkg.in/yaml.$ANYVERSION", "Node", True, "Encode", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
-      - ["gopkg.in/yaml.$ANYVERSION", "Node", True, "SetString", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["gopkg.in/yaml", "", False, "Marshal", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["gopkg.in/yaml", "", False, "Unmarshal", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["gopkg.in/yaml", "", False, "UnmarshalStrict", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["gopkg.in/yaml", "", False, "NewDecoder", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["gopkg.in/yaml", "Decoder", True, "Decode", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["gopkg.in/yaml", "Encoder", True, "Encode", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["gopkg.in/yaml", "Node", True, "Decode", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["gopkg.in/yaml", "Node", True, "Encode", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["gopkg.in/yaml", "Node", True, "SetString", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]

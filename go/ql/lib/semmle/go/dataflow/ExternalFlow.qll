@@ -270,7 +270,7 @@ private string interpretPackage(string p) {
   exists(string r | r = "([^$]+)([./]\\$ANYVERSION(/|$)(.*))?" |
     if exists(p.regexpCapture(r, 4))
     then result = package(p.regexpCapture(r, 1), p.regexpCapture(r, 4))
-    else result = p
+    else result = package(p, "")
   )
 }
 
