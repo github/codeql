@@ -19,5 +19,5 @@ import QueryInjectionFlow::PathGraph
 
 from
   QueryInjectionSink query, QueryInjectionFlow::PathNode source, QueryInjectionFlow::PathNode sink
-where queryTaintedBy(query, source, sink)
+where queryIsTaintedBy(query, source, sink)
 select query, source, sink, "This query depends on a $@.", source.getNode(), "user-provided value"

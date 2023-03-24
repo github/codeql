@@ -59,7 +59,17 @@ module QueryInjectionFlow = TaintTracking::Global<QueryInjectionFlowConfig>;
  * Implementation of `SqlTainted.ql`. This is extracted to a QLL so that it
  * can be excluded from `SqlConcatenated.ql` to avoid overlapping results.
  */
-predicate queryTaintedBy(
+deprecated predicate queryTaintedBy(
+  QueryInjectionSink query, DataFlow::PathNode source, DataFlow::PathNode sink
+) {
+  any(QueryInjectionFlowConfig c).hasFlowPath(source, sink) and sink.getNode() = query
+}
+
+/**
+ * Implementation of `SqlTainted.ql`. This is extracted to a QLL so that it
+ * can be excluded from `SqlConcatenated.ql` to avoid overlapping results.
+ */
+predicate queryIsTaintedBy(
   QueryInjectionSink query, QueryInjectionFlow::PathNode source, QueryInjectionFlow::PathNode sink
 ) {
   QueryInjectionFlow::flowPath(source, sink) and sink.getNode() = query
