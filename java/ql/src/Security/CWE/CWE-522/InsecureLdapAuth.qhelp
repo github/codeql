@@ -33,7 +33,7 @@
 
     <p>
       In the following (good) example, a <code>ldap://</code> URL is used, but
-      SASL authentication is enabled.
+      SASL authentication is enabled so that the credentials will be encrypted. 
     </p>
     <sample src="LdapEnableSasl.java"/>
   </example>
