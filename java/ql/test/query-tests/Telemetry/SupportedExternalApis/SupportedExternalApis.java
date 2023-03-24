@@ -16,7 +16,7 @@ class SupportedExternalApis {
 		Map<String, Object> map = new HashMap<>(); // uninteresting (parameterless constructor)
 		map.put("foo", new Object()); // supported summary
 
-		Duration d = java.time.Duration.ofMillis(1000); // not supported
+		Duration d = java.time.Duration.ofMillis(1000); // supported neutral
 
 		URL github = new URL("https://www.github.com/"); // supported summary
 		InputStream stream = github.openConnection().getInputStream(); // supported source (getInputStream), supported sink (openConnection)
@@ -24,6 +24,6 @@ class SupportedExternalApis {
 		new FileWriter(new File("foo")); // supported sink (FileWriter), supported summary (File)
 		new URL("http://foo").openStream(); // supported sink (openStream), supported summary (URL)
 
-		FileUtils.deleteDirectory(new File("foo")); // supported negative summary (deleteDirectory), supported summary (File)
+		FileUtils.deleteDirectory(new File("foo")); // supported neutral (deleteDirectory), supported summary (File)
 	}
 }

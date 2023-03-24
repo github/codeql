@@ -21,11 +21,11 @@ module UrlRedirectConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof UrlRedirectSink }
 }
 
-module UrlRedirectFlow = TaintTracking::Make<UrlRedirectConfig>;
+module UrlRedirectFlow = TaintTracking::Global<UrlRedirectConfig>;
 
 import UrlRedirectFlow::PathGraph
 
 from UrlRedirectFlow::PathNode source, UrlRedirectFlow::PathNode sink
-where UrlRedirectFlow::hasFlowPath(source, sink)
+where UrlRedirectFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Untrusted URL redirection depends on a $@.", source.getNode(),
   "user-provided value"

@@ -122,7 +122,7 @@ module UncontrolledArithConfig implements DataFlow::ConfigSig {
   }
 }
 
-module UncontrolledArith = TaintTracking::Make<UncontrolledArithConfig>;
+module UncontrolledArith = TaintTracking::Global<UncontrolledArithConfig>;
 
 /** Gets the expression that corresponds to `node`, if any. */
 Expr getExpr(DataFlow::Node node) { result = [node.asExpr(), node.asDefiningArgument()] }
@@ -131,7 +131,7 @@ from
   UncontrolledArith::PathNode source, UncontrolledArith::PathNode sink, VariableAccess va,
   string effect
 where
-  UncontrolledArith::hasFlowPath(source, sink) and
+  UncontrolledArith::flowPath(source, sink) and
   sink.getNode().asExpr() = va and
   missingGuard(va, effect)
 select sink.getNode(), source, sink,

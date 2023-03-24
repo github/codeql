@@ -216,9 +216,9 @@ module Ssa {
       )
     }
 
-    final override string toString() { result = Definition.super.toString() }
+    final override string toString() { result = write.toString() }
 
-    final override Location getLocation() { result = this.getControlFlowNode().getLocation() }
+    final override Location getLocation() { result = write.getLocation() }
   }
 
   /**

@@ -46,13 +46,13 @@ module KeyStrengthFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module KeyStrengthFlow = DataFlow::Make<KeyStrengthFlowConfig>;
+module KeyStrengthFlow = DataFlow::Global<KeyStrengthFlowConfig>;
 
 from
   KeyStrengthFlow::PathNode source, KeyStrengthFlow::PathNode sink, FunctionCall fc, int param,
   string name, int minimumBits, int bits
 where
-  KeyStrengthFlow::hasFlowPath(source, sink) and
+  KeyStrengthFlow::flowPath(source, sink) and
   sink.getNode().asExpr() = fc.getArgument(param) and
   fc.getTarget().hasGlobalName(name) and
   minimumBits = getMinimumKeyStrength(name, param) and

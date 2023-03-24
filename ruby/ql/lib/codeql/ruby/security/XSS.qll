@@ -304,7 +304,7 @@ private module OrmTracking {
     }
   }
 
-  import DataFlow::Make<Config>
+  import DataFlow::Global<Config>
 }
 
 /** Provides default sources, sinks and sanitizers for detecting stored cross-site scripting (XSS) vulnerabilities. */
@@ -336,7 +336,7 @@ module StoredXss {
   private class OrmFieldAsSource extends Source instanceof DataFlow::CallNode {
     OrmFieldAsSource() {
       exists(DataFlow::CallNode subSrc |
-        OrmTracking::hasFlow(subSrc, this.getReceiver()) and
+        OrmTracking::flow(subSrc, this.getReceiver()) and
         subSrc.(OrmInstantiation).methodCallMayAccessField(this.getMethodName())
       )
     }

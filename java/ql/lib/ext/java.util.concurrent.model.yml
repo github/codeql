@@ -17,7 +17,13 @@ extensions:
       - ["java.util.concurrent", "BlockingQueue", True, "poll", "(long,TimeUnit)", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["java.util.concurrent", "BlockingQueue", True, "put", "(Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["java.util.concurrent", "BlockingQueue", True, "take", "()", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["java.util.concurrent", "CompletableFuture", False, "complete", "(Object)", "", "Argument[0]", "Argument[this].SyntheticField[java.util.concurrent.Future.value]", "value", "manual"]
+      - ["java.util.concurrent", "CompletableFuture", False, "completedFuture", "(Object)", "", "Argument[0]", "ReturnValue.SyntheticField[java.util.concurrent.Future.value]", "value", "manual"]
+      - ["java.util.concurrent", "CompletableFuture", False, "join", "()", "", "Argument[this].SyntheticField[java.util.concurrent.Future.value]", "ReturnValue", "value", "manual"]
+      - ["java.util.concurrent", "CompletionStage", False, "toCompletableFuture", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.util.concurrent", "ConcurrentHashMap", True, "elements", "()", "", "Argument[this].MapValue", "ReturnValue.Element", "value", "manual"]
+      - ["java.util.concurrent", "ExecutorService", True, "submit", "(Runnable)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.util.concurrent", "Future", True, "get", "()", "", "Argument[this].SyntheticField[java.util.concurrent.Future.value]", "ReturnValue", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "transfer", "(Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "tryTransfer", "(Object)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["java.util.concurrent", "TransferQueue", True, "tryTransfer", "(Object,long,TimeUnit)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
@@ -26,9 +32,15 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.util.concurrent", "CompletableFuture", "completeExceptionally", "(Throwable)", "manual"]
+      - ["java.util.concurrent", "CompletableFuture", "isDone", "()", "manual"]
+      - ["java.util.concurrent", "CountDownLatch", "await", "", "manual"]
       - ["java.util.concurrent", "CountDownLatch", "countDown", "()", "manual"]
+      - ["java.util.concurrent", "Executor", "execute", "(Runnable)", "manual"]
+      - ["java.util.concurrent", "ExecutorService", "shutdown", "()", "manual"]
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
       - ["java.util.concurrent", "CountDownLatch", "CountDownLatch", "(int)", "manual"] # value-numeric
       - ["java.util.concurrent", "CountDownLatch", "getCount", "()", "manual"]          # value-numeric
+      - ["java.util.concurrent", "TimeUnit", "toMillis", "(long)", "manual"]            # taint-numeric

@@ -125,13 +125,13 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
   }
 }
 
-module FromSensitiveFlow = TaintTracking::Make<FromSensitiveConfig>;
+module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;
 
 from
   SensitiveExpr sensitive, FromSensitiveFlow::PathNode source, FromSensitiveFlow::PathNode sink,
   SqliteFunctionCall sqliteCall
 where
-  FromSensitiveFlow::hasFlowPath(source, sink) and
+  FromSensitiveFlow::flowPath(source, sink) and
   isSourceImpl(source.getNode(), sensitive) and
   isSinkImpl(sink.getNode(), sqliteCall, _)
 select sqliteCall, source, sink,

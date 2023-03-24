@@ -37,4 +37,4 @@ private module FragmentInjectionTaintConfig implements DataFlow::ConfigSig {
  * Taint-tracking flow for unsafe user input
  * that is used to create Android fragments dynamically.
  */
-module FragmentInjectionTaintFlow = TaintTracking::Make<FragmentInjectionTaintConfig>;
+module FragmentInjectionTaintFlow = TaintTracking::Global<FragmentInjectionTaintConfig>;

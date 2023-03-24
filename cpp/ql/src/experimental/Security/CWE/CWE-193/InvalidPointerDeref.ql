@@ -209,7 +209,7 @@ module InvalidPointerToDerefConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _) }
 }
 
-module InvalidPointerToDerefFlow = DataFlow::Make<InvalidPointerToDerefConfig>;
+module InvalidPointerToDerefFlow = DataFlow::Global<InvalidPointerToDerefConfig>;
 
 /**
  * Holds if `pai` is a pointer-arithmetic operation and `source` is a dataflow node with a
@@ -241,7 +241,7 @@ newtype TMergedPathNode =
   // pointer, but we want to raise an alert at the dereference.
   TPathNodeSink(Instruction i) {
     exists(DataFlow::Node n |
-      InvalidPointerToDerefFlow::hasFlow(_, n) and
+      InvalidPointerToDerefFlow::flow(_, n) and
       isInvalidPointerDerefSink(n, i, _)
     )
   }
@@ -349,7 +349,7 @@ predicate hasFlowPath(
   |
     conf1.hasFlowPath(source1.asPathNode1(), _, sink1, _) and
     joinOn1(pai, sink1, source3) and
-    InvalidPointerToDerefFlow::hasFlowPath(source3, sink3) and
+    InvalidPointerToDerefFlow::flowPath(source3, sink3) and
     joinOn2(sink3, sink.asSinkNode(), operation)
   )
 }

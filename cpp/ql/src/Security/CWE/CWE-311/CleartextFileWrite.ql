@@ -33,7 +33,7 @@ module FromSensitiveConfig implements DataFlow::ConfigSig {
   }
 }
 
-module FromSensitiveFlow = TaintTracking::Make<FromSensitiveConfig>;
+module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;
 
 predicate isSinkImpl(DataFlow::Node sink, FileWrite w, Expr dest) {
   exists(Expr e |
@@ -81,7 +81,7 @@ from
   SensitiveExpr source, FromSensitiveFlow::PathNode sourceNode, FromSensitiveFlow::PathNode midNode,
   FileWrite w, Expr dest
 where
-  FromSensitiveFlow::hasFlowPath(sourceNode, midNode) and
+  FromSensitiveFlow::flowPath(sourceNode, midNode) and
   isSourceImpl(sourceNode.getNode(), source) and
   isSinkImpl(midNode.getNode(), w, dest)
 select w, sourceNode, midNode,
