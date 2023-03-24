@@ -222,7 +222,7 @@ signature module GlobalFlowSig {
 }
 
 /**
- * Constructs a standard data flow computation.
+ * Constructs a global data flow computation.
  */
 module Global<ConfigSig Config> implements GlobalFlowSig {
   private module C implements FullStateConfigSig {
@@ -239,7 +239,7 @@ deprecated module Make<ConfigSig Config> implements GlobalFlowSig {
 }
 
 /**
- * Constructs a data flow computation using flow state.
+ * Constructs a global data flow computation using flow state.
  */
 module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
   private module C implements FullStateConfigSig {
