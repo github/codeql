@@ -103,6 +103,8 @@ This source is already known by the CodeQL JS analysis, but we'll show how it co
 - **Member[data]** selects accesses to the **data** property of the event object.
 - Finally, the kind **remote** indicates that this is considered a source of remote flow.
 
+In the next section, we'll show how to restrict the model to recognize events of a specific type.
+
 Continued example: Restricting the event type
 ---------------------------------------------
 
