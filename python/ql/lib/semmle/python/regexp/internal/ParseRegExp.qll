@@ -110,13 +110,10 @@ private module FindRegexMode {
 deprecated class Regex = RegExp;
 
 /** A StrConst used as a regular expression */
-class RegExp extends Expr {
+class RegExp extends Expr instanceof StrConst {
   DataFlow::Node use;
 
-  RegExp() {
-    (this instanceof Bytes or this instanceof Unicode) and
-    this = RegExpTracking::regExpSource(use).asExpr()
-  }
+  RegExp() { this = RegExpTracking::regExpSource(use).asExpr() }
 
   /** Gets a data-flow node where this string value is used as a regular expression. */
   DataFlow::Node getAUse() { result = use }
@@ -332,11 +329,7 @@ class RegExp extends Expr {
   }
 
   /** Gets the text of this regex */
-  string getText() {
-    result = this.(Unicode).getS()
-    or
-    result = this.(Bytes).getS()
-  }
+  string getText() { result = super.getText() }
 
   /** Gets the `i`th character of this regex */
   string getChar(int i) { result = this.getText().charAt(i) }

@@ -15,10 +15,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts as Concepts
 
 /** Gets a constant string value that may be used as a regular expression. */
-DataFlow::LocalSourceNode strStart() {
-  result.asExpr() instanceof Bytes or
-  result.asExpr() instanceof Unicode
-}
+DataFlow::Node strStart() { result.asExpr() instanceof StrConst }
 
 private import semmle.python.regex as Regex
 
