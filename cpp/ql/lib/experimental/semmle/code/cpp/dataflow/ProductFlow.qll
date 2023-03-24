@@ -67,7 +67,7 @@ module ProductFlow {
     default predicate isBarrierIn2(DataFlow::Node node) { none() }
   }
 
-  module Make<ConfigSig Config> {
+  module Global<ConfigSig Config> {
     private module StateConfig implements StateConfigSig {
       class FlowState1 = Unit;
 
@@ -132,7 +132,7 @@ module ProductFlow {
       predicate isBarrierIn2 = Config::isBarrierIn2/1;
     }
 
-    import MakeWithState<StateConfig>
+    import GlobalWithState<StateConfig>
   }
 
   signature module StateConfigSig {
@@ -244,7 +244,7 @@ module ProductFlow {
     default predicate isBarrierIn2(DataFlow::Node node) { none() }
   }
 
-  module MakeWithState<StateConfigSig Config> {
+  module GlobalWithState<StateConfigSig Config> {
     class PathNode1 = Flow1::PathNode;
 
     class PathNode2 = Flow2::PathNode;
@@ -257,7 +257,7 @@ module ProductFlow {
 
     class FlowState2 = Config::FlowState2;
 
-    predicate hasFlowPath(
+    predicate flowPath(
       Flow1::PathNode source1, Flow2::PathNode source2, Flow1::PathNode sink1, Flow2::PathNode sink2
     ) {
       reachable(source1, source2, sink1, sink2)
@@ -287,7 +287,7 @@ module ProductFlow {
       predicate isBarrierIn(DataFlow::Node node) { Config::isBarrierIn1(node) }
     }
 
-    module Flow1 = DataFlow::MakeWithState<Config1>;
+    module Flow1 = DataFlow::GlobalWithState<Config1>;
 
     module Config2 implements DataFlow::StateConfigSig {
       class FlowState = FlowState2;
@@ -319,7 +319,7 @@ module ProductFlow {
       predicate isBarrierIn(DataFlow::Node node) { Config::isBarrierIn2(node) }
     }
 
-    module Flow2 = DataFlow::MakeWithState<Config2>;
+    module Flow2 = DataFlow::GlobalWithState<Config2>;
 
     pragma[nomagic]
     private predicate reachableInterprocEntry(

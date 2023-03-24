@@ -61,7 +61,7 @@ module ArraySizeConfig implements ProductFlow::ConfigSig {
   }
 }
 
-module ArraySizeFlow = ProductFlow::Make<ArraySizeConfig>;
+module ArraySizeFlow = ProductFlow::Global<ArraySizeConfig>;
 
 pragma[nomagic]
 predicate isSinkPair1(
@@ -78,7 +78,7 @@ predicate isSinkPair1(
 from
   ArraySizeFlow::PathNode1 source1, ArraySizeFlow::PathNode2 source2,
   ArraySizeFlow::PathNode1 sink1, ArraySizeFlow::PathNode2 sink2
-where ArraySizeFlow::hasFlowPath(source1, source2, sink1, sink2)
+where ArraySizeFlow::flowPath(source1, source2, sink1, sink2)
 // TODO: pull delta out and display it
 select sink1.getNode(), source1, sink1, "Off-by one error allocated at $@ bounded by $@.", source1,
   source1.toString(), sink2, sink2.toString()

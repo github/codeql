@@ -161,7 +161,7 @@ module AllocToInvalidPointerConfig implements ProductFlow::StateConfigSig {
   }
 }
 
-module AllocToInvalidPointerFlow = ProductFlow::MakeWithState<AllocToInvalidPointerConfig>;
+module AllocToInvalidPointerFlow = ProductFlow::GlobalWithState<AllocToInvalidPointerConfig>;
 
 /**
  * Holds if `pai` is non-strictly upper bounded by `sink2 + delta` and `sink1` is the
@@ -246,7 +246,7 @@ predicate invalidPointerToDerefSource(
 ) {
   exists(AllocToInvalidPointerFlow::PathNode1 p, DataFlow::Node sink1 |
     pragma[only_bind_out](p.getNode()) = sink1 and
-    AllocToInvalidPointerFlow::hasFlowPath(_, _, pragma[only_bind_into](p), _) and
+    AllocToInvalidPointerFlow::flowPath(_, _, pragma[only_bind_into](p), _) and
     isSinkImpl(pai, sink1, _, _) and
     bounded2(source.asInstruction(), pai, delta) and
     delta >= 0
@@ -368,7 +368,7 @@ predicate hasFlowPath(
   PointerArithmeticInstruction pai, string operation
 ) {
   exists(InvalidPointerToDerefFlow::PathNode sink3, AllocToInvalidPointerFlow::PathNode1 sink1 |
-    AllocToInvalidPointerFlow::hasFlowPath(source1.asPathNode1(), _, sink1, _) and
+    AllocToInvalidPointerFlow::flowPath(source1.asPathNode1(), _, sink1, _) and
     joinOn1(pai, sink1, source3) and
     InvalidPointerToDerefFlow::flowPath(source3, sink3) and
     joinOn2(sink3, sink.asSinkNode(), operation)

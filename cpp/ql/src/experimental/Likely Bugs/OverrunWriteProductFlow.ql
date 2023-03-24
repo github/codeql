@@ -132,14 +132,14 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
   }
 }
 
-module StringSizeFlow = ProductFlow::MakeWithState<StringSizeConfig>;
+module StringSizeFlow = ProductFlow::GlobalWithState<StringSizeConfig>;
 
 from
   StringSizeFlow::PathNode1 source1, StringSizeFlow::PathNode2 source2,
   StringSizeFlow::PathNode1 sink1, StringSizeFlow::PathNode2 sink2, int overflow, int sinkState,
   CallInstruction c, DataFlow::Node sourceNode, Expr buffer, string element
 where
-  StringSizeFlow::hasFlowPath(source1, source2, sink1, sink2) and
+  StringSizeFlow::flowPath(source1, source2, sink1, sink2) and
   sinkState = sink2.getState() and
   isSinkPairImpl(c, sink1.getNode(), sink2.getNode(), overflow + sinkState, buffer) and
   overflow > 0 and
