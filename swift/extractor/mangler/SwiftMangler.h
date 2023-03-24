@@ -36,7 +36,7 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   using DeclVisitor = swift::DeclVisitor<SwiftMangler, SwiftMangledName>;
 
  public:
-  explicit SwiftMangler(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
+  virtual ~SwiftMangler() = default;
 
   static SwiftMangledName mangleModuleName(std::string_view name);
 
@@ -104,18 +104,33 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitParametrizedProtocolType(const swift::ParameterizedProtocolType* type);
 
  private:
-  template <typename E>
-  UntypedTrapLabel fetch(E&& e);
+  std::unordered_map<const swift::Decl*, unsigned> preloadedExtensionIndexes;
 
+  virtual SwiftMangledName fetch(const swift::Decl* decl) = 0;
+  virtual SwiftMangledName fetch(const swift::TypeBase* type) = 0;
+  SwiftMangledName fetch(swift::Type type) { return fetch(type.getPointer()); }
+
+  void indexExtensions(llvm::ArrayRef<swift::Decl*> siblings);
+  unsigned int getExtensionIndex(const swift::ExtensionDecl* decl, const swift::Decl* parent);
   static SwiftMangledName initMangled(const swift::TypeBase* type);
   SwiftMangledName initMangled(const swift::Decl* decl);
   SwiftMangledName visitTypeDiscriminatedValueDecl(const swift::ValueDecl* decl);
+};
 
-  swift::Mangle::ASTMangler mangler;
+class SwiftTrapMangler : public SwiftMangler {
+ public:
+  explicit SwiftTrapMangler(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
+
+ private:
+  SwiftMangledName fetch(const swift::Decl* decl) override;
+  SwiftMangledName fetch(const swift::TypeBase* type) override;
+
   SwiftDispatcher& dispatcher;
-  std::unordered_map<const swift::Decl*, unsigned> preloadedExtensionIndexes;
-  void indexExtensions(llvm::ArrayRef<swift::Decl*> siblings);
-  unsigned int getExtensionIndex(const swift::ExtensionDecl* decl, const swift::Decl* parent);
+};
+
+class SwiftRecursiveMangler : public SwiftMangler {
+  SwiftMangledName fetch(const swift::Decl* decl) override;
+  SwiftMangledName fetch(const swift::TypeBase* type) override;
 };
 
 }  // namespace codeql

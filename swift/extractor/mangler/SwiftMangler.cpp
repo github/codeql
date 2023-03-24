@@ -38,14 +38,6 @@ std::string_view getTypeKindStr(const swift::TypeBase* type) {
 
 }  // namespace
 
-template <typename E>
-UntypedTrapLabel SwiftMangler::fetch(E&& e) {
-  auto ret = dispatcher.fetchLabel(std::forward<E>(e));
-  // TODO use a generic logging handle for Swift entities here, once it's available
-  CODEQL_ASSERT(ret.valid(), "using an undefined label in mangling");
-  return ret;
-}
-
 SwiftMangledName SwiftMangler::initMangled(const swift::TypeBase* type) {
   return {getTypeKindStr(type), '_'};
 }
@@ -372,4 +364,30 @@ SwiftMangledName SwiftMangler::visitParametrizedProtocolType(
   }
   ret << '>';
   return ret;
+}
+
+namespace {
+template <typename E>
+UntypedTrapLabel fetchLabel(SwiftDispatcher& dispatcher, const E* e) {
+  auto ret = dispatcher.fetchLabel(e);
+  // TODO use a generic logging handle for Swift entities here, once it's available
+  CODEQL_ASSERT(ret.valid(), "using an undefined label in mangling");
+  return ret;
+}
+}  // namespace
+
+SwiftMangledName SwiftTrapMangler::fetch(const swift::Decl* decl) {
+  return {fetchLabel(dispatcher, decl)};
+}
+
+SwiftMangledName SwiftTrapMangler::fetch(const swift::TypeBase* type) {
+  return {fetchLabel(dispatcher, type)};
+}
+
+SwiftMangledName SwiftRecursiveMangler::fetch(const swift::Decl* decl) {
+  return mangleDecl(*decl).hash();
+}
+
+SwiftMangledName SwiftRecursiveMangler::fetch(const swift::TypeBase* type) {
+  return mangleType(*type).hash();
 }

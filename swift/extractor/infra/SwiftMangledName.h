@@ -16,6 +16,9 @@ class SwiftMangledName {
   explicit operator bool() const { return !value.empty(); }
 
   const std::string& str() const { return value; }
+  operator std::string_view() const { return value; }
+
+  std::string hash() const;
 
   // let's avoid copying as long as we don't need it
   SwiftMangledName() = default;
@@ -29,7 +32,6 @@ class SwiftMangledName {
     (operator<<(std::forward<Args>(args)), ...);
   }
 
-  // streaming labels or ints into a SwiftMangledName just appends them
   SwiftMangledName& operator<<(UntypedTrapLabel label) &;
   SwiftMangledName& operator<<(unsigned i) &;
 
@@ -43,11 +45,6 @@ class SwiftMangledName {
   template <typename T>
   SwiftMangledName& operator<<(T&& arg) & {
     value += arg;
-    return *this;
-  }
-
-  SwiftMangledName& operator<<(const SwiftMangledName& other) {
-    value += other.value;
     return *this;
   }
 

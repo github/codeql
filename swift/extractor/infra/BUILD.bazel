@@ -11,5 +11,6 @@ swift_cc_library(
         "//swift/extractor/trap",
         "//swift/logging",
         "//swift/third_party/swift-llvm-support",
+        "@picosha2",
     ],
 )

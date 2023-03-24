@@ -58,7 +58,7 @@ class SwiftVisitor : private SwiftDispatcher {
   StmtTranslator stmtTranslator{*this};
   TypeTranslator typeTranslator{*this};
   PatternTranslator patternTranslator{*this};
-  SwiftMangler mangler{*this};
+  SwiftTrapMangler mangler{*this};
 };
 
 }  // namespace codeql
