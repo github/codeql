@@ -113,9 +113,7 @@ private class StringLengthConflationSources extends SourceModelCsv {
   override predicate row(string row) {
     row =
       [
-        ";String;true;count;;;;string-length", ";String.UTF8View;true;count;;;;string-utf8-length",
-        ";String.UTF16View;true;count;;;;string-utf16-length",
-        ";NSString;true;length;;;;nsstring-length",
+        ";String;true;count;;;;string-length", ";NSString;true;length;;;;nsstring-length",
         ";NSMutableString;true;length;;;;nsstring-length",
       ]
   }
@@ -128,12 +126,23 @@ private class ExtraStringLengthConflationSource extends StringLengthConflationSo
   StringType stringType;
 
   ExtraStringLengthConflationSource() {
-    exists(MemberRefExpr memberRef |
-      // result of a call to `String.unicodeScalars.count`
-      memberRef.getBase().getType().(NominalType).getName() = "String.UnicodeScalarView" and
+    exists(MemberRefExpr memberRef, string typeName |
+      (
+        // result of a call to `String.utf8.count`
+        typeName = "String.UTF8View" and
+        stringType = "String.utf8"
+        or
+        // result of a call to `String.utf16.count`
+        typeName = "String.UTF16View" and
+        stringType = "String.utf16"
+        or
+        // result of a call to `String.unicodeScalars.count`
+        typeName = "String.UnicodeScalarView" and
+        stringType = "String.unicodeScalars"
+      ) and
+      memberRef.getBase().getType().(NominalType).getName() = typeName and
       memberRef.getMember().(VarDecl).getName() = "count" and
-      this.asExpr() = memberRef and
-      stringType = "String.unicodeScalars"
+      this.asExpr() = memberRef
     )
   }
 
