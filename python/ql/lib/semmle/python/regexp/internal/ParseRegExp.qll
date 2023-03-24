@@ -1,5 +1,5 @@
 /**
- * Library for parsing for Python regular expressions.
+ * Library for parsing Python regular expressions.
  */
 
 import python
