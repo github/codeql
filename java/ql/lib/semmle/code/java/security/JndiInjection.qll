@@ -9,6 +9,9 @@ private import semmle.code.java.frameworks.SpringLdap
 /** A data flow sink for unvalidated user input that is used in JNDI lookup. */
 abstract class JndiInjectionSink extends DataFlow::Node { }
 
+/** A sanitizer for JNDI injection vulnerabilities. */
+abstract class JndiInjectionSanitizer extends DataFlow::Node { }
+
 /**
  * A unit class for adding additional taint steps.
  *
