@@ -11,7 +11,7 @@ class HasMvelInjectionTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasMvelInjection" and
-    exists(DataFlow::Node sink | MvelInjectionFlow::hasFlowTo(sink) |
+    exists(DataFlow::Node sink | MvelInjectionFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

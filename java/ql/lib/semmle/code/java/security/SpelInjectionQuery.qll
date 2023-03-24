@@ -39,7 +39,7 @@ module SpelInjectionConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks flow of unsafe user input that is used to construct and evaluate a SpEL expression. */
-module SpelInjectionFlow = TaintTracking::Make<SpelInjectionConfig>;
+module SpelInjectionFlow = TaintTracking::Global<SpelInjectionConfig>;
 
 /** Default sink for SpEL injection vulnerabilities. */
 private class DefaultSpelExpressionEvaluationSink extends SpelExpressionEvaluationSink {
@@ -47,7 +47,7 @@ private class DefaultSpelExpressionEvaluationSink extends SpelExpressionEvaluati
     exists(MethodAccess ma |
       ma.getMethod() instanceof ExpressionEvaluationMethod and
       ma.getQualifier() = this.asExpr() and
-      not SafeEvaluationContextFlow::hasFlowToExpr(ma.getArgument(0))
+      not SafeEvaluationContextFlow::flowToExpr(ma.getArgument(0))
     )
   }
 }
@@ -68,7 +68,7 @@ private module SafeEvaluationContextFlowConfig implements DataFlow::ConfigSig {
   int fieldFlowBranchLimit() { result = 0 }
 }
 
-private module SafeEvaluationContextFlow = DataFlow::Make<SafeEvaluationContextFlowConfig>;
+private module SafeEvaluationContextFlow = DataFlow::Global<SafeEvaluationContextFlowConfig>;
 
 /**
  * A `ContextSource` that is safe from SpEL injection.

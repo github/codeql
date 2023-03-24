@@ -11,7 +11,7 @@ class HasXsltInjectionTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasXsltInjection" and
-    exists(DataFlow::Node sink | XsltInjectionFlow::hasFlowTo(sink) |
+    exists(DataFlow::Node sink | XsltInjectionFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

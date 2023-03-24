@@ -16,6 +16,6 @@ import semmle.code.java.security.XsltInjectionQuery
 import XsltInjectionFlow::PathGraph
 
 from XsltInjectionFlow::PathNode source, XsltInjectionFlow::PathNode sink
-where XsltInjectionFlow::hasFlowPath(source, sink)
+where XsltInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "XSLT transformation might include stylesheet from $@.",
   source.getNode(), "this user input"

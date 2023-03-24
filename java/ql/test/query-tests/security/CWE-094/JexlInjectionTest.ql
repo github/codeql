@@ -9,7 +9,7 @@ class JexlInjectionTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasJexlInjection" and
-    exists(DataFlow::Node sink | JexlInjectionFlow::hasFlowTo(sink) |
+    exists(DataFlow::Node sink | JexlInjectionFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

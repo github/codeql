@@ -11,7 +11,7 @@ class HasGroovyInjectionTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasGroovyInjection" and
-    exists(DataFlow::Node sink | GroovyInjectionFlow::hasFlowTo(sink) |
+    exists(DataFlow::Node sink | GroovyInjectionFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

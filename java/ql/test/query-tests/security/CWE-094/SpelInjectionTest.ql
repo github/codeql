@@ -11,7 +11,7 @@ class HasSpelInjectionTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasSpelInjection" and
-    exists(DataFlow::Node sink | SpelInjectionFlow::hasFlowTo(sink) |
+    exists(DataFlow::Node sink | SpelInjectionFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

@@ -76,7 +76,7 @@ module JexlInjectionConfig implements DataFlow::ConfigSig {
  * Tracks unsafe user input that is used to construct and evaluate a JEXL expression.
  * It supports both JEXL 2 and 3.
  */
-module JexlInjectionFlow = TaintTracking::Make<JexlInjectionConfig>;
+module JexlInjectionFlow = TaintTracking::Global<JexlInjectionConfig>;
 
 /**
  * Holds if `n1` to `n2` is a dataflow step that creates a JEXL script using an unsafe engine
@@ -122,7 +122,7 @@ private predicate createJexlTemplateStep(DataFlow::Node n1, DataFlow::Node n2) {
 /**
  * Holds if `expr` is a JEXL engine that is configured with a sandbox.
  */
-private predicate isSafeEngine(Expr expr) { SandboxedJexlFlow::hasFlowToExpr(expr) }
+private predicate isSafeEngine(Expr expr) { SandboxedJexlFlow::flowToExpr(expr) }
 
 /**
  * A configuration for tracking sandboxed JEXL engines.
@@ -145,7 +145,7 @@ private module SandboxedJexlFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-private module SandboxedJexlFlow = DataFlow::Make<SandboxedJexlFlowConfig>;
+private module SandboxedJexlFlow = DataFlow::Global<SandboxedJexlFlowConfig>;
 
 /**
  * Defines a data flow source for JEXL engines configured with a sandbox.

@@ -17,6 +17,6 @@ import semmle.code.java.dataflow.DataFlow
 import SpelInjectionFlow::PathGraph
 
 from SpelInjectionFlow::PathNode source, SpelInjectionFlow::PathNode sink
-where SpelInjectionFlow::hasFlowPath(source, sink)
+where SpelInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "SpEL expression depends on a $@.", source.getNode(),
   "user-provided value"

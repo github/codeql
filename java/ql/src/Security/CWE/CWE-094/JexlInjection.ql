@@ -16,6 +16,6 @@ import semmle.code.java.security.JexlInjectionQuery
 import JexlInjectionFlow::PathGraph
 
 from JexlInjectionFlow::PathNode source, JexlInjectionFlow::PathNode sink
-where JexlInjectionFlow::hasFlowPath(source, sink)
+where JexlInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "JEXL expression depends on a $@.", source.getNode(),
   "user-provided value"

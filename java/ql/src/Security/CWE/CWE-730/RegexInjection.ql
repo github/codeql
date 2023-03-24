@@ -18,6 +18,6 @@ import semmle.code.java.security.regexp.RegexInjectionQuery
 import RegexInjectionFlow::PathGraph
 
 from RegexInjectionFlow::PathNode source, RegexInjectionFlow::PathNode sink
-where RegexInjectionFlow::hasFlowPath(source, sink)
+where RegexInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This regular expression is constructed from a $@.",
   source.getNode(), "user-provided value"

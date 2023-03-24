@@ -47,7 +47,7 @@ module XsltInjectionFlowConfig implements DataFlow::ConfigSig {
 /**
  * Tracks flow from unvalidated user input to XSLT transformation.
  */
-module XsltInjectionFlow = TaintTracking::Make<XsltInjectionFlowConfig>;
+module XsltInjectionFlow = TaintTracking::Global<XsltInjectionFlowConfig>;
 
 /**
  * A set of additional taint steps to consider when taint tracking XSLT related data flows.
@@ -70,7 +70,7 @@ private predicate newTransformerOrTemplatesStep(DataFlow::Node n1, DataFlow::Nod
     n2.asExpr() = ma and
     m.getDeclaringType() instanceof TransformerFactory and
     m.hasName(["newTransformer", "newTemplates"]) and
-    not TransformerFactoryWithSecureProcessingFeatureFlow::hasFlowToExpr(ma.getQualifier())
+    not TransformerFactoryWithSecureProcessingFeatureFlow::flowToExpr(ma.getQualifier())
   )
 }
 
@@ -99,7 +99,7 @@ private module TransformerFactoryWithSecureProcessingFeatureFlowConfig implement
 }
 
 private module TransformerFactoryWithSecureProcessingFeatureFlow =
-  DataFlow::Make<TransformerFactoryWithSecureProcessingFeatureFlowConfig>;
+  DataFlow::Global<TransformerFactoryWithSecureProcessingFeatureFlowConfig>;
 
 /** A `ParserConfig` specific to `TransformerFactory`. */
 private class TransformerFactoryFeatureConfig extends ParserConfig {

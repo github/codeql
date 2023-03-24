@@ -47,14 +47,14 @@ module JndiInjectionFlowConfig implements DataFlow::ConfigSig {
 }
 
 /** Tracks flow of unvalidated user input that is used in JNDI lookup */
-module JndiInjectionFlow = TaintTracking::Make<JndiInjectionFlowConfig>;
+module JndiInjectionFlow = TaintTracking::Global<JndiInjectionFlowConfig>;
 
 /**
  * A method that does a JNDI lookup when it receives a `SearchControls` argument with `setReturningObjFlag` = `true`
  */
 private class UnsafeSearchControlsSink extends JndiInjectionSink {
   UnsafeSearchControlsSink() {
-    exists(MethodAccess ma | UnsafeSearchControlsFlow::hasFlowToExpr(ma.getAnArgument()) |
+    exists(MethodAccess ma | UnsafeSearchControlsFlow::flowToExpr(ma.getAnArgument()) |
       this.asExpr() = ma.getArgument(0)
     )
   }
@@ -70,7 +70,7 @@ private module UnsafeSearchControlsConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeSearchControlsArgument }
 }
 
-private module UnsafeSearchControlsFlow = DataFlow::Make<UnsafeSearchControlsConfig>;
+private module UnsafeSearchControlsFlow = DataFlow::Global<UnsafeSearchControlsConfig>;
 
 /**
  * An argument of type `SearchControls` of an `LdapOperations.search` or `DirContext.search` call.

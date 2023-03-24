@@ -31,4 +31,4 @@ module RegexInjectionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof RegexInjectionSanitizer }
 }
 
-module RegexInjectionFlow = TaintTracking::Make<RegexInjectionConfig>;
+module RegexInjectionFlow = TaintTracking::Global<RegexInjectionConfig>;
