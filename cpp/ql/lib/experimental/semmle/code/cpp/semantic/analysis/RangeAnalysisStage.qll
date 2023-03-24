@@ -1054,12 +1054,11 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
           ) else (
             b = b2 and d_max = d2 and fromBackEdge = fbe2 and origdelta = od2 and reason = r2
           )
-        ) and
-        (
-          upper = true and delta = D::fromFloat(D::toFloat(d_max).abs() - 1)
-          or
-          upper = false and delta = D::fromFloat(-D::toFloat(d_max).abs() + 1)
         )
+      |
+        upper = true and delta = D::fromFloat(D::toFloat(d_max).abs() - 1)
+        or
+        upper = false and delta = D::fromFloat(-D::toFloat(d_max).abs() + 1)
       )
     )
   }
