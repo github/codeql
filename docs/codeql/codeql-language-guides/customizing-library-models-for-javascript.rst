@@ -44,9 +44,7 @@ In this example, we'll show how to add the following argument, passed to **execa
   import { shell } from "execa";
   shell(cmd); // <-- add 'cmd' as a taint sink
 
-This sink is already recognized by the CodeQL JS analysis, but for the sake of this example we'll show how it could be added as an extension.
-
-This can be achieved with the following data extension:
+Note that this sink is already recognized by the CodeQL JS analysis, but for this example, you could use the following data extension:
 
 .. code-block:: yaml
 
@@ -79,7 +77,7 @@ In this example, we'll show how the **event.data** expression below could be mar
     let data = event.data; // <-- add 'event.data' as a taint source
   });
 
-This source is already known by the CodeQL JS analysis, but we'll show how it could be added as an extension. This can be achieved with the following extension:
+Note that this source is already known by the CodeQL JS analysis, but for this example, you could use the following data extension:
 
 .. code-block:: yaml
 
@@ -220,7 +218,7 @@ In this example, we'll show how to add flow through calls to `decodeURIComponent
 
   let y = decodeURIComponent(x); // add taint flow from 'x' to 'y'
 
-This flow is already recognized by the CodeQL JS analysis, but this is how it could be added with an extension:
+Note that this flow is already recognized by the CodeQL JS analysis, but for this example, you could use the following data extension:
 
 .. code-block:: yaml
 
@@ -258,7 +256,7 @@ In this example, we'll show how to add flow through calls to **forEach** from th
 
   require('underscore').forEach([x, y], (v) => { ... }); // add value flow from 'x' and 'y' to 'v'
 
-This flow is already recognized by the CodeQL JS analysis, but we'll show how it could be added with an extension.
+Note that this flow is already recognized by the CodeQL JS analysis, but for this example, you could use the following data extension:
 
 .. code-block:: yaml
 
