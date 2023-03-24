@@ -15,7 +15,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.Concepts as Concepts
 
 /** Gets a constant string value that may be used as a regular expression. */
-DataFlow::Node strStart() { result.asExpr() instanceof StrConst }
+DataFlow::LocalSourceNode strStart() { result.asExpr() instanceof StrConst }
 
 private import semmle.python.regex as Regex
 
@@ -44,7 +44,7 @@ private DataFlow::TypeTrackingNode backwards(DataFlow::TypeBackTracker t) {
 private DataFlow::TypeTrackingNode forwards(DataFlow::TypeTracker t) {
   t.start() and
   result = backwards(DataFlow::TypeBackTracker::end()) and
-  result.flowsTo(strStart())
+  result = strStart()
   or
   exists(DataFlow::TypeTracker t2 | result = forwards(t2).track(t2, t)) and
   result = backwards(_)
@@ -57,11 +57,11 @@ private DataFlow::TypeTrackingNode forwards(DataFlow::TypeTracker t) {
  * The result of the exploratory phase is used to limit the size of the search space in this precise analysis.
  */
 private DataFlow::TypeTrackingNode regexTracking(DataFlow::Node start, DataFlow::TypeTracker t) {
-  result = forwards(_) and
+  result = forwards(t) and
   (
     t.start() and
     start = strStart() and
-    result = start.getALocalSource()
+    result = start
     or
     exists(DataFlow::TypeTracker t2 | result = regexTracking(start, t2).track(t2, t))
   )
