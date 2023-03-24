@@ -35,7 +35,7 @@ The CodeQL library for Java exposes the following extensible predicates:
 - **sourceModel**\(package, type, subtypes, name, signature, ext, output, kind, provenance). This is used for **source** models.
 - **sinkModel**\(package, type, subtypes, name, signature, ext, input, kind, provenance). This is used for **sink** models.
 - **summaryModel**\(package, type, subtypes, name, signature, ext, input, output, kind, provenance). This is used for **summary** models.
-- **neutralModel**\(package, type, name, signature, provenance). This is used for **neutral** models, which does not impact the data flow analysis, but it is included here for completeness.
+- **neutralModel**\(package, type, name, signature, provenance). This is used for **neutral** models, which only have minor impact on the data flow analysis.
 
 The extensible predicates are populated using data extensions specified in YAML files.
 
@@ -78,7 +78,7 @@ The first five values identify the callable (in this case a method) to be modele
 - The fourth value **execute** is the method name.
 - The fifth value **(String)** is the method input type signature.
 
-The sixth value is only relevant internally and can be omitted in most use cases.
+The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the sink.
 
 - The seventh value **Argument[0]** is the **access path** to the first argument passed to the method, which means that this is the location of the sink.
@@ -119,7 +119,7 @@ The first five values identify the callable (in this case a method) to be modele
 - The fourth value **getInputStream** is the method name.
 - The fifth value **()** is the method input type signature.
 
-The sixth value is only relevant internally and can be omitted in most use cases.
+The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the source.
 
 - The seventh value **ReturnValue** is the access path to the return of the method, which means that it is the return value that should be considered a source of tainted input.
@@ -166,7 +166,7 @@ These are the same for both of the rows above as we are adding two summaries for
 - The fourth value **concat** is the method name.
 - The fifth value **(String)** is the method input type signature.
 
-The sixth value is only relevant internally and can be omitted in most use cases.
+The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the summary.
 
 - The seventh value is the access path to the input (where data flows from). **Argument[this]** is the access path to the qualifier (**s1** in the example) and **Argument[0]** is the access path to the first argument (**s2** in the example).
@@ -211,7 +211,7 @@ These are the same for both of the rows above as we are adding two summaries for
 - The fourth value **map** is the method name.
 - The fifth value **Function** is the method input type signature.
 
-The sixth value is only relevant internally and can be omitted in most use cases.
+The sixth value should be left empty and is out of scope for this documentation.
 The remaining values are used to define the **access path**, the **kind**, and the **provenance** (origin) of the summary definition.
 
 - The seventh value is the access path to the **input** (where data flows from).
@@ -237,9 +237,8 @@ That is, the first row models that there is value flow from the elements of the 
 Example: Add a **neutral** method
 ----------------------------------
 In this example we will show how to model the **now** method as being neutral.
-This is purely for completeness and has no impact on the analysis.
 A neutral model is used to define that there is no flow through a method.
-Please note that the neutral model for the **now** method is already added.
+Please note that the neutral model for the **now** method is already added to the CodeQL Java analysis.
 
 .. code-block:: java
    
@@ -373,6 +372,8 @@ neutralModel(package, type, name, signature, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 This extensible predicate is not typically needed externally, but included here for completeness.
+It only has minor impact on the data flow analysis.
+Manual neutrals are considered high confidence dispatch call targets and can reduce the number of dispatch call targets during data flow analysis (a performance optimization).
 
 - **provenance**: Provenance (origin) of the flow through.
 
