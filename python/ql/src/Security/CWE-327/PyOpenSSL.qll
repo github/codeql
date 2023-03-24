@@ -55,9 +55,6 @@ class SetOptionsCall extends ProtocolRestriction, DataFlow::CallCfgNode {
   }
 }
 
-// class UnspecificPyOpenSslContextCreation extends PyOpenSslContextCreation, UnspecificContextCreation {
-//   override ProtocolVersion getProtocol() { result = PyOpenSslContextCreation.super.getProtocol() }
-// }
 class PyOpenSsl extends TlsLibrary {
   PyOpenSsl() { this = "pyOpenSSL" }
 
