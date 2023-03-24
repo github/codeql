@@ -60,10 +60,8 @@ jobs:
           path: |
             ruby/extractor/target/release/autobuilder
             ruby/extractor/target/release/autobuilder.exe
-            ruby/extractor/target/x86_64-unknown-linux-gnu/release/autobuilder
             ruby/extractor/target/release/extractor
             ruby/extractor/target/release/extractor.exe
-            ruby/extractor/target/x86_64-unknown-linux-gnu/release/extractor
             ruby/extractor/ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
           key: ${{ runner.os }}-${{ steps.os_version.outputs.version }}-ruby-extractor-${{ hashFiles('ruby/extractor/rust-toolchain.toml', 'ruby/extractor/Cargo.lock') }}--${{ hashFiles('ruby/extractor/**/*.rs') }}
       - uses: actions/cache@v3
