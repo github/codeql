@@ -1,9 +1,5 @@
 private import CaptureModels
 
-private class Activate extends ActiveConfiguration {
-  override predicate activateThroughFlowConfig() { any() }
-}
-
 /**
  * Capture fluent APIs that return `this`.
  * Example of a fluent API:

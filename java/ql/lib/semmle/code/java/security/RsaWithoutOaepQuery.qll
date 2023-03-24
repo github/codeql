@@ -42,4 +42,4 @@ private module RsaWithoutOaepConfig implements DataFlow::ConfigSig {
 }
 
 /** Flow for finding RSA ciphers initialized without using OAEP padding. */
-module RsaWithoutOaepFlow = DataFlow::Make<RsaWithoutOaepConfig>;
+module RsaWithoutOaepFlow = DataFlow::Global<RsaWithoutOaepConfig>;

@@ -1,42 +1,49 @@
 edges
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:10:5:10:8 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:11:5:11:8 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:12:5:12:8 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:13:5:13:8 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:14:5:14:8 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:15:5:15:8 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:16:5:16:8 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:17:5:17:8 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:18:5:18:8 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:19:5:19:8 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:20:5:20:8 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:21:5:21:8 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:22:5:22:8 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:23:17:23:20 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:24:18:24:21 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:42:10:42:13 | name |
+| PolynomialReDoS.rb:4:5:4:8 | name :  | PolynomialReDoS.rb:47:10:47:13 | name |
 | PolynomialReDoS.rb:4:12:4:17 | call to params :  | PolynomialReDoS.rb:4:12:4:24 | ...[...] :  |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:10:5:10:8 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:11:5:11:8 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:12:5:12:8 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:13:5:13:8 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:14:5:14:8 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:15:5:15:8 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:16:5:16:8 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:17:5:17:8 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:18:5:18:8 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:19:5:19:8 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:20:5:20:8 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:21:5:21:8 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:22:5:22:8 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:23:17:23:20 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:24:18:24:21 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:42:10:42:13 | name |
-| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:47:10:47:13 | name |
+| PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | PolynomialReDoS.rb:4:5:4:8 | name :  |
+| PolynomialReDoS.rb:27:5:27:5 | a :  | PolynomialReDoS.rb:28:5:28:5 | a |
 | PolynomialReDoS.rb:27:9:27:14 | call to params :  | PolynomialReDoS.rb:27:9:27:18 | ...[...] :  |
-| PolynomialReDoS.rb:27:9:27:18 | ...[...] :  | PolynomialReDoS.rb:28:5:28:5 | a |
+| PolynomialReDoS.rb:27:9:27:18 | ...[...] :  | PolynomialReDoS.rb:27:5:27:5 | a :  |
+| PolynomialReDoS.rb:29:5:29:5 | b :  | PolynomialReDoS.rb:30:5:30:5 | b |
 | PolynomialReDoS.rb:29:9:29:14 | call to params :  | PolynomialReDoS.rb:29:9:29:18 | ...[...] :  |
-| PolynomialReDoS.rb:29:9:29:18 | ...[...] :  | PolynomialReDoS.rb:30:5:30:5 | b |
+| PolynomialReDoS.rb:29:9:29:18 | ...[...] :  | PolynomialReDoS.rb:29:5:29:5 | b :  |
+| PolynomialReDoS.rb:31:5:31:5 | c :  | PolynomialReDoS.rb:32:5:32:5 | c |
 | PolynomialReDoS.rb:31:9:31:14 | call to params :  | PolynomialReDoS.rb:31:9:31:18 | ...[...] :  |
-| PolynomialReDoS.rb:31:9:31:18 | ...[...] :  | PolynomialReDoS.rb:32:5:32:5 | c |
+| PolynomialReDoS.rb:31:9:31:18 | ...[...] :  | PolynomialReDoS.rb:31:5:31:5 | c :  |
+| PolynomialReDoS.rb:54:5:54:8 | name :  | PolynomialReDoS.rb:56:38:56:41 | name :  |
+| PolynomialReDoS.rb:54:5:54:8 | name :  | PolynomialReDoS.rb:58:37:58:40 | name :  |
 | PolynomialReDoS.rb:54:12:54:17 | call to params :  | PolynomialReDoS.rb:54:12:54:24 | ...[...] :  |
-| PolynomialReDoS.rb:54:12:54:24 | ...[...] :  | PolynomialReDoS.rb:56:38:56:41 | name :  |
-| PolynomialReDoS.rb:54:12:54:24 | ...[...] :  | PolynomialReDoS.rb:58:37:58:40 | name :  |
+| PolynomialReDoS.rb:54:12:54:24 | ...[...] :  | PolynomialReDoS.rb:54:5:54:8 | name :  |
 | PolynomialReDoS.rb:56:38:56:41 | name :  | PolynomialReDoS.rb:61:33:61:37 | input :  |
 | PolynomialReDoS.rb:58:37:58:40 | name :  | PolynomialReDoS.rb:65:42:65:46 | input :  |
 | PolynomialReDoS.rb:61:33:61:37 | input :  | PolynomialReDoS.rb:62:5:62:9 | input |
 | PolynomialReDoS.rb:65:42:65:46 | input :  | PolynomialReDoS.rb:66:5:66:9 | input |
+| PolynomialReDoS.rb:70:5:70:8 | name :  | PolynomialReDoS.rb:73:32:73:35 | name :  |
 | PolynomialReDoS.rb:70:12:70:17 | call to params :  | PolynomialReDoS.rb:70:12:70:24 | ...[...] :  |
-| PolynomialReDoS.rb:70:12:70:24 | ...[...] :  | PolynomialReDoS.rb:73:32:73:35 | name :  |
+| PolynomialReDoS.rb:70:12:70:24 | ...[...] :  | PolynomialReDoS.rb:70:5:70:8 | name :  |
 | PolynomialReDoS.rb:73:32:73:35 | name :  | PolynomialReDoS.rb:76:35:76:39 | input :  |
 | PolynomialReDoS.rb:76:35:76:39 | input :  | PolynomialReDoS.rb:77:5:77:9 | input |
 | lib/index.rb:2:11:2:11 | x :  | lib/index.rb:4:13:4:13 | x |
 | lib/index.rb:8:13:8:13 | x :  | lib/index.rb:9:15:9:15 | x |
 nodes
+| PolynomialReDoS.rb:4:5:4:8 | name :  | semmle.label | name :  |
 | PolynomialReDoS.rb:4:12:4:17 | call to params :  | semmle.label | call to params :  |
 | PolynomialReDoS.rb:4:12:4:24 | ...[...] :  | semmle.label | ...[...] :  |
 | PolynomialReDoS.rb:10:5:10:8 | name | semmle.label | name |
@@ -54,17 +61,21 @@ nodes
 | PolynomialReDoS.rb:22:5:22:8 | name | semmle.label | name |
 | PolynomialReDoS.rb:23:17:23:20 | name | semmle.label | name |
 | PolynomialReDoS.rb:24:18:24:21 | name | semmle.label | name |
+| PolynomialReDoS.rb:27:5:27:5 | a :  | semmle.label | a :  |
 | PolynomialReDoS.rb:27:9:27:14 | call to params :  | semmle.label | call to params :  |
 | PolynomialReDoS.rb:27:9:27:18 | ...[...] :  | semmle.label | ...[...] :  |
 | PolynomialReDoS.rb:28:5:28:5 | a | semmle.label | a |
+| PolynomialReDoS.rb:29:5:29:5 | b :  | semmle.label | b :  |
 | PolynomialReDoS.rb:29:9:29:14 | call to params :  | semmle.label | call to params :  |
 | PolynomialReDoS.rb:29:9:29:18 | ...[...] :  | semmle.label | ...[...] :  |
 | PolynomialReDoS.rb:30:5:30:5 | b | semmle.label | b |
+| PolynomialReDoS.rb:31:5:31:5 | c :  | semmle.label | c :  |
 | PolynomialReDoS.rb:31:9:31:14 | call to params :  | semmle.label | call to params :  |
 | PolynomialReDoS.rb:31:9:31:18 | ...[...] :  | semmle.label | ...[...] :  |
 | PolynomialReDoS.rb:32:5:32:5 | c | semmle.label | c |
 | PolynomialReDoS.rb:42:10:42:13 | name | semmle.label | name |
 | PolynomialReDoS.rb:47:10:47:13 | name | semmle.label | name |
+| PolynomialReDoS.rb:54:5:54:8 | name :  | semmle.label | name :  |
 | PolynomialReDoS.rb:54:12:54:17 | call to params :  | semmle.label | call to params :  |
 | PolynomialReDoS.rb:54:12:54:24 | ...[...] :  | semmle.label | ...[...] :  |
 | PolynomialReDoS.rb:56:38:56:41 | name :  | semmle.label | name :  |
@@ -73,6 +84,7 @@ nodes
 | PolynomialReDoS.rb:62:5:62:9 | input | semmle.label | input |
 | PolynomialReDoS.rb:65:42:65:46 | input :  | semmle.label | input :  |
 | PolynomialReDoS.rb:66:5:66:9 | input | semmle.label | input |
+| PolynomialReDoS.rb:70:5:70:8 | name :  | semmle.label | name :  |
 | PolynomialReDoS.rb:70:12:70:17 | call to params :  | semmle.label | call to params :  |
 | PolynomialReDoS.rb:70:12:70:24 | ...[...] :  | semmle.label | ...[...] :  |
 | PolynomialReDoS.rb:73:32:73:35 | name :  | semmle.label | name :  |

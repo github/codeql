@@ -173,4 +173,4 @@ private module SensitiveCommunicationConfig implements DataFlow::ConfigSig {
 /**
  * Tracks taint flow from variables containing sensitive information to broadcast Intents.
  */
-module SensitiveCommunicationFlow = TaintTracking::Make<SensitiveCommunicationConfig>;
+module SensitiveCommunicationFlow = TaintTracking::Global<SensitiveCommunicationConfig>;

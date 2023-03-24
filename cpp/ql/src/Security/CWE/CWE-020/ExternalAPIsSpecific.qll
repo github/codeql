@@ -73,4 +73,4 @@ private module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 }
 
-module UntrustedDataToExternalApiFlow = TaintTracking::Make<UntrustedDataToExternalApiConfig>;
+module UntrustedDataToExternalApiFlow = TaintTracking::Global<UntrustedDataToExternalApiConfig>;

@@ -394,12 +394,12 @@ module BoostorgAsio {
    * Constructs a standard data flow computation for protocol values to the first argument
    * of a context constructor.
    */
-  module SslContextCallMake<SslContextCallConfigSig Config> {
+  module SslContextCallGlobal<SslContextCallConfigSig Config> {
     private module C implements DataFlow::ConfigSig {
       import Config
     }
 
-    import DataFlow::Make<C>
+    import DataFlow::Global<C>
   }
 
   /**
@@ -428,7 +428,7 @@ module BoostorgAsio {
     }
   }
 
-  module SslContextCallFlow = SslContextCallMake<SslContextCallConfig>;
+  module SslContextCallFlow = SslContextCallGlobal<SslContextCallConfig>;
 
   /**
    * A banned protocol value that flows to the first argument of a context constructor.
@@ -458,7 +458,8 @@ module BoostorgAsio {
     }
   }
 
-  module SslContextCallBannedProtocolFlow = SslContextCallMake<SslContextCallBannedProtocolConfig>;
+  module SslContextCallBannedProtocolFlow =
+    SslContextCallGlobal<SslContextCallBannedProtocolConfig>;
 
   /**
    * A TLS 1.2 protocol value that flows to the first argument of a context constructor.
@@ -488,7 +489,7 @@ module BoostorgAsio {
     }
   }
 
-  module SslContextCallTls12ProtocolFlow = SslContextCallMake<SslContextCallTls12ProtocolConfig>;
+  module SslContextCallTls12ProtocolFlow = SslContextCallGlobal<SslContextCallTls12ProtocolConfig>;
 
   /**
    * A TLS 1.3 protocol value that flows to the first argument of a context constructor.
@@ -518,7 +519,7 @@ module BoostorgAsio {
     }
   }
 
-  module SslContextCallTls13ProtocolFlow = SslContextCallMake<SslContextCallTls13ProtocolConfig>;
+  module SslContextCallTls13ProtocolFlow = SslContextCallGlobal<SslContextCallTls13ProtocolConfig>;
 
   /**
    * A generic TLS protocol value that flows to the first argument of a context constructor.
@@ -548,7 +549,7 @@ module BoostorgAsio {
     }
   }
 
-  module SslContextCallTlsProtocolFlow = SslContextCallMake<SslContextCallTlsProtocolConfig>;
+  module SslContextCallTlsProtocolFlow = SslContextCallGlobal<SslContextCallTlsProtocolConfig>;
 
   /**
    * A context constructor call that flows to a call to `SetOptions()`.
@@ -596,7 +597,7 @@ module BoostorgAsio {
     }
   }
 
-  module SslContextFlowsToSetOptionFlow = DataFlow::Make<SslContextFlowsToSetOptionConfig>;
+  module SslContextFlowsToSetOptionFlow = DataFlow::Global<SslContextFlowsToSetOptionConfig>;
 
   /**
    * An option value that flows to the first parameter of a call to `SetOptions()`.
@@ -640,5 +641,5 @@ module BoostorgAsio {
     }
   }
 
-  module SslOptionFlow = DataFlow::Make<SslOptionConfig>;
+  module SslOptionFlow = DataFlow::Global<SslOptionConfig>;
 }

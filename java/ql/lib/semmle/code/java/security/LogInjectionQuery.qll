@@ -38,4 +38,4 @@ private module LogInjectionConfig implements DataFlow::ConfigSig {
 /**
  * Taint-tracking flow for tracking untrusted user input used in log entries.
  */
-module LogInjectionFlow = TaintTracking::Make<LogInjectionConfig>;
+module LogInjectionFlow = TaintTracking::Global<LogInjectionConfig>;

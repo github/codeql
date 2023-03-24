@@ -7,7 +7,6 @@ private import dotnet
 private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
-private import semmle.code.csharp.frameworks.System as System
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 import semmle.code.csharp.dataflow.ExternalFlow as ExternalFlow
 import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
@@ -110,7 +109,7 @@ predicate isRelevantType(CS::Type t) {
 }
 
 /**
- * Gets the CSV string representation of the qualifier.
+ * Gets the MaD string representation of the qualifier.
  */
 string qualifierString() { result = "Argument[this]" }
 
@@ -120,14 +119,7 @@ string parameterAccess(CS::Parameter p) {
   else result = "Argument[" + p.getPosition() + "]"
 }
 
-/**
- * Gets the CSV string representation of the parameter node `p`.
- */
-string parameterNodeAsInput(DataFlow::ParameterNode p) {
-  result = parameterAccess(p.asParameter())
-  or
-  result = qualifierString() and p instanceof DataFlowPrivate::InstanceParameterNode
-}
+class InstanceParameterNode = DataFlowPrivate::InstanceParameterNode;
 
 pragma[nomagic]
 private CS::Parameter getParameter(DataFlowImplCommon::ReturnNodeExt node, ParameterPosition pos) {
@@ -135,7 +127,7 @@ private CS::Parameter getParameter(DataFlowImplCommon::ReturnNodeExt node, Param
 }
 
 /**
- * Gets the CSV string representation of the the return node `node`.
+ * Gets the MaD string representation of the the return node `node`.
  */
 string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
   if node.getKind() instanceof DataFlowImplCommon::ValueReturnKind
@@ -188,9 +180,9 @@ predicate apiSource(DataFlow::Node source) {
 }
 
 /**
- * Gets the CSV input string representation of `source`.
+ * Gets the MaD input string representation of `source`.
  */
-string asInputArgument(DataFlow::Node source) {
+string asInputArgumentSpecific(DataFlow::Node source) {
   exists(int pos |
     pos = source.(DataFlow::ParameterNode).getParameter().getPosition() and
     result = "Argument[" + pos + "]"

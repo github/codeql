@@ -124,6 +124,8 @@ extensions:
       - ["java.util", "EnumMap", False, "EnumMap", "(Map)", "", "Argument[0].MapValue", "Argument[this].MapValue", "value", "manual"]
       - ["java.util", "Enumeration", True, "asIterator", "", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["java.util", "Enumeration", True, "nextElement", "", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["java.util", "EventObject", False, "EventObject", "(Object)", "", "Argument[0]", "Argument[this].Field[java.util.EventObject.source]", "value", "manual"]
+      - ["java.util", "EventObject", True, "getSource", "()", "", "Argument[this].Field[java.util.EventObject.source]", "ReturnValue", "value", "manual"]
       - ["java.util", "HashMap", False, "HashMap", "(Map)", "", "Argument[0].MapKey", "Argument[this].MapKey", "value", "manual"]
       - ["java.util", "HashMap", False, "HashMap", "(Map)", "", "Argument[0].MapValue", "Argument[this].MapValue", "value", "manual"]
       - ["java.util", "HashSet", False, "HashSet", "(Collection)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
@@ -290,6 +292,7 @@ extensions:
       - ["java.util", "Queue", True, "peek", "()", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["java.util", "Queue", True, "poll", "()", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["java.util", "Queue", True, "remove", "()", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
+      - ["java.util", "ResourceBundle", True, "getString", "(String)", "", "Argument[this].MapValue", "ReturnValue", "value", "manual"]
       - ["java.util", "Scanner", True, "Scanner", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.util", "Scanner", True, "findInLine", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.util", "Scanner", True, "findWithinHorizon", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
@@ -363,36 +366,74 @@ extensions:
       extensible: neutralModel
     data:
       - ["java.util", "ArrayList", "ArrayList", "(int)", "manual"]
+      - ["java.util", "ArrayList", "isEmpty", "()", "manual"]
       - ["java.util", "ArrayList", "size", "()", "manual"]
+      - ["java.util", "Arrays", "toString", "(Object[])", "manual"]
+      - ["java.util", "Calendar", "getInstance", "()", "manual"]
+      - ["java.util", "Collection", "contains", "(Object)", "manual"]
       - ["java.util", "Collection", "isEmpty", "()", "manual"]
       - ["java.util", "Collection", "size", "()", "manual"]
       - ["java.util", "Collections", "emptyList", "()", "manual"]
       - ["java.util", "Collections", "emptyMap", "()", "manual"]
       - ["java.util", "Collections", "emptySet", "()", "manual"]
+      - ["java.util", "Collections", "sort", "", "manual"]
+      - ["java.util", "Enumeration", "hasMoreElements", "()", "manual"]
+      - ["java.util", "HashMap", "containsKey", "(Object)", "manual"]
+      - ["java.util", "HashMap", "HashMap", "(int)", "manual"]
+      - ["java.util", "HashMap", "size", "()", "manual"]
+      - ["java.util", "HashSet", "HashSet", "(int)", "manual"]
       - ["java.util", "Iterator", "hasNext", "()", "manual"]
       - ["java.util", "List", "contains", "(Object)", "manual"]
+      - ["java.util", "List", "equals", "(Object)", "manual"]
+      - ["java.util", "List", "hashCode", "()", "manual"]
+      - ["java.util", "List", "indexOf", "(Object)", "manual"]
       - ["java.util", "List", "isEmpty", "()", "manual"]
+      - ["java.util", "List", "of", "()", "manual"]
+      - ["java.util", "List", "sort", "(Comparator)", "manual"]
       - ["java.util", "List", "size", "()", "manual"]
+      - ["java.util", "Locale", "forLanguageTag", "(String)", "manual"]
       - ["java.util", "Map", "containsKey", "(Object)", "manual"]
       - ["java.util", "Map", "isEmpty", "()", "manual"]
       - ["java.util", "Map", "size", "()", "manual"]
       - ["java.util", "Objects", "equals", "(Object,Object)", "manual"]
       - ["java.util", "Objects", "hash", "(Object[])", "manual"]
+      - ["java.util", "Objects", "hashCode", "(Object)", "manual"]
+      - ["java.util", "Objects", "isNull", "(Object)", "manual"]
       - ["java.util", "Objects", "nonNull", "(Object)", "manual"]
       - ["java.util", "Optional", "empty", "()", "manual"]
+      - ["java.util", "Optional", "isEmpty", "()", "manual"]
       - ["java.util", "Optional", "isPresent", "()", "manual"]
+      - ["java.util", "Random", "nextInt", "(int)", "manual"]
       - ["java.util", "Set", "contains", "(Object)", "manual"]
       - ["java.util", "Set", "isEmpty", "()", "manual"]
       - ["java.util", "Set", "size", "()", "manual"]
+      - ["java.util", "UUID", "equals", "(Object)", "manual"]
+      - ["java.util", "UUID", "fromString", "(String)", "manual"]
       - ["java.util", "UUID", "randomUUID", "()", "manual"]
       - ["java.util", "UUID", "toString", "()", "manual"]
+      - ["java.util", "TimeZone", "getTimeZone", "(String)", "manual"]
+      - ["java.util", "Vector", "size", "()", "manual"]
 
       # The below APIs are currently being stored as neutral models since `WithoutElement` has not yet been implemented for Java.
       # When `WithoutElement` is implemented, these should be changed to summary models of the form `Argument[this].WithoutElement -> Argument[this]`.
+      - ["java.util", "Collection", "removeIf", "(Predicate)", "manual"]
+      - ["java.util", "Iterator", "remove", "()", "manual"]
       - ["java.util", "List", "clear", "()", "manual"]
+      - ["java.util", "List", "remove", "(Object)", "manual"]
       - ["java.util", "Map", "clear", "()", "manual"]
+      - ["java.util", "Set", "clear", "()", "manual"]
+      - ["java.util", "Set", "remove", "(Object)", "manual"]
+      - ["java.util", "Set", "removeAll", "(Collection)", "manual"]
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.util", "Date", "Date", "(long)", "manual"] # taint-numeric
-      - ["java.util", "Date", "getTime", "()", "manual"]  # taint-numeric
+      - ["java.util", "Calendar", "add", "(int,int)", "manual"]      # taint-numeric
+      - ["java.util", "Calendar", "get", "(int)", "manual"]          # value-numeric
+      - ["java.util", "Calendar", "getTime", "()", "manual"]         # taint-numeric
+      - ["java.util", "Calendar", "getTimeInMillis", "()", "manual"] # taint-numeric
+      - ["java.util", "Calendar", "set", "(int,int)", "manual"]      # value-numeric
+      - ["java.util", "Calendar", "setTime", "(Date)", "manual"]     # taint-numeric
+      - ["java.util", "Date", "Date", "(long)", "manual"]            # taint-numeric
+      - ["java.util", "Date", "getTime", "()", "manual"]             # taint-numeric
+      - ["java.util", "Date", "from", "(Instant)", "manual"]         # taint-numeric
+      - ["java.util", "Date", "toInstant", "()", "manual"]           # taint-numeric

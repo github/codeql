@@ -220,7 +220,7 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
 /** Provides a query predicate to check the MaD models for validation errors. */
 module ModelValidation {
   private string getInvalidModelInput() {
-    exists(string pred, string input, string part |
+    exists(string pred, AccessPath input, AccessPathToken part |
       sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
       or
       summaryModel(_, _, _, _, _, _, input, _, _, _) and pred = "summary"
@@ -229,9 +229,10 @@ module ModelValidation {
         invalidSpecComponent(input, part) and
         not part = "" and
         not (part = "Argument" and pred = "sink") and
-        not parseArg(part, _)
+        not parseArg(part, _) and
+        not part.getName() = "Field"
         or
-        part = input.(AccessPath).getToken(0) and
+        part = input.getToken(0) and
         parseParam(part, _)
         or
         invalidIndexComponent(input, part)
@@ -241,7 +242,7 @@ module ModelValidation {
   }
 
   private string getInvalidModelOutput() {
-    exists(string pred, string output, string part |
+    exists(string pred, AccessPath output, AccessPathToken part |
       sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
       or
       summaryModel(_, _, _, _, _, _, _, output, _, _) and pred = "summary"
@@ -249,7 +250,8 @@ module ModelValidation {
       (
         invalidSpecComponent(output, part) and
         not part = "" and
-        not (part = ["Argument", "Parameter"] and pred = "source")
+        not (part = ["Argument", "Parameter"] and pred = "source") and
+        not part.getName() = "Field"
         or
         invalidIndexComponent(output, part)
       ) and

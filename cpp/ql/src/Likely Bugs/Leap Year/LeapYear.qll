@@ -231,7 +231,7 @@ private module LeapYearCheckConfig implements DataFlow::ConfigSig {
   }
 }
 
-module LeapYearCheckFlow = DataFlow::Make<LeapYearCheckConfig>;
+module LeapYearCheckFlow = DataFlow::Global<LeapYearCheckConfig>;
 
 /**
  * Data flow configuration for finding an operation with hardcoded 365 that will flow into
@@ -284,7 +284,7 @@ private module FiletimeYearArithmeticOperationCheckConfig implements DataFlow::C
 }
 
 module FiletimeYearArithmeticOperationCheckFlow =
-  DataFlow::Make<FiletimeYearArithmeticOperationCheckConfig>;
+  DataFlow::Global<FiletimeYearArithmeticOperationCheckConfig>;
 
 /**
  * Taint configuration for finding an operation with hardcoded 365 that will flow into any known date/time field.
@@ -372,4 +372,4 @@ private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::C
 }
 
 module PossibleYearArithmeticOperationCheckFlow =
-  TaintTracking::Make<PossibleYearArithmeticOperationCheckConfig>;
+  TaintTracking::Global<PossibleYearArithmeticOperationCheckConfig>;
