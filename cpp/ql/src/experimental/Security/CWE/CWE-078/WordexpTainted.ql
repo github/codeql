@@ -50,9 +50,9 @@ module WordexpTaintConfig implements DataFlow::ConfigSig {
   }
 }
 
-module WordexpTaint = TaintTracking::Make<WordexpTaintConfig>;
+module WordexpTaint = TaintTracking::Global<WordexpTaintConfig>;
 
 from WordexpTaint::PathNode sourceNode, WordexpTaint::PathNode sinkNode
-where WordexpTaint::hasFlowPath(sourceNode, sinkNode)
+where WordexpTaint::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "Using user-supplied data in a `wordexp` command, without disabling command substitution, can make code vulnerable to command injection."

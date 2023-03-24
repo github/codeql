@@ -24,7 +24,7 @@ module ImproperValidationOfArrayIndexLocalConfig implements DataFlow::ConfigSig 
 }
 
 module ImproperValidationOfArrayIndexLocalFlow =
-  TaintTracking::Make<ImproperValidationOfArrayIndexLocalConfig>;
+  TaintTracking::Global<ImproperValidationOfArrayIndexLocalConfig>;
 
 import ImproperValidationOfArrayIndexLocalFlow::PathGraph
 
@@ -33,7 +33,7 @@ from
   ImproperValidationOfArrayIndexLocalFlow::PathNode sink, CheckableArrayAccess arrayAccess
 where
   arrayAccess.canThrowOutOfBounds(sink.getNode().asExpr()) and
-  ImproperValidationOfArrayIndexLocalFlow::hasFlowPath(source, sink)
+  ImproperValidationOfArrayIndexLocalFlow::flowPath(source, sink)
 select arrayAccess.getIndexExpr(), source, sink,
   "This index depends on a $@ which can cause an ArrayIndexOutOfBoundsException.", source.getNode(),
   "user-provided value"

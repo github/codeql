@@ -27,7 +27,7 @@ module BoundedFlowSourceConfig implements DataFlow::ConfigSig {
   }
 }
 
-module BoundedFlowSourceFlow = DataFlow::Make<BoundedFlowSourceConfig>;
+module BoundedFlowSourceFlow = DataFlow::Global<BoundedFlowSourceConfig>;
 
 import BoundedFlowSourceFlow::PathGraph
 
@@ -39,7 +39,7 @@ where
   arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sizeExpr, arrayCreation) and
   sizeExpr = sink.getNode().asExpr() and
   boundedsource = source.getNode() and
-  BoundedFlowSourceFlow::hasFlowPath(source, sink)
+  BoundedFlowSourceFlow::flowPath(source, sink)
 select arrayAccess.getIndexExpr(), source, sink,
   "This accesses the $@, but the array is initialized using $@ which may be zero.", arrayCreation,
   "array", boundedsource, boundedsource.getDescription().toLowerCase()

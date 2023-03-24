@@ -91,10 +91,10 @@ signature module FullStateConfigSig {
    */
   FlowFeature getAFeature();
 
-  /** Holds if sources should be grouped in the result of `hasFlowPath`. */
+  /** Holds if sources should be grouped in the result of `flowPath`. */
   predicate sourceGrouping(Node source, string sourceGroup);
 
-  /** Holds if sinks should be grouped in the result of `hasFlowPath`. */
+  /** Holds if sinks should be grouped in the result of `flowPath`. */
   predicate sinkGrouping(Node sink, string sinkGroup);
 
   /**
@@ -3629,7 +3629,7 @@ module Impl<FullStateConfigSig Config> {
    * The corresponding paths are generated from the end-points and the graph
    * included in the module `PathGraph`.
    */
-  predicate hasFlowPath(PathNode source, PathNode sink) {
+  predicate flowPath(PathNode source, PathNode sink) {
     exists(PathNodeImpl flowsource, PathNodeImpl flowsink |
       source = flowsource and sink = flowsink
     |
@@ -3638,6 +3638,9 @@ module Impl<FullStateConfigSig Config> {
       flowsink.isFlowSink()
     )
   }
+
+  /** DEPRECATED: Use `flowPath` instead. */
+  deprecated predicate hasFlowPath = flowPath/2;
 
   private predicate flowsTo(PathNodeImpl flowsource, PathNodeSink flowsink, Node source, Node sink) {
     flowsource.isSource() and
@@ -3649,17 +3652,26 @@ module Impl<FullStateConfigSig Config> {
   /**
    * Holds if data can flow from `source` to `sink`.
    */
-  predicate hasFlow(Node source, Node sink) { flowsTo(_, _, source, sink) }
+  predicate flow(Node source, Node sink) { flowsTo(_, _, source, sink) }
+
+  /** DEPRECATED: Use `flow` instead. */
+  deprecated predicate hasFlow = flow/2;
 
   /**
    * Holds if data can flow from some source to `sink`.
    */
-  predicate hasFlowTo(Node sink) { sink = any(PathNodeSink n).getNodeEx().asNode() }
+  predicate flowTo(Node sink) { sink = any(PathNodeSink n).getNodeEx().asNode() }
+
+  /** DEPRECATED: Use `flowTo` instead. */
+  deprecated predicate hasFlowTo = flowTo/1;
 
   /**
    * Holds if data can flow from some source to `sink`.
    */
-  predicate hasFlowToExpr(DataFlowExpr sink) { hasFlowTo(exprNode(sink)) }
+  predicate flowToExpr(DataFlowExpr sink) { flowTo(exprNode(sink)) }
+
+  /** DEPRECATED: Use `flowToExpr` instead. */
+  deprecated predicate hasFlowToExpr = flowToExpr/1;
 
   private predicate finalStats(
     boolean fwd, int nodes, int fields, int conscand, int states, int tuples
@@ -4570,7 +4582,7 @@ module Impl<FullStateConfigSig Config> {
      *
      * To use this in a `path-problem` query, import the module `PartialPathGraph`.
      */
-    predicate hasPartialFlow(PartialPathNode source, PartialPathNode node, int dist) {
+    predicate partialFlow(PartialPathNode source, PartialPathNode node, int dist) {
       partialFlow(source, node) and
       dist = node.getSourceDistance()
     }
@@ -4590,7 +4602,7 @@ module Impl<FullStateConfigSig Config> {
      * Note that reverse flow has slightly lower precision than the corresponding
      * forward flow, as reverse flow disregards type pruning among other features.
      */
-    predicate hasPartialFlowRev(PartialPathNode node, PartialPathNode sink, int dist) {
+    predicate partialFlowRev(PartialPathNode node, PartialPathNode sink, int dist) {
       revPartialFlow(node, sink) and
       dist = node.getSinkDistance()
     }

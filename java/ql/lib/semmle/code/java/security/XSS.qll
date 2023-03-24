@@ -43,7 +43,7 @@ private class DefaultXssSink extends XssSink {
     or
     exists(MethodAccess ma |
       ma.getMethod() instanceof WritingMethod and
-      XssVulnerableWriterSourceToWritingMethodFlow::hasFlowToExpr(ma.getQualifier()) and
+      XssVulnerableWriterSourceToWritingMethodFlow::flowToExpr(ma.getQualifier()) and
       this.asExpr() = ma.getArgument(_)
     )
   }
@@ -71,7 +71,7 @@ private module XssVulnerableWriterSourceToWritingMethodFlowConfig implements Dat
 }
 
 private module XssVulnerableWriterSourceToWritingMethodFlow =
-  TaintTracking::Make<XssVulnerableWriterSourceToWritingMethodFlowConfig>;
+  TaintTracking::Global<XssVulnerableWriterSourceToWritingMethodFlowConfig>;
 
 /** A method that can be used to output data to an output stream or writer. */
 private class WritingMethod extends Method {

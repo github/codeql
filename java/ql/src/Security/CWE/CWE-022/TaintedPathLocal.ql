@@ -41,7 +41,7 @@ module TaintedPathLocalConfig implements DataFlow::ConfigSig {
   }
 }
 
-module TaintedPathLocalFlow = TaintTracking::Make<TaintedPathLocalConfig>;
+module TaintedPathLocalFlow = TaintTracking::Global<TaintedPathLocalConfig>;
 
 import TaintedPathLocalFlow::PathGraph
 
@@ -53,13 +53,13 @@ import TaintedPathLocalFlow::PathGraph
  * continue to report there; otherwise we report directly at `sink`.
  */
 DataFlow::Node getReportingNode(DataFlow::Node sink) {
-  TaintedPathLocalFlow::hasFlowTo(sink) and
+  TaintedPathLocalFlow::flowTo(sink) and
   if exists(PathCreation pc | pc.getAnInput() = sink.asExpr())
   then result.asExpr() = any(PathCreation pc | pc.getAnInput() = sink.asExpr())
   else result = sink
 }
 
 from TaintedPathLocalFlow::PathNode source, TaintedPathLocalFlow::PathNode sink
-where TaintedPathLocalFlow::hasFlowPath(source, sink)
+where TaintedPathLocalFlow::flowPath(source, sink)
 select getReportingNode(sink.getNode()), source, sink, "This path depends on a $@.",
   source.getNode(), "user-provided value"

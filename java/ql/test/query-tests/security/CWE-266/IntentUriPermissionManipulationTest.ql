@@ -6,6 +6,6 @@ class IntentUriPermissionManipulationTest extends InlineFlowTest {
   override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
 
   override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
-    IntentUriPermissionManipulationFlow::hasFlow(src, sink)
+    IntentUriPermissionManipulationFlow::flow(src, sink)
   }
 }

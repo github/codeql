@@ -399,7 +399,7 @@ module BoostorgAsio {
       import Config
     }
 
-    import DataFlow::Make<C>
+    import DataFlow::Global<C>
   }
 
   /**
@@ -596,7 +596,7 @@ module BoostorgAsio {
     }
   }
 
-  module SslContextFlowsToSetOptionFlow = DataFlow::Make<SslContextFlowsToSetOptionConfig>;
+  module SslContextFlowsToSetOptionFlow = DataFlow::Global<SslContextFlowsToSetOptionConfig>;
 
   /**
    * An option value that flows to the first parameter of a call to `SetOptions()`.
@@ -640,5 +640,5 @@ module BoostorgAsio {
     }
   }
 
-  module SslOptionFlow = DataFlow::Make<SslOptionConfig>;
+  module SslOptionFlow = DataFlow::Global<SslOptionConfig>;
 }

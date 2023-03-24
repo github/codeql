@@ -30,15 +30,15 @@ module ExposedSystemDataConfig implements DataFlow::ConfigSig {
   }
 }
 
-module ExposedSystemData = TaintTracking::Make<ExposedSystemDataConfig>;
+module ExposedSystemData = TaintTracking::Global<ExposedSystemDataConfig>;
 
 from ExposedSystemData::PathNode source, ExposedSystemData::PathNode sink
 where
-  ExposedSystemData::hasFlowPath(source, sink) and
+  ExposedSystemData::flowPath(source, sink) and
   not exists(
     DataFlow::Node alt // remove duplicate results on conversions
   |
-    ExposedSystemData::hasFlow(source.getNode(), alt) and
+    ExposedSystemData::flow(source.getNode(), alt) and
     alt.asConvertedExpr() = sink.getNode().asIndirectExpr() and
     alt != sink.getNode()
   )

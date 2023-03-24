@@ -81,4 +81,4 @@ private module PolynomialRedosConfig implements DataFlow::ConfigSig {
   }
 }
 
-module PolynomialRedosFlow = TaintTracking::Make<PolynomialRedosConfig>;
+module PolynomialRedosFlow = TaintTracking::Global<PolynomialRedosConfig>;
