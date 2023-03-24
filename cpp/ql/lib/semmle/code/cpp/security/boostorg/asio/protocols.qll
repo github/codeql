@@ -402,11 +402,6 @@ module BoostorgAsio {
     import DataFlow::Global<C>
   }
 
-  /** DEPRECATED: Use `SslContextCallGlobal` instead. */
-  deprecated module SslContextCallMake<SslContextCallConfigSig Config> {
-    import SslContextCallGlobal<Config>
-  }
-
   /**
    * Any protocol value that flows to the first argument of a context constructor.
    */
