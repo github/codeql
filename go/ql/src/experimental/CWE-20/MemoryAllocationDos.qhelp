@@ -1,0 +1,16 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+Memory allocation size from user-controlled data can allow an attacker to uses a lot of
+ server memory. This can result the server is unavailable or crash due to failure to allocate huge memory.
+</p>
+</overview>
+
+
+<references>
+<li>OWASP: <a href="https://owasp.org/www-community/attacks/Denial_of_Service"> Denial_of_Service</a>.</li>
+</references>
