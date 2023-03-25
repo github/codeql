@@ -325,6 +325,7 @@ foo # not guarded - the overwrite happens in the wrong branch.
 foo = some_call()
 case foo
 when "foo"
+    puts "nothing"
 when "bar"
     foo = "foo"
 end
