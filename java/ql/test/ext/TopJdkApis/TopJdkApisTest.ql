@@ -1,5 +1,5 @@
 import java
-import TopJdkApis
+import semmle.code.java.metrics.summaries.TopJdkApis
 
 from string apiName, string message
 where
