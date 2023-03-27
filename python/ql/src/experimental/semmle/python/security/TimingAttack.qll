@@ -218,7 +218,7 @@ private class FlaskClientSuppliedSecret extends ClientSuppliedSecret {
 private class DjangoClientSuppliedSecret extends ClientSuppliedSecret {
   DjangoClientSuppliedSecret() {
     this =
-      PrivateDjango::DjangoImpl::Http::Request::HttpRequest::classRef()
+      PrivateDjango::DjangoImpl::DjangoHttp::Request::HttpRequest::classRef()
           .getMember(["headers", "META"])
           .getMember("get")
           .getACall() and
@@ -316,36 +316,35 @@ class CompareSink extends DataFlow::Node {
     exists(Compare compare |
       (
         compare.getOp(0) instanceof Eq or
-        compare.getOp(0) instanceof NotEq 
+        compare.getOp(0) instanceof NotEq
       ) and
       (
         compare.getLeft() = this.asExpr() and
-        not compare.getComparator(0).(StrConst).getText() = "bearer" 
+        not compare.getComparator(0).(StrConst).getText() = "bearer"
         or
         compare.getComparator(0) = this.asExpr() and
-        not compare.getLeft().(StrConst).getText() = "bearer" 
+        not compare.getLeft().(StrConst).getText() = "bearer"
       )
-    ) or    
-   exists(Compare compare |
-      ( 
-        compare.getOp(0) instanceof IsNot 
-      ) and
+    )
+    or
+    exists(Compare compare |
+      compare.getOp(0) instanceof IsNot and
       (
         compare.getLeft() = this.asExpr() and
         not compare.getComparator(0) instanceof None
         or
         compare.getComparator(0) = this.asExpr() and
         not compare.getLeft() instanceof None
-      )      
-   )     
+      )
+    )
   }
-  
-/**
- * Holds if there is a flow to len().
- */
+
+  /**
+   * Holds if there is a flow to len().
+   */
   predicate flowtolen() {
     exists(ExcludeLenFunc config, DataFlow2::PathNode source, DataFlow2::PathNode sink |
-       config.hasFlowPath(source, sink)
+      config.hasFlowPath(source, sink)
     )
   }
 }
