@@ -7,7 +7,7 @@
       }
 
       if (y - 2 == x && y > 300) {
-        range(x + y);  // $ range=>=300 range=>=x+1 range=>=y-1
+        range(x + y);  // $ range=<=802 range=>=600
         return x + y;
       }
 
