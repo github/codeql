@@ -1,17 +1,8 @@
 edges
-| StoredCommand.go:11:2:11:27 | ... := ...[0] | StoredCommand.go:13:2:13:5 | rows |
-| StoredCommand.go:13:2:13:5 | rows | StoredCommand.go:13:12:13:19 | &... |
-| StoredCommand.go:13:2:13:5 | rows | file://:0:0:0:0 | parameter -1 of Scan |
-| StoredCommand.go:13:12:13:19 | &... | StoredCommand.go:14:22:14:28 | cmdName |
-| file://:0:0:0:0 | parameter -1 of Scan | file://:0:0:0:0 | [summary] to write: argument 0 in Scan |
+| StoredCommand.go:11:2:11:27 | ... := ...[0] | StoredCommand.go:14:22:14:28 | cmdName |
 nodes
 | StoredCommand.go:11:2:11:27 | ... := ...[0] | semmle.label | ... := ...[0] |
-| StoredCommand.go:13:2:13:5 | rows | semmle.label | rows |
-| StoredCommand.go:13:12:13:19 | &... | semmle.label | &... |
 | StoredCommand.go:14:22:14:28 | cmdName | semmle.label | cmdName |
-| file://:0:0:0:0 | [summary] to write: argument 0 in Scan | semmle.label | [summary] to write: argument 0 in Scan |
-| file://:0:0:0:0 | parameter -1 of Scan | semmle.label | parameter -1 of Scan |
 subpaths
-| StoredCommand.go:13:2:13:5 | rows | file://:0:0:0:0 | parameter -1 of Scan | file://:0:0:0:0 | [summary] to write: argument 0 in Scan | StoredCommand.go:13:12:13:19 | &... |
 #select
 | StoredCommand.go:14:22:14:28 | cmdName | StoredCommand.go:11:2:11:27 | ... := ...[0] | StoredCommand.go:14:22:14:28 | cmdName | This command depends on a $@. | StoredCommand.go:11:2:11:27 | ... := ...[0] | stored value |

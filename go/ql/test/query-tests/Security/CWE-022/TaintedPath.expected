@@ -1,14 +1,21 @@
 edges
-| TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:16:29:16:40 | tainted_path |
-| TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:20:28:20:69 | call to Join |
+| TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:13:18:13:30 | call to Query |
+| TaintedPath.go:13:18:13:22 | selection of URL | file://:0:0:0:0 | parameter -1 of Query |
+| TaintedPath.go:13:18:13:30 | call to Query | TaintedPath.go:16:29:16:40 | tainted_path |
+| TaintedPath.go:13:18:13:30 | call to Query | TaintedPath.go:20:28:20:69 | call to Join |
+| file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query |
 | tst.go:14:2:14:39 | ... := ...[1] | tst.go:17:41:17:56 | selection of Filename |
 nodes
 | TaintedPath.go:13:18:13:22 | selection of URL | semmle.label | selection of URL |
+| TaintedPath.go:13:18:13:30 | call to Query | semmle.label | call to Query |
 | TaintedPath.go:16:29:16:40 | tainted_path | semmle.label | tainted_path |
 | TaintedPath.go:20:28:20:69 | call to Join | semmle.label | call to Join |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | semmle.label | [summary] to write: return (return[0]) in Query |
+| file://:0:0:0:0 | parameter -1 of Query | semmle.label | parameter -1 of Query |
 | tst.go:14:2:14:39 | ... := ...[1] | semmle.label | ... := ...[1] |
 | tst.go:17:41:17:56 | selection of Filename | semmle.label | selection of Filename |
 subpaths
+| TaintedPath.go:13:18:13:22 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | TaintedPath.go:13:18:13:30 | call to Query |
 #select
 | TaintedPath.go:16:29:16:40 | tainted_path | TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:16:29:16:40 | tainted_path | This path depends on a $@. | TaintedPath.go:13:18:13:22 | selection of URL | user-provided value |
 | TaintedPath.go:20:28:20:69 | call to Join | TaintedPath.go:13:18:13:22 | selection of URL | TaintedPath.go:20:28:20:69 | call to Join | This path depends on a $@. | TaintedPath.go:13:18:13:22 | selection of URL | user-provided value |
