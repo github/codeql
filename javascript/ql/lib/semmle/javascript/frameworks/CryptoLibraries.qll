@@ -276,7 +276,7 @@ private module NodeJSCrypto {
  */
 private module CryptoJS {
   private class InstantiatedAlgorithm extends DataFlow::CallNode {
-    CryptographicAlgorithm algorithm; // non-functional
+    private string algorithmName;
 
     InstantiatedAlgorithm() {
       /*
@@ -295,11 +295,25 @@ private module CryptoJS {
         mod = DataFlow::moduleImport("crypto-js") and
         propRead = mod.getAPropertyRead("algo").getAPropertyRead() and
         this = propRead.getAMemberCall("create") and
-        not isStrongPasswordHashingAlgorithm(propRead.getPropertyName())
+        algorithmName = propRead.getPropertyName() and
+        not isStrongPasswordHashingAlgorithm(algorithmName)
       )
     }
 
-    CryptographicAlgorithm getAlgorithm() { result = algorithm }
+    CryptographicAlgorithm getAlgorithm() { result.matchesName(algorithmName) }
+
+    private BlockMode getExplicitBlockMode() { result.matchesString(algorithmName) }
+
+    BlockMode getBlockMode() {
+      isBlockEncryptionAlgorithm(this.getAlgorithm()) and
+      (
+        if exists(this.getExplicitBlockMode())
+        then result = this.getExplicitBlockMode()
+        else
+          // CBC is the default if not explicitly specified
+          result = "CBC"
+      )
+    }
   }
 
 
