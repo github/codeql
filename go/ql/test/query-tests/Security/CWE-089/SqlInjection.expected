@@ -1,13 +1,9 @@
 edges
-| SqlInjection.go:10:7:11:30 | call to Sprintf | SqlInjection.go:12:11:12:11 | q |
 | SqlInjection.go:11:3:11:9 | selection of URL | SqlInjection.go:11:3:11:17 | call to Query |
 | SqlInjection.go:11:3:11:9 | selection of URL | file://:0:0:0:0 | parameter -1 of Query |
-| SqlInjection.go:11:3:11:17 | call to Query | SqlInjection.go:11:3:11:29 | index expression |
-| SqlInjection.go:11:3:11:29 | index expression | SqlInjection.go:10:7:11:30 | call to Sprintf |
-| SqlInjection.go:11:3:11:29 | index expression | file://:0:0:0:0 | parameter 1 of Sprintf |
+| SqlInjection.go:11:3:11:17 | call to Query | SqlInjection.go:12:11:12:11 | q |
 | file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll |
 | file://:0:0:0:0 | parameter 0 of Unmarshal | file://:0:0:0:0 | [summary] to write: argument 1 in Unmarshal |
-| file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf |
 | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
 | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query |
 | issue48.go:17:2:17:33 | ... := ...[0] | issue48.go:18:17:18:17 | b |
@@ -15,37 +11,25 @@ edges
 | issue48.go:17:25:17:32 | selection of Body | issue48.go:17:2:17:33 | ... := ...[0] |
 | issue48.go:18:17:18:17 | b | file://:0:0:0:0 | parameter 0 of Unmarshal |
 | issue48.go:18:17:18:17 | b | issue48.go:18:20:18:39 | &... |
-| issue48.go:18:20:18:39 | &... | issue48.go:21:3:21:33 | index expression |
-| issue48.go:20:8:21:34 | call to Sprintf | issue48.go:22:11:22:12 | q3 |
-| issue48.go:21:3:21:33 | index expression | file://:0:0:0:0 | parameter 1 of Sprintf |
-| issue48.go:21:3:21:33 | index expression | issue48.go:20:8:21:34 | call to Sprintf |
+| issue48.go:18:20:18:39 | &... | issue48.go:22:11:22:12 | q3 |
 | issue48.go:27:2:27:34 | ... := ...[0] | issue48.go:28:17:28:18 | b2 |
 | issue48.go:27:26:27:33 | selection of Body | file://:0:0:0:0 | parameter 0 of ReadAll |
 | issue48.go:27:26:27:33 | selection of Body | issue48.go:27:2:27:34 | ... := ...[0] |
 | issue48.go:28:17:28:18 | b2 | file://:0:0:0:0 | parameter 0 of Unmarshal |
 | issue48.go:28:17:28:18 | b2 | issue48.go:28:21:28:41 | &... |
-| issue48.go:28:21:28:41 | &... | issue48.go:31:3:31:31 | selection of Category |
-| issue48.go:30:8:31:32 | call to Sprintf | issue48.go:32:11:32:12 | q4 |
-| issue48.go:31:3:31:31 | selection of Category | file://:0:0:0:0 | parameter 1 of Sprintf |
-| issue48.go:31:3:31:31 | selection of Category | issue48.go:30:8:31:32 | call to Sprintf |
+| issue48.go:28:21:28:41 | &... | issue48.go:32:11:32:12 | q4 |
 | issue48.go:37:17:37:50 | type conversion | file://:0:0:0:0 | parameter 0 of Unmarshal |
 | issue48.go:37:17:37:50 | type conversion | issue48.go:37:53:37:73 | &... |
 | issue48.go:37:24:37:30 | selection of URL | file://:0:0:0:0 | parameter -1 of Query |
 | issue48.go:37:24:37:30 | selection of URL | issue48.go:37:24:37:38 | call to Query |
 | issue48.go:37:24:37:38 | call to Query | issue48.go:37:17:37:50 | type conversion |
-| issue48.go:37:53:37:73 | &... | issue48.go:40:3:40:31 | selection of Category |
-| issue48.go:39:8:40:32 | call to Sprintf | issue48.go:41:11:41:12 | q5 |
-| issue48.go:40:3:40:31 | selection of Category | file://:0:0:0:0 | parameter 1 of Sprintf |
-| issue48.go:40:3:40:31 | selection of Category | issue48.go:39:8:40:32 | call to Sprintf |
+| issue48.go:37:53:37:73 | &... | issue48.go:41:11:41:12 | q5 |
 | main.go:10:11:10:16 | selection of Form | main.go:10:11:10:28 | index expression |
 | main.go:14:63:14:67 | selection of URL | file://:0:0:0:0 | parameter -1 of Query |
 | main.go:14:63:14:67 | selection of URL | main.go:14:63:14:75 | call to Query |
-| main.go:14:63:14:75 | call to Query | main.go:14:63:14:83 | index expression |
-| main.go:14:63:14:83 | index expression | file://:0:0:0:0 | parameter 1 of Sprintf |
-| main.go:14:63:14:83 | index expression | main.go:14:11:14:84 | call to Sprintf |
+| main.go:14:63:14:75 | call to Query | main.go:14:11:14:84 | call to Sprintf |
 | main.go:15:63:15:70 | selection of Header | file://:0:0:0:0 | parameter -1 of Get |
 | main.go:15:63:15:70 | selection of Header | main.go:15:63:15:84 | call to Get |
-| main.go:15:63:15:84 | call to Get | file://:0:0:0:0 | parameter 1 of Sprintf |
 | main.go:15:63:15:84 | call to Get | main.go:15:11:15:85 | call to Sprintf |
 | main.go:27:17:30:2 | &... [pointer, Category] | main.go:33:3:33:13 | RequestData [pointer, Category] |
 | main.go:27:18:30:2 | struct literal [Category] | main.go:27:17:30:2 | &... [pointer, Category] |
@@ -53,11 +37,9 @@ edges
 | main.go:29:13:29:19 | selection of URL | main.go:29:13:29:27 | call to Query |
 | main.go:29:13:29:27 | call to Query | main.go:29:13:29:39 | index expression |
 | main.go:29:13:29:39 | index expression | main.go:27:18:30:2 | struct literal [Category] |
-| main.go:32:7:33:23 | call to Sprintf | main.go:34:11:34:11 | q |
 | main.go:33:3:33:13 | RequestData [pointer, Category] | main.go:33:3:33:13 | implicit dereference [Category] |
 | main.go:33:3:33:13 | implicit dereference [Category] | main.go:33:3:33:22 | selection of Category |
-| main.go:33:3:33:22 | selection of Category | file://:0:0:0:0 | parameter 1 of Sprintf |
-| main.go:33:3:33:22 | selection of Category | main.go:32:7:33:23 | call to Sprintf |
+| main.go:33:3:33:22 | selection of Category | main.go:34:11:34:11 | q |
 | main.go:38:2:38:12 | definition of RequestData [pointer, Category] | main.go:39:2:39:12 | RequestData [pointer, Category] |
 | main.go:38:2:38:12 | definition of RequestData [pointer, Category] | main.go:42:3:42:13 | RequestData [pointer, Category] |
 | main.go:39:2:39:12 | RequestData [pointer, Category] | main.go:39:2:39:12 | implicit dereference [Category] |
@@ -66,11 +48,9 @@ edges
 | main.go:39:25:39:31 | selection of URL | main.go:39:25:39:39 | call to Query |
 | main.go:39:25:39:39 | call to Query | main.go:39:25:39:51 | index expression |
 | main.go:39:25:39:51 | index expression | main.go:39:2:39:12 | implicit dereference [Category] |
-| main.go:41:7:42:23 | call to Sprintf | main.go:43:11:43:11 | q |
 | main.go:42:3:42:13 | RequestData [pointer, Category] | main.go:42:3:42:13 | implicit dereference [Category] |
 | main.go:42:3:42:13 | implicit dereference [Category] | main.go:42:3:42:22 | selection of Category |
-| main.go:42:3:42:22 | selection of Category | file://:0:0:0:0 | parameter 1 of Sprintf |
-| main.go:42:3:42:22 | selection of Category | main.go:41:7:42:23 | call to Sprintf |
+| main.go:42:3:42:22 | selection of Category | main.go:43:11:43:11 | q |
 | main.go:47:2:47:12 | definition of RequestData [pointer, Category] | main.go:48:4:48:14 | RequestData [pointer, Category] |
 | main.go:47:2:47:12 | definition of RequestData [pointer, Category] | main.go:51:3:51:13 | RequestData [pointer, Category] |
 | main.go:48:3:48:14 | star expression [Category] | main.go:47:2:47:12 | definition of RequestData [pointer, Category] |
@@ -79,11 +59,9 @@ edges
 | main.go:48:28:48:34 | selection of URL | main.go:48:28:48:42 | call to Query |
 | main.go:48:28:48:42 | call to Query | main.go:48:28:48:54 | index expression |
 | main.go:48:28:48:54 | index expression | main.go:48:3:48:14 | star expression [Category] |
-| main.go:50:7:51:23 | call to Sprintf | main.go:52:11:52:11 | q |
 | main.go:51:3:51:13 | RequestData [pointer, Category] | main.go:51:3:51:13 | implicit dereference [Category] |
 | main.go:51:3:51:13 | implicit dereference [Category] | main.go:51:3:51:22 | selection of Category |
-| main.go:51:3:51:22 | selection of Category | file://:0:0:0:0 | parameter 1 of Sprintf |
-| main.go:51:3:51:22 | selection of Category | main.go:50:7:51:23 | call to Sprintf |
+| main.go:51:3:51:22 | selection of Category | main.go:52:11:52:11 | q |
 | main.go:56:2:56:12 | definition of RequestData [pointer, Category] | main.go:57:4:57:14 | RequestData [pointer, Category] |
 | main.go:56:2:56:12 | definition of RequestData [pointer, Category] | main.go:60:5:60:15 | RequestData [pointer, Category] |
 | main.go:57:3:57:14 | star expression [Category] | main.go:56:2:56:12 | definition of RequestData [pointer, Category] |
@@ -92,9 +70,7 @@ edges
 | main.go:57:28:57:34 | selection of URL | main.go:57:28:57:42 | call to Query |
 | main.go:57:28:57:42 | call to Query | main.go:57:28:57:54 | index expression |
 | main.go:57:28:57:54 | index expression | main.go:57:3:57:14 | star expression [Category] |
-| main.go:59:7:60:26 | call to Sprintf | main.go:61:11:61:11 | q |
-| main.go:60:3:60:25 | selection of Category | file://:0:0:0:0 | parameter 1 of Sprintf |
-| main.go:60:3:60:25 | selection of Category | main.go:59:7:60:26 | call to Sprintf |
+| main.go:60:3:60:25 | selection of Category | main.go:61:11:61:11 | q |
 | main.go:60:4:60:15 | star expression [Category] | main.go:60:3:60:25 | selection of Category |
 | main.go:60:5:60:15 | RequestData [pointer, Category] | main.go:60:4:60:15 | star expression [Category] |
 | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:57:22:57:29 | pipeline |
@@ -112,48 +88,37 @@ edges
 | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:80:22:80:27 | filter |
 | mongoDB.go:40:20:40:30 | call to Referer | mongoDB.go:81:18:81:25 | pipeline |
 nodes
-| SqlInjection.go:10:7:11:30 | call to Sprintf | semmle.label | call to Sprintf |
 | SqlInjection.go:11:3:11:9 | selection of URL | semmle.label | selection of URL |
 | SqlInjection.go:11:3:11:17 | call to Query | semmle.label | call to Query |
-| SqlInjection.go:11:3:11:29 | index expression | semmle.label | index expression |
 | SqlInjection.go:12:11:12:11 | q | semmle.label | q |
 | file://:0:0:0:0 | [summary] to write: argument 1 in Unmarshal | semmle.label | [summary] to write: argument 1 in Unmarshal |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | semmle.label | [summary] to write: return (return[0]) in Get |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | semmle.label | [summary] to write: return (return[0]) in Query |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | semmle.label | [summary] to write: return (return[0]) in ReadAll |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | semmle.label | [summary] to write: return (return[0]) in Sprintf |
 | file://:0:0:0:0 | parameter 0 of ReadAll | semmle.label | parameter 0 of ReadAll |
 | file://:0:0:0:0 | parameter 0 of Unmarshal | semmle.label | parameter 0 of Unmarshal |
-| file://:0:0:0:0 | parameter 1 of Sprintf | semmle.label | parameter 1 of Sprintf |
 | file://:0:0:0:0 | parameter -1 of Get | semmle.label | parameter -1 of Get |
 | file://:0:0:0:0 | parameter -1 of Query | semmle.label | parameter -1 of Query |
 | issue48.go:17:2:17:33 | ... := ...[0] | semmle.label | ... := ...[0] |
 | issue48.go:17:25:17:32 | selection of Body | semmle.label | selection of Body |
 | issue48.go:18:17:18:17 | b | semmle.label | b |
 | issue48.go:18:20:18:39 | &... | semmle.label | &... |
-| issue48.go:20:8:21:34 | call to Sprintf | semmle.label | call to Sprintf |
-| issue48.go:21:3:21:33 | index expression | semmle.label | index expression |
 | issue48.go:22:11:22:12 | q3 | semmle.label | q3 |
 | issue48.go:27:2:27:34 | ... := ...[0] | semmle.label | ... := ...[0] |
 | issue48.go:27:26:27:33 | selection of Body | semmle.label | selection of Body |
 | issue48.go:28:17:28:18 | b2 | semmle.label | b2 |
 | issue48.go:28:21:28:41 | &... | semmle.label | &... |
-| issue48.go:30:8:31:32 | call to Sprintf | semmle.label | call to Sprintf |
-| issue48.go:31:3:31:31 | selection of Category | semmle.label | selection of Category |
 | issue48.go:32:11:32:12 | q4 | semmle.label | q4 |
 | issue48.go:37:17:37:50 | type conversion | semmle.label | type conversion |
 | issue48.go:37:24:37:30 | selection of URL | semmle.label | selection of URL |
 | issue48.go:37:24:37:38 | call to Query | semmle.label | call to Query |
 | issue48.go:37:53:37:73 | &... | semmle.label | &... |
-| issue48.go:39:8:40:32 | call to Sprintf | semmle.label | call to Sprintf |
-| issue48.go:40:3:40:31 | selection of Category | semmle.label | selection of Category |
 | issue48.go:41:11:41:12 | q5 | semmle.label | q5 |
 | main.go:10:11:10:16 | selection of Form | semmle.label | selection of Form |
 | main.go:10:11:10:28 | index expression | semmle.label | index expression |
 | main.go:14:11:14:84 | call to Sprintf | semmle.label | call to Sprintf |
 | main.go:14:63:14:67 | selection of URL | semmle.label | selection of URL |
 | main.go:14:63:14:75 | call to Query | semmle.label | call to Query |
-| main.go:14:63:14:83 | index expression | semmle.label | index expression |
 | main.go:15:11:15:85 | call to Sprintf | semmle.label | call to Sprintf |
 | main.go:15:63:15:70 | selection of Header | semmle.label | selection of Header |
 | main.go:15:63:15:84 | call to Get | semmle.label | call to Get |
@@ -162,7 +127,6 @@ nodes
 | main.go:29:13:29:19 | selection of URL | semmle.label | selection of URL |
 | main.go:29:13:29:27 | call to Query | semmle.label | call to Query |
 | main.go:29:13:29:39 | index expression | semmle.label | index expression |
-| main.go:32:7:33:23 | call to Sprintf | semmle.label | call to Sprintf |
 | main.go:33:3:33:13 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
 | main.go:33:3:33:13 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
 | main.go:33:3:33:22 | selection of Category | semmle.label | selection of Category |
@@ -173,7 +137,6 @@ nodes
 | main.go:39:25:39:31 | selection of URL | semmle.label | selection of URL |
 | main.go:39:25:39:39 | call to Query | semmle.label | call to Query |
 | main.go:39:25:39:51 | index expression | semmle.label | index expression |
-| main.go:41:7:42:23 | call to Sprintf | semmle.label | call to Sprintf |
 | main.go:42:3:42:13 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
 | main.go:42:3:42:13 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
 | main.go:42:3:42:22 | selection of Category | semmle.label | selection of Category |
@@ -184,7 +147,6 @@ nodes
 | main.go:48:28:48:34 | selection of URL | semmle.label | selection of URL |
 | main.go:48:28:48:42 | call to Query | semmle.label | call to Query |
 | main.go:48:28:48:54 | index expression | semmle.label | index expression |
-| main.go:50:7:51:23 | call to Sprintf | semmle.label | call to Sprintf |
 | main.go:51:3:51:13 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
 | main.go:51:3:51:13 | implicit dereference [Category] | semmle.label | implicit dereference [Category] |
 | main.go:51:3:51:22 | selection of Category | semmle.label | selection of Category |
@@ -195,7 +157,6 @@ nodes
 | main.go:57:28:57:34 | selection of URL | semmle.label | selection of URL |
 | main.go:57:28:57:42 | call to Query | semmle.label | call to Query |
 | main.go:57:28:57:54 | index expression | semmle.label | index expression |
-| main.go:59:7:60:26 | call to Sprintf | semmle.label | call to Sprintf |
 | main.go:60:3:60:25 | selection of Category | semmle.label | selection of Category |
 | main.go:60:4:60:15 | star expression [Category] | semmle.label | star expression [Category] |
 | main.go:60:5:60:15 | RequestData [pointer, Category] | semmle.label | RequestData [pointer, Category] |
@@ -217,28 +178,18 @@ nodes
 | mongoDB.go:81:18:81:25 | pipeline | semmle.label | pipeline |
 subpaths
 | SqlInjection.go:11:3:11:9 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | SqlInjection.go:11:3:11:17 | call to Query |
-| SqlInjection.go:11:3:11:29 | index expression | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | SqlInjection.go:10:7:11:30 | call to Sprintf |
 | issue48.go:17:25:17:32 | selection of Body | file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | issue48.go:17:2:17:33 | ... := ...[0] |
 | issue48.go:18:17:18:17 | b | file://:0:0:0:0 | parameter 0 of Unmarshal | file://:0:0:0:0 | [summary] to write: argument 1 in Unmarshal | issue48.go:18:20:18:39 | &... |
-| issue48.go:21:3:21:33 | index expression | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | issue48.go:20:8:21:34 | call to Sprintf |
 | issue48.go:27:26:27:33 | selection of Body | file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | issue48.go:27:2:27:34 | ... := ...[0] |
 | issue48.go:28:17:28:18 | b2 | file://:0:0:0:0 | parameter 0 of Unmarshal | file://:0:0:0:0 | [summary] to write: argument 1 in Unmarshal | issue48.go:28:21:28:41 | &... |
-| issue48.go:31:3:31:31 | selection of Category | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | issue48.go:30:8:31:32 | call to Sprintf |
 | issue48.go:37:17:37:50 | type conversion | file://:0:0:0:0 | parameter 0 of Unmarshal | file://:0:0:0:0 | [summary] to write: argument 1 in Unmarshal | issue48.go:37:53:37:73 | &... |
 | issue48.go:37:24:37:30 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | issue48.go:37:24:37:38 | call to Query |
-| issue48.go:40:3:40:31 | selection of Category | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | issue48.go:39:8:40:32 | call to Sprintf |
 | main.go:14:63:14:67 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | main.go:14:63:14:75 | call to Query |
-| main.go:14:63:14:83 | index expression | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | main.go:14:11:14:84 | call to Sprintf |
 | main.go:15:63:15:70 | selection of Header | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | main.go:15:63:15:84 | call to Get |
-| main.go:15:63:15:84 | call to Get | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | main.go:15:11:15:85 | call to Sprintf |
 | main.go:29:13:29:19 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | main.go:29:13:29:27 | call to Query |
-| main.go:33:3:33:22 | selection of Category | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | main.go:32:7:33:23 | call to Sprintf |
 | main.go:39:25:39:31 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | main.go:39:25:39:39 | call to Query |
-| main.go:42:3:42:22 | selection of Category | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | main.go:41:7:42:23 | call to Sprintf |
 | main.go:48:28:48:34 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | main.go:48:28:48:42 | call to Query |
-| main.go:51:3:51:22 | selection of Category | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | main.go:50:7:51:23 | call to Sprintf |
 | main.go:57:28:57:34 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | main.go:57:28:57:42 | call to Query |
-| main.go:60:3:60:25 | selection of Category | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | main.go:59:7:60:26 | call to Sprintf |
 #select
 | SqlInjection.go:12:11:12:11 | q | SqlInjection.go:11:3:11:9 | selection of URL | SqlInjection.go:12:11:12:11 | q | This query depends on a $@. | SqlInjection.go:11:3:11:9 | selection of URL | user-provided value |
 | issue48.go:22:11:22:12 | q3 | issue48.go:17:25:17:32 | selection of Body | issue48.go:22:11:22:12 | q3 | This query depends on a $@. | issue48.go:17:25:17:32 | selection of Body | user-provided value |

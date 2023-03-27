@@ -14,27 +14,17 @@ edges
 | contenttype.go:113:10:113:28 | call to FormValue | contenttype.go:114:50:114:53 | data |
 | file://:0:0:0:0 | parameter 0 of Join | file://:0:0:0:0 | [summary] to write: return (return[0]) in Join |
 | file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll |
-| file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf |
 | file://:0:0:0:0 | parameter -1 of FileName | file://:0:0:0:0 | [summary] to write: return (return[0]) in FileName |
 | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
 | file://:0:0:0:0 | parameter -1 of NextPart | file://:0:0:0:0 | [summary] to write: return (return[0]) in NextPart |
 | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query |
 | file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| reflectedxsstest.go:27:2:27:38 | ... := ...[0] | reflectedxsstest.go:28:50:28:55 | cookie |
-| reflectedxsstest.go:28:17:28:56 | call to Sprintf | reflectedxsstest.go:28:10:28:57 | type conversion |
-| reflectedxsstest.go:28:50:28:55 | cookie | file://:0:0:0:0 | parameter 1 of Sprintf |
-| reflectedxsstest.go:28:50:28:55 | cookie | reflectedxsstest.go:28:17:28:56 | call to Sprintf |
+| reflectedxsstest.go:27:2:27:38 | ... := ...[0] | reflectedxsstest.go:28:10:28:57 | type conversion |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[0] | reflectedxsstest.go:32:34:32:37 | file |
-| reflectedxsstest.go:31:2:31:44 | ... := ...[1] | reflectedxsstest.go:34:46:34:60 | selection of Filename |
-| reflectedxsstest.go:32:2:32:38 | ... := ...[0] | reflectedxsstest.go:33:49:33:55 | content |
+| reflectedxsstest.go:31:2:31:44 | ... := ...[1] | reflectedxsstest.go:34:10:34:62 | type conversion |
+| reflectedxsstest.go:32:2:32:38 | ... := ...[0] | reflectedxsstest.go:33:10:33:57 | type conversion |
 | reflectedxsstest.go:32:34:32:37 | file | file://:0:0:0:0 | parameter 0 of ReadAll |
 | reflectedxsstest.go:32:34:32:37 | file | reflectedxsstest.go:32:2:32:38 | ... := ...[0] |
-| reflectedxsstest.go:33:17:33:56 | call to Sprintf | reflectedxsstest.go:33:10:33:57 | type conversion |
-| reflectedxsstest.go:33:49:33:55 | content | file://:0:0:0:0 | parameter 1 of Sprintf |
-| reflectedxsstest.go:33:49:33:55 | content | reflectedxsstest.go:33:17:33:56 | call to Sprintf |
-| reflectedxsstest.go:34:17:34:61 | call to Sprintf | reflectedxsstest.go:34:10:34:62 | type conversion |
-| reflectedxsstest.go:34:46:34:60 | selection of Filename | file://:0:0:0:0 | parameter 1 of Sprintf |
-| reflectedxsstest.go:34:46:34:60 | selection of Filename | reflectedxsstest.go:34:17:34:61 | call to Sprintf |
 | reflectedxsstest.go:38:2:38:35 | ... := ...[0] | reflectedxsstest.go:39:16:39:21 | reader |
 | reflectedxsstest.go:39:2:39:32 | ... := ...[0] | reflectedxsstest.go:40:14:40:17 | part |
 | reflectedxsstest.go:39:2:39:32 | ... := ...[0] | reflectedxsstest.go:42:2:42:5 | part |
@@ -42,13 +32,10 @@ edges
 | reflectedxsstest.go:39:16:39:21 | reader | reflectedxsstest.go:39:2:39:32 | ... := ...[0] |
 | reflectedxsstest.go:40:14:40:17 | part | file://:0:0:0:0 | parameter -1 of FileName |
 | reflectedxsstest.go:40:14:40:17 | part | reflectedxsstest.go:40:14:40:28 | call to FileName |
-| reflectedxsstest.go:40:14:40:28 | call to FileName | reflectedxsstest.go:44:46:44:53 | partName |
+| reflectedxsstest.go:40:14:40:28 | call to FileName | reflectedxsstest.go:44:10:44:55 | type conversion |
 | reflectedxsstest.go:41:2:41:10 | definition of byteSlice | reflectedxsstest.go:45:10:45:18 | byteSlice |
 | reflectedxsstest.go:42:2:42:5 | part | file://:0:0:0:0 | parameter -1 of Read |
 | reflectedxsstest.go:42:2:42:5 | part | reflectedxsstest.go:41:2:41:10 | definition of byteSlice |
-| reflectedxsstest.go:44:17:44:54 | call to Sprintf | reflectedxsstest.go:44:10:44:55 | type conversion |
-| reflectedxsstest.go:44:46:44:53 | partName | file://:0:0:0:0 | parameter 1 of Sprintf |
-| reflectedxsstest.go:44:46:44:53 | partName | reflectedxsstest.go:44:17:44:54 | call to Sprintf |
 | reflectedxsstest.go:51:14:51:18 | selection of URL | file://:0:0:0:0 | parameter -1 of Query |
 | reflectedxsstest.go:51:14:51:18 | selection of URL | reflectedxsstest.go:51:14:51:26 | call to Query |
 | reflectedxsstest.go:51:14:51:26 | call to Query | reflectedxsstest.go:54:11:54:21 | type conversion |
@@ -92,10 +79,8 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in NextPart | semmle.label | [summary] to write: return (return[0]) in NextPart |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | semmle.label | [summary] to write: return (return[0]) in Query |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | semmle.label | [summary] to write: return (return[0]) in ReadAll |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | semmle.label | [summary] to write: return (return[0]) in Sprintf |
 | file://:0:0:0:0 | parameter 0 of Join | semmle.label | parameter 0 of Join |
 | file://:0:0:0:0 | parameter 0 of ReadAll | semmle.label | parameter 0 of ReadAll |
-| file://:0:0:0:0 | parameter 1 of Sprintf | semmle.label | parameter 1 of Sprintf |
 | file://:0:0:0:0 | parameter -1 of FileName | semmle.label | parameter -1 of FileName |
 | file://:0:0:0:0 | parameter -1 of Get | semmle.label | parameter -1 of Get |
 | file://:0:0:0:0 | parameter -1 of NextPart | semmle.label | parameter -1 of NextPart |
@@ -103,18 +88,12 @@ nodes
 | file://:0:0:0:0 | parameter -1 of Read | semmle.label | parameter -1 of Read |
 | reflectedxsstest.go:27:2:27:38 | ... := ...[0] | semmle.label | ... := ...[0] |
 | reflectedxsstest.go:28:10:28:57 | type conversion | semmle.label | type conversion |
-| reflectedxsstest.go:28:17:28:56 | call to Sprintf | semmle.label | call to Sprintf |
-| reflectedxsstest.go:28:50:28:55 | cookie | semmle.label | cookie |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[0] | semmle.label | ... := ...[0] |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[1] | semmle.label | ... := ...[1] |
 | reflectedxsstest.go:32:2:32:38 | ... := ...[0] | semmle.label | ... := ...[0] |
 | reflectedxsstest.go:32:34:32:37 | file | semmle.label | file |
 | reflectedxsstest.go:33:10:33:57 | type conversion | semmle.label | type conversion |
-| reflectedxsstest.go:33:17:33:56 | call to Sprintf | semmle.label | call to Sprintf |
-| reflectedxsstest.go:33:49:33:55 | content | semmle.label | content |
 | reflectedxsstest.go:34:10:34:62 | type conversion | semmle.label | type conversion |
-| reflectedxsstest.go:34:17:34:61 | call to Sprintf | semmle.label | call to Sprintf |
-| reflectedxsstest.go:34:46:34:60 | selection of Filename | semmle.label | selection of Filename |
 | reflectedxsstest.go:38:2:38:35 | ... := ...[0] | semmle.label | ... := ...[0] |
 | reflectedxsstest.go:39:2:39:32 | ... := ...[0] | semmle.label | ... := ...[0] |
 | reflectedxsstest.go:39:16:39:21 | reader | semmle.label | reader |
@@ -123,8 +102,6 @@ nodes
 | reflectedxsstest.go:41:2:41:10 | definition of byteSlice | semmle.label | definition of byteSlice |
 | reflectedxsstest.go:42:2:42:5 | part | semmle.label | part |
 | reflectedxsstest.go:44:10:44:55 | type conversion | semmle.label | type conversion |
-| reflectedxsstest.go:44:17:44:54 | call to Sprintf | semmle.label | call to Sprintf |
-| reflectedxsstest.go:44:46:44:53 | partName | semmle.label | partName |
 | reflectedxsstest.go:45:10:45:18 | byteSlice | semmle.label | byteSlice |
 | reflectedxsstest.go:51:14:51:18 | selection of URL | semmle.label | selection of URL |
 | reflectedxsstest.go:51:14:51:26 | call to Query | semmle.label | call to Query |
@@ -153,14 +130,10 @@ subpaths
 | ReflectedXss.go:11:15:11:20 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | ReflectedXss.go:11:15:11:36 | call to Get |
 | contenttype.go:11:11:11:16 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | contenttype.go:11:11:11:28 | call to Get |
 | contenttype.go:49:11:49:16 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | contenttype.go:49:11:49:28 | call to Get |
-| reflectedxsstest.go:28:50:28:55 | cookie | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | reflectedxsstest.go:28:17:28:56 | call to Sprintf |
 | reflectedxsstest.go:32:34:32:37 | file | file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | reflectedxsstest.go:32:2:32:38 | ... := ...[0] |
-| reflectedxsstest.go:33:49:33:55 | content | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | reflectedxsstest.go:33:17:33:56 | call to Sprintf |
-| reflectedxsstest.go:34:46:34:60 | selection of Filename | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | reflectedxsstest.go:34:17:34:61 | call to Sprintf |
 | reflectedxsstest.go:39:16:39:21 | reader | file://:0:0:0:0 | parameter -1 of NextPart | file://:0:0:0:0 | [summary] to write: return (return[0]) in NextPart | reflectedxsstest.go:39:2:39:32 | ... := ...[0] |
 | reflectedxsstest.go:40:14:40:17 | part | file://:0:0:0:0 | parameter -1 of FileName | file://:0:0:0:0 | [summary] to write: return (return[0]) in FileName | reflectedxsstest.go:40:14:40:28 | call to FileName |
 | reflectedxsstest.go:42:2:42:5 | part | file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read | reflectedxsstest.go:41:2:41:10 | definition of byteSlice |
-| reflectedxsstest.go:44:46:44:53 | partName | file://:0:0:0:0 | parameter 1 of Sprintf | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sprintf | reflectedxsstest.go:44:17:44:54 | call to Sprintf |
 | reflectedxsstest.go:51:14:51:18 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | reflectedxsstest.go:51:14:51:26 | call to Query |
 | tst.go:14:15:14:20 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | tst.go:14:15:14:36 | call to Get |
 | tst.go:18:32:18:32 | a | file://:0:0:0:0 | parameter 0 of Join | file://:0:0:0:0 | [summary] to write: return (return[0]) in Join | tst.go:18:19:18:38 | call to Join |
