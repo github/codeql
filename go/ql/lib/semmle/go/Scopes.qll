@@ -533,7 +533,7 @@ class Method extends Function {
    * implement themselves.
    */
   predicate implements(Method m) {
-    if this.isInterfaceMethod() then this = m else implementsIncludingInterfaceMethods(m)
+    if this.isInterfaceMethod() then this = m else this.implementsIncludingInterfaceMethods(m)
   }
 
   /**
