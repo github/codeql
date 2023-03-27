@@ -1,10 +1,18 @@
 edges
-| test.cpp:53:27:53:30 | argv | test.cpp:58:25:58:29 | input |
+| test.cpp:53:27:53:30 | argv indirection | test.cpp:58:25:58:29 | input indirection |
+| test.cpp:53:27:53:30 | argv indirection | test.cpp:58:25:58:29 | input indirection |
+| test.cpp:53:27:53:30 | argv indirection | test.cpp:58:25:58:29 | input indirection |
+| test.cpp:53:27:53:30 | argv indirection | test.cpp:58:25:58:29 | input indirection |
 nodes
-| test2.cpp:110:3:110:6 | call to gets | semmle.label | call to gets |
-| test.cpp:53:27:53:30 | argv | semmle.label | argv |
-| test.cpp:58:25:58:29 | input | semmle.label | input |
+| test2.cpp:110:3:110:6 | call to gets indirection | semmle.label | call to gets indirection |
+| test.cpp:53:27:53:30 | argv indirection | semmle.label | argv indirection |
+| test.cpp:53:27:53:30 | argv indirection | semmle.label | argv indirection |
+| test.cpp:58:25:58:29 | input indirection | semmle.label | input indirection |
+| test.cpp:58:25:58:29 | input indirection | semmle.label | input indirection |
 subpaths
 #select
-| test2.cpp:110:3:110:6 | call to gets | test2.cpp:110:3:110:6 | call to gets | test2.cpp:110:3:110:6 | call to gets | This write into buffer 'password' may contain unencrypted data from $@. | test2.cpp:110:3:110:6 | call to gets | user input (string read by gets) |
-| test.cpp:58:3:58:9 | call to sprintf | test.cpp:53:27:53:30 | argv | test.cpp:58:25:58:29 | input | This write into buffer 'passwd' may contain unencrypted data from $@. | test.cpp:53:27:53:30 | argv | user input (a command-line argument) |
+| test2.cpp:110:3:110:6 | call to gets | test2.cpp:110:3:110:6 | call to gets indirection | test2.cpp:110:3:110:6 | call to gets indirection | This write into buffer 'password' may contain unencrypted data from $@. | test2.cpp:110:3:110:6 | call to gets indirection | user input (string read by gets) |
+| test.cpp:58:3:58:9 | call to sprintf | test.cpp:53:27:53:30 | argv indirection | test.cpp:58:25:58:29 | input indirection | This write into buffer 'passwd' may contain unencrypted data from $@. | test.cpp:53:27:53:30 | argv indirection | user input (a command-line argument) |
+| test.cpp:58:3:58:9 | call to sprintf | test.cpp:53:27:53:30 | argv indirection | test.cpp:58:25:58:29 | input indirection | This write into buffer 'passwd' may contain unencrypted data from $@. | test.cpp:53:27:53:30 | argv indirection | user input (a command-line argument) |
+| test.cpp:58:3:58:9 | call to sprintf | test.cpp:53:27:53:30 | argv indirection | test.cpp:58:25:58:29 | input indirection | This write into buffer 'passwd' may contain unencrypted data from $@. | test.cpp:53:27:53:30 | argv indirection | user input (a command-line argument) |
+| test.cpp:58:3:58:9 | call to sprintf | test.cpp:53:27:53:30 | argv indirection | test.cpp:58:25:58:29 | input indirection | This write into buffer 'passwd' may contain unencrypted data from $@. | test.cpp:53:27:53:30 | argv indirection | user input (a command-line argument) |

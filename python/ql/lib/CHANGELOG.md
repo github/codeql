@@ -1,3 +1,33 @@
+## 0.8.2
+
+### New Features
+
+* Added support for merging two `PathGraph`s via disjoint union to allow results from multiple data flow computations in a single `path-problem` query.
+
+### Major Analysis Improvements
+
+* The main data flow and taint tracking APIs have been changed. The old APIs
+  remain in place for now and translate to the new through a
+  backwards-compatible wrapper. If multiple configurations are in scope
+  simultaneously, then this may affect results slightly. The new API is quite
+  similar to the old, but makes use of a configuration module instead of a
+  configuration class.
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
+
+## 0.8.1
+
+### Major Analysis Improvements
+
+* We use a new analysis for the call-graph (determining which function is called). This can lead to changed results. In most cases this is much more accurate than the old call-graph that was based on points-to, but we do lose a few valid edges in the call-graph, especially around methods that are not defined inside its class.
+
+### Minor Analysis Improvements
+
+* Fixed module resolution so we properly recognize definitions made within if-then-else statements.
+* Added modeling of cryptographic operations in the `hmac` library.
+
 ## 0.8.0
 
 ### Breaking Changes

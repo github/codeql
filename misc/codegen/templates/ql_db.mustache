@@ -5,6 +5,14 @@ module Raw {
     {{#final}}override string toString() { result = "{{name}}" }{{/final}}
 
     {{#properties}}
+    /**
+     * {{>ql_property_doc}}     *
+    {{#has_description}}
+    {{#description}}
+     * {{.}}
+    {{/description}}
+    {{/has_description}}
+     */
     {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
       {{tablename}}({{#tableparams}}{{^first}}, {{/first}}{{param}}{{/tableparams}})
     }

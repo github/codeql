@@ -1,3 +1,13 @@
+## 0.5.5
+
+### New Queries
+
+* Added a new query, `rb/zip-slip`, to detect arbitrary file writes during extraction of zip/tar archives.
+
+## 0.5.4
+
+No user-facing changes.
+
 ## 0.5.3
 
 ### New Queries

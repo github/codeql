@@ -32,11 +32,16 @@ hsh2 = {}
 # GOOD: no backwards flow
 stdout_logger.info hsh2[:password]
 hsh2[:password] = "beeda625d7306b45784d91ea0336e201"
+hsh3 = hsh2
 
 # BAD: password logged as plaintext
 stdout_logger.info hsh1[:password]
 # BAD: password logged as plaintext
 stdout_logger.info hsh2[:password]
+# BAD: password logged as plaintext
+stdout_logger.info hsh3[:password]
+# GOOD: not a password
+stdout_logger.info hsh1[:foo]
 
 password_masked_sub = "ca497451f5e883662fb1a37bc9ec7838"
 password_masked_sub_ex = "ca497451f5e883662fb1a37bc9ec7838"

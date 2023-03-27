@@ -2,6 +2,7 @@
 
 import swift
 private import codeql.swift.dataflow.DataFlow
+private import codeql.swift.dataflow.TaintTracking
 private import codeql.swift.frameworks.AEXML
 private import codeql.swift.frameworks.Libxml2
 private import codeql.swift.dataflow.ExternalFlow
@@ -182,9 +183,7 @@ private class Libxml2XxeSink extends XxeSink {
  * including bitwise operations, accesses to `.rawValue`, and casts to `Int32`.
  */
 private predicate lib2xmlOptionLocalTaintStep(DataFlow::Node source, DataFlow::Node sink) {
-  DataFlow::localFlowStep(source, sink)
-  or
-  source.asExpr() = sink.asExpr().(BitwiseOperation).getAnOperand()
+  TaintTracking::localTaintStep(source, sink)
   or
   exists(MemberRefExpr rawValue | rawValue.getMember().(VarDecl).getName() = "rawValue" |
     source.asExpr() = rawValue.getBase() and sink.asExpr() = rawValue

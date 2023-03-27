@@ -3,11 +3,11 @@ namespace ehandler {
 class C { };
 class D { };
 
-void g() {
+static void g() {
 	throw 1;
 }
 
-void f() {
+static void f() {
 	try {
 		try {
 			g();

@@ -1,5 +1,5 @@
 /**
- * DEPRECATED: Use `Make` and `MakeWithState` instead.
+ * DEPRECATED: Use `Global` and `GlobalWithState` instead.
  *
  * Provides a `Configuration` class backwards-compatible interface to the data
  * flow library.
@@ -388,7 +388,7 @@ private predicate hasFlow(Node source, Node sink, Configuration config) {
 }
 
 private predicate hasFlowPath(PathNode source, PathNode sink, Configuration config) {
-  hasFlowPath(source, sink) and source.getConfiguration() = config
+  flowPath(source, sink) and source.getConfiguration() = config
 }
 
 private predicate hasFlowTo(Node sink, Configuration config) { hasFlow(_, sink, config) }

@@ -15,21 +15,24 @@ import codeql.swift.dataflow.TaintTracking
 /**
  * A taint configuration for tainted data reaching any node.
  */
-class TaintReachConfig extends TaintTracking::Configuration {
-  TaintReachConfig() { this = "TaintReachConfig" }
+module TaintReachConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
-
-  override predicate isSink(DataFlow::Node node) { any() }
+  predicate isSink(DataFlow::Node node) { any() }
 }
 
-float taintReach() {
-  exists(TaintReachConfig config, int tainted, int total |
-    tainted = count(DataFlow::Node n | config.hasFlowTo(n)) and
-    total = count(DataFlow::Node n) and
-    result = (tainted * 1000000.0) / total
-  )
-}
+module TaintReachFlow = TaintTracking::Global<TaintReachConfig>;
+
+/**
+ * Gets the total number of dataflow nodes that taint reaches (from any source).
+ */
+int taintedNodesCount() { result = count(DataFlow::Node n | TaintReachFlow::flowTo(n)) }
+
+/**
+ * Gets the proportion of dataflow nodes that taint reaches (from any source),
+ * expressed as a count per million nodes.
+ */
+float taintReach() { result = (taintedNodesCount() * 1000000.0) / count(DataFlow::Node n) }
 
 predicate statistic(string what, string value) {
   what = "Files" and value = count(File f).toString()
@@ -41,6 +44,10 @@ predicate statistic(string what, string value) {
   what = "Remote flow sources" and value = count(RemoteFlowSource s).toString()
   or
   what = "Sensitive expressions" and value = count(SensitiveExpr e).toString()
+  or
+  what = "Dataflow nodes (total)" and value = count(DataFlow::Node n).toString()
+  or
+  what = "Dataflow nodes (tainted)" and value = taintedNodesCount().toString()
   or
   what = "Taint reach (per million nodes)" and value = taintReach().toString()
 }

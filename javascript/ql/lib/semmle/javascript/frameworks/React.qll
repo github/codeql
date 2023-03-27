@@ -417,7 +417,8 @@ private class DefinitePreactComponent extends PreactComponent {
  * - has a `render` method that returns JSX or React elements.
  */
 private class HeuristicReactPreactComponent extends ClassDefinition, PreactComponent,
-  ES2015Component {
+  ES2015Component
+{
   HeuristicReactPreactComponent() {
     any(DataFlow::GlobalVarRefNode c | c.getName() = "Component").flowsToExpr(getSuperClass()) and
     alwaysReturnsJsxOrReactElements(ClassDefinition.super.getInstanceMethod("render"))
@@ -528,7 +529,8 @@ private class FactoryDefinition extends ReactElementDefinition {
  * that binds `this` of a callback.
  */
 private class ReactCallbackPartialInvoke extends DataFlow::PartialInvokeNode::Range,
-  DataFlow::CallNode {
+  DataFlow::CallNode
+{
   ReactCallbackPartialInvoke() {
     exists(string name |
       // React.Children.map or React.Children.forEach
@@ -773,7 +775,7 @@ private class ReactRouterLocationSource extends DOM::LocationSource::Range {
 private DataFlow::SourceNode higherOrderComponentBuilder() {
   // `memo(f)` returns a function that behaves as `f` but caches results
   // It is sometimes used to wrap an entire functional component.
-  result = react().getAPropertyRead("memo")
+  result = react().getAPropertyRead(["memo", "forwardRef"])
   or
   result = DataFlow::moduleMember("react-redux", "connect").getACall()
   or

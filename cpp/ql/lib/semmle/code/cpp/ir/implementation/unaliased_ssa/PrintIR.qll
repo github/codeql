@@ -149,7 +149,9 @@ private class PrintableIRFunction extends PrintableIRNode, TPrintableIRFunction 
 
   override Language::Location getLocation() { result = irFunc.getLocation() }
 
-  override string getLabel() { result = Language::getIdentityString(irFunc.getFunction()) }
+  override string getLabel() {
+    result = Imports::LanguageDebug::getIdentityString(irFunc.getFunction())
+  }
 
   override int getOrder() {
     this =

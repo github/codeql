@@ -16,16 +16,13 @@ import semmle.code.java.Expr
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.ExternalProcess
 import semmle.code.java.security.CommandArguments
-import DataFlow::PathGraph
 
-class LocalUserInputToArgumentToExecFlowConfig extends TaintTracking::Configuration {
-  LocalUserInputToArgumentToExecFlowConfig() { this = "LocalUserInputToArgumentToExecFlowConfig" }
+module LocalUserInputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof ArgumentToExec }
 
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof ArgumentToExec }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType
     or
     node.getType() instanceof BoxedType
@@ -34,9 +31,16 @@ class LocalUserInputToArgumentToExecFlowConfig extends TaintTracking::Configurat
   }
 }
 
+module LocalUserInputToArgumentToExecFlow =
+  TaintTracking::Global<LocalUserInputToArgumentToExecFlowConfig>;
+
+import LocalUserInputToArgumentToExecFlow::PathGraph
+
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, ArgumentToExec execArg,
-  LocalUserInputToArgumentToExecFlowConfig conf
-where conf.hasFlowPath(source, sink) and sink.getNode().asExpr() = execArg
+  LocalUserInputToArgumentToExecFlow::PathNode source,
+  LocalUserInputToArgumentToExecFlow::PathNode sink, ArgumentToExec execArg
+where
+  LocalUserInputToArgumentToExecFlow::flowPath(source, sink) and
+  sink.getNode().asExpr() = execArg
 select execArg, source, sink, "This command line depends on a $@.", source.getNode(),
   "user-provided value"

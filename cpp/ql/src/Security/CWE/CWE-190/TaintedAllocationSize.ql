@@ -19,7 +19,7 @@ import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.security.FlowSources
-import DataFlow::PathGraph
+import TaintedAllocationSize::PathGraph
 
 /**
  * Holds if `alloc` is an allocation, and `tainted` is a child of it that is a
@@ -46,20 +46,20 @@ predicate hasUpperBoundsCheck(Variable var) {
 }
 
 predicate nodeIsBarrierEqualityCandidate(DataFlow::Node node, Operand access, Variable checkedVar) {
-  readsVariable(node.asInstruction(), checkedVar) and
-  any(IRGuardCondition guard).ensuresEq(access, _, _, node.asInstruction().getBlock(), true)
+  exists(Instruction instr | instr = node.asOperand().getDef() |
+    readsVariable(instr, checkedVar) and
+    any(IRGuardCondition guard).ensuresEq(access, _, _, instr.getBlock(), true)
+  )
 }
 
 predicate isFlowSource(FlowSource source, string sourceType) { sourceType = source.getSourceType() }
 
-class TaintedAllocationSizeConfiguration extends TaintTracking::Configuration {
-  TaintedAllocationSizeConfiguration() { this = "TaintedAllocationSizeConfiguration" }
+module TaintedAllocationSizeConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isFlowSource(source, _) }
 
-  override predicate isSource(DataFlow::Node source) { isFlowSource(source, _) }
+  predicate isSink(DataFlow::Node sink) { allocSink(_, sink) }
 
-  override predicate isSink(DataFlow::Node sink) { allocSink(_, sink) }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(Expr e | e = node.asExpr() |
       // There can be two separate reasons for `convertedExprMightOverflow` not holding:
       // 1. `e` really cannot overflow.
@@ -79,8 +79,8 @@ class TaintedAllocationSizeConfiguration extends TaintTracking::Configuration {
       e = any(PointerDiffExpr diff).getAnOperand()
     )
     or
-    exists(Variable checkedVar |
-      readsVariable(node.asInstruction(), checkedVar) and
+    exists(Variable checkedVar, Instruction instr | instr = node.asOperand().getDef() |
+      readsVariable(instr, checkedVar) and
       hasUpperBoundsCheck(checkedVar)
     )
     or
@@ -95,12 +95,14 @@ class TaintedAllocationSizeConfiguration extends TaintTracking::Configuration {
   }
 }
 
+module TaintedAllocationSize = TaintTracking::Global<TaintedAllocationSizeConfig>;
+
 from
-  Expr alloc, DataFlow::PathNode source, DataFlow::PathNode sink, string taintCause,
-  TaintedAllocationSizeConfiguration conf
+  Expr alloc, TaintedAllocationSize::PathNode source, TaintedAllocationSize::PathNode sink,
+  string taintCause
 where
   isFlowSource(source.getNode(), taintCause) and
-  conf.hasFlowPath(source, sink) and
+  TaintedAllocationSize::flowPath(source, sink) and
   allocSink(alloc, sink.getNode())
 select alloc, source, sink, "This allocation size is derived from $@ and might overflow.",
   source.getNode(), "user input (" + taintCause + ")"

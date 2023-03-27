@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Mvc, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.MvcServiceCollectionExtensions` in `Microsoft.AspNetCore.Mvc, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MvcServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IMvcBuilder AddControllers(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;

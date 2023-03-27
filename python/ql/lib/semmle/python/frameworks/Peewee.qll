@@ -164,7 +164,8 @@ private module Peewee {
    * https://docs.peewee-orm.com/en/latest/peewee/api.html#Database.connection.
    */
   class PeeweeDatabaseConnectionCall extends PEP249::Connection::InstanceSource,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     PeeweeDatabaseConnectionCall() {
       this = Database::instance().getMember("connection").getACall()
     }

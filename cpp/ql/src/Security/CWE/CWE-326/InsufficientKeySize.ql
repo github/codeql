@@ -14,7 +14,7 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.ir.IR
-import DataFlow::PathGraph
+import KeyStrengthFlow::PathGraph
 
 // Gets the recommended minimum key size (in bits) of `func`, the name of an encryption function that accepts a key size as parameter `paramIndex`
 int getMinimumKeyStrength(string func, int paramIndex) {
@@ -28,10 +28,8 @@ int getMinimumKeyStrength(string func, int paramIndex) {
   result = 2048
 }
 
-class KeyStrengthFlow extends DataFlow::Configuration {
-  KeyStrengthFlow() { this = "KeyStrengthFlow" }
-
-  override predicate isSource(DataFlow::Node node) {
+module KeyStrengthFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
     exists(int bits |
       node.asInstruction().(IntegerConstantInstruction).getValue().toInt() = bits and
       bits < getMinimumKeyStrength(_, _) and
@@ -39,7 +37,7 @@ class KeyStrengthFlow extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node node) {
+  predicate isSink(DataFlow::Node node) {
     exists(FunctionCall fc, string name, int param |
       node.asExpr() = fc.getArgument(param) and
       fc.getTarget().hasGlobalName(name) and
@@ -48,11 +46,13 @@ class KeyStrengthFlow extends DataFlow::Configuration {
   }
 }
 
+module KeyStrengthFlow = DataFlow::Global<KeyStrengthFlowConfig>;
+
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, KeyStrengthFlow conf, FunctionCall fc,
-  int param, string name, int minimumBits, int bits
+  KeyStrengthFlow::PathNode source, KeyStrengthFlow::PathNode sink, FunctionCall fc, int param,
+  string name, int minimumBits, int bits
 where
-  conf.hasFlowPath(source, sink) and
+  KeyStrengthFlow::flowPath(source, sink) and
   sink.getNode().asExpr() = fc.getArgument(param) and
   fc.getTarget().hasGlobalName(name) and
   minimumBits = getMinimumKeyStrength(name, param) and

@@ -1,3 +1,14 @@
+## 0.5.5
+
+### Deprecated Queries
+
+* The `NetworkToBufferSizeConfiguration` and `UntrustedDataToExternalApiConfig` dataflow configurations have been deprecated. Please use `NetworkToBufferSizeFlow` and `UntrustedDataToExternalApiFlow`.
+* The `LeapYearCheckConfiguration`, `FiletimeYearArithmeticOperationCheckConfiguration`, and `PossibleYearArithmeticOperationCheckConfiguration` dataflow configurations have been deprecated. Please use `LeapYearCheckFlow`, `FiletimeYearArithmeticOperationCheckFlow` and `PossibleYearArithmeticOperationCheckFlow`.
+
+## 0.5.4
+
+No user-facing changes.
+
 ## 0.5.3
 
 No user-facing changes.

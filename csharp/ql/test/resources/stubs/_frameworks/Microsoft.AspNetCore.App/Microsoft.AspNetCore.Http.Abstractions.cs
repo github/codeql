@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Http.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,17 +7,17 @@ namespace Microsoft
     {
         namespace Builder
         {
-            // Generated from `Microsoft.AspNetCore.Builder.EndpointBuilder` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class EndpointBuilder
             {
+                public System.IServiceProvider ApplicationServices { get => throw null; set => throw null; }
                 public abstract Microsoft.AspNetCore.Http.Endpoint Build();
                 public string DisplayName { get => throw null; set => throw null; }
                 protected EndpointBuilder() => throw null;
+                public System.Collections.Generic.IList<System.Func<Microsoft.AspNetCore.Http.EndpointFilterFactoryContext, Microsoft.AspNetCore.Http.EndpointFilterDelegate, Microsoft.AspNetCore.Http.EndpointFilterDelegate>> FilterFactories { get => throw null; }
                 public System.Collections.Generic.IList<object> Metadata { get => throw null; }
                 public Microsoft.AspNetCore.Http.RequestDelegate RequestDelegate { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.IApplicationBuilder` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IApplicationBuilder
             {
                 System.IServiceProvider ApplicationServices { get; set; }
@@ -27,13 +28,12 @@ namespace Microsoft
                 Microsoft.AspNetCore.Builder.IApplicationBuilder Use(System.Func<Microsoft.AspNetCore.Http.RequestDelegate, Microsoft.AspNetCore.Http.RequestDelegate> middleware);
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.IEndpointConventionBuilder` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IEndpointConventionBuilder
             {
                 void Add(System.Action<Microsoft.AspNetCore.Builder.EndpointBuilder> convention);
+                void Finally(System.Action<Microsoft.AspNetCore.Builder.EndpointBuilder> finallyConvention) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.MapExtensions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MapExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder Map(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, Microsoft.AspNetCore.Http.PathString pathMatch, System.Action<Microsoft.AspNetCore.Builder.IApplicationBuilder> configuration) => throw null;
@@ -41,39 +41,33 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder Map(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, string pathMatch, System.Action<Microsoft.AspNetCore.Builder.IApplicationBuilder> configuration) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.MapWhenExtensions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class MapWhenExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder MapWhen(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, System.Func<Microsoft.AspNetCore.Http.HttpContext, bool> predicate, System.Action<Microsoft.AspNetCore.Builder.IApplicationBuilder> configuration) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.RunExtensions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RunExtensions
             {
                 public static void Run(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, Microsoft.AspNetCore.Http.RequestDelegate handler) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.UseExtensions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class UseExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder Use(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, System.Func<Microsoft.AspNetCore.Http.HttpContext, System.Func<System.Threading.Tasks.Task>, System.Threading.Tasks.Task> middleware) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder Use(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, System.Func<Microsoft.AspNetCore.Http.HttpContext, Microsoft.AspNetCore.Http.RequestDelegate, System.Threading.Tasks.Task> middleware) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.UseMiddlewareExtensions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class UseMiddlewareExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseMiddleware(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, System.Type middleware, params object[] args) => throw null;
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseMiddleware<TMiddleware>(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, params object[] args) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.UsePathBaseExtensions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class UsePathBaseExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UsePathBase(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, Microsoft.AspNetCore.Http.PathString pathBase) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.UseWhenExtensions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class UseWhenExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseWhen(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, System.Func<Microsoft.AspNetCore.Http.HttpContext, bool> predicate, System.Action<Microsoft.AspNetCore.Builder.IApplicationBuilder> configuration) => throw null;
@@ -81,14 +75,12 @@ namespace Microsoft
 
             namespace Extensions
             {
-                // Generated from `Microsoft.AspNetCore.Builder.Extensions.MapMiddleware` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MapMiddleware
                 {
                     public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
                     public MapMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.AspNetCore.Builder.Extensions.MapOptions options) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Builder.Extensions.MapOptions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MapOptions
                 {
                     public Microsoft.AspNetCore.Http.RequestDelegate Branch { get => throw null; set => throw null; }
@@ -97,14 +89,12 @@ namespace Microsoft
                     public bool PreserveMatchedPathSegment { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Builder.Extensions.MapWhenMiddleware` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MapWhenMiddleware
                 {
                     public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
                     public MapWhenMiddleware(Microsoft.AspNetCore.Http.RequestDelegate next, Microsoft.AspNetCore.Builder.Extensions.MapWhenOptions options) => throw null;
                 }
 
-                // Generated from `Microsoft.AspNetCore.Builder.Extensions.MapWhenOptions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MapWhenOptions
                 {
                     public Microsoft.AspNetCore.Http.RequestDelegate Branch { get => throw null; set => throw null; }
@@ -112,7 +102,6 @@ namespace Microsoft
                     public System.Func<Microsoft.AspNetCore.Http.HttpContext, bool> Predicate { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Builder.Extensions.UsePathBaseMiddleware` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class UsePathBaseMiddleware
                 {
                     public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
@@ -125,7 +114,6 @@ namespace Microsoft
         {
             namespace Infrastructure
             {
-                // Generated from `Microsoft.AspNetCore.Cors.Infrastructure.ICorsMetadata` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface ICorsMetadata
                 {
                 }
@@ -134,7 +122,11 @@ namespace Microsoft
         }
         namespace Http
         {
-            // Generated from `Microsoft.AspNetCore.Http.BadHttpRequestException` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            public class AsParametersAttribute : System.Attribute
+            {
+                public AsParametersAttribute() => throw null;
+            }
+
             public class BadHttpRequestException : System.IO.IOException
             {
                 public BadHttpRequestException(string message) => throw null;
@@ -144,7 +136,6 @@ namespace Microsoft
                 public int StatusCode { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.ConnectionInfo` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class ConnectionInfo
             {
                 public abstract System.Security.Cryptography.X509Certificates.X509Certificate2 ClientCertificate { get; set; }
@@ -158,7 +149,6 @@ namespace Microsoft
                 public virtual void RequestClose() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.CookieBuilder` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class CookieBuilder
             {
                 public Microsoft.AspNetCore.Http.CookieOptions Build(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
@@ -166,6 +156,7 @@ namespace Microsoft
                 public CookieBuilder() => throw null;
                 public virtual string Domain { get => throw null; set => throw null; }
                 public virtual System.TimeSpan? Expiration { get => throw null; set => throw null; }
+                public System.Collections.Generic.IList<string> Extensions { get => throw null; }
                 public virtual bool HttpOnly { get => throw null; set => throw null; }
                 public virtual bool IsEssential { get => throw null; set => throw null; }
                 public virtual System.TimeSpan? MaxAge { get => throw null; set => throw null; }
@@ -175,7 +166,6 @@ namespace Microsoft
                 public virtual Microsoft.AspNetCore.Http.CookieSecurePolicy SecurePolicy { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.CookieSecurePolicy` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public enum CookieSecurePolicy : int
             {
                 Always = 1,
@@ -183,7 +173,14 @@ namespace Microsoft
                 SameAsRequest = 0,
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.Endpoint` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            public class DefaultEndpointFilterInvocationContext : Microsoft.AspNetCore.Http.EndpointFilterInvocationContext
+            {
+                public override System.Collections.Generic.IList<object> Arguments { get => throw null; }
+                public DefaultEndpointFilterInvocationContext(Microsoft.AspNetCore.Http.HttpContext httpContext, params object[] arguments) => throw null;
+                public override T GetArgument<T>(int index) => throw null;
+                public override Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; }
+            }
+
             public class Endpoint
             {
                 public string DisplayName { get => throw null; }
@@ -193,17 +190,31 @@ namespace Microsoft
                 public override string ToString() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.EndpointHttpContextExtensions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            public delegate System.Threading.Tasks.ValueTask<object> EndpointFilterDelegate(Microsoft.AspNetCore.Http.EndpointFilterInvocationContext context);
+
+            public class EndpointFilterFactoryContext
+            {
+                public System.IServiceProvider ApplicationServices { get => throw null; set => throw null; }
+                public EndpointFilterFactoryContext() => throw null;
+                public System.Reflection.MethodInfo MethodInfo { get => throw null; set => throw null; }
+            }
+
+            public abstract class EndpointFilterInvocationContext
+            {
+                public abstract System.Collections.Generic.IList<object> Arguments { get; }
+                protected EndpointFilterInvocationContext() => throw null;
+                public abstract T GetArgument<T>(int index);
+                public abstract Microsoft.AspNetCore.Http.HttpContext HttpContext { get; }
+            }
+
             public static class EndpointHttpContextExtensions
             {
                 public static Microsoft.AspNetCore.Http.Endpoint GetEndpoint(this Microsoft.AspNetCore.Http.HttpContext context) => throw null;
                 public static void SetEndpoint(this Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Http.Endpoint endpoint) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.EndpointMetadataCollection` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class EndpointMetadataCollection : System.Collections.Generic.IEnumerable<object>, System.Collections.Generic.IReadOnlyCollection<object>, System.Collections.Generic.IReadOnlyList<object>, System.Collections.IEnumerable
             {
-                // Generated from `Microsoft.AspNetCore.Http.EndpointMetadataCollection+Enumerator` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<object>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public object Current { get => throw null; }
@@ -223,10 +234,10 @@ namespace Microsoft
                 System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
                 public T GetMetadata<T>() where T : class => throw null;
                 public System.Collections.Generic.IReadOnlyList<T> GetOrderedMetadata<T>() where T : class => throw null;
+                public T GetRequiredMetadata<T>() where T : class => throw null;
                 public object this[int index] { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.FragmentString` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public struct FragmentString : System.IEquatable<Microsoft.AspNetCore.Http.FragmentString>
             {
                 public static bool operator !=(Microsoft.AspNetCore.Http.FragmentString left, Microsoft.AspNetCore.Http.FragmentString right) => throw null;
@@ -245,7 +256,6 @@ namespace Microsoft
                 public string Value { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.HeaderDictionaryExtensions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HeaderDictionaryExtensions
             {
                 public static void Append(this Microsoft.AspNetCore.Http.IHeaderDictionary headers, string key, Microsoft.Extensions.Primitives.StringValues value) => throw null;
@@ -254,7 +264,6 @@ namespace Microsoft
                 public static void SetCommaSeparatedValues(this Microsoft.AspNetCore.Http.IHeaderDictionary headers, string key, params string[] values) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.HostString` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public struct HostString : System.IEquatable<Microsoft.AspNetCore.Http.HostString>
             {
                 public static bool operator !=(Microsoft.AspNetCore.Http.HostString left, Microsoft.AspNetCore.Http.HostString right) => throw null;
@@ -276,7 +285,6 @@ namespace Microsoft
                 public string Value { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.HttpContext` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class HttpContext
             {
                 public abstract void Abort();
@@ -294,7 +302,6 @@ namespace Microsoft
                 public abstract Microsoft.AspNetCore.Http.WebSocketManager WebSockets { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.HttpMethods` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HttpMethods
             {
                 public static string Connect;
@@ -319,7 +326,6 @@ namespace Microsoft
                 public static string Trace;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.HttpProtocol` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HttpProtocol
             {
                 public static string GetHttpProtocol(System.Version version) => throw null;
@@ -335,7 +341,6 @@ namespace Microsoft
                 public static bool IsHttp3(string protocol) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.HttpRequest` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class HttpRequest
             {
                 public abstract System.IO.Stream Body { get; set; }
@@ -361,7 +366,6 @@ namespace Microsoft
                 public abstract string Scheme { get; set; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.HttpResponse` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class HttpResponse
             {
                 public abstract System.IO.Stream Body { get; set; }
@@ -386,46 +390,98 @@ namespace Microsoft
                 public abstract int StatusCode { get; set; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.HttpResponseWritingExtensions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HttpResponseWritingExtensions
             {
                 public static System.Threading.Tasks.Task WriteAsync(this Microsoft.AspNetCore.Http.HttpResponse response, string text, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
                 public static System.Threading.Tasks.Task WriteAsync(this Microsoft.AspNetCore.Http.HttpResponse response, string text, System.Text.Encoding encoding, System.Threading.CancellationToken cancellationToken = default(System.Threading.CancellationToken)) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.IHttpContextAccessor` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            public class HttpValidationProblemDetails : Microsoft.AspNetCore.Mvc.ProblemDetails
+            {
+                public System.Collections.Generic.IDictionary<string, string[]> Errors { get => throw null; }
+                public HttpValidationProblemDetails() => throw null;
+                public HttpValidationProblemDetails(System.Collections.Generic.IDictionary<string, string[]> errors) => throw null;
+            }
+
+            public interface IBindableFromHttpContext<TSelf> where TSelf : class, Microsoft.AspNetCore.Http.IBindableFromHttpContext<TSelf>
+            {
+                static abstract System.Threading.Tasks.ValueTask<TSelf> BindAsync(Microsoft.AspNetCore.Http.HttpContext context, System.Reflection.ParameterInfo parameter);
+            }
+
+            public interface IContentTypeHttpResult
+            {
+                string ContentType { get; }
+            }
+
+            public interface IEndpointFilter
+            {
+                System.Threading.Tasks.ValueTask<object> InvokeAsync(Microsoft.AspNetCore.Http.EndpointFilterInvocationContext context, Microsoft.AspNetCore.Http.EndpointFilterDelegate next);
+            }
+
+            public interface IFileHttpResult
+            {
+                string ContentType { get; }
+                string FileDownloadName { get; }
+            }
+
             public interface IHttpContextAccessor
             {
                 Microsoft.AspNetCore.Http.HttpContext HttpContext { get; set; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.IHttpContextFactory` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IHttpContextFactory
             {
                 Microsoft.AspNetCore.Http.HttpContext Create(Microsoft.AspNetCore.Http.Features.IFeatureCollection featureCollection);
                 void Dispose(Microsoft.AspNetCore.Http.HttpContext httpContext);
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.IMiddleware` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IMiddleware
             {
                 System.Threading.Tasks.Task InvokeAsync(Microsoft.AspNetCore.Http.HttpContext context, Microsoft.AspNetCore.Http.RequestDelegate next);
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.IMiddlewareFactory` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IMiddlewareFactory
             {
                 Microsoft.AspNetCore.Http.IMiddleware Create(System.Type middlewareType);
                 void Release(Microsoft.AspNetCore.Http.IMiddleware middleware);
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.IResult` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            public interface INestedHttpResult
+            {
+                Microsoft.AspNetCore.Http.IResult Result { get; }
+            }
+
+            public interface IProblemDetailsService
+            {
+                System.Threading.Tasks.ValueTask WriteAsync(Microsoft.AspNetCore.Http.ProblemDetailsContext context);
+            }
+
+            public interface IProblemDetailsWriter
+            {
+                bool CanWrite(Microsoft.AspNetCore.Http.ProblemDetailsContext context);
+                System.Threading.Tasks.ValueTask WriteAsync(Microsoft.AspNetCore.Http.ProblemDetailsContext context);
+            }
+
             public interface IResult
             {
                 System.Threading.Tasks.Task ExecuteAsync(Microsoft.AspNetCore.Http.HttpContext httpContext);
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.PathString` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            public interface IStatusCodeHttpResult
+            {
+                int? StatusCode { get; }
+            }
+
+            public interface IValueHttpResult
+            {
+                object Value { get; }
+            }
+
+            public interface IValueHttpResult<TValue>
+            {
+                TValue Value { get; }
+            }
+
             public struct PathString : System.IEquatable<Microsoft.AspNetCore.Http.PathString>
             {
                 public static bool operator !=(Microsoft.AspNetCore.Http.PathString left, Microsoft.AspNetCore.Http.PathString right) => throw null;
@@ -459,7 +515,14 @@ namespace Microsoft
                 public static implicit operator Microsoft.AspNetCore.Http.PathString(string s) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.QueryString` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            public class ProblemDetailsContext
+            {
+                public Microsoft.AspNetCore.Http.EndpointMetadataCollection AdditionalMetadata { get => throw null; set => throw null; }
+                public Microsoft.AspNetCore.Http.HttpContext HttpContext { get => throw null; set => throw null; }
+                public Microsoft.AspNetCore.Mvc.ProblemDetails ProblemDetails { get => throw null; set => throw null; }
+                public ProblemDetailsContext() => throw null;
+            }
+
             public struct QueryString : System.IEquatable<Microsoft.AspNetCore.Http.QueryString>
             {
                 public static bool operator !=(Microsoft.AspNetCore.Http.QueryString left, Microsoft.AspNetCore.Http.QueryString right) => throw null;
@@ -484,10 +547,8 @@ namespace Microsoft
                 public string Value { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.RequestDelegate` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public delegate System.Threading.Tasks.Task RequestDelegate(Microsoft.AspNetCore.Http.HttpContext context);
 
-            // Generated from `Microsoft.AspNetCore.Http.RequestDelegateResult` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RequestDelegateResult
             {
                 public System.Collections.Generic.IReadOnlyList<object> EndpointMetadata { get => throw null; }
@@ -495,7 +556,6 @@ namespace Microsoft
                 public RequestDelegateResult(Microsoft.AspNetCore.Http.RequestDelegate requestDelegate, System.Collections.Generic.IReadOnlyList<object> metadata) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.RequestTrailerExtensions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RequestTrailerExtensions
             {
                 public static bool CheckTrailersAvailable(this Microsoft.AspNetCore.Http.HttpRequest request) => throw null;
@@ -504,7 +564,6 @@ namespace Microsoft
                 public static bool SupportsTrailers(this Microsoft.AspNetCore.Http.HttpRequest request) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.ResponseTrailerExtensions` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ResponseTrailerExtensions
             {
                 public static void AppendTrailer(this Microsoft.AspNetCore.Http.HttpResponse response, string trailerName, Microsoft.Extensions.Primitives.StringValues trailerValues) => throw null;
@@ -512,7 +571,6 @@ namespace Microsoft
                 public static bool SupportsTrailers(this Microsoft.AspNetCore.Http.HttpResponse response) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.StatusCodes` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class StatusCodes
             {
                 public const int Status100Continue = default;
@@ -582,7 +640,6 @@ namespace Microsoft
                 public const int Status511NetworkAuthenticationRequired = default;
             }
 
-            // Generated from `Microsoft.AspNetCore.Http.WebSocketManager` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class WebSocketManager
             {
                 public virtual System.Threading.Tasks.Task<System.Net.WebSockets.WebSocket> AcceptWebSocketAsync() => throw null;
@@ -595,13 +652,11 @@ namespace Microsoft
 
             namespace Features
             {
-                // Generated from `Microsoft.AspNetCore.Http.Features.IEndpointFeature` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IEndpointFeature
                 {
                     Microsoft.AspNetCore.Http.Endpoint Endpoint { get; set; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Features.IRouteValuesFeature` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IRouteValuesFeature
                 {
                     Microsoft.AspNetCore.Routing.RouteValueDictionary RouteValues { get; set; }
@@ -610,7 +665,6 @@ namespace Microsoft
             }
             namespace Metadata
             {
-                // Generated from `Microsoft.AspNetCore.Http.Metadata.IAcceptsMetadata` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IAcceptsMetadata
                 {
                     System.Collections.Generic.IReadOnlyList<string> ContentTypes { get; }
@@ -618,36 +672,55 @@ namespace Microsoft
                     System.Type RequestType { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Metadata.IFromBodyMetadata` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public interface IEndpointDescriptionMetadata
+                {
+                    string Description { get; }
+                }
+
+                public interface IEndpointMetadataProvider
+                {
+                    static abstract void PopulateMetadata(System.Reflection.MethodInfo method, Microsoft.AspNetCore.Builder.EndpointBuilder builder);
+                }
+
+                public interface IEndpointParameterMetadataProvider
+                {
+                    static abstract void PopulateMetadata(System.Reflection.ParameterInfo parameter, Microsoft.AspNetCore.Builder.EndpointBuilder builder);
+                }
+
+                public interface IEndpointSummaryMetadata
+                {
+                    string Summary { get; }
+                }
+
                 public interface IFromBodyMetadata
                 {
                     bool AllowEmpty { get => throw null; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Metadata.IFromHeaderMetadata` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public interface IFromFormMetadata
+                {
+                    string Name { get; }
+                }
+
                 public interface IFromHeaderMetadata
                 {
                     string Name { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Metadata.IFromQueryMetadata` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IFromQueryMetadata
                 {
                     string Name { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Metadata.IFromRouteMetadata` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IFromRouteMetadata
                 {
                     string Name { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Metadata.IFromServiceMetadata` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IFromServiceMetadata
                 {
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Metadata.IProducesResponseTypeMetadata` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IProducesResponseTypeMetadata
                 {
                     System.Collections.Generic.IEnumerable<string> ContentTypes { get; }
@@ -655,7 +728,15 @@ namespace Microsoft
                     System.Type Type { get; }
                 }
 
-                // Generated from `Microsoft.AspNetCore.Http.Metadata.ITagsMetadata` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public interface IRequestSizeLimitMetadata
+                {
+                    System.Int64? MaxRequestBodySize { get; }
+                }
+
+                public interface ISkipStatusCodePagesMetadata
+                {
+                }
+
                 public interface ITagsMetadata
                 {
                     System.Collections.Generic.IReadOnlyList<string> Tags { get; }
@@ -663,12 +744,24 @@ namespace Microsoft
 
             }
         }
+        namespace Mvc
+        {
+            public class ProblemDetails
+            {
+                public string Detail { get => throw null; set => throw null; }
+                public System.Collections.Generic.IDictionary<string, object> Extensions { get => throw null; }
+                public string Instance { get => throw null; set => throw null; }
+                public ProblemDetails() => throw null;
+                public int? Status { get => throw null; set => throw null; }
+                public string Title { get => throw null; set => throw null; }
+                public string Type { get => throw null; set => throw null; }
+            }
+
+        }
         namespace Routing
         {
-            // Generated from `Microsoft.AspNetCore.Routing.RouteValueDictionary` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RouteValueDictionary : System.Collections.Generic.ICollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IDictionary<string, object>, System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IReadOnlyCollection<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.Generic.IReadOnlyDictionary<string, object>, System.Collections.IEnumerable
             {
-                // Generated from `Microsoft.AspNetCore.Routing.RouteValueDictionary+Enumerator` in `Microsoft.AspNetCore.Http.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<System.Collections.Generic.KeyValuePair<string, object>>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public System.Collections.Generic.KeyValuePair<string, object> Current { get => throw null; }
@@ -701,6 +794,9 @@ namespace Microsoft
                 public bool Remove(string key) => throw null;
                 public bool Remove(string key, out object value) => throw null;
                 public RouteValueDictionary() => throw null;
+                public RouteValueDictionary(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, object>> values) => throw null;
+                public RouteValueDictionary(System.Collections.Generic.IEnumerable<System.Collections.Generic.KeyValuePair<string, string>> values) => throw null;
+                public RouteValueDictionary(Microsoft.AspNetCore.Routing.RouteValueDictionary dictionary) => throw null;
                 public RouteValueDictionary(object values) => throw null;
                 public bool TryAdd(string key, object value) => throw null;
                 public bool TryGetValue(string key, out object value) => throw null;

@@ -13,10 +13,10 @@
 
 import java
 import semmle.code.java.security.FragmentInjectionQuery
-import DataFlow::PathGraph
+import FragmentInjectionTaintFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink
-where any(FragmentInjectionTaintConf conf).hasFlowPath(source, sink)
+from FragmentInjectionTaintFlow::PathNode source, FragmentInjectionTaintFlow::PathNode sink
+where FragmentInjectionTaintFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "Fragment depends on a $@, which may allow a malicious application to bypass access controls.",
   source.getNode(), "user-provided value"

@@ -211,9 +211,7 @@ private module Cached {
 private predicate modifiable(Argument arg) {
   arg.getExpr() instanceof InOutExpr
   or
-  arg.getExpr().getType() instanceof NominalType
-  or
-  arg.getExpr().getType() instanceof PointerType
+  arg.getExpr().getType() instanceof NominalOrBoundGenericNominalType
 }
 
 predicate modifiableParam(ParamDecl param) {
@@ -398,6 +396,19 @@ abstract class ReturnNode extends Node {
 private module ReturnNodes {
   class ReturnReturnNode extends ReturnNode, ExprNode {
     ReturnReturnNode() { exists(ReturnStmt stmt | stmt.getResult() = this.asExpr()) }
+
+    override ReturnKind getKind() { result instanceof NormalReturnKind }
+  }
+
+  /**
+   * A data-flow node that represents the `self` value in a constructor being
+   * implicitly returned as the newly-constructed object
+   */
+  class SelfReturnNode extends InoutReturnNodeImpl {
+    SelfReturnNode() {
+      exit.getScope() instanceof ConstructorDecl and
+      param instanceof SelfParamDecl
+    }
 
     override ReturnKind getKind() { result instanceof NormalReturnKind }
   }

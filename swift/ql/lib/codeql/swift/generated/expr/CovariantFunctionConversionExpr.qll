@@ -5,7 +5,8 @@ import codeql.swift.elements.expr.ImplicitConversionExpr
 
 module Generated {
   class CovariantFunctionConversionExpr extends Synth::TCovariantFunctionConversionExpr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string getAPrimaryQlClass() { result = "CovariantFunctionConversionExpr" }
   }
 }

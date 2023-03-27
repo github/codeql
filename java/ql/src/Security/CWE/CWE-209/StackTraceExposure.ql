@@ -31,33 +31,27 @@ class PrintStackTraceMethod extends Method {
   }
 }
 
-class ServletWriterSourceToPrintStackTraceMethodFlowConfig extends TaintTracking::Configuration {
-  ServletWriterSourceToPrintStackTraceMethodFlowConfig() {
-    this = "StackTraceExposure::ServletWriterSourceToPrintStackTraceMethodFlowConfig"
-  }
+module ServletWriterSourceToPrintStackTraceMethodFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof XssVulnerableWriterSource }
 
-  override predicate isSource(DataFlow::Node src) {
-    src.asExpr() instanceof XssVulnerableWriterSource
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
       sink.asExpr() = ma.getAnArgument() and ma.getMethod() instanceof PrintStackTraceMethod
     )
   }
 }
 
+module ServletWriterSourceToPrintStackTraceMethodFlow =
+  TaintTracking::Global<ServletWriterSourceToPrintStackTraceMethodFlowConfig>;
+
 /**
  * A call that uses `Throwable.printStackTrace()` on a stream that is connected
  * to external output.
  */
 predicate printsStackToWriter(MethodAccess call) {
-  exists(
-    ServletWriterSourceToPrintStackTraceMethodFlowConfig writerSource,
-    PrintStackTraceMethod printStackTrace
-  |
+  exists(PrintStackTraceMethod printStackTrace |
     call.getMethod() = printStackTrace and
-    writerSource.hasFlowToExpr(call.getAnArgument())
+    ServletWriterSourceToPrintStackTraceMethodFlow::flowToExpr(call.getAnArgument())
   )
 }
 
@@ -86,15 +80,14 @@ predicate stackTraceExpr(Expr exception, MethodAccess stackTraceString) {
   )
 }
 
-class StackTraceStringToHttpResponseSinkFlowConfig extends TaintTracking::Configuration {
-  StackTraceStringToHttpResponseSinkFlowConfig() {
-    this = "StackTraceExposure::StackTraceStringToHttpResponseSinkFlowConfig"
-  }
+module StackTraceStringToHttpResponseSinkFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { stackTraceExpr(_, src.asExpr()) }
 
-  override predicate isSource(DataFlow::Node src) { stackTraceExpr(_, src.asExpr()) }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
 }
+
+module StackTraceStringToHttpResponseSinkFlow =
+  TaintTracking::Global<StackTraceStringToHttpResponseSinkFlowConfig>;
 
 /**
  * A write of stack trace data to an external stream.
@@ -109,9 +102,9 @@ predicate printsStackExternally(MethodAccess call, Expr stackTrace) {
  * A stringified stack trace flows to an external sink.
  */
 predicate stringifiedStackFlowsExternally(DataFlow::Node externalExpr, Expr stackTrace) {
-  exists(MethodAccess stackTraceString, StackTraceStringToHttpResponseSinkFlowConfig conf |
+  exists(MethodAccess stackTraceString |
     stackTraceExpr(stackTrace, stackTraceString) and
-    conf.hasFlow(DataFlow::exprNode(stackTraceString), externalExpr)
+    StackTraceStringToHttpResponseSinkFlow::flow(DataFlow::exprNode(stackTraceString), externalExpr)
   )
 }
 
@@ -126,22 +119,20 @@ class GetMessageFlowSource extends MethodAccess {
   }
 }
 
-class GetMessageFlowSourceToHttpResponseSinkFlowConfig extends TaintTracking::Configuration {
-  GetMessageFlowSourceToHttpResponseSinkFlowConfig() {
-    this = "StackTraceExposure::GetMessageFlowSourceToHttpResponseSinkFlowConfig"
-  }
+module GetMessageFlowSourceToHttpResponseSinkFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof GetMessageFlowSource }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof GetMessageFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof InformationLeakSink }
 }
+
+module GetMessageFlowSourceToHttpResponseSinkFlow =
+  TaintTracking::Global<GetMessageFlowSourceToHttpResponseSinkFlowConfig>;
 
 /**
  * A call to `getMessage()` that then flows to a servlet response.
  */
 predicate getMessageFlowsExternally(DataFlow::Node externalExpr, GetMessageFlowSource getMessage) {
-  any(GetMessageFlowSourceToHttpResponseSinkFlowConfig conf)
-      .hasFlow(DataFlow::exprNode(getMessage), externalExpr)
+  GetMessageFlowSourceToHttpResponseSinkFlow::flow(DataFlow::exprNode(getMessage), externalExpr)
 }
 
 from Expr externalExpr, Expr errorInformation

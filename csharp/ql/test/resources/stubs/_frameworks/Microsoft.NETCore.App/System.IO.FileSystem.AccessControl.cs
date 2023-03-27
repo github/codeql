@@ -1,10 +1,10 @@
 // This file contains auto-generated code.
+// Generated from `System.IO.FileSystem.AccessControl, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
     namespace IO
     {
-        // Generated from `System.IO.FileSystemAclExtensions` in `System.IO.FileSystem.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
         public static class FileSystemAclExtensions
         {
             public static void Create(this System.IO.DirectoryInfo directoryInfo, System.Security.AccessControl.DirectorySecurity directorySecurity) => throw null;
@@ -25,7 +25,6 @@ namespace System
     {
         namespace AccessControl
         {
-            // Generated from `System.Security.AccessControl.DirectoryObjectSecurity` in `System.IO.FileSystem.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class DirectoryObjectSecurity : System.Security.AccessControl.ObjectSecurity
             {
                 public virtual System.Security.AccessControl.AccessRule AccessRuleFactory(System.Security.Principal.IdentityReference identityReference, int accessMask, bool isInherited, System.Security.AccessControl.InheritanceFlags inheritanceFlags, System.Security.AccessControl.PropagationFlags propagationFlags, System.Security.AccessControl.AccessControlType type, System.Guid objectType, System.Guid inheritedObjectType) => throw null;
@@ -49,21 +48,18 @@ namespace System
                 protected void SetAuditRule(System.Security.AccessControl.ObjectAuditRule rule) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.DirectorySecurity` in `System.IO.FileSystem.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class DirectorySecurity : System.Security.AccessControl.FileSystemSecurity
             {
                 public DirectorySecurity() => throw null;
                 public DirectorySecurity(string name, System.Security.AccessControl.AccessControlSections includeSections) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.FileSecurity` in `System.IO.FileSystem.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FileSecurity : System.Security.AccessControl.FileSystemSecurity
             {
                 public FileSecurity() => throw null;
                 public FileSecurity(string fileName, System.Security.AccessControl.AccessControlSections includeSections) => throw null;
             }
 
-            // Generated from `System.Security.AccessControl.FileSystemAccessRule` in `System.IO.FileSystem.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FileSystemAccessRule : System.Security.AccessControl.AccessRule
             {
                 public FileSystemAccessRule(System.Security.Principal.IdentityReference identity, System.Security.AccessControl.FileSystemRights fileSystemRights, System.Security.AccessControl.AccessControlType type) : base(default(System.Security.Principal.IdentityReference), default(int), default(bool), default(System.Security.AccessControl.InheritanceFlags), default(System.Security.AccessControl.PropagationFlags), default(System.Security.AccessControl.AccessControlType)) => throw null;
@@ -73,7 +69,6 @@ namespace System
                 public System.Security.AccessControl.FileSystemRights FileSystemRights { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.FileSystemAuditRule` in `System.IO.FileSystem.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class FileSystemAuditRule : System.Security.AccessControl.AuditRule
             {
                 public FileSystemAuditRule(System.Security.Principal.IdentityReference identity, System.Security.AccessControl.FileSystemRights fileSystemRights, System.Security.AccessControl.AuditFlags flags) : base(default(System.Security.Principal.IdentityReference), default(int), default(bool), default(System.Security.AccessControl.InheritanceFlags), default(System.Security.AccessControl.PropagationFlags), default(System.Security.AccessControl.AuditFlags)) => throw null;
@@ -83,7 +78,6 @@ namespace System
                 public System.Security.AccessControl.FileSystemRights FileSystemRights { get => throw null; }
             }
 
-            // Generated from `System.Security.AccessControl.FileSystemRights` in `System.IO.FileSystem.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum FileSystemRights : int
             {
@@ -112,7 +106,6 @@ namespace System
                 WriteExtendedAttributes = 16,
             }
 
-            // Generated from `System.Security.AccessControl.FileSystemSecurity` in `System.IO.FileSystem.AccessControl, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public abstract class FileSystemSecurity : System.Security.AccessControl.NativeObjectSecurity
             {
                 public override System.Type AccessRightType { get => throw null; }

@@ -172,6 +172,14 @@ namespace Test
         static explicit IInterface2<Class11>.operator int(Class11 n) => 0;
     }
 
+    public unsafe class MyUnsafeClass
+    {
+        public static void M1(delegate*<void> f) => throw null;
+        public static void M2(int*[] x) => throw null;
+        public static char* M3() => throw null;
+        public static void M4(int x) => throw null;
+    }
+
     public enum Enum1
     {
         None1,

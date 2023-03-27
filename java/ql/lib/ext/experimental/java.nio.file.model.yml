@@ -3,7 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: experimentalSummaryModel
     data:
-      - ["java.nio.file", "Path", True, "normalize", "", "", "Argument[-1]", "ReturnValue", "taint", "manual", "unsafe-url-forward"]
-      - ["java.nio.file", "Path", True, "resolve", "", "", "Argument[-1..0]", "ReturnValue", "taint", "manual", "unsafe-url-forward"]
-      - ["java.nio.file", "Path", True, "toString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual", "unsafe-url-forward"]
+      - ["java.nio.file", "Path", True, "normalize", "", "", "Argument[this]", "ReturnValue", "taint", "manual", "unsafe-url-forward"]
+      - ["java.nio.file", "Path", True, "resolve", "", "", "Argument[this]", "ReturnValue", "taint", "manual", "unsafe-url-forward"]
+      - ["java.nio.file", "Path", True, "resolve", "", "", "Argument[0]", "ReturnValue", "taint", "manual", "unsafe-url-forward"]
+      - ["java.nio.file", "Path", True, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual", "unsafe-url-forward"]
       - ["java.nio.file", "Paths", True, "get", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual", "unsafe-url-forward"]

@@ -1,3 +1,24 @@
+## 0.5.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
+* Deleted the deprecated `getId` from the `Function`, `NamespaceDefinition`, and `ImportEqualsDeclaration` classes.
+* Deleted the deprecated `flowsTo` predicate from the `HTTP::Servers::RequestSource` and `HTTP::Servers::ResponseSource` class.
+* Deleted the deprecated `getEventName` predicate from the `SocketIO::ReceiveNode`, `SocketIO::SendNode`, `SocketIOClient::SendNode` classes.
+* Deleted the deprecated `RateLimitedRouteHandlerExpr` and `RouteHandlerExpressionWithRateLimiter` classes.
+* [Import assertions](https://github.com/tc39/proposal-import-assertions) are now supported.
+  Previously this feature was only supported in TypeScript code, but is now supported for plain JavaScript as well and is also accessible in the AST.
+
+## 0.5.0
+
+### Breaking Changes
+
+* The `CryptographicOperation` concept has been changed to use a range pattern. This is a breaking change and existing implementations of `CryptographicOperation` will need to be updated in order to compile. These implementations can be updated by:
+  1. Extending `CryptographicOperation::Range` rather than `CryptographicOperation`
+  2. Renaming the `getInput()` member predicate as `getAnInput()`
+  3. Implementing the `BlockMode getBlockMode()` member predicate. The implementation for this can be `none()` if the operation is a hashing operation or an encryption operation using a stream cipher.
+
 ## 0.4.3
 
 ### Minor Analysis Improvements

@@ -1,3 +1,42 @@
+## 0.5.5
+
+### New Features
+
+* Added support for merging two `PathGraph`s via disjoint union to allow results from multiple data flow computations in a single `path-problem` query.
+
+### Major Analysis Improvements
+
+* Removed low-confidence call edges to known neutral call targets from the call graph used in data flow analysis. This includes, for example, custom `List.contains` implementations when the best inferrable type at the call site is simply `List`.
+* Added more sink and summary dataflow models for the following packages:
+  * `java.io`
+  * `java.lang`
+  * `java.sql`
+  * `javafx.scene.web`
+  * `org.apache.commons.compress.archivers.tar`
+  * `org.apache.http.client.utils`
+  * `org.codehaus.cargo.container.installer`
+* The main data flow and taint tracking APIs have been changed. The old APIs
+  remain in place for now and translate to the new through a
+  backwards-compatible wrapper. If multiple configurations are in scope
+  simultaneously, then this may affect results slightly. The new API is quite
+  similar to the old, but makes use of a configuration module instead of a
+  configuration class.
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
+* Deleted the deprecated `getRepresentedString` predicate from the `StringLiteral` class.
+* Deleted the deprecated `ServletWriterSource` class.
+* Deleted the deprecated `getGroupID`, `getArtefactID`, and `artefactMatches` predicates from the `MavenRepoJar` class.
+
+## 0.5.4
+
+### Minor Analysis Improvements
+
+* Added new sinks for `java/hardcoded-credential-api-call` to identify the use of hardcoded secrets in the creation and verification of JWT tokens using `com.auth0.jwt`. These sinks are from [an experimental query submitted by @luchua](https://github.com/github/codeql/pull/9036).
+* The Java extractor now supports builds against JDK 20.
+* The query `java/hardcoded-credential-api-call` now recognizes methods that accept user and password from the SQLServerDataSource class of the Microsoft JDBC Driver for SQL Server.
+
 ## 0.5.3
 
 ### New Features

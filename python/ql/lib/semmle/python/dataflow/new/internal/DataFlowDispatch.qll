@@ -64,7 +64,14 @@ newtype TParameterPosition =
     index = any(Parameter p).getPosition() + 1
   } or
   TSynthStarArgsElementParameterPosition(int index) { exists(TStarArgsParameterPosition(index)) } or
-  TDictSplatParameterPosition()
+  TDictSplatParameterPosition() or
+  // To get flow from a **kwargs argument to a keyword parameter, we add a read-step
+  // from a synthetic **kwargs parameter. We need this separate synthetic ParameterNode,
+  // since we clear content of the normal **kwargs parameter for the names that
+  // correspond to normal keyword parameters. Since we cannot re-use the same parameter
+  // position for multiple parameter nodes in the same callable, we introduce this
+  // synthetic parameter position.
+  TSynthDictSplatParameterPosition()
 
 /** A parameter position. */
 class ParameterPosition extends TParameterPosition {
@@ -92,6 +99,12 @@ class ParameterPosition extends TParameterPosition {
   /** Holds if this position represents a `**kwargs` parameter. */
   predicate isDictSplat() { this = TDictSplatParameterPosition() }
 
+  /**
+   * Holds if this position represents a **synthetic** `**kwargs` parameter
+   * (see comment for `TSynthDictSplatParameterPosition`).
+   */
+  predicate isSynthDictSplat() { this = TSynthDictSplatParameterPosition() }
+
   /** Gets a textual representation of this element. */
   string toString() {
     this.isSelf() and result = "self"
@@ -108,6 +121,8 @@ class ParameterPosition extends TParameterPosition {
     )
     or
     this.isDictSplat() and result = "**"
+    or
+    this.isSynthDictSplat() and result = "synthetic **"
   }
 }
 
@@ -179,6 +194,8 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   )
   or
   ppos.isDictSplat() and apos.isDictSplat()
+  or
+  ppos.isSynthDictSplat() and apos.isDictSplat()
 }
 
 // =============================================================================
@@ -324,16 +341,9 @@ abstract class DataFlowFunction extends DataFlowCallable, TFunction {
     )
     or
     // `**kwargs`
-    // since the dataflow library has the restriction that we can only have ONE result per
-    // parameter position, if there is both a synthetic **kwargs and a real **kwargs
-    // parameter, we only give the result for the synthetic, and add local flow from the
-    // synthetic to the real. It might seem more natural to do it in the other
-    // direction, but since we have a clearStep on the real **kwargs parameter, we would have that
-    // content-clearing would also affect the synthetic parameter, which we don't want.
-    ppos.isDictSplat() and
-    if exists(func.getArgByName(_))
-    then result = TSynthDictSplatParameterNode(this)
-    else result.getParameter() = func.getKwarg()
+    ppos.isDictSplat() and result.getParameter() = func.getKwarg()
+    or
+    ppos.isSynthDictSplat() and result = TSynthDictSplatParameterNode(this)
   }
 }
 
@@ -1460,16 +1470,7 @@ class SummaryParameterNode extends ParameterNodeImpl, TSummaryParameterNode {
   override Parameter getParameter() { none() }
 
   override predicate isParameterOf(DataFlowCallable c, ParameterPosition ppos) {
-    sc = c.asLibraryCallable() and
-    ppos = pos and
-    // avoid overlap with `SynthDictSplatParameterNode`
-    not (
-      pos.isDictSplat() and
-      exists(ParameterPosition keywordPos |
-        FlowSummaryImpl::Private::summaryParameterNodeRange(sc, keywordPos) and
-        keywordPos.isKeyword(_)
-      )
-    )
+    sc = c.asLibraryCallable() and ppos = pos
   }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = sc }

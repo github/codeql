@@ -1,7 +1,9 @@
 edges
-| StackTraceExposure.rb:11:10:11:17 | call to caller :  | StackTraceExposure.rb:12:18:12:19 | bt |
+| StackTraceExposure.rb:11:5:11:6 | bt :  | StackTraceExposure.rb:12:18:12:19 | bt |
+| StackTraceExposure.rb:11:10:11:17 | call to caller :  | StackTraceExposure.rb:11:5:11:6 | bt :  |
 nodes
 | StackTraceExposure.rb:6:18:6:28 | call to backtrace | semmle.label | call to backtrace |
+| StackTraceExposure.rb:11:5:11:6 | bt :  | semmle.label | bt :  |
 | StackTraceExposure.rb:11:10:11:17 | call to caller :  | semmle.label | call to caller :  |
 | StackTraceExposure.rb:12:18:12:19 | bt | semmle.label | bt |
 | StackTraceExposure.rb:18:18:18:28 | call to backtrace | semmle.label | call to backtrace |

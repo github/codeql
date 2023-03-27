@@ -61,10 +61,16 @@ class WebSettingsDisallowContentAccessSink extends DataFlow::Node {
   }
 }
 
-class WebViewDisallowContentAccessConfiguration extends TaintTracking::Configuration {
-  WebViewDisallowContentAccessConfiguration() { this = "WebViewDisallowContentAccessConfiguration" }
+private newtype WebViewOrSettings =
+  IsWebView() or
+  IsSettings()
 
-  override predicate isSource(DataFlow::Node node) { node instanceof WebViewSource }
+module WebViewDisallowContentAccessConfig implements DataFlow::StateConfigSig {
+  class FlowState = WebViewOrSettings;
+
+  predicate isSource(DataFlow::Node node, FlowState state) {
+    node instanceof WebViewSource and state instanceof IsWebView
+  }
 
   /**
    * Holds if the step from `node1` to `node2` is a dataflow step that gets the `WebSettings` object
@@ -73,12 +79,11 @@ class WebViewDisallowContentAccessConfiguration extends TaintTracking::Configura
    * This step is only valid when `state1` is empty and `state2` indicates that the `WebSettings` object
    * has been accessed.
    */
-  override predicate isAdditionalTaintStep(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    state1 instanceof DataFlow::FlowStateEmpty and
-    state2 = "WebSettings" and
+    state1 instanceof IsWebView and
+    state2 instanceof IsSettings and
     // settings = webView.getSettings()
     // ^node2   = ^node1
     exists(MethodAccess ma |
@@ -88,11 +93,16 @@ class WebViewDisallowContentAccessConfiguration extends TaintTracking::Configura
     )
   }
 
-  override predicate isSink(DataFlow::Node node, DataFlow::FlowState state) {
-    state = "WebSettings" and
+  predicate isSink(DataFlow::Node node, FlowState state) {
+    state instanceof IsSettings and
     node instanceof WebSettingsDisallowContentAccessSink
   }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 }
+
+module WebViewDisallowContentAccessFlow =
+  TaintTracking::GlobalWithState<WebViewDisallowContentAccessConfig>;
 
 from Expr e
 where
@@ -106,7 +116,7 @@ where
   // implicit: no setAllowContentAccess(false)
   exists(WebViewSource source |
     source.asExpr() = e and
-    not any(WebViewDisallowContentAccessConfiguration cfg).hasFlow(source, _)
+    not WebViewDisallowContentAccessFlow::flow(source, _)
   )
 select e,
   "Sensitive information may be exposed via a malicious link due to access to content:// links being allowed in this WebView."

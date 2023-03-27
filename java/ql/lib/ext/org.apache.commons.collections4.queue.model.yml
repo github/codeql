@@ -4,8 +4,8 @@ extensions:
       extensible: summaryModel
     data:
       # Note that when lambdas are supported we should have more models for TransformedQueue
-      - ["org.apache.commons.collections4.queue", "CircularFifoQueue", True, "CircularFifoQueue", "(Collection)", "", "Argument[0].Element", "Argument[-1].Element", "value", "manual"]
-      - ["org.apache.commons.collections4.queue", "CircularFifoQueue", True, "get", "", "", "Argument[-1].Element", "ReturnValue", "value", "manual"]
+      - ["org.apache.commons.collections4.queue", "CircularFifoQueue", True, "CircularFifoQueue", "(Collection)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["org.apache.commons.collections4.queue", "CircularFifoQueue", True, "get", "", "", "Argument[this].Element", "ReturnValue", "value", "manual"]
       - ["org.apache.commons.collections4.queue", "PredicatedQueue", True, "predicatedQueue", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4.queue", "SynchronizedQueue", True, "synchronizedQueue", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]
       - ["org.apache.commons.collections4.queue", "TransformedQueue", True, "transformingQueue", "", "", "Argument[0].Element", "ReturnValue.Element", "value", "manual"]

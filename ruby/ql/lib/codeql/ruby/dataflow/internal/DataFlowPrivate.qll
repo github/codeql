@@ -1,3 +1,4 @@
+private import codeql.util.Boolean
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
@@ -8,6 +9,7 @@ private import SsaImpl as SsaImpl
 private import FlowSummaryImpl as FlowSummaryImpl
 private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.frameworks.data.ModelsAsData
+import codeql.util.Unit
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }
@@ -189,18 +191,6 @@ module LocalFlow {
   }
 
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
-    exists(DataFlowCallable c | nodeFrom = TSynthHashSplatParameterNode(c) |
-      exists(HashSplatParameter p |
-        p.getCallable() = c.asCallable() and
-        nodeTo = TNormalParameterNode(p)
-      )
-      or
-      exists(ParameterPosition pos |
-        nodeTo = TSummaryParameterNode(c.asLibraryCallable(), pos) and
-        pos.isHashSplat()
-      )
-    )
-    or
     localSsaFlowStep(nodeFrom, nodeTo)
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
@@ -468,12 +458,15 @@ private module Cached {
       FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, includeUnknown,
         lower)
     } or
+    TElementContentOfTypeContent(string type, Boolean includeUnknown) {
+      type = any(Content::KnownElementContent content).getIndex().getValueType()
+    } or
     TNoContentSet() // Only used by type-tracking
 
   cached
   class TContentSet =
     TSingletonContent or TAnyElementContent or TKnownOrUnknownElementContent or
-        TElementLowerBoundContent;
+        TElementLowerBoundContent or TElementContentOfTypeContent;
 
   private predicate trackKnownValue(ConstantValue cv) {
     not cv.isFloat(_) and
@@ -536,10 +529,7 @@ import Cached
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
   exists(SsaImpl::DefinitionExt def | def = n.(SsaDefinitionExtNode).getDefinitionExt() |
-    def instanceof Ssa::PhiNode or
-    def instanceof SsaImpl::PhiReadNode or
-    def instanceof Ssa::CapturedEntryDefinition or
-    def instanceof Ssa::CapturedCallDefinition
+    not def instanceof Ssa::WriteDefinition
   )
   or
   n = LocalFlow::getParameterDefNode(_)
@@ -648,9 +638,7 @@ private module ParameterNodes {
           )
         or
         parameter = callable.getAParameter().(HashSplatParameter) and
-        pos.isHashSplat() and
-        // avoid overlap with `SynthHashSplatParameterNode`
-        not callable.getAParameter() instanceof KeywordParameter
+        pos.isHashSplat()
         or
         parameter = callable.getParameter(0).(SplatParameter) and
         pos.isSplatAll()
@@ -780,7 +768,7 @@ private module ParameterNodes {
     final override Parameter getParameter() { none() }
 
     final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      c = callable and pos.isHashSplat()
+      c = callable and pos.isSynthHashSplat()
     }
 
     final override CfgScope getCfgScope() { result = callable.asCallable() }
@@ -802,16 +790,7 @@ private module ParameterNodes {
     override Parameter getParameter() { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      sc = c.asLibraryCallable() and
-      pos = pos_ and
-      // avoid overlap with `SynthHashSplatParameterNode`
-      not (
-        pos.isHashSplat() and
-        exists(ParameterPosition keywordPos |
-          FlowSummaryImpl::Private::summaryParameterNodeRange(sc, keywordPos) and
-          keywordPos.isKeyword(_)
-        )
-      )
+      sc = c.asLibraryCallable() and pos = pos_
     }
 
     override CfgScope getCfgScope() { none() }
@@ -1352,7 +1331,15 @@ private module PostUpdateNodes {
 private import PostUpdateNodes
 
 /** A node that performs a type cast. */
-class CastNode extends Node instanceof ReturningNode { }
+class CastNode extends Node {
+  CastNode() {
+    // ensure that actual return nodes are included in the path graph
+    this instanceof ReturningNode
+    or
+    // ensure that all variable assignments are included in the path graph
+    this.(SsaDefinitionExtNode).getDefinitionExt() instanceof Ssa::WriteDefinition
+  }
+}
 
 class DataFlowExpr = CfgNodes::ExprCfgNode;
 
@@ -1363,15 +1350,6 @@ int accessPathLimit() { result = 5 }
  * precision. This disables adaptive access path precision for such access paths.
  */
 predicate forceHighPrecision(Content c) { c instanceof Content::ElementContent }
-
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.

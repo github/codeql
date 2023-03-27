@@ -20,8 +20,8 @@ struct xmlParserOption : Hashable {
     let rawValue: UInt32 = 0
 }
 
-var XML_PARSE_NOENT: xmlParserOption { get { return xmlParserOption() } } 
-var XML_PARSE_DTDLOAD: xmlParserOption { get { return xmlParserOption() } } 
+var XML_PARSE_NOENT: xmlParserOption { get { return xmlParserOption() } }
+var XML_PARSE_DTDLOAD: xmlParserOption { get { return xmlParserOption() } }
 
 typealias xmlChar = UInt8
 typealias xmlDocPtr = UnsafeMutablePointer<xmlDoc>
@@ -58,6 +58,8 @@ func test() {
     let _ = xmlReadFile(remoteCharPtr, nil, 0) // NO XXE: external entities not enabled
     let _ = xmlReadFile(remoteCharPtr, nil, Int32(XML_PARSE_NOENT.rawValue)) // $ hasXXE=57
     let _ = xmlReadFile(remoteCharPtr, nil, Int32(XML_PARSE_DTDLOAD.rawValue)) // $ hasXXE=57
+    let _ = xmlReadFile(remoteCharPtr, nil, Int32(XML_PARSE_NOENT.rawValue | XML_PARSE_DTDLOAD.rawValue)) // $ hasXXE=57
+    let _ = xmlReadFile(remoteCharPtr, nil, Int32(XML_PARSE_NOENT.rawValue | 0)) // $ hasXXE=57
     let _ = xmlReadDoc(remotePtr, nil, nil, 0) // NO XXE: external entities not enabled
     let _ = xmlReadDoc(remotePtr, nil, nil, Int32(XML_PARSE_NOENT.rawValue)) // $ hasXXE=56
     let _ = xmlReadDoc(remotePtr, nil, nil, Int32(XML_PARSE_DTDLOAD.rawValue)) // $ hasXXE=56

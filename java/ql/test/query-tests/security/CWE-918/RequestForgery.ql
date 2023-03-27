@@ -9,7 +9,8 @@ class HasFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "SSRF" and
-    exists(RequestForgeryConfiguration conf, DataFlow::Node sink | conf.hasFlowTo(sink) |
+    exists(DataFlow::Node sink |
+      RequestForgeryFlow::flowTo(sink) and
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

@@ -16,7 +16,6 @@ import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.TaintTracking
 import DataFlow
 import semmle.code.java.dispatch.VirtualDispatch
-import PathGraph
 
 private class ShortStringLiteral extends StringLiteral {
   ShortStringLiteral() { this.getValue().length() < 100 }
@@ -51,26 +50,28 @@ class StringContainer extends RefType {
   }
 }
 
-class InsecureCryptoConfiguration extends TaintTracking::Configuration {
-  InsecureCryptoConfiguration() { this = "InsecureCryptoConfiguration" }
+module InsecureCryptoConfig implements ConfigSig {
+  predicate isSource(Node n) { n.asExpr() instanceof InsecureAlgoLiteral }
 
-  override predicate isSource(Node n) { n.asExpr() instanceof InsecureAlgoLiteral }
+  predicate isSink(Node n) { exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec()) }
 
-  override predicate isSink(Node n) { exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec()) }
-
-  override predicate isSanitizer(Node n) {
+  predicate isBarrier(Node n) {
     objectToString(n.asExpr()) or
     not n.getType().getErasure() instanceof StringContainer
   }
 }
 
+module InsecureCryptoFlow = TaintTracking::Global<InsecureCryptoConfig>;
+
+import InsecureCryptoFlow::PathGraph
+
 from
-  PathNode source, PathNode sink, CryptoAlgoSpec c, InsecureAlgoLiteral s,
-  InsecureCryptoConfiguration conf
+  InsecureCryptoFlow::PathNode source, InsecureCryptoFlow::PathNode sink, CryptoAlgoSpec c,
+  InsecureAlgoLiteral s
 where
   sink.getNode().asExpr() = c.getAlgoSpec() and
   source.getNode().asExpr() = s and
-  conf.hasFlowPath(source, sink)
+  InsecureCryptoFlow::flowPath(source, sink)
 select c, source, sink,
   "Cryptographic algorithm $@ may not be secure, consider using a different algorithm.", s,
   s.getValue()

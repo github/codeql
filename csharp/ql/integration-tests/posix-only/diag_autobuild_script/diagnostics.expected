@@ -2,8 +2,7 @@
   "attributes": {},
   "helpLinks": [],
   "internal": false,
-  "location": {},
-  "markdownMessage": "CodeQL attempted to build your project using a script located at `build.sh`, which failed. Set up a [manual build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
+  "markdownMessage": "CodeQL attempted to build your project using a script located at `build.sh`, which failed.\n\nSet up a [manual build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
   "severity": "error",
   "source": {
     "extractorName": "csharp",
@@ -20,8 +19,7 @@
   "attributes": {},
   "helpLinks": [],
   "internal": false,
-  "location": {},
-  "markdownMessage": "CodeQL could not find any project or solution files in your repository. Set up a [manual build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
+  "markdownMessage": "CodeQL could not find any project or solution files in your repository.\n\nSet up a [manual build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).",
   "severity": "error",
   "source": {
     "extractorName": "csharp",

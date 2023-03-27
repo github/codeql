@@ -32,8 +32,12 @@ private class LengthRestrictedMethod extends Method {
   }
 }
 
-/** A configuration for Polynomial ReDoS queries. */
-class PolynomialRedosConfig extends TaintTracking::Configuration {
+/**
+ * DEPRECATED: Use `PolynomialRedosFlow` instead.
+ *
+ * A configuration for Polynomial ReDoS queries.
+ */
+deprecated class PolynomialRedosConfig extends TaintTracking::Configuration {
   PolynomialRedosConfig() { this = "PolynomialRedosConfig" }
 
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
@@ -47,11 +51,34 @@ class PolynomialRedosConfig extends TaintTracking::Configuration {
   }
 }
 
-/** Holds if there is flow from `source` to `sink` that is matched against the regexp term `regexp` that is vulnerable to Polynomial ReDoS. */
-predicate hasPolynomialReDoSResult(
+/**
+ * DEPRECATED: Use `PolynomialRedosFlow` instead.
+ *
+ * Holds if there is flow from `source` to `sink` that is matched against the regexp term `regexp` that is vulnerable to Polynomial ReDoS.
+ */
+deprecated predicate hasPolynomialReDoSResult(
   DataFlow::PathNode source, DataFlow::PathNode sink,
   SuperlinearBackTracking::PolynomialBackTrackingTerm regexp
 ) {
   any(PolynomialRedosConfig config).hasFlowPath(source, sink) and
   regexp.getRootTerm() = sink.getNode().(PolynomialRedosSink).getRegExp()
 }
+
+/** A configuration for Polynomial ReDoS queries. */
+private module PolynomialRedosConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(SuperlinearBackTracking::PolynomialBackTrackingTerm regexp |
+      regexp.getRootTerm() = sink.(PolynomialRedosSink).getRegExp()
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    node.getType() instanceof PrimitiveType or
+    node.getType() instanceof BoxedType or
+    node.asExpr().(MethodAccess).getMethod() instanceof LengthRestrictedMethod
+  }
+}
+
+module PolynomialRedosFlow = TaintTracking::Global<PolynomialRedosConfig>;

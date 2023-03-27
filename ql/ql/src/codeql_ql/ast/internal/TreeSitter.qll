@@ -1866,12 +1866,6 @@ module JSON {
     /** Gets the location of this element. */
     final L::Location getLocation() { json_ast_node_info(this, _, _, result) }
 
-    predicate hasLocationInfo(
-      string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      this.getLocation().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
-
     /** Gets the parent of this element. */
     final AstNode getParent() { json_ast_node_info(this, result, _, _) }
 

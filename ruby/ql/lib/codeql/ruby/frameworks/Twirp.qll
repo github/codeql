@@ -73,7 +73,8 @@ module Twirp {
 
   /** A parameter that will receive parts of the url when handling an incoming request. */
   class UnmarshaledParameter extends Http::Server::RequestInputAccess::Range,
-    DataFlow::ParameterNode {
+    DataFlow::ParameterNode
+  {
     UnmarshaledParameter() {
       exists(ServiceInstantiation i | i.getAHandlerMethod().getParameter(0) = this.asParameter())
     }

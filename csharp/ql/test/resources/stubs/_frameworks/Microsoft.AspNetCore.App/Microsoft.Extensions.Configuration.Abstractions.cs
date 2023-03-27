@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Configuration.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,16 @@ namespace Microsoft
     {
         namespace Configuration
         {
-            // Generated from `Microsoft.Extensions.Configuration.ConfigurationExtensions` in `Microsoft.Extensions.Configuration.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+            public struct ConfigurationDebugViewContext
+            {
+                // Stub generator skipped constructor 
+                public ConfigurationDebugViewContext(string path, string key, string value, Microsoft.Extensions.Configuration.IConfigurationProvider configurationProvider) => throw null;
+                public Microsoft.Extensions.Configuration.IConfigurationProvider ConfigurationProvider { get => throw null; }
+                public string Key { get => throw null; }
+                public string Path { get => throw null; }
+                public string Value { get => throw null; }
+            }
+
             public static class ConfigurationExtensions
             {
                 public static Microsoft.Extensions.Configuration.IConfigurationBuilder Add<TSource>(this Microsoft.Extensions.Configuration.IConfigurationBuilder builder, System.Action<TSource> configureSource) where TSource : Microsoft.Extensions.Configuration.IConfigurationSource, new() => throw null;
@@ -17,14 +27,12 @@ namespace Microsoft
                 public static Microsoft.Extensions.Configuration.IConfigurationSection GetRequiredSection(this Microsoft.Extensions.Configuration.IConfiguration configuration, string key) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.ConfigurationKeyNameAttribute` in `Microsoft.Extensions.Configuration.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ConfigurationKeyNameAttribute : System.Attribute
             {
                 public ConfigurationKeyNameAttribute(string name) => throw null;
                 public string Name { get => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.ConfigurationPath` in `Microsoft.Extensions.Configuration.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ConfigurationPath
             {
                 public static string Combine(System.Collections.Generic.IEnumerable<string> pathSegments) => throw null;
@@ -34,13 +42,12 @@ namespace Microsoft
                 public static string KeyDelimiter;
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.ConfigurationRootExtensions` in `Microsoft.Extensions.Configuration.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ConfigurationRootExtensions
             {
                 public static string GetDebugView(this Microsoft.Extensions.Configuration.IConfigurationRoot root) => throw null;
+                public static string GetDebugView(this Microsoft.Extensions.Configuration.IConfigurationRoot root, System.Func<Microsoft.Extensions.Configuration.ConfigurationDebugViewContext, string> processValue) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.IConfiguration` in `Microsoft.Extensions.Configuration.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IConfiguration
             {
                 System.Collections.Generic.IEnumerable<Microsoft.Extensions.Configuration.IConfigurationSection> GetChildren();
@@ -49,7 +56,6 @@ namespace Microsoft
                 string this[string key] { get; set; }
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.IConfigurationBuilder` in `Microsoft.Extensions.Configuration.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IConfigurationBuilder
             {
                 Microsoft.Extensions.Configuration.IConfigurationBuilder Add(Microsoft.Extensions.Configuration.IConfigurationSource source);
@@ -58,7 +64,6 @@ namespace Microsoft
                 System.Collections.Generic.IList<Microsoft.Extensions.Configuration.IConfigurationSource> Sources { get; }
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.IConfigurationProvider` in `Microsoft.Extensions.Configuration.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IConfigurationProvider
             {
                 System.Collections.Generic.IEnumerable<string> GetChildKeys(System.Collections.Generic.IEnumerable<string> earlierKeys, string parentPath);
@@ -68,14 +73,12 @@ namespace Microsoft
                 bool TryGet(string key, out string value);
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.IConfigurationRoot` in `Microsoft.Extensions.Configuration.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IConfigurationRoot : Microsoft.Extensions.Configuration.IConfiguration
             {
                 System.Collections.Generic.IEnumerable<Microsoft.Extensions.Configuration.IConfigurationProvider> Providers { get; }
                 void Reload();
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.IConfigurationSection` in `Microsoft.Extensions.Configuration.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IConfigurationSection : Microsoft.Extensions.Configuration.IConfiguration
             {
                 string Key { get; }
@@ -83,7 +86,6 @@ namespace Microsoft
                 string Value { get; set; }
             }
 
-            // Generated from `Microsoft.Extensions.Configuration.IConfigurationSource` in `Microsoft.Extensions.Configuration.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IConfigurationSource
             {
                 Microsoft.Extensions.Configuration.IConfigurationProvider Build(Microsoft.Extensions.Configuration.IConfigurationBuilder builder);

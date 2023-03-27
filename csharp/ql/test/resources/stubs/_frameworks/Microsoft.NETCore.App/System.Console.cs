@@ -1,8 +1,8 @@
 // This file contains auto-generated code.
+// Generated from `System.Console, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace System
 {
-    // Generated from `System.Console` in `System.Console, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public static class Console
     {
         public static System.ConsoleColor BackgroundColor { get => throw null; set => throw null; }
@@ -94,17 +94,14 @@ namespace System
         public static void WriteLine(System.UInt64 value) => throw null;
     }
 
-    // Generated from `System.ConsoleCancelEventArgs` in `System.Console, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public class ConsoleCancelEventArgs : System.EventArgs
     {
         public bool Cancel { get => throw null; set => throw null; }
         public System.ConsoleSpecialKey SpecialKey { get => throw null; }
     }
 
-    // Generated from `System.ConsoleCancelEventHandler` in `System.Console, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public delegate void ConsoleCancelEventHandler(object sender, System.ConsoleCancelEventArgs e);
 
-    // Generated from `System.ConsoleColor` in `System.Console, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public enum ConsoleColor : int
     {
         Black = 0,
@@ -125,7 +122,6 @@ namespace System
         Yellow = 14,
     }
 
-    // Generated from `System.ConsoleKey` in `System.Console, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public enum ConsoleKey : int
     {
         A = 65,
@@ -274,7 +270,6 @@ namespace System
         Zoom = 251,
     }
 
-    // Generated from `System.ConsoleKeyInfo` in `System.Console, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public struct ConsoleKeyInfo : System.IEquatable<System.ConsoleKeyInfo>
     {
         public static bool operator !=(System.ConsoleKeyInfo a, System.ConsoleKeyInfo b) => throw null;
@@ -289,7 +284,6 @@ namespace System
         public System.ConsoleModifiers Modifiers { get => throw null; }
     }
 
-    // Generated from `System.ConsoleModifiers` in `System.Console, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     [System.Flags]
     public enum ConsoleModifiers : int
     {
@@ -298,7 +292,6 @@ namespace System
         Shift = 2,
     }
 
-    // Generated from `System.ConsoleSpecialKey` in `System.Console, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
     public enum ConsoleSpecialKey : int
     {
         ControlBreak = 1,

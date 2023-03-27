@@ -41,4 +41,12 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.util.logging", "LogRecord", False, "LogRecord", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
+      - ["java.util.logging", "Logger", False, "getLogger", "(String)", "", "Argument[0]", "ReturnValue.SyntheticField[java.util.logging.Logger.name]", "value", "manual"]
+      - ["java.util.logging", "Logger", False, "getName", "()", "", "Argument[this].SyntheticField[java.util.logging.Logger.name]", "ReturnValue", "value", "manual"]
+      - ["java.util.logging", "LogRecord", False, "LogRecord", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["java.util.logging", "Logger", "isLoggable", "(Level)", "manual"]

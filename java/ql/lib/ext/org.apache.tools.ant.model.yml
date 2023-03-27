@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.tools.ant", "AntClassLoader", True, "addPathComponent", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["org.apache.tools.ant", "AntClassLoader", True, "AntClassLoader", "(ClassLoader,Project,Path,boolean)", "", "Argument[2]", "read-file", "ai-generated"]
+      - ["org.apache.tools.ant", "AntClassLoader", True, "AntClassLoader", "(Project,Path,boolean)", "", "Argument[1]", "read-file", "ai-generated"]
+      - ["org.apache.tools.ant", "AntClassLoader", True, "AntClassLoader", "(Project,Path)", "", "Argument[1]", "read-file", "ai-generated"]
+      - ["org.apache.tools.ant", "DirectoryScanner", True, "setBasedir", "(File)", "", "Argument[0]", "read-file", "ai-generated"]

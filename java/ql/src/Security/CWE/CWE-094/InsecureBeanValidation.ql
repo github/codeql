@@ -13,7 +13,6 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
 private import semmle.code.java.dataflow.ExternalFlow
 
 /**
@@ -56,13 +55,15 @@ class SetMessageInterpolatorCall extends MethodAccess {
  * Taint tracking BeanValidationConfiguration describing the flow of data from user input
  * to the argument of a method that builds constraint error messages.
  */
-class BeanValidationConfig extends TaintTracking::Configuration {
-  BeanValidationConfig() { this = "BeanValidationConfig" }
+module BeanValidationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof BeanValidationSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof BeanValidationSink }
 }
+
+module BeanValidationFlow = TaintTracking::Global<BeanValidationConfig>;
+
+import BeanValidationFlow::PathGraph
 
 /**
  * A bean validation sink, such as method `buildConstraintViolationWithTemplate`
@@ -72,13 +73,13 @@ private class BeanValidationSink extends DataFlow::Node {
   BeanValidationSink() { sinkNode(this, "bean-validation") }
 }
 
-from BeanValidationConfig cfg, DataFlow::PathNode source, DataFlow::PathNode sink
+from BeanValidationFlow::PathNode source, BeanValidationFlow::PathNode sink
 where
   (
     not exists(SetMessageInterpolatorCall c)
     or
     exists(SetMessageInterpolatorCall c | not c.isSafe())
   ) and
-  cfg.hasFlowPath(source, sink)
+  BeanValidationFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Custom constraint error message contains an unsanitized $@.",
   source, "user-provided value"

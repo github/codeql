@@ -2,11 +2,12 @@
 # yarn lockfile v1
 
 
-"@types/node@12.7.11":
-  version "12.7.11"
-  resolved node-12.7.11.tgz#be879b52031cfb5d295b047f5462d8ef1a716446
+"@types/node@18.15.3":
+  version "18.15.3"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-18.15.3.tgz#f0b991c32cfc6a4e7f3399d6cb4b8cf9a0315014"
+  integrity sha512-p6ua9zBxz5otCmbpb5D3U4B5Nanw6Pk3PPyX05xnxbB/fRv71N7CPmORg7uAD5P70T0xmx1pzAx/FUfa5X+3cw==
 
-typescript@4.9.3:
-  version "4.9.3"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-4.9.3.tgz#3aea307c1746b8c384435d8ac36b8a2e580d85db"
-  integrity sha512-CIfGzTelbKNEnLpLdGFgdyKhG23CKdKgQPOBc+OUNrkJ2vr+KSzsSV5kq5iWhEQbok+quxgGzrAtGWCyU7tHnA==
+typescript@5.0.2:
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.0.2.tgz#891e1a90c5189d8506af64b9ef929fca99ba1ee5"
+  integrity sha512-wVORMBGO/FAs/++blGNeAVdbNKtIh1rbBL2EyQ1+J9lClJ93KiiKe8PmFIVdXhHcyv44SL9oglmfeSsndo0jRw==
