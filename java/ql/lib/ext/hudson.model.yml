@@ -3,6 +3,8 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["hudson", "FilePath", False, "copyFrom", "(FilePath)", "", "Argument[0]", "read-file", "manual"]
+      - ["hudson", "FilePath", False, "copyFrom", "(URL)", "", "Argument[0]", "read-file", "manual"]
       - ["hudson", "FilePath", False, "copyFrom", "(FileItem)", "", "Argument[0]", "read-file", "ai-generated"]
       - ["hudson", "FilePath", False, "copyRecursiveTo", "(DirScanner,FilePath,String,TarCompression)", "", "Argument[1]", "create-file", "ai-generated"]
       - ["hudson", "FilePath", False, "copyRecursiveTo", "(DirScanner,FilePath,String)", "", "Argument[1]", "write-file", "ai-generated"]
@@ -17,8 +19,8 @@ extensions:
       extensible: summaryModel
     data:
       - ["hudson", "FilePath", False, "child", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
-      - ["hudson", "FilePath", False, "list", "(String,String,boolean)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
-      - ["hudson", "FilePath", False, "list", "(String,String,boolean)", "", "Argument[1]", "ReturnValue", "taint", "ai-generated"]
-      - ["hudson", "FilePath", False, "list", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["hudson", "FilePath", False, "list", "(String,String,boolean)", "", "Argument[this]", "ReturnValue", "taint", "ai-generated"]
+      - ["hudson", "FilePath", False, "list", "(String,String)", "", "Argument[this]", "ReturnValue", "taint", "ai-generated"]
+      - ["hudson", "FilePath", False, "list", "(String)", "", "Argument[this]", "ReturnValue", "taint", "ai-generated"]
       - ["hudson", "FilePath", False, "normalize", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
       - ["hudson", "FilePath", False, "sibling", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
