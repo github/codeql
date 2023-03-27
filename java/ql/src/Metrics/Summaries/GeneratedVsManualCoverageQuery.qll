@@ -42,7 +42,7 @@ private int getNumApis(string package, string apiSubset) {
     )
 }
 
-/** TODO */
+/** Holds if the given `callable` belongs to the specified `apiSubset`. */
 private predicate callableSubset(Callable callable, string apiSubset) {
   apiSubset in ["topJdkApis", "allApis"] and
   (
@@ -52,7 +52,10 @@ private predicate callableSubset(Callable callable, string apiSubset) {
   )
 }
 
-/** TODO */
+/**
+ * Provides MaD summary model coverage information for the given `package`
+ * on the given `apiSubset`.
+ */
 predicate modelCoverageGenVsMan(
   string package, int generatedOnly, int both, int manualOnly, int non, int all, float coverage,
   float generatedCoverage, float manualCoverage, float manualCoveredByGenerated,
