@@ -32,7 +32,7 @@ func taintedFunction() func() (*tls.Certificate, error) {
 	return nil
 }
 
-func sink(_ *tls.Certificate) { }
+func sink(_ *tls.Certificate) {}
 
 func testCertStorageFetch() {
 	cert, _ := (*taintedCertStorage()).Fetch("myhostname.org", nil)
