@@ -22,6 +22,14 @@ extensions:
       - ["net/http", "Hijacker", True, "Hijack", "", "", "Argument[-1]", "ReturnValue[1]", "taint", "manual"]
       - ["net/http", "Request", True, "AddCookie", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["net/http", "Request", True, "Clone", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["net/http", "Request", True, "Write", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["net/http", "Request", True, "WriteProxy", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["net/http", "Response", True, "Write", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["net/http", "Transport", True, "Clone", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+  - addsTo:
+      pack: codeql/go-all
+      extensible: sourceModel
+    data:
       - ["net/http", "Request", True, "Cookie", "", "", "ReturnValue[0]", "remote", "manual"]
       - ["net/http", "Request", True, "Cookies", "", "", "ReturnValue.ArrayElement", "remote", "manual"]
       - ["net/http", "Request", True, "FormFile", "", "", "ReturnValue[0..1]", "remote", "manual"]
@@ -30,7 +38,3 @@ extensions:
       - ["net/http", "Request", True, "PostFormValue", "", "", "ReturnValue", "remote", "manual"]
       - ["net/http", "Request", True, "Referer", "", "", "ReturnValue", "remote", "manual"]
       - ["net/http", "Request", True, "UserAgent", "", "", "ReturnValue", "remote", "manual"]
-      - ["net/http", "Request", True, "Write", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
-      - ["net/http", "Request", True, "WriteProxy", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
-      - ["net/http", "Response", True, "Write", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
-      - ["net/http", "Transport", True, "Clone", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
