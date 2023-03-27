@@ -36,6 +36,18 @@
 | testCoreData2.swift:62:30:62:30 | bankAccountNo | label:bankAccountNo, type:private information |
 | testCoreData2.swift:65:3:65:7 | .myBankAccountNumber | label:myBankAccountNumber, type:private information |
 | testCoreData2.swift:65:29:65:29 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:79:18:79:28 | .bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:80:18:80:28 | .bankAccountNo2 | label:bankAccountNo2, type:private information |
+| testCoreData2.swift:82:18:82:18 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:83:18:83:18 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:84:18:84:18 | bankAccountNo2 | label:bankAccountNo2, type:private information |
+| testCoreData2.swift:85:18:85:18 | bankAccountNo2 | label:bankAccountNo2, type:private information |
+| testCoreData2.swift:87:22:87:32 | .bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:88:22:88:22 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:89:22:89:22 | bankAccountNo2 | label:bankAccountNo2, type:private information |
+| testCoreData2.swift:91:10:91:10 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:95:10:95:10 | bankAccountNo | label:bankAccountNo, type:private information |
+| testCoreData2.swift:101:10:101:10 | bankAccountNo | label:bankAccountNo, type:private information |
 | testCoreData.swift:48:15:48:15 | password | label:password, type:credential |
 | testCoreData.swift:51:24:51:24 | password | label:password, type:credential |
 | testCoreData.swift:58:15:58:15 | password | label:password, type:credential |
