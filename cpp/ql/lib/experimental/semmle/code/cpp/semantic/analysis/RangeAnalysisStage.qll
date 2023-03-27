@@ -591,24 +591,6 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
     delta = D::fromInt(0) and
     (upper = true or upper = false)
     or
-    exists(SemExpr x | e2.(SemAddExpr).hasOperands(e1, x) |
-      // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
-      not x instanceof SemConstantIntegerExpr and
-      not e1 instanceof SemConstantIntegerExpr and
-      if strictlyPositiveIntegralExpr(x)
-      then upper = false and delta = D::fromInt(1)
-      else
-        if semPositive(x)
-        then upper = false and delta = D::fromInt(0)
-        else
-          if strictlyNegativeIntegralExpr(x)
-          then upper = true and delta = D::fromInt(-1)
-          else
-            if semNegative(x)
-            then upper = true and delta = D::fromInt(0)
-            else none()
-    )
-    or
     exists(SemExpr x, SemSubExpr sub |
       e2 = sub and
       sub.getLeftOperand() = e1 and
@@ -1043,13 +1025,44 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
         delta = D::fromFloat(f) and
         if semPositive(e) then f >= 0 else any()
       )
+      or
+      exists(
+        SemBound bLeft, SemBound bRight, D::Delta dLeft, D::Delta dRight, boolean fbeLeft,
+        boolean fbeRight, D::Delta odLeft, D::Delta odRight, SemReason rLeft, SemReason rRight
+      |
+        boundedAddOperand(e, upper, bLeft, false, dLeft, fbeLeft, odLeft, rLeft) and
+        boundedAddOperand(e, upper, bRight, true, dRight, fbeRight, odRight, rRight) and
+        delta = D::fromFloat(D::toFloat(dLeft) + D::toFloat(dRight)) and
+        fromBackEdge = fbeLeft.booleanOr(fbeRight)
+      |
+        b = bLeft and origdelta = odLeft and reason = rLeft and bRight instanceof SemZeroBound
+        or
+        b = bRight and origdelta = odRight and reason = rRight and bLeft instanceof SemZeroBound
+      )
     )
   }
 
+  pragma[nomagic]
   private predicate boundedConditionalExpr(
     SemConditionalExpr cond, SemBound b, boolean upper, boolean branch, D::Delta delta,
     boolean fromBackEdge, D::Delta origdelta, SemReason reason
   ) {
     bounded(cond.getBranchExpr(branch), b, delta, upper, fromBackEdge, origdelta, reason)
+  }
+
+  pragma[nomagic]
+  private predicate boundedAddOperand(
+    SemAddExpr add, boolean upper, SemBound b, boolean isLeft, D::Delta delta, boolean fromBackEdge,
+    D::Delta origdelta, SemReason reason
+  ) {
+    // `semValueFlowStep` already handles the case where one of the operands is a constant.
+    not semValueFlowStep(add, _, _) and
+    (
+      isLeft = true and
+      bounded(add.getLeftOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
+      or
+      isLeft = false and
+      bounded(add.getRightOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
+    )
   }
 }
