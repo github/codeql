@@ -1045,6 +1045,8 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
         boolean fbe1, boolean fbe2, D::Delta od1, D::Delta od2, SemReason r1, SemReason r2
       |
         rem = e and
+        not (upper = true and semPositive(rem.getRightOperand())) and
+        not (upper = true and semPositive(rem.getLeftOperand())) and
         boundedRemExpr(rem, b1, true, d1, fbe1, od1, r1) and
         boundedRemExpr(rem, b2, false, d2, fbe2, od2, r2) and
         (
