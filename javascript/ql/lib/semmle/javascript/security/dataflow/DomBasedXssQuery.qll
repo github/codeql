@@ -122,6 +122,13 @@ class Configuration extends TaintTracking::Configuration {
     TaintedUrlSuffix::step(src, trg, TaintedUrlSuffix::label(), DataFlow::FlowLabel::taint()) and
     inlbl = TaintedUrlSuffix::label() and
     outlbl = prefixLabel()
+    or
+    exists(DataFlow::FunctionNode callback |
+      callback = JQuery::htmlCallback() and
+      src = callback.getReturnNode() and
+      trg = callback and
+      inlbl = outlbl
+    )
   }
 }
 

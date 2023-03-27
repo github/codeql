@@ -563,6 +563,25 @@ module JQuery {
     }
   }
 
+  /** Gets a data flow node that reaches a sink that is interpreted as HTML. */
+  private DataFlow::SourceNode htmlCallback(DataFlow::TypeBackTracker t) {
+    t.start() and
+    any(JQuery::MethodCall c).interpretsArgumentAsHtml(result.getALocalUse())
+    or
+    exists(DataFlow::TypeBackTracker t2 | result = htmlCallback(t2).backtrack(t2, t))
+  }
+
+  /**
+   * Gets a function that is passed as a callback to a jQuery function, which will interpret its return value as HTML.
+   *
+   * For example, this gets the function `f` below:
+   * ```js
+   * function f() { ... }
+   * $('#foo').replaceWith(f);
+   * ```
+   */
+  DataFlow::FunctionNode htmlCallback() { result = htmlCallback(DataFlow::TypeBackTracker::end()) }
+
   /**
    * Holds for jQuery plugin definitions of the form `$.fn.<pluginName> = <plugin>` or `$.extend($.fn, {<pluginName>, <plugin>})`.
    */
