@@ -70,8 +70,9 @@ class TaintFlow extends InlineExpectationsTest {
     value = "" and
     element = "" and
     exists(Config c, DataFlow::Node fromNode, DataFlow::Node toNode |
-      toNode.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
-        location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      toNode
+          .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+            location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       c.hasFlow(fromNode, toNode)
     )
   }
