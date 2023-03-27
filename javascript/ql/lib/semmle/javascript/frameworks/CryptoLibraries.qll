@@ -316,7 +316,6 @@ private module CryptoJS {
     }
   }
 
-
   /**
    *  Matches `CryptoJS.<algorithmName>` and `require("crypto-js/<algorithmName>")`
    */
@@ -368,7 +367,7 @@ private module CryptoJS {
     input = result.getParameter(0)
   }
 
-  private API::CallNode getUpdatedApplication (API::Node input, InstantiatedAlgorithm instantiation) {
+  private API::CallNode getUpdatedApplication(API::Node input, InstantiatedAlgorithm instantiation) {
     /*
      *    ```
      *    var CryptoJS = require("crypto-js");
@@ -391,7 +390,7 @@ private module CryptoJS {
 
     result = instantiation.getAMemberCall("update") and
     input = result.getParameter(0)
-  } 
+  }
 
   private class Apply extends CryptographicOperation::Range instanceof API::CallNode {
     API::Node input;
