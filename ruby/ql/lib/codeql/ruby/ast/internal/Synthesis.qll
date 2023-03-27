@@ -3,6 +3,7 @@
 private import AST
 private import TreeSitter
 private import codeql.ruby.ast.internal.Call
+private import codeql.ruby.ast.internal.Constant
 private import codeql.ruby.ast.internal.Expr
 private import codeql.ruby.ast.internal.Variable
 private import codeql.ruby.ast.internal.Pattern
@@ -950,6 +951,28 @@ private module DestructuredAssignDesugar {
     }
   }
 
+  abstract private class LhsWithReceiver extends Expr {
+    abstract Expr getReceiver();
+
+    abstract SynthKind getSynthKind();
+  }
+
+  private class LhsCall extends LhsWithReceiver instanceof MethodCall {
+    final override Expr getReceiver() { result = MethodCall.super.getReceiver() }
+
+    final override SynthKind getSynthKind() {
+      result = MethodCallKind(super.getMethodName(), false, super.getNumberOfArguments())
+    }
+  }
+
+  private class LhsScopedConstant extends LhsWithReceiver, ScopeResolutionConstantAccess {
+    LhsScopedConstant() { exists(this.getScopeExpr()) }
+
+    final override Expr getReceiver() { result = this.getScopeExpr() }
+
+    final override SynthKind getSynthKind() { result = ConstantWriteAccessKind(this.getName()) }
+  }
+
   pragma[nomagic]
   private predicate destructuredAssignSynthesis(AstNode parent, int i, Child child) {
     exists(DestructuredAssignExpr tae |
@@ -958,14 +981,32 @@ private module DestructuredAssignDesugar {
       child = SynthChild(StmtSequenceKind())
       or
       exists(AstNode seq | seq = TStmtSequenceSynth(tae, -1) |
+        exists(LhsWithReceiver mc, int j | mc = tae.getElement(j) |
+          parent = seq and
+          i = j and
+          child = SynthChild(AssignExprKind())
+          or
+          exists(AstNode assign | assign = TAssignExprSynth(seq, j) |
+            parent = assign and
+            i = 0 and
+            child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae, j)))
+            or
+            parent = assign and
+            i = 1 and
+            child = childRef(mc.getReceiver())
+          )
+        )
+        or
         parent = seq and
-        i = 0 and
+        i = tae.getNumberOfElements() and
         child = SynthChild(AssignExprKind())
         or
-        exists(AstNode assign | assign = TAssignExprSynth(seq, 0) |
+        exists(AstNode assign | assign = TAssignExprSynth(seq, tae.getNumberOfElements()) |
           parent = assign and
           i = 0 and
-          child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae, 0)))
+          child =
+            SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae,
+                  tae.getNumberOfElements())))
           or
           parent = assign and
           i = 1 and
@@ -981,10 +1022,37 @@ private module DestructuredAssignDesugar {
           restIndex = tae.getRestIndexOrNumberOfElements()
         |
           parent = seq and
-          i = j + 1 and
+          i = j + 1 + tae.getNumberOfElements() and
           child = SynthChild(AssignExprKind())
           or
-          exists(AstNode assign | assign = TAssignExprSynth(seq, j + 1) |
+          exists(AstNode assign |
+            assign = TAssignExprSynth(seq, j + 1 + tae.getNumberOfElements())
+          |
+            exists(LhsWithReceiver mc | mc = elem |
+              parent = assign and
+              i = 0 and
+              child = SynthChild(mc.getSynthKind())
+              or
+              exists(AstNode call | synthChild(assign, 0, call) |
+                parent = call and
+                i = 0 and
+                child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae, j)))
+                or
+                parent = call and
+                child = childRef(mc.(MethodCall).getArgument(i - 1))
+              )
+            )
+            or
+            (
+              elem instanceof VariableAccess
+              or
+              elem instanceof ConstantAccess and
+              not exists(Ruby::ScopeResolution g |
+                elem = TScopeResolutionConstantAccess(g, _) and exists(g.getScope())
+              )
+              or
+              elem instanceof DestructuredLhsExpr
+            ) and
             parent = assign and
             i = 0 and
             child = childRef(elem)
@@ -995,7 +1063,9 @@ private module DestructuredAssignDesugar {
             or
             parent = TMethodCallSynth(assign, 1, _, _, _) and
             i = 0 and
-            child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae, 0)))
+            child =
+              SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae,
+                    tae.getNumberOfElements())))
             or
             j < restIndex and
             parent = TMethodCallSynth(assign, 1, _, _, _) and
@@ -1050,26 +1120,48 @@ private module DestructuredAssignDesugar {
 
     final override predicate location(AstNode n, Location l) {
       exists(DestructuredAssignExpr tae, StmtSequence seq | seq = tae.getDesugared() |
-        n = seq.getStmt(0) and
+        synthChild(seq, tae.getNumberOfElements(), n) and
         hasLocation(tae.getRightOperand(), l)
         or
-        exists(AstNode elem, int j |
+        exists(LhsWithReceiver elem, int j |
           elem = tae.getElement(j) and
-          n = seq.getStmt(j + 1) and
+          synthChild(seq, j, n) and
+          hasLocation(elem.getReceiver(), l)
+        )
+        or
+        exists(AstNode elem, int j | elem = tae.getElement(j) |
+          synthChild(seq, j + 1 + tae.getNumberOfElements(), n) and
           hasLocation(elem, l)
         )
       )
     }
 
     final override predicate localVariable(AstNode n, int i) {
-      n instanceof DestructuredAssignExpr and
-      i = 0
+      i = [0 .. n.(DestructuredAssignExpr).getNumberOfElements()]
+    }
+
+    final override predicate constantWriteAccess(string name) {
+      exists(DestructuredAssignExpr tae, LhsScopedConstant ca |
+        ca = tae.getElement(_) and
+        name = ca.getName()
+      )
     }
 
     final override predicate methodCall(string name, boolean setter, int arity) {
       name = "[]" and
       setter = false and
       arity = 1
+      or
+      exists(DestructuredAssignExpr tae, MethodCall mc |
+        mc = tae.getElement(_) and
+        name = mc.getMethodName() and
+        setter = false and
+        arity = mc.getNumberOfArguments()
+      )
+    }
+
+    final override predicate excludeFromControlFlowTree(AstNode n) {
+      n = any(DestructuredAssignExpr tae).getElement(_).(LhsWithReceiver)
     }
   }
 }

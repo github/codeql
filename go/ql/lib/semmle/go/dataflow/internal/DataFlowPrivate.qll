@@ -3,6 +3,7 @@ private import DataFlowUtil
 private import DataFlowImplCommon
 private import ContainerFlow
 private import FlowSummaryImpl as FlowSummaryImpl
+import codeql.util.Unit
 import DataFlowNodes::Private
 
 private newtype TReturnKind =
@@ -337,15 +338,6 @@ int accessPathLimit() { result = 5 }
  */
 predicate forceHighPrecision(Content c) {
   c instanceof ArrayContent or c instanceof CollectionContent
-}
-
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
 }
 
 /**
