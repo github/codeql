@@ -66,15 +66,18 @@ class SymmetricEncryptionCreateDecryptorSink extends SymmetricEncryptionKeySink 
 /**
  * Symmetric Key Data Flow configuration.
  */
-class SymmetricKeyTaintTrackingConfiguration extends TaintTracking::Configuration {
-  SymmetricKeyTaintTrackingConfiguration() { this = "SymmetricKeyTaintTracking" }
-
+private module SymmetricKeyTaintTrackingConfig implements DataFlow::ConfigSig {
   /** Holds if the node is a key source. */
-  override predicate isSource(DataFlow::Node src) { src instanceof KeySource }
+  predicate isSource(DataFlow::Node src) { src instanceof KeySource }
 
   /** Holds if the node is a symmetric encryption key sink. */
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SymmetricEncryptionKeySink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof SymmetricEncryptionKeySink }
 
   /** Holds if the node is a key sanitizer. */
-  override predicate isSanitizer(DataFlow::Node sanitizer) { sanitizer instanceof KeySanitizer }
+  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof KeySanitizer }
 }
+
+/**
+ * Symmetric Key Data Flow taint tracking.
+ */
+module SymmetricKeyTaintTracking = TaintTracking::Global<SymmetricKeyTaintTrackingConfig>;
