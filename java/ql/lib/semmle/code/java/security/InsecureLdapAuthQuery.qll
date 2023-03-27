@@ -24,7 +24,7 @@ private module InsecureLdapUrlConfig implements DataFlow::ConfigSig {
   }
 }
 
-module InsecureLdapUrlFlow = TaintTracking::Make<InsecureLdapUrlConfig>;
+module InsecureLdapUrlFlow = TaintTracking::Global<InsecureLdapUrlConfig>;
 
 /**
  * A taint-tracking configuration for `simple` basic-authentication in LDAP configuration.
@@ -40,7 +40,7 @@ private module BasicAuthConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
 }
 
-module BasicAuthFlow = DataFlow::Make<BasicAuthConfig>;
+module BasicAuthFlow = DataFlow::Global<BasicAuthConfig>;
 
 /**
  * A taint-tracking configuration for `ssl` configuration in LDAP authentication.
@@ -56,4 +56,4 @@ private module RequiresSslConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
 }
 
-module RequiresSslFlow = DataFlow::Make<RequiresSslConfig>;
+module RequiresSslFlow = DataFlow::Global<RequiresSslConfig>;

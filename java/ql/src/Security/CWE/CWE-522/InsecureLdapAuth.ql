@@ -18,8 +18,8 @@ import InsecureLdapUrlFlow::PathGraph
 
 from InsecureLdapUrlFlow::PathNode source, InsecureLdapUrlFlow::PathNode sink
 where
-  InsecureLdapUrlFlow::hasFlowPath(source, sink) and
-  BasicAuthFlow::hasFlowTo(sink.getNode()) and
-  not RequiresSslFlow::hasFlowTo(sink.getNode())
+  InsecureLdapUrlFlow::flowPath(source, sink) and
+  BasicAuthFlow::flowTo(sink.getNode()) and
+  not RequiresSslFlow::flowTo(sink.getNode())
 select sink.getNode(), source, sink, "Insecure LDAP authentication from $@.", source.getNode(),
   "LDAP connection string"
