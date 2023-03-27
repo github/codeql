@@ -1,3 +1,7 @@
+/**
+ * `EnumElementExpr` is an expression that constructs a case of an enum.
+ */
+
 private import codeql.swift.elements.expr.Expr
 private import codeql.swift.elements.expr.Argument
 private import codeql.swift.elements.expr.CallExpr
