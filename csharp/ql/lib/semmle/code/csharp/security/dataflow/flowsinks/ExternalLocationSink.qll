@@ -8,7 +8,6 @@ private import semmle.code.csharp.commons.Loggers
 private import semmle.code.csharp.frameworks.system.Web
 private import semmle.code.csharp.frameworks.system.IO
 private import semmle.code.csharp.dataflow.ExternalFlow
-private import semmle.code.csharp.dataflow.DataFlow
 
 /**
  * An external location sink.
@@ -120,6 +119,9 @@ private module LocalFileOutputStreamConfig implements DataFlow::ConfigSig {
 
 private module LocalFileOutputStreamFlow = DataFlow::Make<LocalFileOutputStreamConfig>;
 
+/**
+ * A write to the local filesystem.
+ */
 class LocalFileOutputSink extends ExternalLocationSink {
   LocalFileOutputSink() {
     exists(DataFlow::Node streamSink |
