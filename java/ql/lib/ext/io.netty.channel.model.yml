@@ -12,3 +12,9 @@ extensions:
       - ["io.netty.channel", "DefaultChannelPipeline", False, "connect", "(SocketAddress,ChannelPromise)", "", "Argument[0]", "open-url", "ai-generated"]
       - ["io.netty.channel", "DefaultChannelPipeline", False, "connect", "(SocketAddress,SocketAddress,ChannelPromise)", "", "Argument[0]", "open-url", "ai-generated"]
       - ["io.netty.channel", "DefaultChannelPipeline", False, "connect", "(SocketAddress,SocketAddress)", "", "Argument[0]", "open-url", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["io.netty.channel", "ChannelInboundHandler", True, "channelRead", "", "", "Parameter[1]", "remote", "manual"]
+      - ["io.netty.channel", "SimpleChannelInboundHandler", True, "channelRead0", "", "", "Parameter[1]", "remote", "manual"]
