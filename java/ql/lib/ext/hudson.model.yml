@@ -1,0 +1,26 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["hudson", "FilePath", False, "copyFrom", "(FilePath)", "", "Argument[0]", "read-file", "manual"]
+      - ["hudson", "FilePath", False, "copyFrom", "(URL)", "", "Argument[0]", "read-file", "manual"]
+      - ["hudson", "FilePath", False, "copyFrom", "(FileItem)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["hudson", "FilePath", False, "copyRecursiveTo", "(DirScanner,FilePath,String,TarCompression)", "", "Argument[1]", "create-file", "ai-generated"]
+      - ["hudson", "FilePath", False, "copyRecursiveTo", "(DirScanner,FilePath,String)", "", "Argument[1]", "write-file", "ai-generated"]
+      - ["hudson", "FilePath", False, "copyRecursiveTo", "(String,FilePath)", "", "Argument[1]", "create-file", "ai-generated"]
+      - ["hudson", "FilePath", False, "copyRecursiveTo", "(String,String,FilePath)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["hudson", "FilePath", False, "copyRecursiveTo", "(String,String,FilePath)", "", "Argument[2]", "create-file", "ai-generated"]
+      - ["hudson", "FilePath", False, "copyTo", "(FilePath)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["hudson", "FilePath", False, "installIfNecessaryFrom", "(URL,TaskListener,String)", "", "Argument[0]", "open-url", "ai-generated"]
+      - ["hudson", "FilePath", False, "newInputStreamDenyingSymlinkAsNeeded", "(File,String,boolean)", "", "Argument[0]", "read-file", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["hudson", "FilePath", False, "child", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["hudson", "FilePath", False, "list", "(String,String,boolean)", "", "Argument[this]", "ReturnValue", "taint", "ai-generated"]
+      - ["hudson", "FilePath", False, "list", "(String,String)", "", "Argument[this]", "ReturnValue", "taint", "ai-generated"]
+      - ["hudson", "FilePath", False, "list", "(String)", "", "Argument[this]", "ReturnValue", "taint", "ai-generated"]
+      - ["hudson", "FilePath", False, "normalize", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["hudson", "FilePath", False, "sibling", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
