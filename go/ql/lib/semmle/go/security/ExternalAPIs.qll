@@ -4,7 +4,6 @@
  */
 
 import go
-
 private import semmle.go.dataflow.FlowSummary
 private import Xss
 private import SqlInjectionCustomizations

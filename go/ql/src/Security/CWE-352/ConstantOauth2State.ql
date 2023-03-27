@@ -107,7 +107,8 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
     or
     // Propagate across Sprintf and similar calls
     exists(DataFlow::CallNode cn |
-      cn.getACalleeIncludingExternals().asFunction() instanceof Fmt::AppenderOrSprinter |
+      cn.getACalleeIncludingExternals().asFunction() instanceof Fmt::AppenderOrSprinter
+    |
       pred = cn.getAnArgument() and succ = cn.getResult()
     )
   }
