@@ -4,7 +4,7 @@
  *              possibly allowing a timing attack to retrieve sensitive information.
  * @kind path-problem
  * @problem.severity error
- * @precision medium
+ * @precision low
  * @id py/possible-timing-attack-sensitive-info
  * @tags security
  *       external/cwe/cwe-208

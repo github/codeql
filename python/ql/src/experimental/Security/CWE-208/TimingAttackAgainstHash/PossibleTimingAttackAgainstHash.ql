@@ -6,7 +6,7 @@
  *              A successful attack can result in authentication bypass.
  * @kind path-problem
  * @problem.severity error
- * @precision medium
+ * @precision low
  * @id py/possible-timing-attack-against-hash
  * @tags security
  *       external/cwe/cwe-208
