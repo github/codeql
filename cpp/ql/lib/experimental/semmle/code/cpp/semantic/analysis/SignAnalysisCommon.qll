@@ -198,6 +198,16 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
     }
   }
 
+  /** An expression of an unsigned type. */
+  private class UnsignedExpr extends FlowSignExpr {
+    UnsignedExpr() { Utils::getTrackedType(this) instanceof SemUnsignedIntegerType }
+
+    override Sign getSignRestriction() {
+      result = TPos() or
+      result = TZero()
+    }
+  }
+
   pragma[nomagic]
   private predicate binaryExprOperands(SemBinaryExpr binary, SemExpr left, SemExpr right) {
     binary.getLeftOperand() = left and binary.getRightOperand() = right

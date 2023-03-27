@@ -216,7 +216,9 @@ module SemanticExprConfig {
     TSsaInstruction(IR::Instruction instr) { instr.hasMemoryResult() } or
     TSsaOperand(IR::Operand op) { op.isDefinitionInexact() } or
     TSsaPointerArithmeticGuard(ValueNumber instr) {
-      exists(Guard g, IR::Operand use | use = instr.getAUse() |
+      exists(Guard g, IR::Operand use |
+        use = instr.getAUse() and use.getIRType() instanceof IR::IRAddressType
+      |
         g.comparesLt(use, _, _, _, _) or
         g.comparesLt(_, use, _, _, _) or
         g.comparesEq(use, _, _, _, _) or

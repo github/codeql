@@ -318,7 +318,7 @@ int test_mult01(int a, int b) {
     int r = a*b;  // -143 .. 253
     range(r);
     total += r;
-    range(total); // $ range=">=... * ...+0"
+    range(total); // $ MISSING: range=">=... * ...+0"
   }
   if (3 <= a && a <= 11 && -13 <= b && b <= 0) {
     range(a); // $ range=<=11 range=>=3
@@ -366,7 +366,7 @@ int test_mult02(int a, int b) {
     int r = a*b;  // -143 .. 253
     range(r);
     total += r;
-    range(total); // $ range=">=... * ...+0"
+    range(total); // $ MISSING: range=">=... * ...+0"
   }
   if (0 <= a && a <= 11 && -13 <= b && b <= 0) {
     range(a); // $ range=<=11 range=>=0
@@ -461,7 +461,7 @@ int test_mult04(int a, int b) {
     int r = a*b;  // -391 .. 221
     range(r);
     total += r;
-    range(total); // $ range="<=... * ...+0"
+    range(total); // $ MISSING: range="<=... * ...+0"
   }
   if (-17 <= a && a <= 0 && -13 <= b && b <= 0) {
     range(a); // $ range=<=0 range=>=-17
@@ -509,7 +509,7 @@ int test_mult05(int a, int b) {
     int r = a*b;  // -391 .. 221
     range(r);
     total += r;
-    range(total); // $ range="<=... * ...+0"
+    range(total); // $ MISSING: range="<=... * ...+0"
   }
   if (-17 <= a && a <= -2 && -13 <= b && b <= 0) {
     range(a); // $ range=<=-2 range=>=-17
