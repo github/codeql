@@ -4,6 +4,7 @@
 
 private import go
 private import FlowSummaryImpl as FlowSummaryImpl
+private import codeql.util.Unit
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -64,14 +65,6 @@ predicate defaultImplicitTaintRead(DataFlow::Node node, DataFlow::Content c) {
     or
     c.(DataFlow::PointerContent).getPointerType() = containerType
   )
-}
-
-private newtype TUnit = TMkUnit()
-
-/** A singleton class containing a single dummy "unit" value. */
-private class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
 }
 
 /**
