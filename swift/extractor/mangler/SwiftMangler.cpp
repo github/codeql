@@ -98,26 +98,36 @@ SwiftMangledName SwiftMangler::visitExtensionDecl(const swift::ExtensionDecl* de
   }
 
   auto parent = getParent(decl);
-  unsigned index = 0;
+  return initMangled(decl) << fetch(parent) << getExtensionIndex(decl, parent);
+}
+
+unsigned SwiftMangler::getExtensionIndex(const swift::ExtensionDecl* decl,
+                                         const swift::Decl* parent) {
+  if (auto found = preloadedExtensionIndexes.extract(decl)) {
+    return found.mapped();
+  }
   if (auto parentModule = llvm::dyn_cast<swift::ModuleDecl>(parent)) {
-    llvm::SmallVector<swift::Decl*> parentDecls;
-    parentModule->getTopLevelDecls(parentDecls);
-    auto found = std::find(std::begin(parentDecls), std::end(parentDecls), decl);
-    assert(found != std::end(parentDecls));
-    index = found - std::begin(parentDecls);
+    llvm::SmallVector<swift::Decl*> siblings;
+    parentModule->getTopLevelDecls(siblings);
+    indexExtensions(siblings);
   } else if (auto iterableParent = llvm::dyn_cast<swift::IterableDeclContext>(parent)) {
-    auto parentDecls = iterableParent->getAllMembers();
-    auto found = std::find(std::begin(parentDecls), std::end(parentDecls), decl);
-    assert(found != std::end(parentDecls));
-    index = found - std::begin(parentDecls);
+    indexExtensions(iterableParent->getAllMembers());
   } else {
     assert(false && "non-local context must be module or iterable decl context");
   }
+  auto found = preloadedExtensionIndexes.extract(decl);
+  assert(found && "extension not found within parent");
+  return found.mapped();
+}
 
-  auto ret = initMangled(decl);
-  ret << fetch(parent);
-  ret << index;
-  return ret;
+void SwiftMangler::indexExtensions(llvm::ArrayRef<swift::Decl*> siblings) {
+  auto index = 0u;
+  for (auto sibling : siblings) {
+    if (sibling->getKind() == swift::DeclKind::Extension) {
+      preloadedExtensionIndexes.emplace(sibling, index);
+    }
+    ++index;
+  }
 }
 
 SwiftMangledName SwiftMangler::visitGenericTypeDecl(const swift::GenericTypeDecl* decl) {

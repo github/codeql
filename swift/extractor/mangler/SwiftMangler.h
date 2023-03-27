@@ -102,6 +102,9 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
 
   swift::Mangle::ASTMangler mangler;
   SwiftDispatcher& dispatcher;
+  std::unordered_map<const swift::Decl*, unsigned> preloadedExtensionIndexes;
+  void indexExtensions(llvm::ArrayRef<swift::Decl*> siblings);
+  unsigned int getExtensionIndex(const swift::ExtensionDecl* decl, const swift::Decl* parent);
 };
 
 }  // namespace codeql
