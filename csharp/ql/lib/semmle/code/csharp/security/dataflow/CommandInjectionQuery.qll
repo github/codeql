@@ -25,15 +25,18 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
 /**
  * A taint-tracking configuration for command injection vulnerabilities.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "CommandInjection" }
+module CommandInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+/**
+ * A taint-tracking module for command injection vulnerabilities.
+ */
+module CommandInjection = TaintTracking::Global<CommandInjectionConfig>;
 
 /** A source of remote user input. */
 class RemoteSource extends Source instanceof RemoteFlowSource { }
