@@ -91,6 +91,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "codeql-extractor"
+version = "0.1.0"
+dependencies = [
+ "chrono",
+ "encoding",
+ "flate2",
+ "lazy_static",
+ "num_cpus",
+ "rayon",
+ "regex",
+ "serde",
+ "serde_json",
+ "tracing",
+ "tree-sitter",
+]
+
+[[package]]
 name = "crc32fast"
 version = "1.3.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -431,16 +448,12 @@ checksum = "456c603be3e8d448b072f410900c09faf164fbce2d480456f50eea6e25f9c848"
 name = "ruby-extractor"
 version = "0.1.0"
 dependencies = [
- "chrono",
  "clap",
+ "codeql-extractor",
  "encoding",
- "flate2",
  "lazy_static",
- "num_cpus",
  "rayon",
  "regex",
- "serde",
- "serde_json",
  "tracing",
  "tracing-subscriber",
  "tree-sitter",

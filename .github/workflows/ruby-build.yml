@@ -50,7 +50,7 @@ jobs:
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
       - name: Install cargo-cross
         if: runner.os == 'Linux'
-        run: cargo install cross --version 0.2.1
+        run: cargo install cross --version 0.2.5
       - uses: ./.github/actions/os-version
         id: os_version
       - name: Cache entire extractor
@@ -85,7 +85,12 @@ jobs:
       # This ensures we don't depend on glibc > 2.17.
       - name: Release build (linux)
         if: steps.cache-extractor.outputs.cache-hit != 'true' && runner.os == 'Linux'
-        run: cd extractor && cross build --release
+        run: |
+          cd extractor
+          cross build --release
+          mv target/x86_64-unknown-linux-gnu/release/extractor target/release/
+          mv target/x86_64-unknown-linux-gnu/release/autobuilder target/release/
+          mv target/x86_64-unknown-linux-gnu/release/generator target/release/
       - name: Release build (windows and macos)
         if: steps.cache-extractor.outputs.cache-hit != 'true' && runner.os != 'Linux'
         run: cd extractor && cargo build --release
