@@ -44,7 +44,7 @@ import semmle.go.frameworks.stdlib.TextTabwriter
 import semmle.go.frameworks.stdlib.TextTemplate
 import semmle.go.frameworks.stdlib.Unsafe
 
-// These are modelled using TaintTracking::FunctionModel because they doesn't have real type signatures,
+// These are modeled using TaintTracking::FunctionModel because they doesn't have real type signatures,
 // and therefore currently have an InvalidType, not a SignatureType, which breaks Models as Data.
 /**
  * A model of the built-in `append` function, which propagates taint from its arguments to its
