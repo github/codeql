@@ -29,7 +29,7 @@ func newpgtest(query string, conn newpg.Conn, db newpg.DB, tx newpg.Tx) {
 	tx.Prepare(query)   // $ querystring=query
 }
 
-func sink(x interface{}) { }
+func sink(x interface{}) {}
 
 func pgormtest(query string, q orm.Query) {
 	orm.Q(query)        // $ querystring=query
