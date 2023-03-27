@@ -4,6 +4,7 @@
 
 import javascript
 import semmle.javascript.Concepts::Cryptography
+private import semmle.javascript.security.internal.CryptoAlgorithmNames
 
 /**
  * A key used in a cryptographic algorithm.
@@ -353,7 +354,7 @@ private module CryptoJS {
     input = result.getParameter(0)
   }
 
-  private DataFlow::CallNode getUpdatedApplication (DataFlow::Node input, InstantiatedAlgorithm instantiation) {
+  private API::CallNode getUpdatedApplication (API::Node input, InstantiatedAlgorithm instantiation) {
     /*
      *    ```
      *    var CryptoJS = require("crypto-js");
@@ -375,12 +376,13 @@ private module CryptoJS {
      */
 
     result = instantiation.getAMemberCall("update") and
-    input = result.getArgument(0)
+    input = result.getParameter(0)
   } 
 
   private class Apply extends CryptographicOperation::Range instanceof API::CallNode {
     API::Node input;
     CryptographicAlgorithm algorithm; // non-functional
+    InstantiatedAlgorithm instantiation;
 
     Apply() {
       this = getEncryptionApplication(input, algorithm) or
