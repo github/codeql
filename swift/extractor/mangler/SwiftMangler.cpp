@@ -98,25 +98,33 @@ SwiftMangledName SwiftMangler::visitExtensionDecl(const swift::ExtensionDecl* de
   }
 
   auto parent = getParent(decl);
-  unsigned index = 0;
-  if (auto parentModule = llvm::dyn_cast<swift::ModuleDecl>(parent)) {
-    llvm::SmallVector<swift::Decl*> parentDecls;
-    parentModule->getTopLevelDecls(parentDecls);
-    auto found = std::find(std::begin(parentDecls), std::end(parentDecls), decl);
-    assert(found != std::end(parentDecls));
-    index = found - std::begin(parentDecls);
-  } else if (auto iterableParent = llvm::dyn_cast<swift::IterableDeclContext>(parent)) {
-    auto parentDecls = iterableParent->getAllMembers();
-    auto found = std::find(std::begin(parentDecls), std::end(parentDecls), decl);
-    assert(found != std::end(parentDecls));
-    index = found - std::begin(parentDecls);
-  } else {
-    assert(false && "non-local context must be module or iterable decl context");
+  auto cached = extensionIndexCache.find(decl);
+  if (cached == extensionIndexCache.end()) {
+    llvm::SmallVector<swift::Decl*> siblingsHolder;
+    llvm::ArrayRef<swift::Decl*> siblings;
+    if (auto parentModule = llvm::dyn_cast<swift::ModuleDecl>(parent)) {
+      parentModule->getTopLevelDecls(siblingsHolder);
+      siblings = siblingsHolder;
+    } else if (auto iterableParent = llvm::dyn_cast<swift::IterableDeclContext>(parent)) {
+      siblings = iterableParent->getAllMembers();
+    } else {
+      assert(false && "non-local context must be module or iterable decl context");
+    }
+    auto index = 0u;
+    for (auto sibling : siblings) {
+      if (sibling->getKind() == swift::DeclKind::Extension) {
+        auto [emplaced, _] = extensionIndexCache.emplace(sibling, index);
+        if (sibling == decl) {
+          cached = emplaced;
+        }
+      }
+      ++index;
+    }
+    assert(cached != extensionIndexCache.end() && "extension not found within parent");
   }
-
   auto ret = initMangled(decl);
   ret << fetch(parent);
-  ret << index;
+  ret << cached->second;
   return ret;
 }
 
