@@ -590,11 +590,20 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::EnumContent ec | ec.getParam() = enum.getElement().getParam(pos)))
   )
   or
-  // creation of an optional via implicit conversion
+  // creation of an optional via implicit conversion,
+  // i.e. from `f(x)` where `x: T` into `f(.some(x))` where the context `f` expects a `T?`.
   exists(InjectIntoOptionalExpr e, OptionalSomeDecl someDecl |
     e.convertsFrom(node1.asExpr()) and
     node2 = node1 and // HACK: we should ideally have a separate Node case for the (hidden) InjectIntoOptionalExpr
     c.isSingleton(any(Content::EnumContent ec | ec.getParam() = someDecl.getParam(0)))
+  )
+  or
+  // creation of an optional by returning from an optional initializer (`init?`)
+  exists(ConstructorDecl init, OptionalType initRetType, OptionalSomeDecl someDecl |
+    node1.asExpr().(CallExpr).getStaticTarget() = init and
+    node2 = node1 and // HACK: again, we should ideally have a separate Node case here, and not reuse the CallExpr
+    c.isSingleton(any(Content::EnumContent ec | ec.getParam() = someDecl.getParam(0))) and
+    init.getInterfaceType().(FunctionType).getResult().(FunctionType).getResult() = initRetType
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
