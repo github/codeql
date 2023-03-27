@@ -8,6 +8,7 @@
  * @id py/possible-timing-attack-sensitive-info
  * @tags security
  *       external/cwe/cwe-208
+ *       experimental
  */
 
 import python

@@ -8,6 +8,7 @@
  * @id py/timing-attack-against-header-value
  * @tags security
  *       external/cwe/cwe-208
+ *       experimental
  */
 
 import python
