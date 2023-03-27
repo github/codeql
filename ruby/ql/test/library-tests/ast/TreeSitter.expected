@@ -5615,6 +5615,27 @@ operations/operations.rb:
 #  103|       1: [Constant] CONSTANT4
 #  103|     1: [ReservedWord] ||=
 #  103|     2: [Integer] 7
+#  104|   72: [Assignment] Assignment
+#  104|     0: [LeftAssignmentList] LeftAssignmentList
+#  104|       0: [Constant] FOO
+#  104|       1: [ReservedWord] ,
+#  104|       2: [ScopeResolution] ScopeResolution
+#  104|         0: [ReservedWord] ::
+#  104|         1: [Constant] BAR
+#  104|       3: [ReservedWord] ,
+#  104|       4: [ScopeResolution] ScopeResolution
+#  104|         0: [Identifier] foo
+#  104|         1: [ReservedWord] ::
+#  104|         2: [Constant] FOO
+#  104|     1: [ReservedWord] =
+#  104|     2: [Array] Array
+#  104|       0: [ReservedWord] [
+#  104|       1: [Integer] 1
+#  104|       2: [ReservedWord] ,
+#  104|       3: [Integer] 2
+#  104|       4: [ReservedWord] ,
+#  104|       5: [Integer] 3
+#  104|       6: [ReservedWord] ]
 #    1| [Comment] # Start with assignments to all the identifiers used below, so that they are
 #    2| [Comment] # interpreted as variables.
 #   22| [Comment] # Unary operations
