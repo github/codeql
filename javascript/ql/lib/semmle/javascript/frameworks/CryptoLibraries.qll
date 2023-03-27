@@ -274,6 +274,34 @@ private module NodeJSCrypto {
  * A model of the crypto-js library.
  */
 private module CryptoJS {
+  private class InstantiatedAlgorithm extends DataFlow::CallNode {
+    CryptographicAlgorithm algorithm; // non-functional
+
+    InstantiatedAlgorithm() {
+      /*
+       *       ```
+       *       const crypto = require("crypto-js");
+       *       const cipher = crypto.algo.SHA256.create();
+       *       ```
+       *       matched as:
+       *       ```
+       *       const crypto = require("crypto-js");
+       *       const cipher = crypto.algo.<algorithmName>.create();
+       *       ```
+       */
+
+      exists(DataFlow::SourceNode mod, DataFlow::PropRead propRead |
+        mod = DataFlow::moduleImport("crypto-js") and
+        propRead = mod.getAPropertyRead("algo").getAPropertyRead() and
+        this = propRead.getAMemberCall("create") and
+        not isStrongPasswordHashingAlgorithm(propRead.getPropertyName())
+      )
+    }
+
+    CryptographicAlgorithm getAlgorithm() { result = algorithm }
+  }
+
+
   /**
    *  Matches `CryptoJS.<algorithmName>` and `require("crypto-js/<algorithmName>")`
    */
@@ -325,13 +353,39 @@ private module CryptoJS {
     input = result.getParameter(0)
   }
 
+  private DataFlow::CallNode getUpdatedApplication (DataFlow::Node input, InstantiatedAlgorithm instantiation) {
+    /*
+     *    ```
+     *    var CryptoJS = require("crypto-js");
+     *    var hash = CryptoJS.algo.SHA256.create();
+     *    hash.update('message');
+     *    hash.update('password');
+     *    var hashInHex = hash.finalize();
+     *    ```
+     *    Matched as:
+     *    ```
+     *    var CryptoJS = require("crypto-js");
+     *    var hash = CryptoJS.algo.<algorithmName>.create();
+     *    hash.update(<input>);
+     *    hash.update(<input>);
+     *    var hashInHex = hash.finalize();
+     *    ```
+     *    Also matches where `CryptoJS.algo.<algorithmName>` has been
+     *    replaced by `require("crypto-js/<algorithmName>")`
+     */
+
+    result = instantiation.getAMemberCall("update") and
+    input = result.getArgument(0)
+  } 
+
   private class Apply extends CryptographicOperation::Range instanceof API::CallNode {
     API::Node input;
     CryptographicAlgorithm algorithm; // non-functional
 
     Apply() {
       this = getEncryptionApplication(input, algorithm) or
-      this = getDirectApplication(input, algorithm)
+      this = getDirectApplication(input, algorithm) or
+      this = getUpdatedApplication(input, instantiation)
     }
 
     override DataFlow::Node getAnInput() { result = input.asSink() }
