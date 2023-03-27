@@ -3,15 +3,15 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["java.io", "File", True, "createTempFile", "(String,String,File)", "", "Argument[2]", "create-file", "ai-generated"]
-      - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[0]", "create-file", "ai-generated"]
-      - ["java.io", "FileInputStream", True, "FileInputStream", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
-      - ["java.io", "FileInputStream", True, "FileInputStream", "(String)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.io", "File", True, "createTempFile", "(String,String,File)", "", "Argument[2]", "create-file", "ai-manual"]
+      - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[0]", "create-file", "ai-manual"]
+      - ["java.io", "FileInputStream", True, "FileInputStream", "(File)", "", "Argument[0]", "read-file", "ai-manual"]
+      - ["java.io", "FileInputStream", True, "FileInputStream", "(String)", "", "Argument[0]", "read-file", "ai-manual"]
       - ["java.io", "FileOutputStream", False, "FileOutputStream", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.io", "FileOutputStream", False, "write", "", "", "Argument[0]", "write-file", "manual"]
-      - ["java.io", "FileReader", True, "FileReader", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
-      - ["java.io", "FileReader", True, "FileReader", "(String)", "", "Argument[0]", "read-file", "ai-generated"]
-      - ["java.io", "FileSystem", True, "createDirectory", "(File)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["java.io", "FileReader", True, "FileReader", "(File)", "", "Argument[0]", "read-file", "ai-manual"]
+      - ["java.io", "FileReader", True, "FileReader", "(String)", "", "Argument[0]", "read-file", "ai-manual"]
+      - ["java.io", "FileSystem", True, "createDirectory", "(File)", "", "Argument[0]", "create-file", "ai-manual"]
       - ["java.io", "FileWriter", False, "FileWriter", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.io", "PrintStream", False, "PrintStream", "(File)", "", "Argument[0]", "create-file", "manual"]
       - ["java.io", "PrintStream", False, "PrintStream", "(File,Charset)", "", "Argument[0]", "create-file", "manual"]

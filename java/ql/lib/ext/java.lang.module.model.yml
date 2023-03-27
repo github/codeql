@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.lang.module", "ModuleReader", True, "find", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["java.lang.module", "ModuleReader", True, "find", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
