@@ -30,6 +30,8 @@ abstract class Sink extends DataFlow::ExprNode {
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
+ * DEPRECATED: Use `ConditionalBypass` instead.
+ *
  * A taint-tracking configuration for user-controlled bypass of sensitive method.
  */
 class Configuration extends TaintTracking::Configuration {
@@ -41,6 +43,22 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+/**
+ * A taint-tracking configuration for user-controlled bypass of sensitive method.
+ */
+private module ConditionalBypassConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * A taint-tracking module for user-controlled bypass of sensitive method.
+ */
+module ConditionalBypass = TaintTracking::Global<ConditionalBypassConfig>;
 
 /** A source of remote user input. */
 class RemoteSource extends Source instanceof RemoteFlowSource { }
