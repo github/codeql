@@ -903,6 +903,12 @@ exprValue
 | operations/operations.rb:102:5:102:5 | 1 | 1 | int |
 | operations/operations.rb:102:31:102:31 | 7 | 7 | int |
 | operations/operations.rb:103:17:103:17 | 7 | 7 | int |
+| operations/operations.rb:104:1:104:3 | 0 | 0 | int |
+| operations/operations.rb:104:6:104:10 | 1 | 1 | int |
+| operations/operations.rb:104:13:104:20 | 2 | 2 | int |
+| operations/operations.rb:104:25:104:25 | 1 | 1 | int |
+| operations/operations.rb:104:28:104:28 | 2 | 2 | int |
+| operations/operations.rb:104:31:104:31 | 3 | 3 | int |
 | params/params.rb:41:46:41:46 | 7 | 7 | int |
 | params/params.rb:47:19:47:21 | :bar | :bar | symbol |
 | params/params.rb:47:24:47:24 | 2 | 2 | int |
@@ -1792,6 +1798,12 @@ exprCfgNodeValue
 | operations/operations.rb:102:5:102:5 | 1 | 1 | int |
 | operations/operations.rb:102:31:102:31 | 7 | 7 | int |
 | operations/operations.rb:103:17:103:17 | 7 | 7 | int |
+| operations/operations.rb:104:1:104:3 | 0 | 0 | int |
+| operations/operations.rb:104:6:104:10 | 1 | 1 | int |
+| operations/operations.rb:104:13:104:20 | 2 | 2 | int |
+| operations/operations.rb:104:25:104:25 | 1 | 1 | int |
+| operations/operations.rb:104:28:104:28 | 2 | 2 | int |
+| operations/operations.rb:104:31:104:31 | 3 | 3 | int |
 | params/params.rb:41:46:41:46 | 7 | 7 | int |
 | params/params.rb:47:19:47:21 | :bar | :bar | symbol |
 | params/params.rb:47:24:47:24 | 2 | 2 | int |

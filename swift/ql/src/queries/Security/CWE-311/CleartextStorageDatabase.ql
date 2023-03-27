@@ -26,9 +26,13 @@ DataFlow::Node cleanupNode(DataFlow::Node n) {
   result = n
 }
 
-from CleartextStorageConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
-where config.hasFlowPath(sourceNode, sinkNode)
-select cleanupNode(sinkNode.getNode()), sourceNode, sinkNode,
-  "This operation stores '" + sinkNode.getNode().toString() +
+from
+  CleartextStorageConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode,
+  DataFlow::Node cleanSink
+where
+  config.hasFlowPath(sourceNode, sinkNode) and
+  cleanSink = cleanupNode(sinkNode.getNode())
+select cleanSink, sourceNode, sinkNode,
+  "This operation stores '" + cleanSink.toString() +
     "' in a database. It may contain unencrypted sensitive data from $@.", sourceNode,
   sourceNode.getNode().toString()
