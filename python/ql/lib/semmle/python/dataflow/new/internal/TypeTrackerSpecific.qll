@@ -5,11 +5,17 @@
 private import python
 private import semmle.python.dataflow.new.internal.DataFlowPublic as DataFlowPublic
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
+private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
+private import semmle.python.dataflow.new.FlowSummary
 import semmle.python.internal.CachedStages
 
 class Node = DataFlowPublic::Node;
 
 class TypeTrackingNode = DataFlowPublic::TypeTrackingNode;
+
+private module SCS = SummaryComponentStack;
+
+private module SC = SummaryComponent;
 
 /** A content name for use by type trackers, or the empty string. */
 class OptionalTypeTrackerContent extends string {
@@ -49,7 +55,35 @@ predicate jumpStep = DataFlowPrivate::jumpStepSharedWithTypeTracker/2;
 predicate levelStepCall(Node nodeFrom, Node nodeTo) { none() }
 
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which does not depend on the call graph. */
-predicate levelStepNoCall(Node nodeFrom, Node nodeTo) { none() }
+predicate levelStepNoCall(Node nodeFrom, Node nodeTo) {
+  exists(
+    SummarizedCallable callable, DataFlowPublic::CallCfgNode call, SummaryComponentStack input,
+    SummaryComponentStack output
+  |
+    callable.propagatesFlow(input, output, true) and
+    call = callable.getACallSimple() and
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+  )
+}
+
+private class IdentitySummary extends SummarizedCallable {
+  IdentitySummary() { this = "identity" }
+
+  override DataFlowPublic::CallCfgNode getACall() { none() }
+
+  override DataFlowPublic::ArgumentNode getACallback() { none() }
+
+  override DataFlowPublic::CallCfgNode getACallSimple() {
+    result.getFunction().asExpr().(Name).getId() = "identity"
+  }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "Argument[0]" and
+    output = "ReturnValue" and
+    preservesValue = true
+  }
+}
 
 /**
  * Gets the name of a possible piece of content. For Python, this is currently only attribute names,
@@ -131,4 +165,131 @@ predicate basicWithContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter)
  */
 class Boolean extends boolean {
   Boolean() { this = true or this = false }
+}
+
+// Summary level steps
+/**
+ * Holds if the given component can't be evaluated by `evaluateSummaryComponentStackLocal`.
+ */
+pragma[nomagic]
+predicate isNonLocal(SummaryComponent component) { component = SC::content(_) }
+
+pragma[nomagic]
+private predicate hasStoreSummary(
+  SummarizedCallable callable, DataFlowPublic::ContentSet contents, SummaryComponentStack input,
+  SummaryComponentStack output
+) {
+  not isNonLocal(input.head()) and
+  not isNonLocal(output.head()) and
+  callable
+      .propagatesFlow(input,
+        SummaryComponentStack::push(SummaryComponent::content(contents), output), true)
+}
+
+pragma[noinline]
+private predicate argumentPositionMatch(
+  DataFlowPublic::CallCfgNode call, DataFlowPublic::ArgumentNode arg,
+  DataFlowDispatch::ParameterPosition ppos
+) {
+  exists(DataFlowDispatch::ArgumentPosition apos, DataFlowPrivate::DataFlowCall c |
+    c.getNode() = call.asCfgNode() and
+    arg.argumentOf(c, apos) and
+    DataFlowDispatch::parameterMatch(ppos, apos)
+  )
+}
+
+/**
+ * Gets a data flow node corresponding an argument or return value of `call`,
+ * as specified by `component`.
+ */
+bindingset[call, component]
+private DataFlowPublic::Node evaluateSummaryComponentLocal(
+  DataFlowPublic::CallCfgNode call, SummaryComponent component
+) {
+  exists(DataFlowDispatch::ParameterPosition pos |
+    component = SummaryComponent::argument(pos) and
+    argumentPositionMatch(call, result, pos)
+  )
+  or
+  component = SummaryComponent::return() and
+  result = call
+}
+
+/**
+ * Holds if `callable` is relevant for type-tracking and we therefore want `stack` to
+ * be evaluated locally at its call sites.
+ */
+pragma[nomagic]
+private predicate dependsOnSummaryComponentStack(
+  SummarizedCallable callable, SummaryComponentStack stack
+) {
+  exists(callable.getACallSimple()) and
+  (
+    callable.propagatesFlow(stack, _, true)
+    or
+    callable.propagatesFlow(_, stack, true)
+    or
+    // include store summaries as they may skip an initial step at the input
+    hasStoreSummary(callable, _, stack, _)
+  )
+  or
+  dependsOnSummaryComponentStackCons(callable, _, stack)
+}
+
+pragma[nomagic]
+private predicate dependsOnSummaryComponentStackCons(
+  SummarizedCallable callable, SummaryComponent head, SummaryComponentStack tail
+) {
+  dependsOnSummaryComponentStack(callable, SCS::push(head, tail))
+}
+
+pragma[nomagic]
+private predicate dependsOnSummaryComponentStackConsLocal(
+  SummarizedCallable callable, SummaryComponent head, SummaryComponentStack tail
+) {
+  dependsOnSummaryComponentStackCons(callable, head, tail) and
+  not isNonLocal(head)
+}
+
+pragma[nomagic]
+private predicate dependsOnSummaryComponentStackLeaf(
+  SummarizedCallable callable, SummaryComponent leaf
+) {
+  dependsOnSummaryComponentStack(callable, SCS::singleton(leaf))
+}
+
+/**
+ * Gets a data flow node corresponding to the local input or output of `call`
+ * identified by `stack`, if possible.
+ */
+pragma[nomagic]
+private DataFlowPublic::Node evaluateSummaryComponentStackLocal(
+  SummarizedCallable callable, DataFlowPublic::CallCfgNode call, SummaryComponentStack stack
+) {
+  exists(SummaryComponent component |
+    dependsOnSummaryComponentStackLeaf(callable, component) and
+    stack = SCS::singleton(component) and
+    call = callable.getACallSimple() and
+    result = evaluateSummaryComponentLocal(call, component)
+  )
+  or
+  exists(DataFlowPublic::Node prev, SummaryComponent head, SummaryComponentStack tail |
+    prev = evaluateSummaryComponentStackLocal(callable, call, tail) and
+    dependsOnSummaryComponentStackConsLocal(callable, pragma[only_bind_into](head),
+      pragma[only_bind_out](tail)) and
+    stack = SCS::push(pragma[only_bind_out](head), pragma[only_bind_out](tail))
+  |
+    exists(
+      DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos,
+      DataFlowPrivate::DataFlowCallable c
+    |
+      head = SummaryComponent::parameter(apos) and
+      DataFlowDispatch::parameterMatch(ppos, apos) and
+      prev.getScope() = c.getScope() and
+      result.(DataFlowPrivate::ParameterNodeImpl).isParameterOf(c, ppos)
+    )
+    or
+    head = SummaryComponent::return() and
+    result.(DataFlowPrivate::ReturnNode).getScope() = prev.asExpr().getScope()
+  )
 }
