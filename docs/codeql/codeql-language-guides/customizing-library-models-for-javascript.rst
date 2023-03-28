@@ -8,7 +8,7 @@ Customizing Library Models for JavaScript
 
 .. include:: ../reusables/beta-note-customizing-library-models.rst
 
-The JavaScript analysis can be customized by adding library models in data extension files.
+JavaScript analysis can be customized by adding library models in data extension files.
 
 A data extension for JavaScript is a YAML file of the form:
 
