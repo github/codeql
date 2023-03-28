@@ -11,6 +11,7 @@ import DataFlowImplSpecific::Public
 private import DataFlowImpl
 import DataFlowImplCommonPublic
 import FlowStateString
+private import codeql.util.Unit
 
 /**
  * A configuration of interprocedural data flow analysis. This defines
