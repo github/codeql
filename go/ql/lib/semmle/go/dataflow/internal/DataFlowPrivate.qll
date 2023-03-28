@@ -3,6 +3,7 @@ private import DataFlowUtil
 private import DataFlowImplCommon
 private import ContainerFlow
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.go.dataflow.FlowSummary as FlowSummary
 import codeql.util.Unit
 import DataFlowNodes::Private
 
@@ -237,31 +238,31 @@ class DataFlowLocation = Location;
 
 private newtype TDataFlowCallable =
   TCallable(Callable c) or
-  TFileScope(File f)
+  TFileScope(File f) or
+  TSummarizedCallable(FlowSummary::SummarizedCallable c)
 
 class DataFlowCallable extends TDataFlowCallable {
   Callable asCallable() { this = TCallable(result) }
 
   File asFileScope() { this = TFileScope(result) }
 
-  FuncDef getFuncDef() { result = this.asCallable().getFuncDef() }
+  FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
-  Function asFunction() { result = this.asCallable().asFunction() }
-
-  FuncLit asFuncLit() { result = this.asCallable().asFuncLit() }
-
-  SignatureType getType() { result = this.asCallable().getType() }
+  SignatureType getType() { result = [this.asCallable(), this.asSummarizedCallable()].getType() }
 
   string toString() {
     result = this.asCallable().toString() or
-    result = "File scope: " + this.asFileScope().toString()
+    result = "File scope: " + this.asFileScope().toString() or
+    result = "Summary: " + this.asSummarizedCallable().toString()
   }
 
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.asCallable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-    this.asFileScope().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.asFileScope().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
+    this.asSummarizedCallable()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -281,6 +282,7 @@ class DataFlowCall extends Expr {
 
   /** Gets the enclosing callable of this call. */
   DataFlowCallable getEnclosingCallable() {
+    // NB. At present calls cannot occur inside summarized callables-- this will change if we implement advanced lambda support.
     result.asCallable().getFuncDef() = this.getEnclosingFunction()
     or
     not exists(this.getEnclosingFunction()) and result.asFileScope() = this.getFile()
