@@ -192,7 +192,11 @@ private module Cached {
     )
     or
     // flow from Pattern to an identity-preserving sub-Pattern:
-    nodeFrom.asPattern() = nodeTo.asPattern().getIdentityPreservingEnclosingPattern()
+    nodeTo.asPattern() =
+      [
+        nodeFrom.asPattern().(IsPattern).getSubPattern(),
+        nodeFrom.asPattern().(TypedPattern).getSubPattern()
+      ]
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)

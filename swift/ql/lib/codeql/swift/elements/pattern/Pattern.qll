@@ -86,16 +86,6 @@ class Pattern extends Generated::Pattern {
   }
 
   /**
-   * Gets the parent pattern of this pattern, but only if
-   * both patterns match against the same object, which is not
-   * the case when destructuring a complex data structure,
-   * like a tuple or enum.
-   */
-  final Pattern getIdentityPreservingEnclosingPattern() {
-    result = this.getFullyUnresolved().(Pattern).getImmediateIdentityPreservingEnclosingPattern()
-  }
-
-  /**
    * Gets the parent pattern of this pattern, if any.
    */
   Pattern getImmediateEnclosingPattern() {
@@ -105,16 +95,6 @@ class Pattern extends Generated::Pattern {
     or
     this = result.(TuplePattern).getImmediateElement(_)
     or
-    result = this.getImmediateIdentityPreservingEnclosingPattern()
-  }
-
-  /**
-   * Gets the immediate parent pattern of this pattern, but only if
-   * both patterns match against the same object, which is not
-   * the case when destructuring a complex data structure,
-   * like a tuple or enum.
-   */
-  Pattern getImmediateIdentityPreservingEnclosingPattern() {
     this = result.(BindingPattern).getImmediateSubPattern()
     or
     this = result.(IsPattern).getImmediateSubPattern()
