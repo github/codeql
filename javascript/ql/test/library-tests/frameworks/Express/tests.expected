@@ -3227,10 +3227,13 @@ getRouteHandlerContainerStep
 | src/route-collection.js:1:18:4:1 | {\\n  a:  ... (req)\\n} | src/route-collection.js:3:6:3:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:116:14:116:30 | importedRoutes[p] |
 | src/route-collection.js:1:18:4:1 | {\\n  a:  ... (req)\\n} | src/route-collection.js:3:6:3:35 | (req, r ... og(req) | src/advanced-routehandler-registration.js:119:14:119:29 | importedRoutes.b |
 dbUse
+| src/middleware-flow.js:6:5:6:10 | req.db |
 | src/middleware-flow.js:6:5:6:21 | req.db = new DB() |
 | src/middleware-flow.js:6:14:6:21 | new DB() |
+| src/middleware-flow.js:7:5:7:15 | req.deep.db |
 | src/middleware-flow.js:7:5:7:26 | req.dee ... ew DB() |
 | src/middleware-flow.js:7:19:7:26 | new DB() |
+| src/middleware-flow.js:8:5:8:22 | req.deep.access.db |
 | src/middleware-flow.js:8:5:8:33 | req.dee ... ew DB() |
 | src/middleware-flow.js:8:26:8:33 | new DB() |
 | src/middleware-flow.js:18:9:18:14 | req.db |
