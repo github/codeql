@@ -400,7 +400,10 @@ private module CryptoJS {
     Apply() {
       this = getEncryptionApplication(input, algorithm) or
       this = getDirectApplication(input, algorithm) or
-      this = getUpdatedApplication(input, instantiation)
+      exists(InstantiatedAlgorithm instantiation |
+        this = getUpdatedApplication(input, instantiation) and
+        algorithm = instantiation.getAlgorithm()
+      )
     }
 
     override DataFlow::Node getAnInput() { result = input.asSink() }
