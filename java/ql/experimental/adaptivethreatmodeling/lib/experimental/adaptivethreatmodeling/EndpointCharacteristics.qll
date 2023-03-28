@@ -261,6 +261,17 @@ private class CreateFileSinkCharacteristic extends SinkCharacteristic {
 }
 
 /**
+ * Endpoints identified as "read-file" sinks by the MaD modeling are tainted path sinks with maximal confidence.
+ */
+private class ReadFileSinkCharacteristic extends SinkCharacteristic {
+  ReadFileSinkCharacteristic() { this = "read file" }
+
+  override predicate appliesToEndpoint(DataFlow::Node n) { sinkNode(n, "read-file") }
+
+  override EndpointType getSinkType() { result instanceof TaintedPathSinkType }
+}
+
+/**
  * Endpoints identified as `PathCreation` by the standard Java libraries are path injection sinks with medium
  * confidence, because `PathCreation` is prone to FPs.
  */
