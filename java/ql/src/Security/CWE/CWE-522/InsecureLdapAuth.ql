@@ -2,12 +2,11 @@
  * @name Insecure LDAP authentication
  * @description LDAP authentication with credentials sent in cleartext makes sensitive information vulnerable to remote attackers
  * @kind path-problem
- * @problem.severity warning
+ * @problem.severity error
  * @security-severity 8.8
- * @precision medium
+ * @precision high
  * @id java/insecure-ldap-auth
  * @tags security
- *       experimental
  *       external/cwe/cwe-522
  *       external/cwe/cwe-319
  */
