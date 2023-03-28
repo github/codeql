@@ -52,7 +52,7 @@ module RemoteUserInputToArgumentToExecFlowConfig implements DataFlow::ConfigSig 
 }
 
 module RemoteUserInputToArgumentToExecFlow =
-  TaintTracking::Make<RemoteUserInputToArgumentToExecFlowConfig>;
+  TaintTracking::Global<RemoteUserInputToArgumentToExecFlowConfig>;
 
 /**
  * Implementation of `ExecTainted.ql`. It is extracted to a QLL
@@ -63,6 +63,6 @@ predicate execTainted(
   RemoteUserInputToArgumentToExecFlow::PathNode source,
   RemoteUserInputToArgumentToExecFlow::PathNode sink, ArgumentToExec execArg
 ) {
-  RemoteUserInputToArgumentToExecFlow::hasFlowPath(source, sink) and
+  RemoteUserInputToArgumentToExecFlow::flowPath(source, sink) and
   sink.getNode() = DataFlow::exprNode(execArg)
 }
