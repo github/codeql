@@ -397,8 +397,10 @@ private module CryptoJS {
     CryptographicAlgorithm algorithm; // non-functional
 
     Apply() {
-      this = getEncryptionApplication(input, algorithm) or
-      this = getDirectApplication(input, algorithm) or
+      this = getEncryptionApplication(input, algorithm)
+      or
+      this = getDirectApplication(input, algorithm)
+      or
       exists(InstantiatedAlgorithm instantiation |
         this = getUpdatedApplication(input, instantiation) and
         algorithm = instantiation.getAlgorithm()
