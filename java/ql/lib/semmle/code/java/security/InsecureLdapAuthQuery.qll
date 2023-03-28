@@ -9,7 +9,7 @@ import semmle.code.java.security.InsecureLdapAuth
 /**
  * A taint-tracking configuration for `ldap://` URL in LDAP authentication.
  */
-private module InsecureLdapUrlConfig implements DataFlow::ConfigSig {
+module InsecureLdapUrlConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof InsecureLdapUrl }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureLdapUrlSink }
