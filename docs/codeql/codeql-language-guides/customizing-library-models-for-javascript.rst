@@ -174,7 +174,7 @@ Note that there is a significant difference between the following two rows:
         - ["mysql.Connection", "", ...]
         - ["mysql", "Member[Connection]", ...]
 
-The first row matches instances of **mysql.Connection** which are objects that encapsulate a MySQL connection.
+The first row matches instances of **mysql.Connection**, which are objects that encapsulate a MySQL connection.
 The second row would match something like **require('mysql').Connection**, which is not itself a connection object.
 
 In the next section, we'll show how to generalize the model to handle the absence of type annotations.
