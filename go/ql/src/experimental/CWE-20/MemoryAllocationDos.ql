@@ -18,11 +18,18 @@ abstract class Source extends DataFlow::Node { }
 
 abstract class Sanitizer extends DataFlow::Node { }
 
-// a value is subject to a comparison test, assume this applies some appropriate allocation size limit
-class CompSanitizer extends Sanitizer {
-  CompSanitizer() {
-    exists(RelationalComparisonExpr r |
-      TaintTracking::localTaintStep(this, DataFlow::exprNode(r.getGreaterOperand()))
+private predicate compCheckGuard(DataFlow::Node g, Expr e) {
+  e = g.(DataFlow::RelationalComparisonNode).getAnOperand().asExpr()
+}
+
+class CompSanitizer2 extends Sanitizer {
+  CompSanitizer2() {
+    exists(
+      ControlFlow::ConditionGuardNode guard, SsaWithFields var, boolean branch, DataFlow::Node g
+    |
+      this = var.similar().getAUse()
+    |
+      compCheckGuard(g, var.getAUse().asExpr()) and guard.ensures(g, branch)
     )
   }
 }
