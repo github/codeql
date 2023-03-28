@@ -1,0 +1,51 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+  <overview>
+    <p>
+      When using the Java LDAP API to perform LDAPv3-style extended operations
+      and controls, a context with connection properties including user
+      credentials is started. Transmission of LDAP credentials in cleartext
+      allows remote attackers to obtain sensitive information by sniffing the
+      network.
+    </p>
+  </overview>
+
+  <recommendation>
+    <p>
+      Use the <code>ldaps://</code> protocol to send credentials through SSL or
+      use SASL authentication.
+    </p>
+  </recommendation>
+
+  <example>
+    <p>
+      In the following (bad) example, a <code>ldap://</code> URL is used and
+      credentials will be sent in plaintext.
+    </p>
+    <sample src="LdapAuthUseLdap.java"/>
+
+    <p>
+      In the following (good) example, a <code>ldaps://</code> URL is used so
+      credentials will be encrypted with SSL.
+    </p>
+    <sample src="LdapAuthUseLdaps.java"/>
+
+    <p>
+      In the following (good) example, a <code>ldap://</code> URL is used, but
+      SASL authentication is enabled so that the credentials will be encrypted. 
+    </p>
+    <sample src="LdapEnableSasl.java"/>
+  </example>
+
+  <references>
+    <li>
+      Oracle:
+      <a href="https://docs.oracle.com/javase/jndi/tutorial/ldap/misc/url.html">LDAP and LDAPS URLs</a>
+    </li>
+    <li>
+      Oracle:
+      <a href="https://docs.oracle.com/javase/tutorial/jndi/ldap/simple.html">Simple authentication</a>
+    </li>
+  </references>
+</qhelp>

@@ -818,7 +818,7 @@ private module AssignOperationDesugar {
             i in [0 .. sao.getNumberOfArguments()]
             or
             parent = setter and
-            i = opAssignIndex + 1 and
+            i = opAssignIndex and
             child =
               SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(sao, opAssignIndex)))
           )
@@ -975,7 +975,7 @@ private module DestructuredAssignDesugar {
 
   pragma[nomagic]
   private predicate destructuredAssignSynthesis(AstNode parent, int i, Child child) {
-    exists(DestructuredAssignExpr tae |
+    exists(DestructuredAssignExpr tae, int total | total = tae.getNumberOfElements() |
       parent = tae and
       i = -1 and
       child = SynthChild(StmtSequenceKind())
@@ -998,15 +998,13 @@ private module DestructuredAssignDesugar {
         )
         or
         parent = seq and
-        i = tae.getNumberOfElements() and
+        i = total and
         child = SynthChild(AssignExprKind())
         or
-        exists(AstNode assign | assign = TAssignExprSynth(seq, tae.getNumberOfElements()) |
+        exists(AstNode assign | assign = TAssignExprSynth(seq, total) |
           parent = assign and
           i = 0 and
-          child =
-            SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae,
-                  tae.getNumberOfElements())))
+          child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae, total)))
           or
           parent = assign and
           i = 1 and
@@ -1022,12 +1020,10 @@ private module DestructuredAssignDesugar {
           restIndex = tae.getRestIndexOrNumberOfElements()
         |
           parent = seq and
-          i = j + 1 + tae.getNumberOfElements() and
+          i = j + 1 + total and
           child = SynthChild(AssignExprKind())
           or
-          exists(AstNode assign |
-            assign = TAssignExprSynth(seq, j + 1 + tae.getNumberOfElements())
-          |
+          exists(AstNode assign | assign = TAssignExprSynth(seq, j + 1 + total) |
             exists(LhsWithReceiver mc | mc = elem |
               parent = assign and
               i = 0 and
@@ -1063,9 +1059,7 @@ private module DestructuredAssignDesugar {
             or
             parent = TMethodCallSynth(assign, 1, _, _, _) and
             i = 0 and
-            child =
-              SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae,
-                    tae.getNumberOfElements())))
+            child = SynthChild(LocalVariableAccessSynthKind(TLocalVariableSynth(tae, total)))
             or
             j < restIndex and
             parent = TMethodCallSynth(assign, 1, _, _, _) and
@@ -1086,14 +1080,14 @@ private module DestructuredAssignDesugar {
                 child = SynthChild(IntegerLiteralKind(j))
                 or
                 i = 1 and
-                child = SynthChild(IntegerLiteralKind(restIndex - tae.getNumberOfElements()))
+                child = SynthChild(IntegerLiteralKind(restIndex - total))
               )
             )
             or
             j > restIndex and
             parent = TMethodCallSynth(assign, 1, _, _, _) and
             i = 1 and
-            child = SynthChild(IntegerLiteralKind(j - tae.getNumberOfElements()))
+            child = SynthChild(IntegerLiteralKind(j - total))
           )
         )
       )
@@ -1284,10 +1278,10 @@ private module ForLoopDesugar {
         child = childRef(for.getValue()) // value is the Enumerable
         or
         parent = eachCall and
-        i = -2 and
+        i = 1 and
         child = SynthChild(BraceBlockKind())
         or
-        exists(Block block | block = TBraceBlockSynth(eachCall, -2) |
+        exists(Block block | block = TBraceBlockSynth(eachCall, 1) |
           // block params
           parent = block and
           i = 0 and
@@ -1534,14 +1528,13 @@ private module SafeNavigationCallDesugar {
             i = 1
           )
           or
-          parent = TMethodCallSynth(ifExpr, 2, _, _, _) and
-          (
+          exists(int arity | parent = TMethodCallSynth(ifExpr, 2, _, _, arity) |
             i = 0 and
             child = SynthChild(local)
             or
             child = childRef(call.getArgumentImpl(i - 1))
             or
-            child = childRef(call.getBlockImpl()) and i = -2
+            child = childRef(call.getBlockImpl()) and i = arity + 1
           )
         )
       )

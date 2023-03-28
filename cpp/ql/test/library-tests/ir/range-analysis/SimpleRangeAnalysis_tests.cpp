@@ -18,20 +18,20 @@ int test2(struct List* p) {
   int count = 0;
   for (; p; p = p->next) {
     count = (count+1) % 10;
-    range(count); // $ range=<=9
+    range(count); // $ range=>=-9 range=<=9
   }
-  range(count); // $ range=<=9
+  range(count); // $ range=>=-9 range=<=9
   return count;
 }
 
 int test3(struct List* p) {
   int count = 0;
   for (; p; p = p->next) {
-    range(count++); // $ range=<=9
+    range(count++); // $ range=>=-9 range=<=9
     count = count % 10;
-    range(count); // $ range=<=9
+    range(count); // $ range=>=-9 range=<=9
   }
-  range(count); // $ range=<=9
+  range(count); // $ range=>=-9 range=<=9
   return count;
 }
 
@@ -960,7 +960,22 @@ void guard_bound_out_of_range(void) {
 
 void test_mod(int s) {
   int s2 = s % 5;
-  range(s2); // $ range=<=4 // -4 .. 4
+  range(s2); // $ range=>=-4 range=<=4
+}
+
+void test_mod_neg(int s) {
+  int s2 = s % -5;
+  range(s2); // $ range=>=-4 range=<=4
+}
+
+void test_mod_ternary(int s, bool b) {
+  int s2 = s % (b ? 5 : 500);
+  range(s2); // $ range=>=-499 range=<=499
+}
+
+void test_mod_ternary2(int s, bool b1, bool b2) {
+  int s2 = s % (b1 ? (b2 ? 5 : -5000) : -500000);
+  range(s2); // $ range=>=-499999 range=<=499999
 }
 
 void exit(int);

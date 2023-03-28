@@ -43,11 +43,16 @@ class MethodCallSynth extends MethodCallImpl, TMethodCallSynth {
 
   final override AstNode getReceiverImpl() { synthChild(this, 0, result) }
 
-  final override AstNode getArgumentImpl(int n) { synthChild(this, n + 1, result) and n >= 0 }
+  final override AstNode getArgumentImpl(int n) {
+    synthChild(this, n + 1, result) and
+    n in [0 .. this.getNumberOfArgumentsImpl() - 1]
+  }
 
   final override int getNumberOfArgumentsImpl() { this = TMethodCallSynth(_, _, _, _, result) }
 
-  final override Block getBlockImpl() { synthChild(this, -2, result) }
+  final override Block getBlockImpl() {
+    synthChild(this, this.getNumberOfArgumentsImpl() + 1, result)
+  }
 }
 
 class IdentifierMethodCall extends MethodCallImpl, TIdentifierMethodCall {
