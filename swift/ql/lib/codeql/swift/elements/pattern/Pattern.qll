@@ -37,7 +37,7 @@ class Pattern extends Generated::Pattern {
     )
     or
     exists(PatternBindingDecl v, int i |
-      v.getPattern(i) = this and
+      v.getPattern(i) = pragma[only_bind_out](this) and
       result = v.getInit(i)
     )
   }
