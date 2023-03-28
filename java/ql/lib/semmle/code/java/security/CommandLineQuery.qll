@@ -7,9 +7,93 @@
  * query.
  */
 
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.ExternalProcess
-import semmle.code.java.security.CommandArguments
+import java
+private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.dataflow.ExternalFlow
+private import semmle.code.java.security.ExternalProcess
+private import semmle.code.java.security.CommandArguments
+
+/** A sink for command injection vulnerabilities. */
+abstract class CommandInjectionSink extends DataFlow::Node { }
+
+/** A sanitizer for command injection vulnerabilities. */
+abstract class CommandInjectionSanitizer extends DataFlow::Node { }
+
+/**
+ * A unit class for adding additional taint steps.
+ *
+ * Extend this class to add additional taint steps that should apply to configurations related to command injection.
+ */
+class CommandInjectionAdditionalTaintStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a taint
+   * step for configurations related to command injection.
+   */
+  abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);
+}
+
+private class DefaultCommandInjectionSink extends CommandInjectionSink {
+  DefaultCommandInjectionSink() {
+    this.asExpr() instanceof ArgumentToExec or sinkNode(this, "command-injection")
+  }
+}
+
+private class DefaultCommandInjectionSanitizer extends CommandInjectionSanitizer {
+  DefaultCommandInjectionSanitizer() {
+    this.getType() instanceof PrimitiveType
+    or
+    this.getType() instanceof BoxedType
+    or
+    isSafeCommandArgument(this.asExpr())
+  }
+}
+
+/**
+ * A taint-tracking configuration for unvalidated user input that is used to run an external process.
+ */
+module RemoteUserInputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof CommandInjectionSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof CommandInjectionSanitizer }
+
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+    any(CommandInjectionAdditionalTaintStep s).step(n1, n2)
+  }
+}
+
+/**
+ * Taint-tracking flow for unvalidated user input that is used to run an external process.
+ */
+module RemoteUserInputToArgumentToExecFlow =
+  TaintTracking::Global<RemoteUserInputToArgumentToExecFlowConfig>;
+
+/**
+ * Implementation of `ExecTainted.ql`. It is extracted to a QLL
+ * so that it can be excluded from `ExecUnescaped.ql` to avoid
+ * reporting overlapping results.
+ */
+predicate execIsTainted(
+  RemoteUserInputToArgumentToExecFlow::PathNode source,
+  RemoteUserInputToArgumentToExecFlow::PathNode sink, Expr execArg
+) {
+  RemoteUserInputToArgumentToExecFlow::flowPath(source, sink) and
+  sink.getNode().asExpr() = execArg
+}
+
+/**
+ * DEPRECATED: Use `execIsTainted` instead.
+ *
+ * Implementation of `ExecTainted.ql`. It is extracted to a QLL
+ * so that it can be excluded from `ExecUnescaped.ql` to avoid
+ * reporting overlapping results.
+ */
+deprecated predicate execTainted(DataFlow::PathNode source, DataFlow::PathNode sink, Expr execArg) {
+  exists(RemoteUserInputToArgumentToExecFlowConfig conf |
+    conf.hasFlowPath(source, sink) and sink.getNode().asExpr() = execArg
+  )
+}
 
 /**
  * DEPRECATED: Use `RemoteUserInputToArgumentToExecFlow` instead.
@@ -23,64 +107,11 @@ deprecated class RemoteUserInputToArgumentToExecFlowConfig extends TaintTracking
 
   override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof ArgumentToExec }
+  override predicate isSink(DataFlow::Node sink) { sink instanceof CommandInjectionSink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType
-    or
-    node.getType() instanceof BoxedType
-    or
-    isSafeCommandArgument(node.asExpr())
+  override predicate isSanitizer(DataFlow::Node node) { node instanceof CommandInjectionSanitizer }
+
+  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    any(CommandInjectionAdditionalTaintStep s).step(n1, n2)
   }
-}
-
-/**
- * A taint-tracking configuration for unvalidated user input that is used to run an external process.
- */
-module RemoteUserInputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof ArgumentToExec }
-
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType
-    or
-    node.getType() instanceof BoxedType
-    or
-    isSafeCommandArgument(node.asExpr())
-  }
-}
-
-/**
- * Taint-tracking flow for unvalidated user input that is used to run an external process.
- */
-module RemoteUserInputToArgumentToExecFlow =
-  TaintTracking::Global<RemoteUserInputToArgumentToExecFlowConfig>;
-
-/**
- * DEPRECATED: Use `execIsTainted` instead.
- *
- * Implementation of `ExecTainted.ql`. It is extracted to a QLL
- * so that it can be excluded from `ExecUnescaped.ql` to avoid
- * reporting overlapping results.
- */
-deprecated predicate execTainted(
-  DataFlow::PathNode source, DataFlow::PathNode sink, ArgumentToExec execArg
-) {
-  exists(RemoteUserInputToArgumentToExecFlowConfig conf |
-    conf.hasFlowPath(source, sink) and sink.getNode() = DataFlow::exprNode(execArg)
-  )
-}
-
-/**
- * Implementation of `ExecTainted.ql`. It is extracted to a QLL
- * so that it can be excluded from `ExecUnescaped.ql` to avoid
- * reporting overlapping results.
- */
-predicate execIsTainted(
-  RemoteUserInputToArgumentToExecFlow::PathNode source,
-  RemoteUserInputToArgumentToExecFlow::PathNode sink, ArgumentToExec execArg
-) {
-  RemoteUserInputToArgumentToExecFlow::flowPath(source, sink) and
-  sink.getNode() = DataFlow::exprNode(execArg)
 }
