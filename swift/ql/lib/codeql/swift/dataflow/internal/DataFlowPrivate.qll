@@ -592,17 +592,17 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   or
   // creation of an optional via implicit conversion,
   // i.e. from `f(x)` where `x: T` into `f(.some(x))` where the context `f` expects a `T?`.
-  exists(InjectIntoOptionalExpr e, OptionalSomeDecl someDecl |
+  exists(InjectIntoOptionalExpr e |
     e.convertsFrom(node1.asExpr()) and
     node2 = node1 and // HACK: we should ideally have a separate Node case for the (hidden) InjectIntoOptionalExpr
-    c.isSingleton(any(Content::EnumContent ec | ec.getParam() = someDecl.getParam(0)))
+    c instanceof OptionalSomeContentSet
   )
   or
   // creation of an optional by returning from an optional initializer (`init?`)
-  exists(ConstructorDecl init, OptionalType initRetType, OptionalSomeDecl someDecl |
+  exists(ConstructorDecl init, OptionalType initRetType |
     node1.asExpr().(CallExpr).getStaticTarget() = init and
     node2 = node1 and // HACK: again, we should ideally have a separate Node case here, and not reuse the CallExpr
-    c.isSingleton(any(Content::EnumContent ec | ec.getParam() = someDecl.getParam(0))) and
+    c instanceof OptionalSomeContentSet and
     init.getInterfaceType().(FunctionType).getResult().(FunctionType).getResult() = initRetType
   )
   or
@@ -649,10 +649,10 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
   )
   or
   // read of an optional .some member via `let x: T = y: T?` pattern matching
-  exists(OptionalSomePattern pat, OptionalSomeDecl someDecl |
+  exists(OptionalSomePattern pat |
     node1.asPattern() = pat and
     node2.asPattern() = pat.getSubPattern() and
-    c.isSingleton(any(Content::EnumContent ec | ec.getParam() = someDecl.getParam(0)))
+    c instanceof OptionalSomeContentSet
   )
 }
 
@@ -672,15 +672,17 @@ predicate clearsContent(Node n, ContentSet c) {
 predicate expectsContent(Node n, ContentSet c) { none() }
 
 /**
- * The global singleton `Optional.some` enum element.
+ * The global singleton `Optional.some` content set.
  */
-private class OptionalSomeDecl extends EnumElementDecl {
-  OptionalSomeDecl() {
-    exists(EnumDecl enum |
-      this.getName() = "some" and
-      this.getDeclaringDecl() = enum and
-      enum.getName() = "Optional" and
-      enum.getModule().getName() = "Swift"
+private class OptionalSomeContentSet extends ContentSet {
+  OptionalSomeContentSet() {
+    exists(EnumDecl optional, EnumElementDecl some |
+      some.getDeclaringDecl() = optional and
+      some.getName() = "some" and
+      optional.getName() = "Optional" and
+      optional.getModule().getName() = "Swift"
+    |
+      this.isSingleton(any(Content::EnumContent ec | ec.getParam() = some.getParam(0)))
     )
   }
 }
