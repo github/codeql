@@ -37,7 +37,7 @@ deprecated class RemoteUserInputToArgumentToExecFlowConfig extends TaintTracking
 /**
  * A taint-tracking configuration for unvalidated user input that is used to run an external process.
  */
-private module RemoteUserInputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
+module RemoteUserInputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof ArgumentToExec }
