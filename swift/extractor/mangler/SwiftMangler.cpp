@@ -103,6 +103,10 @@ SwiftMangledName SwiftMangler::visitExtensionDecl(const swift::ExtensionDecl* de
 
 unsigned SwiftMangler::getExtensionIndex(const swift::ExtensionDecl* decl,
                                          const swift::Decl* parent) {
+  // to avoid iterating multiple times on the parent of multiple extensions, we preload extension
+  // indexes once for each encountered parent into the `preloadedExtensionIndexes` mapping.
+  // Because we mangle declarations only once in a given trap/dispatcher context, we can safely
+  // discard preloaded indexes on use
   if (auto found = preloadedExtensionIndexes.extract(decl)) {
     return found.mapped();
   }
