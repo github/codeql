@@ -815,26 +815,20 @@ private module Cached {
     )
   }
 
-  private predicate store(
-    Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
-  ) {
-    exists(ContentSet cs |
-      c = cs.getAStoreContent() and storeSet(node1, cs, node2, contentType, containerType)
-    )
-  }
-
   /**
    * Holds if data can flow from `node1` to `node2` via a direct assignment to
-   * `f`.
+   * `c`.
    *
    * This includes reverse steps through reads when the result of the read has
    * been stored into, in order to handle cases like `x.f1.f2 = y`.
    */
   cached
-  predicate store(Node node1, TypedContent tc, Content c, Node node2, DataFlowType contentType, DataFlowType containerType) {
-    tc.getContent() = c and
-    tc.getContainerType() = containerType and
-    store(node1, c, node2, contentType, containerType)
+  predicate store(
+    Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
+  ) {
+    exists(ContentSet cs |
+      c = cs.getAStoreContent() and storeSet(node1, cs, node2, contentType, containerType)
+    )
   }
 
   /**
@@ -933,9 +927,6 @@ private module Cached {
     TReturnCtxNone() or
     TReturnCtxNoFlowThrough() or
     TReturnCtxMaybeFlowThrough(ReturnPosition pos)
-
-  cached
-  newtype TTypedContent = MkTypedContent(Content c, DataFlowType t) { store(_, c, _, _, t) }
 
   cached
   newtype TAccessPathFront =
@@ -1413,30 +1404,6 @@ class ApproxAccessPathFrontOption extends TApproxAccessPathFrontOption {
     or
     this = TApproxAccessPathFrontSome(any(ApproxAccessPathFront apf | result = apf.toString()))
   }
-}
-
-/** A `Content` tagged with the type of a containing object. */
-class TypedContent extends MkTypedContent {
-  private Content c;
-  private DataFlowType t;
-
-  TypedContent() { this = MkTypedContent(c, t) }
-
-  /** Gets the content. */
-  Content getContent() { result = c }
-
-  /** Gets the container type. */
-  DataFlowType getContainerType() { result = t }
-
-  /** Gets a textual representation of this content. */
-  string toString() { result = c.toString() }
-
-  /**
-   * Holds if access paths with this `TypedContent` at their head always should
-   * be tracked at high precision. This disables adaptive access path precision
-   * for such access paths.
-   */
-  predicate forceHighPrecision() { forceHighPrecision(c) }
 }
 
 /**

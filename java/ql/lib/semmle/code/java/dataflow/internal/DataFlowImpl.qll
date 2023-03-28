@@ -392,7 +392,7 @@ module Impl<FullStateConfigSig Config> {
 
   pragma[nomagic]
   private predicate storeEx(NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType) {
-    store(pragma[only_bind_into](node1.asNode()), _, c, pragma[only_bind_into](node2.asNode()),
+    store(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode()),
       contentType, containerType) and
     hasReadStep(c) and
     stepFilter(node1, node2)
