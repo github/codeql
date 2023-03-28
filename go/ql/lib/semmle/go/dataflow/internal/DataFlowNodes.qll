@@ -11,9 +11,7 @@ private newtype TNode =
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
   MkSummarizedParameterNode(SummarizedCallable c, int i) {
-    i in [0 .. c.getType().getNumParameter() - 1]
-    or
-    c.asFunction() instanceof Method and i = -1
+    FlowSummaryImpl::Private::summaryParameterNodeRange(c, i)
   } or
   MkSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
     FlowSummaryImpl::Private::summaryNodeRange(c, state)
