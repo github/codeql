@@ -219,15 +219,15 @@ positionalArguments
 | desugar.rb:6:3:6:13 | call to count= | desugar.rb:6:17:6:17 | ... = ... |
 | desugar.rb:10:3:10:10 | call to []= | desugar.rb:10:9:10:9 | 0 |
 | desugar.rb:10:3:10:10 | call to []= | desugar.rb:10:14:10:14 | ... = ... |
-| desugar.rb:14:3:14:13 | call to count= | desugar.rb:14:15:14:16 | __synth__1 |
+| desugar.rb:14:3:14:13 | call to count= | desugar.rb:14:3:14:13 | __synth__1 |
 | desugar.rb:14:15:14:16 | ... + ... | desugar.rb:14:18:14:18 | 1 |
 | desugar.rb:18:3:18:28 | call to [] | desugar.rb:18:9:18:9 | __synth__1 |
 | desugar.rb:18:3:18:28 | call to [] | desugar.rb:18:12:18:16 | __synth__2 |
 | desugar.rb:18:3:18:28 | call to [] | desugar.rb:18:19:18:27 | __synth__3 |
+| desugar.rb:18:3:18:28 | call to []= | desugar.rb:18:3:18:28 | __synth__4 |
 | desugar.rb:18:3:18:28 | call to []= | desugar.rb:18:9:18:9 | __synth__1 |
 | desugar.rb:18:3:18:28 | call to []= | desugar.rb:18:12:18:16 | __synth__2 |
 | desugar.rb:18:3:18:28 | call to []= | desugar.rb:18:19:18:27 | __synth__3 |
-| desugar.rb:18:3:18:28 | call to []= | desugar.rb:18:30:18:31 | __synth__4 |
 | desugar.rb:18:19:18:27 | ... + ... | desugar.rb:18:27:18:27 | 3 |
 | desugar.rb:18:30:18:31 | ... + ... | desugar.rb:18:33:18:33 | 1 |
 | desugar.rb:22:3:22:3 | call to [] | desugar.rb:22:3:22:3 | 0 |
