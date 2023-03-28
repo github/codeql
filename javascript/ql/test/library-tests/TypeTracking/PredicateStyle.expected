@@ -11,6 +11,7 @@ apiObject
 | tst_conflict.js:6:38:6:58 | api.cha ... hain2() |
 connection
 | type tracker with call steps | tst.js:7:15:7:18 | conn |
+| type tracker with call steps | tst.js:8:5:8:19 | this.connection |
 | type tracker with call steps | tst.js:11:5:11:19 | this.connection |
 | type tracker with call steps | tst.js:80:16:80:19 | conn |
 | type tracker with call steps | tst.js:84:22:84:22 | x |
@@ -30,7 +31,9 @@ connection
 | type tracker without call steps | tst.js:48:7:48:21 | getConnection() |
 | type tracker without call steps | tst.js:54:37:54:51 | getConnection() |
 | type tracker without call steps | tst.js:57:14:57:48 | config. ... ction') |
+| type tracker without call steps | tst.js:62:3:62:36 | MyAppli ... nection |
 | type tracker without call steps | tst.js:62:40:62:79 | api.cha ... ction() |
+| type tracker without call steps | tst.js:63:3:63:34 | MyAppli ... onflict |
 | type tracker without call steps | tst.js:63:38:63:77 | api.cha ... ction() |
 | type tracker without call steps | tst.js:67:14:67:47 | MyAppli ... nection |
 | type tracker without call steps | tst.js:78:35:78:49 | getConnection() |
@@ -43,6 +46,7 @@ connection
 | type tracker without call steps | tst.js:118:12:118:26 | getConnection() |
 | type tracker without call steps | tst.js:120:21:120:24 | conn |
 | type tracker without call steps | tst.js:126:22:126:25 | conn |
+| type tracker without call steps | tst_conflict.js:6:3:6:34 | MyAppli ... onflict |
 | type tracker without call steps | tst_conflict.js:6:38:6:77 | api.cha ... ction() |
 | type tracker without call steps with property conflict | tst.js:63:3:63:25 | MyAppli ... mespace |
 | type tracker without call steps with property conflict | tst_conflict.js:6:3:6:25 | MyAppli ... mespace |

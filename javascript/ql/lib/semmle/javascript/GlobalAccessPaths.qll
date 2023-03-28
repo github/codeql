@@ -243,6 +243,11 @@ module AccessPath {
       root.isGlobal()
     )
     or
+    exists(Assignment assign |
+      fromReference(assign.getLhs().flow(), root) = result and
+      node = assign.getRhs().flow()
+    )
+    or
     exists(FunctionDeclStmt fun |
       node = DataFlow::valueNode(fun) and
       result = fun.getIdentifier().(GlobalVarDecl).getName() and

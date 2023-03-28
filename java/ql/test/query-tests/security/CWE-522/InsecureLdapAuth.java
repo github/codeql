@@ -11,13 +11,13 @@ public class InsecureLdapAuth {
 		String ldapUrl = "ldap://ad.your-server.com:389";
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put(Context.INITIAL_CONTEXT_FACTORY,
-			"com.sun.jndi.ldap.LdapCtxFactory");
+				"com.sun.jndi.ldap.LdapCtxFactory");
 		environment.put(Context.PROVIDER_URL, ldapUrl);
 		environment.put(Context.REFERRAL, "follow");
 		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
 		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
 		environment.put(Context.SECURITY_CREDENTIALS, password);
-		DirContext dirContext = new InitialDirContext(environment);
+		DirContext dirContext = new InitialDirContext(environment); // $ hasInsecureLdapAuth
 	}
 
 	// BAD - Test LDAP authentication in cleartext using `DirContext`.
@@ -25,13 +25,13 @@ public class InsecureLdapAuth {
 		String ldapUrl = "ldap://"+serverName+":389";
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put(Context.INITIAL_CONTEXT_FACTORY,
-			"com.sun.jndi.ldap.LdapCtxFactory");
+				"com.sun.jndi.ldap.LdapCtxFactory");
 		environment.put(Context.PROVIDER_URL, ldapUrl);
 		environment.put(Context.REFERRAL, "follow");
 		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
 		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
 		environment.put(Context.SECURITY_CREDENTIALS, password);
-		DirContext dirContext = new InitialDirContext(environment);
+		DirContext dirContext = new InitialDirContext(environment); // $ hasInsecureLdapAuth
 	}
 
 	// GOOD - Test LDAP authentication over SSL.
@@ -39,7 +39,7 @@ public class InsecureLdapAuth {
 		String ldapUrl = "ldaps://ad.your-server.com:636";
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put(Context.INITIAL_CONTEXT_FACTORY,
-			"com.sun.jndi.ldap.LdapCtxFactory");
+				"com.sun.jndi.ldap.LdapCtxFactory");
 		environment.put(Context.PROVIDER_URL, ldapUrl);
 		environment.put(Context.REFERRAL, "follow");
 		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
@@ -53,7 +53,7 @@ public class InsecureLdapAuth {
 		String ldapUrl = "ldap://ad.your-server.com:636";
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put(Context.INITIAL_CONTEXT_FACTORY,
-			"com.sun.jndi.ldap.LdapCtxFactory");
+				"com.sun.jndi.ldap.LdapCtxFactory");
 		environment.put(Context.PROVIDER_URL, ldapUrl);
 		environment.put(Context.REFERRAL, "follow");
 		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
@@ -68,7 +68,7 @@ public class InsecureLdapAuth {
 		String ldapUrl = "ldap://ad.your-server.com:389";
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put(Context.INITIAL_CONTEXT_FACTORY,
-			"com.sun.jndi.ldap.LdapCtxFactory");
+				"com.sun.jndi.ldap.LdapCtxFactory");
 		environment.put(Context.PROVIDER_URL, ldapUrl);
 		environment.put(Context.REFERRAL, "follow");
 		environment.put(Context.SECURITY_AUTHENTICATION, "DIGEST-MD5 GSSAPI");
@@ -82,7 +82,7 @@ public class InsecureLdapAuth {
 		String ldapUrl = "ldap://localhost:389";
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put(Context.INITIAL_CONTEXT_FACTORY,
-			"com.sun.jndi.ldap.LdapCtxFactory");
+				"com.sun.jndi.ldap.LdapCtxFactory");
 		environment.put(Context.PROVIDER_URL, ldapUrl);
 		environment.put(Context.REFERRAL, "follow");
 		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
@@ -96,14 +96,14 @@ public class InsecureLdapAuth {
 		String ldapUrl = "ldap://ad.your-server.com:389";
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put(Context.INITIAL_CONTEXT_FACTORY,
-			"com.sun.jndi.ldap.LdapCtxFactory");
+				"com.sun.jndi.ldap.LdapCtxFactory");
 		environment.put(Context.PROVIDER_URL, ldapUrl);
 		environment.put(Context.REFERRAL, "follow");
 		environment.put(Context.SECURITY_AUTHENTICATION, "simple");
 		environment.put(Context.SECURITY_PRINCIPAL, ldapUserName);
 		environment.put(Context.SECURITY_CREDENTIALS, password);
-		InitialLdapContext ldapContext = new InitialLdapContext(environment, null);
-	}	
+		InitialLdapContext ldapContext = new InitialLdapContext(environment, null); // $ hasInsecureLdapAuth
+	}
 
 
 	// BAD - Test LDAP authentication in cleartext using `DirContext` and string literals.
@@ -111,13 +111,13 @@ public class InsecureLdapAuth {
 		String ldapUrl = "ldap://ad.your-server.com:389";
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put("java.naming.factory.initial",
-			"com.sun.jndi.ldap.LdapCtxFactory");
+				"com.sun.jndi.ldap.LdapCtxFactory");
 		environment.put("java.naming.provider.url", ldapUrl);
 		environment.put("java.naming.referral", "follow");
 		environment.put("java.naming.security.authentication", "simple");
 		environment.put("java.naming.security.principal", ldapUserName);
 		environment.put("java.naming.security.credentials", password);
-		DirContext dirContext = new InitialDirContext(environment);
+		DirContext dirContext = new InitialDirContext(environment); // $ hasInsecureLdapAuth
 	}
 
 	private void setSSL(Hashtable env) {
@@ -136,7 +136,7 @@ public class InsecureLdapAuth {
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		setSSL(environment);
 		environment.put(Context.INITIAL_CONTEXT_FACTORY,
-			"com.sun.jndi.ldap.LdapCtxFactory");
+				"com.sun.jndi.ldap.LdapCtxFactory");
 		environment.put(Context.PROVIDER_URL, ldapUrl);
 		setBasicAuth(environment, ldapUserName, password);
 		DirContext dirContext = new InitialLdapContext(environment, null);
@@ -147,9 +147,9 @@ public class InsecureLdapAuth {
 		String ldapUrl = "ldap://"+serverName+":389";
 		Hashtable<String, String> environment = new Hashtable<String, String>();
 		environment.put(Context.INITIAL_CONTEXT_FACTORY,
-			"com.sun.jndi.ldap.LdapCtxFactory");
+				"com.sun.jndi.ldap.LdapCtxFactory");
 		environment.put(Context.PROVIDER_URL, ldapUrl);
 		setBasicAuth(environment, ldapUserName, password);
-		DirContext dirContext = new InitialLdapContext(environment, null);
+		DirContext dirContext = new InitialLdapContext(environment, null); // $ hasInsecureLdapAuth
 	}
 }
