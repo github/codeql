@@ -8,10 +8,11 @@
  */
 
 private import java
+import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
 private import experimental.adaptivethreatmodeling.EndpointCharacteristics as EndpointCharacteristics
 private import experimental.adaptivethreatmodeling.EndpointTypes
-private import experimental.adaptivethreatmodeling.ATMConfigs // To import the configurations of all supported Java queries
+private import experimental.adaptivethreatmodeling.ATMConfigs as ATMConfigs
 
 /*
  * ****** WARNING: ******
@@ -30,7 +31,7 @@ where
     // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
     // treated by the actual query as a sanitizer, since the final logic is something like
     // `isSink(n) and not isSanitizer(n)`. We don't want to include such nodes as positive examples in the prompt.
-    not exists(TaintTracking::Configuration config | config.isSanitizer(sink)) and
+    not ATMConfigs::isBarrier(sink) and
     // Include only sinks that are arguments to an external API call, because these are the sinks we are most interested
     // in.
     sink instanceof ExternalAPIs::ExternalApiDataNode and

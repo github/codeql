@@ -3,11 +3,12 @@
  */
 
 private import java as java
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.PathCreation
 private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import experimental.adaptivethreatmodeling.EndpointTypes
-private import experimental.adaptivethreatmodeling.ATMConfigs // To import the configurations of all supported Java queries
+private import experimental.adaptivethreatmodeling.ATMConfigs as ATMConfigs
 private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
 private import semmle.code.java.Expr as Expr
 
@@ -298,7 +299,7 @@ private class SqlInjectionSinkCharacteristic extends SinkCharacteristic {
   SqlInjectionSinkCharacteristic() { this = "other modeled sql" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
-    n instanceof QueryInjectionSink and
+    n instanceof ATMConfigs::QueryInjectionSink and
     not sinkNode(n, "sql")
   }
 
@@ -335,7 +336,7 @@ private class RequestForgeryOtherSinkCharacteristic extends SinkCharacteristic {
   RequestForgeryOtherSinkCharacteristic() { this = "request forgery" }
 
   override predicate appliesToEndpoint(DataFlow::Node n) {
-    n instanceof RequestForgerySink and
+    n instanceof ATMConfigs::RequestForgerySink and
     not sinkNode(n, "open-url") and
     not sinkNode(n, "jdbc-url")
   }
@@ -392,9 +393,7 @@ private class IsTypeAccessCharacteristic extends NotASinkCharacteristic {
 private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
   IsSanitizerCharacteristic() { this = "sanitizer" }
 
-  override predicate appliesToEndpoint(DataFlow::Node n) {
-    exists(TaintTracking::Configuration config | config.isSanitizer(n))
-  }
+  override predicate appliesToEndpoint(DataFlow::Node n) { ATMConfigs::isBarrier(n) }
 }
 
 /**
@@ -577,7 +576,7 @@ private class IsFlowStepCharacteristic extends LikelyNotASinkCharacteristic {
    * Holds if the node `n` is known as the predecessor in a modeled flow step.
    */
   private predicate isKnownStepSrc(DataFlow::Node n) {
-    any(TaintTracking::Configuration c).isAdditionalFlowStep(n, _) or
+    ATMConfigs::isAdditionalFlowStep(n, _) or
     TaintTracking::localTaintStep(n, _)
   }
 }
@@ -598,7 +597,7 @@ private class CannotBeTaintedCharacteristic extends LikelyNotASinkCharacteristic
    * Holds if the node `n` is known as the predecessor in a modeled flow step.
    */
   private predicate isKnownOutNodeForStep(DataFlow::Node n) {
-    any(TaintTracking::Configuration c).isAdditionalFlowStep(_, n) or
+    ATMConfigs::isAdditionalFlowStep(_, n) or
     TaintTracking::localTaintStep(_, n) or
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(_, n, _) or
     FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(_, n, _) or
