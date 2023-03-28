@@ -395,7 +395,6 @@ private module CryptoJS {
   private class Apply extends CryptographicOperation::Range instanceof API::CallNode {
     API::Node input;
     CryptographicAlgorithm algorithm; // non-functional
-    InstantiatedAlgorithm instantiation;
 
     Apply() {
       this = getEncryptionApplication(input, algorithm) or
