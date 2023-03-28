@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.apache.http.client.methods", "HttpDelete", False, "HttpDelete", "", "", "Argument[0]", "open-url", "manual"]
       - ["org.apache.http.client.methods", "HttpGet", False, "HttpGet", "", "", "Argument[0]", "open-url", "manual"]

@@ -1,12 +1,12 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["java.net.http", "WebSocket$Listener", True, "onText", "(WebSocket,CharSequence,boolean)", "", "Parameter[1]", "remote", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["java.net.http", "HttpRequest", False, "newBuilder", "", "", "Argument[0]", "open-url", "manual"]
       - ["java.net.http", "HttpRequest$Builder", False, "uri", "", "", "Argument[0]", "open-url", "manual"]

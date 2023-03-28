@@ -22,7 +22,8 @@ import DataFlow::PathGraph
 class ConstantSaltSource extends Expr {
   ConstantSaltSource() {
     this = any(ArrayExpr arr | arr.getType().getName() = "Array<UInt8>") or
-    this instanceof StringLiteralExpr
+    this instanceof StringLiteralExpr or
+    this instanceof NumberLiteralExpr
   }
 }
 
@@ -33,10 +34,18 @@ class ConstantSaltSink extends Expr {
   ConstantSaltSink() {
     // `salt` arg in `init` is a sink
     exists(ClassOrStructDecl c, ConstructorDecl f, CallExpr call |
-      c.getFullName() = ["HKDF", "PBKDF1", "PBKDF2", "Scrypt"] and
+      c.getName() = ["HKDF", "PBKDF1", "PBKDF2", "Scrypt"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
       call.getArgumentWithLabel("salt").getExpr() = this
+    )
+    or
+    // RNCryptor
+    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
+      c.getName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+      c.getAMember() = f and
+      call.getStaticTarget() = f and
+      call.getArgumentWithLabel(["salt", "encryptionSalt", "hmacSalt", "HMACSalt"]).getExpr() = this
     )
   }
 }

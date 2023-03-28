@@ -59,12 +59,11 @@ module InsecureRandomness {
    */
   class RandomFnSink extends Sink {
     RandomFnSink() {
-      exists(DataFlowCallable randomFn |
-        randomFn
-            .getName()
+      exists(Function func |
+        func.getName()
             .regexpMatch("(?i).*(gen(erate)?|make|mk|create).*(nonce|salt|pepper|Password).*")
       |
-        this.getEnclosingCallable() = randomFn
+        this.asExpr().getScope() = func
       )
     }
   }

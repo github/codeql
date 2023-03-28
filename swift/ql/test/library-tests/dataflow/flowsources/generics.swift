@@ -7,9 +7,9 @@ class MySimpleClass
 }
 
 func useMySimpleClass(simple: MySimpleClass) {
-    _ = simple.source1 // SOURCE
-    _ = simple.source2 // SOURCE
-    _ = simple.source3() // SOURCE
+    _ = simple.source1 // $ source=remote
+    _ = simple.source2 // $ source=remote
+    _ = simple.source3() // $ source=remote
 }
 
 // ---
@@ -45,33 +45,37 @@ extension MyDerived2
 }
 
 func useDerived(generic: MyGeneric<Int>, generic2: MyGeneric<Any>, derived: MyDerived<Int>, derived2: MyDerived2) {
-    _ = generic.source1 // SOURCE
-    _ = generic.source2 // SOURCE
-    _ = generic.source3() // SOURCE
-    _ = generic2.source1 // SOURCE
-    _ = generic2.source2 // SOURCE
-    _ = generic2.source3() // SOURCE
-    _ = derived.source1 // SOURCE
-    _ = derived.source2 // SOURCE
-    _ = derived.source3() // SOURCE
-    _ = derived.source4 // SOURCE
-    _ = derived.source5 // SOURCE
-    _ = derived.source6() // SOURCE
-    _ = derived.source7 // SOURCE
-    _ = derived.source8() // SOURCE
-    _ = derived2.source1 // SOURCE
-    _ = derived2.source2 // SOURCE
-    _ = derived2.source3() // SOURCE
-    _ = derived2.source9 // SOURCE
-    _ = derived2.source10 // SOURCE
-    _ = derived2.source11() // SOURCE
-    _ = derived2.source12 // SOURCE
-    _ = derived2.source13() // SOURCE
+    _ = generic.source1 // $ source=remote
+    _ = generic.source2 // $ source=remote
+    _ = generic.source3() // $ source=remote
+    _ = generic2.source1 // $ source=remote
+    _ = generic2.source2 // $ source=remote
+    _ = generic2.source3() // $ source=remote
+    _ = derived.source1 // $ source=remote
+    _ = derived.source2 // $ source=remote
+    _ = derived.source3() // $ source=remote
+    _ = derived.source4 // $ source=remote
+    _ = derived.source5 // $ source=remote
+    _ = derived.source6() // $ source=remote
+    _ = derived.source7 // $ source=remote
+    _ = derived.source8() // $ source=remote
+    _ = derived2.source1 // $ source=remote
+    _ = derived2.source2 // $ source=remote
+    _ = derived2.source3() // $ source=remote
+    _ = derived2.source9 // $ source=remote
+    _ = derived2.source10 // $ source=remote
+    _ = derived2.source11() // $ source=remote
+    _ = derived2.source12 // $ source=remote
+    _ = derived2.source13() // $ source=remote
 }
 
 // ---
 
-protocol MyProtocol {
+protocol MyParentProtocol {
+    var source0: Int { get }
+}
+
+protocol MyProtocol : MyParentProtocol {
     var source1: Int { get }
     var source2: Int { get }
 }
@@ -81,21 +85,29 @@ class MyImpl<T> : MyProtocol {
 }
 
 extension MyImpl {
+    var source0: Int { get { return 0 } }
     var source2: Int { get { return 0 } }
 }
 
 func useProtocol(proto: MyProtocol, impl: MyImpl<Int>, impl2: MyImpl<Any>) {
-    _ = proto.source1 // SOURCE
-    _ = proto.source2 // SOURCE
-    _ = impl.source1 // SOURCE
-    _ = impl.source2 // SOURCE
-    _ = impl2.source1 // SOURCE
-    _ = impl2.source2 // SOURCE
+    _ = proto.source0 // $ source=remote
+    _ = proto.source1 // $ source=remote
+    _ = proto.source2 // $ source=remote
+    _ = impl.source0 // $ source=remote
+    _ = impl.source1 // $ source=remote
+    _ = impl.source2 // $ source=remote
+    _ = impl2.source0 // $ source=remote
+    _ = impl2.source1 // $ source=remote
+    _ = impl2.source2 // $ source=remote
 }
 
 // ---
 
-protocol MyProtocol2 {
+protocol MyParentProtocol2 {
+    var source0: Int { get }
+}
+
+protocol MyProtocol2 : MyParentProtocol2 {
     var source1: Int { get }
     var source2: Int { get }
 }
@@ -105,14 +117,48 @@ class MyImpl2<T> {
 }
 
 extension MyImpl2 : MyProtocol2 {
+    var source0: Int { get { return 0 } }
     var source2: Int { get { return 0 } }
 }
 
 func useProtocol2(proto: MyProtocol2, impl: MyImpl2<Int>, impl2: MyImpl2<Any>) {
-    _ = proto.source1 // SOURCE
-    _ = proto.source2 // SOURCE
-    _ = impl.source1 // SOURCE [NOT DETECTED]
-    _ = impl.source2 // SOURCE [NOT DETECTED]
-    _ = impl2.source1 // SOURCE [NOT DETECTED]
-    _ = impl2.source2 // SOURCE [NOT DETECTED]
+    _ = proto.source0 // $ source=remote
+    _ = proto.source1 // $ source=remote
+    _ = proto.source2 // $ source=remote
+    _ = impl.source0 // $ source=remote
+    _ = impl.source1 // $ source=remote
+    _ = impl.source2 // $ source=remote
+    _ = impl2.source0 // $ source=remote
+    _ = impl2.source1 // $ source=remote
+    _ = impl2.source2 // $ source=remote
+}
+
+// ---
+
+protocol MyProtocol3 {
+    func source1() -> Int
+    func source2() -> Int
+    func source3() -> Int
+}
+
+class MyParentClass3 {
+    func source1() -> Int { return 0 }
+}
+
+class MyClass3 : MyParentClass3 {
+    func source2() -> Int { return 0 }
+    func source3() -> Int { return 0 }
+}
+
+extension MyClass3 : MyProtocol3 {
+}
+
+class MyChildClass3: MyClass3 {
+    override func source3() -> Int { return 0 }
+}
+
+func useProtocol3(impl: MyChildClass3) {
+    _ = impl.source1() // not a source (`MyProtocol3.source1` is the declared source and `MyParentClass3` doesn't extend it)
+    _ = impl.source2() // $ source=remote
+    _ = impl.source3() // $ source=remote
 }

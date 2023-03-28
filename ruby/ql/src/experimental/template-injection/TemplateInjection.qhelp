@@ -1,0 +1,38 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+<overview>
+<p>
+Template Injection occurs when user input is embedded in a template's code in an unsafe manner.
+An attacker can use native template syntax to inject a malicious payload into a template, which is then executed server-side.
+This permits the attacker to run arbitrary code in the server's context.
+</p>
+</overview>
+
+<recommendation>
+<p>
+To fix this, ensure that untrusted input is not used as part of a template's code. If the application requirements do not allow this,
+use a sandboxed environment where access to unsafe attributes and methods is prohibited.
+</p>
+</recommendation>
+
+<example>
+<p>
+Consider the example given below, an untrusted HTTP parameter <code>name</code> is used to generate a template string. This can lead to remote code execution.
+</p>
+<sample src="examples/SSTIBad.rb" />
+
+<p>
+Here we have fixed the problem by including ERB/Slim syntax in the string, then the user input will be rendered but not evaluated.
+</p>
+<sample src="examples/SSTIGood.rb" />
+</example>
+
+<references>
+<li>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_injection#Server_Side_Template_Injection">Server Side Template Injection</a>.
+</li>
+<li>
+Portswigger : <a href="https://portswigger.net/web-security/server-side-template-injection">Server Side Template Injection</a>.
+</li>
+</references>
+</qhelp>

@@ -3,29 +3,13 @@
  */
 
 import go
-private import semmle.go.dataflow.ExternalFlow
-
-private class FlowSources extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "net/http;Request;true;Cookie;;;ReturnValue[0];remote",
-        "net/http;Request;true;Cookies;;;ReturnValue.ArrayElement;remote",
-        "net/http;Request;true;FormFile;;;ReturnValue[0..1];remote",
-        "net/http;Request;true;FormValue;;;ReturnValue;remote",
-        "net/http;Request;true;MultipartReader;;;ReturnValue[0];remote",
-        "net/http;Request;true;PostFormValue;;;ReturnValue;remote",
-        "net/http;Request;true;Referer;;;ReturnValue;remote",
-        "net/http;Request;true;UserAgent;;;ReturnValue;remote"
-      ]
-  }
-}
 
 /** Provides models of commonly used functions in the `net/http` package. */
 module NetHttp {
   /** An access to an HTTP request field whose value may be controlled by an untrusted user. */
   private class UserControlledRequestField extends UntrustedFlowSource::Range,
-    DataFlow::FieldReadNode {
+    DataFlow::FieldReadNode
+  {
     UserControlledRequestField() {
       exists(string fieldName | this.getField().hasQualifiedName("net/http", "Request", fieldName) |
         fieldName =

@@ -534,6 +534,21 @@ class ContentSet extends TContentSet {
     this = TElementLowerBoundContent(lower, true)
   }
 
+  /**
+   * Holds if this content set represents all `KnownElementContent`s where
+   * the index is of type `type`, as per `ConstantValue::getValueType/0`.
+   */
+  predicate isElementOfType(string type) { this = TElementContentOfTypeContent(type, false) }
+
+  /**
+   * Holds if this content set represents `UnknownElementContent` unioned with
+   * all `KnownElementContent`s where the index is of type `type`, as per
+   * `ConstantValue::getValueType/0`.
+   */
+  predicate isElementOfTypeOrUnknown(string type) {
+    this = TElementContentOfTypeContent(type, true)
+  }
+
   /** Gets a textual representation of this content set. */
   string toString() {
     exists(Content c |
@@ -558,6 +573,16 @@ class ContentSet extends TContentSet {
       includeUnknown = true and
       result = lower + ".."
     )
+    or
+    exists(string type, boolean includeUnknown |
+      this = TElementContentOfTypeContent(type, includeUnknown)
+    |
+      includeUnknown = false and
+      result = "any(" + type + ")!"
+      or
+      includeUnknown = true and
+      result = "any(" + type + ")"
+    )
   }
 
   /** Gets a content that may be stored into when storing into this set. */
@@ -576,7 +601,14 @@ class ContentSet extends TContentSet {
     // step that store only into `1`
     this.isKnownOrUnknownElement(result)
     or
-    this.isElementLowerBound(_) and
+    // These reverse stores are not as accurate as they could be, but making
+    // them more accurate would result in a large fan-out
+    (
+      this.isElementLowerBound(_) or
+      this.isElementLowerBoundOrUnknown(_) or
+      this.isElementOfType(_) or
+      this.isElementOfTypeOrUnknown(_)
+    ) and
     result = TUnknownElementContent()
   }
 
@@ -599,6 +631,15 @@ class ContentSet extends TContentSet {
         result.(Content::KnownElementContent).getIndex().isInt(i) and
         i >= lower
       )
+      or
+      includeUnknown = true and
+      result = TUnknownElementContent()
+    )
+    or
+    exists(string type, boolean includeUnknown |
+      this = TElementContentOfTypeContent(type, includeUnknown)
+    |
+      type = result.(Content::KnownElementContent).getIndex().getValueType()
       or
       includeUnknown = true and
       result = TUnknownElementContent()
@@ -985,9 +1026,108 @@ class ClassNode extends ModuleNode {
 }
 
 /**
+ * A data flow node corresponding to a literal expression.
+ */
+class LiteralNode extends ExprNode {
+  private CfgNodes::ExprNodes::LiteralCfgNode literalCfgNode;
+
+  LiteralNode() { this.asExpr() = literalCfgNode }
+
+  /** Gets the underlying AST node as a `Literal`. */
+  Literal asLiteralAstNode() { result = literalCfgNode.getExpr() }
+}
+
+/**
+ * A data flow node corresponding to an operation expression.
+ */
+class OperationNode extends ExprNode {
+  private CfgNodes::ExprNodes::OperationCfgNode operationCfgNode;
+
+  OperationNode() { this.asExpr() = operationCfgNode }
+
+  /** Gets the underlying AST node as an `Operation`. */
+  Operation asOperationAstNode() { result = operationCfgNode.getExpr() }
+
+  /** Gets the operator of this operation. */
+  final string getOperator() { result = operationCfgNode.getOperator() }
+
+  /** Gets an operand of this operation. */
+  final Node getAnOperand() { result.asExpr() = operationCfgNode.getAnOperand() }
+}
+
+/**
+ * A data flow node corresponding to a control expression (e.g. `if`, `while`, `for`).
+ */
+class ControlExprNode extends ExprNode {
+  private CfgNodes::ExprNodes::ControlExprCfgNode controlExprCfgNode;
+
+  ControlExprNode() { this.asExpr() = controlExprCfgNode }
+
+  /** Gets the underlying AST node as a `ControlExpr`. */
+  ControlExpr asControlExprAstNode() { result = controlExprCfgNode.getExpr() }
+}
+
+/**
+ * A data flow node corresponding to a variable access expression.
+ */
+class VariableAccessNode extends ExprNode {
+  private CfgNodes::ExprNodes::VariableAccessCfgNode variableAccessCfgNode;
+
+  VariableAccessNode() { this.asExpr() = variableAccessCfgNode }
+
+  /** Gets the underlying AST node as a `VariableAccess`. */
+  VariableAccess asVariableAccessAstNode() { result = variableAccessCfgNode.getExpr() }
+}
+
+/**
+ * A data flow node corresponding to a constant access expression.
+ */
+class ConstantAccessNode extends ExprNode {
+  private CfgNodes::ExprNodes::ConstantAccessCfgNode constantAccessCfgNode;
+
+  ConstantAccessNode() { this.asExpr() = constantAccessCfgNode }
+
+  /** Gets the underlying AST node as a `ConstantAccess`. */
+  ConstantAccess asConstantAccessAstNode() { result = constantAccessCfgNode.getExpr() }
+
+  /** Gets the node corresponding to the scope expression. */
+  final Node getScopeNode() { result.asExpr() = constantAccessCfgNode.getScopeExpr() }
+}
+
+/**
+ * A data flow node corresponding to a LHS expression.
+ */
+class LhsExprNode extends ExprNode {
+  private CfgNodes::ExprNodes::LhsExprCfgNode lhsExprCfgNode;
+
+  LhsExprNode() { this.asExpr() = lhsExprCfgNode }
+
+  /** Gets the underlying AST node as a `LhsExpr`. */
+  LhsExpr asLhsExprAstNode() { result = lhsExprCfgNode.getExpr() }
+
+  /** Gets a variable used in (or introduced by) this LHS. */
+  Variable getAVariable() { result = lhsExprCfgNode.getAVariable() }
+}
+
+/**
+ * A data flow node corresponding to a statement sequence expression.
+ */
+class StmtSequenceNode extends ExprNode {
+  private CfgNodes::ExprNodes::StmtSequenceCfgNode stmtSequenceCfgNode;
+
+  StmtSequenceNode() { this.asExpr() = stmtSequenceCfgNode }
+
+  /** Gets the underlying AST node as a `StmtSequence`. */
+  StmtSequence asStmtSequenceAstNode() { result = stmtSequenceCfgNode.getExpr() }
+
+  /** Gets the last statement in this sequence, if any. */
+  final ExprNode getLastStmt() { result.asExpr() = stmtSequenceCfgNode.getLastStmt() }
+}
+
+/**
  * A data flow node corresponding to a method, block, or lambda expression.
  */
-class CallableNode extends ExprNode {
+class CallableNode extends StmtSequenceNode {
   private Callable callable;
 
   CallableNode() { this.asExpr().getExpr() = callable }
@@ -1001,6 +1141,9 @@ class CallableNode extends ExprNode {
 
   /** Gets the `n`th positional parameter. */
   ParameterNode getParameter(int n) { this.getParameterPosition(result).isPositional(n) }
+
+  /** Gets the number of positional parameters of this callable. */
+  final int getNumberOfParameters() { result = count(this.getParameter(_)) }
 
   /** Gets the keyword parameter of the given name. */
   ParameterNode getKeywordParameter(string name) {

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.springframework.jndi", "JndiTemplate", False, "lookup", "", "", "Argument[0]", "jndi-injection", "manual"]

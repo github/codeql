@@ -85,6 +85,9 @@ module Impl implements RegexTreeViewSig {
 
     /** Gets the associated regex. */
     abstract Regex getRegex();
+
+    /** Gets the last child term of this element. */
+    RegExpTerm getLastChild() { result = this.getChild(this.getNumChild() - 1) }
   }
 
   /**
@@ -206,8 +209,8 @@ module Impl implements RegexTreeViewSig {
        * such as compile-time concatenation, or multi-line string literals.
        */
 
-      exists(int re_start, int re_end, int src_start, int src_end |
-        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, re_end) and
+      exists(int re_start, int src_start, int src_end |
+        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, _) and
         re.sourceCharacter(start, src_start, _) and
         re.sourceCharacter(end - 1, _, src_end) and
         startcolumn = re_start + src_start and
@@ -467,6 +470,8 @@ module Impl implements RegexTreeViewSig {
     override string getPrimaryQLClass() { result = "RegExpAlt" }
   }
 
+  private import codeql.util.Numbers as Numbers
+
   /**
    * An escaped regular expression term, that is, a regular expression
    * term starting with a backslash, which is not a backreference.
@@ -528,11 +533,7 @@ module Impl implements RegexTreeViewSig {
      * Gets the unicode char for this escape.
      * E.g. for `\u0061` this returns "a".
      */
-    private string getUnicode() {
-      exists(int codepoint | codepoint = sum(this.getHexValueFromUnicode(_)) |
-        result = codepoint.toUnicode()
-      )
-    }
+    private string getUnicode() { result = Numbers::parseHexInt(this.getHexString()).toUnicode() }
 
     /** Gets the part of this escape that is a hexidecimal string */
     private string getHexString() {
@@ -544,19 +545,18 @@ module Impl implements RegexTreeViewSig {
         then result = this.getText().substring(3, this.getText().length() - 1)
         else result = this.getText().suffix(2) // \xhh
     }
-
-    /**
-     * Gets int value for the `index`th char in the hex number of the unicode escape.
-     * E.g. for `\u0061` and `index = 2` this returns 96 (the number `6` interpreted as hex).
-     */
-    private int getHexValueFromUnicode(int index) {
-      this.isUnicode() and
-      exists(string hex, string char | hex = this.getHexString() |
-        char = hex.charAt(index) and
-        result = 16.pow(hex.length() - index - 1) * toHex(char)
-      )
-    }
   }
+
+  /**
+   * A character escape in a regular expression.
+   *
+   * Example:
+   *
+   * ```
+   * \.
+   * ```
+   */
+  class RegExpCharEscape = RegExpEscape;
 
   /**
    * A word boundary, that is, a regular expression term of the form `\b`.
@@ -566,22 +566,10 @@ module Impl implements RegexTreeViewSig {
   }
 
   /**
-   * Gets the hex number for the `hex` char.
+   * A non-word boundary, that is, a regular expression term of the form `\B`.
    */
-  private int toHex(string hex) {
-    result = [0 .. 9] and hex = result.toString()
-    or
-    result = 10 and hex = ["a", "A"]
-    or
-    result = 11 and hex = ["b", "B"]
-    or
-    result = 12 and hex = ["c", "C"]
-    or
-    result = 13 and hex = ["d", "D"]
-    or
-    result = 14 and hex = ["e", "E"]
-    or
-    result = 15 and hex = ["f", "F"]
+  class RegExpNonWordBoundary extends RegExpSpecialChar {
+    RegExpNonWordBoundary() { this.getChar() = "\\B" }
   }
 
   /**
@@ -868,6 +856,9 @@ module Impl implements RegexTreeViewSig {
     predicate isNamedGroupOfLiteral(RegExpLiteral lit, string name) {
       lit = this.getLiteral() and name = this.getName()
     }
+
+    /** Holds if this is a capture group. */
+    predicate isCapture() { exists(this.getNumber()) }
   }
 
   /**
@@ -918,6 +909,21 @@ module Impl implements RegexTreeViewSig {
   }
 
   /**
+   * A term that matches a specific position between characters in the string.
+   *
+   * Example:
+   *
+   * ```
+   * ^
+   * ```
+   */
+  class RegExpAnchor extends RegExpSpecialChar {
+    RegExpAnchor() { this.getChar() = ["$", "^"] }
+
+    override string getPrimaryQLClass() { result = "RegExpAnchor" }
+  }
+
+  /**
    * A dollar assertion `$` matching the end of a line.
    *
    * Example:
@@ -926,7 +932,7 @@ module Impl implements RegexTreeViewSig {
    * $
    * ```
    */
-  class RegExpDollar extends RegExpSpecialChar {
+  class RegExpDollar extends RegExpAnchor {
     RegExpDollar() { this.getChar() = "$" }
 
     override string getPrimaryQLClass() { result = "RegExpDollar" }
@@ -941,7 +947,7 @@ module Impl implements RegexTreeViewSig {
    * ^
    * ```
    */
-  class RegExpCaret extends RegExpSpecialChar {
+  class RegExpCaret extends RegExpAnchor {
     RegExpCaret() { this.getChar() = "^" }
 
     override string getPrimaryQLClass() { result = "RegExpCaret" }

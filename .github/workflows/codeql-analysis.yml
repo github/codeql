@@ -28,9 +28,9 @@ jobs:
 
     steps:
     - name: Setup dotnet
-      uses: actions/setup-dotnet@v2
+      uses: actions/setup-dotnet@v3
       with:
-        dotnet-version: 6.0.202
+        dotnet-version: 7.0.102
 
     - name: Checkout repository
       uses: actions/checkout@v3

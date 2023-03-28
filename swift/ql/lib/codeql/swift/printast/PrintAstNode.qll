@@ -1,5 +1,5 @@
 /**
- * Provides classes used to pretty-print a Go AST as a graph.
+ * Provides classes used to pretty-print a Swift AST as a graph.
  * This is factored out of `PrintAst.qll` for testing purposes.
  */
 

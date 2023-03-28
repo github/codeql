@@ -441,8 +441,8 @@ library class ExprEvaluator extends int {
       req = mid.(AssignExpr).getRValue()
     )
     or
-    exists(VariableAccess va, Variable v, boolean sub1 |
-      this.interestingVariableAccess(e, va, v, sub1) and
+    exists(Variable v, boolean sub1 |
+      this.interestingVariableAccess(e, _, v, sub1) and
       req = v.getAnAssignedValue() and
       (sub1 = true implies not this.ignoreVariableAssignment(e, v, req)) and
       sub = false
@@ -876,7 +876,7 @@ private predicate nonAnalyzableVariableDefinition(Variable v, StmtParent def) {
  * empirically to have effect only on a few rare and pathological examples.
  */
 private predicate tractableVariable(Variable v) {
-  not exists(StmtParent def | nonAnalyzableVariableDefinition(v, def)) or
+  not nonAnalyzableVariableDefinition(v, _) or
   strictcount(StmtParent def | nonAnalyzableVariableDefinition(v, def)) < 1000
 }
 

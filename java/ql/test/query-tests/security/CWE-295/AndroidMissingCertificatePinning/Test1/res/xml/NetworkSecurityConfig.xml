@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<network-security-config>
+    <domain-config>
+        <domain>good.example.com</domain>
+        <pin-set expiration="2038/1/19">
+            <pin digest="SHA-256">...</pin>
+        </pin-set>
+    </domain-config>
+</network-security-config>

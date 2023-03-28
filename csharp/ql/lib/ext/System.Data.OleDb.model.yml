@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["System.Data.OleDb", "OleDbCommand", False, "OleDbCommand", "(System.String)", "", "Argument[0]", "sql", "manual"]
       - ["System.Data.OleDb", "OleDbCommand", False, "OleDbCommand", "(System.String,System.Data.OleDb.OleDbConnection)", "", "Argument[0]", "sql", "manual"]

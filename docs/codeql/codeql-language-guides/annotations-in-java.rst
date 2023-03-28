@@ -185,7 +185,7 @@ For more information about the class ``Call``, see ":doc:`Navigating the call gr
 Improvements
 ~~~~~~~~~~~~
 
-The Java standard library provides another annotation type ``java.lang.SupressWarnings`` that can be used to suppress certain categories of warnings. In particular, it can be used to turn off warnings about calls to deprecated methods. Therefore, it makes sense to improve our query to ignore calls to deprecated methods from inside methods that are marked with ``@SuppressWarnings("deprecated")``.
+The Java standard library provides another annotation type ``java.lang.SupressWarnings`` that can be used to suppress certain categories of warnings. In particular, it can be used to turn off warnings about calls to deprecated methods. Therefore, it makes sense to improve our query to ignore calls to deprecated methods from inside methods that are marked with ``@SuppressWarnings("deprecation")``.
 
 For instance, consider this slightly updated example:
 
@@ -198,7 +198,7 @@ For instance, consider this slightly updated example:
            m();
        }
 
-       @SuppressWarnings("deprecated")
+       @SuppressWarnings("deprecation")
        void r() {
            m();
        }
@@ -206,7 +206,7 @@ For instance, consider this slightly updated example:
 
 Here, the programmer has explicitly suppressed warnings about deprecated calls in ``A.r``, so our query should not flag the call to ``A.m`` any more.
 
-To do so, we first introduce a class for representing all ``@SuppressWarnings`` annotations where the string ``deprecated`` occurs among the list of warnings to suppress:
+To do so, we first introduce a class for representing all ``@SuppressWarnings`` annotations where the string ``deprecation`` occurs among the list of warnings to suppress:
 
 .. code-block:: ql
 

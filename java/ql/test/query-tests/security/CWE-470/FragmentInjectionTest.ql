@@ -3,9 +3,9 @@ import semmle.code.java.security.FragmentInjectionQuery
 import TestUtilities.InlineFlowTest
 
 class Test extends InlineFlowTest {
-  override DataFlow::Configuration getValueFlowConfig() { none() }
+  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
 
-  override TaintTracking::Configuration getTaintFlowConfig() {
-    result instanceof FragmentInjectionTaintConf
+  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
+    FragmentInjectionTaintFlow::flow(src, sink)
   }
 }

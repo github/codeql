@@ -611,9 +611,9 @@ module TaintTracking {
         )
         or
         // String.fromCharCode and String.fromCodePoint
-        exists(int i, DataFlow::MethodCallNode mcn |
+        exists(DataFlow::MethodCallNode mcn |
           mcn = succ and
-          pred = mcn.getArgument(i) and
+          pred = mcn.getAnArgument() and
           mcn.getMethodName() = ["fromCharCode", "fromCodePoint"]
         )
         or
@@ -1005,7 +1005,8 @@ module TaintTracking {
    * Note that the `includes` method is covered by `MembershipTestSanitizer`.
    */
   class WhitelistContainmentCallSanitizer extends AdditionalSanitizerGuardNode,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     WhitelistContainmentCallSanitizer() {
       this.getMethodName() = ["contains", "has", "hasOwnProperty", "hasOwn"]
     }

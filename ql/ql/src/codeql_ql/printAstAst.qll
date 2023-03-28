@@ -10,6 +10,7 @@
 
 import ast.Ast
 private import codeql.Locations
+import ast.internal.AstNodes
 
 /**
  * The query can extend this class to control which nodes are printed.
@@ -20,7 +21,7 @@ class PrintAstConfiguration extends string {
   /**
    * Holds if the given node should be printed.
    */
-  predicate shouldPrintNode(AstNode n) { any() }
+  predicate shouldPrintNode(AstNode n) { not exists(toMock(n)) }
 }
 
 /**

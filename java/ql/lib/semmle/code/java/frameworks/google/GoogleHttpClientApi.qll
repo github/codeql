@@ -1,7 +1,6 @@
 import java
 import semmle.code.java.Serializability
 import semmle.code.java.dataflow.DataFlow
-private import semmle.code.java.dataflow.internal.DataFlowForSerializability
 
 /** The method `parseAs` in `com.google.api.client.http.HttpResponse`. */
 private class ParseAsMethod extends Method {
@@ -11,29 +10,29 @@ private class ParseAsMethod extends Method {
   }
 }
 
-private class TypeLiteralToParseAsFlowConfiguration extends DataFlowForSerializability::Configuration {
-  TypeLiteralToParseAsFlowConfiguration() {
-    this = "GoogleHttpClientApi::TypeLiteralToParseAsFlowConfiguration"
-  }
+private module TypeLiteralToParseAsFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof TypeLiteral }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof TypeLiteral }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
       ma.getAnArgument() = sink.asExpr() and
       ma.getMethod() instanceof ParseAsMethod
     )
   }
+}
 
-  TypeLiteral getSourceWithFlowToParseAs() { this.hasFlow(DataFlow::exprNode(result), _) }
+private module TypeLiteralToParseAsFlow = DataFlow::Global<TypeLiteralToParseAsFlowConfig>;
+
+private TypeLiteral getSourceWithFlowToParseAs() {
+  TypeLiteralToParseAsFlow::flow(DataFlow::exprNode(result), _)
 }
 
 /** A field that is deserialized by `HttpResponse.parseAs`. */
 class HttpResponseParseAsDeserializableField extends DeserializableField {
   HttpResponseParseAsDeserializableField() {
-    exists(RefType decltype, TypeLiteralToParseAsFlowConfiguration conf |
+    exists(RefType decltype |
       decltype = this.getDeclaringType() and
-      conf.getSourceWithFlowToParseAs().getReferencedType() = decltype and
+      getSourceWithFlowToParseAs().getReferencedType() = decltype and
       decltype.fromSource()
     )
   }

@@ -94,7 +94,8 @@ abstract class ReflectivelyConstructedClass extends EntryPoint, Class {
 /**
  * Classes that are deserialized by Jackson are reflectively constructed.
  */
-library class JacksonReflectivelyConstructedClass extends ReflectivelyConstructedClass instanceof JacksonDeserializableType {
+library class JacksonReflectivelyConstructedClass extends ReflectivelyConstructedClass instanceof JacksonDeserializableType
+{
   override Callable getALiveCallable() {
     // Constructors may be called by Jackson, if they are a no-arg, they have a suitable annotation,
     // or inherit a suitable annotation through a mixin.
@@ -308,8 +309,8 @@ class FacesAccessibleMethodEntryPoint extends CallableEntryPoint {
  * A Java Server Faces custom component, that is reflectively constructed by the framework when
  * used in a view (JSP or facelet).
  */
-class FacesComponentReflectivelyConstructedClass extends ReflectivelyConstructedClass instanceof FacesComponent {
-}
+class FacesComponentReflectivelyConstructedClass extends ReflectivelyConstructedClass instanceof FacesComponent
+{ }
 
 /**
  * Entry point for EJB home interfaces.
@@ -459,5 +460,5 @@ class ArbitraryXmlEntryPoint extends ReflectivelyConstructedClass {
 deprecated class ArbitraryXMLEntryPoint = ArbitraryXmlEntryPoint;
 
 /** A Selenium PageObject, created by a call to PageFactory.initElements(..). */
-class SeleniumPageObjectEntryPoint extends ReflectivelyConstructedClass instanceof SeleniumPageObject {
-}
+class SeleniumPageObjectEntryPoint extends ReflectivelyConstructedClass instanceof SeleniumPageObject
+{ }

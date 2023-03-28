@@ -11,6 +11,6 @@
  *       external/cwe/cwe-020
  */
 
-import HostnameRegexpShared
+private import semmle.python.security.regexp.HostnameRegex as HostnameRegex
 
-query predicate problems = incompleteHostnameRegExp/4;
+query predicate problems = HostnameRegex::incompleteHostnameRegExp/4;

@@ -7,6 +7,7 @@
  * @problem.severity warning
  * @id go/cors-misconfiguration
  * @tags security
+ *       experimental
  *       external/cwe/cwe-942
  *       external/cwe/cwe-346
  */
@@ -22,9 +23,7 @@ class AllowedFlag extends FlagKind {
 
   bindingset[result]
   override string getAFlagName() {
-    result
-        .toLowerCase()
-        .matches("%" + ["allow", "match", "check", "debug", "devel", "insecure"] + "%")
+    result.regexpMatch("(?i).*(allow|match|check|debug|devel|insecure).*")
   }
 }
 

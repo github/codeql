@@ -1,6 +1,11 @@
-| TestSuppressWarnings.java:2:1:2:49 | SuppressWarnings | lgtm[java/non-sync-override] | lgtm[java/non-sync-override] | TestSuppressWarnings.java:2:1:21:5 | suppression range |
+| TestSuppressWarnings.java:2:1:2:49 | SuppressWarnings | lgtm[java/non-sync-override] | lgtm[java/non-sync-override] | TestSuppressWarnings.java:2:1:38:5 | suppression range |
 | TestSuppressWarnings.java:5:5:5:31 | SuppressWarnings | lgtm[] | lgtm[] | TestSuppressWarnings.java:5:5:8:5 | suppression range |
 | TestSuppressWarnings.java:10:5:10:104 | SuppressWarnings | lgtm[java/confusing-method-name] not confusing | lgtm[java/confusing-method-name] | TestSuppressWarnings.java:9:5:13:5 | suppression range |
 | TestSuppressWarnings.java:10:5:10:104 | SuppressWarnings | lgtm[java/non-sync-override] | lgtm[java/non-sync-override] | TestSuppressWarnings.java:9:5:13:5 | suppression range |
 | TestSuppressWarnings.java:18:5:18:98 | SuppressWarnings | lgtm[java/confusing-method-name] blah blah lgtm[java/non-sync-override] | lgtm[java/confusing-method-name] | TestSuppressWarnings.java:18:5:21:5 | suppression range |
 | TestSuppressWarnings.java:18:5:18:98 | SuppressWarnings | lgtm[java/confusing-method-name] blah blah lgtm[java/non-sync-override] | lgtm[java/non-sync-override] | TestSuppressWarnings.java:18:5:21:5 | suppression range |
+| TestSuppressWarnings.java:22:5:22:33 | SuppressWarnings | codeql[] | lgtm[] | TestSuppressWarnings.java:22:5:25:5 | suppression range |
+| TestSuppressWarnings.java:27:5:27:108 | SuppressWarnings | codeql[java/confusing-method-name] not confusing | lgtm[java/confusing-method-name] | TestSuppressWarnings.java:26:5:30:5 | suppression range |
+| TestSuppressWarnings.java:27:5:27:108 | SuppressWarnings | codeql[java/non-sync-override] | lgtm[java/non-sync-override] | TestSuppressWarnings.java:26:5:30:5 | suppression range |
+| TestSuppressWarnings.java:35:5:35:102 | SuppressWarnings | codeql[java/confusing-method-name] blah blah codeql[java/non-sync-override] | lgtm[java/confusing-method-name] | TestSuppressWarnings.java:35:5:38:5 | suppression range |
+| TestSuppressWarnings.java:35:5:35:102 | SuppressWarnings | codeql[java/confusing-method-name] blah blah codeql[java/non-sync-override] | lgtm[java/non-sync-override] | TestSuppressWarnings.java:35:5:38:5 | suppression range |

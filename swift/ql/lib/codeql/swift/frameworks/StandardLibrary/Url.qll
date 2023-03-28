@@ -1,3 +1,7 @@
+/**
+ * Provides models for the `URL` Swift class.
+ */
+
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.ExternalFlow
@@ -13,6 +17,20 @@ class UrlDecl extends StructDecl {
  */
 private class UriFieldsInheritTaint extends TaintInheritingContent, DataFlow::Content::FieldContent {
   UriFieldsInheritTaint() { this.getField().getEnclosingDecl() instanceof UrlDecl }
+}
+
+/**
+ * A content implying that, if a `URLRequest` is tainted, then its fields `url`, `httpBody`,
+ * `httpBodyStream`, `mainDocument` and `allHTTPHeaderFields` are tainted.
+ */
+private class UrlRequestFieldsInheritTaint extends TaintInheritingContent,
+  DataFlow::Content::FieldContent
+{
+  UrlRequestFieldsInheritTaint() {
+    this.getField().getEnclosingDecl().(NominalTypeDecl).getName() = "URLRequest" and
+    this.getField().getName() =
+      ["url", "httpBody", "httpBodyStream", "mainDocument", "allHTTPHeaderFields"]
+  }
 }
 
 /**

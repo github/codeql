@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @id go/html-template-escaping-passthrough
  * @tags security
+ *       experimental
  *       external/cwe/cwe-79
  */
 

@@ -8,6 +8,7 @@
  * @sub-severity high
  * @id py/reflective-xss-email
  * @tags security
+ *       experimental
  *       external/cwe/cwe-079
  *       external/cwe/cwe-116
  */

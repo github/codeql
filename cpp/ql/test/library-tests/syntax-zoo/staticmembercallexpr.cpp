@@ -1,9 +1,11 @@
+namespace {
 class C {
 	public:
 		static void g();
 };
+}
 
-void f() {
+static void f() {
 	C c;
 	c.g();
 	;

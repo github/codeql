@@ -21,11 +21,11 @@ def version_string_to_tuple(version):
     m = re.match(r'([0-9]+)\.([0-9]+)\.([0-9]+)(.*)', version)
     return tuple([int(m.group(i)) for i in range(1, 4)] + [m.group(4)])
 
-# Version number used by CI. It needs to be one of the versions in many_versions.
-ci_version = '1.7.20'
+# Version number used by CI.
+ci_version = '1.8.10'
 
 # Version numbers in the list need to be in semantically increasing order
-many_versions = [ '1.4.32', '1.5.0', '1.5.10', '1.5.20', '1.5.30', '1.6.0', '1.6.20', '1.7.0', '1.7.20' ]
+many_versions = [ '1.4.32', '1.5.0', '1.5.10', '1.5.20', '1.5.30', '1.6.0', '1.6.20', '1.7.0', '1.7.20', '1.8.0' ]
 
 many_versions_tuples = [version_string_to_tuple(v) for v in many_versions]
 
@@ -57,8 +57,6 @@ def get_single_version(fakeVersionOutput = None):
     raise Exception(f'No suitable kotlinc version found for {current_version} (got {versionOutput}; know about {str(many_versions)})')
 
 def get_latest_url():
-    if ci_version not in many_versions:
-        raise Exception('CI version must be one of many_versions')
     url = 'https://github.com/JetBrains/kotlin/releases/download/v' + ci_version + '/kotlin-compiler-' + ci_version + '.zip'
     return url
 

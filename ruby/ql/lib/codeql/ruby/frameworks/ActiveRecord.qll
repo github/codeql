@@ -31,6 +31,18 @@ private predicate isBuiltInMethodForActiveRecordModelInstance(string methodName)
   methodName = objectInstanceMethodName()
 }
 
+private API::Node activeRecordClassApiNode() {
+  result =
+    // class Foo < ActiveRecord::Base
+    // class Bar < Foo
+    [
+      API::getTopLevelMember("ActiveRecord").getMember("Base"),
+      // In Rails applications `ApplicationRecord` typically extends `ActiveRecord::Base`, but we
+      // treat it separately in case the `ApplicationRecord` definition is not in the database.
+      API::getTopLevelMember("ApplicationRecord")
+    ].getASubclass()
+}
+
 /**
  * A `ClassDeclaration` for a class that inherits from `ActiveRecord::Base`. For example,
  *
@@ -45,15 +57,8 @@ private predicate isBuiltInMethodForActiveRecordModelInstance(string methodName)
  */
 class ActiveRecordModelClass extends ClassDeclaration {
   ActiveRecordModelClass() {
-    // class Foo < ActiveRecord::Base
-    // class Bar < Foo
     this.getSuperclassExpr() =
-      [
-        API::getTopLevelMember("ActiveRecord").getMember("Base"),
-        // In Rails applications `ApplicationRecord` typically extends `ActiveRecord::Base`, but we
-        // treat it separately in case the `ApplicationRecord` definition is not in the database.
-        API::getTopLevelMember("ApplicationRecord")
-      ].getASubclass().getAValueReachableFromSource().asExpr().getExpr()
+      activeRecordClassApiNode().getAValueReachableFromSource().asExpr().getExpr()
   }
 
   // Gets the class declaration for this class and all of its super classes
@@ -116,14 +121,14 @@ private Expr sqlFragmentArgument(MethodCall call) {
         [
           "delete_all", "delete_by", "destroy_all", "destroy_by", "exists?", "find_by", "find_by!",
           "find_or_create_by", "find_or_create_by!", "find_or_initialize_by", "find_by_sql", "from",
-          "group", "having", "joins", "lock", "not", "order", "pluck", "where", "rewhere", "select",
-          "reselect", "update_all"
+          "group", "having", "joins", "lock", "not", "order", "reorder", "pluck", "where",
+          "rewhere", "select", "reselect", "update_all"
         ] and
       result = call.getArgument(0)
       or
       methodName = "calculate" and result = call.getArgument(1)
       or
-      methodName in ["average", "count", "maximum", "minimum", "sum"] and
+      methodName in ["average", "count", "maximum", "minimum", "sum", "count_by_sql"] and
       result = call.getArgument(0)
       or
       // This format was supported until Rails 2.3.8
@@ -208,9 +213,16 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
     exists(PotentiallyUnsafeSqlExecutingMethodCall mc |
       this.asExpr().getNode() = mc.getSqlFragmentSinkArgument()
     )
+    or
+    this = activeRecordConnectionInstance().getAMethodCall("execute").getArgument(0) and
+    unsafeSqlExpr(this.asExpr().getExpr())
   }
 
   override DataFlow::Node getSql() { result = this }
+}
+
+private API::Node activeRecordConnectionInstance() {
+  result = activeRecordClassApiNode().getReturn("connection")
 }
 
 // TODO: model `ActiveRecord` sanitizers
@@ -219,7 +231,8 @@ class ActiveRecordSqlExecutionRange extends SqlExecution::Range {
  * A node that may evaluate to one or more `ActiveRecordModelClass` instances.
  */
 abstract class ActiveRecordModelInstantiation extends OrmInstantiation::Range,
-  DataFlow::LocalSourceNode {
+  DataFlow::LocalSourceNode
+{
   /**
    * Gets the `ActiveRecordModelClass` that this instance belongs to.
    */
@@ -272,7 +285,8 @@ private Expr getUltimateReceiver(MethodCall call) {
 }
 
 // A call to `find`, `where`, etc. that may return active record model object(s)
-private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation, DataFlow::CallNode {
+private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation, DataFlow::CallNode
+{
   private ActiveRecordModelClass cls;
 
   ActiveRecordModelFinderCall() {
@@ -305,7 +319,8 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
 
 // A `self` reference that may resolve to an active record model object
 private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInstantiation,
-  SsaSelfDefinitionNode {
+  SsaSelfDefinitionNode
+{
   private ActiveRecordModelClass cls;
 
   ActiveRecordModelClassSelfReference() {
@@ -465,7 +480,8 @@ private module Persistence {
 
   /** A call to e.g. `user.update(name: "foo")` */
   private class UpdateLikeInstanceMethodCall extends PersistentWriteAccess::Range,
-    ActiveRecordInstanceMethodCall {
+    ActiveRecordInstanceMethodCall
+  {
     UpdateLikeInstanceMethodCall() {
       this.getMethodName() = ["update", "update!", "update_attributes", "update_attributes!"]
     }
@@ -485,7 +501,8 @@ private module Persistence {
 
   /** A call to e.g. `user.update_attribute(name, "foo")` */
   private class UpdateAttributeCall extends PersistentWriteAccess::Range,
-    ActiveRecordInstanceMethodCall {
+    ActiveRecordInstanceMethodCall
+  {
     UpdateAttributeCall() { this.getMethodName() = "update_attribute" }
 
     override DataFlow::Node getValue() {
@@ -688,7 +705,8 @@ private class ActiveRecordCollectionProxyMethodCall extends DataFlow::CallNode {
 /**
  * A call to an association method which yields ActiveRecord instances.
  */
-private class ActiveRecordAssociationModelInstantiation extends ActiveRecordModelInstantiation instanceof ActiveRecordAssociationMethodCall {
+private class ActiveRecordAssociationModelInstantiation extends ActiveRecordModelInstantiation instanceof ActiveRecordAssociationMethodCall
+{
   override ActiveRecordModelClass getClass() {
     result = this.(ActiveRecordAssociationMethodCall).getAssociation().getTargetClass()
   }
@@ -697,7 +715,8 @@ private class ActiveRecordAssociationModelInstantiation extends ActiveRecordMode
 /**
  * A call to a method on a collection proxy which yields ActiveRecord instances.
  */
-private class ActiveRecordCollectionProxyModelInstantiation extends ActiveRecordModelInstantiation instanceof ActiveRecordCollectionProxyMethodCall {
+private class ActiveRecordCollectionProxyModelInstantiation extends ActiveRecordModelInstantiation instanceof ActiveRecordCollectionProxyMethodCall
+{
   override ActiveRecordModelClass getClass() {
     result = this.(ActiveRecordCollectionProxyMethodCall).getAssociation().getTargetClass()
   }

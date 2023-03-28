@@ -21,10 +21,9 @@ runs:
         echo "merge_base=$MERGE_BASE" >> $GITHUB_ENV
     - name: Restore read-only cache (PR)
       if: ${{ github.event_name == 'pull_request' }}
-      uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
+      uses: actions/cache/restore@v3
       with:
         path: 'bazel-cache'
-        read-only: true
         key: bazel-pr-${{ github.sha }}
         restore-keys: |
           bazel-${{ github.base_ref }}-${{ env.merge_base }}
@@ -32,7 +31,7 @@ runs:
           bazel-main-
     - name: Fill cache (push)
       if: ${{ github.event_name != 'pull_request' }}
-      uses: erik-krogh/actions-cache@a88d0603fe5fb5606db9f002dfcadeb32b5f84c6
+      uses: actions/cache@v3
       with:
         path: 'bazel-cache'
         key: bazel-${{ github.ref_name }}-${{ github.sha }} # just fill on main
@@ -63,7 +62,7 @@ runs:
       if : ${{ github.event_name == 'pull_request' }}
       shell: bash
       run: |
-        bazel test //swift/codegen/test
+        bazel test //misc/codegen/test
     - name: Run qltest tests
       if : ${{ github.event_name == 'pull_request' }}
       shell: bash

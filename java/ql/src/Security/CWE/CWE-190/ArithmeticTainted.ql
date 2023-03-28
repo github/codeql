@@ -15,35 +15,40 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import ArithmeticCommon
-import DataFlow::PathGraph
 
-class RemoteUserInputOverflowConfig extends TaintTracking::Configuration {
-  RemoteUserInputOverflowConfig() { this = "ArithmeticTainted.ql:RemoteUserInputOverflowConfig" }
+module RemoteUserInputOverflowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
 
-  override predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
-
-  override predicate isSanitizer(DataFlow::Node n) { overflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
 }
 
-class RemoteUserInputUnderflowConfig extends TaintTracking::Configuration {
-  RemoteUserInputUnderflowConfig() { this = "ArithmeticTainted.ql:RemoteUserInputUnderflowConfig" }
+module RemoteUserInputUnderflowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 
-  override predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
-
-  override predicate isSanitizer(DataFlow::Node n) { underflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, string effect
+module RemoteUserInputOverflow = TaintTracking::Global<RemoteUserInputOverflowConfig>;
+
+module RemoteUserInputUnderflow = TaintTracking::Global<RemoteUserInputUnderflowConfig>;
+
+module Flow =
+  DataFlow::MergePathGraph<RemoteUserInputOverflow::PathNode, RemoteUserInputUnderflow::PathNode,
+    RemoteUserInputOverflow::PathGraph, RemoteUserInputUnderflow::PathGraph>;
+
+import Flow::PathGraph
+
+from Flow::PathNode source, Flow::PathNode sink, ArithExpr exp, string effect
 where
-  any(RemoteUserInputOverflowConfig c).hasFlowPath(source, sink) and
+  RemoteUserInputOverflow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
   overflowSink(exp, sink.getNode().asExpr()) and
   effect = "overflow"
   or
-  any(RemoteUserInputUnderflowConfig c).hasFlowPath(source, sink) and
+  RemoteUserInputUnderflow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
   underflowSink(exp, sink.getNode().asExpr()) and
   effect = "underflow"
 select exp, source, sink,

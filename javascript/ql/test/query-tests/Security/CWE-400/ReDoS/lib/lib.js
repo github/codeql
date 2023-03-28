@@ -44,3 +44,12 @@ module.exports.foo = function (name) {
     name = name.substr(1);
     var data2 = name.match(/f*g/); // NOT OK
 }
+
+var indirectAssign = {};
+module.exports.indirectAssign = indirectAssign;
+
+Object.assign(indirectAssign, {
+  myThing: function (name) {
+    /f*g/.test(name); // NOT OK
+  },
+});

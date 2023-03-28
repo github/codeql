@@ -5,4 +5,3 @@ dependencies:
   codeql/java-queries: '*'
 dataExtensions:
   ext/*.model.yml
-

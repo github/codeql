@@ -3,7 +3,7 @@
 .. _exploring-data-flow-with-path-queries:
 
 Exploring data flow with path queries
-=================================================
+=====================================
 
 You can run CodeQL queries in VS Code to help you track the flow of data through a program, highlighting areas that are potential security vulnerabilities.
 
@@ -20,15 +20,17 @@ You can also modify the existing queries to model data flow more precisely for t
 To ensure that your path query uses the correct format and metadata, follow the instructions in ":ref:`Creating path queries <creating-path-queries>`."
 This topic also contains detailed information about how to define new sources and sinks, as well as templates and examples of how to extend the CodeQL libraries to suit your analysis.
 
-Running path queries in VS Code
------------------------------------
+Running path queries in VS Code locally
+---------------------------------------
 
 #. Open a path query in the editor.
-#. Right-click in the query window and select **CodeQL: Run Query**. (Alternatively, run the command from the Command Palette.)
+#. Right-click in the query window and select **CodeQL: Run Query on Selected Database**. (Alternatively, run the command from the Command Palette.)
 #. Once the query has finished running, you can see the results in the Results view as usual (under ``alerts`` in the dropdown menu). Each query result describes the flow of information between a source and a sink.
 #. Expand the result to see the individual steps that the data follows. 
 #. Click each step to jump to it in the source code and investigate the problem further.
 #. To navigate the results from your keyboard, you can bind shortcuts to the **CodeQL: Navigate Up/Down/Left/Right in Result Viewer** commands.
+
+When you are ready to run a path query at scale, you can use the Variant Analysis Repositories panel to run the query against up to 1,000 repositories on GitHub.com. For information on running analysis at scale across many CodeQL databases, see ":ref:`Running CodeQL queries at scale with multi-repository variant analysis <running-codeql-queries-at-scale-with-mrva>`."
 
 Further reading
 -----------------

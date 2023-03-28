@@ -25,6 +25,7 @@ If you have an idea for a query that you would like to share with other CodeQL u
 
     Each language-specific directory contains further subdirectories that group queries based on their `@tags` or purpose.
     - Experimental queries and libraries are stored in the `experimental` subdirectory within each language-specific directory in the [CodeQL repository](https://github.com/github/codeql). For example, experimental Java queries and libraries are stored in `java/ql/src/experimental` and any corresponding tests in `java/ql/test/experimental`.
+    - Experimental queries need to include `experimental` in their `@tags`
     - The structure of an `experimental` subdirectory mirrors the structure of its parent directory.
     - Select or create an appropriate directory in `experimental` based on the existing directory structure of `experimental` or its parent directory.
 

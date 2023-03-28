@@ -249,15 +249,23 @@ module Stmts {
       child.asAstNode() = ast.getAnElement().getPattern().getFullyUnresolved()
       or
       child.asAstNode() = ast.getAnElement().getBoolean().getFullyConverted()
+      or
+      child.asAstNode() = ast.getAnElement().getAvailability().getFullyUnresolved()
     }
 
     predicate firstElement(int i, ControlFlowElement first) {
       // If there is an initializer in the first element, evaluate that first
       astFirst(ast.getElement(i).getInitializer().getFullyConverted(), first)
       or
-      // Otherwise, the first element is a boolean condition.
+      // Otherwise, the first element is...
       not exists(ast.getElement(i).getInitializer()) and
-      astFirst(ast.getElement(i).getBoolean().getFullyConverted(), first)
+      (
+        // ... a boolean condition.
+        astFirst(ast.getElement(i).getBoolean().getFullyConverted(), first)
+        or
+        // ... or an availability check.
+        astFirst(ast.getElement(i).getAvailability().getFullyUnresolved(), first)
+      )
     }
 
     predicate succElement(int i, ControlFlowElement pred, ControlFlowElement succ, Completion c) {
@@ -272,6 +280,9 @@ module Stmts {
         or
         // ... or the boolean ...
         astLast(ast.getElement(i).getBoolean().getFullyConverted(), pred, c)
+        or
+        // ... or the availability check ...
+        astLast(ast.getElement(i).getAvailability().getFullyUnresolved(), pred, c)
       ) and
       // We evaluate the next element
       c instanceof NormalCompletion and
@@ -287,11 +298,17 @@ module Stmts {
       astLast(ast.getAnElement().getPattern().getFullyUnresolved(), last, c) and
       not c.(MatchingCompletion).isMatch()
       or
+      // Stop if an availability check failed
+      astLast(ast.getAnElement().getAvailability().getFullyUnresolved(), last, c) and
+      c instanceof FalseCompletion
+      or
       // Stop if we successfully evaluated all the conditionals
       (
         astLast(ast.getLastElement().getBoolean().getFullyConverted(), last, c)
         or
         astLast(ast.getLastElement().getPattern().getFullyUnresolved(), last, c)
+        or
+        astLast(ast.getLastElement().getAvailability().getFullyUnresolved(), last, c)
       ) and
       c instanceof NormalCompletion
     }
@@ -1447,8 +1464,8 @@ module Exprs {
     }
   }
 
-  class MethodRefExprTree extends AstStandardPreOrderTree {
-    override MethodRefExpr ast;
+  class MethodLookupExprTree extends AstStandardPreOrderTree {
+    override MethodLookupExpr ast;
 
     override ControlFlowElement getChildElement(int i) {
       i = 0 and result.asAstNode() = ast.getBase().getFullyConverted()
@@ -1767,6 +1784,20 @@ module Exprs {
 
       override predicate convertsFrom(Expr e) { ast.convertsFrom(e) }
     }
+  }
+}
+
+module AvailabilityInfo {
+  private class AvailabilityInfoTree extends AstStandardPostOrderTree {
+    override AvailabilityInfo ast;
+
+    final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = ast.getSpec(i).getFullyUnresolved()
+    }
+  }
+
+  private class AvailabilitySpecTree extends AstLeafTree {
+    override AvailabilitySpec ast;
   }
 }
 

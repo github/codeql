@@ -15,20 +15,15 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import NumericCastCommon
-import DataFlow::PathGraph
 
-private class NumericCastFlowConfig extends TaintTracking::Configuration {
-  NumericCastFlowConfig() {
-    this = "NumericCastTaintedLocal::LocalUserInputToNumericNarrowingCastExpr"
-  }
+module NumericCastFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(NumericNarrowingCastExpr cast).getExpr()
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     boundedRead(node.asExpr()) or
     castCheck(node.asExpr()) or
     node.getType() instanceof SmallType or
@@ -37,13 +32,17 @@ private class NumericCastFlowConfig extends TaintTracking::Configuration {
   }
 }
 
+module NumericCastFlow = TaintTracking::Global<NumericCastFlowConfig>;
+
+import NumericCastFlow::PathGraph
+
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, NumericNarrowingCastExpr exp,
-  VarAccess tainted, NumericCastFlowConfig conf
+  NumericCastFlow::PathNode source, NumericCastFlow::PathNode sink, NumericNarrowingCastExpr exp,
+  VarAccess tainted
 where
   exp.getExpr() = tainted and
   sink.getNode().asExpr() = tainted and
-  conf.hasFlowPath(source, sink) and
+  NumericCastFlow::flowPath(source, sink) and
   not exists(RightShiftOp e | e.getShiftedVariable() = tainted.getVariable())
 select exp, source, sink,
   "This cast to a narrower type depends on a $@, potentially causing truncation.", source.getNode(),

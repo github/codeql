@@ -7,6 +7,7 @@
  * @precision high
  * @id java/spring-boot-exposed-actuators
  * @tags security
+ *       experimental
  *       external/cwe/cwe-16
  */
 

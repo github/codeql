@@ -6,6 +6,7 @@
  * @id java/sensitive-android-file-leak
  * @problem.severity warning
  * @tags security
+ *       experimental
  *       external/cwe/cwe-200
  */
 

@@ -223,8 +223,8 @@ abstract private class BinaryFormatterSink extends InstanceMethodSink { }
 
 private class BinaryFormatterDeserializeMethodSink extends BinaryFormatterSink {
   BinaryFormatterDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isBinaryFormatterCall(mc, m) and
+    exists(MethodCall mc |
+      isBinaryFormatterCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
@@ -241,8 +241,8 @@ abstract private class SoapFormatterSink extends InstanceMethodSink { }
 
 private class SoapFormatterDeserializeMethodSink extends SoapFormatterSink {
   SoapFormatterDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isSoapFormatterCall(mc, m) and
+    exists(MethodCall mc |
+      isSoapFormatterCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
@@ -259,8 +259,8 @@ abstract private class ObjectStateFormatterSink extends InstanceMethodSink { }
 
 private class ObjectStateFormatterDeserializeMethodSink extends ObjectStateFormatterSink {
   ObjectStateFormatterDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isObjectStateFormatterCall(mc, m) and
+    exists(MethodCall mc |
+      isObjectStateFormatterCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
@@ -283,8 +283,8 @@ abstract private class NetDataContractSerializerSink extends InstanceMethodSink 
 
 private class NetDataContractSerializerDeserializeMethodSink extends NetDataContractSerializerSink {
   NetDataContractSerializerDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isNetDataContractSerializerCall(mc, m) and
+    exists(MethodCall mc |
+      isNetDataContractSerializerCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
@@ -299,16 +299,18 @@ private predicate isDataContractJsonSerializerCall(MethodCall mc, Method m) {
 
 abstract private class DataContractJsonSerializerSink extends InstanceMethodSink { }
 
-private class DataContractJsonSerializerDeserializeMethodSink extends DataContractJsonSerializerSink {
+private class DataContractJsonSerializerDeserializeMethodSink extends DataContractJsonSerializerSink
+{
   DataContractJsonSerializerDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isDataContractJsonSerializerCall(mc, m) and
+    exists(MethodCall mc |
+      isDataContractJsonSerializerCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
 }
 
-private class DataContractJsonSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+private class DataContractJsonSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig
+{
   DataContractJsonSafeConstructorTrackingConfiguration() {
     this = "DataContractJsonSafeConstructorTrackingConfiguration"
   }
@@ -326,8 +328,8 @@ private class DataContractJsonSafeConstructorTrackingConfiguration extends SafeC
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall mc, Method m |
-      isDataContractJsonSerializerCall(mc, m) and
+    exists(MethodCall mc |
+      isDataContractJsonSerializerCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
   }
@@ -350,14 +352,15 @@ abstract private class JavaScriptSerializerSink extends InstanceMethodSink { }
 
 private class JavaScriptSerializerDeserializeMethodSink extends JavaScriptSerializerSink {
   JavaScriptSerializerDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isJavaScriptSerializerCall(mc, m) and
+    exists(MethodCall mc |
+      isJavaScriptSerializerCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
 }
 
-private class JavaScriptSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+private class JavaScriptSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig
+{
   JavaScriptSerializerSafeConstructorTrackingConfiguration() {
     this = "JavaScriptSerializerSafeConstructorTrackingConfiguration"
   }
@@ -374,8 +377,8 @@ private class JavaScriptSerializerSafeConstructorTrackingConfiguration extends S
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall mc, Method m |
-      isJavaScriptSerializerCall(mc, m) and
+    exists(MethodCall mc |
+      isJavaScriptSerializerCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
   }
@@ -393,14 +396,15 @@ abstract private class XmlObjectSerializerSink extends InstanceMethodSink { }
 
 private class XmlObjectSerializerDeserializeMethodSink extends XmlObjectSerializerSink {
   XmlObjectSerializerDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isXmlObjectSerializerCall(mc, m) and
+    exists(MethodCall mc |
+      isXmlObjectSerializerCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
 }
 
-private class XmlObjectSerializerDerivedConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+private class XmlObjectSerializerDerivedConstructorTrackingConfiguration extends SafeConstructorTrackingConfig
+{
   XmlObjectSerializerDerivedConstructorTrackingConfiguration() {
     this = "XmlObjectSerializerDerivedConstructorTrackingConfiguration"
   }
@@ -420,8 +424,8 @@ private class XmlObjectSerializerDerivedConstructorTrackingConfiguration extends
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall mc, Method m |
-      isXmlObjectSerializerCall(mc, m) and
+    exists(MethodCall mc |
+      isXmlObjectSerializerCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
   }
@@ -438,14 +442,15 @@ abstract private class XmlSerializerSink extends InstanceMethodSink { }
 
 private class XmlSerializerDeserializeMethodSink extends XmlSerializerSink {
   XmlSerializerDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isXmlSerializerCall(mc, m) and
+    exists(MethodCall mc |
+      isXmlSerializerCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
 }
 
-private class XmlSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+private class XmlSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig
+{
   XmlSerializerSafeConstructorTrackingConfiguration() {
     this = "XmlSerializerSafeConstructorTrackingConfiguration"
   }
@@ -463,8 +468,8 @@ private class XmlSerializerSafeConstructorTrackingConfiguration extends SafeCons
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall mc, Method m |
-      isXmlSerializerCall(mc, m) and
+    exists(MethodCall mc |
+      isXmlSerializerCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
   }
@@ -485,14 +490,15 @@ abstract private class DataContractSerializerSink extends InstanceMethodSink { }
 
 private class DataContractSerializerDeserializeMethodSink extends DataContractSerializerSink {
   DataContractSerializerDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isDataContractSerializerCall(mc, m) and
+    exists(MethodCall mc |
+      isDataContractSerializerCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
 }
 
-private class DataContractSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+private class DataContractSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig
+{
   DataContractSerializerSafeConstructorTrackingConfiguration() {
     this = "DataContractSerializerSafeConstructorTrackingConfiguration"
   }
@@ -510,8 +516,8 @@ private class DataContractSerializerSafeConstructorTrackingConfiguration extends
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall mc, Method m |
-      isDataContractSerializerCall(mc, m) and
+    exists(MethodCall mc |
+      isDataContractSerializerCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
   }
@@ -528,14 +534,15 @@ abstract private class XmlMessageFormatterSink extends InstanceMethodSink { }
 
 private class XmlMessageFormatterDeserializeMethodSink extends XmlMessageFormatterSink {
   XmlMessageFormatterDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isXmlMessageFormatterCall(mc, m) and
+    exists(MethodCall mc |
+      isXmlMessageFormatterCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
 }
 
-private class XmlMessageFormatterSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+private class XmlMessageFormatterSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig
+{
   XmlMessageFormatterSafeConstructorTrackingConfiguration() {
     this = "XmlMessageFormatterSafeConstructorTrackingConfiguration"
   }
@@ -553,8 +560,8 @@ private class XmlMessageFormatterSafeConstructorTrackingConfiguration extends Sa
   }
 
   override predicate isSink(DataFlow::Node sink) {
-    exists(MethodCall mc, Method m |
-      isXmlMessageFormatterCall(mc, m) and
+    exists(MethodCall mc |
+      isXmlMessageFormatterCall(mc, _) and
       mc.getQualifier() = sink.asExpr()
     )
   }
@@ -571,8 +578,8 @@ abstract private class LosFormatterSink extends InstanceMethodSink { }
 
 private class LosFormatterDeserializeMethodSink extends LosFormatterSink {
   LosFormatterDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isLosFormatterCall(mc, m) and
+    exists(MethodCall mc |
+      isLosFormatterCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
@@ -589,8 +596,8 @@ abstract private class FastJsonSink extends ConstructorOrStaticMethodSink { }
 
 private class FastJsonDeserializeMethodSink extends FastJsonSink {
   FastJsonDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isFastJsonCall(mc, m) and
+    exists(MethodCall mc |
+      isFastJsonCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
@@ -607,8 +614,8 @@ abstract private class ActivitySink extends InstanceMethodSink { }
 
 private class ActivityDeserializeMethodSink extends ActivitySink {
   ActivityDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isActivityCall(mc, m) and
+    exists(MethodCall mc |
+      isActivityCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
@@ -625,8 +632,8 @@ abstract private class ResourceReaderSink extends ConstructorOrStaticMethodSink 
 
 private class ResourceReaderDeserializeMethodSink extends ResourceReaderSink {
   ResourceReaderDeserializeMethodSink() {
-    exists(Call mc, Constructor m |
-      isResourceReaderCall(mc, m) and
+    exists(Call mc |
+      isResourceReaderCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
@@ -643,8 +650,8 @@ abstract private class BinaryMessageFormatterSink extends InstanceMethodSink { }
 
 private class BinaryMessageFormatterDeserializeMethodSink extends BinaryMessageFormatterSink {
   BinaryMessageFormatterDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isBinaryMessageFormatterCall(mc, m) and
+    exists(MethodCall mc |
+      isBinaryMessageFormatterCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
@@ -667,8 +674,8 @@ abstract private class XamlReaderSink extends ConstructorOrStaticMethodSink { }
 
 private class XamlReaderDeserializeMethodSink extends XamlReaderSink {
   XamlReaderDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isXamlReaderCall(mc, m) and
+    exists(MethodCall mc |
+      isXamlReaderCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
@@ -689,8 +696,8 @@ abstract private class ProxyObjectSink extends InstanceMethodSink { }
 
 private class ProxyObjectDeserializeMethodSink extends ProxyObjectSink {
   ProxyObjectDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isProxyObjectCall(mc, m) and
+    exists(MethodCall mc |
+      isProxyObjectCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
@@ -707,8 +714,8 @@ abstract private class SweetJaysonSink extends ConstructorOrStaticMethodSink { }
 
 private class SweetJaysonDeserializeMethodSink extends SweetJaysonSink {
   SweetJaysonDeserializeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isSweetJaysonCall(mc, m) and
+    exists(MethodCall mc |
+      isSweetJaysonCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
@@ -717,7 +724,8 @@ private class SweetJaysonDeserializeMethodSink extends SweetJaysonSink {
 /** ServiceStack.Text.JsonSerializer */
 abstract private class ServiceStackTextJsonSerializerSink extends ConstructorOrStaticMethodSink { }
 
-private class ServiceStackTextJsonSerializerDeserializeMethodSink extends ServiceStackTextJsonSerializerSink {
+private class ServiceStackTextJsonSerializerDeserializeMethodSink extends ServiceStackTextJsonSerializerSink
+{
   ServiceStackTextJsonSerializerDeserializeMethodSink() {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and
@@ -741,7 +749,8 @@ private class ServiceStackTextJsonSerializerDeserializeMethodSink extends Servic
 /** ServiceStack.Text.TypeSerializer */
 abstract private class ServiceStackTextTypeSerializerSink extends ConstructorOrStaticMethodSink { }
 
-private class ServiceStackTextTypeSerializerDeserializeMethodSink extends ServiceStackTextTypeSerializerSink {
+private class ServiceStackTextTypeSerializerDeserializeMethodSink extends ServiceStackTextTypeSerializerSink
+{
   ServiceStackTextTypeSerializerDeserializeMethodSink() {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and
@@ -765,7 +774,8 @@ private class ServiceStackTextTypeSerializerDeserializeMethodSink extends Servic
 /** ServiceStack.Text.CsvSerializer */
 abstract private class ServiceStackTextCsvSerializerSink extends ConstructorOrStaticMethodSink { }
 
-private class ServiceStackTextCsvSerializerDeserializeMethodSink extends ServiceStackTextCsvSerializerSink {
+private class ServiceStackTextCsvSerializerDeserializeMethodSink extends ServiceStackTextCsvSerializerSink
+{
   ServiceStackTextCsvSerializerDeserializeMethodSink() {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and
@@ -789,7 +799,8 @@ private class ServiceStackTextCsvSerializerDeserializeMethodSink extends Service
 /** ServiceStack.Text.XmlSerializer */
 abstract private class ServiceStackTextXmlSerializerSink extends ConstructorOrStaticMethodSink { }
 
-private class ServiceStackTextXmlSerializerDeserializeMethodSink extends ServiceStackTextXmlSerializerSink {
+private class ServiceStackTextXmlSerializerDeserializeMethodSink extends ServiceStackTextXmlSerializerSink
+{
   ServiceStackTextXmlSerializerDeserializeMethodSink() {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and
@@ -825,8 +836,8 @@ abstract private class FsPicklerWeakTypeSink extends ConstructorOrStaticMethodSi
 
 private class FsPicklerDeserializeWeakTypeMethodSink extends FsPicklerWeakTypeSink {
   FsPicklerDeserializeWeakTypeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isWeakTypeFsPicklerCall(mc, m) and
+    exists(MethodCall mc |
+      isWeakTypeFsPicklerCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }
@@ -851,8 +862,8 @@ abstract private class FsPicklerStrongTypeSink extends InstanceMethodSink { }
 
 private class FsPicklerDeserializeStrongTypeMethodSink extends FsPicklerStrongTypeSink {
   FsPicklerDeserializeStrongTypeMethodSink() {
-    exists(MethodCall mc, Method m |
-      isStrongTypeFsPicklerCall(mc, m) and
+    exists(MethodCall mc |
+      isStrongTypeFsPicklerCall(mc, _) and
       this.asExpr() = mc.getArgument(0)
     )
   }

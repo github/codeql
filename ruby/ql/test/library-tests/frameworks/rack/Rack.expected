@@ -1,0 +1,4 @@
+| rack.rb:1:1:5:3 | HelloWorld | rack.rb:2:12:2:14 | env |
+| rack.rb:7:1:16:3 | Proxy | rack.rb:12:12:12:18 | the_env |
+| rack.rb:18:1:31:3 | Logger | rack.rb:24:12:24:14 | env |
+| rack.rb:45:1:61:3 | Baz | rack.rb:46:12:46:14 | env |

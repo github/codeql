@@ -197,6 +197,20 @@ module ClientRequest {
   /** Gets the string `url` or `uri`. */
   private string urlPropertyName() { result = "url" or result = "uri" }
 
+  /** An API entry-point for the global variable `axios`. */
+  private class AxiosGlobalEntryPoint extends API::EntryPoint {
+    AxiosGlobalEntryPoint() { this = "axiosGlobal" }
+
+    override DataFlow::SourceNode getASource() { result = DataFlow::globalVarRef("axios") }
+  }
+
+  /** Gets a reference to the `axios` library. */
+  private API::Node axios() {
+    result = API::moduleImport("axios")
+    or
+    result = API::root().getASuccessor(API::Label::entryPoint(any(AxiosGlobalEntryPoint entry)))
+  }
+
   /**
    * A model of a URL request made using the `axios` library.
    */
@@ -204,9 +218,10 @@ module ClientRequest {
     string method;
 
     AxiosUrlRequest() {
-      this = API::moduleImport("axios").getACall() and method = "request"
+      this = axios().getACall() and
+      method = "request"
       or
-      this = API::moduleImport("axios").getMember(method).getACall() and
+      this = axios().getMember(method).getACall() and
       method = [httpMethodName(), "request"]
     }
 
@@ -762,14 +777,12 @@ module ClientRequest {
   /**
    * A shell execution of `curl` that downloads some file.
    */
-  class CurlDownload extends ClientRequest::Range {
-    SystemCommandExecution cmd;
-
+  class CurlDownload extends ClientRequest::Range instanceof SystemCommandExecution {
     CurlDownload() {
-      this = cmd and
       (
-        cmd.getACommandArgument().getStringValue() = "curl" or
-        cmd.getACommandArgument()
+        super.getACommandArgument().getStringValue() = "curl" or
+        super
+            .getACommandArgument()
             .(StringOps::ConcatenationRoot)
             .getConstantStringParts()
             .matches("curl %")
@@ -777,8 +790,8 @@ module ClientRequest {
     }
 
     override DataFlow::Node getUrl() {
-      result = cmd.getArgumentList().getALocalSource().getAPropertyWrite().getRhs() or
-      result = cmd.getACommandArgument().(StringOps::ConcatenationRoot).getALeaf()
+      result = super.getArgumentList().getALocalSource().getAPropertyWrite().getRhs() or
+      result = super.getACommandArgument().(StringOps::ConcatenationRoot).getALeaf()
     }
 
     override DataFlow::Node getHost() { none() }

@@ -1,3 +1,58 @@
+## 0.5.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
+* Deleted the deprecated `getId` from the `Function`, `NamespaceDefinition`, and `ImportEqualsDeclaration` classes.
+* Deleted the deprecated `flowsTo` predicate from the `HTTP::Servers::RequestSource` and `HTTP::Servers::ResponseSource` class.
+* Deleted the deprecated `getEventName` predicate from the `SocketIO::ReceiveNode`, `SocketIO::SendNode`, `SocketIOClient::SendNode` classes.
+* Deleted the deprecated `RateLimitedRouteHandlerExpr` and `RouteHandlerExpressionWithRateLimiter` classes.
+* [Import assertions](https://github.com/tc39/proposal-import-assertions) are now supported.
+  Previously this feature was only supported in TypeScript code, but is now supported for plain JavaScript as well and is also accessible in the AST.
+
+## 0.5.0
+
+### Breaking Changes
+
+* The `CryptographicOperation` concept has been changed to use a range pattern. This is a breaking change and existing implementations of `CryptographicOperation` will need to be updated in order to compile. These implementations can be updated by:
+  1. Extending `CryptographicOperation::Range` rather than `CryptographicOperation`
+  2. Renaming the `getInput()` member predicate as `getAnInput()`
+  3. Implementing the `BlockMode getBlockMode()` member predicate. The implementation for this can be `none()` if the operation is a hashing operation or an encryption operation using a stream cipher.
+
+## 0.4.3
+
+### Minor Analysis Improvements
+
+* Added dataflow sources for the [express-ws](https://www.npmjs.com/package/express-ws) library. 
+
+## 0.4.2
+
+### Minor Analysis Improvements
+
+* Added sinks from the [`node-pty`](https://www.npmjs.com/package/node-pty) library to the `js/code-injection` query.
+
+## 0.4.1
+
+No user-facing changes.
+
+## 0.4.0
+
+### New Features
+
+* Improved support for [Restify](http://restify.com/) framework, leading to more results when scanning applications developed with this framework.
+* Added support for the [Spife](https://github.com/npm/spife) framework.
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `Instance` class from the `Vue` module.
+* Deleted the deprecated `VHtmlSourceWrite` class from `DomBasedXssQuery.qll`.
+* Deleted all the deprecated `[QueryName].qll` files from the `javascript/ql/lib/semmle/javascript/security/dataflow` folder, use the corresponding `[QueryName]Query.qll` files instead.
+* The ReDoS libraries in `semmle.code.javascript.security.regexp` has been moved to a shared pack inside the `shared/` folder, and the previous location has been deprecated.
+
+## 0.3.6
+
+No user-facing changes.
+
 ## 0.3.5
 
 No user-facing changes.

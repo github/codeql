@@ -100,4 +100,5 @@ class Test {
 		new File(new URI(null, null, t, null, null));
 		new File(new URI(null, null, null, 0, t, null, null));
 	}
+
 }

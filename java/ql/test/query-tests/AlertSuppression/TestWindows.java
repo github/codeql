@@ -36,3 +36,11 @@ class TestWindows {} // lgtm
 /* lgtm[@tag:nullness,java/confusing-method-name] */
 /* lgtm[@tag:nullness] */
 /** lgtm[] */
+// codeql[js/debugger-statement]
+// CODEQL[js/debugger-statement]
+// codeql[js/debugger-statement] -- because I know better than codeql
+/* codeql[js/debugger-statement] */
+/* codeql[js/debugger-statement] 
+*/
+class Foo2 {} // codeql[js/debugger-statement]
+

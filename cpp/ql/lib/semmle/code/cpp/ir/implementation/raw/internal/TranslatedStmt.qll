@@ -13,6 +13,223 @@ private import TranslatedInitialization
 
 TranslatedStmt getTranslatedStmt(Stmt stmt) { result.getAst() = stmt }
 
+TranslatedMicrosoftTryExceptHandler getTranslatedMicrosoftTryExceptHandler(
+  MicrosoftTryExceptStmt tryExcept
+) {
+  result.getAst() = tryExcept.getExcept()
+}
+
+class TranslatedMicrosoftTryExceptHandler extends TranslatedElement,
+  TTranslatedMicrosoftTryExceptHandler
+{
+  MicrosoftTryExceptStmt tryExcept;
+
+  TranslatedMicrosoftTryExceptHandler() { this = TTranslatedMicrosoftTryExceptHandler(tryExcept) }
+
+  final override string toString() { result = tryExcept.toString() }
+
+  final override Locatable getAst() { result = tryExcept.getExcept() }
+
+  override Instruction getFirstInstruction() { result = this.getChild(0).getFirstInstruction() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    // t1 = -1
+    tag = TryExceptGenerateNegativeOne() and
+    opcode instanceof Opcode::Constant and
+    resultType = getIntType()
+    or
+    // t2 = cmp t1, condition
+    tag = TryExceptCompareNegativeOne() and
+    opcode instanceof Opcode::CompareEQ and
+    resultType = getBoolType()
+    or
+    // if t2 goto ... else goto ...
+    tag = TryExceptCompareNegativeOneBranch() and
+    opcode instanceof Opcode::ConditionalBranch and
+    resultType = getVoidType()
+    or
+    // t1 = 0
+    tag = TryExceptGenerateZero() and
+    opcode instanceof Opcode::Constant and
+    resultType = getIntType()
+    or
+    // t2 = cmp t1, condition
+    tag = TryExceptCompareZero() and
+    opcode instanceof Opcode::CompareEQ and
+    resultType = getBoolType()
+    or
+    // if t2 goto ... else goto ...
+    tag = TryExceptCompareZeroBranch() and
+    opcode instanceof Opcode::ConditionalBranch and
+    resultType = getVoidType()
+    or
+    // t1 = 1
+    tag = TryExceptGenerateOne() and
+    opcode instanceof Opcode::Constant and
+    resultType = getIntType()
+    or
+    // t2 = cmp t1, condition
+    tag = TryExceptCompareOne() and
+    opcode instanceof Opcode::CompareEQ and
+    resultType = getBoolType()
+    or
+    // if t2 goto ... else goto ...
+    tag = TryExceptCompareOneBranch() and
+    opcode instanceof Opcode::ConditionalBranch and
+    resultType = getVoidType()
+    or
+    // unwind stack
+    tag = UnwindTag() and
+    opcode instanceof Opcode::Unwind and
+    resultType = getVoidType()
+  }
+
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    tag = TryExceptCompareNegativeOne() and
+    (
+      operandTag instanceof LeftOperandTag and
+      result = this.getTranslatedCondition().getResult()
+      or
+      operandTag instanceof RightOperandTag and
+      result = this.getInstruction(TryExceptGenerateNegativeOne())
+    )
+    or
+    tag = TryExceptCompareNegativeOneBranch() and
+    operandTag instanceof ConditionOperandTag and
+    result = this.getInstruction(TryExceptCompareNegativeOne())
+    or
+    tag = TryExceptCompareZero() and
+    (
+      operandTag instanceof LeftOperandTag and
+      result = this.getTranslatedCondition().getResult()
+      or
+      operandTag instanceof RightOperandTag and
+      result = this.getInstruction(TryExceptGenerateZero())
+    )
+    or
+    tag = TryExceptCompareZeroBranch() and
+    operandTag instanceof ConditionOperandTag and
+    result = this.getInstruction(TryExceptCompareZero())
+    or
+    tag = TryExceptCompareOne() and
+    (
+      operandTag instanceof LeftOperandTag and
+      result = this.getTranslatedCondition().getResult()
+      or
+      operandTag instanceof RightOperandTag and
+      result = this.getInstruction(TryExceptGenerateOne())
+    )
+    or
+    tag = TryExceptCompareOneBranch() and
+    operandTag instanceof ConditionOperandTag and
+    result = this.getInstruction(TryExceptCompareOne())
+  }
+
+  override string getInstructionConstantValue(InstructionTag tag) {
+    tag = TryExceptGenerateNegativeOne() and
+    result = "-1"
+    or
+    tag = TryExceptGenerateZero() and
+    result = "0"
+    or
+    tag = TryExceptGenerateOne() and
+    result = "1"
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    // Generate -1 -> Compare condition
+    tag = TryExceptGenerateNegativeOne() and
+    kind instanceof GotoEdge and
+    result = this.getInstruction(TryExceptCompareNegativeOne())
+    or
+    // Compare condition -> Branch
+    tag = TryExceptCompareNegativeOne() and
+    kind instanceof GotoEdge and
+    result = this.getInstruction(TryExceptCompareNegativeOneBranch())
+    or
+    // Branch -> Unwind or Generate 0
+    tag = TryExceptCompareNegativeOneBranch() and
+    (
+      kind instanceof TrueEdge and
+      // TODO: This is not really correct. The semantics of `EXCEPTION_CONTINUE_EXECUTION` is that
+      // we should continue execution at the point where the exception occurred. But we don't have
+      // any instruction to model this behavior.
+      result = this.getInstruction(UnwindTag())
+      or
+      kind instanceof FalseEdge and
+      result = this.getInstruction(TryExceptGenerateZero())
+    )
+    or
+    // Generate 0 -> Compare condition
+    tag = TryExceptGenerateZero() and
+    kind instanceof GotoEdge and
+    result = this.getInstruction(TryExceptCompareZero())
+    or
+    // Compare condition -> Branch
+    tag = TryExceptCompareZero() and
+    kind instanceof GotoEdge and
+    result = this.getInstruction(TryExceptCompareZeroBranch())
+    or
+    // Branch -> Unwind or Generate 1
+    tag = TryExceptCompareZeroBranch() and
+    (
+      kind instanceof TrueEdge and
+      result = this.getInstruction(UnwindTag())
+      or
+      kind instanceof FalseEdge and
+      result = this.getInstruction(TryExceptGenerateOne())
+    )
+    or
+    // Generate 1 -> Compare condition
+    tag = TryExceptGenerateOne() and
+    kind instanceof GotoEdge and
+    result = this.getInstruction(TryExceptCompareOne())
+    or
+    // Compare condition -> Branch
+    tag = TryExceptCompareOne() and
+    kind instanceof GotoEdge and
+    result = this.getInstruction(TryExceptCompareOneBranch())
+    or
+    // Branch -> Handler (the condition value is always 0, -1 or 1, and we've checked for 0 or -1 already.)
+    tag = TryExceptCompareOneBranch() and
+    (
+      kind instanceof TrueEdge and
+      result = this.getTranslatedHandler().getFirstInstruction()
+    )
+    or
+    // Unwind -> Parent
+    tag = UnwindTag() and
+    kind instanceof GotoEdge and
+    result = this.getParent().getChildSuccessor(this)
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getTranslatedCondition() and
+    result = this.getInstruction(TryExceptGenerateNegativeOne())
+    or
+    child = this.getTranslatedHandler() and
+    result = this.getParent().getChildSuccessor(this)
+  }
+
+  private TranslatedExpr getTranslatedCondition() {
+    result = getTranslatedExpr(tryExcept.getCondition())
+  }
+
+  private TranslatedStmt getTranslatedHandler() {
+    result = getTranslatedStmt(tryExcept.getExcept())
+  }
+
+  override TranslatedElement getChild(int id) {
+    id = 0 and
+    result = this.getTranslatedCondition()
+    or
+    id = 1 and
+    result = this.getTranslatedHandler()
+  }
+
+  final override Function getFunction() { result = tryExcept.getEnclosingFunction() }
+}
+
 abstract class TranslatedStmt extends TranslatedElement, TTranslatedStmt {
   Stmt stmt;
 
@@ -249,15 +466,57 @@ class TranslatedUnreachableReturnStmt extends TranslatedReturnStmt {
 }
 
 /**
- * The IR translation of a C++ `try` statement.
+ * A C/C++ `try` statement, or a `__try __except` or `__try __finally` statement.
+ */
+private class TryOrMicrosoftTryStmt extends Stmt {
+  TryOrMicrosoftTryStmt() {
+    this instanceof TryStmt or
+    this instanceof MicrosoftTryStmt
+  }
+
+  /** Gets the number of `catch block`s of this statement. */
+  int getNumberOfCatchClauses() {
+    result = this.(TryStmt).getNumberOfCatchClauses()
+    or
+    this instanceof MicrosoftTryExceptStmt and
+    result = 1
+    or
+    this instanceof MicrosoftTryFinallyStmt and
+    result = 0
+  }
+
+  /** Gets the `body` statement of this statement. */
+  Stmt getStmt() {
+    result = this.(TryStmt).getStmt()
+    or
+    result = this.(MicrosoftTryStmt).getStmt()
+  }
+
+  /** Gets the `i`th translated handler of this statement. */
+  TranslatedElement getTranslatedHandler(int index) {
+    result = getTranslatedStmt(this.(TryStmt).getChild(index + 1))
+    or
+    index = 0 and
+    result = getTranslatedMicrosoftTryExceptHandler(this)
+  }
+
+  /** Gets the `finally` statement (usually a BlockStmt), if any. */
+  Stmt getFinally() { result = this.(MicrosoftTryFinallyStmt).getFinally() }
+}
+
+/**
+ * The IR translation of a C++ `try` (or a `__try __except` or `__try __finally`) statement.
  */
 class TranslatedTryStmt extends TranslatedStmt {
-  override TryStmt stmt;
+  override TryOrMicrosoftTryStmt stmt;
 
   override TranslatedElement getChild(int id) {
     id = 0 and result = getBody()
     or
     result = getHandler(id - 1)
+    or
+    id = stmt.getNumberOfCatchClauses() + 1 and
+    result = this.getFinally()
   }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -269,8 +528,20 @@ class TranslatedTryStmt extends TranslatedStmt {
   override Instruction getFirstInstruction() { result = getBody().getFirstInstruction() }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    // All children go to the successor of the `try`.
-    child = getAChild() and result = getParent().getChildSuccessor(this)
+    // All non-finally children go to the successor of the `try` if
+    // there is no finally block, but if there is a finally block
+    // then we go to that one.
+    child = [this.getBody(), this.getHandler(_)] and
+    (
+      not exists(this.getFinally()) and
+      result = this.getParent().getChildSuccessor(this)
+      or
+      result = this.getFinally().getFirstInstruction()
+    )
+    or
+    // And after the finally block we go to the successor of the `try`.
+    child = this.getFinally() and
+    result = this.getParent().getChildSuccessor(this)
   }
 
   final Instruction getNextHandler(TranslatedHandler handler) {
@@ -290,9 +561,9 @@ class TranslatedTryStmt extends TranslatedStmt {
     result = getHandler(0).getFirstInstruction()
   }
 
-  private TranslatedHandler getHandler(int index) {
-    result = getTranslatedStmt(stmt.getChild(index + 1))
-  }
+  private TranslatedElement getHandler(int index) { result = stmt.getTranslatedHandler(index) }
+
+  private TranslatedStmt getFinally() { result = getTranslatedStmt(stmt.getFinally()) }
 
   private TranslatedStmt getBody() { result = getTranslatedStmt(stmt.getStmt()) }
 }

@@ -19,6 +19,7 @@ private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import semmle.code.cil.Ssa::Ssa as CilSsa
 private import semmle.code.cil.internal.SsaImpl as CilSsaImpl
+import codeql.util.Unit
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallableImpl() }
@@ -159,18 +160,16 @@ private module ThisFlow {
  */
 pragma[nomagic]
 predicate hasNodePath(ControlFlowReachabilityConfiguration conf, ExprNode n1, Node n2) {
-  exists(Expr e1, ControlFlow::Node cfn1, Expr e2, ControlFlow::Node cfn2 |
-    conf.hasExprPath(e1, cfn1, e2, cfn2)
-  |
+  exists(ControlFlow::Node cfn1, ControlFlow::Node cfn2 | conf.hasExprPath(_, cfn1, _, cfn2) |
     cfn1 = n1.getControlFlowNode() and
     cfn2 = n2.(ExprNode).getControlFlowNode()
   )
   or
   exists(
-    Expr e, ControlFlow::Node cfn, AssignableDefinition def, ControlFlow::Node cfnDef,
+    ControlFlow::Node cfn, AssignableDefinition def, ControlFlow::Node cfnDef,
     Ssa::ExplicitDefinition ssaDef
   |
-    conf.hasDefPath(e, cfn, def, cfnDef)
+    conf.hasDefPath(_, cfn, def, cfnDef)
   |
     cfn = n1.getControlFlowNode() and
     ssaDef.getADefinition() = def and
@@ -538,9 +537,7 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   )
   or
   // Flow into phi (read)/uncertain SSA definition node from read
-  exists(SsaImpl::DefinitionExt def, Node read |
-    LocalFlow::localFlowSsaInputFromRead(read, def, nodeTo)
-  |
+  exists(Node read | LocalFlow::localFlowSsaInputFromRead(read, _, nodeTo) |
     nodeFrom = read and
     not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _)
     or
@@ -883,9 +880,7 @@ private module Cached {
     )
     or
     // Flow into phi (read)/uncertain SSA definition node from read
-    exists(SsaImpl::DefinitionExt def, Node read |
-      LocalFlow::localFlowSsaInputFromRead(read, def, nodeTo)
-    |
+    exists(Node read | LocalFlow::localFlowSsaInputFromRead(read, _, nodeTo) |
       nodeFrom = read
       or
       nodeFrom.(PostUpdateNode).getPreUpdateNode() = read
@@ -903,6 +898,13 @@ private module Cached {
     TPropertyContent(Property p) { p.isUnboundDeclaration() } or
     TElementContent() or
     TSyntheticFieldContent(SyntheticField f)
+
+  cached
+  newtype TContentApprox =
+    TFieldApproxContent(string firstChar) { firstChar = approximateFieldContent(_) } or
+    TPropertyApproxContent(string firstChar) { firstChar = approximatePropertyContent(_) } or
+    TElementApproxContent() or
+    TSyntheticFieldApproxContent()
 
   pragma[nomagic]
   private predicate commonSubTypeGeneral(DataFlowTypeOrUnifiable t1, RelevantDataFlowType t2) {
@@ -1214,7 +1216,8 @@ private module ArgumentNodes {
    * ```
    */
   class ImplicitCapturedArgumentNode extends ArgumentNodeImpl, NodeImpl,
-    TImplicitCapturedArgumentNode {
+    TImplicitCapturedArgumentNode
+  {
     private LocalScopeVariable v;
     private ControlFlow::Nodes::ElementNode cfn;
 
@@ -2033,7 +2036,8 @@ private module PostUpdateNodes {
    * a pre-update node for the `ObjectCreationNode`.
    */
   class ObjectInitializerNode extends PostUpdateNode, NodeImpl, ArgumentNodeImpl,
-    TObjectInitializerNode {
+    TObjectInitializerNode
+  {
     private ObjectCreation oc;
     private ControlFlow::Nodes::ElementNode cfn;
 
@@ -2160,15 +2164,6 @@ int accessPathLimit() { result = 5 }
  */
 predicate forceHighPrecision(Content c) { c instanceof ElementContent }
 
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
-
 class LambdaCallKind = Unit;
 
 /** Holds if `creation` is an expression that creates a delegate for `c`. */
@@ -2180,7 +2175,7 @@ predicate lambdaCreation(ExprNode creation, LambdaCallKind kind, DataFlowCallabl
         e.(AddressOfExpr).getOperand().(CallableAccess).getTarget().getUnboundDeclaration()
       ]
   ) and
-  kind = TMkUnit()
+  exists(kind)
 }
 
 private class LambdaConfiguration extends ControlFlowReachabilityConfiguration {
@@ -2211,7 +2206,7 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
     or
     receiver = call.(SummaryCall).getReceiver()
   ) and
-  kind = TMkUnit()
+  exists(kind)
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */
@@ -2244,6 +2239,46 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
+}
+
+/** An approximated `Content`. */
+class ContentApprox extends TContentApprox {
+  /** Gets a textual representation of this approximated `Content`. */
+  string toString() {
+    exists(string firstChar |
+      this = TFieldApproxContent(firstChar) and result = "approximated field " + firstChar
+    )
+    or
+    exists(string firstChar |
+      this = TPropertyApproxContent(firstChar) and result = "approximated property " + firstChar
+    )
+    or
+    this = TElementApproxContent() and result = "element"
+    or
+    this = TSyntheticFieldApproxContent() and result = "approximated synthetic field"
+  }
+}
+
+/** Gets a string for approximating the name of a field. */
+private string approximateFieldContent(FieldContent fc) {
+  result = fc.getField().getName().prefix(1)
+}
+
+/** Gets a string for approximating the name of a property. */
+private string approximatePropertyContent(PropertyContent pc) {
+  result = pc.getProperty().getName().prefix(1)
+}
+
+/** Gets an approximated value for content `c`. */
+pragma[nomagic]
+ContentApprox getContentApprox(Content c) {
+  result = TFieldApproxContent(approximateFieldContent(c))
+  or
+  result = TPropertyApproxContent(approximatePropertyContent(c))
+  or
+  c instanceof ElementContent and result = TElementApproxContent()
+  or
+  c instanceof SyntheticFieldContent and result = TSyntheticFieldApproxContent()
 }
 
 /**
@@ -2333,3 +2368,12 @@ module Csv {
     )
   }
 }
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

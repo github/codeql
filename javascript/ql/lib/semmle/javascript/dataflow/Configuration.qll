@@ -161,7 +161,7 @@ abstract class Configuration extends string {
    */
   predicate isBarrier(DataFlow::Node node) {
     exists(BarrierGuardNode guard |
-      isBarrierGuardInternal(guard) and
+      isBarrierGuardInternal(this, guard) and
       barrierGuardBlocksNode(guard, node, "")
     )
   }
@@ -181,7 +181,7 @@ abstract class Configuration extends string {
    */
   predicate isLabeledBarrier(DataFlow::Node node, FlowLabel lbl) {
     exists(BarrierGuardNode guard |
-      isBarrierGuardInternal(guard) and
+      isBarrierGuardInternal(this, guard) and
       barrierGuardBlocksNode(guard, node, lbl)
     )
     or
@@ -197,17 +197,6 @@ abstract class Configuration extends string {
    * `x` into the "then" branch.
    */
   predicate isBarrierGuard(BarrierGuardNode guard) { none() }
-
-  /**
-   * Holds if `guard` is a barrier guard for this configuration, added through
-   * `isBarrierGuard` or `AdditionalBarrierGuardNode`.
-   */
-  pragma[nomagic]
-  private predicate isBarrierGuardInternal(BarrierGuardNode guard) {
-    isBarrierGuard(guard)
-    or
-    guard.(AdditionalBarrierGuardNode).appliesTo(this)
-  }
 
   /**
    * Holds if data may flow from `source` to `sink` for this configuration.
@@ -265,6 +254,17 @@ abstract class Configuration extends string {
   ) {
     none()
   }
+}
+
+/**
+ * Holds if `guard` is a barrier guard for this configuration, added through
+ * `isBarrierGuard` or `AdditionalBarrierGuardNode`.
+ */
+pragma[nomagic]
+private predicate isBarrierGuardInternal(Configuration cfg, BarrierGuardNode guard) {
+  cfg.isBarrierGuard(guard)
+  or
+  guard.(AdditionalBarrierGuardNode).appliesTo(cfg)
 }
 
 /**
@@ -368,6 +368,8 @@ private predicate barrierGuardBlocksExpr(
   // Handle labelled barrier guard functions specially, to avoid negative recursion
   // through the non-abstract 3-argument version of blocks().
   guard.(AdditionalBarrierGuardCall).internalBlocksLabel(outcome, test, label)
+  or
+  guard.(CallAgainstEqualityCheck).internalBlocksLabel(outcome, test, label)
 }
 
 /**
@@ -1155,9 +1157,9 @@ private predicate parameterPropRead(
   DataFlow::Node arg, string prop, DataFlow::Node succ, DataFlow::Configuration cfg,
   PathSummary summary
 ) {
-  exists(Function f, DataFlow::Node read, DataFlow::Node invk, DataFlow::Node parm |
+  exists(Function f, DataFlow::Node read |
     reachesReturn(f, read, cfg, summary) and
-    parameterPropReadStep(parm, read, prop, cfg, arg, invk, f, succ)
+    parameterPropReadStep(_, read, prop, cfg, arg, _, f, succ)
   )
 }
 
@@ -1764,11 +1766,8 @@ private PathNode getASuccessor(PathNode nd) {
   result = initialMidNode(nd)
   or
   // mid node to mid node
-  exists(
-    Configuration cfg, DataFlow::Node predNd, PathSummary summary, DataFlow::Node succNd,
-    PathSummary newSummary
-  |
-    midNodeStep(nd, predNd, cfg, summary, succNd, newSummary) and
+  exists(Configuration cfg, PathSummary summary, DataFlow::Node succNd, PathSummary newSummary |
+    midNodeStep(nd, _, cfg, summary, succNd, newSummary) and
     result = MkMidNode(succNd, id(cfg), summary.append(newSummary))
   )
   or
@@ -1982,7 +1981,7 @@ private class BarrierGuardFunction extends Function {
   /**
    * Holds if this function applies to the flow in `cfg`.
    */
-  predicate appliesTo(Configuration cfg) { cfg.isBarrierGuard(guard) }
+  predicate appliesTo(Configuration cfg) { isBarrierGuardInternal(cfg, guard) }
 }
 
 /**
@@ -2000,6 +1999,42 @@ private class AdditionalBarrierGuardCall extends AdditionalBarrierGuardNode, Dat
   }
 
   override predicate appliesTo(Configuration cfg) { f.appliesTo(cfg) }
+}
+
+/**
+ * A sanitizer where an inner sanitizer is compared against a boolean.
+ * E.g. (assuming `sanitizes(e)` is an existing sanitizer):
+ * ```javascript
+ * if (sanitizes(e) === true) {
+ *  // e is sanitized
+ * }
+ * ```
+ */
+private class CallAgainstEqualityCheck extends AdditionalBarrierGuardNode {
+  DataFlow::BarrierGuardNode prev;
+  boolean polarity;
+
+  CallAgainstEqualityCheck() {
+    prev instanceof DataFlow::CallNode and
+    exists(EqualityTest test, BooleanLiteral bool |
+      this.asExpr() = test and
+      test.hasOperands(prev.asExpr(), bool) and
+      polarity = test.getPolarity().booleanXor(bool.getBoolValue())
+    )
+  }
+
+  override predicate blocks(boolean outcome, Expr e) {
+    none() // handled by internalBlocksLabel
+  }
+
+  predicate internalBlocksLabel(boolean outcome, Expr e, DataFlow::FlowLabel lbl) {
+    exists(boolean prevOutcome |
+      barrierGuardBlocksExpr(prev, prevOutcome, e, lbl) and
+      outcome = prevOutcome.booleanXor(polarity)
+    )
+  }
+
+  override predicate appliesTo(Configuration cfg) { isBarrierGuardInternal(cfg, prev) }
 }
 
 /**

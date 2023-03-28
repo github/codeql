@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["org.springframework.security.web.savedrequest", "SavedRequest", True, "getCookies", "", "", "ReturnValue", "remote", "manual"]
       - ["org.springframework.security.web.savedrequest", "SavedRequest", True, "getHeaderNames", "", "", "ReturnValue", "remote", "manual"]

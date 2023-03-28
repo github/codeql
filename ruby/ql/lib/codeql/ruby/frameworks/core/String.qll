@@ -114,7 +114,8 @@ module String {
   }
 
   abstract private class SimpleSummarizedCallable extends SummarizedCallable,
-    FlowSummary::SimpleSummarizedCallable {
+    FlowSummary::SimpleSummarizedCallable
+  {
     bindingset[this]
     SimpleSummarizedCallable() { any() }
   }

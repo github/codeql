@@ -7,6 +7,7 @@
  * @id cpp/overrun-write
  * @tags reliability
  *       security
+ *       experimental
  *       external/cwe/cwe-119
  *       external/cwe/cwe-131
  */
@@ -61,11 +62,16 @@ predicate hasSize(AllocationExpr alloc, DataFlow::Node n, string state) {
 predicate isSinkPairImpl(
   CallInstruction c, DataFlow::Node bufSink, DataFlow::Node sizeSink, int delta, Expr eBuf
 ) {
-  exists(int bufIndex, int sizeIndex, Instruction sizeInstr, Instruction bufInstr |
+  exists(
+    int bufIndex, int sizeIndex, Instruction sizeInstr, Instruction bufInstr, ArrayFunction func
+  |
     bufInstr = bufSink.asInstruction() and
     c.getArgument(bufIndex) = bufInstr and
     sizeInstr = sizeSink.asInstruction() and
-    c.getStaticCallTarget().(ArrayFunction).hasArrayWithVariableSize(bufIndex, sizeIndex) and
+    c.getStaticCallTarget() = func and
+    pragma[only_bind_into](func)
+        .hasArrayWithVariableSize(pragma[only_bind_into](bufIndex),
+          pragma[only_bind_into](sizeIndex)) and
     bounded(c.getArgument(sizeIndex), sizeInstr, delta) and
     eBuf = bufInstr.getUnconvertedResultExpression()
   )

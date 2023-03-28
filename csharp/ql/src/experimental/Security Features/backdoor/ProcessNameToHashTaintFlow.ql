@@ -3,6 +3,7 @@
  * @description Flow from a function retrieving process name to a hash function.
  * @kind path-problem
  * @tags security
+ *       experimental
  *       solorigate
  * @problem.severity warning
  * @precision medium

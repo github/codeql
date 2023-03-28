@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Primitives, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Primitives
         {
-            // Generated from `Microsoft.Extensions.Primitives.CancellationChangeToken` in `Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class CancellationChangeToken : Microsoft.Extensions.Primitives.IChangeToken
             {
                 public bool ActiveChangeCallbacks { get => throw null; }
@@ -15,14 +15,12 @@ namespace Microsoft
                 public System.IDisposable RegisterChangeCallback(System.Action<object> callback, object state) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Primitives.ChangeToken` in `Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ChangeToken
             {
                 public static System.IDisposable OnChange(System.Func<Microsoft.Extensions.Primitives.IChangeToken> changeTokenProducer, System.Action changeTokenConsumer) => throw null;
                 public static System.IDisposable OnChange<TState>(System.Func<Microsoft.Extensions.Primitives.IChangeToken> changeTokenProducer, System.Action<TState> changeTokenConsumer, TState state) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Primitives.CompositeChangeToken` in `Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class CompositeChangeToken : Microsoft.Extensions.Primitives.IChangeToken
             {
                 public bool ActiveChangeCallbacks { get => throw null; }
@@ -32,13 +30,11 @@ namespace Microsoft
                 public System.IDisposable RegisterChangeCallback(System.Action<object> callback, object state) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Primitives.Extensions` in `Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class Extensions
             {
                 public static System.Text.StringBuilder Append(this System.Text.StringBuilder builder, Microsoft.Extensions.Primitives.StringSegment segment) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Primitives.IChangeToken` in `Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IChangeToken
             {
                 bool ActiveChangeCallbacks { get; }
@@ -46,7 +42,6 @@ namespace Microsoft
                 System.IDisposable RegisterChangeCallback(System.Action<object> callback, object state);
             }
 
-            // Generated from `Microsoft.Extensions.Primitives.StringSegment` in `Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public struct StringSegment : System.IEquatable<Microsoft.Extensions.Primitives.StringSegment>, System.IEquatable<string>
             {
                 public static bool operator !=(Microsoft.Extensions.Primitives.StringSegment left, Microsoft.Extensions.Primitives.StringSegment right) => throw null;
@@ -97,7 +92,6 @@ namespace Microsoft
                 public static implicit operator Microsoft.Extensions.Primitives.StringSegment(string value) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Primitives.StringSegmentComparer` in `Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class StringSegmentComparer : System.Collections.Generic.IComparer<Microsoft.Extensions.Primitives.StringSegment>, System.Collections.Generic.IEqualityComparer<Microsoft.Extensions.Primitives.StringSegment>
             {
                 public int Compare(Microsoft.Extensions.Primitives.StringSegment x, Microsoft.Extensions.Primitives.StringSegment y) => throw null;
@@ -107,10 +101,8 @@ namespace Microsoft
                 public static Microsoft.Extensions.Primitives.StringSegmentComparer OrdinalIgnoreCase { get => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Primitives.StringTokenizer` in `Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public struct StringTokenizer : System.Collections.Generic.IEnumerable<Microsoft.Extensions.Primitives.StringSegment>, System.Collections.IEnumerable
             {
-                // Generated from `Microsoft.Extensions.Primitives.StringTokenizer+Enumerator` in `Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<Microsoft.Extensions.Primitives.StringSegment>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public Microsoft.Extensions.Primitives.StringSegment Current { get => throw null; }
@@ -131,10 +123,8 @@ namespace Microsoft
                 public StringTokenizer(string value, System.Char[] separators) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Primitives.StringValues` in `Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public struct StringValues : System.Collections.Generic.ICollection<string>, System.Collections.Generic.IEnumerable<string>, System.Collections.Generic.IList<string>, System.Collections.Generic.IReadOnlyCollection<string>, System.Collections.Generic.IReadOnlyList<string>, System.Collections.IEnumerable, System.IEquatable<Microsoft.Extensions.Primitives.StringValues>, System.IEquatable<string>, System.IEquatable<string[]>
             {
-                // Generated from `Microsoft.Extensions.Primitives.StringValues+Enumerator` in `Microsoft.Extensions.Primitives, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public struct Enumerator : System.Collections.Generic.IEnumerator<string>, System.Collections.IEnumerator, System.IDisposable
                 {
                     public string Current { get => throw null; }

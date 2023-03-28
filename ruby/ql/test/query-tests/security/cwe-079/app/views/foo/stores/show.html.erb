@@ -11,7 +11,6 @@
 <ul>
 <% for key in [:display_text, :safe_text] do %>
   <%# BAD: A local rendered raw via the locals hash %>
-  <%# TODO: we miss that `key` can take `:display_text` as a value here %>
   <li><%= raw local_assigns[key] %></li>
 <% end %>
 </ul>

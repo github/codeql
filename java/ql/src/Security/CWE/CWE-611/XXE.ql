@@ -14,43 +14,12 @@
  */
 
 import java
-import semmle.code.java.security.XmlParsers
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking2
-import DataFlow::PathGraph
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.security.XxeRemoteQuery
+import XxeFlow::PathGraph
 
-class SafeSaxSourceFlowConfig extends TaintTracking2::Configuration {
-  SafeSaxSourceFlowConfig() { this = "XmlParsers::SafeSAXSourceFlowConfig" }
-
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSaxSource }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(XmlParserCall parse).getSink()
-  }
-
-  override int fieldFlowBranchLimit() { result = 0 }
-}
-
-class UnsafeXxeSink extends DataFlow::ExprNode {
-  UnsafeXxeSink() {
-    not exists(SafeSaxSourceFlowConfig safeSource | safeSource.hasFlowTo(this)) and
-    exists(XmlParserCall parse |
-      parse.getSink() = this.getExpr() and
-      not parse.isSafe()
-    )
-  }
-}
-
-class XxeConfig extends TaintTracking::Configuration {
-  XxeConfig() { this = "XXE.ql::XxeConfig" }
-
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeXxeSink }
-}
-
-from DataFlow::PathNode source, DataFlow::PathNode sink, XxeConfig conf
-where conf.hasFlowPath(source, sink)
+from XxeFlow::PathNode source, XxeFlow::PathNode sink
+where XxeFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "XML parsing depends on a $@ without guarding against external entity expansion.",
   source.getNode(), "user-provided value"

@@ -6,6 +6,7 @@
  * @precision high
  * @id py/template-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-074
  */
 

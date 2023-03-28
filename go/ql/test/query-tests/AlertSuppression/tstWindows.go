@@ -42,4 +42,17 @@ func winMain() {
                */
 	x = x /* lgtm[@tag:nullness,go/redundant-assignment] */
 	x = x /* lgtm[@tag:nullness] */
-}
+	// codeql[js/debugger-statement]
+	x = x 
+	// CODEQL[js/debugger-statement]
+	x = x
+	// codeql[js/debugger-statement] -- because I know better than codeql
+	x = x
+	/* codeql[js/debugger-statement] */
+	x = x
+	/* codeql[js/debugger-statement] 
+	*/
+	x = x
+	x = x // codeql[js/debugger-statement]	
+}	
+

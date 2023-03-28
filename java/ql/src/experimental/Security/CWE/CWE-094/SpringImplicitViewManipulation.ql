@@ -6,6 +6,7 @@
  * @precision high
  * @id java/spring-view-manipulation-implicit
  * @tags security
+ *       experimental
  *       external/cwe/cwe-094
  */
 

@@ -2,6 +2,7 @@ import csharp
 import cil
 import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 import semmle.code.csharp.dataflow.internal.DataFlowPublic
+import semmle.code.csharp.dataflow.internal.DataFlowDispatch
 import semmle.code.csharp.dataflow.internal.DataFlowImplConsistency::Consistency
 
 private class MyConsistencyConfiguration extends ConsistencyConfiguration {
@@ -11,6 +12,15 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
     exists(ControlFlow::Node cfn |
       cfn.getElement() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
       cfn = n.getControlFlowNode()
+    )
+  }
+
+  override predicate uniqueCallEnclosingCallableExclude(DataFlowCall call) {
+    // TODO: Remove once static initializers are folded into the
+    // static constructors
+    exists(ControlFlow::Node cfn |
+      cfn.getElement() = any(FieldOrProperty f | f.isStatic()).getAChild+() and
+      cfn = call.getControlFlowNode()
     )
   }
 

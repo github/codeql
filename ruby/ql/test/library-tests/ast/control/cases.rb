@@ -156,3 +156,7 @@ case expr
   in ^(@foo);
   in ^(1 + 1);
 end
+
+expr in [1, 2]
+
+expr => {x: v, y: 1}

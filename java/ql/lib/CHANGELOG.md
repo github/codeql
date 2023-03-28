@@ -1,3 +1,94 @@
+## 0.5.5
+
+### New Features
+
+* Added support for merging two `PathGraph`s via disjoint union to allow results from multiple data flow computations in a single `path-problem` query.
+
+### Major Analysis Improvements
+
+* Removed low-confidence call edges to known neutral call targets from the call graph used in data flow analysis. This includes, for example, custom `List.contains` implementations when the best inferrable type at the call site is simply `List`.
+* Added more sink and summary dataflow models for the following packages:
+  * `java.io`
+  * `java.lang`
+  * `java.sql`
+  * `javafx.scene.web`
+  * `org.apache.commons.compress.archivers.tar`
+  * `org.apache.http.client.utils`
+  * `org.codehaus.cargo.container.installer`
+* The main data flow and taint tracking APIs have been changed. The old APIs
+  remain in place for now and translate to the new through a
+  backwards-compatible wrapper. If multiple configurations are in scope
+  simultaneously, then this may affect results slightly. The new API is quite
+  similar to the old, but makes use of a configuration module instead of a
+  configuration class.
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
+* Deleted the deprecated `getRepresentedString` predicate from the `StringLiteral` class.
+* Deleted the deprecated `ServletWriterSource` class.
+* Deleted the deprecated `getGroupID`, `getArtefactID`, and `artefactMatches` predicates from the `MavenRepoJar` class.
+
+## 0.5.4
+
+### Minor Analysis Improvements
+
+* Added new sinks for `java/hardcoded-credential-api-call` to identify the use of hardcoded secrets in the creation and verification of JWT tokens using `com.auth0.jwt`. These sinks are from [an experimental query submitted by @luchua](https://github.com/github/codeql/pull/9036).
+* The Java extractor now supports builds against JDK 20.
+* The query `java/hardcoded-credential-api-call` now recognizes methods that accept user and password from the SQLServerDataSource class of the Microsoft JDBC Driver for SQL Server.
+
+## 0.5.3
+
+### New Features
+
+* Kotlin versions up to 1.8.20 are now supported.
+
+### Minor Analysis Improvements
+
+* Removed the first argument of `java.nio.file.Files#createTempDirectory(String,FileAttribute[])` as a "create-file" sink.
+* Added the first argument of `java.nio.file.Files#copy` as a "read-file" sink for the `java/path-injection` query.
+* The data flow library now disregards flow through code that is dead based on some basic constant propagation, for example, guards like `if (1+1>3)`.
+
+## 0.5.2
+
+### Minor Analysis Improvements
+
+* Added sink models for the `createQuery`, `createNativeQuery`, and `createSQLQuery` methods of the `org.hibernate.query.QueryProducer` interface.
+
+## 0.5.1
+
+### Minor Analysis Improvements
+
+* Added sink models for the constructors of `org.springframework.jdbc.object.MappingSqlQuery` and `org.springframework.jdbc.object.MappingSqlQueryWithParameters`.
+* Added more dataflow models for frequently-used JDK APIs.
+* Removed summary model for `java.lang.String#endsWith(String)` and added neutral model for this API.
+* Added additional taint step for `java.lang.String#endsWith(String)` to `ConditionalBypassFlowConfig`.
+* Added `AllowContentAccessMethod` to represent the `setAllowContentAccess` method of the `android.webkit.WebSettings` class.
+* Added an external flow source for the parameters of methods annotated with `android.webkit.JavascriptInterface`.
+
+## 0.5.0
+
+### Minor Analysis Improvements
+
+* Added more dataflow models for frequently-used JDK APIs.
+* The extraction of Kotlin extension methods has been improved when default parameter values are present. The dispatch and extension receiver parameters are extracted in the correct order. The `ExtensionMethod::getExtensionReceiverParameterIndex` predicate has been introduced to facilitate getting the correct extension parameter index.
+* The query `java/insecure-cookie` now uses global dataflow to track secure cookies being set to the HTTP response object.
+* The library `PathSanitizer.qll` has been improved to detect more path validation patterns in Kotlin.
+* Models as Data models for Java are defined as data extensions instead of being inlined in the code. New models should be added in the `lib/ext` folder.
+* Added a taint model for the method `java.nio.file.Path.getParent`.
+* Fixed a problem in the taint model for the method `java.nio.file.Paths.get`.
+* Deleted the deprecated `LocalClassDeclStmtNode` and `LocalClassDeclStmt` classes from `PrintAst.qll` and `Statement.qll` respectively.
+* Deleted the deprecated `getLocalClass` predicate from `LocalTypeDeclStmt`, and the deprecated `getLocalClassDeclStmt` predicate from `LocalClassOrInterface`.
+* Added support for Android Manifest `<activity-aliases>` elements in data flow sources. 
+
+### Bug Fixes
+
+* We now correctly handle empty block comments, like `/**/`. Previously these could be mistaken for Javadoc comments and led to attribution of Javadoc tags to the wrong declaration.
+
+## 0.4.6
+
+No user-facing changes.
+
 ## 0.4.5
 
 No user-facing changes.

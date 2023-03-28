@@ -40,8 +40,12 @@ module BrokenCryptoAlgorithm {
   class WeakCryptographicOperationSink extends Sink {
     WeakCryptographicOperationSink() {
       exists(CryptographicOperation application |
-        application.getAlgorithm().isWeak() and
-        this = application.getInput()
+        (
+          application.getAlgorithm().isWeak()
+          or
+          application.getBlockMode().isWeak()
+        ) and
+        this = application.getAnInput()
       )
     }
   }

@@ -3,9 +3,9 @@ import codeql.swift.elements
 import TestUtils
 
 from
-  ParamDecl x, ModuleDecl getModule, Type getInterfaceType, int getNumberOfAccessorDecls,
-  string getName, Type getType, string hasAttachedPropertyWrapperType, string hasParentPattern,
-  string hasParentInitializer, string hasPropertyWrapperBackingVarBinding,
+  ParamDecl x, ModuleDecl getModule, int getNumberOfMembers, Type getInterfaceType,
+  int getNumberOfAccessorDecls, string getName, Type getType, string hasAttachedPropertyWrapperType,
+  string hasParentPattern, string hasParentInitializer, string hasPropertyWrapperBackingVarBinding,
   string hasPropertyWrapperBackingVar, string hasPropertyWrapperProjectionVarBinding,
   string hasPropertyWrapperProjectionVar, string isInout,
   string hasPropertyWrapperLocalWrappedVarBinding, string hasPropertyWrapperLocalWrappedVar
@@ -13,6 +13,7 @@ where
   toBeTested(x) and
   not x.isUnknown() and
   getModule = x.getModule() and
+  getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType = x.getInterfaceType() and
   getNumberOfAccessorDecls = x.getNumberOfAccessorDecls() and
   getName = x.getName() and
@@ -53,10 +54,10 @@ where
   if x.hasPropertyWrapperLocalWrappedVar()
   then hasPropertyWrapperLocalWrappedVar = "yes"
   else hasPropertyWrapperLocalWrappedVar = "no"
-select x, "getModule:", getModule, "getInterfaceType:", getInterfaceType,
-  "getNumberOfAccessorDecls:", getNumberOfAccessorDecls, "getName:", getName, "getType:", getType,
-  "hasAttachedPropertyWrapperType:", hasAttachedPropertyWrapperType, "hasParentPattern:",
-  hasParentPattern, "hasParentInitializer:", hasParentInitializer,
+select x, "getModule:", getModule, "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:",
+  getInterfaceType, "getNumberOfAccessorDecls:", getNumberOfAccessorDecls, "getName:", getName,
+  "getType:", getType, "hasAttachedPropertyWrapperType:", hasAttachedPropertyWrapperType,
+  "hasParentPattern:", hasParentPattern, "hasParentInitializer:", hasParentInitializer,
   "hasPropertyWrapperBackingVarBinding:", hasPropertyWrapperBackingVarBinding,
   "hasPropertyWrapperBackingVar:", hasPropertyWrapperBackingVar,
   "hasPropertyWrapperProjectionVarBinding:", hasPropertyWrapperProjectionVarBinding,

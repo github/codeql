@@ -33,7 +33,7 @@ class Generator:
         self.generateNeutrals = False
         self.generateTypeBasedSummaries = False
         self.dryRun = False
-        self.dirname = "model-generator"
+        self.dirname = "modelgenerator"
 
 
     def printHelp(self):

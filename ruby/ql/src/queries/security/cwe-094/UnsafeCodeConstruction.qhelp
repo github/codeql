@@ -1,0 +1,111 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+When a library function dynamically constructs code in a potentially unsafe way, 
+it's important to document to clients of the library that the function should only be
+used with trusted inputs.
+
+If the function is not documented as being potentially unsafe, then a client may
+incorrectly use inputs containing unsafe code fragments, and thereby leave the
+client vulnerable to code-injection attacks.
+</p>
+
+</overview>
+
+<recommendation>
+<p>
+Properly document library functions that construct code from unsanitized 
+inputs, or avoid constructing code in the first place.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example shows two methods implemented using <code>eval</code>: a simple
+deserialization routine and a getter method.
+If untrusted inputs are used with these methods,
+then an attacker might be able to execute arbitrary code on the system. 
+</p>
+
+<sample src="examples/UnsafeCodeConstruction.rb" />
+
+<p>
+To avoid this problem, either properly document that the function is potentially
+unsafe, or use an alternative solution such as <code>JSON.parse</code> or another library 
+that does not allow arbitrary code to be executed.
+</p>
+
+<sample src="examples/UnsafeCodeConstructionSafe.rb" />
+
+</example>
+
+<example>
+<p>
+As another example, consider the below code which dynamically constructs 
+a class that has a getter method with a custom name.
+</p>
+
+<sample src="examples/UnsafeCodeConstruction2.rb" />
+
+<p>
+The example dynamically constructs a string which is then executed using <code>module_eval</code>.  
+This code will break if the specified name is not a valid Ruby identifier, and 
+if the value is controlled by an attacker, then this could lead to code-injection.
+</p>
+
+<p>
+A more robust implementation, that is also immune to code-injection, 
+can be made by using <code>module_eval</code> with a block and using <code>define_method</code>
+to define the getter method.
+</p>
+
+<sample src="examples/UnsafeCodeConstruction2Safe.rb" />
+</example>
+
+<example>
+<p>
+This example dynamically registers a method on another class which
+forwards its arguments to a target object. This approach uses
+<code>module_eval</code> and string interpolation to construct class variables
+and methods.
+</p>
+
+<sample src="examples/UnsafeCodeConstruction3.rb" />
+
+<p>
+A safer approach is to use <code>class_variable_set</code> and
+<code>class_variable_get</code> along with <code>define_method</code>. String
+interpolation is still used to construct the class variable name, but this is
+safe because <code>class_variable_set</code> is not susceptible to code-injection.
+</p>
+
+<p>
+<code>send</code> is used to dynamically call the method specified by <code>name</code>.  
+This is a more robust alternative than the previous example, because it does not allow
+arbitrary code to be executed, but it does still allow for any method to be called
+on the target object. 
+</p>
+
+<sample src="examples/UnsafeCodeConstruction3Safe.rb" />
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://www.owasp.org/index.php/Code_Injection">Code Injection</a>.
+</li>
+<li>
+Wikipedia: <a href="https://en.wikipedia.org/wiki/Code_injection">Code Injection</a>.
+</li>
+<li>
+Ruby documentation: <a href="https://docs.ruby-lang.org/en/3.2/Module.html#method-i-define_method">define_method</a>.
+</li>
+<li>
+Ruby documentation: <a href="https://docs.ruby-lang.org/en/3.2/Module.html#method-i-class_variable_set">class_variable_set</a>.
+</li>
+</references>
+</qhelp>

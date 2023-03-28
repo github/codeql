@@ -18,31 +18,32 @@ import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.security.PathCreation
 import semmle.code.java.security.PathSanitizer
-import DataFlow::PathGraph
 import TaintedPathCommon
 
-class TaintedPathConfig extends TaintTracking::Configuration {
-  TaintedPathConfig() { this = "TaintedPathConfig" }
+module TaintedPathConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PathCreation p).getAnInput()
     or
-    sinkNode(sink, "create-file")
+    sinkNode(sink, ["create-file", "read-file"])
   }
 
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
+  predicate isBarrier(DataFlow::Node sanitizer) {
     sanitizer.getType() instanceof BoxedType or
     sanitizer.getType() instanceof PrimitiveType or
     sanitizer.getType() instanceof NumberType or
     sanitizer instanceof PathInjectionSanitizer
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(TaintedPathAdditionalTaintStep s).step(n1, n2)
   }
 }
+
+module TaintedPath = TaintTracking::Global<TaintedPathConfig>;
+
+import TaintedPath::PathGraph
 
 /**
  * Gets the data-flow node at which to report a path ending at `sink`.
@@ -52,13 +53,13 @@ class TaintedPathConfig extends TaintTracking::Configuration {
  * continue to report there; otherwise we report directly at `sink`.
  */
 DataFlow::Node getReportingNode(DataFlow::Node sink) {
-  any(TaintedPathConfig c).hasFlowTo(sink) and
+  TaintedPath::flowTo(sink) and
   if exists(PathCreation pc | pc.getAnInput() = sink.asExpr())
   then result.asExpr() = any(PathCreation pc | pc.getAnInput() = sink.asExpr())
   else result = sink
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, TaintedPathConfig conf
-where conf.hasFlowPath(source, sink)
+from TaintedPath::PathNode source, TaintedPath::PathNode sink
+where TaintedPath::flowPath(source, sink)
 select getReportingNode(sink.getNode()), source, sink, "This path depends on a $@.",
   source.getNode(), "user-provided value"

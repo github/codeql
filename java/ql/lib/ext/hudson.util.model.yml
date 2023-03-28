@@ -1,0 +1,25 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["hudson.util", "AtomicFileWriter", True, "AtomicFileWriter", "(File)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["hudson.util", "AtomicFileWriter", True, "AtomicFileWriter", "(Path,Charset,boolean,boolean)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["hudson.util", "AtomicFileWriter", True, "AtomicFileWriter", "(Path,Charset)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["hudson.util", "ClasspathBuilder", True, "add", "(FilePath)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["hudson.util", "IOUtils", True, "mkdirs", "(File)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["hudson.util", "StreamTaskListener", True, "StreamTaskListener", "(File,boolean,Charset)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["hudson.util", "TextFile", True, "delete", "()", "", "Argument[this]", "create-file", "manual"]
+      - ["hudson.util", "TextFile", True, "fastTail", "", "", "Argument[this]", "read-file", "manual"]
+      - ["hudson.util", "TextFile", True, "head", "", "", "Argument[this]", "read-file", "manual"]
+      - ["hudson.util", "TextFile", True, "lines", "()", "", "Argument[this]", "read-file", "manual"]
+      - ["hudson.util", "TextFile", True, "read", "()", "", "Argument[this]", "read-file", "manual"]
+      - ["hudson.util", "TextFile", True, "readTrim", "()", "", "Argument[this]", "read-file", "manual"]
+      - ["hudson.util", "TextFile", True, "write", "(String)", "", "Argument[0]", "write-file", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["hudson.util", "QuotedStringTokenizer", True, "tokenize", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["hudson.util", "TextFile", True, "TextFile", "(File)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
+      

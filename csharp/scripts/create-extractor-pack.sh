@@ -6,7 +6,11 @@ if [[ "$OSTYPE" == "linux-gnu"* ]]; then
   dotnet_platform="linux-x64"
 elif [[ "$OSTYPE" == "darwin"* ]]; then
   platform="osx64"
-  dotnet_platform="osx-x64"
+  if [[ $(uname -m) == 'arm64' ]]; then
+    dotnet_platform="osx-arm64"
+  else
+    dotnet_platform="osx-x64"
+  fi
 else
   echo "Unknown OS"
   exit 1
@@ -17,7 +21,7 @@ mkdir -p extractor-pack
 mkdir -p extractor-pack/tools/${platform}
 
 function dotnet_publish {
-  dotnet publish --self-contained --configuration Release --runtime ${dotnet_platform} -p:RuntimeFrameworkVersion=6.0.4 $1 --output extractor-pack/tools/${platform}
+  dotnet publish --self-contained --configuration Release --runtime ${dotnet_platform} -p:RuntimeFrameworkVersion=7.0.2 $1 --output extractor-pack/tools/${platform}
 }
 
 dotnet_publish extractor/Semmle.Extraction.CSharp.Standalone

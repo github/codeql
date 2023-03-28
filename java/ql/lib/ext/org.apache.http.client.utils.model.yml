@@ -1,0 +1,12 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.http.client.utils", "URIBuilder", True, "setHost", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
+      - ["org.apache.http.client.utils", "URIBuilder", True, "setHost", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["org.apache.http.client.utils", "URIBuilder", True, "setPath", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.http.client.utils.URIBuilder.path]", "taint", "ai-generated"]
+      - ["org.apache.http.client.utils", "URIBuilder", True, "setPathSegments", "(List)", "", "Argument[0]", "Argument[this].SyntheticField[org.apache.http.client.utils.URIBuilder.path]", "taint", "ai-generated"]
+      - ["org.apache.http.client.utils", "URIBuilder", True, "URIBuilder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
+      - ["org.apache.http.client.utils", "URIBuilder", True, "URIBuilder", "(URI)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
+      - ["org.apache.http.client.utils", "URLEncodedUtils", True, "parse", "(URI,String)", "", "Argument[0]", "ReturnValue.Element", "taint", "ai-generated"]

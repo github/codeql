@@ -1,5 +1,5 @@
 /**
- * Models for the Alamofire networking library.
+ * Provides models for the Alamofire networking library.
  */
 
 import swift

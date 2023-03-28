@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.AspNetCore.Localization, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Builder
         {
-            // Generated from `Microsoft.AspNetCore.Builder.ApplicationBuilderExtensions` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class ApplicationBuilderExtensions
             {
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseRequestLocalization(this Microsoft.AspNetCore.Builder.IApplicationBuilder app) => throw null;
@@ -15,7 +15,6 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Builder.IApplicationBuilder UseRequestLocalization(this Microsoft.AspNetCore.Builder.IApplicationBuilder app, params string[] cultures) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.RequestLocalizationOptions` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RequestLocalizationOptions
             {
                 public Microsoft.AspNetCore.Builder.RequestLocalizationOptions AddSupportedCultures(params string[] cultures) => throw null;
@@ -31,7 +30,6 @@ namespace Microsoft
                 public System.Collections.Generic.IList<System.Globalization.CultureInfo> SupportedUICultures { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Builder.RequestLocalizationOptionsExtensions` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RequestLocalizationOptionsExtensions
             {
                 public static Microsoft.AspNetCore.Builder.RequestLocalizationOptions AddInitialRequestCultureProvider(this Microsoft.AspNetCore.Builder.RequestLocalizationOptions requestLocalizationOptions, Microsoft.AspNetCore.Localization.RequestCultureProvider requestCultureProvider) => throw null;
@@ -40,7 +38,6 @@ namespace Microsoft
         }
         namespace Localization
         {
-            // Generated from `Microsoft.AspNetCore.Localization.AcceptLanguageHeaderRequestCultureProvider` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class AcceptLanguageHeaderRequestCultureProvider : Microsoft.AspNetCore.Localization.RequestCultureProvider
             {
                 public AcceptLanguageHeaderRequestCultureProvider() => throw null;
@@ -48,7 +45,6 @@ namespace Microsoft
                 public int MaximumAcceptLanguageHeaderValuesToTry { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Localization.CookieRequestCultureProvider` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class CookieRequestCultureProvider : Microsoft.AspNetCore.Localization.RequestCultureProvider
             {
                 public string CookieName { get => throw null; set => throw null; }
@@ -59,27 +55,23 @@ namespace Microsoft
                 public static Microsoft.AspNetCore.Localization.ProviderCultureResult ParseCookieValue(string value) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Localization.CustomRequestCultureProvider` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class CustomRequestCultureProvider : Microsoft.AspNetCore.Localization.RequestCultureProvider
             {
                 public CustomRequestCultureProvider(System.Func<Microsoft.AspNetCore.Http.HttpContext, System.Threading.Tasks.Task<Microsoft.AspNetCore.Localization.ProviderCultureResult>> provider) => throw null;
                 public override System.Threading.Tasks.Task<Microsoft.AspNetCore.Localization.ProviderCultureResult> DetermineProviderCultureResult(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Localization.IRequestCultureFeature` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IRequestCultureFeature
             {
                 Microsoft.AspNetCore.Localization.IRequestCultureProvider Provider { get; }
                 Microsoft.AspNetCore.Localization.RequestCulture RequestCulture { get; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Localization.IRequestCultureProvider` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IRequestCultureProvider
             {
                 System.Threading.Tasks.Task<Microsoft.AspNetCore.Localization.ProviderCultureResult> DetermineProviderCultureResult(Microsoft.AspNetCore.Http.HttpContext httpContext);
             }
 
-            // Generated from `Microsoft.AspNetCore.Localization.ProviderCultureResult` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class ProviderCultureResult
             {
                 public System.Collections.Generic.IList<Microsoft.Extensions.Primitives.StringSegment> Cultures { get => throw null; }
@@ -90,7 +82,6 @@ namespace Microsoft
                 public System.Collections.Generic.IList<Microsoft.Extensions.Primitives.StringSegment> UICultures { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Localization.QueryStringRequestCultureProvider` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class QueryStringRequestCultureProvider : Microsoft.AspNetCore.Localization.RequestCultureProvider
             {
                 public override System.Threading.Tasks.Task<Microsoft.AspNetCore.Localization.ProviderCultureResult> DetermineProviderCultureResult(Microsoft.AspNetCore.Http.HttpContext httpContext) => throw null;
@@ -99,7 +90,6 @@ namespace Microsoft
                 public string UIQueryStringKey { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Localization.RequestCulture` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RequestCulture
             {
                 public System.Globalization.CultureInfo Culture { get => throw null; }
@@ -110,7 +100,6 @@ namespace Microsoft
                 public System.Globalization.CultureInfo UICulture { get => throw null; }
             }
 
-            // Generated from `Microsoft.AspNetCore.Localization.RequestCultureFeature` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RequestCultureFeature : Microsoft.AspNetCore.Localization.IRequestCultureFeature
             {
                 public Microsoft.AspNetCore.Localization.IRequestCultureProvider Provider { get => throw null; }
@@ -118,7 +107,6 @@ namespace Microsoft
                 public RequestCultureFeature(Microsoft.AspNetCore.Localization.RequestCulture requestCulture, Microsoft.AspNetCore.Localization.IRequestCultureProvider provider) => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Localization.RequestCultureProvider` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class RequestCultureProvider : Microsoft.AspNetCore.Localization.IRequestCultureProvider
             {
                 public abstract System.Threading.Tasks.Task<Microsoft.AspNetCore.Localization.ProviderCultureResult> DetermineProviderCultureResult(Microsoft.AspNetCore.Http.HttpContext httpContext);
@@ -127,7 +115,6 @@ namespace Microsoft
                 protected RequestCultureProvider() => throw null;
             }
 
-            // Generated from `Microsoft.AspNetCore.Localization.RequestLocalizationMiddleware` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class RequestLocalizationMiddleware
             {
                 public System.Threading.Tasks.Task Invoke(Microsoft.AspNetCore.Http.HttpContext context) => throw null;
@@ -140,7 +127,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.RequestLocalizationServiceCollectionExtensions` in `Microsoft.AspNetCore.Localization, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class RequestLocalizationServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddRequestLocalization(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, System.Action<Microsoft.AspNetCore.Builder.RequestLocalizationOptions> configureOptions) => throw null;

@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["cn.hutool.core.codec", "Base64", True, "decode", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

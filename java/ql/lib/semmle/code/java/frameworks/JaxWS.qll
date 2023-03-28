@@ -53,6 +53,7 @@ private predicate hasPathAnnotation(Annotatable annotatable) {
  * A method which is annotated with one or more JaxRS resource type annotations e.g. `@GET`, `@POST` etc.
  */
 class JaxRsResourceMethod extends Method {
+  pragma[assume_small_delta]
   JaxRsResourceMethod() {
     exists(AnnotationType a |
       a = this.getAnAnnotation().getType() and
@@ -91,6 +92,7 @@ class JaxRsResourceMethod extends Method {
  * This class contains resource methods, which are executed in response to requests.
  */
 class JaxRsResourceClass extends Class {
+  pragma[assume_small_delta]
   JaxRsResourceClass() {
     // A root resource class has a @Path annotation on the class.
     hasPathAnnotation(this)

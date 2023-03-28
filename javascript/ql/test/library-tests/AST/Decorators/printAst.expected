@@ -1,0 +1,138 @@
+nodes
+| file://:0:0:0:0 | (Arguments) | semmle.label | (Arguments) |
+| file://:0:0:0:0 | (Parameters) | semmle.label | (Parameters) |
+| tst.ts:1:1:1:22 | [DeclStmt] const Dec = ... | semmle.label | [DeclStmt] const Dec = ... |
+| tst.ts:1:1:1:22 | [DeclStmt] const Dec = ... | semmle.order | 1 |
+| tst.ts:1:7:1:9 | [VarDecl] Dec | semmle.label | [VarDecl] Dec |
+| tst.ts:1:7:1:21 | [VariableDeclarator] Dec: any = null | semmle.label | [VariableDeclarator] Dec: any = null |
+| tst.ts:1:12:1:14 | [KeywordTypeExpr] any | semmle.label | [KeywordTypeExpr] any |
+| tst.ts:1:18:1:21 | [Literal] null | semmle.label | [Literal] null |
+| tst.ts:3:1:3:6 | [Decorator] @Dec() | semmle.label | [Decorator] @Dec() |
+| tst.ts:3:2:3:4 | [VarRef] Dec | semmle.label | [VarRef] Dec |
+| tst.ts:3:2:3:6 | [CallExpr] Dec() | semmle.label | [CallExpr] Dec() |
+| tst.ts:4:1:8:1 | [ExportDeclaration] export ... id {} } | semmle.label | [ExportDeclaration] export ... id {} } |
+| tst.ts:4:1:8:1 | [ExportDeclaration] export ... id {} } | semmle.order | 2 |
+| tst.ts:4:8:8:1 | [ClassDefinition,TypeDefinition] class O ... id {} } | semmle.label | [ClassDefinition,TypeDefinition] class O ... id {} } |
+| tst.ts:4:14:4:30 | [VarDecl] OperatorResolvers | semmle.label | [VarDecl] OperatorResolvers |
+| tst.ts:4:32:4:31 | [BlockStmt] {} | semmle.label | [BlockStmt] {} |
+| tst.ts:4:32:4:31 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.label | [ClassInitializedMember,ConstructorDefinition] constructor() {} |
+| tst.ts:4:32:4:31 | [FunctionExpr] () {} | semmle.label | [FunctionExpr] () {} |
+| tst.ts:4:32:4:31 | [Label] constructor | semmle.label | [Label] constructor |
+| tst.ts:5:3:5:8 | [Decorator] @Dec() | semmle.label | [Decorator] @Dec() |
+| tst.ts:5:4:5:6 | [VarRef] Dec | semmle.label | [VarRef] Dec |
+| tst.ts:5:4:5:8 | [CallExpr] Dec() | semmle.label | [CallExpr] Dec() |
+| tst.ts:6:3:6:8 | [Decorator] @Dec() | semmle.label | [Decorator] @Dec() |
+| tst.ts:6:4:6:6 | [VarRef] Dec | semmle.label | [VarRef] Dec |
+| tst.ts:6:4:6:8 | [CallExpr] Dec() | semmle.label | [CallExpr] Dec() |
+| tst.ts:7:3:7:11 | [Label] operators | semmle.label | [Label] operators |
+| tst.ts:7:3:7:22 | [ClassInitializedMember,MethodDefinition] operators(): void {} | semmle.label | [ClassInitializedMember,MethodDefinition] operators(): void {} |
+| tst.ts:7:3:7:22 | [FunctionExpr] operators(): void {} | semmle.label | [FunctionExpr] operators(): void {} |
+| tst.ts:7:16:7:19 | [KeywordTypeExpr] void | semmle.label | [KeywordTypeExpr] void |
+| tst.ts:7:21:7:22 | [BlockStmt] {} | semmle.label | [BlockStmt] {} |
+| tst.ts:10:1:10:41 | [DeclStmt] const createMethodDecorator = ... | semmle.label | [DeclStmt] const createMethodDecorator = ... |
+| tst.ts:10:1:10:41 | [DeclStmt] const createMethodDecorator = ... | semmle.order | 3 |
+| tst.ts:10:7:10:27 | [VarDecl] createMethodDecorator | semmle.label | [VarDecl] createMethodDecorator |
+| tst.ts:10:7:10:40 | [VariableDeclarator] createM ... = null | semmle.label | [VariableDeclarator] createM ... = null |
+| tst.ts:10:31:10:33 | [KeywordTypeExpr] any | semmle.label | [KeywordTypeExpr] any |
+| tst.ts:10:37:10:40 | [Literal] null | semmle.label | [Literal] null |
+| tst.ts:12:1:12:21 | [VarRef] createMethodDecorator | semmle.label | [VarRef] createMethodDecorator |
+| tst.ts:12:1:14:2 | [CallExpr] createM ... { }) | semmle.label | [CallExpr] createM ... { }) |
+| tst.ts:12:1:14:3 | [ExprStmt] createM ... }); | semmle.label | [ExprStmt] createM ... }); |
+| tst.ts:12:1:14:3 | [ExprStmt] createM ... }); | semmle.order | 4 |
+| tst.ts:12:23:14:1 | [ArrowFunctionExpr] ({ args ... { } | semmle.label | [ArrowFunctionExpr] ({ args ... { } |
+| tst.ts:12:24:12:40 | [ObjectPattern,Parameter] { args, context } | semmle.label | [ObjectPattern,Parameter] { args, context } |
+| tst.ts:12:26:12:29 | [Label] args | semmle.label | [Label] args |
+| tst.ts:12:26:12:29 | [PropertyPattern] args | semmle.label | [PropertyPattern] args |
+| tst.ts:12:26:12:29 | [VarDecl] args | semmle.label | [VarDecl] args |
+| tst.ts:12:32:12:38 | [Label] context | semmle.label | [Label] context |
+| tst.ts:12:32:12:38 | [PropertyPattern] context | semmle.label | [PropertyPattern] context |
+| tst.ts:12:32:12:38 | [VarDecl] context | semmle.label | [VarDecl] context |
+| tst.ts:12:43:12:46 | [SimpleParameter] next | semmle.label | [SimpleParameter] next |
+| tst.ts:12:52:14:1 | [BlockStmt] { } | semmle.label | [BlockStmt] { } |
+edges
+| file://:0:0:0:0 | (Arguments) | tst.ts:12:23:14:1 | [ArrowFunctionExpr] ({ args ... { } | semmle.label | 0 |
+| file://:0:0:0:0 | (Arguments) | tst.ts:12:23:14:1 | [ArrowFunctionExpr] ({ args ... { } | semmle.order | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:12:24:12:40 | [ObjectPattern,Parameter] { args, context } | semmle.label | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:12:24:12:40 | [ObjectPattern,Parameter] { args, context } | semmle.order | 0 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:12:43:12:46 | [SimpleParameter] next | semmle.label | 1 |
+| file://:0:0:0:0 | (Parameters) | tst.ts:12:43:12:46 | [SimpleParameter] next | semmle.order | 1 |
+| tst.ts:1:1:1:22 | [DeclStmt] const Dec = ... | tst.ts:1:7:1:21 | [VariableDeclarator] Dec: any = null | semmle.label | 1 |
+| tst.ts:1:1:1:22 | [DeclStmt] const Dec = ... | tst.ts:1:7:1:21 | [VariableDeclarator] Dec: any = null | semmle.order | 1 |
+| tst.ts:1:7:1:21 | [VariableDeclarator] Dec: any = null | tst.ts:1:7:1:9 | [VarDecl] Dec | semmle.label | 1 |
+| tst.ts:1:7:1:21 | [VariableDeclarator] Dec: any = null | tst.ts:1:7:1:9 | [VarDecl] Dec | semmle.order | 1 |
+| tst.ts:1:7:1:21 | [VariableDeclarator] Dec: any = null | tst.ts:1:12:1:14 | [KeywordTypeExpr] any | semmle.label | 2 |
+| tst.ts:1:7:1:21 | [VariableDeclarator] Dec: any = null | tst.ts:1:12:1:14 | [KeywordTypeExpr] any | semmle.order | 2 |
+| tst.ts:1:7:1:21 | [VariableDeclarator] Dec: any = null | tst.ts:1:18:1:21 | [Literal] null | semmle.label | 3 |
+| tst.ts:1:7:1:21 | [VariableDeclarator] Dec: any = null | tst.ts:1:18:1:21 | [Literal] null | semmle.order | 3 |
+| tst.ts:3:1:3:6 | [Decorator] @Dec() | tst.ts:3:2:3:6 | [CallExpr] Dec() | semmle.label | 1 |
+| tst.ts:3:1:3:6 | [Decorator] @Dec() | tst.ts:3:2:3:6 | [CallExpr] Dec() | semmle.order | 1 |
+| tst.ts:3:2:3:6 | [CallExpr] Dec() | tst.ts:3:2:3:4 | [VarRef] Dec | semmle.label | 0 |
+| tst.ts:3:2:3:6 | [CallExpr] Dec() | tst.ts:3:2:3:4 | [VarRef] Dec | semmle.order | 0 |
+| tst.ts:4:1:8:1 | [ExportDeclaration] export ... id {} } | tst.ts:4:8:8:1 | [ClassDefinition,TypeDefinition] class O ... id {} } | semmle.label | 1 |
+| tst.ts:4:1:8:1 | [ExportDeclaration] export ... id {} } | tst.ts:4:8:8:1 | [ClassDefinition,TypeDefinition] class O ... id {} } | semmle.order | 1 |
+| tst.ts:4:8:8:1 | [ClassDefinition,TypeDefinition] class O ... id {} } | tst.ts:3:1:3:6 | [Decorator] @Dec() | semmle.label | 1 |
+| tst.ts:4:8:8:1 | [ClassDefinition,TypeDefinition] class O ... id {} } | tst.ts:3:1:3:6 | [Decorator] @Dec() | semmle.order | 1 |
+| tst.ts:4:8:8:1 | [ClassDefinition,TypeDefinition] class O ... id {} } | tst.ts:4:14:4:30 | [VarDecl] OperatorResolvers | semmle.label | 2 |
+| tst.ts:4:8:8:1 | [ClassDefinition,TypeDefinition] class O ... id {} } | tst.ts:4:14:4:30 | [VarDecl] OperatorResolvers | semmle.order | 2 |
+| tst.ts:4:8:8:1 | [ClassDefinition,TypeDefinition] class O ... id {} } | tst.ts:4:32:4:31 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.label | 3 |
+| tst.ts:4:8:8:1 | [ClassDefinition,TypeDefinition] class O ... id {} } | tst.ts:4:32:4:31 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | semmle.order | 3 |
+| tst.ts:4:8:8:1 | [ClassDefinition,TypeDefinition] class O ... id {} } | tst.ts:7:3:7:22 | [ClassInitializedMember,MethodDefinition] operators(): void {} | semmle.label | 4 |
+| tst.ts:4:8:8:1 | [ClassDefinition,TypeDefinition] class O ... id {} } | tst.ts:7:3:7:22 | [ClassInitializedMember,MethodDefinition] operators(): void {} | semmle.order | 4 |
+| tst.ts:4:32:4:31 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:4:32:4:31 | [FunctionExpr] () {} | semmle.label | 2 |
+| tst.ts:4:32:4:31 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:4:32:4:31 | [FunctionExpr] () {} | semmle.order | 2 |
+| tst.ts:4:32:4:31 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:4:32:4:31 | [Label] constructor | semmle.label | 1 |
+| tst.ts:4:32:4:31 | [ClassInitializedMember,ConstructorDefinition] constructor() {} | tst.ts:4:32:4:31 | [Label] constructor | semmle.order | 1 |
+| tst.ts:4:32:4:31 | [FunctionExpr] () {} | tst.ts:4:32:4:31 | [BlockStmt] {} | semmle.label | 5 |
+| tst.ts:4:32:4:31 | [FunctionExpr] () {} | tst.ts:4:32:4:31 | [BlockStmt] {} | semmle.order | 5 |
+| tst.ts:5:3:5:8 | [Decorator] @Dec() | tst.ts:5:4:5:8 | [CallExpr] Dec() | semmle.label | 1 |
+| tst.ts:5:3:5:8 | [Decorator] @Dec() | tst.ts:5:4:5:8 | [CallExpr] Dec() | semmle.order | 1 |
+| tst.ts:5:4:5:8 | [CallExpr] Dec() | tst.ts:5:4:5:6 | [VarRef] Dec | semmle.label | 0 |
+| tst.ts:5:4:5:8 | [CallExpr] Dec() | tst.ts:5:4:5:6 | [VarRef] Dec | semmle.order | 0 |
+| tst.ts:6:3:6:8 | [Decorator] @Dec() | tst.ts:6:4:6:8 | [CallExpr] Dec() | semmle.label | 1 |
+| tst.ts:6:3:6:8 | [Decorator] @Dec() | tst.ts:6:4:6:8 | [CallExpr] Dec() | semmle.order | 1 |
+| tst.ts:6:4:6:8 | [CallExpr] Dec() | tst.ts:6:4:6:6 | [VarRef] Dec | semmle.label | 0 |
+| tst.ts:6:4:6:8 | [CallExpr] Dec() | tst.ts:6:4:6:6 | [VarRef] Dec | semmle.order | 0 |
+| tst.ts:7:3:7:22 | [ClassInitializedMember,MethodDefinition] operators(): void {} | tst.ts:5:3:5:8 | [Decorator] @Dec() | semmle.label | 1 |
+| tst.ts:7:3:7:22 | [ClassInitializedMember,MethodDefinition] operators(): void {} | tst.ts:5:3:5:8 | [Decorator] @Dec() | semmle.order | 1 |
+| tst.ts:7:3:7:22 | [ClassInitializedMember,MethodDefinition] operators(): void {} | tst.ts:6:3:6:8 | [Decorator] @Dec() | semmle.label | 2 |
+| tst.ts:7:3:7:22 | [ClassInitializedMember,MethodDefinition] operators(): void {} | tst.ts:6:3:6:8 | [Decorator] @Dec() | semmle.order | 2 |
+| tst.ts:7:3:7:22 | [ClassInitializedMember,MethodDefinition] operators(): void {} | tst.ts:7:3:7:11 | [Label] operators | semmle.label | 3 |
+| tst.ts:7:3:7:22 | [ClassInitializedMember,MethodDefinition] operators(): void {} | tst.ts:7:3:7:11 | [Label] operators | semmle.order | 3 |
+| tst.ts:7:3:7:22 | [ClassInitializedMember,MethodDefinition] operators(): void {} | tst.ts:7:3:7:22 | [FunctionExpr] operators(): void {} | semmle.label | 4 |
+| tst.ts:7:3:7:22 | [ClassInitializedMember,MethodDefinition] operators(): void {} | tst.ts:7:3:7:22 | [FunctionExpr] operators(): void {} | semmle.order | 4 |
+| tst.ts:7:3:7:22 | [FunctionExpr] operators(): void {} | tst.ts:7:16:7:19 | [KeywordTypeExpr] void | semmle.label | 4 |
+| tst.ts:7:3:7:22 | [FunctionExpr] operators(): void {} | tst.ts:7:16:7:19 | [KeywordTypeExpr] void | semmle.order | 4 |
+| tst.ts:7:3:7:22 | [FunctionExpr] operators(): void {} | tst.ts:7:21:7:22 | [BlockStmt] {} | semmle.label | 5 |
+| tst.ts:7:3:7:22 | [FunctionExpr] operators(): void {} | tst.ts:7:21:7:22 | [BlockStmt] {} | semmle.order | 5 |
+| tst.ts:10:1:10:41 | [DeclStmt] const createMethodDecorator = ... | tst.ts:10:7:10:40 | [VariableDeclarator] createM ... = null | semmle.label | 1 |
+| tst.ts:10:1:10:41 | [DeclStmt] const createMethodDecorator = ... | tst.ts:10:7:10:40 | [VariableDeclarator] createM ... = null | semmle.order | 1 |
+| tst.ts:10:7:10:40 | [VariableDeclarator] createM ... = null | tst.ts:10:7:10:27 | [VarDecl] createMethodDecorator | semmle.label | 1 |
+| tst.ts:10:7:10:40 | [VariableDeclarator] createM ... = null | tst.ts:10:7:10:27 | [VarDecl] createMethodDecorator | semmle.order | 1 |
+| tst.ts:10:7:10:40 | [VariableDeclarator] createM ... = null | tst.ts:10:31:10:33 | [KeywordTypeExpr] any | semmle.label | 2 |
+| tst.ts:10:7:10:40 | [VariableDeclarator] createM ... = null | tst.ts:10:31:10:33 | [KeywordTypeExpr] any | semmle.order | 2 |
+| tst.ts:10:7:10:40 | [VariableDeclarator] createM ... = null | tst.ts:10:37:10:40 | [Literal] null | semmle.label | 3 |
+| tst.ts:10:7:10:40 | [VariableDeclarator] createM ... = null | tst.ts:10:37:10:40 | [Literal] null | semmle.order | 3 |
+| tst.ts:12:1:14:2 | [CallExpr] createM ... { }) | file://:0:0:0:0 | (Arguments) | semmle.label | 1 |
+| tst.ts:12:1:14:2 | [CallExpr] createM ... { }) | file://:0:0:0:0 | (Arguments) | semmle.order | 1 |
+| tst.ts:12:1:14:2 | [CallExpr] createM ... { }) | tst.ts:12:1:12:21 | [VarRef] createMethodDecorator | semmle.label | 0 |
+| tst.ts:12:1:14:2 | [CallExpr] createM ... { }) | tst.ts:12:1:12:21 | [VarRef] createMethodDecorator | semmle.order | 0 |
+| tst.ts:12:1:14:3 | [ExprStmt] createM ... }); | tst.ts:12:1:14:2 | [CallExpr] createM ... { }) | semmle.label | 1 |
+| tst.ts:12:1:14:3 | [ExprStmt] createM ... }); | tst.ts:12:1:14:2 | [CallExpr] createM ... { }) | semmle.order | 1 |
+| tst.ts:12:23:14:1 | [ArrowFunctionExpr] ({ args ... { } | file://:0:0:0:0 | (Parameters) | semmle.label | 1 |
+| tst.ts:12:23:14:1 | [ArrowFunctionExpr] ({ args ... { } | file://:0:0:0:0 | (Parameters) | semmle.order | 1 |
+| tst.ts:12:23:14:1 | [ArrowFunctionExpr] ({ args ... { } | tst.ts:12:52:14:1 | [BlockStmt] { } | semmle.label | 5 |
+| tst.ts:12:23:14:1 | [ArrowFunctionExpr] ({ args ... { } | tst.ts:12:52:14:1 | [BlockStmt] { } | semmle.order | 5 |
+| tst.ts:12:24:12:40 | [ObjectPattern,Parameter] { args, context } | tst.ts:12:26:12:29 | [PropertyPattern] args | semmle.label | 1 |
+| tst.ts:12:24:12:40 | [ObjectPattern,Parameter] { args, context } | tst.ts:12:26:12:29 | [PropertyPattern] args | semmle.order | 1 |
+| tst.ts:12:24:12:40 | [ObjectPattern,Parameter] { args, context } | tst.ts:12:32:12:38 | [PropertyPattern] context | semmle.label | 2 |
+| tst.ts:12:24:12:40 | [ObjectPattern,Parameter] { args, context } | tst.ts:12:32:12:38 | [PropertyPattern] context | semmle.order | 2 |
+| tst.ts:12:26:12:29 | [PropertyPattern] args | tst.ts:12:26:12:29 | [Label] args | semmle.label | 1 |
+| tst.ts:12:26:12:29 | [PropertyPattern] args | tst.ts:12:26:12:29 | [Label] args | semmle.order | 1 |
+| tst.ts:12:26:12:29 | [PropertyPattern] args | tst.ts:12:26:12:29 | [VarDecl] args | semmle.label | 2 |
+| tst.ts:12:26:12:29 | [PropertyPattern] args | tst.ts:12:26:12:29 | [VarDecl] args | semmle.order | 2 |
+| tst.ts:12:32:12:38 | [PropertyPattern] context | tst.ts:12:32:12:38 | [Label] context | semmle.label | 1 |
+| tst.ts:12:32:12:38 | [PropertyPattern] context | tst.ts:12:32:12:38 | [Label] context | semmle.order | 1 |
+| tst.ts:12:32:12:38 | [PropertyPattern] context | tst.ts:12:32:12:38 | [VarDecl] context | semmle.label | 2 |
+| tst.ts:12:32:12:38 | [PropertyPattern] context | tst.ts:12:32:12:38 | [VarDecl] context | semmle.order | 2 |
+graphProperties
+| semmle.graphKind | tree |

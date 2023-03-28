@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extExperimentalSourceModel
+      extensible: experimentalSourceModel
     data:
       - ["com.jfinal.core", "Controller", True, "get", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]
       - ["com.jfinal.core", "Controller", True, "getBoolean", "", "", "ReturnValue", "remote", "manual", "file-path-injection"]

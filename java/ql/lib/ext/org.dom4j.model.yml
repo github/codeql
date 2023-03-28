@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.dom4j", "DocumentFactory", True, "createPattern", "", "", "Argument[0]", "xpath", "manual"]
       - ["org.dom4j", "DocumentFactory", True, "createXPath", "", "", "Argument[0]", "xpath", "manual"]

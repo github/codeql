@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["freemarker.template", "Template", True, "Template", "(String,Reader)", "", "Argument[1]", "ssti", "manual"]
       - ["freemarker.template", "Template", True, "Template", "(String,Reader,Configuration)", "", "Argument[1]", "ssti", "manual"]

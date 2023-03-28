@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["groovy.lang", "GroovyClassLoader", False, "parseClass", "(GroovyCodeSource)", "", "Argument[0]", "groovy", "manual"]
       - ["groovy.lang", "GroovyClassLoader", False, "parseClass", "(GroovyCodeSource,boolean)", "", "Argument[0]", "groovy", "manual"]

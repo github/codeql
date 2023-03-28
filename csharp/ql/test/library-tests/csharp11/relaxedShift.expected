@@ -1,0 +1,8 @@
+userdefinedoperators
+| RelaxedShift.cs:3:45:3:46 | << | LeftShiftOperator | RelaxedShift.cs:1:18:1:56 | IShiftOperators<Number,String,Number> |
+| RelaxedShift.cs:5:45:5:46 | >> | RightShiftOperator | RelaxedShift.cs:1:18:1:56 | IShiftOperators<Number,String,Number> |
+| RelaxedShift.cs:7:45:7:47 | >>> | UnsignedRightShiftOperator | RelaxedShift.cs:1:18:1:56 | IShiftOperators<Number,String,Number> |
+binaryoperatorcalls
+| RelaxedShift.cs:24:19:24:28 | call to operator << | RelaxedShift.cs:12:35:12:36 | << | RelaxedShift.cs:24:19:24:21 | access to local variable n11 | RelaxedShift.cs:24:26:24:28 | "1" |
+| RelaxedShift.cs:27:19:27:28 | call to operator >> | RelaxedShift.cs:14:35:14:36 | >> | RelaxedShift.cs:27:19:27:21 | access to local variable n21 | RelaxedShift.cs:27:26:27:28 | "2" |
+| RelaxedShift.cs:30:19:30:29 | call to operator >>> | RelaxedShift.cs:16:35:16:37 | >>> | RelaxedShift.cs:30:19:30:21 | access to local variable n31 | RelaxedShift.cs:30:27:30:29 | "3" |

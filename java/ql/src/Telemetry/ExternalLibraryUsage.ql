@@ -14,8 +14,7 @@ private predicate getRelevantUsages(string jarname, int usages) {
     strictcount(Call c, ExternalApi a |
       c.getCallee().getSourceDeclaration() = a and
       not c.getFile() instanceof GeneratedFile and
-      a.jarContainer() = jarname and
-      not a.isUninteresting()
+      a.jarContainer() = jarname
     )
 }
 

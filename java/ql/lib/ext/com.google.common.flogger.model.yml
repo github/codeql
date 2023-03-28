@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["com.google.common.flogger", "LoggingApi", True, "log", "", "", "Argument[0]", "logging", "manual"]
       - ["com.google.common.flogger", "LoggingApi", True, "log", "(String,Object)", "", "Argument[1]", "logging", "manual"]

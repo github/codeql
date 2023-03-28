@@ -282,16 +282,45 @@ func test_optionals(y: Int?) {
     sink(arg: y != nil ? y! : source()) // $ flow=282
 
     if let z = x {
-        sink(arg: z) // $ MISSING: flow=259
+        sink(arg: z) // $ flow=259
     }
     if let z = y {
         sink(arg: z)
     }
-    if let z = x?.signum() { // $ MISSING: flow=259
-        sink(arg: z)
+
+    if let z = x?.signum() {
+        sink(arg: z) // $ flow=259
     }
     if let z = y?.signum() {
         sink(arg: z)
+    }
+
+    guard let z1 = x else { return }
+    guard let z2 = y else { return }
+    sink(arg: z1) // $ flow=259
+    sink(arg: z2)
+
+    sink(arg: x!.signum()) // $ flow=259
+    sink(arg: y!.signum())
+
+    if case .some(let z) = x {
+        sink(arg: z) // $ flow=259
+    }
+    if case .some(let z) = y {
+        sink(arg: z)
+    }
+
+    switch x {
+    case .some(let z):
+        sink(arg: z) // $ MISSING: flow=259
+    case .none:
+        ()
+    }
+    switch y {
+    case .some(let z):
+        sink(arg: z)
+    case .none:
+        ()
     }
 }
 
@@ -303,7 +332,7 @@ func testTuples() {
 
     sink(arg: t1)
     sink(arg: t1.0)
-    sink(arg: t1.1) // $ flow=302
+    sink(arg: t1.1) // $ flow=331
 
     t1.1 = 2
 
@@ -314,7 +343,7 @@ func testTuples() {
     t1.0 = source()
 
     sink(arg: t1)
-    sink(arg: t1.0) // $ flow=314
+    sink(arg: t1.0) // $ flow=343
     sink(arg: t1.1)
 }
 
@@ -324,14 +353,163 @@ func testTuples2() {
     let (a, b, c) = t1
 
     sink(arg: t1)
-    sink(arg: t1.x) // $ flow=322
-    sink(arg: t1.y) // $ flow=322
+    sink(arg: t1.x) // $ flow=351
+    sink(arg: t1.y) // $ flow=351
     sink(arg: t1.z)
     sink(arg: t2)
-    sink(arg: t2.x) // $ flow=322
-    sink(arg: t2.y) // $ flow=322
+    sink(arg: t2.x) // $ flow=351
+    sink(arg: t2.y) // $ flow=351
     sink(arg: t2.z)
-    sink(arg: a) // $ MISSING: flow=322
-    sink(arg: b) // $ MISSING: flow=322
+    sink(arg: a) // $ MISSING: flow=351
+    sink(arg: b) // $ MISSING: flow=351
     sink(arg: c)
+}
+
+enum MyEnum {
+    case myNone
+    case mySingle(Int)
+    case myPair(Int, Int)
+}
+
+func testEnums() {
+    let a : MyEnum = .myNone
+
+    switch a {
+    case .myNone:
+        ()
+    case .mySingle(let a):
+        sink(arg: a)
+    case .myPair(let a, let b):
+        sink(arg: a)
+        sink(arg: b)
+    }
+
+    if case .mySingle(let x) = a {
+        sink(arg: x)
+    }
+    if case .myPair(let x, let y) = a {
+        sink(arg: x)
+        sink(arg: y)
+    }
+
+    let b : MyEnum = .mySingle(source())
+
+    switch b {
+    case .myNone:
+        ()
+    case .mySingle(let a):
+        sink(arg: a) // $ MISSING: flow=395
+    case .myPair(let a, let b):
+        sink(arg: a)
+        sink(arg: b)
+    }
+
+    if case .mySingle(let x) = a {
+        sink(arg: x) // $ MISSING: flow=395
+    }
+    if case .myPair(let x, let y) = a {
+        sink(arg: x)
+        sink(arg: y)
+    }
+
+    let c = MyEnum.myPair(0, source())
+
+    switch c {
+    case .myNone:
+        ()
+    case .mySingle(let a):
+        sink(arg: a)
+    case .myPair(let a, let b):
+        sink(arg: a)
+        sink(arg: b) // $ MISSING: flow=415
+    }
+
+    if case .mySingle(let x) = a {
+        sink(arg: x)
+    }
+    if case .myPair(let x, let y) = a {
+        sink(arg: x)
+        sink(arg: y) // $ MISSING: flow=415
+    }
+}
+
+func source2() -> (Int, Int)? { return nil }
+
+func testOptionals2(y: Int?) {
+    let x = optionalSource()
+
+    if let a = x, let b = y {
+        sink(arg: a) // $ flow=259
+        sink(arg: b)
+    }
+
+    let tuple1 = (x, y)
+    switch tuple1 {
+    case (.some(let a), .some(let b)):
+        sink(arg: a) // $ MISSING: flow=259
+        sink(arg: b)
+    default:
+        ()
+    }
+
+    if let (x, y) = source2() {
+        sink(arg: x) // (taint but not data flow)
+        sink(arg: y) // (taint but not data flow)
+    }
+}
+
+class C {
+    var x: Int?
+}
+
+func testOptionalPropertyAccess(y: Int?) {
+    let x = optionalSource()
+    let cx = C()
+    cx.x = x
+    let cy = C()
+    cy.x = y
+
+    guard let z1 = cx.x else { return }
+    sink(arg: z1) // $ flow=259
+    guard let z2 = cy.x else { return }
+    sink(arg: z2)
+}
+
+func testIdentityArithmetic() {
+  sink(arg: +source()) // $ flow=479
+  sink(arg: (source())) // $ flow=480
+}
+
+func sink(str: String) {}
+
+func source3() -> String { return "" }
+
+class MyClass {
+    var str: String
+    init(s: String) {
+      str = s
+    }
+}
+
+extension MyClass {
+    convenience init(contentsOfFile: String) {
+      self.init(s: source3()) 
+      sink(str: str) // $ flow=496
+    }
+}
+
+func extensionInits(path: String) {
+  sink(str: MyClass(s: source3()).str) // $ flow=502
+  sink(str: MyClass(contentsOfFile: path).str) // $ flow=496
+}
+
+class InoutConstructorClass {
+  init(_ n : inout Int) { n = source() }
+}
+
+func sink(arg: InoutConstructorClass) {}
+
+func inoutConstructor() {
+  var n = 0
+  sink(arg: InoutConstructorClass(&n))
 }

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["groovy.util", "Eval", False, "me", "(String)", "", "Argument[0]", "groovy", "manual"]
       - ["groovy.util", "Eval", False, "me", "(String,Object,String)", "", "Argument[2]", "groovy", "manual"]

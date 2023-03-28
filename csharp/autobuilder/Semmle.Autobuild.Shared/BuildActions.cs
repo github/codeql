@@ -7,14 +7,30 @@ using System.Xml;
 using System.Net.Http;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading.Tasks;
+using System.Runtime.InteropServices;
 
 namespace Semmle.Autobuild.Shared
 {
+    public delegate void BuildOutputHandler(string? data);
+
     /// <summary>
     /// Wrapper around system calls so that the build scripts can be unit-tested.
     /// </summary>
     public interface IBuildActions
     {
+
+        /// <summary>
+        /// Runs a process, captures its output, and provides it asynchronously.
+        /// </summary>
+        /// <param name="exe">The exe to run.</param>
+        /// <param name="args">The other command line arguments.</param>
+        /// <param name="workingDirectory">The working directory (<code>null</code> for current directory).</param>
+        /// <param name="env">Additional environment variables.</param>
+        /// <param name="onOutput">A handler for stdout output.</param>
+        /// <param name="onError">A handler for stderr output.</param>
+        /// <returns>The process exit code.</returns>
+        int RunProcess(string exe, string args, string? workingDirectory, IDictionary<string, string>? env, BuildOutputHandler onOutput, BuildOutputHandler onError);
+
         /// <summary>
         /// Runs a process and captures its output.
         /// </summary>
@@ -99,6 +115,18 @@ namespace Semmle.Autobuild.Shared
         bool IsWindows();
 
         /// <summary>
+        /// Gets a value indicating whether we are running on macOS.
+        /// </summary>
+        /// <returns>True if we are running on macOS.</returns>
+        bool IsMacOs();
+
+        /// <summary>
+        /// Gets a value indicating whether we are running on arm.
+        /// </summary>
+        /// <returns>True if we are running on arm.</returns>
+        bool IsArm();
+
+        /// <summary>
         /// Combine path segments, Path.Combine().
         /// </summary>
         /// <param name="parts">The parts of the path.</param>
@@ -139,6 +167,17 @@ namespace Semmle.Autobuild.Shared
         /// Downloads the resource with the specified URI to a local file.
         /// </summary>
         void DownloadFile(string address, string fileName);
+
+        /// <summary>
+        /// Creates an <see cref="IDiagnosticsWriter" /> for the given <paramref name="filename" />.
+        /// </summary>
+        /// <param name="filename">
+        /// The path suggesting where the diagnostics should be written to.
+        /// </param>
+        /// <returns>
+        /// A <see cref="IDiagnosticsWriter" /> to which diagnostic entries can be added.
+        /// </returns>
+        IDiagnosticsWriter CreateDiagnosticsWriter(string filename);
     }
 
     /// <summary>
@@ -160,13 +199,29 @@ namespace Semmle.Autobuild.Shared
             if (workingDirectory is not null)
                 pi.WorkingDirectory = workingDirectory;
 
-            // Environment variables can only be used when not redirecting stdout
-            if (!redirectStandardOutput)
-            {
-                if (environment is not null)
-                    environment.ForEach(kvp => pi.Environment[kvp.Key] = kvp.Value);
-            }
+            environment?.ForEach(kvp => pi.Environment[kvp.Key] = kvp.Value);
+
             return pi;
+        }
+
+        int IBuildActions.RunProcess(string exe, string args, string? workingDirectory, System.Collections.Generic.IDictionary<string, string>? env, BuildOutputHandler onOutput, BuildOutputHandler onError)
+        {
+            var pi = GetProcessStartInfo(exe, args, workingDirectory, env, true);
+            using var p = new Process
+            {
+                StartInfo = pi
+            };
+            p.StartInfo.RedirectStandardError = true;
+            p.OutputDataReceived += new DataReceivedEventHandler((sender, e) => onOutput(e.Data));
+            p.ErrorDataReceived += new DataReceivedEventHandler((sender, e) => onError(e.Data));
+
+            p.Start();
+
+            p.BeginErrorReadLine();
+            p.BeginOutputReadLine();
+
+            p.WaitForExit();
+            return p.ExitCode;
         }
 
         int IBuildActions.RunProcess(string cmd, string args, string? workingDirectory, IDictionary<string, string>? environment)
@@ -203,6 +258,12 @@ namespace Semmle.Autobuild.Shared
 
         bool IBuildActions.IsWindows() => Win32.IsWindows();
 
+        bool IBuildActions.IsMacOs() => RuntimeInformation.IsOSPlatform(OSPlatform.OSX);
+
+        bool IBuildActions.IsArm() =>
+            RuntimeInformation.ProcessArchitecture == Architecture.Arm64 ||
+            RuntimeInformation.ProcessArchitecture == Architecture.Arm;
+
         string IBuildActions.PathCombine(params string[] parts) => Path.Combine(parts);
 
         void IBuildActions.WriteAllText(string filename, string contents) => File.WriteAllText(filename, contents);
@@ -233,6 +294,8 @@ namespace Semmle.Autobuild.Shared
 
         public void DownloadFile(string address, string fileName) =>
             DownloadFileAsync(address, fileName).Wait();
+
+        public IDiagnosticsWriter CreateDiagnosticsWriter(string filename) => new DiagnosticsStream(filename);
 
         public static IBuildActions Instance { get; } = new SystemBuildActions();
     }

@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["ServiceStack", "IOneWayClient", True, "SendAllOneWay", "(System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1].Element", "remote", "manual"]
       - ["ServiceStack", "IOneWayClient", True, "SendOneWay", "(System.Object)", "", "Argument[0]", "remote", "manual"]
@@ -80,7 +80,7 @@ extensions:
       - ["ServiceStack", "ServiceClientBase", True, "Put", "(System.Object)", "", "Argument[0]", "remote", "manual"]
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["ServiceStack", "HttpResult", False, "HttpResult", "(System.Byte[],System.String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["ServiceStack", "HttpResult", False, "HttpResult", "(System.IO.Stream,System.String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]

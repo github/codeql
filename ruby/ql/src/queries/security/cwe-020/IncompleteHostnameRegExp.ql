@@ -11,6 +11,6 @@
  *       external/cwe/cwe-020
  */
 
-import HostnameRegexpShared
+private import codeql.ruby.security.regexp.HostnameRegexp as HostnameRegxp
 
-query predicate problems = incompleteHostnameRegExp/4;
+query predicate problems = HostnameRegxp::incompleteHostnameRegExp/4;

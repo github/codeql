@@ -1,7 +1,10 @@
 edges
 | file://:0:0:0:0 | [summary param] this in signum() :  | file://:0:0:0:0 | [summary] to write: return (return) in signum() :  |
 | file://:0:0:0:0 | self [a, x] :  | file://:0:0:0:0 | .a [x] :  |
+| file://:0:0:0:0 | self [str] :  | file://:0:0:0:0 | .str :  |
 | file://:0:0:0:0 | self [x] :  | file://:0:0:0:0 | .x :  |
+| file://:0:0:0:0 | self [x] :  | file://:0:0:0:0 | .x :  |
+| file://:0:0:0:0 | value :  | file://:0:0:0:0 | [post] self [x] :  |
 | file://:0:0:0:0 | value :  | file://:0:0:0:0 | [post] self [x] :  |
 | test.swift:6:19:6:26 | call to source() :  | test.swift:7:15:7:15 | t1 |
 | test.swift:6:19:6:26 | call to source() :  | test.swift:9:15:9:15 | t1 |
@@ -100,6 +103,8 @@ edges
 | test.swift:225:14:225:21 | call to source() :  | test.swift:235:13:235:15 | .source_value |
 | test.swift:225:14:225:21 | call to source() :  | test.swift:238:13:238:15 | .source_value |
 | test.swift:259:12:259:19 | call to source() :  | test.swift:263:13:263:28 | call to optionalSource() :  |
+| test.swift:259:12:259:19 | call to source() :  | test.swift:439:13:439:28 | call to optionalSource() :  |
+| test.swift:259:12:259:19 | call to source() :  | test.swift:466:13:466:28 | call to optionalSource() :  |
 | test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:265:15:265:15 | x |
 | test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:267:15:267:16 | ...! |
 | test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:271:15:271:16 | ...? :  |
@@ -107,6 +112,11 @@ edges
 | test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:275:15:275:27 | ... ??(_:_:) ... |
 | test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:279:15:279:31 | ... ? ... : ... |
 | test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:280:15:280:38 | ... ? ... : ... |
+| test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:285:19:285:19 | z |
+| test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:291:16:291:17 | ...? :  |
+| test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:300:15:300:15 | z1 |
+| test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:303:15:303:16 | ...! :  |
+| test.swift:263:13:263:28 | call to optionalSource() :  | test.swift:307:19:307:19 | z |
 | test.swift:270:15:270:22 | call to source() :  | file://:0:0:0:0 | [summary param] this in signum() :  |
 | test.swift:270:15:270:22 | call to source() :  | test.swift:270:15:270:31 | call to signum() |
 | test.swift:271:15:271:16 | ...? :  | file://:0:0:0:0 | [summary param] this in signum() :  |
@@ -114,30 +124,68 @@ edges
 | test.swift:271:15:271:25 | call to signum() :  | test.swift:271:15:271:25 | OptionalEvaluationExpr |
 | test.swift:280:31:280:38 | call to source() :  | test.swift:280:15:280:38 | ... ? ... : ... |
 | test.swift:282:31:282:38 | call to source() :  | test.swift:282:15:282:38 | ... ? ... : ... |
-| test.swift:302:14:302:26 | (...) [Tuple element at index 1] :  | test.swift:306:15:306:15 | t1 [Tuple element at index 1] :  |
-| test.swift:302:18:302:25 | call to source() :  | test.swift:302:14:302:26 | (...) [Tuple element at index 1] :  |
-| test.swift:306:15:306:15 | t1 [Tuple element at index 1] :  | test.swift:306:15:306:18 | .1 |
-| test.swift:314:5:314:5 | [post] t1 [Tuple element at index 0] :  | test.swift:317:15:317:15 | t1 [Tuple element at index 0] :  |
-| test.swift:314:12:314:19 | call to source() :  | test.swift:314:5:314:5 | [post] t1 [Tuple element at index 0] :  |
-| test.swift:317:15:317:15 | t1 [Tuple element at index 0] :  | test.swift:317:15:317:18 | .0 |
-| test.swift:322:14:322:45 | (...) [Tuple element at index 0] :  | test.swift:327:15:327:15 | t1 [Tuple element at index 0] :  |
-| test.swift:322:14:322:45 | (...) [Tuple element at index 0] :  | test.swift:331:15:331:15 | t2 [Tuple element at index 0] :  |
-| test.swift:322:14:322:45 | (...) [Tuple element at index 1] :  | test.swift:328:15:328:15 | t1 [Tuple element at index 1] :  |
-| test.swift:322:14:322:45 | (...) [Tuple element at index 1] :  | test.swift:332:15:332:15 | t2 [Tuple element at index 1] :  |
-| test.swift:322:18:322:25 | call to source() :  | test.swift:322:14:322:45 | (...) [Tuple element at index 0] :  |
-| test.swift:322:31:322:38 | call to source() :  | test.swift:322:14:322:45 | (...) [Tuple element at index 1] :  |
-| test.swift:327:15:327:15 | t1 [Tuple element at index 0] :  | test.swift:327:15:327:18 | .0 |
-| test.swift:328:15:328:15 | t1 [Tuple element at index 1] :  | test.swift:328:15:328:18 | .1 |
-| test.swift:331:15:331:15 | t2 [Tuple element at index 0] :  | test.swift:331:15:331:18 | .0 |
-| test.swift:332:15:332:15 | t2 [Tuple element at index 1] :  | test.swift:332:15:332:18 | .1 |
+| test.swift:291:16:291:17 | ...? :  | file://:0:0:0:0 | [summary param] this in signum() :  |
+| test.swift:291:16:291:17 | ...? :  | test.swift:291:16:291:26 | call to signum() :  |
+| test.swift:291:16:291:26 | call to signum() :  | test.swift:292:19:292:19 | z |
+| test.swift:303:15:303:16 | ...! :  | file://:0:0:0:0 | [summary param] this in signum() :  |
+| test.swift:303:15:303:16 | ...! :  | test.swift:303:15:303:25 | call to signum() |
+| test.swift:331:14:331:26 | (...) [Tuple element at index 1] :  | test.swift:335:15:335:15 | t1 [Tuple element at index 1] :  |
+| test.swift:331:18:331:25 | call to source() :  | test.swift:331:14:331:26 | (...) [Tuple element at index 1] :  |
+| test.swift:335:15:335:15 | t1 [Tuple element at index 1] :  | test.swift:335:15:335:18 | .1 |
+| test.swift:343:5:343:5 | [post] t1 [Tuple element at index 0] :  | test.swift:346:15:346:15 | t1 [Tuple element at index 0] :  |
+| test.swift:343:12:343:19 | call to source() :  | test.swift:343:5:343:5 | [post] t1 [Tuple element at index 0] :  |
+| test.swift:346:15:346:15 | t1 [Tuple element at index 0] :  | test.swift:346:15:346:18 | .0 |
+| test.swift:351:14:351:45 | (...) [Tuple element at index 0] :  | test.swift:356:15:356:15 | t1 [Tuple element at index 0] :  |
+| test.swift:351:14:351:45 | (...) [Tuple element at index 0] :  | test.swift:360:15:360:15 | t2 [Tuple element at index 0] :  |
+| test.swift:351:14:351:45 | (...) [Tuple element at index 1] :  | test.swift:357:15:357:15 | t1 [Tuple element at index 1] :  |
+| test.swift:351:14:351:45 | (...) [Tuple element at index 1] :  | test.swift:361:15:361:15 | t2 [Tuple element at index 1] :  |
+| test.swift:351:18:351:25 | call to source() :  | test.swift:351:14:351:45 | (...) [Tuple element at index 0] :  |
+| test.swift:351:31:351:38 | call to source() :  | test.swift:351:14:351:45 | (...) [Tuple element at index 1] :  |
+| test.swift:356:15:356:15 | t1 [Tuple element at index 0] :  | test.swift:356:15:356:18 | .0 |
+| test.swift:357:15:357:15 | t1 [Tuple element at index 1] :  | test.swift:357:15:357:18 | .1 |
+| test.swift:360:15:360:15 | t2 [Tuple element at index 0] :  | test.swift:360:15:360:18 | .0 |
+| test.swift:361:15:361:15 | t2 [Tuple element at index 1] :  | test.swift:361:15:361:18 | .1 |
+| test.swift:439:13:439:28 | call to optionalSource() :  | test.swift:442:19:442:19 | a |
+| test.swift:462:9:462:9 | self [x] :  | file://:0:0:0:0 | self [x] :  |
+| test.swift:462:9:462:9 | value :  | file://:0:0:0:0 | value :  |
+| test.swift:466:13:466:28 | call to optionalSource() :  | test.swift:468:12:468:12 | x :  |
+| test.swift:468:5:468:5 | [post] cx [x] :  | test.swift:472:20:472:20 | cx [x] :  |
+| test.swift:468:12:468:12 | x :  | test.swift:462:9:462:9 | value :  |
+| test.swift:468:12:468:12 | x :  | test.swift:468:5:468:5 | [post] cx [x] :  |
+| test.swift:472:20:472:20 | cx [x] :  | test.swift:462:9:462:9 | self [x] :  |
+| test.swift:472:20:472:20 | cx [x] :  | test.swift:472:20:472:23 | .x :  |
+| test.swift:472:20:472:23 | .x :  | test.swift:473:15:473:15 | z1 |
+| test.swift:479:14:479:21 | call to source() :  | test.swift:479:13:479:21 | call to +(_:) |
+| test.swift:488:9:488:9 | self [str] :  | file://:0:0:0:0 | self [str] :  |
+| test.swift:489:10:489:13 | s :  | test.swift:490:13:490:13 | s :  |
+| test.swift:490:7:490:7 | [post] self [str] :  | test.swift:489:5:491:5 | self[return] [str] :  |
+| test.swift:490:13:490:13 | s :  | test.swift:490:7:490:7 | [post] self [str] :  |
+| test.swift:495:17:498:5 | self[return] [str] :  | test.swift:503:13:503:41 | call to Self.init(contentsOfFile:) [str] :  |
+| test.swift:496:7:496:7 | [post] self [str] :  | test.swift:495:17:498:5 | self[return] [str] :  |
+| test.swift:496:7:496:7 | [post] self [str] :  | test.swift:497:17:497:17 | self [str] :  |
+| test.swift:496:20:496:28 | call to source3() :  | test.swift:489:10:489:13 | s :  |
+| test.swift:496:20:496:28 | call to source3() :  | test.swift:496:7:496:7 | [post] self [str] :  |
+| test.swift:497:17:497:17 | self [str] :  | test.swift:497:17:497:17 | .str |
+| test.swift:502:13:502:33 | call to MyClass.init(s:) [str] :  | test.swift:488:9:488:9 | self [str] :  |
+| test.swift:502:13:502:33 | call to MyClass.init(s:) [str] :  | test.swift:502:13:502:35 | .str |
+| test.swift:502:24:502:32 | call to source3() :  | test.swift:489:10:489:13 | s :  |
+| test.swift:502:24:502:32 | call to source3() :  | test.swift:502:13:502:33 | call to MyClass.init(s:) [str] :  |
+| test.swift:503:13:503:41 | call to Self.init(contentsOfFile:) [str] :  | test.swift:488:9:488:9 | self [str] :  |
+| test.swift:503:13:503:41 | call to Self.init(contentsOfFile:) [str] :  | test.swift:503:13:503:43 | .str |
 nodes
 | file://:0:0:0:0 | .a [x] :  | semmle.label | .a [x] :  |
+| file://:0:0:0:0 | .str :  | semmle.label | .str :  |
 | file://:0:0:0:0 | .x :  | semmle.label | .x :  |
+| file://:0:0:0:0 | .x :  | semmle.label | .x :  |
+| file://:0:0:0:0 | [post] self [x] :  | semmle.label | [post] self [x] :  |
 | file://:0:0:0:0 | [post] self [x] :  | semmle.label | [post] self [x] :  |
 | file://:0:0:0:0 | [summary param] this in signum() :  | semmle.label | [summary param] this in signum() :  |
 | file://:0:0:0:0 | [summary] to write: return (return) in signum() :  | semmle.label | [summary] to write: return (return) in signum() :  |
 | file://:0:0:0:0 | self [a, x] :  | semmle.label | self [a, x] :  |
+| file://:0:0:0:0 | self [str] :  | semmle.label | self [str] :  |
 | file://:0:0:0:0 | self [x] :  | semmle.label | self [x] :  |
+| file://:0:0:0:0 | self [x] :  | semmle.label | self [x] :  |
+| file://:0:0:0:0 | value :  | semmle.label | value :  |
 | file://:0:0:0:0 | value :  | semmle.label | value :  |
 | test.swift:6:19:6:26 | call to source() :  | semmle.label | call to source() :  |
 | test.swift:7:15:7:15 | t1 | semmle.label | t1 |
@@ -258,26 +306,62 @@ nodes
 | test.swift:280:31:280:38 | call to source() :  | semmle.label | call to source() :  |
 | test.swift:282:15:282:38 | ... ? ... : ... | semmle.label | ... ? ... : ... |
 | test.swift:282:31:282:38 | call to source() :  | semmle.label | call to source() :  |
-| test.swift:302:14:302:26 | (...) [Tuple element at index 1] :  | semmle.label | (...) [Tuple element at index 1] :  |
-| test.swift:302:18:302:25 | call to source() :  | semmle.label | call to source() :  |
-| test.swift:306:15:306:15 | t1 [Tuple element at index 1] :  | semmle.label | t1 [Tuple element at index 1] :  |
-| test.swift:306:15:306:18 | .1 | semmle.label | .1 |
-| test.swift:314:5:314:5 | [post] t1 [Tuple element at index 0] :  | semmle.label | [post] t1 [Tuple element at index 0] :  |
-| test.swift:314:12:314:19 | call to source() :  | semmle.label | call to source() :  |
-| test.swift:317:15:317:15 | t1 [Tuple element at index 0] :  | semmle.label | t1 [Tuple element at index 0] :  |
-| test.swift:317:15:317:18 | .0 | semmle.label | .0 |
-| test.swift:322:14:322:45 | (...) [Tuple element at index 0] :  | semmle.label | (...) [Tuple element at index 0] :  |
-| test.swift:322:14:322:45 | (...) [Tuple element at index 1] :  | semmle.label | (...) [Tuple element at index 1] :  |
-| test.swift:322:18:322:25 | call to source() :  | semmle.label | call to source() :  |
-| test.swift:322:31:322:38 | call to source() :  | semmle.label | call to source() :  |
-| test.swift:327:15:327:15 | t1 [Tuple element at index 0] :  | semmle.label | t1 [Tuple element at index 0] :  |
-| test.swift:327:15:327:18 | .0 | semmle.label | .0 |
-| test.swift:328:15:328:15 | t1 [Tuple element at index 1] :  | semmle.label | t1 [Tuple element at index 1] :  |
-| test.swift:328:15:328:18 | .1 | semmle.label | .1 |
-| test.swift:331:15:331:15 | t2 [Tuple element at index 0] :  | semmle.label | t2 [Tuple element at index 0] :  |
-| test.swift:331:15:331:18 | .0 | semmle.label | .0 |
-| test.swift:332:15:332:15 | t2 [Tuple element at index 1] :  | semmle.label | t2 [Tuple element at index 1] :  |
-| test.swift:332:15:332:18 | .1 | semmle.label | .1 |
+| test.swift:285:19:285:19 | z | semmle.label | z |
+| test.swift:291:16:291:17 | ...? :  | semmle.label | ...? :  |
+| test.swift:291:16:291:26 | call to signum() :  | semmle.label | call to signum() :  |
+| test.swift:292:19:292:19 | z | semmle.label | z |
+| test.swift:300:15:300:15 | z1 | semmle.label | z1 |
+| test.swift:303:15:303:16 | ...! :  | semmle.label | ...! :  |
+| test.swift:303:15:303:25 | call to signum() | semmle.label | call to signum() |
+| test.swift:307:19:307:19 | z | semmle.label | z |
+| test.swift:331:14:331:26 | (...) [Tuple element at index 1] :  | semmle.label | (...) [Tuple element at index 1] :  |
+| test.swift:331:18:331:25 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:335:15:335:15 | t1 [Tuple element at index 1] :  | semmle.label | t1 [Tuple element at index 1] :  |
+| test.swift:335:15:335:18 | .1 | semmle.label | .1 |
+| test.swift:343:5:343:5 | [post] t1 [Tuple element at index 0] :  | semmle.label | [post] t1 [Tuple element at index 0] :  |
+| test.swift:343:12:343:19 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:346:15:346:15 | t1 [Tuple element at index 0] :  | semmle.label | t1 [Tuple element at index 0] :  |
+| test.swift:346:15:346:18 | .0 | semmle.label | .0 |
+| test.swift:351:14:351:45 | (...) [Tuple element at index 0] :  | semmle.label | (...) [Tuple element at index 0] :  |
+| test.swift:351:14:351:45 | (...) [Tuple element at index 1] :  | semmle.label | (...) [Tuple element at index 1] :  |
+| test.swift:351:18:351:25 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:351:31:351:38 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:356:15:356:15 | t1 [Tuple element at index 0] :  | semmle.label | t1 [Tuple element at index 0] :  |
+| test.swift:356:15:356:18 | .0 | semmle.label | .0 |
+| test.swift:357:15:357:15 | t1 [Tuple element at index 1] :  | semmle.label | t1 [Tuple element at index 1] :  |
+| test.swift:357:15:357:18 | .1 | semmle.label | .1 |
+| test.swift:360:15:360:15 | t2 [Tuple element at index 0] :  | semmle.label | t2 [Tuple element at index 0] :  |
+| test.swift:360:15:360:18 | .0 | semmle.label | .0 |
+| test.swift:361:15:361:15 | t2 [Tuple element at index 1] :  | semmle.label | t2 [Tuple element at index 1] :  |
+| test.swift:361:15:361:18 | .1 | semmle.label | .1 |
+| test.swift:439:13:439:28 | call to optionalSource() :  | semmle.label | call to optionalSource() :  |
+| test.swift:442:19:442:19 | a | semmle.label | a |
+| test.swift:462:9:462:9 | self [x] :  | semmle.label | self [x] :  |
+| test.swift:462:9:462:9 | value :  | semmle.label | value :  |
+| test.swift:466:13:466:28 | call to optionalSource() :  | semmle.label | call to optionalSource() :  |
+| test.swift:468:5:468:5 | [post] cx [x] :  | semmle.label | [post] cx [x] :  |
+| test.swift:468:12:468:12 | x :  | semmle.label | x :  |
+| test.swift:472:20:472:20 | cx [x] :  | semmle.label | cx [x] :  |
+| test.swift:472:20:472:23 | .x :  | semmle.label | .x :  |
+| test.swift:473:15:473:15 | z1 | semmle.label | z1 |
+| test.swift:479:13:479:21 | call to +(_:) | semmle.label | call to +(_:) |
+| test.swift:479:14:479:21 | call to source() :  | semmle.label | call to source() :  |
+| test.swift:480:14:480:21 | call to source() | semmle.label | call to source() |
+| test.swift:488:9:488:9 | self [str] :  | semmle.label | self [str] :  |
+| test.swift:489:5:491:5 | self[return] [str] :  | semmle.label | self[return] [str] :  |
+| test.swift:489:10:489:13 | s :  | semmle.label | s :  |
+| test.swift:490:7:490:7 | [post] self [str] :  | semmle.label | [post] self [str] :  |
+| test.swift:490:13:490:13 | s :  | semmle.label | s :  |
+| test.swift:495:17:498:5 | self[return] [str] :  | semmle.label | self[return] [str] :  |
+| test.swift:496:7:496:7 | [post] self [str] :  | semmle.label | [post] self [str] :  |
+| test.swift:496:20:496:28 | call to source3() :  | semmle.label | call to source3() :  |
+| test.swift:497:17:497:17 | .str | semmle.label | .str |
+| test.swift:497:17:497:17 | self [str] :  | semmle.label | self [str] :  |
+| test.swift:502:13:502:33 | call to MyClass.init(s:) [str] :  | semmle.label | call to MyClass.init(s:) [str] :  |
+| test.swift:502:13:502:35 | .str | semmle.label | .str |
+| test.swift:502:24:502:32 | call to source3() :  | semmle.label | call to source3() :  |
+| test.swift:503:13:503:41 | call to Self.init(contentsOfFile:) [str] :  | semmle.label | call to Self.init(contentsOfFile:) [str] :  |
+| test.swift:503:13:503:43 | .str | semmle.label | .str |
 subpaths
 | test.swift:75:21:75:22 | &... :  | test.swift:65:16:65:28 | arg1 :  | test.swift:65:1:70:1 | arg2[return] :  | test.swift:75:31:75:32 | [post] &... :  |
 | test.swift:114:19:114:19 | arg :  | test.swift:109:9:109:14 | arg :  | test.swift:110:12:110:12 | arg :  | test.swift:114:12:114:22 | call to ... :  |
@@ -306,6 +390,14 @@ subpaths
 | test.swift:219:13:219:15 | .a [x] :  | test.swift:163:7:163:7 | self [x] :  | file://:0:0:0:0 | .x :  | test.swift:219:13:219:17 | .x |
 | test.swift:270:15:270:22 | call to source() :  | file://:0:0:0:0 | [summary param] this in signum() :  | file://:0:0:0:0 | [summary] to write: return (return) in signum() :  | test.swift:270:15:270:31 | call to signum() |
 | test.swift:271:15:271:16 | ...? :  | file://:0:0:0:0 | [summary param] this in signum() :  | file://:0:0:0:0 | [summary] to write: return (return) in signum() :  | test.swift:271:15:271:25 | call to signum() :  |
+| test.swift:291:16:291:17 | ...? :  | file://:0:0:0:0 | [summary param] this in signum() :  | file://:0:0:0:0 | [summary] to write: return (return) in signum() :  | test.swift:291:16:291:26 | call to signum() :  |
+| test.swift:303:15:303:16 | ...! :  | file://:0:0:0:0 | [summary param] this in signum() :  | file://:0:0:0:0 | [summary] to write: return (return) in signum() :  | test.swift:303:15:303:25 | call to signum() |
+| test.swift:468:12:468:12 | x :  | test.swift:462:9:462:9 | value :  | file://:0:0:0:0 | [post] self [x] :  | test.swift:468:5:468:5 | [post] cx [x] :  |
+| test.swift:472:20:472:20 | cx [x] :  | test.swift:462:9:462:9 | self [x] :  | file://:0:0:0:0 | .x :  | test.swift:472:20:472:23 | .x :  |
+| test.swift:496:20:496:28 | call to source3() :  | test.swift:489:10:489:13 | s :  | test.swift:490:7:490:7 | [post] self [str] :  | test.swift:496:7:496:7 | [post] self [str] :  |
+| test.swift:502:13:502:33 | call to MyClass.init(s:) [str] :  | test.swift:488:9:488:9 | self [str] :  | file://:0:0:0:0 | .str :  | test.swift:502:13:502:35 | .str |
+| test.swift:502:24:502:32 | call to source3() :  | test.swift:489:10:489:13 | s :  | test.swift:489:5:491:5 | self[return] [str] :  | test.swift:502:13:502:33 | call to MyClass.init(s:) [str] :  |
+| test.swift:503:13:503:41 | call to Self.init(contentsOfFile:) [str] :  | test.swift:488:9:488:9 | self [str] :  | file://:0:0:0:0 | .str :  | test.swift:503:13:503:43 | .str |
 #select
 | test.swift:7:15:7:15 | t1 | test.swift:6:19:6:26 | call to source() :  | test.swift:7:15:7:15 | t1 | result |
 | test.swift:9:15:9:15 | t1 | test.swift:6:19:6:26 | call to source() :  | test.swift:9:15:9:15 | t1 | result |
@@ -345,9 +437,21 @@ subpaths
 | test.swift:280:15:280:38 | ... ? ... : ... | test.swift:259:12:259:19 | call to source() :  | test.swift:280:15:280:38 | ... ? ... : ... | result |
 | test.swift:280:15:280:38 | ... ? ... : ... | test.swift:280:31:280:38 | call to source() :  | test.swift:280:15:280:38 | ... ? ... : ... | result |
 | test.swift:282:15:282:38 | ... ? ... : ... | test.swift:282:31:282:38 | call to source() :  | test.swift:282:15:282:38 | ... ? ... : ... | result |
-| test.swift:306:15:306:18 | .1 | test.swift:302:18:302:25 | call to source() :  | test.swift:306:15:306:18 | .1 | result |
-| test.swift:317:15:317:18 | .0 | test.swift:314:12:314:19 | call to source() :  | test.swift:317:15:317:18 | .0 | result |
-| test.swift:327:15:327:18 | .0 | test.swift:322:18:322:25 | call to source() :  | test.swift:327:15:327:18 | .0 | result |
-| test.swift:328:15:328:18 | .1 | test.swift:322:31:322:38 | call to source() :  | test.swift:328:15:328:18 | .1 | result |
-| test.swift:331:15:331:18 | .0 | test.swift:322:18:322:25 | call to source() :  | test.swift:331:15:331:18 | .0 | result |
-| test.swift:332:15:332:18 | .1 | test.swift:322:31:322:38 | call to source() :  | test.swift:332:15:332:18 | .1 | result |
+| test.swift:285:19:285:19 | z | test.swift:259:12:259:19 | call to source() :  | test.swift:285:19:285:19 | z | result |
+| test.swift:292:19:292:19 | z | test.swift:259:12:259:19 | call to source() :  | test.swift:292:19:292:19 | z | result |
+| test.swift:300:15:300:15 | z1 | test.swift:259:12:259:19 | call to source() :  | test.swift:300:15:300:15 | z1 | result |
+| test.swift:303:15:303:25 | call to signum() | test.swift:259:12:259:19 | call to source() :  | test.swift:303:15:303:25 | call to signum() | result |
+| test.swift:307:19:307:19 | z | test.swift:259:12:259:19 | call to source() :  | test.swift:307:19:307:19 | z | result |
+| test.swift:335:15:335:18 | .1 | test.swift:331:18:331:25 | call to source() :  | test.swift:335:15:335:18 | .1 | result |
+| test.swift:346:15:346:18 | .0 | test.swift:343:12:343:19 | call to source() :  | test.swift:346:15:346:18 | .0 | result |
+| test.swift:356:15:356:18 | .0 | test.swift:351:18:351:25 | call to source() :  | test.swift:356:15:356:18 | .0 | result |
+| test.swift:357:15:357:18 | .1 | test.swift:351:31:351:38 | call to source() :  | test.swift:357:15:357:18 | .1 | result |
+| test.swift:360:15:360:18 | .0 | test.swift:351:18:351:25 | call to source() :  | test.swift:360:15:360:18 | .0 | result |
+| test.swift:361:15:361:18 | .1 | test.swift:351:31:351:38 | call to source() :  | test.swift:361:15:361:18 | .1 | result |
+| test.swift:442:19:442:19 | a | test.swift:259:12:259:19 | call to source() :  | test.swift:442:19:442:19 | a | result |
+| test.swift:473:15:473:15 | z1 | test.swift:259:12:259:19 | call to source() :  | test.swift:473:15:473:15 | z1 | result |
+| test.swift:479:13:479:21 | call to +(_:) | test.swift:479:14:479:21 | call to source() :  | test.swift:479:13:479:21 | call to +(_:) | result |
+| test.swift:480:14:480:21 | call to source() | test.swift:480:14:480:21 | call to source() | test.swift:480:14:480:21 | call to source() | result |
+| test.swift:497:17:497:17 | .str | test.swift:496:20:496:28 | call to source3() :  | test.swift:497:17:497:17 | .str | result |
+| test.swift:502:13:502:35 | .str | test.swift:502:24:502:32 | call to source3() :  | test.swift:502:13:502:35 | .str | result |
+| test.swift:503:13:503:43 | .str | test.swift:496:20:496:28 | call to source3() :  | test.swift:503:13:503:43 | .str | result |

@@ -1,0 +1,108 @@
+closures.swift:
+#    1| [ConcreteFuncDecl] bar()
+#    1|     InterfaceType = () -> String
+#    1|   getBody(): [BraceStmt] { ... }
+#    2|     getElement(0): [ReturnStmt] return ...
+#    2|       getResult(): [StringLiteralExpr] Hello world!
+#    5| [ConcreteFuncDecl] foo()
+#    5|     InterfaceType = () -> ()
+#    5|   getBody(): [BraceStmt] { ... }
+#    6|     getElement(0): [PatternBindingDecl] var ... = ...
+#    6|       getInit(0): [IntegerLiteralExpr] 123
+#    6|       getPattern(0): [NamedPattern] y
+#    6|     getElement(1): [ConcreteVarDecl] y
+#    6|         Type = Int
+#    7|     getElement(2): [CallExpr] call to ...
+#    7|       getFunction(): [CaptureListExpr] { ... }
+#    7|         getBindingDecl(0): [PatternBindingDecl] var ... = ...
+#    7|           getInit(0): [CallExpr] call to bar()
+#    7|             getFunction(): [DeclRefExpr] bar()
+#    7|           getPattern(0): [NamedPattern] x
+#    7|         getClosureBody(): [ClosureExpr] { ... }
+#    7|           getBody(): [BraceStmt] { ... }
+#    8|             getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#    8|               getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#    8|               getArgument(0): [Argument] : [...]
+#    8|                 getExpr(): [VarargExpansionExpr] [...]
+#    8|                   getSubExpr(): [ArrayExpr] [...]
+#    8|                     getElement(0): [DeclRefExpr] x
+#    8|                     getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#    8|               getArgument(1): [Argument] separator: default separator
+#    8|                 getExpr(): [DefaultArgumentExpr] default separator
+#    8|               getArgument(2): [Argument] terminator: default terminator
+#    8|                 getExpr(): [DefaultArgumentExpr] default terminator
+#    9|             getElement(1): [CallExpr] call to print(_:separator:terminator:)
+#    9|               getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#    9|               getArgument(0): [Argument] : [...]
+#    9|                 getExpr(): [VarargExpansionExpr] [...]
+#    9|                   getSubExpr(): [ArrayExpr] [...]
+#    9|                     getElement(0): [DeclRefExpr] y
+#    9|                     getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#    9|               getArgument(1): [Argument] separator: default separator
+#    9|                 getExpr(): [DefaultArgumentExpr] default separator
+#    9|               getArgument(2): [Argument] terminator: default terminator
+#    9|                 getExpr(): [DefaultArgumentExpr] default terminator
+#    8|           getCapture(0): [CapturedDecl] x
+#    9|           getCapture(1): [CapturedDecl] y
+#    7| [ConcreteVarDecl] x
+#    7|     Type = String
+#   12| [TopLevelCodeDecl] { ... }
+#   12|   getBody(): [BraceStmt] { ... }
+#   12|     getElement(0): [PatternBindingDecl] var ... = ...
+#   12|       getInit(0): [NilLiteralExpr] nil
+#   12|       getPattern(0): [TypedPattern] ... as ...
+#   12|         getSubPattern(): [NamedPattern] escape
+#   12|         getTypeRepr(): [TypeRepr] (() -> ())?
+#   12| [ConcreteVarDecl] escape
+#   12|     Type = (() -> ())?
+#   14| [ConcreteFuncDecl] baz()
+#   14|     InterfaceType = () -> ()
+#   14|   getBody(): [BraceStmt] { ... }
+#   15|     getElement(0): [PatternBindingDecl] var ... = ...
+#   15|       getInit(0): [IntegerLiteralExpr] 0
+#   15|       getPattern(0): [NamedPattern] x
+#   15|     getElement(1): [ConcreteVarDecl] x
+#   15|         Type = Int
+#   16|     getElement(2): [ConcreteFuncDecl] quux()
+#   16|         InterfaceType = () -> ()
+#   16|       getBody(): [BraceStmt] { ... }
+#   17|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
+#   17|           getFunction(): [MethodLookupExpr] .+=(_:_:)
+#   17|             getBase(): [TypeExpr] Int.Type
+#   17|               getTypeRepr(): [TypeRepr] Int
+#   17|             getMethodRef(): [DeclRefExpr] +=(_:_:)
+#   17|           getArgument(0): [Argument] : &...
+#   17|             getExpr(): [InOutExpr] &...
+#   17|               getSubExpr(): [DeclRefExpr] x
+#   17|           getArgument(1): [Argument] : 1
+#   17|             getExpr(): [IntegerLiteralExpr] 1
+#   18|         getElement(1): [CallExpr] call to print(_:separator:terminator:)
+#   18|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   18|           getArgument(0): [Argument] : [...]
+#   18|             getExpr(): [VarargExpansionExpr] [...]
+#   18|               getSubExpr(): [ArrayExpr] [...]
+#   18|                 getElement(0): [DeclRefExpr] x
+#   18|                 getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   18|                   getImmediateSubExpr(): [LoadExpr] (Int) ...
+#   18|           getArgument(1): [Argument] separator: default separator
+#   18|             getExpr(): [DefaultArgumentExpr] default separator
+#   18|           getArgument(2): [Argument] terminator: default terminator
+#   18|             getExpr(): [DefaultArgumentExpr] default terminator
+#   17|       getCapture(0): [CapturedDecl] x
+#   20|     getElement(3): [AssignExpr]  ... = ...
+#   20|       getDest(): [DeclRefExpr] escape
+#   20|       getSource(): [DeclRefExpr] quux()
+#   20|       getSource().getFullyConverted(): [InjectIntoOptionalExpr] ((() -> ())?) ...
+#   20|   getCapture(0): [CapturedDecl] escape
+#   23| [ConcreteFuncDecl] callEscape()
+#   23|     InterfaceType = () -> ()
+#   23|   getBody(): [BraceStmt] { ... }
+#   24|     getElement(0): [CallExpr] call to baz()
+#   24|       getFunction(): [DeclRefExpr] baz()
+#   25|     getElement(1): [OptionalEvaluationExpr] OptionalEvaluationExpr
+#   25|       getSubExpr(): [CallExpr] call to ...
+#   25|         getFunction(): [BindOptionalExpr] ...?
+#   25|           getSubExpr(): [DeclRefExpr] escape
+#   25|         getFunction().getFullyConverted(): [LoadExpr] ((() -> ())) ...
+#   25|       getSubExpr().getFullyConverted(): [InjectIntoOptionalExpr] (()?) ...
+#   25|   getCapture(0): [CapturedDecl] escape

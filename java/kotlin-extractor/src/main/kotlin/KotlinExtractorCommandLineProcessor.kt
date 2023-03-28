@@ -3,9 +3,11 @@ package com.github.codeql
 import org.jetbrains.kotlin.compiler.plugin.AbstractCliOption
 import org.jetbrains.kotlin.compiler.plugin.CliOption
 import org.jetbrains.kotlin.compiler.plugin.CommandLineProcessor
+import org.jetbrains.kotlin.compiler.plugin.ExperimentalCompilerApi
 import org.jetbrains.kotlin.config.CompilerConfiguration
 import org.jetbrains.kotlin.config.CompilerConfigurationKey
 
+@OptIn(ExperimentalCompilerApi::class)
 class KotlinExtractorCommandLineProcessor : CommandLineProcessor {
     override val pluginId = "kotlin-extractor"
 

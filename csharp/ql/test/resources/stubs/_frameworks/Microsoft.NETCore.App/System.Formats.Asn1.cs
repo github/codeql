@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `System.Formats.Asn1, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`.
 
 namespace System
 {
@@ -6,7 +7,6 @@ namespace System
     {
         namespace Asn1
         {
-            // Generated from `System.Formats.Asn1.Asn1Tag` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct Asn1Tag : System.IEquatable<System.Formats.Asn1.Asn1Tag>
             {
                 public static bool operator !=(System.Formats.Asn1.Asn1Tag left, System.Formats.Asn1.Asn1Tag right) => throw null;
@@ -44,7 +44,6 @@ namespace System
                 public static System.Formats.Asn1.Asn1Tag UtcTime;
             }
 
-            // Generated from `System.Formats.Asn1.AsnContentException` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class AsnContentException : System.Exception
             {
                 public AsnContentException() => throw null;
@@ -53,7 +52,6 @@ namespace System
                 public AsnContentException(string message, System.Exception inner) => throw null;
             }
 
-            // Generated from `System.Formats.Asn1.AsnDecoder` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public static class AsnDecoder
             {
                 public static System.Byte[] ReadBitString(System.ReadOnlySpan<System.Byte> source, System.Formats.Asn1.AsnEncodingRules ruleSet, out int unusedBitCount, out int bytesConsumed, System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
@@ -89,7 +87,6 @@ namespace System
                 public static bool TryReadUInt64(System.ReadOnlySpan<System.Byte> source, System.Formats.Asn1.AsnEncodingRules ruleSet, out System.UInt64 value, out int bytesConsumed, System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
             }
 
-            // Generated from `System.Formats.Asn1.AsnEncodingRules` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum AsnEncodingRules : int
             {
                 BER = 0,
@@ -97,7 +94,6 @@ namespace System
                 DER = 2,
             }
 
-            // Generated from `System.Formats.Asn1.AsnReader` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class AsnReader
             {
                 public AsnReader(System.ReadOnlyMemory<System.Byte> data, System.Formats.Asn1.AsnEncodingRules ruleSet, System.Formats.Asn1.AsnReaderOptions options = default(System.Formats.Asn1.AsnReaderOptions)) => throw null;
@@ -141,7 +137,6 @@ namespace System
                 public bool TryReadUInt64(out System.UInt64 value, System.Formats.Asn1.Asn1Tag? expectedTag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
             }
 
-            // Generated from `System.Formats.Asn1.AsnReaderOptions` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public struct AsnReaderOptions
             {
                 // Stub generator skipped constructor 
@@ -149,10 +144,8 @@ namespace System
                 public int UtcTimeTwoDigitYearMax { get => throw null; set => throw null; }
             }
 
-            // Generated from `System.Formats.Asn1.AsnWriter` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public class AsnWriter
             {
-                // Generated from `System.Formats.Asn1.AsnWriter+Scope` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
                 public struct Scope : System.IDisposable
                 {
                     public void Dispose() => throw null;
@@ -161,6 +154,7 @@ namespace System
 
 
                 public AsnWriter(System.Formats.Asn1.AsnEncodingRules ruleSet) => throw null;
+                public AsnWriter(System.Formats.Asn1.AsnEncodingRules ruleSet, int initialCapacity) => throw null;
                 public void CopyTo(System.Formats.Asn1.AsnWriter destination) => throw null;
                 public System.Byte[] Encode() => throw null;
                 public int Encode(System.Span<System.Byte> destination) => throw null;
@@ -200,7 +194,6 @@ namespace System
                 public void WriteUtcTime(System.DateTimeOffset value, int twoDigitYearMax, System.Formats.Asn1.Asn1Tag? tag = default(System.Formats.Asn1.Asn1Tag?)) => throw null;
             }
 
-            // Generated from `System.Formats.Asn1.TagClass` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum TagClass : int
             {
                 Application = 64,
@@ -209,7 +202,6 @@ namespace System
                 Universal = 0,
             }
 
-            // Generated from `System.Formats.Asn1.UniversalTagNumber` in `System.Formats.Asn1, Version=6.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51`
             public enum UniversalTagNumber : int
             {
                 BMPString = 30,

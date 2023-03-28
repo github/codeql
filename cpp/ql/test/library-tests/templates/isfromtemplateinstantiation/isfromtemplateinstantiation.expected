@@ -112,8 +112,6 @@
 | isfromtemplateinstantiation.cpp:93:54:93:55 | { ... } | isfromtemplateinstantiation.cpp:93:7:93:7 | AnotherTemplateClass<int>::myMethod1(MyClassEnum) |
 | isfromtemplateinstantiation.cpp:93:55:93:55 | return ... | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<int> |
 | isfromtemplateinstantiation.cpp:93:55:93:55 | return ... | isfromtemplateinstantiation.cpp:93:7:93:7 | AnotherTemplateClass<int>::myMethod1(MyClassEnum) |
-| isfromtemplateinstantiation.cpp:94:29:94:32 | definition of mce2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<int> |
-| isfromtemplateinstantiation.cpp:94:29:94:32 | definition of mce2 | isfromtemplateinstantiation.cpp:97:52:97:52 | AnotherTemplateClass<int>::myMethod2(MyClassEnum) |
 | isfromtemplateinstantiation.cpp:94:36:94:51 | MyClassEnumConst | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<int> |
 | isfromtemplateinstantiation.cpp:94:36:94:51 | MyClassEnumConst | isfromtemplateinstantiation.cpp:97:52:97:52 | AnotherTemplateClass<int>::myMethod2(MyClassEnum) |
 | isfromtemplateinstantiation.cpp:97:52:97:52 | AnotherTemplateClass<int>::myMethod2(MyClassEnum) | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<int> |
@@ -121,6 +119,8 @@
 | isfromtemplateinstantiation.cpp:97:52:97:52 | definition of myMethod2 | isfromtemplateinstantiation.cpp:97:52:97:52 | AnotherTemplateClass<int>::myMethod2(MyClassEnum) |
 | isfromtemplateinstantiation.cpp:97:74:97:77 | MyClassEnum mce2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<int> |
 | isfromtemplateinstantiation.cpp:97:74:97:77 | MyClassEnum mce2 | isfromtemplateinstantiation.cpp:97:52:97:52 | AnotherTemplateClass<int>::myMethod2(MyClassEnum) |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<int> |
+| isfromtemplateinstantiation.cpp:97:74:97:77 | definition of mce2 | isfromtemplateinstantiation.cpp:97:52:97:52 | AnotherTemplateClass<int>::myMethod2(MyClassEnum) |
 | isfromtemplateinstantiation.cpp:98:1:99:1 | { ... } | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<int> |
 | isfromtemplateinstantiation.cpp:98:1:99:1 | { ... } | isfromtemplateinstantiation.cpp:97:52:97:52 | AnotherTemplateClass<int>::myMethod2(MyClassEnum) |
 | isfromtemplateinstantiation.cpp:99:1:99:1 | return ... | isfromtemplateinstantiation.cpp:77:26:77:45 | AnotherTemplateClass<int> |

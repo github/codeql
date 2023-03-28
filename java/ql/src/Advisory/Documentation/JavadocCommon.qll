@@ -41,7 +41,7 @@ class DocuCallable extends Callable {
     this.fromSource() and
     this.isPublic() and
     // Ignore overriding methods (only require Javadoc on the root method).
-    not exists(Method root | this.(Method).overrides(root)) and
+    not this.(Method).overrides(_) and
     // Ignore getters and setters.
     not this instanceof SetterMethod and
     not this instanceof GetterMethod and

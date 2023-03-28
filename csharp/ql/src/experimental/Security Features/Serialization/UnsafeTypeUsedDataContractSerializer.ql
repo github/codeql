@@ -6,6 +6,7 @@
  * @precision medium
  * @id cs/dataset-serialization/unsafe-type-used-data-contract-serializer
  * @tags security
+ *       experimental
  */
 
 import csharp

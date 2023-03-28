@@ -3,6 +3,10 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import TestUtilities.InlineFlowTest
 
+class EnableLegacy extends EnableLegacyConfiguration {
+  EnableLegacy() { exists(this) }
+}
+
 class Conf extends TaintTracking::Configuration {
   Conf() { this = "test:AndroidExternalFlowConf" }
 

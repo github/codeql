@@ -298,3 +298,16 @@ class OnActivityResultIntentSource extends OnActivityResultIncomingIntent, Remot
 
   override string getSourceType() { result = "Android onActivityResult incoming Intent" }
 }
+
+/**
+ * A parameter of a method annotated with the `android.webkit.JavascriptInterface` annotation.
+ */
+class AndroidJavascriptInterfaceMethodParameter extends RemoteFlowSource {
+  AndroidJavascriptInterfaceMethodParameter() {
+    exists(JavascriptInterfaceMethod m | this.asParameter() = m.getAParameter())
+  }
+
+  override string getSourceType() {
+    result = "Parameter of method with JavascriptInterface annotation"
+  }
+}

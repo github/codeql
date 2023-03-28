@@ -8,6 +8,7 @@ type NUL && "%CODEQL_DIST%\codeql.exe" database index-files ^
     --include-extension=.yml ^
     --size-limit=5m ^
     --language=ql ^
+    --working-dir=. ^
     "%CODEQL_EXTRACTOR_QL_WIP_DATABASE%"
 
 exit /b %ERRORLEVEL%

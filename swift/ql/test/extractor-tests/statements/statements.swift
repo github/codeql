@@ -83,3 +83,13 @@ struct HasModifyAccessorDecl {
     }
   }
 }
+
+if #available(macOS 155, *) {
+  print(155)
+}
+
+if #unavailable(macOS 42) {
+  print(42)
+}
+
+

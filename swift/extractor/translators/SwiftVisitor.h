@@ -27,6 +27,12 @@ class SwiftVisitor : private SwiftDispatcher {
   void visit(const swift::StmtConditionElement* element) override {
     stmtTranslator.translateAndEmit(*element);
   }
+  void visit(const swift::PoundAvailableInfo* availability) override {
+    stmtTranslator.translateAndEmit(*availability);
+  }
+  void visit(const swift::AvailabilitySpec* spec) override {
+    stmtTranslator.translateAndEmit(*spec);
+  }
 
   void visit(const swift::CaseLabelItem* item) override { stmtTranslator.translateAndEmit(*item); }
   void visit(const swift::Expr* expr) override { exprTranslator.translateAndEmit(*expr); }
@@ -37,6 +43,10 @@ class SwiftVisitor : private SwiftDispatcher {
   void visit(const swift::TypeBase* type) override { typeTranslator.translateAndEmit(*type); }
   void visit(const swift::TypeRepr* typeRepr, swift::Type type) override {
     typeTranslator.translateAndEmit(*typeRepr, type);
+  }
+
+  void visit(const swift::CapturedValue* capture) override {
+    declTranslator.translateAndEmit(*capture);
   }
 
   DeclTranslator declTranslator{*this};

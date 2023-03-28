@@ -6,11 +6,12 @@
  * @problem.severity warning
  * @tags reliability
  *       security
+ *       experimental
  *       external/cwe/cwe-787
  */
 
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.security.Overflow
 
 from FunctionCall call, Function f, Parameter p, DataFlow::Node sink, PointerArithmeticOperation pao
@@ -20,8 +21,8 @@ where
   p.getUnspecifiedType().(IntegralType).isSigned() and
   call.getArgument(p.getIndex()).getUnspecifiedType().(IntegralType).isUnsigned() and
   pao.getAnOperand() = sink.asExpr() and
-  not exists(Operation a | guardedLesser(a, sink.asExpr())) and
-  not exists(Operation b | guardedGreater(b, call.getArgument(p.getIndex()))) and
+  not guardedLesser(_, sink.asExpr()) and
+  not guardedGreater(_, call.getArgument(p.getIndex())) and
   not call.getArgument(p.getIndex()).isConstant() and
   DataFlow::localFlow(DataFlow::parameterNode(p), sink) and
   p.getUnspecifiedType().getSize() < 8

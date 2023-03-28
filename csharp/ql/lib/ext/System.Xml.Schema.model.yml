@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Xml.Schema", "XmlSchemaCollection", False, "Add", "(System.Xml.Schema.XmlSchema)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Xml.Schema", "XmlSchemaCollection", False, "Add", "(System.Xml.Schema.XmlSchemaCollection)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]

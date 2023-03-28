@@ -41,22 +41,12 @@ module LogInjection {
   }
 
   /**
-   * A call to `strings.Replace` or `strings.ReplaceAll`, considered as a sanitizer
-   * for log injection.
+   * An expression that is equivalent to `strings.ReplaceAll(s, old, new)`,
+   * where `old` is a newline character, considered as a sanitizer for log
+   * injection.
    */
-  class ReplaceSanitizer extends Sanitizer {
-    ReplaceSanitizer() {
-      exists(string name, DataFlow::CallNode call |
-        this = call and
-        call.getTarget().hasQualifiedName("strings", name) and
-        call.getArgument(1).getStringValue().matches("%" + ["\r", "\n"] + "%")
-      |
-        name = "Replace" and
-        call.getArgument(3).getNumericValue() < 0
-        or
-        name = "ReplaceAll"
-      )
-    }
+  class ReplaceSanitizer extends StringOps::ReplaceAll, Sanitizer {
+    ReplaceSanitizer() { this.getReplacedString() = ["\r", "\n"] }
   }
 
   /**

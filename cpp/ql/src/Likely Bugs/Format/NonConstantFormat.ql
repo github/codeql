@@ -15,7 +15,7 @@
  *       external/cwe/cwe-134
  */
 
-import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.commons.Printf
 
 // For the following `...gettext` functions, we assume that
@@ -55,14 +55,23 @@ predicate underscoreMacro(Expr e) {
 /**
  * Holds if `t` cannot hold a character array, directly or indirectly.
  */
-predicate cannotContainString(Type t) {
-  t.getUnspecifiedType() instanceof BuiltInType
-  or
-  t.getUnspecifiedType() instanceof IntegralOrEnumType
+predicate cannotContainString(Type t, boolean isIndirect) {
+  isIndirect = false and
+  exists(Type unspecified |
+    unspecified = t.getUnspecifiedType() and
+    not unspecified instanceof UnknownType
+  |
+    unspecified instanceof BuiltInType or
+    unspecified instanceof IntegralOrEnumType
+  )
 }
 
-predicate isNonConst(DataFlow::Node node) {
-  exists(Expr e | e = node.asExpr() |
+predicate isNonConst(DataFlow::Node node, boolean isIndirect) {
+  exists(Expr e |
+    e = node.asExpr() and isIndirect = false
+    or
+    e = node.asIndirectExpr() and isIndirect = true
+  |
     exists(FunctionCall fc | fc = e |
       not (
         whitelistFunction(fc.getTarget(), _) or
@@ -106,37 +115,45 @@ predicate isNonConst(DataFlow::Node node) {
     )
   )
   or
-  node instanceof DataFlow::DefinitionByReferenceNode
+  node instanceof DataFlow::DefinitionByReferenceNode and
+  isIndirect = true
 }
 
 pragma[noinline]
-predicate isSanitizerNode(DataFlow::Node node) {
-  underscoreMacro(node.asExpr())
+predicate isBarrierNode(DataFlow::Node node) {
+  underscoreMacro([node.asExpr(), node.asIndirectExpr()])
   or
-  cannotContainString(node.getType())
+  exists(node.asExpr()) and
+  cannotContainString(node.getType(), false)
 }
 
-class NonConstFlow extends TaintTracking::Configuration {
-  NonConstFlow() { this = "NonConstFlow" }
-
-  override predicate isSource(DataFlow::Node source) {
-    isNonConst(source) and
-    not cannotContainString(source.getType())
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(FormattingFunctionCall fc | sink.asExpr() = fc.getArgument(fc.getFormatParameterIndex()))
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) { isSanitizerNode(node) }
+predicate isSinkImpl(DataFlow::Node sink, Expr formatString) {
+  [sink.asExpr(), sink.asIndirectExpr()] = formatString and
+  exists(FormattingFunctionCall fc | formatString = fc.getArgument(fc.getFormatParameterIndex()))
 }
+
+module NonConstFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(boolean isIndirect, Type t |
+      isNonConst(source, isIndirect) and
+      t = source.getType() and
+      not cannotContainString(t, isIndirect)
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
+
+  predicate isBarrier(DataFlow::Node node) { isBarrierNode(node) }
+}
+
+module NonConstFlow = TaintTracking::Global<NonConstFlowConfig>;
 
 from FormattingFunctionCall call, Expr formatString
 where
   call.getArgument(call.getFormatParameterIndex()) = formatString and
-  exists(NonConstFlow cf, DataFlow::Node source, DataFlow::Node sink |
-    cf.hasFlow(source, sink) and
-    sink.asExpr() = formatString
+  exists(DataFlow::Node sink |
+    NonConstFlow::flowTo(sink) and
+    isSinkImpl(sink, formatString)
   )
 select formatString,
   "The format string argument to " + call.getTarget().getName() +

@@ -148,6 +148,7 @@ and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://githu
    EJS, templating language
    electron, Runtime environment
    express, Server
+   Fastify, Server
    handlebars, templating language
    hapi, Server
    hogan, templating language
@@ -166,6 +167,7 @@ and the CodeQL library pack ``codeql/javascript-all`` (`changelog <https://githu
    react, HTML framework
    react native, HTML framework
    request, Network communicator
+   restify, Server
    sequelize, Database
    socket.io, Network communicator
    sqlite3, Database
@@ -221,7 +223,9 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    aioch, Database
    aiomysql, Database
    aiopg, Database
+   aiosqlite, Database
    asyncpg, Database
+   cassandra-driver, Database
    clickhouse-driver, Database
    cx_Oracle, Database
    mysql-connector-python, Database
@@ -231,9 +235,9 @@ and the CodeQL library pack ``codeql/python-all`` (`changelog <https://github.co
    oracledb, Database
    phoenixdb, Database
    psycopg2, Database
-   pyodbc, Database
    pymssql, Database
    PyMySQL, Database
+   pyodbc, Database
    sqlite3, Database
    Flask-SQLAlchemy, Database ORM
    peewee, Database ORM
@@ -274,4 +278,3 @@ and the CodeQL library pack ``codeql/ruby-all`` (`changelog <https://github.com/
    Ruby on Rails, Web framework
    rubyzip, Compression library
    typhoeus, HTTP client
-

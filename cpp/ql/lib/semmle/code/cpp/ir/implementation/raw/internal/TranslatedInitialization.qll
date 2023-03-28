@@ -298,11 +298,11 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
     opcode instanceof Opcode::Store and
     resultType = getTypeForPRValue(expr.getType())
     or
-    exists(int startIndex, int elementCount |
+    exists(int elementCount |
       // If the initializer string isn't large enough to fill the target, then
       // we have to generate another instruction sequence to store a constant
       // zero into the remainder of the array.
-      zeroInitRange(startIndex, elementCount) and
+      zeroInitRange(_, elementCount) and
       (
         // Create a constant zero whose size is the size of the remaining
         // space in the target array.
@@ -440,7 +440,8 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
 }
 
 class TranslatedConstructorInitialization extends TranslatedDirectInitialization,
-  StructorCallContext {
+  StructorCallContext
+{
   override ConstructorCall expr;
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -528,7 +529,8 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
  * explicit element in an initializer list.
  */
 class TranslatedExplicitFieldInitialization extends TranslatedFieldInitialization,
-  InitializationContext, TTranslatedExplicitFieldInitialization {
+  InitializationContext, TTranslatedExplicitFieldInitialization
+{
   Expr expr;
 
   TranslatedExplicitFieldInitialization() {
@@ -565,7 +567,8 @@ private string getZeroValue(Type type) {
  * corresponding element in the initializer list.
  */
 class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
-  TTranslatedFieldValueInitialization {
+  TTranslatedFieldValueInitialization
+{
   TranslatedFieldValueInitialization() { this = TTranslatedFieldValueInitialization(ast, field) }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -700,7 +703,8 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
  * an explicit element in an initializer list.
  */
 class TranslatedExplicitElementInitialization extends TranslatedElementInitialization,
-  TTranslatedExplicitElementInitialization, InitializationContext {
+  TTranslatedExplicitElementInitialization, InitializationContext
+{
   int elementIndex;
 
   TranslatedExplicitElementInitialization() {
@@ -737,7 +741,8 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
  * elements without corresponding elements in the initializer list.
  */
 class TranslatedElementValueInitialization extends TranslatedElementInitialization,
-  TTranslatedElementValueInitialization {
+  TTranslatedElementValueInitialization
+{
   int elementIndex;
   int elementCount;
 
@@ -881,7 +886,8 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
  * Represents a call to a delegating or base class constructor from within a constructor.
  */
 abstract class TranslatedConstructorCallFromConstructor extends TranslatedStructorCallFromStructor,
-  TTranslatedConstructorBaseInit {
+  TTranslatedConstructorBaseInit
+{
   TranslatedConstructorCallFromConstructor() { this = TTranslatedConstructorBaseInit(call) }
 }
 
@@ -917,7 +923,8 @@ class TranslatedConstructorDelegationInit extends TranslatedConstructorCallFromC
  * derived class constructor
  */
 class TranslatedConstructorBaseInit extends TranslatedConstructorCallFromConstructor,
-  TranslatedBaseStructorCall {
+  TranslatedBaseStructorCall
+{
   TranslatedConstructorBaseInit() { not call instanceof ConstructorDelegationInit }
 
   final override string toString() { result = "construct base: " + call.toString() }
@@ -934,7 +941,8 @@ TranslatedDestructorBaseDestruction getTranslatedDestructorBaseDestruction(
  * derived class destructor.
  */
 class TranslatedDestructorBaseDestruction extends TranslatedBaseStructorCall,
-  TTranslatedDestructorBaseDestruction {
+  TTranslatedDestructorBaseDestruction
+{
   TranslatedDestructorBaseDestruction() { this = TTranslatedDestructorBaseDestruction(call) }
 
   final override string toString() { result = "destroy base: " + call.toString() }

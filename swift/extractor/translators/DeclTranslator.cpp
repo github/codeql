@@ -3,7 +3,7 @@
 #include <swift/AST/GenericParamList.h>
 #include <swift/AST/ParameterList.h>
 #include "swift/extractor/infra/SwiftDiagnosticKind.h"
-#include "swift/AST/PropertyWrappers.h"
+#include <swift/AST/PropertyWrappers.h>
 
 namespace codeql {
 namespace {
@@ -265,6 +265,7 @@ std::optional<codeql::SubscriptDecl> DeclTranslator::translateSubscriptDecl(
 codeql::ExtensionDecl DeclTranslator::translateExtensionDecl(const swift::ExtensionDecl& decl) {
   auto entry = createEntry(decl);
   entry.extended_type_decl = dispatcher.fetchLabel(decl.getExtendedNominal());
+  entry.protocols = dispatcher.fetchRepeatedLabels(decl.getLocalProtocols());
   fillGenericContext(decl, entry);
   fillIterableDeclContext(decl, entry);
   return entry;
@@ -302,33 +303,7 @@ std::optional<codeql::ModuleDecl> DeclTranslator::translateModuleDecl(
 }
 
 std::string DeclTranslator::mangledName(const swift::ValueDecl& decl) {
-  // ASTMangler::mangleAnyDecl crashes when called on `ModuleDecl`
-  // TODO find a more unique string working also when different modules are compiled with the same
-  // name
-  std::ostringstream ret;
-  if (decl.getKind() == swift::DeclKind::Module) {
-    ret << static_cast<const swift::ModuleDecl&>(decl).getRealName().str().str();
-  } else if (decl.getKind() == swift::DeclKind::TypeAlias) {
-    // In cases like this (when coming from PCM)
-    //  typealias CFXMLTree = CFTree
-    //  typealias CFXMLTreeRef = CFXMLTree
-    // mangleAnyDecl mangles both CFXMLTree and CFXMLTreeRef into 'So12CFXMLTreeRefa'
-    // which is not correct and causes inconsistencies. mangleEntity makes these two distinct
-    // prefix adds a couple of special symbols, we don't necessary need them
-    ret << mangler.mangleEntity(&decl);
-  } else {
-    // prefix adds a couple of special symbols, we don't necessary need them
-    ret << mangler.mangleAnyDecl(&decl, /* prefix = */ false);
-  }
-  // there can be separate declarations (`VarDecl` or `AccessorDecl`) which are effectively the same
-  // (with equal mangled name) but come from different clang modules. This is the case for example
-  // for glibc constants like `L_SET` that appear in both `SwiftGlibc` and `CDispatch`.
-  // For the moment, we sidestep the problem by making them separate entities in the DB
-  // TODO find a more solid solution
-  if (decl.getModuleContext()->isNonSwiftModule()) {
-    ret << '_' << decl.getModuleContext()->getRealName().str().str();
-  }
-  return ret.str();
+  return mangler.mangledName(decl);
 }
 
 void DeclTranslator::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& decl,
@@ -339,6 +314,7 @@ void DeclTranslator::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl&
   entry.params = dispatcher.fetchRepeatedLabels(*decl.getParameters());
   auto self = const_cast<swift::ParamDecl* const>(decl.getImplicitSelfDecl());
   entry.self_param = dispatcher.fetchOptionalLabel(self);
+  entry.captures = dispatcher.fetchRepeatedLabels(decl.getCaptureInfo().getCaptures());
   fillValueDecl(decl, entry);
   fillGenericContext(decl, entry);
 }
@@ -359,7 +335,7 @@ void DeclTranslator::fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl&
 }
 
 void DeclTranslator::fillIterableDeclContext(const swift::IterableDeclContext& decl,
-                                             codeql::IterableDeclContext& entry) {
+                                             codeql::Decl& entry) {
   entry.members = dispatcher.fetchRepeatedLabels(decl.getAllMembers());
 }
 
@@ -442,6 +418,16 @@ codeql::MissingMemberDecl DeclTranslator::translateMissingMemberDecl(
     const swift::MissingMemberDecl& decl) {
   auto entry = createEntry(decl);
   entry.name = decl.getName().getBaseName().userFacingName().str();
+  return entry;
+}
+
+codeql::CapturedDecl DeclTranslator::translateCapturedValue(const swift::CapturedValue& capture) {
+  codeql::CapturedDecl entry{dispatcher.template assignNewLabel(capture)};
+  auto decl = capture.getDecl();
+  entry.decl = dispatcher.fetchLabel(decl);
+  entry.module = dispatcher.fetchLabel(decl->getModuleContext());
+  entry.is_direct = capture.isDirect();
+  entry.is_escaping = !capture.isNoEscape();
   return entry;
 }
 }  // namespace codeql

@@ -3,6 +3,7 @@ private import DataFlowUtil
 private import DataFlowImplCommon
 private import ContainerFlow
 private import FlowSummaryImpl as FlowSummaryImpl
+import codeql.util.Unit
 import DataFlowNodes::Private
 
 private newtype TReturnKind =
@@ -199,21 +200,17 @@ predicate expectsContent(Node n, ContentSet c) {
 }
 
 /** Gets the type of `n` used for type pruning. */
-DataFlowType getNodeType(Node n) {
-  result = n.getType()
-  or
-  result = FlowSummaryImpl::Private::summaryNodeType(n)
-}
+DataFlowType getNodeType(Node n) { result = TTodoDataFlowType() and exists(n) }
 
 /** Gets a string representation of a type returned by `getNodeType()`. */
-string ppReprType(Type t) { result = t.toString() }
+string ppReprType(DataFlowType t) { none() }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
  */
 pragma[inline]
-predicate compatibleTypes(Type t1, Type t2) {
+predicate compatibleTypes(DataFlowType t1, DataFlowType t2) {
   any() // stub implementation
 }
 
@@ -227,7 +224,14 @@ class CastNode extends ExprNode {
 
 class DataFlowExpr = Expr;
 
-class DataFlowType = Type;
+private newtype TDataFlowType =
+  TTodoDataFlowType() or
+  TTodoDataFlowType2() // Add a dummy value to prevent bad functionality-induced joins arising from a type of size 1.
+
+class DataFlowType extends TDataFlowType {
+  /** Gets a textual representation of this element. */
+  string toString() { result = "" }
+}
 
 class DataFlowLocation = Location;
 
@@ -336,15 +340,6 @@ predicate forceHighPrecision(Content c) {
   c instanceof ArrayContent or c instanceof CollectionContent
 }
 
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
-
 /**
  * Gets the `i`th argument of call `c`, where the receiver of a method call
  * counts as argument -1.
@@ -380,3 +375,19 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
 predicate allowParameterReturnInSelf(ParameterNode p) {
   FlowSummaryImpl::Private::summaryAllowParameterReturnInSelf(p)
 }
+
+/** An approximated `Content`. */
+class ContentApprox = Unit;
+
+/** Gets an approximated value for content `c`. */
+pragma[inline]
+ContentApprox getContentApprox(Content c) { any() }
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

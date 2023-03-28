@@ -57,6 +57,15 @@ private predicate exclude(string s) {
       "Parameter 1 of System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.CreateReferenceTrackingHandleInternal",
       "Parameter 2 of System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.CreateReferenceTrackingHandleInternal",
       "Parameter 2 of System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.InvokeUnhandledExceptionPropagation",
+      "Local variable 1 of method Interop.libobjc.NSOperatingSystemVersion_objc_msgSend_stret",
+      "Local variable 1 of method System.Diagnostics.Tracing.XplatEventLogger.LogEventSource",
+      "Local variable 2 of method System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.CreateReferenceTrackingHandleInternal",
+      "Local variable 3 of method System.Diagnostics.Tracing.XplatEventLogger.LogEventSource",
+      "Local variable 4 of method System.CLRConfig.GetConfigBoolValue",
+      "Local variable 4 of method System.Runtime.InteropServices.ObjectiveC.ObjectiveCMarshal.CreateReferenceTrackingHandleInternal",
+      "Local variable 5 of method System.Diagnostics.Tracing.XplatEventLogger.LogEventSource",
+      "Parameter 0 of System.Diagnostics.Tracing.XplatEventLogger.AppendByteArrayAsHexString",
+      "Parameter 1 of System.Diagnostics.Tracing.XplatEventLogger.MinimalJsonserializer"
     ]
 }
 

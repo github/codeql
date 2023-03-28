@@ -4,7 +4,9 @@ import TestUtilities.InlineFlowTest
 import semmle.code.java.security.RsaWithoutOaepQuery
 
 class HasFlowTest extends InlineFlowTest {
-  override DataFlow::Configuration getTaintFlowConfig() { result instanceof RsaWithoutOaepConfig }
+  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
 
-  override DataFlow::Configuration getValueFlowConfig() { none() }
+  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
+    RsaWithoutOaepFlow::flow(src, sink)
+  }
 }

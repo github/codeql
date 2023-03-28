@@ -5,15 +5,21 @@ cached
 module Synth {
   cached
   newtype TElement =
+    TAvailabilityInfo(Raw::AvailabilityInfo id) { constructAvailabilityInfo(id) } or
     TComment(Raw::Comment id) { constructComment(id) } or
     TDbFile(Raw::DbFile id) { constructDbFile(id) } or
     TDbLocation(Raw::DbLocation id) { constructDbLocation(id) } or
     TDiagnostics(Raw::Diagnostics id) { constructDiagnostics(id) } or
+    TOtherAvailabilitySpec(Raw::OtherAvailabilitySpec id) { constructOtherAvailabilitySpec(id) } or
+    TPlatformVersionAvailabilitySpec(Raw::PlatformVersionAvailabilitySpec id) {
+      constructPlatformVersionAvailabilitySpec(id)
+    } or
     TUnknownFile() or
     TUnknownLocation() or
     TUnspecifiedElement(Raw::UnspecifiedElement id) { constructUnspecifiedElement(id) } or
     TAccessorDecl(Raw::AccessorDecl id) { constructAccessorDecl(id) } or
     TAssociatedTypeDecl(Raw::AssociatedTypeDecl id) { constructAssociatedTypeDecl(id) } or
+    TCapturedDecl(Raw::CapturedDecl id) { constructCapturedDecl(id) } or
     TClassDecl(Raw::ClassDecl id) { constructClassDecl(id) } or
     TConcreteFuncDecl(Raw::ConcreteFuncDecl id) { constructConcreteFuncDecl(id) } or
     TConcreteVarDecl(Raw::ConcreteVarDecl id) { constructConcreteVarDecl(id) } or
@@ -144,7 +150,7 @@ module Synth {
     } or
     TMemberRefExpr(Raw::MemberRefExpr id) { constructMemberRefExpr(id) } or
     TMetatypeConversionExpr(Raw::MetatypeConversionExpr id) { constructMetatypeConversionExpr(id) } or
-    TMethodRefExpr(Raw::DotSyntaxCallExpr id) { constructMethodRefExpr(id) } or
+    TMethodLookupExpr(Raw::SelfApplyExpr id) { constructMethodLookupExpr(id) } or
     TNilLiteralExpr(Raw::NilLiteralExpr id) { constructNilLiteralExpr(id) } or
     TObjCSelectorExpr(Raw::ObjCSelectorExpr id) { constructObjCSelectorExpr(id) } or
     TObjectLiteralExpr(Raw::ObjectLiteralExpr id) { constructObjectLiteralExpr(id) } or
@@ -303,8 +309,10 @@ module Synth {
     TWeakStorageType(Raw::WeakStorageType id) { constructWeakStorageType(id) }
 
   class TAstNode =
-    TCaseLabelItem or TConditionElement or TDecl or TExpr or TPattern or TStmt or TStmtCondition or
-        TTypeRepr;
+    TAvailabilityInfo or TAvailabilitySpec or TCaseLabelItem or TConditionElement or TDecl or
+        TExpr or TPattern or TStmt or TStmtCondition or TTypeRepr;
+
+  class TAvailabilitySpec = TOtherAvailabilitySpec or TPlatformVersionAvailabilitySpec;
 
   class TCallable = TAbstractClosureExpr or TAbstractFunctionDecl;
 
@@ -327,9 +335,9 @@ module Synth {
   class TAbstractTypeParamDecl = TAssociatedTypeDecl or TGenericTypeParamDecl;
 
   class TDecl =
-    TEnumCaseDecl or TExtensionDecl or TIfConfigDecl or TImportDecl or TMissingMemberDecl or
-        TOperatorDecl or TPatternBindingDecl or TPoundDiagnosticDecl or TPrecedenceGroupDecl or
-        TTopLevelCodeDecl or TValueDecl;
+    TCapturedDecl or TEnumCaseDecl or TExtensionDecl or TIfConfigDecl or TImportDecl or
+        TMissingMemberDecl or TOperatorDecl or TPatternBindingDecl or TPoundDiagnosticDecl or
+        TPrecedenceGroupDecl or TTopLevelCodeDecl or TValueDecl;
 
   class TFuncDecl = TAccessorDecl or TConcreteFuncDecl;
 
@@ -337,8 +345,6 @@ module Synth {
     TAbstractFunctionDecl or TExtensionDecl or TGenericTypeDecl or TSubscriptDecl;
 
   class TGenericTypeDecl = TNominalTypeDecl or TOpaqueTypeDecl or TTypeAliasDecl;
-
-  class TIterableDeclContext = TExtensionDecl or TNominalTypeDecl;
 
   class TNominalTypeDecl = TClassDecl or TEnumDecl or TProtocolDecl or TStructDecl;
 
@@ -404,7 +410,7 @@ module Synth {
     TBuiltinLiteralExpr or TInterpolatedStringLiteralExpr or TNilLiteralExpr or
         TObjectLiteralExpr or TRegexLiteralExpr;
 
-  class TLookupExpr = TDynamicLookupExpr or TMemberRefExpr or TMethodRefExpr or TSubscriptExpr;
+  class TLookupExpr = TDynamicLookupExpr or TMemberRefExpr or TMethodLookupExpr or TSubscriptExpr;
 
   class TNumberLiteralExpr = TFloatLiteralExpr or TIntegerLiteralExpr;
 
@@ -466,6 +472,9 @@ module Synth {
   class TUnarySyntaxSugarType = TArraySliceType or TOptionalType or TVariadicSequenceType;
 
   cached
+  TAvailabilityInfo convertAvailabilityInfoFromRaw(Raw::Element e) { result = TAvailabilityInfo(e) }
+
+  cached
   TComment convertCommentFromRaw(Raw::Element e) { result = TComment(e) }
 
   cached
@@ -476,6 +485,16 @@ module Synth {
 
   cached
   TDiagnostics convertDiagnosticsFromRaw(Raw::Element e) { result = TDiagnostics(e) }
+
+  cached
+  TOtherAvailabilitySpec convertOtherAvailabilitySpecFromRaw(Raw::Element e) {
+    result = TOtherAvailabilitySpec(e)
+  }
+
+  cached
+  TPlatformVersionAvailabilitySpec convertPlatformVersionAvailabilitySpecFromRaw(Raw::Element e) {
+    result = TPlatformVersionAvailabilitySpec(e)
+  }
 
   cached
   TUnknownFile convertUnknownFileFromRaw(Raw::Element e) { none() }
@@ -495,6 +514,9 @@ module Synth {
   TAssociatedTypeDecl convertAssociatedTypeDeclFromRaw(Raw::Element e) {
     result = TAssociatedTypeDecl(e)
   }
+
+  cached
+  TCapturedDecl convertCapturedDeclFromRaw(Raw::Element e) { result = TCapturedDecl(e) }
 
   cached
   TClassDecl convertClassDeclFromRaw(Raw::Element e) { result = TClassDecl(e) }
@@ -885,7 +907,7 @@ module Synth {
   }
 
   cached
-  TMethodRefExpr convertMethodRefExprFromRaw(Raw::Element e) { result = TMethodRefExpr(e) }
+  TMethodLookupExpr convertMethodLookupExprFromRaw(Raw::Element e) { result = TMethodLookupExpr(e) }
 
   cached
   TNilLiteralExpr convertNilLiteralExprFromRaw(Raw::Element e) { result = TNilLiteralExpr(e) }
@@ -1349,6 +1371,10 @@ module Synth {
 
   cached
   TAstNode convertAstNodeFromRaw(Raw::Element e) {
+    result = convertAvailabilityInfoFromRaw(e)
+    or
+    result = convertAvailabilitySpecFromRaw(e)
+    or
     result = convertCaseLabelItemFromRaw(e)
     or
     result = convertConditionElementFromRaw(e)
@@ -1367,6 +1393,13 @@ module Synth {
   }
 
   cached
+  TAvailabilitySpec convertAvailabilitySpecFromRaw(Raw::Element e) {
+    result = convertOtherAvailabilitySpecFromRaw(e)
+    or
+    result = convertPlatformVersionAvailabilitySpecFromRaw(e)
+  }
+
+  cached
   TCallable convertCallableFromRaw(Raw::Element e) {
     result = convertAbstractClosureExprFromRaw(e)
     or
@@ -1380,8 +1413,6 @@ module Synth {
     result = convertFileFromRaw(e)
     or
     result = convertGenericContextFromRaw(e)
-    or
-    result = convertIterableDeclContextFromRaw(e)
     or
     result = convertLocatableFromRaw(e)
     or
@@ -1469,6 +1500,8 @@ module Synth {
 
   cached
   TDecl convertDeclFromRaw(Raw::Element e) {
+    result = convertCapturedDeclFromRaw(e)
+    or
     result = convertEnumCaseDeclFromRaw(e)
     or
     result = convertExtensionDeclFromRaw(e)
@@ -1517,13 +1550,6 @@ module Synth {
     result = convertOpaqueTypeDeclFromRaw(e)
     or
     result = convertTypeAliasDeclFromRaw(e)
-  }
-
-  cached
-  TIterableDeclContext convertIterableDeclContextFromRaw(Raw::Element e) {
-    result = convertExtensionDeclFromRaw(e)
-    or
-    result = convertNominalTypeDeclFromRaw(e)
   }
 
   cached
@@ -1841,7 +1867,7 @@ module Synth {
     or
     result = convertMemberRefExprFromRaw(e)
     or
-    result = convertMethodRefExprFromRaw(e)
+    result = convertMethodLookupExprFromRaw(e)
     or
     result = convertSubscriptExprFromRaw(e)
   }
@@ -2106,6 +2132,9 @@ module Synth {
   }
 
   cached
+  Raw::Element convertAvailabilityInfoToRaw(TAvailabilityInfo e) { e = TAvailabilityInfo(result) }
+
+  cached
   Raw::Element convertCommentToRaw(TComment e) { e = TComment(result) }
 
   cached
@@ -2116,6 +2145,16 @@ module Synth {
 
   cached
   Raw::Element convertDiagnosticsToRaw(TDiagnostics e) { e = TDiagnostics(result) }
+
+  cached
+  Raw::Element convertOtherAvailabilitySpecToRaw(TOtherAvailabilitySpec e) {
+    e = TOtherAvailabilitySpec(result)
+  }
+
+  cached
+  Raw::Element convertPlatformVersionAvailabilitySpecToRaw(TPlatformVersionAvailabilitySpec e) {
+    e = TPlatformVersionAvailabilitySpec(result)
+  }
 
   cached
   Raw::Element convertUnknownFileToRaw(TUnknownFile e) { none() }
@@ -2135,6 +2174,9 @@ module Synth {
   Raw::Element convertAssociatedTypeDeclToRaw(TAssociatedTypeDecl e) {
     e = TAssociatedTypeDecl(result)
   }
+
+  cached
+  Raw::Element convertCapturedDeclToRaw(TCapturedDecl e) { e = TCapturedDecl(result) }
 
   cached
   Raw::Element convertClassDeclToRaw(TClassDecl e) { e = TClassDecl(result) }
@@ -2523,7 +2565,7 @@ module Synth {
   }
 
   cached
-  Raw::Element convertMethodRefExprToRaw(TMethodRefExpr e) { e = TMethodRefExpr(result) }
+  Raw::Element convertMethodLookupExprToRaw(TMethodLookupExpr e) { e = TMethodLookupExpr(result) }
 
   cached
   Raw::Element convertNilLiteralExprToRaw(TNilLiteralExpr e) { e = TNilLiteralExpr(result) }
@@ -2987,6 +3029,10 @@ module Synth {
 
   cached
   Raw::Element convertAstNodeToRaw(TAstNode e) {
+    result = convertAvailabilityInfoToRaw(e)
+    or
+    result = convertAvailabilitySpecToRaw(e)
+    or
     result = convertCaseLabelItemToRaw(e)
     or
     result = convertConditionElementToRaw(e)
@@ -3005,6 +3051,13 @@ module Synth {
   }
 
   cached
+  Raw::Element convertAvailabilitySpecToRaw(TAvailabilitySpec e) {
+    result = convertOtherAvailabilitySpecToRaw(e)
+    or
+    result = convertPlatformVersionAvailabilitySpecToRaw(e)
+  }
+
+  cached
   Raw::Element convertCallableToRaw(TCallable e) {
     result = convertAbstractClosureExprToRaw(e)
     or
@@ -3018,8 +3071,6 @@ module Synth {
     result = convertFileToRaw(e)
     or
     result = convertGenericContextToRaw(e)
-    or
-    result = convertIterableDeclContextToRaw(e)
     or
     result = convertLocatableToRaw(e)
     or
@@ -3107,6 +3158,8 @@ module Synth {
 
   cached
   Raw::Element convertDeclToRaw(TDecl e) {
+    result = convertCapturedDeclToRaw(e)
+    or
     result = convertEnumCaseDeclToRaw(e)
     or
     result = convertExtensionDeclToRaw(e)
@@ -3155,13 +3208,6 @@ module Synth {
     result = convertOpaqueTypeDeclToRaw(e)
     or
     result = convertTypeAliasDeclToRaw(e)
-  }
-
-  cached
-  Raw::Element convertIterableDeclContextToRaw(TIterableDeclContext e) {
-    result = convertExtensionDeclToRaw(e)
-    or
-    result = convertNominalTypeDeclToRaw(e)
   }
 
   cached
@@ -3479,7 +3525,7 @@ module Synth {
     or
     result = convertMemberRefExprToRaw(e)
     or
-    result = convertMethodRefExprToRaw(e)
+    result = convertMethodLookupExprToRaw(e)
     or
     result = convertSubscriptExprToRaw(e)
   }

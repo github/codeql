@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"io"
+	"io/fs"
 	"log"
 	"os"
 	"os/exec"
@@ -170,7 +171,7 @@ func GetPkgDir(pkgpath string, flags ...string) string {
 // DepErrors checks there are any errors resolving dependencies for `pkgpath`. It passes the `go
 // list` command the flags specified by `flags`.
 func DepErrors(pkgpath string, flags ...string) bool {
-	out, err := runGoList("{{if .DepsErrors}}{{else}}error{{end}}", []string{pkgpath}, flags...)
+	out, err := runGoList("{{if .DepsErrors}}error{{else}}{{end}}", []string{pkgpath}, flags...)
 	if err != nil {
 		// if go list failed, assume dependencies are broken
 		return false
@@ -280,4 +281,19 @@ func EscapeTrapSpecialChars(s string) string {
 	s = strings.ReplaceAll(s, "@", "&commat;")
 	s = strings.ReplaceAll(s, "#", "&num;")
 	return s
+}
+
+func FindGoFiles(root string) bool {
+	found := false
+	filepath.WalkDir(root, func(s string, d fs.DirEntry, e error) error {
+		if e != nil {
+			return e
+		}
+		if filepath.Ext(d.Name()) == ".go" {
+			found = true
+			return filepath.SkipAll
+		}
+		return nil
+	})
+	return found
 }

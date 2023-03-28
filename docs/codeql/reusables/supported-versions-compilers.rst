@@ -16,22 +16,22 @@
    .NET Core up to 3.1
 
    .NET 5, .NET 6","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
-   Go (aka Golang), "Go up to 1.18", "Go 1.11 or more recent", ``.go``
-   Java,"Java 7 to 18 [4]_","javac (OpenJDK and Oracle JDK),
+   Go (aka Golang), "Go up to 1.20", "Go 1.11 or more recent", ``.go``
+   Java,"Java 7 to 20 [4]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [5]_",``.java``
-   Kotlin [6]_,"Kotlin 1.5.0 to 1.7.21","kotlinc",``.kt``
+   Kotlin [6]_,"Kotlin 1.5.0 to 1.8.20","kotlinc",``.kt``
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [7]_"
-   Python [8]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10",Not applicable,``.py``
+   Python [8]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11",Not applicable,``.py``
    Ruby [9]_,"up to 3.1",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
-   TypeScript [10]_,"2.6-4.9",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
+   TypeScript [10]_,"2.6-5.0",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group
 
     .. [1] C++20 support is currently in beta. Supported for GCC on Linux only. Modules are *not* supported.
     .. [2] Support for the clang-cl compiler is preliminary.
     .. [3] Support for the Arm Compiler (armcc) is preliminary.
-    .. [4] Builds that execute on Java 7 to 19 can be analyzed. The analysis understands Java 19 standard language features.
+    .. [4] Builds that execute on Java 7 to 20 can be analyzed. The analysis understands Java 20 standard language features.
     .. [5] ECJ is supported when the build invokes it via the Maven Compiler plugin or the Takari Lifecycle plugin.
     .. [6] Kotlin support is currently in beta.
     .. [7] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.

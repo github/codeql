@@ -175,17 +175,17 @@ func testAsync(_ sink: @escaping (String) async throws -> ()) {
 		let remoteString = getRemoteData()
 
 		try! await sink(localString) // GOOD: the HTML data is local
-		try! await sink(try String(contentsOf: URL(string: "http://example.com/")!)) // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]: HTML contains remote input, may access local secrets
-		try! await sink(remoteString) // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]
+		try! await sink(try String(contentsOf: URL(string: "http://example.com/")!)) // BAD [NOT DETECTED - TODO]: HTML contains remote input, may access local secrets
+		try! await sink(remoteString) // BAD [NOT DETECTED - TODO]
 
 		try! await sink("console.log(" + localStringFragment + ")") // GOOD: the HTML data is local
-		try! await sink("console.log(" + remoteString + ")") // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]
+		try! await sink("console.log(" + remoteString + ")") // BAD [NOT DETECTED - TODO]
 
 		let localData = Data(localString.utf8)
 		let remoteData = Data(remoteString.utf8)
 
 		try! await sink(String(decoding: localData, as: UTF8.self)) // GOOD: the data is local
-		try! await sink(String(decoding: remoteData, as: UTF8.self)) // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]: the data is remote
+		try! await sink(String(decoding: remoteData, as: UTF8.self)) // BAD [NOT DETECTED - TODO]: the data is remote
 
 		try! await sink("console.log(" + String(Int(localStringFragment) ?? 0) + ")") // GOOD: Primitive conversion
 		try! await sink("console.log(" + String(Int(remoteString) ?? 0) + ")") // GOOD: Primitive conversion
@@ -317,7 +317,7 @@ func testQHelpExamples() {
 		let webview = WKWebView()
 		let remoteData = try String(contentsOf: URL(string: "http://example.com/evil.json")!)
 
-		_ = try await webview.evaluateJavaScript("console.log(" + remoteData + ")") // BAD [NOT DETECTED - TODO: extract Callables of @MainActor method calls]
+		_ = try await webview.evaluateJavaScript("console.log(" + remoteData + ")") // BAD
 
 		_ = try await webview.callAsyncJavaScript(
 			"console.log(data)",

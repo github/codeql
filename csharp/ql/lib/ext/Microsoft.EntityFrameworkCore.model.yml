@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", False, "ExecuteSqlRaw", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1]", "sql", "manual"]
       - ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", False, "ExecuteSqlRaw", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Object[])", "", "Argument[1]", "sql", "manual"]

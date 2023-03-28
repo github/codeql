@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["org.scijava.log", "Logger", True, "alwaysLog", "(int,Object,Throwable)", "", "Argument[1]", "logging", "manual"]
       - ["org.scijava.log", "Logger", True, "debug", "(Object)", "", "Argument[0]", "logging", "manual"]

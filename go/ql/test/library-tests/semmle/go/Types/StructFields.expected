@@ -1,65 +1,65 @@
-| Bar | pkg1/tst.go:29:10:31:1 | struct type | flag | bool |
-| Baz | embedded.go:3:10:5:1 | struct type | A | string |
-| CircularGenericStruct1 | generic.go:11:38:13:1 | struct type | pointerField | * CircularGenericStruct1 |
-| CircularGenericStruct2 | generic.go:28:39:30:1 | struct type | pointerField | * CircularGenericStruct2 |
-| EmbedsBaz | embedded.go:12:16:15:1 | struct type | Baz | string |
-| EmbedsBaz | embedded.go:12:16:15:1 | struct type | Qux | Qux |
-| Foo | pkg1/tst.go:24:10:27:1 | struct type | flag | bool |
-| Foo | pkg1/tst.go:24:10:27:1 | struct type | val | int |
-| G | pkg2/tst.go:3:8:5:1 | struct type | g | int |
-| G | pkg2/tst.go:7:8:9:1 | struct type | g | int |
-| GenericStruct1 | generic.go:3:28:9:1 | struct type | arrayField | [10]T |
-| GenericStruct1 | generic.go:3:28:9:1 | struct type | mapField | [string]T |
-| GenericStruct1 | generic.go:3:28:9:1 | struct type | pointerField | * T |
-| GenericStruct1 | generic.go:3:28:9:1 | struct type | sliceField | []T |
-| GenericStruct1 | generic.go:3:28:9:1 | struct type | valueField | T |
-| GenericStruct2 | generic.go:19:42:22:1 | struct type | mapField | [S]T |
-| GenericStruct2 | generic.go:19:42:22:1 | struct type | structField | GenericStruct1 |
-| GenericStruct2b | generic.go:24:39:26:1 | struct type | structField | GenericStruct2 |
-| Qux | embedded.go:7:10:9:1 | struct type | A | string |
-| Qux | embedded.go:7:10:9:1 | struct type | Baz | * Baz |
-| T | pkg1/tst.go:3:8:7:1 | struct type | Bar | Bar |
-| T | pkg1/tst.go:3:8:7:1 | struct type | Foo | Foo |
-| T | pkg1/tst.go:3:8:7:1 | struct type | f | int |
-| T | pkg1/tst.go:3:8:7:1 | struct type | val | int |
-| T | pkg2/tst.go:3:8:5:1 | struct type | g | int |
-| T | pkg2/tst.go:7:8:9:1 | struct type | g | int |
-| T2 | pkg1/tst.go:9:9:12:1 | struct type | Bar | Bar |
-| T2 | pkg1/tst.go:9:9:12:1 | struct type | Foo | Foo |
-| T2 | pkg1/tst.go:9:9:12:1 | struct type | flag | bool |
-| T3 | pkg1/tst.go:14:9:17:1 | struct type | Bar | * Bar |
-| T3 | pkg1/tst.go:14:9:17:1 | struct type | Foo | * Foo |
-| T3 | pkg1/tst.go:14:9:17:1 | struct type | val | int |
-| T4 | pkg1/tst.go:19:9:22:1 | struct type | Bar | Bar |
-| T4 | pkg1/tst.go:19:9:22:1 | struct type | Foo | * Foo |
-| T4 | pkg1/tst.go:19:9:22:1 | struct type | flag | bool |
-| T4 | pkg1/tst.go:19:9:22:1 | struct type | val | int |
-| UsesCircularGenericStruct1 | generic.go:15:42:17:1 | struct type | root | CircularGenericStruct1 |
-| a | depth.go:5:8:8:1 | struct type | b | b |
-| a | depth.go:5:8:8:1 | struct type | c | c |
-| a | depth.go:5:8:8:1 | struct type | d | d |
-| a | depth.go:5:8:8:1 | struct type | f | int |
-| b | depth.go:10:8:12:1 | struct type | f | int |
-| c | depth.go:14:8:16:1 | struct type | d | d |
-| c | depth.go:14:8:16:1 | struct type | f | string |
-| d | depth.go:18:8:20:1 | struct type | f | string |
-| embedder | pkg1/embedding.go:19:15:19:28 | struct type | base | base |
-| embedder2 | pkg1/embedding.go:25:16:25:33 | struct type | base | base |
-| embedder2 | pkg1/embedding.go:25:16:25:33 | struct type | embedder | embedder |
-| embedder2 | pkg1/embedding.go:28:16:28:33 | struct type | base | base |
-| embedder2 | pkg1/embedding.go:28:16:28:33 | struct type | embedder | embedder |
-| embedder3 | pkg1/embedding.go:25:16:25:33 | struct type | base | base |
-| embedder3 | pkg1/embedding.go:25:16:25:33 | struct type | embedder | embedder |
-| embedder3 | pkg1/embedding.go:28:16:28:33 | struct type | base | base |
-| embedder3 | pkg1/embedding.go:28:16:28:33 | struct type | embedder | embedder |
-| embedder4 | pkg1/embedding.go:35:16:38:1 | struct type | base | base |
-| embedder4 | pkg1/embedding.go:35:16:38:1 | struct type | f | int |
-| ptrembedder | pkg1/embedding.go:22:18:22:32 | struct type | base | * base |
-| s | cyclic.go:3:8:5:1 | struct type | s | * s |
-| t | cyclic.go:7:8:10:1 | struct type | f | int |
-| t | cyclic.go:7:8:10:1 | struct type | t | t |
-| t | cyclic.go:7:8:10:1 | struct type | u | * u |
-| u | cyclic.go:12:8:14:1 | struct type | f | int |
-| u | cyclic.go:12:8:14:1 | struct type | t | t |
-| u | cyclic.go:12:8:14:1 | struct type | u | * u |
-| v | cyclic.go:16:8:18:1 | struct type | s | s |
+| cyclic.go:3:6:3:6 | s | cyclic.go:3:8:5:1 | struct type | s | * s |
+| cyclic.go:7:6:7:6 | t | cyclic.go:7:8:10:1 | struct type | f | int |
+| cyclic.go:7:6:7:6 | t | cyclic.go:7:8:10:1 | struct type | t | t |
+| cyclic.go:7:6:7:6 | t | cyclic.go:7:8:10:1 | struct type | u | * u |
+| cyclic.go:12:6:12:6 | u | cyclic.go:12:8:14:1 | struct type | f | int |
+| cyclic.go:12:6:12:6 | u | cyclic.go:12:8:14:1 | struct type | t | t |
+| cyclic.go:12:6:12:6 | u | cyclic.go:12:8:14:1 | struct type | u | * u |
+| cyclic.go:16:6:16:6 | v | cyclic.go:16:8:18:1 | struct type | s | s |
+| depth.go:5:6:5:6 | a | depth.go:5:8:8:1 | struct type | b | b |
+| depth.go:5:6:5:6 | a | depth.go:5:8:8:1 | struct type | c | c |
+| depth.go:5:6:5:6 | a | depth.go:5:8:8:1 | struct type | d | d |
+| depth.go:5:6:5:6 | a | depth.go:5:8:8:1 | struct type | f | int |
+| depth.go:10:6:10:6 | b | depth.go:10:8:12:1 | struct type | f | int |
+| depth.go:14:6:14:6 | c | depth.go:14:8:16:1 | struct type | d | d |
+| depth.go:14:6:14:6 | c | depth.go:14:8:16:1 | struct type | f | string |
+| depth.go:18:6:18:6 | d | depth.go:18:8:20:1 | struct type | f | string |
+| embedded.go:3:6:3:8 | Baz | embedded.go:3:10:5:1 | struct type | A | string |
+| embedded.go:7:6:7:8 | Qux | embedded.go:7:10:9:1 | struct type | A | string |
+| embedded.go:7:6:7:8 | Qux | embedded.go:7:10:9:1 | struct type | Baz | * Baz |
+| embedded.go:12:6:12:14 | EmbedsBaz | embedded.go:12:16:15:1 | struct type | Baz | string |
+| embedded.go:12:6:12:14 | EmbedsBaz | embedded.go:12:16:15:1 | struct type | Qux | Qux |
+| generic.go:3:6:3:19 | GenericStruct1 | generic.go:3:28:9:1 | struct type | arrayField | [10]T |
+| generic.go:3:6:3:19 | GenericStruct1 | generic.go:3:28:9:1 | struct type | mapField | [string]T |
+| generic.go:3:6:3:19 | GenericStruct1 | generic.go:3:28:9:1 | struct type | pointerField | * T |
+| generic.go:3:6:3:19 | GenericStruct1 | generic.go:3:28:9:1 | struct type | sliceField | []T |
+| generic.go:3:6:3:19 | GenericStruct1 | generic.go:3:28:9:1 | struct type | valueField | T |
+| generic.go:11:6:11:27 | CircularGenericStruct1 | generic.go:11:38:13:1 | struct type | pointerField | * CircularGenericStruct1 |
+| generic.go:15:6:15:31 | UsesCircularGenericStruct1 | generic.go:15:42:17:1 | struct type | root | CircularGenericStruct1 |
+| generic.go:19:6:19:19 | GenericStruct2 | generic.go:19:42:22:1 | struct type | mapField | [S]T |
+| generic.go:19:6:19:19 | GenericStruct2 | generic.go:19:42:22:1 | struct type | structField | GenericStruct1 |
+| generic.go:24:6:24:20 | GenericStruct2b | generic.go:24:39:26:1 | struct type | structField | GenericStruct2 |
+| generic.go:28:6:28:27 | CircularGenericStruct2 | generic.go:28:39:30:1 | struct type | pointerField | * CircularGenericStruct2 |
+| pkg1/embedding.go:19:6:19:13 | embedder | pkg1/embedding.go:19:15:19:28 | struct type | base | base |
+| pkg1/embedding.go:22:6:22:16 | ptrembedder | pkg1/embedding.go:22:18:22:32 | struct type | base | * base |
+| pkg1/embedding.go:25:6:25:14 | embedder2 | pkg1/embedding.go:25:16:25:33 | struct type | base | base |
+| pkg1/embedding.go:25:6:25:14 | embedder2 | pkg1/embedding.go:25:16:25:33 | struct type | embedder | embedder |
+| pkg1/embedding.go:25:6:25:14 | embedder2 | pkg1/embedding.go:28:16:28:33 | struct type | base | base |
+| pkg1/embedding.go:25:6:25:14 | embedder2 | pkg1/embedding.go:28:16:28:33 | struct type | embedder | embedder |
+| pkg1/embedding.go:28:6:28:14 | embedder3 | pkg1/embedding.go:25:16:25:33 | struct type | base | base |
+| pkg1/embedding.go:28:6:28:14 | embedder3 | pkg1/embedding.go:25:16:25:33 | struct type | embedder | embedder |
+| pkg1/embedding.go:28:6:28:14 | embedder3 | pkg1/embedding.go:28:16:28:33 | struct type | base | base |
+| pkg1/embedding.go:28:6:28:14 | embedder3 | pkg1/embedding.go:28:16:28:33 | struct type | embedder | embedder |
+| pkg1/embedding.go:35:6:35:14 | embedder4 | pkg1/embedding.go:35:16:38:1 | struct type | base | base |
+| pkg1/embedding.go:35:6:35:14 | embedder4 | pkg1/embedding.go:35:16:38:1 | struct type | f | int |
+| pkg1/tst.go:3:6:3:6 | T | pkg1/tst.go:3:8:7:1 | struct type | Bar | Bar |
+| pkg1/tst.go:3:6:3:6 | T | pkg1/tst.go:3:8:7:1 | struct type | Foo | Foo |
+| pkg1/tst.go:3:6:3:6 | T | pkg1/tst.go:3:8:7:1 | struct type | f | int |
+| pkg1/tst.go:3:6:3:6 | T | pkg1/tst.go:3:8:7:1 | struct type | val | int |
+| pkg1/tst.go:9:6:9:7 | T2 | pkg1/tst.go:9:9:12:1 | struct type | Bar | Bar |
+| pkg1/tst.go:9:6:9:7 | T2 | pkg1/tst.go:9:9:12:1 | struct type | Foo | Foo |
+| pkg1/tst.go:9:6:9:7 | T2 | pkg1/tst.go:9:9:12:1 | struct type | flag | bool |
+| pkg1/tst.go:14:6:14:7 | T3 | pkg1/tst.go:14:9:17:1 | struct type | Bar | * Bar |
+| pkg1/tst.go:14:6:14:7 | T3 | pkg1/tst.go:14:9:17:1 | struct type | Foo | * Foo |
+| pkg1/tst.go:14:6:14:7 | T3 | pkg1/tst.go:14:9:17:1 | struct type | val | int |
+| pkg1/tst.go:19:6:19:7 | T4 | pkg1/tst.go:19:9:22:1 | struct type | Bar | Bar |
+| pkg1/tst.go:19:6:19:7 | T4 | pkg1/tst.go:19:9:22:1 | struct type | Foo | * Foo |
+| pkg1/tst.go:19:6:19:7 | T4 | pkg1/tst.go:19:9:22:1 | struct type | flag | bool |
+| pkg1/tst.go:19:6:19:7 | T4 | pkg1/tst.go:19:9:22:1 | struct type | val | int |
+| pkg1/tst.go:24:6:24:8 | Foo | pkg1/tst.go:24:10:27:1 | struct type | flag | bool |
+| pkg1/tst.go:24:6:24:8 | Foo | pkg1/tst.go:24:10:27:1 | struct type | val | int |
+| pkg1/tst.go:29:6:29:8 | Bar | pkg1/tst.go:29:10:31:1 | struct type | flag | bool |
+| pkg2/tst.go:3:6:3:6 | T | pkg2/tst.go:3:8:5:1 | struct type | g | int |
+| pkg2/tst.go:3:6:3:6 | T | pkg2/tst.go:7:8:9:1 | struct type | g | int |
+| pkg2/tst.go:7:6:7:6 | G | pkg2/tst.go:3:8:5:1 | struct type | g | int |
+| pkg2/tst.go:7:6:7:6 | G | pkg2/tst.go:7:8:9:1 | struct type | g | int |

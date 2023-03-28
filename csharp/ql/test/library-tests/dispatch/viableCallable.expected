@@ -216,18 +216,21 @@
 | ViableCallable.cs:178:13:178:17 | dynamic call to operator + | + | Double |
 | ViableCallable.cs:178:13:178:17 | dynamic call to operator + | + | Int32 |
 | ViableCallable.cs:178:13:178:17 | dynamic call to operator + | + | Int64 |
+| ViableCallable.cs:178:13:178:17 | dynamic call to operator + | + | Int128 |
 | ViableCallable.cs:178:13:178:17 | dynamic call to operator + | + | NFloat |
 | ViableCallable.cs:178:13:178:17 | dynamic call to operator + | + | Single |
 | ViableCallable.cs:180:13:180:17 | dynamic call to operator - | - | Decimal |
 | ViableCallable.cs:180:13:180:17 | dynamic call to operator - | - | Double |
 | ViableCallable.cs:180:13:180:17 | dynamic call to operator - | - | Int32 |
 | ViableCallable.cs:180:13:180:17 | dynamic call to operator - | - | Int64 |
+| ViableCallable.cs:180:13:180:17 | dynamic call to operator - | - | Int128 |
 | ViableCallable.cs:180:13:180:17 | dynamic call to operator - | - | NFloat |
 | ViableCallable.cs:180:13:180:17 | dynamic call to operator - | - | Single |
 | ViableCallable.cs:182:13:182:18 | dynamic call to operator + | + | Decimal |
 | ViableCallable.cs:182:13:182:18 | dynamic call to operator + | + | Double |
 | ViableCallable.cs:182:13:182:18 | dynamic call to operator + | + | Int32 |
 | ViableCallable.cs:182:13:182:18 | dynamic call to operator + | + | Int64 |
+| ViableCallable.cs:182:13:182:18 | dynamic call to operator + | + | Int128 |
 | ViableCallable.cs:182:13:182:18 | dynamic call to operator + | + | NFloat |
 | ViableCallable.cs:182:13:182:18 | dynamic call to operator + | + | Single |
 | ViableCallable.cs:185:17:185:25 | object creation of type C10 | C10 | C10 |
@@ -265,3 +268,21 @@
 | ViableCallable.cs:423:9:423:21 | call to method M<String> | M<> | A5 |
 | ViableCallable.cs:478:9:478:14 | call to method M1 | M1 | C18 |
 | ViableCallable.cs:481:9:481:14 | call to method M2 | M2 | I2 |
+| ViableCallable.cs:495:18:495:22 | call to operator + | + | C19 |
+| ViableCallable.cs:498:26:498:30 | call to operator checked + | checked + | C19 |
+| ViableCallable.cs:501:18:501:23 | call to operator explicit conversion | explicit conversion | C19 |
+| ViableCallable.cs:504:26:504:31 | call to operator checked explicit conversion | checked explicit conversion | C19 |
+| ViableCallable.cs:545:18:545:22 | call to operator + | + | C20 |
+| ViableCallable.cs:548:26:548:30 | call to operator checked + | checked + | C20 |
+| ViableCallable.cs:551:18:551:22 | call to operator - | - | C20 |
+| ViableCallable.cs:554:26:554:30 | call to operator checked - | checked - | I3<> |
+| ViableCallable.cs:557:18:557:22 | call to operator * | * | I3<> |
+| ViableCallable.cs:560:26:560:30 | call to operator checked * | checked * | I3<> |
+| ViableCallable.cs:563:18:563:22 | call to operator / | / | C20 |
+| ViableCallable.cs:563:18:563:22 | call to operator / | / | I3<> |
+| ViableCallable.cs:566:26:566:30 | call to operator checked / | checked / | C20 |
+| ViableCallable.cs:566:26:566:30 | call to operator checked / | checked / | I3<> |
+| ViableCallable.cs:569:9:569:15 | call to method M11 | M11 | C20 |
+| ViableCallable.cs:572:9:572:15 | call to method M12 | M12 | C20 |
+| ViableCallable.cs:572:9:572:15 | call to method M12 | M12 | I3<> |
+| ViableCallable.cs:575:9:575:15 | call to method M13 | M13 | I3<> |

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ "$(uname)" == Darwin ]]; then
-  export DYLD_FALLBACK_LIBRARY_PATH=$(dirname "$0")
+  export DYLD_LIBRARY_PATH=$(dirname "$0")
 else
   export LD_LIBRARY_PATH=$(dirname "$0")
 fi

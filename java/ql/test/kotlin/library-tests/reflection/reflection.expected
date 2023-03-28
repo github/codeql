@@ -269,6 +269,11 @@ compGenerated
 | file://<external>/CharRange.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
 | file://<external>/Class2.class:0:0:0:0 | getValue | Default property accessor |
+| file://<external>/EnumEntries.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | parallelStream | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | stream | Forwarder for a Kotlin class inheriting an interface default method |
+| file://<external>/EnumEntries.class:0:0:0:0 | toArray | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntProgression.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntProgression.class:0:0:0:0 | spliterator | Forwarder for a Kotlin class inheriting an interface default method |
 | file://<external>/IntRange.class:0:0:0:0 | forEach | Forwarder for a Kotlin class inheriting an interface default method |

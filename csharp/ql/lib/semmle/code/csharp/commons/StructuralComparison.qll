@@ -181,8 +181,8 @@ private module Cached {
     result = TConstantGvn(cfe.(Expr).getValue())
     or
     not exists(cfe.(Expr).getValue()) and
-    exists(GvnKind kind, int index |
-      result = toGvn(cfe, kind, index - 1) and
+    exists(int index |
+      result = toGvn(cfe, _, index - 1) and
       index = getNumberOfActualChildren(cfe)
     )
   }

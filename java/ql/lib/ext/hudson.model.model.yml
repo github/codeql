@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["hudson.model", "DownloadService", True, "loadJSON", "(URL)", "", "Argument[0]", "open-url", "ai-generated"]
+      - ["hudson.model", "DownloadService", True, "loadJSONHTML", "(URL)", "", "Argument[0]", "open-url", "ai-generated"]
+      - ["hudson.model", "DirectoryBrowserSupport", False, "DirectoryBrowserSupport", "(ModelObject,FilePath,String,String,boolean)", "", "Argument[1]", "read-file", "ai-generated"]
+      - ["hudson.model", "Items", True, "load", "(ItemGroup,File)", "", "Argument[1]", "read-file", "ai-generated"]
+      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "download", "(DownloadJob,URL)", "", "Argument[1]", "open-url", "ai-generated"]
+      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "install", "(DownloadJob,File,File)", "", "Argument[1]", "create-file", "ai-generated"] # should be delete-file
+      - ["hudson.model", "UpdateCenter$UpdateCenterConfiguration", True, "install", "(DownloadJob,File,File)", "", "Argument[2]", "create-file", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["hudson.model", "Node", True, "createPath", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["hudson.model", "DirectoryBrowserSupport$Path", False, "Path", "(String,String,boolean,long,boolean,long)", "", "Argument[0]", "Argument[this].SyntheticField[hudson.model.DirectoryBrowserSupport$Path.href]", "taint", "ai-generated"]

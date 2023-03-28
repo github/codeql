@@ -50,10 +50,6 @@ import com.semmle.util.trap.dependencies.TrapSet;
 import com.semmle.util.trap.pathtransformers.PathTransformer;
 
 public class OdasaOutput {
-	// By default we use lockless TRAP writing, but this can be set
-	// if we want to use the old TRAP locking for any reason.
-	private final boolean use_trap_locking = Env.systemEnv().getBoolean("CODEQL_EXTRACTOR_JAVA_TRAP_LOCKING", false);
-
 	// either these are set ...
 	private final File trapFolder;
 	private final File sourceArchiveFolder;
@@ -270,55 +266,36 @@ public class OdasaOutput {
 	 * 		For functions for example, this means its parameter signature.
 	 */
 	private TrapFileManager getMembersWriterForDecl(File trap, File trapFileBase, TrapClassVersion trapFileVersion, IrElement sym, String signature) {
-		if (use_trap_locking) {
-			TrapClassVersion currVersion = TrapClassVersion.fromSymbol(sym, log);
-			String shortName = sym instanceof IrDeclarationWithName ? ((IrDeclarationWithName)sym).getName().asString() : "(name unknown)";
-			if (trap.exists()) {
-				// Only re-write an existing trap file if we encountered a newer version of the same class.
-				TrapClassVersion trapVersion = readVersionInfo(trap);
-				if (!currVersion.isValid()) {
-					log.trace("Not rewriting trap file for: " + shortName + " " + trapVersion + " " + currVersion + " " + trap);
-				} else if (currVersion.newerThan(trapVersion)) {
-					log.trace("Rewriting trap file for: " + shortName + " " + trapVersion + " " + currVersion + " " + trap);
-					deleteTrapFileAndDependencies(sym, signature);
-				} else {
-					return null;
-				}
-			} else {
-				log.trace("Writing trap file for: " + shortName + " " + currVersion + " " + trap);
-			}
-		} else {
-			// If the TRAP file already exists then we
-			// don't need to write it.
-			if (trap.exists()) {
-				log.trace("Not rewriting trap file for " + trap.toString() + " as it exists");
-				return null;
-			}
-			// If the TRAP file was written in the past, and
-			// then renamed to its trap-old name, then we
-			// don't need to rewrite it only to rename it
-			// again.
-			File trapFileDir = trap.getParentFile();
-			File trapOld = new File(trapFileDir, trap.getName().replace(".trap.gz", ".trap-old.gz"));
-			if (trapOld.exists()) {
-				log.trace("Not rewriting trap file for " + trap.toString() + " as the trap-old exists");
-				return null;
-			}
-			// Otherwise, if any newer TRAP file has already
-			// been written then we don't need to write
-			// anything.
-			if (trapFileBase != null && trapFileVersion != null && trapFileDir.exists()) {
-				String trapFileBaseName = trapFileBase.getName();
+		// If the TRAP file already exists then we
+		// don't need to write it.
+		if (trap.exists()) {
+			log.trace("Not rewriting trap file for " + trap.toString() + " as it exists");
+			return null;
+		}
+		// If the TRAP file was written in the past, and
+		// then renamed to its trap-old name, then we
+		// don't need to rewrite it only to rename it
+		// again.
+		File trapFileDir = trap.getParentFile();
+		File trapOld = new File(trapFileDir, trap.getName().replace(".trap.gz", ".trap-old.gz"));
+		if (trapOld.exists()) {
+			log.trace("Not rewriting trap file for " + trap.toString() + " as the trap-old exists");
+			return null;
+		}
+		// Otherwise, if any newer TRAP file has already
+		// been written then we don't need to write
+		// anything.
+		if (trapFileBase != null && trapFileVersion != null && trapFileDir.exists()) {
+			String trapFileBaseName = trapFileBase.getName();
 
-				for (File f: FileUtil.list(trapFileDir)) {
-					String name = f.getName();
-					Matcher m = selectClassVersionComponents.matcher(name);
-					if (m.matches() && m.group(1).equals(trapFileBaseName)) {
-						TrapClassVersion v = new TrapClassVersion(Integer.valueOf(m.group(2)), Integer.valueOf(m.group(3)), Long.valueOf(m.group(4)), m.group(5));
-						if (v.newerThan(trapFileVersion)) {
-							log.trace("Not rewriting trap file for " + trap.toString() + " as " + f.toString() + " exists");
-							return null;
-						}
+			for (File f: FileUtil.list(trapFileDir)) {
+				String name = f.getName();
+				Matcher m = selectClassVersionComponents.matcher(name);
+				if (m.matches() && m.group(1).equals(trapFileBaseName)) {
+					TrapClassVersion v = new TrapClassVersion(Integer.valueOf(m.group(2)), Integer.valueOf(m.group(3)), Long.valueOf(m.group(4)), m.group(5));
+					if (v.newerThan(trapFileVersion)) {
+						log.trace("Not rewriting trap file for " + trap.toString() + " as " + f.toString() + " exists");
+						return null;
 					}
 				}
 			}
@@ -374,25 +351,6 @@ public class OdasaOutput {
 			}
 
 			writeTrapDependencies(trapDependenciesForClass);
-
-			// If we are using TRAP locking then we
-			// need to write a metadata file.
-			if (use_trap_locking) {
-				// Record major/minor version information for extracted class files.
-				// This is subsequently used to determine whether to re-extract (a newer version of) the same class.
-				File metadataFile = new File(trapFile.getAbsolutePath().replace(".trap.gz", ".metadata"));
-				try {
-					Map<String, String> versionMap = new LinkedHashMap<>();
-					TrapClassVersion tcv = TrapClassVersion.fromSymbol(sym, log);
-					versionMap.put(MAJOR_VERSION, String.valueOf(tcv.getMajorVersion()));
-					versionMap.put(MINOR_VERSION, String.valueOf(tcv.getMinorVersion()));
-					versionMap.put(LAST_MODIFIED, String.valueOf(tcv.getLastModified()));
-					versionMap.put(EXTRACTOR_NAME, tcv.getExtractorName());
-					FileUtil.writePropertiesCSV(metadataFile, versionMap);
-				} catch (IOException e) {
-					log.warn("Could not save trap metadata file: " + metadataFile.getAbsolutePath(), e);
-				}
-			}
 		}
 		private void writeTrapDependencies(TrapDependencies trapDependencies) {
 			String dep = trapDependencies.trapFile().replace(".trap.gz", ".dep");
@@ -480,22 +438,18 @@ public class OdasaOutput {
 				trapFile = null;
 			} else {
 				File normalTrapFile = getTrapFileForDecl(sym, signature);
-				if (use_trap_locking) {
-					trapFile = normalTrapFile;
-				} else {
-					// We encode the metadata into the filename, so that the
-					// TRAP filenames for different metadatas don't overlap.
-					if (fromSource)
-						trapFileVersion = new TrapClassVersion(0, 0, 0, "kotlin");
-					else
-						trapFileVersion = TrapClassVersion.fromSymbol(sym, log);
-					String baseName = normalTrapFile.getName().replace(".trap.gz", "");
-					// If a class has lots of inner classes, then we get lots of files
-					// in a single directory. This makes our directory listings later slow.
-					// To avoid this, rather than using files named .../Foo*, we use .../Foo/Foo*.
-					trapFileBase = new File(new File(normalTrapFile.getParentFile(), baseName), baseName);
-					trapFile = new File(trapFileBase.getPath() + '#' + trapFileVersion.toString() + ".trap.gz");
-				}
+				// We encode the metadata into the filename, so that the
+				// TRAP filenames for different metadatas don't overlap.
+				if (fromSource)
+					trapFileVersion = new TrapClassVersion(0, 0, 0, "kotlin");
+				else
+					trapFileVersion = TrapClassVersion.fromSymbol(sym, log);
+				String baseName = normalTrapFile.getName().replace(".trap.gz", "");
+				// If a class has lots of inner classes, then we get lots of files
+				// in a single directory. This makes our directory listings later slow.
+				// To avoid this, rather than using files named .../Foo*, we use .../Foo/Foo*.
+				trapFileBase = new File(new File(normalTrapFile.getParentFile(), baseName), baseName);
+				trapFile = new File(trapFileBase.getPath() + '#' + trapFileVersion.toString() + ".trap.gz");
 			}
 		}
 		private TrapLocker(File jarFile) {
@@ -510,9 +464,6 @@ public class OdasaOutput {
 		}
 		public TrapFileManager getTrapFileManager() {
 			if (trapFile!=null) {
-				if (use_trap_locking) {
-					lockTrapFile(trapFile);
-				}
 				return getMembersWriterForDecl(trapFile, trapFileBase, trapFileVersion, sym, signature);
 			} else {
 				return null;
@@ -522,23 +473,14 @@ public class OdasaOutput {
 		@Override
 		public void close() {
 			if (trapFile!=null) {
-				try {
-					if (use_trap_locking) {
-						unlockTrapFile(trapFile);
-					}
-				} catch (NestedError e) {
-					log.warn("Error unlocking trap file " + trapFile.getAbsolutePath(), e);
-				}
-
-				// If we are writing TRAP file locklessly, then now that we
-				// have finished writing our TRAP file, we want to rename
-				// and TRAP file that matches our trapFileBase but doesn't
-				// have the latest metadata.
+				// Now that we have finished writing our TRAP file, we want
+				// to rename and TRAP file that matches our trapFileBase
+				// but doesn't have the latest metadata.
 				// Renaming it to trap-old means that it won't be imported,
 				// but we can still use its presence to avoid future
 				// invocations rewriting it, and it means that the information
 				// is in the TRAP directory if we need it for debugging.
-				if (!use_trap_locking && sym != null) {
+				if (sym != null) {
 					File trapFileDir = trapFileBase.getParentFile();
 					String trapFileBaseName = trapFileBase.getName();
 

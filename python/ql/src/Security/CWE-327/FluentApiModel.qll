@@ -4,63 +4,115 @@ import TlsLibraryModel
 
 /**
  * Configuration to determine the state of a context being used to create
- * a connection. There is one configuration for each pair of `TlsLibrary` and `ProtocolVersion`,
- * such that a single configuration only tracks contexts where a specific `ProtocolVersion` is allowed.
+ * a connection. The configuration uses a flow state to track the `TlsLibrary`
+ * and the insecure `ProtocolVersion`s that are allowed.
  *
  * The state is in terms of whether a specific protocol is allowed. This is
  * either true or false when the context is created and can then be modified
- * later by either restricting or unrestricting the protocol (see the predicates
- * `isRestriction` and `isUnrestriction`).
+ * later by either restricting or unrestricting the protocol (see the predicate
+ * `isAdditionalFlowStep`).
  *
- * Since we are interested in the final state, we want the flow to start from
- * the last unrestriction, so we disallow flow into unrestrictions. We also
- * model the creation as an unrestriction of everything it allows, to account
- * for the common case where the creation plays the role of "last unrestriction".
- *
- * Since we really want "the last unrestriction, not nullified by a restriction",
- * we also disallow flow into restrictions.
+ * The state is represented as a bit vector, where each bit corresponds to a
+ * protocol version. The bit is set if the protocol is allowed.
  */
-class InsecureContextConfiguration extends DataFlow::Configuration {
-  TlsLibrary library;
-  ProtocolVersion tracked_version;
+module InsecureContextConfiguration implements DataFlow::StateConfigSig {
+  private newtype TFlowState =
+    TMkFlowState(TlsLibrary library, int bits) {
+      bits in [0 .. max(any(ProtocolVersion v).getBit()) * 2 - 1]
+    }
 
-  InsecureContextConfiguration() {
-    this = library + "Allows" + tracked_version and
-    tracked_version.isInsecure()
+  class FlowState extends TFlowState {
+    int getBits() { this = TMkFlowState(_, result) }
+
+    TlsLibrary getLibrary() { this = TMkFlowState(result, _) }
+
+    predicate allowsInsecureVersion(ProtocolVersion v) {
+      v.isInsecure() and this.getBits().bitAnd(v.getBit()) != 0
+    }
+
+    string toString() {
+      result =
+        "FlowState(" + this.getLibrary().toString() + ", " +
+          concat(ProtocolVersion v | this.allowsInsecureVersion(v) | v, ", ") + ")"
+    }
   }
 
-  ProtocolVersion getTrackedVersion() { result = tracked_version }
-
-  override predicate isSource(DataFlow::Node source) { this.isUnrestriction(source) }
-
-  override predicate isSink(DataFlow::Node sink) {
-    sink = library.connection_creation().getContext()
-  }
-
-  override predicate isBarrierIn(DataFlow::Node node) {
-    this.isRestriction(node)
+  private predicate relevantState(FlowState state) {
+    isSource(_, state)
     or
-    this.isUnrestriction(node)
-  }
-
-  private predicate isRestriction(DataFlow::Node node) {
-    exists(ProtocolRestriction r |
-      r = library.protocol_restriction() and
-      r.getRestriction() = tracked_version
-    |
-      node = r.getContext()
+    exists(FlowState state0 | relevantState(state0) |
+      exists(ProtocolRestriction r |
+        r = state0.getLibrary().protocol_restriction() and
+        state.getBits() = state0.getBits().bitAnd(sum(r.getRestriction().getBit()).bitNot()) and
+        state0.getLibrary() = state.getLibrary()
+      )
+      or
+      exists(ProtocolUnrestriction pu |
+        pu = state0.getLibrary().protocol_unrestriction() and
+        state.getBits() = state0.getBits().bitOr(sum(pu.getUnrestriction().getBit())) and
+        state0.getLibrary() = state.getLibrary()
+      )
     )
   }
 
-  private predicate isUnrestriction(DataFlow::Node node) {
-    exists(ProtocolUnrestriction pu |
-      pu = library.protocol_unrestriction() and
-      pu.getUnrestriction() = tracked_version
-    |
-      node = pu.getContext()
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    exists(ContextCreation creation | source = creation |
+      creation = state.getLibrary().unspecific_context_creation() and
+      state.getBits() =
+        sum(ProtocolVersion version |
+          version = creation.getProtocol() and version.isInsecure()
+        |
+          version.getBit()
+        )
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink = state.getLibrary().connection_creation().getContext() and
+    state.allowsInsecureVersion(_)
+  }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
+  ) {
+    DataFlow::localFlowStep(node1, node2) and
+    relevantState(state1) and
+    (
+      exists(ProtocolRestriction r |
+        r = state1.getLibrary().protocol_restriction() and
+        node2 = r.getContext() and
+        state2.getBits() = state1.getBits().bitAnd(sum(r.getRestriction().getBit()).bitNot()) and
+        state1.getLibrary() = state2.getLibrary()
+      )
+      or
+      exists(ProtocolUnrestriction pu |
+        pu = state1.getLibrary().protocol_unrestriction() and
+        node2 = pu.getContext() and
+        state2.getBits() = state1.getBits().bitOr(sum(pu.getUnrestriction().getBit())) and
+        state1.getLibrary() = state2.getLibrary()
+      )
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    relevantState(state) and
+    (
+      exists(ProtocolRestriction r |
+        r = state.getLibrary().protocol_restriction() and
+        node = r.getContext() and
+        state.allowsInsecureVersion(r.getRestriction())
+      )
+      or
+      exists(ProtocolUnrestriction pu |
+        pu = state.getLibrary().protocol_unrestriction() and
+        node = pu.getContext() and
+        not state.allowsInsecureVersion(pu.getUnrestriction())
+      )
     )
   }
 }
+
+private module InsecureContextFlow = DataFlow::GlobalWithState<InsecureContextConfiguration>;
 
 /**
  * Holds if `conectionCreation` marks the creation of a connection based on the contex
@@ -74,8 +126,11 @@ predicate unsafe_connection_creation_with_context(
   boolean specific
 ) {
   // Connection created from a context allowing `insecure_version`.
-  exists(InsecureContextConfiguration c | c.hasFlow(contextOrigin, connectionCreation) |
-    insecure_version = c.getTrackedVersion() and
+  exists(InsecureContextFlow::PathNode src, InsecureContextFlow::PathNode sink |
+    InsecureContextFlow::flowPath(src, sink) and
+    src.getNode() = contextOrigin and
+    sink.getNode() = connectionCreation and
+    sink.getState().allowsInsecureVersion(insecure_version) and
     specific = false
   )
   or

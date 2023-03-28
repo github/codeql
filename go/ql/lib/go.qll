@@ -56,6 +56,7 @@ import semmle.go.frameworks.SQL
 import semmle.go.frameworks.Stdlib
 import semmle.go.frameworks.SystemCommandExecutors
 import semmle.go.frameworks.Testing
+import semmle.go.frameworks.Twirp
 import semmle.go.frameworks.WebSocket
 import semmle.go.frameworks.XNetHtml
 import semmle.go.frameworks.XPath

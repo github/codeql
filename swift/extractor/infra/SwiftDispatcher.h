@@ -11,6 +11,8 @@
 #include "swift/extractor/infra/SwiftTagTraits.h"
 #include "swift/extractor/trap/generated/TrapClasses.h"
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
+#include "swift/extractor/infra/SwiftBodyEmissionStrategy.h"
+#include "swift/extractor/config/SwiftExtractorState.h"
 
 namespace codeql {
 
@@ -29,7 +31,10 @@ class SwiftDispatcher {
                                const swift::Expr*,
                                const swift::Pattern*,
                                const swift::TypeRepr*,
-                               const swift::TypeBase*>;
+                               const swift::TypeBase*,
+                               const swift::CapturedValue*,
+                               const swift::PoundAvailableInfo*,
+                               const swift::AvailabilitySpec*>;
 
   template <typename E>
   static constexpr bool IsStorable = std::is_constructible_v<Store::Handle, const E&>;
@@ -41,19 +46,15 @@ class SwiftDispatcher {
   // all references and pointers passed as parameters to this constructor are supposed to outlive
   // the SwiftDispatcher
   SwiftDispatcher(const swift::SourceManager& sourceManager,
+                  SwiftExtractorState& state,
                   TrapDomain& trap,
-                  swift::ModuleDecl& currentModule,
-                  swift::SourceFile* currentPrimarySourceFile = nullptr)
+                  SwiftLocationExtractor& locationExtractor,
+                  SwiftBodyEmissionStrategy& bodyEmissionStrategy)
       : sourceManager{sourceManager},
+        state{state},
         trap{trap},
-        currentModule{currentModule},
-        currentPrimarySourceFile{currentPrimarySourceFile},
-        locationExtractor(trap) {
-    if (currentPrimarySourceFile) {
-      // we make sure the file is in the trap output even if the source is empty
-      locationExtractor.emitFile(currentPrimarySourceFile->getFilename());
-    }
-  }
+        locationExtractor{locationExtractor},
+        bodyEmissionStrategy{bodyEmissionStrategy} {}
 
   const std::unordered_set<swift::ModuleDecl*> getEncounteredModules() && {
     return std::move(encounteredModules);
@@ -154,7 +155,7 @@ class SwiftDispatcher {
     // TODO when everything is moved to structured C++ classes, this should be moved to createEntry
     if (auto l = store.get(e)) {
       if constexpr (IsLocatable<E>) {
-        attachLocation(e, *l);
+        locationExtractor.attachLocation(sourceManager, e, *l);
       }
       return *l;
     }
@@ -203,40 +204,8 @@ class SwiftDispatcher {
   template <typename E, typename... Args>
   auto createUncachedEntry(const E& e, Args&&... args) {
     auto label = trap.createLabel<TrapTagOf<E>>(std::forward<Args>(args)...);
-    attachLocation(&e, label);
+    locationExtractor.attachLocation(sourceManager, &e, label);
     return TrapClassOf<E>{label};
-  }
-
-  template <typename Locatable>
-  void attachLocation(Locatable locatable, TrapLabel<LocatableTag> locatableLabel) {
-    attachLocation(&locatable, locatableLabel);
-  }
-
-  // Emits a Location TRAP entry and attaches it to a `Locatable` trap label
-  template <typename Locatable>
-  void attachLocation(Locatable* locatable, TrapLabel<LocatableTag> locatableLabel) {
-    attachLocation(locatable->getStartLoc(), locatable->getEndLoc(), locatableLabel);
-  }
-
-  void attachLocation(const swift::IfConfigClause* clause, TrapLabel<LocatableTag> locatableLabel) {
-    attachLocation(clause->Loc, clause->Loc, locatableLabel);
-  }
-
-  // Emits a Location TRAP entry and attaches it to a `Locatable` trap label for a given `SourceLoc`
-  void attachLocation(swift::SourceLoc loc, TrapLabel<LocatableTag> locatableLabel) {
-    attachLocation(loc, loc, locatableLabel);
-  }
-
-  // Emits a Location TRAP entry for a list of swift entities and attaches it to a `Locatable` trap
-  // label
-  template <typename Locatable>
-  void attachLocation(llvm::MutableArrayRef<Locatable>* locatables,
-                      TrapLabel<LocatableTag> locatableLabel) {
-    if (locatables->empty()) {
-      return;
-    }
-    attachLocation(locatables->front().getStartLoc(), locatables->back().getEndLoc(),
-                   locatableLabel);
   }
 
   // return `std::optional(fetchLabel(arg))` if arg converts to true, otherwise std::nullopt
@@ -271,45 +240,34 @@ class SwiftDispatcher {
     trap.debug(args...);
   }
 
-  // In order to not emit duplicated entries for declarations, we restrict emission to only
-  // Decls declared within the current "scope".
-  // Depending on the whether we are extracting a primary source file or not the scope is defined as
-  // follows:
-  //  - not extracting a primary source file (`currentPrimarySourceFile == nullptr`): the current
-  //    scope means the current module. This is used in the case of system or builtin modules.
-  //  - extracting a primary source file: in this mode, we extract several files belonging to the
-  //    same module one by one. In this mode, we restrict emission only to the same file ignoring
-  //    all the other files.
-  // This is also used to register the modules we encounter.
-  // TODO calls to this function should be taken away from `DeclVisitor` and moved around with a
-  // clearer separation between naming entities (some decls, all types), deciding whether to emit
-  // them and finally visiting emitting the contents of the entity (which should remain in the
-  // visitors). Then this double responsibility (carrying out the test and registering encountered
-  // modules) should also be cleared out
   bool shouldEmitDeclBody(const swift::Decl& decl) {
-    auto module = decl.getModuleContext();
-    if (module != &currentModule) {
-      encounteredModules.insert(module);
-      return false;
-    }
-    // ModuleDecl is a special case: if it passed the previous test, it is the current module
-    // but it never has a source file, so we short circuit to emit it in any case
-    if (!currentPrimarySourceFile || decl.getKind() == swift::DeclKind::Module) {
-      return true;
-    }
-    if (auto context = decl.getDeclContext()) {
-      return currentPrimarySourceFile == context->getParentSourceFile();
-    }
-    return false;
+    encounteredModules.insert(decl.getModuleContext());
+    return bodyEmissionStrategy.shouldEmitDeclBody(decl);
   }
 
   void emitComment(swift::Token& comment) {
     CommentsTrap entry{trap.createLabel<CommentTag>(), comment.getRawText().str()};
     trap.emit(entry);
-    attachLocation(comment.getRange().getStart(), comment.getRange().getEnd(), entry.id);
+    locationExtractor.attachLocation(sourceManager, comment, entry.id);
+  }
+
+  void extractedDeclaration(const swift::Decl& decl) {
+    if (isLazyDeclaration(decl)) {
+      state.emittedDeclarations.insert(&decl);
+    }
+  }
+  void skippedDeclaration(const swift::Decl& decl) {
+    if (isLazyDeclaration(decl)) {
+      state.pendingDeclarations.insert(&decl);
+    }
   }
 
  private:
+  bool isLazyDeclaration(const swift::Decl& decl) {
+    swift::ModuleDecl* module = decl.getModuleContext();
+    return module->isBuiltinModule() || module->getName().str() == "__ObjC";
+  }
+
   template <typename T, typename = void>
   struct HasSize : std::false_type {};
 
@@ -321,12 +279,6 @@ class SwiftDispatcher {
 
   template <typename T>
   struct HasId<T, decltype(std::declval<T>().id, void())> : std::true_type {};
-
-  void attachLocation(swift::SourceLoc start,
-                      swift::SourceLoc end,
-                      TrapLabel<LocatableTag> locatableLabel) {
-    locationExtractor.attachLocation(sourceManager, start, end, locatableLabel);
-  }
 
   template <typename Tag, typename... Ts>
   TrapLabel<Tag> fetchLabelFromUnion(const llvm::PointerUnion<Ts...> u) {
@@ -355,37 +307,27 @@ class SwiftDispatcher {
     return false;
   }
 
-  static std::filesystem::path getFilePath(std::string_view path) {
-    // TODO: this needs more testing
-    // TODO: check canonicalization of names on a case insensitive filesystems
-    // TODO: make symlink resolution conditional on CODEQL_PRESERVE_SYMLINKS=true
-    std::error_code ec;
-    auto ret = std::filesystem::canonical(path, ec);
-    if (ec) {
-      std::cerr << "Cannot get real path: " << std::quoted(path) << ": " << ec.message() << "\n";
-      return {};
-    }
-    return ret;
-  }
-
   virtual void visit(const swift::Decl* decl) = 0;
   virtual void visit(const swift::Stmt* stmt) = 0;
   virtual void visit(const swift::StmtCondition* cond) = 0;
   virtual void visit(const swift::StmtConditionElement* cond) = 0;
+  virtual void visit(const swift::PoundAvailableInfo* availability) = 0;
+  virtual void visit(const swift::AvailabilitySpec* spec) = 0;
   virtual void visit(const swift::CaseLabelItem* item) = 0;
   virtual void visit(const swift::Expr* expr) = 0;
   virtual void visit(const swift::Pattern* pattern) = 0;
   virtual void visit(const swift::TypeRepr* typeRepr, swift::Type type) = 0;
   virtual void visit(const swift::TypeBase* type) = 0;
+  virtual void visit(const swift::CapturedValue* capture) = 0;
 
   const swift::SourceManager& sourceManager;
+  SwiftExtractorState& state;
   TrapDomain& trap;
   Store store;
+  SwiftLocationExtractor& locationExtractor;
+  SwiftBodyEmissionStrategy& bodyEmissionStrategy;
   Store::Handle waitingForNewLabel{std::monostate{}};
-  swift::ModuleDecl& currentModule;
-  swift::SourceFile* currentPrimarySourceFile;
   std::unordered_set<swift::ModuleDecl*> encounteredModules;
-  SwiftLocationExtractor locationExtractor;
 };
 
 }  // namespace codeql

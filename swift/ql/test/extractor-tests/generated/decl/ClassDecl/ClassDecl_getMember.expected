@@ -1,12 +1,12 @@
 | class.swift:1:1:7:1 | Foo | 0 | class.swift:2:5:2:16 | var ... = ... |
 | class.swift:1:1:7:1 | Foo | 1 | class.swift:2:9:2:9 | field |
-| class.swift:1:1:7:1 | Foo | 2 | class.swift:4:5:6:5 | init() |
-| class.swift:1:1:7:1 | Foo | 3 | class.swift:1:7:1:7 | deinit() |
+| class.swift:1:1:7:1 | Foo | 2 | class.swift:4:5:6:5 | Foo.init() |
+| class.swift:1:1:7:1 | Foo | 3 | class.swift:1:7:1:7 | Foo.deinit() |
 | class.swift:11:1:14:1 | Generic | 0 | class.swift:12:5:12:13 | var ... = ... |
 | class.swift:11:1:14:1 | Generic | 1 | class.swift:12:9:12:9 | x |
 | class.swift:11:1:14:1 | Generic | 2 | class.swift:13:5:13:13 | var ... = ... |
 | class.swift:11:1:14:1 | Generic | 3 | class.swift:13:9:13:9 | y |
-| class.swift:11:1:14:1 | Generic | 4 | class.swift:11:7:11:7 | deinit() |
-| class.swift:11:1:14:1 | Generic | 5 | class.swift:11:7:11:7 | init() |
-| class.swift:16:1:17:1 | Baz | 0 | class.swift:16:21:16:21 | init() |
-| class.swift:16:1:17:1 | Baz | 1 | class.swift:16:7:16:7 | deinit() |
+| class.swift:11:1:14:1 | Generic | 4 | class.swift:11:7:11:7 | Generic<X, Y>.deinit() |
+| class.swift:11:1:14:1 | Generic | 5 | class.swift:11:7:11:7 | Generic<X, Y>.init() |
+| class.swift:16:1:17:1 | Baz | 0 | class.swift:16:21:16:21 | Baz.init() |
+| class.swift:16:1:17:1 | Baz | 1 | class.swift:16:7:16:7 | Baz.deinit() |

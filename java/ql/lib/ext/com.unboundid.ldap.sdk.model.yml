@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["com.unboundid.ldap.sdk", "LDAPConnection", False, "asyncSearch", "", "", "Argument[0]", "ldap", "manual"]
       - ["com.unboundid.ldap.sdk", "LDAPConnection", False, "search", "(ReadOnlySearchRequest)", "", "Argument[0]", "ldap", "manual"]

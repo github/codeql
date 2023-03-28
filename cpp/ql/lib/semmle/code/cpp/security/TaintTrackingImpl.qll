@@ -127,9 +127,9 @@ deprecated private predicate betweenFunctionsValueMoveTo(
   not unreachable(src) and
   not unreachable(dest) and
   (
-    exists(Call call, Function called, int i |
+    exists(Call call, int i |
       src = call.getArgument(i) and
-      resolveCallWithParam(call, called, i, dest) and
+      resolveCallWithParam(call, _, i, dest) and
       destFromArg = true
     )
     or
@@ -151,8 +151,8 @@ deprecated private predicate betweenFunctionsValueMoveTo(
     )
     or
     // If a parameter of type reference is tainted inside a function, taint the argument too
-    exists(Call call, Function f, int pi, Parameter p |
-      resolveCallWithParam(call, f, pi, p) and
+    exists(Call call, int pi, Parameter p |
+      resolveCallWithParam(call, _, pi, p) and
       p.getType() instanceof ReferenceType and
       src = p and
       dest = call.getArgument(pi) and
@@ -591,7 +591,8 @@ deprecated library class DataSensitiveExprCall extends DataSensitiveCallExpr, Ex
 
 /** Call to a virtual function. */
 deprecated library class DataSensitiveOverriddenFunctionCall extends DataSensitiveCallExpr,
-  FunctionCall {
+  FunctionCall
+{
   DataSensitiveOverriddenFunctionCall() {
     exists(getTarget().(VirtualFunction).getAnOverridingFunction())
   }

@@ -168,11 +168,9 @@ module Fastify {
     }
   }
 
-  private class ShorthandRoutingTreeSetup extends Routing::RouteSetup::MethodCall {
-    ShorthandRoutingTreeSetup() {
-      this instanceof RouteSetup and
-      not this.getMethodName() = "route"
-    }
+  private class ShorthandRoutingTreeSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup
+  {
+    ShorthandRoutingTreeSetup() { not this.getMethodName() = "route" }
 
     override string getRelativePath() { result = this.getArgument(0).getStringValue() }
 
@@ -186,11 +184,8 @@ module Fastify {
           .splitAt(",", n)
   }
 
-  private class FullRoutingTreeSetup extends Routing::RouteSetup::MethodCall {
-    FullRoutingTreeSetup() {
-      this instanceof RouteSetup and
-      this.getMethodName() = "route"
-    }
+  private class FullRoutingTreeSetup extends Routing::RouteSetup::MethodCall instanceof RouteSetup {
+    FullRoutingTreeSetup() { this.getMethodName() = "route" }
 
     override string getRelativePath() { result = this.getOptionArgument(0, "url").getStringValue() }
 
@@ -356,7 +351,8 @@ module Fastify {
    * An invocation that sets a single header of the HTTP response.
    */
   private class SetOneHeader extends Http::Servers::StandardHeaderDefinition,
-    DataFlow::MethodCallNode {
+    DataFlow::MethodCallNode
+  {
     RouteHandler rh;
 
     SetOneHeader() {

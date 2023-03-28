@@ -1,12 +1,12 @@
 attachmentInstances
-| active_storage.rb:11:1:11:25 | ... = ... |
+| active_storage.rb:11:1:11:11 | user_avatar |
 | active_storage.rb:11:1:11:25 | ... = ... |
 | active_storage.rb:11:15:11:25 | call to avatar |
 | active_storage.rb:13:1:13:11 | user_avatar |
 | active_storage.rb:14:1:14:11 | user_avatar |
 | active_storage.rb:15:1:15:11 | user_avatar |
 | active_storage.rb:17:1:17:11 | call to avatar |
-| active_storage.rb:19:1:19:42 | ... = ... |
+| active_storage.rb:19:1:19:10 | attachment |
 | active_storage.rb:19:1:19:42 | ... = ... |
 | active_storage.rb:19:14:19:42 | call to new |
 | active_storage.rb:23:11:23:20 | attachment |

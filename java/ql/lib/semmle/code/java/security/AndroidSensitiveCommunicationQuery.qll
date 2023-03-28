@@ -122,9 +122,11 @@ private predicate isStartActivityOrServiceSink(DataFlow::Node arg) {
 }
 
 /**
+ * DEPRECATED: Use `SensitiveCommunicationFlow` instead.
+ *
  * Taint configuration tracking flow from variables containing sensitive information to broadcast Intents.
  */
-class SensitiveCommunicationConfig extends TaintTracking::Configuration {
+deprecated class SensitiveCommunicationConfig extends TaintTracking::Configuration {
   SensitiveCommunicationConfig() { this = "Sensitive Communication Configuration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -148,3 +150,27 @@ class SensitiveCommunicationConfig extends TaintTracking::Configuration {
     this.isSink(node)
   }
 }
+
+private module SensitiveCommunicationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveInfoExpr }
+
+  predicate isSink(DataFlow::Node sink) {
+    isSensitiveBroadcastSink(sink)
+    or
+    isStartActivityOrServiceSink(sink)
+  }
+
+  /**
+   * Holds if broadcast doesn't specify receiving package name of the 3rd party app
+   */
+  predicate isBarrier(DataFlow::Node node) { node instanceof ExplicitIntentSanitizer }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    isSink(node) and exists(c)
+  }
+}
+
+/**
+ * Tracks taint flow from variables containing sensitive information to broadcast Intents.
+ */
+module SensitiveCommunicationFlow = TaintTracking::Global<SensitiveCommunicationConfig>;

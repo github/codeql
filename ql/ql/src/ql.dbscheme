@@ -1187,3 +1187,146 @@ yaml_ast_node_info(
   int loc: @location ref
 );
 
+#keyset[blame_blame_entry, index]
+blame_blame_entry_line(
+  int blame_blame_entry: @blame_blame_entry ref,
+  int index: int ref,
+  unique int line: @blame_token_number ref
+);
+
+blame_blame_entry_def(
+  unique int id: @blame_blame_entry,
+  int date__: @blame_token_date ref
+);
+
+#keyset[blame_blame_info, index]
+blame_blame_info_file_entry(
+  int blame_blame_info: @blame_blame_info ref,
+  int index: int ref,
+  unique int file_entry: @blame_file_entry ref
+);
+
+blame_blame_info_def(
+  unique int id: @blame_blame_info,
+  int today: @blame_token_date ref
+);
+
+#keyset[blame_file_entry, index]
+blame_file_entry_blame_entry(
+  int blame_file_entry: @blame_file_entry ref,
+  int index: int ref,
+  unique int blame_entry: @blame_blame_entry ref
+);
+
+blame_file_entry_def(
+  unique int id: @blame_file_entry,
+  int file_name: @blame_token_filename ref
+);
+
+blame_tokeninfo(
+  unique int id: @blame_token,
+  int kind: int ref,
+  string value: string ref
+);
+
+case @blame_token.kind of
+  0 = @blame_reserved_word
+| 1 = @blame_token_date
+| 2 = @blame_token_filename
+| 3 = @blame_token_number
+;
+
+
+@blame_ast_node = @blame_blame_entry | @blame_blame_info | @blame_file_entry | @blame_token
+
+@blame_ast_node_parent = @blame_ast_node | @file
+
+#keyset[parent, parent_index]
+blame_ast_node_info(
+  unique int node: @blame_ast_node ref,
+  int parent: @blame_ast_node_parent ref,
+  int parent_index: int ref,
+  int loc: @location ref
+);
+
+#keyset[json_array, index]
+json_array_child(
+  int json_array: @json_array ref,
+  int index: int ref,
+  unique int child: @json_value ref
+);
+
+json_array_def(
+  unique int id: @json_array
+);
+
+#keyset[json_document, index]
+json_document_child(
+  int json_document: @json_document ref,
+  int index: int ref,
+  unique int child: @json_value ref
+);
+
+json_document_def(
+  unique int id: @json_document
+);
+
+#keyset[json_object, index]
+json_object_child(
+  int json_object: @json_object ref,
+  int index: int ref,
+  unique int child: @json_pair ref
+);
+
+json_object_def(
+  unique int id: @json_object
+);
+
+@json_pair_key_type = @json_string__ | @json_token_number
+
+json_pair_def(
+  unique int id: @json_pair,
+  int key__: @json_pair_key_type ref,
+  int value: @json_value ref
+);
+
+json_string_child(
+  unique int json_string__: @json_string__ ref,
+  unique int child: @json_token_string_content ref
+);
+
+json_string_def(
+  unique int id: @json_string__
+);
+
+@json_value = @json_array | @json_object | @json_string__ | @json_token_false | @json_token_null | @json_token_number | @json_token_true
+
+json_tokeninfo(
+  unique int id: @json_token,
+  int kind: int ref,
+  string value: string ref
+);
+
+case @json_token.kind of
+  0 = @json_reserved_word
+| 1 = @json_token_comment
+| 2 = @json_token_false
+| 3 = @json_token_null
+| 4 = @json_token_number
+| 5 = @json_token_string_content
+| 6 = @json_token_true
+;
+
+
+@json_ast_node = @json_array | @json_document | @json_object | @json_pair | @json_string__ | @json_token
+
+@json_ast_node_parent = @file | @json_ast_node
+
+#keyset[parent, parent_index]
+json_ast_node_info(
+  unique int node: @json_ast_node ref,
+  int parent: @json_ast_node_parent ref,
+  int parent_index: int ref,
+  int loc: @location ref
+);
+

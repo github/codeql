@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Collections.Concurrent", "BlockingCollection<>", False, "Add", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Collections.Concurrent", "BlockingCollection<>", False, "CopyTo", "(T[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]

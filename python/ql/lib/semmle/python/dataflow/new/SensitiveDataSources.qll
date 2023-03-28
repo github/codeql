@@ -21,11 +21,8 @@ module SensitiveDataClassification = SensitiveDataHeuristics::SensitiveDataClass
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `SensitiveDataSource::Range` instead.
  */
-class SensitiveDataSource extends DataFlow::Node {
-  SensitiveDataSource::Range range;
-
+class SensitiveDataSource extends DataFlow::Node instanceof SensitiveDataSource::Range {
   SensitiveDataSource() {
-    this = range and
     // ignore sensitive password sources in getpass.py, that can escape through `getpass.getpass()` return value,
     // since `getpass.getpass()` is considered a source itself.
     not exists(Module getpass |
@@ -39,7 +36,7 @@ class SensitiveDataSource extends DataFlow::Node {
   /**
    * Gets the classification of the sensitive data.
    */
-  SensitiveDataClassification getClassification() { result = range.getClassification() }
+  SensitiveDataClassification getClassification() { result = super.getClassification() }
 }
 
 /** Provides a class for modeling new sources of sensitive data, such as secrets, certificates, or passwords. */

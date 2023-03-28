@@ -34,9 +34,7 @@ module CodeInjection {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /** A source of remote user input, considered as a flow source for code injection. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * An expression which may be interpreted as an AngularJS expression.
@@ -293,6 +291,27 @@ module CodeInjection {
           this = arr.getAPropertyWrite().getRhs()
         )
       )
+    }
+  }
+
+  /**
+   * An execution of a terminal command via the `node-pty` library, seen as a code injection sink.
+   * Example:
+   * ```JS
+   * var pty = require('node-pty');
+   * var ptyProcess = pty.spawn("bash", [], {...});
+   * ptyProcess.write('ls\r');
+   * ```
+   */
+  class NodePty extends Sink {
+    NodePty() {
+      this =
+        API::moduleImport("node-pty")
+            .getMember("spawn")
+            .getReturn()
+            .getMember("write")
+            .getACall()
+            .getArgument(0)
     }
   }
 

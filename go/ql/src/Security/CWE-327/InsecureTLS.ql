@@ -103,11 +103,8 @@ predicate secureTlsVersionFlowsToSink(DataFlow::PathNode sink, Field fld) {
  * Holds if a secure TLS version may reach `accessPath`.`fld`
  */
 predicate secureTlsVersionFlowsToField(SsaWithFields accessPath, Field fld) {
-  exists(
-    TlsVersionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
-    DataFlow::Node base
-  |
-    secureTlsVersionFlow(config, source, sink, fld) and
+  exists(TlsVersionFlowConfig config, DataFlow::PathNode sink, DataFlow::Node base |
+    secureTlsVersionFlow(config, _, sink, fld) and
     config.isSink(sink.getNode(), fld, base, _) and
     accessPath.getAUse() = base
   )
@@ -243,9 +240,7 @@ class LegacyTlsVersionFlag extends FlagKind {
   LegacyTlsVersionFlag() { this = "legacyTlsVersion" }
 
   bindingset[result]
-  override string getAFlagName() {
-    result.toLowerCase().matches("%" + ["old", "intermediate", "legacy"] + "%")
-  }
+  override string getAFlagName() { result.regexpMatch("(?i).*(old|intermediate|legacy).*") }
 }
 
 /**

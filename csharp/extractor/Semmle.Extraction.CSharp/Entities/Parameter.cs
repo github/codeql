@@ -100,6 +100,7 @@ namespace Semmle.Extraction.CSharp.Entities
             PopulateAttributes();
             PopulateNullability(trapFile, Symbol.GetAnnotatedType());
             PopulateRefKind(trapFile, Symbol.RefKind);
+            PopulateScopedKind(trapFile, Symbol.ScopedKind);
 
             if (Symbol.Name != Original.Symbol.Name)
                 Context.ModelError(Symbol, "Inconsistent parameter declaration");

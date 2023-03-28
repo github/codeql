@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSourceModel
+      extensible: sourceModel
     data:
       - ["com.rabbitmq.client", "Command", True, "getContentBody", "()", "", "ReturnValue", "remote", "manual"]
       - ["com.rabbitmq.client", "Command", True, "getContentHeader", "()", "", "ReturnValue", "remote", "manual"]
@@ -23,9 +23,9 @@ extensions:
       - ["com.rabbitmq.client", "StringRpcServer", True, "handleStringCall", "", "", "Parameter[0]", "remote", "manual"]
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
-      - ["com.rabbitmq.client", "GetResponse", True, "GetResponse", "", "", "Argument[2]", "Argument[-1]", "taint", "manual"]
-      - ["com.rabbitmq.client", "GetResponse", True, "getBody", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["com.rabbitmq.client", "QueueingConsumer$Delivery", True, "getBody", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["com.rabbitmq.client", "RpcClient$Response", True, "getBody", "()", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["com.rabbitmq.client", "GetResponse", True, "GetResponse", "", "", "Argument[2]", "Argument[this]", "taint", "manual"]
+      - ["com.rabbitmq.client", "GetResponse", True, "getBody", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["com.rabbitmq.client", "QueueingConsumer$Delivery", True, "getBody", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["com.rabbitmq.client", "RpcClient$Response", True, "getBody", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

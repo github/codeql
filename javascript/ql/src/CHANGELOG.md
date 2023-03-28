@@ -1,3 +1,39 @@
+## 0.5.5
+
+### Minor Analysis Improvements
+
+* The following queries now recognize HTML sanitizers as propagating taint: `js/sql-injection`,
+  `js/path-injection`, `js/server-side-unvalidated-url-redirection`, `js/client-side-unvalidated-url-redirection`,
+  and `js/request-forgery`.
+
+## 0.5.4
+
+### Minor Analysis Improvements
+
+* The `js/regex-injection` query now recognizes environment variables and command-line arguments as sources.
+
+## 0.5.3
+
+No user-facing changes.
+
+## 0.5.2
+
+No user-facing changes.
+
+## 0.5.1
+
+No user-facing changes.
+
+## 0.5.0
+
+### Minor Analysis Improvements
+
+* The `AlertSuppression.ql` query has been updated to support the new `// codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy `// lgtm` and `// lgtm[query-id]` comments can now also be placed on the line before an alert.
+
+## 0.4.6
+
+No user-facing changes.
+
 ## 0.4.5
 
 No user-facing changes.

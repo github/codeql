@@ -329,12 +329,12 @@ private module Cached {
   cached
   Instruction getChiInstructionTotalOperand(ChiInstruction chiInstr) {
     exists(
-      Alias::VirtualVariable vvar, OldInstruction oldInstr, Alias::MemoryLocation defLocation,
-      OldBlock defBlock, int defRank, int defOffset, OldBlock useBlock, int useRank
+      Alias::VirtualVariable vvar, OldInstruction oldInstr, OldBlock defBlock, int defRank,
+      int defOffset, OldBlock useBlock, int useRank
     |
       chiInstr = getChi(oldInstr) and
       vvar = Alias::getResultMemoryLocation(oldInstr).getVirtualVariable() and
-      hasDefinitionAtRank(vvar, defLocation, defBlock, defRank, defOffset) and
+      hasDefinitionAtRank(vvar, _, defBlock, defRank, defOffset) and
       hasUseAtRank(vvar, useBlock, useRank, oldInstr) and
       definitionReachesUse(vvar, defBlock, defRank, useBlock, useRank) and
       result = getDefinitionOrChiInstruction(defBlock, defOffset, vvar, _)
@@ -996,7 +996,7 @@ deprecated predicate canReuseSSAForMemoryResult = canReuseSsaForMemoryResult/1;
 
 /**
  * Expose some of the internal predicates to PrintSSA.qll. We do this by publicly importing those modules in the
- * `DebugSSA` module, which is then imported by PrintSSA.
+ * `DebugSsa` module, which is then imported by PrintSSA.
  */
 module DebugSsa {
   import PhiInsertion
@@ -1062,62 +1062,6 @@ private module CachedForDebugging {
   cached
   int maxValue() { result = 2147483647 }
 }
-
-module SsaConsistency {
-  /**
-   * Holds if a `MemoryOperand` has more than one `MemoryLocation` assigned by alias analysis.
-   */
-  query predicate multipleOperandMemoryLocations(
-    OldIR::MemoryOperand operand, string message, OldIR::IRFunction func, string funcText
-  ) {
-    exists(int locationCount |
-      locationCount = strictcount(Alias::getOperandMemoryLocation(operand)) and
-      locationCount > 1 and
-      func = operand.getEnclosingIRFunction() and
-      funcText = Language::getIdentityString(func.getFunction()) and
-      message =
-        operand.getUse().toString() + " " + "Operand has " + locationCount.toString() +
-          " memory accesses in function '$@': " +
-          strictconcat(Alias::getOperandMemoryLocation(operand).toString(), ", ")
-    )
-  }
-
-  /**
-   * Holds if a `MemoryLocation` does not have an associated `VirtualVariable`.
-   */
-  query predicate missingVirtualVariableForMemoryLocation(
-    Alias::MemoryLocation location, string message, OldIR::IRFunction func, string funcText
-  ) {
-    not exists(location.getVirtualVariable()) and
-    func = location.getIRFunction() and
-    funcText = Language::getIdentityString(func.getFunction()) and
-    message = "Memory location has no virtual variable in function '$@'."
-  }
-
-  /**
-   * Holds if a `MemoryLocation` is a member of more than one `VirtualVariable`.
-   */
-  query predicate multipleVirtualVariablesForMemoryLocation(
-    Alias::MemoryLocation location, string message, OldIR::IRFunction func, string funcText
-  ) {
-    exists(int vvarCount |
-      vvarCount = strictcount(location.getVirtualVariable()) and
-      vvarCount > 1 and
-      func = location.getIRFunction() and
-      funcText = Language::getIdentityString(func.getFunction()) and
-      message =
-        "Memory location has " + vvarCount.toString() + " virtual variables in function '$@': (" +
-          concat(Alias::VirtualVariable vvar |
-            vvar = location.getVirtualVariable()
-          |
-            vvar.toString(), ", "
-          ) + ")."
-    )
-  }
-}
-
-/** DEPRECATED: Alias for SsaConsistency */
-deprecated module SSAConsistency = SsaConsistency;
 
 /**
  * Provides the portion of the parameterized IR interface that is used to construct the SSA stages

@@ -67,7 +67,7 @@ module UnsafeShellCommandConstruction {
    */
   class StringInterpolationAsSink extends Sink {
     Concepts::SystemCommandExecution s;
-    Ast::StringLiteral lit;
+    Ast::StringlikeLiteral lit;
 
     StringInterpolationAsSink() {
       isUsedAsShellCommand(any(DataFlow::Node n | n.asExpr().getExpr() = lit), s) and
@@ -79,6 +79,26 @@ module UnsafeShellCommandConstruction {
     override DataFlow::Node getCommandExecution() { result = s }
 
     override DataFlow::Node getStringConstruction() { result.asExpr().getExpr() = lit }
+  }
+
+  /**
+   * A component of a string-concatenation (e.g. `"foo " + sink`),
+   * where the resulting string ends up being executed as a shell command.
+   */
+  class StringConcatAsSink extends Sink {
+    Concepts::SystemCommandExecution s;
+    Ast::AddExprRoot add;
+
+    StringConcatAsSink() {
+      isUsedAsShellCommand(any(DataFlow::Node n | n.asExpr().getExpr() = add), s) and
+      this.asExpr().getExpr() = add.getALeaf()
+    }
+
+    override DataFlow::Node getCommandExecution() { result = s }
+
+    override string describe() { result = "string concatenation" }
+
+    override DataFlow::Node getStringConstruction() { result.asExpr().getExpr() = add }
   }
 
   /**

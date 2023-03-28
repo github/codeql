@@ -33,7 +33,7 @@ class QueryInjectionFlowConfig extends TaintTracking::Configuration {
 
 /**
  * Implementation of `SqlTainted.ql`. This is extracted to a QLL so that it
- * can be excluded from `SqlUnescaped.ql` to avoid overlapping results.
+ * can be excluded from `SqlConcatenated.ql` to avoid overlapping results.
  */
 predicate queryTaintedBy(
   QueryInjectionSink query, DataFlow::PathNode source, DataFlow::PathNode sink

@@ -31,4 +31,6 @@ class BinaryExpr extends Generated::BinaryExpr {
   Expr getAnOperand() { result = [this.getLeftOperand(), this.getRightOperand()] }
 
   override string toString() { result = "... " + this.getFunction().toString() + " ..." }
+
+  override AbstractFunctionDecl getStaticTarget() { result = super.getStaticTarget() }
 }

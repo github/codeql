@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package gotwirprpcexample.rpc.notes;
+option go_package = "rpc/notes";
+
+message Note {
+    int32 id = 1;
+    string text = 2;
+    int64 created_at = 3;
+}
+
+message CreateNoteParams {
+    string text = 1;
+}
+
+message GetAllNotesParams {
+}
+
+message GetAllNotesResult {
+    repeated Note notes = 1;
+}
+
+service NotesService {    
+    rpc CreateNote(CreateNoteParams) returns (Note);
+    rpc GetAllNotes(GetAllNotesParams) returns (GetAllNotesResult);
+}

@@ -219,9 +219,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   /** Gets the data flow node that this call targets. */
   Node getReceiver() { result = receiver }
 
-  override DataFlowCallable getEnclosingCallable() {
-    result = TDataFlowFunc(c.getEnclosingFunction())
-  }
+  override DataFlowCallable getEnclosingCallable() { result = TSummarizedCallable(c) }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 

@@ -137,6 +137,10 @@ module TypeTracking<TypeTrackingInput I> {
       (storeStep(_, n, _) or loadStoreStep(_, n, _, _))
     }
 
+    /**
+     * Holds if there is any node in a step relation that is unreachable from a
+     * `LocalSourceNode`.
+     */
     query predicate unreachableNode(string msg) {
       exists(int k, string kind |
         k = strictcount(Node n | stepEntry(n, kind) and not flowsTo(_, n)) and
@@ -144,6 +148,10 @@ module TypeTracking<TypeTrackingInput I> {
       )
     }
 
+    /**
+     * Holds if there is a store target that isn't a `LocalSourceNode` and
+     * backtracking store target feature isn't enabled.
+     */
     query predicate nonSourceStoreTarget(string msg) {
       not hasFeatureBacktrackStoreTarget() and
       exists(int k |
@@ -764,18 +772,20 @@ module TypeTracking<TypeTrackingInput I> {
      * in a source-sink path and calculates the set of source-sink pairs.
      */
     module Graph<endpoint/1 sink> {
-      private newtype TPathNode = MkPathNode(Node node, TypeTracker tt) { node = flow(tt) }
+      private newtype TPathNode =
+        TPathNodeMid(Node node, TypeTracker tt) { node = flow(tt) } or
+        TPathNodeSink(Node node) { sink(node) and flowsTo(node) }
 
       /**
        * A node on a path that is reachable from a source. This is a pair of a
-       * `Node` and a `TypeTracker`.
+       * `Node` and a `TypeTracker` except at sinks for which there is no `TypeTracker`.
        */
       class PathNodeFwd extends TPathNode {
         /** Gets the node of this `PathNode`. */
-        Node getNode() { this = MkPathNode(result, _) }
+        Node getNode() { this = TPathNodeMid(result, _) or this = TPathNodeSink(result) }
 
-        /** Gets the typetracker of this `PathNode`. */
-        TypeTracker getTypeTracker() { this = MkPathNode(_, result) }
+        /** Gets the typetracker of this `PathNode`, if any. */
+        TypeTracker getTypeTracker() { this = TPathNodeMid(_, result) }
 
         private string ppContent() {
           exists(ContentOption c | this.getTypeTracker() = MkTypeTracker(_, c) |
@@ -784,6 +794,8 @@ module TypeTracking<TypeTrackingInput I> {
             c instanceof ContentOption::None and
             result = ""
           )
+          or
+          result = "" and this instanceof TPathNodeSink
         }
 
         /** Gets a textual representation of this node. */
@@ -793,7 +805,7 @@ module TypeTracking<TypeTrackingInput I> {
         predicate isSource() { source(this.getNode()) and this.getTypeTracker().start() }
 
         /** Holds if this is a sink. */
-        predicate isSink() { sink(this.getNode()) and this.getTypeTracker().end() }
+        predicate isSink() { this instanceof TPathNodeSink }
       }
 
       private predicate edgeCand(Node n1, TypeTracker tt1, Node n2, TypeTracker tt2) {
@@ -802,7 +814,17 @@ module TypeTracking<TypeTrackingInput I> {
       }
 
       private predicate edgeCand(PathNodeFwd n1, PathNodeFwd n2) {
-        edgeCand(n1.getNode(), n1.getTypeTracker(), n2.getNode(), n2.getTypeTracker())
+        exists(PathNodeFwd tgt |
+          edgeCand(n1.getNode(), n1.getTypeTracker(), tgt.getNode(), tgt.getTypeTracker())
+        |
+          n2 = tgt
+          or
+          n2 = TPathNodeSink(tgt.getNode()) and tgt.getTypeTracker().end()
+        )
+        or
+        n1.getTypeTracker().end() and
+        flowsTo(n1.getNode(), n2.getNode()) and
+        n2 instanceof TPathNodeSink
       }
 
       private predicate reachRev(PathNodeFwd n) {

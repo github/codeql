@@ -173,10 +173,8 @@ where
     // don't flag replacements of certain characters with whitespace
     not whitelistedRemoval(repl)
     or
-    exists(DataFlow::RegExpLiteralNode rel |
-      isBackslashEscape(repl, rel) and
-      not allBackslashesEscaped(repl) and
-      msg = "This does not escape backslash characters in the input."
-    )
+    isBackslashEscape(repl, _) and
+    not allBackslashesEscaped(repl) and
+    msg = "This does not escape backslash characters in the input."
   )
 select repl.getCalleeNode(), msg

@@ -11,5 +11,6 @@ compile_commands.json
 /.idea
 /cmake*
 
-# VSCode default build directory
+# VSCode default build directory and project directory
 /build
+/.vscode

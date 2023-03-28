@@ -685,22 +685,19 @@ cfg.swift:
 #-----| match -> ... as ...
 
 #   71| ... as ...
-#-----| match -> init(_:)
+#-----| match -> Self.init(_:)
 
 #   71| Int.Type
-#-----|  -> call to init(_:)
-
-#   71| call to init(_:)
 #-----|  -> s
 
-#   71| init(_:)
+#   71| Self.init(_:)
 #-----|  -> Int.Type
 
-#   71| call to init(_:)
+#   71| call to Self.init(_:)
 #-----|  -> var ... = ...
 
 #   71| s
-#-----|  -> call to init(_:)
+#-----|  -> call to Self.init(_:)
 
 #   72| return ...
 #-----| return -> exit maybeParseInt(s:) (normal)
@@ -950,22 +947,22 @@ cfg.swift:
 #   95| ...!
 #-----|  -> ... .+(_:_:) ...
 
-#   98| deinit()
+#   98| C.deinit()
 #-----|  -> self
 
-#   98| enter deinit()
-#-----|  -> deinit()
+#   98| enter C.deinit()
+#-----|  -> C.deinit()
 
-#   98| exit deinit()
+#   98| exit C.deinit()
 
-#   98| exit deinit() (normal)
-#-----|  -> exit deinit()
+#   98| exit C.deinit() (normal)
+#-----|  -> exit C.deinit()
 
 #   98| self
 #-----|  -> { ... }
 
 #   98| { ... }
-#-----|  -> exit deinit() (normal)
+#-----|  -> exit C.deinit() (normal)
 
 #   99| enter get
 #-----|  -> get
@@ -983,16 +980,16 @@ cfg.swift:
 #  100| self
 #-----|  -> n
 
-#  100| enter init(n:)
-#-----|  -> init(n:)
-
-#  100| exit init(n:)
-
-#  100| exit init(n:) (normal)
-#-----|  -> exit init(n:)
-
-#  100| init(n:)
+#  100| C.init(n:)
 #-----|  -> self
+
+#  100| enter C.init(n:)
+#-----|  -> C.init(n:)
+
+#  100| exit C.init(n:)
+
+#  100| exit C.init(n:) (normal)
+#-----|  -> exit C.init(n:)
 
 #  100| n
 #-----|  -> self
@@ -1010,7 +1007,7 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  102| return
-#-----| return -> exit init(n:) (normal)
+#-----| return -> exit C.init(n:) (normal)
 
 #  104| enter getMyInt()
 #-----|  -> getMyInt()
@@ -1062,22 +1059,19 @@ cfg.swift:
 #-----|  -> n1
 
 #  110| c
-#-----| match -> init(n:)
+#-----| match -> C.init(n:)
 
 #  110| C.Type
-#-----|  -> call to init(n:)
-
-#  110| call to init(n:)
 #-----|  -> 42
 
-#  110| init(n:)
+#  110| C.init(n:)
 #-----|  -> C.Type
 
-#  110| call to init(n:)
+#  110| call to C.init(n:)
 #-----|  -> var ... = ...
 
 #  110| 42
-#-----|  -> call to init(n:)
+#-----|  -> call to C.init(n:)
 
 #  111| var ... = ...
 #-----|  -> n1
@@ -4687,22 +4681,22 @@ cfg.swift:
 #  348| 1
 #-----|  -> ... .+=(_:_:) ...
 
-#  352| deinit()
+#  352| OptionalC.deinit()
 #-----|  -> self
 
-#  352| enter deinit()
-#-----|  -> deinit()
+#  352| enter OptionalC.deinit()
+#-----|  -> OptionalC.deinit()
 
-#  352| exit deinit()
+#  352| exit OptionalC.deinit()
 
-#  352| exit deinit() (normal)
-#-----|  -> exit deinit()
+#  352| exit OptionalC.deinit() (normal)
+#-----|  -> exit OptionalC.deinit()
 
 #  352| self
 #-----|  -> { ... }
 
 #  352| { ... }
-#-----|  -> exit deinit() (normal)
+#-----|  -> exit OptionalC.deinit() (normal)
 
 #  353| enter get
 #-----|  -> get
@@ -4720,16 +4714,16 @@ cfg.swift:
 #  354| self
 #-----|  -> arg
 
-#  354| enter init(arg:)
-#-----|  -> init(arg:)
-
-#  354| exit init(arg:)
-
-#  354| exit init(arg:) (normal)
-#-----|  -> exit init(arg:)
-
-#  354| init(arg:)
+#  354| OptionalC.init(arg:)
 #-----|  -> self
+
+#  354| enter OptionalC.init(arg:)
+#-----|  -> OptionalC.init(arg:)
+
+#  354| exit OptionalC.init(arg:)
+
+#  354| exit OptionalC.init(arg:) (normal)
+#-----|  -> exit OptionalC.init(arg:)
 
 #  354| arg
 #-----|  -> self
@@ -4747,7 +4741,7 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  356| return
-#-----| return -> exit init(arg:) (normal)
+#-----| return -> exit OptionalC.init(arg:) (normal)
 
 #  358| enter getOptional()
 #-----|  -> getOptional()
@@ -4978,6 +4972,9 @@ cfg.swift:
 #  377| #...
 #-----|  -> call to _unimplementedInitializer(className:initName:file:line:column:)
 
+#  377| Derived.deinit()
+#-----|  -> self
+
 #  377| _unimplementedInitializer(className:initName:file:line:column:)
 #-----|  -> cfg.Derived
 
@@ -4986,70 +4983,64 @@ cfg.swift:
 #  377| cfg.Derived
 #-----|  -> #...
 
-#  377| deinit()
-#-----|  -> self
+#  377| enter Derived.deinit()
+#-----|  -> Derived.deinit()
 
-#  377| enter deinit()
-#-----|  -> deinit()
+#  377| exit Derived.deinit()
 
-#  377| exit deinit()
-
-#  377| exit deinit() (normal)
-#-----|  -> exit deinit()
+#  377| exit Derived.deinit() (normal)
+#-----|  -> exit Derived.deinit()
 
 #  377| self
 #-----|  -> { ... }
 
 #  377| { ... }
-#-----|  -> exit deinit() (normal)
+#-----|  -> exit Derived.deinit() (normal)
 
-#  377| enter init(n:)
-#-----|  -> init(n:)
-
-#  377| exit init(n:)
-
-#  377| exit init(n:) (normal)
-#-----|  -> exit init(n:)
-
-#  377| init(n:)
+#  377| Derived.init(n:)
 #-----|  -> self
+
+#  377| enter Derived.init(n:)
+#-----|  -> Derived.init(n:)
+
+#  377| exit Derived.init(n:)
+
+#  377| exit Derived.init(n:) (normal)
+#-----|  -> exit Derived.init(n:)
 
 #  377| self
 
 #  378| self
-#-----|  -> init(n:)
+#-----|  -> C.init(n:)
 
-#  378| enter init()
-#-----|  -> init()
-
-#  378| exit init()
-
-#  378| exit init() (normal)
-#-----|  -> exit init()
-
-#  378| init()
+#  378| Derived.init()
 #-----|  -> self
 
-#  379| super
-#-----|  -> call to ...
+#  378| enter Derived.init()
+#-----|  -> Derived.init()
 
-#  379| call to ...
+#  378| exit Derived.init()
+
+#  378| exit Derived.init() (normal)
+#-----|  -> exit Derived.init()
+
+#  379| super
 #-----|  -> 0
 
-#  379| call to ...
+#  379| C.init(n:)
+#-----|  -> super
+
+#  379| call to C.init(n:)
 #-----|  -> self = ...
 
 #  379| self = ...
 #-----|  -> return
 
-#  379| init(n:)
-#-----|  -> super
-
 #  379| 0
-#-----|  -> call to ...
+#-----|  -> call to C.init(n:)
 
 #  380| return
-#-----| return -> exit init() (normal)
+#-----| return -> exit Derived.init() (normal)
 
 #  383| doWithoutCatch(x:)
 #-----|  -> x
@@ -5196,16 +5187,16 @@ cfg.swift:
 #  395| self
 #-----|  -> self
 
-#  395| enter init()
-#-----|  -> init()
-
-#  395| exit init()
-
-#  395| exit init() (normal)
-#-----|  -> exit init()
-
-#  395| init()
+#  395| Structors.init()
 #-----|  -> self
+
+#  395| enter Structors.init()
+#-----|  -> Structors.init()
+
+#  395| exit Structors.init()
+
+#  395| exit Structors.init() (normal)
+#-----|  -> exit Structors.init()
 
 #  396| .field
 #-----|  -> 10
@@ -5220,21 +5211,21 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  397| return
-#-----| return -> exit init() (normal)
+#-----| return -> exit Structors.init() (normal)
 
 #  399| self
 #-----|  -> self
 
-#  399| deinit()
+#  399| Structors.deinit()
 #-----|  -> self
 
-#  399| enter deinit()
-#-----|  -> deinit()
+#  399| enter Structors.deinit()
+#-----|  -> Structors.deinit()
 
-#  399| exit deinit()
+#  399| exit Structors.deinit()
 
-#  399| exit deinit() (normal)
-#-----|  -> exit deinit()
+#  399| exit Structors.deinit() (normal)
+#-----|  -> exit Structors.deinit()
 
 #  400| .field
 #-----|  -> 0
@@ -5243,7 +5234,7 @@ cfg.swift:
 #-----|  -> .field
 
 #  400|  ... = ...
-#-----|  -> exit deinit() (normal)
+#-----|  -> exit Structors.deinit() (normal)
 
 #  400| 0
 #-----|  ->  ... = ...
@@ -5303,22 +5294,22 @@ cfg.swift:
 #  409| MyLocalClass
 #-----|  -> MyLocalStruct
 
-#  409| deinit()
+#  409| MyLocalClass.deinit()
 #-----|  -> self
 
-#  409| enter deinit()
-#-----|  -> deinit()
+#  409| enter MyLocalClass.deinit()
+#-----|  -> MyLocalClass.deinit()
 
-#  409| exit deinit()
+#  409| exit MyLocalClass.deinit()
 
-#  409| exit deinit() (normal)
-#-----|  -> exit deinit()
+#  409| exit MyLocalClass.deinit() (normal)
+#-----|  -> exit MyLocalClass.deinit()
 
 #  409| self
 #-----|  -> { ... }
 
 #  409| { ... }
-#-----|  -> exit deinit() (normal)
+#-----|  -> exit MyLocalClass.deinit() (normal)
 
 #  410| _modify
 #-----|  -> self
@@ -5368,16 +5359,16 @@ cfg.swift:
 #  411| self
 #-----|  -> self
 
-#  411| enter init()
-#-----|  -> init()
-
-#  411| exit init()
-
-#  411| exit init() (normal)
-#-----|  -> exit init()
-
-#  411| init()
+#  411| MyLocalClass.init()
 #-----|  -> self
+
+#  411| enter MyLocalClass.init()
+#-----|  -> MyLocalClass.init()
+
+#  411| exit MyLocalClass.init()
+
+#  411| exit MyLocalClass.init() (normal)
+#-----|  -> exit MyLocalClass.init()
 
 #  412| .x
 #-----|  -> 10
@@ -5392,7 +5383,7 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  413| return
-#-----| return -> exit init() (normal)
+#-----| return -> exit MyLocalClass.init() (normal)
 
 #  416| MyLocalStruct
 #-----|  -> MyLocalEnum
@@ -5445,16 +5436,16 @@ cfg.swift:
 #  418| self
 #-----|  -> self
 
-#  418| enter init()
-#-----|  -> init()
-
-#  418| exit init()
-
-#  418| exit init() (normal)
-#-----|  -> exit init()
-
-#  418| init()
+#  418| MyLocalStruct.init()
 #-----|  -> self
+
+#  418| enter MyLocalStruct.init()
+#-----|  -> MyLocalStruct.init()
+
+#  418| exit MyLocalStruct.init()
+
+#  418| exit MyLocalStruct.init() (normal)
+#-----|  -> exit MyLocalStruct.init()
 
 #  419| .x
 #-----|  -> 10
@@ -5469,7 +5460,7 @@ cfg.swift:
 #-----|  ->  ... = ...
 
 #  420| return
-#-----| return -> exit init() (normal)
+#-----| return -> exit MyLocalStruct.init() (normal)
 
 #  423| MyLocalEnum
 #-----|  -> myLocalVar
@@ -6334,3 +6325,218 @@ cfg.swift:
 
 #  493| 13
 #-----|  -> exit testIfConfig() (normal)
+
+#  496| enter testAvailable()
+#-----|  -> testAvailable()
+
+#  496| exit testAvailable()
+
+#  496| exit testAvailable() (normal)
+#-----|  -> exit testAvailable()
+
+#  496| testAvailable()
+#-----|  -> x
+
+#  497| var ... = ...
+#-----|  -> x
+
+#  497| x
+#-----|  -> if ... then { ... }
+
+#  497| x
+#-----| match -> 0
+
+#  497| 0
+#-----|  -> var ... = ...
+
+#  499| if ... then { ... }
+#-----|  -> StmtCondition
+
+#  499| #available
+#-----| true -> .+=(_:_:)
+#-----| false -> if ... then { ... }
+
+#  499| StmtCondition
+#-----|  -> macOS 10
+
+#  499| macOS 10
+#-----|  -> *
+
+#  499| *
+#-----|  -> #available
+
+#  500| &...
+#-----|  -> 1
+
+#  500| x
+#-----|  -> &...
+
+#  500| ... .+=(_:_:) ...
+#-----|  -> if ... then { ... }
+
+#  500| .+=(_:_:)
+#-----|  -> Int.Type
+
+#  500| Int.Type
+#-----|  -> x
+
+#  500| 1
+#-----|  -> ... .+=(_:_:) ...
+
+#  503| if ... then { ... }
+#-----|  -> StmtCondition
+
+#  503| #available
+#-----| true -> .+=(_:_:)
+#-----| false -> if ... then { ... }
+
+#  503| StmtCondition
+#-----|  -> macOS 10.13
+
+#  503| macOS 10.13
+#-----|  -> *
+
+#  503| *
+#-----|  -> #available
+
+#  504| &...
+#-----|  -> 1
+
+#  504| x
+#-----|  -> &...
+
+#  504| ... .+=(_:_:) ...
+#-----|  -> if ... then { ... }
+
+#  504| .+=(_:_:)
+#-----|  -> Int.Type
+
+#  504| Int.Type
+#-----|  -> x
+
+#  504| 1
+#-----|  -> ... .+=(_:_:) ...
+
+#  507| if ... then { ... }
+#-----|  -> StmtCondition
+
+#  507| #unavailable
+#-----| true -> .+=(_:_:)
+#-----| false -> guard ... else { ... }
+
+#  507| StmtCondition
+#-----|  -> iOS 10
+
+#  507| iOS 10
+#-----|  -> watchOS 10
+
+#  507| watchOS 10
+#-----|  -> macOS 10
+
+#  507| macOS 10
+#-----|  -> #unavailable
+
+#  508| &...
+#-----|  -> 1
+
+#  508| x
+#-----|  -> &...
+
+#  508| ... .+=(_:_:) ...
+#-----|  -> guard ... else { ... }
+
+#  508| .+=(_:_:)
+#-----|  -> Int.Type
+
+#  508| Int.Type
+#-----|  -> x
+
+#  508| 1
+#-----|  -> ... .+=(_:_:) ...
+
+#  511| guard ... else { ... }
+#-----|  -> StmtCondition
+
+#  511| #available
+#-----| false -> .+=(_:_:)
+#-----| true -> if ... then { ... }
+
+#  511| StmtCondition
+#-----|  -> macOS 12
+
+#  511| macOS 12
+#-----|  -> *
+
+#  511| *
+#-----|  -> #available
+
+#  512| &...
+#-----|  -> 1
+
+#  512| x
+#-----|  -> &...
+
+#  512| ... .+=(_:_:) ...
+#-----|  -> if ... then { ... }
+
+#  512| .+=(_:_:)
+#-----|  -> Int.Type
+
+#  512| Int.Type
+#-----|  -> x
+
+#  512| 1
+#-----|  -> ... .+=(_:_:) ...
+
+#  515| if ... then { ... }
+#-----|  -> StmtCondition
+
+#  515| #available
+#-----| false, true -> iOS 12
+#-----| false -> x
+
+#  515| StmtCondition
+#-----|  -> macOS 12
+
+#  515| macOS 12
+#-----|  -> *
+
+#  515| *
+#-----|  -> #available
+
+#  515| #available
+#-----| true -> .+=(_:_:)
+#-----| false -> x
+
+#  515| iOS 12
+#-----|  -> *
+
+#  515| *
+#-----|  -> #available
+
+#  516| &...
+#-----|  -> 1
+
+#  516| x
+#-----|  -> &...
+
+#  516| ... .+=(_:_:) ...
+#-----|  -> x
+
+#  516| .+=(_:_:)
+#-----|  -> Int.Type
+
+#  516| Int.Type
+#-----|  -> x
+
+#  516| 1
+#-----|  -> ... .+=(_:_:) ...
+
+#  519| return ...
+#-----| return -> exit testAvailable() (normal)
+
+#  519| (Int) ...
+#-----|  -> return ...
+
+#  519| x
+#-----|  -> (Int) ...

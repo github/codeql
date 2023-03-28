@@ -58,6 +58,15 @@ extended.rel: reorder input.rel (int id, string name, int parent) id name parent
 // should be placed in the upgrade directory. It should avoid using the default
 // QLL library, and will run in the context of the *old* dbscheme.
 relationname.rel: run relationname.qlo
+
+// Create relationname.rel by running the query predicate 'predicatename' in
+// relationname.qlo and writing the query results as a .rel file. This command
+// expects the upgrade relation to be a query predicate, which has the advantage
+// of allowing multiple upgrade relations to appear in the same .ql file as
+// multiple query predicates. The query file should be named relationname.ql and
+// should be placed in the upgrade directory. It should avoid using the default
+// QLL library, and will run in the context of the *old* dbscheme.
+relationname.rel: run relationname.qlo predicatename
 ```
 
 ### Testing your scripts

@@ -15,6 +15,15 @@ private import codeql.ruby.frameworks.internal.Rails
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
 
 /**
+ * Provides modeling for ActionController, which is part of the `actionpack` gem.
+ * Version: 7.0.
+ */
+module ActionController {
+  // TODO: move the rest of this file inside this module.
+  import codeql.ruby.frameworks.actioncontroller.Filters
+}
+
+/**
  * DEPRECATED: Import `codeql.ruby.frameworks.Rails` and use `Rails::ParamsCall` instead.
  */
 deprecated class ParamsCall = Rails::ParamsCall;
@@ -215,7 +224,8 @@ private module Request {
   }
 
   abstract private class RequestInputAccess extends RequestMethodCall,
-    Http::Server::RequestInputAccess::Range {
+    Http::Server::RequestInputAccess::Range
+  {
     override string getSourceType() { result = "ActionDispatch::Request#" + this.getMethodName() }
   }
 
@@ -301,27 +311,39 @@ private module Request {
     override Http::Server::RequestInputKind getKind() { result = Http::Server::bodyInputKind() }
   }
 
-  /**
-   * A method call on `request` which returns the rack env.
-   * This is a hash containing all the information about the request. Values
-   * under keys starting with `HTTP_` are user-controlled.
-   */
-  private class EnvCall extends RequestMethodCall {
-    EnvCall() { this.getMethodName() = ["env", "filtered_env"] }
-  }
+  private module Env {
+    abstract private class Env extends DataFlow::LocalSourceNode { }
 
-  /**
-   * A read of a user-controlled parameter from the request env.
-   */
-  private class EnvHttpAccess extends DataFlow::CallNode, Http::Server::RequestInputAccess::Range {
-    EnvHttpAccess() {
-      this = any(EnvCall c).getAMethodCall("[]") and
-      this.getArgument(0).getConstantValue().getString().regexpMatch("^HTTP_.+")
+    /**
+     * A method call on `request` which returns the rack env.
+     * This is a hash containing all the information about the request. Values
+     * under keys starting with `HTTP_` are user-controlled.
+     */
+    private class RequestEnvCall extends DataFlow::CallNode, Env {
+      RequestEnvCall() { this.getMethodName() = ["env", "filtered_env"] }
     }
 
-    override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
+    private import codeql.ruby.frameworks.Rack
 
-    override string getSourceType() { result = "ActionDispatch::Request#env[]" }
+    private class RackEnv extends Env {
+      RackEnv() { this = any(Rack::AppCandidate app).getEnv().getALocalUse() }
+    }
+
+    /**
+     * A read of a user-controlled parameter from the request env.
+     */
+    private class EnvHttpAccess extends DataFlow::CallNode, Http::Server::RequestInputAccess::Range {
+      EnvHttpAccess() {
+        this = any(Env c).getAMethodCall("[]") and
+        exists(string key | key = this.getArgument(0).getConstantValue().getString() |
+          key.regexpMatch("^HTTP_.+") or key = "PATH_INFO"
+        )
+      }
+
+      override Http::Server::RequestInputKind getKind() { result = Http::Server::headerInputKind() }
+
+      override string getSourceType() { result = "ActionDispatch::Request#env[]" }
+    }
   }
 }
 
@@ -340,6 +362,21 @@ private class ActionControllerRenderToCall extends RenderToCallImpl {
           .getAMethodCall(["render_to_body", "render_to_string"])
           .asExpr()
           .getExpr()
+  }
+}
+
+/** A call to `ActionController::Renderer#render`. */
+private class RendererRenderCall extends RenderCallImpl {
+  RendererRenderCall() {
+    this =
+      [
+        // ActionController#render is an alias for ActionController::Renderer#render
+        any(ActionControllerClass c).getAnImmediateReference().getAMethodCall("render"),
+        any(ActionControllerClass c)
+            .getAnImmediateReference()
+            .getAMethodCall("renderer")
+            .getAMethodCall("render")
+      ].asExpr().getExpr()
   }
 }
 
@@ -484,15 +521,15 @@ ActionControllerClass getAssociatedControllerClass(ErbFile f) {
  * templates in `app/views/` and `app/views/layouts/`.
  */
 predicate controllerTemplateFile(ActionControllerClass cls, ErbFile templateFile) {
-  exists(string templatesPath, string sourcePrefix, string subPath, string controllerPath |
+  exists(string sourcePrefix, string subPath, string controllerPath |
     controllerPath = cls.getLocation().getFile().getRelativePath() and
-    templatesPath = templateFile.getParentContainer().getRelativePath() and
     // `sourcePrefix` is either a prefix path ending in a slash, or empty if
     // the rails app is at the source root
     sourcePrefix = [controllerPath.regexpCapture("^(.*/)app/controllers/(?:.*?)/(?:[^/]*)$", 1), ""] and
     controllerPath = sourcePrefix + "app/controllers/" + subPath + "_controller.rb" and
     (
-      templatesPath = sourcePrefix + "app/views/" + subPath or
+      sourcePrefix + "app/views/" + subPath = templateFile.getParentContainer().getRelativePath()
+      or
       templateFile.getRelativePath().matches(sourcePrefix + "app/views/layouts/" + subPath + "%")
     )
   )
@@ -520,7 +557,8 @@ class ActionControllerSkipForgeryProtectionCall extends CsrfProtectionSetting::R
  * A call to `protect_from_forgery`.
  */
 private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetting::Range,
-  DataFlow::CallNode {
+  DataFlow::CallNode
+{
   ActionControllerProtectFromForgeryCall() {
     this = actionControllerInstance().getAMethodCall("protect_from_forgery")
   }
@@ -540,7 +578,8 @@ private class ActionControllerProtectFromForgeryCall extends CsrfProtectionSetti
  * A call to `send_file`, which sends the file at the given path to the client.
  */
 private class SendFile extends FileSystemAccess::Range, Http::Server::HttpResponse::Range,
-  DataFlow::CallNode {
+  DataFlow::CallNode
+{
   SendFile() {
     this = [actionControllerInstance(), Response::response()].getAMethodCall("send_file")
   }
@@ -593,9 +632,9 @@ private module ParamsSummaries {
         // dig doesn't always return a Parameters instance, but it will if the
         // given key refers to a nested hash parameter.
         "dig", "each", "each_key", "each_pair", "each_value", "except", "keep_if", "merge",
-        "merge!", "permit", "reject", "reject!", "reverse_merge", "reverse_merge!", "select",
-        "select!", "slice", "slice!", "transform_keys", "transform_keys!", "transform_values",
-        "transform_values!", "with_defaults", "with_defaults!"
+        "merge!", "permit", "reject", "reject!", "require", "reverse_merge", "reverse_merge!",
+        "select", "select!", "slice", "slice!", "transform_keys", "transform_keys!",
+        "transform_values", "transform_values!", "with_defaults", "with_defaults!"
       ]
   }
 

@@ -3,6 +3,7 @@
  */
 
 private import IncompleteUrlSubstringSanitizationSpecific
+private import codeql.regex.HostnameRegexp::Utils
 
 /**
  * A check on a string for whether it contains a given substring, possibly with restrictions on the location of the substring.
@@ -30,9 +31,7 @@ query predicate problems(
   mayHaveStringValue(substring, target) and
   (
     // target contains a domain on a common TLD, and perhaps some other URL components
-    target
-        .regexpMatch("(?i)([a-z]*:?//)?\\.?([a-z0-9-]+\\.)+" + RegExpPatterns::getACommonTld() +
-            "(:[0-9]+)?/?")
+    target.regexpMatch("(?i)([a-z]*:?//)?\\.?([a-z0-9-]+\\.)+" + getACommonTld() + "(:[0-9]+)?/?")
     or
     // target is a HTTP URL to a domain on any TLD
     target.regexpMatch("(?i)https?://([a-z0-9-]+\\.)+([a-z]+)(:[0-9]+)?/?")

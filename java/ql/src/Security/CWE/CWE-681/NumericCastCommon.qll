@@ -16,10 +16,10 @@ class NumericNarrowingCastExpr extends CastExpr {
 
 class RightShiftOp extends Expr {
   RightShiftOp() {
-    this instanceof RShiftExpr or
-    this instanceof URShiftExpr or
-    this instanceof AssignRShiftExpr or
-    this instanceof AssignURShiftExpr
+    this instanceof RightShiftExpr or
+    this instanceof UnsignedRightShiftExpr or
+    this instanceof AssignRightShiftExpr or
+    this instanceof AssignUnsignedRightShiftExpr
   }
 
   private Expr getLhs() {

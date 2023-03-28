@@ -1,4 +1,4 @@
-all: extractor ql/lib/go.dbscheme install-deps
+all: extractor ql/lib/go.dbscheme
 
 ifeq ($(OS),Windows_NT)
 EXE = .exe
@@ -27,17 +27,12 @@ clean:
 	rm -rf tools/bin tools/linux64 tools/osx64 tools/win64 tools/net tools/opencsv
 	rm -rf $(EXTRACTOR_PACK_OUT) build/stats build/testdb
 
-DATAFLOW_BRANCH=main
-
 autoformat:
 	find ql -iregex '.*\.qll?' -print0 | xargs -0 codeql query format -qq -i
 	find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -w
 
 check-formatting:
 	test -z "$$(find . -path '**/vendor' -prune -or -type f -iname '*.go' ! -empty -print0 | xargs -0 grep -L "//\s*autoformat-ignore" | xargs gofmt -l)"
-
-install-deps:
-	bash scripts/install-deps.sh $(CODEQL_LOCK_MODE)
 
 ifeq ($(QHELP_OUT_DIR),)
 # If not otherwise specified, compile qhelp to markdown in place
@@ -75,7 +70,7 @@ tools-win64: $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES)))
 $(addsuffix .exe,$(addprefix tools/win64/,$(BINARIES))):
 	env GOOS=windows GOARCH=amd64 go build -mod=vendor -o $@ ./extractor/cli/$(basename $(@F))
 
-.PHONY: extractor-common extractor extractor-full install-deps
+.PHONY: extractor-common extractor extractor-full
 extractor-common: codeql-extractor.yml LICENSE ql/lib/go.dbscheme \
 	tools/tokenizer.jar $(CODEQL_TOOLS)
 	rm -rf $(EXTRACTOR_PACK_OUT)
@@ -83,6 +78,7 @@ extractor-common: codeql-extractor.yml LICENSE ql/lib/go.dbscheme \
 	cp codeql-extractor.yml LICENSE ql/lib/go.dbscheme ql/lib/go.dbscheme.stats $(EXTRACTOR_PACK_OUT)
 	mkdir $(EXTRACTOR_PACK_OUT)/tools
 	cp -r tools/tokenizer.jar $(CODEQL_TOOLS) $(EXTRACTOR_PACK_OUT)/tools
+	cp -r downgrades $(EXTRACTOR_PACK_OUT)
 
 extractor: extractor-common tools-codeql
 	cp -r tools/$(CODEQL_PLATFORM) $(EXTRACTOR_PACK_OUT)/tools

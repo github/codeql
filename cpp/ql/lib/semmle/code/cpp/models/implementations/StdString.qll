@@ -38,8 +38,7 @@ private class StdBasicStringIterator extends Iterator, Type {
  */
 abstract private class StdStringTaintFunction extends TaintFunction {
   /**
-   * Gets the index of a parameter to this function that is a string (or
-   * character).
+   * Gets the index of a parameter to this function that is a string.
    */
   final int getAStringParameterIndex() {
     exists(Type paramType | paramType = this.getParameter(result).getUnspecifiedType() |
@@ -50,7 +49,14 @@ abstract private class StdStringTaintFunction extends TaintFunction {
       paramType instanceof ReferenceType and
       not paramType.(ReferenceType).getBaseType() =
         this.getDeclaringType().getTemplateArgument(2).(Type).getUnspecifiedType()
-      or
+    )
+  }
+
+  /**
+   * Gets the index of a parameter to this function that is a character.
+   */
+  final int getACharParameterIndex() {
+    exists(Type paramType | paramType = this.getParameter(result).getUnspecifiedType() |
       // i.e. `std::basic_string::CharT`
       paramType = this.getDeclaringType().getTemplateArgument(0).(Type).getUnspecifiedType()
     )
@@ -79,6 +85,7 @@ private class StdStringConstructor extends Constructor, StdStringTaintFunction {
     // taint flow from any parameter of the value type to the returned object
     (
       input.isParameterDeref(this.getAStringParameterIndex()) or
+      input.isParameter(this.getACharParameterIndex()) or
       input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     (
@@ -128,7 +135,7 @@ private class StdStringPush extends StdStringTaintFunction {
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
     // flow from parameter to qualifier
-    input.isParameterDeref(0) and
+    input.isParameter(0) and
     output.isQualifierObject()
   }
 }
@@ -180,6 +187,7 @@ private class StdStringAppend extends StdStringTaintFunction {
     (
       input.isQualifierObject() or
       input.isParameterDeref(this.getAStringParameterIndex()) or
+      input.isParameter(this.getACharParameterIndex()) or
       input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     (
@@ -210,6 +218,7 @@ private class StdStringInsert extends StdStringTaintFunction {
     (
       input.isQualifierObject() or
       input.isParameterDeref(this.getAStringParameterIndex()) or
+      input.isParameter(this.getACharParameterIndex()) or
       input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     (
@@ -236,6 +245,7 @@ private class StdStringAssign extends StdStringTaintFunction {
     // flow from parameter to string itself (qualifier) and return value
     (
       input.isParameterDeref(this.getAStringParameterIndex()) or
+      input.isParameter(this.getACharParameterIndex()) or
       input.isParameter(this.getAnIteratorParameterIndex())
     ) and
     (

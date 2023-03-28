@@ -53,8 +53,6 @@ predicate shouldBeDeadEnd(ControlFlowNode n) {
   not exists(n.getFile().getRelativePath()) // TODO
   or
   n = any(ConstCase c).getValue(_) // TODO
-  or
-  n instanceof ErrorExpr // TODO
 }
 
 from ControlFlowNode n, string s

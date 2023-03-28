@@ -1,0 +1,105 @@
+edges
+| CodeInjection.rb:5:5:5:8 | code :  | CodeInjection.rb:8:10:8:13 | code |
+| CodeInjection.rb:5:5:5:8 | code :  | CodeInjection.rb:8:10:8:13 | code |
+| CodeInjection.rb:5:5:5:8 | code :  | CodeInjection.rb:20:20:20:23 | code |
+| CodeInjection.rb:5:5:5:8 | code :  | CodeInjection.rb:20:20:20:23 | code |
+| CodeInjection.rb:5:5:5:8 | code :  | CodeInjection.rb:23:21:23:24 | code |
+| CodeInjection.rb:5:5:5:8 | code :  | CodeInjection.rb:23:21:23:24 | code |
+| CodeInjection.rb:5:5:5:8 | code :  | CodeInjection.rb:29:15:29:18 | code |
+| CodeInjection.rb:5:5:5:8 | code :  | CodeInjection.rb:32:19:32:22 | code |
+| CodeInjection.rb:5:5:5:8 | code :  | CodeInjection.rb:38:24:38:27 | code :  |
+| CodeInjection.rb:5:5:5:8 | code :  | CodeInjection.rb:38:24:38:27 | code :  |
+| CodeInjection.rb:5:5:5:8 | code :  | CodeInjection.rb:41:40:41:43 | code |
+| CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:5:12:5:24 | ...[...] :  |
+| CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:5:12:5:24 | ...[...] :  |
+| CodeInjection.rb:5:12:5:24 | ...[...] :  | CodeInjection.rb:5:5:5:8 | code :  |
+| CodeInjection.rb:5:12:5:24 | ...[...] :  | CodeInjection.rb:5:5:5:8 | code :  |
+| CodeInjection.rb:38:24:38:27 | code :  | CodeInjection.rb:38:10:38:28 | call to escape |
+| CodeInjection.rb:38:24:38:27 | code :  | CodeInjection.rb:38:10:38:28 | call to escape |
+| CodeInjection.rb:78:5:78:8 | code :  | CodeInjection.rb:80:16:80:19 | code |
+| CodeInjection.rb:78:5:78:8 | code :  | CodeInjection.rb:86:10:86:37 | ... + ... |
+| CodeInjection.rb:78:5:78:8 | code :  | CodeInjection.rb:88:10:88:32 | "prefix_#{...}_suffix" |
+| CodeInjection.rb:78:5:78:8 | code :  | CodeInjection.rb:90:10:90:13 | code |
+| CodeInjection.rb:78:5:78:8 | code :  | CodeInjection.rb:90:10:90:13 | code |
+| CodeInjection.rb:78:12:78:17 | call to params :  | CodeInjection.rb:78:12:78:24 | ...[...] :  |
+| CodeInjection.rb:78:12:78:17 | call to params :  | CodeInjection.rb:78:12:78:24 | ...[...] :  |
+| CodeInjection.rb:78:12:78:24 | ...[...] :  | CodeInjection.rb:78:5:78:8 | code :  |
+| CodeInjection.rb:78:12:78:24 | ...[...] :  | CodeInjection.rb:78:5:78:8 | code :  |
+| CodeInjection.rb:101:3:102:5 | self in index [@foo] :  | CodeInjection.rb:111:3:113:5 | self in baz [@foo] :  |
+| CodeInjection.rb:101:3:102:5 | self in index [@foo] :  | CodeInjection.rb:111:3:113:5 | self in baz [@foo] :  |
+| CodeInjection.rb:105:5:105:8 | [post] self [@foo] :  | CodeInjection.rb:108:3:109:5 | self in bar [@foo] :  |
+| CodeInjection.rb:105:5:105:8 | [post] self [@foo] :  | CodeInjection.rb:108:3:109:5 | self in bar [@foo] :  |
+| CodeInjection.rb:105:12:105:17 | call to params :  | CodeInjection.rb:105:12:105:23 | ...[...] :  |
+| CodeInjection.rb:105:12:105:17 | call to params :  | CodeInjection.rb:105:12:105:23 | ...[...] :  |
+| CodeInjection.rb:105:12:105:23 | ...[...] :  | CodeInjection.rb:105:5:105:8 | [post] self [@foo] :  |
+| CodeInjection.rb:105:12:105:23 | ...[...] :  | CodeInjection.rb:105:5:105:8 | [post] self [@foo] :  |
+| CodeInjection.rb:108:3:109:5 | self in bar [@foo] :  | CodeInjection.rb:101:3:102:5 | self in index [@foo] :  |
+| CodeInjection.rb:108:3:109:5 | self in bar [@foo] :  | CodeInjection.rb:101:3:102:5 | self in index [@foo] :  |
+| CodeInjection.rb:111:3:113:5 | self in baz [@foo] :  | CodeInjection.rb:112:10:112:13 | self [@foo] :  |
+| CodeInjection.rb:111:3:113:5 | self in baz [@foo] :  | CodeInjection.rb:112:10:112:13 | self [@foo] :  |
+| CodeInjection.rb:112:10:112:13 | self [@foo] :  | CodeInjection.rb:112:10:112:13 | @foo |
+| CodeInjection.rb:112:10:112:13 | self [@foo] :  | CodeInjection.rb:112:10:112:13 | @foo |
+nodes
+| CodeInjection.rb:5:5:5:8 | code :  | semmle.label | code :  |
+| CodeInjection.rb:5:5:5:8 | code :  | semmle.label | code :  |
+| CodeInjection.rb:5:12:5:17 | call to params :  | semmle.label | call to params :  |
+| CodeInjection.rb:5:12:5:17 | call to params :  | semmle.label | call to params :  |
+| CodeInjection.rb:5:12:5:24 | ...[...] :  | semmle.label | ...[...] :  |
+| CodeInjection.rb:5:12:5:24 | ...[...] :  | semmle.label | ...[...] :  |
+| CodeInjection.rb:8:10:8:13 | code | semmle.label | code |
+| CodeInjection.rb:8:10:8:13 | code | semmle.label | code |
+| CodeInjection.rb:11:10:11:15 | call to params | semmle.label | call to params |
+| CodeInjection.rb:11:10:11:15 | call to params | semmle.label | call to params |
+| CodeInjection.rb:20:20:20:23 | code | semmle.label | code |
+| CodeInjection.rb:20:20:20:23 | code | semmle.label | code |
+| CodeInjection.rb:23:21:23:24 | code | semmle.label | code |
+| CodeInjection.rb:23:21:23:24 | code | semmle.label | code |
+| CodeInjection.rb:29:15:29:18 | code | semmle.label | code |
+| CodeInjection.rb:32:19:32:22 | code | semmle.label | code |
+| CodeInjection.rb:38:10:38:28 | call to escape | semmle.label | call to escape |
+| CodeInjection.rb:38:10:38:28 | call to escape | semmle.label | call to escape |
+| CodeInjection.rb:38:24:38:27 | code :  | semmle.label | code :  |
+| CodeInjection.rb:38:24:38:27 | code :  | semmle.label | code :  |
+| CodeInjection.rb:41:40:41:43 | code | semmle.label | code |
+| CodeInjection.rb:78:5:78:8 | code :  | semmle.label | code :  |
+| CodeInjection.rb:78:5:78:8 | code :  | semmle.label | code :  |
+| CodeInjection.rb:78:12:78:17 | call to params :  | semmle.label | call to params :  |
+| CodeInjection.rb:78:12:78:17 | call to params :  | semmle.label | call to params :  |
+| CodeInjection.rb:78:12:78:24 | ...[...] :  | semmle.label | ...[...] :  |
+| CodeInjection.rb:78:12:78:24 | ...[...] :  | semmle.label | ...[...] :  |
+| CodeInjection.rb:80:16:80:19 | code | semmle.label | code |
+| CodeInjection.rb:86:10:86:37 | ... + ... | semmle.label | ... + ... |
+| CodeInjection.rb:88:10:88:32 | "prefix_#{...}_suffix" | semmle.label | "prefix_#{...}_suffix" |
+| CodeInjection.rb:90:10:90:13 | code | semmle.label | code |
+| CodeInjection.rb:90:10:90:13 | code | semmle.label | code |
+| CodeInjection.rb:101:3:102:5 | self in index [@foo] :  | semmle.label | self in index [@foo] :  |
+| CodeInjection.rb:101:3:102:5 | self in index [@foo] :  | semmle.label | self in index [@foo] :  |
+| CodeInjection.rb:105:5:105:8 | [post] self [@foo] :  | semmle.label | [post] self [@foo] :  |
+| CodeInjection.rb:105:5:105:8 | [post] self [@foo] :  | semmle.label | [post] self [@foo] :  |
+| CodeInjection.rb:105:12:105:17 | call to params :  | semmle.label | call to params :  |
+| CodeInjection.rb:105:12:105:17 | call to params :  | semmle.label | call to params :  |
+| CodeInjection.rb:105:12:105:23 | ...[...] :  | semmle.label | ...[...] :  |
+| CodeInjection.rb:105:12:105:23 | ...[...] :  | semmle.label | ...[...] :  |
+| CodeInjection.rb:108:3:109:5 | self in bar [@foo] :  | semmle.label | self in bar [@foo] :  |
+| CodeInjection.rb:108:3:109:5 | self in bar [@foo] :  | semmle.label | self in bar [@foo] :  |
+| CodeInjection.rb:111:3:113:5 | self in baz [@foo] :  | semmle.label | self in baz [@foo] :  |
+| CodeInjection.rb:111:3:113:5 | self in baz [@foo] :  | semmle.label | self in baz [@foo] :  |
+| CodeInjection.rb:112:10:112:13 | @foo | semmle.label | @foo |
+| CodeInjection.rb:112:10:112:13 | @foo | semmle.label | @foo |
+| CodeInjection.rb:112:10:112:13 | self [@foo] :  | semmle.label | self [@foo] :  |
+| CodeInjection.rb:112:10:112:13 | self [@foo] :  | semmle.label | self [@foo] :  |
+subpaths
+#select
+| CodeInjection.rb:8:10:8:13 | code | CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:8:10:8:13 | code | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |
+| CodeInjection.rb:11:10:11:15 | call to params | CodeInjection.rb:11:10:11:15 | call to params | CodeInjection.rb:11:10:11:15 | call to params | This code execution depends on a $@. | CodeInjection.rb:11:10:11:15 | call to params | user-provided value |
+| CodeInjection.rb:20:20:20:23 | code | CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:20:20:20:23 | code | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |
+| CodeInjection.rb:23:21:23:24 | code | CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:23:21:23:24 | code | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |
+| CodeInjection.rb:29:15:29:18 | code | CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:29:15:29:18 | code | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |
+| CodeInjection.rb:32:19:32:22 | code | CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:32:19:32:22 | code | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |
+| CodeInjection.rb:38:10:38:28 | call to escape | CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:38:10:38:28 | call to escape | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |
+| CodeInjection.rb:41:40:41:43 | code | CodeInjection.rb:5:12:5:17 | call to params :  | CodeInjection.rb:41:40:41:43 | code | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |
+| CodeInjection.rb:80:16:80:19 | code | CodeInjection.rb:78:12:78:17 | call to params :  | CodeInjection.rb:80:16:80:19 | code | This code execution depends on a $@. | CodeInjection.rb:78:12:78:17 | call to params | user-provided value |
+| CodeInjection.rb:86:10:86:37 | ... + ... | CodeInjection.rb:78:12:78:17 | call to params :  | CodeInjection.rb:86:10:86:37 | ... + ... | This code execution depends on a $@. | CodeInjection.rb:78:12:78:17 | call to params | user-provided value |
+| CodeInjection.rb:88:10:88:32 | "prefix_#{...}_suffix" | CodeInjection.rb:78:12:78:17 | call to params :  | CodeInjection.rb:88:10:88:32 | "prefix_#{...}_suffix" | This code execution depends on a $@. | CodeInjection.rb:78:12:78:17 | call to params | user-provided value |
+| CodeInjection.rb:90:10:90:13 | code | CodeInjection.rb:78:12:78:17 | call to params :  | CodeInjection.rb:90:10:90:13 | code | This code execution depends on a $@. | CodeInjection.rb:78:12:78:17 | call to params | user-provided value |
+| CodeInjection.rb:112:10:112:13 | @foo | CodeInjection.rb:105:12:105:17 | call to params :  | CodeInjection.rb:112:10:112:13 | @foo | This code execution depends on a $@. | CodeInjection.rb:105:12:105:17 | call to params | user-provided value |

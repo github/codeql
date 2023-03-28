@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.shiro.codec", "Base64", False, "decode", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

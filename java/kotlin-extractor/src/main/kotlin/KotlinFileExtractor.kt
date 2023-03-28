@@ -351,18 +351,14 @@ open class KotlinFileExtractor(
             val pkgId = extractPackage(pkg)
             // TODO: There's lots of duplication between this and extractClassSource.
             // Can we share it?
+            val sourceId = useClassSource(c)
+            tw.writeClasses_or_interfaces(id, cls, pkgId, sourceId)
             if (c.isInterfaceLike) {
-                val interfaceId = id.cast<DbInterface>()
-                val sourceInterfaceId = useClassSource(c).cast<DbInterface>()
-                tw.writeInterfaces(interfaceId, cls, pkgId, sourceInterfaceId)
+                tw.writeIsInterface(id)
             } else {
-                val classId = id.cast<DbClass>()
-                val sourceClassId = useClassSource(c).cast<DbClass>()
-                tw.writeClasses(classId, cls, pkgId, sourceClassId)
-
                 val kind = c.kind
                 if (kind == ClassKind.ENUM_CLASS) {
-                    tw.writeIsEnumType(classId)
+                    tw.writeIsEnumType(id)
                 } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT && kind != ClassKind.ENUM_ENTRY) {
                     logger.errorElement("Unrecognised class kind $kind", c)
                 }
@@ -459,11 +455,11 @@ open class KotlinFileExtractor(
     }
 
     private fun extractLocalTypeDeclStmt(c: IrClass, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
-        val id = extractClassSource(c, extractDeclarations = true, extractStaticInitializer = true, extractPrivateMembers = true, extractFunctionBodies = true).cast<DbClass>()
+        val id = extractClassSource(c, extractDeclarations = true, extractStaticInitializer = true, extractPrivateMembers = true, extractFunctionBodies = true)
         extractLocalTypeDeclStmt(id, c, callable, parent, idx)
     }
 
-    private fun extractLocalTypeDeclStmt(id: Label<out DbClass>, locElement: IrElement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
+    private fun extractLocalTypeDeclStmt(id: Label<out DbClassorinterface>, locElement: IrElement, callable: Label<out DbCallable>, parent: Label<out DbStmtparent>, idx: Int) {
         val stmtId = tw.getFreshIdLabel<DbLocaltypedeclstmt>()
         tw.writeStmts_localtypedeclstmt(stmtId, parent, idx, callable)
         tw.writeIsLocalClassOrInterface(id, stmtId)
@@ -630,26 +626,22 @@ open class KotlinFileExtractor(
                 val pkg = c.packageFqName?.asString() ?: ""
                 val cls = if (c.isAnonymousObject) "" else c.name.asString()
                 val pkgId = extractPackage(pkg)
+                tw.writeClasses_or_interfaces(id, cls, pkgId, id)
                 if (c.isInterfaceLike) {
-                    val interfaceId = id.cast<DbInterface>()
-                    tw.writeInterfaces(interfaceId, cls, pkgId, interfaceId)
-
+                    tw.writeIsInterface(id)
                     if (c.kind == ClassKind.ANNOTATION_CLASS) {
-                        tw.writeIsAnnotType(interfaceId)
+                        tw.writeIsAnnotType(id)
                     }
                 } else {
-                    val classId = id.cast<DbClass>()
-                    tw.writeClasses(classId, cls, pkgId, classId)
-
                     val kind = c.kind
                     if (kind == ClassKind.ENUM_CLASS) {
-                        tw.writeIsEnumType(classId)
+                        tw.writeIsEnumType(id)
                     } else if (kind != ClassKind.CLASS && kind != ClassKind.OBJECT && kind != ClassKind.ENUM_ENTRY) {
                         logger.warnElement("Unrecognised class kind $kind", c)
                     }
 
                     if (c.isData) {
-                        tw.writeKtDataClasses(classId)
+                        tw.writeKtDataClasses(id)
                     }
                 }
 
@@ -694,7 +686,7 @@ open class KotlinFileExtractor(
                     tw.writeFieldsKotlinType(instance.id, type.kotlinResult.id)
                     tw.writeHasLocation(instance.id, locId)
                     addModifiers(instance.id, "public", "static", "final")
-                    tw.writeClass_object(id.cast<DbClass>(), instance.id)
+                    tw.writeClass_object(id, instance.id)
                 }
                 if (c.isObject) {
                     addModifiers(id, "static")
@@ -830,7 +822,7 @@ open class KotlinFileExtractor(
                             tw.writeFieldsKotlinType(instance.id, type.kotlinResult.id)
                             tw.writeHasLocation(instance.id, innerLocId)
                             addModifiers(instance.id, "public", "static", "final")
-                            tw.writeType_companion_object(parentId, instance.id, innerId.cast<DbClass>())
+                            tw.writeType_companion_object(parentId, instance.id, innerId)
                         }
                     }
 
@@ -1194,8 +1186,6 @@ open class KotlinFileExtractor(
             // n + o'th parameter, where `o` is the parameter offset caused by adding any dispatch receiver to the parameter list.
             // Note we don't need to add the extension receiver here because `useValueParameter` always assumes an extension receiver
             // will be prepended if one exists.
-            // Note we have to get the real function ID here before entering this block, because otherwise we'll misrepresent the signature of a generic
-            // function without its type variables -- for example, trying to address `f(T, List<T>)` as `f(Object, List)`.
             val realFunctionId = useFunction<DbCallable>(f)
             DeclarationStackAdjuster(f, OverriddenFunctionAttributes(id, id, locId, nonSyntheticParams, typeParameters = listOf(), isStatic = true)).use {
                 val realParamsVarId = getValueParameterLabel(id, parameterTypes.size - 2)
@@ -1389,7 +1379,7 @@ open class KotlinFileExtractor(
 
     private fun getNullabilityAnnotation(t: IrType, declOrigin: IrDeclarationOrigin, existingAnnotations: List<IrConstructorCall>, javaAnnotations: Collection<JavaAnnotation>?) =
         getNullabilityAnnotationName(t, declOrigin, existingAnnotations, javaAnnotations)?.let {
-            pluginContext.referenceClass(it)?.let { annotationClass ->
+            getClassByFqName(pluginContext, it)?.let { annotationClass ->
                 annotationClass.owner.declarations.firstIsInstanceOrNull<IrConstructor>()?.let { annotationConstructor ->
                     IrConstructorCallImpl.fromSymbolOwner(
                         UNDEFINED_OFFSET, UNDEFINED_OFFSET, annotationConstructor.returnType, annotationConstructor.symbol, 0
@@ -1711,6 +1701,10 @@ open class KotlinFileExtractor(
             when (b.kind) {
                 IrSyntheticBodyKind.ENUM_VALUES -> tw.writeKtSyntheticBody(callable, 1)
                 IrSyntheticBodyKind.ENUM_VALUEOF -> tw.writeKtSyntheticBody(callable, 2)
+                else -> {
+                    // TODO: Support IrSyntheticBodyKind.ENUM_ENTRIES
+                    logger.errorElement("Unhandled synthetic body kind " + b.kind.javaClass, b)
+                }
             }
         }
     }
@@ -2402,7 +2396,7 @@ open class KotlinFileExtractor(
 
     private fun findTopLevelFunctionOrWarn(functionFilter: String, type: String, parameterTypes: Array<String>, warnAgainstElement: IrElement): IrFunction? {
 
-        val fn = pluginContext.referenceFunctions(FqName(functionFilter))
+        val fn = getFunctionsByFqName(pluginContext, functionFilter)
             .firstOrNull { fnSymbol ->
                 fnSymbol.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type &&
                 fnSymbol.owner.valueParameters.map { it.type.classFqName?.asString() }.toTypedArray() contentEquals parameterTypes
@@ -2421,7 +2415,7 @@ open class KotlinFileExtractor(
 
     private fun findTopLevelPropertyOrWarn(propertyFilter: String, type: String, warnAgainstElement: IrElement): IrProperty? {
 
-        val prop = pluginContext.referenceProperties(FqName(propertyFilter))
+        val prop = getPropertiesByFqName(pluginContext, propertyFilter)
             .firstOrNull { it.owner.parentClassOrNull?.fqNameWhenAvailable?.asString() == type }
             ?.owner
 
@@ -4446,7 +4440,7 @@ open class KotlinFileExtractor(
     }
 
     private open inner class GeneratedClassHelper(protected val locId: Label<DbLocation>, protected val ids: GeneratedClassLabels) {
-        protected val classId = ids.type.javaResult.id.cast<DbClass>()
+        protected val classId = ids.type.javaResult.id.cast<DbClassorinterface>()
 
         /**
          * Extract a parameter to field assignment, such as `this.field = paramName` below:
@@ -4786,7 +4780,7 @@ open class KotlinFileExtractor(
 
             val locId = tw.getLocation(propertyReferenceExpr)
 
-            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
+            val javaResult = TypeResult(tw.getFreshIdLabel<DbClassorinterface>(), "", "")
             val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
             tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
             val ids = GeneratedClassLabels(
@@ -4978,7 +4972,7 @@ open class KotlinFileExtractor(
 
             val locId = tw.getLocation(functionReferenceExpr)
 
-            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
+            val javaResult = TypeResult(tw.getFreshIdLabel<DbClassorinterface>(), "", "")
             val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
             tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
             val ids = LocallyVisibleFunctionLabels(
@@ -5548,7 +5542,7 @@ open class KotlinFileExtractor(
                         return
                     }
 
-                    val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
+                    val javaResult = TypeResult(tw.getFreshIdLabel<DbClassorinterface>(), "", "")
                     val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
                     tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
                     val ids = LocallyVisibleFunctionLabels(
@@ -5657,7 +5651,7 @@ open class KotlinFileExtractor(
 
                     val idNewexpr = extractNewExpr(ids.constructor, ids.type, locId, id, 1, callable, enclosingStmt)
 
-                    tw.writeIsAnonymClass(ids.type.javaResult.id.cast<DbClass>(), idNewexpr)
+                    tw.writeIsAnonymClass(ids.type.javaResult.id.cast<DbClassorinterface>(), idNewexpr)
 
                     extractTypeAccessRecursive(e.typeOperand, locId, idNewexpr, -3, callable, enclosingStmt)
 
@@ -5703,11 +5697,11 @@ open class KotlinFileExtractor(
         compilerGeneratedKindOverride: CompilerGeneratedKinds? = null,
         superConstructorSelector: (IrFunction) -> Boolean = { it.valueParameters.isEmpty() },
         extractSuperconstructorArgs: (Label<DbSuperconstructorinvocationstmt>) -> Unit = {},
-    ): Label<out DbClass> {
+    ): Label<out DbClassorinterface> {
         // Write class
-        val id = ids.type.javaResult.id.cast<DbClass>()
+        val id = ids.type.javaResult.id.cast<DbClassorinterface>()
         val pkgId = extractPackage("")
-        tw.writeClasses(id, "", pkgId, id)
+        tw.writeClasses_or_interfaces(id, "", pkgId, id)
         tw.writeCompiler_generated(id, (compilerGeneratedKindOverride ?: CompilerGeneratedKinds.CALLABLE_CLASS).kind)
         tw.writeHasLocation(id, locId)
 
@@ -5759,7 +5753,7 @@ open class KotlinFileExtractor(
         localFunction: IrFunction,
         superTypes: List<IrType>,
         compilerGeneratedKindOverride: CompilerGeneratedKinds? = null
-    ) : Label<out DbClass> {
+    ) : Label<out DbClassorinterface> {
         with("generated class", localFunction) {
             val ids = getLocallyVisibleFunctionLabels(localFunction)
 
@@ -5796,9 +5790,6 @@ open class KotlinFileExtractor(
 
         fun findOverriddenAttributes(f: IrFunction) =
             stack.lastOrNull { it.first == f } ?.second
-
-        fun findFirst(f: (Pair<IrDeclaration, OverriddenFunctionAttributes?>) -> Boolean) =
-            stack.findLast(f)
     }
 
     data class OverriddenFunctionAttributes(

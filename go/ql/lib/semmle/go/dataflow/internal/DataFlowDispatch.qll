@@ -56,7 +56,7 @@ private predicate isConcreteInterfaceCall(DataFlow::Node call, DataFlow::Node re
  * but its concrete types can be determined by local reasoning.
  */
 private DataFlowCallable getConcreteTarget(DataFlow::CallNode call) {
-  exists(DataFlow::Node recv, string m | isConcreteInterfaceCall(call, recv, m) |
+  exists(string m | isConcreteInterfaceCall(call, _, m) |
     exists(Type concreteReceiverType |
       concreteReceiverType = getConcreteType(getInterfaceCallReceiverSource(call)) and
       result.asFunction() = concreteReceiverType.getMethod(m)

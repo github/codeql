@@ -1,0 +1,63 @@
+edges
+| UncontrolledFormatString.swift:30:5:30:35 | [summary param] 0 in NSString.init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(string:) :  |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:70:28:70:28 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:73:28:73:28 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:74:28:74:28 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:76:28:76:28 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:77:28:77:28 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:78:28:78:28 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:79:46:79:46 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:81:47:81:47 | tainted :  |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:82:65:82:65 | tainted :  |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:84:54:84:54 | tainted :  |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:85:72:85:72 | tainted :  |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:88:11:88:11 | tainted |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:91:61:91:61 | tainted |
+| UncontrolledFormatString.swift:81:47:81:47 | tainted :  | UncontrolledFormatString.swift:30:5:30:35 | [summary param] 0 in NSString.init(string:) :  |
+| UncontrolledFormatString.swift:81:47:81:47 | tainted :  | UncontrolledFormatString.swift:81:30:81:54 | call to NSString.init(string:) |
+| UncontrolledFormatString.swift:82:65:82:65 | tainted :  | UncontrolledFormatString.swift:30:5:30:35 | [summary param] 0 in NSString.init(string:) :  |
+| UncontrolledFormatString.swift:82:65:82:65 | tainted :  | UncontrolledFormatString.swift:82:48:82:72 | call to NSString.init(string:) |
+| UncontrolledFormatString.swift:84:54:84:54 | tainted :  | UncontrolledFormatString.swift:30:5:30:35 | [summary param] 0 in NSString.init(string:) :  |
+| UncontrolledFormatString.swift:84:54:84:54 | tainted :  | UncontrolledFormatString.swift:84:37:84:61 | call to NSString.init(string:) |
+| UncontrolledFormatString.swift:85:72:85:72 | tainted :  | UncontrolledFormatString.swift:30:5:30:35 | [summary param] 0 in NSString.init(string:) :  |
+| UncontrolledFormatString.swift:85:72:85:72 | tainted :  | UncontrolledFormatString.swift:85:55:85:79 | call to NSString.init(string:) |
+nodes
+| UncontrolledFormatString.swift:30:5:30:35 | [summary param] 0 in NSString.init(string:) :  | semmle.label | [summary param] 0 in NSString.init(string:) :  |
+| UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | semmle.label | call to String.init(contentsOf:) :  |
+| UncontrolledFormatString.swift:70:28:70:28 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:73:28:73:28 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:74:28:74:28 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:76:28:76:28 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:77:28:77:28 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:78:28:78:28 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:79:46:79:46 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:81:30:81:54 | call to NSString.init(string:) | semmle.label | call to NSString.init(string:) |
+| UncontrolledFormatString.swift:81:47:81:47 | tainted :  | semmle.label | tainted :  |
+| UncontrolledFormatString.swift:82:48:82:72 | call to NSString.init(string:) | semmle.label | call to NSString.init(string:) |
+| UncontrolledFormatString.swift:82:65:82:65 | tainted :  | semmle.label | tainted :  |
+| UncontrolledFormatString.swift:84:37:84:61 | call to NSString.init(string:) | semmle.label | call to NSString.init(string:) |
+| UncontrolledFormatString.swift:84:54:84:54 | tainted :  | semmle.label | tainted :  |
+| UncontrolledFormatString.swift:85:55:85:79 | call to NSString.init(string:) | semmle.label | call to NSString.init(string:) |
+| UncontrolledFormatString.swift:85:72:85:72 | tainted :  | semmle.label | tainted :  |
+| UncontrolledFormatString.swift:88:11:88:11 | tainted | semmle.label | tainted |
+| UncontrolledFormatString.swift:91:61:91:61 | tainted | semmle.label | tainted |
+| file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(string:) :  | semmle.label | [summary] to write: return (return) in NSString.init(string:) :  |
+subpaths
+| UncontrolledFormatString.swift:81:47:81:47 | tainted :  | UncontrolledFormatString.swift:30:5:30:35 | [summary param] 0 in NSString.init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(string:) :  | UncontrolledFormatString.swift:81:30:81:54 | call to NSString.init(string:) |
+| UncontrolledFormatString.swift:82:65:82:65 | tainted :  | UncontrolledFormatString.swift:30:5:30:35 | [summary param] 0 in NSString.init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(string:) :  | UncontrolledFormatString.swift:82:48:82:72 | call to NSString.init(string:) |
+| UncontrolledFormatString.swift:84:54:84:54 | tainted :  | UncontrolledFormatString.swift:30:5:30:35 | [summary param] 0 in NSString.init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(string:) :  | UncontrolledFormatString.swift:84:37:84:61 | call to NSString.init(string:) |
+| UncontrolledFormatString.swift:85:72:85:72 | tainted :  | UncontrolledFormatString.swift:30:5:30:35 | [summary param] 0 in NSString.init(string:) :  | file://:0:0:0:0 | [summary] to write: return (return) in NSString.init(string:) :  | UncontrolledFormatString.swift:85:55:85:79 | call to NSString.init(string:) |
+#select
+| UncontrolledFormatString.swift:70:28:70:28 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:70:28:70:28 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:73:28:73:28 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:73:28:73:28 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:74:28:74:28 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:74:28:74:28 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:76:28:76:28 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:76:28:76:28 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:77:28:77:28 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:77:28:77:28 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:78:28:78:28 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:78:28:78:28 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:79:46:79:46 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:79:46:79:46 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:81:30:81:54 | call to NSString.init(string:) | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:81:30:81:54 | call to NSString.init(string:) | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:82:48:82:72 | call to NSString.init(string:) | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:82:48:82:72 | call to NSString.init(string:) | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:84:37:84:61 | call to NSString.init(string:) | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:84:37:84:61 | call to NSString.init(string:) | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:85:55:85:79 | call to NSString.init(string:) | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:85:55:85:79 | call to NSString.init(string:) | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:88:11:88:11 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:88:11:88:11 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |
+| UncontrolledFormatString.swift:91:61:91:61 | tainted | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) :  | UncontrolledFormatString.swift:91:61:91:61 | tainted | This format string depends on $@. | UncontrolledFormatString.swift:64:24:64:77 | call to String.init(contentsOf:) | this user-provided value |

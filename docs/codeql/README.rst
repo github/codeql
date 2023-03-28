@@ -12,6 +12,8 @@ see https://docutils.sourceforge.io/rst.html.
 
 For more information on Sphinx, see https://www.sphinx-doc.org.
 
+For information on contributing to CodeQL documentation, see the `contributing guide </CONTRIBUTING.md>`__.
+
 Project structure
 *****************
 

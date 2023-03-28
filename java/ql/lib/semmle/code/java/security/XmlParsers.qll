@@ -198,7 +198,8 @@ private class DocumentBuilderConstruction extends MethodAccess {
   }
 }
 
-private class SafeDocumentBuilderFactoryToDocumentBuilderConstructionFlowConfig extends DataFlow3::Configuration {
+private class SafeDocumentBuilderFactoryToDocumentBuilderConstructionFlowConfig extends DataFlow3::Configuration
+{
   SafeDocumentBuilderFactoryToDocumentBuilderConstructionFlowConfig() {
     this = "XmlParsers::SafeDocumentBuilderFactoryToDocumentBuilderConstructionFlowConfig"
   }

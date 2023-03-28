@@ -345,21 +345,16 @@ module TaintedPath {
    *
    * This is relevant for paths that are known to be normalized.
    */
-  class StartsWithDotDotSanitizer extends BarrierGuardNode {
-    StringOps::StartsWith startsWith;
-
-    StartsWithDotDotSanitizer() {
-      this = startsWith and
-      isDotDotSlashPrefix(startsWith.getSubstring())
-    }
+  class StartsWithDotDotSanitizer extends BarrierGuardNode instanceof StringOps::StartsWith {
+    StartsWithDotDotSanitizer() { isDotDotSlashPrefix(super.getSubstring()) }
 
     override predicate blocks(boolean outcome, Expr e, DataFlow::FlowLabel label) {
       // Sanitize in the false case for:
       //   .startsWith(".")
       //   .startsWith("..")
       //   .startsWith("../")
-      outcome = startsWith.getPolarity().booleanNot() and
-      e = startsWith.getBaseString().asExpr() and
+      outcome = super.getPolarity().booleanNot() and
+      e = super.getBaseString().asExpr() and
       exists(Label::PosixPath posixPath | posixPath = label |
         posixPath.isNormalized() and
         posixPath.isRelative()
@@ -843,6 +838,12 @@ module TaintedPath {
     or
     exists(API::CallNode call | call = API::moduleImport("slash").getACall() |
       src = call.getArgument(0) and
+      dst = call and
+      srclabel = dstlabel
+    )
+    or
+    exists(HtmlSanitizerCall call |
+      src = call.getInput() and
       dst = call and
       srclabel = dstlabel
     )

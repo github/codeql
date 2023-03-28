@@ -5,14 +5,14 @@ AlternateInterpolatedStrings.cs:
 #    5|     1: [AssignExpr] ... = ...
 #    5|       0: [FieldAccess] access to field s1
 #    5|       1: [InterpolatedStringExpr] $"..."
-#    5|         0: [StringLiteral] "C:"
+#    5|         0: [StringLiteralUtf16] "C:"
 #    5|         1: [IntLiteral] 12
 #    6|   6: [Field] s2
 #    6|     -1: [TypeMention] string
 #    6|     1: [AssignExpr] ... = ...
 #    6|       0: [FieldAccess] access to field s2
 #    6|       1: [InterpolatedStringExpr] $"..."
-#    6|         0: [StringLiteral] "C:"
+#    6|         0: [StringLiteralUtf16] "C:"
 #    6|         1: [IntLiteral] 12
 AsyncStreams.cs:
 #    6| [Class] AsyncStreams
@@ -80,7 +80,7 @@ DefaultInterfaceMethods.cs:
 #    7|   5: [Property] Greeting
 #    7|     -1: [TypeMention] string
 #    9|     3: [Getter] get_Greeting
-#    9|       4: [StringLiteral] "Hello"
+#    9|       4: [StringLiteralUtf16] "Hello"
 #   10|     4: [Setter] set_Greeting
 #-----|       2: (Parameters)
 #   10|         0: [Parameter] value
@@ -93,7 +93,7 @@ DefaultInterfaceMethods.cs:
 #   13|     4: [AddExpr] ... + ...
 #   13|       0: [AddExpr] ... + ...
 #   13|         0: [PropertyCall] access to property Greeting
-#   13|         1: [StringLiteral] " "
+#   13|         1: [StringLiteralUtf16] " "
 #   13|       1: [ParameterAccess] access to parameter name
 #   15|   7: [Property] GreetingString
 #   15|     -1: [TypeMention] string
@@ -108,12 +108,12 @@ DefaultInterfaceMethods.cs:
 #   22|   5: [Property] Name
 #   22|     -1: [TypeMention] string
 #   22|     3: [Getter] get_Name
-#   22|       4: [StringLiteral] "Petra"
+#   22|       4: [StringLiteralUtf16] "Petra"
 #   24|   6: [Property] Greeting
 #   24|     -1: [TypeMention] IPerson
 #   24|     -1: [TypeMention] string
 #   24|     3: [Getter] get_Greeting
-#   24|       4: [StringLiteral] "Howdy"
+#   24|       4: [StringLiteralUtf16] "Howdy"
 #   24|     4: [Setter] set_Greeting
 #-----|       2: (Parameters)
 #   24|         0: [Parameter] value
@@ -353,7 +353,7 @@ NullableRefTypes.cs:
 #   84|         0: [LocalVariableDeclAndInitExpr] String x = ...
 #   84|           -1: [TypeMention] string
 #   84|           0: [LocalVariableAccess] access to local variable x
-#   84|           1: [StringLiteral] "source"
+#   84|           1: [StringLiteralUtf16] "source"
 #   85|       1: [LocalVariableDeclStmt] ... ...;
 #   85|         0: [LocalVariableDeclAndInitExpr] String y = ...
 #   85|           -1: [TypeMention] string
@@ -381,7 +381,7 @@ NullableRefTypes.cs:
 #   93|         0: [LocalVariableDeclAndInitExpr] String x = ...
 #   93|           -1: [TypeMention] string
 #   93|           0: [LocalVariableAccess] access to local variable x
-#   93|           1: [StringLiteral] "source"
+#   93|           1: [StringLiteralUtf16] "source"
 #   94|       1: [LocalVariableDeclStmt] ... ...;
 #   94|         0: [LocalVariableDeclAndInitExpr] String y = ...
 #   94|           -1: [TypeMention] string
@@ -592,7 +592,7 @@ NullableRefTypes.cs:
 #  187|           0: [ExprStmt] ...;
 #  187|             0: [AssignExpr] ... = ...
 #  187|               0: [LocalVariableAccess] access to local variable x
-#  187|               1: [StringLiteral] "not null any more"
+#  187|               1: [StringLiteralUtf16] "not null any more"
 #  190|       3: [ExprStmt] ...;
 #  190|         0: [MethodCall] call to method Check
 #  190|           0: [LocalVariableAccess] access to local variable x
@@ -609,7 +609,7 @@ NullableRefTypes.cs:
 #  203|           0: [ExprStmt] ...;
 #  203|             0: [AssignExpr] ... = ...
 #  203|               0: [LocalVariableAccess] access to local variable y
-#  203|               1: [StringLiteral] "not null"
+#  203|               1: [StringLiteralUtf16] "not null"
 #  198|         0: [BlockStmt] {...}
 #  199|           0: [ThrowStmt] throw ...;
 #  199|             0: [ObjectCreation] object creation of type ArgumentException
@@ -721,7 +721,7 @@ UsingDeclarations.cs:
 #    8|           0: [LocalVariableAccess] access to local variable file1
 #    8|           1: [ObjectCreation] object creation of type FileStream
 #    8|             -1: [TypeMention] FileStream
-#    8|             0: [StringLiteral] "..."
+#    8|             0: [StringLiteralUtf16] "..."
 #    8|             1: [MemberConstantAccess] access to constant Open
 #    8|               -1: [TypeAccess] access to type FileMode
 #    8|                 0: [TypeMention] FileMode
@@ -730,7 +730,7 @@ UsingDeclarations.cs:
 #    8|           0: [LocalVariableAccess] access to local variable file2
 #    8|           1: [ObjectCreation] object creation of type FileStream
 #    8|             -1: [TypeMention] FileStream
-#    8|             0: [StringLiteral] "..."
+#    8|             0: [StringLiteralUtf16] "..."
 #    8|             1: [MemberConstantAccess] access to constant Open
 #    8|               -1: [TypeAccess] access to type FileMode
 #    8|                 0: [TypeMention] FileMode
@@ -740,7 +740,7 @@ UsingDeclarations.cs:
 #   10|           0: [LocalVariableAccess] access to local variable file4
 #   10|           1: [ObjectCreation] object creation of type FileStream
 #   10|             -1: [TypeMention] FileStream
-#   10|             0: [StringLiteral] "..."
+#   10|             0: [StringLiteralUtf16] "..."
 #   10|             1: [MemberConstantAccess] access to constant Open
 #   10|               -1: [TypeAccess] access to type FileMode
 #   10|                 0: [TypeMention] FileMode
@@ -749,7 +749,7 @@ UsingDeclarations.cs:
 #   10|           0: [LocalVariableAccess] access to local variable file3
 #   10|           1: [ObjectCreation] object creation of type FileStream
 #   10|             -1: [TypeMention] FileStream
-#   10|             0: [StringLiteral] "..."
+#   10|             0: [StringLiteralUtf16] "..."
 #   10|             1: [MemberConstantAccess] access to constant Open
 #   10|               -1: [TypeAccess] access to type FileMode
 #   10|                 0: [TypeMention] FileMode
@@ -757,7 +757,7 @@ UsingDeclarations.cs:
 #   14|       2: [UsingBlockStmt] using (...) {...}
 #   14|         0: [ObjectCreation] object creation of type FileStream
 #   14|           -1: [TypeMention] FileStream
-#   14|           0: [StringLiteral] "..."
+#   14|           0: [StringLiteralUtf16] "..."
 #   14|           1: [MemberConstantAccess] access to constant Open
 #   14|             -1: [TypeAccess] access to type FileMode
 #   14|               0: [TypeMention] FileMode
@@ -864,7 +864,7 @@ patterns.cs:
 #   39|           0: [MethodCall] call to method WriteLine
 #   39|             -1: [TypeAccess] access to type Console
 #   39|               0: [TypeMention] Console
-#   39|             0: [StringLiteral] "Hit the breakpoint"
+#   39|             0: [StringLiteralUtf16] "Hit the breakpoint"
 #   40|         2: [BreakStmt] break;
 #   41|         3: [CaseStmt] case ...:
 #   41|           0: [VariablePatternExpr] MyStruct ms2
@@ -877,7 +877,7 @@ patterns.cs:
 #   42|           0: [MethodCall] call to method WriteLine
 #   42|             -1: [TypeAccess] access to type Console
 #   42|               0: [TypeMention] Console
-#   42|             0: [StringLiteral] "Missed the breakpoint"
+#   42|             0: [StringLiteralUtf16] "Missed the breakpoint"
 #   43|         5: [BreakStmt] break;
 #   46|       2: [SwitchStmt] switch (...) {...}
 #   46|         0: [LocalVariableAccess] access to local variable s
@@ -908,7 +908,7 @@ patterns.cs:
 #   52|           0: [MethodCall] call to method WriteLine
 #   52|             -1: [TypeAccess] access to type Console
 #   52|               0: [TypeMention] Console
-#   52|             0: [StringLiteral] "Hit the breakpoint"
+#   52|             0: [StringLiteralUtf16] "Hit the breakpoint"
 #   53|         5: [BreakStmt] break;
 #   54|         6: [CaseStmt] case ...:
 #   54|           0: [RecursivePatternExpr] { ... }
@@ -970,7 +970,7 @@ patterns.cs:
 #   71|           0: [MethodCall] call to method WriteLine
 #   71|             -1: [TypeAccess] access to type Console
 #   71|               0: [TypeMention] Console
-#   71|             0: [StringLiteral] "Hit the breakpoint"
+#   71|             0: [StringLiteralUtf16] "Hit the breakpoint"
 #   72|         5: [BreakStmt] break;
 #   76|       4: [SwitchStmt] switch (...) {...}
 #   76|         0: [ObjectCreation] object creation of type Object
@@ -1039,10 +1039,10 @@ patterns.cs:
 #  101|               1: [GTExpr] ... > ...
 #  101|                 0: [LocalVariableAccess] access to local variable y
 #  101|                 1: [IntLiteral] 10
-#  101|               2: [StringLiteral] "large"
+#  101|               2: [StringLiteralUtf16] "large"
 #  102|             1: [SwitchCaseExpr] ... => ...
 #  102|               0: [DiscardPatternExpr] _
-#  102|               2: [StringLiteral] "small"
+#  102|               2: [StringLiteralUtf16] "small"
 #  105|       1: [LocalVariableDeclStmt] ... ...;
 #  105|         0: [LocalVariableDeclAndInitExpr] Int32 x0 = ...
 #  105|           -1: [TypeMention] int
@@ -1204,7 +1204,7 @@ patterns.cs:
 #  147|               0: [MethodCall] call to method WriteLine
 #  147|                 -1: [TypeAccess] access to type Console
 #  147|                   0: [TypeMention] Console
-#  147|                 0: [StringLiteral] "Invalid operation"
+#  147|                 0: [StringLiteralUtf16] "Invalid operation"
 #  151|   9: [Struct] MyStruct
 #  153|     5: [Field] X
 #  153|       -1: [TypeMention] int

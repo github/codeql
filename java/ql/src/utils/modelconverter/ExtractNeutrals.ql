@@ -10,5 +10,5 @@ import semmle.code.java.dataflow.ExternalFlow
 from string package, string type, string name, string signature, string provenance
 where
   neutralModel(package, type, name, signature, provenance) and
-  provenance != "generated"
+  provenance != ["generated", "ai-generated"]
 select package, type, name, signature, provenance order by package, type, name, signature

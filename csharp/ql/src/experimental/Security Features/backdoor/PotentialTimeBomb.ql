@@ -6,6 +6,7 @@
  * @problem.severity warning
  * @id cs/backdoor/potential-time-bomb
  * @tags security
+ *       experimental
  *       solorigate
  */
 
@@ -79,7 +80,8 @@ class DateTimeStruct extends Struct {
 /**
  * Dataflow configuration to find flow from a GetLastWriteTime source to a DateTime arithmetic operation
  */
-private class FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable extends TaintTracking::Configuration {
+private class FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable extends TaintTracking::Configuration
+{
   FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable() {
     this = "FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable"
   }
@@ -102,7 +104,8 @@ private class FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable extend
 /**
  * Dataflow configuration to find flow from a DateTime arithmetic operation to a DateTime comparison operation
  */
-private class FlowsFromTimeSpanArithmeticToTimeComparisonCallable extends TaintTracking::Configuration {
+private class FlowsFromTimeSpanArithmeticToTimeComparisonCallable extends TaintTracking::Configuration
+{
   FlowsFromTimeSpanArithmeticToTimeComparisonCallable() {
     this = "FlowsFromTimeSpanArithmeticToTimeComparisonCallable"
   }
@@ -124,7 +127,8 @@ private class FlowsFromTimeSpanArithmeticToTimeComparisonCallable extends TaintT
 /**
  * Dataflow configuration to find flow from a DateTime comparison operation to a Selection Statement (such as an If)
  */
-private class FlowsFromTimeComparisonCallableToSelectionStatementCondition extends TaintTracking::Configuration {
+private class FlowsFromTimeComparisonCallableToSelectionStatementCondition extends TaintTracking::Configuration
+{
   FlowsFromTimeComparisonCallableToSelectionStatementCondition() {
     this = "FlowsFromTimeComparisonCallableToSelectionStatementCondition"
   }

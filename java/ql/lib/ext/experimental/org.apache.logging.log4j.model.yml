@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extExperimentalSinkModel
+      extensible: experimentalSinkModel
     data:
       - ["org.apache.logging.log4j", "CloseableThreadContext", False, "put", "", "", "Argument[1]", "log4j", "manual", "log4j-injection"]
       - ["org.apache.logging.log4j", "CloseableThreadContext", False, "putAll", "", "", "Argument[0]", "log4j", "manual", "log4j-injection"]

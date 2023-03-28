@@ -21,9 +21,7 @@ class JmsFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "tainted" and
-    exists(DataFlow::PathNode source, DataFlow::PathNode sink, TestConfig conf |
-      conf.hasFlowPath(source, sink)
-    |
+    exists(DataFlow::PathNode sink, TestConfig conf | conf.hasFlowPath(_, sink) |
       location = sink.getNode().getLocation() and element = sink.getNode().toString() and value = ""
     )
   }

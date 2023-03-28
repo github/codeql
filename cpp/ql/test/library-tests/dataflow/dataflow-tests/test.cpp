@@ -63,7 +63,7 @@ namespace std {
   template<class T> T&& move(T& t) noexcept; // simplified signature
 }
 
-void identityOperations(int* source1) {
+void identityOperations(int* source1) { // $ ast-def=source1 
   const int *x1 = std::move(source1);
   int* x2 = const_cast<int*>(x1);
   int* x3 = (x2);
@@ -71,9 +71,9 @@ void identityOperations(int* source1) {
   sink(x4);  // $ ast,ir
 }
 
-void trackUninitialized() { // NOTE: uninitialized tracking for IR dataflow is deprecated
+void trackUninitialized() {
   int u1;
-  sink(u1); // $ ast
+  sink(u1); // $ ast,ir
   u1 = 2;
   sink(u1); // clean
 
@@ -81,15 +81,15 @@ void trackUninitialized() { // NOTE: uninitialized tracking for IR dataflow is d
   sink(i1); // clean
 
   int u2;
-  sink(i1 ? u2 : 1); // $ ast
+  sink(i1 ? u2 : 1); // $ ast,ir
   i1 = u2;
-  sink(i1); // $ ast
+  sink(i1); // $ ast,ir
 }
 
-void local_references(int &source1, int clean1) {
+void local_references(int &source1, int clean1) { // $ ast-def=source1 ir-def=*source1
   sink(source1); // $ ast,ir
   source1 = clean1;
-  sink(source1); // $ SPURIOUS: ir
+  sink(source1); // clean
 
   // The next two test cases show that the analysis does not understand the "&"
   // on the type at all. It does not understand that the initialization creates
@@ -111,17 +111,17 @@ void local_references(int &source1, int clean1) {
   }
 }
 
-int alwaysAssignSource(int *out) {
+int alwaysAssignSource(int *out) { // $ ast-def=out ir-def=*out 
   *out = source();
   return 0;
 }
 
-int alwaysAssign0(int *out) {
+int alwaysAssign0(int *out) { // $ ast-def=out ir-def=*out
   *out = 0;
   return 0;
 }
 
-int alwaysAssignInput(int *out, int in) {
+int alwaysAssignInput(int *out, int in) { // $ ast-def=out ir-def=*out
   *out = in;
   return 0;
 }
@@ -398,14 +398,14 @@ void flowThroughMemcpy_blockvar_with_local_flow(int source1, int b) {
 void cleanedByMemcpy_ssa(int clean1) { // currently modeled with BlockVar, not SSA
   int tmp;
   memcpy(&tmp, &clean1, sizeof tmp);
-  sink(tmp); // $ SPURIOUS: ast
+  sink(tmp); // $ SPURIOUS: ast,ir
 }
 
 void cleanedByMemcpy_blockvar(int clean1) {
   int tmp;
   int *capture = &tmp;
   memcpy(&tmp, &clean1, sizeof tmp);
-  sink(tmp); // $ SPURIOUS: ast
+  sink(tmp); // $ SPURIOUS: ast,ir
 }
 
 void intRefSource(int &ref_source);
@@ -415,33 +415,40 @@ void intArraySource(int ref_source[], size_t len);
 void intRefSourceCaller() {
   int local;
   intRefSource(local);
-  sink(local); // $ ast=416:7 ast=417:16 MISSING: ir
+  sink(local); // $ ast,ir=416:7 ast,ir=417:16
 }
 
 void intPointerSourceCaller() {
   int local;
   intPointerSource(&local);
-  sink(local); // $ ast=422:7 ast=423:20 MISSING: ir
+  sink(local); // $ ast,ir=422:7 ast,ir=423:20
 }
+
+
+
+
+
 
 void intPointerSourceCaller2() {
   int local[1];
   intPointerSource(local);
-  sink(local); // $ ast=428:7 ast=429:20 MISSING: ir
-  sink(*local); // $ ast=428:7 ast=429:20 MISSING: ir
+  sink(local); // $ ast=434:20 ir SPURIOUS: ast=433:7
+  sink(*local); // $ ast=434:20 ir SPURIOUS: ast=433:7
 }
 
 void intArraySourceCaller() {
   int local;
   intArraySource(&local, 1);
-  sink(local); // $ ast=435:7 ast=436:18 MISSING: ir
+  sink(local); // $ ast,ir=440:7 ast,ir=441:18
 }
 
+// The IR results for this test _are_ equivalent to the AST ones.
+// See the comment on `intPointerSourceCaller2` for an explanation.
 void intArraySourceCaller2() {
   int local[2];
   intArraySource(local, 2);
-  sink(local); // $ ast=441:7 ast=442:18 MISSING: ir
-  sink(*local); // $ ast=441:7 ast=442:18 MISSING: ir
+  sink(local); // $ ast=449:18 ir SPURIOUS: ast=448:7
+  sink(*local); // $ ast=449:18 ir SPURIOUS: ast=448:7
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -461,7 +468,7 @@ void throughStmtExpr(int source1, int clean1) {
   sink(local); // $ ast,ir
 }
 
-void intOutparamSource(int *p) {
+void intOutparamSource(int *p) { // $ ast-def=p ir-def=*p
   *p = source();
 }
 
@@ -477,7 +484,7 @@ struct MyStruct {
   int* content; 
 };
 
-void local_field_flow_def_by_ref_steps_with_local_flow(MyStruct * s) {
+void local_field_flow_def_by_ref_steps_with_local_flow(MyStruct * s) { // $ ast-def=s 
   writes_to_content(s->content);
   int* p_content = s->content;
   sink(*p_content);
@@ -495,7 +502,7 @@ void regression_with_phi_flow(int clean1) {
   }
 }
 
-int intOutparamSourceMissingReturn(int *p) {
+int intOutparamSourceMissingReturn(int *p) { // $ ast-def=p ir-def=*p
   *p = source();
   // return deliberately omitted to test IR dataflow behavior
 }
@@ -504,4 +511,120 @@ void viaOutparamMissingReturn() {
   int x = 0;
   intOutparamSourceMissingReturn(&x);
   sink(x); // $ ast,ir
+}
+
+void uncertain_definition() {
+  int stackArray[2];
+  int clean = 0;
+  stackArray[0] = source();
+  stackArray[1] = clean;
+  sink(stackArray[0]); // $ ast=519:19 ir SPURIOUS: ast=517:7
+}
+
+void set_through_const_pointer(int x, const int **e) // $ ast-def=e ir-def=**e ir-def=*e
+{
+  *e = &x;
+}
+
+void test_set_through_const_pointer(int *e) // $ ast-def=e
+{
+  set_through_const_pointer(source(), &e);
+  sink(*e); // $ ir MISSING: ast
+}
+
+void sink_then_source_1(int* p) { // $ ast-def=p ir-def=*p
+    sink(*p); // $ ir // Flow from the unitialized x to the dereference.
+    *p = source();
+}
+
+void sink_then_source_2(int* p, int y) { // $ ast-def=p ir-def=*p
+    sink(y); // $ SPURIOUS: ast ir
+    *p = source();
+}
+
+void test_sink_then_source() {
+  {
+    int x;
+    sink_then_source_1(&x);
+  }
+  {
+    int y;
+    sink_then_source_2(&y, y);
+  }
+}
+
+int* indirect_source();
+
+namespace IndirectFlowThroughGlobals {
+  int* globalInt;
+
+  void taintGlobal() {
+    globalInt = indirect_source();
+  }
+
+  void f() {
+    sink(*globalInt); // $ ir=562:17 ir=576:17 MISSING: ast=562:17 ast=576:17
+    taintGlobal();
+    sink(*globalInt); // $ ir=562:17 ir=576:17 MISSING: ast=562:17 ast=576:17
+  }
+
+  void calledAfterTaint() {
+    sink(*globalInt); // $ ir=562:17 ir=576:17 MISSING: ast=562:17 ast=576:17
+  }
+
+  void taintAndCall() {
+    globalInt = indirect_source();
+    calledAfterTaint();
+    sink(*globalInt); // $ ir=562:17 ir=576:17 MISSING: ast=562:17 ast=576:17
+  }
+}
+
+void write_to_param(int* x) { // $ ast-def=x
+  int s = source();
+  x = &s;
+}
+
+void test_write_to_param() {
+  int x = 0;
+  write_to_param(&x);
+  sink(x); // $ SPURIOUS: ast
+}
+
+void test_indirect_flow_to_array() {
+  int* p = indirect_source();
+  int* xs[2];
+  xs[0] = p;
+  sink(*xs[0]); // $ ir MISSING: ast // the IR source is the indirection of `indirect_source()`.
+}
+
+void test_def_by_ref_followed_by_uncertain_write_array(int* p) { // $ ast-def=p ir-def=*p
+  intPointerSource(p);
+  p[10] = 0;
+  sink(*p); // $ ir MISSING: ast
+}
+
+void test_def_by_ref_followed_by_uncertain_write_pointer(int* p) { // $ ast-def=p ir-def=*p
+  intPointerSource(p);
+  *p = 0;
+  sink(*p); // $ ir MISSING: ast
+}
+
+void test_flow_through_void_double_pointer(int *p) // $ ast-def=p
+{
+  intPointerSource(p);
+  void* q = (void*)&p;
+  sink(**(int**)q); // $ ir MISSING: ast
+}
+
+void use(int *);
+
+void test_def_via_phi_read(bool b)
+{
+  static int buffer[10]; // This is missing an initialisation in IR dataflow
+  if (b)
+  {
+    use(buffer);
+  }
+  intPointerSource(buffer);
+  sink(buffer); // $ ast,ir
 }

@@ -16,9 +16,9 @@ For example, to declare a module ``M`` as private, you could use:
     }
 
 Note that some annotations act on an entity itself, whilst others act on a particular *name* for the entity:
-  - Act on an **entity**: ``abstract``, ``cached``, ``external``, ``transient``, ``final``, ``override``, ``pragma``, ``language``,
+  - Act on an **entity**: ``abstract``, ``cached``, ``external``, ``transient``, ``override``, ``pragma``, ``language``,
     and ``bindingset``
-  - Act on a **name**: ``deprecated``, ``library``, ``private``, and ``query``
+  - Act on a **name**: ``deprecated``, ``library``, ``private``, ``final``, and ``query``
 
 For example, if you annotate an entity with ``private``, then only that particular name is
 private. You could still access that entity under a different name (using an :ref:`alias <aliases>`).
@@ -179,11 +179,11 @@ without ``external``, the compiler will report an error.
 ``final``
 =========
 
-**Available for**: |classes|, |member predicates|, |fields|
+**Available for**: |classes|, |type-aliases|, |member predicates|, |fields|
 
-The ``final`` annotation is applied to entities that can't be overridden or extended.
-In other words, a final class can't act as a base type for any other types, and a final
-predicate or field can't be overridden in a subclass.
+The ``final`` annotation is applied to names that can't be overridden or extended.
+In other words, a final class or a final type alias can't act as a base type for any other types,
+and a final predicate or field can't be overridden in a subclass.
 
 This is useful if you don't want subclasses to change the meaning of a particular entity.
 
@@ -288,6 +288,39 @@ The ``pragma[inline]`` annotation tells the QL optimizer to always inline the an
 into the places where it is called. This can be useful when a predicate body is very expensive to 
 compute entirely, as it ensures that the predicate is evaluated with the other contextual information
 at the places where it is called.
+
+``pragma[inline_late]``
+-----------------------
+
+**Available for**: |non-member predicates|
+
+The ``pragma[inline_late]`` annotation must be used in conjunction with a
+``bindingset[...]`` pragma. Together, they tell the QL optimiser to use the
+specified binding set for assessing join orders both in the body of the
+annotated predicate and at call sites and to inline the body into call sites
+after join ordering. This can be useful to prevent the optimiser from choosing
+a sub-optimal join order.
+
+For instance, in the example below, the ``pragma[inline_late]`` and
+``bindingset[x]`` annotations specifiy that calls to ``p`` should be join ordered
+in a context where ``x`` is already bound. This forces the join orderer to
+order ``q(x)`` before ``p(x)``, which is more computationally efficient
+than ordering ``p(x)`` before ``q(x)``.
+
+.. code-block:: ql
+
+	bindingset[x]
+	pragma[inline_late]
+	predicate p(int x) { x in [0..100000000] }
+
+	predicate q(int x) { x in [0..10000] }
+
+	from int x
+	where p(x) and q(x)
+	select x
+
+..
+
 
 ``pragma[noinline]``
 --------------------
@@ -397,6 +430,15 @@ For example, ``x = pragma[only_bind_into](y)`` is semantically equivalent to ``x
 
 For more information, see ":ref:`Binding <binding>`."
 
+``pragma[assume_small_delta]``
+------------------------------
+
+**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
+
+The ``pragma[assume_small_delta]`` annotation changes the compilation of the annotated recursive predicate.
+If the compiler normally generates the join orders ``order_<1>``, ``order_<2>``, ``order_<3>``, and ``standard_order``,
+applying this annotation makes ``standard_order`` the same as ``order_<3>`` and removes the (now redundant) ``order_<3>`` join order.
+
 .. _language:
 
 Language pragmas
@@ -444,5 +486,6 @@ The ``bindingset`` annotation takes a comma-separated list of variables.
 .. |fields|                    replace:: :ref:`fields <fields>`
 .. |modules|                   replace:: :ref:`modules <modules>`
 .. |aliases|                   replace:: :ref:`aliases <aliases>`
+.. |type-aliases|              replace:: :ref:`type aliases <type-aliases>`
 .. |algebraic datatypes|       replace:: :ref:`algebraic datatypes <algebraic-datatypes>`
 .. |expressions|               replace:: :ref:`expressions <expressions>`

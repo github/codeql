@@ -7,4 +7,4 @@
 | enum_is_case.swift:21:1:21:5 | ... is some | hasType: | yes | getSubExpr: | enum_is_case.swift:21:1:21:5 | [...] | getElement: | file://:0:0:0:0 | some |
 | enum_is_case.swift:22:1:22:10 | ... is some | hasType: | yes | getSubExpr: | enum_is_case.swift:22:1:22:10 | [...] | getElement: | file://:0:0:0:0 | some |
 | enum_is_case.swift:23:1:23:10 | ... is some | hasType: | yes | getSubExpr: | enum_is_case.swift:23:1:23:10 | [...] | getElement: | file://:0:0:0:0 | some |
-| enum_is_case.swift:24:1:24:8 | ... is some | hasType: | yes | getSubExpr: | enum_is_case.swift:24:1:24:8 | call to init() | getElement: | file://:0:0:0:0 | some |
+| enum_is_case.swift:24:1:24:8 | ... is some | hasType: | yes | getSubExpr: | enum_is_case.swift:24:1:24:8 | call to Set<Element>.init() | getElement: | file://:0:0:0:0 | some |

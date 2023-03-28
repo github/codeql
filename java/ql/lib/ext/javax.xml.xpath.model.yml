@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["javax.xml.xpath", "XPath", True, "compile", "", "", "Argument[0]", "xpath", "manual"]
       - ["javax.xml.xpath", "XPath", True, "evaluate", "", "", "Argument[0]", "xpath", "manual"]

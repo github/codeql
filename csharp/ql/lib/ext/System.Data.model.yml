@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Data", "ConstraintCollection", False, "Add", "(System.Data.Constraint)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Data", "ConstraintCollection", False, "AddRange", "(System.Data.Constraint[])", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]

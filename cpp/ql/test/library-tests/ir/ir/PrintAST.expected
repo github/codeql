@@ -207,34 +207,35 @@ bad_asts.cpp:
 #   27|                 Type = [SpecifiedType] const Point
 #   27|                 ValueCategory = lvalue
 #   28|     getStmt(1): [ReturnStmt] return ...
-#   30| [TopLevelFunction] void Bad::errorExpr()
-#   30|   <params>: 
-#   30|   getEntryPoint(): [BlockStmt] { ... }
-#   31|     getStmt(0): [DeclStmt] declaration
-#   31|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of intref
-#   31|           Type = [LValueReferenceType] int &
-#   31|         getVariable().getInitializer(): [Initializer] initializer for intref
-#   31|           getExpr(): [ErrorExpr] <error expr>
-#   31|               Type = [ErroneousType] error
-#   31|               ValueCategory = prvalue
-#   32|     getStmt(1): [DeclStmt] declaration
-#   32|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
-#   32|           Type = [IntType] int
-#   32|         getVariable().getInitializer(): [Initializer] initializer for x
-#   32|           getExpr(): [ErrorExpr] <error expr>
-#   32|               Type = [ErroneousType] error
-#   32|               ValueCategory = prvalue
-#   33|     getStmt(2): [ExprStmt] ExprStmt
-#   33|       getExpr(): [AssignExpr] ... = ...
-#   33|           Type = [IntType] int
-#   33|           ValueCategory = lvalue
-#   33|         getLValue(): [VariableAccess] x
-#   33|             Type = [IntType] int
-#   33|             ValueCategory = lvalue
-#   33|         getRValue(): [ErrorExpr] <error expr>
-#   33|             Type = [ErroneousType] error
-#   33|             ValueCategory = prvalue(load)
-#   34|     getStmt(3): [ReturnStmt] return ...
+bad_stmts.cpp:
+#    5| [TopLevelFunction] void Bad::errorExpr()
+#    5|   <params>: 
+#    5|   getEntryPoint(): [BlockStmt] { ... }
+#    6|     getStmt(0): [DeclStmt] declaration
+#    6|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of intref
+#    6|           Type = [LValueReferenceType] int &
+#    6|         getVariable().getInitializer(): [Initializer] initializer for intref
+#    6|           getExpr(): [ErrorExpr] <error expr>
+#    6|               Type = [ErroneousType] error
+#    6|               ValueCategory = prvalue
+#    7|     getStmt(1): [DeclStmt] declaration
+#    7|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#    7|           Type = [IntType] int
+#    7|         getVariable().getInitializer(): [Initializer] initializer for x
+#    7|           getExpr(): [ErrorExpr] <error expr>
+#    7|               Type = [ErroneousType] error
+#    7|               ValueCategory = prvalue
+#    8|     getStmt(2): [ExprStmt] ExprStmt
+#    8|       getExpr(): [AssignExpr] ... = ...
+#    8|           Type = [IntType] int
+#    8|           ValueCategory = lvalue
+#    8|         getLValue(): [VariableAccess] x
+#    8|             Type = [IntType] int
+#    8|             ValueCategory = lvalue
+#    8|         getRValue(): [ErrorExpr] <error expr>
+#    8|             Type = [ErroneousType] error
+#    8|             ValueCategory = prvalue(load)
+#    9|     getStmt(3): [ReturnStmt] return ...
 clang.cpp:
 #    5| [TopLevelFunction] int* globalIntAddress()
 #    5|   <params>: 
@@ -14822,3 +14823,348 @@ struct_init.cpp:
 #   41|             Type = [PointerType] Info *
 #   41|             ValueCategory = prvalue
 #   42|     getStmt(2): [ReturnStmt] return ...
+try_except.c:
+#    3| [TopLevelFunction] void ProbeFunction()
+#    3|   <params>: 
+#    4| [TopLevelFunction] void sink()
+#    4|   <params>: 
+#    6| [TopLevelFunction] void f()
+#    6|   <params>: 
+#    6|   getEntryPoint(): [BlockStmt] { ... }
+#    7|     getStmt(0): [DeclStmt] declaration
+#    7|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#    7|           Type = [IntType] int
+#    7|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of y
+#    7|           Type = [IntType] int
+#    7|         getVariable().getInitializer(): [Initializer] initializer for y
+#    7|           getExpr(): [Literal] 0
+#    7|               Type = [IntType] int
+#    7|               Value = [Literal] 0
+#    7|               ValueCategory = prvalue
+#    8|     getStmt(1): [MicrosoftTryExceptStmt] __try { ... } __except( ... ) { ... }
+#    8|       getStmt(): [BlockStmt] { ... }
+#    9|         getStmt(0): [ExprStmt] ExprStmt
+#    9|           getExpr(): [FunctionCall] call to ProbeFunction
+#    9|               Type = [VoidType] void
+#    9|               ValueCategory = prvalue
+#    9|             getArgument(0): [Literal] 0
+#    9|                 Type = [IntType] int
+#    9|                 Value = [Literal] 0
+#    9|                 ValueCategory = prvalue
+#   10|         getStmt(1): [ExprStmt] ExprStmt
+#   10|           getExpr(): [AssignExpr] ... = ...
+#   10|               Type = [IntType] int
+#   10|               ValueCategory = prvalue
+#   10|             getLValue(): [VariableAccess] x
+#   10|                 Type = [IntType] int
+#   10|                 ValueCategory = lvalue
+#   10|             getRValue(): [VariableAccess] y
+#   10|                 Type = [IntType] int
+#   10|                 ValueCategory = prvalue(load)
+#   11|         getStmt(2): [ExprStmt] ExprStmt
+#   11|           getExpr(): [FunctionCall] call to ProbeFunction
+#   11|               Type = [VoidType] void
+#   11|               ValueCategory = prvalue
+#   11|             getArgument(0): [Literal] 0
+#   11|                 Type = [IntType] int
+#   11|                 Value = [Literal] 0
+#   11|                 ValueCategory = prvalue
+#   13|       getCondition(): [Literal] 0
+#   13|           Type = [IntType] int
+#   13|           Value = [Literal] 0
+#   13|           ValueCategory = prvalue
+#   13|       getExcept(): [BlockStmt] { ... }
+#   14|         getStmt(0): [ExprStmt] ExprStmt
+#   14|           getExpr(): [FunctionCall] call to sink
+#   14|               Type = [VoidType] void
+#   14|               ValueCategory = prvalue
+#   14|             getArgument(0): [VariableAccess] x
+#   14|                 Type = [IntType] int
+#   14|                 ValueCategory = prvalue(load)
+#   16|     getStmt(2): [ReturnStmt] return ...
+#   18| [TopLevelFunction] void g()
+#   18|   <params>: 
+#   18|   getEntryPoint(): [BlockStmt] { ... }
+#   19|     getStmt(0): [DeclStmt] declaration
+#   19|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   19|           Type = [IntType] int
+#   19|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of y
+#   19|           Type = [IntType] int
+#   19|         getVariable().getInitializer(): [Initializer] initializer for y
+#   19|           getExpr(): [Literal] 0
+#   19|               Type = [IntType] int
+#   19|               Value = [Literal] 0
+#   19|               ValueCategory = prvalue
+#   20|     getStmt(1): [MicrosoftTryFinallyStmt] __try { ... } __finally { ... }
+#   20|       getStmt(): [BlockStmt] { ... }
+#   21|         getStmt(0): [ExprStmt] ExprStmt
+#   21|           getExpr(): [FunctionCall] call to ProbeFunction
+#   21|               Type = [VoidType] void
+#   21|               ValueCategory = prvalue
+#   21|             getArgument(0): [Literal] 0
+#   21|                 Type = [IntType] int
+#   21|                 Value = [Literal] 0
+#   21|                 ValueCategory = prvalue
+#   22|         getStmt(1): [ExprStmt] ExprStmt
+#   22|           getExpr(): [AssignExpr] ... = ...
+#   22|               Type = [IntType] int
+#   22|               ValueCategory = prvalue
+#   22|             getLValue(): [VariableAccess] x
+#   22|                 Type = [IntType] int
+#   22|                 ValueCategory = lvalue
+#   22|             getRValue(): [VariableAccess] y
+#   22|                 Type = [IntType] int
+#   22|                 ValueCategory = prvalue(load)
+#   23|         getStmt(2): [ExprStmt] ExprStmt
+#   23|           getExpr(): [FunctionCall] call to ProbeFunction
+#   23|               Type = [VoidType] void
+#   23|               ValueCategory = prvalue
+#   23|             getArgument(0): [Literal] 0
+#   23|                 Type = [IntType] int
+#   23|                 Value = [Literal] 0
+#   23|                 ValueCategory = prvalue
+#   25|       getFinally(): [BlockStmt] { ... }
+#   26|         getStmt(0): [ExprStmt] ExprStmt
+#   26|           getExpr(): [FunctionCall] call to sink
+#   26|               Type = [VoidType] void
+#   26|               ValueCategory = prvalue
+#   26|             getArgument(0): [VariableAccess] x
+#   26|                 Type = [IntType] int
+#   26|                 ValueCategory = prvalue(load)
+#   28|     getStmt(2): [ReturnStmt] return ...
+#   30| [TopLevelFunction] void AfxThrowMemoryException()
+#   30|   <params>: 
+#   32| [TopLevelFunction] void h(int)
+#   32|   <params>: 
+#   32|     getParameter(0): [Parameter] b
+#   32|         Type = [IntType] int
+#   32|   getEntryPoint(): [BlockStmt] { ... }
+#   33|     getStmt(0): [DeclStmt] declaration
+#   33|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   33|           Type = [IntType] int
+#   33|         getVariable().getInitializer(): [Initializer] initializer for x
+#   33|           getExpr(): [Literal] 0
+#   33|               Type = [IntType] int
+#   33|               Value = [Literal] 0
+#   33|               ValueCategory = prvalue
+#   34|     getStmt(1): [MicrosoftTryExceptStmt] __try { ... } __except( ... ) { ... }
+#   34|       getStmt(): [BlockStmt] { ... }
+#   35|         getStmt(0): [IfStmt] if (...) ... 
+#   35|           getCondition(): [VariableAccess] b
+#   35|               Type = [IntType] int
+#   35|               ValueCategory = prvalue(load)
+#   35|           getThen(): [BlockStmt] { ... }
+#   36|             getStmt(0): [ExprStmt] ExprStmt
+#   36|               getExpr(): [FunctionCall] call to AfxThrowMemoryException
+#   36|                   Type = [VoidType] void
+#   36|                   ValueCategory = prvalue
+#   39|       getCondition(): [Literal] 1
+#   39|           Type = [IntType] int
+#   39|           Value = [Literal] 1
+#   39|           ValueCategory = prvalue
+#   39|       getExcept(): [BlockStmt] { ... }
+#   40|         getStmt(0): [ExprStmt] ExprStmt
+#   40|           getExpr(): [FunctionCall] call to sink
+#   40|               Type = [VoidType] void
+#   40|               ValueCategory = prvalue
+#   40|             getArgument(0): [VariableAccess] x
+#   40|                 Type = [IntType] int
+#   40|                 ValueCategory = prvalue(load)
+#   42|     getStmt(2): [ReturnStmt] return ...
+try_except.cpp:
+#    3| [TopLevelFunction] void ProbeFunction()
+#    3|   <params>: 
+#    4| [TopLevelFunction] void sink()
+#    4|   <params>: 
+#    6| [TopLevelFunction] void f_cpp()
+#    6|   <params>: 
+#    6|   getEntryPoint(): [BlockStmt] { ... }
+#    7|     getStmt(0): [DeclStmt] declaration
+#    7|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#    7|           Type = [IntType] int
+#    7|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of y
+#    7|           Type = [IntType] int
+#    7|         getVariable().getInitializer(): [Initializer] initializer for y
+#    7|           getExpr(): [Literal] 0
+#    7|               Type = [IntType] int
+#    7|               Value = [Literal] 0
+#    7|               ValueCategory = prvalue
+#    8|     getStmt(1): [MicrosoftTryExceptStmt] __try { ... } __except( ... ) { ... }
+#    8|       getStmt(): [BlockStmt] { ... }
+#    9|         getStmt(0): [ExprStmt] ExprStmt
+#    9|           getExpr(): [FunctionCall] call to ProbeFunction
+#    9|               Type = [VoidType] void
+#    9|               ValueCategory = prvalue
+#    9|             getArgument(0): [Literal] 0
+#    9|                 Type = [IntType] int
+#    9|                 Value = [Literal] 0
+#    9|                 ValueCategory = prvalue
+#   10|         getStmt(1): [ExprStmt] ExprStmt
+#   10|           getExpr(): [AssignExpr] ... = ...
+#   10|               Type = [IntType] int
+#   10|               ValueCategory = lvalue
+#   10|             getLValue(): [VariableAccess] x
+#   10|                 Type = [IntType] int
+#   10|                 ValueCategory = lvalue
+#   10|             getRValue(): [VariableAccess] y
+#   10|                 Type = [IntType] int
+#   10|                 ValueCategory = prvalue(load)
+#   11|         getStmt(2): [ExprStmt] ExprStmt
+#   11|           getExpr(): [FunctionCall] call to ProbeFunction
+#   11|               Type = [VoidType] void
+#   11|               ValueCategory = prvalue
+#   11|             getArgument(0): [Literal] 0
+#   11|                 Type = [IntType] int
+#   11|                 Value = [Literal] 0
+#   11|                 ValueCategory = prvalue
+#   13|       getCondition(): [Literal] 0
+#   13|           Type = [IntType] int
+#   13|           Value = [Literal] 0
+#   13|           ValueCategory = prvalue
+#   13|       getExcept(): [BlockStmt] { ... }
+#   14|         getStmt(0): [ExprStmt] ExprStmt
+#   14|           getExpr(): [FunctionCall] call to sink
+#   14|               Type = [VoidType] void
+#   14|               ValueCategory = prvalue
+#   14|             getArgument(0): [VariableAccess] x
+#   14|                 Type = [IntType] int
+#   14|                 ValueCategory = prvalue(load)
+#   16|     getStmt(2): [ReturnStmt] return ...
+#   18| [TopLevelFunction] void g_cpp()
+#   18|   <params>: 
+#   18|   getEntryPoint(): [BlockStmt] { ... }
+#   19|     getStmt(0): [DeclStmt] declaration
+#   19|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   19|           Type = [IntType] int
+#   19|       getDeclarationEntry(1): [VariableDeclarationEntry] definition of y
+#   19|           Type = [IntType] int
+#   19|         getVariable().getInitializer(): [Initializer] initializer for y
+#   19|           getExpr(): [Literal] 0
+#   19|               Type = [IntType] int
+#   19|               Value = [Literal] 0
+#   19|               ValueCategory = prvalue
+#   20|     getStmt(1): [MicrosoftTryFinallyStmt] __try { ... } __finally { ... }
+#   20|       getStmt(): [BlockStmt] { ... }
+#   21|         getStmt(0): [ExprStmt] ExprStmt
+#   21|           getExpr(): [FunctionCall] call to ProbeFunction
+#   21|               Type = [VoidType] void
+#   21|               ValueCategory = prvalue
+#   21|             getArgument(0): [Literal] 0
+#   21|                 Type = [IntType] int
+#   21|                 Value = [Literal] 0
+#   21|                 ValueCategory = prvalue
+#   22|         getStmt(1): [ExprStmt] ExprStmt
+#   22|           getExpr(): [AssignExpr] ... = ...
+#   22|               Type = [IntType] int
+#   22|               ValueCategory = lvalue
+#   22|             getLValue(): [VariableAccess] x
+#   22|                 Type = [IntType] int
+#   22|                 ValueCategory = lvalue
+#   22|             getRValue(): [VariableAccess] y
+#   22|                 Type = [IntType] int
+#   22|                 ValueCategory = prvalue(load)
+#   23|         getStmt(2): [ExprStmt] ExprStmt
+#   23|           getExpr(): [FunctionCall] call to ProbeFunction
+#   23|               Type = [VoidType] void
+#   23|               ValueCategory = prvalue
+#   23|             getArgument(0): [Literal] 0
+#   23|                 Type = [IntType] int
+#   23|                 Value = [Literal] 0
+#   23|                 ValueCategory = prvalue
+#   25|       getFinally(): [BlockStmt] { ... }
+#   26|         getStmt(0): [ExprStmt] ExprStmt
+#   26|           getExpr(): [FunctionCall] call to sink
+#   26|               Type = [VoidType] void
+#   26|               ValueCategory = prvalue
+#   26|             getArgument(0): [VariableAccess] x
+#   26|                 Type = [IntType] int
+#   26|                 ValueCategory = prvalue(load)
+#   28|     getStmt(2): [ReturnStmt] return ...
+#   30| [TopLevelFunction] void AfxThrowMemoryException()
+#   30|   <params>: 
+#   32| [TopLevelFunction] void h_cpp(int)
+#   32|   <params>: 
+#   32|     getParameter(0): [Parameter] b
+#   32|         Type = [IntType] int
+#   32|   getEntryPoint(): [BlockStmt] { ... }
+#   33|     getStmt(0): [DeclStmt] declaration
+#   33|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   33|           Type = [IntType] int
+#   33|         getVariable().getInitializer(): [Initializer] initializer for x
+#   33|           getExpr(): [Literal] 0
+#   33|               Type = [IntType] int
+#   33|               Value = [Literal] 0
+#   33|               ValueCategory = prvalue
+#   34|     getStmt(1): [MicrosoftTryExceptStmt] __try { ... } __except( ... ) { ... }
+#   34|       getStmt(): [BlockStmt] { ... }
+#   35|         getStmt(0): [IfStmt] if (...) ... 
+#   35|           getCondition(): [VariableAccess] b
+#   35|               Type = [IntType] int
+#   35|               ValueCategory = prvalue(load)
+#   35|           getThen(): [BlockStmt] { ... }
+#   36|             getStmt(0): [ExprStmt] ExprStmt
+#   36|               getExpr(): [FunctionCall] call to AfxThrowMemoryException
+#   36|                   Type = [VoidType] void
+#   36|                   ValueCategory = prvalue
+#   35|           getCondition().getFullyConverted(): [CStyleCast] (bool)...
+#   35|               Conversion = [BoolConversion] conversion to bool
+#   35|               Type = [BoolType] bool
+#   35|               ValueCategory = prvalue
+#   39|       getCondition(): [Literal] 1
+#   39|           Type = [IntType] int
+#   39|           Value = [Literal] 1
+#   39|           ValueCategory = prvalue
+#   39|       getExcept(): [BlockStmt] { ... }
+#   40|         getStmt(0): [ExprStmt] ExprStmt
+#   40|           getExpr(): [FunctionCall] call to sink
+#   40|               Type = [VoidType] void
+#   40|               ValueCategory = prvalue
+#   40|             getArgument(0): [VariableAccess] x
+#   40|                 Type = [IntType] int
+#   40|                 ValueCategory = prvalue(load)
+#   42|     getStmt(2): [ReturnStmt] return ...
+#   44| [TopLevelFunction] void throw_cpp(int)
+#   44|   <params>: 
+#   44|     getParameter(0): [Parameter] b
+#   44|         Type = [IntType] int
+#   44|   getEntryPoint(): [BlockStmt] { ... }
+#   45|     getStmt(0): [DeclStmt] declaration
+#   45|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of x
+#   45|           Type = [IntType] int
+#   45|         getVariable().getInitializer(): [Initializer] initializer for x
+#   45|           getExpr(): [Literal] 0
+#   45|               Type = [IntType] int
+#   45|               Value = [Literal] 0
+#   45|               ValueCategory = prvalue
+#   46|     getStmt(1): [MicrosoftTryExceptStmt] __try { ... } __except( ... ) { ... }
+#   46|       getStmt(): [BlockStmt] { ... }
+#   47|         getStmt(0): [IfStmt] if (...) ... 
+#   47|           getCondition(): [VariableAccess] b
+#   47|               Type = [IntType] int
+#   47|               ValueCategory = prvalue(load)
+#   47|           getThen(): [BlockStmt] { ... }
+#   48|             getStmt(0): [ExprStmt] ExprStmt
+#   48|               getExpr(): [ThrowExpr] throw ...
+#   48|                   Type = [IntType] int
+#   48|                   ValueCategory = prvalue
+#   48|                 getExpr(): [Literal] 1
+#   48|                     Type = [IntType] int
+#   48|                     Value = [Literal] 1
+#   48|                     ValueCategory = prvalue
+#   47|           getCondition().getFullyConverted(): [CStyleCast] (bool)...
+#   47|               Conversion = [BoolConversion] conversion to bool
+#   47|               Type = [BoolType] bool
+#   47|               ValueCategory = prvalue
+#   51|       getCondition(): [Literal] 1
+#   51|           Type = [IntType] int
+#   51|           Value = [Literal] 1
+#   51|           ValueCategory = prvalue
+#   51|       getExcept(): [BlockStmt] { ... }
+#   52|         getStmt(0): [ExprStmt] ExprStmt
+#   52|           getExpr(): [FunctionCall] call to sink
+#   52|               Type = [VoidType] void
+#   52|               ValueCategory = prvalue
+#   52|             getArgument(0): [VariableAccess] x
+#   52|                 Type = [IntType] int
+#   52|                 ValueCategory = prvalue(load)
+#   54|     getStmt(2): [ReturnStmt] return ...

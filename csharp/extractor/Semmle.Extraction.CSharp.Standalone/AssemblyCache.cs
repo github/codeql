@@ -106,36 +106,6 @@ namespace Semmle.BuildAnalyser
                 return result;
             }
 
-            // Attempt to load the reference from the GAC.
-            try
-            {
-                var loadedAssembly = System.Reflection.Assembly.ReflectionOnlyLoad(id);
-
-                if (loadedAssembly is not null)
-                {
-                    // The assembly was somewhere we haven't indexed before.
-                    // Add this assembly to our index so that subsequent lookups are faster.
-
-                    result = AssemblyInfo.MakeFromAssembly(loadedAssembly);
-                    assemblyInfoById[id] = result;
-                    assemblyInfoByFileName[loadedAssembly.Location] = result;
-                    return result;
-                }
-            }
-            catch (FileNotFoundException)
-            {
-                // A suitable assembly could not be found
-            }
-            catch (FileLoadException)
-            {
-                // The assembly cannot be loaded for some reason
-                // e.g. The name is malformed.
-            }
-            catch (PlatformNotSupportedException)
-            {
-                // .NET Core does not have a GAC.
-            }
-
             // Fallback position - locate the assembly by its lower-case name only.
             var asmName = assemblyName.ToLowerInvariant();
 

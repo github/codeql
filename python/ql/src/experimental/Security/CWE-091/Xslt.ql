@@ -7,6 +7,7 @@
  * @precision high
  * @id py/xslt-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-643
  */
 

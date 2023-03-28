@@ -18,20 +18,20 @@ int test2(struct List* p) {
   int count = 0;
   for (; p; p = p->next) {
     count = (count+1) % 10;
-    range(count); // $ range=<=9
+    range(count); // $ range=>=-9 range=<=9
   }
-  range(count); // $ range=<=9
+  range(count); // $ range=>=-9 range=<=9
   return count;
 }
 
 int test3(struct List* p) {
   int count = 0;
   for (; p; p = p->next) {
-    range(count++); // $ range=<=9
+    range(count++); // $ range=>=-9 range=<=9
     count = count % 10;
-    range(count); // $ range=<=9
+    range(count); // $ range=>=-9 range=<=9
   }
-  range(count); // $ range=<=9
+  range(count); // $ range=>=-9 range=<=9
   return count;
 }
 
@@ -40,13 +40,13 @@ int test4() {
   int total = 0;
   for (i = 0; i < 2; i = i+1) {
     range(i); // $ range=<=1 range=>=0
-    range(total);
+    range(total); // $ range=>=0
     total += i;
-    range(total);
+    range(total); // $ range=<=i+1 range=<=i+1 range=>=0 range=>=i+0
   }
-  range(total);
+  range(total); // $ range=>=0
   range(i); // $ range===2
-  range(total + i); // $ range=>=i+1
+  range(total + i); // $ range===i+2 range=>=2 range=>=i+0
   return total + i;
 }
 
@@ -55,13 +55,13 @@ int test5() {
   int total = 0;
   for (i = 0; i < 2; i++) {
     range(i); // $ range=<=1 range=>=0
-    range(total);
+    range(total); // $ range=>=0
     total += i;
-    range(total);
+    range(total); // $ range=<=i+1 range=>=0 range=>=i+0
   }
-  range(total);
+  range(total); // $ range=>=0
   range(i); // $ range===2
-  range(total + i); // $ range=>=i+1
+  range(total + i); // $ range===i+2 range=>=2 range=>=i+0
   return total + i;
 }
 
@@ -70,9 +70,9 @@ int test6() {
   int total = 0;
   for (i = 0; i+2 < 4; i = i+1) {
     range(i); // $ range=<=1 range=>=0
-    range(total);
+    range(total); // $ range=>=0
     total += i;
-    range(total);
+    range(total); // $ range=<=i+1 range=>=0 range=>=i+0
   }
   return total + i;
 }
@@ -119,6 +119,7 @@ int test9(int x, int y) {
     }
     range(x); // $ range=>=4
   }
+  range(x); // $ MISSING: range=>=4
   return x;
 }
 
@@ -174,12 +175,12 @@ int test12() {
    size_type Start = 0;
    while (Start <= test12_helper()-1)
    {
-    range(Start); // $ range=>=0
+    range(Start);
     const size_type Length = test12_helper();
     Start += Length + 1;
-    range(Start); // $ range=>=1 range=>=Start+1 range=">=call to test12_helper+1"
+    range(Start);
    }
-   range(Start); // $ range=>=0
+   range(Start);
 
    return 1;
 }
@@ -193,8 +194,8 @@ int test13(char c, int i) {
   range(y); // $ range===-1
   int z = i+1;
   range(z); // $ range===i+1
-  range(c + i + uc + x + y + z); // $ range=>=1 range=">=... - ...+0"
-  range((double)(c + i + uc + x + y + z)); // $ range=>=1 range=">=... - ...+0"
+  range(c + i + uc + x + y + z);
+  range((double)(c + i + uc + x + y + z));
   return (double)(c + i + uc + x + y + z);
 }
 
@@ -231,62 +232,62 @@ int test_unary(int a) {
     int b = +a;
     range(b); // $ range=<=11 range=>=3
     int c = -a;
-    range(c);
-    range(b+c); // $ range=<=10 range="<=+ ...:a-1" range=">=- ...+1"
+    range(c); // $ range=<=-3 range=>=-11
+    range(b+c); // $ range=<=8 range=>=-8
     total += b+c;
-    range(total);
+    range(total); // $ range=<=8 range=>=-8
   }
   if (0 <= a && a <= 11) {
     range(a); // $ range=<=11 range=>=0
     int b = +a;
     range(b); // $ range=<=11 range=>=0
     int c = -a;
-    range(c);
-    range(b+c); // $ range=<=11 range="<=+ ...:a+0" range=">=- ...+0"
+    range(c); // $ range=<=0 range=>=-11
+    range(b+c); // $ range=<=11  range=>=-11
     total += b+c;
-    range(total);
+    range(total); // $ range=<=0+11 range=<=19 range=>=0-11 range=>=-19
   }
   if (-7 <= a && a <= 11) {
     range(a); // $ range=<=11 range=>=-7
     int b = +a;
     range(b); // $ range=<=11 range=>=-7
     int c = -a;
-    range(c);
-    range(b+c);
+    range(c); // $ range=<=7 range=>=-11
+    range(b+c); // $ range=<=18 range=>=-18
     total += b+c;
-    range(total);
+    range(total); // $ range="<=- ...+18" range=">=- ...-18" range=<=0+29 range=<=37 range=>=0-29 range=>=-37
   }
   if (-7 <= a && a <= 1) {
     range(a); // $ range=<=1 range=>=-7
     int b = +a;
     range(b); // $ range=<=1 range=>=-7
     int c = -a;
-    range(c);
-    range(b+c);
+    range(c); // $ range=<=7 range=>=-1
+    range(b+c); // $ range=<=8 range=>=-8
     total += b+c;
-    range(total);
+    range(total); // $ range="<=- ...+8" range="<=- ...+26" range=">=- ...-8" range=">=- ...-26" range=<=0+37 range=<=45 range=>=0-37 range=>=-45
   }
   if (-7 <= a && a <= 0) {
     range(a); // $ range=<=0 range=>=-7
     int b = +a;
     range(b); // $ range=<=0 range=>=-7
     int c = -a;
-    range(c);
-    range(b+c); // $ range="<=- ...+0" range=">=+ ...:a+0" range=>=-7
+    range(c); // $ range=<=7 range=>=0
+    range(b+c); // $ range=>=-7 range=<=7
     total += b+c;
-    range(total);
+    range(total); // $ range="<=- ...+7" range="<=- ...+15" range="<=- ...+33" range=">=- ...-7" range=">=- ...-15" range=">=- ...-33" range=<=0+44 range=<=52 range=>=0-44 range=>=-52
   }
   if (-7 <= a && a <= -2) {
     range(a); // $ range=<=-2 range=>=-7
     int b = +a;
     range(b); // $ range=<=-2 range=>=-7
     int c = -a;
-    range(c);
-    range(b+c); // $ range="<=- ...-1" range=">=+ ...:a+1" range=>=-6
+    range(c); // $ range=<=7 range=>=2
+    range(b+c); // $ range=<=5 range=>=-5
     total += b+c;
-    range(total);
+    range(total); // $ range="<=- ...+5" range="<=- ...+12" range="<=- ...+20" range="<=- ...+38" range=">=- ...-5" range=">=- ...-12" range=">=- ...-20" range=">=- ...-38" range=<=0+49 range=<=57 range=>=0-49 range=>=-57
   }
-  range(total);
+  range(total); // $ range="<=- ...+5" range="<=- ...+12" range="<=- ...+20" range="<=- ...+38" range=">=- ...-5" range=">=- ...-12" range=">=- ...-20" range=">=- ...-38" range=<=0+49 range=<=57 range=>=0-49 range=>=-57
   return total;
 }
 
@@ -301,7 +302,7 @@ int test_mult01(int a, int b) {
     int r = a*b;  // 15 .. 253
     range(r);
     total += r;
-    range(total); // $ range=>=1
+    range(total); // $ MISSING: range=>=1
   }
   if (3 <= a && a <= 11 && 0 <= b && b <= 23) {
     range(a); // $ range=<=11 range=>=3
@@ -309,7 +310,7 @@ int test_mult01(int a, int b) {
     int r = a*b;  // 0 .. 253
     range(r);
     total += r;
-    range(total); // $ range=>=0 range=>=3+0
+    range(total); // $ MISSING: range=>=0 range=>=3+0
   }
   if (3 <= a && a <= 11 && -13 <= b && b <= 23) {
     range(a); // $ range=<=11 range=>=3
@@ -325,7 +326,7 @@ int test_mult01(int a, int b) {
     int r = a*b;  // -143 .. 0
     range(r);
     total += r;
-    range(total); // $ range=<=3+0
+    range(total); // $ MISSING: range=<=3+0
   }
   if (3 <= a && a <= 11 && -13 <= b && b <= -7) {
     range(a); // $ range=<=11 range=>=3
@@ -333,9 +334,9 @@ int test_mult01(int a, int b) {
     int r = a*b;  // -143 .. -21
     range(r);
     total += r;
-    range(total); // $ range=<=3-1
+    range(total); // $ MISSING: range=<=3-1
   }
-  range(total); // $ range=<=3+0
+  range(total); // $ MISSING: range=<=3+0
   return total;
 }
 
@@ -349,7 +350,7 @@ int test_mult02(int a, int b) {
     int r = a*b;  // 0 .. 253
     range(r);
     total += r;
-    range(total); // $ range=>=0
+    range(total); // $ MISSING: range=>=0
   }
   if (0 <= a && a <= 11 && 0 <= b && b <= 23) {
     range(a); // $ range=<=11 range=>=0
@@ -357,7 +358,7 @@ int test_mult02(int a, int b) {
     int r = a*b;  // 0 .. 253
     range(r);
     total += r;
-    range(total); // $ range=>=0 range=>=0+0
+    range(total); // $ MISSING: range=>=0 range=>=0+0
   }
   if (0 <= a && a <= 11 && -13 <= b && b <= 23) {
     range(a); // $ range=<=11 range=>=0
@@ -373,7 +374,7 @@ int test_mult02(int a, int b) {
     int r = a*b;  // -143 .. 0
     range(r);
     total += r;
-    range(total); // $ range=<=0+0
+    range(total); // $ MISSING: range=<=0+0
   }
   if (0 <= a && a <= 11 && -13 <= b && b <= -7) {
     range(a); // $ range=<=11 range=>=0
@@ -381,9 +382,9 @@ int test_mult02(int a, int b) {
     int r = a*b;  // -143 .. 0
     range(r);
     total += r;
-    range(total); // $ range=<=0+0
+    range(total); // $ MISSING: range=<=0+0
   }
-  range(total); // $ range=<=0+0
+  range(total); // $ MISSING: range=<=0+0
   return total;
 }
 
@@ -444,7 +445,7 @@ int test_mult04(int a, int b) {
     range(b); // $ range=<=23 range=>=5
     int r = a*b;  // -391 .. 0
     total += r;
-    range(total); // $ range=<=0
+    range(total); // $ MISSING: range=<=0
   }
   if (-17 <= a && a <= 0 && 0 <= b && b <= 23) {
     range(a); // $ range=<=0 range=>=-17
@@ -452,7 +453,7 @@ int test_mult04(int a, int b) {
     int r = a*b;  // -391 .. 0
     range(r);
     total += r;
-    range(total); // $ range="<=- ...+0" range=<=0
+    range(total); // $ MISSING: range="<=- ...+0" range=<=0
   }
   if (-17 <= a && a <= 0 && -13 <= b && b <= 23) {
     range(a); // $ range=<=0 range=>=-17
@@ -468,7 +469,7 @@ int test_mult04(int a, int b) {
     int r = a*b;  // 0 .. 221
     range(r);
     total += r;
-    range(total); // $ range=">=- ...+0"
+    range(total); // $ MISSING: range=">=- ...+0"
   }
   if (-17 <= a && a <= 0 && -13 <= b && b <= -7) {
     range(a); // $ range=<=0 range=>=-17
@@ -476,9 +477,9 @@ int test_mult04(int a, int b) {
     int r = a*b;  // 0 .. 221
     range(r);
     total += r;
-    range(total); // $ range=">=- ...+0"
+    range(total); // $ MISSING: range=">=- ...+0"
   }
-  range(total); // $ range=">=- ...+0"
+  range(total); // $ MISSING: range=">=- ...+0"
   return total;
 }
 
@@ -492,7 +493,7 @@ int test_mult05(int a, int b) {
     int r = a*b;  // -391 .. -10
     range(r);
     total += r;
-    range(total); // $ range=<=-1
+    range(total); // $ MISSING: range=<=-1
   }
   if (-17 <= a && a <= -2 && 0 <= b && b <= 23) {
     range(a); // $ range=<=-2 range=>=-17
@@ -500,7 +501,7 @@ int test_mult05(int a, int b) {
     int r = a*b;  // -391 .. 0
     range(r);
     total += r;
-    range(total); // $ range="<=- ...+0" range=<=0
+    range(total); // $ MISSING: range="<=- ...+0" range=<=0
   }
   if (-17 <= a && a <= -2 && -13 <= b && b <= 23) {
     range(a); // $ range=<=-2 range=>=-17
@@ -516,7 +517,7 @@ int test_mult05(int a, int b) {
     int r = a*b;  // 0 .. 221
     range(r);
     total += r;
-    range(total); // $ range=">=- ...+0"
+    range(total); // $ MISSING: range=">=- ...+0"
   }
   if (-17 <= a && a <= -2 && -13 <= b && b <= -7) {
     range(a); // $ range=<=-2 range=>=-17
@@ -524,9 +525,9 @@ int test_mult05(int a, int b) {
     int r = a*b;  // 14 .. 221
     range(r);
     total += r;
-    range(total); // $ range=">=- ...+1"
+    range(total); // $ MISSING: range=">=- ...+1"
   }
-  range(total); // $ range=">=- ...+0"
+  range(total); // $ MISSING: range=">=- ...+0"
   return total;
 }
 
@@ -552,7 +553,7 @@ int test16(int x) {
       range(x); // $ range=<=-1 range=>=0
       return 1;
     }
-    range(d); // $ range===3
+    range(d); // $ range=<=0 range=>=3 // Unreachable code
     range(x); // $ range=<=-1 range=>=0
   }
   range(x); // $ range=>=0
@@ -597,7 +598,7 @@ unsigned int test_ternary01(unsigned int x) {
       (range(x), 500); // $ range=<=299
     range(y8); // y8 <= 300
   }
-  range(y1 + y2 + y3 + y4 + y5 + y6 + y7 + y8); // $ range=">=... = ...:... ? ... : ...+0" range=">=call to range+0"
+  range(y1 + y2 + y3 + y4 + y5 + y6 + y7 + y8); // $ MISSING: range=">=... = ...:... ? ... : ...+0" range=">=call to range+0"
   return y1 + y2 + y3 + y4 + y5 + y6 + y7 + y8;
 }
 
@@ -627,7 +628,7 @@ unsigned int test_ternary02(unsigned int x) {
       (range(x), 5); // $ range=>=300
     range(y5); // y6 >= 0
   }
-  range(y1 + y2 + y3 + y4 + y5); // $ range=">=... = ...:... ? ... : ...+0" range=">=call to range+0"
+  range(y1 + y2 + y3 + y4 + y5); // $ MISSING: range=">=... = ...:... ? ... : ...+0" range=">=call to range+0"
   return y1 + y2 + y3 + y4 + y5;
 }
 
@@ -646,7 +647,7 @@ unsigned int test_comma01(unsigned int x) {
         range(y), // $ range="==++ ...:... = ...+4" range="==... +++3" range="==... ? ... : ...+5"
         y);
   range(y2); // $ range="==++ ...:... = ...+4" range="==... +++3" range="==... ? ... : ...+5"
-  range(y1 + y2); // $ range=">=++ ...:... = ...+5" range=">=... +++4" range=">=... += ...:... = ...+1" range=">=... ? ... : ...+6"
+  range(y1 + y2); // $ MISSING: range=">=++ ...:... = ...+5" range=">=... +++4" range=">=... += ...:... = ...+1" range=">=... ? ... : ...+6"
   return y1 + y2;
 }
 
@@ -684,7 +685,7 @@ int test_unsigned_mult01(unsigned int a, unsigned b) {
     int r = a*b;  // 15 .. 253
     range(r);
     total += r;
-    range(total); // $ range=>=1
+    range(total); // $ MISSING: range=>=1
   }
   if (3 <= a && a <= 11 && 0 <= b && b <= 23) {
     range(a); // $ range=<=11 range=>=3
@@ -692,7 +693,7 @@ int test_unsigned_mult01(unsigned int a, unsigned b) {
     int r = a*b;  // 0 .. 253
     range(r);
     total += r;
-    range(total); // $ range=">=(unsigned int)...+0" range=>=0
+    range(total); // $ MISSING: range=">=(unsigned int)...+0" range=>=0
   }
   if (3 <= a && a <= 11 && 13 <= b && b <= 23) {
     range(a); // $ range=<=11 range=>=3
@@ -700,9 +701,9 @@ int test_unsigned_mult01(unsigned int a, unsigned b) {
     int r = a*b;  // 39 .. 253
     range(r);
     total += r;
-    range(total); // $ range=">=(unsigned int)...+1" range=>=1
+    range(total); // $ MISSING: range=">=(unsigned int)...+1" range=>=1
   }
-  range(total); // $ range=">=(unsigned int)...+0" range=>=0
+  range(total); // $ MISSING: range=">=(unsigned int)...+0" range=>=0
   return total;
 }
 
@@ -714,23 +715,23 @@ int test_unsigned_mult02(unsigned b) {
     int r = 11*b;  // 55 .. 253
     range(r);
     total += r;
-    range(total); // $ range=>=1
+    range(total); // $ MISSING: range=>=1
   }
   if (0 <= b && b <= 23) {
     range(b); // $ range=<=23 range=>=0
     int r = 11*b;  // 0 .. 253
     range(r);
     total += r;
-    range(total); // $ range=">=(unsigned int)...+0" range=>=0
+    range(total); // $ MISSING: range=">=(unsigned int)...+0" range=>=0
   }
   if (13 <= b && b <= 23) {
     range(b); // $ range=<=23 range=>=13
     int r = 11*b;  // 143 .. 253
     range(r);
     total += r;
-    range(total); // $ range=">=(unsigned int)...+1" range=>=1
+    range(total); // $ MISSING: range=">=(unsigned int)...+1" range=>=1
   }
-  range(total); // $ range=">=(unsigned int)...+0" range=>=0
+  range(total); // $ MISSING: range=">=(unsigned int)...+0" range=>=0
   return total;
 }
 
@@ -789,7 +790,7 @@ unsigned long mul_assign(unsigned int ui) {
   range(ulconst); // $ range===10
   ulconst *= 4;
   range(ulconst); // $ range===40
-  range(uiconst + ulconst); // $ range=">=... *= ...+1" range=>=41
+  range(uiconst + ulconst); // $ range===80
   return uiconst + ulconst; // 40 .. 40 for both
 }
 
@@ -941,7 +942,7 @@ void widen_recursive_expr() {
   for (s = 0; s < 10; s++) {
     range(s); // $ range=<=9 range=>=0
     int result = s + s;
-    range(result); // 0 .. 18
+    range(result); // $ range=<=18 range=<=s+9 range=>=0 range=>=s+0
   }
 }
 
@@ -959,7 +960,22 @@ void guard_bound_out_of_range(void) {
 
 void test_mod(int s) {
   int s2 = s % 5;
-  range(s2); // $ range=<=4 // -4 .. 4
+  range(s2); // $ range=>=-4 range=<=4
+}
+
+void test_mod_neg(int s) {
+  int s2 = s % -5;
+  range(s2); // $ range=>=-4 range=<=4
+}
+
+void test_mod_ternary(int s, bool b) {
+  int s2 = s % (b ? 5 : 500);
+  range(s2); // $ range=>=-499 range=<=499
+}
+
+void test_mod_ternary2(int s, bool b1, bool b2) {
+  int s2 = s % (b1 ? (b2 ? 5 : -5000) : -500000);
+  range(s2); // $ range=>=-499999 range=<=499999
 }
 
 void exit(int);
@@ -995,5 +1011,17 @@ void test_overflow() {
     range(x);
     range(y);
     range(x + y); // $ range===-2147483393
+  }
+}
+
+void test_negate_unsigned(unsigned u) {
+  if(10 < u && u < 20) {
+    range<unsigned>(-u); // underflows
+  }
+}
+
+void test_negate_signed(int s) {
+  if(10 < s && s < 20) {
+    range<int>(-s); // $ range=<=-11 range=>=-19
   }
 }

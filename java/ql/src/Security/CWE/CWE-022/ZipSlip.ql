@@ -17,8 +17,6 @@ import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.SSA
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.PathSanitizer
-import DataFlow
-import PathGraph
 private import semmle.code.java.dataflow.ExternalFlow
 
 /**
@@ -36,17 +34,19 @@ class ArchiveEntryNameMethod extends Method {
   }
 }
 
-class ZipSlipConfiguration extends TaintTracking::Configuration {
-  ZipSlipConfiguration() { this = "ZipSlip" }
-
-  override predicate isSource(Node source) {
+module ZipSlipConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source.asExpr().(MethodAccess).getMethod() instanceof ArchiveEntryNameMethod
   }
 
-  override predicate isSink(Node sink) { sink instanceof FileCreationSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof FileCreationSink }
 
-  override predicate isSanitizer(Node node) { node instanceof PathInjectionSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof PathInjectionSanitizer }
 }
+
+module ZipSlipFlow = TaintTracking::Global<ZipSlipConfig>;
+
+import ZipSlipFlow::PathGraph
 
 /**
  * A sink that represents a file creation, such as a file write, copy or move operation.
@@ -55,8 +55,8 @@ private class FileCreationSink extends DataFlow::Node {
   FileCreationSink() { sinkNode(this, "create-file") }
 }
 
-from PathNode source, PathNode sink
-where any(ZipSlipConfiguration c).hasFlowPath(source, sink)
+from ZipSlipFlow::PathNode source, ZipSlipFlow::PathNode sink
+where ZipSlipFlow::flowPath(source, sink)
 select source.getNode(), source, sink,
   "Unsanitized archive entry, which may contain '..', is used in a $@.", sink.getNode(),
   "file system operation"

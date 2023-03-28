@@ -7,6 +7,7 @@
  * @precision high
  * @id java/disabled-certificate-revocation-checking
  * @tags security
+ *       experimental
  *       external/cwe/cwe-299
  */
 

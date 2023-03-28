@@ -5,6 +5,7 @@
  * @problem.severity error
  * @id cs/hash-without-salt
  * @tags security
+ *       experimental
  *       external/cwe-759
  */
 

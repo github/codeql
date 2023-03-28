@@ -3,18 +3,18 @@ import codeql.swift.elements
 import TestUtils
 
 from
-  EnumDecl x, int getNumberOfGenericTypeParams, ModuleDecl getModule, Type getInterfaceType,
-  string getName, int getNumberOfBaseTypes, int getNumberOfMembers, Type getType
+  EnumDecl x, int getNumberOfGenericTypeParams, ModuleDecl getModule, int getNumberOfMembers,
+  Type getInterfaceType, string getName, int getNumberOfBaseTypes, Type getType
 where
   toBeTested(x) and
   not x.isUnknown() and
   getNumberOfGenericTypeParams = x.getNumberOfGenericTypeParams() and
   getModule = x.getModule() and
+  getNumberOfMembers = x.getNumberOfMembers() and
   getInterfaceType = x.getInterfaceType() and
   getName = x.getName() and
   getNumberOfBaseTypes = x.getNumberOfBaseTypes() and
-  getNumberOfMembers = x.getNumberOfMembers() and
   getType = x.getType()
 select x, "getNumberOfGenericTypeParams:", getNumberOfGenericTypeParams, "getModule:", getModule,
-  "getInterfaceType:", getInterfaceType, "getName:", getName, "getNumberOfBaseTypes:",
-  getNumberOfBaseTypes, "getNumberOfMembers:", getNumberOfMembers, "getType:", getType
+  "getNumberOfMembers:", getNumberOfMembers, "getInterfaceType:", getInterfaceType, "getName:",
+  getName, "getNumberOfBaseTypes:", getNumberOfBaseTypes, "getType:", getType

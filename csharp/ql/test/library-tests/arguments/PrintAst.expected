@@ -232,7 +232,7 @@ arguments.cs:
 #   68|       1: [DefaultAttribute] [My(...)]
 #   68|         -1: [TypeMention] MyAttribute
 #   68|         0: [BoolLiteral] true
-#   68|         1: [StringLiteral] ""
+#   68|         1: [StringLiteralUtf16] ""
 #   68|         2: [IntLiteral] 0
 #   69|     4: [BlockStmt] {...}
 #   72| [Class] MyAttribute

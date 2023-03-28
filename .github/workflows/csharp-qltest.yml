@@ -77,10 +77,10 @@ jobs:
       - name: Setup dotnet
         uses: actions/setup-dotnet@v3
         with:
-          dotnet-version: 6.0.202
+          dotnet-version: 7.0.102
       - name: Extractor unit tests
         run: |
-          dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/csharp/extractor/Semmle.Util.Tests"
-          dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/csharp/extractor/Semmle.Extraction.Tests"
-          dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/csharp/autobuilder/Semmle.Autobuild.CSharp.Tests"
-          dotnet test -p:RuntimeFrameworkVersion=6.0.4 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=7.0.2 "${{ github.workspace }}/csharp/extractor/Semmle.Util.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=7.0.2 "${{ github.workspace }}/csharp/extractor/Semmle.Extraction.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=7.0.2 "${{ github.workspace }}/csharp/autobuilder/Semmle.Autobuild.CSharp.Tests"
+          dotnet test -p:RuntimeFrameworkVersion=7.0.2 "${{ github.workspace }}/cpp/autobuilder/Semmle.Autobuild.Cpp.Tests"

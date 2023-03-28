@@ -26,7 +26,7 @@ class InsecureTlsConfig extends TaintTracking::Configuration {
    * Holds for enum values that represent an insecure version of TLS
    */
   override predicate isSource(DataFlow::Node node) {
-    node.asExpr().(MethodRefExpr).getMember().(EnumElementDecl).getName() =
+    node.asExpr().(MethodLookupExpr).getMember().(EnumElementDecl).getName() =
       ["TLSv10", "TLSv11", "tlsProtocol10", "tlsProtocol11"]
   }
 

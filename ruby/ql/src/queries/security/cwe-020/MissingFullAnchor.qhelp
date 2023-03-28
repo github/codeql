@@ -1,0 +1,45 @@
+<!DOCTYPE qhelp PUBLIC
+"-//Semmle//qhelp//EN"
+"qhelp.dtd">
+<qhelp>
+
+	<overview>
+		<p>
+            Regular expressions in Ruby can use anchors to match the beginning and end of a string. 
+            However, if the <code>^</code> and <code>$</code> anchors are used, 
+            the regular expression can match a single line of a multi-line string.
+            This allows bad actors to bypass your regular expression checks and inject malicious input.
+		</p>
+	</overview>
+
+	<recommendation>
+		<p>
+            Use the <code>\A</code> and <code>\z</code> anchors since these anchors will always
+            match the beginning and end of the string, even if the string contains newlines.
+		</p>
+	</recommendation>
+
+	<example>
+
+		<p>
+            The following (bad) example code uses a regular expression to check that a string contains only digits.
+		</p>
+
+		<sample src="examples/missing_full_anchor_bad.rb" />
+
+        <p>
+            The regular expression <code>/^[0-9]+$/</code> will match a single line of a multi-line string, 
+            which may not be the intended behavior. 
+            The following (good) example code uses the regular expression <code>\A[0-9]+\z</code> to match the entire input string.
+        </p>
+        
+        <sample src="examples/missing_full_anchor_good.rb" />
+
+	</example>
+
+	<references>
+        <li>
+            Ruby documentation: <a href="https://ruby-doc.org/3.2.0/Regexp.html#class-Regexp-label-Anchors">Anchors</a>
+        </li>
+	</references>
+</qhelp>

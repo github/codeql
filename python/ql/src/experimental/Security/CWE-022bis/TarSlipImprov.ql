@@ -9,6 +9,7 @@
  * @security-severity 7.5
  * @precision high
  * @tags security
+ *       experimental
  *       external/cwe/cwe-022
  */
 
@@ -100,19 +101,15 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    exists(AttrRead attr, MethodCallNode call |
-      attr.accesses(nodeFrom, "getmembers") and
-      nodeFrom = call.getObject() and
-      nodeFrom instanceof AllTarfileOpens and
-      nodeTo = call
-    )
+    nodeTo.(MethodCallNode).calls(nodeFrom, "getmembers") and
+    nodeFrom instanceof AllTarfileOpens
     or
-    exists(API::CallNode closing |
-      closing = API::moduleImport("contextlib").getMember("closing").getACall() and
-      nodeFrom = closing.getArg(0) and
-      nodeFrom = tarfileOpen().getReturn().getAValueReachingSink() and
-      nodeTo = closing
-    )
+    // To handle the case of `with closing(tarfile.open()) as file:`
+    // we add a step from the first argument of `closing` to the call to `closing`,
+    // whenever that first argument is a return of `tarfile.open()`.
+    nodeTo = API::moduleImport("contextlib").getMember("closing").getACall() and
+    nodeFrom = nodeTo.(API::CallNode).getArg(0) and
+    nodeFrom = tarfileOpen().getReturn().getAValueReachableFromSource()
   }
 }
 

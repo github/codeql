@@ -7,6 +7,7 @@
  * @precision high
  * @id java/xquery-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-652
  */
 

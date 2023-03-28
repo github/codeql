@@ -41,7 +41,7 @@ open class KotlinUsesExtractor(
     val globalExtensionState: KotlinExtractorGlobalState
 ) {
     fun referenceExternalClass(name: String) =
-        pluginContext.referenceClass(FqName(name))?.owner.also {
+        getClassByFqName(pluginContext, FqName(name))?.owner.also {
             if (it == null)
                 logger.warn("Unable to resolve external class $name")
             else
@@ -71,16 +71,16 @@ open class KotlinUsesExtractor(
         TypeResult(fakeKotlinType(), "", "")
     )
 
-    fun extractFileClass(f: IrFile): Label<out DbClass> {
+    fun extractFileClass(f: IrFile): Label<out DbClassorinterface> {
         val pkg = f.fqName.asString()
         val jvmName = getFileClassName(f)
         val qualClassName = if (pkg.isEmpty()) jvmName else "$pkg.$jvmName"
         val label = "@\"class;$qualClassName\""
-        val id: Label<DbClass> = tw.getLabelFor(label) {
+        val id: Label<DbClassorinterface> = tw.getLabelFor(label) {
             val fileId = tw.mkFileId(f.path, false)
             val locId = tw.getWholeFileLocation(fileId)
             val pkgId = extractPackage(pkg)
-            tw.writeClasses(it, jvmName, pkgId, it)
+            tw.writeClasses_or_interfaces(it, jvmName, pkgId, it)
             tw.writeFile_class(it)
             tw.writeHasLocation(it, locId)
 
@@ -118,7 +118,7 @@ open class KotlinUsesExtractor(
     }
 
     fun getJavaEquivalentClass(c: IrClass) =
-        getJavaEquivalentClassId(c)?.let { pluginContext.referenceClass(it.asSingleFqName()) }?.owner
+        getJavaEquivalentClassId(c)?.let { getClassByFqName(pluginContext, it.asSingleFqName()) }?.owner
 
     /**
      * Gets a KotlinFileExtractor based on this one, except it attributes locations to the file that declares the given class.
@@ -328,7 +328,7 @@ open class KotlinUsesExtractor(
                 return@getOrPut null
             }
 
-            val result = pluginContext.referenceClass(qualifiedName)?.owner
+            val result = getClassByFqName(pluginContext, qualifiedName)?.owner
             if (result != null) {
                 logger.info("Replaced synthetic class ${c.name} with its real equivalent")
                 return@getOrPut result
@@ -337,7 +337,7 @@ open class KotlinUsesExtractor(
             // The above doesn't work for (some) generated nested classes, such as R$id, which should be R.id
             val fqn = qualifiedName.asString()
             if (fqn.indexOf('$') >= 0) {
-                val nested = pluginContext.referenceClass(FqName(fqn.replace('$', '.')))?.owner
+                val nested = getClassByFqName(pluginContext, fqn.replace('$', '.'))?.owner
                 if (nested != null) {
                     logger.info("Replaced synthetic nested class ${c.name} with its real equivalent")
                     return@getOrPut nested
@@ -454,7 +454,7 @@ open class KotlinUsesExtractor(
         }
 
         fun tryGetPair(arity: Int): Pair<IrClass, List<IrTypeArgument>?>? {
-            val replaced = pluginContext.referenceClass(fqName)?.owner ?: return null
+            val replaced = getClassByFqName(pluginContext, fqName)?.owner ?: return null
             return Pair(replaced, List(arity) { makeTypeProjection(pluginContext.irBuiltIns.anyNType, Variance.INVARIANT) })
         }
 
@@ -478,7 +478,7 @@ open class KotlinUsesExtractor(
     private fun useAnonymousClass(c: IrClass) =
         tw.lm.anonymousTypeMapping.getOrPut(c) {
             TypeResults(
-                TypeResult(tw.getFreshIdLabel<DbClass>(), "", ""),
+                TypeResult(tw.getFreshIdLabel<DbClassorinterface>(), "", ""),
                 TypeResult(fakeKotlinType(), "TODO", "TODO")
             )
         }
@@ -487,8 +487,8 @@ open class KotlinUsesExtractor(
         val fakeKotlinPackageId: Label<DbPackage> = tw.getLabelFor("@\"FakeKotlinPackage\"", {
             tw.writePackages(it, "fake.kotlin")
         })
-        val fakeKotlinClassId: Label<DbClass> = tw.getLabelFor("@\"FakeKotlinClass\"", {
-            tw.writeClasses(it, "FakeKotlinClass", fakeKotlinPackageId, it)
+        val fakeKotlinClassId: Label<DbClassorinterface> = tw.getLabelFor("@\"FakeKotlinClass\"", {
+            tw.writeClasses_or_interfaces(it, "FakeKotlinClass", fakeKotlinPackageId, it)
         })
         val fakeKotlinTypeId: Label<DbKt_nullable_type> = tw.getLabelFor("@\"FakeKotlinType\"", {
             tw.writeKt_nullable_types(it, fakeKotlinClassId)
@@ -643,26 +643,6 @@ open class KotlinUsesExtractor(
         RETURN, GENERIC_ARGUMENT, OTHER
     }
 
-    private fun isOnDeclarationStackWithoutTypeParameters(f: IrFunction) =
-        this is KotlinFileExtractor && this.declarationStack.findOverriddenAttributes(f)?.typeParameters?.isEmpty() == true
-
-    private fun isStaticFunctionOnStackBeforeClass(c: IrClass) =
-        this is KotlinFileExtractor && (this.declarationStack.findFirst { it.first == c || it.second?.isStatic == true })?.second?.isStatic == true
-
-    private fun isUnavailableTypeParameter(t: IrType) =
-        t is IrSimpleType && t.classifier.owner.let { owner ->
-            owner is IrTypeParameter && owner.parent.let { parent ->
-                when (parent) {
-                    is IrFunction -> isOnDeclarationStackWithoutTypeParameters(parent)
-                    is IrClass -> isStaticFunctionOnStackBeforeClass(parent)
-                    else -> false
-                }
-            }
-        }
-
-    private fun argIsUnavailableTypeParameter(t: IrTypeArgument) =
-        t is IrTypeProjection && isUnavailableTypeParameter(t.type)
-
     private fun useSimpleType(s: IrSimpleType, context: TypeContext): TypeResults {
         if (s.abbreviation != null) {
             // TODO: Extract this information
@@ -670,11 +650,11 @@ open class KotlinUsesExtractor(
         // We use this when we don't actually have an IrClass for a class
         // we want to refer to
         // TODO: Eliminate the need for this if possible
-        fun makeClass(pkgName: String, className: String): Label<DbClass> {
+        fun makeClass(pkgName: String, className: String): Label<DbClassorinterface> {
             val pkgId = extractPackage(pkgName)
             val label = "@\"class;$pkgName.$className\""
-            val classId: Label<DbClass> = tw.getLabelFor(label, {
-                tw.writeClasses(it, className, pkgId, it)
+            val classId: Label<DbClassorinterface> = tw.getLabelFor(label, {
+                tw.writeClasses_or_interfaces(it, className, pkgId, it)
             })
             return classId
         }
@@ -735,13 +715,11 @@ open class KotlinUsesExtractor(
             }
 
             owner is IrClass -> {
-                val args = if (s.isRawType() || s.arguments.any { argIsUnavailableTypeParameter(it) }) null else s.arguments
+                val args = if (s.isRawType()) null else s.arguments
 
                 return useSimpleTypeClass(owner, args, s.isNullable())
             }
             owner is IrTypeParameter -> {
-                if (isUnavailableTypeParameter(s))
-                    return useType(erase(s), context)
                 val javaResult = useTypeParameter(owner)
                 val aClassId = makeClass("kotlin", "TypeParam") // TODO: Wrong
                 val kotlinResult = if (true) TypeResult(fakeKotlinType(), "TODO", "TODO") else
@@ -1259,7 +1237,7 @@ open class KotlinUsesExtractor(
 
         var res = tw.lm.locallyVisibleFunctionLabelMapping[f]
         if (res == null) {
-            val javaResult = TypeResult(tw.getFreshIdLabel<DbClass>(), "", "")
+            val javaResult = TypeResult(tw.getFreshIdLabel<DbClassorinterface>(), "", "")
             val kotlinResult = TypeResult(tw.getFreshIdLabel<DbKt_notnull_type>(), "", "")
             tw.writeKt_notnull_types(kotlinResult.id, javaResult.id)
             res = LocallyVisibleFunctionLabels(
@@ -1474,7 +1452,13 @@ open class KotlinUsesExtractor(
         param.parent.let {
             (it as? IrFunction)?.let { fn ->
                 if (this is KotlinFileExtractor)
-                    this.declarationStack.findOverriddenAttributes(fn)?.id
+                    this.declarationStack.findOverriddenAttributes(fn)?.takeUnless {
+                        // When extracting the `static fun f$default(...)` that accompanies `fun <T> f(val x: T? = defaultExpr, ...)`,
+                        // `f$default` has no type parameters, and so there is no `f$default::T` to refer to.
+                        // We have no good way to extract references to `T` in `defaultExpr`, so we just fall back on describing it
+                        // in terms of `f::T`, even though that type variable ought to be out of scope here.
+                        attribs -> attribs.typeParameters?.isEmpty() == true
+                    }?.id
                 else
                     null
             } ?:

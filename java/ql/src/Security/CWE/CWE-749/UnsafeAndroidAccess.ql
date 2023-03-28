@@ -14,9 +14,9 @@
 
 import java
 import semmle.code.java.security.UnsafeAndroidAccessQuery
-import DataFlow::PathGraph
+import FetchUntrustedResourceFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, FetchUntrustedResourceConfiguration conf
-where conf.hasFlowPath(source, sink)
+from FetchUntrustedResourceFlow::PathNode source, FetchUntrustedResourceFlow::PathNode sink
+where FetchUntrustedResourceFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Unsafe resource fetching in Android WebView due to $@.",
   source.getNode(), sink.getNode().(UrlResourceSink).getSinkType()

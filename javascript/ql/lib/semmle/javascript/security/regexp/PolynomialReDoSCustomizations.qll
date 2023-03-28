@@ -110,6 +110,9 @@ module PolynomialReDoS {
     exists(RegExpAlt alt | term = alt |
       forall(RegExpTerm choice | choice = alt.getAlternative() | isCharClassLike(choice))
     )
+    or
+    // an infinite repetition of a char class, is effectively the same, because the regex is global.
+    exists(InfiniteRepetitionQuantifier quan | term = quan | isCharClassLike(quan.getChild(0)))
   }
 
   /**

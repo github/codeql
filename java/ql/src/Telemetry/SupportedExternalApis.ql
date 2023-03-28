@@ -7,16 +7,9 @@
  */
 
 import java
-import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 import ExternalApi
 
-private predicate relevant(ExternalApi api) {
-  not api.isUninteresting() and
-  (
-    api.isSupported() or
-    api = any(FlowSummaryImpl::Public::NeutralCallable nsc).asCallable()
-  )
-}
+private predicate relevant(ExternalApi api) { api.isSupported() }
 
 from string apiName, int usages
 where Results<relevant/1>::restrict(apiName, usages)

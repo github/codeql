@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["org.apache.commons.collections4.properties", "AbstractPropertiesFactory", True, "load", "(ClassLoader,String)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
       - ["org.apache.commons.collections4.properties", "AbstractPropertiesFactory", True, "load", "(File)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

@@ -9,7 +9,8 @@ newtype TQuery =
   TSqlInjectionQuery() or
   TTaintedPathQuery() or
   TXssQuery() or
-  TXssThroughDomQuery()
+  TXssThroughDomQuery() or
+  TShellCommandInjectionFromEnvironmentQuery()
 
 abstract class Query extends TQuery {
   abstract string getName();
@@ -35,4 +36,10 @@ class XssQuery extends Query, TXssQuery {
 
 class XssThroughDomQuery extends Query, TXssThroughDomQuery {
   override string getName() { result = "XssThroughDom" }
+}
+
+class ShellCommandInjectionFromEnvironmentQuery extends Query,
+  TShellCommandInjectionFromEnvironmentQuery
+{
+  override string getName() { result = "ShellCommandInjectionFromEnvironment" }
 }

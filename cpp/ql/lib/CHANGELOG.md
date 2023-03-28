@@ -1,3 +1,87 @@
+## 0.6.0
+
+### Breaking Changes
+
+* The `semmle.code.cpp.commons.Buffer` and `semmle.code.cpp.commons.NullTermination` libraries no longer expose `semmle.code.cpp.dataflow.DataFlow`. Please import `semmle.code.cpp.dataflow.DataFlow` directly.
+
+### Deprecated APIs
+
+* The `WriteConfig` taint tracking configuration has been deprecated. Please use `WriteFlow`.
+
+### New Features
+
+* Added support for merging two `PathGraph`s via disjoint union to allow results from multiple data flow computations in a single `path-problem` query.
+
+### Major Analysis Improvements
+
+* A new C/C++ dataflow library (`semmle.code.cpp.dataflow.new.DataFlow`) has been added.
+  The new library behaves much more like the dataflow library of other CodeQL supported
+  languages by following use-use dataflow paths instead of def-use dataflow paths.
+  The new library also better supports dataflow through indirections, and new predicates
+  such as `Node::asIndirectExpr` have been added to facilitate working with indirections.
+
+  The `semmle.code.cpp.ir.dataflow.DataFlow` library is now identical to the new
+  `semmle.code.cpp.dataflow.new.DataFlow` library.
+* The main data flow and taint tracking APIs have been changed. The old APIs
+  remain in place for now and translate to the new through a
+  backwards-compatible wrapper. If multiple configurations are in scope
+  simultaneously, then this may affect results slightly. The new API is quite
+  similar to the old, but makes use of a configuration module instead of a
+  configuration class.
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `hasGeneratedCopyConstructor` and `hasGeneratedCopyAssignmentOperator` predicates from the `Folder` class.
+* Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
+* Deleted the deprecated `getMustlockFunction`, `getTrylockFunction`, `getLockFunction`, and `getUnlockFunction` predicates from the `MutexType` class.
+* Deleted the deprecated `getPosInBasicBlock` predicate from the `SubBasicBlock` class.
+* Deleted the deprecated `getExpr` predicate from the `PointerDereferenceExpr` class.
+* Deleted the deprecated `getUseInstruction` and `getDefinitionInstruction` predicates from the `Operand` class.
+* Deleted the deprecated `isInParameter`, `isInParameterPointer`, and `isInQualifier` predicates from the `FunctionInput` class.
+* Deleted the deprecated `isOutParameterPointer`, `isOutQualifier`, `isOutReturnValue`, and `isOutReturnPointer` predicate from the `FunctionOutput` class.
+* Deleted the deprecated 3-argument `isGuardPhi` predicate from the `RangeSsaDefinition` class.
+
+## 0.5.4
+
+No user-facing changes.
+
+## 0.5.3
+
+No user-facing changes.
+
+## 0.5.2
+
+No user-facing changes.
+
+## 0.5.1
+
+No user-facing changes.
+
+## 0.5.0
+
+### Breaking Changes
+
+The predicates in the `MustFlow::Configuration` class used by the `MustFlow` library (`semmle.code.cpp.ir.dataflow.MustFlow`) have changed to be defined directly in terms of the C++ IR instead of IR dataflow nodes.
+
+### Deprecated APIs
+
+* Deprecated `semmle.code.cpp.ir.dataflow.DefaultTaintTracking`. Use `semmle.code.cpp.ir.dataflow.TaintTracking`.
+* Deprecated `semmle.code.cpp.security.TaintTrackingImpl`. Use `semmle.code.cpp.ir.dataflow.TaintTracking`.
+* Deprecated `semmle.code.cpp.valuenumbering.GlobalValueNumberingImpl`. Use `semmle.code.cpp.valuenumbering.GlobalValueNumbering`, which exposes the same API.
+
+### Minor Analysis Improvements
+
+* The `ArgvSource` flow source now uses the second parameter of `main` as its source instead of the uses of this parameter.
+* The `ArgvSource` flow source has been generalized to handle cases where the argument vector of `main` is not named `argv`.
+* The `getaddrinfo` function is now recognized as a flow source.
+* The `secure_getenv` and `_wgetenv` functions are now recognized as local flow sources.
+* The `scanf` and `fscanf` functions and their variants are now recognized as flow sources.
+* Deleted the deprecated `getName` and `getShortName` predicates from the `Folder` class.
+
+## 0.4.6
+
+No user-facing changes.
+
 ## 0.4.5
 
 No user-facing changes.
