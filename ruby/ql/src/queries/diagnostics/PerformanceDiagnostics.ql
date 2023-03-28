@@ -1,4 +1,5 @@
 /**
+ * @id rb/performance-diagnostics
  * @kind table
  */
 
