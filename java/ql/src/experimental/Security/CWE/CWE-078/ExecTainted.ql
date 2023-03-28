@@ -23,6 +23,6 @@ import RemoteUserInputToArgumentToExecFlow::PathGraph
 from
   RemoteUserInputToArgumentToExecFlow::PathNode source,
   RemoteUserInputToArgumentToExecFlow::PathNode sink, ArgumentToExec execArg
-where execTainted(source, sink, execArg)
+where execIsTainted(source, sink, execArg)
 select execArg, source, sink, "This command line depends on a $@.", source.getNode(),
   "user-provided value"

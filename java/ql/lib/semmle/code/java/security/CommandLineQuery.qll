@@ -55,11 +55,26 @@ module RemoteUserInputToArgumentToExecFlow =
   TaintTracking::Global<RemoteUserInputToArgumentToExecFlowConfig>;
 
 /**
+ * DEPRECATED: Use `execIsTainted` instead.
+ *
  * Implementation of `ExecTainted.ql`. It is extracted to a QLL
  * so that it can be excluded from `ExecUnescaped.ql` to avoid
  * reporting overlapping results.
  */
-predicate execTainted(
+deprecated predicate execTainted(
+  DataFlow::PathNode source, DataFlow::PathNode sink, ArgumentToExec execArg
+) {
+  exists(RemoteUserInputToArgumentToExecFlowConfig conf |
+    conf.hasFlowPath(source, sink) and sink.getNode() = DataFlow::exprNode(execArg)
+  )
+}
+
+/**
+ * Implementation of `ExecTainted.ql`. It is extracted to a QLL
+ * so that it can be excluded from `ExecUnescaped.ql` to avoid
+ * reporting overlapping results.
+ */
+predicate execIsTainted(
   RemoteUserInputToArgumentToExecFlow::PathNode source,
   RemoteUserInputToArgumentToExecFlow::PathNode sink, ArgumentToExec execArg
 ) {
