@@ -239,6 +239,14 @@ module LocalFlow {
         scope = e2 and
         isSuccessor = true
         or
+        e1 = e2.(CheckedExpr).getExpr() and
+        scope = e2 and
+        isSuccessor = true
+        or
+        e1 = e2.(UncheckedExpr).getExpr() and
+        scope = e2 and
+        isSuccessor = true
+        or
         exists(WithExpr we |
           scope = we and
           isSuccessor = true
