@@ -166,6 +166,17 @@ We can recognize this using the following extension:
 
 This works in this example because the **connection** parameter has a type annotation that matches what the model is looking for.
 
+Note that there is a significant difference between the following two rows:
+
+.. code-block:: yaml
+
+        data:
+        - ["mysql.Connection", "", ...]
+        - ["mysql", "Member[Connection]", ...]
+
+The first row matches instances of **mysql.Connection** which are objects that encapsulate a MySQL connection.
+The second row would match something like **require('mysql').Connection**, which is not itself a connection object.
+
 In the next section, we'll show how to generalize the model to handle the absence of type annotations.
 
 Continued example: Dealing with untyped code
