@@ -85,6 +85,7 @@ test_getAFunctionValue
 | es2015.js:35:1:35:3 | sum | es2015.js:31:1:33:1 | functio ... +y+z;\\n} |
 | es2015.js:36:1:36:3 | sum | es2015.js:31:1:33:1 | functio ... +y+z;\\n} |
 | m2.js:2:6:2:18 | function() {} | m2.js:2:6:2:18 | function() {} |
+| m.js:1:1:1:9 | exports.f | m.js:1:13:1:25 | function() {} |
 | m.js:1:1:1:25 | exports ... on() {} | m.js:1:13:1:25 | function() {} |
 | m.js:1:13:1:25 | function() {} | m.js:1:13:1:25 | function() {} |
 | m.js:2:1:2:9 | exports.f | m.js:1:13:1:25 | function() {} |
@@ -100,16 +101,19 @@ test_getAFunctionValue
 | protoclass.js:3:10:3:10 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
 | protoclass.js:4:3:4:11 | this.init | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
 | protoclass.js:7:1:7:1 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
+| protoclass.js:7:1:7:16 | F.prototype.init | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
 | protoclass.js:7:1:11:1 | F.proto ...  m();\\n} | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
 | protoclass.js:7:20:11:1 | functio ...  m();\\n} | protoclass.js:7:20:11:1 | functio ...  m();\\n} |
 | protoclass.js:8:3:8:13 | this.method | protoclass.js:13:22:13:34 | function() {} |
 | protoclass.js:9:11:9:21 | this.method | protoclass.js:13:22:13:34 | function() {} |
 | protoclass.js:13:1:13:1 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
+| protoclass.js:13:1:13:18 | F.prototype.method | protoclass.js:13:22:13:34 | function() {} |
 | protoclass.js:13:1:13:34 | F.proto ... on() {} | protoclass.js:13:22:13:34 | function() {} |
 | protoclass.js:13:22:13:34 | function() {} | protoclass.js:13:22:13:34 | function() {} |
 | protoclass.js:15:16:15:16 | F | protoclass.js:3:1:5:1 | functio ... it();\\n} |
 | reflection.js:1:1:3:1 | functio ...  x+y;\\n} | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
 | reflection.js:5:3:5:5 | add | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
+| reflection.js:5:3:5:11 | add.apply | reflection.js:5:15:5:39 | functio ... n 56; } |
 | reflection.js:5:3:5:39 | add.app ... n 56; } | reflection.js:5:15:5:39 | functio ... n 56; } |
 | reflection.js:5:15:5:14 | this | reflection.js:1:1:3:1 | functio ...  x+y;\\n} |
 | reflection.js:5:15:5:39 | functio ... n 56; } | reflection.js:5:15:5:39 | functio ... n 56; } |
@@ -163,11 +167,13 @@ test_getAFunctionValue
 | tst.js:42:2:42:26 | functio ... rn x; } | tst.js:42:2:42:26 | functio ... rn x; } |
 | tst.js:44:1:44:15 | function A() {} | tst.js:44:1:44:15 | function A() {} |
 | tst.js:45:1:45:1 | A | tst.js:44:1:44:15 | function A() {} |
+| tst.js:45:1:45:13 | A.prototype.f | tst.js:45:17:47:1 | functio ... .g();\\n} |
 | tst.js:45:1:47:1 | A.proto ... .g();\\n} | tst.js:45:17:47:1 | functio ... .g();\\n} |
 | tst.js:45:17:47:1 | functio ... .g();\\n} | tst.js:45:17:47:1 | functio ... .g();\\n} |
 | tst.js:46:2:46:7 | this.g | tst.js:48:17:48:29 | function() {} |
 | tst.js:46:2:46:7 | this.g | tst.js:61:17:61:29 | function() {} |
 | tst.js:48:1:48:1 | A | tst.js:44:1:44:15 | function A() {} |
+| tst.js:48:1:48:13 | A.prototype.g | tst.js:48:17:48:29 | function() {} |
 | tst.js:48:1:48:29 | A.proto ... on() {} | tst.js:48:17:48:29 | function() {} |
 | tst.js:48:17:48:29 | function() {} | tst.js:48:17:48:29 | function() {} |
 | tst.js:50:1:50:15 | function B() {} | tst.js:50:1:50:15 | function B() {} |
@@ -186,11 +192,13 @@ test_getAFunctionValue
 | tst.js:60:1:60:1 | C | tst.js:59:1:59:15 | function C() {} |
 | tst.js:60:19:60:19 | A | tst.js:44:1:44:15 | function A() {} |
 | tst.js:61:1:61:1 | C | tst.js:59:1:59:15 | function C() {} |
+| tst.js:61:1:61:13 | C.prototype.g | tst.js:61:17:61:29 | function() {} |
 | tst.js:61:1:61:29 | C.proto ... on() {} | tst.js:61:17:61:29 | function() {} |
 | tst.js:61:17:61:29 | function() {} | tst.js:61:17:61:29 | function() {} |
 | tst.js:63:1:67:2 | (functi ... f();\\n}) | tst.js:63:2:67:1 | functio ... .f();\\n} |
 | tst.js:63:2:67:1 | functio ... .f();\\n} | tst.js:63:2:67:1 | functio ... .f();\\n} |
 | tst.js:64:17:64:17 | B | tst.js:50:1:50:15 | function B() {} |
+| tst.js:65:5:65:7 | b.f | tst.js:65:11:65:23 | function() {} |
 | tst.js:65:5:65:23 | b.f = function() {} | tst.js:65:11:65:23 | function() {} |
 | tst.js:65:11:65:23 | function() {} | tst.js:65:11:65:23 | function() {} |
 | tst.js:66:5:66:7 | b.f | tst.js:52:5:54:2 | functio ... g();\\n\\t} |
