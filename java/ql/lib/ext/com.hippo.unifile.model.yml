@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["com.hippo.unifile", "UniFile", True, "createDirectory", "(String)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["com.hippo.unifile", "UniFile", True, "createFile", "(String)", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["com.hippo.unifile", "UniFile", True, "renameTo", "(String)", "", "Argument[0]", "create-file", "ai-generated"]
