@@ -123,8 +123,9 @@ class Configuration extends TaintTracking::Configuration {
     inlbl = TaintedUrlSuffix::label() and
     outlbl = prefixLabel()
     or
-    exists(DataFlow::FunctionNode callback |
-      callback = JQuery::htmlCallback() and
+    exists(DataFlow::FunctionNode callback, DataFlow::Node arg |
+      any(JQuery::MethodCall c).interpretsArgumentAsHtml(arg) and
+      callback = arg.getABoundFunctionValue(_) and
       src = callback.getReturnNode() and
       trg = callback and
       inlbl = outlbl
