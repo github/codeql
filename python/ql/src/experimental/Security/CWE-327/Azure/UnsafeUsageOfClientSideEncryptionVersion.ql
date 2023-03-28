@@ -1,7 +1,7 @@
 /**
  * @name Unsafe usage of v1 version of Azure Storage client-side encryption.
  * @description Using version v1 of Azure Storage client-side encryption is insecure, and may enable an attacker to decrypt encrypted data
- * @kind problem
+ * @kind path-problem
  * @tags security
  *       experimental
  *       cryptography
@@ -15,33 +15,44 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 
-predicate isUnsafeClientSideAzureStorageEncryptionViaAttributes(Call call, AttrNode node) {
-  exists(
-    API::Node client, DataFlow::AttrWrite keyAttrWrite, DataFlow::MethodCallNode uploadBlobCall
-  |
-    call = uploadBlobCall.asExpr() and node = keyAttrWrite.asCfgNode()
-  |
-    client =
-      API::moduleImport("azure")
-          .getMember("storage")
-          .getMember("blob")
-          .getMember(["ContainerClient", "BlobClient", "BlobServiceClient"])
-          .getAMember()
-          .getReturn() and
-    keyAttrWrite
-        .accesses(client.getAValueReachableFromSource(),
-          ["key_encryption_key", "key_resolver_function"]) and
-    uploadBlobCall.calls(client.getAValueReachableFromSource(), "upload_blob") and
-    DataFlow::localFlow(keyAttrWrite.getObject(), uploadBlobCall.getObject()) and
-    not exists(DataFlow::AttrWrite encryptionVersionWrite |
-      encryptionVersionWrite.accesses(client.getAValueReachableFromSource(), "encryption_version") and
-      encryptionVersionWrite.getValue().asExpr().(StrConst).getText() in ["'2.0'", "2.0"] and
-      DataFlow::localFlow(keyAttrWrite.getObject(), encryptionVersionWrite.getObject()) and
-      DataFlow::localFlow(encryptionVersionWrite.getObject(), uploadBlobCall.getObject())
-    )
-  )
+API::Node getClient() {
+  result =
+    API::moduleImport("azure")
+        .getMember("storage")
+        .getMember("blob")
+        .getMember(["ContainerClient", "BlobClient", "BlobServiceClient"])
+        .getAMember()
+        .getReturn()
 }
 
-from Call call, ControlFlowNode node
-where isUnsafeClientSideAzureStorageEncryptionViaAttributes(call, node)
-select node, "Unsafe usage of v1 version of Azure Storage client-side encryption."
+module AzureBlobClientConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    exists(DataFlow::AttrWrite attr |
+      node = getClient().getAValueReachableFromSource() and
+      attr.accesses(node, ["key_encryption_key", "key_resolver_function"])
+    )
+  }
+
+  predicate isBarrier(DataFlow::Node node) {
+    exists(DataFlow::AttrWrite attr |
+      node = getClient().getAValueReachableFromSource() and
+      attr.accesses(node, "encryption_version") and
+      attr.getValue().asExpr().(StrConst).getText() in ["'2.0'", "2.0"]
+    )
+  }
+
+  predicate isSink(DataFlow::Node node) {
+    exists(DataFlow::MethodCallNode call |
+      call = getClient().getMember("upload_blob").getACall() and
+      node = call.getObject()
+    )
+  }
+}
+
+module AzureBlobClient = DataFlow::Global<AzureBlobClientConfig>;
+
+import AzureBlobClient::PathGraph
+
+from AzureBlobClient::PathNode source, AzureBlobClient::PathNode sink
+where AzureBlobClient::flowPath(source, sink)
+select sink, source, sink, "Unsafe usage of v1 version of Azure Storage client-side encryption"
