@@ -66,9 +66,9 @@ module Generated {
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    {{type}} getImmediate{{singular}}({{#is_repeated}}int index{{/is_repeated}}) {
+    {{type}} get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}int index{{/is_indexed}}) {
       {{^ipa}}
-      result = Synth::convert{{type}}FromRaw(Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_repeated}}index{{/is_repeated}}))
+      result = Synth::convert{{type}}FromRaw(Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_indexed}}index{{/is_indexed}}))
       {{/ipa}}
       {{#ipa}}
       none()
@@ -83,8 +83,8 @@ module Generated {
     {{/description}}
     {{/has_description}}
      */
-    final {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
-      result = getImmediate{{singular}}({{#is_repeated}}index{{/is_repeated}}).resolve()
+    final {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
+      result = get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}index{{/is_indexed}}).resolve()
     }
 
     {{/type_is_class}}
@@ -97,9 +97,9 @@ module Generated {
     {{/description}}
     {{/has_description}}
      */
-    {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
+    {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       {{^ipa}}
-      {{^is_predicate}}result = {{/is_predicate}}Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_repeated}}index{{/is_repeated}})
+      {{^is_predicate}}result = {{/is_predicate}}Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_indexed}}index{{/is_indexed}})
       {{/ipa}}
       {{#ipa}}
       none()
@@ -115,7 +115,7 @@ module Generated {
       exists({{getter}}({{#is_repeated}}index{{/is_repeated}}))
     }
     {{/is_optional}}
-    {{#is_repeated}}
+    {{#is_indexed}}
 
     /**
      * Gets any of the {{doc_plural}}.
@@ -132,7 +132,15 @@ module Generated {
       result = count(int i | exists({{getter}}(i)))
     }
     {{/is_optional}}
-    {{/is_repeated}}
+    {{/is_indexed}}
+    {{#is_unordered}}
+    /**
+     * Gets the number of {{doc_plural}}.
+     */
+    final int getNumberOf{{plural}}() {
+      result = count({{getter}}())
+    }
+    {{/is_unordered}}
     {{/properties}}
   }
 }

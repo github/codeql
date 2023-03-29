@@ -337,6 +337,22 @@ def test_repeated_property(generate_classes, is_child, prev_child):
                                     ])),
     }
 
+def test_repeated_unordered_property(generate_classes):
+    assert generate_classes([
+        schema.Class("FakeRoot"),
+        schema.Class("MyObject", properties=[
+            schema.RepeatedUnorderedProperty("foo", "bar")]),
+    ]) == {
+               "FakeRoot.qll": (a_ql_stub(name="FakeRoot", base_import=gen_import_prefix + "FakeRoot"),
+                                a_ql_class(name="FakeRoot", final=True)),
+               "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                                a_ql_class(name="MyObject", final=True, properties=[
+                                    ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
+                                                tableparams=["this", "result"], is_unordered=True,
+                                                doc="foo of this my object", doc_plural="foos of this my object"),
+                                ])),
+           }
+
 
 @pytest.mark.parametrize("is_child,prev_child", [(False, None), (True, "")])
 def test_repeated_optional_property(generate_classes, is_child, prev_child):
