@@ -63,5 +63,5 @@ func (_ Patch) ApplyWithOptions(_ []byte, _ *ApplyOptions) ([]byte, error) {
 }
 
 func (_ Patch) ApplyIndentWithOptions(_ []byte, _ string, _ *ApplyOptions) ([]byte, error) {
-  return nil, nil
+	return nil, nil
 }
