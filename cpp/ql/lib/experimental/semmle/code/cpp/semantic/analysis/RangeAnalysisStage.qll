@@ -1064,17 +1064,17 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
       )
       or
       exists(
-        SemZeroBound bLeft, SemZeroBound bRight, D::Delta dLeft, D::Delta dRight, boolean fbeLeft,
-        boolean fbeRight, D::Delta odLeft, D::Delta odRight, SemReason rLeft, SemReason rRight
+        D::Delta dLeft, D::Delta dRight, boolean fbeLeft, boolean fbeRight, D::Delta odLeft,
+        D::Delta odRight, SemReason rLeft, SemReason rRight
       |
-        boundedMulOperand(e, upper, bLeft, true, dLeft, fbeLeft, odLeft, rLeft) and
-        boundedMulOperand(e, upper, bRight, false, dRight, fbeRight, odRight, rRight) and
+        boundedMulOperand(e, upper, true, dLeft, fbeLeft, odLeft, rLeft) and
+        boundedMulOperand(e, upper, false, dRight, fbeRight, odRight, rRight) and
         delta = D::fromFloat(D::toFloat(dLeft) * D::toFloat(dRight)) and
         fromBackEdge = fbeLeft.booleanOr(fbeRight)
       |
-        b = bLeft and origdelta = odLeft and reason = rLeft
+        b instanceof SemZeroBound and origdelta = odLeft and reason = rLeft
         or
-        b = bRight and origdelta = odRight and reason = rRight
+        b instanceof SemZeroBound and origdelta = odRight and reason = rRight
       )
     )
   }
@@ -1111,11 +1111,11 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
   }
 
   /**
-   * Define `cmp(true) = <=` and `cmp(false) >=`.
+   * Define `cmp(true) = <=` and `cmp(false) = >=`.
    *
-   * Holds if `mul = left * right`, and in order to know if `mul cmp(upper) B + k` (for
-   * some `B` and `k`) we need to know that `left cmp(upperLeft) B1 + k1` and
-   * `right cmp(upperRight) B2 + k2` (for some `B1`, `B2`, `k1`, and `k2`).
+   * Holds if `mul = left * right`, and in order to know if `mul cmp(upper) Z + k` (for
+   * some `k`) we need to know that `left cmp(upperLeft) Z + k1` and
+   * `right cmp(upperRight) Z + k2` (for some `k1` and `k2`).
    */
   pragma[nomagic]
   private predicate boundedMulOperandCand(
@@ -1190,19 +1190,27 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
     )
   }
 
+  /**
+   * Holds if `isLeft = true` and `mul`'s left operand is bounded by `delta`,
+   * or if `isLeft = false` and `mul`'s right operand is bounded by `delta`.
+   *
+   * If `upper = true` the computed bound is an upper boud, and if `upper = false`
+   * the computed bound is a lower bound. The `fromBackEdge`, `origdelta`, `reason`
+   * triple are defined by the recursive call to `bounded`.
+   */
   pragma[nomagic]
   private predicate boundedMulOperand(
-    SemMulExpr mul, boolean upper, SemZeroBound b, boolean isLeft, D::Delta delta,
-    boolean fromBackEdge, D::Delta origdelta, SemReason reason
+    SemMulExpr mul, boolean upper, boolean isLeft, D::Delta delta, boolean fromBackEdge,
+    D::Delta origdelta, SemReason reason
   ) {
     exists(boolean upperLeft, boolean upperRight, SemExpr left, SemExpr right |
       boundedMulOperandCand(mul, left, right, upper, upperLeft, upperRight)
     |
       isLeft = true and
-      bounded(left, b, delta, upperLeft, fromBackEdge, origdelta, reason)
+      bounded(left, any(SemZeroBound zb), delta, upperLeft, fromBackEdge, origdelta, reason)
       or
       isLeft = false and
-      bounded(right, b, delta, upperRight, fromBackEdge, origdelta, reason)
+      bounded(right, any(SemZeroBound zb), delta, upperRight, fromBackEdge, origdelta, reason)
     )
   }
 }
