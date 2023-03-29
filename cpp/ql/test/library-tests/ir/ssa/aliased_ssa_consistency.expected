@@ -6,7 +6,6 @@ missingOperandType
 duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
-| ssa.cpp:402:7:402:7 | Uninitialized: definition of b | Instruction 'Uninitialized: definition of b' has no successors in function '$@'. | ssa.cpp:401:6:401:8 | void vla(int, int, int, bool) | void vla(int, int, int, bool) |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

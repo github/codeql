@@ -1698,16 +1698,73 @@ ssa.cpp:
 
 #  401| void vla(int, int, int, bool)
 #  401|   Block 0
-#  401|     v401_1(void)         = EnterFunction           : 
-#  401|     mu401_2(unknown)     = AliasedDefinition       : 
-#  401|     mu401_3(unknown)     = InitializeNonLocal      : 
-#  401|     r401_4(glval<int>)   = VariableAddress[n1]     : 
-#  401|     m401_5(int)          = InitializeParameter[n1] : &:r401_4
-#  401|     r401_6(glval<int>)   = VariableAddress[n2]     : 
-#  401|     m401_7(int)          = InitializeParameter[n2] : &:r401_6
-#  401|     r401_8(glval<int>)   = VariableAddress[n3]     : 
-#  401|     m401_9(int)          = InitializeParameter[n3] : &:r401_8
-#  401|     r401_10(glval<bool>) = VariableAddress[b1]     : 
-#  401|     m401_11(bool)        = InitializeParameter[b1] : &:r401_10
-#  402|     r402_1(glval<int[]>) = VariableAddress[b]      : 
-#  402|     mu402_2(int[])       = Uninitialized[b]        : &:r402_1
+#  401|     v401_1(void)           = EnterFunction           : 
+#  401|     mu401_2(unknown)       = AliasedDefinition       : 
+#  401|     mu401_3(unknown)       = InitializeNonLocal      : 
+#  401|     r401_4(glval<int>)     = VariableAddress[n1]     : 
+#  401|     m401_5(int)            = InitializeParameter[n1] : &:r401_4
+#  401|     r401_6(glval<int>)     = VariableAddress[n2]     : 
+#  401|     m401_7(int)            = InitializeParameter[n2] : &:r401_6
+#  401|     r401_8(glval<int>)     = VariableAddress[n3]     : 
+#  401|     m401_9(int)            = InitializeParameter[n3] : &:r401_8
+#  401|     r401_10(glval<bool>)   = VariableAddress[b1]     : 
+#  401|     m401_11(bool)          = InitializeParameter[b1] : &:r401_10
+#  402|     r402_1(glval<int[]>)   = VariableAddress[b]      : 
+#  402|     mu402_2(int[])         = Uninitialized[b]        : &:r402_1
+#  402|     r402_3(glval<int>)     = VariableAddress[n1]     : 
+#  402|     r402_4(int)            = Load[n1]                : &:r402_3, m401_5
+#  402|     v402_5(void)           = NoOp                    : 
+#  403|     r403_1(glval<int[][]>) = VariableAddress[c]      : 
+#  403|     mu403_2(int[][])       = Uninitialized[c]        : &:r403_1
+#  403|     r403_3(glval<int>)     = VariableAddress[n1]     : 
+#  403|     r403_4(int)            = Load[n1]                : &:r403_3, m401_5
+#  403|     r403_5(glval<int>)     = VariableAddress[n2]     : 
+#  403|     r403_6(int)            = Load[n2]                : &:r403_5, m401_7
+#  403|     v403_7(void)           = NoOp                    : 
+#  405|     r405_1(int)            = Constant[0]             : 
+#  405|     r405_2(glval<int[]>)   = VariableAddress[b]      : 
+#  405|     r405_3(int *)          = Convert                 : r405_2
+#  405|     r405_4(glval<int>)     = CopyValue               : r405_3
+#  405|     mu405_5(int)           = Store[?]                : &:r405_4, r405_1
+#  406|     r406_1(int)            = Constant[1]             : 
+#  406|     r406_2(glval<int[]>)   = VariableAddress[b]      : 
+#  406|     r406_3(int *)          = Convert                 : r406_2
+#  406|     r406_4(int)            = Constant[0]             : 
+#  406|     r406_5(glval<int>)     = PointerAdd[4]           : r406_3, r406_4
+#  406|     mu406_6(int)           = Store[?]                : &:r406_5, r406_1
+#  408|     r408_1(int)            = Constant[0]             : 
+#  408|     r408_2(glval<int[][]>) = VariableAddress[c]      : 
+#  408|     r408_3(int(*)[])       = Convert                 : r408_2
+#  408|     r408_4(int)            = Constant[1]             : 
+#  408|     r408_5(int(*)[])       = PointerAdd              : r408_3, r408_4
+#  408|     r408_6(glval<int[]>)   = CopyValue               : r408_5
+#  408|     r408_7(int *)          = Convert                 : r408_6
+#  408|     r408_8(glval<int>)     = CopyValue               : r408_7
+#  408|     mu408_9(int)           = Store[?]                : &:r408_8, r408_1
+#  410|     r410_1(glval<bool>)    = VariableAddress[b1]     : 
+#  410|     r410_2(bool)           = Load[b1]                : &:r410_1, m401_11
+#  410|     v410_3(void)           = ConditionalBranch       : r410_2
+#-----|   False -> Block 2
+#-----|   True -> Block 1
+
+#  411|   Block 1
+#  411|     r411_1(glval<int[]>) = VariableAddress[b]  : 
+#  411|     m411_2(int[])        = Uninitialized[b]    : &:r411_1
+#  411|     r411_3(glval<int>)   = VariableAddress[n1] : 
+#  411|     r411_4(int)          = Load[n1]            : &:r411_3, m401_5
+#  411|     v411_5(void)         = NoOp                : 
+#-----|   Goto -> Block 3
+
+#  413|   Block 2
+#  413|     r413_1(glval<int[]>) = VariableAddress[b]  : 
+#  413|     m413_2(int[])        = Uninitialized[b]    : &:r413_1
+#  413|     r413_3(glval<int>)   = VariableAddress[n2] : 
+#  413|     r413_4(int)          = Load[n2]            : &:r413_3, m401_7
+#  413|     v413_5(void)         = NoOp                : 
+#-----|   Goto -> Block 3
+
+#  415|   Block 3
+#  415|     v415_1(void)  = NoOp         : 
+#  401|     v401_12(void) = ReturnVoid   : 
+#  401|     v401_13(void) = AliasedUse   : ~m?
+#  401|     v401_14(void) = ExitFunction : 
