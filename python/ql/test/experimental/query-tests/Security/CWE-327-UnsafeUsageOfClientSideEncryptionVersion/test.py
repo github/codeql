@@ -53,6 +53,15 @@ def safe():
         blob_client.upload_blob(stream) # OK
 
 
+def safe_different_order():
+    blob_client: BlobClient = BSC.get_blob_client(...)
+    blob_client.encryption_version = '2.0'
+    blob_client.require_encryption = True
+    blob_client.key_encryption_key = ...
+    with open("decryptedcontentfile.txt", "rb") as stream:
+        blob_client.upload_blob(stream) # OK
+
+
 def get_unsafe_blob_client():
     blob_client = BSC.get_blob_client(...)
     blob_client.require_encryption = True

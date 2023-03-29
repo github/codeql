@@ -3,9 +3,10 @@ edges
 | test.py:17:5:17:23 | ControlFlowNode for blob_service_client | test.py:21:9:21:19 | ControlFlowNode for blob_client |
 | test.py:27:5:27:20 | ControlFlowNode for container_client | test.py:31:9:31:19 | ControlFlowNode for blob_client |
 | test.py:37:5:37:15 | ControlFlowNode for blob_client | test.py:43:9:43:19 | ControlFlowNode for blob_client |
-| test.py:59:5:59:15 | ControlFlowNode for blob_client | test.py:60:12:60:22 | ControlFlowNode for blob_client |
-| test.py:60:12:60:22 | ControlFlowNode for blob_client | test.py:64:10:64:33 | ControlFlowNode for get_unsafe_blob_client() |
-| test.py:64:10:64:33 | ControlFlowNode for get_unsafe_blob_client() | test.py:66:9:66:10 | ControlFlowNode for bc |
+| test.py:60:5:60:15 | ControlFlowNode for blob_client | test.py:62:9:62:19 | ControlFlowNode for blob_client |
+| test.py:68:5:68:15 | ControlFlowNode for blob_client | test.py:69:12:69:22 | ControlFlowNode for blob_client |
+| test.py:69:12:69:22 | ControlFlowNode for blob_client | test.py:73:10:73:33 | ControlFlowNode for get_unsafe_blob_client() |
+| test.py:73:10:73:33 | ControlFlowNode for get_unsafe_blob_client() | test.py:75:9:75:10 | ControlFlowNode for bc |
 nodes
 | test.py:9:5:9:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
 | test.py:11:9:11:19 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
@@ -15,14 +16,17 @@ nodes
 | test.py:31:9:31:19 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
 | test.py:37:5:37:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
 | test.py:43:9:43:19 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:59:5:59:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:60:12:60:22 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
-| test.py:64:10:64:33 | ControlFlowNode for get_unsafe_blob_client() | semmle.label | ControlFlowNode for get_unsafe_blob_client() |
-| test.py:66:9:66:10 | ControlFlowNode for bc | semmle.label | ControlFlowNode for bc |
+| test.py:60:5:60:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
+| test.py:62:9:62:19 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
+| test.py:68:5:68:15 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
+| test.py:69:12:69:22 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
+| test.py:73:10:73:33 | ControlFlowNode for get_unsafe_blob_client() | semmle.label | ControlFlowNode for get_unsafe_blob_client() |
+| test.py:75:9:75:10 | ControlFlowNode for bc | semmle.label | ControlFlowNode for bc |
 subpaths
 #select
 | test.py:11:9:11:19 | ControlFlowNode for blob_client | test.py:9:5:9:15 | ControlFlowNode for blob_client | test.py:11:9:11:19 | ControlFlowNode for blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
 | test.py:21:9:21:19 | ControlFlowNode for blob_client | test.py:17:5:17:23 | ControlFlowNode for blob_service_client | test.py:21:9:21:19 | ControlFlowNode for blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
 | test.py:31:9:31:19 | ControlFlowNode for blob_client | test.py:27:5:27:20 | ControlFlowNode for container_client | test.py:31:9:31:19 | ControlFlowNode for blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
 | test.py:43:9:43:19 | ControlFlowNode for blob_client | test.py:37:5:37:15 | ControlFlowNode for blob_client | test.py:43:9:43:19 | ControlFlowNode for blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
-| test.py:66:9:66:10 | ControlFlowNode for bc | test.py:59:5:59:15 | ControlFlowNode for blob_client | test.py:66:9:66:10 | ControlFlowNode for bc | Unsafe usage of v1 version of Azure Storage client-side encryption |
+| test.py:62:9:62:19 | ControlFlowNode for blob_client | test.py:60:5:60:15 | ControlFlowNode for blob_client | test.py:62:9:62:19 | ControlFlowNode for blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
+| test.py:75:9:75:10 | ControlFlowNode for bc | test.py:68:5:68:15 | ControlFlowNode for blob_client | test.py:75:9:75:10 | ControlFlowNode for bc | Unsafe usage of v1 version of Azure Storage client-side encryption |
