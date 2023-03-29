@@ -15,9 +15,9 @@
 
 import java
 import semmle.code.java.security.regexp.RegexInjectionQuery
-import DataFlow::PathGraph
+import RegexInjectionFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, RegexInjectionConfiguration c
-where c.hasFlowPath(source, sink)
+from RegexInjectionFlow::PathNode source, RegexInjectionFlow::PathNode sink
+where RegexInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This regular expression is constructed from a $@.",
   source.getNode(), "user-provided value"
