@@ -1113,9 +1113,9 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
   /**
    * Define `cmp(true) = <=` and `cmp(false) = >=`.
    *
-   * Holds if `mul = left * right`, and in order to know if `mul cmp(upper) Z + k` (for
-   * some `k`) we need to know that `left cmp(upperLeft) Z + k1` and
-   * `right cmp(upperRight) Z + k2` (for some `k1` and `k2`).
+   * Holds if `mul = left * right`, and in order to know if `mul cmp(upper) 0 + k` (for
+   * some `k`) we need to know that `left cmp(upperLeft) 0 + k1` and
+   * `right cmp(upperRight) 0 + k2` (for some `k1` and `k2`).
    */
   pragma[nomagic]
   private predicate boundedMulOperandCand(
