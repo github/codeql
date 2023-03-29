@@ -13,4 +13,10 @@ import go
 module XNetHtml {
   /** Gets the package name `golang.org/x/net/html`. */
   string packagePath() { result = package("golang.org/x/net", "html") }
+
+  private class EscapeString extends EscapeFunction::Range {
+    EscapeString() { this.hasQualifiedName(packagePath(), "EscapeString") }
+
+    override string kind() { result = "html" }
+  }
 }

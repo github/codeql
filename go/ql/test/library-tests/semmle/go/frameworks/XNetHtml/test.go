@@ -1,6 +1,7 @@
 package test
 
 import (
+	"database/sql"
 	"golang.org/x/net/html"
 	"net/http"
 )
@@ -8,7 +9,6 @@ import (
 func test(request *http.Request, writer http.ResponseWriter) {
 
 	cookie, _ := request.Cookie("SomeCookie")
-
 	writer.Write([]byte(html.EscapeString(cookie.Value))) // GOOD: escaped.
 
 	writer.Write([]byte(html.UnescapeString(cookie.Value))) // BAD: unescaped.
@@ -48,4 +48,10 @@ func test(request *http.Request, writer http.ResponseWriter) {
 	cleanNode2.InsertBefore(taintedNode2, &cleanNode2)
 	html.Render(writer, &cleanNode2) // BAD: writing unescaped HTML data
 
+}
+
+func sqlTest(request *http.Request, db *sql.DB) {
+	// Ensure EscapeString is a taint propagator for non-XSS queries, e.g. SQL injection:
+	cookie, _ := request.Cookie("SomeCookie")
+	db.Query(html.EscapeString(cookie.Value))
 }

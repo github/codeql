@@ -3,6 +3,7 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
+      - ["golang.org/x/net/$ANYVERSION/html", "", False, "EscapeString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["golang.org/x/net/$ANYVERSION/html", "", False, "NewTokenizer", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["golang.org/x/net/$ANYVERSION/html", "", False, "NewTokenizerFragment", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["golang.org/x/net/$ANYVERSION/html", "", False, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
