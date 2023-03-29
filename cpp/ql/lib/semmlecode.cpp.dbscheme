@@ -1820,24 +1820,26 @@ new_array_allocated_type(
 
 /**
  * The field being initialized by an initializer expression within an aggregate
- * initializer for a class/struct/union.
+ * initializer for a class/struct/union. Position is used to sort repeated initializers.
  */
-#keyset[aggregate, field]
+#keyset[aggregate, position]
 aggregate_field_init(
     int aggregate: @aggregateliteral ref,
     int initializer: @expr ref,
-    int field: @membervariable ref
+    int field: @membervariable ref,
+    int position: int ref
 );
 
 /**
  * The index of the element being initialized by an initializer expression
- * within an aggregate initializer for an array.
+ * within an aggregate initializer for an array. Position is used to sort repeated initializers.
  */
-#keyset[aggregate, element_index]
+#keyset[aggregate, position]
 aggregate_array_init(
     int aggregate: @aggregateliteral ref,
     int initializer: @expr ref,
-    int element_index: int ref
+    int element_index: int ref,
+    int position: int ref
 );
 
 @ctorinit = @ctordirectinit
