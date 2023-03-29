@@ -192,15 +192,11 @@ void codeql::extractSwiftFiles(SwiftExtractorState& state, swift::CompilerInstan
     todo.pop_back();
     bool isFromSourceFile = false;
     std::unordered_set<swift::ModuleDecl*> encounteredModules;
-    llvm::errs() << "MODULE: " << module->getRealName() << '\n';
     for (auto file : module->getFiles()) {
-      llvm::errs() << "  FILE: kind=" << static_cast<int>(file->getKind());
       auto sourceFile = llvm::dyn_cast<swift::SourceFile>(file);
       if (!sourceFile) {
-        llvm::errs() << '\n';
         continue;
       }
-      llvm::errs() << " name=" << sourceFile->getFilename() << '\n';
       isFromSourceFile = true;
       if (inputFiles.count(sourceFile->getFilename().str()) == 0) {
         continue;
