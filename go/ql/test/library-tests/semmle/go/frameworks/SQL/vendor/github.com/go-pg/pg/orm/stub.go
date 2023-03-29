@@ -493,7 +493,6 @@ type TableModel interface {
 }
 
 type Formatter struct {
-
 }
 
 func (f Formatter) Append(dst []byte, src string, params ...interface{}) []byte {
