@@ -1114,7 +1114,7 @@ class TranslatedVlaDimensionStmt extends TranslatedStmt {
     result = getTranslatedExpr(stmt.getDimensionExpr().getFullyConverted())
   }
 
-  override Instruction getFirstInstruction() { result = getChild(0).getFirstInstruction() }
+  override Instruction getFirstInstruction() { result = this.getChild(0).getFirstInstruction() }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     none()
@@ -1123,8 +1123,8 @@ class TranslatedVlaDimensionStmt extends TranslatedStmt {
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
   override Instruction getChildSuccessor(TranslatedElement child) {
-    child = getChild(0) and
-    result = getParent().getChildSuccessor(this)
+    child = this.getChild(0) and
+    result = this.getParent().getChildSuccessor(this)
   }
 }
 
@@ -1133,7 +1133,7 @@ class TranslatedVlaDeclarationStmt extends TranslatedStmt {
 
   override TranslatedExpr getChild(int id) { none() }
 
-  override Instruction getFirstInstruction() { result = getInstruction(OnlyInstructionTag()) }
+  override Instruction getFirstInstruction() { result = this.getInstruction(OnlyInstructionTag()) }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     // TODO: This needs a new kind of instruction that represents initialization of a VLA.
@@ -1145,7 +1145,7 @@ class TranslatedVlaDeclarationStmt extends TranslatedStmt {
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     tag = OnlyInstructionTag() and
-    result = getParent().getChildSuccessor(this) and
+    result = this.getParent().getChildSuccessor(this) and
     kind instanceof GotoEdge
   }
 
