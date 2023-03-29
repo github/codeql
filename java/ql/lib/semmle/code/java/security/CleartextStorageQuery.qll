@@ -56,7 +56,7 @@ private class DefaultCleartextStorageSanitizer extends CleartextStorageSanitizer
   DefaultCleartextStorageSanitizer() {
     this.getType() instanceof NumericType or
     this.getType() instanceof BooleanType or
-    EncryptedValueFlow::flow(_, this)
+    EncryptedValueFlow::flowTo(this)
   }
 }
 

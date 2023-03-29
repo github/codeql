@@ -9,7 +9,7 @@ class HardcodedCredentialsApiCallTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "HardcodedCredentialsApiCall" and
-    exists(DataFlow::Node sink | HardcodedCredentialApiCallFlow::flow(_, sink) |
+    exists(DataFlow::Node sink | HardcodedCredentialApiCallFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""
