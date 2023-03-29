@@ -1,17 +1,38 @@
-from azure.storage.blob import BlobServiceClient
+from azure.storage.blob import BlobServiceClient, ContainerClient, BlobClient
 
+BSC = BlobServiceClient.from_connection_string(...)
 
 def unsafe():
     # does not set encryption_version to 2.0, default is unsafe
-    blob_client = BlobServiceClient.get_blob_client(...)
+    blob_client = BSC.get_blob_client(...)
     blob_client.require_encryption = True
     blob_client.key_encryption_key = ...
     with open("decryptedcontentfile.txt", "rb") as stream:
         blob_client.upload_blob(stream) # BAD
 
 
+def unsafe_setting_on_blob_service_client():
+    blob_service_client = BlobServiceClient.from_connection_string(...)
+    blob_service_client.require_encryption = True
+    blob_service_client.key_encryption_key = ...
+
+    blob_client = blob_service_client.get_blob_client(...)
+    with open("decryptedcontentfile.txt", "rb") as stream:
+        blob_client.upload_blob(stream)
+
+
+def unsafe_setting_on_container_client():
+    container_client = ContainerClient.from_connection_string(...)
+    container_client.require_encryption = True
+    container_client.key_encryption_key = ...
+
+    blob_client = container_client.get_blob_client(...)
+    with open("decryptedcontentfile.txt", "rb") as stream:
+        blob_client.upload_blob(stream)
+
+
 def potentially_unsafe(use_new_version=False):
-    blob_client = BlobServiceClient.get_blob_client(...)
+    blob_client = BSC.get_blob_client(...)
     blob_client.require_encryption = True
     blob_client.key_encryption_key = ...
 
@@ -23,7 +44,7 @@ def potentially_unsafe(use_new_version=False):
 
 
 def safe():
-    blob_client = BlobServiceClient.get_blob_client(...)
+    blob_client = BSC.get_blob_client(...)
     blob_client.require_encryption = True
     blob_client.key_encryption_key = ...
     # GOOD: Must use `encryption_version` set to `2.0`
@@ -33,7 +54,7 @@ def safe():
 
 
 def get_unsafe_blob_client():
-    blob_client = BlobServiceClient.get_blob_client(...)
+    blob_client = BSC.get_blob_client(...)
     blob_client.require_encryption = True
     blob_client.key_encryption_key = ...
     return blob_client
@@ -46,7 +67,7 @@ def unsafe_with_calls():
 
 
 def get_safe_blob_client():
-    blob_client = BlobServiceClient.get_blob_client(...)
+    blob_client = BSC.get_blob_client(...)
     blob_client.require_encryption = True
     blob_client.key_encryption_key = ...
     blob_client.encryption_version = '2.0'
