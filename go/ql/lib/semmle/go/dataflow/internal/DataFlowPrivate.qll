@@ -3,7 +3,7 @@ private import DataFlowUtil
 private import DataFlowImplCommon
 private import ContainerFlow
 private import FlowSummaryImpl as FlowSummaryImpl
-import codeql.util.Unit
+private import codeql.util.Unit
 import DataFlowNodes::Private
 
 private newtype TReturnKind =

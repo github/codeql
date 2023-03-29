@@ -32,7 +32,8 @@
 | simple.swift:32:13:32:20 | call to source() | simple.swift:32:13:32:25 | ... .&*(_:_:) ... |
 | simple.swift:32:25:32:25 | 2 | simple.swift:32:13:32:25 | ... .&*(_:_:) ... |
 | simple.swift:36:7:36:7 | SSA def(a) | simple.swift:37:13:37:13 | a |
-| simple.swift:36:11:36:11 | 0 | simple.swift:36:7:36:7 | SSA def(a) |
+| simple.swift:36:7:36:7 | a | simple.swift:36:7:36:7 | SSA def(a) |
+| simple.swift:36:11:36:11 | 0 | simple.swift:36:7:36:7 | a |
 | simple.swift:37:13:37:13 | [post] a | simple.swift:38:3:38:3 | a |
 | simple.swift:37:13:37:13 | a | simple.swift:38:3:38:3 | a |
 | simple.swift:38:3:38:3 | &... | simple.swift:39:13:39:13 | a |
@@ -54,7 +55,8 @@
 | simple.swift:44:3:44:7 | SSA def(a) | simple.swift:45:13:45:13 | a |
 | simple.swift:44:7:44:7 | 0 | simple.swift:44:3:44:7 | SSA def(a) |
 | simple.swift:47:7:47:7 | SSA def(b) | simple.swift:48:3:48:3 | b |
-| simple.swift:47:11:47:11 | 128 | simple.swift:47:7:47:7 | SSA def(b) |
+| simple.swift:47:7:47:7 | b | simple.swift:47:7:47:7 | SSA def(b) |
+| simple.swift:47:11:47:11 | 128 | simple.swift:47:7:47:7 | b |
 | simple.swift:48:3:48:3 | &... | simple.swift:49:13:49:13 | b |
 | simple.swift:48:3:48:3 | [post] &... | simple.swift:49:13:49:13 | b |
 | simple.swift:48:3:48:3 | b | simple.swift:48:3:48:3 | &... |
@@ -66,7 +68,8 @@
 | simple.swift:50:3:50:3 | b | simple.swift:50:3:50:3 | &... |
 | simple.swift:50:8:50:8 | 1 | simple.swift:50:3:50:3 | &... |
 | simple.swift:53:7:53:7 | SSA def(c) | simple.swift:54:3:54:3 | c |
-| simple.swift:53:11:53:11 | 10 | simple.swift:53:7:53:7 | SSA def(c) |
+| simple.swift:53:7:53:7 | c | simple.swift:53:7:53:7 | SSA def(c) |
+| simple.swift:53:11:53:11 | 10 | simple.swift:53:7:53:7 | c |
 | simple.swift:54:3:54:3 | &... | simple.swift:55:13:55:13 | c |
 | simple.swift:54:3:54:3 | [post] &... | simple.swift:55:13:55:13 | c |
 | simple.swift:54:3:54:3 | c | simple.swift:54:3:54:3 | &... |
@@ -78,7 +81,8 @@
 | simple.swift:56:3:56:3 | c | simple.swift:56:3:56:3 | &... |
 | simple.swift:56:8:56:8 | 2 | simple.swift:56:3:56:3 | &... |
 | simple.swift:59:7:59:7 | SSA def(d) | simple.swift:60:3:60:3 | d |
-| simple.swift:59:11:59:11 | 100 | simple.swift:59:7:59:7 | SSA def(d) |
+| simple.swift:59:7:59:7 | d | simple.swift:59:7:59:7 | SSA def(d) |
+| simple.swift:59:11:59:11 | 100 | simple.swift:59:7:59:7 | d |
 | simple.swift:60:3:60:3 | &... | simple.swift:61:13:61:13 | d |
 | simple.swift:60:3:60:3 | [post] &... | simple.swift:61:13:61:13 | d |
 | simple.swift:60:3:60:3 | d | simple.swift:60:3:60:3 | &... |
@@ -90,7 +94,8 @@
 | simple.swift:62:3:62:3 | d | simple.swift:62:3:62:3 | &... |
 | simple.swift:62:8:62:8 | 2 | simple.swift:62:3:62:3 | &... |
 | simple.swift:65:7:65:7 | SSA def(e) | simple.swift:66:3:66:3 | e |
-| simple.swift:65:11:65:11 | 1000 | simple.swift:65:7:65:7 | SSA def(e) |
+| simple.swift:65:7:65:7 | e | simple.swift:65:7:65:7 | SSA def(e) |
+| simple.swift:65:11:65:11 | 1000 | simple.swift:65:7:65:7 | e |
 | simple.swift:66:3:66:3 | &... | simple.swift:67:13:67:13 | e |
 | simple.swift:66:3:66:3 | [post] &... | simple.swift:67:13:67:13 | e |
 | simple.swift:66:3:66:3 | e | simple.swift:66:3:66:3 | &... |
@@ -168,7 +173,8 @@
 | stringinterpolation.swift:13:47:13:47 | &... | stringinterpolation.swift:13:47:13:47 | [post] &... |
 | stringinterpolation.swift:13:47:13:47 | [post] &... | stringinterpolation.swift:13:23:13:23 | TapExpr |
 | stringinterpolation.swift:18:6:18:6 | SSA def(p1) | stringinterpolation.swift:19:2:19:2 | p1 |
-| stringinterpolation.swift:18:11:18:24 | call to MyStringPair.init() | stringinterpolation.swift:18:6:18:6 | SSA def(p1) |
+| stringinterpolation.swift:18:6:18:6 | p1 | stringinterpolation.swift:18:6:18:6 | SSA def(p1) |
+| stringinterpolation.swift:18:11:18:24 | call to MyStringPair.init() | stringinterpolation.swift:18:6:18:6 | p1 |
 | stringinterpolation.swift:19:2:19:2 | [post] p1 | stringinterpolation.swift:20:2:20:2 | p1 |
 | stringinterpolation.swift:19:2:19:2 | p1 | stringinterpolation.swift:20:2:20:2 | p1 |
 | stringinterpolation.swift:20:2:20:2 | [post] p1 | stringinterpolation.swift:22:21:22:21 | p1 |
@@ -246,7 +252,8 @@
 | stringinterpolation.swift:24:24:24:24 | &... | stringinterpolation.swift:24:24:24:24 | [post] &... |
 | stringinterpolation.swift:24:24:24:24 | [post] &... | stringinterpolation.swift:24:12:24:12 | TapExpr |
 | stringinterpolation.swift:26:6:26:6 | SSA def(p2) | stringinterpolation.swift:27:2:27:2 | p2 |
-| stringinterpolation.swift:26:11:26:24 | call to MyStringPair.init() | stringinterpolation.swift:26:6:26:6 | SSA def(p2) |
+| stringinterpolation.swift:26:6:26:6 | p2 | stringinterpolation.swift:26:6:26:6 | SSA def(p2) |
+| stringinterpolation.swift:26:11:26:24 | call to MyStringPair.init() | stringinterpolation.swift:26:6:26:6 | p2 |
 | stringinterpolation.swift:27:2:27:2 | [post] p2 | stringinterpolation.swift:28:2:28:2 | p2 |
 | stringinterpolation.swift:27:2:27:2 | p2 | stringinterpolation.swift:28:2:28:2 | p2 |
 | stringinterpolation.swift:28:2:28:2 | [post] p2 | stringinterpolation.swift:30:21:30:21 | p2 |

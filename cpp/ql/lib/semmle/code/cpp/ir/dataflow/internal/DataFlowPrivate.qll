@@ -6,7 +6,7 @@ private import DataFlowImplConsistency
 private import semmle.code.cpp.ir.internal.IRCppLanguage
 private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
-import codeql.util.Unit
+private import codeql.util.Unit
 
 cached
 private module Cached {
