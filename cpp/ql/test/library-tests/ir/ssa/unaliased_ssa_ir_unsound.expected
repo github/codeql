@@ -1695,3 +1695,19 @@ ssa.cpp:
 #  383|     v383_13(void)       = ReturnValue              : &:r383_12, m398_5
 #  383|     v383_14(void)       = AliasedUse               : ~m?
 #  383|     v383_15(void)       = ExitFunction             : 
+
+#  401| void vla(int, int, int, bool)
+#  401|   Block 0
+#  401|     v401_1(void)         = EnterFunction           : 
+#  401|     mu401_2(unknown)     = AliasedDefinition       : 
+#  401|     mu401_3(unknown)     = InitializeNonLocal      : 
+#  401|     r401_4(glval<int>)   = VariableAddress[n1]     : 
+#  401|     m401_5(int)          = InitializeParameter[n1] : &:r401_4
+#  401|     r401_6(glval<int>)   = VariableAddress[n2]     : 
+#  401|     m401_7(int)          = InitializeParameter[n2] : &:r401_6
+#  401|     r401_8(glval<int>)   = VariableAddress[n3]     : 
+#  401|     m401_9(int)          = InitializeParameter[n3] : &:r401_8
+#  401|     r401_10(glval<bool>) = VariableAddress[b1]     : 
+#  401|     m401_11(bool)        = InitializeParameter[b1] : &:r401_10
+#  402|     r402_1(glval<int[]>) = VariableAddress[b]      : 
+#  402|     mu402_2(int[])       = Uninitialized[b]        : &:r402_1
