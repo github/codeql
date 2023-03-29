@@ -25,6 +25,7 @@ class Property:
         OPTIONAL = auto()
         REPEATED_OPTIONAL = auto()
         PREDICATE = auto()
+        REPEATED_UNORDERED = auto()
 
     kind: Kind
     name: Optional[str] = None
@@ -44,7 +45,11 @@ class Property:
 
     @property
     def is_repeated(self) -> bool:
-        return self.kind in (self.Kind.REPEATED, self.Kind.REPEATED_OPTIONAL)
+        return self.kind in (self.Kind.REPEATED, self.Kind.REPEATED_OPTIONAL, self.Kind.REPEATED_UNORDERED)
+
+    @property
+    def is_unordered(self) -> bool:
+        return self.kind == self.Kind.REPEATED_UNORDERED
 
     @property
     def is_predicate(self) -> bool:
@@ -65,6 +70,7 @@ RepeatedProperty = functools.partial(Property, Property.Kind.REPEATED)
 RepeatedOptionalProperty = functools.partial(
     Property, Property.Kind.REPEATED_OPTIONAL)
 PredicateProperty = functools.partial(Property, Property.Kind.PREDICATE)
+RepeatedUnorderedProperty = functools.partial(Property, Property.Kind.REPEATED_UNORDERED)
 
 
 @dataclass
