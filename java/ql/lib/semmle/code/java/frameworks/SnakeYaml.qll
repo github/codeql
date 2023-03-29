@@ -28,15 +28,15 @@ class Yaml extends RefType {
   Yaml() { this.getAnAncestor().hasQualifiedName("org.yaml.snakeyaml", "Yaml") }
 }
 
+private DataFlow::ExprNode yamlClassInstanceExprArgument(ClassInstanceExpr cie) {
+  cie.getConstructedType() instanceof Yaml and
+  result.getExpr() = cie.getArgument(0)
+}
+
 private module SafeYamlConstructionFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeSnakeYamlConstruction }
 
   predicate isSink(DataFlow::Node sink) { sink = yamlClassInstanceExprArgument(_) }
-
-  additional DataFlow::ExprNode yamlClassInstanceExprArgument(ClassInstanceExpr cie) {
-    cie.getConstructedType() instanceof Yaml and
-    result.getExpr() = cie.getArgument(0)
-  }
 
   additional ClassInstanceExpr getSafeYaml() {
     SafeYamlConstructionFlow::flowTo(yamlClassInstanceExprArgument(result))
