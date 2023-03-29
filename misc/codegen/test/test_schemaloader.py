@@ -259,8 +259,8 @@ def test_children():
     }
 
 
-@pytest.mark.parametrize("spec", [defs.string, defs.int, defs.boolean, defs.predicate])
-def test_builtin_and_predicate_children_not_allowed(spec):
+@pytest.mark.parametrize("spec", [defs.string, defs.int, defs.boolean, defs.predicate, defs.set["A"]])
+def test_builtin_predicate_and_set_children_not_allowed(spec):
     with pytest.raises(schema.Error):
         @load
         class data:

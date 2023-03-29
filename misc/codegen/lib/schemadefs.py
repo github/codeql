@@ -8,6 +8,8 @@ class _ChildModifier(_schema.PropertyModifier):
     def modify(self, prop: _schema.Property):
         if prop.type is None or prop.type[0].islower():
             raise _schema.Error("Non-class properties cannot be children")
+        if prop.is_unordered:
+            raise _schema.Error("Set properties cannot be children")
         prop.is_child = True
 
 
