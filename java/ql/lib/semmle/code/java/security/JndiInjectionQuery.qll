@@ -38,7 +38,9 @@ module JndiInjectionFlowConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof JndiInjectionSink }
 
   predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
+    node.getType() instanceof PrimitiveType or
+    node.getType() instanceof BoxedType or
+    node instanceof JndiInjectionSanitizer
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
