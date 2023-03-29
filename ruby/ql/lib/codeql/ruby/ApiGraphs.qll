@@ -584,7 +584,7 @@ module API {
       // If a call node is relevant as a use-node, treat its arguments as def-nodes
       argumentStep(_, useCandFwd(), rhs)
       or
-      defStep(_, trackDefNode(_), rhs)
+      defStep(_, defCand(), rhs)
       or
       rhs = any(EntryPoint entry).getASink()
     }
