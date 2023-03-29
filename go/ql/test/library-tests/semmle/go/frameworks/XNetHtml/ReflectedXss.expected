@@ -13,7 +13,7 @@ edges
 | file://:0:0:0:0 | parameter -1 of TagAttr | file://:0:0:0:0 | [summary] to write: return (return[1]) in TagAttr |
 | file://:0:0:0:0 | parameter -1 of Text | file://:0:0:0:0 | [summary] to write: return (return[0]) in Text |
 | file://:0:0:0:0 | parameter -1 of Token | file://:0:0:0:0 | [summary] to write: return (return[0]) in Token |
-| test.go:10:2:10:42 | ... := ...[0] | test.go:14:42:14:53 | selection of Value |
+| test.go:11:2:11:42 | ... := ...[0] | test.go:14:42:14:53 | selection of Value |
 | test.go:14:22:14:54 | call to UnescapeString | test.go:14:15:14:55 | type conversion |
 | test.go:14:42:14:53 | selection of Value | file://:0:0:0:0 | parameter 0 of UnescapeString |
 | test.go:14:42:14:53 | selection of Value | test.go:14:22:14:54 | call to UnescapeString |
@@ -113,7 +113,7 @@ nodes
 | file://:0:0:0:0 | parameter -1 of TagAttr | semmle.label | parameter -1 of TagAttr |
 | file://:0:0:0:0 | parameter -1 of Text | semmle.label | parameter -1 of Text |
 | file://:0:0:0:0 | parameter -1 of Token | semmle.label | parameter -1 of Token |
-| test.go:10:2:10:42 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:11:2:11:42 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:14:15:14:55 | type conversion | semmle.label | type conversion |
 | test.go:14:22:14:54 | call to UnescapeString | semmle.label | call to UnescapeString |
 | test.go:14:42:14:53 | selection of Value | semmle.label | selection of Value |
@@ -183,7 +183,7 @@ subpaths
 | test.go:47:32:47:43 | selection of Body | file://:0:0:0:0 | parameter 0 of Parse | file://:0:0:0:0 | [summary] to write: return (return[0]) in Parse | test.go:47:2:47:44 | ... := ...[0] |
 | test.go:48:26:48:37 | taintedNode2 | file://:0:0:0:0 | parameter 0 of InsertBefore | file://:0:0:0:0 | [summary] to write: argument -1 in InsertBefore | test.go:46:6:46:15 | definition of cleanNode2 |
 #select
-| test.go:14:15:14:55 | type conversion | test.go:10:2:10:42 | ... := ...[0] | test.go:14:15:14:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:10:2:10:42 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
+| test.go:14:15:14:55 | type conversion | test.go:11:2:11:42 | ... := ...[0] | test.go:14:15:14:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:11:2:11:42 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:17:15:17:31 | type conversion | test.go:16:24:16:35 | selection of Body | test.go:17:15:17:31 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:16:24:16:35 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:20:15:20:32 | type conversion | test.go:19:36:19:47 | selection of Body | test.go:20:15:20:32 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:19:36:19:47 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:23:15:23:35 | type conversion | test.go:22:33:22:44 | selection of Body | test.go:23:15:23:35 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:22:33:22:44 | selection of Body | user-provided value | test.go:0:0:0:0 | test.go |  |
