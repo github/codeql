@@ -36,6 +36,7 @@ indefinite_getters = [
     ("Whatever", "getAWhatever"),
 ]
 
+
 @pytest.mark.parametrize("name,expected_getter", indefinite_getters)
 def test_property_indefinite_article(name, expected_getter):
     prop = ql.Property(name, plural="X")
@@ -47,6 +48,7 @@ def test_property_unordered_getter(name, expected_getter):
     prop = ql.Property(name, plural="X", is_unordered=True)
     assert prop.getter == expected_getter
 
+
 @pytest.mark.parametrize("plural,expected", [
     (None, False),
     ("", False),
@@ -55,6 +57,7 @@ def test_property_unordered_getter(name, expected_getter):
 def test_property_is_repeated(plural, expected):
     prop = ql.Property("foo", "Foo", "props", ["result"], plural=plural)
     assert prop.is_repeated is expected
+
 
 @pytest.mark.parametrize("plural,unordered,expected", [
     (None, False, False),

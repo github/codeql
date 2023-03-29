@@ -41,8 +41,8 @@ def test_empty_class(generate):
     assert generate([
         schema.Class(name="MyClass"),
     ]) == [
-               cpp.Class(name="MyClass", final=True, trap_name="MyClasses")
-           ]
+        cpp.Class(name="MyClass", final=True, trap_name="MyClasses")
+    ]
 
 
 def test_two_class_hierarchy(generate):
@@ -51,9 +51,9 @@ def test_two_class_hierarchy(generate):
         schema.Class(name="A", derived={"B"}),
         schema.Class(name="B", bases=["A"]),
     ]) == [
-               base,
-               cpp.Class(name="B", bases=[base], final=True, trap_name="Bs"),
-           ]
+        base,
+        cpp.Class(name="B", bases=[base], final=True, trap_name="Bs"),
+    ]
 
 
 @pytest.mark.parametrize("type,expected", [
@@ -73,12 +73,12 @@ def test_class_with_field(generate, type, expected, property_cls, optional, repe
     assert generate([
         schema.Class(name="MyClass", properties=[property_cls("prop", type)]),
     ]) == [
-               cpp.Class(name="MyClass",
-                         fields=[cpp.Field("prop", expected, is_optional=optional,
-                                           is_repeated=repeated, is_unordered=unordered, trap_name=trap_name)],
-                         trap_name="MyClasses",
-                         final=True)
-           ]
+        cpp.Class(name="MyClass",
+                  fields=[cpp.Field("prop", expected, is_optional=optional,
+                                    is_repeated=repeated, is_unordered=unordered, trap_name=trap_name)],
+                  trap_name="MyClasses",
+                  final=True)
+    ]
 
 
 def test_class_field_with_null(generate, input):
@@ -91,13 +91,13 @@ def test_class_field_with_null(generate, input):
             schema.SingleProperty("y", "B"),
         ])
     ]) == [
-               a,
-               cpp.Class(name="B", bases=[a], final=True, trap_name="Bs",
-                         fields=[
-                             cpp.Field("x", "TrapLabel<ATag>"),
-                             cpp.Field("y", "TrapLabel<BOrNoneTag>"),
-                         ]),
-           ]
+        a,
+        cpp.Class(name="B", bases=[a], final=True, trap_name="Bs",
+                  fields=[
+            cpp.Field("x", "TrapLabel<ATag>"),
+            cpp.Field("y", "TrapLabel<BOrNoneTag>"),
+        ]),
+    ]
 
 
 def test_class_with_predicate(generate):
@@ -105,12 +105,12 @@ def test_class_with_predicate(generate):
         schema.Class(name="MyClass", properties=[
             schema.PredicateProperty("prop")]),
     ]) == [
-               cpp.Class(name="MyClass",
-                         fields=[
-                             cpp.Field("prop", "bool", trap_name="MyClassProp", is_predicate=True)],
-                         trap_name="MyClasses",
-                         final=True)
-           ]
+        cpp.Class(name="MyClass",
+                  fields=[
+                      cpp.Field("prop", "bool", trap_name="MyClassProp", is_predicate=True)],
+                  trap_name="MyClasses",
+                  final=True)
+    ]
 
 
 @pytest.mark.parametrize("name",
@@ -120,11 +120,11 @@ def test_class_with_overridden_unsigned_field(generate, name):
         schema.Class(name="MyClass", properties=[
             schema.SingleProperty(name, "bar")]),
     ]) == [
-               cpp.Class(name="MyClass",
-                         fields=[cpp.Field(name, "unsigned")],
-                         trap_name="MyClasses",
-                         final=True)
-           ]
+        cpp.Class(name="MyClass",
+                  fields=[cpp.Field(name, "unsigned")],
+                  trap_name="MyClasses",
+                  final=True)
+    ]
 
 
 def test_class_with_overridden_underscore_field(generate):
@@ -132,11 +132,11 @@ def test_class_with_overridden_underscore_field(generate):
         schema.Class(name="MyClass", properties=[
             schema.SingleProperty("something_", "bar")]),
     ]) == [
-               cpp.Class(name="MyClass",
-                         fields=[cpp.Field("something", "bar")],
-                         trap_name="MyClasses",
-                         final=True)
-           ]
+        cpp.Class(name="MyClass",
+                  fields=[cpp.Field("something", "bar")],
+                  trap_name="MyClasses",
+                  final=True)
+    ]
 
 
 @pytest.mark.parametrize("name", cpp.cpp_keywords)
@@ -145,11 +145,11 @@ def test_class_with_keyword_field(generate, name):
         schema.Class(name="MyClass", properties=[
             schema.SingleProperty(name, "bar")]),
     ]) == [
-               cpp.Class(name="MyClass",
-                         fields=[cpp.Field(name + "_", "bar")],
-                         trap_name="MyClasses",
-                         final=True)
-           ]
+        cpp.Class(name="MyClass",
+                  fields=[cpp.Field(name + "_", "bar")],
+                  trap_name="MyClasses",
+                  final=True)
+    ]
 
 
 def test_classes_with_dirs(generate_grouped):
@@ -161,11 +161,11 @@ def test_classes_with_dirs(generate_grouped):
         schema.Class(name="C", bases=["CBase"], group="bar"),
         schema.Class(name="D", group="foo/bar/baz"),
     ]) == {
-               ".": [cpp.Class(name="A", trap_name="As", final=True)],
-               "foo": [cpp.Class(name="B", trap_name="Bs", final=True)],
-               "bar": [cbase, cpp.Class(name="C", bases=[cbase], trap_name="Cs", final=True)],
-               "foo/bar/baz": [cpp.Class(name="D", trap_name="Ds", final=True)],
-           }
+        ".": [cpp.Class(name="A", trap_name="As", final=True)],
+        "foo": [cpp.Class(name="B", trap_name="Bs", final=True)],
+        "bar": [cbase, cpp.Class(name="C", bases=[cbase], trap_name="Cs", final=True)],
+        "foo/bar/baz": [cpp.Class(name="D", trap_name="Ds", final=True)],
+    }
 
 
 def test_cpp_skip_pragma(generate):
@@ -175,10 +175,10 @@ def test_cpp_skip_pragma(generate):
             schema.SingleProperty("y", "bar", pragmas=["x", "cpp_skip", "y"]),
         ])
     ]) == [
-               cpp.Class(name="A", final=True, trap_name="As", fields=[
-                   cpp.Field("x", "foo"),
-               ]),
-           ]
+        cpp.Class(name="A", final=True, trap_name="As", fields=[
+            cpp.Field("x", "foo"),
+        ]),
+    ]
 
 
 def test_ipa_classes_ignored(generate):
@@ -199,8 +199,8 @@ def test_ipa_classes_ignored(generate):
             name="Z",
         ),
     ]) == [
-               cpp.Class(name="Z", final=True, trap_name="Zs"),
-           ]
+        cpp.Class(name="Z", final=True, trap_name="Zs"),
+    ]
 
 
 if __name__ == '__main__':

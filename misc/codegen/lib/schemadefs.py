@@ -94,6 +94,7 @@ class _Listifier(_schema.PropertyModifier):
             raise _schema.Error(
                 "list should only be applied to simple or optional property types")
 
+
 class _Setifier(_schema.PropertyModifier):
     def modify(self, prop: _schema.Property):
         K = _schema.Property.Kind
