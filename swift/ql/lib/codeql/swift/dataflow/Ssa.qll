@@ -38,9 +38,9 @@ module Ssa {
       // if let x5 = optional { ... }
       // guard let x6 = optional else { ... }
       // ```
-      exists(Pattern pattern |
+      exists(NamedPattern pattern |
         bb.getNode(i).getNode().asAstNode() = pattern and
-        v.getParentPattern() = pattern and
+        v = pattern.getVarDecl() and
         certain = true
       )
       or
@@ -153,14 +153,10 @@ module Ssa {
         value.getNode().asAstNode() = a.getSource()
       )
       or
-      exists(
-        VarDecl var, SsaInput::BasicBlock bb, int blockIndex, PatternBindingDecl pbd, Expr init
-      |
-        this.definesAt(var, bb, blockIndex) and
-        pbd.getAPattern() = bb.getNode(blockIndex).getNode().asAstNode() and
-        init = var.getParentInitializer()
-      |
-        value.getAst() = init
+      exists(SsaInput::BasicBlock bb, int blockIndex, NamedPattern np |
+        this.definesAt(_, bb, blockIndex) and
+        np = bb.getNode(blockIndex).getNode().asAstNode() and
+        value.getNode().asAstNode() = np
       )
       or
       exists(SsaInput::BasicBlock bb, int blockIndex, ConditionElement ce, Expr init |
