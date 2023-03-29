@@ -35,7 +35,7 @@ deprecated class RequestForgeryConfiguration extends TaintTracking::Configuratio
 /**
  * A taint-tracking configuration characterising request-forgery risks.
  */
-private module RequestForgeryConfig implements DataFlow::ConfigSig {
+module RequestForgeryConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource and
     // Exclude results of remote HTTP requests: fetching something else based on that result
