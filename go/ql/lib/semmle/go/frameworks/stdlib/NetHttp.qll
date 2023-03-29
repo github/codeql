@@ -164,7 +164,7 @@ module NetHttp {
         // NB. SummarizedCallables do not implement a direct call-site-crossing flow step; instead
         // they are implemented by a function body with internal dataflow nodes, so we mimic the
         // one-step style for the particular case of taint propagation direct from an argument or receiver
-        // to another argument, receiver or return value without an
+        // to another argument, receiver or return value, matching the behaviour for a `TaintTracking::FunctionModel`.
         this = getSummaryInputOrOutputNode(call, input) and
         responseWriter.(DataFlow::PostUpdateNode).getPreUpdateNode() =
           getSummaryInputOrOutputNode(call, output) and
