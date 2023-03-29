@@ -1194,8 +1194,8 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
    * Holds if `isLeft = true` and `mul`'s left operand is bounded by `delta`,
    * or if `isLeft = false` and `mul`'s right operand is bounded by `delta`.
    *
-   * If `upper = true` the computed bound contributes to an upper bound of the
-   * operand, and if `upper = false` it contributes to a lower bound.
+   * If `upper = true` the computed bound contributes to an upper bound of `mul`,
+   * and if `upper = false` it contributes to a lower bound.
    * The `fromBackEdge`, `origdelta`, `reason` triple are defined by the recursive
    * call to `bounded`.
    */
