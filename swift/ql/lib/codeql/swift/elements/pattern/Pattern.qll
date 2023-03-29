@@ -18,6 +18,10 @@ private import codeql.swift.elements.decl.PatternBindingDecl
 private import codeql.swift.elements.decl.EnumElementDecl
 private import codeql.swift.generated.ParentChild
 
+/**
+ * A syntactic construct that can be matched against an expression,
+ * occurring in switch cases, conditions, and variable bindings.
+ */
 class Pattern extends Generated::Pattern {
   /**
    * Gets the expression that this top-level pattern is matched against, if any.
