@@ -8,4 +8,3 @@ extensions:
       - ["expvar", "Map", True, "Set", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
       - ["expvar", "String", True, "Set", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
       - ["expvar", "String", True, "Value", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["expvar", "Var", True, "String", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
