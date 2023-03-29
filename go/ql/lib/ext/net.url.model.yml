@@ -14,7 +14,6 @@ extensions:
       - ["net/url", "", False, "UserPassword", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
       - ["net/url", "URL", True, "EscapedPath", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["net/url", "URL", True, "Hostname", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
-      - ["net/url", "URL", True, "MarshalBinary", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
       - ["net/url", "URL", True, "Parse", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
       - ["net/url", "URL", True, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["net/url", "URL", True, "Port", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
