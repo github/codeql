@@ -82,15 +82,20 @@ API::Node getBlobClient() {
 
 API::Node anyClient() { result in [getBlobServiceClient(), getContainerClient(), getBlobClient()] }
 
-module AzureBlobClientConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) {
-    exists(DataFlow::AttrWrite attr |
-      node = anyClient().getAValueReachableFromSource() and
-      attr.accesses(node, ["key_encryption_key", "key_resolver_function"])
-    )
+newtype TAzureFlowState =
+  MkUsesV1Encryption() or
+  MkUsesNoEncryption()
+
+module AzureBlobClientConfig implements DataFlow::StateConfigSig {
+  class FlowState = TAzureFlowState;
+
+  predicate isSource(DataFlow::Node node, FlowState state) {
+    state = MkUsesNoEncryption() and
+    node = anyClient().asSource()
   }
 
-  predicate isBarrier(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    exists(state) and
     exists(DataFlow::AttrWrite attr |
       node = anyClient().getAValueReachableFromSource() and
       attr.accesses(node, "encryption_version") and
@@ -106,7 +111,20 @@ module AzureBlobClientConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate isSink(DataFlow::Node node) {
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
+  ) {
+    node1 = node2 and
+    state1 = MkUsesNoEncryption() and
+    state2 = MkUsesV1Encryption() and
+    exists(DataFlow::AttrWrite attr |
+      node1 = anyClient().getAValueReachableFromSource() and
+      attr.accesses(node1, ["key_encryption_key", "key_resolver_function"])
+    )
+  }
+
+  predicate isSink(DataFlow::Node node, FlowState state) {
+    state = MkUsesV1Encryption() and
     exists(DataFlow::MethodCallNode call |
       call = getBlobClient().getMember("upload_blob").getACall() and
       node = call.getObject()
@@ -114,7 +132,7 @@ module AzureBlobClientConfig implements DataFlow::ConfigSig {
   }
 }
 
-module AzureBlobClient = DataFlow::Global<AzureBlobClientConfig>;
+module AzureBlobClient = DataFlow::GlobalWithState<AzureBlobClientConfig>;
 
 import AzureBlobClient::PathGraph
 
