@@ -165,7 +165,7 @@ deprecated class StaticInitializationVectorConfig extends TaintTracking::Configu
 /**
  * A config that tracks dataflow to initializing a cipher with a static initialization vector.
  */
-private module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
+module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof StaticInitializationVectorSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof EncryptionInitializationSink }

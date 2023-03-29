@@ -30,7 +30,7 @@ deprecated class InsecureTrustManagerConfiguration extends DataFlow::Configurati
  * A configuration to model the flow of an insecure `TrustManager`
  * to the initialization of an SSL context.
  */
-private module InsecureTrustManagerConfig implements DataFlow::ConfigSig {
+module InsecureTrustManagerConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof InsecureTrustManagerSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureTrustManagerSink }

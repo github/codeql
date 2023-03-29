@@ -23,7 +23,7 @@ deprecated class LogInjectionConfiguration extends TaintTracking::Configuration 
   }
 }
 
-private module LogInjectionConfig implements DataFlow::ConfigSig {
+module LogInjectionConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof LogInjectionSink }

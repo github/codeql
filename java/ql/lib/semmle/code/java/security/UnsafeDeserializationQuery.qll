@@ -437,7 +437,13 @@ deprecated class UnsafeTypeConfig extends TaintTracking2::Configuration {
   }
 }
 
-private module UnsafeTypeConfig implements DataFlow::ConfigSig {
+/**
+ * Tracks flow from a remote source to a type descriptor (e.g. a `java.lang.Class` instance)
+ * passed to a deserialization method.
+ *
+ * If this is user-controlled, arbitrary code could be executed while instantiating the user-specified type.
+ */
+module UnsafeTypeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeTypeSink }
@@ -528,7 +534,7 @@ deprecated class SafeObjectMapperConfig extends DataFlow2::Configuration {
   }
 }
 
-private module SafeObjectMapperConfig implements DataFlow::ConfigSig {
+module SafeObjectMapperConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof SetPolymorphicTypeValidatorSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof ObjectMapperReadQualifier }

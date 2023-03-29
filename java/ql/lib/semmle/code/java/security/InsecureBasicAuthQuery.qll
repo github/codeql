@@ -27,7 +27,7 @@ deprecated class BasicAuthFlowConfig extends TaintTracking::Configuration {
  * A taint tracking configuration for the Basic authentication scheme
  * being used in HTTP connections.
  */
-private module BasicAuthFlowConfig implements DataFlow::ConfigSig {
+module BasicAuthFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof InsecureBasicAuthSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof InsecureBasicAuthSink }

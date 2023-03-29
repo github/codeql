@@ -1013,7 +1013,7 @@ deprecated class SafeTransformerFactoryFlowConfig extends DataFlow3::Configurati
  * A dataflow configuration that identifies `TransformerFactory` and `SAXTransformerFactory`
  * instances that have been safely configured.
  */
-private module SafeTransformerFactoryFlowConfig implements DataFlow::ConfigSig {
+module SafeTransformerFactoryFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeTransformerFactory }
 
   predicate isSink(DataFlow::Node sink) {

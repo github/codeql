@@ -29,7 +29,7 @@ deprecated class HttpStringToUrlOpenMethodFlowConfig extends TaintTracking::Conf
 /**
  * A taint tracking configuration for HTTP connections.
  */
-private module HttpStringToUrlOpenMethodFlowConfig implements DataFlow::ConfigSig {
+module HttpStringToUrlOpenMethodFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof HttpStringLiteral }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof UrlOpenSink }

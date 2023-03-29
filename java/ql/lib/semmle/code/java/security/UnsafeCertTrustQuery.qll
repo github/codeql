@@ -22,7 +22,7 @@ deprecated class SslEndpointIdentificationFlowConfig extends TaintTracking::Conf
   }
 }
 
-private module SslEndpointIdentificationFlowConfig implements DataFlow::ConfigSig {
+module SslEndpointIdentificationFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof SslConnectionInit }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof SslConnectionCreation }

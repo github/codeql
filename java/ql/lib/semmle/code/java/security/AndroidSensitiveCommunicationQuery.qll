@@ -151,7 +151,7 @@ deprecated class SensitiveCommunicationConfig extends TaintTracking::Configurati
   }
 }
 
-private module SensitiveCommunicationConfig implements DataFlow::ConfigSig {
+module SensitiveCommunicationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveInfoExpr }
 
   predicate isSink(DataFlow::Node sink) {

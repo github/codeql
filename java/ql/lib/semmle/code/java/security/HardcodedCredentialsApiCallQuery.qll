@@ -58,7 +58,7 @@ deprecated class HardcodedCredentialApiCallConfiguration extends DataFlow::Confi
 /**
  * A data-flow configuration that tracks flow from a hard-coded credential in a call to a sensitive Java API which may compromise security.
  */
-private module HardcodedCredentialApiCallConfig implements DataFlow::ConfigSig {
+module HardcodedCredentialApiCallConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {
     n.asExpr() instanceof HardcodedExpr and
     not n.asExpr().getEnclosingCallable() instanceof ToStringMethod

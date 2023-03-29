@@ -23,7 +23,7 @@ deprecated class KeySizeConfiguration extends DataFlow::Configuration {
 /**
  * A data flow configuration for tracking key sizes used in cryptographic algorithms.
  */
-private module KeySizeConfig implements DataFlow::StateConfigSig {
+module KeySizeConfig implements DataFlow::StateConfigSig {
   class FlowState = DataFlow::FlowState;
 
   predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {

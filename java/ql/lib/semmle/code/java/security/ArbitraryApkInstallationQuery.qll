@@ -9,7 +9,7 @@ private import semmle.code.java.security.ArbitraryApkInstallation
  * A dataflow configuration for flow from an external source of an APK to the
  * `setData[AndType][AndNormalize]` method of an intent.
  */
-private module ApkInstallationConfig implements DataFlow::ConfigSig {
+module ApkInstallationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof ExternalApkSource }
 
   predicate isSink(DataFlow::Node node) {

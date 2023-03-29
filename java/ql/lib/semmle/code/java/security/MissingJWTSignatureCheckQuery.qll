@@ -28,7 +28,7 @@ deprecated class MissingJwtSignatureCheckConf extends DataFlow::Configuration {
  * Models flow from signing keys assignments to qualifiers of JWT insecure parsers.
  * This is used to determine whether a `JwtParser` performing unsafe parsing has a signing key set.
  */
-private module MissingJwtSignatureCheckConfig implements DataFlow::ConfigSig {
+module MissingJwtSignatureCheckConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof JwtParserWithInsecureParseSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof JwtParserWithInsecureParseSink }

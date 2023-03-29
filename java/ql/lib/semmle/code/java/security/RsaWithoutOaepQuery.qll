@@ -26,7 +26,7 @@ deprecated class RsaWithoutOaepConfig extends DataFlow::Configuration {
   }
 }
 
-private module RsaWithoutOaepConfig implements DataFlow::ConfigSig {
+module RsaWithoutOaepConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
     exists(CompileTimeConstantExpr specExpr, string spec |
       specExpr.getStringValue() = spec and
