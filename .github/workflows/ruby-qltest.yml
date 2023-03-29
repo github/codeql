@@ -4,6 +4,7 @@ on:
   push:
     paths:
       - "ruby/**"
+      - "shared/**"
       - .github/workflows/ruby-build.yml
       - .github/actions/fetch-codeql/action.yml
       - codeql-workspace.yml
