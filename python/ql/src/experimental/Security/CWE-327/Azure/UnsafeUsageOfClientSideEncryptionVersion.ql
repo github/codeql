@@ -111,6 +111,11 @@ module AzureBlobClientConfig implements DataFlow::StateConfigSig {
       attr.accesses(node, "encryption_version") and
       attr.getValue().asExpr().(StrConst).getText() in ["'2.0'", "2.0"]
     )
+    or
+    // small optimization to block flow with no encryption out of the post-update node
+    // for the attribute assignment.
+    isAdditionalFlowStep(_, MkUsesNoEncryption(), node, MkUsesV1Encryption()) and
+    state = MkUsesNoEncryption()
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
@@ -124,7 +129,7 @@ module AzureBlobClientConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    node1 = node2 and
+    node1 = node2.(DataFlow::PostUpdateNode).getPreUpdateNode() and
     state1 = MkUsesNoEncryption() and
     state2 = MkUsesV1Encryption() and
     exists(DataFlow::AttrWrite attr |
