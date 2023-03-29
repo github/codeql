@@ -602,12 +602,12 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c instanceof OptionalSomeContentSet
   )
   or
-  // creation of an optional by returning from an optional initializer (`init?`)
-  exists(ConstructorDecl init, OptionalType initRetType |
+  // creation of an optional by returning from a failable initializer (`init?`)
+  exists(ConstructorDecl init |
     node1.asExpr().(CallExpr).getStaticTarget() = init and
     node2 = node1 and // HACK: again, we should ideally have a separate Node case here, and not reuse the CallExpr
     c instanceof OptionalSomeContentSet and
-    init.getInterfaceType().(FunctionType).getResult().(FunctionType).getResult() = initRetType
+    init.isFailable()
   )
   or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
