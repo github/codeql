@@ -15,7 +15,8 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 
-API::Node getBlobServiceClient() {
+API::Node getBlobServiceClient(boolean isSource) {
+  isSource = true and
   result =
     API::moduleImport("azure")
         .getMember("storage")
@@ -23,6 +24,7 @@ API::Node getBlobServiceClient() {
         .getMember("BlobServiceClient")
         .getReturn()
   or
+  isSource = true and
   result =
     API::moduleImport("azure")
         .getMember("storage")
@@ -33,14 +35,16 @@ API::Node getBlobServiceClient() {
 }
 
 API::CallNode getTransitionToContainerClient() {
-  result = getBlobServiceClient().getMember("get_container_client").getACall()
+  result = getBlobServiceClient(_).getMember("get_container_client").getACall()
   or
-  result = getBlobClient().getMember("_get_container_client").getACall()
+  result = getBlobClient(_).getMember("_get_container_client").getACall()
 }
 
-API::Node getContainerClient() {
+API::Node getContainerClient(boolean isSource) {
+  isSource = false and
   result = getTransitionToContainerClient().getReturn()
   or
+  isSource = true and
   result =
     API::moduleImport("azure")
         .getMember("storage")
@@ -48,6 +52,7 @@ API::Node getContainerClient() {
         .getMember("ContainerClient")
         .getReturn()
   or
+  isSource = true and
   result =
     API::moduleImport("azure")
         .getMember("storage")
@@ -58,12 +63,14 @@ API::Node getContainerClient() {
 }
 
 API::CallNode getTransitionToBlobClient() {
-  result = [getBlobServiceClient(), getContainerClient()].getMember("get_blob_client").getACall()
+  result = [getBlobServiceClient(_), getContainerClient(_)].getMember("get_blob_client").getACall()
 }
 
-API::Node getBlobClient() {
+API::Node getBlobClient(boolean isSource) {
+  isSource = false and
   result = getTransitionToBlobClient().getReturn()
   or
+  isSource = true and
   result =
     API::moduleImport("azure")
         .getMember("storage")
@@ -71,6 +78,7 @@ API::Node getBlobClient() {
         .getMember("BlobClient")
         .getReturn()
   or
+  isSource = true and
   result =
     API::moduleImport("azure")
         .getMember("storage")
@@ -80,7 +88,9 @@ API::Node getBlobClient() {
         .getReturn()
 }
 
-API::Node anyClient() { result in [getBlobServiceClient(), getContainerClient(), getBlobClient()] }
+API::Node anyClient(boolean isSource) {
+  result in [getBlobServiceClient(isSource), getContainerClient(isSource), getBlobClient(isSource)]
+}
 
 newtype TAzureFlowState =
   MkUsesV1Encryption() or
@@ -91,13 +101,13 @@ module AzureBlobClientConfig implements DataFlow::StateConfigSig {
 
   predicate isSource(DataFlow::Node node, FlowState state) {
     state = MkUsesNoEncryption() and
-    node = anyClient().asSource()
+    node = anyClient(true).asSource()
   }
 
   predicate isBarrier(DataFlow::Node node, FlowState state) {
     exists(state) and
     exists(DataFlow::AttrWrite attr |
-      node = anyClient().getAValueReachableFromSource() and
+      node = anyClient(_).getAValueReachableFromSource() and
       attr.accesses(node, "encryption_version") and
       attr.getValue().asExpr().(StrConst).getText() in ["'2.0'", "2.0"]
     )
@@ -118,7 +128,7 @@ module AzureBlobClientConfig implements DataFlow::StateConfigSig {
     state1 = MkUsesNoEncryption() and
     state2 = MkUsesV1Encryption() and
     exists(DataFlow::AttrWrite attr |
-      node1 = anyClient().getAValueReachableFromSource() and
+      node1 = anyClient(_).getAValueReachableFromSource() and
       attr.accesses(node1, ["key_encryption_key", "key_resolver_function"])
     )
   }
@@ -126,7 +136,7 @@ module AzureBlobClientConfig implements DataFlow::StateConfigSig {
   predicate isSink(DataFlow::Node node, FlowState state) {
     state = MkUsesV1Encryption() and
     exists(DataFlow::MethodCallNode call |
-      call = getBlobClient().getMember("upload_blob").getACall() and
+      call = getBlobClient(_).getMember("upload_blob").getACall() and
       node = call.getObject()
     )
   }
