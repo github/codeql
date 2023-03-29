@@ -2,6 +2,6 @@
 import codeql.swift.elements
 import TestUtils
 
-from ModuleDecl x, int index
+from ModuleDecl x
 where toBeTested(x) and not x.isUnknown()
-select x, index, x.getExportedModule(index)
+select x, x.getAnExportedModule()
