@@ -14,7 +14,7 @@ import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
 import codeql.swift.dataflow.FlowSteps
-import DataFlow::PathGraph
+import ConstantPasswordFlow::PathGraph
 
 /**
  * A constant password is created through either a byte array or string literals.
@@ -60,18 +60,16 @@ class ConstantPasswordSink extends Expr {
  * A taint configuration from the source of constants passwords to expressions that use
  * them to initialize password-based encryption keys.
  */
-class ConstantPasswordConfig extends TaintTracking::Configuration {
-  ConstantPasswordConfig() { this = "ConstantPasswordConfig" }
+module ConstantPasswordConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node.asExpr() instanceof ConstantPasswordSource }
 
-  override predicate isSource(DataFlow::Node node) {
-    node.asExpr() instanceof ConstantPasswordSource
-  }
-
-  override predicate isSink(DataFlow::Node node) { node.asExpr() instanceof ConstantPasswordSink }
+  predicate isSink(DataFlow::Node node) { node.asExpr() instanceof ConstantPasswordSink }
 }
 
+module ConstantPasswordFlow = TaintTracking::Global<ConstantPasswordConfig>;
+
 // The query itself
-from ConstantPasswordConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
-where config.hasFlowPath(sourceNode, sinkNode)
+from ConstantPasswordFlow::PathNode sourceNode, ConstantPasswordFlow::PathNode sinkNode
+where ConstantPasswordFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "The value '" + sourceNode.getNode().toString() + "' is used as a constant password."

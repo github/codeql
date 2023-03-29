@@ -13,7 +13,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
-import DataFlow::PathGraph
+import InsufficientHashIterationsFlow::PathGraph
 
 /**
  * An `Expr` that is used to initialize a password-based encryption key.
@@ -46,21 +46,19 @@ class InsufficientHashIterationsSink extends Expr {
  * A dataflow configuration from the hash iterations source to expressions that use
  * it to initialize hash functions.
  */
-class InsufficientHashIterationsConfig extends TaintTracking::Configuration {
-  InsufficientHashIterationsConfig() { this = "InsufficientHashIterationsConfig" }
+module InsufficientHashIterationsConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node.asExpr() instanceof IterationsSource }
 
-  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof IterationsSource }
-
-  override predicate isSink(DataFlow::Node node) {
-    node.asExpr() instanceof InsufficientHashIterationsSink
-  }
+  predicate isSink(DataFlow::Node node) { node.asExpr() instanceof InsufficientHashIterationsSink }
 }
+
+module InsufficientHashIterationsFlow = TaintTracking::Global<InsufficientHashIterationsConfig>;
 
 // The query itself
 from
-  InsufficientHashIterationsConfig config, DataFlow::PathNode sourceNode,
-  DataFlow::PathNode sinkNode
-where config.hasFlowPath(sourceNode, sinkNode)
+  InsufficientHashIterationsFlow::PathNode sourceNode,
+  InsufficientHashIterationsFlow::PathNode sinkNode
+where InsufficientHashIterationsFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "The value '" + sourceNode.getNode().toString() +
     "' is an insufficient number of iterations for secure password hashing."
