@@ -256,7 +256,7 @@ def _get_all_properties_to_be_tested(cls: schema.Class, lookup: typing.Dict[str,
             # TODO here operations are duplicated, but should be better if we split ql and qltest generation
             p = get_ql_property(c, p)
             yield ql.PropertyForTest(p.getter, is_total=p.is_single or p.is_predicate,
-                                     type=p.type if not p.is_predicate else None, is_repeated=p.is_repeated)
+                                     type=p.type if not p.is_predicate else None, is_indexed=p.is_indexed)
             if p.is_repeated and not p.is_optional:
                 yield ql.PropertyForTest(f"getNumberOf{p.plural}", type="int")
             elif p.is_optional and not p.is_repeated:

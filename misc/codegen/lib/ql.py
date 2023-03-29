@@ -197,7 +197,7 @@ class PropertyForTest:
     getter: str
     is_total: bool = True
     type: Optional[str] = None
-    is_repeated: bool = False
+    is_indexed: bool = False
 
 
 @dataclass
