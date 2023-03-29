@@ -51,6 +51,9 @@ module RemoteUserInputToArgumentToExecFlowConfig implements DataFlow::ConfigSig 
   }
 }
 
+/**
+ * Taint-tracking flow for unvalidated user input that is used to run an external process.
+ */
 module RemoteUserInputToArgumentToExecFlow =
   TaintTracking::Global<RemoteUserInputToArgumentToExecFlowConfig>;
 
