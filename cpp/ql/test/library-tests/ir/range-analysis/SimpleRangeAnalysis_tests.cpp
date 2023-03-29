@@ -741,7 +741,7 @@ unsigned long mult_rounding() {
   range(y); // $ range===1000000003
   range(x); // $ range===1000000003
   xy = x * y;
-  range(xy); // $ range===2147483647
+  range(xy);
   return xy; // BUG: upper bound should be >= 1000000006000000009UL
 }
 
