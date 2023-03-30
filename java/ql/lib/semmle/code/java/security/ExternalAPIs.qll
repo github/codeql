@@ -111,6 +111,9 @@ deprecated class UntrustedDataToExternalApiConfig extends TaintTracking::Configu
   override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 }
 
+/**
+ * Taint tracking configuration for flow from `RemoteFlowSource`s to `ExternalApiDataNode`s.
+ */
 module UntrustedDataToExternalApiConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
