@@ -2,9 +2,39 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.decl.GenericTypeDecl
+import codeql.swift.elements.type.Type
 
 module Generated {
+  /**
+   * A declaration of a type alias to another type. For example:
+   * ```
+   * typealias MyInt = Int
+   * ```
+   */
   class TypeAliasDecl extends Synth::TTypeAliasDecl, GenericTypeDecl {
     override string getAPrimaryQlClass() { result = "TypeAliasDecl" }
+
+    /**
+     * Gets the aliased type on the right-hand side of this type alias declaration.
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
+     */
+    Type getImmediateAliasedType() {
+      result =
+        Synth::convertTypeFromRaw(Synth::convertTypeAliasDeclToRaw(this)
+              .(Raw::TypeAliasDecl)
+              .getAliasedType())
+    }
+
+    /**
+     * Gets the aliased type on the right-hand side of this type alias declaration.
+     *
+     * For example the aliased type of `MyInt` in the following code is `Int`:
+     * ```
+     * typealias MyInt = Int
+     * ```
+     */
+    final Type getAliasedType() { result = getImmediateAliasedType().resolve() }
   }
 }
