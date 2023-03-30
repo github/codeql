@@ -6,7 +6,7 @@ import semmle.code.java.dataflow.FlowSources
 private import semmle.code.java.dataflow.ExternalFlow
 
 /**
- * A message interpolator Type that perform Expression Language (EL) evaluations
+ * A message interpolator Type that perform Expression Language (EL) evaluations.
  */
 class ELMessageInterpolatorType extends RefType {
   ELMessageInterpolatorType() {

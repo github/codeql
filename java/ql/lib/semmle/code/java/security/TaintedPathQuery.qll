@@ -77,7 +77,7 @@ module TaintedPathConfig implements DataFlow::ConfigSig {
 module TaintedPathFlow = TaintTracking::Global<TaintedPathConfig>;
 
 /**
- * A taint-tracking configuration for tracking flow from user input to the creation of a path.
+ * A taint-tracking configuration for tracking flow from local user input to the creation of a path.
  */
 module TaintedPathLocalConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
@@ -100,5 +100,5 @@ module TaintedPathLocalConfig implements DataFlow::ConfigSig {
   }
 }
 
-/** Tracks flow from user input to the creation of a path. */
+/** Tracks flow from local user input to the creation of a path. */
 module TaintedPathLocalFlow = TaintTracking::Global<TaintedPathLocalConfig>;
