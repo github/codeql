@@ -22,17 +22,8 @@ module SemanticExprConfig {
 
     /** Holds if this instruction converts a value of type `tFrom` to a value of type `tTo`. */
     predicate converts(SemType tFrom, SemType tTo) {
-      exists(IR::ConvertInstruction convert |
-        this = convert and
-        tFrom = getSemanticType(convert.getUnary().getResultIRType()) and
-        tTo = getSemanticType(convert.getResultIRType())
-      )
-      or
-      exists(IR::CopyValueInstruction copy |
-        this = copy and
-        tFrom = getSemanticType(copy.getUnary().getResultIRType()) and
-        tTo = getSemanticType(copy.getResultIRType())
-      )
+      tFrom = getSemanticType(this.getUnary().getResultIRType()) and
+      tTo = getSemanticType(this.getResultIRType())
     }
   }
 
