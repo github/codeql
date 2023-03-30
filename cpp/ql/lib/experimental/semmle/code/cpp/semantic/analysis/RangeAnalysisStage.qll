@@ -73,6 +73,7 @@ import experimental.semmle.code.cpp.semantic.SemanticCFG
 import experimental.semmle.code.cpp.semantic.SemanticType
 import experimental.semmle.code.cpp.semantic.SemanticOpcode
 private import ConstantAnalysis
+private import Sign
 import experimental.semmle.code.cpp.semantic.SemanticLocation
 
 /**
@@ -248,8 +249,9 @@ signature module OverflowSig<DeltaSig D> {
 }
 
 module RangeStage<
-DeltaSig D, BoundSig<D> Bounds, OverflowSig<D> OverflowParam, LangSig<D> LangParam,
-UtilSig<D> UtilParam> {
+  DeltaSig D, BoundSig<D> Bounds, OverflowSig<D> OverflowParam, LangSig<D> LangParam,
+  UtilSig<D> UtilParam>
+{
   private import Bounds
   private import LangParam
   private import UtilParam
@@ -932,22 +934,59 @@ UtilSig<D> UtilParam> {
 
   predicate bounded(
     SemExpr e, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge, D::Delta origdelta,
-    SemReason reason) {
-      initialBounded(e, b, delta, upper, fromBackEdge, origdelta, reason) and
-      (
-        semExprDoesntOverflow(upper.booleanNot(), e)
-        or
-        not potentiallyOverflowingExpr(upper.booleanNot(), e)
-      )
+    SemReason reason
+  ) {
+    initialBounded(e, b, delta, upper, fromBackEdge, origdelta, reason) and
+    (
+      semExprDoesntOverflow(upper.booleanNot(), e)
+      or
+      not potentiallyOverflowingExpr(upper.booleanNot(), e)
+    )
   }
 
   predicate potentiallyOverflowingExpr(boolean positively, SemExpr expr) {
-    positively in [true, false] and
     (
       expr.getOpcode() instanceof Opcode::Add or
-      expr.getOpcode() instanceof Opcode::PointerAdd or
+      expr.getOpcode() instanceof Opcode::PointerAdd
+    ) and
+    (
+      positively = true and
+      (
+        not semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TPos()
+        or
+        not semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TPos()
+      )
+      or
+      positively = false and
+      (
+        not semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TNeg()
+        or
+        not semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TNeg()
+      )
+    )
+    or
+    (
       expr.getOpcode() instanceof Opcode::Sub or
-      expr.getOpcode() instanceof Opcode::PointerSub or
+      expr.getOpcode() instanceof Opcode::PointerSub
+    ) and
+    (
+      positively = true and
+      (
+        not semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TPos()
+        or
+        not semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TNeg()
+      )
+      or
+      positively = false and
+      (
+        not semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TNeg()
+        or
+        not semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TPos()
+      )
+    )
+    or
+    positively in [true, false] and
+    (
       expr.getOpcode() instanceof Opcode::Mul or
       expr.getOpcode() instanceof Opcode::ShiftLeft
     )
@@ -955,11 +994,9 @@ UtilSig<D> UtilParam> {
     positively = false and
     (
       expr.getOpcode() instanceof Opcode::Negate or
-      expr.getOpcode() instanceof Opcode::SubOne
+      expr.getOpcode() instanceof Opcode::SubOne or
+      expr.(SemDivExpr).getSemType() instanceof SemFloatingPointType
     )
-    or
-    positively = false and
-    expr.(SemDivExpr).getSemType() instanceof SemFloatingPointType
     or
     positively = true and
     expr.getOpcode() instanceof Opcode::AddOne
