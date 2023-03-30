@@ -7,3 +7,4 @@ category: minorAnalysis
 * Added the `XssQuery.qll` library to provide the `XssFlow` taint-tracking module to reason about cross site scripting vulnerabilities.
 * Added the `LdapInjectionQuery.qll` library to provide the `LdapInjectionFlow` taint-tracking module to reason about LDAP injection vulnerabilities.
 * Added the `ResponseSplittingQuery.qll` library to provide the `ResponseSplittingFlow` taint-tracking module to reason about response splitting vulnerabilities.
+* Added the `ExternallyControlledFormatStringQuery.qll` library to provide the `ExternallyControlledFormatStringFlow` taint-tracking module to reason about externally controlled format string vulnerabilities.
