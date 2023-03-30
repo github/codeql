@@ -534,6 +534,12 @@ deprecated class SafeObjectMapperConfig extends DataFlow2::Configuration {
   }
 }
 
+/**
+ * Tracks flow from calls that set a type validator to a subsequent Jackson deserialization method call,
+ * including across builder method calls.
+ *
+ * Such a Jackson deserialization method call is safe because validation will likely prevent instantiating unexpected types.
+ */
 module SafeObjectMapperConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof SetPolymorphicTypeValidatorSource }
 
