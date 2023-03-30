@@ -1,3 +1,13 @@
+## 0.5.5
+
+### New Queries
+
+* Added a new query, `rb/zip-slip`, to detect arbitrary file writes during extraction of zip/tar archives.
+
+### Minor Analysis Improvements
+
+* `rb/sensitive-get-query` no longer reports flow paths from input parameters to sensitive use nodes. This avoids cases where many flow paths could be generated for a single parameter, which caused excessive paths to be generated.
+
 ## 0.5.4
 
 No user-facing changes.
