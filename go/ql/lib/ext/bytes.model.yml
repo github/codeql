@@ -4,8 +4,7 @@ extensions:
       extensible: summaryModel
     data:
       - ["bytes", "", False, "Clone", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["bytes", "", False, "Cut", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
-      - ["bytes", "", False, "Cut", "", "", "Argument[0]", "ReturnValue[1]", "taint", "manual"]
+      - ["bytes", "", False, "Cut", "", "", "Argument[0]", "ReturnValue[0..1]", "taint", "manual"]
       - ["bytes", "", False, "CutPrefix", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["bytes", "", False, "CutSuffix", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
       - ["bytes", "", False, "Fields", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

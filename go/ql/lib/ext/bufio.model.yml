@@ -3,7 +3,6 @@ extensions:
       pack: codeql/go-all
       extensible: summaryModel
     data:
-      - ["bufio", "", False, "NewReadWriter", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
       - ["bufio", "", False, "NewReadWriter", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["bufio", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["bufio", "", False, "NewReaderSize", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
