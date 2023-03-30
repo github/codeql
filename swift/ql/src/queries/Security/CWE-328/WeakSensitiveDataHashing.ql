@@ -15,17 +15,17 @@ import swift
 import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
-import DataFlow::PathGraph
+import WeakHashingFlow::PathGraph
 
-class WeakHashingConfig extends TaintTracking::Configuration {
-  WeakHashingConfig() { this = "WeakHashingConfig" }
+module WeakHashingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node instanceof WeakHashingConfigImpl::Source }
 
-  override predicate isSource(DataFlow::Node node) { node instanceof WeakHashingConfig::Source }
-
-  override predicate isSink(DataFlow::Node node) { node instanceof WeakHashingConfig::Sink }
+  predicate isSink(DataFlow::Node node) { node instanceof WeakHashingConfigImpl::Sink }
 }
 
-module WeakHashingConfig {
+module WeakHashingFlow = TaintTracking::Global<WeakHashingConfig>;
+
+module WeakHashingConfigImpl {
   class Source extends DataFlow::Node {
     Source() { this.asExpr() instanceof SensitiveExpr }
   }
@@ -52,11 +52,11 @@ module WeakHashingConfig {
 }
 
 from
-  WeakHashingConfig config, DataFlow::PathNode source, DataFlow::PathNode sink, string algorithm,
+  WeakHashingFlow::PathNode source, WeakHashingFlow::PathNode sink, string algorithm,
   SensitiveExpr expr
 where
-  config.hasFlowPath(source, sink) and
-  algorithm = sink.getNode().(WeakHashingConfig::Sink).getAlgorithm() and
+  WeakHashingFlow::flowPath(source, sink) and
+  algorithm = sink.getNode().(WeakHashingConfigImpl::Sink).getAlgorithm() and
   expr = source.getNode().asExpr()
 select sink.getNode(), source, sink,
   "Insecure hashing algorithm (" + algorithm + ") depends on $@.", source.getNode(),

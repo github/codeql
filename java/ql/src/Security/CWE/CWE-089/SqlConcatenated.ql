@@ -48,6 +48,6 @@ where
       UncontrolledStringBuilderSourceFlow::flow(DataFlow::exprNode(sbv.getToStringCall()), query)
     )
   ) and
-  not queryTaintedBy(query, _, _)
+  not queryIsTaintedBy(query, _, _)
 select query, "Query built by concatenation with $@, which may be untrusted.", uncontrolled,
   "this expression"

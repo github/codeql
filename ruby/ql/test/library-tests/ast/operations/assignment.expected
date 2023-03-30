@@ -65,6 +65,12 @@ assignments
 | operations.rb:102:1:102:31 | ... \|\|= ... | \|\|= | operations.rb:102:1:102:25 | OtherConstant | operations.rb:102:31:102:31 | 7 | AssignLogicalOrExpr |
 | operations.rb:103:1:103:17 | ... = ... | = | operations.rb:103:1:103:11 | CONSTANT4 | operations.rb:103:13:103:15 | ... \|\| ... | AssignExpr |
 | operations.rb:103:1:103:17 | ... \|\|= ... | \|\|= | operations.rb:103:1:103:11 | CONSTANT4 | operations.rb:103:17:103:17 | 7 | AssignLogicalOrExpr |
+| operations.rb:104:1:104:3 | ... = ... | = | operations.rb:104:1:104:3 | FOO | operations.rb:104:1:104:3 | call to [] | AssignExpr |
+| operations.rb:104:1:104:32 | ... = ... | = | operations.rb:104:1:104:20 | (..., ...) | operations.rb:104:24:104:32 | [...] | AssignExpr |
+| operations.rb:104:6:104:10 | ... = ... | = | operations.rb:104:6:104:10 | BAR | operations.rb:104:6:104:10 | call to [] | AssignExpr |
+| operations.rb:104:13:104:15 | ... = ... | = | operations.rb:104:13:104:15 | __synth__2 | operations.rb:104:13:104:15 | foo | AssignExpr |
+| operations.rb:104:13:104:20 | ... = ... | = | operations.rb:104:13:104:20 | FOO | operations.rb:104:13:104:20 | call to [] | AssignExpr |
+| operations.rb:104:24:104:32 | ... = ... | = | operations.rb:104:24:104:32 | __synth__3 | operations.rb:104:24:104:32 | * ... | AssignExpr |
 assignOperations
 | operations.rb:69:1:69:8 | ... += ... | += | operations.rb:69:1:69:1 | x | operations.rb:69:6:69:8 | 128 | AssignAddExpr |
 | operations.rb:70:1:70:7 | ... -= ... | -= | operations.rb:70:1:70:1 | y | operations.rb:70:6:70:7 | 32 | AssignSubExpr |

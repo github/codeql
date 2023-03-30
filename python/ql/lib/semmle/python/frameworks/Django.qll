@@ -561,8 +561,8 @@ module PrivateDjango {
       API::Node connection() { result = db().getMember("connection") }
 
       /** A `django.db.connection` is a PEP249 compliant DB connection. */
-      class DjangoDbConnection extends PEP249::Connection::InstanceSource {
-        DjangoDbConnection() { this = connection().asSource() }
+      class DjangoDbConnection extends PEP249::DatabaseConnection {
+        DjangoDbConnection() { this = connection() }
       }
 
       // -------------------------------------------------------------------------

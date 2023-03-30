@@ -7,7 +7,6 @@ edition = "2018"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-flate2 = "1.0"
 tree-sitter = "0.20"
 tree-sitter-embedded-template = { git = "https://github.com/tree-sitter/tree-sitter-embedded-template.git", rev = "203f7bd3c1bbfbd98fc19add4b8fcb213c059205" }
 tree-sitter-ruby = { git = "https://github.com/tree-sitter/tree-sitter-ruby.git", rev = "206c7077164372c596ffa8eaadb9435c28941364" }
@@ -15,10 +14,7 @@ clap = "3.0"
 tracing = "0.1"
 tracing-subscriber = { version = "0.3.3", features = ["env-filter"] }
 rayon = "1.5.0"
-num_cpus = "1.14.0"
 regex = "1.7.1"
 encoding = "0.2"
 lazy_static = "1.4.0"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-chrono = { version = "0.4.19", features = ["serde"] }
+codeql-extractor = { path = "../../shared/tree-sitter-extractor" }

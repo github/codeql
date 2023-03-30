@@ -40,6 +40,14 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
 }
 
+private class PatternNodeImpl extends PatternNode, NodeImpl {
+  override Location getLocationImpl() { result = pattern.getLocation() }
+
+  override string toStringImpl() { result = pattern.toString() }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
+}
+
 private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
   override Location getLocationImpl() { result = def.getLocation() }
 
@@ -63,6 +71,7 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(CfgNode n, Expr e) { hasExprNode(n, e) } or
+    TPatternNode(CfgNode n, Pattern p) { hasPatternNode(n, p) } or
     TSsaDefinitionNode(Ssa::Definition def) or
     TInoutReturnNode(ParamDecl param) { modifiableParam(param) } or
     TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
@@ -175,6 +184,20 @@ private module Cached {
       nodeFrom.asExpr() = ie.getBranch(_)
     )
     or
+    // flow from Expr to Pattern
+    exists(Expr e, Pattern p |
+      nodeFrom.asExpr() = e and
+      nodeTo.asPattern() = p and
+      p.getImmediateMatchingExpr() = e
+    )
+    or
+    // flow from Pattern to an identity-preserving sub-Pattern:
+    nodeTo.asPattern() =
+      [
+        nodeFrom.asPattern().(IsPattern).getSubPattern(),
+        nodeFrom.asPattern().(TypedPattern).getSubPattern()
+      ]
+    or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
@@ -201,7 +224,8 @@ private module Cached {
   cached
   newtype TContent =
     TFieldContent(FieldDecl f) or
-    TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) }
+    TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) } or
+    TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) }
 }
 
 /**
@@ -228,6 +252,11 @@ private predicate hasExprNode(CfgNode n, Expr e) {
   n.(PropertySetterCfgNode).getAssignExpr() = e
   or
   n.(PropertyObserverCfgNode).getAssignExpr() = e
+}
+
+private predicate hasPatternNode(PatternCfgNode n, Pattern p) {
+  n.getPattern() = p and
+  p = p.resolve() // no need to turn hidden-AST patterns (`let`s, parens) into data flow nodes
 }
 
 import Cached
@@ -558,6 +587,29 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
   )
   or
+  // creation of an enum `.variant(v1, v2)`
+  exists(EnumElementExpr enum, int pos |
+    node1.asExpr() = enum.getArgument(pos).getExpr() and
+    node2.asExpr() = enum and
+    c.isSingleton(any(Content::EnumContent ec | ec.getParam() = enum.getElement().getParam(pos)))
+  )
+  or
+  // creation of an optional via implicit conversion,
+  // i.e. from `f(x)` where `x: T` into `f(.some(x))` where the context `f` expects a `T?`.
+  exists(InjectIntoOptionalExpr e |
+    e.convertsFrom(node1.asExpr()) and
+    node2 = node1 and // HACK: we should ideally have a separate Node case for the (hidden) InjectIntoOptionalExpr
+    c instanceof OptionalSomeContentSet
+  )
+  or
+  // creation of an optional by returning from a failable initializer (`init?`)
+  exists(ConstructorDecl init |
+    node1.asExpr().(CallExpr).getStaticTarget() = init and
+    node2 = node1 and // HACK: again, we should ideally have a separate Node case here, and not reuse the CallExpr
+    c instanceof OptionalSomeContentSet and
+    init.isFailable()
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
 }
 
@@ -578,6 +630,34 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2.asExpr() = tuple and
     c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
   )
+  or
+  // read of an enum member via `case let .variant(v1, v2)` pattern matching
+  exists(EnumElementPattern enumPat, ParamDecl enumParam, Pattern subPat |
+    node1.asPattern() = enumPat and
+    node2.asPattern() = subPat and
+    c.isSingleton(any(Content::EnumContent ec | ec.getParam() = enumParam))
+  |
+    exists(int idx |
+      enumPat.getElement().getParam(idx) = enumParam and
+      enumPat.getSubPattern(idx) = subPat
+    )
+  )
+  or
+  // read of a tuple member via `case let (v1, v2)` pattern matching
+  exists(TuplePattern tupPat, int idx, Pattern subPat |
+    node1.asPattern() = tupPat and
+    node2.asPattern() = subPat and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = idx))
+  |
+    tupPat.getElement(idx) = subPat
+  )
+  or
+  // read of an optional .some member via `let x: T = y: T?` pattern matching
+  exists(OptionalSomePattern pat |
+    node1.asPattern() = pat and
+    node2.asPattern() = pat.getSubPattern() and
+    c instanceof OptionalSomeContentSet
+  )
 }
 
 /**
@@ -594,6 +674,22 @@ predicate clearsContent(Node n, ContentSet c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) { none() }
+
+/**
+ * The global singleton `Optional.some` content set.
+ */
+private class OptionalSomeContentSet extends ContentSet {
+  OptionalSomeContentSet() {
+    exists(EnumDecl optional, EnumElementDecl some |
+      some.getDeclaringDecl() = optional and
+      some.getName() = "some" and
+      optional.getName() = "Optional" and
+      optional.getModule().getName() = "Swift"
+    |
+      this.isSingleton(any(Content::EnumContent ec | ec.getParam() = some.getParam(0)))
+    )
+  }
+}
 
 private newtype TDataFlowType = TODO_DataFlowType()
 
