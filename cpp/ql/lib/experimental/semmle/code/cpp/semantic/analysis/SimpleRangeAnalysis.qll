@@ -95,7 +95,15 @@ predicate defMightOverflow(RangeSsaDefinition def, StackVariable v) {
  * does not consider the possibility that the expression might overflow
  * due to a conversion.
  */
-predicate exprMightOverflowNegatively(Expr expr) { lowerBound(expr) < exprMinVal(expr) }
+predicate exprMightOverflowNegatively(Expr expr) {
+  lowerBound(expr) < exprMinVal(expr)
+  or
+  exists(SemanticExprConfig::Expr semExpr |
+    semExpr.getUnconverted().getAst() = expr and
+    ConstantStage::potentiallyOverflowingExpr(false, semExpr) and
+    not ConstantStage::initialBounded(semExpr, _, _, false, _, _, _)
+  )
+}
 
 /**
  * Holds if the expression might overflow negatively. Conversions
@@ -113,7 +121,15 @@ predicate convertedExprMightOverflowNegatively(Expr expr) {
  * does not consider the possibility that the expression might overflow
  * due to a conversion.
  */
-predicate exprMightOverflowPositively(Expr expr) { upperBound(expr) > exprMaxVal(expr) }
+predicate exprMightOverflowPositively(Expr expr) {
+  upperBound(expr) > exprMaxVal(expr)
+  or
+  exists(SemanticExprConfig::Expr semExpr |
+    semExpr.getUnconverted().getAst() = expr and
+    ConstantStage::potentiallyOverflowingExpr(true, semExpr) and
+    not ConstantStage::initialBounded(semExpr, _, _, true, _, _, _)
+  )
+}
 
 /**
  * Holds if the expression might overflow positively. Conversions
