@@ -1,6 +1,7 @@
 edges
 | file://:0:0:0:0 | parameter 0 of HTML2str | file://:0:0:0:0 | [summary] to write: return (return[0]) in HTML2str |
 | file://:0:0:0:0 | parameter 0 of Htmlunquote | file://:0:0:0:0 | [summary] to write: return (return[0]) in Htmlunquote |
+| file://:0:0:0:0 | parameter 0 of MapGet | file://:0:0:0:0 | [summary] to write: return (return[0]) in MapGet |
 | file://:0:0:0:0 | parameter 0 of ParseForm | file://:0:0:0:0 | [summary] to write: argument 1 in ParseForm |
 | file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll |
 | file://:0:0:0:0 | parameter 0 of SliceChunk | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceChunk |
@@ -42,7 +43,7 @@ edges
 | test.go:137:23:137:42 | call to Data | test.go:137:23:137:62 | type assertion |
 | test.go:193:15:193:26 | call to Data | test.go:194:36:194:53 | type assertion |
 | test.go:193:15:193:26 | call to Data | test.go:195:39:195:56 | type assertion |
-| test.go:193:15:193:26 | call to Data | test.go:197:14:197:28 | type assertion |
+| test.go:193:15:193:26 | call to Data | test.go:196:28:196:56 | type assertion |
 | test.go:193:15:193:26 | call to Data | test.go:198:36:198:53 | type assertion |
 | test.go:193:15:193:26 | call to Data | test.go:199:34:199:51 | type assertion |
 | test.go:194:21:194:54 | call to HTML2str | test.go:194:14:194:55 | type conversion |
@@ -51,6 +52,9 @@ edges
 | test.go:195:21:195:57 | call to Htmlunquote | test.go:195:14:195:58 | type conversion |
 | test.go:195:39:195:56 | type assertion | file://:0:0:0:0 | parameter 0 of Htmlunquote |
 | test.go:195:39:195:56 | type assertion | test.go:195:21:195:57 | call to Htmlunquote |
+| test.go:196:2:196:68 | ... := ...[0] | test.go:197:14:197:28 | type assertion |
+| test.go:196:28:196:56 | type assertion | file://:0:0:0:0 | parameter 0 of MapGet |
+| test.go:196:28:196:56 | type assertion | test.go:196:2:196:68 | ... := ...[0] |
 | test.go:198:21:198:54 | call to Str2html | test.go:198:14:198:55 | type conversion |
 | test.go:198:36:198:53 | type assertion | file://:0:0:0:0 | parameter 0 of Str2html |
 | test.go:198:36:198:53 | type assertion | test.go:198:21:198:54 | call to Str2html |
@@ -144,6 +148,7 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in HTML2str | semmle.label | [summary] to write: return (return[0]) in HTML2str |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Htmlunquote | semmle.label | [summary] to write: return (return[0]) in Htmlunquote |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Items | semmle.label | [summary] to write: return (return[0]) in Items |
+| file://:0:0:0:0 | [summary] to write: return (return[0]) in MapGet | semmle.label | [summary] to write: return (return[0]) in MapGet |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | semmle.label | [summary] to write: return (return[0]) in ReadAll |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceChunk | semmle.label | [summary] to write: return (return[0]) in SliceChunk |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceDiff | semmle.label | [summary] to write: return (return[0]) in SliceDiff |
@@ -162,6 +167,7 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Substr | semmle.label | [summary] to write: return (return[0]) in Substr |
 | file://:0:0:0:0 | parameter 0 of HTML2str | semmle.label | parameter 0 of HTML2str |
 | file://:0:0:0:0 | parameter 0 of Htmlunquote | semmle.label | parameter 0 of Htmlunquote |
+| file://:0:0:0:0 | parameter 0 of MapGet | semmle.label | parameter 0 of MapGet |
 | file://:0:0:0:0 | parameter 0 of ParseForm | semmle.label | parameter 0 of ParseForm |
 | file://:0:0:0:0 | parameter 0 of ReadAll | semmle.label | parameter 0 of ReadAll |
 | file://:0:0:0:0 | parameter 0 of SliceChunk | semmle.label | parameter 0 of SliceChunk |
@@ -225,6 +231,8 @@ nodes
 | test.go:195:14:195:58 | type conversion | semmle.label | type conversion |
 | test.go:195:21:195:57 | call to Htmlunquote | semmle.label | call to Htmlunquote |
 | test.go:195:39:195:56 | type assertion | semmle.label | type assertion |
+| test.go:196:2:196:68 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:196:28:196:56 | type assertion | semmle.label | type assertion |
 | test.go:197:14:197:28 | type assertion | semmle.label | type assertion |
 | test.go:198:14:198:55 | type conversion | semmle.label | type conversion |
 | test.go:198:21:198:54 | call to Str2html | semmle.label | call to Str2html |
@@ -312,6 +320,7 @@ nodes
 subpaths
 | test.go:194:36:194:53 | type assertion | file://:0:0:0:0 | parameter 0 of HTML2str | file://:0:0:0:0 | [summary] to write: return (return[0]) in HTML2str | test.go:194:21:194:54 | call to HTML2str |
 | test.go:195:39:195:56 | type assertion | file://:0:0:0:0 | parameter 0 of Htmlunquote | file://:0:0:0:0 | [summary] to write: return (return[0]) in Htmlunquote | test.go:195:21:195:57 | call to Htmlunquote |
+| test.go:196:28:196:56 | type assertion | file://:0:0:0:0 | parameter 0 of MapGet | file://:0:0:0:0 | [summary] to write: return (return[0]) in MapGet | test.go:196:2:196:68 | ... := ...[0] |
 | test.go:198:36:198:53 | type assertion | file://:0:0:0:0 | parameter 0 of Str2html | file://:0:0:0:0 | [summary] to write: return (return[0]) in Str2html | test.go:198:21:198:54 | call to Str2html |
 | test.go:199:34:199:51 | type assertion | file://:0:0:0:0 | parameter 0 of Substr | file://:0:0:0:0 | [summary] to write: return (return[0]) in Substr | test.go:199:21:199:58 | call to Substr |
 | test.go:202:18:202:33 | selection of Form | file://:0:0:0:0 | parameter 0 of ParseForm | file://:0:0:0:0 | [summary] to write: argument 1 in ParseForm | test.go:201:6:201:6 | definition of s |
