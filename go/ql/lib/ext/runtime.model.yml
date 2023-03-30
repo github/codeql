@@ -1,6 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/go-all
-      extensible: summaryModel
-    data:
-      - ["runtime", "stringer", True, "String", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
