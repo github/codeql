@@ -397,3 +397,19 @@ int FusedBlockPhiOperand(int x, int y, int z, bool b1) {
 
   return ret;
 }
+
+void vla(int n1, int n2, int n3, bool b1) {
+  int b[n1];
+  int c[n1][n2];
+
+  *b = 0;
+  b[0] = 1;
+
+  **(c + 1) = 0;
+
+  if(b1) {
+    int b[n1];
+  } else {
+    int b[n2];
+  }
+}

@@ -48,5 +48,5 @@ predicate builtFromUncontrolledConcat(Expr expr) {
 from StringArgumentToExec argument
 where
   builtFromUncontrolledConcat(argument) and
-  not execTainted(_, _, argument)
+  not execIsTainted(_, _, argument)
 select argument, "Command line is built with string concatenation."

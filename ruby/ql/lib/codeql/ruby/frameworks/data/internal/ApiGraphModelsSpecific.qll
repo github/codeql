@@ -20,11 +20,7 @@
  */
 
 private import codeql.ruby.AST
-private import codeql.ruby.dataflow.internal.DataFlowPrivate as DataFlowPrivate
 private import ApiGraphModels
-
-class Unit = DataFlowPrivate::Unit;
-
 // Re-export libraries needed by ApiGraphModels.qll
 import codeql.ruby.ApiGraphs
 import codeql.ruby.dataflow.internal.AccessPathSyntax as AccessPathSyntax

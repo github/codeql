@@ -1,4 +1,5 @@
 private import codeql.util.Boolean
+private import codeql.util.Unit
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
@@ -9,7 +10,6 @@ private import SsaImpl as SsaImpl
 private import FlowSummaryImpl as FlowSummaryImpl
 private import FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import codeql.ruby.frameworks.data.ModelsAsData
-import codeql.util.Unit
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallable() }

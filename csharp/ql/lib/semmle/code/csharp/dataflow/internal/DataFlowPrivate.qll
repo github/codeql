@@ -19,7 +19,7 @@ private import semmle.code.csharp.frameworks.system.Collections
 private import semmle.code.csharp.frameworks.system.threading.Tasks
 private import semmle.code.cil.Ssa::Ssa as CilSsa
 private import semmle.code.cil.internal.SsaImpl as CilSsaImpl
-import codeql.util.Unit
+private import codeql.util.Unit
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(NodeImpl n) { result = n.getEnclosingCallableImpl() }

@@ -10,6 +10,7 @@ private import FlowSummaryImplSpecific
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 private import DataFlowImplCommon
+private import codeql.util.Unit
 
 /** Provides classes and predicates for defining flow summaries. */
 module Public {
