@@ -62,9 +62,11 @@ module HardcodedSymmetricEncryptionKey {
   }
 
   /**
+   * DEPRECATED: Use `HardCodedSymmetricEncryption` instead.
+   *
    * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
    */
-  class TaintTrackingConfiguration extends TaintTracking::Configuration {
+  deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
     TaintTrackingConfiguration() { this = "HardcodedSymmetricEncryptionKey" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -85,4 +87,32 @@ module HardcodedSymmetricEncryptionKey {
       )
     }
   }
+
+  /**
+   * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
+   */
+  private module HardCodedSymmetricEncryptionConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+    /**
+     * Since `CryptographicBuffer` uses native code inside, taint tracking doesn't pass through it.
+     * Need to create an additional custom step.
+     */
+    predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
+      exists(MethodCall mc, CryptographicBuffer c |
+        pred.asExpr() = mc.getAnArgument() and
+        mc.getTarget() = c.getAMethod() and
+        succ.asExpr() = mc
+      )
+    }
+  }
+
+  /**
+   * A taint-tracking module for uncontrolled data in path expression vulnerabilities.
+   */
+  module HardCodedSymmetricEncryption = TaintTracking::Global<HardCodedSymmetricEncryptionConfig>;
 }
