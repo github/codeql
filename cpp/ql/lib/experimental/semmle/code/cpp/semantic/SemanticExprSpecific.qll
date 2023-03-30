@@ -46,7 +46,8 @@ module SemanticExprConfig {
     (
       i1 = i2
       or
-      i2 = safeConversion(i1.getAUse())
+      i2 = safeConversion(i1.getAUse()) and
+      i1.getBlock() = i2.getBlock()
     )
   }
 
