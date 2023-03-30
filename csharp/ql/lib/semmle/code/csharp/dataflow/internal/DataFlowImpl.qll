@@ -8,6 +8,7 @@ private import DataFlowImplCommon
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 private import DataFlowImplCommonPublic
+private import codeql.util.Unit
 import DataFlow
 
 /**

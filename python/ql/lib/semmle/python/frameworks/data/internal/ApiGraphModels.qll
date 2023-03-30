@@ -63,9 +63,8 @@
  * the type is not intended to match a static type.
  */
 
+private import codeql.util.Unit
 private import ApiGraphModelsSpecific as Specific
-
-private class Unit = Specific::Unit;
 
 private module API = Specific::API;
 

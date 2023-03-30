@@ -18,8 +18,6 @@ module TaintTracking = CS::TaintTracking;
 
 class Type = CS::Type;
 
-class Unit = DataFlowPrivate::Unit;
-
 /**
  * Holds if any of the parameters of `api` are `System.Func<>`.
  */

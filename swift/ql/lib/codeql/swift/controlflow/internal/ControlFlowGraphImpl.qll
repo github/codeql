@@ -897,21 +897,12 @@ module Patterns {
     }
   }
 
-  private class BindingTree extends AstPostOrderTree {
+  private class BindingTree extends AstStandardPostOrderTree {
     override BindingPattern ast;
 
-    final override predicate propagatesAbnormal(ControlFlowElement n) {
-      n.asAstNode() = ast.getSubPattern().getFullyUnresolved()
-    }
-
-    final override predicate first(ControlFlowElement n) {
-      astFirst(ast.getSubPattern().getFullyUnresolved(), n)
-    }
-
-    override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      astLast(ast.getSubPattern().getFullyUnresolved(), pred, c) and
-      c.(MatchingCompletion).isMatch() and
-      succ.asAstNode() = ast
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and
+      result.asAstNode() = ast.getResolveStep()
     }
   }
 

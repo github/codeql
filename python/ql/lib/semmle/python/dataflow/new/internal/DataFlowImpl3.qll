@@ -11,6 +11,7 @@ import DataFlowImplSpecific::Public
 private import DataFlowImpl
 import DataFlowImplCommonPublic
 import FlowStateString
+private import codeql.util.Unit
 
 /**
  * A configuration of interprocedural data flow analysis. This defines
@@ -328,7 +329,6 @@ private module Config implements FullStateConfigSig {
 }
 
 private import Impl<Config> as I
-import I
 
 /**
  * A `Node` augmented with a call context (except for sinks), an access path, and a configuration.
@@ -379,6 +379,8 @@ class PathNode instanceof I::PathNode {
   final predicate isSinkGroup(string group) { super.isSinkGroup(group) }
 }
 
+module PathGraph = I::PathGraph;
+
 private predicate hasFlow(Node source, Node sink, Configuration config) {
   exists(PathNode source0, PathNode sink0 |
     hasFlowPath(source0, sink0, config) and
@@ -388,7 +390,7 @@ private predicate hasFlow(Node source, Node sink, Configuration config) {
 }
 
 private predicate hasFlowPath(PathNode source, PathNode sink, Configuration config) {
-  flowPath(source, sink) and source.getConfiguration() = config
+  I::flowPath(source, sink) and source.getConfiguration() = config
 }
 
 private predicate hasFlowTo(Node sink, Configuration config) { hasFlow(_, sink, config) }

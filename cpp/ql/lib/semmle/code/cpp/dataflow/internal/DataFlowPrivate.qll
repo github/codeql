@@ -3,7 +3,7 @@ private import DataFlowUtil
 private import DataFlowDispatch
 private import FlowVar
 private import DataFlowImplConsistency
-import codeql.util.Unit
+private import codeql.util.Unit
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
