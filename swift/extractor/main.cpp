@@ -6,7 +6,8 @@
 #include <chrono>
 
 #include <swift/Basic/LLVMInitialize.h>
-#include <swift/FrontendTool/FrontendTool.h>
+#include <swift/DriverTool/DriverTool.h>
+#include <swift/DriverTool/FrontendObserver.h>
 #include <swift/Basic/InitializeSwiftModules.h>
 
 #include "swift/extractor/SwiftExtractor.h"
@@ -92,7 +93,8 @@ class Observer : public swift::FrontendObserver {
     codeql::extractExtractLazyDeclarations(state, compiler);
   }
 
-  void markSuccessfullyExtractedFiles() {
+  void finished(int status) override {
+    if (status != 0) return;
     codeql::SwiftLocationExtractor locExtractor{invocationTrap};
     for (const auto& src : state.sourceFiles) {
       auto fileLabel = locExtractor.emitFile(src);
@@ -102,6 +104,8 @@ class Observer : public swift::FrontendObserver {
 
  private:
   codeql::SwiftExtractorState state;
+  std::shared_ptr<codeql::FileInterceptor> openInterception{
+      codeql::setupFileInterception(state.configuration)};
   codeql::TrapDomain invocationTrap{invocationTrapDomain(state)};
   codeql::SwiftDiagnosticsConsumer diagConsumer{invocationTrap};
 };
@@ -111,49 +115,6 @@ static std::string getenv_or(const char* envvar, const std::string& def) {
     return var;
   }
   return def;
-}
-
-static bool checkRunUnderFilter(int argc, char* const* argv) {
-  auto runUnderFilter = getenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER_FILTER");
-  if (runUnderFilter == nullptr) {
-    return true;
-  }
-  std::string call = argv[0];
-  for (auto i = 1; i < argc; ++i) {
-    call += ' ';
-    call += argv[i];
-  }
-  std::regex filter{runUnderFilter, std::regex_constants::basic | std::regex_constants::nosubs};
-  return std::regex_search(call, filter);
-}
-
-// if `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER` env variable is set, and either
-// * `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER_FILTER` is not set, or
-// * it is set to a regexp matching any substring of the extractor call
-// then the running process is substituted with the command (and possibly
-// options) stated in `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER`, followed by `argv`.
-// Before calling `exec`, `CODEQL_EXTRACTOR_SWIFT_RUN_UNDER` is unset to avoid
-// unpleasant loops.
-// An example usage is to run the extractor under `gdbserver :1234` when the
-// arguments match a given source file.
-static void checkWhetherToRunUnderTool(int argc, char* const* argv) {
-  assert(argc > 0);
-
-  auto runUnder = getenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER");
-  if (runUnder == nullptr || !checkRunUnderFilter(argc, argv)) {
-    return;
-  }
-  std::vector<char*> args;
-  // split RUN_UNDER value by spaces to get args vector
-  for (auto word = std::strtok(runUnder, " "); word != nullptr; word = std::strtok(nullptr, " ")) {
-    args.push_back(word);
-  }
-  // append process args, including extractor executable path
-  args.insert(args.end(), argv, argv + argc);
-  args.push_back(nullptr);
-  // avoid looping on this function
-  unsetenv("CODEQL_EXTRACTOR_SWIFT_RUN_UNDER");
-  execvp(args[0], args.data());
 }
 
 // Creates a target file that should store per-invocation info, e.g. compilation args,
@@ -170,39 +131,19 @@ codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state) {
   return std::move(maybeDomain.value());
 }
 
-codeql::SwiftExtractorConfiguration configure(int argc, char** argv) {
+codeql::SwiftExtractorConfiguration configure(llvm::ArrayRef<const char*> argv) {
   codeql::SwiftExtractorConfiguration configuration{};
   configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", ".");
   configuration.sourceArchiveDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", ".");
   configuration.scratchDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", ".");
-  configuration.frontendOptions.assign(argv + 1, argv + argc);
+  configuration.frontendOptions.assign(argv.begin() + 1, argv.end());
   return configuration;
 }
 
-int main(int argc, char** argv) {
-  checkWhetherToRunUnderTool(argc, argv);
+namespace swift {
 
-  if (argc == 1) {
-    // TODO: print usage
-    return 1;
-  }
-
-  // Required by Swift/LLVM
-  PROGRAM_START(argc, argv);
-  INITIALIZE_LLVM();
-  initializeSwiftModules();
-
-  const auto configuration = configure(argc, argv);
-
-  auto openInterception = codeql::setupFileInterception(configuration);
-
-  Observer observer(configuration);
-  int frontend_rc = swift::performFrontend(configuration.frontendOptions, "swift-extractor",
-                                           (void*)main, &observer);
-
-  if (frontend_rc == 0) {
-    observer.markSuccessfullyExtractedFiles();
-  }
-
-  return frontend_rc;
+FrontendObserver* getFrontendObserver(llvm::ArrayRef<const char*> argv) {
+  static Observer observer{configure(argv)};
+  return &observer;
 }
+}  // namespace swift
