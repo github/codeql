@@ -11,6 +11,5 @@ extensions:
       - ["sync", "Map", True, "Store", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
       - ["sync", "Map", True, "Swap", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
       - ["sync", "Map", True, "Swap", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
-      - ["sync", "Map", True, "Swap", "", "", "Argument[0..1]", "ReturnValue[0]", "taint", "manual"]
       - ["sync", "Pool", True, "Get", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
       - ["sync", "Pool", True, "Put", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
