@@ -70,7 +70,7 @@ func test1(realm : Realm, myUsername: String, myPassword : String, myHashedPassw
 
 	let h = MyRealmSwiftObject2()
 	h.username = myUsername // GOOD (not sensitive)
-	h.password = myPassword // BAD [NOT DETECTED]
+	h.password = myPassword // BAD
 	realm.add(h)
 }
 
