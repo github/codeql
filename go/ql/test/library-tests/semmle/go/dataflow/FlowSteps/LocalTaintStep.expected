@@ -79,13 +79,7 @@
 | file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
 | file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
 | file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
-| file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Swap |
-| file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Swap |
-| file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Swap |
-| file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Swap |
-| file://:0:0:0:0 | parameter 0 of SwapPointer | file://:0:0:0:0 | [summary] to write: argument 0 in SwapPointer |
 | file://:0:0:0:0 | parameter 0 of SwapPointer | file://:0:0:0:0 | [summary] to write: return (return[0]) in SwapPointer |
-| file://:0:0:0:0 | parameter 0 of SwapUintptr | file://:0:0:0:0 | [summary] to write: argument 0 in SwapUintptr |
 | file://:0:0:0:0 | parameter 0 of SwapUintptr | file://:0:0:0:0 | [summary] to write: return (return[0]) in SwapUintptr |
 | file://:0:0:0:0 | parameter 0 of TeeReader | file://:0:0:0:0 | [summary] to write: argument 1 in TeeReader |
 | file://:0:0:0:0 | parameter 0 of TeeReader | file://:0:0:0:0 | [summary] to write: return (return[0]) in TeeReader |
@@ -153,11 +147,8 @@
 | file://:0:0:0:0 | parameter 1 of StorePointer | file://:0:0:0:0 | [summary] to write: argument 0 in StorePointer |
 | file://:0:0:0:0 | parameter 1 of StoreUintptr | file://:0:0:0:0 | [summary] to write: argument 0 in StoreUintptr |
 | file://:0:0:0:0 | parameter 1 of Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
-| file://:0:0:0:0 | parameter 1 of Swap | file://:0:0:0:0 | [summary] to write: return (return[0]) in Swap |
 | file://:0:0:0:0 | parameter 1 of SwapPointer | file://:0:0:0:0 | [summary] to write: argument 0 in SwapPointer |
-| file://:0:0:0:0 | parameter 1 of SwapPointer | file://:0:0:0:0 | [summary] to write: return (return[0]) in SwapPointer |
 | file://:0:0:0:0 | parameter 1 of SwapUintptr | file://:0:0:0:0 | [summary] to write: argument 0 in SwapUintptr |
-| file://:0:0:0:0 | parameter 1 of SwapUintptr | file://:0:0:0:0 | [summary] to write: return (return[0]) in SwapUintptr |
 | file://:0:0:0:0 | parameter 1 of ToLowerSpecial | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToLowerSpecial |
 | file://:0:0:0:0 | parameter 1 of ToTitleSpecial | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToTitleSpecial |
 | file://:0:0:0:0 | parameter 1 of ToUpperSpecial | file://:0:0:0:0 | [summary] to write: return (return[0]) in ToUpperSpecial |
