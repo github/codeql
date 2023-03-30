@@ -10,3 +10,5 @@ dependencies:
   codeql/java-all: ${workspace}
   codeql/suite-helpers: ${workspace}
   codeql/util: ${workspace}
+dataExtensions:
+  - Telemetry/ExtractorInformation.yml

@@ -431,6 +431,11 @@ nodes
 | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
 | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
 | jquery.js:34:13:34:16 | hash |
+| jquery.js:36:25:36:31 | tainted |
+| jquery.js:36:25:36:31 | tainted |
+| jquery.js:37:25:37:37 | () => tainted |
+| jquery.js:37:25:37:37 | () => tainted |
+| jquery.js:37:31:37:37 | tainted |
 | json-stringify.jsx:5:9:5:36 | locale |
 | json-stringify.jsx:5:9:5:36 | locale |
 | json-stringify.jsx:5:18:5:36 | req.param("locale") |
@@ -1562,6 +1567,9 @@ edges
 | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |
+| jquery.js:2:7:2:40 | tainted | jquery.js:36:25:36:31 | tainted |
+| jquery.js:2:7:2:40 | tainted | jquery.js:36:25:36:31 | tainted |
+| jquery.js:2:7:2:40 | tainted | jquery.js:37:31:37:37 | tainted |
 | jquery.js:2:17:2:40 | documen ... .search | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:40 | documen ... .search | jquery.js:2:7:2:40 | tainted |
 | jquery.js:7:20:7:26 | tainted | jquery.js:7:5:7:34 | "<div i ... + "\\">" |
@@ -1615,6 +1623,8 @@ edges
 | jquery.js:28:5:28:26 | window. ... .search | jquery.js:28:5:28:43 | window. ... ?', '') |
 | jquery.js:34:13:34:16 | hash | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
 | jquery.js:34:13:34:16 | hash | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
+| jquery.js:37:31:37:37 | tainted | jquery.js:37:25:37:37 | () => tainted |
+| jquery.js:37:31:37:37 | tainted | jquery.js:37:25:37:37 | () => tainted |
 | json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:11:51:11:56 | locale |
 | json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:19:56:19:61 | locale |
 | json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:31:55:31:60 | locale |

@@ -18,7 +18,7 @@ int test2(struct List* p) {
   int count = 0;
   for (; p; p = p->next) {
     count = (count+1) % 10;
-    range(count); // $ range=>=-9 range=<=9
+    range(count); // $ range=<=9 range=>=-9 range=<=count:p+1
   }
   range(count); // $ range=>=-9 range=<=9
   return count;
@@ -29,7 +29,7 @@ int test3(struct List* p) {
   for (; p; p = p->next) {
     range(count++); // $ range=>=-9 range=<=9
     count = count % 10;
-    range(count); // $ range=>=-9 range=<=9
+    range(count); // $ range=<=9 range=>=-9 range="<=... +++0" range=<=count:p+1
   }
   range(count); // $ range=>=-9 range=<=9
   return count;
@@ -149,7 +149,7 @@ int test11(char *p) {
     range(*p);
   }
   if (c == ':') {
-    range(c);
+    range(c); // $ range===58
     c = *p;
     range(*p);
     if (c != '\0') {
@@ -318,7 +318,7 @@ int test_mult01(int a, int b) {
     int r = a*b;  // -143 .. 253
     range(r);
     total += r;
-    range(total);
+    range(total); // $ MISSING: range=">=... * ...+0"
   }
   if (3 <= a && a <= 11 && -13 <= b && b <= 0) {
     range(a); // $ range=<=11 range=>=3
@@ -366,7 +366,7 @@ int test_mult02(int a, int b) {
     int r = a*b;  // -143 .. 253
     range(r);
     total += r;
-    range(total);
+    range(total); // $ MISSING: range=">=... * ...+0"
   }
   if (0 <= a && a <= 11 && -13 <= b && b <= 0) {
     range(a); // $ range=<=11 range=>=0
@@ -461,7 +461,7 @@ int test_mult04(int a, int b) {
     int r = a*b;  // -391 .. 221
     range(r);
     total += r;
-    range(total);
+    range(total); // $ MISSING: range="<=... * ...+0"
   }
   if (-17 <= a && a <= 0 && -13 <= b && b <= 0) {
     range(a); // $ range=<=0 range=>=-17
@@ -509,7 +509,7 @@ int test_mult05(int a, int b) {
     int r = a*b;  // -391 .. 221
     range(r);
     total += r;
-    range(total);
+    range(total); // $ MISSING: range="<=... * ...+0"
   }
   if (-17 <= a && a <= -2 && -13 <= b && b <= 0) {
     range(a); // $ range=<=-2 range=>=-17
@@ -856,18 +856,18 @@ int notequal_type_endpoint(unsigned n) {
 
 void notequal_refinement(short n) {
   if (n < 0) {
-    range(n);
+    range(n); // $ range=<=-1
     return;
   }
 
   if (n == 0) {
     range(n); // 0 .. 0
   } else {
-    range(n); // 1 ..
+    range(n); // $ range=>=1
   }
 
   if (n) {
-    range(n); // 1 ..
+    range(n); // $ range=>=1
   } else {
     range(n); // 0 .. 0
   }
@@ -883,16 +883,16 @@ void notequal_refinement(short n) {
 void notequal_variations(short n, float f) {
   if (n != 0) {
     if (n >= 0) {
-      range(n); // 1 .. [BUG: we can't handle `!=` coming first]
+      range(n); // $ range=>=1
     }
   }
 
   if (n >= 5) {
     if (2 * n - 10 == 0) { // Same as `n == 10/2` (modulo overflow)
-      range(n);
+      range(n); // $ range=>=5 MISSING: range===5
       return;
     }
-    range(n); // 6 ..
+    range(n); // $ range=>=5 MISSING: range=>=6
   }
 
   if (n != -32768 && n != -32767) {
@@ -900,8 +900,12 @@ void notequal_variations(short n, float f) {
   }
 
   if (n >= 0) {
-    n  ? (range(n), n) : (range(n), n); // ? 1..  : 0..0
-    !n ? (range(n), n) : (range(n), n); // ? 0..0 : 1..
+    n  ?
+      (range(n), n) // $ range=>=1
+    : (range(n), n); // $ MISSING: range===0
+    !n ?
+      (range(n), n) // $ MISSING: range===0
+    : (range(n), n); // $ range=>=1
   }
 }
 
@@ -917,7 +921,7 @@ void two_bounds_from_one_test(short ss, unsigned short us) {
   }
 
   if (ss < 0x8001) { // Lower bound removed in `getDefLowerBounds`
-    range(ss); // -32768 .. 32767
+    range(ss); // $ range=<=32768 MISSING: range=>=-32768
   }
 
   if ((short)us >= 0) {
@@ -970,7 +974,7 @@ void test_mod_neg(int s) {
 
 void test_mod_ternary(int s, bool b) {
   int s2 = s % (b ? 5 : 500);
-  range(s2); // $ range=>=-499 range=<=499
+  range(s2); // $ range=>=-499 range=<=499 range="<=... ? ... : ...-1"
 }
 
 void test_mod_ternary2(int s, bool b1, bool b2) {

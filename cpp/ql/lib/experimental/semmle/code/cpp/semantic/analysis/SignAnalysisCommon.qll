@@ -198,6 +198,16 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
     }
   }
 
+  /** An expression of an unsigned type. */
+  private class UnsignedExpr extends FlowSignExpr {
+    UnsignedExpr() { Utils::getTrackedType(this) instanceof SemUnsignedIntegerType }
+
+    override Sign getSignRestriction() {
+      result = TPos() or
+      result = TZero()
+    }
+  }
+
   pragma[nomagic]
   private predicate binaryExprOperands(SemBinaryExpr binary, SemExpr left, SemExpr right) {
     binary.getLeftOperand() = left and binary.getRightOperand() = right
@@ -328,10 +338,11 @@ module SignAnalysis<DeltaSig D, UtilSig<D> Utils> {
    *  - `isEq = false` : `v != eqbound`
    */
   private predicate eqBound(SemExpr eqbound, SemSsaVariable v, SemSsaReadPosition pos, boolean isEq) {
-    exists(SemGuard guard, boolean testIsTrue, boolean polarity |
-      pos.hasReadOfVar(v) and
-      semGuardControlsSsaRead(guard, pos, testIsTrue) and
-      guard.isEquality(eqbound, Utils::semSsaRead(v, D::fromInt(0)), polarity) and
+    exists(SemGuard guard, boolean testIsTrue, boolean polarity, SemExpr e |
+      pos.hasReadOfVar(pragma[only_bind_into](v)) and
+      semGuardControlsSsaRead(guard, pragma[only_bind_into](pos), testIsTrue) and
+      e = Utils::semSsaRead(pragma[only_bind_into](v), D::fromInt(0)) and
+      guard.isEquality(eqbound, e, polarity) and
       isEq = polarity.booleanXor(testIsTrue).booleanNot() and
       not unknownSign(eqbound)
     )
