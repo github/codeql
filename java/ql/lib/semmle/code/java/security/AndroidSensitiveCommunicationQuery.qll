@@ -151,6 +151,9 @@ deprecated class SensitiveCommunicationConfig extends TaintTracking::Configurati
   }
 }
 
+/**
+ * Taint configuration tracking flow from variables containing sensitive information to broadcast Intents.
+ */
 module SensitiveCommunicationConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveInfoExpr }
 
