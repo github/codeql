@@ -26,6 +26,9 @@ deprecated class RsaWithoutOaepConfig extends DataFlow::Configuration {
   }
 }
 
+/**
+ * A configuration for finding RSA ciphers initialized without using OAEP padding.
+ */
 module RsaWithoutOaepConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) {
     exists(CompileTimeConstantExpr specExpr, string spec |
