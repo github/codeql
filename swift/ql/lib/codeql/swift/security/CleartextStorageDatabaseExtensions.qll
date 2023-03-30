@@ -48,10 +48,10 @@ private class CoreDataStore extends CleartextStorageDatabaseSink {
     // example in `coreDataObj.data = sensitive` the post-update node corresponding
     // with `coreDataObj.data` is a sink.
     // (ideally this would be only members with the `@NSManaged` attribute)
-    exists(ClassOrStructDecl cd, Expr e |
-      cd.getABaseTypeDecl*().getName() = "NSManagedObject" and
+    exists(NominalType t, Expr e |
+      t.getABaseType*().getName() = "NSManagedObject" and
       this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = e and
-      e.getFullyConverted().getType() = cd.getType() and
+      e.getFullyConverted().getType() = t and
       not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
     )
   }
@@ -66,10 +66,10 @@ private class RealmStore extends CleartextStorageDatabaseSink instanceof DataFlo
     // any write into a class derived from `RealmSwiftObject` is a sink. For
     // example in `realmObj.data = sensitive` the post-update node corresponding
     // with `realmObj.data` is a sink.
-    exists(ClassOrStructDecl cd, Expr e |
-      cd.getABaseTypeDecl*().getName() = "RealmSwiftObject" and
+    exists(NominalType t, Expr e |
+      t.getABaseType*().getName() = "RealmSwiftObject" and
       this.getPreUpdateNode().asExpr() = e and
-      e.getFullyConverted().getType() = cd.getType() and
+      e.getFullyConverted().getType() = t and
       not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
     )
   }
@@ -122,15 +122,22 @@ private class CleartextStorageDatabaseEncryptionSanitizer extends CleartextStora
 
 /**
  * An additional taint step for cleartext database storage vulnerabilities.
- * Needed until we have proper content flow through arrays.
  */
 private class CleartextStorageDatabaseArrayAdditionalTaintStep extends CleartextStorageDatabaseAdditionalTaintStep
 {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // needed until we have proper content flow through arrays.
     exists(ArrayExpr arr |
       nodeFrom.asExpr() = arr.getAnElement() and
       nodeTo.asExpr() = arr
     )
+    or
+    // if an object is sensitive, its fields are always sensitive
+    // (this is needed because the sensitive data sources are in a sense
+    //  approximate; for example we might identify `passwordBox` as a source,
+    //  whereas it is more accurate to say that `passwordBox.textField` is the
+    //  true source).
+    nodeTo.asExpr().(MemberRefExpr).getBase() = nodeFrom.asExpr()
   }
 }
 

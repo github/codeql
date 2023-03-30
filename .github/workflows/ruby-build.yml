@@ -48,6 +48,9 @@ jobs:
         run: |
           brew install gnu-tar
           echo "/usr/local/opt/gnu-tar/libexec/gnubin" >> $GITHUB_PATH
+      - name: Install cargo-cross
+        if: runner.os == 'Linux'
+        run: cargo install cross --version 0.2.5
       - uses: ./.github/actions/os-version
         id: os_version
       - name: Cache entire extractor
@@ -78,8 +81,18 @@ jobs:
       - name: Run tests
         if: steps.cache-extractor.outputs.cache-hit != 'true'
         run: cd extractor && cargo test --verbose
-      - name: Release build
-        if: steps.cache-extractor.outputs.cache-hit != 'true'
+      # On linux, build the extractor via cross in a centos7 container.
+      # This ensures we don't depend on glibc > 2.17.
+      - name: Release build (linux)
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && runner.os == 'Linux'
+        run: |
+          cd extractor
+          cross build --release
+          mv target/x86_64-unknown-linux-gnu/release/extractor target/release/
+          mv target/x86_64-unknown-linux-gnu/release/autobuilder target/release/
+          mv target/x86_64-unknown-linux-gnu/release/generator target/release/
+      - name: Release build (windows and macos)
+        if: steps.cache-extractor.outputs.cache-hit != 'true' && runner.os != 'Linux'
         run: cd extractor && cargo build --release
       - name: Generate dbscheme
         if: ${{ matrix.os == 'ubuntu-latest' && steps.cache-extractor.outputs.cache-hit != 'true'}}
@@ -227,3 +240,54 @@ jobs:
         shell: bash
         run: |
           codeql database analyze --search-path "${{ runner.temp }}/ruby-bundle" --format=sarifv2.1.0 --output=out.sarif ../database ruby-code-scanning.qls
+
+  # This is a copy of the 'test' job that runs in a centos7 container.
+  # This tests that the extractor works correctly on systems with an old glibc.
+  test-centos7:
+    defaults:
+      run:
+        working-directory: ${{ github.workspace }}
+    strategy:
+      fail-fast: false
+    runs-on: ubuntu-latest
+    container:
+      image: centos:centos7
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    needs: [package]
+    steps:
+      - name: Install gh cli
+        run: |
+          yum-config-manager --add-repo https://cli.github.com/packages/rpm/gh-cli.repo
+          # fetch-codeql requires unzip and jq
+          # jq is available in epel-release (https://docs.fedoraproject.org/en-US/epel/)
+          yum install -y gh unzip epel-release
+          yum install -y jq
+      - uses: actions/checkout@v3
+      - name: Fetch CodeQL
+        uses: ./.github/actions/fetch-codeql
+
+      # Due to a bug in Actions, we can't use runner.temp in the run blocks here.
+      # https://github.com/actions/runner/issues/2185
+
+      - name: Download Ruby bundle
+        uses: actions/download-artifact@v3
+        with:
+          name: codeql-ruby-bundle
+          path: ${{ runner.temp }}
+      - name: Unzip Ruby bundle
+        shell: bash
+        run: unzip -q -d "$RUNNER_TEMP"/ruby-bundle "$RUNNER_TEMP"/codeql-ruby-bundle.zip
+
+      - name: Run QL test
+        shell: bash
+        run: |
+          codeql test run --search-path "$RUNNER_TEMP"/ruby-bundle --additional-packs "$RUNNER_TEMP"/ruby-bundle ruby/ql/test/library-tests/ast/constants/
+      - name: Create database
+        shell: bash
+        run: |
+          codeql database create --search-path "$RUNNER_TEMP"/ruby-bundle --language ruby --source-root ruby/ql/test/library-tests/ast/constants/ ../database
+      - name: Analyze database
+        shell: bash
+        run: |
+          codeql database analyze --search-path "$RUNNER_TEMP"/ruby-bundle --format=sarifv2.1.0 --output=out.sarif ../database ruby-code-scanning.qls

@@ -265,7 +265,8 @@ class SwiftDispatcher {
  private:
   bool isLazyDeclaration(const swift::Decl& decl) {
     swift::ModuleDecl* module = decl.getModuleContext();
-    return module->isBuiltinModule() || module->getName().str() == "__ObjC";
+    return module->isBuiltinModule() || module->getName().str() == "__ObjC" ||
+           module->isNonSwiftModule();
   }
 
   template <typename T, typename = void>

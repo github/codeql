@@ -29,11 +29,11 @@ module XssConfig implements DataFlow::ConfigSig {
   }
 }
 
-module XssFlow = TaintTracking::Make<XssConfig>;
+module XssFlow = TaintTracking::Global<XssConfig>;
 
 import XssFlow::PathGraph
 
 from XssFlow::PathNode source, XssFlow::PathNode sink
-where XssFlow::hasFlowPath(source, sink)
+where XssFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Cross-site scripting vulnerability due to a $@.",
   source.getNode(), "user-provided value"

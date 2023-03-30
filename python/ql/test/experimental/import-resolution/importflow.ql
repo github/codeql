@@ -11,6 +11,9 @@ private class SourceString extends DataFlow::Node {
   SourceString() {
     this.asExpr().(StrConst).getText() = contents and
     this.asExpr().getParent() instanceof Assign
+    or
+    this.asExpr().(ClassExpr).getInnerScope().getName() = "SOURCE" and
+    contents = "SOURCE"
   }
 
   string getContents() { result = contents }
@@ -62,6 +65,10 @@ private class ImportConfiguration extends DataFlow::Configuration {
 
   override predicate isSink(DataFlow::Node sink) {
     sink = API::moduleImport("trace").getMember("check").getACall().getArg(1)
+  }
+
+  override predicate isBarrier(DataFlow::Node node) {
+    exists(DataFlow::MethodCallNode call | call.calls(node, "block_flow"))
   }
 }
 

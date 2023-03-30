@@ -660,6 +660,15 @@ lookupMethod
 | unresolved_subclass.rb:11:1:12:3 | UnresolvedNamespace::A | new | calls.rb:117:5:117:16 | new |
 | unresolved_subclass.rb:11:1:12:3 | UnresolvedNamespace::A | puts | calls.rb:102:5:102:30 | puts |
 | unresolved_subclass.rb:11:1:12:3 | UnresolvedNamespace::A | to_s | calls.rb:172:5:173:7 | to_s |
+| unresolved_subclass.rb:14:1:15:3 | UnresolvedNamespace::X1::X2::X3::Subclass1 | new | calls.rb:117:5:117:16 | new |
+| unresolved_subclass.rb:14:1:15:3 | UnresolvedNamespace::X1::X2::X3::Subclass1 | puts | calls.rb:102:5:102:30 | puts |
+| unresolved_subclass.rb:14:1:15:3 | UnresolvedNamespace::X1::X2::X3::Subclass1 | to_s | calls.rb:172:5:173:7 | to_s |
+| unresolved_subclass.rb:17:1:18:3 | UnresolvedNamespace::X1::X2::X3::Subclass2 | new | calls.rb:117:5:117:16 | new |
+| unresolved_subclass.rb:17:1:18:3 | UnresolvedNamespace::X1::X2::X3::Subclass2 | puts | calls.rb:102:5:102:30 | puts |
+| unresolved_subclass.rb:17:1:18:3 | UnresolvedNamespace::X1::X2::X3::Subclass2 | to_s | calls.rb:172:5:173:7 | to_s |
+| unresolved_subclass.rb:21:1:22:3 | UnresolvedNamespace::X1::X2::X3::A | new | calls.rb:117:5:117:16 | new |
+| unresolved_subclass.rb:21:1:22:3 | UnresolvedNamespace::X1::X2::X3::A | puts | calls.rb:102:5:102:30 | puts |
+| unresolved_subclass.rb:21:1:22:3 | UnresolvedNamespace::X1::X2::X3::A | to_s | calls.rb:172:5:173:7 | to_s |
 enclosingMethod
 | calls.rb:2:5:2:14 | call to puts | calls.rb:1:1:3:3 | foo |
 | calls.rb:2:5:2:14 | self | calls.rb:1:1:3:3 | foo |

@@ -25,7 +25,7 @@ module ArithmeticTaintedLocalOverflowConfig implements DataFlow::ConfigSig {
 }
 
 module ArithmeticTaintedLocalOverflowFlow =
-  TaintTracking::Make<ArithmeticTaintedLocalOverflowConfig>;
+  TaintTracking::Global<ArithmeticTaintedLocalOverflowConfig>;
 
 module ArithmeticTaintedLocalUnderflowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
@@ -36,20 +36,22 @@ module ArithmeticTaintedLocalUnderflowConfig implements DataFlow::ConfigSig {
 }
 
 module ArithmeticTaintedLocalUnderflowFlow =
-  TaintTracking::Make<ArithmeticTaintedLocalUnderflowConfig>;
+  TaintTracking::Global<ArithmeticTaintedLocalUnderflowConfig>;
 
 module Flow =
-  DataFlow::MergePathGraph<ArithmeticTaintedLocalOverflowFlow::PathNode, ArithmeticTaintedLocalUnderflowFlow::PathNode, ArithmeticTaintedLocalOverflowFlow::PathGraph, ArithmeticTaintedLocalUnderflowFlow::PathGraph>;
+  DataFlow::MergePathGraph<ArithmeticTaintedLocalOverflowFlow::PathNode,
+    ArithmeticTaintedLocalUnderflowFlow::PathNode, ArithmeticTaintedLocalOverflowFlow::PathGraph,
+    ArithmeticTaintedLocalUnderflowFlow::PathGraph>;
 
 import Flow::PathGraph
 
 from Flow::PathNode source, Flow::PathNode sink, ArithExpr exp, string effect
 where
-  ArithmeticTaintedLocalOverflowFlow::hasFlowPath(source.asPathNode1(), sink.asPathNode1()) and
+  ArithmeticTaintedLocalOverflowFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
   overflowSink(exp, sink.getNode().asExpr()) and
   effect = "overflow"
   or
-  ArithmeticTaintedLocalUnderflowFlow::hasFlowPath(source.asPathNode2(), sink.asPathNode2()) and
+  ArithmeticTaintedLocalUnderflowFlow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
   underflowSink(exp, sink.getNode().asExpr()) and
   effect = "underflow"
 select exp, source, sink,

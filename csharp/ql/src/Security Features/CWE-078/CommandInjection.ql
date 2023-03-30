@@ -15,9 +15,9 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.CommandInjectionQuery
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import CommandInjection::PathGraph
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from CommandInjection::PathNode source, CommandInjection::PathNode sink
+where CommandInjection::flowPath(source, sink)
 select sink.getNode(), source, sink, "This command line depends on a $@.", source.getNode(),
   "user-provided value"

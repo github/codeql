@@ -10,6 +10,7 @@ private import FlowSummaryImplSpecific
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 private import DataFlowImplCommon
+private import codeql.util.Unit
 
 /** Provides classes and predicates for defining flow summaries. */
 module Public {
@@ -109,6 +110,7 @@ module Public {
     }
 
     /** Gets the stack obtained by dropping the first `i` elements, if any. */
+    pragma[assume_small_delta]
     SummaryComponentStack drop(int i) {
       i = 0 and result = this
       or

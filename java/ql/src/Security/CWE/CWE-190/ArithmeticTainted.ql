@@ -32,22 +32,23 @@ module RemoteUserInputUnderflowConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
 }
 
-module RemoteUserInputOverflow = TaintTracking::Make<RemoteUserInputOverflowConfig>;
+module RemoteUserInputOverflow = TaintTracking::Global<RemoteUserInputOverflowConfig>;
 
-module RemoteUserInputUnderflow = TaintTracking::Make<RemoteUserInputUnderflowConfig>;
+module RemoteUserInputUnderflow = TaintTracking::Global<RemoteUserInputUnderflowConfig>;
 
 module Flow =
-  DataFlow::MergePathGraph<RemoteUserInputOverflow::PathNode, RemoteUserInputUnderflow::PathNode, RemoteUserInputOverflow::PathGraph, RemoteUserInputUnderflow::PathGraph>;
+  DataFlow::MergePathGraph<RemoteUserInputOverflow::PathNode, RemoteUserInputUnderflow::PathNode,
+    RemoteUserInputOverflow::PathGraph, RemoteUserInputUnderflow::PathGraph>;
 
 import Flow::PathGraph
 
 from Flow::PathNode source, Flow::PathNode sink, ArithExpr exp, string effect
 where
-  RemoteUserInputOverflow::hasFlowPath(source.asPathNode1(), sink.asPathNode1()) and
+  RemoteUserInputOverflow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
   overflowSink(exp, sink.getNode().asExpr()) and
   effect = "overflow"
   or
-  RemoteUserInputUnderflow::hasFlowPath(source.asPathNode2(), sink.asPathNode2()) and
+  RemoteUserInputUnderflow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
   underflowSink(exp, sink.getNode().asExpr()) and
   effect = "underflow"
 select exp, source, sink,

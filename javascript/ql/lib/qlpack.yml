@@ -8,5 +8,6 @@ upgrades: upgrades
 dependencies:
   codeql/regex: ${workspace}
   codeql/tutorial: ${workspace}
+  codeql/util: ${workspace}
 dataExtensions:
   - semmle/javascript/frameworks/**/model.yml

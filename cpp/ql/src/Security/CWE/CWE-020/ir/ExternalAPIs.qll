@@ -10,10 +10,10 @@ import ExternalAPIsSpecific
 
 /** A node representing untrusted data being passed to an external API. */
 class UntrustedExternalApiDataNode extends ExternalApiDataNode {
-  UntrustedExternalApiDataNode() { UntrustedDataToExternalApiFlow::hasFlow(_, this) }
+  UntrustedExternalApiDataNode() { UntrustedDataToExternalApiFlow::flow(_, this) }
 
   /** Gets a source of untrusted data which is passed to this external API data node. */
-  DataFlow::Node getAnUntrustedSource() { UntrustedDataToExternalApiFlow::hasFlow(result, this) }
+  DataFlow::Node getAnUntrustedSource() { UntrustedDataToExternalApiFlow::flow(result, this) }
 }
 
 /** DEPRECATED: Alias for UntrustedExternalApiDataNode */

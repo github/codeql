@@ -1,9 +1,8 @@
 #[macro_use]
 extern crate lazy_static;
-extern crate num_cpus;
 
 use clap::arg;
-use encoding::{self};
+use encoding;
 use rayon::prelude::*;
 use std::borrow::Cow;
 use std::fs;
@@ -11,33 +10,7 @@ use std::io::BufRead;
 use std::path::{Path, PathBuf};
 use tree_sitter::{Language, Parser, Range};
 
-use ruby_extractor::{diagnostics, extractor, file_paths, node_types, trap};
-
-/**
- * Gets the number of threads the extractor should use, by reading the
- * CODEQL_THREADS environment variable and using it as described in the
- * extractor spec:
- *
- * "If the number is positive, it indicates the number of threads that should
- * be used. If the number is negative or zero, it should be added to the number
- * of cores available on the machine to determine how many threads to use
- * (minimum of 1). If unspecified, should be considered as set to -1."
- */
-fn num_codeql_threads() -> Result<usize, String> {
-    let threads_str = std::env::var("CODEQL_THREADS").unwrap_or_else(|_| "-1".to_owned());
-    match threads_str.parse::<i32>() {
-        Ok(num) if num <= 0 => {
-            let reduction = -num as usize;
-            Ok(std::cmp::max(1, num_cpus::get() - reduction))
-        }
-        Ok(num) => Ok(num as usize),
-
-        Err(_) => Err(format!(
-            "Unable to parse CODEQL_THREADS value '{}'",
-            &threads_str
-        )),
-    }
-}
+use codeql_extractor::{diagnostics, extractor, file_paths, node_types, trap};
 
 lazy_static! {
     static ref CP_NUMBER: regex::Regex = regex::Regex::new("cp([0-9]+)").unwrap();
@@ -67,7 +40,7 @@ fn main() -> std::io::Result<()> {
         .init();
     let diagnostics = diagnostics::DiagnosticLoggers::new("ruby");
     let mut main_thread_logger = diagnostics.logger();
-    let num_threads = match num_codeql_threads() {
+    let num_threads = match codeql_extractor::options::num_threads() {
         Ok(num) => num,
         Err(e) => {
             main_thread_logger.write(
@@ -307,8 +280,10 @@ fn scan_erb(
             }
         }
     }
+
     if result.is_empty() {
         let root = tree.root_node();
+
         // Add an empty range at the end of the file
         result.push(Range {
             start_byte: root.end_byte(),
@@ -320,6 +295,8 @@ fn scan_erb(
     (result, line_breaks)
 }
 
+/// Advance `index` to the next non-whitespace character.
+/// Newlines are **not** considered whitespace.
 fn skip_space(content: &[u8], index: usize) -> usize {
     let mut index = index;
     while index < content.len() {

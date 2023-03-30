@@ -502,7 +502,7 @@ UtilSig<D> UtilParam> {
       SemSsaVariable v2, SemGuard guardEq, boolean eqIsTrue, D::Delta d1, D::Delta d2,
       D::Delta oldDelta
     |
-      guardEq = semEqFlowCond(v, semSsaRead(v2, d1), d2, true, eqIsTrue) and
+      guardEq = semEqFlowCond(v, semSsaRead(pragma[only_bind_into](v2), d1), d2, true, eqIsTrue) and
       result = boundFlowCond(v2, e, oldDelta, upper, testIsTrue) and
       // guardEq needs to control guard
       guardEq.directlyControls(result.getBasicBlock(), eqIsTrue) and
@@ -597,24 +597,6 @@ UtilSig<D> UtilParam> {
     e2.(SafeCastExpr).getOperand() = e1 and
     delta = D::fromInt(0) and
     (upper = true or upper = false)
-    or
-    exists(SemExpr x | e2.(SemAddExpr).hasOperands(e1, x) |
-      // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
-      not x instanceof SemConstantIntegerExpr and
-      not e1 instanceof SemConstantIntegerExpr and
-      if strictlyPositiveIntegralExpr(x)
-      then upper = false and delta = D::fromInt(1)
-      else
-        if semPositive(x)
-        then upper = false and delta = D::fromInt(0)
-        else
-          if strictlyNegativeIntegralExpr(x)
-          then upper = true and delta = D::fromInt(-1)
-          else
-            if semNegative(x)
-            then upper = true and delta = D::fromInt(0)
-            else none()
-    )
     or
     exists(SemExpr x, SemSubExpr sub |
       e2 = sub and
@@ -1085,13 +1067,196 @@ UtilSig<D> UtilParam> {
         delta = D::fromFloat(f) and
         if semPositive(e) then f >= 0 else any()
       )
+      or
+      exists(
+        SemBound bLeft, SemBound bRight, D::Delta dLeft, D::Delta dRight, boolean fbeLeft,
+        boolean fbeRight, D::Delta odLeft, D::Delta odRight, SemReason rLeft, SemReason rRight
+      |
+        boundedAddOperand(e, upper, bLeft, false, dLeft, fbeLeft, odLeft, rLeft) and
+        boundedAddOperand(e, upper, bRight, true, dRight, fbeRight, odRight, rRight) and
+        delta = D::fromFloat(D::toFloat(dLeft) + D::toFloat(dRight)) and
+        fromBackEdge = fbeLeft.booleanOr(fbeRight)
+      |
+        b = bLeft and origdelta = odLeft and reason = rLeft and bRight instanceof SemZeroBound
+        or
+        b = bRight and origdelta = odRight and reason = rRight and bLeft instanceof SemZeroBound
+      )
+      or
+      exists(
+        SemRemExpr rem, D::Delta d_max, D::Delta d1, D::Delta d2, boolean fbe1, boolean fbe2,
+        D::Delta od1, D::Delta od2, SemReason r1, SemReason r2
+      |
+        rem = e and
+        b instanceof SemZeroBound and
+        not (upper = true and semPositive(rem.getRightOperand())) and
+        not (upper = true and semPositive(rem.getLeftOperand())) and
+        boundedRemExpr(rem, true, d1, fbe1, od1, r1) and
+        boundedRemExpr(rem, false, d2, fbe2, od2, r2) and
+        (
+          if D::toFloat(d1).abs() > D::toFloat(d2).abs()
+          then (
+            d_max = d1 and fromBackEdge = fbe1 and origdelta = od1 and reason = r1
+          ) else (
+            d_max = d2 and fromBackEdge = fbe2 and origdelta = od2 and reason = r2
+          )
+        )
+      |
+        upper = true and delta = D::fromFloat(D::toFloat(d_max).abs() - 1)
+        or
+        upper = false and delta = D::fromFloat(-D::toFloat(d_max).abs() + 1)
+      )
+      or
+      exists(
+        D::Delta dLeft, D::Delta dRight, boolean fbeLeft, boolean fbeRight, D::Delta odLeft,
+        D::Delta odRight, SemReason rLeft, SemReason rRight
+      |
+        boundedMulOperand(e, upper, true, dLeft, fbeLeft, odLeft, rLeft) and
+        boundedMulOperand(e, upper, false, dRight, fbeRight, odRight, rRight) and
+        delta = D::fromFloat(D::toFloat(dLeft) * D::toFloat(dRight)) and
+        fromBackEdge = fbeLeft.booleanOr(fbeRight)
+      |
+        b instanceof SemZeroBound and origdelta = odLeft and reason = rLeft
+        or
+        b instanceof SemZeroBound and origdelta = odRight and reason = rRight
+      )
     )
   }
 
+  pragma[nomagic]
   private predicate boundedConditionalExpr(
     SemConditionalExpr cond, SemBound b, boolean upper, boolean branch, D::Delta delta,
     boolean fromBackEdge, D::Delta origdelta, SemReason reason
   ) {
     bounded(cond.getBranchExpr(branch), b, delta, upper, fromBackEdge, origdelta, reason)
+  }
+
+  pragma[nomagic]
+  private predicate boundedAddOperand(
+    SemAddExpr add, boolean upper, SemBound b, boolean isLeft, D::Delta delta, boolean fromBackEdge,
+    D::Delta origdelta, SemReason reason
+  ) {
+    // `semValueFlowStep` already handles the case where one of the operands is a constant.
+    not semValueFlowStep(add, _, _) and
+    (
+      isLeft = true and
+      bounded(add.getLeftOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
+      or
+      isLeft = false and
+      bounded(add.getRightOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate boundedRemExpr(
+    SemRemExpr rem, boolean upper, D::Delta delta, boolean fromBackEdge, D::Delta origdelta,
+    SemReason reason
+  ) {
+    bounded(rem.getRightOperand(), any(SemZeroBound zb), delta, upper, fromBackEdge, origdelta,
+      reason)
+  }
+
+  /**
+   * Define `cmp(true) = <=` and `cmp(false) = >=`.
+   *
+   * Holds if `mul = left * right`, and in order to know if `mul cmp(upper) 0 + k` (for
+   * some `k`) we need to know that `left cmp(upperLeft) 0 + k1` and
+   * `right cmp(upperRight) 0 + k2` (for some `k1` and `k2`).
+   */
+  pragma[nomagic]
+  private predicate boundedMulOperandCand(
+    SemMulExpr mul, SemExpr left, SemExpr right, boolean upper, boolean upperLeft,
+    boolean upperRight
+  ) {
+    not boundFlowStepMul(mul, _, _) and
+    mul.getLeftOperand() = left and
+    mul.getRightOperand() = right and
+    (
+      semPositive(left) and
+      (
+        // left, right >= 0
+        semPositive(right) and
+        (
+          // max(left * right) = max(left) * max(right)
+          upper = true and
+          upperLeft = true and
+          upperRight = true
+          or
+          // min(left * right) = min(left) * min(right)
+          upper = false and
+          upperLeft = false and
+          upperRight = false
+        )
+        or
+        // left >= 0, right <= 0
+        semNegative(right) and
+        (
+          // max(left * right) = min(left) * max(right)
+          upper = true and
+          upperLeft = false and
+          upperRight = true
+          or
+          // min(left * right) = max(left) * min(right)
+          upper = false and
+          upperLeft = true and
+          upperRight = false
+        )
+      )
+      or
+      semNegative(left) and
+      (
+        // left <= 0, right >= 0
+        semPositive(right) and
+        (
+          // max(left * right) = max(left) * min(right)
+          upper = true and
+          upperLeft = true and
+          upperRight = false
+          or
+          // min(left * right) = min(left) * max(right)
+          upper = false and
+          upperLeft = false and
+          upperRight = true
+        )
+        or
+        // left, right <= 0
+        semNegative(right) and
+        (
+          // max(left * right) = min(left) * min(right)
+          upper = true and
+          upperLeft = false and
+          upperRight = false
+          or
+          // min(left * right) = max(left) * max(right)
+          upper = false and
+          upperLeft = true and
+          upperRight = true
+        )
+      )
+    )
+  }
+
+  /**
+   * Holds if `isLeft = true` and `mul`'s left operand is bounded by `delta`,
+   * or if `isLeft = false` and `mul`'s right operand is bounded by `delta`.
+   *
+   * If `upper = true` the computed bound contributes to an upper bound of `mul`,
+   * and if `upper = false` it contributes to a lower bound.
+   * The `fromBackEdge`, `origdelta`, `reason` triple are defined by the recursive
+   * call to `bounded`.
+   */
+  pragma[nomagic]
+  private predicate boundedMulOperand(
+    SemMulExpr mul, boolean upper, boolean isLeft, D::Delta delta, boolean fromBackEdge,
+    D::Delta origdelta, SemReason reason
+  ) {
+    exists(boolean upperLeft, boolean upperRight, SemExpr left, SemExpr right |
+      boundedMulOperandCand(mul, left, right, upper, upperLeft, upperRight)
+    |
+      isLeft = true and
+      bounded(left, any(SemZeroBound zb), delta, upperLeft, fromBackEdge, origdelta, reason)
+      or
+      isLeft = false and
+      bounded(right, any(SemZeroBound zb), delta, upperRight, fromBackEdge, origdelta, reason)
+    )
   }
 }

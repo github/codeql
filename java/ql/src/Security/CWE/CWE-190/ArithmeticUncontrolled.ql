@@ -33,7 +33,7 @@ module ArithmeticUncontrolledOverflowConfig implements DataFlow::ConfigSig {
 }
 
 module ArithmeticUncontrolledOverflowFlow =
-  TaintTracking::Make<ArithmeticUncontrolledOverflowConfig>;
+  TaintTracking::Global<ArithmeticUncontrolledOverflowConfig>;
 
 module ArithmeticUncontrolledUnderflowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
@@ -44,20 +44,22 @@ module ArithmeticUncontrolledUnderflowConfig implements DataFlow::ConfigSig {
 }
 
 module ArithmeticUncontrolledUnderflowFlow =
-  TaintTracking::Make<ArithmeticUncontrolledUnderflowConfig>;
+  TaintTracking::Global<ArithmeticUncontrolledUnderflowConfig>;
 
 module Flow =
-  DataFlow::MergePathGraph<ArithmeticUncontrolledOverflowFlow::PathNode, ArithmeticUncontrolledUnderflowFlow::PathNode, ArithmeticUncontrolledOverflowFlow::PathGraph, ArithmeticUncontrolledUnderflowFlow::PathGraph>;
+  DataFlow::MergePathGraph<ArithmeticUncontrolledOverflowFlow::PathNode,
+    ArithmeticUncontrolledUnderflowFlow::PathNode, ArithmeticUncontrolledOverflowFlow::PathGraph,
+    ArithmeticUncontrolledUnderflowFlow::PathGraph>;
 
 import Flow::PathGraph
 
 from Flow::PathNode source, Flow::PathNode sink, ArithExpr exp, string effect
 where
-  ArithmeticUncontrolledOverflowFlow::hasFlowPath(source.asPathNode1(), sink.asPathNode1()) and
+  ArithmeticUncontrolledOverflowFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
   overflowSink(exp, sink.getNode().asExpr()) and
   effect = "overflow"
   or
-  ArithmeticUncontrolledUnderflowFlow::hasFlowPath(source.asPathNode2(), sink.asPathNode2()) and
+  ArithmeticUncontrolledUnderflowFlow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
   underflowSink(exp, sink.getNode().asExpr()) and
   effect = "underflow"
 select exp, source, sink,

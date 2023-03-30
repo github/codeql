@@ -27,7 +27,7 @@ module ExternallyControlledFormatStringConfig implements DataFlow::ConfigSig {
 }
 
 module ExternallyControlledFormatStringFlow =
-  TaintTracking::Make<ExternallyControlledFormatStringConfig>;
+  TaintTracking::Global<ExternallyControlledFormatStringConfig>;
 
 import ExternallyControlledFormatStringFlow::PathGraph
 
@@ -35,7 +35,7 @@ from
   ExternallyControlledFormatStringFlow::PathNode source,
   ExternallyControlledFormatStringFlow::PathNode sink, StringFormat formatCall
 where
-  ExternallyControlledFormatStringFlow::hasFlowPath(source, sink) and
+  ExternallyControlledFormatStringFlow::flowPath(source, sink) and
   sink.getNode().asExpr() = formatCall.getFormatArgument()
 select formatCall.getFormatArgument(), source, sink, "Format string depends on a $@.",
   source.getNode(), "user-provided value"

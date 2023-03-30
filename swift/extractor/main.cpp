@@ -1,5 +1,3 @@
-#include <fstream>
-#include <iomanip>
 #include <stdlib.h>
 #include <vector>
 #include <iostream>
@@ -18,7 +16,6 @@
 #include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/file/Path.h"
-#include <swift/Basic/InitializeSwiftModules.h>
 
 using namespace std::string_literals;
 

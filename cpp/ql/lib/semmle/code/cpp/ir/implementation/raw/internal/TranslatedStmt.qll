@@ -1105,3 +1105,49 @@ class TranslatedAsmStmt extends TranslatedStmt {
     )
   }
 }
+
+class TranslatedVlaDimensionStmt extends TranslatedStmt {
+  override VlaDimensionStmt stmt;
+
+  override TranslatedExpr getChild(int id) {
+    id = 0 and
+    result = getTranslatedExpr(stmt.getDimensionExpr().getFullyConverted())
+  }
+
+  override Instruction getFirstInstruction() { result = this.getChild(0).getFirstInstruction() }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    none()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
+
+  override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getChild(0) and
+    result = this.getParent().getChildSuccessor(this)
+  }
+}
+
+class TranslatedVlaDeclarationStmt extends TranslatedStmt {
+  override VlaDeclStmt stmt;
+
+  override TranslatedExpr getChild(int id) { none() }
+
+  override Instruction getFirstInstruction() { result = this.getInstruction(OnlyInstructionTag()) }
+
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    // TODO: This needs a new kind of instruction that represents initialization of a VLA.
+    // For now we just emit a `NoOp` instruction so that the CFG isn't incomplete.
+    tag = OnlyInstructionTag() and
+    opcode instanceof Opcode::NoOp and
+    resultType = getVoidType()
+  }
+
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    tag = OnlyInstructionTag() and
+    result = this.getParent().getChildSuccessor(this) and
+    kind instanceof GotoEdge
+  }
+
+  override Instruction getChildSuccessor(TranslatedElement child) { none() }
+}

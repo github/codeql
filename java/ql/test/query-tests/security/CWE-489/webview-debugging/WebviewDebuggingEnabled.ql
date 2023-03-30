@@ -1,15 +1,11 @@
 import java
 import TestUtilities.InlineFlowTest
-import semmle.code.java.security.WebviewDubuggingEnabledQuery
-
-class EnableLegacy extends EnableLegacyConfiguration {
-  EnableLegacy() { exists(this) }
-}
+import semmle.code.java.security.WebviewDebuggingEnabledQuery
 
 class HasFlowTest extends InlineFlowTest {
-  override DataFlow::Configuration getTaintFlowConfig() { none() }
+  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
 
-  override DataFlow::Configuration getValueFlowConfig() {
-    result = any(WebviewDebugEnabledConfig c)
+  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) {
+    WebviewDebugEnabledFlow::flow(src, sink)
   }
 }

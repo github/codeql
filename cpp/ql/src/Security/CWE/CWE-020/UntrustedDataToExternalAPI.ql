@@ -15,7 +15,7 @@ import ExternalAPIs
 import UntrustedDataToExternalApiFlow::PathGraph
 
 from UntrustedDataToExternalApiFlow::PathNode source, UntrustedDataToExternalApiFlow::PathNode sink
-where UntrustedDataToExternalApiFlow::hasFlowPath(source, sink)
+where UntrustedDataToExternalApiFlow::flowPath(source, sink)
 select sink, source, sink,
   "Call to " + sink.getNode().(ExternalApiDataNode).getExternalFunction().toString() +
     " with untrusted data from $@.", source, source.toString()

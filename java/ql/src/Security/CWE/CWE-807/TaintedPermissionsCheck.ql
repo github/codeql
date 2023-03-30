@@ -60,14 +60,13 @@ module TaintedPermissionsCheckFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module TaintedPermissionsCheckFlow = TaintTracking::Make<TaintedPermissionsCheckFlowConfig>;
+module TaintedPermissionsCheckFlow = TaintTracking::Global<TaintedPermissionsCheckFlowConfig>;
 
 import TaintedPermissionsCheckFlow::PathGraph
 
 from
   TaintedPermissionsCheckFlow::PathNode source, TaintedPermissionsCheckFlow::PathNode sink,
   PermissionsConstruction p
-where
-  sink.getNode().asExpr() = p.getInput() and TaintedPermissionsCheckFlow::hasFlowPath(source, sink)
+where sink.getNode().asExpr() = p.getInput() and TaintedPermissionsCheckFlow::flowPath(source, sink)
 select p, source, sink, "Permissions check depends on a $@.", source.getNode(),
   "user-controlled value"

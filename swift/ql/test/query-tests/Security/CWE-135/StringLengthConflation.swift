@@ -143,6 +143,24 @@ func test(s: String) {
     let nmstr8 = NSMutableString(string: s)
     nmstr8.insert("*", at: s.count - 1) // BAD: String length used in NSString
     print("insert '\(nmstr7)' / '\(nmstr8)'")
+
+    // --- inspired by real world cases ---
+
+    let scalars = s.unicodeScalars
+    let _ = s.index(s.startIndex, offsetBy: s.count) // GOOD
+    let _ = s.index(s.startIndex, offsetBy: scalars.count) // BAD
+    let _ = scalars.index(scalars.startIndex, offsetBy: scalars.count) // GOOD
+    let _ = scalars.index(scalars.startIndex, offsetBy: s.count) // BAD [NOT DETECTED]
+
+    let s_utf8 = s.utf8
+    let _ = s.index(s.startIndex, offsetBy: s_utf8.count) // BAD
+    let _ = s_utf8.index(s_utf8.startIndex, offsetBy: s_utf8.count) // GOOD
+    let _ = s_utf8.index(s_utf8.startIndex, offsetBy: s.count) // BAD [NOT DETECTED]
+
+    let s_utf16 = s.utf16
+    let _ = s.index(s.startIndex, offsetBy: s_utf16.count) // BAD
+    let _ = s_utf16.index(s_utf16.startIndex, offsetBy: scalars.count) // GOOD
+    let _ = s_utf16.index(s_utf16.startIndex, offsetBy: s.count) // BAD [NOT DETECTED]
 }
 
 // `begin :thumbsup: end`, with thumbs up emoji and skin tone modifier
