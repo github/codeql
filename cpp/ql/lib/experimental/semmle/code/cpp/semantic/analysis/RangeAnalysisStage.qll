@@ -1041,20 +1041,21 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
       )
       or
       exists(
-        SemRemExpr rem, SemZeroBound b1, SemZeroBound b2, D::Delta d_max, D::Delta d1, D::Delta d2,
-        boolean fbe1, boolean fbe2, D::Delta od1, D::Delta od2, SemReason r1, SemReason r2
+        SemRemExpr rem, D::Delta d_max, D::Delta d1, D::Delta d2, boolean fbe1, boolean fbe2,
+        D::Delta od1, D::Delta od2, SemReason r1, SemReason r2
       |
         rem = e and
+        b instanceof SemZeroBound and
         not (upper = true and semPositive(rem.getRightOperand())) and
         not (upper = true and semPositive(rem.getLeftOperand())) and
-        boundedRemExpr(rem, b1, true, d1, fbe1, od1, r1) and
-        boundedRemExpr(rem, b2, false, d2, fbe2, od2, r2) and
+        boundedRemExpr(rem, true, d1, fbe1, od1, r1) and
+        boundedRemExpr(rem, false, d2, fbe2, od2, r2) and
         (
           if D::toFloat(d1).abs() > D::toFloat(d2).abs()
           then (
-            b = b1 and d_max = d1 and fromBackEdge = fbe1 and origdelta = od1 and reason = r1
+            d_max = d1 and fromBackEdge = fbe1 and origdelta = od1 and reason = r1
           ) else (
-            b = b2 and d_max = d2 and fromBackEdge = fbe2 and origdelta = od2 and reason = r2
+            d_max = d2 and fromBackEdge = fbe2 and origdelta = od2 and reason = r2
           )
         )
       |
@@ -1103,11 +1104,13 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
     )
   }
 
+  pragma[nomagic]
   private predicate boundedRemExpr(
-    SemRemExpr rem, SemZeroBound b, boolean upper, D::Delta delta, boolean fromBackEdge,
-    D::Delta origdelta, SemReason reason
+    SemRemExpr rem, boolean upper, D::Delta delta, boolean fromBackEdge, D::Delta origdelta,
+    SemReason reason
   ) {
-    bounded(rem.getRightOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
+    bounded(rem.getRightOperand(), any(SemZeroBound zb), delta, upper, fromBackEdge, origdelta,
+      reason)
   }
 
   /**
