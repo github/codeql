@@ -1,8 +1,6 @@
 /** Provides dataflow configurations to be used in ZipSlip queries. */
 
 import java
-import semmle.code.java.controlflow.Guards
-import semmle.code.java.dataflow.SSA
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.PathSanitizer
 private import semmle.code.java.dataflow.ExternalFlow
