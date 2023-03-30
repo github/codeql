@@ -10,7 +10,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 /**
  * A method that returns the name of an archive entry.
  */
-class ArchiveEntryNameMethod extends Method {
+private class ArchiveEntryNameMethod extends Method {
   ArchiveEntryNameMethod() {
     exists(RefType archiveEntry |
       archiveEntry.hasQualifiedName("java.util.zip", "ZipEntry") or

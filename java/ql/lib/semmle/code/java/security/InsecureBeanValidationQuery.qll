@@ -8,7 +8,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 /**
  * A message interpolator Type that perform Expression Language (EL) evaluations.
  */
-class ELMessageInterpolatorType extends RefType {
+private class ELMessageInterpolatorType extends RefType {
   ELMessageInterpolatorType() {
     this.getASourceSupertype*()
         .hasQualifiedName("org.hibernate.validator.messageinterpolation",
@@ -19,7 +19,7 @@ class ELMessageInterpolatorType extends RefType {
 /**
  * A method call that sets the application's default message interpolator.
  */
-class SetMessageInterpolatorCall extends MethodAccess {
+private class SetMessageInterpolatorCall extends MethodAccess {
   SetMessageInterpolatorCall() {
     exists(Method m, RefType t |
       this.getMethod() = m and
