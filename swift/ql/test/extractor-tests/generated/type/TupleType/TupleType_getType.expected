@@ -1,3 +1,7 @@
+| (Builtin.IntLiteral, Builtin.IntLiteral) | 0 | Builtin.IntLiteral |
+| (Builtin.IntLiteral, Builtin.IntLiteral) | 0 | Builtin.IntLiteral |
+| (Builtin.IntLiteral, Builtin.IntLiteral) | 1 | Builtin.IntLiteral |
+| (Builtin.IntLiteral, Builtin.IntLiteral) | 1 | Builtin.IntLiteral |
 | (Int, Int, Int, Int, Int) | 0 | Int |
 | (Int, Int, Int, Int, Int) | 1 | Int |
 | (Int, Int, Int, Int, Int) | 2 | Int |
