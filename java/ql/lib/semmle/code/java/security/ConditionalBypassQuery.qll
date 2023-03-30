@@ -53,6 +53,9 @@ deprecated class ConditionalBypassFlowConfig extends TaintTracking::Configuratio
   }
 }
 
+/**
+ * A taint tracking configuration for untrusted data flowing to sensitive conditions.
+ */
 module ConditionalBypassFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
@@ -64,6 +67,6 @@ module ConditionalBypassFlowConfig implements DataFlow::ConfigSig {
 }
 
 /**
- * A taint tracking configuration for untrusted data flowing to sensitive conditions.
+ * Taint tracking flow for untrusted data flowing to sensitive conditions.
  */
 module ConditionalBypassFlow = TaintTracking::Global<ConditionalBypassFlowConfig>;
