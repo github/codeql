@@ -274,15 +274,6 @@ module Beego {
     override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
 
-  private class TopLevelTaintPropagators extends TaintTracking::FunctionModel {
-    TopLevelTaintPropagators() { this.hasQualifiedName(packagePath(), "MapGet") }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input.isParameter(0) and
-      output.isResult(0)
-    }
-  }
-
   private class HtmlQuoteSanitizer extends SharedXss::Sanitizer {
     HtmlQuoteSanitizer() {
       exists(DataFlow::CallNode c | c.getTarget().hasQualifiedName(packagePath(), "Htmlquote") |
