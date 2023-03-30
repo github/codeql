@@ -27,7 +27,7 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
  *
  * A taint-tracking configuration for private information flowing unencrypted to an external location.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
+deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
   TaintTrackingConfiguration() { this = "ExposureOfPrivateInformation" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }

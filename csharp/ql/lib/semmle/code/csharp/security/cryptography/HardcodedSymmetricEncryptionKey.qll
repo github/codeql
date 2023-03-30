@@ -66,7 +66,7 @@ module HardcodedSymmetricEncryptionKey {
    *
    * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
    */
-  class TaintTrackingConfiguration extends TaintTracking::Configuration {
+  deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
     TaintTrackingConfiguration() { this = "HardcodedSymmetricEncryptionKey" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }

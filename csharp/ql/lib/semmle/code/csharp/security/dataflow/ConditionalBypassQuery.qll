@@ -34,7 +34,7 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
  *
  * A taint-tracking configuration for user-controlled bypass of sensitive method.
  */
-class Configuration extends TaintTracking::Configuration {
+deprecated class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "UserControlledBypassOfSensitiveMethodConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
