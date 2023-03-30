@@ -19,7 +19,7 @@ import PointerArithmeticToDerefFlow::PathGraph
 
 pragma[nomagic]
 Instruction getABoundIn(SemBound b, IRFunction func) {
-  result = b.getExpr(0) and
+  getSemanticExpr(result) = b.getExpr(0) and
   result.getEnclosingIRFunction() = func
 }
 

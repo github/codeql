@@ -13,7 +13,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
-import DataFlow::PathGraph
+import EcbEncryptionFlow::PathGraph
 
 /**
  * An `Expr` that is used to initialize the block mode of a cipher.
@@ -54,22 +54,22 @@ class Blowfish extends BlockMode {
  * A taint configuration from the constructor of ECB mode to expressions that use
  * it to initialize a cipher.
  */
-class EcbEncryptionConfig extends DataFlow::Configuration {
-  EcbEncryptionConfig() { this = "EcbEncryptionConfig" }
-
-  override predicate isSource(DataFlow::Node node) {
+module EcbEncryptionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
     exists(CallExpr call |
       call.getStaticTarget().(MethodDecl).hasQualifiedName("ECB", "init()") and
       node.asExpr() = call
     )
   }
 
-  override predicate isSink(DataFlow::Node node) { node.asExpr() instanceof BlockMode }
+  predicate isSink(DataFlow::Node node) { node.asExpr() instanceof BlockMode }
 }
 
+module EcbEncryptionFlow = DataFlow::Global<EcbEncryptionConfig>;
+
 // The query itself
-from EcbEncryptionConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
-where config.hasFlowPath(sourceNode, sinkNode)
+from EcbEncryptionFlow::PathNode sourceNode, EcbEncryptionFlow::PathNode sinkNode
+where EcbEncryptionFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "The initialization of the cipher '" + sinkNode.getNode().toString() +
     "' uses the insecure ECB block mode from $@.", sourceNode, sourceNode.getNode().toString()

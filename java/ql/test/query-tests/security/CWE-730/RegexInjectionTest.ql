@@ -9,7 +9,7 @@ class RegexInjectionTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasRegexInjection" and
-    exists(DataFlow::PathNode sink, RegexInjectionConfiguration c | c.hasFlowPath(_, sink) |
+    exists(RegexInjectionFlow::PathNode sink | RegexInjectionFlow::flowPath(_, sink) |
       location = sink.getNode().getLocation() and
       element = sink.getNode().toString() and
       value = ""

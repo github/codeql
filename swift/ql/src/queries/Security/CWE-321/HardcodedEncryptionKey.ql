@@ -13,7 +13,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
-import DataFlow::PathGraph
+import HardcodedKeyFlow::PathGraph
 
 /**
  * An `Expr` that is used to initialize a key.
@@ -62,17 +62,17 @@ class EncryptionKeySink extends Expr {
  * A taint configuration from the key source to expressions that use
  * it to initialize a cipher.
  */
-class HardcodedKeyConfig extends TaintTracking::Configuration {
-  HardcodedKeyConfig() { this = "HardcodedKeyConfig" }
+module HardcodedKeyConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node.asExpr() instanceof KeySource }
 
-  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof KeySource }
-
-  override predicate isSink(DataFlow::Node node) { node.asExpr() instanceof EncryptionKeySink }
+  predicate isSink(DataFlow::Node node) { node.asExpr() instanceof EncryptionKeySink }
 }
 
+module HardcodedKeyFlow = TaintTracking::Global<HardcodedKeyConfig>;
+
 // The query itself
-from HardcodedKeyConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
-where config.hasFlowPath(sourceNode, sinkNode)
+from HardcodedKeyFlow::PathNode sourceNode, HardcodedKeyFlow::PathNode sinkNode
+where HardcodedKeyFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "The key '" + sinkNode.getNode().toString() +
     "' has been initialized with hard-coded values from $@.", sourceNode,

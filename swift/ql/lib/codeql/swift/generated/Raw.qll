@@ -662,6 +662,16 @@ module Raw {
 
   class TypeAliasDecl extends @type_alias_decl, GenericTypeDecl {
     override string toString() { result = "TypeAliasDecl" }
+
+    /**
+     * Gets the aliased type on the right-hand side of this type alias declaration.
+     *
+     * For example the aliased type of `MyInt` in the following code is `Int`:
+     * ```
+     * typealias MyInt = Int
+     * ```
+     */
+    Type getAliasedType() { type_alias_decls(this, result) }
   }
 
   class ClassDecl extends @class_decl, NominalTypeDecl {
