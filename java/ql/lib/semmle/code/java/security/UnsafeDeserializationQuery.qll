@@ -75,7 +75,7 @@ private module SafeKryoConfig implements DataFlow::ConfigSig {
    * Holds when a functional expression is used to create a `KryoPool.Builder`.
    * Eg. `new KryoPool.Builder(() -> new Kryo())`
    */
-  additional predicate stepKryoPoolBuilderFactoryArgToConstructor(
+  private predicate stepKryoPoolBuilderFactoryArgToConstructor(
     DataFlow::Node node1, DataFlow::Node node2
   ) {
     exists(ConstructorCall cc, FunctionalExpr fe |
@@ -90,7 +90,7 @@ private module SafeKryoConfig implements DataFlow::ConfigSig {
    * Holds when a `KryoPool.run` is called to use a `Kryo` instance.
    * Eg. `pool.run(kryo -> ...)`
    */
-  additional predicate stepKryoPoolRunMethodAccessQualifierToFunctionalArgument(
+  private predicate stepKryoPoolRunMethodAccessQualifierToFunctionalArgument(
     DataFlow::Node node1, DataFlow::Node node2
   ) {
     exists(MethodAccess ma |
@@ -103,7 +103,7 @@ private module SafeKryoConfig implements DataFlow::ConfigSig {
   /**
    * Holds when a `KryoPool.Builder` method is called fluently.
    */
-  additional predicate stepKryoPoolBuilderChainMethod(DataFlow::Node node1, DataFlow::Node node2) {
+  private predicate stepKryoPoolBuilderChainMethod(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodAccess ma |
       ma.getMethod() instanceof KryoPoolBuilderMethod and
       ma = node2.asExpr() and
@@ -114,7 +114,7 @@ private module SafeKryoConfig implements DataFlow::ConfigSig {
   /**
    * Holds when a `KryoPool.borrow` method is called.
    */
-  additional predicate stepKryoPoolBorrowMethod(DataFlow::Node node1, DataFlow::Node node2) {
+  private predicate stepKryoPoolBorrowMethod(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodAccess ma |
       ma.getMethod() =
         any(Method m | m.getDeclaringType() instanceof KryoPool and m.hasName("borrow")) and
