@@ -12,6 +12,7 @@
 
 import java
 import semmle.code.java.security.ExternallyControlledFormatStringQuery
+import semmle.code.java.StringFormat
 import ExternallyControlledFormatStringFlow::PathGraph
 
 from
