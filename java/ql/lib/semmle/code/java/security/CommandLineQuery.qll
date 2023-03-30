@@ -70,6 +70,27 @@ module RemoteUserInputToArgumentToExecFlow =
   TaintTracking::Global<RemoteUserInputToArgumentToExecFlowConfig>;
 
 /**
+ * A taint-tracking configuration for unvalidated local user input that is used to run an external process.
+ */
+module LocalUserInputToArgumentToExecFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof LocalUserInput }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof CommandInjectionSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof CommandInjectionSanitizer }
+
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+    any(CommandInjectionAdditionalTaintStep s).step(n1, n2)
+  }
+}
+
+/**
+ * Taint-tracking flow for unvalidated local user input that is used to run an external process.
+ */
+module LocalUserInputToArgumentToExecFlow =
+  TaintTracking::Global<LocalUserInputToArgumentToExecFlowConfig>;
+
+/**
  * Implementation of `ExecTainted.ql`. It is extracted to a QLL
  * so that it can be excluded from `ExecUnescaped.ql` to avoid
  * reporting overlapping results.
