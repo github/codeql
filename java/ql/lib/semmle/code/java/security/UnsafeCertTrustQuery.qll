@@ -22,6 +22,9 @@ deprecated class SslEndpointIdentificationFlowConfig extends TaintTracking::Conf
   }
 }
 
+/**
+ * A taint flow configuration for SSL connections created without a proper certificate trust configuration.
+ */
 module SslEndpointIdentificationFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof SslConnectionInit }
 
@@ -30,6 +33,9 @@ module SslEndpointIdentificationFlowConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof SslUnsafeCertTrustSanitizer }
 }
 
+/**
+ * Taint flow for SSL connections created without a proper certificate trust configuration.
+ */
 module SslEndpointIdentificationFlow = TaintTracking::Global<SslEndpointIdentificationFlowConfig>;
 
 /**
