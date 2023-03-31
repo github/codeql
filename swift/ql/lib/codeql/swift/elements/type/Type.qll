@@ -1,6 +1,4 @@
 private import codeql.swift.generated.type.Type
-private import codeql.swift.elements.type.NominalType
-private import codeql.swift.elements.type.TypeAliasType
 
 class Type extends Generated::Type {
   override string toString() { result = this.getName() }
