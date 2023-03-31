@@ -7,7 +7,7 @@ import java.nio.charset.Charset;
 import java.util.Comparator;
 import java.util.Locale;
 
-public class String implements Comparable<String>, Serializable
+public class String implements CharSequence, Comparable<String>, Serializable
 {
     public String concat(String p0){ return null; } // manual summary
     public String replace(CharSequence p0, CharSequence p1){ return null; } // manual summary

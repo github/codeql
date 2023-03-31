@@ -22,7 +22,16 @@ public interface Map<K, V>
     int size(); // manual neutral
     java.util.Collection<V> values(); // manual summary
     java.util.Set<K> keySet(); // manual summary
-    // java.util.Set<Map.Entry<K, V>> entrySet(); // manual summary - REMOVE UNTIL FIX MAP.ENTRY
+    java.util.Set<Map.Entry<K, V>> entrySet(); // manual summary
     void clear(); // manual neutral
     void putAll(java.util.Map<? extends K, ? extends V> p0); // manual summary
+
+    static <K, V> Map.Entry<K, V> entry(K k, V v) { return null; }  // manual summary
+    static <K, V> Map<K, V> of(K k1, V v1) { return null; }  // manual summary
+    static <K, V> Map<K, V> of(K k1, V v1, K k2, V v2) { return null; }  // manual summary
+
+    interface Entry<K, V> {
+        K getKey(); // manual summary
+        V getValue(); // manual summary
+    }
 }

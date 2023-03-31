@@ -16,4 +16,8 @@ public interface Collection<E> extends java.lang.Iterable<E>
     default java.util.stream.Stream<E> stream(){ return null; } // manual summary
     int size(); // manual neutral
     java.util.Iterator<E> iterator(); // manual summary
+
+    boolean	addAll(Collection<? extends E> c);
+    Object[] toArray();
+    <T> T[] toArray(T[] a);
 }

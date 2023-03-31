@@ -43,4 +43,6 @@ public interface Stream<T> extends BaseStream<T, Stream<T>>
     static <T> java.util.stream.Stream<T> of(T p0){ return null; } // manual summary
     static <T> java.util.stream.Stream<T> of(T... p0){ return null; } // manual summary
     void forEach(java.util.function.Consumer<? super T> p0); // manual summary
+
+    default java.util.List<T> toList() { return null; } // manual summary
 }

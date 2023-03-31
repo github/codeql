@@ -16,4 +16,6 @@ public class Properties extends Hashtable<Object, Object>
 {
     public Object setProperty(String p0, String p1){ return null; } // manual summary
     public String getProperty(String p0){ return null; } // manual summary
+
+    public synchronized Object put(Object key, Object value) { return null; } // manual summary
 }

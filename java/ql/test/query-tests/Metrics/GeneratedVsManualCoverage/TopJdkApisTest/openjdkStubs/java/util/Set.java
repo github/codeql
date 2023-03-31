@@ -17,4 +17,7 @@ public interface Set<E> extends java.util.Collection<E>
     int size(); // manual neutral
     java.util.Iterator<E> iterator(); // manual summary
     void clear(); // manual neutral
+
+    static <E> Set<E> of(E e1) { return null; } // manual summary
+    static <E> Set<E> of(E e1, E e2) { return null; } // manual summary
 }

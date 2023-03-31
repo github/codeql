@@ -16,9 +16,11 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 import java.util.function.UnaryOperator;
 
-public class Vector<E> implements Cloneable, RandomAccess, Serializable
+public class Vector<E> extends java.util.AbstractList<E> implements Cloneable, RandomAccess, Serializable, java.util.List<E>
 {
     public boolean add(E p0){ return false; } // manual summary
     public int size(){ return 0; } // manual neutral
     public void addElement(E p0){} // manual summary
+
+    public E get(int p0){ return null; }
 }

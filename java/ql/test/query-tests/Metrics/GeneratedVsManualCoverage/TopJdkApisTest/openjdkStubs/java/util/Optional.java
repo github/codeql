@@ -21,4 +21,8 @@ public class Optional<T>
     public static <T> java.util.Optional<T> of(T p0){ return null; } // manual summary
     public static <T> java.util.Optional<T> ofNullable(T p0){ return null; } // manual summary
     public void ifPresent(java.util.function.Consumer<? super T> p0){} // manual summary
+
+    public boolean isEmpty() { return false; } // manual neutral
+    public T orElseThrow() { return null; } // manual summary
+
 }

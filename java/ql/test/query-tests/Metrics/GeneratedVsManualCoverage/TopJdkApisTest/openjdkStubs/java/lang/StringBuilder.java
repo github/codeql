@@ -4,7 +4,7 @@ package java.lang;
 
 import java.io.Serializable;
 
-public class StringBuilder implements Serializable
+public class StringBuilder extends AbstractStringBuilder implements Serializable
 {
     public String toString(){ return null; } // manual summary
     public StringBuilder append(CharSequence p0){ return null; } // manual summary
@@ -17,4 +17,9 @@ public class StringBuilder implements Serializable
     public StringBuilder delete(int p0, int p1){ return null; } // manual summary
     public StringBuilder(String p0){} // manual summary
     public StringBuilder(int p0){} // manual summary
+
+    public StringBuilder append(CharSequence s, int start, int end) { return null; }
+
+    public void setCharAt(int p0, char p1){}
+    public void setLength(int p0){}
 }

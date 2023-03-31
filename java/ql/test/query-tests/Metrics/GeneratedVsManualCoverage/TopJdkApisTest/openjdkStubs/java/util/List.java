@@ -30,4 +30,9 @@ public interface List<E> extends java.util.Collection<E>
     java.util.Iterator<E> iterator(); // manual summary
     void add(int p0, E p1); // manual summary
     void clear(); // manual neutral
+
+    static <E> List<E> of() { return null; } // manual neutral
+    static <E> List<E> of(E e1) { return null; } // manual summary
+    static <E> List<E> of(E e1, E e2) { return null; } // manual summary
+    static <E> List<E> of(E e1, E e2, E e3) { return null; } // manual summary
 }

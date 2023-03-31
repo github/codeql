@@ -25,8 +25,10 @@ import java.util.function.ToIntFunction;
 import java.util.function.ToLongBiFunction;
 import java.util.function.ToLongFunction;
 
-public class ConcurrentHashMap<K, V> implements Serializable
+public class ConcurrentHashMap<K, V> extends AbstractMap<K,V> implements Serializable
 {
     public V get(Object p0){ return null; } // manual summary
     public V put(K p0, V p1){ return null; } // manual summary
+
+    public Set<Map.Entry<K,V>> entrySet() { return null; }
 }

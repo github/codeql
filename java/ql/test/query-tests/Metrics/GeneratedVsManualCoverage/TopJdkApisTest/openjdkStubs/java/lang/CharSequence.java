@@ -8,4 +8,6 @@ public interface CharSequence
 {
     String toString(); // manual summary
     int length(); // manual neutral
+
+    char charAt(int index);
 }
