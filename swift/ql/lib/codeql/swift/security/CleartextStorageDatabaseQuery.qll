@@ -38,7 +38,8 @@ class CleartextStorageConfig extends TaintTracking::Configuration {
     // for example in `realmObj.data = sensitive`.
     isSink(node) and
     exists(NominalTypeDecl d, Decl cx |
-      d.getType().getABaseType*().getUnderlyingType().getName() = ["NSManagedObject", "RealmSwiftObject"] and
+      d.getType().getABaseType*().getUnderlyingType().getName() =
+        ["NSManagedObject", "RealmSwiftObject"] and
       cx.asNominalTypeDecl() = d and
       c.getAReadContent().(DataFlow::Content::FieldContent).getField() = cx.getAMember()
     )
