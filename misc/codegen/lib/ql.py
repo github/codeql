@@ -36,6 +36,7 @@ class Property:
     first: bool = False
     is_optional: bool = False
     is_predicate: bool = False
+    is_unordered: bool = False
     prev_child: Optional[str] = None
     qltest_skip: bool = False
     description: List[str] = field(default_factory=list)
@@ -49,7 +50,11 @@ class Property:
 
     @property
     def getter(self):
-        return f"get{self.singular}" if not self.is_predicate else self.singular
+        if self.is_predicate:
+            return self.singular
+        if self.is_unordered:
+            return self.indefinite_getter
+        return f"get{self.singular}"
 
     @property
     def indefinite_getter(self):
@@ -76,6 +81,10 @@ class Property:
     @property
     def has_description(self) -> bool:
         return bool(self.description)
+
+    @property
+    def is_indexed(self) -> bool:
+        return self.is_repeated and not self.is_unordered
 
 
 @dataclass
@@ -188,7 +197,7 @@ class PropertyForTest:
     getter: str
     is_total: bool = True
     type: Optional[str] = None
-    is_repeated: bool = False
+    is_indexed: bool = False
 
 
 @dataclass

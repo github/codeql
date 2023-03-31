@@ -482,13 +482,17 @@ module_decl_is_system_module(  //dir=decl
   int id: @module_decl ref
 );
 
+#keyset[id, index]
 module_decl_imported_modules(  //dir=decl
   int id: @module_decl ref,
+  int index: int ref,
   int imported_module: @module_decl_or_none ref
 );
 
+#keyset[id, index]
 module_decl_exported_modules(  //dir=decl
   int id: @module_decl ref,
+  int index: int ref,
   int exported_module: @module_decl_or_none ref
 );
 

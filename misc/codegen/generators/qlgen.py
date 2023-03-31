@@ -109,6 +109,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
         prev_child=prev_child if prop.is_child else None,
         is_optional=prop.is_optional,
         is_predicate=prop.is_predicate,
+        is_unordered=prop.is_unordered,
         description=prop.description
     )
     if prop.is_single:
@@ -123,7 +124,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
             singular=inflection.singularize(inflection.camelize(prop.name)),
             plural=inflection.pluralize(inflection.camelize(prop.name)),
             tablename=inflection.tableize(f"{cls.name}_{prop.name}"),
-            tableparams=["this", "index", "result"],
+            tableparams=["this", "index", "result"] if not prop.is_unordered else ["this", "result"],
             doc=_get_doc(cls, prop, plural=False),
             doc_plural=_get_doc(cls, prop, plural=True),
         )
@@ -255,7 +256,7 @@ def _get_all_properties_to_be_tested(cls: schema.Class, lookup: typing.Dict[str,
             # TODO here operations are duplicated, but should be better if we split ql and qltest generation
             p = get_ql_property(c, p)
             yield ql.PropertyForTest(p.getter, is_total=p.is_single or p.is_predicate,
-                                     type=p.type if not p.is_predicate else None, is_repeated=p.is_repeated)
+                                     type=p.type if not p.is_predicate else None, is_indexed=p.is_indexed)
             if p.is_repeated and not p.is_optional:
                 yield ql.PropertyForTest(f"getNumberOf{p.plural}", type="int")
             elif p.is_optional and not p.is_repeated:
