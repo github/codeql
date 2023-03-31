@@ -6,9 +6,11 @@ import semmle.code.java.security.UnsafeCertTrust
 import semmle.code.java.security.Encryption
 
 /**
+ * DEPRECATED: Use `SslEndpointIdentificationFlow` instead.
+ *
  * A taint flow configuration for SSL connections created without a proper certificate trust configuration.
  */
-class SslEndpointIdentificationFlowConfig extends TaintTracking::Configuration {
+deprecated class SslEndpointIdentificationFlowConfig extends TaintTracking::Configuration {
   SslEndpointIdentificationFlowConfig() { this = "SslEndpointIdentificationFlowConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof SslConnectionInit }
@@ -21,29 +23,43 @@ class SslEndpointIdentificationFlowConfig extends TaintTracking::Configuration {
 }
 
 /**
+ * A taint flow configuration for SSL connections created without a proper certificate trust configuration.
+ */
+module SslEndpointIdentificationFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof SslConnectionInit }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof SslConnectionCreation }
+
+  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof SslUnsafeCertTrustSanitizer }
+}
+
+/**
+ * Taint flow for SSL connections created without a proper certificate trust configuration.
+ */
+module SslEndpointIdentificationFlow = TaintTracking::Global<SslEndpointIdentificationFlowConfig>;
+
+/**
  * An SSL object that was assigned a safe `SSLParameters` object and can be considered safe.
  */
 private class SslConnectionWithSafeSslParameters extends SslUnsafeCertTrustSanitizer {
   SslConnectionWithSafeSslParameters() {
-    exists(SafeSslParametersFlowConfig config, DataFlow::Node safe, DataFlow::Node sanitizer |
-      config.hasFlowTo(safe) and
+    exists(DataFlow::Node safe, DataFlow::Node sanitizer |
+      SafeSslParametersFlow::flowTo(safe) and
       sanitizer = DataFlow::exprNode(safe.asExpr().(Argument).getCall().getQualifier()) and
       DataFlow::localFlow(sanitizer, this)
     )
   }
 }
 
-private class SafeSslParametersFlowConfig extends DataFlow2::Configuration {
-  SafeSslParametersFlowConfig() { this = "SafeSslParametersFlowConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+private module SafeSslParametersFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(MethodAccess ma |
       ma instanceof SafeSetEndpointIdentificationAlgorithm and
       DataFlow::getInstanceArgument(ma) = source.(DataFlow::PostUpdateNode).getPreUpdateNode()
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma, RefType t | t instanceof SslSocket or t instanceof SslEngine |
       ma.getMethod().hasName("setSSLParameters") and
       ma.getMethod().getDeclaringType().getAnAncestor() = t and
@@ -51,6 +67,8 @@ private class SafeSslParametersFlowConfig extends DataFlow2::Configuration {
     )
   }
 }
+
+private module SafeSslParametersFlow = DataFlow::Global<SafeSslParametersFlowConfig>;
 
 /**
  * A call to `SSLParameters.setEndpointIdentificationAlgorithm` with a non-null and non-empty parameter.

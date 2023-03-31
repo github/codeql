@@ -9,7 +9,7 @@ class ImplicitPendingIntentsTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasImplicitPendingIntent" and
-    exists(DataFlow::Node sink | any(ImplicitPendingIntentStartConf c).hasFlowTo(sink) |
+    exists(DataFlow::Node sink | ImplicitPendingIntentStartFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""
