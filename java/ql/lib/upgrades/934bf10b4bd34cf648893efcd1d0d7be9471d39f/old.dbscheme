@@ -61,19 +61,6 @@ compilation_args(
 );
 
 /**
- * The expanded arguments that were passed to the extractor for a
- * compiler invocation. This is similar to `compilation_args`, but
- * for a `@@@someFile` argument, it includes the arguments from that
- * file, rather than just taking the argument literally.
- */
-#keyset[id, num]
-compilation_expanded_args(
-    int id : @compilation ref,
-    int num : int ref,
-    string arg : string ref
-);
-
-/**
  * The source files that are compiled by a compiler invocation.
  * If `id` is for the compiler invocation
  *
