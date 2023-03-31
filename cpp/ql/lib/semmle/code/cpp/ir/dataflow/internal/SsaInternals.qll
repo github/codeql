@@ -155,11 +155,13 @@ private newtype TDefOrUseImpl =
   TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents a final "use" of a global variable to ensure that
     // the assignment to a global variable isn't ruled out as dead.
-    exists(VariableAddressInstruction vai, int defIndex |
+    exists(VariableAddressInstruction vai, int i |
       vai.getEnclosingIRFunction() = f and
       vai.getAstVariable() = v and
-      isDef(_, _, _, vai, _, defIndex) and
-      indirectionIndex = [0 .. defIndex] + 1
+      indirectionIndex = [0 .. i] + 1
+    |
+      isDef(_, _, _, vai, indirectionIndex, i) or
+      isUse(_, _, vai, indirectionIndex, i)
     )
   } or
   TGlobalDefImpl(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
