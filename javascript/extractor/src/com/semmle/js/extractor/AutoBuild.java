@@ -1236,7 +1236,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       if (!extractor.getConfig().isExterns()) seenFiles = true;
       List<ParseError> errors = loc == null ? Collections.emptyList() : loc.getParseErrors();
       for (ParseError err : errors) {
-        String msg = "A parse error occurred: " + StringUtil.escapeMarkdown(err.getMessage())
+        String msg = "A parse error occurred: " + StringUtil.quoteWithBackticks(err.getMessage().trim())
             + ". Check the syntax of the file. If the file is invalid, correct the error or [exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.";
         // file, relative to the source root
         String relativeFilePath = null;
