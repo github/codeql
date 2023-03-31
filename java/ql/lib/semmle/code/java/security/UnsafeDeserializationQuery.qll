@@ -223,76 +223,72 @@ class UnsafeDeserializationSink extends DataFlow::ExprNode {
   MethodAccess getMethodAccess() { unsafeDeserialization(result, this.getExpr()) }
 }
 
-/** A sanitizer for unsafe deserialization */
-private class UnsafeDeserializationSanitizer extends DataFlow::Node {
-  UnsafeDeserializationSanitizer() {
-    exists(ClassInstanceExpr cie |
-      cie.getConstructor().getDeclaringType() instanceof JsonIoJsonReader and
-      cie = this.asExpr() and
-      SafeJsonIoFlow::flowToExpr(cie.getArgument(1))
-    )
-    or
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof JsonIoJsonToJavaMethod and
-      ma.getArgument(0) = this.asExpr() and
-      SafeJsonIoFlow::flowToExpr(ma.getArgument(1))
-    )
-    or
-    exists(MethodAccess ma |
-      // Sanitize the input to jodd.json.JsonParser.parse et al whenever it appears
-      // to be called with an explicit class argument limiting those types that can
-      // be instantiated during deserialization.
-      ma.getMethod() instanceof JoddJsonParseMethod and
+/** Holds if `node` is a sanitizer for unsafe deserialization */
+private predicate isUnsafeDeserializationSanitizer(DataFlow::Node node) {
+  exists(ClassInstanceExpr cie |
+    cie.getConstructor().getDeclaringType() instanceof JsonIoJsonReader and
+    cie = node.asExpr() and
+    SafeJsonIoFlow::flowToExpr(cie.getArgument(1))
+  )
+  or
+  exists(MethodAccess ma |
+    ma.getMethod() instanceof JsonIoJsonToJavaMethod and
+    ma.getArgument(0) = node.asExpr() and
+    SafeJsonIoFlow::flowToExpr(ma.getArgument(1))
+  )
+  or
+  exists(MethodAccess ma |
+    // Sanitize the input to jodd.json.JsonParser.parse et al whenever it appears
+    // to be called with an explicit class argument limiting those types that can
+    // be instantiated during deserialization.
+    ma.getMethod() instanceof JoddJsonParseMethod and
+    ma.getArgument(1).getType() instanceof TypeClass and
+    not ma.getArgument(1) instanceof NullLiteral and
+    not ma.getArgument(1).getType().getName() = ["Class<Object>", "Class<?>"] and
+    node.asExpr() = ma.getAnArgument()
+  )
+  or
+  exists(MethodAccess ma |
+    // Sanitize the input to flexjson.JSONDeserializer.deserialize whenever it appears
+    // to be called with an explicit class argument limiting those types that can
+    // be instantiated during deserialization, or if the deserializer has already been
+    // configured to use a specified root class.
+    ma.getMethod() instanceof FlexjsonDeserializeMethod and
+    node.asExpr() = ma.getAnArgument() and
+    (
       ma.getArgument(1).getType() instanceof TypeClass and
       not ma.getArgument(1) instanceof NullLiteral and
-      not ma.getArgument(1).getType().getName() = ["Class<Object>", "Class<?>"] and
-      this.asExpr() = ma.getAnArgument()
+      not ma.getArgument(1).getType().getName() = ["Class<Object>", "Class<?>"]
+      or
+      isSafeFlexjsonDeserializer(ma.getQualifier())
     )
-    or
-    exists(MethodAccess ma |
-      // Sanitize the input to flexjson.JSONDeserializer.deserialize whenever it appears
-      // to be called with an explicit class argument limiting those types that can
-      // be instantiated during deserialization, or if the deserializer has already been
-      // configured to use a specified root class.
-      ma.getMethod() instanceof FlexjsonDeserializeMethod and
-      this.asExpr() = ma.getAnArgument() and
-      (
-        ma.getArgument(1).getType() instanceof TypeClass and
-        not ma.getArgument(1) instanceof NullLiteral and
-        not ma.getArgument(1).getType().getName() = ["Class<Object>", "Class<?>"]
-        or
-        isSafeFlexjsonDeserializer(ma.getQualifier())
-      )
-    )
-  }
+  )
 }
 
 /** Taint step for Unsafe deserialization */
-private class UnsafeDeserializationAdditionalTaintStep extends Unit {
-  predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(ClassInstanceExpr cie |
-      cie.getArgument(0) = pred.asExpr() and
-      cie = succ.asExpr() and
-      (
-        cie.getConstructor().getDeclaringType() instanceof JsonIoJsonReader or
-        cie.getConstructor().getDeclaringType() instanceof YamlBeansReader or
-        cie.getConstructor().getDeclaringType().getAnAncestor() instanceof UnsafeHessianInput or
-        cie.getConstructor().getDeclaringType() instanceof BurlapInput
-      )
+private predicate isUnsafeDeserializationTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  exists(ClassInstanceExpr cie |
+    cie.getArgument(0) = pred.asExpr() and
+    cie = succ.asExpr() and
+    (
+      cie.getConstructor().getDeclaringType() instanceof JsonIoJsonReader or
+      cie.getConstructor().getDeclaringType() instanceof YamlBeansReader or
+      cie.getConstructor().getDeclaringType().getAnAncestor() instanceof UnsafeHessianInput or
+      cie.getConstructor().getDeclaringType() instanceof BurlapInput
     )
-    or
-    exists(MethodAccess ma |
-      ma.getMethod() instanceof BurlapInputInitMethod and
-      ma.getArgument(0) = pred.asExpr() and
-      ma.getQualifier() = succ.asExpr()
-    )
-    or
-    createJacksonJsonParserStep(pred, succ)
-    or
-    createJacksonTreeNodeStep(pred, succ)
-    or
-    intentFlowsToParcel(pred, succ)
-  }
+  )
+  or
+  exists(MethodAccess ma |
+    ma.getMethod() instanceof BurlapInputInitMethod and
+    ma.getArgument(0) = pred.asExpr() and
+    ma.getQualifier() = succ.asExpr()
+  )
+  or
+  createJacksonJsonParserStep(pred, succ)
+  or
+  createJacksonTreeNodeStep(pred, succ)
+  or
+  intentFlowsToParcel(pred, succ)
 }
 
 /**
@@ -308,12 +304,10 @@ deprecated class UnsafeDeserializationConfig extends TaintTracking::Configuratio
   override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserializationSink }
 
   override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(UnsafeDeserializationAdditionalTaintStep s).isAdditionalTaintStep(pred, succ)
+    isUnsafeDeserializationTaintStep(pred, succ)
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    node instanceof UnsafeDeserializationSanitizer
-  }
+  override predicate isSanitizer(DataFlow::Node node) { isUnsafeDeserializationSanitizer(node) }
 }
 
 /** Tracks flows from remote user input to a deserialization sink. */
@@ -323,10 +317,10 @@ private module UnsafeDeserializationConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserializationSink }
 
   predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
-    any(UnsafeDeserializationAdditionalTaintStep s).isAdditionalTaintStep(pred, succ)
+    isUnsafeDeserializationTaintStep(pred, succ)
   }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof UnsafeDeserializationSanitizer }
+  predicate isBarrier(DataFlow::Node node) { isUnsafeDeserializationSanitizer(node) }
 }
 
 module UnsafeDeserializationFlow = TaintTracking::Global<UnsafeDeserializationConfig>;
