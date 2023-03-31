@@ -321,10 +321,7 @@ private module CryptoJS {
    */
   private API::Node getAlgorithmNode(CryptographicAlgorithm algorithm) {
     exists(string algorithmName | algorithm.matchesName(algorithmName) |
-      exists(API::Node mod | mod = API::moduleImport("crypto-js") |
-        result = mod.getMember(algorithmName) or
-        result = mod.getMember("Hmac" + algorithmName) // they prefix Hmac
-      )
+      result = API::moduleImport("crypto-js").getMember([algorithmName, "Hmac" + algorithmName])
       or
       result = API::moduleImport("crypto-js/" + algorithmName)
     )
