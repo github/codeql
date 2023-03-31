@@ -181,7 +181,6 @@ class UnknownExternalApiDataNode extends ExternalApiDataNode {
     // Not a sink for a commonly-used query
     not isACommonSink(this) and
     // Not in a package that has some functions modeled
-    // FIXME
     not call.getTarget().getPackage() = getAPackageWithModels()
   }
 }
