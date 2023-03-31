@@ -1,0 +1,80 @@
+failures
+edges
+| Operator.cs:9:38:9:38 | x : C | Operator.cs:9:49:9:49 | access to parameter x : C |
+| Operator.cs:9:38:9:38 | x : C | Operator.cs:9:49:9:49 | access to parameter x : C |
+| Operator.cs:11:51:11:51 | y : C | Operator.cs:11:57:11:57 | access to parameter y : C |
+| Operator.cs:11:51:11:51 | y : C | Operator.cs:11:57:11:57 | access to parameter y : C |
+| Operator.cs:12:38:12:38 | x : C | Operator.cs:12:49:12:49 | access to parameter x : C |
+| Operator.cs:12:38:12:38 | x : C | Operator.cs:12:49:12:49 | access to parameter x : C |
+| Operator.cs:17:17:17:28 | call to method Source<C> : C | Operator.cs:19:17:19:17 | access to local variable x : C |
+| Operator.cs:17:17:17:28 | call to method Source<C> : C | Operator.cs:19:17:19:17 | access to local variable x : C |
+| Operator.cs:19:17:19:17 | access to local variable x : C | Operator.cs:9:38:9:38 | x : C |
+| Operator.cs:19:17:19:17 | access to local variable x : C | Operator.cs:9:38:9:38 | x : C |
+| Operator.cs:19:17:19:17 | access to local variable x : C | Operator.cs:19:17:19:21 | call to operator + : C |
+| Operator.cs:19:17:19:17 | access to local variable x : C | Operator.cs:19:17:19:21 | call to operator + : C |
+| Operator.cs:19:17:19:21 | call to operator + : C | Operator.cs:20:14:20:14 | access to local variable z |
+| Operator.cs:19:17:19:21 | call to operator + : C | Operator.cs:20:14:20:14 | access to local variable z |
+| Operator.cs:25:17:25:28 | call to method Source<C> : C | Operator.cs:27:27:27:27 | access to local variable x : C |
+| Operator.cs:25:17:25:28 | call to method Source<C> : C | Operator.cs:27:27:27:27 | access to local variable x : C |
+| Operator.cs:27:27:27:27 | access to local variable x : C | Operator.cs:12:38:12:38 | x : C |
+| Operator.cs:27:27:27:27 | access to local variable x : C | Operator.cs:12:38:12:38 | x : C |
+| Operator.cs:27:27:27:27 | access to local variable x : C | Operator.cs:27:27:27:31 | call to operator - : C |
+| Operator.cs:27:27:27:27 | access to local variable x : C | Operator.cs:27:27:27:31 | call to operator - : C |
+| Operator.cs:27:27:27:31 | call to operator - : C | Operator.cs:28:14:28:14 | access to local variable z |
+| Operator.cs:27:27:27:31 | call to operator - : C | Operator.cs:28:14:28:14 | access to local variable z |
+| Operator.cs:34:17:34:28 | call to method Source<C> : C | Operator.cs:35:29:35:29 | access to local variable y : C |
+| Operator.cs:34:17:34:28 | call to method Source<C> : C | Operator.cs:35:29:35:29 | access to local variable y : C |
+| Operator.cs:35:25:35:29 | call to operator checked - : C | Operator.cs:36:14:36:14 | access to local variable z |
+| Operator.cs:35:25:35:29 | call to operator checked - : C | Operator.cs:36:14:36:14 | access to local variable z |
+| Operator.cs:35:29:35:29 | access to local variable y : C | Operator.cs:11:51:11:51 | y : C |
+| Operator.cs:35:29:35:29 | access to local variable y : C | Operator.cs:11:51:11:51 | y : C |
+| Operator.cs:35:29:35:29 | access to local variable y : C | Operator.cs:35:25:35:29 | call to operator checked - : C |
+| Operator.cs:35:29:35:29 | access to local variable y : C | Operator.cs:35:25:35:29 | call to operator checked - : C |
+nodes
+| Operator.cs:9:38:9:38 | x : C | semmle.label | x : C |
+| Operator.cs:9:38:9:38 | x : C | semmle.label | x : C |
+| Operator.cs:9:49:9:49 | access to parameter x : C | semmle.label | access to parameter x : C |
+| Operator.cs:9:49:9:49 | access to parameter x : C | semmle.label | access to parameter x : C |
+| Operator.cs:11:51:11:51 | y : C | semmle.label | y : C |
+| Operator.cs:11:51:11:51 | y : C | semmle.label | y : C |
+| Operator.cs:11:57:11:57 | access to parameter y : C | semmle.label | access to parameter y : C |
+| Operator.cs:11:57:11:57 | access to parameter y : C | semmle.label | access to parameter y : C |
+| Operator.cs:12:38:12:38 | x : C | semmle.label | x : C |
+| Operator.cs:12:38:12:38 | x : C | semmle.label | x : C |
+| Operator.cs:12:49:12:49 | access to parameter x : C | semmle.label | access to parameter x : C |
+| Operator.cs:12:49:12:49 | access to parameter x : C | semmle.label | access to parameter x : C |
+| Operator.cs:17:17:17:28 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
+| Operator.cs:17:17:17:28 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
+| Operator.cs:19:17:19:17 | access to local variable x : C | semmle.label | access to local variable x : C |
+| Operator.cs:19:17:19:17 | access to local variable x : C | semmle.label | access to local variable x : C |
+| Operator.cs:19:17:19:21 | call to operator + : C | semmle.label | call to operator + : C |
+| Operator.cs:19:17:19:21 | call to operator + : C | semmle.label | call to operator + : C |
+| Operator.cs:20:14:20:14 | access to local variable z | semmle.label | access to local variable z |
+| Operator.cs:20:14:20:14 | access to local variable z | semmle.label | access to local variable z |
+| Operator.cs:25:17:25:28 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
+| Operator.cs:25:17:25:28 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
+| Operator.cs:27:27:27:27 | access to local variable x : C | semmle.label | access to local variable x : C |
+| Operator.cs:27:27:27:27 | access to local variable x : C | semmle.label | access to local variable x : C |
+| Operator.cs:27:27:27:31 | call to operator - : C | semmle.label | call to operator - : C |
+| Operator.cs:27:27:27:31 | call to operator - : C | semmle.label | call to operator - : C |
+| Operator.cs:28:14:28:14 | access to local variable z | semmle.label | access to local variable z |
+| Operator.cs:28:14:28:14 | access to local variable z | semmle.label | access to local variable z |
+| Operator.cs:34:17:34:28 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
+| Operator.cs:34:17:34:28 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
+| Operator.cs:35:25:35:29 | call to operator checked - : C | semmle.label | call to operator checked - : C |
+| Operator.cs:35:25:35:29 | call to operator checked - : C | semmle.label | call to operator checked - : C |
+| Operator.cs:35:29:35:29 | access to local variable y : C | semmle.label | access to local variable y : C |
+| Operator.cs:35:29:35:29 | access to local variable y : C | semmle.label | access to local variable y : C |
+| Operator.cs:36:14:36:14 | access to local variable z | semmle.label | access to local variable z |
+| Operator.cs:36:14:36:14 | access to local variable z | semmle.label | access to local variable z |
+subpaths
+| Operator.cs:19:17:19:17 | access to local variable x : C | Operator.cs:9:38:9:38 | x : C | Operator.cs:9:49:9:49 | access to parameter x : C | Operator.cs:19:17:19:21 | call to operator + : C |
+| Operator.cs:19:17:19:17 | access to local variable x : C | Operator.cs:9:38:9:38 | x : C | Operator.cs:9:49:9:49 | access to parameter x : C | Operator.cs:19:17:19:21 | call to operator + : C |
+| Operator.cs:27:27:27:27 | access to local variable x : C | Operator.cs:12:38:12:38 | x : C | Operator.cs:12:49:12:49 | access to parameter x : C | Operator.cs:27:27:27:31 | call to operator - : C |
+| Operator.cs:27:27:27:27 | access to local variable x : C | Operator.cs:12:38:12:38 | x : C | Operator.cs:12:49:12:49 | access to parameter x : C | Operator.cs:27:27:27:31 | call to operator - : C |
+| Operator.cs:35:29:35:29 | access to local variable y : C | Operator.cs:11:51:11:51 | y : C | Operator.cs:11:57:11:57 | access to parameter y : C | Operator.cs:35:25:35:29 | call to operator checked - : C |
+| Operator.cs:35:29:35:29 | access to local variable y : C | Operator.cs:11:51:11:51 | y : C | Operator.cs:11:57:11:57 | access to parameter y : C | Operator.cs:35:25:35:29 | call to operator checked - : C |
+#select
+| Operator.cs:20:14:20:14 | access to local variable z | Operator.cs:17:17:17:28 | call to method Source<C> : C | Operator.cs:20:14:20:14 | access to local variable z | $@ | Operator.cs:17:17:17:28 | call to method Source<C> : C | call to method Source<C> : C |
+| Operator.cs:28:14:28:14 | access to local variable z | Operator.cs:25:17:25:28 | call to method Source<C> : C | Operator.cs:28:14:28:14 | access to local variable z | $@ | Operator.cs:25:17:25:28 | call to method Source<C> : C | call to method Source<C> : C |
+| Operator.cs:36:14:36:14 | access to local variable z | Operator.cs:34:17:34:28 | call to method Source<C> : C | Operator.cs:36:14:36:14 | access to local variable z | $@ | Operator.cs:34:17:34:28 | call to method Source<C> : C | call to method Source<C> : C |
