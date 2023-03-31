@@ -291,13 +291,13 @@ private module CryptoJS {
        *       ```
        */
 
-      exists(DataFlow::SourceNode mod, DataFlow::PropRead propRead |
-        mod = DataFlow::moduleImport("crypto-js") and
-        propRead = mod.getAPropertyRead("algo").getAPropertyRead() and
-        this = propRead.getAMemberCall("create") and
-        algorithmName = propRead.getPropertyName() and
-        not isStrongPasswordHashingAlgorithm(algorithmName)
-      )
+      this =
+        API::moduleImport("crypto-js")
+            .getMember("algo")
+            .getMember(algorithmName)
+            .getMember("create")
+            .getACall() and
+      not isStrongPasswordHashingAlgorithm(algorithmName)
     }
 
     CryptographicAlgorithm getAlgorithm() { result.matchesName(algorithmName) }
