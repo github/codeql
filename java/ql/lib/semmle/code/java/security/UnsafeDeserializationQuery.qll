@@ -399,12 +399,10 @@ private class UnsafeTypeSink extends DataFlow::Node {
   }
 }
 
-private class UnsafeTypeAdditionalTaintStep extends Unit {
-  predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    resolveClassStep(fromNode, toNode) or
-    looksLikeResolveClassStep(fromNode, toNode) or
-    intentFlowsToParcel(fromNode, toNode)
-  }
+private predicate isUnsafeTypeAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  resolveClassStep(fromNode, toNode) or
+  looksLikeResolveClassStep(fromNode, toNode) or
+  intentFlowsToParcel(fromNode, toNode)
 }
 
 /**
@@ -427,7 +425,7 @@ deprecated class UnsafeTypeConfig extends TaintTracking2::Configuration {
    * or at least looks like resolving a class.
    */
   override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    any(UnsafeTypeAdditionalTaintStep s).isAdditionalTaintStep(fromNode, toNode)
+    isUnsafeTypeAdditionalTaintStep(fromNode, toNode)
   }
 }
 
@@ -447,7 +445,7 @@ module UnsafeTypeConfig implements DataFlow::ConfigSig {
    * or at least looks like resolving a class.
    */
   predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    any(UnsafeTypeAdditionalTaintStep s).isAdditionalTaintStep(fromNode, toNode)
+    isUnsafeTypeAdditionalTaintStep(fromNode, toNode)
   }
 }
 
@@ -488,18 +486,18 @@ private module EnableJacksonDefaultTypingConfig implements DataFlow::ConfigSig {
 module EnableJacksonDefaultTypingFlow = DataFlow::Global<EnableJacksonDefaultTypingConfig>;
 
 /** Dataflow step that creates an `ObjectMapper` via a builder. */
-private class ObjectMapperBuilderAdditionalFlowStep extends Unit {
-  predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    exists(MethodAccess ma, Method m | m = ma.getMethod() |
-      m.getDeclaringType() instanceof MapperBuilder and
-      m.getReturnType()
-          .(RefType)
-          .hasQualifiedName("com.fasterxml.jackson.databind.json",
-            ["JsonMapper$Builder", "JsonMapper"]) and
-      fromNode.asExpr() = ma.getQualifier() and
-      ma = toNode.asExpr()
-    )
-  }
+private predicate isObjectMapperBuilderAdditionalFlowStep(
+  DataFlow::Node fromNode, DataFlow::Node toNode
+) {
+  exists(MethodAccess ma, Method m | m = ma.getMethod() |
+    m.getDeclaringType() instanceof MapperBuilder and
+    m.getReturnType()
+        .(RefType)
+        .hasQualifiedName("com.fasterxml.jackson.databind.json",
+          ["JsonMapper$Builder", "JsonMapper"]) and
+    fromNode.asExpr() = ma.getQualifier() and
+    ma = toNode.asExpr()
+  )
 }
 
 /**
@@ -524,7 +522,7 @@ deprecated class SafeObjectMapperConfig extends DataFlow2::Configuration {
    * that configures or creates an `ObjectMapper` via a builder.
    */
   override predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    any(ObjectMapperBuilderAdditionalFlowStep s).isAdditionalFlowStep(fromNode, toNode)
+    isObjectMapperBuilderAdditionalFlowStep(fromNode, toNode)
   }
 }
 
@@ -544,7 +542,7 @@ module SafeObjectMapperConfig implements DataFlow::ConfigSig {
    * that configures or creates an `ObjectMapper` via a builder.
    */
   predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
-    any(ObjectMapperBuilderAdditionalFlowStep s).isAdditionalFlowStep(fromNode, toNode)
+    isObjectMapperBuilderAdditionalFlowStep(fromNode, toNode)
   }
 }
 
