@@ -1,6 +1,6 @@
 | nominaltype.swift:35:6:35:6 | a | A | A |  |
 | nominaltype.swift:36:6:36:6 | a_alias | A_alias | A | getAliasedType:A |
-| nominaltype.swift:37:6:37:6 | a_optional_alias | A_optional_alias | Optional<A> | getAliasedType:Optional<A> |
+| nominaltype.swift:37:6:37:6 | a_optional_alias | A_optional_alias | A? | getAliasedType:A? |
 | nominaltype.swift:38:6:38:6 | b1 | B1 | B1 | getABaseType:A |
 | nominaltype.swift:39:6:39:6 | b2 | B2 | B2 | getABaseType:A_alias |
 | nominaltype.swift:40:6:40:6 | b1_alias | B1_alias | B1 | getABaseType:A, getAliasedType:B1 |
