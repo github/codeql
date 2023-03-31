@@ -54,6 +54,8 @@ predicate jumpStep = DataFlowPrivate::jumpStepSharedWithTypeTracker/2;
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
 predicate levelStepCall(Node nodeFrom, Node nodeTo) { none() }
 
+// For testing
+// private import TestSummaries
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which does not depend on the call graph. */
 predicate levelStepNoCall(Node nodeFrom, Node nodeTo) {
   exists(
@@ -65,24 +67,6 @@ predicate levelStepNoCall(Node nodeFrom, Node nodeTo) {
     nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
     nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
-}
-
-private class IdentitySummary extends SummarizedCallable {
-  IdentitySummary() { this = "identity" }
-
-  override DataFlowPublic::CallCfgNode getACall() { none() }
-
-  override DataFlowPublic::ArgumentNode getACallback() { none() }
-
-  override DataFlowPublic::CallCfgNode getACallSimple() {
-    result.getFunction().asExpr().(Name).getId() = "identity"
-  }
-
-  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-    input = "Argument[0]" and
-    output = "ReturnValue" and
-    preservesValue = true
-  }
 }
 
 /**
@@ -130,6 +114,17 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, string content) {
     nodeFrom = a.getValue() and
     nodeTo = a.getObject()
   )
+  // or
+  // exists(
+  //   SummarizedCallable callable, DataFlowPublic::CallCfgNode call, SummaryComponentStack input,
+  //   SummaryComponentStack output
+  // |
+  //   hasStoreSummary(callable, content, pragma[only_bind_into](input),
+  //     pragma[only_bind_into](output)) and
+  //   call = callable.getACallSimple() and
+  //   nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+  //   nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+  // )
 }
 
 /**
@@ -280,16 +275,26 @@ private DataFlowPublic::Node evaluateSummaryComponentStackLocal(
     stack = SCS::push(pragma[only_bind_out](head), pragma[only_bind_out](tail))
   |
     exists(
-      DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos,
-      DataFlowPrivate::DataFlowCallable c
+      DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos, Parameter p
     |
       head = SummaryComponent::parameter(apos) and
       DataFlowDispatch::parameterMatch(ppos, apos) and
-      prev.getScope() = c.getScope() and
-      result.(DataFlowPrivate::ParameterNodeImpl).isParameterOf(c, ppos)
+      // pick the SsaNode rather than the CfgNode
+      result.asVar().getDefinition().(ParameterDefinition).getParameter() = p and
+      (
+        exists(int i | ppos.isPositional(i) |
+          p = prev.getALocalSource().asExpr().(CallableExpr).getInnerScope().getArg(i)
+        )
+        or
+        exists(string name | ppos.isKeyword(name) |
+          p = prev.getALocalSource().asExpr().(CallableExpr).getInnerScope().getArgByName(name)
+        )
+      )
     )
     or
     head = SummaryComponent::return() and
-    result.(DataFlowPrivate::ReturnNode).getScope() = prev.asExpr().getScope()
+    // result should be return value of prev which should be a lambda
+    result.asCfgNode() =
+      prev.getALocalSource().asExpr().(CallableExpr).getInnerScope().getAReturnValueFlowNode()
   )
 }
