@@ -101,6 +101,7 @@ class Entity extends @object {
    * Note that for methods `pkg` is the package path followed by `.` followed
    * by the name of the receiver type, for example `io.Writer`.
    */
+  pragma[nomagic]
   predicate hasQualifiedName(string pkg, string name) {
     pkg = this.getPackage().getPath() and
     name = this.getName()
@@ -517,6 +518,7 @@ class Method extends Function {
    * `exists(Type t | t.hasQualifiedName(pkg, tp) and meth = t.getMethod(m))`: the latter
    * distinguishes between the method sets of `T` and `*T`, while the former does not.
    */
+  pragma[nomagic]
   predicate hasQualifiedName(string pkg, string tp, string m) {
     exists(NamedType t |
       this.isIn(t, m) and
