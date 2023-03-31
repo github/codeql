@@ -15,20 +15,16 @@ class Type extends Generated::Type {
   Type getUnderlyingType() { result = this }
 
   /**
-   * Gets any base type of this type, or the result of resolving a typedef. For
-   * example in the following code, `C` has base type `B` which has underlying
-   * type `A`. Thus, `getABaseOrAliasedType*` can be used to discover the
-   * relationship between `C` and `A`.
+   * Gets any base type of this type. For a `typealias`, this is a base type
+   * of the aliased type. For example in the following code, both `B` and
+   * `B_alias` have base type `A`.
    * ```
    * class A {}
    *
-   * typealias B = A
+   * class B : A {}
    *
-   * class C : B {}
+   * typealias B_alias = B
    * ```
    */
-  Type getABaseOrAliasedType() {
-    result = this.(NominalType).getABaseType() or
-    result = this.(TypeAliasType).getAliasedType()
-  }
+  Type getABaseType() { none() }
 }
