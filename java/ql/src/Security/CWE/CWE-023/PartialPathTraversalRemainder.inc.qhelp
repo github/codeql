@@ -27,8 +27,8 @@ and not just children of <code>parent</code>, which is a security issue.
 <p>
 
 In this example, the <code>if</code> statement checks if <code>parent.toPath()</code> 
-is a prefix of <code>dir.normalize()</code>. Because <code>Path#startsWith</code> will do the correct check that 
-<code>dir</code> is ia child children of <code>parent</code>, as desired.
+is a prefix of <code>dir.normalize()</code>. Because <code>Path#startsWith</code> does the correct check that 
+<code>dir</code> is a child of <code>parent</code>, users will not be able to access siblings of <code>parent</code>, as desired.
 
 </p>
 
