@@ -6,6 +6,7 @@ extensions:
       - ["java.io", "File", True, "createTempFile", "(String,String,File)", "", "Argument[2]", "create-file", "ai-generated"]
       - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[0]", "create-file", "ai-generated"]
       - ["java.io", "FileInputStream", True, "FileInputStream", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.io", "FileInputStream", True, "FileInputStream", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.io", "FileOutputStream", False, "FileOutputStream", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.io", "FileOutputStream", False, "write", "", "", "Argument[0]", "write-file", "manual"]
       - ["java.io", "FileReader", True, "FileReader", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
@@ -109,7 +110,6 @@ extensions:
       - ["java.io", "FileInputStream", "FileInputStream", "(File)", "manual"]
       - ["java.io", "InputStream", "close", "()", "manual"]
       - ["java.io", "OutputStream", "flush", "()", "manual"]
-
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
       - ["java.io", "DataInput", "readInt", "()", "manual"]         # taint-numeric
