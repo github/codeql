@@ -8,6 +8,8 @@ class _ChildModifier(_schema.PropertyModifier):
     def modify(self, prop: _schema.Property):
         if prop.type is None or prop.type[0].islower():
             raise _schema.Error("Non-class properties cannot be children")
+        if prop.is_unordered:
+            raise _schema.Error("Set properties cannot be children")
         prop.is_child = True
 
 
@@ -77,7 +79,7 @@ class _Optionalizer(_schema.PropertyModifier):
         K = _schema.Property.Kind
         if prop.kind != K.SINGLE:
             raise _schema.Error(
-                "Optional should only be applied to simple property types")
+                "optional should only be applied to simple property types")
         prop.kind = K.OPTIONAL
 
 
@@ -90,7 +92,15 @@ class _Listifier(_schema.PropertyModifier):
             prop.kind = K.REPEATED_OPTIONAL
         else:
             raise _schema.Error(
-                "Repeated should only be applied to simple or optional property types")
+                "list should only be applied to simple or optional property types")
+
+
+class _Setifier(_schema.PropertyModifier):
+    def modify(self, prop: _schema.Property):
+        K = _schema.Property.Kind
+        if prop.kind != K.SINGLE:
+            raise _schema.Error("set should only be applied to simple property types")
+        prop.kind = K.REPEATED_UNORDERED
 
 
 class _TypeModifier:
@@ -122,6 +132,7 @@ string = "string"
 predicate = _schema.predicate_marker
 optional = _TypeModifier(_Optionalizer())
 list = _TypeModifier(_Listifier())
+set = _TypeModifier(_Setifier())
 
 child = _ChildModifier()
 doc = _DocModifier

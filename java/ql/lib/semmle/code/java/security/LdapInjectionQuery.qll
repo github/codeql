@@ -1,3 +1,5 @@
+/** Provides a taint tracking configuration to reason about unvalidated user input that is used to construct LDAP queries. */
+
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.LdapInjection
@@ -17,4 +19,5 @@ module LdapInjectionFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
+/** Tracks flow from remote sources to LDAP injection vulnerabilities. */
 module LdapInjectionFlow = TaintTracking::Global<LdapInjectionFlowConfig>;

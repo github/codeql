@@ -14,35 +14,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-private import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.security.PathCreation
-import semmle.code.java.security.PathSanitizer
-import TaintedPathCommon
-
-module TaintedPathLocalConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(PathCreation p).getAnInput()
-    or
-    sinkNode(sink, "create-file")
-  }
-
-  predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer.getType() instanceof BoxedType or
-    sanitizer.getType() instanceof PrimitiveType or
-    sanitizer.getType() instanceof NumberType or
-    sanitizer instanceof PathInjectionSanitizer
-  }
-
-  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-    any(TaintedPathAdditionalTaintStep s).step(n1, n2)
-  }
-}
-
-module TaintedPathLocalFlow = TaintTracking::Global<TaintedPathLocalConfig>;
-
+import semmle.code.java.security.TaintedPathQuery
 import TaintedPathLocalFlow::PathGraph
 
 /**

@@ -14,36 +14,8 @@
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-private import semmle.code.java.dataflow.ExternalFlow
-import semmle.code.java.security.PathCreation
-import semmle.code.java.security.PathSanitizer
-import TaintedPathCommon
-
-module TaintedPathConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(PathCreation p).getAnInput()
-    or
-    sinkNode(sink, ["create-file", "read-file"])
-  }
-
-  predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer.getType() instanceof BoxedType or
-    sanitizer.getType() instanceof PrimitiveType or
-    sanitizer.getType() instanceof NumberType or
-    sanitizer instanceof PathInjectionSanitizer
-  }
-
-  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-    any(TaintedPathAdditionalTaintStep s).step(n1, n2)
-  }
-}
-
-module TaintedPath = TaintTracking::Global<TaintedPathConfig>;
-
-import TaintedPath::PathGraph
+import semmle.code.java.security.TaintedPathQuery
+import TaintedPathFlow::PathGraph
 
 /**
  * Gets the data-flow node at which to report a path ending at `sink`.
@@ -53,13 +25,13 @@ import TaintedPath::PathGraph
  * continue to report there; otherwise we report directly at `sink`.
  */
 DataFlow::Node getReportingNode(DataFlow::Node sink) {
-  TaintedPath::flowTo(sink) and
+  TaintedPathFlow::flowTo(sink) and
   if exists(PathCreation pc | pc.getAnInput() = sink.asExpr())
   then result.asExpr() = any(PathCreation pc | pc.getAnInput() = sink.asExpr())
   else result = sink
 }
 
-from TaintedPath::PathNode source, TaintedPath::PathNode sink
-where TaintedPath::flowPath(source, sink)
+from TaintedPathFlow::PathNode source, TaintedPathFlow::PathNode sink
+where TaintedPathFlow::flowPath(source, sink)
 select getReportingNode(sink.getNode()), source, sink, "This path depends on a $@.",
   source.getNode(), "user-provided value"

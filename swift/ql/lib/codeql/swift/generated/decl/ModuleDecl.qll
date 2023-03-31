@@ -23,62 +23,52 @@ module Generated {
 
     /**
      * Gets the `index`th imported module of this module declaration (0-based).
+     *Gets any of the imported modules of this module declaration.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ModuleDecl getImmediateImportedModule(int index) {
+    ModuleDecl getAnImmediateImportedModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertModuleDeclToRaw(this)
               .(Raw::ModuleDecl)
-              .getImportedModule(index))
+              .getAnImportedModule())
     }
 
     /**
      * Gets the `index`th imported module of this module declaration (0-based).
+     *Gets any of the imported modules of this module declaration.
      */
-    final ModuleDecl getImportedModule(int index) {
-      result = getImmediateImportedModule(index).resolve()
-    }
-
-    /**
-     * Gets any of the imported modules of this module declaration.
-     */
-    final ModuleDecl getAnImportedModule() { result = getImportedModule(_) }
+    final ModuleDecl getAnImportedModule() { result = getAnImmediateImportedModule().resolve() }
 
     /**
      * Gets the number of imported modules of this module declaration.
      */
-    final int getNumberOfImportedModules() { result = count(int i | exists(getImportedModule(i))) }
+    final int getNumberOfImportedModules() { result = count(getAnImportedModule()) }
 
     /**
      * Gets the `index`th exported module of this module declaration (0-based).
+     *Gets any of the exported modules of this module declaration.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ModuleDecl getImmediateExportedModule(int index) {
+    ModuleDecl getAnImmediateExportedModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertModuleDeclToRaw(this)
               .(Raw::ModuleDecl)
-              .getExportedModule(index))
+              .getAnExportedModule())
     }
 
     /**
      * Gets the `index`th exported module of this module declaration (0-based).
+     *Gets any of the exported modules of this module declaration.
      */
-    final ModuleDecl getExportedModule(int index) {
-      result = getImmediateExportedModule(index).resolve()
-    }
-
-    /**
-     * Gets any of the exported modules of this module declaration.
-     */
-    final ModuleDecl getAnExportedModule() { result = getExportedModule(_) }
+    final ModuleDecl getAnExportedModule() { result = getAnImmediateExportedModule().resolve() }
 
     /**
      * Gets the number of exported modules of this module declaration.
      */
-    final int getNumberOfExportedModules() { result = count(int i | exists(getExportedModule(i))) }
+    final int getNumberOfExportedModules() { result = count(getAnExportedModule()) }
   }
 }
