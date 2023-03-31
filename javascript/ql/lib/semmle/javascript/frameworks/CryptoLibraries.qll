@@ -149,7 +149,7 @@ private module BrowserIdCrypto {
  * A model of the Node.js builtin crypto library.
  */
 private module NodeJSCrypto {
-  private class InstantiatedAlgorithm extends DataFlow::CallNode {
+  private class InstantiatedAlgorithm extends API::CallNode {
     private string algorithmName;
 
     InstantiatedAlgorithm() {
@@ -166,11 +166,11 @@ private module NodeJSCrypto {
        *       Also matches `createHash`, `createHmac`, `createSign` instead of `createCipher`.
        */
 
-      exists(DataFlow::SourceNode mod |
-        mod = DataFlow::moduleImport("crypto") and
-        this = mod.getAMemberCall("create" + ["Hash", "Hmac", "Sign", "Cipher"]) and
-        algorithmName = this.getArgument(0).getStringValue()
-      )
+      this =
+        API::moduleImport("crypto")
+            .getMember("create" + ["Hash", "Hmac", "Sign", "Cipher"])
+            .getACall() and
+      algorithmName = this.getArgument(0).getStringValue()
     }
 
     CryptographicAlgorithm getAlgorithm() { result.matchesName(algorithmName) }
@@ -197,13 +197,12 @@ private module NodeJSCrypto {
       // crypto.generateKeyPair(type, options, callback)
       // crypto.generateKeyPairSync(type, options)
       // crypto.generateKeySync(type, options)
-      exists(DataFlow::SourceNode mod, string keyType |
+      exists(string keyType |
         keyType = "Key" and symmetric = true
         or
         keyType = "KeyPair" and symmetric = false
       |
-        mod = DataFlow::moduleImport("crypto") and
-        this = mod.getAMemberCall("generate" + keyType + ["", "Sync"])
+        this = API::moduleImport("crypto").getMember("generate" + keyType + ["", "Sync"]).getACall()
       )
     }
 
@@ -249,17 +248,15 @@ private module NodeJSCrypto {
 
   private class Key extends CryptographicKey {
     Key() {
-      exists(InstantiatedAlgorithm instantiation, string name |
-        name = "setPrivateKey" or
-        name = "sign"
-      |
-        this = instantiation.getAMethodCall(name).getArgument(0)
-      )
+      this =
+        any(InstantiatedAlgorithm i)
+            .getReturn()
+            .getMember(["setPrivateKey", "sign"])
+            .getParameter(0)
+            .asSink()
       or
-      exists(DataFlow::SourceNode mod, string name, DataFlow::InvokeNode call, int index |
-        mod = DataFlow::moduleImport("crypto") and
-        call = mod.getAMemberCall(name) and
-        this = call.getArgument(index)
+      exists(string name, int index |
+        this = API::moduleImport("crypto").getMember(name).getACall().getArgument(index)
       |
         index = 0 and
         (name = "privateDecrypt" or name = "privateEncrypt")
@@ -497,13 +494,12 @@ private module TweetNaCl {
        *      Also matches the "hash" method name, and the "nacl-fast" module.
        */
 
-      exists(DataFlow::SourceNode mod, string name |
+      exists(string name |
         name = "hash" and algorithm.matchesName("SHA512")
         or
         name = "sign" and algorithm.matchesName("ed25519")
       |
-        (mod = DataFlow::moduleImport("nacl") or mod = DataFlow::moduleImport("nacl-fast")) and
-        this = mod.getAMemberCall(name) and
+        this = API::moduleImport(["nacl", "nacl-fast"]).getMember(name).getACall() and
         super.getArgument(0) = input
       )
     }
@@ -529,17 +525,13 @@ private module HashJs {
    */
   private DataFlow::CallNode getAlgorithmNode(CryptographicAlgorithm algorithm) {
     exists(string algorithmName | algorithm.matchesName(algorithmName) |
-      result = DataFlow::moduleMember("hash.js", algorithmName).getACall()
+      result = API::moduleImport("hash.js").getMember(algorithmName).getACall()
       or
-      exists(DataFlow::SourceNode mod |
-        mod = DataFlow::moduleImport("hash.js/lib/hash/" + algorithmName)
-        or
-        exists(string size |
-          mod = DataFlow::moduleImport("hash.js/lib/hash/sha/" + size) and
-          algorithmName = "SHA" + size
-        )
-      |
-        result = mod.getACall()
+      result = API::moduleImport("hash.js/lib/hash/" + algorithmName).getACall()
+      or
+      exists(string size |
+        result = API::moduleImport("hash.js/lib/hash/sha/" + size).getACall() and
+        algorithmName = "SHA" + size
       )
     )
   }
@@ -579,10 +571,7 @@ private module HashJs {
  * A model of the forge library.
  */
 private module Forge {
-  private DataFlow::SourceNode getAnImportNode() {
-    result = DataFlow::moduleImport("forge") or
-    result = DataFlow::moduleImport("node-forge")
-  }
+  private API::Node getAnImportNode() { result = API::moduleImport(["forge", "node-forge"]) }
 
   abstract private class Cipher extends DataFlow::CallNode {
     abstract CryptographicAlgorithm getAlgorithm();
@@ -594,14 +583,14 @@ private module Forge {
     private string blockModeString;
 
     KeyCipher() {
-      exists(DataFlow::SourceNode mod, string algorithmName |
-        mod = getAnImportNode() and
-        algorithm.matchesName(algorithmName)
-      |
-        exists(string createName, string cipherName, string cipherPrefix |
+      exists(string algorithmName | algorithm.matchesName(algorithmName) |
+        exists(string cipherName, string cipherPrefix |
           // `require('forge').cipher.createCipher("3DES-CBC").update("secret", "key");`
-          (createName = "createCipher" or createName = "createDecipher") and
-          this = mod.getAPropertyRead("cipher").getAMemberCall(createName) and
+          this =
+            getAnImportNode()
+                .getMember("cipher")
+                .getMember(["createCipher", "createDecipher"])
+                .getACall() and
           this.getArgument(0).mayHaveStringValue(cipherName) and
           cipherName = cipherPrefix + "-" + blockModeString and
           blockModeString = ["CBC", "CFB", "CTR", "ECB", "GCM", "OFB"] and
@@ -610,13 +599,13 @@ private module Forge {
         )
         or
         // `require("forge").rc2.createEncryptionCipher("key").update("secret");`
-        exists(string createName |
-          createName = "createEncryptionCipher" or createName = "createDecryptionCipher"
-        |
-          this = mod.getAPropertyRead(algorithmName).getAMemberCall(createName) and
-          key = this.getArgument(0) and
-          blockModeString = algorithmName
-        )
+        this =
+          getAnImportNode()
+              .getMember(algorithmName)
+              .getMember(["createEncryptionCipher", "createDecryptionCipher"])
+              .getACall() and
+        key = this.getArgument(0) and
+        blockModeString = algorithmName
       )
     }
 
@@ -637,10 +626,7 @@ private module Forge {
       exists(string algorithmName | algorithm.matchesName(algorithmName) |
         // require("forge").md.md5.create().update('The quick brown fox jumps over the lazy dog');
         this =
-          getAnImportNode()
-              .getAPropertyRead("md")
-              .getAPropertyRead(algorithmName)
-              .getAMemberCall("create")
+          getAnImportNode().getMember("md").getMember(algorithmName).getMember("create").getACall()
       )
     }
 
@@ -676,15 +662,17 @@ private module Forge {
       // var cipher = forge.rc2.createEncryptionCipher(key, 128);
       this =
         getAnImportNode()
-            .getAPropertyRead(any(string s | algorithm.matchesName(s)))
-            .getAMemberCall("createEncryptionCipher")
+            .getMember(any(string s | algorithm.matchesName(s)))
+            .getMember("createEncryptionCipher")
+            .getACall()
       or
       // var key = forge.random.getBytesSync(16);
       // var cipher = forge.cipher.createCipher('AES-CBC', key);
       this =
         getAnImportNode()
-            .getAPropertyRead("cipher")
-            .getAMemberCall(["createCipher", "createDecipher"]) and
+            .getMember("cipher")
+            .getMember(["createCipher", "createDecipher"])
+            .getACall() and
       algorithm.matchesName(this.getArgument(0).getStringValue())
     }
 
@@ -713,12 +701,9 @@ private module Md5 {
 
     Apply() {
       // `require("md5")("message");`
-      exists(DataFlow::SourceNode mod |
-        mod = DataFlow::moduleImport("md5") and
-        algorithm.matchesName("MD5") and
-        this = mod.getACall() and
-        super.getArgument(0) = input
-      )
+      algorithm.matchesName("MD5") and
+      this = API::moduleImport("md5").getACall() and
+      super.getArgument(0) = input
     }
 
     override DataFlow::Node getAnInput() { result = input }
@@ -740,21 +725,12 @@ private module Bcrypt {
 
     Apply() {
       // `require("bcrypt").hash(password);` with minor naming variations
-      exists(DataFlow::SourceNode mod, string moduleName, string methodName |
-        algorithm.matchesName("BCRYPT") and
-        (
-          moduleName = "bcrypt" or
-          moduleName = "bcryptjs" or
-          moduleName = "bcrypt-nodejs"
-        ) and
-        (
-          methodName = "hash" or
-          methodName = "hashSync"
-        ) and
-        mod = DataFlow::moduleImport(moduleName) and
-        this = mod.getAMemberCall(methodName) and
-        super.getArgument(0) = input
-      )
+      algorithm.matchesName("BCRYPT") and
+      this =
+        API::moduleImport(["bcrypt", "bcryptjs", "bcrypt-nodejs"])
+            .getMember(["hash", "hashSync"])
+            .getACall() and
+      super.getArgument(0) = input
     }
 
     override DataFlow::Node getAnInput() { result = input }
@@ -776,13 +752,11 @@ private module Hasha {
 
     Apply() {
       // `require('hasha')('unicorn', { algorithm: "md5" });`
-      exists(DataFlow::SourceNode mod, string algorithmName, DataFlow::Node algorithmNameNode |
-        mod = DataFlow::moduleImport("hasha") and
-        this = mod.getACall() and
+      exists(string algorithmName |
+        this = API::moduleImport("hasha").getACall() and
         super.getArgument(0) = input and
         algorithm.matchesName(algorithmName) and
-        super.getOptionArgument(1, "algorithm") = algorithmNameNode and
-        algorithmNameNode.mayHaveStringValue(algorithmName)
+        super.getOptionArgument(1, "algorithm").mayHaveStringValue(algorithmName)
       )
     }
 
@@ -800,7 +774,7 @@ private module Hasha {
  */
 private module ExpressJwt {
   private class Key extends CryptographicKey {
-    Key() { this = DataFlow::moduleMember("express-jwt", "sign").getACall().getArgument(1) }
+    Key() { this = API::moduleImport("express-jwt").getMember("sign").getACall().getArgument(1) }
   }
 }
 
