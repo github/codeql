@@ -43,7 +43,9 @@ httpRequests
 | NetHttp.rb:13:6:13:17 | call to get |
 | NetHttp.rb:14:6:14:18 | call to post |
 | NetHttp.rb:15:6:15:17 | call to put |
+| NetHttp.rb:16:6:16:19 | call to patch |
 | NetHttp.rb:24:3:24:33 | call to get |
+| NetHttp.rb:29:1:29:32 | call to post |
 | OpenURI.rb:3:9:3:41 | call to open |
 | OpenURI.rb:6:9:6:34 | call to open |
 | OpenURI.rb:9:9:9:38 | call to open |
@@ -110,7 +112,9 @@ getFramework
 | NetHttp.rb:13:6:13:17 | call to get | Net::HTTP |
 | NetHttp.rb:14:6:14:18 | call to post | Net::HTTP |
 | NetHttp.rb:15:6:15:17 | call to put | Net::HTTP |
+| NetHttp.rb:16:6:16:19 | call to patch | Net::HTTP |
 | NetHttp.rb:24:3:24:33 | call to get | Net::HTTP |
+| NetHttp.rb:29:1:29:32 | call to post | Net::HTTP |
 | OpenURI.rb:3:9:3:41 | call to open | OpenURI |
 | OpenURI.rb:6:9:6:34 | call to open | OpenURI |
 | OpenURI.rb:9:9:9:38 | call to open | OpenURI |
@@ -259,8 +263,11 @@ getAUrlPart
 | NetHttp.rb:14:6:14:18 | call to post | NetHttp.rb:14:15:14:17 | "/" |
 | NetHttp.rb:15:6:15:17 | call to put | NetHttp.rb:11:21:11:41 | "https://example.com" |
 | NetHttp.rb:15:6:15:17 | call to put | NetHttp.rb:15:14:15:16 | "/" |
+| NetHttp.rb:16:6:16:19 | call to patch | NetHttp.rb:11:21:11:41 | "https://example.com" |
+| NetHttp.rb:16:6:16:19 | call to patch | NetHttp.rb:16:16:16:18 | "/" |
 | NetHttp.rb:24:3:24:33 | call to get | NetHttp.rb:24:17:24:22 | domain |
 | NetHttp.rb:24:3:24:33 | call to get | NetHttp.rb:24:29:24:32 | path |
+| NetHttp.rb:29:1:29:32 | call to post | NetHttp.rb:29:16:29:18 | uri |
 | OpenURI.rb:3:9:3:41 | call to open | OpenURI.rb:3:21:3:40 | "http://example.com" |
 | OpenURI.rb:6:9:6:34 | call to open | OpenURI.rb:6:14:6:33 | "http://example.com" |
 | OpenURI.rb:9:9:9:38 | call to open | OpenURI.rb:9:18:9:37 | "http://example.com" |
