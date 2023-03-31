@@ -99,6 +99,7 @@ private module Frameworks {
   private import codeql.swift.security.CleartextStorageDatabaseExtensions
   private import codeql.swift.security.PathInjectionExtensions
   private import codeql.swift.security.PredicateInjectionExtensions
+  private import codeql.swift.security.StringLengthConflationExtensions
 }
 
 /**
