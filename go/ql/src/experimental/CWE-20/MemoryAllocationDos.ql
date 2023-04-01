@@ -55,7 +55,7 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(DataFlow::CallNode call |
-      node2 = call and
+      node2 = call.getResult(0) and
       call.getTarget().hasQualifiedName("strconv", ["Atoi", "ParseInt", "ParseUint"]) and
       call.getArgument(0) = node1
     )

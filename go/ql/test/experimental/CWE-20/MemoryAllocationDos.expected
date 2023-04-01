@@ -1,0 +1,8 @@
+edges
+| MemoryAllocationDosBad.go:11:24:11:29 | selection of Form | MemoryAllocationDosBad.go:12:19:12:19 | c |
+nodes
+| MemoryAllocationDosBad.go:11:24:11:29 | selection of Form | semmle.label | selection of Form |
+| MemoryAllocationDosBad.go:12:19:12:19 | c | semmle.label | c |
+subpaths
+#select
+| MemoryAllocationDosBad.go:12:19:12:19 | c | MemoryAllocationDosBad.go:11:24:11:29 | selection of Form | MemoryAllocationDosBad.go:12:19:12:19 | c | Untrusted memory allocation size depends on a $@. | MemoryAllocationDosBad.go:11:24:11:29 | selection of Form | user-provided value |
