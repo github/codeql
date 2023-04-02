@@ -1,11 +1,11 @@
 /**
-* Provides a taint tracking configuration for reasoning about
-* sensitive information in broken or weak cryptographic algorithms.
-*
-* Note, for performance reasons: only import this file if
-* `SensitiveDataUsedInWeakCryptoOperationQuery::Configuration` is needed, otherwise
-* `SensitiveDataUsedInWeakCryptoOperationCustomizations` should be imported instead.
-*/
+ * Provides a taint tracking configuration for reasoning about
+ * sensitive information in broken or weak cryptographic algorithms.
+ *
+ * Note, for performance reasons: only import this file if
+ * `SensitiveDataUsedInWeakCryptoOperationQuery::Configuration` is needed, otherwise
+ * `SensitiveDataUsedInWeakCryptoOperationCustomizations` should be imported instead.
+ */
 
 import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
