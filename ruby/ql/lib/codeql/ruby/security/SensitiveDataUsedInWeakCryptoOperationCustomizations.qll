@@ -8,6 +8,11 @@ import ruby
 import codeql.ruby.Concepts::Cryptography
 private import codeql.ruby.security.SensitiveActions
 
+/**
+* Provides default sources, sinks and sanitizers for reasoning about
+* sensitive information in broken or weak cryptographic algorithms,
+* as well as extension points for adding your own.
+*/
 module SensitiveDataUsedInWeakCryptoOperation {
   /**
    * A data flow source for sensitive information in broken or weak cryptographic algorithms.
