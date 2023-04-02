@@ -44,6 +44,7 @@ postWithInFlow
 | example.c:28:23:28:25 | pos [inner post update] | PostUpdateNode should not be the target of local flow. |
 | globals.cpp:13:5:13:19 | flowTestGlobal1 [post update] | PostUpdateNode should not be the target of local flow. |
 | globals.cpp:23:5:23:19 | flowTestGlobal2 [post update] | PostUpdateNode should not be the target of local flow. |
+| globals.cpp:34:18:34:18 | x [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:23:3:23:14 | v [post update] | PostUpdateNode should not be the target of local flow. |
 | lambdas.cpp:43:3:43:3 | c [post update] | PostUpdateNode should not be the target of local flow. |
 | ref.cpp:11:5:11:7 | lhs [post update] | PostUpdateNode should not be the target of local flow. |

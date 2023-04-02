@@ -22,3 +22,20 @@ void readGlobal2() {
 void writeGlobal2() {
     flowTestGlobal2 = source();
 }
+
+namespace MyNamespace {
+    struct A {
+        int x;
+    };
+
+    A global_a;
+
+    void set_without_ssa_def() {
+        global_a.x = source();
+    }
+
+    void call_set_without_ssa_def() {
+        set_without_ssa_def();
+        sink(global_a.x); // $ MISSING: ast,ir
+    }
+}
