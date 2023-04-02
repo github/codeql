@@ -36,6 +36,6 @@ namespace MyNamespace {
 
     void call_set_without_ssa_def() {
         set_without_ssa_def();
-        sink(global_a.x); // $ MISSING: ast,ir
+        sink(global_a.x); // $ ir MISSING: ast
     }
 }
