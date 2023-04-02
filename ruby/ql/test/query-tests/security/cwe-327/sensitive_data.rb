@@ -36,3 +36,11 @@ strong.encrypt
 strong.random_key
 strong.update(k) # OKAY: encrypting sensitive data using a strong algoithm
 strong.final
+
+username = "someone"
+
+weak = OpenSSL::Cipher::AES.new(128, 'ecb')
+weak.encrypt
+weak.random_key
+weak.update(username) # OKAY: not sensitive
+weak.final

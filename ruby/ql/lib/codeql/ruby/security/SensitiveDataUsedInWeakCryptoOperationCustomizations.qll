@@ -37,6 +37,11 @@ module SensitiveDataUsedInWeakCryptoOperation {
    * in broken or weak cryptographic algorithms.
    */
   class SensitiveExprSource extends Source instanceof SensitiveNode {
+    SensitiveExprSource() {
+      // Exclude user names and similar information
+      this.getClassification() != SensitiveDataClassification::id()
+    }
+
     override string describe() { result = SensitiveNode.super.describe() }
   }
 
