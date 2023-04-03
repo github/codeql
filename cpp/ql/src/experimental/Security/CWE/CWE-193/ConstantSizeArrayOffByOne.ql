@@ -10,9 +10,9 @@
  *       experimental
  */
 
-import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysis
-import experimental.semmle.code.cpp.semantic.SemanticBound
-import experimental.semmle.code.cpp.semantic.SemanticExprSpecific
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticBound
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.DataFlow
 import PointerArithmeticToDerefFlow::PathGraph

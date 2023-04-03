@@ -11,9 +11,10 @@
 
 import cpp
 import experimental.semmle.code.cpp.dataflow.ProductFlow
-import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysis
-import experimental.semmle.code.cpp.rangeanalysis.Bound
-import experimental.semmle.code.cpp.semantic.SemanticExprSpecific
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticBound
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.Bound
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.models.interfaces.Allocation
@@ -34,7 +35,7 @@ class PhpEmalloc extends AllocationFunction {
   override int getSizeArg() { result = 0 }
 }
 
-predicate bounded(Instruction i, Bound b, int delta, boolean upper) {
+predicate bounded(Instruction i, SemBound b, int delta, boolean upper) {
   // TODO: reason
   semBounded(getSemanticExpr(i), b, delta, upper, _)
 }

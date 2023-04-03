@@ -17,9 +17,9 @@ import experimental.semmle.code.cpp.dataflow.ProductFlow
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.models.interfaces.ArrayFunction
-import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysis
-import experimental.semmle.code.cpp.semantic.SemanticBound
-import experimental.semmle.code.cpp.semantic.SemanticExprSpecific
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticBound
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import DataFlow::PathGraph
 
 pragma[nomagic]
