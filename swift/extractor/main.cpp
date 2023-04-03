@@ -16,6 +16,7 @@
 #include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/file/Path.h"
+#include "swift/extractor/infra/log/SwiftLogging.h"
 
 using namespace std::string_literals;
 
@@ -179,7 +180,27 @@ codeql::SwiftExtractorConfiguration configure(int argc, char** argv) {
   return configuration;
 }
 
-int main(int argc, char** argv) {
+static auto argDump(int argc, char** argv) {
+  std::string ret;
+  for (auto arg = argv + 1; arg < argv + argc; ++arg) {
+    ret += *arg;
+    ret += ' ';
+  }
+  ret.pop_back();
+  return ret;
+}
+
+static auto envDump(char** envp) {
+  std::string ret;
+  for (auto env = envp; *env; ++env) {
+    ret += *env;
+    ret += '\n';
+  }
+  ret.pop_back();
+  return ret;
+}
+
+int main(int argc, char** argv, char** envp) {
   checkWhetherToRunUnderTool(argc, argv);
 
   if (argc == 1) {
@@ -193,6 +214,10 @@ int main(int argc, char** argv) {
   initializeSwiftModules();
 
   const auto configuration = configure(argc, argv);
+  codeql::Log::configure("extractor");
+  auto& logger = codeql::logger();
+  LOG_INFO("calling extractor with arguments \"{}\"", argDump(argc, argv));
+  LOG_DEBUG("environment:\n{}\n", envDump(envp));
 
   auto openInterception = codeql::setupFileInterception(configuration);
 
@@ -203,6 +228,8 @@ int main(int argc, char** argv) {
   if (frontend_rc == 0) {
     observer.markSuccessfullyExtractedFiles();
   }
+
+  codeql::Log::flush();
 
   return frontend_rc;
 }
