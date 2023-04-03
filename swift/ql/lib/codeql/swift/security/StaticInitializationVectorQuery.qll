@@ -20,31 +20,6 @@ class StaticInitializationVectorSource extends Expr {
 }
 
 /**
- * A class for all ways to set an IV.
- */
-class EncryptionInitializationSink extends Expr {
-  EncryptionInitializationSink() {
-    // `iv` arg in `init` is a sink
-    exists(InitializerCallExpr call |
-      call.getStaticTarget()
-          .hasQualifiedName([
-              "AES", "ChaCha20", "Blowfish", "Rabbit", "CBC", "CFB", "GCM", "OCB", "OFB", "PCBC",
-              "CCM", "CTR"
-            ], _) and
-      call.getArgumentWithLabel("iv").getExpr() = this
-    )
-    or
-    // RNCryptor
-    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
-      c.getFullName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
-      c.getAMember() = f and
-      call.getStaticTarget() = f and
-      call.getArgumentWithLabel(["iv", "IV"]).getExpr() = this
-    )
-  }
-}
-
-/**
  * A dataflow configuration from the source of a static IV to expressions that use
  * it to initialize a cipher.
  */
@@ -53,7 +28,13 @@ module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
     node.asExpr() instanceof StaticInitializationVectorSource
   }
 
-  predicate isSink(DataFlow::Node node) { node.asExpr() instanceof EncryptionInitializationSink }
+  predicate isSink(DataFlow::Node node) { node instanceof StaticInitializationVectorSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof StaticInitializationVectorSanitizer}
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(StaticInitializationVectorAdditionalTaintStep s).step(nodeFrom, nodeTo)
+  }
 }
 
 module StaticInitializationVectorFlow = TaintTracking::Global<StaticInitializationVectorConfig>;

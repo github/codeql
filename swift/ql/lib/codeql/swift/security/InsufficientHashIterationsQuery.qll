@@ -6,7 +6,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
-import codeql.swift.security.InsufficientHashIterationsQuery
+import codeql.swift.security.InsufficientHashIterationsExtensions
 
 /**
  * An `Expr` that is used to initialize a password-based encryption key.
@@ -21,28 +21,19 @@ class IntLiteralSource extends IterationsSource instanceof IntegerLiteralExpr {
 }
 
 /**
- * A class for all ways to set the iterations of hash function.
- */
-class InsufficientHashIterationsSink extends Expr {
-  InsufficientHashIterationsSink() {
-    // `iterations` arg in `init` is a sink
-    exists(ClassOrStructDecl c, ConstructorDecl f, CallExpr call |
-      c.getName() = ["PBKDF1", "PBKDF2"] and
-      c.getAMember() = f and
-      call.getStaticTarget() = f and
-      call.getArgumentWithLabel("iterations").getExpr() = this
-    )
-  }
-}
-
-/**
  * A dataflow configuration from the hash iterations source to expressions that use
  * it to initialize hash functions.
  */
 module InsufficientHashIterationsConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof IterationsSource }
 
-  predicate isSink(DataFlow::Node node) { node.asExpr() instanceof InsufficientHashIterationsSink }
+  predicate isSink(DataFlow::Node node) { node instanceof InsufficientHashIterationsSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof InsufficientHashIterationsSanitizer}
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(InsufficientHashIterationsAdditionalTaintStep s).step(nodeFrom, nodeTo)
+  }
 }
 
 module InsufficientHashIterationsFlow = TaintTracking::Global<InsufficientHashIterationsConfig>;

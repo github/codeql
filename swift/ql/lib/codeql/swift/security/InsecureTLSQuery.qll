@@ -10,7 +10,7 @@ import codeql.swift.dataflow.FlowSources
 import codeql.swift.security.InsecureTLSExtensions
 
 /**
- * A taint config to detect insecure configuration of `NSURLSessionConfiguration`
+ * A taint config to detect insecure configuration of `NSURLSessionConfiguration`.
  */
 module InsecureTlsConfig implements DataFlow::ConfigSig {
   /**
@@ -21,18 +21,12 @@ module InsecureTlsConfig implements DataFlow::ConfigSig {
       ["TLSv10", "TLSv11", "tlsProtocol10", "tlsProtocol11"]
   }
 
-  /**
-   * Holds for assignment of TLS-related properties of `NSURLSessionConfiguration`
-   */
-  predicate isSink(DataFlow::Node node) {
-    exists(AssignExpr assign |
-      assign.getSource() = node.asExpr() and
-      assign.getDest().(MemberRefExpr).getMember().(ConcreteVarDecl).getName() =
-        [
-          "tlsMinimumSupportedProtocolVersion", "tlsMinimumSupportedProtocol",
-          "tlsMaximumSupportedProtocolVersion", "tlsMaximumSupportedProtocol"
-        ]
-    )
+  predicate isSink(DataFlow::Node node) { node instanceof InsecureTlsExtensionsSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof InsecureTlsExtensionsSanitizer}
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(InsecureTlsExtensionsAdditionalTaintStep s).step(nodeFrom, nodeTo)
   }
 }
 

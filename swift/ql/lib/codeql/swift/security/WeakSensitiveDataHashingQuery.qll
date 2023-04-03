@@ -12,7 +12,13 @@ import codeql.swift.security.WeakSensitiveDataHashingExtensions
 module WeakHashingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof WeakHashingConfigImpl::Source }
 
-  predicate isSink(DataFlow::Node node) { node instanceof WeakHashingConfigImpl::Sink }
+  predicate isSink(DataFlow::Node node) { node instanceof WeakSensitiveDataHashingSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof WeakSensitiveDataHashingSanitizer}
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(WeakSensitiveDataHashingAdditionalTaintStep s).step(nodeFrom, nodeTo)
+  }
 }
 
 module WeakHashingFlow = TaintTracking::Global<WeakHashingConfig>;
@@ -20,25 +26,5 @@ module WeakHashingFlow = TaintTracking::Global<WeakHashingConfig>;
 module WeakHashingConfigImpl {
   class Source extends DataFlow::Node {
     Source() { this.asExpr() instanceof SensitiveExpr }
-  }
-
-  abstract class Sink extends DataFlow::Node {
-    abstract string getAlgorithm();
-  }
-
-  class CryptoHash extends Sink {
-    string algorithm;
-
-    CryptoHash() {
-      exists(ApplyExpr call, FuncDecl func |
-        call.getAnArgument().getExpr() = this.asExpr() and
-        call.getStaticTarget() = func and
-        func.getName().matches(["hash(%", "update(%"]) and
-        algorithm = func.getEnclosingDecl().(ClassOrStructDecl).getName() and
-        algorithm = ["MD5", "SHA1"]
-      )
-    }
-
-    override string getAlgorithm() { result = algorithm }
   }
 }

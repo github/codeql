@@ -20,7 +20,7 @@ from
   SensitiveExpr expr
 where
   WeakHashingFlow::flowPath(source, sink) and
-  algorithm = sink.getNode().(WeakHashingConfigImpl::Sink).getAlgorithm() and
+  algorithm = sink.getNode().(WeakSensitiveDataHashingSink).getAlgorithm() and
   expr = source.getNode().asExpr()
 select sink.getNode(), source, sink,
   "Insecure hashing algorithm (" + algorithm + ") depends on $@.", source.getNode(),

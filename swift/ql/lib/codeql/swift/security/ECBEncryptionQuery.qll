@@ -1,47 +1,12 @@
 /**
  * Provides a taint tracking configuration to find encryption using the
- * ECB encrpytion mode.
+ * ECB encryption mode.
  */
 
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
 import codeql.swift.security.ECBEncryptionExtensions
-
-/**
- * An `Expr` that is used to initialize the block mode of a cipher.
- */
-abstract class BlockMode extends Expr { }
-
-/**
- * An `Expr` that is used to form an `AES` cipher.
- */
-class AES extends BlockMode {
-  AES() {
-    // `blockMode` arg in `AES.init` is a sink
-    exists(CallExpr call |
-      call.getStaticTarget()
-          .(MethodDecl)
-          .hasQualifiedName("AES", ["init(key:blockMode:)", "init(key:blockMode:padding:)"]) and
-      call.getArgument(1).getExpr() = this
-    )
-  }
-}
-
-/**
- * An `Expr` that is used to form a `Blowfish` cipher.
- */
-class Blowfish extends BlockMode {
-  Blowfish() {
-    // `blockMode` arg in `Blowfish.init` is a sink
-    exists(CallExpr call |
-      call.getStaticTarget()
-          .(MethodDecl)
-          .hasQualifiedName("Blowfish", "init(key:blockMode:padding:)") and
-      call.getArgument(1).getExpr() = this
-    )
-  }
-}
 
 /**
  * A taint configuration from the constructor of ECB mode to expressions that use
@@ -55,7 +20,13 @@ module EcbEncryptionConfig implements DataFlow::ConfigSig {
     )
   }
 
-  predicate isSink(DataFlow::Node node) { node.asExpr() instanceof BlockMode }
+  predicate isSink(DataFlow::Node node) { node instanceof EcbEncryptionSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof EcbEncryptionSanitizer}
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(EcbEncryptionAdditionalTaintStep s).step(nodeFrom, nodeTo)
+  }
 }
 
 module EcbEncryptionFlow = DataFlow::Global<EcbEncryptionConfig>;

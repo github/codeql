@@ -26,39 +26,19 @@ class ByteArrayLiteralSource extends KeySource {
 class StringLiteralSource extends KeySource instanceof StringLiteralExpr { }
 
 /**
- * A class for all ways to set a key.
- */
-class EncryptionKeySink extends Expr {
-  EncryptionKeySink() {
-    // `key` arg in `init` is a sink
-    exists(CallExpr call, string fName |
-      call.getStaticTarget()
-          .(MethodDecl)
-          .hasQualifiedName([
-              "AES", "HMAC", "ChaCha20", "CBCMAC", "CMAC", "Poly1305", "Blowfish", "Rabbit"
-            ], fName) and
-      fName.matches("init(key:%") and
-      call.getArgument(0).getExpr() = this
-    )
-    or
-    // RNCryptor
-    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
-      c.getFullName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
-      c.getAMember() = f and
-      call.getStaticTarget() = f and
-      call.getArgumentWithLabel(["encryptionKey", "withEncryptionKey"]).getExpr() = this
-    )
-  }
-}
-
-/**
  * A taint configuration from the key source to expressions that use
  * it to initialize a cipher.
  */
 module HardcodedKeyConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof KeySource }
 
-  predicate isSink(DataFlow::Node node) { node.asExpr() instanceof EncryptionKeySink }
+  predicate isSink(DataFlow::Node node) { node instanceof HardcodedEncryptionKeySink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof HardcodedEncryptionKeySanitizer}
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(HardcodedEncryptionKeyAdditionalTaintStep s).step(nodeFrom, nodeTo)
+  }
 }
 
 module HardcodedKeyFlow = TaintTracking::Global<HardcodedKeyConfig>;
