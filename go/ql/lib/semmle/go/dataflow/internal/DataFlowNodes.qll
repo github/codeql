@@ -570,6 +570,12 @@ module Public {
   abstract class ParameterNode extends DataFlow::Node {
     /** Holds if this node initializes the `i`th parameter of `c`. */
     abstract predicate isParameterOf(DataFlowCallable c, int i);
+
+    /** Gets the callable that this parameter belongs to. */
+    DataFlowCallable getCallable() { this.isParameterOf(result, _) }
+
+    /** Gets this parameter's position. */
+    int getPosition() { this.isParameterOf(_, result) }
   }
 
   /**
@@ -722,20 +728,18 @@ module Public {
      */
     predicate argumentOf(CallExpr call, int pos) {
       call = c.asExpr() and
-      pos = i and
-      (
-        i != -1
-        or
-        exists(c.(MethodCallNode).getTarget().getBody())
-        or
-        hasExternalSpecification(c.(DataFlow::MethodCallNode).getTarget())
-      )
+      pos = i
     }
 
     /**
      * Gets the `CallNode` this is an argument to.
      */
     CallNode getCall() { result = c }
+
+    /**
+     * Gets this argument's position.
+     */
+    int getPosition() { result = i }
   }
 
   /**

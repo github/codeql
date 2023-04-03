@@ -271,3 +271,11 @@ Function viableImplInCallContext(CallInstruction call, CallInstruction ctx) {
 /** Holds if arguments at position `apos` match parameters at position `ppos`. */
 pragma[inline]
 predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+
+/**
+ * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
+ *
+ * This is a filter on top of the language-neutral argument/parameter matching implemented by `viableParamArg`.
+ */
+pragma[inline]
+predicate viableParamArgSpecific(DataFlowCall call, ParameterNode p, ArgumentNode arg) { any() }

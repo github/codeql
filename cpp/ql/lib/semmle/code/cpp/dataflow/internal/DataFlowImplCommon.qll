@@ -425,7 +425,8 @@ private module Cached {
     exists(ParameterPosition ppos |
       viableParam(call, ppos, p) and
       argumentPositionMatch(call, arg, ppos) and
-      compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(p))
+      compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(p)) and
+      viableParamArgSpecific(call, p, arg)
     )
   }
 
