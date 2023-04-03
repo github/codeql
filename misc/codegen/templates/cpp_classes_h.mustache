@@ -5,6 +5,8 @@
 #include <iostream>
 #include <optional>
 #include <vector>
+#include <binlog/binlog.hpp>
+#include <binlog/adapt_stdoptional.hpp>
 
 #include "{{trap_library}}/TrapLabel.h"
 #include "{{trap_library}}/TrapTagTraits.h"
@@ -80,3 +82,9 @@ struct detail::ToTrapClassFunctor<{{name}}Tag> {
 };
 {{/classes}}
 }
+
+{{#classes}}
+{{#final}}
+BINLOG_ADAPT_STRUCT(codeql::{{name}}, id{{> cpp_list_fields}});
+{{/final}}
+{{/classes}}

@@ -5,18 +5,21 @@
 
 #include "swift/extractor/trap/TrapLabel.h"
 #include "swift/extractor/infra/file/TargetFile.h"
+#include "swift/extractor/infra/log/SwiftLogging.h"
 
 namespace codeql {
 
 // Abstracts a given trap output file, with its own universe of trap labels
 class TrapDomain {
   TargetFile out;
+  Logger logger{out.target().filename()};
 
  public:
   explicit TrapDomain(TargetFile&& out) : out{std::move(out)} {}
 
   template <typename Entry>
   void emit(const Entry& e) {
+    LOG_TRACE("{}", e);
     out << e << '\n';
   }
 
@@ -48,6 +51,7 @@ class TrapDomain {
                                                  Args&&... args) {
     auto ret = allocateLabel<Tag>();
     assignKey(ret, std::forward<Args>(args)...);
+    LOG_TRACE("^^^ .implementation {}", implementationId);
     out << " .implementation " << trapQuoted(implementationId) << '\n';
     return ret;
   }
@@ -62,6 +66,7 @@ class TrapDomain {
 
   template <typename Tag>
   void assignStar(TrapLabel<Tag> label) {
+    LOG_TRACE("{}=*", label);
     out << label << "=*";
   }
 
@@ -69,6 +74,7 @@ class TrapDomain {
   void assignKey(TrapLabel<Tag> label, const std::string& key) {
     // prefix the key with the id to guarantee the same key is not used wrongly with different tags
     auto prefixed = std::string(Tag::prefix) + '_' + key;
+    LOG_TRACE("{}=@{}", label, prefixed);
     out << label << "=@" << trapQuoted(prefixed);
   }
 
