@@ -54,7 +54,7 @@ predicate nodeIsBarrierEqualityCandidate(DataFlow::Node node, Operand access, Va
 
 predicate isFlowSource(FlowSource source, string sourceType) { sourceType = source.getSourceType() }
 
-module TaintedAllocationSizeConfiguration implements DataFlow::ConfigSig {
+module TaintedAllocationSizeConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isFlowSource(source, _) }
 
   predicate isSink(DataFlow::Node sink) { allocSink(_, sink) }
@@ -95,14 +95,14 @@ module TaintedAllocationSizeConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module TaintedAllocationSize = TaintTracking::Make<TaintedAllocationSizeConfiguration>;
+module TaintedAllocationSize = TaintTracking::Global<TaintedAllocationSizeConfig>;
 
 from
   Expr alloc, TaintedAllocationSize::PathNode source, TaintedAllocationSize::PathNode sink,
   string taintCause
 where
   isFlowSource(source.getNode(), taintCause) and
-  TaintedAllocationSize::hasFlowPath(source, sink) and
+  TaintedAllocationSize::flowPath(source, sink) and
   allocSink(alloc, sink.getNode())
 select alloc, source, sink, "This allocation size is derived from $@ and might overflow.",
   source.getNode(), "user input (" + taintCause + ")"

@@ -4,11 +4,11 @@ extensions:
       extensible: summaryModel
     data:
       # Note that when lambdas are supported we should have more models for TransformedSplitMap
-      - ["org.apache.commons.collections.trie", "AbstractPatriciaTrie", True, "select", "", "", "Argument[-1].MapKey", "ReturnValue.MapKey", "value", "manual"]
-      - ["org.apache.commons.collections.trie", "AbstractPatriciaTrie", True, "select", "", "", "Argument[-1].MapValue", "ReturnValue.MapValue", "value", "manual"]
-      - ["org.apache.commons.collections.trie", "AbstractPatriciaTrie", True, "selectKey", "", "", "Argument[-1].MapKey", "ReturnValue", "value", "manual"]
-      - ["org.apache.commons.collections.trie", "AbstractPatriciaTrie", True, "selectValue", "", "", "Argument[-1].MapValue", "ReturnValue", "value", "manual"]
-      - ["org.apache.commons.collections.trie", "PatriciaTrie", True, "PatriciaTrie", "", "", "Argument[0].MapKey", "Argument[-1].MapKey", "value", "manual"]
-      - ["org.apache.commons.collections.trie", "PatriciaTrie", True, "PatriciaTrie", "", "", "Argument[0].MapValue", "Argument[-1].MapValue", "value", "manual"]
+      - ["org.apache.commons.collections.trie", "AbstractPatriciaTrie", True, "select", "", "", "Argument[this].MapKey", "ReturnValue.MapKey", "value", "manual"]
+      - ["org.apache.commons.collections.trie", "AbstractPatriciaTrie", True, "select", "", "", "Argument[this].MapValue", "ReturnValue.MapValue", "value", "manual"]
+      - ["org.apache.commons.collections.trie", "AbstractPatriciaTrie", True, "selectKey", "", "", "Argument[this].MapKey", "ReturnValue", "value", "manual"]
+      - ["org.apache.commons.collections.trie", "AbstractPatriciaTrie", True, "selectValue", "", "", "Argument[this].MapValue", "ReturnValue", "value", "manual"]
+      - ["org.apache.commons.collections.trie", "PatriciaTrie", True, "PatriciaTrie", "", "", "Argument[0].MapKey", "Argument[this].MapKey", "value", "manual"]
+      - ["org.apache.commons.collections.trie", "PatriciaTrie", True, "PatriciaTrie", "", "", "Argument[0].MapValue", "Argument[this].MapValue", "value", "manual"]
       - ["org.apache.commons.collections.trie", "UnmodifiableTrie", True, "unmodifiableTrie", "", "", "Argument[0].MapKey", "ReturnValue.MapKey", "value", "manual"]
       - ["org.apache.commons.collections.trie", "UnmodifiableTrie", True, "unmodifiableTrie", "", "", "Argument[0].MapValue", "ReturnValue.MapValue", "value", "manual"]

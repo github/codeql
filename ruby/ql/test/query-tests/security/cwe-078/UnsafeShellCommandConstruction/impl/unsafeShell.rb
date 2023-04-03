@@ -57,4 +57,14 @@ class Foobar2
   def string_concat(x) 
     IO.popen("cat " + x, "w") # NOT OK
   end
+
+  def array_taint (x, y)
+    arr = ["cat"]
+    arr.push(x)
+    IO.popen(arr.join(' '), "w") # NOT OK
+
+    arr2 = ["cat"]
+    arr2 << y
+    IO.popen(arr.join(' '), "w") # NOT OK
+  end
 end

@@ -10,6 +10,7 @@ private import FlowSummaryImplSpecific
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 private import DataFlowImplCommon
+private import codeql.util.Unit
 
 /** Provides classes and predicates for defining flow summaries. */
 module Public {
@@ -109,6 +110,7 @@ module Public {
     }
 
     /** Gets the stack obtained by dropping the first `i` elements, if any. */
+    pragma[assume_small_delta]
     SummaryComponentStack drop(int i) {
       i = 0 and result = this
       or
@@ -1048,6 +1050,16 @@ module Private {
     predicate invalidSpecComponent(AccessPath spec, string c) {
       c = spec.getToken(_) and
       not exists(interpretComponent(c))
+    }
+
+    /**
+     * Holds if token `part` of specification `spec` has an invalid index.
+     * E.g., `Argument[-1]`.
+     */
+    predicate invalidIndexComponent(AccessPath spec, AccessPathToken part) {
+      part = spec.getToken(_) and
+      part.getName() = ["Parameter", "Argument"] and
+      AccessPath::parseInt(part.getArgumentList()) < 0
     }
 
     private predicate inputNeedsReference(AccessPathToken c) {

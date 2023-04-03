@@ -1,10 +1,14 @@
 failures
 edges
-| insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" :  | insecure_download.rb:33:15:33:17 | url |
-| insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" :  | insecure_download.rb:33:15:33:17 | url |
+| insecure_download.rb:31:5:31:7 | url :  | insecure_download.rb:33:15:33:17 | url |
+| insecure_download.rb:31:5:31:7 | url :  | insecure_download.rb:33:15:33:17 | url |
+| insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" :  | insecure_download.rb:31:5:31:7 | url :  |
+| insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" :  | insecure_download.rb:31:5:31:7 | url :  |
 nodes
 | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | semmle.label | "http://example.org/unsafe.APK" |
 | insecure_download.rb:27:15:27:45 | "http://example.org/unsafe.APK" | semmle.label | "http://example.org/unsafe.APK" |
+| insecure_download.rb:31:5:31:7 | url :  | semmle.label | url :  |
+| insecure_download.rb:31:5:31:7 | url :  | semmle.label | url :  |
 | insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" :  | semmle.label | "http://example.org/unsafe.APK" :  |
 | insecure_download.rb:31:11:31:41 | "http://example.org/unsafe.APK" :  | semmle.label | "http://example.org/unsafe.APK" :  |
 | insecure_download.rb:33:15:33:17 | url | semmle.label | url |

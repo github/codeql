@@ -1,5 +1,3 @@
-#include <fstream>
-#include <iomanip>
 #include <stdlib.h>
 #include <vector>
 #include <iostream>
@@ -18,7 +16,6 @@
 #include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/file/Path.h"
-#include <swift/Basic/InitializeSwiftModules.h>
 
 using namespace std::string_literals;
 
@@ -93,6 +90,14 @@ class Observer : public swift::FrontendObserver {
     codeql::extractSwiftFiles(state, compiler);
     codeql::extractSwiftInvocation(state, compiler, invocationTrap);
     codeql::extractExtractLazyDeclarations(state, compiler);
+  }
+
+  void markSuccessfullyExtractedFiles() {
+    codeql::SwiftLocationExtractor locExtractor{invocationTrap};
+    for (const auto& src : state.sourceFiles) {
+      auto fileLabel = locExtractor.emitFile(src);
+      invocationTrap.emit(codeql::FileIsSuccessfullyExtractedTrap{fileLabel});
+    }
   }
 
  private:
@@ -194,6 +199,10 @@ int main(int argc, char** argv) {
   Observer observer(configuration);
   int frontend_rc = swift::performFrontend(configuration.frontendOptions, "swift-extractor",
                                            (void*)main, &observer);
+
+  if (frontend_rc == 0) {
+    observer.markSuccessfullyExtractedFiles();
+  }
 
   return frontend_rc;
 }

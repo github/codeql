@@ -90,7 +90,7 @@ private class FieldReferencedJacksonSerializableType extends JacksonSerializable
 /** A type whose values may be deserialized by the Jackson JSON framework. */
 abstract class JacksonDeserializableType extends Type { }
 
-private module TypeLiteralToJacksonDatabindFlowConfiguration implements DataFlow::ConfigSig {
+private module TypeLiteralToJacksonDatabindFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source.asExpr() instanceof TypeLiteral }
 
   predicate isSink(DataFlow::Node sink) {
@@ -108,10 +108,10 @@ private module TypeLiteralToJacksonDatabindFlowConfiguration implements DataFlow
 }
 
 private module TypeLiteralToJacksonDatabindFlow =
-  DataFlow::Make<TypeLiteralToJacksonDatabindFlowConfiguration>;
+  DataFlow::Global<TypeLiteralToJacksonDatabindFlowConfig>;
 
 private TypeLiteral getSourceWithFlowToJacksonDatabind() {
-  TypeLiteralToJacksonDatabindFlow::hasFlow(DataFlow::exprNode(result), _)
+  TypeLiteralToJacksonDatabindFlow::flow(DataFlow::exprNode(result), _)
 }
 
 /** A type whose values are explicitly deserialized in a call to a Jackson method. */

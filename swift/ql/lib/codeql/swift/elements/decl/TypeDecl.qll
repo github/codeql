@@ -28,8 +28,13 @@ class TypeDecl extends Generated::TypeDecl {
   cached
   string getFullName() {
     not this.getEnclosingDecl() instanceof TypeDecl and
+    not this.getEnclosingDecl() instanceof ExtensionDecl and
     result = this.getName()
     or
     result = this.getEnclosingDecl().(TypeDecl).getFullName() + "." + this.getName()
+    or
+    result =
+      this.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getFullName() + "." +
+        this.getName()
   }
 }

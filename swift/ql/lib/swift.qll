@@ -8,6 +8,7 @@ import codeql.swift.elements.expr.InitializerLookupExpr
 import codeql.swift.elements.expr.MethodCallExpr
 import codeql.swift.elements.expr.InitializerCallExpr
 import codeql.swift.elements.expr.SelfRefExpr
+import codeql.swift.elements.expr.EnumElementExpr
 import codeql.swift.elements.decl.MethodDecl
 import codeql.swift.elements.decl.ClassOrStructDecl
 import codeql.swift.elements.type.NumericType

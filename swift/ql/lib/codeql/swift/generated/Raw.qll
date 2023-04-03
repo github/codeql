@@ -42,6 +42,11 @@ module Raw {
      * Gets the name of this file.
      */
     string getName() { files(this, result) }
+
+    /**
+     * Holds if this file is successfully extracted.
+     */
+    predicate isSuccessfullyExtracted() { file_is_successfully_extracted(this) }
   }
 
   class Locatable extends @locatable, Element {
@@ -414,13 +419,15 @@ module Raw {
 
     /**
      * Gets the `index`th imported module of this module declaration (0-based).
+     *Gets any of the imported modules of this module declaration.
      */
-    ModuleDecl getImportedModule(int index) { module_decl_imported_modules(this, index, result) }
+    ModuleDecl getAnImportedModule() { module_decl_imported_modules(this, result) }
 
     /**
      * Gets the `index`th exported module of this module declaration (0-based).
+     *Gets any of the exported modules of this module declaration.
      */
-    ModuleDecl getExportedModule(int index) { module_decl_exported_modules(this, index, result) }
+    ModuleDecl getAnExportedModule() { module_decl_exported_modules(this, result) }
   }
 
   class SubscriptDecl extends @subscript_decl, AbstractStorageDecl, GenericContext {
@@ -655,6 +662,16 @@ module Raw {
 
   class TypeAliasDecl extends @type_alias_decl, GenericTypeDecl {
     override string toString() { result = "TypeAliasDecl" }
+
+    /**
+     * Gets the aliased type on the right-hand side of this type alias declaration.
+     *
+     * For example the aliased type of `MyInt` in the following code is `Int`:
+     * ```
+     * typealias MyInt = Int
+     * ```
+     */
+    Type getAliasedType() { type_alias_decls(this, result) }
   }
 
   class ClassDecl extends @class_decl, NominalTypeDecl {

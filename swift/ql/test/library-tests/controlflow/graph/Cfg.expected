@@ -334,16 +334,16 @@ cfg.swift:
 #-----|  -> default separator
 
 #   39| case ...
-#-----|  -> let ...
+#-----|  -> error
+
+#   39| error
+#-----|  -> error
 
 #   39| error
 #-----| match -> let ...
 
 #   39| let ...
 #-----| match -> print(_:separator:terminator:)
-
-#   39| let ...
-#-----|  -> error
 
 #   40| print(_:separator:terminator:)
 

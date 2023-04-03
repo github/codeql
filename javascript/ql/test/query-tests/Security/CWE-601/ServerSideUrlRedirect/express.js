@@ -159,3 +159,8 @@ app.get('/some/path', function(req, res) {
   else
     res.redirect(target); // NOT OK
 });
+
+app.get("/foo/:bar/:baz", (req, res) => {
+  let myThing = JSON.stringify(req.query).slice(1, -1);
+  res.redirect(myThing); // NOT OK
+});

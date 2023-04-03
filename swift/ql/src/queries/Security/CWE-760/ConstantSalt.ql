@@ -14,7 +14,7 @@ import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
 import codeql.swift.dataflow.FlowSteps
-import DataFlow::PathGraph
+import ConstantSaltFlow::PathGraph
 
 /**
  * A constant salt is created through either a byte array or string literals.
@@ -34,7 +34,7 @@ class ConstantSaltSink extends Expr {
   ConstantSaltSink() {
     // `salt` arg in `init` is a sink
     exists(ClassOrStructDecl c, ConstructorDecl f, CallExpr call |
-      c.getFullName() = ["HKDF", "PBKDF1", "PBKDF2", "Scrypt"] and
+      c.getName() = ["HKDF", "PBKDF1", "PBKDF2", "Scrypt"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
       call.getArgumentWithLabel("salt").getExpr() = this
@@ -42,7 +42,7 @@ class ConstantSaltSink extends Expr {
     or
     // RNCryptor
     exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
-      c.getFullName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+      c.getName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
       call.getArgumentWithLabel(["salt", "encryptionSalt", "hmacSalt", "HMACSalt"]).getExpr() = this
@@ -52,19 +52,19 @@ class ConstantSaltSink extends Expr {
 
 /**
  * A taint configuration from the source of constants salts to expressions that use
- * them to initialize password-based enecryption keys.
+ * them to initialize password-based encryption keys.
  */
-class ConstantSaltConfig extends TaintTracking::Configuration {
-  ConstantSaltConfig() { this = "ConstantSaltConfig" }
+module ConstantSaltConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node.asExpr() instanceof ConstantSaltSource }
 
-  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof ConstantSaltSource }
-
-  override predicate isSink(DataFlow::Node node) { node.asExpr() instanceof ConstantSaltSink }
+  predicate isSink(DataFlow::Node node) { node.asExpr() instanceof ConstantSaltSink }
 }
 
+module ConstantSaltFlow = TaintTracking::Global<ConstantSaltConfig>;
+
 // The query itself
-from ConstantSaltConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
-where config.hasFlowPath(sourceNode, sinkNode)
+from ConstantSaltFlow::PathNode sourceNode, ConstantSaltFlow::PathNode sinkNode
+where ConstantSaltFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "The value '" + sourceNode.getNode().toString() +
     "' is used as a constant salt, which is insecure for hashing passwords."

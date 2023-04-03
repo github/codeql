@@ -19,7 +19,7 @@ import XxeFlow::PathGraph
 /**
  * A configuration for tracking XML objects and their states.
  */
-module XxeConfiguration implements DataFlow::StateConfigSig {
+module XxeConfig implements DataFlow::StateConfigSig {
   class FlowState = TXxeFlowState;
 
   predicate isSource(DataFlow::Node node, FlowState flowstate) {
@@ -45,9 +45,9 @@ module XxeConfiguration implements DataFlow::StateConfigSig {
   }
 }
 
-module XxeFlow = DataFlow::MakeWithState<XxeConfiguration>;
+module XxeFlow = DataFlow::GlobalWithState<XxeConfig>;
 
 from XxeFlow::PathNode source, XxeFlow::PathNode sink
-where XxeFlow::hasFlowPath(source, sink)
+where XxeFlow::flowPath(source, sink)
 select sink, source, sink,
   "This $@ is not configured to prevent an XML external entity (XXE) attack.", source, "XML parser"

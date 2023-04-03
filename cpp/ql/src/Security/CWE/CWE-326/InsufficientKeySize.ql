@@ -28,7 +28,7 @@ int getMinimumKeyStrength(string func, int paramIndex) {
   result = 2048
 }
 
-module KeyStrengthFlowConfiguration implements DataFlow::ConfigSig {
+module KeyStrengthFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     exists(int bits |
       node.asInstruction().(IntegerConstantInstruction).getValue().toInt() = bits and
@@ -46,13 +46,13 @@ module KeyStrengthFlowConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module KeyStrengthFlow = DataFlow::Make<KeyStrengthFlowConfiguration>;
+module KeyStrengthFlow = DataFlow::Global<KeyStrengthFlowConfig>;
 
 from
   KeyStrengthFlow::PathNode source, KeyStrengthFlow::PathNode sink, FunctionCall fc, int param,
   string name, int minimumBits, int bits
 where
-  KeyStrengthFlow::hasFlowPath(source, sink) and
+  KeyStrengthFlow::flowPath(source, sink) and
   sink.getNode().asExpr() = fc.getArgument(param) and
   fc.getTarget().hasGlobalName(name) and
   minimumBits = getMinimumKeyStrength(name, param) and

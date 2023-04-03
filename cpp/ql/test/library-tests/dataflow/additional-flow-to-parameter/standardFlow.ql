@@ -14,8 +14,8 @@ module TestConfig implements DataFlow::ConfigSig {
   }
 }
 
-module TestFlow = DataFlow::Make<TestConfig>;
+module TestFlow = DataFlow::Global<TestConfig>;
 
 from DataFlow::Node sink, DataFlow::Node source
-where TestFlow::hasFlow(source, sink)
+where TestFlow::flow(source, sink)
 select sink, source

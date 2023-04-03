@@ -9,7 +9,7 @@ class HasInsecureBasicAuthTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasInsecureBasicAuth" and
-    exists(DataFlow::Node sink, BasicAuthFlowConfig conf | conf.hasFlowTo(sink) |
+    exists(DataFlow::Node sink | InsecureBasicAuthFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

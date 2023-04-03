@@ -16,7 +16,8 @@
  * 1. The `namespace` column selects a package.
  * 2. The `type` column selects a type within that package.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
- *    arbitrary subtype of that type.
+ *    arbitrary subtype of that type. Set this to `false` if leaving the `type`
+ *    blank (for example, a free function).
  * 4. The `name` column optionally selects a specific named member of the type.
  * 5. The `signature` column optionally restricts the named member. If
  *    `signature` is blank then no such filtering is done. The format of the
@@ -98,6 +99,7 @@ private module Frameworks {
   private import codeql.swift.security.CleartextStorageDatabaseExtensions
   private import codeql.swift.security.PathInjectionExtensions
   private import codeql.swift.security.PredicateInjectionExtensions
+  private import codeql.swift.security.StringLengthConflationExtensions
 }
 
 /**

@@ -70,7 +70,7 @@ predicate hasUpperBoundsCheck(Variable var) {
   )
 }
 
-module TaintedPathConfiguration implements DataFlow::ConfigSig {
+module TaintedPathConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node instanceof FlowSource }
 
   predicate isSink(DataFlow::Node node) {
@@ -90,7 +90,7 @@ module TaintedPathConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module TaintedPath = TaintTracking::Make<TaintedPathConfiguration>;
+module TaintedPath = TaintTracking::Global<TaintedPathConfig>;
 
 from
   FileFunction fileFunction, Expr taintedArg, FlowSource taintSource,
@@ -98,7 +98,7 @@ from
 where
   taintedArg = sinkNode.getNode().asIndirectArgument() and
   fileFunction.outermostWrapperFunctionCall(taintedArg, callChain) and
-  TaintedPath::hasFlowPath(sourceNode, sinkNode) and
+  TaintedPath::flowPath(sourceNode, sinkNode) and
   taintSource = sourceNode.getNode()
 select taintedArg, sourceNode, sinkNode,
   "This argument to a file access function is derived from $@ and then passed to " + callChain + ".",

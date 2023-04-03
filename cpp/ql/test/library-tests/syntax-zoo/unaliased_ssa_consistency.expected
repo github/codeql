@@ -12,12 +12,9 @@ instructionWithoutSuccessor
 | condition_decls.cpp:26:23:26:24 | IndirectMayWriteSideEffect: call to BoxedInt | Instruction 'IndirectMayWriteSideEffect: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:25:6:25:21 | void switch_decl_bind(int) | void switch_decl_bind(int) |
 | condition_decls.cpp:41:22:41:23 | IndirectMayWriteSideEffect: call to BoxedInt | Instruction 'IndirectMayWriteSideEffect: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:40:6:40:20 | void while_decl_bind(int) | void while_decl_bind(int) |
 | condition_decls.cpp:48:52:48:53 | IndirectMayWriteSideEffect: call to BoxedInt | Instruction 'IndirectMayWriteSideEffect: call to BoxedInt' has no successors in function '$@'. | condition_decls.cpp:47:6:47:18 | void for_decl_bind(int) | void for_decl_bind(int) |
-| misc.c:171:10:171:13 | Uninitialized: definition of str2 | Instruction 'Uninitialized: definition of str2' has no successors in function '$@'. | misc.c:168:6:168:8 | void vla() | void vla() |
 | ms_try_mix.cpp:35:13:35:19 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | ms_try_mix.cpp:29:6:29:19 | void ms_finally_mix(int) | void ms_finally_mix(int) |
 | ms_try_mix.cpp:53:5:53:11 | ThrowValue: throw ... | Instruction 'ThrowValue: throw ...' has no successors in function '$@'. | ms_try_mix.cpp:49:6:49:28 | void ms_empty_finally_at_end() | void ms_empty_finally_at_end() |
 | stmt_expr.cpp:27:5:27:15 | Store: ... = ... | Instruction 'Store: ... = ...' has no successors in function '$@'. | stmt_expr.cpp:21:13:21:13 | void stmtexpr::g(int) | void stmtexpr::g(int) |
-| vla.c:5:9:5:14 | Uninitialized: definition of matrix | Instruction 'Uninitialized: definition of matrix' has no successors in function '$@'. | vla.c:3:12:3:12 | int f(int, char**) | int f(int, char**) |
-| vla.c:11:6:11:16 | InitializeNonLocal: vla_typedef | Instruction 'InitializeNonLocal: vla_typedef' has no successors in function '$@'. | vla.c:11:6:11:16 | void vla_typedef() | void vla_typedef() |
 ambiguousSuccessors
 unexplainedLoop
 unnecessaryPhiInstruction

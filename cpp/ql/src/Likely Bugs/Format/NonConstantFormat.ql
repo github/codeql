@@ -132,7 +132,7 @@ predicate isSinkImpl(DataFlow::Node sink, Expr formatString) {
   exists(FormattingFunctionCall fc | formatString = fc.getArgument(fc.getFormatParameterIndex()))
 }
 
-module NonConstFlowConfiguration implements DataFlow::ConfigSig {
+module NonConstFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     exists(boolean isIndirect, Type t |
       isNonConst(source, isIndirect) and
@@ -146,13 +146,13 @@ module NonConstFlowConfiguration implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { isBarrierNode(node) }
 }
 
-module NonConstFlow = TaintTracking::Make<NonConstFlowConfiguration>;
+module NonConstFlow = TaintTracking::Global<NonConstFlowConfig>;
 
 from FormattingFunctionCall call, Expr formatString
 where
   call.getArgument(call.getFormatParameterIndex()) = formatString and
   exists(DataFlow::Node sink |
-    NonConstFlow::hasFlowTo(sink) and
+    NonConstFlow::flowTo(sink) and
     isSinkImpl(sink, formatString)
   )
 select formatString,

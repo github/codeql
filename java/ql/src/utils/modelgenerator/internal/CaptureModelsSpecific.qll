@@ -3,7 +3,6 @@
  */
 
 private import java as J
-private import semmle.code.java.dataflow.internal.DataFlowNodes
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.ContainerFlow as ContainerFlow
 private import semmle.code.java.dataflow.DataFlow as Df
@@ -130,7 +129,7 @@ private predicate partialModel(TargetApiSpecific api, string type, string name, 
 }
 
 /**
- * Computes the first 6 columns for CSV rows.
+ * Computes the first 6 columns for MaD rows.
  */
 string asPartialModel(TargetApiSpecific api) {
   exists(string type, string name, string parameters |
@@ -145,7 +144,7 @@ string asPartialModel(TargetApiSpecific api) {
 }
 
 /**
- * Computes the first 4 columns for neutral CSV rows.
+ * Computes the first 4 columns for neutral MaD rows.
  */
 string asPartialNeutralModel(TargetApiSpecific api) {
   exists(string type, string name, string parameters |
@@ -187,11 +186,14 @@ predicate isRelevantType(J::Type t) {
 }
 
 /**
- * Gets the CSV string representation of the qualifier.
+ * Gets the MaD string representation of the qualifier.
  */
-string qualifierString() { result = "Argument[-1]" }
+string qualifierString() { result = "Argument[this]" }
 
-private string parameterAccess(J::Parameter p) {
+/**
+ * Gets the MaD string representation of the parameter `p`.
+ */
+string parameterAccess(J::Parameter p) {
   if
     p.getType() instanceof J::Array and
     not isPrimitiveTypeUsedForBulkData(p.getType().(J::Array).getElementType())
@@ -202,17 +204,10 @@ private string parameterAccess(J::Parameter p) {
     else result = "Argument[" + p.getPosition() + "]"
 }
 
-/**
- * Gets the CSV string representation of the parameter node `p`.
- */
-string parameterNodeAsInput(DataFlow::ParameterNode p) {
-  result = parameterAccess(p.asParameter())
-  or
-  result = qualifierString() and p instanceof DataFlow::InstanceParameterNode
-}
+class InstanceParameterNode = DataFlow::InstanceParameterNode;
 
 /**
- * Gets the CSV string represention of the the return node `node`.
+ * Gets the MaD string represention of the the return node `node`.
  */
 string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
   if node.getKind() instanceof DataFlowImplCommon::ValueReturnKind
@@ -268,9 +263,9 @@ predicate apiSource(DataFlow::Node source) {
 }
 
 /**
- * Gets the CSV input string representation of `source`.
+ * Gets the MaD input string representation of `source`.
  */
-string asInputArgument(DataFlow::Node source) {
+string asInputArgumentSpecific(DataFlow::Node source) {
   exists(int pos |
     source.(DataFlow::ParameterNode).isParameterOf(_, pos) and
     result = "Argument[" + pos + "]"

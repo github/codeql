@@ -14,22 +14,26 @@
 import java
 import ArraySizing
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "LocalUserInputTocanThrowOutOfBoundsDueToEmptyArrayConfig" }
+module ImproperValidationOfArrayIndexLocalConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     any(CheckableArrayAccess caa).canThrowOutOfBounds(sink.asExpr())
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, CheckableArrayAccess arrayAccess
+module ImproperValidationOfArrayIndexLocalFlow =
+  TaintTracking::Global<ImproperValidationOfArrayIndexLocalConfig>;
+
+import ImproperValidationOfArrayIndexLocalFlow::PathGraph
+
+from
+  ImproperValidationOfArrayIndexLocalFlow::PathNode source,
+  ImproperValidationOfArrayIndexLocalFlow::PathNode sink, CheckableArrayAccess arrayAccess
 where
   arrayAccess.canThrowOutOfBounds(sink.getNode().asExpr()) and
-  any(Conf conf).hasFlowPath(source, sink)
+  ImproperValidationOfArrayIndexLocalFlow::flowPath(source, sink)
 select arrayAccess.getIndexExpr(), source, sink,
   "This index depends on a $@ which can cause an ArrayIndexOutOfBoundsException.", source.getNode(),
   "user-provided value"

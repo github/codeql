@@ -16,9 +16,11 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.ExternalProcess
 import semmle.code.java.security.CommandLineQuery
-import DataFlow::PathGraph
+import RemoteUserInputToArgumentToExecFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ArgumentToExec execArg
-where execTainted(source, sink, execArg)
+from
+  RemoteUserInputToArgumentToExecFlow::PathNode source,
+  RemoteUserInputToArgumentToExecFlow::PathNode sink, ArgumentToExec execArg
+where execIsTainted(source, sink, execArg)
 select execArg, source, sink, "This command line depends on a $@.", source.getNode(),
   "user-provided value"

@@ -272,5 +272,5 @@
 | declarations.swift:182:7:182:7 | B.init() |  |
 | declarations.swift:182:7:182:7 | self |  |
 | declarations.swift:182:7:182:7 | self |  |
-| declarations.swift:183:1:183:15 | A |  |
-| declarations.swift:184:1:184:18 | C |  |
+| declarations.swift:183:1:183:15 | A | getAliasedType:B |
+| declarations.swift:184:1:184:18 | C | getAliasedType:Int? |

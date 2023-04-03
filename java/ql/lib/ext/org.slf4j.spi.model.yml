@@ -12,9 +12,9 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.slf4j.spi", "LoggingEventBuilder", True, "addArgument", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
-      - ["org.slf4j.spi", "LoggingEventBuilder", True, "addArgument", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
-      - ["org.slf4j.spi", "LoggingEventBuilder", True, "addKeyValue", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
-      - ["org.slf4j.spi", "LoggingEventBuilder", True, "addKeyValue", "", "", "Argument[1]", "Argument[-1]", "taint", "manual"]
-      - ["org.slf4j.spi", "LoggingEventBuilder", True, "addMarker", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
-      - ["org.slf4j.spi", "LoggingEventBuilder", True, "setCause", "", "", "Argument[-1]", "ReturnValue", "value", "manual"]
+      - ["org.slf4j.spi", "LoggingEventBuilder", True, "addArgument", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["org.slf4j.spi", "LoggingEventBuilder", True, "addArgument", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["org.slf4j.spi", "LoggingEventBuilder", True, "addKeyValue", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["org.slf4j.spi", "LoggingEventBuilder", True, "addKeyValue", "", "", "Argument[1]", "Argument[this]", "taint", "manual"]
+      - ["org.slf4j.spi", "LoggingEventBuilder", True, "addMarker", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
+      - ["org.slf4j.spi", "LoggingEventBuilder", True, "setCause", "", "", "Argument[this]", "ReturnValue", "value", "manual"]

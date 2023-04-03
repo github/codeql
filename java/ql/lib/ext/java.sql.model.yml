@@ -20,14 +20,28 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["java.sql", "PreparedStatement", True, "setString", "(int,String)", "", "Argument[1]", "Argument[-1]", "value", "manual"]
-      - ["java.sql", "ResultSet", True, "getString", "(String)", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["java.sql", "Connection", True, "nativeSQL", "(String)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["java.sql", "PreparedStatement", True, "setString", "(int,String)", "", "Argument[1]", "Argument[this]", "value", "manual"]
+      - ["java.sql", "ResultSet", True, "getString", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.sql", "Connection", "createStatement", "()", "manual"]
+      - ["java.sql", "PreparedStatement", "executeUpdate", "()", "manual"]
+      - ["java.sql", "PreparedStatement", "executeQuery", "()", "manual"]
       - ["java.sql", "ResultSet", "next", "()", "manual"]
+      - ["java.sql", "Statement", "close", "()", "manual"]
+
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.sql", "PreparedStatement", "setInt", "(int,int)", "manual"] # value-numeric
-      - ["java.sql", "ResultSet", "getInt", "(String)", "manual"]          # taint-numeric
+      - ["java.sql", "PreparedStatement", "setInt", "(int,int)", "manual"]   # value-numeric
+      - ["java.sql", "PreparedStatement", "setLong", "(int,long)", "manual"] # value-numeric
+      - ["java.sql", "ResultSet", "getInt", "(int)", "manual"]               # taint-numeric
+      - ["java.sql", "ResultSet", "getInt", "(String)", "manual"]            # taint-numeric
+      - ["java.sql", "ResultSet", "getLong", "(String)", "manual"]           # taint-numeric
+      - ["java.sql", "ResultSet", "getString", "(int)", "manual"]            # taint-numeric, potentially interesting for second order SQL injection
+      - ["java.sql", "ResultSet", "getTimestamp", "(String)", "manual"]      # taint-numeric
+      - ["java.sql", "Timestamp", "Timestamp", "(long)", "manual"]           # taint-numeric
+      - ["java.sql", "Timestamp", "getTime", "()", "manual"]                 # taint-numeric

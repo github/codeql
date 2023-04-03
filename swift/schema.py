@@ -20,6 +20,7 @@ class Element:
 @qltest.collapse_hierarchy
 class File(Element):
     name: string
+    is_successfully_extracted: predicate | cpp.skip
 
 @qltest.skip
 @qltest.collapse_hierarchy
@@ -271,8 +272,8 @@ class GenericTypeDecl(GenericContext, TypeDecl):
 class ModuleDecl(TypeDecl):
     is_builtin_module: predicate | doc("this module is the built-in one")
     is_system_module: predicate | doc("this module is a system one")
-    imported_modules: list["ModuleDecl"]
-    exported_modules: list["ModuleDecl"]
+    imported_modules: set["ModuleDecl"]
+    exported_modules: set["ModuleDecl"]
 
 class SubscriptDecl(AbstractStorageDecl, GenericContext):
     params: list[ParamDecl] | child
@@ -323,7 +324,18 @@ class OpaqueTypeDecl(GenericTypeDecl):
     opaque_generic_params: list["GenericTypeParamType"]
 
 class TypeAliasDecl(GenericTypeDecl):
-    pass
+    """
+    A declaration of a type alias to another type. For example:
+    ```
+    typealias MyInt = Int
+    ```
+    """
+    aliased_type: Type | doc("aliased type on the right-hand side of this type alias declaration") | desc("""
+        For example the aliased type of `MyInt` in the following code is `Int`:
+        ```
+        typealias MyInt = Int
+        ```
+    """)
 
 class ClassDecl(NominalTypeDecl):
     pass

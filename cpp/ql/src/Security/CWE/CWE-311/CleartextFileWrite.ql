@@ -23,7 +23,7 @@ import FromSensitiveFlow::PathGraph
 /**
  * A taint flow configuration for flow from a sensitive expression to a `FileWrite` sink.
  */
-module FromSensitiveConfiguration implements DataFlow::ConfigSig {
+module FromSensitiveConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { isSourceImpl(source, _) }
 
   predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _, _) }
@@ -33,7 +33,7 @@ module FromSensitiveConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module FromSensitiveFlow = TaintTracking::Make<FromSensitiveConfiguration>;
+module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;
 
 predicate isSinkImpl(DataFlow::Node sink, FileWrite w, Expr dest) {
   exists(Expr e |
@@ -81,7 +81,7 @@ from
   SensitiveExpr source, FromSensitiveFlow::PathNode sourceNode, FromSensitiveFlow::PathNode midNode,
   FileWrite w, Expr dest
 where
-  FromSensitiveFlow::hasFlowPath(sourceNode, midNode) and
+  FromSensitiveFlow::flowPath(sourceNode, midNode) and
   isSourceImpl(sourceNode.getNode(), source) and
   isSinkImpl(midNode.getNode(), w, dest)
 select w, sourceNode, midNode,

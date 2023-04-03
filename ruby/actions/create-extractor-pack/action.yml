@@ -24,6 +24,6 @@ runs:
       if: steps.cache-extractor.outputs.cache-hit != 'true'
       shell: bash
       run: |
-        cargo install cross --version 0.2.1
+        cargo install cross --version 0.2.5
         scripts/create-extractor-pack.sh
       working-directory: ruby

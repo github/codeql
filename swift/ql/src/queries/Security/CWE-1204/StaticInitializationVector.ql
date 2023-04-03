@@ -14,7 +14,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
-import DataFlow::PathGraph
+import StaticInitializationVectorFlow::PathGraph
 
 /**
  * A static IV is created through either a byte array or string literals.
@@ -56,23 +56,21 @@ class EncryptionInitializationSink extends Expr {
  * A dataflow configuration from the source of a static IV to expressions that use
  * it to initialize a cipher.
  */
-class StaticInitializationVectorConfig extends TaintTracking::Configuration {
-  StaticInitializationVectorConfig() { this = "StaticInitializationVectorConfig" }
-
-  override predicate isSource(DataFlow::Node node) {
+module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
     node.asExpr() instanceof StaticInitializationVectorSource
   }
 
-  override predicate isSink(DataFlow::Node node) {
-    node.asExpr() instanceof EncryptionInitializationSink
-  }
+  predicate isSink(DataFlow::Node node) { node.asExpr() instanceof EncryptionInitializationSink }
 }
+
+module StaticInitializationVectorFlow = TaintTracking::Global<StaticInitializationVectorConfig>;
 
 // The query itself
 from
-  StaticInitializationVectorConfig config, DataFlow::PathNode sourceNode,
-  DataFlow::PathNode sinkNode
-where config.hasFlowPath(sourceNode, sinkNode)
+  StaticInitializationVectorFlow::PathNode sourceNode,
+  StaticInitializationVectorFlow::PathNode sinkNode
+where StaticInitializationVectorFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "The static value '" + sourceNode.getNode().toString() +
     "' is used as an initialization vector for encryption."

@@ -1,8 +1,10 @@
 edges
+| decompression_api.rb:4:9:4:12 | path :  | decompression_api.rb:5:31:5:34 | path |
 | decompression_api.rb:4:16:4:21 | call to params :  | decompression_api.rb:4:16:4:28 | ...[...] :  |
-| decompression_api.rb:4:16:4:28 | ...[...] :  | decompression_api.rb:5:31:5:34 | path |
+| decompression_api.rb:4:16:4:28 | ...[...] :  | decompression_api.rb:4:9:4:12 | path :  |
 | decompression_api.rb:15:31:15:36 | call to params :  | decompression_api.rb:15:31:15:43 | ...[...] |
 nodes
+| decompression_api.rb:4:9:4:12 | path :  | semmle.label | path :  |
 | decompression_api.rb:4:16:4:21 | call to params :  | semmle.label | call to params :  |
 | decompression_api.rb:4:16:4:28 | ...[...] :  | semmle.label | ...[...] :  |
 | decompression_api.rb:5:31:5:34 | path | semmle.label | path |

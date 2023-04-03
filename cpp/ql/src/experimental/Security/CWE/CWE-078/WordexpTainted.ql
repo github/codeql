@@ -35,7 +35,7 @@ private predicate isCommandSubstitutionDisabled(FunctionCall fc) {
 /**
  * A configuration to track user-supplied data to the `wordexp` function.
  */
-module WordexpTaintConfiguration implements DataFlow::ConfigSig {
+module WordexpTaintConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
   predicate isSink(DataFlow::Node sink) {
@@ -50,9 +50,9 @@ module WordexpTaintConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module WordexpTaint = TaintTracking::Make<WordexpTaintConfiguration>;
+module WordexpTaint = TaintTracking::Global<WordexpTaintConfig>;
 
 from WordexpTaint::PathNode sourceNode, WordexpTaint::PathNode sinkNode
-where WordexpTaint::hasFlowPath(sourceNode, sinkNode)
+where WordexpTaint::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "Using user-supplied data in a `wordexp` command, without disabling command substitution, can make code vulnerable to command injection."

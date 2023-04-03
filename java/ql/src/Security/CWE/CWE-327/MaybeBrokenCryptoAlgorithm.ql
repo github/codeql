@@ -50,7 +50,7 @@ class StringContainer extends RefType {
   }
 }
 
-module InsecureCryptoConfiguration implements ConfigSig {
+module InsecureCryptoConfig implements ConfigSig {
   predicate isSource(Node n) { n.asExpr() instanceof InsecureAlgoLiteral }
 
   predicate isSink(Node n) { exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec()) }
@@ -61,7 +61,7 @@ module InsecureCryptoConfiguration implements ConfigSig {
   }
 }
 
-module InsecureCryptoFlow = TaintTracking::Make<InsecureCryptoConfiguration>;
+module InsecureCryptoFlow = TaintTracking::Global<InsecureCryptoConfig>;
 
 import InsecureCryptoFlow::PathGraph
 
@@ -71,7 +71,7 @@ from
 where
   sink.getNode().asExpr() = c.getAlgoSpec() and
   source.getNode().asExpr() = s and
-  InsecureCryptoFlow::hasFlowPath(source, sink)
+  InsecureCryptoFlow::flowPath(source, sink)
 select c, source, sink,
   "Cryptographic algorithm $@ may not be secure, consider using a different algorithm.", s,
   s.getValue()

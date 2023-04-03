@@ -1,25 +1,30 @@
 edges
+| CommandInjection.rb:6:9:6:11 | cmd :  | CommandInjection.rb:7:10:7:15 | #{...} |
+| CommandInjection.rb:6:9:6:11 | cmd :  | CommandInjection.rb:8:16:8:18 | cmd |
+| CommandInjection.rb:6:9:6:11 | cmd :  | CommandInjection.rb:10:14:10:16 | cmd |
+| CommandInjection.rb:6:9:6:11 | cmd :  | CommandInjection.rb:11:17:11:22 | #{...} |
+| CommandInjection.rb:6:9:6:11 | cmd :  | CommandInjection.rb:13:9:13:14 | #{...} |
+| CommandInjection.rb:6:9:6:11 | cmd :  | CommandInjection.rb:29:19:29:24 | #{...} |
+| CommandInjection.rb:6:9:6:11 | cmd :  | CommandInjection.rb:33:24:33:36 | "echo #{...}" |
+| CommandInjection.rb:6:9:6:11 | cmd :  | CommandInjection.rb:34:39:34:51 | "grep #{...}" |
 | CommandInjection.rb:6:15:6:20 | call to params :  | CommandInjection.rb:6:15:6:26 | ...[...] :  |
-| CommandInjection.rb:6:15:6:26 | ...[...] :  | CommandInjection.rb:7:10:7:15 | #{...} |
-| CommandInjection.rb:6:15:6:26 | ...[...] :  | CommandInjection.rb:8:16:8:18 | cmd |
-| CommandInjection.rb:6:15:6:26 | ...[...] :  | CommandInjection.rb:10:14:10:16 | cmd |
-| CommandInjection.rb:6:15:6:26 | ...[...] :  | CommandInjection.rb:11:17:11:22 | #{...} |
-| CommandInjection.rb:6:15:6:26 | ...[...] :  | CommandInjection.rb:13:9:13:14 | #{...} |
-| CommandInjection.rb:6:15:6:26 | ...[...] :  | CommandInjection.rb:29:19:29:24 | #{...} |
-| CommandInjection.rb:6:15:6:26 | ...[...] :  | CommandInjection.rb:33:24:33:36 | "echo #{...}" |
-| CommandInjection.rb:6:15:6:26 | ...[...] :  | CommandInjection.rb:34:39:34:51 | "grep #{...}" |
+| CommandInjection.rb:6:15:6:26 | ...[...] :  | CommandInjection.rb:6:9:6:11 | cmd :  |
+| CommandInjection.rb:46:9:46:11 | cmd :  | CommandInjection.rb:50:24:50:36 | "echo #{...}" |
 | CommandInjection.rb:46:15:46:20 | call to params :  | CommandInjection.rb:46:15:46:26 | ...[...] :  |
-| CommandInjection.rb:46:15:46:26 | ...[...] :  | CommandInjection.rb:50:24:50:36 | "echo #{...}" |
+| CommandInjection.rb:46:15:46:26 | ...[...] :  | CommandInjection.rb:46:9:46:11 | cmd :  |
+| CommandInjection.rb:54:7:54:9 | cmd :  | CommandInjection.rb:59:14:59:16 | cmd |
 | CommandInjection.rb:54:13:54:18 | call to params :  | CommandInjection.rb:54:13:54:24 | ...[...] :  |
-| CommandInjection.rb:54:13:54:24 | ...[...] :  | CommandInjection.rb:59:14:59:16 | cmd |
+| CommandInjection.rb:54:13:54:24 | ...[...] :  | CommandInjection.rb:54:7:54:9 | cmd :  |
 | CommandInjection.rb:73:18:73:23 | number :  | CommandInjection.rb:74:14:74:29 | "echo #{...}" |
 | CommandInjection.rb:81:23:81:33 | blah_number :  | CommandInjection.rb:82:14:82:34 | "echo #{...}" |
 | CommandInjection.rb:90:20:90:25 | **args :  | CommandInjection.rb:91:22:91:25 | args :  |
 | CommandInjection.rb:91:22:91:25 | args :  | CommandInjection.rb:91:22:91:37 | ...[...] :  |
 | CommandInjection.rb:91:22:91:37 | ...[...] :  | CommandInjection.rb:91:14:91:39 | "echo #{...}" |
+| CommandInjection.rb:103:9:103:12 | file :  | CommandInjection.rb:104:16:104:28 | "cat #{...}" |
 | CommandInjection.rb:103:16:103:21 | call to params :  | CommandInjection.rb:103:16:103:28 | ...[...] :  |
-| CommandInjection.rb:103:16:103:28 | ...[...] :  | CommandInjection.rb:104:16:104:28 | "cat #{...}" |
+| CommandInjection.rb:103:16:103:28 | ...[...] :  | CommandInjection.rb:103:9:103:12 | file :  |
 nodes
+| CommandInjection.rb:6:9:6:11 | cmd :  | semmle.label | cmd :  |
 | CommandInjection.rb:6:15:6:20 | call to params :  | semmle.label | call to params :  |
 | CommandInjection.rb:6:15:6:26 | ...[...] :  | semmle.label | ...[...] :  |
 | CommandInjection.rb:7:10:7:15 | #{...} | semmle.label | #{...} |
@@ -30,9 +35,11 @@ nodes
 | CommandInjection.rb:29:19:29:24 | #{...} | semmle.label | #{...} |
 | CommandInjection.rb:33:24:33:36 | "echo #{...}" | semmle.label | "echo #{...}" |
 | CommandInjection.rb:34:39:34:51 | "grep #{...}" | semmle.label | "grep #{...}" |
+| CommandInjection.rb:46:9:46:11 | cmd :  | semmle.label | cmd :  |
 | CommandInjection.rb:46:15:46:20 | call to params :  | semmle.label | call to params :  |
 | CommandInjection.rb:46:15:46:26 | ...[...] :  | semmle.label | ...[...] :  |
 | CommandInjection.rb:50:24:50:36 | "echo #{...}" | semmle.label | "echo #{...}" |
+| CommandInjection.rb:54:7:54:9 | cmd :  | semmle.label | cmd :  |
 | CommandInjection.rb:54:13:54:18 | call to params :  | semmle.label | call to params :  |
 | CommandInjection.rb:54:13:54:24 | ...[...] :  | semmle.label | ...[...] :  |
 | CommandInjection.rb:59:14:59:16 | cmd | semmle.label | cmd |
@@ -44,6 +51,7 @@ nodes
 | CommandInjection.rb:91:14:91:39 | "echo #{...}" | semmle.label | "echo #{...}" |
 | CommandInjection.rb:91:22:91:25 | args :  | semmle.label | args :  |
 | CommandInjection.rb:91:22:91:37 | ...[...] :  | semmle.label | ...[...] :  |
+| CommandInjection.rb:103:9:103:12 | file :  | semmle.label | file :  |
 | CommandInjection.rb:103:16:103:21 | call to params :  | semmle.label | call to params :  |
 | CommandInjection.rb:103:16:103:28 | ...[...] :  | semmle.label | ...[...] :  |
 | CommandInjection.rb:104:16:104:28 | "cat #{...}" | semmle.label | "cat #{...}" |

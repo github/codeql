@@ -39,7 +39,7 @@
  *    "Argument[n]", "Argument[n1..n2]", "ReturnValue":
  *    - "": Selects a write to the selected element in case this is a field.
  *    - "Argument[n]": Selects an argument in a call to the selected element.
- *      The arguments are zero-indexed, and `-1` specifies the qualifier.
+ *      The arguments are zero-indexed, and `this` specifies the qualifier.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
  *      the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects a value being returned by the selected element.
@@ -50,14 +50,14 @@
  *    - "": Selects a read of a selected field, or a selected parameter.
  *    - "Argument[n]": Selects the post-update value of an argument in a call to the
  *      selected element. That is, the value of the argument after the call returns.
- *      The arguments are zero-indexed, and `-1` specifies the qualifier.
+ *      The arguments are zero-indexed, and `this` specifies the qualifier.
  *    - "Argument[n1..n2]": Similar to "Argument[n]" but select any argument in
  *      the given range. The range is inclusive at both ends.
  *    - "Parameter": Selects the value of a parameter of the selected element.
  *      "Parameter" is also allowed in case the selected element is already a
  *      parameter itself.
  *    - "Parameter[n]": Similar to "Parameter" but restricted to a specific
- *      numbered parameter (zero-indexed, and `-1` specifies the value of `this`).
+ *      numbered parameter (zero-indexed, and `this` specifies the value of `this`).
  *    - "Parameter[n1..n2]": Similar to "Parameter[n]" but selects any parameter
  *      in the given range. The range is inclusive at both ends.
  *    - "ReturnValue": Selects the return value of a call to the selected element.
@@ -220,7 +220,7 @@ predicate modelCoverage(string package, int pkgs, string kind, string part, int 
 /** Provides a query predicate to check the MaD models for validation errors. */
 module ModelValidation {
   private string getInvalidModelInput() {
-    exists(string pred, string input, string part |
+    exists(string pred, AccessPath input, AccessPathToken part |
       sinkModel(_, _, _, _, _, _, input, _, _) and pred = "sink"
       or
       summaryModel(_, _, _, _, _, _, input, _, _, _) and pred = "summary"
@@ -229,24 +229,32 @@ module ModelValidation {
         invalidSpecComponent(input, part) and
         not part = "" and
         not (part = "Argument" and pred = "sink") and
-        not parseArg(part, _)
+        not parseArg(part, _) and
+        not part.getName() = "Field"
         or
-        part = input.(AccessPath).getToken(0) and
+        part = input.getToken(0) and
         parseParam(part, _)
+        or
+        invalidIndexComponent(input, part)
       ) and
       result = "Unrecognized input specification \"" + part + "\" in " + pred + " model."
     )
   }
 
   private string getInvalidModelOutput() {
-    exists(string pred, string output, string part |
+    exists(string pred, AccessPath output, AccessPathToken part |
       sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
       or
       summaryModel(_, _, _, _, _, _, _, output, _, _) and pred = "summary"
     |
-      invalidSpecComponent(output, part) and
-      not part = "" and
-      not (part = ["Argument", "Parameter"] and pred = "source") and
+      (
+        invalidSpecComponent(output, part) and
+        not part = "" and
+        not (part = ["Argument", "Parameter"] and pred = "source") and
+        not part.getName() = "Field"
+        or
+        invalidIndexComponent(output, part)
+      ) and
       result = "Unrecognized output specification \"" + part + "\" in " + pred + " model."
     )
   }
