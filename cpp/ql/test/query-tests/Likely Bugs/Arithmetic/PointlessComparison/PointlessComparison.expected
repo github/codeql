@@ -18,6 +18,13 @@
 | PointlessComparison.c:197:7:197:11 | ... < ... | Comparison is always false because x >= 0. |
 | PointlessComparison.c:250:9:250:19 | ... == ... | Comparison is always false because u32idx >= 1. |
 | PointlessComparison.c:255:9:255:19 | ... == ... | Comparison is always false because u64idx >= 1. |
+| PointlessComparison.c:273:9:273:18 | ... > ... | Comparison is always false because c <= 0. |
+| PointlessComparison.c:283:13:283:19 | ... >= ... | Comparison is always true because c >= 11. |
 | PointlessComparison.c:294:9:294:16 | ... >= ... | Comparison is always false because ui1 <= 0. |
 | PointlessComparison.c:363:7:363:14 | ... == ... | Comparison is always false because tmp <= 0. |
+| PointlessComparison.c:372:6:372:16 | ... >= ... | Comparison is always true because ... >> ... >= 1.5. |
+| PointlessComparison.c:373:6:373:16 | ... >= ... | Comparison is always false because ... >> ... <= 1.5. |
+| PointlessComparison.c:374:6:374:16 | ... == ... | Comparison is always false because ... >> ... >= 1.5. |
+| PointlessComparison.c:388:10:388:21 | ... > ... | Comparison is always false because ... * ... <= 408. |
+| PointlessComparison.c:391:12:391:20 | ... < ... | Comparison is always false because ... * ... >= 6. |
 | RegressionTests.cpp:125:7:125:11 | ... > ... | Comparison is always false because x <= 0. |
