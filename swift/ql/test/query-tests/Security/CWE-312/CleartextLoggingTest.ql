@@ -9,11 +9,8 @@ class CleartextLogging extends InlineExpectationsTest {
   override string getARelevantTag() { result = "hasCleartextLogging" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(
-      CleartextLoggingConfiguration config, DataFlow::Node source, DataFlow::Node sink,
-      Expr sinkExpr
-    |
-      config.hasFlow(source, sink) and
+    exists(DataFlow::Node source, DataFlow::Node sink, Expr sinkExpr |
+      CleartextLoggingFlow::flow(source, sink) and
       sinkExpr = sink.asExpr() and
       location = sinkExpr.getLocation() and
       element = sinkExpr.toString() and
