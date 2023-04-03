@@ -121,6 +121,7 @@ module API {
      * end
      * ```
      */
+    pragma[inline]
     DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }
 
     /**
