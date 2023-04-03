@@ -972,7 +972,7 @@ class Class extends TClass, TypeDeclaration, ModuleDeclaration {
   }
 
   /** Gets the class type defined by this class declaration. */
-  Type getType() { result.getDeclaration() = this }
+  ClassType getType() { result.getDeclaration() = this }
 
   override AstNode getAChild(string pred) {
     result = super.getAChild(pred)

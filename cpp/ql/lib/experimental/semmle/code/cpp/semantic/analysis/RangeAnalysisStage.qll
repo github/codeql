@@ -78,18 +78,15 @@ import experimental.semmle.code.cpp.semantic.SemanticLocation
 /**
  * Holds if `typ` is a small integral type with the given lower and upper bounds.
  */
-private predicate typeBound(SemIntegerType typ, int lowerbound, int upperbound) {
+private predicate typeBound(SemIntegerType typ, float lowerbound, float upperbound) {
   exists(int bitSize | bitSize = typ.getByteSize() * 8 |
-    bitSize < 32 and
-    (
-      if typ.isSigned()
-      then (
-        upperbound = 1.bitShiftLeft(bitSize - 1) - 1 and
-        lowerbound = -upperbound - 1
-      ) else (
-        lowerbound = 0 and
-        upperbound = 1.bitShiftLeft(bitSize) - 1
-      )
+    if typ.isSigned()
+    then (
+      upperbound = 2.pow(bitSize - 1) - 1 and
+      lowerbound = -upperbound - 1
+    ) else (
+      lowerbound = 0 and
+      upperbound = 2.pow(bitSize) - 1
     )
   )
 }
@@ -286,10 +283,10 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
     }
 
     /** Gets the lower bound of the resulting type. */
-    int getLowerBound() { typeBound(getTrackedType(this), result, _) }
+    float getLowerBound() { typeBound(getTrackedType(this), result, _) }
 
     /** Gets the upper bound of the resulting type. */
-    int getUpperBound() { typeBound(getTrackedType(this), _, result) }
+    float getUpperBound() { typeBound(getTrackedType(this), _, result) }
   }
 
   private module SignAnalysisInstantiated = SignAnalysis<D, UtilParam>; // TODO: will this cause reevaluation if it's instantiated with the same DeltaSig and UtilParam multiple times?
