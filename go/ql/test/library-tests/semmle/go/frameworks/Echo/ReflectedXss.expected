@@ -1,11 +1,9 @@
 edges
 | file://:0:0:0:0 | parameter 0 of NewReader | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewReader |
-| file://:0:0:0:0 | parameter 1 of Set | file://:0:0:0:0 | [summary] to write: argument -1 in Set |
-| file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
+| file://:0:0:0:0 | parameter 1 of Set | file://:0:0:0:0 | [summary] to write: argument -2 in Set |
 | file://:0:0:0:0 | parameter -1 of Open | file://:0:0:0:0 | [summary] to write: return (return[0]) in Open |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
+| file://:0:0:0:0 | parameter -2 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
+| file://:0:0:0:0 | parameter -2 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
 | test.go:13:11:13:32 | call to Param | test.go:14:16:14:20 | param |
 | test.go:19:11:19:27 | call to ParamValues | test.go:20:16:20:20 | param |
 | test.go:25:11:25:37 | call to QueryParam | test.go:26:16:26:20 | param |
@@ -18,9 +16,7 @@ edges
 | test.go:56:13:56:22 | fileHeader | file://:0:0:0:0 | parameter -1 of Open |
 | test.go:56:13:56:22 | fileHeader | test.go:56:2:56:29 | ... := ...[0] |
 | test.go:57:2:57:7 | definition of buffer | test.go:59:20:59:25 | buffer |
-| test.go:58:2:58:5 | file | file://:0:0:0:0 | parameter -1 of Read |
-| test.go:58:2:58:5 | file | file://:0:0:0:0 | parameter -1 of Read |
-| test.go:58:2:58:5 | file | file://:0:0:0:0 | parameter -1 of Read |
+| test.go:58:2:58:5 | file | file://:0:0:0:0 | parameter -2 of Read |
 | test.go:58:2:58:5 | file | test.go:57:2:57:7 | definition of buffer |
 | test.go:64:2:64:31 | ... := ...[0] | test.go:65:16:65:41 | index expression |
 | test.go:70:2:70:31 | ... := ...[0] | test.go:72:13:72:22 | fileHeader |
@@ -28,9 +24,7 @@ edges
 | test.go:72:13:72:22 | fileHeader | file://:0:0:0:0 | parameter -1 of Open |
 | test.go:72:13:72:22 | fileHeader | test.go:72:2:72:29 | ... := ...[0] |
 | test.go:73:2:73:7 | definition of buffer | test.go:75:20:75:25 | buffer |
-| test.go:74:2:74:5 | file | file://:0:0:0:0 | parameter -1 of Read |
-| test.go:74:2:74:5 | file | file://:0:0:0:0 | parameter -1 of Read |
-| test.go:74:2:74:5 | file | file://:0:0:0:0 | parameter -1 of Read |
+| test.go:74:2:74:5 | file | file://:0:0:0:0 | parameter -2 of Read |
 | test.go:74:2:74:5 | file | test.go:73:2:73:7 | definition of buffer |
 | test.go:80:2:80:32 | ... := ...[0] | test.go:81:16:81:24 | selection of Value |
 | test.go:86:13:86:25 | call to Cookies | test.go:87:16:87:31 | selection of Value |
@@ -38,7 +32,7 @@ edges
 | test.go:110:17:110:19 | definition of ctx | test.go:112:16:112:18 | ctx |
 | test.go:111:21:111:42 | call to Param | file://:0:0:0:0 | parameter 1 of Set |
 | test.go:111:21:111:42 | call to Param | test.go:110:17:110:19 | definition of ctx |
-| test.go:112:16:112:18 | ctx | file://:0:0:0:0 | parameter -1 of Get |
+| test.go:112:16:112:18 | ctx | file://:0:0:0:0 | parameter -2 of Get |
 | test.go:112:16:112:18 | ctx | test.go:112:16:112:33 | call to Get |
 | test.go:112:16:112:33 | call to Get | test.go:112:16:112:42 | type assertion |
 | test.go:122:11:122:32 | call to Param | test.go:123:16:123:20 | param |
@@ -51,19 +45,15 @@ edges
 | test.go:162:11:162:32 | call to Param | test.go:163:23:163:35 | type conversion |
 nodes
 | file://:0:0:0:0 | [summary] to write: argument 0 in Read | semmle.label | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | [summary] to write: argument 0 in Read | semmle.label | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | [summary] to write: argument 0 in Read | semmle.label | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | [summary] to write: argument -1 in Set | semmle.label | [summary] to write: argument -1 in Set |
+| file://:0:0:0:0 | [summary] to write: argument -2 in Set | semmle.label | [summary] to write: argument -2 in Set |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | semmle.label | [summary] to write: return (return[0]) in Get |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewReader | semmle.label | [summary] to write: return (return[0]) in NewReader |
 | file://:0:0:0:0 | [summary] to write: return (return[0]) in Open | semmle.label | [summary] to write: return (return[0]) in Open |
 | file://:0:0:0:0 | parameter 0 of NewReader | semmle.label | parameter 0 of NewReader |
 | file://:0:0:0:0 | parameter 1 of Set | semmle.label | parameter 1 of Set |
-| file://:0:0:0:0 | parameter -1 of Get | semmle.label | parameter -1 of Get |
 | file://:0:0:0:0 | parameter -1 of Open | semmle.label | parameter -1 of Open |
-| file://:0:0:0:0 | parameter -1 of Read | semmle.label | parameter -1 of Read |
-| file://:0:0:0:0 | parameter -1 of Read | semmle.label | parameter -1 of Read |
-| file://:0:0:0:0 | parameter -1 of Read | semmle.label | parameter -1 of Read |
+| file://:0:0:0:0 | parameter -2 of Get | semmle.label | parameter -2 of Get |
+| file://:0:0:0:0 | parameter -2 of Read | semmle.label | parameter -2 of Read |
 | test.go:13:11:13:32 | call to Param | semmle.label | call to Param |
 | test.go:14:16:14:20 | param | semmle.label | param |
 | test.go:19:11:19:27 | call to ParamValues | semmle.label | call to ParamValues |
@@ -117,15 +107,11 @@ nodes
 | test.go:163:23:163:35 | type conversion | semmle.label | type conversion |
 subpaths
 | test.go:56:13:56:22 | fileHeader | file://:0:0:0:0 | parameter -1 of Open | file://:0:0:0:0 | [summary] to write: return (return[0]) in Open | test.go:56:2:56:29 | ... := ...[0] |
-| test.go:58:2:58:5 | file | file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read | test.go:57:2:57:7 | definition of buffer |
-| test.go:58:2:58:5 | file | file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read | test.go:57:2:57:7 | definition of buffer |
-| test.go:58:2:58:5 | file | file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read | test.go:57:2:57:7 | definition of buffer |
+| test.go:58:2:58:5 | file | file://:0:0:0:0 | parameter -2 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read | test.go:57:2:57:7 | definition of buffer |
 | test.go:72:13:72:22 | fileHeader | file://:0:0:0:0 | parameter -1 of Open | file://:0:0:0:0 | [summary] to write: return (return[0]) in Open | test.go:72:2:72:29 | ... := ...[0] |
-| test.go:74:2:74:5 | file | file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read | test.go:73:2:73:7 | definition of buffer |
-| test.go:74:2:74:5 | file | file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read | test.go:73:2:73:7 | definition of buffer |
-| test.go:74:2:74:5 | file | file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read | test.go:73:2:73:7 | definition of buffer |
-| test.go:111:21:111:42 | call to Param | file://:0:0:0:0 | parameter 1 of Set | file://:0:0:0:0 | [summary] to write: argument -1 in Set | test.go:110:17:110:19 | definition of ctx |
-| test.go:112:16:112:18 | ctx | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | test.go:112:16:112:33 | call to Get |
+| test.go:74:2:74:5 | file | file://:0:0:0:0 | parameter -2 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read | test.go:73:2:73:7 | definition of buffer |
+| test.go:111:21:111:42 | call to Param | file://:0:0:0:0 | parameter 1 of Set | file://:0:0:0:0 | [summary] to write: argument -2 in Set | test.go:110:17:110:19 | definition of ctx |
+| test.go:112:16:112:18 | ctx | file://:0:0:0:0 | parameter -2 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | test.go:112:16:112:33 | call to Get |
 | test.go:147:30:147:34 | param | file://:0:0:0:0 | parameter 0 of NewReader | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewReader | test.go:147:12:147:35 | call to NewReader |
 #select
 | test.go:14:16:14:20 | param | test.go:13:11:13:32 | call to Param | test.go:14:16:14:20 | param | Cross-site scripting vulnerability due to $@. | test.go:13:11:13:32 | call to Param | user-provided value | test.go:0:0:0:0 | test.go |  |
