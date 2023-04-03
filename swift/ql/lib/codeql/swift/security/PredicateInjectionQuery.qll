@@ -36,9 +36,7 @@ module PredicateInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof PredicateInjectionSink }
 
-  predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer instanceof PredicateInjectionSanitizer
-  }
+  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof PredicateInjectionSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
     any(PredicateInjectionAdditionalTaintStep s).step(n1, n2)
