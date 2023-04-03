@@ -245,6 +245,40 @@ module Actions {
   }
 
   /**
+   * Holds if `${{ e }}` is a GitHub Actions expression evaluated within this YAML string.
+   * See https://docs.github.com/en/free-pro-team@latest/actions/reference/context-and-expression-syntax-for-github-actions.
+   * Only finds simple expressions like `${{ github.event.comment.body }}`, where the expression contains only alphanumeric characters, underscores, dots, or dashes.
+   * Does not identify more complicated expressions like `${{ fromJSON(env.time) }}`, or ${{ format('{{Hello {0}!}}', github.event.head_commit.author.name) }}
+   */
+  string getASimpleReferenceExpression(YamlString node) {
+    // We use `regexpFind` to obtain *all* matches of `${{...}}`,
+    // not just the last (greedy match) or first (reluctant match).
+    result =
+      node.getValue()
+          .regexpFind("\\$\\{\\{\\s*[A-Za-z0-9_\\[\\]\\*\\(\\)\\.\\-]+\\s*\\}\\}", _, _)
+          .regexpCapture("\\$\\{\\{\\s*([A-Za-z0-9_\\[\\]\\*\\((\\)\\.\\-]+)\\s*\\}\\}", 1)
+  }
+
+  /**
+   * A `script:` field within an Actions `with:` specific to `actions/github-script` action.
+   *
+   * For example:
+   * ```
+   * uses: actions/github-script@v3
+   * with:
+   *   script: console.log('${{ github.event.pull_request.head.sha }}')
+   * ```
+   */
+  class Script extends YamlNode, YamlString {
+    With with;
+
+    Script() { with.lookup("script") = this }
+
+    /** Gets the `with` field this field belongs to. */
+    With getWith() { result = with }
+  }
+
+  /**
    * A `run` field within an Actions job step, which runs command-line programs using an operating system shell.
    * See https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions#jobsjob_idstepsrun.
    */
@@ -255,20 +289,5 @@ module Actions {
 
     /** Gets the step that executes this `run` command. */
     Step getStep() { result = step }
-
-    /**
-     * Holds if `${{ e }}` is a GitHub Actions expression evaluated within this `run` command.
-     * See https://docs.github.com/en/free-pro-team@latest/actions/reference/context-and-expression-syntax-for-github-actions.
-     * Only finds simple expressions like `${{ github.event.comment.body }}`, where the expression contains only alphanumeric characters, underscores, dots, or dashes.
-     * Does not identify more complicated expressions like `${{ fromJSON(env.time) }}`, or ${{ format('{{Hello {0}!}}', github.event.head_commit.author.name) }}
-     */
-    string getASimpleReferenceExpression() {
-      // We use `regexpFind` to obtain *all* matches of `${{...}}`,
-      // not just the last (greedy match) or first (reluctant match).
-      result =
-        this.getValue()
-            .regexpFind("\\$\\{\\{\\s*[A-Za-z0-9_\\[\\]\\*\\(\\)\\.\\-]+\\s*\\}\\}", _, _)
-            .regexpCapture("\\$\\{\\{\\s*([A-Za-z0-9_\\[\\]\\*\\((\\)\\.\\-]+)\\s*\\}\\}", 1)
-    }
   }
 }

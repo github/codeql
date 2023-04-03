@@ -2,6 +2,9 @@
 | .github/workflows/comment_issue.yml:13:12:13:50 | echo '$ ... ody }}' | Potential injection from the github.event.comment.body context, which may be controlled by an external user. |
 | .github/workflows/comment_issue.yml:14:12:14:48 | echo '$ ... ody }}' | Potential injection from the github.event.issue.body context, which may be controlled by an external user. |
 | .github/workflows/comment_issue.yml:15:12:15:49 | echo '$ ... tle }}' | Potential injection from the github.event.issue.title context, which may be controlled by an external user. |
+| .github/workflows/comment_issue.yml:22:17:22:63 | console ... dy }}') | Potential injection from the github.event.comment.body context, which may be controlled by an external user. |
+| .github/workflows/comment_issue.yml:25:17:25:61 | console ... dy }}') | Potential injection from the github.event.issue.body context, which may be controlled by an external user. |
+| .github/workflows/comment_issue.yml:28:17:28:62 | console ... le }}') | Potential injection from the github.event.issue.title context, which may be controlled by an external user. |
 | .github/workflows/comment_issue_newline.yml:9:14:10:50 | \| | Potential injection from the github.event.comment.body context, which may be controlled by an external user. |
 | .github/workflows/discussion.yml:7:12:7:54 | echo '$ ... tle }}' | Potential injection from the github.event.discussion.title context, which may be controlled by an external user. |
 | .github/workflows/discussion.yml:8:12:8:53 | echo '$ ... ody }}' | Potential injection from the github.event.discussion.body context, which may be controlled by an external user. |
