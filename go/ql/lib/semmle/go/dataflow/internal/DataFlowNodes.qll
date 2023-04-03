@@ -5,16 +5,38 @@ private import DataFlowPrivate
 private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.go.dataflow.ExternalFlow
 
+private predicate isInterfaceMethod(Method c) {
+  c.getReceiverBaseType().getUnderlyingType() instanceof InterfaceType
+}
+
+private SummaryComponent stateBottom(FlowSummaryImpl::Private::SummaryNodeState state) {
+  exists(SummaryComponentStack stack |
+    state.isInputState(_, stack) or
+    state.isOutputState(_, stack)
+  |
+    result = stack.bottom()
+  )
+}
+
 cached
 private newtype TNode =
   MkInstructionNode(IR::Instruction insn) or
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
   MkSummarizedParameterNode(SummarizedCallable c, int i) {
-    FlowSummaryImpl::Private::summaryParameterNodeRange(c, i)
+    FlowSummaryImpl::Private::summaryParameterNodeRange(c, i) and
+    if isInterfaceMethod(c.asFunction()) then i != -1 else i != -2
   } or
   MkSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
-    FlowSummaryImpl::Private::summaryNodeRange(c, state)
+    FlowSummaryImpl::Private::summaryNodeRange(c, state) and
+    if isInterfaceMethod(c.asFunction())
+    then (
+      stateBottom(state) != SummaryComponent::parameter(-1) and
+      stateBottom(state) != SummaryComponent::argument(-1)
+    ) else (
+      stateBottom(state) != SummaryComponent::parameter(-2) and
+      stateBottom(state) != SummaryComponent::argument(-2)
+    )
   }
 
 /** Nodes intended for only use inside the data-flow libraries. */
@@ -34,14 +56,36 @@ module Private {
     n = MkSummaryInternalNode(result.asSummarizedCallable(), _)
   }
 
-  /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
+  /**
+   * Holds if `p` is a `ParameterNode` of `c` with position `pos`.
+   *
+   * Note that we renumber the receiver of an interface method to -2 instead of the
+   * usual -1, in order to only propagate flow from the receiver of interface method calls
+   * to interface methods themselves (which are necessarily models), rather than to
+   * concrete methods implementing the interface, as is done for regular parameters.
+   */
   predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
-    p.isParameterOf(c, pos)
+    exists(int realPos | p.isParameterOf(c, realPos) |
+      if realPos = -1 and isInterfaceMethod(c.asSummarizedCallable().asFunction())
+      then pos = -2
+      else realPos = pos
+    )
   }
 
-  /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
+  /**
+   * Holds if `arg` is an `ArgumentNode` of `c` with position `pos`.
+   *
+   * Note that we renumber the receiver of an interface call to -2 instead of the
+   * usual -1, in order to only propagate flow from the receiver of interface method calls
+   * to interface methods themselves (which are necessarily models), rather than to
+   * concrete methods implementing the interface, as is done for regular parameters.
+   */
   predicate isArgumentNode(ArgumentNode arg, DataFlowCall c, ArgumentPosition pos) {
-    arg.argumentOf(c, pos)
+    exists(int realPos | arg.argumentOf(c, realPos) |
+      if realPos = -1 and isInterfaceMethod(c.getNode().(DataFlow::CallNode).getTarget())
+      then pos = -2
+      else realPos = pos
+    )
   }
 
   /** A data flow node that represents returning a value from a function. */
@@ -718,20 +762,8 @@ module Public {
      * Holds if this argument occurs at the given position in the given call.
      *
      * The receiver argument is considered to have index `-1`.
-     *
-     * Note that we currently do not track receiver arguments into calls to interface methods.
      */
-    predicate argumentOf(CallExpr call, int pos) {
-      call = c.asExpr() and
-      pos = i and
-      (
-        i != -1
-        or
-        exists(c.(MethodCallNode).getTarget().getBody())
-        or
-        hasExternalSpecification(c.(DataFlow::MethodCallNode).getTarget())
-      )
-    }
+    predicate argumentOf(CallExpr call, int pos) { call = c.asExpr() and pos = i }
 
     /**
      * Gets the `CallNode` this is an argument to.

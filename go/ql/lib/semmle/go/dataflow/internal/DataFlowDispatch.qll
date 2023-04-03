@@ -117,7 +117,7 @@ predicate mayBenefitFromCallContext(DataFlowCall call, DataFlowCallable f) { non
 DataFlowCallable viableImplInCallContext(DataFlowCall call, DataFlowCall ctx) { none() }
 
 private int parameterPosition() {
-  result = [-1 .. any(DataFlowCallable c).getType().getNumParameter()]
+  result = [-2 .. any(DataFlowCallable c).getType().getNumParameter()]
 }
 
 /** A parameter position represented by an integer. */

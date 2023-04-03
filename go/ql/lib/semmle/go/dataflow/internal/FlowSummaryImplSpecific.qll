@@ -272,10 +272,26 @@ private int parseConstantOrRange(string arg) {
   )
 }
 
+/**
+ * Gets an integer specified by the integer or range `arg`, adding `-2` in the case that the result would include `-1`.
+ */
+bindingset[arg]
+private int parseConstantOrRangeAddingInterfaceReceiver(string arg) {
+  exists(int written | written = parseConstantOrRange(arg) |
+    result = written
+    or
+    written = -1 and result = -2
+  )
+}
+
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[arg]
-ArgumentPosition parseParamBody(string arg) { result = parseConstantOrRange(arg) }
+ArgumentPosition parseParamBody(string arg) {
+  result = parseConstantOrRangeAddingInterfaceReceiver(arg)
+}
 
 /** Gets the parameter position obtained by parsing `X` in `Argument[X]`. */
 bindingset[arg]
-ParameterPosition parseArgBody(string arg) { result = parseConstantOrRange(arg) }
+ParameterPosition parseArgBody(string arg) {
+  result = parseConstantOrRangeAddingInterfaceReceiver(arg)
+}
