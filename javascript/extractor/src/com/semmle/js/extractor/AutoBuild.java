@@ -1239,12 +1239,11 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
         String msg = "A parse error occurred: " + StringUtil.escapeMarkdown(err.getMessage())
             + ". Check the syntax of the file. If the file is invalid, correct the error or [exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.";
         // file, relative to the source root
-        String relativeFilePath = null;
+        DiagnosticLocation.Builder builder = DiagnosticLocation.builder();
         if (file.startsWith(LGTM_SRC)) {
-          relativeFilePath = file.subpath(LGTM_SRC.getNameCount(), file.getNameCount()).toString();
+          builder = builder.setFile(file.subpath(LGTM_SRC.getNameCount(), file.getNameCount()).toString());
         }
-        DiagnosticLocation diagLoc = DiagnosticLocation.builder()
-            .setFile(relativeFilePath)
+        DiagnosticLocation diagLoc = builder
             .setStartLine(err.getPosition().getLine())
             .setStartColumn(err.getPosition().getColumn())
             .setEndLine(err.getPosition().getLine())
