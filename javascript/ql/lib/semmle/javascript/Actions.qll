@@ -267,8 +267,8 @@ module Actions {
       // not just the last (greedy match) or first (reluctant match).
       result =
         this.getValue()
-            .regexpFind("\\$\\{\\{\\s*[A-Za-z0-9_\\.\\-]+\\s*\\}\\}", _, _)
-            .regexpCapture("\\$\\{\\{\\s*([A-Za-z0-9_\\.\\-]+)\\s*\\}\\}", 1)
+            .regexpFind("\\$\\{\\{\\s*[A-Za-z0-9_\\[\\]\\*\\(\\)\\.\\-]+\\s*\\}\\}", _, _)
+            .regexpCapture("\\$\\{\\{\\s*([A-Za-z0-9_\\[\\]\\*\\((\\)\\.\\-]+)\\s*\\}\\}", 1)
     }
   }
 }

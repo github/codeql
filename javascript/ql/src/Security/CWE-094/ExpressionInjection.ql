@@ -30,7 +30,10 @@ private predicate isExternalUserControlledPullRequest(string context) {
         "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*body\\b",
         "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*label\\b",
         "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*repo\\s*\\.\\s*default_branch\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*repo\\s*\\.\\s*description\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*repo\\s*\\.\\s*homepage\\b",
         "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pull_request\\s*\\.\\s*head\\s*\\.\\s*ref\\b",
+        "\\bgithub\\s*\\.\\s*head_ref\\b"
       ]
   |
     context.regexpMatch(reg)
@@ -39,8 +42,7 @@ private predicate isExternalUserControlledPullRequest(string context) {
 
 bindingset[context]
 private predicate isExternalUserControlledReview(string context) {
-  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*review\\s*\\.\\s*body\\b") or
-  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*review_comment\\s*\\.\\s*body\\b")
+  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*review\\s*\\.\\s*body\\b")
 }
 
 bindingset[context]
@@ -50,8 +52,8 @@ private predicate isExternalUserControlledComment(string context) {
 
 bindingset[context]
 private predicate isExternalUserControlledGollum(string context) {
-  context
-      .regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pages(?:\\[[0-9]\\]|\\s*\\.\\s*\\*)+\\s*\\.\\s*page_name\\b")
+  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pages\\[[0-9]+\\]\\s*\\.\\s*page_name\\b") or
+  context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*pages\\[[0-9]+\\]\\s*\\.\\s*title\\b")
 }
 
 bindingset[context]
@@ -59,13 +61,16 @@ private predicate isExternalUserControlledCommit(string context) {
   exists(string reg |
     reg =
       [
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits(?:\\[[0-9]\\]|\\s*\\.\\s*\\*)+\\s*\\.\\s*message\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits\\[[0-9]+\\]\\s*\\.\\s*message\\b",
         "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*message\\b",
         "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*author\\s*\\.\\s*email\\b",
         "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*author\\s*\\.\\s*name\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits(?:\\[[0-9]\\]|\\s*\\.\\s*\\*)+\\s*\\.\\s*author\\s*\\.\\s*email\\b",
-        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits(?:\\[[0-9]\\]|\\s*\\.\\s*\\*)+\\s*\\.\\s*author\\s*\\.\\s*name\\b",
-        "\\bgithub\\s*\\.\\s*head_ref\\b"
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*committer\\s*\\.\\s*email\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*head_commit\\s*\\.\\s*committer\\s*\\.\\s*name\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits\\[[0-9]+\\]\\s*\\.\\s*author\\s*\\.\\s*email\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits\\[[0-9]+\\]\\s*\\.\\s*author\\s*\\.\\s*name\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits\\[[0-9]+\\]\\s*\\.\\s*committer\\s*\\.\\s*email\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*commits\\[[0-9]+\\]\\s*\\.\\s*committer\\s*\\.\\s*name\\b",
       ]
   |
     context.regexpMatch(reg)
@@ -76,6 +81,25 @@ bindingset[context]
 private predicate isExternalUserControlledDiscussion(string context) {
   context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*discussion\\s*\\.\\s*title\\b") or
   context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*discussion\\s*\\.\\s*body\\b")
+}
+
+bindingset[context]
+private predicate isExternalUserControlledWorkflowRun(string context) {
+  exists(string reg |
+    reg =
+      [
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_branch\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*display_title\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_repository\\b\\s*\\.\\s*description\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_commit\\b\\s*\\.\\s*message\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_commit\\b\\s*\\.\\s*author\\b\\s*\\.\\s*email\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_commit\\b\\s*\\.\\s*author\\b\\s*\\.\\s*name\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_commit\\b\\s*\\.\\s*committer\\b\\s*\\.\\s*email\\b",
+        "\\bgithub\\s*\\.\\s*event\\s*\\.\\s*workflow_run\\s*\\.\\s*head_commit\\b\\s*\\.\\s*committer\\b\\s*\\.\\s*name\\b",
+      ]
+  |
+    context.regexpMatch(reg)
+  )
 }
 
 from Actions::Run run, string context, Actions::On on
@@ -89,20 +113,29 @@ where
     exists(on.getNode("pull_request_target")) and
     isExternalUserControlledPullRequest(context)
     or
-    (exists(on.getNode("pull_request_review_comment")) or exists(on.getNode("pull_request_review"))) and
-    isExternalUserControlledReview(context)
+    exists(on.getNode("pull_request_review")) and
+    (isExternalUserControlledReview(context) or isExternalUserControlledPullRequest(context))
     or
-    (exists(on.getNode("issue_comment")) or exists(on.getNode("pull_request_target"))) and
-    isExternalUserControlledComment(context)
+    exists(on.getNode("pull_request_review_comment")) and
+    (isExternalUserControlledComment(context) or isExternalUserControlledPullRequest(context))
+    or
+    exists(on.getNode("issue_comment")) and
+    (isExternalUserControlledComment(context) or isExternalUserControlledIssue(context))
     or
     exists(on.getNode("gollum")) and
     isExternalUserControlledGollum(context)
     or
-    exists(on.getNode("pull_request_target")) and
+    exists(on.getNode("push")) and
     isExternalUserControlledCommit(context)
     or
-    (exists(on.getNode("discussion")) or exists(on.getNode("discussion_comment"))) and
+    exists(on.getNode("discussion")) and
     isExternalUserControlledDiscussion(context)
+    or
+    exists(on.getNode("discussion_comment")) and
+    (isExternalUserControlledDiscussion(context) or isExternalUserControlledComment(context))
+    or
+    exists(on.getNode("workflow_run")) and
+    isExternalUserControlledWorkflowRun(context)
   )
 select run,
   "Potential injection from the " + context +
