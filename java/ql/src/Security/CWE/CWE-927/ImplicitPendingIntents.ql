@@ -15,10 +15,10 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.security.ImplicitPendingIntentsQuery
-import DataFlow::PathGraph
+import ImplicitPendingIntentStartFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink
-where any(ImplicitPendingIntentStartConf conf).hasFlowPath(source, sink)
+from ImplicitPendingIntentStartFlow::PathNode source, ImplicitPendingIntentStartFlow::PathNode sink
+where ImplicitPendingIntentStartFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "$@ and sent to an unspecified third party through a PendingIntent.", source.getNode(),
   "An implicit Intent is created"
