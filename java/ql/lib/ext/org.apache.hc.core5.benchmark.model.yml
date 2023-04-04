@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.hc.core5.benchmark", "Builder", True, "setUri", "", "", "Argument[0]", "%-url", "manual"] # ! maybe step instead
+      - ["org.apache.hc.core5.benchmark", "Builder", True, "setUri", "", "", "Argument[0]", "%-url", "manual"] # ! maybe step instead; also check docs again, name should be BenchmarkConfig$Builder instead I believe
