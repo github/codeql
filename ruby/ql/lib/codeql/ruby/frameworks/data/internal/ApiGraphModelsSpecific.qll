@@ -107,22 +107,23 @@ API::Node getExtraNodeFromPath(string type, AccessPath path, int n) {
 
 /** Gets a Ruby-specific interpretation of the given `type`. */
 API::Node getExtraNodeFromType(string type) {
+  result instanceof API::Use and
   exists(string consts, string suffix, DataFlow::ConstRef constRef |
     parseRelevantType(type, consts, suffix) and
     constRef = getConstantFromConstPath(consts)
   |
     suffix = "!" and
     (
-      result.asSource() = constRef
+      result.getInducingNode() = constRef
       or
-      result.asSource() = constRef.getADescendentModule().getAnOwnModuleSelf()
+      result.getInducingNode() = constRef.getADescendentModule().getAnOwnModuleSelf()
     )
     or
     suffix = "" and
     (
-      result.asSource() = constRef.getAMethodCall("new")
+      result.getInducingNode() = constRef.getAMethodCall("new")
       or
-      result.asSource() = constRef.getADescendentModule().getAnInstanceSelf()
+      result.getInducingNode() = constRef.getADescendentModule().getAnInstanceSelf()
     )
   )
   or
