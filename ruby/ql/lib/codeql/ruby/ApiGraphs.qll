@@ -122,7 +122,7 @@ module API {
      * ```
      */
     pragma[inline]
-    DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }
+    DataFlow::LocalSourceNode asSource() { Impl::use(pragma[only_bind_out](this), result) }
 
     /**
      * Gets a data-flow node where this value leaves the current codebase and flows into an
@@ -178,14 +178,14 @@ module API {
      * - A submodule of a module
      * - An attribute of an object
      */
-    bindingset[m]
-    bindingset[result]
+    pragma[inline]
     Node getMember(string m) { result = this.getASuccessor(Label::member(m)) }
 
     /**
      * Gets a node representing a member of this API component where the name of the member may
      * or may not be known statically.
      */
+    pragma[inline]
     Node getAMember() { result = this.getASuccessor(Label::member(_)) }
 
     /**
@@ -199,11 +199,13 @@ module API {
      * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
      * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
      */
+    pragma[inline]
     Node getInstance() { result = this.getASubclass().getReturn("new") }
 
     /**
      * Gets a node representing a call to `method` on the receiver represented by this node.
      */
+    pragma[inline]
     MethodAccessNode getMethod(string method) {
       result = this.getASubclass().getASuccessor(Label::method(method))
     }
@@ -211,24 +213,27 @@ module API {
     /**
      * Gets a node representing the result of this call.
      */
+    pragma[inline]
     Node getReturn() { result = this.getASuccessor(Label::return()) }
 
     /**
      * Gets a node representing the result of calling a method on the receiver represented by this node.
      */
+    pragma[inline]
     Node getReturn(string method) { result = this.getMethod(method).getReturn() }
 
     /** Gets an API node representing the `n`th positional parameter. */
-    pragma[nomagic]
+    pragma[inline]
     Node getParameter(int n) { result = this.getASuccessor(Label::parameter(n)) }
 
     /** Gets an API node representing the given keyword parameter. */
-    pragma[nomagic]
+    pragma[inline]
     Node getKeywordParameter(string name) {
       result = this.getASuccessor(Label::keywordParameter(name))
     }
 
     /** Gets an API node representing the block parameter. */
+    pragma[inline]
     Node getBlock() { result = this.getASuccessor(Label::blockParameter()) }
 
     /**
@@ -261,6 +266,7 @@ module API {
     /**
      * Gets a node representing the `content` stored on the base object.
      */
+    pragma[inline]
     Node getContent(DataFlow::Content content) {
       result = this.getASuccessor(Label::content(content))
     }
@@ -275,9 +281,11 @@ module API {
     }
 
     /** Gets a node representing the instance field of the given `name`, which must include the `@` character. */
+    pragma[inline]
     Node getField(string name) { result = this.getContent(DataFlowPrivate::TFieldContent(name)) }
 
     /** Gets a node representing an element of this collection (known or unknown). */
+    pragma[inline]
     Node getAnElement() {
       result = this.getContents(any(DataFlow::ContentSet set | set.isAnyElement()))
     }
@@ -294,13 +302,25 @@ module API {
      * Gets a node such that there is an edge in the API graph between this node and the other
      * one, and that edge is labeled with `lbl`.
      */
-    Node getASuccessor(Label::ApiLabel lbl) { Impl::edge(this, lbl, result) }
+    bindingset[this, lbl]
+    pragma[inline]
+    Node getASuccessor(Label::ApiLabel lbl) {
+      edgeForward(this, lbl, result)
+      // pragma[only_bind_into](result) =
+      //   pragma[only_bind_out](this).getASuccessorRaw(pragma[only_bind_out](lbl))
+    }
+
+    /**
+     * Like `getASuccessor` but without join-order restrictions. Should rarely be used.
+     */
+    pragma[inline]
+    Node getASuccessorRaw(Label::ApiLabel lbl) { Impl::edge(this, lbl, result) }
 
     /**
      * Gets a node such that there is an edge in the API graph between that other node and
      * this one, and that edge is labeled with `lbl`
      */
-    Node getAPredecessor(Label::ApiLabel lbl) { this = result.getASuccessor(lbl) }
+    Node getAPredecessor(Label::ApiLabel lbl) { this = result.getASuccessorRaw(lbl) }
 
     /**
      * Gets a node such that there is an edge in the API graph between this node and the other
@@ -312,7 +332,7 @@ module API {
      * Gets a node such that there is an edge in the API graph between that other node and
      * this one.
      */
-    Node getASuccessor() { result = this.getASuccessor(_) }
+    Node getASuccessor() { result = this.getASuccessorRaw(_) }
 
     /**
      * Gets the data-flow node that gives rise to this node, if any.
@@ -444,7 +464,23 @@ module API {
    * you should use `.getMember` on the parent module/class. For example, for nodes corresponding to the class `Gem::Version`,
    * use `getTopLevelMember("Gem").getMember("Version")`.
    */
-  Node getTopLevelMember(string m) { result = root().getMember(m) }
+  bindingset[m]
+  pragma[inline]
+  Node getTopLevelMember(string m) {
+    pragma[only_bind_into](result) = getTopLevelMemberRaw(pragma[only_bind_out](m))
+  }
+
+  cached
+  private Node getTopLevelMemberRaw(string m) {
+    Impl::forceCachingInSameStage() and
+    result = root().getMember(m)
+  }
+
+  bindingset[pred, lbl]
+  pragma[inline_late]
+  private predicate edgeForward(Node pred, Label::ApiLabel lbl, Node succ) {
+    Impl::edge(pred, lbl, succ)
+  }
 
   /**
    * Provides the actual implementation of API graphs, cached for performance.
@@ -485,6 +521,12 @@ module API {
       result = read.getModule().getQualifiedName() and
       not result.matches("%::%")
     }
+
+    cached
+    predicate forceCachingInSameStage() { any() }
+
+    cached
+    predicate forceCachingBackref() { exists(getTopLevelMemberRaw(_)) }
 
     /**
      * Holds if `ref` is a use of a node that should have an incoming edge from the root
