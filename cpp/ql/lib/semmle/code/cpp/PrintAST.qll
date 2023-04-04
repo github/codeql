@@ -752,13 +752,13 @@ private predicate namedExprChildPredicates(Expr expr, Element ele, string pred) 
     expr.(VariableAccess).getQualifier() = ele and pred = "getQualifier()"
     or
     exists(Field f |
-      expr.(ClassAggregateLiteral).getFieldExpr(f) = ele and
-      pred = "getFieldExpr(" + f.toString() + ")"
+      expr.(ClassAggregateLiteral).getAFieldExpr(f) = ele and
+      pred = "getAFieldExpr(" + f.toString() + ")"
     )
     or
     exists(int n |
-      expr.(ArrayOrVectorAggregateLiteral).getElementExpr(n) = ele and
-      pred = "getElementExpr(" + n.toString() + ")"
+      expr.(ArrayOrVectorAggregateLiteral).getAnElementExpr(n) = ele and
+      pred = "getAnElementExpr(" + n.toString() + ")"
     )
     or
     expr.(AlignofExprOperator).getExprOperand() = ele and pred = "getExprOperand()"

@@ -606,9 +606,9 @@ newtype TTranslatedElement =
     not ignoreExpr(expr) and
     (
       exists(Initializer init | init.getExpr().getFullyConverted() = expr) or
-      exists(ClassAggregateLiteral initList | initList.getFieldExpr(_).getFullyConverted() = expr) or
+      exists(ClassAggregateLiteral initList | initList.getAFieldExpr(_).getFullyConverted() = expr) or
       exists(ArrayOrVectorAggregateLiteral initList |
-        initList.getElementExpr(_).getFullyConverted() = expr
+        initList.getAnElementExpr(_).getFullyConverted() = expr
       ) or
       exists(ReturnStmt returnStmt | returnStmt.getExpr().getFullyConverted() = expr) or
       exists(ConstructorFieldInit fieldInit | fieldInit.getExpr().getFullyConverted() = expr) or
@@ -785,7 +785,7 @@ private int getNextExplicitlyInitializedElementAfter(
   ArrayOrVectorAggregateLiteral initList, int afterElementIndex
 ) {
   isFirstValueInitializedElementInRange(initList, afterElementIndex) and
-  result = min(int i | exists(initList.getElementExpr(i)) and i > afterElementIndex)
+  result = min(int i | exists(initList.getAnElementExpr(i)) and i > afterElementIndex)
 }
 
 /**
@@ -798,7 +798,7 @@ private predicate isFirstValueInitializedElementInRange(
   initList.isValueInitialized(elementIndex) and
   (
     elementIndex = 0 or
-    exists(initList.getElementExpr(elementIndex - 1))
+    exists(initList.getAnElementExpr(elementIndex - 1))
   )
 }
 
