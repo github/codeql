@@ -1,0 +1,16 @@
+linters:
+  enable:
+  - depguard
+  - dogsled
+  - gofmt
+  - goimports
+  - golint
+  - gosec
+  - govet
+  - megacheck
+  - misspell
+  - nakedret
+  - prealloc
+  - unconvert
+  - unparam
+  - wastedassign
