@@ -151,7 +151,11 @@ class Log {
 
 // This class represent a named domain-specific logger, responsible for pushing logs using the
 // underlying `binlog::SessionWriter` class. This has a configured log level, so that logs on this
-// `Logger` with a level lower than the configured one are no-ops.
+// `Logger` with a level lower than the configured one are no-ops. The level is configured based
+// on rules matching `<root name>/<name>` in `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` (see above).
+// `<root name>` is what is provided to the global `Log::configure`, `<name>` is provided in the
+// constructor. If no rule matches the name, the log level defaults to the minimum level of all
+// outputs.
 class Logger {
  public:
   explicit Logger(const std::string& name) : Logger(Log::getLoggerConfiguration(name)) {}
