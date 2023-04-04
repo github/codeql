@@ -211,12 +211,15 @@ class ClassAggregateLiteral extends AggregateLiteral {
    * field `field`, if present. The expression is the `position`'th entry in the
    * aggregate literal.
    *
-   * For example, if `aggr` represents the initialization literal `{.x = 1234, .x = 5678}` in
+   * For example, if `aggr` represents the initialization literal `{.x = 123, .y = 456 .x = 789}` in
    * ```cpp
-   * struct Foo { int x; };
-   * struct Foo foo = {.x = 1234, .x = 5678};
+   * struct Foo { int x; int y; };
+   * struct Foo foo = {.x = 123, .y = 456 .x = 789};
    * ```
-   * then `aggr.getFieldExpr(x, 0)` gives `1234`, and `aggr.getFieldExpr(x, 1)` gives `5678`.
+   * then:
+   * - `aggr.getFieldExpr(x, 0)` gives `123`.
+   * - `aggr.getFieldExpr(y, 1)` gives `456`.
+   * - `aggr.getFieldExpr(x, 2)` gives `789`.
    */
   Expr getFieldExpr(Field field, int position) {
     field = classType.getAField() and
@@ -313,11 +316,14 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
    * element `elementIndex`, if present. The expression is the `position`'th entry
    * in the aggregate literal.
    *
-   * For example, if `a` represents the initialization literal `{[0] = 1234, [0] = 5678}` in
+   * For example, if `a` represents the initialization literal `{[0] = 123, [1] = 456, [0] = 789 }` in
    * ```cpp
-   * int x[1] = {[0] = 1234, [0] = 5678};
+   * int x[2] = {[0] = 123, [1] = 456, [0] = 789 };
    * ```
-   * then `a.getElementExpr(0, 0)` gives `1234`, and `a.getElementExpr(0, 1)` gives `5678`.
+   * then:
+   * - `a.getElementExpr(0, 0)` gives `123`.
+   * - `a.getElementExpr(1, 1)` gives `456`.
+   * - `a.getElementExpr(0, 2)` gives `789`.
    */
   Expr getElementExpr(int elementIndex, int position) {
     aggregate_array_init(underlyingElement(this), unresolveElement(result), elementIndex, position)
