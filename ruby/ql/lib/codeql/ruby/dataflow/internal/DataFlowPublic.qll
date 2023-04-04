@@ -336,6 +336,9 @@ private module Cached {
   }
 
   cached
+  predicate hasLocalUse(Node source, Node sink) { hasLocalSource(sink, source) }
+
+  cached
   predicate hasMethodCall(LocalSourceNode source, CallNode call, string name) {
     source.flowsTo(call.getReceiver()) and
     call.getMethodName() = name
@@ -386,6 +389,8 @@ private module Cached {
 }
 
 private import Cached
+
+module Internal = Cached;
 
 /** Gets a node corresponding to expression `e`. */
 ExprNode exprNode(CfgNodes::ExprCfgNode e) { result.getExprNode() = e }
