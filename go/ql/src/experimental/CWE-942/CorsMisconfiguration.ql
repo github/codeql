@@ -166,7 +166,7 @@ class FlowsFromUntrusted extends TaintTracking::Configuration {
 }
 
 /**
- * Holds if the provided `dst` is also destination of a `UntrustedFlowSource`.
+ * Holds if the provided `allowOriginHW` is also destination of a `UntrustedFlowSource`.
  */
 predicate flowsToGuardedByCheckOnUntrusted(AllowOriginHeaderWrite allowOriginHW) {
   exists(FlowsFromUntrusted cfg, DataFlow::Node sink, ControlFlow::ConditionGuardNode cgn |

@@ -57,13 +57,12 @@ module NetHttp {
   }
 
   private class MapWrite extends Http::HeaderWrite::Range, DataFlow::Node {
-    Write write;
     DataFlow::Node index;
     DataFlow::Node rhs;
 
     MapWrite() {
       this.getType().hasQualifiedName("net/http", "Header") and
-      write.writesElement(this, index, rhs)
+      any(Write write).writesElement(this, index, rhs)
     }
 
     override DataFlow::Node getName() { result = index }

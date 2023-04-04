@@ -19,7 +19,7 @@ module SafeUrlFlow {
   /** An outgoing sanitizer edge for safe URL flow. */
   abstract class SanitizerEdge extends DataFlow::Node { }
 
-  /** Standard library safe URL sources. */
+  /** A standard library safe URL source. */
   class StdlibSource extends Source, DataFlow::FieldReadNode {
     StdlibSource() { this.getField().hasQualifiedName("net/http", "Request", ["Host", "URL"]) }
   }

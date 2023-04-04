@@ -51,13 +51,9 @@ module Beego {
    */
   private class BeegoInputSource extends UntrustedFlowSource::Range {
     string methodName;
-    FunctionOutput output;
 
     BeegoInputSource() {
-      exists(DataFlow::MethodCallNode c | this = output.getExitNode(c) |
-        c.getTarget().hasQualifiedName(contextPackagePath(), "BeegoInput", methodName)
-      ) and
-      (
+      exists(FunctionOutput output |
         methodName = "Bind" and
         output.isParameter(0)
         or
@@ -66,6 +62,10 @@ module Beego {
             "URI", "URL", "UserAgent"
           ] and
         output.isResult(0)
+      |
+        exists(DataFlow::MethodCallNode c | this = output.getExitNode(c) |
+          c.getTarget().hasQualifiedName(contextPackagePath(), "BeegoInput", methodName)
+        )
       )
     }
 
@@ -81,16 +81,8 @@ module Beego {
    * `beego.Controller` sources of untrusted data.
    */
   private class BeegoControllerSource extends UntrustedFlowSource::Range {
-    string methodName;
-    FunctionOutput output;
-
     BeegoControllerSource() {
-      exists(DataFlow::MethodCallNode c |
-        c.getTarget().hasQualifiedName(packagePath(), "Controller", methodName)
-      |
-        this = output.getExitNode(c)
-      ) and
-      (
+      exists(string methodName, FunctionOutput output |
         methodName = "ParseForm" and
         output.isParameter(0)
         or
@@ -99,6 +91,12 @@ module Beego {
         or
         methodName = "GetFile" and
         output.isResult(1)
+      |
+        exists(DataFlow::MethodCallNode c |
+          c.getTarget().hasQualifiedName(packagePath(), "Controller", methodName)
+        |
+          this = output.getExitNode(c)
+        )
       )
     }
   }
@@ -225,10 +223,8 @@ module Beego {
   }
 
   private class ContextResponseBody extends Http::ResponseBody::Range {
-    string name;
-
     ContextResponseBody() {
-      exists(Method m | m.hasQualifiedName(contextPackagePath(), "Context", name) |
+      exists(Method m, string name | m.hasQualifiedName(contextPackagePath(), "Context", name) |
         name = "Abort" and this = m.getACall().getArgument(1)
         or
         name = "WriteString" and this = m.getACall().getArgument(0)
@@ -326,16 +322,17 @@ module Beego {
   }
 
   private class RedirectMethods extends Http::Redirect::Range, DataFlow::CallNode {
-    string package;
     string className;
 
     RedirectMethods() {
-      (
-        package = packagePath() and className = "Controller"
-        or
-        package = contextPackagePath() and className = "Context"
-      ) and
-      this = any(Method m | m.hasQualifiedName(package, className, "Redirect")).getACall()
+      exists(string package |
+        (
+          package = packagePath() and className = "Controller"
+          or
+          package = contextPackagePath() and className = "Context"
+        ) and
+        this = any(Method m | m.hasQualifiedName(package, className, "Redirect")).getACall()
+      )
     }
 
     override DataFlow::Node getUrl() {
