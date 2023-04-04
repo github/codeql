@@ -121,6 +121,45 @@ ssa.c:
 #   17|     v17_6(void)          = AliasedUse         : m17_3
 #   17|     v17_7(void)          = ExitFunction       : 
 
+#   28| void test_foo_array_and_int()
+#   28|   Block 0
+#   28|     v28_1(void)                     = EnterFunction      : 
+#   28|     m28_2(unknown)                  = AliasedDefinition  : 
+#   28|     m28_3(unknown)                  = InitializeNonLocal : 
+#   28|     m28_4(unknown)                  = Chi                : total:m28_2, partial:m28_3
+#   29|     r29_1(glval<Foo_array_and_int>) = VariableAddress[f] : 
+#   29|     m29_2(Foo_array_and_int)        = Uninitialized[f]   : &:r29_1
+#   29|     r29_3(glval<int[2]>)            = FieldAddress[x]    : r29_1
+#   29|     r29_4(int)                      = Constant[0]        : 
+#   29|     r29_5(glval<int>)               = PointerAdd[4]      : r29_3, r29_4
+#   29|     r29_6(int)                      = Constant[0]        : 
+#   29|     m29_7(int)                      = Store[?]           : &:r29_5, r29_6
+#   29|     m29_8(Foo_array_and_int)        = Chi                : total:m29_2, partial:m29_7
+#   29|     r29_9(int)                      = Constant[1]        : 
+#   29|     r29_10(glval<int>)              = PointerAdd[4]      : r29_3, r29_9
+#   29|     r29_11(int)                     = Constant[1]        : 
+#   29|     m29_12(int)                     = Store[?]           : &:r29_10, r29_11
+#   29|     m29_13(Foo_array_and_int)       = Chi                : total:m29_8, partial:m29_12
+#   29|     r29_14(glval<int[2]>)           = FieldAddress[x]    : r29_1
+#   29|     r29_15(int)                     = Constant[0]        : 
+#   29|     r29_16(glval<int>)              = PointerAdd[4]      : r29_14, r29_15
+#   29|     r29_17(int)                     = Constant[42]       : 
+#   29|     m29_18(int)                     = Store[?]           : &:r29_16, r29_17
+#   29|     m29_19(Foo_array_and_int)       = Chi                : total:m29_13, partial:m29_18
+#   29|     r29_20(int)                     = Constant[1]        : 
+#   29|     r29_21(glval<int>)              = PointerAdd[4]      : r29_14, r29_20
+#   29|     r29_22(int)                     = Constant[0]        : 
+#   29|     m29_23(int)                     = Store[?]           : &:r29_21, r29_22
+#   29|     m29_24(Foo_array_and_int)       = Chi                : total:m29_19, partial:m29_23
+#   29|     r29_25(glval<int>)              = FieldAddress[y]    : r29_1
+#   29|     r29_26(int)                     = Constant[42]       : 
+#   29|     m29_27(int)                     = Store[?]           : &:r29_25, r29_26
+#   29|     m29_28(Foo_array_and_int)       = Chi                : total:m29_24, partial:m29_27
+#   30|     v30_1(void)                     = NoOp               : 
+#   28|     v28_5(void)                     = ReturnVoid         : 
+#   28|     v28_6(void)                     = AliasedUse         : m28_3
+#   28|     v28_7(void)                     = ExitFunction       : 
+
 ssa.cpp:
 #   13| int ChiPhiNode(Point*, bool, bool)
 #   13|   Block 0

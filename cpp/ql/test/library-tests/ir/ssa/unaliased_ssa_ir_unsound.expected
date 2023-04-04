@@ -105,6 +105,39 @@ ssa.c:
 #   17|     v17_5(void)          = AliasedUse         : ~m?
 #   17|     v17_6(void)          = ExitFunction       : 
 
+#   28| void test_foo_array_and_int()
+#   28|   Block 0
+#   28|     v28_1(void)                     = EnterFunction      : 
+#   28|     mu28_2(unknown)                 = AliasedDefinition  : 
+#   28|     mu28_3(unknown)                 = InitializeNonLocal : 
+#   29|     r29_1(glval<Foo_array_and_int>) = VariableAddress[f] : 
+#   29|     mu29_2(Foo_array_and_int)       = Uninitialized[f]   : &:r29_1
+#   29|     r29_3(glval<int[2]>)            = FieldAddress[x]    : r29_1
+#   29|     r29_4(int)                      = Constant[0]        : 
+#   29|     r29_5(glval<int>)               = PointerAdd[4]      : r29_3, r29_4
+#   29|     r29_6(int)                      = Constant[0]        : 
+#   29|     mu29_7(int)                     = Store[?]           : &:r29_5, r29_6
+#   29|     r29_8(int)                      = Constant[1]        : 
+#   29|     r29_9(glval<int>)               = PointerAdd[4]      : r29_3, r29_8
+#   29|     r29_10(int)                     = Constant[1]        : 
+#   29|     mu29_11(int)                    = Store[?]           : &:r29_9, r29_10
+#   29|     r29_12(glval<int[2]>)           = FieldAddress[x]    : r29_1
+#   29|     r29_13(int)                     = Constant[0]        : 
+#   29|     r29_14(glval<int>)              = PointerAdd[4]      : r29_12, r29_13
+#   29|     r29_15(int)                     = Constant[42]       : 
+#   29|     mu29_16(int)                    = Store[?]           : &:r29_14, r29_15
+#   29|     r29_17(int)                     = Constant[1]        : 
+#   29|     r29_18(glval<int>)              = PointerAdd[4]      : r29_12, r29_17
+#   29|     r29_19(int)                     = Constant[0]        : 
+#   29|     mu29_20(int)                    = Store[?]           : &:r29_18, r29_19
+#   29|     r29_21(glval<int>)              = FieldAddress[y]    : r29_1
+#   29|     r29_22(int)                     = Constant[42]       : 
+#   29|     mu29_23(int)                    = Store[?]           : &:r29_21, r29_22
+#   30|     v30_1(void)                     = NoOp               : 
+#   28|     v28_4(void)                     = ReturnVoid         : 
+#   28|     v28_5(void)                     = AliasedUse         : ~m?
+#   28|     v28_6(void)                     = ExitFunction       : 
+
 ssa.cpp:
 #   13| int ChiPhiNode(Point*, bool, bool)
 #   13|   Block 0
