@@ -7,9 +7,6 @@ duplicateChiOperand
 sideEffectWithoutPrimary
 instructionWithoutSuccessor
 ambiguousSuccessors
-| ssa.c:3:14:3:16 | Uninitialized: definition of foo | Instruction 'Uninitialized: definition of foo' has 2 successors of kind 'Goto' in function '$@'. | ssa.c:2:6:2:22 | void named_designators() | void named_designators() |
-| ssa.c:7:13:7:37 | PointerAdd: {...} | Instruction 'PointerAdd: {...}' has 2 successors of kind 'Goto' in function '$@'. | ssa.c:6:6:6:25 | void repeated_designators() | void repeated_designators() |
-| ssa.cpp:418:16:418:46 | PointerAdd: {...} | Instruction 'PointerAdd: {...}' has 2 successors of kind 'Goto' in function '$@'. | ssa.cpp:417:6:417:29 | void nested_array_designators() | void nested_array_designators() |
 unexplainedLoop
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
