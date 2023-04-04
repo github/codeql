@@ -11,12 +11,12 @@ import codeql.swift.security.InsufficientHashIterationsExtensions
 /**
  * An `Expr` that is used to initialize a password-based encryption key.
  */
-abstract class IterationsSource extends Expr { }
+private abstract class IterationsSource extends Expr { }
 
 /**
  * A literal integer that is 120,000 or less is a source of taint for iterations.
  */
-class IntLiteralSource extends IterationsSource instanceof IntegerLiteralExpr {
+private class IntLiteralSource extends IterationsSource instanceof IntegerLiteralExpr {
   IntLiteralSource() { this.getStringValue().toInt() < 120000 }
 }
 

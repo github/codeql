@@ -10,7 +10,7 @@ import codeql.swift.dataflow.TaintTracking
 import codeql.swift.security.WeakSensitiveDataHashingExtensions
 
 module WeakHashingConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) { node instanceof WeakHashingConfigImpl::Source }
+  predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
   predicate isSink(DataFlow::Node node) { node instanceof WeakSensitiveDataHashingSink }
 
@@ -22,9 +22,3 @@ module WeakHashingConfig implements DataFlow::ConfigSig {
 }
 
 module WeakHashingFlow = TaintTracking::Global<WeakHashingConfig>;
-
-module WeakHashingConfigImpl {
-  class Source extends DataFlow::Node {
-    Source() { this.asExpr() instanceof SensitiveExpr }
-  }
-}

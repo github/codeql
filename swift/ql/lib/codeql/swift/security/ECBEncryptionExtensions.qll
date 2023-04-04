@@ -7,6 +7,13 @@ import swift
 import codeql.swift.dataflow.DataFlow
 
 /**
+ * A dataflow source for ECB encryption vulnerabilities. That is,
+ * a `DataFlow::Node` of something that specifies a block mode
+ * cipher.
+ */
+abstract class EcbEncryptionSource extends DataFlow::Node { }
+
+/**
  * A dataflow sink for ECB encryption vulnerabilities. That is,
  * a `DataFlow::Node` of something that is used as the block mode
  * of a cipher.
@@ -30,7 +37,19 @@ class EcbEncryptionAdditionalTaintStep extends Unit {
 }
 
 /**
- * A block mode being used to form an `AES` cipher.
+ * A block mode for the CryptoSwift library.
+ */
+private class CryptoSwiftEcb extends EcbEncryptionSource {
+  CryptoSwiftEcb() {
+    exists(CallExpr call |
+      call.getStaticTarget().(MethodDecl).hasQualifiedName("ECB", "init()") and
+      this.asExpr() = call
+    )
+  }
+}
+
+/**
+ * A block mode being used to form a CryptoSwift `AES` cipher.
  */
 private class AES extends EcbEncryptionSink {
   AES() {
@@ -45,7 +64,7 @@ private class AES extends EcbEncryptionSink {
 }
 
 /**
- * A block mode being used to form a `Blowfish` cipher.
+ * A block mode being used to form a CryptoSwift `Blowfish` cipher.
  */
 private class Blowfish extends EcbEncryptionSink {
   Blowfish() {

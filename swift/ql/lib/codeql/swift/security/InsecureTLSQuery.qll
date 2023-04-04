@@ -13,13 +13,7 @@ import codeql.swift.security.InsecureTLSExtensions
  * A taint config to detect insecure configuration of `NSURLSessionConfiguration`.
  */
 module InsecureTlsConfig implements DataFlow::ConfigSig {
-  /**
-   * Holds for enum values that represent an insecure version of TLS
-   */
-  predicate isSource(DataFlow::Node node) {
-    node.asExpr().(MethodLookupExpr).getMember().(EnumElementDecl).getName() =
-      ["TLSv10", "TLSv11", "tlsProtocol10", "tlsProtocol11"]
-  }
+  predicate isSource(DataFlow::Node node) {  node instanceof InsecureTlsExtensionsSource }
 
   predicate isSink(DataFlow::Node node) { node instanceof InsecureTlsExtensionsSink }
 

@@ -13,12 +13,7 @@ import codeql.swift.security.ECBEncryptionExtensions
  * it to initialize a cipher.
  */
 module EcbEncryptionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node node) {
-    exists(CallExpr call |
-      call.getStaticTarget().(MethodDecl).hasQualifiedName("ECB", "init()") and
-      node.asExpr() = call
-    )
-  }
+  predicate isSource(DataFlow::Node node) { node instanceof EcbEncryptionSource }
 
   predicate isSink(DataFlow::Node node) { node instanceof EcbEncryptionSink }
 
