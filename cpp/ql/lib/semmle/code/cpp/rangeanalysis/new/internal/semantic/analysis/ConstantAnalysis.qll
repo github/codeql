@@ -2,7 +2,7 @@
  * Simple constant analysis using the Semantic interface.
  */
 
-private import experimental.semmle.code.cpp.semantic.Semantic
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
 private import ConstantAnalysisSpecific as Specific
 
 /** An expression that always has the same integer value. */

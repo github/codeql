@@ -11,7 +11,7 @@
  */
 
 private import ModulusAnalysisSpecific::Private
-private import experimental.semmle.code.cpp.semantic.Semantic
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
 private import ConstantAnalysis
 private import RangeUtils
 private import RangeAnalysisStage

@@ -1,10 +1,10 @@
 private import RangeAnalysisStage
 private import RangeAnalysisSpecific
-private import experimental.semmle.code.cpp.semantic.analysis.FloatDelta
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
 private import RangeUtils
-private import experimental.semmle.code.cpp.semantic.SemanticBound as SemanticBound
-private import experimental.semmle.code.cpp.semantic.SemanticLocation
-private import experimental.semmle.code.cpp.semantic.SemanticSSA
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticBound as SemanticBound
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticLocation
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticSSA
 
 module ConstantBounds implements BoundSig<FloatDelta> {
   class SemBound instanceof SemanticBound::SemBound {

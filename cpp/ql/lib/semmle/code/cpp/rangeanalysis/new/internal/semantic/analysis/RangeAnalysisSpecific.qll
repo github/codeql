@@ -2,9 +2,9 @@
  * C++-specific implementation of range analysis.
  */
 
-private import experimental.semmle.code.cpp.semantic.Semantic
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
 private import RangeAnalysisStage
-private import experimental.semmle.code.cpp.semantic.analysis.FloatDelta
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
 
 module CppLangImpl implements LangSig<FloatDelta> {
   /**

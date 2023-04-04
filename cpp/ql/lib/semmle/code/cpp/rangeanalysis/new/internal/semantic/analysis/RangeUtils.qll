@@ -2,7 +2,7 @@
  * Provides utility predicates for range analysis.
  */
 
-private import experimental.semmle.code.cpp.semantic.Semantic
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
 private import RangeAnalysisSpecific
 private import RangeAnalysisStage as Range
 private import ConstantAnalysis
