@@ -96,55 +96,61 @@ void collectSeverityRules(const char* var, LevelConfiguration&& configuration) {
 
 }  // namespace
 
-void Log::configure(std::string_view root) {
-  auto& i = instance();
-
-  i.rootName = root;
+void Log::configureImpl(std::string_view root) {
+  rootName = root;
   // as we are configuring logging right now, we collect problems and log them at the end
   std::vector<std::string> problems;
   collectSeverityRules("CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS",
-                       {i.sourceRules, i.binary.level, i.text.level, i.console.level, problems});
-  if (i.text || i.binary) {
+                       {sourceRules, binary.level, text.level, console.level, problems});
+  if (text || binary) {
     std::filesystem::path logFile = getEnvOr("CODEQL_EXTRACTOR_SWIFT_LOG_DIR", ".");
     logFile /= root;
     logFile /= std::to_string(std::chrono::system_clock::now().time_since_epoch().count());
     std::error_code ec;
     std::filesystem::create_directories(logFile.parent_path(), ec);
     if (!ec) {
-      if (i.text) {
+      if (text) {
         logFile.replace_extension(".log");
-        i.textFile.open(logFile);
-        if (!i.textFile) {
+        textFile.open(logFile);
+        if (!textFile) {
           problems.emplace_back("Unable to open text log file " + logFile.string());
-          i.text.level = Level::no_logs;
+          text.level = Level::no_logs;
         }
       }
-      if (i.binary) {
+      if (binary) {
         logFile.replace_extension(".blog");
-        i.binary.output.open(logFile, std::fstream::out | std::fstream::binary);
-        if (!i.binary.output) {
+        binary.output.open(logFile, std::fstream::out | std::fstream::binary);
+        if (!binary.output) {
           problems.emplace_back("Unable to open binary log file " + logFile.string());
-          i.binary.level = Level::no_logs;
+          binary.level = Level::no_logs;
         }
       }
     } else {
       problems.emplace_back("Unable to create log directory " + logFile.parent_path().string() +
                             ": " + ec.message());
-      i.binary.level = Level::no_logs;
-      i.text.level = Level::no_logs;
+      binary.level = Level::no_logs;
+      text.level = Level::no_logs;
     }
   }
   for (const auto& problem : problems) {
     LOG_ERROR("{}", problem);
   }
-  LOG_INFO("Logging configured (binary: {}, text: {}, console: {})", i.binary.level, i.text.level,
-           i.console.level);
-  flush();
+  LOG_INFO("Logging configured (binary: {}, text: {}, console: {})", binary.level, text.level,
+           console.level);
+  flushImpl();
 }
 
-void Log::flush() {
-  auto& i = instance();
-  i.session.consume(i);
+void Log::flushImpl() {
+  session.consume(*this);
+}
+
+Log::LoggerConfiguration Log::getLoggerConfigurationImpl(std::string_view name) {
+  LoggerConfiguration ret{session, rootName};
+  ret.fullyQualifiedName += '/';
+  ret.fullyQualifiedName += name;
+  ret.level = std::min({binary.level, text.level, console.level});
+  ret.level = getLevelFor(ret.fullyQualifiedName, sourceRules, ret.level);
+  return ret;
 }
 
 Log& Log::write(const char* buffer, std::streamsize size) {
@@ -154,28 +160,9 @@ Log& Log::write(const char* buffer, std::streamsize size) {
   return *this;
 }
 
-Log::Level Log::getLevelForSource(std::string_view name) const {
-  auto dflt = std::min({binary.level, text.level, console.level});
-  auto level = getLevelFor(name, sourceRules, dflt);
-  // avoid Log::logger() constructor loop
-  if (name.size() > rootName.size() && name.substr(rootName.size() + 1) != "logging") {
-    LOG_DEBUG("setting up logger \"{}\" with level {}", name, level);
-  }
-  return level;
-}
-
 Logger& Log::logger() {
   static Logger ret{"logging"};
   return ret;
 }
 
-void Logger::setName(std::string name) {
-  level_ = Log::instance().getLevelForSource(name);
-  w.setName(std::move(name));
-}
-
-Logger& logger() {
-  static Logger ret{};
-  return ret;
-}
 }  // namespace codeql

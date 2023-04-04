@@ -215,9 +215,11 @@ int main(int argc, char** argv, char** envp) {
 
   const auto configuration = configure(argc, argv);
   codeql::Log::configure("extractor");
-  auto& logger = codeql::logger();
-  LOG_INFO("calling extractor with arguments \"{}\"", argDump(argc, argv));
-  LOG_DEBUG("environment:\n{}\n", envDump(envp));
+  {
+    codeql::Logger logger{"main"};
+    LOG_INFO("calling extractor with arguments \"{}\"", argDump(argc, argv));
+    LOG_DEBUG("environment:\n{}\n", envDump(envp));
+  }
 
   auto openInterception = codeql::setupFileInterception(configuration);
 

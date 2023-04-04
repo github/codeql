@@ -64,5 +64,4 @@ def load_dependencies(workspace_name):
         repository = "morganstanley/binlog",
         commit = "3fef8846f5ef98e64211e7982c2ead67e0b185a6",
         sha256 = "f5c61d90a6eff341bf91771f2f465be391fd85397023e1b391c17214f9cbd045",
-        patches = ["01-change-severity-printing"],
     )
