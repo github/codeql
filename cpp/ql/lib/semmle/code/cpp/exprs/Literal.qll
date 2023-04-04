@@ -351,7 +351,7 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
   bindingset[elementIndex]
   predicate isValueInitialized(int elementIndex) {
     this.isInitialized(elementIndex) and
-    not exists(this.getElementExpr(elementIndex))
+    not exists(this.getAnElementExpr(elementIndex))
   }
 }
 
