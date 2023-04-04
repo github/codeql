@@ -40,5 +40,4 @@ module SafeUrlFlow {
   private class StringSlicingEdge extends SanitizerEdge {
     StringSlicingEdge() { this = any(DataFlow::SliceNode sn) }
   }
-
 }
