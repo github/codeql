@@ -619,11 +619,11 @@ newtype TTranslatedElement =
     )
   } or
   // The initialization of a field via a member of an initializer list.
-  TTranslatedExplicitFieldInitialization(Expr ast, Field field, Expr expr, int repitition) {
+  TTranslatedExplicitFieldInitialization(Expr ast, Field field, Expr expr, int position) {
     exists(ClassAggregateLiteral initList |
       not ignoreExpr(initList) and
       ast = initList and
-      expr = initList.getFieldExpr(field, repitition).getFullyConverted()
+      expr = initList.getFieldExpr(field, position).getFullyConverted()
     )
     or
     exists(ConstructorFieldInit init |
@@ -631,7 +631,7 @@ newtype TTranslatedElement =
       ast = init and
       field = init.getTarget() and
       expr = init.getExpr().getFullyConverted() and
-      repitition = 0
+      position = -1
     )
   } or
   // The value initialization of a field due to an omitted member of an
@@ -645,10 +645,10 @@ newtype TTranslatedElement =
   } or
   // The initialization of an array element via a member of an initializer list.
   TTranslatedExplicitElementInitialization(
-    ArrayOrVectorAggregateLiteral initList, int elementIndex, int repitition
+    ArrayOrVectorAggregateLiteral initList, int elementIndex, int position
   ) {
     not ignoreExpr(initList) and
-    exists(initList.getElementExpr(elementIndex, repitition))
+    exists(initList.getElementExpr(elementIndex, position))
   } or
   // The value initialization of a range of array elements that were omitted
   // from an initializer list.

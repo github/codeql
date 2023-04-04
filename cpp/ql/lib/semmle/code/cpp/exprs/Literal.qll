@@ -208,7 +208,8 @@ class ClassAggregateLiteral extends AggregateLiteral {
 
   /**
    * Gets the expression within the aggregate literal that is used to initialize
-   * field `field` the `repitition`'th time in the initializer list, if present.
+   * field `field`, if present. The expression is the `position`'th entry in the
+   * aggregate literal.
    *
    * For example, if `aggr` represents the initialization literal `{.x = 1234, .x = 5678}` in
    * ```cpp
@@ -217,10 +218,10 @@ class ClassAggregateLiteral extends AggregateLiteral {
    * ```
    * then `aggr.getFieldExpr(x, 0)` gives `1234`, and `aggr.getFieldExpr(x, 1)` gives `5678`.
    */
-  Expr getFieldExpr(Field field, int repitition) {
+  Expr getFieldExpr(Field field, int position) {
     field = classType.getAField() and
     aggregate_field_init(underlyingElement(this), unresolveElement(result), unresolveElement(field),
-      repitition)
+      position)
   }
 
   /**
@@ -309,7 +310,8 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
 
   /**
    * Gets the expression within the aggregate literal that is used to initialize
-   * element `elementIndex` the `repitition`'th time in the initializer list, if present.
+   * element `elementIndex`, if present. The expression is the `position`'th entry
+   * in the aggregate literal.
    *
    * For example, if `a` represents the initialization literal `{[0] = 1234, [0] = 5678}` in
    * ```cpp
@@ -317,8 +319,8 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
    * ```
    * then `a.getElementExpr(0, 0)` gives `1234`, and `a.getElementExpr(0, 1)` gives `5678`.
    */
-  Expr getElementExpr(int elementIndex, int repitition) {
-    aggregate_array_init(underlyingElement(this), unresolveElement(result), elementIndex, repitition)
+  Expr getElementExpr(int elementIndex, int position) {
+    aggregate_array_init(underlyingElement(this), unresolveElement(result), elementIndex, position)
   }
 
   /**

@@ -206,7 +206,7 @@ class TranslatedClassListInitialization extends TranslatedListInitialization {
         fieldInit = getTranslatedFieldInitialization(expr, _) and
         fieldInit.getOrder() = ord
       |
-        fieldInit order by ord, fieldInit.getRepetitionIndex()
+        fieldInit order by ord, fieldInit.getPosition()
       )
   }
 }
@@ -224,7 +224,7 @@ class TranslatedArrayListInitialization extends TranslatedListInitialization {
       rank[id + 1](TranslatedElementInitialization init |
         init.getInitList() = expr
       |
-        init order by init.getElementIndex(), init.getRepetitionIndex()
+        init order by init.getElementIndex(), init.getPosition()
       )
   }
 }
@@ -525,11 +525,8 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
 
   final Field getField() { result = field }
 
-  /**
-   * Gets the index of this initialization, if the field is mentioned
-   * multiple times in the initializer.
-   */
-  int getRepetitionIndex() { result = 0 }
+  /** Gets the position in the initializer list, or `-1` if the initialization is implicit. */
+  int getPosition() { result = -1 }
 }
 
 /**
@@ -540,10 +537,10 @@ class TranslatedExplicitFieldInitialization extends TranslatedFieldInitializatio
   InitializationContext, TTranslatedExplicitFieldInitialization
 {
   Expr expr;
-  int repitition;
+  int position;
 
   TranslatedExplicitFieldInitialization() {
-    this = TTranslatedExplicitFieldInitialization(ast, field, expr, repitition)
+    this = TTranslatedExplicitFieldInitialization(ast, field, expr, position)
   }
 
   override Instruction getTargetAddress() { result = getInstruction(getFieldAddressTag()) }
@@ -566,7 +563,7 @@ class TranslatedExplicitFieldInitialization extends TranslatedFieldInitializatio
     result = getTranslatedInitialization(expr)
   }
 
-  override int getRepetitionIndex() { result = repitition }
+  override int getPosition() { result = position }
 }
 
 private string getZeroValue(Type type) {
@@ -700,7 +697,7 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
 
   abstract int getElementIndex();
 
-  int getRepetitionIndex() { result = 0 }
+  int getPosition() { result = -1 }
 
   final InstructionTag getElementAddressTag() { result = InitializerElementAddressTag() }
 
@@ -719,10 +716,10 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
   TTranslatedExplicitElementInitialization, InitializationContext
 {
   int elementIndex;
-  int repetition;
+  int position;
 
   TranslatedExplicitElementInitialization() {
-    this = TTranslatedExplicitElementInitialization(initList, elementIndex, repetition)
+    this = TTranslatedExplicitElementInitialization(initList, elementIndex, position)
   }
 
   override Instruction getTargetAddress() { result = getInstruction(getElementAddressTag()) }
@@ -745,12 +742,12 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
 
   override int getElementIndex() { result = elementIndex }
 
-  override int getRepetitionIndex() { result = repetition }
+  override int getPosition() { result = position }
 
   TranslatedInitialization getInitialization() {
     result =
       getTranslatedInitialization(initList
-            .getElementExpr(elementIndex, repetition)
+            .getElementExpr(elementIndex, position)
             .getFullyConverted())
   }
 }
