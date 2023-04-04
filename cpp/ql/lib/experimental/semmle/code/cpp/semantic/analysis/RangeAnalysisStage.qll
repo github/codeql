@@ -941,6 +941,17 @@ module RangeStage<
       semExprDoesntOverflow(upper.booleanNot(), e)
       or
       not potentiallyOverflowingExpr(upper.booleanNot(), e)
+      or
+      initialBounded(e, any(SemZeroBound z), _, upper.booleanNot(), _, _, _)
+      or
+      exists(D::Delta otherDelta |
+        initialBounded(e, _, otherDelta, upper.booleanNot(), _, _, _) and
+        (
+          upper = true and D::toFloat(otherDelta) >= 0
+          or
+          upper = false and D::toFloat(otherDelta) <= 0
+        )
+      )
     )
   }
 
@@ -952,16 +963,14 @@ module RangeStage<
     (
       positively = true and
       (
-        not semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TPos()
-        or
-        not semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TPos()
+        semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TPos() and
+        semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TPos()
       )
       or
       positively = false and
       (
-        not semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TNeg()
-        or
-        not semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TNeg()
+        semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TNeg() and
+        semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TNeg()
       )
     )
     or
@@ -972,16 +981,14 @@ module RangeStage<
     (
       positively = true and
       (
-        not semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TPos()
-        or
-        not semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TNeg()
+        semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TPos() and
+        semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TNeg()
       )
       or
       positively = false and
       (
-        not semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TNeg()
-        or
-        not semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TPos()
+        semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TNeg() and
+        semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TPos()
       )
     )
     or
