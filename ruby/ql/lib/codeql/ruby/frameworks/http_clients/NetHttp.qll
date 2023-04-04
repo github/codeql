@@ -20,15 +20,11 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries 
  * ```
  */
 class NetHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
-  private DataFlow::CallNode request;
   private API::Node requestNode;
   private boolean returnsResponseBody;
 
   NetHttpRequest() {
-    exists(string method |
-      request = requestNode.asSource() and
-      this = request
-    |
+    exists(string method | this = requestNode.asSource() |
       // Net::HTTP.get(...)
       method = "get" and
       requestNode = API::getTopLevelMember("Net").getMember("HTTP").getReturn(method) and
@@ -53,7 +49,7 @@ class NetHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
    * Gets a node that contributes to the URL of the request.
    */
   override DataFlow::Node getAUrlPart() {
-    result = request.getArgument(0)
+    result = this.getArgument(0)
     or
     // Net::HTTP.new(...).get(...)
     exists(API::Node new |
@@ -80,7 +76,7 @@ class NetHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
     exists(DataFlow::CallNode setter |
       setter.asExpr().getExpr().(SetterMethodCall).getMethodName() = "verify_mode=" and
       result = setter.getArgument(0) and
-      localFlow(setter.getReceiver(), request.getReceiver())
+      localFlow(setter.getReceiver(), this.getReceiver())
     )
   }
 
