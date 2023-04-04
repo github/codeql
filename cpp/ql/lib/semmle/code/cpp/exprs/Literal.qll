@@ -190,10 +190,23 @@ class ClassAggregateLiteral extends AggregateLiteral {
    * Gets the expression within the aggregate literal that is used to initialize
    * field `field`, if present.
    */
-  Expr getFieldExpr(Field field) {
+  Expr getFieldExpr(Field field) { result = this.getFieldExpr(field, _) }
+
+  /**
+   * Gets the expression within the aggregate literal that is used to initialize
+   * field `field` the `repitition`'th time in the initializer list, if present.
+   *
+   * For example, if `aggr` represents the initialization literal `{.x = 1234, .x = 5678}` in
+   * ```cpp
+   * struct Foo { int x; };
+   * struct Foo foo = {.x = 1234, .x = 5678};
+   * ```
+   * then `aggr.getFieldExpr(x, 0)` gives `1234`, and `aggr.getFieldExpr(x, 1)` gives `5678`.
+   */
+  Expr getFieldExpr(Field field, int repitition) {
     field = classType.getAField() and
     aggregate_field_init(underlyingElement(this), unresolveElement(result), unresolveElement(field),
-      _)
+      repitition)
   }
 
   /**
@@ -264,8 +277,20 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
    * Gets the expression within the aggregate literal that is used to initialize
    * element `elementIndex`, if present.
    */
-  Expr getElementExpr(int elementIndex) {
-    aggregate_array_init(underlyingElement(this), unresolveElement(result), elementIndex, _)
+  Expr getElementExpr(int elementIndex) { result = this.getElementExpr(elementIndex, _) }
+
+  /**
+   * Gets the expression within the aggregate literal that is used to initialize
+   * element `elementIndex` the `repitition`'th time in the initializer list, if present.
+   *
+   * For example, if `a` represents the initialization literal `{[0] = 1234, [0] = 5678}` in
+   * ```cpp
+   * int x[1] = {[0] = 1234, [0] = 5678};
+   * ```
+   * then `a.getElementExpr(0, 0)` gives `1234`, and `a.getElementExpr(0, 1)` gives `5678`.
+   */
+  Expr getElementExpr(int elementIndex, int repitition) {
+    aggregate_array_init(underlyingElement(this), unresolveElement(result), elementIndex, repitition)
   }
 
   /**
