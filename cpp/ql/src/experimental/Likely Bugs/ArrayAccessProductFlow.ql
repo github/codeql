@@ -34,7 +34,7 @@ class PhpEmalloc extends AllocationFunction {
   override int getSizeArg() { result = 0 }
 }
 
-predicate bounded(Instruction i, SemBound b, int delta, boolean upper) {
+predicate bounded(Instruction i, Bound b, int delta, boolean upper) {
   // TODO: reason
   semBounded(getSemanticExpr(i), b, delta, upper, _)
 }
