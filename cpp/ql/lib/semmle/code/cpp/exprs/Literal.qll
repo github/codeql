@@ -204,7 +204,7 @@ class ClassAggregateLiteral extends AggregateLiteral {
    * This predicate may have multiple results since a field can be initialized
    * multiple times in the same initializer.
    */
-  Expr getFieldExpr(Field field) { result = this.getFieldExpr(field, _) }
+  deprecated Expr getFieldExpr(Field field) { result = this.getFieldExpr(field, _) }
 
   /**
    * Gets the expression within the aggregate literal that is used to initialize
@@ -238,7 +238,7 @@ class ClassAggregateLiteral extends AggregateLiteral {
     (
       // If the field has an explicit initializer expression, then the field is
       // initialized.
-      exists(this.getFieldExpr(field))
+      exists(this.getAFieldExpr(field))
       or
       // If the type is not a union, all fields without initializers are value
       // initialized.
@@ -262,7 +262,7 @@ class ClassAggregateLiteral extends AggregateLiteral {
   pragma[inline]
   predicate isValueInitialized(Field field) {
     this.isInitialized(field) and
-    not exists(this.getFieldExpr(field))
+    not exists(this.getAFieldExpr(field))
   }
 }
 
@@ -309,7 +309,7 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
    * This predicate may have multiple results since an element can be initialized
    * multiple times in the same initializer.
    */
-  Expr getElementExpr(int elementIndex) { result = this.getElementExpr(elementIndex, _) }
+  deprecated Expr getElementExpr(int elementIndex) { result = this.getElementExpr(elementIndex, _) }
 
   /**
    * Gets the expression within the aggregate literal that is used to initialize
@@ -351,7 +351,7 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
   bindingset[elementIndex]
   predicate isValueInitialized(int elementIndex) {
     this.isInitialized(elementIndex) and
-    not exists(this.getElementExpr(elementIndex))
+    not exists(this.getAnElementExpr(elementIndex))
   }
 }
 
