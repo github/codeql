@@ -187,13 +187,44 @@ class ClassAggregateLiteral extends AggregateLiteral {
   override string getAPrimaryQlClass() { result = "ClassAggregateLiteral" }
 
   /**
+   * Gets an expression within the aggregate literal that is used to initialize
+   * field `field`, if present.
+   *
+   * This predicate may have multiple results since a field can be initialized
+   * multiple times in the same initializer.
+   */
+  Expr getAFieldExpr(Field field) { result = this.getFieldExpr(field, _) }
+
+  /**
+   * DEPRECATED: Use `getAFieldExpr` instead.
+   *
    * Gets the expression within the aggregate literal that is used to initialize
    * field `field`, if present.
+   *
+   * This predicate may have multiple results since a field can be initialized
+   * multiple times in the same initializer.
    */
-  Expr getFieldExpr(Field field) {
+  Expr getFieldExpr(Field field) { result = this.getFieldExpr(field, _) }
+
+  /**
+   * Gets the expression within the aggregate literal that is used to initialize
+   * field `field`, if present. The expression is the `position`'th entry in the
+   * aggregate literal.
+   *
+   * For example, if `aggr` represents the initialization literal `{.x = 123, .y = 456 .x = 789}` in
+   * ```cpp
+   * struct Foo { int x; int y; };
+   * struct Foo foo = {.x = 123, .y = 456 .x = 789};
+   * ```
+   * then:
+   * - `aggr.getFieldExpr(x, 0)` gives `123`.
+   * - `aggr.getFieldExpr(y, 1)` gives `456`.
+   * - `aggr.getFieldExpr(x, 2)` gives `789`.
+   */
+  Expr getFieldExpr(Field field, int position) {
     field = classType.getAField() and
     aggregate_field_init(underlyingElement(this), unresolveElement(result), unresolveElement(field),
-      _)
+      position)
   }
 
   /**
@@ -261,11 +292,41 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
   Type getElementType() { none() }
 
   /**
+   * Gets an expression within the aggregate literal that is used to initialize
+   * element `elementIndex`, if present.
+   *
+   * This predicate may have multiple results since an element can be initialized
+   * multiple times in the same initializer.
+   */
+  Expr getAnElementExpr(int elementIndex) { result = this.getElementExpr(elementIndex, _) }
+
+  /**
+   * DEPRECATED: Use `getAnElementExpr` instead.
+   *
    * Gets the expression within the aggregate literal that is used to initialize
    * element `elementIndex`, if present.
+   *
+   * This predicate may have multiple results since an element can be initialized
+   * multiple times in the same initializer.
    */
-  Expr getElementExpr(int elementIndex) {
-    aggregate_array_init(underlyingElement(this), unresolveElement(result), elementIndex, _)
+  Expr getElementExpr(int elementIndex) { result = this.getElementExpr(elementIndex, _) }
+
+  /**
+   * Gets the expression within the aggregate literal that is used to initialize
+   * element `elementIndex`, if present. The expression is the `position`'th entry
+   * in the aggregate literal.
+   *
+   * For example, if `a` represents the initialization literal `{[0] = 123, [1] = 456, [0] = 789 }` in
+   * ```cpp
+   * int x[2] = {[0] = 123, [1] = 456, [0] = 789 };
+   * ```
+   * then:
+   * - `a.getElementExpr(0, 0)` gives `123`.
+   * - `a.getElementExpr(1, 1)` gives `456`.
+   * - `a.getElementExpr(0, 2)` gives `789`.
+   */
+  Expr getElementExpr(int elementIndex, int position) {
+    aggregate_array_init(underlyingElement(this), unresolveElement(result), elementIndex, position)
   }
 
   /**
