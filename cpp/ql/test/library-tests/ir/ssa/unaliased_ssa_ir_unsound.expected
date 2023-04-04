@@ -49,6 +49,62 @@ ssa.c:
 #    6|     v6_5(void)          = AliasedUse         : ~m?
 #    6|     v6_6(void)          = ExitFunction       : 
 
+#   11| void named_designators_2()
+#   11|   Block 0
+#   11|     v11_1(void)        = EnterFunction                : 
+#   11|     mu11_2(unknown)    = AliasedDefinition            : 
+#   11|     mu11_3(unknown)    = InitializeNonLocal           : 
+#   12|     r12_1(glval<Foo2>) = VariableAddress[foo]         : 
+#   12|     mu12_2(Foo2)       = Uninitialized[foo]           : &:r12_1
+#   12|     r12_3(glval<int>)  = FieldAddress[x]              : r12_1
+#   12|     r12_4(int)         = Constant[1234]               : 
+#   12|     mu12_5(int)        = Store[?]                     : &:r12_3, r12_4
+#   12|     r12_6(glval<int>)  = FieldAddress[y]              : r12_1
+#   12|     r12_7(int)         = Constant[5678]               : 
+#   12|     mu12_8(int)        = Store[?]                     : &:r12_6, r12_7
+#   14|     r14_1(glval<Foo2>) = VariableAddress[foo_swapped] : 
+#   14|     mu14_2(Foo2)       = Uninitialized[foo_swapped]   : &:r14_1
+#   14|     r14_3(glval<int>)  = FieldAddress[x]              : r14_1
+#   14|     r14_4(int)         = Constant[1234]               : 
+#   14|     mu14_5(int)        = Store[?]                     : &:r14_3, r14_4
+#   14|     r14_6(glval<int>)  = FieldAddress[y]              : r14_1
+#   14|     r14_7(int)         = Constant[5678]               : 
+#   14|     mu14_8(int)        = Store[?]                     : &:r14_6, r14_7
+#   15|     v15_1(void)        = NoOp                         : 
+#   11|     v11_4(void)        = ReturnVoid                   : 
+#   11|     v11_5(void)        = AliasedUse                   : ~m?
+#   11|     v11_6(void)        = ExitFunction                 : 
+
+#   17| void non_repeated_designators()
+#   17|   Block 0
+#   17|     v17_1(void)          = EnterFunction      : 
+#   17|     mu17_2(unknown)      = AliasedDefinition  : 
+#   17|     mu17_3(unknown)      = InitializeNonLocal : 
+#   18|     r18_1(glval<int[2]>) = VariableAddress[x] : 
+#   18|     mu18_2(int[2])       = Uninitialized[x]   : &:r18_1
+#   18|     r18_3(int)           = Constant[0]        : 
+#   18|     r18_4(glval<int>)    = PointerAdd[4]      : r18_1, r18_3
+#   18|     r18_5(int)           = Constant[1234]     : 
+#   18|     mu18_6(int)          = Store[?]           : &:r18_4, r18_5
+#   18|     r18_7(int)           = Constant[1]        : 
+#   18|     r18_8(glval<int>)    = PointerAdd[4]      : r18_1, r18_7
+#   18|     r18_9(int)           = Constant[5678]     : 
+#   18|     mu18_10(int)         = Store[?]           : &:r18_8, r18_9
+#   20|     r20_1(glval<int[2]>) = VariableAddress[y] : 
+#   20|     mu20_2(int[2])       = Uninitialized[y]   : &:r20_1
+#   20|     r20_3(int)           = Constant[0]        : 
+#   20|     r20_4(glval<int>)    = PointerAdd[4]      : r20_1, r20_3
+#   20|     r20_5(int)           = Constant[5678]     : 
+#   20|     mu20_6(int)          = Store[?]           : &:r20_4, r20_5
+#   20|     r20_7(int)           = Constant[1]        : 
+#   20|     r20_8(glval<int>)    = PointerAdd[4]      : r20_1, r20_7
+#   20|     r20_9(int)           = Constant[1234]     : 
+#   20|     mu20_10(int)         = Store[?]           : &:r20_8, r20_9
+#   21|     v21_1(void)          = NoOp               : 
+#   17|     v17_4(void)          = ReturnVoid         : 
+#   17|     v17_5(void)          = AliasedUse         : ~m?
+#   17|     v17_6(void)          = ExitFunction       : 
+
 ssa.cpp:
 #   13| int ChiPhiNode(Point*, bool, bool)
 #   13|   Block 0

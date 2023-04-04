@@ -55,6 +55,72 @@ ssa.c:
 #    6|     v6_6(void)          = AliasedUse         : m6_3
 #    6|     v6_7(void)          = ExitFunction       : 
 
+#   11| void named_designators_2()
+#   11|   Block 0
+#   11|     v11_1(void)        = EnterFunction                : 
+#   11|     m11_2(unknown)     = AliasedDefinition            : 
+#   11|     m11_3(unknown)     = InitializeNonLocal           : 
+#   11|     m11_4(unknown)     = Chi                          : total:m11_2, partial:m11_3
+#   12|     r12_1(glval<Foo2>) = VariableAddress[foo]         : 
+#   12|     m12_2(Foo2)        = Uninitialized[foo]           : &:r12_1
+#   12|     r12_3(glval<int>)  = FieldAddress[x]              : r12_1
+#   12|     r12_4(int)         = Constant[1234]               : 
+#   12|     m12_5(int)         = Store[?]                     : &:r12_3, r12_4
+#   12|     m12_6(Foo2)        = Chi                          : total:m12_2, partial:m12_5
+#   12|     r12_7(glval<int>)  = FieldAddress[y]              : r12_1
+#   12|     r12_8(int)         = Constant[5678]               : 
+#   12|     m12_9(int)         = Store[?]                     : &:r12_7, r12_8
+#   12|     m12_10(Foo2)       = Chi                          : total:m12_6, partial:m12_9
+#   14|     r14_1(glval<Foo2>) = VariableAddress[foo_swapped] : 
+#   14|     m14_2(Foo2)        = Uninitialized[foo_swapped]   : &:r14_1
+#   14|     r14_3(glval<int>)  = FieldAddress[x]              : r14_1
+#   14|     r14_4(int)         = Constant[1234]               : 
+#   14|     m14_5(int)         = Store[?]                     : &:r14_3, r14_4
+#   14|     m14_6(Foo2)        = Chi                          : total:m14_2, partial:m14_5
+#   14|     r14_7(glval<int>)  = FieldAddress[y]              : r14_1
+#   14|     r14_8(int)         = Constant[5678]               : 
+#   14|     m14_9(int)         = Store[?]                     : &:r14_7, r14_8
+#   14|     m14_10(Foo2)       = Chi                          : total:m14_6, partial:m14_9
+#   15|     v15_1(void)        = NoOp                         : 
+#   11|     v11_5(void)        = ReturnVoid                   : 
+#   11|     v11_6(void)        = AliasedUse                   : m11_3
+#   11|     v11_7(void)        = ExitFunction                 : 
+
+#   17| void non_repeated_designators()
+#   17|   Block 0
+#   17|     v17_1(void)          = EnterFunction      : 
+#   17|     m17_2(unknown)       = AliasedDefinition  : 
+#   17|     m17_3(unknown)       = InitializeNonLocal : 
+#   17|     m17_4(unknown)       = Chi                : total:m17_2, partial:m17_3
+#   18|     r18_1(glval<int[2]>) = VariableAddress[x] : 
+#   18|     m18_2(int[2])        = Uninitialized[x]   : &:r18_1
+#   18|     r18_3(int)           = Constant[0]        : 
+#   18|     r18_4(glval<int>)    = PointerAdd[4]      : r18_1, r18_3
+#   18|     r18_5(int)           = Constant[1234]     : 
+#   18|     m18_6(int)           = Store[?]           : &:r18_4, r18_5
+#   18|     m18_7(int[2])        = Chi                : total:m18_2, partial:m18_6
+#   18|     r18_8(int)           = Constant[1]        : 
+#   18|     r18_9(glval<int>)    = PointerAdd[4]      : r18_1, r18_8
+#   18|     r18_10(int)          = Constant[5678]     : 
+#   18|     m18_11(int)          = Store[?]           : &:r18_9, r18_10
+#   18|     m18_12(int[2])       = Chi                : total:m18_7, partial:m18_11
+#   20|     r20_1(glval<int[2]>) = VariableAddress[y] : 
+#   20|     m20_2(int[2])        = Uninitialized[y]   : &:r20_1
+#   20|     r20_3(int)           = Constant[0]        : 
+#   20|     r20_4(glval<int>)    = PointerAdd[4]      : r20_1, r20_3
+#   20|     r20_5(int)           = Constant[5678]     : 
+#   20|     m20_6(int)           = Store[?]           : &:r20_4, r20_5
+#   20|     m20_7(int[2])        = Chi                : total:m20_2, partial:m20_6
+#   20|     r20_8(int)           = Constant[1]        : 
+#   20|     r20_9(glval<int>)    = PointerAdd[4]      : r20_1, r20_8
+#   20|     r20_10(int)          = Constant[1234]     : 
+#   20|     m20_11(int)          = Store[?]           : &:r20_9, r20_10
+#   20|     m20_12(int[2])       = Chi                : total:m20_7, partial:m20_11
+#   21|     v21_1(void)          = NoOp               : 
+#   17|     v17_5(void)          = ReturnVoid         : 
+#   17|     v17_6(void)          = AliasedUse         : m17_3
+#   17|     v17_7(void)          = ExitFunction       : 
+
 ssa.cpp:
 #   13| int ChiPhiNode(Point*, bool, bool)
 #   13|   Block 0
