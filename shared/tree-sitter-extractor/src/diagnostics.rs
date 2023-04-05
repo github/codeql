@@ -255,15 +255,15 @@ impl DiagnosticMessage {
             match args.get(i) {
                 Some(MessageArg::Code(t)) => {
                     plain.push_str(t);
-                    if t.len() > 0 {
+                    if !t.is_empty() {
                         let count = longest_backtick_sequence_length(t) + 1;
                         markdown.push_str(&"`".repeat(count));
                         if count > 1 {
-                            markdown.push_str(" ");
+                            markdown.push(' ');
                         }
                         markdown.push_str(t);
                         if count > 1 {
-                            markdown.push_str(" ");
+                            markdown.push(' ');
                         }
                         markdown.push_str(&"`".repeat(count));
                     }
@@ -271,11 +271,11 @@ impl DiagnosticMessage {
                 Some(MessageArg::Link(text, url)) => {
                     plain.push_str(text);
                     self.help_link(url);
-                    markdown.push_str("[");
+                    markdown.push('[');
                     markdown.push_str(text);
                     markdown.push_str("](");
                     markdown.push_str(url);
-                    markdown.push_str(")");
+                    markdown.push(')');
                 }
                 None => {}
             }
