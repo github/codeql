@@ -14,7 +14,7 @@
  */
 
 import cpp
-import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
+import semmle.code.cpp.rangeanalysis.new.SimpleRangeAnalysis
 import semmle.code.cpp.ir.dataflow.internal.DefaultTaintTrackingImpl
 
 /** Holds if `expr` might overflow. */

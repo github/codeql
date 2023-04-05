@@ -13,7 +13,7 @@
  */
 
 import cpp
-import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
+import semmle.code.cpp.rangeanalysis.new.SimpleRangeAnalysis
 import BadAdditionOverflowCheck
 import PointlessSelfComparison
 

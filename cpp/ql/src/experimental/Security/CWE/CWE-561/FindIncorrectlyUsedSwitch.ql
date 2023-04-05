@@ -15,7 +15,7 @@
  */
 
 import cpp
-import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
+import semmle.code.cpp.rangeanalysis.new.SimpleRangeAnalysis
 
 /** Holds if the range contains no boundary values. */
 predicate isRealRange(Expr exp) {

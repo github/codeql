@@ -13,7 +13,7 @@
 
 import cpp
 import semmle.code.cpp.commons.Exclusions
-import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
+import semmle.code.cpp.rangeanalysis.new.SimpleRangeAnalysis
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 import semmle.code.cpp.controlflow.Guards
 import semmle.code.cpp.ir.dataflow.DataFlow

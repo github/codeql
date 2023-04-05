@@ -19,7 +19,7 @@
 
 import cpp
 import semmle.code.cpp.controlflow.SSA
-import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
+import semmle.code.cpp.rangeanalysis.new.SimpleRangeAnalysis
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
 /**

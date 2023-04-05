@@ -17,7 +17,7 @@
 import cpp
 import semmle.code.cpp.controlflow.Dominance
 import semmle.code.cpp.controlflow.SSA
-import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
+import semmle.code.cpp.rangeanalysis.new.SimpleRangeAnalysis
 
 /**
  * C++ references are all pointer width, but the comparison takes place with

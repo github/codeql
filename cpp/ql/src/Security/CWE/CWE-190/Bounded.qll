@@ -4,7 +4,7 @@
  */
 
 private import cpp
-private import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
+private import semmle.code.cpp.rangeanalysis.new.SimpleRangeAnalysis
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
 /**

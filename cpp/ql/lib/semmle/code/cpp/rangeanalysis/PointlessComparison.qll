@@ -3,7 +3,7 @@
  */
 
 import cpp
-import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
+import semmle.code.cpp.rangeanalysis.new.SimpleRangeAnalysis
 
 /** Gets the lower bound of the fully converted expression. */
 private float lowerBoundFC(Expr expr) { result = lowerBound(expr.getFullyConverted()) }

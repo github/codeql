@@ -6,7 +6,7 @@ import semmle.code.cpp.Type
 import semmle.code.cpp.commons.CommonType
 import semmle.code.cpp.commons.StringAnalysis
 import semmle.code.cpp.models.interfaces.FormattingFunction
-private import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
+private import semmle.code.cpp.rangeanalysis.new.SimpleRangeAnalysis
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
 private newtype TBufferWriteEstimationReason =
