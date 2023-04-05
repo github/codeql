@@ -65,19 +65,21 @@ class CookieStorageSink extends ExternalLocationSink, RemoteFlowSink {
   }
 }
 
+
+
 private predicate isFileWriteCall(Expr stream, Expr data) {
   exists(MethodCall mc, Method m | mc.getTarget() = m.getAnOverrider*() |
-    mc.getTarget().hasQualifiedName("System.IO", "Stream", ["Write", "WriteAsync"]) and
+    m.hasQualifiedName("System.IO", "Stream", ["Write", "WriteAsync"]) and
     stream = mc.getQualifier() and
     data = mc.getArgument(0)
     or
-    mc.getTarget()
+    m
         .hasQualifiedName("System.IO", "TextWriter",
           ["Write", "WriteAsync", "WriteLine", "WriteLineAsync"]) and
     stream = mc.getQualifier() and
     data = mc.getArgument(0)
     or
-    mc.getTarget().hasQualifiedName("System.Xml.Linq", "XDocument", ["Save", "SaveAsync"]) and
+    m.hasQualifiedName("System.Xml.Linq", "XDocument", ["Save", "SaveAsync"]) and
     data = mc.getQualifier() and
     stream = mc.getArgument(0)
   )
@@ -117,7 +119,7 @@ private module LocalFileOutputStreamConfig implements DataFlow::ConfigSig {
   }
 }
 
-private module LocalFileOutputStreamFlow = DataFlow::Make<LocalFileOutputStreamConfig>;
+private module LocalFileOutputStreamFlow = DataFlow::Global<LocalFileOutputStreamConfig>;
 
 /**
  * A write to the local filesystem.
@@ -125,7 +127,7 @@ private module LocalFileOutputStreamFlow = DataFlow::Make<LocalFileOutputStreamC
 class LocalFileOutputSink extends ExternalLocationSink {
   LocalFileOutputSink() {
     exists(DataFlow::Node streamSink |
-      LocalFileOutputStreamFlow::hasFlow(_, streamSink) and
+      LocalFileOutputStreamFlow::flow(_, streamSink) and
       isFileWriteCall(streamSink.asExpr(), this.asExpr())
     )
   }
