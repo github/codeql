@@ -257,12 +257,11 @@ impl<'a> Visitor<'a> {
             "parse-error",
             "Could not process some files due to syntax errors",
         );
-        &mesg
-            .severity(diagnostics::Severity::Warning)
+        mesg.severity(diagnostics::Severity::Warning)
             .location(self.path, start_line, start_column, end_line, end_column)
             .message(message, args);
         if status_page {
-            &mesg.status_page();
+            mesg.status_page();
         }
         self.record_parse_error(loc, &mesg);
     }

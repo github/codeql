@@ -143,7 +143,7 @@ impl LogWriter {
         if let Some(mut writer) = self.inner.as_mut() {
             serde_json::to_writer(&mut writer, mesg)
                 .unwrap_or_else(|e| tracing::debug!("Failed to write log entry: {}", e));
-            &mut writer
+            writer
                 .write_all(b"\n")
                 .unwrap_or_else(|e| tracing::debug!("Failed to write log entry: {}", e));
         }
