@@ -1,12 +1,122 @@
+use std::collections::BTreeMap as Map;
+use std::collections::BTreeSet as Set;
+use std::fs::File;
+use std::io::LineWriter;
+use std::io::Write;
+use std::path::PathBuf;
+
+use crate::node_types;
+
 pub mod dbscheme;
 pub mod language;
 pub mod ql;
 pub mod ql_gen;
 
-use std::collections::BTreeMap as Map;
-use std::collections::BTreeSet as Set;
+/// Generate a dbscheme and QL library for the given languages.
+pub fn generate(
+    languages: Vec<language::Language>,
+    dbscheme_path: PathBuf,
+    ql_library_path: PathBuf,
+) -> std::io::Result<()> {
+    let dbscheme_file = File::create(dbscheme_path).map_err(|e| {
+        tracing::error!("Failed to create dbscheme file: {}", e);
+        e
+    })?;
+    let mut dbscheme_writer = LineWriter::new(dbscheme_file);
+    write!(
+        dbscheme_writer,
+        "// CodeQL database schema for {}\n\
+         // Automatically generated from the tree-sitter grammar; do not edit\n\n",
+        languages[0].name
+    )?;
 
-use crate::node_types;
+    let (diagnostics_case, diagnostics_table) = create_diagnostics();
+    dbscheme::write(
+        &mut dbscheme_writer,
+        &[
+            create_location_union(),
+            create_locations_default_table(),
+            create_files_table(),
+            create_folders_table(),
+            create_container_union(),
+            create_containerparent_table(),
+            create_source_location_prefix_table(),
+            dbscheme::Entry::Table(diagnostics_table),
+            dbscheme::Entry::Case(diagnostics_case),
+        ],
+    )?;
+
+    let mut ql_writer = LineWriter::new(File::create(ql_library_path)?);
+    write!(
+        ql_writer,
+        "/**\n\
+          * CodeQL library for {}
+          * Automatically generated from the tree-sitter grammar; do not edit\n\
+          */\n\n",
+        languages[0].name
+    )?;
+    ql::write(
+        &mut ql_writer,
+        &[ql::TopLevel::Import(ql::Import {
+            module: "codeql.Locations",
+            alias: Some("L"),
+        })],
+    )?;
+
+    for language in languages {
+        let prefix = node_types::to_snake_case(&language.name);
+        let ast_node_name = format!("{}_ast_node", &prefix);
+        let node_info_table_name = format!("{}_ast_node_info", &prefix);
+        let ast_node_parent_name = format!("{}_ast_node_parent", &prefix);
+        let token_name = format!("{}_token", &prefix);
+        let tokeninfo_name = format!("{}_tokeninfo", &prefix);
+        let reserved_word_name = format!("{}_reserved_word", &prefix);
+        let nodes = node_types::read_node_types_str(&prefix, language.node_types)?;
+        let (dbscheme_entries, mut ast_node_members, token_kinds) = convert_nodes(&nodes);
+        ast_node_members.insert(&token_name);
+        dbscheme::write(&mut dbscheme_writer, &dbscheme_entries)?;
+        let token_case = create_token_case(&token_name, token_kinds);
+        dbscheme::write(
+            &mut dbscheme_writer,
+            &[
+                dbscheme::Entry::Table(create_tokeninfo(&tokeninfo_name, &token_name)),
+                dbscheme::Entry::Case(token_case),
+                dbscheme::Entry::Union(dbscheme::Union {
+                    name: &ast_node_name,
+                    members: ast_node_members,
+                }),
+                dbscheme::Entry::Union(dbscheme::Union {
+                    name: &ast_node_parent_name,
+                    members: [&ast_node_name, "file"].iter().cloned().collect(),
+                }),
+                dbscheme::Entry::Table(create_ast_node_info_table(
+                    &node_info_table_name,
+                    &ast_node_parent_name,
+                    &ast_node_name,
+                )),
+            ],
+        )?;
+
+        let mut body = vec![
+            ql::TopLevel::Class(ql_gen::create_ast_node_class(
+                &ast_node_name,
+                &node_info_table_name,
+            )),
+            ql::TopLevel::Class(ql_gen::create_token_class(&token_name, &tokeninfo_name)),
+            ql::TopLevel::Class(ql_gen::create_reserved_word_class(&reserved_word_name)),
+        ];
+        body.append(&mut ql_gen::convert_nodes(&nodes));
+        ql::write(
+            &mut ql_writer,
+            &[ql::TopLevel::Module(ql::Module {
+                qldoc: None,
+                name: &language.name,
+                body,
+            })],
+        )?;
+    }
+    Ok(())
+}
 
 /// Given the name of the parent node, and its field information, returns a pair,
 /// the first of which is the field's type. The second is an optional dbscheme
@@ -138,7 +248,7 @@ fn add_field_for_column_storage<'a>(
 /// 2. A set of names of the members of the `<lang>_ast_node` union.
 /// 3. A map where the keys are the dbscheme names for token kinds, and the
 /// values are their integer representations.
-pub fn convert_nodes(
+fn convert_nodes(
     nodes: &node_types::NodeTypeMap,
 ) -> (Vec<dbscheme::Entry>, Set<&str>, Map<&str, usize>) {
     let mut entries: Vec<dbscheme::Entry> = Vec::new();
@@ -245,7 +355,7 @@ pub fn convert_nodes(
 /// - `name` - the name of the table to create.
 /// - `parent_name` - the name of the parent type.
 /// - `ast_node_name` - the name of the node child type.
-pub fn create_ast_node_info_table<'a>(
+fn create_ast_node_info_table<'a>(
     name: &'a str,
     parent_name: &'a str,
     ast_node_name: &'a str,
@@ -286,7 +396,7 @@ pub fn create_ast_node_info_table<'a>(
     }
 }
 
-pub fn create_tokeninfo<'a>(name: &'a str, type_name: &'a str) -> dbscheme::Table<'a> {
+fn create_tokeninfo<'a>(name: &'a str, type_name: &'a str) -> dbscheme::Table<'a> {
     dbscheme::Table {
         name,
         keysets: None,
@@ -316,10 +426,7 @@ pub fn create_tokeninfo<'a>(name: &'a str, type_name: &'a str) -> dbscheme::Tabl
     }
 }
 
-pub fn create_token_case<'a>(
-    name: &'a str,
-    token_kinds: Map<&'a str, usize>,
-) -> dbscheme::Case<'a> {
+fn create_token_case<'a>(name: &'a str, token_kinds: Map<&'a str, usize>) -> dbscheme::Case<'a> {
     let branches: Vec<(usize, &str)> = token_kinds
         .iter()
         .map(|(&name, kind_id)| (*kind_id, name))
@@ -331,14 +438,14 @@ pub fn create_token_case<'a>(
     }
 }
 
-pub fn create_location_union<'a>() -> dbscheme::Entry<'a> {
+fn create_location_union<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Union(dbscheme::Union {
         name: "location",
         members: vec!["location_default"].into_iter().collect(),
     })
 }
 
-pub fn create_files_table<'a>() -> dbscheme::Entry<'a> {
+fn create_files_table<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Table(dbscheme::Table {
         name: "files",
         keysets: None,
@@ -360,7 +467,7 @@ pub fn create_files_table<'a>() -> dbscheme::Entry<'a> {
         ],
     })
 }
-pub fn create_folders_table<'a>() -> dbscheme::Entry<'a> {
+fn create_folders_table<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Table(dbscheme::Table {
         name: "folders",
         keysets: None,
@@ -383,7 +490,7 @@ pub fn create_folders_table<'a>() -> dbscheme::Entry<'a> {
     })
 }
 
-pub fn create_locations_default_table<'a>() -> dbscheme::Entry<'a> {
+fn create_locations_default_table<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Table(dbscheme::Table {
         name: "locations_default",
         keysets: None,
@@ -434,14 +541,14 @@ pub fn create_locations_default_table<'a>() -> dbscheme::Entry<'a> {
     })
 }
 
-pub fn create_container_union<'a>() -> dbscheme::Entry<'a> {
+fn create_container_union<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Union(dbscheme::Union {
         name: "container",
         members: vec!["folder", "file"].into_iter().collect(),
     })
 }
 
-pub fn create_containerparent_table<'a>() -> dbscheme::Entry<'a> {
+fn create_containerparent_table<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Table(dbscheme::Table {
         name: "containerparent",
         columns: vec![
@@ -464,7 +571,7 @@ pub fn create_containerparent_table<'a>() -> dbscheme::Entry<'a> {
     })
 }
 
-pub fn create_source_location_prefix_table<'a>() -> dbscheme::Entry<'a> {
+fn create_source_location_prefix_table<'a>() -> dbscheme::Entry<'a> {
     dbscheme::Entry::Table(dbscheme::Table {
         name: "sourceLocationPrefix",
         keysets: None,
@@ -478,7 +585,7 @@ pub fn create_source_location_prefix_table<'a>() -> dbscheme::Entry<'a> {
     })
 }
 
-pub fn create_diagnostics<'a>() -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
+fn create_diagnostics<'a>() -> (dbscheme::Case<'a>, dbscheme::Table<'a>) {
     let table = dbscheme::Table {
         name: "diagnostics",
         keysets: None,
