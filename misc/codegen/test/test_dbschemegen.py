@@ -168,6 +168,32 @@ def test_final_class_with_repeated_field(generate, property_cls, dir_param):
     )
 
 
+def test_final_class_with_repeated_unordered_field(generate, dir_param):
+    assert generate([
+        schema.Class("Object", group=dir_param.input, properties=[
+            schema.RepeatedUnorderedProperty("foo", "bar"),
+        ]),
+    ]) == dbscheme.Scheme(
+        src=schema_file.name,
+        includes=[],
+        declarations=[
+            dbscheme.Table(
+                name="objects",
+                columns=[
+                    dbscheme.Column('id', '@object', binding=True),
+                ], dir=dir_param.expected,
+            ),
+            dbscheme.Table(
+                name="object_foos",
+                columns=[
+                    dbscheme.Column('id', '@object'),
+                    dbscheme.Column('foo', 'bar'),
+                ], dir=dir_param.expected,
+            ),
+        ],
+    )
+
+
 def test_final_class_with_predicate_field(generate, dir_param):
     assert generate([
         schema.Class("Object", group=dir_param.input, properties=[

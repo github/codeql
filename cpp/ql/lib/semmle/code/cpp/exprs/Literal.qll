@@ -192,7 +192,8 @@ class ClassAggregateLiteral extends AggregateLiteral {
    */
   Expr getFieldExpr(Field field) {
     field = classType.getAField() and
-    aggregate_field_init(underlyingElement(this), unresolveElement(result), unresolveElement(field))
+    aggregate_field_init(underlyingElement(this), unresolveElement(result), unresolveElement(field),
+      _)
   }
 
   /**
@@ -264,7 +265,7 @@ class ArrayOrVectorAggregateLiteral extends AggregateLiteral {
    * element `elementIndex`, if present.
    */
   Expr getElementExpr(int elementIndex) {
-    aggregate_array_init(underlyingElement(this), unresolveElement(result), elementIndex)
+    aggregate_array_init(underlyingElement(this), unresolveElement(result), elementIndex, _)
   }
 
   /**

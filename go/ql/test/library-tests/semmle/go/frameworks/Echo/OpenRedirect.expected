@@ -14,5 +14,5 @@ nodes
 | test.go:191:21:191:32 | call to String | semmle.label | call to String |
 subpaths
 #select
-| test.go:171:20:171:24 | param | test.go:170:11:170:32 | call to Param | test.go:171:20:171:24 | param | Untrusted URL redirection depends on a $@. | test.go:170:11:170:32 | call to Param | user-provided value |
-| test.go:180:20:180:28 | ...+... | test.go:176:11:176:32 | call to Param | test.go:180:20:180:28 | ...+... | Untrusted URL redirection depends on a $@. | test.go:176:11:176:32 | call to Param | user-provided value |
+| test.go:171:20:171:24 | param | test.go:170:11:170:32 | call to Param | test.go:171:20:171:24 | param | This path to an untrusted URL redirection depends on a $@. | test.go:170:11:170:32 | call to Param | user-provided value |
+| test.go:180:20:180:28 | ...+... | test.go:176:11:176:32 | call to Param | test.go:180:20:180:28 | ...+... | This path to an untrusted URL redirection depends on a $@. | test.go:176:11:176:32 | call to Param | user-provided value |

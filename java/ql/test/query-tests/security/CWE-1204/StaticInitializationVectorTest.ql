@@ -9,7 +9,7 @@ class StaticInitializationVectorTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "staticInitializationVector" and
-    exists(DataFlow::Node sink, StaticInitializationVectorConfig conf | conf.hasFlowTo(sink) |
+    exists(DataFlow::Node sink | StaticInitializationVectorFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

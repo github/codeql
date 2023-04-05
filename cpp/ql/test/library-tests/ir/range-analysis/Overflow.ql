@@ -1,5 +1,5 @@
 import cpp
-import experimental.semmle.code.cpp.semantic.analysis.SimpleRangeAnalysis
+import semmle.code.cpp.rangeanalysis.new.SimpleRangeAnalysis
 import TestUtilities.InlineExpectationsTest
 
 class RangeAnalysisTest extends InlineExpectationsTest {

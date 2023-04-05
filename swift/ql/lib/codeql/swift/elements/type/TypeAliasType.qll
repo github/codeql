@@ -13,4 +13,6 @@ class TypeAliasType extends Generated::TypeAliasType {
   Type getAliasedType() { result = this.getDecl().getAliasedType() }
 
   override Type getUnderlyingType() { result = this.getAliasedType().getUnderlyingType() }
+
+  override Type getABaseType() { result = this.getAliasedType().getABaseType() }
 }

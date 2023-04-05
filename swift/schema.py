@@ -272,8 +272,8 @@ class GenericTypeDecl(GenericContext, TypeDecl):
 class ModuleDecl(TypeDecl):
     is_builtin_module: predicate | doc("this module is the built-in one")
     is_system_module: predicate | doc("this module is a system one")
-    imported_modules: list["ModuleDecl"]
-    exported_modules: list["ModuleDecl"]
+    imported_modules: set["ModuleDecl"]
+    exported_modules: set["ModuleDecl"]
 
 class SubscriptDecl(AbstractStorageDecl, GenericContext):
     params: list[ParamDecl] | child

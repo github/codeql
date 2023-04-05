@@ -161,11 +161,12 @@ static std::unordered_set<swift::ModuleDecl*> extractDeclarations(
 static std::unordered_set<std::string> collectInputFilenames(swift::CompilerInstance& compiler) {
   // The frontend can be called in many different ways.
   // At each invocation we only extract system and builtin modules and any input source files that
-  // have an output associated with them.
+  // are primary inputs, or all of them if there are no primary inputs (whole module optimization)
   std::unordered_set<std::string> sourceFiles;
-  auto inputFiles = compiler.getInvocation().getFrontendOptions().InputsAndOutputs.getAllInputs();
-  for (auto& input : inputFiles) {
-    if (input.getType() == swift::file_types::TY_Swift && !input.outputFilename().empty()) {
+  const auto& inOuts = compiler.getInvocation().getFrontendOptions().InputsAndOutputs;
+  for (auto& input : inOuts.getAllInputs()) {
+    if (input.getType() == swift::file_types::TY_Swift &&
+        (!inOuts.hasPrimaryInputs() || input.isPrimary())) {
       sourceFiles.insert(input.getFileName());
     }
   }
