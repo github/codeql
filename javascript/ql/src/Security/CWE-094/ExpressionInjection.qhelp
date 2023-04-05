@@ -21,7 +21,7 @@
 			The best practice to avoid code injection vulnerabilities
 			in GitHub workflows is to set the untrusted input value of the expression
 			to an intermediate environment variable and then use the environment variable
-			using the native syntax of the shell/script interpreter (i.e. <b>NOT</b> the ${{ env.VAR }}).
+			using the native syntax of the shell/script interpreter (i.e. <b>NOT</b> the <i>${{ env.VAR }}</i>).
 		</p>
         <p>
             It is also recommended to limit the permissions of any tokens used 
@@ -34,6 +34,18 @@
 			The following example lets a user inject an arbitrary shell command:
 		</p>
 		<sample src="examples/comment_issue_bad.yml" />
+
+		<p>
+			The following example uses shell syntax to read
+			the environment variable and will prevent the attack:
+		</p>
+		<sample src="examples/comment_issue_good.yml" />
+
+		<p>
+			The following example uses an environment variable, but
+			still allows injection because of the use of expression syntax:
+		</p>
+		<sample src="examples/comment_issue_bad_env.yml" />
 
 		<p>
 			The following example uses shell syntax to read
