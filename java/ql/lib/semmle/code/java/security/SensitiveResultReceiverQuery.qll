@@ -47,9 +47,29 @@ private module SensitiveResultReceiverConfig implements DataFlow::ConfigSig {
 module SensitiveResultReceiverFlow = TaintTracking::Global<SensitiveResultReceiverConfig>;
 
 /**
+ * DEPRECATED: Use `isSensitiveResultReceiver` instead.
+ *
  * Holds if there is a path from sensitive data at `src` to a result receiver at `sink`, and the receiver was obtained from an untrusted source `recSrc`.
  */
-predicate sensitiveResultReceiver(
+deprecated predicate sensitiveResultReceiver(
+  DataFlow::PathNode src, DataFlow::PathNode sink, DataFlow::Node recSrc
+) {
+  exists(
+    ResultReceiverSendCall call, SensitiveResultReceiverFlow::PathNode srrSrc,
+    SensitiveResultReceiverFlow::PathNode srrSink
+  |
+    src.getNode() = srrSrc.getNode() and sink.getNode() = srrSink.getNode()
+  |
+    SensitiveResultReceiverFlow::flowPath(srrSrc, srrSink) and
+    sink.getNode().asExpr() = call.getSentData() and
+    untrustedResultReceiverSend(recSrc, call)
+  )
+}
+
+/**
+ * Holds if there is a path from sensitive data at `src` to a result receiver at `sink`, and the receiver was obtained from an untrusted source `recSrc`.
+ */
+predicate isSensitiveResultReceiver(
   SensitiveResultReceiverFlow::PathNode src, SensitiveResultReceiverFlow::PathNode sink,
   DataFlow::Node recSrc
 ) {

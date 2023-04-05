@@ -18,6 +18,6 @@ import SensitiveResultReceiverFlow::PathGraph
 from
   SensitiveResultReceiverFlow::PathNode src, SensitiveResultReceiverFlow::PathNode sink,
   DataFlow::Node recSrc
-where sensitiveResultReceiver(src, sink, recSrc)
+where isSensitiveResultReceiver(src, sink, recSrc)
 select sink, src, sink, "This $@ is sent to a ResultReceiver obtained from $@.", src,
   "sensitive information", recSrc, "this untrusted source"
