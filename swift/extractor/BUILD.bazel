@@ -39,10 +39,5 @@ pkg_runfiles(
     name = "pkg",
     srcs = [":extractor"],
     excludes = ["extractor.sh"],  # script gets copied as "extractor", no need for the original .sh file
-    renames = select({
-        # workaround for https://github.com/bazelbuild/bazel/issues/11082 (wrongly marked as closed)
-        "@platforms//os:macos": {":swiftFrontendObserver": "libswiftFrontendObserver.dylib"},
-        "//conditions:default": {},
-    }),
     visibility = ["//swift:__pkg__"],
 )
