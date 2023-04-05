@@ -71,7 +71,7 @@ module InsecureFeatureFlag {
   }
 
   /**
-   * Flags suggesting an optional feature, perhaps deliberately insecure.
+   * A flag suggesting an optional feature, perhaps deliberately insecure.
    */
   class SecurityFeatureFlag extends FlagKind {
     SecurityFeatureFlag() { this = "securityFeature" }

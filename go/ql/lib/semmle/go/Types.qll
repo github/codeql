@@ -172,7 +172,7 @@ class InvalidType extends @invalidtype, Type {
 /** A basic type. */
 class BasicType extends @basictype, Type { }
 
-/** Either the normal or literal boolean type */
+/** The normal boolean type or the literal boolean type */
 class BoolType extends @booltype, BasicType { }
 
 /** The `bool` type of a non-literal expression */
@@ -317,7 +317,7 @@ class Complex128Type extends @complex128type, ComplexType {
   override string getName() { result = "complex128" }
 }
 
-/** Either the normal or literal string type */
+/** The normal string type or the literal string type */
 class StringType extends @stringtype, BasicType { }
 
 /** The `string` type of a non-literal expression */

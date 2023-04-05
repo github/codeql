@@ -19,7 +19,7 @@ class HashableNode extends AstNode {
   }
 
   /**
-   * An opaque integer describing the type of this AST node.
+   * Gets an opaque integer describing the type of this AST node.
    */
   int getKind() {
     exists(int baseKind |

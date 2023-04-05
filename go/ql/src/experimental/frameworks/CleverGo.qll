@@ -175,18 +175,14 @@ private module CleverGo {
    * Models HTTP redirects.
    */
   private class HttpRedirect extends Http::Redirect::Range, DataFlow::CallNode {
-    string package;
     DataFlow::Node urlNode;
 
     HttpRedirect() {
       // HTTP redirect models for package: clevergo.tech/clevergo@v0.5.2
-      package = packagePath() and
       // Receiver type: Context
-      (
-        // signature: func (*Context) Redirect(code int, url string) error
-        this = any(Method m | m.hasQualifiedName(package, "Context", "Redirect")).getACall() and
-        urlNode = this.getArgument(1)
-      )
+      // signature: func (*Context) Redirect(code int, url string) error
+      this = any(Method m | m.hasQualifiedName(packagePath(), "Context", "Redirect")).getACall() and
+      urlNode = this.getArgument(1)
     }
 
     override DataFlow::Node getUrl() { result = urlNode }

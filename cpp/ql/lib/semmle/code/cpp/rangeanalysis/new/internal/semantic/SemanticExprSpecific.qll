@@ -5,7 +5,7 @@
 private import cpp as Cpp
 private import semmle.code.cpp.ir.IR as IR
 private import Semantic
-private import experimental.semmle.code.cpp.rangeanalysis.Bound as IRBound
+private import analysis.Bound as IRBound
 private import semmle.code.cpp.controlflow.IRGuards as IRGuards
 private import semmle.code.cpp.ir.ValueNumbering
 

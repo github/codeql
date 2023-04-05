@@ -2,7 +2,7 @@
  * Provides C++-specific definitions for use in sign analysis.
  */
 
-private import experimental.semmle.code.cpp.semantic.Semantic
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
 
 /**
  * Workaround to allow certain expressions to have a negative sign, even if the type of the

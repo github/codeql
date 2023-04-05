@@ -61,9 +61,8 @@ module Private {
   /** A data flow node that represents the output of a call. */
   class OutNode extends Node {
     DataFlow::CallNode call;
-    int i;
 
-    OutNode() { this = call.getResult(i) }
+    OutNode() { this = call.getResult(_) }
 
     /** Gets the underlying call. */
     DataFlowCall getCall() { result = call.asExpr() }
@@ -753,13 +752,14 @@ module Public {
    * of the function.
    */
   class ResultNode extends InstructionNode {
-    FuncDef fd;
     int i;
 
     ResultNode() {
-      exists(IR::ReturnInstruction ret | ret.getRoot() = fd | insn = ret.getResult(i))
-      or
-      insn.(IR::ReadResultInstruction).reads(fd.getResultVar(i))
+      exists(FuncDef fd |
+        exists(IR::ReturnInstruction ret | ret.getRoot() = fd | insn = ret.getResult(i))
+        or
+        insn.(IR::ReadResultInstruction).reads(fd.getResultVar(i))
+      )
     }
 
     /** Gets the index of this result among all results of the function. */
@@ -1112,12 +1112,12 @@ module Public {
    */
   class RangeElementNode extends Node {
     DataFlow::Node base;
-    IR::ExtractTupleElementInstruction extract;
 
     RangeElementNode() {
-      this.asInstruction() = extract and
-      extract.extractsElement(_, 1) and
-      extract.getBase().(IR::GetNextEntryInstruction).getDomain() = base.asInstruction()
+      exists(IR::ExtractTupleElementInstruction extract | extract = this.asInstruction() |
+        extract.extractsElement(_, 1) and
+        extract.getBase().(IR::GetNextEntryInstruction).getDomain() = base.asInstruction()
+      )
     }
 
     /** Gets the data-flow node representing the base from which the element is read. */

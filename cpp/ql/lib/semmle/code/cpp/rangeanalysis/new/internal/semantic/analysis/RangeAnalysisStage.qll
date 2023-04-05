@@ -65,15 +65,15 @@
 
 private import RangeUtils as Utils
 private import SignAnalysisCommon
-private import experimental.semmle.code.cpp.semantic.analysis.ModulusAnalysis
-import experimental.semmle.code.cpp.semantic.SemanticExpr
-import experimental.semmle.code.cpp.semantic.SemanticSSA
-import experimental.semmle.code.cpp.semantic.SemanticGuard
-import experimental.semmle.code.cpp.semantic.SemanticCFG
-import experimental.semmle.code.cpp.semantic.SemanticType
-import experimental.semmle.code.cpp.semantic.SemanticOpcode
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.ModulusAnalysis
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExpr
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticSSA
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticGuard
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticCFG
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticType
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticOpcode
 private import ConstantAnalysis
-import experimental.semmle.code.cpp.semantic.SemanticLocation
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticLocation
 
 /**
  * Holds if `typ` is a small integral type with the given lower and upper bounds.

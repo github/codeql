@@ -65,7 +65,8 @@ private class SetCookieSink extends DataFlow::Node {
 }
 
 /**
- * Tracks sensitive name to `net/http.SetCookie`.
+ * A taint-tracking configuration for tracking flow from sensitive names to
+ * `net/http.SetCookie`.
  */
 class NameToNetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
   NameToNetHttpCookieTrackingConfiguration() { this = "NameToNetHttpCookieTrackingConfiguration" }
@@ -84,7 +85,8 @@ class NameToNetHttpCookieTrackingConfiguration extends TaintTracking::Configurat
 }
 
 /**
- * Tracks `bool` assigned to `HttpOnly` that flows into `net/http.SetCookie`.
+ * A taint-tracking configuration for tracking flow from `bool` assigned to
+ * `HttpOnly` that flows into `net/http.SetCookie`.
  */
 class BoolToNetHttpCookieTrackingConfiguration extends TaintTracking::Configuration {
   BoolToNetHttpCookieTrackingConfiguration() { this = "BoolToNetHttpCookieTrackingConfiguration" }
@@ -105,7 +107,8 @@ class BoolToNetHttpCookieTrackingConfiguration extends TaintTracking::Configurat
 }
 
 /**
- * Tracks `HttpOnly` set to `false` to `gin-gonic/gin.Context.SetCookie`.
+ * A taint-tracking configuration for tracking flow from `HttpOnly` set to
+ * `false` to `gin-gonic/gin.Context.SetCookie`.
  */
 class BoolToGinSetCookieTrackingConfiguration extends DataFlow::Configuration {
   BoolToGinSetCookieTrackingConfiguration() { this = "BoolToGinSetCookieTrackingConfiguration" }
@@ -125,7 +128,8 @@ class BoolToGinSetCookieTrackingConfiguration extends DataFlow::Configuration {
 }
 
 /**
- * Tracks sensitive name to `gin-gonic/gin.Context.SetCookie`.
+ * A taint-tracking configuration for tracking flow from sensitive names to
+ * `gin-gonic/gin.Context.SetCookie`.
  */
 private class NameToGinSetCookieTrackingConfiguration extends DataFlow2::Configuration {
   NameToGinSetCookieTrackingConfiguration() { this = "NameToGinSetCookieTrackingConfiguration" }
@@ -164,7 +168,8 @@ private class GorillaStoreSaveSink extends DataFlow::Node {
 }
 
 /**
- * Tracks from gorilla cookie store creation to `gorilla/sessions.Session.Save`.
+ * A taint-tracking configuration for tracking flow from gorilla cookie store
+ * creation to `gorilla/sessions.Session.Save`.
  */
 class GorillaCookieStoreSaveTrackingConfiguration extends DataFlow::Configuration {
   GorillaCookieStoreSaveTrackingConfiguration() {
@@ -194,7 +199,8 @@ class GorillaCookieStoreSaveTrackingConfiguration extends DataFlow::Configuratio
 }
 
 /**
- * Tracks session options to `gorilla/sessions.Session.Save`.
+ * A taint-tracking configuration for tracking flow from session options to
+ * `gorilla/sessions.Session.Save`.
  */
 class GorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configuration {
   GorillaSessionOptionsTrackingConfiguration() {
@@ -219,7 +225,8 @@ class GorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configur
 }
 
 /**
- * Tracks `bool` assigned to `HttpOnly` that flows into `gorilla/sessions.Session.Save`.
+ * A taint-tracking configuration for tracking flow from a `bool` assigned to
+ * `HttpOnly` to `gorilla/sessions.Session.Save`.
  */
 class BoolToGorillaSessionOptionsTrackingConfiguration extends TaintTracking::Configuration {
   BoolToGorillaSessionOptionsTrackingConfiguration() {

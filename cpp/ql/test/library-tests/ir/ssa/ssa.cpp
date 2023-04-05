@@ -413,3 +413,7 @@ void vla(int n1, int n2, int n3, bool b1) {
     int b[n2];
   }
 }
+
+void nested_array_designators() {
+  int x[1][2] = {[0][0] = 1234, [0][1] = 5678};
+}

@@ -8,7 +8,7 @@
 
 private import RangeAnalysisStage
 private import SignAnalysisSpecific as Specific
-private import experimental.semmle.code.cpp.semantic.Semantic
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
 private import ConstantAnalysis
 private import RangeUtils
 private import Sign

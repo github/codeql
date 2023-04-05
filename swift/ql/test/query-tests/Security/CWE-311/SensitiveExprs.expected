@@ -111,10 +111,13 @@
 | testGRDB.swift:208:81:208:81 | password | label:password, type:credential |
 | testGRDB.swift:210:85:210:85 | password | label:password, type:credential |
 | testGRDB.swift:212:99:212:99 | password | label:password, type:credential |
-| testRealm.swift:34:11:34:11 | myPassword | label:myPassword, type:credential |
-| testRealm.swift:42:11:42:11 | myPassword | label:myPassword, type:credential |
-| testRealm.swift:52:12:52:12 | myPassword | label:myPassword, type:credential |
-| testRealm.swift:59:11:59:11 | myPassword | label:myPassword, type:credential |
+| testRealm.swift:31:20:31:20 | .password | label:password, type:credential |
+| testRealm.swift:41:11:41:11 | myPassword | label:myPassword, type:credential |
+| testRealm.swift:49:11:49:11 | myPassword | label:myPassword, type:credential |
+| testRealm.swift:59:12:59:12 | myPassword | label:myPassword, type:credential |
+| testRealm.swift:66:11:66:11 | myPassword | label:myPassword, type:credential |
+| testRealm.swift:73:2:73:4 | .password | label:password, type:credential |
+| testRealm.swift:73:15:73:15 | myPassword | label:myPassword, type:credential |
 | testSend.swift:29:19:29:19 | passwordPlain | label:passwordPlain, type:credential |
 | testSend.swift:33:19:33:19 | passwordPlain | label:passwordPlain, type:credential |
 | testSend.swift:45:13:45:13 | password | label:password, type:credential |

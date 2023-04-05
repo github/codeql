@@ -10,20 +10,20 @@ module K8sIoApiCoreV1 {
   string packagePath() { result = package("k8s.io/api", "core/v1") }
 
   private class SecretDeepCopy extends TaintTracking::FunctionModel, Method {
-    string methodName;
     FunctionOutput output;
 
     SecretDeepCopy() {
-      (
+      exists(string methodName |
         methodName in ["DeepCopy", "DeepCopyObject"] and output.isResult()
         or
         methodName = "DeepCopyInto" and output.isParameter(0)
-      ) and
-      this.hasQualifiedName(packagePath(), ["Secret", "SecretList"], methodName)
+      |
+        this.hasQualifiedName(packagePath(), ["Secret", "SecretList"], methodName)
+      )
     }
 
     override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp = outp
+      inp.isReceiver() and outp = output
     }
   }
 

@@ -1305,10 +1305,10 @@ module CFG {
       exists(Completion inner | lastNode(this.getBody(), last, inner) and not inner.isNormal() |
         if inner = Break(this.getLabel())
         then cmpl = Done()
-        else
-          if inner = Continue(this.getLabel())
-          then none()
-          else cmpl = inner
+        else (
+          not inner = Continue(this.getLabel()) and
+          cmpl = inner
+        )
       )
     }
   }

@@ -5,9 +5,9 @@
 
 private import cpp
 private import semmle.code.cpp.ir.IR
-private import experimental.semmle.code.cpp.semantic.SemanticBound
-private import experimental.semmle.code.cpp.semantic.SemanticExprSpecific
-private import RangeAnalysis
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticBound
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 
 /**
  * Gets the lower bound of the expression.
