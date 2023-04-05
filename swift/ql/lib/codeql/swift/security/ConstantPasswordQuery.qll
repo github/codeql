@@ -28,7 +28,7 @@ module ConstantPasswordConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof ConstantPasswordSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof ConstantPasswordSanitizer}
+  predicate isBarrier(DataFlow::Node node) { node instanceof ConstantPasswordSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(ConstantPasswordAdditionalTaintStep s).step(nodeFrom, nodeTo)

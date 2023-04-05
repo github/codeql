@@ -53,7 +53,8 @@ private class RnCryptorPasswordSink extends ConstantPasswordSink {
       c.getName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
-      call.getArgumentWithLabel(["password", "withPassword", "forPassword"]).getExpr() = this.asExpr()
+      call.getArgumentWithLabel(["password", "withPassword", "forPassword"]).getExpr() =
+        this.asExpr()
     )
     or
     // RNCryptor (unlabelled arguments)

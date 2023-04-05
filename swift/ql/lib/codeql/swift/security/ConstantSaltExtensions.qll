@@ -28,7 +28,6 @@ class ConstantSaltAdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
-
 /**
  * A sink for the CryptoSwift library.
  */
@@ -47,13 +46,14 @@ private class CryptoSwiftSaltSink extends ConstantSaltSink {
 /**
  * A sink for the RNCryptor library.
  */
- private class RnCryptorSaltSink extends ConstantSaltSink {
+private class RnCryptorSaltSink extends ConstantSaltSink {
   RnCryptorSaltSink() {
     exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
       c.getName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
-      call.getArgumentWithLabel(["salt", "encryptionSalt", "hmacSalt", "HMACSalt"]).getExpr() = this.asExpr()
+      call.getArgumentWithLabel(["salt", "encryptionSalt", "hmacSalt", "HMACSalt"]).getExpr() =
+        this.asExpr()
     )
   }
 }

@@ -14,7 +14,7 @@ module WeakHashingConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof WeakSensitiveDataHashingSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof WeakSensitiveDataHashingSanitizer}
+  predicate isBarrier(DataFlow::Node node) { node instanceof WeakSensitiveDataHashingSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(WeakSensitiveDataHashingAdditionalTaintStep s).step(nodeFrom, nodeTo)

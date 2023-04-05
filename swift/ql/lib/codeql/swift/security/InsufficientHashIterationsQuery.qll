@@ -11,7 +11,7 @@ import codeql.swift.security.InsufficientHashIterationsExtensions
 /**
  * An `Expr` that is used to initialize a password-based encryption key.
  */
-private abstract class IterationsSource extends Expr { }
+abstract private class IterationsSource extends Expr { }
 
 /**
  * A literal integer that is 120,000 or less is a source of taint for iterations.
@@ -29,7 +29,7 @@ module InsufficientHashIterationsConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof InsufficientHashIterationsSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof InsufficientHashIterationsSanitizer}
+  predicate isBarrier(DataFlow::Node node) { node instanceof InsufficientHashIterationsSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(InsufficientHashIterationsAdditionalTaintStep s).step(nodeFrom, nodeTo)

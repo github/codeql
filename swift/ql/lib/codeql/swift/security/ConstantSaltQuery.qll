@@ -29,7 +29,7 @@ module ConstantSaltConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof ConstantSaltSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof ConstantSaltSanitizer}
+  predicate isBarrier(DataFlow::Node node) { node instanceof ConstantSaltSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(ConstantSaltAdditionalTaintStep s).step(nodeFrom, nodeTo)

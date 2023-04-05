@@ -17,7 +17,7 @@ module EcbEncryptionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof EcbEncryptionSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof EcbEncryptionSanitizer}
+  predicate isBarrier(DataFlow::Node node) { node instanceof EcbEncryptionSanitizer }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(EcbEncryptionAdditionalTaintStep s).step(nodeFrom, nodeTo)
