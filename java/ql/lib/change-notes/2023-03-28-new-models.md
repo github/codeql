@@ -4,7 +4,6 @@ category: minorAnalysis
 * Added models for the following packages:
 
   * com.google.common.io
-  * com.hippo.unifile
   * java.lang
   * java.nio.file
   * kotlin.io
