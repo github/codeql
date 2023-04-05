@@ -21,7 +21,7 @@ private class IntLiteralSource extends IterationsSource instanceof IntegerLitera
 }
 
 /**
- * A dataflow configuration from the hash iterations source to expressions that use
+ * A taint tracking configuration from the hash iterations source to expressions that use
  * it to initialize hash functions.
  */
 module InsufficientHashIterationsConfig implements DataFlow::ConfigSig {

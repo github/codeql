@@ -9,6 +9,10 @@ import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
 import codeql.swift.security.WeakSensitiveDataHashingExtensions
 
+/**
+ * A taint tracking configuration from sensitive expressions to broken or weak
+ * hashing sinks.
+ */
 module WeakHashingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
