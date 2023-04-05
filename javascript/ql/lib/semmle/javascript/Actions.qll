@@ -63,7 +63,7 @@ module Actions {
     abstract string getName();
   }
 
-  /** Workflow level 'global' environment variable. */
+  /** A workflow level 'global' environment variable. */
   class GlobalEnv extends Env {
     string envName;
     Workflow workflow;
@@ -77,7 +77,7 @@ module Actions {
     override string getName() { result = envName }
   }
 
-  /** Job level environment variable. */
+  /** A job level environment variable. */
   class JobEnv extends Env {
     string envName;
     Job job;
@@ -91,7 +91,7 @@ module Actions {
     override string getName() { result = envName }
   }
 
-  /** Step level environment variable. */
+  /** A step level environment variable. */
   class StepEnv extends Env {
     string envName;
     Step step;
