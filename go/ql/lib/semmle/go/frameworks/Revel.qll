@@ -201,11 +201,9 @@ module Revel {
   private class RevelHeaderMethods extends TaintTracking::FunctionModel {
     FunctionInput input;
     FunctionOutput output;
-    string name;
 
     RevelHeaderMethods() {
-      this.(Method).hasQualifiedName(packagePath(), "RevelHeader", name) and
-      (
+      exists(string name | this.(Method).hasQualifiedName(packagePath(), "RevelHeader", name) |
         name = ["Add", "Set"] and input.isParameter([0, 1]) and output.isReceiver()
         or
         name = ["Get", "GetAll"] and input.isReceiver() and output.isResult()

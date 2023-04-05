@@ -13,7 +13,7 @@ module Raw {
     {{/description}}
     {{/has_description}}
      */
-    {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
+    {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       {{tablename}}({{#tableparams}}{{^first}}, {{/first}}{{param}}{{/tableparams}})
     }
     {{/properties}}

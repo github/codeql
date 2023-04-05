@@ -201,11 +201,13 @@ class TranslatedClassListInitialization extends TranslatedListInitialization {
   override ClassAggregateLiteral expr;
 
   override TranslatedElement getChild(int id) {
-    exists(TranslatedFieldInitialization fieldInit |
-      result = fieldInit and
-      fieldInit = getTranslatedFieldInitialization(expr, _) and
-      fieldInit.getOrder() = id
-    )
+    result =
+      rank[id + 1](TranslatedFieldInitialization fieldInit, int ord |
+        fieldInit = getTranslatedFieldInitialization(expr, _) and
+        fieldInit.getOrder() = ord
+      |
+        fieldInit order by ord, fieldInit.getPosition()
+      )
   }
 }
 
@@ -222,7 +224,7 @@ class TranslatedArrayListInitialization extends TranslatedListInitialization {
       rank[id + 1](TranslatedElementInitialization init |
         init.getInitList() = expr
       |
-        init order by init.getElementIndex()
+        init order by init.getElementIndex(), init.getPosition()
       )
   }
 }
@@ -522,6 +524,9 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
   final InstructionTag getFieldAddressTag() { result = InitializerFieldAddressTag() }
 
   final Field getField() { result = field }
+
+  /** Gets the position in the initializer list, or `-1` if the initialization is implicit. */
+  int getPosition() { result = -1 }
 }
 
 /**
@@ -532,9 +537,10 @@ class TranslatedExplicitFieldInitialization extends TranslatedFieldInitializatio
   InitializationContext, TTranslatedExplicitFieldInitialization
 {
   Expr expr;
+  int position;
 
   TranslatedExplicitFieldInitialization() {
-    this = TTranslatedExplicitFieldInitialization(ast, field, expr)
+    this = TTranslatedExplicitFieldInitialization(ast, field, expr, position)
   }
 
   override Instruction getTargetAddress() { result = getInstruction(getFieldAddressTag()) }
@@ -556,6 +562,8 @@ class TranslatedExplicitFieldInitialization extends TranslatedFieldInitializatio
   private TranslatedInitialization getInitialization() {
     result = getTranslatedInitialization(expr)
   }
+
+  override int getPosition() { result = position }
 }
 
 private string getZeroValue(Type type) {
@@ -689,6 +697,8 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
 
   abstract int getElementIndex();
 
+  int getPosition() { result = -1 }
+
   final InstructionTag getElementAddressTag() { result = InitializerElementAddressTag() }
 
   final InstructionTag getElementIndexTag() { result = InitializerElementIndexTag() }
@@ -706,9 +716,10 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
   TTranslatedExplicitElementInitialization, InitializationContext
 {
   int elementIndex;
+  int position;
 
   TranslatedExplicitElementInitialization() {
-    this = TTranslatedExplicitElementInitialization(initList, elementIndex)
+    this = TTranslatedExplicitElementInitialization(initList, elementIndex, position)
   }
 
   override Instruction getTargetAddress() { result = getInstruction(getElementAddressTag()) }
@@ -731,8 +742,13 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
 
   override int getElementIndex() { result = elementIndex }
 
+  override int getPosition() { result = position }
+
   TranslatedInitialization getInitialization() {
-    result = getTranslatedInitialization(initList.getElementExpr(elementIndex).getFullyConverted())
+    result =
+      getTranslatedInitialization(initList
+            .getElementExpr(elementIndex, position)
+            .getFullyConverted())
   }
 }
 

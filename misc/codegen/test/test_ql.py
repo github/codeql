@@ -27,17 +27,26 @@ def test_property_is_a_class(type, expected):
     assert [p.param for p in prop.tableparams] == expected_tableparams
 
 
-@pytest.mark.parametrize("name,expected_getter", [
+indefinite_getters = [
     ("Argument", "getAnArgument"),
     ("Element", "getAnElement"),
     ("Integer", "getAnInteger"),
     ("Operator", "getAnOperator"),
     ("Unit", "getAUnit"),
     ("Whatever", "getAWhatever"),
-])
+]
+
+
+@pytest.mark.parametrize("name,expected_getter", indefinite_getters)
 def test_property_indefinite_article(name, expected_getter):
     prop = ql.Property(name, plural="X")
     assert prop.indefinite_getter == expected_getter
+
+
+@pytest.mark.parametrize("name,expected_getter", indefinite_getters)
+def test_property_unordered_getter(name, expected_getter):
+    prop = ql.Property(name, plural="X", is_unordered=True)
+    assert prop.getter == expected_getter
 
 
 @pytest.mark.parametrize("plural,expected", [
@@ -48,6 +57,17 @@ def test_property_indefinite_article(name, expected_getter):
 def test_property_is_repeated(plural, expected):
     prop = ql.Property("foo", "Foo", "props", ["result"], plural=plural)
     assert prop.is_repeated is expected
+
+
+@pytest.mark.parametrize("plural,unordered,expected", [
+    (None, False, False),
+    ("", False, False),
+    ("X", False, True),
+    ("X", True, False),
+])
+def test_property_is_indexed(plural, unordered, expected):
+    prop = ql.Property("foo", "Foo", "props", ["result"], plural=plural, is_unordered=unordered)
+    assert prop.is_indexed is expected
 
 
 @pytest.mark.parametrize("is_optional,is_predicate,plural,expected", [

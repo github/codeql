@@ -49,7 +49,7 @@ private class CoreDataStore extends CleartextStorageDatabaseSink {
     // with `coreDataObj.data` is a sink.
     // (ideally this would be only members with the `@NSManaged` attribute)
     exists(NominalType t, Expr e |
-      t.getABaseType*().getName() = "NSManagedObject" and
+      t.getABaseType*().getUnderlyingType().getName() = "NSManagedObject" and
       this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = e and
       e.getFullyConverted().getType() = t and
       not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl
@@ -67,7 +67,7 @@ private class RealmStore extends CleartextStorageDatabaseSink instanceof DataFlo
     // example in `realmObj.data = sensitive` the post-update node corresponding
     // with `realmObj.data` is a sink.
     exists(NominalType t, Expr e |
-      t.getABaseType*().getName() = "RealmSwiftObject" and
+      t.getABaseType*().getUnderlyingType().getName() = "RealmSwiftObject" and
       this.getPreUpdateNode().asExpr() = e and
       e.getFullyConverted().getType() = t and
       not e.(DeclRefExpr).getDecl() instanceof SelfParamDecl

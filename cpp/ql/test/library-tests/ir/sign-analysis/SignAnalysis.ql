@@ -1,9 +1,10 @@
 import cpp
-import experimental.semmle.code.cpp.semantic.analysis.SignAnalysisCommon
-import experimental.semmle.code.cpp.semantic.Semantic
-import experimental.semmle.code.cpp.semantic.analysis.RangeUtils
-import experimental.semmle.code.cpp.semantic.analysis.FloatDelta
-import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysisSpecific
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.SignAnalysisCommon
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeUtils
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysisSpecific
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR as IR
 import TestUtilities.InlineExpectationsTest
 
@@ -16,7 +17,7 @@ class SignAnalysisTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(SemExpr e, IR::CallInstruction call |
-      call.getArgument(0) = e and
+      getSemanticExpr(call.getArgument(0)) = e and
       call.getStaticCallTarget().hasName("sign") and
       tag = "sign" and
       element = e.toString() and

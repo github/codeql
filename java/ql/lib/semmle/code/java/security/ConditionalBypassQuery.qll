@@ -37,9 +37,11 @@ private predicate endsWithStep(DataFlow::Node node1, DataFlow::Node node2) {
 }
 
 /**
+ * DEPRECATED: Use `ConditionalBypassFlow` instead.
+ *
  * A taint tracking configuration for untrusted data flowing to sensitive conditions.
  */
-class ConditionalBypassFlowConfig extends TaintTracking::Configuration {
+deprecated class ConditionalBypassFlowConfig extends TaintTracking::Configuration {
   ConditionalBypassFlowConfig() { this = "ConditionalBypassFlowConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
@@ -50,3 +52,21 @@ class ConditionalBypassFlowConfig extends TaintTracking::Configuration {
     endsWithStep(node1, node2)
   }
 }
+
+/**
+ * A taint tracking configuration for untrusted data flowing to sensitive conditions.
+ */
+module ConditionalBypassFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { conditionControlsMethod(_, sink.asExpr()) }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    endsWithStep(node1, node2)
+  }
+}
+
+/**
+ * Taint tracking flow for untrusted data flowing to sensitive conditions.
+ */
+module ConditionalBypassFlow = TaintTracking::Global<ConditionalBypassFlowConfig>;

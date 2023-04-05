@@ -15,12 +15,11 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.UnsafeJsEvalQuery
-import DataFlow::PathGraph
+import UnsafeJsEvalFlow::PathGraph
 
 from
-  UnsafeJsEvalConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode,
-  UnsafeJsEvalSink sink
+  UnsafeJsEvalFlow::PathNode sourceNode, UnsafeJsEvalFlow::PathNode sinkNode, UnsafeJsEvalSink sink
 where
-  config.hasFlowPath(sourceNode, sinkNode) and
+  UnsafeJsEvalFlow::flowPath(sourceNode, sinkNode) and
   sink = sinkNode.getNode()
 select sink, sourceNode, sinkNode, "Evaluation of uncontrolled JavaScript from a remote source."

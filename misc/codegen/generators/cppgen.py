@@ -49,6 +49,7 @@ def _get_field(cls: schema.Class, p: schema.Property, add_or_none_except: typing
         is_optional=p.is_optional,
         is_repeated=p.is_repeated,
         is_predicate=p.is_predicate,
+        is_unordered=p.is_unordered,
         trap_name=trap_name,
     )
     args.update(cpp.get_field_override(p.name))

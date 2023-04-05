@@ -14,7 +14,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.CleartextStorageDatabaseQuery
-import DataFlow::PathGraph
+import CleartextStorageFlow::PathGraph
 
 /**
  * Gets a prettier node to use in the results.
@@ -27,10 +27,10 @@ DataFlow::Node cleanupNode(DataFlow::Node n) {
 }
 
 from
-  CleartextStorageConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode,
+  CleartextStorageFlow::PathNode sourceNode, CleartextStorageFlow::PathNode sinkNode,
   DataFlow::Node cleanSink
 where
-  config.hasFlowPath(sourceNode, sinkNode) and
+  CleartextStorageFlow::flowPath(sourceNode, sinkNode) and
   cleanSink = cleanupNode(sinkNode.getNode())
 select cleanSink, sourceNode, sinkNode,
   "This operation stores '" + cleanSink.toString() +

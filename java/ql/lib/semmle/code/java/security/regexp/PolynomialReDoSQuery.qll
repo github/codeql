@@ -65,7 +65,7 @@ deprecated predicate hasPolynomialReDoSResult(
 }
 
 /** A configuration for Polynomial ReDoS queries. */
-private module PolynomialRedosConfig implements DataFlow::ConfigSig {
+module PolynomialRedosConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) {

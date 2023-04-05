@@ -12,9 +12,7 @@ class UnsafeCertTrustTest extends InlineExpectationsTest {
     exists(Expr unsafeTrust |
       unsafeTrust instanceof RabbitMQEnableHostnameVerificationNotSet
       or
-      exists(SslEndpointIdentificationFlowConfig config |
-        config.hasFlowTo(DataFlow::exprNode(unsafeTrust))
-      )
+      SslEndpointIdentificationFlow::flowTo(DataFlow::exprNode(unsafeTrust))
     |
       unsafeTrust.getLocation() = location and
       element = unsafeTrust.toString() and
