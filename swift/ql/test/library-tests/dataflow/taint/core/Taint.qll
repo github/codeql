@@ -13,8 +13,6 @@ module TestConfiguration implements DataFlow::ConfigSig {
       sinkCall.getAnArgument().getExpr() = sink.asExpr()
     )
   }
-
-  //override int explorationLimit() { result = 100 }
 }
 
 module TestFlow = TaintTracking::Global<TestConfiguration>;
