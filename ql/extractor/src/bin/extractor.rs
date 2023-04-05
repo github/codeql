@@ -176,7 +176,7 @@ fn main() -> std::io::Result<()> {
                     &code_ranges,
                 )
             }
-            std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
+            std::fs::create_dir_all(src_archive_file.parent().unwrap())?;
             std::fs::copy(&path, &src_archive_file)?;
             write_trap(&trap_dir, path, &trap_writer, trap_compression)
         })
@@ -195,7 +195,7 @@ fn write_trap(
     trap_compression: trap::Compression,
 ) -> std::io::Result<()> {
     let trap_file = path_for(trap_dir, &path, trap_compression.extension());
-    std::fs::create_dir_all(&trap_file.parent().unwrap())?;
+    std::fs::create_dir_all(trap_file.parent().unwrap())?;
     trap_writer.write_to_file(&trap_file, trap_compression)
 }
 
