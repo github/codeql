@@ -36,14 +36,8 @@
 		<sample src="examples/comment_issue_bad.yml" />
 
 		<p>
-			The following example uses shell syntax to read
-			the environment variable and will prevent the attack:
-		</p>
-		<sample src="examples/comment_issue_good.yml" />
-
-		<p>
 			The following example uses an environment variable, but
-			still allows injection because of the use of expression syntax:
+			<b>still allows the injection</b> because of the use of expression syntax:
 		</p>
 		<sample src="examples/comment_issue_bad_env.yml" />
 
