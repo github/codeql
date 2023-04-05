@@ -1,0 +1,56 @@
+extensions:
+
+  # An incomplete set of sources database reads
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["java.io", "OutputStream", True, "write", "(byte[])", "", "Argument[0]", "sql", "manual"]
+      - ["java.io", "OutputStream", True, "write", "(byte[],int,int)", "", "Argument[0]", "sql", "manual"]
+      - ["java.io", "OutputStream", True, "write", "(int)", "", "Argument[0]", "sql", "manual"]
+
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      # Create a few
+      - ["java.sql", "PreparedStatement", True, "executeQuery", "()", "", "ReturnValue", "sql", "manual"]
+      - ["java.sql", "PreparedStatement", True, "getMetaData", "()", "", "ReturnValue", "sql", "manual"]
+      - ["java.sql", "PreparedStatement", True, "getParameterMetaData", "", "", "ReturnValue", "sql", "manual"]
+      - ["java.sql", "Statement", True, "executeQuery", "(String)", "", "ReturnValue", "sql", "manual"]
+      - ["java.sql", "Statement", True, "getResultSet", "()", "", "ReturnValue", "sql", "manual"]
+      - ["java.sql", "Statement", True, "getGeneratedKeys", "()", "", "ReturnValue", "sql", "manual"]
+      - ["java.sql", "Statement", True, "getConnection", "()", "", "ReturnValue", "sql", "manual"]
+      - ["java.sql", "ResultSet", True, "getInt", "(int)", "", "Argument[0]", "sql", "manual"]
+
+      # This one is not defined elsewhere. Why not? I can't get my example working without it.
+      - ["java.io", "InputStream", True, "read", "()", "", "ReturnValue", "remote", "manual"]
+
+
+  # Create a graph of parent-child relationships between threat models and their kinds
+  # The left side is a kind of threat model. The right side groups the kinds together.
+  - addsTo:
+      pack: codeql/java-all
+      extensible: threatModelGrouping
+    data:
+      - ["android-widget", "android"]
+      - ["android-external-storage-dir", "android"]
+      - ["contentprovider", "android"]
+      - ["request", "remote"]
+      - ["response", "remote"]
+      - ["sql", "local"]
+      - ["remote", "standard"]
+
+      # Not sure if these should really go in the standard threat model, but we need them for tests to pass
+      - ["android-external-storage-dir", "standard"]
+      - ["contentprovider", "standard"]
+      - ["android-widget", "standard"]
+      - ["android-web-resource-response", "standard"]
+      - ["uri-path", "standard"]
+
+  # Provide a default, empty supportedThreatModel
+  - addsTo:
+      pack: codeql/java-all
+      extensible: supportedThreatModel
+    data: []

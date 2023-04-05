@@ -84,6 +84,7 @@ private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
 private import ExternalFlowExtensions as Extensions
+private import ExternalFlowConfiguration as ConfiguredExtensions
 private import FlowSummary
 
 /**
@@ -135,10 +136,12 @@ predicate sourceModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
   string output, string kind, string provenance
 ) {
-  Extensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
-  or
-  any(ActiveExperimentalModels q)
-      .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
+  ConfiguredExtensions::supportedSourceModel(kind) and (
+    Extensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
+    or
+    any(ActiveExperimentalModels q)
+        .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
+  )
 }
 
 /** Holds if a sink model exists for the given parameters. */
@@ -282,12 +285,13 @@ module ModelValidation {
       not kind.matches("qltest%") and
       result = "Invalid kind \"" + kind + "\" in sink model."
     )
-    or
-    exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["remote", "contentprovider", "android-widget", "android-external-storage-dir"] and
-      not kind.matches("qltest%") and
-      result = "Invalid kind \"" + kind + "\" in source model."
-    )
+    // All source kinds are supported, but some may not be used in this query.
+    // or
+    // exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
+    //   not ConfiguredExtensions::supportedSourceKind(kind) and
+    //   not kind.matches("qltest%") and
+    //   result = "Invalid kind \"" + kind + "\" in source model."
+    // )
   }
 
   private string getInvalidModelSignature() {
