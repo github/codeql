@@ -169,5 +169,5 @@ where
     isExternalUserControlledWorkflowRun(context)
   )
 select node,
-  "Potential injection from the " + injection +
-    " context, which may be controlled by an external user."
+  "Potential injection from the ${ " + injection +
+    " }, which may be controlled by an external user."
