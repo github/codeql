@@ -125,7 +125,7 @@ impl LogWriter {
                     .create(true)
                     .append(true)
                     .write(true)
-                    .open(&path)
+                    .open(path)
                 {
                     Err(e) => {
                         tracing::error!(
