@@ -28,6 +28,9 @@ module Actions {
     /** Gets the `jobs` mapping from job IDs to job definitions in this workflow. */
     YamlMapping getJobs() { result = this.lookup("jobs") }
 
+    /** Gets the 'global' `env` mapping in this workflow. */
+    YamlMapping getEnv() { result = this.lookup("env") }
+
     /** Gets the name of the workflow. */
     string getName() { result = this.lookup("name").(YamlString).getValue() }
 
@@ -52,6 +55,54 @@ module Actions {
 
     /** Gets the workflow that this trigger is in. */
     Workflow getWorkflow() { result = workflow }
+  }
+
+  /** An environment variable in 'env:' */
+  abstract class Env extends YamlNode, YamlString {
+    /** Gets the name of this environment variable. */
+    abstract string getName();
+  }
+
+  /** Workflow level 'global' environment variable. */
+  class GlobalEnv extends Env {
+    string envName;
+    Workflow workflow;
+
+    GlobalEnv() { this = workflow.getEnv().lookup(envName) }
+
+    /** Gets the workflow this field belongs to. */
+    Workflow getWorkflow() { result = workflow }
+
+    /** Gets the name of this environment variable. */
+    override string getName() { result = envName }
+  }
+
+  /** Job level environment variable. */
+  class JobEnv extends Env {
+    string envName;
+    Job job;
+
+    JobEnv() { this = job.getEnv().lookup(envName) }
+
+    /** Gets the job this field belongs to. */
+    Job getJob() { result = job }
+
+    /** Gets the name of this environment variable. */
+    override string getName() { result = envName }
+  }
+
+  /** Step level environment variable. */
+  class StepEnv extends Env {
+    string envName;
+    Step step;
+
+    StepEnv() { this = step.getEnv().lookup(envName) }
+
+    /** Gets the step this field belongs to. */
+    Step getStep() { result = step }
+
+    /** Gets the name of this environment variable. */
+    override string getName() { result = envName }
   }
 
   /**
@@ -87,6 +138,9 @@ module Actions {
 
     /** Gets the sequence of `steps` within this job. */
     YamlSequence getSteps() { result = this.lookup("steps") }
+
+    /** Gets the `env` mapping in this job. */
+    YamlMapping getEnv() { result = this.lookup("env") }
 
     /** Gets the workflow this job belongs to. */
     Workflow getWorkflow() { result = workflow }
@@ -148,6 +202,9 @@ module Actions {
 
     /** Gets the value of the `if` field in this step, if any. */
     StepIf getIf() { result.getStep() = this }
+
+    /** Gets the value of the `env` field in this step, if any. */
+    YamlMapping getEnv() { result = this.lookup("env") }
 
     /** Gets the ID of this step, if any. */
     string getId() { result = this.lookup("id").(YamlString).getValue() }
@@ -258,6 +315,10 @@ module Actions {
           .regexpFind("\\$\\{\\{\\s*[A-Za-z0-9_\\[\\]\\*\\(\\)\\.\\-]+\\s*\\}\\}", _, _)
           .regexpCapture("\\$\\{\\{\\s*([A-Za-z0-9_\\[\\]\\*\\((\\)\\.\\-]+)\\s*\\}\\}", 1)
   }
+
+  /** Extracts the 'name' part from env.name */
+  bindingset[name]
+  string getEnvName(string name) { result = name.regexpCapture("env\\.([A-Za-z0-9_]+)", 1) }
 
   /**
    * A `script:` field within an Actions `with:` specific to `actions/github-script` action.

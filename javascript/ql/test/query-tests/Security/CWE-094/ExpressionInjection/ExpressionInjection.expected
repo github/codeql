@@ -15,8 +15,11 @@
 | .github/workflows/gollum.yml:8:12:8:53 | echo '$ ... tle }}' | Potential injection from the github.event.pages[11].title context, which may be controlled by an external user. |
 | .github/workflows/gollum.yml:9:12:9:56 | echo '$ ... ame }}' | Potential injection from the github.event.pages[0].page_name context, which may be controlled by an external user. |
 | .github/workflows/gollum.yml:10:12:10:59 | echo '$ ... ame }}' | Potential injection from the github.event.pages[2222].page_name context, which may be controlled by an external user. |
-| .github/workflows/issues.yml:7:12:7:49 | echo '$ ... tle }}' | Potential injection from the github.event.issue.title context, which may be controlled by an external user. |
-| .github/workflows/issues.yml:8:12:8:48 | echo '$ ... ody }}' | Potential injection from the github.event.issue.body context, which may be controlled by an external user. |
+| .github/workflows/issues.yml:13:12:13:49 | echo '$ ... tle }}' | Potential injection from the github.event.issue.title context, which may be controlled by an external user. |
+| .github/workflows/issues.yml:14:12:14:48 | echo '$ ... ody }}' | Potential injection from the github.event.issue.body context, which may be controlled by an external user. |
+| .github/workflows/issues.yml:15:12:15:39 | echo '$ ... env }}' | Potential injection from the env.global_env context, which may be controlled by an external user. |
+| .github/workflows/issues.yml:17:12:17:36 | echo '$ ... env }}' | Potential injection from the env.job_env context, which may be controlled by an external user. |
+| .github/workflows/issues.yml:18:12:18:37 | echo '$ ... env }}' | Potential injection from the env.step_env context, which may be controlled by an external user. |
 | .github/workflows/pull_request_review.yml:7:12:7:56 | echo '$ ... tle }}' | Potential injection from the github.event.pull_request.title context, which may be controlled by an external user. |
 | .github/workflows/pull_request_review.yml:8:12:8:55 | echo '$ ... ody }}' | Potential injection from the github.event.pull_request.body context, which may be controlled by an external user. |
 | .github/workflows/pull_request_review.yml:9:12:9:61 | echo '$ ... bel }}' | Potential injection from the github.event.pull_request.head.label context, which may be controlled by an external user. |

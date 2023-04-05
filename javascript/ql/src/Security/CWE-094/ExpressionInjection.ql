@@ -103,22 +103,38 @@ private predicate isExternalUserControlledWorkflowRun(string context) {
   )
 }
 
-from YamlNode node, string context, Actions::On on
+from YamlNode node, string injection, string context, Actions::On on
 where
   (
     exists(Actions::Run run |
       node = run and
-      Actions::getASimpleReferenceExpression(run) = context and
-      run.getStep().getJob().getWorkflow().getOn() = on
+      Actions::getASimpleReferenceExpression(run) = injection and
+      run.getStep().getJob().getWorkflow().getOn() = on and
+      (
+        injection = context
+        or
+        exists(Actions::Env env |
+          Actions::getEnvName(injection) = env.getName() and
+          Actions::getASimpleReferenceExpression(env) = context
+        )
+      )
     )
     or
     exists(Actions::Script script, Actions::Step step, Actions::Uses uses |
       node = script and
+      script.getWith().getStep().getJob().getWorkflow().getOn() = on and
       script.getWith().getStep() = step and
       uses.getStep() = step and
       uses.getGitHubRepository() = "actions/github-script" and
-      Actions::getASimpleReferenceExpression(script) = context and
-      script.getWith().getStep().getJob().getWorkflow().getOn() = on
+      Actions::getASimpleReferenceExpression(script) = injection and
+      (
+        injection = context
+        or
+        exists(Actions::Env env |
+          Actions::getEnvName(injection) = env.getName() and
+          Actions::getASimpleReferenceExpression(env) = context
+        )
+      )
     )
   ) and
   (
@@ -153,5 +169,5 @@ where
     isExternalUserControlledWorkflowRun(context)
   )
 select node,
-  "Potential injection from the " + context +
+  "Potential injection from the " + injection +
     " context, which may be controlled by an external user."
