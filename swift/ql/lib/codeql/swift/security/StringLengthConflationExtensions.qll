@@ -7,47 +7,63 @@ import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.ExternalFlow
 
+private newtype TStringType =
+  TString() or
+  TNsString() or
+  TStringUtf8() or
+  TStringUtf16() or
+  TStringUnicodeScalars()
+
 /**
  * A type of Swift string encoding. This class is used as a flow state for
  * the string length conflation taint tracking configuration.
  */
-class StringType extends string {
+class StringType extends TStringType {
+  string name;
   string singular;
-  string equivClass;
+  TStringType equivClass;
   string csvLabel;
 
   StringType() {
-    this = "String" and
+    this = TString() and
+    name = "String" and
     singular = "a String" and
-    equivClass = "String" and
+    equivClass = this and
     csvLabel = "string-length"
     or
-    this = "NSString" and
+    this = TNsString() and
+    name = "NSString" and
     singular = "an NSString" and
-    equivClass = "NSString" and
+    equivClass = this and
     csvLabel = "nsstring-length"
     or
-    this = "String.utf8" and
+    this = TStringUtf8() and
+    name = "String.utf8" and
     singular = "a String.utf8" and
-    equivClass = "String.utf8" and
+    equivClass = this and
     csvLabel = "string-utf8-length"
     or
-    this = "String.utf16" and
+    this = TStringUtf16() and
+    name = "String.utf16" and
     singular = "a String.utf16" and
-    equivClass = "NSString" and
+    equivClass = TNsString() and
     csvLabel = "string-utf16-length"
     or
-    this = "String.unicodeScalars" and
+    this = TStringUnicodeScalars() and
+    name = "String.unicodeScalars" and
     singular = "a String.unicodeScalars" and
-    equivClass = "String.unicodeScalars" and
+    equivClass = this and
     csvLabel = "string-unicodescalars-length"
   }
+
+  /** Gets a textual representation of this string type. */
+  string toString() { result = name }
 
   /**
    * Gets the equivalence class for this string type. If these are equal,
    * they should be treated as equivalent.
    */
-  string getEquivClass() { result = equivClass }
+  StringType getEquivClass() { result = equivClass }
 
   /**
    * Gets text for the singular form of this string type.
@@ -130,15 +146,15 @@ private class ExtraStringLengthConflationSource extends StringLengthConflationSo
       (
         // result of a call to `String.utf8.count`
         typeName = "String.UTF8View" and
-        stringType = "String.utf8"
+        stringType = TStringUtf8()
         or
         // result of a call to `String.utf16.count`
         typeName = "String.UTF16View" and
-        stringType = "String.utf16"
+        stringType = TStringUtf16()
         or
         // result of a call to `String.unicodeScalars.count`
         typeName = "String.UnicodeScalarView" and
-        stringType = "String.unicodeScalars"
+        stringType = TStringUnicodeScalars()
       ) and
       memberRef.getBase().getType().(NominalType).getName() = typeName and
       memberRef.getMember().(VarDecl).getName() = "count" and
