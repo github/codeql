@@ -82,7 +82,7 @@ fn main() -> std::io::Result<()> {
         .build_global()
         .unwrap();
 
-    let matches = clap::App::new("Ruby extractor")
+    let matches = clap::Command::new("Ruby extractor")
         .version("1.0")
         .author("GitHub")
         .about("CodeQL Ruby extractor")
@@ -90,18 +90,21 @@ fn main() -> std::io::Result<()> {
         .arg(arg!(--"output-dir" <DIR>         "Sets a custom trap folder"))
         .arg(arg!(--"file-list" <FILE_LIST>    "A text file containing the paths of the files to extract"))
         .get_matches();
+
     let src_archive_dir = matches
-        .value_of("source-archive-dir")
+        .get_one::<String>("source-archive-dir")
         .expect("missing --source-archive-dir");
     let src_archive_dir = file_paths::path_from_string(src_archive_dir);
 
     let trap_dir = matches
-        .value_of("output-dir")
+        .get_one::<String>("output-dir")
         .expect("missing --output-dir");
-    let trap_dir = file_paths::path_from_string(trap_dir);
+    let trap_dir = file_paths::path_from_string(&trap_dir);
 
-    let file_list = matches.value_of("file-list").expect("missing --file-list");
-    let file_list = fs::File::open(file_paths::path_from_string(file_list))?;
+    let file_list = matches
+        .get_one::<String>("file-list")
+        .expect("missing --file-list");
+    let file_list = fs::File::open(file_paths::path_from_string(&file_list))?;
 
     let language = tree_sitter_ruby::language();
     let erb = tree_sitter_embedded_template::language();
