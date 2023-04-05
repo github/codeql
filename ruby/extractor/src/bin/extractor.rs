@@ -2,7 +2,6 @@
 extern crate lazy_static;
 
 use clap::arg;
-use encoding;
 use rayon::prelude::*;
 use std::borrow::Cow;
 use std::fs;
@@ -224,7 +223,7 @@ fn main() -> std::io::Result<()> {
                 &source,
                 &code_ranges,
             );
-            std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
+            std::fs::create_dir_all(src_archive_file.parent().unwrap())?;
             if needs_conversion {
                 std::fs::write(&src_archive_file, &source)?;
             } else {
@@ -247,7 +246,7 @@ fn write_trap(
     trap_compression: trap::Compression,
 ) -> std::io::Result<()> {
     let trap_file = file_paths::path_for(trap_dir, &path, trap_compression.extension());
-    std::fs::create_dir_all(&trap_file.parent().unwrap())?;
+    std::fs::create_dir_all(trap_file.parent().unwrap())?;
     trap_writer.write_to_file(&trap_file, trap_compression)
 }
 
@@ -260,7 +259,7 @@ fn scan_erb(
 ) -> (Vec<Range>, Vec<usize>) {
     let mut parser = Parser::new();
     parser.set_language(erb).unwrap();
-    let tree = parser.parse(&source, None).expect("Failed to parse file");
+    let tree = parser.parse(source, None).expect("Failed to parse file");
     let mut result = Vec::new();
     let mut line_breaks = vec![];
 
