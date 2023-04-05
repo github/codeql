@@ -17,12 +17,24 @@
 // * passing a logger around using a `Logger& logger` function parameter
 // They are created with a name that appears in the logs and can be used to filter debug levels (see
 // `Logger`).
-#define LOG_CRITICAL(...) LOG_IMPL(codeql::Log::Level::critical, __VA_ARGS__)
-#define LOG_ERROR(...) LOG_IMPL(codeql::Log::Level::error, __VA_ARGS__)
-#define LOG_WARNING(...) LOG_IMPL(codeql::Log::Level::warning, __VA_ARGS__)
-#define LOG_INFO(...) LOG_IMPL(codeql::Log::Level::info, __VA_ARGS__)
-#define LOG_DEBUG(...) LOG_IMPL(codeql::Log::Level::debug, __VA_ARGS__)
-#define LOG_TRACE(...) LOG_IMPL(codeql::Log::Level::trace, __VA_ARGS__)
+#define LOG_CRITICAL(...) LOG_WITH_LEVEL(codeql::Log::Level::critical, __VA_ARGS__)
+#define LOG_ERROR(...) LOG_WITH_LEVEL(codeql::Log::Level::error, __VA_ARGS__)
+#define LOG_WARNING(...) LOG_WITH_LEVEL(codeql::Log::Level::warning, __VA_ARGS__)
+#define LOG_INFO(...) LOG_WITH_LEVEL(codeql::Log::Level::info, __VA_ARGS__)
+#define LOG_DEBUG(...) LOG_WITH_LEVEL(codeql::Log::Level::debug, __VA_ARGS__)
+#define LOG_TRACE(...) LOG_WITH_LEVEL(codeql::Log::Level::trace, __VA_ARGS__)
+
+// only do the actual logging if the picked up `Logger` instance is configured to handle the
+// provided log level. `LEVEL` must be a compile-time constant. `logger()` is evaluated once
+#define LOG_WITH_LEVEL(LEVEL, ...)                                                                 \
+  do {                                                                                             \
+    constexpr codeql::Log::Level _level = LEVEL;                                                   \
+    codeql::Logger& _logger = logger();                                                            \
+    if (_level >= _logger.level()) {                                                               \
+      BINLOG_CREATE_SOURCE_AND_EVENT(_logger.writer(), _level, /* category */, binlog::clockNow(), \
+                                     __VA_ARGS__);                                                 \
+    }                                                                                              \
+  } while (false)
 
 // avoid calling into binlog's original macros
 #undef BINLOG_CRITICAL
@@ -49,16 +61,6 @@
 #undef BINLOG_TRACE_W
 #undef BINLOG_TRACE_C
 #undef BINLOG_TRACE_WC
-
-// only do the actual logging if the picked up `Logger` instance is configured to handle the
-// provided log level
-#define LOG_IMPL(severity, ...)                                                        \
-  do {                                                                                 \
-    if (auto& _logger = logger(); severity >= _logger.level()) {                       \
-      BINLOG_CREATE_SOURCE_AND_EVENT(_logger.writer(), severity, , binlog::clockNow(), \
-                                     __VA_ARGS__);                                     \
-    }                                                                                  \
-  } while (false)
 
 namespace codeql {
 
