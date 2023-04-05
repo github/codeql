@@ -65,17 +65,14 @@ class CookieStorageSink extends ExternalLocationSink, RemoteFlowSink {
   }
 }
 
-
-
 private predicate isFileWriteCall(Expr stream, Expr data) {
   exists(MethodCall mc, Method m | mc.getTarget() = m.getAnOverrider*() |
     m.hasQualifiedName("System.IO", "Stream", ["Write", "WriteAsync"]) and
     stream = mc.getQualifier() and
     data = mc.getArgument(0)
     or
-    m
-        .hasQualifiedName("System.IO", "TextWriter",
-          ["Write", "WriteAsync", "WriteLine", "WriteLineAsync"]) and
+    m.hasQualifiedName("System.IO", "TextWriter",
+      ["Write", "WriteAsync", "WriteLine", "WriteLineAsync"]) and
     stream = mc.getQualifier() and
     data = mc.getArgument(0)
     or
