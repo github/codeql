@@ -97,7 +97,7 @@ impl fmt::Display for Entry {
         match self {
             Entry::FreshId(label) => write!(f, "{}=*", label),
             Entry::MapLabelToKey(label, key) => {
-                write!(f, "{}=@\"{}\"", label, key.replace("\"", "\"\""))
+                write!(f, "{}=@\"{}\"", label, key.replace('"', "\"\""))
             }
             Entry::GenericTuple(name, args) => {
                 write!(f, "{}(", name)?;
@@ -142,7 +142,7 @@ impl fmt::Display for Arg {
             Arg::String(x) => write!(
                 f,
                 "\"{}\"",
-                limit_string(x, MAX_STRLEN).replace("\"", "\"\"")
+                limit_string(x, MAX_STRLEN).replace('"', "\"\"")
             ),
         }
     }

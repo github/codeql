@@ -3,10 +3,9 @@
  */
 
 import swift
-import codeql.swift.dataflow.DataFlow::DataFlow
 import FlowConfig
-import DataFlow::PathGraph
+import TestFlow::PathGraph
 
-from DataFlow::PathNode src, DataFlow::PathNode sink, TestConfiguration test
-where test.hasFlowPath(src, sink)
+from TestFlow::PathNode src, TestFlow::PathNode sink
+where TestFlow::flowPath(src, sink)
 select sink, src, sink, "result"

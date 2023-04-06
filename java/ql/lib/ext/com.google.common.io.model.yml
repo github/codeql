@@ -3,6 +3,14 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["com.google.common.io", "Files", False, "asCharSink", "(File,Charset,FileWriteMode[])", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["com.google.common.io", "Files", False, "asCharSource", "(File,Charset)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["com.google.common.io", "Files", False, "copy", "(File,OutputStream)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["com.google.common.io", "Files", False, "readLines", "(File,Charset)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["com.google.common.io", "Files", False, "toByteArray", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["com.google.common.io", "Files", False, "toString", "(File,Charset)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["com.google.common.io", "Files", False, "write", "(byte[],File)", "", "Argument[0]", "write-file", "ai-generated"]
+      - ["com.google.common.io", "Files", False, "write", "(byte[],File)", "", "Argument[1]", "create-file", "manual"]
       - ["com.google.common.io", "Resources", False, "asByteSource", "(URL)", "", "Argument[0]", "url-open-stream", "manual"]
       - ["com.google.common.io", "Resources", False, "asCharSource", "(URL,Charset)", "", "Argument[0]", "url-open-stream", "manual"]
       - ["com.google.common.io", "Resources", False, "copy", "(URL,OutputStream)", "", "Argument[0]", "url-open-stream", "manual"]

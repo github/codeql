@@ -1,0 +1,21 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["kotlin.io", "FilesKt", False, "deleteRecursively", "(File)", "", "Argument[0]", "create-file", "ai-generated"] # should be delete-file
+      - ["kotlin.io", "FilesKt", False, "inputStream", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["kotlin.io", "FilesKt", False, "readBytes", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["kotlin.io", "FilesKt", False, "readText", "(File,Charset)", "", "Argument[0]", "read-file", "ai-generated"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["kotlin.io", "FilesKt", False, "normalize", "(File)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["kotlin.io", "FilesKt", False, "relativeTo", "(File,File)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["kotlin.io", "FilesKt", False, "relativeTo", "(File,File)", "", "Argument[1]", "ReturnValue", "taint", "ai-generated"]
+      - ["kotlin.io", "FilesKt", False, "relativeToOrNull", "(File,File)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["kotlin.io", "FilesKt", False, "relativeToOrNull", "(File,File)", "", "Argument[1]", "ReturnValue", "taint", "ai-generated"]
+      - ["kotlin.io", "FilesKt", False, "resolve", "(File,File)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["kotlin.io", "FilesKt", False, "resolve", "(File,String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["kotlin.io", "FilesKt", False, "toRelativeString", "(File,File)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]

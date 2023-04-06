@@ -19,7 +19,8 @@ import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
-import DataFlow::PathGraph
+import StringSizeFlow::PathGraph1
+import codeql.util.Unit
 
 pragma[nomagic]
 Instruction getABoundIn(SemBound b, IRFunction func) {
@@ -30,7 +31,8 @@ Instruction getABoundIn(SemBound b, IRFunction func) {
 /**
  * Holds if `i <= b + delta`.
  */
-pragma[nomagic]
+bindingset[i]
+pragma[inline_late]
 predicate bounded(Instruction i, Instruction b, int delta) {
   exists(SemBound bound, IRFunction func |
     semBounded(getSemanticExpr(i), bound, delta, true, _) and
@@ -45,7 +47,7 @@ VariableAccess getAVariableAccess(Expr e) { e.getAChild*() = result }
  * Holds if `(n, state)` pair represents the source of flow for the size
  * expression associated with `alloc`.
  */
-predicate hasSize(AllocationExpr alloc, DataFlow::Node n, string state) {
+predicate hasSize(AllocationExpr alloc, DataFlow::Node n, int state) {
   exists(VariableAccess va, Expr size, int delta |
     size = alloc.getSizeExpr() and
     // Get the unique variable in a size expression like `x` in `malloc(x + 1)`.
@@ -54,7 +56,7 @@ predicate hasSize(AllocationExpr alloc, DataFlow::Node n, string state) {
     bounded(any(Instruction instr | instr.getUnconvertedResultExpression() = size),
       any(LoadInstruction load | load.getUnconvertedResultExpression() = va), delta) and
     n.asConvertedExpr() = va.getFullyConverted() and
-    state = delta.toString()
+    state = delta
   )
 }
 
@@ -76,12 +78,13 @@ predicate isSinkPairImpl(
   )
 }
 
-class StringSizeConfiguration extends ProductFlow::Configuration {
-  StringSizeConfiguration() { this = "StringSizeConfiguration" }
+module StringSizeConfig implements ProductFlow::StateConfigSig {
+  class FlowState1 = Unit;
 
-  override predicate isSourcePair(
-    DataFlow::Node bufSource, DataFlow::FlowState state1, DataFlow::Node sizeSource,
-    DataFlow::FlowState state2
+  class FlowState2 = int;
+
+  predicate isSourcePair(
+    DataFlow::Node bufSource, FlowState1 state1, DataFlow::Node sizeSource, FlowState2 state2
   ) {
     // In the case of an allocation like
     // ```cpp
@@ -89,30 +92,38 @@ class StringSizeConfiguration extends ProductFlow::Configuration {
     // ```
     // we use `state2` to remember that there was an offset (in this case an offset of `1`) added
     // to the size of the allocation. This state is then checked in `isSinkPair`.
-    state1 instanceof DataFlow::FlowStateEmpty and
+    exists(state1) and
     hasSize(bufSource.asConvertedExpr(), sizeSource, state2)
   }
 
-  override predicate isSinkPair(
-    DataFlow::Node bufSink, DataFlow::FlowState state1, DataFlow::Node sizeSink,
-    DataFlow::FlowState state2
+  predicate isSinkPair(
+    DataFlow::Node bufSink, FlowState1 state1, DataFlow::Node sizeSink, FlowState2 state2
   ) {
-    state1 instanceof DataFlow::FlowStateEmpty and
-    state2 = [-32 .. 32].toString() and // An arbitrary bound because we need to bound `state2`
+    exists(state1) and
+    state2 = [-32 .. 32] and // An arbitrary bound because we need to bound `state2`
     exists(int delta |
       isSinkPairImpl(_, bufSink, sizeSink, delta, _) and
-      delta > state2.toInt()
+      delta > state2
     )
   }
 
-  override predicate isAdditionalFlowStep2(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
+  predicate isBarrier1(DataFlow::Node node, FlowState1 state) { none() }
+
+  predicate isBarrier2(DataFlow::Node node, FlowState2 state) { none() }
+
+  predicate isAdditionalFlowStep1(
+    DataFlow::Node node1, FlowState1 state1, DataFlow::Node node2, FlowState1 state2
+  ) {
+    none()
+  }
+
+  predicate isAdditionalFlowStep2(
+    DataFlow::Node node1, FlowState2 state1, DataFlow::Node node2, FlowState2 state2
   ) {
     exists(AddInstruction add, Operand op, int delta, int s1, int s2 |
       s1 = [-32 .. 32] and // An arbitrary bound because we need to bound `state`
-      state1 = s1.toString() and
-      state2 = s2.toString() and
+      state1 = s1 and
+      state2 = s2 and
       add.hasOperands(node1.asOperand(), op) and
       semBounded(getSemanticExpr(op.getDef()), any(SemZeroBound zero), delta, true, _) and
       node2.asInstruction() = add and
@@ -121,13 +132,15 @@ class StringSizeConfiguration extends ProductFlow::Configuration {
   }
 }
 
+module StringSizeFlow = ProductFlow::GlobalWithState<StringSizeConfig>;
+
 from
-  StringSizeConfiguration conf, DataFlow::PathNode source1, DataFlow2::PathNode source2,
-  DataFlow::PathNode sink1, DataFlow2::PathNode sink2, int overflow, int sinkState,
+  StringSizeFlow::PathNode1 source1, StringSizeFlow::PathNode2 source2,
+  StringSizeFlow::PathNode1 sink1, StringSizeFlow::PathNode2 sink2, int overflow, int sinkState,
   CallInstruction c, DataFlow::Node sourceNode, Expr buffer, string element
 where
-  conf.hasFlowPath(source1, source2, sink1, sink2) and
-  sinkState = sink2.getState().toInt() and
+  StringSizeFlow::flowPath(source1, source2, sink1, sink2) and
+  sinkState = sink2.getState() and
   isSinkPairImpl(c, sink1.getNode(), sink2.getNode(), overflow + sinkState, buffer) and
   overflow > 0 and
   sourceNode = source1.getNode() and

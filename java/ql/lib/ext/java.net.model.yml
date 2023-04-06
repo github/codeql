@@ -10,6 +10,7 @@ extensions:
       extensible: sinkModel
     data:
       - ["java.net", "DatagramSocket", True, "connect", "(SocketAddress)", "", "Argument[0]", "open-url", "ai-generated"]
+      - ["java.net", "Socket", True, "Socket", "(String,int)", "", "Argument[0]", "open-url", "ai-generated"]
       - ["java.net", "URL", False, "openConnection", "", "", "Argument[this]", "open-url", "manual"]
       - ["java.net", "URL", False, "openConnection", "(Proxy)", "", "Argument[0]", "open-url", "ai-generated"]
       - ["java.net", "URL", False, "openStream", "", "", "Argument[this]", "open-url", "manual"]
@@ -28,10 +29,13 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
+      - ["java.net", "InetAddress", True, "getByAddress", "(byte[])", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
       - ["java.net", "InetAddress", True, "getByName", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
       - ["java.net", "InetAddress", True, "getAllByName", "(String)", "", "Argument[0]", "ReturnValue.ArrayElement", "taint", "ai-generated"]
       - ["java.net", "InetSocketAddress", True, "createUnresolved", "(String,int)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
       - ["java.net", "InetSocketAddress", True, "InetSocketAddress", "(String,int)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
+      - ["java.net", "URI", False, "resolve", "(URI)", "", "Argument[this]", "ReturnValue", "taint", "ai-generated"]
+      - ["java.net", "URI", False, "URI", "(String,String,String,int,String,String,String)", "", "Argument[5]", "Argument[this].SyntheticField[java.net.URI.query]", "taint", "ai-generated"]
       - ["java.net", "URI", False, "URI", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.net", "URI", False, "create", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URI", False, "resolve", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]

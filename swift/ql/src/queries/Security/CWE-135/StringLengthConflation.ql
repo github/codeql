@@ -13,14 +13,14 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.StringLengthConflationQuery
-import DataFlow::PathGraph
+import StringLengthConflationFlow::PathGraph
 
 from
-  StringLengthConflationConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  StringLengthConflationFlow::PathNode source, StringLengthConflationFlow::PathNode sink,
   StringType sourceType, StringType sinkType, string message
 where
-  config.hasFlowPath(source, sink) and
-  config.isSource(source.getNode(), sourceType) and
+  StringLengthConflationFlow::flowPath(source, sink) and
+  StringLengthConflationConfig::isSource(source.getNode(), sourceType) and
   sinkType = sink.getNode().(StringLengthConflationSink).getCorrectStringType() and
   message =
     "This " + sourceType + " length is used in " + sinkType.getSingular() +
