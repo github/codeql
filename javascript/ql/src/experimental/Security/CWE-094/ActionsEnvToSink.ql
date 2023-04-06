@@ -50,9 +50,10 @@ class MyConfiguration extends TaintTracking::Configuration {
 
 from
   MyConfiguration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, IndexExpr srcidx,
-  DotExpr srcdot, string fnname, string envname
+  DotExpr srcdot, string fnname, string envname, Expr arg
 where
   cfg.hasFlowPath(source, sink) and
+  source.getNode().asExpr() = arg and
   fnname = sink.getNode().asExpr().getParent().(CallExpr).getCalleeName() and
   (
     srcidx = source.getNode().asExpr() and envname = srcidx.getPropertyName()
@@ -67,4 +68,4 @@ where
       "GITHUB_REPOSITORY", "GITHUB_REPOSITORY_OWNER", "GITHUB_RUN_ID", "GITHUB_RUN_NUMBER",
       "GITHUB_SERVER_URL", "GITHUB_SHA", "GITHUB_WORKFLOW", "GITHUB_WORKSPACE"
     ]
-select envname, source, sink, fnname
+select arg, source, sink, fnname
