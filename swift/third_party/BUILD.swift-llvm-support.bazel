@@ -2,22 +2,7 @@ load("@rules_pkg//:mappings.bzl", "pkg_files", "strip_prefix")
 
 cc_library(
     name = "swift-llvm-support",
-    srcs = [
-        "libCodeQLSwiftFrontendTool.a",
-    ] + select({
-        "@platforms//os:linux": [
-            "libCodeQLSwiftFrontendTool.so",
-            "libswiftCore.so",
-        ],
-        "@platforms//os:macos": [
-            "libCodeQLSwiftFrontendTool.dylib",
-            "libswiftCore.dylib",
-            "libswiftCompatibility50.a",
-            "libswiftCompatibility51.a",
-            "libswiftCompatibilityConcurrency.a",
-            "libswiftCompatibilityDynamicReplacements.a",
-        ],
-    }),
+    srcs = glob(["*.a", "*.so", "*.dylib"]),
     hdrs = glob(["include/**/*", "stdlib/**/*" ]),
     linkopts = [
         "-lm",
@@ -34,7 +19,7 @@ cc_library(
         ],
         "//conditions:default": [],
     }),
-    includes = [ "include" ],
+    includes = ["include", "stdlib/public/SwiftShims"],
     visibility = ["//visibility:public"],
 )
 
