@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @precision medium
- * @id javascript/context-sinks
+ * @id javascript/input-sinks
  * @tags security
  *       external/cwe/cwe-094
  *       experimental
