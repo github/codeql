@@ -378,10 +378,10 @@ codeql::MemberRefExpr ExprTranslator::translateMemberRefExpr(const swift::Member
 
 codeql::KeyPathExpr ExprTranslator::translateKeyPathExpr(const swift::KeyPathExpr& expr) {
   auto entry = createExprEntry(expr);
-  // TODO this should be completely redone, as we are using internal stuff here instead of
-  // extracting expr.getComponents()
   if (!expr.isObjC()) {
-    entry.parsed_path = dispatcher.fetchOptionalLabel(expr.getParsedPath());
+    for (const auto& component : expr.getComponents()) {
+      entry.components.push_back(emitKeyPathComponent(component));
+    }
     if (auto rootTypeRepr = expr.getRootType()) {
       auto keyPathType = expr.getType()->getAs<swift::BoundGenericClassType>();
       assert(keyPathType && "KeyPathExpr must have BoundGenericClassType");
@@ -484,6 +484,26 @@ TrapLabel<ArgumentTag> ExprTranslator::emitArgument(const swift::Argument& arg) 
   auto entry = dispatcher.createUncachedEntry(arg);
   entry.label = arg.getLabel().str().str();
   entry.expr = dispatcher.fetchLabel(arg.getExpr());
+  dispatcher.emit(entry);
+  return entry.id;
+}
+
+TrapLabel<KeyPathComponentTag> ExprTranslator::emitKeyPathComponent(
+    const swift::KeyPathExpr::Component& component) {
+  auto entry = dispatcher.createUncachedEntry(component);
+  entry.kind = static_cast<int>(component.getKind());
+  if (auto subscript_args = component.getSubscriptArgs()) {
+    for (const auto& arg : *subscript_args) {
+      entry.subscript_arguments.push_back(emitArgument(arg));
+    }
+  }
+  if (component.getKind() == swift::KeyPathExpr::Component::Kind::TupleElement) {
+    entry.tuple_index = static_cast<int>(component.getTupleIndex());
+  }
+  if (component.hasDeclRef()) {
+    entry.decl_ref = dispatcher.fetchLabel(component.getDeclRef().getDecl());
+  }
+  entry.component_type = dispatcher.fetchLabel(component.getComponentType());
   dispatcher.emit(entry);
   return entry.id;
 }

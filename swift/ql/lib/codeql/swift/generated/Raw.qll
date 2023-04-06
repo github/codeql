@@ -134,6 +134,49 @@ module Raw {
 
   class AvailabilitySpec extends @availability_spec, AstNode { }
 
+  class KeyPathComponent extends @key_path_component, AstNode {
+    override string toString() { result = "KeyPathComponent" }
+
+    /**
+     * Gets the kind of key path component.
+     *
+     * This is 3 for properties, 4 for array and dictionary subscripts, 5 for optional forcing
+     * (`!`), 6 for optional chaining (`?`), 7 for implicit optional wrapping, 8 for `self`,
+     * and 9 for tuple element indexing.
+     *
+     * The following values should not appear: 0 for invalid components, 1 for unresolved
+     * properties, 2 for unresolved subscripts, 10 for #keyPath dictionary keys, and 11 for
+     * implicit IDE code completion data.
+     */
+    int getKind() { key_path_components(this, result, _) }
+
+    /**
+     * Gets the `index`th argument to an array or dictionary subscript expression (0-based).
+     */
+    Argument getSubscriptArgument(int index) {
+      key_path_component_subscript_arguments(this, index, result)
+    }
+
+    /**
+     * Gets the tuple index of this key path component, if it exists.
+     */
+    int getTupleIndex() { key_path_component_tuple_indices(this, result) }
+
+    /**
+     * Gets the property or subscript operator, if it exists.
+     */
+    ValueDecl getDeclRef() { key_path_component_decl_refs(this, result) }
+
+    /**
+     * Gets the return type of this component application.
+     *
+     * An optional-chaining component has a non-optional type to feed into the rest of the key
+     * path; an optional-wrapping component is inserted if required to produce an optional type
+     * as the final output.
+     */
+    Type getComponentType() { key_path_components(this, _, result) }
+  }
+
   class UnspecifiedElement extends @unspecified_element, ErrorElement {
     override string toString() { result = "UnspecifiedElement" }
 
@@ -981,9 +1024,9 @@ module Raw {
     TypeRepr getRoot() { key_path_expr_roots(this, result) }
 
     /**
-     * Gets the parsed path of this key path expression, if it exists.
+     * Gets the `index`th component of this key path expression (0-based).
      */
-    Expr getParsedPath() { key_path_expr_parsed_paths(this, result) }
+    KeyPathComponent getComponent(int index) { key_path_expr_components(this, index, result) }
   }
 
   class LazyInitializerExpr extends @lazy_initializer_expr, Expr {

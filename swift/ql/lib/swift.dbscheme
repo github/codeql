@@ -112,6 +112,7 @@ locations(
 | @condition_element
 | @decl
 | @expr
+| @key_path_component
 | @pattern
 | @stmt
 | @stmt_condition
@@ -172,6 +173,31 @@ availability_info_specs(
   @other_availability_spec
 | @platform_version_availability_spec
 ;
+
+key_path_components(
+  unique int id: @key_path_component,
+  int kind: int ref,
+  int component_type: @type_or_none ref
+);
+
+#keyset[id, index]
+key_path_component_subscript_arguments(
+  int id: @key_path_component ref,
+  int index: int ref,
+  int subscript_argument: @argument_or_none ref
+);
+
+#keyset[id]
+key_path_component_tuple_indices(
+  int id: @key_path_component ref,
+  int tuple_index: int ref
+);
+
+#keyset[id]
+key_path_component_decl_refs(
+  int id: @key_path_component ref,
+  int decl_ref: @value_decl_or_none ref
+);
 
 unspecified_elements(
   unique int id: @unspecified_element,
@@ -994,10 +1020,11 @@ key_path_expr_roots(  //dir=expr
   int root: @type_repr_or_none ref
 );
 
-#keyset[id]
-key_path_expr_parsed_paths(  //dir=expr
+#keyset[id, index]
+key_path_expr_components(  //dir=expr
   int id: @key_path_expr ref,
-  int parsed_path: @expr_or_none ref
+  int index: int ref,
+  int component: @key_path_component_or_none ref
 );
 
 lazy_initializer_exprs(  //dir=expr
@@ -2494,6 +2521,11 @@ variadic_sequence_types(  //dir=type
 
 @generic_type_param_type_or_none =
   @generic_type_param_type
+| @unspecified_element
+;
+
+@key_path_component_or_none =
+  @key_path_component
 | @unspecified_element
 ;
 
