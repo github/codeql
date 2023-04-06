@@ -104,7 +104,7 @@ private predicate isExternalUserControlledWorkflowRun(string context) {
 }
 
 /**
- * The env variable name in `${{ env.name }}`
+ * Holds if the env variable name in `${{ env.name }}`
  * is where the external user controlled value was assigned to.
  */
 bindingset[injection]
@@ -122,7 +122,7 @@ predicate isRunInjectable(Actions::Run run, string injection, string context) {
   (
     injection = context
     or
-    exists(Actions::Env env | isEnvTainted(env, injection, context))
+    isEnvTainted(_, injection, context)
   )
 }
 
@@ -139,7 +139,7 @@ predicate isScriptInjectable(Actions::Script script, string injection, string co
     (
       injection = context
       or
-      exists(Actions::Env env | isEnvTainted(env, injection, context))
+      isEnvTainted(_, injection, context)
     )
   )
 }
