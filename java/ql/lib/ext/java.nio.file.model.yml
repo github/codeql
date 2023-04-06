@@ -21,6 +21,7 @@ extensions:
       - ["java.nio.file", "Files", False, "newBufferedReader", "(Path,Charset)", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.nio.file", "Files", False, "newBufferedReader", "(Path)", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.nio.file", "Files", False, "newBufferedWriter", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "newInputStream", "(Path,OpenOption[])", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.nio.file", "Files", False, "newOutputStream", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "readAllBytes", "(Path)", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.nio.file", "Files", False, "readAllLines", "(Path,Charset)", "", "Argument[0]", "read-file", "ai-generated"]
