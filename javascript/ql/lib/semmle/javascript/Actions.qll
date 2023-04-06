@@ -32,7 +32,7 @@ module Actions {
     string getName() { result = this.lookup("name").(YamlString).getValue() }
 
     /** Gets the name of the workflow file. */
-    string getFileName() { result = this.getFile().getBaseName() }
+    string getFileName() { result = this.getLocation().getFile().getBaseName() }
 
     /** Gets the `on:` in this workflow. */
     On getOn() { result = this.lookup("on") }
