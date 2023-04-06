@@ -55,11 +55,12 @@ predicate isFieldAddressSource(Field f, DataFlow::Node source) {
  * writes to an address that non-strictly upper-bounds `sink`, or `i` is a `LoadInstruction` that
  * reads from an address that non-strictly upper-bounds `sink`.
  */
+pragma[inline]
 predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string operation) {
   exists(AddressOperand addr, int delta |
-    bounded(pragma[only_bind_into](addr).getDef(), sink.asInstruction(), delta) and
+    bounded(addr.getDef(), sink.asInstruction(), delta) and
     delta >= 0 and
-    i.getAnOperand() = pragma[only_bind_into](addr)
+    i.getAnOperand() = addr
   |
     i instanceof StoreInstruction and
     operation = "write"
@@ -88,6 +89,7 @@ module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
     isConstantSizeOverflowSource(_, source.asInstruction(), _)
   }
 
+  pragma[inline]
   predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _) }
 }
 
