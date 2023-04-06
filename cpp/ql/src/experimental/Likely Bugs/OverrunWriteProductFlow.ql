@@ -30,7 +30,8 @@ Instruction getABoundIn(SemBound b, IRFunction func) {
 /**
  * Holds if `i <= b + delta`.
  */
-pragma[nomagic]
+bindingset[i]
+pragma[inline_late]
 predicate bounded(Instruction i, Instruction b, int delta) {
   exists(SemBound bound, IRFunction func |
     semBounded(getSemanticExpr(i), bound, delta, true, _) and

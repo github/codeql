@@ -30,14 +30,22 @@ Instruction getABoundIn(SemBound b, IRFunction func) {
 /**
  * Holds if `i <= b + delta`.
  */
-pragma[nomagic]
-predicate bounded(Instruction i, Instruction b, int delta) {
+pragma[inline]
+predicate boundedImpl(Instruction i, Instruction b, int delta) {
   exists(SemBound bound, IRFunction func |
     semBounded(getSemanticExpr(i), bound, delta, true, _) and
     b = getABoundIn(bound, func) and
     i.getEnclosingIRFunction() = func
   )
 }
+
+bindingset[i]
+pragma[inline_late]
+predicate bounded1(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
+
+bindingset[b]
+pragma[inline_late]
+predicate bounded2(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
 
 /**
  * Holds if the combination of `n` and `state` represents an appropriate
@@ -135,14 +143,6 @@ class AllocToInvalidPointerConf extends ProductFlow::Configuration {
   override predicate isBarrierIn1(DataFlow::Node node) { this.isSourcePair(node, _, _, _) }
 }
 
-pragma[nomagic]
-predicate pointerAddInstructionHasOperands(
-  PointerAddInstruction pai, Instruction left, Instruction right
-) {
-  pai.getLeft() = left and
-  pai.getRight() = right
-}
-
 /**
  * Holds if `pai` is non-strictly upper bounded by `sink2 + delta` and `sink1` is the
  * left operand of the pointer-arithmetic operation.
@@ -162,8 +162,9 @@ predicate pointerAddInstructionHasBounds(
   PointerAddInstruction pai, DataFlow::Node sink1, DataFlow::Node sink2, int delta
 ) {
   exists(Instruction right |
-    pointerAddInstructionHasOperands(pai, sink1.asInstruction(), right) and
-    bounded(right, sink2.asInstruction(), delta)
+    pai.getRight() = right and
+    pai.getLeft() = sink1.asInstruction() and
+    bounded1(right, sink2.asInstruction(), delta)
   )
 }
 
@@ -184,9 +185,10 @@ predicate isSinkImpl(
  * writes to an address that non-strictly upper-bounds `sink`, or `i` is a `LoadInstruction` that
  * reads from an address that non-strictly upper-bounds `sink`.
  */
+pragma[inline]
 predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string operation) {
   exists(AddressOperand addr, int delta |
-    bounded(addr.getDef(), sink.asInstruction(), delta) and
+    bounded1(addr.getDef(), sink.asInstruction(), delta) and
     delta >= 0 and
     i.getAnOperand() = addr
   |
@@ -205,6 +207,7 @@ predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string o
 module InvalidPointerToDerefConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { invalidPointerToDerefSource(_, source, _) }
 
+  pragma[inline]
   predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _) }
 }
 
@@ -222,10 +225,10 @@ predicate invalidPointerToDerefSource(
   PointerArithmeticInstruction pai, DataFlow::Node source, int delta
 ) {
   exists(ProductFlow::Configuration conf, DataFlow::PathNode p, DataFlow::Node sink1 |
-    p.getNode() = sink1 and
-    conf.hasFlowPath(_, _, p, _) and
+    pragma[only_bind_out](p.getNode()) = sink1 and
+    conf.hasFlowPath(_, _, pragma[only_bind_into](p), _) and
     isSinkImpl(pai, sink1, _, _) and
-    bounded(source.asInstruction(), pai, delta) and
+    bounded2(source.asInstruction(), pai, delta) and
     delta >= 0
   )
 }
@@ -240,7 +243,7 @@ newtype TMergedPathNode =
   // pointer, but we want to raise an alert at the dereference.
   TPathNodeSink(Instruction i) {
     exists(DataFlow::Node n |
-      InvalidPointerToDerefFlow::flow(_, n) and
+      InvalidPointerToDerefFlow::flowTo(n) and
       isInvalidPointerDerefSink(n, i, _)
     )
   }
@@ -334,6 +337,7 @@ predicate joinOn1(
  * that dereferences `p1`. The string `operation` describes whether the `i` is
  * a `StoreInstruction` or `LoadInstruction`.
  */
+pragma[inline]
 predicate joinOn2(InvalidPointerToDerefFlow::PathNode p1, Instruction i, string operation) {
   isInvalidPointerDerefSink(p1.getNode(), i, operation)
 }

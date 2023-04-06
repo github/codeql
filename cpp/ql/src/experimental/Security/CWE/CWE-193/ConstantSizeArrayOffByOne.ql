@@ -25,7 +25,8 @@ Instruction getABoundIn(SemBound b, IRFunction func) {
 /**
  * Holds if `i <= b + delta`.
  */
-pragma[nomagic]
+bindingset[i]
+pragma[inline_late]
 predicate bounded(Instruction i, Instruction b, int delta) {
   exists(SemBound bound, IRFunction func |
     semBounded(getSemanticExpr(i), bound, delta, true, _) and
@@ -56,9 +57,9 @@ predicate isFieldAddressSource(Field f, DataFlow::Node source) {
  */
 predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string operation) {
   exists(AddressOperand addr, int delta |
-    bounded(addr.getDef(), sink.asInstruction(), delta) and
+    bounded(pragma[only_bind_into](addr).getDef(), sink.asInstruction(), delta) and
     delta >= 0 and
-    i.getAnOperand() = addr
+    i.getAnOperand() = pragma[only_bind_into](addr)
   |
     i instanceof StoreInstruction and
     operation = "write"
