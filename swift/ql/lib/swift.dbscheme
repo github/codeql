@@ -829,7 +829,7 @@ bind_optional_exprs(  //dir=expr
 
 capture_list_exprs(  //dir=expr
   unique int id: @capture_list_expr,
-  int closure_body: @explicit_closure_expr_or_none ref
+  int closure_body: @closure_expr_or_none ref
 );
 
 #keyset[id, index]
@@ -2457,6 +2457,11 @@ variadic_sequence_types(  //dir=type
 | @unspecified_element
 ;
 
+@closure_expr_or_none =
+  @closure_expr
+| @unspecified_element
+;
+
 @condition_element_or_none =
   @condition_element
 | @unspecified_element
@@ -2469,11 +2474,6 @@ variadic_sequence_types(  //dir=type
 
 @enum_element_decl_or_none =
   @enum_element_decl
-| @unspecified_element
-;
-
-@explicit_closure_expr_or_none =
-  @explicit_closure_expr
 | @unspecified_element
 ;
 
