@@ -1,7 +1,5 @@
-#[macro_use]
-extern crate lazy_static;
-
-use clap::arg;
+use clap::Args;
+use lazy_static::lazy_static;
 use rayon::prelude::*;
 use std::borrow::Cow;
 use std::fs;
@@ -11,23 +9,22 @@ use tree_sitter::{Language, Parser, Range};
 
 use codeql_extractor::{diagnostics, extractor, file_paths, node_types, trap};
 
-lazy_static! {
-    static ref CP_NUMBER: regex::Regex = regex::Regex::new("cp([0-9]+)").unwrap();
+#[derive(Args)]
+pub struct Options {
+    /// Sets a custom source achive folder
+    #[arg(long)]
+    source_archive_dir: String,
+
+    /// Sets a custom trap folder
+    #[arg(long)]
+    output_dir: String,
+
+    /// A text file containing the paths of the files to extract
+    #[arg(long)]
+    file_list: String,
 }
 
-/// Returns the `encoding::Encoding` corresponding to the given encoding name, if one exists.
-fn encoding_from_name(encoding_name: &str) -> Option<&(dyn encoding::Encoding + Send + Sync)> {
-    match encoding::label::encoding_from_whatwg_label(encoding_name) {
-        s @ Some(_) => s,
-        None => CP_NUMBER.captures(encoding_name).and_then(|cap| {
-            encoding::label::encoding_from_windows_code_page(
-                str::parse(cap.get(1).unwrap().as_str()).unwrap(),
-            )
-        }),
-    }
-}
-
-fn main() -> std::io::Result<()> {
+pub fn run(options: Options) -> std::io::Result<()> {
     tracing_subscriber::fmt()
         .with_target(false)
         .without_time()
@@ -82,29 +79,11 @@ fn main() -> std::io::Result<()> {
         .build_global()
         .unwrap();
 
-    let matches = clap::Command::new("Ruby extractor")
-        .version("1.0")
-        .author("GitHub")
-        .about("CodeQL Ruby extractor")
-        .arg(arg!(--"source-archive-dir" <DIR> "Sets a custom source archive folder"))
-        .arg(arg!(--"output-dir" <DIR>         "Sets a custom trap folder"))
-        .arg(arg!(--"file-list" <FILE_LIST>    "A text file containing the paths of the files to extract"))
-        .get_matches();
+    let src_archive_dir = file_paths::path_from_string(&options.source_archive_dir);
 
-    let src_archive_dir = matches
-        .get_one::<String>("source-archive-dir")
-        .expect("missing --source-archive-dir");
-    let src_archive_dir = file_paths::path_from_string(src_archive_dir);
+    let trap_dir = file_paths::path_from_string(&options.output_dir);
 
-    let trap_dir = matches
-        .get_one::<String>("output-dir")
-        .expect("missing --output-dir");
-    let trap_dir = file_paths::path_from_string(&trap_dir);
-
-    let file_list = matches
-        .get_one::<String>("file-list")
-        .expect("missing --file-list");
-    let file_list = fs::File::open(file_paths::path_from_string(&file_list))?;
+    let file_list = fs::File::open(file_paths::path_from_string(&options.file_list))?;
 
     let language = tree_sitter_ruby::language();
     let erb = tree_sitter_embedded_template::language();
@@ -242,6 +221,22 @@ fn main() -> std::io::Result<()> {
     write_trap(&trap_dir, path, &trap_writer, trap_compression)
 }
 
+lazy_static! {
+    static ref CP_NUMBER: regex::Regex = regex::Regex::new("cp([0-9]+)").unwrap();
+}
+
+/// Returns the `encoding::Encoding` corresponding to the given encoding name, if one exists.
+fn encoding_from_name(encoding_name: &str) -> Option<&(dyn encoding::Encoding + Send + Sync)> {
+    match encoding::label::encoding_from_whatwg_label(encoding_name) {
+        s @ Some(_) => s,
+        None => CP_NUMBER.captures(encoding_name).and_then(|cap| {
+            encoding::label::encoding_from_windows_code_page(
+                str::parse(cap.get(1).unwrap().as_str()).unwrap(),
+            )
+        }),
+    }
+}
+
 fn write_trap(
     trap_dir: &Path,
     path: PathBuf,
@@ -372,68 +367,4 @@ fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<str>> {
         return Some(String::from_utf8_lossy(&content[start..index]));
     }
     None
-}
-
-#[test]
-fn test_scan_coding_comment() {
-    let text = "# encoding: utf-8";
-    let result = scan_coding_comment(text.as_bytes());
-    assert_eq!(result, Some("utf-8".into()));
-
-    let text = "#coding:utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, Some("utf-8".into()));
-
-    let text = "# foo\n# encoding: utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, None);
-
-    let text = "# encoding: latin1 encoding: utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, Some("latin1".into()));
-
-    let text = "# encoding: nonsense";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, Some("nonsense".into()));
-
-    let text = "# coding = utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, Some("utf-8".into()));
-
-    let text = "# CODING = utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, Some("utf-8".into()));
-
-    let text = "# CoDiNg = utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, Some("utf-8".into()));
-
-    let text = "# blah blahblahcoding = utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, Some("utf-8".into()));
-
-    // unicode BOM is ignored
-    let text = "\u{FEFF}# encoding: utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, Some("utf-8".into()));
-
-    let text = "\u{FEFF} # encoding: utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, Some("utf-8".into()));
-
-    let text = "#! /usr/bin/env ruby\n # encoding: utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, Some("utf-8".into()));
-
-    let text = "\u{FEFF}#! /usr/bin/env ruby\n # encoding: utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, Some("utf-8".into()));
-
-    // A #! must be the first thing on a line, otherwise it's a normal comment
-    let text = " #! /usr/bin/env ruby encoding = utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, Some("utf-8".into()));
-    let text = " #! /usr/bin/env ruby \n # encoding = utf-8";
-    let result = scan_coding_comment(&text.as_bytes());
-    assert_eq!(result, None);
 }
