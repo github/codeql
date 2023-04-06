@@ -50,8 +50,12 @@ private class DefaultConstantPasswordSink extends ConstantPasswordSink {
 private class RnCryptorPasswordSink extends ConstantPasswordSink {
   RnCryptorPasswordSink() {
     // RNCryptor (labelled arguments)
-    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
-      c.getName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+    exists(NominalTypeDecl c, MethodDecl f, CallExpr call |
+      c.getName() =
+        [
+          "RNCryptor", "RNEncryptor", "RNDecryptor", "RNCryptor.EncryptorV3",
+          "RNCryptor.DecryptorV3"
+        ] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
       call.getArgumentWithLabel(["password", "withPassword", "forPassword"]).getExpr() =

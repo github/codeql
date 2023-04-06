@@ -49,8 +49,12 @@ private class CryptoSwiftSaltSink extends ConstantSaltSink {
  */
 private class RnCryptorSaltSink extends ConstantSaltSink {
   RnCryptorSaltSink() {
-    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
-      c.getName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+    exists(NominalTypeDecl c, MethodDecl f, CallExpr call |
+      c.getName() =
+        [
+          "RNCryptor", "RNEncryptor", "RNDecryptor", "RNCryptor.EncryptorV3",
+          "RNCryptor.DecryptorV3"
+        ] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
       call.getArgumentWithLabel(["salt", "encryptionSalt", "hmacSalt", "HMACSalt"]).getExpr() =

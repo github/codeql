@@ -52,8 +52,12 @@ private class CryptoSwiftEncryptionKeySink extends HardcodedEncryptionKeySink {
  */
 private class RnCryptorEncryptionKeySink extends HardcodedEncryptionKeySink {
   RnCryptorEncryptionKeySink() {
-    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
-      c.getFullName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+    exists(NominalTypeDecl c, MethodDecl f, CallExpr call |
+      c.getFullName() =
+        [
+          "RNCryptor", "RNEncryptor", "RNDecryptor", "RNCryptor.EncryptorV3",
+          "RNCryptor.DecryptorV3"
+        ] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
       call.getArgumentWithLabel(["encryptionKey", "withEncryptionKey"]).getExpr() = this.asExpr()
