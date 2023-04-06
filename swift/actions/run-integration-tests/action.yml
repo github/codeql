@@ -13,7 +13,7 @@ runs:
     - uses: actions/setup-python@v4
       with:
         python-version-file: 'swift/.python-version'
-    - uses: swift-actions/setup-swift@da0e3e04b5e3e15dbc3861bd835ad9f0afe56296
+    - uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
       with:
         swift-version: "${{steps.get_swift_version.outputs.version}}"
     - uses: ./.github/actions/fetch-codeql

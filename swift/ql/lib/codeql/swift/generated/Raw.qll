@@ -1098,7 +1098,7 @@ module Raw {
     /**
      * Gets the closure body of this capture list expression.
      */
-    ClosureExpr getClosureBody() { capture_list_exprs(this, result) }
+    AbstractClosureExpr getClosureBody() { capture_list_exprs(this, result) }
   }
 
   /**

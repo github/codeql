@@ -384,7 +384,7 @@ class CapturedDecl(Decl):
 
 class CaptureListExpr(Expr):
     binding_decls: list[PatternBindingDecl] | child
-    closure_body: "ClosureExpr" | child
+    closure_body: "AbstractClosureExpr" | child
 
 class CollectionExpr(Expr):
     pass
