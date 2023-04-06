@@ -39,6 +39,8 @@ module NormalHashFunction {
       or
       node instanceof Sanitizer
     }
+
+    override predicate isSanitizerIn(DataFlow::Node node) { node instanceof Source }
   }
 }
 
@@ -71,5 +73,7 @@ module ComputationallyExpensiveHashFunction {
       or
       node instanceof Sanitizer
     }
+
+    override predicate isSanitizerIn(DataFlow::Node node) { node instanceof Source }
   }
 }
