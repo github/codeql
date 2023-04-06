@@ -1,10 +1,15 @@
-name: Fast-forward tracking branch for latest CodeQL version
+# Fast-forwards the branch specified in BRANCH_NAME
+# to the github.ref/sha that this workflow is run on.
+# Used as part of the release process, to ensure
+# external query writers can always access a branch of github/codeql
+# that is compatible with the latest stable release.
+name: Fast-forward tracking branch for selected CodeQL version
 on:
   workflow_dispatch:
 
 jobs:
   fast-forward:
-    name: Fast-forward tracking branch for latest CodeQL version
+    name: Fast-forward tracking branch for selected CodeQL version
     runs-on: ubuntu-latest
     if: github.repository == 'github/codeql'
     permissions:
@@ -16,7 +21,7 @@ jobs:
         if: ${{ !startsWith(github.ref_name, 'codeql-cli-') }}
         shell: bash
         run: |
-          echo "::error ::The $BRANCH_NAME tracking branch should only be fast-forwarded to the tip of a codeql-cli-* branch, got $GITHUB_REF instead."
+          echo "::error ::The $BRANCH_NAME tracking branch should only be fast-forwarded to the tip of a codeql-cli-* branch, got $GITHUB_REF_NAME instead."
           exit 1
 
       - name: Checkout
