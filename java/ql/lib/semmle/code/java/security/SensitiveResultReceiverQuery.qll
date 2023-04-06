@@ -40,6 +40,8 @@ private module SensitiveResultReceiverConfig implements DataFlow::ConfigSig {
       node.asExpr() = call.getSentData()
     )
   }
+
+  predicate allowImplicitRead(DataFlow::Node n, DataFlow::ContentSet c) { isSink(n) and exists(c) }
 }
 
 module SensitiveResultReceiverFlow = TaintTracking::Global<SensitiveResultReceiverConfig>;
