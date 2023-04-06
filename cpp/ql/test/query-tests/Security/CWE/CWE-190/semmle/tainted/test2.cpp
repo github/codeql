@@ -37,5 +37,5 @@ void test3()
 
   int num = atoi(buffer);
   num = num + 1000; // BAD
-  num += 1000; // BAD [NOT DETECTED]
+  num += 1000; // BAD
 }
