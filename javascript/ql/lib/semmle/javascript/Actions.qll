@@ -10,14 +10,60 @@ import javascript
  * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
  */
 module Actions {
-  /** A YAML node in a GitHub Actions workflow file. */
+  /** A YAML node in a GitHub Actions workflow or custom action file. */
   private class Node extends YamlNode {
     Node() {
-      this.getLocation()
-          .getFile()
-          .getRelativePath()
-          .regexpMatch("(^|.*/)\\.github/workflows/.*\\.y(?:a?)ml$")
+      exists(File f |
+        f = this.getLocation().getFile() and
+        (
+          f.getRelativePath().regexpMatch("(^|.*/)\\.github/workflows/.*\\.y(?:a?)ml$")
+          or
+          f.getBaseName() = "action.yml"
+        )
+      )
     }
+  }
+
+  /**
+   * A custom action. This is a mapping at the top level of an Actions YAML action file.
+   * See https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions.
+   */
+  class Action extends Node, YamlDocument, YamlMapping {
+    /** Gets the `runs` mapping. */
+    Runs getRuns() { result = this.lookup("runs") }
+  }
+
+  /**
+   * An `runs` mapping in a custom action YAML.
+   * See https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs
+   */
+  class Runs extends StepsContainer {
+    Action action;
+
+    Runs() { action.lookup("runs") = this }
+
+    /** Gets the action that this `runs` mapping is in. */
+    Action getAction() { result = action }
+  }
+
+  /**
+   * The parent class of the class that can contain `steps` mappings. (`Job` or `Runs` currently.)
+   */
+  abstract class StepsContainer extends YamlNode, YamlMapping {
+    /** Gets the sequence of `steps` within this YAML node. */
+    YamlSequence getSteps() { result = this.lookup("steps") }
+  }
+
+  /**
+   * A `using` mapping in a custom action YAML.
+   */
+  class Using extends YamlNode, YamlScalar {
+    Runs runs;
+
+    Using() { runs.lookup("using") = this }
+
+    /** Gets the `runs` mapping that this `using` mapping is in. */
+    Runs getRuns() { result = runs }
   }
 
   /**
@@ -109,7 +155,7 @@ module Actions {
    * An Actions job within a workflow.
    * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions#jobs.
    */
-  class Job extends YamlNode, YamlMapping {
+  class Job extends StepsContainer {
     string jobId;
     Workflow workflow;
 
@@ -135,9 +181,6 @@ module Actions {
 
     /** Gets the step at the given index within this job. */
     Step getStep(int index) { result.getJob() = this and result.getIndex() = index }
-
-    /** Gets the sequence of `steps` within this job. */
-    YamlSequence getSteps() { result = this.lookup("steps") }
 
     /** Gets the `env` mapping in this job. */
     YamlMapping getEnv() { result = this.lookup("env") }
@@ -184,15 +227,17 @@ module Actions {
    */
   class Step extends YamlNode, YamlMapping {
     int index;
-    Job job;
+    StepsContainer parent;
 
-    Step() { this = job.getSteps().getElement(index) }
+    Step() { this = parent.getSteps().getElement(index) }
 
     /** Gets the 0-based position of this step within the sequence of `steps`. */
     int getIndex() { result = index }
 
     /** Gets the job this step belongs to. */
-    Job getJob() { result = job }
+    Job getJob() { result = parent.(Job) }
+
+    Runs getRuns() { result = parent.(Runs) }
 
     /** Gets the value of the `uses` field in this step, if any. */
     Uses getUses() { result.getStep() = this }

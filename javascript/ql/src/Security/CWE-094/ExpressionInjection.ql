@@ -103,70 +103,122 @@ private predicate isExternalUserControlledWorkflowRun(string context) {
   )
 }
 
-from YamlNode node, string injection, string context, Actions::On on
+/**
+ * The env variable name in `${{ env.name }}`
+ * is where the external user controlled value was assigned to.
+ */
+bindingset[injection]
+predicate isEnvTainted(Actions::Env env, string injection, string context) {
+  Actions::getEnvName(injection) = env.getName() and
+  Actions::getASimpleReferenceExpression(env) = context
+}
+
+/**
+ * Holds if the `run` contains any expression interpolation `${{ e }}`.
+ * Sets `context` to the initial untrusted value assignment in case of `${{ env... }}` interpolation
+ */
+predicate isRunInjectable(Actions::Run run, string injection, string context) {
+  Actions::getASimpleReferenceExpression(run) = injection and
+  (
+    injection = context
+    or
+    exists(Actions::Env env | isEnvTainted(env, injection, context))
+  )
+}
+
+/**
+ * Holds if the `actions/github-script` contains any expression interpolation `${{ e }}`.
+ * Sets `context` to the initial untrusted value assignment in case of `${{ env... }}` interpolation
+ */
+predicate isScriptInjectable(Actions::Script script, string injection, string context) {
+  exists(Actions::Step step, Actions::Uses uses |
+    script.getWith().getStep() = step and
+    uses.getStep() = step and
+    uses.getGitHubRepository() = "actions/github-script" and
+    Actions::getASimpleReferenceExpression(script) = injection and
+    (
+      injection = context
+      or
+      exists(Actions::Env env | isEnvTainted(env, injection, context))
+    )
+  )
+}
+
+from YamlNode node, string injection, string context
 where
-  (
-    exists(Actions::Run run |
-      node = run and
-      Actions::getASimpleReferenceExpression(run) = injection and
-      run.getStep().getJob().getWorkflow().getOn() = on and
-      (
-        injection = context
-        or
-        exists(Actions::Env env |
-          Actions::getEnvName(injection) = env.getName() and
-          Actions::getASimpleReferenceExpression(env) = context
-        )
+  exists(Actions::Using u, Actions::Runs runs |
+    u.getValue() = "composite" and
+    u.getRuns() = runs and
+    (
+      exists(Actions::Run run |
+        isRunInjectable(run, injection, context) and
+        node = run and
+        run.getStep().getRuns() = runs
       )
-    )
-    or
-    exists(Actions::Script script, Actions::Step step, Actions::Uses uses |
-      node = script and
-      script.getWith().getStep().getJob().getWorkflow().getOn() = on and
-      script.getWith().getStep() = step and
-      uses.getStep() = step and
-      uses.getGitHubRepository() = "actions/github-script" and
-      Actions::getASimpleReferenceExpression(script) = injection and
-      (
-        injection = context
-        or
-        exists(Actions::Env env |
-          Actions::getEnvName(injection) = env.getName() and
-          Actions::getASimpleReferenceExpression(env) = context
-        )
+      or
+      exists(Actions::Script script |
+        node = script and
+        script.getWith().getStep().getRuns() = runs and
+        isScriptInjectable(script, injection, context)
       )
+    ) and
+    (
+      isExternalUserControlledIssue(context) or
+      isExternalUserControlledPullRequest(context) or
+      isExternalUserControlledReview(context) or
+      isExternalUserControlledComment(context) or
+      isExternalUserControlledGollum(context) or
+      isExternalUserControlledCommit(context) or
+      isExternalUserControlledDiscussion(context) or
+      isExternalUserControlledWorkflowRun(context)
     )
-  ) and
-  (
-    exists(on.getNode("issues")) and
-    isExternalUserControlledIssue(context)
-    or
-    exists(on.getNode("pull_request_target")) and
-    isExternalUserControlledPullRequest(context)
-    or
-    exists(on.getNode("pull_request_review")) and
-    (isExternalUserControlledReview(context) or isExternalUserControlledPullRequest(context))
-    or
-    exists(on.getNode("pull_request_review_comment")) and
-    (isExternalUserControlledComment(context) or isExternalUserControlledPullRequest(context))
-    or
-    exists(on.getNode("issue_comment")) and
-    (isExternalUserControlledComment(context) or isExternalUserControlledIssue(context))
-    or
-    exists(on.getNode("gollum")) and
-    isExternalUserControlledGollum(context)
-    or
-    exists(on.getNode("push")) and
-    isExternalUserControlledCommit(context)
-    or
-    exists(on.getNode("discussion")) and
-    isExternalUserControlledDiscussion(context)
-    or
-    exists(on.getNode("discussion_comment")) and
-    (isExternalUserControlledDiscussion(context) or isExternalUserControlledComment(context))
-    or
-    exists(on.getNode("workflow_run")) and
-    isExternalUserControlledWorkflowRun(context)
+  )
+  or
+  exists(Actions::On on |
+    (
+      exists(Actions::Run run |
+        isRunInjectable(run, injection, context) and
+        node = run and
+        run.getStep().getJob().getWorkflow().getOn() = on
+      )
+      or
+      exists(Actions::Script script |
+        node = script and
+        script.getWith().getStep().getJob().getWorkflow().getOn() = on and
+        isScriptInjectable(script, injection, context)
+      )
+    ) and
+    (
+      exists(on.getNode("issues")) and
+      isExternalUserControlledIssue(context)
+      or
+      exists(on.getNode("pull_request_target")) and
+      isExternalUserControlledPullRequest(context)
+      or
+      exists(on.getNode("pull_request_review")) and
+      (isExternalUserControlledReview(context) or isExternalUserControlledPullRequest(context))
+      or
+      exists(on.getNode("pull_request_review_comment")) and
+      (isExternalUserControlledComment(context) or isExternalUserControlledPullRequest(context))
+      or
+      exists(on.getNode("issue_comment")) and
+      (isExternalUserControlledComment(context) or isExternalUserControlledIssue(context))
+      or
+      exists(on.getNode("gollum")) and
+      isExternalUserControlledGollum(context)
+      or
+      exists(on.getNode("push")) and
+      isExternalUserControlledCommit(context)
+      or
+      exists(on.getNode("discussion")) and
+      isExternalUserControlledDiscussion(context)
+      or
+      exists(on.getNode("discussion_comment")) and
+      (isExternalUserControlledDiscussion(context) or isExternalUserControlledComment(context))
+      or
+      exists(on.getNode("workflow_run")) and
+      isExternalUserControlledWorkflowRun(context)
+    )
   )
 select node,
   "Potential injection from the ${ " + injection +
