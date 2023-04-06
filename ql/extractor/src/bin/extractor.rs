@@ -58,27 +58,29 @@ fn main() -> std::io::Result<()> {
         .build_global()
         .unwrap();
 
-    let matches = clap::App::new("QL extractor")
+    let matches = clap::Command::new("QL extractor")
         .version("1.0")
         .author("GitHub")
         .about("CodeQL QL extractor")
-        .args_from_usage(
-            "--source-archive-dir=<DIR> 'Sets a custom source archive folder'
-                    --output-dir=<DIR>         'Sets a custom trap folder'
-                    --file-list=<FILE_LIST>    'A text files containing the paths of the files to extract'",
-        )
+        .args(&[
+            clap::arg!(--"source-archive-dir" <DIR> "Sets a custom source archive folder"),
+            clap::arg!(--"output-dir" <DIR> "Sets a custom trap folder"),
+            clap::arg!(--"file-list" <FILE_LIST> "A text file containing the paths of the files to extract"),
+        ])
         .get_matches();
     let src_archive_dir = matches
-        .value_of("source-archive-dir")
+        .get_one::<String>("source-archive-dir")
         .expect("missing --source-archive-dir");
     let src_archive_dir = PathBuf::from(src_archive_dir);
 
     let trap_dir = matches
-        .value_of("output-dir")
+        .get_one::<String>("output-dir")
         .expect("missing --output-dir");
     let trap_dir = PathBuf::from(trap_dir);
 
-    let file_list = matches.value_of("file-list").expect("missing --file-list");
+    let file_list = matches
+        .get_one::<String>("file-list")
+        .expect("missing --file-list");
     let file_list = fs::File::open(file_list)?;
 
     let language = tree_sitter_ql::language();
