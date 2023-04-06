@@ -12,10 +12,12 @@ namespace codeql {
 // Abstracts a given trap output file, with its own universe of trap labels
 class TrapDomain {
   TargetFile out;
-  Logger logger{out.target().filename()};
+  Logger logger{getLoggerName()};
 
  public:
-  explicit TrapDomain(TargetFile&& out) : out{std::move(out)} {}
+  explicit TrapDomain(TargetFile&& out) : out{std::move(out)} {
+    LOG_DEBUG("writing trap file with target {}", this->out.target());
+  }
 
   template <typename Entry>
   void emit(const Entry& e) {
@@ -83,6 +85,17 @@ class TrapDomain {
     std::ostringstream oss;
     (oss << ... << keyParts);
     assignKey(label, oss.str());
+  }
+
+  std::string getLoggerName() {
+    // packaged swift modules are typically structured as
+    // `Module.swiftmodule/<arch_triple>.swiftmodule`, so the parent is more informative
+    // We use `Module.swiftmodule/.trap` then
+    if (auto parent = out.target().parent_path(); parent.extension() == ".swiftmodule") {
+      return parent.filename() / ".trap";
+    } else {
+      return out.target().filename();
+    }
   }
 };
 
