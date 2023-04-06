@@ -16,7 +16,7 @@ module Actions {
       this.getLocation()
           .getFile()
           .getRelativePath()
-          .regexpMatch("(^|.*/)\\.github/workflows/.*\\.yml$")
+          .regexpMatch("(^|.*/)\\.github/workflows/.*\\.y(?:a?)ml$")
     }
   }
 
