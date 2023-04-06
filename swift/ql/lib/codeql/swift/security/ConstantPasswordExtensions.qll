@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for constant password vulnerabilities. That is,
@@ -64,4 +65,11 @@ private class RnCryptorPasswordSink extends ConstantPasswordSink {
       call.getArgument(0).getExpr() = this.asExpr()
     )
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultPasswordSink extends ConstantPasswordSink {
+  DefaultPasswordSink() { sinkNode(this, "encryption-password") }
 }

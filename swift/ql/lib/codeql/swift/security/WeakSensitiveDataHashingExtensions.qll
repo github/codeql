@@ -6,9 +6,11 @@
 import swift
 import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
- * A dataflow sink for weak sensitive data hashing vulnerabilities.
+ * A dataflow sink for weak sensitive data hashing vulnerabilities. That is,
+ * a `DataFlow::Node` that is passed into a weak hashing function.
  */
 abstract class WeakSensitiveDataHashingSink extends DataFlow::Node {
   /**
@@ -48,6 +50,17 @@ private class CryptoSwiftWeakHashingSink extends WeakSensitiveDataHashingSink {
       algorithm = ["MD5", "SHA1"]
     )
   }
+
+  override string getAlgorithm() { result = algorithm }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultWeakHashingSink extends WeakSensitiveDataHashingSink {
+  string algorithm;
+
+  DefaultWeakHashingSink() { sinkNode(this, "weak-hash-input-" + algorithm) }
 
   override string getAlgorithm() { result = algorithm }
 }

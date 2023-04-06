@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for hard-coded encryption key vulnerabilities. That is,
@@ -58,4 +59,11 @@ private class RnCryptorEncryptionKeySink extends HardcodedEncryptionKeySink {
       call.getArgumentWithLabel(["encryptionKey", "withEncryptionKey"]).getExpr() = this.asExpr()
     )
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultEncryptionKeySink extends HardcodedEncryptionKeySink {
+  DefaultEncryptionKeySink() { sinkNode(this, "encryption-key") }
 }

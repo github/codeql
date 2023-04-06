@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for constant salt vulnerabilities. That is,
@@ -56,4 +57,11 @@ private class RnCryptorSaltSink extends ConstantSaltSink {
         this.asExpr()
     )
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultSaltSink extends ConstantSaltSink {
+  DefaultSaltSink() { sinkNode(this, "encryption-salt") }
 }

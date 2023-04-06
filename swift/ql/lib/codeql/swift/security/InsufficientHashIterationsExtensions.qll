@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for insufficient hash interation vulnerabilities. That is,
@@ -42,4 +43,11 @@ private class CryptoSwiftHashIterationsSink extends InsufficientHashIterationsSi
       call.getArgumentWithLabel("iterations").getExpr() = this.asExpr()
     )
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultHashIterationsSink extends InsufficientHashIterationsSink {
+  DefaultHashIterationsSink() { sinkNode(this, "hash-iteration-count") }
 }

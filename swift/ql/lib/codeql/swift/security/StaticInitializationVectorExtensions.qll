@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for static initialization vector vulnerabilities. That is,
@@ -57,4 +58,11 @@ private class RnCryptorInitializationVectorSink extends StaticInitializationVect
       call.getArgumentWithLabel(["iv", "IV"]).getExpr() = this.asExpr()
     )
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultInitializationVectorSink extends StaticInitializationVectorSink {
+  DefaultInitializationVectorSink() { sinkNode(this, "encryption-iv") }
 }

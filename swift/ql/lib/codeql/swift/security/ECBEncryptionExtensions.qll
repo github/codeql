@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow source for ECB encryption vulnerabilities. That is,
@@ -76,4 +77,11 @@ private class Blowfish extends EcbEncryptionSink {
       call.getArgument(1).getExpr() = this.asExpr()
     )
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultEcbEncryptionSink extends EcbEncryptionSink {
+  DefaultEcbEncryptionSink() { sinkNode(this, "encryption-block-mode") }
 }
