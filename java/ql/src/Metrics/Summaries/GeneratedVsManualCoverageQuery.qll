@@ -1,6 +1,6 @@
 private import semmle.code.java.dataflow.FlowSummary
 private import utils.modelgenerator.internal.CaptureModels
-private import semmle.code.java.metrics.summaries.TopJdkApis
+private import TopJdkApis
 
 /**
  * Returns the number of `DataFlowTargetApi`s with Summary MaD models
