@@ -8,6 +8,9 @@
 #include <binlog/binlog.hpp>
 #include <binlog/TextOutputStream.hpp>
 #include <binlog/EventFilter.hpp>
+#include <binlog/adapt_stdfilesystem.hpp>
+#include <binlog/adapt_stdoptional.hpp>
+#include <binlog/adapt_stdvariant.hpp>
 
 // Logging macros. These will call `logger()` to get a Logger instance, picking up any `logger`
 // defined in the current scope. Domain-specific loggers can be added or used by either:
@@ -64,10 +67,22 @@
 
 namespace codeql {
 
+// tools should define this to tweak the root name of all loggers
+extern const char* const logRootName;
+
 // This class is responsible for the global log state (outputs, log level rules, flushing)
 // State is stored in the singleton `Log::instance()`.
 // Before using logging, `Log::configure("<name>")` should be used (e.g.
 // `Log::configure("extractor")`). Then, `Log::flush()` should be regularly called.
+// Logging is configured upon first usage.  This consists in
+//  * using environment variable `CODEQL_EXTRACTOR_SWIFT_LOG_DIR` to choose where to dump the log
+//    file(s). Log files will go to a subdirectory thereof named after `logRootName`
+//  * using environment variable `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` to configure levels for
+//    loggers and outputs. This must have the form of a comma separated `spec:level` list, where
+//    `spec` is either a glob pattern (made up of alphanumeric, `/`, `*` and `.` characters) for
+//    matching logger names or one of `out:bin`, `out:text` or `out:console`.
+//    Output default levels can be seen in the corresponding initializers below. By default, all
+//    loggers are configured with the lowest output level
 class Log {
  public:
   using Level = binlog::Severity;
@@ -78,17 +93,6 @@ class Log {
     std::string fullyQualifiedName;
     Level level;
   };
-
-  // Configure logging. This consists in
-  // * using environment variable `CODEQL_EXTRACTOR_SWIFT_LOG_DIR` to choose where to dump the log
-  //   file(s). Log files will go to a subdirectory thereof named after `root`
-  // * using environment variable `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` to configure levels for
-  //   loggers and outputs. This must have the form of a comma separated `spec:level` list, where
-  //   `spec` is either a glob pattern (made up of alphanumeric, `/`, `*` and `.` characters) for
-  //   matching logger names or one of `out:bin`, `out:text` or `out:console`.
-  //   Output default levels can be seen in the corresponding initializers below. By default, all
-  //   loggers are configured with the lowest output level
-  static void configure(std::string_view root) { instance().configureImpl(root); }
 
   // Flush logs to the designated outputs
   static void flush() { instance().flushImpl(); }
@@ -101,16 +105,16 @@ class Log {
  private:
   static constexpr const char* format = "%u %S [%n] %m (%G:%L)\n";
 
-  Log() = default;
+  Log() { configure(); }
 
   static Log& instance() {
     static Log ret;
     return ret;
   }
 
-  static class Logger& logger();
+  class Logger& logger();
 
-  void configureImpl(std::string_view root);
+  void configure();
   void flushImpl();
   LoggerConfiguration getLoggerConfigurationImpl(std::string_view name);
 
@@ -148,19 +152,24 @@ class Log {
   FilteredOutput<binlog::TextOutputStream> text{Level::info, textFile, format};
   FilteredOutput<binlog::TextOutputStream> console{Level::warning, std::cerr, format};
   LevelRules sourceRules;
-  std::string rootName;
 };
 
 // This class represent a named domain-specific logger, responsible for pushing logs using the
 // underlying `binlog::SessionWriter` class. This has a configured log level, so that logs on this
 // `Logger` with a level lower than the configured one are no-ops. The level is configured based
-// on rules matching `<root name>/<name>` in `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` (see above).
-// `<root name>` is what is provided to the global `Log::configure`, `<name>` is provided in the
-// constructor. If no rule matches the name, the log level defaults to the minimum level of all
-// outputs.
+// on rules matching `<logRootName>/<name>` in `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` (see above).
+// `<name>` is provided in the constructor. If no rule matches the name, the log level defaults to
+// the minimum level of all outputs.
 class Logger {
  public:
-  explicit Logger(const std::string& name) : Logger(Log::getLoggerConfiguration(name)) {}
+  // configured logger based on name, as explained above
+  explicit Logger(std::string_view name) : Logger(Log::getLoggerConfiguration(name)) {}
+
+  // used internally, public to be accessible to Log for its own logger
+  explicit Logger(Log::LoggerConfiguration&& configuration)
+      : w{configuration.session, queueSize, /* id */ 0,
+          std::move(configuration.fullyQualifiedName)},
+        level_{configuration.level} {}
 
   binlog::SessionWriter& writer() { return w; }
   Log::Level level() const { return level_; }
@@ -171,11 +180,6 @@ class Logger {
 
  private:
   static constexpr size_t queueSize = 1 << 20;  // default taken from binlog
-
-  explicit Logger(Log::LoggerConfiguration&& configuration)
-      : w{configuration.session, queueSize, /* id */ 0,
-          std::move(configuration.fullyQualifiedName)},
-        level_{configuration.level} {}
 
   binlog::SessionWriter w;
   Log::Level level_;

@@ -20,6 +20,8 @@
 
 using namespace std::string_literals;
 
+const char* const codeql::logRootName = "extractor";
+
 // must be called before processFrontendOptions modifies output paths
 static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
                                        const swift::FrontendOptions& options) {
@@ -214,7 +216,6 @@ int main(int argc, char** argv, char** envp) {
   initializeSwiftModules();
 
   const auto configuration = configure(argc, argv);
-  codeql::Log::configure("extractor");
   {
     codeql::Logger logger{"main"};
     LOG_INFO("calling extractor with arguments \"{}\"", argDump(argc, argv));

@@ -96,15 +96,14 @@ void collectSeverityRules(const char* var, LevelConfiguration&& configuration) {
 
 }  // namespace
 
-void Log::configureImpl(std::string_view root) {
-  rootName = root;
+void Log::configure() {
   // as we are configuring logging right now, we collect problems and log them at the end
   std::vector<std::string> problems;
   collectSeverityRules("CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS",
                        {sourceRules, binary.level, text.level, console.level, problems});
   if (text || binary) {
     std::filesystem::path logFile = getEnvOr("CODEQL_EXTRACTOR_SWIFT_LOG_DIR", ".");
-    logFile /= root;
+    logFile /= logRootName;
     logFile /= std::to_string(std::chrono::system_clock::now().time_since_epoch().count());
     std::error_code ec;
     std::filesystem::create_directories(logFile.parent_path(), ec);
@@ -145,11 +144,15 @@ void Log::flushImpl() {
 }
 
 Log::LoggerConfiguration Log::getLoggerConfigurationImpl(std::string_view name) {
-  LoggerConfiguration ret{session, rootName};
+  LoggerConfiguration ret{session, logRootName};
   ret.fullyQualifiedName += '/';
   ret.fullyQualifiedName += name;
   ret.level = std::min({binary.level, text.level, console.level});
   ret.level = getLevelFor(ret.fullyQualifiedName, sourceRules, ret.level);
+  // avoid Logger constructor loop
+  if (name != "logging") {
+    LOG_DEBUG("Configuring logger {} with level {}", ret.fullyQualifiedName, ret.level);
+  }
   return ret;
 }
 
@@ -161,7 +164,7 @@ Log& Log::write(const char* buffer, std::streamsize size) {
 }
 
 Logger& Log::logger() {
-  static Logger ret{"logging"};
+  static Logger ret{getLoggerConfigurationImpl("logging")};
   return ret;
 }
 
