@@ -10,7 +10,7 @@ import javascript
  * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
  */
 module Actions {
-  /** A YAML node in a GitHub Actions workflow or custom action file. */
+  /** A YAML node in a GitHub Actions workflow or a custom action file. */
   private class Node extends YamlNode {
     Node() {
       exists(File f |
@@ -235,10 +235,10 @@ module Actions {
     int getIndex() { result = index }
 
     /** Gets the `job` this step belongs to. The step may belong to a `job` in a workflow or `runs` in a custom action. */
-    Job getJob() { result = parent.(Job) }
+    Job getJob() { result = parent }
 
     /** Gets the `runs` this step belongs to. The step may belong to a `job` in a workflow or `runs` in a custom action. */
-    Runs getRuns() { result = parent.(Runs) }
+    Runs getRuns() { result = parent }
 
     /** Gets the value of the `uses` field in this step, if any. */
     Uses getUses() { result.getStep() = this }
