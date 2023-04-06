@@ -234,9 +234,10 @@ module Actions {
     /** Gets the 0-based position of this step within the sequence of `steps`. */
     int getIndex() { result = index }
 
-    /** Gets the job this step belongs to. */
+    /** Gets the `job` this step belongs to. The step may belong to a `job` in a workflow or `runs` in a custom action. */
     Job getJob() { result = parent.(Job) }
 
+    /** Gets the `runs` this step belongs to. The step may belong to a `job` in a workflow or `runs` in a custom action. */
     Runs getRuns() { result = parent.(Runs) }
 
     /** Gets the value of the `uses` field in this step, if any. */
