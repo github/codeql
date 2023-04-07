@@ -1,22 +1,24 @@
 import java.io.IOException;
 import java.net.URI;
-
-import org.apache.hc.core5.http.HttpHost;
-import org.apache.hc.core5.http.Method;
-
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-// org.apache.hc.client5.http.async.methods
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.Method;
+import org.apache.hc.core5.http.impl.bootstrap.HttpAsyncRequester;
+import org.apache.hc.core5.http.impl.io.DefaultClassicHttpRequestFactory;
+import org.apache.hc.core5.http.impl.nio.DefaultHttpRequestFactory;
+import org.apache.hc.core5.http.io.support.ClassicRequestBuilder;
+import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
+import org.apache.hc.core5.http.message.BasicHttpRequest;
+import org.apache.hc.core5.http.message.HttpRequestWrapper;
 import org.apache.hc.client5.http.async.methods.BasicHttpRequests;
 import org.apache.hc.client5.http.async.methods.ConfigurableHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequest;
 import org.apache.hc.client5.http.async.methods.SimpleHttpRequests;
 import org.apache.hc.client5.http.async.methods.SimpleRequestBuilder;
-
-// org.apache.hc.client5.http.classic.methods
 import org.apache.hc.client5.http.classic.methods.ClassicHttpRequests;
 import org.apache.hc.client5.http.classic.methods.HttpDelete;
 import org.apache.hc.client5.http.classic.methods.HttpGet;
@@ -27,21 +29,9 @@ import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.classic.methods.HttpPut;
 import org.apache.hc.client5.http.classic.methods.HttpTrace;
 import org.apache.hc.client5.http.classic.methods.HttpUriRequestBase;
-
 import org.apache.hc.client5.http.fluent.Request;
 
-import org.apache.hc.core5.http.impl.bootstrap.HttpAsyncRequester;
-import org.apache.hc.core5.http.impl.io.DefaultClassicHttpRequestFactory;
-import org.apache.hc.core5.http.impl.nio.DefaultHttpRequestFactory;
-
-import org.apache.hc.core5.http.io.support.ClassicRequestBuilder;
-
-import org.apache.hc.core5.http.message.BasicClassicHttpRequest;
-import org.apache.hc.core5.http.message.BasicHttpRequest;
-import org.apache.hc.core5.http.message.HttpRequestWrapper;
-
-
-public class ApacheHttp5SSRF extends HttpServlet {
+public class ApacheHttpSSRFVersion5 extends HttpServlet {
 
     // org.apache.hc.client5.http.async.methods
     protected void doGet1(HttpServletRequest request, HttpServletResponse response)
@@ -309,7 +299,6 @@ public class ApacheHttp5SSRF extends HttpServlet {
             HttpHost host = new HttpHost(hostSink);
 
             // org.apache.hc.core5.http.impl.bootstrap
-            //AsyncRequesterBootstrap asyncReq = new AsyncRequesterBootstrap();
             HttpAsyncRequester httpAsyncReq = new HttpAsyncRequester(null, null, null, null, null, null);
             httpAsyncReq.connect(host, null); // $ SSRF
             httpAsyncReq.connect(host, null, null, null); // $ SSRF
