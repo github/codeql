@@ -368,3 +368,67 @@ fn scan_coding_comment(content: &[u8]) -> std::option::Option<Cow<str>> {
     }
     None
 }
+
+#[test]
+fn test_scan_coding_comment() {
+    let text = "# encoding: utf-8";
+    let result = scan_coding_comment(text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "#coding:utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "# foo\n# encoding: utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, None);
+
+    let text = "# encoding: latin1 encoding: utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("latin1".into()));
+
+    let text = "# encoding: nonsense";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("nonsense".into()));
+
+    let text = "# coding = utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "# CODING = utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "# CoDiNg = utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "# blah blahblahcoding = utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    // unicode BOM is ignored
+    let text = "\u{FEFF}# encoding: utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "\u{FEFF} # encoding: utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "#! /usr/bin/env ruby\n # encoding: utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    let text = "\u{FEFF}#! /usr/bin/env ruby\n # encoding: utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+
+    // A #! must be the first thing on a line, otherwise it's a normal comment
+    let text = " #! /usr/bin/env ruby encoding = utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, Some("utf-8".into()));
+    let text = " #! /usr/bin/env ruby \n # encoding = utf-8";
+    let result = scan_coding_comment(&text.as_bytes());
+    assert_eq!(result, None);
+}
