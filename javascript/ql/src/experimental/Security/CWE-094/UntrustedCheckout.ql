@@ -53,7 +53,7 @@ class ProbableJob extends Actions::Job {
 }
 
 /**
- * on: pull_request_target
+ * The `on: pull_request_target`.
  */
 class ProbablePullRequestTarget extends Actions::On, YamlMappingLikeNode {
   ProbablePullRequestTarget() {
