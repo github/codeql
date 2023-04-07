@@ -2,7 +2,6 @@
 extern crate lazy_static;
 
 use clap::arg;
-use encoding;
 use rayon::prelude::*;
 use std::borrow::Cow;
 use std::fs;
@@ -83,7 +82,7 @@ fn main() -> std::io::Result<()> {
         .build_global()
         .unwrap();
 
-    let matches = clap::App::new("Ruby extractor")
+    let matches = clap::Command::new("Ruby extractor")
         .version("1.0")
         .author("GitHub")
         .about("CodeQL Ruby extractor")
@@ -91,18 +90,21 @@ fn main() -> std::io::Result<()> {
         .arg(arg!(--"output-dir" <DIR>         "Sets a custom trap folder"))
         .arg(arg!(--"file-list" <FILE_LIST>    "A text file containing the paths of the files to extract"))
         .get_matches();
+
     let src_archive_dir = matches
-        .value_of("source-archive-dir")
+        .get_one::<String>("source-archive-dir")
         .expect("missing --source-archive-dir");
     let src_archive_dir = file_paths::path_from_string(src_archive_dir);
 
     let trap_dir = matches
-        .value_of("output-dir")
+        .get_one::<String>("output-dir")
         .expect("missing --output-dir");
-    let trap_dir = file_paths::path_from_string(trap_dir);
+    let trap_dir = file_paths::path_from_string(&trap_dir);
 
-    let file_list = matches.value_of("file-list").expect("missing --file-list");
-    let file_list = fs::File::open(file_paths::path_from_string(file_list))?;
+    let file_list = matches
+        .get_one::<String>("file-list")
+        .expect("missing --file-list");
+    let file_list = fs::File::open(file_paths::path_from_string(&file_list))?;
 
     let language = tree_sitter_ruby::language();
     let erb = tree_sitter_embedded_template::language();
@@ -224,7 +226,7 @@ fn main() -> std::io::Result<()> {
                 &source,
                 &code_ranges,
             );
-            std::fs::create_dir_all(&src_archive_file.parent().unwrap())?;
+            std::fs::create_dir_all(src_archive_file.parent().unwrap())?;
             if needs_conversion {
                 std::fs::write(&src_archive_file, &source)?;
             } else {
@@ -247,7 +249,7 @@ fn write_trap(
     trap_compression: trap::Compression,
 ) -> std::io::Result<()> {
     let trap_file = file_paths::path_for(trap_dir, &path, trap_compression.extension());
-    std::fs::create_dir_all(&trap_file.parent().unwrap())?;
+    std::fs::create_dir_all(trap_file.parent().unwrap())?;
     trap_writer.write_to_file(&trap_file, trap_compression)
 }
 
@@ -260,7 +262,7 @@ fn scan_erb(
 ) -> (Vec<Range>, Vec<usize>) {
     let mut parser = Parser::new();
     parser.set_language(erb).unwrap();
-    let tree = parser.parse(&source, None).expect("Failed to parse file");
+    let tree = parser.parse(source, None).expect("Failed to parse file");
     let mut result = Vec::new();
     let mut line_breaks = vec![];
 

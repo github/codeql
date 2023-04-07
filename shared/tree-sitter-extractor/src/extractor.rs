@@ -123,7 +123,7 @@ pub fn extract(
     source: &[u8],
     ranges: &[Range],
 ) {
-    let path_str = file_paths::normalize_path(&path);
+    let path_str = file_paths::normalize_path(path);
     let span = tracing::span!(
         tracing::Level::TRACE,
         "extract",
@@ -137,7 +137,7 @@ pub fn extract(
     let mut parser = Parser::new();
     parser.set_language(language).unwrap();
     parser.set_included_ranges(ranges).unwrap();
-    let tree = parser.parse(&source, None).expect("Failed to parse file");
+    let tree = parser.parse(source, None).expect("Failed to parse file");
     trap_writer.comment(format!("Auto-generated TRAP file for {}", path_str));
     let file_label = populate_file(trap_writer, path);
     let mut visitor = Visitor::new(
@@ -257,12 +257,11 @@ impl<'a> Visitor<'a> {
             "parse-error",
             "Could not process some files due to syntax errors",
         );
-        &mesg
-            .severity(diagnostics::Severity::Warning)
+        mesg.severity(diagnostics::Severity::Warning)
             .location(self.path, start_line, start_column, end_line, end_column)
             .message(message, args);
         if status_page {
-            &mesg.status_page();
+            mesg.status_page();
         }
         self.record_parse_error(loc, &mesg);
     }
@@ -442,7 +441,7 @@ impl<'a> Visitor<'a> {
                     "Value for unknown field: {}::{} and type {}",
                     &[
                         diagnostics::MessageArg::Code(node.kind()),
-                        diagnostics::MessageArg::Code(&child_node.field_name.unwrap_or("child")),
+                        diagnostics::MessageArg::Code(child_node.field_name.unwrap_or("child")),
                         diagnostics::MessageArg::Code(&format!("{:?}", child_node.type_name)),
                     ],
                     *node,

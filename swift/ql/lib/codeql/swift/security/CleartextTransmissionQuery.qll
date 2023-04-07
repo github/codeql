@@ -13,7 +13,7 @@ import codeql.swift.security.CleartextTransmissionExtensions
  * A taint configuration from sensitive information to expressions that are
  * transmitted over a network.
  */
-class CleartextTransmissionConfig extends TaintTracking::Configuration {
+deprecated class CleartextTransmissionConfig extends TaintTracking::Configuration {
   CleartextTransmissionConfig() { this = "CleartextTransmissionConfig" }
 
   override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
@@ -33,3 +33,32 @@ class CleartextTransmissionConfig extends TaintTracking::Configuration {
     isSource(node)
   }
 }
+
+/**
+ * A taint configuration from sensitive information to expressions that are
+ * transmitted over a network.
+ */
+module CleartextTransmissionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
+
+  predicate isSink(DataFlow::Node node) { node instanceof CleartextTransmissionSink }
+
+  predicate isBarrier(DataFlow::Node sanitizer) {
+    sanitizer instanceof CleartextTransmissionSanitizer
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    any(CleartextTransmissionAdditionalTaintStep s).step(nodeFrom, nodeTo)
+  }
+
+  predicate isBarrierIn(DataFlow::Node node) {
+    // make sources barriers so that we only report the closest instance
+    isSource(node)
+  }
+}
+
+/**
+ * Detect taint flow of sensitive information to expressions that are transmitted over
+ * a network.
+ */
+module CleartextTransmissionFlow = TaintTracking::Global<CleartextTransmissionConfig>;

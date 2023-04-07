@@ -14,11 +14,20 @@ extensions:
       - ["java.nio.file", "Files", False, "createTempFile", "(Path,String,String,FileAttribute[])", "", "Argument[0]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "delete", "(Path)", "", "Argument[0]", "create-file", "ai-generated"] # should be delete-file
       - ["java.nio.file", "Files", False, "deleteIfExists", "(Path)", "", "Argument[0]", "create-file", "ai-generated"] # should be delete-file
+      - ["java.nio.file", "Files", False, "deleteIfExists", "(Path)", "", "Argument[0]", "create-file", "ai-generated"] # should be delete-file
       - ["java.nio.file", "Files", False, "lines", "(Path,Charset)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.nio.file", "Files", False, "lines", "(Path)", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.nio.file", "Files", False, "move", "", "", "Argument[1]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "newBufferedReader", "(Path,Charset)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.nio.file", "Files", False, "newBufferedReader", "(Path)", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.nio.file", "Files", False, "newBufferedWriter", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "newInputStream", "(Path,OpenOption[])", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.nio.file", "Files", False, "newOutputStream", "", "", "Argument[0]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "readAllBytes", "(Path)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.nio.file", "Files", False, "readAllLines", "(Path,Charset)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.nio.file", "Files", False, "readAllLines", "(Path)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.nio.file", "Files", False, "readString", "(Path,Charset)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.nio.file", "Files", False, "readString", "(Path)", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.nio.file", "Files", False, "write", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "write", "", "", "Argument[1]", "write-file", "manual"]
       - ["java.nio.file", "Files", False, "writeString", "", "", "Argument[0]", "create-file", "manual"]
@@ -28,6 +37,8 @@ extensions:
       - ["java.nio.file", "Files", True, "delete", "(Path)", "", "Argument[0]", "create-file", "ai-generated"] # should be delete-file
       - ["java.nio.file", "Files", True, "newInputStream", "(Path,OpenOption[])", "", "Argument[0]", "read-file", "ai-generated"]
       - ["java.nio.file", "Files", True, "newOutputStream", "(Path,OpenOption[])", "", "Argument[0]", "create-file", "ai-generated"]
+      - ["java.nio.file", "SecureDirectoryStream", True, "deleteDirectory", "(Path)", "", "Argument[0]", "create-file", "ai-generated"] # should be delete-file
+      - ["java.nio.file", "SecureDirectoryStream", True, "deleteFile", "(Path)", "", "Argument[0]", "create-file", "ai-generated"] # should be delete-file
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
@@ -49,6 +60,7 @@ extensions:
       - ["java.nio.file", "Path", True, "of", "(String,String[])", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
       - ["java.nio.file", "Path", True, "of", "(String,String[])", "", "Argument[1]", "ReturnValue", "taint", "ai-generated"]
       - ["java.nio.file", "Path", True, "of", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
+      - ["java.nio.file", "Path", True, "relativize", "(Path)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
       - ["java.nio.file", "Path", True, "resolve", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "resolve", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "toAbsolutePath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
@@ -62,7 +74,6 @@ extensions:
       # - ["java.nio.file", "Files", True, "walkFileTree", "(Path,FileVisitor)", "", "Argument[0]", "Argument[1].Method[preVisitDirectory(Path,BasicFileAttributes)].Parameter[0]", "taint", "ai-generated"]
       # - ["java.nio.file", "Files", True, "walkFileTree", "(Path,FileVisitor)", "", "Argument[0]" "Argument[1].Method[visitFile(Path,BasicFileAttributes)].Parameter[0]", "taint", "ai-generated"]
       # - ["java.nio.file", "Files", True, "walkFileTree", "(Path,FileVisitor)", "", "Argument[0]", "Argument[1].Method[visitFileFailed(Path,IOException)].Parameter[0]", "taint", "ai-generated"]
-
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
