@@ -9,6 +9,8 @@ use std::path::Path;
 
 use tree_sitter::{Language, Node, Parser, Range, Tree};
 
+pub mod simple;
+
 pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::Label {
     let (file_label, fresh) = writer.global_id(&trap::full_id_for_file(
         &file_paths::normalize_path(absolute_path),
