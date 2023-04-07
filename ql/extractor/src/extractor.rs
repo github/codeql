@@ -1,3 +1,4 @@
+use clap::Args;
 use rayon::prelude::*;
 use std::fs;
 use std::io::BufRead;
@@ -5,7 +6,22 @@ use std::path::{Path, PathBuf};
 
 use codeql_extractor::{diagnostics, extractor, node_types, trap};
 
-fn main() -> std::io::Result<()> {
+#[derive(Args)]
+pub struct Options {
+    /// Sets a custom source achive folder
+    #[arg(long)]
+    source_archive_dir: PathBuf,
+
+    /// Sets a custom trap folder
+    #[arg(long)]
+    output_dir: PathBuf,
+
+    /// A text file containing the paths of the files to extract
+    #[arg(long)]
+    file_list: PathBuf,
+}
+
+pub fn run(options: Options) -> std::io::Result<()> {
     tracing_subscriber::fmt()
         .with_target(false)
         .without_time()
@@ -58,30 +74,9 @@ fn main() -> std::io::Result<()> {
         .build_global()
         .unwrap();
 
-    let matches = clap::Command::new("QL extractor")
-        .version("1.0")
-        .author("GitHub")
-        .about("CodeQL QL extractor")
-        .args(&[
-            clap::arg!(--"source-archive-dir" <DIR> "Sets a custom source archive folder"),
-            clap::arg!(--"output-dir" <DIR> "Sets a custom trap folder"),
-            clap::arg!(--"file-list" <FILE_LIST> "A text file containing the paths of the files to extract"),
-        ])
-        .get_matches();
-    let src_archive_dir = matches
-        .get_one::<String>("source-archive-dir")
-        .expect("missing --source-archive-dir");
-    let src_archive_dir = PathBuf::from(src_archive_dir);
-
-    let trap_dir = matches
-        .get_one::<String>("output-dir")
-        .expect("missing --output-dir");
-    let trap_dir = PathBuf::from(trap_dir);
-
-    let file_list = matches
-        .get_one::<String>("file-list")
-        .expect("missing --file-list");
-    let file_list = fs::File::open(file_list)?;
+    let trap_dir = options.output_dir;
+    let file_list = fs::File::open(options.file_list)?;
+    let source_archive_dir = options.source_archive_dir;
 
     let language = tree_sitter_ql::language();
     let dbscheme = tree_sitter_ql_dbscheme::language();
@@ -114,7 +109,7 @@ fn main() -> std::io::Result<()> {
                 return Ok(());
             }
             let path = PathBuf::from(line).canonicalize()?;
-            let src_archive_file = path_for(&src_archive_dir, &path, "");
+            let src_archive_file = path_for(&source_archive_dir, &path, "");
             let source = std::fs::read(&path)?;
             let code_ranges = vec![];
             let mut trap_writer = trap::Writer::new();

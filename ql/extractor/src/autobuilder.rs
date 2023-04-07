@@ -1,8 +1,13 @@
+use clap::Args;
 use std::env;
 use std::path::PathBuf;
 use std::process::Command;
 
-fn main() -> std::io::Result<()> {
+#[derive(Args)]
+// The autobuilder takes no command-line options, but this may change in the future.
+pub struct Options {}
+
+pub fn run(_: Options) -> std::io::Result<()> {
     let dist = env::var("CODEQL_DIST").expect("CODEQL_DIST not set");
     let db = env::var("CODEQL_EXTRACTOR_QL_WIP_DATABASE")
         .expect("CODEQL_EXTRACTOR_QL_WIP_DATABASE not set");

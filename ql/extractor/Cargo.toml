@@ -1,5 +1,5 @@
 [package]
-name = "ql-extractor"
+name = "codeql-ql-extractor"
 version = "0.1.0"
 authors = ["GitHub"]
 edition = "2018"

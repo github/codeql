@@ -182,6 +182,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "codeql-ql-extractor"
+version = "0.1.0"
+dependencies = [
+ "clap",
+ "codeql-extractor",
+ "rayon",
+ "regex",
+ "tracing",
+ "tracing-subscriber",
+ "tree-sitter",
+ "tree-sitter-blame",
+ "tree-sitter-json",
+ "tree-sitter-ql",
+ "tree-sitter-ql-dbscheme",
+ "tree-sitter-ql-yaml",
+]
+
+[[package]]
 name = "codespan-reporting"
 version = "0.11.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -625,24 +643,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2b63bdb0cd06f1f4dedf69b254734f9b45af66e4a031e42a7480257d9898b435"
 dependencies = [
  "unicode-ident",
-]
-
-[[package]]
-name = "ql-extractor"
-version = "0.1.0"
-dependencies = [
- "clap",
- "codeql-extractor",
- "rayon",
- "regex",
- "tracing",
- "tracing-subscriber",
- "tree-sitter",
- "tree-sitter-blame",
- "tree-sitter-json",
- "tree-sitter-ql",
- "tree-sitter-ql-dbscheme",
- "tree-sitter-ql-yaml",
 ]
 
 [[package]]
