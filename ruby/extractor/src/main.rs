@@ -5,7 +5,7 @@ mod extractor;
 mod generator;
 
 #[derive(Parser)]
-#[command(author, version, about, long_about = None)]
+#[command(author, version, about)]
 enum Cli {
     Extract(extractor::Options),
     Generate(generator::Options),
