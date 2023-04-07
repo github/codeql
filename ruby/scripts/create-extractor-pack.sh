@@ -22,7 +22,7 @@ if [[ "$CARGO" == "cross" ]]; then
   BIN_DIR=extractor/target/x86_64-unknown-linux-gnu/release
 fi
 
-"$BIN_DIR/generator" --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+"$BIN_DIR/codeql-ruby-extractor" generate --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
 
 codeql query format -i ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
 
@@ -30,5 +30,4 @@ rm -rf extractor-pack
 mkdir -p extractor-pack
 cp -r codeql-extractor.yml downgrades tools ql/lib/ruby.dbscheme ql/lib/ruby.dbscheme.stats extractor-pack/
 mkdir -p extractor-pack/tools/${platform}
-cp "$BIN_DIR/extractor" extractor-pack/tools/${platform}/extractor
-cp "$BIN_DIR/autobuilder" extractor-pack/tools/${platform}/autobuilder
+cp "$BIN_DIR/codeql-ruby-extractor" extractor-pack/tools/${platform}/extractor
