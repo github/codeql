@@ -560,6 +560,20 @@ nodes
 | react-use-context.js:16:26:16:36 | window.name |
 | react-use-context.js:16:26:16:36 | window.name |
 | react-use-context.js:16:26:16:36 | window.name |
+| react-use-router.js:5:9:5:28 | router |
+| react-use-router.js:5:18:5:28 | useRouter() |
+| react-use-router.js:9:21:9:26 | router |
+| react-use-router.js:9:21:9:32 | router.query |
+| react-use-router.js:9:21:9:32 | router.query |
+| react-use-router.js:9:21:9:39 | router.query.foobar |
+| react-use-router.js:9:21:9:39 | router.query.foobar |
+| react-use-router.js:20:15:20:24 | router |
+| react-use-router.js:20:17:20:22 | router |
+| react-use-router.js:21:43:21:48 | router |
+| react-use-router.js:21:43:21:54 | router.query |
+| react-use-router.js:21:43:21:54 | router.query |
+| react-use-router.js:21:43:21:61 | router.query.foobar |
+| react-use-router.js:21:43:21:61 | router.query.foobar |
 | react-use-state.js:4:9:4:49 | state |
 | react-use-state.js:4:9:4:49 | state |
 | react-use-state.js:4:10:4:14 | state |
@@ -1700,6 +1714,22 @@ edges
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-use-context.js:10:22:10:32 | window.name | react-use-context.js:10:22:10:32 | window.name |
 | react-use-context.js:16:26:16:36 | window.name | react-use-context.js:16:26:16:36 | window.name |
+| react-use-router.js:5:9:5:28 | router | react-use-router.js:9:21:9:26 | router |
+| react-use-router.js:5:18:5:28 | useRouter() | react-use-router.js:5:9:5:28 | router |
+| react-use-router.js:9:21:9:26 | router | react-use-router.js:9:21:9:32 | router.query |
+| react-use-router.js:9:21:9:32 | router.query | react-use-router.js:9:21:9:39 | router.query.foobar |
+| react-use-router.js:9:21:9:32 | router.query | react-use-router.js:9:21:9:39 | router.query.foobar |
+| react-use-router.js:9:21:9:32 | router.query | react-use-router.js:9:21:9:39 | router.query.foobar |
+| react-use-router.js:9:21:9:32 | router.query | react-use-router.js:9:21:9:39 | router.query.foobar |
+| react-use-router.js:9:21:9:39 | router.query.foobar | react-use-router.js:5:18:5:28 | useRouter() |
+| react-use-router.js:20:15:20:24 | router | react-use-router.js:21:43:21:48 | router |
+| react-use-router.js:20:17:20:22 | router | react-use-router.js:20:15:20:24 | router |
+| react-use-router.js:21:43:21:48 | router | react-use-router.js:21:43:21:54 | router.query |
+| react-use-router.js:21:43:21:54 | router.query | react-use-router.js:21:43:21:61 | router.query.foobar |
+| react-use-router.js:21:43:21:54 | router.query | react-use-router.js:21:43:21:61 | router.query.foobar |
+| react-use-router.js:21:43:21:54 | router.query | react-use-router.js:21:43:21:61 | router.query.foobar |
+| react-use-router.js:21:43:21:54 | router.query | react-use-router.js:21:43:21:61 | router.query.foobar |
+| react-use-router.js:21:43:21:61 | router.query.foobar | react-use-router.js:20:17:20:22 | router |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
@@ -2386,6 +2416,8 @@ edges
 | react-native.js:9:27:9:33 | tainted | react-native.js:7:17:7:33 | req.param("code") | react-native.js:9:27:9:33 | tainted | Cross-site scripting vulnerability due to $@. | react-native.js:7:17:7:33 | req.param("code") | user-provided value |
 | react-use-context.js:10:22:10:32 | window.name | react-use-context.js:10:22:10:32 | window.name | react-use-context.js:10:22:10:32 | window.name | Cross-site scripting vulnerability due to $@. | react-use-context.js:10:22:10:32 | window.name | user-provided value |
 | react-use-context.js:16:26:16:36 | window.name | react-use-context.js:16:26:16:36 | window.name | react-use-context.js:16:26:16:36 | window.name | Cross-site scripting vulnerability due to $@. | react-use-context.js:16:26:16:36 | window.name | user-provided value |
+| react-use-router.js:9:21:9:39 | router.query.foobar | react-use-router.js:9:21:9:32 | router.query | react-use-router.js:9:21:9:39 | router.query.foobar | Cross-site scripting vulnerability due to $@. | react-use-router.js:9:21:9:32 | router.query | user-provided value |
+| react-use-router.js:21:43:21:61 | router.query.foobar | react-use-router.js:21:43:21:54 | router.query | react-use-router.js:21:43:21:61 | router.query.foobar | Cross-site scripting vulnerability due to $@. | react-use-router.js:21:43:21:54 | router.query | user-provided value |
 | react-use-state.js:5:51:5:55 | state | react-use-state.js:4:38:4:48 | window.name | react-use-state.js:5:51:5:55 | state | Cross-site scripting vulnerability due to $@. | react-use-state.js:4:38:4:48 | window.name | user-provided value |
 | react-use-state.js:11:51:11:55 | state | react-use-state.js:10:14:10:24 | window.name | react-use-state.js:11:51:11:55 | state | Cross-site scripting vulnerability due to $@. | react-use-state.js:10:14:10:24 | window.name | user-provided value |
 | react-use-state.js:17:51:17:55 | state | react-use-state.js:16:20:16:30 | window.name | react-use-state.js:17:51:17:55 | state | Cross-site scripting vulnerability due to $@. | react-use-state.js:16:20:16:30 | window.name | user-provided value |
