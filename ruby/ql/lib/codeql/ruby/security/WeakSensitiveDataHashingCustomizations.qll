@@ -5,7 +5,6 @@
  */
 
 private import ruby
-private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking
 private import codeql.ruby.Concepts
 private import codeql.ruby.dataflow.BarrierGuards

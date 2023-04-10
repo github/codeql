@@ -14,7 +14,6 @@
 
 import ruby
 import codeql.ruby.security.WeakSensitiveDataHashingQuery
-import codeql.ruby.DataFlow
 import codeql.ruby.TaintTracking
 import DataFlow::PathGraph
 
