@@ -31,7 +31,7 @@ private predicate untrustedResultReceiverSend(DataFlow::Node src, ResultReceiver
   UntrustedResultReceiverFlow::flow(src, DataFlow::exprNode(call.getReceiver()))
 }
 
-private module SensitiveResultReceiverConfig implements DataFlow::ConfigSig {
+module SensitiveResultReceiverConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
   predicate isSink(DataFlow::Node node) {
