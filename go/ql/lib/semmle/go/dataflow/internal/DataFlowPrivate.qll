@@ -352,7 +352,7 @@ Node getArgument(CallNode c, int i) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) { n instanceof SummaryNode or n instanceof SummarizedParameterNode }
 
 class LambdaCallKind = Unit;
 
