@@ -132,6 +132,8 @@ extensions:
       - ["java.lang", "Throwable", True, "getMessage", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Throwable", True, "getLocalizedMessage", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Throwable", True, "toString", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "taint", "manual"]
+      - ["java.lang", "UnsupportedOperationException", False, "UnsupportedOperationException", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
+
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
