@@ -348,8 +348,38 @@ module API {
     }
 
     /**
-     * Gets a node representing a function that wraps the current value, forwarding arguments and
-     * return values.
+     * Gets a node representing a function that is a wrapper around the function represented by this node.
+     *
+     * Concretely, a function that forwards all its parameters to a call to `f` and returns the result of that call
+     * is considered a wrapper around `f`.
+     *
+     * Examples:
+     * ```js
+     * function f(x) {
+     *   return g(x); // f = g.getForwardingFunction()
+     * }
+     *
+     * function doExec(x) {
+     *   console.log(x);
+     *   return exec(x); // doExec = exec.getForwardingFunction()
+     * }
+     *
+     * function doEither(x, y) {
+     *   if (x > y) {
+     *     return foo(x, y); // doEither = foo.getForwardingFunction()
+     *   } else {
+     *     return bar(x, y); // doEither = bar.getForwardingFunction()
+     *   }
+     * }
+     *
+     * function wrapWithLogging(f) {
+     *   return (x) => {
+     *     console.log(x);
+     *     return f(x); // f.getForwardingFunction() = anonymous arrow function
+     *   }
+     * }
+     * wrapWithLogging(g); // g.getForwardingFunction() = wrapWithLogging(g)
+     * ```
      */
     cached
     Node getForwardingFunction() {
