@@ -133,18 +133,18 @@ func testArrays(harmlessArray: Array<UInt8>, passwdArray: Array<UInt8>) {
 
 func testData(harmlessData: Data, passwdData: Data) {
     _ = harmlessData.md5() // GOOD (not sensitive)
-    _ = passwdData.md5() // BAD [NOT DETECTED]
+    _ = passwdData.md5() // BAD
     _ = harmlessData.sha1() // GOOD (not sensitive)
-    _ = passwdData.sha1() // BAD [NOT DETECTED]
+    _ = passwdData.sha1() // BAD
     _ = harmlessData.sha512() // GOOD
     _ = passwdData.sha512() // GOOD
 }
 
 func testStrings(passwd: String) {
     _ = "harmless".md5() // GOOD (not sensitive)
-    _ = passwd.md5() // BAD [NOT DETECTED]
+    _ = passwd.md5() // BAD
     _ = "harmless".sha1() // GOOD (not sensitive)
-    _ = passwd.sha1() // BAD [NOT DETECTED]
+    _ = passwd.sha1() // BAD
     _ = "harmless".sha512() // GOOD
     _ = passwd.sha512() // GOOD
 }
