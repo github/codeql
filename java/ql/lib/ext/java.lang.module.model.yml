@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: sinkModel
+      extensible: summaryModel
     data:
-      - ["java.lang.module", "ModuleReader", True, "find", "(String)", "", "Argument[0]", "read-file", "ai-generated"] # The documentation implies that the location is actually read: https://docs.oracle.com/javase/9/docs/api/java/lang/module/ModuleReader.html#find-java.lang.String-
+      - ["java.lang.module", "ModuleReader", True, "find", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-generated"]
