@@ -110,23 +110,23 @@ extension String {
 
 func testArrays(harmlessArray: Array<UInt8>, passwdArray: Array<UInt8>) {
     _ = MD5().calculate(for: harmlessArray) // GOOD (not sensitive)
-    _ = MD5().calculate(for: passwdArray) // BAD [NOT DETECTED]
+    _ = MD5().calculate(for: passwdArray) // BAD
     _ = SHA1().calculate(for: harmlessArray) // GOOD (not sensitive)
-    _ = SHA1().calculate(for: passwdArray) // BAD [NOT DETECTED]
+    _ = SHA1().calculate(for: passwdArray) // BAD
     _ = SHA2(variant: .sha512).calculate(for: harmlessArray) // GOOD
     _ = SHA2(variant: .sha512).calculate(for: passwdArray) // GOOD
 
     _ = Digest.md5(harmlessArray) // GOOD (not sensitive)
-    _ = Digest.md5(passwdArray) // BAD [NOT DETECTED]
+    _ = Digest.md5(passwdArray) // BAD
     _ = Digest.sha1(harmlessArray) // GOOD (not sensitive)
-    _ = Digest.sha1(passwdArray) // BAD [NOT DETECTED]
+    _ = Digest.sha1(passwdArray) // BAD
     _ = Digest.sha512(harmlessArray) // GOOD
     _ = Digest.sha512(passwdArray) // GOOD
 
     _ = harmlessArray.md5() // GOOD (not sensitive)
-    _ = passwdArray.md5() // BAD [NOT DETECTED]
+    _ = passwdArray.md5() // BAD
     _ = harmlessArray.sha1() // GOOD (not sensitive)
-    _ = passwdArray.sha1() // BAD [NOT DETECTED]
+    _ = passwdArray.sha1() // BAD
     _ = harmlessArray.sha512() // GOOD
     _ = passwdArray.sha512() // GOOD
 }
