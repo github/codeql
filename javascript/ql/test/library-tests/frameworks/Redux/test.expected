@@ -176,8 +176,13 @@ getRootStateAccessPath
 | toolkit | react-redux.jsx:85:24:85:36 | use entryPoint("react-redux-connect").getParameter(0).getParameter(0).getMember("toolkit") |
 | toolkit.asyncValue | react-redux.jsx:85:24:85:47 | use entryPoint("react-redux-connect").getParameter(0).getParameter(0).getMember("toolkit").getMember("asyncValue") |
 | toolkit.value | react-redux.jsx:84:32:84:50 | use entryPoint("react-redux-connect").getParameter(0).getParameter(0).getMember("toolkit").getMember("value") |
+| x1 | accessPaths.js:8:16:8:52 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getForwardingFunction().getReturn() |
 | x1 | accessPaths.js:8:44:8:51 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getParameter(0).getParameter(0).getMember("x1") |
+| x2 | accessPaths.js:9:16:9:52 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getForwardingFunction().getReturn() |
 | x2 | accessPaths.js:9:44:9:51 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getParameter(0).getParameter(0).getMember("x2") |
+| x3 | accessPaths.js:10:16:10:52 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getForwardingFunction().getReturn() |
 | x3 | accessPaths.js:10:44:10:51 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getParameter(0).getParameter(0).getMember("x3") |
+| x4 | accessPaths.js:11:16:11:52 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getForwardingFunction().getReturn() |
 | x4 | accessPaths.js:11:44:11:51 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getParameter(0).getParameter(0).getMember("x4") |
+| x5 | accessPaths.js:12:16:12:52 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getForwardingFunction().getReturn() |
 | x5 | accessPaths.js:12:44:12:51 | use moduleImport("react-redux").getMember("exports").getMember("useSelector").getParameter(0).getParameter(0).getMember("x5") |

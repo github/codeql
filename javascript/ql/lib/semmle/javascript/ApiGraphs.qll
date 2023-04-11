@@ -348,6 +348,16 @@ module API {
     }
 
     /**
+     * Gets a node representing a function that wraps the current value, forwarding arguments and
+     * return values.
+     */
+    cached
+    Node getForwardingFunction() {
+      Stages::ApiStage::ref() and
+      result = this.getASuccessor(Label::forwardingFunction())
+    }
+
+    /**
      * Gets any class that has this value as a decorator.
      *
      * For example:
@@ -901,6 +911,9 @@ module API {
           or
           lbl = Label::return() and
           ref = pred.getAnInvocation()
+          or
+          lbl = Label::forwardingFunction() and
+          DataFlow::functionForwardingStep(pred.getALocalUse(), ref)
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
@@ -1431,6 +1444,9 @@ module API {
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
 
+    /** Gets the label representing a function wrapper that forwards to an underlying function. */
+    LabelForwardingFunction forwardingFunction() { any() }
+
     /** Gets the `promised` edge label connecting a promise to its contained value. */
     LabelPromised promised() { any() }
 
@@ -1483,6 +1499,7 @@ module API {
         MkLabelDecoratedClass() or
         MkLabelDecoratedMember() or
         MkLabelDecoratedParameter() or
+        MkLabelForwardingFunction() or
         MkLabelEntryPoint(API::EntryPoint e)
 
       /** A label for an entry-point. */
@@ -1564,6 +1581,11 @@ module API {
       /** A label for the receiver of call, that is, the value passed as `this`. */
       class LabelReceiver extends ApiLabel, MkLabelReceiver {
         override string toString() { result = "getReceiver()" }
+      }
+
+      /** A label for a function that is a wrapper around another function. */
+      class LabelForwardingFunction extends ApiLabel, MkLabelForwardingFunction {
+        override string toString() { result = "getForwardingFunction()" }
       }
 
       /** A label for a class decorated by the current value. */

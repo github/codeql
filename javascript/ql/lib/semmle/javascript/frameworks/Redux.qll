@@ -985,7 +985,9 @@ module Redux {
    */
   private module ReactRedux {
     /** Gets an API node referring to the `useSelector` function. */
-    API::Node useSelector() { result = API::moduleImport("react-redux").getMember("useSelector") }
+    API::Node useSelector() {
+      result = API::moduleImport("react-redux").getMember("useSelector").getForwardingFunction*()
+    }
 
     /**
      * A step out of a `useSelector` call, such as from `state.x` to the result of `useSelector(state => state.x)`.
