@@ -9,8 +9,6 @@ class RangeAnalysisTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Expr e |
-      /*call.getArgument(0) = e and
-      call.getTarget().hasName("range") and*/
       tag = "overflow" and
       element = e.toString() and
       location = e.getLocation() and
