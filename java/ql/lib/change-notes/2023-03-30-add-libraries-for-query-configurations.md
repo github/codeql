@@ -10,5 +10,9 @@ category: minorAnalysis
 * Added the `ExecTaintedLocalQuery.qll` library to provide the `LocalUserInputToArgumentToExecFlow` taint-tracking module to reason about command injection vulnerabilities caused by local data flow.
 * Added the `StackTraceExposureQuery.qll` library to provide the `printsStackExternally`, `stringifiedStackFlowsExternally`, and `getMessageFlowsExternally` predicates to reason about stack trace exposure vulnerabilities.
 * Added the `SqlTaintedLocalQuery.qll` library to provide the `LocalUserInputToArgumentToSqlFlow` taint-tracking module to reason about SQL injection vulnerabilities caused by local data flow.
+* Added the `UrlRedirectLocalQuery.qll` library to provide the `UrlRedirectLocalFlow` taint-tracking module to reason about URL redirection vulnerabilities caused by local data flow.
+* Added the `MaybeBrokenCryptoAlgorithmQuery.qll` library to provide the `InsecureCryptoFlow` taint-tracking module to reason about broken cryptographic algorithm vulnerabilities.
+* Added the `BrokenCryptoAlgorithmQuery.qll` library to provide the `InsecureCryptoFlow` taint-tracking module to reason about broken cryptographic algorithm vulnerabilities.
+* Added the `NumericCastTaintedQuery.qll` library to provide the `NumericCastTaintedFlow` taint-tracking module to reason about numeric cast vulnerabilities.
 * Added the `ResponseSplittingLocalQuery.qll` library to provide the `ResponseSplittingLocalFlow` taint-tracking module to reason about response splitting vulnerabilities caused by local data flow.
 * Added the `UnsafeHostnameVerificationQuery.qll` library to provide the `TrustAllHostnameVerifierFlow` taint-tracking module to reason about insecure hostname verification vulnerabilities.
