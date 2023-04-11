@@ -1,3 +1,5 @@
+/** Provides guards and predicates to reason about arithmetic. */
+
 import semmle.code.java.arithmetic.Overflow
 import semmle.code.java.controlflow.Guards
 private import semmle.code.java.dataflow.SSA
