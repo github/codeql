@@ -16,4 +16,8 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["org.apache.commons.io", "FileUtils", True, "copyInputStreamToFile", "(InputStream,File)", "", "Argument[0]", "write-file", "ai-generated"]
+      - ["org.apache.commons.io", "FileUtils", True, "copyInputStreamToFile", "(InputStream,File)", "", "Argument[1]", "create-file", "manual"]
+      - ["org.apache.commons.io", "FileUtils", True, "copyToFile", "(InputStream,File)", "", "Argument[0]", "write-file", "ai-generated"]
+      - ["org.apache.commons.io", "FileUtils", True, "copyToFile", "(InputStream,File)", "", "Argument[1]", "create-file", "manual"]
       - ["org.apache.commons.io", "FileUtils", True, "openInputStream", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
