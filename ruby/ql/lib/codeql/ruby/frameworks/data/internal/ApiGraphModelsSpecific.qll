@@ -113,16 +113,16 @@ API::Node getExtraNodeFromType(string type) {
   |
     suffix = "!" and
     (
-      result.asSource() = constRef
+      result.asSourceInternal() = constRef
       or
-      result.asSource() = constRef.getADescendentModule().getAnOwnModuleSelf()
+      result.asSourceInternal() = constRef.getADescendentModule().getAnOwnModuleSelf()
     )
     or
     suffix = "" and
     (
-      result.asSource() = constRef.getAMethodCall("new")
+      result.asSourceInternal() = constRef.getAMethodCall("new")
       or
-      result.asSource() = constRef.getADescendentModule().getAnInstanceSelf()
+      result.asSourceInternal() = constRef.getADescendentModule().getAnInstanceSelf()
     )
   )
   or

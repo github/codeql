@@ -99,9 +99,7 @@ module API {
      */
     pragma[inline]
     DataFlow::Node getAValueReachableFromSource() {
-      exists(DataFlow::LocalSourceNode src | Impl::use(this, src) |
-        Impl::trackUseNode(src).flowsTo(result)
-      )
+      result = getAValueReachableFromSourceInline(this)
     }
 
     /**
@@ -121,7 +119,19 @@ module API {
      * end
      * ```
      */
-    DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }
+    pragma[inline]
+    DataFlow::LocalSourceNode asSource() { result = pragma[only_bind_out](this).asSourceInternal() }
+
+    /**
+     * INTERNAL USE ONLY.
+     *
+     * Same as `asSource()` but without join-order hints.
+     */
+    cached
+    DataFlow::LocalSourceNode asSourceInternal() {
+      Impl::forceCachingInSameStage() and
+      Impl::use(this, result)
+    }
 
     /**
      * Gets a data-flow node where this value leaves the current codebase and flows into an
@@ -167,6 +177,7 @@ module API {
     /**
      * Gets a call to a method on the receiver represented by this API component.
      */
+    pragma[inline]
     DataFlow::CallNode getAMethodCall(string method) { result = this.getReturn(method).asSource() }
 
     /**
@@ -177,15 +188,29 @@ module API {
      * - A submodule of a module
      * - An attribute of an object
      */
-    bindingset[m]
-    bindingset[result]
-    Node getMember(string m) { result = this.getASuccessor(Label::member(m)) }
+    pragma[inline]
+    Node getMember(string m) { result = pragma[only_bind_out](this).getMemberInternal(m) }
+
+    /**
+     * INTERNAL USE ONLY.
+     *
+     * Same as `getMember` but without join-order hints.
+     */
+    cached
+    Node getMemberInternal(string m) {
+      Impl::forceCachingInSameStage() and
+      result = this.getASuccessor(Label::member(m))
+    }
 
     /**
      * Gets a node representing a member of this API component where the name of the member may
      * or may not be known statically.
      */
-    Node getAMember() { result = this.getASuccessor(Label::member(_)) }
+    cached
+    Node getAMember() {
+      Impl::forceCachingInSameStage() and
+      result = this.getASuccessor(Label::member(_))
+    }
 
     /**
      * Gets a node representing an instance of this API component, that is, an object whose
@@ -198,41 +223,75 @@ module API {
      * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
      * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
      */
+    pragma[inline]
     Node getInstance() { result = this.getASubclass().getReturn("new") }
 
     /**
      * Gets a node representing a call to `method` on the receiver represented by this node.
      */
+    pragma[inline]
     MethodAccessNode getMethod(string method) {
+      result = pragma[only_bind_out](this).getMethodInternal(method)
+    }
+
+    /**
+     * INTERNAL USE ONLY.
+     *
+     * Same as `getMethod` but without join-order hints.
+     */
+    cached
+    MethodAccessNode getMethodInternal(string method) {
+      Impl::forceCachingInSameStage() and
       result = this.getASubclass().getASuccessor(Label::method(method))
     }
 
     /**
      * Gets a node representing the result of this call.
      */
-    Node getReturn() { result = this.getASuccessor(Label::return()) }
+    pragma[inline]
+    Node getReturn() { result = pragma[only_bind_out](this).getReturnInternal() }
+
+    /**
+     * INTERNAL USE ONLY.
+     *
+     * Same as `getReturn()` but without join-order hints.
+     */
+    cached
+    Node getReturnInternal() {
+      Impl::forceCachingInSameStage() and result = this.getASuccessor(Label::return())
+    }
 
     /**
      * Gets a node representing the result of calling a method on the receiver represented by this node.
      */
+    pragma[inline]
     Node getReturn(string method) { result = this.getMethod(method).getReturn() }
 
     /** Gets an API node representing the `n`th positional parameter. */
-    pragma[nomagic]
-    Node getParameter(int n) { result = this.getASuccessor(Label::parameter(n)) }
+    cached
+    Node getParameter(int n) {
+      Impl::forceCachingInSameStage() and
+      result = this.getASuccessor(Label::parameter(n))
+    }
 
     /** Gets an API node representing the given keyword parameter. */
-    pragma[nomagic]
+    cached
     Node getKeywordParameter(string name) {
+      Impl::forceCachingInSameStage() and
       result = this.getASuccessor(Label::keywordParameter(name))
     }
 
     /** Gets an API node representing the block parameter. */
-    Node getBlock() { result = this.getASuccessor(Label::blockParameter()) }
+    cached
+    Node getBlock() {
+      Impl::forceCachingInSameStage() and
+      result = this.getASuccessor(Label::blockParameter())
+    }
 
     /**
      * Gets a `new` call to the function represented by this API component.
      */
+    pragma[inline]
     DataFlow::ExprNode getAnInstantiation() { result = this.getInstance().asSource() }
 
     /**
@@ -255,12 +314,17 @@ module API {
      * ```
      * In the example above, `getMember("A").getAnImmediateSubclass()` will return uses of `B` only.
      */
-    Node getAnImmediateSubclass() { result = this.getASuccessor(Label::subclass()) }
+    cached
+    Node getAnImmediateSubclass() {
+      Impl::forceCachingInSameStage() and result = this.getASuccessor(Label::subclass())
+    }
 
     /**
      * Gets a node representing the `content` stored on the base object.
      */
+    cached
     Node getContent(DataFlow::Content content) {
+      Impl::forceCachingInSameStage() and
       result = this.getASuccessor(Label::content(content))
     }
 
@@ -274,10 +338,16 @@ module API {
     }
 
     /** Gets a node representing the instance field of the given `name`, which must include the `@` character. */
-    Node getField(string name) { result = this.getContent(DataFlowPrivate::TFieldContent(name)) }
+    cached
+    Node getField(string name) {
+      Impl::forceCachingInSameStage() and
+      result = this.getContent(DataFlowPrivate::TFieldContent(name))
+    }
 
     /** Gets a node representing an element of this collection (known or unknown). */
+    cached
     Node getAnElement() {
+      Impl::forceCachingInSameStage() and
       result = this.getContents(any(DataFlow::ContentSet set | set.isAnyElement()))
     }
 
@@ -363,6 +433,16 @@ module API {
     int getDepth() { result = Impl::distanceFromRoot(this) }
   }
 
+  bindingset[node]
+  pragma[inline_late]
+  private DataFlow::Node getAValueReachableFromSourceInline(Node node) {
+    exists(DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode dst |
+      Impl::use(node, pragma[only_bind_into](src)) and
+      pragma[only_bind_into](dst) = Impl::trackUseNode(src) and
+      dst.flowsTo(result)
+    )
+  }
+
   /** The root node of an API graph. */
   class Root extends Node, Impl::MkRoot {
     override string toString() { result = "root" }
@@ -443,7 +523,10 @@ module API {
    * you should use `.getMember` on the parent module/class. For example, for nodes corresponding to the class `Gem::Version`,
    * use `getTopLevelMember("Gem").getMember("Version")`.
    */
-  Node getTopLevelMember(string m) { result = root().getMember(m) }
+  cached
+  Node getTopLevelMember(string m) {
+    Impl::forceCachingInSameStage() and result = root().getMemberInternal(m)
+  }
 
   /**
    * Provides the actual implementation of API graphs, cached for performance.
@@ -469,6 +552,32 @@ module API {
    */
   cached
   private module Impl {
+    cached
+    predicate forceCachingInSameStage() { any() }
+
+    cached
+    predicate forceCachingBackref() {
+      1 = 1
+      or
+      exists(getTopLevelMember(_))
+      or
+      exists(
+        any(Node n)
+            .getMemberInternal("foo")
+            .getAMember()
+            .getMethodInternal("foo")
+            .getReturnInternal()
+            .getParameter(0)
+            .getKeywordParameter("foo")
+            .getBlock()
+            .getAnImmediateSubclass()
+            .getContent(_)
+            .getField(_)
+            .getAnElement()
+            .asSourceInternal()
+      )
+    }
+
     cached
     newtype TApiNode =
       /** The root of the API graph. */
