@@ -53,6 +53,8 @@ private class WeakHashingSinks extends SinkModelCsv {
         ";SHA1;true;calculate(for:);;;Argument[0];weak-hash-input-SHA1",
         ";SHA1;true;callAsFunction(_:);;;Argument[0];weak-hash-input-SHA1",
         ";SHA1;true;update(withBytes:isLast:);;;Argument[0];weak-hash-input-SHA1",
+        ";Digest;true;md5(_:);;;Argument[0];weak-hash-input-MD5",
+        ";Digest;true;sha1(_:);;;Argument[0];weak-hash-input-SHA1",
       ]
   }
 }
