@@ -62,7 +62,7 @@ module ESLint {
   /** An `.eslintrc.yaml` file. */
   private class EslintrcYaml extends Configuration instanceof YamlMapping {
     EslintrcYaml() {
-      exists(string n | n = this.getFile().getBaseName() |
+      exists(string n | n = getFile().getBaseName() |
         n = ".eslintrc.yaml" or n = ".eslintrc.yml" or n = ".eslintrc"
       )
     }

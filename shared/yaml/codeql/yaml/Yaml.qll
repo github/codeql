@@ -150,6 +150,9 @@ module Make<InputSig Input> {
    * ```
    */
   class YamlNode instanceof Input::NodeBase {
+    /** Gets the file this node comes from. */
+    Input::File getFile() { result = this.getLocation().getFile() }
+
     /**
      * Gets the `Location` of this node.
      */

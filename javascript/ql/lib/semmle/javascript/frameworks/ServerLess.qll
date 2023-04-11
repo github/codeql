@@ -15,7 +15,7 @@ private module ServerLess {
    * `codeURI` defaults to the empty string if no explicit value is set in the configuration.
    */
   private predicate hasServerlessHandler(File ymlFile, string handler, string codeUri) {
-    exists(YamlMapping resource | ymlFile = resource.getLocation().getFile() |
+    exists(YamlMapping resource | ymlFile = resource.getFile() |
       // There exists at least "AWS::Serverless::Function" and "Aliyun::Serverless::Function"
       resource.lookup("Type").(YamlScalar).getValue().regexpMatch(".*::Serverless::Function") and
       exists(YamlMapping properties | properties = resource.lookup("Properties") |
