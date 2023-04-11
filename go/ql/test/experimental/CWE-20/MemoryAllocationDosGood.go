@@ -1,11 +1,11 @@
-package main
+package server
 
 import (
 	"net/http"
 	"strconv"
 )
 
-func serve1() {
+func serve_good() {
 	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 
 		c, _ := strconv.Atoi(r.Form.Get("count"))
