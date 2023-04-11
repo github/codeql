@@ -1231,4 +1231,9 @@ module Redux {
       }
     }
   }
+
+  /** For testing only. */
+  module Internal {
+    predicate getRootStateAccessPath = rootStateAccessPath/1;
+  }
 }
