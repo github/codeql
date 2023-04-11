@@ -59,31 +59,23 @@ module ESLint {
     }
   }
 
-  private class LocatableYamlMapping extends YamlMapping, Locatable {
-    override Location getLocation() { result = YamlMapping.super.getLocation() }
-
-    override string getAPrimaryQlClass() { result = YamlMapping.super.getAPrimaryQlClass() }
-
-    override string toString() { result = YamlMapping.super.toString() }
-  }
-
   /** An `.eslintrc.yaml` file. */
-  private class EslintrcYaml extends LocatableYamlMapping, Configuration instanceof YamlDocument {
+  private class EslintrcYaml extends Configuration instanceof YamlMapping {
     EslintrcYaml() {
       exists(string n | n = this.getFile().getBaseName() |
         n = ".eslintrc.yaml" or n = ".eslintrc.yml" or n = ".eslintrc"
       )
     }
 
-    override ConfigurationObject getGlobals() { result = lookup("globals") }
+    override ConfigurationObject getGlobals() { result = super.lookup("globals") }
   }
 
   /** An ESLint configuration object in YAML format. */
-  private class YamlConfigurationObject extends ConfigurationObject, LocatableYamlMapping {
-    override Configuration getConfiguration() { this = result.(EslintrcYaml).getValue(_) }
+  private class YamlConfigurationObject extends ConfigurationObject instanceof YamlMapping {
+    override Configuration getConfiguration() { this = result.(YamlMapping).getValue(_) }
 
     override boolean getBooleanProperty(string p) {
-      exists(string v | v = lookup(p).(YamlBool).getValue() |
+      exists(string v | v = super.lookup(p).(YamlBool).getValue() |
         v = "true" and result = true
         or
         v = "false" and result = false
