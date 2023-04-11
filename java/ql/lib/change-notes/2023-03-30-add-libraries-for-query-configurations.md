@@ -16,3 +16,7 @@ category: minorAnalysis
 * Added the `NumericCastTaintedQuery.qll` library to provide the `NumericCastTaintedFlow` taint-tracking module to reason about numeric cast vulnerabilities.
 * Added the `ResponseSplittingLocalQuery.qll` library to provide the `ResponseSplittingLocalFlow` taint-tracking module to reason about response splitting vulnerabilities caused by local data flow.
 * Added the `UnsafeHostnameVerificationQuery.qll` library to provide the `TrustAllHostnameVerifierFlow` taint-tracking module to reason about insecure hostname verification vulnerabilities.
+* Added the `ArithmeticCommon.qll` library to provide predicates for reasoning about arithmetic operations.
+* Added the `ArithmeticTaintedQuery.qll` library to provide the `RemoteUserInputOverflow` and `RemoteUserInputUnderflow` taint-tracking modules to reason about arithmetic with unvalidated user input.
+* Added the `ArithmeticUncontrolledQuery.qll` library to provide the `ArithmeticUncontrolledOverflowFlow`  and `ArithmeticUncontrolledUnderflowFlow` taint-tracking modules to reason about arithmetic with uncontrolled user input.
+* Added the `ArithmeticWithExtremeValuesQuery.qll` library to provide the `MaxValueFlow` and `MinValueFlow` dataflow modules to reason about arithmetic with extreme values.
