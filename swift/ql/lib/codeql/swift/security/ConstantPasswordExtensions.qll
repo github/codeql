@@ -35,7 +35,7 @@ class ConstantPasswordAdditionalTaintStep extends Unit {
 private class CryptoSwiftPasswordSink extends ConstantPasswordSink {
   CryptoSwiftPasswordSink() {
     // `password` arg in `init` is a sink
-    exists(ClassOrStructDecl c, ConstructorDecl f, CallExpr call |
+    exists(NominalTypeDecl c, ConstructorDecl f, CallExpr call |
       c.getName() = ["HKDF", "PBKDF1", "PBKDF2", "Scrypt"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and

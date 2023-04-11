@@ -36,7 +36,7 @@ class InsufficientHashIterationsAdditionalTaintStep extends Unit {
 private class CryptoSwiftHashIterationsSink extends InsufficientHashIterationsSink {
   CryptoSwiftHashIterationsSink() {
     // `iterations` arg in `init` is a sink
-    exists(ClassOrStructDecl c, ConstructorDecl f, CallExpr call |
+    exists(NominalTypeDecl c, ConstructorDecl f, CallExpr call |
       c.getName() = ["PBKDF1", "PBKDF2"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and

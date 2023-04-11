@@ -35,14 +35,11 @@ class HardcodedEncryptionKeyAdditionalTaintStep extends Unit {
 private class CryptoSwiftEncryptionKeySink extends HardcodedEncryptionKeySink {
   CryptoSwiftEncryptionKeySink() {
     // `key` arg in `init` is a sink
-    exists(CallExpr call, string fName |
-      call.getStaticTarget()
-          .(MethodDecl)
-          .hasQualifiedName([
-              "AES", "HMAC", "ChaCha20", "CBCMAC", "CMAC", "Poly1305", "Blowfish", "Rabbit"
-            ], fName) and
-      fName.matches("init(key:%") and
-      call.getArgument(0).getExpr() = this.asExpr()
+    exists(NominalTypeDecl c, ConstructorDecl f, CallExpr call |
+      c.getName() = ["AES", "HMAC", "ChaCha20", "CBCMAC", "CMAC", "Poly1305", "Blowfish", "Rabbit"] and
+      c.getAMember() = f and
+      call.getStaticTarget() = f and
+      call.getArgumentWithLabel("key").getExpr() = this.asExpr()
     )
   }
 }
