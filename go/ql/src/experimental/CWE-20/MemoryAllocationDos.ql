@@ -22,11 +22,8 @@ private SsaWithFields getAComparedVar() {
 }
 
 class CompSanitizer2 extends Sanitizer {
-  CompSanitizer2() {
-    this = getAComparedVar().similar().getAUse()
-  }
+  CompSanitizer2() { this = getAComparedVar().similar().getAUse() }
 }
-
 
 string macaronContextPath() { result = package("gopkg.in/macaron", "") }
 
