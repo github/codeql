@@ -1,3 +1,5 @@
+/** Provides predicates and classes to reason about the sizing and indexing of arrays. */
+
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DefUse

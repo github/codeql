@@ -12,20 +12,7 @@
  */
 
 import java
-import ArraySizing
-import BoundingChecks
-import semmle.code.java.dataflow.TaintTracking
-
-module BoundedFlowSourceConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof BoundedFlowSource }
-
-  predicate isSink(DataFlow::Node sink) {
-    exists(CheckableArrayAccess arrayAccess | arrayAccess.canThrowOutOfBounds(sink.asExpr()))
-  }
-}
-
-module BoundedFlowSourceFlow = DataFlow::Global<BoundedFlowSourceConfig>;
-
+import semmle.code.java.security.ImproperValidationOfArrayIndexCodeSpecifiedQuery
 import BoundedFlowSourceFlow::PathGraph
 
 from

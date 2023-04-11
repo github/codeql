@@ -12,23 +12,7 @@
  */
 
 import java
-import ArraySizing
-import semmle.code.java.dataflow.TaintTracking
-
-module BoundedFlowSourceConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    source instanceof BoundedFlowSource and
-    // There is not a fixed lower bound which is greater than zero.
-    not source.(BoundedFlowSource).lowerBound() > 0
-  }
-
-  predicate isSink(DataFlow::Node sink) {
-    any(CheckableArrayAccess caa).canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), _)
-  }
-}
-
-module BoundedFlowSourceFlow = DataFlow::Global<BoundedFlowSourceConfig>;
-
+import semmle.code.java.security.ImproperValidationOfArrayConstructionCodeSpecifiedQuery
 import BoundedFlowSourceFlow::PathGraph
 
 from
