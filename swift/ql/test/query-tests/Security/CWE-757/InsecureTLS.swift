@@ -190,7 +190,7 @@ extension URLSessionConfiguration {
 
 func case_21() {
   let _ = URLSessionConfiguration(withMinVersion: tls_protocol_version_t.TLSv13) // GOOD
-  let _ = URLSessionConfiguration(withMinVersion: tls_protocol_version_t.TLSv10) // BAD
+  let _ = URLSessionConfiguration(withMinVersion: tls_protocol_version_t.TLSv10) // BAD [NOT DETECTED]
 }
 
 func setVersion(version: inout tls_protocol_version_t, value: tls_protocol_version_t) {
