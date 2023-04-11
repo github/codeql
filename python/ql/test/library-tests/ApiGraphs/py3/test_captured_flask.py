@@ -11,16 +11,4 @@ def create_app():
 
   @app.route('/v2/user/<int:id>', methods=['GET','PUT'])
   def users(id):
-      if 'Authorization-Token' not in request.headers:
-          return make_response(jsonify({'Error':'Authorization-Token header is not set'}),403)
-
-      token = request.headers.get('Authorization-Token')
-      sid = check_token(token)
-
-      #if we don't have a valid session send 403
-      if not sid:
-          return make_response(jsonify({'Error':'Token check failed: {0}'.format(sid)}))
-      try:
-          user = Users.query.filter_by(id=id).first()  #$ use=moduleImport("flask_sqlalchemy").getMember("SQLAlchemy").getReturn().getMember("Model").getASubclass().getMember("query").getMember("filter_by")
-      except Exception as e:
-          return make_response(jsonify({'error':str(e)}),500)
+      Users.query.filter_by(id=id).first()  #$ use=moduleImport("flask_sqlalchemy").getMember("SQLAlchemy").getReturn().getMember("Model").getASubclass().getMember("query").getMember("filter_by")
