@@ -994,7 +994,7 @@ module Redux {
       override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
         exists(API::CallNode call |
           call = useSelector().getACall() and
-          pred = call.getParameter(0).getReturn().asSink() and
+          pred = call.getCallback(0).getReturnNode() and
           succ = call
         )
       }
