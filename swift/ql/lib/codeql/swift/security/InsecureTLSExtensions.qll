@@ -50,13 +50,15 @@ private class EnumInsecureTlsExtensionsSource extends InsecureTlsExtensionsSourc
  */
 private class NsUrlTlsExtensionsSink extends InsecureTlsExtensionsSink {
   NsUrlTlsExtensionsSink() {
-    exists(AssignExpr assign |
-      assign.getSource() = this.asExpr() and
-      assign.getDest().(MemberRefExpr).getMember().(ConcreteVarDecl).getName() =
+    exists(MemberRefExpr e |
+      e.getBase().getType().getABaseType*().getUnderlyingType().getName() =
+              "URLSessionConfiguration" and
+      e.getMember().(ConcreteVarDecl).getName() =
         [
           "tlsMinimumSupportedProtocolVersion", "tlsMinimumSupportedProtocol",
           "tlsMaximumSupportedProtocolVersion", "tlsMaximumSupportedProtocol"
-        ]
+        ] and
+      this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = e.getBase()
     )
   }
 }
