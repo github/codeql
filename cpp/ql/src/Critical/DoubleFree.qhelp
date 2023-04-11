@@ -1,0 +1,35 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+
+<overview>
+<p>
+Dereferencing a pointer after it has been deallocated may result in memory corruption which can
+lead to security vulnerabilities.
+</p>
+
+<include src="dataFlowWarning.inc.qhelp" />
+
+</overview>
+<recommendation>
+<p>
+Ensure that all execution paths deallocate the allocated memory at most once. If possible, reassign
+the pointer to a null value after deallocating it. This will both prevent double-free vulnerabilities, and
+increase the likelihood of the operating system raising a runtime error if the pointer is subsequently
+dereferenced after being deallocated.
+</p>
+
+</recommendation>
+<example><sample src="DoubleFree.cpp" />
+</example>
+<references>
+
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/vulnerabilities/Doubly_freeing_memory">Doubly freeing memory</a>.
+</li>
+
+</references>
+</qhelp>
