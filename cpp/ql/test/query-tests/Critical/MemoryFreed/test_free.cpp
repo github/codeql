@@ -9,8 +9,8 @@ int asprintf(char ** strp, const char * fmt, ...);
 
 void* test_double_free1(int *a) {
     free(a); // GOOD
-    a[5] = 5;
-    *a = 5;
+    a[5] = 5; // BAD
+    *a = 5; // BAD
     free(a); // BAD
     a = (int*) malloc(8);
     free(a); // GOOD
@@ -40,9 +40,9 @@ void test_dominance2(void *a) {
 void test_post_dominance1(int *a)
 {
     if (condition()) free(a); // GOOD
-    if (condition()) a[2] = 5;
+    if (condition()) a[2] = 5; // GOOD
     if (condition()) free(a); // GOOD
-    a[2] = 5;
+    a[2] = 5; // BAD
     free(a); // BAD
 }
 
@@ -61,14 +61,14 @@ void test_use_after_free6(int *a, int *b) {
     free(a);
     a=b;
     free(b);
-    if (condition()) a[0] = 5;
+    if (condition()) a[0] = 5; // BAD [NOT DETECTED]
 }
 
 void test_use_after_free7(int *a) {
     a[0] = 42;
     free(a);
 
-    if (a[3]) {
+    if (a[3]) { // BAD
         free(a); // BAD
     }
 }
@@ -81,20 +81,20 @@ public:
 void test_new1() {
     A *a = new A();
     delete(a);
-    a->f();
+    a->f(); // BAD [NOT DETECTED]
     delete(a); // BAD [NOT DETECTED]
 }
 
 void test_dereference1(A *a) {
-    a->f();
+    a->f(); // GOOD
     free(a);
-    a->f();
+    a->f(); // BAD
 }
 
 void* use_after_free(void *a) {
     free(a);
-    use(a);
-    return a;
+    use(a); // BAD
+    return a; // BAD
 }
 
 void test_realloc1(void *a) {
@@ -139,23 +139,23 @@ struct list {
 
 void test_loop1(struct list ** list_ptr) {
     struct list *next;
-    while (*list_ptr) {
+    while (*list_ptr) { // GOOD
         free((*list_ptr)->data); // GOOD
-        next = (*list_ptr)->next;
+        next = (*list_ptr)->next; // GOOD
         free(*list_ptr); // GOOD
-        *list_ptr = next;
+        *list_ptr = next; // GOOD
     }
     free(list_ptr); // GOOD
 }
 
 void test_use_after_free8(struct list * a) {
     if (condition()) free(a);
-    a->data = malloc(10);
+    a->data = malloc(10); // BAD
     free(a); // BAD
 }
 
 void test_loop2(char ** a) {
-    while (*a) {
+    while (*a) { // GOOD
         free(*a); // GOOD
         a++;
     }
@@ -171,7 +171,7 @@ void* test_realloc4() {
 
 void test_sizeof(int *a) {
     free(a);
-    int x = sizeof(a[0]);
+    int x = sizeof(a[0]); // GOOD
 }
 
 void call_by_reference(char * &a);
@@ -179,9 +179,9 @@ int custom_alloc_func(char ** a);
 
 void test_reassign(char *a) {
     free(a); // GOOD
-    asprintf(&a, "Hello world");
+    asprintf(&a, "Hello world"); // GOOD
     free(a); //GOOD
-    call_by_reference(a);
+    call_by_reference(a); // GOOD
     free(a); // GOOD
     int v;
     if (v = custom_alloc_func(&a)) return;
