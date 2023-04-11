@@ -105,12 +105,26 @@ predicate neutralElement(FlowSummary::SummarizedCallable c, string provenance) {
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   c = "ListElement" and
   result = FlowSummary::SummaryComponent::listElement()
+  or
+  exists(Attribute a |
+    c.getName() = "Member" and
+    c.getArgumentList() = a.getName() and
+    result =
+      FlowSummary::SummaryComponent::content(any(AttributeContent ac |
+          ac.getAttribute() = a.getName()
+        ))
+  )
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
 string getComponentSpecific(SummaryComponent sc) {
   sc = TContentSummaryComponent(any(ListElementContent c)) and
   result = "ListElement"
+  or
+  exists(AttributeContent ac |
+    sc = TContentSummaryComponent(ac) and
+    result = "Member[" + ac.getAttribute() + "]"
+  )
 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */

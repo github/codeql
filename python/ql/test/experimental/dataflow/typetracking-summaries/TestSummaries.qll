@@ -150,3 +150,40 @@ private class SummarizedCallableJsonLoads extends SummarizedCallable {
     preservesValue = true
   }
 }
+
+// read and store
+private class SummarizedCallableReadSecret extends SummarizedCallable {
+  SummarizedCallableReadSecret() { this = "read_secret" }
+
+  override DataFlow::CallCfgNode getACall() { none() }
+
+  override DataFlow::CallCfgNode getACallSimple() {
+    result.getFunction().asCfgNode().(NameNode).getId() = this
+  }
+
+  override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "Argument[0].Member[secret]" and
+    output = "ReturnValue" and
+    preservesValue = true
+  }
+}
+
+private class SummarizedCallableSetSecret extends SummarizedCallable {
+  SummarizedCallableSetSecret() { this = "set_secret" }
+
+  override DataFlow::CallCfgNode getACall() { none() }
+
+  override DataFlow::CallCfgNode getACallSimple() {
+    result.getFunction().asCfgNode().(NameNode).getId() = this
+  }
+
+  override DataFlow::ArgumentNode getACallback() { result.asExpr().(Name).getId() = this }
+
+  override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+    input = "Argument[1]" and
+    output = "Argument[0].Member[secret]" and
+    preservesValue = true
+  }
+}

@@ -114,17 +114,19 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, string content) {
     nodeFrom = a.getValue() and
     nodeTo = a.getObject()
   )
-  // or
-  // exists(
-  //   SummarizedCallable callable, DataFlowPublic::CallCfgNode call, SummaryComponentStack input,
-  //   SummaryComponentStack output
-  // |
-  //   hasStoreSummary(callable, content, pragma[only_bind_into](input),
-  //     pragma[only_bind_into](output)) and
-  //   call = callable.getACallSimple() and
-  //   nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
-  //   nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
-  // )
+  or
+  exists(
+    SummarizedCallable callable, DataFlowPublic::CallCfgNode call, SummaryComponentStack input,
+    SummaryComponentStack output, DataFlowPublic::ContentSet contents
+  |
+    contents.(DataFlowPublic::AttributeContent).getAttribute() = content
+  |
+    hasStoreSummary(callable, contents, pragma[only_bind_into](input),
+      pragma[only_bind_into](output)) and
+    call = callable.getACallSimple() and
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
+  )
 }
 
 /**
@@ -135,6 +137,18 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, string content) {
     a.mayHaveAttributeName(content) and
     nodeFrom = a.getObject() and
     nodeTo = a
+  )
+  or
+  exists(
+    SummarizedCallable callable, DataFlowPublic::CallCfgNode call, SummaryComponentStack input,
+    SummaryComponentStack output, DataFlowPublic::ContentSet contents
+  |
+    contents.(DataFlowPublic::AttributeContent).getAttribute() = content
+  |
+    hasLoadSummary(callable, contents, pragma[only_bind_into](input), pragma[only_bind_into](output)) and
+    call = callable.getACallSimple() and
+    nodeFrom = evaluateSummaryComponentStackLocal(callable, call, input) and
+    nodeTo = evaluateSummaryComponentStackLocal(callable, call, output)
   )
 }
 
@@ -180,6 +194,22 @@ private predicate hasStoreSummary(
       .propagatesFlow(input,
         SummaryComponentStack::push(SummaryComponent::content(contents), output), true)
 }
+
+pragma[nomagic]
+private predicate hasLoadSummary(
+  SummarizedCallable callable, DataFlowPublic::ContentSet contents, SummaryComponentStack input,
+  SummaryComponentStack output
+) {
+  callable
+      .propagatesFlow(SummaryComponentStack::push(SummaryComponent::content(contents), input),
+        output, true) and
+  not isNonLocal(input.head()) and
+  not isNonLocal(output.head())
+}
+
+private import semmle.python.dataflow.new.internal.AccessPathSyntax as APS
+
+predicate testS(APS::AccessPath ap) { ap.hasSyntaxError() }
 
 pragma[noinline]
 private predicate argumentPositionMatch(

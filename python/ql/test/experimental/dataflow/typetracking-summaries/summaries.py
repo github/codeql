@@ -51,3 +51,11 @@ from json import loads as json_loads
 tainted_resultlist = json_loads(tracked)  # $ tracked
 tr = tainted_resultlist[0]
 tr  # $ MISSING: tracked
+
+x.secret = tracked # $ tracked tracked=secret
+r = read_secret(x) # $ tracked tracked=secret
+r  # $ tracked
+
+y # $ tracked=secret
+set_secret(y, tracked) # $ tracked tracked=secret
+y.secret  # $ tracked tracked=secret
