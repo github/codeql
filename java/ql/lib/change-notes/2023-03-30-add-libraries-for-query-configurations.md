@@ -20,3 +20,4 @@ category: minorAnalysis
 * Added the `ArithmeticTaintedQuery.qll` library to provide the `RemoteUserInputOverflow` and `RemoteUserInputUnderflow` taint-tracking modules to reason about arithmetic with unvalidated user input.
 * Added the `ArithmeticUncontrolledQuery.qll` library to provide the `ArithmeticUncontrolledOverflowFlow`  and `ArithmeticUncontrolledUnderflowFlow` taint-tracking modules to reason about arithmetic with uncontrolled user input.
 * Added the `ArithmeticWithExtremeValuesQuery.qll` library to provide the `MaxValueFlow` and `MinValueFlow` dataflow modules to reason about arithmetic with extreme values.
+* Added the `TempDirLocalInformationDisclosureQuery.qll` library to provide the `TempDirSystemGetPropertyToCreate` taint-tracking module to reason about local information disclosure vulnerabilities caused by local data flow.
