@@ -48,6 +48,15 @@ private module YamlSig implements LibYaml::InputSig {
 
 import LibYaml::Make<YamlSig>
 
+// private class to forward the `toString` etc. predicates from `YamlNode` to `Locatable`.
+private class MyYmlNode extends Locatable instanceof YamlNode {
+  override string getAPrimaryQlClass() { result = YamlNode.super.getAPrimaryQlClass() }
+
+  override Location getLocation() { result = YamlNode.super.getLocation() }
+
+  override string toString() { result = YamlNode.super.toString() }
+}
+
 /** DEPRECATED: Alias for YamlNode */
 deprecated class YAMLNode = YamlNode;
 
