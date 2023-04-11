@@ -14,3 +14,4 @@ Memory allocation size from user-controlled data can allow an attacker to uses a
 <references>
 <li>OWASP: <a href="https://owasp.org/www-community/attacks/Denial_of_Service"> Denial_of_Service</a>.</li>
 </references>
+</qhelp>

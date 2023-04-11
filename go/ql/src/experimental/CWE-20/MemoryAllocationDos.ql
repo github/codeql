@@ -10,7 +10,6 @@
  */
 
 import go
-import semmle.go.security.FlowSources
 import semmle.go.security.AllocationSizeOverflow
 import DataFlow::PathGraph
 
@@ -18,21 +17,16 @@ abstract class Source extends DataFlow::Node { }
 
 abstract class Sanitizer extends DataFlow::Node { }
 
-private predicate compCheckGuard(DataFlow::Node g, Expr e) {
-  e = g.(DataFlow::RelationalComparisonNode).getAnOperand().asExpr()
+private SsaWithFields getAComparedVar() {
+  result.getAUse() = any(DataFlow::RelationalComparisonNode n).getAnOperand()
 }
 
 class CompSanitizer2 extends Sanitizer {
   CompSanitizer2() {
-    exists(
-      ControlFlow::ConditionGuardNode guard, SsaWithFields var, boolean branch, DataFlow::Node g
-    |
-      this = var.similar().getAUse()
-    |
-      compCheckGuard(g, var.getAUse().asExpr()) and guard.ensures(g, branch)
-    )
+    this = getAComparedVar().similar().getAUse()
   }
 }
+
 
 string macaronContextPath() { result = package("gopkg.in/macaron", "") }
 
