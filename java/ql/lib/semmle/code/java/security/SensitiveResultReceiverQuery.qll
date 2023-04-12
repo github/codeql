@@ -1,7 +1,8 @@
 /** Definitions for the sensitive result receiver query. */
 
 import java
-import semmle.code.java.dataflow.TaintTracking2
+import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.SensitiveActions
 
@@ -31,6 +32,25 @@ private predicate untrustedResultReceiverSend(DataFlow::Node src, ResultReceiver
   UntrustedResultReceiverFlow::flow(src, DataFlow::exprNode(call.getReceiver()))
 }
 
+deprecated private class SensitiveResultReceiverConf extends TaintTracking::Configuration {
+  SensitiveResultReceiverConf() { this = "SensitiveResultReceiverConf" }
+
+  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
+
+  override predicate isSink(DataFlow::Node node) {
+    exists(ResultReceiverSendCall call |
+      untrustedResultReceiverSend(_, call) and
+      node.asExpr() = call.getSentData()
+    )
+  }
+
+  override predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    super.allowImplicitRead(node, c)
+    or
+    this.isSink(node)
+  }
+}
+
 module SensitiveResultReceiverConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
@@ -54,13 +74,8 @@ module SensitiveResultReceiverFlow = TaintTracking::Global<SensitiveResultReceiv
 deprecated predicate sensitiveResultReceiver(
   DataFlow::PathNode src, DataFlow::PathNode sink, DataFlow::Node recSrc
 ) {
-  exists(
-    ResultReceiverSendCall call, SensitiveResultReceiverFlow::PathNode srrSrc,
-    SensitiveResultReceiverFlow::PathNode srrSink
-  |
-    src.getNode() = srrSrc.getNode() and sink.getNode() = srrSink.getNode()
-  |
-    SensitiveResultReceiverFlow::flowPath(srrSrc, srrSink) and
+  exists(ResultReceiverSendCall call |
+    any(SensitiveResultReceiverConf c).hasFlowPath(src, sink) and
     sink.getNode().asExpr() = call.getSentData() and
     untrustedResultReceiverSend(recSrc, call)
   )
