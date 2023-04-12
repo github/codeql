@@ -44,13 +44,4 @@ module Spew {
       result = this.getArgument(any(int i | i >= target.getFirstPrintedArg()))
     }
   }
-
-  /** The `Sprint` function or one of its variants. */
-  class Sprinter extends TaintTracking::FunctionModel {
-    Sprinter() { this.hasQualifiedName(packagePath(), ["Sdump", "Sprint", "Sprintln", "Sprintf"]) }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(_) and outp.isResult()
-    }
-  }
 }

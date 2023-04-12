@@ -1,0 +1,23 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["golang.org/x/net/html", "", False, "NewTokenizer", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "NewTokenizer", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "Parse", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "ParseFragment", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "ParseFragmentWithOptions", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "ParseWithOptions", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "Render", "", "", "Argument[1]", "Argument[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "UnescapeString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "", False, "UnescapeString", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "Buffered", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "Buffered", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "Raw", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "Raw", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "TagAttr", "", "", "Argument[-1]", "ReturnValue[1]", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "Text", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "Text", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "Token", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["golang.org/x/net/html", "Tokenizer", True, "Token", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
