@@ -140,6 +140,8 @@ module Raw {
     /**
      * Gets the kind of key path component.
      *
+     * INTERNAL: Do not use.
+     *
      * This is 3 for properties, 4 for array and dictionary subscripts, 5 for optional forcing
      * (`!`), 6 for optional chaining (`?`), 7 for implicit optional wrapping, 8 for `self`,
      * and 9 for tuple element indexing.
