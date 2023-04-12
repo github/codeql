@@ -356,6 +356,40 @@ module Make<InlineExpectationsTestSig Impl> {
     else value = ""
   }
 
+  /**
+   * A module that merges two test signatures.
+   *
+   * This module can be used when multiple inline expectation tests occur in a single file. For example:
+   * ```ql
+   * module Test1 implements TestSig {
+   *  ...
+   * }
+   *
+   * module Test2 implements TestSig {
+   *   ...
+   * }
+   *
+   * import MakeTest<MergeTests<Test1, Test2>>
+   * ```
+   */
+  module MergeTests<TestSig TestImpl1, TestSig TestImpl2> implements TestSig {
+    string getARelevantTag() {
+      result = TestImpl1::getARelevantTag() or result = TestImpl2::getARelevantTag()
+    }
+
+    predicate hasActualResult(Impl::Location location, string element, string tag, string value) {
+      TestImpl1::hasActualResult(location, element, tag, value)
+      or
+      TestImpl2::hasActualResult(location, element, tag, value)
+    }
+
+    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value) {
+      TestImpl1::hasOptionalResult(location, element, tag, value)
+      or
+      TestImpl2::hasOptionalResult(location, element, tag, value)
+    }
+  }
+
   private module LegacyImpl implements TestSig {
     string getARelevantTag() { result = any(InlineExpectationsTest t).getARelevantTag() }
 
