@@ -179,3 +179,15 @@ class ApplyExprCfgNode extends ExprCfgNode {
 class CallExprCfgNode extends ApplyExprCfgNode {
   override CallExpr e;
 }
+
+class KeyPathApplicationExprCfgNode extends ExprCfgNode {
+  override KeyPathApplicationExpr e;
+
+  CfgNode getKeyPath() { result.getAst() = e.getKeyPath() }
+
+  CfgNode getBase() { result.getAst() = e.getBase() }
+}
+
+class KeyPathExprCfgNode extends ExprCfgNode {
+  override KeyPathExpr e;
+}
