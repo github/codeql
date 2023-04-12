@@ -94,8 +94,8 @@ module ParameterSinks {
   private InitializeParameterInstruction getAnAlwaysDereferencedParameter0() {
     exists(DataFlow::Node source, DataFlow::Node sink, IRBlock b1, int i1, IRBlock b2, int i2 |
       hasFlow(pragma[only_bind_into](source), result, pragma[only_bind_into](sink)) and
-      source.hasIndexInBlock(b1, i1) and
-      sink.hasIndexInBlock(b2, i2) and
+      source.hasIndexInBlock(b1, pragma[only_bind_into](i1)) and
+      sink.hasIndexInBlock(b2, pragma[only_bind_into](i2)) and
       strictlyPostDominates(b2, i2, b1, i1)
     )
   }
@@ -104,15 +104,29 @@ module ParameterSinks {
     result.getBlock().postDominates(f.getEntryBlock())
   }
 
+  pragma[nomagic]
+  predicate callHasTargetAndArgument(Function f, int i, CallInstruction call, Instruction argument) {
+    call.getStaticCallTarget() = f and
+    call.getArgument(i) = argument
+  }
+
+  pragma[nomagic]
+  predicate initializeParameterInFunction(Function f, int i, InitializeParameterInstruction init) {
+    pragma[only_bind_out](init.getEnclosingFunction()) = f and
+    init.hasIndex(i)
+  }
+
   InitializeParameterInstruction getAnAlwaysDereferencedParameter() {
     result = getAnAlwaysDereferencedParameter0()
     or
-    exists(CallInstruction call, int i, InitializeParameterInstruction p |
-      pragma[only_bind_out](call.getStaticCallTarget()) =
-        pragma[only_bind_out](p.getEnclosingFunction()) and
-      p.hasIndex(i) and
+    exists(
+      CallInstruction call, int i, InitializeParameterInstruction p, Instruction argument,
+      Function f
+    |
+      callHasTargetAndArgument(f, i, call, argument) and
+      initializeParameterInFunction(f, i, p) and
       p = getAnAlwaysDereferencedParameter() and
-      result = valueNumber(call.getArgument(i)).getAnInstruction() and
+      result = pragma[only_bind_out](valueNumber(argument).getAnInstruction()) and
       call = getAnAlwaysReachedCallInstruction(_)
     )
   }
