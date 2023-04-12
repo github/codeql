@@ -12,7 +12,7 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
-import DataFlow::PathGraph
+import HashWithoutSaltFlow::PathGraph
 
 /**
  * Gets a regular expression for matching common names of variables
@@ -138,12 +138,10 @@ class HashWithoutSaltSink extends DataFlow::ExprNode {
  * Taint configuration tracking flow from an expression whose name suggests it holds password data
  * to a method call that generates a hash without a salt.
  */
-class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
-  HashWithoutSaltConfiguration() { this = "HashWithoutSaltConfiguration" }
+module HashWithoutSaltConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof PasswordVarExpr }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof PasswordVarExpr }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof HashWithoutSaltSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof HashWithoutSaltSink }
 
   /**
    * Holds if a password is concatenated with a salt then hashed together through the call `System.arraycopy(password.getBytes(), ...)`, for example,
@@ -152,7 +150,7 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
    *  `byte[] messageDigest = md.digest(allBytes);`
    * Or the password is concatenated with a salt as a string.
    */
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(MethodAccess ma |
       ma.getMethod().getDeclaringType().hasQualifiedName("java.lang", "System") and
       ma.getMethod().hasName("arraycopy") and
@@ -176,6 +174,8 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, HashWithoutSaltConfiguration cc
-where cc.hasFlowPath(source, sink)
+module HashWithoutSaltFlow = TaintTracking::Global<HashWithoutSaltConfig>;
+
+from HashWithoutSaltFlow::PathNode source, HashWithoutSaltFlow::PathNode sink
+where HashWithoutSaltFlow::flowPath(source, sink)
 select sink, source, sink, "$@ is hashed without a salt.", source, "The password"
