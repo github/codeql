@@ -143,7 +143,7 @@ private predicate isInterfaceMethod(Method c) {
  * a receiver parameter to a concrete method.
  */
 pragma[inline]
-predicate viableParamArgSpecific(
+predicate golangSpecificParamArgFilter(
   DataFlowCall call, DataFlow::ParameterNode p, DataFlow::ArgumentNode arg
 ) {
   // Interface methods calls may be passed strictly to that exact method's model receiver:

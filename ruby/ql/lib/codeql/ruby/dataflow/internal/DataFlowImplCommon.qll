@@ -426,7 +426,7 @@ private module Cached {
       viableParam(call, ppos, p) and
       argumentPositionMatch(call, arg, ppos) and
       compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(p)) and
-      viableParamArgSpecific(call, p, arg)
+      golangSpecificParamArgFilter(call, p, arg)
     )
   }
 
