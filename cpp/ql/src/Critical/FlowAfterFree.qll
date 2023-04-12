@@ -103,7 +103,7 @@ module FlowFromFree<isSinkSig/2 isASink, isExcludedSig/2 isExcluded> {
 
 /**
  * Holds if `n` is a dataflow node such that `n.asExpr() = e` and `e`
- * is being freed by a deallocation function `dealloc`.
+ * is being freed by a deallocation expression `dealloc`.
  */
 predicate isFree(DataFlow::Node n, Expr e, DeallocationExpr dealloc) {
   e = dealloc.getFreedExpr() and
