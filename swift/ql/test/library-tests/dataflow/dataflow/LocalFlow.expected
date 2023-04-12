@@ -615,6 +615,7 @@
 | test.swift:574:7:574:7 | f | test.swift:574:7:574:7 | SSA def(f) |
 | test.swift:574:11:574:14 | #keyPath(...) | test.swift:574:7:574:7 | f |
 | test.swift:574:11:574:14 | #keyPath(...) | test.swift:574:7:574:7 | f |
+| test.swift:574:11:574:14 | enter #keyPath(...) | test.swift:574:14:574:14 | KeyPathComponent |
 | test.swift:579:7:579:7 | self | test.swift:579:7:579:7 | SSA def(self) |
 | test.swift:581:3:581:3 | SSA def(self) | test.swift:582:5:582:5 | self |
 | test.swift:581:3:581:3 | self | test.swift:581:3:581:3 | SSA def(self) |
@@ -632,3 +633,4 @@
 | test.swift:589:7:589:7 | f | test.swift:589:7:589:7 | SSA def(f) |
 | test.swift:589:11:589:17 | #keyPath(...) | test.swift:589:7:589:7 | f |
 | test.swift:589:11:589:17 | #keyPath(...) | test.swift:589:7:589:7 | f |
+| test.swift:589:11:589:17 | enter #keyPath(...) | test.swift:589:15:589:15 | KeyPathComponent |

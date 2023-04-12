@@ -572,7 +572,7 @@ struct S {
 func testKeyPath() {
   let s = S(x: source())
   let f = \S.x
-  sink(arg: s[keyPath: f]) // $ MISSING: flow=573
+  sink(arg: s[keyPath: f]) // $ flow=573
 }
 
 struct S2 {
@@ -587,5 +587,5 @@ func testNestedKeyPath() {
   let s = S(x: source())
   let s2 = S2(s: s)
   let f = \S2.s.x
-  sink(arg: s2[keyPath: f]) // $ MISSING: flow=587
+  sink(arg: s2[keyPath: f]) // $ flow=587
 }
