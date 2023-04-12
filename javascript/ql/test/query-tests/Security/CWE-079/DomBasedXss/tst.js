@@ -489,4 +489,7 @@ function urlStuff() {
   window.open(location.hash.substr(1)); // OK - any JavaScript is executed in another context
 
   navigation.navigate(location.hash.substr(1)); // NOT OK
+
+  const myHistory = require('history').createBrowserHistory();
+  myHistory.push(location.hash.substr(1)); // NOT OK
 }

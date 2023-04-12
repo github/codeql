@@ -222,6 +222,8 @@ module ClientSideUrlRedirect {
     HistoryWriteUrlSink() {
       this = History::getBrowserHistory().getMember(["push", "replace"]).getACall().getArgument(0)
     }
+
+    override predicate isXssSink() { any() }
   }
 
   /**
