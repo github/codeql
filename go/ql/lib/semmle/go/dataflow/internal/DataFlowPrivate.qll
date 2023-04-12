@@ -242,20 +242,44 @@ private newtype TDataFlowCallable =
   TSummarizedCallable(FlowSummary::SummarizedCallable c)
 
 class DataFlowCallable extends TDataFlowCallable {
+  /**
+   * Gets the `Callable` corresponding to this `DataFlowCallable`, if any.
+   */
   Callable asCallable() { this = TCallable(result) }
 
+  /**
+   * Gets the `File` whose root scope corresponds to this `DataFlowCallable`, if any.
+   */
   File asFileScope() { this = TFileScope(result) }
 
+  /**
+   * Gets the `SummarizedCallable` corresponding to this `DataFlowCallable`, if any.
+   */
   FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
+  /**
+   * Gets the type of this callable.
+   *
+   * If this is a `File` root scope, this has no value.
+   */
   SignatureType getType() { result = [this.asCallable(), this.asSummarizedCallable()].getType() }
 
+  /**
+   * Gets a string representation of this callable.
+   */
   string toString() {
     result = this.asCallable().toString() or
     result = "File scope: " + this.asFileScope().toString() or
     result = "Summary: " + this.asSummarizedCallable().toString()
   }
 
+  /**
+   * Holds if this callable is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
