@@ -1,4 +1,3 @@
-| file://:0:0:0:0 | Encode | tst2.go:10:35:10:38 | data | tst2.go:10:9:10:26 | call to NewEncoder |
 | file://:0:0:0:0 | NewEncoder | tst2.go:10:9:10:26 | call to NewEncoder | tst2.go:9:6:9:6 | definition of w |
 | file://:0:0:0:0 | ReadFrom | tst.go:10:23:10:28 | reader | tst.go:9:2:9:12 | definition of bytesBuffer |
 | file://:0:0:0:0 | Reset | reset.go:12:15:12:20 | source | reset.go:11:6:11:11 | definition of reader |

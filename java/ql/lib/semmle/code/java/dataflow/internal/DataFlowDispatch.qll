@@ -171,6 +171,16 @@ private module DispatchImpl {
   /** Holds if arguments at position `apos` match parameters at position `ppos`. */
   pragma[inline]
   predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) { ppos = apos }
+
+  /**
+   * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
+   *
+   * This is a temporary hook to support technical debt in the Go language; do not use.
+   */
+  pragma[inline]
+  predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
+    any()
+  }
 }
 
 import DispatchImpl
