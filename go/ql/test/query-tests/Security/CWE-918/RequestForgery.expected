@@ -1,6 +1,5 @@
 edges
 | RequestForgery.go:8:12:8:34 | call to FormValue | RequestForgery.go:11:24:11:65 | ...+... |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
 | tst.go:10:13:10:35 | call to FormValue | tst.go:14:11:14:17 | tainted |
 | tst.go:10:13:10:35 | call to FormValue | tst.go:18:12:18:18 | tainted |
 | tst.go:10:13:10:35 | call to FormValue | tst.go:21:34:21:40 | tainted |
@@ -8,7 +7,6 @@ edges
 | tst.go:10:13:10:35 | call to FormValue | tst.go:27:11:27:29 | ...+... |
 | tst.go:10:13:10:35 | call to FormValue | tst.go:29:11:29:40 | ...+... |
 | tst.go:10:13:10:35 | call to FormValue | tst.go:37:11:37:11 | u |
-| tst.go:37:11:37:11 | u | file://:0:0:0:0 | parameter -1 of String |
 | tst.go:37:11:37:11 | u | tst.go:37:11:37:20 | call to String |
 | websocket.go:60:21:60:31 | call to Referer | websocket.go:65:27:65:40 | untrustedInput |
 | websocket.go:74:21:74:31 | call to Referer | websocket.go:78:36:78:49 | untrustedInput |
@@ -22,8 +20,6 @@ edges
 nodes
 | RequestForgery.go:8:12:8:34 | call to FormValue | semmle.label | call to FormValue |
 | RequestForgery.go:11:24:11:65 | ...+... | semmle.label | ...+... |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in String | semmle.label | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | semmle.label | parameter -1 of String |
 | tst.go:10:13:10:35 | call to FormValue | semmle.label | call to FormValue |
 | tst.go:14:11:14:17 | tainted | semmle.label | tainted |
 | tst.go:18:12:18:18 | tainted | semmle.label | tainted |
@@ -52,7 +48,6 @@ nodes
 | websocket.go:202:21:202:31 | call to Referer | semmle.label | call to Referer |
 | websocket.go:204:11:204:24 | untrustedInput | semmle.label | untrustedInput |
 subpaths
-| tst.go:37:11:37:11 | u | file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String | tst.go:37:11:37:20 | call to String |
 #select
 | RequestForgery.go:11:15:11:66 | call to Get | RequestForgery.go:8:12:8:34 | call to FormValue | RequestForgery.go:11:24:11:65 | ...+... | The $@ of this request depends on a $@. | RequestForgery.go:11:24:11:65 | ...+... | URL | RequestForgery.go:8:12:8:34 | call to FormValue | user-provided value |
 | tst.go:14:2:14:18 | call to Get | tst.go:10:13:10:35 | call to FormValue | tst.go:14:11:14:17 | tainted | The $@ of this request depends on a $@. | tst.go:14:11:14:17 | tainted | URL | tst.go:10:13:10:35 | call to FormValue | user-provided value |

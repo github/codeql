@@ -1,17 +1,13 @@
 edges
-| file://:0:0:0:0 | parameter 0 of ReadFull | file://:0:0:0:0 | [summary] to write: argument 1 in ReadFull |
 | sample.go:15:24:15:63 | type conversion | sample.go:16:9:16:15 | slice expression |
 | sample.go:15:49:15:61 | call to Uint32 | sample.go:15:24:15:63 | type conversion |
 | sample.go:16:9:16:15 | slice expression | sample.go:26:25:26:30 | call to Guid |
 | sample.go:33:2:33:6 | definition of nonce | sample.go:37:25:37:29 | nonce |
 | sample.go:33:2:33:6 | definition of nonce | sample.go:37:32:37:36 | nonce |
 | sample.go:34:12:34:40 | call to New | sample.go:35:14:35:19 | random |
-| sample.go:35:14:35:19 | random | file://:0:0:0:0 | parameter 0 of ReadFull |
 | sample.go:35:14:35:19 | random | sample.go:33:2:33:6 | definition of nonce |
 nodes
 | InsecureRandomness.go:12:18:12:40 | call to Intn | semmle.label | call to Intn |
-| file://:0:0:0:0 | [summary] to write: argument 1 in ReadFull | semmle.label | [summary] to write: argument 1 in ReadFull |
-| file://:0:0:0:0 | parameter 0 of ReadFull | semmle.label | parameter 0 of ReadFull |
 | sample.go:15:24:15:63 | type conversion | semmle.label | type conversion |
 | sample.go:15:49:15:61 | call to Uint32 | semmle.label | call to Uint32 |
 | sample.go:16:9:16:15 | slice expression | semmle.label | slice expression |
@@ -27,7 +23,6 @@ nodes
 | sample.go:46:17:46:39 | call to Intn | semmle.label | call to Intn |
 | sample.go:47:17:47:39 | call to Intn | semmle.label | call to Intn |
 subpaths
-| sample.go:35:14:35:19 | random | file://:0:0:0:0 | parameter 0 of ReadFull | file://:0:0:0:0 | [summary] to write: argument 1 in ReadFull | sample.go:33:2:33:6 | definition of nonce |
 #select
 | InsecureRandomness.go:12:18:12:40 | call to Intn | InsecureRandomness.go:12:18:12:40 | call to Intn | InsecureRandomness.go:12:18:12:40 | call to Intn | A password-related function depends on a $@ generated with a cryptographically weak RNG. | InsecureRandomness.go:12:18:12:40 | call to Intn | random number |
 | sample.go:26:25:26:30 | call to Guid | sample.go:15:49:15:61 | call to Uint32 | sample.go:26:25:26:30 | call to Guid | This cryptographic algorithm depends on a $@ generated with a cryptographically weak RNG. | sample.go:15:49:15:61 | call to Uint32 | random number |

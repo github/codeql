@@ -1,20 +1,15 @@
 edges
 | XPathInjection.go:13:14:13:19 | selection of Form | XPathInjection.go:13:14:13:35 | call to Get |
-| XPathInjection.go:13:14:13:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | XPathInjection.go:13:14:13:35 | call to Get | XPathInjection.go:16:29:16:91 | ...+... |
-| file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
-| tst.go:32:14:32:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | tst.go:32:14:32:19 | selection of Form | tst.go:32:14:32:35 | call to Get |
 | tst.go:32:14:32:35 | call to Get | tst.go:35:23:35:85 | ...+... |
 | tst.go:32:14:32:35 | call to Get | tst.go:38:24:38:86 | ...+... |
 | tst.go:32:14:32:35 | call to Get | tst.go:41:24:41:82 | ...+... |
-| tst.go:46:14:46:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | tst.go:46:14:46:19 | selection of Form | tst.go:46:14:46:35 | call to Get |
 | tst.go:46:14:46:35 | call to Get | tst.go:49:26:49:84 | ...+... |
 | tst.go:46:14:46:35 | call to Get | tst.go:52:29:52:87 | ...+... |
 | tst.go:46:14:46:35 | call to Get | tst.go:55:33:55:91 | ...+... |
 | tst.go:46:14:46:35 | call to Get | tst.go:58:30:58:88 | ...+... |
-| tst.go:63:14:63:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | tst.go:63:14:63:19 | selection of Form | tst.go:63:14:63:35 | call to Get |
 | tst.go:63:14:63:35 | call to Get | tst.go:66:25:66:83 | ...+... |
 | tst.go:63:14:63:35 | call to Get | tst.go:69:28:69:86 | ...+... |
@@ -24,38 +19,31 @@ edges
 | tst.go:63:14:63:35 | call to Get | tst.go:81:29:81:87 | ...+... |
 | tst.go:63:14:63:35 | call to Get | tst.go:84:23:84:85 | ...+... |
 | tst.go:63:14:63:35 | call to Get | tst.go:87:22:87:84 | ...+... |
-| tst.go:92:14:92:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | tst.go:92:14:92:19 | selection of Form | tst.go:92:14:92:35 | call to Get |
 | tst.go:92:14:92:35 | call to Get | tst.go:95:26:95:84 | ...+... |
 | tst.go:92:14:92:35 | call to Get | tst.go:98:29:98:87 | ...+... |
 | tst.go:92:14:92:35 | call to Get | tst.go:101:33:101:91 | ...+... |
 | tst.go:92:14:92:35 | call to Get | tst.go:104:30:104:88 | ...+... |
-| tst.go:109:14:109:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | tst.go:109:14:109:19 | selection of Form | tst.go:109:14:109:35 | call to Get |
 | tst.go:109:14:109:35 | call to Get | tst.go:112:25:112:87 | ...+... |
 | tst.go:109:14:109:35 | call to Get | tst.go:115:26:115:88 | ...+... |
-| tst.go:120:14:120:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | tst.go:120:14:120:19 | selection of Form | tst.go:120:14:120:35 | call to Get |
 | tst.go:120:14:120:35 | call to Get | tst.go:124:23:124:126 | ...+... |
 | tst.go:120:14:120:35 | call to Get | tst.go:127:24:127:127 | ...+... |
 | tst.go:120:14:120:35 | call to Get | tst.go:130:27:130:122 | ...+... |
-| tst.go:121:14:121:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | tst.go:121:14:121:19 | selection of Form | tst.go:121:14:121:35 | call to Get |
 | tst.go:121:14:121:35 | call to Get | tst.go:124:23:124:126 | ...+... |
 | tst.go:121:14:121:35 | call to Get | tst.go:127:24:127:127 | ...+... |
 | tst.go:121:14:121:35 | call to Get | tst.go:130:27:130:122 | ...+... |
-| tst.go:138:14:138:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | tst.go:138:14:138:19 | selection of Form | tst.go:138:14:138:35 | call to Get |
 | tst.go:138:14:138:35 | call to Get | tst.go:141:27:141:89 | ...+... |
 | tst.go:138:14:138:35 | call to Get | tst.go:144:28:144:90 | ...+... |
-| tst.go:149:14:149:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | tst.go:149:14:149:19 | selection of Form | tst.go:149:14:149:35 | call to Get |
 | tst.go:149:14:149:35 | call to Get | tst.go:153:33:153:136 | ...+... |
 | tst.go:149:14:149:35 | call to Get | tst.go:156:18:156:121 | ...+... |
 | tst.go:149:14:149:35 | call to Get | tst.go:162:31:162:126 | ...+... |
 | tst.go:149:14:149:35 | call to Get | tst.go:171:21:171:116 | ...+... |
 | tst.go:149:14:149:35 | call to Get | tst.go:180:27:180:122 | ...+... |
-| tst.go:150:14:150:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | tst.go:150:14:150:19 | selection of Form | tst.go:150:14:150:35 | call to Get |
 | tst.go:150:14:150:35 | call to Get | tst.go:153:33:153:136 | ...+... |
 | tst.go:150:14:150:35 | call to Get | tst.go:156:18:156:121 | ...+... |
@@ -66,8 +54,6 @@ nodes
 | XPathInjection.go:13:14:13:19 | selection of Form | semmle.label | selection of Form |
 | XPathInjection.go:13:14:13:35 | call to Get | semmle.label | call to Get |
 | XPathInjection.go:16:29:16:91 | ...+... | semmle.label | ...+... |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | semmle.label | [summary] to write: return (return[0]) in Get |
-| file://:0:0:0:0 | parameter -1 of Get | semmle.label | parameter -1 of Get |
 | tst.go:32:14:32:19 | selection of Form | semmle.label | selection of Form |
 | tst.go:32:14:32:35 | call to Get | semmle.label | call to Get |
 | tst.go:35:23:35:85 | ...+... | semmle.label | ...+... |
@@ -120,17 +106,6 @@ nodes
 | tst.go:171:21:171:116 | ...+... | semmle.label | ...+... |
 | tst.go:180:27:180:122 | ...+... | semmle.label | ...+... |
 subpaths
-| XPathInjection.go:13:14:13:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | XPathInjection.go:13:14:13:35 | call to Get |
-| tst.go:32:14:32:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | tst.go:32:14:32:35 | call to Get |
-| tst.go:46:14:46:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | tst.go:46:14:46:35 | call to Get |
-| tst.go:63:14:63:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | tst.go:63:14:63:35 | call to Get |
-| tst.go:92:14:92:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | tst.go:92:14:92:35 | call to Get |
-| tst.go:109:14:109:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | tst.go:109:14:109:35 | call to Get |
-| tst.go:120:14:120:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | tst.go:120:14:120:35 | call to Get |
-| tst.go:121:14:121:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | tst.go:121:14:121:35 | call to Get |
-| tst.go:138:14:138:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | tst.go:138:14:138:35 | call to Get |
-| tst.go:149:14:149:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | tst.go:149:14:149:35 | call to Get |
-| tst.go:150:14:150:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | tst.go:150:14:150:35 | call to Get |
 #select
 | XPathInjection.go:16:29:16:91 | ...+... | XPathInjection.go:13:14:13:19 | selection of Form | XPathInjection.go:16:29:16:91 | ...+... | XPath expression depends on a $@. | XPathInjection.go:13:14:13:19 | selection of Form | user-provided value |
 | tst.go:35:23:35:85 | ...+... | tst.go:32:14:32:19 | selection of Form | tst.go:35:23:35:85 | ...+... | XPath expression depends on a $@. | tst.go:32:14:32:19 | selection of Form | user-provided value |

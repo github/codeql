@@ -102,8 +102,6 @@ edges
 | HTMLTemplateEscapingPassthrough.go:90:16:90:77 | type conversion | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted |
 | HTMLTemplateEscapingPassthrough.go:90:38:90:67 | call to HTMLEscapeString | HTMLTemplateEscapingPassthrough.go:90:16:90:77 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:90:64:90:66 | src | HTMLTemplateEscapingPassthrough.go:90:38:90:67 | call to HTMLEscapeString |
-| HTMLTemplateEscapingPassthrough.go:90:64:90:66 | src | file://:0:0:0:0 | parameter 0 of HTMLEscapeString |
-| file://:0:0:0:0 | parameter 0 of HTMLEscapeString | file://:0:0:0:0 | [summary] to write: return (return[0]) in HTMLEscapeString |
 nodes
 | HTMLTemplateEscapingPassthrough.go:28:12:28:41 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:28:12:28:41 | type conversion | semmle.label | type conversion |
@@ -300,10 +298,7 @@ nodes
 | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted | semmle.label | converted |
 | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted | semmle.label | converted |
 | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted | semmle.label | converted |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in HTMLEscapeString | semmle.label | [summary] to write: return (return[0]) in HTMLEscapeString |
-| file://:0:0:0:0 | parameter 0 of HTMLEscapeString | semmle.label | parameter 0 of HTMLEscapeString |
 subpaths
-| HTMLTemplateEscapingPassthrough.go:90:64:90:66 | src | file://:0:0:0:0 | parameter 0 of HTMLEscapeString | file://:0:0:0:0 | [summary] to write: return (return[0]) in HTMLEscapeString | HTMLTemplateEscapingPassthrough.go:90:38:90:67 | call to HTMLEscapeString |
 #select
 | HTMLTemplateEscapingPassthrough.go:29:39:29:39 | a | HTMLTemplateEscapingPassthrough.go:28:26:28:40 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:29:39:29:39 | a | Data from an $@ will not be auto-escaped because it was $@ to template.HTML | HTMLTemplateEscapingPassthrough.go:28:26:28:40 | call to UserAgent | untrusted source | HTMLTemplateEscapingPassthrough.go:28:12:28:41 | type conversion | converted |
 | HTMLTemplateEscapingPassthrough.go:35:40:35:40 | a | HTMLTemplateEscapingPassthrough.go:34:23:34:37 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:35:40:35:40 | a | Data from an $@ will not be auto-escaped because it was $@ to template.HTML | HTMLTemplateEscapingPassthrough.go:34:23:34:37 | call to UserAgent | untrusted source | HTMLTemplateEscapingPassthrough.go:34:9:34:38 | type conversion | converted |

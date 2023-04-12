@@ -1,41 +1,27 @@
 edges
 | EmailBad.go:9:10:9:17 | selection of Header | EmailBad.go:9:10:9:29 | call to Get |
-| EmailBad.go:9:10:9:17 | selection of Header | file://:0:0:0:0 | parameter -1 of Get |
 | EmailBad.go:9:10:9:29 | call to Get | EmailBad.go:12:56:12:67 | type conversion |
-| file://:0:0:0:0 | parameter 1 of NewContent | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewContent |
-| file://:0:0:0:0 | parameter 1 of WriteString | file://:0:0:0:0 | [summary] to write: argument 0 in WriteString |
-| file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
 | main.go:29:21:29:31 | call to Referer | main.go:31:57:31:78 | type conversion |
 | main.go:37:21:37:31 | call to Referer | main.go:41:25:41:38 | untrustedInput |
-| main.go:41:25:41:38 | untrustedInput | file://:0:0:0:0 | parameter 1 of WriteString |
 | main.go:41:25:41:38 | untrustedInput | main.go:40:3:40:7 | definition of write |
 | main.go:46:21:46:31 | call to Referer | main.go:52:46:52:59 | untrustedInput |
 | main.go:46:21:46:31 | call to Referer | main.go:53:52:53:65 | untrustedInput |
 | main.go:58:21:58:31 | call to Referer | main.go:60:47:60:60 | untrustedInput |
 | main.go:60:14:60:61 | call to NewContent | main.go:63:16:63:22 | content |
-| main.go:60:47:60:60 | untrustedInput | file://:0:0:0:0 | parameter 1 of NewContent |
 | main.go:60:47:60:60 | untrustedInput | main.go:60:14:60:61 | call to NewContent |
 | main.go:68:21:68:31 | call to Referer | main.go:74:47:74:60 | untrustedInput |
 | main.go:74:14:74:61 | call to NewContent | main.go:76:50:76:56 | content |
 | main.go:74:14:74:61 | call to NewContent | main.go:76:59:76:65 | content |
 | main.go:74:14:74:61 | call to NewContent | main.go:77:16:77:22 | content |
-| main.go:74:47:74:60 | untrustedInput | file://:0:0:0:0 | parameter 1 of NewContent |
 | main.go:74:47:74:60 | untrustedInput | main.go:74:14:74:61 | call to NewContent |
 | main.go:82:21:82:31 | call to Referer | main.go:89:37:89:50 | untrustedInput |
 | main.go:82:21:82:31 | call to Referer | main.go:91:48:91:61 | untrustedInput |
 | main.go:91:15:91:62 | call to NewContent | main.go:93:16:93:23 | content2 |
-| main.go:91:48:91:61 | untrustedInput | file://:0:0:0:0 | parameter 1 of NewContent |
 | main.go:91:48:91:61 | untrustedInput | main.go:91:15:91:62 | call to NewContent |
 nodes
 | EmailBad.go:9:10:9:17 | selection of Header | semmle.label | selection of Header |
 | EmailBad.go:9:10:9:29 | call to Get | semmle.label | call to Get |
 | EmailBad.go:12:56:12:67 | type conversion | semmle.label | type conversion |
-| file://:0:0:0:0 | [summary] to write: argument 0 in WriteString | semmle.label | [summary] to write: argument 0 in WriteString |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | semmle.label | [summary] to write: return (return[0]) in Get |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in NewContent | semmle.label | [summary] to write: return (return[0]) in NewContent |
-| file://:0:0:0:0 | parameter 1 of NewContent | semmle.label | parameter 1 of NewContent |
-| file://:0:0:0:0 | parameter 1 of WriteString | semmle.label | parameter 1 of WriteString |
-| file://:0:0:0:0 | parameter -1 of Get | semmle.label | parameter -1 of Get |
 | main.go:29:21:29:31 | call to Referer | semmle.label | call to Referer |
 | main.go:31:57:31:78 | type conversion | semmle.label | type conversion |
 | main.go:37:21:37:31 | call to Referer | semmle.label | call to Referer |
@@ -60,11 +46,6 @@ nodes
 | main.go:91:48:91:61 | untrustedInput | semmle.label | untrustedInput |
 | main.go:93:16:93:23 | content2 | semmle.label | content2 |
 subpaths
-| EmailBad.go:9:10:9:17 | selection of Header | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | EmailBad.go:9:10:9:29 | call to Get |
-| main.go:41:25:41:38 | untrustedInput | file://:0:0:0:0 | parameter 1 of WriteString | file://:0:0:0:0 | [summary] to write: argument 0 in WriteString | main.go:40:3:40:7 | definition of write |
-| main.go:60:47:60:60 | untrustedInput | file://:0:0:0:0 | parameter 1 of NewContent | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewContent | main.go:60:14:60:61 | call to NewContent |
-| main.go:74:47:74:60 | untrustedInput | file://:0:0:0:0 | parameter 1 of NewContent | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewContent | main.go:74:14:74:61 | call to NewContent |
-| main.go:91:48:91:61 | untrustedInput | file://:0:0:0:0 | parameter 1 of NewContent | file://:0:0:0:0 | [summary] to write: return (return[0]) in NewContent | main.go:91:15:91:62 | call to NewContent |
 #select
 | EmailBad.go:12:56:12:67 | type conversion | EmailBad.go:9:10:9:17 | selection of Header | EmailBad.go:12:56:12:67 | type conversion | Email content may contain $@. | EmailBad.go:9:10:9:17 | selection of Header | untrusted input |
 | main.go:31:57:31:78 | type conversion | main.go:29:21:29:31 | call to Referer | main.go:31:57:31:78 | type conversion | Email content may contain $@. | main.go:29:21:29:31 | call to Referer | untrusted input |

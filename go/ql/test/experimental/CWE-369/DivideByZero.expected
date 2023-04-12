@@ -1,25 +1,18 @@
 edges
 | DivideByZero.go:10:12:10:16 | selection of URL | DivideByZero.go:10:12:10:24 | call to Query |
-| DivideByZero.go:10:12:10:16 | selection of URL | file://:0:0:0:0 | parameter -1 of Query |
 | DivideByZero.go:10:12:10:24 | call to Query | DivideByZero.go:12:16:12:20 | value |
 | DivideByZero.go:17:12:17:16 | selection of URL | DivideByZero.go:17:12:17:24 | call to Query |
-| DivideByZero.go:17:12:17:16 | selection of URL | file://:0:0:0:0 | parameter -1 of Query |
 | DivideByZero.go:17:12:17:24 | call to Query | DivideByZero.go:18:11:18:24 | type conversion |
 | DivideByZero.go:18:11:18:24 | type conversion | DivideByZero.go:19:16:19:20 | value |
 | DivideByZero.go:24:12:24:16 | selection of URL | DivideByZero.go:24:12:24:24 | call to Query |
-| DivideByZero.go:24:12:24:16 | selection of URL | file://:0:0:0:0 | parameter -1 of Query |
 | DivideByZero.go:24:12:24:24 | call to Query | DivideByZero.go:26:16:26:20 | value |
 | DivideByZero.go:31:12:31:16 | selection of URL | DivideByZero.go:31:12:31:24 | call to Query |
-| DivideByZero.go:31:12:31:16 | selection of URL | file://:0:0:0:0 | parameter -1 of Query |
 | DivideByZero.go:31:12:31:24 | call to Query | DivideByZero.go:33:16:33:20 | value |
 | DivideByZero.go:38:12:38:16 | selection of URL | DivideByZero.go:38:12:38:24 | call to Query |
-| DivideByZero.go:38:12:38:16 | selection of URL | file://:0:0:0:0 | parameter -1 of Query |
 | DivideByZero.go:38:12:38:24 | call to Query | DivideByZero.go:40:16:40:20 | value |
 | DivideByZero.go:54:12:54:16 | selection of URL | DivideByZero.go:54:12:54:24 | call to Query |
-| DivideByZero.go:54:12:54:16 | selection of URL | file://:0:0:0:0 | parameter -1 of Query |
 | DivideByZero.go:54:12:54:24 | call to Query | DivideByZero.go:55:11:55:24 | type conversion |
 | DivideByZero.go:55:11:55:24 | type conversion | DivideByZero.go:57:17:57:21 | value |
-| file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query |
 nodes
 | DivideByZero.go:10:12:10:16 | selection of URL | semmle.label | selection of URL |
 | DivideByZero.go:10:12:10:24 | call to Query | semmle.label | call to Query |
@@ -41,15 +34,7 @@ nodes
 | DivideByZero.go:54:12:54:24 | call to Query | semmle.label | call to Query |
 | DivideByZero.go:55:11:55:24 | type conversion | semmle.label | type conversion |
 | DivideByZero.go:57:17:57:21 | value | semmle.label | value |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | semmle.label | [summary] to write: return (return[0]) in Query |
-| file://:0:0:0:0 | parameter -1 of Query | semmle.label | parameter -1 of Query |
 subpaths
-| DivideByZero.go:10:12:10:16 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | DivideByZero.go:10:12:10:24 | call to Query |
-| DivideByZero.go:17:12:17:16 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | DivideByZero.go:17:12:17:24 | call to Query |
-| DivideByZero.go:24:12:24:16 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | DivideByZero.go:24:12:24:24 | call to Query |
-| DivideByZero.go:31:12:31:16 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | DivideByZero.go:31:12:31:24 | call to Query |
-| DivideByZero.go:38:12:38:16 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | DivideByZero.go:38:12:38:24 | call to Query |
-| DivideByZero.go:54:12:54:16 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | DivideByZero.go:54:12:54:24 | call to Query |
 #select
 | DivideByZero.go:12:16:12:20 | value | DivideByZero.go:10:12:10:16 | selection of URL | DivideByZero.go:12:16:12:20 | value | This variable might be zero leading to a division-by-zero panic. |
 | DivideByZero.go:19:16:19:20 | value | DivideByZero.go:17:12:17:16 | selection of URL | DivideByZero.go:19:16:19:20 | value | This variable might be zero leading to a division-by-zero panic. |

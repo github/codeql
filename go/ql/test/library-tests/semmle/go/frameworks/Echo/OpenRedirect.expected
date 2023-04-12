@@ -1,20 +1,12 @@
 edges
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String |
 | test.go:170:11:170:32 | call to Param | test.go:171:20:171:24 | param |
 | test.go:176:11:176:32 | call to Param | test.go:180:20:180:28 | ...+... |
 | test.go:188:10:188:26 | selection of URL | test.go:191:21:191:23 | url |
 | test.go:188:10:188:26 | selection of URL | test.go:191:21:191:23 | url |
 | test.go:188:10:188:26 | selection of URL | test.go:191:21:191:32 | call to String |
-| test.go:191:21:191:23 | url | file://:0:0:0:0 | parameter -1 of String |
-| test.go:191:21:191:23 | url | file://:0:0:0:0 | parameter -1 of String |
 | test.go:191:21:191:23 | url | test.go:191:21:191:32 | call to String |
 | test.go:191:21:191:23 | url | test.go:191:21:191:32 | call to String |
 nodes
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in String | semmle.label | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in String | semmle.label | [summary] to write: return (return[0]) in String |
-| file://:0:0:0:0 | parameter -1 of String | semmle.label | parameter -1 of String |
-| file://:0:0:0:0 | parameter -1 of String | semmle.label | parameter -1 of String |
 | test.go:170:11:170:32 | call to Param | semmle.label | call to Param |
 | test.go:171:20:171:24 | param | semmle.label | param |
 | test.go:176:11:176:32 | call to Param | semmle.label | call to Param |
@@ -26,8 +18,6 @@ nodes
 | test.go:191:21:191:32 | call to String | semmle.label | call to String |
 | test.go:191:21:191:32 | call to String | semmle.label | call to String |
 subpaths
-| test.go:191:21:191:23 | url | file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String | test.go:191:21:191:32 | call to String |
-| test.go:191:21:191:23 | url | file://:0:0:0:0 | parameter -1 of String | file://:0:0:0:0 | [summary] to write: return (return[0]) in String | test.go:191:21:191:32 | call to String |
 #select
 | test.go:171:20:171:24 | param | test.go:170:11:170:32 | call to Param | test.go:171:20:171:24 | param | This path to an untrusted URL redirection depends on a $@. | test.go:170:11:170:32 | call to Param | user-provided value |
 | test.go:180:20:180:28 | ...+... | test.go:176:11:176:32 | call to Param | test.go:180:20:180:28 | ...+... | This path to an untrusted URL redirection depends on a $@. | test.go:176:11:176:32 | call to Param | user-provided value |

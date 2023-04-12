@@ -1,27 +1,4 @@
 edges
-| file://:0:0:0:0 | parameter 0 of HTML2str | file://:0:0:0:0 | [summary] to write: return (return[0]) in HTML2str |
-| file://:0:0:0:0 | parameter 0 of Htmlunquote | file://:0:0:0:0 | [summary] to write: return (return[0]) in Htmlunquote |
-| file://:0:0:0:0 | parameter 0 of MapGet | file://:0:0:0:0 | [summary] to write: return (return[0]) in MapGet |
-| file://:0:0:0:0 | parameter 0 of ParseForm | file://:0:0:0:0 | [summary] to write: argument 1 in ParseForm |
-| file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll |
-| file://:0:0:0:0 | parameter 0 of SliceChunk | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceChunk |
-| file://:0:0:0:0 | parameter 0 of SliceDiff | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceDiff |
-| file://:0:0:0:0 | parameter 0 of SliceFilter | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceFilter |
-| file://:0:0:0:0 | parameter 0 of SliceIntersect | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceIntersect |
-| file://:0:0:0:0 | parameter 0 of SliceMerge | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceMerge |
-| file://:0:0:0:0 | parameter 0 of SlicePad | file://:0:0:0:0 | [summary] to write: return (return[0]) in SlicePad |
-| file://:0:0:0:0 | parameter 0 of SliceRand | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceRand |
-| file://:0:0:0:0 | parameter 0 of SliceReduce | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceReduce |
-| file://:0:0:0:0 | parameter 0 of SliceShuffle | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceShuffle |
-| file://:0:0:0:0 | parameter 0 of SliceUnique | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceUnique |
-| file://:0:0:0:0 | parameter 0 of Str2html | file://:0:0:0:0 | [summary] to write: return (return[0]) in Str2html |
-| file://:0:0:0:0 | parameter 0 of Substr | file://:0:0:0:0 | [summary] to write: return (return[0]) in Substr |
-| file://:0:0:0:0 | parameter 1 of Set | file://:0:0:0:0 | [summary] to write: argument -1 in Set |
-| file://:0:0:0:0 | parameter 1 of SliceIntersect | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceIntersect |
-| file://:0:0:0:0 | parameter 1 of SliceMerge | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceMerge |
-| file://:0:0:0:0 | parameter 2 of SlicePad | file://:0:0:0:0 | [summary] to write: return (return[0]) in SlicePad |
-| file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
-| file://:0:0:0:0 | parameter -1 of Items | file://:0:0:0:0 | [summary] to write: return (return[0]) in Items |
 | test.go:27:6:27:10 | definition of bound | test.go:29:13:29:30 | type conversion |
 | test.go:27:6:27:10 | definition of bound | test.go:30:13:30:27 | type conversion |
 | test.go:27:6:27:10 | definition of bound | test.go:31:13:31:29 | type conversion |
@@ -47,27 +24,20 @@ edges
 | test.go:193:15:193:26 | call to Data | test.go:198:36:198:53 | type assertion |
 | test.go:193:15:193:26 | call to Data | test.go:199:34:199:51 | type assertion |
 | test.go:194:21:194:54 | call to HTML2str | test.go:194:14:194:55 | type conversion |
-| test.go:194:36:194:53 | type assertion | file://:0:0:0:0 | parameter 0 of HTML2str |
 | test.go:194:36:194:53 | type assertion | test.go:194:21:194:54 | call to HTML2str |
 | test.go:195:21:195:57 | call to Htmlunquote | test.go:195:14:195:58 | type conversion |
-| test.go:195:39:195:56 | type assertion | file://:0:0:0:0 | parameter 0 of Htmlunquote |
 | test.go:195:39:195:56 | type assertion | test.go:195:21:195:57 | call to Htmlunquote |
 | test.go:196:2:196:68 | ... := ...[0] | test.go:197:14:197:28 | type assertion |
-| test.go:196:28:196:56 | type assertion | file://:0:0:0:0 | parameter 0 of MapGet |
 | test.go:196:28:196:56 | type assertion | test.go:196:2:196:68 | ... := ...[0] |
 | test.go:198:21:198:54 | call to Str2html | test.go:198:14:198:55 | type conversion |
-| test.go:198:36:198:53 | type assertion | file://:0:0:0:0 | parameter 0 of Str2html |
 | test.go:198:36:198:53 | type assertion | test.go:198:21:198:54 | call to Str2html |
 | test.go:199:21:199:58 | call to Substr | test.go:199:14:199:59 | type conversion |
-| test.go:199:34:199:51 | type assertion | file://:0:0:0:0 | parameter 0 of Substr |
 | test.go:199:34:199:51 | type assertion | test.go:199:21:199:58 | call to Substr |
 | test.go:201:6:201:6 | definition of s | test.go:203:14:203:28 | type conversion |
-| test.go:202:18:202:33 | selection of Form | file://:0:0:0:0 | parameter 0 of ParseForm |
 | test.go:202:18:202:33 | selection of Form | test.go:201:6:201:6 | definition of s |
 | test.go:217:2:217:34 | ... := ...[0] | test.go:219:31:219:31 | f |
 | test.go:217:2:217:34 | ... := ...[1] | test.go:218:14:218:32 | type conversion |
 | test.go:219:2:219:32 | ... := ...[0] | test.go:220:14:220:20 | content |
-| test.go:219:31:219:31 | f | file://:0:0:0:0 | parameter 0 of ReadAll |
 | test.go:219:31:219:31 | f | test.go:219:2:219:32 | ... := ...[0] |
 | test.go:222:2:222:40 | ... := ...[0] | test.go:223:14:223:38 | type conversion |
 | test.go:225:7:225:28 | call to GetString | test.go:226:14:226:22 | type conversion |
@@ -92,102 +62,40 @@ edges
 | test.go:269:2:269:40 | ... := ...[0] | test.go:296:40:296:51 | genericFiles |
 | test.go:269:2:269:40 | ... := ...[0] | test.go:297:39:297:50 | genericFiles |
 | test.go:278:21:278:53 | call to SliceChunk | test.go:278:21:278:92 | selection of Filename |
-| test.go:278:38:278:49 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceChunk |
 | test.go:278:38:278:49 | genericFiles | test.go:278:21:278:53 | call to SliceChunk |
 | test.go:279:21:279:60 | call to SliceDiff | test.go:279:21:279:96 | selection of Filename |
-| test.go:279:37:279:48 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceDiff |
 | test.go:279:37:279:48 | genericFiles | test.go:279:21:279:60 | call to SliceDiff |
 | test.go:284:3:286:44 | call to SliceFilter | test.go:284:3:286:80 | selection of Filename |
-| test.go:285:4:285:15 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceFilter |
 | test.go:285:4:285:15 | genericFiles | test.go:284:3:286:44 | call to SliceFilter |
 | test.go:287:21:287:65 | call to SliceIntersect | test.go:287:21:287:101 | selection of Filename |
-| test.go:287:42:287:53 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceIntersect |
 | test.go:287:42:287:53 | genericFiles | test.go:287:21:287:65 | call to SliceIntersect |
 | test.go:288:21:288:65 | call to SliceIntersect | test.go:288:21:288:101 | selection of Filename |
-| test.go:288:53:288:64 | genericFiles | file://:0:0:0:0 | parameter 1 of SliceIntersect |
 | test.go:288:53:288:64 | genericFiles | test.go:288:21:288:65 | call to SliceIntersect |
 | test.go:289:21:289:61 | call to SliceMerge | test.go:289:21:289:97 | selection of Filename |
-| test.go:289:38:289:49 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceMerge |
 | test.go:289:38:289:49 | genericFiles | test.go:289:21:289:61 | call to SliceMerge |
 | test.go:290:21:290:61 | call to SliceMerge | test.go:290:21:290:97 | selection of Filename |
-| test.go:290:49:290:60 | genericFiles | file://:0:0:0:0 | parameter 1 of SliceMerge |
 | test.go:290:49:290:60 | genericFiles | test.go:290:21:290:61 | call to SliceMerge |
 | test.go:291:21:291:66 | call to SlicePad | test.go:291:21:291:102 | selection of Filename |
-| test.go:291:51:291:65 | index expression | file://:0:0:0:0 | parameter 2 of SlicePad |
 | test.go:291:51:291:65 | index expression | test.go:291:21:291:66 | call to SlicePad |
 | test.go:292:21:292:66 | call to SlicePad | test.go:292:21:292:102 | selection of Filename |
-| test.go:292:36:292:47 | genericFiles | file://:0:0:0:0 | parameter 0 of SlicePad |
 | test.go:292:36:292:47 | genericFiles | test.go:292:21:292:66 | call to SlicePad |
 | test.go:293:21:293:49 | call to SliceRand | test.go:293:21:293:82 | selection of Filename |
-| test.go:293:37:293:48 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceRand |
 | test.go:293:37:293:48 | genericFiles | test.go:293:21:293:49 | call to SliceRand |
 | test.go:295:21:295:97 | call to SliceReduce | test.go:295:21:295:133 | selection of Filename |
-| test.go:295:39:295:50 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceReduce |
 | test.go:295:39:295:50 | genericFiles | test.go:295:21:295:97 | call to SliceReduce |
 | test.go:296:21:296:52 | call to SliceShuffle | test.go:296:21:296:88 | selection of Filename |
-| test.go:296:40:296:51 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceShuffle |
 | test.go:296:40:296:51 | genericFiles | test.go:296:21:296:52 | call to SliceShuffle |
 | test.go:297:21:297:51 | call to SliceUnique | test.go:297:21:297:87 | selection of Filename |
-| test.go:297:39:297:50 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceUnique |
 | test.go:297:39:297:50 | genericFiles | test.go:297:21:297:51 | call to SliceUnique |
 | test.go:302:2:302:5 | definition of bMap | test.go:305:21:305:24 | bMap |
 | test.go:302:2:302:5 | definition of bMap | test.go:306:21:306:24 | bMap |
 | test.go:303:15:303:36 | call to GetString | test.go:304:22:304:30 | untrusted |
-| test.go:304:22:304:30 | untrusted | file://:0:0:0:0 | parameter 1 of Set |
 | test.go:304:22:304:30 | untrusted | test.go:302:2:302:5 | definition of bMap |
-| test.go:305:21:305:24 | bMap | file://:0:0:0:0 | parameter -1 of Get |
 | test.go:305:21:305:24 | bMap | test.go:305:21:305:39 | call to Get |
 | test.go:305:21:305:39 | call to Get | test.go:305:21:305:48 | type assertion |
-| test.go:306:21:306:24 | bMap | file://:0:0:0:0 | parameter -1 of Items |
 | test.go:306:21:306:24 | bMap | test.go:306:21:306:32 | call to Items |
 | test.go:306:21:306:32 | call to Items | test.go:306:21:306:52 | type assertion |
 nodes
-| file://:0:0:0:0 | [summary] to write: argument 1 in ParseForm | semmle.label | [summary] to write: argument 1 in ParseForm |
-| file://:0:0:0:0 | [summary] to write: argument -1 in Set | semmle.label | [summary] to write: argument -1 in Set |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | semmle.label | [summary] to write: return (return[0]) in Get |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in HTML2str | semmle.label | [summary] to write: return (return[0]) in HTML2str |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in Htmlunquote | semmle.label | [summary] to write: return (return[0]) in Htmlunquote |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in Items | semmle.label | [summary] to write: return (return[0]) in Items |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in MapGet | semmle.label | [summary] to write: return (return[0]) in MapGet |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | semmle.label | [summary] to write: return (return[0]) in ReadAll |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceChunk | semmle.label | [summary] to write: return (return[0]) in SliceChunk |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceDiff | semmle.label | [summary] to write: return (return[0]) in SliceDiff |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceFilter | semmle.label | [summary] to write: return (return[0]) in SliceFilter |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceIntersect | semmle.label | [summary] to write: return (return[0]) in SliceIntersect |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceIntersect | semmle.label | [summary] to write: return (return[0]) in SliceIntersect |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceMerge | semmle.label | [summary] to write: return (return[0]) in SliceMerge |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceMerge | semmle.label | [summary] to write: return (return[0]) in SliceMerge |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in SlicePad | semmle.label | [summary] to write: return (return[0]) in SlicePad |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in SlicePad | semmle.label | [summary] to write: return (return[0]) in SlicePad |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceRand | semmle.label | [summary] to write: return (return[0]) in SliceRand |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceReduce | semmle.label | [summary] to write: return (return[0]) in SliceReduce |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceShuffle | semmle.label | [summary] to write: return (return[0]) in SliceShuffle |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceUnique | semmle.label | [summary] to write: return (return[0]) in SliceUnique |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in Str2html | semmle.label | [summary] to write: return (return[0]) in Str2html |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in Substr | semmle.label | [summary] to write: return (return[0]) in Substr |
-| file://:0:0:0:0 | parameter 0 of HTML2str | semmle.label | parameter 0 of HTML2str |
-| file://:0:0:0:0 | parameter 0 of Htmlunquote | semmle.label | parameter 0 of Htmlunquote |
-| file://:0:0:0:0 | parameter 0 of MapGet | semmle.label | parameter 0 of MapGet |
-| file://:0:0:0:0 | parameter 0 of ParseForm | semmle.label | parameter 0 of ParseForm |
-| file://:0:0:0:0 | parameter 0 of ReadAll | semmle.label | parameter 0 of ReadAll |
-| file://:0:0:0:0 | parameter 0 of SliceChunk | semmle.label | parameter 0 of SliceChunk |
-| file://:0:0:0:0 | parameter 0 of SliceDiff | semmle.label | parameter 0 of SliceDiff |
-| file://:0:0:0:0 | parameter 0 of SliceFilter | semmle.label | parameter 0 of SliceFilter |
-| file://:0:0:0:0 | parameter 0 of SliceIntersect | semmle.label | parameter 0 of SliceIntersect |
-| file://:0:0:0:0 | parameter 0 of SliceMerge | semmle.label | parameter 0 of SliceMerge |
-| file://:0:0:0:0 | parameter 0 of SlicePad | semmle.label | parameter 0 of SlicePad |
-| file://:0:0:0:0 | parameter 0 of SliceRand | semmle.label | parameter 0 of SliceRand |
-| file://:0:0:0:0 | parameter 0 of SliceReduce | semmle.label | parameter 0 of SliceReduce |
-| file://:0:0:0:0 | parameter 0 of SliceShuffle | semmle.label | parameter 0 of SliceShuffle |
-| file://:0:0:0:0 | parameter 0 of SliceUnique | semmle.label | parameter 0 of SliceUnique |
-| file://:0:0:0:0 | parameter 0 of Str2html | semmle.label | parameter 0 of Str2html |
-| file://:0:0:0:0 | parameter 0 of Substr | semmle.label | parameter 0 of Substr |
-| file://:0:0:0:0 | parameter 1 of Set | semmle.label | parameter 1 of Set |
-| file://:0:0:0:0 | parameter 1 of SliceIntersect | semmle.label | parameter 1 of SliceIntersect |
-| file://:0:0:0:0 | parameter 1 of SliceMerge | semmle.label | parameter 1 of SliceMerge |
-| file://:0:0:0:0 | parameter 2 of SlicePad | semmle.label | parameter 2 of SlicePad |
-| file://:0:0:0:0 | parameter -1 of Get | semmle.label | parameter -1 of Get |
-| file://:0:0:0:0 | parameter -1 of Items | semmle.label | parameter -1 of Items |
 | test.go:27:6:27:10 | definition of bound | semmle.label | definition of bound |
 | test.go:29:13:29:30 | type conversion | semmle.label | type conversion |
 | test.go:30:13:30:27 | type conversion | semmle.label | type conversion |
@@ -318,29 +226,6 @@ nodes
 | test.go:306:21:306:32 | call to Items | semmle.label | call to Items |
 | test.go:306:21:306:52 | type assertion | semmle.label | type assertion |
 subpaths
-| test.go:194:36:194:53 | type assertion | file://:0:0:0:0 | parameter 0 of HTML2str | file://:0:0:0:0 | [summary] to write: return (return[0]) in HTML2str | test.go:194:21:194:54 | call to HTML2str |
-| test.go:195:39:195:56 | type assertion | file://:0:0:0:0 | parameter 0 of Htmlunquote | file://:0:0:0:0 | [summary] to write: return (return[0]) in Htmlunquote | test.go:195:21:195:57 | call to Htmlunquote |
-| test.go:196:28:196:56 | type assertion | file://:0:0:0:0 | parameter 0 of MapGet | file://:0:0:0:0 | [summary] to write: return (return[0]) in MapGet | test.go:196:2:196:68 | ... := ...[0] |
-| test.go:198:36:198:53 | type assertion | file://:0:0:0:0 | parameter 0 of Str2html | file://:0:0:0:0 | [summary] to write: return (return[0]) in Str2html | test.go:198:21:198:54 | call to Str2html |
-| test.go:199:34:199:51 | type assertion | file://:0:0:0:0 | parameter 0 of Substr | file://:0:0:0:0 | [summary] to write: return (return[0]) in Substr | test.go:199:21:199:58 | call to Substr |
-| test.go:202:18:202:33 | selection of Form | file://:0:0:0:0 | parameter 0 of ParseForm | file://:0:0:0:0 | [summary] to write: argument 1 in ParseForm | test.go:201:6:201:6 | definition of s |
-| test.go:219:31:219:31 | f | file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | test.go:219:2:219:32 | ... := ...[0] |
-| test.go:278:38:278:49 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceChunk | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceChunk | test.go:278:21:278:53 | call to SliceChunk |
-| test.go:279:37:279:48 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceDiff | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceDiff | test.go:279:21:279:60 | call to SliceDiff |
-| test.go:285:4:285:15 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceFilter | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceFilter | test.go:284:3:286:44 | call to SliceFilter |
-| test.go:287:42:287:53 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceIntersect | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceIntersect | test.go:287:21:287:65 | call to SliceIntersect |
-| test.go:288:53:288:64 | genericFiles | file://:0:0:0:0 | parameter 1 of SliceIntersect | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceIntersect | test.go:288:21:288:65 | call to SliceIntersect |
-| test.go:289:38:289:49 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceMerge | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceMerge | test.go:289:21:289:61 | call to SliceMerge |
-| test.go:290:49:290:60 | genericFiles | file://:0:0:0:0 | parameter 1 of SliceMerge | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceMerge | test.go:290:21:290:61 | call to SliceMerge |
-| test.go:291:51:291:65 | index expression | file://:0:0:0:0 | parameter 2 of SlicePad | file://:0:0:0:0 | [summary] to write: return (return[0]) in SlicePad | test.go:291:21:291:66 | call to SlicePad |
-| test.go:292:36:292:47 | genericFiles | file://:0:0:0:0 | parameter 0 of SlicePad | file://:0:0:0:0 | [summary] to write: return (return[0]) in SlicePad | test.go:292:21:292:66 | call to SlicePad |
-| test.go:293:37:293:48 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceRand | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceRand | test.go:293:21:293:49 | call to SliceRand |
-| test.go:295:39:295:50 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceReduce | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceReduce | test.go:295:21:295:97 | call to SliceReduce |
-| test.go:296:40:296:51 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceShuffle | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceShuffle | test.go:296:21:296:52 | call to SliceShuffle |
-| test.go:297:39:297:50 | genericFiles | file://:0:0:0:0 | parameter 0 of SliceUnique | file://:0:0:0:0 | [summary] to write: return (return[0]) in SliceUnique | test.go:297:21:297:51 | call to SliceUnique |
-| test.go:304:22:304:30 | untrusted | file://:0:0:0:0 | parameter 1 of Set | file://:0:0:0:0 | [summary] to write: argument -1 in Set | test.go:302:2:302:5 | definition of bMap |
-| test.go:305:21:305:24 | bMap | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | test.go:305:21:305:39 | call to Get |
-| test.go:306:21:306:24 | bMap | file://:0:0:0:0 | parameter -1 of Items | file://:0:0:0:0 | [summary] to write: return (return[0]) in Items | test.go:306:21:306:32 | call to Items |
 #select
 | test.go:29:13:29:30 | type conversion | test.go:27:6:27:10 | definition of bound | test.go:29:13:29:30 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:27:6:27:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |
 | test.go:30:13:30:27 | type conversion | test.go:27:6:27:10 | definition of bound | test.go:30:13:30:27 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:27:6:27:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |

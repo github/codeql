@@ -1,51 +1,33 @@
 edges
 | ReflectedXss.go:11:15:11:20 | selection of Form | ReflectedXss.go:11:15:11:36 | call to Get |
-| ReflectedXss.go:11:15:11:20 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | ReflectedXss.go:11:15:11:36 | call to Get | ReflectedXss.go:14:44:14:51 | username |
 | contenttype.go:11:11:11:16 | selection of Form | contenttype.go:11:11:11:28 | call to Get |
-| contenttype.go:11:11:11:16 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | contenttype.go:11:11:11:28 | call to Get | contenttype.go:17:11:17:22 | type conversion |
 | contenttype.go:49:11:49:16 | selection of Form | contenttype.go:49:11:49:28 | call to Get |
-| contenttype.go:49:11:49:16 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | contenttype.go:49:11:49:28 | call to Get | contenttype.go:53:34:53:37 | data |
 | contenttype.go:63:10:63:28 | call to FormValue | contenttype.go:64:52:64:55 | data |
 | contenttype.go:73:10:73:28 | call to FormValue | contenttype.go:79:11:79:14 | data |
 | contenttype.go:88:10:88:28 | call to FormValue | contenttype.go:91:4:91:7 | data |
 | contenttype.go:113:10:113:28 | call to FormValue | contenttype.go:114:50:114:53 | data |
-| file://:0:0:0:0 | parameter 0 of Join | file://:0:0:0:0 | [summary] to write: return (return[0]) in Join |
-| file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll |
-| file://:0:0:0:0 | parameter -1 of FileName | file://:0:0:0:0 | [summary] to write: return (return[0]) in FileName |
-| file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get |
-| file://:0:0:0:0 | parameter -1 of NextPart | file://:0:0:0:0 | [summary] to write: return (return[0]) in NextPart |
-| file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
 | reflectedxsstest.go:27:2:27:38 | ... := ...[0] | reflectedxsstest.go:28:10:28:57 | type conversion |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[0] | reflectedxsstest.go:32:34:32:37 | file |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[1] | reflectedxsstest.go:34:10:34:62 | type conversion |
 | reflectedxsstest.go:32:2:32:38 | ... := ...[0] | reflectedxsstest.go:33:10:33:57 | type conversion |
-| reflectedxsstest.go:32:34:32:37 | file | file://:0:0:0:0 | parameter 0 of ReadAll |
 | reflectedxsstest.go:32:34:32:37 | file | reflectedxsstest.go:32:2:32:38 | ... := ...[0] |
 | reflectedxsstest.go:38:2:38:35 | ... := ...[0] | reflectedxsstest.go:39:16:39:21 | reader |
 | reflectedxsstest.go:39:2:39:32 | ... := ...[0] | reflectedxsstest.go:40:14:40:17 | part |
 | reflectedxsstest.go:39:2:39:32 | ... := ...[0] | reflectedxsstest.go:42:2:42:5 | part |
-| reflectedxsstest.go:39:16:39:21 | reader | file://:0:0:0:0 | parameter -1 of NextPart |
 | reflectedxsstest.go:39:16:39:21 | reader | reflectedxsstest.go:39:2:39:32 | ... := ...[0] |
-| reflectedxsstest.go:40:14:40:17 | part | file://:0:0:0:0 | parameter -1 of FileName |
 | reflectedxsstest.go:40:14:40:17 | part | reflectedxsstest.go:40:14:40:28 | call to FileName |
 | reflectedxsstest.go:40:14:40:28 | call to FileName | reflectedxsstest.go:44:10:44:55 | type conversion |
 | reflectedxsstest.go:41:2:41:10 | definition of byteSlice | reflectedxsstest.go:45:10:45:18 | byteSlice |
-| reflectedxsstest.go:42:2:42:5 | part | file://:0:0:0:0 | parameter -1 of Read |
 | reflectedxsstest.go:42:2:42:5 | part | reflectedxsstest.go:41:2:41:10 | definition of byteSlice |
-| reflectedxsstest.go:51:14:51:18 | selection of URL | file://:0:0:0:0 | parameter -1 of Query |
 | reflectedxsstest.go:51:14:51:18 | selection of URL | reflectedxsstest.go:51:14:51:26 | call to Query |
 | reflectedxsstest.go:51:14:51:26 | call to Query | reflectedxsstest.go:54:11:54:21 | type conversion |
-| tst.go:14:15:14:20 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | tst.go:14:15:14:20 | selection of Form | tst.go:14:15:14:36 | call to Get |
 | tst.go:14:15:14:36 | call to Get | tst.go:18:32:18:32 | a |
 | tst.go:18:19:18:38 | call to Join | tst.go:18:12:18:39 | type conversion |
-| tst.go:18:32:18:32 | a | file://:0:0:0:0 | parameter 0 of Join |
 | tst.go:18:32:18:32 | a | tst.go:18:19:18:38 | call to Join |
-| tst.go:48:14:48:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get |
 | tst.go:48:14:48:19 | selection of Form | tst.go:48:14:48:34 | call to Get |
 | tst.go:48:14:48:34 | call to Get | tst.go:53:12:53:26 | type conversion |
 | websocketXss.go:30:7:30:10 | definition of xnet | websocketXss.go:32:24:32:27 | xnet |
@@ -72,20 +54,6 @@ nodes
 | contenttype.go:91:4:91:7 | data | semmle.label | data |
 | contenttype.go:113:10:113:28 | call to FormValue | semmle.label | call to FormValue |
 | contenttype.go:114:50:114:53 | data | semmle.label | data |
-| file://:0:0:0:0 | [summary] to write: argument 0 in Read | semmle.label | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in FileName | semmle.label | [summary] to write: return (return[0]) in FileName |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | semmle.label | [summary] to write: return (return[0]) in Get |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in Join | semmle.label | [summary] to write: return (return[0]) in Join |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in NextPart | semmle.label | [summary] to write: return (return[0]) in NextPart |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | semmle.label | [summary] to write: return (return[0]) in Query |
-| file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | semmle.label | [summary] to write: return (return[0]) in ReadAll |
-| file://:0:0:0:0 | parameter 0 of Join | semmle.label | parameter 0 of Join |
-| file://:0:0:0:0 | parameter 0 of ReadAll | semmle.label | parameter 0 of ReadAll |
-| file://:0:0:0:0 | parameter -1 of FileName | semmle.label | parameter -1 of FileName |
-| file://:0:0:0:0 | parameter -1 of Get | semmle.label | parameter -1 of Get |
-| file://:0:0:0:0 | parameter -1 of NextPart | semmle.label | parameter -1 of NextPart |
-| file://:0:0:0:0 | parameter -1 of Query | semmle.label | parameter -1 of Query |
-| file://:0:0:0:0 | parameter -1 of Read | semmle.label | parameter -1 of Read |
 | reflectedxsstest.go:27:2:27:38 | ... := ...[0] | semmle.label | ... := ...[0] |
 | reflectedxsstest.go:28:10:28:57 | type conversion | semmle.label | type conversion |
 | reflectedxsstest.go:31:2:31:44 | ... := ...[0] | semmle.label | ... := ...[0] |
@@ -127,17 +95,6 @@ nodes
 | websocketXss.go:54:3:54:38 | ... := ...[1] | semmle.label | ... := ...[1] |
 | websocketXss.go:55:24:55:31 | gorilla3 | semmle.label | gorilla3 |
 subpaths
-| ReflectedXss.go:11:15:11:20 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | ReflectedXss.go:11:15:11:36 | call to Get |
-| contenttype.go:11:11:11:16 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | contenttype.go:11:11:11:28 | call to Get |
-| contenttype.go:49:11:49:16 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | contenttype.go:49:11:49:28 | call to Get |
-| reflectedxsstest.go:32:34:32:37 | file | file://:0:0:0:0 | parameter 0 of ReadAll | file://:0:0:0:0 | [summary] to write: return (return[0]) in ReadAll | reflectedxsstest.go:32:2:32:38 | ... := ...[0] |
-| reflectedxsstest.go:39:16:39:21 | reader | file://:0:0:0:0 | parameter -1 of NextPart | file://:0:0:0:0 | [summary] to write: return (return[0]) in NextPart | reflectedxsstest.go:39:2:39:32 | ... := ...[0] |
-| reflectedxsstest.go:40:14:40:17 | part | file://:0:0:0:0 | parameter -1 of FileName | file://:0:0:0:0 | [summary] to write: return (return[0]) in FileName | reflectedxsstest.go:40:14:40:28 | call to FileName |
-| reflectedxsstest.go:42:2:42:5 | part | file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read | reflectedxsstest.go:41:2:41:10 | definition of byteSlice |
-| reflectedxsstest.go:51:14:51:18 | selection of URL | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query | reflectedxsstest.go:51:14:51:26 | call to Query |
-| tst.go:14:15:14:20 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | tst.go:14:15:14:36 | call to Get |
-| tst.go:18:32:18:32 | a | file://:0:0:0:0 | parameter 0 of Join | file://:0:0:0:0 | [summary] to write: return (return[0]) in Join | tst.go:18:19:18:38 | call to Join |
-| tst.go:48:14:48:19 | selection of Form | file://:0:0:0:0 | parameter -1 of Get | file://:0:0:0:0 | [summary] to write: return (return[0]) in Get | tst.go:48:14:48:34 | call to Get |
 #select
 | ReflectedXss.go:14:44:14:51 | username | ReflectedXss.go:11:15:11:20 | selection of Form | ReflectedXss.go:14:44:14:51 | username | Cross-site scripting vulnerability due to $@. | ReflectedXss.go:11:15:11:20 | selection of Form | user-provided value | ReflectedXss.go:0:0:0:0 | ReflectedXss.go |  |
 | contenttype.go:17:11:17:22 | type conversion | contenttype.go:11:11:11:16 | selection of Form | contenttype.go:17:11:17:22 | type conversion | Cross-site scripting vulnerability due to $@. | contenttype.go:11:11:11:16 | selection of Form | user-provided value | contenttype.go:0:0:0:0 | contenttype.go |  |
