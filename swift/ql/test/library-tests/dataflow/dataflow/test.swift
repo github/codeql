@@ -560,3 +560,32 @@ func inoutConstructor() {
   var n = 0
   sink(arg: InoutConstructorClass(&n))
 }
+
+struct S {
+  let x: Int
+
+  init(x: Int) {
+    self.x = x
+  }
+}
+
+func testKeyPath() {
+  let s = S(x: source())
+  let f = \S.x
+  sink(arg: s[keyPath: f]) // $ MISSING: flow=573
+}
+
+struct S2 {
+  let s: S
+
+  init(s: S) {
+    self.s = s
+  }
+}
+
+func testNestedKeyPath() {
+  let s = S(x: source())
+  let s2 = S2(s: s)
+  let f = \S2.s.x
+  sink(arg: s2[keyPath: f]) // $ MISSING: flow=587
+}

@@ -601,3 +601,34 @@
 | test.swift:560:7:560:7 | n | test.swift:560:7:560:7 | SSA def(n) |
 | test.swift:560:11:560:11 | 0 | test.swift:560:7:560:7 | n |
 | test.swift:561:36:561:36 | n | test.swift:561:35:561:36 | &... |
+| test.swift:565:7:565:7 | self | test.swift:565:7:565:7 | SSA def(self) |
+| test.swift:567:3:567:3 | SSA def(self) | test.swift:568:5:568:5 | self |
+| test.swift:567:3:567:3 | self | test.swift:567:3:567:3 | SSA def(self) |
+| test.swift:567:8:567:11 | SSA def(x) | test.swift:568:14:568:14 | x |
+| test.swift:567:8:567:11 | x | test.swift:567:8:567:11 | SSA def(x) |
+| test.swift:568:5:568:5 | [post] self | test.swift:567:3:569:3 | self[return] |
+| test.swift:568:5:568:5 | self | test.swift:567:3:569:3 | self[return] |
+| test.swift:573:7:573:7 | SSA def(s) | test.swift:575:13:575:13 | s |
+| test.swift:573:7:573:7 | s | test.swift:573:7:573:7 | SSA def(s) |
+| test.swift:573:11:573:24 | call to S.init(x:) | test.swift:573:7:573:7 | s |
+| test.swift:574:7:574:7 | SSA def(f) | test.swift:575:24:575:24 | f |
+| test.swift:574:7:574:7 | f | test.swift:574:7:574:7 | SSA def(f) |
+| test.swift:574:11:574:14 | #keyPath(...) | test.swift:574:7:574:7 | f |
+| test.swift:574:11:574:14 | #keyPath(...) | test.swift:574:7:574:7 | f |
+| test.swift:579:7:579:7 | self | test.swift:579:7:579:7 | SSA def(self) |
+| test.swift:581:3:581:3 | SSA def(self) | test.swift:582:5:582:5 | self |
+| test.swift:581:3:581:3 | self | test.swift:581:3:581:3 | SSA def(self) |
+| test.swift:581:8:581:11 | SSA def(s) | test.swift:582:14:582:14 | s |
+| test.swift:581:8:581:11 | s | test.swift:581:8:581:11 | SSA def(s) |
+| test.swift:582:5:582:5 | [post] self | test.swift:581:3:583:3 | self[return] |
+| test.swift:582:5:582:5 | self | test.swift:581:3:583:3 | self[return] |
+| test.swift:587:7:587:7 | SSA def(s) | test.swift:588:18:588:18 | s |
+| test.swift:587:7:587:7 | s | test.swift:587:7:587:7 | SSA def(s) |
+| test.swift:587:11:587:24 | call to S.init(x:) | test.swift:587:7:587:7 | s |
+| test.swift:588:7:588:7 | SSA def(s2) | test.swift:590:13:590:13 | s2 |
+| test.swift:588:7:588:7 | s2 | test.swift:588:7:588:7 | SSA def(s2) |
+| test.swift:588:12:588:19 | call to S2.init(s:) | test.swift:588:7:588:7 | s2 |
+| test.swift:589:7:589:7 | SSA def(f) | test.swift:590:25:590:25 | f |
+| test.swift:589:7:589:7 | f | test.swift:589:7:589:7 | SSA def(f) |
+| test.swift:589:11:589:17 | #keyPath(...) | test.swift:589:7:589:7 | f |
+| test.swift:589:11:589:17 | #keyPath(...) | test.swift:589:7:589:7 | f |
