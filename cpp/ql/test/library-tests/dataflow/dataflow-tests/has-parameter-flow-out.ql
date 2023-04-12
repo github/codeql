@@ -5,12 +5,10 @@ module AstTest {
   private import semmle.code.cpp.dataflow.DataFlow::DataFlow
   private import semmle.code.cpp.dataflow.internal.DataFlowPrivate
 
-  class AstParameterDefTest extends InlineExpectationsTest {
-    AstParameterDefTest() { this = "AstParameterDefTest" }
+  module AstParameterDefTest implements TestSig {
+    string getARelevantTag() { result = "ast-def" }
 
-    override string getARelevantTag() { result = "ast-def" }
-
-    override predicate hasActualResult(Location location, string element, string tag, string value) {
+    predicate hasActualResult(Location location, string element, string tag, string value) {
       exists(Function f, Parameter p, RefParameterFinalValueNode n |
         p.isNamed() and
         n.getParameter() = p and
@@ -20,6 +18,10 @@ module AstTest {
         tag = "ast-def" and
         value = p.getName()
       )
+    }
+
+    predicate hasOptionalResult(Location location, string element, string tag, string value) {
+      none()
     }
   }
 }
@@ -33,12 +35,10 @@ module IRTest {
     (if k = 0 then result = "" else result = "*" + stars(k - 1))
   }
 
-  class IRParameterDefTest extends InlineExpectationsTest {
-    IRParameterDefTest() { this = "IRParameterDefTest" }
+  module IRParameterDefTest implements TestSig {
+    string getARelevantTag() { result = "ir-def" }
 
-    override string getARelevantTag() { result = "ir-def" }
-
-    override predicate hasActualResult(Location location, string element, string tag, string value) {
+    predicate hasActualResult(Location location, string element, string tag, string value) {
       exists(Function f, Parameter p, FinalParameterNode n |
         p.isNamed() and
         n.getParameter() = p and
@@ -49,5 +49,11 @@ module IRTest {
         value = stars(n.getIndirectionIndex()) + p.getName()
       )
     }
+
+    predicate hasOptionalResult(Location location, string element, string tag, string value) {
+      none()
+    }
   }
 }
+
+import MakeTest<MergeTests<AstTest::AstParameterDefTest, IRTest::IRParameterDefTest>>
