@@ -1245,9 +1245,9 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
         }
         DiagnosticLocation diagLoc = builder
             .setStartLine(err.getPosition().getLine())
-            .setStartColumn(err.getPosition().getColumn())
+            .setStartColumn(err.getPosition().getColumn() + 1) // convert from 0-based to 1-based
             .setEndLine(err.getPosition().getLine())
-            .setEndColumn(err.getPosition().getColumn())
+            .setEndColumn(err.getPosition().getColumn() + 1) // convert from 0-based to 1-based
             .build();
         writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR, diagLoc);
       }
