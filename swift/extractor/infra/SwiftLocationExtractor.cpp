@@ -1,3 +1,4 @@
+#include <swift/AST/Expr.h>
 #include <swift/AST/SourceFile.h>
 #include <swift/Basic/SourceManager.h>
 #include <swift/Parse/Token.h>
@@ -64,6 +65,13 @@ void SwiftLocationExtractor::attachLocation(const swift::SourceManager& sourceMa
                                             swift::Token& token,
                                             TrapLabel<LocatableTag> locatableLabel) {
   attachLocation(sourceManager, token.getRange().getStart(), token.getRange().getEnd(),
+                 locatableLabel);
+}
+
+void SwiftLocationExtractor::attachLocation(const swift::SourceManager& sourceManager,
+                                            const swift::KeyPathExpr::Component* component,
+                                            TrapLabel<LocatableTag> locatableLabel) {
+  attachLocation(sourceManager, component->getSourceRange().Start, component->getSourceRange().End,
                  locatableLabel);
 }
 
