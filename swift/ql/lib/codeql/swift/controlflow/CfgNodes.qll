@@ -180,14 +180,24 @@ class CallExprCfgNode extends ApplyExprCfgNode {
   override CallExpr e;
 }
 
+/** A control-flow node that wraps a key-path application. */
 class KeyPathApplicationExprCfgNode extends ExprCfgNode {
   override KeyPathApplicationExpr e;
 
+  /**
+   * Gets the control-flow node that wraps the key-path of
+   * this control-flow element.
+   */
   CfgNode getKeyPath() { result.getAst() = e.getKeyPath() }
 
+  /**
+   * Gets the control-flow node that wraps the base of
+   * this control-flow element.
+   */
   CfgNode getBase() { result.getAst() = e.getBase() }
 }
 
+/** A control-flow node that wraps a key-path expression. */
 class KeyPathExprCfgNode extends ExprCfgNode {
   override KeyPathExpr e;
 }
