@@ -160,7 +160,11 @@ class Node extends TIRDataFlowNode {
   /** Gets the operands corresponding to this node, if any. */
   Operand asOperand() { result = this.(OperandNode).getOperand() }
 
-  /** Holds if this node is at index `i` in basic block `block`. */
+  /**
+   * Holds if this node is at index `i` in basic block `block`.
+   *
+   * Note: Phi nodes are considered to be at index `-1`.
+   */
   final predicate hasIndexInBlock(IRBlock block, int i) {
     this.asInstruction() = block.getInstruction(i)
     or
