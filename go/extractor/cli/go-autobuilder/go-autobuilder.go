@@ -237,6 +237,19 @@ func getDepMode() DependencyInstallerMode {
 	return GoGetNoModules
 }
 
+func getModMode(depMode DependencyInstallerMode) ModMode {
+	if depMode == GoGetWithModules {
+		// if a vendor/modules.txt file exists, we assume that there are vendored Go dependencies, and
+		// skip the dependency installation step and run the extractor with `-mod=vendor`
+		if util.FileExists("vendor/modules.txt") {
+			return ModVendor
+		} else if util.DirExists("vendor") {
+			return ModMod
+		}
+	}
+	return ModUnset
+}
+
 func main() {
 	if len(os.Args) > 1 {
 		usage()
@@ -264,7 +277,6 @@ func main() {
 	// determine how to install dependencies and whether a GOPATH needs to be set up before
 	// extraction
 	depMode := getDepMode()
-	modMode := ModUnset
 	needGopath := true
 	goDirectiveFound := false
 	if _, present := os.LookupEnv("GO111MODULE"); !present {
@@ -290,15 +302,7 @@ func main() {
 		}
 	}
 
-	if depMode == GoGetWithModules {
-		// if a vendor/modules.txt file exists, we assume that there are vendored Go dependencies, and
-		// skip the dependency installation step and run the extractor with `-mod=vendor`
-		if util.FileExists("vendor/modules.txt") {
-			modMode = ModVendor
-		} else if util.DirExists("vendor") {
-			modMode = ModMod
-		}
-	}
+	modMode := getModMode(depMode)
 
 	if modMode == ModVendor {
 		// fix go vendor issues with go versions >= 1.14 when no go version is specified in the go.mod
