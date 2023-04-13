@@ -1,5 +1,6 @@
 private import RangeAnalysisStage 
-private import RangeAnalysisSpecific
+private import RangeAnalysisConstantSpecific
+private import RangeAnalysisRelativeSpecific
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
 private import RangeUtils
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticBound as SemanticBound
@@ -47,10 +48,10 @@ module RelativeBounds implements BoundSig<FloatDelta> {
 }
 
 module ConstantStage =
-  RangeStage<FloatDelta, ConstantBounds, FloatOverflow, CppLangImpl, RangeUtil<FloatDelta, CppLangImpl>>;
+  RangeStage<FloatDelta, ConstantBounds, FloatOverflow, CppLangImplConstant, RangeUtil<FloatDelta, CppLangImplConstant>>;
 
 module RelativeStage =
-  RangeStage<FloatDelta, RelativeBounds, FloatOverflow, CppLangImpl, RangeUtil<FloatDelta, CppLangImpl>>;
+  RangeStage<FloatDelta, RelativeBounds, FloatOverflow, CppLangImplRelative, RangeUtil<FloatDelta, CppLangImplRelative>>;
 
 private newtype TSemReason =
   TSemNoReason() or

@@ -242,7 +242,7 @@ signature module BoundSig<DeltaSig D> {
 }
 
 signature module OverflowSig<DeltaSig D> {
-  predicate semExprDoesntOverflow(boolean positively, SemExpr expr);
+  predicate semExprDoesNotOverflow(boolean positively, SemExpr expr);
 }
 
 module RangeStage<
@@ -935,11 +935,9 @@ module RangeStage<
   ) {
     initialBounded(e, b, delta, upper, fromBackEdge, origdelta, reason) and
     (
-      semExprDoesntOverflow(upper.booleanNot(), e)
+      semExprDoesNotOverflow(upper.booleanNot(), e)
       or
       not potentiallyOverflowingExpr(upper.booleanNot(), e)
-      or
-      initialBounded(e, any(SemZeroBound z), _, upper.booleanNot(), _, _, _)
       or
       exists(D::Delta otherDelta |
         initialBounded(e, _, otherDelta, upper.booleanNot(), _, _, _) and
