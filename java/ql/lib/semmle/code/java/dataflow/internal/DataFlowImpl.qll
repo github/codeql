@@ -390,10 +390,10 @@ module Impl<FullStateConfigSig Config> {
   private predicate hasReadStep(Content c) { read(_, c, _) }
 
   pragma[nomagic]
-  private predicate storeEx(NodeEx node1, TypedContent tc, NodeEx node2, DataFlowType contentType) {
-    store(pragma[only_bind_into](node1.asNode()), tc, pragma[only_bind_into](node2.asNode()),
-      contentType) and
-    hasReadStep(tc.getContent()) and
+  private predicate storeEx(NodeEx node1, TypedContent tc, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType) {
+    store(pragma[only_bind_into](node1.asNode()), tc, c, pragma[only_bind_into](node2.asNode()),
+      contentType, containerType) and
+    hasReadStep(c) and
     stepFilter(node1, node2)
   }
 
@@ -478,7 +478,7 @@ module Impl<FullStateConfigSig Config> {
       exists(NodeEx mid |
         useFieldFlow() and
         fwdFlow(mid, cc) and
-        storeEx(mid, _, node, _)
+        storeEx(mid, _, _, node, _, _)
       )
       or
       // read
@@ -570,12 +570,11 @@ module Impl<FullStateConfigSig Config> {
     pragma[assume_small_delta]
     pragma[nomagic]
     private predicate fwdFlowConsCand(Content c) {
-      exists(NodeEx mid, NodeEx node, TypedContent tc |
+      exists(NodeEx mid, NodeEx node |
         not fullBarrier(node) and
         useFieldFlow() and
         fwdFlow(mid, _) and
-        storeEx(mid, tc, node, _) and
-        c = tc.getContent()
+        storeEx(mid, _, c, node, _, _)
       )
     }
 
@@ -709,11 +708,10 @@ module Impl<FullStateConfigSig Config> {
 
     pragma[nomagic]
     private predicate revFlowStore(Content c, NodeEx node, boolean toReturn) {
-      exists(NodeEx mid, TypedContent tc |
+      exists(NodeEx mid |
         revFlow(mid, toReturn) and
         fwdFlowConsCand(c) and
-        storeEx(node, tc, mid, _) and
-        c = tc.getContent()
+        storeEx(node, _, c, mid, _, _)
       )
     }
 
@@ -803,15 +801,12 @@ module Impl<FullStateConfigSig Config> {
 
     pragma[nomagic]
     predicate storeStepCand(
-      NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType
+      NodeEx node1, Ap ap1, TypedContent tc, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
     ) {
-      exists(Content c |
-        revFlowIsReadAndStored(c) and
-        revFlow(node2) and
-        storeEx(node1, tc, node2, contentType) and
-        c = tc.getContent() and
-        exists(ap1)
-      )
+      revFlowIsReadAndStored(c) and
+      revFlow(node2) and
+      storeEx(node1, tc, c, node2, contentType, containerType) and
+      exists(ap1)
     }
 
     pragma[nomagic]
@@ -1053,7 +1048,7 @@ module Impl<FullStateConfigSig Config> {
     predicate returnMayFlowThrough(RetNodeEx ret, Ap argAp, Ap ap, ReturnKindExt kind);
 
     predicate storeStepCand(
-      NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType
+      NodeEx node1, Ap ap1, TypedContent tc, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
     );
 
     predicate readStepCand(NodeEx n1, Content c, NodeEx n2);
@@ -1306,7 +1301,7 @@ module Impl<FullStateConfigSig Config> {
       ) {
         exists(DataFlowType contentType, ApApprox apa1 |
           fwdFlow(node1, state, cc, summaryCtx, argAp, ap1, apa1) and
-          PrevStage::storeStepCand(node1, apa1, tc, node2, contentType) and
+          PrevStage::storeStepCand(node1, apa1, tc, _, node2, contentType, _) and
           typecheckStore(ap1, contentType)
         )
       }
@@ -1659,10 +1654,10 @@ module Impl<FullStateConfigSig Config> {
 
       pragma[nomagic]
       predicate storeStepCand(
-        NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType
+        NodeEx node1, Ap ap1, TypedContent tc, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
       ) {
-        exists(Ap ap2, Content c |
-          PrevStage::storeStepCand(node1, _, tc, node2, contentType) and
+        exists(Ap ap2 |
+          PrevStage::storeStepCand(node1, _, tc, c, node2, contentType, containerType) and
           revFlowStore(ap2, c, ap1, node1, _, tc, node2, _, _) and
           revFlowConsCand(ap2, c, ap1)
         )
@@ -1688,7 +1683,7 @@ module Impl<FullStateConfigSig Config> {
 
       private predicate fwdConsCand(TypedContent tc, Ap ap) { storeStepFwd(_, ap, tc, _, _) }
 
-      private predicate revConsCand(TypedContent tc, Ap ap) { storeStepCand(_, ap, tc, _, _) }
+      private predicate revConsCand(TypedContent tc, Ap ap) { storeStepCand(_, ap, tc, _, _, _, _) }
 
       private predicate validAp(Ap ap) {
         revFlow(_, _, _, _, ap) and ap instanceof ApNil
@@ -2003,7 +1998,7 @@ module Impl<FullStateConfigSig Config> {
         or
         node.asNode() instanceof OutNodeExt
         or
-        Stage2::storeStepCand(_, _, _, node, _)
+        Stage2::storeStepCand(_, _, _, _, node, _, _)
         or
         Stage2::readStepCand(_, _, node)
         or
@@ -2026,7 +2021,7 @@ module Impl<FullStateConfigSig Config> {
         additionalJumpStep(node, next) or
         flowIntoCallNodeCand2(_, node, next, _) or
         flowOutOfCallNodeCand2(_, node, _, next, _) or
-        Stage2::storeStepCand(node, _, _, next, _) or
+        Stage2::storeStepCand(node, _, _, _, next, _, _) or
         Stage2::readStepCand(node, _, next)
       )
       or
@@ -3386,7 +3381,7 @@ module Impl<FullStateConfigSig Config> {
     PathNodeMid mid, NodeEx node, FlowState state, AccessPath ap0, TypedContent tc, CallContext cc
   ) {
     ap0 = mid.getAp() and
-    Stage5::storeStepCand(mid.getNodeEx(), _, tc, node, _) and
+    Stage5::storeStepCand(mid.getNodeEx(), _, tc, _, node, _, _) and
     state = mid.getState() and
     cc = mid.getCallContext()
   }
@@ -3593,7 +3588,7 @@ module Impl<FullStateConfigSig Config> {
       result.isHidden() and
       exists(NodeEx n1, NodeEx n2 | n1 = n.getNodeEx() and n2 = result.getNodeEx() |
         localFlowBigStep(n1, _, n2, _, _, _, _) or
-        storeEx(n1, _, n2, _) or
+        storeEx(n1, _, _, n2, _, _) or
         readSetEx(n1, _, n2)
       )
     }
@@ -4271,7 +4266,7 @@ module Impl<FullStateConfigSig Config> {
       exists(NodeEx midNode, DataFlowType contentType |
         midNode = mid.getNodeEx() and
         ap1 = mid.getAp() and
-        storeEx(midNode, tc, node, contentType) and
+        storeEx(midNode, tc, _, node, contentType, _) and
         ap2.getHead() = tc and
         ap2.len() = unbindInt(ap1.len() + 1) and
         compatibleTypes(ap1.getType(), contentType)
@@ -4522,12 +4517,11 @@ module Impl<FullStateConfigSig Config> {
     private predicate revPartialPathStoreStep(
       PartialPathNodeRev mid, RevPartialAccessPath ap, Content c, NodeEx node
     ) {
-      exists(NodeEx midNode, TypedContent tc |
+      exists(NodeEx midNode |
         midNode = mid.getNodeEx() and
         ap = mid.getAp() and
-        storeEx(node, tc, midNode, _) and
-        ap.getHead() = c and
-        tc.getContent() = c
+        storeEx(node, _, c, midNode, _, _) and
+        ap.getHead() = c
       )
     }
 

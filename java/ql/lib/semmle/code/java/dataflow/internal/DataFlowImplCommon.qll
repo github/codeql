@@ -831,8 +831,10 @@ private module Cached {
    * been stored into, in order to handle cases like `x.f1.f2 = y`.
    */
   cached
-  predicate store(Node node1, TypedContent tc, Node node2, DataFlowType contentType) {
-    store(node1, tc.getContent(), node2, contentType, tc.getContainerType())
+  predicate store(Node node1, TypedContent tc, Content c, Node node2, DataFlowType contentType, DataFlowType containerType) {
+    tc.getContent() = c and
+    tc.getContainerType() = containerType and
+    store(node1, c, node2, contentType, containerType)
   }
 
   /**
