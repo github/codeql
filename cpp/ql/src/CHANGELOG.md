@@ -1,3 +1,9 @@
+## 0.5.7
+
+### Minor Analysis Improvements
+
+* The query `cpp/tainted-arithmetic` now also flags possible overflows in arithmetic assignment operations.
+
 ## 0.5.6
 
 No user-facing changes.
