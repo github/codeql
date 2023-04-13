@@ -15,33 +15,30 @@
 import ruby
 import codeql.ruby.security.WeakSensitiveDataHashingQuery
 import codeql.ruby.TaintTracking
-import DataFlow::PathGraph
+import WeakSensitiveDataHashing::Config::PathGraph
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, string ending, string algorithmName,
+  WeakSensitiveDataHashing::Config::PathNode source,
+  WeakSensitiveDataHashing::Config::PathNode sink, string ending, string algorithmName,
   string classification
 where
-  exists(NormalHashFunction::Configuration config |
-    config.hasFlowPath(source, sink) and
-    algorithmName = sink.getNode().(NormalHashFunction::Sink).getAlgorithmName() and
-    classification = source.getNode().(NormalHashFunction::Source).getClassification() and
-    ending = "."
-  )
+  NormalHashFunction::flowPath(source.asPathNode1(), sink.asPathNode1()) and
+  algorithmName = sink.getNode().(NormalHashFunction::Sink).getAlgorithmName() and
+  classification = source.getNode().(NormalHashFunction::Source).getClassification() and
+  ending = "."
   or
-  exists(ComputationallyExpensiveHashFunction::Configuration config |
-    config.hasFlowPath(source, sink) and
-    algorithmName = sink.getNode().(ComputationallyExpensiveHashFunction::Sink).getAlgorithmName() and
-    classification =
-      source.getNode().(ComputationallyExpensiveHashFunction::Source).getClassification() and
-    (
-      sink.getNode().(ComputationallyExpensiveHashFunction::Sink).isComputationallyExpensive() and
-      ending = "."
-      or
-      not sink.getNode().(ComputationallyExpensiveHashFunction::Sink).isComputationallyExpensive() and
-      ending =
-        " for " + classification +
-          " hashing, since it is not a computationally expensive hash function."
-    )
+  ComputationallyExpensiveHashFunction::flowPath(source.asPathNode2(), sink.asPathNode2()) and
+  algorithmName = sink.getNode().(ComputationallyExpensiveHashFunction::Sink).getAlgorithmName() and
+  classification =
+    source.getNode().(ComputationallyExpensiveHashFunction::Source).getClassification() and
+  (
+    sink.getNode().(ComputationallyExpensiveHashFunction::Sink).isComputationallyExpensive() and
+    ending = "."
+    or
+    not sink.getNode().(ComputationallyExpensiveHashFunction::Sink).isComputationallyExpensive() and
+    ending =
+      " for " + classification +
+        " hashing, since it is not a computationally expensive hash function."
   )
 select sink.getNode(), source, sink,
   "$@ is used in a hashing algorithm (" + algorithmName + ") that is insecure" + ending,

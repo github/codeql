@@ -26,21 +26,17 @@ module NormalHashFunction {
    * A taint-tracking configuration for detecting use of a broken or weak
    * cryptographic hashing algorithm on sensitive data.
    */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "NormalHashFunction" }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node)
-      or
-      node instanceof Sanitizer
-    }
-
-    override predicate isSanitizerIn(DataFlow::Node node) { node instanceof Source }
+    predicate isBarrierIn(DataFlow::Node node) { node instanceof Source }
   }
+
+  import TaintTracking::Global<Config>
 }
 
 /**
@@ -60,19 +56,28 @@ module ComputationallyExpensiveHashFunction {
    * Passwords has stricter requirements on the hashing algorithm used (must be
    * computationally expensive to prevent brute-force attacks).
    */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "ComputationallyExpensiveHashFunction" }
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    override predicate isSanitizer(DataFlow::Node node) {
-      super.isSanitizer(node)
-      or
-      node instanceof Sanitizer
-    }
-
-    override predicate isSanitizerIn(DataFlow::Node node) { node instanceof Source }
+    predicate isBarrierIn(DataFlow::Node node) { node instanceof Source }
   }
+
+  import TaintTracking::Global<Config>
+}
+
+/**
+ * Provides a path graph for tracking use of a broken or weak cryptographic
+ * hashing algorithm on sensitive data.
+ */
+module WeakSensitiveDataHashing {
+  /**
+   * A path graph for tracking use of a broken or weak cryptographic
+   * hashing algorithm on sensitive data.
+   */
+  module Config =
+    DataFlow::MergePathGraph<NormalHashFunction::PathNode, ComputationallyExpensiveHashFunction::PathNode, NormalHashFunction::PathGraph, ComputationallyExpensiveHashFunction::PathGraph>;
 }
