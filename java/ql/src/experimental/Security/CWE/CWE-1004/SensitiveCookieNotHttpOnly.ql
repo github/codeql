@@ -126,7 +126,7 @@ predicate isTestMethod(MethodAccess ma) {
  * A taint configuration tracking flow of a method that sets the `HttpOnly` flag,
  * or one that removes a cookie, to a `ServletResponse.addCookie` call.
  */
-module SetHttpOnlyOrRemovesCookieConfiguration implements DataFlow::ConfigSig {
+module SetHttpOnlyOrRemovesCookieConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     source.asExpr() =
       any(MethodAccess ma | setsCookieHttpOnly(ma) or removesCookie(ma)).getQualifier()
@@ -138,8 +138,7 @@ module SetHttpOnlyOrRemovesCookieConfiguration implements DataFlow::ConfigSig {
   }
 }
 
-module SetHttpOnlyOrRemovesCookieFlow =
-  TaintTracking::Global<SetHttpOnlyOrRemovesCookieConfiguration>;
+module SetHttpOnlyOrRemovesCookieFlow = TaintTracking::Global<SetHttpOnlyOrRemovesCookieConfig>;
 
 /**
  * A cookie that is added to an HTTP response and which doesn't have `httpOnly` set, used as a sink
