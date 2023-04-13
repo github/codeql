@@ -10,6 +10,7 @@ private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprS
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysisImpl
 private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
+
 /**
  * Gets the lower bound of the expression.
  *

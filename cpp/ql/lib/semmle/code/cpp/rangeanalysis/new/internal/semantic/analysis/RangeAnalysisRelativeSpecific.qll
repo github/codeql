@@ -30,33 +30,32 @@ module CppLangImplRelative implements LangSig<FloatDelta> {
       typeBounds(e.getSemType(), lb, ub) and
       (
         upper = false and
-        delta < lb or
+        delta < lb
+        or
         upper = true and
         delta > ub
       )
     )
   }
 
-  
-private predicate typeBounds(SemType t, float lb, float ub) {
-  exists(SemIntegerType integralType, float limit |
-    integralType = t and limit = 2.pow(8 * integralType.getByteSize())
-  |
-    if integralType instanceof SemBooleanType
-    then lb = 0 and ub = 1
-    else
-      if integralType.isSigned()
-      then (
-        lb = -(limit / 2) and ub = (limit / 2) - 1
-      ) else (
-        lb = 0 and ub = limit - 1
-      )
-  )
-  or
-  // This covers all floating point types. The range is (-Inf, +Inf).
-  t instanceof SemFloatingPointType and lb = -(1.0 / 0.0) and ub = 1.0 / 0.0
-}
-
+  private predicate typeBounds(SemType t, float lb, float ub) {
+    exists(SemIntegerType integralType, float limit |
+      integralType = t and limit = 2.pow(8 * integralType.getByteSize())
+    |
+      if integralType instanceof SemBooleanType
+      then lb = 0 and ub = 1
+      else
+        if integralType.isSigned()
+        then (
+          lb = -(limit / 2) and ub = (limit / 2) - 1
+        ) else (
+          lb = 0 and ub = limit - 1
+        )
+    )
+    or
+    // This covers all floating point types. The range is (-Inf, +Inf).
+    t instanceof SemFloatingPointType and lb = -(1.0 / 0.0) and ub = 1.0 / 0.0
+  }
 
   /**
    * Ignore any inferred zero lower bound on this expression.

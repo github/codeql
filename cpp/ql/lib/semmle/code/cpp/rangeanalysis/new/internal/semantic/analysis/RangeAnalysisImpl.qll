@@ -1,4 +1,4 @@
-private import RangeAnalysisStage 
+private import RangeAnalysisStage
 private import RangeAnalysisConstantSpecific
 private import RangeAnalysisRelativeSpecific
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
@@ -61,7 +61,6 @@ private newtype TSemReason =
     guard = any(RelativeStage::SemCondReason reason).getCond()
   }
 
-
 ConstantStage::SemReason constantReason(SemReason reason) {
   result instanceof ConstantStage::SemNoReason and reason instanceof SemNoReason
   or
@@ -73,6 +72,7 @@ RelativeStage::SemReason relativeReason(SemReason reason) {
   or
   result.(RelativeStage::SemCondReason).getCond() = reason.(SemCondReason).getCond()
 }
+
 import Public
 
 module Public {
