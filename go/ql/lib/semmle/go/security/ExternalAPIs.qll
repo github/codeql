@@ -188,14 +188,26 @@ class UnknownExternalApiDataNode extends ExternalApiDataNode {
 /** DEPRECATED: Alias for UnknownExternalApiDataNode */
 deprecated class UnknownExternalAPIDataNode = UnknownExternalApiDataNode;
 
-/** A configuration for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s. */
-class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
+/**
+ * DEPRECATED: Use `UntrustedDataToExternalApiFlow` instead.
+ *
+ * A configuration for tracking flow from `RemoteFlowSource`s to `ExternalApiDataNode`s.
+ */
+deprecated class UntrustedDataToExternalApiConfig extends TaintTracking::Configuration {
   UntrustedDataToExternalApiConfig() { this = "UntrustedDataToExternalAPIConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
 }
+
+private module UntrustedDataConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof ExternalApiDataNode }
+}
+
+module UntrustedDataToExternalApiFlow = DataFlow::Global<UntrustedDataConfig>;
 
 /** DEPRECATED: Alias for UntrustedDataToExternalApiConfig */
 deprecated class UntrustedDataToExternalAPIConfig = UntrustedDataToExternalApiConfig;
@@ -214,12 +226,10 @@ deprecated class UntrustedDataToUnknownExternalAPIConfig = UntrustedDataToUnknow
 
 /** A node representing untrusted data being passed to an external API. */
 class UntrustedExternalApiDataNode extends ExternalApiDataNode {
-  UntrustedExternalApiDataNode() { any(UntrustedDataToExternalApiConfig c).hasFlow(_, this) }
+  UntrustedExternalApiDataNode() { UntrustedDataToExternalApiFlow::flow(_, this) }
 
   /** Gets a source of untrusted data which is passed to this external API data node. */
-  DataFlow::Node getAnUntrustedSource() {
-    any(UntrustedDataToExternalApiConfig c).hasFlow(result, this)
-  }
+  DataFlow::Node getAnUntrustedSource() { UntrustedDataToExternalApiFlow::flow(result, this) }
 }
 
 /** DEPRECATED: Alias for UntrustedExternalApiDataNode */
