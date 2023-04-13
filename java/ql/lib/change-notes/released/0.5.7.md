@@ -18,13 +18,17 @@
 * Added a summary model for the `java.lang.UnsupportedOperationException(String)` constructor.
 * The filenames embedded in `Compilation.toString()` now use `/` as the path separator on all platforms.
 * Added models for the following packages:
-  * java.lang
-  * java.net
-  * java.nio.file
-* Added models for the following packages:
-  * java.io
-  * java.lang.module
-  * org.apache.commons.io
+  * `java.lang`
+  * `java.net`
+  * `java.nio.file`
+  * `java.io`
+  * `java.lang.module`
+  * `org.apache.commons.httpclient.util`
+  * `org.apache.commons.io`
+  * `org.apache.http.client`
+  * `org.eclipse.jetty.client`
+  * `com.google.common.io`
+  * `kotlin.io`
 * Added the `TaintedPathQuery.qll` library to provide the `TaintedPathFlow` and `TaintedPathLocalFlow` taint-tracking modules to reason about tainted path vulnerabilities.
 * Added the `ZipSlipQuery.qll` library to provide the `ZipSlipFlow` taint-tracking module to reason about zip-slip vulnerabilities.
 * Added the `InsecureBeanValidationQuery.qll` library to provide the `BeanValidationFlow` taint-tracking module to reason about bean validation vulnerabilities.
@@ -35,25 +39,6 @@
 * Improved the handling of addition in the range analysis. This can cause in minor changes to the results produced by `java/index-out-of-bounds` and `java/constant-comparison`.
 * A new models as data sink kind `command-injection` has been added.
 * The queries `java/command-line-injection` and `java/concatenated-command-line` now can be extended using the `command-injection` models as data sink kind.
-* Added models for the following packages:
-
-  * com.google.common.io
-  * java.lang
-  * java.nio.file
-  * kotlin.io
-  * org.apache.commons.httpclient.util
-  * org.apache.http.client
-  * org.eclipse.jetty.client
-* Added more sink and summary dataflow models for the following packages:
-  * `hudson.model`
-  * `hudson.scm`
-  * `hudson.util`
-* Added more sink and summary dataflow models for the following packages:
-  * `hudson.cli`
-  * `hudson.lifecycle`
-  * `hudson`
-  * `hudson.util.io`
-* Added the extensible abstract class `JndiInjectionSanitizer`. Now this class can be extended to add more sanitizers to the `java/jndi-injection` query.
 * Added more sink and summary dataflow models for the following packages:
   * `java.net`
   * `java.nio.file`
@@ -61,6 +46,14 @@
   * `javax.naming`
   * `javax.servlet`
   * `org.geogebra.web.full.main`
+  * `hudson`
+  * `hudson.cli`
+  * `hudson.lifecycle`
+  * `hudson.model`
+  * `hudson.scm`
+  * `hudson.util`
+  * `hudson.util.io`
+* Added the extensible abstract class `JndiInjectionSanitizer`. Now this class can be extended to add more sanitizers to the `java/jndi-injection` query.
 * Added a summary model for the `nativeSQL` method of the `java.sql.Connection` interface.
 * Added sink and summary dataflow models for the Jenkins and Netty frameworks.
 * The Models as Data syntax for selecting the qualifier has been changed from `-1` to `this` (e.g. `Argument[-1]` is now written as `Argument[this]`).

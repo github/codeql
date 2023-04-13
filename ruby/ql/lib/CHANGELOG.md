@@ -11,7 +11,7 @@
 * Control flow graph: the evaluation order of scope expressions and receivers in multiple assignments has been adjusted to match the changes made in Ruby 
 3.1 and 3.2.
 * The clear-text storage (`rb/clear-text-storage-sensitive-data`) and logging (`rb/clear-text-logging-sensitive-data`) queries now use built-in flow through hashes, for improved precision. This may result in both new true positives and less false positives.
-* Accesses of `params` in Sinatra applications are now recognised as HTTP input accesses.
+* Accesses of `params` in Sinatra applications are now recognized as HTTP input accesses.
 * Data flow is tracked from Sinatra route handlers to ERB files.
 * Data flow is tracked between basic Sinatra filters (those without URL patterns) and their corresponding route handlers.
 
