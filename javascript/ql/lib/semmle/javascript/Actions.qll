@@ -10,7 +10,7 @@ import javascript
  * See https://docs.github.com/en/actions/reference/workflow-syntax-for-github-actions.
  */
 module Actions {
-  /** A YAML node in a GitHub Actions workflow or a custom action file. */
+  /** A YAML node in a GitHub Actions workflow or a custom composite action file. */
   private class Node extends YamlNode {
     Node() {
       exists(File f |
@@ -25,7 +25,7 @@ module Actions {
   }
 
   /**
-   * A custom action. This is a mapping at the top level of an Actions YAML action file.
+   * A custom composite action. This is a mapping at the top level of an Actions YAML action file.
    * See https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions.
    */
   class Action extends Node, YamlDocument, YamlMapping {
@@ -34,7 +34,7 @@ module Actions {
   }
 
   /**
-   * An `runs` mapping in a custom action YAML.
+   * An `runs` mapping in a custom composite action YAML.
    * See https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs
    */
   class Runs extends StepsContainer {
@@ -55,7 +55,7 @@ module Actions {
   }
 
   /**
-   * A `using` mapping in a custom action YAML.
+   * A `using` mapping in a custom composite action YAML.
    */
   class Using extends YamlNode, YamlScalar {
     Runs runs;
@@ -234,10 +234,10 @@ module Actions {
     /** Gets the 0-based position of this step within the sequence of `steps`. */
     int getIndex() { result = index }
 
-    /** Gets the `job` this step belongs to, if the step belongs to a `job` in a workflow. Has no result if the step belongs to `runs` in a custom action. */
+    /** Gets the `job` this step belongs to, if the step belongs to a `job` in a workflow. Has no result if the step belongs to `runs` in a custom composite action. */
     Job getJob() { result = parent }
 
-    /** Gets the `runs` this step belongs to, if the step belongs to a `runs` in a custom action. Has no result if the step belongs to a `job` in a workflow. */
+    /** Gets the `runs` this step belongs to, if the step belongs to a `runs` in a custom composite action. Has no result if the step belongs to a `job` in a workflow. */
     Runs getRuns() { result = parent }
 
     /** Gets the value of the `uses` field in this step, if any. */
