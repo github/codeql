@@ -250,6 +250,35 @@ func getModMode(depMode DependencyInstallerMode) ModMode {
 	return ModUnset
 }
 
+func fixGoVendorIssues(modMode ModMode, depMode DependencyInstallerMode, goDirectiveFound bool) ModMode {
+	if modMode == ModVendor {
+		// fix go vendor issues with go versions >= 1.14 when no go version is specified in the go.mod
+		// if this is the case, and dependencies were vendored with an old go version (and therefore
+		// do not contain a '## explicit' annotation, the go command will fail and refuse to do any
+		// work
+		//
+		// we work around this by adding an explicit go version of 1.13, which is the last version
+		// where this is not an issue
+		if depMode == GoGetWithModules {
+			if !goDirectiveFound {
+				// if the go.mod does not contain a version line
+				modulesTxt, err := ioutil.ReadFile("vendor/modules.txt")
+				if err != nil {
+					log.Println("Failed to read vendor/modules.txt to check for mismatched Go version")
+				} else if explicitRe := regexp.MustCompile("(?m)^## explicit$"); !explicitRe.Match(modulesTxt) {
+					// and the modules.txt does not contain an explicit annotation
+					log.Println("Adding a version directive to the go.mod file as the modules.txt does not have explicit annotations")
+					if !addVersionToMod("1.13") {
+						log.Println("Failed to add a version to the go.mod file to fix explicitly required package bug; not using vendored dependencies")
+						return ModMod
+					}
+				}
+			}
+		}
+	}
+	return modMode
+}
+
 func main() {
 	if len(os.Args) > 1 {
 		usage()
@@ -303,32 +332,7 @@ func main() {
 	}
 
 	modMode := getModMode(depMode)
-
-	if modMode == ModVendor {
-		// fix go vendor issues with go versions >= 1.14 when no go version is specified in the go.mod
-		// if this is the case, and dependencies were vendored with an old go version (and therefore
-		// do not contain a '## explicit' annotation, the go command will fail and refuse to do any
-		// work
-		//
-		// we work around this by adding an explicit go version of 1.13, which is the last version
-		// where this is not an issue
-		if depMode == GoGetWithModules {
-			if !goDirectiveFound {
-				// if the go.mod does not contain a version line
-				modulesTxt, err := ioutil.ReadFile("vendor/modules.txt")
-				if err != nil {
-					log.Println("Failed to read vendor/modules.txt to check for mismatched Go version")
-				} else if explicitRe := regexp.MustCompile("(?m)^## explicit$"); !explicitRe.Match(modulesTxt) {
-					// and the modules.txt does not contain an explicit annotation
-					log.Println("Adding a version directive to the go.mod file as the modules.txt does not have explicit annotations")
-					if !addVersionToMod("1.13") {
-						log.Println("Failed to add a version to the go.mod file to fix explicitly required package bug; not using vendored dependencies")
-						modMode = ModMod
-					}
-				}
-			}
-		}
-	}
+	modMode = fixGoVendorIssues(modMode, depMode, goDirectiveFound)
 
 	// Go 1.16 and later won't automatically attempt to update go.mod / go.sum during package loading, so try to update them here:
 	if modMode != ModVendor && depMode == GoGetWithModules && semver.Compare(getEnvGoSemVer(), "1.16") >= 0 {
