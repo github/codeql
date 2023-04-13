@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Improved the queries for injection vulnerabilities in GitHub Actions workflows (`js/actions/command-injection` and `js/actions/pull-request-target`) and the associated library `semmle.javascript.Actions`. These now support steps defined in composite actions, in addition to steps defined in Actions workflow files.
+* Improved the queries for injection vulnerabilities in GitHub Actions workflows (`js/actions/command-injection` and `js/actions/pull-request-target`) and the associated library `semmle.javascript.Actions`. These now support steps defined in composite actions, in addition to steps defined in Actions workflow files. It supports more potentially untrusted input values. Additioanlly to the shell injections it now also detects injections in `actions/github-script`. It also detects simple injections from user controlled `${{ env.name }}`. Additionally to the `yml` extension now it also supports workflows with the `yaml` extension.
