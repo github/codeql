@@ -27,7 +27,7 @@ module Log {
   private class LogCall extends LoggerCall::Range, DataFlow::CallNode {
     LogCall() { this = any(LogFunction f).getACall() }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 
   /** A fatal log function, which calls `os.Exit`. */

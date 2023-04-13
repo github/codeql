@@ -124,7 +124,7 @@ module Revel {
         or
         methodName = "RenderText" and
         contentType = "text/plain" and
-        this = methodCall.getAnArgument()
+        this = methodCall.getSyntacticArgument(_)
       )
     }
 
@@ -201,7 +201,7 @@ module Revel {
         )
         or
         // a revel controller.Render(arg) will set controller.ViewArgs["arg"] = arg
-        exists(Variable arg | arg.getARead() = render.(ControllerRender).getAnArgument() |
+        exists(Variable arg | arg.getARead() = render.(ControllerRender).getASyntacticArgument() |
           var.getBaseVariable() = arg and
           var.getQualifiedName() = read.getFieldName()
         )

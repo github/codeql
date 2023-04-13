@@ -219,7 +219,7 @@ module StringOps {
        * replaced.
        */
       DataFlow::Node getAReplacedArgument() {
-        exists(int n | n % 2 = 0 and result = this.getArgument(n))
+        exists(int n | n % 2 = 0 and result = this.getSyntacticArgument(n))
       }
     }
 

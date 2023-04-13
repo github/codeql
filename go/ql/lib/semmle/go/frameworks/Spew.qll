@@ -41,7 +41,7 @@ module Spew {
     SpewCall() { this = target.getACall() }
 
     override DataFlow::Node getAMessageComponent() {
-      result = this.getArgument(any(int i | i >= target.getFirstPrintedArg()))
+      result = this.getSyntacticArgument(any(int i | i >= target.getFirstPrintedArg()))
     }
   }
 

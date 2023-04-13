@@ -90,7 +90,7 @@ module ElazarlGoproxy {
         onreqcall.getTarget().hasQualifiedName(packagePath(), "ProxyHttpServer", "OnRequest")
       |
         handlerReg.getReceiver() = onreqcall.getASuccessor*() and
-        check = onreqcall.getArgument(0)
+        check = onreqcall.getSyntacticArgument(0)
       )
     }
   }
@@ -119,6 +119,6 @@ module ElazarlGoproxy {
   private class ProxyLog extends LoggerCall::Range, DataFlow::MethodCallNode {
     ProxyLog() { this.getTarget() instanceof ProxyLogFunction }
 
-    override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
+    override DataFlow::Node getAMessageComponent() { result = this.getASyntacticArgument() }
   }
 }

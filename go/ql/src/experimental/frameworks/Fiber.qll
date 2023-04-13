@@ -183,7 +183,7 @@ private module Fiber {
           // signature: func (*Ctx) Append(field string, values ...string)
           methodName = "Append" and
           headerNameNode = headerSetterCall.getArgument(0) and
-          headerValueNode = headerSetterCall.getArgument(any(int i | i >= 1))
+          headerValueNode = headerSetterCall.getSyntacticArgument(any(int i | i >= 1))
           or
           // signature: func (*Ctx) Set(key string, val string)
           methodName = "Set" and
@@ -270,7 +270,7 @@ private module Fiber {
           or
           // signature: func (*Ctx) Send(bodies ...interface{})
           methodName = "Send" and
-          bodyNode = bodySetterCall.getArgument(_)
+          bodyNode = bodySetterCall.getSyntacticArgument(_)
           or
           // signature: func (*Ctx) SendBytes(body []byte)
           methodName = "SendBytes" and
@@ -286,7 +286,7 @@ private module Fiber {
           or
           // signature: func (*Ctx) Write(bodies ...interface{})
           methodName = "Write" and
-          bodyNode = bodySetterCall.getArgument(_)
+          bodyNode = bodySetterCall.getSyntacticArgument(_)
         )
       )
     )
