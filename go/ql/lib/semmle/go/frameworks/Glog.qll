@@ -39,8 +39,6 @@ module Glog {
     StringFormatter() { this.getName().matches("%f") }
 
     override int getFormatStringIndex() { result = super.getFirstPrintedArg() }
-
-    override int getFirstFormattedParameterIndex() { result = super.getFirstPrintedArg() + 1 }
   }
 
   private class GlogCall extends LoggerCall::Range, DataFlow::CallNode {

@@ -66,8 +66,6 @@ module Fmt {
     }
 
     override int getFormatStringIndex() { result = argOffset }
-
-    override int getFirstFormattedParameterIndex() { result = argOffset + 1 }
   }
 
   /** The `Sscan` function or one of its variants. */

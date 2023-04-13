@@ -20,8 +20,6 @@ module Log {
     LogFormatter() { this.getName().matches("%f") }
 
     override int getFormatStringIndex() { result = 0 }
-
-    override int getFirstFormattedParameterIndex() { result = 1 }
   }
 
   private class LogCall extends LoggerCall::Range, DataFlow::CallNode {

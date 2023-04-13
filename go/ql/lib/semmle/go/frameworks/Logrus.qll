@@ -43,7 +43,5 @@ module Logrus {
     }
 
     override int getFormatStringIndex() { result = argOffset }
-
-    override int getFirstFormattedParameterIndex() { result = argOffset + 1 }
   }
 }

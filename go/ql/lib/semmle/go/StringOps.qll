@@ -304,11 +304,6 @@ module StringOps {
        * Gets the parameter index of the format string.
        */
       abstract int getFormatStringIndex();
-
-      /**
-       * Gets the parameter index of the first parameter to be formatted.
-       */
-      abstract int getFirstFormattedParameterIndex();
     }
 
     /**
@@ -336,7 +331,7 @@ module StringOps {
         formatDirective = this.getComponent(n) and
         formatDirective.charAt(0) = "%" and
         formatDirective.charAt(1) != "%" and
-        result = this.getArgument((n / 2) + f.getFirstFormattedParameterIndex())
+        result = this.getImplicitVarargsArgument((n / 2))
       }
     }
   }

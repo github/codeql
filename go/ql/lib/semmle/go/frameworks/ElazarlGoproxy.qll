@@ -112,8 +112,6 @@ module ElazarlGoproxy {
     ProxyLogFunction() { this.hasQualifiedName(packagePath(), "ProxyCtx", ["Logf", "Warnf"]) }
 
     override int getFormatStringIndex() { result = 0 }
-
-    override int getFirstFormattedParameterIndex() { result = 1 }
   }
 
   private class ProxyLog extends LoggerCall::Range, DataFlow::MethodCallNode {

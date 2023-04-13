@@ -32,8 +32,6 @@ module Zap {
     ZapFormatter() { this.getName().matches("%f") }
 
     override int getFormatStringIndex() { result = 0 }
-
-    override int getFirstFormattedParameterIndex() { result = 1 }
   }
 
   /**
