@@ -57,10 +57,8 @@ class ProbableJob extends Actions::Job {
  */
 class ProbablePullRequestTarget extends Actions::On, YamlMappingLikeNode {
   ProbablePullRequestTarget() {
-    exists(YamlNode prtNode |
-      // The `on:` is triggered on `pull_request_target`
-      this.getNode("pull_request_target") = prtNode
-    )
+    // The `on:` is triggered on `pull_request_target`
+    exists(this.getNode("pull_request_target"))
   }
 }
 
