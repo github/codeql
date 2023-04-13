@@ -95,7 +95,7 @@ private module Cached {
     } or
     TSourceParameterNode(ParamDecl param) or
     TKeyPathParameterNode(EntryNode entry) { entry.getScope() instanceof KeyPathExpr } or
-    TKeyPathReturnNode(ExitNode entry) { entry.getScope() instanceof KeyPathExpr } or
+    TKeyPathReturnNode(ExitNode exit) { exit.getScope() instanceof KeyPathExpr } or
     TKeyPathComponentNode(KeyPathComponent component) or
     TSummaryParameterNode(FlowSummary::SummarizedCallable c, ParameterPosition pos) {
       FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
