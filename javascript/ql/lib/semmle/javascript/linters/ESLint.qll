@@ -60,7 +60,7 @@ module ESLint {
   }
 
   /** An `.eslintrc.yaml` file. */
-  private class EslintrcYaml extends Configuration instanceof YamlMapping {
+  private class EslintrcYaml extends Configuration instanceof YamlMapping, YamlDocument {
     EslintrcYaml() {
       exists(string n | n = getFile().getBaseName() |
         n = ".eslintrc.yaml" or n = ".eslintrc.yml" or n = ".eslintrc"
@@ -72,7 +72,9 @@ module ESLint {
 
   /** An ESLint configuration object in YAML format. */
   private class YamlConfigurationObject extends ConfigurationObject instanceof YamlMapping {
-    override Configuration getConfiguration() { this = result.(YamlMapping).getValue(_) }
+    override Configuration getConfiguration() {
+      this = result.(EslintrcYaml).(YamlMapping).getValue(_)
+    }
 
     override boolean getBooleanProperty(string p) {
       exists(string v | v = super.lookup(p).(YamlBool).getValue() |
