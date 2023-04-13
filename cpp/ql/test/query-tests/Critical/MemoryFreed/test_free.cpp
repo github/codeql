@@ -99,7 +99,7 @@ void* use_after_free(void *a) {
 
 void test_realloc1(void *a) {
     free(a);
-    void *b = realloc(a, sizeof(a)*3); // BAD
+    void *b = realloc(a, sizeof(a)*3); // BAD [NOT DETECTED by cpp/double-free]
     free(a); // BAD
     free(b); // GOOD
 }
