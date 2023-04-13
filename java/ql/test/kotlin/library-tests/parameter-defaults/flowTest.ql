@@ -13,13 +13,12 @@ class ShouldBeSunk extends StringLiteral {
 }
 
 module Config implements DataFlow::ConfigSig {
-
- predicate isSource(DataFlow::Node n) {
+  predicate isSource(DataFlow::Node n) {
     n.asExpr() instanceof ShouldBeSunk or
     n.asExpr() instanceof ShouldNotBeSunk
   }
 
- predicate isSink(DataFlow::Node n) {
+  predicate isSink(DataFlow::Node n) {
     n.asExpr().(Argument).getCall().getCallee().getName() = "sink"
   }
 }

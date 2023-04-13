@@ -2,11 +2,11 @@ import java
 import semmle.code.java.dataflow.DataFlow
 
 module Config implements DataFlow::ConfigSig {
- predicate isSource(DataFlow::Node n) {
+  predicate isSource(DataFlow::Node n) {
     n.asExpr().(CompileTimeConstantExpr).getEnclosingCallable().fromSource()
   }
 
- predicate isSink(DataFlow::Node n) {
+  predicate isSink(DataFlow::Node n) {
     n.asExpr() = any(MethodAccess ma | ma.getMethod().getName() = "sink").getAnArgument()
   }
 }
