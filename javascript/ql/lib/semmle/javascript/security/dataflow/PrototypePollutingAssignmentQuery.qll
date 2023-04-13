@@ -53,6 +53,8 @@ class Configuration extends TaintTracking::Configuration {
         not replace.getRawReplacement().getStringValue() = ""
       )
     )
+    or
+    node = NodeJSLib::Path::moduleMember(["join", "normalize", "relative", "resolve"]).getACall()
   }
 
   override predicate isAdditionalFlowStep(
