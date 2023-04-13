@@ -6,7 +6,7 @@
 
 ### Deprecated APIs
 
-* The predicates single-parameter predicates `ArrayOrVectorAggregateLiteral.getElementExpr` and `ClassAggregateLiteral.getFieldExpr` have been deprecated in favor of `ArrayOrVectorAggregateLiteral.getAnElementExpr` and `ClassAggregateLiteral.getAFieldExpr`.
+* The single-parameter predicates `ArrayOrVectorAggregateLiteral.getElementExpr` and `ClassAggregateLiteral.getFieldExpr` have been deprecated in favor of `ArrayOrVectorAggregateLiteral.getAnElementExpr` and `ClassAggregateLiteral.getAFieldExpr`.
 * The recently introduced new data flow and taint tracking APIs have had a
   number of module and predicate renamings. The old APIs remain in place for
   now.
