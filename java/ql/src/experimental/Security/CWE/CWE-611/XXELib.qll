@@ -52,9 +52,7 @@ class ValidatorValidate extends XmlParserCall {
 
   override Expr getSink() { result = this.getArgument(0) }
 
-  override predicate isSafe() {
-    exists(SafeValidatorFlowConfig svfc | svfc.hasFlowToExpr(this.getQualifier()))
-  }
+  override predicate isSafe() { SafeValidatorFlow::flowToExpr(this.getQualifier()) }
 }
 
 /** A `ParserConfig` specific to `Validator`. */
@@ -82,20 +80,20 @@ class SafeValidator extends VarAccess {
   }
 }
 
-private class SafeValidatorFlowConfig extends DataFlow3::Configuration {
-  SafeValidatorFlowConfig() { this = "SafeValidatorFlowConfig" }
+private module SafeValidatorFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeValidator }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeValidator }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
       sink.asExpr() = ma.getQualifier() and
       ma.getMethod().getDeclaringType() instanceof Validator
     )
   }
 
-  override int fieldFlowBranchLimit() { result = 0 }
+  int fieldFlowBranchLimit() { result = 0 }
 }
+
+private module SafeValidatorFlow = DataFlow::Global<SafeValidatorFlowConfig>;
 
 /**
  * The classes `org.apache.commons.digester3.Digester`, `org.apache.commons.digester.Digester` or `org.apache.tomcat.util.digester.Digester`.
@@ -121,9 +119,7 @@ class DigesterParse extends XmlParserCall {
 
   override Expr getSink() { result = this.getArgument(0) }
 
-  override predicate isSafe() {
-    exists(SafeDigesterFlowConfig sdfc | sdfc.hasFlowToExpr(this.getQualifier()))
-  }
+  override predicate isSafe() { SafeDigesterFlow::flowToExpr(this.getQualifier()) }
 }
 
 /** A `ParserConfig` that is specific to `Digester`. */
@@ -170,19 +166,19 @@ class SafeDigester extends VarAccess {
   }
 }
 
-private class SafeDigesterFlowConfig extends DataFlow4::Configuration {
-  SafeDigesterFlowConfig() { this = "SafeDigesterFlowConfig" }
+private module SafeDigesterFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeDigester }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof SafeDigester }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
       sink.asExpr() = ma.getQualifier() and ma.getMethod().getDeclaringType() instanceof Digester
     )
   }
 
-  override int fieldFlowBranchLimit() { result = 0 }
+  int fieldFlowBranchLimit() { result = 0 }
 }
+
+private module SafeDigesterFlow = DataFlow::Global<SafeDigesterFlowConfig>;
 
 /** The class `java.beans.XMLDecoder`. */
 class XmlDecoder extends RefType {
