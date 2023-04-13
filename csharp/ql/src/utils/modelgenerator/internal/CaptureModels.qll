@@ -4,10 +4,19 @@
  */
 
 private import CaptureModelsSpecific
+private import CaptureModelsPrinting
 
 class DataFlowTargetApi extends TargetApiSpecific {
   DataFlowTargetApi() { isRelevantForDataFlowModels(this) }
 }
+
+private module Printing implements PrintingSig {
+  class Api = DataFlowTargetApi;
+
+  string getProvenance() { result = "df-generated" }
+}
+
+module ModelPrinting = PrintingImpl<Printing>;
 
 /**
  * Holds if data can flow from `node1` to `node2` either via a read or a write of an intermediate field `f`.
@@ -53,58 +62,6 @@ string parameterNodeAsInput(DataFlow::ParameterNode p) {
 string asInputArgument(DataFlow::Node source) { result = asInputArgumentSpecific(source) }
 
 /**
- * Gets the summary model for `api` with `input`, `output` and `kind`.
- */
-bindingset[input, output, kind]
-private string asSummaryModel(TargetApiSpecific api, string input, string output, string kind) {
-  result =
-    asPartialModel(api) + input + ";" //
-      + output + ";" //
-      + kind + ";" //
-      + "generated"
-}
-
-string asNeutralModel(TargetApiSpecific api) { result = asPartialNeutralModel(api) + "generated" }
-
-/**
- * Gets the value summary model for `api` with `input` and `output`.
- */
-bindingset[input, output]
-string asValueModel(TargetApiSpecific api, string input, string output) {
-  result = asSummaryModel(api, input, output, "value")
-}
-
-/**
- * Gets the taint summary model for `api` with `input` and `output`.
- */
-bindingset[input, output]
-private string asTaintModel(TargetApiSpecific api, string input, string output) {
-  result = asSummaryModel(api, input, output, "taint")
-}
-
-/**
- * Gets the sink model for `api` with `input` and `kind`.
- */
-bindingset[input, kind]
-private string asSinkModel(TargetApiSpecific api, string input, string kind) {
-  result =
-    asPartialModel(api) + input + ";" //
-      + kind + ";" //
-      + "generated"
-}
-
-/**
- * Gets the source model for `api` with `output` and `kind`.
- */
-bindingset[output, kind]
-private string asSourceModel(TargetApiSpecific api, string output, string kind) {
-  result =
-    asPartialModel(api) + output + ";" //
-      + kind + ";" //
-      + "generated"
-}
-
-/**
  * Gets the summary model of `api`, if it follows the `fluent` programming pattern (returns `this`).
  */
 string captureQualifierFlow(TargetApiSpecific api) {
@@ -112,7 +69,7 @@ string captureQualifierFlow(TargetApiSpecific api) {
     api = returnNodeEnclosingCallable(ret) and
     isOwnInstanceAccessNode(ret)
   ) and
-  result = asValueModel(api, qualifierString(), "ReturnValue")
+  result = ModelPrinting::asValueModel(api, qualifierString(), "ReturnValue")
 }
 
 private int accessPathLimit() { result = 2 }
@@ -225,7 +182,7 @@ string captureThroughFlow(DataFlowTargetApi api) {
     input = parameterNodeAsInput(p) and
     output = returnNodeAsOutput(returnNodeExt) and
     input != output and
-    result = asTaintModel(api, input, output)
+    result = ModelPrinting::asTaintModel(api, input, output)
   )
 }
 
@@ -264,7 +221,7 @@ string captureSource(DataFlowTargetApi api) {
     ExternalFlow::sourceNode(source, kind) and
     api = sink.getEnclosingCallable() and
     isRelevantSourceKind(kind) and
-    result = asSourceModel(api, returnNodeAsOutput(sink), kind)
+    result = ModelPrinting::asSourceModel(api, returnNodeAsOutput(sink), kind)
   )
 }
 
@@ -296,6 +253,6 @@ string captureSink(DataFlowTargetApi api) {
     ExternalFlow::sinkNode(sink, kind) and
     api = src.getEnclosingCallable() and
     isRelevantSinkKind(kind) and
-    result = asSinkModel(api, asInputArgument(src), kind)
+    result = ModelPrinting::asSinkModel(api, asInputArgument(src), kind)
   )
 }
