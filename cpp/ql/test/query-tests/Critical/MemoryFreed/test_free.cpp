@@ -88,7 +88,7 @@ void test_new1() {
 void test_dereference1(A *a) {
     a->f(); // GOOD
     free(a);
-    a->f(); // BAD
+    a->f(); // BAD [NOT DETECTED]
 }
 
 void* use_after_free(void *a) {
@@ -225,5 +225,5 @@ void MmFreePagesFromMdl(void*);
 void ExFreePool(void*);
 void test_ms_free(void * memory_descriptor_list) {
     MmFreePagesFromMdl(memory_descriptor_list); //GOOD
-    ExFreePool(memory_descriptor_list); // GOOD
+    ExFreePool(memory_descriptor_list); // GOOD [FALSE POSITIVE for cpp/use-after-free]
 }
