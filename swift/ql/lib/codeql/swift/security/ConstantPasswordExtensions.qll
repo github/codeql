@@ -51,7 +51,7 @@ private class RnCryptorPasswordSink extends ConstantPasswordSink {
   RnCryptorPasswordSink() {
     // RNCryptor (labelled arguments)
     exists(NominalTypeDecl c, MethodDecl f, CallExpr call |
-      c.getName() =
+      c.getFullName() =
         [
           "RNCryptor", "RNEncryptor", "RNDecryptor", "RNCryptor.EncryptorV3",
           "RNCryptor.DecryptorV3"

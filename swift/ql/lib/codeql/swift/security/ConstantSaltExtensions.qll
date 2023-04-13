@@ -50,7 +50,7 @@ private class CryptoSwiftSaltSink extends ConstantSaltSink {
 private class RnCryptorSaltSink extends ConstantSaltSink {
   RnCryptorSaltSink() {
     exists(NominalTypeDecl c, MethodDecl f, CallExpr call |
-      c.getName() =
+      c.getFullName() =
         [
           "RNCryptor", "RNEncryptor", "RNDecryptor", "RNCryptor.EncryptorV3",
           "RNCryptor.DecryptorV3"
