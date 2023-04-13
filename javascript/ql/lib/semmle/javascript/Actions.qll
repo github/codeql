@@ -110,11 +110,11 @@ module Actions {
   }
 
   /** A workflow level 'global' environment variable. */
-  class GlobalEnv extends Env {
+  class WorkflowEnvVariable extends Env {
     string envName;
     Workflow workflow;
 
-    GlobalEnv() { this = workflow.getEnv().lookup(envName) }
+    WorkflowEnvVariable() { this = workflow.getEnv().lookup(envName) }
 
     /** Gets the workflow this field belongs to. */
     Workflow getWorkflow() { result = workflow }
