@@ -14,10 +14,10 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
+import MatchRegexFlow::PathGraph
 import PermissiveDotRegexQuery
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, MatchRegexConfiguration conf
-where conf.hasFlowPath(source, sink)
+from MatchRegexFlow::PathNode source, MatchRegexFlow::PathNode sink
+where MatchRegexFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Potentially authentication bypass due to $@.",
   source.getNode(), "user-provided value"
