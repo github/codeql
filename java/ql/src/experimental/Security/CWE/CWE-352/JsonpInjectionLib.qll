@@ -3,7 +3,6 @@ private import JsonStringLib
 private import semmle.code.java.security.XSS
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.FlowSources
-private import semmle.code.java.frameworks.spring.SpringController
 
 /**
  * A method that is called to handle an HTTP GET request.
