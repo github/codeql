@@ -44,6 +44,9 @@ public class Test {
             Exception e4 = new IllegalStateException((String)source());
             sink((String)e4.getMessage()); // $hasValueFlow
 
+            Exception e5 = new UnsupportedOperationException((String)source());
+            sink((String)e5.getMessage()); // $hasValueFlow
+
             Throwable t = new Throwable((Throwable)source());
             sink((Throwable)t.getCause()); // $hasValueFlow
 

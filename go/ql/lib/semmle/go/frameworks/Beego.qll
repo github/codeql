@@ -7,6 +7,7 @@ import go
 import semmle.go.security.Xss
 private import semmle.go.security.SafeUrlFlowCustomizations
 
+// Some TaintTracking::FunctionModel subclasses remain because varargs functions don't work with Models-as-Data sumamries yet.
 /**
  * Provides classes for working with untrusted flow sources, sinks and taint propagators
  * from the [Beego](https://github.com/beego/beego) package.
@@ -269,33 +270,6 @@ module Beego {
     override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
 
-  private class TopLevelTaintPropagators extends TaintTracking::FunctionModel {
-    string name;
-
-    TopLevelTaintPropagators() {
-      this.hasQualifiedName(packagePath(), name) and
-      name in ["HTML2str", "Htmlquote", "Htmlunquote", "MapGet", "ParseForm", "Str2html", "Substr"]
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      name in ["HTML2str", "Htmlquote", "Htmlunquote", "MapGet", "Str2html", "Substr"] and
-      input.isParameter(0) and
-      output.isResult(0)
-      or
-      name = "ParseForm" and
-      input.isParameter(0) and
-      output.isParameter(1)
-    }
-  }
-
-  private class ContextTaintPropagators extends TaintTracking::FunctionModel {
-    ContextTaintPropagators() { this.hasQualifiedName(contextPackagePath(), "WriteBody") }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input.isParameter(2) and output.isParameter(1)
-    }
-  }
-
   private class HtmlQuoteSanitizer extends SharedXss::Sanitizer {
     HtmlQuoteSanitizer() {
       exists(DataFlow::CallNode c | c.getTarget().hasQualifiedName(packagePath(), "Htmlquote") |
@@ -345,42 +319,11 @@ module Beego {
   }
 
   private class UtilsTaintPropagators extends TaintTracking::FunctionModel {
-    string name;
-
-    UtilsTaintPropagators() {
-      this.hasQualifiedName(utilsPackagePath(), name) and
-      name in [
-          "GetDisplayString", "SliceChunk", "SliceDiff", "SliceFilter", "SliceIntersect",
-          "SliceMerge", "SlicePad", "SliceRand", "SliceReduce", "SliceShuffle", "SliceUnique"
-        ]
-    }
+    UtilsTaintPropagators() { this.hasQualifiedName(utilsPackagePath(), "GetDisplayString") }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      name in [
-          "GetDisplayString", "SliceIntersect", "SliceMerge", "SlicePad", "SliceRand",
-          "SliceShuffle", "SliceUnique"
-        ] and
       input.isParameter(_) and
       output.isResult(0)
-      or
-      name in ["SliceChunk", "SliceDiff", "SliceFilter", "SliceReduce"] and
-      input.isParameter(0) and
-      output.isResult(0)
-    }
-  }
-
-  private class BeeMapModels extends TaintTracking::FunctionModel, Method {
-    string name;
-
-    BeeMapModels() {
-      this.hasQualifiedName(utilsPackagePath(), "BeeMap", name) and
-      name in ["Get", "Set", "Items"]
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      name = "Set" and input.isParameter(1) and output.isReceiver()
-      or
-      name in ["Get", "Items"] and input.isReceiver() and output.isResult(0)
     }
   }
 }

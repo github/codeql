@@ -5,8 +5,8 @@ extensions:
     data:
       - ["java.sql", "Connection", True, "prepareCall", "", "", "Argument[0]", "sql", "manual"]
       - ["java.sql", "Connection", True, "prepareStatement", "", "", "Argument[0]", "sql", "manual"]
-      - ["java.sql", "DatabaseMetaData", True, "getColumns", "(String,String,String,String)", "", "Argument[2]", "sql", "ai-generated"]
-      - ["java.sql", "DatabaseMetaData", True, "getPrimaryKeys", "(String,String,String)", "", "Argument[2]", "sql", "ai-generated"]
+      - ["java.sql", "DatabaseMetaData", True, "getColumns", "(String,String,String,String)", "", "Argument[2]", "sql", "ai-manual"]
+      - ["java.sql", "DatabaseMetaData", True, "getPrimaryKeys", "(String,String,String)", "", "Argument[2]", "sql", "ai-manual"]
       - ["java.sql", "Driver", False, "connect", "(String,Properties)", "", "Argument[0]", "jdbc-url", "manual"]
       - ["java.sql", "DriverManager", False, "getConnection", "(String)", "", "Argument[0]", "jdbc-url", "manual"]
       - ["java.sql", "DriverManager", False, "getConnection", "(String,Properties)", "", "Argument[0]", "jdbc-url", "manual"]

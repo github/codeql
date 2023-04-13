@@ -3005,24 +3005,38 @@ cfg.swift:
 #  456|     getElement(0): [PatternBindingDecl] var ... = ...
 #  456|       getInit(0): [KeyPathExpr] #keyPath(...)
 #  456|         getRoot(): [TypeRepr] A
+#  456|         getComponent(0): [KeyPathComponent] KeyPathComponent
+#  456|         getComponent(1): [KeyPathComponent] KeyPathComponent
 #  456|       getPattern(0): [NamedPattern] kpGet_b_x
 #  456|     getElement(1): [ConcreteVarDecl] kpGet_b_x
 #  456|         Type = WritableKeyPath<A, Int>
 #  457|     getElement(2): [PatternBindingDecl] var ... = ...
 #  457|       getInit(0): [KeyPathExpr] #keyPath(...)
 #  457|         getRoot(): [TypeRepr] A
+#  457|         getComponent(0): [KeyPathComponent] KeyPathComponent
+#  457|         getComponent(1): [KeyPathComponent] KeyPathComponent
+#  457|           getSubscriptArgument(0): [Argument] : 0
+#  457|             getExpr(): [IntegerLiteralExpr] 0
+#  457|         getComponent(2): [KeyPathComponent] KeyPathComponent
 #  457|       getPattern(0): [NamedPattern] kpGet_bs_0_x
 #  457|     getElement(3): [ConcreteVarDecl] kpGet_bs_0_x
 #  457|         Type = WritableKeyPath<A, Int>
 #  458|     getElement(4): [PatternBindingDecl] var ... = ...
 #  458|       getInit(0): [KeyPathExpr] #keyPath(...)
 #  458|         getRoot(): [TypeRepr] A
+#  458|         getComponent(0): [KeyPathComponent] KeyPathComponent
+#  458|         getComponent(1): [KeyPathComponent] KeyPathComponent
+#  458|         getComponent(2): [KeyPathComponent] KeyPathComponent
 #  458|       getPattern(0): [NamedPattern] kpGet_mayB_force_x
 #  458|     getElement(5): [ConcreteVarDecl] kpGet_mayB_force_x
 #  458|         Type = WritableKeyPath<A, Int>
 #  459|     getElement(6): [PatternBindingDecl] var ... = ...
 #  459|       getInit(0): [KeyPathExpr] #keyPath(...)
 #  459|         getRoot(): [TypeRepr] A
+#  459|         getComponent(0): [KeyPathComponent] KeyPathComponent
+#  459|         getComponent(1): [KeyPathComponent] KeyPathComponent
+#  459|         getComponent(2): [KeyPathComponent] KeyPathComponent
+#-----|         getComponent(3): [KeyPathComponent] KeyPathComponent
 #  459|       getPattern(0): [NamedPattern] kpGet_mayB_x
 #  459|     getElement(7): [ConcreteVarDecl] kpGet_mayB_x
 #  459|         Type = KeyPath<A, Int?>
@@ -4642,6 +4656,7 @@ expressions.swift:
 #   54|       getDest(): [DiscardAssignmentExpr] _
 #   54|       getSource(): [KeyPathExpr] #keyPath(...)
 #   54|         getRoot(): [TypeRepr] S
+#   54|         getComponent(0): [KeyPathComponent] KeyPathComponent
 #   56| [ConcreteFuncDecl] unsafeFunction(pointer:)
 #   56|     InterfaceType = (UnsafePointer<Int>) -> ()
 #   56|   getParam(0): [ParamDecl] pointer
@@ -5252,6 +5267,7 @@ expressions.swift:
 #  154|           getKeyPath(): [DeclRefExpr] keyPathB
 #  154|         getKeyPath(): [KeyPathExpr] #keyPath(...)
 #  154|           getRoot(): [TypeRepr] B
+#  154|           getComponent(0): [KeyPathComponent] KeyPathComponent
 #  154|       getPattern(0): [NamedPattern] nested_apply
 #  154|     getElement(5): [ConcreteVarDecl] nested_apply
 #  154|         Type = Int
@@ -5322,6 +5338,244 @@ expressions.swift:
 #  163|           getExpr(): [IntegerLiteralExpr] 1
 #  163|         getArgument(1): [Argument] : 0
 #  163|           getExpr(): [IntegerLiteralExpr] 0
+#  166| [StructDecl] Bar
+#  167|   getMember(0): [PatternBindingDecl] var ... = ...
+#  167|     getPattern(0): [TypedPattern] ... as ...
+#  167|       getSubPattern(): [NamedPattern] value
+#  167|       getTypeRepr(): [TypeRepr] Int
+#  167|   getMember(1): [ConcreteVarDecl] value
+#  167|       Type = Int
+#  167|     getAccessorDecl(0): [AccessorDecl] get
+#  167|         InterfaceType = (Bar) -> () -> Int
+#  167|       getSelfParam(): [ParamDecl] self
+#  167|           Type = Bar
+#  167|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .value
+#-----|             getBase(): [DeclRefExpr] self
+#  167|     getAccessorDecl(1): [AccessorDecl] set
+#  167|         InterfaceType = (inout Bar) -> (Int) -> ()
+#  167|       getSelfParam(): [ParamDecl] self
+#  167|           Type = Bar
+#  167|       getParam(0): [ParamDecl] value
+#  167|           Type = Int
+#  167|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .value
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  167|     getAccessorDecl(2): [AccessorDecl] _modify
+#  167|         InterfaceType = (inout Bar) -> () -> ()
+#  167|       getSelfParam(): [ParamDecl] self
+#  167|           Type = Bar
+#  167|       getBody(): [BraceStmt] { ... }
+#  167|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .value
+#-----|               getBase(): [DeclRefExpr] self
+#  168|   getMember(2): [PatternBindingDecl] var ... = ...
+#-----|     getInit(0): [NilLiteralExpr] nil
+#  168|     getPattern(0): [TypedPattern] ... as ...
+#  168|       getSubPattern(): [NamedPattern] opt
+#  168|       getTypeRepr(): [TypeRepr] Int?
+#  168|   getMember(3): [ConcreteVarDecl] opt
+#  168|       Type = Int?
+#  168|     getAccessorDecl(0): [AccessorDecl] get
+#  168|         InterfaceType = (Bar) -> () -> Int?
+#  168|       getSelfParam(): [ParamDecl] self
+#  168|           Type = Bar
+#  168|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .opt
+#-----|             getBase(): [DeclRefExpr] self
+#  168|     getAccessorDecl(1): [AccessorDecl] set
+#  168|         InterfaceType = (inout Bar) -> (Int?) -> ()
+#  168|       getSelfParam(): [ParamDecl] self
+#  168|           Type = Bar
+#  168|       getParam(0): [ParamDecl] value
+#  168|           Type = Int?
+#  168|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .opt
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  168|     getAccessorDecl(2): [AccessorDecl] _modify
+#  168|         InterfaceType = (inout Bar) -> () -> ()
+#  168|       getSelfParam(): [ParamDecl] self
+#  168|           Type = Bar
+#  168|       getBody(): [BraceStmt] { ... }
+#  168|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .opt
+#-----|               getBase(): [DeclRefExpr] self
+#  166|   getMember(4): [ConstructorDecl] Bar.init(value:opt:)
+#  166|       InterfaceType = (Bar.Type) -> (Int, Int?) -> Bar
+#  166|     getSelfParam(): [ParamDecl] self
+#  166|         Type = Bar
+#  166|     getParam(0): [ParamDecl] value
+#  166|         Type = Int
+#  166|     getParam(1): [ParamDecl] opt
+#  166|         Type = Int?
+#  171| [StructDecl] Foo
+#  172|   getMember(0): [PatternBindingDecl] var ... = ...
+#  172|     getPattern(0): [TypedPattern] ... as ...
+#  172|       getSubPattern(): [NamedPattern] value
+#  172|       getTypeRepr(): [TypeRepr] Int
+#  172|   getMember(1): [ConcreteVarDecl] value
+#  172|       Type = Int
+#  172|     getAccessorDecl(0): [AccessorDecl] get
+#  172|         InterfaceType = (Foo) -> () -> Int
+#  172|       getSelfParam(): [ParamDecl] self
+#  172|           Type = Foo
+#  172|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .value
+#-----|             getBase(): [DeclRefExpr] self
+#  172|     getAccessorDecl(1): [AccessorDecl] set
+#  172|         InterfaceType = (inout Foo) -> (Int) -> ()
+#  172|       getSelfParam(): [ParamDecl] self
+#  172|           Type = Foo
+#  172|       getParam(0): [ParamDecl] value
+#  172|           Type = Int
+#  172|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .value
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  172|     getAccessorDecl(2): [AccessorDecl] _modify
+#  172|         InterfaceType = (inout Foo) -> () -> ()
+#  172|       getSelfParam(): [ParamDecl] self
+#  172|           Type = Foo
+#  172|       getBody(): [BraceStmt] { ... }
+#  172|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .value
+#-----|               getBase(): [DeclRefExpr] self
+#  173|   getMember(2): [PatternBindingDecl] var ... = ...
+#-----|     getInit(0): [NilLiteralExpr] nil
+#  173|     getPattern(0): [TypedPattern] ... as ...
+#  173|       getSubPattern(): [NamedPattern] opt
+#  173|       getTypeRepr(): [TypeRepr] Bar?
+#  173|   getMember(3): [ConcreteVarDecl] opt
+#  173|       Type = Bar?
+#  173|     getAccessorDecl(0): [AccessorDecl] get
+#  173|         InterfaceType = (Foo) -> () -> Bar?
+#  173|       getSelfParam(): [ParamDecl] self
+#  173|           Type = Foo
+#  173|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [ReturnStmt] return ...
+#-----|           getResult(): [MemberRefExpr] .opt
+#-----|             getBase(): [DeclRefExpr] self
+#  173|     getAccessorDecl(1): [AccessorDecl] set
+#  173|         InterfaceType = (inout Foo) -> (Bar?) -> ()
+#  173|       getSelfParam(): [ParamDecl] self
+#  173|           Type = Foo
+#  173|       getParam(0): [ParamDecl] value
+#  173|           Type = Bar?
+#  173|       getBody(): [BraceStmt] { ... }
+#-----|         getElement(0): [AssignExpr]  ... = ...
+#-----|           getDest(): [MemberRefExpr] .opt
+#-----|             getBase(): [DeclRefExpr] self
+#-----|           getSource(): [DeclRefExpr] value
+#  173|     getAccessorDecl(2): [AccessorDecl] _modify
+#  173|         InterfaceType = (inout Foo) -> () -> ()
+#  173|       getSelfParam(): [ParamDecl] self
+#  173|           Type = Foo
+#  173|       getBody(): [BraceStmt] { ... }
+#  173|         getElement(0): [YieldStmt] yield ...
+#-----|           getResult(0): [InOutExpr] &...
+#-----|             getSubExpr(): [MemberRefExpr] .opt
+#-----|               getBase(): [DeclRefExpr] self
+#  171|   getMember(4): [ConstructorDecl] Foo.init(value:opt:)
+#  171|       InterfaceType = (Foo.Type) -> (Int, Bar?) -> Foo
+#  171|     getSelfParam(): [ParamDecl] self
+#  171|         Type = Foo
+#  171|     getParam(0): [ParamDecl] value
+#  171|         Type = Int
+#  171|     getParam(1): [ParamDecl] opt
+#  171|         Type = Bar?
+#  176| [TopLevelCodeDecl] { ... }
+#  176|   getBody(): [BraceStmt] { ... }
+#  176|     getElement(0): [PatternBindingDecl] var ... = ...
+#  176|       getInit(0): [KeyPathExpr] #keyPath(...)
+#  176|         getRoot(): [TypeRepr] Foo
+#  176|         getComponent(0): [KeyPathComponent] KeyPathComponent
+#  176|       getPattern(0): [NamedPattern] prop
+#  176| [ConcreteVarDecl] prop
+#  176|     Type = WritableKeyPath<Foo, Int>
+#  177| [TopLevelCodeDecl] { ... }
+#  177|   getBody(): [BraceStmt] { ... }
+#  177|     getElement(0): [PatternBindingDecl] var ... = ...
+#  177|       getInit(0): [KeyPathExpr] #keyPath(...)
+#  177|         getRoot(): [TypeRepr] [Int]
+#  177|         getComponent(0): [KeyPathComponent] KeyPathComponent
+#  177|           getSubscriptArgument(0): [Argument] : 0
+#  177|             getExpr(): [IntegerLiteralExpr] 0
+#  177|       getPattern(0): [NamedPattern] arrElement
+#  177| [ConcreteVarDecl] arrElement
+#  177|     Type = WritableKeyPath<[Int], Int>
+#  178| [TopLevelCodeDecl] { ... }
+#  178|   getBody(): [BraceStmt] { ... }
+#  178|     getElement(0): [PatternBindingDecl] var ... = ...
+#  178|       getInit(0): [KeyPathExpr] #keyPath(...)
+#  178|         getRoot(): [TypeRepr] [String : Int]
+#  178|         getComponent(0): [KeyPathComponent] KeyPathComponent
+#  178|           getSubscriptArgument(0): [Argument] : a
+#  178|             getExpr(): [StringLiteralExpr] a
+#  178|       getPattern(0): [NamedPattern] dictElement
+#  178| [ConcreteVarDecl] dictElement
+#  178|     Type = WritableKeyPath<[String : Int], Int?>
+#  179| [TopLevelCodeDecl] { ... }
+#  179|   getBody(): [BraceStmt] { ... }
+#  179|     getElement(0): [PatternBindingDecl] var ... = ...
+#  179|       getInit(0): [KeyPathExpr] #keyPath(...)
+#  179|         getRoot(): [TypeRepr] Int?
+#  179|         getComponent(0): [KeyPathComponent] KeyPathComponent
+#  179|         getComponent(1): [KeyPathComponent] KeyPathComponent
+#  179|       getPattern(0): [NamedPattern] optForce
+#  179| [ConcreteVarDecl] optForce
+#  179|     Type = WritableKeyPath<Int?, Int>
+#  180| [TopLevelCodeDecl] { ... }
+#  180|   getBody(): [BraceStmt] { ... }
+#  180|     getElement(0): [PatternBindingDecl] var ... = ...
+#  180|       getInit(0): [KeyPathExpr] #keyPath(...)
+#  180|         getRoot(): [TypeRepr] Foo
+#  180|         getComponent(0): [KeyPathComponent] KeyPathComponent
+#  180|         getComponent(1): [KeyPathComponent] KeyPathComponent
+#  180|         getComponent(2): [KeyPathComponent] KeyPathComponent
+#  180|       getPattern(0): [NamedPattern] optChain
+#  180| [ConcreteVarDecl] optChain
+#  180|     Type = KeyPath<Foo, Int?>
+#  181| [TopLevelCodeDecl] { ... }
+#  181|   getBody(): [BraceStmt] { ... }
+#  181|     getElement(0): [PatternBindingDecl] var ... = ...
+#  181|       getInit(0): [KeyPathExpr] #keyPath(...)
+#  181|         getRoot(): [TypeRepr] Foo
+#  181|         getComponent(0): [KeyPathComponent] KeyPathComponent
+#  181|         getComponent(1): [KeyPathComponent] KeyPathComponent
+#  181|         getComponent(2): [KeyPathComponent] KeyPathComponent
+#-----|         getComponent(3): [KeyPathComponent] KeyPathComponent
+#  181|       getPattern(0): [NamedPattern] optChainWrap
+#  181| [ConcreteVarDecl] optChainWrap
+#  181|     Type = KeyPath<Foo, Int?>
+#  182| [TopLevelCodeDecl] { ... }
+#  182|   getBody(): [BraceStmt] { ... }
+#  182|     getElement(0): [PatternBindingDecl] var ... = ...
+#  182|       getInit(0): [KeyPathExpr] #keyPath(...)
+#  182|         getRoot(): [TypeRepr] Int
+#  182|         getComponent(0): [KeyPathComponent] KeyPathComponent
+#  182|       getPattern(0): [NamedPattern] slf
+#  182| [ConcreteVarDecl] slf
+#  182|     Type = WritableKeyPath<Int, Int>
+#  183| [TopLevelCodeDecl] { ... }
+#  183|   getBody(): [BraceStmt] { ... }
+#  183|     getElement(0): [PatternBindingDecl] var ... = ...
+#  183|       getInit(0): [KeyPathExpr] #keyPath(...)
+#  183|         getRoot(): [TypeRepr] (Int, Int)
+#  183|         getComponent(0): [KeyPathComponent] KeyPathComponent
+#  183|       getPattern(0): [NamedPattern] tupleElement
+#  183| [ConcreteVarDecl] tupleElement
+#  183|     Type = WritableKeyPath<(Int, Int), Int>
 patterns.swift:
 #    1| [ConcreteFuncDecl] basic_patterns()
 #    1|     InterfaceType = () -> ()

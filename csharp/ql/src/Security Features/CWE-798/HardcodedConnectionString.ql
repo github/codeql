@@ -15,7 +15,7 @@
 import csharp
 import semmle.code.csharp.frameworks.system.Data
 import semmle.code.csharp.security.dataflow.HardcodedCredentialsQuery
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import ConnectionString::PathGraph
 
 /**
  * A string literal containing a username or password field.
@@ -29,24 +29,24 @@ class ConnectionStringPasswordOrUsername extends NonEmptyStringLiteral {
 /**
  * A taint-tracking configuration for tracking string literals to a `ConnectionString` property.
  */
-class ConnectionStringTaintTrackingConfiguration extends TaintTracking::Configuration {
-  ConnectionStringTaintTrackingConfiguration() { this = "connectionstring" }
+module ConnectionStringConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ConnectionStringPasswordOrUsername }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof ConnectionStringPasswordOrUsername
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink.asExpr() =
       any(SystemDataConnectionClass connection).getConnectionStringProperty().getAnAssignedValue()
   }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof StringFormatSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof StringFormatSanitizer }
 }
 
-from
-  ConnectionStringTaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+/**
+ * A taint-tracking module for tracking string literals to a `ConnectionString` property.
+ */
+module ConnectionString = TaintTracking::Global<ConnectionStringConfig>;
+
+from ConnectionString::PathNode source, ConnectionString::PathNode sink
+where ConnectionString::flowPath(source, sink)
 select source.getNode(), source, sink,
   "'ConnectionString' property includes hard-coded credentials set in $@.",
   any(Call call | call.getAnArgument() = sink.getNode().asExpr()) as call, call.toString()

@@ -287,3 +287,13 @@
 | expressions.swift:163:9:163:9 | >>(_:_:) | DeclRefExpr |
 | expressions.swift:163:9:163:9 | Int.Type | TypeExpr |
 | expressions.swift:163:12:163:12 | 0 | IntegerLiteralExpr |
+| expressions.swift:176:12:176:17 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:177:18:177:26 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:177:25:177:25 | 0 | IntegerLiteralExpr |
+| expressions.swift:178:19:178:38 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:178:35:178:35 | a | StringLiteralExpr |
+| expressions.swift:179:16:179:35 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:180:16:180:26 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:181:20:181:30 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:182:11:182:16 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:183:20:183:32 | #keyPath(...) | KeyPathExpr |

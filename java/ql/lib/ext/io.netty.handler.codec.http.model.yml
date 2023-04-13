@@ -3,13 +3,13 @@ extensions:
     pack: codeql/java-all
     extensible: sinkModel
   data:
-    - ["io.netty.handler.codec.http", "DefaultFullHttpRequest", True, "DefaultFullHttpRequest", "(HttpVersion,HttpMethod,String,ByteBuf)", "", "Argument[2]", "open-url", "ai-generated"]
-    - ["io.netty.handler.codec.http", "DefaultHttpRequest", True, "DefaultHttpRequest", "(HttpVersion,HttpMethod,String)", "", "Argument[2]", "open-url", "ai-generated"]
+    - ["io.netty.handler.codec.http", "DefaultFullHttpRequest", True, "DefaultFullHttpRequest", "(HttpVersion,HttpMethod,String,ByteBuf)", "", "Argument[2]", "open-url", "ai-manual"]
+    - ["io.netty.handler.codec.http", "DefaultHttpRequest", True, "DefaultHttpRequest", "(HttpVersion,HttpMethod,String)", "", "Argument[2]", "open-url", "ai-manual"]
 - addsTo:
     pack: codeql/java-all
     extensible: summaryModel
   data:
-    - ["io.netty.handler.codec.http", "QueryStringEncoder", True, "QueryStringEncoder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
+    - ["io.netty.handler.codec.http", "QueryStringEncoder", True, "QueryStringEncoder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "add", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "add", "(CharSequence,Iterable)", "", "Argument[0]", "Argument[this].Element.MapKey", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "add", "(CharSequence,Iterable)", "", "Argument[1].Element", "Argument[this].Element.MapValue", "taint", "manual"]

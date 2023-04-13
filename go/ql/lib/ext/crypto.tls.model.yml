@@ -1,0 +1,8 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["crypto/tls", "", False, "Client", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["crypto/tls", "", False, "NewListener", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["crypto/tls", "", False, "Server", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

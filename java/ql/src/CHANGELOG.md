@@ -1,3 +1,7 @@
+## 0.5.6
+
+No user-facing changes.
+
 ## 0.5.5
 
 ### New Queries

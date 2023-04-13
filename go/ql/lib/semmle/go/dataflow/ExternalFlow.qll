@@ -206,7 +206,7 @@ module ModelValidation {
       or
       summaryModel(package, type, _, name, signature, ext, _, _, _, provenance) and pred = "summary"
     |
-      not package.regexpMatch("[a-zA-Z0-9_\\./]*") and
+      not package.replaceAll("$ANYVERSION", "").regexpMatch("[a-zA-Z0-9_\\./-]*") and
       result = "Dubious package \"" + package + "\" in " + pred + " model."
       or
       not type.regexpMatch("[a-zA-Z0-9_\\$<>]*") and
@@ -221,7 +221,7 @@ module ModelValidation {
       not ext.regexpMatch("|Annotated") and
       result = "Unrecognized extra API graph element \"" + ext + "\" in " + pred + " model."
       or
-      not provenance = ["manual", "generated"] and
+      invalidProvenance(provenance) and
       result = "Unrecognized provenance description \"" + provenance + "\" in " + pred + " model."
     )
   }
@@ -265,6 +265,15 @@ private string paramsStringPart(Function f, int i) {
  */
 string paramsString(Function f) { result = concat(int i | | paramsStringPart(f, i) order by i) }
 
+bindingset[p]
+private string interpretPackage(string p) {
+  exists(string r | r = "([^$]+)([./]\\$ANYVERSION(/|$)(.*))?" |
+    if exists(p.regexpCapture(r, 4))
+    then result = package(p.regexpCapture(r, 1), p.regexpCapture(r, 4))
+    else result = package(p, "")
+  )
+}
+
 /** Gets the source/sink/summary element corresponding to the supplied parameters. */
 SourceOrSinkElement interpretElement(
   string pkg, string type, boolean subtypes, string name, string signature, string ext
@@ -273,16 +282,16 @@ SourceOrSinkElement interpretElement(
   // Go does not need to distinguish functions with signature
   signature = "" and
   (
-    exists(Field f | f.hasQualifiedName(pkg, type, name) | result.asEntity() = f)
+    exists(Field f | f.hasQualifiedName(interpretPackage(pkg), type, name) | result.asEntity() = f)
     or
-    exists(Method m | m.hasQualifiedName(pkg, type, name) |
+    exists(Method m | m.hasQualifiedName(interpretPackage(pkg), type, name) |
       result.asEntity() = m
       or
-      subtypes = true and result.asEntity().(Method).implements(m)
+      subtypes = true and result.asEntity().(Method).implementsIncludingInterfaceMethods(m)
     )
     or
     type = "" and
-    exists(Entity e | e.hasQualifiedName(pkg, name) | result.asEntity() = e)
+    exists(Entity e | e.hasQualifiedName(interpretPackage(pkg), name) | result.asEntity() = e)
   )
 }
 
