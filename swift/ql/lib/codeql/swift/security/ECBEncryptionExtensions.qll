@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow source for ECB encryption vulnerabilities. That is,
@@ -48,32 +49,22 @@ private class CryptoSwiftEcb extends EcbEncryptionSource {
   }
 }
 
-/**
- * A block mode being used to form a CryptoSwift `AES` cipher.
- */
-private class AES extends EcbEncryptionSink {
-  AES() {
-    // `blockMode` arg in `AES.init` is a sink
-    exists(CallExpr call |
-      call.getStaticTarget()
-          .(MethodDecl)
-          .hasQualifiedName("AES", ["init(key:blockMode:)", "init(key:blockMode:padding:)"]) and
-      call.getArgument(1).getExpr() = this.asExpr()
-    )
+private class EcbEncryptionSinks extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        // CryptoSwift `AES.init` block mode
+        ";AES;true;init(key:blockMode:);;;Argument[1];encryption-block-mode",
+        ";AES;true;init(key:blockMode:padding:);;;Argument[1];encryption-block-mode",
+        // CryptoSwift `Blowfish.init` block mode
+        ";Blowfish;true;init(key:blockMode:padding:);;;Argument[1];encryption-block-mode",
+      ]
   }
 }
 
 /**
- * A block mode being used to form a CryptoSwift `Blowfish` cipher.
+ * A sink defined in a CSV model.
  */
-private class Blowfish extends EcbEncryptionSink {
-  Blowfish() {
-    // `blockMode` arg in `Blowfish.init` is a sink
-    exists(CallExpr call |
-      call.getStaticTarget()
-          .(MethodDecl)
-          .hasQualifiedName("Blowfish", "init(key:blockMode:padding:)") and
-      call.getArgument(1).getExpr() = this.asExpr()
-    )
-  }
+private class DefaultEcbEncryptionSink extends EcbEncryptionSink {
+  DefaultEcbEncryptionSink() { sinkNode(this, "encryption-block-mode") }
 }

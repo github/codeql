@@ -6,9 +6,11 @@
 import swift
 import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
- * A dataflow sink for weak sensitive data hashing vulnerabilities.
+ * A dataflow sink for weak sensitive data hashing vulnerabilities. That is,
+ * a `DataFlow::Node` that is passed into a weak hashing function.
  */
 abstract class WeakSensitiveDataHashingSink extends DataFlow::Node {
   /**
@@ -33,21 +35,28 @@ class WeakSensitiveDataHashingAdditionalTaintStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
+private class WeakHashingSinks extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        // CryptoKit
+        ";Insecure.MD5;true;hash(data:);;;Argument[0];weak-hash-input-MD5",
+        ";Insecure.MD5;true;update(data:);;;Argument[0];weak-hash-input-MD5",
+        ";Insecure.MD5;true;update(bufferPointer:);;;Argument[0];weak-hash-input-MD5",
+        ";Insecure.SHA1;true;hash(data:);;;Argument[0];weak-hash-input-SHA1",
+        ";Insecure.SHA1;true;update(data:);;;Argument[0];weak-hash-input-SHA1",
+        ";Insecure.SHA1;true;update(bufferPointer:);;;Argument[0];weak-hash-input-SHA1",
+      ]
+  }
+}
+
 /**
- * A sink for the CryptoSwift library.
+ * A sink defined in a CSV model.
  */
-private class CryptoSwiftWeakHashingSink extends WeakSensitiveDataHashingSink {
+private class DefaultWeakHashingSink extends WeakSensitiveDataHashingSink {
   string algorithm;
 
-  CryptoSwiftWeakHashingSink() {
-    exists(ApplyExpr call, FuncDecl func |
-      call.getAnArgument().getExpr() = this.asExpr() and
-      call.getStaticTarget() = func and
-      func.getName().matches(["hash(%", "update(%"]) and
-      algorithm = func.getEnclosingDecl().(ClassOrStructDecl).getName() and
-      algorithm = ["MD5", "SHA1"]
-    )
-  }
+  DefaultWeakHashingSink() { sinkNode(this, "weak-hash-input-" + algorithm) }
 
   override string getAlgorithm() { result = algorithm }
 }

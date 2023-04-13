@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for constant salt vulnerabilities. That is,
@@ -34,7 +35,7 @@ class ConstantSaltAdditionalTaintStep extends Unit {
 private class CryptoSwiftSaltSink extends ConstantSaltSink {
   CryptoSwiftSaltSink() {
     // `salt` arg in `init` is a sink
-    exists(ClassOrStructDecl c, ConstructorDecl f, CallExpr call |
+    exists(NominalTypeDecl c, ConstructorDecl f, CallExpr call |
       c.getName() = ["HKDF", "PBKDF1", "PBKDF2", "Scrypt"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
@@ -48,12 +49,23 @@ private class CryptoSwiftSaltSink extends ConstantSaltSink {
  */
 private class RnCryptorSaltSink extends ConstantSaltSink {
   RnCryptorSaltSink() {
-    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
-      c.getName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+    exists(NominalTypeDecl c, MethodDecl f, CallExpr call |
+      c.getFullName() =
+        [
+          "RNCryptor", "RNEncryptor", "RNDecryptor", "RNCryptor.EncryptorV3",
+          "RNCryptor.DecryptorV3"
+        ] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
       call.getArgumentWithLabel(["salt", "encryptionSalt", "hmacSalt", "HMACSalt"]).getExpr() =
         this.asExpr()
     )
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultSaltSink extends ConstantSaltSink {
+  DefaultSaltSink() { sinkNode(this, "encryption-salt") }
 }

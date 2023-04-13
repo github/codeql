@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow source for insecure TLS configuration vulnerabilities. That is,
@@ -58,4 +59,11 @@ private class NsUrlTlsExtensionsSink extends InsecureTlsExtensionsSink {
         ]
     )
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultTlsExtensionsSink extends InsecureTlsExtensionsSink {
+  DefaultTlsExtensionsSink() { sinkNode(this, "tls-protocol-version") }
 }
