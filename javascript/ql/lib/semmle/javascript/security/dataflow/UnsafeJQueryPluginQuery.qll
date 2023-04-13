@@ -23,6 +23,9 @@ class Configuration extends TaintTracking::Configuration {
     node instanceof DomBasedXss::Sanitizer
     or
     node instanceof Sanitizer
+    or
+    // Plugins usually do `$(this)` to coerce an existing DOM element to a jQuery object.
+    node instanceof DataFlow::ThisNode
   }
 
   override predicate isAdditionalTaintStep(DataFlow::Node src, DataFlow::Node sink) {
