@@ -124,7 +124,10 @@ module Ssa {
     }
   }
 
-  private module SsaImpl = SsaImplCommon::Make<SsaInput>;
+  /**
+   * INTERNAL: Do not use.
+   */
+  module SsaImpl = SsaImplCommon::Make<SsaInput>;
 
   cached
   class Definition extends SsaImpl::Definition {
