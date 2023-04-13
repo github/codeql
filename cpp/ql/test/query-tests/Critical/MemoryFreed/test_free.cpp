@@ -88,7 +88,7 @@ void test_new1() {
 void test_dereference1(A *a) {
     a->f(); // GOOD
     free(a);
-    a->f(); // BAD [NOT DETECTED]
+    a->f(); // BAD
 }
 
 void* use_after_free(void *a) {

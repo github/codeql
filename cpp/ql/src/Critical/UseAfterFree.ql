@@ -39,6 +39,8 @@ predicate isUse0(DataFlow::Node n, Expr e) {
     or
     e = any(ArrayExpr ae).getArrayBase()
     or
+    e = any(Call call).getQualifier()
+    or
     // Assume any function without a body will dereference the pointer
     exists(int i, Call call, Function f |
       n.asExpr() = call.getArgument(i) and
