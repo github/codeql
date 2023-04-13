@@ -145,7 +145,7 @@ module PathGraph {
   }
 
   /**
-   * Computes the reflextive transitive closure of `getASuccessorIfDifferentValueNumber`.
+   * Computes the reflexive transitive closure of `getASuccessorIfDifferentValueNumber`.
    */
   private Instruction getASuccessorIfDifferentValueNumberTC(ValueNumber vn, Instruction i) {
     revFlow(i, vn) and
