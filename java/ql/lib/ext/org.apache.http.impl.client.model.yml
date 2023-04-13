@@ -1,0 +1,20 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.http.impl.client", "RequestWrapper", True, "setURI", "", "", "Argument[0]", "%-url", "manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.http.impl.client", "RedirectLocations", True, "add", "(URI)", "", "Argument[0]", "Argument[-1].Element", "value", "manual"] # ! double-check the output for this step
+  - addsTo:
+      pack: codeql/java-all
+      extensible: neutralModel
+    data:
+      - ["org.apache.http.impl.client", "RedirectLocations", "contains", "(URI)", "manual"]
+
+      # The below APIs are currently being stored as neutral models since `WithoutElement` has not yet been implemented for Java.
+      # When `WithoutElement` is implemented, these should be changed to summary models of the form `Argument[-1].WithoutElement -> Argument[-1]`.
+      - ["org.apache.http.impl.client", "RedirectLocations", "remove", "(URI)", "manual"]
