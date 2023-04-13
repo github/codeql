@@ -45,21 +45,16 @@ private class EnumInsecureTlsExtensionsSource extends InsecureTlsExtensionsSourc
   }
 }
 
-/**
- * A sink for assignment of TLS-related properties of `NSURLSessionConfiguration`.
- */
-private class NsUrlTlsExtensionsSink extends InsecureTlsExtensionsSink {
-  NsUrlTlsExtensionsSink() {
-    exists(MemberRefExpr e |
-      e.getBase().getType().getABaseType*().getUnderlyingType().getName() =
-              "URLSessionConfiguration" and
-      e.getMember().(ConcreteVarDecl).getName() =
-        [
-          "tlsMinimumSupportedProtocolVersion", "tlsMinimumSupportedProtocol",
-          "tlsMaximumSupportedProtocolVersion", "tlsMaximumSupportedProtocol"
-        ] and
-      this.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr() = e.getBase()
-    )
+private class TlsExtensionsSinks extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        // TLS-related properties of `URLSessionConfiguration`
+        ";URLSessionConfiguration;false;tlsMinimumSupportedProtocolVersion;;;;tls-protocol-version",
+        ";URLSessionConfiguration;false;tlsMinimumSupportedProtocol;;;;tls-protocol-version",
+        ";URLSessionConfiguration;false;tlsMaximumSupportedProtocolVersion;;;;tls-protocol-version",
+        ";URLSessionConfiguration;false;tlsMaximumSupportedProtocol;;;;tls-protocol-version",
+      ]
   }
 }
 
@@ -67,5 +62,7 @@ private class NsUrlTlsExtensionsSink extends InsecureTlsExtensionsSink {
  * A sink defined in a CSV model.
  */
 private class DefaultTlsExtensionsSink extends InsecureTlsExtensionsSink {
-  DefaultTlsExtensionsSink() { sinkNode(this, "tls-protocol-version") }
+  DefaultTlsExtensionsSink() {
+    sinkNode(this.(DataFlow::PostUpdateNode).getPreUpdateNode(), "tls-protocol-version")
+  }
 }
