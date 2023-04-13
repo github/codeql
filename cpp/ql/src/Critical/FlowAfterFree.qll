@@ -111,3 +111,19 @@ predicate isFree(DataFlow::Node n, Expr e, DeallocationExpr dealloc) {
   // Ignore realloc functions
   not exists(dealloc.(FunctionCall).getTarget().(AllocationFunction).getReallocPtrArg())
 }
+
+/**
+ * Holds if `fc` is a function call that is the result of expanding
+ * the `ExFreePool` macro.
+ */
+predicate isExFreePoolCall(FunctionCall fc, Expr e) {
+  e = fc.getArgument(0) and
+  (
+    exists(MacroInvocation mi |
+      mi.getMacroName() = "ExFreePool" and
+      mi.getExpr() = fc
+    )
+    or
+    fc.getTarget().hasGlobalName("ExFreePool")
+  )
+}

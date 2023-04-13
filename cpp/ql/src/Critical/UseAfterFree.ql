@@ -146,9 +146,20 @@ predicate isUse(DataFlow::Node n, Expr e) {
   )
 }
 
-predicate excludeNothing(DeallocationExpr dealloc, Expr e) { none() }
+/**
+ * `dealloc1` is a deallocation expression, `e` is an expression that dereferences a
+ * pointer, and the `(dealloc1, e)` pair should be excluded by the `FlowFromFree` library.
+ */
+bindingset[dealloc1, e]
+predicate isExcludeFreeUsePair(DeallocationExpr dealloc1, Expr e) {
+  // From https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-mmfreepagesfrommdl:
+  // "After calling MmFreePagesFromMdl, the caller must also call ExFreePool
+  // to release the memory that was allocated for the MDL structure."
+  dealloc1.(FunctionCall).getTarget().hasGlobalName("MmFreePagesFromMdl") and
+  isExFreePoolCall(_, e)
+}
 
-module UseAfterFree = FlowFromFree<isUse/2, excludeNothing/2>;
+module UseAfterFree = FlowFromFree<isUse/2, isExcludeFreeUsePair/2>;
 
 from UseAfterFree::PathNode source, UseAfterFree::PathNode sink, DeallocationExpr dealloc
 where

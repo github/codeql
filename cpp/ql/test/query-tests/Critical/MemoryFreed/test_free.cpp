@@ -225,5 +225,5 @@ void MmFreePagesFromMdl(void*);
 void ExFreePool(void*);
 void test_ms_free(void * memory_descriptor_list) {
     MmFreePagesFromMdl(memory_descriptor_list); //GOOD
-    ExFreePool(memory_descriptor_list); // GOOD [FALSE POSITIVE for cpp/use-after-free]
+    ExFreePool(memory_descriptor_list); // GOOD
 }

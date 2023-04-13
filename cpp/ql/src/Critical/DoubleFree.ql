@@ -19,19 +19,6 @@ import DoubleFree::PathGraph
 predicate isFree(DataFlow::Node n, Expr e) { isFree(n, e, _) }
 
 /**
- * Holds if `fc` is a function call that is the result of expanding
- * the `ExFreePool` macro.
- */
-predicate isExFreePoolCall(FunctionCall fc) {
-  exists(MacroInvocation mi |
-    mi.getMacroName() = "ExFreePool" and
-    mi.getExpr() = fc
-  )
-  or
-  fc.getTarget().hasGlobalName("ExFreePool")
-}
-
-/**
  * `dealloc1` is a deallocation expression and `e` is an expression such
  * that is deallocated by a deallocation expression, and the `(dealloc1, e)` pair
  * should be excluded by the `FlowFromFree` library.
@@ -46,7 +33,7 @@ predicate isExcludeFreePair(DeallocationExpr dealloc1, Expr e) {
     // From https://learn.microsoft.com/en-us/windows-hardware/drivers/ddi/wdm/nf-wdm-mmfreepagesfrommdl:
     // "After calling MmFreePagesFromMdl, the caller must also call ExFreePool
     // to release the memory that was allocated for the MDL structure."
-    isExFreePoolCall(dealloc2)
+    isExFreePoolCall(dealloc2, _)
   )
 }
 

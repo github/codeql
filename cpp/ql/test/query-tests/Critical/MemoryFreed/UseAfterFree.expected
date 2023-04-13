@@ -15,7 +15,6 @@ edges
 | test_free.cpp:101:10:101:10 | a | test_free.cpp:102:23:102:23 | a |
 | test_free.cpp:152:27:152:27 | a | test_free.cpp:153:5:153:5 | a |
 | test_free.cpp:152:27:152:27 | a | test_free.cpp:153:5:153:5 | a |
-| test_free.cpp:227:24:227:45 | memory_descriptor_list | test_free.cpp:228:16:228:37 | memory_descriptor_list |
 nodes
 | test_free.cpp:11:10:11:10 | a | semmle.label | a |
 | test_free.cpp:11:10:11:10 | a | semmle.label | a |
@@ -40,8 +39,6 @@ nodes
 | test_free.cpp:152:27:152:27 | a | semmle.label | a |
 | test_free.cpp:152:27:152:27 | a | semmle.label | a |
 | test_free.cpp:153:5:153:5 | a | semmle.label | a |
-| test_free.cpp:227:24:227:45 | memory_descriptor_list | semmle.label | memory_descriptor_list |
-| test_free.cpp:228:16:228:37 | memory_descriptor_list | semmle.label | memory_descriptor_list |
 subpaths
 #select
 | test_free.cpp:12:5:12:5 | a | test_free.cpp:11:10:11:10 | a | test_free.cpp:12:5:12:5 | a | Memory may have been previously freed by $@. | test_free.cpp:11:5:11:8 | call to free | call to free |
@@ -60,4 +57,3 @@ subpaths
 | test_free.cpp:102:23:102:23 | a | test_free.cpp:101:10:101:10 | a | test_free.cpp:102:23:102:23 | a | Memory may have been previously freed by $@. | test_free.cpp:101:5:101:8 | call to free | call to free |
 | test_free.cpp:153:5:153:5 | a | test_free.cpp:152:27:152:27 | a | test_free.cpp:153:5:153:5 | a | Memory may have been previously freed by $@. | test_free.cpp:152:22:152:25 | call to free | call to free |
 | test_free.cpp:153:5:153:5 | a | test_free.cpp:152:27:152:27 | a | test_free.cpp:153:5:153:5 | a | Memory may have been previously freed by $@. | test_free.cpp:152:22:152:25 | call to free | call to free |
-| test_free.cpp:228:16:228:37 | memory_descriptor_list | test_free.cpp:227:24:227:45 | memory_descriptor_list | test_free.cpp:228:16:228:37 | memory_descriptor_list | Memory may have been previously freed by $@. | test_free.cpp:227:5:227:22 | call to MmFreePagesFromMdl | call to MmFreePagesFromMdl |
