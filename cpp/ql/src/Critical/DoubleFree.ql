@@ -31,6 +31,14 @@ predicate isExFreePoolCall(FunctionCall fc) {
   fc.getTarget().hasGlobalName("ExFreePool")
 }
 
+/**
+ * `dealloc1` is a deallocation expression and `e` is an expression such
+ * that is deallocated by a deallocation expression, and the `(dealloc1, e)` pair
+ * should be excluded by the `FlowFromFree` library.
+ *
+ * Note that `e` is not necessarily the expression deallocated by `dealloc1`. It will
+ * be bound to the second deallocation as identified by the `FlowFromFree` library.
+ */
 bindingset[dealloc1, e]
 predicate isExcludeFreePair(DeallocationExpr dealloc1, Expr e) {
   exists(DeallocationExpr dealloc2 | isFree(_, e, dealloc2) |
