@@ -6,19 +6,17 @@
 
 <overview>
 <p>
-Dereferencing a pointer after it has been deallocated may result in memory corruption which can
-lead to security vulnerabilities.
+Deallocating memory more than once can lead to a double-free vulnerability. This can be exploited to
+corrupt the allocator's internal data structures, which can lead to denial-of-service attacks by crashing
+the program, or to security vulnerabilities by allowing an attacker to overwrite arbitrary memory locations.
 </p>
-
-<include src="dataFlowWarning.inc.qhelp" />
 
 </overview>
 <recommendation>
 <p>
 Ensure that all execution paths deallocate the allocated memory at most once. If possible, reassign
-the pointer to a null value after deallocating it. This will both prevent double-free vulnerabilities, and
-increase the likelihood of the operating system raising a runtime error if the pointer is subsequently
-dereferenced after being deallocated.
+the pointer to a null value after deallocating it. This will prevent double-free vulnerabilities since
+most deallocation functions will perform a null-pointer check before attempting to deallocate the memory.
 </p>
 
 </recommendation>
