@@ -164,7 +164,7 @@ void test_loop2(char ** a) {
 
 void* test_realloc4() {
     void *a = 0;
-    void *b = realloc(a, 10); // GOOD [FALSE POSITIVE]
+    void *b = realloc(a, 10); // BAD for cpp/memory-never-freed
     if (!b) { return a; }
     return b;
 }
