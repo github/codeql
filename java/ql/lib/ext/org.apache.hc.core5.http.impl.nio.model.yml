@@ -1,8 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/java-all
-      extensible: sinkModel
-    data:
-      # ! `DefaultHttpRequestFactory` extends Object, no subclasses; implements `HttpRequestFactory`; HAS javadocs
-      - ["org.apache.hc.core5.http.impl.nio", "DefaultHttpRequestFactory", True, "newHttpRequest", "(String,String)", "", "Argument[1]", "%-url", "manual"]
-      - ["org.apache.hc.core5.http.impl.nio", "DefaultHttpRequestFactory", True, "newHttpRequest", "(String,URI)", "", "Argument[1]", "%-url", "manual"]

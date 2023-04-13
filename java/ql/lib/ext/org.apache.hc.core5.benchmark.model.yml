@@ -1,7 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
-      extensible: summaryModel
+      extensible: sinkModel
     data:
-      # ! `BenchmarkConfig$Builder` only extends Object, no Javadocs on the setUri method, may be too internal to include?
-      - ["org.apache.hc.core5.benchmark", "BenchmarkConfig$Builder", True, "setUri", "(URI)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["org.apache.hc.core5.benchmark", "BenchmarkConfig$Builder", True, "setUri", "(URI)", "", "Argument[0]", "open-url", "manual"] # hq-manual

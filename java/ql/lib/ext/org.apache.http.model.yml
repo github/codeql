@@ -9,12 +9,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.http", "HttpHost", True, "HttpHost", "(HttpHost)", "", "Argument[0]", "%-url", "manual"]  # ! ModelType: sinkOrStep, Notes:
-      - ["org.apache.http", "HttpHost", True, "HttpHost", "(InetAddress,String,int,String)", "", "Argument[1]", "%-url", "manual"] # ! ModelType: sinkOrStep, Notes:
-      - ["org.apache.http", "HttpHost", True, "HttpHost", "(String)", "", "Argument[0]", "%-url", "manual"]    # ! ModelType: sinkOrStep, Notes:
-      - ["org.apache.http", "HttpHost", True, "HttpHost", "(String,int)", "", "Argument[0]", "%-url", "manual"] # ! ModelType: sinkOrStep, Notes:
-      - ["org.apache.http", "HttpHost", True, "HttpHost", "(String,int,String)", "", "Argument[0]", "%-url", "manual"] # ! ModelType: sinkOrStep, Notes:
-      - ["org.apache.http", "HttpRequestFactory", True, "newHttpRequest", "(String,String)", "", "Argument[1]", "%-url", "manual"]
+      - ["org.apache.http", "HttpRequestFactory", True, "newHttpRequest", "(String,String)", "", "Argument[1]", "open-url", "manual"] # hq-manual
       - ["org.apache.http", "HttpResponse", True, "setEntity", "(HttpEntity)", "", "Argument[0]", "xss", "manual"]
   - addsTo:
       pack: codeql/java-all
@@ -26,6 +21,11 @@ extensions:
       - ["org.apache.http", "HeaderElement", True, "getParameterByName", "(String)", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.http", "HeaderElement", True, "getParameters", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.http", "HeaderElement", True, "getValue", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.http", "HttpHost", True, "HttpHost", "(HttpHost)", "", "Argument[0]", "Argument[this]", "taint", "manual"] # hq-manual
+      - ["org.apache.http", "HttpHost", True, "HttpHost", "(InetAddress,String,int,String)", "", "Argument[1]", "Argument[this]", "taint", "manual"] # hq-manual
+      - ["org.apache.http", "HttpHost", True, "HttpHost", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"] # hq-manual
+      - ["org.apache.http", "HttpHost", True, "HttpHost", "(String,int)", "", "Argument[0]", "Argument[this]", "taint", "manual"] # hq-manual
+      - ["org.apache.http", "HttpHost", True, "HttpHost", "(String,int,String)", "", "Argument[0]", "Argument[this]", "taint", "manual"] # hq-manual
       - ["org.apache.http", "HeaderIterator", True, "nextHeader", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.http", "HttpEntity", True, "getContent", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.http", "HttpEntity", True, "getContentEncoding", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

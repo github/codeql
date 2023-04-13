@@ -3,19 +3,14 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-    # ! BasicClassicHttpRequest extends Object>HeaderGroup>BasicHttpRequest, implements Serializable, ClassicHttpRequest, HttpEntityContainer, HttpMessage, HttpRequest, MessageHeaders; has javadocs
-      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(Method,HttpHost,String)", "", "Argument[1]", "%-url", "manual"]
-      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(Method,URI)", "", "Argument[1]", "%-url", "manual"]
-      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "%-url", "manual"]
-      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(String,URI)", "", "Argument[1]", "%-url", "manual"]
-      # ! BasicHttpRequest extends Object>HeaderGroup, subclass is BasicClassicHttpRequest, implements Serializable, HttpMessage, HttpRequest, MessageHeaders; has javadocs
-      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(Method,HttpHost,String)", "", "Argument[1]", "%-url", "manual"]
-      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(Method,URI)", "", "Argument[1]", "%-url", "manual"]
-      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "%-url", "manual"]
-      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(String,URI)", "", "Argument[1]", "%-url", "manual"]
-      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "setUri", "(URI)", "", "Argument[0]", "%-url", "manual"]
-      # ! HttpRequestWrapper extends Object>AbstractMessageWrapper, no subclasses, implements HttpMessage, HttpRequest, MessageHeaders; has javadocs
-      - ["org.apache.hc.core5.http.message", "HttpRequestWrapper", True, "setUri", "(URI)", "", "Argument[0]", "%-url", "manual"]
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(Method,HttpHost,String)", "", "Argument[1]", "open-url", "manual"] # hq-manual
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(Method,URI)", "", "Argument[1]", "open-url", "manual"] # hq-manual
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "open-url", "manual"] # hq-manual
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(String,URI)", "", "Argument[1]", "open-url", "manual"] # hq-manual
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(Method,HttpHost,String)", "", "Argument[1]", "open-url", "manual"] # hq-manual
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(Method,URI)", "", "Argument[1]", "open-url", "manual"] # hq-manual
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "open-url", "manual"] # hq-manual
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(String,URI)", "", "Argument[1]", "open-url", "manual"] # hq-manual
 
   - addsTo:
       pack: codeql/java-all

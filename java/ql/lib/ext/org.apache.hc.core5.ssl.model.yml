@@ -1,9 +1,0 @@
-extensions:
-  - addsTo:
-      pack: codeql/java-all
-      extensible: sinkModel
-    data:
-      - ["org.apache.hc.core5.ssl", "SSLContextBuilder", True, "loadKeyMaterial", "(URL,char[],char[])", "", "Argument[0]", "%-url", "manual"]
-      - ["org.apache.hc.core5.ssl", "SSLContextBuilder", True, "loadKeyMaterial", "(URL,char[],char[],PrivateKeyStrategy)", "", "Argument[0]", "%-url", "manual"]
-      - ["org.apache.hc.core5.ssl", "SSLContextBuilder", True, "loadTrustMaterial", "(URL,char[])", "", "Argument[0]", "%-url", "manual"]
-      - ["org.apache.hc.core5.ssl", "SSLContextBuilder", True, "loadTrustMaterial", "(URL,char[],TrustStrategy)", "", "Argument[0]", "%-url", "manual"]
