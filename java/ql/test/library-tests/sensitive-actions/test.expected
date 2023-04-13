@@ -29,12 +29,23 @@ sensitiveVarAccess
 | Test.java:140:15:140:34 | aaPasswdaaQuestionaa |
 | Test.java:141:15:141:36 | aaPasswordaaQuestionaa |
 sensitiveVariable
+| Test.java:48:9:48:33 | String aaPasswordaa |
+| Test.java:49:9:49:31 | String aaPasswdaa |
 | Test.java:53:9:53:39 | String aaRefreshaaTokenaa |
 | Test.java:54:9:54:38 | String aaSecretaaTokenaa |
+| Test.java:72:9:72:39 | String aaHashedPasswordaa |
+| Test.java:73:9:73:37 | String aaHashedPasswdaa |
 | Test.java:77:9:77:45 | String aaHashedRefreshaaTokenaa |
 | Test.java:78:9:78:44 | String aaHashedsecretaatokenaa |
+| Test.java:79:9:79:38 | String aaCryptPasswordaa |
+| Test.java:80:9:80:36 | String aaCryptPasswdaa |
 | Test.java:84:9:84:44 | String aaCryptRefreshaaTokenaa |
 | Test.java:85:9:85:43 | String aaCryptSecretaaTokenaa |
+| Test.java:117:9:117:34 | String aaChallengeaa |
+| Test.java:118:9:118:31 | String aaPasswdaa |
+| Test.java:119:9:119:33 | String aaPasswordaa |
+| Test.java:120:9:120:33 | String aaPasscodeaa |
+| Test.java:121:9:121:35 | String aaPassphraseaa |
 | Test.java:122:9:122:30 | String aaTokenaa |
 | Test.java:123:9:123:31 | String aaSecretaa |
 sensitiveDataMethod
