@@ -1,15 +1,23 @@
 // CodeQL database schema for QL
 // Automatically generated from the tree-sitter grammar; do not edit
 
-@location = @location_default
+/*- Files and folders -*/
 
+/**
+ * The location of an element that is not an expression or a statement.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
 locations_default(
+  /** The location of an element that is not an expression or a statement. */
   unique int id: @location_default,
-  int file: @file ref,
-  int start_line: int ref,
-  int start_column: int ref,
-  int end_line: int ref,
-  int end_column: int ref
+  int container: @container ref,
+  int startLine: int ref,
+  int startColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref
 );
 
 files(
@@ -29,9 +37,14 @@ containerparent(
   unique int child: @container ref
 );
 
-sourceLocationPrefix(
-  string prefix: string ref
-);
+/*- Source location prefix -*/
+
+/**
+ * The source location of the snapshot.
+ */
+sourceLocationPrefix(string prefix : string ref);
+
+/*- Diagnostic messages -*/
 
 diagnostics(
   unique int id: @diagnostic,
@@ -49,6 +62,9 @@ case @diagnostic.severity of
 | 40 = @diagnostic_error
 ;
 
+/*- QL-specific part -*/
+
+@location = @location_default
 
 @ql_add_expr_left_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
 

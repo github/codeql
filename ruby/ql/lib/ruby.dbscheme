@@ -1,15 +1,23 @@
 // CodeQL database schema for Ruby
 // Automatically generated from the tree-sitter grammar; do not edit
 
-@location = @location_default
+/*- Files and folders -*/
 
+/**
+ * The location of an element that is not an expression or a statement.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
 locations_default(
+  /** The location of an element that is not an expression or a statement. */
   unique int id: @location_default,
-  int file: @file ref,
-  int start_line: int ref,
-  int start_column: int ref,
-  int end_line: int ref,
-  int end_column: int ref
+  int container: @container ref,
+  int startLine: int ref,
+  int startColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref
 );
 
 files(
@@ -29,9 +37,14 @@ containerparent(
   unique int child: @container ref
 );
 
-sourceLocationPrefix(
-  string prefix: string ref
-);
+/*- Source location prefix -*/
+
+/**
+ * The source location of the snapshot.
+ */
+sourceLocationPrefix(string prefix : string ref);
+
+/*- Diagnostic messages -*/
 
 diagnostics(
   unique int id: @diagnostic,
@@ -49,6 +62,9 @@ case @diagnostic.severity of
 | 40 = @diagnostic_error
 ;
 
+/*- Ruby-specific part -*/
+
+@location = @location_default
 
 @ruby_underscore_arg = @ruby_assignment | @ruby_binary | @ruby_conditional | @ruby_operator_assignment | @ruby_range | @ruby_unary | @ruby_underscore_primary
 
@@ -1377,6 +1393,8 @@ ruby_ast_node_info(
   int parent_index: int ref,
   int loc: @location ref
 );
+
+/*- ERB-specific part -*/
 
 erb_comment_directive_child(
   unique int erb_comment_directive: @erb_comment_directive ref,

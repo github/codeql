@@ -1,3 +1,4 @@
+/*- Compilations (Java) -*/
 /**
  * An invocation of the compiler. Note that more than one file may be
  * compiled per invocation. For example, this command compiles three
@@ -181,20 +182,32 @@ compilation_finished(
     int result : int ref
 );
 
+/*- Diagnostic messages -*/
+
 diagnostics(
-    unique int id: @diagnostic,
-    string generated_by: string ref, // TODO: Sync this with the other languages?
-    int severity: int ref,
-    string error_tag: string ref,
-    string error_message: string ref,
-    string full_error_message: string ref,
-    int location: @location_default ref
+  unique int id: @diagnostic,
+  string generated_by: string ref, // TODO: Sync this with the other languages?
+  int severity: int ref,
+  string error_tag: string ref,
+  string error_message: string ref,
+  string full_error_message: string ref,
+  int location: @location_default ref
 );
 
-/*
- * External artifacts
- */
+case @diagnostic.severity of
+  10 = @diagnostic_debug
+| 20 = @diagnostic_info
+| 30 = @diagnostic_warning
+| 40 = @diagnostic_error
+;
 
+/*- External data -*/
+
+/**
+ * External data, loaded from CSV files during snapshot creation. See
+ * [Tutorial: Incorporating external data](https://help.semmle.com/wiki/display/SD/Tutorial%3A+Incorporating+external+data)
+ * for more information.
+ */
 externalData(
   int id : @externalDataElement,
   string path : string ref,
@@ -202,17 +215,18 @@ externalData(
   string value : string ref
 );
 
-snapshotDate(
-  unique date snapshotDate : date ref
-);
+/*- Snapshot date -*/
 
-sourceLocationPrefix(
-  string prefix : string ref
-);
+snapshotDate(unique date snapshotDate : date ref);
 
-/*
- * Duplicate code
+/*- Source location prefix -*/
+
+/**
+ * The source location of the snapshot.
  */
+sourceLocationPrefix(string prefix : string ref);
+
+/*- Duplicate code -*/
 
 duplicateCode(
   unique int id : @duplication,
@@ -236,6 +250,8 @@ tokens(
   int endLine : int ref,
   int endColumn : int ref
 );
+
+/*- SMAP -*/
 
 /*
  * SMAP
@@ -265,34 +281,23 @@ smap_lines(
   int outputLineIncrement: int ref
 );
 
-/*
- * Locations and files
+/*- Files and folders -*/
+
+/**
+ * The location of an element that is not an expression or a statement.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
-
-@location = @location_default ;
-
 locations_default(
+  /** The location of an element that is not an expression or a statement. */
   unique int id: @location_default,
-  int file: @file ref,
-  int beginLine: int ref,
-  int beginColumn: int ref,
+  int container: @container ref,
+  int startLine: int ref,
+  int startColumn: int ref,
   int endLine: int ref,
   int endColumn: int ref
-);
-
-hasLocation(
-  int locatableid: @locatable ref,
-  int id: @location ref
-);
-
-@sourceline = @locatable ;
-
-#keyset[element_id]
-numlines(
-  int element_id: @sourceline ref,
-  int num_lines: int ref,
-  int num_code: int ref,
-  int num_comment: int ref
 );
 
 files(
@@ -305,16 +310,33 @@ folders(
   string name: string ref
 );
 
-@container = @folder | @file
+@container = @file | @folder
 
 containerparent(
   int parent: @container ref,
   unique int child: @container ref
 );
 
-/*
- * Java
- */
+/*- Lines of code -*/
+
+#keyset[element_id]
+numlines(
+  int element_id: @sourceline ref,
+  int num_lines: int ref,
+  int num_code: int ref,
+  int num_comment: int ref
+);
+
+/*- Java -*/
+
+@location = @location_default ;
+
+hasLocation(
+  int locatableid: @locatable ref,
+  int id: @location ref
+);
+
+@sourceline = @locatable ;
 
 cupackage(
   unique int id: @file ref,
@@ -1060,9 +1082,7 @@ javadocText(
 
 @top = @element | @locatable | @folder;
 
-/*
- * XML Files
- */
+/*- XML Files -*/
 
 xmlEncoding(
   unique int id: @file ref,
@@ -1133,9 +1153,7 @@ xmllocations(
 
 @xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
 
-/*
- * configuration files with key value pairs
- */
+/*- configuration files with key value pairs -*/
 
 configs(
   unique int id: @config
@@ -1159,6 +1177,8 @@ configLocations(
 );
 
 @configLocatable = @config | @configName | @configValue;
+
+/*- Kotlin -*/
 
 ktComments(
   unique int id: @ktcomment,

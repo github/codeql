@@ -1,0 +1,43 @@
+{
+  "files": [
+    "java/ql/lib/config/semmlecode.dbscheme",
+    "javascript/ql/lib/semmlecode.javascript.dbscheme",
+    "cpp/ql/lib/semmlecode.cpp.dbscheme",
+    "python/ql/lib/semmlecode.python.dbscheme",
+    "ruby/ql/lib/ruby.dbscheme",
+    "go/ql/lib/go.dbscheme",
+    "swift/prefix.dbscheme",
+    "swift/ql/lib/swift.dbscheme",
+    "csharp/ql/lib/semmlecode.csharp.dbscheme",
+    "ql/ql/src/ql.dbscheme"
+  ],
+  "fragments": [
+    "/*- Files and folders -*/",
+    "/*- Compilations -*/",
+    "/*- Compilations (Java) -*/",
+    "/*- Diagnostic messages -*/",
+    "/*- Duplicate code -*/",
+    "/*- External data -*/",
+    "/*- External packages -*/",
+    "/*- External defects and metrics -*/",
+    "/*- Source location prefix -*/",
+    "/*- Lines of code -*/",
+    "/*- Snapshot date -*/",
+    "/*- Version control data -*/",
+    "/*- YAML -*/",
+    "/*- XML Files -*/",
+    "/*- SMAP -*/",
+    "/*- Java -*/",
+    "/*- configuration files with key value pairs -*/",
+    "/*- Kotlin -*/",
+    "/*- JavaScript-specific part -*/",
+    "/*- Ruby-specific part -*/",
+    "/*- ERB-specific part -*/",
+    "/*- GO-specific part -*/",
+    "/*- QL-specific part -*/",
+    "/*- Swift-specific part -*/",
+    "/*- C# dbscheme -*/",
+    "/*- C++ dbscheme -*/",
+    "/*- Python dbscheme -*/"
+  ]
+}
