@@ -221,6 +221,22 @@ func checkVendor() bool {
 	return true
 }
 
+func getDepMode() DependencyInstallerMode {
+	if util.FileExists("go.mod") {
+		log.Println("Found go.mod, enabling go modules")
+		return GoGetWithModules
+	}
+	if util.FileExists("Gopkg.toml") {
+		log.Println("Found Gopkg.toml, using dep instead of go get")
+		return Dep
+	}
+	if util.FileExists("glide.yaml") {
+		log.Println("Found glide.yaml, enabling go modules")
+		return Glide
+	}
+	return GoGetNoModules
+}
+
 func main() {
 	if len(os.Args) > 1 {
 		usage()
@@ -247,15 +263,14 @@ func main() {
 
 	// determine how to install dependencies and whether a GOPATH needs to be set up before
 	// extraction
-	depMode := GoGetNoModules
+	depMode := getDepMode()
 	modMode := ModUnset
 	needGopath := true
 	goDirectiveFound := false
 	if _, present := os.LookupEnv("GO111MODULE"); !present {
 		os.Setenv("GO111MODULE", "auto")
 	}
-	if util.FileExists("go.mod") {
-		depMode = GoGetWithModules
+	if depMode == GoGetWithModules {
 		needGopath = false
 		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+)$`)
 		goMod, err := ioutil.ReadFile("go.mod")
@@ -273,13 +288,6 @@ func main() {
 				}
 			}
 		}
-		log.Println("Found go.mod, enabling go modules")
-	} else if util.FileExists("Gopkg.toml") {
-		depMode = Dep
-		log.Println("Found Gopkg.toml, using dep instead of go get")
-	} else if util.FileExists("glide.yaml") {
-		depMode = Glide
-		log.Println("Found glide.yaml, enabling go modules")
 	}
 
 	if depMode == GoGetWithModules {
