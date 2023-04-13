@@ -39,9 +39,9 @@ void test_dominance2(void *a) {
 
 void test_post_dominance1(int *a)
 {
-    if (condition()) free(a); // GOOD
-    if (condition()) a[2] = 5; // GOOD
-    if (condition()) free(a); // GOOD
+    if (condition()) free(a);
+    if (condition()) a[2] = 5; // BAD [NOT DETECTED]
+    if (condition()) free(a); // BAD [NOT DETECTED]
     a[2] = 5; // BAD
     free(a); // BAD
 }
