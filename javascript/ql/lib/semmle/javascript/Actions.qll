@@ -75,7 +75,7 @@ module Actions {
     YamlMapping getJobs() { result = this.lookup("jobs") }
 
     /** Gets the 'global' `env` mapping in this workflow. */
-    YamlMapping getEnv() { result = this.lookup("env") }
+    WorkflowEnv getEnv() { result = this.lookup("env") }
 
     /** Gets the name of the workflow. */
     string getName() { result = this.lookup("name").(YamlString).getValue() }
@@ -103,52 +103,36 @@ module Actions {
     Workflow getWorkflow() { result = workflow }
   }
 
-  /** An environment variable in 'env:' */
-  abstract class EnvVariable extends YamlNode, YamlString {
-    /** Gets the name of this environment variable. */
-    abstract string getName();
-  }
+  abstract class Env extends YamlNode, YamlMapping { }
 
-  /** A workflow level 'global' environment variable. */
-  class WorkflowEnvVariable extends EnvVariable {
-    string envName;
+  /** A workflow level `env` mapping. */
+  class WorkflowEnv extends Env {
     Workflow workflow;
 
-    WorkflowEnvVariable() { this = workflow.getEnv().lookup(envName) }
+    WorkflowEnv() { workflow.lookup("env") = this }
 
     /** Gets the workflow this field belongs to. */
     Workflow getWorkflow() { result = workflow }
-
-    /** Gets the name of this environment variable. */
-    override string getName() { result = envName }
   }
 
-  /** A job level environment variable. */
-  class JobEnvVariable extends EnvVariable {
-    string envName;
+  /** A job level `env` mapping. */
+  class JobEnv extends Env {
     Job job;
 
-    JobEnvVariable() { this = job.getEnv().lookup(envName) }
+    JobEnv() { job.lookup("env") = this }
 
     /** Gets the job this field belongs to. */
     Job getJob() { result = job }
-
-    /** Gets the name of this environment variable. */
-    override string getName() { result = envName }
   }
 
-  /** A step level environment variable. */
-  class StepEnvVariable extends EnvVariable {
-    string envName;
+  /** A step level `env` mapping. */
+  class StepEnv extends Env {
     Step step;
 
-    StepEnvVariable() { this = step.getEnv().lookup(envName) }
+    StepEnv() { step.lookup("env") = this }
 
     /** Gets the step this field belongs to. */
     Step getStep() { result = step }
-
-    /** Gets the name of this environment variable. */
-    override string getName() { result = envName }
   }
 
   /**
@@ -183,7 +167,7 @@ module Actions {
     Step getStep(int index) { result.getJob() = this and result.getIndex() = index }
 
     /** Gets the `env` mapping in this job. */
-    YamlMapping getEnv() { result = this.lookup("env") }
+    JobEnv getEnv() { result = this.lookup("env") }
 
     /** Gets the workflow this job belongs to. */
     Workflow getWorkflow() { result = workflow }
@@ -250,7 +234,7 @@ module Actions {
     StepIf getIf() { result.getStep() = this }
 
     /** Gets the value of the `env` field in this step, if any. */
-    YamlMapping getEnv() { result = this.lookup("env") }
+    StepEnv getEnv() { result = this.lookup("env") }
 
     /** Gets the ID of this step, if any. */
     string getId() { result = this.lookup("id").(YamlString).getValue() }

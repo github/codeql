@@ -108,9 +108,12 @@ private predicate isExternalUserControlledWorkflowRun(string context) {
  * is where the external user controlled value was assigned to.
  */
 bindingset[injection]
-predicate isEnvTainted(Actions::EnvVariable env, string injection, string context) {
-  Actions::getEnvName(injection) = env.getName() and
-  Actions::getASimpleReferenceExpression(env) = context
+predicate isEnvTainted(string injection, string context) {
+  exists(Actions::Env env, string envName, YamlString envValue |
+    envValue = env.lookup(envName) and
+    Actions::getEnvName(injection) = envName and
+    Actions::getASimpleReferenceExpression(envValue) = context
+  )
 }
 
 /**
@@ -122,7 +125,7 @@ predicate isRunInjectable(Actions::Run run, string injection, string context) {
   (
     injection = context
     or
-    isEnvTainted(_, injection, context)
+    isEnvTainted(injection, context)
   )
 }
 
@@ -139,7 +142,7 @@ predicate isScriptInjectable(Actions::Script script, string injection, string co
     (
       injection = context
       or
-      isEnvTainted(_, injection, context)
+      isEnvTainted(injection, context)
     )
   )
 }
