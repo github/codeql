@@ -14,8 +14,9 @@ import semmle.go.security.ExternalAPIs
 import DataFlow::PathGraph
 
 from
-  UntrustedDataToUnknownExternalApiConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+  UntrustedDataToUnknownExternalApi::PathNode source,
+  UntrustedDataToUnknownExternalApi::PathNode sink
+where UntrustedDataToUnknownExternalApi::flowPath(source, sink)
 select sink, source, sink,
   "Call to " + sink.getNode().(UnknownExternalApiDataNode).getFunctionDescription() +
     " with untrusted data from $@.", source, source.toString()
