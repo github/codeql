@@ -104,11 +104,11 @@ private predicate isExternalUserControlledWorkflowRun(string context) {
 }
 
 /**
- * Holds if the env variable name in `${{ env.name }}`
- * is where the external user controlled value was assigned to.
+ * Holds if environment name in the `injection` (in a form of `env.name`)
+ * is tainted by the `context` (in a form of `github.event.xxx.xxx`).
  */
 bindingset[injection]
-predicate isEnvTainted(string injection, string context) {
+predicate isEnvInterpolationTainted(string injection, string context) {
   exists(Actions::Env env, string envName, YamlString envValue |
     envValue = env.lookup(envName) and
     Actions::getEnvName(injection) = envName and
@@ -125,7 +125,7 @@ predicate isRunInjectable(Actions::Run run, string injection, string context) {
   (
     injection = context
     or
-    isEnvTainted(injection, context)
+    isEnvInterpolationTainted(injection, context)
   )
 }
 
@@ -142,7 +142,7 @@ predicate isScriptInjectable(Actions::Script script, string injection, string co
     (
       injection = context
       or
-      isEnvTainted(injection, context)
+      isEnvInterpolationTainted(injection, context)
     )
   )
 }
