@@ -104,13 +104,13 @@ module Actions {
   }
 
   /** An environment variable in 'env:' */
-  abstract class Env extends YamlNode, YamlString {
+  abstract class EnvVariable extends YamlNode, YamlString {
     /** Gets the name of this environment variable. */
     abstract string getName();
   }
 
   /** A workflow level 'global' environment variable. */
-  class WorkflowEnvVariable extends Env {
+  class WorkflowEnvVariable extends EnvVariable {
     string envName;
     Workflow workflow;
 
@@ -124,11 +124,11 @@ module Actions {
   }
 
   /** A job level environment variable. */
-  class JobEnv extends Env {
+  class JobEnvVariable extends EnvVariable {
     string envName;
     Job job;
 
-    JobEnv() { this = job.getEnv().lookup(envName) }
+    JobEnvVariable() { this = job.getEnv().lookup(envName) }
 
     /** Gets the job this field belongs to. */
     Job getJob() { result = job }
@@ -138,11 +138,11 @@ module Actions {
   }
 
   /** A step level environment variable. */
-  class StepEnv extends Env {
+  class StepEnvVariable extends EnvVariable {
     string envName;
     Step step;
 
-    StepEnv() { this = step.getEnv().lookup(envName) }
+    StepEnvVariable() { this = step.getEnv().lookup(envName) }
 
     /** Gets the step this field belongs to. */
     Step getStep() { result = step }

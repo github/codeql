@@ -108,7 +108,7 @@ private predicate isExternalUserControlledWorkflowRun(string context) {
  * is where the external user controlled value was assigned to.
  */
 bindingset[injection]
-predicate isEnvTainted(Actions::Env env, string injection, string context) {
+predicate isEnvTainted(Actions::EnvVariable env, string injection, string context) {
   Actions::getEnvName(injection) = env.getName() and
   Actions::getASimpleReferenceExpression(env) = context
 }
