@@ -38,11 +38,8 @@ where
             // there is no callback `OnAppendCookie` that sets `HttpOnly` to true
             not exists(OnAppendCookieHttpOnlyTrackingConfig config | config.hasFlowTo(_)) and
             // Passed as third argument to `IResponseCookies.Append`
-            exists(
-              CookieOptionsTrackingConfiguration cookieTracking, DataFlow::Node creation,
-              DataFlow::Node append
-            |
-              cookieTracking.hasFlow(creation, append) and
+            exists(DataFlow::Node creation, DataFlow::Node append |
+              CookieOptionsTracking::flow(creation, append) and
               creation.asExpr() = oc and
               append.asExpr() = mc.getArgument(2)
             )
@@ -79,8 +76,8 @@ where
             oc = c and
             oc.getType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
             not isPropertySet(oc, "HttpOnly") and
-            exists(CookieOptionsTrackingConfiguration cookieTracking, DataFlow::Node creation |
-              cookieTracking.hasFlow(creation, _) and
+            exists(DataFlow::Node creation |
+              CookieOptionsTracking::flow(creation, _) and
               creation.asExpr() = oc
             )
           )
