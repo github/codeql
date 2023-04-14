@@ -340,22 +340,22 @@ class Callable extends StmtParent, Member, @callable {
   }
 }
 
+/**
+ * Holds if the given type is public and not a nested type.
+ * If the given type is a nested type, holds if its enclosing type
+ * is also public.
+ */
+private predicate veryPublic(RefType t) {
+  t.isPublic() and
+  (
+    not t instanceof NestedType or
+    veryPublic(t.(NestedType).getEnclosingType())
+  )
+}
+
 /** A callable that is the same as its source declaration. */
 class SrcCallable extends Callable {
   SrcCallable() { this.isSourceDeclaration() }
-
-  /**
-   * Holds if the given type is public and not a nested type.
-   * If the given type is a nested type, holds if its enclosing type
-   * is also public.
-   */
-  private predicate veryPublic(RefType t) {
-    t.isPublic() and
-    (
-      not t instanceof NestedType or
-      veryPublic(t.(NestedType).getEnclosingType())
-    )
-  }
 
   /**
    * Holds if this callable is effectively `public`, meaning that it can be
