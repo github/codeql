@@ -142,23 +142,45 @@ predicate isScriptInjectable(Actions::GitHubScript script, string injection, str
   )
 }
 
+/**
+ * Holds if the composite action contains untrusted expression interpolation `${{ e }}`.
+ */
+YamlNode getInjectableCompositeActionNode(Actions::Runs runs, string injection, string context) {
+  exists(Actions::Run run |
+    isRunInjectable(run, injection, context) and
+    result = run and
+    run.getStep().getRuns() = runs
+  )
+  or
+  exists(Actions::GitHubScript script |
+    isScriptInjectable(script, injection, context) and
+    result = script and
+    script.getWith().getStep().getRuns() = runs
+  )
+}
+
+/**
+ * Holds if the workflow contains untrusted expression interpolation `${{ e }}`.
+ */
+YamlNode getInjectableWorkflowNode(Actions::On on, string injection, string context) {
+  exists(Actions::Run run |
+    isRunInjectable(run, injection, context) and
+    result = run and
+    run.getStep().getJob().getWorkflow().getOn() = on
+  )
+  or
+  exists(Actions::GitHubScript script |
+    isScriptInjectable(script, injection, context) and
+    result = script and
+    script.getWith().getStep().getJob().getWorkflow().getOn() = on
+  )
+}
+
 from YamlNode node, string injection, string context
 where
   exists(Actions::CompositeAction action, Actions::Runs runs |
     action.getRuns() = runs and
-    (
-      exists(Actions::Run run |
-        isRunInjectable(run, injection, context) and
-        node = run and
-        run.getStep().getRuns() = runs
-      )
-      or
-      exists(Actions::GitHubScript script |
-        node = script and
-        script.getWith().getStep().getRuns() = runs and
-        isScriptInjectable(script, injection, context)
-      )
-    ) and
+    node = getInjectableCompositeActionNode(runs, injection, context) and
     (
       isExternalUserControlledIssue(context) or
       isExternalUserControlledPullRequest(context) or
@@ -172,19 +194,7 @@ where
   )
   or
   exists(Actions::On on |
-    (
-      exists(Actions::Run run |
-        isRunInjectable(run, injection, context) and
-        node = run and
-        run.getStep().getJob().getWorkflow().getOn() = on
-      )
-      or
-      exists(Actions::GitHubScript script |
-        node = script and
-        script.getWith().getStep().getJob().getWorkflow().getOn() = on and
-        isScriptInjectable(script, injection, context)
-      )
-    ) and
+    node = getInjectableWorkflowNode(on, injection, context) and
     (
       exists(on.getNode("issues")) and
       isExternalUserControlledIssue(context)
