@@ -2,7 +2,7 @@
 
 struct URL {
 	init?(string: String) {}
-
+    init(fileURLWithPath path: String, isDirectory: Bool) {}
 }
 
 class NSURL {
@@ -177,30 +177,30 @@ class SerializedDatabase {
     init(path: String, configuration: Configuration = Configuration(), defaultLabel: String, purpose: String? = nil) {}
 }
 
+// Realm
 
+class Realm {
+}
 
+extension Realm {
+	struct Configuration {
+		init(
+			fileURL: URL? = URL(fileURLWithPath: "defaultFile", isDirectory: false),
+			inMemoryIdentifier: String? = nil,
+			syncConfiguration: Int = 0,
+			encryptionKey: Data? = nil,
+			readOnly: Bool = false,
+			schemaVersion: UInt64 = 0,
+			migrationBlock: Int = 0,
+			deleteRealmIfMigrationNeeded: Bool = false,
+			shouldCompactOnLaunch: Bool = false,
+			objectTypes: Int = 0,
+			seedFilePath: URL? = nil) { }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+		var fileURL: URL?
+        var seedFilePath: URL?
+	}
+}
 
 // --- tests ---
 
@@ -308,18 +308,18 @@ func test() {
     let _ = SerializedDatabase(path: remoteString, configuration: Configuration(), defaultLabel: "", purpose: nil) // $ hasPathInjection=208
     let _ = SerializedDatabase(path: "", configuration: Configuration(), defaultLabel: "", purpose: nil) // Safe
 
+    // Realm
 
+	_ = Realm.Configuration(fileURL: safeUrl) // GOOD
+	_ = Realm.Configuration(fileURL: remoteUrl) // BAD [NOT DETECTED]
+	_ = Realm.Configuration(seedFilePath: safeUrl) // GOOD
+	_ = Realm.Configuration(seedFilePath: remoteUrl) // BAD [NOT DETECTED]
 
-
-
-
-
-
-
-
-
-
-
+	var config = Realm.Configuration() // GOOD
+	config.fileURL = safeUrl // GOOD
+	config.fileURL = remoteUrl // BAD [NOT DETECTED]
+	config.seedFilePath = safeUrl // GOOD
+	config.seedFilePath = remoteUrl // BAD [NOT DETECTED]
 }
 
 func testSanitizers() {
