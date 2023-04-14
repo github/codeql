@@ -221,6 +221,21 @@ func checkVendor() bool {
 	return true
 }
 
+func getSourceDir() string {
+	srcdir := os.Getenv("LGTM_SRC")
+	if srcdir != "" {
+		log.Printf("LGTM_SRC is %s\n", srcdir)
+	} else {
+		cwd, err := os.Getwd()
+		if err != nil {
+			log.Fatalln("Failed to get current working directory.")
+		}
+		log.Printf("LGTM_SRC is not set; defaulting to current working directory %s\n", cwd)
+		srcdir = cwd
+	}
+	return srcdir
+}
+
 func getDepMode() DependencyInstallerMode {
 	if util.FileExists("go.mod") {
 		log.Println("Found go.mod, enabling go modules")
@@ -349,17 +364,7 @@ func main() {
 
 	log.Printf("Autobuilder was built with %s, environment has %s\n", runtime.Version(), getEnvGoVersion())
 
-	srcdir := os.Getenv("LGTM_SRC")
-	if srcdir != "" {
-		log.Printf("LGTM_SRC is %s\n", srcdir)
-	} else {
-		cwd, err := os.Getwd()
-		if err != nil {
-			log.Fatalln("Failed to get current working directory.")
-		}
-		log.Printf("LGTM_SRC is not set; defaulting to current working directory %s\n", cwd)
-		srcdir = cwd
-	}
+	srcdir := getSourceDir()
 
 	// we set `SEMMLE_PATH_TRANSFORMER` ourselves in some cases, so blank it out first for consistency
 	os.Setenv("SEMMLE_PATH_TRANSFORMER", "")
