@@ -51,7 +51,7 @@ deprecated private class SensitiveResultReceiverConf extends TaintTracking::Conf
   }
 }
 
-module SensitiveResultReceiverConfig implements DataFlow::ConfigSig {
+private module SensitiveResultReceiverConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
   predicate isSink(DataFlow::Node node) {
@@ -64,7 +64,7 @@ module SensitiveResultReceiverConfig implements DataFlow::ConfigSig {
   predicate allowImplicitRead(DataFlow::Node n, DataFlow::ContentSet c) { isSink(n) and exists(c) }
 }
 
-module SensitiveResultReceiverFlow = TaintTracking::Global<SensitiveResultReceiverConfig>;
+private module SensitiveResultReceiverFlow = TaintTracking::Global<SensitiveResultReceiverConfig>;
 
 /**
  * DEPRECATED: Use `isSensitiveResultReceiver` instead.
