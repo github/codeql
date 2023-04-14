@@ -2,7 +2,6 @@
 
 import java
 import semmle.code.java.dataflow.TaintTracking
-private import semmle.code.java.dataflow.TaintTracking2
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.SensitiveActions
 
@@ -64,7 +63,8 @@ private module SensitiveResultReceiverConfig implements DataFlow::ConfigSig {
   predicate allowImplicitRead(DataFlow::Node n, DataFlow::ContentSet c) { isSink(n) and exists(c) }
 }
 
-private module SensitiveResultReceiverFlow = TaintTracking::Global<SensitiveResultReceiverConfig>;
+/** Taint tracking flow for sensitive expressions flowing to untrusted result receivers. */
+module SensitiveResultReceiverFlow = TaintTracking::Global<SensitiveResultReceiverConfig>;
 
 /**
  * DEPRECATED: Use `isSensitiveResultReceiver` instead.
