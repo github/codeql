@@ -1,7 +1,7 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
-import TestUtilities.InlineExpectationsTest
+import TestUtilities.InlineFlowTest
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) {
@@ -17,17 +17,10 @@ module Config implements DataFlow::ConfigSig {
 
 module Flow = TaintTracking::Global<Config>;
 
-class HasFlowTest extends InlineExpectationsTest {
+class HasFlowTest extends InlineFlowTest {
   HasFlowTest() { this = "HasFlowTest" }
 
-  override string getARelevantTag() { result = "hasTaintFlow" }
+  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "hasTaintFlow" and
-    exists(DataFlow::Node sink | Flow::flowTo(sink) |
-      sink.getLocation() = location and
-      element = sink.toString() and
-      value = ""
-    )
-  }
+  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) { Flow::flow(src, sink) }
 }
