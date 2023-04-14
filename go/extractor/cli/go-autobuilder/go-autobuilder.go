@@ -301,6 +301,46 @@ func getNeedGopath(depMode DependencyInstallerMode, importpath string) bool {
 	return needGopath
 }
 
+func tryUpdateGoModAndGoSum(modMode ModMode, depMode DependencyInstallerMode) {
+	// Go 1.16 and later won't automatically attempt to update go.mod / go.sum during package loading, so try to update them here:
+	if modMode != ModVendor && depMode == GoGetWithModules && semver.Compare(getEnvGoSemVer(), "1.16") >= 0 {
+		// stat go.mod and go.sum
+		beforeGoModFileInfo, beforeGoModErr := os.Stat("go.mod")
+		if beforeGoModErr != nil {
+			log.Println("Failed to stat go.mod before running `go mod tidy -e`")
+		}
+
+		beforeGoSumFileInfo, beforeGoSumErr := os.Stat("go.sum")
+
+		// run `go mod tidy -e`
+		res := util.RunCmd(exec.Command("go", "mod", "tidy", "-e"))
+
+		if !res {
+			log.Println("Failed to run `go mod tidy -e`")
+		} else {
+			if beforeGoModFileInfo != nil {
+				afterGoModFileInfo, afterGoModErr := os.Stat("go.mod")
+				if afterGoModErr != nil {
+					log.Println("Failed to stat go.mod after running `go mod tidy -e`")
+				} else if afterGoModFileInfo.ModTime().After(beforeGoModFileInfo.ModTime()) {
+					// if go.mod has been changed then notify the user
+					log.Println("We have run `go mod tidy -e` and it altered go.mod. You may wish to check these changes into version control. ")
+				}
+			}
+
+			afterGoSumFileInfo, afterGoSumErr := os.Stat("go.sum")
+			if afterGoSumErr != nil {
+				log.Println("Failed to stat go.sum after running `go mod tidy -e`")
+			} else {
+				if beforeGoSumErr != nil || afterGoSumFileInfo.ModTime().After(beforeGoSumFileInfo.ModTime()) {
+					// if go.sum has been changed then notify the user
+					log.Println("We have run `go mod tidy -e` and it altered go.sum. You may wish to check these changes into version control. ")
+				}
+			}
+		}
+	}
+}
+
 func main() {
 	if len(os.Args) > 1 {
 		usage()
@@ -354,43 +394,7 @@ func main() {
 	modMode := getModMode(depMode)
 	modMode = fixGoVendorIssues(modMode, depMode, goDirectiveFound)
 
-	// Go 1.16 and later won't automatically attempt to update go.mod / go.sum during package loading, so try to update them here:
-	if modMode != ModVendor && depMode == GoGetWithModules && semver.Compare(getEnvGoSemVer(), "1.16") >= 0 {
-		// stat go.mod and go.sum
-		beforeGoModFileInfo, beforeGoModErr := os.Stat("go.mod")
-		if beforeGoModErr != nil {
-			log.Println("Failed to stat go.mod before running `go mod tidy -e`")
-		}
-
-		beforeGoSumFileInfo, beforeGoSumErr := os.Stat("go.sum")
-
-		// run `go mod tidy -e`
-		res := util.RunCmd(exec.Command("go", "mod", "tidy", "-e"))
-
-		if !res {
-			log.Println("Failed to run `go mod tidy -e`")
-		} else {
-			if beforeGoModFileInfo != nil {
-				afterGoModFileInfo, afterGoModErr := os.Stat("go.mod")
-				if afterGoModErr != nil {
-					log.Println("Failed to stat go.mod after running `go mod tidy -e`")
-				} else if afterGoModFileInfo.ModTime().After(beforeGoModFileInfo.ModTime()) {
-					// if go.mod has been changed then notify the user
-					log.Println("We have run `go mod tidy -e` and it altered go.mod. You may wish to check these changes into version control. ")
-				}
-			}
-
-			afterGoSumFileInfo, afterGoSumErr := os.Stat("go.sum")
-			if afterGoSumErr != nil {
-				log.Println("Failed to stat go.sum after running `go mod tidy -e`")
-			} else {
-				if beforeGoSumErr != nil || afterGoSumFileInfo.ModTime().After(beforeGoSumFileInfo.ModTime()) {
-					// if go.sum has been changed then notify the user
-					log.Println("We have run `go mod tidy -e` and it altered go.sum. You may wish to check these changes into version control. ")
-				}
-			}
-		}
-	}
+	tryUpdateGoModAndGoSum(modMode, depMode)
 
 	importpath := getImportPath()
 	needGopath := getNeedGopath(depMode, importpath)
