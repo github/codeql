@@ -20,7 +20,7 @@ module CommandInjection {
    * A taint-tracking configuration for reasoning about command-injection vulnerabilities
    * with sinks which are not sanitized by `--`.
    */
-  class Configuration extends TaintTracking::Configuration {
+  deprecated class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "CommandInjection" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -38,6 +38,18 @@ module CommandInjection {
       guard instanceof SanitizerGuard
     }
   }
+
+  private module CommandInjectionConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    predicate isSink(DataFlow::Node sink) {
+      exists(Sink s | sink = s | not s.doubleDashIsSanitizing())
+    }
+
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+  }
+
+  module TaintConfiguration = DataFlow::Global<CommandInjectionConfig>;
 
   private class ArgumentArrayWithDoubleDash extends DataFlow::Node {
     int doubleDashIndex;
@@ -82,7 +94,7 @@ module CommandInjection {
    * A taint-tracking configuration for reasoning about command-injection vulnerabilities
    * with sinks which are sanitized by `--`.
    */
-  class DoubleDashSanitizingConfiguration extends TaintTracking::Configuration {
+  deprecated class DoubleDashSanitizingConfiguration extends TaintTracking::Configuration {
     DoubleDashSanitizingConfiguration() { this = "CommandInjectionWithDoubleDashSanitizer" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -101,4 +113,17 @@ module CommandInjection {
       guard instanceof SanitizerGuard
     }
   }
+
+  private module DoubleDashSanitizingConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    predicate isSink(DataFlow::Node sink) { exists(Sink s | sink = s | s.doubleDashIsSanitizing()) }
+
+    predicate isBarrier(DataFlow::Node node) {
+      node instanceof Sanitizer or
+      node = any(ArgumentArrayWithDoubleDash array).getASanitizedElement()
+    }
+  }
+
+  module DoubleDashSanitizing = DataFlow::Global<DoubleDashSanitizingConfig>;
 }
