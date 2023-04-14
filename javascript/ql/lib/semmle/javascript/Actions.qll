@@ -28,7 +28,12 @@ module Actions {
    * A custom composite action. This is a mapping at the top level of an Actions YAML action file.
    * See https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions.
    */
-  class Action extends Node, YamlDocument, YamlMapping {
+  class CompositeAction extends Node, YamlDocument, YamlMapping {
+    CompositeAction() {
+      this.getFile().getBaseName() = "action.yml" and
+      this.lookup("runs").(YamlMapping).lookup("using").(YamlScalar).getValue() = "composite"
+    }
+
     /** Gets the `runs` mapping. */
     Runs getRuns() { result = this.lookup("runs") }
   }
@@ -38,12 +43,15 @@ module Actions {
    * See https://docs.github.com/en/actions/creating-actions/metadata-syntax-for-github-actions#runs
    */
   class Runs extends StepsContainer {
-    Action action;
+    CompositeAction action;
 
     Runs() { action.lookup("runs") = this }
 
     /** Gets the action that this `runs` mapping is in. */
-    Action getAction() { result = action }
+    CompositeAction getAction() { result = action }
+
+    /** Gets the `using` mapping. */
+    Using getUsing() { result = this.lookup("using") }
   }
 
   /**

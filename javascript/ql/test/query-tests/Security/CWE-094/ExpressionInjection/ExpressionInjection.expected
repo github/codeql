@@ -62,4 +62,4 @@
 | .github/workflows/workflow_run.yml:14:12:14:77 | echo '$ ... ame }}' | Potential injection from the ${ github.event.workflow_run.head_commit.committer.name }, which may be controlled by an external user. |
 | .github/workflows/workflow_run.yml:15:12:15:62 | echo '$ ... nch }}' | Potential injection from the ${ github.event.workflow_run.head_branch }, which may be controlled by an external user. |
 | .github/workflows/workflow_run.yml:16:12:16:78 | echo '$ ... ion }}' | Potential injection from the ${ github.event.workflow_run.head_repository.description }, which may be controlled by an external user. |
-| action.yml:14:12:14:50 | echo '$ ... ody }}' | Potential injection from the ${ github.event.comment.body }, which may be controlled by an external user. |
+| action1/action.yml:14:12:14:50 | echo '$ ... ody }}' | Potential injection from the ${ github.event.comment.body }, which may be controlled by an external user. |

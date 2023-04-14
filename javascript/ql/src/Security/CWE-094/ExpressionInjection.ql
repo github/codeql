@@ -149,9 +149,8 @@ predicate isScriptInjectable(Actions::Script script, string injection, string co
 
 from YamlNode node, string injection, string context
 where
-  exists(Actions::Using u, Actions::Runs runs |
-    u.getValue() = "composite" and
-    u.getRuns() = runs and
+  exists(Actions::CompositeAction action, Actions::Runs runs |
+    action.getRuns() = runs and
     (
       exists(Actions::Run run |
         isRunInjectable(run, injection, context) and
