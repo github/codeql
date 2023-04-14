@@ -111,6 +111,7 @@ module Actions {
     Workflow getWorkflow() { result = workflow }
   }
 
+  /** A common class for `env` in workflow, job or step. */
   abstract class Env extends YamlNode, YamlMapping { }
 
   /** A workflow level `env` mapping. */
