@@ -350,8 +350,7 @@ func main() {
 	log.Printf("Autobuilder was built with %s, environment has %s\n", runtime.Version(), getEnvGoVersion())
 
 	srcdir := os.Getenv("LGTM_SRC")
-	inLGTM := srcdir != ""
-	if inLGTM {
+	if srcdir != "" {
 		log.Printf("LGTM_SRC is %s\n", srcdir)
 	} else {
 		cwd, err := os.Getwd()
@@ -399,9 +398,7 @@ func main() {
 	importpath := getImportPath()
 	needGopath := getNeedGopath(depMode, importpath)
 
-	if os.Getenv("LGTM_INDEX_NEED_GOPATH") != "" {
-		inLGTM = true
-	}
+	inLGTM := os.Getenv("LGTM_SRC") != "" || os.Getenv("LGTM_INDEX_NEED_GOPATH") != ""
 
 	if inLGTM && needGopath {
 		// a temporary directory where everything is moved while the correct
