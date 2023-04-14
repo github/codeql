@@ -279,6 +279,28 @@ func fixGoVendorIssues(modMode ModMode, depMode DependencyInstallerMode, goDirec
 	return modMode
 }
 
+func getNeedGopath(depMode DependencyInstallerMode, importpath string) bool {
+	needGopath := true
+	if depMode == GoGetWithModules {
+		needGopath = false
+	}
+	// if `LGTM_INDEX_NEED_GOPATH` is set, it overrides the value for `needGopath` inferred above
+	if needGopathOverride := os.Getenv("LGTM_INDEX_NEED_GOPATH"); needGopathOverride != "" {
+		if needGopathOverride == "true" {
+			needGopath = true
+		} else if needGopathOverride == "false" {
+			needGopath = false
+		} else {
+			log.Fatalf("Unexpected value for Boolean environment variable LGTM_NEED_GOPATH: %v.\n", needGopathOverride)
+		}
+	}
+	if needGopath && importpath == "" {
+		log.Printf("Failed to determine import path, not setting up GOPATH")
+		needGopath = false
+	}
+	return needGopath
+}
+
 func main() {
 	if len(os.Args) > 1 {
 		usage()
@@ -306,13 +328,11 @@ func main() {
 	// determine how to install dependencies and whether a GOPATH needs to be set up before
 	// extraction
 	depMode := getDepMode()
-	needGopath := true
 	goDirectiveFound := false
 	if _, present := os.LookupEnv("GO111MODULE"); !present {
 		os.Setenv("GO111MODULE", "auto")
 	}
 	if depMode == GoGetWithModules {
-		needGopath = false
 		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+)$`)
 		goMod, err := ioutil.ReadFile("go.mod")
 		if err != nil {
@@ -372,22 +392,11 @@ func main() {
 		}
 	}
 
-	// if `LGTM_INDEX_NEED_GOPATH` is set, it overrides the value for `needGopath` inferred above
-	if needGopathOverride := os.Getenv("LGTM_INDEX_NEED_GOPATH"); needGopathOverride != "" {
-		inLGTM = true
-		if needGopathOverride == "true" {
-			needGopath = true
-		} else if needGopathOverride == "false" {
-			needGopath = false
-		} else {
-			log.Fatalf("Unexpected value for Boolean environment variable LGTM_NEED_GOPATH: %v.\n", needGopathOverride)
-		}
-	}
-
 	importpath := getImportPath()
-	if needGopath && importpath == "" {
-		log.Printf("Failed to determine import path, not setting up GOPATH")
-		needGopath = false
+	needGopath := getNeedGopath(depMode, importpath)
+
+	if os.Getenv("LGTM_INDEX_NEED_GOPATH") != "" {
+		inLGTM = true
 	}
 
 	if inLGTM && needGopath {
