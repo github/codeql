@@ -473,6 +473,39 @@ func buildWithoutCustomCommands(modMode ModMode) bool {
 	return shouldInstallDependencies
 }
 
+func buildWithCustomCommands(inst string) {
+	// write custom build commands into a script, then run it
+	var (
+		ext    = ""
+		header = ""
+		footer = ""
+	)
+	if runtime.GOOS == "windows" {
+		ext = ".cmd"
+		header = "@echo on\n@prompt +$S\n"
+		footer = "\nIF %ERRORLEVEL% NEQ 0 EXIT"
+	} else {
+		ext = ".sh"
+		header = "#! /bin/bash\nset -xe +u\n"
+	}
+	script, err := ioutil.TempFile("", "go-build-command-*"+ext)
+	if err != nil {
+		log.Fatalf("Unable to create temporary script holding custom build commands: %s\n", err.Error())
+	}
+	defer os.Remove(script.Name())
+	_, err = script.WriteString(header + inst + footer)
+	if err != nil {
+		log.Fatalf("Unable to write to temporary script holding custom build commands: %s\n", err.Error())
+	}
+	err = script.Close()
+	if err != nil {
+		log.Fatalf("Unable to close temporary script holding custom build commands: %s\n", err.Error())
+	}
+	os.Chmod(script.Name(), 0700)
+	log.Println("Installing dependencies using custom build command.")
+	util.RunCmd(exec.Command(script.Name()))
+}
+
 func main() {
 	if len(os.Args) > 1 {
 		usage()
@@ -532,36 +565,7 @@ func main() {
 	if inst == "" {
 		shouldInstallDependencies = buildWithoutCustomCommands(modMode)
 	} else {
-		// write custom build commands into a script, then run it
-		var (
-			ext    = ""
-			header = ""
-			footer = ""
-		)
-		if runtime.GOOS == "windows" {
-			ext = ".cmd"
-			header = "@echo on\n@prompt +$S\n"
-			footer = "\nIF %ERRORLEVEL% NEQ 0 EXIT"
-		} else {
-			ext = ".sh"
-			header = "#! /bin/bash\nset -xe +u\n"
-		}
-		script, err := ioutil.TempFile("", "go-build-command-*"+ext)
-		if err != nil {
-			log.Fatalf("Unable to create temporary script holding custom build commands: %s\n", err.Error())
-		}
-		defer os.Remove(script.Name())
-		_, err = script.WriteString(header + inst + footer)
-		if err != nil {
-			log.Fatalf("Unable to write to temporary script holding custom build commands: %s\n", err.Error())
-		}
-		err = script.Close()
-		if err != nil {
-			log.Fatalf("Unable to close temporary script holding custom build commands: %s\n", err.Error())
-		}
-		os.Chmod(script.Name(), 0700)
-		log.Println("Installing dependencies using custom build command.")
-		util.RunCmd(exec.Command(script.Name()))
+		buildWithCustomCommands(inst)
 	}
 
 	if modMode == ModVendor {
