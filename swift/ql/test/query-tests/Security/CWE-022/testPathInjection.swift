@@ -311,9 +311,9 @@ func test() {
     // Realm
 
 	_ = Realm.Configuration(fileURL: safeUrl) // GOOD
-	_ = Realm.Configuration(fileURL: remoteUrl) // BAD [NOT DETECTED]
+	_ = Realm.Configuration(fileURL: remoteUrl) // BAD
 	_ = Realm.Configuration(seedFilePath: safeUrl) // GOOD
-	_ = Realm.Configuration(seedFilePath: remoteUrl) // BAD [NOT DETECTED]
+	_ = Realm.Configuration(seedFilePath: remoteUrl) // BAD
 
 	var config = Realm.Configuration() // GOOD
 	config.fileURL = safeUrl // GOOD
