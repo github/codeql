@@ -454,6 +454,25 @@ func moveToTemporaryGopath(srcdir string, importpath string) {
 	log.Printf("GOPATH set to %s.\n", newGopath)
 }
 
+func buildWithoutCustomCommands(modMode ModMode) bool {
+	shouldInstallDependencies := false
+	// try to build the project
+	buildSucceeded := autobuilder.Autobuild()
+
+	// Build failed or there are still dependency errors; we'll try to install dependencies
+	// ourselves
+	if !buildSucceeded {
+		log.Println("Build failed, continuing to install dependencies.")
+
+		shouldInstallDependencies = true
+	} else if util.DepErrors("./...", modMode.argsForGoVersion(getEnvGoSemVer())...) {
+		log.Println("Dependencies are still not resolving after the build, continuing to install dependencies.")
+
+		shouldInstallDependencies = true
+	}
+	return shouldInstallDependencies
+}
+
 func main() {
 	if len(os.Args) > 1 {
 		usage()
@@ -511,20 +530,7 @@ func main() {
 	inst := util.Getenv("CODEQL_EXTRACTOR_GO_BUILD_COMMAND", "LGTM_INDEX_BUILD_COMMAND")
 	shouldInstallDependencies := false
 	if inst == "" {
-		// try to build the project
-		buildSucceeded := autobuilder.Autobuild()
-
-		// Build failed or there are still dependency errors; we'll try to install dependencies
-		// ourselves
-		if !buildSucceeded {
-			log.Println("Build failed, continuing to install dependencies.")
-
-			shouldInstallDependencies = true
-		} else if util.DepErrors("./...", modMode.argsForGoVersion(getEnvGoSemVer())...) {
-			log.Println("Dependencies are still not resolving after the build, continuing to install dependencies.")
-
-			shouldInstallDependencies = true
-		}
+		shouldInstallDependencies = buildWithoutCustomCommands(modMode)
 	} else {
 		// write custom build commands into a script, then run it
 		var (
