@@ -356,6 +356,104 @@ func tryUpdateGoModAndGoSum(modMode ModMode, depMode DependencyInstallerMode) {
 	}
 }
 
+func moveToTemporaryGopath(srcdir string, importpath string) {
+	// a temporary directory where everything is moved while the correct
+	// directory structure is created.
+	scratch, err := ioutil.TempDir(srcdir, "scratch")
+	if err != nil {
+		log.Fatalf("Failed to create temporary directory %s in directory %s: %s\n",
+			scratch, srcdir, err.Error())
+	}
+	log.Printf("Temporary directory is %s.\n", scratch)
+
+	// move all files in `srcdir` to `scratch`
+	dir, err := os.Open(srcdir)
+	if err != nil {
+		log.Fatalf("Failed to open source directory %s for reading: %s\n", srcdir, err.Error())
+	}
+	files, err := dir.Readdirnames(-1)
+	if err != nil {
+		log.Fatalf("Failed to read source directory %s: %s\n", srcdir, err.Error())
+	}
+	for _, file := range files {
+		if file != filepath.Base(scratch) {
+			log.Printf("Moving %s/%s to %s/%s.\n", srcdir, file, scratch, file)
+			err := os.Rename(filepath.Join(srcdir, file), filepath.Join(scratch, file))
+			if err != nil {
+				log.Fatalf("Failed to move file %s to the temporary directory: %s\n", file, err.Error())
+			}
+		}
+	}
+
+	// create a new folder which we will add to GOPATH below
+	// Note we evaluate all symlinks here for consistency: otherwise os.Chdir below
+	// will follow links but other references to the path may not, which can lead to
+	// disagreements between GOPATH and the working directory.
+	realSrc, err := filepath.EvalSymlinks(srcdir)
+	if err != nil {
+		log.Fatalf("Failed to evaluate symlinks in %s: %s\n", srcdir, err.Error())
+	}
+
+	root := filepath.Join(realSrc, "root")
+
+	// move source files to where Go expects them to be
+	newdir := filepath.Join(root, "src", importpath)
+	err = os.MkdirAll(filepath.Dir(newdir), 0755)
+	if err != nil {
+		log.Fatalf("Failed to create directory %s: %s\n", newdir, err.Error())
+	}
+	log.Printf("Moving %s to %s.\n", scratch, newdir)
+	err = os.Rename(scratch, newdir)
+	if err != nil {
+		log.Fatalf("Failed to rename %s to %s: %s\n", scratch, newdir, err.Error())
+	}
+
+	// schedule restoring the contents of newdir to their original location after this function completes:
+	defer restoreRepoLayout(newdir, files, filepath.Base(scratch), srcdir)
+
+	err = os.Chdir(newdir)
+	if err != nil {
+		log.Fatalf("Failed to chdir into %s: %s\n", newdir, err.Error())
+	}
+
+	// set up SEMMLE_PATH_TRANSFORMER to ensure paths in the source archive and the snapshot
+	// match the original source location, not the location we moved it to
+	pt, err := ioutil.TempFile("", "path-transformer")
+	if err != nil {
+		log.Fatalf("Unable to create path transformer file: %s.", err.Error())
+	}
+	defer os.Remove(pt.Name())
+	_, err = pt.WriteString("#" + realSrc + "\n" + newdir + "//\n")
+	if err != nil {
+		log.Fatalf("Unable to write path transformer file: %s.", err.Error())
+	}
+	err = pt.Close()
+	if err != nil {
+		log.Fatalf("Unable to close path transformer file: %s.", err.Error())
+	}
+	err = os.Setenv("SEMMLE_PATH_TRANSFORMER", pt.Name())
+	if err != nil {
+		log.Fatalf("Unable to set SEMMLE_PATH_TRANSFORMER environment variable: %s.\n", err.Error())
+	}
+
+	// set/extend GOPATH
+	oldGopath := os.Getenv("GOPATH")
+	var newGopath string
+	if oldGopath != "" {
+		newGopath = strings.Join(
+			[]string{root, oldGopath},
+			string(os.PathListSeparator),
+		)
+	} else {
+		newGopath = root
+	}
+	err = os.Setenv("GOPATH", newGopath)
+	if err != nil {
+		log.Fatalf("Unable to set GOPATH to %s: %s\n", newGopath, err.Error())
+	}
+	log.Printf("GOPATH set to %s.\n", newGopath)
+}
+
 func main() {
 	if len(os.Args) > 1 {
 		usage()
@@ -406,101 +504,7 @@ func main() {
 	inLGTM := os.Getenv("LGTM_SRC") != "" || os.Getenv("LGTM_INDEX_NEED_GOPATH") != ""
 
 	if inLGTM && needGopath {
-		// a temporary directory where everything is moved while the correct
-		// directory structure is created.
-		scratch, err := ioutil.TempDir(srcdir, "scratch")
-		if err != nil {
-			log.Fatalf("Failed to create temporary directory %s in directory %s: %s\n",
-				scratch, srcdir, err.Error())
-		}
-		log.Printf("Temporary directory is %s.\n", scratch)
-
-		// move all files in `srcdir` to `scratch`
-		dir, err := os.Open(srcdir)
-		if err != nil {
-			log.Fatalf("Failed to open source directory %s for reading: %s\n", srcdir, err.Error())
-		}
-		files, err := dir.Readdirnames(-1)
-		if err != nil {
-			log.Fatalf("Failed to read source directory %s: %s\n", srcdir, err.Error())
-		}
-		for _, file := range files {
-			if file != filepath.Base(scratch) {
-				log.Printf("Moving %s/%s to %s/%s.\n", srcdir, file, scratch, file)
-				err := os.Rename(filepath.Join(srcdir, file), filepath.Join(scratch, file))
-				if err != nil {
-					log.Fatalf("Failed to move file %s to the temporary directory: %s\n", file, err.Error())
-				}
-			}
-		}
-
-		// create a new folder which we will add to GOPATH below
-		// Note we evaluate all symlinks here for consistency: otherwise os.Chdir below
-		// will follow links but other references to the path may not, which can lead to
-		// disagreements between GOPATH and the working directory.
-		realSrc, err := filepath.EvalSymlinks(srcdir)
-		if err != nil {
-			log.Fatalf("Failed to evaluate symlinks in %s: %s\n", srcdir, err.Error())
-		}
-
-		root := filepath.Join(realSrc, "root")
-
-		// move source files to where Go expects them to be
-		newdir := filepath.Join(root, "src", importpath)
-		err = os.MkdirAll(filepath.Dir(newdir), 0755)
-		if err != nil {
-			log.Fatalf("Failed to create directory %s: %s\n", newdir, err.Error())
-		}
-		log.Printf("Moving %s to %s.\n", scratch, newdir)
-		err = os.Rename(scratch, newdir)
-		if err != nil {
-			log.Fatalf("Failed to rename %s to %s: %s\n", scratch, newdir, err.Error())
-		}
-
-		// schedule restoring the contents of newdir to their original location after this function completes:
-		defer restoreRepoLayout(newdir, files, filepath.Base(scratch), srcdir)
-
-		err = os.Chdir(newdir)
-		if err != nil {
-			log.Fatalf("Failed to chdir into %s: %s\n", newdir, err.Error())
-		}
-
-		// set up SEMMLE_PATH_TRANSFORMER to ensure paths in the source archive and the snapshot
-		// match the original source location, not the location we moved it to
-		pt, err := ioutil.TempFile("", "path-transformer")
-		if err != nil {
-			log.Fatalf("Unable to create path transformer file: %s.", err.Error())
-		}
-		defer os.Remove(pt.Name())
-		_, err = pt.WriteString("#" + realSrc + "\n" + newdir + "//\n")
-		if err != nil {
-			log.Fatalf("Unable to write path transformer file: %s.", err.Error())
-		}
-		err = pt.Close()
-		if err != nil {
-			log.Fatalf("Unable to close path transformer file: %s.", err.Error())
-		}
-		err = os.Setenv("SEMMLE_PATH_TRANSFORMER", pt.Name())
-		if err != nil {
-			log.Fatalf("Unable to set SEMMLE_PATH_TRANSFORMER environment variable: %s.\n", err.Error())
-		}
-
-		// set/extend GOPATH
-		oldGopath := os.Getenv("GOPATH")
-		var newGopath string
-		if oldGopath != "" {
-			newGopath = strings.Join(
-				[]string{root, oldGopath},
-				string(os.PathListSeparator),
-			)
-		} else {
-			newGopath = root
-		}
-		err = os.Setenv("GOPATH", newGopath)
-		if err != nil {
-			log.Fatalf("Unable to set GOPATH to %s: %s\n", newGopath, err.Error())
-		}
-		log.Printf("GOPATH set to %s.\n", newGopath)
+		moveToTemporaryGopath(srcdir, importpath)
 	}
 
 	// check whether an explicit dependency installation command was provided
