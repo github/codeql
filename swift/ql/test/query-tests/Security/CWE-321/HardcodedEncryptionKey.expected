@@ -19,6 +19,10 @@ edges
 | cryptoswift.swift:92:18:92:36 | call to getConstantString() :  | cryptoswift.swift:153:26:153:26 | keyString |
 | cryptoswift.swift:92:18:92:36 | call to getConstantString() :  | cryptoswift.swift:162:24:162:24 | keyString |
 | cryptoswift.swift:92:18:92:36 | call to getConstantString() :  | cryptoswift.swift:164:24:164:24 | keyString |
+| misc.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  |
+| misc.swift:38:19:38:38 | call to Data.init(_:) :  | misc.swift:41:41:41:41 | myConstKey |
+| misc.swift:38:24:38:24 | abcdef123456 :  | misc.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  |
+| misc.swift:38:24:38:24 | abcdef123456 :  | misc.swift:38:19:38:38 | call to Data.init(_:) :  |
 | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  |
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:65:73:65:73 | myConstKey |
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:66:73:66:73 | myConstKey |
@@ -60,6 +64,11 @@ nodes
 | cryptoswift.swift:163:24:163:24 | key | semmle.label | key |
 | cryptoswift.swift:164:24:164:24 | keyString | semmle.label | keyString |
 | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | semmle.label | [summary] to write: return (return) in Data.init(_:) :  |
+| file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | semmle.label | [summary] to write: return (return) in Data.init(_:) :  |
+| misc.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | semmle.label | [summary param] 0 in Data.init(_:) :  |
+| misc.swift:38:19:38:38 | call to Data.init(_:) :  | semmle.label | call to Data.init(_:) :  |
+| misc.swift:38:24:38:24 | abcdef123456 :  | semmle.label | abcdef123456 :  |
+| misc.swift:41:41:41:41 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | semmle.label | [summary param] 0 in Data.init(_:) :  |
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | semmle.label | call to Data.init(_:) :  |
 | rncryptor.swift:60:24:60:24 | abcdef123456 :  | semmle.label | abcdef123456 :  |
@@ -78,6 +87,7 @@ nodes
 | rncryptor.swift:80:94:80:94 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:81:102:81:102 | myConstKey | semmle.label | myConstKey |
 subpaths
+| misc.swift:38:24:38:24 | abcdef123456 :  | misc.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | misc.swift:38:19:38:38 | call to Data.init(_:) :  |
 | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  |
 #select
 | cryptoswift.swift:108:21:108:21 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant :  | cryptoswift.swift:108:21:108:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant :  | this string is constant |
@@ -99,6 +109,7 @@ subpaths
 | cryptoswift.swift:162:24:162:24 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant :  | cryptoswift.swift:162:24:162:24 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant :  | this string is constant |
 | cryptoswift.swift:163:24:163:24 | key | cryptoswift.swift:90:26:90:121 | [...] :  | cryptoswift.swift:163:24:163:24 | key | The key 'key' has been initialized with hard-coded values from $@. | cryptoswift.swift:90:26:90:121 | [...] :  | [...] |
 | cryptoswift.swift:164:24:164:24 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant :  | cryptoswift.swift:164:24:164:24 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant :  | this string is constant |
+| misc.swift:41:41:41:41 | myConstKey | misc.swift:38:24:38:24 | abcdef123456 :  | misc.swift:41:41:41:41 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | misc.swift:38:24:38:24 | abcdef123456 :  | abcdef123456 |
 | rncryptor.swift:65:73:65:73 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:65:73:65:73 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
 | rncryptor.swift:66:73:66:73 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:66:73:66:73 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
 | rncryptor.swift:67:73:67:73 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:67:73:67:73 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |

@@ -38,7 +38,7 @@ func test(myVarStr: String) {
 	let myConstKey = Data("abcdef123456")
 
 	_ = Realm.Configuration(encryptionKey: myVarKey) // GOOD
-	_ = Realm.Configuration(encryptionKey: myConstKey) // BAD [NOT DETECTED]
+	_ = Realm.Configuration(encryptionKey: myConstKey) // BAD
 
 	var config = Realm.Configuration() // GOOD
 	config.encryptionKey = myVarKey // GOOD

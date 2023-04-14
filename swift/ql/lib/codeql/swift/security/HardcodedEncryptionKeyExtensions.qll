@@ -62,6 +62,18 @@ private class RnCryptorEncryptionKeySink extends HardcodedEncryptionKeySink {
   }
 }
 
+private class EncryptionKeySinks extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        // Realm database library.
+        ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:);;;Argument[3];encryption-key",
+        ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[3];encryption-key",
+        ";Realm.Configuration;true;encryptionKey;;;;encryption-key",
+      ]
+  }
+}
+
 /**
  * A sink defined in a CSV model.
  */
