@@ -557,6 +557,33 @@ func installDependencies(depMode DependencyInstallerMode) {
 	util.RunCmd(install)
 }
 
+func extract(depMode DependencyInstallerMode, modMode ModMode) {
+	extractor, err := util.GetExtractorPath()
+	if err != nil {
+		log.Fatalf("Could not determine path of extractor: %v.\n", err)
+	}
+
+	cwd, err := os.Getwd()
+	if err != nil {
+		log.Fatalf("Unable to determine current directory: %s\n", err.Error())
+	}
+
+	extractorArgs := []string{}
+	if depMode == GoGetWithModules {
+		extractorArgs = append(extractorArgs, modMode.argsForGoVersion(getEnvGoSemVer())...)
+	}
+	extractorArgs = append(extractorArgs, "./...")
+
+	log.Printf("Running extractor command '%s %v' from directory '%s'.\n", extractor, extractorArgs, cwd)
+	cmd := exec.Command(extractor, extractorArgs...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err = cmd.Run()
+	if err != nil {
+		log.Fatalf("Extraction failed: %s\n", err.Error())
+	}
+}
+
 func main() {
 	if len(os.Args) > 1 {
 		usage()
@@ -637,29 +664,5 @@ func main() {
 		}
 	}
 
-	// extract
-	extractor, err := util.GetExtractorPath()
-	if err != nil {
-		log.Fatalf("Could not determine path of extractor: %v.\n", err)
-	}
-
-	cwd, err := os.Getwd()
-	if err != nil {
-		log.Fatalf("Unable to determine current directory: %s\n", err.Error())
-	}
-
-	extractorArgs := []string{}
-	if depMode == GoGetWithModules {
-		extractorArgs = append(extractorArgs, modMode.argsForGoVersion(getEnvGoSemVer())...)
-	}
-	extractorArgs = append(extractorArgs, "./...")
-
-	log.Printf("Running extractor command '%s %v' from directory '%s'.\n", extractor, extractorArgs, cwd)
-	cmd := exec.Command(extractor, extractorArgs...)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err = cmd.Run()
-	if err != nil {
-		log.Fatalf("Extraction failed: %s\n", err.Error())
-	}
+	extract(depMode, modMode)
 }
