@@ -627,6 +627,10 @@ private module Forge {
         // require("forge").md.md5.create().update('The quick brown fox jumps over the lazy dog');
         this =
           getAnImportNode().getMember("md").getMember(algorithmName).getMember("create").getACall()
+        or
+        // require("forge").sha512.sha256.create().update('The quick brown fox jumps over the lazy dog');
+        this =
+          getAnImportNode().getMember("md").getMember(algorithmName).getAMember().getMember("create").getACall()
       )
     }
 
