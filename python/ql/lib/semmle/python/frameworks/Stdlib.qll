@@ -3779,6 +3779,62 @@ private module StdlibPrivate {
     override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
   }
 
+  // ---------------------------------------------------------------------------
+  // Flow summaries for funtions contructing containers
+  // ---------------------------------------------------------------------------
+  /** A flow summary for `dict`. */
+  class DictSummary extends SummarizedCallable {
+    DictSummary() { this = "builtins.dict" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("dict").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("dict").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
+        input = "Argument[0].DictionaryElement[" + key + "]" and
+        output = "ReturnValue.DictionaryElement[" + key + "]" and
+        preservesValue = true
+      )
+      or
+      exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
+        input = "Argument[" + key + ":]" and
+        output = "ReturnValue.DictionaryElement[" + key + "]" and
+        preservesValue = true
+      )
+      or
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for `list`. */
+  class ListSummary extends SummarizedCallable {
+    ListSummary() { this = "builtins.list" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("list").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("list").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0].ListElement" and
+      output = "ReturnValue.ListElement" and
+      preservesValue = true
+      or
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Flow summaries for functions operating on containers
+  // ---------------------------------------------------------------------------
   /** A flow summary for `reversed`. */
   class ReversedSummary extends SummarizedCallable {
     ReversedSummary() { this = "builtins.reversed" }
@@ -3792,6 +3848,73 @@ private module StdlibPrivate {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[0].ListElement" and
       output = "ReturnValue.ListElement" and
+      preservesValue = true
+      or
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for `sorted`. */
+  class SortedSummary extends SummarizedCallable {
+    SortedSummary() { this = "builtins.sorted" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("sorted").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("sorted").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0].ListElement" and
+      output = "ReturnValue.ListElement" and
+      preservesValue = true
+      or
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for `iter`. */
+  class IterSummary extends SummarizedCallable {
+    IterSummary() { this = "builtins.iter" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("iter").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("iter").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0].ListElement" and
+      output = "ReturnValue.ListElement" and
+      preservesValue = true
+      or
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for `next`. */
+  class NextSummary extends SummarizedCallable {
+    NextSummary() { this = "builtins.next" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("next").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("next").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0].ListElement" and
+      output = "ReturnValue" and
+      preservesValue = true
+      or
+      input = "Argument[1]" and
+      output = "ReturnValue" and
       preservesValue = true
     }
   }
