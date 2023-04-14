@@ -79,5 +79,7 @@ module WeakSensitiveDataHashing {
    * hashing algorithm on sensitive data.
    */
   module Config =
-    DataFlow::MergePathGraph<NormalHashFunction::PathNode, ComputationallyExpensiveHashFunction::PathNode, NormalHashFunction::PathGraph, ComputationallyExpensiveHashFunction::PathGraph>;
+    DataFlow::MergePathGraph<NormalHashFunction::PathNode,
+      ComputationallyExpensiveHashFunction::PathNode, NormalHashFunction::PathGraph,
+      ComputationallyExpensiveHashFunction::PathGraph>;
 }
