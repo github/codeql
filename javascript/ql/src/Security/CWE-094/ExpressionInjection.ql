@@ -15,6 +15,44 @@
 import javascript
 import semmle.javascript.Actions
 
+/**
+ * A `script:` field within an Actions `with:` specific to `actions/github-script` action.
+ *
+ * For example:
+ * ```
+ * uses: actions/github-script@v3
+ * with:
+ *   script: console.log('${{ github.event.pull_request.head.sha }}')
+ * ```
+ */
+class GitHubScript extends YamlNode, YamlString {
+  GitHubScriptWith with;
+
+  GitHubScript() { with.lookup("script") = this }
+
+  /** Gets the `with` field this field belongs to. */
+  GitHubScriptWith getWith() { result = with }
+}
+
+/**
+ * A step that uses `actions/github-script` action.
+ */
+class GitHubScriptStep extends Actions::Step {
+  GitHubScriptStep() { this.getUses().getGitHubRepository() = "actions/github-script" }
+}
+
+/**
+ * A `with:` field sibling to `uses: actions/github-script`.
+ */
+class GitHubScriptWith extends YamlNode, YamlMapping {
+  GitHubScriptStep step;
+
+  GitHubScriptWith() { step.lookup("with") = this }
+
+  /** Gets the step this field belongs to. */
+  GitHubScriptStep getStep() { result = step }
+}
+
 bindingset[context]
 private predicate isExternalUserControlledIssue(string context) {
   context.regexpMatch("\\bgithub\\s*\\.\\s*event\\s*\\.\\s*issue\\s*\\.\\s*title\\b") or
@@ -133,7 +171,7 @@ predicate isRunInjectable(Actions::Run run, string injection, string context) {
  * Holds if the `actions/github-script` contains any expression interpolation `${{ e }}`.
  * Sets `context` to the initial untrusted value assignment in case of `${{ env... }}` interpolation
  */
-predicate isScriptInjectable(Actions::GitHubScript script, string injection, string context) {
+predicate isScriptInjectable(GitHubScript script, string injection, string context) {
   Actions::getASimpleReferenceExpression(script) = injection and
   (
     injection = context
@@ -152,7 +190,7 @@ YamlNode getInjectableCompositeActionNode(Actions::Runs runs, string injection, 
     run.getStep().getRuns() = runs
   )
   or
-  exists(Actions::GitHubScript script |
+  exists(GitHubScript script |
     isScriptInjectable(script, injection, context) and
     result = script and
     script.getWith().getStep().getRuns() = runs
@@ -169,7 +207,7 @@ YamlNode getInjectableWorkflowNode(Actions::On on, string injection, string cont
     run.getStep().getJob().getWorkflow().getOn() = on
   )
   or
-  exists(Actions::GitHubScript script |
+  exists(GitHubScript script |
     isScriptInjectable(script, injection, context) and
     result = script and
     script.getWith().getStep().getJob().getWorkflow().getOn() = on
