@@ -133,17 +133,12 @@ predicate isRunInjectable(Actions::Run run, string injection, string context) {
  * Holds if the `actions/github-script` contains any expression interpolation `${{ e }}`.
  * Sets `context` to the initial untrusted value assignment in case of `${{ env... }}` interpolation
  */
-predicate isScriptInjectable(Actions::Script script, string injection, string context) {
-  exists(Actions::Step step, Actions::Uses uses |
-    script.getWith().getStep() = step and
-    uses.getStep() = step and
-    uses.getGitHubRepository() = "actions/github-script" and
-    Actions::getASimpleReferenceExpression(script) = injection and
-    (
-      injection = context
-      or
-      isEnvInterpolationTainted(injection, context)
-    )
+predicate isScriptInjectable(Actions::GitHubScript script, string injection, string context) {
+  Actions::getASimpleReferenceExpression(script) = injection and
+  (
+    injection = context
+    or
+    isEnvInterpolationTainted(injection, context)
   )
 }
 
@@ -158,7 +153,7 @@ where
         run.getStep().getRuns() = runs
       )
       or
-      exists(Actions::Script script |
+      exists(Actions::GitHubScript script |
         node = script and
         script.getWith().getStep().getRuns() = runs and
         isScriptInjectable(script, injection, context)
@@ -184,7 +179,7 @@ where
         run.getStep().getJob().getWorkflow().getOn() = on
       )
       or
-      exists(Actions::Script script |
+      exists(Actions::GitHubScript script |
         node = script and
         script.getWith().getStep().getJob().getWorkflow().getOn() = on and
         isScriptInjectable(script, injection, context)

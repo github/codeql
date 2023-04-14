@@ -368,13 +368,32 @@ module Actions {
    *   script: console.log('${{ github.event.pull_request.head.sha }}')
    * ```
    */
-  class Script extends YamlNode, YamlString {
-    With with;
+  class GitHubScript extends YamlNode, YamlString {
+    GitHubScriptWith with;
 
-    Script() { with.lookup("script") = this }
+    GitHubScript() { with.lookup("script") = this }
 
     /** Gets the `with` field this field belongs to. */
-    With getWith() { result = with }
+    GitHubScriptWith getWith() { result = with }
+  }
+
+  /**
+   * A step that uses `actions/github-script` action.
+   */
+  class GitHubScriptStep extends Step {
+    GitHubScriptStep() { this.getUses().getGitHubRepository() = "actions/github-script" }
+  }
+
+  /**
+   * A `with:` field sibling to `uses: actions/github-script`.
+   */
+  class GitHubScriptWith extends YamlNode, YamlMapping {
+    GitHubScriptStep step;
+
+    GitHubScriptWith() { step.lookup("with") = this }
+
+    /** Gets the step this field belongs to. */
+    GitHubScriptStep getStep() { result = step }
   }
 
   /**
