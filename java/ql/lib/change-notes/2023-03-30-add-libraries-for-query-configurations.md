@@ -7,3 +7,4 @@ category: minorAnalysis
 * Added the `XssLocalQuery.qll` library to provide the `XssLocalFlow` taint-tracking module to reason about XSS vulnerabilities caused by local data flow.
 * Added the `ExternallyControlledFormatStringLocalQuery.qll` library to provide the `ExternallyControlledFormatStringLocalFlow` taint-tracking module to reason about format string vulnerabilities caused by local data flow.
 * Added the `InsecureCookieQuery.qll` library to provide the `SecureCookieFlow` taint-tracking module to reason about insecure cookie vulnerabilities.
+* Added the `ExecTaintedLocalQuery.qll` library to provide the `LocalUserInputToArgumentToExecFlow` taint-tracking module to reason about command injection vulnerabilities caused by local data flow.
