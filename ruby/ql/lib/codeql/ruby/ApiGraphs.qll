@@ -120,17 +120,8 @@ module API {
      * ```
      */
     pragma[inline]
-    DataFlow::LocalSourceNode asSource() { result = pragma[only_bind_out](this).asSourceInternal() }
-
-    /**
-     * INTERNAL USE ONLY.
-     *
-     * Same as `asSource()` but without join-order hints.
-     */
-    cached
-    DataFlow::LocalSourceNode asSourceInternal() {
-      Impl::forceCachingInSameStage() and
-      Impl::use(this, result)
+    DataFlow::LocalSourceNode asSource() {
+      result = pragma[only_bind_out](this).(Node::Internal).asSourceInternal()
     }
 
     /**
@@ -189,17 +180,8 @@ module API {
      * - An attribute of an object
      */
     pragma[inline]
-    Node getMember(string m) { result = pragma[only_bind_out](this).getMemberInternal(m) }
-
-    /**
-     * INTERNAL USE ONLY.
-     *
-     * Same as `getMember` but without join-order hints.
-     */
-    cached
-    Node getMemberInternal(string m) {
-      Impl::forceCachingInSameStage() and
-      result = this.getASuccessor(Label::member(m))
+    Node getMember(string m) {
+      result = pragma[only_bind_out](this).(Node::Internal).getMemberInternal(m)
     }
 
     /**
@@ -231,35 +213,14 @@ module API {
      */
     pragma[inline]
     MethodAccessNode getMethod(string method) {
-      result = pragma[only_bind_out](this).getMethodInternal(method)
-    }
-
-    /**
-     * INTERNAL USE ONLY.
-     *
-     * Same as `getMethod` but without join-order hints.
-     */
-    cached
-    MethodAccessNode getMethodInternal(string method) {
-      Impl::forceCachingInSameStage() and
-      result = this.getASubclass().getASuccessor(Label::method(method))
+      result = pragma[only_bind_out](this).(Node::Internal).getMethodInternal(method)
     }
 
     /**
      * Gets a node representing the result of this call.
      */
     pragma[inline]
-    Node getReturn() { result = pragma[only_bind_out](this).getReturnInternal() }
-
-    /**
-     * INTERNAL USE ONLY.
-     *
-     * Same as `getReturn()` but without join-order hints.
-     */
-    cached
-    Node getReturnInternal() {
-      Impl::forceCachingInSameStage() and result = this.getASuccessor(Label::return())
-    }
+    Node getReturn() { result = pragma[only_bind_out](this).(Node::Internal).getReturnInternal() }
 
     /**
      * Gets a node representing the result of calling a method on the receiver represented by this node.
@@ -407,7 +368,7 @@ module API {
     /**
      * Gets a textual representation of this element.
      */
-    abstract string toString();
+    string toString() { none() }
 
     /**
      * Gets a path of the given `length` from the root to this node.
@@ -431,6 +392,55 @@ module API {
 
     /** Gets the shortest distance from the root to this node in the API graph. */
     int getDepth() { result = Impl::distanceFromRoot(this) }
+  }
+
+  /** Companion module to the `Node` class. */
+  module Node {
+    /**
+     * INTERNAL USE ONLY.
+     *
+     * An API node, with some internal predicates exposed.
+     */
+    class Internal extends Node {
+      /**
+       * INTERNAL USE ONLY.
+       *
+       * Same as `asSource()` but without join-order hints.
+       */
+      cached
+      DataFlow::LocalSourceNode asSourceInternal() {
+        Impl::forceCachingInSameStage() and
+        Impl::use(this, result)
+      }
+
+      /**
+       * Same as `getMember` but without join-order hints.
+       */
+      cached
+      Node getMemberInternal(string m) {
+        Impl::forceCachingInSameStage() and
+        result = this.getASuccessor(Label::member(m))
+      }
+
+      /**
+       * Same as `getMethod` but without join-order hints.
+       */
+      cached
+      MethodAccessNode getMethodInternal(string method) {
+        Impl::forceCachingInSameStage() and
+        result = this.getASubclass().getASuccessor(Label::method(method))
+      }
+
+      /**
+       * INTERNAL USE ONLY.
+       *
+       * Same as `getReturn()` but without join-order hints.
+       */
+      cached
+      Node getReturnInternal() {
+        Impl::forceCachingInSameStage() and result = this.getASuccessor(Label::return())
+      }
+    }
   }
 
   bindingset[node]
@@ -525,7 +535,7 @@ module API {
    */
   cached
   Node getTopLevelMember(string m) {
-    Impl::forceCachingInSameStage() and result = root().getMemberInternal(m)
+    Impl::forceCachingInSameStage() and result = root().(Node::Internal).getMemberInternal(m)
   }
 
   /**
@@ -563,9 +573,12 @@ module API {
       or
       exists(
         any(Node n)
+            .(Node::Internal)
             .getMemberInternal("foo")
             .getAMember()
+            .(Node::Internal)
             .getMethodInternal("foo")
+            .(Node::Internal)
             .getReturnInternal()
             .getParameter(0)
             .getKeywordParameter("foo")
@@ -574,6 +587,7 @@ module API {
             .getContent(_)
             .getField(_)
             .getAnElement()
+            .(Node::Internal)
             .asSourceInternal()
       )
     }
