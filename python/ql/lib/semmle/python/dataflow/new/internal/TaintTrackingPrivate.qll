@@ -1,6 +1,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
+private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.dataflow.new.internal.TaintTrackingPublic
 private import semmle.python.ApiGraphs
 
@@ -55,6 +56,8 @@ private module Cached {
     awaitStep(nodeFrom, nodeTo)
     or
     asyncWithStep(nodeFrom, nodeTo)
+    or
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
   }
 }
 
@@ -183,17 +186,17 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   or
   // constructor call
   exists(DataFlow::CallCfgNode call | call = nodeTo |
-    call = API::builtin(["list", "set", "frozenset", "dict", "tuple"]).getACall() and
+    call = API::builtin(["set", "frozenset", "tuple"]).getACall() and
     call.getArg(0) = nodeFrom
     // TODO: Properly handle defaultdict/namedtuple
   )
   or
-  // functions operating on collections
-  exists(DataFlow::CallCfgNode call | call = nodeTo |
-    call = API::builtin(["sorted", "reversed", "iter", "next"]).getACall() and
-    call.getArg(0) = nodeFrom
-  )
-  or
+  // // functions operating on collections
+  // exists(DataFlow::CallCfgNode call | call = nodeTo |
+  //   call = API::builtin(["iter", "next"]).getACall() and
+  //   call.getArg(0) = nodeFrom
+  // )
+  // or
   // methods
   exists(DataFlow::MethodCallNode call, string methodName | call = nodeTo |
     methodName in [
@@ -210,6 +213,19 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
     call.calls(obj, ["append", "add"]) and
     obj = nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() and
     call.getArg(0) = nodeFrom
+  )
+  or
+  // Although flow through collections is modeled precisely using stores/reads, we still
+  // allow flow out of a _tainted_ collection. This is needed in order to support taint-
+  // tracking configurations where the source is a collection.
+  exists(DataFlow::Content c | DataFlowPrivate::readStep(nodeFrom, c, nodeTo) |
+    c instanceof DataFlow::ListElementContent
+    or
+    c instanceof DataFlow::SetElementContent
+    or
+    c instanceof DataFlow::DictionaryElementContent
+    or
+    c instanceof DataFlow::DictionaryElementAnyContent
   )
 }
 
