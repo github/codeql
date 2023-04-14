@@ -80,5 +80,5 @@ func test(var myVarKey: Data, var myHMACKey: Data) {
 	let _ = try? myDecryptor.decryptData(myData, with: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey) // BAD
 	let _ = try? myDecryptor.decryptData(myData, withSettings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey) // BAD
 
-	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myVarKey, hmacKey: myConstKey, handler: myHandler) // BAD [NOT DETECTED]
+	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myVarKey, hmacKey: myConstKey, handler: myHandler) // BAD
 }

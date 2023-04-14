@@ -38,6 +38,7 @@ edges
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:79:66:79:66 | myConstKey |
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:80:94:80:94 | myConstKey |
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:81:102:81:102 | myConstKey |
+| rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  | rncryptor.swift:83:92:83:92 | myConstKey |
 | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  |
 | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  |
 nodes
@@ -86,6 +87,7 @@ nodes
 | rncryptor.swift:79:66:79:66 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:80:94:80:94 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:81:102:81:102 | myConstKey | semmle.label | myConstKey |
+| rncryptor.swift:83:92:83:92 | myConstKey | semmle.label | myConstKey |
 subpaths
 | misc.swift:38:24:38:24 | abcdef123456 :  | misc.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | misc.swift:38:19:38:38 | call to Data.init(_:) :  |
 | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) :  | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) :  | rncryptor.swift:60:19:60:38 | call to Data.init(_:) :  |
@@ -124,3 +126,4 @@ subpaths
 | rncryptor.swift:79:66:79:66 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:79:66:79:66 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
 | rncryptor.swift:80:94:80:94 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:80:94:80:94 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
 | rncryptor.swift:81:102:81:102 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:81:102:81:102 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |
+| rncryptor.swift:83:92:83:92 | myConstKey | rncryptor.swift:60:24:60:24 | abcdef123456 :  | rncryptor.swift:83:92:83:92 | myConstKey | The key 'myConstKey' has been initialized with hard-coded values from $@. | rncryptor.swift:60:24:60:24 | abcdef123456 :  | abcdef123456 |

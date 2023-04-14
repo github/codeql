@@ -57,7 +57,8 @@ private class RnCryptorEncryptionKeySink extends HardcodedEncryptionKeySink {
         ] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
-      call.getArgumentWithLabel(["encryptionKey", "withEncryptionKey"]).getExpr() = this.asExpr()
+      call.getArgumentWithLabel(["encryptionKey", "withEncryptionKey", "hmacKey"]).getExpr() =
+        this.asExpr()
     )
   }
 }
