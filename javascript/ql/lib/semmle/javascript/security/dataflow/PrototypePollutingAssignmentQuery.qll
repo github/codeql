@@ -54,7 +54,7 @@ class Configuration extends TaintTracking::Configuration {
       )
     )
     or
-    node = NodeJSLib::Path::moduleMember(["join", "normalize", "relative", "resolve"]).getACall()
+    node = NodeJSLib::Path::moduleMember(["join", "relative", "resolve"]).getACall()
   }
 
   override predicate isSanitizerEdge(
