@@ -506,6 +506,57 @@ func buildWithCustomCommands(inst string) {
 	util.RunCmd(exec.Command(script.Name()))
 }
 
+func installDependencies(depMode DependencyInstallerMode) {
+	// automatically determine command to install dependencies
+	var install *exec.Cmd
+	if depMode == Dep {
+		// set up the dep cache if SEMMLE_CACHE is set
+		cacheDir := os.Getenv("SEMMLE_CACHE")
+		if cacheDir != "" {
+			depCacheDir := filepath.Join(cacheDir, "go", "dep")
+			log.Printf("Attempting to create dep cache dir %s\n", depCacheDir)
+			err := os.MkdirAll(depCacheDir, 0755)
+			if err != nil {
+				log.Printf("Failed to create dep cache directory: %s\n", err.Error())
+			} else {
+				log.Printf("Setting dep cache directory to %s\n", depCacheDir)
+				err = os.Setenv("DEPCACHEDIR", depCacheDir)
+				if err != nil {
+					log.Println("Failed to set dep cache directory")
+				} else {
+					err = os.Setenv("DEPCACHEAGE", "720h") // 30 days
+					if err != nil {
+						log.Println("Failed to set dep cache age")
+					}
+				}
+			}
+		}
+
+		if util.FileExists("Gopkg.lock") {
+			// if Gopkg.lock exists, don't update it and only vendor dependencies
+			install = exec.Command("dep", "ensure", "-v", "-vendor-only")
+		} else {
+			install = exec.Command("dep", "ensure", "-v")
+		}
+		log.Println("Installing dependencies using `dep ensure`.")
+	} else if depMode == Glide {
+		install = exec.Command("glide", "install")
+		log.Println("Installing dependencies using `glide install`")
+	} else {
+		// explicitly set go module support
+		if depMode == GoGetWithModules {
+			os.Setenv("GO111MODULE", "on")
+		} else if depMode == GoGetNoModules {
+			os.Setenv("GO111MODULE", "off")
+		}
+
+		// get dependencies
+		install = exec.Command("go", "get", "-v", "./...")
+		log.Println("Installing dependencies using `go get -v ./...`.")
+	}
+	util.RunCmd(install)
+}
+
 func main() {
 	if len(os.Args) > 1 {
 		usage()
@@ -582,54 +633,7 @@ func main() {
 		if modMode == ModVendor {
 			log.Printf("Skipping dependency installation because a Go vendor directory was found.")
 		} else {
-			// automatically determine command to install dependencies
-			var install *exec.Cmd
-			if depMode == Dep {
-				// set up the dep cache if SEMMLE_CACHE is set
-				cacheDir := os.Getenv("SEMMLE_CACHE")
-				if cacheDir != "" {
-					depCacheDir := filepath.Join(cacheDir, "go", "dep")
-					log.Printf("Attempting to create dep cache dir %s\n", depCacheDir)
-					err := os.MkdirAll(depCacheDir, 0755)
-					if err != nil {
-						log.Printf("Failed to create dep cache directory: %s\n", err.Error())
-					} else {
-						log.Printf("Setting dep cache directory to %s\n", depCacheDir)
-						err = os.Setenv("DEPCACHEDIR", depCacheDir)
-						if err != nil {
-							log.Println("Failed to set dep cache directory")
-						} else {
-							err = os.Setenv("DEPCACHEAGE", "720h") // 30 days
-							if err != nil {
-								log.Println("Failed to set dep cache age")
-							}
-						}
-					}
-				}
-
-				if util.FileExists("Gopkg.lock") {
-					// if Gopkg.lock exists, don't update it and only vendor dependencies
-					install = exec.Command("dep", "ensure", "-v", "-vendor-only")
-				} else {
-					install = exec.Command("dep", "ensure", "-v")
-				}
-				log.Println("Installing dependencies using `dep ensure`.")
-			} else if depMode == Glide {
-				install = exec.Command("glide", "install")
-				log.Println("Installing dependencies using `glide install`")
-			} else {
-				// explicitly set go module support
-				if depMode == GoGetWithModules {
-					os.Setenv("GO111MODULE", "on")
-				} else if depMode == GoGetNoModules {
-					os.Setenv("GO111MODULE", "off")
-				}
-
-				// get dependencies
-				install = exec.Command("go", "get", "-v", "./...")
-				log.Println("Installing dependencies using `go get -v ./...`.")
-			}
-			util.RunCmd(install)
+			installDependencies(depMode)
 		}
 	}
 
