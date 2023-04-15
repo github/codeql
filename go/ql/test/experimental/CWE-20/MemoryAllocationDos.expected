@@ -1,8 +1,16 @@
 edges
-| MemoryAllocationDosBad.go:11:24:11:29 | selection of Form | MemoryAllocationDosBad.go:12:19:12:19 | c |
+| MemoryAllocationDosBad.go:16:24:16:29 | selection of Form | MemoryAllocationDosBad.go:17:19:17:19 | c |
+| MemoryAllocationDosBad.go:19:24:19:29 | selection of Form | MemoryAllocationDosBad.go:23:19:23:19 | d |
+| MemoryAllocationDosBad.go:25:24:25:29 | selection of Form | MemoryAllocationDosBad.go:29:19:29:19 | e |
 nodes
-| MemoryAllocationDosBad.go:11:24:11:29 | selection of Form | semmle.label | selection of Form |
-| MemoryAllocationDosBad.go:12:19:12:19 | c | semmle.label | c |
+| MemoryAllocationDosBad.go:16:24:16:29 | selection of Form | semmle.label | selection of Form |
+| MemoryAllocationDosBad.go:17:19:17:19 | c | semmle.label | c |
+| MemoryAllocationDosBad.go:19:24:19:29 | selection of Form | semmle.label | selection of Form |
+| MemoryAllocationDosBad.go:23:19:23:19 | d | semmle.label | d |
+| MemoryAllocationDosBad.go:25:24:25:29 | selection of Form | semmle.label | selection of Form |
+| MemoryAllocationDosBad.go:29:19:29:19 | e | semmle.label | e |
 subpaths
 #select
-| MemoryAllocationDosBad.go:12:19:12:19 | c | MemoryAllocationDosBad.go:11:24:11:29 | selection of Form | MemoryAllocationDosBad.go:12:19:12:19 | c | Untrusted memory allocation size depends on a $@. | MemoryAllocationDosBad.go:11:24:11:29 | selection of Form | user-provided value |
+| MemoryAllocationDosBad.go:17:19:17:19 | c | MemoryAllocationDosBad.go:16:24:16:29 | selection of Form | MemoryAllocationDosBad.go:17:19:17:19 | c | Untrusted memory allocation size depends on a $@. | MemoryAllocationDosBad.go:16:24:16:29 | selection of Form | user-provided value |
+| MemoryAllocationDosBad.go:23:19:23:19 | d | MemoryAllocationDosBad.go:19:24:19:29 | selection of Form | MemoryAllocationDosBad.go:23:19:23:19 | d | Untrusted memory allocation size depends on a $@. | MemoryAllocationDosBad.go:19:24:19:29 | selection of Form | user-provided value |
+| MemoryAllocationDosBad.go:29:19:29:19 | e | MemoryAllocationDosBad.go:25:24:25:29 | selection of Form | MemoryAllocationDosBad.go:29:19:29:19 | e | Untrusted memory allocation size depends on a $@. | MemoryAllocationDosBad.go:25:24:25:29 | selection of Form | user-provided value |

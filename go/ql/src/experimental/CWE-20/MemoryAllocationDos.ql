@@ -18,11 +18,25 @@ abstract class Source extends DataFlow::Node { }
 abstract class Sanitizer extends DataFlow::Node { }
 
 private SsaWithFields getAComparedVar() {
-  result.getAUse() = any(DataFlow::RelationalComparisonNode n).getAnOperand()
+  exists(RelationalComparisonExpr e |
+    not e.getLesserOperand().isConst() or e.getLesserOperand().getIntValue() != 0
+  |
+    result.getAUse().asExpr() = e.getGreaterOperand()
+  )
 }
 
-class CompSanitizer2 extends Sanitizer {
-  CompSanitizer2() { this = getAComparedVar().similar().getAUse() }
+class CompSanitizer extends Sanitizer {
+  CompSanitizer() { this = getAComparedVar().similar().getAUse() }
+}
+
+class FieldReadSanitizer extends Sanitizer {
+  FieldReadSanitizer() {
+    exists(DataFlow::FieldReadNode f |
+      f.asExpr() = any(RelationalComparisonExpr e).getGreaterOperand()
+    |
+      this.asInstruction() = f.asInstruction().getASuccessor+()
+    )
+  }
 }
 
 string macaronContextPath() { result = package("gopkg.in/macaron", "") }

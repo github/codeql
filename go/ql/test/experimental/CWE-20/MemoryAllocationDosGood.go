@@ -5,6 +5,16 @@ import (
 	"strconv"
 )
 
+type testStruct struct {
+	PageSize int
+}
+
+
+func getInt(r *http.Request) int {
+	ret, _ := strconv.Atoi(r.Form.Get("count3"))
+	return ret
+}
+
 func serve_good() {
 	http.HandleFunc("/user", func(w http.ResponseWriter, r *http.Request) {
 
