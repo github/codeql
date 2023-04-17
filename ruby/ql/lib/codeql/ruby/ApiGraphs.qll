@@ -359,6 +359,11 @@ module API {
     Location getLocation() {
       result = this.getInducingNode().getLocation()
       or
+      exists(DataFlow::ModuleNode mod |
+        this = Impl::MkModuleObject(mod) and
+        result = mod.getLocation()
+      )
+      or
       // For nodes that do not have a meaningful location, `path` is the empty string and all other
       // parameters are zero.
       not exists(this.getInducingNode()) and
