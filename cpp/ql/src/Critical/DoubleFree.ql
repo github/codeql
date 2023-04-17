@@ -1,6 +1,6 @@
 /**
  * @name Potential double free
- * @description An allocated memory block is free multiple times. Behavior in such cases is undefined and can cause memory corruption.
+ * @description Freeing a resource more than once can lead to undefined behavior and cause memory corruption.
  * @kind path-problem
  * @precision medium
  * @id cpp/double-free
