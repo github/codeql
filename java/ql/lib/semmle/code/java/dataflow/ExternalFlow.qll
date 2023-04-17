@@ -84,6 +84,7 @@ private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
 private import ExternalFlowExtensions as Extensions
+private import ExternalFlowConfiguration as ConfiguredExtensions
 private import FlowSummary
 
 /**
@@ -135,10 +136,13 @@ predicate sourceModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
   string output, string kind, string provenance
 ) {
-  Extensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
-  or
-  any(ActiveExperimentalModels q)
-      .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
+  ConfiguredExtensions::supportedSourceModel(kind) and
+  (
+    Extensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
+    or
+    any(ActiveExperimentalModels q)
+        .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
+  )
 }
 
 /** Holds if a sink model exists for the given parameters. */
