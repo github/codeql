@@ -86,8 +86,6 @@ module EntityFramework {
   abstract class EFSummarizedCallable extends SummarizedCallable {
     bindingset[this]
     EFSummarizedCallable() { any() }
-
-    override predicate hasProvenance(string provenance) { provenance = "manual" }
   }
 
   private class DbSetAddOrUpdateRequiredSummaryComponentStack extends RequiredSummaryComponentStack {

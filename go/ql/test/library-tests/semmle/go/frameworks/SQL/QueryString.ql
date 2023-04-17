@@ -32,3 +32,31 @@ class QueryString extends InlineExpectationsTest {
     )
   }
 }
+
+class Config extends TaintTracking::Configuration {
+  Config() { this = "pg-orm config" }
+
+  override predicate isSource(DataFlow::Node n) { n.asExpr() instanceof StringLit }
+
+  override predicate isSink(DataFlow::Node n) {
+    n = any(DataFlow::CallNode cn | cn.getTarget().getName() = "sink").getAnArgument()
+  }
+}
+
+class TaintFlow extends InlineExpectationsTest {
+  TaintFlow() { this = "pg-orm flow" }
+
+  override string getARelevantTag() { result = "flowfrom" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    tag = "flowfrom" and
+    element = "" and
+    exists(Config c, DataFlow::Node fromNode, DataFlow::Node toNode |
+      toNode
+          .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+            location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      c.hasFlow(fromNode, toNode) and
+      value = fromNode.asExpr().(StringLit).getValue()
+    )
+  }
+}

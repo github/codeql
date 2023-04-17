@@ -9,11 +9,18 @@ edges
 | new-tests.go:26:26:26:30 | &... | new-tests.go:35:12:35:58 | call to Sprintf |
 | new-tests.go:39:18:39:30 | call to Param | new-tests.go:47:11:47:46 | ...+... |
 | new-tests.go:49:18:49:30 | call to Query | new-tests.go:50:11:50:46 | ...+... |
-| new-tests.go:62:31:62:38 | selection of Body | new-tests.go:68:11:68:57 | call to Sprintf |
-| new-tests.go:62:31:62:38 | selection of Body | new-tests.go:69:11:69:57 | call to Sprintf |
-| new-tests.go:62:31:62:38 | selection of Body | new-tests.go:74:12:74:58 | call to Sprintf |
-| new-tests.go:78:18:78:24 | selection of URL | new-tests.go:79:11:79:46 | ...+... |
-| new-tests.go:81:37:81:43 | selection of URL | new-tests.go:82:11:82:46 | ...+... |
+| new-tests.go:62:2:62:39 | ... := ...[0] | new-tests.go:63:17:63:23 | reqBody |
+| new-tests.go:62:31:62:38 | selection of Body | new-tests.go:62:2:62:39 | ... := ...[0] |
+| new-tests.go:63:17:63:23 | reqBody | new-tests.go:63:26:63:30 | &... |
+| new-tests.go:63:26:63:30 | &... | new-tests.go:68:11:68:57 | call to Sprintf |
+| new-tests.go:63:26:63:30 | &... | new-tests.go:69:11:69:57 | call to Sprintf |
+| new-tests.go:63:26:63:30 | &... | new-tests.go:74:12:74:58 | call to Sprintf |
+| new-tests.go:78:18:78:24 | selection of URL | new-tests.go:78:18:78:32 | call to Query |
+| new-tests.go:78:18:78:32 | call to Query | new-tests.go:78:18:78:46 | call to Get |
+| new-tests.go:78:18:78:46 | call to Get | new-tests.go:79:11:79:46 | ...+... |
+| new-tests.go:81:18:81:67 | call to TrimPrefix | new-tests.go:82:11:82:46 | ...+... |
+| new-tests.go:81:37:81:43 | selection of URL | new-tests.go:81:37:81:48 | selection of Path |
+| new-tests.go:81:37:81:48 | selection of Path | new-tests.go:81:18:81:67 | call to TrimPrefix |
 | new-tests.go:86:10:86:20 | call to Vars | new-tests.go:88:11:88:46 | ...+... |
 | new-tests.go:95:18:95:45 | call to URLParam | new-tests.go:96:11:96:46 | ...+... |
 nodes
@@ -35,13 +42,20 @@ nodes
 | new-tests.go:47:11:47:46 | ...+... | semmle.label | ...+... |
 | new-tests.go:49:18:49:30 | call to Query | semmle.label | call to Query |
 | new-tests.go:50:11:50:46 | ...+... | semmle.label | ...+... |
+| new-tests.go:62:2:62:39 | ... := ...[0] | semmle.label | ... := ...[0] |
 | new-tests.go:62:31:62:38 | selection of Body | semmle.label | selection of Body |
+| new-tests.go:63:17:63:23 | reqBody | semmle.label | reqBody |
+| new-tests.go:63:26:63:30 | &... | semmle.label | &... |
 | new-tests.go:68:11:68:57 | call to Sprintf | semmle.label | call to Sprintf |
 | new-tests.go:69:11:69:57 | call to Sprintf | semmle.label | call to Sprintf |
 | new-tests.go:74:12:74:58 | call to Sprintf | semmle.label | call to Sprintf |
 | new-tests.go:78:18:78:24 | selection of URL | semmle.label | selection of URL |
+| new-tests.go:78:18:78:32 | call to Query | semmle.label | call to Query |
+| new-tests.go:78:18:78:46 | call to Get | semmle.label | call to Get |
 | new-tests.go:79:11:79:46 | ...+... | semmle.label | ...+... |
+| new-tests.go:81:18:81:67 | call to TrimPrefix | semmle.label | call to TrimPrefix |
 | new-tests.go:81:37:81:43 | selection of URL | semmle.label | selection of URL |
+| new-tests.go:81:37:81:48 | selection of Path | semmle.label | selection of Path |
 | new-tests.go:82:11:82:46 | ...+... | semmle.label | ...+... |
 | new-tests.go:86:10:86:20 | call to Vars | semmle.label | call to Vars |
 | new-tests.go:88:11:88:46 | ...+... | semmle.label | ...+... |

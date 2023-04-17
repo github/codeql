@@ -1,0 +1,24 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["net/textproto", "", False, "CanonicalMIMEHeaderKey", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["net/textproto", "", False, "NewConn", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["net/textproto", "", False, "NewReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["net/textproto", "", False, "TrimBytes", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["net/textproto", "", False, "TrimString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["net/textproto", "MIMEHeader", True, "Add", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
+      - ["net/textproto", "MIMEHeader", True, "Get", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["net/textproto", "MIMEHeader", True, "Set", "", "", "Argument[0..1]", "Argument[-1]", "taint", "manual"]
+      - ["net/textproto", "MIMEHeader", True, "Values", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["net/textproto", "Reader", True, "DotReader", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["net/textproto", "Reader", True, "ReadCodeLine", "", "", "Argument[-1]", "ReturnValue[1]", "taint", "manual"]
+      - ["net/textproto", "Reader", True, "ReadContinuedLine", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/textproto", "Reader", True, "ReadContinuedLineBytes", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/textproto", "Reader", True, "ReadDotBytes", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/textproto", "Reader", True, "ReadDotLines", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/textproto", "Reader", True, "ReadLine", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/textproto", "Reader", True, "ReadLineBytes", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/textproto", "Reader", True, "ReadMIMEHeader", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["net/textproto", "Reader", True, "ReadResponse", "", "", "Argument[-1]", "ReturnValue[1]", "taint", "manual"]

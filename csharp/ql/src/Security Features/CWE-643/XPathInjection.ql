@@ -13,9 +13,9 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.XPathInjectionQuery
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import XpathInjection::PathGraph
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from XpathInjection::PathNode source, XpathInjection::PathNode sink
+where XpathInjection::flowPath(source, sink)
 select sink.getNode(), source, sink, "This XPath expression depends on a $@.", source.getNode(),
   "user-provided value"

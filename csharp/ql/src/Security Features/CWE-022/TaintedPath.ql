@@ -16,9 +16,9 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.TaintedPathQuery
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import TaintedPath::PathGraph
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from TaintedPath::PathNode source, TaintedPath::PathNode sink
+where TaintedPath::flowPath(source, sink)
 select sink.getNode(), source, sink, "This path depends on a $@.", source.getNode(),
   "user-provided value"

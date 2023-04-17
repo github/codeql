@@ -40,18 +40,16 @@ class PortletRenderRequestMethod extends Method {
  * A taint-tracking configuration for unsafe user input
  * that can lead to Spring View Manipulation vulnerabilities.
  */
-class SpringViewManipulationConfig extends TaintTracking::Configuration {
-  SpringViewManipulationConfig() { this = "Spring View Manipulation Config" }
-
-  override predicate isSource(DataFlow::Node source) {
+module SpringViewManipulationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource or
     source instanceof WebRequestSource or
     source.asExpr().(MethodAccess).getMethod() instanceof PortletRenderRequestMethod
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SpringViewManipulationSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof SpringViewManipulationSink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     // Block flows like
     // ```
     // a = "redirect:" + taint`
@@ -87,6 +85,8 @@ class SpringViewManipulationConfig extends TaintTracking::Configuration {
     )
   }
 }
+
+module SpringViewManipulationFlow = TaintTracking::Global<SpringViewManipulationConfig>;
 
 private Call getAStringCombiningCall() {
   exists(StringCombiningMethod m | result = m.getAReference())
