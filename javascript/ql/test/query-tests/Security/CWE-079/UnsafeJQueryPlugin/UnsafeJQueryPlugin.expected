@@ -127,13 +127,6 @@ nodes
 | unsafe-jquery-plugin.js:186:21:186:30 | options.of |
 | unsafe-jquery-plugin.js:192:19:192:28 | options.of |
 | unsafe-jquery-plugin.js:192:19:192:28 | options.of |
-| unsafe-jquery-plugin.js:196:33:196:39 | options |
-| unsafe-jquery-plugin.js:196:33:196:39 | options |
-| unsafe-jquery-plugin.js:197:3:203:3 | $.exten ... ns,\\n\\t\\t) |
-| unsafe-jquery-plugin.js:197:12:201:4 | {\\n\\t\\t\\t\\tf ... \\t}\\n\\t\\t\\t} |
-| unsafe-jquery-plugin.js:199:8:199:11 | this |
-| unsafe-jquery-plugin.js:199:8:199:11 | this |
-| unsafe-jquery-plugin.js:202:4:202:10 | options |
 edges
 | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:3:5:3:11 | options |
 | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:3:5:3:11 | options |
@@ -263,15 +256,6 @@ edges
 | unsafe-jquery-plugin.js:186:21:186:27 | options | unsafe-jquery-plugin.js:186:21:186:30 | options.of |
 | unsafe-jquery-plugin.js:186:21:186:30 | options.of | unsafe-jquery-plugin.js:192:19:192:28 | options.of |
 | unsafe-jquery-plugin.js:186:21:186:30 | options.of | unsafe-jquery-plugin.js:192:19:192:28 | options.of |
-| unsafe-jquery-plugin.js:196:33:196:39 | options | unsafe-jquery-plugin.js:202:4:202:10 | options |
-| unsafe-jquery-plugin.js:196:33:196:39 | options | unsafe-jquery-plugin.js:202:4:202:10 | options |
-| unsafe-jquery-plugin.js:197:3:203:3 | $.exten ... ns,\\n\\t\\t) | unsafe-jquery-plugin.js:199:8:199:11 | this |
-| unsafe-jquery-plugin.js:197:3:203:3 | $.exten ... ns,\\n\\t\\t) | unsafe-jquery-plugin.js:199:8:199:11 | this |
-| unsafe-jquery-plugin.js:197:12:201:4 | {\\n\\t\\t\\t\\tf ... \\t}\\n\\t\\t\\t} | unsafe-jquery-plugin.js:197:3:203:3 | $.exten ... ns,\\n\\t\\t) |
-| unsafe-jquery-plugin.js:197:12:201:4 | {\\n\\t\\t\\t\\tf ... \\t}\\n\\t\\t\\t} | unsafe-jquery-plugin.js:199:8:199:11 | this |
-| unsafe-jquery-plugin.js:197:12:201:4 | {\\n\\t\\t\\t\\tf ... \\t}\\n\\t\\t\\t} | unsafe-jquery-plugin.js:199:8:199:11 | this |
-| unsafe-jquery-plugin.js:202:4:202:10 | options | unsafe-jquery-plugin.js:197:3:203:3 | $.exten ... ns,\\n\\t\\t) |
-| unsafe-jquery-plugin.js:202:4:202:10 | options | unsafe-jquery-plugin.js:197:12:201:4 | {\\n\\t\\t\\t\\tf ... \\t}\\n\\t\\t\\t} |
 #select
 | unsafe-jquery-plugin.js:3:5:3:11 | options | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:3:5:3:11 | options | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
 | unsafe-jquery-plugin.js:5:5:5:18 | options.target | unsafe-jquery-plugin.js:2:38:2:44 | options | unsafe-jquery-plugin.js:5:5:5:18 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:2:19:63:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
@@ -296,4 +280,3 @@ edges
 | unsafe-jquery-plugin.js:170:6:170:11 | target | unsafe-jquery-plugin.js:160:38:160:44 | options | unsafe-jquery-plugin.js:170:6:170:11 | target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:160:19:173:2 | functio ... \\t\\t}\\n\\n\\t} | '$.fn.my_plugin' plugin |
 | unsafe-jquery-plugin.js:179:5:179:18 | options.target | unsafe-jquery-plugin.js:178:27:178:33 | options | unsafe-jquery-plugin.js:179:5:179:18 | options.target | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:178:18:180:2 | functio ... T OK\\n\\t} | '$.fn.my_plugin' plugin |
 | unsafe-jquery-plugin.js:192:19:192:28 | options.of | unsafe-jquery-plugin.js:185:28:185:34 | options | unsafe-jquery-plugin.js:192:19:192:28 | options.of | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:185:18:194:2 | functio ... et);\\n\\t} | '$.fn.position' plugin |
-| unsafe-jquery-plugin.js:199:8:199:11 | this | unsafe-jquery-plugin.js:196:33:196:39 | options | unsafe-jquery-plugin.js:199:8:199:11 | this | Potential XSS vulnerability in the $@. | unsafe-jquery-plugin.js:196:23:204:2 | functio ... \\t\\t);\\n\\t} | '$.fn.blockReceiver' plugin |

@@ -1,1 +1,0 @@
-| query-tests/Security/CWE-079/UnsafeJQueryPlugin/unsafe-jquery-plugin.js:199 | did not expect an alert, but found an alert for UnsafeJQueryPlugin | OK |  |
