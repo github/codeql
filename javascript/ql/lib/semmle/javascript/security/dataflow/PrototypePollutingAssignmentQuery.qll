@@ -62,7 +62,11 @@ class Configuration extends TaintTracking::Configuration {
     // step because it preserves all properties, but the destination is not actually Object.prototype.
     exists(ExtendCall call |
       pred = call.getASourceOperand() and
-      succ = call.getDestinationOperand().getALocalSource() and
+      (
+        succ = call.getDestinationOperand().getALocalSource()
+        or
+        succ = call
+      ) and
       lbl instanceof ObjectPrototype
     )
   }
