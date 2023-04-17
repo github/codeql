@@ -1071,8 +1071,8 @@ module Impl<FullStateConfigSig Config> {
 
       Typ getTyp(DataFlowType t);
 
-      bindingset[tc, tail]
-      Ap apCons(TypedContent tc, Ap tail);
+      bindingset[tc, t, tail]
+      Ap apCons(TypedContent tc, Typ t, Ap tail);
 
       /**
        * An approximation of `Content` that corresponds to the precision level of
@@ -1263,7 +1263,7 @@ module Impl<FullStateConfigSig Config> {
         // store
         exists(TypedContent tc, Typ t0, Ap ap0 |
           fwdFlowStore(_, t0, ap0, tc, t, node, state, cc, summaryCtx, argAp) and
-          ap = apCons(tc, ap0) and
+          ap = apCons(tc, t0, ap0) and
           apa = getApprox(ap)
         )
         or
@@ -1330,7 +1330,7 @@ module Impl<FullStateConfigSig Config> {
         exists(TypedContent tc |
           fwdFlowStore(_, t1, tail, tc, t2, _, _, _, _, _) and
           tc.getContent() = c and
-          cons = apCons(tc, tail)
+          cons = apCons(tc, t1, tail)
         )
       }
 
@@ -1423,9 +1423,9 @@ module Impl<FullStateConfigSig Config> {
       }
 
       pragma[nomagic]
-      private predicate storeStepFwd(NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, Ap ap2) {
-        fwdFlowStore(node1, _, ap1, tc, _, node2, _, _, _, _) and
-        ap2 = apCons(tc, ap1) and
+      private predicate storeStepFwd(NodeEx node1, Typ t1, Ap ap1, TypedContent tc, NodeEx node2, Ap ap2) {
+        fwdFlowStore(node1, t1, ap1, tc, _, node2, _, _, _, _) and
+        ap2 = apCons(tc, t1, ap1) and
         readStepFwd(_, ap2, tc.getContent(), _, _)
       }
 
@@ -1563,7 +1563,7 @@ module Impl<FullStateConfigSig Config> {
         or
         // store
         exists(Ap ap0, Content c |
-          revFlowStore(ap0, c, ap, node, state, _, _, returnCtx, returnAp) and
+          revFlowStore(ap0, c, ap, _, node, state, _, _, returnCtx, returnAp) and
           revFlowConsCand(ap0, c, ap)
         )
         or
@@ -1602,11 +1602,11 @@ module Impl<FullStateConfigSig Config> {
 
       pragma[nomagic]
       private predicate revFlowStore(
-        Ap ap0, Content c, Ap ap, NodeEx node, FlowState state, TypedContent tc, NodeEx mid,
+        Ap ap0, Content c, Ap ap, Typ t, NodeEx node, FlowState state, TypedContent tc, NodeEx mid,
         ReturnCtx returnCtx, ApOption returnAp
       ) {
         revFlow(mid, state, returnCtx, returnAp, ap0) and
-        storeStepFwd(node, ap, tc, mid, ap0) and
+        storeStepFwd(node, t, ap, tc, mid, ap0) and
         tc.getContent() = c
       }
 
@@ -1676,7 +1676,7 @@ module Impl<FullStateConfigSig Config> {
       ) {
         exists(Ap ap2 |
           PrevStage::storeStepCand(node1, _, tc, c, node2, contentType, containerType) and
-          revFlowStore(ap2, c, ap1, node1, _, tc, node2, _, _) and
+          revFlowStore(ap2, c, ap1, _, node1, _, tc, node2, _, _) and
           revFlowConsCand(ap2, c, ap1)
         )
       }
@@ -1685,7 +1685,7 @@ module Impl<FullStateConfigSig Config> {
         exists(Ap ap1, Ap ap2 |
           revFlow(node2, _, _, _, pragma[only_bind_into](ap2)) and
           readStepFwd(node1, ap1, c, node2, ap2) and
-          revFlowStore(ap1, c, pragma[only_bind_into](ap2), _, _, _, _, _, _)
+          revFlowStore(ap1, c, pragma[only_bind_into](ap2), _, _, _, _, _, _, _)
         )
       }
 
@@ -1699,21 +1699,26 @@ module Impl<FullStateConfigSig Config> {
       pragma[nomagic]
       predicate revFlowAp(NodeEx node, Ap ap) { revFlow(node, _, _, _, ap) }
 
-      private predicate fwdConsCand(TypedContent tc, Ap ap) { storeStepFwd(_, ap, tc, _, _) }
+      private predicate fwdConsCand(TypedContent tc, Typ t, Ap ap) { storeStepFwd(_, t, ap, tc, _, _) }
 
-      private predicate revConsCand(TypedContent tc, Ap ap) { storeStepCand(_, ap, tc, _, _, _, _) }
+      private predicate revConsCand(TypedContent tc, Typ t, Ap ap) {
+        exists(Ap ap2, Content c |
+          revFlowStore(ap2, c, ap, t, _, _, tc, _, _, _) and
+          revFlowConsCand(ap2, c, ap)
+        )
+      }
 
       private predicate validAp(Ap ap) {
         revFlow(_, _, _, _, ap) and ap instanceof ApNil
         or
-        exists(TypedContent head, Ap tail |
-          consCand(head, tail) and
-          ap = apCons(head, tail)
+        exists(TypedContent head, Typ t, Ap tail |
+          consCand(head, t, tail) and
+          ap = apCons(head, t, tail)
         )
       }
 
-      additional predicate consCand(TypedContent tc, Ap ap) {
-        revConsCand(tc, ap) and
+      additional predicate consCand(TypedContent tc, Typ t, Ap ap) {
+        revConsCand(tc, t, ap) and
         validAp(ap)
       }
 
@@ -1766,8 +1771,8 @@ module Impl<FullStateConfigSig Config> {
       ) {
         fwd = true and
         nodes = count(NodeEx node | fwdFlow(node, _, _, _, _, _, _)) and
-        fields = count(TypedContent f0 | fwdConsCand(f0, _)) and
-        conscand = count(TypedContent f0, Ap ap | fwdConsCand(f0, ap)) and
+        fields = count(TypedContent f0 | fwdConsCand(f0, _, _)) and
+        conscand = count(TypedContent f0, Typ t, Ap ap | fwdConsCand(f0, t, ap)) and
         states = count(FlowState state | fwdFlow(_, state, _, _, _, _, _)) and
         tuples =
           count(NodeEx n, FlowState state, Cc cc, ParamNodeOption summaryCtx, ApOption argAp, Typ t, Ap ap |
@@ -1776,8 +1781,8 @@ module Impl<FullStateConfigSig Config> {
         or
         fwd = false and
         nodes = count(NodeEx node | revFlow(node, _, _, _, _)) and
-        fields = count(TypedContent f0 | consCand(f0, _)) and
-        conscand = count(TypedContent f0, Ap ap | consCand(f0, ap)) and
+        fields = count(TypedContent f0 | consCand(f0, _, _)) and
+        conscand = count(TypedContent f0, Typ t, Ap ap | consCand(f0, t, ap)) and
         states = count(FlowState state | revFlow(_, state, _, _, _)) and
         tuples =
           count(NodeEx n, FlowState state, ReturnCtx returnCtx, ApOption retAp, Ap ap |
@@ -1895,8 +1900,8 @@ module Impl<FullStateConfigSig Config> {
 
     Typ getTyp(DataFlowType t) { any() }
 
-    bindingset[tc, tail]
-    Ap apCons(TypedContent tc, Ap tail) { result = true and exists(tc) and exists(tail) }
+    bindingset[tc, t, tail]
+    Ap apCons(TypedContent tc, Typ t, Ap tail) { result = true and exists(tc) and exists(t) and exists(tail) }
 
     class ApHeadContent = Unit;
 
@@ -2165,8 +2170,8 @@ module Impl<FullStateConfigSig Config> {
 
     Typ getTyp(DataFlowType t) { result = t }
 
-    bindingset[tc, tail]
-    Ap apCons(TypedContent tc, Ap tail) { result.getAHead() = tc and exists(tail) }
+    bindingset[tc, t, tail]
+    Ap apCons(TypedContent tc, Typ t, Ap tail) { result.getAHead() = tc and exists(t) and exists(tail) }
 
     class ApHeadContent = ContentApprox;
 
@@ -2249,8 +2254,8 @@ module Impl<FullStateConfigSig Config> {
 
     Typ getTyp(DataFlowType t) { result = t }
 
-    bindingset[tc, tail]
-    Ap apCons(TypedContent tc, Ap tail) { result.getHead() = tc and exists(tail) }
+    bindingset[tc, t, tail]
+    Ap apCons(TypedContent tc, Typ t, Ap tail) { result.getHead() = tc and exists(t) and exists(tail) }
 
     class ApHeadContent = Content;
 
@@ -2373,7 +2378,7 @@ module Impl<FullStateConfigSig Config> {
    */
   private predicate expensiveLen2unfolding(TypedContent tc) {
     exists(int tails, int nodes, int apLimit, int tupleLimit |
-      tails = strictcount(AccessPathFront apf | Stage4::consCand(tc, apf)) and
+      tails = strictcount(DataFlowType t, AccessPathFront apf | Stage4::consCand(tc, t, apf)) and
       nodes =
         strictcount(NodeEx n, FlowState state |
           Stage4::revFlow(n, state, any(AccessPathFrontHead apf | apf.getHead() = tc))
@@ -2390,11 +2395,11 @@ module Impl<FullStateConfigSig Config> {
   private newtype TAccessPathApprox =
     TNil(DataFlowType t) or
     TConsNil(TypedContent tc, DataFlowType t) {
-      Stage4::consCand(tc, TFrontNil(t)) and
+      Stage4::consCand(tc, t, TFrontNil(t)) and
       not expensiveLen2unfolding(tc)
     } or
     TConsCons(TypedContent tc1, TypedContent tc2, int len) {
-      Stage4::consCand(tc1, TFrontHead(tc2)) and
+      Stage4::consCand(tc1, _, TFrontHead(tc2)) and
       len in [2 .. accessPathLimit()] and
       not expensiveLen2unfolding(tc1)
     } or
@@ -2421,8 +2426,8 @@ module Impl<FullStateConfigSig Config> {
 
     abstract AccessPathFront getFront();
 
-    /** Gets the access path obtained by popping `head` from this path, if any. */
-    abstract AccessPathApprox pop(TypedContent head);
+    /** Holds if this is a representation of `head` followed by the `typ,tail` pair. */
+    abstract predicate isCons(TypedContent head, DataFlowType typ, AccessPathApprox tail);
   }
 
   private class AccessPathApproxNil extends AccessPathApprox, TNil {
@@ -2440,7 +2445,7 @@ module Impl<FullStateConfigSig Config> {
 
     override AccessPathFront getFront() { result = TFrontNil(t) }
 
-    override AccessPathApprox pop(TypedContent head) { none() }
+    override predicate isCons(TypedContent head, DataFlowType typ, AccessPathApprox tail) { none() }
   }
 
   abstract private class AccessPathApproxCons extends AccessPathApprox { }
@@ -2464,7 +2469,7 @@ module Impl<FullStateConfigSig Config> {
 
     override AccessPathFront getFront() { result = TFrontHead(tc) }
 
-    override AccessPathApprox pop(TypedContent head) { head = tc and result = TNil(t) }
+    override predicate isCons(TypedContent head, DataFlowType typ, AccessPathApprox tail) { head = tc and typ = t and tail = TNil(t) }
   }
 
   private class AccessPathApproxConsCons extends AccessPathApproxCons, TConsCons {
@@ -2488,15 +2493,16 @@ module Impl<FullStateConfigSig Config> {
 
     override AccessPathFront getFront() { result = TFrontHead(tc1) }
 
-    override AccessPathApprox pop(TypedContent head) {
+    override predicate isCons(TypedContent head, DataFlowType typ, AccessPathApprox tail) {
       head = tc1 and
+      typ = tc2.getContainerType() and
       (
-        result = TConsCons(tc2, _, len - 1)
+        tail = TConsCons(tc2, _, len - 1)
         or
         len = 2 and
-        result = TConsNil(tc2, _)
+        tail = TConsNil(tc2, _)
         or
-        result = TCons1(tc2, len - 1)
+        tail = TCons1(tc2, len - 1)
       )
     }
   }
@@ -2521,32 +2527,30 @@ module Impl<FullStateConfigSig Config> {
 
     override AccessPathFront getFront() { result = TFrontHead(tc) }
 
-    override AccessPathApprox pop(TypedContent head) {
+    override predicate isCons(TypedContent head, DataFlowType typ, AccessPathApprox tail) {
       head = tc and
       (
-        exists(TypedContent tc2 | Stage4::consCand(tc, TFrontHead(tc2)) |
-          result = TConsCons(tc2, _, len - 1)
+        exists(TypedContent tc2 | Stage4::consCand(tc, typ, TFrontHead(tc2)) |
+          tail = TConsCons(tc2, _, len - 1)
           or
           len = 2 and
-          result = TConsNil(tc2, _)
+          tail = TConsNil(tc2, _)
           or
-          result = TCons1(tc2, len - 1)
+          tail = TCons1(tc2, len - 1)
         )
         or
         exists(DataFlowType t |
           len = 1 and
-          Stage4::consCand(tc, TFrontNil(t)) and
-          result = TNil(t)
+          Stage4::consCand(tc, t, TFrontNil(t)) and
+          typ = t and
+          tail = TNil(t)
         )
       )
     }
   }
 
-  /** Gets the access path obtained by popping `tc` from `ap`, if any. */
-  private AccessPathApprox pop(TypedContent tc, AccessPathApprox apa) { result = apa.pop(tc) }
-
-  /** Gets the access path obtained by pushing `tc` onto `ap`. */
-  private AccessPathApprox push(TypedContent tc, AccessPathApprox apa) { apa = pop(tc, result) }
+  /** Gets the access path obtained by pushing `tc` onto the `t,apa` pair. */
+  private AccessPathApprox push(TypedContent tc, DataFlowType t, AccessPathApprox apa) { result.isCons(tc, t, apa) }
 
   private newtype TAccessPathApproxOption =
     TAccessPathApproxNone() or
@@ -2578,8 +2582,8 @@ module Impl<FullStateConfigSig Config> {
 
     Typ getTyp(DataFlowType t) { result = t }
 
-    bindingset[tc, tail]
-    Ap apCons(TypedContent tc, Ap tail) { result = push(tc, tail) }
+    bindingset[tc, t, tail]
+    Ap apCons(TypedContent tc, Typ t, Ap tail) { result = push(tc, t, tail) }
 
     class ApHeadContent = Content;
 
@@ -2710,8 +2714,8 @@ module Impl<FullStateConfigSig Config> {
       tc = apa.getHead() and
       len = apa.len() and
       result =
-        strictcount(AccessPathFront apf |
-          Stage5::consCand(tc, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
+        strictcount(DataFlowType t, AccessPathFront apf |
+          Stage5::consCand(tc, t, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
         )
     )
   }
@@ -2738,9 +2742,9 @@ module Impl<FullStateConfigSig Config> {
   }
 
   private AccessPathApprox getATail(AccessPathApprox apa) {
-    exists(TypedContent head |
-      apa.pop(head) = result and
-      Stage5::consCand(head, result)
+    exists(TypedContent head, DataFlowType t |
+      apa.isCons(head, t, result) and
+      Stage5::consCand(head, t, result)
     )
   }
 
@@ -2962,7 +2966,7 @@ module Impl<FullStateConfigSig Config> {
     override TypedContent getHead() { result = head1 }
 
     override AccessPath getTail() {
-      Stage5::consCand(head1, result.getApprox()) and
+      Stage5::consCand(head1, head2.getContainerType(), result.getApprox()) and
       result.getHead() = head2 and
       result.length() = len - 1
     }
@@ -2994,7 +2998,7 @@ module Impl<FullStateConfigSig Config> {
     override TypedContent getHead() { result = head }
 
     override AccessPath getTail() {
-      Stage5::consCand(head, result.getApprox()) and result.length() = len - 1
+      Stage5::consCand(head, _, result.getApprox()) and result.length() = len - 1
     }
 
     override AccessPathFrontHead getFront() { result = TFrontHead(head) }
