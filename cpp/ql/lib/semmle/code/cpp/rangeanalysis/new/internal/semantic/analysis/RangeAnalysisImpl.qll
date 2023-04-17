@@ -48,10 +48,12 @@ module RelativeBounds implements BoundSig<FloatDelta> {
 }
 
 module ConstantStage =
-  RangeStage<FloatDelta, ConstantBounds, FloatOverflow, CppLangImplConstant, RangeUtil<FloatDelta, CppLangImplConstant>>;
+  RangeStage<FloatDelta, ConstantBounds, FloatOverflow, CppLangImplConstant,
+    RangeUtil<FloatDelta, CppLangImplConstant>>;
 
 module RelativeStage =
-  RangeStage<FloatDelta, RelativeBounds, FloatOverflow, CppLangImplRelative, RangeUtil<FloatDelta, CppLangImplRelative>>;
+  RangeStage<FloatDelta, RelativeBounds, FloatOverflow, CppLangImplRelative,
+    RangeUtil<FloatDelta, CppLangImplRelative>>;
 
 private newtype TSemReason =
   TSemNoReason() or
