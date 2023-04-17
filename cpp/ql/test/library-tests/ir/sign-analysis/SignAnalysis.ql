@@ -8,7 +8,8 @@ import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR as IR
 import TestUtilities.InlineExpectationsTest
 
-module SignAnalysisInstantiated = SignAnalysis<FloatDelta, RangeUtil<FloatDelta, CppLangImplRelative>>;
+module SignAnalysisInstantiated =
+  SignAnalysis<FloatDelta, RangeUtil<FloatDelta, CppLangImplRelative>>;
 
 class SignAnalysisTest extends InlineExpectationsTest {
   SignAnalysisTest() { this = "SignAnalysisTest" }
