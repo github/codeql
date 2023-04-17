@@ -8,7 +8,7 @@
 <p>
 Deallocating memory more than once can lead to a double-free vulnerability. This can be exploited to
 corrupt the allocator's internal data structures, which can lead to denial-of-service attacks by crashing
-the program, or to security vulnerabilities by allowing an attacker to overwrite arbitrary memory locations.
+the program, or security vulnerabilities, by allowing an attacker to overwrite arbitrary memory locations.
 </p>
 
 </overview>
