@@ -27,10 +27,8 @@ private J::Method superImpl(J::Method m) {
 }
 
 private predicate isInTestFile(J::File file) {
-  file.getAbsolutePath().matches("%src/test/%") or
-  file.getAbsolutePath().matches("%/guava-tests/%") or
-  file.getAbsolutePath().matches("%/guava-testlib/%") or
-  file.getAbsolutePath().matches("%/groovy-stubs/test/%")
+  file.getAbsolutePath()
+      .matches(["%src/test/%", "%/guava-tests/%", "%/guava-testlib/%", "%/groovy-stubs/test/%"])
 }
 
 private predicate isJdkInternal(J::CompilationUnit cu) {
