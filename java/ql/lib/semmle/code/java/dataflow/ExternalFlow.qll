@@ -136,13 +136,12 @@ predicate sourceModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
   string output, string kind, string provenance
 ) {
-  ConfiguredExtensions::supportedSourceModel(kind) and
-  (
+  exists(string relatedKind | relatedKind = ConfiguredExtensions::getSourceModelKinds(kind) |
     Extensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
-    or
-    any(ActiveExperimentalModels q)
-        .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
   )
+  or
+  any(ActiveExperimentalModels q)
+      .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
 }
 
 /** Holds if a sink model exists for the given parameters. */

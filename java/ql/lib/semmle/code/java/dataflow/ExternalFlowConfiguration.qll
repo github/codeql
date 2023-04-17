@@ -28,17 +28,24 @@ private string childThreatModel(string group) {
 }
 
 /**
- * Holds if source models of the specified kind are
- * supported for the current query.
+ * Gets all kinds of threat models.
+ */
+private string getAllKinds() { sourceModel(_, _, _, _, _, _, _, result, _) }
+
+/**
+ * Gets the related source model kinds under the current threat model.
  */
 bindingset[kind]
-predicate supportedSourceModel(string kind) {
-  // expansive threat model includes all kinds
-  supportedThreatModel("expansive")
+string getSourceModelKinds(string kind) {
+  supportedThreatModel("standard") and
+  result = kind
   or
-  // check if this kind is supported directly
-  supportedThreatModel(kind)
+  // expansive threat model includes all kinds.
+  supportedThreatModel("expansive") and
+  result = getAllKinds()
   or
   // check if one of this kind's ancestors are supported
-  exists(string group | group = parentThreatModel(kind) | supportedThreatModel(group))
+  exists(string group | group = parentThreatModel(kind) |
+    supportedThreatModel(group) and result = childThreatModel(group)
+  )
 }
