@@ -1,0 +1,2 @@
+| query-tests/Security/CWE-915/PrototypePollutingAssignment/tst.js:120 | did not expect an alert, but found an alert for PrototypePollutingAssignment | OK - 'object' is not Object.prototype itself (but possibly a copy) | PrototypePollutingAssignment |
+| query-tests/Security/CWE-915/PrototypePollutingAssignment/tst.js:124 | did not expect an alert, but found an alert for PrototypePollutingAssignment | OK - 'dest' is not Object.prototype itself (but possibly a copy) | PrototypePollutingAssignment |

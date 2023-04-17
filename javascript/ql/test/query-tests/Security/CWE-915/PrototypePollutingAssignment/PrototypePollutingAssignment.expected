@@ -190,6 +190,26 @@ nodes
 | tst.js:105:5:105:17 | object[taint] |
 | tst.js:105:5:105:17 | object[taint] |
 | tst.js:105:12:105:16 | taint |
+| tst.js:116:9:116:38 | taint |
+| tst.js:116:17:116:38 | String( ... y.data) |
+| tst.js:116:24:116:37 | req.query.data |
+| tst.js:116:24:116:37 | req.query.data |
+| tst.js:119:9:119:51 | object |
+| tst.js:119:18:119:51 | Object. ... taint]) |
+| tst.js:119:32:119:33 | {} |
+| tst.js:119:32:119:33 | {} |
+| tst.js:119:36:119:50 | plainObj[taint] |
+| tst.js:119:45:119:49 | taint |
+| tst.js:120:5:120:10 | object |
+| tst.js:120:5:120:10 | object |
+| tst.js:122:9:122:17 | dest |
+| tst.js:122:16:122:17 | {} |
+| tst.js:123:19:123:22 | dest |
+| tst.js:123:19:123:22 | dest |
+| tst.js:123:25:123:39 | plainObj[taint] |
+| tst.js:123:34:123:38 | taint |
+| tst.js:124:5:124:8 | dest |
+| tst.js:124:5:124:8 | dest |
 edges
 | lib.js:1:38:1:40 | obj | lib.js:6:7:6:9 | obj |
 | lib.js:1:38:1:40 | obj | lib.js:6:7:6:9 | obj |
@@ -366,6 +386,26 @@ edges
 | tst.js:102:24:102:37 | req.query.data | tst.js:102:17:102:38 | String( ... y.data) |
 | tst.js:105:12:105:16 | taint | tst.js:105:5:105:17 | object[taint] |
 | tst.js:105:12:105:16 | taint | tst.js:105:5:105:17 | object[taint] |
+| tst.js:116:9:116:38 | taint | tst.js:119:45:119:49 | taint |
+| tst.js:116:9:116:38 | taint | tst.js:123:34:123:38 | taint |
+| tst.js:116:17:116:38 | String( ... y.data) | tst.js:116:9:116:38 | taint |
+| tst.js:116:24:116:37 | req.query.data | tst.js:116:17:116:38 | String( ... y.data) |
+| tst.js:116:24:116:37 | req.query.data | tst.js:116:17:116:38 | String( ... y.data) |
+| tst.js:119:9:119:51 | object | tst.js:120:5:120:10 | object |
+| tst.js:119:9:119:51 | object | tst.js:120:5:120:10 | object |
+| tst.js:119:18:119:51 | Object. ... taint]) | tst.js:119:9:119:51 | object |
+| tst.js:119:32:119:33 | {} | tst.js:119:18:119:51 | Object. ... taint]) |
+| tst.js:119:36:119:50 | plainObj[taint] | tst.js:119:18:119:51 | Object. ... taint]) |
+| tst.js:119:36:119:50 | plainObj[taint] | tst.js:119:32:119:33 | {} |
+| tst.js:119:36:119:50 | plainObj[taint] | tst.js:119:32:119:33 | {} |
+| tst.js:119:45:119:49 | taint | tst.js:119:36:119:50 | plainObj[taint] |
+| tst.js:122:9:122:17 | dest | tst.js:123:19:123:22 | dest |
+| tst.js:122:9:122:17 | dest | tst.js:123:19:123:22 | dest |
+| tst.js:122:9:122:17 | dest | tst.js:124:5:124:8 | dest |
+| tst.js:122:9:122:17 | dest | tst.js:124:5:124:8 | dest |
+| tst.js:122:16:122:17 | {} | tst.js:122:9:122:17 | dest |
+| tst.js:123:25:123:39 | plainObj[taint] | tst.js:122:16:122:17 | {} |
+| tst.js:123:34:123:38 | taint | tst.js:123:25:123:39 | plainObj[taint] |
 #select
 | lib.js:6:7:6:9 | obj | lib.js:1:43:1:46 | path | lib.js:6:7:6:9 | obj | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:1:43:1:46 | path | library input |
 | lib.js:15:3:15:14 | obj[path[0]] | lib.js:14:38:14:41 | path | lib.js:15:3:15:14 | obj[path[0]] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | lib.js:14:38:14:41 | path | library input |
@@ -394,3 +434,7 @@ edges
 | tst.js:94:5:94:37 | obj[req ... ', '')] | tst.js:94:9:94:19 | req.query.x | tst.js:94:5:94:37 | obj[req ... ', '')] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:94:9:94:19 | req.query.x | user controlled input |
 | tst.js:97:5:97:46 | obj[req ... g, '')] | tst.js:97:9:97:19 | req.query.x | tst.js:97:5:97:46 | obj[req ... g, '')] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:97:9:97:19 | req.query.x | user controlled input |
 | tst.js:105:5:105:17 | object[taint] | tst.js:102:24:102:37 | req.query.data | tst.js:105:5:105:17 | object[taint] | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:102:24:102:37 | req.query.data | user controlled input |
+| tst.js:119:32:119:33 | {} | tst.js:116:24:116:37 | req.query.data | tst.js:119:32:119:33 | {} | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:116:24:116:37 | req.query.data | user controlled input |
+| tst.js:120:5:120:10 | object | tst.js:116:24:116:37 | req.query.data | tst.js:120:5:120:10 | object | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:116:24:116:37 | req.query.data | user controlled input |
+| tst.js:123:19:123:22 | dest | tst.js:116:24:116:37 | req.query.data | tst.js:123:19:123:22 | dest | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:116:24:116:37 | req.query.data | user controlled input |
+| tst.js:124:5:124:8 | dest | tst.js:116:24:116:37 | req.query.data | tst.js:124:5:124:8 | dest | This assignment may alter Object.prototype if a malicious '__proto__' string is injected from $@. | tst.js:116:24:116:37 | req.query.data | user controlled input |
