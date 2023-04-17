@@ -677,8 +677,12 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = getElementAddressTag() and
     (
-      operandTag instanceof LeftOperandTag and
-      result = getParent().(InitializationContext).getTargetAddress()
+      exists(string s |
+        tag = getElementAddressTag() and
+        s = getParent().(InitializationContext).getAQlClass() and
+        operandTag instanceof LeftOperandTag and
+        result = getParent().(InitializationContext).getTargetAddress()
+      )
       or
       operandTag instanceof RightOperandTag and
       result = getInstruction(getElementIndexTag())

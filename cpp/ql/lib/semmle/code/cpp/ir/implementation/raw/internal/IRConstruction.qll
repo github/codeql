@@ -77,7 +77,6 @@ module Raw {
   cached
   predicate hasDynamicInitializationFlag(Function func, StaticLocalVariable var, CppType type) {
     var.getFunction() = func and
-    var.hasDynamicInitialization() and
     type = getBoolType()
   }
 

@@ -62,15 +62,6 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // constant value.
   isIRConstant(getRealParent(expr))
   or
-  // Only translate the initializer of a static local if it uses run-time data.
-  // Otherwise the initializer does not run in function scope.
-  exists(Initializer init, StaticStorageDurationVariable var |
-    init = var.getInitializer() and
-    not var.hasDynamicInitialization() and
-    expr = init.getExpr().getFullyConverted() and
-    not var instanceof GlobalOrNamespaceVariable
-  )
-  or
   // Ignore descendants of `__assume` expressions, since we translated these to `NoOp`.
   getRealParent(expr) instanceof AssumeExpr
   or
@@ -447,14 +438,7 @@ private predicate translateDeclarationEntry(IRDeclarationEntry entry) {
   exists(DeclStmt declStmt, LocalVariable var |
     translateStmt(declStmt) and
     declStmt = entry.getStmt() and
-    // Only declarations of local variables need to be translated to IR.
-    var = entry.getDeclaration() and
-    (
-      not var.isStatic()
-      or
-      // Ignore static variables unless they have a dynamic initializer.
-      var.(StaticLocalVariable).hasDynamicInitialization()
-    )
+    var = entry.getDeclaration()
   )
 }
 
