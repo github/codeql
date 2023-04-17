@@ -47,8 +47,6 @@ extensions:
       - ["java.io", "RandomAccessFile", False, "writeUTF", "", "", "Argument[0]", "write-file", "manual"]
       - ["java.io", "Writer", True, "append", "", "", "Argument[0]", "write-file", "manual"]
       - ["java.io", "Writer", True, "write", "", "", "Argument[0]", "write-file", "manual"]
-      - ["java.io", "OutputStream", True, "write", "(byte[])", "", "Argument[0]", "write-file", "manual"]
-      - ["java.io", "OutputStream", True, "write", "(byte[],int,int)", "", "Argument[0]", "write-file", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
