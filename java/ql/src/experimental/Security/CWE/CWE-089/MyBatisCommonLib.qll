@@ -17,23 +17,23 @@ private predicate propertiesKey(DataFlow::Node prop, string key) {
 }
 
 /** A data flow configuration tracing flow from ibatis `Configuration.getVariables()` to a store into a `Properties` object. */
-private class PropertiesFlowConfig extends DataFlow2::Configuration {
-  PropertiesFlowConfig() { this = "PropertiesFlowConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
+private module PropertiesFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) {
     exists(MethodAccess ma | ma.getMethod() instanceof IbatisConfigurationGetVariablesMethod |
       src.asExpr() = ma
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { propertiesKey(sink, _) }
+  predicate isSink(DataFlow::Node sink) { propertiesKey(sink, _) }
 }
+
+private module PropertiesFlow = DataFlow::Global<PropertiesFlowConfig>;
 
 /** Gets a `Properties` key that may map onto a Mybatis `Configuration` variable. */
 string getAMybatisConfigurationVariableKey() {
-  exists(PropertiesFlowConfig conf, DataFlow::Node n |
+  exists(DataFlow::Node n |
     propertiesKey(n, result) and
-    conf.hasFlowTo(n)
+    PropertiesFlow::flowTo(n)
   )
 }
 

@@ -123,6 +123,10 @@
     "java/ql/src/utils/modelgenerator/internal/CaptureModels.qll",
     "csharp/ql/src/utils/modelgenerator/internal/CaptureModels.qll"
   ],
+  "Model as Data Generation Java/C# - CaptureModelsPrinting": [
+    "java/ql/src/utils/modelgenerator/internal/CaptureModelsPrinting.qll",
+    "csharp/ql/src/utils/modelgenerator/internal/CaptureModelsPrinting.qll"
+  ],
   "Sign Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/Sign.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/rangeanalysis/Sign.qll"

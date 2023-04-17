@@ -10,6 +10,7 @@ module Synth {
     TDbFile(Raw::DbFile id) { constructDbFile(id) } or
     TDbLocation(Raw::DbLocation id) { constructDbLocation(id) } or
     TDiagnostics(Raw::Diagnostics id) { constructDiagnostics(id) } or
+    TKeyPathComponent(Raw::KeyPathComponent id) { constructKeyPathComponent(id) } or
     TOtherAvailabilitySpec(Raw::OtherAvailabilitySpec id) { constructOtherAvailabilitySpec(id) } or
     TPlatformVersionAvailabilitySpec(Raw::PlatformVersionAvailabilitySpec id) {
       constructPlatformVersionAvailabilitySpec(id)
@@ -310,7 +311,7 @@ module Synth {
 
   class TAstNode =
     TAvailabilityInfo or TAvailabilitySpec or TCaseLabelItem or TConditionElement or TDecl or
-        TExpr or TPattern or TStmt or TStmtCondition or TTypeRepr;
+        TExpr or TKeyPathComponent or TPattern or TStmt or TStmtCondition or TTypeRepr;
 
   class TAvailabilitySpec = TOtherAvailabilitySpec or TPlatformVersionAvailabilitySpec;
 
@@ -485,6 +486,9 @@ module Synth {
 
   cached
   TDiagnostics convertDiagnosticsFromRaw(Raw::Element e) { result = TDiagnostics(e) }
+
+  cached
+  TKeyPathComponent convertKeyPathComponentFromRaw(Raw::Element e) { result = TKeyPathComponent(e) }
 
   cached
   TOtherAvailabilitySpec convertOtherAvailabilitySpecFromRaw(Raw::Element e) {
@@ -1383,6 +1387,8 @@ module Synth {
     or
     result = convertExprFromRaw(e)
     or
+    result = convertKeyPathComponentFromRaw(e)
+    or
     result = convertPatternFromRaw(e)
     or
     result = convertStmtFromRaw(e)
@@ -2145,6 +2151,9 @@ module Synth {
 
   cached
   Raw::Element convertDiagnosticsToRaw(TDiagnostics e) { e = TDiagnostics(result) }
+
+  cached
+  Raw::Element convertKeyPathComponentToRaw(TKeyPathComponent e) { e = TKeyPathComponent(result) }
 
   cached
   Raw::Element convertOtherAvailabilitySpecToRaw(TOtherAvailabilitySpec e) {
@@ -3040,6 +3049,8 @@ module Synth {
     result = convertDeclToRaw(e)
     or
     result = convertExprToRaw(e)
+    or
+    result = convertKeyPathComponentToRaw(e)
     or
     result = convertPatternToRaw(e)
     or

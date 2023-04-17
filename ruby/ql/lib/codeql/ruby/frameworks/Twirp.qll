@@ -18,8 +18,7 @@ module Twirp {
    */
   class ServiceInstantiation extends DataFlow::CallNode {
     ServiceInstantiation() {
-      this =
-        API::getTopLevelMember("Twirp").getMember("Service").getASubclass().getAnInstantiation()
+      this = API::getTopLevelMember("Twirp").getMember("Service").getAnInstantiation()
     }
 
     /**
@@ -62,7 +61,7 @@ module Twirp {
    */
   class ClientInstantiation extends DataFlow::CallNode {
     ClientInstantiation() {
-      this = API::getTopLevelMember("Twirp").getMember("Client").getASubclass().getAnInstantiation()
+      this = API::getTopLevelMember("Twirp").getMember("Client").getAnInstantiation()
     }
   }
 

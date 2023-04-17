@@ -1,21 +1,20 @@
 import java
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 
 /**
  * A taint-tracking configuration detecting unsafe use of a
  * `DexClassLoader` by an Android app.
  */
-class InsecureDexConfiguration extends TaintTracking::Configuration {
-  InsecureDexConfiguration() { this = "Insecure Dex File Load" }
+module InsecureDexConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof InsecureDexSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof InsecureDexSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof InsecureDexSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof InsecureDexSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    flowStep(pred, succ)
-  }
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) { flowStep(pred, succ) }
 }
+
+module InsecureDexFlow = TaintTracking::Global<InsecureDexConfig>;
 
 /** A data flow source for insecure Dex class loading vulnerabilities. */
 abstract class InsecureDexSource extends DataFlow::Node { }

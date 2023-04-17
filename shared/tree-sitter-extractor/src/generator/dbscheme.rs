@@ -119,7 +119,7 @@ impl<'a> fmt::Display for Union<'a> {
 }
 
 /// Generates the dbscheme by writing the given dbscheme `entries` to the `file`.
-pub fn write<'a>(file: &mut dyn std::io::Write, entries: &'a [Entry]) -> std::io::Result<()> {
+pub fn write(file: &mut dyn std::io::Write, entries: &[Entry]) -> std::io::Result<()> {
     for entry in entries {
         match entry {
             Entry::Case(case) => write!(file, "{}\n\n", case)?,

@@ -1,11 +1,11 @@
 import cpp
-import experimental.semmle.code.cpp.semantic.analysis.ModulusAnalysis
-import experimental.semmle.code.cpp.semantic.Semantic
-import experimental.semmle.code.cpp.semantic.analysis.RangeUtils
-import experimental.semmle.code.cpp.semantic.analysis.FloatDelta
-import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysisSpecific
-import experimental.semmle.code.cpp.semantic.analysis.RangeAnalysisImpl
-import experimental.semmle.code.cpp.semantic.SemanticExprSpecific
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.ModulusAnalysis
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeUtils
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysisSpecific
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysisImpl
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR as IR
 import TestUtilities.InlineExpectationsTest
 

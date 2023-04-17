@@ -4,6 +4,7 @@
  */
 
 import go
+private import semmle.go.dataflow.FlowSummary
 private import Xss
 private import SqlInjectionCustomizations
 private import RequestForgeryCustomizations
@@ -148,9 +149,16 @@ Package getAPackageWithFunctionModels() {
   exists(getAMethodModelInPackage(result))
 }
 
+/** Gets the name of a package that has at least one SummarizedCallable. */
+Package getAPackageWithSummarizedCallables() {
+  result = any(SummarizedCallable c).asFunction().getPackage()
+}
+
 /** Gets the name of a package which has models. */
 Package getAPackageWithModels() {
   result = getAPackageWithFunctionModels()
+  or
+  result = getAPackageWithSummarizedCallables()
   or
   // An incomplete list of packages which have been modeled but do not have any function models
   result.getPath() in [

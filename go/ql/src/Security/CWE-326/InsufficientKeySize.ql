@@ -14,7 +14,8 @@ import go
 import DataFlow::PathGraph
 
 /**
- * RSA key length data flow tracking configuration.
+ * A data flow tracking configuration for tracking flow from RSA key length to
+ * calls to RSA key generation functions.
  */
 class RsaKeyTrackingConfiguration extends DataFlow::Configuration {
   RsaKeyTrackingConfiguration() { this = "RsaKeyTrackingConfiguration" }

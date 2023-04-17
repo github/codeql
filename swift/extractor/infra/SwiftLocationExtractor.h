@@ -2,6 +2,7 @@
 
 #include <swift/AST/ASTAllocated.h>
 #include <swift/AST/AvailabilitySpec.h>
+#include <swift/AST/Expr.h>
 #include <swift/AST/SourceFile.h>
 #include <swift/Basic/SourceManager.h>
 #include <unordered_map>
@@ -72,6 +73,10 @@ class SwiftLocationExtractor {
 
   void attachLocation(const swift::SourceManager& sourceManager,
                       swift::Token& token,
+                      TrapLabel<LocatableTag> locatableLabel);
+
+  void attachLocation(const swift::SourceManager& sourceManager,
+                      const swift::KeyPathExpr::Component* component,
                       TrapLabel<LocatableTag> locatableLabel);
 
  private:

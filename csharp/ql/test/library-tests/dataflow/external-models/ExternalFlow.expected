@@ -1,3 +1,4 @@
+invalidModelRow
 edges
 | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | ExternalFlow.cs:10:29:10:32 | access to local variable arg1 : Object |
 | ExternalFlow.cs:10:29:10:32 | access to local variable arg1 : Object | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes |
@@ -162,7 +163,6 @@ nodes
 | ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs | semmle.label | call to method MixedFlowArgs |
 | ExternalFlow.cs:206:38:206:39 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
 subpaths
-invalidModelRow
 #select
 | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | $@ | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:18:18:18:24 | access to local variable argOut1 | ExternalFlow.cs:15:29:15:40 | object creation of type Object : Object | ExternalFlow.cs:18:18:18:24 | access to local variable argOut1 | $@ | ExternalFlow.cs:15:29:15:40 | object creation of type Object : Object | object creation of type Object : Object |

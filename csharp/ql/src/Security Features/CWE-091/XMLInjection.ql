@@ -12,19 +12,17 @@
  */
 
 import csharp
-import DataFlow::PathGraph
 import semmle.code.csharp.security.dataflow.flowsources.Remote
 import semmle.code.csharp.frameworks.system.Xml
+import XmlInjection::PathGraph
 
 /**
  * A taint-tracking configuration for untrusted user input used in XML.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "XMLInjection" }
+module XmlInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       mc.getTarget().hasName("WriteRaw") and
       mc.getTarget().getDeclaringType().getABaseType*().hasQualifiedName("System.Xml", "XmlWriter")
@@ -33,7 +31,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(MethodCall mc |
       mc.getTarget().hasName("Escape") and
       mc.getTarget()
@@ -46,7 +44,12 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+/**
+ * A taint-tracking module for untrusted user input used in XML.
+ */
+module XmlInjection = TaintTracking::Global<XmlInjectionConfig>;
+
+from XmlInjection::PathNode source, XmlInjection::PathNode sink
+where XmlInjection::flowPath(source, sink)
 select sink.getNode(), source, sink, "This XML element depends on a $@.", source.getNode(),
   "user-provided value"

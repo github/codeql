@@ -147,7 +147,7 @@ class LambdaCapture extends Locatable, @lambdacapture {
    */
   Expr getInitializer() {
     exists(LambdaExpression lambda | this = lambda.getCapture(_) |
-      result = lambda.getInitializer().getFieldExpr(this.getField())
+      result = lambda.getInitializer().getAFieldExpr(this.getField())
     )
   }
 }

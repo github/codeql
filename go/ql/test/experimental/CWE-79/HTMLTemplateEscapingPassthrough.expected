@@ -92,7 +92,7 @@ edges
 | HTMLTemplateEscapingPassthrough.go:74:17:74:31 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:75:38:75:44 | escaped |
 | HTMLTemplateEscapingPassthrough.go:80:10:80:24 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:81:16:81:33 | type conversion |
 | HTMLTemplateEscapingPassthrough.go:80:10:80:24 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:83:38:83:40 | src |
-| HTMLTemplateEscapingPassthrough.go:88:10:88:24 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:90:16:90:77 | type conversion |
+| HTMLTemplateEscapingPassthrough.go:88:10:88:24 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:90:64:90:66 | src |
 | HTMLTemplateEscapingPassthrough.go:90:16:90:77 | type conversion | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted |
 | HTMLTemplateEscapingPassthrough.go:90:16:90:77 | type conversion | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted |
 | HTMLTemplateEscapingPassthrough.go:90:16:90:77 | type conversion | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted |
@@ -100,6 +100,8 @@ edges
 | HTMLTemplateEscapingPassthrough.go:90:16:90:77 | type conversion | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted |
 | HTMLTemplateEscapingPassthrough.go:90:16:90:77 | type conversion | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted |
 | HTMLTemplateEscapingPassthrough.go:90:16:90:77 | type conversion | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted |
+| HTMLTemplateEscapingPassthrough.go:90:38:90:67 | call to HTMLEscapeString | HTMLTemplateEscapingPassthrough.go:90:16:90:77 | type conversion |
+| HTMLTemplateEscapingPassthrough.go:90:64:90:66 | src | HTMLTemplateEscapingPassthrough.go:90:38:90:67 | call to HTMLEscapeString |
 nodes
 | HTMLTemplateEscapingPassthrough.go:28:12:28:41 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:28:12:28:41 | type conversion | semmle.label | type conversion |
@@ -287,6 +289,8 @@ nodes
 | HTMLTemplateEscapingPassthrough.go:90:16:90:77 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:90:16:90:77 | type conversion | semmle.label | type conversion |
 | HTMLTemplateEscapingPassthrough.go:90:16:90:77 | type conversion | semmle.label | type conversion |
+| HTMLTemplateEscapingPassthrough.go:90:38:90:67 | call to HTMLEscapeString | semmle.label | call to HTMLEscapeString |
+| HTMLTemplateEscapingPassthrough.go:90:64:90:66 | src | semmle.label | src |
 | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted | semmle.label | converted |
 | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted | semmle.label | converted |
 | HTMLTemplateEscapingPassthrough.go:91:38:91:46 | converted | semmle.label | converted |
