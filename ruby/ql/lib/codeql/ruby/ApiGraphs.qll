@@ -813,20 +813,20 @@ module API {
         useRoot(lbl, ref)
         or
         exists(DataFlow::Node node, DataFlow::Node src |
-          pred = MkUse(src) and
+          use(pred, src) and
           trackUseNode(src).flowsTo(node) and
           useStep(lbl, node, ref)
         )
         or
         exists(DataFlow::Node callback |
-          pred = MkDef(callback) and
+          def(pred, callback) and
           parameterStep(lbl, trackDefNode(callback), ref)
         )
       )
       or
       exists(DataFlow::Node predNode, DataFlow::Node succNode |
         def(pred, predNode) and
-        def(succ, succNode) and
+        succ = MkDef(succNode) and
         defStep(lbl, trackDefNode(predNode), succNode)
       )
       or
@@ -844,7 +844,7 @@ module API {
       exists(DataFlow::CallNode call |
         // from receiver to method call node
         exists(DataFlow::Node receiver |
-          pred = MkUse(receiver) and
+          use(pred, receiver) and
           useNodeReachesReceiver(receiver, call) and
           lbl = Label::method(call.getMethodName()) and
           succ = MkMethodAccessNode(call)
