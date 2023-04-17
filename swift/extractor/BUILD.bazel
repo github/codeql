@@ -3,11 +3,12 @@ load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")
 load("//misc/bazel:pkg_runfiles.bzl", "pkg_runfiles")
 
 swift_cc_binary(
-    name = "extractor.real",
+    name = "swiftFrontendObserver",
     srcs = glob([
         "*.h",
         "*.cpp",
     ]),
+    linkshared = True,
     deps = [
         "//swift/extractor/config",
         "//swift/extractor/infra",
@@ -21,14 +22,17 @@ swift_cc_binary(
 
 generate_cmake(
     name = "cmake",
-    targets = [":extractor.real"],
+    targets = [":swiftFrontendObserver"],
     visibility = ["//visibility:public"],
 )
 
 sh_binary(
     name = "extractor",
     srcs = ["extractor.sh"],
-    data = [":extractor.real"],
+    data = [
+        ":swiftFrontendObserver",
+        "//swift/third_party/swift-llvm-support:swift-frontend",
+    ],
 )
 
 pkg_runfiles(

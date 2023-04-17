@@ -2,23 +2,16 @@ load("@rules_pkg//:mappings.bzl", "pkg_files", "strip_prefix")
 
 cc_library(
     name = "swift-llvm-support",
-    srcs = [
-        "libCodeQLSwiftFrontendTool.a",
-    ] + select({
-        "@platforms//os:linux": [
-            "libCodeQLSwiftFrontendTool.so",
-            "libswiftCore.so",
-        ],
-        "@platforms//os:macos": [
-            "libCodeQLSwiftFrontendTool.dylib",
-            "libswiftCore.dylib",
-            "libswiftCompatibility50.a",
-            "libswiftCompatibility51.a",
-            "libswiftCompatibilityConcurrency.a",
-            "libswiftCompatibilityDynamicReplacements.a",
-        ],
-    }),
-    hdrs = glob(["include/**/*", "stdlib/**/*" ]),
+    srcs = glob([
+        "lib*.a",
+        "lib*.so",
+        "lib*.dylib",
+    ]),
+    hdrs = glob([
+        "include/**/*",
+        "stdlib/**/*",
+    ]),
+    includes = ["include"],
     linkopts = [
         "-lm",
         "-lz",
@@ -34,7 +27,6 @@ cc_library(
         ],
         "//conditions:default": [],
     }),
-    includes = [ "include" ],
     visibility = ["//visibility:public"],
 )
 
@@ -46,3 +38,5 @@ pkg_files(
     strip_prefix = strip_prefix.from_pkg(),
     visibility = ["//visibility:public"],
 )
+
+exports_files(["swift-frontend"])
