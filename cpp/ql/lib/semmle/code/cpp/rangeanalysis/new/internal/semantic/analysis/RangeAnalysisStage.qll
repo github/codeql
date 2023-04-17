@@ -958,14 +958,14 @@ module RangeStage<
     (
       positively = true and
       (
-        semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TPos() and
-        semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TPos()
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getLeftOperand())) = TPos() and
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getRightOperand())) = TPos()
       )
       or
       positively = false and
       (
-        semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TNeg() and
-        semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TNeg()
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getLeftOperand())) = TNeg() and
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getRightOperand())) = TNeg()
       )
     )
     or
@@ -976,14 +976,14 @@ module RangeStage<
     (
       positively = true and
       (
-        semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TPos() and
-        semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TNeg()
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getLeftOperand())) = TPos() and
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getRightOperand())) = TNeg()
       )
       or
       positively = false and
       (
-        semExprSign(expr.(SemBinaryExpr).getLeftOperand()) = TNeg() and
-        semExprSign(expr.(SemBinaryExpr).getRightOperand()) = TPos()
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getLeftOperand())) = TNeg() and
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getRightOperand())) = TPos()
       )
     )
     or
