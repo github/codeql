@@ -20,7 +20,7 @@
 
 using namespace std::string_literals;
 
-const char* const codeql::logRootName = "extractor";
+const std::string_view codeql::logRootName = "extractor";
 
 // must be called before processFrontendOptions modifies output paths
 static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
@@ -182,6 +182,7 @@ codeql::SwiftExtractorConfiguration configure(int argc, char** argv) {
   return configuration;
 }
 
+// TODO: use `absl::StrJoin` or `boost::algorithm::join`
 static auto argDump(int argc, char** argv) {
   std::string ret;
   for (auto arg = argv + 1; arg < argv + argc; ++arg) {
@@ -192,13 +193,13 @@ static auto argDump(int argc, char** argv) {
   return ret;
 }
 
+// TODO: use `absl::StrJoin` or `boost::algorithm::join`
 static auto envDump(char** envp) {
   std::string ret;
   for (auto env = envp; *env; ++env) {
     ret += *env;
     ret += '\n';
   }
-  ret.pop_back();
   return ret;
 }
 

@@ -50,14 +50,15 @@ You can also run `../misc/codegen/codegen.py`, as long as you are beneath the `s
 A log file is produced for each run under `CODEQL_EXTRACTOR_SWIFT_LOG_DIR` (the usual DB log directory).
 
 You can use the environment variable `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` to configure levels for
-loggers and outputs. This must have the form of a comma separated `spec:level` list, where
+loggers and outputs. This must have the form of a comma separated `spec:min_level` list, where
 `spec` is either a glob pattern (made up of alphanumeric, `/`, `*` and `.` characters) for
-matching logger names or one of `out:bin`, `out:text` or `out:console`, and `level` is one of `trace`, `debug`, `info`,
-`warning`, `error`, `critical` or `no_logs` to turn logs completely off.
+matching logger names or one of `out:bin`, `out:text` or `out:console`, and `min_level` is one
+of `trace`, `debug`, `info`, `warning`, `error`, `critical` or `no_logs` to turn logs completely off.
+
 Current output default levels are no binary logs, `info` logs or higher in the text file and `warning` logs or higher on
-standard error. By default, all loggers are configured with the lowest output level. Logger names are visible in the
-textual logs between `[...]`. Examples are `extractor/dispatcher` or `extractor/<source filename>.trap`. An example
-of `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` usage is the following:
+standard error. By default, all loggers are configured with the lowest logging level of all outputs (`info` by default).
+Logger names are visible in the textual logs between `[...]`. Examples are `extractor/dispatcher`
+or `extractor/<source filename>.trap`. An example of `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` usage is the following:
 
 ```bash
 export CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS=out:console:trace,out:text:no_logs,*:warning,*.trap:trace
@@ -109,4 +110,5 @@ In particular for breakpoints to work you might need to setup the following remo
 | `bazel-out` | `/absolute/path/to/codeql/bazel-out` |
 
 ### Thread safety
+
 The extractor is single-threaded, and there was no effort to make anything in it thread-safe.

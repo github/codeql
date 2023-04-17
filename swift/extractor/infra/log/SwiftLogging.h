@@ -68,7 +68,7 @@
 namespace codeql {
 
 // tools should define this to tweak the root name of all loggers
-extern const char* const logRootName;
+extern const std::string_view logRootName;
 
 // This class is responsible for the global log state (outputs, log level rules, flushing)
 // State is stored in the singleton `Log::instance()`.
@@ -152,6 +152,7 @@ class Log {
   FilteredOutput<binlog::TextOutputStream> text{Level::info, textFile, format};
   FilteredOutput<binlog::TextOutputStream> console{Level::warning, std::cerr, format};
   LevelRules sourceRules;
+  std::vector<std::string> collectSeverityRulesAndReturnProblems(const char* envVar);
 };
 
 // This class represent a named domain-specific logger, responsible for pushing logs using the

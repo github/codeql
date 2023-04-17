@@ -55,6 +55,7 @@ class UntypedTrapLabel {
   size_t strSize() const {
     if (id_ == undefined) return 17;  // #ffffffffffffffff
     if (id_ == 0) return 2;           // #0
+    // TODO: use absl::bit_width or C+20 std::bit_width instead of this ugly formula
     return /* # */ 1 + /* hex digits */ static_cast<size_t>(ceil(log2(id_ + 1) / 4));
   }
 };

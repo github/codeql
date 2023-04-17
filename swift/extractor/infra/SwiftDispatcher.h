@@ -152,11 +152,7 @@ class SwiftDispatcher {
       return *l;
     }
     waitingForNewLabel = e;
-    // TODO: more generic and informational visiting one-line log
-    if constexpr (std::is_convertible_v<E, const swift::ValueDecl*>) {
-      const swift::ValueDecl* x = e;
-      LOG_TRACE("{}", x->getName().getBaseIdentifier().str());
-    }
+    // TODO: add tracing logs for visited stuff, maybe within the translators?
     visit(e, std::forward<Args>(args)...);
     Log::flush();
     // TODO when everything is moved to structured C++ classes, this should be moved to createEntry

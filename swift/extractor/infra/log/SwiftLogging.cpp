@@ -23,11 +23,11 @@ Log::Level getLevelFor(std::string_view name, const LevelRules& rules, Log::Leve
   return dflt;
 }
 
-const char* getEnvOr(const char* var, const char* deflt) {
+const char* getEnvOr(const char* var, const char* dflt) {
   if (const char* ret = getenv(var)) {
     return ret;
   }
-  return deflt;
+  return dflt;
 }
 
 std::string_view matchToView(std::csub_match m) {
@@ -48,16 +48,11 @@ Log::Level matchToLevel(std::csub_match m) {
   return stringToLevel(matchToView(m));
 }
 
-struct LevelConfiguration {
-  LevelRules& sourceRules;
-  Log::Level& binSeverity;
-  Log::Level& textSeverity;
-  Log::Level& consoleSeverity;
-  std::vector<std::string>& problems;
-};
+}  // namespace
 
-void collectSeverityRules(const char* var, LevelConfiguration&& configuration) {
-  if (auto levels = getEnvOr(var, nullptr)) {
+std::vector<std::string> Log::collectSeverityRulesAndReturnProblems(const char* envVar) {
+  std::vector<std::string> problems;
+  if (auto levels = getEnvOr(envVar, nullptr)) {
     // expect comma-separated <glob pattern>:<log severity>
     std::regex comma{","};
     std::regex levelAssignment{R"((?:([*./\w]+)|(?:out:(bin|text|console))):()" LEVEL_REGEX_PATTERN
@@ -76,31 +71,28 @@ void collectSeverityRules(const char* var, LevelConfiguration&& configuration) {
             pattern.insert(pos, (pattern[pos] == '*') ? "." : "\\");
             pos += 2;
           }
-          configuration.sourceRules.emplace_back(pattern, level);
+          sourceRules.emplace_back(pattern, level);
         } else {
           auto out = matchToView(match[2]);
           if (out == "bin") {
-            configuration.binSeverity = level;
+            binary.level = level;
           } else if (out == "text") {
-            configuration.textSeverity = level;
+            text.level = level;
           } else if (out == "console") {
-            configuration.consoleSeverity = level;
+            console.level = level;
           }
         }
       } else {
-        configuration.problems.emplace_back("Malformed log level rule: " + it->str());
+        problems.emplace_back("Malformed log level rule: " + it->str());
       }
     }
   }
+  return problems;
 }
-
-}  // namespace
 
 void Log::configure() {
   // as we are configuring logging right now, we collect problems and log them at the end
-  std::vector<std::string> problems;
-  collectSeverityRules("CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS",
-                       {sourceRules, binary.level, text.level, console.level, problems});
+  auto problems = collectSeverityRulesAndReturnProblems("CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS");
   if (text || binary) {
     std::filesystem::path logFile = getEnvOr("CODEQL_EXTRACTOR_SWIFT_LOG_DIR", ".");
     logFile /= logRootName;
@@ -144,7 +136,7 @@ void Log::flushImpl() {
 }
 
 Log::LoggerConfiguration Log::getLoggerConfigurationImpl(std::string_view name) {
-  LoggerConfiguration ret{session, logRootName};
+  LoggerConfiguration ret{session, std::string{logRootName}};
   ret.fullyQualifiedName += '/';
   ret.fullyQualifiedName += name;
   ret.level = std::min({binary.level, text.level, console.level});
