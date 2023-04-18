@@ -104,7 +104,9 @@ private string isExtensible(J::RefType ref) {
 }
 
 private string typeAsModel(J::RefType type) {
-  result = type.getCompilationUnit().getPackage().getName() + ";" + type.nestedName()
+  result =
+    type.getCompilationUnit().getPackage().getName() + ";" +
+      type.getErasure().(J::RefType).nestedName()
 }
 
 private J::RefType bestTypeForModel(TargetApiSpecific api) {
