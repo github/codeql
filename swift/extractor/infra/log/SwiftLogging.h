@@ -9,6 +9,7 @@
 #include <binlog/TextOutputStream.hpp>
 #include <binlog/EventFilter.hpp>
 #include <binlog/adapt_stdfilesystem.hpp>
+#include <binlog/adapt_stderrorcode.hpp>
 #include <binlog/adapt_stdoptional.hpp>
 #include <binlog/adapt_stdvariant.hpp>
 
