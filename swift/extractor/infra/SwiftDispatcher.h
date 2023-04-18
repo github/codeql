@@ -13,7 +13,7 @@
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
 #include "swift/extractor/infra/SwiftBodyEmissionStrategy.h"
 #include "swift/extractor/config/SwiftExtractorState.h"
-#include "swift/extractor/infra/log/SwiftLogging.h"
+#include "swift/extractor/infra/log/SwiftAssert.h"
 
 namespace codeql {
 
@@ -67,21 +67,20 @@ class SwiftDispatcher {
     entry.forEachLabel([&valid, &entry, this](const char* field, int index, auto& label) {
       using Label = std::remove_reference_t<decltype(label)>;
       if (!label.valid()) {
-        std::cerr << entry.NAME << " has undefined " << field;
-        if (index >= 0) {
-          std::cerr << '[' << index << ']';
-        }
+        const char* action;
         if constexpr (std::is_base_of_v<typename Label::Tag, UnspecifiedElementTag>) {
-          std::cerr << ", replacing with unspecified element\n";
+          action = "replacing with unspecified element";
           label = emitUnspecified(idOf(entry), field, index);
         } else {
-          std::cerr << ", skipping emission\n";
+          action = "skipping emission";
           valid = false;
         }
+        LOG_ERROR("{} has undefined field {}{}, {}", entry.NAME, field,
+                  index >= 0 ? ('[' + std::to_string(index) + ']') : "", action);
       }
     });
     if (valid) {
-      trap.emit(entry);
+      trap.emit(entry, /* check */ false);
     }
   }
 
@@ -146,8 +145,8 @@ class SwiftDispatcher {
     // this is required so we avoid any recursive loop: a `fetchLabel` during the visit of `e` might
     // end up calling `fetchLabel` on `e` itself, so we want the visit of `e` to call `fetchLabel`
     // only after having called `assignNewLabel` on `e`.
-    assert(std::holds_alternative<std::monostate>(waitingForNewLabel) &&
-           "fetchLabel called before assignNewLabel");
+    CODEQL_ASSERT(std::holds_alternative<std::monostate>(waitingForNewLabel),
+                  "fetchLabel called before assignNewLabel");
     if (auto l = store.get(e)) {
       return *l;
     }
@@ -162,8 +161,8 @@ class SwiftDispatcher {
       }
       return *l;
     }
-    assert(!"assignNewLabel not called during visit");
-    return {};
+    LOG_CRITICAL("assignNewLabel not called during visit");
+    abort();
   }
 
   // convenience `fetchLabel` overload for `swift::Type` (which is just a wrapper for
@@ -184,7 +183,7 @@ class SwiftDispatcher {
   // declarations
   template <typename E, typename... Args, std::enable_if_t<IsStorable<E>>* = nullptr>
   TrapLabel<ConcreteTrapTagOf<E>> assignNewLabel(const E& e, Args&&... args) {
-    assert(waitingForNewLabel == Store::Handle{e} && "assignNewLabel called on wrong entity");
+    CODEQL_ASSERT(waitingForNewLabel == Store::Handle{e}, "assignNewLabel called on wrong entity");
     auto label = trap.createLabel<ConcreteTrapTagOf<E>>(std::forward<Args>(args)...);
     store.insert(e, label);
     waitingForNewLabel = std::monostate{};
@@ -332,7 +331,10 @@ class SwiftDispatcher {
   SwiftBodyEmissionStrategy& bodyEmissionStrategy;
   Store::Handle waitingForNewLabel{std::monostate{}};
   std::unordered_set<swift::ModuleDecl*> encounteredModules;
-  Logger logger{"dispatcher"};
+  Logger& logger() {
+    static Logger ret{"dispatcher"};
+    return ret;
+  }
 };
 
 }  // namespace codeql

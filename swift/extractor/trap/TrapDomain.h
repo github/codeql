@@ -20,8 +20,16 @@ class TrapDomain {
   }
 
   template <typename Entry>
-  void emit(const Entry& e) {
+  void emit(const Entry& e, bool check = true) {
     LOG_TRACE("{}", e);
+    if (check) {
+      e.forEachLabel([&e, this](const char* field, int index, auto& label) {
+        if (!label.valid()) {
+          LOG_ERROR("{} has undefined field {}{}", e.NAME, field,
+                    index >= 0 ? ('[' + std::to_string(index) + ']') : "");
+        }
+      });
+    }
     out << e << '\n';
   }
 
@@ -34,7 +42,9 @@ class TrapDomain {
 
   template <typename... Args>
   void debug(const Args&... args) {
-    emitComment("DEBUG:\n", args..., '\n');
+    out << "/* DEBUG:\n";
+    (out << ... << args);
+    out << "\n*/\n";
   }
 
   template <typename Tag>
