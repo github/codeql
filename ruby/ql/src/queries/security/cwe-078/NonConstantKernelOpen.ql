@@ -21,6 +21,7 @@ import codeql.ruby.ApiGraphs
 
 from AmbiguousPathCall call
 where
+  call.getNumberOfArguments() > 0 and
   not hasConstantPrefix(call.getPathArgument().getALocalSource().asExpr().getExpr()) and
   not call.getPathArgument().getALocalSource() =
     API::getTopLevelMember("File").getAMethodCall("join")
