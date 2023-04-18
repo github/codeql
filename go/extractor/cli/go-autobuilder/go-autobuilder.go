@@ -356,7 +356,7 @@ func tryUpdateGoModAndGoSum(modMode ModMode, depMode DependencyInstallerMode) {
 	}
 }
 
-func moveToTemporaryGopath(srcdir string, importpath string) {
+func moveToTemporaryGopath(srcdir string, importpath string) (string, []string, string, string, string) {
 	// a temporary directory where everything is moved while the correct
 	// directory structure is created.
 	scratch, err := ioutil.TempDir(srcdir, "scratch")
@@ -408,10 +408,11 @@ func moveToTemporaryGopath(srcdir string, importpath string) {
 		log.Fatalf("Failed to rename %s to %s: %s\n", scratch, newdir, err.Error())
 	}
 
-	// schedule restoring the contents of newdir to their original location after this function completes:
-	defer restoreRepoLayout(newdir, files, filepath.Base(scratch), srcdir)
+	return scratch, files, realSrc, root, newdir
+}
 
-	err = os.Chdir(newdir)
+func createPathTransformerFile(newdir string) *os.File {
+	err := os.Chdir(newdir)
 	if err != nil {
 		log.Fatalf("Failed to chdir into %s: %s\n", newdir, err.Error())
 	}
@@ -422,8 +423,11 @@ func moveToTemporaryGopath(srcdir string, importpath string) {
 	if err != nil {
 		log.Fatalf("Unable to create path transformer file: %s.", err.Error())
 	}
-	defer os.Remove(pt.Name())
-	_, err = pt.WriteString("#" + realSrc + "\n" + newdir + "//\n")
+	return pt
+}
+
+func writePathTransformerFile(pt *os.File, realSrc, root, newdir string) {
+	_, err := pt.WriteString("#" + realSrc + "\n" + newdir + "//\n")
 	if err != nil {
 		log.Fatalf("Unable to write path transformer file: %s.", err.Error())
 	}
@@ -435,7 +439,9 @@ func moveToTemporaryGopath(srcdir string, importpath string) {
 	if err != nil {
 		log.Fatalf("Unable to set SEMMLE_PATH_TRANSFORMER environment variable: %s.\n", err.Error())
 	}
+}
 
+func setGopath(root string) {
 	// set/extend GOPATH
 	oldGopath := os.Getenv("GOPATH")
 	var newGopath string
@@ -447,7 +453,7 @@ func moveToTemporaryGopath(srcdir string, importpath string) {
 	} else {
 		newGopath = root
 	}
-	err = os.Setenv("GOPATH", newGopath)
+	err := os.Setenv("GOPATH", newGopath)
 	if err != nil {
 		log.Fatalf("Unable to set GOPATH to %s: %s\n", newGopath, err.Error())
 	}
@@ -634,7 +640,16 @@ func main() {
 	inLGTM := os.Getenv("LGTM_SRC") != "" || os.Getenv("LGTM_INDEX_NEED_GOPATH") != ""
 
 	if inLGTM && needGopath {
-		moveToTemporaryGopath(srcdir, importpath)
+		scratch, files, realSrc, root, newdir := moveToTemporaryGopath(srcdir, importpath)
+
+		// schedule restoring the contents of newdir to their original location after this function completes:
+		defer restoreRepoLayout(newdir, files, filepath.Base(scratch), srcdir)
+
+		pt := createPathTransformerFile(newdir)
+		defer os.Remove(pt.Name())
+
+		writePathTransformerFile(pt, realSrc, root, newdir)
+		setGopath(root)
 	}
 
 	// check whether an explicit dependency installation command was provided
