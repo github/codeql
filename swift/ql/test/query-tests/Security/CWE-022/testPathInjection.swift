@@ -311,15 +311,15 @@ func test() {
     // Realm
 
 	_ = Realm.Configuration(fileURL: safeUrl) // GOOD
-	_ = Realm.Configuration(fileURL: remoteUrl) // BAD
+	_ = Realm.Configuration(fileURL: remoteUrl) // $ hasPathInjection=208
 	_ = Realm.Configuration(seedFilePath: safeUrl) // GOOD
-	_ = Realm.Configuration(seedFilePath: remoteUrl) // BAD
+	_ = Realm.Configuration(seedFilePath: remoteUrl) // $ hasPathInjection=208
 
 	var config = Realm.Configuration() // GOOD
 	config.fileURL = safeUrl // GOOD
-	config.fileURL = remoteUrl // BAD [NOT DETECTED]
+	config.fileURL = remoteUrl // $ MISSING: hasPathInjection=208
 	config.seedFilePath = safeUrl // GOOD
-	config.seedFilePath = remoteUrl // BAD [NOT DETECTED]
+	config.seedFilePath = remoteUrl // $ MISSING: hasPathInjection=208
 }
 
 func testSanitizers() {
