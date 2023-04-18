@@ -23,20 +23,14 @@ where
   ) and
   // intersect with strong types, but user controlled or weak types deserialization usages
   (
-    exists(
-      DataFlow::Node weakTypeUsage,
-      WeakTypeCreationToUsageTrackingConfig weakTypeDeserializerTracking, MethodCall mc
-    |
-      weakTypeDeserializerTracking.hasFlowTo(weakTypeUsage) and
+    exists(DataFlow::Node weakTypeUsage, MethodCall mc |
+      WeakTypeCreationToUsageTracking::flowTo(weakTypeUsage) and
       mc.getQualifier() = weakTypeUsage.asExpr() and
       mc.getAnArgument() = deserializeCallArg.getNode().asExpr()
     )
     or
-    exists(
-      TaintToObjectTypeTrackingConfig userControlledTypeTracking, DataFlow::Node taintedTypeUsage,
-      MethodCall mc
-    |
-      userControlledTypeTracking.hasFlowTo(taintedTypeUsage) and
+    exists(DataFlow::Node taintedTypeUsage, MethodCall mc |
+      TaintToObjectTypeTracking::flowTo(taintedTypeUsage) and
       mc.getQualifier() = taintedTypeUsage.asExpr() and
       mc.getAnArgument() = deserializeCallArg.getNode().asExpr()
     )
