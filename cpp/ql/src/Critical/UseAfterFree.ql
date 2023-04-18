@@ -128,7 +128,8 @@ module ParameterSinks {
       callHasTargetAndArgument(f, i, call, argument) and
       initializeParameterInFunction(f, i, p) and
       p = getAnAlwaysDereferencedParameter() and
-      result = pragma[only_bind_out](valueNumber(argument).getAnInstruction()) and
+      result =
+        pragma[only_bind_out](pragma[only_bind_into](valueNumber(argument)).getAnInstruction()) and
       call = getAnAlwaysReachedCallInstruction(_)
     )
   }
