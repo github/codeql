@@ -137,8 +137,6 @@ private class RecordConstructorFlow extends SummarizedCallable {
       preservesValue = true
     )
   }
-
-  override predicate hasProvenance(string provenance) { provenance = "manual" }
 }
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;

@@ -40,7 +40,7 @@ private API::Node activeRecordClassApiNode() {
       // In Rails applications `ApplicationRecord` typically extends `ActiveRecord::Base`, but we
       // treat it separately in case the `ApplicationRecord` definition is not in the database.
       API::getTopLevelMember("ApplicationRecord")
-    ].getASubclass()
+    ]
 }
 
 /**
@@ -58,7 +58,7 @@ private API::Node activeRecordClassApiNode() {
 class ActiveRecordModelClass extends ClassDeclaration {
   ActiveRecordModelClass() {
     this.getSuperclassExpr() =
-      activeRecordClassApiNode().getAValueReachableFromSource().asExpr().getExpr()
+      activeRecordClassApiNode().getASubclass().getAValueReachableFromSource().asExpr().getExpr()
   }
 
   // Gets the class declaration for this class and all of its super classes

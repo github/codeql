@@ -36,6 +36,8 @@ class TargetFile {
     return *this;
   }
 
+  const std::filesystem::path& target() const { return targetPath; }
+
  private:
   TargetFile(const std::filesystem::path& target,
              const std::filesystem::path& targetDir,

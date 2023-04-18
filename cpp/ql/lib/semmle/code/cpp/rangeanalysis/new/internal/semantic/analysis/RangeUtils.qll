@@ -3,7 +3,7 @@
  */
 
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
-private import RangeAnalysisSpecific
+private import RangeAnalysisRelativeSpecific
 private import RangeAnalysisStage as Range
 private import ConstantAnalysis
 

@@ -211,17 +211,17 @@ class QueryDoc extends QLDoc {
 
   /** Gets the @name for the query */
   string getQueryName() {
-    result = this.getContents().regexpCapture("(?s).*@name ([\\w-\\s]+)(?=\\n).*", 1)
+    result = this.getContents().regexpCapture("(?s).*@name (.+?)(?=\\n).*", 1)
   }
 
   /** Gets the id part (without language) of the @id */
   string getQueryId() {
-    result = this.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-]+)\\s.*", 2)
+    result = this.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-/]+)\\s.*", 2)
   }
 
   /** Gets the language of the @id */
   string getQueryLanguage() {
-    result = this.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-]+)\\s.*", 1)
+    result = this.getContents().regexpCapture("(?s).*@id (\\w+)/([\\w\\-/]+)\\s.*", 1)
   }
 }
 

@@ -985,7 +985,9 @@ module Redux {
    */
   private module ReactRedux {
     /** Gets an API node referring to the `useSelector` function. */
-    API::Node useSelector() { result = API::moduleImport("react-redux").getMember("useSelector") }
+    API::Node useSelector() {
+      result = API::moduleImport("react-redux").getMember("useSelector").getForwardingFunction*()
+    }
 
     /**
      * A step out of a `useSelector` call, such as from `state.x` to the result of `useSelector(state => state.x)`.
@@ -994,7 +996,7 @@ module Redux {
       override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
         exists(API::CallNode call |
           call = useSelector().getACall() and
-          pred = call.getParameter(0).getReturn().asSink() and
+          pred = call.getCallback(0).getReturnNode() and
           succ = call
         )
       }
@@ -1230,5 +1232,10 @@ module Redux {
         )
       }
     }
+  }
+
+  /** For testing only. */
+  module Internal {
+    predicate getRootStateAccessPath = rootStateAccessPath/1;
   }
 }

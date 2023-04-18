@@ -12,7 +12,7 @@ private import CaptureModels
  *   }
  * ```
  * Captured Model:
- * ```Summaries;BasicFlow;false;ReturnThis;(System.Object);Argument[this];ReturnValue;value```
+ * ```Summaries;BasicFlow;false;ReturnThis;(System.Object);Argument[this];ReturnValue;value;df-generated```
  * Capture APIs that transfer taint from an input parameter to an output return
  * value or parameter.
  * Allows a sequence of read steps followed by a sequence of store steps.
@@ -36,8 +36,8 @@ private import CaptureModels
  * ```
  * Captured Models:
  * ```
- * Summaries;BasicFlow;false;ReturnField;();Argument[this];ReturnValue;taint |
- * Summaries;BasicFlow;false;AssignFieldToArray;(System.Object[]);Argument[this];Argument[0].Element;taint
+ * Summaries;BasicFlow;false;ReturnField;();Argument[this];ReturnValue;taint;df-generated |
+ * Summaries;BasicFlow;false;AssignFieldToArray;(System.Object[]);Argument[this];Argument[0].Element;taint;df-generated
  * ```
  *
  * ```csharp
@@ -51,7 +51,7 @@ private import CaptureModels
  * }
  * ```
  * Captured Model:
- * ```Summaries;BasicFlow;false;SetField;(System.String);Argument[0];Argument[this];taint```
+ * ```Summaries;BasicFlow;false;SetField;(System.String);Argument[0];Argument[this];taint;df-generated```
  *
  * ```csharp
  * public class BasicFlow {
@@ -62,7 +62,7 @@ private import CaptureModels
  * }
  * ```
  * Captured Model:
- * ```Summaries;BasicFlow;false;ReturnSubstring;(System.String);Argument[0];ReturnValue;taint```
+ * ```Summaries;BasicFlow;false;ReturnSubstring;(System.String);Argument[0];ReturnValue;taint;df-generated```
  *
  * ```csharp
  * public class BasicFlow {
@@ -73,7 +73,7 @@ private import CaptureModels
  * }
  * ```
  * Captured Model:
- * ```Summaries;BasicFlow;false;AssignToArray;(System.Int32,System.Int32[]);Argument[0];Argument[1].Element;taint```
+ * ```Summaries;BasicFlow;false;AssignToArray;(System.Int32,System.Int32[]);Argument[0];Argument[1].Element;taint;df-generated```
  */
 string captureFlow(DataFlowTargetApi api) {
   result = captureQualifierFlow(api) or
@@ -86,5 +86,5 @@ string captureFlow(DataFlowTargetApi api) {
  */
 string captureNoFlow(DataFlowTargetApi api) {
   not exists(captureFlow(api)) and
-  result = asNeutralModel(api)
+  result = ModelPrinting::asNeutralModel(api)
 }

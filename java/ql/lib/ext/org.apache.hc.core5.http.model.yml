@@ -4,6 +4,9 @@ extensions:
       extensible: sinkModel
     data:
       - ["org.apache.hc.core5.http", "HttpEntityContainer", True, "setEntity", "(HttpEntity)", "", "Argument[0]", "xss", "manual"]
+      - ["org.apache.hc.core5.http", "HttpRequest", True, "setUri", "(URI)", "", "Argument[0]", "open-url", "hq-manual"]
+      - ["org.apache.hc.core5.http", "HttpRequestFactory", True, "newHttpRequest", "(String,String)", "", "Argument[1]", "open-url", "hq-manual"]
+      - ["org.apache.hc.core5.http", "HttpRequestFactory", True, "newHttpRequest", "(String,URI)", "", "Argument[1]", "open-url", "hq-manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
@@ -14,6 +17,12 @@ extensions:
       - ["org.apache.hc.core5.http", "HttpEntity", True, "getContent", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.hc.core5.http", "HttpEntity", True, "getTrailers", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.hc.core5.http", "HttpEntityContainer", True, "getEntity", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["org.apache.hc.core5.http", "HttpHost", True, "HttpHost", "(String)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.http", "HttpHost", True, "HttpHost", "(String,InetAddress,String,int)", "", "Argument[2]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.http", "HttpHost", True, "HttpHost", "(String,String)", "", "Argument[1]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.http", "HttpHost", True, "HttpHost", "(String,String,int)", "", "Argument[1]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.http", "HttpHost", True, "HttpHost", "(String,int)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
+      - ["org.apache.hc.core5.http", "HttpHost", True, "create", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "hq-manual"]
       - ["org.apache.hc.core5.http", "HttpRequest", True, "getAuthority", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.hc.core5.http", "HttpRequest", True, "getMethod", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.apache.hc.core5.http", "HttpRequest", True, "getPath", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]

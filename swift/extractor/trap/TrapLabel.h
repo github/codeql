@@ -5,6 +5,9 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <binlog/binlog.hpp>
+#include <cmath>
+#include <charconv>
 
 namespace codeql {
 
@@ -18,6 +21,7 @@ class UntypedTrapLabel {
   friend class std::hash<UntypedTrapLabel>;
   template <typename Tag>
   friend class TrapLabel;
+  BINLOG_ADAPT_STRUCT_FRIEND;
 
   static constexpr uint64_t undefined = 0xffffffffffffffff;
 
@@ -38,7 +42,22 @@ class UntypedTrapLabel {
     return out;
   }
 
+  std::string str() const {
+    std::string ret(strSize(), '\0');
+    ret[0] = '#';
+    std::to_chars(ret.data() + 1, ret.data() + ret.size(), id_, 16);
+    return ret;
+  }
+
   friend bool operator==(UntypedTrapLabel lhs, UntypedTrapLabel rhs) { return lhs.id_ == rhs.id_; }
+
+ private:
+  size_t strSize() const {
+    if (id_ == undefined) return 17;  // #ffffffffffffffff
+    if (id_ == 0) return 2;           // #0
+    // TODO: use absl::bit_width or C+20 std::bit_width instead of this ugly formula
+    return /* # */ 1 + /* hex digits */ static_cast<size_t>(ceil(log2(id_ + 1) / 4));
+  }
 };
 
 template <typename TagParam>
@@ -100,3 +119,33 @@ struct hash<codeql::UntypedTrapLabel> {
   }
 };
 }  // namespace std
+
+namespace mserialize {
+// log labels using their string representation, using binlog/mserialize internal plumbing
+template <>
+struct CustomTag<codeql::UntypedTrapLabel, void> : detail::BuiltinTag<std::string> {
+  using T = codeql::UntypedTrapLabel;
+};
+
+template <typename Tag>
+struct CustomTag<codeql::TrapLabel<Tag>, void> : detail::BuiltinTag<std::string> {
+  using T = codeql::TrapLabel<Tag>;
+};
+
+template <>
+struct CustomSerializer<codeql::UntypedTrapLabel, void> {
+  template <typename OutputStream>
+  static void serialize(codeql::UntypedTrapLabel label, OutputStream& out) {
+    mserialize::serialize(label.str(), out);
+  }
+
+  static size_t serialized_size(codeql::UntypedTrapLabel label) {
+    return sizeof(std::uint32_t) + label.strSize();
+  }
+};
+
+template <typename Tag>
+struct CustomSerializer<codeql::TrapLabel<Tag>, void> : CustomSerializer<codeql::UntypedTrapLabel> {
+};
+
+}  // namespace mserialize

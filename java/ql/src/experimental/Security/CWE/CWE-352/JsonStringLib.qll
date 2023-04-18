@@ -1,7 +1,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
 
 /** Json string type data. */
 abstract class JsonStringSource extends DataFlow::Node { }

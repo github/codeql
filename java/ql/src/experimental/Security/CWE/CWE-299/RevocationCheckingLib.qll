@@ -5,15 +5,15 @@ import DataFlow
 /**
  * A taint-tracking configuration for disabling revocation checking.
  */
-class DisabledRevocationCheckingConfig extends TaintTracking::Configuration {
-  DisabledRevocationCheckingConfig() { this = "DisabledRevocationCheckingConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
-    exists(BooleanLiteral b | b.getBooleanValue() = false | source.asExpr() = b)
+module DisabledRevocationCheckingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source.asExpr().(BooleanLiteral).getBooleanValue() = false
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof SetRevocationEnabledSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof SetRevocationEnabledSink }
 }
+
+module DisabledRevocationCheckingFlow = TaintTracking::Global<DisabledRevocationCheckingConfig>;
 
 /**
  * A sink that disables revocation checking,

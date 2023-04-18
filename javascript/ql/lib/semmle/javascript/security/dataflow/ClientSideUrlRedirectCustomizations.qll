@@ -222,6 +222,8 @@ module ClientSideUrlRedirect {
     HistoryWriteUrlSink() {
       this = History::getBrowserHistory().getMember(["push", "replace"]).getACall().getArgument(0)
     }
+
+    override predicate isXssSink() { any() }
   }
 
   /**
@@ -231,6 +233,8 @@ module ClientSideUrlRedirect {
     NextRoutePushUrlSink() {
       this = NextJS::nextRouter().getAMemberCall(["push", "replace"]).getArgument(0)
     }
+
+    override predicate isXssSink() { any() }
   }
 
   private class SinkFromModel extends Sink {

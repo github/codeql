@@ -31,7 +31,7 @@ private string nonSuspicious() {
  * Gets a regular expression for matching common names of variables that indicate the value being held contains sensitive information.
  */
 string getCommonSensitiveInfoRegex() {
-  result = "(?i).*challenge|pass(wd|word|code|phrase)(?!.*question).*" or
+  result = "(?i).*(challenge|pass(wd|word|code|phrase))(?!.*question).*" or
   result = "(?i).*(token|secret).*"
 }
 

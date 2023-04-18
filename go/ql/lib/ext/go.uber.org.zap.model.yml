@@ -1,0 +1,16 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["go.uber.org/zap", "", False, "Any", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["go.uber.org/zap", "", False, "Binary", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["go.uber.org/zap", "", False, "ByteString", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["go.uber.org/zap", "", False, "ByteStrings", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["go.uber.org/zap", "", False, "Error", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["go.uber.org/zap", "", False, "Errors", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["go.uber.org/zap", "", False, "NamedError", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["go.uber.org/zap", "", False, "Reflect", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["go.uber.org/zap", "", False, "String", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["go.uber.org/zap", "", False, "Stringp", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
+      - ["go.uber.org/zap", "", False, "Strings", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]

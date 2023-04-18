@@ -63,3 +63,10 @@ query predicate taintFlow(DataFlow::Node source, DataFlow::Node sink) {
 query DataFlow::SourceNode reactComponentRef(ReactComponent component) {
   result = component.getAComponentCreatorReference()
 }
+
+query predicate ambiguousAccessPath(API::Node node, string path) {
+  count(string accessPath | Redux::Internal::getRootStateAccessPath(accessPath) = node) > 1 and
+  Redux::Internal::getRootStateAccessPath(path) = node
+}
+
+query predicate getRootStateAccessPath = Redux::Internal::getRootStateAccessPath/1;

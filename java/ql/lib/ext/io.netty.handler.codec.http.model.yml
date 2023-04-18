@@ -3,13 +3,14 @@ extensions:
     pack: codeql/java-all
     extensible: sinkModel
   data:
-    - ["io.netty.handler.codec.http", "DefaultFullHttpRequest", True, "DefaultFullHttpRequest", "(HttpVersion,HttpMethod,String,ByteBuf)", "", "Argument[2]", "open-url", "ai-generated"]
-    - ["io.netty.handler.codec.http", "DefaultHttpRequest", True, "DefaultHttpRequest", "(HttpVersion,HttpMethod,String)", "", "Argument[2]", "open-url", "ai-generated"]
+    - ["io.netty.handler.codec.http", "DefaultFullHttpRequest", True, "DefaultFullHttpRequest", "(HttpVersion,HttpMethod,String,ByteBuf)", "", "Argument[2]", "open-url", "ai-manual"]
+    - ["io.netty.handler.codec.http", "DefaultHttpRequest", True, "DefaultHttpRequest", "(HttpVersion,HttpMethod,String)", "", "Argument[2]", "open-url", "ai-manual"]
+    - ["io.netty.handler.codec.http", "HttpRequest", True, "setUri", "", "", "Argument[0]", "open-url", "manual"]
 - addsTo:
     pack: codeql/java-all
     extensible: summaryModel
   data:
-    - ["io.netty.handler.codec.http", "QueryStringEncoder", True, "QueryStringEncoder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
+    - ["io.netty.handler.codec.http", "QueryStringEncoder", True, "QueryStringEncoder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "add", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "add", "(CharSequence,Iterable)", "", "Argument[0]", "Argument[this].Element.MapKey", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "add", "(CharSequence,Iterable)", "", "Argument[1].Element", "Argument[this].Element.MapValue", "taint", "manual"]
@@ -67,12 +68,11 @@ extensions:
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "valueCharSequenceIterator", "(CharSequence)", "", "Argument[this].Element.MapValue", "ReturnValue.Element", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "toString", "", "", "Argument[this].Element.MapKey", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpHeaders", True, "toString", "", "", "Argument[this].Element.MapValue", "ReturnValue", "taint", "manual"]
-    # Currently all write steps to http messages are taint flow. It may reduce FPs to use a synthetic field for headers instead. 
+    # Currently all write steps to http messages are taint flow. It may reduce FPs to use a synthetic field for headers instead.
     - ["io.netty.handler.codec.http", "HttpMessage", True, "headers", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "LastHttpContent", True, "trailingHeaders", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpRequest", True, "getUri", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "HttpRequest", True, "uri", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
-    - ["io.netty.handler.codec.http", "HttpRequest", True, "setUri", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
     - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "QueryStringDecoder", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
     - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "decodeComponent", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
     - ["io.netty.handler.codec.http", "QueryStringDecoder", True, "parameters", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]

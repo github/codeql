@@ -8,6 +8,8 @@ private import semmle.code.cpp.ir.IR
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticBound
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
+private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysisImpl
+private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
 
 /**
  * Gets the lower bound of the expression.
@@ -22,8 +24,10 @@ private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.Rang
  *    `lowerBound(expr.getFullyConverted())`
  */
 float lowerBound(Expr expr) {
-  exists(Instruction i, SemBound b | i.getAst() = expr and b instanceof SemZeroBound |
-    semBounded(getSemanticExpr(i), b, result, false, _)
+  exists(Instruction i, ConstantBounds::SemBound b |
+    i.getAst() = expr and b instanceof ConstantBounds::SemZeroBound
+  |
+    ConstantStage::semBounded(getSemanticExpr(i), b, result, false, _)
   )
 }
 
@@ -40,8 +44,10 @@ float lowerBound(Expr expr) {
  *    `upperBound(expr.getFullyConverted())`
  */
 float upperBound(Expr expr) {
-  exists(Instruction i, SemBound b | i.getAst() = expr and b instanceof SemZeroBound |
-    semBounded(getSemanticExpr(i), b, result, true, _)
+  exists(Instruction i, ConstantBounds::SemBound b |
+    i.getAst() = expr and b instanceof ConstantBounds::SemZeroBound
+  |
+    ConstantStage::semBounded(getSemanticExpr(i), b, result, true, _)
   )
 }
 
@@ -90,7 +96,15 @@ predicate defMightOverflow(RangeSsaDefinition def, StackVariable v) {
  * does not consider the possibility that the expression might overflow
  * due to a conversion.
  */
-predicate exprMightOverflowNegatively(Expr expr) { none() }
+predicate exprMightOverflowNegatively(Expr expr) {
+  lowerBound(expr) < exprMinVal(expr)
+  or
+  exists(SemanticExprConfig::Expr semExpr |
+    semExpr.getUnconverted().getAst() = expr and
+    ConstantStage::potentiallyOverflowingExpr(false, semExpr) and
+    not ConstantStage::initialBounded(semExpr, _, _, false, _, _, _)
+  )
+}
 
 /**
  * Holds if the expression might overflow negatively. Conversions
@@ -108,7 +122,15 @@ predicate convertedExprMightOverflowNegatively(Expr expr) {
  * does not consider the possibility that the expression might overflow
  * due to a conversion.
  */
-predicate exprMightOverflowPositively(Expr expr) { none() }
+predicate exprMightOverflowPositively(Expr expr) {
+  upperBound(expr) > exprMaxVal(expr)
+  or
+  exists(SemanticExprConfig::Expr semExpr |
+    semExpr.getUnconverted().getAst() = expr and
+    ConstantStage::potentiallyOverflowingExpr(true, semExpr) and
+    not ConstantStage::initialBounded(semExpr, _, _, true, _, _, _)
+  )
+}
 
 /**
  * Holds if the expression might overflow positively. Conversions

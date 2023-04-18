@@ -10,14 +10,8 @@ private newtype TNode =
   MkInstructionNode(IR::Instruction insn) or
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
-  MkSummarizedParameterNode(DataFlowCallable c, int i) {
-    not exists(c.getFuncDef()) and
-    c.asCallable() instanceof SummarizedCallable and
-    (
-      i in [0 .. c.getType().getNumParameter() - 1]
-      or
-      c.asFunction() instanceof Method and i = -1
-    )
+  MkSummarizedParameterNode(SummarizedCallable c, int i) {
+    FlowSummaryImpl::Private::summaryParameterNodeRange(c, i)
   } or
   MkSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
     FlowSummaryImpl::Private::summaryNodeRange(c, state)
@@ -31,12 +25,18 @@ module Private {
   DataFlowCallable nodeGetEnclosingCallable(Node n) {
     result.asCallable() = n.getEnclosingCallable()
     or
-    not exists(n.getEnclosingCallable()) and result.asFileScope() = n.getFile()
+    (n = MkInstructionNode(_) or n = MkSsaNode(_) or n = MkGlobalFunctionNode(_)) and
+    not exists(n.getEnclosingCallable()) and
+    result.asFileScope() = n.getFile()
+    or
+    n = MkSummarizedParameterNode(result.asSummarizedCallable(), _)
+    or
+    n = MkSummaryInternalNode(result.asSummarizedCallable(), _)
   }
 
   /** Holds if `p` is a `ParameterNode` of `c` with position `pos`. */
   predicate isParameterNode(ParameterNode p, DataFlowCallable c, ParameterPosition pos) {
-    p.isParameterOf(c.asCallable(), pos)
+    p.isParameterOf(c, pos)
   }
 
   /** Holds if `arg` is an `ArgumentNode` of `c` with position `pos`. */
@@ -115,15 +115,7 @@ module Public {
     ControlFlow::Root getRoot() { none() } // overridden in subclasses
 
     /** INTERNAL: Use `getRoot()` instead. */
-    Callable getEnclosingCallable() {
-      result.getFuncDef() = this.getRoot()
-      or
-      exists(DataFlowCallable dfc | result = dfc.asCallable() |
-        this = MkSummarizedParameterNode(dfc, _)
-        or
-        this = MkSummaryInternalNode(dfc.asCallable(), _)
-      )
-    }
+    Callable getEnclosingCallable() { result.getFuncDef() = this.getRoot() }
 
     /** Gets the type of this node. */
     Type getType() { none() } // overridden in subclasses
@@ -577,7 +569,13 @@ module Public {
   /** A representation of a parameter initialization. */
   abstract class ParameterNode extends DataFlow::Node {
     /** Holds if this node initializes the `i`th parameter of `c`. */
-    abstract predicate isParameterOf(Callable c, int i);
+    abstract predicate isParameterOf(DataFlowCallable c, int i);
+
+    /** Gets the callable that this parameter belongs to. */
+    DataFlowCallable getCallable() { this.isParameterOf(result, _) }
+
+    /** Gets this parameter's position. */
+    int getPosition() { this.isParameterOf(_, result) }
   }
 
   /**
@@ -585,12 +583,10 @@ module Public {
    * already have a parameter nodes.
    */
   class SummarizedParameterNode extends ParameterNode, MkSummarizedParameterNode {
-    Callable c;
+    SummarizedCallable c;
     int i;
 
-    SummarizedParameterNode() {
-      this = MkSummarizedParameterNode(any(DataFlowCallable dfc | c = dfc.asCallable()), i)
-    }
+    SummarizedParameterNode() { this = MkSummarizedParameterNode(c, i) }
 
     // There are no AST representations of summarized parameter nodes
     override ControlFlow::Root getRoot() { none() }
@@ -603,7 +599,9 @@ module Public {
       i = -1 and result = c.asFunction().(Method).getReceiverType()
     }
 
-    override predicate isParameterOf(Callable call, int idx) { c = call and i = idx }
+    override predicate isParameterOf(DataFlowCallable call, int idx) {
+      c = call.asSummarizedCallable() and i = idx
+    }
 
     override string toString() { result = "parameter " + i + " of " + c.toString() }
 
@@ -622,7 +620,9 @@ module Public {
     /** Gets the parameter this node initializes. */
     override Parameter asParameter() { result = parm }
 
-    override predicate isParameterOf(Callable c, int i) { parm.isParameterOf(c.getFuncDef(), i) }
+    override predicate isParameterOf(DataFlowCallable c, int i) {
+      parm.isParameterOf(c.asCallable().getFuncDef(), i)
+    }
   }
 
   /** A representation of a receiver initialization. */
@@ -728,20 +728,18 @@ module Public {
      */
     predicate argumentOf(CallExpr call, int pos) {
       call = c.asExpr() and
-      pos = i and
-      (
-        i != -1
-        or
-        exists(c.(MethodCallNode).getTarget().getBody())
-        or
-        hasExternalSpecification(c.(DataFlow::MethodCallNode).getTarget())
-      )
+      pos = i
     }
 
     /**
      * Gets the `CallNode` this is an argument to.
      */
     CallNode getCall() { result = c }
+
+    /**
+     * Gets this argument's position.
+     */
+    int getPosition() { result = i }
   }
 
   /**

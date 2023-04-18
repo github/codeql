@@ -13,7 +13,6 @@
  */
 
 import java
-import semmle.code.java.security.ExternalProcess
 import semmle.code.java.security.CommandLineQuery
 
 /**
