@@ -97,7 +97,6 @@ std::optional<codeql::ParamDecl> DeclTranslator::translateParamDecl(const swift:
 codeql::TopLevelCodeDecl DeclTranslator::translateTopLevelCodeDecl(
     const swift::TopLevelCodeDecl& decl) {
   auto entry = createEntry(decl);
-  assert(decl.getBody() && "Expect top level code to have body");
   entry.body = dispatcher.fetchLabel(decl.getBody());
   return entry;
 }
@@ -107,7 +106,6 @@ codeql::PatternBindingDecl DeclTranslator::translatePatternBindingDecl(
   auto entry = createEntry(decl);
   for (unsigned i = 0; i < decl.getNumPatternEntries(); ++i) {
     auto pattern = decl.getPattern(i);
-    assert(pattern && "Expect pattern binding decl to have all patterns");
     entry.patterns.push_back(dispatcher.fetchLabel(pattern));
     entry.inits.push_back(dispatcher.fetchOptionalLabel(decl.getInit(i)));
   }
@@ -309,9 +307,10 @@ std::string DeclTranslator::mangledName(const swift::ValueDecl& decl) {
 
 void DeclTranslator::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& decl,
                                               codeql::AbstractFunctionDecl& entry) {
-  assert(decl.hasParameterList() && "Expect functions to have a parameter list");
   entry.name = !decl.hasName() ? "(unnamed function decl)" : constructName(decl.getName());
   entry.body = dispatcher.fetchOptionalLabel(decl.getBody());
+  CODEQL_EXPECT_OR(return, decl.hasParameterList(), "Function {} has no parameter list",
+                         entry.name);
   entry.params = dispatcher.fetchRepeatedLabels(*decl.getParameters());
   auto self = const_cast<swift::ParamDecl* const>(decl.getImplicitSelfDecl());
   entry.self_param = dispatcher.fetchOptionalLabel(self);
@@ -378,7 +377,6 @@ void DeclTranslator::fillGenericContext(const swift::GenericContext& decl,
 }
 
 void DeclTranslator::fillValueDecl(const swift::ValueDecl& decl, codeql::ValueDecl& entry) {
-  assert(decl.getInterfaceType() && "Expect ValueDecl to have InterfaceType");
   entry.interface_type = dispatcher.fetchLabel(decl.getInterfaceType());
 }
 

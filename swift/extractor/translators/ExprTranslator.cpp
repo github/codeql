@@ -355,11 +355,11 @@ codeql::IsExpr ExprTranslator::translateIsExpr(const swift::IsExpr& expr) {
 codeql::SubscriptExpr ExprTranslator::translateSubscriptExpr(const swift::SubscriptExpr& expr) {
   auto entry = createExprEntry(expr);
   fillAccessorSemantics(expr, entry);
-  assert(expr.getArgs() && "SubscriptExpr has getArgs");
+  fillLookupExpr(expr, entry);
+  CODEQL_EXPECT_OR(return entry, expr.getArgs(), "SubscriptExpr has null getArgs");
   for (const auto& arg : *expr.getArgs()) {
     entry.arguments.push_back(emitArgument(arg));
   }
-  fillLookupExpr(expr, entry);
   return entry;
 }
 
@@ -384,9 +384,10 @@ codeql::KeyPathExpr ExprTranslator::translateKeyPathExpr(const swift::KeyPathExp
     }
     if (auto rootTypeRepr = expr.getRootType()) {
       auto keyPathType = expr.getType()->getAs<swift::BoundGenericClassType>();
-      assert(keyPathType && "KeyPathExpr must have BoundGenericClassType");
+      CODEQL_EXPECT_OR(return entry, keyPathType, "KeyPathExpr must have BoundGenericClassType");
       auto keyPathTypeArgs = keyPathType->getGenericArgs();
-      assert(keyPathTypeArgs.size() != 0 && "KeyPathExpr type must have generic args");
+      CODEQL_EXPECT_OR(return entry, keyPathTypeArgs.size() != 0,
+                              "KeyPathExpr type must have generic args");
       entry.root = dispatcher.fetchLabel(rootTypeRepr, keyPathTypeArgs[0]);
     }
   }
@@ -474,10 +475,10 @@ codeql::ErrorExpr ExprTranslator::translateErrorExpr(const swift::ErrorExpr& exp
 
 void ExprTranslator::fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,
                                              codeql::AbstractClosureExpr& entry) {
-  assert(expr.getParameters() && "AbstractClosureExpr has getParameters()");
-  entry.params = dispatcher.fetchRepeatedLabels(*expr.getParameters());
   entry.body = dispatcher.fetchLabel(expr.getBody());
   entry.captures = dispatcher.fetchRepeatedLabels(expr.getCaptureInfo().getCaptures());
+  CODEQL_EXPECT_OR(return, expr.getParameters(), "AbstractClosureExpr has null getParameters()");
+  entry.params = dispatcher.fetchRepeatedLabels(*expr.getParameters());
 }
 
 TrapLabel<ArgumentTag> ExprTranslator::emitArgument(const swift::Argument& arg) {
@@ -524,7 +525,7 @@ void ExprTranslator::fillAnyTryExpr(const swift::AnyTryExpr& expr, codeql::AnyTr
 
 void ExprTranslator::fillApplyExpr(const swift::ApplyExpr& expr, codeql::ApplyExpr& entry) {
   entry.function = dispatcher.fetchLabel(expr.getFn());
-  assert(expr.getArgs() && "ApplyExpr has getArgs");
+  CODEQL_EXPECT_OR(return, expr.getArgs(), "ApplyExpr has null getArgs");
   for (const auto& arg : *expr.getArgs()) {
     entry.arguments.push_back(emitArgument(arg));
   }
