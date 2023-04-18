@@ -47,9 +47,11 @@ abstract class Sanitizer extends DataFlow::Node { }
 private class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /**
+ * DEPRECATED: Use `TaintToObjectMethodTracking` instead.
+ *
  * User input to object method call deserialization flow tracking.
  */
-class TaintToObjectMethodTrackingConfig extends TaintTracking::Configuration {
+deprecated class TaintToObjectMethodTrackingConfig extends TaintTracking::Configuration {
   TaintToObjectMethodTrackingConfig() { this = "TaintToObjectMethodTrackingConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -60,9 +62,27 @@ class TaintToObjectMethodTrackingConfig extends TaintTracking::Configuration {
 }
 
 /**
+ * User input to object method call deserialization flow tracking config.
+ */
+private module TaintToObjectMethodTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof InstanceMethodSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * User input to object method call deserialization flow tracking config.
+ */
+module TaintToObjectMethodTracking = TaintTracking::Global<TaintToObjectMethodTrackingConfig>;
+
+/**
+ * DEPRECATED: Use `JsonConvertTracking` instead.
+ *
  * User input to `JsonConvert` call deserialization flow tracking.
  */
-class JsonConvertTrackingConfig extends TaintTracking::Configuration {
+deprecated class JsonConvertTrackingConfig extends TaintTracking::Configuration {
   JsonConvertTrackingConfig() { this = "JsonConvertTrackingConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -73,6 +93,24 @@ class JsonConvertTrackingConfig extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+/**
+ * User input to `JsonConvert` call deserialization flow tracking config.
+ */
+private module JsonConvertTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof NewtonsoftJsonConvertDeserializeObjectMethodSink
+  }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * User input to `JsonConvert` call deserialization flow tracking config.
+ */
+module JsonConvertTracking = TaintTracking::Global<JsonConvertTrackingConfig>;
 
 /**
  * DEPRECATED: Use `TypeNameTracking` instead.
@@ -186,9 +224,12 @@ private module TypeNameTrackingConfig implements DataFlow::ConfigSig {
 module TypeNameTracking = DataFlow::Global<TypeNameTrackingConfig>;
 
 /**
+ * DEPRECATED: Use `TaintToConstructorOrStaticMethodTracking` instead.
+ *
  * User input to static method or constructor call deserialization flow tracking.
  */
-class TaintToConstructorOrStaticMethodTrackingConfig extends TaintTracking::Configuration {
+deprecated class TaintToConstructorOrStaticMethodTrackingConfig extends TaintTracking::Configuration
+{
   TaintToConstructorOrStaticMethodTrackingConfig() {
     this = "TaintToConstructorOrStaticMethodTrackingConfig"
   }
@@ -198,6 +239,174 @@ class TaintToConstructorOrStaticMethodTrackingConfig extends TaintTracking::Conf
   override predicate isSink(DataFlow::Node sink) { sink instanceof ConstructorOrStaticMethodSink }
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * User input to static method or constructor call deserialization flow tracking config.
+ */
+private module TaintToConstructorOrStaticMethodTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof ConstructorOrStaticMethodSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * User input to static method or constructor call deserialization flow tracking module.
+ */
+module TaintToConstructorOrStaticMethodTracking =
+  TaintTracking::Global<TaintToConstructorOrStaticMethodTrackingConfig>;
+
+private newtype TUnsafeDeserializationPathNode =
+  TTaintToObjectMethodTrackingPathNode(TaintToObjectMethodTracking::PathNode node) or
+  TTaintToConstructorOrStaticMethodTrackingPathNode(
+    TaintToConstructorOrStaticMethodTracking::PathNode node
+  ) or
+  TJsonConvertTrackingPathNode(JsonConvertTracking::PathNode node)
+
+/**
+ * A flow node for tracking unsafe deserialization.
+ */
+class UnsafeDeserializationPathNode extends TUnsafeDeserializationPathNode {
+  /** Gets a textual representation of this node. */
+  string toString() { none() }
+
+  /** Gets the location of this node. */
+  Location getLocation() { none() }
+
+  /** Gets the node of this path node. */
+  abstract DataFlow::Node getNode();
+
+  /** Gets the underlying `TaintToObjectMethodTracking::PathNode`, if any. */
+  TaintToObjectMethodTracking::PathNode getTaintToObjectMethodTrackingPathNode() {
+    result = this.(TaintToObjectMethodTrackingPathNode).getPathNode()
+  }
+
+  /** Gets the underlying `TaintToConstructorOrStaticMethodTracking::PathNode`, if any. */
+  TaintToConstructorOrStaticMethodTracking::PathNode getTaintToConstructorOrStaticMethodTrackingPathNode(
+    ) {
+    result = this.(TaintToConstructorOrStaticMethodTrackingPathNode).getPathNode()
+  }
+
+  /** Gets the underlying `JsonConvertTracking::PathNode`, if any. */
+  JsonConvertTracking::PathNode getJsonConvertTrackingPathNode() {
+    result = this.(JsonConvertTrackingPathNode).getPathNode()
+  }
+}
+
+/**
+ * A TaintToObjectMethodTracking data flow node.
+ */
+class TaintToObjectMethodTrackingPathNode extends TTaintToObjectMethodTrackingPathNode,
+  UnsafeDeserializationPathNode
+{
+  TaintToObjectMethodTracking::PathNode node;
+
+  TaintToObjectMethodTrackingPathNode() { this = TTaintToObjectMethodTrackingPathNode(node) }
+
+  /** Gets the underlying `TaintToObjectMethodTracking::PathNode`. */
+  TaintToObjectMethodTracking::PathNode getPathNode() { result = node }
+
+  override string toString() { result = node.toString() }
+
+  override Location getLocation() { result = node.getNode().getLocation() }
+
+  override DataFlow::Node getNode() { result = node.getNode() }
+}
+
+/**
+ * A TaintToConstructorOrStaticMethodTracking data flow node.
+ */
+class TaintToConstructorOrStaticMethodTrackingPathNode extends TTaintToConstructorOrStaticMethodTrackingPathNode,
+  UnsafeDeserializationPathNode
+{
+  TaintToConstructorOrStaticMethodTracking::PathNode node;
+
+  TaintToConstructorOrStaticMethodTrackingPathNode() {
+    this = TTaintToConstructorOrStaticMethodTrackingPathNode(node)
+  }
+
+  /** Gets the underlying `TaintToConstructorOrStaticMethodTracking::PathNode`. */
+  TaintToConstructorOrStaticMethodTracking::PathNode getPathNode() { result = node }
+
+  override string toString() { result = node.toString() }
+
+  override Location getLocation() { result = node.getNode().getLocation() }
+
+  override DataFlow::Node getNode() { result = node.getNode() }
+}
+
+/**
+ * A JsonConvertTracking data flow node.
+ */
+class JsonConvertTrackingPathNode extends TJsonConvertTrackingPathNode,
+  UnsafeDeserializationPathNode
+{
+  JsonConvertTracking::PathNode node;
+
+  JsonConvertTrackingPathNode() { this = TJsonConvertTrackingPathNode(node) }
+
+  /** Gets the underlying `JsonConvertTracking::PathNode`. */
+  JsonConvertTracking::PathNode getPathNode() { result = node }
+
+  override string toString() { result = node.toString() }
+
+  override Location getLocation() { result = node.getNode().getLocation() }
+
+  override DataFlow::Node getNode() { result = node.getNode() }
+}
+
+/**
+ * Provides the query predicates needed to include a graph in a path-problem query.
+ */
+module PathGraph {
+  /**
+   * Holds if `(node1,node2)` is an edge in the graph of data flow path explanations.
+   */
+  query predicate edges(UnsafeDeserializationPathNode node1, UnsafeDeserializationPathNode node2) {
+    TaintToObjectMethodTracking::PathGraph::edges(node1.getTaintToObjectMethodTrackingPathNode(),
+      node2.getTaintToObjectMethodTrackingPathNode())
+    or
+    TaintToConstructorOrStaticMethodTracking::PathGraph::edges(node1
+          .getTaintToConstructorOrStaticMethodTrackingPathNode(),
+      node2.getTaintToConstructorOrStaticMethodTrackingPathNode())
+    or
+    JsonConvertTracking::PathGraph::edges(node1.getJsonConvertTrackingPathNode(),
+      node2.getJsonConvertTrackingPathNode())
+  }
+
+  /** Holds if `n` is a node in the graph of data flow path explanations. */
+  query predicate nodes(UnsafeDeserializationPathNode n, string key, string val) {
+    TaintToObjectMethodTracking::PathGraph::nodes(n.getTaintToObjectMethodTrackingPathNode(), key,
+      val)
+    or
+    TaintToConstructorOrStaticMethodTracking::PathGraph::nodes(n.getTaintToConstructorOrStaticMethodTrackingPathNode(),
+      key, val)
+    or
+    JsonConvertTracking::PathGraph::nodes(n.getJsonConvertTrackingPathNode(), key, val)
+  }
+
+  /**
+   * Holds if `(arg, par, ret, out)` forms a subpath-tuple, that is, flow through
+   * a subpath between `par` and `ret` with the connecting edges `arg -> par` and
+   * `ret -> out` is summarized as the edge `arg -> out`.
+   */
+  query predicate subpaths(
+    UnsafeDeserializationPathNode arg, UnsafeDeserializationPathNode par,
+    UnsafeDeserializationPathNode ret, UnsafeDeserializationPathNode out
+  ) {
+    TaintToObjectMethodTracking::PathGraph::subpaths(arg.getTaintToObjectMethodTrackingPathNode(),
+      par.getTaintToObjectMethodTrackingPathNode(), ret.getTaintToObjectMethodTrackingPathNode(),
+      out.getTaintToObjectMethodTrackingPathNode()) or
+    TaintToConstructorOrStaticMethodTracking::PathGraph::subpaths(arg.getTaintToConstructorOrStaticMethodTrackingPathNode(),
+      par.getTaintToConstructorOrStaticMethodTrackingPathNode(),
+      ret.getTaintToConstructorOrStaticMethodTrackingPathNode(),
+      out.getTaintToConstructorOrStaticMethodTrackingPathNode()) or
+    JsonConvertTracking::PathGraph::subpaths(arg.getJsonConvertTrackingPathNode(),
+      par.getJsonConvertTrackingPathNode(), ret.getJsonConvertTrackingPathNode(),
+      out.getJsonConvertTrackingPathNode())
+  }
 }
 
 /**

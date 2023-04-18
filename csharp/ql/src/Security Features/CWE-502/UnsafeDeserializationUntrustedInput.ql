@@ -13,14 +13,13 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.UnsafeDeserializationQuery
-import DataFlow::PathGraph
+import PathGraph
 
-from DataFlow::PathNode userInput, DataFlow::PathNode deserializeCallArg
+from UnsafeDeserializationPathNode userInput, UnsafeDeserializationPathNode deserializeCallArg
 where
-  exists(TaintToObjectMethodTrackingConfig taintTracking |
-    // all flows from user input to deserialization with weak and strong type serializers
-    taintTracking.hasFlowPath(userInput, deserializeCallArg)
-  ) and
+  // all flows from user input to deserialization with weak and strong type serializers
+  TaintToObjectMethodTracking::flowPath(userInput.getTaintToObjectMethodTrackingPathNode(),
+    deserializeCallArg.getTaintToObjectMethodTrackingPathNode()) and
   // intersect with strong types, but user controlled or weak types deserialization usages
   (
     exists(DataFlow::Node weakTypeUsage, MethodCall mc |
@@ -37,13 +36,14 @@ where
   )
   or
   // no type check needed - straightforward taint -> sink
-  exists(TaintToConstructorOrStaticMethodTrackingConfig taintTracking2 |
-    taintTracking2.hasFlowPath(userInput, deserializeCallArg)
-  )
+  TaintToConstructorOrStaticMethodTracking::flowPath(userInput
+        .getTaintToConstructorOrStaticMethodTrackingPathNode(),
+    deserializeCallArg.getTaintToConstructorOrStaticMethodTrackingPathNode())
   or
   // JsonConvert static method call, but with additional unsafe typename tracking
-  exists(JsonConvertTrackingConfig taintTrackingJsonConvert, DataFlow::Node settingsCallArg |
-    taintTrackingJsonConvert.hasFlowPath(userInput, deserializeCallArg) and
+  exists(DataFlow::Node settingsCallArg |
+    JsonConvertTracking::flowPath(userInput.getJsonConvertTrackingPathNode(),
+      deserializeCallArg.getJsonConvertTrackingPathNode()) and
     TypeNameTracking::flow(_, settingsCallArg) and
     deserializeCallArg.getNode().asExpr().getParent() = settingsCallArg.asExpr().getParent()
   )
