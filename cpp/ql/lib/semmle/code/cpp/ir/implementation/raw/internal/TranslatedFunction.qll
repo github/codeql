@@ -322,6 +322,8 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
       (
         var instanceof GlobalOrNamespaceVariable
         or
+        var instanceof StaticLocalVariable
+        or
         var instanceof MemberVariable and not var instanceof Field
       ) and
       exists(VariableAccess access |

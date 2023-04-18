@@ -139,7 +139,8 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
 
   final override Declaration getFunction() {
     result = expr.getEnclosingFunction() or
-    result = expr.getEnclosingVariable().(GlobalOrNamespaceVariable)
+    result = expr.getEnclosingVariable().(GlobalOrNamespaceVariable) or
+    result = expr.getEnclosingVariable().(StaticInitializedStaticLocalVariable)
   }
 
   final override Locatable getAst() { result = expr }
@@ -654,6 +655,8 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
     result = initList.getEnclosingFunction()
     or
     result = initList.getEnclosingVariable().(GlobalOrNamespaceVariable)
+    or
+    result = initList.getEnclosingVariable().(StaticInitializedStaticLocalVariable)
   }
 
   final override Instruction getFirstInstruction() { result = getInstruction(getElementIndexTag()) }

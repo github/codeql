@@ -62,15 +62,6 @@ private predicate ignoreExprAndDescendants(Expr expr) {
   // constant value.
   isIRConstant(getRealParent(expr))
   or
-  // Only translate the initializer of a static local if it uses run-time data.
-  // Otherwise the initializer does not run in function scope.
-  exists(Initializer init, StaticStorageDurationVariable var |
-    init = var.getInitializer() and
-    not var.hasDynamicInitialization() and
-    expr = init.getExpr().getFullyConverted() and
-    not var instanceof GlobalOrNamespaceVariable
-  )
-  or
   // Ignore descendants of `__assume` expressions, since we translated these to `NoOp`.
   getRealParent(expr) instanceof AssumeExpr
   or
@@ -438,6 +429,17 @@ predicate hasTranslatedSyntheticTemporaryObject(Expr expr) {
   not expr.hasLValueToRValueConversion()
 }
 
+class StaticInitializedStaticLocalVariable extends StaticLocalVariable {
+  StaticInitializedStaticLocalVariable() {
+    this.hasInitializer() and
+    not this.hasDynamicInitialization()
+  }
+}
+
+class RuntimeInitializedStaticLocalVariable extends StaticLocalVariable {
+  RuntimeInitializedStaticLocalVariable() { this.hasDynamicInitialization() }
+}
+
 /**
  * Holds if the specified `DeclarationEntry` needs an IR translation. An IR translation is only
  * necessary for automatic local variables, or for static local variables with dynamic
@@ -453,7 +455,7 @@ private predicate translateDeclarationEntry(IRDeclarationEntry entry) {
       not var.isStatic()
       or
       // Ignore static variables unless they have a dynamic initializer.
-      var.(StaticLocalVariable).hasDynamicInitialization()
+      var instanceof RuntimeInitializedStaticLocalVariable
     )
   )
 }
@@ -755,7 +757,7 @@ newtype TTranslatedElement =
   } or
   // The side effect that initializes newly-allocated memory.
   TTranslatedAllocationSideEffect(AllocationExpr expr) { not ignoreSideEffects(expr) } or
-  TTranslatedGlobalOrNamespaceVarInit(GlobalOrNamespaceVariable var) { Raw::varHasIRFunc(var) }
+  TTranslatedStaticStorageDurationVarInit(Variable var) { Raw::varHasIRFunc(var) }
 
 /**
  * Gets the index of the first explicitly initialized element in `initList`
@@ -1043,6 +1045,6 @@ abstract class TranslatedRootElement extends TranslatedElement {
   TranslatedRootElement() {
     this instanceof TTranslatedFunction
     or
-    this instanceof TTranslatedGlobalOrNamespaceVarInit
+    this instanceof TTranslatedStaticStorageDurationVarInit
   }
 }
