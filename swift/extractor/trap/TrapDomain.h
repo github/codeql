@@ -26,10 +26,15 @@ class TrapDomain {
   }
 
   template <typename... Args>
-  void debug(const Args&... args) {
-    out << "/* DEBUG:\n";
+  void emitComment(const Args&... args) {
+    out << "/* ";
     (out << ... << args);
-    out << "\n*/\n";
+    out << " */\n";
+  }
+
+  template <typename... Args>
+  void debug(const Args&... args) {
+    emitComment("DEBUG:\n", args..., '\n');
   }
 
   template <typename Tag>
