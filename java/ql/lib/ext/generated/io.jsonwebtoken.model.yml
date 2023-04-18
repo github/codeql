@@ -299,9 +299,9 @@ extensions:
       - ["io.jsonwebtoken", "UnsupportedJwtException", true, "UnsupportedJwtException", "(String)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["io.jsonwebtoken", "UnsupportedJwtException", true, "UnsupportedJwtException", "(String,Throwable)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
       - ["io.jsonwebtoken", "UnsupportedJwtException", true, "UnsupportedJwtException", "(String,Throwable)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
-      - ["java.util", "Map<String,Object>", true, "put", "(String,Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
-      - ["java.util", "Map<String,Object>", true, "put", "(String,Object)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
-      - ["java.util", "Map<String,Object>", true, "put", "(String,Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
+      - ["java.util", "Map", true, "put", "(String,Object)", "", "Argument[0]", "Argument[this]", "taint", "df-generated"]
+      - ["java.util", "Map", true, "put", "(String,Object)", "", "Argument[1]", "Argument[this]", "taint", "df-generated"]
+      - ["java.util", "Map", true, "put", "(String,Object)", "", "Argument[this]", "ReturnValue", "taint", "df-generated"]
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel
