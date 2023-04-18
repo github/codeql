@@ -457,9 +457,7 @@ module API {
      * Gets a string representation of the lexicographically least among all shortest access paths
      * from the root to this node.
      */
-    string getPath() {
-      result = min(string p | p = this.getAPath(Impl::distanceFromRoot(this)) | p)
-    }
+    string getPath() { result = min(string p | p = this.getAPath() | p) }
 
     /**
      * Gets a node such that there is an edge in the API graph between this node and the other
@@ -529,23 +527,22 @@ module API {
     }
 
     /**
-     * Gets a path of the given `length` from the root to this node.
+     * Gets a shortest path from the root to this node.
      */
-    private string getAPath(int length) {
+    private string getAPath() {
       this instanceof Impl::MkRoot and
-      length = 0 and
       result = ""
       or
       exists(Node pred, Label::ApiLabel lbl, string predpath |
         Impl::edge(pred, lbl, this) and
-        predpath = pred.getAPath(length - 1) and
-        exists(string dot | if length = 1 then dot = "" else dot = "." |
+        Impl::distanceFromRoot(this) = 1 + Impl::distanceFromRoot(pred) and
+        predpath = pred.getAPath() and
+        exists(string dot | if predpath = "" then dot = "" else dot = "." |
           result = predpath + dot + lbl and
           // avoid producing strings longer than 1MB
           result.length() < 1000 * 1000
         )
-      ) and
-      length in [1 .. Impl::distanceFromRoot(this)]
+      )
     }
 
     /** Gets the shortest distance from the root to this node in the API graph. */
