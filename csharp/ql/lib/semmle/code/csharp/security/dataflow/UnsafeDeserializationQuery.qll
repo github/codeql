@@ -201,9 +201,11 @@ class TaintToConstructorOrStaticMethodTrackingConfig extends TaintTracking::Conf
 }
 
 /**
+ * DEPRECATED: Use `TaintToObjectTypeTracking` instead.
+ *
  * User input to instance type flow tracking.
  */
-class TaintToObjectTypeTrackingConfig extends TaintTracking2::Configuration {
+deprecated class TaintToObjectTypeTrackingConfig extends TaintTracking2::Configuration {
   TaintToObjectTypeTrackingConfig() { this = "TaintToObjectTypeTrackingConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -234,9 +236,47 @@ class TaintToObjectTypeTrackingConfig extends TaintTracking2::Configuration {
 }
 
 /**
+ * User input to instance type flow tracking config.
+ */
+private module TaintToObjectTypeTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall mc |
+      mc.getTarget() instanceof UnsafeDeserializer and
+      sink.asExpr() = mc.getQualifier()
+    )
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(MethodCall mc, Method m |
+      m = mc.getTarget() and
+      m.getDeclaringType().hasQualifiedName("System", "Type") and
+      m.hasName("GetType") and
+      m.isStatic() and
+      n1.asExpr() = mc.getArgument(0) and
+      n2.asExpr() = mc
+    )
+    or
+    exists(ObjectCreation oc |
+      n1.asExpr() = oc.getAnArgument() and
+      n2.asExpr() = oc and
+      oc.getObjectType() instanceof StrongTypeDeserializer
+    )
+  }
+}
+
+/**
+ * User input to instance type flow tracking module.
+ */
+module TaintToObjectTypeTracking = TaintTracking::Global<TaintToObjectTypeTrackingConfig>;
+
+/**
+ * DEPRECATED: Use `WeakTypeCreationToUsageTracking` instead.
+ *
  * Unsafe deserializer creation to usage tracking config.
  */
-class WeakTypeCreationToUsageTrackingConfig extends TaintTracking2::Configuration {
+deprecated class WeakTypeCreationToUsageTrackingConfig extends TaintTracking2::Configuration {
   WeakTypeCreationToUsageTrackingConfig() { this = "DeserializerCreationToUsageTrackingConfig" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -253,6 +293,31 @@ class WeakTypeCreationToUsageTrackingConfig extends TaintTracking2::Configuratio
     )
   }
 }
+
+/**
+ * Unsafe deserializer creation to usage tracking config.
+ */
+private module WeakTypeCreationToUsageTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    exists(ObjectCreation oc |
+      oc.getObjectType() instanceof WeakTypeDeserializer and
+      source.asExpr() = oc
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall mc |
+      mc.getTarget() instanceof UnsafeDeserializer and
+      sink.asExpr() = mc.getQualifier()
+    )
+  }
+}
+
+/**
+ * Unsafe deserializer creation to usage tracking module.
+ */
+module WeakTypeCreationToUsageTracking =
+  TaintTracking::Global<WeakTypeCreationToUsageTrackingConfig>;
 
 /**
  * Safe deserializer creation to usage tracking config.
