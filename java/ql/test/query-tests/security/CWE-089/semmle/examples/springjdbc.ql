@@ -1,27 +1,13 @@
 import java
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.QueryInjection
+import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.SqlInjectionQuery
 import TestUtilities.InlineExpectationsTest
 
-private module QueryInjectionFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) {
-    src.asExpr() = any(MethodAccess ma | ma.getMethod().hasName("source"))
-  }
+private class SourceMethodSource extends RemoteFlowSource {
+  SourceMethodSource() { this.asExpr().(MethodAccess).getMethod().hasName("source") }
 
-  predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
-
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType or
-    node.getType() instanceof NumberType
-  }
-
-  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(AdditionalQueryInjectionTaintStep s).step(node1, node2)
-  }
+  override string getSourceType() { result = "source" }
 }
-
-private module QueryInjectionFlow = TaintTracking::Global<QueryInjectionFlowConfig>;
 
 class HasFlowTest extends InlineExpectationsTest {
   HasFlowTest() { this = "HasFlowTest" }
