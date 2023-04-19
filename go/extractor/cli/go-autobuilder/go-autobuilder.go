@@ -22,7 +22,8 @@ import (
 
 func usage() {
 	fmt.Fprintf(os.Stderr,
-		`%s is a wrapper script that installs dependencies and calls the extractor.
+		`%s is a wrapper script that installs dependencies and calls the extractor, or if '--identify-environment'
+is passed then it produces a file 'environment.json' which specifies what go version is needed.
 
 When LGTM_SRC is not set, the script installs dependencies as described below, and then invokes the
 extractor in the working directory.
@@ -601,12 +602,7 @@ func extract(depMode DependencyInstallerMode, modMode ModMode) {
 	}
 }
 
-func main() {
-	if len(os.Args) > 1 {
-		usage()
-		os.Exit(2)
-	}
-
+func installDependenciesAndBuild() {
 	log.Printf("Autobuilder was built with %s, environment has %s\n", runtime.Version(), getEnvGoVersion())
 
 	srcdir := getSourceDir()
@@ -691,4 +687,19 @@ func main() {
 	}
 
 	extract(depMode, modMode)
+}
+
+func identifyEnvironment() {
+
+}
+
+func main() {
+	if len(os.Args) == 0 {
+		installDependenciesAndBuild()
+	} else if len(os.Args) == 2 && os.Args[1] == "--identify-environment" {
+		identifyEnvironment()
+	} else {
+		usage()
+		os.Exit(2)
+	}
 }
