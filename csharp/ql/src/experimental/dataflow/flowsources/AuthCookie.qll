@@ -9,18 +9,16 @@ import semmle.code.csharp.frameworks.microsoft.AspNetCore
  * Holds if the expression is a variable with a sensitive name.
  */
 predicate isCookieWithSensitiveName(Expr cookieExpr) {
-  exists(AuthCookieNameConfiguration dataflow, DataFlow::Node sink |
-    dataflow.hasFlowTo(sink) and
+  exists(DataFlow::Node sink |
+    AuthCookieName::flowTo(sink) and
     sink.asExpr() = cookieExpr
   )
 }
 
 /**
- * Tracks if a variable with a sensitive name is used as an argument.
+ * Configuration for tracking if a variable with a sensitive name is used as an argument.
  */
-private class AuthCookieNameConfiguration extends DataFlow::Configuration {
-  AuthCookieNameConfiguration() { this = "AuthCookieNameConfiguration" }
-
+private module AuthCookieNameConfig implements DataFlow::ConfigSig {
   private predicate isAuthVariable(Expr expr) {
     exists(string val |
       (
@@ -32,12 +30,15 @@ private class AuthCookieNameConfiguration extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
+  predicate isSource(DataFlow::Node source) { isAuthVariable(source.asExpr()) }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(Call c | sink.asExpr() = c.getAnArgument())
-  }
+  predicate isSink(DataFlow::Node sink) { exists(Call c | sink.asExpr() = c.getAnArgument()) }
 }
+
+/**
+ * Tracks if a variable with a sensitive name is used as an argument.
+ */
+private module AuthCookieName = DataFlow::Global<AuthCookieNameConfig>;
 
 /**
  * DEPRECATED: Use `CookieOptionsTracking` instead.
