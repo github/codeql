@@ -1,11 +1,16 @@
+use clap::Args;
 use std::env;
 use std::path::PathBuf;
 use std::process::Command;
 
-fn main() -> std::io::Result<()> {
+#[derive(Args)]
+// The autobuilder takes no command-line options, but this may change in the future.
+pub struct Options {}
+
+pub fn run(_: Options) -> std::io::Result<()> {
     let dist = env::var("CODEQL_DIST").expect("CODEQL_DIST not set");
-    let db = env::var("CODEQL_EXTRACTOR_QL_WIP_DATABASE")
-        .expect("CODEQL_EXTRACTOR_QL_WIP_DATABASE not set");
+    let db = env::var("CODEQL_EXTRACTOR_RUBY_WIP_DATABASE")
+        .expect("CODEQL_EXTRACTOR_RUBY_WIP_DATABASE not set");
     let codeql = if env::consts::OS == "windows" {
         "codeql.exe"
     } else {
@@ -15,16 +20,13 @@ fn main() -> std::io::Result<()> {
     let mut cmd = Command::new(codeql);
     cmd.arg("database")
         .arg("index-files")
-        .arg("--include-extension=.ql")
-        .arg("--include-extension=.qll")
-        .arg("--include-extension=.dbscheme")
-        .arg("--include-extension=.json")
-        .arg("--include-extension=.jsonc")
-        .arg("--include-extension=.jsonl")
-        .arg("--include=**/qlpack.yml")
-        .arg("--include=deprecated.blame")
-        .arg("--size-limit=10m")
-        .arg("--language=ql")
+        .arg("--include-extension=.rb")
+        .arg("--include-extension=.erb")
+        .arg("--include-extension=.gemspec")
+        .arg("--include=**/Gemfile")
+        .arg("--exclude=**/.git")
+        .arg("--size-limit=5m")
+        .arg("--language=ruby")
         .arg("--working-dir=.")
         .arg(db);
 
