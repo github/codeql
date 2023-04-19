@@ -13,7 +13,7 @@ import codeql.swift.security.CleartextStorageDatabaseExtensions
  * A taint configuration from sensitive information to expressions that are
  * transmitted over a network.
  */
-module CleartextStorageConfig implements DataFlow::ConfigSig {
+module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
   predicate isSink(DataFlow::Node node) { node instanceof CleartextStorageDatabaseSink }
@@ -48,4 +48,4 @@ module CleartextStorageConfig implements DataFlow::ConfigSig {
  * Detect taint flow of sensitive information to expressions that are
  * transmitted over a network.
  */
-module CleartextStorageFlow = TaintTracking::Global<CleartextStorageConfig>;
+module CleartextStorageDatabaseFlow = TaintTracking::Global<CleartextStorageDatabaseConfig>;
