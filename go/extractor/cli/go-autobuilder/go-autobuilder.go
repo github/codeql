@@ -252,6 +252,31 @@ func getDepMode() DependencyInstallerMode {
 	return GoGetNoModules
 }
 
+func tryReadGoDirective(depMode DependencyInstallerMode) (string, bool) {
+	version := ""
+	found := false
+	if depMode == GoGetWithModules {
+		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+)$`)
+		goMod, err := os.ReadFile("go.mod")
+		if err != nil {
+			log.Println("Failed to read go.mod to check for missing Go version")
+		} else {
+			matches := versionRe.FindSubmatch(goMod)
+			if matches != nil {
+				found = true
+				if len(matches) > 1 {
+					version := string(matches[1])
+					semverVersion := "v" + version
+					if semver.Compare(semverVersion, getEnvGoSemVer()) >= 0 {
+						diagnostics.EmitNewerGoVersionNeeded()
+					}
+				}
+			}
+		}
+	}
+	return version, found
+}
+
 func getModMode(depMode DependencyInstallerMode) ModMode {
 	if depMode == GoGetWithModules {
 		// if a vendor/modules.txt file exists, we assume that there are vendored Go dependencies, and
@@ -612,28 +637,11 @@ func installDependenciesAndBuild() {
 	// determine how to install dependencies and whether a GOPATH needs to be set up before
 	// extraction
 	depMode := getDepMode()
-	goDirectiveFound := false
 	if _, present := os.LookupEnv("GO111MODULE"); !present {
 		os.Setenv("GO111MODULE", "auto")
 	}
-	if depMode == GoGetWithModules {
-		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+)$`)
-		goMod, err := os.ReadFile("go.mod")
-		if err != nil {
-			log.Println("Failed to read go.mod to check for missing Go version")
-		} else {
-			matches := versionRe.FindSubmatch(goMod)
-			if matches != nil {
-				goDirectiveFound = true
-				if len(matches) > 1 {
-					goDirectiveVersion := "v" + string(matches[1])
-					if semver.Compare(goDirectiveVersion, getEnvGoSemVer()) >= 0 {
-						diagnostics.EmitNewerGoVersionNeeded()
-					}
-				}
-			}
-		}
-	}
+
+	_, goDirectiveFound := tryReadGoDirective(depMode)
 
 	modMode := getModMode(depMode)
 	modMode = fixGoVendorIssues(modMode, depMode, goDirectiveFound)
