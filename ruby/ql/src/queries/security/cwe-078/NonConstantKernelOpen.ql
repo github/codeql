@@ -37,7 +37,7 @@ predicate hasConstantPrefix(DataFlow::Node node) {
   node.asExpr().getExpr().(StringlikeLiteral).getComponent(0) instanceof StringTextComponent
   or
   // it is not a constant string argument
-  exists(node.asExpr().getExpr().getConstantValue())
+  exists(node.getConstantValue())
   or
   // not a concatenation that starts with a constant string
   exists(DataFlow::ExprNode prefix |
@@ -46,5 +46,13 @@ predicate hasConstantPrefix(DataFlow::Node node) {
   )
   or
   // is a .freeze call on a constant string
-  node.asExpr().getExpr().(ConstantReadAccess).getValue().(MethodCall).getMethodName() = "freeze"
+  exists(DataFlow::CallNode call | node = call and call.getMethodName() = "freeze" |
+    hasConstantPrefix(call.getReceiver())
+  )
+  or
+  // is a constant read of a constant string
+  exists(DataFlow::Node constant |
+    constant.asExpr().getExpr() = node.asExpr().getExpr().(ConstantReadAccess).getValue() and
+    hasConstantPrefix(constant)
+  )
 }
