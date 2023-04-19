@@ -314,9 +314,8 @@ class FreadBA extends BufferAccess {
  * but not:
  *  &buffer[ix]
  */
-class ArrayExprBA extends BufferAccess {
+class ArrayExprBA extends BufferAccess, ArrayExpr {
   ArrayExprBA() {
-    exists(this.(ArrayExpr).getArrayOffset().getValue().toInt()) and
     not exists(AddressOfExpr aoe | aoe.getAChild() = this) and
     // exclude accesses in macro implementation of `strcmp`,
     // which are carefully controlled but can look dangerous.

@@ -4,6 +4,7 @@
 
 #include <iostream>
 #include <string>
+#include <binlog/binlog.hpp>
 
 #include "{{trap_library_dir}}/TrapLabel.h"
 #include "{{trap_library_dir}}/TrapTagTraits.h"
@@ -43,3 +44,7 @@ struct ToBindingTrapFunctor<{{type}}> {
 {{/id}}
 {{/traps}}
 }
+
+{{#traps}}
+BINLOG_ADAPT_STRUCT(codeql::{{name}}Trap{{#fields}}, {{field_name}}{{/fields}});
+{{/traps}}

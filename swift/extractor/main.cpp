@@ -16,8 +16,11 @@
 #include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/file/Path.h"
+#include "swift/extractor/infra/log/SwiftLogging.h"
 
 using namespace std::string_literals;
+
+const std::string_view codeql::logRootName = "extractor";
 
 // must be called before processFrontendOptions modifies output paths
 static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
@@ -83,6 +86,8 @@ class Observer : public swift::FrontendObserver {
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
+    // remove default consumers to avoid double messaging
+    instance.getDiags().takeConsumers();
     instance.addDiagnosticConsumer(&diagConsumer);
   }
 
@@ -179,7 +184,28 @@ codeql::SwiftExtractorConfiguration configure(int argc, char** argv) {
   return configuration;
 }
 
-int main(int argc, char** argv) {
+// TODO: use `absl::StrJoin` or `boost::algorithm::join`
+static auto argDump(int argc, char** argv) {
+  std::string ret;
+  for (auto arg = argv + 1; arg < argv + argc; ++arg) {
+    ret += *arg;
+    ret += ' ';
+  }
+  ret.pop_back();
+  return ret;
+}
+
+// TODO: use `absl::StrJoin` or `boost::algorithm::join`
+static auto envDump(char** envp) {
+  std::string ret;
+  for (auto env = envp; *env; ++env) {
+    ret += *env;
+    ret += '\n';
+  }
+  return ret;
+}
+
+int main(int argc, char** argv, char** envp) {
   checkWhetherToRunUnderTool(argc, argv);
 
   if (argc == 1) {
@@ -193,6 +219,11 @@ int main(int argc, char** argv) {
   initializeSwiftModules();
 
   const auto configuration = configure(argc, argv);
+  {
+    codeql::Logger logger{"main"};
+    LOG_INFO("calling extractor with arguments \"{}\"", argDump(argc, argv));
+    LOG_DEBUG("environment:\n{}\n", envDump(envp));
+  }
 
   auto openInterception = codeql::setupFileInterception(configuration);
 
@@ -203,6 +234,8 @@ int main(int argc, char** argv) {
   if (frontend_rc == 0) {
     observer.markSuccessfullyExtractedFiles();
   }
+
+  codeql::Log::flush();
 
   return frontend_rc;
 }

@@ -13,7 +13,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.CleartextStoragePreferencesQuery
-import CleartextStorageFlow::PathGraph
+import CleartextStoragePreferencesFlow::PathGraph
 
 /**
  * Gets a prettier node to use in the results.
@@ -26,10 +26,10 @@ DataFlow::Node cleanupNode(DataFlow::Node n) {
 }
 
 from
-  CleartextStorageFlow::PathNode sourceNode, CleartextStorageFlow::PathNode sinkNode,
-  DataFlow::Node cleanSink
+  CleartextStoragePreferencesFlow::PathNode sourceNode,
+  CleartextStoragePreferencesFlow::PathNode sinkNode, DataFlow::Node cleanSink
 where
-  CleartextStorageFlow::flowPath(sourceNode, sinkNode) and
+  CleartextStoragePreferencesFlow::flowPath(sourceNode, sinkNode) and
   cleanSink = cleanupNode(sinkNode.getNode())
 select cleanSink, sourceNode, sinkNode,
   "This operation stores '" + cleanSink.toString() + "' in " +

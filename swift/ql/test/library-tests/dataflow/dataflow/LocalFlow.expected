@@ -601,3 +601,64 @@
 | test.swift:560:7:560:7 | n | test.swift:560:7:560:7 | SSA def(n) |
 | test.swift:560:11:560:11 | 0 | test.swift:560:7:560:7 | n |
 | test.swift:561:36:561:36 | n | test.swift:561:35:561:36 | &... |
+| test.swift:565:7:565:7 | self | test.swift:565:7:565:7 | SSA def(self) |
+| test.swift:567:3:567:3 | SSA def(self) | test.swift:568:5:568:5 | self |
+| test.swift:567:3:567:3 | self | test.swift:567:3:567:3 | SSA def(self) |
+| test.swift:567:8:567:11 | SSA def(x) | test.swift:568:14:568:14 | x |
+| test.swift:567:8:567:11 | x | test.swift:567:8:567:11 | SSA def(x) |
+| test.swift:568:5:568:5 | [post] self | test.swift:567:3:569:3 | self[return] |
+| test.swift:568:5:568:5 | self | test.swift:567:3:569:3 | self[return] |
+| test.swift:573:7:573:7 | SSA def(s) | test.swift:575:13:575:13 | s |
+| test.swift:573:7:573:7 | s | test.swift:573:7:573:7 | SSA def(s) |
+| test.swift:573:11:573:24 | call to S.init(x:) | test.swift:573:7:573:7 | s |
+| test.swift:574:7:574:7 | SSA def(f) | test.swift:575:24:575:24 | f |
+| test.swift:574:7:574:7 | f | test.swift:574:7:574:7 | SSA def(f) |
+| test.swift:574:11:574:14 | #keyPath(...) | test.swift:574:7:574:7 | f |
+| test.swift:574:11:574:14 | enter #keyPath(...) | test.swift:574:14:574:14 | KeyPathComponent |
+| test.swift:575:13:575:13 | s | test.swift:578:13:578:13 | s |
+| test.swift:577:7:577:7 | SSA def(inferred) | test.swift:578:24:578:24 | inferred |
+| test.swift:577:7:577:7 | inferred | test.swift:577:7:577:7 | SSA def(inferred) |
+| test.swift:577:7:577:32 | ... as ... | test.swift:577:7:577:7 | inferred |
+| test.swift:577:36:577:38 | #keyPath(...) | test.swift:577:7:577:32 | ... as ... |
+| test.swift:577:36:577:38 | enter #keyPath(...) | test.swift:577:38:577:38 | KeyPathComponent |
+| test.swift:582:7:582:7 | self | test.swift:582:7:582:7 | SSA def(self) |
+| test.swift:584:3:584:3 | SSA def(self) | test.swift:585:5:585:5 | self |
+| test.swift:584:3:584:3 | self | test.swift:584:3:584:3 | SSA def(self) |
+| test.swift:584:8:584:11 | SSA def(s) | test.swift:585:14:585:14 | s |
+| test.swift:584:8:584:11 | s | test.swift:584:8:584:11 | SSA def(s) |
+| test.swift:585:5:585:5 | [post] self | test.swift:584:3:586:3 | self[return] |
+| test.swift:585:5:585:5 | self | test.swift:584:3:586:3 | self[return] |
+| test.swift:590:7:590:7 | SSA def(s) | test.swift:591:18:591:18 | s |
+| test.swift:590:7:590:7 | s | test.swift:590:7:590:7 | SSA def(s) |
+| test.swift:590:11:590:24 | call to S.init(x:) | test.swift:590:7:590:7 | s |
+| test.swift:591:7:591:7 | SSA def(s2) | test.swift:593:13:593:13 | s2 |
+| test.swift:591:7:591:7 | s2 | test.swift:591:7:591:7 | SSA def(s2) |
+| test.swift:591:12:591:19 | call to S2.init(s:) | test.swift:591:7:591:7 | s2 |
+| test.swift:592:7:592:7 | SSA def(f) | test.swift:593:25:593:25 | f |
+| test.swift:592:7:592:7 | f | test.swift:592:7:592:7 | SSA def(f) |
+| test.swift:592:11:592:17 | #keyPath(...) | test.swift:592:7:592:7 | f |
+| test.swift:592:11:592:17 | enter #keyPath(...) | test.swift:592:15:592:15 | KeyPathComponent |
+| test.swift:597:9:597:9 | SSA def(array) | test.swift:599:15:599:15 | array |
+| test.swift:597:9:597:9 | array | test.swift:597:9:597:9 | SSA def(array) |
+| test.swift:597:17:597:26 | [...] | test.swift:597:9:597:9 | array |
+| test.swift:598:9:598:9 | SSA def(f) | test.swift:599:30:599:30 | f |
+| test.swift:598:9:598:9 | f | test.swift:598:9:598:9 | SSA def(f) |
+| test.swift:598:13:598:22 | #keyPath(...) | test.swift:598:9:598:9 | f |
+| test.swift:598:13:598:22 | enter #keyPath(...) | test.swift:598:20:598:22 | KeyPathComponent |
+| test.swift:603:7:603:7 | self | test.swift:603:7:603:7 | SSA def(self) |
+| test.swift:605:3:605:3 | SSA def(self) | test.swift:606:5:606:5 | self |
+| test.swift:605:3:605:3 | self | test.swift:605:3:605:3 | SSA def(self) |
+| test.swift:605:8:605:12 | SSA def(s) | test.swift:606:14:606:14 | s |
+| test.swift:605:8:605:12 | s | test.swift:605:8:605:12 | SSA def(s) |
+| test.swift:606:5:606:5 | [post] self | test.swift:605:3:607:3 | self[return] |
+| test.swift:606:5:606:5 | self | test.swift:605:3:607:3 | self[return] |
+| test.swift:611:9:611:9 | SSA def(s) | test.swift:612:29:612:29 | s |
+| test.swift:611:9:611:9 | s | test.swift:611:9:611:9 | SSA def(s) |
+| test.swift:611:13:611:26 | call to S.init(x:) | test.swift:611:9:611:9 | s |
+| test.swift:612:9:612:9 | SSA def(s2) | test.swift:614:15:614:15 | s2 |
+| test.swift:612:9:612:9 | s2 | test.swift:612:9:612:9 | SSA def(s2) |
+| test.swift:612:14:612:30 | call to S2_Optional.init(s:) | test.swift:612:9:612:9 | s2 |
+| test.swift:613:9:613:9 | SSA def(f) | test.swift:614:27:614:27 | f |
+| test.swift:613:9:613:9 | f | test.swift:613:9:613:9 | SSA def(f) |
+| test.swift:613:13:613:29 | #keyPath(...) | test.swift:613:9:613:9 | f |
+| test.swift:613:13:613:29 | enter #keyPath(...) | test.swift:613:26:613:26 | KeyPathComponent |

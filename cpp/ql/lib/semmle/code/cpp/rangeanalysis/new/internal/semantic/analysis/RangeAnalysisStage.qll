@@ -73,6 +73,7 @@ import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticCFG
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticType
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticOpcode
 private import ConstantAnalysis
+private import Sign
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticLocation
 
 /**
@@ -240,11 +241,19 @@ signature module BoundSig<DeltaSig D> {
   }
 }
 
-module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<D> UtilParam> {
+signature module OverflowSig<DeltaSig D> {
+  predicate semExprDoesNotOverflow(boolean positively, SemExpr expr);
+}
+
+module RangeStage<
+  DeltaSig D, BoundSig<D> Bounds, OverflowSig<D> OverflowParam, LangSig<D> LangParam,
+  UtilSig<D> UtilParam>
+{
   private import Bounds
   private import LangParam
   private import UtilParam
   private import D
+  private import OverflowParam
 
   /**
    * An expression that does conversion, boxing, or unboxing
@@ -920,6 +929,81 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
     bounded(cast.getOperand(), b, delta, upper, fromBackEdge, origdelta, reason)
   }
 
+  predicate bounded(
+    SemExpr e, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge, D::Delta origdelta,
+    SemReason reason
+  ) {
+    initialBounded(e, b, delta, upper, fromBackEdge, origdelta, reason) and
+    (
+      semExprDoesNotOverflow(upper.booleanNot(), e)
+      or
+      not potentiallyOverflowingExpr(upper.booleanNot(), e)
+      or
+      exists(D::Delta otherDelta |
+        initialBounded(e, _, otherDelta, upper.booleanNot(), _, _, _) and
+        (
+          upper = true and D::toFloat(otherDelta) >= 0
+          or
+          upper = false and D::toFloat(otherDelta) <= 0
+        )
+      )
+    )
+  }
+
+  predicate potentiallyOverflowingExpr(boolean positively, SemExpr expr) {
+    (
+      expr.getOpcode() instanceof Opcode::Add or
+      expr.getOpcode() instanceof Opcode::PointerAdd
+    ) and
+    (
+      positively = true and
+      (
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getLeftOperand())) = TPos() and
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getRightOperand())) = TPos()
+      )
+      or
+      positively = false and
+      (
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getLeftOperand())) = TNeg() and
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getRightOperand())) = TNeg()
+      )
+    )
+    or
+    (
+      expr.getOpcode() instanceof Opcode::Sub or
+      expr.getOpcode() instanceof Opcode::PointerSub
+    ) and
+    (
+      positively = true and
+      (
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getLeftOperand())) = TPos() and
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getRightOperand())) = TNeg()
+      )
+      or
+      positively = false and
+      (
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getLeftOperand())) = TNeg() and
+        pragma[only_bind_out](semExprSign(expr.(SemBinaryExpr).getRightOperand())) = TPos()
+      )
+    )
+    or
+    positively in [true, false] and
+    (
+      expr.getOpcode() instanceof Opcode::Mul or
+      expr.getOpcode() instanceof Opcode::ShiftLeft
+    )
+    or
+    positively = false and
+    (
+      expr.getOpcode() instanceof Opcode::Negate or
+      expr.getOpcode() instanceof Opcode::SubOne or
+      expr.(SemDivExpr).getSemType() instanceof SemFloatingPointType
+    )
+    or
+    positively = true and
+    expr.getOpcode() instanceof Opcode::AddOne
+  }
+
   /**
    * Computes a normal form of `x` where -0.0 has changed to +0.0. This can be
    * needed on the lesser side of a floating-point comparison or on both sides of
@@ -934,7 +1018,7 @@ module RangeStage<DeltaSig D, BoundSig<D> Bounds, LangSig<D> LangParam, UtilSig<
    * - `upper = true`  : `e <= b + delta`
    * - `upper = false` : `e >= b + delta`
    */
-  private predicate bounded(
+  predicate initialBounded(
     SemExpr e, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge, D::Delta origdelta,
     SemReason reason
   ) {

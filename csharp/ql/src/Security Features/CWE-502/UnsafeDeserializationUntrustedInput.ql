@@ -48,12 +48,9 @@ where
   )
   or
   // JsonConvert static method call, but with additional unsafe typename tracking
-  exists(
-    JsonConvertTrackingConfig taintTrackingJsonConvert, TypeNameTrackingConfig typenameTracking,
-    DataFlow::Node settingsCallArg
-  |
+  exists(JsonConvertTrackingConfig taintTrackingJsonConvert, DataFlow::Node settingsCallArg |
     taintTrackingJsonConvert.hasFlowPath(userInput, deserializeCallArg) and
-    typenameTracking.hasFlow(_, settingsCallArg) and
+    TypeNameTracking::flow(_, settingsCallArg) and
     deserializeCallArg.getNode().asExpr().getParent() = settingsCallArg.asExpr().getParent()
   )
 select deserializeCallArg, userInput, deserializeCallArg, "$@ flows to unsafe deserializer.",
