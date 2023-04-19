@@ -413,7 +413,13 @@ func moveToTemporaryGopath(srcdir string, importpath string) moveGopathInfo {
 		log.Fatalf("Failed to rename %s to %s: %s\n", scratch, newdir, err.Error())
 	}
 
-	return moveGopathInfo{scratch, realSrc, root, newdir, files}
+	return moveGopathInfo{
+		scratch: scratch,
+		realSrc: realSrc,
+		root:    root,
+		newdir:  newdir,
+		files:   files,
+	}
 }
 
 func createPathTransformerFile(newdir string) *os.File {
