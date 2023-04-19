@@ -356,7 +356,12 @@ func tryUpdateGoModAndGoSum(modMode ModMode, depMode DependencyInstallerMode) {
 	}
 }
 
-func moveToTemporaryGopath(srcdir string, importpath string) (string, []string, string, string, string) {
+type moveGopathInfo struct {
+	scratch, realSrc, root, newdir string
+	files                          []string
+}
+
+func moveToTemporaryGopath(srcdir string, importpath string) moveGopathInfo {
 	// a temporary directory where everything is moved while the correct
 	// directory structure is created.
 	scratch, err := ioutil.TempDir(srcdir, "scratch")
@@ -408,7 +413,7 @@ func moveToTemporaryGopath(srcdir string, importpath string) (string, []string, 
 		log.Fatalf("Failed to rename %s to %s: %s\n", scratch, newdir, err.Error())
 	}
 
-	return scratch, files, realSrc, root, newdir
+	return moveGopathInfo{scratch, realSrc, root, newdir, files}
 }
 
 func createPathTransformerFile(newdir string) *os.File {
@@ -640,16 +645,16 @@ func main() {
 	inLGTM := os.Getenv("LGTM_SRC") != "" || os.Getenv("LGTM_INDEX_NEED_GOPATH") != ""
 
 	if inLGTM && needGopath {
-		scratch, files, realSrc, root, newdir := moveToTemporaryGopath(srcdir, importpath)
+		paths := moveToTemporaryGopath(srcdir, importpath)
 
 		// schedule restoring the contents of newdir to their original location after this function completes:
-		defer restoreRepoLayout(newdir, files, filepath.Base(scratch), srcdir)
+		defer restoreRepoLayout(paths.newdir, paths.files, filepath.Base(paths.scratch), srcdir)
 
-		pt := createPathTransformerFile(newdir)
+		pt := createPathTransformerFile(paths.newdir)
 		defer os.Remove(pt.Name())
 
-		writePathTransformerFile(pt, realSrc, root, newdir)
-		setGopath(root)
+		writePathTransformerFile(pt, paths.realSrc, paths.root, paths.newdir)
+		setGopath(paths.root)
 	}
 
 	// check whether an explicit dependency installation command was provided
