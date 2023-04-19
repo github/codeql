@@ -696,12 +696,99 @@ func installDependenciesAndBuild() {
 	extract(depMode, modMode)
 }
 
-func identifyEnvironment() {
+const minGoVersion = "1.11"
+const maxGoVersion = "1.20"
 
+func outsideSupportedRange(version string) bool {
+	short := semver.MajorMinor("v" + version)
+	return semver.Compare(short, "v"+minGoVersion) < 0 || semver.Compare(short, "v"+maxGoVersion) > 0
+}
+
+func isGoInstalled() bool {
+	_, err := exec.LookPath("go")
+	return err == nil
+}
+
+func getVersionToInstall() string {
+	log.Printf("Autobuilder was built with %s, environment has %s\n", runtime.Version(), getEnvGoVersion())
+	depMode := getDepMode()
+	goModVersion, goDirectiveFound := tryReadGoDirective(depMode)
+
+	if outsideSupportedRange(goModVersion) {
+		log.Println("The version of Go specified in the go.mod file (" + goModVersion + ") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ").")
+		//TODO: emit diagnostic
+		return ""
+	}
+
+	if !isGoInstalled() {
+		if goDirectiveFound {
+			log.Println("No version of Go installed. Writing an `environment.json` file specifying the version of Go from the go.mod file (" + goModVersion + ").")
+			return goModVersion
+		} else {
+			log.Println("No version of Go installed and no `go.mod` file found. Writing an `environment.json` file specifying the maximum supported version of Go (" + maxGoVersion + ").")
+			return maxGoVersion
+		}
+	}
+
+	envVersion := getEnvGoVersion()[2:]
+
+	if outsideSupportedRange(envVersion) {
+		log.Println("The version of Go installed in the environment (" + goModVersion + ") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ").")
+		//TODO: emit diagnostic
+		return ""
+	}
+
+	if !goDirectiveFound {
+		log.Println("No `go.mod` file found. Version " + envVersion + " installed in the environment.")
+		return ""
+	}
+
+	if semver.Compare("v"+goModVersion, "v"+envVersion) > 0 {
+		log.Println(
+			"The version of Go installed in the environment (" + envVersion + ") is lower than the version specified in the go.mod file (" + goModVersion +
+				").\nWriting an `environment.json` file specifying the version of go from the go.mod file (" + goModVersion + ").")
+		return goModVersion
+	}
+
+	// no need to install a version of Go
+	return ""
+}
+
+func writeEnvironmentFile(version string) {
+	var content string
+	if version == "" {
+		content = `{ "include": [] }`
+	} else {
+		content = `{ "include": [ { "go": { "version": "` + version + `" } } ] }`
+	}
+
+	targetFile, err := os.Create("environment.json")
+	if err != nil {
+		log.Println("Failed to create environment.json: ")
+		log.Println(err)
+		return
+	}
+	defer func() {
+		if err := targetFile.Close(); err != nil {
+			log.Println("Failed to close environment.json:")
+			log.Println(err)
+		}
+	}()
+
+	_, err = targetFile.WriteString(content)
+	if err != nil {
+		log.Println("Failed to write to environment.json: ")
+		log.Println(err)
+	}
+}
+
+func identifyEnvironment() {
+	versionToInstall := getVersionToInstall()
+	writeEnvironmentFile(versionToInstall)
 }
 
 func main() {
-	if len(os.Args) == 0 {
+	if len(os.Args) == 1 {
 		installDependenciesAndBuild()
 	} else if len(os.Args) == 2 && os.Args[1] == "--identify-environment" {
 		identifyEnvironment()
