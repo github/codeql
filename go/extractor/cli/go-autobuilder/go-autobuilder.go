@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"io/ioutil"
 	"log"
 	"net/url"
 	"os"
@@ -278,7 +277,7 @@ func fixGoVendorIssues(modMode ModMode, depMode DependencyInstallerMode, goDirec
 		if depMode == GoGetWithModules {
 			if !goDirectiveFound {
 				// if the go.mod does not contain a version line
-				modulesTxt, err := ioutil.ReadFile("vendor/modules.txt")
+				modulesTxt, err := os.ReadFile("vendor/modules.txt")
 				if err != nil {
 					log.Println("Failed to read vendor/modules.txt to check for mismatched Go version")
 				} else if explicitRe := regexp.MustCompile("(?m)^## explicit$"); !explicitRe.Match(modulesTxt) {
@@ -365,7 +364,7 @@ type moveGopathInfo struct {
 func moveToTemporaryGopath(srcdir string, importpath string) moveGopathInfo {
 	// a temporary directory where everything is moved while the correct
 	// directory structure is created.
-	scratch, err := ioutil.TempDir(srcdir, "scratch")
+	scratch, err := os.MkdirTemp(srcdir, "scratch")
 	if err != nil {
 		log.Fatalf("Failed to create temporary directory %s in directory %s: %s\n",
 			scratch, srcdir, err.Error())
@@ -431,7 +430,7 @@ func createPathTransformerFile(newdir string) *os.File {
 
 	// set up SEMMLE_PATH_TRANSFORMER to ensure paths in the source archive and the snapshot
 	// match the original source location, not the location we moved it to
-	pt, err := ioutil.TempFile("", "path-transformer")
+	pt, err := os.CreateTemp("", "path-transformer")
 	if err != nil {
 		log.Fatalf("Unable to create path transformer file: %s.", err.Error())
 	}
@@ -506,7 +505,7 @@ func buildWithCustomCommands(inst string) {
 		ext = ".sh"
 		header = "#! /bin/bash\nset -xe +u\n"
 	}
-	script, err := ioutil.TempFile("", "go-build-command-*"+ext)
+	script, err := os.CreateTemp("", "go-build-command-*"+ext)
 	if err != nil {
 		log.Fatalf("Unable to create temporary script holding custom build commands: %s\n", err.Error())
 	}
@@ -619,7 +618,7 @@ func installDependenciesAndBuild() {
 	}
 	if depMode == GoGetWithModules {
 		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+)$`)
-		goMod, err := ioutil.ReadFile("go.mod")
+		goMod, err := os.ReadFile("go.mod")
 		if err != nil {
 			log.Println("Failed to read go.mod to check for missing Go version")
 		} else {
