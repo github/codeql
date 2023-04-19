@@ -378,21 +378,6 @@ class SrcCallable extends Callable {
       this.isProtected() and not tsub.isFinal()
     )
   }
-
-  /**
-   * Holds if this callable is implicitly `public`, meaning that it can be
-   * called outside the codebase or if there exists a method that can be called
-   * outside the codebase and this callable is a possible implementation of that
-   * method.
-   */
-  predicate isImplicitlyPublic() {
-    this.isEffectivelyPublic()
-    or
-    exists(SrcMethod m |
-      m.(SrcCallable).isEffectivelyPublic() and
-      m.getAPossibleImplementationOfSrcMethod() = this
-    )
-  }
 }
 
 /** Gets the erasure of `t1` if it is a raw type, or `t1` itself otherwise. */
