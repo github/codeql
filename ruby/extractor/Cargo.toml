@@ -1,5 +1,5 @@
 [package]
-name = "codeql-ruby-extractor"
+name = "codeql-extractor-ruby"
 description = "CodeQL Ruby extractor"
 version = "0.1.0"
 authors = ["GitHub"]
