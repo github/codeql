@@ -14,11 +14,14 @@
 
 import java
 import semmle.code.java.security.CommandLineQuery
+import semmle.code.java.security.ExternalProcess
 import LocalUserInputToArgumentToExecFlow::PathGraph
 
 from
   LocalUserInputToArgumentToExecFlow::PathNode source,
-  LocalUserInputToArgumentToExecFlow::PathNode sink
-where LocalUserInputToArgumentToExecFlow::flowPath(source, sink)
-select sink.getNode().asExpr(), source, sink, "This command line depends on a $@.",
-  source.getNode(), "user-provided value"
+  LocalUserInputToArgumentToExecFlow::PathNode sink, Expr e
+where
+  LocalUserInputToArgumentToExecFlow::flowPath(source, sink) and
+  argumentToExec(e, sink.getNode())
+select e, source, sink, "This command line depends on a $@.", source.getNode(),
+  "user-provided value"

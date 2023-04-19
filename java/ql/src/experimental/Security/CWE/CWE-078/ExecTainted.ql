@@ -15,7 +15,11 @@
 import java
 import semmle.code.java.security.CommandLineQuery
 import RemoteUserInputToArgumentToExecFlow::PathGraph
-import JSchOSInjection
+private import semmle.code.java.dataflow.ExternalFlow
+
+private class ActivateModels extends ActiveExperimentalModels {
+  ActivateModels() { this = "jsch-os-injection" }
+}
 
 // This is a clone of query `java/command-line-injection` that also includes experimental sinks.
 from
