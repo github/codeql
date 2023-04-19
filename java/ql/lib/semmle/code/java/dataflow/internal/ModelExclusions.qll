@@ -2,6 +2,7 @@
 
 import java
 
+/** Holds if the given package `p` is a test package. */
 pragma[nomagic]
 private predicate isTestPackage(Package p) {
   p.getName()
@@ -12,33 +13,35 @@ private predicate isTestPackage(Package p) {
           "org.xmlunit%", "org.testcontainers.%", "org.opentest4j%", "org.mockserver%",
           "org.powermock%", "org.skyscreamer.jsonassert%", "org.rnorth.visibleassertions",
           "org.openqa.selenium%", "com.gargoylesoftware.htmlunit%", "org.jboss.arquillian.testng%",
-          "org.testng%", "%.test%"
+          "org.testng%"
         ])
 }
 
 /**
  * A test library.
  */
-private class TestLibrary extends RefType {
+class TestLibrary extends RefType {
   TestLibrary() { isTestPackage(this.getPackage()) }
 }
 
+/** Holds if the given file is a test file. */
 private predicate isInTestFile(File file) {
   file.getAbsolutePath().matches("%src/test/%") or
   file.getAbsolutePath().matches("%/guava-tests/%") or
   file.getAbsolutePath().matches("%/guava-testlib/%")
 }
 
+/** Holds if the given compilation unit's package is a JDK internal. */
 private predicate isJdkInternal(CompilationUnit cu) {
   cu.getPackage().getName().matches("org.graalvm%") or
-  cu.getPackage().getName().matches("com.sun%") or // ! maybe don't exclude `sun` ones? see SensitiveApi models again.
+  cu.getPackage().getName().matches("com.sun%") or
   cu.getPackage().getName().matches("sun%") or
   cu.getPackage().getName().matches("jdk%") or
   cu.getPackage().getName().matches("java2d%") or
   cu.getPackage().getName().matches("build.tools%") or
   cu.getPackage().getName().matches("propertiesparser%") or
   cu.getPackage().getName().matches("org.jcp%") or
-  cu.getPackage().getName().matches("org.w3c%") or // ! maybe don't exclude these?
+  cu.getPackage().getName().matches("org.w3c%") or
   cu.getPackage().getName().matches("org.ietf.jgss%") or
   cu.getPackage().getName().matches("org.xml.sax%") or
   cu.getPackage().getName().matches("com.oracle%") or
@@ -48,18 +51,17 @@ private predicate isJdkInternal(CompilationUnit cu) {
   cu.getPackage().getName() = "transparentruler" or
   cu.getPackage().getName() = "genstubs" or
   cu.getPackage().getName() = "netscape.javascript" or
-  cu.getPackage().getName() = "" or
-  cu.getPackage().getName().matches("%internal%")
+  cu.getPackage().getName() = ""
 }
 
-/** Holds if the given callable is not worth modeling. */
+/** Holds if the given callable is not interesting to model. */
 private predicate isUninterestingForModels(Callable c) {
-  c.getDeclaringType() instanceof TestLibrary or
   isInTestFile(c.getCompilationUnit().getFile()) or
   isJdkInternal(c.getCompilationUnit()) or
   c instanceof MainMethod or
   c instanceof StaticInitializer or
   exists(FunctionalExpr funcExpr | c = funcExpr.asMethod()) or
+  c.getDeclaringType() instanceof TestLibrary or
   c.(Constructor).isParameterless()
 }
 
