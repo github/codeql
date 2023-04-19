@@ -40,9 +40,11 @@ private class AuthCookieNameConfiguration extends DataFlow::Configuration {
 }
 
 /**
+ * DEPRECATED: Use `CookieOptionsTracking` instead.
+ *
  * Tracks creation of `CookieOptions` to `IResponseCookies.Append(String, String, CookieOptions)` call as a third parameter.
  */
-class CookieOptionsTrackingConfiguration extends DataFlow::Configuration {
+deprecated class CookieOptionsTrackingConfiguration extends DataFlow::Configuration {
   CookieOptionsTrackingConfiguration() { this = "CookieOptionsTrackingConfiguration" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -56,6 +58,29 @@ class CookieOptionsTrackingConfiguration extends DataFlow::Configuration {
     )
   }
 }
+
+/**
+ * Configuration module tracking creation of `CookieOptions` to `IResponseCookies.Append(String, String, CookieOptions)`
+ * calls as a third parameter.
+ */
+private module CookieOptionsTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    source.asExpr().(ObjectCreation).getType() instanceof MicrosoftAspNetCoreHttpCookieOptions
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MicrosoftAspNetCoreHttpResponseCookies iResponse, MethodCall mc |
+      iResponse.getAppendMethod() = mc.getTarget() and
+      mc.getArgument(2) = sink.asExpr()
+    )
+  }
+}
+
+/**
+ * Tracking creation of `CookieOptions` to `IResponseCookies.Append(String, String, CookieOptions)`
+ * calls as a third parameter.
+ */
+module CookieOptionsTracking = DataFlow::Global<CookieOptionsTrackingConfig>;
 
 /**
  * Looks for property value of `CookiePolicyOptions` passed to `app.UseCookiePolicy` in `Startup.Configure`.

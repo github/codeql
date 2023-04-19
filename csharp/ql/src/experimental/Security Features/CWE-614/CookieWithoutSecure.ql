@@ -37,8 +37,8 @@ where
           oc = c and
           oc.getType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
           not isPropertySet(oc, "Secure") and
-          exists(CookieOptionsTrackingConfiguration cookieTracking, DataFlow::Node creation |
-            cookieTracking.hasFlow(creation, _) and
+          exists(DataFlow::Node creation |
+            CookieOptionsTracking::flow(creation, _) and
             creation.asExpr() = oc
           )
         )
@@ -82,8 +82,8 @@ where
           // there is no callback `OnAppendCookie` that sets `Secure` to true
           not exists(OnAppendCookieSecureTrackingConfig config | config.hasFlowTo(_)) and
           // the cookie option is passed to `Append`
-          exists(CookieOptionsTrackingConfiguration cookieTracking, DataFlow::Node creation |
-            cookieTracking.hasFlow(creation, _) and
+          exists(DataFlow::Node creation |
+            CookieOptionsTracking::flow(creation, _) and
             creation.asExpr() = oc
           )
         )
