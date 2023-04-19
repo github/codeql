@@ -69,6 +69,7 @@ module InclusionTest {
       inner.getContainerNode().getALocalSource() = DataFlow::parameterNode(callee.getAParameter())
     }
 
+    pragma[assume_small_delta]
     override DataFlow::Node getContainerNode() {
       exists(int arg |
         inner.getContainerNode().getALocalSource() =
@@ -77,6 +78,7 @@ module InclusionTest {
       )
     }
 
+    pragma[assume_small_delta]
     override DataFlow::Node getContainedNode() {
       exists(int arg |
         inner.getContainedNode().getALocalSource() =
