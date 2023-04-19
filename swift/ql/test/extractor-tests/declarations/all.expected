@@ -231,7 +231,7 @@
 | declarations.swift:132:5:132:15 | willSet |  |
 | declarations.swift:134:5:134:5 | self |  |
 | declarations.swift:134:5:134:14 | didSet |  |
-| declarations.swift:138:1:142:1 | extension |  |
+| declarations.swift:138:1:142:1 | extension of Int |  |
 | declarations.swift:139:3:141:3 | id() |  |
 | declarations.swift:139:8:139:8 | self |  |
 | declarations.swift:144:1:144:7 | { ... } |  |
