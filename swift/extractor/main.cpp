@@ -217,6 +217,7 @@ int main(int argc, char** argv, char** envp) {
   PROGRAM_START(argc, argv);
   INITIALIZE_LLVM();
   initializeSwiftModules();
+  // Adding some extractor change
 
   const auto configuration = configure(argc, argv);
   {
