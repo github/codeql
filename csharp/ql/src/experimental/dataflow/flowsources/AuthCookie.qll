@@ -135,18 +135,22 @@ Expr getAValueForProp(ObjectCreation create, Assignment a, string prop) {
 predicate isPropertySet(ObjectCreation oc, string prop) { exists(getAValueForProp(oc, _, prop)) }
 
 /**
+ * DEPRECATED: Use `OnAppendCookieSecureTracking` instead.
+ *
  * Tracks if a callback used in `OnAppendCookie` sets `Secure` to `true`.
  */
-class OnAppendCookieSecureTrackingConfig extends OnAppendCookieTrackingConfig {
+deprecated class OnAppendCookieSecureTrackingConfig extends OnAppendCookieTrackingConfig {
   OnAppendCookieSecureTrackingConfig() { this = "OnAppendCookieSecureTrackingConfig" }
 
   override string propertyName() { result = "Secure" }
 }
 
 /**
+ * DEPRECATED: Use `OnAppendCookieHttpOnlyTracking` instead.
+ *
  * Tracks if a callback used in `OnAppendCookie` sets `HttpOnly` to `true`.
  */
-class OnAppendCookieHttpOnlyTrackingConfig extends OnAppendCookieTrackingConfig {
+deprecated class OnAppendCookieHttpOnlyTrackingConfig extends OnAppendCookieTrackingConfig {
   OnAppendCookieHttpOnlyTrackingConfig() { this = "OnAppendCookieHttpOnlyTrackingConfig" }
 
   override string propertyName() { result = "HttpOnly" }
@@ -206,3 +210,83 @@ abstract private class OnAppendCookieTrackingConfig extends DataFlow::Configurat
       )
   }
 }
+
+private signature string propertyName();
+
+/**
+ * Configuration for tracking if a callback used in `OnAppendCookie` sets a cookie property to `true`.
+ */
+private module OnAppendCookieTrackingConfig<propertyName/0 getPropertyName> implements
+  DataFlow::ConfigSig
+{
+  /**
+   * Specifies the cookie property name to track.
+   */
+  predicate isSource(DataFlow::Node source) {
+    exists(PropertyWrite pw, Assignment delegateAssign, Callable c |
+      pw.getProperty().getName() = "OnAppendCookie" and
+      pw.getProperty().getDeclaringType() instanceof MicrosoftAspNetCoreBuilderCookiePolicyOptions and
+      delegateAssign.getLValue() = pw and
+      (
+        exists(LambdaExpr lambda |
+          delegateAssign.getRValue() = lambda and
+          lambda = c
+        )
+        or
+        exists(DelegateCreation delegate |
+          delegateAssign.getRValue() = delegate and
+          delegate.getArgument().(CallableAccess).getTarget() = c
+        )
+      ) and
+      c.getParameter(0) = source.asParameter()
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(PropertyWrite pw, Assignment a |
+      pw.getProperty().getDeclaringType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
+      pw.getProperty().getName() = getPropertyName() and
+      a.getLValue() = pw and
+      exists(Expr val |
+        DataFlow::localExprFlow(val, a.getRValue()) and
+        val.getValue() = "true"
+      ) and
+      sink.asExpr() = pw.getQualifier()
+    )
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node2.asExpr() =
+      any(PropertyRead pr |
+        pr.getQualifier() = node1.asExpr() and
+        pr.getProperty().getDeclaringType() instanceof
+          MicrosoftAspNetCoreCookiePolicyAppendCookieContext
+      )
+  }
+}
+
+private string getPropertyNameSecure() { result = "Secure" }
+
+/**
+ * Configuration module for tracking if a callback used in `OnAppendCookie` sets `Secure` to `true`.
+ */
+private module OnAppendCookieSecureTrackingConfig =
+  OnAppendCookieTrackingConfig<getPropertyNameSecure/0>;
+
+/**
+ * Tracks if a callback used in `OnAppendCookie` sets `Secure` to `true`.
+ */
+module OnAppendCookieSecureTracking = DataFlow::Global<OnAppendCookieSecureTrackingConfig>;
+
+private string getPropertyNameHttpOnly() { result = "HttpOnly" }
+
+/**
+ * Configuration module for tracking if a callback used in `OnAppendCookie` sets `HttpOnly` to `true`.
+ */
+private module OnAppendCookieHttpOnlyTrackingConfig =
+  OnAppendCookieTrackingConfig<getPropertyNameHttpOnly/0>;
+
+/**
+ * Tracks if a callback used in `OnAppendCookie` sets `HttpOnly` to `true`.
+ */
+module OnAppendCookieHttpOnlyTracking = DataFlow::Global<OnAppendCookieHttpOnlyTrackingConfig>;
