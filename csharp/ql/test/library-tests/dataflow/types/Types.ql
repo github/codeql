@@ -3,17 +3,15 @@
  */
 
 import csharp
-import DataFlow::PathGraph
+import Types::PathGraph
 
-class Conf extends DataFlow::Configuration {
-  Conf() { this = "TypesConf" }
-
-  override predicate isSource(DataFlow::Node src) {
+module TypesConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) {
     src.asExpr() instanceof ObjectCreation or
     src.asExpr() instanceof NullLiteral
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       mc.getTarget().hasUndecoratedName("Sink") and
       mc.getAnArgument() = sink.asExpr()
@@ -21,6 +19,8 @@ class Conf extends DataFlow::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf
-where conf.hasFlowPath(source, sink)
+module Types = DataFlow::Global<TypesConfig>;
+
+from Types::PathNode source, Types::PathNode sink
+where Types::flowPath(source, sink)
 select source, source, sink, "$@", sink, sink.toString()
