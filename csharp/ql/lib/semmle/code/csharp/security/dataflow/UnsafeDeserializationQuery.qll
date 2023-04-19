@@ -75,9 +75,11 @@ class JsonConvertTrackingConfig extends TaintTracking::Configuration {
 }
 
 /**
+ * DEPRECATED: Use `TypeNameTracking` instead.
+ *
  * Tracks unsafe `TypeNameHandling` setting to `JsonConvert` call
  */
-class TypeNameTrackingConfig extends DataFlow::Configuration {
+deprecated class TypeNameTrackingConfig extends DataFlow::Configuration {
   TypeNameTrackingConfig() { this = "TypeNameTrackingConfig" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -126,6 +128,62 @@ class TypeNameTrackingConfig extends DataFlow::Configuration {
     )
   }
 }
+
+/**
+ * Configuration module for tracking unsafe `TypeNameHandling` setting to `JsonConvert` calls.
+ */
+private module TypeNameTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    (
+      source.asExpr() instanceof MemberConstantAccess and
+      source.getType() instanceof TypeNameHandlingEnum
+      or
+      source.asExpr() instanceof IntegerLiteral
+    ) and
+    source.asExpr().hasValue() and
+    not source.asExpr().getValue() = "0"
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall mc, Method m, Expr expr |
+      m = mc.getTarget() and
+      (
+        not mc.getArgument(0).hasValue() and
+        m instanceof NewtonsoftJsonConvertClassDeserializeObjectMethod
+      ) and
+      expr = mc.getAnArgument() and
+      sink.asExpr() = expr and
+      expr.getType() instanceof JsonSerializerSettingsClass
+    )
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node1.asExpr() instanceof IntegerLiteral and
+    node2.asExpr().(CastExpr).getExpr() = node1.asExpr()
+    or
+    node1.getType() instanceof TypeNameHandlingEnum and
+    exists(PropertyWrite pw, Property p, Assignment a |
+      a.getLValue() = pw and
+      pw.getProperty() = p and
+      p.getDeclaringType() instanceof JsonSerializerSettingsClass and
+      p.hasName("TypeNameHandling") and
+      (
+        node1.asExpr() = a.getRValue() and
+        node2.asExpr() = pw.getQualifier()
+        or
+        exists(ObjectInitializer oi |
+          node1.asExpr() = oi.getAMemberInitializer().getRValue() and
+          node2.asExpr() = oi
+        )
+      )
+    )
+  }
+}
+
+/**
+ * Configuration module for tracking unsafe `TypeNameHandling` setting to `JsonConvert` calls.
+ */
+module TypeNameTracking = DataFlow::Global<TypeNameTrackingConfig>;
 
 /**
  * User input to static method or constructor call deserialization flow tracking.
