@@ -26,10 +26,10 @@ DataFlow::Node cleanupNode(DataFlow::Node n) {
 }
 
 from
-CleartextStoragePreferencesFlow::PathNode sourceNode, CleartextStoragePreferencesFlow::PathNode sinkNode,
-  DataFlow::Node cleanSink
+  CleartextStoragePreferencesFlow::PathNode sourceNode,
+  CleartextStoragePreferencesFlow::PathNode sinkNode, DataFlow::Node cleanSink
 where
-CleartextStoragePreferencesFlow::flowPath(sourceNode, sinkNode) and
+  CleartextStoragePreferencesFlow::flowPath(sourceNode, sinkNode) and
   cleanSink = cleanupNode(sinkNode.getNode())
 select cleanSink, sourceNode, sinkNode,
   "This operation stores '" + cleanSink.toString() + "' in " +

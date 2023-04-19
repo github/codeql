@@ -27,10 +27,10 @@ DataFlow::Node cleanupNode(DataFlow::Node n) {
 }
 
 from
-CleartextStorageDatabaseFlow::PathNode sourceNode, CleartextStorageDatabaseFlow::PathNode sinkNode,
-  DataFlow::Node cleanSink
+  CleartextStorageDatabaseFlow::PathNode sourceNode,
+  CleartextStorageDatabaseFlow::PathNode sinkNode, DataFlow::Node cleanSink
 where
-CleartextStorageDatabaseFlow::flowPath(sourceNode, sinkNode) and
+  CleartextStorageDatabaseFlow::flowPath(sourceNode, sinkNode) and
   cleanSink = cleanupNode(sinkNode.getNode())
 select cleanSink, sourceNode, sinkNode,
   "This operation stores '" + cleanSink.toString() +
