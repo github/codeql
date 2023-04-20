@@ -1067,6 +1067,13 @@ private Expr getConvertedResultExpression0(Instruction instr) {
     // instruction mapping to `size`.
     convert.getAst() instanceof NewArrayExpr and
     result = convert.getUnary().getConvertedResultExpression()
+    or
+    // The IR translation for `AssignOperation` may include a conversion on the left-hand
+    // side of the operation. Like in the case above, the `ConvertInstruction` does not have
+    // a result for `getConvertedResultExpression()` since it's part of the translation for
+    // `AssignOperation` and not of the underlying operand.
+    convert.getAst() instanceof AssignOperation and
+    result = convert.getUnary().getConvertedResultExpression()
   )
 }
 
