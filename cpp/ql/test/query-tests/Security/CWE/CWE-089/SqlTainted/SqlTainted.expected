@@ -7,8 +7,6 @@ edges
 | test.cpp:43:27:43:30 | argv | test.cpp:43:27:43:33 | access to array |
 | test.cpp:43:27:43:30 | argv | test.cpp:43:27:43:33 | access to array |
 | test.cpp:43:27:43:30 | argv | test.cpp:43:27:43:33 | access to array |
-| test.cpp:43:27:43:30 | argv | test.cpp:43:27:43:33 | access to array |
-| test.cpp:43:27:43:30 | argv | test.cpp:43:27:43:33 | access to array |
 subpaths
 nodes
 | test.c:15:20:15:23 | argv | semmle.label | argv |
@@ -17,7 +15,6 @@ nodes
 | test.c:21:18:21:23 | query1 | semmle.label | query1 |
 | test.cpp:43:27:43:30 | argv | semmle.label | argv |
 | test.cpp:43:27:43:30 | argv | semmle.label | argv |
-| test.cpp:43:27:43:33 | access to array | semmle.label | access to array |
 | test.cpp:43:27:43:33 | access to array | semmle.label | access to array |
 | test.cpp:43:27:43:33 | access to array | semmle.label | access to array |
 #select

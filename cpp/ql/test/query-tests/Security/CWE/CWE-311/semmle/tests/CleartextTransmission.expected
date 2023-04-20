@@ -25,7 +25,6 @@ edges
 | test3.cpp:322:16:322:24 | password2 | test3.cpp:325:11:325:14 | data |
 | test3.cpp:324:11:324:14 | data | test3.cpp:293:20:293:23 | data |
 | test3.cpp:325:11:325:14 | data | test3.cpp:298:20:298:23 | data |
-| test3.cpp:400:16:400:23 | password | test3.cpp:400:15:400:23 | & ... |
 | test3.cpp:526:44:526:54 | my_latitude | test3.cpp:527:15:527:20 | buffer indirection |
 | test3.cpp:532:45:532:58 | home_longitude | test3.cpp:533:15:533:20 | buffer indirection |
 | test3.cpp:551:47:551:58 | salaryString | test3.cpp:552:15:552:20 | buffer indirection |
@@ -89,8 +88,6 @@ nodes
 | test3.cpp:352:16:352:23 | password | semmle.label | password |
 | test3.cpp:368:15:368:22 | password | semmle.label | password |
 | test3.cpp:388:15:388:22 | password | semmle.label | password |
-| test3.cpp:400:15:400:23 | & ... | semmle.label | & ... |
-| test3.cpp:400:16:400:23 | password | semmle.label | password |
 | test3.cpp:414:15:414:24 | password | semmle.label | password |
 | test3.cpp:420:15:420:24 | password | semmle.label | password |
 | test3.cpp:431:8:431:15 | password | semmle.label | password |
