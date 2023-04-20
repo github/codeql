@@ -1075,6 +1075,24 @@ private Expr getConvertedResultExpression0(Instruction instr) {
     convert.getAst() instanceof AssignOperation and
     result = convert.getUnary().getConvertedResultExpression()
   )
+  or
+  exists(BinaryInstruction binary | instr = binary |
+    // The instruction that contains the result of an `AssignOperation` is
+    // the unloaded left operand (see the comments in `TranslatedAssignOperation`).
+    // That means that for cases like
+    // ```cpp
+    // int x = ...;
+    // x += 1;
+    // ```
+    // the result of `x += 1` is the `VariableAddressInstruction` that represents `x`. But
+    // that instruction doesn't receive the flow from this `AssignOperation`. So instead we
+    // map the operation to the `AddInstruction`.
+    binary.getAst() = result.(AssignOperation)
+    or
+    // Same story for `CrementOperation`s (cf. the comments in the subclasses
+    // of `TranslatedCrementOperation`).
+    binary.getAst() = result.(CrementOperation)
+  )
 }
 
 /**
@@ -1135,24 +1153,10 @@ private predicate isFullyConvertedInstruction(Instruction instr) {
 private predicate exprNodeShouldBeInstruction(Node node, Expr e) {
   not exprNodeShouldBeOperand(_, e) and
   not exprNodeShouldBeIndirectOutNode(_, e) and
-  exists(Instruction instr | instr = node.asInstruction() and isFullyConvertedInstruction(instr) |
+  exists(Instruction instr |
+    instr = node.asInstruction() and
+    isFullyConvertedInstruction(instr) and
     e = getConvertedResultExpression(instr)
-    or
-    // The instruction that contains the result of an `AssignOperation` is
-    // the unloaded left operand (see the comments in `TranslatedAssignOperation`).
-    // That means that for cases like
-    // ```cpp
-    // int x = ...;
-    // x += 1;
-    // ```
-    // the result of `x += 1` is the `VariableAddressInstruction` that represents `x`. But
-    // that instruction doesn't receive the flow from this `AssignOperation`. So instead we
-    // map the operation to the `AddInstruction`.
-    instr.(BinaryInstruction).getAst() = e.(AssignOperation)
-    or
-    // Same story for `CrementOperation`s (cf. the comments in the subclasses
-    // of `TranslatedCrementOperation`).
-    instr.(BinaryInstruction).getAst() = e.(CrementOperation)
   )
 }
 
