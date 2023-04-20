@@ -3,6 +3,7 @@ edges
 | test.cpp:39:27:39:30 | argv | test.cpp:44:38:44:63 | ... * ... |
 | test.cpp:39:27:39:30 | argv | test.cpp:46:38:46:63 | ... + ... |
 | test.cpp:39:27:39:30 | argv | test.cpp:49:32:49:35 | size |
+| test.cpp:39:27:39:30 | argv | test.cpp:50:17:50:30 | size |
 | test.cpp:39:27:39:30 | argv | test.cpp:53:35:53:60 | ... * ... |
 | test.cpp:39:27:39:30 | argv indirection | test.cpp:43:38:43:44 | tainted |
 | test.cpp:39:27:39:30 | argv indirection | test.cpp:43:38:43:44 | tainted |
@@ -12,6 +13,8 @@ edges
 | test.cpp:39:27:39:30 | argv indirection | test.cpp:46:38:46:63 | ... + ... |
 | test.cpp:39:27:39:30 | argv indirection | test.cpp:49:32:49:35 | size |
 | test.cpp:39:27:39:30 | argv indirection | test.cpp:49:32:49:35 | size |
+| test.cpp:39:27:39:30 | argv indirection | test.cpp:50:17:50:30 | size |
+| test.cpp:39:27:39:30 | argv indirection | test.cpp:50:17:50:30 | size |
 | test.cpp:39:27:39:30 | argv indirection | test.cpp:53:35:53:60 | ... * ... |
 | test.cpp:39:27:39:30 | argv indirection | test.cpp:53:35:53:60 | ... * ... |
 | test.cpp:124:18:124:23 | call to getenv | test.cpp:128:24:128:41 | ... * ... |
@@ -51,6 +54,7 @@ nodes
 | test.cpp:44:38:44:63 | ... * ... | semmle.label | ... * ... |
 | test.cpp:46:38:46:63 | ... + ... | semmle.label | ... + ... |
 | test.cpp:49:32:49:35 | size | semmle.label | size |
+| test.cpp:50:17:50:30 | size | semmle.label | size |
 | test.cpp:53:35:53:60 | ... * ... | semmle.label | ... * ... |
 | test.cpp:124:18:124:23 | call to getenv | semmle.label | call to getenv |
 | test.cpp:124:18:124:31 | call to getenv indirection | semmle.label | call to getenv indirection |
@@ -100,6 +104,9 @@ subpaths
 | test.cpp:49:25:49:30 | call to malloc | test.cpp:39:27:39:30 | argv | test.cpp:49:32:49:35 | size | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv | user input (a command-line argument) |
 | test.cpp:49:25:49:30 | call to malloc | test.cpp:39:27:39:30 | argv indirection | test.cpp:49:32:49:35 | size | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv indirection | user input (a command-line argument) |
 | test.cpp:49:25:49:30 | call to malloc | test.cpp:39:27:39:30 | argv indirection | test.cpp:49:32:49:35 | size | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv indirection | user input (a command-line argument) |
+| test.cpp:50:17:50:30 | new[] | test.cpp:39:27:39:30 | argv | test.cpp:50:17:50:30 | size | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv | user input (a command-line argument) |
+| test.cpp:50:17:50:30 | new[] | test.cpp:39:27:39:30 | argv indirection | test.cpp:50:17:50:30 | size | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv indirection | user input (a command-line argument) |
+| test.cpp:50:17:50:30 | new[] | test.cpp:39:27:39:30 | argv indirection | test.cpp:50:17:50:30 | size | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv indirection | user input (a command-line argument) |
 | test.cpp:53:21:53:27 | call to realloc | test.cpp:39:27:39:30 | argv | test.cpp:53:35:53:60 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv | user input (a command-line argument) |
 | test.cpp:53:21:53:27 | call to realloc | test.cpp:39:27:39:30 | argv indirection | test.cpp:53:35:53:60 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv indirection | user input (a command-line argument) |
 | test.cpp:53:21:53:27 | call to realloc | test.cpp:39:27:39:30 | argv indirection | test.cpp:53:35:53:60 | ... * ... | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv indirection | user input (a command-line argument) |
