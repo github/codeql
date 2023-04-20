@@ -1060,19 +1060,19 @@
                     <v>8553</v>
                 </e>
                 <e>
-                    <k>start_line</k>
+                    <k>startLine</k>
                     <v>74697</v>
                 </e>
                 <e>
-                    <k>start_column</k>
+                    <k>startColumn</k>
                     <v>2236</v>
                 </e>
                 <e>
-                    <k>end_line</k>
+                    <k>endLine</k>
                     <v>74730</v>
                 </e>
                 <e>
-                    <k>end_column</k>
+                    <k>endColumn</k>
                     <v>2415</v>
                 </e>
             </columnsizes>
@@ -1095,7 +1095,7 @@
                 </dep>
                 <dep>
                     <src>id</src>
-                    <trg>start_line</trg>
+                    <trg>startLine</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -1111,7 +1111,7 @@
                 </dep>
                 <dep>
                     <src>id</src>
-                    <trg>start_column</trg>
+                    <trg>startColumn</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -1127,7 +1127,7 @@
                 </dep>
                 <dep>
                     <src>id</src>
-                    <trg>end_line</trg>
+                    <trg>endLine</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -1143,7 +1143,7 @@
                 </dep>
                 <dep>
                     <src>id</src>
-                    <trg>end_column</trg>
+                    <trg>endColumn</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -1235,7 +1235,7 @@
                 </dep>
                 <dep>
                     <src>file</src>
-                    <trg>start_line</trg>
+                    <trg>startLine</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -1316,7 +1316,7 @@
                 </dep>
                 <dep>
                     <src>file</src>
-                    <trg>start_column</trg>
+                    <trg>startColumn</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -1392,7 +1392,7 @@
                 </dep>
                 <dep>
                     <src>file</src>
-                    <trg>end_line</trg>
+                    <trg>endLine</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -1473,7 +1473,7 @@
                 </dep>
                 <dep>
                     <src>file</src>
-                    <trg>end_column</trg>
+                    <trg>endColumn</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -1548,7 +1548,7 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>start_line</src>
+                    <src>startLine</src>
                     <trg>id</trg>
                     <val>
                         <hist>
@@ -1624,7 +1624,7 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>start_line</src>
+                    <src>startLine</src>
                     <trg>file</trg>
                     <val>
                         <hist>
@@ -1675,8 +1675,8 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>start_line</src>
-                    <trg>start_column</trg>
+                    <src>startLine</src>
+                    <trg>startColumn</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -1751,8 +1751,8 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>start_line</src>
-                    <trg>end_line</trg>
+                    <src>startLine</src>
+                    <trg>endLine</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -1797,8 +1797,8 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>start_line</src>
-                    <trg>end_column</trg>
+                    <src>startLine</src>
+                    <trg>endColumn</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -1873,7 +1873,7 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>start_column</src>
+                    <src>startColumn</src>
                     <trg>id</trg>
                     <val>
                         <hist>
@@ -1949,7 +1949,7 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>start_column</src>
+                    <src>startColumn</src>
                     <trg>file</trg>
                     <val>
                         <hist>
@@ -2025,8 +2025,8 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>start_column</src>
-                    <trg>start_line</trg>
+                    <src>startColumn</src>
+                    <trg>startLine</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -2101,8 +2101,8 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>start_column</src>
-                    <trg>end_line</trg>
+                    <src>startColumn</src>
+                    <trg>endLine</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -2177,8 +2177,8 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>start_column</src>
-                    <trg>end_column</trg>
+                    <src>startColumn</src>
+                    <trg>endColumn</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -2248,7 +2248,7 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>end_line</src>
+                    <src>endLine</src>
                     <trg>id</trg>
                     <val>
                         <hist>
@@ -2324,7 +2324,7 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>end_line</src>
+                    <src>endLine</src>
                     <trg>file</trg>
                     <val>
                         <hist>
@@ -2375,8 +2375,8 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>end_line</src>
-                    <trg>start_line</trg>
+                    <src>endLine</src>
+                    <trg>startLine</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -2421,8 +2421,8 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>end_line</src>
-                    <trg>start_column</trg>
+                    <src>endLine</src>
+                    <trg>startColumn</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -2497,8 +2497,8 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>end_line</src>
-                    <trg>end_column</trg>
+                    <src>endLine</src>
+                    <trg>endColumn</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -2573,7 +2573,7 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>end_column</src>
+                    <src>endColumn</src>
                     <trg>id</trg>
                     <val>
                         <hist>
@@ -2649,7 +2649,7 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>end_column</src>
+                    <src>endColumn</src>
                     <trg>file</trg>
                     <val>
                         <hist>
@@ -2725,8 +2725,8 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>end_column</src>
-                    <trg>start_line</trg>
+                    <src>endColumn</src>
+                    <trg>startLine</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -2801,8 +2801,8 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>end_column</src>
-                    <trg>start_column</trg>
+                    <src>endColumn</src>
+                    <trg>startColumn</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
@@ -2872,8 +2872,8 @@
                     </val>
                 </dep>
                 <dep>
-                    <src>end_column</src>
-                    <trg>end_line</trg>
+                    <src>endColumn</src>
+                    <trg>endLine</trg>
                     <val>
                         <hist>
                             <budget>12</budget>
