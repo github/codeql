@@ -1130,8 +1130,8 @@ module Impl<FullStateConfigSig Config> {
         DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow
       );
 
-      bindingset[node, state, ap]
-      predicate filter(NodeEx node, FlowState state, Ap ap);
+      bindingset[node, state, t, ap]
+      predicate filter(NodeEx node, FlowState state, Typ t, Ap ap);
 
       bindingset[typ, contentType]
       predicate typecheckStore(Typ typ, DataFlowType contentType);
@@ -1192,7 +1192,7 @@ module Impl<FullStateConfigSig Config> {
       ) {
         fwdFlow0(node, state, cc, summaryCtx, argAp, t, ap, apa) and
         PrevStage::revFlow(node, state, apa) and
-        filter(node, state, ap)
+        filter(node, state, t, ap)
       }
 
       pragma[inline]
@@ -1955,9 +1955,10 @@ module Impl<FullStateConfigSig Config> {
       )
     }
 
-    bindingset[node, state, ap]
-    predicate filter(NodeEx node, FlowState state, Ap ap) {
+    bindingset[node, state, t, ap]
+    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) {
       PrevStage::revFlowState(state) and
+      exists(t) and
       exists(ap) and
       not stateBarrier(node, state) and
       (
@@ -2214,10 +2215,10 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate castingNodeEx(NodeEx node) { node.asNode() instanceof CastingNode }
 
-    bindingset[node, state, ap]
-    predicate filter(NodeEx node, FlowState state, Ap ap) {
+    bindingset[node, state, t, ap]
+    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) {
       exists(state) and
-      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), ap.getType()) else any()) and
+      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t) else any()) and
       (
         notExpectsContent(node)
         or
@@ -2337,11 +2338,11 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate castingNodeEx(NodeEx node) { node.asNode() instanceof CastingNode }
 
-    bindingset[node, state, ap]
-    predicate filter(NodeEx node, FlowState state, Ap ap) {
+    bindingset[node, state, t, ap]
+    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) {
       exists(state) and
       not clear(node, ap) and
-      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), ap.getType()) else any()) and
+      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t) else any()) and
       (
         notExpectsContent(node)
         or
@@ -2633,8 +2634,8 @@ module Impl<FullStateConfigSig Config> {
       )
     }
 
-    bindingset[node, state, ap]
-    predicate filter(NodeEx node, FlowState state, Ap ap) { any() }
+    bindingset[node, state, t, ap]
+    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) { any() }
 
     // Type checking is not necessary here as it has already been done in stage 3.
     bindingset[typ, contentType]
