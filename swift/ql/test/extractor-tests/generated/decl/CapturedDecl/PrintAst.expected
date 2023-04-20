@@ -1,10 +1,10 @@
 closures.swift:
-#    1| [ConcreteFuncDecl] bar()
+#    1| [ConcreteFuncDecl] hello()
 #    1|     InterfaceType = () -> String
 #    1|   getBody(): [BraceStmt] { ... }
 #    2|     getElement(0): [ReturnStmt] return ...
 #    2|       getResult(): [StringLiteralExpr] Hello world!
-#    5| [ConcreteFuncDecl] foo()
+#    5| [ConcreteFuncDecl] captureList()
 #    5|     InterfaceType = () -> ()
 #    5|   getBody(): [BraceStmt] { ... }
 #    6|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -15,8 +15,8 @@ closures.swift:
 #    7|     getElement(2): [CallExpr] call to ...
 #    7|       getFunction(): [CaptureListExpr] { ... }
 #    7|         getBindingDecl(0): [PatternBindingDecl] var ... = ...
-#    7|           getInit(0): [CallExpr] call to bar()
-#    7|             getFunction(): [DeclRefExpr] bar()
+#    7|           getInit(0): [CallExpr] call to hello()
+#    7|             getFunction(): [DeclRefExpr] hello()
 #    7|           getPattern(0): [NamedPattern] x
 #    7|         getClosureBody(): [ClosureExpr] { ... }
 #    7|           getBody(): [BraceStmt] { ... }
@@ -55,7 +55,7 @@ closures.swift:
 #   12|         getTypeRepr(): [TypeRepr] (() -> ())?
 #   12| [ConcreteVarDecl] escape
 #   12|     Type = (() -> ())?
-#   14| [ConcreteFuncDecl] baz()
+#   14| [ConcreteFuncDecl] setEscape()
 #   14|     InterfaceType = () -> ()
 #   14|   getBody(): [BraceStmt] { ... }
 #   15|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -63,46 +63,1131 @@ closures.swift:
 #   15|       getPattern(0): [NamedPattern] x
 #   15|     getElement(1): [ConcreteVarDecl] x
 #   15|         Type = Int
-#   16|     getElement(2): [ConcreteFuncDecl] quux()
-#   16|         InterfaceType = () -> ()
-#   16|       getBody(): [BraceStmt] { ... }
-#   17|         getElement(0): [BinaryExpr] ... .+=(_:_:) ...
-#   17|           getFunction(): [MethodLookupExpr] .+=(_:_:)
-#   17|             getBase(): [TypeExpr] Int.Type
-#   17|               getTypeRepr(): [TypeRepr] Int
-#   17|             getMethodRef(): [DeclRefExpr] +=(_:_:)
-#   17|           getArgument(0): [Argument] : &...
-#   17|             getExpr(): [InOutExpr] &...
-#   17|               getSubExpr(): [DeclRefExpr] x
-#   17|           getArgument(1): [Argument] : 1
-#   17|             getExpr(): [IntegerLiteralExpr] 1
-#   18|         getElement(1): [CallExpr] call to print(_:separator:terminator:)
-#   18|           getFunction(): [DeclRefExpr] print(_:separator:terminator:)
-#   18|           getArgument(0): [Argument] : [...]
-#   18|             getExpr(): [VarargExpansionExpr] [...]
-#   18|               getSubExpr(): [ArrayExpr] [...]
-#   18|                 getElement(0): [DeclRefExpr] x
-#   18|                 getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
-#   18|                   getImmediateSubExpr(): [LoadExpr] (Int) ...
-#   18|           getArgument(1): [Argument] separator: default separator
-#   18|             getExpr(): [DefaultArgumentExpr] default separator
-#   18|           getArgument(2): [Argument] terminator: default terminator
-#   18|             getExpr(): [DefaultArgumentExpr] default terminator
-#   17|       getCapture(0): [CapturedDecl] x
-#   20|     getElement(3): [AssignExpr]  ... = ...
-#   20|       getDest(): [DeclRefExpr] escape
-#   20|       getSource(): [DeclRefExpr] quux()
-#   20|       getSource().getFullyConverted(): [InjectIntoOptionalExpr] ((() -> ())?) ...
-#   20|   getCapture(0): [CapturedDecl] escape
-#   23| [ConcreteFuncDecl] callEscape()
-#   23|     InterfaceType = () -> ()
-#   23|   getBody(): [BraceStmt] { ... }
-#   24|     getElement(0): [CallExpr] call to baz()
-#   24|       getFunction(): [DeclRefExpr] baz()
-#   25|     getElement(1): [OptionalEvaluationExpr] OptionalEvaluationExpr
-#   25|       getSubExpr(): [CallExpr] call to ...
-#   25|         getFunction(): [BindOptionalExpr] ...?
-#   25|           getSubExpr(): [DeclRefExpr] escape
-#   25|         getFunction().getFullyConverted(): [LoadExpr] ((() -> ())) ...
-#   25|       getSubExpr().getFullyConverted(): [InjectIntoOptionalExpr] (()?) ...
-#   25|   getCapture(0): [CapturedDecl] escape
+#   16|     getElement(2): [AssignExpr]  ... = ...
+#   16|       getDest(): [DeclRefExpr] escape
+#   16|       getSource(): [ClosureExpr] { ... }
+#   16|         getBody(): [BraceStmt] { ... }
+#   17|           getElement(0): [BinaryExpr] ... .+=(_:_:) ...
+#   17|             getFunction(): [MethodLookupExpr] .+=(_:_:)
+#   17|               getBase(): [TypeExpr] Int.Type
+#   17|                 getTypeRepr(): [TypeRepr] Int
+#   17|               getMethodRef(): [DeclRefExpr] +=(_:_:)
+#   17|             getArgument(0): [Argument] : &...
+#   17|               getExpr(): [InOutExpr] &...
+#   17|                 getSubExpr(): [DeclRefExpr] x
+#   17|             getArgument(1): [Argument] : 1
+#   17|               getExpr(): [IntegerLiteralExpr] 1
+#   18|           getElement(1): [CallExpr] call to print(_:separator:terminator:)
+#   18|             getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   18|             getArgument(0): [Argument] : [...]
+#   18|               getExpr(): [VarargExpansionExpr] [...]
+#   18|                 getSubExpr(): [ArrayExpr] [...]
+#   18|                   getElement(0): [DeclRefExpr] x
+#   18|                   getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   18|                     getImmediateSubExpr(): [LoadExpr] (Int) ...
+#   18|             getArgument(1): [Argument] separator: default separator
+#   18|               getExpr(): [DefaultArgumentExpr] default separator
+#   18|             getArgument(2): [Argument] terminator: default terminator
+#   18|               getExpr(): [DefaultArgumentExpr] default terminator
+#   17|         getCapture(0): [CapturedDecl] x
+#   16|       getSource().getFullyConverted(): [InjectIntoOptionalExpr] ((() -> ())?) ...
+#   16|   getCapture(0): [CapturedDecl] escape
+#   22| [ConcreteFuncDecl] callEscape()
+#   22|     InterfaceType = () -> ()
+#   22|   getBody(): [BraceStmt] { ... }
+#   23|     getElement(0): [CallExpr] call to setEscape()
+#   23|       getFunction(): [DeclRefExpr] setEscape()
+#   24|     getElement(1): [OptionalEvaluationExpr] OptionalEvaluationExpr
+#   24|       getSubExpr(): [CallExpr] call to ...
+#   24|         getFunction(): [BindOptionalExpr] ...?
+#   24|           getSubExpr(): [DeclRefExpr] escape
+#   24|         getFunction().getFullyConverted(): [LoadExpr] ((() -> ())) ...
+#   24|       getSubExpr().getFullyConverted(): [InjectIntoOptionalExpr] (()?) ...
+#   24|   getCapture(0): [CapturedDecl] escape
+#   27| [ConcreteFuncDecl] logical()
+#   27|     InterfaceType = () -> Bool
+#   27|   getBody(): [BraceStmt] { ... }
+#   28|     getElement(0): [PatternBindingDecl] var ... = ...
+#   28|       getInit(0): [ClosureExpr] { ... }
+#   28|         getParam(0): [ParamDecl] x
+#   28|             Type = Int
+#   28|         getBody(): [BraceStmt] { ... }
+#   28|           getElement(0): [ReturnStmt] return ...
+#   28|             getResult(): [BinaryExpr] ... .+(_:_:) ...
+#   28|               getFunction(): [MethodLookupExpr] .+(_:_:)
+#   28|                 getBase(): [TypeExpr] Int.Type
+#   28|                   getTypeRepr(): [TypeRepr] Int
+#   28|                 getMethodRef(): [DeclRefExpr] +(_:_:)
+#   28|               getArgument(0): [Argument] : x
+#   28|                 getExpr(): [DeclRefExpr] x
+#   28|               getArgument(1): [Argument] : 1
+#   28|                 getExpr(): [IntegerLiteralExpr] 1
+#   28|       getInit(0).getFullyConverted(): [InjectIntoOptionalExpr] (((Int) -> Int)?) ...
+#   28|       getPattern(0): [TypedPattern] ... as ...
+#   28|         getSubPattern(): [NamedPattern] f
+#   28|         getTypeRepr(): [TypeRepr] ((Int) -> Int)?
+#   28|     getElement(1): [ConcreteVarDecl] f
+#   28|         Type = ((Int) -> Int)?
+#   29|     getElement(2): [PatternBindingDecl] var ... = ...
+#   29|       getInit(0): [IntegerLiteralExpr] 42
+#   29|       getInit(0).getFullyConverted(): [InjectIntoOptionalExpr] (Int?) ...
+#   29|       getPattern(0): [TypedPattern] ... as ...
+#   29|         getSubPattern(): [NamedPattern] x
+#   29|         getTypeRepr(): [TypeRepr] Int?
+#   29|     getElement(3): [ConcreteVarDecl] x
+#   29|         Type = Int?
+#   30|     getElement(4): [ReturnStmt] return ...
+#   30|       getResult(): [BinaryExpr] ... .&&(_:_:) ...
+#   31|         getFunction(): [MethodLookupExpr] .&&(_:_:)
+#   31|           getBase(): [TypeExpr] Bool.Type
+#   31|             getTypeRepr(): [TypeRepr] Bool
+#   31|           getMethodRef(): [DeclRefExpr] &&(_:_:)
+#   30|         getArgument(0): [Argument] : ... .!=(_:_:) ...
+#   30|           getExpr(): [BinaryExpr] ... .!=(_:_:) ...
+#   30|             getFunction(): [MethodLookupExpr] .!=(_:_:)
+#   30|               getBase(): [TypeExpr] Optional<((Int) -> Int)>.Type
+#   30|                 getTypeRepr(): [TypeRepr] Optional<((Int) -> Int)>
+#   30|               getMethodRef(): [DeclRefExpr] !=(_:_:)
+#   30|             getArgument(0): [Argument] : f
+#   30|               getExpr(): [DeclRefExpr] f
+#   30|             getArgument(1): [Argument] : nil
+#   30|               getExpr(): [NilLiteralExpr] nil
+#   31|         getArgument(1): [Argument] : { ... }
+#   31|           getExpr(): [AutoClosureExpr] { ... }
+#   31|             getBody(): [BraceStmt] { ... }
+#   31|               getElement(0): [ReturnStmt] return ...
+#   31|                 getResult(): [BinaryExpr] ... .&&(_:_:) ...
+#   32|                   getFunction(): [MethodLookupExpr] .&&(_:_:)
+#   32|                     getBase(): [TypeExpr] Bool.Type
+#   32|                       getTypeRepr(): [TypeRepr] Bool
+#   32|                     getMethodRef(): [DeclRefExpr] &&(_:_:)
+#   31|                   getArgument(0): [Argument] : ... .!=(_:_:) ...
+#   31|                     getExpr(): [BinaryExpr] ... .!=(_:_:) ...
+#   31|                       getFunction(): [MethodLookupExpr] .!=(_:_:)
+#   31|                         getBase(): [TypeExpr] Optional<Int>.Type
+#   31|                           getTypeRepr(): [TypeRepr] Optional<Int>
+#   31|                         getMethodRef(): [DeclRefExpr] !=(_:_:)
+#   31|                       getArgument(0): [Argument] : x
+#   31|                         getExpr(): [DeclRefExpr] x
+#   31|                       getArgument(1): [Argument] : nil
+#   31|                         getExpr(): [NilLiteralExpr] nil
+#   32|                   getArgument(1): [Argument] : { ... }
+#   32|                     getExpr(): [AutoClosureExpr] { ... }
+#   32|                       getBody(): [BraceStmt] { ... }
+#   32|                         getElement(0): [ReturnStmt] return ...
+#   32|                           getResult(): [BinaryExpr] ... .==(_:_:) ...
+#   32|                             getFunction(): [MethodLookupExpr] .==(_:_:)
+#   32|                               getBase(): [TypeExpr] Int.Type
+#   32|                                 getTypeRepr(): [TypeRepr] Int
+#   32|                               getMethodRef(): [DeclRefExpr] ==(_:_:)
+#   32|                             getArgument(0): [Argument] : call to ...
+#   32|                               getExpr(): [CallExpr] call to ...
+#   32|                                 getFunction(): [ForceValueExpr] ...!
+#   32|                                   getSubExpr(): [DeclRefExpr] f
+#   32|                                 getArgument(0): [Argument] : ...!
+#   32|                                   getExpr(): [ForceValueExpr] ...!
+#   32|                                     getSubExpr(): [DeclRefExpr] x
+#   32|                             getArgument(1): [Argument] : 43
+#   32|                               getExpr(): [IntegerLiteralExpr] 43
+#   32|                       getCapture(0): [CapturedDecl] f
+#   32|                       getCapture(1): [CapturedDecl] x
+#   31|                 getResult().getFullyConverted(): [ParenExpr] (...)
+#   31|             getCapture(0): [CapturedDecl] x
+#   32|             getCapture(1): [CapturedDecl] f
+#   35| [ConcreteFuncDecl] asyncTest()
+#   35|     InterfaceType = () -> ()
+#   35|   getBody(): [BraceStmt] { ... }
+#   36|     getElement(0): [ConcreteFuncDecl] withCallback(_:)
+#   36|         InterfaceType = (@escaping (Int) async -> Int) -> ()
+#   36|       getParam(0): [ParamDecl] callback
+#   36|           Type = (Int) async -> Int
+#   36|       getBody(): [BraceStmt] { ... }
+#   38|         getElement(0): [ConcreteFuncDecl] wrapper(_:)
+#   38|             InterfaceType = @Sendable (Int) async -> Int
+#   38|           getParam(0): [ParamDecl] x
+#   38|               Type = Int
+#   38|           getBody(): [BraceStmt] { ... }
+#   39|             getElement(0): [ReturnStmt] return ...
+#   39|               getResult(): [CallExpr] call to ...
+#   39|                 getFunction(): [DeclRefExpr] callback
+#   39|                 getArgument(0): [Argument] : ... .+(_:_:) ...
+#   39|                   getExpr(): [BinaryExpr] ... .+(_:_:) ...
+#   39|                     getFunction(): [MethodLookupExpr] .+(_:_:)
+#   39|                       getBase(): [TypeExpr] Int.Type
+#   39|                         getTypeRepr(): [TypeRepr] Int
+#   39|                       getMethodRef(): [DeclRefExpr] +(_:_:)
+#   39|                     getArgument(0): [Argument] : x
+#   39|                       getExpr(): [DeclRefExpr] x
+#   39|                     getArgument(1): [Argument] : 1
+#   39|                       getExpr(): [IntegerLiteralExpr] 1
+#   39|               getResult().getFullyConverted(): [AwaitExpr] await ...
+#   39|           getCapture(0): [CapturedDecl] callback
+#   41|         getElement(1): [CallExpr] call to Task<Success, Never>.init(priority:operation:)
+#   41|           getFunction(): [MethodLookupExpr] Task<Success, Never>.init(priority:operation:)
+#   41|             getBase(): [TypeExpr] Task<(), Never>.Type
+#   41|               getTypeRepr(): [TypeRepr] Task<(), Never>
+#   41|             getMethodRef(): [DeclRefExpr] Task<Success, Never>.init(priority:operation:)
+#   41|           getArgument(0): [Argument] priority: default priority
+#   41|             getExpr(): [DefaultArgumentExpr] default priority
+#   41|           getArgument(1): [Argument] operation: { ... }
+#   41|             getExpr(): [ClosureExpr] { ... }
+#   41|               getBody(): [BraceStmt] { ... }
+#   42|                 getElement(0): [ReturnStmt] return ...
+#   42|                   getResult(): [CallExpr] call to print(_:separator:terminator:)
+#   42|                     getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#   42|                     getArgument(0): [Argument] : [...]
+#   42|                       getExpr(): [VarargExpansionExpr] [...]
+#   42|                         getSubExpr(): [ArrayExpr] [...]
+#   42|                           getElement(0): [StringLiteralExpr] asyncTest():
+#   42|                           getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#   42|                           getElement(1): [CallExpr] call to wrapper(_:)
+#   42|                             getFunction(): [DeclRefExpr] wrapper(_:)
+#   42|                             getArgument(0): [Argument] : 40
+#   42|                               getExpr(): [IntegerLiteralExpr] 40
+#   42|                           getElement(1).getFullyConverted(): [ErasureExpr] (Any) ...
+#   42|                             getImmediateSubExpr(): [AwaitExpr] await ...
+#   42|                     getArgument(1): [Argument] separator: default separator
+#   42|                       getExpr(): [DefaultArgumentExpr] default separator
+#   42|                     getArgument(2): [Argument] terminator: default terminator
+#   42|                       getExpr(): [DefaultArgumentExpr] default terminator
+#   42|               getCapture(0): [CapturedDecl] wrapper(_:)
+#   45|     getElement(1): [CallExpr] call to withCallback(_:)
+#   45|       getFunction(): [DeclRefExpr] withCallback(_:)
+#   45|       getArgument(0): [Argument] : { ... }
+#   45|         getExpr(): [ClosureExpr] { ... }
+#   45|           getParam(0): [ParamDecl] x
+#   45|               Type = Int
+#   45|           getBody(): [BraceStmt] { ... }
+#   46|             getElement(0): [ReturnStmt] return ...
+#   46|               getResult(): [BinaryExpr] ... .+(_:_:) ...
+#   46|                 getFunction(): [MethodLookupExpr] .+(_:_:)
+#   46|                   getBase(): [TypeExpr] Int.Type
+#   46|                     getTypeRepr(): [TypeRepr] Int
+#   46|                   getMethodRef(): [DeclRefExpr] +(_:_:)
+#   46|                 getArgument(0): [Argument] : x
+#   46|                   getExpr(): [DeclRefExpr] x
+#   46|                 getArgument(1): [Argument] : 1
+#   46|                   getExpr(): [IntegerLiteralExpr] 1
+#   41| [NilLiteralExpr] nil
+#   50| [ConcreteFuncDecl] foo()
+#   50|     InterfaceType = () -> Int
+#   50|   getBody(): [BraceStmt] { ... }
+#   51|     getElement(0): [PatternBindingDecl] var ... = ...
+#   51|       getInit(0): [IntegerLiteralExpr] 1
+#   51|       getPattern(0): [NamedPattern] x
+#   51|     getElement(1): [ConcreteVarDecl] x
+#   51|         Type = Int
+#   52|     getElement(2): [PatternBindingDecl] var ... = ...
+#   52|       getInit(0): [ClosureExpr] { ... }
+#   52|         getParam(0): [ParamDecl] y
+#   52|             Type = Int
+#   52|         getBody(): [BraceStmt] { ... }
+#   52|           getElement(0): [ReturnStmt] return ...
+#   52|             getResult(): [BinaryExpr] ... .+=(_:_:) ...
+#   52|               getFunction(): [MethodLookupExpr] .+=(_:_:)
+#   52|                 getBase(): [TypeExpr] Int.Type
+#   52|                   getTypeRepr(): [TypeRepr] Int
+#   52|                 getMethodRef(): [DeclRefExpr] +=(_:_:)
+#   52|               getArgument(0): [Argument] : &...
+#   52|                 getExpr(): [InOutExpr] &...
+#   52|                   getSubExpr(): [DeclRefExpr] x
+#   52|               getArgument(1): [Argument] : y
+#   52|                 getExpr(): [DeclRefExpr] y
+#   52|         getCapture(0): [CapturedDecl] x
+#   52|       getPattern(0): [NamedPattern] f
+#   52|     getElement(3): [ConcreteVarDecl] f
+#   52|         Type = (Int) -> ()
+#   53|     getElement(4): [BinaryExpr] ... .+=(_:_:) ...
+#   53|       getFunction(): [MethodLookupExpr] .+=(_:_:)
+#   53|         getBase(): [TypeExpr] Int.Type
+#   53|           getTypeRepr(): [TypeRepr] Int
+#   53|         getMethodRef(): [DeclRefExpr] +=(_:_:)
+#   53|       getArgument(0): [Argument] : &...
+#   53|         getExpr(): [InOutExpr] &...
+#   53|           getSubExpr(): [DeclRefExpr] x
+#   53|       getArgument(1): [Argument] : 40
+#   53|         getExpr(): [IntegerLiteralExpr] 40
+#   54|     getElement(5): [PatternBindingDecl] var ... = ...
+#   54|       getInit(0): [ClosureExpr] { ... }
+#   54|         getBody(): [BraceStmt] { ... }
+#   54|           getElement(0): [ReturnStmt] return ...
+#   54|             getResult(): [DeclRefExpr] x
+#   54|             getResult().getFullyConverted(): [LoadExpr] (Int) ...
+#   54|         getCapture(0): [CapturedDecl] x
+#   54|       getPattern(0): [NamedPattern] r
+#   54|     getElement(6): [ConcreteVarDecl] r
+#   54|         Type = () -> Int
+#   55|     getElement(7): [CallExpr] call to ...
+#   55|       getFunction(): [DeclRefExpr] f
+#   55|       getArgument(0): [Argument] : 1
+#   55|         getExpr(): [IntegerLiteralExpr] 1
+#   56|     getElement(8): [ReturnStmt] return ...
+#   56|       getResult(): [CallExpr] call to ...
+#   56|         getFunction(): [DeclRefExpr] r
+#   51| [Comment] // x is a non-escaping capture of f and r
+#   51| 
+#   56| [Comment] // 42
+#   56| 
+#   59| [ConcreteFuncDecl] bar()
+#   59|     InterfaceType = () -> () -> Int
+#   59|   getBody(): [BraceStmt] { ... }
+#   60|     getElement(0): [PatternBindingDecl] var ... = ...
+#   60|       getInit(0): [IntegerLiteralExpr] 1
+#   60|       getPattern(0): [NamedPattern] x
+#   60|     getElement(1): [ConcreteVarDecl] x
+#   60|         Type = Int
+#   61|     getElement(2): [PatternBindingDecl] var ... = ...
+#   61|       getInit(0): [ClosureExpr] { ... }
+#   61|         getParam(0): [ParamDecl] y
+#   61|             Type = Int
+#   61|         getBody(): [BraceStmt] { ... }
+#   61|           getElement(0): [ReturnStmt] return ...
+#   61|             getResult(): [BinaryExpr] ... .+=(_:_:) ...
+#   61|               getFunction(): [MethodLookupExpr] .+=(_:_:)
+#   61|                 getBase(): [TypeExpr] Int.Type
+#   61|                   getTypeRepr(): [TypeRepr] Int
+#   61|                 getMethodRef(): [DeclRefExpr] +=(_:_:)
+#   61|               getArgument(0): [Argument] : &...
+#   61|                 getExpr(): [InOutExpr] &...
+#   61|                   getSubExpr(): [DeclRefExpr] x
+#   61|               getArgument(1): [Argument] : y
+#   61|                 getExpr(): [DeclRefExpr] y
+#   61|         getCapture(0): [CapturedDecl] x
+#   61|       getPattern(0): [NamedPattern] f
+#   61|     getElement(3): [ConcreteVarDecl] f
+#   61|         Type = (Int) -> ()
+#   62|     getElement(4): [BinaryExpr] ... .+=(_:_:) ...
+#   62|       getFunction(): [MethodLookupExpr] .+=(_:_:)
+#   62|         getBase(): [TypeExpr] Int.Type
+#   62|           getTypeRepr(): [TypeRepr] Int
+#   62|         getMethodRef(): [DeclRefExpr] +=(_:_:)
+#   62|       getArgument(0): [Argument] : &...
+#   62|         getExpr(): [InOutExpr] &...
+#   62|           getSubExpr(): [DeclRefExpr] x
+#   62|       getArgument(1): [Argument] : 40
+#   62|         getExpr(): [IntegerLiteralExpr] 40
+#   63|     getElement(5): [PatternBindingDecl] var ... = ...
+#   63|       getInit(0): [ClosureExpr] { ... }
+#   63|         getBody(): [BraceStmt] { ... }
+#   63|           getElement(0): [ReturnStmt] return ...
+#   63|             getResult(): [DeclRefExpr] x
+#   63|             getResult().getFullyConverted(): [LoadExpr] (Int) ...
+#   63|         getCapture(0): [CapturedDecl] x
+#   63|       getPattern(0): [NamedPattern] r
+#   63|     getElement(6): [ConcreteVarDecl] r
+#   63|         Type = () -> Int
+#   64|     getElement(7): [CallExpr] call to ...
+#   64|       getFunction(): [DeclRefExpr] f
+#   64|       getArgument(0): [Argument] : 1
+#   64|         getExpr(): [IntegerLiteralExpr] 1
+#   65|     getElement(8): [ReturnStmt] return ...
+#   65|       getResult(): [DeclRefExpr] r
+#   60| [Comment] // x is a non-escaping capture of f, escaping capture of r
+#   60| 
+#   65| [Comment] // constantly 42
+#   65| 
+#   68| [TopLevelCodeDecl] { ... }
+#   68|   getBody(): [BraceStmt] { ... }
+#   68|     getElement(0): [PatternBindingDecl] var ... = ...
+#   68|       getInit(0): [NilLiteralExpr] nil
+#   68|       getPattern(0): [TypedPattern] ... as ...
+#   68|         getSubPattern(): [NamedPattern] g
+#   68|         getTypeRepr(): [TypeRepr] ((Int) -> Void)?
+#   68| [ConcreteVarDecl] g
+#   68|     Type = ((Int) -> Void)?
+#   69| [ConcreteFuncDecl] baz()
+#   69|     InterfaceType = () -> () -> Int
+#   69|   getBody(): [BraceStmt] { ... }
+#   70|     getElement(0): [PatternBindingDecl] var ... = ...
+#   70|       getInit(0): [IntegerLiteralExpr] 1
+#   70|       getPattern(0): [NamedPattern] x
+#   70|     getElement(1): [ConcreteVarDecl] x
+#   70|         Type = Int
+#   71|     getElement(2): [AssignExpr]  ... = ...
+#   71|       getDest(): [DeclRefExpr] g
+#   71|       getSource(): [ClosureExpr] { ... }
+#   71|         getParam(0): [ParamDecl] y
+#   71|             Type = Int
+#   71|         getBody(): [BraceStmt] { ... }
+#   71|           getElement(0): [ReturnStmt] return ...
+#   71|             getResult(): [BinaryExpr] ... .+=(_:_:) ...
+#   71|               getFunction(): [MethodLookupExpr] .+=(_:_:)
+#   71|                 getBase(): [TypeExpr] Int.Type
+#   71|                   getTypeRepr(): [TypeRepr] Int
+#   71|                 getMethodRef(): [DeclRefExpr] +=(_:_:)
+#   71|               getArgument(0): [Argument] : &...
+#   71|                 getExpr(): [InOutExpr] &...
+#   71|                   getSubExpr(): [DeclRefExpr] x
+#   71|               getArgument(1): [Argument] : y
+#   71|                 getExpr(): [DeclRefExpr] y
+#   71|         getCapture(0): [CapturedDecl] x
+#   71|       getSource().getFullyConverted(): [InjectIntoOptionalExpr] (((Int) -> Void)?) ...
+#   72|     getElement(3): [BinaryExpr] ... .+=(_:_:) ...
+#   72|       getFunction(): [MethodLookupExpr] .+=(_:_:)
+#   72|         getBase(): [TypeExpr] Int.Type
+#   72|           getTypeRepr(): [TypeRepr] Int
+#   72|         getMethodRef(): [DeclRefExpr] +=(_:_:)
+#   72|       getArgument(0): [Argument] : &...
+#   72|         getExpr(): [InOutExpr] &...
+#   72|           getSubExpr(): [DeclRefExpr] x
+#   72|       getArgument(1): [Argument] : 40
+#   72|         getExpr(): [IntegerLiteralExpr] 40
+#   73|     getElement(4): [PatternBindingDecl] var ... = ...
+#   73|       getInit(0): [ClosureExpr] { ... }
+#   73|         getBody(): [BraceStmt] { ... }
+#   73|           getElement(0): [ReturnStmt] return ...
+#   73|             getResult(): [DeclRefExpr] x
+#   73|             getResult().getFullyConverted(): [LoadExpr] (Int) ...
+#   73|         getCapture(0): [CapturedDecl] x
+#   73|       getPattern(0): [NamedPattern] r
+#   73|     getElement(5): [ConcreteVarDecl] r
+#   73|         Type = () -> Int
+#   74|     getElement(6): [CallExpr] call to ...
+#   74|       getFunction(): [ForceValueExpr] ...!
+#   74|         getSubExpr(): [DeclRefExpr] g
+#   74|         getSubExpr().getFullyConverted(): [LoadExpr] (((Int) -> Void)?) ...
+#   74|       getArgument(0): [Argument] : 1
+#   74|         getExpr(): [IntegerLiteralExpr] 1
+#   75|     getElement(7): [ReturnStmt] return ...
+#   75|       getResult(): [DeclRefExpr] r
+#   71|   getCapture(0): [CapturedDecl] g
+#   70| [Comment] // x is an escaping capture of g and r
+#   70| 
+#   71| [Comment] // closure escapes!
+#   71| 
+#   78| [ConcreteFuncDecl] quux()
+#   78|     InterfaceType = () -> Int
+#   78|   getBody(): [BraceStmt] { ... }
+#   79|     getElement(0): [PatternBindingDecl] var ... = ...
+#   79|       getInit(0): [IntegerLiteralExpr] 0
+#   79|       getPattern(0): [NamedPattern] y
+#   79|     getElement(1): [ConcreteVarDecl] y
+#   79|         Type = Int
+#   81|     getElement(2): [ConcreteFuncDecl] f()
+#   81|         InterfaceType = () -> () -> Void
+#   81|       getBody(): [BraceStmt] { ... }
+#   82|         getElement(0): [PatternBindingDecl] var ... = ...
+#   82|           getInit(0): [IntegerLiteralExpr] 5
+#   82|           getPattern(0): [NamedPattern] x
+#   82|         getElement(1): [ConcreteVarDecl] x
+#   82|             Type = Int
+#   84|         getElement(2): [ConcreteFuncDecl] a()
+#   84|             InterfaceType = () -> ()
+#   84|           getBody(): [BraceStmt] { ... }
+#   85|             getElement(0): [AssignExpr]  ... = ...
+#   85|               getDest(): [DeclRefExpr] y
+#   85|               getSource(): [BinaryExpr] ... .+(_:_:) ...
+#   85|                 getFunction(): [MethodLookupExpr] .+(_:_:)
+#   85|                   getBase(): [TypeExpr] Int.Type
+#   85|                     getTypeRepr(): [TypeRepr] Int
+#   85|                   getMethodRef(): [DeclRefExpr] +(_:_:)
+#   85|                 getArgument(0): [Argument] : ... .*(_:_:) ...
+#   85|                   getExpr(): [BinaryExpr] ... .*(_:_:) ...
+#   85|                     getFunction(): [MethodLookupExpr] .*(_:_:)
+#   85|                       getBase(): [TypeExpr] Int.Type
+#   85|                         getTypeRepr(): [TypeRepr] Int
+#   85|                       getMethodRef(): [DeclRefExpr] *(_:_:)
+#   85|                     getArgument(0): [Argument] : 10
+#   85|                       getExpr(): [IntegerLiteralExpr] 10
+#   85|                     getArgument(1): [Argument] : y
+#   85|                       getExpr(): [DeclRefExpr] y
+#   85|                       getExpr().getFullyConverted(): [LoadExpr] (Int) ...
+#   85|                 getArgument(1): [Argument] : x
+#   85|                   getExpr(): [DeclRefExpr] x
+#   85|                   getExpr().getFullyConverted(): [LoadExpr] (Int) ...
+#   86|             getElement(1): [BinaryExpr] ... .-=(_:_:) ...
+#   86|               getFunction(): [MethodLookupExpr] .-=(_:_:)
+#   86|                 getBase(): [TypeExpr] Int.Type
+#   86|                   getTypeRepr(): [TypeRepr] Int
+#   86|                 getMethodRef(): [DeclRefExpr] -=(_:_:)
+#   86|               getArgument(0): [Argument] : &...
+#   86|                 getExpr(): [InOutExpr] &...
+#   86|                   getSubExpr(): [DeclRefExpr] x
+#   86|               getArgument(1): [Argument] : 1
+#   86|                 getExpr(): [IntegerLiteralExpr] 1
+#   87|             getElement(2): [IfStmt] if ... then { ... }
+#   87|               getCondition(): [StmtCondition] StmtCondition
+#   87|                 getElement(0): [ConditionElement] ... .>(_:_:) ...
+#   87|                   getBoolean(): [BinaryExpr] ... .>(_:_:) ...
+#   87|                     getFunction(): [MethodLookupExpr] .>(_:_:)
+#   87|                       getBase(): [TypeExpr] Int.Type
+#   87|                         getTypeRepr(): [TypeRepr] Int
+#   87|                       getMethodRef(): [DeclRefExpr] >(_:_:)
+#   87|                     getArgument(0): [Argument] : x
+#   87|                       getExpr(): [DeclRefExpr] x
+#   87|                       getExpr().getFullyConverted(): [LoadExpr] (Int) ...
+#   87|                     getArgument(1): [Argument] : 0
+#   87|                       getExpr(): [IntegerLiteralExpr] 0
+#   87|               getThen(): [BraceStmt] { ... }
+#   88|                 getElement(0): [CallExpr] call to b()
+#   88|                   getFunction(): [DeclRefExpr] b()
+#   85|           getCapture(0): [CapturedDecl] y
+#   85|           getCapture(1): [CapturedDecl] x
+#   88|           getCapture(2): [CapturedDecl] b()
+#   92|         getElement(3): [ConcreteFuncDecl] b()
+#   92|             InterfaceType = () -> ()
+#   92|           getBody(): [BraceStmt] { ... }
+#   93|             getElement(0): [AssignExpr]  ... = ...
+#   93|               getDest(): [DeclRefExpr] y
+#   93|               getSource(): [BinaryExpr] ... .+(_:_:) ...
+#   93|                 getFunction(): [MethodLookupExpr] .+(_:_:)
+#   93|                   getBase(): [TypeExpr] Int.Type
+#   93|                     getTypeRepr(): [TypeRepr] Int
+#   93|                   getMethodRef(): [DeclRefExpr] +(_:_:)
+#   93|                 getArgument(0): [Argument] : ... .*(_:_:) ...
+#   93|                   getExpr(): [BinaryExpr] ... .*(_:_:) ...
+#   93|                     getFunction(): [MethodLookupExpr] .*(_:_:)
+#   93|                       getBase(): [TypeExpr] Int.Type
+#   93|                         getTypeRepr(): [TypeRepr] Int
+#   93|                       getMethodRef(): [DeclRefExpr] *(_:_:)
+#   93|                     getArgument(0): [Argument] : 10
+#   93|                       getExpr(): [IntegerLiteralExpr] 10
+#   93|                     getArgument(1): [Argument] : y
+#   93|                       getExpr(): [DeclRefExpr] y
+#   93|                       getExpr().getFullyConverted(): [LoadExpr] (Int) ...
+#   93|                 getArgument(1): [Argument] : ... .*(_:_:) ...
+#   93|                   getExpr(): [BinaryExpr] ... .*(_:_:) ...
+#   93|                     getFunction(): [MethodLookupExpr] .*(_:_:)
+#   93|                       getBase(): [TypeExpr] Int.Type
+#   93|                         getTypeRepr(): [TypeRepr] Int
+#   93|                       getMethodRef(): [DeclRefExpr] *(_:_:)
+#   93|                     getArgument(0): [Argument] : 2
+#   93|                       getExpr(): [IntegerLiteralExpr] 2
+#   93|                     getArgument(1): [Argument] : x
+#   93|                       getExpr(): [DeclRefExpr] x
+#   93|                       getExpr().getFullyConverted(): [LoadExpr] (Int) ...
+#   94|             getElement(1): [BinaryExpr] ... .-=(_:_:) ...
+#   94|               getFunction(): [MethodLookupExpr] .-=(_:_:)
+#   94|                 getBase(): [TypeExpr] Int.Type
+#   94|                   getTypeRepr(): [TypeRepr] Int
+#   94|                 getMethodRef(): [DeclRefExpr] -=(_:_:)
+#   94|               getArgument(0): [Argument] : &...
+#   94|                 getExpr(): [InOutExpr] &...
+#   94|                   getSubExpr(): [DeclRefExpr] x
+#   94|               getArgument(1): [Argument] : 1
+#   94|                 getExpr(): [IntegerLiteralExpr] 1
+#   95|             getElement(2): [IfStmt] if ... then { ... }
+#   95|               getCondition(): [StmtCondition] StmtCondition
+#   95|                 getElement(0): [ConditionElement] ... .>(_:_:) ...
+#   95|                   getBoolean(): [BinaryExpr] ... .>(_:_:) ...
+#   95|                     getFunction(): [MethodLookupExpr] .>(_:_:)
+#   95|                       getBase(): [TypeExpr] Int.Type
+#   95|                         getTypeRepr(): [TypeRepr] Int
+#   95|                       getMethodRef(): [DeclRefExpr] >(_:_:)
+#   95|                     getArgument(0): [Argument] : x
+#   95|                       getExpr(): [DeclRefExpr] x
+#   95|                       getExpr().getFullyConverted(): [LoadExpr] (Int) ...
+#   95|                     getArgument(1): [Argument] : 0
+#   95|                       getExpr(): [IntegerLiteralExpr] 0
+#   95|               getThen(): [BraceStmt] { ... }
+#   96|                 getElement(0): [CallExpr] call to a()
+#   96|                   getFunction(): [DeclRefExpr] a()
+#   93|           getCapture(0): [CapturedDecl] y
+#   93|           getCapture(1): [CapturedDecl] x
+#   96|           getCapture(2): [CapturedDecl] a()
+#  100|         getElement(4): [ReturnStmt] return ...
+#  100|           getResult(): [DeclRefExpr] a()
+#   85|       getCapture(0): [CapturedDecl] y
+#  103|     getElement(3): [PatternBindingDecl] var ... = ...
+#  103|       getInit(0): [CallExpr] call to f()
+#  103|         getFunction(): [DeclRefExpr] f()
+#  103|       getPattern(0): [NamedPattern] a
+#  103|     getElement(4): [ConcreteVarDecl] a
+#  103|         Type = () -> Void
+#  104|     getElement(5): [CallExpr] call to ...
+#  104|       getFunction(): [DeclRefExpr] a
+#  105|     getElement(6): [ReturnStmt] return ...
+#  105|       getResult(): [DeclRefExpr] y
+#  105|       getResult().getFullyConverted(): [LoadExpr] (Int) ...
+#  105| [Comment] // 58341
+#  105| 
+#  108| [ConcreteFuncDecl] sharedCapture()
+#  108|     InterfaceType = () -> Int
+#  108|   getBody(): [BraceStmt] { ... }
+#  109|     getElement(0): [PatternBindingDecl] var ... = ...
+#  109|       getInit(0): [CallExpr] call to ...
+#  109|         getFunction(): [ClosureExpr] { ... }
+#  109|           getBody(): [BraceStmt] { ... }
+#  110|             getElement(0): [PatternBindingDecl] var ... = ...
+#  110|               getInit(0): [IntegerLiteralExpr] 0
+#  110|               getPattern(0): [NamedPattern] x
+#  110|             getElement(1): [ConcreteVarDecl] x
+#  110|                 Type = Int
+#  111|             getElement(2): [ReturnStmt] return ...
+#  111|               getResult(): [TupleExpr] (...)
+#  111|                 getElement(0): [ClosureExpr] { ... }
+#  111|                   getBody(): [BraceStmt] { ... }
+#  111|                     getElement(0): [ReturnStmt] return ...
+#  111|                       getResult(): [BinaryExpr] ... .+=(_:_:) ...
+#  111|                         getFunction(): [MethodLookupExpr] .+=(_:_:)
+#  111|                           getBase(): [TypeExpr] Int.Type
+#  111|                             getTypeRepr(): [TypeRepr] Int
+#  111|                           getMethodRef(): [DeclRefExpr] +=(_:_:)
+#  111|                         getArgument(0): [Argument] : &...
+#  111|                           getExpr(): [InOutExpr] &...
+#  111|                             getSubExpr(): [DeclRefExpr] x
+#  111|                         getArgument(1): [Argument] : 1
+#  111|                           getExpr(): [IntegerLiteralExpr] 1
+#  111|                   getCapture(0): [CapturedDecl] x
+#  111|                 getElement(1): [ClosureExpr] { ... }
+#  111|                   getBody(): [BraceStmt] { ... }
+#  111|                     getElement(0): [ReturnStmt] return ...
+#  111|                       getResult(): [DeclRefExpr] x
+#  111|                       getResult().getFullyConverted(): [LoadExpr] (Int) ...
+#  111|                   getCapture(0): [CapturedDecl] x
+#  109|       getPattern(0): [TuplePattern] (...)
+#  109|         getElement(0): [NamedPattern] incrX
+#  109|         getElement(1): [NamedPattern] getX
+#  109|     getElement(1): [ConcreteVarDecl] incrX
+#  109|         Type = () -> ()
+#  109|     getElement(2): [ConcreteVarDecl] getX
+#  109|         Type = () -> Int
+#  114|     getElement(3): [PatternBindingDecl] var ... = ...
+#  114|       getInit(0): [ClosureExpr] { ... }
+#  114|         getBody(): [BraceStmt] { ... }
+#  115|           getElement(0): [CallExpr] call to ...
+#  115|             getFunction(): [DeclRefExpr] incrX
+#  116|           getElement(1): [CallExpr] call to ...
+#  116|             getFunction(): [DeclRefExpr] incrX
+#  115|         getCapture(0): [CapturedDecl] incrX
+#  114|       getPattern(0): [NamedPattern] doubleIncrX
+#  114|     getElement(4): [ConcreteVarDecl] doubleIncrX
+#  114|         Type = () -> ()
+#  119|     getElement(5): [CallExpr] call to ...
+#  119|       getFunction(): [DeclRefExpr] doubleIncrX
+#  120|     getElement(6): [CallExpr] call to ...
+#  120|       getFunction(): [DeclRefExpr] doubleIncrX
+#  121|     getElement(7): [ReturnStmt] return ...
+#  121|       getResult(): [CallExpr] call to ...
+#  121|         getFunction(): [DeclRefExpr] getX
+#  121| [Comment] // 4
+#  121| 
+#  124| [ConcreteFuncDecl] sink(_:)
+#  124|     InterfaceType = (Int) -> ()
+#  124|   getParam(0): [ParamDecl] x
+#  124|       Type = Int
+#  124|   getBody(): [BraceStmt] { ... }
+#  124|     getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#  124|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  124|       getArgument(0): [Argument] : [...]
+#  124|         getExpr(): [VarargExpansionExpr] [...]
+#  124|           getSubExpr(): [ArrayExpr] [...]
+#  124|             getElement(0): [StringLiteralExpr] sink:
+#  124|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  124|             getElement(1): [DeclRefExpr] x
+#  124|             getElement(1).getFullyConverted(): [ErasureExpr] (Any) ...
+#  124|       getArgument(1): [Argument] separator: default separator
+#  124|         getExpr(): [DefaultArgumentExpr] default separator
+#  124|       getArgument(2): [Argument] terminator: default terminator
+#  124|         getExpr(): [DefaultArgumentExpr] default terminator
+#  125| [ConcreteFuncDecl] source()
+#  125|     InterfaceType = () -> Int
+#  125|   getBody(): [BraceStmt] { ... }
+#  125|     getElement(0): [ReturnStmt] return ...
+#  125|       getResult(): [IntegerLiteralExpr] -1
+#  127| [ConcreteFuncDecl] sharedCaptureMultipleWriters()
+#  127|     InterfaceType = () -> ()
+#  127|   getBody(): [BraceStmt] { ... }
+#  128|     getElement(0): [PatternBindingDecl] var ... = ...
+#  128|       getInit(0): [IntegerLiteralExpr] 123
+#  128|       getPattern(0): [NamedPattern] x
+#  128|     getElement(1): [ConcreteVarDecl] x
+#  128|         Type = Int
+#  130|     getElement(2): [PatternBindingDecl] var ... = ...
+#  130|       getInit(0): [ClosureExpr] { ... }
+#  130|         getBody(): [BraceStmt] { ... }
+#  130|           getElement(0): [ReturnStmt] return ...
+#  130|             getResult(): [CallExpr] call to sink(_:)
+#  130|               getFunction(): [DeclRefExpr] sink(_:)
+#  130|               getArgument(0): [Argument] : x
+#  130|                 getExpr(): [DeclRefExpr] x
+#  130|                 getExpr().getFullyConverted(): [LoadExpr] (Int) ...
+#  130|         getCapture(0): [CapturedDecl] x
+#  130|       getPattern(0): [NamedPattern] callSink
+#  130|     getElement(3): [ConcreteVarDecl] callSink
+#  130|         Type = () -> ()
+#  132|     getElement(4): [PatternBindingDecl] var ... = ...
+#  132|       getInit(0): [ClosureExpr] { ... }
+#  132|         getParam(0): [ParamDecl] y
+#  132|             Type = Int
+#  132|         getBody(): [BraceStmt] { ... }
+#  133|           getElement(0): [PatternBindingDecl] var ... = ...
+#  133|             getInit(0): [ClosureExpr] { ... }
+#  133|               getBody(): [BraceStmt] { ... }
+#  133|                 getElement(0): [ReturnStmt] return ...
+#  133|                   getResult(): [AssignExpr]  ... = ...
+#  133|                     getDest(): [DeclRefExpr] x
+#  133|                     getSource(): [DeclRefExpr] y
+#  133|               getCapture(0): [CapturedDecl] x
+#  133|               getCapture(1): [CapturedDecl] y
+#  133|             getPattern(0): [NamedPattern] setter
+#  133|           getElement(1): [ConcreteVarDecl] setter
+#  133|               Type = () -> ()
+#  134|           getElement(2): [ReturnStmt] return ...
+#  134|             getResult(): [DeclRefExpr] setter
+#  133|         getCapture(0): [CapturedDecl] x
+#  132|       getPattern(0): [NamedPattern] makeSetter
+#  132|     getElement(5): [ConcreteVarDecl] makeSetter
+#  132|         Type = (Int) -> () -> ()
+#  137|     getElement(6): [PatternBindingDecl] var ... = ...
+#  137|       getInit(0): [CallExpr] call to ...
+#  137|         getFunction(): [DeclRefExpr] makeSetter
+#  137|         getArgument(0): [Argument] : 42
+#  137|           getExpr(): [IntegerLiteralExpr] 42
+#  137|       getPattern(0): [NamedPattern] goodSetter
+#  137|     getElement(7): [ConcreteVarDecl] goodSetter
+#  137|         Type = () -> ()
+#  138|     getElement(8): [PatternBindingDecl] var ... = ...
+#  138|       getInit(0): [CallExpr] call to ...
+#  138|         getFunction(): [DeclRefExpr] makeSetter
+#  138|         getArgument(0): [Argument] : call to source()
+#  138|           getExpr(): [CallExpr] call to source()
+#  138|             getFunction(): [DeclRefExpr] source()
+#  138|       getPattern(0): [NamedPattern] badSetter
+#  138|     getElement(9): [ConcreteVarDecl] badSetter
+#  138|         Type = () -> ()
+#  140|     getElement(10): [CallExpr] call to ...
+#  140|       getFunction(): [DeclRefExpr] goodSetter
+#  141|     getElement(11): [CallExpr] call to ...
+#  141|       getFunction(): [DeclRefExpr] callSink
+#  143|     getElement(12): [CallExpr] call to ...
+#  143|       getFunction(): [DeclRefExpr] badSetter
+#  144|     getElement(13): [CallExpr] call to ...
+#  144|       getFunction(): [DeclRefExpr] callSink
+#  147| [ConcreteFuncDecl] reentrant()
+#  147|     InterfaceType = () -> Int
+#  147|   getBody(): [BraceStmt] { ... }
+#  149|     getElement(0): [ConcreteFuncDecl] f(_:)
+#  149|         InterfaceType = (Int) -> (Int) -> Int
+#  149|       getParam(0): [ParamDecl] x
+#  149|           Type = Int
+#  149|       getBody(): [BraceStmt] { ... }
+#  150|         getElement(0): [IfStmt] if ... then { ... }
+#  150|           getCondition(): [StmtCondition] StmtCondition
+#  150|             getElement(0): [ConditionElement] ... .==(_:_:) ...
+#  150|               getBoolean(): [BinaryExpr] ... .==(_:_:) ...
+#  150|                 getFunction(): [MethodLookupExpr] .==(_:_:)
+#  150|                   getBase(): [TypeExpr] Int.Type
+#  150|                     getTypeRepr(): [TypeRepr] Int
+#  150|                   getMethodRef(): [DeclRefExpr] ==(_:_:)
+#  150|                 getArgument(0): [Argument] : x
+#  150|                   getExpr(): [DeclRefExpr] x
+#  150|                 getArgument(1): [Argument] : 0
+#  150|                   getExpr(): [IntegerLiteralExpr] 0
+#  150|           getThen(): [BraceStmt] { ... }
+#  151|             getElement(0): [ReturnStmt] return ...
+#  151|               getResult(): [ClosureExpr] { ... }
+#  151|                 getParam(0): [ParamDecl] _
+#  151|                     Type = Int
+#  151|                 getBody(): [BraceStmt] { ... }
+#  151|                   getElement(0): [ReturnStmt] return ...
+#  151|                     getResult(): [DeclRefExpr] x
+#  151|                 getCapture(0): [CapturedDecl] x
+#  154|         getElement(1): [PatternBindingDecl] var ... = ...
+#  154|           getInit(0): [CallExpr] call to g(_:)
+#  154|             getFunction(): [DeclRefExpr] g(_:)
+#  154|             getArgument(0): [Argument] : ... .-(_:_:) ...
+#  154|               getExpr(): [BinaryExpr] ... .-(_:_:) ...
+#  154|                 getFunction(): [MethodLookupExpr] .-(_:_:)
+#  154|                   getBase(): [TypeExpr] Int.Type
+#  154|                     getTypeRepr(): [TypeRepr] Int
+#  154|                   getMethodRef(): [DeclRefExpr] -(_:_:)
+#  154|                 getArgument(0): [Argument] : x
+#  154|                   getExpr(): [DeclRefExpr] x
+#  154|                 getArgument(1): [Argument] : 1
+#  154|                   getExpr(): [IntegerLiteralExpr] 1
+#  154|           getPattern(0): [NamedPattern] next
+#  154|         getElement(2): [ConcreteVarDecl] next
+#  154|             Type = (Int) -> Int
+#  155|         getElement(3): [ReturnStmt] return ...
+#  155|           getResult(): [ClosureExpr] { ... }
+#  155|             getParam(0): [ParamDecl] k
+#  155|                 Type = Int
+#  155|             getBody(): [BraceStmt] { ... }
+#  155|               getElement(0): [ReturnStmt] return ...
+#  155|                 getResult(): [BinaryExpr] ... .+(_:_:) ...
+#  155|                   getFunction(): [MethodLookupExpr] .+(_:_:)
+#  155|                     getBase(): [TypeExpr] Int.Type
+#  155|                       getTypeRepr(): [TypeRepr] Int
+#  155|                     getMethodRef(): [DeclRefExpr] +(_:_:)
+#  155|                   getArgument(0): [Argument] : ... .*(_:_:) ...
+#  155|                     getExpr(): [BinaryExpr] ... .*(_:_:) ...
+#  155|                       getFunction(): [MethodLookupExpr] .*(_:_:)
+#  155|                         getBase(): [TypeExpr] Int.Type
+#  155|                           getTypeRepr(): [TypeRepr] Int
+#  155|                         getMethodRef(): [DeclRefExpr] *(_:_:)
+#  155|                       getArgument(0): [Argument] : k
+#  155|                         getExpr(): [DeclRefExpr] k
+#  155|                       getArgument(1): [Argument] : call to ...
+#  155|                         getExpr(): [CallExpr] call to ...
+#  155|                           getFunction(): [DeclRefExpr] next
+#  155|                           getArgument(0): [Argument] : ... .*(_:_:) ...
+#  155|                             getExpr(): [BinaryExpr] ... .*(_:_:) ...
+#  155|                               getFunction(): [MethodLookupExpr] .*(_:_:)
+#  155|                                 getBase(): [TypeExpr] Int.Type
+#  155|                                   getTypeRepr(): [TypeRepr] Int
+#  155|                                 getMethodRef(): [DeclRefExpr] *(_:_:)
+#  155|                               getArgument(0): [Argument] : 10
+#  155|                                 getExpr(): [IntegerLiteralExpr] 10
+#  155|                               getArgument(1): [Argument] : k
+#  155|                                 getExpr(): [DeclRefExpr] k
+#  155|                   getArgument(1): [Argument] : x
+#  155|                     getExpr(): [DeclRefExpr] x
+#  155|             getCapture(0): [CapturedDecl] next
+#  155|             getCapture(1): [CapturedDecl] x
+#  154|       getCapture(0): [CapturedDecl] g(_:)
+#  158|     getElement(1): [ConcreteFuncDecl] g(_:)
+#  158|         InterfaceType = (Int) -> (Int) -> Int
+#  158|       getParam(0): [ParamDecl] x
+#  158|           Type = Int
+#  158|       getBody(): [BraceStmt] { ... }
+#  159|         getElement(0): [IfStmt] if ... then { ... }
+#  159|           getCondition(): [StmtCondition] StmtCondition
+#  159|             getElement(0): [ConditionElement] ... .==(_:_:) ...
+#  159|               getBoolean(): [BinaryExpr] ... .==(_:_:) ...
+#  159|                 getFunction(): [MethodLookupExpr] .==(_:_:)
+#  159|                   getBase(): [TypeExpr] Int.Type
+#  159|                     getTypeRepr(): [TypeRepr] Int
+#  159|                   getMethodRef(): [DeclRefExpr] ==(_:_:)
+#  159|                 getArgument(0): [Argument] : x
+#  159|                   getExpr(): [DeclRefExpr] x
+#  159|                 getArgument(1): [Argument] : 0
+#  159|                   getExpr(): [IntegerLiteralExpr] 0
+#  159|           getThen(): [BraceStmt] { ... }
+#  160|             getElement(0): [ReturnStmt] return ...
+#  160|               getResult(): [ClosureExpr] { ... }
+#  160|                 getParam(0): [ParamDecl] _
+#  160|                     Type = Int
+#  160|                 getBody(): [BraceStmt] { ... }
+#  160|                   getElement(0): [ReturnStmt] return ...
+#  160|                     getResult(): [DeclRefExpr] x
+#  160|                 getCapture(0): [CapturedDecl] x
+#  163|         getElement(1): [PatternBindingDecl] var ... = ...
+#  163|           getInit(0): [CallExpr] call to f(_:)
+#  163|             getFunction(): [DeclRefExpr] f(_:)
+#  163|             getArgument(0): [Argument] : ... .-(_:_:) ...
+#  163|               getExpr(): [BinaryExpr] ... .-(_:_:) ...
+#  163|                 getFunction(): [MethodLookupExpr] .-(_:_:)
+#  163|                   getBase(): [TypeExpr] Int.Type
+#  163|                     getTypeRepr(): [TypeRepr] Int
+#  163|                   getMethodRef(): [DeclRefExpr] -(_:_:)
+#  163|                 getArgument(0): [Argument] : x
+#  163|                   getExpr(): [DeclRefExpr] x
+#  163|                 getArgument(1): [Argument] : 1
+#  163|                   getExpr(): [IntegerLiteralExpr] 1
+#  163|           getPattern(0): [NamedPattern] next
+#  163|         getElement(2): [ConcreteVarDecl] next
+#  163|             Type = (Int) -> Int
+#  164|         getElement(3): [ReturnStmt] return ...
+#  164|           getResult(): [ClosureExpr] { ... }
+#  164|             getParam(0): [ParamDecl] k
+#  164|                 Type = Int
+#  164|             getBody(): [BraceStmt] { ... }
+#  164|               getElement(0): [ReturnStmt] return ...
+#  164|                 getResult(): [BinaryExpr] ... .+(_:_:) ...
+#  164|                   getFunction(): [MethodLookupExpr] .+(_:_:)
+#  164|                     getBase(): [TypeExpr] Int.Type
+#  164|                       getTypeRepr(): [TypeRepr] Int
+#  164|                     getMethodRef(): [DeclRefExpr] +(_:_:)
+#  164|                   getArgument(0): [Argument] : ... .*(_:_:) ...
+#  164|                     getExpr(): [BinaryExpr] ... .*(_:_:) ...
+#  164|                       getFunction(): [MethodLookupExpr] .*(_:_:)
+#  164|                         getBase(): [TypeExpr] Int.Type
+#  164|                           getTypeRepr(): [TypeRepr] Int
+#  164|                         getMethodRef(): [DeclRefExpr] *(_:_:)
+#  164|                       getArgument(0): [Argument] : k
+#  164|                         getExpr(): [DeclRefExpr] k
+#  164|                       getArgument(1): [Argument] : call to ...
+#  164|                         getExpr(): [CallExpr] call to ...
+#  164|                           getFunction(): [DeclRefExpr] next
+#  164|                           getArgument(0): [Argument] : ... .*(_:_:) ...
+#  164|                             getExpr(): [BinaryExpr] ... .*(_:_:) ...
+#  164|                               getFunction(): [MethodLookupExpr] .*(_:_:)
+#  164|                                 getBase(): [TypeExpr] Int.Type
+#  164|                                   getTypeRepr(): [TypeRepr] Int
+#  164|                                 getMethodRef(): [DeclRefExpr] *(_:_:)
+#  164|                               getArgument(0): [Argument] : 10
+#  164|                                 getExpr(): [IntegerLiteralExpr] 10
+#  164|                               getArgument(1): [Argument] : k
+#  164|                                 getExpr(): [DeclRefExpr] k
+#  164|                   getArgument(1): [Argument] : ... .*(_:_:) ...
+#  164|                     getExpr(): [BinaryExpr] ... .*(_:_:) ...
+#  164|                       getFunction(): [MethodLookupExpr] .*(_:_:)
+#  164|                         getBase(): [TypeExpr] Int.Type
+#  164|                           getTypeRepr(): [TypeRepr] Int
+#  164|                         getMethodRef(): [DeclRefExpr] *(_:_:)
+#  164|                       getArgument(0): [Argument] : 2
+#  164|                         getExpr(): [IntegerLiteralExpr] 2
+#  164|                       getArgument(1): [Argument] : x
+#  164|                         getExpr(): [DeclRefExpr] x
+#  164|             getCapture(0): [CapturedDecl] next
+#  164|             getCapture(1): [CapturedDecl] x
+#  163|       getCapture(0): [CapturedDecl] f(_:)
+#  167|     getElement(2): [PatternBindingDecl] var ... = ...
+#  167|       getInit(0): [CallExpr] call to f(_:)
+#  167|         getFunction(): [DeclRefExpr] f(_:)
+#  167|         getArgument(0): [Argument] : 5
+#  167|           getExpr(): [IntegerLiteralExpr] 5
+#  167|       getPattern(0): [NamedPattern] h
+#  167|     getElement(3): [ConcreteVarDecl] h
+#  167|         Type = (Int) -> Int
+#  169|     getElement(4): [PatternBindingDecl] var ... = ...
+#  169|       getInit(0): [CallExpr] call to ...
+#  169|         getFunction(): [DeclRefExpr] h
+#  169|         getArgument(0): [Argument] : 10
+#  169|           getExpr(): [IntegerLiteralExpr] 10
+#  169|       getPattern(0): [NamedPattern] y
+#  169|     getElement(5): [ConcreteVarDecl] y
+#  169|         Type = Int
+#  171|     getElement(6): [ReturnStmt] return ...
+#  171|       getResult(): [DeclRefExpr] y
+#  171| [Comment] // 10004003085
+#  171| 
+#  174| [ConcreteFuncDecl] main()
+#  174|     InterfaceType = () -> ()
+#  174|   getBody(): [BraceStmt] { ... }
+#  175|     getElement(0): [CallExpr] call to print(_:separator:terminator:)
+#  175|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  175|       getArgument(0): [Argument] : [...]
+#  175|         getExpr(): [VarargExpansionExpr] [...]
+#  175|           getSubExpr(): [ArrayExpr] [...]
+#  175|             getElement(0): [StringLiteralExpr] captureList():
+#  175|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  175|       getArgument(1): [Argument] separator: default separator
+#  175|         getExpr(): [DefaultArgumentExpr] default separator
+#  175|       getArgument(2): [Argument] terminator: default terminator
+#  175|         getExpr(): [DefaultArgumentExpr] default terminator
+#  176|     getElement(1): [CallExpr] call to captureList()
+#  176|       getFunction(): [DeclRefExpr] captureList()
+#  178|     getElement(2): [CallExpr] call to print(_:separator:terminator:)
+#  178|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  178|       getArgument(0): [Argument] : [...]
+#  178|         getExpr(): [VarargExpansionExpr] [...]
+#  178|           getSubExpr(): [ArrayExpr] [...]
+#  178|             getElement(0): [StringLiteralExpr] callEscape():
+#  178|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  178|       getArgument(1): [Argument] separator: default separator
+#  178|         getExpr(): [DefaultArgumentExpr] default separator
+#  178|       getArgument(2): [Argument] terminator: default terminator
+#  178|         getExpr(): [DefaultArgumentExpr] default terminator
+#  179|     getElement(3): [CallExpr] call to callEscape()
+#  179|       getFunction(): [DeclRefExpr] callEscape()
+#  181|     getElement(4): [CallExpr] call to print(_:separator:terminator:)
+#  181|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  181|       getArgument(0): [Argument] : [...]
+#  181|         getExpr(): [VarargExpansionExpr] [...]
+#  181|           getSubExpr(): [ArrayExpr] [...]
+#  181|             getElement(0): [StringLiteralExpr] logical():
+#  181|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  181|             getElement(1): [CallExpr] call to logical()
+#  181|               getFunction(): [DeclRefExpr] logical()
+#  181|             getElement(1).getFullyConverted(): [ErasureExpr] (Any) ...
+#  181|       getArgument(1): [Argument] separator: default separator
+#  181|         getExpr(): [DefaultArgumentExpr] default separator
+#  181|       getArgument(2): [Argument] terminator: default terminator
+#  181|         getExpr(): [DefaultArgumentExpr] default terminator
+#  183|     getElement(5): [CallExpr] call to print(_:separator:terminator:)
+#  183|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  183|       getArgument(0): [Argument] : [...]
+#  183|         getExpr(): [VarargExpansionExpr] [...]
+#  183|           getSubExpr(): [ArrayExpr] [...]
+#  183|             getElement(0): [StringLiteralExpr] asyncTest():
+#  183|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  183|       getArgument(1): [Argument] separator: default separator
+#  183|         getExpr(): [DefaultArgumentExpr] default separator
+#  183|       getArgument(2): [Argument] terminator: default terminator
+#  183|         getExpr(): [DefaultArgumentExpr] default terminator
+#  184|     getElement(6): [CallExpr] call to asyncTest()
+#  184|       getFunction(): [DeclRefExpr] asyncTest()
+#  186|     getElement(7): [CallExpr] call to print(_:separator:terminator:)
+#  186|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  186|       getArgument(0): [Argument] : [...]
+#  186|         getExpr(): [VarargExpansionExpr] [...]
+#  186|           getSubExpr(): [ArrayExpr] [...]
+#  186|             getElement(0): [StringLiteralExpr] foo():
+#  186|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  186|             getElement(1): [CallExpr] call to foo()
+#  186|               getFunction(): [DeclRefExpr] foo()
+#  186|             getElement(1).getFullyConverted(): [ErasureExpr] (Any) ...
+#  186|       getArgument(1): [Argument] separator: default separator
+#  186|         getExpr(): [DefaultArgumentExpr] default separator
+#  186|       getArgument(2): [Argument] terminator: default terminator
+#  186|         getExpr(): [DefaultArgumentExpr] default terminator
+#  188|     getElement(8): [PatternBindingDecl] var ... = ...
+#  188|       getInit(0): [CallExpr] call to bar()
+#  188|         getFunction(): [DeclRefExpr] bar()
+#  188|       getPattern(0): [NamedPattern] a
+#  188|     getElement(9): [ConcreteVarDecl] a
+#  188|         Type = () -> Int
+#  189|     getElement(10): [PatternBindingDecl] var ... = ...
+#  189|       getInit(0): [CallExpr] call to baz()
+#  189|         getFunction(): [DeclRefExpr] baz()
+#  189|       getPattern(0): [NamedPattern] b
+#  189|     getElement(11): [ConcreteVarDecl] b
+#  189|         Type = () -> Int
+#  191|     getElement(12): [CallExpr] call to print(_:separator:terminator:)
+#  191|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  191|       getArgument(0): [Argument] : [...]
+#  191|         getExpr(): [VarargExpansionExpr] [...]
+#  191|           getSubExpr(): [ArrayExpr] [...]
+#  191|             getElement(0): [StringLiteralExpr] bar():
+#  191|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  191|             getElement(1): [CallExpr] call to ...
+#  191|               getFunction(): [DeclRefExpr] a
+#  191|             getElement(1).getFullyConverted(): [ErasureExpr] (Any) ...
+#  191|             getElement(2): [CallExpr] call to ...
+#  191|               getFunction(): [DeclRefExpr] a
+#  191|             getElement(2).getFullyConverted(): [ErasureExpr] (Any) ...
+#  191|       getArgument(1): [Argument] separator: default separator
+#  191|         getExpr(): [DefaultArgumentExpr] default separator
+#  191|       getArgument(2): [Argument] terminator: default terminator
+#  191|         getExpr(): [DefaultArgumentExpr] default terminator
+#  193|     getElement(13): [CallExpr] call to print(_:separator:terminator:)
+#  193|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  193|       getArgument(0): [Argument] : [...]
+#  193|         getExpr(): [VarargExpansionExpr] [...]
+#  193|           getSubExpr(): [ArrayExpr] [...]
+#  193|             getElement(0): [StringLiteralExpr] baz():
+#  193|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  193|             getElement(1): [CallExpr] call to ...
+#  193|               getFunction(): [DeclRefExpr] b
+#  193|             getElement(1).getFullyConverted(): [ErasureExpr] (Any) ...
+#  193|             getElement(2): [CallExpr] call to ...
+#  193|               getFunction(): [DeclRefExpr] b
+#  193|             getElement(2).getFullyConverted(): [ErasureExpr] (Any) ...
+#  193|       getArgument(1): [Argument] separator: default separator
+#  193|         getExpr(): [DefaultArgumentExpr] default separator
+#  193|       getArgument(2): [Argument] terminator: default terminator
+#  193|         getExpr(): [DefaultArgumentExpr] default terminator
+#  195|     getElement(14): [CallExpr] call to ...
+#  195|       getFunction(): [ForceValueExpr] ...!
+#  195|         getSubExpr(): [DeclRefExpr] g
+#  195|         getSubExpr().getFullyConverted(): [LoadExpr] (((Int) -> Void)?) ...
+#  195|       getArgument(0): [Argument] : 1
+#  195|         getExpr(): [IntegerLiteralExpr] 1
+#  196|     getElement(15): [CallExpr] call to print(_:separator:terminator:)
+#  196|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  196|       getArgument(0): [Argument] : [...]
+#  196|         getExpr(): [VarargExpansionExpr] [...]
+#  196|           getSubExpr(): [ArrayExpr] [...]
+#  196|             getElement(0): [StringLiteralExpr] g!(1):
+#  196|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  196|             getElement(1): [CallExpr] call to ...
+#  196|               getFunction(): [DeclRefExpr] b
+#  196|             getElement(1).getFullyConverted(): [ErasureExpr] (Any) ...
+#  196|             getElement(2): [CallExpr] call to ...
+#  196|               getFunction(): [DeclRefExpr] b
+#  196|             getElement(2).getFullyConverted(): [ErasureExpr] (Any) ...
+#  196|       getArgument(1): [Argument] separator: default separator
+#  196|         getExpr(): [DefaultArgumentExpr] default separator
+#  196|       getArgument(2): [Argument] terminator: default terminator
+#  196|         getExpr(): [DefaultArgumentExpr] default terminator
+#  198|     getElement(16): [CallExpr] call to ...
+#  198|       getFunction(): [ForceValueExpr] ...!
+#  198|         getSubExpr(): [DeclRefExpr] g
+#  198|         getSubExpr().getFullyConverted(): [LoadExpr] (((Int) -> Void)?) ...
+#  198|       getArgument(0): [Argument] : 1
+#  198|         getExpr(): [IntegerLiteralExpr] 1
+#  199|     getElement(17): [CallExpr] call to print(_:separator:terminator:)
+#  199|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  199|       getArgument(0): [Argument] : [...]
+#  199|         getExpr(): [VarargExpansionExpr] [...]
+#  199|           getSubExpr(): [ArrayExpr] [...]
+#  199|             getElement(0): [StringLiteralExpr] g!(1):
+#  199|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  199|             getElement(1): [CallExpr] call to ...
+#  199|               getFunction(): [DeclRefExpr] b
+#  199|             getElement(1).getFullyConverted(): [ErasureExpr] (Any) ...
+#  199|             getElement(2): [CallExpr] call to ...
+#  199|               getFunction(): [DeclRefExpr] b
+#  199|             getElement(2).getFullyConverted(): [ErasureExpr] (Any) ...
+#  199|       getArgument(1): [Argument] separator: default separator
+#  199|         getExpr(): [DefaultArgumentExpr] default separator
+#  199|       getArgument(2): [Argument] terminator: default terminator
+#  199|         getExpr(): [DefaultArgumentExpr] default terminator
+#  201|     getElement(18): [CallExpr] call to print(_:separator:terminator:)
+#  201|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  201|       getArgument(0): [Argument] : [...]
+#  201|         getExpr(): [VarargExpansionExpr] [...]
+#  201|           getSubExpr(): [ArrayExpr] [...]
+#  201|             getElement(0): [StringLiteralExpr] quux():
+#  201|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  201|             getElement(1): [CallExpr] call to quux()
+#  201|               getFunction(): [DeclRefExpr] quux()
+#  201|             getElement(1).getFullyConverted(): [ErasureExpr] (Any) ...
+#  201|       getArgument(1): [Argument] separator: default separator
+#  201|         getExpr(): [DefaultArgumentExpr] default separator
+#  201|       getArgument(2): [Argument] terminator: default terminator
+#  201|         getExpr(): [DefaultArgumentExpr] default terminator
+#  203|     getElement(19): [CallExpr] call to print(_:separator:terminator:)
+#  203|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  203|       getArgument(0): [Argument] : [...]
+#  203|         getExpr(): [VarargExpansionExpr] [...]
+#  203|           getSubExpr(): [ArrayExpr] [...]
+#  203|             getElement(0): [StringLiteralExpr] sharedCapture():
+#  203|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  203|             getElement(1): [CallExpr] call to sharedCapture()
+#  203|               getFunction(): [DeclRefExpr] sharedCapture()
+#  203|             getElement(1).getFullyConverted(): [ErasureExpr] (Any) ...
+#  203|       getArgument(1): [Argument] separator: default separator
+#  203|         getExpr(): [DefaultArgumentExpr] default separator
+#  203|       getArgument(2): [Argument] terminator: default terminator
+#  203|         getExpr(): [DefaultArgumentExpr] default terminator
+#  205|     getElement(20): [CallExpr] call to print(_:separator:terminator:)
+#  205|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  205|       getArgument(0): [Argument] : [...]
+#  205|         getExpr(): [VarargExpansionExpr] [...]
+#  205|           getSubExpr(): [ArrayExpr] [...]
+#  205|             getElement(0): [StringLiteralExpr] sharedCaptureMultipleWriters():
+#  205|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  205|       getArgument(1): [Argument] separator: default separator
+#  205|         getExpr(): [DefaultArgumentExpr] default separator
+#  205|       getArgument(2): [Argument] terminator: default terminator
+#  205|         getExpr(): [DefaultArgumentExpr] default terminator
+#  206|     getElement(21): [CallExpr] call to sharedCaptureMultipleWriters()
+#  206|       getFunction(): [DeclRefExpr] sharedCaptureMultipleWriters()
+#  208|     getElement(22): [CallExpr] call to print(_:separator:terminator:)
+#  208|       getFunction(): [DeclRefExpr] print(_:separator:terminator:)
+#  208|       getArgument(0): [Argument] : [...]
+#  208|         getExpr(): [VarargExpansionExpr] [...]
+#  208|           getSubExpr(): [ArrayExpr] [...]
+#  208|             getElement(0): [StringLiteralExpr] reentrant():
+#  208|             getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
+#  208|             getElement(1): [CallExpr] call to reentrant()
+#  208|               getFunction(): [DeclRefExpr] reentrant()
+#  208|             getElement(1).getFullyConverted(): [ErasureExpr] (Any) ...
+#  208|       getArgument(1): [Argument] separator: default separator
+#  208|         getExpr(): [DefaultArgumentExpr] default separator
+#  208|       getArgument(2): [Argument] terminator: default terminator
+#  208|         getExpr(): [DefaultArgumentExpr] default terminator
+#  195|   getCapture(0): [CapturedDecl] g
+#  176| [Comment] // Hello world! 123
+#  176| 
+#  179| [Comment] // 1
+#  179| 
+#  181| [Comment] // true
+#  181| 
+#  184| [Comment] // 42
+#  184| 
+#  186| [Comment] // 42
+#  186| 
+#  191| [Comment] // 42 42
+#  191| 
+#  193| [Comment] // 42 42
+#  193| 
+#  196| [Comment] // 43 43
+#  196| 
+#  199| [Comment] // 44 44
+#  199| 
+#  201| [Comment] // 58341
+#  201| 
+#  203| [Comment] // 4
+#  203| 
+#  206| [Comment] // 42, -1
+#  206| 
+#  208| [Comment] // 10004003085
+#  208| 
+#  211| [TopLevelCodeDecl] { ... }
+#  211|   getBody(): [BraceStmt] { ... }
+#  211|     getElement(0): [CallExpr] call to main()
+#  211|       getFunction(): [DeclRefExpr] main()
