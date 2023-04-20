@@ -103,21 +103,6 @@ private class TokenValidationResultIsValidCall extends PropertyRead {
 }
 
 /**
- * Dataflow from the output of `Microsoft.IdentityModel.JsonWebTokens.JsonWebTokenHandler.ValidateToken` call to access the `IsValid` or `Exception` property
- */
-private class FlowsToTokenValidationResultIsValidCall extends DataFlow::Configuration {
-  FlowsToTokenValidationResultIsValidCall() { this = "FlowsToTokenValidationResultIsValidCall" }
-
-  override predicate isSource(DataFlow::Node source) {
-    source.asExpr() instanceof JsonWebTokenHandlerValidateTokenCall
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
-    exists(TokenValidationResultIsValidCall call | sink.asExpr() = call.getQualifier())
-  }
-}
-
-/**
  * A security-sensitive property for `Microsoft.IdentityModel.Tokens.TokenValidationParameters`
  */
 class TokenValidationParametersProperty extends Property {

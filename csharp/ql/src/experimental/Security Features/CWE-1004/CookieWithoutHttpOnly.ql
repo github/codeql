@@ -36,7 +36,7 @@ where
             iResponse.getAppendMethod() = mc.getTarget() and
             isCookieWithSensitiveName(mc.getArgument(0)) and
             // there is no callback `OnAppendCookie` that sets `HttpOnly` to true
-            not exists(OnAppendCookieHttpOnlyTrackingConfig config | config.hasFlowTo(_)) and
+            not OnAppendCookieHttpOnlyTracking::flowTo(_) and
             // Passed as third argument to `IResponseCookies.Append`
             exists(DataFlow::Node creation, DataFlow::Node append |
               CookieOptionsTracking::flow(creation, append) and
@@ -67,7 +67,7 @@ where
         // default is not configured or is not set to `Always`
         not getAValueForCookiePolicyProp("HttpOnly").getValue() = "1" and
         // there is no callback `OnAppendCookie` that sets `HttpOnly` to true
-        not exists(OnAppendCookieHttpOnlyTrackingConfig config | config.hasFlowTo(_)) and
+        not OnAppendCookieHttpOnlyTracking::flowTo(_) and
         iResponse.getAppendMethod() = mc.getTarget() and
         isCookieWithSensitiveName(mc.getArgument(0)) and
         (
