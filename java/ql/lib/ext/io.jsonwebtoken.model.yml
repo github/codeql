@@ -11,5 +11,5 @@ extensions:
       pack: codeql/java-all
       extensible: sourceModel
     data:
-      - ["io.jsonwebtoken", "SigningKeyResolverAdapter", True, "resolveSigningKey", "", "", "Parameter[0]", "remote", "manual"]
+      - ["io.jsonwebtoken", "SigningKeyResolver", True, "resolveSigningKey", "", "", "Parameter[0]", "remote", "manual"]
       - ["io.jsonwebtoken", "SigningKeyResolverAdapter", True, "resolveSigningKeyBytes", "", "", "Parameter[0]", "remote", "manual"]
