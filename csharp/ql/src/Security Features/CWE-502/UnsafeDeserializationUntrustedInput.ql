@@ -13,14 +13,18 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.UnsafeDeserializationQuery
-import DataFlow::PathGraph
+import Flow::PathGraph
 
-from DataFlow::PathNode userInput, DataFlow::PathNode deserializeCallArg
+module Flow =
+  DataFlow::MergePathGraph3<TaintToObjectMethodTracking::PathNode,
+    TaintToConstructorOrStaticMethodTracking::PathNode, JsonConvertTracking::PathNode,
+    TaintToObjectMethodTracking::PathGraph, TaintToConstructorOrStaticMethodTracking::PathGraph,
+    JsonConvertTracking::PathGraph>;
+
+from Flow::PathNode userInput, Flow::PathNode deserializeCallArg
 where
-  exists(TaintToObjectMethodTrackingConfig taintTracking |
-    // all flows from user input to deserialization with weak and strong type serializers
-    taintTracking.hasFlowPath(userInput, deserializeCallArg)
-  ) and
+  // all flows from user input to deserialization with weak and strong type serializers
+  TaintToObjectMethodTracking::flowPath(userInput.asPathNode1(), deserializeCallArg.asPathNode1()) and
   // intersect with strong types, but user controlled or weak types deserialization usages
   (
     exists(DataFlow::Node weakTypeUsage, MethodCall mc |
@@ -37,13 +41,12 @@ where
   )
   or
   // no type check needed - straightforward taint -> sink
-  exists(TaintToConstructorOrStaticMethodTrackingConfig taintTracking2 |
-    taintTracking2.hasFlowPath(userInput, deserializeCallArg)
-  )
+  TaintToConstructorOrStaticMethodTracking::flowPath(userInput.asPathNode2(),
+    deserializeCallArg.asPathNode2())
   or
   // JsonConvert static method call, but with additional unsafe typename tracking
-  exists(JsonConvertTrackingConfig taintTrackingJsonConvert, DataFlow::Node settingsCallArg |
-    taintTrackingJsonConvert.hasFlowPath(userInput, deserializeCallArg) and
+  exists(DataFlow::Node settingsCallArg |
+    JsonConvertTracking::flowPath(userInput.asPathNode3(), deserializeCallArg.asPathNode3()) and
     TypeNameTracking::flow(_, settingsCallArg) and
     deserializeCallArg.getNode().asExpr().getParent() = settingsCallArg.asExpr().getParent()
   )

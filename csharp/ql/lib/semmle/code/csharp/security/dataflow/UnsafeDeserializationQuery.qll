@@ -47,9 +47,11 @@ abstract class Sanitizer extends DataFlow::Node { }
 private class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /**
+ * DEPRECATED: Use `TaintToObjectMethodTracking` instead.
+ *
  * User input to object method call deserialization flow tracking.
  */
-class TaintToObjectMethodTrackingConfig extends TaintTracking::Configuration {
+deprecated class TaintToObjectMethodTrackingConfig extends TaintTracking::Configuration {
   TaintToObjectMethodTrackingConfig() { this = "TaintToObjectMethodTrackingConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -60,9 +62,27 @@ class TaintToObjectMethodTrackingConfig extends TaintTracking::Configuration {
 }
 
 /**
+ * User input to object method call deserialization flow tracking configuration.
+ */
+private module TaintToObjectMethodTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof InstanceMethodSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * User input to object method call deserialization flow tracking module.
+ */
+module TaintToObjectMethodTracking = TaintTracking::Global<TaintToObjectMethodTrackingConfig>;
+
+/**
+ * DEPRECATED: Use `JsonConvertTracking` instead.
+ *
  * User input to `JsonConvert` call deserialization flow tracking.
  */
-class JsonConvertTrackingConfig extends TaintTracking::Configuration {
+deprecated class JsonConvertTrackingConfig extends TaintTracking::Configuration {
   JsonConvertTrackingConfig() { this = "JsonConvertTrackingConfig" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -73,6 +93,24 @@ class JsonConvertTrackingConfig extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+/**
+ * User input to `JsonConvert` call deserialization flow tracking configuration.
+ */
+private module JsonConvertTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) {
+    sink instanceof NewtonsoftJsonConvertDeserializeObjectMethodSink
+  }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * User input to `JsonConvert` call deserialization flow tracking module.
+ */
+module JsonConvertTracking = TaintTracking::Global<JsonConvertTrackingConfig>;
 
 /**
  * DEPRECATED: Use `TypeNameTracking` instead.
@@ -186,9 +224,12 @@ private module TypeNameTrackingConfig implements DataFlow::ConfigSig {
 module TypeNameTracking = DataFlow::Global<TypeNameTrackingConfig>;
 
 /**
+ * DEPRECATED: Use `TaintToConstructorOrStaticMethodTracking` instead.
+ *
  * User input to static method or constructor call deserialization flow tracking.
  */
-class TaintToConstructorOrStaticMethodTrackingConfig extends TaintTracking::Configuration {
+deprecated class TaintToConstructorOrStaticMethodTrackingConfig extends TaintTracking::Configuration
+{
   TaintToConstructorOrStaticMethodTrackingConfig() {
     this = "TaintToConstructorOrStaticMethodTrackingConfig"
   }
@@ -199,6 +240,23 @@ class TaintToConstructorOrStaticMethodTrackingConfig extends TaintTracking::Conf
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+/**
+ * User input to static method or constructor call deserialization flow tracking configuration.
+ */
+private module TaintToConstructorOrStaticMethodTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof ConstructorOrStaticMethodSink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * User input to static method or constructor call deserialization flow tracking module.
+ */
+module TaintToConstructorOrStaticMethodTracking =
+  TaintTracking::Global<TaintToConstructorOrStaticMethodTrackingConfig>;
 
 /**
  * DEPRECATED: Use `TaintToObjectTypeTracking` instead.
