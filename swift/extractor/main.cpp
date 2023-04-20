@@ -177,9 +177,11 @@ codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state) {
 
 codeql::SwiftExtractorConfiguration configure(int argc, char** argv) {
   codeql::SwiftExtractorConfiguration configuration{};
-  configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", ".");
-  configuration.sourceArchiveDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", ".");
-  configuration.scratchDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", ".");
+  configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", "extractor-out/trap/swift");
+  configuration.sourceArchiveDir =
+      getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", "extractor-out/src");
+  configuration.scratchDir =
+      getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", "extractor-out/working");
   configuration.frontendOptions.assign(argv + 1, argv + argc);
   return configuration;
 }
