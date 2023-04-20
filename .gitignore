@@ -11,6 +11,12 @@
 */ql/test/**/*.actual
 */ql/test/**/go.sum
 
+# upgrade/downgrade script tests projects and artifacts
+**/upgrades/**/test/*.testproj
+**/upgrades/**/test/*.actual
+**/downgrades/**/test/*.testproj
+**/downgrades/**/test/*.actual
+
 # Visual studio temporaries, except a file used by QL4VS
 .vs/*
 !.vs/VSWorkspaceSettings.json
