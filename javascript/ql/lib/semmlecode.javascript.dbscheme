@@ -1,51 +1,64 @@
 /*** Standard fragments ***/
 
-/** Files and folders **/
+/*- Files and folders -*/
 
-@location = @location_default;
+/**
+ * The location of an element.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
+locations_default(
+  unique int id: @location_default,
+  int file: @file ref,
+  int beginLine: int ref,
+  int beginColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref
+);
 
-locations_default(unique int id: @location_default,
-          int file: @file ref,
-          int beginLine: int ref,
-          int beginColumn: int ref,
-          int endLine: int ref,
-          int endColumn: int ref
-         );
+files(
+  unique int id: @file,
+  string name: string ref
+);
 
-@sourceline = @locatable;
+folders(
+  unique int id: @folder,
+  string name: string ref
+);
 
-numlines(int element_id: @sourceline ref,
-         int num_lines: int ref,
-         int num_code: int ref,
-         int num_comment: int ref
-        );
+@container = @file | @folder
 
-files(unique int id: @file,
-      varchar(900) name: string ref);
+containerparent(
+  int parent: @container ref,
+  unique int child: @container ref
+);
 
-folders(unique int id: @folder,
-        varchar(900) name: string ref);
+/*- Lines of code -*/
 
+numlines(
+  int element_id: @sourceline ref,
+  int num_lines: int ref,
+  int num_code: int ref,
+  int num_comment: int ref
+);
 
-@container = @folder | @file ;
-
-
-containerparent(int parent: @container ref,
-                unique int child: @container ref);
-
-/** Duplicate code **/
+/*- Duplicate code -*/
 
 duplicateCode(
   unique int id : @duplication,
-  varchar(900) relativePath : string ref,
-  int equivClass : int ref);
+  string relativePath : string ref,
+  int equivClass : int ref
+);
 
 similarCode(
   unique int id : @similarity,
-  varchar(900) relativePath : string ref,
-  int equivClass : int ref);
+  string relativePath : string ref,
+  int equivClass : int ref
+);
 
-@duplication_or_similarity = @duplication | @similarity;
+@duplication_or_similarity = @duplication | @similarity
 
 tokens(
   int id : @duplication_or_similarity ref,
@@ -53,51 +66,67 @@ tokens(
   int beginLine : int ref,
   int beginColumn : int ref,
   int endLine : int ref,
-  int endColumn : int ref);
+  int endColumn : int ref
+);
 
-/** External data **/
+/*- External data -*/
 
+/**
+ * External data, loaded from CSV files during snapshot creation. See
+ * [Tutorial: Incorporating external data](https://help.semmle.com/wiki/display/SD/Tutorial%3A+Incorporating+external+data)
+ * for more information.
+ */
 externalData(
   int id : @externalDataElement,
-  varchar(900) path : string ref,
+  string path : string ref,
   int column: int ref,
-  varchar(900) value : string ref
+  string value : string ref
 );
+
+/*- Snapshot date -*/
 
 snapshotDate(unique date snapshotDate : date ref);
 
-sourceLocationPrefix(varchar(900) prefix : string ref);
+/*- Source location prefix -*/
 
-/** Version control data **/
+/**
+ * The source location of the snapshot.
+ */
+sourceLocationPrefix(string prefix : string ref);
+
+/*- Version control data -*/
 
 svnentries(
-  int id : @svnentry,
-  varchar(500) revision : string ref,
-  varchar(500) author : string ref,
+  unique int id : @svnentry,
+  string revision : string ref,
+  string author : string ref,
   date revisionDate : date ref,
   int changeSize : int ref
-);
+)
 
 svnaffectedfiles(
   int id : @svnentry ref,
   int file : @file ref,
-  varchar(500) action : string ref
-);
+  string action : string ref
+)
 
 svnentrymsg(
-  int id : @svnentry ref,
-  varchar(500) message : string ref
-);
+  unique int id : @svnentry ref,
+  string message : string ref
+)
 
 svnchurn(
   int commit : @svnentry ref,
   int file : @file ref,
   int addedLines : int ref,
   int deletedLines : int ref
-);
+)
 
+/*- JavaScript-specific part -*/
 
-/*** JavaScript-specific part ***/
+@location = @location_default
+
+@sourceline = @locatable;
 
 filetype(
   int file: @file ref,
@@ -1046,14 +1075,50 @@ jsdoc_has_new_parameter (int fn: @jsdoc_function_type_expr ref);
 
 jsdoc_errors (unique int id: @jsdoc_error, int tag: @jsdoc_tag ref, varchar(900) message: string ref, varchar(900) tostring: string ref);
 
-// YAML
+@dataflownode = @expr | @function_decl_stmt | @class_decl_stmt | @namespace_declaration | @enum_declaration | @property;
+
+@optionalchainable = @call_expr | @propaccess;
+
+isOptionalChaining(int id: @optionalchainable ref);
+
+/**
+ * The time taken for the extraction of a file.
+ * This table contains non-deterministic content.
+ *
+ * The sum of the `time` column for each (`file`, `timerKind`) pair
+ * is the total time taken for extraction of `file`.  The `extractionPhase`
+ * column provides a granular view of the extraction time of the file.
+ */
+extraction_time(
+  int file : @file ref,
+  // see `com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase`.
+  int extractionPhase: int ref,
+  // 0 for the elapsed CPU time in nanoseconds, 1 for the elapsed wallclock time in nanoseconds
+  int timerKind: int ref,
+  float time: float ref
+)
+
+/**
+* Non-timing related data for the extraction of a single file.
+* This table contains non-deterministic content.
+*/
+extraction_data(
+  int file : @file ref,
+  // the absolute path to the cache file
+  varchar(900) cacheFile: string ref,
+  boolean fromCache: boolean ref,
+  int length: int ref
+)
+
+/*- YAML -*/
+
 #keyset[parent, idx]
 yaml (unique int id: @yaml_node,
       int kind: int ref,
       int parent: @yaml_node_parent ref,
       int idx: int ref,
-      varchar(900) tag: string ref,
-      varchar(900) tostring: string ref);
+      string tag: string ref,
+      string tostring: string ref);
 
 case @yaml_node.kind of
   0 = @yaml_scalar_node
@@ -1067,41 +1132,41 @@ case @yaml_node.kind of
 @yaml_node_parent = @yaml_collection_node | @file;
 
 yaml_anchors (unique int node: @yaml_node ref,
-              varchar(900) anchor: string ref);
+              string anchor: string ref);
 
 yaml_aliases (unique int alias: @yaml_alias_node ref,
-              varchar(900) target: string ref);
+              string target: string ref);
 
 yaml_scalars (unique int scalar: @yaml_scalar_node ref,
               int style: int ref,
-              varchar(900) value: string ref);
+              string value: string ref);
 
 yaml_errors (unique int id: @yaml_error,
-             varchar(900) message: string ref);
+             string message: string ref);
 
 yaml_locations(unique int locatable: @yaml_locatable ref,
              int location: @location_default ref);
 
 @yaml_locatable = @yaml_node | @yaml_error;
 
-/* XML Files */
+/*- XML Files -*/
 
 xmlEncoding(
   unique int id: @file ref,
-  varchar(900) encoding: string ref
+  string encoding: string ref
 );
 
 xmlDTDs(
   unique int id: @xmldtd,
-  varchar(900) root: string ref,
-  varchar(900) publicId: string ref,
-  varchar(900) systemId: string ref,
+  string root: string ref,
+  string publicId: string ref,
+  string systemId: string ref,
   int fileid: @file ref
 );
 
 xmlElements(
   unique int id: @xmlelement,
-  varchar(900) name: string ref,
+  string name: string ref,
   int parentid: @xmlparent ref,
   int idx: int ref,
   int fileid: @file ref
@@ -1110,16 +1175,16 @@ xmlElements(
 xmlAttrs(
   unique int id: @xmlattribute,
   int elementid: @xmlelement ref,
-  varchar(900) name: string ref,
-  varchar(3600) value: string ref,
+  string name: string ref,
+  string value: string ref,
   int idx: int ref,
   int fileid: @file ref
 );
 
 xmlNs(
   int id: @xmlnamespace,
-  varchar(900) prefixName: string ref,
-  varchar(900) URI: string ref,
+  string prefixName: string ref,
+  string URI: string ref,
   int fileid: @file ref
 );
 
@@ -1131,14 +1196,14 @@ xmlHasNs(
 
 xmlComments(
   unique int id: @xmlcomment,
-  varchar(3600) text: string ref,
+  string text: string ref,
   int parentid: @xmlparent ref,
   int fileid: @file ref
 );
 
 xmlChars(
   unique int id: @xmlcharacters,
-  varchar(3600) text: string ref,
+  string text: string ref,
   int parentid: @xmlparent ref,
   int idx: int ref,
   int isCDATA: int ref,
@@ -1155,15 +1220,7 @@ xmllocations(
 
 @xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
 
-@dataflownode = @expr | @function_decl_stmt | @class_decl_stmt | @namespace_declaration | @enum_declaration | @property;
-
-@optionalchainable = @call_expr | @propaccess;
-
-isOptionalChaining(int id: @optionalchainable ref);
-
-/*
- * configuration files with key value pairs
- */
+/*- Configuration files with key value pairs -*/
 
 configs(
   unique int id: @config
@@ -1187,32 +1244,3 @@ configLocations(
 );
 
 @configLocatable = @config | @configName | @configValue;
-
-/**
- * The time taken for the extraction of a file.
- * This table contains non-deterministic content.
- *
- * The sum of the `time` column for each (`file`, `timerKind`) pair
- * is the total time taken for extraction of `file`.  The `extractionPhase`
- * column provides a granular view of the extraction time of the file.
- */
-extraction_time(
-   int file : @file ref,
-   // see `com.semmle.js.extractor.ExtractionMetrics.ExtractionPhase`.
-   int extractionPhase: int ref,
-   // 0 for the elapsed CPU time in nanoseconds, 1 for the elapsed wallclock time in nanoseconds
-   int timerKind: int ref,
-   float time: float ref
-)
-
-/**
- * Non-timing related data for the extraction of a single file.
- * This table contains non-deterministic content.
- */
-extraction_data(
-   int file : @file ref,
-   // the absolute path to the cache file
-   varchar(900) cacheFile: string ref,
-   boolean fromCache: boolean ref,
-   int length: int ref
-)

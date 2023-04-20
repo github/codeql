@@ -1,6 +1,15 @@
 {
   "files": [
+    "javascript/ql/lib/semmlecode.javascript.dbscheme",
   ],
   "fragments": [
+    "/*- External data -*/",
+    "/*- Files and folders -*/",
+    "/*- Source location prefix -*/",
+    "/*- Lines of code -*/",
+    "/*- Configuration files with key value pairs -*/",
+    "/*- YAML -*/",
+    "/*- XML Files -*/",
+    "/*- JavaScript-specific part -*/"
   ]
 }
