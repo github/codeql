@@ -1,6 +1,6 @@
 /**
- * @name SimpleXMLRPCServer DoS vulnerability
- * @description SimpleXMLRPCServer is vulnerable to DoS attacks from untrusted user input
+ * @name SimpleXMLRPCServer denial of service
+ * @description SimpleXMLRPCServer is vulnerable to denial of service attacks from untrusted user input
  * @kind problem
  * @problem.severity warning
  * @precision high
