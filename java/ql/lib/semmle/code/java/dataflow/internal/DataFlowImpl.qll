@@ -3077,9 +3077,7 @@ module Impl<FullStateConfigSig Config> {
     private string ppType() {
       this instanceof PathNodeSink and result = ""
       or
-      this.(PathNodeMid).getAp() instanceof AccessPathNil and result = ""
-      or
-      exists(DataFlowType t | t = this.(PathNodeMid).getAp().getHead().getContainerType() |
+      exists(DataFlowType t | t = this.(PathNodeMid).getType() |
         // The `concat` becomes "" if `ppReprType` has no result.
         result = concat(" : " + ppReprType(t))
       )
