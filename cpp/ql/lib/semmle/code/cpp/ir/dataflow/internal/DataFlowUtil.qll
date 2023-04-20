@@ -1034,10 +1034,21 @@ class RawIndirectInstruction extends Node, TRawIndirectInstruction {
   }
 }
 
+/**
+ * Holds if `operand` does not immediately flow into a
+ * conversion-like instruction.
+ */
+private predicate isFullyConvertedOperand(Operand operand) {
+  not Ssa::ignoreOperand(operand) and
+  not isConversion(operand)
+}
+
 /** Holds if `node` is an `OperandNode` that should map `node.asExpr()` to `e`. */
 predicate exprNodeShouldBeOperand(OperandNode node, Expr e) {
-  exists(Instruction def |
-    unique( | | getAUse(def)) = node.getOperand() and
+  exists(Instruction def, Operand operand |
+    operand = node.getOperand() and
+    isFullyConvertedOperand(operand) and
+    unique( | | getAUse(def)) = operand and
     e = def.getConvertedResultExpression()
   )
 }
@@ -1070,12 +1081,17 @@ private predicate exprNodeShouldBeIndirectOutNode(IndirectArgumentOutNode node, 
   )
 }
 
+private predicate isFullyConvertedInstruction(Instruction instr) {
+  not Ssa::ignoreInstruction(instr) and
+  not isConversion(instr.getAUse())
+}
+
 /** Holds if `node` should be an instruction node that maps `node.asExpr()` to `e`. */
-predicate exprNodeShouldBeInstruction(Node node, Expr e) {
+private predicate exprNodeShouldBeInstruction(Node node, Expr e) {
   not exprNodeShouldBeOperand(_, e) and
   not exprNodeShouldBeIndirectOutNode(_, e) and
-  (
-    e = node.asInstruction().getConvertedResultExpression()
+  exists(Instruction instr | instr = node.asInstruction() and isFullyConvertedInstruction(instr) |
+    e = instr.getConvertedResultExpression()
     or
     // The instruction that contains the result of an `AssignOperation` is
     // the unloaded left operand (see the comments in `TranslatedAssignOperation`).
@@ -1087,11 +1103,11 @@ predicate exprNodeShouldBeInstruction(Node node, Expr e) {
     // the result of `x += 1` is the `VariableAddressInstruction` that represents `x`. But
     // that instruction doesn't receive the flow from this `AssignOperation`. So instead we
     // map the operation to the `AddInstruction`.
-    node.asInstruction().getAst() = e.(AssignOperation)
+    instr.getAst() = e.(AssignOperation)
     or
     // Same story for `CrementOperation`s (cf. the comments in the subclasses
     // of `TranslatedCrementOperation`).
-    node.asInstruction().getAst() = e.(CrementOperation)
+    instr.getAst() = e.(CrementOperation)
   )
 }
 

@@ -897,6 +897,15 @@ private class MyConsistencyConfiguration extends Consistency::ConsistencyConfigu
   }
 }
 
+/** Holds if `op` is the only use of its defining instruction, and that op is used in a conversation */
+predicate isConversion(Operand op) {
+  exists(Instruction def, Operand use |
+    def = op.getDef() and
+    use = unique( | | getAUse(def)) and
+    conversionFlow(use, _, false, false)
+  )
+}
+
 /**
  * A local flow relation that includes both local steps, read steps and
  * argument-to-return flow through summarized functions.

@@ -716,15 +716,6 @@ private module Cached {
     )
   }
 
-  /** Holds if `op` is the only use of its defining instruction, and that op is used in a conversation */
-  private predicate isConversion(Operand op) {
-    exists(Instruction def, Operand use |
-      def = op.getDef() and
-      use = unique( | | getAUse(def)) and
-      conversionFlow(use, _, false, false)
-    )
-  }
-
   /**
    * Holds if `op` is a use of an SSA variable rooted at `base` with `ind` number
    * of indirections.
