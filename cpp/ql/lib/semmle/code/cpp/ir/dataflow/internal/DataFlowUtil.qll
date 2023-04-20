@@ -1148,11 +1148,11 @@ private predicate exprNodeShouldBeInstruction(Node node, Expr e) {
     // the result of `x += 1` is the `VariableAddressInstruction` that represents `x`. But
     // that instruction doesn't receive the flow from this `AssignOperation`. So instead we
     // map the operation to the `AddInstruction`.
-    instr.getAst() = e.(AssignOperation)
+    instr.(BinaryInstruction).getAst() = e.(AssignOperation)
     or
     // Same story for `CrementOperation`s (cf. the comments in the subclasses
     // of `TranslatedCrementOperation`).
-    instr.getAst() = e.(CrementOperation)
+    instr.(BinaryInstruction).getAst() = e.(CrementOperation)
   )
 }
 
