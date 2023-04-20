@@ -199,7 +199,17 @@ predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode nod
   )
 }
 
-predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) { none() }
+predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode node) {
+  // Allow fields to be picked as input nodes.
+  exists(Node n, AstNode ast, MemberRefExpr e |
+    n = node.asNode() and
+    ast = mid.asElement()
+  |
+    c = "" and
+    e.getBase() = n.asExpr() and
+    e.getMember() = ast
+  )
+}
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[s]
