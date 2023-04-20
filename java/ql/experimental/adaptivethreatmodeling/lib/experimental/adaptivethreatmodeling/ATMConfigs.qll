@@ -13,12 +13,11 @@ import semmle.code.java.security.SqlInjectionQuery
 import semmle.code.java.security.CommandLineQuery
 import semmle.code.java.security.TaintedPathQuery
 
-
 /**
  * Holds if `sanitizer` is a sanitizer for any of the supported queries.
  */
 predicate isBarrier(DataFlow::Node sanitizer) {
-  RequestForgeryFlow::isBarrier(sanitizer) or
+  RequestForgeryConfig::isBarrier(sanitizer) or
   QueryInjectionFlowConfig::isBarrier(sanitizer) or
   RemoteUserInputToArgumentToExecFlowConfig::isBarrier(sanitizer) or
   TaintedPathConfig::isBarrier(sanitizer)
@@ -28,9 +27,8 @@ predicate isBarrier(DataFlow::Node sanitizer) {
  * Holds if `n1` to `n2` is an additional flow step for any of the supported queries.
  */
 predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-  RequestForgeryFlow::isAdditionalFlowStep(n1, n2) or
+  RequestForgeryConfig::isAdditionalFlowStep(n1, n2) or
   QueryInjectionFlowConfig::isAdditionalFlowStep(n1, n2) or
   RemoteUserInputToArgumentToExecFlowConfig::isAdditionalFlowStep(n1, n2) or
   TaintedPathConfig::isAdditionalFlowStep(n1, n2)
 }
-
