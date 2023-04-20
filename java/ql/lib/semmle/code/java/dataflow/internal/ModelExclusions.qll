@@ -26,9 +26,8 @@ class TestLibrary extends RefType {
 
 /** Holds if the given file is a test file. */
 private predicate isInTestFile(File file) {
-  file.getAbsolutePath().matches("%src/test/%") or
-  file.getAbsolutePath().matches("%/guava-tests/%") or
-  file.getAbsolutePath().matches("%/guava-testlib/%")
+  file.getAbsolutePath().matches(["%/test/%", "%/guava-tests/%", "%/guava-testlib/%"]) and
+  not file.getAbsolutePath().matches("%/ql/test/%") // allows our test cases to work
 }
 
 /** Holds if the given compilation unit's package is a JDK internal. */
@@ -54,8 +53,8 @@ private predicate isJdkInternal(CompilationUnit cu) {
   cu.getPackage().getName() = ""
 }
 
-/** Holds if the given callable is not interesting to model. */
-private predicate isUninterestingForModels(Callable c) {
+/** Holds if the given callable is not worth modeling. */
+predicate isUninterestingForModels(Callable c) {
   isInTestFile(c.getCompilationUnit().getFile()) or
   isJdkInternal(c.getCompilationUnit()) or
   c instanceof MainMethod or
