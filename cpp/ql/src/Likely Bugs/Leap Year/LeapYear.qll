@@ -361,7 +361,7 @@ private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::C
 
   predicate isSink(DataFlow::Node sink) {
     exists(StructLikeClass dds, FieldAccess fa, AssignExpr aexpr |
-      aexpr.getRValue() = sink.asConvertedExpr()
+      aexpr.getRValue() = sink.asExpr()
     |
       (dds instanceof PackedTimeType or dds instanceof UnpackedTimeType) and
       fa.getQualifier().getUnderlyingType() = dds and
