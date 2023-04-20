@@ -1,15 +1,22 @@
 // CodeQL database schema for Ruby
 // Automatically generated from the tree-sitter grammar; do not edit
 
-@location = @location_default
+/*- Files and folders -*/
 
+/**
+ * The location of an element.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
 locations_default(
   unique int id: @location_default,
   int file: @file ref,
-  int start_line: int ref,
-  int start_column: int ref,
-  int end_line: int ref,
-  int end_column: int ref
+  int beginLine: int ref,
+  int beginColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref
 );
 
 files(
@@ -29,9 +36,14 @@ containerparent(
   unique int child: @container ref
 );
 
-sourceLocationPrefix(
-  string prefix: string ref
-);
+/*- Source location prefix -*/
+
+/**
+ * The source location of the snapshot.
+ */
+sourceLocationPrefix(string prefix : string ref);
+
+/*- Diagnostic messages -*/
 
 diagnostics(
   unique int id: @diagnostic,
@@ -42,14 +54,15 @@ diagnostics(
   int location: @location_default ref
 );
 
+/*- Diagnostic messages: severity -*/
+
 case @diagnostic.severity of
   10 = @diagnostic_debug
 | 20 = @diagnostic_info
 | 30 = @diagnostic_warning
 | 40 = @diagnostic_error
 ;
-
-
+/*- Ruby dbscheme -*/
 @ruby_underscore_arg = @ruby_assignment | @ruby_binary | @ruby_conditional | @ruby_operator_assignment | @ruby_range | @ruby_unary | @ruby_underscore_primary
 
 @ruby_underscore_call_operator = @ruby_reserved_word
@@ -1375,9 +1388,10 @@ ruby_ast_node_info(
   unique int node: @ruby_ast_node ref,
   int parent: @ruby_ast_node_parent ref,
   int parent_index: int ref,
-  int loc: @location ref
+  int loc: @location_default ref
 );
 
+/*- Erb dbscheme -*/
 erb_comment_directive_child(
   unique int erb_comment_directive: @erb_comment_directive ref,
   unique int child: @erb_token_comment ref
@@ -1450,6 +1464,6 @@ erb_ast_node_info(
   unique int node: @erb_ast_node ref,
   int parent: @erb_ast_node_parent ref,
   int parent_index: int ref,
-  int loc: @location ref
+  int loc: @location_default ref
 );
 
