@@ -30,7 +30,7 @@ module UnsafeDeserialization {
     or
     result = API::moduleImport("js-yaml-js-types").getMember(["all", "function"])
     or
-    result = unsafeYamlSchema().getMember("extend").getReceiver()
+    result = unsafeYamlSchema().getMember("extend").getReturn()
     or
     exists(API::CallNode call |
       call.getAParameter().refersTo(unsafeYamlSchema()) and
