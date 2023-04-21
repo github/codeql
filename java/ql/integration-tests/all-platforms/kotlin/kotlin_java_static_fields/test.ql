@@ -1,6 +1,6 @@
 import java
 import semmle.code.java.dataflow.DataFlow
-import DataFlow::PathGraph
+import Flow::PathGraph
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { n.asExpr().(StringLiteral).getValue() = "taint" }
