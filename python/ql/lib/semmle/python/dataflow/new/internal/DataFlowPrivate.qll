@@ -588,6 +588,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   dictStoreStep(nodeFrom, c, nodeTo)
   or
+  moreDictStoreSteps(nodeFrom, c, nodeTo)
+  or
   comprehensionStoreStep(nodeFrom, c, nodeTo)
   or
   iterableUnpackingStoreStep(nodeFrom, c, nodeTo)
@@ -699,7 +701,15 @@ predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeT
     nodeFrom.getNode().getNode() = item.getValue() and
     c.getKey() = item.getKey().(StrConst).getS()
   )
-  or
+}
+
+/**
+ * This has been made private since `dictStoreStep` is used by taint-tracking, and
+ * adding these extra steps made some alerts very noisy.
+ *
+ * TODO: Once TaintTracking no longer uses `dictStoreStep`, unify the two predicates.
+ */
+private predicate moreDictStoreSteps(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
   exists(SubscriptNode subscript |
     nodeTo.(PostUpdateNode).getPreUpdateNode().asCfgNode() = subscript.getObject() and
     nodeFrom.asCfgNode() = subscript.(DefinitionNode).getValue() and
