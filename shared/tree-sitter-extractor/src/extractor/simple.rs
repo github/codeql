@@ -114,7 +114,7 @@ impl Extractor {
                                 let lang = &self.languages[*i];
                                 crate::extractor::extract(
                                     lang.ts_language,
-                                    "ruby",
+                                    lang.prefix,
                                     &schemas[*i],
                                     &mut diagnostics_writer,
                                     &mut trap_writer,
