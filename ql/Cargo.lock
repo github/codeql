@@ -196,7 +196,6 @@ dependencies = [
  "tree-sitter-json",
  "tree-sitter-ql",
  "tree-sitter-ql-dbscheme",
- "tree-sitter-ql-yaml",
 ]
 
 [[package]]
@@ -945,15 +944,6 @@ dependencies = [
 name = "tree-sitter-ql-dbscheme"
 version = "0.0.1"
 source = "git+https://github.com/erik-krogh/tree-sitter-ql-dbscheme.git?rev=63e1344353f63931e88bfbc2faa2e78e1421b213#63e1344353f63931e88bfbc2faa2e78e1421b213"
-dependencies = [
- "cc",
- "tree-sitter",
-]
-
-[[package]]
-name = "tree-sitter-ql-yaml"
-version = "0.19.0"
-source = "git+https://github.com/erik-krogh/tree-sitter-ql.git?rev=cf704bf3671e1ae148e173464fb65a4d2bbf5f99#cf704bf3671e1ae148e173464fb65a4d2bbf5f99"
 dependencies = [
  "cc",
  "tree-sitter",
