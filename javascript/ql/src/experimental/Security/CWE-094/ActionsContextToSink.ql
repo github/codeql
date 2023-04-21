@@ -1,6 +1,7 @@
 /**
  * @name Actions Direct Context to Sinks
- * @description Finding direct context to sinks in GitHub Actions written in javascript.
+ * @description Finding dataflows from attacker controlled context objects
+ *    to sinks in GitHub Actions written in javascript.
  * @kind path-problem
  * @problem.severity warning
  * @precision medium
@@ -51,9 +52,14 @@ DataFlow::PropRead payloadEvent(string event) {
 DataFlow::Node pullrequestSources() {
   result = payloadObject("pull_request", "head").getAPropertyRead("ref") or
   result = payloadObject("pull_request", "head").getAPropertyRead("label") or
-  result = payloadObject("pull_request", "head").getAPropertyRead("repo").getAPropertyRead("default_branch") or
-  result = payloadObject("pull_request", "head").getAPropertyRead("repo").getAPropertyRead("description") or
-  result = payloadObject("pull_request", "head").getAPropertyRead("repo").getAPropertyRead("homepage") or
+  result =
+    payloadObject("pull_request", "head")
+        .getAPropertyRead("repo")
+        .getAPropertyRead("default_branch") or
+  result =
+    payloadObject("pull_request", "head").getAPropertyRead("repo").getAPropertyRead("description") or
+  result =
+    payloadObject("pull_request", "head").getAPropertyRead("repo").getAPropertyRead("homepage") or
   result = payloadObject("pull_request", "title") or
   result = payloadObject("pull_request", "body")
 }
@@ -80,13 +86,15 @@ DataFlow::Node workflowRunSources() {
   result = payloadObject("workflow_run", "head_commit").getAPropertyRead("message") or
   result =
     payloadObject("workflow_run", "head_commit").getAPropertyRead("author").getAPropertyRead("name") or
-    result =
-    payloadObject("workflow_run", "head_commit").getAPropertyRead("committer").getAPropertyRead("name") or
+  result =
+    payloadObject("workflow_run", "head_commit")
+        .getAPropertyRead("committer")
+        .getAPropertyRead("name") or
   result =
     payloadObject("workflow_run", "head_commit")
         .getAPropertyRead("author")
         .getAPropertyRead("email") or
-    result =
+  result =
     payloadObject("workflow_run", "head_commit")
         .getAPropertyRead("committer")
         .getAPropertyRead("email") or
@@ -109,8 +117,16 @@ DataFlow::Node headCommitSources() {
     payloadEvent("commits").getAPropertyRead().getAPropertyRead("author").getAPropertyRead("name") or
   result =
     payloadEvent("commits").getAPropertyRead().getAPropertyRead("author").getAPropertyRead("email") or
-   result = payloadEvent("commits").getAPropertyRead().getAPropertyRead("committer").getAPropertyRead("name") or
-  result = payloadEvent("commits").getAPropertyRead().getAPropertyRead("committer").getAPropertyRead("email")
+  result =
+    payloadEvent("commits")
+        .getAPropertyRead()
+        .getAPropertyRead("committer")
+        .getAPropertyRead("name") or
+  result =
+    payloadEvent("commits")
+        .getAPropertyRead()
+        .getAPropertyRead("committer")
+        .getAPropertyRead("email")
 }
 
 class MyConfiguration extends TaintTracking::Configuration {

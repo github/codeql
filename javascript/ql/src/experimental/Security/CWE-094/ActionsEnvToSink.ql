@@ -1,6 +1,6 @@
 /**
- * @name Actions Input to JS Sinks
- * @description Finding paths from inputs to sinks in GitHub Actions written in javascript.
+ * @name Actions Environment Variables to JS Sinks
+ * @description Finding dataflows from Environment variables to sinks in GitHub Actions written in javascript.
  * @kind path-problem
  * @problem.severity warning
  * @precision medium
