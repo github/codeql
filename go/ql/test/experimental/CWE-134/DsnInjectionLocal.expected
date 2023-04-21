@@ -1,0 +1,8 @@
+edges
+| Dsn.go:26:11:26:17 | selection of Args | Dsn.go:29:29:29:33 | dbDSN |
+nodes
+| Dsn.go:26:11:26:17 | selection of Args | semmle.label | selection of Args |
+| Dsn.go:29:29:29:33 | dbDSN | semmle.label | dbDSN |
+subpaths
+#select
+| Dsn.go:29:29:29:33 | dbDSN | Dsn.go:26:11:26:17 | selection of Args | Dsn.go:29:29:29:33 | dbDSN | This query depends on a $@. | Dsn.go:26:11:26:17 | selection of Args | user-provided value |
