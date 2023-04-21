@@ -14,6 +14,13 @@ extensions:
       - ["System.IO", "File", False, "Open", "", "", "ReturnValue", "file-write", "manual"]
       - ["System.IO", "File", False, "OpenWrite", "", "", "ReturnValue", "file-write", "manual"]
       - ["System.IO", "File", False, "Create", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "File", False, "CreateText", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "File", False, "AppendText", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "FileInfo", False, "Open", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "FileInfo", False, "OpenWrite", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "FileInfo", False, "Create", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "FileInfo", False, "CreateText", "", "", "ReturnValue", "file-write", "manual"]
+      - ["System.IO", "FileInfo", False, "AppendText", "", "", "ReturnValue", "file-write", "manual"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: summaryModel
