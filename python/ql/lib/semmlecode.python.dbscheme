@@ -16,9 +16,7 @@
  * mechanism not work properly.
  */
 
- /*
- * External artifacts
- */
+/*- DEPRECATED: External defects and metrics -*/
 
 externalDefects(
   unique int id : @externalDefect,
@@ -35,31 +33,44 @@ externalMetrics(
   float value : float ref
 );
 
+/*- External data -*/
+
+/**
+ * External data, loaded from CSV files during snapshot creation. See
+ * [Tutorial: Incorporating external data](https://help.semmle.com/wiki/display/SD/Tutorial%3A+Incorporating+external+data)
+ * for more information.
+ */
 externalData(
   int id : @externalDataElement,
-  varchar(900) queryPath : string ref,
+  string path : string ref,
   int column: int ref,
-  varchar(900) data : string ref
+  string value : string ref
 );
+
+/*- DEPRECATED: Snapshot date -*/
 
 snapshotDate(unique date snapshotDate : date ref);
 
-sourceLocationPrefix(varchar(900) prefix : string ref);
+/*- Source location prefix -*/
 
-
-/*
- * Duplicate code
+/**
+ * The source location of the snapshot.
  */
+sourceLocationPrefix(string prefix : string ref);
+
+/*- DEPRECATED: Duplicate code -*/
 
 duplicateCode(
   unique int id : @duplication,
-  varchar(900) relativePath : string ref,
-  int equivClass : int ref);
+  string relativePath : string ref,
+  int equivClass : int ref
+);
 
 similarCode(
   unique int id : @similarity,
-  varchar(900) relativePath : string ref,
-  int equivClass : int ref);
+  string relativePath : string ref,
+  int equivClass : int ref
+);
 
 @duplication_or_similarity = @duplication | @similarity
 
@@ -69,7 +80,192 @@ tokens(
   int beginLine : int ref,
   int beginColumn : int ref,
   int endLine : int ref,
-  int endColumn : int ref);
+  int endColumn : int ref
+);
+
+/*- DEPRECATED: Version control data -*/
+
+svnentries(
+  unique int id : @svnentry,
+  string revision : string ref,
+  string author : string ref,
+  date revisionDate : date ref,
+  int changeSize : int ref
+)
+
+svnaffectedfiles(
+  int id : @svnentry ref,
+  int file : @file ref,
+  string action : string ref
+)
+
+svnentrymsg(
+  unique int id : @svnentry ref,
+  string message : string ref
+)
+
+svnchurn(
+  int commit : @svnentry ref,
+  int file : @file ref,
+  int addedLines : int ref,
+  int deletedLines : int ref
+)
+
+/*- Lines of code -*/
+
+numlines(
+  int element_id: @sourceline ref,
+  int num_lines: int ref,
+  int num_code: int ref,
+  int num_comment: int ref
+);
+
+/*- Files and folders -*/
+
+/**
+ * The location of an element.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
+locations_default(
+  unique int id: @location_default,
+  int file: @file ref,
+  int beginLine: int ref,
+  int beginColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref
+);
+
+files(
+  unique int id: @file,
+  string name: string ref
+);
+
+folders(
+  unique int id: @folder,
+  string name: string ref
+);
+
+@container = @file | @folder
+
+containerparent(
+  int parent: @container ref,
+  unique int child: @container ref
+);
+
+/*- XML Files -*/
+
+xmlEncoding(
+  unique int id: @file ref,
+  string encoding: string ref
+);
+
+xmlDTDs(
+  unique int id: @xmldtd,
+  string root: string ref,
+  string publicId: string ref,
+  string systemId: string ref,
+  int fileid: @file ref
+);
+
+xmlElements(
+  unique int id: @xmlelement,
+  string name: string ref,
+  int parentid: @xmlparent ref,
+  int idx: int ref,
+  int fileid: @file ref
+);
+
+xmlAttrs(
+  unique int id: @xmlattribute,
+  int elementid: @xmlelement ref,
+  string name: string ref,
+  string value: string ref,
+  int idx: int ref,
+  int fileid: @file ref
+);
+
+xmlNs(
+  int id: @xmlnamespace,
+  string prefixName: string ref,
+  string URI: string ref,
+  int fileid: @file ref
+);
+
+xmlHasNs(
+  int elementId: @xmlnamespaceable ref,
+  int nsId: @xmlnamespace ref,
+  int fileid: @file ref
+);
+
+xmlComments(
+  unique int id: @xmlcomment,
+  string text: string ref,
+  int parentid: @xmlparent ref,
+  int fileid: @file ref
+);
+
+xmlChars(
+  unique int id: @xmlcharacters,
+  string text: string ref,
+  int parentid: @xmlparent ref,
+  int idx: int ref,
+  int isCDATA: int ref,
+  int fileid: @file ref
+);
+
+@xmlparent = @file | @xmlelement;
+@xmlnamespaceable = @xmlelement | @xmlattribute;
+
+xmllocations(
+  int xmlElement: @xmllocatable ref,
+  int location: @location_default ref
+);
+
+@xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
+
+/*- YAML -*/
+
+#keyset[parent, idx]
+yaml (unique int id: @yaml_node,
+      int kind: int ref,
+      int parent: @yaml_node_parent ref,
+      int idx: int ref,
+      string tag: string ref,
+      string tostring: string ref);
+
+case @yaml_node.kind of
+  0 = @yaml_scalar_node
+| 1 = @yaml_mapping_node
+| 2 = @yaml_sequence_node
+| 3 = @yaml_alias_node
+;
+
+@yaml_collection_node = @yaml_mapping_node | @yaml_sequence_node;
+
+@yaml_node_parent = @yaml_collection_node | @file;
+
+yaml_anchors (unique int node: @yaml_node ref,
+              string anchor: string ref);
+
+yaml_aliases (unique int alias: @yaml_alias_node ref,
+              string target: string ref);
+
+yaml_scalars (unique int scalar: @yaml_scalar_node ref,
+              int style: int ref,
+              string value: string ref);
+
+yaml_errors (unique int id: @yaml_error,
+             string message: string ref);
+
+yaml_locations(unique int locatable: @yaml_locatable ref,
+             int location: @location_default ref);
+
+@yaml_locatable = @yaml_node | @yaml_error;
+
+/*- Python dbscheme -*/
 
 /*
  * Line metrics
@@ -86,67 +282,13 @@ py_docstringlines(int id : @py_scope ref,
 py_alllines(int id : @py_scope ref,
                 int count : int ref);
 
-/*
- * Version history
- */
-
-svnentries(
-  int id : @svnentry,
-  varchar(500) revision : string ref,
-  varchar(500) author : string ref,
-  date revisionDate : date ref,
-  int changeSize : int ref
-)
-
-svnaffectedfiles(
-  int id : @svnentry ref,
-  int file : @file ref,
-  varchar(500) action : string ref
-)
-
-svnentrymsg(
-  int id : @svnentry ref,
-  varchar(500) message : string ref
-)
-
-svnchurn(
-  int commit : @svnentry ref,
-  int file : @file ref,
-  int addedLines : int ref,
-  int deletedLines : int ref
-)
-
 /****************************
         Python dbscheme
 ****************************/
 
-files(unique int id: @file,
-      varchar(900) name: string ref);
-
-folders(unique int id: @folder,
-        varchar(900) name: string ref);
-
-@container = @folder | @file;
-
-containerparent(int parent: @container ref,
-                unique int child: @container ref);
-
 @sourceline = @file | @py_Module | @xmllocatable;
 
-numlines(int element_id: @sourceline ref,
-         int num_lines: int ref,
-         int num_code: int ref,
-         int num_comment: int ref
-        );
-
 @location = @location_ast | @location_default ;
-
-locations_default(unique int id: @location_default,
-          int file: @file ref,
-          int beginLine: int ref,
-          int beginColumn: int ref,
-          int endLine: int ref,
-          int endColumn: int ref);
 
 locations_ast(unique int id: @location_ast,
           int module: @py_Module ref,
@@ -1052,96 +1194,3 @@ py_decorated_object(int object : @py_object ref,
 @py_object = @py_cobject | @py_flow_node;
 
 @py_source_element = @py_ast_node | @container;
-
-/* XML Files */
-
-xmlEncoding  (unique int id: @file ref, varchar(900) encoding: string ref);
-
-xmlDTDs       (unique int id: @xmldtd,
-              varchar(900) root: string ref,
-              varchar(900) publicId: string ref,
-              varchar(900) systemId: string ref,
-              int fileid: @file ref);
-
-xmlElements   (unique int id: @xmlelement,
-              varchar(900) name: string ref,
-              int parentid: @xmlparent ref,
-              int idx: int ref,
-              int fileid: @file ref);
-
-xmlAttrs      (unique int id: @xmlattribute,
-              int elementid: @xmlelement ref,
-              varchar(900) name: string ref,
-              varchar(3600) value: string ref,
-              int idx: int ref,
-              int fileid: @file ref);
-
-xmlNs         (int id: @xmlnamespace,
-              varchar(900) prefixName: string ref,
-              varchar(900) URI: string ref,
-              int fileid: @file ref);
-
-xmlHasNs      (int elementId: @xmlnamespaceable ref,
-              int nsId: @xmlnamespace ref,
-              int fileid: @file ref);
-
-xmlComments   (unique int id: @xmlcomment,
-              varchar(3600) text: string ref,
-              int parentid: @xmlparent ref,
-              int fileid: @file ref);
-
-xmlChars      (unique int id: @xmlcharacters,
-              varchar(3600) text: string ref,
-              int parentid: @xmlparent ref,
-              int idx: int ref,
-              int isCDATA: int ref,
-              int fileid: @file ref);
-
-@xmlparent = @file | @xmlelement;
-@xmlnamespaceable = @xmlelement | @xmlattribute;
-
-xmllocations(int xmlElement: @xmllocatable ref,
-             int location: @location_default ref);
-
-@xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
-
-/**
- *  YAML
- */
-
-#keyset[parent, idx]
-yaml (unique int id: @yaml_node,
-      int kind: int ref,
-      int parent: @yaml_node_parent ref,
-      int idx: int ref,
-      varchar(900) tag: string ref,
-      varchar(900) tostring: string ref);
-
-case @yaml_node.kind of
-  0 = @yaml_scalar_node
-| 1 = @yaml_mapping_node
-| 2 = @yaml_sequence_node
-| 3 = @yaml_alias_node
-;
-
-@yaml_collection_node = @yaml_mapping_node | @yaml_sequence_node;
-
-@yaml_node_parent = @yaml_collection_node | @file;
-
-yaml_anchors (unique int node: @yaml_node ref,
-              varchar(900) anchor: string ref);
-
-yaml_aliases (unique int alias: @yaml_alias_node ref,
-              varchar(900) target: string ref);
-
-yaml_scalars (unique int scalar: @yaml_scalar_node ref,
-              int style: int ref,
-              varchar(900) value: string ref);
-
-yaml_errors (unique int id: @yaml_error,
-             varchar(900) message: string ref);
-
-yaml_locations(unique int locatable: @yaml_locatable ref,
-             int location: @location_default ref);
-
-@yaml_locatable = @yaml_node | @yaml_error;

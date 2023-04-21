@@ -1,6 +1,7 @@
 {
   "files": [
     "javascript/ql/lib/semmlecode.javascript.dbscheme",
+    "python/ql/lib/semmlecode.python.dbscheme",
     "ruby/ql/lib/ruby.dbscheme",
     "ql/ql/src/ql.dbscheme"
   ],
@@ -14,6 +15,10 @@
     "/*- Configuration files with key value pairs -*/",
     "/*- YAML -*/",
     "/*- XML Files -*/",
+    "/*- DEPRECATED: External defects and metrics -*/",
+    "/*- DEPRECATED: Snapshot date -*/",
+    "/*- DEPRECATED: Duplicate code -*/",
+    "/*- DEPRECATED: Version control data -*/",
     "/*- JavaScript-specific part -*/",
     "/*- Ruby dbscheme -*/",
     "/*- Erb dbscheme -*/",
@@ -21,6 +26,7 @@
     "/*- Dbscheme dbscheme -*/",
     "/*- Yaml dbscheme -*/",
     "/*- Blame dbscheme -*/",
-    "/*- JSON dbscheme -*/"
+    "/*- JSON dbscheme -*/",
+    "/*- Python dbscheme -*/"
   ]
 }
