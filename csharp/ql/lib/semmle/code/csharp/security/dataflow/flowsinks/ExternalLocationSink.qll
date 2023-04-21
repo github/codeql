@@ -83,20 +83,7 @@ private predicate isFileWriteCall(Expr stream, Expr data) {
 }
 
 private module LocalFileOutputStreamConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node src) {
-    exists(MethodCall mc | mc = src.asExpr() |
-      mc.getTarget().hasQualifiedName("System.IO", "File", ["Open", "Create", "OpenWrite"])
-      or
-      mc.getTarget()
-          .hasQualifiedName("System.IO", "FileInfo",
-            ["AppendText", "Create", "CreateText", "Open", "OpenText", "OpenWrite"])
-    )
-    or
-    exists(ObjectCreation oc | oc = src.asExpr() |
-      oc.getObjectType() instanceof SystemIOStreamWriterClass and
-      oc.getArgument(0).getType() instanceof StringType
-    )
-  }
+  predicate isSource(DataFlow::Node src) { sourceNode(src, "file-write") }
 
   predicate isSink(DataFlow::Node sink) { isFileWriteCall(sink.asExpr(), _) }
 

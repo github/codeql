@@ -212,7 +212,7 @@ module ModelValidation {
     )
     or
     exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["local", "remote", "file"] and
+      not kind = ["local", "remote", "file", "file-write"] and
       result = "Invalid kind \"" + kind + "\" in source model."
     )
   }
