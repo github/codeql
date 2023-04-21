@@ -70,8 +70,7 @@ DataFlow::Node discussionSources() {
 
 DataFlow::Node commentSources() {
   result = payloadObject("comment", "body") or
-  result = payloadObject("review", "body") or
-  result = payloadObject("comment", "body")
+  result = payloadObject("review", "body")
 }
 
 DataFlow::Node workflowRunSources() {
