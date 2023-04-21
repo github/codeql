@@ -1,8 +1,8 @@
-| extensions.swift:5:1:9:1 | extension | 0 | extensions.swift:6:5:6:37 | var ... = ... |
-| extensions.swift:5:1:9:1 | extension | 1 | extensions.swift:6:9:6:9 | x |
-| extensions.swift:5:1:9:1 | extension | 2 | extensions.swift:8:5:8:17 | foo() |
-| extensions.swift:11:1:15:1 | extension | 0 | extensions.swift:12:5:12:38 | var ... = ... |
-| extensions.swift:11:1:15:1 | extension | 1 | extensions.swift:12:9:12:9 | y |
-| extensions.swift:11:1:15:1 | extension | 2 | extensions.swift:14:5:14:17 | bar() |
-| extensions.swift:21:1:23:1 | extension | 0 | extensions.swift:22:5:22:17 | baz() |
-| extensions.swift:27:1:29:1 | extension | 0 | extensions.swift:28:5:28:17 | baz() |
+| extensions.swift:5:1:9:1 | extension of S | 0 | extensions.swift:6:5:6:37 | var ... = ... |
+| extensions.swift:5:1:9:1 | extension of S | 1 | extensions.swift:6:9:6:9 | x |
+| extensions.swift:5:1:9:1 | extension of S | 2 | extensions.swift:8:5:8:17 | foo() |
+| extensions.swift:11:1:15:1 | extension of C | 0 | extensions.swift:12:5:12:38 | var ... = ... |
+| extensions.swift:11:1:15:1 | extension of C | 1 | extensions.swift:12:9:12:9 | y |
+| extensions.swift:11:1:15:1 | extension of C | 2 | extensions.swift:14:5:14:17 | bar() |
+| extensions.swift:21:1:23:1 | extension of S | 0 | extensions.swift:22:5:22:17 | baz() |
+| extensions.swift:27:1:29:1 | extension of C | 0 | extensions.swift:28:5:28:17 | baz() |

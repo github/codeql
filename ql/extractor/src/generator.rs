@@ -1,33 +1,26 @@
+use clap::Args;
 use std::path::PathBuf;
 
 use codeql_extractor::generator::{generate, language::Language};
 
-fn main() -> std::io::Result<()> {
+#[derive(Args)]
+pub struct Options {
+    /// Path of the generated dbscheme file
+    #[arg(long)]
+    dbscheme: PathBuf,
+
+    /// Path of the generated QLL file
+    #[arg(long)]
+    library: PathBuf,
+}
+
+pub fn run(options: Options) -> std::io::Result<()> {
     tracing_subscriber::fmt()
         .with_target(false)
         .without_time()
         .with_level(true)
         .with_env_filter(tracing_subscriber::EnvFilter::from_default_env())
         .init();
-
-    let matches = clap::Command::new("QL dbscheme generator")
-        .version("1.0")
-        .author("GitHub")
-        .about("CodeQL QL dbscheme generator")
-        .args(&[
-            clap::arg!(--dbscheme <FILE> "Path of the generated dbscheme file"),
-            clap::arg!(--library <FILE> "Path of the generated QLL file"),
-        ])
-        .get_matches();
-    let dbscheme_path = matches
-        .get_one::<String>("dbscheme")
-        .expect("missing --dbscheme");
-    let dbscheme_path = PathBuf::from(dbscheme_path);
-
-    let ql_library_path = matches
-        .get_one::<String>("library")
-        .expect("missing --library");
-    let ql_library_path = PathBuf::from(ql_library_path);
 
     let languages = vec![
         Language {
@@ -52,5 +45,5 @@ fn main() -> std::io::Result<()> {
         },
     ];
 
-    generate(languages, dbscheme_path, ql_library_path)
+    generate(languages, options.dbscheme, options.library)
 }

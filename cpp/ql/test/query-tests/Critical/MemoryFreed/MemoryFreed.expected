@@ -89,6 +89,9 @@
 | test_free.cpp:216:10:216:10 | a |
 | test_free.cpp:220:10:220:10 | a |
 | test_free.cpp:227:24:227:45 | memory_descriptor_list |
+| test_free.cpp:233:14:233:15 | * ... |
+| test_free.cpp:239:14:239:15 | * ... |
+| test_free.cpp:245:10:245:11 | * ... |
 | virtual.cpp:18:10:18:10 | a |
 | virtual.cpp:19:10:19:10 | c |
 | virtual.cpp:38:10:38:10 | b |
