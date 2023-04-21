@@ -81,6 +81,8 @@ DataFlow::Node workflowRunSources() {
   result = payloadObject("workflow_run", "head_commit").getAPropertyRead("message") or
   result =
     payloadObject("workflow_run", "head_commit").getAPropertyRead("author").getAPropertyRead("name") or
+    result =
+    payloadObject("workflow_run", "head_commit").getAPropertyRead("committer").getAPropertyRead("name") or
   result =
     payloadObject("workflow_run", "head_commit")
         .getAPropertyRead("author")
