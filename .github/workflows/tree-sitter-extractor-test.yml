@@ -1,0 +1,44 @@
+name: Test tree-sitter-extractor
+
+on:
+  push:
+    paths:
+      - "shared/tree-sitter-extractor/**"
+      - .github/workflows/tree-sitter-extractor-test.yml
+    branches:
+      - main
+      - "rc/*"
+  pull_request:
+    paths:
+      - "shared/tree-sitter-extractor/**"
+      - .github/workflows/tree-sitter-extractor-test.yml
+    branches:
+      - main
+      - "rc/*"
+
+env:
+  CARGO_TERM_COLOR: always
+
+defaults:
+  run:
+    working-directory: shared/tree-sitter-extractor
+
+jobs:
+  test:
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check formatting
+        run: cargo fmt --all -- --check
+      - name: Run tests
+        run: cargo test --verbose
+      - name: Run clippy
+  fmt:
+    steps:
+      - uses: actions/checkout@v3
+      - name: Check formatting
+        run: cargo fmt --check
+  clippy:
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run clippy
+        run: cargo clippy -- --no-deps -D warnings
