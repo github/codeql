@@ -1,12 +1,10 @@
 use std::fs::File;
-use std::io::{Write, Read, BufRead};
+use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 
 use codeql_extractor::extractor::simple;
 use flate2::read::GzDecoder;
 use tree_sitter_ql;
-
-
 
 /// An very simple happy-path test.
 /// We run the extractor using the tree-sitter-ql grammar and a single source file,
@@ -30,14 +28,16 @@ fn simple_extractor() {
     let foo_qll = {
         let path = source_archive_dir.join("foo.qll");
         let mut file = File::create(&path).expect("Failed to create src/foo.qll");
-        file.write_all(b"predicate p(int a) { a = 1 }").expect("Failed to write to foo.qll");
+        file.write_all(b"predicate p(int a) { a = 1 }")
+            .expect("Failed to write to foo.qll");
         PathBuf::from(path)
     };
 
     let file_list = {
         let path = root_dir.join("files.txt");
         let mut file = File::create(&path).expect("Failed to create files.txt");
-        file.write_all(foo_qll.as_path().display().to_string().as_bytes()).expect("Failed to write to files.txt");
+        file.write_all(foo_qll.as_path().display().to_string().as_bytes())
+            .expect("Failed to write to files.txt");
         path
     };
 
@@ -54,14 +54,20 @@ fn simple_extractor() {
 
     // Check for the presence of $root/trap/$root/src/foo.qll
     {
-        let  root_dir_relative  = {
+        let root_dir_relative = {
             let r = root_dir.as_path().display().to_string();
             r.strip_prefix("/").unwrap().to_string()
         };
-        let foo_qll_trap_gz = root_dir.join("trap").join(root_dir_relative).join("src/foo.qll.trap.gz");
-        let mut decoder = GzDecoder::new(File::open(foo_qll_trap_gz).expect("Failed to open foo.qll.trap.gz"));
+        let foo_qll_trap_gz = root_dir
+            .join("trap")
+            .join(root_dir_relative)
+            .join("src/foo.qll.trap.gz");
+        let mut decoder =
+            GzDecoder::new(File::open(foo_qll_trap_gz).expect("Failed to open foo.qll.trap.gz"));
         let mut first_line = [0; 31];
-        decoder.read_exact(&mut first_line).expect("Failed to read from foo.qll.trap.gz");
+        decoder
+            .read_exact(&mut first_line)
+            .expect("Failed to read from foo.qll.trap.gz");
         assert_eq!(first_line.as_slice(), b"// Auto-generated TRAP file for");
     }
 }
