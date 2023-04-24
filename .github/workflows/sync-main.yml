@@ -1,0 +1,37 @@
+name: Sync Main
+on:
+  schedule:
+    - cron:  '0 12 * * *'
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+jobs:
+  sync-main:
+    name: Sync-main
+    runs-on: ubuntu-latest
+    if: github.repository == 'microsoft/codeql'
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Git config
+        shell: bash
+        run: |
+          git config user.name Dilan Bhalla
+          git config user.email dilanbhalla@microsoft.com
+      - name: Fetch
+        shell: bash
+        run: |
+          set -x
+          git fetch
+          git remote add upstream https://github.com/github/codeql.git
+          git fetch upstream --tags --force
+      - name: Sync Main
+        shell: bash
+        run: |
+          git merge codeql-cli/latest
+          git push origin main
+          git push origin --tags --force
+
