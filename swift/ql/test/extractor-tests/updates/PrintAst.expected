@@ -8,7 +8,7 @@ v5.8.swift:
 #    5|       getTypeRepr(): [TypeRepr] Double
 #    5|   getMember(1): [ConcreteVarDecl] degreesCelsius
 #    5|       Type = Double
-#    5|     getAccessorDecl(0): [AccessorDecl] get
+#    5|     getAccessor(0): [Accessor] get
 #    5|         InterfaceType = (Temperature) -> () -> Double
 #    5|       getSelfParam(): [ParamDecl] self
 #    5|           Type = Temperature
@@ -16,7 +16,7 @@ v5.8.swift:
 #-----|         getElement(0): [ReturnStmt] return ...
 #-----|           getResult(): [MemberRefExpr] .degreesCelsius
 #-----|             getBase(): [DeclRefExpr] self
-#    5|     getAccessorDecl(1): [AccessorDecl] set
+#    5|     getAccessor(1): [Accessor] set
 #    5|         InterfaceType = (inout Temperature) -> (Double) -> ()
 #    5|       getSelfParam(): [ParamDecl] self
 #    5|           Type = Temperature
@@ -27,7 +27,7 @@ v5.8.swift:
 #-----|           getDest(): [MemberRefExpr] .degreesCelsius
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#    5|     getAccessorDecl(2): [AccessorDecl] _modify
+#    5|     getAccessor(2): [Accessor] _modify
 #    5|         InterfaceType = (inout Temperature) -> () -> ()
 #    5|       getSelfParam(): [ParamDecl] self
 #    5|           Type = Temperature
@@ -36,7 +36,7 @@ v5.8.swift:
 #-----|           getResult(0): [InOutExpr] &...
 #-----|             getSubExpr(): [MemberRefExpr] .degreesCelsius
 #-----|               getBase(): [DeclRefExpr] self
-#    4|   getMember(2): [ConstructorDecl] Temperature.init(degreesCelsius:)
+#    4|   getMember(2): [Initializer] Temperature.init(degreesCelsius:)
 #    4|       InterfaceType = (Temperature.Type) -> (Double) -> Temperature
 #    4|     getSelfParam(): [ParamDecl] self
 #    4|         Type = Temperature
@@ -51,7 +51,7 @@ v5.8.swift:
 #   13|       getTypeRepr(): [TypeRepr] Double
 #   13|   getMember(1): [ConcreteVarDecl] degreesFahrenheit
 #   13|       Type = Double
-#   13|     getAccessorDecl(0): [AccessorDecl] get
+#   13|     getAccessor(0): [Accessor] get
 #   13|         InterfaceType = (Temperature) -> () -> Double
 #   13|       getSelfParam(): [ParamDecl] self
 #   13|           Type = Temperature
@@ -84,7 +84,7 @@ v5.8.swift:
 #   14|               getExpr().getFullyConverted(): [ParenExpr] (...)
 #   14|             getArgument(1): [Argument] : 32
 #   14|               getExpr(): [IntegerLiteralExpr] 32
-#   18| [ConcreteFuncDecl] collectionDowncast(_:)
+#   18| [NamedFunction] collectionDowncast(_:)
 #   18|     InterfaceType = ([Any]) -> ()
 #   18|   getParam(0): [ParamDecl] arr
 #   18|       Type = [Any]
@@ -120,7 +120,7 @@ v5.8.swift:
 #   30|       getTypeRepr(): [TypeRepr] (() -> ())?
 #   30|   getMember(1): [ConcreteVarDecl] tapHandler
 #   30|       Type = (() -> ())?
-#   30|     getAccessorDecl(0): [AccessorDecl] get
+#   30|     getAccessor(0): [Accessor] get
 #   30|         InterfaceType = (Button) -> () -> (() -> ())?
 #   30|       getSelfParam(): [ParamDecl] self
 #   30|           Type = Button
@@ -128,7 +128,7 @@ v5.8.swift:
 #-----|         getElement(0): [ReturnStmt] return ...
 #-----|           getResult(): [MemberRefExpr] .tapHandler
 #-----|             getBase(): [DeclRefExpr] self
-#   30|     getAccessorDecl(1): [AccessorDecl] set
+#   30|     getAccessor(1): [Accessor] set
 #   30|         InterfaceType = (inout Button) -> ((() -> ())?) -> ()
 #   30|       getSelfParam(): [ParamDecl] self
 #   30|           Type = Button
@@ -139,7 +139,7 @@ v5.8.swift:
 #-----|           getDest(): [MemberRefExpr] .tapHandler
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#   30|     getAccessorDecl(2): [AccessorDecl] _modify
+#   30|     getAccessor(2): [Accessor] _modify
 #   30|         InterfaceType = (inout Button) -> () -> ()
 #   30|       getSelfParam(): [ParamDecl] self
 #   30|           Type = Button
@@ -148,13 +148,13 @@ v5.8.swift:
 #-----|           getResult(0): [InOutExpr] &...
 #-----|             getSubExpr(): [MemberRefExpr] .tapHandler
 #-----|               getBase(): [DeclRefExpr] self
-#   29|   getMember(2): [ConstructorDecl] Button.init()
+#   29|   getMember(2): [Initializer] Button.init()
 #   29|       InterfaceType = (Button.Type) -> () -> Button
 #   29|     getSelfParam(): [ParamDecl] self
 #   29|         Type = Button
 #   29|     getBody(): [BraceStmt] { ... }
 #   29|       getElement(0): [ReturnStmt] return
-#   29|   getMember(3): [ConstructorDecl] Button.init(tapHandler:)
+#   29|   getMember(3): [Initializer] Button.init(tapHandler:)
 #   29|       InterfaceType = (Button.Type) -> ((() -> ())?) -> Button
 #   29|     getSelfParam(): [ParamDecl] self
 #   29|         Type = Button
@@ -172,7 +172,7 @@ v5.8.swift:
 #   34|       getTypeRepr(): [TypeRepr] Button
 #   34|   getMember(1): [ConcreteVarDecl] button
 #   34|       Type = Button
-#   34|     getAccessorDecl(0): [AccessorDecl] get
+#   34|     getAccessor(0): [Accessor] get
 #   34|         InterfaceType = (ViewController) -> () -> Button
 #   34|       getSelfParam(): [ParamDecl] self
 #   34|           Type = ViewController
@@ -180,7 +180,7 @@ v5.8.swift:
 #-----|         getElement(0): [ReturnStmt] return ...
 #-----|           getResult(): [MemberRefExpr] .button
 #-----|             getBase(): [DeclRefExpr] self
-#   34|     getAccessorDecl(1): [AccessorDecl] set
+#   34|     getAccessor(1): [Accessor] set
 #   34|         InterfaceType = (ViewController) -> (Button) -> ()
 #   34|       getSelfParam(): [ParamDecl] self
 #   34|           Type = ViewController
@@ -191,7 +191,7 @@ v5.8.swift:
 #-----|           getDest(): [MemberRefExpr] .button
 #-----|             getBase(): [DeclRefExpr] self
 #-----|           getSource(): [DeclRefExpr] value
-#   34|     getAccessorDecl(2): [AccessorDecl] _modify
+#   34|     getAccessor(2): [Accessor] _modify
 #   34|         InterfaceType = (ViewController) -> () -> ()
 #   34|       getSelfParam(): [ParamDecl] self
 #   34|           Type = ViewController
@@ -200,7 +200,7 @@ v5.8.swift:
 #-----|           getResult(0): [InOutExpr] &...
 #-----|             getSubExpr(): [MemberRefExpr] .button
 #-----|               getBase(): [DeclRefExpr] self
-#   36|   getMember(2): [ConcreteFuncDecl] setup()
+#   36|   getMember(2): [NamedFunction] setup()
 #   36|       InterfaceType = (ViewController) -> () -> ()
 #   36|     getSelfParam(): [ParamDecl] self
 #   36|         Type = ViewController
@@ -214,7 +214,7 @@ v5.8.swift:
 #   37|             getInit(0): [DeclRefExpr] self
 #   37|             getInit(0).getFullyConverted(): [InjectIntoOptionalExpr] (ViewController?) ...
 #   37|             getPattern(0): [NamedPattern] self
-#   37|           getClosureBody(): [ClosureExpr] { ... }
+#   37|           getClosureBody(): [ExplicitClosureExpr] { ... }
 #   37|             getBody(): [BraceStmt] { ... }
 #   38|               getElement(0): [GuardStmt] guard ... else { ... }
 #   38|                 getCondition(): [StmtCondition] StmtCondition
@@ -232,17 +232,17 @@ v5.8.swift:
 #   39|                   getMethodRef(): [DeclRefExpr] dismiss()
 #   38|             getCapture(0): [CapturedDecl] self
 #   37|         getSource().getFullyConverted(): [InjectIntoOptionalExpr] ((() -> ())?) ...
-#   43|   getMember(3): [ConcreteFuncDecl] dismiss()
+#   43|   getMember(3): [NamedFunction] dismiss()
 #   43|       InterfaceType = (ViewController) -> () -> ()
 #   43|     getSelfParam(): [ParamDecl] self
 #   43|         Type = ViewController
 #   43|     getBody(): [BraceStmt] { ... }
-#   33|   getMember(4): [DestructorDecl] ViewController.deinit()
+#   33|   getMember(4): [Deinitializer] ViewController.deinit()
 #   33|       InterfaceType = (ViewController) -> () -> ()
 #   33|     getSelfParam(): [ParamDecl] self
 #   33|         Type = ViewController
 #   33|     getBody(): [BraceStmt] { ... }
-#   33|   getMember(5): [ConstructorDecl] ViewController.init()
+#   33|   getMember(5): [Initializer] ViewController.init()
 #   33|       InterfaceType = (ViewController.Type) -> () -> ViewController
 #   33|     getSelfParam(): [ParamDecl] self
 #   33|         Type = ViewController
