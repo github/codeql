@@ -180,7 +180,7 @@ abstract class TranslatedSideEffects extends TranslatedElement {
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = getAst() }
 
-  final override Declaration getFunction() { result = getExpr().getEnclosingDeclaration() }
+  final override Declaration getFunction() { result = getEnclosingDeclaration(getExpr()) }
 
   final override TranslatedElement getChild(int i) {
     result =

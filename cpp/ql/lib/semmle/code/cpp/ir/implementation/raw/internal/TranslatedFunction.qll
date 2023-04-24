@@ -328,7 +328,7 @@ class TranslatedFunction extends TranslatedRootElement, TTranslatedFunction {
       ) and
       exists(VariableAccess access |
         access.getTarget() = var and
-        access.getEnclosingFunction() = func
+        getEnclosingFunction(access) = func
       )
       or
       var.(LocalScopeVariable).getFunction() = func

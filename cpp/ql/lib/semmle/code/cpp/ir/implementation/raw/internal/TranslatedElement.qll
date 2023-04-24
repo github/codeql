@@ -109,8 +109,8 @@ private predicate ignoreExprOnly(Expr expr) {
   // should not be translated.
   exists(NewOrNewArrayExpr new | expr = new.getAllocatorCall().getArgument(0))
   or
-  not translateFunction(expr.getEnclosingFunction()) and
-  not Raw::varHasIRFunc(expr.getEnclosingVariable())
+  not translateFunction(getEnclosingFunction(expr)) and
+  not Raw::varHasIRFunc(getEnclosingVariable(expr))
   or
   // We do not yet translate destructors properly, so for now we ignore the
   // destructor call. We do, however, translate the expression being

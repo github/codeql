@@ -1,4 +1,5 @@
 import semmle.code.cpp.ir.implementation.raw.internal.TranslatedElement
+private import TranslatedExpr
 private import cpp
 private import semmle.code.cpp.ir.implementation.IRType
 private import semmle.code.cpp.ir.implementation.Opcode
@@ -117,7 +118,7 @@ class TranslatedStaticStorageDurationVarInit extends TranslatedRootElement,
       ) and
       exists(VariableAccess access |
         access.getTarget() = varUsed and
-        access.getEnclosingVariable() = var
+        getEnclosingVariable(access) = var
       )
       or
       var = varUsed
