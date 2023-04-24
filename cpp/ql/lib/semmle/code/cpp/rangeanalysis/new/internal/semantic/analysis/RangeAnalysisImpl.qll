@@ -1,5 +1,6 @@
 private import RangeAnalysisStage
-private import RangeAnalysisSpecific
+private import RangeAnalysisConstantSpecific
+private import RangeAnalysisRelativeSpecific
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
 private import RangeUtils
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticBound as SemanticBound
@@ -28,7 +29,7 @@ module ConstantBounds implements BoundSig<FloatDelta> {
   }
 }
 
-private module RelativeBounds implements BoundSig<FloatDelta> {
+module RelativeBounds implements BoundSig<FloatDelta> {
   class SemBound instanceof SemanticBound::SemBound {
     SemBound() { not this instanceof SemanticBound::SemZeroBound }
 
@@ -46,11 +47,13 @@ private module RelativeBounds implements BoundSig<FloatDelta> {
   }
 }
 
-private module ConstantStage =
-  RangeStage<FloatDelta, ConstantBounds, CppLangImpl, RangeUtil<FloatDelta, CppLangImpl>>;
+module ConstantStage =
+  RangeStage<FloatDelta, ConstantBounds, FloatOverflow, CppLangImplConstant,
+    RangeUtil<FloatDelta, CppLangImplConstant>>;
 
-private module RelativeStage =
-  RangeStage<FloatDelta, RelativeBounds, CppLangImpl, RangeUtil<FloatDelta, CppLangImpl>>;
+module RelativeStage =
+  RangeStage<FloatDelta, RelativeBounds, FloatOverflow, CppLangImplRelative,
+    RangeUtil<FloatDelta, CppLangImplRelative>>;
 
 private newtype TSemReason =
   TSemNoReason() or
@@ -60,48 +63,52 @@ private newtype TSemReason =
     guard = any(RelativeStage::SemCondReason reason).getCond()
   }
 
-/**
- * A reason for an inferred bound. This can either be `CondReason` if the bound
- * is due to a specific condition, or `NoReason` if the bound is inferred
- * without going through a bounding condition.
- */
-abstract class SemReason extends TSemReason {
-  /** Gets a textual representation of this reason. */
-  abstract string toString();
-}
-
-/**
- * A reason for an inferred bound that indicates that the bound is inferred
- * without going through a bounding condition.
- */
-class SemNoReason extends SemReason, TSemNoReason {
-  override string toString() { result = "NoReason" }
-}
-
-/** A reason for an inferred bound pointing to a condition. */
-class SemCondReason extends SemReason, TSemCondReason {
-  /** Gets the condition that is the reason for the bound. */
-  SemGuard getCond() { this = TSemCondReason(result) }
-
-  override string toString() { result = getCond().toString() }
-}
-
-private ConstantStage::SemReason constantReason(SemReason reason) {
+ConstantStage::SemReason constantReason(SemReason reason) {
   result instanceof ConstantStage::SemNoReason and reason instanceof SemNoReason
   or
   result.(ConstantStage::SemCondReason).getCond() = reason.(SemCondReason).getCond()
 }
 
-private RelativeStage::SemReason relativeReason(SemReason reason) {
+RelativeStage::SemReason relativeReason(SemReason reason) {
   result instanceof RelativeStage::SemNoReason and reason instanceof SemNoReason
   or
   result.(RelativeStage::SemCondReason).getCond() = reason.(SemCondReason).getCond()
 }
 
-predicate semBounded(
-  SemExpr e, SemanticBound::SemBound b, float delta, boolean upper, SemReason reason
-) {
-  ConstantStage::semBounded(e, b, delta, upper, constantReason(reason))
-  or
-  RelativeStage::semBounded(e, b, delta, upper, relativeReason(reason))
+import Public
+
+module Public {
+  predicate semBounded(
+    SemExpr e, SemanticBound::SemBound b, float delta, boolean upper, SemReason reason
+  ) {
+    ConstantStage::semBounded(e, b, delta, upper, constantReason(reason))
+    or
+    RelativeStage::semBounded(e, b, delta, upper, relativeReason(reason))
+  }
+
+  /**
+   * A reason for an inferred bound. This can either be `CondReason` if the bound
+   * is due to a specific condition, or `NoReason` if the bound is inferred
+   * without going through a bounding condition.
+   */
+  abstract class SemReason extends TSemReason {
+    /** Gets a textual representation of this reason. */
+    abstract string toString();
+  }
+
+  /**
+   * A reason for an inferred bound that indicates that the bound is inferred
+   * without going through a bounding condition.
+   */
+  class SemNoReason extends SemReason, TSemNoReason {
+    override string toString() { result = "NoReason" }
+  }
+
+  /** A reason for an inferred bound pointing to a condition. */
+  class SemCondReason extends SemReason, TSemCondReason {
+    /** Gets the condition that is the reason for the bound. */
+    SemGuard getCond() { this = TSemCondReason(result) }
+
+    override string toString() { result = getCond().toString() }
+  }
 }

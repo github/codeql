@@ -58,7 +58,7 @@ module CfgScope {
   }
 
   private class KeyPathScope extends Range_ instanceof KeyPathExpr {
-    AstControlFlowTree tree;
+    KeyPathControlFlowTree tree;
 
     KeyPathScope() { tree.getAst() = this }
 
@@ -76,6 +76,12 @@ module CfgScope {
 
     final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
   }
+
+  private class KeyPathControlFlowTree extends StandardPostOrderTree, KeyPathElement {
+    final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = expr.getComponent(i)
+    }
+  }
 }
 
 /** Holds if `first` is first executed when entering `scope`. */
@@ -86,6 +92,14 @@ predicate succEntry(CfgScope::Range_ scope, ControlFlowElement first) { scope.en
 pragma[nomagic]
 predicate succExit(CfgScope::Range_ scope, ControlFlowElement last, Completion c) {
   scope.exit(last, c)
+}
+
+private class KeyPathComponentTree extends AstStandardPostOrderTree {
+  override KeyPathComponent ast;
+
+  final override ControlFlowElement getChildElement(int i) {
+    result.asAstNode() = ast.getSubscriptArgument(i).getExpr().getFullyConverted()
+  }
 }
 
 /**

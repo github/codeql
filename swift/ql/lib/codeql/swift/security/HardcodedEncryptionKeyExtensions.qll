@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for hard-coded encryption key vulnerabilities. That is,
@@ -34,14 +35,11 @@ class HardcodedEncryptionKeyAdditionalTaintStep extends Unit {
 private class CryptoSwiftEncryptionKeySink extends HardcodedEncryptionKeySink {
   CryptoSwiftEncryptionKeySink() {
     // `key` arg in `init` is a sink
-    exists(CallExpr call, string fName |
-      call.getStaticTarget()
-          .(MethodDecl)
-          .hasQualifiedName([
-              "AES", "HMAC", "ChaCha20", "CBCMAC", "CMAC", "Poly1305", "Blowfish", "Rabbit"
-            ], fName) and
-      fName.matches("init(key:%") and
-      call.getArgument(0).getExpr() = this.asExpr()
+    exists(NominalTypeDecl c, ConstructorDecl f, CallExpr call |
+      c.getName() = ["AES", "HMAC", "ChaCha20", "CBCMAC", "CMAC", "Poly1305", "Blowfish", "Rabbit"] and
+      c.getAMember() = f and
+      call.getStaticTarget() = f and
+      call.getArgumentWithLabel("key").getExpr() = this.asExpr()
     )
   }
 }
@@ -51,11 +49,35 @@ private class CryptoSwiftEncryptionKeySink extends HardcodedEncryptionKeySink {
  */
 private class RnCryptorEncryptionKeySink extends HardcodedEncryptionKeySink {
   RnCryptorEncryptionKeySink() {
-    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
-      c.getFullName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+    exists(NominalTypeDecl c, MethodDecl f, CallExpr call |
+      c.getFullName() =
+        [
+          "RNCryptor", "RNEncryptor", "RNDecryptor", "RNCryptor.EncryptorV3",
+          "RNCryptor.DecryptorV3"
+        ] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
-      call.getArgumentWithLabel(["encryptionKey", "withEncryptionKey"]).getExpr() = this.asExpr()
+      call.getArgumentWithLabel(["encryptionKey", "withEncryptionKey", "hmacKey"]).getExpr() =
+        this.asExpr()
     )
   }
+}
+
+private class EncryptionKeySinks extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        // Realm database library.
+        ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:);;;Argument[3];encryption-key",
+        ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[3];encryption-key",
+        ";Realm.Configuration;true;encryptionKey;;;;encryption-key",
+      ]
+  }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultEncryptionKeySink extends HardcodedEncryptionKeySink {
+  DefaultEncryptionKeySink() { sinkNode(this, "encryption-key") }
 }
