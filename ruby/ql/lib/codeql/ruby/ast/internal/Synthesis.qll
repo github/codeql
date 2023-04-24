@@ -1169,12 +1169,11 @@ private module ArrayLiteralDesugar {
       child = SynthChild(MethodCallKind("[]", false, al.getNumberOfElements()))
       or
       parent = TMethodCallSynth(al, -1, _, _, _) and
-      (
-        i = 0 and
-        child = SynthChild(ConstantReadAccessKind("::Array"))
-        or
-        child = childRef(al.getElement(i - 1))
-      )
+      i = 0 and
+      child = SynthChild(ConstantReadAccessKind("::Array"))
+      or
+      parent = TMethodCallSynth(al, -1, _, _, _) and
+      child = childRef(al.getElement(i - 1))
     )
   }
 
@@ -1212,12 +1211,11 @@ private module HashLiteralDesugar {
       child = SynthChild(MethodCallKind("[]", false, hl.getNumberOfElements()))
       or
       parent = TMethodCallSynth(hl, -1, _, _, _) and
-      (
-        i = 0 and
-        child = SynthChild(ConstantReadAccessKind("::Hash"))
-        or
-        child = childRef(hl.getElement(i - 1))
-      )
+      i = 0 and
+      child = SynthChild(ConstantReadAccessKind("::Hash"))
+      or
+      parent = TMethodCallSynth(hl, -1, _, _, _) and
+      child = childRef(hl.getElement(i - 1))
     )
   }
 

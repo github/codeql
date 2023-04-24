@@ -94,7 +94,8 @@ void Log::configure() {
   // as we are configuring logging right now, we collect problems and log them at the end
   auto problems = collectSeverityRulesAndReturnProblems("CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS");
   if (text || binary) {
-    std::filesystem::path logFile = getEnvOr("CODEQL_EXTRACTOR_SWIFT_LOG_DIR", ".");
+    std::filesystem::path logFile = getEnvOr("CODEQL_EXTRACTOR_SWIFT_LOG_DIR", "extractor-out/log");
+    logFile /= "swift";
     logFile /= logRootName;
     logFile /= std::to_string(std::chrono::system_clock::now().time_since_epoch().count());
     std::error_code ec;

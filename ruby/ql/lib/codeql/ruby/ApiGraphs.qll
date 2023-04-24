@@ -359,6 +359,11 @@ module API {
     Location getLocation() {
       result = this.getInducingNode().getLocation()
       or
+      exists(DataFlow::ModuleNode mod |
+        this = Impl::MkModuleObject(mod) and
+        result = mod.getLocation()
+      )
+      or
       // For nodes that do not have a meaningful location, `path` is the empty string and all other
       // parameters are zero.
       not exists(this.getInducingNode()) and
@@ -601,7 +606,9 @@ module API {
       /** A use of an API member at the node `nd`. */
       MkUse(DataFlow::Node nd) { isUse(nd) } or
       /** A value that escapes into an external library at the node `nd` */
-      MkDef(DataFlow::Node nd) { isDef(nd) }
+      MkDef(DataFlow::Node nd) { isDef(nd) } or
+      /** A module object seen as a use node. */
+      MkModuleObject(DataFlow::ModuleNode mod)
 
     private string resolveTopLevel(ConstantReadAccess read) {
       result = read.getModule().getQualifiedName() and
@@ -684,7 +691,14 @@ module API {
      * Holds if `ref` is a use of node `nd`.
      */
     cached
-    predicate use(TApiNode nd, DataFlow::Node ref) { nd = MkUse(ref) }
+    predicate use(TApiNode nd, DataFlow::Node ref) {
+      nd = MkUse(ref)
+      or
+      exists(DataFlow::ModuleNode mod |
+        nd = MkModuleObject(mod) and
+        ref = mod.getAnImmediateReference()
+      )
+    }
 
     /**
      * Holds if `rhs` is a RHS of node `nd`.
@@ -803,6 +817,14 @@ module API {
     }
 
     /**
+     * Holds if `superclass` is the superclass of `mod`.
+     */
+    pragma[nomagic]
+    private predicate superclassNode(DataFlow::ModuleNode mod, DataFlow::Node superclass) {
+      superclass.asExpr().getExpr() = mod.getADeclaration().(ClassDeclaration).getSuperclassExpr()
+    }
+
+    /**
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */
     cached
@@ -813,38 +835,35 @@ module API {
         useRoot(lbl, ref)
         or
         exists(DataFlow::Node node, DataFlow::Node src |
-          pred = MkUse(src) and
+          use(pred, src) and
           trackUseNode(src).flowsTo(node) and
           useStep(lbl, node, ref)
         )
         or
         exists(DataFlow::Node callback |
-          pred = MkDef(callback) and
+          def(pred, callback) and
           parameterStep(lbl, trackDefNode(callback), ref)
         )
       )
       or
       exists(DataFlow::Node predNode, DataFlow::Node succNode |
         def(pred, predNode) and
-        def(succ, succNode) and
+        succ = MkDef(succNode) and
         defStep(lbl, trackDefNode(predNode), succNode)
       )
       or
-      // `pred` is a use of class A
-      // `succ` is a use of class B
-      // there exists a class declaration B < A
-      exists(ClassDeclaration c, DataFlow::Node a, DataFlow::Node b |
-        use(pred, a) and
-        use(succ, b) and
-        b.asExpr().getExpr().(ConstantReadAccess).getAQualifiedName() = c.getAQualifiedName() and
-        pragma[only_bind_into](c).getSuperclassExpr() = a.asExpr().getExpr() and
+      exists(DataFlow::Node predNode, DataFlow::Node superclassNode, DataFlow::ModuleNode mod |
+        use(pred, predNode) and
+        trackUseNode(predNode).flowsTo(superclassNode) and
+        superclassNode(mod, superclassNode) and
+        succ = MkModuleObject(mod) and
         lbl = Label::subclass()
       )
       or
       exists(DataFlow::CallNode call |
         // from receiver to method call node
         exists(DataFlow::Node receiver |
-          pred = MkUse(receiver) and
+          use(pred, receiver) and
           useNodeReachesReceiver(receiver, call) and
           lbl = Label::method(call.getMethodName()) and
           succ = MkMethodAccessNode(call)
