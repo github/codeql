@@ -27,9 +27,9 @@ jobs:
         shell: bash
         run: |
           set -x
-          git fetch --unshallow
+          git fetch
           git remote add upstream https://github.com/github/codeql.git
-          git fetch upstream --unshallow --tags --force
+          git fetch upstream --tags --force
       - name: Sync Main
         shell: bash
         run: |
