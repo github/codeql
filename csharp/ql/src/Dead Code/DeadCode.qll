@@ -99,8 +99,3 @@ predicate isDeadField(Field f) {
     not fc instanceof FieldRead and not fc.isRefArgument()
   )
 }
-
-predicate testPredicate(Method m) {
-  not isRecursivelyLiveMethod(m) and
-  m.isSourceDeclaration()
-}
