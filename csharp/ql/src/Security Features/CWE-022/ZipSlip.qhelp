@@ -27,7 +27,7 @@ written to <code>c:\sneaky-file</code>.</p>
 <p>Ensure that output paths constructed from zip archive entries are validated to prevent writing
 files to unexpected locations.</p>
 
-<p>The recommended way of writing an output file from a zip archive entry is to:</p>
+<p>The recommended way of writing an output file from a zip archive entry is to conduct the following in sequence:</p>
 
 <ol>
 <li>Use <code>Path.Combine(destinationDirectory, archiveEntry.FullName)</code> to determine the raw
