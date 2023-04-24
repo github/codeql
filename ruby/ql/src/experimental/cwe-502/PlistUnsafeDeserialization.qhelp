@@ -8,18 +8,17 @@
     </overview>
     <recommendation>
         <p>
-            This vulnerability can be prevented by using <code>Plist.parse_xml</code>.
+        This vulnerability in Plist can be prevented by calling <code>Plist.parse_xml FileOrXmlString, marshal: false</code>.
         </p>
     </recommendation>
     <example>
-        <p>In the example below, you can see safe and unsafe call of this dangerous method that can be abused by a remote user input. You can use "marshal: false" as an arugument for <code>Plist.parse_xml</code> to use it safe.
+        <p>In the example below, you can see safe and unsafe Plist dangerous method calls that can be abused by a remote user input. You can use "marshal: false" as an arugument for <code>Plist.parse_xml</code> to use it safe.
         </p>
         <sample src="PlistUnsafeYamlDeserialization.rb" />
     </example>
     <references>
     <li>
-    Security considerations from library documentation
-    <a href="https://github.com/patsplat/plist#label-Security+considerations">patsplat/plist</a>.
+    Security considerations from library documentation: <a href="https://github.com/patsplat/plist#label-Security+considerations">patsplat/plist Repository</a>.
     </li>
     </references>
 </qhelp>

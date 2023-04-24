@@ -1,30 +1,43 @@
 /**
- * add additional steps for to_ruby method of YAML/Psych library
+ * Provides modeling for the `YAML` and `Psych` libraries.
  */
 
 private import codeql.ruby.dataflow.FlowSteps
 private import codeql.ruby.DataFlow
 private import codeql.ruby.ApiGraphs
 
+/**
+ * A taint step related to the result of `YAML.parse` calls, or similar.
+ *In the following example, this step will propagate taint from
+ *`source` to `sink`:
+ *
+ *```rb
+ *x = source
+ *result = YAML.parse(x)
+ *sink result.to_ruby # Unsafe call
+ * ```
+ */
 private class YamlParseStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::CallNode yaml_parser_methods |
-      yaml_parser_methods =
-        API::getTopLevelMember(["YAML", "Psych"]).getAMethodCall(["parse", "parse_stream"]) and
+    exists(DataFlow::CallNode yamlParserMethod |
+      yamlParserMethod = yamlNode().getAMethodCall(["parse", "parse_stream"]) and
       (
-        pred = yaml_parser_methods.getArgument(0) or
-        pred = yaml_parser_methods.getKeywordArgument("yaml")
+        pred = yamlParserMethod.getArgument(0) or
+        pred = yamlParserMethod.getKeywordArgument("yaml")
       ) and
-      succ = yaml_parser_methods.getAMethodCall("to_ruby")
-    )
-    or
-    exists(DataFlow::CallNode yaml_parser_methods |
-      yaml_parser_methods = API::getTopLevelMember(["YAML", "Psych"]).getAMethodCall("parse_file") and
+      succ = yamlParserMethod.getAMethodCall("to_ruby")
+      or
+      yamlParserMethod = yamlNode().getAMethodCall("parse_file") and
       (
-        pred = yaml_parser_methods.getArgument(0) or
-        pred = yaml_parser_methods.getKeywordArgument("filename")
+        pred = yamlParserMethod.getArgument(0) or
+        pred = yamlParserMethod.getKeywordArgument("filename")
       ) and
-      succ = yaml_parser_methods.getAMethodCall("to_ruby")
+      succ = yamlParserMethod.getAMethodCall("to_ruby")
     )
   }
 }
+
+/**
+ * YAML/Psych Top level Class member
+ */
+private API::Node yamlNode() { result = API::getTopLevelMember(["YAML", "Psych"]) }
