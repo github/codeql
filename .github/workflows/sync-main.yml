@@ -31,7 +31,7 @@ jobs:
       - name: Sync Main
         shell: bash
         run: |
-          git merge codeql-cli/latest --allow-unrelated-histories
+          git merge codeql-cli/latest
           git push origin main
           git push origin --tags --force
 
