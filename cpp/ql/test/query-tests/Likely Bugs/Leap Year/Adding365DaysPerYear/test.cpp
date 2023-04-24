@@ -235,5 +235,5 @@ void test_with_conversion(long long qwLongTime) {
 	qwLongTime += (ULONGLONG)(365 * 24 * 60 * 60 * 10000000LLU);
 
 	// copy back to a FILETIME
-	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // BAD	[NOT DETECTED]
+	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // BAD
 }

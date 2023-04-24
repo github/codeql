@@ -7,3 +7,4 @@
 | test.cpp:217:29:217:51 | ... & ... | An arithmetic operation $@ that uses a constant value of 365 ends up modifying this date/time, without considering leap year scenarios. | test.cpp:214:16:214:47 | ... * ... | ... * ... |
 | test.cpp:218:30:218:45 | ... >> ... | An arithmetic operation $@ that uses a constant value of 365 ends up modifying this date/time, without considering leap year scenarios. | test.cpp:214:2:214:47 | ... += ... | ... += ... |
 | test.cpp:218:30:218:45 | ... >> ... | An arithmetic operation $@ that uses a constant value of 365 ends up modifying this date/time, without considering leap year scenarios. | test.cpp:214:16:214:47 | ... * ... | ... * ... |
+| test.cpp:238:29:238:51 | ... & ... | An arithmetic operation $@ that uses a constant value of 365 ends up modifying this date/time, without considering leap year scenarios. | test.cpp:235:28:235:59 | ... * ... | ... * ... |

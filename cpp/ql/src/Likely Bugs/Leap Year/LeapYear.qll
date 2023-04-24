@@ -336,7 +336,7 @@ deprecated class PossibleYearArithmeticOperationCheckConfiguration extends Taint
  */
 private module PossibleYearArithmeticOperationCheckConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    exists(Operation op | op = source.asConvertedExpr() |
+    exists(Operation op | op = source.asExpr() |
       op.getAChild*().getValue().toInt() = 365 and
       (
         not op.getParent() instanceof Expr or
