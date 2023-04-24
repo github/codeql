@@ -33,7 +33,6 @@ jobs:
       - name: Sync Main
         shell: bash
         run: |
-          git log --oneline -20
           git merge codeql-cli/latest
           git push origin main
           git push origin --tags --force
