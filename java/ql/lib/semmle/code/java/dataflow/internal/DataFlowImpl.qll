@@ -3987,7 +3987,11 @@ module Impl<FullStateConfigSig Config> {
 
     private newtype TSummaryCtx3 =
       TSummaryCtx3None() or
-      TSummaryCtx3Some(PartialAccessPath ap)
+      TSummaryCtx3Some(DataFlowType t)
+
+    private newtype TSummaryCtx4 =
+      TSummaryCtx4None() or
+      TSummaryCtx4Some(PartialAccessPath ap)
 
     private newtype TRevSummaryCtx1 =
       TRevSummaryCtx1None() or
@@ -4004,18 +4008,19 @@ module Impl<FullStateConfigSig Config> {
     private newtype TPartialPathNode =
       TPartialPathNodeFwd(
         NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
-        TSummaryCtx3 sc3, DataFlowType t, PartialAccessPath ap
+        TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
       ) {
         sourceNode(node, state) and
         cc instanceof CallContextAny and
         sc1 = TSummaryCtx1None() and
         sc2 = TSummaryCtx2None() and
         sc3 = TSummaryCtx3None() and
+        sc4 = TSummaryCtx4None() and
         t = node.getDataFlowType() and
         ap = TPartialNil(node.getDataFlowType()) and
         exists(explorationLimit())
         or
-        partialPathNodeMk0(node, state, cc, sc1, sc2, sc3, t, ap) and
+        partialPathNodeMk0(node, state, cc, sc1, sc2, sc3, sc4, t, ap) and
         distSrc(node.getEnclosingCallable()) <= explorationLimit()
       } or
       TPartialPathNodeRev(
@@ -4043,9 +4048,9 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate partialPathNodeMk0(
       NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
-      TSummaryCtx3 sc3, DataFlowType t, PartialAccessPath ap
+      TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
     ) {
-      partialPathStep(_, node, state, cc, sc1, sc2, sc3, t, ap) and
+      partialPathStep(_, node, state, cc, sc1, sc2, sc3, sc4, t, ap) and
       not fullBarrier(node) and
       not stateBarrier(node, state) and
       not clearsContentEx(node, ap.getHead().getContent()) and
@@ -4155,10 +4160,11 @@ module Impl<FullStateConfigSig Config> {
       TSummaryCtx1 sc1;
       TSummaryCtx2 sc2;
       TSummaryCtx3 sc3;
+      TSummaryCtx4 sc4;
       DataFlowType t;
       PartialAccessPath ap;
 
-      PartialPathNodeFwd() { this = TPartialPathNodeFwd(node, state, cc, sc1, sc2, sc3, t, ap) }
+      PartialPathNodeFwd() { this = TPartialPathNodeFwd(node, state, cc, sc1, sc2, sc3, sc4, t, ap) }
 
       NodeEx getNodeEx() { result = node }
 
@@ -4172,13 +4178,15 @@ module Impl<FullStateConfigSig Config> {
 
       TSummaryCtx3 getSummaryCtx3() { result = sc3 }
 
+      TSummaryCtx4 getSummaryCtx4() { result = sc4 }
+
       DataFlowType getType() { result = t }
 
       PartialAccessPath getAp() { result = ap }
 
       override PartialPathNodeFwd getASuccessor() {
         partialPathStep(this, result.getNodeEx(), result.getState(), result.getCallContext(),
-          result.getSummaryCtx1(), result.getSummaryCtx2(), result.getSummaryCtx3(), result.getType(), result.getAp())
+          result.getSummaryCtx1(), result.getSummaryCtx2(), result.getSummaryCtx3(), result.getSummaryCtx4(), result.getType(), result.getAp())
       }
 
       predicate isSource() {
@@ -4187,6 +4195,7 @@ module Impl<FullStateConfigSig Config> {
         sc1 = TSummaryCtx1None() and
         sc2 = TSummaryCtx2None() and
         sc3 = TSummaryCtx3None() and
+        sc4 = TSummaryCtx4None() and
         ap instanceof TPartialNil
       }
     }
@@ -4229,7 +4238,7 @@ module Impl<FullStateConfigSig Config> {
 
     private predicate partialPathStep(
       PartialPathNodeFwd mid, NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1,
-      TSummaryCtx2 sc2, TSummaryCtx3 sc3, DataFlowType t, PartialAccessPath ap
+      TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
     ) {
       not isUnreachableInCallCached(node.asNode(), cc.(CallContextSpecificCall).getCall()) and
       (
@@ -4239,6 +4248,7 @@ module Impl<FullStateConfigSig Config> {
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
+        sc4 = mid.getSummaryCtx4() and
         t = mid.getType() and
         ap = mid.getAp()
         or
@@ -4248,6 +4258,7 @@ module Impl<FullStateConfigSig Config> {
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
+        sc4 = mid.getSummaryCtx4() and
         mid.getAp() instanceof PartialAccessPathNil and
         t = node.getDataFlowType() and
         ap = TPartialNil(node.getDataFlowType())
@@ -4257,6 +4268,7 @@ module Impl<FullStateConfigSig Config> {
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
+        sc4 = mid.getSummaryCtx4() and
         mid.getAp() instanceof PartialAccessPathNil and
         t = node.getDataFlowType() and
         ap = TPartialNil(node.getDataFlowType())
@@ -4268,7 +4280,8 @@ module Impl<FullStateConfigSig Config> {
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
       sc3 = TSummaryCtx3None() and
-        t = mid.getType() and
+      sc4 = TSummaryCtx4None() and
+      t = mid.getType() and
       ap = mid.getAp()
       or
       additionalJumpStep(mid.getNodeEx(), node) and
@@ -4277,6 +4290,7 @@ module Impl<FullStateConfigSig Config> {
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
       sc3 = TSummaryCtx3None() and
+      sc4 = TSummaryCtx4None() and
       mid.getAp() instanceof PartialAccessPathNil and
       t = node.getDataFlowType() and
       ap = TPartialNil(node.getDataFlowType())
@@ -4286,6 +4300,7 @@ module Impl<FullStateConfigSig Config> {
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
       sc3 = TSummaryCtx3None() and
+      sc4 = TSummaryCtx4None() and
       mid.getAp() instanceof PartialAccessPathNil and
       t = node.getDataFlowType() and
       ap = TPartialNil(node.getDataFlowType())
@@ -4295,7 +4310,8 @@ module Impl<FullStateConfigSig Config> {
       cc = mid.getCallContext() and
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
-      sc3 = mid.getSummaryCtx3()
+      sc3 = mid.getSummaryCtx3() and
+      sc4 = mid.getSummaryCtx4()
       or
       exists(DataFlowType t0, PartialAccessPath ap0, Content c |
         partialPathReadStep(mid, t0, ap0, c, node, cc) and
@@ -4303,20 +4319,23 @@ module Impl<FullStateConfigSig Config> {
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
+        sc4 = mid.getSummaryCtx4() and
         apConsFwd(t, ap, c, t0, ap0)
       )
       or
-      partialPathIntoCallable(mid, node, state, _, cc, sc1, sc2, sc3, _, t, ap)
+      partialPathIntoCallable(mid, node, state, _, cc, sc1, sc2, sc3, sc4, _, t, ap)
       or
       partialPathOutOfCallable(mid, node, state, cc, t, ap) and
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
-      sc3 = TSummaryCtx3None()
+      sc3 = TSummaryCtx3None() and
+      sc4 = TSummaryCtx4None()
       or
       partialPathThroughCallable(mid, node, state, cc, t, ap) and
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
-      sc3 = mid.getSummaryCtx3()
+      sc3 = mid.getSummaryCtx3() and
+      sc4 = mid.getSummaryCtx4()
     }
 
     bindingset[result, i]
@@ -4422,14 +4441,15 @@ module Impl<FullStateConfigSig Config> {
     private predicate partialPathIntoCallable(
       PartialPathNodeFwd mid, ParamNodeEx p, FlowState state, CallContext outercc,
       CallContextCall innercc, TSummaryCtx1 sc1, TSummaryCtx2 sc2, TSummaryCtx3 sc3,
-      DataFlowCall call, DataFlowType t, PartialAccessPath ap
+      TSummaryCtx4 sc4, DataFlowCall call, DataFlowType t, PartialAccessPath ap
     ) {
       exists(ParameterPosition pos, DataFlowCallable callable |
         partialPathIntoCallable0(mid, callable, pos, state, outercc, call, t, ap) and
         p.isParameterOf(callable, pos) and
         sc1 = TSummaryCtx1Param(p) and
         sc2 = TSummaryCtx2Some(state) and
-        sc3 = TSummaryCtx3Some(ap)
+        sc3 = TSummaryCtx3Some(t) and
+        sc4 = TSummaryCtx4Some(ap)
       |
         if recordDataFlowCallSite(call, callable)
         then innercc = TSpecificCall(call)
@@ -4440,7 +4460,7 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate paramFlowsThroughInPartialPath(
       ReturnKindExt kind, FlowState state, CallContextCall cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
-      TSummaryCtx3 sc3, DataFlowType t, PartialAccessPath ap
+      TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
     ) {
       exists(PartialPathNodeFwd mid, RetNodeEx ret |
         mid.getNodeEx() = ret and
@@ -4450,6 +4470,7 @@ module Impl<FullStateConfigSig Config> {
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
+        sc4 = mid.getSummaryCtx4() and
         t = mid.getType() and
         ap = mid.getAp()
       )
@@ -4460,9 +4481,9 @@ module Impl<FullStateConfigSig Config> {
       DataFlowCall call, PartialPathNodeFwd mid, ReturnKindExt kind, FlowState state,
       CallContext cc, DataFlowType t, PartialAccessPath ap
     ) {
-      exists(CallContext innercc, TSummaryCtx1 sc1, TSummaryCtx2 sc2, TSummaryCtx3 sc3 |
-        partialPathIntoCallable(mid, _, _, cc, innercc, sc1, sc2, sc3, call, _, _) and
-        paramFlowsThroughInPartialPath(kind, state, innercc, sc1, sc2, sc3, t, ap)
+      exists(CallContext innercc, TSummaryCtx1 sc1, TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4 |
+        partialPathIntoCallable(mid, _, _, cc, innercc, sc1, sc2, sc3, sc4, call, _, _) and
+        paramFlowsThroughInPartialPath(kind, state, innercc, sc1, sc2, sc3, sc4, t, ap)
       )
     }
 
