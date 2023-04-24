@@ -16,160 +16,133 @@
 import cpp
 import semmle.code.cpp.commons.Scanf
 import semmle.code.cpp.controlflow.Guards
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.dataflow.new.DataFlow::DataFlow
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.ValueNumbering
 
-/**
- * Holds if `call` is a `scanf`-like function that may write to `output` at index `index`.
- *
- * Furthermore, `instr` is the instruction that defines the address of the `index`'th argument
- * of `call`, and `vn` is the value number of `instr.`
- */
-predicate isSource(ScanfFunctionCall call, int index, Instruction instr, ValueNumber vn, Expr output) {
-  output = call.getOutputArgument(index).getFullyConverted() and
-  instr.getConvertedResultExpression() = output and
-  vn.getAnInstruction() = instr
+/** Holds if `n` reaches an argument  to a call to a `scanf`-like function. */
+pragma[nomagic]
+predicate revFlow0(Node n) {
+  isSink(_, _, n, _)
+  or
+  exists(Node succ | revFlow0(succ) | localFlowStep(n, succ))
 }
 
 /**
- * Holds if `instr` is control-flow reachable in 0 or more steps from
- * a call to a `scanf`-like function.
+ * Holds if `n` represents an uninitialized stack-allocated variable, or a
+ * newly (and presumed uninitialized) heap allocation.
  */
+predicate isUninitialized(Node n) {
+  exists(n.asUninitialized()) or
+  n.asIndirectExpr(1) instanceof AllocationExpr
+}
+
 pragma[nomagic]
-predicate fwdFlow0(Instruction instr) {
-  isSource(_, _, instr, _, _)
-  or
-  exists(Instruction prev |
-    fwdFlow0(prev) and
-    prev.getASuccessor() = instr
+predicate fwdFlow0(Node n) {
+  revFlow0(n) and
+  (
+    isUninitialized(n)
+    or
+    exists(Node prev |
+      fwdFlow0(prev) and
+      localFlowStep(prev, n)
+    )
   )
 }
 
-/**
- * Holds if `instr` is part of the IR translation of `access` that
- * is not an expression being deallocated, and `instr` has value
- * number `vn`.
- */
-predicate isSink(Instruction instr, Access access, ValueNumber vn) {
-  instr.getAst() = access and
-  not any(DeallocationExpr dealloc).getFreedExpr() = access and
-  vn.getAnInstruction() = instr
+predicate isSink(ScanfFunctionCall call, int index, Node n, Expr input) {
+  input = call.getOutputArgument(index) and
+  n.asIndirectExpr() = input
 }
 
 /**
- * Holds if `instr` is part of a path from a call to a `scanf`-like function
+ * Holds if `call` is a `scanf`-like call and `output` is the `index`'th
+ * argument that has not been previously initialized.
+ */
+predicate isRelevantScanfCall(ScanfFunctionCall call, int index, Expr output) {
+  exists(Node n | fwdFlow0(n) and isSink(call, index, n, output))
+}
+
+/**
+ * Holds if `call` is a `scanf`-like function that may write to `output` at
+ * index `index` and `n` is the dataflow node that represents the data after
+ * it has been written to by `call`.
+ */
+predicate isSource(ScanfFunctionCall call, int index, Node n, Expr output) {
+  isRelevantScanfCall(call, index, output) and
+  output = call.getOutputArgument(index) and
+  n.asDefiningArgument() = output
+}
+
+/**
+ * Holds if `n` is reachable from an output argument of a relevant call to
+ * a `scanf`-like function.
+ */
+pragma[nomagic]
+predicate fwdFlow(Node n) {
+  isSource(_, _, n, _)
+  or
+  exists(Node prev |
+    fwdFlow(prev) and
+    localFlowStep(prev, n) and
+    not isSanitizerOut(prev)
+  )
+}
+
+/** Holds if `n` should not have outgoing flow. */
+predicate isSanitizerOut(Node n) {
+  // We disable flow out of sinks to reduce result duplication
+  isSink(n, _)
+  or
+  // If the node is being passed to a function it may be
+  // modified, and thus it's safe to later read the value.
+  exists(n.asIndirectArgument())
+}
+
+/**
+ * Holds if `n` is a node such that `n.asExpr() = e` and `e` is not an
+ * argument of a deallocation expression.
+ */
+predicate isSink(Node n, Expr e) {
+  n.asExpr() = e and
+  not any(DeallocationExpr dealloc).getFreedExpr() = e
+}
+
+/**
+ * Holds if `n` is part of a path from a call to a `scanf`-like function
  * to a use of the written variable.
  */
 pragma[nomagic]
-predicate revFlow0(Instruction instr) {
-  fwdFlow0(instr) and
+predicate revFlow(Node n) {
+  fwdFlow(n) and
   (
-    isSink(instr, _, _)
+    isSink(n, _)
     or
-    exists(Instruction succ | revFlow0(succ) | instr.getASuccessor() = succ)
-  )
-}
-
-/**
- * Holds if `instr` is part of a path from a call to a `scanf`-like function
- * that writes to a variable with value number `vn`, without passing through
- * redefinitions of the variable.
- */
-pragma[nomagic]
-private predicate fwdFlow(Instruction instr, ValueNumber vn) {
-  revFlow0(instr) and
-  (
-    isSource(_, _, instr, vn, _)
-    or
-    exists(Instruction prev |
-      fwdFlow(prev, vn) and
-      prev.getASuccessor() = instr and
-      not isBarrier(instr, vn)
+    exists(Node succ |
+      revFlow(succ) and
+      localFlowStep(n, succ) and
+      not isSanitizerOut(n)
     )
   )
 }
 
-/**
- * Holds if `instr` is part of a path from a call to a `scanf`-like function
- * that writes to a variable with value number `vn`, without passing through
- * redefinitions of the variable.
- *
- * Note: This predicate only holds for the `(intr, vn)` pairs that are also
- * control-flow reachable from an argument to a `scanf`-like function call.
- */
-pragma[nomagic]
-predicate revFlow(Instruction instr, ValueNumber vn) {
-  fwdFlow(instr, pragma[only_bind_out](vn)) and
-  (
-    isSink(instr, _, vn)
-    or
-    exists(Instruction succ | revFlow(succ, vn) |
-      instr.getASuccessor() = succ and
-      not isBarrier(succ, vn)
-    )
-  )
+/** A local flow step, restricted to relevant dataflow nodes. */
+private predicate step(Node n1, Node n2) {
+  revFlow(n1) and
+  revFlow(n2) and
+  localFlowStep(n1, n2)
 }
 
-/**
- * A type that bundles together a reachable instruction with the appropriate
- * value number (i.e., the value number that's transferred from the source
- * to the sink).
- */
-newtype TNode = MkNode(Instruction instr, ValueNumber vn) { revFlow(instr, vn) }
-
-class Node extends MkNode {
-  ValueNumber vn;
-  Instruction instr;
-
-  Node() { this = MkNode(instr, vn) }
-
-  final string toString() { result = instr.toString() }
-
-  final Node getASuccessor() { result = MkNode(pragma[only_bind_out](instr.getASuccessor()), vn) }
-
-  final Location getLocation() { result = instr.getLocation() }
-}
-
-/**
- * Holds if `instr` is an instruction with value number `vn` that is
- * used in a store operation, or is overwritten by another call to
- * a `scanf`-like function.
- */
-private predicate isBarrier(Instruction instr, ValueNumber vn) {
-  // We only need to compute barriers for instructions that we
-  // managed to hit during the initial flow stage.
-  revFlow0(pragma[only_bind_into](instr)) and
-  valueNumber(instr) = vn and
-  exists(Expr e | instr.getAst() = e |
-    instr = any(StoreInstruction s).getDestinationAddress()
-    or
-    isSource(_, _, _, _, [e, e.getParent().(AddressOfExpr)])
-  )
-}
-
-/** Holds if `n1` steps to `n2` in a single step. */
-predicate isSuccessor(Node n1, Node n2) { n1.getASuccessor() = n2 }
-
-predicate hasFlow(Node n1, Node n2) = fastTC(isSuccessor/2)(n1, n2)
-
-Node getNode(Instruction instr, ValueNumber vn) { result = MkNode(instr, vn) }
+predicate hasFlow(Node n1, Node n2) = fastTC(step/2)(n1, n2)
 
 /**
  * Holds if `source` is the `index`'th argument to the `scanf`-like call `call`, and `sink` is
- * an instruction that is part of the translation of `access` which is a transitive
- * control-flow successor of `call`.
- *
- * Furthermore, `source` and `sink` have identical global value numbers.
+ * a dataflow node that represents the expression `e`.
  */
-predicate hasFlow(
-  Instruction source, ScanfFunctionCall call, int index, Instruction sink, Access access
-) {
-  exists(ValueNumber vn |
-    isSource(call, index, source, vn, _) and
-    hasFlow(getNode(source, pragma[only_bind_into](vn)), getNode(sink, pragma[only_bind_into](vn))) and
-    isSink(sink, access, vn)
-  )
+predicate hasFlow(Node source, ScanfFunctionCall call, int index, Node sink, Expr e) {
+  isSource(call, index, source, _) and
+  hasFlow(source, sink) and
+  isSink(sink, e)
 }
 
 /**
@@ -177,7 +150,7 @@ predicate hasFlow(
  * success in writing the output argument at index `index`.
  */
 int getMinimumGuardConstant(ScanfFunctionCall call, int index) {
-  isSource(call, index, _, _, _) and
+  isSource(call, index, _, _) and
   result =
     index + 1 -
       count(ScanfFormatLiteral f, int n |
@@ -191,7 +164,7 @@ int getMinimumGuardConstant(ScanfFunctionCall call, int index) {
  * Holds the access to `e` isn't guarded by a check that ensures that `call` returned
  * at least `minGuard`.
  */
-predicate hasNonGuardedAccess(ScanfFunctionCall call, Access e, int minGuard) {
+predicate hasNonGuardedAccess(ScanfFunctionCall call, Expr e, int minGuard) {
   exists(int index |
     hasFlow(_, call, index, _, e) and
     minGuard = getMinimumGuardConstant(call, index)
@@ -211,7 +184,7 @@ BasicBlock blockGuardedBy(int value, string op, ScanfFunctionCall call) {
   exists(GuardCondition g, Expr left, Expr right |
     right = g.getAChild() and
     value = left.getValue().toInt() and
-    DataFlow::localExprFlow(call, right)
+    localExprFlow(call, right)
   |
     g.ensuresEq(left, right, 0, result, true) and op = "=="
     or
@@ -221,9 +194,9 @@ BasicBlock blockGuardedBy(int value, string op, ScanfFunctionCall call) {
   )
 }
 
-from ScanfFunctionCall call, Access access, int minGuard
-where hasNonGuardedAccess(call, access, minGuard)
-select access,
+from ScanfFunctionCall call, Expr e, int minGuard
+where hasNonGuardedAccess(call, e, minGuard)
+select e,
   "This variable is read, but may not have been written. " +
     "It should be guarded by a check that the $@ returns at least " + minGuard + ".", call,
   call.toString()

@@ -14,22 +14,108 @@ edges
 | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:99:12:99:33 | new URI(...) |
 | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:100:12:100:45 | new URI(...) |
 | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:101:12:101:54 | new URI(...) |
-| mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:17:61:17:72 | source(...) : String |
-| mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:19:41:19:52 | source(...) : String |
-| mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:25:38:25:49 | source(...) : String |
-| mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:27:36:27:47 | source(...) : String |
-| mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:29:31:29:42 | source(...) : String |
-| mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:31:33:31:44 | source(...) : String |
-| mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:33:50:33:61 | source(...) : String |
-| mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:35:54:35:65 | source(...) : String |
-| mad/Test.java:17:61:17:72 | source(...) : String | mad/Test.java:17:52:17:72 | (...)... |
-| mad/Test.java:19:41:19:52 | source(...) : String | mad/Test.java:19:32:19:52 | (...)... |
-| mad/Test.java:25:38:25:49 | source(...) : String | mad/Test.java:25:31:25:49 | (...)... |
-| mad/Test.java:27:36:27:47 | source(...) : String | mad/Test.java:27:29:27:47 | (...)... |
-| mad/Test.java:29:31:29:42 | source(...) : String | mad/Test.java:29:24:29:42 | (...)... |
-| mad/Test.java:31:33:31:44 | source(...) : String | mad/Test.java:31:24:31:44 | (...)... |
-| mad/Test.java:33:50:33:61 | source(...) : String | mad/Test.java:33:41:33:61 | (...)... |
-| mad/Test.java:35:54:35:65 | source(...) : String | mad/Test.java:35:45:35:65 | (...)... |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:33:61:33:68 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:35:41:35:48 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:37:56:37:63 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:39:46:39:53 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:41:38:41:45 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:43:36:43:43 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:45:31:45:38 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:47:33:47:40 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:49:27:49:34 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:50:27:50:34 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:51:34:51:41 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:53:40:53:47 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:54:48:54:55 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:55:47:55:54 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:57:40:57:47 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:59:38:59:45 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:61:33:61:40 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:63:33:63:40 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:65:41:65:48 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:67:42:67:49 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:69:37:69:44 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:71:29:71:36 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:73:37:73:44 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:75:28:75:35 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:77:33:77:40 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:79:40:79:47 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:81:40:81:47 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:82:40:82:47 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:84:38:84:45 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:86:28:86:35 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:87:28:87:35 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:88:28:88:35 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:90:34:90:41 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:91:34:91:41 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:93:33:93:40 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:95:42:95:49 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:97:50:97:57 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:99:54:99:61 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:104:37:104:44 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:106:74:106:81 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:108:68:108:75 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:110:68:110:75 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:112:30:112:37 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:117:30:117:37 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:122:33:122:40 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:124:27:124:34 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:126:28:126:35 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:128:29:128:36 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:133:27:133:34 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:135:26:135:33 | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:140:29:140:36 | source(...) : String |
+| mad/Test.java:33:61:33:68 | source(...) : String | mad/Test.java:33:52:33:68 | (...)... |
+| mad/Test.java:35:41:35:48 | source(...) : String | mad/Test.java:35:32:35:48 | (...)... |
+| mad/Test.java:37:56:37:63 | source(...) : String | mad/Test.java:37:47:37:63 | (...)... |
+| mad/Test.java:39:46:39:53 | source(...) : String | mad/Test.java:39:39:39:53 | (...)... |
+| mad/Test.java:41:38:41:45 | source(...) : String | mad/Test.java:41:31:41:45 | (...)... |
+| mad/Test.java:43:36:43:43 | source(...) : String | mad/Test.java:43:29:43:43 | (...)... |
+| mad/Test.java:45:31:45:38 | source(...) : String | mad/Test.java:45:24:45:38 | (...)... |
+| mad/Test.java:47:33:47:40 | source(...) : String | mad/Test.java:47:24:47:40 | (...)... |
+| mad/Test.java:49:27:49:34 | source(...) : String | mad/Test.java:49:20:49:34 | (...)... |
+| mad/Test.java:50:27:50:34 | source(...) : String | mad/Test.java:50:20:50:34 | (...)... |
+| mad/Test.java:51:34:51:41 | source(...) : String | mad/Test.java:51:20:51:41 | (...)... |
+| mad/Test.java:53:40:53:47 | source(...) : String | mad/Test.java:53:33:53:47 | (...)... |
+| mad/Test.java:54:48:54:55 | source(...) : String | mad/Test.java:54:33:54:55 | (...)... |
+| mad/Test.java:55:47:55:54 | source(...) : String | mad/Test.java:55:40:55:54 | (...)... |
+| mad/Test.java:57:40:57:47 | source(...) : String | mad/Test.java:57:33:57:47 | (...)... |
+| mad/Test.java:59:38:59:45 | source(...) : String | mad/Test.java:59:31:59:45 | (...)... |
+| mad/Test.java:61:33:61:40 | source(...) : String | mad/Test.java:61:26:61:40 | (...)... |
+| mad/Test.java:63:33:63:40 | source(...) : String | mad/Test.java:63:26:63:40 | (...)... |
+| mad/Test.java:65:41:65:48 | source(...) : String | mad/Test.java:65:34:65:48 | (...)... |
+| mad/Test.java:67:42:67:49 | source(...) : String | mad/Test.java:67:35:67:49 | (...)... |
+| mad/Test.java:69:37:69:44 | source(...) : String | mad/Test.java:69:30:69:44 | (...)... |
+| mad/Test.java:71:29:71:36 | source(...) : String | mad/Test.java:71:22:71:36 | (...)... |
+| mad/Test.java:73:37:73:44 | source(...) : String | mad/Test.java:73:30:73:44 | (...)... |
+| mad/Test.java:75:28:75:35 | source(...) : String | mad/Test.java:75:21:75:35 | (...)... |
+| mad/Test.java:77:33:77:40 | source(...) : String | mad/Test.java:77:26:77:40 | (...)... |
+| mad/Test.java:79:40:79:47 | source(...) : String | mad/Test.java:79:33:79:47 | (...)... |
+| mad/Test.java:81:40:81:47 | source(...) : String | mad/Test.java:81:33:81:47 | (...)... |
+| mad/Test.java:82:40:82:47 | source(...) : String | mad/Test.java:82:33:82:47 | (...)... |
+| mad/Test.java:84:38:84:45 | source(...) : String | mad/Test.java:84:31:84:45 | (...)... |
+| mad/Test.java:86:28:86:35 | source(...) : String | mad/Test.java:86:21:86:35 | (...)... |
+| mad/Test.java:87:28:87:35 | source(...) : String | mad/Test.java:87:21:87:35 | (...)... |
+| mad/Test.java:88:28:88:35 | source(...) : String | mad/Test.java:88:21:88:35 | (...)... |
+| mad/Test.java:90:34:90:41 | source(...) : String | mad/Test.java:90:27:90:41 | (...)... |
+| mad/Test.java:91:34:91:41 | source(...) : String | mad/Test.java:91:27:91:41 | (...)... |
+| mad/Test.java:93:33:93:40 | source(...) : String | mad/Test.java:93:26:93:40 | (...)... |
+| mad/Test.java:95:42:95:49 | source(...) : String | mad/Test.java:95:35:95:49 | (...)... |
+| mad/Test.java:97:50:97:57 | source(...) : String | mad/Test.java:97:41:97:57 | (...)... |
+| mad/Test.java:99:54:99:61 | source(...) : String | mad/Test.java:99:45:99:61 | (...)... |
+| mad/Test.java:104:37:104:44 | source(...) : String | mad/Test.java:104:30:104:44 | (...)... |
+| mad/Test.java:106:74:106:81 | source(...) : String | mad/Test.java:106:40:106:81 | (...)... |
+| mad/Test.java:108:68:108:75 | source(...) : String | mad/Test.java:108:34:108:75 | (...)... |
+| mad/Test.java:110:68:110:75 | source(...) : String | mad/Test.java:110:34:110:75 | (...)... |
+| mad/Test.java:112:30:112:37 | source(...) : String | mad/Test.java:112:23:112:37 | (...)... |
+| mad/Test.java:117:30:117:37 | source(...) : String | mad/Test.java:117:23:117:37 | (...)... |
+| mad/Test.java:122:33:122:40 | source(...) : String | mad/Test.java:122:23:122:40 | (...)... |
+| mad/Test.java:124:27:124:34 | source(...) : String | mad/Test.java:124:20:124:34 | (...)... |
+| mad/Test.java:126:28:126:35 | source(...) : String | mad/Test.java:126:21:126:35 | (...)... |
+| mad/Test.java:128:29:128:36 | source(...) : String | mad/Test.java:128:22:128:36 | (...)... |
+| mad/Test.java:133:27:133:34 | source(...) : String | mad/Test.java:133:20:133:34 | (...)... |
+| mad/Test.java:135:26:135:33 | source(...) : String | mad/Test.java:135:19:135:33 | (...)... |
+| mad/Test.java:140:29:140:36 | source(...) : String | mad/Test.java:140:20:140:36 | (...)... |
 nodes
 | Test.java:19:18:19:38 | getHostName(...) : String | semmle.label | getHostName(...) : String |
 | Test.java:24:20:24:23 | temp | semmle.label | temp |
@@ -50,23 +136,109 @@ nodes
 | Test.java:99:12:99:33 | new URI(...) | semmle.label | new URI(...) |
 | Test.java:100:12:100:45 | new URI(...) | semmle.label | new URI(...) |
 | Test.java:101:12:101:54 | new URI(...) | semmle.label | new URI(...) |
-| mad/Test.java:12:16:12:36 | getHostName(...) : String | semmle.label | getHostName(...) : String |
-| mad/Test.java:17:52:17:72 | (...)... | semmle.label | (...)... |
-| mad/Test.java:17:61:17:72 | source(...) : String | semmle.label | source(...) : String |
-| mad/Test.java:19:32:19:52 | (...)... | semmle.label | (...)... |
-| mad/Test.java:19:41:19:52 | source(...) : String | semmle.label | source(...) : String |
-| mad/Test.java:25:31:25:49 | (...)... | semmle.label | (...)... |
-| mad/Test.java:25:38:25:49 | source(...) : String | semmle.label | source(...) : String |
-| mad/Test.java:27:29:27:47 | (...)... | semmle.label | (...)... |
-| mad/Test.java:27:36:27:47 | source(...) : String | semmle.label | source(...) : String |
-| mad/Test.java:29:24:29:42 | (...)... | semmle.label | (...)... |
-| mad/Test.java:29:31:29:42 | source(...) : String | semmle.label | source(...) : String |
-| mad/Test.java:31:24:31:44 | (...)... | semmle.label | (...)... |
-| mad/Test.java:31:33:31:44 | source(...) : String | semmle.label | source(...) : String |
-| mad/Test.java:33:41:33:61 | (...)... | semmle.label | (...)... |
-| mad/Test.java:33:50:33:61 | source(...) : String | semmle.label | source(...) : String |
-| mad/Test.java:35:45:35:65 | (...)... | semmle.label | (...)... |
-| mad/Test.java:35:54:35:65 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:28:16:28:36 | getHostName(...) : String | semmle.label | getHostName(...) : String |
+| mad/Test.java:33:52:33:68 | (...)... | semmle.label | (...)... |
+| mad/Test.java:33:61:33:68 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:35:32:35:48 | (...)... | semmle.label | (...)... |
+| mad/Test.java:35:41:35:48 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:37:47:37:63 | (...)... | semmle.label | (...)... |
+| mad/Test.java:37:56:37:63 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:39:39:39:53 | (...)... | semmle.label | (...)... |
+| mad/Test.java:39:46:39:53 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:41:31:41:45 | (...)... | semmle.label | (...)... |
+| mad/Test.java:41:38:41:45 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:43:29:43:43 | (...)... | semmle.label | (...)... |
+| mad/Test.java:43:36:43:43 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:45:24:45:38 | (...)... | semmle.label | (...)... |
+| mad/Test.java:45:31:45:38 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:47:24:47:40 | (...)... | semmle.label | (...)... |
+| mad/Test.java:47:33:47:40 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:49:20:49:34 | (...)... | semmle.label | (...)... |
+| mad/Test.java:49:27:49:34 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:50:20:50:34 | (...)... | semmle.label | (...)... |
+| mad/Test.java:50:27:50:34 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:51:20:51:41 | (...)... | semmle.label | (...)... |
+| mad/Test.java:51:34:51:41 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:53:33:53:47 | (...)... | semmle.label | (...)... |
+| mad/Test.java:53:40:53:47 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:54:33:54:55 | (...)... | semmle.label | (...)... |
+| mad/Test.java:54:48:54:55 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:55:40:55:54 | (...)... | semmle.label | (...)... |
+| mad/Test.java:55:47:55:54 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:57:33:57:47 | (...)... | semmle.label | (...)... |
+| mad/Test.java:57:40:57:47 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:59:31:59:45 | (...)... | semmle.label | (...)... |
+| mad/Test.java:59:38:59:45 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:61:26:61:40 | (...)... | semmle.label | (...)... |
+| mad/Test.java:61:33:61:40 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:63:26:63:40 | (...)... | semmle.label | (...)... |
+| mad/Test.java:63:33:63:40 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:65:34:65:48 | (...)... | semmle.label | (...)... |
+| mad/Test.java:65:41:65:48 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:67:35:67:49 | (...)... | semmle.label | (...)... |
+| mad/Test.java:67:42:67:49 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:69:30:69:44 | (...)... | semmle.label | (...)... |
+| mad/Test.java:69:37:69:44 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:71:22:71:36 | (...)... | semmle.label | (...)... |
+| mad/Test.java:71:29:71:36 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:73:30:73:44 | (...)... | semmle.label | (...)... |
+| mad/Test.java:73:37:73:44 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:75:21:75:35 | (...)... | semmle.label | (...)... |
+| mad/Test.java:75:28:75:35 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:77:26:77:40 | (...)... | semmle.label | (...)... |
+| mad/Test.java:77:33:77:40 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:79:33:79:47 | (...)... | semmle.label | (...)... |
+| mad/Test.java:79:40:79:47 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:81:33:81:47 | (...)... | semmle.label | (...)... |
+| mad/Test.java:81:40:81:47 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:82:33:82:47 | (...)... | semmle.label | (...)... |
+| mad/Test.java:82:40:82:47 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:84:31:84:45 | (...)... | semmle.label | (...)... |
+| mad/Test.java:84:38:84:45 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:86:21:86:35 | (...)... | semmle.label | (...)... |
+| mad/Test.java:86:28:86:35 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:87:21:87:35 | (...)... | semmle.label | (...)... |
+| mad/Test.java:87:28:87:35 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:88:21:88:35 | (...)... | semmle.label | (...)... |
+| mad/Test.java:88:28:88:35 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:90:27:90:41 | (...)... | semmle.label | (...)... |
+| mad/Test.java:90:34:90:41 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:91:27:91:41 | (...)... | semmle.label | (...)... |
+| mad/Test.java:91:34:91:41 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:93:26:93:40 | (...)... | semmle.label | (...)... |
+| mad/Test.java:93:33:93:40 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:95:35:95:49 | (...)... | semmle.label | (...)... |
+| mad/Test.java:95:42:95:49 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:97:41:97:57 | (...)... | semmle.label | (...)... |
+| mad/Test.java:97:50:97:57 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:99:45:99:61 | (...)... | semmle.label | (...)... |
+| mad/Test.java:99:54:99:61 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:104:30:104:44 | (...)... | semmle.label | (...)... |
+| mad/Test.java:104:37:104:44 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:106:40:106:81 | (...)... | semmle.label | (...)... |
+| mad/Test.java:106:74:106:81 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:108:34:108:75 | (...)... | semmle.label | (...)... |
+| mad/Test.java:108:68:108:75 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:110:34:110:75 | (...)... | semmle.label | (...)... |
+| mad/Test.java:110:68:110:75 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:112:23:112:37 | (...)... | semmle.label | (...)... |
+| mad/Test.java:112:30:112:37 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:117:23:117:37 | (...)... | semmle.label | (...)... |
+| mad/Test.java:117:30:117:37 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:122:23:122:40 | (...)... | semmle.label | (...)... |
+| mad/Test.java:122:33:122:40 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:124:20:124:34 | (...)... | semmle.label | (...)... |
+| mad/Test.java:124:27:124:34 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:126:21:126:35 | (...)... | semmle.label | (...)... |
+| mad/Test.java:126:28:126:35 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:128:22:128:36 | (...)... | semmle.label | (...)... |
+| mad/Test.java:128:29:128:36 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:133:20:133:34 | (...)... | semmle.label | (...)... |
+| mad/Test.java:133:27:133:34 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:135:19:135:33 | (...)... | semmle.label | (...)... |
+| mad/Test.java:135:26:135:33 | source(...) : String | semmle.label | source(...) : String |
+| mad/Test.java:140:20:140:36 | (...)... | semmle.label | (...)... |
+| mad/Test.java:140:29:140:36 | source(...) : String | semmle.label | source(...) : String |
 subpaths
 #select
 | Test.java:24:11:24:24 | new File(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:24:20:24:23 | temp | This path depends on a $@. | Test.java:19:18:19:38 | getHostName(...) | user-provided value |
@@ -80,11 +252,54 @@ subpaths
 | Test.java:99:3:99:34 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:99:12:99:33 | new URI(...) | This path depends on a $@. | Test.java:95:14:95:34 | getHostName(...) | user-provided value |
 | Test.java:100:3:100:46 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:100:12:100:45 | new URI(...) | This path depends on a $@. | Test.java:95:14:95:34 | getHostName(...) | user-provided value |
 | Test.java:101:3:101:55 | new File(...) | Test.java:95:14:95:34 | getHostName(...) : String | Test.java:101:12:101:54 | new URI(...) | This path depends on a $@. | Test.java:95:14:95:34 | getHostName(...) | user-provided value |
-| mad/Test.java:17:52:17:72 | (...)... | mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:17:52:17:72 | (...)... | This path depends on a $@. | mad/Test.java:12:16:12:36 | getHostName(...) | user-provided value |
-| mad/Test.java:19:32:19:52 | (...)... | mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:19:32:19:52 | (...)... | This path depends on a $@. | mad/Test.java:12:16:12:36 | getHostName(...) | user-provided value |
-| mad/Test.java:25:31:25:49 | (...)... | mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:25:31:25:49 | (...)... | This path depends on a $@. | mad/Test.java:12:16:12:36 | getHostName(...) | user-provided value |
-| mad/Test.java:27:29:27:47 | (...)... | mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:27:29:27:47 | (...)... | This path depends on a $@. | mad/Test.java:12:16:12:36 | getHostName(...) | user-provided value |
-| mad/Test.java:29:24:29:42 | (...)... | mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:29:24:29:42 | (...)... | This path depends on a $@. | mad/Test.java:12:16:12:36 | getHostName(...) | user-provided value |
-| mad/Test.java:31:9:31:45 | new FileReader(...) | mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:31:24:31:44 | (...)... | This path depends on a $@. | mad/Test.java:12:16:12:36 | getHostName(...) | user-provided value |
-| mad/Test.java:33:41:33:61 | (...)... | mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:33:41:33:61 | (...)... | This path depends on a $@. | mad/Test.java:12:16:12:36 | getHostName(...) | user-provided value |
-| mad/Test.java:35:45:35:65 | (...)... | mad/Test.java:12:16:12:36 | getHostName(...) : String | mad/Test.java:35:45:35:65 | (...)... | This path depends on a $@. | mad/Test.java:12:16:12:36 | getHostName(...) | user-provided value |
+| mad/Test.java:33:52:33:68 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:33:52:33:68 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:35:32:35:48 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:35:32:35:48 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:37:47:37:63 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:37:47:37:63 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:39:39:39:53 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:39:39:39:53 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:41:31:41:45 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:41:31:41:45 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:43:29:43:43 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:43:29:43:43 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:45:24:45:38 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:45:24:45:38 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:47:9:47:41 | new FileReader(...) | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:47:24:47:40 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:49:20:49:34 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:49:20:49:34 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:50:20:50:34 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:50:20:50:34 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:51:20:51:41 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:51:20:51:41 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:53:33:53:47 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:53:33:53:47 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:54:33:54:55 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:54:33:54:55 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:55:40:55:54 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:55:40:55:54 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:57:33:57:47 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:57:33:57:47 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:59:31:59:45 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:59:31:59:45 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:61:26:61:40 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:61:26:61:40 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:63:26:63:40 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:63:26:63:40 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:65:34:65:48 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:65:34:65:48 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:67:35:67:49 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:67:35:67:49 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:69:30:69:44 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:69:30:69:44 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:71:22:71:36 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:71:22:71:36 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:73:30:73:44 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:73:30:73:44 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:75:21:75:35 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:75:21:75:35 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:77:26:77:40 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:77:26:77:40 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:79:33:79:47 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:79:33:79:47 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:81:33:81:47 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:81:33:81:47 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:82:33:82:47 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:82:33:82:47 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:84:31:84:45 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:84:31:84:45 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:86:21:86:35 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:86:21:86:35 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:87:21:87:35 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:87:21:87:35 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:88:21:88:35 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:88:21:88:35 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:90:27:90:41 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:90:27:90:41 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:91:27:91:41 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:91:27:91:41 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:93:26:93:40 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:93:26:93:40 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:95:35:95:49 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:95:35:95:49 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:97:41:97:57 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:97:41:97:57 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:99:45:99:61 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:99:45:99:61 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:104:30:104:44 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:104:30:104:44 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:106:40:106:81 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:106:40:106:81 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:108:34:108:75 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:108:34:108:75 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:110:34:110:75 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:110:34:110:75 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:112:23:112:37 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:112:23:112:37 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:117:23:117:37 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:117:23:117:37 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:122:23:122:40 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:122:23:122:40 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:124:20:124:34 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:124:20:124:34 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:126:21:126:35 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:126:21:126:35 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:128:22:128:36 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:128:22:128:36 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:133:20:133:34 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:133:20:133:34 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:135:19:135:33 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:135:19:135:33 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |
+| mad/Test.java:140:20:140:36 | (...)... | mad/Test.java:28:16:28:36 | getHostName(...) : String | mad/Test.java:140:20:140:36 | (...)... | This path depends on a $@. | mad/Test.java:28:16:28:36 | getHostName(...) | user-provided value |

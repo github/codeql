@@ -1,5 +1,7 @@
 package generatedtest;
 
+import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLDecoder;
@@ -17,7 +19,28 @@ public class Test {
 	public void test() throws Exception {
 
 		{
-			// "java.net;URI;false;URI;(String);;Argument[0];Argument[-1];taint;manual"
+			// "java.net;InetAddress;true;getByName;(String);;Argument[0];ReturnValue;taint;ai-generated"
+			InetAddress out = null;
+			String in = (String) source();
+			out = InetAddress.getByName(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.net;InetSocketAddress;true;InetSocketAddress;(String,int);;Argument[0];Argument[this];taint;ai-generated"
+			InetSocketAddress out = null;
+			String in = (String) source();
+			out = new InetSocketAddress(in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.net;InetSocketAddress;true;createUnresolved;(String,int);;Argument[0];ReturnValue;taint;ai-generated"
+			InetSocketAddress out = null;
+			String in = (String) source();
+			out = InetSocketAddress.createUnresolved(in, 0);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.net;URI;false;URI;(String);;Argument[0];Argument[this];taint;manual"
 			URI out = null;
 			String in = (String) source();
 			out = new URI(in);
@@ -31,42 +54,72 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.net;URI;false;toASCIIString;;;Argument[-1];ReturnValue;taint;manual"
+			// "java.net;URI;false;resolve;(String);;Argument[0];ReturnValue;taint;ai-generated"
+			URI out = null;
+			String in = (String) source();
+			URI instance = null;
+			out = instance.resolve(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.net;URI;false;resolve;(URI);;Argument[0];ReturnValue;taint;ai-generated"
+			URI out = null;
+			URI in = (URI) source();
+			URI instance = null;
+			out = instance.resolve(in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.net;URI;false;toASCIIString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			URI in = (URI) source();
 			out = in.toASCIIString();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.net;URI;false;toString;;;Argument[-1];ReturnValue;taint;manual"
+			// "java.net;URI;false;toString;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			URI in = (URI) source();
 			out = in.toString();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.net;URI;false;toURL;;;Argument[-1];ReturnValue;taint;manual"
+			// "java.net;URI;false;toURL;;;Argument[this];ReturnValue;taint;manual"
 			URL out = null;
 			URI in = (URI) source();
 			out = in.toURL();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.net;URL;false;URL;(String);;Argument[0];Argument[-1];taint;manual"
+			// "java.net;URL;false;URL;(String);;Argument[0];Argument[this];taint;manual"
 			URL out = null;
 			String in = (String) source();
 			out = new URL(in);
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.net;URL;false;toExternalForm;;;Argument[-1];ReturnValue;taint;manual"
+			// "java.net;URL;false;URL;(URL,String);;Argument[0];Argument[this];taint;ai-generated"
+			URL out = null;
+			URL in = (URL) source();
+			out = new URL(in, null);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.net;URL;false;URL;(URL,String);;Argument[1];Argument[this];taint;ai-generated"
+			URL out = null;
+			String in = (String) source();
+			out = new URL(null, in);
+			sink(out); // $ hasTaintFlow
+		}
+		{
+			// "java.net;URL;false;toExternalForm;;;Argument[this];ReturnValue;taint;manual"
 			String out = null;
 			URL in = (URL) source();
 			out = in.toExternalForm();
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "java.net;URL;false;toURI;;;Argument[-1];ReturnValue;taint;manual"
+			// "java.net;URL;false;toURI;;;Argument[this];ReturnValue;taint;manual"
 			URI out = null;
 			URL in = (URL) source();
 			out = in.toURI();

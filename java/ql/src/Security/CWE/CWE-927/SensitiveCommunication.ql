@@ -16,6 +16,6 @@ import semmle.code.java.security.AndroidSensitiveCommunicationQuery
 import SensitiveCommunicationFlow::PathGraph
 
 from SensitiveCommunicationFlow::PathNode source, SensitiveCommunicationFlow::PathNode sink
-where SensitiveCommunicationFlow::hasFlowPath(source, sink)
+where SensitiveCommunicationFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "This call may leak $@.", source.getNode(),
   "sensitive information"

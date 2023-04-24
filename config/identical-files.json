@@ -3,7 +3,6 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlow.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlow.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlow.qll",
-    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlow.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlow.qll",
     "go/ql/lib/semmle/go/dataflow/internal/DataFlow.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlow.qll",
@@ -14,7 +13,6 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl.qll",
-    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImpl.qll",
     "go/ql/lib/semmle/go/dataflow/internal/DataFlowImpl.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImpl.qll",
@@ -37,10 +35,6 @@
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl2.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl3.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl4.qll",
-    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl1.qll",
-    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl2.qll",
-    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl3.qll",
-    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlowImpl4.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImpl1.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImpl2.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImpl3.qll",
@@ -65,7 +59,6 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplCommon.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
-    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlowImplCommon.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplCommon.qll",
     "go/ql/lib/semmle/go/dataflow/internal/DataFlowImplCommon.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplCommon.qll",
@@ -75,7 +68,6 @@
   "TaintTracking Java/C++/C#/Go/Python/Ruby/Swift": [
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/tainttracking1/TaintTracking.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/tainttracking1/TaintTracking.qll",
-    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/tainttracking1/TaintTracking.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/tainttracking1/TaintTracking.qll",
     "go/ql/lib/semmle/go/dataflow/internal/tainttracking1/TaintTracking.qll",
     "java/ql/lib/semmle/code/java/dataflow/internal/tainttracking1/TaintTracking.qll",
@@ -89,9 +81,6 @@
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/tainttracking3/TaintTrackingImpl.qll",
-    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
-    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
-    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/tainttracking3/TaintTrackingImpl.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/tainttracking1/TaintTrackingImpl.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/tainttracking2/TaintTrackingImpl.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/tainttracking3/TaintTrackingImpl.qll",
@@ -113,7 +102,6 @@
     "java/ql/lib/semmle/code/java/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/semmle/code/cpp/dataflow/internal/DataFlowImplConsistency.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
-    "cpp/ql/lib/experimental/semmle/code/cpp/ir/dataflow/internal/DataFlowImplConsistency.qll",
     "csharp/ql/lib/semmle/code/csharp/dataflow/internal/DataFlowImplConsistency.qll",
     "python/ql/lib/semmle/python/dataflow/new/internal/DataFlowImplConsistency.qll",
     "ruby/ql/lib/codeql/ruby/dataflow/internal/DataFlowImplConsistency.qll",
@@ -134,6 +122,10 @@
   "Model as Data Generation Java/C# - CaptureModels": [
     "java/ql/src/utils/modelgenerator/internal/CaptureModels.qll",
     "csharp/ql/src/utils/modelgenerator/internal/CaptureModels.qll"
+  ],
+  "Model as Data Generation Java/C# - CaptureModelsPrinting": [
+    "java/ql/src/utils/modelgenerator/internal/CaptureModelsPrinting.qll",
+    "csharp/ql/src/utils/modelgenerator/internal/CaptureModelsPrinting.qll"
   ],
   "Sign Java/C#": [
     "java/ql/lib/semmle/code/java/dataflow/internal/rangeanalysis/Sign.qll",
@@ -290,6 +282,11 @@
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRBlockImports.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRBlockImports.qll",
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRBlockImports.qll"
+  ],
+  "C++ IR IRConsistencyImports": [
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRConsistencyImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/unaliased_ssa/internal/IRConsistencyImports.qll",
+    "cpp/ql/lib/semmle/code/cpp/ir/implementation/aliased_ssa/internal/IRConsistencyImports.qll"
   ],
   "C++ IR IRFunctionImports": [
     "cpp/ql/lib/semmle/code/cpp/ir/implementation/raw/internal/IRFunctionImports.qll",

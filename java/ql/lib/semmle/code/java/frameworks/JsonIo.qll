@@ -42,8 +42,12 @@ class JsonIoUseMapsSetter extends MethodAccess {
   }
 }
 
-/** A data flow configuration tracing flow from JsonIo safe settings. */
-class SafeJsonIoConfig extends DataFlow2::Configuration {
+/**
+ * DEPRECATED: Use `SafeJsonIoFlow` instead.
+ *
+ * A data flow configuration tracing flow from JsonIo safe settings.
+ */
+deprecated class SafeJsonIoConfig extends DataFlow2::Configuration {
   SafeJsonIoConfig() { this = "UnsafeDeserialization::SafeJsonIoConfig" }
 
   override predicate isSource(DataFlow::Node src) {
@@ -65,3 +69,30 @@ class SafeJsonIoConfig extends DataFlow2::Configuration {
     )
   }
 }
+
+/**
+ * A data flow configuration tracing flow from JsonIo safe settings.
+ */
+module SafeJsonIoConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) {
+    exists(MethodAccess ma |
+      ma instanceof JsonIoUseMapsSetter and
+      src.asExpr() = ma.getQualifier()
+    )
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodAccess ma |
+      ma.getMethod() instanceof JsonIoJsonToJavaMethod and
+      sink.asExpr() = ma.getArgument(1)
+    )
+    or
+    exists(ClassInstanceExpr cie |
+      cie.getConstructor().getDeclaringType() instanceof JsonIoJsonReader and
+      sink.asExpr() = cie.getArgument(1)
+    )
+  }
+}
+
+/** Tracks flow from JsonIo safe settings. */
+module SafeJsonIoFlow = DataFlow::Global<SafeJsonIoConfig>;

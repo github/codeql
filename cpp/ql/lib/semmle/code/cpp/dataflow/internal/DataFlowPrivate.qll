@@ -3,6 +3,7 @@ private import DataFlowUtil
 private import DataFlowDispatch
 private import FlowVar
 private import DataFlowImplConsistency
+private import codeql.util.Unit
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
@@ -158,7 +159,7 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
     // `PostUpdateNode`, which means it must be an `ObjectInitializerNode`.
     node2.asExpr() = aggr and
     f.(FieldContent).getField() = field and
-    aggr.getFieldExpr(field) = node1.asExpr()
+    aggr.getAFieldExpr(field) = node1.asExpr()
   )
   or
   exists(FieldAccess fa |
@@ -263,15 +264,6 @@ int accessPathLimit() { result = 5 }
  * precision. This disables adaptive access path precision for such access paths.
  */
 predicate forceHighPrecision(Content c) { none() }
-
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { none() }

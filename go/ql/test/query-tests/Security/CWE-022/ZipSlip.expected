@@ -4,8 +4,11 @@ edges
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name |
 | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate |
 | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate |
-| ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:14:20:14:20 | p |
-| tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:16:14:16:34 | call to Dir |
+| ZipSlip.go:11:2:15:2 | range statement[1] | ZipSlip.go:12:24:12:29 | selection of Name |
+| ZipSlip.go:12:3:12:30 | ... := ...[0] | ZipSlip.go:14:20:14:20 | p |
+| ZipSlip.go:12:24:12:29 | selection of Name | ZipSlip.go:12:3:12:30 | ... := ...[0] |
+| tarslip.go:15:2:15:30 | ... := ...[0] | tarslip.go:16:23:16:33 | selection of Name |
+| tarslip.go:16:23:16:33 | selection of Name | tarslip.go:16:14:16:34 | call to Dir |
 | tst.go:23:2:43:2 | range statement[1] | tst.go:29:20:29:23 | path |
 nodes
 | UnsafeUnzipSymlinkGood.go:52:24:52:32 | definition of candidate | semmle.label | definition of candidate |
@@ -14,9 +17,12 @@ nodes
 | UnsafeUnzipSymlinkGood.go:76:24:76:38 | selection of Linkname | semmle.label | selection of Linkname |
 | UnsafeUnzipSymlinkGood.go:76:70:76:80 | selection of Name | semmle.label | selection of Name |
 | ZipSlip.go:11:2:15:2 | range statement[1] | semmle.label | range statement[1] |
+| ZipSlip.go:12:3:12:30 | ... := ...[0] | semmle.label | ... := ...[0] |
+| ZipSlip.go:12:24:12:29 | selection of Name | semmle.label | selection of Name |
 | ZipSlip.go:14:20:14:20 | p | semmle.label | p |
 | tarslip.go:15:2:15:30 | ... := ...[0] | semmle.label | ... := ...[0] |
 | tarslip.go:16:14:16:34 | call to Dir | semmle.label | call to Dir |
+| tarslip.go:16:23:16:33 | selection of Name | semmle.label | selection of Name |
 | tst.go:23:2:43:2 | range statement[1] | semmle.label | range statement[1] |
 | tst.go:29:20:29:23 | path | semmle.label | path |
 subpaths

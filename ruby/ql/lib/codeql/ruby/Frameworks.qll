@@ -27,4 +27,7 @@ private import codeql.ruby.frameworks.ActionDispatch
 private import codeql.ruby.frameworks.PosixSpawn
 private import codeql.ruby.frameworks.StringFormatters
 private import codeql.ruby.frameworks.Json
+private import codeql.ruby.frameworks.Erb
+private import codeql.ruby.frameworks.Slim
+private import codeql.ruby.frameworks.Sinatra
 private import codeql.ruby.frameworks.Twirp

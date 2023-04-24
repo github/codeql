@@ -87,11 +87,11 @@ void class_field_test() {
 
 	sink(mc1.a);
 	sink(mc1.b); // $ ast,ir
-	sink(mc1.c); // $ ast MISSING: ir
+	sink(mc1.c); // $ ast,ir
 	sink(mc1.d); // $ ast,ir
 	sink(mc2.a);
 	sink(mc2.b); // $ ast,ir
-	sink(mc2.c); // $ ast MISSING: ir
+	sink(mc2.c); // $ ast,ir
 	sink(mc2.d);
 }
 
@@ -448,9 +448,9 @@ void test_qualifiers()
 	sink(b);
 	sink(b.getMember());
 	b.member = source();
-	sink(b); // $ MISSING: ast,ir
+	sink(b); // $ ir MISSING: ast
 	sink(b.member); // $ ast,ir
-	sink(b.getMember()); // $ MISSING: ast,ir
+	sink(b.getMember()); // $ ir MISSING: ast
 
 	c = new MyClass2(0);
 
@@ -677,7 +677,7 @@ public:
 void test_with_const_member(char* source) {
   C_const_member_function c;
   memcpy(c.data(), source, 16);
-  sink(c.data()); // $ ast MISSING: ir
+  sink(c.data()); // $ ast,ir
 }
 
 void argument_source(void*);
@@ -690,7 +690,7 @@ void test_argument_source_field_to_obj() {
 	two_members s;
 	argument_source(s.x);
 
-	sink(s); // $ SPURIOUS: ast
+	sink(s); // $ SPURIOUS: ast,ir
 	sink(s.x); // $ ast,ir
 	sink(s.y); // clean
 }

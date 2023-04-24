@@ -55,4 +55,12 @@ class Foobar
     foo = "foo = " + x
     eval(foo) # NOT OK
   end
+
+  def join_indirect(x, y) 
+    arr = Array(x)
+    eval(arr.join(" ")) # NOT OK
+
+    arr2 = [Array(["foo = ", y]).join(" ")]
+    eval(arr2.join("\n")) # NOT OK
+  end
 end

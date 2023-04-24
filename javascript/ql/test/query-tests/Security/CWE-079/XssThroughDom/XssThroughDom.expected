@@ -159,6 +159,11 @@ nodes
 | xss-through-dom.js:141:25:141:27 | src |
 | xss-through-dom.js:150:24:150:26 | src |
 | xss-through-dom.js:150:24:150:26 | src |
+| xss-through-dom.js:154:25:154:27 | msg |
+| xss-through-dom.js:155:27:155:29 | msg |
+| xss-through-dom.js:155:27:155:29 | msg |
+| xss-through-dom.js:159:34:159:52 | $("textarea").val() |
+| xss-through-dom.js:159:34:159:52 | $("textarea").val() |
 edges
 | forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values |
 | forms.js:8:23:8:28 | values | forms.js:9:31:9:36 | values |
@@ -263,6 +268,10 @@ edges
 | xss-through-dom.js:139:11:139:52 | src | xss-through-dom.js:150:24:150:26 | src |
 | xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:139:11:139:52 | src |
 | xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:139:11:139:52 | src |
+| xss-through-dom.js:154:25:154:27 | msg | xss-through-dom.js:155:27:155:29 | msg |
+| xss-through-dom.js:154:25:154:27 | msg | xss-through-dom.js:155:27:155:29 | msg |
+| xss-through-dom.js:159:34:159:52 | $("textarea").val() | xss-through-dom.js:154:25:154:27 | msg |
+| xss-through-dom.js:159:34:159:52 | $("textarea").val() | xss-through-dom.js:154:25:154:27 | msg |
 #select
 | forms.js:9:31:9:40 | values.foo | forms.js:8:23:8:28 | values | forms.js:9:31:9:40 | values.foo | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:8:23:8:28 | values | DOM text |
 | forms.js:12:31:12:40 | values.bar | forms.js:11:24:11:29 | values | forms.js:12:31:12:40 | values.bar | $@ is reinterpreted as HTML without escaping meta-characters. | forms.js:11:24:11:29 | values | DOM text |
@@ -307,3 +316,4 @@ edges
 | xss-through-dom.js:140:19:140:21 | src | xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:140:19:140:21 | src | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:139:17:139:52 | documen ... k").src | DOM text |
 | xss-through-dom.js:141:25:141:27 | src | xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:141:25:141:27 | src | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:139:17:139:52 | documen ... k").src | DOM text |
 | xss-through-dom.js:150:24:150:26 | src | xss-through-dom.js:139:17:139:52 | documen ... k").src | xss-through-dom.js:150:24:150:26 | src | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:139:17:139:52 | documen ... k").src | DOM text |
+| xss-through-dom.js:155:27:155:29 | msg | xss-through-dom.js:159:34:159:52 | $("textarea").val() | xss-through-dom.js:155:27:155:29 | msg | $@ is reinterpreted as HTML without escaping meta-characters. | xss-through-dom.js:159:34:159:52 | $("textarea").val() | DOM text |

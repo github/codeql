@@ -14,25 +14,28 @@
 import java
 import ArraySizing
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "LocalUserInputTocanThrowOutOfBoundsDueToEmptyArrayConfig" }
+module ImproperValidationOfArrayConstructionLocalConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     any(CheckableArrayAccess caa).canThrowOutOfBoundsDueToEmptyArray(sink.asExpr(), _)
   }
 }
 
+module ImproperValidationOfArrayConstructionLocalFlow =
+  TaintTracking::Global<ImproperValidationOfArrayConstructionLocalConfig>;
+
+import ImproperValidationOfArrayConstructionLocalFlow::PathGraph
+
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, Expr sizeExpr,
+  ImproperValidationOfArrayConstructionLocalFlow::PathNode source,
+  ImproperValidationOfArrayConstructionLocalFlow::PathNode sink, Expr sizeExpr,
   ArrayCreationExpr arrayCreation, CheckableArrayAccess arrayAccess
 where
   arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sizeExpr, arrayCreation) and
   sizeExpr = sink.getNode().asExpr() and
-  any(Conf conf).hasFlowPath(source, sink)
+  ImproperValidationOfArrayConstructionLocalFlow::flowPath(source, sink)
 select arrayAccess.getIndexExpr(), source, sink,
   "This accesses the $@, but the array is initialized using a $@ which may be zero.", arrayCreation,
   "array", source.getNode(), "user-provided value"

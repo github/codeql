@@ -7,10 +7,12 @@ import semmle.code.java.frameworks.android.PendingIntent
 import semmle.code.java.security.ImplicitPendingIntents
 
 /**
+ * DEPRECATED: Use `ImplicitPendingIntentStartFlow` instead.
+ *
  * A taint tracking configuration for implicit `PendingIntent`s
  * being wrapped in another implicit `Intent` that gets started.
  */
-class ImplicitPendingIntentStartConf extends TaintTracking::Configuration {
+deprecated class ImplicitPendingIntentStartConf extends TaintTracking::Configuration {
   ImplicitPendingIntentStartConf() { this = "ImplicitPendingIntentStartConf" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
@@ -52,3 +54,50 @@ class ImplicitPendingIntentStartConf extends TaintTracking::Configuration {
     c instanceof DataFlow::ArrayContent
   }
 }
+
+/**
+ * A taint tracking configuration for implicit `PendingIntent`s
+ * being wrapped in another implicit `Intent` that gets started.
+ */
+module ImplicitPendingIntentStartConfig implements DataFlow::StateConfigSig {
+  class FlowState = DataFlow::FlowState;
+
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    source.(ImplicitPendingIntentSource).hasState(state)
+  }
+
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    sink.(ImplicitPendingIntentSink).hasState(state)
+  }
+
+  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof ExplicitIntentSanitizer }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(ImplicitPendingIntentAdditionalTaintStep c).step(node1, node2)
+  }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
+  ) {
+    any(ImplicitPendingIntentAdditionalTaintStep c).step(node1, state1, node2, state2)
+  }
+
+  predicate allowImplicitRead(DataFlow::Node node, DataFlow::ContentSet c) {
+    isSink(node, _) and
+    allowIntentExtrasImplicitRead(node, c)
+    or
+    isAdditionalFlowStep(node, _) and
+    c.(DataFlow::FieldContent).getType() instanceof PendingIntent
+    or
+    // Allow implicit reads of Intent arrays for steps like getActivities
+    // or sinks like startActivities
+    (isSink(node, _) or isAdditionalFlowStep(node, _, _, _)) and
+    node.getType().(Array).getElementType() instanceof TypeIntent and
+    c instanceof DataFlow::ArrayContent
+  }
+}
+
+module ImplicitPendingIntentStartFlow =
+  TaintTracking::GlobalWithState<ImplicitPendingIntentStartConfig>;

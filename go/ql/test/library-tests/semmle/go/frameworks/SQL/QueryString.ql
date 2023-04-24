@@ -8,10 +8,9 @@ class SqlTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "query" and
-    exists(SQL::Query q, SQL::QueryString qs, int qsLine | qs = q.getAQueryString() |
+    exists(SQL::Query q, SQL::QueryString qs | qs = q.getAQueryString() |
       q.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
-      qs.hasLocationInfo(_, qsLine, _, _, _) and
       element = q.toString() and
       value = qs.toString()
     )
@@ -30,6 +29,34 @@ class QueryString extends InlineExpectationsTest {
       qs.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       value = qs.toString()
+    )
+  }
+}
+
+class Config extends TaintTracking::Configuration {
+  Config() { this = "pg-orm config" }
+
+  override predicate isSource(DataFlow::Node n) { n.asExpr() instanceof StringLit }
+
+  override predicate isSink(DataFlow::Node n) {
+    n = any(DataFlow::CallNode cn | cn.getTarget().getName() = "sink").getAnArgument()
+  }
+}
+
+class TaintFlow extends InlineExpectationsTest {
+  TaintFlow() { this = "pg-orm flow" }
+
+  override string getARelevantTag() { result = "flowfrom" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    tag = "flowfrom" and
+    element = "" and
+    exists(Config c, DataFlow::Node fromNode, DataFlow::Node toNode |
+      toNode
+          .hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
+            location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
+      c.hasFlow(fromNode, toNode) and
+      value = fromNode.asExpr().(StringLit).getValue()
     )
   }
 }

@@ -17,7 +17,6 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.RandomQuery
 import semmle.code.java.security.SecurityTests
 import ArithmeticCommon
-import DataFlow::PathGraph
 
 class TaintSource extends DataFlow::ExprNode {
   TaintSource() {
@@ -25,33 +24,42 @@ class TaintSource extends DataFlow::ExprNode {
   }
 }
 
-class ArithmeticUncontrolledOverflowConfig extends TaintTracking::Configuration {
-  ArithmeticUncontrolledOverflowConfig() { this = "ArithmeticUncontrolledOverflowConfig" }
+module ArithmeticUncontrolledOverflowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
+  predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
 
-  override predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
-
-  override predicate isSanitizer(DataFlow::Node n) { overflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
 }
 
-class ArithmeticUncontrolledUnderflowConfig extends TaintTracking::Configuration {
-  ArithmeticUncontrolledUnderflowConfig() { this = "ArithmeticUncontrolledUnderflowConfig" }
+module ArithmeticUncontrolledOverflowFlow =
+  TaintTracking::Global<ArithmeticUncontrolledOverflowConfig>;
 
-  override predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
+module ArithmeticUncontrolledUnderflowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
 
-  override predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
+  predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
 
-  override predicate isSanitizer(DataFlow::Node n) { underflowBarrier(n) }
+  predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ArithExpr exp, string effect
+module ArithmeticUncontrolledUnderflowFlow =
+  TaintTracking::Global<ArithmeticUncontrolledUnderflowConfig>;
+
+module Flow =
+  DataFlow::MergePathGraph<ArithmeticUncontrolledOverflowFlow::PathNode,
+    ArithmeticUncontrolledUnderflowFlow::PathNode, ArithmeticUncontrolledOverflowFlow::PathGraph,
+    ArithmeticUncontrolledUnderflowFlow::PathGraph>;
+
+import Flow::PathGraph
+
+from Flow::PathNode source, Flow::PathNode sink, ArithExpr exp, string effect
 where
-  any(ArithmeticUncontrolledOverflowConfig c).hasFlowPath(source, sink) and
+  ArithmeticUncontrolledOverflowFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) and
   overflowSink(exp, sink.getNode().asExpr()) and
   effect = "overflow"
   or
-  any(ArithmeticUncontrolledUnderflowConfig c).hasFlowPath(source, sink) and
+  ArithmeticUncontrolledUnderflowFlow::flowPath(source.asPathNode2(), sink.asPathNode2()) and
   underflowSink(exp, sink.getNode().asExpr()) and
   effect = "underflow"
 select exp, source, sink,

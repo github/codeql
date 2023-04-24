@@ -1,10 +1,10 @@
 import codeql.ruby.Concepts
 import codeql.ruby.DataFlow
 
-query predicate httpRequests(
-  Http::Client::Request r, string framework, DataFlow::Node urlPart, DataFlow::Node responseBody
-) {
-  r.getFramework() = framework and
-  r.getAUrlPart() = urlPart and
-  r.getResponseBody() = responseBody
-}
+query predicate httpRequests(Http::Client::Request r) { any() }
+
+query string getFramework(Http::Client::Request req) { result = req.getFramework() }
+
+query DataFlow::Node getResponseBody(Http::Client::Request req) { result = req.getResponseBody() }
+
+query DataFlow::Node getAUrlPart(Http::Client::Request req) { result = req.getAUrlPart() }

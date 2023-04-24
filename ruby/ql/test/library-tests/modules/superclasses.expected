@@ -36,6 +36,12 @@
 #-----| TrueClass
 #-----|  -> Object
 
+#-----| UnresolvedNamespace::X1
+
+#-----| UnresolvedNamespace::X1::X2
+
+#-----| UnresolvedNamespace::X1::X2::X3
+
 calls.rb:
 #   21| M
 
@@ -261,4 +267,13 @@ unresolved_subclass.rb:
 #-----|  -> UnresolvedNamespace::Subclass1
 
 #   11| UnresolvedNamespace::A
+#-----|  -> Object
+
+#   14| UnresolvedNamespace::X1::X2::X3::Subclass1
+#-----|  -> ResolvableBaseClass
+
+#   17| UnresolvedNamespace::X1::X2::X3::Subclass2
+#-----|  -> UnresolvedNamespace::X1::X2::X3::Subclass1
+
+#   21| UnresolvedNamespace::X1::X2::X3::A
 #-----|  -> Object

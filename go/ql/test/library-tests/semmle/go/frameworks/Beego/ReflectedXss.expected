@@ -18,14 +18,27 @@ edges
 | test.go:108:14:108:25 | call to Data | test.go:108:14:108:45 | type assertion |
 | test.go:120:14:120:25 | call to Data | test.go:120:14:120:45 | type assertion |
 | test.go:137:23:137:42 | call to Data | test.go:137:23:137:62 | type assertion |
-| test.go:193:15:193:26 | call to Data | test.go:194:14:194:55 | type conversion |
-| test.go:193:15:193:26 | call to Data | test.go:195:14:195:58 | type conversion |
-| test.go:193:15:193:26 | call to Data | test.go:197:14:197:28 | type assertion |
-| test.go:193:15:193:26 | call to Data | test.go:198:14:198:55 | type conversion |
-| test.go:193:15:193:26 | call to Data | test.go:199:14:199:59 | type conversion |
-| test.go:202:18:202:33 | selection of Form | test.go:203:14:203:28 | type conversion |
-| test.go:217:2:217:34 | ... := ...[0] | test.go:220:14:220:20 | content |
+| test.go:193:15:193:26 | call to Data | test.go:194:36:194:53 | type assertion |
+| test.go:193:15:193:26 | call to Data | test.go:195:39:195:56 | type assertion |
+| test.go:193:15:193:26 | call to Data | test.go:196:28:196:56 | type assertion |
+| test.go:193:15:193:26 | call to Data | test.go:198:36:198:53 | type assertion |
+| test.go:193:15:193:26 | call to Data | test.go:199:34:199:51 | type assertion |
+| test.go:194:21:194:54 | call to HTML2str | test.go:194:14:194:55 | type conversion |
+| test.go:194:36:194:53 | type assertion | test.go:194:21:194:54 | call to HTML2str |
+| test.go:195:21:195:57 | call to Htmlunquote | test.go:195:14:195:58 | type conversion |
+| test.go:195:39:195:56 | type assertion | test.go:195:21:195:57 | call to Htmlunquote |
+| test.go:196:2:196:68 | ... := ...[0] | test.go:197:14:197:28 | type assertion |
+| test.go:196:28:196:56 | type assertion | test.go:196:2:196:68 | ... := ...[0] |
+| test.go:198:21:198:54 | call to Str2html | test.go:198:14:198:55 | type conversion |
+| test.go:198:36:198:53 | type assertion | test.go:198:21:198:54 | call to Str2html |
+| test.go:199:21:199:58 | call to Substr | test.go:199:14:199:59 | type conversion |
+| test.go:199:34:199:51 | type assertion | test.go:199:21:199:58 | call to Substr |
+| test.go:201:6:201:6 | definition of s | test.go:203:14:203:28 | type conversion |
+| test.go:202:18:202:33 | selection of Form | test.go:201:6:201:6 | definition of s |
+| test.go:217:2:217:34 | ... := ...[0] | test.go:219:31:219:31 | f |
 | test.go:217:2:217:34 | ... := ...[1] | test.go:218:14:218:32 | type conversion |
+| test.go:219:2:219:32 | ... := ...[0] | test.go:220:14:220:20 | content |
+| test.go:219:31:219:31 | f | test.go:219:2:219:32 | ... := ...[0] |
 | test.go:222:2:222:40 | ... := ...[0] | test.go:223:14:223:38 | type conversion |
 | test.go:225:7:225:28 | call to GetString | test.go:226:14:226:22 | type conversion |
 | test.go:228:8:228:35 | call to GetStrings | test.go:229:14:229:26 | type conversion |
@@ -35,21 +48,53 @@ edges
 | test.go:253:23:253:44 | call to GetCookie | test.go:253:16:253:45 | type conversion |
 | test.go:264:62:264:83 | call to GetCookie | test.go:264:55:264:84 | type conversion |
 | test.go:269:2:269:40 | ... := ...[0] | test.go:277:21:277:61 | call to GetDisplayString |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:278:21:278:92 | selection of Filename |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:279:21:279:96 | selection of Filename |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:284:3:286:80 | selection of Filename |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:287:21:287:101 | selection of Filename |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:288:21:288:101 | selection of Filename |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:289:21:289:97 | selection of Filename |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:290:21:290:97 | selection of Filename |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:291:21:291:102 | selection of Filename |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:292:21:292:102 | selection of Filename |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:293:21:293:82 | selection of Filename |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:295:21:295:133 | selection of Filename |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:296:21:296:88 | selection of Filename |
-| test.go:269:2:269:40 | ... := ...[0] | test.go:297:21:297:87 | selection of Filename |
-| test.go:303:15:303:36 | call to GetString | test.go:305:21:305:48 | type assertion |
-| test.go:303:15:303:36 | call to GetString | test.go:306:21:306:52 | type assertion |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:278:38:278:49 | genericFiles |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:279:37:279:48 | genericFiles |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:285:4:285:15 | genericFiles |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:287:42:287:53 | genericFiles |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:288:53:288:64 | genericFiles |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:289:38:289:49 | genericFiles |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:290:49:290:60 | genericFiles |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:291:51:291:65 | index expression |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:292:36:292:47 | genericFiles |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:293:37:293:48 | genericFiles |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:295:39:295:50 | genericFiles |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:296:40:296:51 | genericFiles |
+| test.go:269:2:269:40 | ... := ...[0] | test.go:297:39:297:50 | genericFiles |
+| test.go:278:21:278:53 | call to SliceChunk | test.go:278:21:278:92 | selection of Filename |
+| test.go:278:38:278:49 | genericFiles | test.go:278:21:278:53 | call to SliceChunk |
+| test.go:279:21:279:60 | call to SliceDiff | test.go:279:21:279:96 | selection of Filename |
+| test.go:279:37:279:48 | genericFiles | test.go:279:21:279:60 | call to SliceDiff |
+| test.go:284:3:286:44 | call to SliceFilter | test.go:284:3:286:80 | selection of Filename |
+| test.go:285:4:285:15 | genericFiles | test.go:284:3:286:44 | call to SliceFilter |
+| test.go:287:21:287:65 | call to SliceIntersect | test.go:287:21:287:101 | selection of Filename |
+| test.go:287:42:287:53 | genericFiles | test.go:287:21:287:65 | call to SliceIntersect |
+| test.go:288:21:288:65 | call to SliceIntersect | test.go:288:21:288:101 | selection of Filename |
+| test.go:288:53:288:64 | genericFiles | test.go:288:21:288:65 | call to SliceIntersect |
+| test.go:289:21:289:61 | call to SliceMerge | test.go:289:21:289:97 | selection of Filename |
+| test.go:289:38:289:49 | genericFiles | test.go:289:21:289:61 | call to SliceMerge |
+| test.go:290:21:290:61 | call to SliceMerge | test.go:290:21:290:97 | selection of Filename |
+| test.go:290:49:290:60 | genericFiles | test.go:290:21:290:61 | call to SliceMerge |
+| test.go:291:21:291:66 | call to SlicePad | test.go:291:21:291:102 | selection of Filename |
+| test.go:291:51:291:65 | index expression | test.go:291:21:291:66 | call to SlicePad |
+| test.go:292:21:292:66 | call to SlicePad | test.go:292:21:292:102 | selection of Filename |
+| test.go:292:36:292:47 | genericFiles | test.go:292:21:292:66 | call to SlicePad |
+| test.go:293:21:293:49 | call to SliceRand | test.go:293:21:293:82 | selection of Filename |
+| test.go:293:37:293:48 | genericFiles | test.go:293:21:293:49 | call to SliceRand |
+| test.go:295:21:295:97 | call to SliceReduce | test.go:295:21:295:133 | selection of Filename |
+| test.go:295:39:295:50 | genericFiles | test.go:295:21:295:97 | call to SliceReduce |
+| test.go:296:21:296:52 | call to SliceShuffle | test.go:296:21:296:88 | selection of Filename |
+| test.go:296:40:296:51 | genericFiles | test.go:296:21:296:52 | call to SliceShuffle |
+| test.go:297:21:297:51 | call to SliceUnique | test.go:297:21:297:87 | selection of Filename |
+| test.go:297:39:297:50 | genericFiles | test.go:297:21:297:51 | call to SliceUnique |
+| test.go:302:2:302:5 | definition of bMap | test.go:305:21:305:24 | bMap |
+| test.go:302:2:302:5 | definition of bMap | test.go:306:21:306:24 | bMap |
+| test.go:303:15:303:36 | call to GetString | test.go:304:22:304:30 | untrusted |
+| test.go:304:22:304:30 | untrusted | test.go:302:2:302:5 | definition of bMap |
+| test.go:305:21:305:24 | bMap | test.go:305:21:305:39 | call to Get |
+| test.go:305:21:305:39 | call to Get | test.go:305:21:305:48 | type assertion |
+| test.go:306:21:306:24 | bMap | test.go:306:21:306:32 | call to Items |
+| test.go:306:21:306:32 | call to Items | test.go:306:21:306:52 | type assertion |
 nodes
 | test.go:27:6:27:10 | definition of bound | semmle.label | definition of bound |
 | test.go:29:13:29:30 | type conversion | semmle.label | type conversion |
@@ -89,15 +134,28 @@ nodes
 | test.go:137:23:137:62 | type assertion | semmle.label | type assertion |
 | test.go:193:15:193:26 | call to Data | semmle.label | call to Data |
 | test.go:194:14:194:55 | type conversion | semmle.label | type conversion |
+| test.go:194:21:194:54 | call to HTML2str | semmle.label | call to HTML2str |
+| test.go:194:36:194:53 | type assertion | semmle.label | type assertion |
 | test.go:195:14:195:58 | type conversion | semmle.label | type conversion |
+| test.go:195:21:195:57 | call to Htmlunquote | semmle.label | call to Htmlunquote |
+| test.go:195:39:195:56 | type assertion | semmle.label | type assertion |
+| test.go:196:2:196:68 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:196:28:196:56 | type assertion | semmle.label | type assertion |
 | test.go:197:14:197:28 | type assertion | semmle.label | type assertion |
 | test.go:198:14:198:55 | type conversion | semmle.label | type conversion |
+| test.go:198:21:198:54 | call to Str2html | semmle.label | call to Str2html |
+| test.go:198:36:198:53 | type assertion | semmle.label | type assertion |
 | test.go:199:14:199:59 | type conversion | semmle.label | type conversion |
+| test.go:199:21:199:58 | call to Substr | semmle.label | call to Substr |
+| test.go:199:34:199:51 | type assertion | semmle.label | type assertion |
+| test.go:201:6:201:6 | definition of s | semmle.label | definition of s |
 | test.go:202:18:202:33 | selection of Form | semmle.label | selection of Form |
 | test.go:203:14:203:28 | type conversion | semmle.label | type conversion |
 | test.go:217:2:217:34 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:217:2:217:34 | ... := ...[1] | semmle.label | ... := ...[1] |
 | test.go:218:14:218:32 | type conversion | semmle.label | type conversion |
+| test.go:219:2:219:32 | ... := ...[0] | semmle.label | ... := ...[0] |
+| test.go:219:31:219:31 | f | semmle.label | f |
 | test.go:220:14:220:20 | content | semmle.label | content |
 | test.go:222:2:222:40 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:223:14:223:38 | type conversion | semmle.label | type conversion |
@@ -119,21 +177,53 @@ nodes
 | test.go:264:62:264:83 | call to GetCookie | semmle.label | call to GetCookie |
 | test.go:269:2:269:40 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:277:21:277:61 | call to GetDisplayString | semmle.label | call to GetDisplayString |
+| test.go:278:21:278:53 | call to SliceChunk | semmle.label | call to SliceChunk |
 | test.go:278:21:278:92 | selection of Filename | semmle.label | selection of Filename |
+| test.go:278:38:278:49 | genericFiles | semmle.label | genericFiles |
+| test.go:279:21:279:60 | call to SliceDiff | semmle.label | call to SliceDiff |
 | test.go:279:21:279:96 | selection of Filename | semmle.label | selection of Filename |
+| test.go:279:37:279:48 | genericFiles | semmle.label | genericFiles |
+| test.go:284:3:286:44 | call to SliceFilter | semmle.label | call to SliceFilter |
 | test.go:284:3:286:80 | selection of Filename | semmle.label | selection of Filename |
+| test.go:285:4:285:15 | genericFiles | semmle.label | genericFiles |
+| test.go:287:21:287:65 | call to SliceIntersect | semmle.label | call to SliceIntersect |
 | test.go:287:21:287:101 | selection of Filename | semmle.label | selection of Filename |
+| test.go:287:42:287:53 | genericFiles | semmle.label | genericFiles |
+| test.go:288:21:288:65 | call to SliceIntersect | semmle.label | call to SliceIntersect |
 | test.go:288:21:288:101 | selection of Filename | semmle.label | selection of Filename |
+| test.go:288:53:288:64 | genericFiles | semmle.label | genericFiles |
+| test.go:289:21:289:61 | call to SliceMerge | semmle.label | call to SliceMerge |
 | test.go:289:21:289:97 | selection of Filename | semmle.label | selection of Filename |
+| test.go:289:38:289:49 | genericFiles | semmle.label | genericFiles |
+| test.go:290:21:290:61 | call to SliceMerge | semmle.label | call to SliceMerge |
 | test.go:290:21:290:97 | selection of Filename | semmle.label | selection of Filename |
+| test.go:290:49:290:60 | genericFiles | semmle.label | genericFiles |
+| test.go:291:21:291:66 | call to SlicePad | semmle.label | call to SlicePad |
 | test.go:291:21:291:102 | selection of Filename | semmle.label | selection of Filename |
+| test.go:291:51:291:65 | index expression | semmle.label | index expression |
+| test.go:292:21:292:66 | call to SlicePad | semmle.label | call to SlicePad |
 | test.go:292:21:292:102 | selection of Filename | semmle.label | selection of Filename |
+| test.go:292:36:292:47 | genericFiles | semmle.label | genericFiles |
+| test.go:293:21:293:49 | call to SliceRand | semmle.label | call to SliceRand |
 | test.go:293:21:293:82 | selection of Filename | semmle.label | selection of Filename |
+| test.go:293:37:293:48 | genericFiles | semmle.label | genericFiles |
+| test.go:295:21:295:97 | call to SliceReduce | semmle.label | call to SliceReduce |
 | test.go:295:21:295:133 | selection of Filename | semmle.label | selection of Filename |
+| test.go:295:39:295:50 | genericFiles | semmle.label | genericFiles |
+| test.go:296:21:296:52 | call to SliceShuffle | semmle.label | call to SliceShuffle |
 | test.go:296:21:296:88 | selection of Filename | semmle.label | selection of Filename |
+| test.go:296:40:296:51 | genericFiles | semmle.label | genericFiles |
+| test.go:297:21:297:51 | call to SliceUnique | semmle.label | call to SliceUnique |
 | test.go:297:21:297:87 | selection of Filename | semmle.label | selection of Filename |
+| test.go:297:39:297:50 | genericFiles | semmle.label | genericFiles |
+| test.go:302:2:302:5 | definition of bMap | semmle.label | definition of bMap |
 | test.go:303:15:303:36 | call to GetString | semmle.label | call to GetString |
+| test.go:304:22:304:30 | untrusted | semmle.label | untrusted |
+| test.go:305:21:305:24 | bMap | semmle.label | bMap |
+| test.go:305:21:305:39 | call to Get | semmle.label | call to Get |
 | test.go:305:21:305:48 | type assertion | semmle.label | type assertion |
+| test.go:306:21:306:24 | bMap | semmle.label | bMap |
+| test.go:306:21:306:32 | call to Items | semmle.label | call to Items |
 | test.go:306:21:306:52 | type assertion | semmle.label | type assertion |
 subpaths
 #select

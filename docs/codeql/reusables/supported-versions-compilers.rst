@@ -11,11 +11,11 @@
    Microsoft extensions (up to VS 2019),
 
    Arm Compiler 5 [3]_","``.cpp``, ``.c++``, ``.cxx``, ``.hpp``, ``.hh``, ``.h++``, ``.hxx``, ``.c``, ``.cc``, ``.h``"
-   C#,C# up to 10.0,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
+   C#,C# up to 11,"Microsoft Visual Studio up to 2019 with .NET up to 4.8,
 
    .NET Core up to 3.1
 
-   .NET 5, .NET 6","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
+   .NET 5, .NET 6, .NET 7","``.sln``, ``.csproj``, ``.cs``, ``.cshtml``, ``.xaml``"
    Go (aka Golang), "Go up to 1.20", "Go 1.11 or more recent", ``.go``
    Java,"Java 7 to 20 [4]_","javac (OpenJDK and Oracle JDK),
 
@@ -23,8 +23,8 @@
    Kotlin [6]_,"Kotlin 1.5.0 to 1.8.20","kotlinc",``.kt``
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [7]_"
    Python [8]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11",Not applicable,``.py``
-   Ruby [9]_,"up to 3.1",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
-   TypeScript [10]_,"2.6-4.9",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
+   Ruby [9]_,"up to 3.2",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
+   TypeScript [10]_,"2.6-5.0",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group
 

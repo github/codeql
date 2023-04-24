@@ -1,12 +1,11 @@
 name: codeql/python-queries
-version: 0.6.5-dev
+version: 0.7.1-dev
 groups: 
   - python
   - queries
 dependencies:
   codeql/python-all: ${workspace}
   codeql/suite-helpers: ${workspace}
-  codeql/util: ${workspace}
 suites: codeql-suites
 extractor: python
 defaultSuiteFile: codeql-suites/python-code-scanning.qls

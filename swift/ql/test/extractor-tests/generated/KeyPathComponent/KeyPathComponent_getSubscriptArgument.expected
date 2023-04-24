@@ -1,0 +1,2 @@
+| key_path_expr.swift:12:24:12:26 | KeyPathComponent | 0 | key_path_expr.swift:12:25:12:25 | : 0 |
+| key_path_expr.swift:13:34:13:38 | KeyPathComponent | 0 | key_path_expr.swift:13:35:13:35 | : a |

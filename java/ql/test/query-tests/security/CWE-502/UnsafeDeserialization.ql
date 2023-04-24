@@ -9,7 +9,7 @@ class UnsafeDeserializationTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "unsafeDeserialization" and
-    exists(DataFlow::Node sink, UnsafeDeserializationConfig conf | conf.hasFlowTo(sink) |
+    exists(DataFlow::Node sink | UnsafeDeserializationFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

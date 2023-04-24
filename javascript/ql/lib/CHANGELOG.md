@@ -1,3 +1,30 @@
+## 0.6.0
+
+### Major Analysis Improvements
+
+* Added support for TypeScript 5.0.
+
+### Minor Analysis Improvements
+
+* `router.push` and `router.replace` in `Next.js` are now considered as XSS sink.
+* The crypto-js module in `CryptoLibraries.qll` now supports progressive hashing with algo.update().
+
+## 0.5.2
+
+No user-facing changes.
+
+## 0.5.1
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
+* Deleted the deprecated `getId` from the `Function`, `NamespaceDefinition`, and `ImportEqualsDeclaration` classes.
+* Deleted the deprecated `flowsTo` predicate from the `HTTP::Servers::RequestSource` and `HTTP::Servers::ResponseSource` class.
+* Deleted the deprecated `getEventName` predicate from the `SocketIO::ReceiveNode`, `SocketIO::SendNode`, `SocketIOClient::SendNode` classes.
+* Deleted the deprecated `RateLimitedRouteHandlerExpr` and `RouteHandlerExpressionWithRateLimiter` classes.
+* [Import assertions](https://github.com/tc39/proposal-import-assertions) are now supported.
+  Previously this feature was only supported in TypeScript code, but is now supported for plain JavaScript as well and is also accessible in the AST.
+
 ## 0.5.0
 
 ### Breaking Changes

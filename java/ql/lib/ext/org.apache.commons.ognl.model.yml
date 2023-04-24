@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.commons.ognl", "Node", True, "getValue", "", "", "Argument[-1]", "ognl-injection", "manual"]
-      - ["org.apache.commons.ognl", "Node", True, "setValue", "", "", "Argument[-1]", "ognl-injection", "manual"]
+      - ["org.apache.commons.ognl", "Node", True, "getValue", "", "", "Argument[this]", "ognl-injection", "manual"]
+      - ["org.apache.commons.ognl", "Node", True, "setValue", "", "", "Argument[this]", "ognl-injection", "manual"]
       - ["org.apache.commons.ognl", "Ognl", False, "getValue", "", "", "Argument[0]", "ognl-injection", "manual"]
       - ["org.apache.commons.ognl", "Ognl", False, "setValue", "", "", "Argument[0]", "ognl-injection", "manual"]

@@ -12,4 +12,4 @@ extensions:
     data:
       - ["com.rabbitmq.client.impl", "Frame", False, "fromBodyFragment", "(int,byte[],int,int)", "", "Argument[1]", "ReturnValue", "taint", "manual"]
       - ["com.rabbitmq.client.impl", "Frame", False, "readFrom", "(DataInputStream)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["com.rabbitmq.client.impl", "Frame", True, "writeTo", "(DataOutputStream)", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["com.rabbitmq.client.impl", "Frame", True, "writeTo", "(DataOutputStream)", "", "Argument[this]", "Argument[0]", "taint", "manual"]

@@ -1,3 +1,19 @@
+## 0.7.0
+
+### Bug Fixes
+
+* Nonlocal variables are excluded from alerts.
+
+## 0.6.6
+
+No user-facing changes.
+
+## 0.6.5
+
+### New Queries
+
+* Added a new query, `py/shell-command-constructed-from-input`, to detect libraries that unsafely construct shell commands from their inputs.
+
 ## 0.6.4
 
 No user-facing changes.

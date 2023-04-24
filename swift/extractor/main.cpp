@@ -1,5 +1,3 @@
-#include <fstream>
-#include <iomanip>
 #include <stdlib.h>
 #include <vector>
 #include <iostream>
@@ -18,9 +16,11 @@
 #include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/file/Path.h"
-#include <swift/Basic/InitializeSwiftModules.h>
+#include "swift/extractor/infra/log/SwiftLogging.h"
 
 using namespace std::string_literals;
+
+const std::string_view codeql::logRootName = "extractor";
 
 // must be called before processFrontendOptions modifies output paths
 static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
@@ -86,6 +86,8 @@ class Observer : public swift::FrontendObserver {
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
+    // remove default consumers to avoid double messaging
+    instance.getDiags().takeConsumers();
     instance.addDiagnosticConsumer(&diagConsumer);
   }
 
@@ -93,6 +95,14 @@ class Observer : public swift::FrontendObserver {
     codeql::extractSwiftFiles(state, compiler);
     codeql::extractSwiftInvocation(state, compiler, invocationTrap);
     codeql::extractExtractLazyDeclarations(state, compiler);
+  }
+
+  void markSuccessfullyExtractedFiles() {
+    codeql::SwiftLocationExtractor locExtractor{invocationTrap};
+    for (const auto& src : state.sourceFiles) {
+      auto fileLabel = locExtractor.emitFile(src);
+      invocationTrap.emit(codeql::FileIsSuccessfullyExtractedTrap{fileLabel});
+    }
   }
 
  private:
@@ -167,14 +177,37 @@ codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state) {
 
 codeql::SwiftExtractorConfiguration configure(int argc, char** argv) {
   codeql::SwiftExtractorConfiguration configuration{};
-  configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", ".");
-  configuration.sourceArchiveDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", ".");
-  configuration.scratchDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", ".");
+  configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", "extractor-out/trap/swift");
+  configuration.sourceArchiveDir =
+      getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", "extractor-out/src");
+  configuration.scratchDir =
+      getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", "extractor-out/working");
   configuration.frontendOptions.assign(argv + 1, argv + argc);
   return configuration;
 }
 
-int main(int argc, char** argv) {
+// TODO: use `absl::StrJoin` or `boost::algorithm::join`
+static auto argDump(int argc, char** argv) {
+  std::string ret;
+  for (auto arg = argv + 1; arg < argv + argc; ++arg) {
+    ret += *arg;
+    ret += ' ';
+  }
+  ret.pop_back();
+  return ret;
+}
+
+// TODO: use `absl::StrJoin` or `boost::algorithm::join`
+static auto envDump(char** envp) {
+  std::string ret;
+  for (auto env = envp; *env; ++env) {
+    ret += *env;
+    ret += '\n';
+  }
+  return ret;
+}
+
+int main(int argc, char** argv, char** envp) {
   checkWhetherToRunUnderTool(argc, argv);
 
   if (argc == 1) {
@@ -188,12 +221,23 @@ int main(int argc, char** argv) {
   initializeSwiftModules();
 
   const auto configuration = configure(argc, argv);
+  {
+    codeql::Logger logger{"main"};
+    LOG_INFO("calling extractor with arguments \"{}\"", argDump(argc, argv));
+    LOG_DEBUG("environment:\n{}\n", envDump(envp));
+  }
 
   auto openInterception = codeql::setupFileInterception(configuration);
 
   Observer observer(configuration);
   int frontend_rc = swift::performFrontend(configuration.frontendOptions, "swift-extractor",
                                            (void*)main, &observer);
+
+  if (frontend_rc == 0) {
+    observer.markSuccessfullyExtractedFiles();
+  }
+
+  codeql::Log::flush();
 
   return frontend_rc;
 }

@@ -21,7 +21,39 @@ module Ssa {
 
     class ExitBasicBlock = BasicBlocks::ExitBasicBlock;
 
-    class SourceVariable = VarDecl;
+    private newtype TSourceVariable =
+      TNormalSourceVariable(VarDecl v) or
+      TKeyPathSourceVariable(EntryNode entry) { entry.getScope() instanceof KeyPathExpr }
+
+    abstract class SourceVariable extends TSourceVariable {
+      abstract string toString();
+
+      VarDecl asVarDecl() { none() }
+
+      EntryNode asKeyPath() { none() }
+
+      DeclRefExpr getAnAccess() { result.getDecl() = this.asVarDecl() }
+    }
+
+    private class NormalSourceVariable extends SourceVariable, TNormalSourceVariable {
+      VarDecl v;
+
+      NormalSourceVariable() { this = TNormalSourceVariable(v) }
+
+      override string toString() { result = v.toString() }
+
+      override VarDecl asVarDecl() { result = v }
+    }
+
+    private class KeyPathSourceVariable extends SourceVariable, TKeyPathSourceVariable {
+      EntryNode enter;
+
+      KeyPathSourceVariable() { this = TKeyPathSourceVariable(enter) }
+
+      override string toString() { result = enter.toString() }
+
+      override EntryNode asKeyPath() { result = enter }
+    }
 
     predicate variableWrite(BasicBlock bb, int i, SourceVariable v, boolean certain) {
       exists(AssignExpr assign |
@@ -38,19 +70,24 @@ module Ssa {
       // if let x5 = optional { ... }
       // guard let x6 = optional else { ... }
       // ```
-      exists(Pattern pattern |
+      exists(NamedPattern pattern |
         bb.getNode(i).getNode().asAstNode() = pattern and
-        v.getParentPattern() = pattern and
+        v.asVarDecl() = pattern.getVarDecl() and
         certain = true
       )
       or
-      v instanceof ParamDecl and
-      bb.getNode(i).getNode().asAstNode() = v and
+      exists(ParamDecl p |
+        p = v.asVarDecl() and
+        bb.getNode(i).getNode().asAstNode() = p and
+        certain = true
+      )
+      or
+      bb.getNode(i) = v.asKeyPath() and
       certain = true
       or
       // Mark the subexpression as a write of the local variable declared in the `TapExpr`.
       exists(TapExpr tap |
-        v = tap.getVar() and
+        v.asVarDecl() = tap.getVar() and
         bb.getNode(i).getNode().asAstNode() = tap.getSubExpr() and
         certain = true
       )
@@ -60,7 +97,7 @@ module Ssa {
       exists(DeclRefExpr ref |
         not isLValue(ref) and
         bb.getNode(i).getNode().asAstNode() = ref and
-        v = ref.getDecl() and
+        v.asVarDecl() = ref.getDecl() and
         certain = true
       )
       or
@@ -71,24 +108,26 @@ module Ssa {
       )
       or
       exists(ExitNode exit, AbstractFunctionDecl func |
-        func.getAParam() = v or func.getSelfParam() = v
-      |
+        [func.getAParam(), func.getSelfParam()] = v.asVarDecl() and
         bb.getNode(i) = exit and
-        modifiableParam(v) and
+        modifiableParam(v.asVarDecl()) and
         bb.getScope() = func and
         certain = true
       )
       or
       // Mark the `TapExpr` as a read of the of the local variable.
       exists(TapExpr tap |
-        v = tap.getVar() and
+        v.asVarDecl() = tap.getVar() and
         bb.getNode(i).getNode().asAstNode() = tap and
         certain = true
       )
     }
   }
 
-  private module SsaImpl = SsaImplCommon::Make<SsaInput>;
+  /**
+   * INTERNAL: Do not use.
+   */
+  module SsaImpl = SsaImplCommon::Make<SsaInput>;
 
   cached
   class Definition extends SsaImpl::Definition {
@@ -97,7 +136,7 @@ module Ssa {
 
     cached
     ControlFlowNode getARead() {
-      exists(VarDecl v, SsaInput::BasicBlock bb, int i |
+      exists(SsaInput::SourceVariable v, SsaInput::BasicBlock bb, int i |
         SsaImpl::ssaDefReachesRead(v, this, bb, i) and
         SsaInput::variableRead(bb, i, v, true) and
         result = bb.getNode(i)
@@ -153,14 +192,10 @@ module Ssa {
         value.getNode().asAstNode() = a.getSource()
       )
       or
-      exists(
-        VarDecl var, SsaInput::BasicBlock bb, int blockIndex, PatternBindingDecl pbd, Expr init
-      |
-        this.definesAt(var, bb, blockIndex) and
-        pbd.getAPattern() = bb.getNode(blockIndex).getNode().asAstNode() and
-        init = var.getParentInitializer()
-      |
-        value.getAst() = init
+      exists(SsaInput::BasicBlock bb, int blockIndex, NamedPattern np |
+        this.definesAt(_, bb, blockIndex) and
+        np = bb.getNode(blockIndex).getNode().asAstNode() and
+        value.getNode().asAstNode() = np
       )
       or
       exists(SsaInput::BasicBlock bb, int blockIndex, ConditionElement ce, Expr init |

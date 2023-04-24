@@ -47,7 +47,7 @@ private predicate defaultSource(DataFlow::Node src) {
   src.asExpr().(MethodAccess).getMethod().getName() = ["source", "taint"]
 }
 
-module DefaultFlowConf implements DataFlow::ConfigSig {
+module DefaultFlowConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { defaultSource(n) }
 
   predicate isSink(DataFlow::Node n) {
@@ -57,9 +57,9 @@ module DefaultFlowConf implements DataFlow::ConfigSig {
   int fieldFlowBranchLimit() { result = 1000 }
 }
 
-private module DefaultValueFlow = DataFlow::Make<DefaultFlowConf>;
+private module DefaultValueFlow = DataFlow::Global<DefaultFlowConfig>;
 
-private module DefaultTaintFlow = TaintTracking::Make<DefaultFlowConf>;
+private module DefaultTaintFlow = TaintTracking::Global<DefaultFlowConfig>;
 
 class DefaultValueFlowConf extends DataFlow::Configuration {
   DefaultValueFlowConf() { this = "qltest:defaultValueFlowConf" }
@@ -118,13 +118,13 @@ class InlineFlowTest extends InlineExpectationsTest {
   predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) {
     if exists(EnableLegacyConfiguration e)
     then getValueFlowConfig().hasFlow(src, sink)
-    else DefaultValueFlow::hasFlow(src, sink)
+    else DefaultValueFlow::flow(src, sink)
   }
 
   predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
     if exists(EnableLegacyConfiguration e)
     then getTaintFlowConfig().hasFlow(src, sink)
-    else DefaultTaintFlow::hasFlow(src, sink)
+    else DefaultTaintFlow::flow(src, sink)
   }
 
   DataFlow::Configuration getValueFlowConfig() { result = any(DefaultValueFlowConf config) }

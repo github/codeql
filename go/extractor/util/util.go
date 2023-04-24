@@ -183,7 +183,7 @@ func DepErrors(pkgpath string, flags ...string) bool {
 // FileExists tests whether the file at `filename` exists and is not a directory.
 func FileExists(filename string) bool {
 	info, err := os.Stat(filename)
-	if err != nil && !os.IsNotExist(err) {
+	if err != nil && !errors.Is(err, fs.ErrNotExist) {
 		log.Printf("Unable to stat %s: %s\n", filename, err.Error())
 	}
 	return err == nil && !info.IsDir()
@@ -192,7 +192,7 @@ func FileExists(filename string) bool {
 // DirExists tests whether `filename` exists and is a directory.
 func DirExists(filename string) bool {
 	info, err := os.Stat(filename)
-	if err != nil && !os.IsNotExist(err) {
+	if err != nil && !errors.Is(err, fs.ErrNotExist) {
 		log.Printf("Unable to stat %s: %s\n", filename, err.Error())
 	}
 	return err == nil && info.IsDir()

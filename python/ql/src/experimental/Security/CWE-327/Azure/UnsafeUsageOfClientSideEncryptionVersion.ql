@@ -1,7 +1,7 @@
 /**
  * @name Unsafe usage of v1 version of Azure Storage client-side encryption.
  * @description Using version v1 of Azure Storage client-side encryption is insecure, and may enable an attacker to decrypt encrypted data
- * @kind problem
+ * @kind path-problem
  * @tags security
  *       experimental
  *       cryptography
@@ -12,80 +12,145 @@
  */
 
 import python
+import semmle.python.dataflow.new.DataFlow
 import semmle.python.ApiGraphs
 
-predicate isUnsafeClientSideAzureStorageEncryptionViaAttributes(Call call, AttrNode node) {
-  exists(
-    API::Node n, API::Node n2, Attribute a, AssignStmt astmt, API::Node uploadBlob,
-    ControlFlowNode ctrlFlowNode, string s
-  |
-    s in ["key_encryption_key", "key_resolver_function"] and
-    n =
-      API::moduleImport("azure")
-          .getMember("storage")
-          .getMember("blob")
-          .getMember("BlobClient")
-          .getReturn()
-          .getMember(s) and
-    n2 =
-      API::moduleImport("azure")
-          .getMember("storage")
-          .getMember("blob")
-          .getMember("BlobClient")
-          .getReturn()
-          .getMember("upload_blob") and
-    n.getAValueReachableFromSource().asExpr() = a and
-    astmt.getATarget() = a and
-    a.getAFlowNode() = node and
-    uploadBlob =
-      API::moduleImport("azure")
-          .getMember("storage")
-          .getMember("blob")
-          .getMember("BlobClient")
-          .getReturn()
-          .getMember("upload_blob") and
-    uploadBlob.getACall().asExpr() = call and
-    ctrlFlowNode = call.getAFlowNode() and
-    node.strictlyReaches(ctrlFlowNode) and
-    node != ctrlFlowNode and
-    not exists(
-      AssignStmt astmt2, Attribute a2, AttrNode encryptionVersionSet, StrConst uc,
-      API::Node encryptionVersion
-    |
-      uc = astmt2.getValue() and
-      uc.getText() in ["'2.0'", "2.0"] and
-      encryptionVersion =
-        API::moduleImport("azure")
-            .getMember("storage")
-            .getMember("blob")
-            .getMember("BlobClient")
-            .getReturn()
-            .getMember("encryption_version") and
-      encryptionVersion.getAValueReachableFromSource().asExpr() = a2 and
-      astmt2.getATarget() = a2 and
-      a2.getAFlowNode() = encryptionVersionSet and
-      encryptionVersionSet.strictlyReaches(ctrlFlowNode)
-    )
-  )
+API::Node getBlobServiceClient(boolean isSource) {
+  isSource = true and
+  result =
+    API::moduleImport("azure")
+        .getMember("storage")
+        .getMember("blob")
+        .getMember("BlobServiceClient")
+        .getReturn()
+  or
+  isSource = true and
+  result =
+    API::moduleImport("azure")
+        .getMember("storage")
+        .getMember("blob")
+        .getMember("BlobServiceClient")
+        .getMember("from_connection_string")
+        .getReturn()
 }
 
-predicate isUnsafeClientSideAzureStorageEncryptionViaObjectCreation(Call call, ControlFlowNode node) {
-  exists(API::Node c, string s, Keyword k | k.getAFlowNode() = node |
-    c.getACall().asExpr() = call and
-    c = API::moduleImport("azure").getMember("storage").getMember("blob").getMember(s) and
-    s in ["ContainerClient", "BlobClient", "BlobServiceClient"] and
-    k.getArg() = "key_encryption_key" and
-    k = call.getANamedArg() and
-    not k.getValue() instanceof None and
-    not exists(Keyword k2 | k2 = call.getANamedArg() |
-      k2.getArg() = "encryption_version" and
-      k2.getValue().(StrConst).getText() in ["'2.0'", "2.0"]
-    )
-  )
+API::CallNode getTransitionToContainerClient() {
+  result = getBlobServiceClient(_).getMember("get_container_client").getACall()
+  or
+  result = getBlobClient(_).getMember("_get_container_client").getACall()
 }
 
-from Call call, ControlFlowNode node
-where
-  isUnsafeClientSideAzureStorageEncryptionViaAttributes(call, node) or
-  isUnsafeClientSideAzureStorageEncryptionViaObjectCreation(call, node)
-select node, "Unsafe usage of v1 version of Azure Storage client-side encryption."
+API::Node getContainerClient(boolean isSource) {
+  isSource = false and
+  result = getTransitionToContainerClient().getReturn()
+  or
+  isSource = true and
+  result =
+    API::moduleImport("azure")
+        .getMember("storage")
+        .getMember("blob")
+        .getMember("ContainerClient")
+        .getReturn()
+  or
+  isSource = true and
+  result =
+    API::moduleImport("azure")
+        .getMember("storage")
+        .getMember("blob")
+        .getMember("ContainerClient")
+        .getMember(["from_connection_string", "from_container_url"])
+        .getReturn()
+}
+
+API::CallNode getTransitionToBlobClient() {
+  result = [getBlobServiceClient(_), getContainerClient(_)].getMember("get_blob_client").getACall()
+}
+
+API::Node getBlobClient(boolean isSource) {
+  isSource = false and
+  result = getTransitionToBlobClient().getReturn()
+  or
+  isSource = true and
+  result =
+    API::moduleImport("azure")
+        .getMember("storage")
+        .getMember("blob")
+        .getMember("BlobClient")
+        .getReturn()
+  or
+  isSource = true and
+  result =
+    API::moduleImport("azure")
+        .getMember("storage")
+        .getMember("blob")
+        .getMember("BlobClient")
+        .getMember(["from_connection_string", "from_blob_url"])
+        .getReturn()
+}
+
+API::Node anyClient(boolean isSource) {
+  result in [getBlobServiceClient(isSource), getContainerClient(isSource), getBlobClient(isSource)]
+}
+
+newtype TAzureFlowState =
+  MkUsesV1Encryption() or
+  MkUsesNoEncryption()
+
+module AzureBlobClientConfig implements DataFlow::StateConfigSig {
+  class FlowState = TAzureFlowState;
+
+  predicate isSource(DataFlow::Node node, FlowState state) {
+    state = MkUsesNoEncryption() and
+    node = anyClient(true).asSource()
+  }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) {
+    exists(state) and
+    exists(DataFlow::AttrWrite attr |
+      node = anyClient(_).getAValueReachableFromSource() and
+      attr.accesses(node, "encryption_version") and
+      attr.getValue().asExpr().(StrConst).getText() in ["'2.0'", "2.0"]
+    )
+    or
+    // small optimization to block flow with no encryption out of the post-update node
+    // for the attribute assignment.
+    isAdditionalFlowStep(_, MkUsesNoEncryption(), node, MkUsesV1Encryption()) and
+    state = MkUsesNoEncryption()
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    exists(DataFlow::MethodCallNode call |
+      call in [getTransitionToContainerClient(), getTransitionToBlobClient()] and
+      node1 = call.getObject() and
+      node2 = call
+    )
+  }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
+  ) {
+    node1 = node2.(DataFlow::PostUpdateNode).getPreUpdateNode() and
+    state1 = MkUsesNoEncryption() and
+    state2 = MkUsesV1Encryption() and
+    exists(DataFlow::AttrWrite attr |
+      node1 = anyClient(_).getAValueReachableFromSource() and
+      attr.accesses(node1, ["key_encryption_key", "key_resolver_function"])
+    )
+  }
+
+  predicate isSink(DataFlow::Node node, FlowState state) {
+    state = MkUsesV1Encryption() and
+    exists(DataFlow::MethodCallNode call |
+      call = getBlobClient(_).getMember("upload_blob").getACall() and
+      node = call.getObject()
+    )
+  }
+}
+
+module AzureBlobClient = DataFlow::GlobalWithState<AzureBlobClientConfig>;
+
+import AzureBlobClient::PathGraph
+
+from AzureBlobClient::PathNode source, AzureBlobClient::PathNode sink
+where AzureBlobClient::flowPath(source, sink)
+select sink, source, sink, "Unsafe usage of v1 version of Azure Storage client-side encryption"

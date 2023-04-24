@@ -449,6 +449,8 @@ private ContentFilter getFilterFromWithoutContentStep(DataFlow::ContentSet conte
     or
     content.isElementLowerBoundOrUnknown(_)
     or
+    content.isElementOfTypeOrUnknown(_)
+    or
     content.isSingleton(any(DataFlow::Content::UnknownElementContent c))
   ) and
   result = MkElementFilter()
@@ -483,6 +485,10 @@ private ContentFilter getFilterFromWithContentStep(DataFlow::ContentSet content)
     content.isElementLowerBound(_)
     or
     content.isElementLowerBoundOrUnknown(_)
+    or
+    content.isElementOfType(_)
+    or
+    content.isElementOfTypeOrUnknown(_)
     or
     content.isSingleton(any(DataFlow::Content::ElementContent c))
   ) and

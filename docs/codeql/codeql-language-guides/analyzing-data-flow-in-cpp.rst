@@ -1,5 +1,9 @@
 .. _analyzing-data-flow-in-cpp:
 
+.. pull-quote:: Note
+
+   The data flow library used in this article has been replaced with an improved library which is available from CodeQL 2.12.5 onwards, see :ref:`Analyzing data flow in C and C++ (new) <analyzing-data-flow-in-cpp-new>`. The old library will be deprecated in the near future and removed a year after deprecation.
+
 Analyzing data flow in C and C++
 ================================
 
@@ -84,7 +88,7 @@ The following query finds the filename passed to ``fopen``.
    import cpp
 
    from Function fopen, FunctionCall fc
-   where fopen.hasQualifiedName("fopen")
+   where fopen.hasGlobalName("fopen")
      and fc.getTarget() = fopen
    select fc.getArgument(0)
 
@@ -96,12 +100,12 @@ Unfortunately, this will only give the expression in the argument, not the value
    import semmle.code.cpp.dataflow.DataFlow
 
    from Function fopen, FunctionCall fc, Expr src
-   where fopen.hasQualifiedName("fopen")
+   where fopen.hasGlobalName("fopen")
      and fc.getTarget() = fopen
      and DataFlow::localFlow(DataFlow::exprNode(src), DataFlow::exprNode(fc.getArgument(0)))
    select src
 
-Then we can vary the source, for example an access to a public parameter. The following query finds where a public parameter is used to open a file:
+Then we can vary the source and, for example, use the parameter of a function. The following query finds where a parameter is used when opening a file:
 
 .. code-block:: ql
 
@@ -109,7 +113,7 @@ Then we can vary the source, for example an access to a public parameter. The fo
    import semmle.code.cpp.dataflow.DataFlow
 
    from Function fopen, FunctionCall fc, Parameter p
-   where fopen.hasQualifiedName("fopen")
+   where fopen.hasGlobalName("fopen")
      and fc.getTarget() = fopen
      and DataFlow::localFlow(DataFlow::parameterNode(p), DataFlow::exprNode(fc.getArgument(0)))
    select p
@@ -232,14 +236,14 @@ The following data flow configuration tracks data flow from environment variable
      override predicate isSource(DataFlow::Node source) {
        exists (Function getenv |
          source.asExpr().(FunctionCall).getTarget() = getenv and
-         getenv.hasQualifiedName("getenv")
+         getenv.hasGlobalName("getenv")
        )
      }
 
      override predicate isSink(DataFlow::Node sink) {
        exists (FunctionCall fc |
          sink.asExpr() = fc.getArgument(0) and
-         fc.getTarget().hasQualifiedName("fopen")
+         fc.getTarget().hasGlobalName("fopen")
        )
      }
    }
@@ -352,7 +356,7 @@ Exercise 3
 
    class GetenvSource extends FunctionCall {
      GetenvSource() {
-       this.getTarget().hasQualifiedName("getenv")
+       this.getTarget().hasGlobalName("getenv")
      }
    }
 
@@ -365,7 +369,7 @@ Exercise 4
 
    class GetenvSource extends DataFlow::Node {
      GetenvSource() {
-       this.asExpr().(FunctionCall).getTarget().hasQualifiedName("getenv")
+       this.asExpr().(FunctionCall).getTarget().hasGlobalName("getenv")
      }
    }
 

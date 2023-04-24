@@ -4,8 +4,8 @@
 
 import swift
 import Taint
-import PathGraph
+import TestFlow::PathGraph
 
-from PathNode src, PathNode sink, TestConfiguration test
-where test.hasFlowPath(src, sink)
+from TestFlow::PathNode src, TestFlow::PathNode sink
+where TestFlow::flowPath(src, sink)
 select sink, src, sink, "result"

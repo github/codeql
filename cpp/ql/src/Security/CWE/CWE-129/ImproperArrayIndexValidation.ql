@@ -17,7 +17,7 @@ import semmle.code.cpp.controlflow.IRGuards
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
-import DataFlow::PathGraph
+import ImproperArrayIndexValidation::PathGraph
 import semmle.code.cpp.security.Security
 
 predicate hasUpperBound(VariableAccess offsetExpr) {
@@ -65,12 +65,10 @@ predicate predictableInstruction(Instruction instr) {
   predictableInstruction(instr.(UnaryInstruction).getUnary())
 }
 
-class ImproperArrayIndexValidationConfig extends TaintTracking::Configuration {
-  ImproperArrayIndexValidationConfig() { this = "ImproperArrayIndexValidationConfig" }
+module ImproperArrayIndexValidationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isFlowSource(source, _) }
 
-  override predicate isSource(DataFlow::Node source) { isFlowSource(source, _) }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     hasUpperBound(node.asExpr())
     or
     // These barriers are ported from `DefaultTaintTracking` because this query is quite noisy
@@ -107,7 +105,7 @@ class ImproperArrayIndexValidationConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(ArrayExpr arrayExpr, VariableAccess offsetExpr |
       offsetExpr = arrayExpr.getArrayOffset() and
       sink.asExpr() = offsetExpr and
@@ -116,11 +114,13 @@ class ImproperArrayIndexValidationConfig extends TaintTracking::Configuration {
   }
 }
 
+module ImproperArrayIndexValidation = TaintTracking::Global<ImproperArrayIndexValidationConfig>;
+
 from
-  ImproperArrayIndexValidationConfig conf, DataFlow::PathNode source, DataFlow::PathNode sink,
+  ImproperArrayIndexValidation::PathNode source, ImproperArrayIndexValidation::PathNode sink,
   string sourceType
 where
-  conf.hasFlowPath(source, sink) and
+  ImproperArrayIndexValidation::flowPath(source, sink) and
   isFlowSource(source.getNode(), sourceType)
 select sink.getNode(), source, sink,
   "An array indexing expression depends on $@ that might be outside the bounds of the array.",

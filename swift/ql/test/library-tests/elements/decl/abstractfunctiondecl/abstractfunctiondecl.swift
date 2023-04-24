@@ -30,3 +30,10 @@ enum Enum1 {
 	case case2
 	func func7() {}
 }
+
+extension Class1
+{
+	class Class4 {
+		func func8() {}
+	}
+}

@@ -1,5 +1,15 @@
+/**
+ * INTERNAL: Do not use.
+ * This module holds thin fully generated class definitions around DB entities.
+ */
 module Raw {
   {{#classes}}
+  /**
+   * INTERNAL: Do not use.
+  {{#doc}}
+   * {{.}}
+  {{/doc}}
+   */
   class {{name}} extends {{db_id}}{{#bases}}, {{.}}{{/bases}} {
     {{#root}}string toString() { none() }{{/root}}
     {{#final}}override string toString() { result = "{{name}}" }{{/final}}
@@ -13,7 +23,7 @@ module Raw {
     {{/description}}
     {{/has_description}}
      */
-    {{type}} {{getter}}({{#is_repeated}}int index{{/is_repeated}}) {
+    {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       {{tablename}}({{#tableparams}}{{^first}}, {{/first}}{{param}}{{/tableparams}})
     }
     {{/properties}}

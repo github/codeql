@@ -15,7 +15,7 @@
 
 import csharp
 import semmle.code.csharp.security.cryptography.EncryptionKeyDataFlowQuery
-import DataFlow::PathGraph
+import SymmetricKey::PathGraph
 
 /**
  * The creation of a literal byte array.
@@ -38,10 +38,10 @@ class StringLiteralSource extends KeySource {
 }
 
 from
-  SymmetricKeyTaintTrackingConfiguration keyFlow, DataFlow::PathNode source,
-  DataFlow::PathNode sink, KeySource srcNode, SymmetricEncryptionKeySink sinkNode
+  SymmetricKey::PathNode source, SymmetricKey::PathNode sink, KeySource srcNode,
+  SymmetricEncryptionKeySink sinkNode
 where
-  keyFlow.hasFlowPath(source, sink) and
+  SymmetricKey::flowPath(source, sink) and
   source.getNode() = srcNode and
   sink.getNode() = sinkNode
 select sink.getNode(), source, sink,

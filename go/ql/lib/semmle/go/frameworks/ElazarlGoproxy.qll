@@ -121,22 +121,4 @@ module ElazarlGoproxy {
 
     override DataFlow::Node getAMessageComponent() { result = this.getAnArgument() }
   }
-
-  private class MethodModels extends TaintTracking::FunctionModel, Method {
-    FunctionInput inp;
-    FunctionOutput outp;
-
-    MethodModels() {
-      // Methods:
-      // signature: func CertStorage.Fetch(hostname string, gen func() (*tls.Certificate, error)) (*tls.Certificate, error)
-      //
-      // `hostname` excluded because if the cert storage or generator function themselves have not
-      // been tainted, `hostname` would be unlikely to fetch user-controlled data
-      this.hasQualifiedName(packagePath(), "CertStorage", "Fetch") and
-      (inp.isReceiver() or inp.isParameter(1)) and
-      outp.isResult(0)
-    }
-
-    override predicate hasTaintFlow(FunctionInput i, FunctionOutput o) { i = inp and o = outp }
-  }
 }

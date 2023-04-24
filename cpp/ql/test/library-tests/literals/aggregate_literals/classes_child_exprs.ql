@@ -5,5 +5,5 @@ import cpp
 // (which, in the case of designated initializers, will not necessarily match
 // the order in which the fields were declared).
 from ClassAggregateLiteral cal, int i, Field f
-where cal.getFieldExpr(f) = cal.getChild(i)
+where cal.getAFieldExpr(f) = cal.getChild(i)
 select cal, cal.getUnspecifiedType(), i, cal.getChild(i), f

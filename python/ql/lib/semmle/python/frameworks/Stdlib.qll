@@ -2435,9 +2435,14 @@ private module StdlibPrivate {
    * against a database.
    *
    * See https://devdocs.io/python~3.9/library/sqlite3
+   * https://github.com/python/cpython/blob/3.11/Lib/sqlite3/dbapi2.py
    */
   class Sqlite3 extends PEP249::PEP249ModuleApiNode {
-    Sqlite3() { this = API::moduleImport("sqlite3") }
+    Sqlite3() {
+      this = API::moduleImport("sqlite3")
+      or
+      this = API::moduleImport("sqlite3").getMember("dbapi2")
+    }
   }
 
   // ---------------------------------------------------------------------------

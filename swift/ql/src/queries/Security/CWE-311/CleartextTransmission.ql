@@ -14,10 +14,10 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.CleartextTransmissionQuery
-import DataFlow::PathGraph
+import CleartextTransmissionFlow::PathGraph
 
-from CleartextTransmissionConfig config, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode
-where config.hasFlowPath(sourceNode, sinkNode)
+from CleartextTransmissionFlow::PathNode sourceNode, CleartextTransmissionFlow::PathNode sinkNode
+where CleartextTransmissionFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "This operation transmits '" + sinkNode.getNode().toString() +
     "', which may contain unencrypted sensitive data from $@.", sourceNode,

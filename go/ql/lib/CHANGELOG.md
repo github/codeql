@@ -1,3 +1,34 @@
+## 0.5.0
+
+### Deprecated APIs
+
+* The recently introduced new data flow and taint tracking APIs have had a
+  number of module and predicate renamings. The old APIs remain in place for
+  now.
+
+### Bug Fixes
+
+* Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular `DataFlow::hasFlowPath`, `DataFlow::hasFlow`, `DataFlow::hasFlowTo`, and `DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+### New Features
+
+* Added support for merging two `PathGraph`s via disjoint union to allow results from multiple data flow computations in a single `path-problem` query.
+
+### Major Analysis Improvements
+
+* The main data flow and taint tracking APIs have been changed. The old APIs
+  remain in place for now and translate to the new through a
+  backwards-compatible wrapper. If multiple configurations are in scope
+  simultaneously, then this may affect results slightly. The new API is quite
+  similar to the old, but makes use of a configuration module instead of a
+  configuration class.
+
 ## 0.4.4
 
 No user-facing changes.

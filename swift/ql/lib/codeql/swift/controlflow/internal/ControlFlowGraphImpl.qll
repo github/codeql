@@ -58,7 +58,7 @@ module CfgScope {
   }
 
   private class KeyPathScope extends Range_ instanceof KeyPathExpr {
-    AstControlFlowTree tree;
+    KeyPathControlFlowTree tree;
 
     KeyPathScope() { tree.getAst() = this }
 
@@ -76,6 +76,12 @@ module CfgScope {
 
     final override predicate exit(ControlFlowElement last, Completion c) { last(tree, last, c) }
   }
+
+  private class KeyPathControlFlowTree extends StandardPostOrderTree, KeyPathElement {
+    final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = expr.getComponent(i)
+    }
+  }
 }
 
 /** Holds if `first` is first executed when entering `scope`. */
@@ -86,6 +92,14 @@ predicate succEntry(CfgScope::Range_ scope, ControlFlowElement first) { scope.en
 pragma[nomagic]
 predicate succExit(CfgScope::Range_ scope, ControlFlowElement last, Completion c) {
   scope.exit(last, c)
+}
+
+private class KeyPathComponentTree extends AstStandardPostOrderTree {
+  override KeyPathComponent ast;
+
+  final override ControlFlowElement getChildElement(int i) {
+    result.asAstNode() = ast.getSubscriptArgument(i).getExpr().getFullyConverted()
+  }
 }
 
 /**
@@ -897,21 +911,12 @@ module Patterns {
     }
   }
 
-  private class BindingTree extends AstPostOrderTree {
+  private class BindingTree extends AstStandardPostOrderTree {
     override BindingPattern ast;
 
-    final override predicate propagatesAbnormal(ControlFlowElement n) {
-      n.asAstNode() = ast.getSubPattern().getFullyUnresolved()
-    }
-
-    final override predicate first(ControlFlowElement n) {
-      astFirst(ast.getSubPattern().getFullyUnresolved(), n)
-    }
-
-    override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
-      astLast(ast.getSubPattern().getFullyUnresolved(), pred, c) and
-      c.(MatchingCompletion).isMatch() and
-      succ.asAstNode() = ast
+    final override ControlFlowElement getChildElement(int i) {
+      i = 0 and
+      result.asAstNode() = ast.getResolveStep()
     }
   }
 

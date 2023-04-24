@@ -58,6 +58,7 @@ MAP(swift::Stmt, StmtTag)
   MAP(swift::PoundAssertStmt, PoundAssertStmtTag)
 
 MAP(swift::Argument, ArgumentTag)
+MAP(swift::KeyPathExpr::Component, KeyPathComponentTag)
 MAP(swift::Expr, ExprTag)
   MAP(swift::ErrorExpr, ErrorExprTag)
   MAP(swift::LiteralExpr, LiteralExprTag)

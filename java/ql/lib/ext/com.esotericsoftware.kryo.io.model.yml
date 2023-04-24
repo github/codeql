@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["com.esotericsoftware.kryo.io", "Input", False, "Input", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["com.esotericsoftware.kryo.io", "Input", False, "Input", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]

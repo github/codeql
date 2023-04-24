@@ -250,7 +250,8 @@ private predicate selfInToplevel(SelfVariable self, Module m) {
 private predicate asModulePattern(SsaDefinitionExtNode def, Module m) {
   exists(AsPattern ap |
     m = resolveConstantReadAccess(ap.getPattern()) and
-    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess() = ap.getVariableAccess()
+    def.getDefinitionExt().(Ssa::WriteDefinition).getWriteAccess().getNode() =
+      ap.getVariableAccess()
   )
 }
 
@@ -1378,4 +1379,14 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isAnyNamed() and apos.isKeyword(_)
   or
   apos.isAnyNamed() and ppos.isKeyword(_)
+}
+
+/**
+ * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
+ *
+ * This is a temporary hook to support technical debt in the Go language; do not use.
+ */
+pragma[inline]
+predicate golangSpecificParamArgFilter(DataFlowCall call, DataFlow::Node p, ArgumentNode arg) {
+  any()
 }

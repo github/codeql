@@ -14,7 +14,7 @@
 
 import java
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
+import semmle.code.java.dataflow.TaintTracking
 
 class TypeShiroSubject extends RefType {
   TypeShiroSubject() { this.getQualifiedName() = "org.apache.shiro.subject.Subject" }
@@ -52,19 +52,21 @@ class WCPermissionConstruction extends ClassInstanceExpr, PermissionsConstructio
   override Expr getInput() { result = this.getArgument(0) }
 }
 
-class TaintedPermissionsCheckFlowConfig extends TaintTracking::Configuration {
-  TaintedPermissionsCheckFlowConfig() { this = "TaintedPermissionsCheckFlowConfig" }
+module TaintedPermissionsCheckFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof UserInput }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof UserInput }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PermissionsConstruction p).getInput()
   }
 }
 
+module TaintedPermissionsCheckFlow = TaintTracking::Global<TaintedPermissionsCheckFlowConfig>;
+
+import TaintedPermissionsCheckFlow::PathGraph
+
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, PermissionsConstruction p,
-  TaintedPermissionsCheckFlowConfig conf
-where sink.getNode().asExpr() = p.getInput() and conf.hasFlowPath(source, sink)
+  TaintedPermissionsCheckFlow::PathNode source, TaintedPermissionsCheckFlow::PathNode sink,
+  PermissionsConstruction p
+where sink.getNode().asExpr() = p.getInput() and TaintedPermissionsCheckFlow::flowPath(source, sink)
 select p, source, sink, "Permissions check depends on a $@.", source.getNode(),
   "user-controlled value"

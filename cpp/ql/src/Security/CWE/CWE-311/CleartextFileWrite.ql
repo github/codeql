@@ -15,24 +15,41 @@
 import cpp
 import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.security.FileWrite
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
-import semmle.code.cpp.dataflow.TaintTracking
-import DataFlow::PathGraph
+import semmle.code.cpp.ir.dataflow.TaintTracking
+import FromSensitiveFlow::PathGraph
 
 /**
  * A taint flow configuration for flow from a sensitive expression to a `FileWrite` sink.
  */
-class FromSensitiveConfiguration extends TaintTracking::Configuration {
-  FromSensitiveConfiguration() { this = "FromSensitiveConfiguration" }
+module FromSensitiveConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { isSourceImpl(source, _) }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof SensitiveExpr }
+  predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _, _) }
 
-  override predicate isSink(DataFlow::Node sink) { any(FileWrite w).getASource() = sink.asExpr() }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
+}
+
+module FromSensitiveFlow = TaintTracking::Global<FromSensitiveConfig>;
+
+predicate isSinkImpl(DataFlow::Node sink, FileWrite w, Expr dest) {
+  exists(Expr e |
+    e = [sink.asExpr(), sink.asIndirectExpr()] and
+    w.getASource() = e and
+    dest = w.getDest() and
+    // ignore things written with other conversion characters
+    not exists(string convChar | convChar = w.getSourceConvChar(e) | not convChar = ["s", "S"]) and
+    // exclude calls with standard streams
+    not dest.(VariableAccess).getTarget().getName() = ["stdin", "stdout", "stderr"]
+  )
+}
+
+predicate isSourceImpl(DataFlow::Node source, SensitiveExpr sensitive) {
+  not isFileName(globalValueNumber(sensitive)) and // file names are not passwords
+  source.asExpr() = sensitive
 }
 
 /**
@@ -61,17 +78,12 @@ predicate isFileName(GVN gvn) {
 }
 
 from
-  FromSensitiveConfiguration config, SensitiveExpr source, DataFlow::PathNode sourceNode, Expr mid,
-  DataFlow::PathNode midNode, FileWrite w, Expr dest
+  SensitiveExpr source, FromSensitiveFlow::PathNode sourceNode, FromSensitiveFlow::PathNode midNode,
+  FileWrite w, Expr dest
 where
-  config.hasFlowPath(sourceNode, midNode) and
-  sourceNode.getNode().asExpr() = source and
-  midNode.getNode().asExpr() = mid and
-  mid = w.getASource() and
-  dest = w.getDest() and
-  not dest.(VariableAccess).getTarget().getName() = ["stdin", "stdout", "stderr"] and // exclude calls with standard streams
-  not isFileName(globalValueNumber(source)) and // file names are not passwords
-  not exists(string convChar | convChar = w.getSourceConvChar(mid) | not convChar = ["s", "S"]) // ignore things written with other conversion characters
+  FromSensitiveFlow::flowPath(sourceNode, midNode) and
+  isSourceImpl(sourceNode.getNode(), source) and
+  isSinkImpl(midNode.getNode(), w, dest)
 select w, sourceNode, midNode,
   "This write into file '" + dest.toString() + "' may contain unencrypted data from $@.", source,
   "this source."

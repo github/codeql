@@ -1,3 +1,4 @@
+#include <swift/AST/Expr.h>
 #include <swift/AST/SourceFile.h>
 #include <swift/Basic/SourceManager.h>
 #include <swift/Parse/Token.h>
@@ -30,10 +31,15 @@ void SwiftLocationExtractor::attachLocation(const swift::SourceManager& sourceMa
   trap.emit(LocatableLocationsTrap{locatableLabel, entry.id});
 }
 
-void SwiftLocationExtractor::emitFile(swift::SourceFile* file) {
+TrapLabel<FileTag> SwiftLocationExtractor::emitFile(swift::SourceFile* file) {
   if (file) {
-    fetchFileLabel(resolvePath(file->getFilename()));
+    return emitFile(std::string_view{file->getFilename()});
   }
+  return undefined_label;
+}
+
+TrapLabel<FileTag> SwiftLocationExtractor::emitFile(const std::filesystem::path& file) {
+  return fetchFileLabel(resolvePath(file));
 }
 
 void SwiftLocationExtractor::attachLocation(const swift::SourceManager& sourceManager,
@@ -59,6 +65,13 @@ void SwiftLocationExtractor::attachLocation(const swift::SourceManager& sourceMa
                                             swift::Token& token,
                                             TrapLabel<LocatableTag> locatableLabel) {
   attachLocation(sourceManager, token.getRange().getStart(), token.getRange().getEnd(),
+                 locatableLabel);
+}
+
+void SwiftLocationExtractor::attachLocation(const swift::SourceManager& sourceManager,
+                                            const swift::KeyPathExpr::Component* component,
+                                            TrapLabel<LocatableTag> locatableLabel) {
+  attachLocation(sourceManager, component->getSourceRange().Start, component->getSourceRange().End,
                  locatableLabel);
 }
 

@@ -20,6 +20,7 @@ class Element:
 @qltest.collapse_hierarchy
 class File(Element):
     name: string
+    is_successfully_extracted: predicate | cpp.skip
 
 @qltest.skip
 @qltest.collapse_hierarchy
@@ -271,8 +272,8 @@ class GenericTypeDecl(GenericContext, TypeDecl):
 class ModuleDecl(TypeDecl):
     is_builtin_module: predicate | doc("this module is the built-in one")
     is_system_module: predicate | doc("this module is a system one")
-    imported_modules: list["ModuleDecl"]
-    exported_modules: list["ModuleDecl"]
+    imported_modules: set["ModuleDecl"]
+    exported_modules: set["ModuleDecl"]
 
 class SubscriptDecl(AbstractStorageDecl, GenericContext):
     params: list[ParamDecl] | child
@@ -323,7 +324,18 @@ class OpaqueTypeDecl(GenericTypeDecl):
     opaque_generic_params: list["GenericTypeParamType"]
 
 class TypeAliasDecl(GenericTypeDecl):
-    pass
+    """
+    A declaration of a type alias to another type. For example:
+    ```
+    typealias MyInt = Int
+    ```
+    """
+    aliased_type: Type | doc("aliased type on the right-hand side of this type alias declaration") | desc("""
+        For example the aliased type of `MyInt` in the following code is `Int`:
+        ```
+        typealias MyInt = Int
+        ```
+    """)
 
 class ClassDecl(NominalTypeDecl):
     pass
@@ -437,9 +449,38 @@ class KeyPathApplicationExpr(Expr):
 class KeyPathDotExpr(Expr):
     pass
 
+class KeyPathComponent(AstNode):
+    """
+    A component of a `KeyPathExpr`.
+    """
+    kind: int | doc("kind of key path component") | desc("""
+        INTERNAL: Do not use.
+
+        This is 3 for properties, 4 for array and dictionary subscripts, 5 for optional forcing
+        (`!`), 6 for optional chaining (`?`), 7 for implicit optional wrapping, 8 for `self`,
+        and 9 for tuple element indexing.
+
+        The following values should not appear: 0 for invalid components, 1 for unresolved
+        properties, 2 for unresolved subscripts, 10 for #keyPath dictionary keys, and 11 for
+        implicit IDE code completion data.
+    """)
+    subscript_arguments : list[Argument] | child | doc(
+        "arguments to an array or dictionary subscript expression")
+    tuple_index : optional[int]
+    decl_ref : optional[ValueDecl] | doc("property or subscript operator")
+    component_type : Type | doc("return type of this component application") | desc("""
+        An optional-chaining component has a non-optional type to feed into the rest of the key
+        path; an optional-wrapping component is inserted if required to produce an optional type
+        as the final output.
+    """)
+
+
 class KeyPathExpr(Expr):
+    """
+    A key-path expression.
+    """
     root: optional["TypeRepr"] | child
-    parsed_path: optional[Expr] | child
+    components: list[KeyPathComponent] | child
 
 class LazyInitializerExpr(Expr):
     sub_expr: Expr | child
@@ -949,7 +990,6 @@ class TypeRepr(AstNode):
 class AnyFunctionType(Type):
     result: Type
     param_types: list[Type]
-    param_labels: list[optional[string]]
     is_throwing: predicate | doc("this type refers to a throwing function")
     is_async: predicate | doc("this type refers to an `async` function")
 

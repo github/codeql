@@ -1,3 +1,19 @@
+## 0.6.0
+
+### New Queries
+
+* The query `java/insecure-ldap-auth` has been promoted from experimental to the main query pack. This query detects transmission of cleartext credentials in LDAP authentication. Insecure LDAP authentication causes sensitive information to be vulnerable to remote attackers. This query was originally [submitted as an experimental query by @luchua-bc](https://github.com/github/codeql/pull/4854)
+
+## 0.5.6
+
+No user-facing changes.
+
+## 0.5.5
+
+### New Queries
+
+* Added a new query, `java/android/arbitrary-apk-installation`, to detect installation of APKs from untrusted sources.
+
 ## 0.5.4
 
 No user-facing changes.
