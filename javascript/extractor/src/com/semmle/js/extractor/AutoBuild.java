@@ -1238,7 +1238,7 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       List<ParseError> errors = loc == null ? Collections.emptyList() : loc.getParseErrors();
       for (ParseError err : errors) {
         String msg = "A parse error occurred: " + StringUtil.quoteWithBackticks(err.getMessage().trim())
-            + ". Check the syntax of the file. If the file is invalid, correct the error or [exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.";
+            + ".";
 
         Optional<DiagnosticLocation> diagLoc = Optional.empty();
         if (file.startsWith(LGTM_SRC)) {
@@ -1250,13 +1250,17 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
             .setEndColumn(err.getPosition().getColumn() + 1) // convert from 0-based to 1-based
             .build()
             .getOk();
-        }
-        if (diagLoc.isPresent()) {
-          writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR, diagLoc.get());
-        } else {
-          msg += "\n\nRelated file: " + file;
-          writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR);
-        }
+    }
+    if (diagLoc.isPresent()) {
+      msg += " Check the syntax of the file. If the file is invalid, correct the error or "
+          + "[exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-"
+          + "your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.";
+      writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR, diagLoc.get());
+    } else {
+      msg += " The affected file is not located within the code being analyzed."
+          + (Env.systemEnv().isActions() ? " Please see the workflow run logs for more information." : "");
+      writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR);
+    }
       }
       logEndProcess(start, "Done extracting " + file);
     } catch (OutOfMemoryError oom) {
