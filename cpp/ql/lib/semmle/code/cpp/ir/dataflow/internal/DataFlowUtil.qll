@@ -1045,8 +1045,8 @@ private predicate isFullyConvertedOperand(Operand operand) {
 
 /**
  * Gets the expression that `n.asExpr()` should return when `n` is an instruction node that
- * wraps `convert`, and the returned expression should be different from the expression
- * returned by `convert.getConvertedResultExpression()`.
+ * wraps `instr`, and the returned expression should be different from the expression
+ * returned by `instr.getConvertedResultExpression()`.
  */
 private Expr getConvertedResultExpression0(Instruction instr) {
   exists(ConvertInstruction convert | instr = convert |
@@ -1092,6 +1092,28 @@ private Expr getConvertedResultExpression0(Instruction instr) {
     // Same story for `CrementOperation`s (cf. the comments in the subclasses
     // of `TranslatedCrementOperation`).
     binary.getAst() = result.(CrementOperation)
+  )
+  or
+  exists(CopyValueInstruction copy | instr = copy |
+    // Consider an example like
+    // ```cpp
+    // *a = 5;
+    // ```
+    // this produces the following IR:
+    // ```
+    // r1 = Constant[5]        :
+    // r2 = VariableAddress[a] :
+    // r3 = Load[a]            : &:r2, m1
+    // r4 = CopyValue          : r3
+    // m2 = Store[?]           : &:r4, r1
+    // ```
+    // the result of `r3.getConvertedResultExpression()` is `a`, and the result
+    // of `r4.getConvertedResultExpression()` is `*a`. But since a `CopyValueInstruction`
+    // is treated like a conversion in dataflow, the dataflow node wrapping that instruction
+    // must be the one that has a result for `asExpr()`. So `r4.asExpr()` must produce both
+    // `a` and `*a`.
+    copy.getAst() instanceof PointerDereferenceExpr and
+    result = [copy.getConvertedResultExpression(), copy.getUnary().getConvertedResultExpression()]
   )
 }
 

@@ -1,5 +1,7 @@
 edges
 | test_free.cpp:11:10:11:10 | a | test_free.cpp:12:5:12:5 | a |
+| test_free.cpp:11:10:11:10 | a | test_free.cpp:13:5:13:6 | * ... |
+| test_free.cpp:11:10:11:10 | a | test_free.cpp:13:5:13:6 | a |
 | test_free.cpp:42:27:42:27 | a | test_free.cpp:45:5:45:5 | a |
 | test_free.cpp:44:27:44:27 | a | test_free.cpp:45:5:45:5 | a |
 | test_free.cpp:69:10:69:10 | a | test_free.cpp:71:9:71:9 | a |
@@ -14,6 +16,10 @@ edges
 nodes
 | test_free.cpp:11:10:11:10 | a | semmle.label | a |
 | test_free.cpp:12:5:12:5 | a | semmle.label | a |
+| test_free.cpp:13:5:13:6 | * ... | semmle.label | * ... |
+| test_free.cpp:13:5:13:6 | * ... | semmle.label | a |
+| test_free.cpp:13:5:13:6 | a | semmle.label | * ... |
+| test_free.cpp:13:5:13:6 | a | semmle.label | a |
 | test_free.cpp:42:27:42:27 | a | semmle.label | a |
 | test_free.cpp:44:27:44:27 | a | semmle.label | a |
 | test_free.cpp:45:5:45:5 | a | semmle.label | a |
@@ -38,6 +44,10 @@ nodes
 subpaths
 #select
 | test_free.cpp:12:5:12:5 | a | test_free.cpp:11:10:11:10 | a | test_free.cpp:12:5:12:5 | a | Memory may have been previously freed by $@. | test_free.cpp:11:5:11:8 | call to free | call to free |
+| test_free.cpp:13:5:13:6 | * ... | test_free.cpp:11:10:11:10 | a | test_free.cpp:13:5:13:6 | * ... | Memory may have been previously freed by $@. | test_free.cpp:11:5:11:8 | call to free | call to free |
+| test_free.cpp:13:5:13:6 | * ... | test_free.cpp:11:10:11:10 | a | test_free.cpp:13:5:13:6 | a | Memory may have been previously freed by $@. | test_free.cpp:11:5:11:8 | call to free | call to free |
+| test_free.cpp:13:5:13:6 | a | test_free.cpp:11:10:11:10 | a | test_free.cpp:13:5:13:6 | * ... | Memory may have been previously freed by $@. | test_free.cpp:11:5:11:8 | call to free | call to free |
+| test_free.cpp:13:5:13:6 | a | test_free.cpp:11:10:11:10 | a | test_free.cpp:13:5:13:6 | a | Memory may have been previously freed by $@. | test_free.cpp:11:5:11:8 | call to free | call to free |
 | test_free.cpp:45:5:45:5 | a | test_free.cpp:42:27:42:27 | a | test_free.cpp:45:5:45:5 | a | Memory may have been previously freed by $@. | test_free.cpp:42:22:42:25 | call to free | call to free |
 | test_free.cpp:45:5:45:5 | a | test_free.cpp:44:27:44:27 | a | test_free.cpp:45:5:45:5 | a | Memory may have been previously freed by $@. | test_free.cpp:44:22:44:25 | call to free | call to free |
 | test_free.cpp:71:9:71:9 | a | test_free.cpp:69:10:69:10 | a | test_free.cpp:71:9:71:9 | a | Memory may have been previously freed by $@. | test_free.cpp:69:5:69:8 | call to free | call to free |

@@ -4,6 +4,66 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
+| dispatch.cpp:78:23:78:39 | * ... indirection | Node should have one toString but has 2. |
+| dispatch.cpp:78:23:78:39 | call to allocateBottom indirection | Node should have one toString but has 2. |
+| test.cpp:115:3:115:6 | * ... | Node should have one toString but has 2. |
+| test.cpp:115:3:115:6 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:115:3:115:6 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:115:3:115:6 | out | Node should have one toString but has 2. |
+| test.cpp:115:3:115:6 | out indirection | Node should have one toString but has 2. |
+| test.cpp:115:3:115:6 | out indirection | Node should have one toString but has 2. |
+| test.cpp:120:3:120:6 | * ... | Node should have one toString but has 2. |
+| test.cpp:120:3:120:6 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:120:3:120:6 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:120:3:120:6 | out | Node should have one toString but has 2. |
+| test.cpp:120:3:120:6 | out indirection | Node should have one toString but has 2. |
+| test.cpp:120:3:120:6 | out indirection | Node should have one toString but has 2. |
+| test.cpp:125:3:125:6 | * ... | Node should have one toString but has 2. |
+| test.cpp:125:3:125:6 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:125:3:125:6 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:125:3:125:6 | out | Node should have one toString but has 2. |
+| test.cpp:125:3:125:6 | out indirection | Node should have one toString but has 2. |
+| test.cpp:125:3:125:6 | out indirection | Node should have one toString but has 2. |
+| test.cpp:472:3:472:4 | * ... | Node should have one toString but has 2. |
+| test.cpp:472:3:472:4 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:472:3:472:4 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:472:3:472:4 | p | Node should have one toString but has 2. |
+| test.cpp:472:3:472:4 | p indirection | Node should have one toString but has 2. |
+| test.cpp:472:3:472:4 | p indirection | Node should have one toString but has 2. |
+| test.cpp:506:3:506:4 | * ... | Node should have one toString but has 2. |
+| test.cpp:506:3:506:4 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:506:3:506:4 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:506:3:506:4 | p | Node should have one toString but has 2. |
+| test.cpp:506:3:506:4 | p indirection | Node should have one toString but has 2. |
+| test.cpp:506:3:506:4 | p indirection | Node should have one toString but has 2. |
+| test.cpp:526:3:526:4 | * ... | Node should have one toString but has 2. |
+| test.cpp:526:3:526:4 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:526:3:526:4 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:526:3:526:4 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:526:3:526:4 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:526:3:526:4 | e | Node should have one toString but has 2. |
+| test.cpp:526:3:526:4 | e indirection | Node should have one toString but has 2. |
+| test.cpp:526:3:526:4 | e indirection | Node should have one toString but has 2. |
+| test.cpp:526:3:526:4 | e indirection | Node should have one toString but has 2. |
+| test.cpp:526:3:526:4 | e indirection | Node should have one toString but has 2. |
+| test.cpp:537:5:537:6 | * ... | Node should have one toString but has 2. |
+| test.cpp:537:5:537:6 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:537:5:537:6 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:537:5:537:6 | p | Node should have one toString but has 2. |
+| test.cpp:537:5:537:6 | p indirection | Node should have one toString but has 2. |
+| test.cpp:537:5:537:6 | p indirection | Node should have one toString but has 2. |
+| test.cpp:542:5:542:6 | * ... | Node should have one toString but has 2. |
+| test.cpp:542:5:542:6 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:542:5:542:6 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:542:5:542:6 | p | Node should have one toString but has 2. |
+| test.cpp:542:5:542:6 | p indirection | Node should have one toString but has 2. |
+| test.cpp:542:5:542:6 | p indirection | Node should have one toString but has 2. |
+| test.cpp:608:3:608:4 | * ... | Node should have one toString but has 2. |
+| test.cpp:608:3:608:4 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:608:3:608:4 | * ... indirection | Node should have one toString but has 2. |
+| test.cpp:608:3:608:4 | p | Node should have one toString but has 2. |
+| test.cpp:608:3:608:4 | p indirection | Node should have one toString but has 2. |
+| test.cpp:608:3:608:4 | p indirection | Node should have one toString but has 2. |
 missingToString
 parameterCallable
 localFlowIsLocal
