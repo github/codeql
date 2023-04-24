@@ -4004,17 +4004,18 @@ module Impl<FullStateConfigSig Config> {
     private newtype TPartialPathNode =
       TPartialPathNodeFwd(
         NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
-        TSummaryCtx3 sc3, PartialAccessPath ap
+        TSummaryCtx3 sc3, DataFlowType t, PartialAccessPath ap
       ) {
         sourceNode(node, state) and
         cc instanceof CallContextAny and
         sc1 = TSummaryCtx1None() and
         sc2 = TSummaryCtx2None() and
         sc3 = TSummaryCtx3None() and
+        t = node.getDataFlowType() and
         ap = TPartialNil(node.getDataFlowType()) and
         exists(explorationLimit())
         or
-        partialPathNodeMk0(node, state, cc, sc1, sc2, sc3, ap) and
+        partialPathNodeMk0(node, state, cc, sc1, sc2, sc3, t, ap) and
         distSrc(node.getEnclosingCallable()) <= explorationLimit()
       } or
       TPartialPathNodeRev(
@@ -4042,9 +4043,9 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate partialPathNodeMk0(
       NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
-      TSummaryCtx3 sc3, PartialAccessPath ap
+      TSummaryCtx3 sc3, DataFlowType t, PartialAccessPath ap
     ) {
-      partialPathStep(_, node, state, cc, sc1, sc2, sc3, ap) and
+      partialPathStep(_, node, state, cc, sc1, sc2, sc3, t, ap) and
       not fullBarrier(node) and
       not stateBarrier(node, state) and
       not clearsContentEx(node, ap.getHead().getContent()) and
@@ -4053,7 +4054,7 @@ module Impl<FullStateConfigSig Config> {
         expectsContentEx(node, ap.getHead().getContent())
       ) and
       if node.asNode() instanceof CastingNode
-      then compatibleTypes(node.getDataFlowType(), ap.getType())
+      then compatibleTypes(node.getDataFlowType(), t)
       else any()
     }
 
@@ -4113,11 +4114,7 @@ module Impl<FullStateConfigSig Config> {
       private string ppType() {
         this instanceof PartialPathNodeRev and result = ""
         or
-        this.(PartialPathNodeFwd).getAp() instanceof PartialAccessPathNil and result = ""
-        or
-        exists(DataFlowType t |
-          t = this.(PartialPathNodeFwd).getAp().(PartialAccessPathCons).getType()
-        |
+        exists(DataFlowType t | t = this.(PartialPathNodeFwd).getType() |
           // The `concat` becomes "" if `ppReprType` has no result.
           result = concat(" : " + ppReprType(t))
         )
@@ -4158,9 +4155,10 @@ module Impl<FullStateConfigSig Config> {
       TSummaryCtx1 sc1;
       TSummaryCtx2 sc2;
       TSummaryCtx3 sc3;
+      DataFlowType t;
       PartialAccessPath ap;
 
-      PartialPathNodeFwd() { this = TPartialPathNodeFwd(node, state, cc, sc1, sc2, sc3, ap) }
+      PartialPathNodeFwd() { this = TPartialPathNodeFwd(node, state, cc, sc1, sc2, sc3, t, ap) }
 
       NodeEx getNodeEx() { result = node }
 
@@ -4174,11 +4172,13 @@ module Impl<FullStateConfigSig Config> {
 
       TSummaryCtx3 getSummaryCtx3() { result = sc3 }
 
+      DataFlowType getType() { result = t }
+
       PartialAccessPath getAp() { result = ap }
 
       override PartialPathNodeFwd getASuccessor() {
         partialPathStep(this, result.getNodeEx(), result.getState(), result.getCallContext(),
-          result.getSummaryCtx1(), result.getSummaryCtx2(), result.getSummaryCtx3(), result.getAp())
+          result.getSummaryCtx1(), result.getSummaryCtx2(), result.getSummaryCtx3(), result.getType(), result.getAp())
       }
 
       predicate isSource() {
@@ -4229,7 +4229,7 @@ module Impl<FullStateConfigSig Config> {
 
     private predicate partialPathStep(
       PartialPathNodeFwd mid, NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1,
-      TSummaryCtx2 sc2, TSummaryCtx3 sc3, PartialAccessPath ap
+      TSummaryCtx2 sc2, TSummaryCtx3 sc3, DataFlowType t, PartialAccessPath ap
     ) {
       not isUnreachableInCallCached(node.asNode(), cc.(CallContextSpecificCall).getCall()) and
       (
@@ -4239,6 +4239,7 @@ module Impl<FullStateConfigSig Config> {
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
+        t = mid.getType() and
         ap = mid.getAp()
         or
         additionalLocalFlowStep(mid.getNodeEx(), node) and
@@ -4248,6 +4249,7 @@ module Impl<FullStateConfigSig Config> {
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
         mid.getAp() instanceof PartialAccessPathNil and
+        t = node.getDataFlowType() and
         ap = TPartialNil(node.getDataFlowType())
         or
         additionalLocalStateStep(mid.getNodeEx(), mid.getState(), node, state) and
@@ -4256,6 +4258,7 @@ module Impl<FullStateConfigSig Config> {
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
         mid.getAp() instanceof PartialAccessPathNil and
+        t = node.getDataFlowType() and
         ap = TPartialNil(node.getDataFlowType())
       )
       or
@@ -4265,6 +4268,7 @@ module Impl<FullStateConfigSig Config> {
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
       sc3 = TSummaryCtx3None() and
+        t = mid.getType() and
       ap = mid.getAp()
       or
       additionalJumpStep(mid.getNodeEx(), node) and
@@ -4274,6 +4278,7 @@ module Impl<FullStateConfigSig Config> {
       sc2 = TSummaryCtx2None() and
       sc3 = TSummaryCtx3None() and
       mid.getAp() instanceof PartialAccessPathNil and
+      t = node.getDataFlowType() and
       ap = TPartialNil(node.getDataFlowType())
       or
       additionalJumpStateStep(mid.getNodeEx(), mid.getState(), node, state) and
@@ -4282,32 +4287,33 @@ module Impl<FullStateConfigSig Config> {
       sc2 = TSummaryCtx2None() and
       sc3 = TSummaryCtx3None() and
       mid.getAp() instanceof PartialAccessPathNil and
+      t = node.getDataFlowType() and
       ap = TPartialNil(node.getDataFlowType())
       or
-      partialPathStoreStep(mid, _, _, node, ap) and
+      partialPathStoreStep(mid, _, _, _, node, t, ap) and
       state = mid.getState() and
       cc = mid.getCallContext() and
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       sc3 = mid.getSummaryCtx3()
       or
-      exists(PartialAccessPath ap0, TypedContent tc |
-        partialPathReadStep(mid, ap0, tc, node, cc) and
+      exists(DataFlowType t0, PartialAccessPath ap0, Content c |
+        partialPathReadStep(mid, t0, ap0, c, node, cc) and
         state = mid.getState() and
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
-        apConsFwd(ap, tc, ap0)
+        apConsFwd(t, ap, c, t0, ap0)
       )
       or
-      partialPathIntoCallable(mid, node, state, _, cc, sc1, sc2, sc3, _, ap)
+      partialPathIntoCallable(mid, node, state, _, cc, sc1, sc2, sc3, _, t, ap)
       or
-      partialPathOutOfCallable(mid, node, state, cc, ap) and
+      partialPathOutOfCallable(mid, node, state, cc, t, ap) and
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
       sc3 = TSummaryCtx3None()
       or
-      partialPathThroughCallable(mid, node, state, cc, ap) and
+      partialPathThroughCallable(mid, node, state, cc, t, ap) and
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       sc3 = mid.getSummaryCtx3()
@@ -4318,55 +4324,58 @@ module Impl<FullStateConfigSig Config> {
 
     pragma[inline]
     private predicate partialPathStoreStep(
-      PartialPathNodeFwd mid, PartialAccessPath ap1, TypedContent tc, NodeEx node,
-      PartialAccessPath ap2
+      PartialPathNodeFwd mid, DataFlowType t1, PartialAccessPath ap1, Content c, NodeEx node,
+      DataFlowType t2, PartialAccessPath ap2
     ) {
-      exists(NodeEx midNode, DataFlowType contentType |
+      exists(NodeEx midNode, DataFlowType contentType, TypedContent tc |
         midNode = mid.getNodeEx() and
+        t1 = mid.getType() and
         ap1 = mid.getAp() and
-        storeEx(midNode, tc, _, node, contentType, _) and
+        storeEx(midNode, tc, c, node, contentType, t2) and
         ap2.getHead() = tc and
         ap2.len() = unbindInt(ap1.len() + 1) and
-        compatibleTypes(ap1.getType(), contentType)
+        compatibleTypes(t1, contentType)
       )
     }
 
     pragma[nomagic]
-    private predicate apConsFwd(PartialAccessPath ap1, TypedContent tc, PartialAccessPath ap2) {
-      partialPathStoreStep(_, ap1, tc, _, ap2)
+    private predicate apConsFwd(DataFlowType t1, PartialAccessPath ap1, Content c, DataFlowType t2, PartialAccessPath ap2) {
+      partialPathStoreStep(_, t1, ap1, c, _, t2, ap2)
     }
 
     pragma[nomagic]
     private predicate partialPathReadStep(
-      PartialPathNodeFwd mid, PartialAccessPath ap, TypedContent tc, NodeEx node, CallContext cc
+      PartialPathNodeFwd mid, DataFlowType t, PartialAccessPath ap, Content c, NodeEx node, CallContext cc
     ) {
       exists(NodeEx midNode |
         midNode = mid.getNodeEx() and
+        t = mid.getType() and
         ap = mid.getAp() and
-        read(midNode, tc.getContent(), node) and
-        ap.getHead() = tc and
+        read(midNode, c, node) and
+        ap.getHead().getContent() = c and
         cc = mid.getCallContext()
       )
     }
 
     private predicate partialPathOutOfCallable0(
       PartialPathNodeFwd mid, ReturnPosition pos, FlowState state, CallContext innercc,
-      PartialAccessPath ap
+      DataFlowType t, PartialAccessPath ap
     ) {
       pos = mid.getNodeEx().(RetNodeEx).getReturnPosition() and
       state = mid.getState() and
       innercc = mid.getCallContext() and
       innercc instanceof CallContextNoCall and
+      t = mid.getType() and
       ap = mid.getAp()
     }
 
     pragma[nomagic]
     private predicate partialPathOutOfCallable1(
       PartialPathNodeFwd mid, DataFlowCall call, ReturnKindExt kind, FlowState state,
-      CallContext cc, PartialAccessPath ap
+      CallContext cc, DataFlowType t, PartialAccessPath ap
     ) {
       exists(ReturnPosition pos, DataFlowCallable c, CallContext innercc |
-        partialPathOutOfCallable0(mid, pos, state, innercc, ap) and
+        partialPathOutOfCallable0(mid, pos, state, innercc, t, ap) and
         c = pos.getCallable() and
         kind = pos.getKind() and
         resolveReturn(innercc, c, call)
@@ -4376,10 +4385,10 @@ module Impl<FullStateConfigSig Config> {
     }
 
     private predicate partialPathOutOfCallable(
-      PartialPathNodeFwd mid, NodeEx out, FlowState state, CallContext cc, PartialAccessPath ap
+      PartialPathNodeFwd mid, NodeEx out, FlowState state, CallContext cc, DataFlowType t, PartialAccessPath ap
     ) {
       exists(ReturnKindExt kind, DataFlowCall call |
-        partialPathOutOfCallable1(mid, call, kind, state, cc, ap)
+        partialPathOutOfCallable1(mid, call, kind, state, cc, t, ap)
       |
         out.asNode() = kind.getAnOutNode(call)
       )
@@ -4388,13 +4397,14 @@ module Impl<FullStateConfigSig Config> {
     pragma[noinline]
     private predicate partialPathIntoArg(
       PartialPathNodeFwd mid, ParameterPosition ppos, FlowState state, CallContext cc,
-      DataFlowCall call, PartialAccessPath ap
+      DataFlowCall call, DataFlowType t, PartialAccessPath ap
     ) {
       exists(ArgNode arg, ArgumentPosition apos |
         arg = mid.getNodeEx().asNode() and
         state = mid.getState() and
         cc = mid.getCallContext() and
         arg.argumentOf(call, apos) and
+        t = mid.getType() and
         ap = mid.getAp() and
         parameterMatch(ppos, apos)
       )
@@ -4403,19 +4413,19 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate partialPathIntoCallable0(
       PartialPathNodeFwd mid, DataFlowCallable callable, ParameterPosition pos, FlowState state,
-      CallContext outercc, DataFlowCall call, PartialAccessPath ap
+      CallContext outercc, DataFlowCall call, DataFlowType t, PartialAccessPath ap
     ) {
-      partialPathIntoArg(mid, pos, state, outercc, call, ap) and
+      partialPathIntoArg(mid, pos, state, outercc, call, t, ap) and
       callable = resolveCall(call, outercc)
     }
 
     private predicate partialPathIntoCallable(
       PartialPathNodeFwd mid, ParamNodeEx p, FlowState state, CallContext outercc,
       CallContextCall innercc, TSummaryCtx1 sc1, TSummaryCtx2 sc2, TSummaryCtx3 sc3,
-      DataFlowCall call, PartialAccessPath ap
+      DataFlowCall call, DataFlowType t, PartialAccessPath ap
     ) {
       exists(ParameterPosition pos, DataFlowCallable callable |
-        partialPathIntoCallable0(mid, callable, pos, state, outercc, call, ap) and
+        partialPathIntoCallable0(mid, callable, pos, state, outercc, call, t, ap) and
         p.isParameterOf(callable, pos) and
         sc1 = TSummaryCtx1Param(p) and
         sc2 = TSummaryCtx2Some(state) and
@@ -4430,7 +4440,7 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate paramFlowsThroughInPartialPath(
       ReturnKindExt kind, FlowState state, CallContextCall cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
-      TSummaryCtx3 sc3, PartialAccessPath ap
+      TSummaryCtx3 sc3, DataFlowType t, PartialAccessPath ap
     ) {
       exists(PartialPathNodeFwd mid, RetNodeEx ret |
         mid.getNodeEx() = ret and
@@ -4440,6 +4450,7 @@ module Impl<FullStateConfigSig Config> {
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
+        t = mid.getType() and
         ap = mid.getAp()
       )
     }
@@ -4447,19 +4458,19 @@ module Impl<FullStateConfigSig Config> {
     pragma[noinline]
     private predicate partialPathThroughCallable0(
       DataFlowCall call, PartialPathNodeFwd mid, ReturnKindExt kind, FlowState state,
-      CallContext cc, PartialAccessPath ap
+      CallContext cc, DataFlowType t, PartialAccessPath ap
     ) {
       exists(CallContext innercc, TSummaryCtx1 sc1, TSummaryCtx2 sc2, TSummaryCtx3 sc3 |
-        partialPathIntoCallable(mid, _, _, cc, innercc, sc1, sc2, sc3, call, _) and
-        paramFlowsThroughInPartialPath(kind, state, innercc, sc1, sc2, sc3, ap)
+        partialPathIntoCallable(mid, _, _, cc, innercc, sc1, sc2, sc3, call, _, _) and
+        paramFlowsThroughInPartialPath(kind, state, innercc, sc1, sc2, sc3, t, ap)
       )
     }
 
     private predicate partialPathThroughCallable(
-      PartialPathNodeFwd mid, NodeEx out, FlowState state, CallContext cc, PartialAccessPath ap
+      PartialPathNodeFwd mid, NodeEx out, FlowState state, CallContext cc, DataFlowType t, PartialAccessPath ap
     ) {
       exists(DataFlowCall call, ReturnKindExt kind |
-        partialPathThroughCallable0(call, mid, kind, state, cc, ap) and
+        partialPathThroughCallable0(call, mid, kind, state, cc, t, ap) and
         out.asNode() = kind.getAnOutNode(call)
       )
     }
