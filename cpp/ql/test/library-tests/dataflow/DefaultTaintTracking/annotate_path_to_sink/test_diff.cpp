@@ -95,11 +95,11 @@ int main(int argc, char *argv[]) {
 
     calls_sink_with_argv(argv[1]); // $ ast,ir-path
 
-    char*** p = &argv; // $ ast
+    char*** p = &argv; // $ ir-path ast
 
-    sink(*p[0]); // $ ast ir-sink
+    sink(*p[0]); // $ ast ir-sink=96:26 ir-sink=98:18
 
-    calls_sink_with_argv(*p[i]); // $ ir-path MISSING:ast
+    calls_sink_with_argv(*p[i]); // $ ir-path=96:26 ir-path=98:18 MISSING:ast
 
     sink(*(argv + 1)); // $ ast ir-path ir-sink
 

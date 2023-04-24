@@ -6,6 +6,13 @@ edges
 | globalVars.c:8:7:8:10 | copy | globalVars.c:30:15:30:18 | copy |
 | globalVars.c:8:7:8:10 | copy | globalVars.c:33:15:33:18 | copy |
 | globalVars.c:8:7:8:10 | copy | globalVars.c:35:11:35:14 | copy |
+| globalVars.c:8:7:8:10 | copy indirection | globalVars.c:27:9:27:12 | copy |
+| globalVars.c:8:7:8:10 | copy indirection | globalVars.c:27:9:27:12 | copy |
+| globalVars.c:8:7:8:10 | copy indirection | globalVars.c:30:15:30:18 | copy |
+| globalVars.c:8:7:8:10 | copy indirection | globalVars.c:30:15:30:18 | copy |
+| globalVars.c:8:7:8:10 | copy indirection | globalVars.c:30:15:30:18 | copy |
+| globalVars.c:8:7:8:10 | copy indirection | globalVars.c:35:11:35:14 | copy |
+| globalVars.c:8:7:8:10 | copy indirection | globalVars.c:35:11:35:14 | copy indirection |
 | globalVars.c:9:7:9:11 | copy2 | globalVars.c:38:9:38:13 | copy2 |
 | globalVars.c:9:7:9:11 | copy2 | globalVars.c:38:9:38:13 | copy2 |
 | globalVars.c:9:7:9:11 | copy2 | globalVars.c:41:15:41:19 | copy2 |
@@ -14,14 +21,29 @@ edges
 | globalVars.c:9:7:9:11 | copy2 | globalVars.c:44:15:44:19 | copy2 |
 | globalVars.c:9:7:9:11 | copy2 | globalVars.c:50:9:50:13 | copy2 |
 | globalVars.c:9:7:9:11 | copy2 | globalVars.c:50:9:50:13 | copy2 |
+| globalVars.c:9:7:9:11 | copy2 indirection | globalVars.c:38:9:38:13 | copy2 |
+| globalVars.c:9:7:9:11 | copy2 indirection | globalVars.c:38:9:38:13 | copy2 |
+| globalVars.c:9:7:9:11 | copy2 indirection | globalVars.c:41:15:41:19 | copy2 |
+| globalVars.c:9:7:9:11 | copy2 indirection | globalVars.c:41:15:41:19 | copy2 |
+| globalVars.c:9:7:9:11 | copy2 indirection | globalVars.c:41:15:41:19 | copy2 |
+| globalVars.c:9:7:9:11 | copy2 indirection | globalVars.c:50:9:50:13 | copy2 |
+| globalVars.c:9:7:9:11 | copy2 indirection | globalVars.c:50:9:50:13 | copy2 |
 | globalVars.c:11:22:11:25 | argv | globalVars.c:8:7:8:10 | copy |
 | globalVars.c:11:22:11:25 | argv | globalVars.c:12:2:12:15 | ... = ... |
+| globalVars.c:11:22:11:25 | argv indirection | globalVars.c:8:7:8:10 | copy |
+| globalVars.c:11:22:11:25 | argv indirection | globalVars.c:8:7:8:10 | copy indirection |
+| globalVars.c:11:22:11:25 | argv indirection | globalVars.c:12:2:12:15 | ... = ... |
 | globalVars.c:12:2:12:15 | ... = ... | globalVars.c:8:7:8:10 | copy |
 | globalVars.c:15:21:15:23 | val | globalVars.c:9:7:9:11 | copy2 |
 | globalVars.c:15:21:15:23 | val | globalVars.c:16:2:16:12 | ... = ... |
+| globalVars.c:15:21:15:23 | val indirection | globalVars.c:9:7:9:11 | copy2 |
+| globalVars.c:15:21:15:23 | val indirection | globalVars.c:9:7:9:11 | copy2 indirection |
+| globalVars.c:15:21:15:23 | val indirection | globalVars.c:16:2:16:12 | ... = ... |
 | globalVars.c:16:2:16:12 | ... = ... | globalVars.c:9:7:9:11 | copy2 |
 | globalVars.c:24:11:24:14 | argv | globalVars.c:11:22:11:25 | argv |
 | globalVars.c:24:11:24:14 | argv | globalVars.c:11:22:11:25 | argv |
+| globalVars.c:24:11:24:14 | argv | globalVars.c:11:22:11:25 | argv indirection |
+| globalVars.c:24:11:24:14 | argv indirection | globalVars.c:11:22:11:25 | argv indirection |
 | globalVars.c:30:15:30:18 | copy | globalVars.c:30:15:30:18 | copy |
 | globalVars.c:30:15:30:18 | copy | globalVars.c:30:15:30:18 | copy |
 | globalVars.c:30:15:30:18 | copy | globalVars.c:30:15:30:18 | copy |
@@ -29,6 +51,7 @@ edges
 | globalVars.c:33:15:33:18 | copy | globalVars.c:35:11:35:14 | copy |
 | globalVars.c:35:11:35:14 | copy | globalVars.c:15:21:15:23 | val |
 | globalVars.c:35:11:35:14 | copy | globalVars.c:35:11:35:14 | copy |
+| globalVars.c:35:11:35:14 | copy indirection | globalVars.c:15:21:15:23 | val indirection |
 | globalVars.c:41:15:41:19 | copy2 | globalVars.c:41:15:41:19 | copy2 |
 | globalVars.c:41:15:41:19 | copy2 | globalVars.c:41:15:41:19 | copy2 |
 | globalVars.c:41:15:41:19 | copy2 | globalVars.c:41:15:41:19 | copy2 |
@@ -39,13 +62,18 @@ edges
 subpaths
 nodes
 | globalVars.c:8:7:8:10 | copy | semmle.label | copy |
+| globalVars.c:8:7:8:10 | copy indirection | semmle.label | copy indirection |
 | globalVars.c:9:7:9:11 | copy2 | semmle.label | copy2 |
+| globalVars.c:9:7:9:11 | copy2 indirection | semmle.label | copy2 indirection |
 | globalVars.c:11:22:11:25 | argv | semmle.label | argv |
+| globalVars.c:11:22:11:25 | argv indirection | semmle.label | argv indirection |
 | globalVars.c:12:2:12:15 | ... = ... | semmle.label | ... = ... |
 | globalVars.c:15:21:15:23 | val | semmle.label | val |
+| globalVars.c:15:21:15:23 | val indirection | semmle.label | val indirection |
 | globalVars.c:16:2:16:12 | ... = ... | semmle.label | ... = ... |
 | globalVars.c:24:11:24:14 | argv | semmle.label | argv |
 | globalVars.c:24:11:24:14 | argv | semmle.label | argv |
+| globalVars.c:24:11:24:14 | argv indirection | semmle.label | argv indirection |
 | globalVars.c:27:9:27:12 | copy | semmle.label | copy |
 | globalVars.c:27:9:27:12 | copy | semmle.label | copy |
 | globalVars.c:30:15:30:18 | copy | semmle.label | copy |
@@ -53,6 +81,7 @@ nodes
 | globalVars.c:30:15:30:18 | copy | semmle.label | copy |
 | globalVars.c:33:15:33:18 | copy | semmle.label | copy |
 | globalVars.c:35:11:35:14 | copy | semmle.label | copy |
+| globalVars.c:35:11:35:14 | copy indirection | semmle.label | copy indirection |
 | globalVars.c:38:9:38:13 | copy2 | semmle.label | copy2 |
 | globalVars.c:38:9:38:13 | copy2 | semmle.label | copy2 |
 | globalVars.c:41:15:41:19 | copy2 | semmle.label | copy2 |
