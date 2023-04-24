@@ -361,3 +361,52 @@ module MergePathGraph<
     }
   }
 }
+
+/**
+ * Constructs a `PathGraph` from three `PathGraph`s by disjoint union.
+ */
+module MergePathGraph3<
+  PathNodeSig PathNode1, PathNodeSig PathNode2, PathNodeSig PathNode3,
+  PathGraphSig<PathNode1> Graph1, PathGraphSig<PathNode2> Graph2, PathGraphSig<PathNode3> Graph3>
+{
+  private module MergedInner = MergePathGraph<PathNode1, PathNode2, Graph1, Graph2>;
+
+  private module Merged =
+    MergePathGraph<MergedInner::PathNode, PathNode3, MergedInner::PathGraph, Graph3>;
+
+  /** A node in a graph of path explanations that is formed by disjoint union of the three given graphs. */
+  class PathNode instanceof Merged::PathNode {
+    /** Gets this as a projection on the first given `PathGraph`. */
+    PathNode1 asPathNode1() { result = super.asPathNode1().asPathNode1() }
+
+    /** Gets this as a projection on the second given `PathGraph`. */
+    PathNode2 asPathNode2() { result = super.asPathNode1().asPathNode2() }
+
+    /** Gets this as a projection on the third given `PathGraph`. */
+    PathNode3 asPathNode3() { result = super.asPathNode2() }
+
+    /** Gets a textual representation of this element. */
+    string toString() { result = super.toString() }
+
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+     */
+    predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    /** Gets the underlying `Node`. */
+    Node getNode() { result = super.getNode() }
+  }
+
+  /**
+   * Provides the query predicates needed to include a graph in a path-problem query.
+   */
+  module PathGraph = Merged::PathGraph;
+}
