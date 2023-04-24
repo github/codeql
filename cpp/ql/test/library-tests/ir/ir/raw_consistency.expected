@@ -11,10 +11,6 @@ unexplainedLoop
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
-| ir.cpp:1232:16:1232:16 | Address | Operand 'Address' is used on instruction 'Store: 0' in function '$@', but is defined on instruction 'VariableAddress: a' in function '$@'. | ir.cpp:1231:5:1231:19 | int staticLocalInit(int) | int staticLocalInit(int) | ir.cpp:1232:16:1232:16 | int a | int a |
-| ir.cpp:1233:16:1233:16 | Address | Operand 'Address' is used on instruction 'Store: (int)...' in function '$@', but is defined on instruction 'VariableAddress: b' in function '$@'. | ir.cpp:1231:5:1231:19 | int staticLocalInit(int) | int staticLocalInit(int) | ir.cpp:1233:16:1233:16 | int b | int b |
-| struct_init.cpp:21:17:21:28 | Left | Operand 'Left' is used on instruction 'PointerAdd: {...}' in function '$@', but is defined on instruction 'VariableAddress: static_infos' in function '$@'. | struct_init.cpp:20:6:20:25 | void declare_static_infos() | void declare_static_infos() | struct_init.cpp:21:17:21:28 | Info[] static_infos | Info[] static_infos |
-| struct_init.cpp:21:17:21:28 | Left | Operand 'Left' is used on instruction 'PointerAdd: {...}' in function '$@', but is defined on instruction 'VariableAddress: static_infos' in function '$@'. | struct_init.cpp:20:6:20:25 | void declare_static_infos() | void declare_static_infos() | struct_init.cpp:21:17:21:28 | Info[] static_infos | Info[] static_infos |
 instructionWithoutUniqueBlock
 containsLoopOfForwardEdges
 lostReachability
