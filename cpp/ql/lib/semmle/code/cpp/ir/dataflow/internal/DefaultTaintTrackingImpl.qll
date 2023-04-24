@@ -62,6 +62,8 @@ private DataFlow::Node getNodeForSource(Expr source) {
 private DataFlow::Node getNodeForExpr(Expr node) {
   result = DataFlow::exprNode(node)
   or
+  result = DataFlow::indirectExprNode(node, 1)
+  or
   // Some of the sources in `isUserInput` are intended to match the value of
   // an expression, while others (those modeled below) are intended to match
   // the taint that propagates out of an argument, like the `char *` argument
@@ -222,6 +224,8 @@ private module Cached {
     // don't use dataflow into taint sources, as this leads to duplicate results.
     exists(Expr source | isUserInput(source, _) |
       node = DataFlow::exprNode(source)
+      or
+      node = DataFlow::indirectExprNode(source, _)
       or
       // This case goes together with the similar (but not identical) rule in
       // `getNodeForSource`.

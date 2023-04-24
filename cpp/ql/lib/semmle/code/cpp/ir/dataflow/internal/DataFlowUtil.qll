@@ -1503,6 +1503,28 @@ OperandNode operandNode(Operand operand) { result.getOperand() = operand }
 ExprNode exprNode(Expr e) { result.getExpr() = e }
 
 /**
+ * Gets the `Node` corresponding to the value of evaluating `e` (or any of its
+ * conversions) after performing `indirectionIndex` number of dereferences.
+ *
+ * There is no result if `e` is a `Conversion`. For data flowing
+ * _out of_ an expression, like when an argument is passed by reference, use
+ * `definitionByReferenceNodeFromArgument` instead.
+ */
+IndirectExprNode indirectExprNode(Expr e, int indirectionIndex) {
+  result.getExpr(indirectionIndex) = e
+}
+
+/**
+ * Gets the `Node` corresponding to the value of evaluating `e` (or any of its
+ * conversions) after performing a non-zero number of dereferences.
+ *
+ * There is no result if `e` is a `Conversion`. For data flowing
+ * _out of_ an expression, like when an argument is passed by reference, use
+ * `definitionByReferenceNodeFromArgument` instead.
+ */
+IndirectExprNode indirectExprNode(Expr e) { result = indirectExprNode(e, _) }
+
+/**
  * Gets the `Node` corresponding to the value of evaluating `e`. Here, `e` may
  * be a `Conversion`. For data flowing _out of_ an expression, like when an
  * argument is passed by reference, use
