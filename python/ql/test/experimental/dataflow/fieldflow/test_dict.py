@@ -49,7 +49,7 @@ def test_dict_update():
 def test_setdefault():
     d = {}
     x = d.setdefault("key", SOURCE)
-    SINK(x)  # $ MISSING: flow="SOURCE, l:-1 -> d.setdefault(..)"
+    SINK(x)  # $ flow="SOURCE, l:-1 -> x"
     SINK(d["key"])  # $ flow="SOURCE, l:-2 -> d['key']"
     SINK(d.setdefault("key", NONSOURCE))  # $ flow="SOURCE, l:-3 -> d.setdefault(..)"
 
