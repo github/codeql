@@ -78,25 +78,26 @@ module UnsafeDeserialization {
    * An argument in a call to `YAML.unsafe_*` and `YAML.load_stream` , considered sinks
    * for unsafe deserialization. The `YAML` module is an alias of `Psych` in
    * recent versions of Ruby.
+   * the `this = yamlNode().getAMethodCall("load").getArgument(0)` is safe
+   * in recent versions of YAML library, so it will be removed in future.
    */
   class YamlLoadArgument extends Sink {
     YamlLoadArgument() {
-      this =
-        API::getTopLevelMember(["YAML", "Psych"])
-            .getAMethodCall(["unsafe_load_file", "unsafe_load", "load_stream"])
-            .getArgument(0)
+      this = yamlNode().getAMethodCall("load").getArgument(0)
       or
       this =
-        API::getTopLevelMember(["YAML", "Psych"])
-            .getAMethodCall(["unsafe_load", "load_stream"])
-            .getKeywordArgument("yaml")
+        yamlNode().getAMethodCall(["unsafe_load_file", "unsafe_load", "load_stream"]).getArgument(0)
       or
-      this =
-        API::getTopLevelMember(["YAML", "Psych"])
-            .getAMethodCall("unsafe_load_file")
-            .getKeywordArgument("filename")
+      this = yamlNode().getAMethodCall(["unsafe_load", "load_stream"]).getKeywordArgument("yaml")
+      or
+      this = yamlNode().getAMethodCall("unsafe_load_file").getKeywordArgument("filename")
     }
   }
+
+  /**
+   * YAML/Psych Top level Class member
+   */
+  private API::Node yamlNode() { result = API::getTopLevelMember(["YAML", "Psych"]) }
 
   /**
    * An argument in a call to `YAML.parse*`, considered sinks
@@ -107,9 +108,7 @@ module UnsafeDeserialization {
   class YamlParseArgument extends Sink {
     YamlParseArgument() {
       this =
-        API::getTopLevelMember(["YAML", "Psych"])
-            .getAMethodCall(["parse", "parse_stream", "parse_file"])
-            .getAMethodCall("to_ruby")
+        yamlNode().getAMethodCall(["parse", "parse_stream", "parse_file"]).getAMethodCall("to_ruby")
     }
   }
 
@@ -238,28 +237,19 @@ module UnsafeDeserialization {
   }
 
   /**
-   * check whether an input argument has desired "key: value" input or not.
-   */
-  predicate checkkeyValue(CfgNodes::ExprNodes::PairCfgNode p, string key, string value) {
-    p.getKey().getConstantValue().isStringlikeValue(key) and
-    DataFlow::exprNode(p.getValue()).getALocalSource().getConstantValue().toString() = value
-  }
-
-  /**
    * An argument in a call to `Plist.parse_xml` where the marshal is `true` (which is
    * the default), considered a sink for unsafe deserialization.
    */
   class UnsafePlistParsexmlArgument extends Sink {
     UnsafePlistParsexmlArgument() {
-      exists(DataFlow::CallNode plistParsexml |
-        plistParsexml = API::getTopLevelMember("Plist").getAMethodCall("parse_xml")
+      exists(DataFlow::CallNode plistParseXml |
+        plistParseXml = API::getTopLevelMember("Plist").getAMethodCall("parse_xml")
       |
-        this = [plistParsexml.getArgument(0), plistParsexml.getKeywordArgument("filename_or_xml")] and
-        // Exclude calls that explicitly pass a safe mode option.
-        checkkeyValue(plistParsexml.getArgument(1).asExpr(), "marshal", "true")
+        this = [plistParseXml.getArgument(0), plistParseXml.getKeywordArgument("filename_or_xml")] and
+        plistParseXml.getKeywordArgument("marshal").getConstantValue().isBoolean(true)
         or
-        this = [plistParsexml.getArgument(0), plistParsexml.getKeywordArgument("filename_or_xml")] and
-        plistParsexml.getNumberOfArguments() = 1
+        this = [plistParseXml.getArgument(0), plistParseXml.getKeywordArgument("filename_or_xml")] and
+        plistParseXml.getNumberOfArguments() = 1
       )
     }
   }

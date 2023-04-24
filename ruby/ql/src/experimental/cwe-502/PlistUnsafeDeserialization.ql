@@ -6,7 +6,7 @@
  * @problem.severity warning
  * @security-severity 9.8
  * @precision high
- * @id rb/Plist-unsafe-deserialization
+ * @id rb/plist-unsafe-deserialization
  * @tags security
  *       experimental
  *       external/cwe/cwe-502
@@ -22,30 +22,19 @@ import codeql.ruby.security.UnsafeDeserializationCustomizations
 abstract class PlistUnsafeSinks extends DataFlow::Node { }
 
 /**
- * check whether an input argument has desired "key: value" input or not.
- * borrowed from UnsafeDeserialization module with some changes
- */
-predicate checkkeyBalue(CfgNodes::ExprNodes::PairCfgNode p, string key, string value) {
-  p.getKey().getConstantValue().isStringlikeValue(key) and
-  DataFlow::exprNode(p.getValue()).getALocalSource().getConstantValue().toString() = value
-}
-
-/**
  * An argument in a call to `Plist.parse_xml` where the marshal is `true` (which is
  * the default), considered a sink for unsafe deserialization.
- * borrowed from UnsafeDeserialization module with some changes
  */
 class UnsafePlistParsexmlArgument extends PlistUnsafeSinks {
   UnsafePlistParsexmlArgument() {
-    exists(DataFlow::CallNode plistParsexml |
-      plistParsexml = API::getTopLevelMember("Plist").getAMethodCall("parse_xml")
+    exists(DataFlow::CallNode plistParseXml |
+      plistParseXml = API::getTopLevelMember("Plist").getAMethodCall("parse_xml")
     |
-      this = [plistParsexml.getArgument(0), plistParsexml.getKeywordArgument("filename_or_xml")] and
-      // Exclude calls that explicitly pass a safe mode option.
-      checkkeyBalue(plistParsexml.getArgument(1).asExpr(), "marshal", "true")
+      this = [plistParseXml.getArgument(0), plistParseXml.getKeywordArgument("filename_or_xml")] and
+      plistParseXml.getKeywordArgument("marshal").getConstantValue().isBoolean(true)
       or
-      this = [plistParsexml.getArgument(0), plistParsexml.getKeywordArgument("filename_or_xml")] and
-      plistParsexml.getNumberOfArguments() = 1
+      this = [plistParseXml.getArgument(0), plistParseXml.getKeywordArgument("filename_or_xml")] and
+      plistParseXml.getNumberOfArguments() = 1
     )
   }
 }
