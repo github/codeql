@@ -223,3 +223,17 @@ void checkedExample()
 		// handle error...
 	}
 }
+
+void test_with_conversion(long long qwLongTime) {
+	// get the current time as a FILETIME
+	SYSTEMTIME st; FILETIME ft;
+	GetSystemTime(&st);
+	SystemTimeToFileTime(&st, &ft);
+
+	// add a year by calculating the ticks in 365 days
+	// (which may be incorrect when crossing a leap day)
+	qwLongTime += (ULONGLONG)(365 * 24 * 60 * 60 * 10000000LLU);
+
+	// copy back to a FILETIME
+	ft.dwLowDateTime = (DWORD)(qwLongTime & 0xFFFFFFFF); // BAD	[NOT DETECTED]
+}
