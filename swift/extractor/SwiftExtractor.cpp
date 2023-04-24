@@ -59,9 +59,8 @@ static fs::path getFilename(swift::ModuleDecl& module,
     std::string ret;
     ret += module.getRealName().str();
     ret += '_';
-    llvm::SmallVector<char> scratch;
     // lazyDeclaration must be a ValueDecl, as already asserted in SwiftMangler::mangledName
-    ret += llvm::cast<swift::ValueDecl>(lazyDeclaration)->getName().getString(scratch);
+    ret += llvm::cast<swift::ValueDecl>(lazyDeclaration)->getBaseName().userFacingName();
     ret += '_';
     // half a SHA2 is enough
     ret += std::string_view(mangled).substr(0, mangled.size() / 2);
