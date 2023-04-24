@@ -2,7 +2,6 @@
 
 #include <swift/AST/DiagnosticConsumer.h>
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
-#include "swift/extractor/infra/log/SwiftLogging.h"
 
 namespace codeql {
 
@@ -18,17 +17,8 @@ class SwiftDiagnosticsConsumer : public swift::DiagnosticConsumer {
  private:
   static std::string getDiagMessage(swift::SourceManager& sourceManager,
                                     const swift::DiagnosticInfo& diagInfo);
-  void forwardToLog(swift::SourceManager& sourceManager,
-                    const swift::DiagnosticInfo& diagInfo,
-                    const std::string& message);
-
-  void forwardToLog(swift::SourceManager& sourceManager, const swift::DiagnosticInfo& diagInfo) {
-    forwardToLog(sourceManager, diagInfo, getDiagMessage(sourceManager, diagInfo));
-  }
-
   TrapDomain& trap;
   SwiftLocationExtractor locationExtractor;
-  Logger logger{"compiler"};
 };
 
 }  // namespace codeql
