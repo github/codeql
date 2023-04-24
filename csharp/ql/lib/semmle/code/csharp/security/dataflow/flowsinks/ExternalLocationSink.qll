@@ -82,6 +82,7 @@ private predicate isFileWriteCall(Expr stream, Expr data) {
   )
 }
 
+/** A configuration for tracking flow from calls that open a file in write mode to methods that write to that file, excluding encrypted streams. */
 private module LocalFileOutputStreamConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { sourceNode(src, "file-write") }
 
@@ -111,7 +112,7 @@ private module LocalFileOutputStreamFlow = DataFlow::Global<LocalFileOutputStrea
 class LocalFileOutputSink extends ExternalLocationSink {
   LocalFileOutputSink() {
     exists(DataFlow::Node streamSink |
-      LocalFileOutputStreamFlow::flow(_, streamSink) and
+      LocalFileOutputStreamFlow::flowTo(streamSink) and
       isFileWriteCall(streamSink.asExpr(), this.asExpr())
     )
   }
