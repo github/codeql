@@ -6107,20 +6107,6 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "io.netty.handler.codec.http;HttpRequest;true;setUri;;;Argument[0];Argument[-1];taint;manual"
-			FullHttpRequest out = null;
-			String in = (String)source();
-			out.setUri(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
-			// "io.netty.handler.codec.http;HttpRequest;true;setUri;;;Argument[0];Argument[-1];taint;manual"
-			HttpRequest out = null;
-			String in = (String)source();
-			out.setUri(in);
-			sink(out); // $ hasTaintFlow
-		}
-		{
 			// "io.netty.handler.codec.http;HttpRequest;true;uri;;;Argument[-1];ReturnValue;taint;manual"
 			String out = null;
 			HttpRequest in = (HttpRequest)source();

@@ -1,5 +1,6 @@
 import java.util.ResourceBundle;
 import java.util.logging.LogRecord;
+import java.util.regex.Pattern;
 import com.google.common.flogger.LoggingApi;
 import org.apache.commons.logging.Log;
 import org.apache.log4j.Category;
@@ -17,6 +18,172 @@ import org.slf4j.spi.LoggingEventBuilder;
 public class LogInjectionTest {
     public Object source() {
         return null;
+    }
+
+    public void testSanitizers() {
+        String source = (String) source();
+        Logger logger = null;
+        logger.debug(source.replace("\n", "")); // Safe
+        logger.debug(source.replace("\n", "\n")); // $ hasTaintFlow
+        logger.debug(source.replace("\n", "\r")); // $ hasTaintFlow
+        logger.debug(source.replace("\r", "")); // Safe
+        logger.debug(source.replace("\r", "\n")); // $ hasTaintFlow
+        logger.debug(source.replace("\r", "\r")); // $ hasTaintFlow
+        logger.debug(source.replace("something_else", "")); // $ hasTaintFlow
+        logger.debug(source.replace('\n', '_')); // Safe
+        logger.debug(source.replace('\n', '\n')); // $ hasTaintFlow
+        logger.debug(source.replace('\n', '\r')); // $ hasTaintFlow
+        logger.debug(source.replace('\r', '_')); // Safe
+        logger.debug(source.replace('\r', '\n')); // $ hasTaintFlow
+        logger.debug(source.replace('\r', '\r')); // $ hasTaintFlow
+        logger.debug(source.replace('-', '_')); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\n", "")); // Safe
+        logger.debug(source.replaceAll("\n", "\n")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\n", "\r")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\r", "")); // Safe
+        logger.debug(source.replaceAll("\r", "\n")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\r", "\r")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\\n", "")); // Safe
+        logger.debug(source.replaceAll("\\n", "\n")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\\n", "\r")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\\r", "")); // Safe
+        logger.debug(source.replaceAll("\\r", "\n")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\\r", "\r")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\\R", "")); // Safe
+        logger.debug(source.replaceAll("\\R", "\n")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("\\R", "\r")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("[^a-zA-Z]", "")); // Safe
+        logger.debug(source.replaceAll("[^a-zA-Z]", "\n")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("[^a-zA-Z]", "\r")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("[^a-zA-Z\n]", "")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("[^a-zA-Z\r]", "")); // $ hasTaintFlow
+        logger.debug(source.replaceAll("[^a-zA-Z\\R]", "")); // $ hasTaintFlow
+    }
+
+    public void testGuards() {
+        String source = (String) source();
+        Logger logger = null;
+
+        if (source.matches(".*\n.*")) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (Pattern.matches(".*\n.*", source)) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (source.matches(".*\\n.*")) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (Pattern.matches(".*\\n.*", source)) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (source.matches(".*\r.*")) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (Pattern.matches(".*\r.*", source)) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (source.matches(".*\\r.*")) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (Pattern.matches(".*\\r.*", source)) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (source.matches(".*\\R.*")) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (Pattern.matches(".*\\R.*", source)) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // Safe
+        }
+
+        if (source.matches(".*")) {
+            logger.debug(source); // Safe (assuming not DOTALL)
+        } else {
+            logger.debug(source); // $ hasTaintFlow
+        }
+
+        if (Pattern.matches(".*", source)) {
+            logger.debug(source); // Safe (assuming not DOTALL)
+        } else {
+            logger.debug(source); // $ hasTaintFlow
+        }
+
+        if (source.matches("[^\n\r]*")) {
+            logger.debug(source); // Safe
+        } else {
+            logger.debug(source); // $ hasTaintFlow
+        }
+
+        if (Pattern.matches("[^\n\r]*", source)) {
+            logger.debug(source); // Safe
+        } else {
+            logger.debug(source); // $ hasTaintFlow
+        }
+
+        if (source.matches("[^\\R]*")) {
+            logger.debug(source); // Safe
+        } else {
+            logger.debug(source); // $ hasTaintFlow
+        }
+
+        if (Pattern.matches("[^\\R]*", source)) {
+            logger.debug(source); // Safe
+        } else {
+            logger.debug(source); // $ hasTaintFlow
+        }
+
+        if (source.matches("[^a-zA-Z]*")) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // $ hasTaintFlow
+        }
+
+        if (Pattern.matches("[^a-zA-Z]*", source)) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // $ hasTaintFlow
+        }
+
+        if (source.matches("[\n]*")) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // $ MISSING: $ hasTaintFlow
+        }
+
+        if (Pattern.matches("[\n]*", source)) {
+            logger.debug(source); // $ hasTaintFlow
+        } else {
+            logger.debug(source); // $ MISSING: $ hasTaintFlow
+        }
+
     }
 
     public void test() {

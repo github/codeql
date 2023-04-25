@@ -26,12 +26,17 @@ predicate ignoreOperand(Operand operand) {
 predicate ignoreInstruction(Instruction instr) {
   DataFlowImplCommon::forceCachingInSameStage() and
   (
+    instr instanceof CallSideEffectInstruction or
+    instr instanceof CallReadSideEffectInstruction or
+    instr instanceof ExitFunctionInstruction or
+    instr instanceof EnterFunctionInstruction or
     instr instanceof WriteSideEffectInstruction or
     instr instanceof PhiInstruction or
     instr instanceof ReadSideEffectInstruction or
     instr instanceof ChiInstruction or
     instr instanceof InitializeIndirectionInstruction or
     instr instanceof AliasedDefinitionInstruction or
+    instr instanceof AliasedUseInstruction or
     instr instanceof InitializeNonLocalInstruction or
     instr instanceof ReturnIndirectionInstruction
   )

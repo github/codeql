@@ -32,6 +32,13 @@ module UnsafeJQueryPlugin {
   abstract class Sanitizer extends DataFlow::Node { }
 
   /**
+   * The receiver of a function, seen as a sanitizer.
+   *
+   * Plugins often do `$(this)` to coerce an existing DOM element to a jQuery object.
+   */
+  private class ThisSanitizer extends Sanitizer instanceof DataFlow::ThisNode { }
+
+  /**
    * An argument that may act as an HTML fragment rather than a CSS selector, as a sink for remote unsafe jQuery plugins.
    */
   class AmbiguousHtmlOrSelectorArgument extends DataFlow::Node,

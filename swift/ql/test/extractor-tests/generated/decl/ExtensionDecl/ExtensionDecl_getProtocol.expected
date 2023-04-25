@@ -1,3 +1,3 @@
-| extensions.swift:21:1:23:1 | extension | 0 | extensions.swift:17:1:19:1 | P1 |
-| extensions.swift:27:1:29:1 | extension | 0 | extensions.swift:17:1:19:1 | P1 |
-| extensions.swift:27:1:29:1 | extension | 1 | extensions.swift:25:1:25:14 | P2 |
+| extensions.swift:21:1:23:1 | extension of S | 0 | extensions.swift:17:1:19:1 | P1 |
+| extensions.swift:27:1:29:1 | extension of C | 0 | extensions.swift:17:1:19:1 | P1 |
+| extensions.swift:27:1:29:1 | extension of C | 1 | extensions.swift:25:1:25:14 | P2 |

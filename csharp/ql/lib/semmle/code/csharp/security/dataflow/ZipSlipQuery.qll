@@ -27,8 +27,12 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
  */
 abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
-/** A taint tracking configuration for Zip Slip */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
+/**
+ * DEPRECATED: Use `ZipSlip` instead.
+ *
+ * A taint tracking configuration for Zip Slip.
+ */
+deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
   TaintTrackingConfiguration() { this = "ZipSlipTaintTracking" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -41,6 +45,22 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
     guard instanceof SanitizerGuard
   }
 }
+
+/**
+ * A taint tracking configuration for Zip Slip.
+ */
+private module ZipSlipConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * A taint tracking module for Zip Slip.
+ */
+module ZipSlip = TaintTracking::Global<ZipSlipConfig>;
 
 /** An access to the `FullName` property of a `ZipArchiveEntry`. */
 class ArchiveFullNameSource extends Source {

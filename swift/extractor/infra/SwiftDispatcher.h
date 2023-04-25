@@ -13,6 +13,7 @@
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
 #include "swift/extractor/infra/SwiftBodyEmissionStrategy.h"
 #include "swift/extractor/config/SwiftExtractorState.h"
+#include "swift/extractor/infra/log/SwiftLogging.h"
 
 namespace codeql {
 
@@ -151,7 +152,9 @@ class SwiftDispatcher {
       return *l;
     }
     waitingForNewLabel = e;
+    // TODO: add tracing logs for visited stuff, maybe within the translators?
     visit(e, std::forward<Args>(args)...);
+    Log::flush();
     // TODO when everything is moved to structured C++ classes, this should be moved to createEntry
     if (auto l = store.get(e)) {
       if constexpr (IsLocatable<E>) {
@@ -329,6 +332,7 @@ class SwiftDispatcher {
   SwiftBodyEmissionStrategy& bodyEmissionStrategy;
   Store::Handle waitingForNewLabel{std::monostate{}};
   std::unordered_set<swift::ModuleDecl*> encounteredModules;
+  Logger logger{"dispatcher"};
 };
 
 }  // namespace codeql
