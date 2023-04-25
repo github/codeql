@@ -533,7 +533,7 @@ export class TypeTable {
         let enclosingType = getEnclosingTypeOfThisType(type);
         if (enclosingType != null) {
           return "this;" + this.getId(enclosingType, false);
-        } else if (symbol.parent == null) {
+        } else if (symbol.parent == null || isFunctionTypeOrTypeAlias(symbol.declarations?.[0])) {
           // The type variable is bound on a call signature. Only extract it by name.
           return "lextypevar;" + symbol.name;
         } else {
@@ -1327,4 +1327,9 @@ export class TypeTable {
       }
     }
   }
+}
+
+function isFunctionTypeOrTypeAlias(declaration: ts.Declaration | undefined) {
+  if (declaration == null) return false;
+  return declaration.kind === ts.SyntaxKind.FunctionType || declaration.kind === ts.SyntaxKind.TypeAliasDeclaration;
 }
