@@ -1,6 +1,7 @@
+/*- Source location prefix -*/
+
 /**
  * The source location of the snapshot.
  */
-sourceLocationPrefix(
-  string prefix: string ref
-);
+sourceLocationPrefix(string prefix : string ref);
+

@@ -16,9 +16,7 @@
  * mechanism not work properly.
  */
 
- /*
- * External artifacts
- */
+/*- External defects and metrics -*/
 
 externalDefects(
   unique int id : @externalDefect,
@@ -35,31 +33,44 @@ externalMetrics(
   float value : float ref
 );
 
+/*- External data -*/
+
+/**
+ * External data, loaded from CSV files during snapshot creation. See
+ * [Tutorial: Incorporating external data](https://help.semmle.com/wiki/display/SD/Tutorial%3A+Incorporating+external+data)
+ * for more information.
+ */
 externalData(
   int id : @externalDataElement,
-  varchar(900) queryPath : string ref,
+  string path : string ref,
   int column: int ref,
-  varchar(900) data : string ref
+  string value : string ref
 );
+
+/*- Snapshot date -*/
 
 snapshotDate(unique date snapshotDate : date ref);
 
-sourceLocationPrefix(varchar(900) prefix : string ref);
+/*- Source location prefix -*/
 
-
-/*
- * Duplicate code
+/**
+ * The source location of the snapshot.
  */
+sourceLocationPrefix(string prefix : string ref);
+
+/*- Duplicate code -*/
 
 duplicateCode(
   unique int id : @duplication,
-  varchar(900) relativePath : string ref,
-  int equivClass : int ref);
+  string relativePath : string ref,
+  int equivClass : int ref
+);
 
 similarCode(
   unique int id : @similarity,
-  varchar(900) relativePath : string ref,
-  int equivClass : int ref);
+  string relativePath : string ref,
+  int equivClass : int ref
+);
 
 @duplication_or_similarity = @duplication | @similarity
 
@@ -69,31 +80,15 @@ tokens(
   int beginLine : int ref,
   int beginColumn : int ref,
   int endLine : int ref,
-  int endColumn : int ref);
+  int endColumn : int ref
+);
 
-/*
- * Line metrics
- */
-py_codelines(int id : @py_scope ref,
-             int count : int ref);
-
-py_commentlines(int id : @py_scope ref,
-                int count : int ref);
-
-py_docstringlines(int id : @py_scope ref,
-                int count : int ref);
-
-py_alllines(int id : @py_scope ref,
-                int count : int ref);
-
-/*
- * Version history
- */
+/*- Version control data -*/
 
 svnentries(
-  int id : @svnentry,
-  varchar(500) revision : string ref,
-  varchar(500) author : string ref,
+  unique int id : @svnentry,
+  string revision : string ref,
+  string author : string ref,
   date revisionDate : date ref,
   int changeSize : int ref
 )
@@ -101,12 +96,12 @@ svnentries(
 svnaffectedfiles(
   int id : @svnentry ref,
   int file : @file ref,
-  varchar(500) action : string ref
+  string action : string ref
 )
 
 svnentrymsg(
-  int id : @svnentry ref,
-  varchar(500) message : string ref
+  unique int id : @svnentry ref,
+  string message : string ref
 )
 
 svnchurn(
@@ -116,37 +111,72 @@ svnchurn(
   int deletedLines : int ref
 )
 
-/****************************
-        Python dbscheme
-****************************/
+/*- Lines of code -*/
 
-files(unique int id: @file,
-      varchar(900) name: string ref);
+#keyset[element_id]
+numlines(
+  int element_id: @sourceline ref,
+  int num_lines: int ref,
+  int num_code: int ref,
+  int num_comment: int ref
+);
 
-folders(unique int id: @folder,
-        varchar(900) name: string ref);
+/*- Files and folders -*/
 
-@container = @folder | @file;
+/**
+ * The location of an element that is not an expression or a statement.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
+locations_default(
+  /** The location of an element that is not an expression or a statement. */
+  unique int id: @location_default,
+  int container: @container ref,
+  int startLine: int ref,
+  int startColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref
+);
 
-containerparent(int parent: @container ref,
-                unique int child: @container ref);
+files(
+  unique int id: @file,
+  string name: string ref
+);
+
+folders(
+  unique int id: @folder,
+  string name: string ref
+);
+
+@container = @file | @folder
+
+containerparent(
+  int parent: @container ref,
+  unique int child: @container ref
+);
+
+/*- Python dbscheme -*/
+
+/*
+ * Line metrics
+ */
+py_codelines(int id : @py_scope ref,
+    int count : int ref);
+
+py_commentlines(int id : @py_scope ref,
+       int count : int ref);
+
+py_docstringlines(int id : @py_scope ref,
+       int count : int ref);
+
+py_alllines(int id : @py_scope ref,
+       int count : int ref);
 
 @sourceline = @file | @py_Module | @xmllocatable;
 
-numlines(int element_id: @sourceline ref,
-         int num_lines: int ref,
-         int num_code: int ref,
-         int num_comment: int ref
-        );
-
 @location = @location_ast | @location_default ;
-
-locations_default(unique int id: @location_default,
-          int file: @file ref,
-          int beginLine: int ref,
-          int beginColumn: int ref,
-          int endLine: int ref,
-          int endColumn: int ref);
 
 locations_ast(unique int id: @location_ast,
           int module: @py_Module ref,
@@ -1053,54 +1083,74 @@ py_decorated_object(int object : @py_object ref,
 
 @py_source_element = @py_ast_node | @container;
 
-/* XML Files */
+/*- XML Files -*/
 
-xmlEncoding  (unique int id: @file ref, varchar(900) encoding: string ref);
+xmlEncoding(
+  unique int id: @file ref,
+  string encoding: string ref
+);
 
-xmlDTDs       (unique int id: @xmldtd,
-              varchar(900) root: string ref,
-              varchar(900) publicId: string ref,
-              varchar(900) systemId: string ref,
-              int fileid: @file ref);
+xmlDTDs(
+  unique int id: @xmldtd,
+  string root: string ref,
+  string publicId: string ref,
+  string systemId: string ref,
+  int fileid: @file ref
+);
 
-xmlElements   (unique int id: @xmlelement,
-              varchar(900) name: string ref,
-              int parentid: @xmlparent ref,
-              int idx: int ref,
-              int fileid: @file ref);
+xmlElements(
+  unique int id: @xmlelement,
+  string name: string ref,
+  int parentid: @xmlparent ref,
+  int idx: int ref,
+  int fileid: @file ref
+);
 
-xmlAttrs      (unique int id: @xmlattribute,
-              int elementid: @xmlelement ref,
-              varchar(900) name: string ref,
-              varchar(3600) value: string ref,
-              int idx: int ref,
-              int fileid: @file ref);
+xmlAttrs(
+  unique int id: @xmlattribute,
+  int elementid: @xmlelement ref,
+  string name: string ref,
+  string value: string ref,
+  int idx: int ref,
+  int fileid: @file ref
+);
 
-xmlNs         (int id: @xmlnamespace,
-              varchar(900) prefixName: string ref,
-              varchar(900) URI: string ref,
-              int fileid: @file ref);
+xmlNs(
+  int id: @xmlnamespace,
+  string prefixName: string ref,
+  string URI: string ref,
+  int fileid: @file ref
+);
 
-xmlHasNs      (int elementId: @xmlnamespaceable ref,
-              int nsId: @xmlnamespace ref,
-              int fileid: @file ref);
+xmlHasNs(
+  int elementId: @xmlnamespaceable ref,
+  int nsId: @xmlnamespace ref,
+  int fileid: @file ref
+);
 
-xmlComments   (unique int id: @xmlcomment,
-              varchar(3600) text: string ref,
-              int parentid: @xmlparent ref,
-              int fileid: @file ref);
+xmlComments(
+  unique int id: @xmlcomment,
+  string text: string ref,
+  int parentid: @xmlparent ref,
+  int fileid: @file ref
+);
 
-xmlChars      (unique int id: @xmlcharacters,
-              varchar(3600) text: string ref,
-              int parentid: @xmlparent ref,
-              int idx: int ref,
-              int isCDATA: int ref,
-              int fileid: @file ref);
+xmlChars(
+  unique int id: @xmlcharacters,
+  string text: string ref,
+  int parentid: @xmlparent ref,
+  int idx: int ref,
+  int isCDATA: int ref,
+  int fileid: @file ref
+);
 
 @xmlparent = @file | @xmlelement;
 @xmlnamespaceable = @xmlelement | @xmlattribute;
 
-xmllocations(int xmlElement: @xmllocatable ref,
-             int location: @location_default ref);
+xmllocations(
+  int xmlElement: @xmllocatable ref,
+  int location: @location_default ref
+);
 
 @xmllocatable = @xmlcharacters | @xmlelement | @xmlcomment | @xmlattribute | @xmldtd | @file | @xmlnamespace;
+
