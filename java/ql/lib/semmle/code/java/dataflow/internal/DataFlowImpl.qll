@@ -2412,8 +2412,8 @@ module Impl<FullStateConfigSig Config> {
       Stage4::consCand(tc, t, TFrontNil(t)) and
       not expensiveLen2unfolding(tc)
     } or
-    TConsCons(TypedContent tc1, TypedContent tc2, int len) {
-      Stage4::consCand(tc1, _, TFrontHead(tc2)) and
+    TConsCons(TypedContent tc1, DataFlowType t, TypedContent tc2, int len) {
+      Stage4::consCand(tc1, t, TFrontHead(tc2)) and
       len in [2 .. accessPathLimit()] and
       not expensiveLen2unfolding(tc1)
     } or
@@ -2488,10 +2488,11 @@ module Impl<FullStateConfigSig Config> {
 
   private class AccessPathApproxConsCons extends AccessPathApproxCons, TConsCons {
     private TypedContent tc1;
+    private DataFlowType t;
     private TypedContent tc2;
     private int len;
 
-    AccessPathApproxConsCons() { this = TConsCons(tc1, tc2, len) }
+    AccessPathApproxConsCons() { this = TConsCons(tc1, t, tc2, len) }
 
     override string toString() {
       if len = 2
@@ -2509,9 +2510,9 @@ module Impl<FullStateConfigSig Config> {
 
     override predicate isCons(TypedContent head, DataFlowType typ, AccessPathApprox tail) {
       head = tc1 and
-      typ = tc2.getContainerType() and
+      typ = t and
       (
-        tail = TConsCons(tc2, _, len - 1)
+        tail = TConsCons(tc2, _, _, len - 1)
         or
         len = 2 and
         tail = TConsNil(tc2, _)
@@ -2545,7 +2546,7 @@ module Impl<FullStateConfigSig Config> {
       head = tc and
       (
         exists(TypedContent tc2 | Stage4::consCand(tc, typ, TFrontHead(tc2)) |
-          tail = TConsCons(tc2, _, len - 1)
+          tail = TConsCons(tc2, _, _, len - 1)
           or
           len = 2 and
           tail = TConsNil(tc2, _)
@@ -2940,7 +2941,7 @@ module Impl<FullStateConfigSig Config> {
     override AccessPathApproxCons getApprox() {
       result = TConsNil(head_, t) and tail_ instanceof AccessPathNil
       or
-      result = TConsCons(head_, tail_.getHead(), this.length())
+      result = TConsCons(head_, t, tail_.getHead(), this.length())
       or
       result = TCons1(head_, this.length())
     }
@@ -3002,7 +3003,7 @@ module Impl<FullStateConfigSig Config> {
     override AccessPathFrontHead getFront() { result = TFrontHead(head1) }
 
     override AccessPathApproxCons getApprox() {
-      result = TConsCons(head1, head2, len) or
+      result = TConsCons(head1, t, head2, len) or
       result = TCons1(head1, len)
     }
 
