@@ -14,6 +14,7 @@
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
 #include "swift/extractor/infra/SwiftBodyEmissionStrategy.h"
 #include "swift/extractor/mangler/SwiftMangler.h"
+#include <picosha2.h>
 
 using namespace codeql;
 using namespace std::string_literals;
@@ -50,8 +51,20 @@ static fs::path getFilename(swift::ModuleDecl& module,
     return resolvePath(primaryFile->getFilename());
   }
   if (lazyDeclaration) {
+    // this code will be thrown away in the near future
     SwiftMangler mangler;
-    return mangler.mangledName(*lazyDeclaration);
+    auto mangled = mangler.mangledName(*lazyDeclaration);
+    // mangled name can be too long to use as a file name, so we can't use it directly
+    mangled = picosha2::hash256_hex_string(mangled);
+    std::string ret;
+    ret += module.getRealName().str();
+    ret += '_';
+    // lazyDeclaration must be a ValueDecl, as already asserted in SwiftMangler::mangledName
+    ret += llvm::cast<swift::ValueDecl>(lazyDeclaration)->getBaseName().userFacingName();
+    ret += '_';
+    // half a SHA2 is enough
+    ret += std::string_view(mangled).substr(0, mangled.size() / 2);
+    return ret;
   }
   // PCM clang module
   if (module.isNonSwiftModule()) {
