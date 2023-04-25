@@ -340,6 +340,47 @@ class Callable extends StmtParent, Member, @callable {
   }
 }
 
+/**
+ * Holds if the given type is public and, if it is a nested type, that all of
+ * its enclosing types are public as well.
+ */
+private predicate veryPublic(RefType t) {
+  t.isPublic() and
+  (
+    not t instanceof NestedType or
+    veryPublic(t.(NestedType).getEnclosingType())
+  )
+}
+
+/** A callable that is the same as its source declaration. */
+class SrcCallable extends Callable {
+  SrcCallable() { this.isSourceDeclaration() }
+
+  /**
+   * Holds if this callable is effectively public in the sense that it can be
+   * called from outside the codebase. This means either a `public` callable on
+   * a sufficiently public type or a `protected` callable on a sufficiently
+   * public non-`final` type.
+   */
+  predicate isEffectivelyPublic() {
+    exists(RefType t | t = this.getDeclaringType() |
+      this.isPublic() and veryPublic(t)
+      or
+      this.isProtected() and not t.isFinal() and veryPublic(t)
+    )
+    or
+    exists(SrcRefType tsub, Method m |
+      veryPublic(tsub) and
+      tsub.hasMethod(m, _) and
+      m.getSourceDeclaration() = this
+    |
+      this.isPublic()
+      or
+      this.isProtected() and not tsub.isFinal()
+    )
+  }
+}
+
 /** Gets the erasure of `t1` if it is a raw type, or `t1` itself otherwise. */
 private Type eraseRaw(Type t1) {
   if t1 instanceof RawType then result = t1.getErasure() else result = t1
