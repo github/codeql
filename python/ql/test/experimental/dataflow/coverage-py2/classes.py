@@ -43,12 +43,12 @@ def OK():
 class With_index:
     def __index__(self):
         SINK1(self)
-        OK()  # Call not found
+        OK()
         return 0
 
 
 def test_index():
     import operator
 
-    with_index = With_index()  #$ MISSING: arg1="SSA variable with_index" func=With_index.__index__
+    with_index = With_index()  #$ arg1="SSA variable with_index" func=With_index.__index__
     operator.index(with_index)
