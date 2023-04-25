@@ -450,7 +450,7 @@ export class TypeTable {
         this.isInShallowTypeContext ? TypeExtractionState.PendingShallow : TypeExtractionState.PendingFull);
       // If the type is the self-type for a named type (not a generic instantiation of it),
       // emit the self-type binding for that type.
-      if (content.startsWith("reference;") && !(isTypeReference(type) && type.target !== type)) {
+      if (content.startsWith("reference;") && isTypeSelfReference(type)) {
         this.selfTypes.symbols.push(this.getSymbolId(type.aliasSymbol || type.symbol));
         this.selfTypes.selfTypes.push(id);
       }
@@ -1356,4 +1356,31 @@ export class TypeTable {
 function isFunctionTypeOrTypeAlias(declaration: ts.Declaration | undefined) {
   if (declaration == null) return false;
   return declaration.kind === ts.SyntaxKind.FunctionType || declaration.kind === ts.SyntaxKind.TypeAliasDeclaration;
+}
+
+/**
+ * Given a `type` whose type-string is known to be a `reference`, returns true if this is the self-type for the referenced type.
+ *
+ * For example, for `type Foo<R> = ...` this returns true if `type` is `Foo<R>`.
+ */
+function isTypeSelfReference(type: ts.Type) {
+  if (type.aliasSymbol != null) {
+    const { aliasTypeArguments } = type;
+    if (aliasTypeArguments == null) return true;
+    let declaration = type.aliasSymbol.declarations?.[0];
+    if (declaration == null || declaration.kind !== ts.SyntaxKind.TypeAliasDeclaration) return false;
+    let alias = declaration as ts.TypeAliasDeclaration;
+    for (let i = 0; i < aliasTypeArguments.length; ++i) {
+      if (aliasTypeArguments[i].symbol?.declarations?.[0] !== alias.typeParameters[i]) {
+        return false;
+      }
+    }
+    return true;
+  } else if (isTypeReference(type)) {
+    return type.target === type;
+  } else {
+    // Return true because we know we have mapped this type to kind `reference`, and in the cases
+    // not covered above (i.e. generic types) it is always a self-reference.
+    return true;
+  }
 }
