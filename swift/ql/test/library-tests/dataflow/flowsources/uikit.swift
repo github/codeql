@@ -23,8 +23,8 @@ class UITextField: UIControl {
 // --- tests ---
 
 func testUITextField(textField: UITextField) {
-  _ = textField.text // $ MISSING: source=local
-  _ = textField.attributedText // $ MISSING: source=local
+  _ = textField.text // $ source=local
+  _ = textField.attributedText // $ source=local
   _ = textField.placeholder // GOOD (not input)
-  _ = textField.text?.uppercased() // $ MISSING: source=local
+  _ = textField.text?.uppercased() // $ source=local
 }

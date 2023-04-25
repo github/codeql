@@ -79,6 +79,7 @@ private import internal.FlowSummaryImplSpecific
  * ensuring that they are visible to the taint tracking / data flow library.
  */
 private module Frameworks {
+  private import codeql.swift.frameworks.Alamofire.Alamofire
   private import codeql.swift.frameworks.StandardLibrary.Collection
   private import codeql.swift.frameworks.StandardLibrary.CustomUrlSchemes
   private import codeql.swift.frameworks.StandardLibrary.Data
@@ -94,7 +95,7 @@ private module Frameworks {
   private import codeql.swift.frameworks.StandardLibrary.Url
   private import codeql.swift.frameworks.StandardLibrary.UrlSession
   private import codeql.swift.frameworks.StandardLibrary.WebView
-  private import codeql.swift.frameworks.Alamofire.Alamofire
+  private import codeql.swift.frameworks.UIKit.UITextField
   private import codeql.swift.security.CleartextLoggingExtensions
   private import codeql.swift.security.CleartextStorageDatabaseExtensions
   private import codeql.swift.security.ECBEncryptionExtensions
