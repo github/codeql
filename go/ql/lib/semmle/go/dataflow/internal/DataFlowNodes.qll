@@ -10,6 +10,7 @@ private newtype TNode =
   MkInstructionNode(IR::Instruction insn) or
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
+  MkImplicitVarargsSlice(CallExpr c) { c.getTarget().isVariadic() and not c.hasEllipsis() } or
   MkSummarizedParameterNode(SummarizedCallable c, int i) {
     FlowSummaryImpl::Private::summaryParameterNodeRange(c, i)
   } or
@@ -424,6 +425,41 @@ module Public {
     override string toString() { result = "function literal" }
 
     override ResultNode getAResult() { result.getRoot() = this.getExpr() }
+  }
+
+  /**
+   * An implicit varargs slice creation expression.
+   *
+   * A variadic function like `f(t1 T1, ..., Tm tm, A... x)` actually sees the
+   * varargs parameter as a slice `[]A`. A call `f(t1, ..., tm, x1, ..., xn)`
+   * desugars to `f(t1, ..., tm, []A{x1, ..., xn})`, and this node corresponds
+   * to this implicit slice creation.
+   */
+  class ImplicitVarargsSlice extends Node, MkImplicitVarargsSlice {
+    CallNode call;
+
+    ImplicitVarargsSlice() { this = MkImplicitVarargsSlice(call.getCall()) }
+
+    override ControlFlow::Root getRoot() { result = call.getRoot() }
+
+    /** Gets the call containing this varargs slice creation argument. */
+    CallNode getCallNode() { result = call }
+
+    override Type getType() {
+      exists(Function f | f = call.getTarget() |
+        result = f.getParameterType(f.getNumParameter() - 1)
+      )
+    }
+
+    override string getNodeKind() { result = "implicit varargs slice" }
+
+    override string toString() { result = "[]type{args}" }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      call.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
   }
 
   /**

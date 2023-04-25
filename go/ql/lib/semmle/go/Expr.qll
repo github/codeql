@@ -858,6 +858,18 @@ class CallExpr extends CallOrConversionExpr {
   int getNumArgument() { result = count(this.getAnArgument()) }
 
   /**
+   * Gets an argument with an ellipsis after it which is passed to a varargs
+   * parameter, as in `f(x...)`.
+   *
+   * Note that if the varargs parameter is `...T` then the type of the argument
+   * must be assignable to the slice type `[]T`.
+   */
+  Expr getExplicitVarargsArgument() {
+    this.hasEllipsis() and
+    result = this.getArgument(this.getNumArgument() - 1)
+  }
+
+  /**
    * Gets the name of the invoked function, method or variable if it can be
    * determined syntactically.
    *
