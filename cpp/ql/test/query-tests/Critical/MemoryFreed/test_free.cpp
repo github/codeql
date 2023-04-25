@@ -227,3 +227,21 @@ void test_ms_free(void * memory_descriptor_list) {
     MmFreePagesFromMdl(memory_descriptor_list); //GOOD
     ExFreePool(memory_descriptor_list); // GOOD
 }
+
+void test_loop3(char ** a, char ** b) {
+    if (*a) {
+        free(*a);
+        a++;
+    }
+    use(*a); // GOOD [FALSE POSITIVE]
+
+    for (;*b; b++) {
+        free(*b);
+    }
+    use(*b); // GOOD [FALSE POSITIVE]
+}
+
+void test_deref(char **a) {
+    free(*a);
+    use(*a); // GOOD [FALSE POSITIVE]
+}

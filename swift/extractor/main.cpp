@@ -9,6 +9,8 @@
 #include <swift/FrontendTool/FrontendTool.h>
 #include <swift/Basic/InitializeSwiftModules.h>
 
+#include "absl/strings/str_join.h"
+
 #include "swift/extractor/SwiftExtractor.h"
 #include "swift/extractor/infra/TargetDomains.h"
 #include "swift/extractor/remapping/SwiftFileInterception.h"
@@ -86,8 +88,6 @@ class Observer : public swift::FrontendObserver {
   }
 
   void configuredCompiler(swift::CompilerInstance& instance) override {
-    // remove default consumers to avoid double messaging
-    instance.getDiags().takeConsumers();
     instance.addDiagnosticConsumer(&diagConsumer);
   }
 
@@ -177,25 +177,22 @@ codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state) {
 
 codeql::SwiftExtractorConfiguration configure(int argc, char** argv) {
   codeql::SwiftExtractorConfiguration configuration{};
-  configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", ".");
-  configuration.sourceArchiveDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", ".");
-  configuration.scratchDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", ".");
+  configuration.trapDir = getenv_or("CODEQL_EXTRACTOR_SWIFT_TRAP_DIR", "extractor-out/trap/swift");
+  configuration.sourceArchiveDir =
+      getenv_or("CODEQL_EXTRACTOR_SWIFT_SOURCE_ARCHIVE_DIR", "extractor-out/src");
+  configuration.scratchDir =
+      getenv_or("CODEQL_EXTRACTOR_SWIFT_SCRATCH_DIR", "extractor-out/working");
   configuration.frontendOptions.assign(argv + 1, argv + argc);
   return configuration;
 }
 
-// TODO: use `absl::StrJoin` or `boost::algorithm::join`
 static auto argDump(int argc, char** argv) {
-  std::string ret;
-  for (auto arg = argv + 1; arg < argv + argc; ++arg) {
-    ret += *arg;
-    ret += ' ';
+  if (argc < 2) {
+    return ""s;
   }
-  ret.pop_back();
-  return ret;
+  return absl::StrJoin(argv + 1, argv + argc, " ");
 }
 
-// TODO: use `absl::StrJoin` or `boost::algorithm::join`
 static auto envDump(char** envp) {
   std::string ret;
   for (auto env = envp; *env; ++env) {

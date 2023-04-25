@@ -13,7 +13,7 @@ private import codeql.swift.security.PredicateInjectionExtensions
  * A taint-tracking configuration for predicate injection vulnerabilities.
  */
 module PredicateInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof PredicateInjectionSink }
 
