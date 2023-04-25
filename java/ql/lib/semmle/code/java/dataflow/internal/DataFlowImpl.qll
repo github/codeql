@@ -3936,40 +3936,6 @@ module Impl<FullStateConfigSig Config> {
       }
     }
 
-    private newtype TRevPartialAccessPath =
-      TRevPartialNil() or
-      TRevPartialCons(Content c, int len) { len in [1 .. accessPathLimit()] }
-
-    /**
-     * Conceptually a list of `Content`s, but only the first
-     * element of the list and its length are tracked.
-     */
-    private class RevPartialAccessPath extends TRevPartialAccessPath {
-      abstract string toString();
-
-      Content getHead() { this = TRevPartialCons(result, _) }
-
-      int len() {
-        this = TRevPartialNil() and result = 0
-        or
-        this = TRevPartialCons(_, result)
-      }
-    }
-
-    private class RevPartialAccessPathNil extends RevPartialAccessPath, TRevPartialNil {
-      override string toString() { result = "" }
-    }
-
-    private class RevPartialAccessPathCons extends RevPartialAccessPath, TRevPartialCons {
-      override string toString() {
-        exists(Content c, int len | this = TRevPartialCons(c, len) |
-          if len = 1
-          then result = "[" + c.toString() + "]"
-          else result = "[" + c.toString() + ", ... (" + len.toString() + ")]"
-        )
-      }
-    }
-
     private predicate relevantState(FlowState state) {
       sourceNode(_, state) or
       sinkNode(_, state) or
@@ -4005,7 +3971,7 @@ module Impl<FullStateConfigSig Config> {
 
     private newtype TRevSummaryCtx3 =
       TRevSummaryCtx3None() or
-      TRevSummaryCtx3Some(RevPartialAccessPath ap)
+      TRevSummaryCtx3Some(PartialAccessPath ap)
 
     private newtype TPartialPathNode =
       TPartialPathNodeFwd(
@@ -4027,13 +3993,13 @@ module Impl<FullStateConfigSig Config> {
       } or
       TPartialPathNodeRev(
         NodeEx node, FlowState state, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2, TRevSummaryCtx3 sc3,
-        RevPartialAccessPath ap
+        PartialAccessPath ap
       ) {
         sinkNode(node, state) and
         sc1 = TRevSummaryCtx1None() and
         sc2 = TRevSummaryCtx2None() and
         sc3 = TRevSummaryCtx3None() and
-        ap = TRevPartialNil() and
+        ap = TPartialNil() and
         exists(explorationLimit())
         or
         revPartialPathStep(_, node, state, sc1, sc2, sc3, ap) and
@@ -4208,7 +4174,7 @@ module Impl<FullStateConfigSig Config> {
       TRevSummaryCtx1 sc1;
       TRevSummaryCtx2 sc2;
       TRevSummaryCtx3 sc3;
-      RevPartialAccessPath ap;
+      PartialAccessPath ap;
 
       PartialPathNodeRev() { this = TPartialPathNodeRev(node, state, sc1, sc2, sc3, ap) }
 
@@ -4222,7 +4188,7 @@ module Impl<FullStateConfigSig Config> {
 
       TRevSummaryCtx3 getSummaryCtx3() { result = sc3 }
 
-      RevPartialAccessPath getAp() { result = ap }
+      PartialAccessPath getAp() { result = ap }
 
       override PartialPathNodeRev getASuccessor() {
         revPartialPathStep(result, this.getNodeEx(), this.getState(), this.getSummaryCtx1(),
@@ -4234,7 +4200,7 @@ module Impl<FullStateConfigSig Config> {
         sc1 = TRevSummaryCtx1None() and
         sc2 = TRevSummaryCtx2None() and
         sc3 = TRevSummaryCtx3None() and
-        ap = TRevPartialNil()
+        ap = TPartialNil()
       }
     }
 
@@ -4501,7 +4467,7 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate revPartialPathStep(
       PartialPathNodeRev mid, NodeEx node, FlowState state, TRevSummaryCtx1 sc1,
-      TRevSummaryCtx2 sc2, TRevSummaryCtx3 sc3, RevPartialAccessPath ap
+      TRevSummaryCtx2 sc2, TRevSummaryCtx3 sc3, PartialAccessPath ap
     ) {
       localFlowStepEx(node, mid.getNodeEx()) and
       state = mid.getState() and
@@ -4515,15 +4481,15 @@ module Impl<FullStateConfigSig Config> {
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       sc3 = mid.getSummaryCtx3() and
-      mid.getAp() instanceof RevPartialAccessPathNil and
-      ap = TRevPartialNil()
+      mid.getAp() instanceof PartialAccessPathNil and
+      ap = TPartialNil()
       or
       additionalLocalStateStep(node, state, mid.getNodeEx(), mid.getState()) and
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       sc3 = mid.getSummaryCtx3() and
-      mid.getAp() instanceof RevPartialAccessPathNil and
-      ap = TRevPartialNil()
+      mid.getAp() instanceof PartialAccessPathNil and
+      ap = TPartialNil()
       or
       jumpStepEx(node, mid.getNodeEx()) and
       state = mid.getState() and
@@ -4537,15 +4503,15 @@ module Impl<FullStateConfigSig Config> {
       sc1 = TRevSummaryCtx1None() and
       sc2 = TRevSummaryCtx2None() and
       sc3 = TRevSummaryCtx3None() and
-      mid.getAp() instanceof RevPartialAccessPathNil and
-      ap = TRevPartialNil()
+      mid.getAp() instanceof PartialAccessPathNil and
+      ap = TPartialNil()
       or
       additionalJumpStateStep(node, state, mid.getNodeEx(), mid.getState()) and
       sc1 = TRevSummaryCtx1None() and
       sc2 = TRevSummaryCtx2None() and
       sc3 = TRevSummaryCtx3None() and
-      mid.getAp() instanceof RevPartialAccessPathNil and
-      ap = TRevPartialNil()
+      mid.getAp() instanceof PartialAccessPathNil and
+      ap = TPartialNil()
       or
       revPartialPathReadStep(mid, _, _, node, ap) and
       state = mid.getState() and
@@ -4553,7 +4519,7 @@ module Impl<FullStateConfigSig Config> {
       sc2 = mid.getSummaryCtx2() and
       sc3 = mid.getSummaryCtx3()
       or
-      exists(RevPartialAccessPath ap0, Content c |
+      exists(PartialAccessPath ap0, Content c |
         revPartialPathStoreStep(mid, ap0, c, node) and
         state = mid.getState() and
         sc1 = mid.getSummaryCtx1() and
@@ -4588,8 +4554,8 @@ module Impl<FullStateConfigSig Config> {
 
     pragma[inline]
     private predicate revPartialPathReadStep(
-      PartialPathNodeRev mid, RevPartialAccessPath ap1, Content c, NodeEx node,
-      RevPartialAccessPath ap2
+      PartialPathNodeRev mid, PartialAccessPath ap1, Content c, NodeEx node,
+      PartialAccessPath ap2
     ) {
       exists(NodeEx midNode |
         midNode = mid.getNodeEx() and
@@ -4601,13 +4567,13 @@ module Impl<FullStateConfigSig Config> {
     }
 
     pragma[nomagic]
-    private predicate apConsRev(RevPartialAccessPath ap1, Content c, RevPartialAccessPath ap2) {
+    private predicate apConsRev(PartialAccessPath ap1, Content c, PartialAccessPath ap2) {
       revPartialPathReadStep(_, ap1, c, _, ap2)
     }
 
     pragma[nomagic]
     private predicate revPartialPathStoreStep(
-      PartialPathNodeRev mid, RevPartialAccessPath ap, Content c, NodeEx node
+      PartialPathNodeRev mid, PartialAccessPath ap, Content c, NodeEx node
     ) {
       exists(NodeEx midNode |
         midNode = mid.getNodeEx() and
@@ -4620,7 +4586,7 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate revPartialPathIntoReturn(
       PartialPathNodeRev mid, ReturnPosition pos, FlowState state, TRevSummaryCtx1Some sc1,
-      TRevSummaryCtx2Some sc2, TRevSummaryCtx3Some sc3, DataFlowCall call, RevPartialAccessPath ap
+      TRevSummaryCtx2Some sc2, TRevSummaryCtx3Some sc3, DataFlowCall call, PartialAccessPath ap
     ) {
       exists(NodeEx out |
         mid.getNodeEx() = out and
@@ -4636,7 +4602,7 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate revPartialPathFlowsThrough(
       ArgumentPosition apos, FlowState state, TRevSummaryCtx1Some sc1, TRevSummaryCtx2Some sc2,
-      TRevSummaryCtx3Some sc3, RevPartialAccessPath ap
+      TRevSummaryCtx3Some sc3, PartialAccessPath ap
     ) {
       exists(PartialPathNodeRev mid, ParamNodeEx p, ParameterPosition ppos |
         mid.getNodeEx() = p and
@@ -4653,7 +4619,7 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate revPartialPathThroughCallable0(
       DataFlowCall call, PartialPathNodeRev mid, ArgumentPosition pos, FlowState state,
-      RevPartialAccessPath ap
+      PartialAccessPath ap
     ) {
       exists(TRevSummaryCtx1Some sc1, TRevSummaryCtx2Some sc2, TRevSummaryCtx3Some sc3 |
         revPartialPathIntoReturn(mid, _, _, sc1, sc2, sc3, call, _) and
@@ -4663,7 +4629,7 @@ module Impl<FullStateConfigSig Config> {
 
     pragma[nomagic]
     private predicate revPartialPathThroughCallable(
-      PartialPathNodeRev mid, ArgNodeEx node, FlowState state, RevPartialAccessPath ap
+      PartialPathNodeRev mid, ArgNodeEx node, FlowState state, PartialAccessPath ap
     ) {
       exists(DataFlowCall call, ArgumentPosition pos |
         revPartialPathThroughCallable0(call, mid, pos, state, ap) and
