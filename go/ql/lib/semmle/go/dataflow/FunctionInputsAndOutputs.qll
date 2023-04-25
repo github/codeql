@@ -74,7 +74,9 @@ private class ParameterInput extends FunctionInput, TInParameter {
 
   override predicate isParameter(int i) { i = index }
 
-  override DataFlow::Node getEntryNode(DataFlow::CallNode c) { result = c.getArgument(index) }
+  override DataFlow::Node getEntryNode(DataFlow::CallNode c) {
+    result = c.getSyntacticArgument(index)
+  }
 
   override DataFlow::Node getExitNode(FuncDef f) {
     result = DataFlow::parameterNode(f.getParameter(index))
