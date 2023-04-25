@@ -19,12 +19,15 @@ class UITextField: UIControl {
     set { }
   }
 }
+class UISearchTextField : UITextField {
+}
 
 // --- tests ---
 
-func testUITextField(textField: UITextField) {
+func testUITextField(textField: UITextField, searchTextField: UISearchTextField) {
   _ = textField.text // $ source=local
   _ = textField.attributedText // $ source=local
   _ = textField.placeholder // GOOD (not input)
   _ = textField.text?.uppercased() // $ source=local
+  _ = searchTextField.text // $ source=local
 }
