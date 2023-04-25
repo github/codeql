@@ -43,6 +43,9 @@ function isTypeAlwaysSafeToExpand(type: ts.Type): boolean {
       return false;
     }
   }
+  if (type.aliasSymbol != null) {
+    return false;
+  }
   return true;
 }
 
