@@ -1107,7 +1107,10 @@ private Expr getConvertedResultExpression0(Instruction instr) {
     binary.getAst() = result.(CrementOperation)
   )
   or
-  exists(CopyValueInstruction copy | instr = copy |
+  exists(CopyValueInstruction copy |
+    instr = copy and
+    result = [copy.getConvertedResultExpression(), copy.getUnary().getConvertedResultExpression()]
+  |
     // Consider an example like
     // ```cpp
     // *a = 5;
@@ -1125,8 +1128,8 @@ private Expr getConvertedResultExpression0(Instruction instr) {
     // is treated like a conversion in dataflow, the dataflow node wrapping that instruction
     // must be the one that has a result for `asExpr()`. So `r4.asExpr()` must produce both
     // `a` and `*a`.
-    copy.getAst() instanceof PointerDereferenceExpr and
-    result = [copy.getConvertedResultExpression(), copy.getUnary().getConvertedResultExpression()]
+    copy.getAst() instanceof PointerDereferenceExpr or
+    copy.getAst() instanceof AddressOfExpr
   )
 }
 
@@ -1134,20 +1137,23 @@ private Expr getConvertedResultExpression0(Instruction instr) {
  * Gets the `Expr` whose result is computed by `i` for dataflow-purposes, if any.
  * The Expr may be a conversion.
  */
-private Expr getConvertedResultExpression(Instruction i) {
-  result = getConvertedResultExpression0(i)
+private Expr getConvertedResultExpression(Instruction i, boolean modified) {
+  result = getConvertedResultExpression0(i) and
+  modified = true
   or
   not exists(getConvertedResultExpression0(i)) and
-  result = i.getConvertedResultExpression()
+  result = i.getConvertedResultExpression() and
+  modified = false
 }
 
 /** Holds if `node` is an `OperandNode` that should map `node.asExpr()` to `e`. */
 predicate exprNodeShouldBeOperand(OperandNode node, Expr e) {
-  exists(Instruction def, Operand operand |
+  exists(Instruction def, Operand operand, boolean modified |
+    e = getConvertedResultExpression(def, modified) and
     operand = node.getOperand() and
-    isFullyConvertedOperand(operand) and
-    unique( | | getAUse(def)) = operand and
-    e = getConvertedResultExpression(def)
+    unique( | | getAUse(def)) = operand
+  |
+    if modified = false then isFullyConvertedOperand(operand) else any()
   )
 }
 
@@ -1167,14 +1173,14 @@ private predicate indirectExprNodeShouldBeIndirectOperand(RawIndirectOperand nod
     )
     or
     not indirectExprNodeShouldBeIndirectOperand0(_, node, _) and
-    e = getConvertedResultExpression(instr)
+    e = getConvertedResultExpression(instr, _)
   )
 }
 
 private predicate exprNodeShouldBeIndirectOutNode(IndirectArgumentOutNode node, Expr e) {
   exists(CallInstruction call |
     call.getStaticCallTarget() instanceof Constructor and
-    e = getConvertedResultExpression(call) and
+    e = getConvertedResultExpression(call, _) and
     call.getThisArgumentOperand() = node.getAddressOperand()
   )
 }
@@ -1188,10 +1194,11 @@ private predicate isFullyConvertedInstruction(Instruction instr) {
 private predicate exprNodeShouldBeInstruction(Node node, Expr e) {
   not exprNodeShouldBeOperand(_, e) and
   not exprNodeShouldBeIndirectOutNode(_, e) and
-  exists(Instruction instr |
+  exists(Instruction instr, boolean modified |
     instr = node.asInstruction() and
-    isFullyConvertedInstruction(instr) and
-    e = getConvertedResultExpression(instr)
+    e = getConvertedResultExpression(instr, modified)
+  |
+    if modified = false then isFullyConvertedInstruction(instr) else any()
   )
 }
 
@@ -1203,7 +1210,7 @@ predicate indirectExprNodeShouldBeIndirectInstruction(IndirectInstruction node, 
     e = instr.(VariableAddressInstruction).getAst().(Expr).getFullyConverted()
     or
     not instr instanceof VariableAddressInstruction and
-    e = getConvertedResultExpression(instr)
+    e = getConvertedResultExpression(instr, _)
   )
 }
 
@@ -1765,7 +1772,7 @@ private module ExprFlowCached {
       pai = load.getSourceAddress() and
       pai.getLeftOperand() = n.getOperand() and
       n.getIndirectionIndex() = 1 and
-      e = getConvertedResultExpression(load)
+      e = getConvertedResultExpression(load, _)
     )
   }
 
@@ -2028,9 +2035,9 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
   /** Gets a node that is safely guarded by the given guard check. */
   ExprNode getABarrierNode() {
     exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
-      e = getConvertedResultExpression(value.getAnInstruction()) and
+      e = getConvertedResultExpression(value.getAnInstruction(), _) and
       result.getConvertedExpr() = e and
-      guardChecks(g, getConvertedResultExpression(value.getAnInstruction()), edge) and
+      guardChecks(g, getConvertedResultExpression(value.getAnInstruction(), _), edge) and
       g.controls(result.getBasicBlock(), edge)
     )
   }
@@ -2083,7 +2090,7 @@ deprecated class BarrierGuard extends IRGuardCondition {
       (
         this.checksInstr(value.getAnInstruction(), edge)
         or
-        this.checks(getConvertedResultExpression(value.getAnInstruction()), edge)
+        this.checks(getConvertedResultExpression(value.getAnInstruction(), _), edge)
       ) and
       result.asInstruction() = value.getAnInstruction() and
       this.controls(result.asInstruction().getBlock(), edge)
