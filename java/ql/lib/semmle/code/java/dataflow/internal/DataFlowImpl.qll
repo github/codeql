@@ -1070,8 +1070,6 @@ module Impl<FullStateConfigSig Config> {
       bindingset[result, ap]
       ApApprox getApprox(Ap ap);
 
-      ApNil getApNil(NodeEx node);
-
       Typ getTyp(DataFlowType t);
 
       bindingset[tc, t, tail]
@@ -1122,7 +1120,7 @@ module Impl<FullStateConfigSig Config> {
       bindingset[node2, state2]
       predicate localStep(
         NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        Typ t, ApNil ap, LocalCc lcc
+        Typ t, LocalCc lcc
       );
 
       predicate flowOutOfCall(
@@ -1221,21 +1219,18 @@ module Impl<FullStateConfigSig Config> {
         argAp = apNone() and
         summaryCtx = TParamNodeNone() and
         t = getNodeTyp(node) and
-        ap = getApNil(node) and
+        ap instanceof ApNil and
         apa = getApprox(ap)
         or
-        exists(NodeEx mid, FlowState state0, Typ t0, Ap ap0, ApApprox apa0, LocalCc localCc |
-          fwdFlow(mid, state0, cc, summaryCtx, argT, argAp, t0, ap0, apa0) and
+        exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
+          fwdFlow(mid, state0, cc, summaryCtx, argT, argAp, t0, ap, apa) and
           localCc = getLocalCc(mid, cc)
         |
-          localStep(mid, state0, node, state, true, _, _, localCc) and
-          t = t0 and
-          ap = ap0 and
-          apa = apa0
+          localStep(mid, state0, node, state, true, _, localCc) and
+          t = t0
           or
-          localStep(mid, state0, node, state, false, t, ap, localCc) and
-          ap0 instanceof ApNil and
-          apa = getApprox(ap)
+          localStep(mid, state0, node, state, false, t, localCc) and
+          ap instanceof ApNil
         )
         or
         exists(NodeEx mid |
@@ -1247,28 +1242,26 @@ module Impl<FullStateConfigSig Config> {
           argAp = apNone()
         )
         or
-        exists(NodeEx mid, ApNil nil |
-          fwdFlow(mid, state, _, _, _, _, _, nil) and
+        exists(NodeEx mid |
+          fwdFlow(mid, state, _, _, _, _, _, ap, apa) and
           additionalJumpStep(mid, node) and
           cc = ccNone() and
           summaryCtx = TParamNodeNone() and
           argT instanceof TypOption::None and
           argAp = apNone() and
           t = getNodeTyp(node) and
-          ap = getApNil(node) and
-          apa = getApprox(ap)
+          ap instanceof ApNil
         )
         or
-        exists(NodeEx mid, FlowState state0, ApNil nil |
-          fwdFlow(mid, state0, _, _, _, _, _, nil) and
+        exists(NodeEx mid, FlowState state0 |
+          fwdFlow(mid, state0, _, _, _, _, _, ap, apa) and
           additionalJumpStateStep(mid, state0, node, state) and
           cc = ccNone() and
           summaryCtx = TParamNodeNone() and
           argT instanceof TypOption::None and
           argAp = apNone() and
           t = getNodeTyp(node) and
-          ap = getApNil(node) and
-          apa = getApprox(ap)
+          ap instanceof ApNil
         )
         or
         // store
@@ -1538,14 +1531,13 @@ module Impl<FullStateConfigSig Config> {
         ap instanceof ApNil
         or
         exists(NodeEx mid, FlowState state0 |
-          localStep(node, state, mid, state0, true, _, _, _) and
+          localStep(node, state, mid, state0, true, _, _) and
           revFlow(mid, state0, returnCtx, returnAp, ap)
         )
         or
-        exists(NodeEx mid, FlowState state0, ApNil nil |
-          fwdFlow(node, pragma[only_bind_into](state), _, _, _, _, _, ap) and
-          localStep(node, pragma[only_bind_into](state), mid, state0, false, _, _, _) and
-          revFlow(mid, state0, returnCtx, returnAp, nil) and
+        exists(NodeEx mid, FlowState state0 |
+          localStep(node, pragma[only_bind_into](state), mid, state0, false, _, _) and
+          revFlow(mid, state0, returnCtx, returnAp, ap) and
           ap instanceof ApNil
         )
         or
@@ -1556,19 +1548,17 @@ module Impl<FullStateConfigSig Config> {
           returnAp = apNone()
         )
         or
-        exists(NodeEx mid, ApNil nil |
-          fwdFlow(node, _, _, _, _, _, _, ap) and
+        exists(NodeEx mid |
           additionalJumpStep(node, mid) and
-          revFlow(pragma[only_bind_into](mid), state, _, _, nil) and
+          revFlow(pragma[only_bind_into](mid), state, _, _, ap) and
           returnCtx = TReturnCtxNone() and
           returnAp = apNone() and
           ap instanceof ApNil
         )
         or
-        exists(NodeEx mid, FlowState state0, ApNil nil |
-          fwdFlow(node, _, _, _, _, _, _, ap) and
+        exists(NodeEx mid, FlowState state0 |
           additionalJumpStateStep(node, state, mid, state0) and
-          revFlow(pragma[only_bind_into](mid), pragma[only_bind_into](state0), _, _, nil) and
+          revFlow(pragma[only_bind_into](mid), pragma[only_bind_into](state0), _, _, ap) and
           returnCtx = TReturnCtxNone() and
           returnAp = apNone() and
           ap instanceof ApNil
@@ -1909,8 +1899,6 @@ module Impl<FullStateConfigSig Config> {
     bindingset[result, ap]
     PrevStage::Ap getApprox(Ap ap) { any() }
 
-    ApNil getApNil(NodeEx node) { Stage1::revFlow(node) and exists(result) }
-
     Typ getTyp(DataFlowType t) { any() }
 
     bindingset[tc, t, tail]
@@ -1936,7 +1924,7 @@ module Impl<FullStateConfigSig Config> {
     bindingset[node2, state2]
     predicate localStep(
       NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-      Typ t, ApNil ap, LocalCc lcc
+      Typ t, LocalCc lcc
     ) {
       (
         preservesValue = true and
@@ -1951,7 +1939,6 @@ module Impl<FullStateConfigSig Config> {
         additionalLocalStateStep(node1, state1, node2, state2)
       ) and
       exists(t) and
-      exists(ap) and
       exists(lcc)
     }
 
@@ -2178,10 +2165,6 @@ module Impl<FullStateConfigSig Config> {
 
     PrevStage::Ap getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
 
-    ApNil getApNil(NodeEx node) {
-      PrevStage::revFlow(node, _) and result = TApproxFrontNil(node.getDataFlowType())
-    }
-
     Typ getTyp(DataFlowType t) { result = t }
 
     bindingset[tc, t, tail]
@@ -2204,10 +2187,9 @@ module Impl<FullStateConfigSig Config> {
 
     predicate localStep(
       NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-      DataFlowType t, ApproxAccessPathFrontNil ap, LocalCc lcc
+      DataFlowType t, LocalCc lcc
     ) {
       localFlowBigStep(node1, state1, node2, state2, preservesValue, t, _) and
-      ap.getType() = t and
       exists(lcc)
     }
 
@@ -2262,10 +2244,6 @@ module Impl<FullStateConfigSig Config> {
 
     PrevStage::Ap getApprox(Ap ap) { result = ap.toApprox() }
 
-    ApNil getApNil(NodeEx node) {
-      PrevStage::revFlow(node, _) and result = TFrontNil(node.getDataFlowType())
-    }
-
     Typ getTyp(DataFlowType t) { result = t }
 
     bindingset[tc, t, tail]
@@ -2289,10 +2267,9 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     predicate localStep(
       NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-      DataFlowType t, ApNil ap, LocalCc lcc
+      DataFlowType t, LocalCc lcc
     ) {
       localFlowBigStep(node1, state1, node2, state2, preservesValue, t, _) and
-      ap.getType() = t and
       PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
       PrevStage::revFlow(node2, pragma[only_bind_into](state2), _) and
       exists(lcc)
@@ -2407,9 +2384,9 @@ module Impl<FullStateConfigSig Config> {
   }
 
   private newtype TAccessPathApprox =
-    TNil(DataFlowType t) or
+    TNil() or
     TConsNil(TypedContent tc, DataFlowType t) {
-      Stage4::consCand(tc, t, TFrontNil(t)) and
+      Stage4::consCand(tc, t, TFrontNil()) and
       not expensiveLen2unfolding(tc)
     } or
     TConsCons(TypedContent tc1, DataFlowType t, TypedContent tc2, int len) {
@@ -2436,8 +2413,6 @@ module Impl<FullStateConfigSig Config> {
 
     abstract int len();
 
-    abstract DataFlowType getType();
-
     abstract AccessPathFront getFront();
 
     /** Holds if this is a representation of `head` followed by the `typ,tail` pair. */
@@ -2445,19 +2420,13 @@ module Impl<FullStateConfigSig Config> {
   }
 
   private class AccessPathApproxNil extends AccessPathApprox, TNil {
-    private DataFlowType t;
-
-    AccessPathApproxNil() { this = TNil(t) }
-
-    override string toString() { result = concat(": " + ppReprType(t)) }
+    override string toString() { result = "" }
 
     override TypedContent getHead() { none() }
 
     override int len() { result = 0 }
 
-    override DataFlowType getType() { result = t }
-
-    override AccessPathFront getFront() { result = TFrontNil(t) }
+    override AccessPathFront getFront() { result = TFrontNil() }
 
     override predicate isCons(TypedContent head, DataFlowType typ, AccessPathApprox tail) { none() }
   }
@@ -2479,11 +2448,9 @@ module Impl<FullStateConfigSig Config> {
 
     override int len() { result = 1 }
 
-    override DataFlowType getType() { result = tc.getContainerType() }
-
     override AccessPathFront getFront() { result = TFrontHead(tc) }
 
-    override predicate isCons(TypedContent head, DataFlowType typ, AccessPathApprox tail) { head = tc and typ = t and tail = TNil(t) }
+    override predicate isCons(TypedContent head, DataFlowType typ, AccessPathApprox tail) { head = tc and typ = t and tail = TNil() }
   }
 
   private class AccessPathApproxConsCons extends AccessPathApproxCons, TConsCons {
@@ -2503,8 +2470,6 @@ module Impl<FullStateConfigSig Config> {
     override TypedContent getHead() { result = tc1 }
 
     override int len() { result = len }
-
-    override DataFlowType getType() { result = tc1.getContainerType() }
 
     override AccessPathFront getFront() { result = TFrontHead(tc1) }
 
@@ -2538,8 +2503,6 @@ module Impl<FullStateConfigSig Config> {
 
     override int len() { result = len }
 
-    override DataFlowType getType() { result = tc.getContainerType() }
-
     override AccessPathFront getFront() { result = TFrontHead(tc) }
 
     override predicate isCons(TypedContent head, DataFlowType typ, AccessPathApprox tail) {
@@ -2554,12 +2517,9 @@ module Impl<FullStateConfigSig Config> {
           tail = TCons1(tc2, len - 1)
         )
         or
-        exists(DataFlowType t |
-          len = 1 and
-          Stage4::consCand(tc, t, TFrontNil(t)) and
-          typ = t and
-          tail = TNil(t)
-        )
+        len = 1 and
+        Stage4::consCand(tc, typ, TFrontNil()) and
+        tail = TNil()
       )
     }
   }
@@ -2591,10 +2551,6 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     PrevStage::Ap getApprox(Ap ap) { result = ap.getFront() }
 
-    ApNil getApNil(NodeEx node) {
-      PrevStage::revFlow(node, _) and result = TNil(node.getDataFlowType())
-    }
-
     Typ getTyp(DataFlowType t) { result = t }
 
     bindingset[tc, t, tail]
@@ -2618,10 +2574,9 @@ module Impl<FullStateConfigSig Config> {
 
     predicate localStep(
       NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-      DataFlowType t, ApNil ap, LocalCc lcc
+      DataFlowType t, LocalCc lcc
     ) {
       localFlowBigStep(node1, state1, node2, state2, preservesValue, t, lcc) and
-      ap.getType() = t and
       PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
       PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
     }
@@ -2813,7 +2768,7 @@ module Impl<FullStateConfigSig Config> {
   }
 
   private newtype TAccessPath =
-    TAccessPathNil(DataFlowType t) or
+    TAccessPathNil() or
     TAccessPathCons(TypedContent head, DataFlowType t, AccessPath tail) {
       exists(AccessPathApproxCons apa |
         not evalUnfold(apa, false) and
@@ -2849,7 +2804,7 @@ module Impl<FullStateConfigSig Config> {
       sourceCallCtx(cc) and
       sc instanceof SummaryCtxNone and
       t = node.getDataFlowType() and
-      ap = TAccessPathNil(t)
+      ap = TAccessPathNil()
       or
       // ... or a step from an existing PathNode to another node.
       pathStep(_, node, state, cc, sc, t, ap) and
@@ -2899,25 +2854,19 @@ module Impl<FullStateConfigSig Config> {
   }
 
   private class AccessPathNil extends AccessPath, TAccessPathNil {
-    private DataFlowType t;
-
-    AccessPathNil() { this = TAccessPathNil(t) }
-
-    DataFlowType getType() { result = t }
-
     override TypedContent getHead() { none() }
 
     override AccessPath getTail() { none() }
 
     override predicate isCons(TypedContent head, DataFlowType typ, AccessPath tail) { none() }
 
-    override AccessPathFrontNil getFront() { result = TFrontNil(t) }
+    override AccessPathFrontNil getFront() { result = TFrontNil() }
 
-    override AccessPathApproxNil getApprox() { result = TNil(t) }
+    override AccessPathApproxNil getApprox() { result = TNil() }
 
     override int length() { result = 0 }
 
-    override string toString() { result = concat(": " + ppReprType(t)) }
+    override string toString() { result = "" }
   }
 
   private class AccessPathCons extends AccessPath, TAccessPathCons {
@@ -2939,7 +2888,7 @@ module Impl<FullStateConfigSig Config> {
 
     pragma[assume_small_delta]
     override AccessPathApproxCons getApprox() {
-      result = TConsNil(head_, t) and tail_ instanceof AccessPathNil
+      result = TConsNil(head_, t) and tail_ = TAccessPathNil()
       or
       result = TConsCons(head_, t, tail_.getHead(), this.length())
       or
@@ -2950,7 +2899,7 @@ module Impl<FullStateConfigSig Config> {
     override int length() { result = 1 + tail_.length() }
 
     private string toStringImpl(boolean needsSuffix) {
-      tail_ = TAccessPathNil(_) and
+      tail_ = TAccessPathNil() and
       needsSuffix = false and
       result = head_.toString() + "]" + concat(" : " + ppReprType(t))
       or
@@ -3281,7 +3230,7 @@ module Impl<FullStateConfigSig Config> {
       sourceCallCtx(cc) and
       sc instanceof SummaryCtxNone and
       t = node.getDataFlowType() and
-      ap = TAccessPathNil(t)
+      ap = TAccessPathNil()
     }
 
     predicate isAtSink() {
@@ -3406,11 +3355,10 @@ module Impl<FullStateConfigSig Config> {
       localFlowBigStep(midnode, state0, node, state, true, _, localCC)
     )
     or
-    exists(AccessPath ap0, NodeEx midnode, FlowState state0, LocalCallContext localCC |
-      pathNode(mid, midnode, state0, cc, sc, _, ap0, localCC) and
+    exists(NodeEx midnode, FlowState state0, LocalCallContext localCC |
+      pathNode(mid, midnode, state0, cc, sc, _, ap, localCC) and
       localFlowBigStep(midnode, state0, node, state, false, t, localCC) and
-      ap.(AccessPathNil).getType() = t and
-      ap0 instanceof AccessPathNil
+      ap instanceof AccessPathNil
     )
     or
     jumpStepEx(mid.getNodeEx(), node) and
@@ -3426,14 +3374,14 @@ module Impl<FullStateConfigSig Config> {
     sc instanceof SummaryCtxNone and
     mid.getAp() instanceof AccessPathNil and
     t = node.getDataFlowType() and
-    ap = TAccessPathNil(t)
+    ap = TAccessPathNil()
     or
     additionalJumpStateStep(mid.getNodeEx(), mid.getState(), node, state) and
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
     mid.getAp() instanceof AccessPathNil and
     t = node.getDataFlowType() and
-    ap = TAccessPathNil(t)
+    ap = TAccessPathNil()
     or
     exists(TypedContent tc, DataFlowType t0, AccessPath ap0 |
       pathStoreStep(mid, node, state, t0, ap0, tc, t, cc) and

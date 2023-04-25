@@ -957,12 +957,12 @@ private module Cached {
 
   cached
   newtype TAccessPathFront =
-    TFrontNil(DataFlowType t) or
+    TFrontNil() or
     TFrontHead(TypedContent tc)
 
   cached
   newtype TApproxAccessPathFront =
-    TApproxFrontNil(DataFlowType t) or
+    TApproxFrontNil() or
     TApproxFrontHead(TypedContentApprox tc)
 
   cached
@@ -1415,8 +1415,6 @@ class TypedContentApprox extends MkTypedContentApprox {
 abstract class ApproxAccessPathFront extends TApproxAccessPathFront {
   abstract string toString();
 
-  abstract DataFlowType getType();
-
   abstract boolean toBoolNonEmpty();
 
   TypedContentApprox getHead() { this = TApproxFrontHead(result) }
@@ -1431,13 +1429,7 @@ abstract class ApproxAccessPathFront extends TApproxAccessPathFront {
 }
 
 class ApproxAccessPathFrontNil extends ApproxAccessPathFront, TApproxFrontNil {
-  private DataFlowType t;
-
-  ApproxAccessPathFrontNil() { this = TApproxFrontNil(t) }
-
-  override string toString() { result = ppReprType(t) }
-
-  override DataFlowType getType() { result = t }
+  override string toString() { result = "nil" }
 
   override boolean toBoolNonEmpty() { result = false }
 }
@@ -1448,8 +1440,6 @@ class ApproxAccessPathFrontHead extends ApproxAccessPathFront, TApproxFrontHead 
   ApproxAccessPathFrontHead() { this = TApproxFrontHead(tc) }
 
   override string toString() { result = tc.toString() }
-
-  override DataFlowType getType() { result = tc.getContainerType() }
 
   override boolean toBoolNonEmpty() { result = true }
 }
@@ -1493,23 +1483,15 @@ class TypedContent extends MkTypedContent {
 abstract class AccessPathFront extends TAccessPathFront {
   abstract string toString();
 
-  abstract DataFlowType getType();
-
   abstract ApproxAccessPathFront toApprox();
 
   TypedContent getHead() { this = TFrontHead(result) }
 }
 
 class AccessPathFrontNil extends AccessPathFront, TFrontNil {
-  private DataFlowType t;
+  override string toString() { result = "nil" }
 
-  AccessPathFrontNil() { this = TFrontNil(t) }
-
-  override string toString() { result = ppReprType(t) }
-
-  override DataFlowType getType() { result = t }
-
-  override ApproxAccessPathFront toApprox() { result = TApproxFrontNil(t) }
+  override ApproxAccessPathFront toApprox() { result = TApproxFrontNil() }
 }
 
 class AccessPathFrontHead extends AccessPathFront, TFrontHead {
@@ -1518,8 +1500,6 @@ class AccessPathFrontHead extends AccessPathFront, TFrontHead {
   AccessPathFrontHead() { this = TFrontHead(tc) }
 
   override string toString() { result = tc.toString() }
-
-  override DataFlowType getType() { result = tc.getContainerType() }
 
   override ApproxAccessPathFront toApprox() { result.getAHead() = tc }
 }
