@@ -614,14 +614,14 @@ export class TypeTable {
         // cannot be written using TypeScript syntax - so we ignore them entirely.
         return null;
       }
-      return this.makeTypeStringVector("union", unionType.types);
+      return this.makeDeduplicatedTypeStringVector("union", unionType.types);
     }
     if (flags & ts.TypeFlags.Intersection) {
       let intersectionType = type as ts.IntersectionType;
       if (intersectionType.types.length === 0) {
         return null; // Ignore malformed type.
       }
-      return this.makeTypeStringVector("intersection", intersectionType.types);
+      return this.makeDeduplicatedTypeStringVector("intersection", intersectionType.types);
     }
     if (isTypeReference(type) && (type.target.objectFlags & ts.ObjectFlags.Tuple)) {
       // Encode the minimum length and presence of rest element in the first two parts of the type string.
@@ -780,6 +780,27 @@ export class TypeTable {
       let id = this.getId(types[i], false);
       if (id == null) return null;
       hash += ";" + id;
+    }
+    return hash;
+  }
+
+  /**
+   * Returns the given string with the IDs of the given types appended,
+   * ignoring duplicates, and each separated by `;`.
+   */
+  private makeDeduplicatedTypeStringVector(tag: string, types: ReadonlyArray<ts.Type>, length = types.length): string | null {
+    let seenIds = new Set<number>();
+    let numberOfSeenIds = 0;
+    let hash = tag;
+    for (let i = 0; i < length; ++i) {
+      let id = this.getId(types[i], false);
+      if (id == null) return null;
+      seenIds.add(id);
+      if (seenIds.size > numberOfSeenIds) {
+        // This ID was not seen before
+        ++numberOfSeenIds;
+        hash += ";" + id;
+      }
     }
     return hash;
   }
