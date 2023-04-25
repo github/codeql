@@ -16,6 +16,7 @@ swift_cc_binary(
         "//swift/extractor/remapping",
         "//swift/extractor/translators",
         "//swift/third_party/swift-llvm-support",
+        "@absl//absl/strings",
     ],
 )
 
