@@ -2759,10 +2759,10 @@ module Impl<FullStateConfigSig Config> {
     )
   }
 
-  private AccessPathApprox getATail(AccessPathApprox apa) {
-    exists(TypedContent head, DataFlowType t |
-      apa.isCons(head, t, result) and
-      Stage5::consCand(head, t, result)
+  private predicate hasTail(AccessPathApprox apa, DataFlowType t, AccessPathApprox tail) {
+    exists(TypedContent head |
+      apa.isCons(head, t, tail) and
+      Stage5::consCand(head, t, tail)
     )
   }
 
@@ -2808,7 +2808,7 @@ module Impl<FullStateConfigSig Config> {
   private int countPotentialAps(AccessPathApprox apa) {
     apa instanceof AccessPathApproxNil and result = 1
     or
-    result = strictsum(AccessPathApprox tail | tail = getATail(apa) | countAps(tail))
+    result = strictsum(DataFlowType t, AccessPathApprox tail | hasTail(apa, t, tail) | countAps(tail))
   }
 
   private newtype TAccessPath =
@@ -2817,16 +2817,17 @@ module Impl<FullStateConfigSig Config> {
       exists(AccessPathApproxCons apa |
         not evalUnfold(apa, false) and
         head = apa.getHead() and
-        tail.getApprox() = getATail(apa)
+        hasTail(apa, _, tail.getApprox())
       )
     } or
     TAccessPathCons2(TypedContent head1, TypedContent head2, int len) {
-      exists(AccessPathApproxCons apa |
+      exists(AccessPathApproxCons apa, AccessPathApprox tail |
         evalUnfold(apa, false) and
         not expensiveLen1to2unfolding(apa) and
         apa.len() = len and
+        hasTail(apa, _, tail) and
         head1 = apa.getHead() and
-        head2 = getATail(apa).getHead()
+        head2 = tail.getHead()
       )
     } or
     TAccessPathCons1(TypedContent head, int len) {
