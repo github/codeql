@@ -3903,46 +3903,35 @@ module Impl<FullStateConfigSig Config> {
     private int distSink(DataFlowCallable c) { result = distSinkExt(TCallable(c)) - 1 }
 
     private newtype TPartialAccessPath =
-      TPartialNil(DataFlowType t) or
-      TPartialCons(TypedContent tc, int len) { len in [1 .. accessPathLimit()] }
+      TPartialNil() or
+      TPartialCons(Content c, int len) { len in [1 .. accessPathLimit()] }
 
     /**
-     * Conceptually a list of `TypedContent`s followed by a `Type`, but only the first
-     * element of the list and its length are tracked. If data flows from a source to
-     * a given node with a given `AccessPath`, this indicates the sequence of
-     * dereference operations needed to get from the value in the node to the
-     * tracked object. The final type indicates the type of the tracked object.
+     * Conceptually a list of `Content`s, but only the first
+     * element of the list and its length are tracked.
      */
     private class PartialAccessPath extends TPartialAccessPath {
       abstract string toString();
 
-      TypedContent getHead() { this = TPartialCons(result, _) }
+      Content getHead() { this = TPartialCons(result, _) }
 
       int len() {
-        this = TPartialNil(_) and result = 0
+        this = TPartialNil() and result = 0
         or
         this = TPartialCons(_, result)
-      }
-
-      DataFlowType getType() {
-        this = TPartialNil(result)
-        or
-        exists(TypedContent head | this = TPartialCons(head, _) | result = head.getContainerType())
       }
     }
 
     private class PartialAccessPathNil extends PartialAccessPath, TPartialNil {
-      override string toString() {
-        exists(DataFlowType t | this = TPartialNil(t) | result = concat(": " + ppReprType(t)))
-      }
+      override string toString() { result = "" }
     }
 
     private class PartialAccessPathCons extends PartialAccessPath, TPartialCons {
       override string toString() {
-        exists(TypedContent tc, int len | this = TPartialCons(tc, len) |
+        exists(Content c, int len | this = TPartialCons(c, len) |
           if len = 1
-          then result = "[" + tc.toString() + "]"
-          else result = "[" + tc.toString() + ", ... (" + len.toString() + ")]"
+          then result = "[" + c.toString() + "]"
+          else result = "[" + c.toString() + ", ... (" + len.toString() + ")]"
         )
       }
     }
@@ -4030,7 +4019,7 @@ module Impl<FullStateConfigSig Config> {
         sc3 = TSummaryCtx3None() and
         sc4 = TSummaryCtx4None() and
         t = node.getDataFlowType() and
-        ap = TPartialNil(node.getDataFlowType()) and
+        ap = TPartialNil() and
         exists(explorationLimit())
         or
         partialPathNodeMk0(node, state, cc, sc1, sc2, sc3, sc4, t, ap) and
@@ -4066,10 +4055,10 @@ module Impl<FullStateConfigSig Config> {
       partialPathStep(_, node, state, cc, sc1, sc2, sc3, sc4, t, ap) and
       not fullBarrier(node) and
       not stateBarrier(node, state) and
-      not clearsContentEx(node, ap.getHead().getContent()) and
+      not clearsContentEx(node, ap.getHead()) and
       (
         notExpectsContent(node) or
-        expectsContentEx(node, ap.getHead().getContent())
+        expectsContentEx(node, ap.getHead())
       ) and
       if node.asNode() instanceof CastingNode
       then compatibleTypes(node.getDataFlowType(), t)
@@ -4274,7 +4263,7 @@ module Impl<FullStateConfigSig Config> {
         sc4 = mid.getSummaryCtx4() and
         mid.getAp() instanceof PartialAccessPathNil and
         t = node.getDataFlowType() and
-        ap = TPartialNil(node.getDataFlowType())
+        ap = TPartialNil()
         or
         additionalLocalStateStep(mid.getNodeEx(), mid.getState(), node, state) and
         cc = mid.getCallContext() and
@@ -4284,7 +4273,7 @@ module Impl<FullStateConfigSig Config> {
         sc4 = mid.getSummaryCtx4() and
         mid.getAp() instanceof PartialAccessPathNil and
         t = node.getDataFlowType() and
-        ap = TPartialNil(node.getDataFlowType())
+        ap = TPartialNil()
       )
       or
       jumpStepEx(mid.getNodeEx(), node) and
@@ -4306,7 +4295,7 @@ module Impl<FullStateConfigSig Config> {
       sc4 = TSummaryCtx4None() and
       mid.getAp() instanceof PartialAccessPathNil and
       t = node.getDataFlowType() and
-      ap = TPartialNil(node.getDataFlowType())
+      ap = TPartialNil()
       or
       additionalJumpStateStep(mid.getNodeEx(), mid.getState(), node, state) and
       cc instanceof CallContextAny and
@@ -4316,7 +4305,7 @@ module Impl<FullStateConfigSig Config> {
       sc4 = TSummaryCtx4None() and
       mid.getAp() instanceof PartialAccessPathNil and
       t = node.getDataFlowType() and
-      ap = TPartialNil(node.getDataFlowType())
+      ap = TPartialNil()
       or
       partialPathStoreStep(mid, _, _, _, node, t, ap) and
       state = mid.getState() and
@@ -4359,12 +4348,12 @@ module Impl<FullStateConfigSig Config> {
       PartialPathNodeFwd mid, DataFlowType t1, PartialAccessPath ap1, Content c, NodeEx node,
       DataFlowType t2, PartialAccessPath ap2
     ) {
-      exists(NodeEx midNode, DataFlowType contentType, TypedContent tc |
+      exists(NodeEx midNode, DataFlowType contentType |
         midNode = mid.getNodeEx() and
         t1 = mid.getType() and
         ap1 = mid.getAp() and
-        storeEx(midNode, tc, c, node, contentType, t2) and
-        ap2.getHead() = tc and
+        storeEx(midNode, _, c, node, contentType, t2) and
+        ap2.getHead() = c and
         ap2.len() = unbindInt(ap1.len() + 1) and
         compatibleTypes(t1, contentType)
       )
@@ -4384,7 +4373,7 @@ module Impl<FullStateConfigSig Config> {
         t = mid.getType() and
         ap = mid.getAp() and
         read(midNode, c, node) and
-        ap.getHead().getContent() = c and
+        ap.getHead() = c and
         cc = mid.getCallContext()
       )
     }
