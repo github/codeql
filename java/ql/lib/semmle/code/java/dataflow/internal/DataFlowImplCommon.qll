@@ -940,7 +940,7 @@ private module Cached {
   cached
   newtype TAccessPathFront =
     TFrontNil() or
-    TFrontHead(TypedContent tc)
+    TFrontHead(Content c)
 
   cached
   newtype TApproxAccessPathFront =
@@ -1447,7 +1447,7 @@ abstract class AccessPathFront extends TAccessPathFront {
 
   abstract ApproxAccessPathFront toApprox();
 
-  TypedContent getHead() { this = TFrontHead(result) }
+  Content getHead() { this = TFrontHead(result) }
 }
 
 class AccessPathFrontNil extends AccessPathFront, TFrontNil {
@@ -1457,13 +1457,13 @@ class AccessPathFrontNil extends AccessPathFront, TFrontNil {
 }
 
 class AccessPathFrontHead extends AccessPathFront, TFrontHead {
-  private TypedContent tc;
+  private Content c;
 
-  AccessPathFrontHead() { this = TFrontHead(tc) }
+  AccessPathFrontHead() { this = TFrontHead(c) }
 
-  override string toString() { result = tc.toString() }
+  override string toString() { result = c.toString() }
 
-  override ApproxAccessPathFront toApprox() { result.getAHead() = tc.getContent() }
+  override ApproxAccessPathFront toApprox() { result.getAHead() = c }
 }
 
 /** An optional access path front. */
