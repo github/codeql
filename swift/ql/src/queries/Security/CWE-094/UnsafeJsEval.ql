@@ -4,7 +4,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 9.3
- * @precision high
+ * @precision medium
  * @id swift/unsafe-js-eval
  * @tags security
  *       external/cwe/cwe-094

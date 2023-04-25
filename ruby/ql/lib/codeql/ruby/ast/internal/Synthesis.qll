@@ -952,6 +952,8 @@ private module DestructuredAssignDesugar {
   }
 
   abstract private class LhsWithReceiver extends Expr {
+    LhsWithReceiver() { this = any(DestructuredAssignExpr dae).getElement(_) }
+
     abstract Expr getReceiver();
 
     abstract SynthKind getSynthKind();
@@ -960,8 +962,14 @@ private module DestructuredAssignDesugar {
   private class LhsCall extends LhsWithReceiver instanceof MethodCall {
     final override Expr getReceiver() { result = MethodCall.super.getReceiver() }
 
+    pragma[nomagic]
+    private string getMethodName(int args) {
+      result = super.getMethodName() and
+      args = super.getNumberOfArguments()
+    }
+
     final override SynthKind getSynthKind() {
-      result = MethodCallKind(super.getMethodName(), false, super.getNumberOfArguments())
+      exists(int args | result = MethodCallKind(this.getMethodName(args), false, args))
     }
   }
 
@@ -1154,9 +1162,7 @@ private module DestructuredAssignDesugar {
       )
     }
 
-    final override predicate excludeFromControlFlowTree(AstNode n) {
-      n = any(DestructuredAssignExpr tae).getElement(_).(LhsWithReceiver)
-    }
+    final override predicate excludeFromControlFlowTree(AstNode n) { n instanceof LhsWithReceiver }
   }
 }
 
@@ -1211,12 +1217,11 @@ private module HashLiteralDesugar {
       child = SynthChild(MethodCallKind("[]", false, hl.getNumberOfElements()))
       or
       parent = TMethodCallSynth(hl, -1, _, _, _) and
-      (
-        i = 0 and
-        child = SynthChild(ConstantReadAccessKind("::Hash"))
-        or
-        child = childRef(hl.getElement(i - 1))
-      )
+      i = 0 and
+      child = SynthChild(ConstantReadAccessKind("::Hash"))
+      or
+      parent = TMethodCallSynth(hl, -1, _, _, _) and
+      child = childRef(hl.getElement(i - 1))
     )
   }
 
