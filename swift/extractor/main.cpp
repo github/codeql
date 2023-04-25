@@ -9,6 +9,8 @@
 #include <swift/FrontendTool/FrontendTool.h>
 #include <swift/Basic/InitializeSwiftModules.h>
 
+#include "absl/strings/str_join.h"
+
 #include "swift/extractor/SwiftExtractor.h"
 #include "swift/extractor/infra/TargetDomains.h"
 #include "swift/extractor/remapping/SwiftFileInterception.h"
@@ -184,18 +186,13 @@ codeql::SwiftExtractorConfiguration configure(int argc, char** argv) {
   return configuration;
 }
 
-// TODO: use `absl::StrJoin` or `boost::algorithm::join`
 static auto argDump(int argc, char** argv) {
-  std::string ret;
-  for (auto arg = argv + 1; arg < argv + argc; ++arg) {
-    ret += *arg;
-    ret += ' ';
+  if (argc < 2) {
+    return ""s;
   }
-  ret.pop_back();
-  return ret;
+  return absl::StrJoin(argv + 1, argv + argc, " ");
 }
 
-// TODO: use `absl::StrJoin` or `boost::algorithm::join`
 static auto envDump(char** envp) {
   std::string ret;
   for (auto env = envp; *env; ++env) {
