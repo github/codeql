@@ -4,6 +4,78 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
+| file://:0:0:0:0 | (__begin) | Node should have one toString but has 2. |
+| file://:0:0:0:0 | (__begin) | Node should have one toString but has 2. |
+| file://:0:0:0:0 | (__begin) indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | (__begin) indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | (__begin) indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | (__begin) indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | * ... indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | this | Node should have one toString but has 2. |
+| file://:0:0:0:0 | this | Node should have one toString but has 2. |
+| file://:0:0:0:0 | this | Node should have one toString but has 2. |
+| file://:0:0:0:0 | this indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | this indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | this indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | this indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | this indirection | Node should have one toString but has 2. |
+| file://:0:0:0:0 | this indirection | Node should have one toString but has 2. |
+| ir.cpp:747:8:747:8 | & ... | Node should have one toString but has 2. |
+| ir.cpp:747:8:747:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:747:8:747:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:747:8:747:8 | base_s | Node should have one toString but has 2. |
+| ir.cpp:747:8:747:8 | base_s indirection | Node should have one toString but has 2. |
+| ir.cpp:747:8:747:8 | base_s indirection | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | & ... | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | & ... | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | & ... | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | (unnamed parameter 0) | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | (unnamed parameter 0) indirection | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | (unnamed parameter 0) indirection | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | * ... | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | * ... indirection | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | * ... indirection | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | middle_s | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | middle_s indirection | Node should have one toString but has 2. |
+| ir.cpp:756:8:756:8 | middle_s indirection | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | & ... | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | & ... | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | & ... | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | & ... indirection | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | (unnamed parameter 0) | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | (unnamed parameter 0) indirection | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | (unnamed parameter 0) indirection | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | * ... | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | * ... indirection | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | * ... indirection | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | derived_s | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | derived_s indirection | Node should have one toString but has 2. |
+| ir.cpp:765:8:765:8 | derived_s indirection | Node should have one toString but has 2. |
 missingToString
 parameterCallable
 localFlowIsLocal
