@@ -2168,12 +2168,12 @@ module Impl<FullStateConfigSig Config> {
     Typ getTyp(DataFlowType t) { result = t }
 
     bindingset[tc, t, tail]
-    Ap apCons(TypedContent tc, Typ t, Ap tail) { result.getAHead() = tc and exists(t) and exists(tail) }
+    Ap apCons(TypedContent tc, Typ t, Ap tail) { result.getAHead() = tc.getContent() and exists(t) and exists(tail) }
 
     class ApHeadContent = ContentApprox;
 
     pragma[noinline]
-    ApHeadContent getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+    ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
 
     predicate projectToHeadContent = getContentApprox/1;
 
@@ -2203,7 +2203,7 @@ module Impl<FullStateConfigSig Config> {
         PrevStage::revFlow(node) and
         PrevStage::readStepCand(_, c, _) and
         expectsContentEx(node, c) and
-        c = ap.getAHead().getContent()
+        c = ap.getAHead()
       )
     }
 

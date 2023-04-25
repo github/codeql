@@ -935,25 +935,7 @@ private module Cached {
     TReturnCtxMaybeFlowThrough(ReturnPosition pos)
 
   cached
-  newtype TTypedContentApprox =
-    MkTypedContentApprox(ContentApprox c, DataFlowType t) {
-      exists(Content cont |
-        c = getContentApprox(cont) and
-        store(_, cont, _, _, t)
-      )
-    }
-
-  cached
   newtype TTypedContent = MkTypedContent(Content c, DataFlowType t) { store(_, c, _, _, t) }
-
-  cached
-  TypedContent getATypedContent(TypedContentApprox c) {
-    exists(ContentApprox cls, DataFlowType t, Content cont |
-      c = MkTypedContentApprox(cls, pragma[only_bind_into](t)) and
-      result = MkTypedContent(cont, pragma[only_bind_into](t)) and
-      cls = getContentApprox(cont)
-    )
-  }
 
   cached
   newtype TAccessPathFront =
@@ -963,7 +945,7 @@ private module Cached {
   cached
   newtype TApproxAccessPathFront =
     TApproxFrontNil() or
-    TApproxFrontHead(TypedContentApprox tc)
+    TApproxFrontHead(ContentApprox c)
 
   cached
   newtype TAccessPathFrontOption =
@@ -1389,26 +1371,6 @@ class ReturnCtx extends TReturnCtx {
   }
 }
 
-/** An approximated `Content` tagged with the type of a containing object. */
-class TypedContentApprox extends MkTypedContentApprox {
-  private ContentApprox c;
-  private DataFlowType t;
-
-  TypedContentApprox() { this = MkTypedContentApprox(c, t) }
-
-  /** Gets a typed content approximated by this value. */
-  TypedContent getATypedContent() { result = getATypedContent(this) }
-
-  /** Gets the content. */
-  ContentApprox getContent() { result = c }
-
-  /** Gets the container type. */
-  DataFlowType getContainerType() { result = t }
-
-  /** Gets a textual representation of this approximated content. */
-  string toString() { result = c.toString() }
-}
-
 /**
  * The front of an approximated access path. This is either a head or a nil.
  */
@@ -1417,13 +1379,13 @@ abstract class ApproxAccessPathFront extends TApproxAccessPathFront {
 
   abstract boolean toBoolNonEmpty();
 
-  TypedContentApprox getHead() { this = TApproxFrontHead(result) }
+  ContentApprox getHead() { this = TApproxFrontHead(result) }
 
   pragma[nomagic]
-  TypedContent getAHead() {
-    exists(TypedContentApprox cont |
+  Content getAHead() {
+    exists(ContentApprox cont |
       this = TApproxFrontHead(cont) and
-      result = cont.getATypedContent()
+      cont = getContentApprox(result)
     )
   }
 }
@@ -1435,11 +1397,11 @@ class ApproxAccessPathFrontNil extends ApproxAccessPathFront, TApproxFrontNil {
 }
 
 class ApproxAccessPathFrontHead extends ApproxAccessPathFront, TApproxFrontHead {
-  private TypedContentApprox tc;
+  private ContentApprox c;
 
-  ApproxAccessPathFrontHead() { this = TApproxFrontHead(tc) }
+  ApproxAccessPathFrontHead() { this = TApproxFrontHead(c) }
 
-  override string toString() { result = tc.toString() }
+  override string toString() { result = c.toString() }
 
   override boolean toBoolNonEmpty() { result = true }
 }
@@ -1501,7 +1463,7 @@ class AccessPathFrontHead extends AccessPathFront, TFrontHead {
 
   override string toString() { result = tc.toString() }
 
-  override ApproxAccessPathFront toApprox() { result.getAHead() = tc }
+  override ApproxAccessPathFront toApprox() { result.getAHead() = tc.getContent() }
 }
 
 /** An optional access path front. */
