@@ -393,9 +393,22 @@ class Node extends TIRDataFlowNode {
 }
 
 private string toExprString(Node n) {
-  result = n.asExpr().toString()
+  // Pick the first expression (ordered by line, column information)'s string representation as the
+  // string representation of the dataflow node.
+  result =
+    min(Expr e, int startline, int startcolumn |
+      e = n.asExpr() and e.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+    |
+      e order by startline, startcolumn
+    ).toString()
   or
-  result = n.asIndirectExpr().toString() + " indirection"
+  // and similarly if it's an indirect expression.
+  result =
+    min(Expr e, int startline, int startcolumn |
+        e = n.asIndirectExpr() and e.getLocation().hasLocationInfo(_, startline, startcolumn, _, _)
+      |
+        e order by startline, startcolumn
+      ).toString() + " indirection"
 }
 
 /**
@@ -927,7 +940,7 @@ class RawIndirectOperand extends Node, TRawIndirectOperand {
   }
 
   override string toStringImpl() {
-    result = instructionNode(this.getOperand().getDef()).toStringImpl() + " indirection"
+    result = operandNode(this.getOperand()).toString() + " indirection"
   }
 }
 
@@ -1030,7 +1043,7 @@ class RawIndirectInstruction extends Node, TRawIndirectInstruction {
   }
 
   override string toStringImpl() {
-    result = instructionNode(this.getInstruction()).toStringImpl() + " indirection"
+    result = instructionNode(this.getInstruction()).toString() + " indirection"
   }
 }
 

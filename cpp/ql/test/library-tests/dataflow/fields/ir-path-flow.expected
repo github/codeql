@@ -748,10 +748,8 @@ edges
 | qualifiers.cpp:38:16:38:20 | inner indirection [a] | qualifiers.cpp:38:23:38:23 | a indirection |
 | qualifiers.cpp:38:23:38:23 | a indirection | qualifiers.cpp:38:23:38:23 | a |
 | qualifiers.cpp:42:5:42:40 | ... = ... | qualifiers.cpp:42:25:42:25 | * ... indirection [post update] [a] |
-| qualifiers.cpp:42:5:42:40 | ... = ... | qualifiers.cpp:42:25:42:25 | call to getInner indirection [post update] [a] |
 | qualifiers.cpp:42:7:42:11 | getInner output argument [inner indirection, a] | qualifiers.cpp:43:10:43:14 | outer indirection [inner indirection, a] |
 | qualifiers.cpp:42:25:42:25 | * ... indirection [post update] [a] | qualifiers.cpp:42:7:42:11 | getInner output argument [inner indirection, a] |
-| qualifiers.cpp:42:25:42:25 | call to getInner indirection [post update] [a] | qualifiers.cpp:42:7:42:11 | getInner output argument [inner indirection, a] |
 | qualifiers.cpp:42:29:42:38 | call to user_input | qualifiers.cpp:42:5:42:40 | ... = ... |
 | qualifiers.cpp:43:10:43:14 | outer indirection [inner indirection, a] | qualifiers.cpp:43:16:43:20 | inner indirection [a] |
 | qualifiers.cpp:43:10:43:14 | outer indirection [inner indirection, a] | qualifiers.cpp:43:16:43:20 | inner indirection [a] |
@@ -1579,9 +1577,6 @@ nodes
 | qualifiers.cpp:42:5:42:40 | ... = ... | semmle.label | ... = ... |
 | qualifiers.cpp:42:7:42:11 | getInner output argument [inner indirection, a] | semmle.label | getInner output argument [inner indirection, a] |
 | qualifiers.cpp:42:25:42:25 | * ... indirection [post update] [a] | semmle.label | * ... indirection [post update] [a] |
-| qualifiers.cpp:42:25:42:25 | * ... indirection [post update] [a] | semmle.label | call to getInner indirection [post update] [a] |
-| qualifiers.cpp:42:25:42:25 | call to getInner indirection [post update] [a] | semmle.label | * ... indirection [post update] [a] |
-| qualifiers.cpp:42:25:42:25 | call to getInner indirection [post update] [a] | semmle.label | call to getInner indirection [post update] [a] |
 | qualifiers.cpp:42:29:42:38 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:43:10:43:14 | outer indirection [inner indirection, a] | semmle.label | outer indirection [inner indirection, a] |
 | qualifiers.cpp:43:16:43:20 | inner indirection [a] | semmle.label | inner indirection [a] |
