@@ -2881,6 +2881,9 @@ module Impl<FullStateConfigSig Config> {
     /** Gets the tail of this access path, if any. */
     abstract AccessPath getTail();
 
+    /** Holds if this is a representation of `head` followed by the `typ,tail` pair. */
+    abstract predicate isCons(TypedContent head, DataFlowType typ, AccessPath tail);
+
     /** Gets the front of this access path. */
     abstract AccessPathFront getFront();
 
@@ -2892,15 +2895,6 @@ module Impl<FullStateConfigSig Config> {
 
     /** Gets a textual representation of this access path. */
     abstract string toString();
-
-    /** Gets the access path obtained by popping `tc` from this access path, if any. */
-    final AccessPath pop(TypedContent tc) {
-      result = this.getTail() and
-      tc = this.getHead()
-    }
-
-    /** Gets the access path obtained by pushing `tc` onto this access path. */
-    final AccessPath push(TypedContent tc) { this = result.pop(tc) }
   }
 
   private class AccessPathNil extends AccessPath, TAccessPathNil {
@@ -2914,6 +2908,8 @@ module Impl<FullStateConfigSig Config> {
 
     override AccessPath getTail() { none() }
 
+    override predicate isCons(TypedContent head, DataFlowType typ, AccessPath tail) { none() }
+
     override AccessPathFrontNil getFront() { result = TFrontNil(t) }
 
     override AccessPathApproxNil getApprox() { result = TNil(t) }
@@ -2924,47 +2920,51 @@ module Impl<FullStateConfigSig Config> {
   }
 
   private class AccessPathCons extends AccessPath, TAccessPathCons {
-    private TypedContent head;
+    private TypedContent head_;
     private DataFlowType t;
-    private AccessPath tail;
+    private AccessPath tail_;
 
-    AccessPathCons() { this = TAccessPathCons(head, t, tail) }
+    AccessPathCons() { this = TAccessPathCons(head_, t, tail_) }
 
-    override TypedContent getHead() { result = head }
+    override TypedContent getHead() { result = head_ }
 
-    override AccessPath getTail() { result = tail }
+    override AccessPath getTail() { result = tail_ }
 
-    override AccessPathFrontHead getFront() { result = TFrontHead(head) }
+    override predicate isCons(TypedContent head, DataFlowType typ, AccessPath tail) {
+      head = head_ and typ = t and tail = tail_
+    }
+
+    override AccessPathFrontHead getFront() { result = TFrontHead(head_) }
 
     pragma[assume_small_delta]
     override AccessPathApproxCons getApprox() {
-      result = TConsNil(head, t) and tail instanceof AccessPathNil
+      result = TConsNil(head_, t) and tail_ instanceof AccessPathNil
       or
-      result = TConsCons(head, tail.getHead(), this.length())
+      result = TConsCons(head_, tail_.getHead(), this.length())
       or
-      result = TCons1(head, this.length())
+      result = TCons1(head_, this.length())
     }
 
     pragma[assume_small_delta]
-    override int length() { result = 1 + tail.length() }
+    override int length() { result = 1 + tail_.length() }
 
     private string toStringImpl(boolean needsSuffix) {
-      tail = TAccessPathNil(_) and
+      tail_ = TAccessPathNil(_) and
       needsSuffix = false and
-      result = head.toString() + "]" + concat(" : " + ppReprType(t))
+      result = head_.toString() + "]" + concat(" : " + ppReprType(t))
       or
-      result = head + ", " + tail.(AccessPathCons).toStringImpl(needsSuffix)
+      result = head_ + ", " + tail_.(AccessPathCons).toStringImpl(needsSuffix)
       or
-      exists(TypedContent tc2, TypedContent tc3, int len | tail = TAccessPathCons2(tc2, _, tc3, len) |
-        result = head + ", " + tc2 + ", " + tc3 + ", ... (" and len > 2 and needsSuffix = true
+      exists(TypedContent tc2, TypedContent tc3, int len | tail_ = TAccessPathCons2(tc2, _, tc3, len) |
+        result = head_ + ", " + tc2 + ", " + tc3 + ", ... (" and len > 2 and needsSuffix = true
         or
-        result = head + ", " + tc2 + ", " + tc3 + "]" and len = 2 and needsSuffix = false
+        result = head_ + ", " + tc2 + ", " + tc3 + "]" and len = 2 and needsSuffix = false
       )
       or
-      exists(TypedContent tc2, int len | tail = TAccessPathCons1(tc2, len) |
-        result = head + ", " + tc2 + ", ... (" and len > 1 and needsSuffix = true
+      exists(TypedContent tc2, int len | tail_ = TAccessPathCons1(tc2, len) |
+        result = head_ + ", " + tc2 + ", ... (" and len > 1 and needsSuffix = true
         or
-        result = head + ", " + tc2 + "]" and len = 1 and needsSuffix = false
+        result = head_ + ", " + tc2 + "]" and len = 1 and needsSuffix = false
       )
     }
 
@@ -2991,6 +2991,14 @@ module Impl<FullStateConfigSig Config> {
       result.length() = len - 1
     }
 
+    override predicate isCons(TypedContent head, DataFlowType typ, AccessPath tail) {
+      head = head1 and
+      typ = t and
+      Stage5::consCand(head1, t, tail.getApprox()) and
+      tail.getHead() = head2 and
+      tail.length() = len - 1
+    }
+
     override AccessPathFrontHead getFront() { result = TFrontHead(head1) }
 
     override AccessPathApproxCons getApprox() {
@@ -3010,27 +3018,32 @@ module Impl<FullStateConfigSig Config> {
   }
 
   private class AccessPathCons1 extends AccessPath, TAccessPathCons1 {
-    private TypedContent head;
+    private TypedContent head_;
     private int len;
 
-    AccessPathCons1() { this = TAccessPathCons1(head, len) }
+    AccessPathCons1() { this = TAccessPathCons1(head_, len) }
 
-    override TypedContent getHead() { result = head }
+    override TypedContent getHead() { result = head_ }
 
     override AccessPath getTail() {
-      Stage5::consCand(head, _, result.getApprox()) and result.length() = len - 1
+      Stage5::consCand(head_, _, result.getApprox()) and result.length() = len - 1
     }
 
-    override AccessPathFrontHead getFront() { result = TFrontHead(head) }
+    override predicate isCons(TypedContent head, DataFlowType typ, AccessPath tail) {
+      head = head_ and
+      Stage5::consCand(head_, typ, tail.getApprox()) and tail.length() = len - 1
+    }
 
-    override AccessPathApproxCons getApprox() { result = TCons1(head, len) }
+    override AccessPathFrontHead getFront() { result = TFrontHead(head_) }
+
+    override AccessPathApproxCons getApprox() { result = TCons1(head_, len) }
 
     override int length() { result = len }
 
     override string toString() {
       if len = 1
-      then result = "[" + head.toString() + "]"
-      else result = "[" + head.toString() + ", ... (" + len.toString() + ")]"
+      then result = "[" + head_.toString() + "]"
+      else result = "[" + head_.toString() + ", ... (" + len.toString() + ")]"
     }
   }
 
@@ -3421,14 +3434,17 @@ module Impl<FullStateConfigSig Config> {
     t = node.getDataFlowType() and
     ap = TAccessPathNil(t)
     or
-    exists(TypedContent tc | pathStoreStep(mid, node, state, ap.pop(tc), tc, t, cc)) and
-    sc = mid.getSummaryCtx()
+    exists(TypedContent tc, DataFlowType t0, AccessPath ap0 |
+      pathStoreStep(mid, node, state, t0, ap0, tc, t, cc) and
+      ap.isCons(tc, t0, ap0) and
+      sc = mid.getSummaryCtx()
+    )
     or
-    exists(TypedContent tc | pathReadStep(mid, node, state, ap.push(tc), tc, cc)) and
-    // TODO: replace push/pop with isCons
-    // ap0.isCons(tc, t, ap)
-    exists(t) and
-    sc = mid.getSummaryCtx()
+    exists(TypedContent tc, AccessPath ap0 |
+      pathReadStep(mid, node, state, ap0, tc, cc) and
+      ap0.isCons(tc, t, ap) and
+      sc = mid.getSummaryCtx()
+    )
     or
     pathIntoCallable(mid, node, state, _, cc, sc, _) and t = mid.getType() and ap = mid.getAp()
     or
@@ -3450,8 +3466,9 @@ module Impl<FullStateConfigSig Config> {
 
   pragma[nomagic]
   private predicate pathStoreStep(
-    PathNodeMid mid, NodeEx node, FlowState state, AccessPath ap0, TypedContent tc, DataFlowType t, CallContext cc
+    PathNodeMid mid, NodeEx node, FlowState state, DataFlowType t0, AccessPath ap0, TypedContent tc, DataFlowType t, CallContext cc
   ) {
+    t0 = mid.getType() and
     ap0 = mid.getAp() and
     Stage5::storeStepCand(mid.getNodeEx(), _, tc, _, node, _, t) and
     state = mid.getState() and
