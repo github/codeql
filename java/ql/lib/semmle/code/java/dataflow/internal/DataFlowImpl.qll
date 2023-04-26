@@ -2521,9 +2521,6 @@ module Impl<FullStateConfigSig Config> {
     }
   }
 
-  /** Gets the access path obtained by pushing `c` onto the `t,apa` pair. */
-  private AccessPathApprox push(Content c, DataFlowType t, AccessPathApprox apa) { result.isCons(c, t, apa) }
-
   private newtype TAccessPathApproxOption =
     TAccessPathApproxNone() or
     TAccessPathApproxSome(AccessPathApprox apa)
@@ -2551,7 +2548,7 @@ module Impl<FullStateConfigSig Config> {
     Typ getTyp(DataFlowType t) { result = t }
 
     bindingset[c, t, tail]
-    Ap apCons(Content c, Typ t, Ap tail) { result = push(c, t, tail) }
+    Ap apCons(Content c, Typ t, Ap tail) { result.isCons(c, t, tail) }
 
     class ApHeadContent = Content;
 
@@ -2663,8 +2660,6 @@ module Impl<FullStateConfigSig Config> {
     private AccessPath ap;
 
     SummaryCtxSome() { this = TSummaryCtxSome(p, s, t, ap) }
-
-    ParameterPosition getParameterPos() { p.isParameterOf(_, result) }
 
     ParamNodeEx getParamNode() { result = p }
 
@@ -2832,9 +2827,6 @@ module Impl<FullStateConfigSig Config> {
     /** Gets the head of this access path, if any. */
     abstract Content getHead();
 
-    /** Gets the tail of this access path, if any. */
-    abstract AccessPath getTail();
-
     /** Holds if this is a representation of `head` followed by the `typ,tail` pair. */
     abstract predicate isCons(Content head, DataFlowType typ, AccessPath tail);
 
@@ -2853,8 +2845,6 @@ module Impl<FullStateConfigSig Config> {
 
   private class AccessPathNil extends AccessPath, TAccessPathNil {
     override Content getHead() { none() }
-
-    override AccessPath getTail() { none() }
 
     override predicate isCons(Content head, DataFlowType typ, AccessPath tail) { none() }
 
@@ -2875,8 +2865,6 @@ module Impl<FullStateConfigSig Config> {
     AccessPathCons() { this = TAccessPathCons(head_, t, tail_) }
 
     override Content getHead() { result = head_ }
-
-    override AccessPath getTail() { result = tail_ }
 
     override predicate isCons(Content head, DataFlowType typ, AccessPath tail) {
       head = head_ and typ = t and tail = tail_
@@ -2933,12 +2921,6 @@ module Impl<FullStateConfigSig Config> {
 
     override Content getHead() { result = head1 }
 
-    override AccessPath getTail() {
-      Stage5::consCand(head1, t, result.getApprox()) and
-      result.getHead() = head2 and
-      result.length() = len - 1
-    }
-
     override predicate isCons(Content head, DataFlowType typ, AccessPath tail) {
       head = head1 and
       typ = t and
@@ -2972,10 +2954,6 @@ module Impl<FullStateConfigSig Config> {
     AccessPathCons1() { this = TAccessPathCons1(head_, len) }
 
     override Content getHead() { result = head_ }
-
-    override AccessPath getTail() {
-      Stage5::consCand(head_, _, result.getApprox()) and result.length() = len - 1
-    }
 
     override predicate isCons(Content head, DataFlowType typ, AccessPath tail) {
       head = head_ and
