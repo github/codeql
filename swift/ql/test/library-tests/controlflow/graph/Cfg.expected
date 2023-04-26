@@ -53,6 +53,9 @@ cfg.swift:
 
 #   17| exit mightThrow(x:)
 
+#   17| exit mightThrow(x:) (abnormal)
+#-----|  -> exit mightThrow(x:)
+
 #   17| exit mightThrow(x:) (normal)
 #-----|  -> exit mightThrow(x:)
 
@@ -85,7 +88,7 @@ cfg.swift:
 #-----|  -> ... .>=(_:_:) ...
 
 #   19| throw ...
-#-----| exception -> exit mightThrow(x:) (normal)
+#-----| exception -> exit mightThrow(x:) (abnormal)
 
 #   19| MyError.Type
 #-----|  -> (Error) ...
@@ -119,7 +122,7 @@ cfg.swift:
 #-----|  -> ... .<=(_:_:) ...
 
 #   22| throw ...
-#-----| exception -> exit mightThrow(x:) (normal)
+#-----| exception -> exit mightThrow(x:) (abnormal)
 
 #   22| MyError.Type
 #-----|  -> .+(_:_:)
@@ -1724,6 +1727,9 @@ cfg.swift:
 
 #  181| exit m1(x:)
 
+#  181| exit m1(x:) (abnormal)
+#-----|  -> exit m1(x:)
+
 #  181| exit m1(x:) (normal)
 #-----|  -> exit m1(x:)
 
@@ -1790,16 +1796,16 @@ cfg.swift:
 #-----| true -> { ... }
 
 #  185| ... .&&(_:_:) ...
-#-----| exception -> exit m1(x:) (normal)
+#-----| exception -> exit m1(x:) (abnormal)
 #-----| false -> [false] ... .&&(_:_:) ...
 #-----| true -> { ... }
 
 #  185| [false] ... .&&(_:_:) ...
-#-----| exception -> exit m1(x:) (normal)
+#-----| exception -> exit m1(x:) (abnormal)
 #-----| false -> [false] ... .&&(_:_:) ...
 
 #  185| ... .&&(_:_:) ...
-#-----| exception -> exit m1(x:) (normal)
+#-----| exception -> exit m1(x:) (abnormal)
 #-----| true -> print(_:separator:terminator:)
 #-----| false -> print(_:separator:terminator:)
 
@@ -1807,7 +1813,7 @@ cfg.swift:
 #-----|  -> .<=(_:_:)
 
 #  185| [false] ... .&&(_:_:) ...
-#-----| exception -> exit m1(x:) (normal)
+#-----| exception -> exit m1(x:) (abnormal)
 #-----| false -> print(_:separator:terminator:)
 
 #  185| .<=(_:_:)
@@ -2285,6 +2291,9 @@ cfg.swift:
 
 #  237| exit disjunct(b1:b2:)
 
+#  237| exit disjunct(b1:b2:) (abnormal)
+#-----|  -> exit disjunct(b1:b2:)
+
 #  237| exit disjunct(b1:b2:) (normal)
 #-----|  -> exit disjunct(b1:b2:)
 
@@ -2311,12 +2320,12 @@ cfg.swift:
 #-----| false -> { ... }
 
 #  238| ... .||(_:_:) ...
-#-----| exception -> exit disjunct(b1:b2:) (normal)
+#-----| exception -> exit disjunct(b1:b2:) (abnormal)
 #-----| false -> [false] (...)
 #-----| true -> [true] (...)
 
 #  238| [true] ... .||(_:_:) ...
-#-----| exception -> exit disjunct(b1:b2:) (normal)
+#-----| exception -> exit disjunct(b1:b2:) (abnormal)
 #-----| true -> [true] (...)
 
 #  238| b2
@@ -5050,6 +5059,9 @@ cfg.swift:
 
 #  383| exit doWithoutCatch(x:)
 
+#  383| exit doWithoutCatch(x:) (abnormal)
+#-----|  -> exit doWithoutCatch(x:)
+
 #  383| exit doWithoutCatch(x:) (normal)
 #-----|  -> exit doWithoutCatch(x:)
 
@@ -5066,7 +5078,7 @@ cfg.swift:
 #-----|  -> 0
 
 #  385| call to mightThrow(x:)
-#-----| exception -> exit doWithoutCatch(x:) (normal)
+#-----| exception -> exit doWithoutCatch(x:) (abnormal)
 #-----|  -> try ...
 
 #  385| 0
@@ -5103,7 +5115,7 @@ cfg.swift:
 #-----|  -> 0
 
 #  387| call to mightThrow(x:)
-#-----| exception -> exit doWithoutCatch(x:) (normal)
+#-----| exception -> exit doWithoutCatch(x:) (abnormal)
 #-----|  -> try! ...
 
 #  387| 0
