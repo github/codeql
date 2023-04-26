@@ -1,4 +1,5 @@
 edges
+| DigesterTests.java:14:49:14:72 | getInputStream(...) : ServletInputStream | DigesterTests.java:16:24:16:41 | servletInputStream |
 | DocumentBuilderTests.java:93:21:93:73 | new SAXSource(...) : SAXSource | DocumentBuilderTests.java:94:16:94:21 | source : SAXSource |
 | DocumentBuilderTests.java:93:35:93:72 | new InputSource(...) : InputSource | DocumentBuilderTests.java:93:21:93:73 | new SAXSource(...) : SAXSource |
 | DocumentBuilderTests.java:93:51:93:71 | getInputStream(...) : InputStream | DocumentBuilderTests.java:93:35:93:72 | new InputSource(...) : InputSource |
@@ -66,6 +67,12 @@ edges
 | TransformerTests.java:136:38:136:58 | getInputStream(...) : InputStream | TransformerTests.java:136:21:136:59 | new StreamSource(...) |
 | TransformerTests.java:141:32:141:69 | new InputSource(...) : InputSource | TransformerTests.java:141:18:141:70 | new SAXSource(...) |
 | TransformerTests.java:141:48:141:68 | getInputStream(...) : InputStream | TransformerTests.java:141:32:141:69 | new InputSource(...) : InputSource |
+| ValidatorTests.java:17:49:17:72 | getInputStream(...) : ServletInputStream | ValidatorTests.java:21:48:21:65 | servletInputStream : ServletInputStream |
+| ValidatorTests.java:21:31:21:66 | new StreamSource(...) : StreamSource | ValidatorTests.java:22:28:22:33 | source |
+| ValidatorTests.java:21:48:21:65 | servletInputStream : ServletInputStream | ValidatorTests.java:21:31:21:66 | new StreamSource(...) : StreamSource |
+| XMLDecoderTests.java:16:49:16:72 | getInputStream(...) : ServletInputStream | XMLDecoderTests.java:17:48:17:65 | servletInputStream : ServletInputStream |
+| XMLDecoderTests.java:17:33:17:66 | new XMLDecoder(...) : XMLDecoder | XMLDecoderTests.java:18:9:18:18 | xmlDecoder |
+| XMLDecoderTests.java:17:48:17:65 | servletInputStream : ServletInputStream | XMLDecoderTests.java:17:33:17:66 | new XMLDecoder(...) : XMLDecoder |
 | XMLReaderTests.java:16:34:16:54 | getInputStream(...) : InputStream | XMLReaderTests.java:16:18:16:55 | new InputSource(...) |
 | XMLReaderTests.java:56:34:56:54 | getInputStream(...) : InputStream | XMLReaderTests.java:56:18:56:55 | new InputSource(...) |
 | XMLReaderTests.java:63:34:63:54 | getInputStream(...) : InputStream | XMLReaderTests.java:63:18:63:55 | new InputSource(...) |
@@ -76,6 +83,8 @@ edges
 | XMLReaderTests.java:100:34:100:54 | getInputStream(...) : InputStream | XMLReaderTests.java:100:18:100:55 | new InputSource(...) |
 | XPathExpressionTests.java:27:37:27:57 | getInputStream(...) : InputStream | XPathExpressionTests.java:27:21:27:58 | new InputSource(...) |
 nodes
+| DigesterTests.java:14:49:14:72 | getInputStream(...) : ServletInputStream | semmle.label | getInputStream(...) : ServletInputStream |
+| DigesterTests.java:16:24:16:41 | servletInputStream | semmle.label | servletInputStream |
 | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | semmle.label | getInputStream(...) |
 | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | semmle.label | getInputStream(...) |
 | DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | semmle.label | getInputStream(...) |
@@ -96,6 +105,7 @@ nodes
 | DocumentBuilderTests.java:101:46:101:51 | source : StreamSource | semmle.label | source : StreamSource |
 | DocumentBuilderTests.java:102:16:102:21 | source : StreamSource | semmle.label | source : StreamSource |
 | DocumentBuilderTests.java:102:16:102:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| ParserHelperTests.java:12:55:12:78 | getInputStream(...) | semmle.label | getInputStream(...) |
 | SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | semmle.label | getInputStream(...) |
 | SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | semmle.label | getInputStream(...) |
 | SAXParserTests.java:13:18:13:38 | getInputStream(...) | semmle.label | getInputStream(...) |
@@ -219,6 +229,14 @@ nodes
 | TransformerTests.java:141:32:141:69 | new InputSource(...) : InputSource | semmle.label | new InputSource(...) : InputSource |
 | TransformerTests.java:141:48:141:68 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | semmle.label | getInputStream(...) |
+| ValidatorTests.java:17:49:17:72 | getInputStream(...) : ServletInputStream | semmle.label | getInputStream(...) : ServletInputStream |
+| ValidatorTests.java:21:31:21:66 | new StreamSource(...) : StreamSource | semmle.label | new StreamSource(...) : StreamSource |
+| ValidatorTests.java:21:48:21:65 | servletInputStream : ServletInputStream | semmle.label | servletInputStream : ServletInputStream |
+| ValidatorTests.java:22:28:22:33 | source | semmle.label | source |
+| XMLDecoderTests.java:16:49:16:72 | getInputStream(...) : ServletInputStream | semmle.label | getInputStream(...) : ServletInputStream |
+| XMLDecoderTests.java:17:33:17:66 | new XMLDecoder(...) : XMLDecoder | semmle.label | new XMLDecoder(...) : XMLDecoder |
+| XMLDecoderTests.java:17:48:17:65 | servletInputStream : ServletInputStream | semmle.label | servletInputStream : ServletInputStream |
+| XMLDecoderTests.java:18:9:18:18 | xmlDecoder | semmle.label | xmlDecoder |
 | XMLReaderTests.java:16:18:16:55 | new InputSource(...) | semmle.label | new InputSource(...) |
 | XMLReaderTests.java:16:34:16:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | XMLReaderTests.java:56:18:56:55 | new InputSource(...) | semmle.label | new InputSource(...) |
@@ -251,6 +269,7 @@ nodes
 | XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | semmle.label | getInputStream(...) |
 subpaths
 #select
+| DigesterTests.java:16:24:16:41 | servletInputStream | DigesterTests.java:14:49:14:72 | getInputStream(...) : ServletInputStream | DigesterTests.java:16:24:16:41 | servletInputStream | XML parsing depends on a $@ without guarding against external entity expansion. | DigesterTests.java:14:49:14:72 | getInputStream(...) | user-provided value |
 | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | user-provided value |
 | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | user-provided value |
 | DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:35:19:35:39 | getInputStream(...) | user-provided value |
@@ -263,6 +282,7 @@ subpaths
 | DocumentBuilderTests.java:94:16:94:38 | getInputSource(...) | DocumentBuilderTests.java:93:51:93:71 | getInputStream(...) : InputStream | DocumentBuilderTests.java:94:16:94:38 | getInputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:93:51:93:71 | getInputStream(...) | user-provided value |
 | DocumentBuilderTests.java:101:16:101:52 | sourceToInputSource(...) | DocumentBuilderTests.java:100:41:100:61 | getInputStream(...) : InputStream | DocumentBuilderTests.java:101:16:101:52 | sourceToInputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:100:41:100:61 | getInputStream(...) | user-provided value |
 | DocumentBuilderTests.java:102:16:102:38 | getInputStream(...) | DocumentBuilderTests.java:100:41:100:61 | getInputStream(...) : InputStream | DocumentBuilderTests.java:102:16:102:38 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:100:41:100:61 | getInputStream(...) | user-provided value |
+| ParserHelperTests.java:12:55:12:78 | getInputStream(...) | ParserHelperTests.java:12:55:12:78 | getInputStream(...) | ParserHelperTests.java:12:55:12:78 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | ParserHelperTests.java:12:55:12:78 | getInputStream(...) | user-provided value |
 | SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXBuilderTests.java:8:19:8:39 | getInputStream(...) | user-provided value |
 | SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXBuilderTests.java:20:19:20:39 | getInputStream(...) | user-provided value |
 | SAXParserTests.java:13:18:13:38 | getInputStream(...) | SAXParserTests.java:13:18:13:38 | getInputStream(...) | SAXParserTests.java:13:18:13:38 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | SAXParserTests.java:13:18:13:38 | getInputStream(...) | user-provided value |
@@ -328,6 +348,8 @@ subpaths
 | TransformerTests.java:136:21:136:59 | new StreamSource(...) | TransformerTests.java:136:38:136:58 | getInputStream(...) : InputStream | TransformerTests.java:136:21:136:59 | new StreamSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:136:38:136:58 | getInputStream(...) | user-provided value |
 | TransformerTests.java:141:18:141:70 | new SAXSource(...) | TransformerTests.java:141:48:141:68 | getInputStream(...) : InputStream | TransformerTests.java:141:18:141:70 | new SAXSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | TransformerTests.java:141:48:141:68 | getInputStream(...) | user-provided value |
 | UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | UnmarshallerTests.java:28:18:28:38 | getInputStream(...) | user-provided value |
+| ValidatorTests.java:22:28:22:33 | source | ValidatorTests.java:17:49:17:72 | getInputStream(...) : ServletInputStream | ValidatorTests.java:22:28:22:33 | source | XML parsing depends on a $@ without guarding against external entity expansion. | ValidatorTests.java:17:49:17:72 | getInputStream(...) | user-provided value |
+| XMLDecoderTests.java:18:9:18:18 | xmlDecoder | XMLDecoderTests.java:16:49:16:72 | getInputStream(...) : ServletInputStream | XMLDecoderTests.java:18:9:18:18 | xmlDecoder | XML parsing depends on a $@ without guarding against external entity expansion. | XMLDecoderTests.java:16:49:16:72 | getInputStream(...) | user-provided value |
 | XMLReaderTests.java:16:18:16:55 | new InputSource(...) | XMLReaderTests.java:16:34:16:54 | getInputStream(...) : InputStream | XMLReaderTests.java:16:18:16:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:16:34:16:54 | getInputStream(...) | user-provided value |
 | XMLReaderTests.java:56:18:56:55 | new InputSource(...) | XMLReaderTests.java:56:34:56:54 | getInputStream(...) : InputStream | XMLReaderTests.java:56:18:56:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:56:34:56:54 | getInputStream(...) | user-provided value |
 | XMLReaderTests.java:63:18:63:55 | new InputSource(...) | XMLReaderTests.java:63:34:63:54 | getInputStream(...) : InputStream | XMLReaderTests.java:63:18:63:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:63:34:63:54 | getInputStream(...) | user-provided value |
