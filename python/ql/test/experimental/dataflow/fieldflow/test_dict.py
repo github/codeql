@@ -46,7 +46,7 @@ def test_dict_update():
     SINK(d.get("key"))  # $ flow="SOURCE, l:-2 -> d.get(..)"
 
 @expects(3) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
-def test_setdefault():
+def test_dict_setdefault():
     d = {}
     x = d.setdefault("key", SOURCE)
     SINK(x)  # $ flow="SOURCE, l:-1 -> x"
@@ -61,13 +61,6 @@ def test_dict_override():
 
     d["key"] = NONSOURCE
     SINK_F(d["key"])
-
-
-def test_dict_setdefault():
-    d = {}
-    d.setdefault("key", SOURCE)
-    SINK(d["key"])  # $ flow="SOURCE, l:-1 -> d['key']"
-
 
 @expects(3) # $ unresolved_call=expects(..) unresolved_call=expects(..)(..)
 def test_dict_nonstring_key():
