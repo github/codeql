@@ -68,6 +68,7 @@ if __name__ == "__main__":
     check_tests_valid("coverage-py3.classes")
     check_tests_valid("variable-capture.in")
     check_tests_valid("variable-capture.nonlocal")
+    check_tests_valid("variable-capture.global")
     check_tests_valid("variable-capture.dict")
     check_tests_valid("variable-capture.test_collections")
     check_tests_valid("module-initialization.multiphase")
