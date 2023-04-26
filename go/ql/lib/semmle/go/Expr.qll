@@ -885,6 +885,15 @@ class CallExpr extends CallOrConversionExpr {
     )
   }
 
+  /**
+   * Gets the signature type of the invoked function.
+   *
+   * Note that it avoids calling `getTarget()` so that it works even when that
+   * predicate isn't defined, for example when calling a variable with function
+   * type.
+   */
+  SignatureType getCalleeType() { result = this.getCalleeExpr().getType() }
+
   /** Gets the declared target of this call. */
   Function getTarget() { this.getCalleeExpr() = result.getAReference() }
 
