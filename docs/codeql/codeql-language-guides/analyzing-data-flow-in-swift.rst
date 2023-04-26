@@ -15,7 +15,7 @@ For a more general introduction to modeling data flow, see ":ref:`About data flo
 Local data flow
 ---------------
 
-Local data flow tracks the flow of data within a single method or callable. Local data flow is easier, faster, and more precise than global data flow. Before looking at more complex tracking, you should always consider local tracking because it is sufficient for many queries.
+Local data flow tracks the flow of data within a single function. Local data flow is easier, faster, and more precise than global data flow. Before looking at more complex tracking, you should always consider local tracking because it is sufficient for many queries.
 
 Using local data flow
 ~~~~~~~~~~~~~~~~~~~~~
@@ -36,7 +36,7 @@ The ``Node`` class has a number of useful subclasses, such as ``ExprNode`` for e
         */
        ControlFlowNode getCfgNode() { none() }
 
-      ...
+       ...
      }
 
 You can use the predicates ``exprNode`` and ``parameterNode`` to map from expressions and parameters to their data-flow node:
@@ -65,7 +65,7 @@ For example, you can find flow from an expression ``source`` to an expression ``
 Using local taint tracking
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Local taint tracking extends local data flow to include flow steps where values are not preserved, for example, string manipulation.
+Local taint tracking extends local data flow to include flow steps where values are not preserved, such as string manipulation.
 For example:
 
 .. code-block:: swift
@@ -209,10 +209,10 @@ The global taint tracking library uses the same configuration module as the glob
    where MyTaintFlow::flow(source, sink)
    select source, "Taint flow to $@.", sink, sink.toString()
 
-Predefined sources and sinks
+Predefined sources
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The data flow library module ``codeql.swift.dataflow.FlowSources`` contains a number of predefined sources and sinks, providing a good starting point for defining data flow and taint flow based security queries.
+The data flow library module ``codeql.swift.dataflow.FlowSources`` contains a number of predefined sources, providing a good starting point for defining data flow and taint flow based security queries.
 
 -  The class ``RemoteFlowSource`` represents data flow from remote network inputs and from other applications.
 -  The class ``LocalFlowSource`` represents data flow from local user input.
@@ -221,11 +221,11 @@ The data flow library module ``codeql.swift.dataflow.FlowSources`` contains a nu
 Examples of global data flow
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-The following global taint-tracking query finds places where a string literal is used in a function call argument called "password".
+The following global taint-tracking query finds places where a string literal is used in a function call argument named "password".
   - Since this is a taint-tracking query, the ``TaintTracking::Global`` module is used.
   - The ``isSource`` predicate defines sources as any ``StringLiteralExpr``.
   - The ``isSink`` predicate defines sinks as arguments to a ``CallExpr`` called "password".
-  - The sources and sinks may need tuning to a particular use case, for example if passwords are represented by a type other than ``String`` or passed in arguments of a different name than "password".
+  - The sources and sinks may need tuning to a particular use, for example if passwords are represented by a type other than ``String`` or passed in arguments of a different name than "password".
 
 .. code-block:: ql
 
@@ -245,8 +245,7 @@ The following global taint-tracking query finds places where a string literal is
 
    from DataFlow::Node sourceNode, DataFlow::Node sinkNode
    where ConstantPasswordFlow::flow(sourceNode, sinkNode)
-   select sinkNode, sourceNode, sinkNode,
-     "The value '" + sourceNode.toString() + "' is used as a constant password."
+   select sinkNode, "The value '" + sourceNode.toString() + "' is used as a constant password."
 
 
 The following global taint-tracking query finds places where a value from a remote or local user input is used as an argument to the SQLite ``Connection.execute(_:)`` function.
@@ -255,7 +254,6 @@ The following global taint-tracking query finds places where a value from a remo
   - The ``isSink`` predicate defines sinks as the first argument in any call to ``Connection.execute(_:)``.
 
 .. code-block:: ql
-
 
    import swift
    import codeql.swift.dataflow.DataFlow
@@ -277,8 +275,7 @@ The following global taint-tracking query finds places where a value from a remo
 
    from DataFlow::Node sourceNode, DataFlow::Node sinkNode
    where SqlInjectionFlow::flow(sourceNode, sinkNode)
-   select sinkNode, sourceNode, sinkNode, "This query depends on a $@.", sourceNode,
-     "user-provided value"
+   select sinkNode, "This query depends on a $@.", sourceNode, "user-provided value"
 
 Further reading
 ---------------
