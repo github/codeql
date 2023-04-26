@@ -4,9 +4,7 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.DataFlow3
-import semmle.code.java.dataflow.DataFlow4
-import semmle.code.java.dataflow.DataFlow5
-private import semmle.code.java.dataflow.SSA
+private import semmle.code.java.dataflow.RangeUtils
 
 /*
  * Various XML parsers in Java.
@@ -128,26 +126,6 @@ class DocumentBuilderFactoryConfig extends ParserConfig {
       m.hasName("setFeature")
     )
   }
-}
-
-private predicate constantStringExpr(Expr e, string val) {
-  e.(CompileTimeConstantExpr).getStringValue() = val
-  or
-  exists(SsaExplicitUpdate v, Expr src |
-    e = v.getAUse() and
-    src = v.getDefiningExpr().(VariableAssign).getSource() and
-    constantStringExpr(src, val)
-  )
-}
-
-/** An expression that always has the same string value. */
-private class ConstantStringExpr extends Expr {
-  string value;
-
-  ConstantStringExpr() { constantStringExpr(this, value) }
-
-  /** Get the string value of this expression. */
-  string getStringValue() { result = value }
 }
 
 /**
