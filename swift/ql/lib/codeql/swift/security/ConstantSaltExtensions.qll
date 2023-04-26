@@ -35,7 +35,7 @@ class ConstantSaltAdditionalTaintStep extends Unit {
 private class CryptoSwiftSaltSink extends ConstantSaltSink {
   CryptoSwiftSaltSink() {
     // `salt` arg in `init` is a sink
-    exists(NominalTypeDecl c, ConstructorDecl f, CallExpr call |
+    exists(NominalTypeDecl c, Initializer f, CallExpr call |
       c.getName() = ["HKDF", "PBKDF1", "PBKDF2", "Scrypt"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
@@ -49,7 +49,7 @@ private class CryptoSwiftSaltSink extends ConstantSaltSink {
  */
 private class RnCryptorSaltSink extends ConstantSaltSink {
   RnCryptorSaltSink() {
-    exists(NominalTypeDecl c, MethodDecl f, CallExpr call |
+    exists(NominalTypeDecl c, Method f, CallExpr call |
       c.getFullName() =
         [
           "RNCryptor", "RNEncryptor", "RNDecryptor", "RNCryptor.EncryptorV3",
