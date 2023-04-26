@@ -1,3 +1,8 @@
+/**
+ * Provides an AST-based interface to the relative range analysis, which tracks bounds of the form
+ * `a < B + delta` for expressions `a` and `b` and an integer offset `delta`.
+ */
+
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 private import cpp
 private import semmle.code.cpp.ir.IR
@@ -14,13 +19,22 @@ private import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 predicate bounded(Expr e, Bound b, float delta, boolean upper, Reason reason) {
   exists(SemanticExprConfig::Expr semExpr |
     semExpr.getUnconverted().getUnconvertedResultExpression() = e
-    or
-    semExpr.getConverted().getConvertedResultExpression() = e
   |
     semBounded(semExpr, b, delta, upper, reason)
   )
 }
 
+/**
+ * Holds if e is bounded by `b + delta`. The bound is an upper bound if
+ * `upper` is true, and can be traced baack to a guard represented by `reason`.
+ */
+predicate convertedBounded(Expr e, Bound b, float delta, boolean upper, Reason reason) {
+  exists(SemanticExprConfig::Expr semExpr |
+    semExpr.getConverted().getConvertedResultExpression() = e
+  |
+    semBounded(semExpr, b, delta, upper, reason)
+  )
+}
 /**
  * A reason for an inferred bound. This can either be `CondReason` if the bound
  * is due to a specific condition, or `NoReason` if the bound is inferred
