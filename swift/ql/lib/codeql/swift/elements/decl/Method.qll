@@ -5,15 +5,15 @@ private Decl getAMember(Decl ctx) {
   or
   exists(VarDecl var |
     ctx.getAMember() = var and
-    var.getAnAccessorDecl() = result
+    var.getAnAccessor() = result
   )
 }
 
 /**
  * A function that is a member of a class, struct, enum or protocol.
  */
-class MethodDecl extends AbstractFunctionDecl {
-  MethodDecl() {
+class Method extends Function {
+  Method() {
     this = getAMember(any(ClassDecl c))
     or
     this = getAMember(any(StructDecl c))
