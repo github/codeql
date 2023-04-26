@@ -11,6 +11,7 @@
 
 import go
 import semmle.go.security.AllocationSizeOverflow
+import semmle.go.frameworks.Stdlib
 import DataFlow::PathGraph
 
 abstract class Source extends DataFlow::Node { }
@@ -39,6 +40,15 @@ class FieldReadSanitizer extends Sanitizer {
   }
 }
 
+private predicate compCheckGuard(DataFlow::Node g, Expr e, boolean outcome) {
+  e = g.(DataFlow::RelationalComparisonNode).getAnOperand().asExpr() and
+  outcome = [true, false]
+}
+
+class CompSanitizerGuard extends Sanitizer {
+  CompSanitizerGuard() { this = DataFlow::BarrierGuard<compCheckGuard/3>::getABarrierNode() }
+}
+
 string macaronContextPath() { result = package("gopkg.in/macaron", "") }
 
 class UntrustedFlowAsSource extends Source instanceof UntrustedFlowSource { }
@@ -61,7 +71,7 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(DataFlow::CallNode call |
       node2 = call.getResult(0) and
-      call.getTarget().hasQualifiedName("strconv", ["Atoi", "ParseInt", "ParseUint"]) and
+      call.getTarget() instanceof IntegerParser::Range and
       call.getArgument(0) = node1
     )
   }

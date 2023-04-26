@@ -24,6 +24,11 @@ func serve_good() {
 		}
 		_ = make([]int, c)
 
+		f, _ := strconv.Atoi(r.Form.Get("count4"))
+		if(f < 20){
+			_ = make([]int, f)
+		}
+
 	})
 	http.ListenAndServe(":80", nil)
 }
