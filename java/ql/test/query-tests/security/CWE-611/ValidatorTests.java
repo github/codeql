@@ -19,7 +19,7 @@ public class ValidatorTests {
         Schema schema = factory.newSchema();
         Validator validator = schema.newValidator();
         StreamSource source = new StreamSource(servletInputStream);
-        validator.validate(source); // bad
+        validator.validate(source); // $ hasTaintFlow
     }
 
     @PostMapping(value = "good")
