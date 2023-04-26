@@ -52,7 +52,7 @@ def mod_list(l):
     return [mod_local(x) for x in l]
 
 l_modded = mod_list(l)
-SINK(l_modded[0]) #$ MISSING: captured
+SINK(l_modded[0]) #$ captured
 
 def mod_list_first(l):
     def mod_local(x):
