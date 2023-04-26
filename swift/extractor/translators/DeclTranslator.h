@@ -16,9 +16,9 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
  public:
   using AstTranslatorBase<DeclTranslator>::AstTranslatorBase;
 
-  codeql::ConcreteFuncDecl translateFuncDecl(const swift::FuncDecl& decl);
-  codeql::ConstructorDecl translateConstructorDecl(const swift::ConstructorDecl& decl);
-  codeql::DestructorDecl translateDestructorDecl(const swift::DestructorDecl& decl);
+  codeql::NamedFunction translateFuncDecl(const swift::FuncDecl& decl);
+  codeql::Initializer translateConstructorDecl(const swift::ConstructorDecl& decl);
+  codeql::Deinitializer translateDestructorDecl(const swift::DestructorDecl& decl);
   codeql::PrefixOperatorDecl translatePrefixOperatorDecl(const swift::PrefixOperatorDecl& decl);
   codeql::PostfixOperatorDecl translatePostfixOperatorDecl(const swift::PostfixOperatorDecl& decl);
   codeql::InfixOperatorDecl translateInfixOperatorDecl(const swift::InfixOperatorDecl& decl);
@@ -37,7 +37,7 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
       const swift::GenericTypeParamDecl& decl);
   codeql::AssociatedTypeDecl translateAssociatedTypeDecl(const swift::AssociatedTypeDecl& decl);
   codeql::TypeAliasDecl translateTypeAliasDecl(const swift::TypeAliasDecl& decl);
-  codeql::AccessorDecl translateAccessorDecl(const swift::AccessorDecl& decl);
+  codeql::Accessor translateAccessorDecl(const swift::AccessorDecl& decl);
   codeql::SubscriptDecl translateSubscriptDecl(const swift::SubscriptDecl& decl);
   codeql::ExtensionDecl translateExtensionDecl(const swift::ExtensionDecl& decl);
   codeql::ImportDecl translateImportDecl(const swift::ImportDecl& decl);
@@ -49,8 +49,7 @@ class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
   codeql::CapturedDecl translateCapturedValue(const swift::CapturedValue& capture);
 
  private:
-  void fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& decl,
-                                codeql::AbstractFunctionDecl& entry);
+  void fillFunction(const swift::AbstractFunctionDecl& decl, codeql::Function& entry);
   void fillOperatorDecl(const swift::OperatorDecl& decl, codeql::OperatorDecl& entry);
   void fillTypeDecl(const swift::TypeDecl& decl, codeql::TypeDecl& entry);
   void fillIterableDeclContext(const swift::IterableDeclContext& decl, codeql::Decl& entry);
