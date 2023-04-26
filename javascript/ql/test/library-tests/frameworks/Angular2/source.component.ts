@@ -19,5 +19,6 @@ export class Source {
 
     methodOnComponent(x) {
         this.sanitizer.bypassSecurityTrustHtml(x);
+        this.elementRef.nativeElement.innerHTML = x;
     }
 }
