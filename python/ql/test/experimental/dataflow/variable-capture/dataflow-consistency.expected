@@ -1,10 +1,11 @@
 uniqueEnclosingCallable
 uniqueCallEnclosingCallable
-| collections.py:39:17:39:38 | Lambda() | Call should have one enclosing callable but has 0. |
-| collections.py:39:17:39:38 | Lambda() | Call should have one enclosing callable but has 0. |
-| collections.py:45:19:45:24 | mod() | Call should have one enclosing callable but has 0. |
-| collections.py:45:19:45:24 | mod() | Call should have one enclosing callable but has 0. |
-| collections.py:52:13:52:24 | mod_local() | Call should have one enclosing callable but has 0. |
+| test_collections.py:39:17:39:38 | Lambda() | Call should have one enclosing callable but has 0. |
+| test_collections.py:39:17:39:38 | Lambda() | Call should have one enclosing callable but has 0. |
+| test_collections.py:45:19:45:24 | mod() | Call should have one enclosing callable but has 0. |
+| test_collections.py:45:19:45:24 | mod() | Call should have one enclosing callable but has 0. |
+| test_collections.py:52:13:52:24 | mod_local() | Call should have one enclosing callable but has 0. |
+| test_collections.py:52:13:52:24 | mod_local() | Call should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation
