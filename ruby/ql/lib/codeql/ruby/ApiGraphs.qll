@@ -99,9 +99,7 @@ module API {
      */
     pragma[inline]
     DataFlow::Node getAValueReachableFromSource() {
-      exists(DataFlow::LocalSourceNode src | Impl::use(this, src) |
-        Impl::trackUseNode(src).flowsTo(result)
-      )
+      result = getAValueReachableFromSourceInline(this)
     }
 
     /**
@@ -121,7 +119,10 @@ module API {
      * end
      * ```
      */
-    DataFlow::LocalSourceNode asSource() { Impl::use(this, result) }
+    pragma[inline]
+    DataFlow::LocalSourceNode asSource() {
+      result = pragma[only_bind_out](this).(Node::Internal).asSourceInternal()
+    }
 
     /**
      * Gets a data-flow node where this value leaves the current codebase and flows into an
@@ -167,6 +168,7 @@ module API {
     /**
      * Gets a call to a method on the receiver represented by this API component.
      */
+    pragma[inline]
     DataFlow::CallNode getAMethodCall(string method) { result = this.getReturn(method).asSource() }
 
     /**
@@ -177,15 +179,20 @@ module API {
      * - A submodule of a module
      * - An attribute of an object
      */
-    bindingset[m]
-    bindingset[result]
-    Node getMember(string m) { result = this.getASuccessor(Label::member(m)) }
+    pragma[inline]
+    Node getMember(string m) {
+      result = pragma[only_bind_out](this).(Node::Internal).getMemberInternal(m)
+    }
 
     /**
      * Gets a node representing a member of this API component where the name of the member may
      * or may not be known statically.
      */
-    Node getAMember() { result = this.getASuccessor(Label::member(_)) }
+    cached
+    Node getAMember() {
+      Impl::forceCachingInSameStage() and
+      result = this.getASuccessor(Label::member(_))
+    }
 
     /**
      * Gets a node representing an instance of this API component, that is, an object whose
@@ -198,41 +205,54 @@ module API {
      * This predicate may have multiple results when there are multiple constructor calls invoking this API component.
      * Consider using `getAnInstantiation()` if there is a need to distinguish between individual constructor calls.
      */
+    pragma[inline]
     Node getInstance() { result = this.getASubclass().getReturn("new") }
 
     /**
      * Gets a node representing a call to `method` on the receiver represented by this node.
      */
+    pragma[inline]
     MethodAccessNode getMethod(string method) {
-      result = this.getASubclass().getASuccessor(Label::method(method))
+      result = pragma[only_bind_out](this).(Node::Internal).getMethodInternal(method)
     }
 
     /**
      * Gets a node representing the result of this call.
      */
-    Node getReturn() { result = this.getASuccessor(Label::return()) }
+    pragma[inline]
+    Node getReturn() { result = pragma[only_bind_out](this).(Node::Internal).getReturnInternal() }
 
     /**
      * Gets a node representing the result of calling a method on the receiver represented by this node.
      */
+    pragma[inline]
     Node getReturn(string method) { result = this.getMethod(method).getReturn() }
 
     /** Gets an API node representing the `n`th positional parameter. */
-    pragma[nomagic]
-    Node getParameter(int n) { result = this.getASuccessor(Label::parameter(n)) }
+    cached
+    Node getParameter(int n) {
+      Impl::forceCachingInSameStage() and
+      result = this.getASuccessor(Label::parameter(n))
+    }
 
     /** Gets an API node representing the given keyword parameter. */
-    pragma[nomagic]
+    cached
     Node getKeywordParameter(string name) {
+      Impl::forceCachingInSameStage() and
       result = this.getASuccessor(Label::keywordParameter(name))
     }
 
     /** Gets an API node representing the block parameter. */
-    Node getBlock() { result = this.getASuccessor(Label::blockParameter()) }
+    cached
+    Node getBlock() {
+      Impl::forceCachingInSameStage() and
+      result = this.getASuccessor(Label::blockParameter())
+    }
 
     /**
      * Gets a `new` call to the function represented by this API component.
      */
+    pragma[inline]
     DataFlow::ExprNode getAnInstantiation() { result = this.getInstance().asSource() }
 
     /**
@@ -255,12 +275,17 @@ module API {
      * ```
      * In the example above, `getMember("A").getAnImmediateSubclass()` will return uses of `B` only.
      */
-    Node getAnImmediateSubclass() { result = this.getASuccessor(Label::subclass()) }
+    cached
+    Node getAnImmediateSubclass() {
+      Impl::forceCachingInSameStage() and result = this.getASuccessor(Label::subclass())
+    }
 
     /**
      * Gets a node representing the `content` stored on the base object.
      */
+    cached
     Node getContent(DataFlow::Content content) {
+      Impl::forceCachingInSameStage() and
       result = this.getASuccessor(Label::content(content))
     }
 
@@ -274,10 +299,16 @@ module API {
     }
 
     /** Gets a node representing the instance field of the given `name`, which must include the `@` character. */
-    Node getField(string name) { result = this.getContent(DataFlowPrivate::TFieldContent(name)) }
+    cached
+    Node getField(string name) {
+      Impl::forceCachingInSameStage() and
+      result = this.getContent(DataFlowPrivate::TFieldContent(name))
+    }
 
     /** Gets a node representing an element of this collection (known or unknown). */
+    cached
     Node getAnElement() {
+      Impl::forceCachingInSameStage() and
       result = this.getContents(any(DataFlow::ContentSet set | set.isAnyElement()))
     }
 
@@ -328,6 +359,11 @@ module API {
     Location getLocation() {
       result = this.getInducingNode().getLocation()
       or
+      exists(DataFlow::ModuleNode mod |
+        this = Impl::MkModuleObject(mod) and
+        result = mod.getLocation()
+      )
+      or
       // For nodes that do not have a meaningful location, `path` is the empty string and all other
       // parameters are zero.
       not exists(this.getInducingNode()) and
@@ -337,7 +373,7 @@ module API {
     /**
      * Gets a textual representation of this element.
      */
-    abstract string toString();
+    string toString() { none() }
 
     /**
      * Gets a path of the given `length` from the root to this node.
@@ -361,6 +397,65 @@ module API {
 
     /** Gets the shortest distance from the root to this node in the API graph. */
     int getDepth() { result = Impl::distanceFromRoot(this) }
+  }
+
+  /** Companion module to the `Node` class. */
+  module Node {
+    /**
+     * INTERNAL USE ONLY.
+     *
+     * An API node, with some internal predicates exposed.
+     */
+    class Internal extends Node {
+      /**
+       * INTERNAL USE ONLY.
+       *
+       * Same as `asSource()` but without join-order hints.
+       */
+      cached
+      DataFlow::LocalSourceNode asSourceInternal() {
+        Impl::forceCachingInSameStage() and
+        Impl::use(this, result)
+      }
+
+      /**
+       * Same as `getMember` but without join-order hints.
+       */
+      cached
+      Node getMemberInternal(string m) {
+        Impl::forceCachingInSameStage() and
+        result = this.getASuccessor(Label::member(m))
+      }
+
+      /**
+       * Same as `getMethod` but without join-order hints.
+       */
+      cached
+      MethodAccessNode getMethodInternal(string method) {
+        Impl::forceCachingInSameStage() and
+        result = this.getASubclass().getASuccessor(Label::method(method))
+      }
+
+      /**
+       * INTERNAL USE ONLY.
+       *
+       * Same as `getReturn()` but without join-order hints.
+       */
+      cached
+      Node getReturnInternal() {
+        Impl::forceCachingInSameStage() and result = this.getASuccessor(Label::return())
+      }
+    }
+  }
+
+  bindingset[node]
+  pragma[inline_late]
+  private DataFlow::Node getAValueReachableFromSourceInline(Node node) {
+    exists(DataFlow::LocalSourceNode src, DataFlow::LocalSourceNode dst |
+      Impl::use(node, pragma[only_bind_into](src)) and
+      pragma[only_bind_into](dst) = Impl::trackUseNode(src) and
+      dst.flowsTo(result)
+    )
   }
 
   /** The root node of an API graph. */
@@ -443,7 +538,10 @@ module API {
    * you should use `.getMember` on the parent module/class. For example, for nodes corresponding to the class `Gem::Version`,
    * use `getTopLevelMember("Gem").getMember("Version")`.
    */
-  Node getTopLevelMember(string m) { result = root().getMember(m) }
+  cached
+  Node getTopLevelMember(string m) {
+    Impl::forceCachingInSameStage() and result = root().(Node::Internal).getMemberInternal(m)
+  }
 
   /**
    * Provides the actual implementation of API graphs, cached for performance.
@@ -470,6 +568,36 @@ module API {
   cached
   private module Impl {
     cached
+    predicate forceCachingInSameStage() { any() }
+
+    cached
+    predicate forceCachingBackref() {
+      1 = 1
+      or
+      exists(getTopLevelMember(_))
+      or
+      exists(
+        any(Node n)
+            .(Node::Internal)
+            .getMemberInternal("foo")
+            .getAMember()
+            .(Node::Internal)
+            .getMethodInternal("foo")
+            .(Node::Internal)
+            .getReturnInternal()
+            .getParameter(0)
+            .getKeywordParameter("foo")
+            .getBlock()
+            .getAnImmediateSubclass()
+            .getContent(_)
+            .getField(_)
+            .getAnElement()
+            .(Node::Internal)
+            .asSourceInternal()
+      )
+    }
+
+    cached
     newtype TApiNode =
       /** The root of the API graph. */
       MkRoot() or
@@ -478,7 +606,9 @@ module API {
       /** A use of an API member at the node `nd`. */
       MkUse(DataFlow::Node nd) { isUse(nd) } or
       /** A value that escapes into an external library at the node `nd` */
-      MkDef(DataFlow::Node nd) { isDef(nd) }
+      MkDef(DataFlow::Node nd) { isDef(nd) } or
+      /** A module object seen as a use node. */
+      MkModuleObject(DataFlow::ModuleNode mod)
 
     private string resolveTopLevel(ConstantReadAccess read) {
       result = read.getModule().getQualifiedName() and
@@ -561,7 +691,14 @@ module API {
      * Holds if `ref` is a use of node `nd`.
      */
     cached
-    predicate use(TApiNode nd, DataFlow::Node ref) { nd = MkUse(ref) }
+    predicate use(TApiNode nd, DataFlow::Node ref) {
+      nd = MkUse(ref)
+      or
+      exists(DataFlow::ModuleNode mod |
+        nd = MkModuleObject(mod) and
+        ref = mod.getAnImmediateReference()
+      )
+    }
 
     /**
      * Holds if `rhs` is a RHS of node `nd`.
@@ -680,6 +817,14 @@ module API {
     }
 
     /**
+     * Holds if `superclass` is the superclass of `mod`.
+     */
+    pragma[nomagic]
+    private predicate superclassNode(DataFlow::ModuleNode mod, DataFlow::Node superclass) {
+      superclass.asExpr().getExpr() = mod.getADeclaration().(ClassDeclaration).getSuperclassExpr()
+    }
+
+    /**
      * Holds if there is an edge from `pred` to `succ` in the API graph that is labeled with `lbl`.
      */
     cached
@@ -690,38 +835,35 @@ module API {
         useRoot(lbl, ref)
         or
         exists(DataFlow::Node node, DataFlow::Node src |
-          pred = MkUse(src) and
+          use(pred, src) and
           trackUseNode(src).flowsTo(node) and
           useStep(lbl, node, ref)
         )
         or
         exists(DataFlow::Node callback |
-          pred = MkDef(callback) and
+          def(pred, callback) and
           parameterStep(lbl, trackDefNode(callback), ref)
         )
       )
       or
       exists(DataFlow::Node predNode, DataFlow::Node succNode |
         def(pred, predNode) and
-        def(succ, succNode) and
+        succ = MkDef(succNode) and
         defStep(lbl, trackDefNode(predNode), succNode)
       )
       or
-      // `pred` is a use of class A
-      // `succ` is a use of class B
-      // there exists a class declaration B < A
-      exists(ClassDeclaration c, DataFlow::Node a, DataFlow::Node b |
-        use(pred, a) and
-        use(succ, b) and
-        b.asExpr().getExpr().(ConstantReadAccess).getAQualifiedName() = c.getAQualifiedName() and
-        pragma[only_bind_into](c).getSuperclassExpr() = a.asExpr().getExpr() and
+      exists(DataFlow::Node predNode, DataFlow::Node superclassNode, DataFlow::ModuleNode mod |
+        use(pred, predNode) and
+        trackUseNode(predNode).flowsTo(superclassNode) and
+        superclassNode(mod, superclassNode) and
+        succ = MkModuleObject(mod) and
         lbl = Label::subclass()
       )
       or
       exists(DataFlow::CallNode call |
         // from receiver to method call node
         exists(DataFlow::Node receiver |
-          pred = MkUse(receiver) and
+          use(pred, receiver) and
           useNodeReachesReceiver(receiver, call) and
           lbl = Label::method(call.getMethodName()) and
           succ = MkMethodAccessNode(call)

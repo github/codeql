@@ -12,27 +12,8 @@ private import codeql.swift.security.PredicateInjectionExtensions
 /**
  * A taint-tracking configuration for predicate injection vulnerabilities.
  */
-deprecated class PredicateInjectionConf extends TaintTracking::Configuration {
-  PredicateInjectionConf() { this = "PredicateInjectionConf" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof PredicateInjectionSink }
-
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
-    sanitizer instanceof PredicateInjectionSanitizer
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
-    any(PredicateInjectionAdditionalTaintStep s).step(n1, n2)
-  }
-}
-
-/**
- * A taint-tracking configuration for predicate injection vulnerabilities.
- */
 module PredicateInjectionConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
   predicate isSink(DataFlow::Node sink) { sink instanceof PredicateInjectionSink }
 

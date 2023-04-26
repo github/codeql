@@ -8,15 +8,15 @@ class TestRemoteFlowSource extends RemoteFlowSource {
   override string getSourceType() { result = "test" }
 }
 
-class TaintFlowConf extends TaintTracking::Configuration {
-  TaintFlowConf() { this = "qltest:dataflow:entrypoint-types-taint" }
+module TaintFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node n) { n instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node n) {
+  predicate isSink(DataFlow::Node n) {
     exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
 }
+
+module TaintFlow = TaintTracking::Global<TaintFlowConfig>;
 
 class HasFlowTest extends InlineExpectationsTest {
   HasFlowTest() { this = "HasFlowTest" }
@@ -25,7 +25,7 @@ class HasFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasTaintFlow" and
-    exists(DataFlow::Node sink, TaintFlowConf conf | conf.hasFlowTo(sink) |
+    exists(DataFlow::Node sink | TaintFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""
