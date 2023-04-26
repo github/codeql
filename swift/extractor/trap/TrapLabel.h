@@ -26,11 +26,11 @@ class UntypedTrapLabel {
 
   static constexpr uint64_t undefined = 0xffffffffffffffff;
 
- protected:
-  UntypedTrapLabel() : id_{undefined} {}
-  UntypedTrapLabel(uint64_t id) : id_{id} { assert(id != undefined); }
-
  public:
+  UntypedTrapLabel() : id_{undefined} {}
+  explicit UntypedTrapLabel(uint64_t id) : id_{id} { assert(id != undefined); }
+  UntypedTrapLabel(UndefinedTrapLabel) : UntypedTrapLabel() {}
+
   bool valid() const { return id_ != undefined; }
   explicit operator bool() const { return valid(); }
 
@@ -58,6 +58,8 @@ class UntypedTrapLabel {
     // Number of hex digits is ceil(bit_width(id) / 4), but C++ integer division can only do floor.
     return /* # */ 1 + /* hex digits */ 1 + (absl::bit_width(id_) - 1) / 4;
   }
+
+  friend bool operator!=(UntypedTrapLabel lhs, UntypedTrapLabel rhs) { return lhs.id_ != rhs.id_; }
 };
 
 template <typename TagParam>
@@ -79,8 +81,8 @@ class TrapLabel : public UntypedTrapLabel {
   }
 
   // The caller is responsible for ensuring ID uniqueness.
-  static TrapLabel unsafeCreateFromExplicitId(uint64_t id) { return {id}; }
-  static TrapLabel unsafeCreateFromUntyped(UntypedTrapLabel label) { return {label.id_}; }
+  static TrapLabel unsafeCreateFromExplicitId(uint64_t id) { return TrapLabel{id}; }
+  static TrapLabel unsafeCreateFromUntyped(UntypedTrapLabel label) { return TrapLabel{label.id_}; }
 
   template <typename SourceTag>
   TrapLabel(const TrapLabel<SourceTag>& other) : UntypedTrapLabel(other) {
