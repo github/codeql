@@ -1,1 +1,1 @@
-semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll {testdir}/../../../../resources/stubs/System.Windows.cs
+semmle-extractor-options: ${testdir}/../../../resources/stubs/System.Web.cs /r:System.Collections.Specialized.dll /r:System.Security.Cryptography.dll {testdir}/../../../../resources/stubs/System.Windows.cs
