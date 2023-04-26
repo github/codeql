@@ -1279,7 +1279,7 @@ class DataFlowType extends TDataFlowType {
 DataFlowType getNodeType(NodeImpl n) { result = TTodoDataFlowType() and exists(n) }
 
 /** Gets a string representation of a `DataFlowType`. */
-string ppReprType(DataFlowType t) { result = t.toString() }
+string ppReprType(DataFlowType t) { none() }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
