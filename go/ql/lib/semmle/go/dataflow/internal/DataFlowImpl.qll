@@ -9,6 +9,7 @@ private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 private import DataFlowImplCommonPublic
 private import codeql.util.Unit
+private import codeql.util.Option
 import DataFlow
 
 /**
@@ -390,10 +391,12 @@ module Impl<FullStateConfigSig Config> {
   private predicate hasReadStep(Content c) { read(_, c, _) }
 
   pragma[nomagic]
-  private predicate storeEx(NodeEx node1, TypedContent tc, NodeEx node2, DataFlowType contentType) {
-    store(pragma[only_bind_into](node1.asNode()), tc, pragma[only_bind_into](node2.asNode()),
-      contentType) and
-    hasReadStep(tc.getContent()) and
+  private predicate storeEx(
+    NodeEx node1, Content c, NodeEx node2, DataFlowType contentType, DataFlowType containerType
+  ) {
+    store(pragma[only_bind_into](node1.asNode()), c, pragma[only_bind_into](node2.asNode()),
+      contentType, containerType) and
+    hasReadStep(c) and
     stepFilter(node1, node2)
   }
 
@@ -478,7 +481,7 @@ module Impl<FullStateConfigSig Config> {
       exists(NodeEx mid |
         useFieldFlow() and
         fwdFlow(mid, cc) and
-        storeEx(mid, _, node, _)
+        storeEx(mid, _, node, _, _)
       )
       or
       // read
@@ -570,12 +573,11 @@ module Impl<FullStateConfigSig Config> {
     pragma[assume_small_delta]
     pragma[nomagic]
     private predicate fwdFlowConsCand(Content c) {
-      exists(NodeEx mid, NodeEx node, TypedContent tc |
+      exists(NodeEx mid, NodeEx node |
         not fullBarrier(node) and
         useFieldFlow() and
         fwdFlow(mid, _) and
-        storeEx(mid, tc, node, _) and
-        c = tc.getContent()
+        storeEx(mid, c, node, _, _)
       )
     }
 
@@ -709,11 +711,10 @@ module Impl<FullStateConfigSig Config> {
 
     pragma[nomagic]
     private predicate revFlowStore(Content c, NodeEx node, boolean toReturn) {
-      exists(NodeEx mid, TypedContent tc |
+      exists(NodeEx mid |
         revFlow(mid, toReturn) and
         fwdFlowConsCand(c) and
-        storeEx(node, tc, mid, _) and
-        c = tc.getContent()
+        storeEx(node, c, mid, _, _)
       )
     }
 
@@ -803,15 +804,13 @@ module Impl<FullStateConfigSig Config> {
 
     pragma[nomagic]
     predicate storeStepCand(
-      NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType
+      NodeEx node1, Ap ap1, Content c, NodeEx node2, DataFlowType contentType,
+      DataFlowType containerType
     ) {
-      exists(Content c |
-        revFlowIsReadAndStored(c) and
-        revFlow(node2) and
-        storeEx(node1, tc, node2, contentType) and
-        c = tc.getContent() and
-        exists(ap1)
-      )
+      revFlowIsReadAndStored(c) and
+      revFlow(node2) and
+      storeEx(node1, c, node2, contentType, containerType) and
+      exists(ap1)
     }
 
     pragma[nomagic]
@@ -1053,7 +1052,8 @@ module Impl<FullStateConfigSig Config> {
     predicate returnMayFlowThrough(RetNodeEx ret, Ap argAp, Ap ap, ReturnKindExt kind);
 
     predicate storeStepCand(
-      NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType
+      NodeEx node1, Ap ap1, Content c, NodeEx node2, DataFlowType contentType,
+      DataFlowType containerType
     );
 
     predicate readStepCand(NodeEx n1, Content c, NodeEx n2);
@@ -1063,6 +1063,10 @@ module Impl<FullStateConfigSig Config> {
     class ApApprox = PrevStage::Ap;
 
     signature module StageParam {
+      class Typ {
+        string toString();
+      }
+
       class Ap;
 
       class ApNil extends Ap;
@@ -1070,10 +1074,10 @@ module Impl<FullStateConfigSig Config> {
       bindingset[result, ap]
       ApApprox getApprox(Ap ap);
 
-      ApNil getApNil(NodeEx node);
+      Typ getTyp(DataFlowType t);
 
-      bindingset[tc, tail]
-      Ap apCons(TypedContent tc, Ap tail);
+      bindingset[c, t, tail]
+      Ap apCons(Content c, Typ t, Ap tail);
 
       /**
        * An approximation of `Content` that corresponds to the precision level of
@@ -1120,7 +1124,7 @@ module Impl<FullStateConfigSig Config> {
       bindingset[node2, state2]
       predicate localStep(
         NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-        ApNil ap, LocalCc lcc
+        Typ t, LocalCc lcc
       );
 
       predicate flowOutOfCall(
@@ -1131,17 +1135,26 @@ module Impl<FullStateConfigSig Config> {
         DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow
       );
 
-      bindingset[node, state, ap]
-      predicate filter(NodeEx node, FlowState state, Ap ap);
+      bindingset[node, state, t, ap]
+      predicate filter(NodeEx node, FlowState state, Typ t, Ap ap);
 
-      bindingset[ap, contentType]
-      predicate typecheckStore(Ap ap, DataFlowType contentType);
+      bindingset[typ, contentType]
+      predicate typecheckStore(Typ typ, DataFlowType contentType);
     }
 
     module Stage<StageParam Param> implements StageSig {
       import Param
 
       /* Begin: Stage logic. */
+      private module TypOption = Option<Typ>;
+
+      private class TypOption = TypOption::Option;
+
+      pragma[nomagic]
+      private Typ getNodeTyp(NodeEx node) {
+        PrevStage::revFlow(node) and result = getTyp(node.getDataFlowType())
+      }
+
       pragma[nomagic]
       private predicate flowIntoCallApa(
         DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, ApApprox apa
@@ -1183,97 +1196,102 @@ module Impl<FullStateConfigSig Config> {
        */
       pragma[nomagic]
       additional predicate fwdFlow(
-        NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, ApOption argAp, Ap ap,
-        ApApprox apa
+        NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
+        ApOption argAp, Typ t, Ap ap, ApApprox apa
       ) {
-        fwdFlow0(node, state, cc, summaryCtx, argAp, ap, apa) and
+        fwdFlow0(node, state, cc, summaryCtx, argT, argAp, t, ap, apa) and
         PrevStage::revFlow(node, state, apa) and
-        filter(node, state, ap)
+        filter(node, state, t, ap)
       }
 
       pragma[inline]
       additional predicate fwdFlow(
-        NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, ApOption argAp, Ap ap
+        NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
+        ApOption argAp, Typ t, Ap ap
       ) {
-        fwdFlow(node, state, cc, summaryCtx, argAp, ap, _)
+        fwdFlow(node, state, cc, summaryCtx, argT, argAp, t, ap, _)
       }
 
       pragma[assume_small_delta]
       pragma[nomagic]
       private predicate fwdFlow0(
-        NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, ApOption argAp, Ap ap,
-        ApApprox apa
+        NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
+        ApOption argAp, Typ t, Ap ap, ApApprox apa
       ) {
         sourceNode(node, state) and
         (if hasSourceCallCtx() then cc = ccSomeCall() else cc = ccNone()) and
+        argT instanceof TypOption::None and
         argAp = apNone() and
         summaryCtx = TParamNodeNone() and
-        ap = getApNil(node) and
+        t = getNodeTyp(node) and
+        ap instanceof ApNil and
         apa = getApprox(ap)
         or
-        exists(NodeEx mid, FlowState state0, Ap ap0, ApApprox apa0, LocalCc localCc |
-          fwdFlow(mid, state0, cc, summaryCtx, argAp, ap0, apa0) and
+        exists(NodeEx mid, FlowState state0, Typ t0, LocalCc localCc |
+          fwdFlow(mid, state0, cc, summaryCtx, argT, argAp, t0, ap, apa) and
           localCc = getLocalCc(mid, cc)
         |
           localStep(mid, state0, node, state, true, _, localCc) and
-          ap = ap0 and
-          apa = apa0
+          t = t0
           or
-          localStep(mid, state0, node, state, false, ap, localCc) and
-          ap0 instanceof ApNil and
-          apa = getApprox(ap)
+          localStep(mid, state0, node, state, false, t, localCc) and
+          ap instanceof ApNil
         )
         or
         exists(NodeEx mid |
-          fwdFlow(mid, pragma[only_bind_into](state), _, _, _, ap, apa) and
+          fwdFlow(mid, state, _, _, _, _, t, ap, apa) and
           jumpStepEx(mid, node) and
           cc = ccNone() and
           summaryCtx = TParamNodeNone() and
+          argT instanceof TypOption::None and
           argAp = apNone()
         )
         or
-        exists(NodeEx mid, ApNil nil |
-          fwdFlow(mid, state, _, _, _, nil) and
+        exists(NodeEx mid |
+          fwdFlow(mid, state, _, _, _, _, _, ap, apa) and
           additionalJumpStep(mid, node) and
           cc = ccNone() and
           summaryCtx = TParamNodeNone() and
+          argT instanceof TypOption::None and
           argAp = apNone() and
-          ap = getApNil(node) and
-          apa = getApprox(ap)
+          t = getNodeTyp(node) and
+          ap instanceof ApNil
         )
         or
-        exists(NodeEx mid, FlowState state0, ApNil nil |
-          fwdFlow(mid, state0, _, _, _, nil) and
+        exists(NodeEx mid, FlowState state0 |
+          fwdFlow(mid, state0, _, _, _, _, _, ap, apa) and
           additionalJumpStateStep(mid, state0, node, state) and
           cc = ccNone() and
           summaryCtx = TParamNodeNone() and
+          argT instanceof TypOption::None and
           argAp = apNone() and
-          ap = getApNil(node) and
-          apa = getApprox(ap)
+          t = getNodeTyp(node) and
+          ap instanceof ApNil
         )
         or
         // store
-        exists(TypedContent tc, Ap ap0 |
-          fwdFlowStore(_, ap0, tc, node, state, cc, summaryCtx, argAp) and
-          ap = apCons(tc, ap0) and
+        exists(Content c, Typ t0, Ap ap0 |
+          fwdFlowStore(_, t0, ap0, c, t, node, state, cc, summaryCtx, argT, argAp) and
+          ap = apCons(c, t0, ap0) and
           apa = getApprox(ap)
         )
         or
         // read
-        exists(Ap ap0, Content c |
-          fwdFlowRead(ap0, c, _, node, state, cc, summaryCtx, argAp) and
-          fwdFlowConsCand(ap0, c, ap) and
+        exists(Typ t0, Ap ap0, Content c |
+          fwdFlowRead(t0, ap0, c, _, node, state, cc, summaryCtx, argT, argAp) and
+          fwdFlowConsCand(t0, ap0, c, t, ap) and
           apa = getApprox(ap)
         )
         or
         // flow into a callable
-        fwdFlowIn(_, node, state, _, cc, _, _, ap, apa) and
+        fwdFlowIn(_, node, state, _, cc, _, _, _, t, ap, apa) and
         if PrevStage::parameterMayFlowThrough(node, apa)
         then (
           summaryCtx = TParamNodeSome(node.asNode()) and
+          argT = TypOption::some(t) and
           argAp = apSome(ap)
         ) else (
-          summaryCtx = TParamNodeNone() and argAp = apNone()
+          summaryCtx = TParamNodeNone() and argT instanceof TypOption::None and argAp = apNone()
         )
         or
         // flow out of a callable
@@ -1281,7 +1299,7 @@ module Impl<FullStateConfigSig Config> {
           DataFlowCall call, RetNodeEx ret, boolean allowsFieldFlow, CcNoCall innercc,
           DataFlowCallable inner
         |
-          fwdFlow(ret, state, innercc, summaryCtx, argAp, ap, apa) and
+          fwdFlow(ret, state, innercc, summaryCtx, argT, argAp, t, ap, apa) and
           flowOutOfCallApa(call, ret, _, node, allowsFieldFlow, apa) and
           inner = ret.getEnclosingCallable() and
           cc = getCallContextReturn(inner, call, innercc) and
@@ -1293,7 +1311,7 @@ module Impl<FullStateConfigSig Config> {
           DataFlowCall call, CcCall ccc, RetNodeEx ret, boolean allowsFieldFlow,
           ApApprox innerArgApa
         |
-          fwdFlowThrough(call, cc, state, ccc, summaryCtx, argAp, ap, apa, ret, innerArgApa) and
+          fwdFlowThrough(call, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret, innerArgApa) and
           flowThroughOutOfCall(call, ccc, ret, node, allowsFieldFlow, innerArgApa, apa) and
           if allowsFieldFlow = false then ap instanceof ApNil else any()
         )
@@ -1301,27 +1319,26 @@ module Impl<FullStateConfigSig Config> {
 
       pragma[nomagic]
       private predicate fwdFlowStore(
-        NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, FlowState state, Cc cc,
-        ParamNodeOption summaryCtx, ApOption argAp
+        NodeEx node1, Typ t1, Ap ap1, Content c, Typ t2, NodeEx node2, FlowState state, Cc cc,
+        ParamNodeOption summaryCtx, TypOption argT, ApOption argAp
       ) {
-        exists(DataFlowType contentType, ApApprox apa1 |
-          fwdFlow(node1, state, cc, summaryCtx, argAp, ap1, apa1) and
-          PrevStage::storeStepCand(node1, apa1, tc, node2, contentType) and
-          typecheckStore(ap1, contentType)
+        exists(DataFlowType contentType, DataFlowType containerType, ApApprox apa1 |
+          fwdFlow(node1, state, cc, summaryCtx, argT, argAp, t1, ap1, apa1) and
+          PrevStage::storeStepCand(node1, apa1, c, node2, contentType, containerType) and
+          t2 = getTyp(containerType) and
+          typecheckStore(t1, contentType)
         )
       }
 
       /**
-       * Holds if forward flow with access path `tail` reaches a store of `c`
-       * resulting in access path `cons`.
+       * Holds if forward flow with access path `tail` and type `t1` reaches a
+       * store of `c` on a container of type `t2` resulting in access path
+       * `cons`.
        */
       pragma[nomagic]
-      private predicate fwdFlowConsCand(Ap cons, Content c, Ap tail) {
-        exists(TypedContent tc |
-          fwdFlowStore(_, tail, tc, _, _, _, _, _) and
-          tc.getContent() = c and
-          cons = apCons(tc, tail)
-        )
+      private predicate fwdFlowConsCand(Typ t2, Ap cons, Content c, Typ t1, Ap tail) {
+        fwdFlowStore(_, t1, tail, c, t2, _, _, _, _, _, _) and
+        cons = apCons(c, t1, tail)
       }
 
       pragma[nomagic]
@@ -1338,11 +1355,11 @@ module Impl<FullStateConfigSig Config> {
 
       pragma[nomagic]
       private predicate fwdFlowRead(
-        Ap ap, Content c, NodeEx node1, NodeEx node2, FlowState state, Cc cc,
-        ParamNodeOption summaryCtx, ApOption argAp
+        Typ t, Ap ap, Content c, NodeEx node1, NodeEx node2, FlowState state, Cc cc,
+        ParamNodeOption summaryCtx, TypOption argT, ApOption argAp
       ) {
         exists(ApHeadContent apc |
-          fwdFlow(node1, state, cc, summaryCtx, argAp, ap) and
+          fwdFlow(node1, state, cc, summaryCtx, argT, argAp, t, ap) and
           apc = getHeadContent(ap) and
           readStepCand0(node1, apc, c, node2)
         )
@@ -1351,10 +1368,10 @@ module Impl<FullStateConfigSig Config> {
       pragma[nomagic]
       private predicate fwdFlowIn(
         DataFlowCall call, ParamNodeEx p, FlowState state, Cc outercc, CcCall innercc,
-        ParamNodeOption summaryCtx, ApOption argAp, Ap ap, ApApprox apa
+        ParamNodeOption summaryCtx, TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa
       ) {
         exists(ArgNodeEx arg, boolean allowsFieldFlow |
-          fwdFlow(arg, state, outercc, summaryCtx, argAp, ap, apa) and
+          fwdFlow(arg, state, outercc, summaryCtx, argT, argAp, t, ap, apa) and
           flowIntoCallApa(call, arg, p, allowsFieldFlow, apa) and
           innercc = getCallContextCall(call, p.getEnclosingCallable(), outercc) and
           if allowsFieldFlow = false then ap instanceof ApNil else any()
@@ -1363,13 +1380,13 @@ module Impl<FullStateConfigSig Config> {
 
       pragma[nomagic]
       private predicate fwdFlowRetFromArg(
-        RetNodeEx ret, FlowState state, CcCall ccc, ParamNodeEx summaryCtx, Ap argAp,
-        ApApprox argApa, Ap ap, ApApprox apa
+        RetNodeEx ret, FlowState state, CcCall ccc, ParamNodeEx summaryCtx, Typ argT, Ap argAp,
+        ApApprox argApa, Typ t, Ap ap, ApApprox apa
       ) {
         exists(ReturnKindExt kind |
           fwdFlow(pragma[only_bind_into](ret), state, ccc,
-            TParamNodeSome(pragma[only_bind_into](summaryCtx.asNode())),
-            pragma[only_bind_into](apSome(argAp)), ap, pragma[only_bind_into](apa)) and
+            TParamNodeSome(pragma[only_bind_into](summaryCtx.asNode())), TypOption::some(argT),
+            pragma[only_bind_into](apSome(argAp)), t, ap, pragma[only_bind_into](apa)) and
           kind = ret.getKind() and
           parameterFlowThroughAllowed(summaryCtx, kind) and
           argApa = getApprox(argAp) and
@@ -1380,19 +1397,23 @@ module Impl<FullStateConfigSig Config> {
       pragma[inline]
       private predicate fwdFlowThrough0(
         DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
-        ApOption argAp, Ap ap, ApApprox apa, RetNodeEx ret, ParamNodeEx innerSummaryCtx,
-        Ap innerArgAp, ApApprox innerArgApa
+        TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa, RetNodeEx ret,
+        ParamNodeEx innerSummaryCtx, Typ innerArgT, Ap innerArgAp, ApApprox innerArgApa
       ) {
-        fwdFlowRetFromArg(ret, state, ccc, innerSummaryCtx, innerArgAp, innerArgApa, ap, apa) and
-        fwdFlowIsEntered(call, cc, ccc, summaryCtx, argAp, innerSummaryCtx, innerArgAp)
+        fwdFlowRetFromArg(ret, state, ccc, innerSummaryCtx, innerArgT, innerArgAp, innerArgApa, t,
+          ap, apa) and
+        fwdFlowIsEntered(call, cc, ccc, summaryCtx, argT, argAp, innerSummaryCtx, innerArgT,
+          innerArgAp)
       }
 
       pragma[nomagic]
       private predicate fwdFlowThrough(
         DataFlowCall call, Cc cc, FlowState state, CcCall ccc, ParamNodeOption summaryCtx,
-        ApOption argAp, Ap ap, ApApprox apa, RetNodeEx ret, ApApprox innerArgApa
+        TypOption argT, ApOption argAp, Typ t, Ap ap, ApApprox apa, RetNodeEx ret,
+        ApApprox innerArgApa
       ) {
-        fwdFlowThrough0(call, cc, state, ccc, summaryCtx, argAp, ap, apa, ret, _, _, innerArgApa)
+        fwdFlowThrough0(call, cc, state, ccc, summaryCtx, argT, argAp, t, ap, apa, ret, _, _, _,
+          innerArgApa)
       }
 
       /**
@@ -1401,11 +1422,11 @@ module Impl<FullStateConfigSig Config> {
        */
       pragma[nomagic]
       private predicate fwdFlowIsEntered(
-        DataFlowCall call, Cc cc, CcCall innerCc, ParamNodeOption summaryCtx, ApOption argAp,
-        ParamNodeEx p, Ap ap
+        DataFlowCall call, Cc cc, CcCall innerCc, ParamNodeOption summaryCtx, TypOption argT,
+        ApOption argAp, ParamNodeEx p, Typ t, Ap ap
       ) {
         exists(ApApprox apa |
-          fwdFlowIn(call, pragma[only_bind_into](p), _, cc, innerCc, summaryCtx, argAp, ap,
+          fwdFlowIn(call, pragma[only_bind_into](p), _, cc, innerCc, summaryCtx, argT, argAp, t, ap,
             pragma[only_bind_into](apa)) and
           PrevStage::parameterMayFlowThrough(p, apa) and
           PrevStage::callMayFlowThroughRev(call)
@@ -1413,33 +1434,36 @@ module Impl<FullStateConfigSig Config> {
       }
 
       pragma[nomagic]
-      private predicate storeStepFwd(NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, Ap ap2) {
-        fwdFlowStore(node1, ap1, tc, node2, _, _, _, _) and
-        ap2 = apCons(tc, ap1) and
-        fwdFlowRead(ap2, tc.getContent(), _, _, _, _, _, _)
+      private predicate storeStepFwd(NodeEx node1, Typ t1, Ap ap1, Content c, NodeEx node2, Ap ap2) {
+        fwdFlowStore(node1, t1, ap1, c, _, node2, _, _, _, _, _) and
+        ap2 = apCons(c, t1, ap1) and
+        readStepFwd(_, ap2, c, _, _)
       }
 
+      pragma[nomagic]
       private predicate readStepFwd(NodeEx n1, Ap ap1, Content c, NodeEx n2, Ap ap2) {
-        fwdFlowRead(ap1, c, n1, n2, _, _, _, _) and
-        fwdFlowConsCand(ap1, c, ap2)
+        exists(Typ t1 |
+          fwdFlowRead(t1, ap1, c, n1, n2, _, _, _, _, _) and
+          fwdFlowConsCand(t1, ap1, c, _, ap2)
+        )
       }
 
       pragma[nomagic]
       private predicate returnFlowsThrough0(
         DataFlowCall call, FlowState state, CcCall ccc, Ap ap, ApApprox apa, RetNodeEx ret,
-        ParamNodeEx innerSummaryCtx, Ap innerArgAp, ApApprox innerArgApa
+        ParamNodeEx innerSummaryCtx, Typ innerArgT, Ap innerArgAp, ApApprox innerArgApa
       ) {
-        fwdFlowThrough0(call, _, state, ccc, _, _, ap, apa, ret, innerSummaryCtx, innerArgAp,
-          innerArgApa)
+        fwdFlowThrough0(call, _, state, ccc, _, _, _, _, ap, apa, ret, innerSummaryCtx, innerArgT,
+          innerArgAp, innerArgApa)
       }
 
       pragma[nomagic]
       private predicate returnFlowsThrough(
-        RetNodeEx ret, ReturnPosition pos, FlowState state, CcCall ccc, ParamNodeEx p, Ap argAp,
-        Ap ap
+        RetNodeEx ret, ReturnPosition pos, FlowState state, CcCall ccc, ParamNodeEx p, Typ argT,
+        Ap argAp, Ap ap
       ) {
         exists(DataFlowCall call, ApApprox apa, boolean allowsFieldFlow, ApApprox innerArgApa |
-          returnFlowsThrough0(call, state, ccc, ap, apa, ret, p, argAp, innerArgApa) and
+          returnFlowsThrough0(call, state, ccc, ap, apa, ret, p, argT, argAp, innerArgApa) and
           flowThroughOutOfCall(call, ccc, ret, _, allowsFieldFlow, innerArgApa, apa) and
           pos = ret.getReturnPosition() and
           if allowsFieldFlow = false then ap instanceof ApNil else any()
@@ -1450,11 +1474,13 @@ module Impl<FullStateConfigSig Config> {
       private predicate flowThroughIntoCall(
         DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow, Ap argAp, Ap ap
       ) {
-        exists(ApApprox argApa |
+        exists(ApApprox argApa, Typ argT |
           flowIntoCallApa(call, pragma[only_bind_into](arg), pragma[only_bind_into](p),
             allowsFieldFlow, argApa) and
-          fwdFlow(arg, _, _, _, _, pragma[only_bind_into](argAp), argApa) and
-          returnFlowsThrough(_, _, _, _, p, pragma[only_bind_into](argAp), ap) and
+          fwdFlow(arg, _, _, _, _, _, pragma[only_bind_into](argT), pragma[only_bind_into](argAp),
+            argApa) and
+          returnFlowsThrough(_, _, _, _, p, pragma[only_bind_into](argT),
+            pragma[only_bind_into](argAp), ap) and
           if allowsFieldFlow = false then argAp instanceof ApNil else any()
         )
       }
@@ -1465,7 +1491,7 @@ module Impl<FullStateConfigSig Config> {
       ) {
         exists(ApApprox apa |
           flowIntoCallApa(call, arg, p, allowsFieldFlow, apa) and
-          fwdFlow(arg, _, _, _, _, ap, apa)
+          fwdFlow(arg, _, _, _, _, _, _, ap, apa)
         )
       }
 
@@ -1476,7 +1502,7 @@ module Impl<FullStateConfigSig Config> {
       ) {
         exists(ApApprox apa |
           flowOutOfCallApa(call, ret, _, out, allowsFieldFlow, apa) and
-          fwdFlow(ret, _, _, _, _, ap, apa) and
+          fwdFlow(ret, _, _, _, _, _, _, ap, apa) and
           pos = ret.getReturnPosition()
         )
       }
@@ -1494,14 +1520,14 @@ module Impl<FullStateConfigSig Config> {
         NodeEx node, FlowState state, ReturnCtx returnCtx, ApOption returnAp, Ap ap
       ) {
         revFlow0(node, state, returnCtx, returnAp, ap) and
-        fwdFlow(node, state, _, _, _, ap)
+        fwdFlow(node, state, _, _, _, _, _, ap)
       }
 
       pragma[nomagic]
       private predicate revFlow0(
         NodeEx node, FlowState state, ReturnCtx returnCtx, ApOption returnAp, Ap ap
       ) {
-        fwdFlow(node, state, _, _, _, ap) and
+        fwdFlow(node, state, _, _, _, _, _, ap) and
         sinkNode(node, state) and
         (
           if hasSinkCallCtx()
@@ -1516,10 +1542,9 @@ module Impl<FullStateConfigSig Config> {
           revFlow(mid, state0, returnCtx, returnAp, ap)
         )
         or
-        exists(NodeEx mid, FlowState state0, ApNil nil |
-          fwdFlow(node, pragma[only_bind_into](state), _, _, _, ap) and
+        exists(NodeEx mid, FlowState state0 |
           localStep(node, pragma[only_bind_into](state), mid, state0, false, _, _) and
-          revFlow(mid, state0, returnCtx, returnAp, nil) and
+          revFlow(mid, state0, returnCtx, returnAp, ap) and
           ap instanceof ApNil
         )
         or
@@ -1530,19 +1555,17 @@ module Impl<FullStateConfigSig Config> {
           returnAp = apNone()
         )
         or
-        exists(NodeEx mid, ApNil nil |
-          fwdFlow(node, _, _, _, _, ap) and
+        exists(NodeEx mid |
           additionalJumpStep(node, mid) and
-          revFlow(pragma[only_bind_into](mid), state, _, _, nil) and
+          revFlow(pragma[only_bind_into](mid), state, _, _, ap) and
           returnCtx = TReturnCtxNone() and
           returnAp = apNone() and
           ap instanceof ApNil
         )
         or
-        exists(NodeEx mid, FlowState state0, ApNil nil |
-          fwdFlow(node, _, _, _, _, ap) and
+        exists(NodeEx mid, FlowState state0 |
           additionalJumpStateStep(node, state, mid, state0) and
-          revFlow(pragma[only_bind_into](mid), pragma[only_bind_into](state0), _, _, nil) and
+          revFlow(pragma[only_bind_into](mid), pragma[only_bind_into](state0), _, _, ap) and
           returnCtx = TReturnCtxNone() and
           returnAp = apNone() and
           ap instanceof ApNil
@@ -1550,7 +1573,7 @@ module Impl<FullStateConfigSig Config> {
         or
         // store
         exists(Ap ap0, Content c |
-          revFlowStore(ap0, c, ap, node, state, _, _, returnCtx, returnAp) and
+          revFlowStore(ap0, c, ap, _, node, state, _, returnCtx, returnAp) and
           revFlowConsCand(ap0, c, ap)
         )
         or
@@ -1577,7 +1600,7 @@ module Impl<FullStateConfigSig Config> {
         // flow out of a callable
         exists(ReturnPosition pos |
           revFlowOut(_, node, pos, state, _, _, ap) and
-          if returnFlowsThrough(node, pos, state, _, _, _, ap)
+          if returnFlowsThrough(node, pos, state, _, _, _, _, ap)
           then (
             returnCtx = TReturnCtxMaybeFlowThrough(pos) and
             returnAp = apSome(ap)
@@ -1589,12 +1612,11 @@ module Impl<FullStateConfigSig Config> {
 
       pragma[nomagic]
       private predicate revFlowStore(
-        Ap ap0, Content c, Ap ap, NodeEx node, FlowState state, TypedContent tc, NodeEx mid,
+        Ap ap0, Content c, Ap ap, Typ t, NodeEx node, FlowState state, NodeEx mid,
         ReturnCtx returnCtx, ApOption returnAp
       ) {
         revFlow(mid, state, returnCtx, returnAp, ap0) and
-        storeStepFwd(node, ap, tc, mid, ap0) and
-        tc.getContent() = c
+        storeStepFwd(node, t, ap, c, mid, ap0)
       }
 
       /**
@@ -1652,18 +1674,19 @@ module Impl<FullStateConfigSig Config> {
       ) {
         exists(RetNodeEx ret, FlowState state, CcCall ccc |
           revFlowOut(call, ret, pos, state, returnCtx, returnAp, ap) and
-          returnFlowsThrough(ret, pos, state, ccc, _, _, ap) and
+          returnFlowsThrough(ret, pos, state, ccc, _, _, _, ap) and
           matchesCall(ccc, call)
         )
       }
 
       pragma[nomagic]
       predicate storeStepCand(
-        NodeEx node1, Ap ap1, TypedContent tc, NodeEx node2, DataFlowType contentType
+        NodeEx node1, Ap ap1, Content c, NodeEx node2, DataFlowType contentType,
+        DataFlowType containerType
       ) {
-        exists(Ap ap2, Content c |
-          PrevStage::storeStepCand(node1, _, tc, node2, contentType) and
-          revFlowStore(ap2, c, ap1, node1, _, tc, node2, _, _) and
+        exists(Ap ap2 |
+          PrevStage::storeStepCand(node1, _, c, node2, contentType, containerType) and
+          revFlowStore(ap2, c, ap1, _, node1, _, node2, _, _) and
           revFlowConsCand(ap2, c, ap1)
         )
       }
@@ -1686,21 +1709,26 @@ module Impl<FullStateConfigSig Config> {
       pragma[nomagic]
       predicate revFlowAp(NodeEx node, Ap ap) { revFlow(node, _, _, _, ap) }
 
-      private predicate fwdConsCand(TypedContent tc, Ap ap) { storeStepFwd(_, ap, tc, _, _) }
+      private predicate fwdConsCand(Content c, Typ t, Ap ap) { storeStepFwd(_, t, ap, c, _, _) }
 
-      private predicate revConsCand(TypedContent tc, Ap ap) { storeStepCand(_, ap, tc, _, _) }
+      private predicate revConsCand(Content c, Typ t, Ap ap) {
+        exists(Ap ap2 |
+          revFlowStore(ap2, c, ap, t, _, _, _, _, _) and
+          revFlowConsCand(ap2, c, ap)
+        )
+      }
 
       private predicate validAp(Ap ap) {
         revFlow(_, _, _, _, ap) and ap instanceof ApNil
         or
-        exists(TypedContent head, Ap tail |
-          consCand(head, tail) and
-          ap = apCons(head, tail)
+        exists(Content head, Typ t, Ap tail |
+          consCand(head, t, tail) and
+          ap = apCons(head, t, tail)
         )
       }
 
-      additional predicate consCand(TypedContent tc, Ap ap) {
-        revConsCand(tc, ap) and
+      additional predicate consCand(Content c, Typ t, Ap ap) {
+        revConsCand(c, t, ap) and
         validAp(ap)
       }
 
@@ -1715,7 +1743,7 @@ module Impl<FullStateConfigSig Config> {
       pragma[nomagic]
       predicate parameterMayFlowThrough(ParamNodeEx p, Ap ap) {
         exists(ReturnPosition pos |
-          returnFlowsThrough(_, pos, _, _, p, ap, _) and
+          returnFlowsThrough(_, pos, _, _, p, _, ap, _) and
           parameterFlowsThroughRev(p, ap, pos, _)
         )
       }
@@ -1723,7 +1751,7 @@ module Impl<FullStateConfigSig Config> {
       pragma[nomagic]
       predicate returnMayFlowThrough(RetNodeEx ret, Ap argAp, Ap ap, ReturnKindExt kind) {
         exists(ParamNodeEx p, ReturnPosition pos |
-          returnFlowsThrough(ret, pos, _, _, p, argAp, ap) and
+          returnFlowsThrough(ret, pos, _, _, p, _, argAp, ap) and
           parameterFlowsThroughRev(p, argAp, pos, ap) and
           kind = pos.getKind()
         )
@@ -1752,19 +1780,18 @@ module Impl<FullStateConfigSig Config> {
         boolean fwd, int nodes, int fields, int conscand, int states, int tuples
       ) {
         fwd = true and
-        nodes = count(NodeEx node | fwdFlow(node, _, _, _, _, _)) and
-        fields = count(TypedContent f0 | fwdConsCand(f0, _)) and
-        conscand = count(TypedContent f0, Ap ap | fwdConsCand(f0, ap)) and
-        states = count(FlowState state | fwdFlow(_, state, _, _, _, _)) and
+        nodes = count(NodeEx node | fwdFlow(node, _, _, _, _, _, _, _)) and
+        fields = count(Content f0 | fwdConsCand(f0, _, _)) and
+        conscand = count(Content f0, Typ t, Ap ap | fwdConsCand(f0, t, ap)) and
+        states = count(FlowState state | fwdFlow(_, state, _, _, _, _, _, _)) and
         tuples =
-          count(NodeEx n, FlowState state, Cc cc, ParamNodeOption summaryCtx, ApOption argAp, Ap ap |
-            fwdFlow(n, state, cc, summaryCtx, argAp, ap)
-          )
+          count(NodeEx n, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
+            ApOption argAp, Typ t, Ap ap | fwdFlow(n, state, cc, summaryCtx, argT, argAp, t, ap))
         or
         fwd = false and
         nodes = count(NodeEx node | revFlow(node, _, _, _, _)) and
-        fields = count(TypedContent f0 | consCand(f0, _)) and
-        conscand = count(TypedContent f0, Ap ap | consCand(f0, ap)) and
+        fields = count(Content f0 | consCand(f0, _, _)) and
+        conscand = count(Content f0, Typ t, Ap ap | consCand(f0, t, ap)) and
         states = count(FlowState state | revFlow(_, state, _, _, _)) and
         tuples =
           count(NodeEx n, FlowState state, ReturnCtx returnCtx, ApOption retAp, Ap ap |
@@ -1865,6 +1892,8 @@ module Impl<FullStateConfigSig Config> {
   private module Stage2Param implements MkStage<Stage1>::StageParam {
     private module PrevStage = Stage1;
 
+    class Typ = Unit;
+
     class Ap extends boolean {
       Ap() { this in [true, false] }
     }
@@ -1876,10 +1905,12 @@ module Impl<FullStateConfigSig Config> {
     bindingset[result, ap]
     PrevStage::Ap getApprox(Ap ap) { any() }
 
-    ApNil getApNil(NodeEx node) { Stage1::revFlow(node) and exists(result) }
+    Typ getTyp(DataFlowType t) { any() }
 
-    bindingset[tc, tail]
-    Ap apCons(TypedContent tc, Ap tail) { result = true and exists(tc) and exists(tail) }
+    bindingset[c, t, tail]
+    Ap apCons(Content c, Typ t, Ap tail) {
+      result = true and exists(c) and exists(t) and exists(tail)
+    }
 
     class ApHeadContent = Unit;
 
@@ -1900,8 +1931,8 @@ module Impl<FullStateConfigSig Config> {
     bindingset[node1, state1]
     bindingset[node2, state2]
     predicate localStep(
-      NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-      ApNil ap, LocalCc lcc
+      NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue, Typ t,
+      LocalCc lcc
     ) {
       (
         preservesValue = true and
@@ -1915,7 +1946,7 @@ module Impl<FullStateConfigSig Config> {
         preservesValue = false and
         additionalLocalStateStep(node1, state1, node2, state2)
       ) and
-      exists(ap) and
+      exists(t) and
       exists(lcc)
     }
 
@@ -1932,9 +1963,10 @@ module Impl<FullStateConfigSig Config> {
       )
     }
 
-    bindingset[node, state, ap]
-    predicate filter(NodeEx node, FlowState state, Ap ap) {
+    bindingset[node, state, t, ap]
+    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) {
       PrevStage::revFlowState(state) and
+      exists(t) and
       exists(ap) and
       not stateBarrier(node, state) and
       (
@@ -1945,8 +1977,8 @@ module Impl<FullStateConfigSig Config> {
       )
     }
 
-    bindingset[ap, contentType]
-    predicate typecheckStore(Ap ap, DataFlowType contentType) { any() }
+    bindingset[typ, contentType]
+    predicate typecheckStore(Typ typ, DataFlowType contentType) { any() }
   }
 
   private module Stage2 implements StageSig {
@@ -2003,7 +2035,7 @@ module Impl<FullStateConfigSig Config> {
         or
         node.asNode() instanceof OutNodeExt
         or
-        Stage2::storeStepCand(_, _, _, node, _)
+        Stage2::storeStepCand(_, _, _, node, _, _)
         or
         Stage2::readStepCand(_, _, node)
         or
@@ -2026,7 +2058,7 @@ module Impl<FullStateConfigSig Config> {
         additionalJumpStep(node, next) or
         flowIntoCallNodeCand2(_, node, next, _) or
         flowOutOfCallNodeCand2(_, node, _, next, _) or
-        Stage2::storeStepCand(node, _, _, next, _) or
+        Stage2::storeStepCand(node, _, _, next, _, _) or
         Stage2::readStepCand(node, _, next)
       )
       or
@@ -2133,23 +2165,23 @@ module Impl<FullStateConfigSig Config> {
   private module Stage3Param implements MkStage<Stage2>::StageParam {
     private module PrevStage = Stage2;
 
+    class Typ = DataFlowType;
+
     class Ap = ApproxAccessPathFront;
 
     class ApNil = ApproxAccessPathFrontNil;
 
     PrevStage::Ap getApprox(Ap ap) { result = ap.toBoolNonEmpty() }
 
-    ApNil getApNil(NodeEx node) {
-      PrevStage::revFlow(node, _) and result = TApproxFrontNil(node.getDataFlowType())
-    }
+    Typ getTyp(DataFlowType t) { result = t }
 
-    bindingset[tc, tail]
-    Ap apCons(TypedContent tc, Ap tail) { result.getAHead() = tc and exists(tail) }
+    bindingset[c, t, tail]
+    Ap apCons(Content c, Typ t, Ap tail) { result.getAHead() = c and exists(t) and exists(tail) }
 
     class ApHeadContent = ContentApprox;
 
     pragma[noinline]
-    ApHeadContent getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+    ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
 
     predicate projectToHeadContent = getContentApprox/1;
 
@@ -2163,9 +2195,9 @@ module Impl<FullStateConfigSig Config> {
 
     predicate localStep(
       NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-      ApproxAccessPathFrontNil ap, LocalCc lcc
+      DataFlowType t, LocalCc lcc
     ) {
-      localFlowBigStep(node1, state1, node2, state2, preservesValue, ap.getType(), _) and
+      localFlowBigStep(node1, state1, node2, state2, preservesValue, t, _) and
       exists(lcc)
     }
 
@@ -2179,17 +2211,17 @@ module Impl<FullStateConfigSig Config> {
         PrevStage::revFlow(node) and
         PrevStage::readStepCand(_, c, _) and
         expectsContentEx(node, c) and
-        c = ap.getAHead().getContent()
+        c = ap.getAHead()
       )
     }
 
     pragma[nomagic]
     private predicate castingNodeEx(NodeEx node) { node.asNode() instanceof CastingNode }
 
-    bindingset[node, state, ap]
-    predicate filter(NodeEx node, FlowState state, Ap ap) {
+    bindingset[node, state, t, ap]
+    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) {
       exists(state) and
-      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), ap.getType()) else any()) and
+      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t) else any()) and
       (
         notExpectsContent(node)
         or
@@ -2197,11 +2229,11 @@ module Impl<FullStateConfigSig Config> {
       )
     }
 
-    bindingset[ap, contentType]
-    predicate typecheckStore(Ap ap, DataFlowType contentType) {
+    bindingset[typ, contentType]
+    predicate typecheckStore(Typ typ, DataFlowType contentType) {
       // We need to typecheck stores here, since reverse flow through a getter
       // might have a different type here compared to inside the getter.
-      compatibleTypes(ap.getType(), contentType)
+      compatibleTypes(typ, contentType)
     }
   }
 
@@ -2212,23 +2244,23 @@ module Impl<FullStateConfigSig Config> {
   private module Stage4Param implements MkStage<Stage3>::StageParam {
     private module PrevStage = Stage3;
 
+    class Typ = DataFlowType;
+
     class Ap = AccessPathFront;
 
     class ApNil = AccessPathFrontNil;
 
     PrevStage::Ap getApprox(Ap ap) { result = ap.toApprox() }
 
-    ApNil getApNil(NodeEx node) {
-      PrevStage::revFlow(node, _) and result = TFrontNil(node.getDataFlowType())
-    }
+    Typ getTyp(DataFlowType t) { result = t }
 
-    bindingset[tc, tail]
-    Ap apCons(TypedContent tc, Ap tail) { result.getHead() = tc and exists(tail) }
+    bindingset[c, t, tail]
+    Ap apCons(Content c, Typ t, Ap tail) { result.getHead() = c and exists(t) and exists(tail) }
 
     class ApHeadContent = Content;
 
     pragma[noinline]
-    ApHeadContent getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+    ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
 
     ApHeadContent projectToHeadContent(Content c) { result = c }
 
@@ -2243,9 +2275,9 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     predicate localStep(
       NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-      ApNil ap, LocalCc lcc
+      DataFlowType t, LocalCc lcc
     ) {
-      localFlowBigStep(node1, state1, node2, state2, preservesValue, ap.getType(), _) and
+      localFlowBigStep(node1, state1, node2, state2, preservesValue, t, _) and
       PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
       PrevStage::revFlow(node2, pragma[only_bind_into](state2), _) and
       exists(lcc)
@@ -2289,7 +2321,7 @@ module Impl<FullStateConfigSig Config> {
     }
 
     pragma[nomagic]
-    private predicate clear(NodeEx node, Ap ap) { clearContent(node, ap.getHead().getContent()) }
+    private predicate clear(NodeEx node, Ap ap) { clearContent(node, ap.getHead()) }
 
     pragma[nomagic]
     private predicate expectsContentCand(NodeEx node, Ap ap) {
@@ -2297,18 +2329,18 @@ module Impl<FullStateConfigSig Config> {
         PrevStage::revFlow(node) and
         PrevStage::readStepCand(_, c, _) and
         expectsContentEx(node, c) and
-        c = ap.getHead().getContent()
+        c = ap.getHead()
       )
     }
 
     pragma[nomagic]
     private predicate castingNodeEx(NodeEx node) { node.asNode() instanceof CastingNode }
 
-    bindingset[node, state, ap]
-    predicate filter(NodeEx node, FlowState state, Ap ap) {
+    bindingset[node, state, t, ap]
+    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) {
       exists(state) and
       not clear(node, ap) and
-      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), ap.getType()) else any()) and
+      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t) else any()) and
       (
         notExpectsContent(node)
         or
@@ -2316,11 +2348,11 @@ module Impl<FullStateConfigSig Config> {
       )
     }
 
-    bindingset[ap, contentType]
-    predicate typecheckStore(Ap ap, DataFlowType contentType) {
+    bindingset[typ, contentType]
+    predicate typecheckStore(Typ typ, DataFlowType contentType) {
       // We need to typecheck stores here, since reverse flow through a getter
       // might have a different type here compared to inside the getter.
-      compatibleTypes(ap.getType(), contentType)
+      compatibleTypes(typ, contentType)
     }
   }
 
@@ -2335,190 +2367,174 @@ module Impl<FullStateConfigSig Config> {
   private predicate flowCandSummaryCtx(NodeEx node, FlowState state, AccessPathFront argApf) {
     exists(AccessPathFront apf |
       Stage4::revFlow(node, state, TReturnCtxMaybeFlowThrough(_), _, apf) and
-      Stage4::fwdFlow(node, state, any(Stage4::CcCall ccc), _, TAccessPathFrontSome(argApf), apf)
+      Stage4::fwdFlow(node, state, any(Stage4::CcCall ccc), _, _, TAccessPathFrontSome(argApf), _,
+        apf)
     )
   }
 
   /**
-   * Holds if a length 2 access path approximation with the head `tc` is expected
+   * Holds if a length 2 access path approximation with the head `c` is expected
    * to be expensive.
    */
-  private predicate expensiveLen2unfolding(TypedContent tc) {
+  private predicate expensiveLen2unfolding(Content c) {
     exists(int tails, int nodes, int apLimit, int tupleLimit |
-      tails = strictcount(AccessPathFront apf | Stage4::consCand(tc, apf)) and
+      tails = strictcount(DataFlowType t, AccessPathFront apf | Stage4::consCand(c, t, apf)) and
       nodes =
         strictcount(NodeEx n, FlowState state |
-          Stage4::revFlow(n, state, any(AccessPathFrontHead apf | apf.getHead() = tc))
+          Stage4::revFlow(n, state, any(AccessPathFrontHead apf | apf.getHead() = c))
           or
-          flowCandSummaryCtx(n, state, any(AccessPathFrontHead apf | apf.getHead() = tc))
+          flowCandSummaryCtx(n, state, any(AccessPathFrontHead apf | apf.getHead() = c))
         ) and
       accessPathApproxCostLimits(apLimit, tupleLimit) and
       apLimit < tails and
       tupleLimit < (tails - 1) * nodes and
-      not tc.forceHighPrecision()
+      not forceHighPrecision(c)
     )
   }
 
   private newtype TAccessPathApprox =
-    TNil(DataFlowType t) or
-    TConsNil(TypedContent tc, DataFlowType t) {
-      Stage4::consCand(tc, TFrontNil(t)) and
-      not expensiveLen2unfolding(tc)
+    TNil() or
+    TConsNil(Content c, DataFlowType t) {
+      Stage4::consCand(c, t, TFrontNil()) and
+      not expensiveLen2unfolding(c)
     } or
-    TConsCons(TypedContent tc1, TypedContent tc2, int len) {
-      Stage4::consCand(tc1, TFrontHead(tc2)) and
+    TConsCons(Content c1, DataFlowType t, Content c2, int len) {
+      Stage4::consCand(c1, t, TFrontHead(c2)) and
       len in [2 .. accessPathLimit()] and
-      not expensiveLen2unfolding(tc1)
+      not expensiveLen2unfolding(c1)
     } or
-    TCons1(TypedContent tc, int len) {
+    TCons1(Content c, int len) {
       len in [1 .. accessPathLimit()] and
-      expensiveLen2unfolding(tc)
+      expensiveLen2unfolding(c)
     }
 
   /**
-   * Conceptually a list of `TypedContent`s followed by a `DataFlowType`, but only
-   * the first two elements of the list and its length are tracked. If data flows
-   * from a source to a given node with a given `AccessPathApprox`, this indicates
-   * the sequence of dereference operations needed to get from the value in the node
-   * to the tracked object. The final type indicates the type of the tracked object.
+   * Conceptually a list of `Content`s where nested tails are also paired with a
+   * `DataFlowType`, but only the first two elements of the list and its length
+   * are tracked. If data flows from a source to a given node with a given
+   * `AccessPathApprox`, this indicates the sequence of dereference operations
+   * needed to get from the value in the node to the tracked object. The
+   * `DataFlowType`s indicate the types of the stored values.
    */
   abstract private class AccessPathApprox extends TAccessPathApprox {
     abstract string toString();
 
-    abstract TypedContent getHead();
+    abstract Content getHead();
 
     abstract int len();
 
-    abstract DataFlowType getType();
-
     abstract AccessPathFront getFront();
 
-    /** Gets the access path obtained by popping `head` from this path, if any. */
-    abstract AccessPathApprox pop(TypedContent head);
+    /** Holds if this is a representation of `head` followed by the `typ,tail` pair. */
+    abstract predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail);
   }
 
   private class AccessPathApproxNil extends AccessPathApprox, TNil {
-    private DataFlowType t;
+    override string toString() { result = "" }
 
-    AccessPathApproxNil() { this = TNil(t) }
-
-    override string toString() { result = concat(": " + ppReprType(t)) }
-
-    override TypedContent getHead() { none() }
+    override Content getHead() { none() }
 
     override int len() { result = 0 }
 
-    override DataFlowType getType() { result = t }
+    override AccessPathFront getFront() { result = TFrontNil() }
 
-    override AccessPathFront getFront() { result = TFrontNil(t) }
-
-    override AccessPathApprox pop(TypedContent head) { none() }
+    override predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail) { none() }
   }
 
   abstract private class AccessPathApproxCons extends AccessPathApprox { }
 
   private class AccessPathApproxConsNil extends AccessPathApproxCons, TConsNil {
-    private TypedContent tc;
+    private Content c;
     private DataFlowType t;
 
-    AccessPathApproxConsNil() { this = TConsNil(tc, t) }
+    AccessPathApproxConsNil() { this = TConsNil(c, t) }
 
     override string toString() {
       // The `concat` becomes "" if `ppReprType` has no result.
-      result = "[" + tc.toString() + "]" + concat(" : " + ppReprType(t))
+      result = "[" + c.toString() + "]" + concat(" : " + ppReprType(t))
     }
 
-    override TypedContent getHead() { result = tc }
+    override Content getHead() { result = c }
 
     override int len() { result = 1 }
 
-    override DataFlowType getType() { result = tc.getContainerType() }
+    override AccessPathFront getFront() { result = TFrontHead(c) }
 
-    override AccessPathFront getFront() { result = TFrontHead(tc) }
-
-    override AccessPathApprox pop(TypedContent head) { head = tc and result = TNil(t) }
+    override predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail) {
+      head = c and typ = t and tail = TNil()
+    }
   }
 
   private class AccessPathApproxConsCons extends AccessPathApproxCons, TConsCons {
-    private TypedContent tc1;
-    private TypedContent tc2;
+    private Content c1;
+    private DataFlowType t;
+    private Content c2;
     private int len;
 
-    AccessPathApproxConsCons() { this = TConsCons(tc1, tc2, len) }
+    AccessPathApproxConsCons() { this = TConsCons(c1, t, c2, len) }
 
     override string toString() {
       if len = 2
-      then result = "[" + tc1.toString() + ", " + tc2.toString() + "]"
-      else result = "[" + tc1.toString() + ", " + tc2.toString() + ", ... (" + len.toString() + ")]"
+      then result = "[" + c1.toString() + ", " + c2.toString() + "]"
+      else result = "[" + c1.toString() + ", " + c2.toString() + ", ... (" + len.toString() + ")]"
     }
 
-    override TypedContent getHead() { result = tc1 }
+    override Content getHead() { result = c1 }
 
     override int len() { result = len }
 
-    override DataFlowType getType() { result = tc1.getContainerType() }
+    override AccessPathFront getFront() { result = TFrontHead(c1) }
 
-    override AccessPathFront getFront() { result = TFrontHead(tc1) }
-
-    override AccessPathApprox pop(TypedContent head) {
-      head = tc1 and
+    override predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail) {
+      head = c1 and
+      typ = t and
       (
-        result = TConsCons(tc2, _, len - 1)
+        tail = TConsCons(c2, _, _, len - 1)
         or
         len = 2 and
-        result = TConsNil(tc2, _)
+        tail = TConsNil(c2, _)
         or
-        result = TCons1(tc2, len - 1)
+        tail = TCons1(c2, len - 1)
       )
     }
   }
 
   private class AccessPathApproxCons1 extends AccessPathApproxCons, TCons1 {
-    private TypedContent tc;
+    private Content c;
     private int len;
 
-    AccessPathApproxCons1() { this = TCons1(tc, len) }
+    AccessPathApproxCons1() { this = TCons1(c, len) }
 
     override string toString() {
       if len = 1
-      then result = "[" + tc.toString() + "]"
-      else result = "[" + tc.toString() + ", ... (" + len.toString() + ")]"
+      then result = "[" + c.toString() + "]"
+      else result = "[" + c.toString() + ", ... (" + len.toString() + ")]"
     }
 
-    override TypedContent getHead() { result = tc }
+    override Content getHead() { result = c }
 
     override int len() { result = len }
 
-    override DataFlowType getType() { result = tc.getContainerType() }
+    override AccessPathFront getFront() { result = TFrontHead(c) }
 
-    override AccessPathFront getFront() { result = TFrontHead(tc) }
-
-    override AccessPathApprox pop(TypedContent head) {
-      head = tc and
+    override predicate isCons(Content head, DataFlowType typ, AccessPathApprox tail) {
+      head = c and
       (
-        exists(TypedContent tc2 | Stage4::consCand(tc, TFrontHead(tc2)) |
-          result = TConsCons(tc2, _, len - 1)
+        exists(Content c2 | Stage4::consCand(c, typ, TFrontHead(c2)) |
+          tail = TConsCons(c2, _, _, len - 1)
           or
           len = 2 and
-          result = TConsNil(tc2, _)
+          tail = TConsNil(c2, _)
           or
-          result = TCons1(tc2, len - 1)
+          tail = TCons1(c2, len - 1)
         )
         or
-        exists(DataFlowType t |
-          len = 1 and
-          Stage4::consCand(tc, TFrontNil(t)) and
-          result = TNil(t)
-        )
+        len = 1 and
+        Stage4::consCand(c, typ, TFrontNil()) and
+        tail = TNil()
       )
     }
   }
-
-  /** Gets the access path obtained by popping `tc` from `ap`, if any. */
-  private AccessPathApprox pop(TypedContent tc, AccessPathApprox apa) { result = apa.pop(tc) }
-
-  /** Gets the access path obtained by pushing `tc` onto `ap`. */
-  private AccessPathApprox push(TypedContent tc, AccessPathApprox apa) { apa = pop(tc, result) }
 
   private newtype TAccessPathApproxOption =
     TAccessPathApproxNone() or
@@ -2535,6 +2551,8 @@ module Impl<FullStateConfigSig Config> {
   private module Stage5Param implements MkStage<Stage4>::StageParam {
     private module PrevStage = Stage4;
 
+    class Typ = DataFlowType;
+
     class Ap = AccessPathApprox;
 
     class ApNil = AccessPathApproxNil;
@@ -2542,17 +2560,15 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     PrevStage::Ap getApprox(Ap ap) { result = ap.getFront() }
 
-    ApNil getApNil(NodeEx node) {
-      PrevStage::revFlow(node, _) and result = TNil(node.getDataFlowType())
-    }
+    Typ getTyp(DataFlowType t) { result = t }
 
-    bindingset[tc, tail]
-    Ap apCons(TypedContent tc, Ap tail) { result = push(tc, tail) }
+    bindingset[c, t, tail]
+    Ap apCons(Content c, Typ t, Ap tail) { result.isCons(c, t, tail) }
 
     class ApHeadContent = Content;
 
     pragma[noinline]
-    ApHeadContent getHeadContent(Ap ap) { result = ap.getHead().getContent() }
+    ApHeadContent getHeadContent(Ap ap) { result = ap.getHead() }
 
     ApHeadContent projectToHeadContent(Content c) { result = c }
 
@@ -2567,9 +2583,9 @@ module Impl<FullStateConfigSig Config> {
 
     predicate localStep(
       NodeEx node1, FlowState state1, NodeEx node2, FlowState state2, boolean preservesValue,
-      ApNil ap, LocalCc lcc
+      DataFlowType t, LocalCc lcc
     ) {
-      localFlowBigStep(node1, state1, node2, state2, preservesValue, ap.getType(), lcc) and
+      localFlowBigStep(node1, state1, node2, state2, preservesValue, t, lcc) and
       PrevStage::revFlow(node1, pragma[only_bind_into](state1), _) and
       PrevStage::revFlow(node2, pragma[only_bind_into](state2), _)
     }
@@ -2596,12 +2612,12 @@ module Impl<FullStateConfigSig Config> {
       )
     }
 
-    bindingset[node, state, ap]
-    predicate filter(NodeEx node, FlowState state, Ap ap) { any() }
+    bindingset[node, state, t, ap]
+    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) { any() }
 
     // Type checking is not necessary here as it has already been done in stage 3.
-    bindingset[ap, contentType]
-    predicate typecheckStore(Ap ap, DataFlowType contentType) { any() }
+    bindingset[typ, contentType]
+    predicate typecheckStore(Typ typ, DataFlowType contentType) { any() }
   }
 
   private module Stage5 = MkStage<Stage4>::Stage<Stage5Param>;
@@ -2613,8 +2629,8 @@ module Impl<FullStateConfigSig Config> {
     exists(AccessPathApprox apa0 |
       Stage5::parameterMayFlowThrough(p, _) and
       Stage5::revFlow(n, state, TReturnCtxMaybeFlowThrough(_), _, apa0) and
-      Stage5::fwdFlow(n, state, any(CallContextCall ccc), TParamNodeSome(p.asNode()),
-        TAccessPathApproxSome(apa), apa0)
+      Stage5::fwdFlow(n, state, any(CallContextCall ccc), TParamNodeSome(p.asNode()), _,
+        TAccessPathApproxSome(apa), _, apa0)
     )
   }
 
@@ -2628,9 +2644,12 @@ module Impl<FullStateConfigSig Config> {
 
   private newtype TSummaryCtx =
     TSummaryCtxNone() or
-    TSummaryCtxSome(ParamNodeEx p, FlowState state, AccessPath ap) {
-      Stage5::parameterMayFlowThrough(p, ap.getApprox()) and
-      Stage5::revFlow(p, state, _)
+    TSummaryCtxSome(ParamNodeEx p, FlowState state, DataFlowType t, AccessPath ap) {
+      exists(AccessPathApprox apa | ap.getApprox() = apa |
+        Stage5::parameterMayFlowThrough(p, apa) and
+        Stage5::fwdFlow(p, state, _, _, _, _, t, apa) and
+        Stage5::revFlow(p, state, _)
+      )
     }
 
   /**
@@ -2652,11 +2671,10 @@ module Impl<FullStateConfigSig Config> {
   private class SummaryCtxSome extends SummaryCtx, TSummaryCtxSome {
     private ParamNodeEx p;
     private FlowState s;
+    private DataFlowType t;
     private AccessPath ap;
 
-    SummaryCtxSome() { this = TSummaryCtxSome(p, s, ap) }
-
-    ParameterPosition getParameterPos() { p.isParameterOf(_, result) }
+    SummaryCtxSome() { this = TSummaryCtxSome(p, s, t, ap) }
 
     ParamNodeEx getParamNode() { result = p }
 
@@ -2673,12 +2691,13 @@ module Impl<FullStateConfigSig Config> {
    * Gets the number of length 2 access path approximations that correspond to `apa`.
    */
   private int count1to2unfold(AccessPathApproxCons1 apa) {
-    exists(TypedContent tc, int len |
-      tc = apa.getHead() and
+    exists(Content c, int len |
+      c = apa.getHead() and
       len = apa.len() and
       result =
-        strictcount(AccessPathFront apf |
-          Stage5::consCand(tc, any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
+        strictcount(DataFlowType t, AccessPathFront apf |
+          Stage5::consCand(c, t,
+            any(AccessPathApprox ap | ap.getFront() = apf and ap.len() = len - 1))
         )
     )
   }
@@ -2704,10 +2723,10 @@ module Impl<FullStateConfigSig Config> {
     )
   }
 
-  private AccessPathApprox getATail(AccessPathApprox apa) {
-    exists(TypedContent head |
-      apa.pop(head) = result and
-      Stage5::consCand(head, result)
+  private predicate hasTail(AccessPathApprox apa, DataFlowType t, AccessPathApprox tail) {
+    exists(Content head |
+      apa.isCons(head, t, tail) and
+      Stage5::consCand(head, t, tail)
     )
   }
 
@@ -2716,7 +2735,7 @@ module Impl<FullStateConfigSig Config> {
    * expected to be expensive. Holds with `unfold = true` otherwise.
    */
   private predicate evalUnfold(AccessPathApprox apa, boolean unfold) {
-    if apa.getHead().forceHighPrecision()
+    if forceHighPrecision(apa.getHead())
     then unfold = true
     else
       exists(int aps, int nodes, int apLimit, int tupleLimit |
@@ -2753,28 +2772,30 @@ module Impl<FullStateConfigSig Config> {
   private int countPotentialAps(AccessPathApprox apa) {
     apa instanceof AccessPathApproxNil and result = 1
     or
-    result = strictsum(AccessPathApprox tail | tail = getATail(apa) | countAps(tail))
+    result =
+      strictsum(DataFlowType t, AccessPathApprox tail | hasTail(apa, t, tail) | countAps(tail))
   }
 
   private newtype TAccessPath =
-    TAccessPathNil(DataFlowType t) or
-    TAccessPathCons(TypedContent head, AccessPath tail) {
+    TAccessPathNil() or
+    TAccessPathCons(Content head, DataFlowType t, AccessPath tail) {
       exists(AccessPathApproxCons apa |
         not evalUnfold(apa, false) and
         head = apa.getHead() and
-        tail.getApprox() = getATail(apa)
+        hasTail(apa, t, tail.getApprox())
       )
     } or
-    TAccessPathCons2(TypedContent head1, TypedContent head2, int len) {
-      exists(AccessPathApproxCons apa |
+    TAccessPathCons2(Content head1, DataFlowType t, Content head2, int len) {
+      exists(AccessPathApproxCons apa, AccessPathApprox tail |
         evalUnfold(apa, false) and
         not expensiveLen1to2unfolding(apa) and
         apa.len() = len and
+        hasTail(apa, t, tail) and
         head1 = apa.getHead() and
-        head2 = getATail(apa).getHead()
+        head2 = tail.getHead()
       )
     } or
-    TAccessPathCons1(TypedContent head, int len) {
+    TAccessPathCons1(Content head, int len) {
       exists(AccessPathApproxCons apa |
         evalUnfold(apa, false) and
         expensiveLen1to2unfolding(apa) and
@@ -2785,16 +2806,19 @@ module Impl<FullStateConfigSig Config> {
 
   private newtype TPathNode =
     pragma[assume_small_delta]
-    TPathNodeMid(NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, AccessPath ap) {
+    TPathNodeMid(
+      NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t, AccessPath ap
+    ) {
       // A PathNode is introduced by a source ...
       Stage5::revFlow(node, state) and
       sourceNode(node, state) and
       sourceCallCtx(cc) and
       sc instanceof SummaryCtxNone and
-      ap = TAccessPathNil(node.getDataFlowType())
+      t = node.getDataFlowType() and
+      ap = TAccessPathNil()
       or
       // ... or a step from an existing PathNode to another node.
-      pathStep(_, node, state, cc, sc, ap) and
+      pathStep(_, node, state, cc, sc, t, ap) and
       Stage5::revFlow(node, state, ap.getApprox())
     } or
     TPathNodeSink(NodeEx node, FlowState state) {
@@ -2812,17 +2836,18 @@ module Impl<FullStateConfigSig Config> {
     }
 
   /**
-   * A list of `TypedContent`s followed by a `DataFlowType`. If data flows from a
-   * source to a given node with a given `AccessPath`, this indicates the sequence
-   * of dereference operations needed to get from the value in the node to the
-   * tracked object. The final type indicates the type of the tracked object.
+   * A list of `Content`s where nested tails are also paired with a
+   * `DataFlowType`. If data flows from a source to a given node with a given
+   * `AccessPath`, this indicates the sequence of dereference operations needed
+   * to get from the value in the node to the tracked object. The
+   * `DataFlowType`s indicate the types of the stored values.
    */
   private class AccessPath extends TAccessPath {
     /** Gets the head of this access path, if any. */
-    abstract TypedContent getHead();
+    abstract Content getHead();
 
-    /** Gets the tail of this access path, if any. */
-    abstract AccessPath getTail();
+    /** Holds if this is a representation of `head` followed by the `typ,tail` pair. */
+    abstract predicate isCons(Content head, DataFlowType typ, AccessPath tail);
 
     /** Gets the front of this access path. */
     abstract AccessPathFront getFront();
@@ -2835,80 +2860,66 @@ module Impl<FullStateConfigSig Config> {
 
     /** Gets a textual representation of this access path. */
     abstract string toString();
-
-    /** Gets the access path obtained by popping `tc` from this access path, if any. */
-    final AccessPath pop(TypedContent tc) {
-      result = this.getTail() and
-      tc = this.getHead()
-    }
-
-    /** Gets the access path obtained by pushing `tc` onto this access path. */
-    final AccessPath push(TypedContent tc) { this = result.pop(tc) }
   }
 
   private class AccessPathNil extends AccessPath, TAccessPathNil {
-    private DataFlowType t;
+    override Content getHead() { none() }
 
-    AccessPathNil() { this = TAccessPathNil(t) }
+    override predicate isCons(Content head, DataFlowType typ, AccessPath tail) { none() }
 
-    DataFlowType getType() { result = t }
+    override AccessPathFrontNil getFront() { result = TFrontNil() }
 
-    override TypedContent getHead() { none() }
-
-    override AccessPath getTail() { none() }
-
-    override AccessPathFrontNil getFront() { result = TFrontNil(t) }
-
-    override AccessPathApproxNil getApprox() { result = TNil(t) }
+    override AccessPathApproxNil getApprox() { result = TNil() }
 
     override int length() { result = 0 }
 
-    override string toString() { result = concat(": " + ppReprType(t)) }
+    override string toString() { result = "" }
   }
 
   private class AccessPathCons extends AccessPath, TAccessPathCons {
-    private TypedContent head;
-    private AccessPath tail;
+    private Content head_;
+    private DataFlowType t;
+    private AccessPath tail_;
 
-    AccessPathCons() { this = TAccessPathCons(head, tail) }
+    AccessPathCons() { this = TAccessPathCons(head_, t, tail_) }
 
-    override TypedContent getHead() { result = head }
+    override Content getHead() { result = head_ }
 
-    override AccessPath getTail() { result = tail }
+    override predicate isCons(Content head, DataFlowType typ, AccessPath tail) {
+      head = head_ and typ = t and tail = tail_
+    }
 
-    override AccessPathFrontHead getFront() { result = TFrontHead(head) }
+    override AccessPathFrontHead getFront() { result = TFrontHead(head_) }
 
     pragma[assume_small_delta]
     override AccessPathApproxCons getApprox() {
-      result = TConsNil(head, tail.(AccessPathNil).getType())
+      result = TConsNil(head_, t) and tail_ = TAccessPathNil()
       or
-      result = TConsCons(head, tail.getHead(), this.length())
+      result = TConsCons(head_, t, tail_.getHead(), this.length())
       or
-      result = TCons1(head, this.length())
+      result = TCons1(head_, this.length())
     }
 
     pragma[assume_small_delta]
-    override int length() { result = 1 + tail.length() }
+    override int length() { result = 1 + tail_.length() }
 
     private string toStringImpl(boolean needsSuffix) {
-      exists(DataFlowType t |
-        tail = TAccessPathNil(t) and
-        needsSuffix = false and
-        result = head.toString() + "]" + concat(" : " + ppReprType(t))
+      tail_ = TAccessPathNil() and
+      needsSuffix = false and
+      result = head_.toString() + "]" + concat(" : " + ppReprType(t))
+      or
+      result = head_ + ", " + tail_.(AccessPathCons).toStringImpl(needsSuffix)
+      or
+      exists(Content c2, Content c3, int len | tail_ = TAccessPathCons2(c2, _, c3, len) |
+        result = head_ + ", " + c2 + ", " + c3 + ", ... (" and len > 2 and needsSuffix = true
+        or
+        result = head_ + ", " + c2 + ", " + c3 + "]" and len = 2 and needsSuffix = false
       )
       or
-      result = head + ", " + tail.(AccessPathCons).toStringImpl(needsSuffix)
-      or
-      exists(TypedContent tc2, TypedContent tc3, int len | tail = TAccessPathCons2(tc2, tc3, len) |
-        result = head + ", " + tc2 + ", " + tc3 + ", ... (" and len > 2 and needsSuffix = true
+      exists(Content c2, int len | tail_ = TAccessPathCons1(c2, len) |
+        result = head_ + ", " + c2 + ", ... (" and len > 1 and needsSuffix = true
         or
-        result = head + ", " + tc2 + ", " + tc3 + "]" and len = 2 and needsSuffix = false
-      )
-      or
-      exists(TypedContent tc2, int len | tail = TAccessPathCons1(tc2, len) |
-        result = head + ", " + tc2 + ", ... (" and len > 1 and needsSuffix = true
-        or
-        result = head + ", " + tc2 + "]" and len = 1 and needsSuffix = false
+        result = head_ + ", " + c2 + "]" and len = 1 and needsSuffix = false
       )
     }
 
@@ -2920,24 +2931,27 @@ module Impl<FullStateConfigSig Config> {
   }
 
   private class AccessPathCons2 extends AccessPath, TAccessPathCons2 {
-    private TypedContent head1;
-    private TypedContent head2;
+    private Content head1;
+    private DataFlowType t;
+    private Content head2;
     private int len;
 
-    AccessPathCons2() { this = TAccessPathCons2(head1, head2, len) }
+    AccessPathCons2() { this = TAccessPathCons2(head1, t, head2, len) }
 
-    override TypedContent getHead() { result = head1 }
+    override Content getHead() { result = head1 }
 
-    override AccessPath getTail() {
-      Stage5::consCand(head1, result.getApprox()) and
-      result.getHead() = head2 and
-      result.length() = len - 1
+    override predicate isCons(Content head, DataFlowType typ, AccessPath tail) {
+      head = head1 and
+      typ = t and
+      Stage5::consCand(head1, t, tail.getApprox()) and
+      tail.getHead() = head2 and
+      tail.length() = len - 1
     }
 
     override AccessPathFrontHead getFront() { result = TFrontHead(head1) }
 
     override AccessPathApproxCons getApprox() {
-      result = TConsCons(head1, head2, len) or
+      result = TConsCons(head1, t, head2, len) or
       result = TCons1(head1, len)
     }
 
@@ -2953,27 +2967,29 @@ module Impl<FullStateConfigSig Config> {
   }
 
   private class AccessPathCons1 extends AccessPath, TAccessPathCons1 {
-    private TypedContent head;
+    private Content head_;
     private int len;
 
-    AccessPathCons1() { this = TAccessPathCons1(head, len) }
+    AccessPathCons1() { this = TAccessPathCons1(head_, len) }
 
-    override TypedContent getHead() { result = head }
+    override Content getHead() { result = head_ }
 
-    override AccessPath getTail() {
-      Stage5::consCand(head, result.getApprox()) and result.length() = len - 1
+    override predicate isCons(Content head, DataFlowType typ, AccessPath tail) {
+      head = head_ and
+      Stage5::consCand(head_, typ, tail.getApprox()) and
+      tail.length() = len - 1
     }
 
-    override AccessPathFrontHead getFront() { result = TFrontHead(head) }
+    override AccessPathFrontHead getFront() { result = TFrontHead(head_) }
 
-    override AccessPathApproxCons getApprox() { result = TCons1(head, len) }
+    override AccessPathApproxCons getApprox() { result = TCons1(head_, len) }
 
     override int length() { result = len }
 
     override string toString() {
       if len = 1
-      then result = "[" + head.toString() + "]"
-      else result = "[" + head.toString() + ", ... (" + len.toString() + ")]"
+      then result = "[" + head_.toString() + "]"
+      else result = "[" + head_.toString() + ", ... (" + len.toString() + ")]"
     }
   }
 
@@ -3034,9 +3050,7 @@ module Impl<FullStateConfigSig Config> {
     private string ppType() {
       this instanceof PathNodeSink and result = ""
       or
-      this.(PathNodeMid).getAp() instanceof AccessPathNil and result = ""
-      or
-      exists(DataFlowType t | t = this.(PathNodeMid).getAp().getHead().getContainerType() |
+      exists(DataFlowType t | t = this.(PathNodeMid).getType() |
         // The `concat` becomes "" if `ppReprType` has no result.
         result = concat(" : " + ppReprType(t))
       )
@@ -3177,9 +3191,10 @@ module Impl<FullStateConfigSig Config> {
     FlowState state;
     CallContext cc;
     SummaryCtx sc;
+    DataFlowType t;
     AccessPath ap;
 
-    PathNodeMid() { this = TPathNodeMid(node, state, cc, sc, ap) }
+    PathNodeMid() { this = TPathNodeMid(node, state, cc, sc, t, ap) }
 
     override NodeEx getNodeEx() { result = node }
 
@@ -3189,11 +3204,13 @@ module Impl<FullStateConfigSig Config> {
 
     SummaryCtx getSummaryCtx() { result = sc }
 
+    DataFlowType getType() { result = t }
+
     AccessPath getAp() { result = ap }
 
     private PathNodeMid getSuccMid() {
       pathStep(this, result.getNodeEx(), result.getState(), result.getCallContext(),
-        result.getSummaryCtx(), result.getAp())
+        result.getSummaryCtx(), result.getType(), result.getAp())
     }
 
     override PathNodeImpl getASuccessorImpl() {
@@ -3208,7 +3225,8 @@ module Impl<FullStateConfigSig Config> {
       sourceNode(node, state) and
       sourceCallCtx(cc) and
       sc instanceof SummaryCtxNone and
-      ap = TAccessPathNil(node.getDataFlowType())
+      t = node.getDataFlowType() and
+      ap = TAccessPathNil()
     }
 
     predicate isAtSink() {
@@ -3305,8 +3323,8 @@ module Impl<FullStateConfigSig Config> {
   }
 
   private predicate pathNode(
-    PathNodeMid mid, NodeEx midnode, FlowState state, CallContext cc, SummaryCtx sc, AccessPath ap,
-    LocalCallContext localCC
+    PathNodeMid mid, NodeEx midnode, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t,
+    AccessPath ap, LocalCallContext localCC
   ) {
     midnode = mid.getNodeEx() and
     state = mid.getState() and
@@ -3315,6 +3333,7 @@ module Impl<FullStateConfigSig Config> {
     localCC =
       getLocalCallContext(pragma[only_bind_into](pragma[only_bind_out](cc)),
         midnode.getEnclosingCallable()) and
+    t = mid.getType() and
     ap = mid.getAp()
   }
 
@@ -3325,23 +3344,25 @@ module Impl<FullStateConfigSig Config> {
   pragma[assume_small_delta]
   pragma[nomagic]
   private predicate pathStep(
-    PathNodeMid mid, NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, AccessPath ap
+    PathNodeMid mid, NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t,
+    AccessPath ap
   ) {
     exists(NodeEx midnode, FlowState state0, LocalCallContext localCC |
-      pathNode(mid, midnode, state0, cc, sc, ap, localCC) and
+      pathNode(mid, midnode, state0, cc, sc, t, ap, localCC) and
       localFlowBigStep(midnode, state0, node, state, true, _, localCC)
     )
     or
-    exists(AccessPath ap0, NodeEx midnode, FlowState state0, LocalCallContext localCC |
-      pathNode(mid, midnode, state0, cc, sc, ap0, localCC) and
-      localFlowBigStep(midnode, state0, node, state, false, ap.(AccessPathNil).getType(), localCC) and
-      ap0 instanceof AccessPathNil
+    exists(NodeEx midnode, FlowState state0, LocalCallContext localCC |
+      pathNode(mid, midnode, state0, cc, sc, _, ap, localCC) and
+      localFlowBigStep(midnode, state0, node, state, false, t, localCC) and
+      ap instanceof AccessPathNil
     )
     or
     jumpStepEx(mid.getNodeEx(), node) and
     state = mid.getState() and
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
+    t = mid.getType() and
     ap = mid.getAp()
     or
     additionalJumpStep(mid.getNodeEx(), node) and
@@ -3349,44 +3370,57 @@ module Impl<FullStateConfigSig Config> {
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
     mid.getAp() instanceof AccessPathNil and
-    ap = TAccessPathNil(node.getDataFlowType())
+    t = node.getDataFlowType() and
+    ap = TAccessPathNil()
     or
     additionalJumpStateStep(mid.getNodeEx(), mid.getState(), node, state) and
     cc instanceof CallContextAny and
     sc instanceof SummaryCtxNone and
     mid.getAp() instanceof AccessPathNil and
-    ap = TAccessPathNil(node.getDataFlowType())
+    t = node.getDataFlowType() and
+    ap = TAccessPathNil()
     or
-    exists(TypedContent tc | pathStoreStep(mid, node, state, ap.pop(tc), tc, cc)) and
-    sc = mid.getSummaryCtx()
+    exists(Content c, DataFlowType t0, AccessPath ap0 |
+      pathStoreStep(mid, node, state, t0, ap0, c, t, cc) and
+      ap.isCons(c, t0, ap0) and
+      sc = mid.getSummaryCtx()
+    )
     or
-    exists(TypedContent tc | pathReadStep(mid, node, state, ap.push(tc), tc, cc)) and
-    sc = mid.getSummaryCtx()
+    exists(Content c, AccessPath ap0 |
+      pathReadStep(mid, node, state, ap0, c, cc) and
+      ap0.isCons(c, t, ap) and
+      sc = mid.getSummaryCtx()
+    )
     or
-    pathIntoCallable(mid, node, state, _, cc, sc, _) and ap = mid.getAp()
+    pathIntoCallable(mid, node, state, _, cc, sc, _) and t = mid.getType() and ap = mid.getAp()
     or
-    pathOutOfCallable(mid, node, state, cc) and ap = mid.getAp() and sc instanceof SummaryCtxNone
+    pathOutOfCallable(mid, node, state, cc) and
+    t = mid.getType() and
+    ap = mid.getAp() and
+    sc instanceof SummaryCtxNone
     or
-    pathThroughCallable(mid, node, state, cc, ap) and sc = mid.getSummaryCtx()
+    pathThroughCallable(mid, node, state, cc, t, ap) and sc = mid.getSummaryCtx()
   }
 
   pragma[nomagic]
   private predicate pathReadStep(
-    PathNodeMid mid, NodeEx node, FlowState state, AccessPath ap0, TypedContent tc, CallContext cc
+    PathNodeMid mid, NodeEx node, FlowState state, AccessPath ap0, Content c, CallContext cc
   ) {
     ap0 = mid.getAp() and
-    tc = ap0.getHead() and
-    Stage5::readStepCand(mid.getNodeEx(), tc.getContent(), node) and
+    c = ap0.getHead() and
+    Stage5::readStepCand(mid.getNodeEx(), c, node) and
     state = mid.getState() and
     cc = mid.getCallContext()
   }
 
   pragma[nomagic]
   private predicate pathStoreStep(
-    PathNodeMid mid, NodeEx node, FlowState state, AccessPath ap0, TypedContent tc, CallContext cc
+    PathNodeMid mid, NodeEx node, FlowState state, DataFlowType t0, AccessPath ap0, Content c,
+    DataFlowType t, CallContext cc
   ) {
+    t0 = mid.getType() and
     ap0 = mid.getAp() and
-    Stage5::storeStepCand(mid.getNodeEx(), _, tc, node, _) and
+    Stage5::storeStepCand(mid.getNodeEx(), _, c, node, _, t) and
     state = mid.getState() and
     cc = mid.getCallContext()
   }
@@ -3440,10 +3474,10 @@ module Impl<FullStateConfigSig Config> {
   pragma[noinline]
   private predicate pathIntoArg(
     PathNodeMid mid, ParameterPosition ppos, FlowState state, CallContext cc, DataFlowCall call,
-    AccessPath ap, AccessPathApprox apa
+    DataFlowType t, AccessPath ap, AccessPathApprox apa
   ) {
     exists(ArgNodeEx arg, ArgumentPosition apos |
-      pathNode(mid, arg, state, cc, _, ap, _) and
+      pathNode(mid, arg, state, cc, _, t, ap, _) and
       arg.asNode().(ArgNode).argumentOf(call, apos) and
       apa = ap.getApprox() and
       parameterMatch(ppos, apos)
@@ -3463,10 +3497,10 @@ module Impl<FullStateConfigSig Config> {
   pragma[nomagic]
   private predicate pathIntoCallable0(
     PathNodeMid mid, DataFlowCallable callable, ParameterPosition pos, FlowState state,
-    CallContext outercc, DataFlowCall call, AccessPath ap
+    CallContext outercc, DataFlowCall call, DataFlowType t, AccessPath ap
   ) {
     exists(AccessPathApprox apa |
-      pathIntoArg(mid, pragma[only_bind_into](pos), state, outercc, call, ap,
+      pathIntoArg(mid, pragma[only_bind_into](pos), state, outercc, call, t, ap,
         pragma[only_bind_into](apa)) and
       callable = resolveCall(call, outercc) and
       parameterCand(callable, pragma[only_bind_into](pos), pragma[only_bind_into](apa))
@@ -3483,13 +3517,13 @@ module Impl<FullStateConfigSig Config> {
     PathNodeMid mid, ParamNodeEx p, FlowState state, CallContext outercc, CallContextCall innercc,
     SummaryCtx sc, DataFlowCall call
   ) {
-    exists(ParameterPosition pos, DataFlowCallable callable, AccessPath ap |
-      pathIntoCallable0(mid, callable, pos, state, outercc, call, ap) and
+    exists(ParameterPosition pos, DataFlowCallable callable, DataFlowType t, AccessPath ap |
+      pathIntoCallable0(mid, callable, pos, state, outercc, call, t, ap) and
       p.isParameterOf(callable, pos) and
       (
-        sc = TSummaryCtxSome(p, state, ap)
+        sc = TSummaryCtxSome(p, state, t, ap)
         or
-        not exists(TSummaryCtxSome(p, state, ap)) and
+        not exists(TSummaryCtxSome(p, state, t, ap)) and
         sc = TSummaryCtxNone() and
         // When the call contexts of source and sink needs to match then there's
         // never any reason to enter a callable except to find a summary. See also
@@ -3506,11 +3540,11 @@ module Impl<FullStateConfigSig Config> {
   /** Holds if data may flow from a parameter given by `sc` to a return of kind `kind`. */
   pragma[nomagic]
   private predicate paramFlowsThrough(
-    ReturnKindExt kind, FlowState state, CallContextCall cc, SummaryCtxSome sc, AccessPath ap,
-    AccessPathApprox apa
+    ReturnKindExt kind, FlowState state, CallContextCall cc, SummaryCtxSome sc, DataFlowType t,
+    AccessPath ap, AccessPathApprox apa
   ) {
     exists(RetNodeEx ret |
-      pathNode(_, ret, state, cc, sc, ap, _) and
+      pathNode(_, ret, state, cc, sc, t, ap, _) and
       kind = ret.getKind() and
       apa = ap.getApprox() and
       parameterFlowThroughAllowed(sc.getParamNode(), kind)
@@ -3521,11 +3555,11 @@ module Impl<FullStateConfigSig Config> {
   pragma[nomagic]
   private predicate pathThroughCallable0(
     DataFlowCall call, PathNodeMid mid, ReturnKindExt kind, FlowState state, CallContext cc,
-    AccessPath ap, AccessPathApprox apa
+    DataFlowType t, AccessPath ap, AccessPathApprox apa
   ) {
     exists(CallContext innercc, SummaryCtx sc |
       pathIntoCallable(mid, _, _, cc, innercc, sc, call) and
-      paramFlowsThrough(kind, state, innercc, sc, ap, apa)
+      paramFlowsThrough(kind, state, innercc, sc, t, ap, apa)
     )
   }
 
@@ -3535,10 +3569,10 @@ module Impl<FullStateConfigSig Config> {
    */
   pragma[noinline]
   private predicate pathThroughCallable(
-    PathNodeMid mid, NodeEx out, FlowState state, CallContext cc, AccessPath ap
+    PathNodeMid mid, NodeEx out, FlowState state, CallContext cc, DataFlowType t, AccessPath ap
   ) {
     exists(DataFlowCall call, ReturnKindExt kind, AccessPathApprox apa |
-      pathThroughCallable0(call, mid, kind, state, cc, ap, apa) and
+      pathThroughCallable0(call, mid, kind, state, cc, t, ap, apa) and
       out = getAnOutNodeFlow(kind, call, apa)
     )
   }
@@ -3551,11 +3585,12 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate subpaths01(
       PathNodeImpl arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
-      NodeEx out, FlowState sout, AccessPath apout
+      NodeEx out, FlowState sout, DataFlowType t, AccessPath apout
     ) {
-      pathThroughCallable(arg, out, pragma[only_bind_into](sout), _, pragma[only_bind_into](apout)) and
+      pathThroughCallable(arg, out, pragma[only_bind_into](sout), _, pragma[only_bind_into](t),
+        pragma[only_bind_into](apout)) and
       pathIntoCallable(arg, par, _, _, innercc, sc, _) and
-      paramFlowsThrough(kind, pragma[only_bind_into](sout), innercc, sc,
+      paramFlowsThrough(kind, pragma[only_bind_into](sout), innercc, sc, pragma[only_bind_into](t),
         pragma[only_bind_into](apout), _) and
       not arg.isHidden()
     }
@@ -3567,9 +3602,9 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate subpaths02(
       PathNodeImpl arg, ParamNodeEx par, SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind,
-      NodeEx out, FlowState sout, AccessPath apout
+      NodeEx out, FlowState sout, DataFlowType t, AccessPath apout
     ) {
-      subpaths01(arg, par, sc, innercc, kind, out, sout, apout) and
+      subpaths01(arg, par, sc, innercc, kind, out, sout, t, apout) and
       out.asNode() = kind.getAnOutNode(_)
     }
 
@@ -3579,11 +3614,11 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate subpaths03(
       PathNodeImpl arg, ParamNodeEx par, PathNodeMid ret, NodeEx out, FlowState sout,
-      AccessPath apout
+      DataFlowType t, AccessPath apout
     ) {
       exists(SummaryCtxSome sc, CallContext innercc, ReturnKindExt kind, RetNodeEx retnode |
-        subpaths02(arg, par, sc, innercc, kind, out, sout, apout) and
-        pathNode(ret, retnode, sout, innercc, sc, apout, _) and
+        subpaths02(arg, par, sc, innercc, kind, out, sout, t, apout) and
+        pathNode(ret, retnode, sout, innercc, sc, t, apout, _) and
         kind = retnode.getKind()
       )
     }
@@ -3593,7 +3628,7 @@ module Impl<FullStateConfigSig Config> {
       result.isHidden() and
       exists(NodeEx n1, NodeEx n2 | n1 = n.getNodeEx() and n2 = result.getNodeEx() |
         localFlowBigStep(n1, _, n2, _, _, _, _) or
-        storeEx(n1, _, n2, _) or
+        storeEx(n1, _, n2, _, _) or
         readSetEx(n1, _, n2)
       )
     }
@@ -3610,12 +3645,14 @@ module Impl<FullStateConfigSig Config> {
      * `ret -> out` is summarized as the edge `arg -> out`.
      */
     predicate subpaths(PathNodeImpl arg, PathNodeImpl par, PathNodeImpl ret, PathNodeImpl out) {
-      exists(ParamNodeEx p, NodeEx o, FlowState sout, AccessPath apout, PathNodeMid out0 |
+      exists(
+        ParamNodeEx p, NodeEx o, FlowState sout, DataFlowType t, AccessPath apout, PathNodeMid out0
+      |
         pragma[only_bind_into](arg).getANonHiddenSuccessor() = pragma[only_bind_into](out0) and
-        subpaths03(pragma[only_bind_into](arg), p, localStepToHidden*(ret), o, sout, apout) and
+        subpaths03(pragma[only_bind_into](arg), p, localStepToHidden*(ret), o, sout, t, apout) and
         hasSuccessor(pragma[only_bind_into](arg), par, p) and
         not ret.isHidden() and
-        pathNode(out0, o, sout, _, _, apout, _)
+        pathNode(out0, o, sout, _, _, t, apout, _)
       |
         out = out0 or out = out0.projectToSink()
       )
@@ -3690,15 +3727,14 @@ module Impl<FullStateConfigSig Config> {
   ) {
     fwd = true and
     nodes = count(NodeEx n0 | exists(PathNodeImpl pn | pn.getNodeEx() = n0)) and
-    fields = count(TypedContent f0 | exists(PathNodeMid pn | pn.getAp().getHead() = f0)) and
+    fields = count(Content f0 | exists(PathNodeMid pn | pn.getAp().getHead() = f0)) and
     conscand = count(AccessPath ap | exists(PathNodeMid pn | pn.getAp() = ap)) and
     states = count(FlowState state | exists(PathNodeMid pn | pn.getState() = state)) and
     tuples = count(PathNodeImpl pn)
     or
     fwd = false and
     nodes = count(NodeEx n0 | exists(PathNodeImpl pn | pn.getNodeEx() = n0 and reach(pn))) and
-    fields =
-      count(TypedContent f0 | exists(PathNodeMid pn | pn.getAp().getHead() = f0 and reach(pn))) and
+    fields = count(Content f0 | exists(PathNodeMid pn | pn.getAp().getHead() = f0 and reach(pn))) and
     conscand = count(AccessPath ap | exists(PathNodeMid pn | pn.getAp() = ap and reach(pn))) and
     states = count(FlowState state | exists(PathNodeMid pn | pn.getState() = state and reach(pn))) and
     tuples = count(PathNode pn)
@@ -3837,77 +3873,32 @@ module Impl<FullStateConfigSig Config> {
     private int distSink(DataFlowCallable c) { result = distSinkExt(TCallable(c)) - 1 }
 
     private newtype TPartialAccessPath =
-      TPartialNil(DataFlowType t) or
-      TPartialCons(TypedContent tc, int len) { len in [1 .. accessPathLimit()] }
-
-    /**
-     * Conceptually a list of `TypedContent`s followed by a `Type`, but only the first
-     * element of the list and its length are tracked. If data flows from a source to
-     * a given node with a given `AccessPath`, this indicates the sequence of
-     * dereference operations needed to get from the value in the node to the
-     * tracked object. The final type indicates the type of the tracked object.
-     */
-    private class PartialAccessPath extends TPartialAccessPath {
-      abstract string toString();
-
-      TypedContent getHead() { this = TPartialCons(result, _) }
-
-      int len() {
-        this = TPartialNil(_) and result = 0
-        or
-        this = TPartialCons(_, result)
-      }
-
-      DataFlowType getType() {
-        this = TPartialNil(result)
-        or
-        exists(TypedContent head | this = TPartialCons(head, _) | result = head.getContainerType())
-      }
-    }
-
-    private class PartialAccessPathNil extends PartialAccessPath, TPartialNil {
-      override string toString() {
-        exists(DataFlowType t | this = TPartialNil(t) | result = concat(": " + ppReprType(t)))
-      }
-    }
-
-    private class PartialAccessPathCons extends PartialAccessPath, TPartialCons {
-      override string toString() {
-        exists(TypedContent tc, int len | this = TPartialCons(tc, len) |
-          if len = 1
-          then result = "[" + tc.toString() + "]"
-          else result = "[" + tc.toString() + ", ... (" + len.toString() + ")]"
-        )
-      }
-    }
-
-    private newtype TRevPartialAccessPath =
-      TRevPartialNil() or
-      TRevPartialCons(Content c, int len) { len in [1 .. accessPathLimit()] }
+      TPartialNil() or
+      TPartialCons(Content c, int len) { len in [1 .. accessPathLimit()] }
 
     /**
      * Conceptually a list of `Content`s, but only the first
      * element of the list and its length are tracked.
      */
-    private class RevPartialAccessPath extends TRevPartialAccessPath {
+    private class PartialAccessPath extends TPartialAccessPath {
       abstract string toString();
 
-      Content getHead() { this = TRevPartialCons(result, _) }
+      Content getHead() { this = TPartialCons(result, _) }
 
       int len() {
-        this = TRevPartialNil() and result = 0
+        this = TPartialNil() and result = 0
         or
-        this = TRevPartialCons(_, result)
+        this = TPartialCons(_, result)
       }
     }
 
-    private class RevPartialAccessPathNil extends RevPartialAccessPath, TRevPartialNil {
+    private class PartialAccessPathNil extends PartialAccessPath, TPartialNil {
       override string toString() { result = "" }
     }
 
-    private class RevPartialAccessPathCons extends RevPartialAccessPath, TRevPartialCons {
+    private class PartialAccessPathCons extends PartialAccessPath, TPartialCons {
       override string toString() {
-        exists(Content c, int len | this = TRevPartialCons(c, len) |
+        exists(Content c, int len | this = TPartialCons(c, len) |
           if len = 1
           then result = "[" + c.toString() + "]"
           else result = "[" + c.toString() + ", ... (" + len.toString() + ")]"
@@ -3934,7 +3925,11 @@ module Impl<FullStateConfigSig Config> {
 
     private newtype TSummaryCtx3 =
       TSummaryCtx3None() or
-      TSummaryCtx3Some(PartialAccessPath ap)
+      TSummaryCtx3Some(DataFlowType t)
+
+    private newtype TSummaryCtx4 =
+      TSummaryCtx4None() or
+      TSummaryCtx4Some(PartialAccessPath ap)
 
     private newtype TRevSummaryCtx1 =
       TRevSummaryCtx1None() or
@@ -3946,33 +3941,35 @@ module Impl<FullStateConfigSig Config> {
 
     private newtype TRevSummaryCtx3 =
       TRevSummaryCtx3None() or
-      TRevSummaryCtx3Some(RevPartialAccessPath ap)
+      TRevSummaryCtx3Some(PartialAccessPath ap)
 
     private newtype TPartialPathNode =
       TPartialPathNodeFwd(
         NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
-        TSummaryCtx3 sc3, PartialAccessPath ap
+        TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
       ) {
         sourceNode(node, state) and
         cc instanceof CallContextAny and
         sc1 = TSummaryCtx1None() and
         sc2 = TSummaryCtx2None() and
         sc3 = TSummaryCtx3None() and
-        ap = TPartialNil(node.getDataFlowType()) and
+        sc4 = TSummaryCtx4None() and
+        t = node.getDataFlowType() and
+        ap = TPartialNil() and
         exists(explorationLimit())
         or
-        partialPathNodeMk0(node, state, cc, sc1, sc2, sc3, ap) and
+        partialPathNodeMk0(node, state, cc, sc1, sc2, sc3, sc4, t, ap) and
         distSrc(node.getEnclosingCallable()) <= explorationLimit()
       } or
       TPartialPathNodeRev(
         NodeEx node, FlowState state, TRevSummaryCtx1 sc1, TRevSummaryCtx2 sc2, TRevSummaryCtx3 sc3,
-        RevPartialAccessPath ap
+        PartialAccessPath ap
       ) {
         sinkNode(node, state) and
         sc1 = TRevSummaryCtx1None() and
         sc2 = TRevSummaryCtx2None() and
         sc3 = TRevSummaryCtx3None() and
-        ap = TRevPartialNil() and
+        ap = TPartialNil() and
         exists(explorationLimit())
         or
         revPartialPathStep(_, node, state, sc1, sc2, sc3, ap) and
@@ -3989,18 +3986,18 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate partialPathNodeMk0(
       NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
-      TSummaryCtx3 sc3, PartialAccessPath ap
+      TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
     ) {
-      partialPathStep(_, node, state, cc, sc1, sc2, sc3, ap) and
+      partialPathStep(_, node, state, cc, sc1, sc2, sc3, sc4, t, ap) and
       not fullBarrier(node) and
       not stateBarrier(node, state) and
-      not clearsContentEx(node, ap.getHead().getContent()) and
+      not clearsContentEx(node, ap.getHead()) and
       (
         notExpectsContent(node) or
-        expectsContentEx(node, ap.getHead().getContent())
+        expectsContentEx(node, ap.getHead())
       ) and
       if node.asNode() instanceof CastingNode
-      then compatibleTypes(node.getDataFlowType(), ap.getType())
+      then compatibleTypes(node.getDataFlowType(), t)
       else any()
     }
 
@@ -4060,11 +4057,7 @@ module Impl<FullStateConfigSig Config> {
       private string ppType() {
         this instanceof PartialPathNodeRev and result = ""
         or
-        this.(PartialPathNodeFwd).getAp() instanceof PartialAccessPathNil and result = ""
-        or
-        exists(DataFlowType t |
-          t = this.(PartialPathNodeFwd).getAp().(PartialAccessPathCons).getType()
-        |
+        exists(DataFlowType t | t = this.(PartialPathNodeFwd).getType() |
           // The `concat` becomes "" if `ppReprType` has no result.
           result = concat(" : " + ppReprType(t))
         )
@@ -4105,9 +4098,13 @@ module Impl<FullStateConfigSig Config> {
       TSummaryCtx1 sc1;
       TSummaryCtx2 sc2;
       TSummaryCtx3 sc3;
+      TSummaryCtx4 sc4;
+      DataFlowType t;
       PartialAccessPath ap;
 
-      PartialPathNodeFwd() { this = TPartialPathNodeFwd(node, state, cc, sc1, sc2, sc3, ap) }
+      PartialPathNodeFwd() {
+        this = TPartialPathNodeFwd(node, state, cc, sc1, sc2, sc3, sc4, t, ap)
+      }
 
       NodeEx getNodeEx() { result = node }
 
@@ -4121,11 +4118,16 @@ module Impl<FullStateConfigSig Config> {
 
       TSummaryCtx3 getSummaryCtx3() { result = sc3 }
 
+      TSummaryCtx4 getSummaryCtx4() { result = sc4 }
+
+      DataFlowType getType() { result = t }
+
       PartialAccessPath getAp() { result = ap }
 
       override PartialPathNodeFwd getASuccessor() {
         partialPathStep(this, result.getNodeEx(), result.getState(), result.getCallContext(),
-          result.getSummaryCtx1(), result.getSummaryCtx2(), result.getSummaryCtx3(), result.getAp())
+          result.getSummaryCtx1(), result.getSummaryCtx2(), result.getSummaryCtx3(),
+          result.getSummaryCtx4(), result.getType(), result.getAp())
       }
 
       predicate isSource() {
@@ -4134,6 +4136,7 @@ module Impl<FullStateConfigSig Config> {
         sc1 = TSummaryCtx1None() and
         sc2 = TSummaryCtx2None() and
         sc3 = TSummaryCtx3None() and
+        sc4 = TSummaryCtx4None() and
         ap instanceof TPartialNil
       }
     }
@@ -4144,7 +4147,7 @@ module Impl<FullStateConfigSig Config> {
       TRevSummaryCtx1 sc1;
       TRevSummaryCtx2 sc2;
       TRevSummaryCtx3 sc3;
-      RevPartialAccessPath ap;
+      PartialAccessPath ap;
 
       PartialPathNodeRev() { this = TPartialPathNodeRev(node, state, sc1, sc2, sc3, ap) }
 
@@ -4158,7 +4161,7 @@ module Impl<FullStateConfigSig Config> {
 
       TRevSummaryCtx3 getSummaryCtx3() { result = sc3 }
 
-      RevPartialAccessPath getAp() { result = ap }
+      PartialAccessPath getAp() { result = ap }
 
       override PartialPathNodeRev getASuccessor() {
         revPartialPathStep(result, this.getNodeEx(), this.getState(), this.getSummaryCtx1(),
@@ -4170,13 +4173,13 @@ module Impl<FullStateConfigSig Config> {
         sc1 = TRevSummaryCtx1None() and
         sc2 = TRevSummaryCtx2None() and
         sc3 = TRevSummaryCtx3None() and
-        ap = TRevPartialNil()
+        ap = TPartialNil()
       }
     }
 
     private predicate partialPathStep(
       PartialPathNodeFwd mid, NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1,
-      TSummaryCtx2 sc2, TSummaryCtx3 sc3, PartialAccessPath ap
+      TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
     ) {
       not isUnreachableInCallCached(node.asNode(), cc.(CallContextSpecificCall).getCall()) and
       (
@@ -4186,6 +4189,8 @@ module Impl<FullStateConfigSig Config> {
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
+        sc4 = mid.getSummaryCtx4() and
+        t = mid.getType() and
         ap = mid.getAp()
         or
         additionalLocalFlowStep(mid.getNodeEx(), node) and
@@ -4194,16 +4199,20 @@ module Impl<FullStateConfigSig Config> {
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
+        sc4 = mid.getSummaryCtx4() and
         mid.getAp() instanceof PartialAccessPathNil and
-        ap = TPartialNil(node.getDataFlowType())
+        t = node.getDataFlowType() and
+        ap = TPartialNil()
         or
         additionalLocalStateStep(mid.getNodeEx(), mid.getState(), node, state) and
         cc = mid.getCallContext() and
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
+        sc4 = mid.getSummaryCtx4() and
         mid.getAp() instanceof PartialAccessPathNil and
-        ap = TPartialNil(node.getDataFlowType())
+        t = node.getDataFlowType() and
+        ap = TPartialNil()
       )
       or
       jumpStepEx(mid.getNodeEx(), node) and
@@ -4212,6 +4221,8 @@ module Impl<FullStateConfigSig Config> {
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
       sc3 = TSummaryCtx3None() and
+      sc4 = TSummaryCtx4None() and
+      t = mid.getType() and
       ap = mid.getAp()
       or
       additionalJumpStep(mid.getNodeEx(), node) and
@@ -4220,44 +4231,52 @@ module Impl<FullStateConfigSig Config> {
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
       sc3 = TSummaryCtx3None() and
+      sc4 = TSummaryCtx4None() and
       mid.getAp() instanceof PartialAccessPathNil and
-      ap = TPartialNil(node.getDataFlowType())
+      t = node.getDataFlowType() and
+      ap = TPartialNil()
       or
       additionalJumpStateStep(mid.getNodeEx(), mid.getState(), node, state) and
       cc instanceof CallContextAny and
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
       sc3 = TSummaryCtx3None() and
+      sc4 = TSummaryCtx4None() and
       mid.getAp() instanceof PartialAccessPathNil and
-      ap = TPartialNil(node.getDataFlowType())
+      t = node.getDataFlowType() and
+      ap = TPartialNil()
       or
-      partialPathStoreStep(mid, _, _, node, ap) and
+      partialPathStoreStep(mid, _, _, _, node, t, ap) and
       state = mid.getState() and
       cc = mid.getCallContext() and
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
-      sc3 = mid.getSummaryCtx3()
+      sc3 = mid.getSummaryCtx3() and
+      sc4 = mid.getSummaryCtx4()
       or
-      exists(PartialAccessPath ap0, TypedContent tc |
-        partialPathReadStep(mid, ap0, tc, node, cc) and
+      exists(DataFlowType t0, PartialAccessPath ap0, Content c |
+        partialPathReadStep(mid, t0, ap0, c, node, cc) and
         state = mid.getState() and
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
-        apConsFwd(ap, tc, ap0)
+        sc4 = mid.getSummaryCtx4() and
+        apConsFwd(t, ap, c, t0, ap0)
       )
       or
-      partialPathIntoCallable(mid, node, state, _, cc, sc1, sc2, sc3, _, ap)
+      partialPathIntoCallable(mid, node, state, _, cc, sc1, sc2, sc3, sc4, _, t, ap)
       or
-      partialPathOutOfCallable(mid, node, state, cc, ap) and
+      partialPathOutOfCallable(mid, node, state, cc, t, ap) and
       sc1 = TSummaryCtx1None() and
       sc2 = TSummaryCtx2None() and
-      sc3 = TSummaryCtx3None()
+      sc3 = TSummaryCtx3None() and
+      sc4 = TSummaryCtx4None()
       or
-      partialPathThroughCallable(mid, node, state, cc, ap) and
+      partialPathThroughCallable(mid, node, state, cc, t, ap) and
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
-      sc3 = mid.getSummaryCtx3()
+      sc3 = mid.getSummaryCtx3() and
+      sc4 = mid.getSummaryCtx4()
     }
 
     bindingset[result, i]
@@ -4265,55 +4284,61 @@ module Impl<FullStateConfigSig Config> {
 
     pragma[inline]
     private predicate partialPathStoreStep(
-      PartialPathNodeFwd mid, PartialAccessPath ap1, TypedContent tc, NodeEx node,
-      PartialAccessPath ap2
+      PartialPathNodeFwd mid, DataFlowType t1, PartialAccessPath ap1, Content c, NodeEx node,
+      DataFlowType t2, PartialAccessPath ap2
     ) {
       exists(NodeEx midNode, DataFlowType contentType |
         midNode = mid.getNodeEx() and
+        t1 = mid.getType() and
         ap1 = mid.getAp() and
-        storeEx(midNode, tc, node, contentType) and
-        ap2.getHead() = tc and
+        storeEx(midNode, c, node, contentType, t2) and
+        ap2.getHead() = c and
         ap2.len() = unbindInt(ap1.len() + 1) and
-        compatibleTypes(ap1.getType(), contentType)
+        compatibleTypes(t1, contentType)
       )
     }
 
     pragma[nomagic]
-    private predicate apConsFwd(PartialAccessPath ap1, TypedContent tc, PartialAccessPath ap2) {
-      partialPathStoreStep(_, ap1, tc, _, ap2)
+    private predicate apConsFwd(
+      DataFlowType t1, PartialAccessPath ap1, Content c, DataFlowType t2, PartialAccessPath ap2
+    ) {
+      partialPathStoreStep(_, t1, ap1, c, _, t2, ap2)
     }
 
     pragma[nomagic]
     private predicate partialPathReadStep(
-      PartialPathNodeFwd mid, PartialAccessPath ap, TypedContent tc, NodeEx node, CallContext cc
+      PartialPathNodeFwd mid, DataFlowType t, PartialAccessPath ap, Content c, NodeEx node,
+      CallContext cc
     ) {
       exists(NodeEx midNode |
         midNode = mid.getNodeEx() and
+        t = mid.getType() and
         ap = mid.getAp() and
-        read(midNode, tc.getContent(), node) and
-        ap.getHead() = tc and
+        read(midNode, c, node) and
+        ap.getHead() = c and
         cc = mid.getCallContext()
       )
     }
 
     private predicate partialPathOutOfCallable0(
       PartialPathNodeFwd mid, ReturnPosition pos, FlowState state, CallContext innercc,
-      PartialAccessPath ap
+      DataFlowType t, PartialAccessPath ap
     ) {
       pos = mid.getNodeEx().(RetNodeEx).getReturnPosition() and
       state = mid.getState() and
       innercc = mid.getCallContext() and
       innercc instanceof CallContextNoCall and
+      t = mid.getType() and
       ap = mid.getAp()
     }
 
     pragma[nomagic]
     private predicate partialPathOutOfCallable1(
       PartialPathNodeFwd mid, DataFlowCall call, ReturnKindExt kind, FlowState state,
-      CallContext cc, PartialAccessPath ap
+      CallContext cc, DataFlowType t, PartialAccessPath ap
     ) {
       exists(ReturnPosition pos, DataFlowCallable c, CallContext innercc |
-        partialPathOutOfCallable0(mid, pos, state, innercc, ap) and
+        partialPathOutOfCallable0(mid, pos, state, innercc, t, ap) and
         c = pos.getCallable() and
         kind = pos.getKind() and
         resolveReturn(innercc, c, call)
@@ -4323,10 +4348,11 @@ module Impl<FullStateConfigSig Config> {
     }
 
     private predicate partialPathOutOfCallable(
-      PartialPathNodeFwd mid, NodeEx out, FlowState state, CallContext cc, PartialAccessPath ap
+      PartialPathNodeFwd mid, NodeEx out, FlowState state, CallContext cc, DataFlowType t,
+      PartialAccessPath ap
     ) {
       exists(ReturnKindExt kind, DataFlowCall call |
-        partialPathOutOfCallable1(mid, call, kind, state, cc, ap)
+        partialPathOutOfCallable1(mid, call, kind, state, cc, t, ap)
       |
         out.asNode() = kind.getAnOutNode(call)
       )
@@ -4335,13 +4361,14 @@ module Impl<FullStateConfigSig Config> {
     pragma[noinline]
     private predicate partialPathIntoArg(
       PartialPathNodeFwd mid, ParameterPosition ppos, FlowState state, CallContext cc,
-      DataFlowCall call, PartialAccessPath ap
+      DataFlowCall call, DataFlowType t, PartialAccessPath ap
     ) {
       exists(ArgNode arg, ArgumentPosition apos |
         arg = mid.getNodeEx().asNode() and
         state = mid.getState() and
         cc = mid.getCallContext() and
         arg.argumentOf(call, apos) and
+        t = mid.getType() and
         ap = mid.getAp() and
         parameterMatch(ppos, apos)
       )
@@ -4350,23 +4377,24 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate partialPathIntoCallable0(
       PartialPathNodeFwd mid, DataFlowCallable callable, ParameterPosition pos, FlowState state,
-      CallContext outercc, DataFlowCall call, PartialAccessPath ap
+      CallContext outercc, DataFlowCall call, DataFlowType t, PartialAccessPath ap
     ) {
-      partialPathIntoArg(mid, pos, state, outercc, call, ap) and
+      partialPathIntoArg(mid, pos, state, outercc, call, t, ap) and
       callable = resolveCall(call, outercc)
     }
 
     private predicate partialPathIntoCallable(
       PartialPathNodeFwd mid, ParamNodeEx p, FlowState state, CallContext outercc,
       CallContextCall innercc, TSummaryCtx1 sc1, TSummaryCtx2 sc2, TSummaryCtx3 sc3,
-      DataFlowCall call, PartialAccessPath ap
+      TSummaryCtx4 sc4, DataFlowCall call, DataFlowType t, PartialAccessPath ap
     ) {
       exists(ParameterPosition pos, DataFlowCallable callable |
-        partialPathIntoCallable0(mid, callable, pos, state, outercc, call, ap) and
+        partialPathIntoCallable0(mid, callable, pos, state, outercc, call, t, ap) and
         p.isParameterOf(callable, pos) and
         sc1 = TSummaryCtx1Param(p) and
         sc2 = TSummaryCtx2Some(state) and
-        sc3 = TSummaryCtx3Some(ap)
+        sc3 = TSummaryCtx3Some(t) and
+        sc4 = TSummaryCtx4Some(ap)
       |
         if recordDataFlowCallSite(call, callable)
         then innercc = TSpecificCall(call)
@@ -4377,7 +4405,7 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate paramFlowsThroughInPartialPath(
       ReturnKindExt kind, FlowState state, CallContextCall cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
-      TSummaryCtx3 sc3, PartialAccessPath ap
+      TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
     ) {
       exists(PartialPathNodeFwd mid, RetNodeEx ret |
         mid.getNodeEx() = ret and
@@ -4387,6 +4415,8 @@ module Impl<FullStateConfigSig Config> {
         sc1 = mid.getSummaryCtx1() and
         sc2 = mid.getSummaryCtx2() and
         sc3 = mid.getSummaryCtx3() and
+        sc4 = mid.getSummaryCtx4() and
+        t = mid.getType() and
         ap = mid.getAp()
       )
     }
@@ -4394,19 +4424,22 @@ module Impl<FullStateConfigSig Config> {
     pragma[noinline]
     private predicate partialPathThroughCallable0(
       DataFlowCall call, PartialPathNodeFwd mid, ReturnKindExt kind, FlowState state,
-      CallContext cc, PartialAccessPath ap
+      CallContext cc, DataFlowType t, PartialAccessPath ap
     ) {
-      exists(CallContext innercc, TSummaryCtx1 sc1, TSummaryCtx2 sc2, TSummaryCtx3 sc3 |
-        partialPathIntoCallable(mid, _, _, cc, innercc, sc1, sc2, sc3, call, _) and
-        paramFlowsThroughInPartialPath(kind, state, innercc, sc1, sc2, sc3, ap)
+      exists(
+        CallContext innercc, TSummaryCtx1 sc1, TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4
+      |
+        partialPathIntoCallable(mid, _, _, cc, innercc, sc1, sc2, sc3, sc4, call, _, _) and
+        paramFlowsThroughInPartialPath(kind, state, innercc, sc1, sc2, sc3, sc4, t, ap)
       )
     }
 
     private predicate partialPathThroughCallable(
-      PartialPathNodeFwd mid, NodeEx out, FlowState state, CallContext cc, PartialAccessPath ap
+      PartialPathNodeFwd mid, NodeEx out, FlowState state, CallContext cc, DataFlowType t,
+      PartialAccessPath ap
     ) {
       exists(DataFlowCall call, ReturnKindExt kind |
-        partialPathThroughCallable0(call, mid, kind, state, cc, ap) and
+        partialPathThroughCallable0(call, mid, kind, state, cc, t, ap) and
         out.asNode() = kind.getAnOutNode(call)
       )
     }
@@ -4414,7 +4447,7 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate revPartialPathStep(
       PartialPathNodeRev mid, NodeEx node, FlowState state, TRevSummaryCtx1 sc1,
-      TRevSummaryCtx2 sc2, TRevSummaryCtx3 sc3, RevPartialAccessPath ap
+      TRevSummaryCtx2 sc2, TRevSummaryCtx3 sc3, PartialAccessPath ap
     ) {
       localFlowStepEx(node, mid.getNodeEx()) and
       state = mid.getState() and
@@ -4428,15 +4461,15 @@ module Impl<FullStateConfigSig Config> {
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       sc3 = mid.getSummaryCtx3() and
-      mid.getAp() instanceof RevPartialAccessPathNil and
-      ap = TRevPartialNil()
+      mid.getAp() instanceof PartialAccessPathNil and
+      ap = TPartialNil()
       or
       additionalLocalStateStep(node, state, mid.getNodeEx(), mid.getState()) and
       sc1 = mid.getSummaryCtx1() and
       sc2 = mid.getSummaryCtx2() and
       sc3 = mid.getSummaryCtx3() and
-      mid.getAp() instanceof RevPartialAccessPathNil and
-      ap = TRevPartialNil()
+      mid.getAp() instanceof PartialAccessPathNil and
+      ap = TPartialNil()
       or
       jumpStepEx(node, mid.getNodeEx()) and
       state = mid.getState() and
@@ -4450,15 +4483,15 @@ module Impl<FullStateConfigSig Config> {
       sc1 = TRevSummaryCtx1None() and
       sc2 = TRevSummaryCtx2None() and
       sc3 = TRevSummaryCtx3None() and
-      mid.getAp() instanceof RevPartialAccessPathNil and
-      ap = TRevPartialNil()
+      mid.getAp() instanceof PartialAccessPathNil and
+      ap = TPartialNil()
       or
       additionalJumpStateStep(node, state, mid.getNodeEx(), mid.getState()) and
       sc1 = TRevSummaryCtx1None() and
       sc2 = TRevSummaryCtx2None() and
       sc3 = TRevSummaryCtx3None() and
-      mid.getAp() instanceof RevPartialAccessPathNil and
-      ap = TRevPartialNil()
+      mid.getAp() instanceof PartialAccessPathNil and
+      ap = TPartialNil()
       or
       revPartialPathReadStep(mid, _, _, node, ap) and
       state = mid.getState() and
@@ -4466,7 +4499,7 @@ module Impl<FullStateConfigSig Config> {
       sc2 = mid.getSummaryCtx2() and
       sc3 = mid.getSummaryCtx3()
       or
-      exists(RevPartialAccessPath ap0, Content c |
+      exists(PartialAccessPath ap0, Content c |
         revPartialPathStoreStep(mid, ap0, c, node) and
         state = mid.getState() and
         sc1 = mid.getSummaryCtx1() and
@@ -4501,8 +4534,7 @@ module Impl<FullStateConfigSig Config> {
 
     pragma[inline]
     private predicate revPartialPathReadStep(
-      PartialPathNodeRev mid, RevPartialAccessPath ap1, Content c, NodeEx node,
-      RevPartialAccessPath ap2
+      PartialPathNodeRev mid, PartialAccessPath ap1, Content c, NodeEx node, PartialAccessPath ap2
     ) {
       exists(NodeEx midNode |
         midNode = mid.getNodeEx() and
@@ -4514,27 +4546,26 @@ module Impl<FullStateConfigSig Config> {
     }
 
     pragma[nomagic]
-    private predicate apConsRev(RevPartialAccessPath ap1, Content c, RevPartialAccessPath ap2) {
+    private predicate apConsRev(PartialAccessPath ap1, Content c, PartialAccessPath ap2) {
       revPartialPathReadStep(_, ap1, c, _, ap2)
     }
 
     pragma[nomagic]
     private predicate revPartialPathStoreStep(
-      PartialPathNodeRev mid, RevPartialAccessPath ap, Content c, NodeEx node
+      PartialPathNodeRev mid, PartialAccessPath ap, Content c, NodeEx node
     ) {
-      exists(NodeEx midNode, TypedContent tc |
+      exists(NodeEx midNode |
         midNode = mid.getNodeEx() and
         ap = mid.getAp() and
-        storeEx(node, tc, midNode, _) and
-        ap.getHead() = c and
-        tc.getContent() = c
+        storeEx(node, c, midNode, _, _) and
+        ap.getHead() = c
       )
     }
 
     pragma[nomagic]
     private predicate revPartialPathIntoReturn(
       PartialPathNodeRev mid, ReturnPosition pos, FlowState state, TRevSummaryCtx1Some sc1,
-      TRevSummaryCtx2Some sc2, TRevSummaryCtx3Some sc3, DataFlowCall call, RevPartialAccessPath ap
+      TRevSummaryCtx2Some sc2, TRevSummaryCtx3Some sc3, DataFlowCall call, PartialAccessPath ap
     ) {
       exists(NodeEx out |
         mid.getNodeEx() = out and
@@ -4550,7 +4581,7 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate revPartialPathFlowsThrough(
       ArgumentPosition apos, FlowState state, TRevSummaryCtx1Some sc1, TRevSummaryCtx2Some sc2,
-      TRevSummaryCtx3Some sc3, RevPartialAccessPath ap
+      TRevSummaryCtx3Some sc3, PartialAccessPath ap
     ) {
       exists(PartialPathNodeRev mid, ParamNodeEx p, ParameterPosition ppos |
         mid.getNodeEx() = p and
@@ -4567,7 +4598,7 @@ module Impl<FullStateConfigSig Config> {
     pragma[nomagic]
     private predicate revPartialPathThroughCallable0(
       DataFlowCall call, PartialPathNodeRev mid, ArgumentPosition pos, FlowState state,
-      RevPartialAccessPath ap
+      PartialAccessPath ap
     ) {
       exists(TRevSummaryCtx1Some sc1, TRevSummaryCtx2Some sc2, TRevSummaryCtx3Some sc3 |
         revPartialPathIntoReturn(mid, _, _, sc1, sc2, sc3, call, _) and
@@ -4577,7 +4608,7 @@ module Impl<FullStateConfigSig Config> {
 
     pragma[nomagic]
     private predicate revPartialPathThroughCallable(
-      PartialPathNodeRev mid, ArgNodeEx node, FlowState state, RevPartialAccessPath ap
+      PartialPathNodeRev mid, ArgNodeEx node, FlowState state, PartialAccessPath ap
     ) {
       exists(DataFlowCall call, ArgumentPosition pos |
         revPartialPathThroughCallable0(call, mid, pos, state, ap) and
