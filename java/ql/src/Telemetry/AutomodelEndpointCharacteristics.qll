@@ -12,6 +12,7 @@ private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
 private import semmle.code.java.Expr as Expr
 private import semmle.code.java.security.QueryInjection
 private import semmle.code.java.security.RequestForgery
+private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclusions
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
@@ -236,6 +237,18 @@ private class UndocumentedMethodCharacteristic extends CharacteristicsImpl::Unin
 
   override predicate appliesToEndpoint(Endpoint e) {
     not exists(e.getEnclosingCallable().(Documentable).getJavadoc())
+  }
+}
+
+/**
+ * A characteristic that limits candidates to parameters of methods that are recognized as `ModelApi`, iow., APIs that
+ * are considered worth modelling.
+ */
+private class NotAModelApiParameter extends CharacteristicsImpl::UninterestingToModelCharacteristic {
+  NotAModelApiParameter() { this = "not a model API parameter" }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    not exists(ModelExclusions::ModelApi api | api.getParameter(_) = e.asParameter())
   }
 }
 
