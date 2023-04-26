@@ -40,28 +40,6 @@ private module Echo {
   }
 
   /**
-   * Models of `Context.Get/Set`. `Context` behaves like a map, with corresponding taint propagation.
-   */
-  private class ContextMapModels extends TaintTracking::FunctionModel, Method {
-    string methodName;
-    FunctionInput input;
-    FunctionOutput output;
-
-    ContextMapModels() {
-      (
-        methodName = "Get" and input.isReceiver() and output.isResult()
-        or
-        methodName = "Set" and input.isParameter(1) and output.isReceiver()
-      ) and
-      this.hasQualifiedName(packagePath(), "Context", methodName)
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp = input and outp = output
-    }
-  }
-
-  /**
    * A call to a method on `Context` struct that unmarshals data into a target.
    */
   private class EchoContextBinder extends UntrustedFlowSource::Range {

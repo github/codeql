@@ -4,6 +4,7 @@ import codeql.swift.elements.CommentConstructor
 import codeql.swift.elements.DbFileConstructor
 import codeql.swift.elements.DbLocationConstructor
 import codeql.swift.elements.DiagnosticsConstructor
+import codeql.swift.elements.KeyPathComponentConstructor
 import codeql.swift.elements.OtherAvailabilitySpecConstructor
 import codeql.swift.elements.PlatformVersionAvailabilitySpecConstructor
 import codeql.swift.elements.UnspecifiedElementConstructor

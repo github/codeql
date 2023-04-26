@@ -133,7 +133,7 @@ module TempDirSystemGetPropertyToCreateConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) {
     sink instanceof FileCreationSink and
-    not TempDirSystemGetPropertyDirectlyToMkdir::hasFlowTo(sink)
+    not TempDirSystemGetPropertyDirectlyToMkdir::flowTo(sink)
   }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
@@ -146,7 +146,7 @@ module TempDirSystemGetPropertyToCreateConfig implements DataFlow::ConfigSig {
 }
 
 module TempDirSystemGetPropertyToCreate =
-  TaintTracking::Make<TempDirSystemGetPropertyToCreateConfig>;
+  TaintTracking::Global<TempDirSystemGetPropertyToCreateConfig>;
 
 /**
  * Configuration that tracks calls to to `mkdir` or `mkdirs` that are are directly on the temp directory system property.
@@ -179,7 +179,7 @@ module TempDirSystemGetPropertyDirectlyToMkdirConfig implements DataFlow::Config
 }
 
 module TempDirSystemGetPropertyDirectlyToMkdir =
-  TaintTracking::Make<TempDirSystemGetPropertyDirectlyToMkdirConfig>;
+  TaintTracking::Global<TempDirSystemGetPropertyDirectlyToMkdirConfig>;
 
 //
 // Begin configuration for tracking single-method calls that are vulnerable.
@@ -270,7 +270,7 @@ import Flow::PathGraph
 from Flow::PathNode source, Flow::PathNode sink, string message
 where
   (
-    TempDirSystemGetPropertyToCreate::hasFlowPath(source.asPathNode1(), sink.asPathNode1()) and
+    TempDirSystemGetPropertyToCreate::flowPath(source.asPathNode1(), sink.asPathNode1()) and
     message =
       "Local information disclosure vulnerability from $@ due to use of file or directory readable by other local users."
     or

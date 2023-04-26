@@ -42,7 +42,7 @@ private class GraphqlRelayClassicMutationClass extends ClassDeclaration {
     this.getSuperclassExpr() =
       graphQlSchema()
           .getMember("RelayClassicMutation")
-          .getASubclass*()
+          .getASubclass()
           .getAValueReachableFromSource()
           .asExpr()
           .getExpr()

@@ -12,6 +12,6 @@ private class LogInjectionTest extends InlineFlowTest {
   override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
 
   override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
-    LogInjectionFlow::hasFlow(src, sink)
+    LogInjectionFlow::flow(src, sink)
   }
 }

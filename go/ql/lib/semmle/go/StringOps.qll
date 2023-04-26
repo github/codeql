@@ -581,7 +581,7 @@ module StringOps {
   }
 
   /**
-   * One of the operands in a string concatenation.
+   * An operand in a string concatenation.
    *
    * See `ConcatenationElement` for more information.
    */

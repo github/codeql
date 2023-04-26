@@ -167,6 +167,7 @@ def test_properties():
             three: defs.list[defs.boolean]
             four: defs.list[defs.optional[defs.string]]
             five: defs.predicate
+            six: defs.set[defs.string]
 
     assert data.classes == {
         'A': schema.Class('A', properties=[
@@ -175,6 +176,7 @@ def test_properties():
             schema.RepeatedProperty('three', 'boolean'),
             schema.RepeatedOptionalProperty('four', 'string'),
             schema.PredicateProperty('five'),
+            schema.RepeatedUnorderedProperty('six', 'string'),
         ]),
     }
 
@@ -193,6 +195,7 @@ def test_class_properties():
             two: defs.optional[A]
             three: defs.list[A]
             four: defs.list[defs.optional[A]]
+            five: defs.set[A]
 
     assert data.classes == {
         'A': schema.Class('A', derived={'B'}),
@@ -201,6 +204,7 @@ def test_class_properties():
             schema.OptionalProperty('two', 'A'),
             schema.RepeatedProperty('three', 'A'),
             schema.RepeatedOptionalProperty('four', 'A'),
+            schema.RepeatedUnorderedProperty('five', 'A'),
         ]),
     }
 
@@ -213,6 +217,7 @@ def test_string_reference_class_properties():
             two: defs.optional["A"]
             three: defs.list["A"]
             four: defs.list[defs.optional["A"]]
+            five: defs.set["A"]
 
     assert data.classes == {
         'A': schema.Class('A', properties=[
@@ -220,6 +225,7 @@ def test_string_reference_class_properties():
             schema.OptionalProperty('two', 'A'),
             schema.RepeatedProperty('three', 'A'),
             schema.RepeatedOptionalProperty('four', 'A'),
+            schema.RepeatedUnorderedProperty('five', 'A'),
         ]),
     }
 
@@ -253,8 +259,8 @@ def test_children():
     }
 
 
-@pytest.mark.parametrize("spec", [defs.string, defs.int, defs.boolean, defs.predicate])
-def test_builtin_and_predicate_children_not_allowed(spec):
+@pytest.mark.parametrize("spec", [defs.string, defs.int, defs.boolean, defs.predicate, defs.set["A"]])
+def test_builtin_predicate_and_set_children_not_allowed(spec):
     with pytest.raises(schema.Error):
         @load
         class data:

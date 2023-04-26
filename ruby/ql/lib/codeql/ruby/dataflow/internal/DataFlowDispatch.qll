@@ -1380,3 +1380,13 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   or
   apos.isAnyNamed() and ppos.isKeyword(_)
 }
+
+/**
+ * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
+ *
+ * This is a temporary hook to support technical debt in the Go language; do not use.
+ */
+pragma[inline]
+predicate golangSpecificParamArgFilter(DataFlowCall call, DataFlow::Node p, ArgumentNode arg) {
+  any()
+}

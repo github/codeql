@@ -9,7 +9,7 @@ class TemplateInjectionTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasTemplateInjection" and
-    exists(DataFlow::Node sink, TemplateInjectionFlowConfig conf | conf.hasFlowTo(sink) |
+    exists(DataFlow::Node sink | TemplateInjectionFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

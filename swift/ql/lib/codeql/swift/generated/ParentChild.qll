@@ -219,6 +219,26 @@ private module Impl {
     )
   }
 
+  private Element getImmediateChildOfKeyPathComponent(
+    KeyPathComponent e, int index, string partialPredicateCall
+  ) {
+    exists(int b, int bAstNode, int n, int nSubscriptArgument |
+      b = 0 and
+      bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
+      n = bAstNode and
+      nSubscriptArgument =
+        n + 1 + max(int i | i = -1 or exists(e.getImmediateSubscriptArgument(i)) | i) and
+      (
+        none()
+        or
+        result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
+        or
+        result = e.getImmediateSubscriptArgument(index - n) and
+        partialPredicateCall = "SubscriptArgument(" + (index - n).toString() + ")"
+      )
+    )
+  }
+
   private Element getImmediateChildOfUnspecifiedElement(
     UnspecifiedElement e, int index, string partialPredicateCall
   ) {
@@ -1443,12 +1463,12 @@ private module Impl {
   private Element getImmediateChildOfKeyPathExpr(
     KeyPathExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int n, int nRoot, int nParsedPath |
+    exists(int b, int bExpr, int n, int nRoot, int nComponent |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nRoot = n + 1 and
-      nParsedPath = nRoot + 1 and
+      nComponent = nRoot + 1 + max(int i | i = -1 or exists(e.getImmediateComponent(i)) | i) and
       (
         none()
         or
@@ -1456,9 +1476,8 @@ private module Impl {
         or
         index = n and result = e.getImmediateRoot() and partialPredicateCall = "Root()"
         or
-        index = nRoot and
-        result = e.getImmediateParsedPath() and
-        partialPredicateCall = "ParsedPath()"
+        result = e.getImmediateComponent(index - nRoot) and
+        partialPredicateCall = "Component(" + (index - nRoot).toString() + ")"
       )
     )
   }
@@ -4829,6 +4848,8 @@ private module Impl {
     result = getImmediateChildOfUnknownLocation(e, index, partialAccessor)
     or
     result = getImmediateChildOfAvailabilityInfo(e, index, partialAccessor)
+    or
+    result = getImmediateChildOfKeyPathComponent(e, index, partialAccessor)
     or
     result = getImmediateChildOfUnspecifiedElement(e, index, partialAccessor)
     or

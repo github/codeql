@@ -161,6 +161,28 @@ class Node extends TIRDataFlowNode {
   Operand asOperand() { result = this.(OperandNode).getOperand() }
 
   /**
+   * Holds if this node is at index `i` in basic block `block`.
+   *
+   * Note: Phi nodes are considered to be at index `-1`.
+   */
+  final predicate hasIndexInBlock(IRBlock block, int i) {
+    this.asInstruction() = block.getInstruction(i)
+    or
+    this.asOperand().getUse() = block.getInstruction(i)
+    or
+    this.(SsaPhiNode).getPhiNode().getBasicBlock() = block and i = -1
+    or
+    this.(RawIndirectOperand).getOperand().getUse() = block.getInstruction(i)
+    or
+    this.(RawIndirectInstruction).getInstruction() = block.getInstruction(i)
+    or
+    this.(PostUpdateNode).getPreUpdateNode().hasIndexInBlock(block, i)
+  }
+
+  /** Gets the basic block of this node, if any. */
+  final IRBlock getBasicBlock() { this.hasIndexInBlock(result, _) }
+
+  /**
    * Gets the non-conversion expression corresponding to this node, if any.
    * This predicate only has a result on nodes that represent the value of
    * evaluating the expression. For data flowing _out of_ an expression, like
@@ -530,7 +552,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
    */
   final Node getAnInput(boolean fromBackEdge) {
     localFlowStep(result, this) and
-    if phi.getBasicBlock().dominates(getBasicBlock(result))
+    if phi.getBasicBlock().dominates(result.getBasicBlock())
     then fromBackEdge = true
     else fromBackEdge = false
   }
@@ -1887,7 +1909,7 @@ module BarrierGuard<guardChecksSig/3 guardChecks> {
       e = value.getAnInstruction().getConvertedResultExpression() and
       result.getConvertedExpr() = e and
       guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
-      g.controls(getBasicBlock(result), edge)
+      g.controls(result.getBasicBlock(), edge)
     )
   }
 }

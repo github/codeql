@@ -21,8 +21,8 @@ private import codeql.ruby.dataflow.internal.DataFlowImplForHttpClientLibraries 
  */
 class NetHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
   private DataFlow::CallNode request;
-  private DataFlow::Node responseBody;
   private API::Node requestNode;
+  private boolean returnsResponseBody;
 
   NetHttpRequest() {
     exists(string method |
@@ -32,12 +32,12 @@ class NetHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
       // Net::HTTP.get(...)
       method = "get" and
       requestNode = API::getTopLevelMember("Net").getMember("HTTP").getReturn(method) and
-      responseBody = request
+      returnsResponseBody = true
       or
       // Net::HTTP.post(...).body
       method in ["post", "post_form"] and
       requestNode = API::getTopLevelMember("Net").getMember("HTTP").getReturn(method) and
-      responseBody = requestNode.getAMethodCall(["body", "read_body", "entity"])
+      returnsResponseBody = false
       or
       // Net::HTTP.new(..).get(..).body
       method in [
@@ -45,7 +45,7 @@ class NetHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
           "post", "post2", "request_post", "request"
         ] and
       requestNode = API::getTopLevelMember("Net").getMember("HTTP").getInstance().getReturn(method) and
-      responseBody = requestNode.getAMethodCall(["body", "read_body", "entity"])
+      returnsResponseBody = false
     )
   }
 
@@ -64,7 +64,11 @@ class NetHttpRequest extends Http::Client::Request::Range, DataFlow::CallNode {
     )
   }
 
-  override DataFlow::Node getResponseBody() { result = responseBody }
+  override DataFlow::Node getResponseBody() {
+    if returnsResponseBody = true
+    then result = this
+    else result = requestNode.getAMethodCall(["body", "read_body", "entity"])
+  }
 
   /** Gets the value that controls certificate validation, if any. */
   DataFlow::Node getCertificateValidationControllingValue() {

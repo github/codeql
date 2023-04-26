@@ -23,7 +23,7 @@ private module ImproperValidationOfArrayConstructionConfig implements DataFlow::
 }
 
 module ImproperValidationOfArrayConstructionFlow =
-  TaintTracking::Make<ImproperValidationOfArrayConstructionConfig>;
+  TaintTracking::Global<ImproperValidationOfArrayConstructionConfig>;
 
 import ImproperValidationOfArrayConstructionFlow::PathGraph
 
@@ -34,7 +34,7 @@ from
 where
   arrayAccess.canThrowOutOfBoundsDueToEmptyArray(sizeExpr, arrayCreation) and
   sizeExpr = sink.getNode().asExpr() and
-  ImproperValidationOfArrayConstructionFlow::hasFlowPath(source, sink)
+  ImproperValidationOfArrayConstructionFlow::flowPath(source, sink)
 select arrayAccess.getIndexExpr(), source, sink,
   "This accesses the $@, but the array is initialized using a $@ which may be zero.", arrayCreation,
   "array", source.getNode(), "user-provided value"

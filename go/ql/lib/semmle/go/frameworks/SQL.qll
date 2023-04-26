@@ -218,27 +218,6 @@ module SQL {
         )
       }
     }
-
-    /** A taint model for various methods on the struct `Formatter` of `go-pg/pg/orm`. */
-    private class PgOrmFormatterFunction extends TaintTracking::FunctionModel, Method {
-      FunctionInput i;
-      FunctionOutput o;
-
-      PgOrmFormatterFunction() {
-        exists(string m | this.hasQualifiedName(gopgorm(), "Formatter", m) |
-          // func (f Formatter) Append(dst []byte, src string, params ...interface{}) []byte
-          // func (f Formatter) AppendBytes(dst, src []byte, params ...interface{}) []byte
-          // func (f Formatter) FormatQuery(dst []byte, query string, params ...interface{}) []byte
-          (m = "Append" or m = "AppendBytes" or m = "FormatQuery") and
-          i.isParameter(1) and
-          (o.isParameter(0) or o.isResult())
-        )
-      }
-
-      override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-        inp = i and outp = o
-      }
-    }
   }
 
   /** A model for sinks of GORM. */

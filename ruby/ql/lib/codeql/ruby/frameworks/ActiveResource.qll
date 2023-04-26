@@ -17,8 +17,9 @@ module ActiveResource {
   /**
    * An ActiveResource model class. This is any (transitive) subclass of ActiveResource.
    */
+  pragma[nomagic]
   private API::Node modelApiNode() {
-    result = API::getTopLevelMember("ActiveResource").getMember("Base").getASubclass+()
+    result = API::getTopLevelMember("ActiveResource").getMember("Base").getASubclass()
   }
 
   /**

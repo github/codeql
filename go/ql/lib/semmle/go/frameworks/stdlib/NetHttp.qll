@@ -3,6 +3,8 @@
  */
 
 import go
+private import semmle.go.dataflow.FlowSummary
+private import semmle.go.dataflow.internal.DataFlowPrivate
 
 /** Provides models of commonly used functions in the `net/http` package. */
 module NetHttp {
@@ -57,13 +59,12 @@ module NetHttp {
   }
 
   private class MapWrite extends Http::HeaderWrite::Range, DataFlow::Node {
-    Write write;
     DataFlow::Node index;
     DataFlow::Node rhs;
 
     MapWrite() {
       this.getType().hasQualifiedName("net/http", "Header") and
-      write.writesElement(this, index, rhs)
+      any(Write write).writesElement(this, index, rhs)
     }
 
     override DataFlow::Node getName() { result = index }
@@ -121,6 +122,18 @@ module NetHttp {
     }
   }
 
+  private DataFlow::Node getSummaryInputOrOutputNode(
+    DataFlow::CallNode call, SummaryComponentStack stack
+  ) {
+    exists(int n |
+      stack = SummaryComponentStack::argument(n) and
+      result = call.getArgument(n)
+    )
+    or
+    stack = SummaryComponentStack::argument(-1) and
+    result = call.getReceiver()
+  }
+
   private class ResponseBody extends Http::ResponseBody::Range, DataFlow::ArgumentNode {
     DataFlow::Node responseWriter;
 
@@ -136,6 +149,24 @@ module NetHttp {
         // A modeled function conveying taint from some input to the response writer,
         // e.g. `io.Copy(responseWriter, someTaintedReader)`
         model.taintStep(this, responseWriter) and
+        responseWriter.getType().implements("net/http", "ResponseWriter")
+      )
+      or
+      exists(
+        SummarizedCallable callable, DataFlow::CallNode call, SummaryComponentStack input,
+        SummaryComponentStack output
+      |
+        callable = call.getACalleeIncludingExternals() and callable.propagatesFlow(input, output, _)
+      |
+        // A modeled function conveying taint from some input to the response writer,
+        // e.g. `io.Copy(responseWriter, someTaintedReader)`
+        // NB. SummarizedCallables do not implement a direct call-site-crossing flow step; instead
+        // they are implemented by a function body with internal dataflow nodes, so we mimic the
+        // one-step style for the particular case of taint propagation direct from an argument or receiver
+        // to another argument, receiver or return value, matching the behavior for a `TaintTracking::FunctionModel`.
+        this = getSummaryInputOrOutputNode(call, input) and
+        responseWriter.(DataFlow::PostUpdateNode).getPreUpdateNode() =
+          getSummaryInputOrOutputNode(call, output) and
         responseWriter.getType().implements("net/http", "ResponseWriter")
       )
     }
@@ -253,119 +284,5 @@ module NetHttp {
     }
 
     override predicate guardedBy(DataFlow::Node check) { check = handlerReg.getArgument(0) }
-  }
-
-  private class FunctionModels extends TaintTracking::FunctionModel {
-    FunctionInput inp;
-    FunctionOutput outp;
-
-    FunctionModels() {
-      // signature: func CanonicalHeaderKey(s string) string
-      this.hasQualifiedName("net/http", "CanonicalHeaderKey") and
-      (inp.isParameter(0) and outp.isResult())
-      or
-      // signature: func Error(w ResponseWriter, error string, code int)
-      this.hasQualifiedName("net/http", "Error") and
-      (inp.isParameter(1) and outp.isParameter(0))
-      or
-      // signature: func MaxBytesReader(w ResponseWriter, r io.ReadCloser, n int64) io.ReadCloser
-      this.hasQualifiedName("net/http", "MaxBytesReader") and
-      (inp.isParameter(1) and outp.isResult())
-      or
-      // signature: func NewRequest(method, url string, body io.Reader) (*Request, error)
-      this.hasQualifiedName("net/http", "NewRequest") and
-      (inp.isParameter(1) and outp.isResult(0))
-      or
-      // signature: func NewRequestWithContext(ctx context.Context, method, url string, body io.Reader) (*Request, error)
-      this.hasQualifiedName("net/http", "NewRequestWithContext") and
-      (inp.isParameter(2) and outp.isResult(0))
-      or
-      // signature: func ReadRequest(b *bufio.Reader) (*Request, error)
-      this.hasQualifiedName("net/http", "ReadRequest") and
-      (inp.isParameter(0) and outp.isResult(0))
-      or
-      // signature: func ReadResponse(r *bufio.Reader, req *Request) (*Response, error)
-      this.hasQualifiedName("net/http", "ReadResponse") and
-      (inp.isParameter(0) and outp.isResult(0))
-      or
-      // signature: func SetCookie(w ResponseWriter, cookie *Cookie)
-      this.hasQualifiedName("net/http", "SetCookie") and
-      (inp.isParameter(1) and outp.isParameter(0))
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input = inp and output = outp
-    }
-  }
-
-  private class MethodModels extends TaintTracking::FunctionModel, Method {
-    FunctionInput inp;
-    FunctionOutput outp;
-
-    MethodModels() {
-      // signature: func (Header) Add(key string, value string)
-      this.hasQualifiedName("net/http", "Header", "Add") and
-      (inp.isParameter(_) and outp.isReceiver())
-      or
-      // signature: func (Header) Clone() Header
-      this.hasQualifiedName("net/http", "Header", "Clone") and
-      (inp.isReceiver() and outp.isResult())
-      or
-      // signature: func (Header) Get(key string) string
-      this.hasQualifiedName("net/http", "Header", "Get") and
-      (inp.isReceiver() and outp.isResult())
-      or
-      // signature: func (Header) Set(key string, value string)
-      this.hasQualifiedName("net/http", "Header", "Set") and
-      (inp.isParameter(_) and outp.isReceiver())
-      or
-      // signature: func (Header) Values(key string) []string
-      this.hasQualifiedName("net/http", "Header", "Values") and
-      (inp.isReceiver() and outp.isResult())
-      or
-      // signature: func (Header) Write(w io.Writer) error
-      this.hasQualifiedName("net/http", "Header", "Write") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (Header) WriteSubset(w io.Writer, exclude map[string]bool) error
-      this.hasQualifiedName("net/http", "Header", "WriteSubset") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Request) AddCookie(c *Cookie)
-      this.hasQualifiedName("net/http", "Request", "AddCookie") and
-      (inp.isParameter(0) and outp.isReceiver())
-      or
-      // signature: func (*Request) Clone(ctx context.Context) *Request
-      this.hasQualifiedName("net/http", "Request", "Clone") and
-      (inp.isReceiver() and outp.isResult())
-      or
-      // signature: func (*Request) Write(w io.Writer) error
-      this.hasQualifiedName("net/http", "Request", "Write") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Request) WriteProxy(w io.Writer) error
-      this.hasQualifiedName("net/http", "Request", "WriteProxy") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Response) Write(w io.Writer) error
-      this.hasQualifiedName("net/http", "Response", "Write") and
-      (inp.isReceiver() and outp.isParameter(0))
-      or
-      // signature: func (*Transport) Clone() *Transport
-      this.hasQualifiedName("net/http", "Transport", "Clone") and
-      (inp.isReceiver() and outp.isResult())
-      or
-      // signature: func (Hijacker) Hijack() (net.Conn, *bufio.ReadWriter, error)
-      this.implements("net/http", "Hijacker", "Hijack") and
-      (inp.isReceiver() and outp.isResult([0, 1]))
-      or
-      // signature: func (ResponseWriter) Write([]byte) (int, error)
-      this.implements("net/http", "ResponseWriter", "Write") and
-      (inp.isParameter(0) and outp.isReceiver())
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input = inp and output = outp
-    }
   }
 }

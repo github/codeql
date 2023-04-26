@@ -103,7 +103,7 @@ private module DefaultTaintTrackingConfig implements DataFlow::ConfigSig {
   }
 }
 
-private module DefaultTaintTrackingFlow = TaintTracking::Make<DefaultTaintTrackingConfig>;
+private module DefaultTaintTrackingFlow = TaintTracking::Global<DefaultTaintTrackingConfig>;
 
 private module ToGlobalVarTaintTrackingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source = getNodeForSource(_) }
@@ -121,13 +121,13 @@ private module ToGlobalVarTaintTrackingConfig implements DataFlow::ConfigSig {
   predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
 }
 
-private module ToGlobalVarTaintTrackingFlow = TaintTracking::Make<ToGlobalVarTaintTrackingConfig>;
+private module ToGlobalVarTaintTrackingFlow = TaintTracking::Global<ToGlobalVarTaintTrackingConfig>;
 
 private module FromGlobalVarTaintTrackingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     // This set of sources should be reasonably small, which is good for
     // performance since the set of sinks is very large.
-    ToGlobalVarTaintTrackingFlow::hasFlowTo(source)
+    ToGlobalVarTaintTrackingFlow::flowTo(source)
   }
 
   predicate isSink(DataFlow::Node sink) { exists(adjustedSink(sink)) }
@@ -145,7 +145,7 @@ private module FromGlobalVarTaintTrackingConfig implements DataFlow::ConfigSig {
 }
 
 private module FromGlobalVarTaintTrackingFlow =
-  TaintTracking::Make<FromGlobalVarTaintTrackingConfig>;
+  TaintTracking::Global<FromGlobalVarTaintTrackingConfig>;
 
 private predicate readsVariable(LoadInstruction load, Variable var) {
   load.getSourceAddress().(VariableAddressInstruction).getAstVariable() = var
@@ -331,7 +331,7 @@ private import Cached
 cached
 predicate tainted(Expr source, Element tainted) {
   exists(DataFlow::Node sink |
-    DefaultTaintTrackingFlow::hasFlow(getNodeForSource(source), sink) and
+    DefaultTaintTrackingFlow::flow(getNodeForSource(source), sink) and
     tainted = adjustedSink(sink)
   )
 }
@@ -360,8 +360,8 @@ predicate taintedIncludingGlobalVars(Expr source, Element tainted, string global
     DataFlow::VariableNode variableNode, GlobalOrNamespaceVariable global, DataFlow::Node sink
   |
     global = variableNode.getVariable() and
-    ToGlobalVarTaintTrackingFlow::hasFlow(getNodeForSource(source), variableNode) and
-    FromGlobalVarTaintTrackingFlow::hasFlow(variableNode, sink) and
+    ToGlobalVarTaintTrackingFlow::flow(getNodeForSource(source), variableNode) and
+    FromGlobalVarTaintTrackingFlow::flow(variableNode, sink) and
     tainted = adjustedSink(sink) and
     global = globalVarFromId(globalVar)
   )
@@ -450,7 +450,7 @@ module TaintedWithPath {
     predicate isBarrierIn(DataFlow::Node node) { nodeIsBarrierIn(node) }
   }
 
-  private module AdjustedFlow = TaintTracking::Make<AdjustedConfig>;
+  private module AdjustedFlow = TaintTracking::Global<AdjustedConfig>;
 
   /*
    * A sink `Element` may map to multiple `DataFlowX::PathNode`s via (the
@@ -472,7 +472,7 @@ module TaintedWithPath {
     // that makes it easiest to deal with the case where source = sink.
     TEndpointPathNode(Element e) {
       exists(DataFlow::Node sourceNode, DataFlow::Node sinkNode |
-        AdjustedFlow::hasFlow(sourceNode, sinkNode)
+        AdjustedFlow::flow(sourceNode, sinkNode)
       |
         sourceNode = getNodeForExpr(e) and
         exists(TaintTrackingConfiguration ttCfg | ttCfg.isSource(e))
@@ -634,7 +634,7 @@ module TaintedWithPath {
     exists(DataFlow::Node flowSource, DataFlow::Node flowSink |
       source = sourceNode.(InitialPathNode).inner() and
       flowSource = getNodeForExpr(source) and
-      AdjustedFlow::hasFlow(flowSource, flowSink) and
+      AdjustedFlow::flow(flowSource, flowSink) and
       tainted = adjustedSink(flowSink) and
       tainted = sinkNode.(FinalPathNode).inner()
     )

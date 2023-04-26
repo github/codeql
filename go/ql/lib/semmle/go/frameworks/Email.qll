@@ -44,17 +44,6 @@ module EmailData {
     result = package("github.com/sendgrid/sendgrid-go", "helpers/mail")
   }
 
-  private class NewContent extends TaintTracking::FunctionModel {
-    NewContent() {
-      // func NewContent(contentType string, value string) *Content
-      this.hasQualifiedName(sendgridMail(), "NewContent")
-    }
-
-    override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
-      input.isParameter(1) and output.isResult()
-    }
-  }
-
   /** A data-flow node that is written to an email using the sendgrid/sendgrid-go package. */
   private class SendGridEmail extends Range {
     SendGridEmail() {
@@ -79,6 +68,7 @@ module EmailData {
   }
 }
 
+// These models are not implemented using Models-as-Data because they represent reverse flow.
 /**
  * A taint model of the `Writer.CreatePart` method from `mime/multipart`.
  *

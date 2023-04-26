@@ -40,6 +40,30 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
 }
 
+private class KeyPathComponentNodeImpl extends TKeyPathComponentNode, NodeImpl {
+  KeyPathComponent component;
+
+  KeyPathComponentNodeImpl() { this = TKeyPathComponentNode(component) }
+
+  override Location getLocationImpl() { result = component.getLocation() }
+
+  override string toStringImpl() { result = component.toString() }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = component.getKeyPathExpr()
+  }
+
+  KeyPathComponent getComponent() { result = component }
+}
+
+private class PatternNodeImpl extends PatternNode, NodeImpl {
+  override Location getLocationImpl() { result = pattern.getLocation() }
+
+  override string toStringImpl() { result = pattern.toString() }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
+}
+
 private class SsaDefinitionNodeImpl extends SsaDefinitionNode, NodeImpl {
   override Location getLocationImpl() { result = def.getLocation() }
 
@@ -63,12 +87,16 @@ private module Cached {
   cached
   newtype TNode =
     TExprNode(CfgNode n, Expr e) { hasExprNode(n, e) } or
+    TPatternNode(CfgNode n, Pattern p) { hasPatternNode(n, p) } or
     TSsaDefinitionNode(Ssa::Definition def) or
     TInoutReturnNode(ParamDecl param) { modifiableParam(param) } or
     TSummaryNode(FlowSummary::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
       FlowSummaryImpl::Private::summaryNodeRange(c, state)
     } or
     TSourceParameterNode(ParamDecl param) or
+    TKeyPathParameterNode(EntryNode entry) { entry.getScope() instanceof KeyPathExpr } or
+    TKeyPathReturnNode(ExitNode exit) { exit.getScope() instanceof KeyPathExpr } or
+    TKeyPathComponentNode(KeyPathComponent component) or
     TSummaryParameterNode(FlowSummary::SummarizedCallable c, ParameterPosition pos) {
       FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
     } or
@@ -96,7 +124,7 @@ private module Cached {
     (
       nodeTo instanceof InoutReturnNode
       implies
-      nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable()
+      nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable().asVarDecl()
     )
   }
 
@@ -126,7 +154,7 @@ private module Cached {
       (
         nodeTo instanceof InoutReturnNode
         implies
-        nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable()
+        nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable().asVarDecl()
       )
       or
       // use-use flow
@@ -175,6 +203,25 @@ private module Cached {
       nodeFrom.asExpr() = ie.getBranch(_)
     )
     or
+    // flow from Expr to Pattern
+    exists(Expr e, Pattern p |
+      nodeFrom.asExpr() = e and
+      nodeTo.asPattern() = p and
+      p.getImmediateMatchingExpr() = e
+    )
+    or
+    // flow from Pattern to an identity-preserving sub-Pattern:
+    nodeTo.asPattern() =
+      [
+        nodeFrom.asPattern().(IsPattern).getSubPattern(),
+        nodeFrom.asPattern().(TypedPattern).getSubPattern()
+      ]
+    or
+    // Flow from the unique parameter of a key path expression to
+    // the first component in the chain.
+    nodeTo.(KeyPathComponentNodeImpl).getComponent() =
+      nodeFrom.(KeyPathParameterNode).getComponent(0)
+    or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
   }
@@ -201,7 +248,8 @@ private module Cached {
   cached
   newtype TContent =
     TFieldContent(FieldDecl f) or
-    TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) }
+    TTupleContent(int index) { exists(any(TupleExpr te).getElement(index)) } or
+    TEnumContent(ParamDecl f) { exists(EnumElementDecl d | d.getAParam() = f) }
 }
 
 /**
@@ -228,6 +276,11 @@ private predicate hasExprNode(CfgNode n, Expr e) {
   n.(PropertySetterCfgNode).getAssignExpr() = e
   or
   n.(PropertyObserverCfgNode).getAssignExpr() = e
+}
+
+private predicate hasPatternNode(PatternCfgNode n, Pattern p) {
+  n.getPattern() = p and
+  p = p.resolve() // no need to turn hidden-AST patterns (`let`s, parens) into data flow nodes
 }
 
 import Cached
@@ -281,6 +334,28 @@ private module ParameterNodes {
     override string toStringImpl() { result = "[summary param] " + pos + " in " + sc }
 
     override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
+  }
+
+  class KeyPathParameterNode extends ParameterNodeImpl, TKeyPathParameterNode {
+    private EntryNode entry;
+
+    KeyPathParameterNode() { this = TKeyPathParameterNode(entry) }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c.asSourceCallable() = entry.getScope() and pos = TThisParameter()
+    }
+
+    override Location getLocationImpl() { result = entry.getLocation() }
+
+    override string toStringImpl() { result = entry.toString() }
+
+    override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
+
+    KeyPathComponent getComponent(int i) { result = entry.getScope().(KeyPathExpr).getComponent(i) }
+
+    KeyPathComponent getAComponent() { result = this.getComponent(_) }
+
+    KeyPathExpr getKeyPathExpr() { result = entry.getScope() }
   }
 }
 
@@ -383,6 +458,17 @@ private module ArgumentNodes {
       FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
     }
   }
+
+  class KeyPathArgumentNode extends ExprNode, ArgumentNode {
+    private KeyPathApplicationExprCfgNode keyPath;
+
+    KeyPathArgumentNode() { keyPath.getBase() = this.getCfgNode() }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.asKeyPath() = keyPath and
+      pos = TThisArgument()
+    }
+  }
 }
 
 import ArgumentNodes
@@ -445,6 +531,24 @@ private module ReturnNodes {
 
     override ReturnKind getKind() { result = rk }
   }
+
+  class KeyPathReturnNodeImpl extends ReturnNode, TKeyPathReturnNode, NodeImpl {
+    ExitNode exit;
+
+    KeyPathReturnNodeImpl() { this = TKeyPathReturnNode(exit) }
+
+    override ReturnKind getKind() { result instanceof NormalReturnKind }
+
+    override ControlFlowNode getCfgNode() { result = exit }
+
+    override DataFlowCallable getEnclosingCallable() { result.asSourceCallable() = exit.getScope() }
+
+    override Location getLocationImpl() { result = exit.getLocation() }
+
+    override string toStringImpl() { result = exit.toString() }
+
+    KeyPathExpr getKeyPathExpr() { result = exit.getScope() }
+  }
 }
 
 import ReturnNodes
@@ -463,6 +567,16 @@ private module OutNodes {
 
     override DataFlowCall getCall(ReturnKind kind) {
       result.asCall() = apply and kind instanceof NormalReturnKind
+    }
+  }
+
+  class KeyPathOutNode extends OutNode, ExprNodeImpl {
+    KeyPathApplicationExprCfgNode keyPath;
+
+    KeyPathOutNode() { keyPath = this.getCfgNode() }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      result.asKeyPath() = keyPath and kind instanceof NormalReturnKind
     }
   }
 
@@ -558,6 +672,29 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
     c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
   )
   or
+  // creation of an enum `.variant(v1, v2)`
+  exists(EnumElementExpr enum, int pos |
+    node1.asExpr() = enum.getArgument(pos).getExpr() and
+    node2.asExpr() = enum and
+    c.isSingleton(any(Content::EnumContent ec | ec.getParam() = enum.getElement().getParam(pos)))
+  )
+  or
+  // creation of an optional via implicit conversion,
+  // i.e. from `f(x)` where `x: T` into `f(.some(x))` where the context `f` expects a `T?`.
+  exists(InjectIntoOptionalExpr e |
+    e.convertsFrom(node1.asExpr()) and
+    node2 = node1 and // HACK: we should ideally have a separate Node case for the (hidden) InjectIntoOptionalExpr
+    c instanceof OptionalSomeContentSet
+  )
+  or
+  // creation of an optional by returning from a failable initializer (`init?`)
+  exists(ConstructorDecl init |
+    node1.asExpr().(CallExpr).getStaticTarget() = init and
+    node2 = node1 and // HACK: again, we should ideally have a separate Node case here, and not reuse the CallExpr
+    c instanceof OptionalSomeContentSet and
+    init.isFailable()
+  )
+  or
   FlowSummaryImpl::Private::Steps::summaryStoreStep(node1, c, node2)
 }
 
@@ -578,6 +715,48 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2.asExpr() = tuple and
     c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = tuple.getIndex()))
   )
+  or
+  // read of an enum member via `case let .variant(v1, v2)` pattern matching
+  exists(EnumElementPattern enumPat, ParamDecl enumParam, Pattern subPat |
+    node1.asPattern() = enumPat and
+    node2.asPattern() = subPat and
+    c.isSingleton(any(Content::EnumContent ec | ec.getParam() = enumParam))
+  |
+    exists(int idx |
+      enumPat.getElement().getParam(idx) = enumParam and
+      enumPat.getSubPattern(idx) = subPat
+    )
+  )
+  or
+  // read of a tuple member via `case let (v1, v2)` pattern matching
+  exists(TuplePattern tupPat, int idx, Pattern subPat |
+    node1.asPattern() = tupPat and
+    node2.asPattern() = subPat and
+    c.isSingleton(any(Content::TupleContent tc | tc.getIndex() = idx))
+  |
+    tupPat.getElement(idx) = subPat
+  )
+  or
+  // read of an optional .some member via `let x: T = y: T?` pattern matching
+  exists(OptionalSomePattern pat |
+    node1.asPattern() = pat and
+    node2.asPattern() = pat.getSubPattern() and
+    c instanceof OptionalSomeContentSet
+  )
+  or
+  // read of a component in a key-path expression chain
+  exists(KeyPathComponent component, FieldDecl f |
+    component = node1.(KeyPathComponentNodeImpl).getComponent() and
+    f = component.getDeclRef() and
+    c.isSingleton(any(Content::FieldContent ct | ct.getField() = f))
+  |
+    // the next node is either the next element in the chain
+    node2.(KeyPathComponentNodeImpl).getComponent() = component.getNextComponent()
+    or
+    // or the return node, if this is the last component in the chain
+    not exists(component.getNextComponent()) and
+    node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr()
+  )
 }
 
 /**
@@ -594,6 +773,22 @@ predicate clearsContent(Node n, ContentSet c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) { none() }
+
+/**
+ * The global singleton `Optional.some` content set.
+ */
+private class OptionalSomeContentSet extends ContentSet {
+  OptionalSomeContentSet() {
+    exists(EnumDecl optional, EnumElementDecl some |
+      some.getDeclaringDecl() = optional and
+      some.getName() = "some" and
+      optional.getName() = "Optional" and
+      optional.getModule().getName() = "Swift"
+    |
+      this.isSingleton(any(Content::EnumContent ec | ec.getParam() = some.getParam(0)))
+    )
+  }
+}
 
 private newtype TDataFlowType = TODO_DataFlowType()
 
@@ -690,6 +885,9 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   or
   kind = TLambdaCallKind() and
   receiver = call.(SummaryCall).getReceiver()
+  or
+  kind = TLambdaCallKind() and
+  receiver.asExpr() = call.asKeyPath().getExpr().(KeyPathApplicationExpr).getKeyPath()
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */

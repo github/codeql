@@ -64,7 +64,16 @@ def cls_to_dbscheme(cls: schema.Class, lookup: typing.Dict[str, schema.Class], a
         )
     # use property-specific tables for 1-to-many and 1-to-at-most-1 properties
     for f in cls.properties:
-        if f.is_repeated:
+        if f.is_unordered:
+            yield Table(
+                name=inflection.tableize(f"{cls.name}_{f.name}"),
+                columns=[
+                    Column("id", type=dbtype(cls.name)),
+                    Column(inflection.singularize(f.name), dbtype(f.type, add_or_none_except)),
+                ],
+                dir=dir,
+            )
+        elif f.is_repeated:
             yield Table(
                 keyset=KeySet(["id", "index"]),
                 name=inflection.tableize(f"{cls.name}_{f.name}"),

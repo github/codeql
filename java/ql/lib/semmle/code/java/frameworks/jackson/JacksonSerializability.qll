@@ -108,10 +108,10 @@ private module TypeLiteralToJacksonDatabindFlowConfig implements DataFlow::Confi
 }
 
 private module TypeLiteralToJacksonDatabindFlow =
-  DataFlow::Make<TypeLiteralToJacksonDatabindFlowConfig>;
+  DataFlow::Global<TypeLiteralToJacksonDatabindFlowConfig>;
 
 private TypeLiteral getSourceWithFlowToJacksonDatabind() {
-  TypeLiteralToJacksonDatabindFlow::hasFlow(DataFlow::exprNode(result), _)
+  TypeLiteralToJacksonDatabindFlow::flow(DataFlow::exprNode(result), _)
 }
 
 /** A type whose values are explicitly deserialized in a call to a Jackson method. */

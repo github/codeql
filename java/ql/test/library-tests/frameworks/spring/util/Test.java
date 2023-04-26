@@ -381,20 +381,6 @@ public class Test {
 			sink(out); // $hasTaintFlow
 		}
 		{
-			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint;manual"
-			File out = null;
-			byte[] in = (byte[])source();
-			FileCopyUtils.copy(in, out);
-			sink(out); // $hasTaintFlow
-		}
-		{
-			// "org.springframework.util;FileCopyUtils;false;copy;;;Argument[0];Argument[1];taint;manual"
-			File out = null;
-			File in = (File)source();
-			FileCopyUtils.copy(in, out);
-			sink(out); // $hasTaintFlow
-		}
-		{
 			// "org.springframework.util;FileCopyUtils;false;copyToByteArray;;;Argument[0];ReturnValue;taint;manual"
 			byte[] out = null;
 			InputStream in = (InputStream)source();

@@ -13,23 +13,27 @@ import codeql.swift.security.CleartextStoragePreferencesExtensions
  * A taint configuration from sensitive information to expressions that are
  * stored as preferences.
  */
-class CleartextStorageConfig extends TaintTracking::Configuration {
-  CleartextStorageConfig() { this = "CleartextStorageConfig" }
+module CleartextStoragePreferencesConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
 
-  override predicate isSource(DataFlow::Node node) { node.asExpr() instanceof SensitiveExpr }
+  predicate isSink(DataFlow::Node node) { node instanceof CleartextStoragePreferencesSink }
 
-  override predicate isSink(DataFlow::Node node) { node instanceof CleartextStoragePreferencesSink }
-
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
+  predicate isBarrier(DataFlow::Node sanitizer) {
     sanitizer instanceof CleartextStoragePreferencesSanitizer
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(CleartextStoragePreferencesAdditionalTaintStep s).step(nodeFrom, nodeTo)
   }
 
-  override predicate isSanitizerIn(DataFlow::Node node) {
+  predicate isBarrierIn(DataFlow::Node node) {
     // make sources barriers so that we only report the closest instance
-    this.isSource(node)
+    isSource(node)
   }
 }
+
+/**
+ * Detect taint flow of sensitive information to expressions that are stored
+ * as preferences.
+ */
+module CleartextStoragePreferencesFlow = TaintTracking::Global<CleartextStoragePreferencesConfig>;

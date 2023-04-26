@@ -29,7 +29,7 @@ predicate flowsFromUntrustedToConversion(
 }
 
 /**
- * Provides the names of the types that will not be escaped when passed to
+ * A name of a type that will not be escaped when passed to
  * a `html/template` template.
  */
 class PassthroughTypeName extends string {

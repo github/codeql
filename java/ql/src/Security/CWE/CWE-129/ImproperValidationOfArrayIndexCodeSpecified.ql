@@ -24,7 +24,7 @@ module BoundedFlowSourceConfig implements DataFlow::ConfigSig {
   }
 }
 
-module BoundedFlowSourceFlow = DataFlow::Make<BoundedFlowSourceConfig>;
+module BoundedFlowSourceFlow = DataFlow::Global<BoundedFlowSourceConfig>;
 
 import BoundedFlowSourceFlow::PathGraph
 
@@ -34,7 +34,7 @@ from
 where
   arrayAccess.canThrowOutOfBounds(sink.getNode().asExpr()) and
   boundedsource = source.getNode() and
-  BoundedFlowSourceFlow::hasFlowPath(source, sink) and
+  BoundedFlowSourceFlow::flowPath(source, sink) and
   boundedsource != sink.getNode() and
   not (
     (

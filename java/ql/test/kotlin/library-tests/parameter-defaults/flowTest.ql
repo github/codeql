@@ -12,21 +12,21 @@ class ShouldBeSunk extends StringLiteral {
   }
 }
 
-class Config extends DataFlow::Configuration {
-  Config() { this = "Config" }
-
-  override predicate isSource(DataFlow::Node n) {
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) {
     n.asExpr() instanceof ShouldBeSunk or
     n.asExpr() instanceof ShouldNotBeSunk
   }
 
-  override predicate isSink(DataFlow::Node n) {
+  predicate isSink(DataFlow::Node n) {
     n.asExpr().(Argument).getCall().getCallee().getName() = "sink"
   }
 }
 
+module Flow = DataFlow::Global<Config>;
+
 predicate isSunk(StringLiteral sl) {
-  exists(Config c, DataFlow::Node source | c.hasFlow(source, _) and sl = source.asExpr())
+  exists(DataFlow::Node source | Flow::flow(source, _) and sl = source.asExpr())
 }
 
 query predicate shouldBeSunkButIsnt(ShouldBeSunk src) { not isSunk(src) }

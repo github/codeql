@@ -13,6 +13,7 @@
 | Builtin.NativeObject | BuiltinNativeObjectType |
 | Builtin.RawPointer | BuiltinRawPointerType |
 | Builtin.RawUnsafeContinuation | BuiltinRawUnsafeContinuationType |
+| Builtin.UnsafeValueBuffer | BuiltinUnsafeValueBufferType |
 | Builtin.Vec2xFPIEEE32 | BuiltinVectorType |
 | Builtin.Vec2xFPIEEE64 | BuiltinVectorType |
 | Builtin.Vec2xInt8 | BuiltinVectorType |

@@ -12,12 +12,10 @@
 
 import csharp
 import semmle.code.csharp.dataflow.DataFlow::DataFlow
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import AddCertToRootStore::PathGraph
 
-class AddCertToRootStoreConfig extends DataFlow::Configuration {
-  AddCertToRootStoreConfig() { this = "Adding Certificate To Root Store" }
-
-  override predicate isSource(DataFlow::Node source) {
+module AddCertToRootStoreConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(ObjectCreation oc | oc = source.asExpr() |
       oc.getType()
           .(RefType)
@@ -26,7 +24,7 @@ class AddCertToRootStoreConfig extends DataFlow::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       (
         mc.getTarget()
@@ -40,6 +38,8 @@ class AddCertToRootStoreConfig extends DataFlow::Configuration {
   }
 }
 
-from DataFlow::PathNode oc, DataFlow::PathNode mc, AddCertToRootStoreConfig config
-where config.hasFlowPath(oc, mc)
+module AddCertToRootStore = DataFlow::Global<AddCertToRootStoreConfig>;
+
+from AddCertToRootStore::PathNode oc, AddCertToRootStore::PathNode mc
+where AddCertToRootStore::flowPath(oc, mc)
 select mc.getNode(), oc, mc, "This certificate is added to the root certificate store."

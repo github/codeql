@@ -57,40 +57,14 @@ module DefaultFlowConfig implements DataFlow::ConfigSig {
   int fieldFlowBranchLimit() { result = 1000 }
 }
 
-private module DefaultValueFlow = DataFlow::Make<DefaultFlowConfig>;
+private module DefaultValueFlow = DataFlow::Global<DefaultFlowConfig>;
 
-private module DefaultTaintFlow = TaintTracking::Make<DefaultFlowConfig>;
-
-class DefaultValueFlowConf extends DataFlow::Configuration {
-  DefaultValueFlowConf() { this = "qltest:defaultValueFlowConf" }
-
-  override predicate isSource(DataFlow::Node n) { defaultSource(n) }
-
-  override predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
-  }
-
-  override int fieldFlowBranchLimit() { result = 1000 }
-}
-
-class DefaultTaintFlowConf extends TaintTracking::Configuration {
-  DefaultTaintFlowConf() { this = "qltest:defaultTaintFlowConf" }
-
-  override predicate isSource(DataFlow::Node n) { defaultSource(n) }
-
-  override predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
-  }
-
-  override int fieldFlowBranchLimit() { result = 1000 }
-}
+private module DefaultTaintFlow = TaintTracking::Global<DefaultFlowConfig>;
 
 private string getSourceArgString(DataFlow::Node src) {
   defaultSource(src) and
   src.asExpr().(MethodAccess).getAnArgument().(StringLiteral).getValue() = result
 }
-
-abstract class EnableLegacyConfiguration extends Unit { }
 
 class InlineFlowTest extends InlineExpectationsTest {
   InlineFlowTest() { this = "HasFlowTest" }
@@ -116,18 +90,10 @@ class InlineFlowTest extends InlineExpectationsTest {
   }
 
   predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) {
-    if exists(EnableLegacyConfiguration e)
-    then getValueFlowConfig().hasFlow(src, sink)
-    else DefaultValueFlow::hasFlow(src, sink)
+    DefaultValueFlow::flow(src, sink)
   }
 
   predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
-    if exists(EnableLegacyConfiguration e)
-    then getTaintFlowConfig().hasFlow(src, sink)
-    else DefaultTaintFlow::hasFlow(src, sink)
+    DefaultTaintFlow::flow(src, sink)
   }
-
-  DataFlow::Configuration getValueFlowConfig() { result = any(DefaultValueFlowConf config) }
-
-  DataFlow::Configuration getTaintFlowConfig() { result = any(DefaultTaintFlowConf config) }
 }

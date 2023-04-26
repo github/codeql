@@ -1,22 +1,26 @@
 edges
 | tst.rb:1:7:1:7 | r :  | tst.rb:2:4:2:4 | r :  |
 | tst.rb:2:4:2:4 | r :  | tst.rb:2:3:2:15 | call to pack :  |
-| tst.rb:5:27:5:72 | "707574732822636f646520696e6a6..." :  | tst.rb:7:8:7:30 | totally_harmless_string :  |
+| tst.rb:5:1:5:23 | totally_harmless_string :  | tst.rb:7:8:7:30 | totally_harmless_string :  |
+| tst.rb:5:27:5:72 | "707574732822636f646520696e6a6..." :  | tst.rb:5:1:5:23 | totally_harmless_string :  |
 | tst.rb:7:8:7:30 | totally_harmless_string :  | tst.rb:1:7:1:7 | r :  |
 | tst.rb:7:8:7:30 | totally_harmless_string :  | tst.rb:7:6:7:31 | call to e |
 | tst.rb:10:11:10:24 | "666f6f626172" :  | tst.rb:1:7:1:7 | r :  |
 | tst.rb:10:11:10:24 | "666f6f626172" :  | tst.rb:10:9:10:25 | call to e |
-| tst.rb:16:31:16:84 | "\\x70\\x75\\x74\\x73\\x28\\x27\\x68\\..." :  | tst.rb:17:6:17:32 | another_questionable_string :  |
+| tst.rb:16:1:16:27 | another_questionable_string :  | tst.rb:17:6:17:32 | another_questionable_string :  |
+| tst.rb:16:31:16:84 | "\\x70\\x75\\x74\\x73\\x28\\x27\\x68\\..." :  | tst.rb:16:1:16:27 | another_questionable_string :  |
 | tst.rb:17:6:17:32 | another_questionable_string :  | tst.rb:17:6:17:38 | call to strip |
 nodes
 | tst.rb:1:7:1:7 | r :  | semmle.label | r :  |
 | tst.rb:2:3:2:15 | call to pack :  | semmle.label | call to pack :  |
 | tst.rb:2:4:2:4 | r :  | semmle.label | r :  |
+| tst.rb:5:1:5:23 | totally_harmless_string :  | semmle.label | totally_harmless_string :  |
 | tst.rb:5:27:5:72 | "707574732822636f646520696e6a6..." :  | semmle.label | "707574732822636f646520696e6a6..." :  |
 | tst.rb:7:6:7:31 | call to e | semmle.label | call to e |
 | tst.rb:7:8:7:30 | totally_harmless_string :  | semmle.label | totally_harmless_string :  |
 | tst.rb:10:9:10:25 | call to e | semmle.label | call to e |
 | tst.rb:10:11:10:24 | "666f6f626172" :  | semmle.label | "666f6f626172" :  |
+| tst.rb:16:1:16:27 | another_questionable_string :  | semmle.label | another_questionable_string :  |
 | tst.rb:16:31:16:84 | "\\x70\\x75\\x74\\x73\\x28\\x27\\x68\\..." :  | semmle.label | "\\x70\\x75\\x74\\x73\\x28\\x27\\x68\\..." :  |
 | tst.rb:17:6:17:32 | another_questionable_string :  | semmle.label | another_questionable_string :  |
 | tst.rb:17:6:17:38 | call to strip | semmle.label | call to strip |

@@ -13,9 +13,9 @@
 
 import java
 import semmle.code.java.security.TemplateInjectionQuery
-import DataFlow::PathGraph
+import TemplateInjectionFlow::PathGraph
 
-from TemplateInjectionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from TemplateInjectionFlow::PathNode source, TemplateInjectionFlow::PathNode sink
+where TemplateInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Template, which may contain code, depends on a $@.",
   source.getNode(), "user-provided value"

@@ -3,6 +3,8 @@ private import DataFlowUtil
 private import DataFlowImplCommon
 private import ContainerFlow
 private import FlowSummaryImpl as FlowSummaryImpl
+private import semmle.go.dataflow.FlowSummary as FlowSummary
+private import codeql.util.Unit
 import DataFlowNodes::Private
 
 private newtype TReturnKind =
@@ -236,31 +238,55 @@ class DataFlowLocation = Location;
 
 private newtype TDataFlowCallable =
   TCallable(Callable c) or
-  TFileScope(File f)
+  TFileScope(File f) or
+  TSummarizedCallable(FlowSummary::SummarizedCallable c)
 
 class DataFlowCallable extends TDataFlowCallable {
+  /**
+   * Gets the `Callable` corresponding to this `DataFlowCallable`, if any.
+   */
   Callable asCallable() { this = TCallable(result) }
 
+  /**
+   * Gets the `File` whose root scope corresponds to this `DataFlowCallable`, if any.
+   */
   File asFileScope() { this = TFileScope(result) }
 
-  FuncDef getFuncDef() { result = this.asCallable().getFuncDef() }
+  /**
+   * Gets the `SummarizedCallable` corresponding to this `DataFlowCallable`, if any.
+   */
+  FlowSummary::SummarizedCallable asSummarizedCallable() { this = TSummarizedCallable(result) }
 
-  Function asFunction() { result = this.asCallable().asFunction() }
+  /**
+   * Gets the type of this callable.
+   *
+   * If this is a `File` root scope, this has no value.
+   */
+  SignatureType getType() { result = [this.asCallable(), this.asSummarizedCallable()].getType() }
 
-  FuncLit asFuncLit() { result = this.asCallable().asFuncLit() }
-
-  SignatureType getType() { result = this.asCallable().getType() }
-
+  /**
+   * Gets a string representation of this callable.
+   */
   string toString() {
     result = this.asCallable().toString() or
-    result = "File scope: " + this.asFileScope().toString()
+    result = "File scope: " + this.asFileScope().toString() or
+    result = "Summary: " + this.asSummarizedCallable().toString()
   }
 
+  /**
+   * Holds if this callable is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     this.asCallable().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
-    this.asFileScope().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.asFileScope().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn) or
+    this.asSummarizedCallable()
+        .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 }
 
@@ -280,6 +306,7 @@ class DataFlowCall extends Expr {
 
   /** Gets the enclosing callable of this call. */
   DataFlowCallable getEnclosingCallable() {
+    // NB. At present calls cannot occur inside summarized callables-- this will change if we implement advanced lambda support.
     result.asCallable().getFuncDef() = this.getEnclosingFunction()
     or
     not exists(this.getEnclosingFunction()) and result.asFileScope() = this.getFile()
@@ -339,15 +366,6 @@ predicate forceHighPrecision(Content c) {
   c instanceof ArrayContent or c instanceof CollectionContent
 }
 
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
-
 /**
  * Gets the `i`th argument of call `c`, where the receiver of a method call
  * counts as argument -1.
@@ -360,7 +378,7 @@ Node getArgument(CallNode c, int i) {
 }
 
 /** Holds if `n` should be hidden from path explanations. */
-predicate nodeIsHidden(Node n) { none() }
+predicate nodeIsHidden(Node n) { n instanceof SummaryNode or n instanceof SummarizedParameterNode }
 
 class LambdaCallKind = Unit;
 

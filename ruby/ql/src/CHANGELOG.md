@@ -1,3 +1,15 @@
+## 0.6.0
+
+### New Queries
+
+* Added a new experimental query, `rb/server-side-template-injection`, to detect cases where user input may be embedded into a template's code in an unsafe manner.
+
+## 0.5.6
+
+### Minor Analysis Improvements
+
+* `rb/sensitive-get-query` no longer reports flow paths from input parameters to sensitive use nodes. This avoids cases where many flow paths could be generated for a single parameter, which caused excessive paths to be generated.
+
 ## 0.5.5
 
 ### New Queries

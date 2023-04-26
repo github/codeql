@@ -338,6 +338,23 @@ def test_repeated_property(generate_classes, is_child, prev_child):
     }
 
 
+def test_repeated_unordered_property(generate_classes):
+    assert generate_classes([
+        schema.Class("FakeRoot"),
+        schema.Class("MyObject", properties=[
+            schema.RepeatedUnorderedProperty("foo", "bar")]),
+    ]) == {
+        "FakeRoot.qll": (a_ql_stub(name="FakeRoot", base_import=gen_import_prefix + "FakeRoot"),
+                         a_ql_class(name="FakeRoot", final=True)),
+        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         a_ql_class(name="MyObject", final=True, properties=[
+                                    ql.Property(singular="Foo", plural="Foos", type="bar", tablename="my_object_foos",
+                                                tableparams=["this", "result"], is_unordered=True,
+                                                doc="foo of this my object", doc_plural="foos of this my object"),
+                                    ])),
+    }
+
+
 @pytest.mark.parametrize("is_child,prev_child", [(False, None), (True, "")])
 def test_repeated_optional_property(generate_classes, is_child, prev_child):
     assert generate_classes([
@@ -552,23 +569,28 @@ def test_test_partial_properties(opts, generate_tests):
         schema.Class("B", bases=["A"], properties=[
             schema.RepeatedProperty("y", "bool"),
             schema.RepeatedOptionalProperty("z", "int"),
+            schema.RepeatedUnorderedProperty("w", "string"),
         ]),
     ]) == {
         "B/B.ql": a_ql_class_tester(class_name="B", properties=[
             ql.PropertyForTest(getter="hasX"),
             ql.PropertyForTest(getter="getNumberOfYs", type="int"),
+            ql.PropertyForTest(getter="getNumberOfWs", type="int"),
         ]),
         "B/B_getX.ql": a_ql_property_tester(class_name="B",
                                             property=ql.PropertyForTest(getter="getX", is_total=False,
                                                                                type="string")),
         "B/B_getY.ql": a_ql_property_tester(class_name="B",
                                             property=ql.PropertyForTest(getter="getY", is_total=False,
-                                                                               is_repeated=True,
+                                                                               is_indexed=True,
                                                                                type="bool")),
         "B/B_getZ.ql": a_ql_property_tester(class_name="B",
                                             property=ql.PropertyForTest(getter="getZ", is_total=False,
-                                                                               is_repeated=True,
-                                                                               type="int")),
+                                                                        is_indexed=True,
+                                                                        type="int")),
+        "B/B_getAW.ql": a_ql_property_tester(class_name="B",
+                                             property=ql.PropertyForTest(getter="getAW", is_total=False,
+                                                                         type="string")),
     }
 
 
@@ -589,7 +611,7 @@ def test_test_properties_deduplicated(opts, generate_tests):
         ]),
         "Final/Final_getY.ql": a_ql_property_tester(class_name="Final",
                                                     property=ql.PropertyForTest(getter="getY", is_total=False,
-                                                                                       is_repeated=True,
+                                                                                is_indexed=True,
                                                                                        type="bool")),
     }
 

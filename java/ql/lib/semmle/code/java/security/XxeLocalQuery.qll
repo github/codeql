@@ -42,4 +42,4 @@ module XxeLocalConfig implements DataFlow::ConfigSig {
 /**
  * Detect taint flow of unvalidated local user input that is used in XML external entity expansion.
  */
-module XxeLocalFlow = TaintTracking::Make<XxeLocalConfig>;
+module XxeLocalFlow = TaintTracking::Global<XxeLocalConfig>;

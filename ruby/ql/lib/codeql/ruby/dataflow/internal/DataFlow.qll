@@ -2,7 +2,7 @@
  * Provides an implementation of global (interprocedural) data flow. This file
  * re-exports the local (intraprocedural) data flow analysis from
  * `DataFlowImplSpecific::Public` and adds a global analysis, mainly exposed
- * through the `Make` and `MakeWithState` modules.
+ * through the `Global` and `GlobalWithState` modules.
  */
 
 private import DataFlowImplCommon
@@ -73,10 +73,10 @@ signature module ConfigSig {
    */
   default FlowFeature getAFeature() { none() }
 
-  /** Holds if sources should be grouped in the result of `hasFlowPath`. */
+  /** Holds if sources should be grouped in the result of `flowPath`. */
   default predicate sourceGrouping(Node source, string sourceGroup) { none() }
 
-  /** Holds if sinks should be grouped in the result of `hasFlowPath`. */
+  /** Holds if sinks should be grouped in the result of `flowPath`. */
   default predicate sinkGrouping(Node sink, string sinkGroup) { none() }
 
   /**
@@ -166,10 +166,10 @@ signature module StateConfigSig {
    */
   default FlowFeature getAFeature() { none() }
 
-  /** Holds if sources should be grouped in the result of `hasFlowPath`. */
+  /** Holds if sources should be grouped in the result of `flowPath`. */
   default predicate sourceGrouping(Node source, string sourceGroup) { none() }
 
-  /** Holds if sinks should be grouped in the result of `hasFlowPath`. */
+  /** Holds if sinks should be grouped in the result of `flowPath`. */
   default predicate sinkGrouping(Node sink, string sinkGroup) { none() }
 
   /**
@@ -182,15 +182,15 @@ signature module StateConfigSig {
 }
 
 /**
- * Gets the exploration limit for `hasPartialFlow` and `hasPartialFlowRev`
+ * Gets the exploration limit for `partialFlow` and `partialFlowRev`
  * measured in approximate number of interprocedural steps.
  */
 signature int explorationLimitSig();
 
 /**
- * The output of a data flow computation.
+ * The output of a global data flow computation.
  */
-signature module DataFlowSig {
+signature module GlobalFlowSig {
   /**
    * A `Node` augmented with a call context (except for sinks) and an access path.
    * Only those `PathNode`s that are reachable from a source, and which can reach a sink, are generated.
@@ -203,28 +203,28 @@ signature module DataFlowSig {
    * The corresponding paths are generated from the end-points and the graph
    * included in the module `PathGraph`.
    */
-  predicate hasFlowPath(PathNode source, PathNode sink);
+  predicate flowPath(PathNode source, PathNode sink);
 
   /**
    * Holds if data can flow from `source` to `sink`.
    */
-  predicate hasFlow(Node source, Node sink);
+  predicate flow(Node source, Node sink);
 
   /**
    * Holds if data can flow from some source to `sink`.
    */
-  predicate hasFlowTo(Node sink);
+  predicate flowTo(Node sink);
 
   /**
    * Holds if data can flow from some source to `sink`.
    */
-  predicate hasFlowToExpr(DataFlowExpr sink);
+  predicate flowToExpr(DataFlowExpr sink);
 }
 
 /**
- * Constructs a standard data flow computation.
+ * Constructs a global data flow computation.
  */
-module Make<ConfigSig Config> implements DataFlowSig {
+module Global<ConfigSig Config> implements GlobalFlowSig {
   private module C implements FullStateConfigSig {
     import DefaultState<Config>
     import Config
@@ -233,15 +233,25 @@ module Make<ConfigSig Config> implements DataFlowSig {
   import Impl<C>
 }
 
+/** DEPRECATED: Use `Global` instead. */
+deprecated module Make<ConfigSig Config> implements GlobalFlowSig {
+  import Global<Config>
+}
+
 /**
- * Constructs a data flow computation using flow state.
+ * Constructs a global data flow computation using flow state.
  */
-module MakeWithState<StateConfigSig Config> implements DataFlowSig {
+module GlobalWithState<StateConfigSig Config> implements GlobalFlowSig {
   private module C implements FullStateConfigSig {
     import Config
   }
 
   import Impl<C>
+}
+
+/** DEPRECATED: Use `GlobalWithState` instead. */
+deprecated module MakeWithState<StateConfigSig Config> implements GlobalFlowSig {
+  import GlobalWithState<Config>
 }
 
 signature class PathNodeSig {
@@ -350,4 +360,53 @@ module MergePathGraph<
       Graph2::subpaths(arg.asPathNode2(), par.asPathNode2(), ret.asPathNode2(), out.asPathNode2())
     }
   }
+}
+
+/**
+ * Constructs a `PathGraph` from three `PathGraph`s by disjoint union.
+ */
+module MergePathGraph3<
+  PathNodeSig PathNode1, PathNodeSig PathNode2, PathNodeSig PathNode3,
+  PathGraphSig<PathNode1> Graph1, PathGraphSig<PathNode2> Graph2, PathGraphSig<PathNode3> Graph3>
+{
+  private module MergedInner = MergePathGraph<PathNode1, PathNode2, Graph1, Graph2>;
+
+  private module Merged =
+    MergePathGraph<MergedInner::PathNode, PathNode3, MergedInner::PathGraph, Graph3>;
+
+  /** A node in a graph of path explanations that is formed by disjoint union of the three given graphs. */
+  class PathNode instanceof Merged::PathNode {
+    /** Gets this as a projection on the first given `PathGraph`. */
+    PathNode1 asPathNode1() { result = super.asPathNode1().asPathNode1() }
+
+    /** Gets this as a projection on the second given `PathGraph`. */
+    PathNode2 asPathNode2() { result = super.asPathNode1().asPathNode2() }
+
+    /** Gets this as a projection on the third given `PathGraph`. */
+    PathNode3 asPathNode3() { result = super.asPathNode2() }
+
+    /** Gets a textual representation of this element. */
+    string toString() { result = super.toString() }
+
+    /**
+     * Holds if this element is at the specified location.
+     * The location spans column `startcolumn` of line `startline` to
+     * column `endcolumn` of line `endline` in file `filepath`.
+     * For more information, see
+     * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+     */
+    predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+
+    /** Gets the underlying `Node`. */
+    Node getNode() { result = super.getNode() }
+  }
+
+  /**
+   * Provides the query predicates needed to include a graph in a path-problem query.
+   */
+  module PathGraph = Merged::PathGraph;
 }

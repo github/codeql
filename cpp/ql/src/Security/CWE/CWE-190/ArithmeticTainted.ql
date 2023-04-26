@@ -35,7 +35,8 @@ class Configuration extends TaintTrackingConfiguration {
       op.getAnOperand() = e
     |
       op instanceof UnaryArithmeticOperation or
-      op instanceof BinaryArithmeticOperation
+      op instanceof BinaryArithmeticOperation or
+      op instanceof AssignArithmeticOperation
     )
   }
 

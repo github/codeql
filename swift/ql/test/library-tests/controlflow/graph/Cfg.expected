@@ -334,16 +334,16 @@ cfg.swift:
 #-----|  -> default separator
 
 #   39| case ...
-#-----|  -> let ...
+#-----|  -> error
+
+#   39| error
+#-----|  -> error
 
 #   39| error
 #-----| match -> let ...
 
 #   39| let ...
 #-----| match -> print(_:separator:terminator:)
-
-#   39| let ...
-#-----|  -> error
 
 #   40| print(_:separator:terminator:)
 
@@ -5680,12 +5680,6 @@ cfg.swift:
 #  456| var ... = ...
 #-----|  -> kpGet_b_x
 
-#  456| var ... = ...
-#-----|  -> kpGet_b_x
-
-#  456| kpGet_b_x
-#-----|  -> kpGet_bs_0_x
-
 #  456| kpGet_b_x
 #-----|  -> kpGet_bs_0_x
 
@@ -5693,34 +5687,27 @@ cfg.swift:
 #-----| match -> #keyPath(...)
 
 #  456| #keyPath(...)
-#-----|  -> var ... = ...
+#-----|  -> exit #keyPath(...) (normal)
 
 #  456| #keyPath(...)
 #-----|  -> var ... = ...
-#-----|  -> exit #keyPath(...) (normal)
 
 #  456| enter #keyPath(...)
-#-----|  -> #keyPath(...)
+#-----|  -> KeyPathComponent
 
 #  456| exit #keyPath(...)
 
 #  456| exit #keyPath(...) (normal)
 #-----|  -> exit #keyPath(...)
 
-#  457| var ... = ...
-#-----|  -> kpGet_bs_0_x
+#  456| KeyPathComponent
+#-----|  -> KeyPathComponent
+
+#  456| KeyPathComponent
+#-----|  -> #keyPath(...)
 
 #  457| var ... = ...
 #-----|  -> kpGet_bs_0_x
-
-#  457| var ... = ...
-#-----|  -> kpGet_bs_0_x
-
-#  457| kpGet_bs_0_x
-#-----|  -> kpGet_mayB_force_x
-
-#  457| kpGet_bs_0_x
-#-----|  -> kpGet_mayB_force_x
 
 #  457| kpGet_bs_0_x
 #-----|  -> kpGet_mayB_force_x
@@ -5728,47 +5715,34 @@ cfg.swift:
 #  457| kpGet_bs_0_x
 #-----| match -> #keyPath(...)
 
-#  457| kpGet_bs_0_x
-#-----| match -> #keyPath(...)
-
 #  457| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  457| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  457| #keyPath(...)
-#-----|  -> var ... = ...
 #-----|  -> exit #keyPath(...) (normal)
 
+#  457| #keyPath(...)
+#-----|  -> var ... = ...
+
 #  457| enter #keyPath(...)
-#-----|  -> #keyPath(...)
+#-----|  -> KeyPathComponent
 
 #  457| exit #keyPath(...)
 
 #  457| exit #keyPath(...) (normal)
 #-----|  -> exit #keyPath(...)
 
-#  458| var ... = ...
-#-----|  -> kpGet_mayB_force_x
+#  457| KeyPathComponent
+#-----|  -> 0
+
+#  457| KeyPathComponent
+#-----|  -> KeyPathComponent
+
+#  457| 0
+#-----|  -> KeyPathComponent
+
+#  457| KeyPathComponent
+#-----|  -> #keyPath(...)
 
 #  458| var ... = ...
 #-----|  -> kpGet_mayB_force_x
-
-#  458| var ... = ...
-#-----|  -> kpGet_mayB_force_x
-
-#  458| var ... = ...
-#-----|  -> kpGet_mayB_force_x
-
-#  458| kpGet_mayB_force_x
-#-----|  -> kpGet_mayB_x
-
-#  458| kpGet_mayB_force_x
-#-----|  -> kpGet_mayB_x
-
-#  458| kpGet_mayB_force_x
-#-----|  -> kpGet_mayB_x
 
 #  458| kpGet_mayB_force_x
 #-----|  -> kpGet_mayB_x
@@ -5776,59 +5750,31 @@ cfg.swift:
 #  458| kpGet_mayB_force_x
 #-----| match -> #keyPath(...)
 
-#  458| kpGet_mayB_force_x
-#-----| match -> #keyPath(...)
-
-#  458| kpGet_mayB_force_x
-#-----| match -> #keyPath(...)
-
 #  458| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  458| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  458| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  458| #keyPath(...)
-#-----|  -> var ... = ...
 #-----|  -> exit #keyPath(...) (normal)
 
+#  458| #keyPath(...)
+#-----|  -> var ... = ...
+
 #  458| enter #keyPath(...)
-#-----|  -> #keyPath(...)
+#-----|  -> KeyPathComponent
 
 #  458| exit #keyPath(...)
 
 #  458| exit #keyPath(...) (normal)
 #-----|  -> exit #keyPath(...)
 
-#  459| var ... = ...
-#-----|  -> kpGet_mayB_x
+#  458| KeyPathComponent
+#-----|  -> KeyPathComponent
+
+#  458| KeyPathComponent
+#-----|  -> KeyPathComponent
+
+#  458| KeyPathComponent
+#-----|  -> #keyPath(...)
 
 #  459| var ... = ...
 #-----|  -> kpGet_mayB_x
-
-#  459| var ... = ...
-#-----|  -> kpGet_mayB_x
-
-#  459| var ... = ...
-#-----|  -> kpGet_mayB_x
-
-#  459| var ... = ...
-#-----|  -> kpGet_mayB_x
-
-#  459| kpGet_mayB_x
-#-----|  -> apply_kpGet_b_x
-
-#  459| kpGet_mayB_x
-#-----|  -> apply_kpGet_b_x
-
-#  459| kpGet_mayB_x
-#-----|  -> apply_kpGet_b_x
-
-#  459| kpGet_mayB_x
-#-----|  -> apply_kpGet_b_x
 
 #  459| kpGet_mayB_x
 #-----|  -> apply_kpGet_b_x
@@ -5836,65 +5782,30 @@ cfg.swift:
 #  459| kpGet_mayB_x
 #-----| match -> #keyPath(...)
 
-#  459| kpGet_mayB_x
-#-----| match -> #keyPath(...)
-
-#  459| kpGet_mayB_x
-#-----| match -> #keyPath(...)
-
-#  459| kpGet_mayB_x
-#-----| match -> #keyPath(...)
-
 #  459| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  459| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  459| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  459| #keyPath(...)
-#-----|  -> var ... = ...
-
-#  459| #keyPath(...)
-#-----|  -> var ... = ...
 #-----|  -> exit #keyPath(...) (normal)
 
+#  459| #keyPath(...)
+#-----|  -> var ... = ...
+
 #  459| enter #keyPath(...)
-#-----|  -> #keyPath(...)
+#-----|  -> KeyPathComponent
 
 #  459| exit #keyPath(...)
 
 #  459| exit #keyPath(...) (normal)
 #-----|  -> exit #keyPath(...)
 
-#  461| var ... = ...
-#-----|  -> apply_kpGet_b_x
+#  459| KeyPathComponent
+#-----|  -> KeyPathComponent
+
+#  459| KeyPathComponent
+#-----|  -> KeyPathComponent
+
+#  459| KeyPathComponent
 
 #  461| var ... = ...
 #-----|  -> apply_kpGet_b_x
-
-#  461| var ... = ...
-#-----|  -> apply_kpGet_b_x
-
-#  461| var ... = ...
-#-----|  -> apply_kpGet_b_x
-
-#  461| var ... = ...
-#-----|  -> apply_kpGet_b_x
-
-#  461| apply_kpGet_b_x
-#-----|  -> apply_kpGet_bs_0_x
-
-#  461| apply_kpGet_b_x
-#-----|  -> apply_kpGet_bs_0_x
-
-#  461| apply_kpGet_b_x
-#-----|  -> apply_kpGet_bs_0_x
-
-#  461| apply_kpGet_b_x
-#-----|  -> apply_kpGet_bs_0_x
 
 #  461| apply_kpGet_b_x
 #-----|  -> apply_kpGet_bs_0_x
@@ -5902,44 +5813,8 @@ cfg.swift:
 #  461| apply_kpGet_b_x
 #-----| match -> a
 
-#  461| apply_kpGet_b_x
-#-----| match -> a
-
-#  461| apply_kpGet_b_x
-#-----| match -> a
-
-#  461| apply_kpGet_b_x
-#-----| match -> a
-
-#  461| apply_kpGet_b_x
-#-----| match -> a
-
 #  461| a
 #-----|  -> kpGet_b_x
-
-#  461| a
-#-----|  -> kpGet_b_x
-
-#  461| a
-#-----|  -> kpGet_b_x
-
-#  461| a
-#-----|  -> kpGet_b_x
-
-#  461| a
-#-----|  -> kpGet_b_x
-
-#  461| \...[...]
-#-----|  -> var ... = ...
-
-#  461| \...[...]
-#-----|  -> var ... = ...
-
-#  461| \...[...]
-#-----|  -> var ... = ...
-
-#  461| \...[...]
-#-----|  -> var ... = ...
 
 #  461| \...[...]
 #-----|  -> var ... = ...
@@ -5947,44 +5822,8 @@ cfg.swift:
 #  461| (WritableKeyPath<A, Int>) ...
 #-----|  -> \...[...]
 
-#  461| (WritableKeyPath<A, Int>) ...
-#-----|  -> \...[...]
-
-#  461| (WritableKeyPath<A, Int>) ...
-#-----|  -> \...[...]
-
-#  461| (WritableKeyPath<A, Int>) ...
-#-----|  -> \...[...]
-
-#  461| (WritableKeyPath<A, Int>) ...
-#-----|  -> \...[...]
-
 #  461| kpGet_b_x
 #-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  461| kpGet_b_x
-#-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  461| kpGet_b_x
-#-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  461| kpGet_b_x
-#-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  461| kpGet_b_x
-#-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  462| var ... = ...
-#-----|  -> apply_kpGet_bs_0_x
-
-#  462| var ... = ...
-#-----|  -> apply_kpGet_bs_0_x
-
-#  462| var ... = ...
-#-----|  -> apply_kpGet_bs_0_x
-
-#  462| var ... = ...
-#-----|  -> apply_kpGet_bs_0_x
 
 #  462| var ... = ...
 #-----|  -> apply_kpGet_bs_0_x
@@ -5993,43 +5832,7 @@ cfg.swift:
 #-----|  -> apply_kpGet_mayB_force_x
 
 #  462| apply_kpGet_bs_0_x
-#-----|  -> apply_kpGet_mayB_force_x
-
-#  462| apply_kpGet_bs_0_x
-#-----|  -> apply_kpGet_mayB_force_x
-
-#  462| apply_kpGet_bs_0_x
-#-----|  -> apply_kpGet_mayB_force_x
-
-#  462| apply_kpGet_bs_0_x
-#-----|  -> apply_kpGet_mayB_force_x
-
-#  462| apply_kpGet_bs_0_x
 #-----| match -> a
-
-#  462| apply_kpGet_bs_0_x
-#-----| match -> a
-
-#  462| apply_kpGet_bs_0_x
-#-----| match -> a
-
-#  462| apply_kpGet_bs_0_x
-#-----| match -> a
-
-#  462| apply_kpGet_bs_0_x
-#-----| match -> a
-
-#  462| a
-#-----|  -> kpGet_bs_0_x
-
-#  462| a
-#-----|  -> kpGet_bs_0_x
-
-#  462| a
-#-----|  -> kpGet_bs_0_x
-
-#  462| a
-#-----|  -> kpGet_bs_0_x
 
 #  462| a
 #-----|  -> kpGet_bs_0_x
@@ -6037,59 +5840,11 @@ cfg.swift:
 #  462| \...[...]
 #-----|  -> var ... = ...
 
-#  462| \...[...]
-#-----|  -> var ... = ...
-
-#  462| \...[...]
-#-----|  -> var ... = ...
-
-#  462| \...[...]
-#-----|  -> var ... = ...
-
-#  462| \...[...]
-#-----|  -> var ... = ...
-
-#  462| (WritableKeyPath<A, Int>) ...
-#-----|  -> \...[...]
-
-#  462| (WritableKeyPath<A, Int>) ...
-#-----|  -> \...[...]
-
-#  462| (WritableKeyPath<A, Int>) ...
-#-----|  -> \...[...]
-
-#  462| (WritableKeyPath<A, Int>) ...
-#-----|  -> \...[...]
-
 #  462| (WritableKeyPath<A, Int>) ...
 #-----|  -> \...[...]
 
 #  462| kpGet_bs_0_x
 #-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  462| kpGet_bs_0_x
-#-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  462| kpGet_bs_0_x
-#-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  462| kpGet_bs_0_x
-#-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  462| kpGet_bs_0_x
-#-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  463| var ... = ...
-#-----|  -> apply_kpGet_mayB_force_x
-
-#  463| var ... = ...
-#-----|  -> apply_kpGet_mayB_force_x
-
-#  463| var ... = ...
-#-----|  -> apply_kpGet_mayB_force_x
-
-#  463| var ... = ...
-#-----|  -> apply_kpGet_mayB_force_x
 
 #  463| var ... = ...
 #-----|  -> apply_kpGet_mayB_force_x
@@ -6098,43 +5853,7 @@ cfg.swift:
 #-----|  -> apply_kpGet_mayB_x
 
 #  463| apply_kpGet_mayB_force_x
-#-----|  -> apply_kpGet_mayB_x
-
-#  463| apply_kpGet_mayB_force_x
-#-----|  -> apply_kpGet_mayB_x
-
-#  463| apply_kpGet_mayB_force_x
-#-----|  -> apply_kpGet_mayB_x
-
-#  463| apply_kpGet_mayB_force_x
-#-----|  -> apply_kpGet_mayB_x
-
-#  463| apply_kpGet_mayB_force_x
 #-----| match -> a
-
-#  463| apply_kpGet_mayB_force_x
-#-----| match -> a
-
-#  463| apply_kpGet_mayB_force_x
-#-----| match -> a
-
-#  463| apply_kpGet_mayB_force_x
-#-----| match -> a
-
-#  463| apply_kpGet_mayB_force_x
-#-----| match -> a
-
-#  463| a
-#-----|  -> kpGet_mayB_force_x
-
-#  463| a
-#-----|  -> kpGet_mayB_force_x
-
-#  463| a
-#-----|  -> kpGet_mayB_force_x
-
-#  463| a
-#-----|  -> kpGet_mayB_force_x
 
 #  463| a
 #-----|  -> kpGet_mayB_force_x
@@ -6142,59 +5861,11 @@ cfg.swift:
 #  463| \...[...]
 #-----|  -> var ... = ...
 
-#  463| \...[...]
-#-----|  -> var ... = ...
-
-#  463| \...[...]
-#-----|  -> var ... = ...
-
-#  463| \...[...]
-#-----|  -> var ... = ...
-
-#  463| \...[...]
-#-----|  -> var ... = ...
-
-#  463| (WritableKeyPath<A, Int>) ...
-#-----|  -> \...[...]
-
-#  463| (WritableKeyPath<A, Int>) ...
-#-----|  -> \...[...]
-
-#  463| (WritableKeyPath<A, Int>) ...
-#-----|  -> \...[...]
-
-#  463| (WritableKeyPath<A, Int>) ...
-#-----|  -> \...[...]
-
 #  463| (WritableKeyPath<A, Int>) ...
 #-----|  -> \...[...]
 
 #  463| kpGet_mayB_force_x
 #-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  463| kpGet_mayB_force_x
-#-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  463| kpGet_mayB_force_x
-#-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  463| kpGet_mayB_force_x
-#-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  463| kpGet_mayB_force_x
-#-----|  -> (WritableKeyPath<A, Int>) ...
-
-#  464| var ... = ...
-#-----|  -> apply_kpGet_mayB_x
-
-#  464| var ... = ...
-#-----|  -> apply_kpGet_mayB_x
-
-#  464| var ... = ...
-#-----|  -> apply_kpGet_mayB_x
-
-#  464| var ... = ...
-#-----|  -> apply_kpGet_mayB_x
 
 #  464| var ... = ...
 #-----|  -> apply_kpGet_mayB_x
@@ -6203,39 +5874,7 @@ cfg.swift:
 #-----|  -> exit test(a:) (normal)
 
 #  464| apply_kpGet_mayB_x
-
-#  464| apply_kpGet_mayB_x
-
-#  464| apply_kpGet_mayB_x
-
-#  464| apply_kpGet_mayB_x
-
-#  464| apply_kpGet_mayB_x
 #-----| match -> a
-
-#  464| apply_kpGet_mayB_x
-#-----| match -> a
-
-#  464| apply_kpGet_mayB_x
-#-----| match -> a
-
-#  464| apply_kpGet_mayB_x
-#-----| match -> a
-
-#  464| apply_kpGet_mayB_x
-#-----| match -> a
-
-#  464| a
-#-----|  -> kpGet_mayB_x
-
-#  464| a
-#-----|  -> kpGet_mayB_x
-
-#  464| a
-#-----|  -> kpGet_mayB_x
-
-#  464| a
-#-----|  -> kpGet_mayB_x
 
 #  464| a
 #-----|  -> kpGet_mayB_x
@@ -6243,44 +5882,8 @@ cfg.swift:
 #  464| \...[...]
 #-----|  -> var ... = ...
 
-#  464| \...[...]
-#-----|  -> var ... = ...
-
-#  464| \...[...]
-#-----|  -> var ... = ...
-
-#  464| \...[...]
-#-----|  -> var ... = ...
-
-#  464| \...[...]
-#-----|  -> var ... = ...
-
 #  464| (KeyPath<A, Int?>) ...
 #-----|  -> \...[...]
-
-#  464| (KeyPath<A, Int?>) ...
-#-----|  -> \...[...]
-
-#  464| (KeyPath<A, Int?>) ...
-#-----|  -> \...[...]
-
-#  464| (KeyPath<A, Int?>) ...
-#-----|  -> \...[...]
-
-#  464| (KeyPath<A, Int?>) ...
-#-----|  -> \...[...]
-
-#  464| kpGet_mayB_x
-#-----|  -> (KeyPath<A, Int?>) ...
-
-#  464| kpGet_mayB_x
-#-----|  -> (KeyPath<A, Int?>) ...
-
-#  464| kpGet_mayB_x
-#-----|  -> (KeyPath<A, Int?>) ...
-
-#  464| kpGet_mayB_x
-#-----|  -> (KeyPath<A, Int?>) ...
 
 #  464| kpGet_mayB_x
 #-----|  -> (KeyPath<A, Int?>) ...

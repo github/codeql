@@ -106,10 +106,8 @@ private class MissingPinningSink extends DataFlow::Node {
 }
 
 /** Configuration for finding uses of non trusted URLs. */
-private class UntrustedUrlConfig extends TaintTracking::Configuration {
-  UntrustedUrlConfig() { this = "UntrustedUrlConfig" }
-
-  override predicate isSource(DataFlow::Node node) {
+private module UntrustedUrlConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
     trustedDomain(_) and
     exists(string lit | lit = node.asExpr().(CompileTimeConstantExpr).getStringValue() |
       lit.matches("%://%") and // it's a URL
@@ -117,8 +115,10 @@ private class UntrustedUrlConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node node) { node instanceof MissingPinningSink }
+  predicate isSink(DataFlow::Node node) { node instanceof MissingPinningSink }
 }
+
+private module UntrustedUrlFlow = TaintTracking::Global<UntrustedUrlConfig>;
 
 /** Holds if `node` is a network communication call for which certificate pinning is not implemented. */
 predicate missingPinning(DataFlow::Node node, string domain) {
@@ -127,8 +127,8 @@ predicate missingPinning(DataFlow::Node node, string domain) {
   (
     not trustedDomain(_) and domain = ""
     or
-    exists(UntrustedUrlConfig conf, DataFlow::Node src |
-      conf.hasFlow(src, node) and
+    exists(DataFlow::Node src |
+      UntrustedUrlFlow::flow(src, node) and
       domain = getDomain(src.asExpr())
     )
   )

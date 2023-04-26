@@ -1,9 +1,9 @@
 import csharp
 import Common
 
-from Configuration c, Parameter p, int outRefArg
+from Parameter p, int outRefArg
 where
-  flowOutFromParameter(c, p) and outRefArg = -1
+  Data::flowOutFromParameter(p) and outRefArg = -1
   or
-  flowOutFromParameterOutOrRef(c, p, outRefArg)
+  Data::flowOutFromParameterOutOrRef(p, outRefArg)
 select p.getCallable(), p.getPosition(), outRefArg

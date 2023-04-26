@@ -241,20 +241,24 @@ module CallGraph {
     )
   }
 
-  private predicate shouldTrackObjectWithMethods(DataFlow::SourceNode node) {
+  private DataFlow::FunctionNode getAMethodOnPlainObject(DataFlow::SourceNode node) {
     (
       (
         node instanceof DataFlow::ObjectLiteralNode
         or
         node instanceof DataFlow::FunctionNode
       ) and
-      node.getAPropertySource() instanceof DataFlow::FunctionNode
+      result = node.getAPropertySource()
       or
-      exists(node.(DataFlow::ObjectLiteralNode).getPropertyGetter(_))
+      result = node.(DataFlow::ObjectLiteralNode).getPropertyGetter(_)
       or
-      exists(node.(DataFlow::ObjectLiteralNode).getPropertySetter(_))
+      result = node.(DataFlow::ObjectLiteralNode).getPropertySetter(_)
     ) and
     not node.getTopLevel().isExterns()
+  }
+
+  private predicate shouldTrackObjectWithMethods(DataFlow::SourceNode node) {
+    exists(getAMethodOnPlainObject(node))
   }
 
   /**
@@ -272,5 +276,23 @@ module CallGraph {
     result = node
     or
     StepSummary::step(getAnAllocationSiteRef(node), result, objectWithMethodsStep())
+  }
+
+  /**
+   * Holds if `pred` is assumed to flow to `succ` because a method is stored on an object that is assumed
+   * to be the receiver of calls to that method.
+   *
+   * For example, object literal below is assumed to flow to the receiver of the `foo` function:
+   * ```js
+   * let obj = {};
+   * obj.foo = function() {}
+   * ```
+   */
+  cached
+  predicate impliedReceiverStep(DataFlow::SourceNode pred, DataFlow::SourceNode succ) {
+    exists(DataFlow::SourceNode host |
+      pred = getAnAllocationSiteRef(host) and
+      succ = getAMethodOnPlainObject(host).getReceiver()
+    )
   }
 }

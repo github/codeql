@@ -6,6 +6,6 @@ class Test extends InlineFlowTest {
   override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
 
   override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
-    FragmentInjectionTaintFlow::hasFlow(src, sink)
+    FragmentInjectionTaintFlow::flow(src, sink)
   }
 }

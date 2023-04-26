@@ -1,4 +1,5 @@
 private import codeql.util.Boolean
+private import codeql.util.Unit
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
@@ -528,10 +529,7 @@ import Cached
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
   exists(SsaImpl::DefinitionExt def | def = n.(SsaDefinitionExtNode).getDefinitionExt() |
-    def instanceof Ssa::PhiNode or
-    def instanceof SsaImpl::PhiReadNode or
-    def instanceof Ssa::CapturedEntryDefinition or
-    def instanceof Ssa::CapturedCallDefinition
+    not def instanceof Ssa::WriteDefinition
   )
   or
   n = LocalFlow::getParameterDefNode(_)
@@ -1333,7 +1331,15 @@ private module PostUpdateNodes {
 private import PostUpdateNodes
 
 /** A node that performs a type cast. */
-class CastNode extends Node instanceof ReturningNode { }
+class CastNode extends Node {
+  CastNode() {
+    // ensure that actual return nodes are included in the path graph
+    this instanceof ReturningNode
+    or
+    // ensure that all variable assignments are included in the path graph
+    this.(SsaDefinitionExtNode).getDefinitionExt() instanceof Ssa::WriteDefinition
+  }
+}
 
 class DataFlowExpr = CfgNodes::ExprCfgNode;
 
@@ -1344,15 +1350,6 @@ int accessPathLimit() { result = 5 }
  * precision. This disables adaptive access path precision for such access paths.
  */
 predicate forceHighPrecision(Content c) { c instanceof Content::ElementContent }
-
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
