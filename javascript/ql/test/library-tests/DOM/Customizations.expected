@@ -23,5 +23,6 @@ test_domValueRef
 | nameditems.js:1:1:2:19 | documen ... em('x') |
 | querySelectorAll.js:2:5:2:29 | documen ... ctorAll |
 | querySelectorAll.js:2:5:2:36 | documen ... ('foo') |
+| querySelectorAll.js:2:46:2:48 | elm |
 | tst.js:49:3:49:8 | window |
 | tst.js:50:3:50:8 | window |
