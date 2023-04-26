@@ -3,7 +3,7 @@ import codeql.swift.elements
 import TestUtils
 
 from
-  AccessorDecl x, string hasName, string hasSelfParam, int getNumberOfParams, string hasBody,
+  Accessor x, string hasName, string hasSelfParam, int getNumberOfParams, string hasBody,
   int getNumberOfCaptures, int getNumberOfGenericTypeParams, ModuleDecl getModule,
   int getNumberOfMembers, Type getInterfaceType, string isGetter, string isSetter, string isWillSet,
   string isDidSet, string isRead, string isModify, string isUnsafeAddress,

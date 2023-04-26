@@ -2,6 +2,6 @@
 import codeql.swift.elements
 import TestUtils
 
-from ConstructorRefCallExpr x
+from ConcreteVarDecl x, int index
 where toBeTested(x) and not x.isUnknown()
-select x, x.getType()
+select x, index, x.getAccessor(index)

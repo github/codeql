@@ -2,6 +2,6 @@
 import codeql.swift.elements
 import TestUtils
 
-from ConcreteFuncDecl x, int index
+from InitializerRefCallExpr x, int index
 where toBeTested(x) and not x.isUnknown()
-select x, index, x.getGenericTypeParam(index)
+select x, index, x.getArgument(index)

@@ -2,6 +2,6 @@
 import codeql.swift.elements
 import TestUtils
 
-from ConstructorRefCallExpr x, int index
+from Accessor x, int index
 where toBeTested(x) and not x.isUnknown()
-select x, index, x.getArgument(index)
+select x, index, x.getMember(index)

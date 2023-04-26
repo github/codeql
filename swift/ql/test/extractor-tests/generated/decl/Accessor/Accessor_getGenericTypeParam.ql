@@ -2,6 +2,6 @@
 import codeql.swift.elements
 import TestUtils
 
-from AccessorDecl x
+from Accessor x, int index
 where toBeTested(x) and not x.isUnknown()
-select x, x.getSelfParam()
+select x, index, x.getGenericTypeParam(index)

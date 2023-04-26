@@ -1,5 +1,5 @@
 import swift
 
-from DestructorDecl d
+from Deinitializer d
 where d.getLocation().getFile().getBaseName() != "Package.swift"
 select d

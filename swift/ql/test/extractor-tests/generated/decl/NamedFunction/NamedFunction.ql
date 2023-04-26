@@ -3,7 +3,7 @@ import codeql.swift.elements
 import TestUtils
 
 from
-  ConcreteFuncDecl x, string hasName, string hasSelfParam, int getNumberOfParams, string hasBody,
+  NamedFunction x, string hasName, string hasSelfParam, int getNumberOfParams, string hasBody,
   int getNumberOfCaptures, int getNumberOfGenericTypeParams, ModuleDecl getModule,
   int getNumberOfMembers, Type getInterfaceType
 where

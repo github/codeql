@@ -2,6 +2,6 @@
 import codeql.swift.elements
 import TestUtils
 
-from AccessorDecl x, int index
+from NamedFunction x
 where toBeTested(x) and not x.isUnknown()
-select x, index, x.getCapture(index)
+select x, x.getName()

@@ -1,6 +1,10 @@
 private import codeql.swift.elements
 private import codeql.swift.generated.ParentChild
 
+// Internal classes are not imported by the tests:
+import codeql.swift.elements.expr.InitializerRefCallExpr
+import codeql.swift.elements.expr.DotSyntaxCallExpr
+
 cached
 predicate toBeTested(Element e) {
   e instanceof File

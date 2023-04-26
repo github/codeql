@@ -2,6 +2,6 @@
 import codeql.swift.elements
 import TestUtils
 
-from ParamDecl x, int index
+from NamedFunction x, int index
 where toBeTested(x) and not x.isUnknown()
-select x, index, x.getAccessorDecl(index)
+select x, index, x.getMember(index)

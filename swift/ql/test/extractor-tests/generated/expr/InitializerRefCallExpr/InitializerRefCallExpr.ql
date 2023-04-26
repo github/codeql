@@ -3,7 +3,7 @@ import codeql.swift.elements
 import TestUtils
 
 from
-  ConstructorRefCallExpr x, string hasType, Expr getFunction, int getNumberOfArguments, Expr getBase
+  InitializerRefCallExpr x, string hasType, Expr getFunction, int getNumberOfArguments, Expr getBase
 where
   toBeTested(x) and
   not x.isUnknown() and

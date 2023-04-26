@@ -1,5 +1,5 @@
 import swift
 
-from ConstructorDecl d
+from Initializer d
 where d.getLocation().getFile().getBaseName() != "Package.swift"
 select d

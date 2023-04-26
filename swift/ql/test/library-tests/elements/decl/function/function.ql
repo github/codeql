@@ -1,6 +1,6 @@
 import swift
 
-string describe(AbstractFunctionDecl f) {
+string describe(Function f) {
   result = "getName:" + f.getName()
   or
   exists(string a |
@@ -8,15 +8,15 @@ string describe(AbstractFunctionDecl f) {
     result = "hasName:" + a
   )
   or
-  result = "MethodDecl" and f instanceof MethodDecl
+  result = "Method" and f instanceof Method
   or
   exists(string a, string b |
-    f.(MethodDecl).hasQualifiedName(a, b) and
+    f.(Method).hasQualifiedName(a, b) and
     result = "hasQualifiedName(2):" + a + "." + b
   )
   or
   exists(string a, string b, string c |
-    f.(MethodDecl).hasQualifiedName(a, b, c) and
+    f.(Method).hasQualifiedName(a, b, c) and
     result = "hasQualifiedName(3):" + a + "." + b + "." + c
   )
   or
@@ -25,7 +25,7 @@ string describe(AbstractFunctionDecl f) {
   )
 }
 
-from AbstractFunctionDecl f
+from Function f
 where
   not f.getFile() instanceof UnknownFile and
   not f.getName().matches("%init%")
