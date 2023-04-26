@@ -10057,6 +10057,54 @@ ir.cpp:
 # 1883|     v1883_5(void)             = AliasedUse                                                : ~m?
 # 1883|     v1883_6(void)             = ExitFunction                                              : 
 
+# 1889| char global_template<char>
+# 1889|   Block 0
+# 1889|     v1889_1(void)        = EnterFunction                    : 
+# 1889|     mu1889_2(unknown)    = AliasedDefinition                : 
+# 1889|     r1889_3(glval<char>) = VariableAddress[global_template] : 
+# 1889|     r1889_4(char)        = Constant[42]                     : 
+# 1889|     mu1889_5(char)       = Store[global_template]           : &:r1889_3, r1889_4
+# 1889|     v1889_6(void)        = ReturnVoid                       : 
+# 1889|     v1889_7(void)        = AliasedUse                       : ~m?
+# 1889|     v1889_8(void)        = ExitFunction                     : 
+
+# 1889| int global_template<int>
+# 1889|   Block 0
+# 1889|     v1889_1(void)       = EnterFunction                    : 
+# 1889|     mu1889_2(unknown)   = AliasedDefinition                : 
+# 1889|     r1889_3(glval<int>) = VariableAddress[global_template] : 
+# 1889|     r1889_4(int)        = Constant[42]                     : 
+# 1889|     mu1889_5(int)       = Store[global_template]           : &:r1889_3, r1889_4
+# 1889|     v1889_6(void)       = ReturnVoid                       : 
+# 1889|     v1889_7(void)       = AliasedUse                       : ~m?
+# 1889|     v1889_8(void)       = ExitFunction                     : 
+
+# 1891| int test_global_template_int()
+# 1891|   Block 0
+# 1891|     v1891_1(void)        = EnterFunction                    : 
+# 1891|     mu1891_2(unknown)    = AliasedDefinition                : 
+# 1891|     mu1891_3(unknown)    = InitializeNonLocal               : 
+# 1892|     r1892_1(glval<int>)  = VariableAddress[local_int]       : 
+# 1892|     r1892_2(glval<int>)  = VariableAddress[global_template] : 
+# 1892|     r1892_3(int)         = Load[global_template]            : &:r1892_2, ~m?
+# 1892|     mu1892_4(int)        = Store[local_int]                 : &:r1892_1, r1892_3
+# 1893|     r1893_1(glval<char>) = VariableAddress[local_char]      : 
+# 1893|     r1893_2(glval<char>) = VariableAddress[global_template] : 
+# 1893|     r1893_3(char)        = Load[global_template]            : &:r1893_2, ~m?
+# 1893|     mu1893_4(char)       = Store[local_char]                : &:r1893_1, r1893_3
+# 1894|     r1894_1(glval<int>)  = VariableAddress[#return]         : 
+# 1894|     r1894_2(glval<int>)  = VariableAddress[local_int]       : 
+# 1894|     r1894_3(int)         = Load[local_int]                  : &:r1894_2, ~m?
+# 1894|     r1894_4(glval<char>) = VariableAddress[local_char]      : 
+# 1894|     r1894_5(char)        = Load[local_char]                 : &:r1894_4, ~m?
+# 1894|     r1894_6(int)         = Convert                          : r1894_5
+# 1894|     r1894_7(int)         = Add                              : r1894_3, r1894_6
+# 1894|     mu1894_8(int)        = Store[#return]                   : &:r1894_1, r1894_7
+# 1891|     r1891_4(glval<int>)  = VariableAddress[#return]         : 
+# 1891|     v1891_5(void)        = ReturnValue                      : &:r1891_4, ~m?
+# 1891|     v1891_6(void)        = AliasedUse                       : ~m?
+# 1891|     v1891_7(void)        = ExitFunction                     : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
