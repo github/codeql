@@ -10,7 +10,7 @@ private newtype TNode =
   MkInstructionNode(IR::Instruction insn) or
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
-  MkImplicitVarargsSlice(CallExpr c) { c.getTarget().isVariadic() and not c.hasEllipsis() } or
+  MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
   MkSummarizedParameterNode(SummarizedCallable c, int i) {
     FlowSummaryImpl::Private::summaryParameterNodeRange(c, i)
   } or
@@ -572,13 +572,9 @@ module Public {
      * predicate `getArgument` on `CallExpr`, which gets the syntactic arguments.
      */
     Node getArgument(int i) {
-      exists(SignatureType t, int lastParamIndex |
-        t = this.getACalleeIncludingExternals().getType() and
-        lastParamIndex = t.getNumParameter() - 1
-      |
+      exists(int lastParamIndex | lastParamIndex = expr.getCalleeType().getNumParameter() - 1 |
         if
-          not this.hasEllipsis() and
-          t.isVariadic() and
+          expr.hasImplicitVarargs() and
           i >= lastParamIndex
         then
           result.(ImplicitVarargsSlice).getCallNode() = this and
@@ -598,11 +594,10 @@ module Public {
      * the varargs parameter of the target of this call (if there is one).
      */
     Node getImplicitVarargsArgument(int i) {
-      not this.hasEllipsis() and
       i >= 0 and
-      exists(Function f | f = this.getTarget() |
-        f.isVariadic() and
-        result = this.getSyntacticArgument(f.getNumParameter() - 1 + i)
+      expr.hasImplicitVarargs() and
+      exists(int lastParamIndex | lastParamIndex = expr.getCalleeType().getNumParameter() - 1 |
+        result = this.getSyntacticArgument(lastParamIndex + i)
       )
     }
 
