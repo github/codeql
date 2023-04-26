@@ -13,7 +13,7 @@ private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.controlflow.CfgNodes
 
-class SummarizedCallableBase = AbstractFunctionDecl;
+class SummarizedCallableBase = Function;
 
 DataFlowCallable inject(SummarizedCallable c) { result.getUnderlyingCallable() = c }
 
@@ -59,7 +59,7 @@ DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any(
  * `input`, output specification `output`, kind `kind`, and provenance `provenance`.
  */
 predicate summaryElement(
-  AbstractFunctionDecl c, string input, string output, string kind, string provenance
+  Function c, string input, string output, string kind, string provenance
 ) {
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
@@ -73,7 +73,7 @@ predicate summaryElement(
  * Holds if a neutral model exists for `c` with provenance `provenance`,
  * which means that there is no flow through `c`.
  */
-predicate neutralElement(AbstractFunctionDecl c, string provenance) { none() }
+predicate neutralElement(Function c, string provenance) { none() }
 
 /**
  * Holds if an external source specification exists for `e` with output specification
@@ -167,7 +167,7 @@ class InterpretNode extends TInterpretNode {
   DataFlowCallable asCallable() { result.getUnderlyingCallable() = this.asElement() }
 
   /** Gets the target of this call, if any. */
-  AbstractFunctionDecl getCallTarget() { result = this.asCall().asCall().getStaticTarget() }
+  Function getCallTarget() { result = this.asCall().asCall().getStaticTarget() }
 
   /** Gets a textual representation of this node. */
   string toString() {

@@ -378,7 +378,7 @@ private predicate elementSpec(
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
 }
 
-private string paramsStringPart(AbstractFunctionDecl c, int i) {
+private string paramsStringPart(Function c, int i) {
   i = -1 and result = "(" and exists(c)
   or
   exists(int n, string p | c.getParam(n).getType().toString() = p |
@@ -397,12 +397,12 @@ private string paramsStringPart(AbstractFunctionDecl c, int i) {
  * Parameter types are represented by their type erasure.
  */
 cached
-string paramsString(AbstractFunctionDecl c) {
+string paramsString(Function c) {
   result = concat(int i | | paramsStringPart(c, i) order by i)
 }
 
 bindingset[func]
-predicate matchesSignature(AbstractFunctionDecl func, string signature) {
+predicate matchesSignature(Function func, string signature) {
   signature = "" or
   paramsString(func) = signature
 }
@@ -425,17 +425,17 @@ private Element interpretElement0(
   namespace = "" and // TODO: Fill out when we properly extract modules.
   (
     // Non-member functions
-    exists(AbstractFunctionDecl func |
+    exists(Function func |
       func.getName() = name and
       type = "" and
       matchesSignature(func, signature) and
       subtypes = false and
-      not result instanceof MethodDecl and
+      not result instanceof Method and
       result = func
     )
     or
     // Member functions
-    exists(NominalTypeDecl namedTypeDecl, Decl declWithMethod, MethodDecl method |
+    exists(NominalTypeDecl namedTypeDecl, Decl declWithMethod, Method method |
       method.getName() = name and
       method = declWithMethod.getAMember() and
       namedTypeDecl.getFullName() = type and
