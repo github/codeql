@@ -20,7 +20,6 @@ unexplainedLoop
 unnecessaryPhiInstruction
 memoryOperandDefinitionIsUnmodeled
 operandAcrossFunctions
-| test.c:245:31:245:31 | Condition | Operand 'Condition' is used on instruction 'ConditionalBranch: 0' in function '$@', but is defined on instruction 'Constant: 0' in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> | test.c:245:24:245:24 | const void *[] a | const void *[] a |
 instructionWithoutUniqueBlock
 containsLoopOfForwardEdges
 lostReachability
@@ -31,7 +30,6 @@ notMarkedAsConflated
 wronglyMarkedAsConflated
 invalidOverlap
 nonUniqueEnclosingIRFunction
-| test.c:245:31:245:31 | ConditionalBranch: 0 | Instruction 'ConditionalBranch: 0' has 0 results for `getEnclosingIRFunction()` in function '$@'. | file://:0:0:0:0 | <Missing IRFunction> | <Missing IRFunction> |
 fieldAddressOnNonPointer
 thisArgumentIsNonPointer
 | pmcallexpr.cpp:10:2:10:15 | Call: call to expression | Call instruction 'Call: call to expression' has a `this` argument operand that is not an address, in function '$@'. | pmcallexpr.cpp:8:13:8:13 | void f() | void f() |
