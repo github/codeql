@@ -53,7 +53,7 @@ module RequiresEncodingConfig<EncodingConfigSig EncodingConfig> implements DataF
   int fieldFlowBranchLimit() { result = 0 }
 }
 
-/** An encoded value, for example a call to `HttpServerUtility.HtmlEncode`. */
+/** An encoded value, for example through a call to `HttpServerUtility.HtmlEncode`. */
 class EncodedValue extends Expr {
   EncodedValue() {
     EncodingConfigurations::SqlExprEncodingConfig::isPossibleEncodedValue(this)
