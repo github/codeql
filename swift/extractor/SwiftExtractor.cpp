@@ -79,7 +79,6 @@ static fs::path getFilename(swift::ModuleDecl& module,
     return resolvePath(primaryFile->getFilename());
   }
   if (lazyDeclaration) {
-<<<<<<< HEAD
     // this code will be thrown away in the near future
     auto decl = llvm::dyn_cast<swift::ValueDecl>(lazyDeclaration);
     assert(decl);
@@ -94,11 +93,6 @@ static fs::path getFilename(swift::ModuleDecl& module,
     // half a SHA2 is enough
     ret += std::string_view(mangled).substr(0, mangled.size() / 2);
     return ret;
-=======
-    //    static int i;
-    //    return mangledDeclName(*lazyDeclaration) + std::to_string(i++);
-    return mangledDeclName(*lazyDeclaration);
->>>>>>> 4cbad80695 (Swift: more mangling)
   }
   // PCM clang module
   if (module.isNonSwiftModule()) {
