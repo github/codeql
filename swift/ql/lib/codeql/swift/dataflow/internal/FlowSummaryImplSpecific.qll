@@ -58,9 +58,7 @@ DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any(
  * Holds if an external flow summary exists for `c` with input specification
  * `input`, output specification `output`, kind `kind`, and provenance `provenance`.
  */
-predicate summaryElement(
-  Function c, string input, string output, string kind, string provenance
-) {
+predicate summaryElement(Function c, string input, string output, string kind, string provenance) {
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |

@@ -397,9 +397,7 @@ private string paramsStringPart(Function c, int i) {
  * Parameter types are represented by their type erasure.
  */
 cached
-string paramsString(Function c) {
-  result = concat(int i | | paramsStringPart(c, i) order by i)
-}
+string paramsString(Function c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
 
 bindingset[func]
 predicate matchesSignature(Function func, string signature) {

@@ -51,9 +51,7 @@ private class WKWebViewDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
 private class WKUserContentControllerDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
   WKUserContentControllerDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
-      ce.getStaticTarget()
-          .(Method)
-          .hasQualifiedName("WKUserContentController", "addUserScript(_:)")
+      ce.getStaticTarget().(Method).hasQualifiedName("WKUserContentController", "addUserScript(_:)")
     ).getArgument(0).getExpr() = this.asExpr()
   }
 }
@@ -89,9 +87,9 @@ private class JSContextDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
  */
 private class JSEvaluateScriptDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
   JSEvaluateScriptDefaultUnsafeJsEvalSink() {
-    any(CallExpr ce |
-      ce.getStaticTarget().(FreeFunction).hasName("JSEvaluateScript(_:_:_:_:_:_:)")
-    ).getArgument(1).getExpr() = this.asExpr()
+    any(CallExpr ce | ce.getStaticTarget().(FreeFunction).hasName("JSEvaluateScript(_:_:_:_:_:_:)"))
+        .getArgument(1)
+        .getExpr() = this.asExpr()
   }
 }
 

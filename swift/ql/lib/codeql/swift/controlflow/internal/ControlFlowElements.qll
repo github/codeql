@@ -69,9 +69,7 @@ private predicate isPropertySetterElement(Accessor accessor, AssignExpr assign) 
   )
 }
 
-predicate isPropertySetterElement(
-  PropertySetterElement pse, Accessor accessor, AssignExpr assign
-) {
+predicate isPropertySetterElement(PropertySetterElement pse, Accessor accessor, AssignExpr assign) {
   pse = TPropertySetterElement(accessor, assign)
 }
 
