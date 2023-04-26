@@ -174,10 +174,8 @@ SwiftMangledName SwiftMangler::visitTupleType(const swift::TupleType* type) {
 }
 
 SwiftMangledName SwiftMangler::visitBuiltinType(const swift::BuiltinType* type) {
-  auto ret = initMangled(type);
   llvm::SmallString<32> buffer;
-  ret << type->getTypeName(buffer, /* prependBuiltinNamespace= */ false);
-  return ret;
+  return initMangled(type) << type->getTypeName(buffer, /* prependBuiltinNamespace= */ false);
 }
 
 SwiftMangledName SwiftMangler::visitAnyGenericType(const swift::AnyGenericType* type) {
