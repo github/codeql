@@ -993,7 +993,7 @@ class TranslatedConstructorBareInit extends TranslatedElement, TTranslatedConstr
 
   override TranslatedElement getChild(int id) { none() }
 
-  override Declaration getFunction() { result = getParent().getFunction() }
+  override Declaration getFunction() { result = this.getParent().getFunction() }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
