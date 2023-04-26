@@ -31,8 +31,7 @@ signature module EncodingConfigSig {
 }
 
 /**
- * A configuration for specifying expressions that must be
- * encoded, along with a set of potential valid encoded values.
+ * A configuration for specifying expressions that must be encoded.
  */
 module RequiresEncodingConfig<EncodingConfigSig EncodingConfig> implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
