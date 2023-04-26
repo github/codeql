@@ -4,7 +4,7 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.ClosureExpr
 
 module Generated {
-  class AutoClosureExpr extends Synth::TAutoClosureExpr, ClosureExpr {
-    override string getAPrimaryQlClass() { result = "AutoClosureExpr" }
+  class ExplicitClosureExpr extends Synth::TExplicitClosureExpr, ClosureExpr {
+    override string getAPrimaryQlClass() { result = "ExplicitClosureExpr" }
   }
 }

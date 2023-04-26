@@ -2,8 +2,9 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.Callable
-import codeql.swift.elements.expr.Expr
+import codeql.swift.elements.decl.GenericContext
+import codeql.swift.elements.decl.ValueDecl
 
 module Generated {
-  class AbstractClosureExpr extends Synth::TAbstractClosureExpr, Expr, Callable { }
+  class Function extends Synth::TFunction, GenericContext, ValueDecl, Callable { }
 }

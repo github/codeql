@@ -7,7 +7,7 @@ module Generated {
   /**
    * INTERNAL: Do not use.
    */
-  class DotSyntaxCallExpr extends Synth::TDotSyntaxCallExpr, SelfApplyExpr {
-    override string getAPrimaryQlClass() { result = "DotSyntaxCallExpr" }
+  class InitializerRefCallExpr extends Synth::TInitializerRefCallExpr, SelfApplyExpr {
+    override string getAPrimaryQlClass() { result = "InitializerRefCallExpr" }
   }
 }

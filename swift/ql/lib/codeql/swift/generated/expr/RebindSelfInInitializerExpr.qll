@@ -5,42 +5,42 @@ import codeql.swift.elements.expr.Expr
 import codeql.swift.elements.decl.VarDecl
 
 module Generated {
-  class RebindSelfInConstructorExpr extends Synth::TRebindSelfInConstructorExpr, Expr {
-    override string getAPrimaryQlClass() { result = "RebindSelfInConstructorExpr" }
+  class RebindSelfInInitializerExpr extends Synth::TRebindSelfInInitializerExpr, Expr {
+    override string getAPrimaryQlClass() { result = "RebindSelfInInitializerExpr" }
 
     /**
-     * Gets the sub expression of this rebind self in constructor expression.
+     * Gets the sub expression of this rebind self in initializer expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     Expr getImmediateSubExpr() {
       result =
-        Synth::convertExprFromRaw(Synth::convertRebindSelfInConstructorExprToRaw(this)
-              .(Raw::RebindSelfInConstructorExpr)
+        Synth::convertExprFromRaw(Synth::convertRebindSelfInInitializerExprToRaw(this)
+              .(Raw::RebindSelfInInitializerExpr)
               .getSubExpr())
     }
 
     /**
-     * Gets the sub expression of this rebind self in constructor expression.
+     * Gets the sub expression of this rebind self in initializer expression.
      */
     final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
 
     /**
-     * Gets the self of this rebind self in constructor expression.
+     * Gets the self of this rebind self in initializer expression.
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     VarDecl getImmediateSelf() {
       result =
-        Synth::convertVarDeclFromRaw(Synth::convertRebindSelfInConstructorExprToRaw(this)
-              .(Raw::RebindSelfInConstructorExpr)
+        Synth::convertVarDeclFromRaw(Synth::convertRebindSelfInInitializerExprToRaw(this)
+              .(Raw::RebindSelfInInitializerExpr)
               .getSelf())
     }
 
     /**
-     * Gets the self of this rebind self in constructor expression.
+     * Gets the self of this rebind self in initializer expression.
      */
     final VarDecl getSelf() { result = getImmediateSelf().resolve() }
   }
