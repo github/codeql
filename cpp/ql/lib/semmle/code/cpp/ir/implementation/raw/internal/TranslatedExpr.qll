@@ -888,8 +888,19 @@ class TranslatedNonFieldVariableAccess extends TranslatedVariableAccess {
 
   override IRVariable getInstructionVariable(InstructionTag tag) {
     tag = OnlyInstructionTag() and
-    result = getIRUserVariable(getEnclosingDeclaration(expr), expr.getTarget())
+    exists(Declaration d, Variable v |
+      accessHasEnclosingDeclarationAndVariable(d, v, expr) and
+      result = getIRUserVariable(d, v)
+    )
   }
+}
+
+pragma[nomagic]
+private predicate accessHasEnclosingDeclarationAndVariable(
+  Declaration d, Variable v, VariableAccess va
+) {
+  d = getEnclosingDeclaration(va) and
+  v = va.getTarget()
 }
 
 class TranslatedFieldAccess extends TranslatedVariableAccess {
