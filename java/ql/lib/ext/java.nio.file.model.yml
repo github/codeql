@@ -79,4 +79,4 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.nio.file", "Files", "exists", "(Path,LinkOption[])", "manual"]
+      - ["java.nio.file", "Files", "exists", "(Path,LinkOption[])", "summary", "manual"]
