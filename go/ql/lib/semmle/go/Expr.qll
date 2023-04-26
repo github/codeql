@@ -857,6 +857,12 @@ class CallExpr extends CallOrConversionExpr {
   /** Gets the number of argument expressions of this call. */
   int getNumArgument() { result = count(this.getAnArgument()) }
 
+  /** Holds if this call has implicit variadic arguments. */
+  predicate hasImplicitVarargs() {
+    this.getCalleeType().isVariadic() and
+    not this.hasEllipsis()
+  }
+
   /**
    * Gets an argument with an ellipsis after it which is passed to a varargs
    * parameter, as in `f(x...)`.
