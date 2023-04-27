@@ -16,7 +16,7 @@ signature module CandidateSig {
 
   class EndpointType;
 
-  /** The string representing the file+range of the endpoint. */
+  /** Gets the string representing the file+range of the endpoint. */
   string getLocationString(Endpoint e);
 
   /**
@@ -64,7 +64,7 @@ signature module CandidateSig {
  *
  * This module is language-agnostic, although the `CandidateSig` module will be language-specific.
  *
- * The language specific implementation can also further extend the behaviour of this module by adding additional
+ * The language specific implementation can also further extend the behavior of this module by adding additional
  *   implementations of endpoint characteristics exported by this module.
  */
 module SharedCharacteristics<CandidateSig Candidate> {

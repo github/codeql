@@ -1,5 +1,5 @@
 /**
- * Surfaces endpoints are sinks with high confidence, for use as positive examples in the prompt.
+ * Surfaces endpoints that are sinks with high confidence, for use as positive examples in the prompt.
  *
  * @name Positive examples (experimental)
  * @kind problem
@@ -12,13 +12,6 @@ private import java
 private import semmle.code.java.security.ExternalAPIs as ExternalAPIs
 private import AutomodelEndpointCharacteristics
 private import AutomodelEndpointTypes
-
-// private import experimental.adaptivethreatmodeling.ATMConfigs // To import the configurations of all supported Java queries
-/*
- * ****** WARNING: ******
- * Before calling this query, make sure there's no codex-generated data extension file in `java/ql/lib/ext`. Otherwise,
- * the ML-generated, noisy sinks will end up polluting the positive examples used in the prompt!
- */
 
 from Endpoint sink, SinkType sinkType, string message
 where

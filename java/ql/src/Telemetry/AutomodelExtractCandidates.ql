@@ -1,6 +1,6 @@
 /**
- * Surfaces the endpoints that pass the endpoint filters and are not already known to be sinks, and are therefore used
- * as candidates for classification with an ML model.
+ * Surfaces the endpoints that are not already known to be sinks, and are therefore used as candidates for
+ * classification with an ML model.
  *
  * Note: This query does not actually classify the endpoints using the model.
  *

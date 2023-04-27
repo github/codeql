@@ -1,5 +1,5 @@
 /**
- * Surfaces endpoints are non-sinks with high confidence, for use as negative examples in the prompt.
+ * Surfaces endpoints that are non-sinks with high confidence, for use as negative examples in the prompt.
  *
  * @name Negative examples (experimental)
  * @kind problem
