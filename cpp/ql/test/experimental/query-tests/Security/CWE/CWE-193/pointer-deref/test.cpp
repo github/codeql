@@ -64,7 +64,7 @@ void test5(int size) {
     }
 
     for (char* p = begin; p <= end; ++p) {
-        *p = 0; // BAD
+        *p = 0; // BAD [NOT DETECTED]
     }
 
     for (char* p = begin; p < end; ++p) {
@@ -93,7 +93,7 @@ void test6(int size) {
     }
 
     for (char* p = arr.begin; p <= arr.end; ++p) {
-        *p = 0; // BAD
+        *p = 0; // BAD [NOT DETECTED]
     }
 
     for (char* p = arr.begin; p < arr.end; ++p) {
@@ -107,7 +107,7 @@ void test7_callee(array_t arr) {
     }
 
     for (char* p = arr.begin; p <= arr.end; ++p) {
-        *p = 0; // BAD
+        *p = 0; // BAD [NOT DETECTED]
     }
 
     for (char* p = arr.begin; p < arr.end; ++p) {
@@ -154,7 +154,7 @@ void test9(int size) {
     }
 
     for (char* p = arr->begin; p <= arr->end; ++p) {
-        *p = 0; // BAD
+        *p = 0; // BAD [NOT DETECTED]
     }
 
     for (char* p = arr->begin; p < arr->end; ++p) {
@@ -168,7 +168,7 @@ void test10_callee(array_t *arr) {
     }
 
     for (char* p = arr->begin; p <= arr->end; ++p) {
-        *p = 0; // BAD
+        *p = 0; // BAD [NOT DETECTED]
     }
 
     for (char* p = arr->begin; p < arr->end; ++p) {
@@ -281,7 +281,7 @@ void test19(unsigned len)
   int *end = xs + len;
   for (int *x = xs; x < end; x++)
   {
-    int i = *x; // GOOD [FALSE POSITIVE]
+    int i = *x; // GOOD
   }
 }
 
@@ -291,6 +291,6 @@ void test20(unsigned len)
   int *end = xs + len;
   for (int *x = xs; x < end; x++)
   {
-    *x = 0; // GOOD [FALSE POSITIVE]
+    *x = 0; // GOOD
   }
 }

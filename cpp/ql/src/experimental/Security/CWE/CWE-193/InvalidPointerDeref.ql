@@ -229,6 +229,8 @@ module InvalidPointerToDerefConfig implements DataFlow::ConfigSig {
 
   pragma[inline]
   predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _) }
+
+  predicate isBarrier(DataFlow::Node node) { node = any(DataFlow::SsaPhiNode phi).getAnInput(true) }
 }
 
 module InvalidPointerToDerefFlow = DataFlow::Global<InvalidPointerToDerefConfig>;
