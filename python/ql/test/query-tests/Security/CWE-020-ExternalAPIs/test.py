@@ -32,17 +32,27 @@ def hmac_example2():
 def unknown_lib_1():
     from unknown.lib import func
     data = request.args.get("data")
-    func(data) # TODO: currently not recognized
-    func(kw=data) # TODO: currently not recognized
+    func(data)
+    func(kw=data)
 
 
 @app.route("/unknown-lib-2")
 def unknown_lib_2():
     import unknown.lib
     data = request.args.get("data")
-    unknown.lib.func(data) # TODO: currently not recognized
-    unknown.lib.func(kw=data) # TODO: currently not recognized
+    unknown.lib.func(data)
+    unknown.lib.func(kw=data)
 
+
+def handle_this(arg, application = None):
+    if application:
+        # since application could be None, we could end up reporting `None.json.dumps`
+        application.json.dumps(arg)
+
+@app.route("/optional-arg")
+def optional_arg():
+    data = request.args.get("data")
+    handle_this(data)
 
 if __name__ == "__main__":
     # http://127.0.0.1:5000/hmac-example?data=aGVsbG8gd29ybGQh

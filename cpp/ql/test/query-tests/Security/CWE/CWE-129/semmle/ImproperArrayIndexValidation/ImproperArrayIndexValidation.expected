@@ -2,6 +2,12 @@ edges
 | test1.c:7:26:7:29 | argv | test1.c:9:9:9:9 | i |
 | test1.c:7:26:7:29 | argv | test1.c:11:9:11:9 | i |
 | test1.c:7:26:7:29 | argv | test1.c:13:9:13:9 | i |
+| test1.c:7:26:7:29 | argv indirection | test1.c:9:9:9:9 | i |
+| test1.c:7:26:7:29 | argv indirection | test1.c:9:9:9:9 | i |
+| test1.c:7:26:7:29 | argv indirection | test1.c:11:9:11:9 | i |
+| test1.c:7:26:7:29 | argv indirection | test1.c:11:9:11:9 | i |
+| test1.c:7:26:7:29 | argv indirection | test1.c:13:9:13:9 | i |
+| test1.c:7:26:7:29 | argv indirection | test1.c:13:9:13:9 | i |
 | test1.c:9:9:9:9 | i | test1.c:16:16:16:16 | i |
 | test1.c:11:9:11:9 | i | test1.c:32:16:32:16 | i |
 | test1.c:13:9:13:9 | i | test1.c:48:16:48:16 | i |
@@ -10,6 +16,8 @@ edges
 | test1.c:48:16:48:16 | i | test1.c:53:15:53:15 | j |
 nodes
 | test1.c:7:26:7:29 | argv | semmle.label | argv |
+| test1.c:7:26:7:29 | argv indirection | semmle.label | argv indirection |
+| test1.c:7:26:7:29 | argv indirection | semmle.label | argv indirection |
 | test1.c:9:9:9:9 | i | semmle.label | i |
 | test1.c:11:9:11:9 | i | semmle.label | i |
 | test1.c:13:9:13:9 | i | semmle.label | i |
@@ -22,5 +30,11 @@ nodes
 subpaths
 #select
 | test1.c:18:16:18:16 | i | test1.c:7:26:7:29 | argv | test1.c:18:16:18:16 | i | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | argv | a command-line argument |
+| test1.c:18:16:18:16 | i | test1.c:7:26:7:29 | argv indirection | test1.c:18:16:18:16 | i | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | argv indirection | a command-line argument |
+| test1.c:18:16:18:16 | i | test1.c:7:26:7:29 | argv indirection | test1.c:18:16:18:16 | i | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | argv indirection | a command-line argument |
 | test1.c:33:11:33:11 | i | test1.c:7:26:7:29 | argv | test1.c:33:11:33:11 | i | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | argv | a command-line argument |
+| test1.c:33:11:33:11 | i | test1.c:7:26:7:29 | argv indirection | test1.c:33:11:33:11 | i | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | argv indirection | a command-line argument |
+| test1.c:33:11:33:11 | i | test1.c:7:26:7:29 | argv indirection | test1.c:33:11:33:11 | i | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | argv indirection | a command-line argument |
 | test1.c:53:15:53:15 | j | test1.c:7:26:7:29 | argv | test1.c:53:15:53:15 | j | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | argv | a command-line argument |
+| test1.c:53:15:53:15 | j | test1.c:7:26:7:29 | argv indirection | test1.c:53:15:53:15 | j | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | argv indirection | a command-line argument |
+| test1.c:53:15:53:15 | j | test1.c:7:26:7:29 | argv indirection | test1.c:53:15:53:15 | j | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | argv indirection | a command-line argument |

@@ -9,9 +9,9 @@ private class TestSource extends RemoteFlowSource {
 }
 
 private class LogInjectionTest extends InlineFlowTest {
-  override DataFlow::Configuration getValueFlowConfig() { none() }
+  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
 
-  override TaintTracking::Configuration getTaintFlowConfig() {
-    result instanceof LogInjectionConfiguration
+  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
+    LogInjectionFlow::flow(src, sink)
   }
 }

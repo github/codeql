@@ -1,3 +1,40 @@
+## 0.6.0
+
+### Minor Analysis Improvements
+
+* The `DisablingCertificateValidation.ql` query has been updated to check `createServer` from `https` for disabled certificate validation.
+* Improved the model of jQuery to account for XSS sinks where the HTML string
+  is provided via a callback. This may lead to more results for the `js/xss` query.
+* The `js/weak-cryptographic-algorithm` query now flags cryptograhic operations using a weak block mode,
+  such as AES-ECB.
+
+### Bug Fixes
+
+* Fixed a bug where a destructuring pattern could not be parsed if it had a property
+  named `get` or `set` with a default value.
+
+## 0.5.6
+
+No user-facing changes.
+
+## 0.5.5
+
+### Minor Analysis Improvements
+
+* The following queries now recognize HTML sanitizers as propagating taint: `js/sql-injection`,
+  `js/path-injection`, `js/server-side-unvalidated-url-redirection`, `js/client-side-unvalidated-url-redirection`,
+  and `js/request-forgery`.
+
+## 0.5.4
+
+### Minor Analysis Improvements
+
+* The `js/regex-injection` query now recognizes environment variables and command-line arguments as sources.
+
+## 0.5.3
+
+No user-facing changes.
+
 ## 0.5.2
 
 No user-facing changes.

@@ -8,6 +8,7 @@ private import semmle.code.csharp.dataflow.FlowSummary
 private import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
 private import semmle.code.csharp.dataflow.internal.DataFlowPrivate
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch as DataFlowDispatch
+private import semmle.code.csharp.dataflow.internal.FlowSummaryImpl as FlowSummaryImpl
 private import semmle.code.csharp.dataflow.internal.TaintTrackingPrivate
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
@@ -104,8 +105,17 @@ class ExternalApi extends DotNet::Callable {
   pragma[nomagic]
   predicate isSink() { sinkNode(this.getAnInput(), _) }
 
-  /** Holds if this API is supported by existing CodeQL libraries, that is, it is either a recognized source or sink or has a flow summary. */
-  predicate isSupported() { this.hasSummary() or this.isSource() or this.isSink() }
+  /** Holds if this API is a known neutral. */
+  pragma[nomagic]
+  predicate isNeutral() { this instanceof FlowSummaryImpl::Public::NeutralCallable }
+
+  /**
+   * Holds if this API is supported by existing CodeQL libraries, that is, it is either a
+   * recognized source, sink or neutral or it has a flow summary.
+   */
+  predicate isSupported() {
+    this.hasSummary() or this.isSource() or this.isSink() or this.isNeutral()
+  }
 }
 
 /**

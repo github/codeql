@@ -75,3 +75,7 @@ function getSomeunsafeOptions() {
     }
 }
 new https.Agent(getSomeunsafeOptions());
+
+https.createServer({
+    rejectUnauthorized: false // NOT OK
+});

@@ -1,0 +1,26 @@
+children
+|     return r7 |     {4} r7 = r3 UNION r6 |
+|     {4} r2 = JOIN r1 WITH raparser#d14bb8db::TestPredicate#b ON FIRST 1 OUTPUT "p1", toString("p1"), 123, "  r1 = SCAN fubar\\n   r1" |     {1} r1 = CONSTANT(unique string)["p1"] |
+|     {4} r2 = JOIN r1 WITH raparser#d14bb8db::TestPredicate#b ON FIRST 1 OUTPUT "p1", toString("p1"), 123, "  r1 = SCAN fubar\\n   r1" |     {1} r1 = CONSTANT(unique string)["p1"] |
+|     {4} r3 = STREAM DEDUP r2 |     {4} r2 = JOIN r1 WITH raparser#d14bb8db::TestPredicate#b ON FIRST 1 OUTPUT "p1", toString("p1"), 123, "  r1 = SCAN fubar\\n   r1" |
+|     {4} r3 = STREAM DEDUP r2 |     {4} r2 = JOIN r1 WITH raparser#d14bb8db::TestPredicate#b ON FIRST 1 OUTPUT "p1", toString("p1"), 123, "  r1 = SCAN fubar\\n   r1" |
+|     {4} r4 = JOIN r1 WITH raparser#d14bb8db::TestPredicate#b ON FIRST 1 OUTPUT "p1", "(no string representation)", 123, "  r1 = SCAN fubar\\n   r1" |     {1} r1 = CONSTANT(unique string)["p1"] |
+|     {4} r4 = JOIN r1 WITH raparser#d14bb8db::TestPredicate#b ON FIRST 1 OUTPUT "p1", "(no string representation)", 123, "  r1 = SCAN fubar\\n   r1" |     {1} r1 = CONSTANT(unique string)["p1"] |
+|     {4} r5 = STREAM DEDUP r4 |     {4} r4 = JOIN r1 WITH raparser#d14bb8db::TestPredicate#b ON FIRST 1 OUTPUT "p1", "(no string representation)", 123, "  r1 = SCAN fubar\\n   r1" |
+|     {4} r5 = STREAM DEDUP r4 |     {4} r4 = JOIN r1 WITH raparser#d14bb8db::TestPredicate#b ON FIRST 1 OUTPUT "p1", "(no string representation)", 123, "  r1 = SCAN fubar\\n   r1" |
+|     {4} r6 = r5 AND NOT project##select#query#ffff#nullary({}) |     {4} r5 = STREAM DEDUP r4 |
+|     {4} r6 = r5 AND NOT project##select#query#ffff#nullary({}) |     {4} r5 = STREAM DEDUP r4 |
+|     {4} r7 = r3 UNION r6 |     {4} r3 = STREAM DEDUP r2 |
+|     {4} r7 = r3 UNION r6 |     {4} r6 = r5 AND NOT project##select#query#ffff#nullary({}) |
+|     {4} r7 = r3 UNION r6 |     {4} r6 = r5 AND NOT project##select#query#ffff#nullary({}) |
+#select
+| p1 | 1 |     {1} r1 = CONSTANT(unique string)["p1"] | 1 | 1 | 0 | 0 |
+| p1 | 3 |     {4} r2 = JOIN r1 WITH raparser#d14bb8db::TestPredicate#b ON FIRST 1 OUTPUT "p1", toString("p1"), 123, "  r1 = SCAN fubar\\n   r1" | 2 | 4 | 1 | 1 |
+| p1 | 3 |     {4} r2 = JOIN r1 WITH raparser#d14bb8db::TestPredicate#b ON FIRST 1 OUTPUT "p1", toString("p1"), 123, "  r1 = SCAN fubar\\n   r1" | 2 | 4 | 1 | 1 |
+| p1 | 5 |     {4} r3 = STREAM DEDUP r2 | 3 | 4 | 0 | 1 |
+| p1 | 6 |     {4} r4 = JOIN r1 WITH raparser#d14bb8db::TestPredicate#b ON FIRST 1 OUTPUT "p1", "(no string representation)", 123, "  r1 = SCAN fubar\\n   r1" | 4 | 4 | 1 | 1 |
+| p1 | 6 |     {4} r4 = JOIN r1 WITH raparser#d14bb8db::TestPredicate#b ON FIRST 1 OUTPUT "p1", "(no string representation)", 123, "  r1 = SCAN fubar\\n   r1" | 4 | 4 | 1 | 1 |
+| p1 | 7 |     {4} r5 = STREAM DEDUP r4 | 5 | 4 | 0 | 1 |
+| p1 | 8 |     {4} r6 = r5 AND NOT project##select#query#ffff#nullary({}) | 6 | 4 | 1 | 1 |
+| p1 | 8 |     {4} r6 = r5 AND NOT project##select#query#ffff#nullary({}) | 6 | 4 | 1 | 1 |
+| p1 | 9 |     {4} r7 = r3 UNION r6 | 7 | 4 | 0 | 2 |

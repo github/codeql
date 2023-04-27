@@ -1,21 +1,33 @@
 import cpp
+import semmle.code.cpp.Print
 
 string describe(Element e) {
-  result = "function " + e.(Function).getFullSignature()
+  e instanceof Function and
+  result = "function " + getIdentityString(e)
   or
   result =
     "function declaration entry for " +
-      e.(FunctionDeclarationEntry).getFunction().getFullSignature()
+      getIdentityString(e.(FunctionDeclarationEntry).getFunction())
   or
-  result = "parameter for " + e.(Parameter).getFunction().getFullSignature()
+  result = "parameter for " + getIdentityString(e.(Parameter).getFunction())
   or
   result =
     "parameter declaration entry for " +
-      e.(ParameterDeclarationEntry).getFunctionDeclarationEntry().getFunction().getFullSignature()
+      getIdentityString(e.(ParameterDeclarationEntry).getFunctionDeclarationEntry().getFunction())
+  or
+  exists(Element template |
+    e.isFromTemplateInstantiation(template) and
+    result = "isFromTemplateInstantiation(" + template.toString() + ")"
+  )
+  or
+  exists(Element template |
+    e.isFromUninstantiatedTemplate(template) and
+    result = "isFromUninstantiatedTemplate(" + template.toString() + ")"
+  )
 }
 
 from Element e
 where
-  not e.getLocation() instanceof UnknownLocation and
+  e.getLocation().getFile().getBaseName() != "" and
   not e instanceof Folder
-select e, concat(describe(e), ", ")
+select e, strictconcat(describe(e), ", ")

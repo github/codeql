@@ -1,6 +1,6 @@
 import csharp
 import Common
 
-from Config c, DataFlow::Node source, DataFlow::Node sink
-where c.hasFlow(source, sink)
+from DataFlow::Node source, DataFlow::Node sink
+where Flow::flow(source, sink)
 select sink

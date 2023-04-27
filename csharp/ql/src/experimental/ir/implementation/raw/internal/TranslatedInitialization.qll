@@ -276,7 +276,8 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
  * an explicit element in an initializer list.
  */
 class TranslatedExplicitElementInitialization extends TranslatedElementInitialization,
-  TTranslatedExplicitElementInitialization, InitializationContext {
+  TTranslatedExplicitElementInitialization, InitializationContext
+{
   int elementIndex;
 
   TranslatedExplicitElementInitialization() {
@@ -312,7 +313,8 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
 
 // TODO: Possibly refactor into something simpler
 abstract class TranslatedConstructorCallFromConstructor extends TranslatedElement,
-  ConstructorCallContext {
+  ConstructorCallContext
+{
   Call call;
 
   final override Language::AST getAst() { result = call }
@@ -344,7 +346,8 @@ TranslatedConstructorInitializer getTranslatedConstructorInitializer(Constructor
  */
 // Review: do we need the conversion instructions in C#?
 class TranslatedConstructorInitializer extends TranslatedConstructorCallFromConstructor,
-  TTranslatedConstructorInitializer {
+  TTranslatedConstructorInitializer
+{
   TranslatedConstructorInitializer() { this = TTranslatedConstructorInitializer(call) }
 
   override string toString() { result = "constructor init: " + call.toString() }

@@ -606,9 +606,9 @@ newtype TTranslatedElement =
     not ignoreExpr(expr) and
     (
       exists(Initializer init | init.getExpr().getFullyConverted() = expr) or
-      exists(ClassAggregateLiteral initList | initList.getFieldExpr(_).getFullyConverted() = expr) or
+      exists(ClassAggregateLiteral initList | initList.getAFieldExpr(_).getFullyConverted() = expr) or
       exists(ArrayOrVectorAggregateLiteral initList |
-        initList.getElementExpr(_).getFullyConverted() = expr
+        initList.getAnElementExpr(_).getFullyConverted() = expr
       ) or
       exists(ReturnStmt returnStmt | returnStmt.getExpr().getFullyConverted() = expr) or
       exists(ConstructorFieldInit fieldInit | fieldInit.getExpr().getFullyConverted() = expr) or
@@ -619,18 +619,19 @@ newtype TTranslatedElement =
     )
   } or
   // The initialization of a field via a member of an initializer list.
-  TTranslatedExplicitFieldInitialization(Expr ast, Field field, Expr expr) {
+  TTranslatedExplicitFieldInitialization(Expr ast, Field field, Expr expr, int position) {
     exists(ClassAggregateLiteral initList |
       not ignoreExpr(initList) and
       ast = initList and
-      expr = initList.getFieldExpr(field).getFullyConverted()
+      expr = initList.getFieldExpr(field, position).getFullyConverted()
     )
     or
     exists(ConstructorFieldInit init |
       not ignoreExpr(init) and
       ast = init and
       field = init.getTarget() and
-      expr = init.getExpr().getFullyConverted()
+      expr = init.getExpr().getFullyConverted() and
+      position = -1
     )
   } or
   // The value initialization of a field due to an omitted member of an
@@ -643,9 +644,11 @@ newtype TTranslatedElement =
     )
   } or
   // The initialization of an array element via a member of an initializer list.
-  TTranslatedExplicitElementInitialization(ArrayOrVectorAggregateLiteral initList, int elementIndex) {
+  TTranslatedExplicitElementInitialization(
+    ArrayOrVectorAggregateLiteral initList, int elementIndex, int position
+  ) {
     not ignoreExpr(initList) and
-    exists(initList.getElementExpr(elementIndex))
+    exists(initList.getElementExpr(elementIndex, position))
   } or
   // The value initialization of a range of array elements that were omitted
   // from an initializer list.
@@ -782,7 +785,7 @@ private int getNextExplicitlyInitializedElementAfter(
   ArrayOrVectorAggregateLiteral initList, int afterElementIndex
 ) {
   isFirstValueInitializedElementInRange(initList, afterElementIndex) and
-  result = min(int i | exists(initList.getElementExpr(i)) and i > afterElementIndex)
+  result = min(int i | exists(initList.getAnElementExpr(i)) and i > afterElementIndex)
 }
 
 /**
@@ -795,7 +798,7 @@ private predicate isFirstValueInitializedElementInRange(
   initList.isValueInitialized(elementIndex) and
   (
     elementIndex = 0 or
-    exists(initList.getElementExpr(elementIndex - 1))
+    exists(initList.getAnElementExpr(elementIndex - 1))
   )
 }
 

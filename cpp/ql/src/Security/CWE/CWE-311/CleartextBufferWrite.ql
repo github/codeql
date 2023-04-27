@@ -16,7 +16,7 @@ import semmle.code.cpp.security.BufferWrite as BufferWrite
 import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import DataFlow::PathGraph
+import ToBufferFlow::PathGraph
 
 /**
  * A buffer write into a sensitive expression.
@@ -39,27 +39,29 @@ class SensitiveBufferWrite extends Expr instanceof BufferWrite::BufferWrite {
  * A taint flow configuration for flow from user input to a buffer write
  * into a sensitive expression.
  */
-class ToBufferConfiguration extends TaintTracking::Configuration {
-  ToBufferConfiguration() { this = "ToBufferConfiguration" }
+module ToBufferConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(SensitiveBufferWrite w | w.getASource() = sink.asExpr())
-  }
+  predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
+}
+
+module ToBufferFlow = TaintTracking::Global<ToBufferConfig>;
+
+predicate isSinkImpl(DataFlow::Node sink, SensitiveBufferWrite w) {
+  w.getASource() = sink.asIndirectExpr()
 }
 
 from
-  ToBufferConfiguration config, SensitiveBufferWrite w, DataFlow::PathNode sourceNode,
-  DataFlow::PathNode sinkNode, FlowSource source
+  SensitiveBufferWrite w, ToBufferFlow::PathNode sourceNode, ToBufferFlow::PathNode sinkNode,
+  FlowSource source
 where
-  config.hasFlowPath(sourceNode, sinkNode) and
+  ToBufferFlow::flowPath(sourceNode, sinkNode) and
   sourceNode.getNode() = source and
-  w.getASource() = sinkNode.getNode().asExpr()
+  isSinkImpl(sinkNode.getNode(), w)
 select w, sourceNode, sinkNode,
   "This write into buffer '" + w.getDest().toString() + "' may contain unencrypted data from $@.",
   source, "user input (" + source.getSourceType() + ")"

@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "Built a Gradle project without the [Gradle wrapper](https://docs.gradle.org/current/userguide/gradle_wrapper.html). This may use an incompatible version of Gradle.",
+  "severity": "warning",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/guessed-gradle-version",
+    "name": "Required Gradle version not specified"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}

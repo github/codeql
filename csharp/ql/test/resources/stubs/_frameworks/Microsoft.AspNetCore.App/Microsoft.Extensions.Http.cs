@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Http, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace DependencyInjection
         {
-            // Generated from `Microsoft.Extensions.DependencyInjection.HttpClientBuilderExtensions` in `Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HttpClientBuilderExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder AddHttpMessageHandler(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder, System.Func<System.Net.Http.DelegatingHandler> configureHandler) => throw null;
@@ -27,7 +27,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder SetHandlerLifetime(this Microsoft.Extensions.DependencyInjection.IHttpClientBuilder builder, System.TimeSpan handlerLifetime) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.HttpClientFactoryServiceCollectionExtensions` in `Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HttpClientFactoryServiceCollectionExtensions
             {
                 public static Microsoft.Extensions.DependencyInjection.IServiceCollection AddHttpClient(this Microsoft.Extensions.DependencyInjection.IServiceCollection services) => throw null;
@@ -52,7 +51,6 @@ namespace Microsoft
                 public static Microsoft.Extensions.DependencyInjection.IHttpClientBuilder AddHttpClient<TClient>(this Microsoft.Extensions.DependencyInjection.IServiceCollection services, string name, System.Action<System.IServiceProvider, System.Net.Http.HttpClient> configureClient) where TClient : class => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.DependencyInjection.IHttpClientBuilder` in `Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IHttpClientBuilder
             {
                 string Name { get; }
@@ -62,7 +60,6 @@ namespace Microsoft
         }
         namespace Http
         {
-            // Generated from `Microsoft.Extensions.Http.HttpClientFactoryOptions` in `Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class HttpClientFactoryOptions
             {
                 public System.TimeSpan HandlerLifetime { get => throw null; set => throw null; }
@@ -73,7 +70,6 @@ namespace Microsoft
                 public bool SuppressHandlerScope { get => throw null; set => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Http.HttpMessageHandlerBuilder` in `Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public abstract class HttpMessageHandlerBuilder
             {
                 public abstract System.Collections.Generic.IList<System.Net.Http.DelegatingHandler> AdditionalHandlers { get; }
@@ -85,13 +81,11 @@ namespace Microsoft
                 public virtual System.IServiceProvider Services { get => throw null; }
             }
 
-            // Generated from `Microsoft.Extensions.Http.IHttpMessageHandlerBuilderFilter` in `Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IHttpMessageHandlerBuilderFilter
             {
                 System.Action<Microsoft.Extensions.Http.HttpMessageHandlerBuilder> Configure(System.Action<Microsoft.Extensions.Http.HttpMessageHandlerBuilder> next);
             }
 
-            // Generated from `Microsoft.Extensions.Http.ITypedHttpClientFactory<>` in `Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ITypedHttpClientFactory<TClient>
             {
                 TClient CreateClient(System.Net.Http.HttpClient httpClient);
@@ -99,7 +93,6 @@ namespace Microsoft
 
             namespace Logging
             {
-                // Generated from `Microsoft.Extensions.Http.Logging.LoggingHttpMessageHandler` in `Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class LoggingHttpMessageHandler : System.Net.Http.DelegatingHandler
                 {
                     public LoggingHttpMessageHandler(Microsoft.Extensions.Logging.ILogger logger) => throw null;
@@ -107,7 +100,6 @@ namespace Microsoft
                     protected internal override System.Threading.Tasks.Task<System.Net.Http.HttpResponseMessage> SendAsync(System.Net.Http.HttpRequestMessage request, System.Threading.CancellationToken cancellationToken) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Http.Logging.LoggingScopeHttpMessageHandler` in `Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class LoggingScopeHttpMessageHandler : System.Net.Http.DelegatingHandler
                 {
                     public LoggingScopeHttpMessageHandler(Microsoft.Extensions.Logging.ILogger logger) => throw null;
@@ -121,39 +113,25 @@ namespace Microsoft
 }
 namespace System
 {
-    namespace Diagnostics
-    {
-        namespace CodeAnalysis
-        {
-            /* Duplicate type 'DynamicallyAccessedMemberTypes' is not stubbed in this assembly 'Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'. */
-
-            /* Duplicate type 'DynamicallyAccessedMembersAttribute' is not stubbed in this assembly 'Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60'. */
-
-        }
-    }
     namespace Net
     {
         namespace Http
         {
-            // Generated from `System.Net.Http.HttpClientFactoryExtensions` in `Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HttpClientFactoryExtensions
             {
                 public static System.Net.Http.HttpClient CreateClient(this System.Net.Http.IHttpClientFactory factory) => throw null;
             }
 
-            // Generated from `System.Net.Http.HttpMessageHandlerFactoryExtensions` in `Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class HttpMessageHandlerFactoryExtensions
             {
                 public static System.Net.Http.HttpMessageHandler CreateHandler(this System.Net.Http.IHttpMessageHandlerFactory factory) => throw null;
             }
 
-            // Generated from `System.Net.Http.IHttpClientFactory` in `Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IHttpClientFactory
             {
                 System.Net.Http.HttpClient CreateClient(string name);
             }
 
-            // Generated from `System.Net.Http.IHttpMessageHandlerFactory` in `Microsoft.Extensions.Http, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IHttpMessageHandlerFactory
             {
                 System.Net.Http.HttpMessageHandler CreateHandler(string name);

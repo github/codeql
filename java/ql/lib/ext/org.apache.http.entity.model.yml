@@ -3,9 +3,9 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.http.entity", "BasicHttpEntity", True, "setContent", "(InputStream)", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["org.apache.http.entity", "BasicHttpEntity", True, "setContent", "(InputStream)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["org.apache.http.entity", "BufferedHttpEntity", True, "BufferedHttpEntity", "(HttpEntity)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.http.entity", "ByteArrayEntity", True, "ByteArrayEntity", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["org.apache.http.entity", "ByteArrayEntity", True, "ByteArrayEntity", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["org.apache.http.entity", "HttpEntityWrapper", True, "HttpEntityWrapper", "(HttpEntity)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.apache.http.entity", "InputStreamEntity", True, "InputStreamEntity", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["org.apache.http.entity", "StringEntity", True, "StringEntity", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["org.apache.http.entity", "StringEntity", True, "StringEntity", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]

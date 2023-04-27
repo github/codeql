@@ -31,16 +31,16 @@ following snippet demonstrates.
 
 This query selects the API graph node corresponding to the ``re`` module. This node represents the fact that the ``re`` module has been imported rather than a specific location in the program where the import happens. Therefore, there will be at most one result per project, and it will not have a useful location, so you'll have to click `Show 1 non-source result` in order to see it.
 
-To find where the ``re`` module is referenced in the program, you can use the ``getAUse`` method. The following query selects all references to the ``re`` module in the current database.
+To find where the ``re`` module is referenced in the program, you can use the ``getAValueReachableFromSource`` method. The following query selects all references to the ``re`` module in the current database.
 
 .. code-block:: ql
 
     import python
     import semmle.python.ApiGraphs
 
-    select API::moduleImport("re").getAUse()
+    select API::moduleImport("re").getAValueReachableFromSource()
 
-Note that the ``getAUse`` method accounts for local flow, so that ``my_re_compile``
+Note that the ``getAValueReachableFromSource`` method accounts for local flow, so that ``my_re_compile``
 in the following snippet is
 correctly recognized as a reference to the ``re.compile`` function.
 
@@ -53,7 +53,7 @@ correctly recognized as a reference to the ``re.compile`` function.
     r = my_re_compile(".*")
 
 If you only require immediate uses, without taking local flow into account, then you can use
-the ``getAnImmediateUse`` method instead.
+the ``asSource`` method instead.
 
 Note that the given module name *must not* contain any dots. Thus, something like
 ``API::moduleImport("flask.views")`` will not do what you expect. Instead, this should be decomposed
@@ -71,7 +71,7 @@ the above ``re.compile`` example, you can now find references to ``re.compile``.
     import python
     import semmle.python.ApiGraphs
 
-    select API::moduleImport("re").getMember("compile").getAUse()
+    select API::moduleImport("re").getMember("compile").getAValueReachableFromSource()
 
 In addition to ``getMember``, you can use the ``getUnknownMember`` method to find references to API
 components where the name is not known statically. You can use the ``getAMember`` method to
@@ -89,12 +89,36 @@ where the return value of ``re.compile`` is used:
     import python
     import semmle.python.ApiGraphs
 
-    select API::moduleImport("re").getMember("compile").getReturn().getAUse()
+    select API::moduleImport("re").getMember("compile").getReturn().getAValueReachableFromSource()
 
 Note that this includes all uses of the result of ``re.compile``, including those reachable via
-local flow. To get just the *calls* to ``re.compile``, you can use ``getAnImmediateUse`` instead of
-``getAUse``. As this is a common occurrence, you can use ``getACall`` instead of
-``getReturn`` followed by ``getAnImmediateUse``.
+local flow. To get just the *calls* to ``re.compile``, you can use ``asSource`` instead of
+``getAValueReachableFromSource``. As this is a common occurrence, you can, instead of
+``getReturn`` followed by ``asSource``, simply use ``getACall``. This will result in an
+``API::CallNode``, which deserves a small description of its own.
+
+``API::CallNode``s are not ``API::Node``s. Instead they are ``DataFlow::Node``s with some convenience
+predicates that allows you to recover ``API::Node``s for the return value as well as for arguments
+to the call. This enables you to constrain the call in various ways using the API graph. The following
+snippet finds all calls to ``re.compile`` where the ``pattern`` argument comes from parsing a command
+line argument using the ``argparse`` library.
+
+.. code-block:: ql
+
+    import python
+    import semmle.python.ApiGraphs
+
+    from API::CallNode call
+    where
+        call = API::moduleImport("re").getMember("compile").getACall() and
+        call.getParameter(0, "pattern") =
+            API::moduleImport("argparse")
+                .getMember("ArgumentParser")
+                .getReturn()
+                .getMember("parse_args")
+                .getMember(_)
+    select call
+
 
 Note that the API graph does not distinguish between class instantiations and function calls. As far
 as it's concerned, both are simply places where an API graph node is called.
@@ -122,7 +146,7 @@ all subclasses of ``View``, you must explicitly include the subclasses of ``Meth
         API::moduleImport("flask").getMember("views").getMember(["View", "MethodView"]).getASubclass*()
     }
 
-    select viewClass().getAUse()
+    select viewClass().getAValueReachableFromSource()
 
 Note the use of the set literal ``["View", "MethodView"]`` to match both classes simultaneously.
 

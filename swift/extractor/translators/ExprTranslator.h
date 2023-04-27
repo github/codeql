@@ -121,6 +121,7 @@ class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
   void fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,
                                codeql::AbstractClosureExpr& entry);
   TrapLabel<ArgumentTag> emitArgument(const swift::Argument& arg);
+  TrapLabel<KeyPathComponentTag> emitKeyPathComponent(const swift::KeyPathExpr::Component& expr);
   void fillExplicitCastExpr(const swift::ExplicitCastExpr& expr, codeql::ExplicitCastExpr& entry);
   void fillIdentityExpr(const swift::IdentityExpr& expr, codeql::IdentityExpr& entry);
   void fillAnyTryExpr(const swift::AnyTryExpr& expr, codeql::AnyTryExpr& entry);

@@ -841,6 +841,12 @@ module TaintedPath {
       dst = call and
       srclabel = dstlabel
     )
+    or
+    exists(HtmlSanitizerCall call |
+      src = call.getInput() and
+      dst = call and
+      srclabel = dstlabel
+    )
   }
 
   /**

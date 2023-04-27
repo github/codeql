@@ -3,18 +3,26 @@ import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
 import TestUtilities.InlineFlowTest
 
-class TaintFlowConf extends DefaultTaintFlowConf {
-  override predicate isSource(DataFlow::Node n) {
-    super.isSource(n)
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) {
+    DefaultFlowConfig::isSource(node)
     or
-    n instanceof RemoteFlowSource
+    node instanceof RemoteFlowSource
   }
+
+  predicate isSink = DefaultFlowConfig::isSink/1;
 }
 
-class ValueFlowConf extends DefaultValueFlowConf {
-  override predicate isSource(DataFlow::Node n) {
-    super.isSource(n)
-    or
-    n instanceof RemoteFlowSource
+module TaintFlow = TaintTracking::Global<Config>;
+
+module ValueFlow = DataFlow::Global<Config>;
+
+class Test extends InlineFlowTest {
+  override predicate hasTaintFlow(DataFlow::Node source, DataFlow::Node sink) {
+    TaintFlow::flow(source, sink)
+  }
+
+  override predicate hasValueFlow(DataFlow::Node source, DataFlow::Node sink) {
+    ValueFlow::flow(source, sink)
   }
 }

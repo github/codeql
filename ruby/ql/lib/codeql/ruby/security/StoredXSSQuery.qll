@@ -16,9 +16,11 @@ module StoredXss {
   import XSS::StoredXss
 
   /**
+   * DEPRECATED.
+   *
    * A taint-tracking configuration for reasoning about Stored XSS.
    */
-  class Configuration extends TaintTracking::Configuration {
+  deprecated class Configuration extends TaintTracking::Configuration {
     Configuration() { this = "StoredXss" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -38,6 +40,23 @@ module StoredXss {
       isAdditionalXssTaintStep(node1, node2)
     }
   }
+
+  /**
+   * A taint-tracking configuration for reasoning about Stored XSS.
+   */
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+      isAdditionalXssTaintStep(node1, node2)
+    }
+  }
+
+  import TaintTracking::Global<Config>
 }
 
 /** DEPRECATED: Alias for StoredXss */

@@ -1,3 +1,33 @@
+## 0.5.0
+
+### Minor Analysis Improvements
+
+* The receiver arguments of `net/http.Header.Set` and `.Del` are no longer flagged by query `go/untrusted-data-to-external-api`.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+No user-facing changes.
+
+## 0.4.4
+
+### Minor Analysis Improvements
+
+* The query `go/incorrect-integer-conversion` now correctly recognizes guards of the form `if val <= x` to protect a conversion `uintX(val)` when `x` is in the range `(math.MaxIntX, math.MaxUintX]`.
+
+## 0.4.3
+
+### New Queries
+
+* Added a new query, `go/unhandled-writable-file-close`, to detect instances where writable file handles are closed without appropriate checks for errors.
+
+### Query Metadata Changes
+
+* The precision of the `go/log-injection` query was decreased from `high` to `medium`, since it may not be able to identify every way in which log data may be sanitized. This also aligns it with the precision of comparable queries for other languages.
+
 ## 0.4.2
 
 No user-facing changes.

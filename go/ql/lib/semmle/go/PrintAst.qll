@@ -5,7 +5,7 @@
 import go
 
 /**
- * Hook to customize the files and functions printed by this module.
+ * A hook to customize the files and functions printed by this module.
  *
  * For an AstNode to be printed, it always requires `shouldPrintFile(f)` to hold
  * for its containing file `f`, and additionally requires `shouldPrintFunction(fun)`

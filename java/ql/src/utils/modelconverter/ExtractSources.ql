@@ -12,6 +12,6 @@ from
   string output, string kind, string provenance
 where
   sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance) and
-  provenance != "generated"
+  not provenance.matches("%generated")
 select package, type, subtypes, name, signature, ext, output, kind, provenance order by
     package, type, name, signature, output, kind

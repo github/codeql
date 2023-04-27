@@ -1,3 +1,36 @@
+## 0.6.0
+
+### New Queries
+
+* Added a new experimental query, `rb/server-side-template-injection`, to detect cases where user input may be embedded into a template's code in an unsafe manner.
+
+## 0.5.6
+
+### Minor Analysis Improvements
+
+* `rb/sensitive-get-query` no longer reports flow paths from input parameters to sensitive use nodes. This avoids cases where many flow paths could be generated for a single parameter, which caused excessive paths to be generated.
+
+## 0.5.5
+
+### New Queries
+
+* Added a new query, `rb/zip-slip`, to detect arbitrary file writes during extraction of zip/tar archives.
+
+## 0.5.4
+
+No user-facing changes.
+
+## 0.5.3
+
+### New Queries
+
+* Added a new query, `rb/regex/badly-anchored-regexp`, to detect regular expression validators that use `^` and `$` 
+  as anchors and therefore might match only a single line of a multi-line string.
+
+### Minor Analysis Improvements
+
+* The `rb/polynomial-redos` query now considers the entrypoints of the API of a gem as sources.
+
 ## 0.5.2
 
 ### New Queries

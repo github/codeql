@@ -8,9 +8,11 @@ import semmle.code.java.dataflow.TaintTracking3
 import semmle.code.java.security.AndroidIntentRedirection
 
 /**
+ * DEPRECATED: Use `IntentRedirectionFlow` instead.
+ *
  * A taint tracking configuration for tainted Intents being used to start Android components.
  */
-class IntentRedirectionConfiguration extends TaintTracking::Configuration {
+deprecated class IntentRedirectionConfiguration extends TaintTracking::Configuration {
   IntentRedirectionConfiguration() { this = "IntentRedirectionConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
@@ -26,31 +28,45 @@ class IntentRedirectionConfiguration extends TaintTracking::Configuration {
   }
 }
 
+/** A taint tracking configuration for tainted Intents being used to start Android components. */
+module IntentRedirectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof IntentRedirectionSink }
+
+  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof IntentRedirectionSanitizer }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    any(IntentRedirectionAdditionalTaintStep c).step(node1, node2)
+  }
+}
+
+/** Tracks the flow of tainted Intents being used to start Android components. */
+module IntentRedirectionFlow = TaintTracking::Global<IntentRedirectionConfig>;
+
 /**
  * A sanitizer for sinks that receive the original incoming Intent,
  * since its component cannot be arbitrarily set.
  */
 private class OriginalIntentSanitizer extends IntentRedirectionSanitizer {
-  OriginalIntentSanitizer() { any(SameIntentBeingRelaunchedConfiguration c).hasFlowTo(this) }
+  OriginalIntentSanitizer() { SameIntentBeingRelaunchedFlow::flowTo(this) }
 }
 
 /**
  * Data flow configuration used to discard incoming Intents
  * flowing directly to sinks that start Android components.
  */
-private class SameIntentBeingRelaunchedConfiguration extends DataFlow2::Configuration {
-  SameIntentBeingRelaunchedConfiguration() { this = "SameIntentBeingRelaunchedConfiguration" }
+private module SameIntentBeingRelaunchedConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof IntentRedirectionSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof IntentRedirectionSink }
-
-  override predicate isBarrier(DataFlow::Node barrier) {
+  predicate isBarrier(DataFlow::Node barrier) {
     // Don't discard the Intent if its original component is tainted
     barrier instanceof IntentWithTaintedComponent
   }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // Intents being built with the copy constructor from the original Intent are discarded too
     exists(ClassInstanceExpr cie |
       cie.getConstructedType() instanceof TypeIntent and
@@ -61,12 +77,14 @@ private class SameIntentBeingRelaunchedConfiguration extends DataFlow2::Configur
   }
 }
 
+private module SameIntentBeingRelaunchedFlow = DataFlow::Global<SameIntentBeingRelaunchedConfig>;
+
 /** An `Intent` with a tainted component. */
 private class IntentWithTaintedComponent extends DataFlow::Node {
   IntentWithTaintedComponent() {
-    exists(IntentSetComponent setExpr, TaintedIntentComponentConf conf |
+    exists(IntentSetComponent setExpr |
       setExpr.getQualifier() = this.asExpr() and
-      conf.hasFlowTo(DataFlow::exprNode(setExpr.getSink()))
+      TaintedIntentComponentFlow::flowTo(DataFlow::exprNode(setExpr.getSink()))
     )
   }
 }
@@ -74,15 +92,15 @@ private class IntentWithTaintedComponent extends DataFlow::Node {
 /**
  * A taint tracking configuration for tainted data flowing to an `Intent`'s component.
  */
-private class TaintedIntentComponentConf extends TaintTracking3::Configuration {
-  TaintedIntentComponentConf() { this = "TaintedIntentComponentConf" }
+private module TaintedIntentComponentConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     any(IntentSetComponent setComponent).getSink() = sink.asExpr()
   }
 }
+
+private module TaintedIntentComponentFlow = TaintTracking::Global<TaintedIntentComponentConfig>;
 
 /** A call to a method that changes the component of an `Intent`. */
 private class IntentSetComponent extends MethodAccess {

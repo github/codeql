@@ -15,10 +15,12 @@
 import java
 import semmle.code.java.security.IntentUriPermissionManipulationQuery
 import semmle.code.java.dataflow.DataFlow
-import DataFlow::PathGraph
+import IntentUriPermissionManipulationFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink
-where any(IntentUriPermissionManipulationConf c).hasFlowPath(source, sink)
+from
+  IntentUriPermissionManipulationFlow::PathNode source,
+  IntentUriPermissionManipulationFlow::PathNode sink
+where IntentUriPermissionManipulationFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "This Intent can be set with arbitrary flags from a $@, " +
     "and used to give access to internal content providers.", source.getNode(),

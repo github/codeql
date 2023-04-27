@@ -228,7 +228,7 @@ class TestCase extends TTestCase {
    */
   Type getOutputType() {
     if baseOutput = SummaryComponentStack::return()
-    then result = getReturnType(callable)
+    then result = callable.getReturnType()
     else
       exists(int i |
         baseOutput = SummaryComponentStack::argument(i) and

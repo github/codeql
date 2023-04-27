@@ -17,10 +17,10 @@ private module FlowSummaries {
 
 class SummarizedCallableBase = Callable;
 
-DataFlowCallable inject(SummarizedCallable c) { result.asCallable() = c }
+DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
-ArgumentPosition instanceParameterPosition() { result = -1 }
+ArgumentPosition callbackSelfParameterPosition() { result = -1 }
 
 /** Gets the textual representation of a parameter position in the format used for flow summaries. */
 string getParameterPosition(ParameterPosition pos) { result = pos.toString() }
@@ -189,9 +189,7 @@ class InterpretNode extends TInterpretNode {
 
   /** Gets the callable that this node corresponds to, if any. */
   DataFlowCallable asCallable() {
-    result.asFunction() = this.asElement().asEntity()
-    or
-    result.asFuncLit() = this.asElement().asAstNode()
+    result.asSummarizedCallable().asFunction() = this.asElement().asEntity()
   }
 
   /** Gets the target of this call, if any. */

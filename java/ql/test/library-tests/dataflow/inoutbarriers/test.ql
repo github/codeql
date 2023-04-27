@@ -14,54 +14,46 @@ predicate sink0(Node n) {
   )
 }
 
-class Conf1 extends Configuration {
-  Conf1() { this = "inoutbarriers1" }
+module Conf1 implements ConfigSig {
+  predicate isSource(Node n) { src0(n) }
 
-  override predicate isSource(Node n) { src0(n) }
-
-  override predicate isSink(Node n) { sink0(n) }
+  predicate isSink(Node n) { sink0(n) }
 }
 
-class Conf2 extends Configuration {
-  Conf2() { this = "inoutbarriers2" }
+module Conf2 implements ConfigSig {
+  predicate isSource(Node n) { src0(n) }
 
-  override predicate isSource(Node n) { src0(n) }
+  predicate isSink(Node n) { sink0(n) }
 
-  override predicate isSink(Node n) { sink0(n) }
-
-  override predicate isBarrierIn(Node n) { src0(n) }
+  predicate isBarrierIn(Node n) { src0(n) }
 }
 
-class Conf3 extends Configuration {
-  Conf3() { this = "inoutbarriers3" }
+module Conf3 implements ConfigSig {
+  predicate isSource(Node n) { src0(n) }
 
-  override predicate isSource(Node n) { src0(n) }
+  predicate isSink(Node n) { sink0(n) }
 
-  override predicate isSink(Node n) { sink0(n) }
-
-  override predicate isBarrierOut(Node n) { sink0(n) }
+  predicate isBarrierOut(Node n) { sink0(n) }
 }
 
-class Conf4 extends Configuration {
-  Conf4() { this = "inoutbarriers4" }
+module Conf4 implements ConfigSig {
+  predicate isSource(Node n) { src0(n) }
 
-  override predicate isSource(Node n) { src0(n) }
+  predicate isSink(Node n) { sink0(n) }
 
-  override predicate isSink(Node n) { sink0(n) }
+  predicate isBarrierIn(Node n) { src0(n) }
 
-  override predicate isBarrierIn(Node n) { src0(n) }
-
-  override predicate isBarrierOut(Node n) { sink0(n) }
+  predicate isBarrierOut(Node n) { sink0(n) }
 }
 
 predicate flow(Node src, Node sink, string s) {
-  any(Conf1 c).hasFlow(src, sink) and s = "nobarrier"
+  Global<Conf1>::flow(src, sink) and s = "nobarrier"
   or
-  any(Conf2 c).hasFlow(src, sink) and s = "srcbarrier"
+  Global<Conf2>::flow(src, sink) and s = "srcbarrier"
   or
-  any(Conf3 c).hasFlow(src, sink) and s = "sinkbarrier"
+  Global<Conf3>::flow(src, sink) and s = "sinkbarrier"
   or
-  any(Conf4 c).hasFlow(src, sink) and s = "both"
+  Global<Conf4>::flow(src, sink) and s = "both"
 }
 
 from Node src, Node sink, string s

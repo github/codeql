@@ -35,22 +35,6 @@ private module Gin {
     }
   }
 
-  private class ParamsGet extends TaintTracking::FunctionModel, Method {
-    ParamsGet() { this.hasQualifiedName(packagePath(), "Params", "Get") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp.isResult(0)
-    }
-  }
-
-  private class ParamsByName extends TaintTracking::FunctionModel, Method {
-    ParamsByName() { this.hasQualifiedName(packagePath(), "Params", "ByName") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp.isResult()
-    }
-  }
-
   /**
    * A call to a method on `Context` struct that unmarshals data into a target.
    */

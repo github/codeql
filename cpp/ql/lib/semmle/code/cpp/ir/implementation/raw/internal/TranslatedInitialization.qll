@@ -201,11 +201,13 @@ class TranslatedClassListInitialization extends TranslatedListInitialization {
   override ClassAggregateLiteral expr;
 
   override TranslatedElement getChild(int id) {
-    exists(TranslatedFieldInitialization fieldInit |
-      result = fieldInit and
-      fieldInit = getTranslatedFieldInitialization(expr, _) and
-      fieldInit.getOrder() = id
-    )
+    result =
+      rank[id + 1](TranslatedFieldInitialization fieldInit, int ord |
+        fieldInit = getTranslatedFieldInitialization(expr, _) and
+        fieldInit.getOrder() = ord
+      |
+        fieldInit order by ord, fieldInit.getPosition()
+      )
   }
 }
 
@@ -222,7 +224,7 @@ class TranslatedArrayListInitialization extends TranslatedListInitialization {
       rank[id + 1](TranslatedElementInitialization init |
         init.getInitList() = expr
       |
-        init order by init.getElementIndex()
+        init order by init.getElementIndex(), init.getPosition()
       )
   }
 }
@@ -440,7 +442,8 @@ class TranslatedStringLiteralInitialization extends TranslatedDirectInitializati
 }
 
 class TranslatedConstructorInitialization extends TranslatedDirectInitialization,
-  StructorCallContext {
+  StructorCallContext
+{
   override ConstructorCall expr;
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -521,6 +524,9 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
   final InstructionTag getFieldAddressTag() { result = InitializerFieldAddressTag() }
 
   final Field getField() { result = field }
+
+  /** Gets the position in the initializer list, or `-1` if the initialization is implicit. */
+  int getPosition() { result = -1 }
 }
 
 /**
@@ -528,11 +534,13 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
  * explicit element in an initializer list.
  */
 class TranslatedExplicitFieldInitialization extends TranslatedFieldInitialization,
-  InitializationContext, TTranslatedExplicitFieldInitialization {
+  InitializationContext, TTranslatedExplicitFieldInitialization
+{
   Expr expr;
+  int position;
 
   TranslatedExplicitFieldInitialization() {
-    this = TTranslatedExplicitFieldInitialization(ast, field, expr)
+    this = TTranslatedExplicitFieldInitialization(ast, field, expr, position)
   }
 
   override Instruction getTargetAddress() { result = getInstruction(getFieldAddressTag()) }
@@ -554,6 +562,8 @@ class TranslatedExplicitFieldInitialization extends TranslatedFieldInitializatio
   private TranslatedInitialization getInitialization() {
     result = getTranslatedInitialization(expr)
   }
+
+  override int getPosition() { result = position }
 }
 
 private string getZeroValue(Type type) {
@@ -565,7 +575,8 @@ private string getZeroValue(Type type) {
  * corresponding element in the initializer list.
  */
 class TranslatedFieldValueInitialization extends TranslatedFieldInitialization,
-  TTranslatedFieldValueInitialization {
+  TTranslatedFieldValueInitialization
+{
   TranslatedFieldValueInitialization() { this = TTranslatedFieldValueInitialization(ast, field) }
 
   override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
@@ -686,6 +697,8 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
 
   abstract int getElementIndex();
 
+  int getPosition() { result = -1 }
+
   final InstructionTag getElementAddressTag() { result = InitializerElementAddressTag() }
 
   final InstructionTag getElementIndexTag() { result = InitializerElementIndexTag() }
@@ -700,11 +713,13 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
  * an explicit element in an initializer list.
  */
 class TranslatedExplicitElementInitialization extends TranslatedElementInitialization,
-  TTranslatedExplicitElementInitialization, InitializationContext {
+  TTranslatedExplicitElementInitialization, InitializationContext
+{
   int elementIndex;
+  int position;
 
   TranslatedExplicitElementInitialization() {
-    this = TTranslatedExplicitElementInitialization(initList, elementIndex)
+    this = TTranslatedExplicitElementInitialization(initList, elementIndex, position)
   }
 
   override Instruction getTargetAddress() { result = getInstruction(getElementAddressTag()) }
@@ -727,8 +742,13 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
 
   override int getElementIndex() { result = elementIndex }
 
+  override int getPosition() { result = position }
+
   TranslatedInitialization getInitialization() {
-    result = getTranslatedInitialization(initList.getElementExpr(elementIndex).getFullyConverted())
+    result =
+      getTranslatedInitialization(initList
+            .getElementExpr(elementIndex, position)
+            .getFullyConverted())
   }
 }
 
@@ -737,7 +757,8 @@ class TranslatedExplicitElementInitialization extends TranslatedElementInitializ
  * elements without corresponding elements in the initializer list.
  */
 class TranslatedElementValueInitialization extends TranslatedElementInitialization,
-  TTranslatedElementValueInitialization {
+  TTranslatedElementValueInitialization
+{
   int elementIndex;
   int elementCount;
 
@@ -881,7 +902,8 @@ abstract class TranslatedBaseStructorCall extends TranslatedStructorCallFromStru
  * Represents a call to a delegating or base class constructor from within a constructor.
  */
 abstract class TranslatedConstructorCallFromConstructor extends TranslatedStructorCallFromStructor,
-  TTranslatedConstructorBaseInit {
+  TTranslatedConstructorBaseInit
+{
   TranslatedConstructorCallFromConstructor() { this = TTranslatedConstructorBaseInit(call) }
 }
 
@@ -917,7 +939,8 @@ class TranslatedConstructorDelegationInit extends TranslatedConstructorCallFromC
  * derived class constructor
  */
 class TranslatedConstructorBaseInit extends TranslatedConstructorCallFromConstructor,
-  TranslatedBaseStructorCall {
+  TranslatedBaseStructorCall
+{
   TranslatedConstructorBaseInit() { not call instanceof ConstructorDelegationInit }
 
   final override string toString() { result = "construct base: " + call.toString() }
@@ -934,7 +957,8 @@ TranslatedDestructorBaseDestruction getTranslatedDestructorBaseDestruction(
  * derived class destructor.
  */
 class TranslatedDestructorBaseDestruction extends TranslatedBaseStructorCall,
-  TTranslatedDestructorBaseDestruction {
+  TTranslatedDestructorBaseDestruction
+{
   TranslatedDestructorBaseDestruction() { this = TTranslatedDestructorBaseDestruction(call) }
 
   final override string toString() { result = "destroy base: " + call.toString() }

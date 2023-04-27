@@ -3,15 +3,18 @@ private import DataFlowImplSpecific::Public
 import Cached
 
 module DataFlowImplCommonPublic {
-  /** A state value to track during data flow. */
-  class FlowState = string;
+  /** Provides `FlowState = string`. */
+  module FlowStateString {
+    /** A state value to track during data flow. */
+    class FlowState = string;
 
-  /**
-   * The default state, which is used when the state is unspecified for a source
-   * or a sink.
-   */
-  class FlowStateEmpty extends FlowState {
-    FlowStateEmpty() { this = "" }
+    /**
+     * The default state, which is used when the state is unspecified for a source
+     * or a sink.
+     */
+    class FlowStateEmpty extends FlowState {
+      FlowStateEmpty() { this = "" }
+    }
   }
 
   private newtype TFlowFeature =
@@ -137,10 +140,8 @@ private module LambdaFlow {
   }
 
   pragma[nomagic]
-  private TReturnPositionSimple viableReturnPosLambda(
-    DataFlowCall call, DataFlowCallOption lastCall, ReturnKind kind
-  ) {
-    result = TReturnPositionSimple0(viableCallableLambda(call, lastCall), kind)
+  private TReturnPositionSimple viableReturnPosLambda(DataFlowCall call, ReturnKind kind) {
+    result = TReturnPositionSimple0(viableCallableLambda(call, _), kind)
   }
 
   private predicate viableReturnPosOutNonLambda(
@@ -152,11 +153,12 @@ private module LambdaFlow {
     )
   }
 
+  pragma[nomagic]
   private predicate viableReturnPosOutLambda(
-    DataFlowCall call, DataFlowCallOption lastCall, TReturnPositionSimple pos, OutNode out
+    DataFlowCall call, TReturnPositionSimple pos, OutNode out
   ) {
     exists(ReturnKind kind |
-      pos = viableReturnPosLambda(call, lastCall, kind) and
+      pos = viableReturnPosLambda(call, kind) and
       out = getAnOutNode(call, kind)
     )
   }
@@ -179,11 +181,13 @@ private module LambdaFlow {
     boolean toJump, DataFlowCallOption lastCall
   ) {
     revLambdaFlow0(lambdaCall, kind, node, t, toReturn, toJump, lastCall) and
+    not expectsContent(node, _) and
     if castNode(node) or node instanceof ArgNode or node instanceof ReturnNode
     then compatibleTypes(t, getNodeDataFlowType(node))
     else any()
   }
 
+  pragma[assume_small_delta]
   pragma[nomagic]
   predicate revLambdaFlow0(
     DataFlowCall lambdaCall, LambdaCallKind kind, Node node, DataFlowType t, boolean toReturn,
@@ -270,6 +274,7 @@ private module LambdaFlow {
     )
   }
 
+  pragma[assume_small_delta]
   pragma[nomagic]
   predicate revLambdaFlowOut(
     DataFlowCall lambdaCall, LambdaCallKind kind, TReturnPositionSimple pos, DataFlowType t,
@@ -281,7 +286,7 @@ private module LambdaFlow {
       or
       // non-linear recursion
       revLambdaFlowOutLambdaCall(lambdaCall, kind, out, t, toJump, call, lastCall) and
-      viableReturnPosOutLambda(call, _, pos, out)
+      viableReturnPosOutLambda(call, pos, out)
     )
   }
 
@@ -420,7 +425,8 @@ private module Cached {
     exists(ParameterPosition ppos |
       viableParam(call, ppos, p) and
       argumentPositionMatch(call, arg, ppos) and
-      compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(p))
+      compatibleTypes(getNodeDataFlowType(arg), getNodeDataFlowType(p)) and
+      golangSpecificParamArgFilter(call, p, arg)
     )
   }
 

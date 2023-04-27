@@ -52,16 +52,16 @@ class RNDecryptor : RNCryptor
 
 // --- tests ---
 
-func test() {
+func test(var myVarKey: Data, var myHMACKey: Data) {
 	// RNCryptor
 	let myEncryptor = RNEncryptor()
 	let myDecryptor = RNDecryptor()
 	let myData = Data(0)
 	let myConstKey = Data("abcdef123456")
-	let myHMACKey = Data(0)
 	let myHandler = {}
 	let myIV = Data(0)
 
+	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myVarKey, hmacKey: myHMACKey, handler: myHandler) // GOOD
 	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey, handler: myHandler) // BAD
 	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey, handler: myHandler) // BAD
 	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey, iv: myIV, handler: myHandler) // BAD
@@ -79,4 +79,6 @@ func test() {
 	let _ = try? myDecryptor.decryptData(myData, withEncryptionKey: myConstKey, HMACKey: myHMACKey) // BAD
 	let _ = try? myDecryptor.decryptData(myData, with: kRNCryptorAES256Settings, encryptionKey: myConstKey, hmacKey: myHMACKey) // BAD
 	let _ = try? myDecryptor.decryptData(myData, withSettings: kRNCryptorAES256Settings, encryptionKey: myConstKey, HMACKey: myHMACKey) // BAD
+
+	let _ = RNEncryptor(settings: kRNCryptorAES256Settings, encryptionKey: myVarKey, hmacKey: myConstKey, handler: myHandler) // BAD
 }

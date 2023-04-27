@@ -146,4 +146,17 @@ const cashDom = require("cash-dom");
         }
     };
     cashDom("#id").html(DOMPurify ? DOMPurify.sanitize(src) : src); // OK
+
+    $("<a />", { html: src }).appendTo("#id"); // NOT OK
+
+    function foo() {
+      window.VeryUniqueXssTestName = {
+        send: function (msg) {
+            $("#id").html(msg); // NOT OK
+        },
+      };
+    
+      VeryUniqueXssTestName.send($("textarea").val());
+    }
+    foo()
 })();

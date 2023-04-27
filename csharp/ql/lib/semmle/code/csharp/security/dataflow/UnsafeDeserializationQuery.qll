@@ -75,9 +75,11 @@ class JsonConvertTrackingConfig extends TaintTracking::Configuration {
 }
 
 /**
+ * DEPRECATED: Use `TypeNameTracking` instead.
+ *
  * Tracks unsafe `TypeNameHandling` setting to `JsonConvert` call
  */
-class TypeNameTrackingConfig extends DataFlow::Configuration {
+deprecated class TypeNameTrackingConfig extends DataFlow::Configuration {
   TypeNameTrackingConfig() { this = "TypeNameTrackingConfig" }
 
   override predicate isSource(DataFlow::Node source) {
@@ -126,6 +128,62 @@ class TypeNameTrackingConfig extends DataFlow::Configuration {
     )
   }
 }
+
+/**
+ * Configuration module for tracking unsafe `TypeNameHandling` setting to `JsonConvert` calls.
+ */
+private module TypeNameTrackingConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    (
+      source.asExpr() instanceof MemberConstantAccess and
+      source.getType() instanceof TypeNameHandlingEnum
+      or
+      source.asExpr() instanceof IntegerLiteral
+    ) and
+    source.asExpr().hasValue() and
+    not source.asExpr().getValue() = "0"
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    exists(MethodCall mc, Method m, Expr expr |
+      m = mc.getTarget() and
+      (
+        not mc.getArgument(0).hasValue() and
+        m instanceof NewtonsoftJsonConvertClassDeserializeObjectMethod
+      ) and
+      expr = mc.getAnArgument() and
+      sink.asExpr() = expr and
+      expr.getType() instanceof JsonSerializerSettingsClass
+    )
+  }
+
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+    node1.asExpr() instanceof IntegerLiteral and
+    node2.asExpr().(CastExpr).getExpr() = node1.asExpr()
+    or
+    node1.getType() instanceof TypeNameHandlingEnum and
+    exists(PropertyWrite pw, Property p, Assignment a |
+      a.getLValue() = pw and
+      pw.getProperty() = p and
+      p.getDeclaringType() instanceof JsonSerializerSettingsClass and
+      p.hasName("TypeNameHandling") and
+      (
+        node1.asExpr() = a.getRValue() and
+        node2.asExpr() = pw.getQualifier()
+        or
+        exists(ObjectInitializer oi |
+          node1.asExpr() = oi.getAMemberInitializer().getRValue() and
+          node2.asExpr() = oi
+        )
+      )
+    )
+  }
+}
+
+/**
+ * Configuration module for tracking unsafe `TypeNameHandling` setting to `JsonConvert` calls.
+ */
+module TypeNameTracking = DataFlow::Global<TypeNameTrackingConfig>;
 
 /**
  * User input to static method or constructor call deserialization flow tracking.
@@ -299,7 +357,8 @@ private predicate isDataContractJsonSerializerCall(MethodCall mc, Method m) {
 
 abstract private class DataContractJsonSerializerSink extends InstanceMethodSink { }
 
-private class DataContractJsonSerializerDeserializeMethodSink extends DataContractJsonSerializerSink {
+private class DataContractJsonSerializerDeserializeMethodSink extends DataContractJsonSerializerSink
+{
   DataContractJsonSerializerDeserializeMethodSink() {
     exists(MethodCall mc |
       isDataContractJsonSerializerCall(mc, _) and
@@ -308,7 +367,8 @@ private class DataContractJsonSerializerDeserializeMethodSink extends DataContra
   }
 }
 
-private class DataContractJsonSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+private class DataContractJsonSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig
+{
   DataContractJsonSafeConstructorTrackingConfiguration() {
     this = "DataContractJsonSafeConstructorTrackingConfiguration"
   }
@@ -357,7 +417,8 @@ private class JavaScriptSerializerDeserializeMethodSink extends JavaScriptSerial
   }
 }
 
-private class JavaScriptSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+private class JavaScriptSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig
+{
   JavaScriptSerializerSafeConstructorTrackingConfiguration() {
     this = "JavaScriptSerializerSafeConstructorTrackingConfiguration"
   }
@@ -400,7 +461,8 @@ private class XmlObjectSerializerDeserializeMethodSink extends XmlObjectSerializ
   }
 }
 
-private class XmlObjectSerializerDerivedConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+private class XmlObjectSerializerDerivedConstructorTrackingConfiguration extends SafeConstructorTrackingConfig
+{
   XmlObjectSerializerDerivedConstructorTrackingConfiguration() {
     this = "XmlObjectSerializerDerivedConstructorTrackingConfiguration"
   }
@@ -445,7 +507,8 @@ private class XmlSerializerDeserializeMethodSink extends XmlSerializerSink {
   }
 }
 
-private class XmlSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+private class XmlSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig
+{
   XmlSerializerSafeConstructorTrackingConfiguration() {
     this = "XmlSerializerSafeConstructorTrackingConfiguration"
   }
@@ -492,7 +555,8 @@ private class DataContractSerializerDeserializeMethodSink extends DataContractSe
   }
 }
 
-private class DataContractSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+private class DataContractSerializerSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig
+{
   DataContractSerializerSafeConstructorTrackingConfiguration() {
     this = "DataContractSerializerSafeConstructorTrackingConfiguration"
   }
@@ -535,7 +599,8 @@ private class XmlMessageFormatterDeserializeMethodSink extends XmlMessageFormatt
   }
 }
 
-private class XmlMessageFormatterSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig {
+private class XmlMessageFormatterSafeConstructorTrackingConfiguration extends SafeConstructorTrackingConfig
+{
   XmlMessageFormatterSafeConstructorTrackingConfiguration() {
     this = "XmlMessageFormatterSafeConstructorTrackingConfiguration"
   }
@@ -717,7 +782,8 @@ private class SweetJaysonDeserializeMethodSink extends SweetJaysonSink {
 /** ServiceStack.Text.JsonSerializer */
 abstract private class ServiceStackTextJsonSerializerSink extends ConstructorOrStaticMethodSink { }
 
-private class ServiceStackTextJsonSerializerDeserializeMethodSink extends ServiceStackTextJsonSerializerSink {
+private class ServiceStackTextJsonSerializerDeserializeMethodSink extends ServiceStackTextJsonSerializerSink
+{
   ServiceStackTextJsonSerializerDeserializeMethodSink() {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and
@@ -741,7 +807,8 @@ private class ServiceStackTextJsonSerializerDeserializeMethodSink extends Servic
 /** ServiceStack.Text.TypeSerializer */
 abstract private class ServiceStackTextTypeSerializerSink extends ConstructorOrStaticMethodSink { }
 
-private class ServiceStackTextTypeSerializerDeserializeMethodSink extends ServiceStackTextTypeSerializerSink {
+private class ServiceStackTextTypeSerializerDeserializeMethodSink extends ServiceStackTextTypeSerializerSink
+{
   ServiceStackTextTypeSerializerDeserializeMethodSink() {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and
@@ -765,7 +832,8 @@ private class ServiceStackTextTypeSerializerDeserializeMethodSink extends Servic
 /** ServiceStack.Text.CsvSerializer */
 abstract private class ServiceStackTextCsvSerializerSink extends ConstructorOrStaticMethodSink { }
 
-private class ServiceStackTextCsvSerializerDeserializeMethodSink extends ServiceStackTextCsvSerializerSink {
+private class ServiceStackTextCsvSerializerDeserializeMethodSink extends ServiceStackTextCsvSerializerSink
+{
   ServiceStackTextCsvSerializerDeserializeMethodSink() {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and
@@ -789,7 +857,8 @@ private class ServiceStackTextCsvSerializerDeserializeMethodSink extends Service
 /** ServiceStack.Text.XmlSerializer */
 abstract private class ServiceStackTextXmlSerializerSink extends ConstructorOrStaticMethodSink { }
 
-private class ServiceStackTextXmlSerializerDeserializeMethodSink extends ServiceStackTextXmlSerializerSink {
+private class ServiceStackTextXmlSerializerDeserializeMethodSink extends ServiceStackTextXmlSerializerSink
+{
   ServiceStackTextXmlSerializerDeserializeMethodSink() {
     exists(MethodCall mc, Method m |
       m = mc.getTarget() and

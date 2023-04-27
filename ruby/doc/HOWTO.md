@@ -7,7 +7,7 @@ This document contains information about common development tasks.
 [Install Rust](https://www.rust-lang.org/tools/install), then run:
 
 ```bash
-cargo build --release
+(cd extractor && cargo build --release)
 ```
 
 ## Generating the database schema and QL library
@@ -16,7 +16,7 @@ The generated `ql/lib/ruby.dbscheme` and `ql/lib/codeql/ruby/ast/internal/TreeSi
 
 ```bash
 # Run the generator
-cargo run --release -p ruby-generator -- --dbscheme ql/lib/ruby.dbscheme --library ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
+(cd extractor && cargo run --release --bin generator -- --dbscheme ../ql/lib/ruby.dbscheme --library ../ql/lib/codeql/ruby/ast/internal/TreeSitter.qll)
 # Then auto-format the QL library
 codeql query format -i ql/lib/codeql/ruby/ast/internal/TreeSitter.qll
 ```

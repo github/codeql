@@ -1186,6 +1186,16 @@ module Array {
     }
   }
 
+  private class JoinSummary extends SimpleSummarizedCallable {
+    JoinSummary() { this = ["join"] }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self].Element[any]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
   private class PushSummary extends SimpleSummarizedCallable {
     // `append` is an alias for `push`
     PushSummary() { this = ["push", "append"] }

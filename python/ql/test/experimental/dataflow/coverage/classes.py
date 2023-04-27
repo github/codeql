@@ -506,7 +506,7 @@ class With_call:
 
 
 def test_call():
-    with_call = With_call()  #$ MISSING: arg1="SSA variable with_call" func=With_call.__call__
+    with_call = With_call()  #$ arg1="SSA variable with_call" func=With_call.__call__
     with_call()
 
 
@@ -535,21 +535,6 @@ def test_len_if():
         pass
 
 
-# object.__length_hint__(self)
-class With_length_hint:
-    def __length_hint__(self):
-        SINK1(self)
-        OK()  # Call not found
-        return 0
-
-
-def test_length_hint():
-    import operator
-
-    with_length_hint = With_length_hint()  #$ MISSING: arg1="SSA variable with_length_hint" func=With_length_hint.__length_hint__
-    operator.length_hint(with_length_hint)
-
-
 # object.__getitem__(self, key)
 class With_getitem:
     def __getitem__(self, key):
@@ -560,9 +545,9 @@ class With_getitem:
 
 
 def test_getitem():
-    with_getitem = With_getitem() #$ arg1="SSA variable with_getitem" func=With_getitem.__getitem__
+    with_getitem = With_getitem() #$ MISSING: arg1="SSA variable with_getitem" func=With_getitem.__getitem__
     arg2 = 0
-    with_getitem[arg2] #$ arg2 func=With_getitem.__getitem__
+    with_getitem[arg2] #$ MISSING: arg2 func=With_getitem.__getitem__
 
 
 # object.__setitem__(self, key, value)
@@ -575,10 +560,10 @@ class With_setitem:
 
 
 def test_setitem():
-    with_setitem = With_setitem()  #$ arg1="SSA variable with_setitem" func=With_setitem.__setitem__
+    with_setitem = With_setitem()  #$ MISSING: arg1="SSA variable with_setitem" func=With_setitem.__setitem__
     arg2 = 0
     arg3 = ""
-    with_setitem[arg2] = arg3  #$ arg2 arg3 func=With_setitem.__setitem__
+    with_setitem[arg2] = arg3  #$ MISSING: arg2 arg3 func=With_setitem.__setitem__
 
 
 # object.__delitem__(self, key)
@@ -590,9 +575,9 @@ class With_delitem:
 
 
 def test_delitem():
-    with_delitem = With_delitem()  #$ arg1="SSA variable with_delitem" func=With_delitem.__delitem__
+    with_delitem = With_delitem()  #$ MISSING: arg1="SSA variable with_delitem" func=With_delitem.__delitem__
     arg2 = 0
-    del with_delitem[arg2]  #$ arg2 func=With_delitem.__delitem__
+    del with_delitem[arg2]  #$ MISSING: arg2 func=With_delitem.__delitem__
 
 
 # object.__missing__(self, key)
@@ -662,9 +647,9 @@ class With_add:
 
 
 def test_add():
-    with_add = With_add()  #$ arg1="SSA variable with_add" func=With_add.__add__
+    with_add = With_add()  #$ MISSING: arg1="SSA variable with_add" func=With_add.__add__
     arg2 = with_add
-    with_add + arg2  #$ arg2 func=With_add.__add__
+    with_add + arg2  #$ MISSING: arg2 func=With_add.__add__
 
 
 # object.__sub__(self, other)
@@ -677,9 +662,9 @@ class With_sub:
 
 
 def test_sub():
-    with_sub = With_sub()  #$ arg1="SSA variable with_sub" func=With_sub.__sub__
+    with_sub = With_sub()  #$ MISSING: arg1="SSA variable with_sub" func=With_sub.__sub__
     arg2 = with_sub
-    with_sub - arg2  #$ arg2 func=With_sub.__sub__
+    with_sub - arg2  #$ MISSING: arg2 func=With_sub.__sub__
 
 
 # object.__mul__(self, other)
@@ -692,9 +677,9 @@ class With_mul:
 
 
 def test_mul():
-    with_mul = With_mul()  #$ arg1="SSA variable with_mul" func=With_mul.__mul__
+    with_mul = With_mul()  #$ MISSING: arg1="SSA variable with_mul" func=With_mul.__mul__
     arg2 = with_mul
-    with_mul * arg2  #$ arg2 func=With_mul.__mul__
+    with_mul * arg2  #$ MISSING: arg2 func=With_mul.__mul__
 
 
 # object.__matmul__(self, other)
@@ -707,9 +692,9 @@ class With_matmul:
 
 
 def test_matmul():
-    with_matmul = With_matmul()  #$ arg1="SSA variable with_matmul" func=With_matmul.__matmul__
+    with_matmul = With_matmul()  #$ MISSING: arg1="SSA variable with_matmul" func=With_matmul.__matmul__
     arg2 = with_matmul
-    with_matmul @ arg2  #$ arg2 func=With_matmul.__matmul__
+    with_matmul @ arg2  #$ MISSING: arg2 func=With_matmul.__matmul__
 
 
 # object.__truediv__(self, other)
@@ -722,9 +707,9 @@ class With_truediv:
 
 
 def test_truediv():
-    with_truediv = With_truediv()  #$ arg1="SSA variable with_truediv" func=With_truediv.__truediv__
+    with_truediv = With_truediv()  #$ MISSING: arg1="SSA variable with_truediv" func=With_truediv.__truediv__
     arg2 = with_truediv
-    with_truediv / arg2  #$ arg2 func=With_truediv.__truediv__
+    with_truediv / arg2  #$ MISSING: arg2 func=With_truediv.__truediv__
 
 
 # object.__floordiv__(self, other)
@@ -737,9 +722,9 @@ class With_floordiv:
 
 
 def test_floordiv():
-    with_floordiv = With_floordiv()  #$ arg1="SSA variable with_floordiv" func=With_floordiv.__floordiv__
+    with_floordiv = With_floordiv()  #$ MISSING: arg1="SSA variable with_floordiv" func=With_floordiv.__floordiv__
     arg2 = with_floordiv
-    with_floordiv // arg2  #$ arg2 func=With_floordiv.__floordiv__
+    with_floordiv // arg2  #$ MISSING: arg2 func=With_floordiv.__floordiv__
 
 
 # object.__mod__(self, other)
@@ -752,9 +737,9 @@ class With_mod:
 
 
 def test_mod():
-    with_mod = With_mod()  #$ arg1="SSA variable with_mod" func=With_mod.__mod__
+    with_mod = With_mod()  #$ MISSING: arg1="SSA variable with_mod" func=With_mod.__mod__
     arg2 = with_mod
-    with_mod % arg2  #$ arg2 func=With_mod.__mod__
+    with_mod % arg2  #$ MISSING: arg2 func=With_mod.__mod__
 
 
 # object.__divmod__(self, other)
@@ -788,9 +773,9 @@ def test_pow():
 
 
 def test_pow_op():
-    with_pow = With_pow()  #$ arg1="SSA variable with_pow" func=With_pow.__pow__
+    with_pow = With_pow()  #$ MISSING: arg1="SSA variable with_pow" func=With_pow.__pow__
     arg2 = with_pow
-    with_pow ** arg2  #$ arg2 func=With_pow.__pow__
+    with_pow ** arg2  #$ MISSING: arg2 func=With_pow.__pow__
 
 
 # object.__lshift__(self, other)
@@ -803,9 +788,9 @@ class With_lshift:
 
 
 def test_lshift():
-    with_lshift = With_lshift()  #$ arg1="SSA variable with_lshift" func=With_lshift.__lshift__
+    with_lshift = With_lshift()  #$ MISSING: arg1="SSA variable with_lshift" func=With_lshift.__lshift__
     arg2 = with_lshift
-    with_lshift << arg2  #$ arg2 func=With_lshift.__lshift__
+    with_lshift << arg2  #$ MISSING: arg2 func=With_lshift.__lshift__
 
 
 # object.__rshift__(self, other)
@@ -818,9 +803,9 @@ class With_rshift:
 
 
 def test_rshift():
-    with_rshift = With_rshift()  #$ arg1="SSA variable with_rshift" func=With_rshift.__rshift__
+    with_rshift = With_rshift()  #$ MISSING: arg1="SSA variable with_rshift" func=With_rshift.__rshift__
     arg2 = with_rshift
-    with_rshift >> arg2  #$ arg2 func=With_rshift.__rshift__
+    with_rshift >> arg2  #$ MISSING: arg2 func=With_rshift.__rshift__
 
 
 # object.__and__(self, other)
@@ -833,9 +818,9 @@ class With_and:
 
 
 def test_and():
-    with_and = With_and()  #$ arg1="SSA variable with_and" func=With_and.__and__
+    with_and = With_and()  #$ MISSING: arg1="SSA variable with_and" func=With_and.__and__
     arg2 = with_and
-    with_and & arg2  #$ arg2 func=With_and.__and__
+    with_and & arg2  #$ MISSING: arg2 func=With_and.__and__
 
 
 # object.__xor__(self, other)
@@ -848,9 +833,9 @@ class With_xor:
 
 
 def test_xor():
-    with_xor = With_xor()  #$ arg1="SSA variable with_xor" func=With_xor.__xor__
+    with_xor = With_xor()  #$ MISSING: arg1="SSA variable with_xor" func=With_xor.__xor__
     arg2 = with_xor
-    with_xor ^ arg2  #$ arg2 func=With_xor.__xor__
+    with_xor ^ arg2  #$ MISSING: arg2 func=With_xor.__xor__
 
 
 # object.__or__(self, other)
@@ -863,9 +848,9 @@ class With_or:
 
 
 def test_or():
-    with_or = With_or()  #$ arg1="SSA variable with_or" func=With_or.__or__
+    with_or = With_or()  #$ MISSING: arg1="SSA variable with_or" func=With_or.__or__
     arg2 = with_or
-    with_or | arg2  #$ arg2 func=With_or.__or__
+    with_or | arg2  #$ MISSING: arg2 func=With_or.__or__
 
 
 # object.__radd__(self, other)
@@ -1376,13 +1361,6 @@ class With_index:
         SINK1(self)
         OK()  # Call not found
         return 0
-
-
-def test_index():
-    import operator
-
-    with_index = With_index()  #$ MISSING: arg1="SSA variable with_index" func=With_index.__index__
-    operator.index(with_index)
 
 
 def test_index_slicing():

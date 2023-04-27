@@ -145,11 +145,6 @@ void TypeTranslator::fillAnyFunctionType(const swift::AnyFunctionType& type,
   entry.result = dispatcher.fetchLabel(type.getResult());
   for (const auto& p : type.getParams()) {
     entry.param_types.push_back(dispatcher.fetchLabel(p.getPlainType()));
-    if (p.hasLabel()) {
-      entry.param_labels.emplace_back(p.getLabel().str().str());
-    } else {
-      entry.param_labels.emplace_back();
-    }
   }
   entry.is_throwing = type.isThrowing();
   entry.is_async = type.isAsync();
@@ -242,11 +237,7 @@ codeql::OpenedArchetypeType TypeTranslator::translateOpenedArchetypeType(
 }
 
 codeql::ModuleType TypeTranslator::translateModuleType(const swift::ModuleType& type) {
-  auto key = type.getModule()->getRealName().str().str();
-  if (type.getModule()->isNonSwiftModule()) {
-    key += "|clang";
-  }
-  auto entry = createTypeEntry(type, key);
+  auto entry = createTypeEntry(type);
   entry.module = dispatcher.fetchLabel(type.getModule());
   return entry;
 }

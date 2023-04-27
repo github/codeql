@@ -3,18 +3,18 @@ import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import TestUtilities.InlineFlowTest
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "test:AndroidExternalFlowConf" }
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink.asExpr().(Argument).getCall().getCallee().hasName("sink")
   }
 }
 
-class ExternalStorageTest extends InlineFlowTest {
-  override DataFlow::Configuration getValueFlowConfig() { none() }
+module Flow = TaintTracking::Global<Config>;
 
-  override DataFlow::Configuration getTaintFlowConfig() { result instanceof Conf }
+class ExternalStorageTest extends InlineFlowTest {
+  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
+
+  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) { Flow::flow(src, sink) }
 }

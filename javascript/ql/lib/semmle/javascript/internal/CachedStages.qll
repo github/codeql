@@ -277,6 +277,7 @@ module Stages {
             .getUnknownMember()
             .getInstance()
             .getReceiver()
+            .getForwardingFunction()
             .getPromisedError()
             .getADecoratedClass()
             .getADecoratedMember()

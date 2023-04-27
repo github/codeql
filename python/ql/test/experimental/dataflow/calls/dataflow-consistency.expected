@@ -1,4 +1,9 @@
 uniqueEnclosingCallable
+uniqueCallEnclosingCallable
+| new_cls_param.py:14:6:14:16 | classmethod() | Call should have one enclosing callable but has 0. |
+| test.py:21:6:21:17 | staticmethod() | Call should have one enclosing callable but has 0. |
+| test.py:25:6:25:16 | classmethod() | Call should have one enclosing callable but has 0. |
+| test.py:29:6:29:16 | classmethod() | Call should have one enclosing callable but has 0. |
 uniqueType
 uniqueNodeLocation
 missingLocation

@@ -1,3 +1,5 @@
+private import codeql.util.Boolean
+private import codeql.util.Unit
 private import codeql.ruby.AST
 private import codeql.ruby.ast.internal.Synthesis
 private import codeql.ruby.CFG
@@ -189,18 +191,6 @@ module LocalFlow {
   }
 
   predicate localFlowStepCommon(Node nodeFrom, Node nodeTo) {
-    exists(DataFlowCallable c | nodeFrom = TSynthHashSplatParameterNode(c) |
-      exists(HashSplatParameter p |
-        p.getCallable() = c.asCallable() and
-        nodeTo = TNormalParameterNode(p)
-      )
-      or
-      exists(ParameterPosition pos |
-        nodeTo = TSummaryParameterNode(c.asLibraryCallable(), pos) and
-        pos.isHashSplat()
-      )
-    )
-    or
     localSsaFlowStep(nodeFrom, nodeTo)
     or
     nodeFrom.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::BlockArgumentCfgNode).getValue()
@@ -468,12 +458,15 @@ private module Cached {
       FlowSummaryImplSpecific::ParsePositions::isParsedElementLowerBoundPosition(_, includeUnknown,
         lower)
     } or
+    TElementContentOfTypeContent(string type, Boolean includeUnknown) {
+      type = any(Content::KnownElementContent content).getIndex().getValueType()
+    } or
     TNoContentSet() // Only used by type-tracking
 
   cached
   class TContentSet =
     TSingletonContent or TAnyElementContent or TKnownOrUnknownElementContent or
-        TElementLowerBoundContent;
+        TElementLowerBoundContent or TElementContentOfTypeContent;
 
   private predicate trackKnownValue(ConstantValue cv) {
     not cv.isFloat(_) and
@@ -536,10 +529,7 @@ import Cached
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
   exists(SsaImpl::DefinitionExt def | def = n.(SsaDefinitionExtNode).getDefinitionExt() |
-    def instanceof Ssa::PhiNode or
-    def instanceof SsaImpl::PhiReadNode or
-    def instanceof Ssa::CapturedEntryDefinition or
-    def instanceof Ssa::CapturedCallDefinition
+    not def instanceof Ssa::WriteDefinition
   )
   or
   n = LocalFlow::getParameterDefNode(_)
@@ -648,9 +638,7 @@ private module ParameterNodes {
           )
         or
         parameter = callable.getAParameter().(HashSplatParameter) and
-        pos.isHashSplat() and
-        // avoid overlap with `SynthHashSplatParameterNode`
-        not callable.getAParameter() instanceof KeywordParameter
+        pos.isHashSplat()
         or
         parameter = callable.getParameter(0).(SplatParameter) and
         pos.isSplatAll()
@@ -780,7 +768,7 @@ private module ParameterNodes {
     final override Parameter getParameter() { none() }
 
     final override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      c = callable and pos.isHashSplat()
+      c = callable and pos.isSynthHashSplat()
     }
 
     final override CfgScope getCfgScope() { result = callable.asCallable() }
@@ -802,16 +790,7 @@ private module ParameterNodes {
     override Parameter getParameter() { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      sc = c.asLibraryCallable() and
-      pos = pos_ and
-      // avoid overlap with `SynthHashSplatParameterNode`
-      not (
-        pos.isHashSplat() and
-        exists(ParameterPosition keywordPos |
-          FlowSummaryImpl::Private::summaryParameterNodeRange(sc, keywordPos) and
-          keywordPos.isKeyword(_)
-        )
-      )
+      sc = c.asLibraryCallable() and pos = pos_
     }
 
     override CfgScope getCfgScope() { none() }
@@ -1157,6 +1136,8 @@ predicate jumpStep(Node pred, Node succ) {
   succ.asExpr().getExpr().(ConstantReadAccess).getValue() = pred.asExpr().getExpr()
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred, succ)
+  or
+  any(AdditionalJumpStep s).step(pred, succ)
 }
 
 private ContentSet getKeywordContent(string name) {
@@ -1298,7 +1279,7 @@ class DataFlowType extends TDataFlowType {
 DataFlowType getNodeType(NodeImpl n) { result = TTodoDataFlowType() and exists(n) }
 
 /** Gets a string representation of a `DataFlowType`. */
-string ppReprType(DataFlowType t) { result = t.toString() }
+string ppReprType(DataFlowType t) { none() }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
@@ -1350,7 +1331,15 @@ private module PostUpdateNodes {
 private import PostUpdateNodes
 
 /** A node that performs a type cast. */
-class CastNode extends Node instanceof ReturningNode { }
+class CastNode extends Node {
+  CastNode() {
+    // ensure that actual return nodes are included in the path graph
+    this instanceof ReturningNode
+    or
+    // ensure that all variable assignments are included in the path graph
+    this.(SsaDefinitionExtNode).getDefinitionExt() instanceof Ssa::WriteDefinition
+  }
+}
 
 class DataFlowExpr = CfgNodes::ExprCfgNode;
 
@@ -1361,15 +1350,6 @@ int accessPathLimit() { result = 5 }
  * precision. This disables adaptive access path precision for such access paths.
  */
 predicate forceHighPrecision(Content c) { c instanceof Content::ElementContent }
-
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
 
 /**
  * Holds if the node `n` is unreachable when the call context is `call`.
@@ -1484,3 +1464,24 @@ ContentApprox getContentApprox(Content c) {
   or
   result = TNonElementContentApprox(c)
 }
+
+/**
+ * A unit class for adding additional jump steps.
+ *
+ * Extend this class to add additional jump steps.
+ */
+class AdditionalJumpStep extends Unit {
+  /**
+   * Holds if data can flow from `pred` to `succ` in a way that discards call contexts.
+   */
+  abstract predicate step(Node pred, Node succ);
+}
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

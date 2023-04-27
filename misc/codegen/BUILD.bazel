@@ -1,0 +1,14 @@
+load("@codegen_deps//:requirements.bzl", "requirement")
+
+py_binary(
+    name = "codegen",
+    srcs = ["codegen.py"],
+    data = [
+        "//misc/codegen/templates:cpp",
+        "//misc/codegen/templates:trap",
+    ],
+    visibility = ["//visibility:public"],
+    deps = [
+        "//misc/codegen/generators",
+    ],
+)

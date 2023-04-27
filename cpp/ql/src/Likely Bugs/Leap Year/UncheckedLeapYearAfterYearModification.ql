@@ -29,21 +29,16 @@ where
       )
       or
       // If there is a data flow from the variable that was modified to a function that seems to check for leap year
-      exists(
-        VariableAccess source, ChecksForLeapYearFunctionCall fc, LeapYearCheckConfiguration config
-      |
+      exists(VariableAccess source, ChecksForLeapYearFunctionCall fc |
         source = var.getAnAccess() and
-        config.hasFlow(DataFlow::exprNode(source), DataFlow::exprNode(fc.getAnArgument()))
+        LeapYearCheckFlow::flow(DataFlow::exprNode(source), DataFlow::exprNode(fc.getAnArgument()))
       )
       or
       // If there is a data flow from the field that was modified to a function that seems to check for leap year
-      exists(
-        VariableAccess vacheck, YearFieldAccess yfacheck, ChecksForLeapYearFunctionCall fc,
-        LeapYearCheckConfiguration config
-      |
+      exists(VariableAccess vacheck, YearFieldAccess yfacheck, ChecksForLeapYearFunctionCall fc |
         vacheck = var.getAnAccess() and
         yfacheck.getQualifier() = vacheck and
-        config.hasFlow(DataFlow::exprNode(yfacheck), DataFlow::exprNode(fc.getAnArgument()))
+        LeapYearCheckFlow::flow(DataFlow::exprNode(yfacheck), DataFlow::exprNode(fc.getAnArgument()))
       )
       or
       // If there is a successor or predecessor that sets the month = 1

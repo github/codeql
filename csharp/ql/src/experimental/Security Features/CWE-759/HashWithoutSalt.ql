@@ -12,7 +12,7 @@
 import csharp
 import semmle.code.csharp.dataflow.DataFlow2
 import semmle.code.csharp.dataflow.TaintTracking2
-import DataFlow::PathGraph
+import HashWithoutSalt::PathGraph
 
 /** The C# class `Windows.Security.Cryptography.Core.HashAlgorithmProvider`. */
 class HashAlgorithmProvider extends RefType {
@@ -120,12 +120,10 @@ predicate hasHashAncestor(MethodCall mc) {
  * Taint configuration tracking flow from an expression whose name suggests it holds
  * password data to a method call that generates a hash without a salt.
  */
-class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
-  HashWithoutSaltConfiguration() { this = "HashWithoutSaltConfiguration" }
+module HashWithoutSaltConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof PasswordVarExpr }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof PasswordVarExpr }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       sink.asExpr() = mc.getArgument(0) and
       isHashCall(mc) and
@@ -148,7 +146,7 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodCall mc |
       mc.getTarget()
           .hasQualifiedName("Windows.Security.Cryptography", "CryptographicBuffer",
@@ -166,7 +164,7 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
    *  `byte[] saltedPassword = sha256.ComputeHash(rawSalted);`
    *  Or the password is concatenated with a salt as a string.
    */
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(MethodCall mc |
       hasFurtherProcessing(mc) and
       mc.getAnArgument() = node.asExpr()
@@ -194,7 +192,9 @@ class HashWithoutSaltConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, HashWithoutSaltConfiguration c
-where c.hasFlowPath(source, sink)
+module HashWithoutSalt = TaintTracking::Global<HashWithoutSaltConfig>;
+
+from HashWithoutSalt::PathNode source, HashWithoutSalt::PathNode sink
+where HashWithoutSalt::flowPath(source, sink)
 select sink.getNode(), source, sink, "$@ is hashed without a salt.", source.getNode(),
   "The password"

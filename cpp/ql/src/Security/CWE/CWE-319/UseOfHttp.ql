@@ -12,9 +12,9 @@
  */
 
 import cpp
-import semmle.code.cpp.dataflow.TaintTracking
+import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
-import DataFlow::PathGraph
+import HttpStringToUrlOpen::PathGraph
 
 /**
  * A string matching private host names of IPv4 and IPv6, which only matches
@@ -54,20 +54,18 @@ class HttpStringLiteral extends StringLiteral {
 /**
  * Taint tracking configuration for HTTP connections.
  */
-class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
-  HttpStringToUrlOpenConfig() { this = "HttpStringToUrlOpenConfig" }
-
-  override predicate isSource(DataFlow::Node src) {
+module HttpStringToUrlOpenConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) {
     // Sources are strings containing an HTTP URL not in a private domain.
-    src.asExpr() instanceof HttpStringLiteral and
+    src.asIndirectExpr() instanceof HttpStringLiteral and
     // block taint starting at `strstr`, which is likely testing an existing URL, rather than constructing an HTTP URL.
     not exists(FunctionCall fc |
       fc.getTarget().getName() = ["strstr", "strcasestr"] and
-      fc.getArgument(1) = globalValueNumber(src.asExpr()).getAnExpr()
+      fc.getArgument(1) = globalValueNumber(src.asIndirectExpr()).getAnExpr()
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     // Sinks can be anything that demonstrates the string is likely to be
     // accessed as a URL, for example using it in a network access. Some
     // URLs are only ever displayed or used for data processing.
@@ -77,24 +75,24 @@ class HttpStringToUrlOpenConfig extends TaintTracking::Configuration {
               "system", "gethostbyname", "gethostbyname2", "gethostbyname_r", "getaddrinfo",
               "X509_load_http", "X509_CRL_load_http"
             ]) and
-      sink.asExpr() = fc.getArgument(0)
+      sink.asIndirectExpr() = fc.getArgument(0)
       or
       fc.getTarget().hasGlobalOrStdName(["send", "URLDownloadToFile", "URLDownloadToCacheFile"]) and
-      sink.asExpr() = fc.getArgument(1)
+      sink.asIndirectExpr() = fc.getArgument(1)
       or
       fc.getTarget().hasGlobalOrStdName(["curl_easy_setopt", "getnameinfo"]) and
-      sink.asExpr() = fc.getArgument(2)
+      sink.asIndirectExpr() = fc.getArgument(2)
       or
       fc.getTarget().hasGlobalOrStdName(["ShellExecute", "ShellExecuteA", "ShellExecuteW"]) and
-      sink.asExpr() = fc.getArgument(3)
+      sink.asIndirectExpr() = fc.getArgument(3)
     )
   }
 }
 
-from
-  HttpStringToUrlOpenConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
-  HttpStringLiteral str
+module HttpStringToUrlOpen = TaintTracking::Global<HttpStringToUrlOpenConfig>;
+
+from HttpStringToUrlOpen::PathNode source, HttpStringToUrlOpen::PathNode sink, HttpStringLiteral str
 where
-  config.hasFlowPath(source, sink) and
-  str = source.getNode().asExpr()
+  HttpStringToUrlOpen::flowPath(source, sink) and
+  str = source.getNode().asIndirectExpr()
 select str, source, sink, "This URL may be constructed with the HTTP protocol."

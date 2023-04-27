@@ -422,32 +422,6 @@ private predicate boundFlowStep(Expr e2, Expr e1, int delta, boolean upper) {
   (upper = true or upper = false)
   or
   exists(Expr x |
-    e2.(AddExpr).hasOperands(e1, x)
-    or
-    exists(AssignAddExpr add | add = e2 |
-      add.getDest() = e1 and add.getRhs() = x
-      or
-      add.getDest() = x and add.getRhs() = e1
-    )
-  |
-    // `x instanceof ConstantIntegerExpr` is covered by valueFlowStep
-    not x instanceof ConstantIntegerExpr and
-    not e1 instanceof ConstantIntegerExpr and
-    if strictlyPositiveIntegralExpr(x)
-    then upper = false and delta = 1
-    else
-      if positive(x)
-      then upper = false and delta = 0
-      else
-        if strictlyNegativeIntegralExpr(x)
-        then upper = true and delta = -1
-        else
-          if negative(x)
-          then upper = true and delta = 0
-          else none()
-  )
-  or
-  exists(Expr x |
     exists(SubExpr sub |
       e2 = sub and
       sub.getLeftOperand() = e1 and
@@ -896,6 +870,20 @@ private predicate bounded(
     or
     upper = false and delta = d1.minimum(d2)
   )
+  or
+  exists(
+    Bound b1, Bound b2, int d1, int d2, boolean fbe1, boolean fbe2, int od1, int od2, Reason r1,
+    Reason r2
+  |
+    boundedAddition(e, upper, b1, true, d1, fbe1, od1, r1) and
+    boundedAddition(e, upper, b2, false, d2, fbe2, od2, r2) and
+    delta = d1 + d2 and
+    fromBackEdge = fbe1.booleanOr(fbe2)
+  |
+    b = b1 and origdelta = od1 and reason = r1 and b2 instanceof ZeroBound
+    or
+    b = b2 and origdelta = od2 and reason = r2 and b1 instanceof ZeroBound
+  )
 }
 
 private predicate boundedConditionalExpr(
@@ -903,4 +891,38 @@ private predicate boundedConditionalExpr(
   int origdelta, Reason reason
 ) {
   bounded(cond.getBranchExpr(branch), b, delta, upper, fromBackEdge, origdelta, reason)
+}
+
+private predicate nonConstAdd(Expr add, Expr operand, boolean isLeft) {
+  exists(Expr other |
+    add.(AddExpr).getLeftOperand() = operand and
+    add.(AddExpr).getRightOperand() = other and
+    isLeft = true
+    or
+    add.(AddExpr).getLeftOperand() = other and
+    add.(AddExpr).getRightOperand() = operand and
+    isLeft = false
+    or
+    add.(AssignAddExpr).getDest() = operand and
+    add.(AssignAddExpr).getRhs() = other and
+    isLeft = true
+    or
+    add.(AssignAddExpr).getDest() = other and
+    add.(AssignAddExpr).getRhs() = operand and
+    isLeft = false
+  |
+    // `ConstantIntegerExpr` is covered by valueFlowStep
+    not other instanceof ConstantIntegerExpr and
+    not operand instanceof ConstantIntegerExpr
+  )
+}
+
+private predicate boundedAddition(
+  Expr add, boolean upper, Bound b, boolean isLeft, int delta, boolean fromBackEdge, int origdelta,
+  Reason reason
+) {
+  exists(Expr op |
+    nonConstAdd(add, op, isLeft) and
+    bounded(op, b, delta, upper, fromBackEdge, origdelta, reason)
+  )
 }

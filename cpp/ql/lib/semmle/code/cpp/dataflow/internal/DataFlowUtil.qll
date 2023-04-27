@@ -3,10 +3,10 @@
  */
 
 private import cpp
-private import semmle.code.cpp.dataflow.internal.FlowVar
+private import FlowVar
 private import semmle.code.cpp.models.interfaces.DataFlow
 private import semmle.code.cpp.controlflow.Guards
-private import semmle.code.cpp.dataflow.internal.AddressFlow
+private import AddressFlow
 
 cached
 private newtype TNode =

@@ -10,20 +10,21 @@ import TlsLibraryModel
 class SslContextCreation extends ContextCreation, DataFlow::CallCfgNode {
   SslContextCreation() { this = API::moduleImport("ssl").getMember("SSLContext").getACall() }
 
-  override string getProtocol() {
+  override ProtocolVersion getProtocol() {
     exists(DataFlow::Node protocolArg, Ssl ssl |
       protocolArg in [this.getArg(0), this.getArgByName("protocol")]
     |
-      protocolArg =
-        [
-          ssl.specific_version(result).getAValueReachableFromSource(),
-          ssl.unspecific_version(result).getAValueReachableFromSource()
-        ]
+      protocolArg = ssl.specific_version(result).getAValueReachableFromSource()
+      or
+      protocolArg = ssl.unspecific_version().getAValueReachableFromSource() and
+      // see https://docs.python.org/3/library/ssl.html#id7
+      result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
     )
     or
     not exists(this.getArg(_)) and
     not exists(this.getArgByName(_)) and
-    result = "TLS"
+    // see https://docs.python.org/3/library/ssl.html#id7
+    result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
   }
 }
 
@@ -34,7 +35,7 @@ class SslDefaultContextCreation extends ContextCreation {
 
   // Allowed insecure versions are "TLSv1" and "TLSv1_1"
   // see https://docs.python.org/3/library/ssl.html#context-creation
-  override string getProtocol() { result = "TLS" }
+  override ProtocolVersion getProtocol() { result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"] }
 }
 
 /** Gets a reference to an `ssl.Context` instance. */
@@ -161,35 +162,29 @@ class ContextSetVersion extends ProtocolRestriction, ProtocolUnrestriction, Data
   }
 }
 
-class UnspecificSslContextCreation extends SslContextCreation, UnspecificContextCreation {
-  UnspecificSslContextCreation() { library instanceof Ssl }
-
-  override ProtocolVersion getUnrestriction() {
-    result = UnspecificContextCreation.super.getUnrestriction() and
-    // These are turned off by default since Python 3.6
-    // see https://docs.python.org/3.6/library/ssl.html#ssl.SSLContext
-    not result in ["SSLv2", "SSLv3"]
-  }
-}
-
-class UnspecificSslDefaultContextCreation extends SslDefaultContextCreation, ProtocolUnrestriction {
-  override DataFlow::Node getContext() { result = this }
-
-  // see https://docs.python.org/3/library/ssl.html#ssl.create_default_context
-  override ProtocolVersion getUnrestriction() {
-    result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"]
-  }
-}
-
+// class UnspecificSslContextCreation extends SslContextCreation, UnspecificContextCreation {
+//   // UnspecificSslContextCreation() { library instanceof Ssl }
+//   override ProtocolVersion getProtocol() {
+//     result = UnspecificContextCreation.super.getProtocol() and
+//     // These are turned off by default since Python 3.6
+//     // see https://docs.python.org/3.6/library/ssl.html#ssl.SSLContext
+//     not result in ["SSLv2", "SSLv3"]
+//   }
+// }
+// class UnspecificSslDefaultContextCreation extends SslDefaultContextCreation {
+//   // override DataFlow::Node getContext() { result = this }
+//   // see https://docs.python.org/3/library/ssl.html#ssl.create_default_context
+//   override ProtocolVersion getProtocol() { result in ["TLSv1", "TLSv1_1", "TLSv1_2", "TLSv1_3"] }
+// }
 class Ssl extends TlsLibrary {
   Ssl() { this = "ssl" }
 
   override string specific_version_name(ProtocolVersion version) { result = "PROTOCOL_" + version }
 
-  override string unspecific_version_name(ProtocolFamily family) {
-    family = "SSLv23" and result = "PROTOCOL_" + family
+  override string unspecific_version_name() {
+    result = "PROTOCOL_SSLv23"
     or
-    family = "TLS" and result = "PROTOCOL_" + family + ["", "_CLIENT", "_SERVER"]
+    result = "PROTOCOL_TLS" + ["", "_CLIENT", "_SERVER"]
   }
 
   override API::Node version_constants() { result = API::moduleImport("ssl") }
@@ -219,9 +214,5 @@ class Ssl extends TlsLibrary {
     result instanceof OptionsAugAndNot
     or
     result instanceof ContextSetVersion
-    or
-    result instanceof UnspecificSslContextCreation
-    or
-    result instanceof UnspecificSslDefaultContextCreation
   }
 }

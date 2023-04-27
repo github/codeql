@@ -1,3 +1,68 @@
+## 0.6.0
+
+### Deprecated APIs
+
+* The recently introduced new data flow and taint tracking APIs have had a
+  number of module and predicate renamings. The old APIs remain in place for
+  now.
+
+### Minor Analysis Improvements
+
+* Control flow graph: the evaluation order of scope expressions and receivers in multiple assignments has been adjusted to match the changes made in Ruby 
+3.1 and 3.2.
+* The clear-text storage (`rb/clear-text-storage-sensitive-data`) and logging (`rb/clear-text-logging-sensitive-data`) queries now use built-in flow through hashes, for improved precision. This may result in both new true positives and less false positives.
+* Accesses of `params` in Sinatra applications are now recognized as HTTP input accesses.
+* Data flow is tracked from Sinatra route handlers to ERB files.
+* Data flow is tracked between basic Sinatra filters (those without URL patterns) and their corresponding route handlers.
+
+### Bug Fixes
+
+* Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular `DataFlow::hasFlowPath`, `DataFlow::hasFlow`, `DataFlow::hasFlowTo`, and `DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
+
+## 0.5.6
+
+No user-facing changes.
+
+## 0.5.5
+
+### New Features
+
+* Added support for merging two `PathGraph`s via disjoint union to allow results from multiple data flow computations in a single `path-problem` query.
+
+### Major Analysis Improvements
+
+* The main data flow and taint tracking APIs have been changed. The old APIs
+  remain in place for now and translate to the new through a
+  backwards-compatible wrapper. If multiple configurations are in scope
+  simultaneously, then this may affect results slightly. The new API is quite
+  similar to the old, but makes use of a configuration module instead of a
+  configuration class.
+
+### Minor Analysis Improvements
+
+* Data flow through `initialize` methods is now taken into account also when the receiver of a `new` call is an (implicit or explicit) `self`.
+* The Active Record query methods `reorder` and `count_by_sql` are now recognized as SQL executions.
+* Calls to `ActiveRecord::Connection#execute`, including those via subclasses, are now recognized as SQL executions.
+* Data flow through `ActionController::Parameters#require` is now tracked properly.
+* The severity of parse errors was reduced to warning (previously error). 
+* Deleted the deprecated `getQualifiedName` predicate from the `ConstantWriteAccess` class.
+* Deleted the deprecated `getWhenBranch` and `getAWhenBranch` predicates from the `CaseExpr` class.
+* Deleted the deprecated `Self`, `PatternParameter`, `Pattern`, `VariablePattern`, `TuplePattern`, and `TuplePatternParameter` classes.
+
+## 0.5.4
+
+### Minor Analysis Improvements
+
+* Flow is now tracked between ActionController `before_filter` and `after_filter` callbacks and their associated action methods.
+* Calls to `ApplicationController#render` and `ApplicationController::Renderer#render` are recognized as Rails rendering calls.
+* Support for [Twirp framework](https://twitchtv.github.io/twirp/docs/intro.html).
+
+## 0.5.3
+
+### Minor Analysis Improvements
+
+ * Ruby 3.1: one-line pattern matches are now supported. The AST nodes are named `TestPattern` (`expr in pattern`) and `MatchPattern` (`expr => pattern`).
+
 ## 0.5.2
 
 ### Minor Analysis Improvements

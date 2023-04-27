@@ -25,9 +25,11 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
+ * DEPRECATED: Use `SqlInjection` instead.
+ *
  * A taint-tracking configuration for SQL injection vulnerabilities.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
+deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
   TaintTrackingConfiguration() { this = "SqlInjection" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -36,6 +38,32 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+/**
+ * A taint-tracking configuration for SQL injection vulnerabilities.
+ */
+module SqlInjectionConfig implements DataFlow::ConfigSig {
+  /**
+   * Holds if `source` is a relevant data flow source.
+   */
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  /**
+   * Holds if `sink` is a relevant data flow sink.
+   */
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  /**
+   * Holds if data flow through `node` is prohibited. This completely removes
+   * `node` from the data flow graph.
+   */
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * A taint-tracking module for SQL injection vulnerabilities.
+ */
+module SqlInjection = TaintTracking::Global<SqlInjectionConfig>;
 
 /** A source of remote user input. */
 class RemoteSource extends Source instanceof RemoteFlowSource { }

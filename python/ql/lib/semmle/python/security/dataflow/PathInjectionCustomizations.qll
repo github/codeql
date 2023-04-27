@@ -58,7 +58,33 @@ module PathInjection {
    * A file system access, considered as a flow sink.
    */
   class FileSystemAccessAsSink extends Sink {
-    FileSystemAccessAsSink() { this = any(FileSystemAccess e).getAPathArgument() }
+    FileSystemAccessAsSink() {
+      this = any(FileSystemAccess e).getAPathArgument() and
+      // since implementation of Path.open in pathlib.py is like
+      // ```py
+      // def open(self, ...):
+      //     return io.open(self, ...)
+      // ```
+      // any time we would report flow to the `path_obj.open` sink, we can ALSO report
+      // the flow from the `self` parameter to the `io.open` sink -- obviously we
+      // don't want that.
+      //
+      // However, simply removing taint edges out of a sink is not a good enough solution,
+      // since we would only flag one of the `p.open` calls in the following example
+      // due to use-use flow
+      // ```py
+      // p.open()
+      // p.open()
+      // ```
+      //
+      // The same approach is used in the command injection query.
+      not exists(Module pathlib |
+        pathlib.getName() = "pathlib" and
+        this.getScope().getEnclosingModule() = pathlib and
+        // do allow this call if we're analyzing pathlib.py as part of CPython though
+        not exists(pathlib.getFile().getRelativePath())
+      )
+    }
   }
 
   private import semmle.python.frameworks.data.ModelsAsData

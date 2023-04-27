@@ -22,43 +22,6 @@ module Couchbase {
   }
 
   /**
-   * Models of methods on `gocb/AnalyticsQuery` and `gocb/N1qlQuery` which which support a fluent
-   * interface by returning the receiver. They are not inherently relevant to taint.
-   */
-  private class QueryMethodV1 extends TaintTracking::FunctionModel, Method {
-    QueryMethodV1() {
-      exists(string queryTypeName, string methodName |
-        queryTypeName = "AnalyticsQuery" and
-        methodName in [
-            "ContextId", "Deferred", "Pretty", "Priority", "RawParam", "ServerSideTimeout"
-          ]
-        or
-        queryTypeName = "N1qlQuery" and
-        methodName in [
-            "AdHoc", "Consistency", "ConsistentWith", "Custom", "PipelineBatch", "PipelineCap",
-            "Profile", "ReadOnly", "ScanCap", "Timeout"
-          ]
-      |
-        this.hasQualifiedName(packagePath(), queryTypeName, methodName)
-      )
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp.isResult()
-    }
-  }
-
-  private class QueryFromN1qlStatementV1 extends TaintTracking::FunctionModel {
-    QueryFromN1qlStatementV1() {
-      this.hasQualifiedName(packagePath(), ["NewAnalyticsQuery", "NewN1qlQuery"])
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(0) and outp.isResult()
-    }
-  }
-
-  /**
    * A query used in an API function acting on a `Bucket` or `Cluster` struct of v1 of
    * the official Couchbase Go library, gocb.
    */

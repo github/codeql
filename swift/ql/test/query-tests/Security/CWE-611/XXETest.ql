@@ -15,8 +15,8 @@ class XxeTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "hasXXE" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(XxeConfiguration config, DataFlow::Node source, DataFlow::Node sink, Expr sinkExpr |
-      config.hasFlow(source, sink) and
+    exists(DataFlow::Node source, DataFlow::Node sink, Expr sinkExpr |
+      XxeFlow::flow(source, sink) and
       sinkExpr = sink.asExpr() and
       location = sinkExpr.getLocation() and
       element = sinkExpr.toString() and

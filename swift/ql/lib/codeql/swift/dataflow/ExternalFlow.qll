@@ -16,7 +16,8 @@
  * 1. The `namespace` column selects a package.
  * 2. The `type` column selects a type within that package.
  * 3. The `subtypes` is a boolean that indicates whether to jump to an
- *    arbitrary subtype of that type.
+ *    arbitrary subtype of that type. Set this to `false` if leaving the `type`
+ *    blank (for example, a free function).
  * 4. The `name` column optionally selects a specific named member of the type.
  * 5. The `signature` column optionally restricts the named member. If
  *    `signature` is blank then no such filtering is done. The format of the
@@ -81,9 +82,12 @@ private module Frameworks {
   private import codeql.swift.frameworks.StandardLibrary.Collection
   private import codeql.swift.frameworks.StandardLibrary.CustomUrlSchemes
   private import codeql.swift.frameworks.StandardLibrary.Data
+  private import codeql.swift.frameworks.StandardLibrary.FileManager
   private import codeql.swift.frameworks.StandardLibrary.FilePath
   private import codeql.swift.frameworks.StandardLibrary.InputStream
   private import codeql.swift.frameworks.StandardLibrary.NsData
+  private import codeql.swift.frameworks.StandardLibrary.NsObject
+  private import codeql.swift.frameworks.StandardLibrary.NsString
   private import codeql.swift.frameworks.StandardLibrary.NsUrl
   private import codeql.swift.frameworks.StandardLibrary.Sequence
   private import codeql.swift.frameworks.StandardLibrary.String
@@ -92,8 +96,13 @@ private module Frameworks {
   private import codeql.swift.frameworks.StandardLibrary.WebView
   private import codeql.swift.frameworks.Alamofire.Alamofire
   private import codeql.swift.security.CleartextLoggingExtensions
+  private import codeql.swift.security.CleartextStorageDatabaseExtensions
+  private import codeql.swift.security.ECBEncryptionExtensions
+  private import codeql.swift.security.HardcodedEncryptionKeyExtensions
   private import codeql.swift.security.PathInjectionExtensions
   private import codeql.swift.security.PredicateInjectionExtensions
+  private import codeql.swift.security.StringLengthConflationExtensions
+  private import codeql.swift.security.WeakSensitiveDataHashingExtensions
 }
 
 /**

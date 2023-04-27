@@ -490,5 +490,11 @@ private predicate otherApiCallableCredentialParam(string s) {
       "com.microsoft.sqlserver.jdbc.SQLServerDataSource;setPassword(String);0",
       "com.microsoft.sqlserver.jdbc.SQLServerDataSource;getConnection(String, String);0",
       "com.microsoft.sqlserver.jdbc.SQLServerDataSource;getConnection(String, String);1",
+      "com.auth0.jwt.algorithms.Algorithm;HMAC256(String);0",
+      "com.auth0.jwt.algorithms.Algorithm;HMAC256(byte[]);0",
+      "com.auth0.jwt.algorithms.Algorithm;HMAC384(String);0",
+      "com.auth0.jwt.algorithms.Algorithm;HMAC384(byte[]);0",
+      "com.auth0.jwt.algorithms.Algorithm;HMAC512(String);0",
+      "com.auth0.jwt.algorithms.Algorithm;HMAC512(byte[]);0"
     ]
 }

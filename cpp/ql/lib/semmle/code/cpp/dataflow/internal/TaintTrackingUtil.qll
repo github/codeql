@@ -14,7 +14,7 @@ private import semmle.code.cpp.models.interfaces.Iterator
 private import semmle.code.cpp.models.interfaces.PointerWrapper
 
 private module DataFlow {
-  import semmle.code.cpp.dataflow.internal.DataFlowUtil
+  import DataFlowUtil
 }
 
 /**

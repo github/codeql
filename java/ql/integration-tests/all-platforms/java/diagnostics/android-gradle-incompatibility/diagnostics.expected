@@ -1,0 +1,28 @@
+{
+  "markdownMessage": "An Android build may have failed. Ensure the Code Scanning workflow installs required dependencies, and that the [Gradle and Android SDK versions are compatible](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle).\n\nRelevant output line: `   > Minimum supported Gradle version is 7.4. Current version is 7.3. If using the gradle wrapper, try editing the distributionUrl in <test-root-directory>/gradle/wrapper/gradle-wrapper.properties to gradle-7.4-all.zip`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/android-build-failure",
+    "name": "Android build failure"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
+{
+  "markdownMessage": "An Android build may have failed. Ensure the Code Scanning workflow installs required dependencies, and that the [Gradle and Android SDK versions are compatible](https://developer.android.com/studio/releases/gradle-plugin#updating-gradle).\n\nRelevant output line: `Caused by: java.lang.RuntimeException: Minimum supported Gradle version is 7.4. Current version is 7.3. If using the gradle wrapper, try editing the distributionUrl in <test-root-directory>/gradle/wrapper/gradle-wrapper.properties to gradle-7.4-all.zip`",
+  "severity": "error",
+  "source": {
+    "extractorName": "java",
+    "id": "java/autobuilder/android-build-failure",
+    "name": "Android build failure"
+  },
+  "visibility": {
+    "cliSummaryTable": false,
+    "statusPage": false,
+    "telemetry": true
+  }
+}

@@ -8,10 +8,10 @@ class HasPolyRedos extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasPolyRedos" and
-    exists(DataFlow::PathNode sink |
-      hasPolynomialReDoSResult(_, sink, _) and
-      location = sink.getNode().getLocation() and
-      element = sink.getNode().toString() and
+    exists(DataFlow::Node sink |
+      PolynomialRedosFlow::flowTo(sink) and
+      location = sink.getLocation() and
+      element = sink.toString() and
       value = ""
     )
   }

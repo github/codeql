@@ -5,7 +5,8 @@ import codeql.swift.elements.expr.ImplicitConversionExpr
 
 module Generated {
   class LinearToDifferentiableFunctionExpr extends Synth::TLinearToDifferentiableFunctionExpr,
-    ImplicitConversionExpr {
+    ImplicitConversionExpr
+  {
     override string getAPrimaryQlClass() { result = "LinearToDifferentiableFunctionExpr" }
   }
 }

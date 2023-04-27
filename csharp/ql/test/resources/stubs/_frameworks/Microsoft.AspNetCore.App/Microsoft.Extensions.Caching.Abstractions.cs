@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Caching.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -8,7 +9,6 @@ namespace Microsoft
         {
             namespace Distributed
             {
-                // Generated from `Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryExtensions` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class DistributedCacheEntryExtensions
                 {
                     public static Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions SetAbsoluteExpiration(this Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions options, System.DateTimeOffset absolute) => throw null;
@@ -16,7 +16,6 @@ namespace Microsoft
                     public static Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions SetSlidingExpiration(this Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions options, System.TimeSpan offset) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class DistributedCacheEntryOptions
                 {
                     public System.DateTimeOffset? AbsoluteExpiration { get => throw null; set => throw null; }
@@ -25,7 +24,6 @@ namespace Microsoft
                     public System.TimeSpan? SlidingExpiration { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Distributed.DistributedCacheExtensions` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class DistributedCacheExtensions
                 {
                     public static string GetString(this Microsoft.Extensions.Caching.Distributed.IDistributedCache cache, string key) => throw null;
@@ -38,7 +36,6 @@ namespace Microsoft
                     public static System.Threading.Tasks.Task SetStringAsync(this Microsoft.Extensions.Caching.Distributed.IDistributedCache cache, string key, string value, Microsoft.Extensions.Caching.Distributed.DistributedCacheEntryOptions options, System.Threading.CancellationToken token = default(System.Threading.CancellationToken)) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Distributed.IDistributedCache` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IDistributedCache
                 {
                     System.Byte[] Get(string key);
@@ -54,7 +51,6 @@ namespace Microsoft
             }
             namespace Memory
             {
-                // Generated from `Microsoft.Extensions.Caching.Memory.CacheEntryExtensions` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class CacheEntryExtensions
                 {
                     public static Microsoft.Extensions.Caching.Memory.ICacheEntry AddExpirationToken(this Microsoft.Extensions.Caching.Memory.ICacheEntry entry, Microsoft.Extensions.Primitives.IChangeToken expirationToken) => throw null;
@@ -69,7 +65,6 @@ namespace Microsoft
                     public static Microsoft.Extensions.Caching.Memory.ICacheEntry SetValue(this Microsoft.Extensions.Caching.Memory.ICacheEntry entry, object value) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Memory.CacheExtensions` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class CacheExtensions
                 {
                     public static object Get(this Microsoft.Extensions.Caching.Memory.IMemoryCache cache, object key) => throw null;
@@ -84,7 +79,6 @@ namespace Microsoft
                     public static bool TryGetValue<TItem>(this Microsoft.Extensions.Caching.Memory.IMemoryCache cache, object key, out TItem value) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Memory.CacheItemPriority` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum CacheItemPriority : int
                 {
                     High = 2,
@@ -93,7 +87,6 @@ namespace Microsoft
                     Normal = 1,
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Memory.EvictionReason` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public enum EvictionReason : int
                 {
                     Capacity = 5,
@@ -104,7 +97,6 @@ namespace Microsoft
                     TokenExpired = 4,
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Memory.ICacheEntry` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface ICacheEntry : System.IDisposable
                 {
                     System.DateTimeOffset? AbsoluteExpiration { get; set; }
@@ -118,15 +110,14 @@ namespace Microsoft
                     object Value { get; set; }
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Memory.IMemoryCache` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public interface IMemoryCache : System.IDisposable
                 {
                     Microsoft.Extensions.Caching.Memory.ICacheEntry CreateEntry(object key);
+                    Microsoft.Extensions.Caching.Memory.MemoryCacheStatistics GetCurrentStatistics() => throw null;
                     void Remove(object key);
                     bool TryGetValue(object key, out object value);
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Memory.MemoryCacheEntryExtensions` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public static class MemoryCacheEntryExtensions
                 {
                     public static Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions AddExpirationToken(this Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions options, Microsoft.Extensions.Primitives.IChangeToken expirationToken) => throw null;
@@ -139,7 +130,6 @@ namespace Microsoft
                     public static Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions SetSlidingExpiration(this Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions options, System.TimeSpan offset) => throw null;
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Memory.MemoryCacheEntryOptions` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public class MemoryCacheEntryOptions
                 {
                     public System.DateTimeOffset? AbsoluteExpiration { get => throw null; set => throw null; }
@@ -152,7 +142,15 @@ namespace Microsoft
                     public System.TimeSpan? SlidingExpiration { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Memory.PostEvictionCallbackRegistration` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
+                public class MemoryCacheStatistics
+                {
+                    public System.Int64 CurrentEntryCount { get => throw null; set => throw null; }
+                    public System.Int64? CurrentEstimatedSize { get => throw null; set => throw null; }
+                    public MemoryCacheStatistics() => throw null;
+                    public System.Int64 TotalHits { get => throw null; set => throw null; }
+                    public System.Int64 TotalMisses { get => throw null; set => throw null; }
+                }
+
                 public class PostEvictionCallbackRegistration
                 {
                     public Microsoft.Extensions.Caching.Memory.PostEvictionDelegate EvictionCallback { get => throw null; set => throw null; }
@@ -160,20 +158,17 @@ namespace Microsoft
                     public object State { get => throw null; set => throw null; }
                 }
 
-                // Generated from `Microsoft.Extensions.Caching.Memory.PostEvictionDelegate` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
                 public delegate void PostEvictionDelegate(object key, object value, Microsoft.Extensions.Caching.Memory.EvictionReason reason, object state);
 
             }
         }
         namespace Internal
         {
-            // Generated from `Microsoft.Extensions.Internal.ISystemClock` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface ISystemClock
             {
                 System.DateTimeOffset UtcNow { get; }
             }
 
-            // Generated from `Microsoft.Extensions.Internal.SystemClock` in `Microsoft.Extensions.Caching.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class SystemClock : Microsoft.Extensions.Internal.ISystemClock
             {
                 public SystemClock() => throw null;

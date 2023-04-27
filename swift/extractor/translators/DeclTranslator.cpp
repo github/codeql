@@ -3,7 +3,7 @@
 #include <swift/AST/GenericParamList.h>
 #include <swift/AST/ParameterList.h>
 #include "swift/extractor/infra/SwiftDiagnosticKind.h"
-#include "swift/AST/PropertyWrappers.h"
+#include <swift/AST/PropertyWrappers.h>
 
 namespace codeql {
 namespace {
@@ -24,31 +24,23 @@ std::string constructName(const swift::DeclName& declName) {
 }
 }  // namespace
 
-std::optional<codeql::ConcreteFuncDecl> DeclTranslator::translateFuncDecl(
-    const swift::FuncDecl& decl) {
-  if (auto entry = createNamedEntry(decl)) {
-    fillAbstractFunctionDecl(decl, *entry);
-    return entry;
-  }
-  return std::nullopt;
+codeql::ConcreteFuncDecl DeclTranslator::translateFuncDecl(const swift::FuncDecl& decl) {
+  auto entry = createEntry(decl);
+  fillAbstractFunctionDecl(decl, entry);
+  return entry;
 }
 
-std::optional<codeql::ConstructorDecl> DeclTranslator::translateConstructorDecl(
+codeql::ConstructorDecl DeclTranslator::translateConstructorDecl(
     const swift::ConstructorDecl& decl) {
-  if (auto entry = createNamedEntry(decl)) {
-    fillAbstractFunctionDecl(decl, *entry);
-    return entry;
-  }
-  return std::nullopt;
+  auto entry = createEntry(decl);
+  fillAbstractFunctionDecl(decl, entry);
+  return entry;
 }
 
-std::optional<codeql::DestructorDecl> DeclTranslator::translateDestructorDecl(
-    const swift::DestructorDecl& decl) {
-  if (auto entry = createNamedEntry(decl)) {
-    fillAbstractFunctionDecl(decl, *entry);
-    return entry;
-  }
-  return std::nullopt;
+codeql::DestructorDecl DeclTranslator::translateDestructorDecl(const swift::DestructorDecl& decl) {
+  auto entry = createEntry(decl);
+  fillAbstractFunctionDecl(decl, entry);
+  return entry;
 }
 
 codeql::PrefixOperatorDecl DeclTranslator::translatePrefixOperatorDecl(
@@ -79,16 +71,13 @@ codeql::PrecedenceGroupDecl DeclTranslator::translatePrecedenceGroupDecl(
   return entry;
 }
 
-std::optional<codeql::ParamDecl> DeclTranslator::translateParamDecl(const swift::ParamDecl& decl) {
-  auto entry = createNamedEntry(decl);
-  if (!entry) {
-    return std::nullopt;
-  }
-  fillVarDecl(decl, *entry);
-  entry->is_inout = decl.isInOut();
+codeql::ParamDecl DeclTranslator::translateParamDecl(const swift::ParamDecl& decl) {
+  auto entry = createEntry(decl);
+  fillVarDecl(decl, entry);
+  entry.is_inout = decl.isInOut();
   if (auto wrapped = decl.getPropertyWrapperWrappedValueVar()) {
-    entry->property_wrapper_local_wrapped_var = dispatcher.fetchLabel(wrapped);
-    entry->property_wrapper_local_wrapped_var_binding =
+    entry.property_wrapper_local_wrapped_var = dispatcher.fetchLabel(wrapped);
+    entry.property_wrapper_local_wrapped_var_binding =
         dispatcher.fetchLabel(wrapped->getParentPatternBinding());
   }
   return entry;
@@ -114,56 +103,35 @@ codeql::PatternBindingDecl DeclTranslator::translatePatternBindingDecl(
   return entry;
 }
 
-std::optional<codeql::ConcreteVarDecl> DeclTranslator::translateVarDecl(
-    const swift::VarDecl& decl) {
-  std::optional<codeql::ConcreteVarDecl> entry;
-  // We do not deduplicate variables from non-swift (PCM, clang modules) modules as the mangler
-  // crashes sometimes
-  if (decl.getDeclContext()->isLocalContext() || decl.getModuleContext()->isNonSwiftModule()) {
-    entry = createEntry(decl);
-  } else {
-    entry = createNamedEntry(decl);
-    if (!entry) {
-      return std::nullopt;
-    }
-  }
-  entry->introducer_int = static_cast<uint8_t>(decl.getIntroducer());
-  fillVarDecl(decl, *entry);
+codeql::ConcreteVarDecl DeclTranslator::translateVarDecl(const swift::VarDecl& decl) {
+  auto entry = createEntry(decl);
+  entry.introducer_int = static_cast<uint8_t>(decl.getIntroducer());
+  fillVarDecl(decl, entry);
   return entry;
 }
 
-std::optional<codeql::StructDecl> DeclTranslator::translateStructDecl(
-    const swift::StructDecl& decl) {
-  if (auto entry = createNamedEntry(decl)) {
-    fillNominalTypeDecl(decl, *entry);
-    return entry;
-  }
-  return std::nullopt;
+codeql::StructDecl DeclTranslator::translateStructDecl(const swift::StructDecl& decl) {
+  auto entry = createEntry(decl);
+  fillNominalTypeDecl(decl, entry);
+  return entry;
 }
 
-std::optional<codeql::ClassDecl> DeclTranslator::translateClassDecl(const swift::ClassDecl& decl) {
-  if (auto entry = createNamedEntry(decl)) {
-    fillNominalTypeDecl(decl, *entry);
-    return entry;
-  }
-  return std::nullopt;
+codeql::ClassDecl DeclTranslator::translateClassDecl(const swift::ClassDecl& decl) {
+  auto entry = createEntry(decl);
+  fillNominalTypeDecl(decl, entry);
+  return entry;
 }
 
-std::optional<codeql::EnumDecl> DeclTranslator::translateEnumDecl(const swift::EnumDecl& decl) {
-  if (auto entry = createNamedEntry(decl)) {
-    fillNominalTypeDecl(decl, *entry);
-    return entry;
-  }
-  return std::nullopt;
+codeql::EnumDecl DeclTranslator::translateEnumDecl(const swift::EnumDecl& decl) {
+  auto entry = createEntry(decl);
+  fillNominalTypeDecl(decl, entry);
+  return entry;
 }
 
-std::optional<codeql::ProtocolDecl> DeclTranslator::translateProtocolDecl(
-    const swift::ProtocolDecl& decl) {
-  if (auto entry = createNamedEntry(decl)) {
-    fillNominalTypeDecl(decl, *entry);
-    return entry;
-  }
-  return std::nullopt;
+codeql::ProtocolDecl DeclTranslator::translateProtocolDecl(const swift::ProtocolDecl& decl) {
+  auto entry = createEntry(decl);
+  fillNominalTypeDecl(decl, entry);
+  return entry;
 }
 
 codeql::EnumCaseDecl DeclTranslator::translateEnumCaseDecl(const swift::EnumCaseDecl& decl) {
@@ -172,17 +140,14 @@ codeql::EnumCaseDecl DeclTranslator::translateEnumCaseDecl(const swift::EnumCase
   return entry;
 }
 
-std::optional<codeql::EnumElementDecl> DeclTranslator::translateEnumElementDecl(
+codeql::EnumElementDecl DeclTranslator::translateEnumElementDecl(
     const swift::EnumElementDecl& decl) {
-  auto entry = createNamedEntry(decl);
-  if (!entry) {
-    return std::nullopt;
-  }
-  entry->name = decl.getNameStr().str();
+  auto entry = createEntry(decl);
+  entry.name = decl.getNameStr().str();
   if (decl.hasParameterList()) {
-    entry->params = dispatcher.fetchRepeatedLabels(*decl.getParameterList());
+    entry.params = dispatcher.fetchRepeatedLabels(*decl.getParameterList());
   }
-  fillValueDecl(decl, *entry);
+  fillValueDecl(decl, entry);
   return entry;
 }
 
@@ -194,71 +159,59 @@ codeql::GenericTypeParamDecl DeclTranslator::translateGenericTypeParamDecl(
   return entry;
 }
 
-std::optional<codeql::AssociatedTypeDecl> DeclTranslator::translateAssociatedTypeDecl(
+codeql::AssociatedTypeDecl DeclTranslator::translateAssociatedTypeDecl(
     const swift::AssociatedTypeDecl& decl) {
-  if (auto entry = createNamedEntry(decl)) {
-    fillTypeDecl(decl, *entry);
-    return entry;
-  }
-  return std::nullopt;
-}
-
-std::optional<codeql::TypeAliasDecl> DeclTranslator::translateTypeAliasDecl(
-    const swift::TypeAliasDecl& decl) {
-  if (auto entry = createNamedEntry(decl)) {
-    fillTypeDecl(decl, *entry);
-    return entry;
-  }
-  return std::nullopt;
-}
-
-std::optional<codeql::AccessorDecl> DeclTranslator::translateAccessorDecl(
-    const swift::AccessorDecl& decl) {
-  auto entry = createNamedEntry(decl);
-  if (!entry) {
-    return std::nullopt;
-  }
-  switch (decl.getAccessorKind()) {
-    case swift::AccessorKind::Get:
-      entry->is_getter = true;
-      break;
-    case swift::AccessorKind::Set:
-      entry->is_setter = true;
-      break;
-    case swift::AccessorKind::WillSet:
-      entry->is_will_set = true;
-      break;
-    case swift::AccessorKind::DidSet:
-      entry->is_did_set = true;
-      break;
-    case swift::AccessorKind::Read:
-      entry->is_read = true;
-      break;
-    case swift::AccessorKind::Modify:
-      entry->is_modify = true;
-      break;
-    case swift::AccessorKind::Address:
-      entry->is_unsafe_address = true;
-      break;
-    case swift::AccessorKind::MutableAddress:
-      entry->is_unsafe_mutable_address = true;
-      break;
-  }
-  fillAbstractFunctionDecl(decl, *entry);
+  auto entry = createEntry(decl);
+  fillTypeDecl(decl, entry);
   return entry;
 }
 
-std::optional<codeql::SubscriptDecl> DeclTranslator::translateSubscriptDecl(
-    const swift::SubscriptDecl& decl) {
-  auto entry = createNamedEntry(decl);
-  if (!entry) {
-    return std::nullopt;
+codeql::TypeAliasDecl DeclTranslator::translateTypeAliasDecl(const swift::TypeAliasDecl& decl) {
+  auto entry = createEntry(decl);
+  entry.aliased_type = dispatcher.fetchLabel(decl.getUnderlyingType());
+  fillTypeDecl(decl, entry);
+  return entry;
+}
+
+codeql::AccessorDecl DeclTranslator::translateAccessorDecl(const swift::AccessorDecl& decl) {
+  auto entry = createEntry(decl);
+  switch (decl.getAccessorKind()) {
+    case swift::AccessorKind::Get:
+      entry.is_getter = true;
+      break;
+    case swift::AccessorKind::Set:
+      entry.is_setter = true;
+      break;
+    case swift::AccessorKind::WillSet:
+      entry.is_will_set = true;
+      break;
+    case swift::AccessorKind::DidSet:
+      entry.is_did_set = true;
+      break;
+    case swift::AccessorKind::Read:
+      entry.is_read = true;
+      break;
+    case swift::AccessorKind::Modify:
+      entry.is_modify = true;
+      break;
+    case swift::AccessorKind::Address:
+      entry.is_unsafe_address = true;
+      break;
+    case swift::AccessorKind::MutableAddress:
+      entry.is_unsafe_mutable_address = true;
+      break;
   }
-  entry->element_type = dispatcher.fetchLabel(decl.getElementInterfaceType());
+  fillAbstractFunctionDecl(decl, entry);
+  return entry;
+}
+
+codeql::SubscriptDecl DeclTranslator::translateSubscriptDecl(const swift::SubscriptDecl& decl) {
+  auto entry = createEntry(decl);
+  entry.element_type = dispatcher.fetchLabel(decl.getElementInterfaceType());
   if (auto indices = decl.getIndices()) {
-    entry->params = dispatcher.fetchRepeatedLabels(*indices);
+    entry.params = dispatcher.fetchRepeatedLabels(*indices);
   }
-  fillAbstractStorageDecl(decl, *entry);
+  fillAbstractStorageDecl(decl, entry);
   return entry;
 }
 
@@ -279,51 +232,23 @@ codeql::ImportDecl DeclTranslator::translateImportDecl(const swift::ImportDecl& 
   return entry;
 }
 
-std::optional<codeql::ModuleDecl> DeclTranslator::translateModuleDecl(
-    const swift::ModuleDecl& decl) {
-  auto entry = createNamedEntry(decl);
-  if (!entry) {
-    return std::nullopt;
-  }
-  entry->is_builtin_module = decl.isBuiltinModule();
-  entry->is_system_module = decl.isSystemModule();
+codeql::ModuleDecl DeclTranslator::translateModuleDecl(const swift::ModuleDecl& decl) {
+  auto entry = createEntry(decl);
+  entry.is_builtin_module = decl.isBuiltinModule();
+  entry.is_system_module = decl.isSystemModule();
   using K = swift::ModuleDecl::ImportFilterKind;
   llvm::SmallVector<swift::ImportedModule> imports;
   decl.getImportedModules(imports, K::Default);
   for (const auto& import : imports) {
-    entry->imported_modules.push_back(dispatcher.fetchLabel(import.importedModule));
+    entry.imported_modules.push_back(dispatcher.fetchLabel(import.importedModule));
   }
   imports.clear();
   decl.getImportedModules(imports, K::Exported);
   for (const auto& import : imports) {
-    entry->exported_modules.push_back(dispatcher.fetchLabel(import.importedModule));
+    entry.exported_modules.push_back(dispatcher.fetchLabel(import.importedModule));
   }
-  fillTypeDecl(decl, *entry);
+  fillTypeDecl(decl, entry);
   return entry;
-}
-
-std::string DeclTranslator::mangledName(const swift::ValueDecl& decl) {
-  std::string_view moduleName = decl.getModuleContext()->getRealName().str();
-  // ASTMangler::mangleAnyDecl crashes when called on `ModuleDecl`
-  if (decl.getKind() == swift::DeclKind::Module) {
-    return std::string{moduleName};
-  }
-  std::ostringstream ret;
-  // stamp all declarations with an id-ref of the containing module
-  ret << '{' << ModuleDeclTag::prefix << '_' << moduleName << '}';
-  if (decl.getKind() == swift::DeclKind::TypeAlias) {
-    // In cases like this (when coming from PCM)
-    //  typealias CFXMLTree = CFTree
-    //  typealias CFXMLTreeRef = CFXMLTree
-    // mangleAnyDecl mangles both CFXMLTree and CFXMLTreeRef into 'So12CFXMLTreeRefa'
-    // which is not correct and causes inconsistencies. mangleEntity makes these two distinct
-    // prefix adds a couple of special symbols, we don't necessary need them
-    ret << mangler.mangleEntity(&decl);
-  } else {
-    // prefix adds a couple of special symbols, we don't necessary need them
-    ret << mangler.mangleAnyDecl(&decl, /* prefix = */ false);
-  }
-  return ret.str();
 }
 
 void DeclTranslator::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& decl,
@@ -415,15 +340,12 @@ codeql::IfConfigDecl DeclTranslator::translateIfConfigDecl(const swift::IfConfig
   return entry;
 }
 
-std::optional<codeql::OpaqueTypeDecl> DeclTranslator::translateOpaqueTypeDecl(
-    const swift::OpaqueTypeDecl& decl) {
-  if (auto entry = createNamedEntry(decl)) {
-    fillTypeDecl(decl, *entry);
-    entry->naming_declaration = dispatcher.fetchLabel(decl.getNamingDecl());
-    entry->opaque_generic_params = dispatcher.fetchRepeatedLabels(decl.getOpaqueGenericParams());
-    return entry;
-  }
-  return std::nullopt;
+codeql::OpaqueTypeDecl DeclTranslator::translateOpaqueTypeDecl(const swift::OpaqueTypeDecl& decl) {
+  auto entry = createEntry(decl);
+  fillTypeDecl(decl, entry);
+  entry.naming_declaration = dispatcher.fetchLabel(decl.getNamingDecl());
+  entry.opaque_generic_params = dispatcher.fetchRepeatedLabels(decl.getOpaqueGenericParams());
+  return entry;
 }
 
 codeql::PoundDiagnosticDecl DeclTranslator::translatePoundDiagnosticDecl(
@@ -442,7 +364,7 @@ codeql::MissingMemberDecl DeclTranslator::translateMissingMemberDecl(
 }
 
 codeql::CapturedDecl DeclTranslator::translateCapturedValue(const swift::CapturedValue& capture) {
-  codeql::CapturedDecl entry{dispatcher.template assignNewLabel(capture)};
+  auto entry = dispatcher.createEntry(capture);
   auto decl = capture.getDecl();
   entry.decl = dispatcher.fetchLabel(decl);
   entry.module = dispatcher.fetchLabel(decl->getModuleContext());

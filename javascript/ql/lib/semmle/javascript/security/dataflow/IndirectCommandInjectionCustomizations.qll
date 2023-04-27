@@ -10,7 +10,10 @@ module IndirectCommandInjection {
   /**
    * A data flow source for command-injection vulnerabilities.
    */
-  abstract class Source extends DataFlow::Node { }
+  abstract class Source extends DataFlow::Node {
+    /** Gets a description of this source. */
+    string describe() { result = "command-line argument" }
+  }
 
   /**
    * A data flow sink for command-injection vulnerabilities.
@@ -25,8 +28,8 @@ module IndirectCommandInjection {
   /**
    * A source of user input from the command-line, considered as a flow source for command injection.
    */
-  private class CommandLineArgumentsArrayAsSource extends Source instanceof CommandLineArgumentsArray {
-  }
+  private class CommandLineArgumentsArrayAsSource extends Source instanceof CommandLineArgumentsArray
+  { }
 
   /**
    * An array of command-line arguments.
@@ -35,6 +38,15 @@ module IndirectCommandInjection {
     CommandLineArgumentsArray() {
       this = DataFlow::globalVarRef("process").getAPropertyRead("argv")
     }
+  }
+
+  /**
+   * A read of `process.env`, considered as a flow source for command injection.
+   */
+  private class ProcessEnvAsSource extends Source {
+    ProcessEnvAsSource() { this = NodeJSLib::process().getAPropertyRead("env") }
+
+    override string describe() { result = "environment variable" }
   }
 
   /**

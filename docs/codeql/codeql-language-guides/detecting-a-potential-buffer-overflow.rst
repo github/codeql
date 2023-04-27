@@ -204,6 +204,7 @@ The completed query will now identify cases where the result of ``strlen`` is st
 .. code-block:: ql
 
    import cpp
+   import semmle.code.cpp.controlflow.SSA
 
    class MallocCall extends FunctionCall
    {

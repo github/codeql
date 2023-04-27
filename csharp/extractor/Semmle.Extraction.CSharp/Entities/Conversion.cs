@@ -10,6 +10,8 @@ namespace Semmle.Extraction.CSharp.Entities
         private Conversion(Context cx, IMethodSymbol init)
             : base(cx, init) { }
 
+        protected override MethodKind ExplicitlyImplementsKind => MethodKind.Conversion;
+
         public static new Conversion Create(Context cx, IMethodSymbol symbol) =>
             ConversionFactory.Instance.CreateEntityFromSymbol(cx, symbol);
 

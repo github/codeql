@@ -11,12 +11,24 @@ class WebConfigXml extends XmlFile {
   WebConfigXml() { this.getName().matches("%Web.config") }
 }
 
+/**
+ * A `Web.config` transformation file.
+ */
+class WebConfigReleaseTransformXml extends XmlFile {
+  WebConfigReleaseTransformXml() { this.getName().matches("%Web.Release.config") }
+}
+
 /** DEPRECATED: Alias for WebConfigXml */
 deprecated class WebConfigXML = WebConfigXml;
 
 /** A `<configuration>` tag in an ASP.NET configuration file. */
 class ConfigurationXmlElement extends XmlElement {
   ConfigurationXmlElement() { this.getName().toLowerCase() = "configuration" }
+}
+
+/** A `<compilation>` tag in an ASP.NET configuration file. */
+class CompilationXmlElement extends XmlElement {
+  CompilationXmlElement() { this.getName().toLowerCase() = "compilation" }
 }
 
 /** DEPRECATED: Alias for ConfigurationXmlElement */
@@ -148,4 +160,16 @@ class HttpCookiesElement extends XmlElement {
 
   /** DEPRECATED: Alias for isRequireSsl */
   deprecated predicate isRequireSSL() { this.isRequireSsl() }
+}
+
+/** A `Transform` attribute in a Web.config transformation file. */
+class TransformXmlAttribute extends XmlAttribute {
+  TransformXmlAttribute() { this.getName().toLowerCase() = "transform" }
+
+  /**
+   * Gets the list of attribute removals in `Transform=RemoveAttributes(list)`.
+   */
+  string getRemoveAttributes() {
+    result = this.getValue().regexpCapture("RemoveAttributes\\((.*)\\)", 1).splitAt(",")
+  }
 }

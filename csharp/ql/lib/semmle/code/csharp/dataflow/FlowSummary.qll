@@ -141,7 +141,8 @@ private class RecordConstructorFlow extends SummarizedCallable {
 
 class RequiredSummaryComponentStack = Impl::Public::RequiredSummaryComponentStack;
 
-private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
+private class RecordConstructorFlowRequiredSummaryComponentStack extends RequiredSummaryComponentStack
+{
   override predicate required(SummaryComponent head, SummaryComponentStack tail) {
     exists(Property p |
       recordConstructorFlow(_, _, p) and

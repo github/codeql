@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.CSharp, Version=7.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace RuntimeBinder
         {
-            // Generated from `Microsoft.CSharp.RuntimeBinder.Binder` in `Microsoft.CSharp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public static class Binder
             {
                 public static System.Runtime.CompilerServices.CallSiteBinder BinaryOperation(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags flags, System.Linq.Expressions.ExpressionType operation, System.Type context, System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo> argumentInfo) => throw null;
@@ -22,13 +22,11 @@ namespace Microsoft
                 public static System.Runtime.CompilerServices.CallSiteBinder UnaryOperation(Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags flags, System.Linq.Expressions.ExpressionType operation, System.Type context, System.Collections.Generic.IEnumerable<Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo> argumentInfo) => throw null;
             }
 
-            // Generated from `Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo` in `Microsoft.CSharp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class CSharpArgumentInfo
             {
                 public static Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfo Create(Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfoFlags flags, string name) => throw null;
             }
 
-            // Generated from `Microsoft.CSharp.RuntimeBinder.CSharpArgumentInfoFlags` in `Microsoft.CSharp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum CSharpArgumentInfoFlags : int
             {
@@ -41,7 +39,6 @@ namespace Microsoft
                 UseCompileTimeType = 1,
             }
 
-            // Generated from `Microsoft.CSharp.RuntimeBinder.CSharpBinderFlags` in `Microsoft.CSharp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             [System.Flags]
             public enum CSharpBinderFlags : int
             {
@@ -57,7 +54,6 @@ namespace Microsoft
                 ValueFromCompoundAssignment = 128,
             }
 
-            // Generated from `Microsoft.CSharp.RuntimeBinder.RuntimeBinderException` in `Microsoft.CSharp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RuntimeBinderException : System.Exception
             {
                 public RuntimeBinderException() => throw null;
@@ -66,7 +62,6 @@ namespace Microsoft
                 public RuntimeBinderException(string message, System.Exception innerException) => throw null;
             }
 
-            // Generated from `Microsoft.CSharp.RuntimeBinder.RuntimeBinderInternalCompilerException` in `Microsoft.CSharp, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a`
             public class RuntimeBinderInternalCompilerException : System.Exception
             {
                 public RuntimeBinderInternalCompilerException() => throw null;

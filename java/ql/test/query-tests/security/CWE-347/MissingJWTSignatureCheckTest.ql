@@ -9,7 +9,7 @@ class HasMissingJwtSignatureCheckTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasMissingJwtSignatureCheck" and
-    exists(DataFlow::Node sink, MissingJwtSignatureCheckConf conf | conf.hasFlowTo(sink) |
+    exists(DataFlow::Node sink | MissingJwtSignatureCheckFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

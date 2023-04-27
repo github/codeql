@@ -1,5 +1,5 @@
-| a1.c:10:16:10:16 | struct <unnamed> | 0 | file://:0:0:0:0 | int | 1 types |
-| a1.c:17:16:17:16 | struct <unnamed> | 0 | file://:0:0:0:0 | int | 1 types |
+| a1.c:10:16:10:16 | (unnamed class/struct/union) | 0 | file://:0:0:0:0 | int | 1 types |
+| a1.c:17:16:17:16 | (unnamed class/struct/union) | 0 | file://:0:0:0:0 | int | 1 types |
 | a1.c:24:8:24:10 | Foo | 0 | file://:0:0:0:0 | anon_empty_t * | 1 types |
 | a1.c:24:8:24:10 | Foo | 1 | file://:0:0:0:0 | anon_nonempty_t * | 1 types |
 | a1.c:24:8:24:10 | Foo | 2 | file://:0:0:0:0 | int | 1 types |
@@ -7,8 +7,8 @@
 | a1.c:36:8:36:10 | Bar | 0 | file://:0:0:0:0 | Empty * | 1 types |
 | a1.c:36:8:36:10 | Bar | 1 | file://:0:0:0:0 | NonEmpty * | 1 types |
 | a1.c:36:8:36:10 | Bar | 2 | file://:0:0:0:0 | int | 1 types |
-| a2.c:10:16:10:16 | struct <unnamed> | 0 | file://:0:0:0:0 | int | 1 types |
-| a2.c:17:16:17:16 | struct <unnamed> | 0 | file://:0:0:0:0 | int | 1 types |
+| a2.c:10:16:10:16 | (unnamed class/struct/union) | 0 | file://:0:0:0:0 | int | 1 types |
+| a2.c:17:16:17:16 | (unnamed class/struct/union) | 0 | file://:0:0:0:0 | int | 1 types |
 | a2.c:24:8:24:10 | Foo | 0 | file://:0:0:0:0 | anon_empty_t * | 1 types |
 | a2.c:24:8:24:10 | Foo | 1 | file://:0:0:0:0 | anon_nonempty_t * | 1 types |
 | a2.c:24:8:24:10 | Foo | 2 | file://:0:0:0:0 | int | 1 types |

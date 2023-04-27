@@ -44,9 +44,9 @@ end
 
 def m8
     sink(s8 { source "a" }) # $ hasValueFlow=a
-    sink(s8 do # $hasValueFlow=a
+    sink(s8 do
         source "a" 
-    end)
+    end) # $hasValueFlow=a
 end
 
 def m9
@@ -224,10 +224,10 @@ end
 def m28(i)
     a = source "a"
     x = s28(a)
-    sink x[0]
-    sink x[1] # $ MISSING: hasValueFlow=a
-    sink x[2] # $ MISSING: hasValueFlow=a
-    sink x[i] # $ MISSING: hasValueFlow=a
+    sink x[0] # $ SPURIOUS: hasValueFlow=a
+    sink x[1] # $ hasValueFlow=a
+    sink x[2] # $ hasValueFlow=a
+    sink x[i] # $ hasValueFlow=a
 end
 
 def m29(i)
