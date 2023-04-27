@@ -61,6 +61,7 @@ pub fn run(options: Options) -> std::io::Result<()> {
             },
         ],
         trap_dir: options.output_dir,
+        trap_compression: trap::Compression::from_env("CODEQL_QL_TRAP_COMPRESSION"),
         source_archive_dir: options.source_archive_dir,
         file_list: options.file_list,
     };

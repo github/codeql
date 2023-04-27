@@ -22,6 +22,10 @@ pub struct Extractor {
     pub trap_dir: PathBuf,
     pub source_archive_dir: PathBuf,
     pub file_list: PathBuf,
+    // Typically constructed via `trap::Compression::from_env`.
+    // This allow us to report the error using our diagnostics system
+    // without exposing it to consumers.
+    pub trap_compression: Result<trap::Compression, String>,
 }
 
 impl Extractor {
@@ -52,8 +56,8 @@ impl Extractor {
                 "threads"
             }
         );
-        let trap_compression = match trap::Compression::from_env("CODEQL_QL_TRAP_COMPRESSION") {
-            Ok(x) => x,
+        let trap_compression = match &self.trap_compression {
+            Ok(x) => *x,
             Err(e) => {
                 main_thread_logger.write(
                     main_thread_logger

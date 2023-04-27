@@ -3,6 +3,7 @@ use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
 
 use codeql_extractor::extractor::simple;
+use codeql_extractor::trap;
 use flate2::read::GzDecoder;
 use tree_sitter_ql;
 
@@ -47,6 +48,7 @@ fn simple_extractor() {
         trap_dir,
         source_archive_dir,
         file_list,
+        trap_compression: Ok(trap::Compression::Gzip),
     };
 
     // The extractor should run successfully
