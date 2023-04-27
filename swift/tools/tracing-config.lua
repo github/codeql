@@ -47,6 +47,7 @@ function RegisterExtractorPack(id)
       strip_unsupported_arg(args, '-emit-localized-strings-path', 1)
       strip_unsupported_arg(args, '-stack-check', 0)
       strip_unsupported_arg(args, '-experimental-skip-non-inlinable-function-bodies-without-types', 0)
+      strip_unsupported_arg(args, '-enable-default-cmo', 0)
       strip_unsupported_clang_arg(args, '-ivfsstatcache', 1)
     end
 
