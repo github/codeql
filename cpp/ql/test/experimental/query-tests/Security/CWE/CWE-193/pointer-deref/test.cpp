@@ -229,14 +229,14 @@ void test15(unsigned index) {
     return;
   }
   int* newname = new int[size];
-  newname[index] = 0; // GOOD [FALSE POSITIVE]
+  newname[index] = 0; // GOOD
 }
 
 void test16(unsigned index) {
   unsigned size = index + 13;
   if(size >= index) {
     int* newname = new int[size];
-    newname[index] = 0; // GOOD [FALSE POSITIVE]
+    newname[index] = 0; // GOOD
   }
 }
 
@@ -251,7 +251,7 @@ void test17(unsigned *p, unsigned x, unsigned k) {
         // The following access is okay because:
         // n = 3*p[0] + k >= p[0] + k >= p[1] + k > p[1] = i
         // (where p[0] denotes the original value for p[0])
-        p[i] = x; // GOOD [FALSE POSITIVE]
+        p[i] = x; // GOOD
     }
 }
 

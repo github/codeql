@@ -233,25 +233,63 @@ module InvalidPointerToDerefConfig implements DataFlow::ConfigSig {
 
 module InvalidPointerToDerefFlow = DataFlow::Global<InvalidPointerToDerefConfig>;
 
-/**
- * Holds if `pai` is a pointer-arithmetic operation and `source` is a dataflow node with a
- * pointer-value that is non-strictly upper bounded by `pai + delta`.
- *
- * For example, if `pai` is a pointer-arithmetic operation `p + size` in an expression such
- * as `(p + size) + 1` and `source` is the node representing `(p + size) + 1`. In this
- * case `delta` is 1.
- */
-predicate invalidPointerToDerefSource(
-  PointerArithmeticInstruction pai, DataFlow::Node source, int delta
-) {
-  exists(AllocToInvalidPointerFlow::PathNode1 p, DataFlow::Node sink1 |
-    pragma[only_bind_out](p.getNode()) = sink1 and
-    AllocToInvalidPointerFlow::flowPath(_, _, pragma[only_bind_into](p), _) and
-    isSinkImpl(pai, sink1, _, _) and
-    bounded2(source.asInstruction(), pai, delta) and
-    delta >= 0
-  )
+module InvalidPointerToDerefSource {
+  private predicate conversionStep(Instruction iFrom, Instruction iTo) {
+    iTo.(CopyValueInstruction).getSourceValue() = iFrom or
+    iTo.(ConvertInstruction).getUnary() = iFrom or
+    iTo.(CheckedConvertOrNullInstruction).getUnary() = iFrom or
+    iTo.(InheritanceConversionInstruction).getUnary() = iFrom or
+    // it's fine to treat pointer arithmetic as conversions as conversions
+    // here as we'll use the range analysis library to ensure that the pointer
+    // arithmetic operation didn't modify the value too much (see the uses of
+    // `bounded2` in `invalidPointerToDerefSource`).
+    iTo.(PointerArithmeticInstruction).getLeft() = iFrom
+  }
+
+  /** Holds if `instr` flows to a `StoreInstruction`'s source value operand. */
+  private predicate isStored(Instruction instr) {
+    instr = any(StoreInstruction store).getSourceValue()
+    or
+    exists(Instruction i | isStored(i) and conversionStep(instr, i))
+  }
+
+  /** Holds if `instr` flows to a `LoadInstruction`'s source address operand. */
+  private predicate isLoaded(Instruction instr) {
+    instr = any(LoadInstruction store).getSourceAddress()
+    or
+    exists(Instruction i | isLoaded(i) and conversionStep(instr, i))
+  }
+
+  /**
+   * A `PointerArithmeticInstruction` that either flows to a `StoreInstruction`'s value
+   * operand, or is used as an address in a `LoadInstruction`.
+   */
+  private class StoredOrLoadedPointerArithmeticInstruction extends PointerArithmeticInstruction {
+    StoredOrLoadedPointerArithmeticInstruction() { isStored(this) or isLoaded(this) }
+  }
+
+  /**
+   * Holds if `pai` is a pointer-arithmetic operation and `source` is a dataflow node with a
+   * pointer-value that is non-strictly upper bounded by `pai + delta`.
+   *
+   * For example, if `pai` is a pointer-arithmetic operation `p + size` in an expression such
+   * as `(p + size) + 1` and `source` is the node representing `(p + size) + 1`. In this
+   * case `delta` is 1.
+   */
+  predicate invalidPointerToDerefSource(
+    StoredOrLoadedPointerArithmeticInstruction pai, DataFlow::Node source, int delta
+  ) {
+    exists(AllocToInvalidPointerFlow::PathNode1 p, DataFlow::Node sink1 |
+      pragma[only_bind_out](p.getNode()) = sink1 and
+      AllocToInvalidPointerFlow::flowPath(_, _, pragma[only_bind_into](p), _) and
+      isSinkImpl(pai, sink1, _, _) and
+      bounded2(source.asInstruction(), pai, delta) and
+      delta >= 0
+    )
+  }
 }
+
+import InvalidPointerToDerefSource
 
 newtype TMergedPathNode =
   // The path nodes computed by the first projection of `AllocToInvalidPointerConf`
