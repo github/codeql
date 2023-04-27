@@ -1,0 +1,31 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+    <overview>
+        <p>
+        Block cipher modes are algorithms which take a fixed size input and produce a ciphertext of this size.
+        Electronic Codebook Mode (ECB mode) is a particularly insecure block cipher mode because each plaintext bit will always be turned into the same corresponding ciphertext bit.
+        </p>
+        <p>
+        According to CWE-326: Inadequate Encryption Strength, ECB mode should not be used for any data that a user intends to keep secure.
+        </p>
+    </overview>
+
+    <recommendation>
+    <p>When block cipher modes are being used, do not use Electronic Codebook Mode.</p>
+    </recommendation>
+
+    <example>
+        <p>This example shows a cipher being initialized with ECB mode in one function and CBC mode in another function.
+        </p>
+
+        <sample src="examples/ecb_rejection.js" />
+    </example>
+
+    <references>
+        <li>CWE-326 <a href="https://cwe.mitre.org/data/definitions/326.html"></a>.</li>
+        <li>Observed Example of CWE-326 <a href="https://www.cve.org/CVERecord?id=CVE-2002-1697">article</a>.</li>
+        <li>ECB in use <a href="https://miro.medium.com/v2/resize:fit:1400/1*zw8Juc6NoZheJt4k61tuEQ.png">tool</a>.</li>
+    </references>
+</qhelp>
