@@ -18,49 +18,34 @@ import semmle.python.dataflow.new.RemoteFlowSources
 import semmle.python.ApiGraphs
 import DataFlow::PathGraph
 
+private API::Node paramikoClient() {
+  result = API::moduleImport("paramiko").getMember("SSHClient").getReturn()
+}
+
 class ParamikoCMDInjectionConfiguration extends TaintTracking::Configuration {
   ParamikoCMDInjectionConfiguration() { this = "ParamikoCMDInjectionConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
+  /**
+   * exec_command of `paramiko.SSHClient` class execute command on ssh target server
+   * the `paramiko.ProxyCommand` is equivalent of `ssh -o ProxyCommand="CMD"`
+   *  and it run CMD on current system that running the ssh command
+   * the Sink related to proxy command is the `connect` method of `paramiko.SSHClient` class
+   */
   override predicate isSink(DataFlow::Node sink) {
-    sink =
-      [
-        API::moduleImport("paramiko")
-            .getMember("SSHClient")
-            .getReturn()
-            .getMember("exec_command")
-            .getACall()
-            .getArgByName("command"),
-        API::moduleImport("paramiko")
-            .getMember("SSHClient")
-            .getReturn()
-            .getMember("exec_command")
-            .getACall()
-            .getArg(0)
-      ]
+    sink = paramikoClient().getMember("exec_command").getACall().getParameter(0, "command").asSink()
     or
-    sink =
-      [
-        API::moduleImport("paramiko")
-            .getMember("SSHClient")
-            .getReturn()
-            .getMember("connect")
-            .getACall()
-            .getArgByName("sock"),
-        API::moduleImport("paramiko")
-            .getMember("SSHClient")
-            .getReturn()
-            .getMember("connect")
-            .getACall()
-            .getArg(11)
-      ]
+    sink = paramikoClient().getMember("connect").getACall().getParameter(11, "sock").asSink()
   }
 
+  /**
+   * this additional taint step help taint tracking to find the vulnerable `connect` method of `paramiko.SSHClient` class
+   */
   override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(API::CallNode call |
       call = API::moduleImport("paramiko").getMember("ProxyCommand").getACall() and
-      nodeFrom = [call.getArg(0), call.getArgByName("command_line")] and
+      nodeFrom = call.getParameter(0, "command_line").asSink() and
       nodeTo = call
     )
   }
