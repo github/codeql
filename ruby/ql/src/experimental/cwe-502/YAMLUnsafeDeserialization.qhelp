@@ -15,7 +15,7 @@
     </recommendation>
     <example>
         <p>In the example below, you can see safe and unsafe methods get called by a remote user input. You can give correct authorization to users, or you can use safe methods for loading yaml documents.</p>
-        <sample src="YAMLUnsafeYamlDeserialization.rb" />
+        <sample src="YAMLUnsafeDeserialization.rb" />
     </example>
     <references>
     <li>
