@@ -15,3 +15,7 @@ function getHandler2() {
   return function (req, res){}
 }
 app.use([getHandler2()]);
+
+function handler3(req, res) {}
+let array = [handler3];
+app.use(array);
