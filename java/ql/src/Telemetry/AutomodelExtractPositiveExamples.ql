@@ -5,7 +5,7 @@
  * @kind problem
  * @severity info
  * @id java/ml-powered/known-sink
- * @tags automodel extract positive-examples
+ * @tags automodel extract examples positive
  */
 
 private import java

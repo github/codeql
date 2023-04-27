@@ -25,6 +25,9 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
     t instanceof AutomodelEndpointTypes::NegativeSinkType
   }
 
+  // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
+  predicate isSanitizer(Endpoint e, EndpointType t) { none() }
+
   string getLocationString(Endpoint e) { result = e.getLocation().toString() }
 
   predicate isKnownLabel(string label, string humanReadableLabel, EndpointType type) {

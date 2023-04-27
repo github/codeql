@@ -4,11 +4,19 @@ float highConfidence() { result = 0.9 }
 
 float mediumConfidence() { result = 0.6 }
 
+/**
+ * A specification of how to  instantiate the shared characteristics for a given candidate class.
+ *
+ * The `CandidateSig` implementation specifies a type to use for Endpoints (eg., `ParameterNode`), as well as a type
+ * to label endpoint classes (the `EndpointType`). One of the endpoint classes needs to be a 'negative' class, meaning
+ *   "not any of the other known endpoint types".
+ */
 signature module CandidateSig {
   class Endpoint;
 
   class EndpointType;
 
+  /** The string representing the file+range of the endpoint. */
   string getLocationString(Endpoint e);
 
   /**
@@ -21,6 +29,11 @@ signature module CandidateSig {
    * This predicate should hold for that type, and that type only.
    */
   predicate isNegative(EndpointType t);
+
+  /**
+   * Should hold for any endpoint that is a flow sanitizer.
+   */
+  predicate isSanitizer(Endpoint e, EndpointType t);
 
   /**
    * Should hold for any endpoint that is a sink of the given (known or unknown) label.
@@ -37,11 +50,23 @@ signature module CandidateSig {
    *
    * This is a helper function to extract and export needed information about each endpoint in the sink candidate query
    * as well as the queries that extract positive and negative examples for the prompt / training set. The metadata is
-   * extracted as a string in the format of a Python dictionary.
+   * extracted as a string in the format of a Python dictionary, eg.:
+   *
+   *     `{'Package': 'com.foo.util', 'Type': 'HelperClass', ... }`.
+   *
+   * The meta data will be passed on to the machine learning code by the extraction queries.
    */
   predicate hasMetadata(Endpoint e, string metadata);
 }
 
+/**
+ * A set of shared characteristics for a given candidate class.
+ *
+ * This module is language-agnostic, although the `CandidateSig` module will be language-specific.
+ *
+ * The language specific implementation can also further extend the behaviour of this module by adding additional
+ *   implementations of endpoint characteristics exported by this module.
+ */
 module SharedCharacteristics<CandidateSig Candidate> {
   predicate isNegative(Candidate::EndpointType e) { Candidate::isNegative(e) }
 
@@ -160,20 +185,6 @@ module SharedCharacteristics<CandidateSig Candidate> {
   }
 
   /**
-   * Endpoints identified as sinks by the MaD modeling are sinks with maximal confidence.
-   */
-  private class KnownSinkCharacteristic extends SinkCharacteristic {
-    string madLabel;
-    Candidate::EndpointType endpointType;
-
-    KnownSinkCharacteristic() { Candidate::isKnownLabel(madLabel, this, endpointType) }
-
-    override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isSink(e, madLabel) }
-
-    override Candidate::EndpointType getSinkType() { result = endpointType }
-  }
-
-  /**
    * A high-confidence characteristic that indicates that an endpoint is not a sink of any type. These endpoints can be
    * used as negative samples for training or for a few-shot prompt.
    */
@@ -188,33 +199,6 @@ module SharedCharacteristics<CandidateSig Candidate> {
       isPositiveIndicator = true and
       confidence = highConfidence()
     }
-  }
-
-  /**
-   * A negative characteristic that indicates that an endpoint is not part of the source code for the project being
-   * analyzed.
-   *
-   * WARNING: These endpoints should not be used as negative samples for training, because they are not necessarily
-   * non-sinks. They are merely not interesting sinks to run through the ML model.
-   */
-  private class IsExternalCharacteristic extends LikelyNotASinkCharacteristic {
-    IsExternalCharacteristic() { this = "external" }
-
-    override predicate appliesToEndpoint(Candidate::Endpoint e) {
-      not exists(Candidate::getLocationString(e))
-    }
-  }
-
-  /**
-   * A negative characteristic that indicates that an endpoint was manually modeled as a neutral model.
-   *
-   * TODO: It may be necessary to turn this into a LikelyNotASinkCharacteristic, pending answers to the definition of a
-   * neutral model (https://github.com/github/codeql-java-team/issues/254#issuecomment-1435309148).
-   */
-  private class NeutralModelCharacteristic extends NotASinkCharacteristic {
-    NeutralModelCharacteristic() { this = "known non-sink" }
-
-    override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isNeutral(e) }
   }
 
   /**
@@ -254,6 +238,44 @@ module SharedCharacteristics<CandidateSig Candidate> {
       Candidate::isNegative(endpointType) and
       isPositiveIndicator = true and
       confidence = mediumConfidence()
+    }
+  }
+
+  /**
+   * Contains default implementations that are derived solely from the `CandidateSig` implementation.
+   */
+  private module DefaultCharacteristicImplementations {
+    /**
+     * Endpoints identified as sinks by the `CandidateSig` implementation are sinks with maximal confidence.
+     */
+    private class KnownSinkCharacteristic extends SinkCharacteristic {
+      string madLabel;
+      Candidate::EndpointType endpointType;
+
+      KnownSinkCharacteristic() { Candidate::isKnownLabel(madLabel, this, endpointType) }
+
+      override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isSink(e, madLabel) }
+
+      override Candidate::EndpointType getSinkType() { result = endpointType }
+    }
+
+    /**
+     * A negative characteristic that indicates that an endpoint was manually modeled as a neutral model.
+     */
+    private class NeutralModelCharacteristic extends NotASinkCharacteristic {
+      NeutralModelCharacteristic() { this = "known non-sink" }
+
+      override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isNeutral(e) }
+    }
+
+    /**
+     * A negative characteristic that indicates that an endpoint is not part of the source code for the project being
+     * analyzed.
+     */
+    private class IsSanitizerCharacteristic extends NotASinkCharacteristic {
+      IsSanitizerCharacteristic() { this = "external" }
+
+      override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isSanitizer(e, _) }
     }
   }
 }

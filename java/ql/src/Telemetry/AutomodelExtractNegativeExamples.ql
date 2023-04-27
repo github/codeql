@@ -5,7 +5,7 @@
  * @kind problem
  * @severity info
  * @id java/ml-powered/non-sink
- * @tags automodel extract negative-examples
+ * @tags automodel extract examples negative
  */
 
 import AutomodelEndpointCharacteristics
