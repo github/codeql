@@ -2162,6 +2162,9 @@ module Impl<FullStateConfigSig Config> {
 
   private import LocalFlowBigStep
 
+  pragma[nomagic]
+  private predicate castingNodeEx(NodeEx node) { node.asNode() instanceof CastingNode }
+
   private module Stage3Param implements MkStage<Stage2>::StageParam {
     private module PrevStage = Stage2;
 
@@ -2214,9 +2217,6 @@ module Impl<FullStateConfigSig Config> {
         c = ap.getAHead()
       )
     }
-
-    pragma[nomagic]
-    private predicate castingNodeEx(NodeEx node) { node.asNode() instanceof CastingNode }
 
     bindingset[node, state, t, ap]
     predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) {
@@ -2332,9 +2332,6 @@ module Impl<FullStateConfigSig Config> {
         c = ap.getHead()
       )
     }
-
-    pragma[nomagic]
-    private predicate castingNodeEx(NodeEx node) { node.asNode() instanceof CastingNode }
 
     bindingset[node, state, t, ap]
     predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) {
@@ -2613,11 +2610,16 @@ module Impl<FullStateConfigSig Config> {
     }
 
     bindingset[node, state, t, ap]
-    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) { any() }
+    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) {
+      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t) else any()) and
+      exists(state) and
+      exists(ap)
+    }
 
-    // Type checking is not necessary here as it has already been done in stage 3.
     bindingset[typ, contentType]
-    predicate typecheckStore(Typ typ, DataFlowType contentType) { any() }
+    predicate typecheckStore(Typ typ, DataFlowType contentType) {
+      compatibleTypes(typ, contentType)
+    }
   }
 
   private module Stage5 = MkStage<Stage4>::Stage<Stage5Param>;
@@ -2819,7 +2821,8 @@ module Impl<FullStateConfigSig Config> {
       or
       // ... or a step from an existing PathNode to another node.
       pathStep(_, node, state, cc, sc, t, ap) and
-      Stage5::revFlow(node, state, ap.getApprox())
+      Stage5::revFlow(node, state, ap.getApprox()) and
+      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t) else any())
     } or
     TPathNodeSink(NodeEx node, FlowState state) {
       exists(PathNodeMid sink |
@@ -3418,11 +3421,14 @@ module Impl<FullStateConfigSig Config> {
     PathNodeMid mid, NodeEx node, FlowState state, DataFlowType t0, AccessPath ap0, Content c,
     DataFlowType t, CallContext cc
   ) {
-    t0 = mid.getType() and
-    ap0 = mid.getAp() and
-    Stage5::storeStepCand(mid.getNodeEx(), _, c, node, _, t) and
-    state = mid.getState() and
-    cc = mid.getCallContext()
+    exists(DataFlowType contentType |
+      t0 = mid.getType() and
+      ap0 = mid.getAp() and
+      Stage5::storeStepCand(mid.getNodeEx(), _, c, node, contentType, t) and
+      state = mid.getState() and
+      cc = mid.getCallContext() and
+      compatibleTypes(t0, contentType)
+    )
   }
 
   private predicate pathOutOfCallable0(
