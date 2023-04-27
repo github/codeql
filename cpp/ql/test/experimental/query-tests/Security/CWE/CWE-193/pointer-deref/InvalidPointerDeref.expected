@@ -575,6 +575,12 @@ edges
 | test.cpp:213:6:213:6 | q | test.cpp:213:5:213:13 | Store: ... = ... |
 | test.cpp:213:6:213:6 | q | test.cpp:213:5:213:13 | Store: ... = ... |
 | test.cpp:221:17:221:22 | call to malloc | test.cpp:222:5:222:5 | p |
+| test.cpp:231:18:231:30 | new[] | test.cpp:232:3:232:9 | newname |
+| test.cpp:232:3:232:9 | newname | test.cpp:232:3:232:16 | access to array |
+| test.cpp:232:3:232:16 | access to array | test.cpp:232:3:232:20 | Store: ... = ... |
+| test.cpp:238:20:238:32 | new[] | test.cpp:239:5:239:11 | newname |
+| test.cpp:239:5:239:11 | newname | test.cpp:239:5:239:18 | access to array |
+| test.cpp:239:5:239:18 | access to array | test.cpp:239:5:239:22 | Store: ... = ... |
 #select
 | test.cpp:6:14:6:15 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
 | test.cpp:8:14:8:21 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:8:14:8:21 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
@@ -593,3 +599,5 @@ edges
 | test.cpp:171:9:171:14 | Store: ... = ... | test.cpp:143:18:143:23 | call to malloc | test.cpp:171:9:171:14 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:143:18:143:23 | call to malloc | call to malloc | test.cpp:144:29:144:32 | size | size |
 | test.cpp:201:5:201:19 | Store: ... = ... | test.cpp:194:23:194:28 | call to malloc | test.cpp:201:5:201:19 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:194:23:194:28 | call to malloc | call to malloc | test.cpp:195:21:195:23 | len | len |
 | test.cpp:213:5:213:13 | Store: ... = ... | test.cpp:205:23:205:28 | call to malloc | test.cpp:213:5:213:13 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:205:23:205:28 | call to malloc | call to malloc | test.cpp:206:21:206:23 | len | len |
+| test.cpp:232:3:232:20 | Store: ... = ... | test.cpp:231:18:231:30 | new[] | test.cpp:232:3:232:20 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:231:18:231:30 | new[] | new[] | test.cpp:232:11:232:15 | index | index |
+| test.cpp:239:5:239:22 | Store: ... = ... | test.cpp:238:20:238:32 | new[] | test.cpp:239:5:239:22 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:238:20:238:32 | new[] | new[] | test.cpp:239:13:239:17 | index | index |

@@ -222,3 +222,20 @@ void test14(unsigned long n, char *p) {
     p[n - 1] = 'a'; // GOOD
   }
 }
+
+void test15(unsigned index) {
+  unsigned size = index + 13;
+  if(size < index) {
+    return;
+  }
+  int* newname = new int[size];
+  newname[index] = 0; // GOOD [FALSE POSITIVE]
+}
+
+void test16(unsigned index) {
+  unsigned size = index + 13;
+  if(size >= index) {
+    int* newname = new int[size];
+    newname[index] = 0; // GOOD [FALSE POSITIVE]
+  }
+}
