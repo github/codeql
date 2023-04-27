@@ -2,6 +2,7 @@ use clap::Args;
 use std::path::PathBuf;
 
 use codeql_extractor::extractor::simple;
+use codeql_extractor::trap;
 
 #[derive(Args)]
 pub struct Options {
