@@ -254,3 +254,49 @@ void test17(unsigned *p, unsigned x, unsigned k) {
         p[i] = x; // GOOD [FALSE POSITIVE]
     }
 }
+
+struct array_with_size
+{
+  int *xs;
+  unsigned len;
+};
+
+void test17(unsigned len, array_with_size *s)
+{
+  int *xs = new int[len];
+  int *end = xs + len;
+  for (int *x = xs; x <= end; x++)
+  {
+    int i = *x; // BAD
+  }
+}
+
+void test18(unsigned len, array_with_size *s)
+{
+  int *xs = new int[len];
+  int *end = xs + len;
+  for (int *x = xs; x <= end; x++)
+  {
+    *x = 0; // BAD
+  }
+}
+
+void test19(unsigned len, array_with_size *s)
+{
+  int *xs = new int[len];
+  int *end = xs + len;
+  for (int *x = xs; x < end; x++)
+  {
+    int i = *x; // GOOD [FALSE POSITIVE]
+  }
+}
+
+void test20(unsigned len, array_with_size *s)
+{
+  int *xs = new int[len];
+  int *end = xs + len;
+  for (int *x = xs; x < end; x++)
+  {
+    *x = 0; // GOOD [FALSE POSITIVE]
+  }
+}
