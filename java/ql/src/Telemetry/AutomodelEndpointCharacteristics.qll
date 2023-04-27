@@ -83,13 +83,15 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
     exists(int paramIdx | e.isParameterOf(_, paramIdx) | input = "Argument[" + paramIdx + "]")
   }
 
-  predicate hasMetadata(Endpoint n, string metadata) {
+  predicate hasMetadata(Endpoint e, string metadata) {
     exists(
       string package, string type, boolean subtypes, string name, string signature, string ext,
-      int input, string provenance, boolean isPublic, boolean isFinal, string calleeJavaDoc
+      int input, string provenance, boolean isPublic, boolean isFinal, boolean isStatic,
+      string calleeJavaDoc
     |
-      hasMetadata(n, package, type, name, signature, input, isFinal, isPublic, calleeJavaDoc) and
-      (if isFinal = true then subtypes = false else subtypes = true) and
+      hasMetadata(e, package, type, name, signature, input, isFinal, isStatic, isPublic,
+        calleeJavaDoc) and
+      (if isFinal = true or isStatic = true then subtypes = false else subtypes = true) and
       ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
       provenance = "ai-generated" and
       metadata =
@@ -98,6 +100,7 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
           + "', 'Type': '" + type //
           + "', 'Subtypes': " + subtypes //
           + ", 'Name': '" + name //
+          + ", 'ParamName': '" + e.toString() //
           + "', 'Signature': '" + signature //
           + "', 'Ext': '" + ext //
           + "', 'Argument index': " + input //
@@ -126,12 +129,17 @@ class Endpoint = CandidatesImpl::Endpoint;
  */
 predicate hasMetadata(
   Endpoint n, string package, string type, string name, string signature, int input,
-  boolean isFinal, boolean isPublic, string calleeJavaDoc
+  boolean isFinal, boolean isStatic, boolean isPublic, string calleeJavaDoc
 ) {
   exists(Callable callee |
     n.asParameter() = callee.getParameter(input) and
     package = callee.getDeclaringType().getPackage().getName() and
     type = callee.getDeclaringType().getErasure().(RefType).nestedName() and
+    (
+      if callee.isStatic() or callee.getDeclaringType().isStatic()
+      then isStatic = true
+      else isStatic = false
+    ) and
     (
       if callee.isFinal() or callee.getDeclaringType().isFinal()
       then isFinal = true
@@ -221,22 +229,6 @@ private class TestFileCharacteristic extends CharacteristicsImpl::LikelyNotASink
     file.getAbsolutePath().matches("%src/test/%") or
     file.getAbsolutePath().matches("%/guava-tests/%") or
     file.getAbsolutePath().matches("%/guava-testlib/%")
-  }
-}
-
-/**
- * A negative characteristic that filters out calls to undocumented methods. The assumption is that methods that are
- *   intended / likely to be called from outside the package are documented.
- *
- * Note that in practice we have seen some interesting sinks in methods that are external-facing but undocumented (and
- *    appear in empty Javadoc pages), so this filter can be expected to lead to the loss of some interesting sinks.
- */
-private class UndocumentedMethodCharacteristic extends CharacteristicsImpl::UninterestingToModelCharacteristic
-{
-  UndocumentedMethodCharacteristic() { this = "undocumented method" }
-
-  override predicate appliesToEndpoint(Endpoint e) {
-    not exists(e.getEnclosingCallable().(Documentable).getJavadoc())
   }
 }
 
