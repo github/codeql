@@ -14,7 +14,7 @@
     <example>
         <p>In the example below, you can see safe and unsafe Plist dangerous method calls that can be abused by a remote user input. You can use "marshal: false" as an arugument for <code>Plist.parse_xml</code> to use it safe.
         </p>
-        <sample src="PlistUnsafeYamlDeserialization.rb" />
+        <sample src="PlistUnsafeDeserialization.rb" />
     </example>
     <references>
     <li>

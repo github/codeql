@@ -40,11 +40,11 @@ to arbitrary objects, this is inherently unsafe.
 <sample src="examples/UnsafeDeserializationBad.rb"/>
 
 <p>In the example below, you can see safe and unsafe methods get called by a remote user input. You can give correct authorization to users, or you can use safe methods for loading yaml documents.</p>
-<sample src="examples/YAMLUnsafeYamlDeserialization.rb"/>
+<sample src="examples/YAMLUnsafeDeserialization.rb"/>
 
 <p>In the example below, you can see safe and unsafe Plist dangerous method calls that can be abused by a remote user input. You can use "marshal: false" as an arugument for <code>Plist.parse_xml</code> to use it safe.
 </p>
-<sample src="examples/PlistUnsafeYamlDeserialization.rb"/>
+<sample src="examples/PlistUnsafeDeserialization.rb"/>
 
 <p>
 Using <code>JSON.parse</code> and <code>YAML.safe_load</code> instead, as in the
