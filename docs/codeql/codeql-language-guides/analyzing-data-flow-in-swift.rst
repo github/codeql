@@ -43,7 +43,9 @@ You can use the predicates ``exprNode`` and ``parameterNode`` to map from expres
 
 .. code-block:: ql
 
-     /** Gets a node corresponding to expression `e`. */
+     /**
+      * Gets a node corresponding to expression `e`.
+      */
      ExprNode exprNode(DataFlowExpr e) { result.asExpr() = e }
 
      /**
