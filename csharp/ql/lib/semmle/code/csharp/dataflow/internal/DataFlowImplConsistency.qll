@@ -58,6 +58,9 @@ module Consistency {
     predicate uniqueParameterNodePositionExclude(DataFlowCallable c, ParameterPosition pos, Node p) {
       none()
     }
+
+    /** Holds if `n` should be excluded from the consistency test `identityLocalStep`. */
+    predicate identityLocalStepExclude(Node n) { none() }
   }
 
   private class RelevantNode extends Node {
@@ -286,5 +289,11 @@ module Consistency {
   query predicate uniqueContentApprox(Content c, string msg) {
     not exists(unique(ContentApprox approx | approx = getContentApprox(c))) and
     msg = "Non-unique content approximation."
+  }
+
+  query predicate identityLocalStep(Node n, string msg) {
+    simpleLocalFlowStep(n, n) and
+    not any(ConsistencyConfiguration c).identityLocalStepExclude(n) and
+    msg = "Node steps to itself"
   }
 }
