@@ -239,3 +239,17 @@ void test16(unsigned index) {
     newname[index] = 0; // GOOD [FALSE POSITIVE]
   }
 }
+
+void *realloc(void *, unsigned);
+
+void test17(unsigned *p, unsigned x, unsigned k) {
+    if(k > 0 && p[1] <= p[0]){
+        unsigned n = 3*p[0] + k;
+        p = (unsigned*)realloc(p, n);
+        p[0] = n;
+        unsigned i = p[1];
+        // The following access is okay because:
+        // n = 2*p[0] + k >= p[0] + k >= p[1] + k > p[1] = i
+        p[i] = x; // GOOD [FALSE POSITIVE]
+    }
+}
