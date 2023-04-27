@@ -234,7 +234,7 @@ private class TestFileCharacteristic extends CharacteristicsImpl::LikelyNotASink
 
 /**
  * A characteristic that limits candidates to parameters of methods that are recognized as `ModelApi`, iow., APIs that
- * are considered worth modelling.
+ * are considered worth modeling.
  */
 private class NotAModelApiParameter extends CharacteristicsImpl::UninterestingToModelCharacteristic {
   NotAModelApiParameter() { this = "not a model API parameter" }
