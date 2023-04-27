@@ -1,10 +1,9 @@
 edges
-| LogInjectionBad.py:0:0:0:0 | ModuleVariableNode for LogInjectionBad.request | LogInjectionBad.py:17:12:17:18 | ControlFlowNode for request |
-| LogInjectionBad.py:0:0:0:0 | ModuleVariableNode for LogInjectionBad.request | LogInjectionBad.py:23:12:23:18 | ControlFlowNode for request |
-| LogInjectionBad.py:0:0:0:0 | ModuleVariableNode for LogInjectionBad.request | LogInjectionBad.py:29:12:29:18 | ControlFlowNode for request |
-| LogInjectionBad.py:0:0:0:0 | ModuleVariableNode for LogInjectionBad.request | LogInjectionBad.py:35:12:35:18 | ControlFlowNode for request |
 | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | LogInjectionBad.py:7:19:7:25 | GSSA Variable request |
-| LogInjectionBad.py:7:19:7:25 | GSSA Variable request | LogInjectionBad.py:0:0:0:0 | ModuleVariableNode for LogInjectionBad.request |
+| LogInjectionBad.py:7:19:7:25 | GSSA Variable request | LogInjectionBad.py:17:12:17:18 | ControlFlowNode for request |
+| LogInjectionBad.py:7:19:7:25 | GSSA Variable request | LogInjectionBad.py:23:12:23:18 | ControlFlowNode for request |
+| LogInjectionBad.py:7:19:7:25 | GSSA Variable request | LogInjectionBad.py:29:12:29:18 | ControlFlowNode for request |
+| LogInjectionBad.py:7:19:7:25 | GSSA Variable request | LogInjectionBad.py:35:12:35:18 | ControlFlowNode for request |
 | LogInjectionBad.py:17:12:17:18 | ControlFlowNode for request | LogInjectionBad.py:17:12:17:23 | ControlFlowNode for Attribute |
 | LogInjectionBad.py:17:12:17:23 | ControlFlowNode for Attribute | LogInjectionBad.py:18:21:18:40 | ControlFlowNode for BinaryExpr |
 | LogInjectionBad.py:23:12:23:18 | ControlFlowNode for request | LogInjectionBad.py:23:12:23:23 | ControlFlowNode for Attribute |
@@ -14,7 +13,6 @@ edges
 | LogInjectionBad.py:35:12:35:18 | ControlFlowNode for request | LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute |
 | LogInjectionBad.py:35:12:35:23 | ControlFlowNode for Attribute | LogInjectionBad.py:37:19:37:38 | ControlFlowNode for BinaryExpr |
 nodes
-| LogInjectionBad.py:0:0:0:0 | ModuleVariableNode for LogInjectionBad.request | semmle.label | ModuleVariableNode for LogInjectionBad.request |
 | LogInjectionBad.py:7:19:7:25 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | LogInjectionBad.py:7:19:7:25 | GSSA Variable request | semmle.label | GSSA Variable request |
 | LogInjectionBad.py:17:12:17:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
