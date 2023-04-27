@@ -79,7 +79,7 @@ module UnsafeDeserialization {
    * for unsafe deserialization. The `YAML` module is an alias of `Psych` in
    * recent versions of Ruby.
    * the `this = yamlNode().getAMethodCall("load").getArgument(0)` is safe
-   * in recent versions of YAML library, so it will be removed in future.
+   *  in psych/yaml library after [v4.0.0](https://github.com/ruby/psych/releases/tag/v4.0.0), so it will be removed in future.
    */
   class YamlLoadArgument extends Sink {
     YamlLoadArgument() {
