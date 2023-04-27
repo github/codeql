@@ -249,7 +249,8 @@ void test17(unsigned *p, unsigned x, unsigned k) {
         p[0] = n;
         unsigned i = p[1];
         // The following access is okay because:
-        // n = 2*p[0] + k >= p[0] + k >= p[1] + k > p[1] = i
+        // n = 3*p[0] + k >= p[0] + k >= p[1] + k > p[1] = i
+        // (where p[0] denotes the original value for p[0])
         p[i] = x; // GOOD [FALSE POSITIVE]
     }
 }
