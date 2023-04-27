@@ -552,7 +552,7 @@ class SsaPhiNode extends Node, TSsaPhiNode {
    */
   final Node getAnInput(boolean fromBackEdge) {
     localFlowStep(result, this) and
-    if phi.getBasicBlock().dominates(result.getBasicBlock())
+    if phi.getBasicBlock().strictlyDominates(result.getBasicBlock())
     then fromBackEdge = true
     else fromBackEdge = false
   }
