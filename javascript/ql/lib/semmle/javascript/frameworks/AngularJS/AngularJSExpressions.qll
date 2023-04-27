@@ -808,23 +808,19 @@ private import Parser
  *
  * Will eventually be a subtype of `DataFlow::Node`.
  */
-class NgDataFlowNode extends TNode {
-  NgAstNode astNode;
-
-  NgDataFlowNode() { this = astNode }
-
+class NgDataFlowNode extends TNode instanceof NgAstNode {
   /** Gets the AST node this node corresponds to. */
-  NgAstNode getAstNode() { result = astNode }
+  NgAstNode getAstNode() { result = this }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = astNode.toString() }
+  string toString() { result = super.toString() }
 
   /**
    * Gets a scope object for this node.
    */
   AngularJS::AngularScope getAScope() {
     exists(NgToken token, NgSource source |
-      astNode.at(token, _) and
+      super.at(token, _) and
       token.at(source, _)
     |
       result.mayApplyTo(source.getProvider().getEnclosingElement())

@@ -6,16 +6,17 @@
  * @precision high
  * @id java/spring-view-manipulation
  * @tags security
+ *       experimental
  *       external/cwe/cwe-094
  */
 
 import java
 import SpringViewManipulationLib
-import DataFlow::PathGraph
+import SpringViewManipulationFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, SpringViewManipulationConfig conf
+from SpringViewManipulationFlow::PathNode source, SpringViewManipulationFlow::PathNode sink
 where
   thymeleafIsUsed() and
-  conf.hasFlowPath(source, sink)
+  SpringViewManipulationFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Potential Spring Expression Language injection from $@.",
   source.getNode(), "this user input"

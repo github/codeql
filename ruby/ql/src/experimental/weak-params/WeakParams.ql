@@ -7,6 +7,7 @@
  * @precision medium
  * @id rb/weak-params
  * @tags security
+ *       experimental
  */
 
 import codeql.ruby.AST

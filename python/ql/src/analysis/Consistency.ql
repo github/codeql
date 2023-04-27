@@ -231,8 +231,8 @@ predicate points_to_consistency(string clsname, string problem, string what) {
     what = obj.toString()
   )
   or
-  exists(ControlFlowNode use, ControlFlowNode inter, Object obj |
-    intermediate_origins(use, inter, obj) and
+  exists(ControlFlowNode use, ControlFlowNode inter |
+    intermediate_origins(use, inter, _) and
     clsname = use.getAQlClass() and
     problem = "has intermediate origin " + inter and
     what = use.toString()

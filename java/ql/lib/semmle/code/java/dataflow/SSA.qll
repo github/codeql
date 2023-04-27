@@ -149,7 +149,7 @@ class SsaSourceField extends SsaSourceVariable {
       if f.isStatic() then result = f.getDeclaringType().getQualifiedName() else result = "this"
     )
     or
-    exists(Field f, RefType t | this = TEnclosingField(_, f, t) | result = t.toString() + ".this")
+    exists(RefType t | this = TEnclosingField(_, _, t) | result = t.toString() + ".this")
     or
     exists(SsaSourceVariable q | this = TQualifiedField(_, q, _) | result = q.toString())
   }
@@ -384,7 +384,7 @@ private module SsaImpl {
   private predicate intraInstanceCallEdge(Callable c1, Method m2) {
     exists(MethodAccess ma, RefType t1 |
       ma.getCaller() = c1 and
-      m2 = viableImpl(ma) and
+      m2 = viableImpl_v2(ma) and
       not m2.isStatic() and
       (
         not exists(ma.getQualifier()) or
@@ -402,7 +402,7 @@ private module SsaImpl {
   }
 
   private Callable tgt(Call c) {
-    result = viableImpl(c)
+    result = viableImpl_v2(c)
     or
     result = getRunnerTarget(c)
     or
@@ -451,6 +451,7 @@ private module SsaImpl {
    * Holds if `f` is live in `b` at index `i`. The rank of `i` is `rankix` as
    * defined by `callDefUseRank`.
    */
+  pragma[assume_small_delta]
   private predicate liveAtRank(TrackedField f, BasicBlock b, int rankix, int i) {
     callDefUseRank(f, b, rankix, i) and
     (
@@ -564,6 +565,7 @@ private module SsaImpl {
   }
 
   /** Holds if a phi node for `v` is needed at the beginning of basic block `b`. */
+  pragma[assume_small_delta]
   cached
   predicate phiNode(TrackedVar v, BasicBlock b) {
     liveAtEntry(v, b) and

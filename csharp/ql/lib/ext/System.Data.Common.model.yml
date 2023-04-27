@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Data.Common", "DataColumnMappingCollection", False, "AddRange", "(System.Array)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
       - ["System.Data.Common", "DataColumnMappingCollection", False, "AddRange", "(System.Data.Common.DataColumnMapping[])", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]

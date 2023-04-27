@@ -14,7 +14,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "OverloadedDeclRefExpr" }
 
     /**
-     * Gets the `index`th possible declaration of this overloaded declaration ref expression (0-based).
+     * Gets the `index`th possible declaration of this overloaded declaration reference expression (0-based).
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
@@ -27,20 +27,22 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th possible declaration of this overloaded declaration ref expression (0-based).
+     * Gets the `index`th possible declaration of this overloaded declaration reference expression (0-based).
      */
     final ValueDecl getPossibleDeclaration(int index) {
       result = getImmediatePossibleDeclaration(index).resolve()
     }
 
     /**
-     * Gets any of the possible declarations of this overloaded declaration ref expression.
+     * Gets any of the possible declarations of this overloaded declaration reference expression.
      */
     final ValueDecl getAPossibleDeclaration() { result = getPossibleDeclaration(_) }
 
     /**
-     * Gets the number of possible declarations of this overloaded declaration ref expression.
+     * Gets the number of possible declarations of this overloaded declaration reference expression.
      */
-    final int getNumberOfPossibleDeclarations() { result = count(getAPossibleDeclaration()) }
+    final int getNumberOfPossibleDeclarations() {
+      result = count(int i | exists(getPossibleDeclaration(i)))
+    }
   }
 }

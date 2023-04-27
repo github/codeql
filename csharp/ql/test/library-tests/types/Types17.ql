@@ -6,5 +6,5 @@
 import csharp
 
 from Enum e
-where e.getQualifiedName() = "Types.Enum"
+where e.hasQualifiedName("Types", "Enum")
 select e

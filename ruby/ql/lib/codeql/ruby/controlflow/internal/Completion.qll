@@ -211,8 +211,11 @@ private predicate inBooleanContext(AstNode n) {
   or
   exists(CaseExpr c, WhenClause w |
     not exists(c.getValue()) and
-    c.getABranch() = w and
+    c.getABranch() = w
+  |
     w.getPattern(_) = n
+    or
+    w = n
   )
 }
 
@@ -233,8 +236,11 @@ private predicate inMatchingContext(AstNode n) {
   or
   exists(CaseExpr c, WhenClause w |
     exists(c.getValue()) and
-    c.getABranch() = w and
+    c.getABranch() = w
+  |
     w.getPattern(_) = n
+    or
+    w = n
   )
   or
   n instanceof CasePattern
@@ -278,7 +284,8 @@ abstract class ConditionalCompletion extends NormalCompletion {
  * A completion that represents evaluation of an expression
  * with a Boolean value.
  */
-class BooleanCompletion extends ConditionalCompletion, NonNestedNormalCompletion, TBooleanCompletion {
+class BooleanCompletion extends ConditionalCompletion, NonNestedNormalCompletion, TBooleanCompletion
+{
   BooleanCompletion() { this = TBooleanCompletion(value) }
 
   /** Gets the dual Boolean completion. */

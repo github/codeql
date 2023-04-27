@@ -27,8 +27,8 @@ class K8sIoApimachineryPkgRuntimeTest extends InlineExpectationsTest {
   override string getARelevantTag() { result = "KsIoApimachineryPkgRuntime" }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(TestConfig config, DataFlow::PathNode source, DataFlow::PathNode sink |
-      config.hasFlowPath(source, sink) and
+    exists(TestConfig config, DataFlow::PathNode sink |
+      config.hasFlowPath(_, sink) and
       sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = sink.toString() and

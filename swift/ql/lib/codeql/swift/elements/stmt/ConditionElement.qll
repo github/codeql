@@ -6,5 +6,7 @@ class ConditionElement extends Generated::ConditionElement {
     result = this.getBoolean().toString()
     or
     result = this.getPattern().toString() + " = ... "
+    or
+    result = this.getAvailability().toString()
   }
 }

@@ -6,6 +6,7 @@
  * @id java/sensitive-android-file-leak
  * @problem.severity warning
  * @tags security
+ *       experimental
  *       external/cwe/cwe-200
  */
 
@@ -13,7 +14,7 @@ import java
 import semmle.code.java.controlflow.Guards
 import AndroidFileIntentSink
 import AndroidFileIntentSource
-import DataFlow::PathGraph
+import AndroidFileLeakFlow::PathGraph
 
 private predicate startsWithSanitizer(Guard g, Expr e, boolean branch) {
   exists(MethodAccess ma |
@@ -24,16 +25,14 @@ private predicate startsWithSanitizer(Guard g, Expr e, boolean branch) {
   )
 }
 
-class AndroidFileLeakConfig extends TaintTracking::Configuration {
-  AndroidFileLeakConfig() { this = "AndroidFileLeakConfig" }
-
+module AndroidFileLeakConfig implements DataFlow::ConfigSig {
   /**
    * Holds if `src` is a read of some Intent-typed variable guarded by a check like
    * `requestCode == someCode`, where `requestCode` is the first
    * argument to `Activity.onActivityResult` and `someCode` is
    * any request code used in a call to `startActivityForResult(intent, someCode)`.
    */
-  override predicate isSource(DataFlow::Node src) {
+  predicate isSource(DataFlow::Node src) {
     exists(
       OnActivityForResultMethod oafr, ConditionBlock cb, CompileTimeConstantExpr cc,
       VarAccess intentVar
@@ -49,9 +48,9 @@ class AndroidFileLeakConfig extends TaintTracking::Configuration {
   }
 
   /** Holds if it is a sink of file access in Android. */
-  override predicate isSink(DataFlow::Node sink) { sink instanceof AndroidFileSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof AndroidFileSink }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node prev, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node prev, DataFlow::Node succ) {
     exists(MethodAccess aema, AsyncTaskRunInBackgroundMethod arm |
       // fileAsyncTask.execute(params) will invoke doInBackground(params) of FileAsyncTask
       aema.getQualifier().getType() = arm.getDeclaringType() and
@@ -71,12 +70,14 @@ class AndroidFileLeakConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node = DataFlow::BarrierGuard<startsWithSanitizer/3>::getABarrierNode()
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, AndroidFileLeakConfig conf
-where conf.hasFlowPath(source, sink)
+module AndroidFileLeakFlow = TaintTracking::Global<AndroidFileLeakConfig>;
+
+from AndroidFileLeakFlow::PathNode source, AndroidFileLeakFlow::PathNode sink
+where AndroidFileLeakFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Leaking arbitrary Android file from $@.", source.getNode(),
   "this user input"

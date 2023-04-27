@@ -31,7 +31,8 @@ class ComplementExpr extends UnaryBitwiseOperation, @bit_not_expr {
  * A binary bitwise operation. Either a bitwise-and operation
  * (`BitwiseAndExpr`), a bitwise-or operation (`BitwiseOrExpr`),
  * a bitwise exclusive-or operation (`BitwiseXorExpr`), a left-shift
- * operation (`LShiftExpr`), or a right-shift operation (`RShiftExpr`).
+ * operation (`LeftShiftExpr`), a right-shift operation (`RightShiftExpr`),
+ * or an unsigned right-shift operation (`UnsignedRightShiftExpr`).
  */
 class BinaryBitwiseOperation extends BitwiseOperation, BinaryOperation, @bin_bit_op_expr {
   override string getOperator() { none() }
@@ -40,19 +41,34 @@ class BinaryBitwiseOperation extends BitwiseOperation, BinaryOperation, @bin_bit
 /**
  * A left-shift operation, for example `x << y`.
  */
-class LShiftExpr extends BinaryBitwiseOperation, @lshift_expr {
+class LeftShiftExpr extends BinaryBitwiseOperation, @lshift_expr {
   override string getOperator() { result = "<<" }
 
-  override string getAPrimaryQlClass() { result = "LShiftExpr" }
+  override string getAPrimaryQlClass() { result = "LeftShiftExpr" }
 }
+
+/** DEPRECATED: Alias for LeftShiftExpr. */
+deprecated class LShiftExpr = LeftShiftExpr;
 
 /**
  * A right-shift operation, for example `x >> y`.
  */
-class RShiftExpr extends BinaryBitwiseOperation, @rshift_expr {
+class RightShiftExpr extends BinaryBitwiseOperation, @rshift_expr {
   override string getOperator() { result = ">>" }
 
-  override string getAPrimaryQlClass() { result = "RShiftExpr" }
+  override string getAPrimaryQlClass() { result = "RightShiftExpr" }
+}
+
+/** DEPRECATED: Alias for RightShiftExpr. */
+deprecated class RShiftExpr = RightShiftExpr;
+
+/**
+ * An unsigned right-shift operation, for example `x >>> y`.
+ */
+class UnsignedRightShiftExpr extends BinaryBitwiseOperation, @urshift_expr {
+  override string getOperator() { result = ">>>" }
+
+  override string getAPrimaryQlClass() { result = "UnsignedRightShiftExpr" }
 }
 
 /**

@@ -10,6 +10,7 @@ private import FlowSummaryImplSpecific
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Public
 private import DataFlowImplCommon
+private import codeql.util.Unit
 
 /** Provides classes and predicates for defining flow summaries. */
 module Public {
@@ -39,6 +40,11 @@ module Public {
       )
       or
       exists(ReturnKind rk | this = TReturnSummaryComponent(rk) and result = "return (" + rk + ")")
+      or
+      exists(SummaryComponent::SyntheticGlobal sg |
+        this = TSyntheticGlobalSummaryComponent(sg) and
+        result = "synthetic global (" + sg + ")"
+      )
     }
   }
 
@@ -61,6 +67,20 @@ module Public {
 
     /** Gets a summary component for a return of kind `rk`. */
     SummaryComponent return(ReturnKind rk) { result = TReturnSummaryComponent(rk) }
+
+    /** Gets a summary component for synthetic global `sg`. */
+    SummaryComponent syntheticGlobal(SyntheticGlobal sg) {
+      result = TSyntheticGlobalSummaryComponent(sg)
+    }
+
+    /**
+     * A synthetic global. This represents some form of global state, which
+     * summaries can read and write individually.
+     */
+    abstract class SyntheticGlobal extends string {
+      bindingset[this]
+      SyntheticGlobal() { any() }
+    }
   }
 
   /**
@@ -90,6 +110,7 @@ module Public {
     }
 
     /** Gets the stack obtained by dropping the first `i` elements, if any. */
+    pragma[assume_small_delta]
     SummaryComponentStack drop(int i) {
       i = 0 and result = this
       or
@@ -145,24 +166,24 @@ module Public {
     SummaryComponentStack return(ReturnKind rk) { result = singleton(SummaryComponent::return(rk)) }
   }
 
-  private predicate noComponentSpecificCsv(SummaryComponent sc) {
-    not exists(getComponentSpecificCsv(sc))
+  private predicate noComponentSpecific(SummaryComponent sc) {
+    not exists(getComponentSpecific(sc))
   }
 
   /** Gets a textual representation of this component used for flow summaries. */
-  private string getComponentCsv(SummaryComponent sc) {
-    result = getComponentSpecificCsv(sc)
+  private string getComponent(SummaryComponent sc) {
+    result = getComponentSpecific(sc)
     or
-    noComponentSpecificCsv(sc) and
+    noComponentSpecific(sc) and
     (
       exists(ArgumentPosition pos |
         sc = TParameterSummaryComponent(pos) and
-        result = "Parameter[" + getArgumentPositionCsv(pos) + "]"
+        result = "Parameter[" + getArgumentPosition(pos) + "]"
       )
       or
       exists(ParameterPosition pos |
         sc = TArgumentSummaryComponent(pos) and
-        result = "Argument[" + getParameterPositionCsv(pos) + "]"
+        result = "Argument[" + getParameterPosition(pos) + "]"
       )
       or
       sc = TReturnSummaryComponent(getReturnValueKind()) and result = "ReturnValue"
@@ -170,16 +191,16 @@ module Public {
   }
 
   /** Gets a textual representation of this stack used for flow summaries. */
-  string getComponentStackCsv(SummaryComponentStack stack) {
+  string getComponentStack(SummaryComponentStack stack) {
     exists(SummaryComponent head, SummaryComponentStack tail |
       head = stack.head() and
       tail = stack.tail() and
-      result = getComponentStackCsv(tail) + "." + getComponentCsv(head)
+      result = getComponentStack(tail) + "." + getComponent(head)
     )
     or
     exists(SummaryComponent c |
       stack = TSingletonSummaryComponentStack(c) and
-      result = getComponentCsv(c)
+      result = getComponent(c)
     )
   }
 
@@ -192,6 +213,54 @@ module Public {
      * Holds if the stack obtained by pushing `head` onto `tail` is required.
      */
     abstract predicate required(SummaryComponent head, SummaryComponentStack tail);
+  }
+
+  /**
+   * Gets the valid model origin values.
+   */
+  private string getValidModelOrigin() {
+    result =
+      [
+        "ai", // AI (machine learning)
+        "df", // Dataflow (model generator)
+        "tb", // Type based (model generator)
+        "hq", // Heuristic query
+      ]
+  }
+
+  /**
+   * A class used to represent provenance values for MaD models.
+   *
+   * The provenance value is a string of the form `origin-verification`
+   * (or just `manual`), where `origin` is a value indicating the
+   * origin of the model, and `verification` is a value indicating, how
+   * the model was verified.
+   *
+   * Examples could be:
+   * - `df-generated`: A model produced by the model generator, but not verified by a human.
+   * - `ai-manual`: A model produced by AI, but verified by a human.
+   */
+  class Provenance extends string {
+    private string verification;
+
+    Provenance() {
+      exists(string origin | origin = getValidModelOrigin() |
+        this = origin + "-" + verification and
+        verification = ["manual", "generated"]
+      )
+      or
+      this = verification and verification = "manual"
+    }
+
+    /**
+     * Holds if this is a valid generated provenance value.
+     */
+    predicate isGenerated() { verification = "generated" }
+
+    /**
+     * Holds if this is a valid manual provenance value.
+     */
+    predicate isManual() { verification = "manual" }
   }
 
   /** A callable with a flow summary. */
@@ -227,18 +296,61 @@ module Public {
     }
 
     /**
-     * Holds if values stored inside `content` are cleared on objects passed as
-     * arguments at position `pos` to this callable.
-     *
-     * TODO: Remove once all languages support `WithoutContent` tokens.
+     * Holds if there exists a generated summary that applies to this callable.
      */
-    pragma[nomagic]
-    predicate clearsContent(ParameterPosition pos, ContentSet content) { none() }
+    final predicate hasGeneratedModel() {
+      exists(Provenance p | p.isGenerated() and this.hasProvenance(p))
+    }
 
     /**
-     * Holds if the summary is auto generated.
+     * Holds if all the summaries that apply to this callable are auto generated and not manually created.
+     * That is, only apply generated models, when there are no manual models.
      */
-    predicate isAutoGenerated() { none() }
+    final predicate applyGeneratedModel() {
+      this.hasGeneratedModel() and
+      not this.hasManualModel()
+    }
+
+    /**
+     * Holds if there exists a manual summary that applies to this callable.
+     */
+    final predicate hasManualModel() {
+      exists(Provenance p | p.isManual() and this.hasProvenance(p))
+    }
+
+    /**
+     * Holds if there exists a manual summary that applies to this callable.
+     * Always apply manual models if they exist.
+     */
+    final predicate applyManualModel() { this.hasManualModel() }
+
+    /**
+     * Holds if there exists a summary that applies to this callable
+     * that has provenance `provenance`.
+     */
+    predicate hasProvenance(Provenance provenance) { provenance = "manual" }
+  }
+
+  /** A callable where there is no flow via the callable. */
+  class NeutralCallable extends SummarizedCallableBase {
+    private Provenance provenance;
+
+    NeutralCallable() { neutralElement(this, provenance) }
+
+    /**
+     * Holds if the neutral is auto generated.
+     */
+    final predicate hasGeneratedModel() { provenance.isGenerated() }
+
+    /**
+     * Holds if there exists a manual neutral that applies to this callable.
+     */
+    final predicate hasManualModel() { provenance.isManual() }
+
+    /**
+     * Holds if the neutral has provenance `p`.
+     */
+    predicate hasProvenance(Provenance p) { p = provenance }
   }
 }
 
@@ -255,11 +367,12 @@ module Private {
     TParameterSummaryComponent(ArgumentPosition pos) or
     TArgumentSummaryComponent(ParameterPosition pos) or
     TReturnSummaryComponent(ReturnKind rk) or
+    TSyntheticGlobalSummaryComponent(SummaryComponent::SyntheticGlobal sg) or
     TWithoutContentSummaryComponent(ContentSet c) or
     TWithContentSummaryComponent(ContentSet c)
 
-  private TParameterSummaryComponent thisParam() {
-    result = TParameterSummaryComponent(instanceParameterPosition())
+  private TParameterSummaryComponent callbackSelfParam() {
+    result = TParameterSummaryComponent(callbackSelfParameterPosition())
   }
 
   newtype TSummaryComponentStack =
@@ -268,7 +381,7 @@ module Private {
       any(RequiredSummaryComponentStack x).required(head, tail)
       or
       any(RequiredSummaryComponentStack x).required(TParameterSummaryComponent(_), tail) and
-      head = thisParam()
+      head = callbackSelfParam()
       or
       derivedFluentFlowPush(_, _, _, head, tail, _)
     }
@@ -293,7 +406,7 @@ module Private {
       callbackRef = s.drop(_) and
       (isCallbackParameter(callbackRef) or callbackRef.head() = TReturnSummaryComponent(_)) and
       input = callbackRef.tail() and
-      output = TConsSummaryComponentStack(thisParam(), input) and
+      output = TConsSummaryComponentStack(callbackSelfParam(), input) and
       preservesValue = true
     )
     or
@@ -318,23 +431,6 @@ module Private {
           SummaryComponentStack::singleton(TArgumentSummaryComponent(_))) and
       preservesValue = preservesValue1.booleanAnd(preservesValue2)
     )
-    or
-    exists(ParameterPosition ppos, ContentSet cs |
-      c.clearsContent(ppos, cs) and
-      input = SummaryComponentStack::push(SummaryComponent::withoutContent(cs), output) and
-      output = SummaryComponentStack::argument(ppos) and
-      preservesValue = true
-    )
-  }
-
-  private class MkClearStack extends RequiredSummaryComponentStack {
-    override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-      exists(SummarizedCallable sc, ParameterPosition ppos, ContentSet cs |
-        sc.clearsContent(ppos, cs) and
-        head = SummaryComponent::withoutContent(cs) and
-        tail = SummaryComponentStack::argument(ppos)
-      )
-    }
   }
 
   /**
@@ -413,6 +509,9 @@ module Private {
       out.head() = TParameterSummaryComponent(_) and
       s = out.tail()
     )
+    or
+    // Add the post-update node corresponding to the requested argument node
+    outputState(c, s) and isCallbackParameter(s)
   }
 
   private newtype TSummaryNodeState =
@@ -521,7 +620,8 @@ module Private {
   predicate summaryParameterNodeRange(SummarizedCallable c, ParameterPosition pos) {
     parameterReadState(c, _, pos)
     or
-    isParameterPostUpdate(_, c, pos)
+    // Same as `isParameterPostUpdate(_, c, pos)`, but can be used in a negative context
+    any(SummaryNodeState state).isOutputState(c, SummaryComponentStack::argument(pos))
   }
 
   private predicate callbackOutput(
@@ -568,16 +668,19 @@ module Private {
           head = TWithContentSummaryComponent(cont)
         )
         or
-        exists(ContentSet cont |
-          head = TWithoutContentSummaryComponent(cont) and
-          result = getNodeType(summaryNodeInputState(c, s.tail()))
-        )
+        head = TWithoutContentSummaryComponent(_) and
+        result = getNodeType(summaryNodeInputState(c, s.tail()))
         or
         exists(ReturnKind rk |
           head = TReturnSummaryComponent(rk) and
           result =
             getCallbackReturnType(getNodeType(summaryNodeInputState(pragma[only_bind_out](c),
                   s.tail())), rk)
+        )
+        or
+        exists(SummaryComponent::SyntheticGlobal sg |
+          head = TSyntheticGlobalSummaryComponent(sg) and
+          result = getSyntheticGlobalType(sg)
         )
       )
       or
@@ -597,6 +700,11 @@ module Private {
           result =
             getCallbackParameterType(getNodeType(summaryNodeInputState(pragma[only_bind_out](c),
                   s.tail())), pos)
+        )
+        or
+        exists(SummaryComponent::SyntheticGlobal sg |
+          head = TSyntheticGlobalSummaryComponent(sg) and
+          result = getSyntheticGlobalType(sg)
         )
       )
     )
@@ -636,8 +744,8 @@ module Private {
 
   /** Holds if summary node `ret` is a return node of kind `rk`. */
   predicate summaryReturnNode(Node ret, ReturnKind rk) {
-    exists(SummarizedCallable callable, SummaryComponentStack s |
-      ret = summaryNodeOutputState(callable, s) and
+    exists(SummaryComponentStack s |
+      ret = summaryNodeOutputState(_, s) and
       s = TSingletonSummaryComponentStack(TReturnSummaryComponent(rk))
     )
   }
@@ -709,6 +817,18 @@ module Private {
     }
 
     /**
+     * Holds if there is a jump step from `pred` to `succ`, which is synthesized
+     * from a flow summary.
+     */
+    predicate summaryJumpStep(Node pred, Node succ) {
+      exists(SummaryComponentStack s |
+        s = SummaryComponentStack::singleton(SummaryComponent::syntheticGlobal(_)) and
+        pred = summaryNodeOutputState(_, s) and
+        succ = summaryNodeInputState(_, s)
+      )
+    }
+
+    /**
      * Holds if values stored inside content `c` are cleared at `n`. `n` is a
      * synthesized summary node, so in order for values to be cleared at calls
      * to the relevant method, it is important that flow does not pass over
@@ -767,6 +887,27 @@ module Private {
     }
 
     /**
+     * Holds if `p` can reach `n` in a summarized callable, using only value-preserving
+     * local steps. `clearsOrExpects` records whether any node on the path from `p` to
+     * `n` either clears or expects contents.
+     */
+    private predicate paramReachesLocal(ParamNode p, Node n, boolean clearsOrExpects) {
+      viableParam(_, _, _, p) and
+      n = p and
+      clearsOrExpects = false
+      or
+      exists(Node mid, boolean clearsOrExpectsMid |
+        paramReachesLocal(p, mid, clearsOrExpectsMid) and
+        summaryLocalStep(mid, n, true) and
+        if
+          summaryClearsContent(n, _) or
+          summaryExpectsContent(n, _)
+        then clearsOrExpects = true
+        else clearsOrExpects = clearsOrExpectsMid
+      )
+    }
+
+    /**
      * Holds if use-use flow starting from `arg` should be prohibited.
      *
      * This is the case when `arg` is the argument of a call that targets a
@@ -775,15 +916,11 @@ module Private {
      */
     pragma[nomagic]
     predicate prohibitsUseUseFlow(ArgNode arg, SummarizedCallable sc) {
-      exists(ParamNode p, Node mid, ParameterPosition ppos, Node ret |
+      exists(ParamNode p, ParameterPosition ppos, Node ret |
+        paramReachesLocal(p, ret, true) and
         p = summaryArgParam0(_, arg, sc) and
         p.isParameterOf(_, pragma[only_bind_into](ppos)) and
-        summaryLocalStep(p, mid, true) and
-        summaryLocalStep(mid, ret, true) and
         isParameterPostUpdate(ret, _, pragma[only_bind_into](ppos))
-      |
-        summaryClearsContent(mid, _) or
-        summaryExpectsContent(mid, _)
       )
     }
 
@@ -854,7 +991,7 @@ module Private {
   }
 
   /**
-   * Provides a means of translating externally (e.g., CSV) defined flow
+   * Provides a means of translating externally (e.g., MaD) defined flow
    * summaries into a `SummarizedCallable`s.
    */
   module External {
@@ -870,16 +1007,26 @@ module Private {
       AccessPathRange() { relevantSpec(this) }
     }
 
-    /** Holds if specification component `c` parses as parameter `n`. */
+    /** Holds if specification component `token` parses as parameter `pos`. */
     predicate parseParam(AccessPathToken token, ArgumentPosition pos) {
       token.getName() = "Parameter" and
       pos = parseParamBody(token.getAnArgument())
     }
 
-    /** Holds if specification component `c` parses as argument `n`. */
+    /** Holds if specification component `token` parses as argument `pos`. */
     predicate parseArg(AccessPathToken token, ParameterPosition pos) {
       token.getName() = "Argument" and
       pos = parseArgBody(token.getAnArgument())
+    }
+
+    /** Holds if specification component `token` parses as synthetic global `sg`. */
+    predicate parseSynthGlobal(AccessPathToken token, string sg) {
+      token.getName() = "SyntheticGlobal" and
+      sg = token.getAnArgument()
+    }
+
+    private class SyntheticGlobalFromAccessPath extends SummaryComponent::SyntheticGlobal {
+      SyntheticGlobalFromAccessPath() { parseSynthGlobal(_, this) }
     }
 
     private SummaryComponent interpretComponent(AccessPathToken token) {
@@ -892,6 +1039,10 @@ module Private {
       )
       or
       token = "ReturnValue" and result = SummaryComponent::return(getReturnValueKind())
+      or
+      exists(string sg |
+        parseSynthGlobal(token, sg) and result = SummaryComponent::syntheticGlobal(sg)
+      )
       or
       result = interpretComponentSpecific(token)
     }
@@ -934,13 +1085,18 @@ module Private {
       private predicate relevantSummaryElementGenerated(
         AccessPath inSpec, AccessPath outSpec, string kind
       ) {
-        summaryElement(this, inSpec, outSpec, kind, true) and
-        not summaryElement(this, _, _, _, false) and
-        not this.clearsContent(_, _)
+        exists(Provenance provenance |
+          provenance.isGenerated() and
+          summaryElement(this, inSpec, outSpec, kind, provenance)
+        ) and
+        not this.applyManualModel()
       }
 
       private predicate relevantSummaryElement(AccessPath inSpec, AccessPath outSpec, string kind) {
-        summaryElement(this, inSpec, outSpec, kind, false)
+        exists(Provenance provenance |
+          provenance.isManual() and
+          summaryElement(this, inSpec, outSpec, kind, provenance)
+        )
         or
         this.relevantSummaryElementGenerated(inSpec, outSpec, kind)
       }
@@ -959,13 +1115,29 @@ module Private {
         )
       }
 
-      override predicate isAutoGenerated() { this.relevantSummaryElementGenerated(_, _, _) }
+      override predicate hasProvenance(Provenance provenance) {
+        summaryElement(this, _, _, _, provenance)
+      }
     }
 
     /** Holds if component `c` of specification `spec` cannot be parsed. */
     predicate invalidSpecComponent(AccessPath spec, string c) {
       c = spec.getToken(_) and
       not exists(interpretComponent(c))
+    }
+
+    /** Holds if `provenance` is not a valid provenance value. */
+    bindingset[provenance]
+    predicate invalidProvenance(string provenance) { not provenance instanceof Provenance }
+
+    /**
+     * Holds if token `part` of specification `spec` has an invalid index.
+     * E.g., `Argument[-1]`.
+     */
+    predicate invalidIndexComponent(AccessPath spec, AccessPathToken part) {
+      part = spec.getToken(_) and
+      part.getName() = ["Parameter", "Argument"] and
+      AccessPath::parseInt(part.getArgumentList()) < 0
     }
 
     private predicate inputNeedsReference(AccessPathToken c) {
@@ -1070,7 +1242,7 @@ module Private {
     }
 
     /**
-     * Holds if `node` is specified as a source with the given kind in a CSV flow
+     * Holds if `node` is specified as a source with the given kind in a MaD flow
      * model.
      */
     predicate isSourceNode(InterpretNode node, string kind) {
@@ -1081,7 +1253,7 @@ module Private {
     }
 
     /**
-     * Holds if `node` is specified as a sink with the given kind in a CSV flow
+     * Holds if `node` is specified as a sink with the given kind in a MaD flow
      * model.
      */
     predicate isSinkNode(InterpretNode node, string kind) {
@@ -1094,7 +1266,7 @@ module Private {
 
   /** Provides a query predicate for outputting a set of relevant flow summaries. */
   module TestOutput {
-    /** A flow summary to include in the `summary/3` query predicate. */
+    /** A flow summary to include in the `summary/1` query predicate. */
     abstract class RelevantSummarizedCallable instanceof SummarizedCallable {
       /** Gets the string representation of this callable used by `summary/1`. */
       abstract string getCallableCsv();
@@ -1109,6 +1281,14 @@ module Private {
       string toString() { result = super.toString() }
     }
 
+    /** A model to include in the `neutral/1` query predicate. */
+    abstract class RelevantNeutralCallable instanceof NeutralCallable {
+      /** Gets the string representation of this callable used by `neutral/1`. */
+      abstract string getCallableCsv();
+
+      string toString() { result = super.toString() }
+    }
+
     /** Render the kind in the format used in flow summaries. */
     private string renderKind(boolean preservesValue) {
       preservesValue = true and result = "value"
@@ -1116,13 +1296,17 @@ module Private {
       preservesValue = false and result = "taint"
     }
 
-    private string renderProvenance(RelevantSummarizedCallable c) {
-      if c.(SummarizedCallable).isAutoGenerated() then result = "generated" else result = "manual"
+    private string renderProvenance(SummarizedCallable c) {
+      if c.applyManualModel() then result = "manual" else c.hasProvenance(result)
+    }
+
+    private string renderProvenanceNeutral(NeutralCallable c) {
+      if c.hasManualModel() then result = "manual" else c.hasProvenance(result)
     }
 
     /**
      * A query predicate for outputting flow summaries in semi-colon separated format in QL tests.
-     * The syntax is: "namespace;type;overrides;name;signature;ext;inputspec;outputspec;kind;provenance"",
+     * The syntax is: "namespace;type;overrides;name;signature;ext;inputspec;outputspec;kind;provenance",
      * ext is hardcoded to empty.
      */
     query predicate summary(string csv) {
@@ -1132,8 +1316,23 @@ module Private {
       |
         c.relevantSummary(input, output, preservesValue) and
         csv =
-          c.getCallableCsv() + getComponentStackCsv(input) + ";" + getComponentStackCsv(output) +
-            ";" + renderKind(preservesValue) + ";" + renderProvenance(c)
+          c.getCallableCsv() // Callable information
+            + getComponentStack(input) + ";" // input
+            + getComponentStack(output) + ";" // output
+            + renderKind(preservesValue) + ";" // kind
+            + renderProvenance(c) // provenance
+      )
+    }
+
+    /**
+     * Holds if a neutral model `csv` exists (semi-colon separated format). Used for testing purposes.
+     * The syntax is: "namespace;type;name;signature;provenance"",
+     */
+    query predicate neutral(string csv) {
+      exists(RelevantNeutralCallable c |
+        csv =
+          c.getCallableCsv() // Callable information
+            + renderProvenanceNeutral(c) // provenance
       )
     }
   }

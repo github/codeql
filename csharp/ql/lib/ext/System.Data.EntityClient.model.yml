@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["System.Data.EntityClient", "EntityCommand", False, "EntityCommand", "(System.String)", "", "Argument[0]", "sql", "manual"]
       - ["System.Data.EntityClient", "EntityCommand", False, "EntityCommand", "(System.String,System.Data.EntityClient.EntityConnection)", "", "Argument[0]", "sql", "manual"]

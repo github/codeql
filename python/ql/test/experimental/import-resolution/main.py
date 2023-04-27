@@ -84,6 +84,80 @@ from attr_clash import clashing_attr, non_clashing_submodule #$ imports=attr_cla
 check("clashing_attr", clashing_attr, "clashing_attr", globals()) #$ prints=clashing_attr SPURIOUS: prints="<module attr_clash.clashing_attr>"
 check("non_clashing_submodule", non_clashing_submodule, "<module attr_clash.non_clashing_submodule>", globals()) #$ prints="<module attr_clash.non_clashing_submodule>"
 
+import attr_clash.clashing_attr as _doesnt_matter #$ imports=attr_clash.clashing_attr as=_doesnt_matter
+from attr_clash import clashing_attr, non_clashing_submodule #$ imports=attr_clash.clashing_attr as=clashing_attr imports=attr_clash.non_clashing_submodule as=non_clashing_submodule
+check("clashing_attr", clashing_attr, "<module attr_clash.clashing_attr>", globals()) #$ prints="<module attr_clash.clashing_attr>" SPURIOUS: prints=clashing_attr
+
+# check that import * only imports the __all__ attributes
+from has_defined_all import *
+check("all_defined_foo", all_defined_foo, "all_defined_foo", globals()) #$ prints=all_defined_foo
+
+try:
+    check("all_defined_bar", all_defined_bar, "all_defined_bar", globals()) #$ SPURIOUS: prints=all_defined_bar
+    raise Exception("Did not get expected NameError")
+except NameError as e:
+    if "all_defined_bar" in str(e):
+        print("Got expected NameError:", e)
+    else:
+        raise
+
+import has_defined_all # $ imports=has_defined_all as=has_defined_all
+check("has_defined_all.all_defined_foo", has_defined_all.all_defined_foo, "all_defined_foo", globals()) #$ prints=all_defined_foo
+check("has_defined_all.all_defined_bar", has_defined_all.all_defined_bar, "all_defined_bar", globals()) #$ prints=all_defined_bar
+
+# same check as above, but going through one level of indirection (which can make a difference)
+from has_defined_all_indirection import *
+check("all_defined_foo_copy", all_defined_foo_copy, "all_defined_foo_copy", globals()) #$ prints=all_defined_foo_copy
+
+try:
+    check("all_defined_bar_copy", all_defined_bar_copy, "all_defined_bar_copy", globals()) #$ SPURIOUS: prints=all_defined_bar_copy
+    raise Exception("Did not get expected NameError")
+except NameError as e:
+    if "all_defined_bar_copy" in str(e):
+        print("Got expected NameError:", e)
+    else:
+        raise
+
+# same check as above, but going through one level of indirection (which can make a difference)
+import has_defined_all_indirection # $ imports=has_defined_all_indirection as=has_defined_all_indirection
+check("has_defined_all_indirection.all_defined_foo_copy", has_defined_all_indirection.all_defined_foo_copy, "all_defined_foo_copy", globals()) #$ prints=all_defined_foo_copy
+
+try:
+    check("has_defined_all_indirection.all_defined_bar_copy", has_defined_all_indirection.all_defined_bar_copy, "all_defined_bar_copy", globals())
+    raise Exception("Did not get expected AttributeError")
+except AttributeError as e:
+    if "all_defined_bar_copy" in str(e):
+        print("Got expected AttributeError:", e)
+    else:
+        raise
+
+# check that import * from an __init__ file works
+from package.subpackage2 import *
+check("subpackage2_attr", subpackage2_attr, "subpackage2_attr", globals()) #$ prints=subpackage2_attr
+
+# check that definitions from within if-then-else are found
+from if_then_else import if_then_else_defined
+check("if_then_else_defined", if_then_else_defined, "if_defined", globals()) #$ prints=if_defined prints=else_defined_1 prints=else_defined_2
+
+# check that refined definitions are handled correctly
+import refined # $ imports=refined as=refined
+check("refined.SOURCE", refined.SOURCE, refined.SOURCE, globals()) #$ prints=SOURCE
+
+import if_then_else_refined # $ imports=if_then_else_refined as=if_then_else_refined
+check("if_then_else_refined.src", if_then_else_refined.src, if_then_else_refined.src, globals()) #$ prints=SOURCE
+
+import simplistic_reexport # $ imports=simplistic_reexport as=simplistic_reexport
+check("simplistic_reexport.bar_attr", simplistic_reexport.bar_attr, "overwritten", globals()) #$ prints=overwritten SPURIOUS: prints=bar_attr
+check("simplistic_reexport.baz_attr", simplistic_reexport.baz_attr, "overwritten", globals()) #$ prints=overwritten SPURIOUS: prints=baz_attr
+
+# check that we don't treat all assignments as being exports
+import block_flow_check #$ imports=block_flow_check as=block_flow_check
+check("block_flow_check.SOURCE", block_flow_check.SOURCE, block_flow_check.SOURCE, globals())
+
+# show that import resolution is a bit too generous with definitions
+import generous_export #$ imports=generous_export as=generous_export
+check("generous_export.SOURCE", generous_export.SOURCE, generous_export.SOURCE, globals()) #$ SPURIOUS: prints=SOURCE
+
 exit(__file__)
 
 print()
@@ -91,4 +165,4 @@ print()
 if status() == 0:
     print("PASS")
 else:
-    print("FAIL")
+    sys.exit("FAIL")

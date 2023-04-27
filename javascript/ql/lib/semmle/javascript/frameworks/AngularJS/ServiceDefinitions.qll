@@ -235,7 +235,8 @@ abstract class CustomServiceDefinition extends DataFlow::Node {
  * A definition of a custom AngularJS dependency injection service using a "recipe".
  */
 abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinition,
-  DependencyInjection {
+  DependencyInjection
+{
   string methodName;
   string name;
 
@@ -268,7 +269,8 @@ abstract class RecipeDefinition extends DataFlow::CallNode, CustomServiceDefinit
  * (used through `ng-controller` directives).
  */
 abstract private class CustomSpecialServiceDefinition extends CustomServiceDefinition,
-  DependencyInjection {
+  DependencyInjection
+{
   override DataFlow::Node getAnInjectableFunction() { result = this.getAFactoryFunction() }
 }
 
@@ -473,27 +475,21 @@ abstract class ServiceRequestNode extends DataFlow::Node {
 /**
  * The request for a scope service in the form of the link-function of a directive.
  */
-private class LinkFunctionWithScopeInjection extends ServiceRequestNode {
-  LinkFunctionWithScopeInjection() { this instanceof LinkFunction }
-
+private class LinkFunctionWithScopeInjection extends ServiceRequestNode instanceof LinkFunction {
   override DataFlow::ParameterNode getDependencyParameter(ServiceReference service) {
     service instanceof ScopeServiceReference and
-    result = this.(LinkFunction).getScopeParameter()
+    result = super.getScopeParameter()
   }
 }
 
 /**
  * A request for a service, in the form of a dependency-injected function.
  */
-class InjectableFunctionServiceRequest extends ServiceRequestNode {
-  InjectableFunction injectedFunction;
-
-  InjectableFunctionServiceRequest() { injectedFunction = this }
-
+class InjectableFunctionServiceRequest extends ServiceRequestNode instanceof InjectableFunction {
   /**
    * Gets the function of this request.
    */
-  InjectableFunction getAnInjectedFunction() { result = injectedFunction }
+  InjectableFunction getAnInjectedFunction() { result = this }
 
   /**
    * Gets a name of a requested service.
@@ -512,7 +508,7 @@ class InjectableFunctionServiceRequest extends ServiceRequestNode {
   }
 
   override DataFlow::ParameterNode getDependencyParameter(ServiceReference service) {
-    service = injectedFunction.getAResolvedDependency(result)
+    service = super.getAResolvedDependency(result)
   }
 }
 
@@ -631,12 +627,9 @@ class ProviderRecipeDefinition extends RecipeDefinition {
   }
 }
 
-private class ProviderRecipeServiceInjection extends DependencyInjection {
-  ProviderRecipeServiceInjection() { this instanceof ProviderRecipeDefinition }
-
-  override DataFlow::Node getAnInjectableFunction() {
-    result = this.(ProviderRecipeDefinition).getAService()
-  }
+private class ProviderRecipeServiceInjection extends DependencyInjection instanceof ProviderRecipeDefinition
+{
+  override DataFlow::Node getAnInjectableFunction() { result = super.getAService() }
 }
 
 /**

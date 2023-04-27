@@ -69,7 +69,7 @@ class ValueOrRefType extends DotNet::ValueOrRefType, Type, Attributable, @value_
     )
     or
     not exists(this.getDeclaringType()) and
-    qualifier = this.getNamespace().getQualifiedName() and
+    qualifier = this.getNamespace().getFullName() and
     name = this.getUndecoratedName()
   }
 
@@ -825,7 +825,7 @@ class AnonymousClass extends Class {
  * The `object` type, `System.Object`.
  */
 class ObjectType extends Class {
-  ObjectType() { this.hasQualifiedName("System.Object") }
+  ObjectType() { this.hasQualifiedName("System", "Object") }
 
   override string toStringWithTypes() { result = "object" }
 
@@ -836,7 +836,7 @@ class ObjectType extends Class {
  * The `string` type, `System.String`.
  */
 class StringType extends Class {
-  StringType() { this.hasQualifiedName("System.String") }
+  StringType() { this.hasQualifiedName("System", "String") }
 
   override string toStringWithTypes() { result = "string" }
 

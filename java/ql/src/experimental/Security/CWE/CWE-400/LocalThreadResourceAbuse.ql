@@ -3,7 +3,7 @@
  * @description Using user input directly to control a thread's sleep time could lead to
  *              performance problems or even resource exhaustion.
  * @kind path-problem
- * @id java/thread-resource-abuse
+ * @id java/local-thread-resource-abuse
  * @problem.severity recommendation
  * @tags security
  *       external/cwe/cwe-400
@@ -11,8 +11,9 @@
 
 import java
 import ThreadResourceAbuse
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
+import ThreadResourceAbuseFlow::PathGraph
 
 /** The `getInitParameter` method of servlet or JSF. */
 class GetInitParameter extends Method {
@@ -41,18 +42,16 @@ class InitParameterInput extends LocalUserInput {
 }
 
 /** Taint configuration of uncontrolled thread resource consumption from local user input. */
-class ThreadResourceAbuse extends TaintTracking::Configuration {
-  ThreadResourceAbuse() { this = "ThreadResourceAbuse" }
+module ThreadResourceAbuseConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
+  predicate isSink(DataFlow::Node sink) { sink instanceof PauseThreadSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof PauseThreadSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     any(AdditionalValueStep r).step(pred, succ)
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     exists(
       MethodAccess ma // Math.min(sleepTime, MAX_INTERVAL)
     |
@@ -64,7 +63,9 @@ class ThreadResourceAbuse extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ThreadResourceAbuse conf
-where conf.hasFlowPath(source, sink)
+module ThreadResourceAbuseFlow = TaintTracking::Global<ThreadResourceAbuseConfig>;
+
+from ThreadResourceAbuseFlow::PathNode source, ThreadResourceAbuseFlow::PathNode sink
+where ThreadResourceAbuseFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Possible uncontrolled resource consumption due to $@.",
   source.getNode(), "local user-provided value"

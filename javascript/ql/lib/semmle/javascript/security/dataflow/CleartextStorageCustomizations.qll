@@ -40,9 +40,7 @@ module CleartextStorage {
   }
 
   /** A call to any function whose name suggests that it encodes or encrypts its arguments. */
-  class ProtectSanitizer extends Sanitizer {
-    ProtectSanitizer() { this instanceof ProtectCall }
-  }
+  class ProtectSanitizer extends Sanitizer instanceof ProtectCall { }
 
   /**
    * An expression set as a value on a cookie instance.

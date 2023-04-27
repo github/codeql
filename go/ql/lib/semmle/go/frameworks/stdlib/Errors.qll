@@ -6,22 +6,15 @@ import go
 
 /** Provides models of commonly used functions in the `errors` package. */
 module Errors {
+  // These are expressed using TaintTracking::FunctionModel because varargs functions don't work with Models-as-Data sumamries yet.
   private class FunctionModels extends TaintTracking::FunctionModel {
     FunctionInput inp;
     FunctionOutput outp;
 
     FunctionModels() {
-      // signature: func As(err error, target interface{}) bool
-      hasQualifiedName("errors", "As") and
-      (inp.isParameter(0) and outp.isParameter(1))
-      or
-      // signature: func New(text string) error
-      hasQualifiedName("errors", "New") and
-      (inp.isParameter(0) and outp.isResult())
-      or
-      // signature: func Unwrap(err error) error
-      hasQualifiedName("errors", "Unwrap") and
-      (inp.isParameter(0) and outp.isResult())
+      // signature: func Join(errs ...error) error
+      hasQualifiedName("errors", "Join") and
+      (inp.isParameter(_) and outp.isResult())
     }
 
     override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {

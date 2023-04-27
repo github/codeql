@@ -56,14 +56,14 @@ private predicate isIncorrectIntegerConversion(int sourceBitSize, int sinkBitSiz
  * integer types, which could cause unexpected values.
  */
 class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
-  boolean sourceIsSigned;
+  boolean sinkIsSigned;
   int sourceBitSize;
   int sinkBitSize;
 
   ConversionWithoutBoundsCheckConfig() {
-    sourceIsSigned in [true, false] and
+    sinkIsSigned in [true, false] and
     isIncorrectIntegerConversion(sourceBitSize, sinkBitSize) and
-    this = "ConversionWithoutBoundsCheckConfig" + sourceBitSize + sourceIsSigned + sinkBitSize
+    this = "ConversionWithoutBoundsCheckConfig" + sourceBitSize + sinkIsSigned + sinkBitSize
   }
 
   /** Gets the bit size of the source. */
@@ -75,11 +75,6 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
     |
       c.getTarget() = ip and source = c.getResult(0)
     |
-      (
-        if ip.getResultType(0) instanceof SignedIntegerType
-        then sourceIsSigned = true
-        else sourceIsSigned = false
-      ) and
       (
         apparentBitSize = ip.getTargetBitSize()
         or
@@ -112,10 +107,13 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
   predicate isSinkWithBitSize(DataFlow::TypeCastNode sink, int bitSize) {
     sink.asExpr() instanceof ConversionExpr and
     exists(IntegerType integerType | sink.getResultType().getUnderlyingType() = integerType |
-      bitSize = integerType.getSize()
-      or
-      not exists(integerType.getSize()) and
-      bitSize = getIntTypeBitSize(sink.getFile())
+      (
+        bitSize = integerType.getSize()
+        or
+        not exists(integerType.getSize()) and
+        bitSize = getIntTypeBitSize(sink.getFile())
+      ) and
+      if integerType instanceof SignedIntegerType then sinkIsSigned = true else sinkIsSigned = false
     ) and
     not exists(ShrExpr shrExpr |
       shrExpr.getLeftOperand().getGlobalValueNumber() =
@@ -125,7 +123,13 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { this.isSinkWithBitSize(sink, sinkBitSize) }
+  override predicate isSink(DataFlow::Node sink) {
+    // We use the argument of the type conversion as the configuration sink so that we
+    // can sanitize the result of the conversion to prevent flow on to further sinks
+    // without needing to use `isSanitizerOut`, which doesn't work with flow states
+    // (and therefore the legacy `TaintTracking::Configuration` class).
+    this.isSinkWithBitSize(sink.getASuccessor(), sinkBitSize)
+  }
 
   override predicate isSanitizer(DataFlow::Node node) {
     // To catch flows that only happen on 32-bit architectures we
@@ -134,12 +138,11 @@ class ConversionWithoutBoundsCheckConfig extends TaintTracking::Configuration {
       if sinkBitSize != 0 then bitSize = sinkBitSize else bitSize = 32
     |
       node = DataFlow::BarrierGuard<upperBoundCheckGuard/3>::getABarrierNodeForGuard(g) and
-      g.isBoundFor(bitSize, sourceIsSigned)
+      g.isBoundFor(bitSize, sinkIsSigned)
     )
-  }
-
-  override predicate isSanitizerOut(DataFlow::Node node) {
-    exists(int bitSize | isIncorrectIntegerConversion(sourceBitSize, bitSize) |
+    or
+    exists(int bitSize |
+      isIncorrectIntegerConversion(sourceBitSize, bitSize) and
       this.isSinkWithBitSize(node, bitSize)
     )
   }

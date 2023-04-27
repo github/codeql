@@ -15,7 +15,7 @@ public class Test {
   public void test() throws Exception {
 
     {
-      // "java.util.regex;Matcher;false;group;;;Argument[-1];ReturnValue;taint;manual"
+      // "java.util.regex;Matcher;false;group;;;Argument[this];ReturnValue;taint;manual"
       String out = null;
       String in = (String) source();
       Matcher m = pattern.matcher(in);
@@ -23,7 +23,7 @@ public class Test {
       sink(out); // $ hasTaintFlow
     }
     {
-      // "java.util.regex;Matcher;false;group;;;Argument[-1];ReturnValue;taint;manual"
+      // "java.util.regex;Matcher;false;group;;;Argument[this];ReturnValue;taint;manual"
       String out = null;
       String in = (String) source();
       Matcher m = pattern.matcher(in);
@@ -31,7 +31,7 @@ public class Test {
       sink(out); // $ hasTaintFlow
     }
     {
-      // "java.util.regex;Matcher;false;group;;;Argument[-1];ReturnValue;taint;manual"
+      // "java.util.regex;Matcher;false;group;;;Argument[this];ReturnValue;taint;manual"
       String out = null;
       String in = (String) source();
       Matcher m = pattern.matcher(in);
@@ -39,7 +39,7 @@ public class Test {
       sink(out); // $ hasTaintFlow
     }
     {
-      // "java.util.regex;Matcher;false;replaceAll;;;Argument[-1];ReturnValue;taint;manual"
+      // "java.util.regex;Matcher;false;replaceAll;;;Argument[this];ReturnValue;taint;manual"
       String out = null;
       String in = (String) source();
       Matcher m = pattern.matcher(in);
@@ -55,7 +55,7 @@ public class Test {
       sink(out); // $ hasTaintFlow
     }
     {
-      // "java.util.regex;Matcher;false;replaceFirst;;;Argument[-1];ReturnValue;taint;manual"
+      // "java.util.regex;Matcher;false;replaceFirst;;;Argument[this];ReturnValue;taint;manual"
       String out = null;
       String in = (String) source();
       Matcher m = pattern.matcher(in);

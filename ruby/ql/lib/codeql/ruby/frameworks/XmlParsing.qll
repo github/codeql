@@ -96,7 +96,7 @@ private class LibXmlRubyXmlParserCall extends XmlParserCall::Range, DataFlow::Ca
     or
     // If the database contains a call to set `default_substitute_entities` to
     // true, then we assume external entities are enabled for this call
-    exists(AssignExpr ae | enablesLibXmlDefaultEntitySubstitution(ae))
+    enablesLibXmlDefaultEntitySubstitution(_)
   }
 }
 

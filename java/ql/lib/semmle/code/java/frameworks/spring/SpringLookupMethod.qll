@@ -22,10 +22,8 @@ class SpringLookupMethod extends SpringXmlElement {
    * To find the Java method in a child bean, see `getMethod(SpringBean)`.
    */
   Method getMethod() {
-    exists(RefType superType |
-      this.getEnclosingBean().getClass().hasMethod(result, superType) and
-      result.getName() = this.getMethodName()
-    )
+    this.getEnclosingBean().getClass().hasMethod(result, _) and
+    result.getName() = this.getMethodName()
   }
 
   /**

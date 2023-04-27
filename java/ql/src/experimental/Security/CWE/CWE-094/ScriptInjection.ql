@@ -7,12 +7,14 @@
  * @precision high
  * @id java/unsafe-eval
  * @tags security
+ *       experimental
  *       external/cwe/cwe-094
  */
 
 import java
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
+import ScriptInjectionFlow::PathGraph
 
 /** A method of ScriptEngine that allows code injection. */
 class ScriptEngineMethod extends Method {
@@ -132,15 +134,15 @@ class ScriptInjectionSink extends DataFlow::ExprNode {
  * A taint tracking configuration that tracks flow from `RemoteFlowSource` to an argument
  * of a method call that executes injected script.
  */
-class ScriptInjectionConfiguration extends TaintTracking::Configuration {
-  ScriptInjectionConfiguration() { this = "ScriptInjectionConfiguration" }
+module ScriptInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ScriptInjectionSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof ScriptInjectionSink }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ScriptInjectionConfiguration conf
-where conf.hasFlowPath(source, sink)
+module ScriptInjectionFlow = TaintTracking::Global<ScriptInjectionConfig>;
+
+from ScriptInjectionFlow::PathNode source, ScriptInjectionFlow::PathNode sink
+where ScriptInjectionFlow::flowPath(source, sink)
 select sink.getNode().(ScriptInjectionSink).getMethodAccess(), source, sink,
   "Java Script Engine evaluate $@.", source.getNode(), "user input"

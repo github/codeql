@@ -87,9 +87,9 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
   void fillBoundGenericType(const swift::BoundGenericType& type, codeql::BoundGenericType& entry);
   void fillAnyGenericType(const swift::AnyGenericType& type, codeql::AnyGenericType& entry);
 
-  template <typename T, typename... Args>
-  auto createTypeEntry(const T& type, const Args&... args) {
-    auto entry = dispatcher.createEntry(type, args...);
+  template <typename T>
+  auto createTypeEntry(const T& type) {
+    auto entry = dispatcher.createEntry(type);
     fillType(type, entry);
     return entry;
   }

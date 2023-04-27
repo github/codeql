@@ -83,8 +83,15 @@ In detail, a type signature definition consists of:
 #. The name of the module signature. This is an `identifier <https://codeql.github.com/docs/ql-language-reference/ql-language-specification/#identifiers>`_
    starting with a uppercase letter.
 #. Optionally, a list of parameters for :ref:`parameterized module signatures <parameterized-module-signatures>`.
-#. The module signature body, consisting of type signatures and predicate signatures enclosed in braces.
+#. The module signature body, consisting of type signatures, predicate signatures, and default predicates enclosed in braces.
    The ``signature`` keyword is omitted for these contained signatures.
+
+Module signature default predicates are syntactically constructed like predicate signatures,
+but preceded by the ``default`` keyword, and with a predicate body instead of the concluding
+semicolon ``;``.
+Default predicate bodies are restricted in that they may not use entities that in any way
+depend on other module signature members or parameters of the module signature or any
+existing enclosing modules.
 
 For example:
 
@@ -93,6 +100,7 @@ For example:
     signature module MSig {
       class T;
       predicate restriction(T t);
+      default string descr(T t) { result = "default" }
     }
 
     module Module implements MSig {

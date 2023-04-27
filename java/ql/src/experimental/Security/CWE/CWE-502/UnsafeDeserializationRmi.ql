@@ -9,13 +9,14 @@
  * @precision high
  * @id java/unsafe-deserialization-rmi
  * @tags security
+ *       experimental
  *       external/cwe/cwe-502
  */
 
 import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Rmi
-import DataFlow::PathGraph
+import BindingUnsafeRemoteObjectFlow::PathGraph
 
 /**
  * A method that binds a name to a remote object.
@@ -47,22 +48,20 @@ private predicate hasVulnerableMethod(RefType type) {
  * A taint-tracking configuration for unsafe remote objects
  * that are vulnerable to deserialization attacks.
  */
-private class BindingUnsafeRemoteObjectConfig extends TaintTracking::Configuration {
-  BindingUnsafeRemoteObjectConfig() { this = "BindingUnsafeRemoteObjectConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+private module BindingUnsafeRemoteObjectConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(ConstructorCall cc | cc = source.asExpr() |
       hasVulnerableMethod(cc.getConstructedType().getAnAncestor())
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma | ma.getArgument(1) = sink.asExpr() |
       ma.getMethod() instanceof BindMethod
     )
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
       m.getDeclaringType().hasQualifiedName("java.rmi.server", "UnicastRemoteObject") and
       m.hasName("exportObject") and
@@ -73,6 +72,9 @@ private class BindingUnsafeRemoteObjectConfig extends TaintTracking::Configurati
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, BindingUnsafeRemoteObjectConfig conf
-where conf.hasFlowPath(source, sink)
+private module BindingUnsafeRemoteObjectFlow =
+  TaintTracking::Global<BindingUnsafeRemoteObjectConfig>;
+
+from BindingUnsafeRemoteObjectFlow::PathNode source, BindingUnsafeRemoteObjectFlow::PathNode sink
+where BindingUnsafeRemoteObjectFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Unsafe deserialization in a remote object."

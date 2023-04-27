@@ -67,32 +67,32 @@ private class StepsFromModel extends ModelInput::SummaryModelCsv {
   override predicate row(string row) {
     row =
       [
-        ";any;Method[set_value];Argument[0];Argument[self].Field[@value];value",
-        ";any;Method[get_value];Argument[self].Field[@value];ReturnValue;value",
-        ";;Member[Foo].Method[firstArg];Argument[0];ReturnValue;taint",
-        ";;Member[Foo].Method[secondArg];Argument[1];ReturnValue;taint",
-        ";;Member[Foo].Method[onlyWithoutBlock].WithoutBlock;Argument[0];ReturnValue;taint",
-        ";;Member[Foo].Method[onlyWithBlock].WithBlock;Argument[0];ReturnValue;taint",
-        ";;Member[Foo].Method[blockArg].Argument[block].Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
-        ";;Member[Foo].Method[namedArg];Argument[foo:];ReturnValue;taint",
-        ";;Member[Foo].Method[anyArg];Argument[any];ReturnValue;taint",
-        ";;Member[Foo].Method[anyNamedArg];Argument[any-named];ReturnValue;taint",
-        ";;Member[Foo].Method[anyPositionFromOne];Argument[1..];ReturnValue;taint",
-        ";;Member[Foo].Method[intoNamedCallback];Argument[0];Argument[foo:].Parameter[0];taint",
-        ";;Member[Foo].Method[intoNamedParameter];Argument[0];Argument[0].Parameter[foo:];taint",
-        ";;Member[Foo].Method[startInNamedCallback].Argument[foo:].Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
-        ";;Member[Foo].Method[startInNamedParameter].Argument[0].Parameter[foo:].Method[preserveTaint];Argument[0];ReturnValue;taint",
-        ";;Member[Foo].Instance.Method[flowToAnyArg];Argument[0];Argument[any];taint",
-        ";;Member[Foo].Instance.Method[flowToSelf];Argument[0];Argument[self];taint",
-        ";any;Method[matchedByName];Argument[0];ReturnValue;taint",
-        ";any;Method[matchedByNameRcv];Argument[self];ReturnValue;taint",
-        ";any;Method[withElementOne];Argument[self].WithElement[1];ReturnValue;value",
-        ";any;Method[withExactlyElementOne];Argument[self].WithElement[1!];ReturnValue;value",
-        ";any;Method[withoutElementOne];Argument[self].WithoutElement[1];Argument[self];value",
-        ";any;Method[withoutExactlyElementOne];Argument[self].WithoutElement[1!];Argument[self];value",
-        ";any;Method[readElementOne];Argument[self].Element[1];ReturnValue;value",
-        ";any;Method[readExactlyElementOne];Argument[self].Element[1!];ReturnValue;value",
-        ";any;Method[withoutElementOneAndTwo];Argument[self].WithoutElement[1].WithoutElement[2].WithElement[any];Argument[self];value",
+        "any;Method[set_value];Argument[0];Argument[self].Field[@value];value",
+        "any;Method[get_value];Argument[self].Field[@value];ReturnValue;value",
+        "Foo!;Method[firstArg];Argument[0];ReturnValue;taint",
+        "Foo!;Method[secondArg];Argument[1];ReturnValue;taint",
+        "Foo!;Method[onlyWithoutBlock].WithoutBlock;Argument[0];ReturnValue;taint",
+        "Foo!;Method[onlyWithBlock].WithBlock;Argument[0];ReturnValue;taint",
+        "Foo!;Method[blockArg].Argument[block].Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
+        "Foo!;Method[namedArg];Argument[foo:];ReturnValue;taint",
+        "Foo!;Method[anyArg];Argument[any];ReturnValue;taint",
+        "Foo!;Method[anyNamedArg];Argument[any-named];ReturnValue;taint",
+        "Foo!;Method[anyPositionFromOne];Argument[1..];ReturnValue;taint",
+        "Foo!;Method[intoNamedCallback];Argument[0];Argument[foo:].Parameter[0];taint",
+        "Foo!;Method[intoNamedParameter];Argument[0];Argument[0].Parameter[foo:];taint",
+        "Foo!;Method[startInNamedCallback].Argument[foo:].Parameter[0].Method[preserveTaint];Argument[0];ReturnValue;taint",
+        "Foo!;Method[startInNamedParameter].Argument[0].Parameter[foo:].Method[preserveTaint];Argument[0];ReturnValue;taint",
+        "Foo;Method[flowToAnyArg];Argument[0];Argument[any];taint",
+        "Foo;Method[flowToSelf];Argument[0];Argument[self];taint",
+        "any;Method[matchedByName];Argument[0];ReturnValue;taint",
+        "any;Method[matchedByNameRcv];Argument[self];ReturnValue;taint",
+        "any;Method[withElementOne];Argument[self].WithElement[1];ReturnValue;value",
+        "any;Method[withExactlyElementOne];Argument[self].WithElement[1!];ReturnValue;value",
+        "any;Method[withoutElementOne];Argument[self].WithoutElement[1];Argument[self];value",
+        "any;Method[withoutExactlyElementOne];Argument[self].WithoutElement[1!];Argument[self];value",
+        "any;Method[readElementOne];Argument[self].Element[1];ReturnValue;value",
+        "any;Method[readExactlyElementOne];Argument[self].Element[1!];ReturnValue;value",
+        "any;Method[withoutElementOneAndTwo];Argument[self].WithoutElement[1].WithoutElement[2].WithElement[any];Argument[self];value",
       ]
   }
 }
@@ -101,23 +101,21 @@ private class TypeFromModel extends ModelInput::TypeModelCsv {
   override predicate row(string row) {
     row =
       [
-        "test;FooOrBar;;;Member[Foo].Instance", //
-        "test;FooOrBar;;;Member[Bar].Instance", //
-        "test;FooOrBar;test;FooOrBar;Method[next].ReturnValue",
+        "~FooOrBar;Foo;", //
+        "~FooOrBar;Bar;", //
+        "~FooOrBar;~FooOrBar;Method[next].ReturnValue",
       ]
   }
 }
 
 private class TypeFromCodeQL extends ModelInput::TypeModel {
-  override DataFlow::Node getASource(string package, string type) {
-    package = "test" and
-    type = "FooOrBar" and
+  override DataFlow::Node getASource(string type) {
+    type = "~FooOrBar" and
     result.getConstantValue().getString() = "magic_string"
   }
 
-  override API::Node getAnApiNode(string package, string type) {
-    package = "test" and
-    type = "FooOrBar" and
+  override API::Node getAnApiNode(string type) {
+    type = "~FooOrBar" and
     result = API::getTopLevelMember("Alias").getMember(["Foo", "Bar"])
   }
 }
@@ -126,13 +124,13 @@ private class InvalidTypeModel extends ModelInput::TypeModelCsv {
   override predicate row(string row) {
     row =
       [
-        "test;TooManyColumns;;;Member[Foo].Instance;too;many;columns", //
-        "test;TooFewColumns", //
-        "test;X;test;Y;Method[foo].Arg[0]", //
-        "test;X;test;Y;Method[foo].Argument[0-1]", //
-        "test;X;test;Y;Method[foo].Argument[*]", //
-        "test;X;test;Y;Method[foo].Argument", //
-        "test;X;test;Y;Method[foo].Member", //
+        "TooManyColumns;;Member[Foo].Instance;too;many;columns", //
+        "TooFewColumns", //
+        "Foo;Foo;Method[foo].Arg[0]", //
+        "Foo;Foo;Method[foo].Argument[0-1]", //
+        "Foo;Foo;Method[foo].Argument[*]", //
+        "Foo;Foo;Method[foo].Argument", //
+        "Foo;Foo;Method[foo].Member", //
       ]
   }
 }
@@ -141,12 +139,12 @@ private class SinkFromModel extends ModelInput::SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        "test;FooOrBar;Method[method].Argument[0];test-sink", //
-        ";;Member[Foo].Method[sinkAnyArg].Argument[any];test-sink", //
-        ";;Member[Foo].Method[sinkAnyNamedArg].Argument[any-named];test-sink", //
-        ";;Member[Foo].Method[getSinks].ReturnValue.Element[any].Method[mySink].Argument[0];test-sink", //
-        ";;Member[Foo].Method[arraySink].Argument[0].Element[any];test-sink", //
-        ";;Member[Foo].Method[secondArrayElementIsSink].Argument[0].Element[1];test-sink", //
+        "~FooOrBar;Method[method].Argument[0];test-sink", //
+        "Foo!;Method[sinkAnyArg].Argument[any];test-sink", //
+        "Foo!;Method[sinkAnyNamedArg].Argument[any-named];test-sink", //
+        "Foo!;Method[getSinks].ReturnValue.Element[any].Method[mySink].Argument[0];test-sink", //
+        "Foo!;Method[arraySink].Argument[0].Element[any];test-sink", //
+        "Foo!;Method[secondArrayElementIsSink].Argument[0].Element[1];test-sink", //
       ]
   }
 }

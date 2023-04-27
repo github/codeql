@@ -7,6 +7,7 @@
  * @precision high
  * @id cs/webclient-path-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-099
  *       external/cwe/cwe-023
  *       external/cwe/cwe-036
@@ -15,9 +16,9 @@
 
 import csharp
 import TaintedWebClientLib
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import TaintedWebClient::PathGraph
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from TaintedWebClient::PathNode source, TaintedWebClient::PathNode sink
+where TaintedWebClient::flowPath(source, sink)
 select sink.getNode(), source, sink, "A method of WebClient depepends on a $@.", source.getNode(),
   "user-provided value"

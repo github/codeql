@@ -3,7 +3,6 @@
  *
  * Example for a test.ql:
  * ```ql
- *  *import codeql.ruby.AST
  * import TestUtilities.InlineFlowTest
  * import PathGraph
  *

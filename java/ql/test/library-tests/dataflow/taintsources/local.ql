@@ -2,32 +2,29 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import TestUtilities.InlineExpectationsTest
 
-class LocalSource extends DataFlow::Node {
-  LocalSource() {
-    this instanceof UserInput and
-    not this instanceof RemoteFlowSource
-  }
+class LocalSource extends DataFlow::Node instanceof UserInput {
+  LocalSource() { not this instanceof RemoteFlowSource }
 }
 
 predicate isTestSink(DataFlow::Node n) {
   exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
 }
 
-class LocalValueConf extends DataFlow::Configuration {
-  LocalValueConf() { this = "LocalValueConf" }
+module LocalValueConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n instanceof LocalSource }
 
-  override predicate isSource(DataFlow::Node n) { n instanceof LocalSource }
-
-  override predicate isSink(DataFlow::Node n) { isTestSink(n) }
+  predicate isSink(DataFlow::Node n) { isTestSink(n) }
 }
 
-class LocalTaintConf extends TaintTracking::Configuration {
-  LocalTaintConf() { this = "LocalTaintConf" }
+module LocalValueFlow = DataFlow::Global<LocalValueConfig>;
 
-  override predicate isSource(DataFlow::Node n) { n instanceof LocalSource }
+module LocalTaintConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n instanceof LocalSource }
 
-  override predicate isSink(DataFlow::Node n) { isTestSink(n) }
+  predicate isSink(DataFlow::Node n) { isTestSink(n) }
 }
+
+module LocalTaintFlow = TaintTracking::Global<LocalTaintConfig>;
 
 class LocalFlowTest extends InlineExpectationsTest {
   LocalFlowTest() { this = "LocalFlowTest" }
@@ -36,7 +33,7 @@ class LocalFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasLocalValueFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink | any(LocalValueConf c).hasFlow(src, sink) |
+    exists(DataFlow::Node sink | LocalValueFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""
@@ -44,7 +41,7 @@ class LocalFlowTest extends InlineExpectationsTest {
     or
     tag = "hasLocalTaintFlow" and
     exists(DataFlow::Node src, DataFlow::Node sink |
-      any(LocalTaintConf c).hasFlow(src, sink) and not any(LocalValueConf c).hasFlow(src, sink)
+      LocalTaintFlow::flow(src, sink) and not LocalValueFlow::flow(src, sink)
     |
       sink.getLocation() = location and
       element = sink.toString() and

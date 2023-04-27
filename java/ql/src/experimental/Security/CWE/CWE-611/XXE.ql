@@ -8,23 +8,25 @@
  * @precision high
  * @id java/xxe-with-experimental-sinks
  * @tags security
+ *       experimental
  *       external/cwe/cwe-611
  */
 
 import java
 import XXELib
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.FlowSources
-import DataFlow::PathGraph
+import XxeFlow::PathGraph
 
-class XxeConfig extends TaintTracking::Configuration {
-  XxeConfig() { this = "XxeConfig" }
+module XxeConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node src) { src instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeXxeSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeXxeSink }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, XxeConfig conf
-where conf.hasFlowPath(source, sink)
+module XxeFlow = TaintTracking::Global<XxeConfig>;
+
+from XxeFlow::PathNode source, XxeFlow::PathNode sink
+where XxeFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Unsafe parsing of XML file from $@.", source.getNode(),
   "user input"

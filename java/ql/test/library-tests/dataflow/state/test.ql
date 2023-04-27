@@ -39,21 +39,25 @@ predicate step(Node n1, Node n2, string s1, string s2) {
 
 predicate checkNode(Node n) { n.asExpr().(Argument).getCall().getCallee().hasName("check") }
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "qltest:state" }
+module Config implements DataFlow::StateConfigSig {
+  class FlowState = string;
 
-  override predicate isSource(Node n, FlowState s) { src(n, s) }
+  predicate isSource(Node n, FlowState s) { src(n, s) }
 
-  override predicate isSink(Node n, FlowState s) { sink(n, s) }
+  predicate isSink(Node n, FlowState s) { sink(n, s) }
 
-  override predicate isSanitizer(Node n, FlowState s) { bar(n, s) }
+  predicate isBarrier(Node n, FlowState s) { bar(n, s) }
 
-  override predicate isAdditionalTaintStep(Node n1, FlowState s1, Node n2, FlowState s2) {
+  predicate isAdditionalFlowStep(Node n1, FlowState s1, Node n2, FlowState s2) {
     step(n1, n2, s1, s2)
   }
-
-  override int explorationLimit() { result = 0 }
 }
+
+int explorationLimit() { result = 0 }
+
+module Flow = TaintTracking::GlobalWithState<Config>;
+
+module PartialFlow = Flow::FlowExploration<explorationLimit/0>;
 
 class HasFlowTest extends InlineExpectationsTest {
   HasFlowTest() { this = "HasFlowTest" }
@@ -62,16 +66,16 @@ class HasFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "flow" and
-    exists(PathNode src, PathNode sink, Conf conf |
-      conf.hasFlowPath(src, sink) and
+    exists(Flow::PathNode src, Flow::PathNode sink |
+      Flow::flowPath(src, sink) and
       sink.getNode().getLocation() = location and
       element = sink.toString() and
       value = src.getState()
     )
     or
     tag = "pFwd" and
-    exists(PartialPathNode src, PartialPathNode node, Conf conf |
-      conf.hasPartialFlow(src, node, _) and
+    exists(PartialFlow::PartialPathNode src, PartialFlow::PartialPathNode node |
+      PartialFlow::partialFlow(src, node, _) and
       checkNode(node.getNode()) and
       node.getNode().getLocation() = location and
       element = node.toString() and
@@ -79,8 +83,8 @@ class HasFlowTest extends InlineExpectationsTest {
     )
     or
     tag = "pRev" and
-    exists(PartialPathNode node, PartialPathNode sink, Conf conf |
-      conf.hasPartialFlowRev(node, sink, _) and
+    exists(PartialFlow::PartialPathNode node, PartialFlow::PartialPathNode sink |
+      PartialFlow::partialFlowRev(node, sink, _) and
       checkNode(node.getNode()) and
       node.getNode().getLocation() = location and
       element = node.toString() and

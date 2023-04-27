@@ -15,6 +15,12 @@ filegroup(
     visibility = ["//swift:__subpackages__"],
 )
 
+filegroup(
+    name = "codegen_conf",
+    srcs = ["codegen.conf"],
+    visibility = ["//swift:__subpackages__"],
+)
+
 pkg_files(
     name = "dbscheme_files",
     srcs = [
@@ -39,9 +45,9 @@ pkg_filegroup(
     visibility = ["//visibility:public"],
 )
 
-pkg_runfiles(
+pkg_filegroup(
     name = "extractor",
-    srcs = ["//swift/extractor"],
+    srcs = ["//swift/extractor:pkg"],
     prefix = "tools/" + codeql_platform,
 )
 

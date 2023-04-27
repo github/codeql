@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.kohsuke.stapler.framework.adjunct", "AdjunctManager", True, "AdjunctManager", "(ServletContext,ClassLoader,String,long)", "", "Argument[2]", "Argument[this].Field[org.kohsuke.stapler.framework.adjunct.AdjunctManager.rootURL]", "taint", "ai-manual"] # the class never accesses the URL, but the field is public

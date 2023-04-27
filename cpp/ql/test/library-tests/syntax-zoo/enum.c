@@ -2,6 +2,6 @@ enum {
 	a = 1 + 1
 };
 
-int f() {
+static int f() {
 	return a;
 }

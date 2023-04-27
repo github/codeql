@@ -43,11 +43,16 @@ private module Cached {
       nodeFrom.asExpr() = interpolated.getAppendingExpr()
     )
     or
-    // allow flow through string concatenation.
-    exists(AddExpr ae |
-      ae.getAnOperand() = nodeFrom.asExpr() and
-      ae = nodeTo.asExpr() and
-      ae.getType().getName() = "String"
+    // allow flow through arithmetic (this case includes string concatenation)
+    nodeTo.asExpr().(ArithmeticOperation).getAnOperand() = nodeFrom.asExpr()
+    or
+    // allow flow through bitwise operations
+    nodeTo.asExpr().(BitwiseOperation).getAnOperand() = nodeFrom.asExpr()
+    or
+    // allow flow through assignment operations (e.g. `+=`)
+    exists(AssignOperation op |
+      nodeFrom.asExpr() = op.getSource() and
+      nodeTo.asExpr() = op.getDest()
     )
     or
     // flow through a subscript access
@@ -74,7 +79,13 @@ private module Cached {
    */
   cached
   predicate localTaintStepCached(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    DataFlow::localFlowStep(nodeFrom, nodeTo)
+    or
     defaultAdditionalTaintStep(nodeFrom, nodeTo)
+    or
+    // Simple flow through library code is included in the exposed local
+    // step relation, even though flow is technically inter-procedural
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(nodeFrom, nodeTo, _)
   }
 }
 

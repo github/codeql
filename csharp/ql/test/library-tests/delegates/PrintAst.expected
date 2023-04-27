@@ -245,7 +245,7 @@ delegates.cs:
 #   79|                 0: [IntLiteral] 3
 #   79|               1: [DelegateCall] delegate call
 #   79|                 -1: [LocalVariableAccess] access to local variable ps
-#   79|                 0: [StringLiteral] ""
+#   79|                 0: [StringLiteralUtf16] ""
 #   81|         16: [LocalVariableDeclStmt] ... ...;
 #   81|           0: [LocalVariableDeclExpr] ContextCallback d
 #   81|             0: [TypeMention] ContextCallback

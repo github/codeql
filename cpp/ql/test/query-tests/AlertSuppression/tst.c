@@ -35,3 +35,10 @@ int x = 0; // lgtm
 */
 /* lgtm[@tag:nullness,js/invocation-of-non-function] */
 /* lgtm[@tag:nullness] */
+// codeql[js/debugger-statement]
+// CODEQL[js/debugger-statement]
+// codeql[js/debugger-statement] -- because I know better than codeql
+/* codeql[js/debugger-statement] */
+/* codeql[js/debugger-statement] 
+*/
+int y; // codeql[js/debugger-statement]

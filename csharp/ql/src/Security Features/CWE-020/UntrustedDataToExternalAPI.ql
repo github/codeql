@@ -10,11 +10,16 @@
  */
 
 import csharp
+import semmle.code.csharp.commons.QualifiedName
 import semmle.code.csharp.security.dataflow.ExternalAPIsQuery
-import DataFlow::PathGraph
+import RemoteSourceToExternalApi::PathGraph
 
-from UntrustedDataToExternalApiConfig config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from
+  RemoteSourceToExternalApi::PathNode source, RemoteSourceToExternalApi::PathNode sink,
+  string qualifier, string name
+where
+  RemoteSourceToExternalApi::flowPath(source, sink) and
+  sink.getNode().(ExternalApiDataNode).hasQualifiedName(qualifier, name)
 select sink, source, sink,
-  "Call to " + sink.getNode().(ExternalApiDataNode).getCallableDescription() +
-    " with untrusted data from $@.", source, source.toString()
+  "Call to " + getQualifiedName(qualifier, name) + " with untrusted data from $@.", source,
+  source.toString()

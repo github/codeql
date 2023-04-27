@@ -4,7 +4,7 @@
 
 import cpp
 import semmle.code.cpp.controlflow.SSA
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 
 /**
  * Holds if `alloc` is a use of `malloc` or `new`.  `kind` is
@@ -159,8 +159,8 @@ predicate freeExprOrIndirect(Expr free, Expr freed, string kind) {
   freeExpr(free, freed, kind)
   or
   // indirect free via function call
-  exists(Expr internalFree, Expr internalFreed, int arg |
-    freeExprOrIndirect(internalFree, internalFreed, kind) and
+  exists(Expr internalFreed, int arg |
+    freeExprOrIndirect(_, internalFreed, kind) and
     free.(FunctionCall).getTarget().getParameter(arg) = internalFreed.(VariableAccess).getTarget() and
     free.(FunctionCall).getArgument(arg) = freed
   )

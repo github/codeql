@@ -25,9 +25,11 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
+ * DEPRECATED: Use `ReDoS` instead.
+ *
  * A taint-tracking configuration for untrusted user input used in dangerous regular expression operations.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
+deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
   TaintTrackingConfiguration() { this = "ReDoS" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -37,10 +39,24 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
 
-/** A source of remote user input. */
-class RemoteSource extends Source {
-  RemoteSource() { this instanceof RemoteFlowSource }
+/**
+ * A taint-tracking configuration for untrusted user input used in dangerous regular expression operations.
+ */
+private module ReDoSConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+/**
+ * A taint-tracking module for untrusted user input used in dangerous regular expression operations.
+ */
+module ReDoS = TaintTracking::Global<ReDoSConfig>;
+
+/** A source of remote user input. */
+class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /**
  * An expression that represents a regular expression with potential exponential behavior.
@@ -62,10 +78,12 @@ predicate isExponentialRegex(StringLiteral s) {
 }
 
 /**
+ * DEPRECATED: Use `ExponentialRegexDataflow` instead.
+ *
  * A data flow configuration for tracking exponential worst case time regular expression string
  * literals to the pattern argument of a regex.
  */
-class ExponentialRegexDataflow extends DataFlow2::Configuration {
+deprecated class ExponentialRegexDataflow extends DataFlow2::Configuration {
   ExponentialRegexDataflow() { this = "ExponentialRegex" }
 
   override predicate isSource(DataFlow::Node s) { isExponentialRegex(s.asExpr()) }
@@ -74,14 +92,26 @@ class ExponentialRegexDataflow extends DataFlow2::Configuration {
 }
 
 /**
+ * A data flow configuration for tracking exponential worst case time regular expression string
+ * literals to the pattern argument of a regex.
+ */
+private module ExponentialRegexDataFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node s) { isExponentialRegex(s.asExpr()) }
+
+  predicate isSink(DataFlow::Node s) { s.asExpr() = any(RegexOperation c).getPattern() }
+}
+
+module ExponentialRegexDataFlow = DataFlow::Global<ExponentialRegexDataFlowConfig>;
+
+/**
  * An expression passed as the `input` to a call to a `Regex` method, where the regex appears to
  * have exponential behavior.
  */
 class ExponentialRegexSink extends DataFlow::ExprNode, Sink {
   ExponentialRegexSink() {
-    exists(ExponentialRegexDataflow regexDataflow, RegexOperation regexOperation |
+    exists(RegexOperation regexOperation |
       // Exponential regex flows to the pattern argument
-      regexDataflow.hasFlow(_, DataFlow::exprNode(regexOperation.getPattern()))
+      ExponentialRegexDataFlow::flow(_, DataFlow::exprNode(regexOperation.getPattern()))
     |
       // This is used as an input for this pattern
       this.getExpr() = regexOperation.getInput() and

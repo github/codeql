@@ -1,6 +1,6 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["Windows.Security.Cryptography.Core", "SymmetricKeyAlgorithmProvider", False, "CreateSymmetricKey", "(Windows.Storage.Streams.IBuffer)", "", "Argument[0]", "encryption-symmetrickey", "manual"]

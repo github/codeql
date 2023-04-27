@@ -29,7 +29,7 @@
 | test.kt:3:1:14:1 | Test | test.kt:12:3:12:121 | testMemberExtensionFunction | testMemberExtensionFunction(Test2,int,double,boolean) |
 | test.kt:3:1:14:1 | Test | test.kt:12:3:12:121 | testMemberExtensionFunction | testMemberExtensionFunction(Test2,int,java.lang.String,double,boolean) |
 | test.kt:3:1:14:1 | Test | test.kt:12:3:12:121 | testMemberExtensionFunction | testMemberExtensionFunction(Test2,int,java.lang.String,double,float,boolean) |
-| test.kt:3:1:14:1 | Test | test.kt:12:3:12:121 | testMemberExtensionFunction$default | testMemberExtensionFunction$default(Test2,Test,int,java.lang.String,double,float,boolean,int,java.lang.Object) |
+| test.kt:3:1:14:1 | Test | test.kt:12:3:12:121 | testMemberExtensionFunction$default | testMemberExtensionFunction$default(Test,Test2,int,java.lang.String,double,float,boolean,int,java.lang.Object) |
 | test.kt:16:1:28:1 | Test2 | test.kt:16:34:28:1 | Test2 | Test2(int,double,boolean) |
 | test.kt:16:1:28:1 | Test2 | test.kt:16:34:28:1 | Test2 | Test2(int,java.lang.String,double,boolean) |
 | test.kt:16:1:28:1 | Test2 | test.kt:16:34:28:1 | Test2 | Test2(int,java.lang.String,double,float,boolean) |

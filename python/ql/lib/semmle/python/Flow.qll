@@ -125,7 +125,7 @@ class ControlFlowNode extends @py_flow_node {
   /** Gets a textual representation of this element. */
   cached
   string toString() {
-    Stages::DataFlow::ref() and
+    Stages::AST::ref() and
     exists(Scope s | s.getEntryNode() = this | result = "Entry node for " + s.toString())
     or
     exists(Scope s | s.getANormalExit() = this | result = "Exit node for " + s.toString())
@@ -385,9 +385,9 @@ class CallNode extends ControlFlowNode {
 
   /** Gets the flow node corresponding to an argument of the call corresponding to this flow node */
   ControlFlowNode getAnArg() {
-    exists(int n | result = this.getArg(n))
+    result = this.getArg(_)
     or
-    exists(string name | result = this.getArgByName(name))
+    result = this.getArgByName(_)
   }
 
   override Call getNode() { result = super.getNode() }
@@ -409,6 +409,12 @@ class CallNode extends ControlFlowNode {
   /** Gets the first tuple (*) argument of this call, if any. */
   ControlFlowNode getStarArg() {
     result.getNode() = this.getNode().getStarArg() and
+    result.getBasicBlock().dominates(this.getBasicBlock())
+  }
+
+  /** Gets a dictionary (**) argument of this call, if any. */
+  ControlFlowNode getKwargs() {
+    result.getNode() = this.getNode().getKwargs() and
     result.getBasicBlock().dominates(this.getBasicBlock())
   }
 }

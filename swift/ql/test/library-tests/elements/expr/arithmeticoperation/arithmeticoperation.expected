@@ -4,3 +4,7 @@
 | arithmeticoperation.swift:9:6:9:10 | ... ./(_:_:) ... | BinaryArithmeticOperation, DivExpr |
 | arithmeticoperation.swift:10:6:10:10 | ... .%(_:_:) ... | BinaryArithmeticOperation, RemExpr |
 | arithmeticoperation.swift:11:6:11:7 | call to -(_:) | UnaryArithmeticOperation, UnaryMinusExpr |
+| arithmeticoperation.swift:12:6:12:7 | call to +(_:) | UnaryArithmeticOperation, UnaryPlusExpr |
+| arithmeticoperation.swift:15:6:15:11 | ... .&+(_:_:) ... | AddExpr, BinaryArithmeticOperation |
+| arithmeticoperation.swift:16:6:16:11 | ... .&-(_:_:) ... | BinaryArithmeticOperation, SubExpr |
+| arithmeticoperation.swift:17:6:17:11 | ... .&*(_:_:) ... | BinaryArithmeticOperation, MulExpr |

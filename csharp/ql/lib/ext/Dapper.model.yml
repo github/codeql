@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["Dapper", "SqlMapper", False, "Execute", "(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>)", "", "Argument[1]", "sql", "manual"]
       - ["Dapper", "SqlMapper", False, "ExecuteAsync", "(System.Data.IDbConnection,System.String,System.Object,System.Data.IDbTransaction,System.Nullable<System.Int32>,System.Nullable<System.Data.CommandType>)", "", "Argument[1]", "sql", "manual"]

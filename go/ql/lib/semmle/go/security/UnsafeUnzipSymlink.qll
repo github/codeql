@@ -14,7 +14,7 @@ module UnsafeUnzipSymlink {
   import UnsafeUnzipSymlinkCustomizations::UnsafeUnzipSymlink
 
   /**
-   * Taint-flow configuration tracking archive header fields flowing to a `path/filepath.EvalSymlinks` call.
+   * A taint-flow configuration tracking archive header fields flowing to a `path/filepath.EvalSymlinks` call.
    */
   class EvalSymlinksConfiguration extends TaintTracking2::Configuration {
     EvalSymlinksConfiguration() { this = "Archive header field symlinks resolved" }
@@ -41,7 +41,7 @@ module UnsafeUnzipSymlink {
   }
 
   /**
-   * Taint-flow configuration tracking archive header fields flowing to an `os.Symlink` call,
+   * A taint-flow configuration tracking archive header fields flowing to an `os.Symlink` call,
    * which never flow to a `path/filepath.EvalSymlinks` call.
    */
   class SymlinkConfiguration extends TaintTracking::Configuration {

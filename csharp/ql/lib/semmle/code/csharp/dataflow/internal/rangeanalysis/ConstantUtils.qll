@@ -13,7 +13,7 @@ private class ExprNode = ControlFlow::Nodes::ExprNode;
  * Holds if `pa` is an access to the `Length` property of an array.
  */
 predicate systemArrayLengthAccess(PropertyAccess pa) {
-  propertyOverrides(pa.getTarget(), "System.Array", "Length")
+  propertyOverrides(pa.getTarget(), "System", "Array", "Length")
 }
 
 /**

@@ -29,10 +29,12 @@ abstract class Sink extends DataFlow::ExprNode {
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
+ * DEPRECATED: Use `MissingXxmlValidation` instead.
+ *
  * A taint-tracking configuration for untrusted user input processed as XML without validation against a
  * known schema.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
+deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
   TaintTrackingConfiguration() { this = "MissingXMLValidation" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -42,10 +44,26 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
 
-/** A source of remote user input. */
-class RemoteSource extends Source {
-  RemoteSource() { this instanceof RemoteFlowSource }
+/**
+ * A taint-tracking configuration for untrusted user input processed as XML without validation against a
+ * known schema.
+ */
+private module MissingXmlValidationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+/**
+ * A taint-tracking module for untrusted user input processed as XML without validation against a
+ * known schema.
+ */
+module MissingXmlValidation = TaintTracking::Global<MissingXmlValidationConfig>;
+
+/** A source of remote user input. */
+class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /**
  * The input argument to a call to `XmlReader.Create` where the input will not be validated against

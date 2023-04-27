@@ -10,6 +10,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.Frameworks
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
+private import codeql.ruby.Regexp as RE
 
 /**
  * A data-flow node that constructs a SQL statement.
@@ -74,6 +75,49 @@ module SqlExecution {
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the SQL statements to be executed. */
     abstract DataFlow::Node getSql();
+  }
+}
+
+/**
+ * A data-flow node that executes a regular expression.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `RegexExecution::Range` instead.
+ */
+class RegexExecution extends DataFlow::Node instanceof RegexExecution::Range {
+  /** Gets the data flow node for the regex being executed by this node. */
+  DataFlow::Node getRegex() { result = super.getRegex() }
+
+  /** Gets a dataflow node for the string to be searched or matched against. */
+  DataFlow::Node getString() { result = super.getString() }
+
+  /**
+   * Gets the name of this regex execution, typically the name of an executing method.
+   * This is used for nice alert messages and should include the module if possible.
+   */
+  string getName() { result = super.getName() }
+}
+
+/** Provides classes for modeling new regular-expression execution APIs. */
+module RegexExecution {
+  /**
+   * A data-flow node that executes a regular expression.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `RegexExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the data flow node for the regex being executed by this node. */
+    abstract DataFlow::Node getRegex();
+
+    /** Gets a dataflow node for the string to be searched or matched against. */
+    abstract DataFlow::Node getString();
+
+    /**
+     * Gets the name of this regex execution, typically the name of an executing method.
+     * This is used for nice alert messages and should include the module if possible.
+     */
+    abstract string getName();
   }
 }
 
@@ -168,7 +212,8 @@ module FileSystemWriteAccess {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `FileSystemPermissionModification::Range` instead.
  */
-class FileSystemPermissionModification extends DataFlow::Node instanceof FileSystemPermissionModification::Range {
+class FileSystemPermissionModification extends DataFlow::Node instanceof FileSystemPermissionModification::Range
+{
   /**
    * Gets an argument to this permission modification that is interpreted as a
    * set of permissions.
@@ -424,7 +469,8 @@ module Http {
       }
     }
 
-    private class RequestInputAccessAsRemoteFlowSource extends RemoteFlowSource::Range instanceof RequestInputAccess {
+    private class RequestInputAccessAsRemoteFlowSource extends RemoteFlowSource::Range instanceof RequestInputAccess
+    {
       override string getSourceType() { result = this.(RequestInputAccess).getSourceType() }
     }
 
@@ -913,7 +959,8 @@ module Path {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `CookieSecurityConfigurationSetting::Range` instead.
  */
-class CookieSecurityConfigurationSetting extends DataFlow::Node instanceof CookieSecurityConfigurationSetting::Range {
+class CookieSecurityConfigurationSetting extends DataFlow::Node instanceof CookieSecurityConfigurationSetting::Range
+{
   /**
    * Gets a description of how this cookie setting may weaken application security.
    * This predicate has no results if the setting is considered to be safe.
@@ -993,7 +1040,8 @@ module Cryptography {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `CryptographicOperation::Range` instead.
    */
-  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range {
+  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range
+  {
     /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
     deprecated predicate isWeak() { super.isWeak() }
   }
@@ -1014,4 +1062,70 @@ module Cryptography {
   }
 
   class BlockMode = SC::BlockMode;
+}
+
+/**
+ * A data-flow node that constructs a template.
+ *
+ * Often, it is worthy of an alert if a template is constructed such that
+ * executing it would be a security risk.
+ *
+ * If it is important that the template is rendered, use `TemplateRendering`.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `TemplateConstruction::Range` instead.
+ */
+class TemplateConstruction extends DataFlow::Node instanceof TemplateConstruction::Range {
+  /** Gets the argument that specifies the template to be constructed. */
+  DataFlow::Node getTemplate() { result = super.getTemplate() }
+}
+
+/** Provides a class for modeling new template rendering APIs. */
+module TemplateConstruction {
+  /**
+   * A data-flow node that constructs a template.
+   *
+   * Often, it is worthy of an alert if a template is constructed such that
+   * executing it would be a security risk.
+   *
+   * If it is important that the template is rendered, use `TemplateRendering`.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `TemplateConstruction` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the template to be constructed. */
+    abstract DataFlow::Node getTemplate();
+  }
+}
+
+/**
+ * A data-flow node that renders templates.
+ *
+ * If the context of interest is such that merely constructing a template
+ * would be valuable to report, consider using `TemplateConstruction`.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `TemplateRendering::Range` instead.
+ */
+class TemplateRendering extends DataFlow::Node instanceof TemplateRendering::Range {
+  /** Gets the argument that specifies the template to be rendered. */
+  DataFlow::Node getTemplate() { result = super.getTemplate() }
+}
+
+/** Provides a class for modeling new template rendering APIs. */
+module TemplateRendering {
+  /**
+   * A data-flow node that renders templates.
+   *
+   * If the context of interest is such that merely constructing a template
+   * would be valuable to report, consider using `TemplateConstruction`.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `TemplateRendering` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the template to be rendered. */
+    abstract DataFlow::Node getTemplate();
+  }
 }

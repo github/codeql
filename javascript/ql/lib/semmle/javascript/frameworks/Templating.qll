@@ -174,23 +174,19 @@ module Templating {
   /**
    * A place where a template is instantiated or rendered.
    */
-  class TemplateInstantiation extends DataFlow::Node {
-    TemplateInstantiation::Range range;
-
-    TemplateInstantiation() { this = range }
-
+  class TemplateInstantiation extends DataFlow::Node instanceof TemplateInstantiation::Range {
     /** Gets a data flow node that refers to the instantiated template string, if any. */
-    DataFlow::SourceNode getOutput() { result = range.getOutput() }
+    DataFlow::SourceNode getOutput() { result = super.getOutput() }
 
     /** Gets a data flow node that refers a template file to be instantiated, if any. */
-    DataFlow::Node getTemplateFileNode() { result = range.getTemplateFileNode() }
+    DataFlow::Node getTemplateFileNode() { result = super.getTemplateFileNode() }
 
     /** Gets a data flow node that refers to an object whose properties become variables in the template. */
-    DataFlow::Node getTemplateParamsNode() { result = range.getTemplateParamsNode() }
+    DataFlow::Node getTemplateParamsNode() { result = super.getTemplateParamsNode() }
 
     /** Gets a data flow node that provides the value for the template variable at the given access path. */
     DataFlow::Node getTemplateParamForValue(string accessPath) {
-      result = range.getTemplateParamForValue(accessPath)
+      result = super.getTemplateParamForValue(accessPath)
     }
 
     /** Gets the template file instantiated here, if any. */
@@ -203,7 +199,7 @@ module Templating {
      *
      * If not known, the relevant syntax will be determined by a heuristic.
      */
-    TemplateSyntax getTemplateSyntax() { result = range.getTemplateSyntax() }
+    TemplateSyntax getTemplateSyntax() { result = super.getTemplateSyntax() }
   }
 
   /** Companion module to the `TemplateInstantiation` class. */

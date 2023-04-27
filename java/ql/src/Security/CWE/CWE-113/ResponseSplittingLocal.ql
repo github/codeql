@@ -14,23 +14,24 @@
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.security.ResponseSplitting
-import DataFlow::PathGraph
 
-class ResponseSplittingLocalConfig extends TaintTracking::Configuration {
-  ResponseSplittingLocalConfig() { this = "ResponseSplittingLocalConfig" }
+module ResponseSplittingLocalConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
+  predicate isSink(DataFlow::Node sink) { sink instanceof HeaderSplittingSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof HeaderSplittingSink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType or
     node.getType() instanceof BoxedType
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ResponseSplittingLocalConfig conf
-where conf.hasFlowPath(source, sink)
+module ResponseSplitting = TaintTracking::Global<ResponseSplittingLocalConfig>;
+
+import ResponseSplitting::PathGraph
+
+from ResponseSplitting::PathNode source, ResponseSplitting::PathNode sink
+where ResponseSplitting::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "This header depends on a $@, which may cause a response-splitting vulnerability.",
   source.getNode(), "user-provided value"

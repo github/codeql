@@ -1,0 +1,88 @@
+// Generated automatically from javax.jdo.PersistenceManagerFactory for testing purposes
+
+package javax.jdo;
+
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Properties;
+import java.util.Set;
+import javax.jdo.FetchGroup;
+import javax.jdo.PersistenceManager;
+import javax.jdo.datastore.DataStoreCache;
+import javax.jdo.listener.InstanceLifecycleListener;
+import javax.jdo.metadata.JDOMetadata;
+import javax.jdo.metadata.TypeMetadata;
+
+public interface PersistenceManagerFactory extends Serializable
+{
+    Collection<Class> getManagedClasses();
+    Collection<String> supportedOptions();
+    DataStoreCache getDataStoreCache();
+    FetchGroup getFetchGroup(Class p0, String p1);
+    Integer getDatastoreReadTimeoutMillis();
+    Integer getDatastoreWriteTimeoutMillis();
+    JDOMetadata newMetadata();
+    Object getConnectionFactory();
+    Object getConnectionFactory2();
+    PersistenceManager getPersistenceManager();
+    PersistenceManager getPersistenceManager(String p0, String p1);
+    PersistenceManager getPersistenceManagerProxy();
+    Properties getProperties();
+    Set getFetchGroups();
+    String getConnectionDriverName();
+    String getConnectionFactory2Name();
+    String getConnectionFactoryName();
+    String getConnectionURL();
+    String getConnectionUserName();
+    String getMapping();
+    String getName();
+    String getPersistenceUnitName();
+    String getServerTimeZoneID();
+    String getTransactionIsolationLevel();
+    String getTransactionType();
+    TypeMetadata getMetadata(String p0);
+    boolean getCopyOnAttach();
+    boolean getDetachAllOnCommit();
+    boolean getIgnoreCache();
+    boolean getMultithreaded();
+    boolean getNontransactionalRead();
+    boolean getNontransactionalWrite();
+    boolean getOptimistic();
+    boolean getReadOnly();
+    boolean getRestoreValues();
+    boolean getRetainValues();
+    boolean isClosed();
+    void addFetchGroups(FetchGroup... p0);
+    void addInstanceLifecycleListener(InstanceLifecycleListener p0, Class[] p1);
+    void close();
+    void registerMetadata(JDOMetadata p0);
+    void removeAllFetchGroups();
+    void removeFetchGroups(FetchGroup... p0);
+    void removeInstanceLifecycleListener(InstanceLifecycleListener p0);
+    void setConnectionDriverName(String p0);
+    void setConnectionFactory(Object p0);
+    void setConnectionFactory2(Object p0);
+    void setConnectionFactory2Name(String p0);
+    void setConnectionFactoryName(String p0);
+    void setConnectionPassword(String p0);
+    void setConnectionURL(String p0);
+    void setConnectionUserName(String p0);
+    void setCopyOnAttach(boolean p0);
+    void setDatastoreReadTimeoutMillis(Integer p0);
+    void setDatastoreWriteTimeoutMillis(Integer p0);
+    void setDetachAllOnCommit(boolean p0);
+    void setIgnoreCache(boolean p0);
+    void setMapping(String p0);
+    void setMultithreaded(boolean p0);
+    void setName(String p0);
+    void setNontransactionalRead(boolean p0);
+    void setNontransactionalWrite(boolean p0);
+    void setOptimistic(boolean p0);
+    void setPersistenceUnitName(String p0);
+    void setReadOnly(boolean p0);
+    void setRestoreValues(boolean p0);
+    void setRetainValues(boolean p0);
+    void setServerTimeZoneID(String p0);
+    void setTransactionIsolationLevel(String p0);
+    void setTransactionType(String p0);
+}

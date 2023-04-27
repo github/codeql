@@ -10,5 +10,5 @@ where
   m.getName() = "NullableType" and
   m.getReturnType() = t1 and
   t1.getUnderlyingType() = t2 and
-  t2.getQualifiedName() = "Types.Struct"
+  t2.hasQualifiedName("Types", "Struct")
 select t1

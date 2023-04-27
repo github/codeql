@@ -58,6 +58,15 @@ extended.rel: reorder input.rel (int id, string name, int parent) id name parent
 // should be placed in the upgrade directory. It should avoid using the default
 // QLL library, and will run in the context of the *old* dbscheme.
 relationname.rel: run relationname.qlo
+
+// Create relationname.rel by running the query predicate 'predicatename' in
+// relationname.qlo and writing the query results as a .rel file. This command
+// expects the upgrade relation to be a query predicate, which has the advantage
+// of allowing multiple upgrade relations to appear in the same .ql file as
+// multiple query predicates. The query file should be named relationname.ql and
+// should be placed in the upgrade directory. It should avoid using the default
+// QLL library, and will run in the context of the *old* dbscheme.
+relationname.rel: run relationname.qlo predicatename
 ```
 
 ### Testing your scripts
@@ -69,10 +78,10 @@ Although we have some automated testing of the scripts (e.g. to test that you ca
 To test the upgrade script, run:
 
 ```
-codeql test run --search-path=<old-extractor-pack> --search-path=ql <test-dir>
+codeql test run --search-path=<old-extractor-pack> --search-path=<codeql-root> <test-dir>
 ```
 
-Where `<old-extractor-pack>` is an extractor pack containing the old extractor and dbscheme that pre-date your changes, and `<test-dir>` is the directory containing the qltests for your language. This will run the tests using an old extractor, and the test databases will all be upgraded in place using your new upgrade script.
+Where `<old-extractor-pack>` is an extractor pack containing the old extractor and dbscheme that pre-date your changes, `<test-dir>` is the directory containing the qltests for your language, and `<codeql-root>` is the root directory directory of the `github/codeql` clone that contains `<test-dir>`. This will run the tests using an old extractor, and the test databases will all be upgraded in place using your new upgrade script.
 
 To test the downgrade script, create an extractor pack that includes your new dbscheme and extractor changes. Then checkout the `main` branch of `codeql` (i.e. a branch that does not include your changes), and run:
 

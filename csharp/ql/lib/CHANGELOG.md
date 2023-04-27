@@ -1,3 +1,102 @@
+## 0.6.0
+
+### Deprecated APIs
+
+* The recently introduced new data flow and taint tracking APIs have had a
+  number of module and predicate renamings. The old APIs remain in place for
+  now.
+
+### Bug Fixes
+
+* Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular `DataFlow::hasFlowPath`, `DataFlow::hasFlow`, `DataFlow::hasFlowTo`, and `DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
+
+## 0.5.6
+
+No user-facing changes.
+
+## 0.5.5
+
+### New Features
+
+* Added support for merging two `PathGraph`s via disjoint union to allow results from multiple data flow computations in a single `path-problem` query.
+
+### Major Analysis Improvements
+
+* The main data flow and taint tracking APIs have been changed. The old APIs
+  remain in place for now and translate to the new through a
+  backwards-compatible wrapper. If multiple configurations are in scope
+  simultaneously, then this may affect results slightly. The new API is quite
+  similar to the old, but makes use of a configuration module instead of a
+  configuration class.
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
+* Deleted the deprecated `getAssertionIndex`, and `getAssertedParameter` predicates from the `AssertMethod` class.
+* Deleted the deprecated `OverridableMethod` and `OverridableAccessor` classes.
+* The `unsafe` predicate for `Modifiable` has been extended to cover delegate return types and identify pointer-like types at any nest level. This is relevant for `unsafe` declarations extracted from assemblies.
+
+## 0.5.4
+
+### Minor Analysis Improvements
+
+* The query `cs/static-field-written-by-instance` is updated to handle properties.
+* C# 11: Support for explicit interface member implementation of operators.
+* The extraction of member modifiers has been generalized, which could lead to the extraction of more modifiers.
+* C# 11: Added extractor and library support for `file` scoped types.
+* C# 11: Added extractor support for `required` fields and properties.
+* C# 11: Added library support for `checked` operators.
+
+## 0.5.3
+
+### Minor Analysis Improvements
+
+* C# 11: Added extractor support for the `scoped` modifier annotation on parameters and local variables.
+
+## 0.5.2
+
+### Major Analysis Improvements
+
+* Add extractor and library support for UTF-8 encoded strings.
+* The `StringLiteral` class includes UTF-8 encoded strings.
+* In the DB Scheme `@string_literal_expr` is renamed to `@utf16_string_literal_expr`.
+
+### Minor Analysis Improvements
+
+* C# 11: Added extractor support for `ref` fields in `ref struct` declarations.
+
+## 0.5.1
+
+### Major Analysis Improvements
+
+* Added library support for generic attributes (also for CIL extracted attributes).
+* `cil.ConstructedType::getName` was changed to include printing of the type arguments.
+
+### Minor Analysis Improvements
+
+* Attributes on methods in CIL are now extracted (Bugfix).
+* Support for `static virtual` and `static abstract` interface members.
+* Support for *operators* in interface definitions. 
+* C# 11: Added support for the unsigned right shift `>>>` and unsigned right shift assignment `>>>=` operators.
+* Query id's have been aligned such that they are prefixed with `cs` instead of `csharp`.
+
+## 0.5.0
+
+### Minor Analysis Improvements
+
+* C# 11: Added support for list- and slice patterns in the extractor.
+* Deleted the deprecated `getNameWithoutBrackets` predicate from the `ValueOrRefType` class in `Type.qll`.
+* `Element::hasQualifiedName/1` has been deprecated. Use `hasQualifiedName/2` or `hasQualifiedName/3` instead.
+* Added TCP/UDP sockets as taint sources.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+No user-facing changes.
+
 ## 0.4.4
 
 ### Minor Analysis Improvements

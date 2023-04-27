@@ -24,9 +24,11 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
+ * DEPRECATED: Use `RegexInjection` instead.
+ *
  * A taint-tracking configuration for untrusted user input used to construct regular expressions.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
+deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
   TaintTrackingConfiguration() { this = "RegexInjection" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -36,10 +38,24 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
 
-/** A source of remote user input. */
-class RemoteSource extends Source {
-  RemoteSource() { this instanceof RemoteFlowSource }
+/**
+ * A taint-tracking configuration for untrusted user input used to construct regular expressions.
+ */
+private module RegexInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+/**
+ * A taint-tracking module for untrusted user input used to construct regular expressions.
+ */
+module RegexInjection = TaintTracking::Global<RegexInjectionConfig>;
+
+/** A source of remote user input. */
+class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /**
  * A `pattern` argument to a construction of a `Regex`.

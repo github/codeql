@@ -40,7 +40,8 @@ abstract class TranslatedLocalDeclaration extends TranslatedElement, TTranslated
  * including its initialization, if any.
  */
 class TranslatedLocalVariableDeclaration extends TranslatedLocalDeclaration,
-  LocalVariableDeclarationBase, InitializationContext {
+  LocalVariableDeclarationBase, InitializationContext
+{
   LocalVariable var;
 
   TranslatedLocalVariableDeclaration() { var = expr.getVariable() }

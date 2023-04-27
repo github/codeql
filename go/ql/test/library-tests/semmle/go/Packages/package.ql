@@ -2,17 +2,18 @@ import go
 
 from string path
 where
-  (
-    path = "github.com/nonexistent/v2/test" or // OK
-    path = "github.com/nonexistent/test" or // OK
-    path = "github.com/nonexistent//v//test" or // NOT OK
-    path = "github.com/nonexistent//v/test" or // NOT OK
-    path = "github.com/nonexistent/v//test" or // NOT OK
-    path = "github.com/nonexistent/v/asd/v2/test" or // NOT OK
-    path = "github.com/nonexistent/v/test" or // NOT OK
-    path = "github.com/nonexistent//v2//test" or // NOT OK
-    path = "github.com/nonexistent//v2/test" or // NOT OK
-    path = "github.com/nonexistent/v2//test" // NOT OK
-  ) and
+  path =
+    [
+      "github.com/nonexistent/v2/test", // OK
+      "github.com/nonexistent/test", // OK
+      "github.com/nonexistent//v//test", // NOT OK
+      "github.com/nonexistent//v/test", // NOT OK
+      "github.com/nonexistent/v//test", // NOT OK
+      "github.com/nonexistent/v/asd/v2/test", // NOT OK
+      "github.com/nonexistent/v/test", // NOT OK
+      "github.com/nonexistent//v2//test", // NOT OK
+      "github.com/nonexistent//v2/test", // NOT OK
+      "github.com/nonexistent/v2//test" // NOT OK
+    ] and
   path = package("github.com/nonexistent", "test")
 select path

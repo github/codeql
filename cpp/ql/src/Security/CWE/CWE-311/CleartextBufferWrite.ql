@@ -16,33 +16,52 @@ import semmle.code.cpp.security.BufferWrite as BufferWrite
 import semmle.code.cpp.security.SensitiveExprs
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.ir.dataflow.TaintTracking
-import DataFlow::PathGraph
+import ToBufferFlow::PathGraph
 
 /**
- * A taint flow configuration for flow from user input to a buffer write.
+ * A buffer write into a sensitive expression.
  */
-class ToBufferConfiguration extends TaintTracking::Configuration {
-  ToBufferConfiguration() { this = "ToBufferConfiguration" }
+class SensitiveBufferWrite extends Expr instanceof BufferWrite::BufferWrite {
+  SensitiveBufferWrite() { super.getDest() instanceof SensitiveExpr }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
+  /**
+   * Gets a data source of this operation.
+   */
+  Expr getASource() { result = super.getASource() }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  /**
+   * Gets the destination buffer of this operation.
+   */
+  Expr getDest() { result = super.getDest() }
+}
+
+/**
+ * A taint flow configuration for flow from user input to a buffer write
+ * into a sensitive expression.
+ */
+module ToBufferConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof FlowSource }
+
+  predicate isBarrier(DataFlow::Node node) {
     node.asExpr().getUnspecifiedType() instanceof IntegralType
   }
 
-  override predicate isSink(DataFlow::Node sink) {
-    exists(BufferWrite::BufferWrite w | w.getASource() = sink.asExpr())
-  }
+  predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _) }
+}
+
+module ToBufferFlow = TaintTracking::Global<ToBufferConfig>;
+
+predicate isSinkImpl(DataFlow::Node sink, SensitiveBufferWrite w) {
+  w.getASource() = sink.asIndirectExpr()
 }
 
 from
-  ToBufferConfiguration config, BufferWrite::BufferWrite w, DataFlow::PathNode sourceNode,
-  DataFlow::PathNode sinkNode, FlowSource source, SensitiveExpr dest
+  SensitiveBufferWrite w, ToBufferFlow::PathNode sourceNode, ToBufferFlow::PathNode sinkNode,
+  FlowSource source
 where
-  config.hasFlowPath(sourceNode, sinkNode) and
+  ToBufferFlow::flowPath(sourceNode, sinkNode) and
   sourceNode.getNode() = source and
-  w.getASource() = sinkNode.getNode().asExpr() and
-  dest = w.getDest()
+  isSinkImpl(sinkNode.getNode(), w)
 select w, sourceNode, sinkNode,
-  "This write into buffer '" + dest.toString() + "' may contain unencrypted data from $@.", source,
-  "user input (" + source.getSourceType() + ")"
+  "This write into buffer '" + w.getDest().toString() + "' may contain unencrypted data from $@.",
+  source, "user input (" + source.getSourceType() + ")"

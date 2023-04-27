@@ -22,73 +22,74 @@ import semmle.code.cpp.ir.dataflow.TaintTracking
 import semmle.code.cpp.ir.dataflow.TaintTracking2
 import semmle.code.cpp.security.FlowSources
 import semmle.code.cpp.models.implementations.Strcat
-import DataFlow::PathGraph
-
-Expr sinkAsArgumentIndirection(DataFlow::Node sink) {
-  result =
-    sink.asOperand()
-        .(SideEffectOperand)
-        .getAddressOperand()
-        .getAnyDef()
-        .getUnconvertedResultExpression()
-}
+import ExecTaint::PathGraph
 
 /**
- * Holds if `fst` is a string that is used in a format or concatenation function resulting in `snd`,
- * and is *not* placed at the start of the resulting string. This indicates that the author did not
- * expect `fst` to control what program is run if the resulting string is eventually interpreted as
- * a command line, for example as an argument to `system`.
+ * Holds if `incoming` is a string that is used in a format or concatenation function resulting
+ * in `outgoing`, and is *not* placed at the start of the resulting string. This indicates that
+ * the author did not expect `incoming` to control what program is run if the resulting string
+ * is eventually interpreted as a command line, for example as an argument to `system`.
  */
-predicate interestingConcatenation(DataFlow::Node fst, DataFlow::Node snd) {
+predicate interestingConcatenation(DataFlow::Node incoming, DataFlow::Node outgoing) {
   exists(FormattingFunctionCall call, int index, FormatLiteral literal |
-    sinkAsArgumentIndirection(fst) = call.getConversionArgument(index) and
-    snd.asDefiningArgument() = call.getOutputArgument(false) and
+    incoming.asIndirectArgument() = call.getConversionArgument(index) and
+    outgoing.asDefiningArgument() = call.getOutputArgument(false) and
     literal = call.getFormat() and
     not literal.getConvSpecOffset(index) = 0 and
     literal.getConversionChar(index) = ["s", "S"]
   )
   or
   // strcat and friends
-  exists(StrcatFunction strcatFunc, CallInstruction call, ReadSideEffectInstruction rse |
-    call.getStaticCallTarget() = strcatFunc and
-    rse.getArgumentDef() = call.getArgument(strcatFunc.getParamSrc()) and
-    fst.asOperand() = rse.getSideEffectOperand() and
-    snd.asInstruction().(WriteSideEffectInstruction).getDestinationAddress() =
-      call.getArgument(strcatFunc.getParamDest())
+  exists(StrcatFunction strcatFunc, Call call |
+    call.getTarget() = strcatFunc and
+    incoming.asIndirectArgument() = call.getArgument(strcatFunc.getParamSrc()) and
+    outgoing.asDefiningArgument() = call.getArgument(strcatFunc.getParamDest())
   )
   or
-  exists(CallInstruction call, Operator op, ReadSideEffectInstruction rse |
-    call.getStaticCallTarget() = op and
+  exists(Call call, Operator op |
+    call.getTarget() = op and
     op.hasQualifiedName("std", "operator+") and
     op.getType().(UserType).hasQualifiedName("std", "basic_string") and
-    call.getArgument(1) = rse.getArgumentOperand().getAnyDef() and // left operand
-    fst.asOperand() = rse.getSideEffectOperand() and
-    call = snd.asInstruction()
+    incoming.asIndirectArgument() = call.getArgument(1) and // left operand
+    call = outgoing.asInstruction().getUnconvertedResultExpression()
   )
 }
 
-class ConcatState extends DataFlow::FlowState {
-  ConcatState() { this = "ConcatState" }
+newtype TState =
+  TConcatState() or
+  TExecState(DataFlow::Node incoming, DataFlow::Node outgoing) {
+    interestingConcatenation(pragma[only_bind_into](incoming), pragma[only_bind_into](outgoing))
+  }
+
+class ConcatState extends TConcatState {
+  string toString() { result = "ConcatState" }
 }
 
-class ExecState extends DataFlow::FlowState {
-  DataFlow::Node fst;
-  DataFlow::Node snd;
+class ExecState extends TExecState {
+  DataFlow::Node incoming;
+  DataFlow::Node outgoing;
 
-  ExecState() {
-    this =
-      "ExecState (" + fst.getLocation() + " | " + fst + ", " + snd.getLocation() + " | " + snd + ")" and
-    interestingConcatenation(pragma[only_bind_into](fst), pragma[only_bind_into](snd))
-  }
+  ExecState() { this = TExecState(incoming, outgoing) }
 
-  DataFlow::Node getFstNode() { result = fst }
+  DataFlow::Node getIncomingNode() { result = incoming }
 
-  DataFlow::Node getSndNode() { result = snd }
+  DataFlow::Node getOutgoingNode() { result = outgoing }
 
   /** Holds if this is a possible `ExecState` for `sink`. */
-  predicate isFeasibleForSink(DataFlow::Node sink) {
-    any(ExecStateConfiguration conf).hasFlow(snd, sink)
-  }
+  predicate isFeasibleForSink(DataFlow::Node sink) { ExecState::flow(outgoing, sink) }
+
+  string toString() { result = "ExecState" }
+}
+
+predicate isSinkImpl(DataFlow::Node sink, Expr command, string callChain) {
+  command = sink.asIndirectArgument() and
+  shellCommand(command, callChain)
+}
+
+predicate isBarrierImpl(DataFlow::Node node) {
+  node.asExpr().getUnspecifiedType() instanceof IntegralType
+  or
+  node.asExpr().getUnspecifiedType() instanceof FloatingPointType
 }
 
 /**
@@ -96,67 +97,61 @@ class ExecState extends DataFlow::FlowState {
  * given sink. This avoids a cartesian product between all sinks and all `ExecState`s in
  * `ExecTaintConfiguration::isSink`.
  */
-class ExecStateConfiguration extends TaintTracking2::Configuration {
-  ExecStateConfiguration() { this = "ExecStateConfiguration" }
+module ExecStateConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { any(ExecState state).getOutgoingNode() = source }
 
-  override predicate isSource(DataFlow::Node source) {
-    exists(ExecState state | state.getSndNode() = source)
-  }
+  predicate isSink(DataFlow::Node sink) { isSinkImpl(sink, _, _) }
 
-  override predicate isSink(DataFlow::Node sink) {
-    shellCommand(sinkAsArgumentIndirection(sink), _)
-  }
+  predicate isBarrier(DataFlow::Node node) { isBarrierImpl(node) }
 
-  override predicate isSanitizerOut(DataFlow::Node node) {
-    isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
+  predicate isBarrierOut(DataFlow::Node node) {
+    isSink(node) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
   }
 }
 
-class ExecTaintConfiguration extends TaintTracking::Configuration {
-  ExecTaintConfiguration() { this = "ExecTaintConfiguration" }
+module ExecState = TaintTracking::Global<ExecStateConfig>;
 
-  override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
+module ExecTaintConfig implements DataFlow::StateConfigSig {
+  class FlowState = TState;
+
+  predicate isSource(DataFlow::Node source, FlowState state) {
     source instanceof FlowSource and
     state instanceof ConcatState
   }
 
-  override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    any(ExecStateConfiguration conf).isSink(sink) and
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    ExecStateConfig::isSink(sink) and
     state.(ExecState).isFeasibleForSink(sink)
   }
 
-  override predicate isAdditionalTaintStep(
-    DataFlow::Node node1, DataFlow::FlowState state1, DataFlow::Node node2,
-    DataFlow::FlowState state2
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
     state1 instanceof ConcatState and
-    state2.(ExecState).getFstNode() = node1 and
-    state2.(ExecState).getSndNode() = node2
+    state2.(ExecState).getIncomingNode() = node1 and
+    state2.(ExecState).getOutgoingNode() = node2
   }
 
-  override predicate isSanitizer(DataFlow::Node node, DataFlow::FlowState state) {
-    (
-      node.asInstruction().getResultType() instanceof IntegralType
-      or
-      node.asInstruction().getResultType() instanceof FloatingPointType
-    ) and
-    state instanceof ConcatState
-  }
+  predicate isBarrier(DataFlow::Node node) { isBarrierImpl(node) }
 
-  override predicate isSanitizerOut(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
+
+  predicate isBarrierOut(DataFlow::Node node) {
     isSink(node, _) // Prevent duplicates along a call chain, since `shellCommand` will include wrappers
   }
 }
 
+module ExecTaint = TaintTracking::GlobalWithState<ExecTaintConfig>;
+
 from
-  ExecTaintConfiguration conf, DataFlow::PathNode sourceNode, DataFlow::PathNode sinkNode,
-  string taintCause, string callChain, DataFlow::Node concatResult
+  ExecTaint::PathNode sourceNode, ExecTaint::PathNode sinkNode, string taintCause, string callChain,
+  DataFlow::Node concatResult, Expr command
 where
-  conf.hasFlowPath(sourceNode, sinkNode) and
+  ExecTaint::flowPath(sourceNode, sinkNode) and
   taintCause = sourceNode.getNode().(FlowSource).getSourceType() and
-  shellCommand(sinkAsArgumentIndirection(sinkNode.getNode()), callChain) and
-  concatResult = sinkNode.getState().(ExecState).getSndNode()
-select sinkAsArgumentIndirection(sinkNode.getNode()), sourceNode, sinkNode,
+  isSinkImpl(sinkNode.getNode(), command, callChain) and
+  concatResult = sinkNode.getState().(ExecState).getOutgoingNode()
+select command, sourceNode, sinkNode,
   "This argument to an OS command is derived from $@, dangerously concatenated into $@, and then passed to "
     + callChain + ".", sourceNode, "user input (" + taintCause + ")", concatResult,
   concatResult.toString()

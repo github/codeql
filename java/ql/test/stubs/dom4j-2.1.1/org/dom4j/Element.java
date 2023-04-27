@@ -1,140 +1,88 @@
-/*
- * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
- *
- * This software is open source.
- * See the bottom of this file for the licence.
- */
+// Generated automatically from org.dom4j.Element for testing purposes
 
-/*
-* Adapted from DOM4J version 2.1.1 as available at
-*   https://search.maven.org/remotecontent?filepath=org/dom4j/dom4j/2.1.1/dom4j-2.1.1-sources.jar
-* Only relevant stubs of this file have been retained for test purposes.
-*/
 package org.dom4j;
 
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import org.dom4j.Attribute;
+import org.dom4j.Branch;
+import org.dom4j.CDATA;
+import org.dom4j.Entity;
+import org.dom4j.Namespace;
+import org.dom4j.Node;
+import org.dom4j.QName;
+import org.dom4j.Text;
 
-public interface Element extends Branch {
-
-	Namespace getNamespace();
-
-	Namespace getNamespaceForPrefix(String prefix);
-
-	Namespace getNamespaceForURI(String uri);
-
-	List<Namespace> getNamespacesForURI(String uri);
-
-	String getNamespacePrefix();
-
-	String getNamespaceURI();
-
-	String getQualifiedName();
-
-	List<Namespace> additionalNamespaces();
-
-	List<Namespace> declaredNamespaces();
-
-	Element addAttribute(String name, String value);
-
-	Element addComment(String comment);
-
-	Element addCDATA(String cdata);
-
-	Element addEntity(String name, String text);
-
-	Element addNamespace(String prefix, String uri);
-
-	Element addProcessingInstruction(String target, String text);
-
-	Element addProcessingInstruction(String target, Map<String, String> data);
-
-	Element addText(String text);
-
-	void add(Namespace namespace);
-
-	String getText();
-
-	String getTextTrim();
-
-	String getStringValue();
-
-	Object getData();
-
-	void setData(Object data);
-
-	int attributeCount();
-
-	String attributeValue(String name);
-
-	String attributeValue(String name, String defaultValue);
-
-	void setAttributeValue(String name, String value);
-
-	Element element(String name);
-
-	List<Element> elements();
-
-	List<Element> elements(String name);
-
-	Iterator<Element> elementIterator();
-
-	Iterator<Element> elementIterator(String name);
-
-	boolean isRootElement();
-
-	boolean hasMixedContent();
-
-	boolean isTextOnly();
-
-	void appendAttributes(Element element);
-
-	Element createCopy();
-
-	Element createCopy(String name);
-
-	String elementText(String name);
-
-	String elementTextTrim(String name);
-
-	Node getXPathResult(int index);
-
+public interface Element extends Branch
+{
+    Attribute attribute(QName p0);
+    Attribute attribute(String p0);
+    Attribute attribute(int p0);
+    Element addAttribute(QName p0, String p1);
+    Element addAttribute(String p0, String p1);
+    Element addCDATA(String p0);
+    Element addComment(String p0);
+    Element addEntity(String p0, String p1);
+    Element addNamespace(String p0, String p1);
+    Element addProcessingInstruction(String p0, Map p1);
+    Element addProcessingInstruction(String p0, String p1);
+    Element addText(String p0);
+    Element createCopy();
+    Element createCopy(QName p0);
+    Element createCopy(String p0);
+    Element element(QName p0);
+    Element element(String p0);
+    Iterator attributeIterator();
+    Iterator elementIterator();
+    Iterator elementIterator(QName p0);
+    Iterator elementIterator(String p0);
+    List additionalNamespaces();
+    List attributes();
+    List declaredNamespaces();
+    List elements();
+    List elements(QName p0);
+    List elements(String p0);
+    List getNamespacesForURI(String p0);
+    Namespace getNamespace();
+    Namespace getNamespaceForPrefix(String p0);
+    Namespace getNamespaceForURI(String p0);
+    Node getXPathResult(int p0);
+    Object getData();
+    QName getQName();
+    QName getQName(String p0);
+    String attributeValue(QName p0);
+    String attributeValue(QName p0, String p1);
+    String attributeValue(String p0);
+    String attributeValue(String p0, String p1);
+    String elementText(QName p0);
+    String elementText(String p0);
+    String elementTextTrim(QName p0);
+    String elementTextTrim(String p0);
+    String getNamespacePrefix();
+    String getNamespaceURI();
+    String getQualifiedName();
+    String getStringValue();
+    String getText();
+    String getTextTrim();
+    boolean hasMixedContent();
+    boolean isRootElement();
+    boolean isTextOnly();
+    boolean remove(Attribute p0);
+    boolean remove(CDATA p0);
+    boolean remove(Entity p0);
+    boolean remove(Namespace p0);
+    boolean remove(Text p0);
+    int attributeCount();
+    void add(Attribute p0);
+    void add(CDATA p0);
+    void add(Entity p0);
+    void add(Namespace p0);
+    void add(Text p0);
+    void appendAttributes(Element p0);
+    void setAttributeValue(QName p0, String p1);
+    void setAttributeValue(String p0, String p1);
+    void setAttributes(List p0);
+    void setData(Object p0);
+    void setQName(QName p0);
 }
-
-/*
- * Redistribution and use of this software and associated documentation
- * ("Software"), with or without modification, are permitted provided that the
- * following conditions are met:
- * 
- * 1. Redistributions of source code must retain copyright statements and
- * notices. Redistributions must also contain a copy of this document.
- * 
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- * this list of conditions and the following disclaimer in the documentation
- * and/or other materials provided with the distribution.
- * 
- * 3. The name "DOM4J" must not be used to endorse or promote products derived
- * from this Software without prior written permission of MetaStuff, Ltd. For
- * written permission, please contact dom4j-info@metastuff.com.
- * 
- * 4. Products derived from this Software may not be called "DOM4J" nor may
- * "DOM4J" appear in their names without prior written permission of MetaStuff,
- * Ltd. DOM4J is a registered trademark of MetaStuff, Ltd.
- * 
- * 5. Due credit should be given to the DOM4J Project - http://www.dom4j.org
- * 
- * THIS SOFTWARE IS PROVIDED BY METASTUFF, LTD. AND CONTRIBUTORS ``AS IS'' AND
- * ANY EXPRESSED OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
- * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
- * ARE DISCLAIMED. IN NO EVENT SHALL METASTUFF, LTD. OR ITS CONTRIBUTORS BE
- * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
- * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
- * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
- * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
- * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
- * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- * 
- * Copyright 2001-2005 (C) MetaStuff, Ltd. All Rights Reserved.
- */

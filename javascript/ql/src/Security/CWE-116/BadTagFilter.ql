@@ -16,7 +16,8 @@
  *       external/cwe/cwe-186
  */
 
-import semmle.javascript.security.BadTagFilterQuery
+private import semmle.javascript.security.regexp.RegExpTreeView::RegExpTreeView as TreeView
+import codeql.regex.nfa.BadTagFilterQuery::Make<TreeView>
 
 from HtmlMatchingRegExp regexp, string msg
 where msg = min(string m | isBadRegexpFilter(regexp, m) | m order by m.length(), m) // there might be multiple, we arbitrarily pick the shortest one

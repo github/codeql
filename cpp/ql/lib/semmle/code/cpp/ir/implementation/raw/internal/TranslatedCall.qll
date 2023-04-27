@@ -522,7 +522,8 @@ abstract class TranslatedArgumentSideEffect extends TranslatedSideEffect {
  * calls other than constructor calls.
  */
 class TranslatedArgumentExprSideEffect extends TranslatedArgumentSideEffect,
-  TTranslatedArgumentExprSideEffect {
+  TTranslatedArgumentExprSideEffect
+{
   Expr arg;
 
   TranslatedArgumentExprSideEffect() {
@@ -557,7 +558,8 @@ class TranslatedArgumentExprSideEffect extends TranslatedArgumentSideEffect,
  * calls to non-static member functions.
  */
 class TranslatedStructorQualifierSideEffect extends TranslatedArgumentSideEffect,
-  TTranslatedStructorQualifierSideEffect {
+  TTranslatedStructorQualifierSideEffect
+{
   TranslatedStructorQualifierSideEffect() {
     this = TTranslatedStructorQualifierSideEffect(call, sideEffectOpcode) and
     index = -1

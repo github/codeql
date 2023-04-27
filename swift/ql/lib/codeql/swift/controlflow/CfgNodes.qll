@@ -91,20 +91,21 @@ class CfgNode extends ControlFlowNode, TElementNode {
 
   /** Gets a split for this control flow node, if any. */
   final Split getASplit() { result = splits.getASplit() }
-}
 
-private Expr getAst(ControlFlowElement n) {
-  result = n.asAstNode()
-  or
-  result = n.(PropertyGetterElement).getRef()
-  or
-  result = n.(PropertySetterElement).getAssignExpr()
-  or
-  result = n.(PropertyObserverElement).getAssignExpr()
-  or
-  result = n.(ClosureElement).getAst()
-  or
-  result = n.(KeyPathElement).getAst()
+  /** Gets the AST representation of this control flow node, if any. */
+  Expr getAst() {
+    result = n.asAstNode()
+    or
+    result = n.(PropertyGetterElement).getRef()
+    or
+    result = n.(PropertySetterElement).getAssignExpr()
+    or
+    result = n.(PropertyObserverElement).getAssignExpr()
+    or
+    result = n.(ClosureElement).getAst()
+    or
+    result = n.(KeyPathElement).getAst()
+  }
 }
 
 /** A control-flow node that wraps an AST expression. */
@@ -117,13 +118,23 @@ class ExprCfgNode extends CfgNode {
   Expr getExpr() { result = e }
 }
 
+/** A control-flow node that wraps a pattern. */
+class PatternCfgNode extends CfgNode {
+  Pattern p;
+
+  PatternCfgNode() { p = this.getNode().asAstNode() }
+
+  /** Gets the underlying pattern. */
+  Pattern getPattern() { result = p }
+}
+
 /** A control-flow node that wraps a property getter. */
 class PropertyGetterCfgNode extends CfgNode {
   override PropertyGetterElement n;
 
   Expr getRef() { result = n.getRef() }
 
-  CfgNode getBase() { getAst(result.getNode()) = n.getBase() }
+  CfgNode getBase() { result.getAst() = n.getBase() }
 
   AccessorDecl getAccessorDecl() { result = n.getAccessorDecl() }
 }
@@ -134,9 +145,9 @@ class PropertySetterCfgNode extends CfgNode {
 
   AssignExpr getAssignExpr() { result = n.getAssignExpr() }
 
-  CfgNode getBase() { getAst(result.getNode()) = n.getBase() }
+  CfgNode getBase() { result.getAst() = n.getBase() }
 
-  CfgNode getSource() { getAst(result.getNode()) = n.getAssignExpr().getSource() }
+  CfgNode getSource() { result.getAst() = n.getAssignExpr().getSource() }
 
   AccessorDecl getAccessorDecl() { result = n.getAccessorDecl() }
 }
@@ -146,9 +157,9 @@ class PropertyObserverCfgNode extends CfgNode {
 
   AssignExpr getAssignExpr() { result = n.getAssignExpr() }
 
-  CfgNode getBase() { getAst(result.getNode()) = n.getBase() }
+  CfgNode getBase() { result.getAst() = n.getBase() }
 
-  CfgNode getSource() { getAst(result.getNode()) = n.getAssignExpr().getSource() }
+  CfgNode getSource() { result.getAst() = n.getAssignExpr().getSource() }
 
   AccessorDecl getAccessorDecl() { result = n.getObserver() }
 }
@@ -156,9 +167,9 @@ class PropertyObserverCfgNode extends CfgNode {
 class ApplyExprCfgNode extends ExprCfgNode {
   override ApplyExpr e;
 
-  CfgNode getArgument(int index) { getAst(result.getNode()) = e.getArgument(index).getExpr() }
+  CfgNode getArgument(int index) { result.getAst() = e.getArgument(index).getExpr() }
 
-  CfgNode getQualifier() { getAst(result.getNode()) = e.getQualifier() }
+  CfgNode getQualifier() { result.getAst() = e.getQualifier() }
 
   AbstractFunctionDecl getStaticTarget() { result = e.getStaticTarget() }
 
@@ -167,4 +178,26 @@ class ApplyExprCfgNode extends ExprCfgNode {
 
 class CallExprCfgNode extends ApplyExprCfgNode {
   override CallExpr e;
+}
+
+/** A control-flow node that wraps a key-path application. */
+class KeyPathApplicationExprCfgNode extends ExprCfgNode {
+  override KeyPathApplicationExpr e;
+
+  /**
+   * Gets the control-flow node that wraps the key-path of
+   * this control-flow element.
+   */
+  CfgNode getKeyPath() { result.getAst() = e.getKeyPath() }
+
+  /**
+   * Gets the control-flow node that wraps the base of
+   * this control-flow element.
+   */
+  CfgNode getBase() { result.getAst() = e.getBase() }
+}
+
+/** A control-flow node that wraps a key-path expression. */
+class KeyPathExprCfgNode extends ExprCfgNode {
+  override KeyPathExpr e;
 }

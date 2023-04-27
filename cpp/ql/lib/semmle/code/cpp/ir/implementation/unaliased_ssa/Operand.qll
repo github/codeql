@@ -45,7 +45,7 @@ class Operand extends TStageOperand {
       this = reusedPhiOperand(use, def, predecessorBlock, _)
     )
     or
-    exists(Instruction use | this = chiOperand(use, _))
+    this = chiOperand(_, _)
   }
 
   /** Gets a textual representation of this element. */
@@ -86,22 +86,6 @@ class Operand extends TStageOperand {
     result = this.getAnyDef() and
     this.getDefinitionOverlap() instanceof MustExactlyOverlap
   }
-
-  /**
-   * DEPRECATED: renamed to `getUse`.
-   *
-   * Gets the `Instruction` that consumes this operand.
-   */
-  deprecated final Instruction getUseInstruction() { result = this.getUse() }
-
-  /**
-   * DEPRECATED: use `getAnyDef` or `getDef`. The exact replacement for this
-   * predicate is `getAnyDef`, but most uses of this predicate should probably
-   * be replaced with `getDef`.
-   *
-   * Gets the `Instruction` whose result is the value of the operand.
-   */
-  deprecated final Instruction getDefinitionInstruction() { result = this.getAnyDef() }
 
   /**
    * Gets the overlap relationship between the operand's definition and its use.
@@ -412,6 +396,9 @@ class CallTargetOperand extends RegisterOperand {
  */
 class ArgumentOperand extends RegisterOperand {
   override ArgumentOperandTag tag;
+
+  /** Gets the `CallInstruction` for which this is an argument. */
+  CallInstruction getCall() { result.getAnArgumentOperand() = this }
 }
 
 /**

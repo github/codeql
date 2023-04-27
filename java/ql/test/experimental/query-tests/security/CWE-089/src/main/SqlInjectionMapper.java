@@ -33,6 +33,9 @@ public interface SqlInjectionMapper {
 	@Select({"select * from test", "where id = ${name}"})
 	public Test bad9(HashMap<String, Object> map);
 
+	@Select({"select * from test where id = #{id} and name = '${ name }'"})
+	String bad10(Integer id, String name);
+
 	List<Test> good1(Integer id);
 
 	//using providers
@@ -66,4 +69,6 @@ public interface SqlInjectionMapper {
 	@Select("select * from user_info where age = #{age}")
 	String good3(@Param("age") String age);
 
+	@Select({"select * from test where id = #{id} and name = #{name}"})
+	String good4(Integer id, String name);
 }

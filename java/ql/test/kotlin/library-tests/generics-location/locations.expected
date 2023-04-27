@@ -5,7 +5,6 @@ classLocations
 | main.A<Object> | file:///!unknown-binary-location/main/A.class:0:0:0:0 | file:///!unknown-binary-location/main/A.class:0:0:0:0 |
 | main.A<String> | A.class:0:0:0:0 | A.class:0:0:0:0 |
 | main.A<String> | file:///!unknown-binary-location/main/A.class:0:0:0:0 | file:///!unknown-binary-location/main/A.class:0:0:0:0 |
-| main.B | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 |
 | main.B | generics.kt:3:1:11:1 | generics.kt:3:1:11:1 |
 | main.B<Integer> | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 | generics-location.testproj/test.class.files/main/B.class:0:0:0:0 |
 | main.B<Object> | file:///!unknown-binary-location/main/B.class:0:0:0:0 | file:///!unknown-binary-location/main/B.class:0:0:0:0 |

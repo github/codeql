@@ -5,18 +5,17 @@ on:
       - "go/**"
       - "!go/ql/**" # don't run other-os if only ql/ files changed
       - .github/workflows/go-tests-other-os.yml
-      - .github/actions/fetch-codeql/action.yml
-      - .github/actions/cache-query-compilation/action.yml
+      - .github/actions/**
       - codeql-workspace.yml
 jobs:
   test-mac:
     name: Test MacOS
     runs-on: macos-latest
     steps:
-      - name: Set up Go 1.19
-        uses: actions/setup-go@v3
+      - name: Set up Go 1.20
+        uses: actions/setup-go@v4
         with:
-          go-version: 1.19
+          go-version: '1.20'
         id: go
 
       - name: Check out code
@@ -48,10 +47,10 @@ jobs:
     name: Test Windows
     runs-on: windows-latest-xl
     steps:
-      - name: Set up Go 1.19
-        uses: actions/setup-go@v3
+      - name: Set up Go 1.20
+        uses: actions/setup-go@v4
         with:
-          go-version: 1.19
+          go-version: '1.20'
         id: go
 
       - name: Check out code

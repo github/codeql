@@ -36,6 +36,7 @@
 | kotlin.Byte | minus |
 | kotlin.Byte | plus |
 | kotlin.Byte | rangeTo |
+| kotlin.Byte | rangeUntil |
 | kotlin.Byte | rem |
 | kotlin.Byte | shortValue |
 | kotlin.Byte | times |

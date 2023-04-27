@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Linq", "Enumerable", False, "Aggregate<,,>", "(System.Collections.Generic.IEnumerable<TSource>,TAccumulate,System.Func<TAccumulate,TSource,TAccumulate>,System.Func<TAccumulate,TResult>)", "", "Argument[0].Element", "Argument[2].Parameter[1]", "value", "manual"]
       - ["System.Linq", "Enumerable", False, "Aggregate<,,>", "(System.Collections.Generic.IEnumerable<TSource>,TAccumulate,System.Func<TAccumulate,TSource,TAccumulate>,System.Func<TAccumulate,TResult>)", "", "Argument[1]", "Argument[2].Parameter[0]", "value", "manual"]

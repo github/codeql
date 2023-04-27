@@ -3,7 +3,6 @@
  */
 
 import java
-private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 
 /** A utility class for resolving resource locations to files in the file system in the Spring framework. */

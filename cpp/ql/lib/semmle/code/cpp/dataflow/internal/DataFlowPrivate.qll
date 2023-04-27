@@ -3,6 +3,7 @@ private import DataFlowUtil
 private import DataFlowDispatch
 private import FlowVar
 private import DataFlowImplConsistency
+private import codeql.util.Unit
 
 /** Gets the callable in which this node occurs. */
 DataFlowCallable nodeGetEnclosingCallable(Node n) { result = n.getEnclosingCallable() }
@@ -158,7 +159,7 @@ predicate storeStep(Node node1, Content f, PostUpdateNode node2) {
     // `PostUpdateNode`, which means it must be an `ObjectInitializerNode`.
     node2.asExpr() = aggr and
     f.(FieldContent).getField() = field and
-    aggr.getFieldExpr(field) = node1.asExpr()
+    aggr.getAFieldExpr(field) = node1.asExpr()
   )
   or
   exists(FieldAccess fa |
@@ -264,15 +265,6 @@ int accessPathLimit() { result = 5 }
  */
 predicate forceHighPrecision(Content c) { none() }
 
-/** The unit type. */
-private newtype TUnit = TMkUnit()
-
-/** The trivial type with a single element. */
-class Unit extends TUnit {
-  /** Gets a textual representation of this element. */
-  string toString() { result = "unit" }
-}
-
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) { none() }
 
@@ -296,6 +288,13 @@ predicate additionalLambdaFlowStep(Node nodeFrom, Node nodeTo, boolean preserves
  */
 predicate allowParameterReturnInSelf(ParameterNode p) { none() }
 
+/** An approximated `Content`. */
+class ContentApprox = Unit;
+
+/** Gets an approximated value for content `c`. */
+pragma[inline]
+ContentApprox getContentApprox(Content c) { any() }
+
 private class MyConsistencyConfiguration extends Consistency::ConsistencyConfiguration {
   override predicate argHasPostUpdateExclude(ArgumentNode n) {
     // Is the null pointer (or something that's not really a pointer)
@@ -311,3 +310,12 @@ private class MyConsistencyConfiguration extends Consistency::ConsistencyConfigu
     // consistency alerts enough that most of them are interesting.
   }
 }
+
+/**
+ * Gets an additional term that is added to the `join` and `branch` computations to reflect
+ * an additional forward or backwards branching factor that is not taken into account
+ * when calculating the (virtual) dispatch cost.
+ *
+ * Argument `arg` is part of a path from a source to a sink, and `p` is the target parameter.
+ */
+int getAdditionalFlowIntoCallNodeTerm(ArgumentNode arg, ParameterNode p) { none() }

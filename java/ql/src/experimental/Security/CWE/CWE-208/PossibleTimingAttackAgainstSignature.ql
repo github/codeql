@@ -9,14 +9,17 @@
  * @precision medium
  * @id java/possible-timing-attack-against-signature
  * @tags security
+ *       experimental
  *       external/cwe/cwe-208
  */
 
 import java
 import NonConstantTimeCheckOnSignatureQuery
-import DataFlow::PathGraph
+import NonConstantTimeCryptoComparisonFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, NonConstantTimeCryptoComparisonConfig conf
-where conf.hasFlowPath(source, sink)
+from
+  NonConstantTimeCryptoComparisonFlow::PathNode source,
+  NonConstantTimeCryptoComparisonFlow::PathNode sink
+where NonConstantTimeCryptoComparisonFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Possible timing attack against $@ validation.", source,
   source.getNode().(CryptoOperationSource).getCall().getResultType()

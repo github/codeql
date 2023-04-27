@@ -1,1 +1,1 @@
-| P<Int, String> | getName: | P<Int, String> | getCanonicalType: | P<Int, String> | getBase: | P |
+| P<Int, String> | getName: | P<Int, String> | getCanonicalType: | P<Int, String> | getBase: | P | getNumberOfArgs: | 2 |

@@ -1,0 +1,68 @@
+| tst.swift:7:8:7:14 | // lgtm\n |  lgtm | lgtm | tst.swift:7:1:7:14 | suppression range |
+| tst.swift:8:8:8:42 | // lgtm[swift/redundant-assignment]\n |  lgtm[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tst.swift:8:1:8:42 | suppression range |
+| tst.swift:9:8:9:42 | // lgtm[swift/redundant-assignment]\n |  lgtm[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tst.swift:9:1:9:42 | suppression range |
+| tst.swift:10:8:10:69 | // lgtm[swift/redundant-assignment, swift/redundant-operation]\n |  lgtm[swift/redundant-assignment, swift/redundant-operation] | lgtm[swift/redundant-assignment, swift/redundant-operation] | tst.swift:10:1:10:69 | suppression range |
+| tst.swift:11:8:11:29 | // lgtm[@tag:nullness]\n |  lgtm[@tag:nullness] | lgtm[@tag:nullness] | tst.swift:11:1:11:29 | suppression range |
+| tst.swift:12:8:12:56 | // lgtm[@tag:nullness,swift/redundant-assignment]\n |  lgtm[@tag:nullness,swift/redundant-assignment] | lgtm[@tag:nullness,swift/redundant-assignment] | tst.swift:12:1:12:56 | suppression range |
+| tst.swift:13:8:13:35 | // lgtm[@expires:2017-06-11]\n |  lgtm[@expires:2017-06-11] | lgtm[@expires:2017-06-11] | tst.swift:13:1:13:35 | suppression range |
+| tst.swift:14:8:14:73 | // lgtm[swift/redundant-operation] because I know better than lgtm\n |  lgtm[swift/redundant-operation] because I know better than lgtm | lgtm[swift/redundant-operation] | tst.swift:14:1:14:73 | suppression range |
+| tst.swift:15:8:15:25 | // lgtm: blah blah\n |  lgtm: blah blah | lgtm | tst.swift:15:1:15:25 | suppression range |
+| tst.swift:16:8:16:39 | // lgtm blah blah #falsepositive\n |  lgtm blah blah #falsepositive | lgtm | tst.swift:16:1:16:39 | suppression range |
+| tst.swift:17:8:17:42 | //lgtm  [swift/redundant-operation]\n | lgtm  [swift/redundant-operation] | lgtm  [swift/redundant-operation] | tst.swift:17:1:17:42 | suppression range |
+| tst.swift:18:8:18:17 | /* lgtm */ |  lgtm  | lgtm | tst.swift:18:1:18:17 | suppression range |
+| tst.swift:19:8:19:16 | // lgtm[]\n |  lgtm[] | lgtm[] | tst.swift:19:1:19:16 | suppression range |
+| tst.swift:21:8:21:13 | //lgtm\n | lgtm | lgtm | tst.swift:21:1:21:13 | suppression range |
+| tst.swift:22:8:22:14 | //\tlgtm\n | \tlgtm | lgtm | tst.swift:22:1:22:14 | suppression range |
+| tst.swift:23:8:23:43 | // lgtm\t[swift/redundant-assignment]\n |  lgtm\t[swift/redundant-assignment] | lgtm\t[swift/redundant-assignment] | tst.swift:23:1:23:43 | suppression range |
+| tst.swift:26:8:26:19 | // foo; lgtm\n |  foo; lgtm | lgtm | tst.swift:26:1:26:19 | suppression range |
+| tst.swift:27:8:27:47 | // foo; lgtm[swift/redundant-assignment]\n |  foo; lgtm[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tst.swift:27:1:27:47 | suppression range |
+| tst.swift:29:8:29:46 | // foo lgtm[swift/redundant-assignment]\n |  foo lgtm[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tst.swift:29:1:29:46 | suppression range |
+| tst.swift:31:8:31:50 | // foo lgtm[swift/redundant-assignment] bar\n |  foo lgtm[swift/redundant-assignment] bar | lgtm[swift/redundant-assignment] | tst.swift:31:1:31:50 | suppression range |
+| tst.swift:32:8:32:15 | // LGTM!\n |  LGTM! | LGTM | tst.swift:32:1:32:15 | suppression range |
+| tst.swift:33:8:33:42 | // LGTM[swift/redundant-assignment]\n |  LGTM[swift/redundant-assignment] | LGTM[swift/redundant-assignment] | tst.swift:33:1:33:42 | suppression range |
+| tst.swift:34:8:34:78 | // lgtm[swift/redundant-assignment] and lgtm[swift/redundant-operation]\n |  lgtm[swift/redundant-assignment] and lgtm[swift/redundant-operation] | lgtm[swift/redundant-assignment] | tst.swift:34:1:34:78 | suppression range |
+| tst.swift:34:8:34:78 | // lgtm[swift/redundant-assignment] and lgtm[swift/redundant-operation]\n |  lgtm[swift/redundant-assignment] and lgtm[swift/redundant-operation] | lgtm[swift/redundant-operation] | tst.swift:34:1:34:78 | suppression range |
+| tst.swift:35:8:35:48 | // lgtm[swift/redundant-assignment]; lgtm\n |  lgtm[swift/redundant-assignment]; lgtm | lgtm | tst.swift:35:1:35:48 | suppression range |
+| tst.swift:35:8:35:48 | // lgtm[swift/redundant-assignment]; lgtm\n |  lgtm[swift/redundant-assignment]; lgtm | lgtm[swift/redundant-assignment] | tst.swift:35:1:35:48 | suppression range |
+| tst.swift:36:8:36:19 | /* lgtm[] */ |  lgtm[]  | lgtm[] | tst.swift:36:1:36:19 | suppression range |
+| tst.swift:37:8:37:45 | /* lgtm[swift/redundant-assignment] */ |  lgtm[swift/redundant-assignment]  | lgtm[swift/redundant-assignment] | tst.swift:37:1:37:45 | suppression range |
+| tst.swift:43:8:43:59 | /* lgtm[@tag:nullness,swift/redundant-assignment] */ |  lgtm[@tag:nullness,swift/redundant-assignment]  | lgtm[@tag:nullness,swift/redundant-assignment] | tst.swift:43:1:43:59 | suppression range |
+| tst.swift:44:8:44:32 | /* lgtm[@tag:nullness] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tst.swift:44:1:44:32 | suppression range |
+| tst.swift:45:2:45:38 | // codeql[swift/redundant-assignment]\n |  codeql[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tst.swift:46:0:46:0 | suppression range |
+| tst.swift:47:2:47:38 | // CODEQL[swift/redundant-assignment]\n |  CODEQL[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tst.swift:48:0:48:0 | suppression range |
+| tst.swift:49:2:49:75 | // codeql[swift/redundant-assignment] -- because I know better than codeql\n |  codeql[swift/redundant-assignment] -- because I know better than codeql | lgtm[swift/redundant-assignment] | tst.swift:50:0:50:0 | suppression range |
+| tst.swift:51:2:51:41 | /* codeql[swift/redundant-assignment] */ |  codeql[swift/redundant-assignment]  | lgtm[swift/redundant-assignment] | tst.swift:52:0:52:0 | suppression range |
+| tstWindows.swift:7:8:7:14 | // lgtm\r |  lgtm | lgtm | tstWindows.swift:7:1:7:14 | suppression range |
+| tstWindows.swift:8:8:8:42 | // lgtm[swift/redundant-assignment]\r |  lgtm[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tstWindows.swift:8:1:8:42 | suppression range |
+| tstWindows.swift:9:8:9:42 | // lgtm[swift/redundant-assignment]\r |  lgtm[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tstWindows.swift:9:1:9:42 | suppression range |
+| tstWindows.swift:10:8:10:69 | // lgtm[swift/redundant-assignment, swift/redundant-operation]\r |  lgtm[swift/redundant-assignment, swift/redundant-operation] | lgtm[swift/redundant-assignment, swift/redundant-operation] | tstWindows.swift:10:1:10:69 | suppression range |
+| tstWindows.swift:11:8:11:29 | // lgtm[@tag:nullness]\r |  lgtm[@tag:nullness] | lgtm[@tag:nullness] | tstWindows.swift:11:1:11:29 | suppression range |
+| tstWindows.swift:12:8:12:56 | // lgtm[@tag:nullness,swift/redundant-assignment]\r |  lgtm[@tag:nullness,swift/redundant-assignment] | lgtm[@tag:nullness,swift/redundant-assignment] | tstWindows.swift:12:1:12:56 | suppression range |
+| tstWindows.swift:13:8:13:35 | // lgtm[@expires:2017-06-11]\r |  lgtm[@expires:2017-06-11] | lgtm[@expires:2017-06-11] | tstWindows.swift:13:1:13:35 | suppression range |
+| tstWindows.swift:14:8:14:73 | // lgtm[swift/redundant-operation] because I know better than lgtm\r |  lgtm[swift/redundant-operation] because I know better than lgtm | lgtm[swift/redundant-operation] | tstWindows.swift:14:1:14:73 | suppression range |
+| tstWindows.swift:15:8:15:25 | // lgtm: blah blah\r |  lgtm: blah blah | lgtm | tstWindows.swift:15:1:15:25 | suppression range |
+| tstWindows.swift:16:8:16:39 | // lgtm blah blah #falsepositive\r |  lgtm blah blah #falsepositive | lgtm | tstWindows.swift:16:1:16:39 | suppression range |
+| tstWindows.swift:17:8:17:42 | //lgtm  [swift/redundant-operation]\r | lgtm  [swift/redundant-operation] | lgtm  [swift/redundant-operation] | tstWindows.swift:17:1:17:42 | suppression range |
+| tstWindows.swift:18:8:18:17 | /* lgtm */ |  lgtm  | lgtm | tstWindows.swift:18:1:18:17 | suppression range |
+| tstWindows.swift:19:8:19:16 | // lgtm[]\r |  lgtm[] | lgtm[] | tstWindows.swift:19:1:19:16 | suppression range |
+| tstWindows.swift:21:8:21:13 | //lgtm\r | lgtm | lgtm | tstWindows.swift:21:1:21:13 | suppression range |
+| tstWindows.swift:22:8:22:14 | //\tlgtm\r | \tlgtm | lgtm | tstWindows.swift:22:1:22:14 | suppression range |
+| tstWindows.swift:23:8:23:43 | // lgtm\t[swift/redundant-assignment]\r |  lgtm\t[swift/redundant-assignment] | lgtm\t[swift/redundant-assignment] | tstWindows.swift:23:1:23:43 | suppression range |
+| tstWindows.swift:26:8:26:19 | // foo; lgtm\r |  foo; lgtm | lgtm | tstWindows.swift:26:1:26:19 | suppression range |
+| tstWindows.swift:27:8:27:47 | // foo; lgtm[swift/redundant-assignment]\r |  foo; lgtm[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tstWindows.swift:27:1:27:47 | suppression range |
+| tstWindows.swift:29:8:29:46 | // foo lgtm[swift/redundant-assignment]\r |  foo lgtm[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tstWindows.swift:29:1:29:46 | suppression range |
+| tstWindows.swift:31:8:31:50 | // foo lgtm[swift/redundant-assignment] bar\r |  foo lgtm[swift/redundant-assignment] bar | lgtm[swift/redundant-assignment] | tstWindows.swift:31:1:31:50 | suppression range |
+| tstWindows.swift:32:8:32:15 | // LGTM!\r |  LGTM! | LGTM | tstWindows.swift:32:1:32:15 | suppression range |
+| tstWindows.swift:33:8:33:42 | // LGTM[swift/redundant-assignment]\r |  LGTM[swift/redundant-assignment] | LGTM[swift/redundant-assignment] | tstWindows.swift:33:1:33:42 | suppression range |
+| tstWindows.swift:34:8:34:78 | // lgtm[swift/redundant-assignment] and lgtm[swift/redundant-operation]\r |  lgtm[swift/redundant-assignment] and lgtm[swift/redundant-operation] | lgtm[swift/redundant-assignment] | tstWindows.swift:34:1:34:78 | suppression range |
+| tstWindows.swift:34:8:34:78 | // lgtm[swift/redundant-assignment] and lgtm[swift/redundant-operation]\r |  lgtm[swift/redundant-assignment] and lgtm[swift/redundant-operation] | lgtm[swift/redundant-operation] | tstWindows.swift:34:1:34:78 | suppression range |
+| tstWindows.swift:35:8:35:48 | // lgtm[swift/redundant-assignment]; lgtm\r |  lgtm[swift/redundant-assignment]; lgtm | lgtm | tstWindows.swift:35:1:35:48 | suppression range |
+| tstWindows.swift:35:8:35:48 | // lgtm[swift/redundant-assignment]; lgtm\r |  lgtm[swift/redundant-assignment]; lgtm | lgtm[swift/redundant-assignment] | tstWindows.swift:35:1:35:48 | suppression range |
+| tstWindows.swift:36:8:36:19 | /* lgtm[] */ |  lgtm[]  | lgtm[] | tstWindows.swift:36:1:36:19 | suppression range |
+| tstWindows.swift:37:8:37:45 | /* lgtm[swift/redundant-assignment] */ |  lgtm[swift/redundant-assignment]  | lgtm[swift/redundant-assignment] | tstWindows.swift:37:1:37:45 | suppression range |
+| tstWindows.swift:43:8:43:59 | /* lgtm[@tag:nullness,swift/redundant-assignment] */ |  lgtm[@tag:nullness,swift/redundant-assignment]  | lgtm[@tag:nullness,swift/redundant-assignment] | tstWindows.swift:43:1:43:59 | suppression range |
+| tstWindows.swift:44:8:44:32 | /* lgtm[@tag:nullness] */ |  lgtm[@tag:nullness]  | lgtm[@tag:nullness] | tstWindows.swift:44:1:44:32 | suppression range |
+| tstWindows.swift:45:2:45:38 | // codeql[swift/redundant-assignment]\r |  codeql[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tstWindows.swift:46:0:46:0 | suppression range |
+| tstWindows.swift:47:2:47:38 | // CODEQL[swift/redundant-assignment]\r |  CODEQL[swift/redundant-assignment] | lgtm[swift/redundant-assignment] | tstWindows.swift:48:0:48:0 | suppression range |
+| tstWindows.swift:49:2:49:75 | // codeql[swift/redundant-assignment] -- because I know better than codeql\r |  codeql[swift/redundant-assignment] -- because I know better than codeql | lgtm[swift/redundant-assignment] | tstWindows.swift:50:0:50:0 | suppression range |
+| tstWindows.swift:51:2:51:41 | /* codeql[swift/redundant-assignment] */ |  codeql[swift/redundant-assignment]  | lgtm[swift/redundant-assignment] | tstWindows.swift:52:0:52:0 | suppression range |

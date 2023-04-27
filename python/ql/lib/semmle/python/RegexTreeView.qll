@@ -102,6 +102,9 @@ module Impl implements RegexTreeViewSig {
     /** Gets the number of child terms. */
     int getNumChild() { result = count(this.getAChild()) }
 
+    /** Gets the last child term of this element. */
+    RegExpTerm getLastChild() { result = this.getChild(this.getNumChild() - 1) }
+
     /** Gets the associated regex. */
     abstract Regex getRegex();
   }
@@ -224,8 +227,8 @@ module Impl implements RegexTreeViewSig {
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      exists(int re_start, int re_end |
-        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, re_end) and
+      exists(int re_start |
+        re.getLocation().hasLocationInfo(filepath, startline, re_start, endline, _) and
         startcolumn = re_start + start + 4 and
         endcolumn = re_start + end + 3
       )
@@ -454,7 +457,18 @@ module Impl implements RegexTreeViewSig {
     override string getPrimaryQLClass() { result = "RegExpAlt" }
   }
 
-  additional class RegExpCharEscape = RegExpEscape;
+  /**
+   * A character escape in a regular expression.
+   *
+   * Example:
+   *
+   * ```
+   * \.
+   * ```
+   */
+  class RegExpCharEscape = RegExpEscape;
+
+  private import codeql.util.Numbers as Numbers
 
   /**
    * An escaped regular expression term, that is, a regular expression
@@ -516,42 +530,8 @@ module Impl implements RegexTreeViewSig {
      * E.g. for `\u0061` this returns "a".
      */
     private string getUnicode() {
-      exists(int codepoint | codepoint = sum(this.getHexValueFromUnicode(_)) |
-        result = codepoint.toUnicode()
-      )
+      result = Numbers::parseHexInt(this.getText().suffix(2)).toUnicode()
     }
-
-    /**
-     * Gets int value for the `index`th char in the hex number of the unicode escape.
-     * E.g. for `\u0061` and `index = 2` this returns 96 (the number `6` interpreted as hex).
-     */
-    private int getHexValueFromUnicode(int index) {
-      this.isUnicode() and
-      exists(string hex, string char | hex = this.getText().suffix(2) |
-        char = hex.charAt(index) and
-        result = 16.pow(hex.length() - index - 1) * toHex(char)
-      )
-    }
-  }
-
-  /**
-   * Gets the hex number for the `hex` char.
-   */
-  private int toHex(string hex) {
-    hex = [0 .. 9].toString() and
-    result = hex.toInt()
-    or
-    result = 10 and hex = ["a", "A"]
-    or
-    result = 11 and hex = ["b", "B"]
-    or
-    result = 12 and hex = ["c", "C"]
-    or
-    result = 13 and hex = ["d", "D"]
-    or
-    result = 14 and hex = ["e", "E"]
-    or
-    result = 15 and hex = ["f", "F"]
   }
 
   /**
@@ -559,6 +539,13 @@ module Impl implements RegexTreeViewSig {
    */
   class RegExpWordBoundary extends RegExpSpecialChar {
     RegExpWordBoundary() { this.getChar() = "\\b" }
+  }
+
+  /**
+   * A non-word boundary, that is, a regular expression term of the form `\B`.
+   */
+  class RegExpNonWordBoundary extends RegExpSpecialChar {
+    RegExpNonWordBoundary() { this.getChar() = "\\B" }
   }
 
   /**
@@ -830,6 +817,19 @@ module Impl implements RegexTreeViewSig {
   }
 
   /**
+   * A term that matches a specific position between characters in the string.
+   *
+   * Example:
+   *
+   * ```
+   * \A
+   * ```
+   */
+  class RegExpAnchor extends RegExpSpecialChar {
+    RegExpAnchor() { this.getChar() = ["\\A", "^", "$", "\\Z"] }
+  }
+
+  /**
    * A dollar assertion `$` or `\Z` matching the end of a line.
    *
    * Example:
@@ -838,7 +838,7 @@ module Impl implements RegexTreeViewSig {
    * $
    * ```
    */
-  class RegExpDollar extends RegExpSpecialChar {
+  class RegExpDollar extends RegExpAnchor {
     RegExpDollar() { this.getChar() = ["$", "\\Z"] }
 
     override string getPrimaryQLClass() { result = "RegExpDollar" }
@@ -853,7 +853,7 @@ module Impl implements RegexTreeViewSig {
    * ^
    * ```
    */
-  class RegExpCaret extends RegExpSpecialChar {
+  class RegExpCaret extends RegExpAnchor {
     RegExpCaret() { this.getChar() = ["^", "\\A"] }
 
     override string getPrimaryQLClass() { result = "RegExpCaret" }

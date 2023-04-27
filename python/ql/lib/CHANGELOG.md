@@ -1,3 +1,103 @@
+## 0.9.0
+
+### Deprecated APIs
+
+* The recently introduced new data flow and taint tracking APIs have had a
+  number of module and predicate renamings. The old APIs remain in place for
+  now.
+
+### Minor Analysis Improvements
+
+* Added modeling of SQL execution in the packages `sqlite3.dbapi2`, `cassandra-driver`, `aiosqlite`, and the functions `sqlite3.Connection.executescript`/`sqlite3.Cursor.executescript` and `asyncpg.connection.connect()`.
+* Fixed module resolution so we allow imports of definitions that have had an attribute assigned to it, such as `class Foo; Foo.bar = 42`.
+
+### Bug Fixes
+
+* Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular, `DataFlow::hasFlowPath`, `DataFlow::hasFlow`, `DataFlow::hasFlowTo`, and `DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
+
+## 0.8.3
+
+No user-facing changes.
+
+## 0.8.2
+
+### New Features
+
+* Added support for merging two `PathGraph`s via disjoint union to allow results from multiple data flow computations in a single `path-problem` query.
+
+### Major Analysis Improvements
+
+* The main data flow and taint tracking APIs have been changed. The old APIs
+  remain in place for now and translate to the new through a
+  backwards-compatible wrapper. If multiple configurations are in scope
+  simultaneously, then this may affect results slightly. The new API is quite
+  similar to the old, but makes use of a configuration module instead of a
+  configuration class.
+
+### Minor Analysis Improvements
+
+* Deleted the deprecated `getPath` and `getFolder` predicates from the `XmlFile` class.
+
+## 0.8.1
+
+### Major Analysis Improvements
+
+* We use a new analysis for the call-graph (determining which function is called). This can lead to changed results. In most cases this is much more accurate than the old call-graph that was based on points-to, but we do lose a few valid edges in the call-graph, especially around methods that are not defined inside its class.
+
+### Minor Analysis Improvements
+
+* Fixed module resolution so we properly recognize definitions made within if-then-else statements.
+* Added modeling of cryptographic operations in the `hmac` library.
+
+## 0.8.0
+
+### Breaking Changes
+
+- Python 2 is no longer supported for extracting databases using the CodeQL CLI. As a consequence,
+  the previously deprecated support for `pyxl` and `spitfire` templates has also been removed. When
+  extracting Python 2 code, having Python 2 installed is still recommended, as this ensures the
+  correct version of the Python standard library is extracted.
+
+### Minor Analysis Improvements
+
+* Fixed module resolution so we properly recognize that in `from <pkg> import *`, where `<pkg>` is a package, the actual imports are made from the `<pkg>/__init__.py` file.
+
+## 0.7.2
+
+No user-facing changes.
+
+## 0.7.1
+
+No user-facing changes.
+
+## 0.7.0
+
+### Major Analysis Improvements
+
+* The _PAM authorization bypass due to incorrect usage_ (`py/pam-auth-bypass`) query has been converted to a taint-tracking query, resulting in significantly fewer false positives.
+
+### Minor Analysis Improvements
+
+* Added `subprocess.getoutput` and `subprocess.getoutputstatus` as new command injection sinks for the StdLib.
+* The data-flow library has been rewritten to no longer rely on the points-to analysis in order to resolve references to modules. Improvements in the module resolution can lead to more results.
+* Deleted the deprecated `importNode` predicate from the `DataFlowUtil.qll` file.
+* Deleted the deprecated features from `PEP249.qll` that were not inside the `PEP249` module.
+* Deleted the deprecated `werkzeug` from the `Werkzeug` module in `Werkzeug.qll`.
+* Deleted the deprecated `methodResult` predicate from `PEP249::Cursor`.
+
+### Bug Fixes
+
+* `except*` is now supported.
+* The result of `Try.getAHandler` and `Try.getHandler(<index>)` is no longer of type `ExceptStmt`, as handlers may also be `ExceptGroupStmt`s (After Python 3.11 introduced PEP 654). Instead, it is of the new type `ExceptionHandler` of which `ExceptStmt` and `ExceptGroupStmt` are subtypes. To support selecting only one type of handler, `Try.getANormalHandler` and `Try.getAGroupHandler` have been added. Existing uses of `Try.getAHandler` for which it is important to select only normal handlers, will need to be updated to `Try.getANormalHandler`.
+
+## 0.6.6
+
+No user-facing changes.
+
+## 0.6.5
+
+No user-facing changes.
+
 ## 0.6.4
 
 ### Minor Analysis Improvements

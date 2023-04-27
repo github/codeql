@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["ServiceStack.OrmLite", "IUntypedSqlExpression", True, "UnsafeAnd", "(System.String,System.Object[])", "", "Argument[0]", "sql", "manual"]
       - ["ServiceStack.OrmLite", "IUntypedSqlExpression", True, "UnsafeFrom", "(System.String)", "", "Argument[0]", "sql", "manual"]

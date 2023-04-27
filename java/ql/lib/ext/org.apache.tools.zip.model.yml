@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["org.apache.tools.zip", "ZipEntry", True, "ZipEntry", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]

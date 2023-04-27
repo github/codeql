@@ -3,12 +3,29 @@ display_name: "Ruby"
 version: 0.1.0
 column_kind: "utf8"
 legacy_qltest_extraction: true
+github_api_languages:
+  - Ruby
+scc_languages:
+  - Ruby
 file_types:
   - name: ruby
     display_name: Ruby files
     extensions:
-       - .rb
+      - .rb
   - name: erb
     display_name: Ruby templates
     extensions:
-       - .erb
+      - .erb
+options:
+  trap:
+    title: Options pertaining to TRAP.
+    type: object
+    properties:
+      compression:
+        title: Controls compression for the TRAP files written by the extractor.
+        description: >
+          This option is only intended for use in debugging the extractor. Accepted
+          values are 'gzip' (the default, to write gzip-compressed TRAP) and 'none'
+          (to write uncompressed TRAP).
+        type: string
+        pattern: "^(none|gzip)$"

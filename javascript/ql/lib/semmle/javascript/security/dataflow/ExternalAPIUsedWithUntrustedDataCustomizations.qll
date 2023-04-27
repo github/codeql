@@ -55,9 +55,7 @@ module ExternalApiUsedWithUntrustedData {
    */
   abstract class Sanitizer extends DataFlow::Node { }
 
-  private class RemoteFlowAsSource extends Source {
-    RemoteFlowAsSource() { this instanceof RemoteFlowSource }
-  }
+  private class RemoteFlowAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * A package name whose entire API is considered "safe" for the purpose of this query.

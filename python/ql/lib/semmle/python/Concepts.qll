@@ -9,6 +9,7 @@ private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.RemoteFlowSources
 private import semmle.python.dataflow.new.TaintTracking
 private import semmle.python.Frameworks
+private import semmle.python.security.internal.EncryptionKeySizes
 
 /**
  * A data-flow node that executes an operating system command,
@@ -18,6 +19,9 @@ private import semmle.python.Frameworks
  * extend `SystemCommandExecution::Range` instead.
  */
 class SystemCommandExecution extends DataFlow::Node instanceof SystemCommandExecution::Range {
+  /** Holds if a shell interprets `arg`. */
+  predicate isShellInterpreted(DataFlow::Node arg) { super.isShellInterpreted(arg) }
+
   /** Gets the argument that specifies the command to be executed. */
   DataFlow::Node getCommand() { result = super.getCommand() }
 }
@@ -34,6 +38,9 @@ module SystemCommandExecution {
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the command to be executed. */
     abstract DataFlow::Node getCommand();
+
+    /** Holds if a shell interprets `arg`. */
+    predicate isShellInterpreted(DataFlow::Node arg) { none() }
   }
 }
 
@@ -1018,7 +1025,8 @@ module Http {
      * Extend this class to refine existing API models. If you want to model new APIs,
      * extend `CsrfLocalProtectionSetting::Range` instead.
      */
-    class CsrfLocalProtectionSetting extends DataFlow::Node instanceof CsrfLocalProtectionSetting::Range {
+    class CsrfLocalProtectionSetting extends DataFlow::Node instanceof CsrfLocalProtectionSetting::Range
+    {
       /**
        * Gets a request handler whose CSRF protection is changed.
        */
@@ -1141,21 +1149,21 @@ module Cryptography {
       abstract class RsaRange extends Range {
         final override string getName() { result = "RSA" }
 
-        final override int minimumSecureKeySize() { result = 2048 }
+        final override int minimumSecureKeySize() { result = minSecureKeySizeRsa() }
       }
 
       /** A data-flow node that generates a new DSA key-pair. */
       abstract class DsaRange extends Range {
         final override string getName() { result = "DSA" }
 
-        final override int minimumSecureKeySize() { result = 2048 }
+        final override int minimumSecureKeySize() { result = minSecureKeySizeDsa() }
       }
 
       /** A data-flow node that generates a new ECC key-pair. */
       abstract class EccRange extends Range {
         final override string getName() { result = "ECC" }
 
-        final override int minimumSecureKeySize() { result = 224 }
+        final override int minimumSecureKeySize() { result = minSecureKeySizeEcc() }
       }
     }
   }

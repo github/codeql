@@ -15,6 +15,7 @@ enumConstants
 | describeConstable |
 | equals |
 | finalize |
+| forEach |
 | getDeclaringClass |
 | hasMoreElements |
 | hashCode |
@@ -23,8 +24,12 @@ enumConstants
 | noneOf |
 | of |
 | ordinal |
+| parallelStream |
 | range |
 | resolveConstantDesc |
+| spliterator |
+| stream |
+| toArray |
 | toString |
 | typeCheck |
 | usesEnum |

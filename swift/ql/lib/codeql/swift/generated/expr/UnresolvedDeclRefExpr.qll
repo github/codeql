@@ -9,7 +9,7 @@ module Generated {
     override string getAPrimaryQlClass() { result = "UnresolvedDeclRefExpr" }
 
     /**
-     * Gets the name of this unresolved declaration ref expression, if it exists.
+     * Gets the name of this unresolved declaration reference expression, if it exists.
      */
     string getName() {
       result = Synth::convertUnresolvedDeclRefExprToRaw(this).(Raw::UnresolvedDeclRefExpr).getName()

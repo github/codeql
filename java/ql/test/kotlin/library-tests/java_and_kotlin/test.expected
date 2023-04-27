@@ -1,7 +1,6 @@
 methods
 | Java.java:4:7:4:13 | javaFun | javaFun() |
 | Java.java:10:17:10:19 | fn0 | fn0(int) |
-| Java.java:15:17:15:19 | fn1 | fn1(int,kotlin.coroutines.Continuation) |
 | Kotlin.kt:2:2:4:2 | kotlinFun | kotlinFun() |
 | Kotlin.kt:8:10:8:38 | fn0 | fn0(int) |
 | Kotlin.kt:9:18:9:46 | fn1 | fn1(int) |
@@ -9,15 +8,12 @@ methods
 | Kotlin.kt:14:22:14:59 | fn1 | fn1(int) |
 overrides
 | Java.java:10:17:10:19 | fn0 | Kotlin.kt:8:10:8:38 | fn0 |
-| Java.java:15:17:15:19 | fn1 | java_and_kotlin.testproj/test.class.files/Base.class:0:0:0:0 | fn1 |
 | Kotlin.kt:13:14:13:51 | fn0 | Kotlin.kt:8:10:8:38 | fn0 |
 | Kotlin.kt:14:22:14:59 | fn1 | Kotlin.kt:9:18:9:46 | fn1 |
 signature_mismatch
 | Kotlin.kt:9:18:9:46 | fn1 | fn1(int) |
-| java_and_kotlin.testproj/test.class.files/Base.class:0:0:0:0 | fn1 | fn1(int,kotlin.coroutines.Continuation) |
 #select
 | Java.java:5:3:5:26 | kotlinFun(...) | Kotlin.kt:2:2:4:2 | kotlinFun |
 | Java.java:11:11:11:22 | fn0(...) | Kotlin.kt:8:10:8:38 | fn0 |
-| Java.java:16:11:16:35 | fn1(...) | java_and_kotlin.testproj/test.class.files/Base.class:0:0:0:0 | fn1 |
 | Kotlin.kt:13:40:13:51 | fn0(...) | Kotlin.kt:8:10:8:38 | fn0 |
 | Kotlin.kt:14:48:14:59 | fn1(...) | Kotlin.kt:9:18:9:46 | fn1 |

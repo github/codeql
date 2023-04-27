@@ -72,13 +72,13 @@ module Private {
   }
 
   /** A left shift or an assign-lshift expression. */
-  class LShiftExpr extends J::Expr {
-    LShiftExpr() { this instanceof J::LShiftExpr or this instanceof J::AssignLShiftExpr }
+  class LeftShiftExpr extends J::Expr {
+    LeftShiftExpr() { this instanceof J::LeftShiftExpr or this instanceof J::AssignLeftShiftExpr }
 
     /** Gets the RHS operand of this shift. */
     Expr getRhs() {
-      result = this.(J::LShiftExpr).getRightOperand() or
-      result = this.(J::AssignLShiftExpr).getRhs()
+      result = this.(J::LeftShiftExpr).getRightOperand() or
+      result = this.(J::AssignLeftShiftExpr).getRhs()
     }
   }
 

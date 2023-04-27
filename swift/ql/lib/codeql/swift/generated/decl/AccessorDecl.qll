@@ -26,5 +26,29 @@ module Generated {
      * Holds if this accessor is a `didSet`, called after the property is set.
      */
     predicate isDidSet() { Synth::convertAccessorDeclToRaw(this).(Raw::AccessorDecl).isDidSet() }
+
+    /**
+     * Holds if this accessor is a `_read` coroutine, yielding a borrowed value of the property.
+     */
+    predicate isRead() { Synth::convertAccessorDeclToRaw(this).(Raw::AccessorDecl).isRead() }
+
+    /**
+     * Holds if this accessor is a `_modify` coroutine, yielding an inout value of the property.
+     */
+    predicate isModify() { Synth::convertAccessorDeclToRaw(this).(Raw::AccessorDecl).isModify() }
+
+    /**
+     * Holds if this accessor is an `unsafeAddress` immutable addressor.
+     */
+    predicate isUnsafeAddress() {
+      Synth::convertAccessorDeclToRaw(this).(Raw::AccessorDecl).isUnsafeAddress()
+    }
+
+    /**
+     * Holds if this accessor is an `unsafeMutableAddress` mutable addressor.
+     */
+    predicate isUnsafeMutableAddress() {
+      Synth::convertAccessorDeclToRaw(this).(Raw::AccessorDecl).isUnsafeMutableAddress()
+    }
   }
 }

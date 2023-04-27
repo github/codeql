@@ -9,4 +9,10 @@ func test(c: Bool, x: Int, y: Int, z: Int) {
 	v = 3 / 4;
 	v = x % y;
 	v = -x;
+	v = +x;
+
+	// arithmetic operations with overflow
+	v = x &+ y;
+	v = x &- y;
+	v = x &* y;
 }

@@ -49,6 +49,15 @@ EOF
         end
         Open3.capture2("echo #{cmd}")
     end
+
+    def update
+      cmd = params[:key]
+      case cmd
+      when "foo"
+        system(cmd)
+      end
+      system(cmd)
+    end
 end
 
 module Types

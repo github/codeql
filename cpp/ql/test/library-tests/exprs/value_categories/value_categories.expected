@@ -7,7 +7,7 @@
 | value_categories.cpp:38:5:38:5 | (reference dereference) | int | lvalue |
 | value_categories.cpp:38:5:38:9 | ... = ... | int | lvalue |
 | value_categories.cpp:42:12:42:12 | (reference dereference) | int | lvalue |
-| value_categories.cpp:52:19:52:33 | (reference dereference) | int | xvalue |
+| value_categories.cpp:52:31:52:33 | (reference dereference) | int | xvalue |
 | value_categories.cpp:57:5:57:6 | (reference dereference) | int | lvalue |
 | value_categories.cpp:57:5:57:10 | ... = ... | int | lvalue |
 | value_categories.cpp:62:12:62:33 | static_cast<int>... | int | xvalue |

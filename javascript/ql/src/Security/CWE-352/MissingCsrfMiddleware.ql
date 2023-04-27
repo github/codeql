@@ -57,7 +57,7 @@ predicate hasCookieMiddleware(Routing::Node route, Http::CookieMiddlewareInstanc
  */
 DataFlow::SourceNode csrfMiddlewareCreation() {
   exists(DataFlow::SourceNode callee | result = callee.getACall() |
-    callee = DataFlow::moduleImport("csurf")
+    callee = DataFlow::moduleImport(["csurf", "tiny-csrf"])
     or
     callee = DataFlow::moduleImport("lusca") and
     exists(result.(DataFlow::CallNode).getOptionArgument(0, "csrf"))

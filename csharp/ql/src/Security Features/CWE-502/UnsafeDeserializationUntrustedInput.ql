@@ -24,19 +24,19 @@ where
   // intersect with strong types, but user controlled or weak types deserialization usages
   (
     exists(
-      DataFlow::Node weakTypeCreation, DataFlow::Node weakTypeUsage,
+      DataFlow::Node weakTypeUsage,
       WeakTypeCreationToUsageTrackingConfig weakTypeDeserializerTracking, MethodCall mc
     |
-      weakTypeDeserializerTracking.hasFlow(weakTypeCreation, weakTypeUsage) and
+      weakTypeDeserializerTracking.hasFlowTo(weakTypeUsage) and
       mc.getQualifier() = weakTypeUsage.asExpr() and
       mc.getAnArgument() = deserializeCallArg.getNode().asExpr()
     )
     or
     exists(
       TaintToObjectTypeTrackingConfig userControlledTypeTracking, DataFlow::Node taintedTypeUsage,
-      DataFlow::Node userInput2, MethodCall mc
+      MethodCall mc
     |
-      userControlledTypeTracking.hasFlow(userInput2, taintedTypeUsage) and
+      userControlledTypeTracking.hasFlowTo(taintedTypeUsage) and
       mc.getQualifier() = taintedTypeUsage.asExpr() and
       mc.getAnArgument() = deserializeCallArg.getNode().asExpr()
     )
@@ -48,12 +48,9 @@ where
   )
   or
   // JsonConvert static method call, but with additional unsafe typename tracking
-  exists(
-    JsonConvertTrackingConfig taintTrackingJsonConvert, TypeNameTrackingConfig typenameTracking,
-    DataFlow::Node settingsCallArg
-  |
+  exists(JsonConvertTrackingConfig taintTrackingJsonConvert, DataFlow::Node settingsCallArg |
     taintTrackingJsonConvert.hasFlowPath(userInput, deserializeCallArg) and
-    typenameTracking.hasFlow(_, settingsCallArg) and
+    TypeNameTracking::flow(_, settingsCallArg) and
     deserializeCallArg.getNode().asExpr().getParent() = settingsCallArg.asExpr().getParent()
   )
 select deserializeCallArg, userInput, deserializeCallArg, "$@ flows to unsafe deserializer.",

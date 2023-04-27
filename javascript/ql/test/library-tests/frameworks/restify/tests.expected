@@ -11,10 +11,16 @@ test_RequestInputAccess
 | src/test.js:19:5:19:26 | request ... ('bar') | header | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 | src/test.js:20:5:20:25 | request ... ('baz') | header | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 test_RouteHandler_getAResponseHeader
+| src/test.js:6:1:6:21 | functio ... er1(){} | content-type | src/test.js:6:1:6:21 | functio ... er1(){} |
+| src/test.js:9:19:11:1 | functio ... ition\\n} | content-type | src/test.js:9:19:11:1 | functio ... ition\\n} |
 | src/test.js:9:19:11:1 | functio ... ition\\n} | header1 | src/test.js:10:5:10:34 | respons ... 1', '') |
+| src/test.js:12:19:22:1 | functio ... okie;\\n} | content-type | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 | src/test.js:12:19:22:1 | functio ... okie;\\n} | header2 | src/test.js:13:5:13:37 | respons ... 2', '') |
 test_HeaderDefinition_defines
+| src/test.js:6:1:6:21 | functio ... er1(){} | content-type | application/json |
+| src/test.js:9:19:11:1 | functio ... ition\\n} | content-type | application/json |
 | src/test.js:10:5:10:34 | respons ... 1', '') | header1 |  |
+| src/test.js:12:19:22:1 | functio ... okie;\\n} | content-type | application/json |
 | src/test.js:13:5:13:37 | respons ... 2', '') | header2 |  |
 test_ResponseExpr
 | src/test.js:9:46:9:53 | response | src/test.js:9:19:11:1 | functio ... ition\\n} |
@@ -24,14 +30,20 @@ test_ResponseExpr
 | src/test.js:12:46:12:53 | response | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 | src/test.js:13:5:13:12 | response | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 test_HeaderDefinition
+| src/test.js:6:1:6:21 | functio ... er1(){} | src/test.js:6:1:6:21 | functio ... er1(){} |
+| src/test.js:9:19:11:1 | functio ... ition\\n} | src/test.js:9:19:11:1 | functio ... ition\\n} |
 | src/test.js:10:5:10:34 | respons ... 1', '') | src/test.js:9:19:11:1 | functio ... ition\\n} |
+| src/test.js:12:19:22:1 | functio ... okie;\\n} | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 | src/test.js:13:5:13:37 | respons ... 2', '') | src/test.js:12:19:22:1 | functio ... okie;\\n} |
 test_RouteSetup_getServer
 | src/test.js:7:1:7:26 | server2 ... ndler1) | src/test.js:4:15:4:36 | restify ... erver() |
 | src/test.js:9:1:11:2 | server2 ... tion\\n}) | src/test.js:4:15:4:36 | restify ... erver() |
 | src/test.js:12:1:22:2 | server2 ... kie;\\n}) | src/test.js:4:15:4:36 | restify ... erver() |
 test_HeaderDefinition_getAHeaderName
+| src/test.js:6:1:6:21 | functio ... er1(){} | content-type |
+| src/test.js:9:19:11:1 | functio ... ition\\n} | content-type |
 | src/test.js:10:5:10:34 | respons ... 1', '') | header1 |
+| src/test.js:12:19:22:1 | functio ... okie;\\n} | content-type |
 | src/test.js:13:5:13:37 | respons ... 2', '') | header2 |
 test_ServerDefinition
 | src/test.js:1:15:1:47 | require ... erver() |

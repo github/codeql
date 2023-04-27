@@ -23,7 +23,7 @@ module Protobuf {
   }
 
   /** The `Marshal` and `MarshalAppend` functions in the protobuf packages. */
-  private class MarshalFunction extends TaintTracking::FunctionModel, MarshalingFunction::Range {
+  private class MarshalFunction extends MarshalingFunction::Range {
     string name;
 
     MarshalFunction() {
@@ -32,10 +32,6 @@ module Protobuf {
         this.hasQualifiedName(protobufPackages(), name) or
         this.(Method).hasQualifiedName(modernProtobufPackage(), "MarshalOptions", name)
       )
-    }
-
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = this.getAnInput() and outp = this.getOutput()
     }
 
     override DataFlow::FunctionInput getAnInput() {
@@ -82,14 +78,10 @@ module Protobuf {
   }
 
   /** The `Unmarshal` function in the protobuf packages. */
-  class UnmarshalFunction extends TaintTracking::FunctionModel, UnmarshalingFunction::Range {
+  class UnmarshalFunction extends UnmarshalingFunction::Range {
     UnmarshalFunction() {
       this.hasQualifiedName(protobufPackages(), "Unmarshal") or
       this.(Method).hasQualifiedName(modernProtobufPackage(), "UnmarshalOptions", "Unmarshal")
-    }
-
-    override predicate hasTaintFlow(DataFlow::FunctionInput inp, DataFlow::FunctionOutput outp) {
-      inp = this.getAnInput() and outp = this.getOutput()
     }
 
     override DataFlow::FunctionInput getAnInput() { result.isParameter(0) }
@@ -99,27 +91,9 @@ module Protobuf {
     override string getFormat() { result = "protobuf" }
   }
 
-  /** The `Merge` function in the protobuf packages. */
-  private class MergeFunction extends TaintTracking::FunctionModel {
-    MergeFunction() { this.hasQualifiedName(protobufPackages(), "Merge") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(1) and outp.isParameter(0)
-    }
-  }
-
   /** A protobuf `Message` type. */
   class MessageType extends Type {
     MessageType() { this.implements(protobufReflectPackage(), "ProtoMessage") }
-  }
-
-  /** The `Clone` function in the protobuf packages. */
-  private class MessageCloneFunction extends TaintTracking::FunctionModel {
-    MessageCloneFunction() { this.hasQualifiedName(protobufPackages(), "Clone") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isParameter(0) and outp.isResult()
-    }
   }
 
   /** A `Get` method of a protobuf `Message` type. */

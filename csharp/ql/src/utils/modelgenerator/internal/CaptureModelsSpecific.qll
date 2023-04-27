@@ -7,7 +7,6 @@ private import dotnet
 private import semmle.code.csharp.commons.Util as Util
 private import semmle.code.csharp.commons.Collections as Collections
 private import semmle.code.csharp.dataflow.internal.DataFlowDispatch
-private import semmle.code.csharp.frameworks.System as System
 private import semmle.code.csharp.frameworks.system.linq.Expressions
 import semmle.code.csharp.dataflow.ExternalFlow as ExternalFlow
 import semmle.code.csharp.dataflow.internal.DataFlowImplCommon as DataFlowImplCommon
@@ -18,8 +17,6 @@ module DataFlow = CS::DataFlow;
 module TaintTracking = CS::TaintTracking;
 
 class Type = CS::Type;
-
-class Unit = DataFlowPrivate::Unit;
 
 /**
  * Holds if any of the parameters of `api` are `System.Func<>`.
@@ -35,10 +32,12 @@ private predicate isHigherOrder(CS::Callable api) {
  */
 private predicate isRelevantForModels(CS::Callable api) {
   [api.(CS::Modifiable), api.(CS::Accessor).getDeclaration()].isEffectivelyPublic() and
-  api.getDeclaringType().getNamespace().getQualifiedName() != "" and
+  api.getDeclaringType().getNamespace().getFullName() != "" and
   not api instanceof CS::ConversionOperator and
   not api instanceof Util::MainMethod and
-  not api instanceof CS::Destructor
+  not api instanceof CS::Destructor and
+  not api instanceof CS::AnonymousFunctionExpr and
+  not api.(CS::Constructor).isParameterless()
 }
 
 /**
@@ -68,7 +67,7 @@ class TargetApiSpecific extends DotNet::Callable {
 
 predicate asPartialModel = DataFlowPrivate::Csv::asPartialModel/1;
 
-predicate asPartialNegativeModel = DataFlowPrivate::Csv::asPartialNegativeModel/1;
+predicate asPartialNeutralModel = DataFlowPrivate::Csv::asPartialNeutralModel/1;
 
 /**
  * Holds if `t` is a type that is generally used for bulk data in collection types.
@@ -108,7 +107,7 @@ predicate isRelevantType(CS::Type t) {
 }
 
 /**
- * Gets the CSV string representation of the qualifier.
+ * Gets the MaD string representation of the qualifier.
  */
 string qualifierString() { result = "Argument[this]" }
 
@@ -118,14 +117,7 @@ string parameterAccess(CS::Parameter p) {
   else result = "Argument[" + p.getPosition() + "]"
 }
 
-/**
- * Gets the CSV string representation of the parameter node `p`.
- */
-string parameterNodeAsInput(DataFlow::ParameterNode p) {
-  result = parameterAccess(p.asParameter())
-  or
-  result = qualifierString() and p instanceof DataFlowPrivate::InstanceParameterNode
-}
+class InstanceParameterNode = DataFlowPrivate::InstanceParameterNode;
 
 pragma[nomagic]
 private CS::Parameter getParameter(DataFlowImplCommon::ReturnNodeExt node, ParameterPosition pos) {
@@ -133,7 +125,7 @@ private CS::Parameter getParameter(DataFlowImplCommon::ReturnNodeExt node, Param
 }
 
 /**
- * Gets the CSV string representation of the the return node `node`.
+ * Gets the MaD string representation of the the return node `node`.
  */
 string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
   if node.getKind() instanceof DataFlowImplCommon::ValueReturnKind
@@ -186,9 +178,9 @@ predicate apiSource(DataFlow::Node source) {
 }
 
 /**
- * Gets the CSV input string representation of `source`.
+ * Gets the MaD input string representation of `source`.
  */
-string asInputArgument(DataFlow::Node source) {
+string asInputArgumentSpecific(DataFlow::Node source) {
   exists(int pos |
     pos = source.(DataFlow::ParameterNode).getParameter().getPosition() and
     result = "Argument[" + pos + "]"

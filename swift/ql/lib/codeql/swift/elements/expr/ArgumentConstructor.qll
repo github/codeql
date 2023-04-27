@@ -1,9 +1,8 @@
 private import codeql.swift.generated.Raw
+private import codeql.swift.elements.expr.MethodLookupExpr
 
 predicate constructArgument(Raw::Argument id) {
-  // exclude an argument that will be part of a DotSyntaxCallExpr
-  // that will be transformed into a MethodRefCallExpr
-  not exists(Raw::DotSyntaxCallExpr c |
-    c.getFunction() instanceof Raw::DeclRefExpr and id = c.getArgument(0)
-  )
+  // exclude an argument that will be part of a SelfApplyExpr
+  // that will be transformed into a MethodLookupExpr
+  not exists(Raw::SelfApplyExpr e | id = e.getArgument(0))
 }

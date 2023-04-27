@@ -6,6 +6,7 @@
  * @precision high
  * @id java/unvalidated-cors-origin-set
  * @tags security
+ *       experimental
  *       external/cwe/cwe-346
  */
 
@@ -13,8 +14,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.frameworks.Servlets
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.TaintTracking2
-import DataFlow::PathGraph
+import CorsOriginFlow::PathGraph
 
 /**
  *  Holds if `header` sets `Access-Control-Allow-Credentials` to `true`. This ensures fair chances of exploitability.
@@ -47,24 +47,25 @@ private Expr getAccessControlAllowOriginHeaderName() {
 }
 
 /**
- * This taintflow2 configuration checks if there is a flow from source node towards CorsProbableCheckAccess methods.
+ * A taint-tracking configuration for flow from a source node to CorsProbableCheckAccess methods.
  */
-class CorsSourceReachesCheckConfig extends TaintTracking2::Configuration {
-  CorsSourceReachesCheckConfig() { this = "CorsOriginConfig" }
+module CorsSourceReachesCheckConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { CorsOriginFlow::flow(source, _) }
 
-  override predicate isSource(DataFlow::Node source) { any(CorsOriginConfig c).hasFlow(source, _) }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(CorsProbableCheckAccess check).getAnArgument()
   }
 }
 
-private class CorsOriginConfig extends TaintTracking::Configuration {
-  CorsOriginConfig() { this = "CorsOriginConfig" }
+/**
+ * Taint-tracking flow from a source node to CorsProbableCheckAccess methods.
+ */
+module CorsSourceReachesCheckFlow = TaintTracking::Global<CorsSourceReachesCheckConfig>;
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+private module CorsOriginConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess corsHeader, MethodAccess allowCredentialsHeader |
       (
         corsHeader.getMethod() instanceof ResponseSetHeaderMethod or
@@ -78,9 +79,11 @@ private class CorsOriginConfig extends TaintTracking::Configuration {
   }
 }
 
-from
-  DataFlow::PathNode source, DataFlow::PathNode sink, CorsOriginConfig conf,
-  CorsSourceReachesCheckConfig sanconf
-where conf.hasFlowPath(source, sink) and not sanconf.hasFlow(source.getNode(), _)
+private module CorsOriginFlow = TaintTracking::Global<CorsOriginConfig>;
+
+from CorsOriginFlow::PathNode source, CorsOriginFlow::PathNode sink
+where
+  CorsOriginFlow::flowPath(source, sink) and
+  not CorsSourceReachesCheckFlow::flow(source.getNode(), _)
 select sink.getNode(), source, sink, "CORS header is being set using user controlled value $@.",
   source.getNode(), "user-provided value"

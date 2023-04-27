@@ -9,6 +9,7 @@
  * @precision high
  * @id cs/web/cookie-httponly-not-set
  * @tags security
+ *       experimental
  *       external/cwe/cwe-1004
  */
 
@@ -35,18 +36,10 @@ where
             iResponse.getAppendMethod() = mc.getTarget() and
             isCookieWithSensitiveName(mc.getArgument(0)) and
             // there is no callback `OnAppendCookie` that sets `HttpOnly` to true
-            not exists(
-              OnAppendCookieHttpOnlyTrackingConfig config, DataFlow::Node source,
-              DataFlow::Node sink
-            |
-              config.hasFlow(source, sink)
-            ) and
+            not OnAppendCookieHttpOnlyTracking::flowTo(_) and
             // Passed as third argument to `IResponseCookies.Append`
-            exists(
-              CookieOptionsTrackingConfiguration cookieTracking, DataFlow::Node creation,
-              DataFlow::Node append
-            |
-              cookieTracking.hasFlow(creation, append) and
+            exists(DataFlow::Node creation, DataFlow::Node append |
+              CookieOptionsTracking::flow(creation, append) and
               creation.asExpr() = oc and
               append.asExpr() = mc.getArgument(2)
             )
@@ -74,11 +67,7 @@ where
         // default is not configured or is not set to `Always`
         not getAValueForCookiePolicyProp("HttpOnly").getValue() = "1" and
         // there is no callback `OnAppendCookie` that sets `HttpOnly` to true
-        not exists(
-          OnAppendCookieHttpOnlyTrackingConfig config, DataFlow::Node source, DataFlow::Node sink
-        |
-          config.hasFlow(source, sink)
-        ) and
+        not OnAppendCookieHttpOnlyTracking::flowTo(_) and
         iResponse.getAppendMethod() = mc.getTarget() and
         isCookieWithSensitiveName(mc.getArgument(0)) and
         (
@@ -87,11 +76,8 @@ where
             oc = c and
             oc.getType() instanceof MicrosoftAspNetCoreHttpCookieOptions and
             not isPropertySet(oc, "HttpOnly") and
-            exists(
-              CookieOptionsTrackingConfiguration cookieTracking, DataFlow::Node creation,
-              DataFlow::Node append
-            |
-              cookieTracking.hasFlow(creation, append) and
+            exists(DataFlow::Node creation |
+              CookieOptionsTracking::flow(creation, _) and
               creation.asExpr() = oc
             )
           )

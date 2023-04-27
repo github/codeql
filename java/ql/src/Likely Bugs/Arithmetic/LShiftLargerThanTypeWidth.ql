@@ -14,7 +14,7 @@ int integralTypeWidth(IntegralType t) {
   if t.hasName("long") or t.hasName("Long") then result = 64 else result = 32
 }
 
-from LShiftExpr shift, IntegralType t, int v, string typname, int width
+from LeftShiftExpr shift, IntegralType t, int v, string typname, int width
 where
   shift.getLeftOperand().getType() = t and
   shift.getRightOperand().(CompileTimeConstantExpr).getIntValue() = v and

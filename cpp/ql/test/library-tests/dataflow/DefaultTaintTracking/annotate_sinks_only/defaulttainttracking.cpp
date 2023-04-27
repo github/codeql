@@ -1,25 +1,13 @@
 #include "../shared.h"
 
-
-
-
-
-
-
-
-
-
 int main() {
-
-
-
   sink(_strdup(getenv("VAR"))); // $ ir MISSING: ast
   sink(strdup(getenv("VAR"))); // $ ast,ir
   sink(unmodeled_function(getenv("VAR"))); // clean by assumption
 
   char untainted_buf[100] = "";
   char buf[100] = "VAR = ";
-  sink(strcat(buf, getenv("VAR"))); // $ ast MISSING: ir
+  sink(strcat(buf, getenv("VAR"))); // $ ast,ir
 
   sink(buf); // $ ast,ir
   sink(untainted_buf); // the two buffers would be conflated if we added flow through all partial chi inputs
@@ -58,9 +46,6 @@ void test_outparams() {
     flow_to_outparam(&p2, getenv("VAR"));
     sink(p2); // $ ir MISSING: ast
 }
-
-
-
 
 struct XY {
   int x;
@@ -230,24 +215,17 @@ void test_recv() {
 
 // --- send and related functions ---
 
-int send(int, const void*, int, int);
-
-void test_send(char* buffer, int length) {
-  send(0, buffer, length, 0); // $ remote
-}
-
 struct iovec {
   void  *iov_base;
   unsigned iov_len;
 };
 
 int readv(int, const struct iovec*, int);
-int writev(int, const struct iovec*, int);
 
 void sink(const iovec* iovs);
 void sink(iovec);
 
-int test_readv_and_writev(iovec* iovs) {
+void test_readv_and_writev(iovec* iovs) {
   readv(0, iovs, 16);
   sink(iovs); // $ast,ir
   sink(iovs[0]); // $ast,ir
@@ -256,6 +234,4 @@ int test_readv_and_writev(iovec* iovs) {
   char* p = (char*)iovs[1].iov_base;
   sink(p); // $ MISSING: ast,ir
   sink(*p); // $ MISSING: ast,ir
-
-  writev(0, iovs, 16); // $ remote
 }

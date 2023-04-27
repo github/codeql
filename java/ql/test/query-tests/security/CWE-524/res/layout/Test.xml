@@ -4,9 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
-   <!-- $hasResult --> <EditText
+    <EditText
         android:id="@+id/test1_password"
-        android:inputType="text"/>  
+        android:inputType="text"/> <!-- $hasResult -->
 
     <EditText
         android:id="@+id/test2_safe"
@@ -20,12 +20,12 @@
         android:id="@+id/test4_password"
         android:inputType="textPassword"/> 
 
-    <!-- $hasResult --> <EditText
+    <EditText
         android:id="@+id/test5_bank_account_name"
-        android:inputType="textMultiLine"/>  
+        android:inputType="textMultiLine"/> <!-- $hasResult -->
 
-    <!-- $hasResult --> <EditText
-        android:id="@+id/test6_password"/>  
+    <EditText
+        android:id="@+id/test6_password"/> <!-- $hasResult -->
 
     <EditText
         android:id="@+id/test7_password"/>  

@@ -21,6 +21,8 @@ private module Cached {
       qName = getAnAssumedGlobalConst()
       or
       qName = namespaceDeclaration(_)
+      or
+      qName = getAnAssumedGlobalNamespacePrefix(_)
     } or
     TUnresolved(Namespace n) { not exists(namespaceDeclaration(n)) }
 
@@ -36,6 +38,8 @@ private module Cached {
       TResolved(container) = resolveConstantReadAccess(n.getScopeExpr()) and
       result = scopeAppend(container, n.getName())
     )
+    or
+    result = getAnAssumedGlobalNamespacePrefix(n)
   }
 
   cached
@@ -165,7 +169,7 @@ private module Cached {
    */
   cached
   Method lookupMethodInSubClasses(Module m, string name) {
-    exists(Module sub | sub.getSuperClass() = m |
+    exists(Module sub | sub.getAnImmediateAncestor() = m |
       TMethod(result) = lookupMethodOrConst0(sub, name) or
       result = lookupMethodInSubClasses(sub, name)
     )
@@ -407,9 +411,32 @@ private module ResolveImpl {
    */
   string getAnAssumedGlobalConst() {
     exists(ConstantAccess access |
-      not exists(access.getScopeExpr()) and
       result = access.getName() and
       isToplevel(access)
+    )
+  }
+
+  private ConstantAccess getANamespaceScopeInTopLevel() {
+    result.(Namespace).getEnclosingModule() instanceof Toplevel
+    or
+    result = getANamespaceScopeInTopLevel().getScopeExpr()
+  }
+
+  /**
+   * Gets the syntactical qualified name of the given constant access, which must be a top-level
+   * namespace or scope prefix thereof.
+   *
+   * For example, for `module A::B::C` this gets `A`, `A::B`, and `A::B::C` for the two prefixes
+   * and the module itself, respectively.
+   */
+  string getAnAssumedGlobalNamespacePrefix(ConstantAccess access) {
+    access = getANamespaceScopeInTopLevel() and
+    (
+      not exists(access.getScopeExpr()) and
+      result = access.getName()
+      or
+      result =
+        scopeAppend(getAnAssumedGlobalNamespacePrefix(access.getScopeExpr()), access.getName())
     )
   }
 
@@ -420,6 +447,12 @@ private module ResolveImpl {
     result = [builtin(), getAnAssumedGlobalConst()] and
     name = result and
     container = "Object"
+    or
+    exists(ConstantAccess access |
+      container = getAnAssumedGlobalNamespacePrefix(access.getScopeExpr()) and
+      name = access.getName() and
+      result = getAnAssumedGlobalNamespacePrefix(access)
+    )
   }
 
   pragma[nomagic]

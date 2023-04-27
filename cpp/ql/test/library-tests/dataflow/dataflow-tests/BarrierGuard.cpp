@@ -4,7 +4,7 @@ bool guarded(int);
 
 void bg_basic(int source) {
   if (guarded(source)) {
-    sink(source); // no flow
+    sink(source);
   } else {
     sink(source); // $ ast,ir
   }
@@ -14,13 +14,13 @@ void bg_not(int source) {
   if (!guarded(source)) {
     sink(source); // $ ast,ir
   } else {
-    sink(source); // no flow
+    sink(source);
   }
 }
 
 void bg_and(int source, bool arbitrary) {
   if (guarded(source) && arbitrary) {
-    sink(source); // no flow
+    sink(source);
   } else {
     sink(source); // $ ast,ir
   }
@@ -38,7 +38,7 @@ void bg_return(int source) {
   if (!guarded(source)) {
     return;
   }
-  sink(source); // no flow
+  sink(source);
 }
 
 struct XY {
@@ -56,7 +56,7 @@ void bg_stackstruct(XY s1, XY s2) {
   }
 }
 
-void bg_structptr(XY *p1, XY *p2) {
+void bg_structptr(XY *p1, XY *p2) { // $ ast-def=p1 ast-def=p2
   p1->x = source();
   if (guarded(p1->x)) {
     sink(p1->x); // $ SPURIOUS: ast

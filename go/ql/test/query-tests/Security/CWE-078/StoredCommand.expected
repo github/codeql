@@ -1,8 +1,8 @@
 edges
-| StoredCommand.go:11:2:11:27 | ... := ...[0] : pointer type | StoredCommand.go:14:22:14:28 | cmdName |
+| StoredCommand.go:11:2:11:27 | ... := ...[0] | StoredCommand.go:14:22:14:28 | cmdName |
 nodes
-| StoredCommand.go:11:2:11:27 | ... := ...[0] : pointer type | semmle.label | ... := ...[0] : pointer type |
+| StoredCommand.go:11:2:11:27 | ... := ...[0] | semmle.label | ... := ...[0] |
 | StoredCommand.go:14:22:14:28 | cmdName | semmle.label | cmdName |
 subpaths
 #select
-| StoredCommand.go:14:22:14:28 | cmdName | StoredCommand.go:11:2:11:27 | ... := ...[0] : pointer type | StoredCommand.go:14:22:14:28 | cmdName | This command depends on a $@. | StoredCommand.go:11:2:11:27 | ... := ...[0] | stored value |
+| StoredCommand.go:14:22:14:28 | cmdName | StoredCommand.go:11:2:11:27 | ... := ...[0] | StoredCommand.go:14:22:14:28 | cmdName | This command depends on a $@. | StoredCommand.go:11:2:11:27 | ... := ...[0] | stored value |

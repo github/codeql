@@ -36,6 +36,13 @@ abstract class RemoteFlowSource extends DataFlow::Node {
   abstract string getSourceType();
 }
 
+/**
+ * A module for importing frameworks that define remote flow sources.
+ */
+private module RemoteFlowSources {
+  private import semmle.code.java.frameworks.android.Widget
+}
+
 private class ExternalRemoteFlowSource extends RemoteFlowSource {
   ExternalRemoteFlowSource() { sourceNode(this, "remote") }
 
@@ -165,9 +172,7 @@ abstract class UserInput extends DataFlow::Node { }
 /**
  * Input that may be controlled by a remote user.
  */
-private class RemoteUserInput extends UserInput {
-  RemoteUserInput() { this instanceof RemoteFlowSource }
-}
+private class RemoteUserInput extends UserInput instanceof RemoteFlowSource { }
 
 /** A node with input that may be controlled by a local user. */
 abstract class LocalUserInput extends UserInput { }
@@ -292,4 +297,17 @@ class OnActivityResultIntentSource extends OnActivityResultIncomingIntent, Remot
   OnActivityResultIntentSource() { this.isRemoteSource() }
 
   override string getSourceType() { result = "Android onActivityResult incoming Intent" }
+}
+
+/**
+ * A parameter of a method annotated with the `android.webkit.JavascriptInterface` annotation.
+ */
+class AndroidJavascriptInterfaceMethodParameter extends RemoteFlowSource {
+  AndroidJavascriptInterfaceMethodParameter() {
+    exists(JavascriptInterfaceMethod m | this.asParameter() = m.getAParameter())
+  }
+
+  override string getSourceType() {
+    result = "Parameter of method with JavascriptInterface annotation"
+  }
 }

@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["generatedtest", "Test", False, "getMapKeyDefault", "(Bundle)", "", "Argument[0].MapKey", "ReturnValue", "value", "manual"]

@@ -47,29 +47,19 @@ private predicate defaultSource(DataFlow::Node src) {
   src.asExpr().(MethodAccess).getMethod().getName() = ["source", "taint"]
 }
 
-class DefaultValueFlowConf extends DataFlow::Configuration {
-  DefaultValueFlowConf() { this = "qltest:defaultValueFlowConf" }
+module DefaultFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { defaultSource(n) }
 
-  override predicate isSource(DataFlow::Node n) { defaultSource(n) }
-
-  override predicate isSink(DataFlow::Node n) {
+  predicate isSink(DataFlow::Node n) {
     exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
 
-  override int fieldFlowBranchLimit() { result = 1000 }
+  int fieldFlowBranchLimit() { result = 1000 }
 }
 
-class DefaultTaintFlowConf extends TaintTracking::Configuration {
-  DefaultTaintFlowConf() { this = "qltest:defaultTaintFlowConf" }
+private module DefaultValueFlow = DataFlow::Global<DefaultFlowConfig>;
 
-  override predicate isSource(DataFlow::Node n) { defaultSource(n) }
-
-  override predicate isSink(DataFlow::Node n) {
-    exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
-  }
-
-  override int fieldFlowBranchLimit() { result = 1000 }
-}
+private module DefaultTaintFlow = TaintTracking::Global<DefaultFlowConfig>;
 
 private string getSourceArgString(DataFlow::Node src) {
   defaultSource(src) and
@@ -83,7 +73,7 @@ class InlineFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasValueFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink | getValueFlowConfig().hasFlow(src, sink) |
+    exists(DataFlow::Node src, DataFlow::Node sink | hasValueFlow(src, sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
@@ -91,7 +81,7 @@ class InlineFlowTest extends InlineExpectationsTest {
     or
     tag = "hasTaintFlow" and
     exists(DataFlow::Node src, DataFlow::Node sink |
-      getTaintFlowConfig().hasFlow(src, sink) and not getValueFlowConfig().hasFlow(src, sink)
+      hasTaintFlow(src, sink) and not hasValueFlow(src, sink)
     |
       sink.getLocation() = location and
       element = sink.toString() and
@@ -99,7 +89,11 @@ class InlineFlowTest extends InlineExpectationsTest {
     )
   }
 
-  DataFlow::Configuration getValueFlowConfig() { result = any(DefaultValueFlowConf config) }
+  predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) {
+    DefaultValueFlow::flow(src, sink)
+  }
 
-  DataFlow::Configuration getTaintFlowConfig() { result = any(DefaultTaintFlowConf config) }
+  predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
+    DefaultTaintFlow::flow(src, sink)
+  }
 }

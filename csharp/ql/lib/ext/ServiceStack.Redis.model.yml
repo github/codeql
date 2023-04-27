@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["ServiceStack.Redis", "IRedisClient", True, "Custom", "(System.Object[])", "", "Argument[0]", "code", "manual"]
       - ["ServiceStack.Redis", "IRedisClient", True, "ExecCachedLua", "(System.String,System.Func<System.String,T>)", "", "Argument[0]", "code", "manual"]

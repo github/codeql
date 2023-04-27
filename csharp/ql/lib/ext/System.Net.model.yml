@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Net", "Cookie", False, "get_Value", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["System.Net", "CookieCollection", False, "Add", "(System.Net.CookieCollection)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]

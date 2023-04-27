@@ -7,6 +7,7 @@
  * @precision high
  * @id java/unsafe-reflection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-470
  */
 
@@ -16,7 +17,7 @@ import UnsafeReflectionLib
 import semmle.code.java.dataflow.DataFlow
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.controlflow.Guards
-import DataFlow::PathGraph
+import UnsafeReflectionFlow::PathGraph
 
 private predicate containsSanitizer(Guard g, Expr e, boolean branch) {
   g.(MethodAccess).getMethod().hasName("contains") and
@@ -30,14 +31,12 @@ private predicate equalsSanitizer(Guard g, Expr e, boolean branch) {
   branch = true
 }
 
-class UnsafeReflectionConfig extends TaintTracking::Configuration {
-  UnsafeReflectionConfig() { this = "UnsafeReflectionConfig" }
+module UnsafeReflectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeReflectionSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeReflectionSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
     // Argument -> return of Class.forName, ClassLoader.loadClass
     exists(ReflectiveClassIdentifierMethodAccess rcimac |
       rcimac.getArgument(0) = pred.asExpr() and rcimac = succ.asExpr()
@@ -74,11 +73,13 @@ class UnsafeReflectionConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node = DataFlow::BarrierGuard<containsSanitizer/3>::getABarrierNode() or
     node = DataFlow::BarrierGuard<equalsSanitizer/3>::getABarrierNode()
   }
 }
+
+module UnsafeReflectionFlow = TaintTracking::Global<UnsafeReflectionConfig>;
 
 private Expr getAMethodArgument(MethodAccess reflectiveCall) {
   result = reflectiveCall.(NewInstance).getAnArgument()
@@ -87,10 +88,10 @@ private Expr getAMethodArgument(MethodAccess reflectiveCall) {
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeReflectionConfig conf,
+  UnsafeReflectionFlow::PathNode source, UnsafeReflectionFlow::PathNode sink,
   MethodAccess reflectiveCall
 where
-  conf.hasFlowPath(source, sink) and
+  UnsafeReflectionFlow::flowPath(source, sink) and
   sink.getNode().asExpr() = reflectiveCall.getQualifier() and
-  conf.hasFlowToExpr(getAMethodArgument(reflectiveCall))
+  UnsafeReflectionFlow::flowToExpr(getAMethodArgument(reflectiveCall))
 select sink.getNode(), source, sink, "Unsafe reflection of $@.", source.getNode(), "user input"

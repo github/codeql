@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Xml.Serialization", "XmlAnyElementAttributes", False, "Add", "(System.Xml.Serialization.XmlAnyElementAttribute)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Xml.Serialization", "XmlAnyElementAttributes", False, "CopyTo", "(System.Xml.Serialization.XmlAnyElementAttribute[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]

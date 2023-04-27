@@ -43,11 +43,16 @@ class MethodCallSynth extends MethodCallImpl, TMethodCallSynth {
 
   final override AstNode getReceiverImpl() { synthChild(this, 0, result) }
 
-  final override AstNode getArgumentImpl(int n) { synthChild(this, n + 1, result) and n >= 0 }
+  final override AstNode getArgumentImpl(int n) {
+    synthChild(this, n + 1, result) and
+    n in [0 .. this.getNumberOfArgumentsImpl() - 1]
+  }
 
   final override int getNumberOfArgumentsImpl() { this = TMethodCallSynth(_, _, _, _, result) }
 
-  final override Block getBlockImpl() { synthChild(this, -2, result) }
+  final override Block getBlockImpl() {
+    synthChild(this, this.getNumberOfArgumentsImpl() + 1, result)
+  }
 }
 
 class IdentifierMethodCall extends MethodCallImpl, TIdentifierMethodCall {
@@ -78,12 +83,9 @@ class RegularMethodCall extends MethodCallImpl, TRegularMethodCall {
   }
 
   final override string getMethodNameImpl() {
-    isRegularMethodCall(g) and
-    (
-      result = "call" and not exists(g.getMethod())
-      or
-      result = g.getMethod().(Ruby::Token).getValue()
-    )
+    result = "call" and not exists(g.getMethod())
+    or
+    result = g.getMethod().(Ruby::Token).getValue()
   }
 
   final override Expr getArgumentImpl(int n) { toGenerated(result) = g.getArguments().getChild(n) }
@@ -115,12 +117,26 @@ class ElementReferenceImpl extends MethodCallImpl, TElementReference {
 
 abstract class SuperCallImpl extends MethodCallImpl, TSuperCall { }
 
+private Ruby::AstNode getSuperParent(Ruby::Super sup) {
+  result = sup
+  or
+  result = getSuperParent(sup).getParent() and
+  not result instanceof Ruby::Method
+}
+
+private string getSuperMethodName(Ruby::Super sup) {
+  exists(Ruby::Method meth |
+    meth = getSuperParent(sup).getParent() and
+    result = any(Method c | toGenerated(c) = meth).getName()
+  )
+}
+
 class TokenSuperCall extends SuperCallImpl, TTokenSuperCall {
   private Ruby::Super g;
 
   TokenSuperCall() { this = TTokenSuperCall(g) }
 
-  final override string getMethodNameImpl() { result = g.getValue() }
+  final override string getMethodNameImpl() { result = getSuperMethodName(g) }
 
   final override Expr getReceiverImpl() { none() }
 
@@ -136,7 +152,7 @@ class RegularSuperCall extends SuperCallImpl, TRegularSuperCall {
 
   RegularSuperCall() { this = TRegularSuperCall(g) }
 
-  final override string getMethodNameImpl() { result = g.getMethod().(Ruby::Super).getValue() }
+  final override string getMethodNameImpl() { result = getSuperMethodName(g.getMethod()) }
 
   final override Expr getReceiverImpl() { none() }
 

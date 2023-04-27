@@ -14,8 +14,8 @@ import codeql_ql.style.UseInstanceofExtensionQuery
 from Class c, Type type, string message
 where
   (
-    usesCastingBasedInstanceof(c, type) or
-    usesFieldBasedInstanceof(c, any(TypeExpr te | te.getResolvedType() = type), _, _)
+    instanceofThisInCharPred(c, type) or
+    usesFieldBasedInstanceof(c, type, _, _)
   ) and
   message = "Consider defining this class as non-extending subtype of $@."
 select c, message, type.getDeclaration(), type.getName()

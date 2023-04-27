@@ -12,8 +12,8 @@ import Metrics.Internal.Extents
 /** Gets the LGTM suppression annotation text in the string `s`, if any. */
 bindingset[s]
 string getAnnotationText(string s) {
-  // match `lgtm[...]` anywhere in the comment
-  result = s.regexpFind("(?i)\\blgtm\\s*\\[[^\\]]*\\]", _, _)
+  // match `lgtm[...]` or `codeql[...]` anywhere in the comment
+  result = s.regexpFind("(?i)\\b(lgtm|codeql)\\s*\\[[^\\]]*\\]", _, _).trim()
 }
 
 /**
@@ -69,9 +69,7 @@ class SuppressionAnnotation extends SuppressWarningsAnnotation {
 /**
  * The scope of an alert suppression annotation.
  */
-class SuppressionScope extends @annotation {
-  SuppressionScope() { this instanceof SuppressionAnnotation }
-
+class SuppressionScope extends @annotation instanceof SuppressionAnnotation {
   /** Gets a suppression annotation with this scope. */
   SuppressionAnnotation getSuppressionAnnotation() { result = this }
 
@@ -85,7 +83,7 @@ class SuppressionScope extends @annotation {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    this.(SuppressionAnnotation).covers(filepath, startline, startcolumn, endline, endcolumn)
+    super.covers(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /** Gets a textual representation of this element. */
@@ -98,5 +96,5 @@ where
   annotationText = getAnnotationText(text)
 select c, // suppression entity
   text, // full text of suppression string
-  annotationText, // LGTM suppression annotation text
+  annotationText.regexpReplaceAll("(?i)^codeql", "lgtm"), // LGTM suppression annotation text
   c.getScope() // scope of suppression

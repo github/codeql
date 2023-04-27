@@ -6,5 +6,5 @@
 import csharp
 
 from UnboundGenericInterface c
-where c.getQualifiedName() = "Types.GenericInterface<>"
+where c.hasQualifiedName("Types", "GenericInterface<>")
 select c

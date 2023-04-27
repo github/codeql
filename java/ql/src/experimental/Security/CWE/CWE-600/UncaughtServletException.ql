@@ -9,6 +9,7 @@
  * @precision medium
  * @id java/uncaught-servlet-exception
  * @tags security
+ *       experimental
  *       external/cwe/cwe-600
  */
 
@@ -17,7 +18,7 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.Servlets
 import semmle.code.xml.WebXML
-import DataFlow::PathGraph
+import UncaughtServletExceptionFlow::PathGraph
 
 /** Holds if a given exception type is caught. */
 private predicate exceptionIsCaught(TryStmt t, RefType exType) {
@@ -65,15 +66,15 @@ class UncaughtServletExceptionSink extends DataFlow::ExprNode {
 }
 
 /** Taint configuration of uncaught exceptions caused by user provided data from `RemoteFlowSource` */
-class UncaughtServletExceptionConfiguration extends TaintTracking::Configuration {
-  UncaughtServletExceptionConfiguration() { this = "UncaughtServletException" }
+module UncaughtServletExceptionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UncaughtServletExceptionSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof UncaughtServletExceptionSink }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, UncaughtServletExceptionConfiguration c
-where c.hasFlowPath(source, sink) and not hasErrorPage()
+module UncaughtServletExceptionFlow = TaintTracking::Global<UncaughtServletExceptionConfig>;
+
+from UncaughtServletExceptionFlow::PathNode source, UncaughtServletExceptionFlow::PathNode sink
+where UncaughtServletExceptionFlow::flowPath(source, sink) and not hasErrorPage()
 select sink.getNode(), source, sink, "This value depends on a $@ and can throw uncaught exception.",
   source.getNode(), "user-provided value"

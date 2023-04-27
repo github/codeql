@@ -298,9 +298,7 @@ class MethodCallNode extends CallNode instanceof DataFlow::Impl::MethodCallNodeD
  * new Array(16)
  * ```
  */
-class NewNode extends InvokeNode {
-  NewNode() { this instanceof DataFlow::Impl::NewNodeDef }
-}
+class NewNode extends InvokeNode instanceof DataFlow::Impl::NewNodeDef { }
 
 /**
  * A data flow node corresponding to the `this` parameter in a function or `this` at the top-level.

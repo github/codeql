@@ -1205,6 +1205,17 @@ class ShiftRightInstruction extends BinaryBitwiseInstruction {
 }
 
 /**
+ * An instruction that shifts its left operand to the right by the number of bits specified by its
+ * right operand.
+ *
+ * Both operands must have an integer type. The result has the same type as the left operand.
+ * The leftmost bits are zero-filled.
+ */
+class UnsignedShiftRightInstruction extends BinaryBitwiseInstruction {
+  UnsignedShiftRightInstruction() { this.getOpcode() instanceof Opcode::UnsignedShiftRight }
+}
+
+/**
  * An instruction that performs a binary arithmetic operation involving at least one pointer
  * operand.
  */

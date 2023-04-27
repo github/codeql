@@ -59,7 +59,7 @@ func main() {
 
 	http.HandleFunc("/foo", handler) // $ handler="/foo"
 
-	http.HandleFunc("/bar", func(w http.ResponseWriter, r *http.Request) { // $ handler="/bar"
+	http.HandleFunc("/bar", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprintf(w, "Hello, %q", html.EscapeString(r.URL.Path))
-	})
+	}) // $ handler="/bar"
 }

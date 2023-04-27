@@ -7,18 +7,21 @@ import semmle.code.java.dataflow.TaintTracking
  * A taint-tracking configuration for unsafe user input
  * that is used to construct and evaluate an expression.
  */
-class JakartaExpressionInjectionConfig extends TaintTracking::Configuration {
-  JakartaExpressionInjectionConfig() { this = "JakartaExpressionInjectionConfig" }
+module JakartaExpressionInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof ExpressionEvaluationSink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof ExpressionEvaluationSink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
+  predicate isAdditionalFlowStep(DataFlow::Node fromNode, DataFlow::Node toNode) {
     any(TaintPropagatingCall c).taintFlow(fromNode, toNode) or
     hasGetterFlow(fromNode, toNode)
   }
 }
+
+/**
+ * Taint-tracking flow from remote sources, through an expression, to its eventual evaluation.
+ */
+module JakartaExpressionInjectionFlow = TaintTracking::Global<JakartaExpressionInjectionConfig>;
 
 /**
  * A sink for Expresssion Language injection vulnerabilities,

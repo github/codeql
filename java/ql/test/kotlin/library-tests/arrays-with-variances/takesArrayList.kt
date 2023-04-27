@@ -110,6 +110,3 @@ public class TakesArrayList {
   fun inInArrayComparableAny(c: Comparable<Array<in Array<in Any>>>) { }
 
 }
-
-// Diagnostic Matches: Completion failure for type: org.jetbrains.annotations.NotNull
-// Diagnostic Matches: Unknown location for org.jetbrains.annotations.NotNull

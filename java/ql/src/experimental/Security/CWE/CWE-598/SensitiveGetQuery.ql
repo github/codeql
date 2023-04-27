@@ -6,6 +6,7 @@
  * @precision medium
  * @id java/sensitive-query-with-get
  * @tags security
+ *       experimental
  *       external/cwe/cwe-598
  */
 
@@ -13,7 +14,7 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.SensitiveActions
-import DataFlow::PathGraph
+import SensitiveGetQueryFlow::PathGraph
 
 /** A variable that holds sensitive information judging by its name. */
 class SensitiveInfoExpr extends Expr {
@@ -58,22 +59,22 @@ class RequestGetParamSource extends DataFlow::ExprNode {
 }
 
 /** A taint configuration tracking flow from the `ServletRequest` of a GET request handler to an expression whose name suggests it holds security-sensitive data. */
-class SensitiveGetQueryConfiguration extends TaintTracking::Configuration {
-  SensitiveGetQueryConfiguration() { this = "SensitiveGetQueryConfiguration" }
+module SensitiveGetQueryConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RequestGetParamSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RequestGetParamSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SensitiveInfoExpr }
+  predicate isSink(DataFlow::Node sink) { sink.asExpr() instanceof SensitiveInfoExpr }
 
   /** Holds if the node is in a servlet method other than `doGet`. */
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     isServletRequestMethod(node.getEnclosingCallable()) and
     not isGetServletMethod(node.getEnclosingCallable())
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, SensitiveGetQueryConfiguration c
-where c.hasFlowPath(source, sink)
+module SensitiveGetQueryFlow = TaintTracking::Global<SensitiveGetQueryConfig>;
+
+from SensitiveGetQueryFlow::PathNode source, SensitiveGetQueryFlow::PathNode sink
+where SensitiveGetQueryFlow::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "$@ uses the GET request method to transmit sensitive information.", source.getNode(),
   "This request"

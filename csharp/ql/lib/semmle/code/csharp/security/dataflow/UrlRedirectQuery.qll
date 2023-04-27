@@ -33,9 +33,11 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
 abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
 /**
+ * DEPRECATED: Use `UrlRedirect` instead.
+ *
  * A taint-tracking configuration for reasoning about unvalidated URL redirect vulnerabilities.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
+deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
   TaintTrackingConfiguration() { this = "UrlRedirect" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -49,10 +51,24 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   }
 }
 
-/** A source of remote user input. */
-class RemoteSource extends Source {
-  RemoteSource() { this instanceof RemoteFlowSource }
+/**
+ * A taint-tracking configuration for reasoning about unvalidated URL redirect vulnerabilities.
+ */
+private module UrlRedirectConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+/**
+ * A taint-tracking module for reasoning about unvalidated URL redirect vulnerabilities.
+ */
+module UrlRedirect = TaintTracking::Global<UrlRedirectConfig>;
+
+/** A source of remote user input. */
+class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /**
  * A URL argument to a call to `HttpResponse.Redirect()` or `Controller.Redirect()`, that is a

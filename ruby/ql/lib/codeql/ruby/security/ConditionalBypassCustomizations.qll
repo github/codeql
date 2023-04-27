@@ -37,9 +37,7 @@ module ConditionalBypass {
    * A source of remote user input, considered as a flow source for bypass of
    * sensitive action guards.
    */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * A conditional that guards a sensitive action, e.g. `ok` in `if (ok) login()`.

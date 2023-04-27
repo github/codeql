@@ -90,6 +90,16 @@ class ImportDeclaration extends Stmt, Import, @import_declaration {
 
   override PathExpr getImportedPath() { result = getChildExpr(-1) }
 
+  /**
+   * Gets the object literal passed as part of the `assert` clause in this import declaration.
+   *
+   * For example, this gets the `{ type: "json" }` object literal in the following:
+   * ```js
+   * import foo from "foo" assert { type: "json" };
+   * ```
+   */
+  ObjectExpr getImportAssertion() { result = this.getChildExpr(-10) }
+
   /** Gets the `i`th import specifier of this import declaration. */
   ImportSpecifier getSpecifier(int i) { result = getChildExpr(i) }
 
@@ -310,6 +320,19 @@ abstract class ExportDeclaration extends Stmt, @export_declaration {
   predicate isTypeOnly() { has_type_keyword(this) }
 
   override string getAPrimaryQlClass() { result = "ExportDeclaration" }
+
+  /**
+   * Gets the object literal passed as part of the `assert` clause, if this is
+   * a re-export declaration.
+   *
+   * For example, this gets the `{ type: "json" }` expression in each of the following:
+   * ```js
+   * export { x } from 'foo' assert { type: "json" };
+   * export * from 'foo' assert { type: "json" };
+   * export * as x from 'foo' assert { type: "json" };
+   * ```
+   */
+  ObjectExpr getImportAssertion() { result = this.getChildExpr(-10) }
 }
 
 /**

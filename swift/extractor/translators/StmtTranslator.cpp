@@ -15,6 +15,8 @@ void StmtTranslator::translateAndEmit(const swift::StmtConditionElement& element
   } else if (auto pattern = element.getPatternOrNull()) {
     entry.pattern = dispatcher.fetchLabel(pattern);
     entry.initializer = dispatcher.fetchLabel(element.getInitializer());
+  } else if (auto availability = element.getAvailability()) {
+    entry.availability = dispatcher.fetchLabel(availability);
   }
   dispatcher.emit(entry);
 }
@@ -24,6 +26,33 @@ void StmtTranslator::translateAndEmit(const swift::CaseLabelItem& labelItem) {
   entry.pattern = dispatcher.fetchLabel(labelItem.getPattern());
   entry.guard = dispatcher.fetchOptionalLabel(labelItem.getGuardExpr());
   dispatcher.emit(entry);
+}
+
+void StmtTranslator::translateAndEmit(const swift::PoundAvailableInfo& availability) {
+  auto entry = dispatcher.createEntry(availability);
+  entry.is_unavailable = availability.isUnavailability();
+  entry.specs = dispatcher.fetchRepeatedLabels(availability.getQueries());
+  dispatcher.emit(entry);
+}
+
+void StmtTranslator::translateAndEmit(const swift::AvailabilitySpec& spec) {
+  if (llvm::isa<swift::PlatformVersionConstraintAvailabilitySpec>(spec)) {
+    translateAndEmit(llvm::cast<swift::PlatformVersionConstraintAvailabilitySpec>(spec));
+  } else if (llvm::isa<swift::OtherPlatformAvailabilitySpec>(spec)) {
+    translateAndEmit(llvm::cast<swift::OtherPlatformAvailabilitySpec>(spec));
+  }
+}
+
+void StmtTranslator::translateAndEmit(
+    const swift::PlatformVersionConstraintAvailabilitySpec& spec) {
+  auto entry = dispatcher.createEntry(spec);
+  entry.platform = swift::platformString(spec.getPlatform()).str();
+  entry.version = spec.getVersion().getAsString();
+  dispatcher.emit(entry);
+}
+
+void StmtTranslator::translateAndEmit(const swift::OtherPlatformAvailabilitySpec& spec) {
+  dispatcher.emit(dispatcher.createEntry(spec));
 }
 
 codeql::BraceStmt StmtTranslator::translateBraceStmt(const swift::BraceStmt& stmt) {

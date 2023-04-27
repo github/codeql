@@ -38,7 +38,6 @@ import semmle.go.frameworks.Echo
 import semmle.go.frameworks.ElazarlGoproxy
 import semmle.go.frameworks.Email
 import semmle.go.frameworks.Encoding
-import semmle.go.frameworks.EvanphxJsonPatch
 import semmle.go.frameworks.Gin
 import semmle.go.frameworks.Glog
 import semmle.go.frameworks.GoRestfulHttp
@@ -56,6 +55,7 @@ import semmle.go.frameworks.SQL
 import semmle.go.frameworks.Stdlib
 import semmle.go.frameworks.SystemCommandExecutors
 import semmle.go.frameworks.Testing
+import semmle.go.frameworks.Twirp
 import semmle.go.frameworks.WebSocket
 import semmle.go.frameworks.XNetHtml
 import semmle.go.frameworks.XPath

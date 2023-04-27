@@ -178,3 +178,7 @@ func ifConfig() {
   12
   #endif
 }
+
+class B {}
+typealias A = B
+typealias C = Int?

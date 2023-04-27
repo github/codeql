@@ -8,31 +8,29 @@
  * @precision high
  * @id java/mybatis-annotation-sql-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-089
  */
 
 import java
-import DataFlow::PathGraph
 import MyBatisCommonLib
 import MyBatisAnnotationSqlInjectionLib
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTracking
+import MyBatisAnnotationSqlInjectionFlow::PathGraph
 
-private class MyBatisAnnotationSqlInjectionConfiguration extends TaintTracking::Configuration {
-  MyBatisAnnotationSqlInjectionConfiguration() { this = "MyBatis annotation sql injection" }
+private module MyBatisAnnotationSqlInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
+  predicate isSink(DataFlow::Node sink) { sink instanceof MyBatisAnnotatedMethodCallArgument }
 
-  override predicate isSink(DataFlow::Node sink) {
-    sink instanceof MyBatisAnnotatedMethodCallArgument
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node.getType() instanceof PrimitiveType or
     node.getType() instanceof BoxedType or
     node.getType() instanceof NumberType
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     exists(MethodAccess ma |
       ma.getMethod().getDeclaringType() instanceof TypeObject and
       ma.getMethod().getName() = "toString" and
@@ -42,12 +40,15 @@ private class MyBatisAnnotationSqlInjectionConfiguration extends TaintTracking::
   }
 }
 
+private module MyBatisAnnotationSqlInjectionFlow =
+  TaintTracking::Global<MyBatisAnnotationSqlInjectionConfig>;
+
 from
-  MyBatisAnnotationSqlInjectionConfiguration cfg, DataFlow::PathNode source,
-  DataFlow::PathNode sink, IbatisSqlOperationAnnotation isoa, MethodAccess ma,
-  string unsafeExpression
+  MyBatisAnnotationSqlInjectionFlow::PathNode source,
+  MyBatisAnnotationSqlInjectionFlow::PathNode sink, IbatisSqlOperationAnnotation isoa,
+  MethodAccess ma, string unsafeExpression
 where
-  cfg.hasFlowPath(source, sink) and
+  MyBatisAnnotationSqlInjectionFlow::flowPath(source, sink) and
   ma.getAnArgument() = sink.getNode().asExpr() and
   myBatisSqlOperationAnnotationFromMethod(ma.getMethod(), isoa) and
   unsafeExpression = getAMybatisAnnotationSqlValue(isoa) and

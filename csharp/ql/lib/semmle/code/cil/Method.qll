@@ -67,7 +67,8 @@ class MethodImplementation extends EntryPoint, @cil_method_implementation {
  * destructors, operators, accessors and so on.
  */
 class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowNode,
-  CustomModifierReceiver, Parameterizable, @cil_method {
+  CustomModifierReceiver, Parameterizable, @cil_method
+{
   /**
    * Gets a method implementation, if any. Note that there can
    * be several implementations in different assemblies.
@@ -146,7 +147,7 @@ class Method extends DotNet::Callable, Element, Member, TypeContainer, DataFlowN
 
   /** Holds if this method is a destructor/finalizer. */
   predicate isFinalizer() {
-    this.getOverriddenMethod*().getQualifiedName() = "System.Object.Finalize"
+    this.getOverriddenMethod*().hasQualifiedName("System", "Object", "Finalize")
   }
 
   /** Holds if this method is an operator. */
@@ -258,7 +259,7 @@ class Setter extends Accessor {
 
   /** Holds if this setter is an `init` accessor. */
   predicate isInitOnly() {
-    exists(Type t | t.getQualifiedName() = "System.Runtime.CompilerServices.IsExternalInit" |
+    exists(Type t | t.hasQualifiedName("System.Runtime.CompilerServices", "IsExternalInit") |
       this.hasRequiredCustomModifier(t)
     )
   }

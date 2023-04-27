@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeAnonymousType<>", "(System.String,T)", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["Newtonsoft.Json", "JsonConvert", False, "DeserializeAnonymousType<>", "(System.String,T,Newtonsoft.Json.JsonSerializerSettings)", "", "Argument[0]", "ReturnValue", "taint", "manual"]

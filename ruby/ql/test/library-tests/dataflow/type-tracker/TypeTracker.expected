@@ -446,7 +446,7 @@ trackEnd
 | type_tracker.rb:13:11:13:23 | call to new | type_tracker.rb:7:5:9:7 | self (field) |
 | type_tracker.rb:13:11:13:23 | call to new | type_tracker.rb:7:5:9:7 | self in field |
 | type_tracker.rb:13:11:13:23 | call to new | type_tracker.rb:8:9:8:14 | self |
-| type_tracker.rb:13:11:13:23 | call to new | type_tracker.rb:13:5:13:23 | ... = ... |
+| type_tracker.rb:13:11:13:23 | call to new | type_tracker.rb:13:5:13:7 | var |
 | type_tracker.rb:13:11:13:23 | call to new | type_tracker.rb:13:5:13:23 | ... = ... |
 | type_tracker.rb:13:11:13:23 | call to new | type_tracker.rb:13:11:13:23 | call to new |
 | type_tracker.rb:13:11:13:23 | call to new | type_tracker.rb:14:5:14:7 | var |
@@ -467,7 +467,7 @@ trackEnd
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:5:14:23 | ... |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:17:14:23 | "hello" |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:17:14:23 | ... = ... |
-| type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:17:14:23 | ... = ... |
+| type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:14:17:14:23 | __synth__0 |
 | type_tracker.rb:14:17:14:23 | "hello" | type_tracker.rb:15:10:15:18 | call to field |
 | type_tracker.rb:14:17:14:23 | __synth__0 | type_tracker.rb:14:17:14:23 | __synth__0 |
 | type_tracker.rb:15:5:15:18 | call to puts | type_tracker.rb:12:1:16:3 | return return in m |
@@ -606,8 +606,8 @@ trackEnd
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:39:5:39:18 | ... |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:39:16:39:18 | ... = ... |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:39:16:39:18 | ... = ... |
-| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:39:16:39:18 | ... = ... |
-| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:39:16:39:18 | ... = ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:39:16:39:18 | __synth__0 |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:39:16:39:18 | __synth__0 |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:39:16:39:18 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:39:16:39:18 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:40:5:40:12 | ...[...] |
@@ -618,8 +618,8 @@ trackEnd
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:43:5:43:19 | ... |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:43:17:43:19 | ... = ... |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:43:17:43:19 | ... = ... |
-| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:43:17:43:19 | ... = ... |
-| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:43:17:43:19 | ... = ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:43:17:43:19 | __synth__0 |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:43:17:43:19 | __synth__0 |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:43:17:43:19 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:43:17:43:19 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:44:5:44:13 | ...[...] |
@@ -630,8 +630,8 @@ trackEnd
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:5:47:19 | ... |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | ... = ... |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | ... = ... |
-| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | ... = ... |
-| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | ... = ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | __synth__0 |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | __synth__0 |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:47:17:47:19 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:5:51:13 | __synth__0 |
@@ -640,8 +640,8 @@ trackEnd
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:5:51:19 | ... |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | ... = ... |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | ... = ... |
-| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | ... = ... |
-| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | ... = ... |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | __synth__0 |
+| type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | __synth__0 |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:51:17:51:19 | obj |
 | type_tracker.rb:34:18:34:20 | obj | type_tracker.rb:52:5:52:13 | ...[...] |
@@ -664,7 +664,7 @@ trackEnd
 | type_tracker.rb:34:26:34:26 | z | type_tracker.rb:52:12:52:12 | z |
 | type_tracker.rb:35:5:35:7 | tmp | type_tracker.rb:35:5:35:7 | tmp |
 | type_tracker.rb:35:11:35:15 | Array | type_tracker.rb:35:11:35:15 | Array |
-| type_tracker.rb:35:11:35:15 | call to [] | type_tracker.rb:35:5:35:15 | ... = ... |
+| type_tracker.rb:35:11:35:15 | call to [] | type_tracker.rb:35:5:35:7 | tmp |
 | type_tracker.rb:35:11:35:15 | call to [] | type_tracker.rb:35:5:35:15 | ... = ... |
 | type_tracker.rb:35:11:35:15 | call to [] | type_tracker.rb:35:11:35:15 | call to [] |
 | type_tracker.rb:35:11:35:15 | call to [] | type_tracker.rb:36:5:36:7 | tmp |
@@ -672,7 +672,7 @@ trackEnd
 | type_tracker.rb:36:9:36:9 | 0 | type_tracker.rb:36:9:36:9 | 0 |
 | type_tracker.rb:38:5:38:9 | array | type_tracker.rb:38:5:38:9 | array |
 | type_tracker.rb:38:13:38:25 | Array | type_tracker.rb:38:13:38:25 | Array |
-| type_tracker.rb:38:13:38:25 | call to [] | type_tracker.rb:38:5:38:25 | ... = ... |
+| type_tracker.rb:38:13:38:25 | call to [] | type_tracker.rb:38:5:38:9 | array |
 | type_tracker.rb:38:13:38:25 | call to [] | type_tracker.rb:38:5:38:25 | ... = ... |
 | type_tracker.rb:38:13:38:25 | call to [] | type_tracker.rb:38:13:38:25 | call to [] |
 | type_tracker.rb:38:13:38:25 | call to [] | type_tracker.rb:39:5:39:9 | array |
@@ -692,7 +692,7 @@ trackEnd
 | type_tracker.rb:40:11:40:11 | 0 | type_tracker.rb:40:11:40:11 | 0 |
 | type_tracker.rb:42:5:42:10 | array2 | type_tracker.rb:42:5:42:10 | array2 |
 | type_tracker.rb:42:14:42:26 | Array | type_tracker.rb:42:14:42:26 | Array |
-| type_tracker.rb:42:14:42:26 | call to [] | type_tracker.rb:42:5:42:26 | ... = ... |
+| type_tracker.rb:42:14:42:26 | call to [] | type_tracker.rb:42:5:42:10 | array2 |
 | type_tracker.rb:42:14:42:26 | call to [] | type_tracker.rb:42:5:42:26 | ... = ... |
 | type_tracker.rb:42:14:42:26 | call to [] | type_tracker.rb:42:14:42:26 | call to [] |
 | type_tracker.rb:42:14:42:26 | call to [] | type_tracker.rb:43:5:43:10 | array2 |
@@ -717,7 +717,7 @@ trackEnd
 | type_tracker.rb:44:5:44:13 | ...[...] | type_tracker.rb:44:5:44:13 | ...[...] |
 | type_tracker.rb:46:5:46:10 | array3 | type_tracker.rb:46:5:46:10 | array3 |
 | type_tracker.rb:46:14:46:26 | Array | type_tracker.rb:46:14:46:26 | Array |
-| type_tracker.rb:46:14:46:26 | call to [] | type_tracker.rb:46:5:46:26 | ... = ... |
+| type_tracker.rb:46:14:46:26 | call to [] | type_tracker.rb:46:5:46:10 | array3 |
 | type_tracker.rb:46:14:46:26 | call to [] | type_tracker.rb:46:5:46:26 | ... = ... |
 | type_tracker.rb:46:14:46:26 | call to [] | type_tracker.rb:46:14:46:26 | call to [] |
 | type_tracker.rb:46:14:46:26 | call to [] | type_tracker.rb:47:5:47:10 | array3 |
@@ -738,7 +738,7 @@ trackEnd
 | type_tracker.rb:48:12:48:12 | 1 | type_tracker.rb:48:12:48:12 | 1 |
 | type_tracker.rb:50:5:50:10 | array4 | type_tracker.rb:50:5:50:10 | array4 |
 | type_tracker.rb:50:14:50:26 | Array | type_tracker.rb:50:14:50:26 | Array |
-| type_tracker.rb:50:14:50:26 | call to [] | type_tracker.rb:50:5:50:26 | ... = ... |
+| type_tracker.rb:50:14:50:26 | call to [] | type_tracker.rb:50:5:50:10 | array4 |
 | type_tracker.rb:50:14:50:26 | call to [] | type_tracker.rb:50:5:50:26 | ... = ... |
 | type_tracker.rb:50:14:50:26 | call to [] | type_tracker.rb:50:14:50:26 | call to [] |
 | type_tracker.rb:50:14:50:26 | call to [] | type_tracker.rb:51:5:51:10 | array4 |

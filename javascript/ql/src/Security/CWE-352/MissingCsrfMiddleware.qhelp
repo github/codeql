@@ -25,7 +25,7 @@
 <recommendation>
 	<p>
 
-		Use a middleware package such as <code>csurf</code> to protect against CSRF attacks.
+		Use a middleware package such as <code>lusca.csrf</code> to protect against CSRF attacks.
 
 	</p>
 </recommendation>
@@ -58,6 +58,6 @@
 
 <references>
 	<li>OWASP: <a href="https://www.owasp.org/index.php/Cross-Site_Request_Forgery_(CSRF)">Cross-Site Request Forgery (CSRF)</a></li>
-	<li>NPM: <a href="https://www.npmjs.com/package/csurf">csurf</a></li>
+	<li>NPM: <a href="https://www.npmjs.com/package/lusca">lusca</a></li>
 </references>
 </qhelp>

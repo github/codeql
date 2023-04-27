@@ -348,6 +348,46 @@ module API {
     }
 
     /**
+     * Gets a node representing a function that is a wrapper around the function represented by this node.
+     *
+     * Concretely, a function that forwards all its parameters to a call to `f` and returns the result of that call
+     * is considered a wrapper around `f`.
+     *
+     * Examples:
+     * ```js
+     * function f(x) {
+     *   return g(x); // f = g.getForwardingFunction()
+     * }
+     *
+     * function doExec(x) {
+     *   console.log(x);
+     *   return exec(x); // doExec = exec.getForwardingFunction()
+     * }
+     *
+     * function doEither(x, y) {
+     *   if (x > y) {
+     *     return foo(x, y); // doEither = foo.getForwardingFunction()
+     *   } else {
+     *     return bar(x, y); // doEither = bar.getForwardingFunction()
+     *   }
+     * }
+     *
+     * function wrapWithLogging(f) {
+     *   return (x) => {
+     *     console.log(x);
+     *     return f(x); // f.getForwardingFunction() = anonymous arrow function
+     *   }
+     * }
+     * wrapWithLogging(g); // g.getForwardingFunction() = wrapWithLogging(g)
+     * ```
+     */
+    cached
+    Node getForwardingFunction() {
+      Stages::ApiStage::ref() and
+      result = this.getASuccessor(Label::forwardingFunction())
+    }
+
+    /**
      * Gets any class that has this value as a decorator.
      *
      * For example:
@@ -460,7 +500,6 @@ module API {
       this = Impl::MkClassInstance(result) or
       this = Impl::MkUse(result) or
       this = Impl::MkDef(result) or
-      this = Impl::MkAsyncFuncResult(result) or
       this = Impl::MkSyntheticCallbackArg(_, _, result)
     }
 
@@ -562,6 +601,9 @@ module API {
     /** Gets a node whose type has the given qualified name, not including types from models. */
     Node getANodeOfTypeRaw(string moduleName, string exportedName) {
       result = Impl::MkTypeUse(moduleName, exportedName).(Node).getInstance()
+      or
+      exportedName = "" and
+      result = getAModuleImportRaw(moduleName)
     }
   }
 
@@ -671,9 +713,6 @@ module API {
           cls.getAnInstanceReference() = trackDefNode(_)
         )
       } or
-      MkAsyncFuncResult(DataFlow::FunctionNode f) {
-        f = trackDefNode(_) and f.getFunction().isAsync() and hasSemantics(f)
-      } or
       MkDef(DataFlow::Node nd) { rhs(_, _, nd) } or
       MkUse(DataFlow::Node nd) { use(_, _, nd) } or
       /** A use of a TypeScript type. */
@@ -688,8 +727,7 @@ module API {
 
     class TDef = MkModuleDef or TNonModuleDef;
 
-    class TNonModuleDef =
-      MkModuleExport or MkClassInstance or MkAsyncFuncResult or MkDef or MkSyntheticCallbackArg;
+    class TNonModuleDef = MkModuleExport or MkClassInstance or MkDef or MkSyntheticCallbackArg;
 
     class TUse = MkModuleUse or MkModuleImport or MkUse or MkTypeUse;
 
@@ -740,10 +778,11 @@ module API {
             rhs = m.getAnExportedValue(prop)
           )
           or
-          exists(DataFlow::FunctionNode fn | fn = pred |
-            not fn.getFunction().isAsync() and
-            lbl = Label::return() and
-            rhs = fn.getAReturn()
+          exists(DataFlow::FunctionNode fn |
+            fn = pred and
+            lbl = Label::return()
+          |
+            if fn.getFunction().isAsync() then rhs = fn.getReturnNode() else rhs = fn.getAReturn()
           )
           or
           lbl = Label::promised() and
@@ -774,13 +813,12 @@ module API {
         )
         or
         exists(DataFlow::FunctionNode f |
-          base = MkAsyncFuncResult(f) and
+          f.getFunction().isAsync() and
+          base = MkDef(f.getReturnNode())
+        |
           lbl = Label::promised() and
           rhs = f.getAReturn()
-        )
-        or
-        exists(DataFlow::FunctionNode f |
-          base = MkAsyncFuncResult(f) and
+          or
           lbl = Label::promisedError() and
           rhs = f.getExceptionalReturn()
         )
@@ -903,6 +941,9 @@ module API {
           or
           lbl = Label::return() and
           ref = pred.getAnInvocation()
+          or
+          lbl = Label::forwardingFunction() and
+          DataFlow::functionForwardingStep(pred.getALocalUse(), ref)
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
@@ -1272,10 +1313,11 @@ module API {
       )
       or
       exists(DataFlow::Node nd, DataFlow::FunctionNode f |
+        f.getFunction().isAsync() and
         pred = MkDef(nd) and
         f = trackDefNode(nd) and
         lbl = Label::return() and
-        succ = MkAsyncFuncResult(f)
+        succ = MkDef(f.getReturnNode())
       )
       or
       exists(int bound, DataFlow::InvokeNode call |
@@ -1432,6 +1474,9 @@ module API {
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
 
+    /** Gets the label representing a function wrapper that forwards to an underlying function. */
+    LabelForwardingFunction forwardingFunction() { any() }
+
     /** Gets the `promised` edge label connecting a promise to its contained value. */
     LabelPromised promised() { any() }
 
@@ -1484,6 +1529,7 @@ module API {
         MkLabelDecoratedClass() or
         MkLabelDecoratedMember() or
         MkLabelDecoratedParameter() or
+        MkLabelForwardingFunction() or
         MkLabelEntryPoint(API::EntryPoint e)
 
       /** A label for an entry-point. */
@@ -1565,6 +1611,11 @@ module API {
       /** A label for the receiver of call, that is, the value passed as `this`. */
       class LabelReceiver extends ApiLabel, MkLabelReceiver {
         override string toString() { result = "getReceiver()" }
+      }
+
+      /** A label for a function that is a wrapper around another function. */
+      class LabelForwardingFunction extends ApiLabel, MkLabelForwardingFunction {
+        override string toString() { result = "getForwardingFunction()" }
       }
 
       /** A label for a class decorated by the current value. */

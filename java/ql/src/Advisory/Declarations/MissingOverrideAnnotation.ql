@@ -12,7 +12,7 @@
 import java
 
 class OverridingMethod extends Method {
-  OverridingMethod() { exists(Method m | this.overrides(m)) }
+  OverridingMethod() { this.overrides(_) }
 
   predicate isOverrideAnnotated() { this.getAnAnnotation() instanceof OverrideAnnotation }
 }

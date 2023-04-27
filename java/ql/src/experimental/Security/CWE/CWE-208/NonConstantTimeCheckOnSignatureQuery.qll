@@ -4,8 +4,6 @@
 
 import semmle.code.java.controlflow.Guards
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.TaintTracking2
-import semmle.code.java.dataflow.DataFlow3
 import semmle.code.java.dataflow.FlowSources
 
 /** A method call that produces cryptographic result. */
@@ -51,10 +49,8 @@ private class ProduceSignatureCall extends ProduceCryptoCall {
  * A config that tracks data flow from initializing a cipher for encryption
  * to producing a ciphertext using this cipher.
  */
-private class InitializeEncryptorConfig extends DataFlow3::Configuration {
-  InitializeEncryptorConfig() { this = "InitializeEncryptorConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+private module InitializeEncryptorConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(MethodAccess ma |
       ma.getMethod().hasQualifiedName("javax.crypto", "Cipher", "init") and
       ma.getArgument(0).(VarAccess).getVariable().hasName("ENCRYPT_MODE") and
@@ -62,13 +58,15 @@ private class InitializeEncryptorConfig extends DataFlow3::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess ma |
       ma.getMethod().hasQualifiedName("javax.crypto", "Cipher", "doFinal") and
       ma.getQualifier() = sink.asExpr()
     )
   }
 }
+
+private module InitializeEncryptorFlow = DataFlow::Global<InitializeEncryptorConfig>;
 
 /** A method call that produces a ciphertext. */
 private class ProduceCiphertextCall extends ProduceCryptoCall {
@@ -90,9 +88,7 @@ private class ProduceCiphertextCall extends ProduceCryptoCall {
         this.getArgument(1) = output
       )
     ) and
-    exists(InitializeEncryptorConfig config |
-      config.hasFlowTo(DataFlow3::exprNode(this.getQualifier()))
-    )
+    InitializeEncryptorFlow::flowToExpr(this.getQualifier())
   }
 
   override string getResultType() { result = "ciphertext" }
@@ -151,16 +147,14 @@ private predicate updateMessageDigestStep(DataFlow2::Node fromNode, DataFlow2::N
  * A config that tracks data flow from remote user input to a cryptographic operation
  * such as cipher, MAC or signature.
  */
-private class UserInputInCryptoOperationConfig extends TaintTracking2::Configuration {
-  UserInputInCryptoOperationConfig() { this = "UserInputInCryptoOperationConfig" }
+private module UserInputInCryptoOperationConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(ProduceCryptoCall call | call.getQualifier() = sink.asExpr())
   }
 
-  override predicate isAdditionalTaintStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
+  predicate isAdditionalFlowStep(DataFlow2::Node fromNode, DataFlow2::Node toNode) {
     updateCryptoOperationStep(fromNode, toNode)
     or
     createMessageDigestStep(fromNode, toNode)
@@ -168,6 +162,13 @@ private class UserInputInCryptoOperationConfig extends TaintTracking2::Configura
     updateMessageDigestStep(fromNode, toNode)
   }
 }
+
+/**
+ * Taint-tracking flow from remote user input to a cryptographic operation
+ * such as cipher, MAC or signature.
+ */
+private module UserInputInCryptoOperationFlow =
+  TaintTracking::Global<UserInputInCryptoOperationConfig>;
 
 /** A source that produces result of cryptographic operation. */
 class CryptoOperationSource extends DataFlow::Node {
@@ -177,10 +178,8 @@ class CryptoOperationSource extends DataFlow::Node {
 
   /** Holds if remote user input was used in the cryptographic operation. */
   predicate includesUserInput() {
-    exists(
-      DataFlow2::PathNode source, DataFlow2::PathNode sink, UserInputInCryptoOperationConfig config
-    |
-      config.hasFlowPath(source, sink)
+    exists(UserInputInCryptoOperationFlow::PathNode sink |
+      UserInputInCryptoOperationFlow::flowPath(_, sink)
     |
       sink.getNode().asExpr() = call.getQualifier()
     )
@@ -214,12 +213,10 @@ private class NonConstantTimeComparisonCall extends StaticMethodAccess {
  * A config that tracks data flow from remote user input to methods
  * that compare inputs using a non-constant-time algorithm.
  */
-private class UserInputInComparisonConfig extends TaintTracking2::Configuration {
-  UserInputInComparisonConfig() { this = "UserInputInComparisonConfig" }
+private module UserInputInComparisonConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(NonConstantTimeEqualsCall call |
       sink.asExpr() = [call.getAnArgument(), call.getQualifier()]
     )
@@ -227,6 +224,8 @@ private class UserInputInComparisonConfig extends TaintTracking2::Configuration 
     exists(NonConstantTimeComparisonCall call | sink.asExpr() = call.getAnArgument())
   }
 }
+
+private module UserInputInComparisonFlow = TaintTracking::Global<UserInputInComparisonConfig>;
 
 /** Holds if `expr` looks like a constant. */
 private predicate looksLikeConstant(Expr expr) {
@@ -303,21 +302,18 @@ class NonConstantTimeComparisonSink extends DataFlow::Node {
   }
 
   /** Holds if remote user input was used in the comparison. */
-  predicate includesUserInput() {
-    exists(UserInputInComparisonConfig config |
-      config.hasFlowTo(DataFlow2::exprNode(anotherParameter))
-    )
-  }
+  predicate includesUserInput() { UserInputInComparisonFlow::flowToExpr(anotherParameter) }
 }
 
 /**
  * A configuration that tracks data flow from cryptographic operations
  * to methods that compare data using a non-constant-time algorithm.
  */
-class NonConstantTimeCryptoComparisonConfig extends TaintTracking::Configuration {
-  NonConstantTimeCryptoComparisonConfig() { this = "NonConstantTimeCryptoComparisonConfig" }
+module NonConstantTimeCryptoComparisonConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof CryptoOperationSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof CryptoOperationSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof NonConstantTimeComparisonSink }
 }
+
+module NonConstantTimeCryptoComparisonFlow =
+  TaintTracking::Global<NonConstantTimeCryptoComparisonConfig>;

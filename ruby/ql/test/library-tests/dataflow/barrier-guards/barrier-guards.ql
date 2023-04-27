@@ -4,6 +4,7 @@ import codeql.ruby.controlflow.CfgNodes
 import codeql.ruby.controlflow.ControlFlowGraph
 import codeql.ruby.controlflow.BasicBlocks
 import codeql.ruby.DataFlow
+import TestUtilities.InlineExpectationsTest
 
 query predicate oldStyleBarrierGuards(
   BarrierGuard g, DataFlow::Node guardedNode, ExprCfgNode expr, boolean branch
@@ -21,4 +22,20 @@ query predicate controls(CfgNode condition, BasicBlock bb, SuccessorTypes::Condi
     cb.controls(bb, s) and
     condition = cb.getLastNode()
   )
+}
+
+class BarrierGuardTest extends InlineExpectationsTest {
+  BarrierGuardTest() { this = "BarrierGuardTest" }
+
+  override string getARelevantTag() { result = "guarded" }
+
+  override predicate hasActualResult(Location location, string element, string tag, string value) {
+    tag = "guarded" and
+    exists(DataFlow::Node n |
+      newStyleBarrierGuards(n) and
+      location = n.getLocation() and
+      element = n.toString() and
+      value = ""
+    )
+  }
 }

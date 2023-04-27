@@ -8,6 +8,10 @@ import semmle.code.java.controlflow.Guards
 import semmle.code.java.security.UrlRedirect
 import Regex
 
+private class ActivateModels extends ActiveExperimentalModels {
+  ActivateModels() { this = "permissive-dot-regex-query" }
+}
+
 /** A string that ends with `.*` not prefixed with `\`. */
 private class PermissiveDotStr extends StringLiteral {
   PermissiveDotStr() {
@@ -16,20 +20,6 @@ private class PermissiveDotStr extends StringLiteral {
       not s.charAt(i - 1) = "\\" and
       s.length() = i + 2
     )
-  }
-}
-
-/** Remote flow sources obtained from the URI of a servlet request. */
-private class GetServletUriSource extends SourceModelCsv {
-  override predicate row(string row) {
-    row =
-      [
-        "javax.servlet.http;HttpServletRequest;false;getPathInfo;();;ReturnValue;uri-path;manual",
-        "javax.servlet.http;HttpServletRequest;false;getPathTranslated;();;ReturnValue;uri-path;manual",
-        "javax.servlet.http;HttpServletRequest;false;getRequestURI;();;ReturnValue;uri-path;manual",
-        "javax.servlet.http;HttpServletRequest;false;getRequestURL;();;ReturnValue;uri-path;manual",
-        "javax.servlet.http;HttpServletRequest;false;getServletPath;();;ReturnValue;uri-path;manual"
-      ]
   }
 }
 
@@ -103,14 +93,12 @@ private class CompileRegexSink extends DataFlow::ExprNode {
 /**
  * A data flow configuration for regular expressions that include permissive dots.
  */
-private class PermissiveDotRegexConfig extends DataFlow2::Configuration {
-  PermissiveDotRegexConfig() { this = "PermissiveDotRegex::PermissiveDotRegexConfig" }
+private module PermissiveDotRegexConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow2::Node src) { src.asExpr() instanceof PermissiveDotStr }
 
-  override predicate isSource(DataFlow2::Node src) { src.asExpr() instanceof PermissiveDotStr }
+  predicate isSink(DataFlow2::Node sink) { sink instanceof CompileRegexSink }
 
-  override predicate isSink(DataFlow2::Node sink) { sink instanceof CompileRegexSink }
-
-  override predicate isBarrier(DataFlow2::Node node) {
+  predicate isBarrier(DataFlow2::Node node) {
     exists(
       MethodAccess ma, Field f // Pattern.compile(PATTERN, Pattern.DOTALL)
     |
@@ -123,19 +111,19 @@ private class PermissiveDotRegexConfig extends DataFlow2::Configuration {
   }
 }
 
+private module PermissiveDotRegexFlow = DataFlow::Global<PermissiveDotRegexConfig>;
+
 /**
  * A taint-tracking configuration for untrusted user input used to match regular expressions
  * that include permissive dots.
  */
-class MatchRegexConfiguration extends TaintTracking::Configuration {
-  MatchRegexConfiguration() { this = "PermissiveDotRegex::MatchRegexConfiguration" }
-
-  override predicate isSource(DataFlow::Node source) {
+module MatchRegexConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     sourceNode(source, "uri-path") or // Servlet uri source
     source instanceof SpringUriInputParameterSource // Spring uri source
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink instanceof MatchRegexSink and
     exists(
       Guard guard, Expr se, Expr ce // used in a condition to control url redirect, which is a typical security enforcement
@@ -155,7 +143,7 @@ class MatchRegexConfiguration extends TaintTracking::Configuration {
       ) and
       guard.controls(se.getBasicBlock(), true)
     ) and
-    exists(MethodAccess ma | any(PermissiveDotRegexConfig conf2).hasFlowToExpr(ma.getArgument(0)) |
+    exists(MethodAccess ma | PermissiveDotRegexFlow::flowToExpr(ma.getArgument(0)) |
       // input.matches(regexPattern)
       ma.getMethod() instanceof StringMatchMethod and
       ma.getQualifier() = sink.asExpr()
@@ -174,6 +162,8 @@ class MatchRegexConfiguration extends TaintTracking::Configuration {
     )
   }
 }
+
+module MatchRegexFlow = TaintTracking::Global<MatchRegexConfig>;
 
 /**
  * A data flow sink representing a string being matched against a regular expression.

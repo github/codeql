@@ -1,12 +1,18 @@
-var app = require("express")(),
+const app = require("express")(),
   cookieParser = require("cookie-parser"),
-  passport = require("passport"),
-  csrf = require("csurf");
+  bodyParser = require("body-parser"),
+  session = require("express-session"),
+  csrf = require('lusca').csrf;
 
 app.use(cookieParser());
-app.use(passport.authorize({ session: true }));
-app.use(csrf({ cookie: true }));
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(session({ secret: process.env['SECRET'], cookie: { maxAge: 60000 } }));
+app.use(csrf());
+
+// ...
+
 app.post("/changeEmail", function(req, res) {
-  let newEmail = req.cookies["newEmail"];
-  // ...
+  const userId = req.session.id;
+  const email = req.body["email"];
+  // ... update email associated with userId
 });

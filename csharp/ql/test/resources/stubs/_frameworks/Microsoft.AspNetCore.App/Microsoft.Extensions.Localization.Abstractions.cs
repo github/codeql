@@ -1,4 +1,5 @@
 // This file contains auto-generated code.
+// Generated from `Microsoft.Extensions.Localization.Abstractions, Version=7.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`.
 
 namespace Microsoft
 {
@@ -6,7 +7,6 @@ namespace Microsoft
     {
         namespace Localization
         {
-            // Generated from `Microsoft.Extensions.Localization.IStringLocalizer` in `Microsoft.Extensions.Localization.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IStringLocalizer
             {
                 System.Collections.Generic.IEnumerable<Microsoft.Extensions.Localization.LocalizedString> GetAllStrings(bool includeParentCultures);
@@ -14,19 +14,16 @@ namespace Microsoft
                 Microsoft.Extensions.Localization.LocalizedString this[string name] { get; }
             }
 
-            // Generated from `Microsoft.Extensions.Localization.IStringLocalizer<>` in `Microsoft.Extensions.Localization.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IStringLocalizer<T> : Microsoft.Extensions.Localization.IStringLocalizer
             {
             }
 
-            // Generated from `Microsoft.Extensions.Localization.IStringLocalizerFactory` in `Microsoft.Extensions.Localization.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public interface IStringLocalizerFactory
             {
                 Microsoft.Extensions.Localization.IStringLocalizer Create(System.Type resourceSource);
                 Microsoft.Extensions.Localization.IStringLocalizer Create(string baseName, string location);
             }
 
-            // Generated from `Microsoft.Extensions.Localization.LocalizedString` in `Microsoft.Extensions.Localization.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class LocalizedString
             {
                 public LocalizedString(string name, string value) => throw null;
@@ -40,7 +37,6 @@ namespace Microsoft
                 public static implicit operator string(Microsoft.Extensions.Localization.LocalizedString localizedString) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Localization.StringLocalizer<>` in `Microsoft.Extensions.Localization.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public class StringLocalizer<TResourceSource> : Microsoft.Extensions.Localization.IStringLocalizer, Microsoft.Extensions.Localization.IStringLocalizer<TResourceSource>
             {
                 public System.Collections.Generic.IEnumerable<Microsoft.Extensions.Localization.LocalizedString> GetAllStrings(bool includeParentCultures) => throw null;
@@ -49,7 +45,6 @@ namespace Microsoft
                 public StringLocalizer(Microsoft.Extensions.Localization.IStringLocalizerFactory factory) => throw null;
             }
 
-            // Generated from `Microsoft.Extensions.Localization.StringLocalizerExtensions` in `Microsoft.Extensions.Localization.Abstractions, Version=6.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60`
             public static class StringLocalizerExtensions
             {
                 public static System.Collections.Generic.IEnumerable<Microsoft.Extensions.Localization.LocalizedString> GetAllStrings(this Microsoft.Extensions.Localization.IStringLocalizer stringLocalizer) => throw null;

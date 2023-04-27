@@ -12,8 +12,8 @@ private import semmle.code.java.dataflow.FlowSummary
 private import semmle.code.java.dataflow.InstanceAccess
 private import FlowSummaryImpl as FlowSummaryImpl
 private import TaintTrackingUtil as TaintTrackingUtil
+private import DataFlowNodes
 import DataFlowNodes::Public
-import semmle.code.Unit
 
 /** Holds if `n` is an access to an unqualified `this` at `cfgnode`. */
 private predicate thisAccess(Node n, ControlFlowNode cfgnode) {
@@ -185,14 +185,6 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1, node2, true)
 }
-
-private newtype TContent =
-  TFieldContent(InstanceField f) or
-  TArrayContent() or
-  TCollectionContent() or
-  TMapKeyContent() or
-  TMapValueContent() or
-  TSyntheticFieldContent(SyntheticField s)
 
 /**
  * A description of the way data may be stored inside an object. Examples

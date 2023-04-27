@@ -11,8 +11,8 @@ class HasExpRedos extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasExpRedos" and
-    exists(TreeView::RegExpTerm t, string pump, ExponentialBackTracking::State s, string prefixMsg |
-      ExponentialBackTracking::hasReDoSResult(t, pump, s, prefixMsg) and
+    exists(TreeView::RegExpTerm t |
+      ExponentialBackTracking::hasReDoSResult(t, _, _, _) and
       not t.getRegex().getAMode() = "VERBOSE" and
       value = "" and
       location = t.getLocation() and

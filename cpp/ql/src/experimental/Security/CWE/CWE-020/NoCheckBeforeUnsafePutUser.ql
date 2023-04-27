@@ -11,11 +11,12 @@
  * @problem.severity warning
  * @security-severity 7.5
  * @tags security
+ *       experimental
  *       external/cwe/cwe-020
  */
 
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 
 /**
  * A Linux system call.

@@ -2,9 +2,13 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.expr.Expr
+import codeql.swift.elements.KeyPathComponent
 import codeql.swift.elements.type.TypeRepr
 
 module Generated {
+  /**
+   * A key-path expression.
+   */
   class KeyPathExpr extends Synth::TKeyPathExpr, Expr {
     override string getAPrimaryQlClass() { result = "KeyPathExpr" }
 
@@ -32,26 +36,33 @@ module Generated {
     final predicate hasRoot() { exists(getRoot()) }
 
     /**
-     * Gets the parsed path of this key path expression, if it exists.
+     * Gets the `index`th component of this key path expression (0-based).
      *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
      * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Expr getImmediateParsedPath() {
+    KeyPathComponent getImmediateComponent(int index) {
       result =
-        Synth::convertExprFromRaw(Synth::convertKeyPathExprToRaw(this)
+        Synth::convertKeyPathComponentFromRaw(Synth::convertKeyPathExprToRaw(this)
               .(Raw::KeyPathExpr)
-              .getParsedPath())
+              .getComponent(index))
     }
 
     /**
-     * Gets the parsed path of this key path expression, if it exists.
+     * Gets the `index`th component of this key path expression (0-based).
      */
-    final Expr getParsedPath() { result = getImmediateParsedPath().resolve() }
+    final KeyPathComponent getComponent(int index) {
+      result = getImmediateComponent(index).resolve()
+    }
 
     /**
-     * Holds if `getParsedPath()` exists.
+     * Gets any of the components of this key path expression.
      */
-    final predicate hasParsedPath() { exists(getParsedPath()) }
+    final KeyPathComponent getAComponent() { result = getComponent(_) }
+
+    /**
+     * Gets the number of components of this key path expression.
+     */
+    final int getNumberOfComponents() { result = count(int i | exists(getComponent(i))) }
   }
 }

@@ -1,4 +1,5 @@
 import csharp
+import semmle.code.csharp.commons.QualifiedName
 
 query predicate records(RecordClass t, string i, RecordCloneMethod clone) {
   t.getABaseInterface().toStringWithTypes() = i and
@@ -7,7 +8,9 @@ query predicate records(RecordClass t, string i, RecordCloneMethod clone) {
 }
 
 private string getMemberName(Member m) {
-  result = m.getDeclaringType().getQualifiedName() + "." + m.toStringWithTypes()
+  exists(string qualifier, string name | m.getDeclaringType().hasQualifiedName(qualifier, name) |
+    result = getQualifiedName(qualifier, name) + "." + m.toStringWithTypes()
+  )
 }
 
 query predicate members(RecordClass t, string ms, string l) {

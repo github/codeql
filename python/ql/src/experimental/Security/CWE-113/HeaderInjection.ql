@@ -6,6 +6,7 @@
  * @problem.severity error
  * @id py/header-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-113
  *       external/cwe/cwe-079
  */

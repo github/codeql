@@ -196,9 +196,9 @@ newtype TControlFlowNode =
    * expression is initialized.
    */
   MkZeroInitNode(ValueEntity v) {
-    exists(ValueSpec spec, int i |
+    exists(ValueSpec spec |
       not exists(spec.getAnInit()) and
-      spec.getNameExpr(i) = v.getDeclaration()
+      spec.getNameExpr(_) = v.getDeclaration()
     )
     or
     exists(v.(ResultVariable).getFunction().getBody())
@@ -1305,10 +1305,10 @@ module CFG {
       exists(Completion inner | lastNode(this.getBody(), last, inner) and not inner.isNormal() |
         if inner = Break(this.getLabel())
         then cmpl = Done()
-        else
-          if inner = Continue(this.getLabel())
-          then none()
-          else cmpl = inner
+        else (
+          not inner = Continue(this.getLabel()) and
+          cmpl = inner
+        )
       )
     }
   }
@@ -2057,7 +2057,7 @@ module CFG {
    */
   cached
   predicate mayReturnNormally(ControlFlowTree root) {
-    exists(ControlFlow::Node last, Completion cmpl | lastNode(root, last, cmpl) and cmpl != Panic())
+    exists(Completion cmpl | lastNode(root, _, cmpl) and cmpl != Panic())
   }
 
   /**

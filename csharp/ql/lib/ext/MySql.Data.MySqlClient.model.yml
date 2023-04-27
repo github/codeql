@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSinkModel
+      extensible: sinkModel
     data:
       - ["MySql.Data.MySqlClient", "MySqlHelper", False, "ExecuteDataRow", "(System.String,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql", "manual"]
       - ["MySql.Data.MySqlClient", "MySqlHelper", False, "ExecuteDataRowAsync", "(System.String,System.String,MySql.Data.MySqlClient.MySqlParameter[])", "", "Argument[1]", "sql", "manual"]

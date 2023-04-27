@@ -7,7 +7,6 @@ import java
 import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.security.CleartextStorageQuery
-import semmle.code.java.security.Files
 import semmle.code.xml.AndroidManifest
 
 private class AndroidFilesystemCleartextStorageSink extends CleartextStorageSink {
@@ -25,16 +24,16 @@ class LocalFileOpenCall extends Storable {
   }
 
   override Expr getAnInput() {
-    exists(FilesystemFlowConfig conf, DataFlow::Node n |
+    exists(DataFlow::Node n |
       filesystemInput(n, result) and
-      conf.hasFlow(DataFlow::exprNode(this), n)
+      FilesystemFlow::flow(DataFlow::exprNode(this), n)
     )
   }
 
   override Expr getAStore() {
-    exists(FilesystemFlowConfig conf, DataFlow::Node n |
+    exists(DataFlow::Node n |
       closesFile(n, result) and
-      conf.hasFlow(DataFlow::exprNode(this), n)
+      FilesystemFlow::flow(DataFlow::exprNode(this), n)
     )
   }
 }
@@ -80,17 +79,15 @@ private class CloseFileMethod extends Method {
   }
 }
 
-private class FilesystemFlowConfig extends DataFlow::Configuration {
-  FilesystemFlowConfig() { this = "FilesystemFlowConfig" }
+private module FilesystemFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof LocalFileOpenCall }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof LocalFileOpenCall }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     filesystemInput(sink, _) or
     closesFile(sink, _)
   }
 
-  override predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
+  predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     // Add nested Writer constructors as extra data flow steps
     exists(ClassInstanceExpr cie |
       cie.getConstructedType().getAnAncestor().hasQualifiedName("java.io", "Writer") and
@@ -99,3 +96,5 @@ private class FilesystemFlowConfig extends DataFlow::Configuration {
     )
   }
 }
+
+private module FilesystemFlow = DataFlow::Global<FilesystemFlowConfig>;

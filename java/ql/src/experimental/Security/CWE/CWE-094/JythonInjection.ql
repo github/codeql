@@ -7,14 +7,16 @@
  * @precision high
  * @id java/jython-injection
  * @tags security
+ *       experimental
  *       external/cwe/cwe-094
  *       external/cwe/cwe-095
  */
 
 import java
 import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.frameworks.spring.SpringController
-import DataFlow::PathGraph
+import CodeInjectionFlow::PathGraph
 
 /** The class `org.python.util.PythonInterpreter`. */
 class PythonInterpreter extends RefType {
@@ -100,15 +102,19 @@ class CodeInjectionSink extends DataFlow::ExprNode {
  * A taint configuration for tracking flow from `RemoteFlowSource` to a Jython method call
  * `CodeInjectionSink` that executes injected code.
  */
-class CodeInjectionConfiguration extends TaintTracking::Configuration {
-  CodeInjectionConfiguration() { this = "CodeInjectionConfiguration" }
+module CodeInjectionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof CodeInjectionSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof CodeInjectionSink }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, CodeInjectionConfiguration conf
-where conf.hasFlowPath(source, sink)
+/**
+ * Taint tracking flow from `RemoteFlowSource` to a Jython method call
+ * `CodeInjectionSink` that executes injected code.
+ */
+module CodeInjectionFlow = TaintTracking::Global<CodeInjectionConfig>;
+
+from CodeInjectionFlow::PathNode source, CodeInjectionFlow::PathNode sink
+where CodeInjectionFlow::flowPath(source, sink)
 select sink.getNode().(CodeInjectionSink).getMethodAccess(), source, sink, "Jython evaluate $@.",
   source.getNode(), "user input"

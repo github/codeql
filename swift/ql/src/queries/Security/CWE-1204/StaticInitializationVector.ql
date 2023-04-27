@@ -12,62 +12,13 @@
  */
 
 import swift
-import codeql.swift.dataflow.DataFlow
-import codeql.swift.dataflow.TaintTracking
-import DataFlow::PathGraph
+import codeql.swift.security.StaticInitializationVectorQuery
+import StaticInitializationVectorFlow::PathGraph
 
-/**
- * A static IV is created through either a byte array or string literals.
- */
-class StaticInitializationVectorSource extends Expr {
-  StaticInitializationVectorSource() {
-    this = any(ArrayExpr arr | arr.getType().getName() = "Array<UInt8>") or
-    this instanceof StringLiteralExpr
-  }
-}
-
-/**
- * A class for all ways to set an IV.
- */
-class EncryptionInitializationSink extends Expr {
-  EncryptionInitializationSink() {
-    // `iv` arg in `init` is a sink
-    exists(CallExpr call, string fName, int arg |
-      call.getStaticTarget()
-          .(MethodDecl)
-          .hasQualifiedName([
-              "AES", "ChaCha20", "Blowfish", "Rabbit", "CBC", "CFB", "GCM", "OCB", "OFB", "PCBC",
-              "CCM", "CTR"
-            ], fName) and
-      fName.matches("%init(%iv:%") and
-      arg = [0, 1] and
-      call.getStaticTarget().(MethodDecl).getParam(pragma[only_bind_into](arg)).getName() = "iv" and
-      call.getArgument(pragma[only_bind_into](arg)).getExpr() = this
-    )
-  }
-}
-
-/**
- * A dataflow configuration from the source of a static IV to expressions that use
- * it to initialize a cipher.
- */
-class StaticInitializationVectorConfig extends TaintTracking::Configuration {
-  StaticInitializationVectorConfig() { this = "StaticInitializationVectorConfig" }
-
-  override predicate isSource(DataFlow::Node node) {
-    node.asExpr() instanceof StaticInitializationVectorSource
-  }
-
-  override predicate isSink(DataFlow::Node node) {
-    node.asExpr() instanceof EncryptionInitializationSink
-  }
-}
-
-// The query itself
 from
-  StaticInitializationVectorConfig config, DataFlow::PathNode sourceNode,
-  DataFlow::PathNode sinkNode
-where config.hasFlowPath(sourceNode, sinkNode)
+  StaticInitializationVectorFlow::PathNode sourceNode,
+  StaticInitializationVectorFlow::PathNode sinkNode
+where StaticInitializationVectorFlow::flowPath(sourceNode, sinkNode)
 select sinkNode.getNode(), sourceNode, sinkNode,
   "The static value '" + sourceNode.getNode().toString() +
     "' is used as an initialization vector for encryption."

@@ -150,8 +150,9 @@ class AssignRemExpr extends AssignArithmeticOperation, @assign_rem_expr {
  * operation (`AssignAndExpr`), a bitwise-or assignment
  * operation (`AssignOrExpr`), a bitwise exclusive-or assignment
  * operation (`AssignXorExpr`), a left-shift assignment
- * operation (`AssignLShiftExpr`), or a right-shift assignment
- * operation (`AssignRShiftExpr`).
+ * operation (`AssignLeftShiftExpr`), or a right-shift assignment
+ * operation (`AssignRightShiftExpr`), or an unsigned right-shift assignment
+ * operation (`AssignUnsignedRightShiftExpr`).
  */
 class AssignBitwiseOperation extends AssignOperation, @assign_bitwise_expr { }
 
@@ -185,19 +186,34 @@ class AssignXorExpr extends AssignBitwiseOperation, @assign_xor_expr {
 /**
  * A left-shift assignment operation, for example `x <<= y`.
  */
-class AssignLShiftExpr extends AssignBitwiseOperation, @assign_lshift_expr {
+class AssignLeftShiftExpr extends AssignBitwiseOperation, @assign_lshift_expr {
   override string getOperator() { result = "<<=" }
 
-  override string getAPrimaryQlClass() { result = "AssignLShiftExpr" }
+  override string getAPrimaryQlClass() { result = "AssignLeftShiftExpr" }
 }
+
+/** DEPRECATED: Alias for AssignLeftShipExpr. */
+deprecated class AssignLShiftExpr = AssignLeftShiftExpr;
 
 /**
  * A right-shift assignment operation, for example `x >>= y`.
  */
-class AssignRShiftExpr extends AssignBitwiseOperation, @assign_rshift_expr {
+class AssignRightShiftExpr extends AssignBitwiseOperation, @assign_rshift_expr {
   override string getOperator() { result = ">>=" }
 
-  override string getAPrimaryQlClass() { result = "AssignRShiftExpr" }
+  override string getAPrimaryQlClass() { result = "AssignRightShiftExpr" }
+}
+
+/** DEPRECATED: Alias for AssignRightShiftExpr. */
+deprecated class AssignRShiftExpr = AssignRightShiftExpr;
+
+/**
+ * An unsigned right-shift assignment operation, for example `x >>>= y`.
+ */
+class AssignUnsighedRightShiftExpr extends AssignBitwiseOperation, @assign_urshift_expr {
+  override string getOperator() { result = ">>>=" }
+
+  override string getAPrimaryQlClass() { result = "AssignUnsighedRightShiftExpr" }
 }
 
 /**

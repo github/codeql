@@ -9,6 +9,7 @@
  * @precision high
  * @id py/insecure-randomness
  * @tags security
+ *       experimental
  *       external/cwe/cwe-338
  */
 

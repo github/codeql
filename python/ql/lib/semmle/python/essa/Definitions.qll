@@ -69,6 +69,8 @@ abstract class SsaSourceVariable extends @py_variable {
     or
     SsaSource::exception_capture(this, def)
     or
+    SsaSource::exception_group_capture(this, def)
+    or
     SsaSource::with_definition(this, def)
     or
     SsaSource::pattern_capture_definition(this, def)
@@ -205,22 +207,19 @@ class BuiltinVariable extends SsaSourceVariable {
   override CallNode redefinedAtCallSite() { none() }
 }
 
-class ModuleVariable extends SsaSourceVariable {
+class ModuleVariable extends SsaSourceVariable instanceof GlobalVariable {
   ModuleVariable() {
-    this instanceof GlobalVariable and
-    (
-      exists(this.(Variable).getAStore())
-      or
-      this.(Variable).getId() = "__name__"
-      or
-      this.(Variable).getId() = "__package__"
-      or
-      exists(ImportStar is | is.getScope() = this.(Variable).getScope())
-    )
+    exists(this.(Variable).getAStore())
+    or
+    this.(Variable).getId() = "__name__"
+    or
+    this.(Variable).getId() = "__package__"
+    or
+    exists(ImportStar is | is.getScope() = this.(Variable).getScope())
   }
 
   pragma[nomagic]
-  private Scope scope_as_global_variable() { result = this.(GlobalVariable).getScope() }
+  private Scope scope_as_global_variable() { result = GlobalVariable.super.getScope() }
 
   pragma[noinline]
   CallNode global_variable_callnode() { result.getScope() = this.scope_as_global_variable() }
@@ -263,7 +262,7 @@ class ModuleVariable extends SsaSourceVariable {
       class_with_global_metaclass(s, this)
       or
       /* Variable is used in scope */
-      this.(GlobalVariable).getAUse().getScope() = s
+      GlobalVariable.super.getAUse().getScope() = s
     )
     or
     exists(ImportTimeScope scope | scope.entryEdge(_, result) |

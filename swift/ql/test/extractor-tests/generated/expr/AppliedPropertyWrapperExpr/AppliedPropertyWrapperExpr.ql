@@ -2,11 +2,12 @@
 import codeql.swift.elements
 import TestUtils
 
-from AppliedPropertyWrapperExpr x, int getKind, Expr getValue, ParamDecl getParam
+from AppliedPropertyWrapperExpr x, string hasType, int getKind, Expr getValue, ParamDecl getParam
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getKind = x.getKind() and
   getValue = x.getValue() and
   getParam = x.getParam()
-select x, "getKind:", getKind, "getValue:", getValue, "getParam:", getParam
+select x, "hasType:", hasType, "getKind:", getKind, "getValue:", getValue, "getParam:", getParam

@@ -7,13 +7,14 @@
  * @precision high
  * @id java/timing-attack-against-headers-value
  * @tags security
+ *       experimental
  *       external/cwe/cwe-208
  */
 
 import java
 import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
-import DataFlow::PathGraph
+import NonConstantTimeComparisonFlow::PathGraph
 
 /** A static method that uses a non-constant-time algorithm for comparing inputs. */
 private class NonConstantTimeComparisonCall extends StaticMethodAccess {
@@ -53,20 +54,18 @@ class ClientSuppliedIpTokenCheck extends DataFlow::Node {
   }
 }
 
-class NonConstantTimeComparisonConfig extends TaintTracking::Configuration {
-  NonConstantTimeComparisonConfig() { this = "NonConstantTimeComparisonConfig" }
+module NonConstantTimeComparisonConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof ClientSuppliedIpTokenCheck }
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof ClientSuppliedIpTokenCheck
-  }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     isNonConstantEqualsCallArgument(sink.asExpr()) or
     isNonConstantComparisonCallArgument(sink.asExpr())
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, NonConstantTimeComparisonConfig conf
-where conf.hasFlowPath(source, sink)
+module NonConstantTimeComparisonFlow = TaintTracking::Global<NonConstantTimeComparisonConfig>;
+
+from NonConstantTimeComparisonFlow::PathNode source, NonConstantTimeComparisonFlow::PathNode sink
+where NonConstantTimeComparisonFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Possible timing attack against $@ validation.",
   source.getNode(), "client-supplied token"

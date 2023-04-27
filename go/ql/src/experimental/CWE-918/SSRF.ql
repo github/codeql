@@ -6,6 +6,7 @@
  * @problem.severity error
  * @precision high
  * @tags security
+ *       experimental
  *       external/cwe/cwe-918
  */
 

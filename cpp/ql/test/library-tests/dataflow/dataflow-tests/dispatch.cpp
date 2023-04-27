@@ -25,7 +25,7 @@ struct Bottom : Middle {
   void notSink(int x) override { }
 };
 
-void VirtualDispatch(Bottom *bottomPtr, Bottom &bottomRef) {
+void VirtualDispatch(Bottom *bottomPtr, Bottom &bottomRef) { // $ ast-def=bottomPtr ast-def=bottomRef
   Top *topPtr = bottomPtr, &topRef = bottomRef;
 
   sink(topPtr->isSource1()); // $ ir MISSING: ast
@@ -65,11 +65,11 @@ Top *allocateBottom() {
   return new Bottom();
 }
 
-void callSinkByPointer(Top *top) {
+void callSinkByPointer(Top *top) { // $ ast-def=top
   top->isSink(source()); // leads to MISSING from ast
 }
 
-void callSinkByReference(Top &top) {
+void callSinkByReference(Top &top) { // $ ast-def=top
   top.isSink(source()); // leads to MISSING from ast
 }
 
@@ -81,11 +81,11 @@ void globalVirtualDispatch() {
   x->isSink(source()); // $ MISSING: ast,ir
 }
 
-Top *identity(Top *top) {
+Top *identity(Top *top) { // $ ast-def=top
   return top;
 }
 
-void callIdentityFunctions(Top *top, Bottom *bottom) {
+void callIdentityFunctions(Top *top, Bottom *bottom) { // $ ast-def=bottom ast-def=top
   identity(bottom)->isSink(source()); // $ MISSING: ast,ir
   identity(top)->isSink(source()); // no flow
 }
@@ -120,7 +120,7 @@ namespace virtual_inheritance {
   struct Bottom : Middle {
   };
 
-  void VirtualDispatch(Bottom *bottomPtr, Bottom &bottomRef) {
+  void VirtualDispatch(Bottom *bottomPtr, Bottom &bottomRef) { // $ ast-def=bottomPtr ast-def=bottomRef
     // Because the inheritance from `Top` is virtual, the following casts go
     // directly from `Bottom` to `Top`, skipping `Middle`. That means we don't
     // get flow from a `Middle` value to the call qualifier.

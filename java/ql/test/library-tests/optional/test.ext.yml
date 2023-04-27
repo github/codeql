@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: summaryModel
+    data:
+      - ["generatedtest", "Test", False, "getStreamElement", "", "", "Argument[0].Element", "ReturnValue", "value", "manual"]

@@ -23,9 +23,15 @@ module Make<RegexTreeViewSig TreeImpl> {
     RootTerm root, string str, boolean ignorePrefix, boolean testWithGroups
   ) {
     // the regexp must mention "<" and ">" explicitly.
-    forall(string angleBracket | angleBracket = ["<", ">"] |
-      any(RegExpConstant term | term.getValue().matches("%" + angleBracket + "%")).getRootTerm() =
-        root
+    (
+      forall(string angleBracket | angleBracket = ["<", ">"] |
+        any(RegExpConstant term | term.getValue().matches("%" + angleBracket + "%")).getRootTerm() =
+          root
+      )
+      or
+      // or contain "-->" / "--!>" / "<--" / "<!--"
+      root =
+        any(RegExpConstant term | term.getValue() = ["-->", "--!>", "<--", "<!--"]).getRootTerm()
     ) and
     ignorePrefix = true and
     (
@@ -40,7 +46,7 @@ module Make<RegexTreeViewSig TreeImpl> {
           "<script src='foo'></script>", "<SCRIPT>foo</SCRIPT>", "<script\tsrc=\"foo\"/>",
           "<script\tsrc='foo'></script>", "<sCrIpT>foo</ScRiPt>",
           "<script src=\"foo\">foo</script >", "<script src=\"foo\">foo</script foo=\"bar\">",
-          "<script src=\"foo\">foo</script\t\n bar>"
+          "<script src=\"foo\">foo</script\t\n bar>", "-->", "--!>", "--"
         ] and
       testWithGroups = false
     )
@@ -106,6 +112,12 @@ module Make<RegexTreeViewSig TreeImpl> {
         "This regular expression only parses --> (capture group " + group +
           ") and not --!> as an HTML comment end tag."
     )
+    or
+    // CVE-2021-4231 - matching only "-->" but not "--!>".
+    regexp.matches("-->") and
+    not regexp.matches("--!>") and
+    not regexp.matches("--") and
+    msg = "This regular expression only parses --> and not --!> as a HTML comment end tag."
     or
     regexp.matches("<!-- foo -->") and
     not regexp.matches("<!-- foo\n -->") and

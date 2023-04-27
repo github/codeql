@@ -1,13 +1,12 @@
 | AsRef | System.Runtime.InteropServices.InAttribute | modreq |
 | EventWriteTransfer | System.Runtime.InteropServices.InAttribute | modreq |
 | GetPinnableReference | System.Runtime.InteropServices.InAttribute | modreq |
-| Invoke | System.Runtime.InteropServices.InAttribute | modreq |
-| Max | System.Runtime.InteropServices.InAttribute | modreq |
-| Min | System.Runtime.InteropServices.InAttribute | modreq |
+| GetValueRefOrDefaultRef | System.Runtime.InteropServices.InAttribute | modreq |
 | ThreadIDExecutingCallbacks | System.Runtime.CompilerServices.IsVolatile | modreq |
 | Value | System.Runtime.CompilerServices.IsVolatile | modreq |
 | _bufferedValuesIndex | System.Runtime.CompilerServices.IsVolatile | modreq |
 | _canSeek | System.Runtime.CompilerServices.IsVolatile | modreq |
+| _cancelCompleted | System.Runtime.CompilerServices.IsVolatile | modreq |
 | _container | System.Runtime.CompilerServices.IsVolatile | modreq |
 | _fullyInitialized | System.Runtime.CompilerServices.IsVolatile | modreq |
 | _head | System.Runtime.CompilerServices.IsVolatile | modreq |
@@ -67,7 +66,6 @@
 | m_tailIndex | System.Runtime.CompilerServices.IsVolatile | modreq |
 | m_taskSchedulerId | System.Runtime.CompilerServices.IsVolatile | modreq |
 | m_waitHandle | System.Runtime.CompilerServices.IsVolatile | modreq |
-| numOutstandingThreadRequests | System.Runtime.CompilerServices.IsVolatile | modreq |
 | numRequestedWorkers | System.Runtime.CompilerServices.IsVolatile | modreq |
 | property Current | System.Runtime.InteropServices.InAttribute | modreq |
 | property Item | System.Runtime.InteropServices.InAttribute | modreq |
@@ -92,13 +90,17 @@
 | s_invariantInfo | System.Runtime.CompilerServices.IsVolatile | modreq |
 | s_jajpDTFI | System.Runtime.CompilerServices.IsVolatile | modreq |
 | s_japaneseEraInfo | System.Runtime.CompilerServices.IsVolatile | modreq |
+| s_osArchPlusOne | System.Runtime.CompilerServices.IsVolatile | modreq |
 | s_osVersion | System.Runtime.CompilerServices.IsVolatile | modreq |
 | s_processId | System.Runtime.CompilerServices.IsVolatile | modreq |
 | s_processPath | System.Runtime.CompilerServices.IsVolatile | modreq |
 | s_provider | System.Runtime.CompilerServices.IsVolatile | modreq |
 | s_providers | System.Runtime.CompilerServices.IsVolatile | modreq |
 | s_regionNames | System.Runtime.CompilerServices.IsVolatile | modreq |
+| s_systemPageSize | System.Runtime.CompilerServices.IsVolatile | modreq |
+| s_useNet6KeyParser | System.Runtime.CompilerServices.IsVolatile | modreq |
 | s_userDefaultCulture | System.Runtime.CompilerServices.IsVolatile | modreq |
 | s_userDefaultUICulture | System.Runtime.CompilerServices.IsVolatile | modreq |
 | s_zhtwDTFI | System.Runtime.CompilerServices.IsVolatile | modreq |
+| set_IsOptional | System.Runtime.CompilerServices.IsExternalInit | modreq |
 | set_Prop2 | System.Runtime.CompilerServices.IsExternalInit | modreq |

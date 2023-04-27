@@ -6,14 +6,10 @@ import semmle.code.java.frameworks.spring.SpringAttribute
 import semmle.code.java.frameworks.spring.SpringAutowire
 import semmle.code.java.frameworks.spring.SpringBean
 import semmle.code.java.frameworks.spring.SpringBeanFile
-import semmle.code.java.frameworks.spring.SpringBeans
 import semmle.code.java.frameworks.spring.SpringBeanRefType
-import semmle.code.java.frameworks.spring.SpringCache
-import semmle.code.java.frameworks.spring.SpringContext
 import semmle.code.java.frameworks.spring.SpringComponentScan
 import semmle.code.java.frameworks.spring.SpringConstructorArg
 import semmle.code.java.frameworks.spring.SpringController
-import semmle.code.java.frameworks.spring.SpringData
 import semmle.code.java.frameworks.spring.SpringDescription
 import semmle.code.java.frameworks.spring.SpringEntry
 import semmle.code.java.frameworks.spring.SpringFlex
@@ -36,12 +32,7 @@ import semmle.code.java.frameworks.spring.SpringQualifier
 import semmle.code.java.frameworks.spring.SpringRef
 import semmle.code.java.frameworks.spring.SpringReplacedMethod
 import semmle.code.java.frameworks.spring.SpringSet
-import semmle.code.java.frameworks.spring.SpringUi
-import semmle.code.java.frameworks.spring.SpringUtil
-import semmle.code.java.frameworks.spring.SpringValidation
 import semmle.code.java.frameworks.spring.SpringValue
-import semmle.code.java.frameworks.spring.SpringWebMultipart
-import semmle.code.java.frameworks.spring.SpringWebUtil
 import semmle.code.java.frameworks.spring.SpringXMLElement
 import semmle.code.java.frameworks.spring.metrics.MetricSpringBean
 import semmle.code.java.frameworks.spring.metrics.MetricSpringBeanFile

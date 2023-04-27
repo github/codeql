@@ -74,6 +74,7 @@ newtype TDataFlowCall =
   TPropertyGetterCall(PropertyGetterCfgNode getter) or
   TPropertySetterCall(PropertySetterCfgNode setter) or
   TPropertyObserverCall(PropertyObserverCfgNode observer) or
+  TKeyPathCall(KeyPathApplicationExprCfgNode keyPathApplication) or
   TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
@@ -88,6 +89,9 @@ class DataFlowCall extends TDataFlowCall {
 
   /** Gets the underlying source code call, if any. */
   ApplyExprCfgNode asCall() { none() }
+
+  /** Gets the underlying key-path application node, if any. */
+  KeyPathApplicationExprCfgNode asKeyPath() { none() }
 
   /**
    * Gets the i'th argument of call.class
@@ -129,6 +133,25 @@ private class NormalCall extends DataFlowCall, TNormalCall {
     result = apply.getQualifier()
     or
     result = apply.getArgument(i)
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(apply.getScope()) }
+
+  override string toString() { result = apply.toString() }
+
+  override Location getLocation() { result = apply.getLocation() }
+}
+
+private class KeyPathCall extends DataFlowCall, TKeyPathCall {
+  private KeyPathApplicationExprCfgNode apply;
+
+  KeyPathCall() { this = TKeyPathCall(apply) }
+
+  override KeyPathApplicationExprCfgNode asKeyPath() { result = apply }
+
+  override CfgNode getArgument(int i) {
+    i = -1 and
+    result = apply.getBase()
   }
 
   override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(apply.getScope()) }
@@ -219,9 +242,7 @@ class SummaryCall extends DataFlowCall, TSummaryCall {
   /** Gets the data flow node that this call targets. */
   Node getReceiver() { result = receiver }
 
-  override DataFlowCallable getEnclosingCallable() {
-    result = TDataFlowFunc(c.getEnclosingFunction())
-  }
+  override DataFlowCallable getEnclosingCallable() { result = TSummarizedCallable(c) }
 
   override string toString() { result = "[summary] call to " + receiver + " in " + c }
 
@@ -334,4 +355,14 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   apos instanceof TThisArgument
   or
   ppos.(PositionalParameterPosition).getIndex() = apos.(PositionalArgumentPosition).getIndex()
+}
+
+/**
+ * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
+ *
+ * This is a temporary hook to support technical debt in the Go language; do not use.
+ */
+pragma[inline]
+predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
+  any()
 }

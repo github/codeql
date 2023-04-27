@@ -2,9 +2,11 @@
 import codeql.swift.elements
 import TestUtils
 
-from DynamicLookupExpr x, Expr getBase
+from DynamicLookupExpr x, string hasType, Expr getBase, string hasMember
 where
   toBeTested(x) and
   not x.isUnknown() and
-  getBase = x.getBase()
-select x, x.getPrimaryQlClasses(), "getBase:", getBase
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
+  getBase = x.getBase() and
+  if x.hasMember() then hasMember = "yes" else hasMember = "no"
+select x, x.getPrimaryQlClasses(), "hasType:", hasType, "getBase:", getBase, "hasMember:", hasMember

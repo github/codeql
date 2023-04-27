@@ -1,0 +1,110 @@
+passingPositiveTests
+| PASSED | candidateHandler | src/index.js:127:33:127:57 | // test ... Handler |
+| PASSED | candidateHandler | src/index.js:180:42:180:66 | // test ... Handler |
+| PASSED | corsMiconfigurationSink | src/index.js:159:41:159:72 | // test ... ionSink |
+| PASSED | handler | src/index.js:32:39:32:54 | // test: handler |
+| PASSED | handler | src/index.js:41:39:41:54 | // test: handler |
+| PASSED | handler | src/index.js:44:35:44:50 | // test: handler |
+| PASSED | handler | src/index.js:47:36:47:51 | // test: handler |
+| PASSED | handler | src/index.js:50:36:50:51 | // test: handler |
+| PASSED | handler | src/index.js:53:36:53:51 | // test: handler |
+| PASSED | handler | src/index.js:56:36:56:51 | // test: handler |
+| PASSED | handler | src/index.js:59:36:59:51 | // test: handler |
+| PASSED | handler | src/index.js:62:36:62:51 | // test: handler |
+| PASSED | handler | src/index.js:71:36:71:51 | // test: handler |
+| PASSED | handler | src/index.js:93:44:93:66 | // test ... handler |
+| PASSED | handler | src/index.js:99:30:99:45 | // test: handler |
+| PASSED | handler | src/index.js:103:30:103:45 | // test: handler |
+| PASSED | handler | src/index.js:111:31:111:46 | // test: handler |
+| PASSED | handler | src/index.js:115:30:115:45 | // test: handler |
+| PASSED | handler | src/index.js:121:32:121:47 | // test: handler |
+| PASSED | handler | src/index.js:131:33:131:48 | // test: handler |
+| PASSED | handler | src/index.js:137:33:137:48 | // test: handler |
+| PASSED | handler | src/index.js:156:50:156:65 | // test: handler |
+| PASSED | handler | src/index.js:190:65:190:87 | // test ... handler |
+| PASSED | handler | src/index.js:194:63:194:85 | // test ... handler |
+| PASSED | handler | src/index.js:197:55:197:77 | // test ... handler |
+| PASSED | handler | src/index.js:199:39:199:61 | // test ... handler |
+| PASSED | handler | src/index.js:201:49:201:71 | // test ... handler |
+| PASSED | handler | src/index.js:205:65:205:87 | // test ... handler |
+| PASSED | headerDefinition | src/index.js:104:46:104:70 | // test ... inition |
+| PASSED | headerDefinition | src/index.js:122:44:122:68 | // test ... inition |
+| PASSED | headerDefinition | src/index.js:132:44:132:68 | // test ... inition |
+| PASSED | redirectSink | src/index.js:78:32:78:60 | // test ... ectSink |
+| PASSED | redirectSink | src/index.js:87:45:87:73 | // test ... ectSink |
+| PASSED | redirectSink | src/index.js:88:40:88:68 | // test ... ectSink |
+| PASSED | setup | src/index.js:66:21:66:34 | // test: setup |
+| PASSED | setup | src/index.js:67:31:67:44 | // test: setup |
+| PASSED | setup | src/index.js:68:33:68:46 | // test: setup |
+| PASSED | setup | src/index.js:91:38:91:51 | // test: setup |
+| PASSED | setup | src/index.js:92:39:92:52 | // test: setup |
+| PASSED | setup | src/index.js:93:44:93:66 | // test ... handler |
+| PASSED | setup | src/index.js:98:20:98:33 | // test: setup |
+| PASSED | setup | src/index.js:110:21:110:34 | // test: setup |
+| PASSED | setup | src/index.js:148:29:148:42 | // test: setup |
+| PASSED | setup | src/index.js:152:31:152:44 | // test: setup |
+| PASSED | setup | src/index.js:153:31:153:44 | // test: setup |
+| PASSED | setup | src/index.js:173:66:173:79 | // test: setup |
+| PASSED | setup | src/index.js:177:66:177:78 | //test: setup |
+| PASSED | setup | src/index.js:190:65:190:87 | // test ... handler |
+| PASSED | setup | src/index.js:194:63:194:85 | // test ... handler |
+| PASSED | setup | src/index.js:197:55:197:77 | // test ... handler |
+| PASSED | setup | src/index.js:199:39:199:61 | // test ... handler |
+| PASSED | setup | src/index.js:201:49:201:71 | // test ... handler |
+| PASSED | setup | src/index.js:205:65:205:87 | // test ... handler |
+| PASSED | source | src/index.js:11:76:11:130 | // test ... k, !xss |
+| PASSED | source | src/index.js:24:76:24:128 | // test ... nk, xss |
+| PASSED | source | src/index.js:72:41:72:80 | // test ... reSink  |
+| PASSED | source | src/index.js:73:44:73:82 | // test ... ureSink |
+| PASSED | source | src/index.js:74:40:74:78 | // test ... ureSink |
+| PASSED | source | src/index.js:75:39:75:77 | // test ... ureSink |
+| PASSED | source | src/index.js:78:32:78:60 | // test ... ectSink |
+| PASSED | source | src/index.js:87:45:87:73 | // test ... ectSink |
+| PASSED | source | src/index.js:88:40:88:68 | // test ... ectSink |
+| PASSED | source | src/index.js:100:37:100:51 | // test: source |
+| PASSED | source | src/index.js:123:40:123:92 | // test ... nk, xss |
+| PASSED | source | src/index.js:133:43:133:96 | // test ... k, !xss |
+| PASSED | source | src/index.js:138:31:138:45 | // test: source |
+| PASSED | source | src/index.js:164:41:164:93 | // test ... nk, xss |
+| PASSED | source | src/index.js:166:26:166:50 | // test ... srfSink |
+| PASSED | source | src/index.js:168:45:168:69 | // test ... srfSink |
+| PASSED | source | src/index.js:203:28:203:58 | // test ... k, !xss |
+| PASSED | source | src/index.js:207:28:207:56 | // test ... nk, xss |
+| PASSED | ssrfSink | src/index.js:166:26:166:50 | // test ... srfSink |
+| PASSED | ssrfSink | src/index.js:168:45:168:69 | // test ... srfSink |
+| PASSED | stackTraceExposureSink | src/index.js:9:66:9:96 | // test ... ureSink |
+| PASSED | stackTraceExposureSink | src/index.js:11:76:11:130 | // test ... k, !xss |
+| PASSED | stackTraceExposureSink | src/index.js:22:66:22:105 | // test ... xssSink |
+| PASSED | stackTraceExposureSink | src/index.js:24:76:24:128 | // test ... nk, xss |
+| PASSED | stackTraceExposureSink | src/index.js:72:41:72:80 | // test ... reSink  |
+| PASSED | stackTraceExposureSink | src/index.js:73:44:73:82 | // test ... ureSink |
+| PASSED | stackTraceExposureSink | src/index.js:74:40:74:78 | // test ... ureSink |
+| PASSED | stackTraceExposureSink | src/index.js:75:39:75:77 | // test ... ureSink |
+| PASSED | stackTraceExposureSink | src/index.js:105:29:105:73 | // test ... nk, xss |
+| PASSED | stackTraceExposureSink | src/index.js:116:29:116:59 | // test ... ureSink |
+| PASSED | stackTraceExposureSink | src/index.js:123:40:123:92 | // test ... nk, xss |
+| PASSED | stackTraceExposureSink | src/index.js:133:43:133:96 | // test ... k, !xss |
+| PASSED | stackTraceExposureSink | src/index.js:143:20:143:64 | // test ... nk, xss |
+| PASSED | stackTraceExposureSink | src/index.js:164:41:164:93 | // test ... nk, xss |
+| PASSED | xss | src/index.js:24:76:24:128 | // test ... nk, xss |
+| PASSED | xss | src/index.js:105:29:105:73 | // test ... nk, xss |
+| PASSED | xss | src/index.js:123:40:123:92 | // test ... nk, xss |
+| PASSED | xss | src/index.js:143:20:143:64 | // test ... nk, xss |
+| PASSED | xss | src/index.js:164:41:164:93 | // test ... nk, xss |
+| PASSED | xss | src/index.js:207:28:207:56 | // test ... nk, xss |
+| PASSED | xssSink | src/index.js:22:66:22:105 | // test ... xssSink |
+| PASSED | xssSink | src/index.js:24:76:24:128 | // test ... nk, xss |
+| PASSED | xssSink | src/index.js:105:29:105:73 | // test ... nk, xss |
+| PASSED | xssSink | src/index.js:123:40:123:92 | // test ... nk, xss |
+| PASSED | xssSink | src/index.js:133:43:133:96 | // test ... k, !xss |
+| PASSED | xssSink | src/index.js:143:20:143:64 | // test ... nk, xss |
+| PASSED | xssSink | src/index.js:164:41:164:93 | // test ... nk, xss |
+| PASSED | xssSink | src/index.js:207:28:207:56 | // test ... nk, xss |
+failingPositiveTests
+passingNegativeTests
+| PASSED | !xss | src/index.js:11:76:11:130 | // test ... k, !xss |
+| PASSED | !xss | src/index.js:133:43:133:96 | // test ... k, !xss |
+| PASSED | !xss | src/index.js:203:28:203:58 | // test ... k, !xss |
+| PASSED | !xssSink | src/index.js:11:76:11:130 | // test ... k, !xss |
+| PASSED | !xssSink | src/index.js:203:28:203:58 | // test ... k, !xss |
+failingNegativeTests

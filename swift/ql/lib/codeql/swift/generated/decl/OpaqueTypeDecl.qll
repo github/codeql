@@ -66,6 +66,8 @@ module Generated {
     /**
      * Gets the number of opaque generic parameters of this opaque type declaration.
      */
-    final int getNumberOfOpaqueGenericParams() { result = count(getAnOpaqueGenericParam()) }
+    final int getNumberOfOpaqueGenericParams() {
+      result = count(int i | exists(getOpaqueGenericParam(i)))
+    }
   }
 }

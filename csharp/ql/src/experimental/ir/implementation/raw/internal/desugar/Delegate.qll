@@ -45,7 +45,8 @@ module DelegateElements {
  * The translation of the constructor call that happens as part of the delegate creation.
  */
 private class TranslatedDelegateConstructorCall extends TranslatedCompilerGeneratedCall,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override DelegateCreation generatedBy;
 
   TranslatedDelegateConstructorCall() { this = TTranslatedCompilerGeneratedElement(generatedBy, 0) }
@@ -80,7 +81,8 @@ private class TranslatedDelegateConstructorCall extends TranslatedCompilerGenera
  * The translation of the invoke call that happens as part of the desugaring of the delegate call.
  */
 private class TranslatedDelegateInvokeCall extends TranslatedCompilerGeneratedCall,
-  TTranslatedCompilerGeneratedElement {
+  TTranslatedCompilerGeneratedElement
+{
   override DelegateCall generatedBy;
 
   TranslatedDelegateInvokeCall() { this = TTranslatedCompilerGeneratedElement(generatedBy, 1) }

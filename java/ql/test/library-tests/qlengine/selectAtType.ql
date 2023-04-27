@@ -1,5 +1,5 @@
 import java
 
-@class clasz() { any() }
+@classorinterface clasz() { any() }
 
 select clasz()

@@ -102,9 +102,7 @@ module RequestForgery {
 }
 
 /** A sink for request forgery, considered as a sink for safe URL flow. */
-private class SafeUrlSink extends SafeUrlFlow::Sink {
-  SafeUrlSink() { this instanceof RequestForgery::Sink }
-}
+private class SafeUrlSink extends SafeUrlFlow::Sink instanceof RequestForgery::Sink { }
 
 /**
  * A read of a field considered unsafe for request forgery, considered as a sanitizer for a safe

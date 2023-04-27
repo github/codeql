@@ -1,26 +1,12 @@
 import java
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.QueryInjection
+import semmle.code.java.dataflow.FlowSources
+import semmle.code.java.security.SqlInjectionQuery
 import TestUtilities.InlineExpectationsTest
 
-private class QueryInjectionFlowConfig extends TaintTracking::Configuration {
-  QueryInjectionFlowConfig() { this = "SqlInjectionLib::QueryInjectionFlowConfig" }
+private class SourceMethodSource extends RemoteFlowSource {
+  SourceMethodSource() { this.asExpr().(MethodAccess).getMethod().hasName("source") }
 
-  override predicate isSource(DataFlow::Node src) {
-    src.asExpr() = any(MethodAccess ma | ma.getMethod().hasName("source"))
-  }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof QueryInjectionSink }
-
-  override predicate isSanitizer(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or
-    node.getType() instanceof BoxedType or
-    node.getType() instanceof NumberType
-  }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(AdditionalQueryInjectionTaintStep s).step(node1, node2)
-  }
+  override string getSourceType() { result = "source" }
 }
 
 class HasFlowTest extends InlineExpectationsTest {
@@ -30,9 +16,7 @@ class HasFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "sqlInjection" and
-    exists(DataFlow::Node src, DataFlow::Node sink, QueryInjectionFlowConfig conf |
-      conf.hasFlow(src, sink)
-    |
+    exists(DataFlow::Node sink | QueryInjectionFlow::flowTo(sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = ""

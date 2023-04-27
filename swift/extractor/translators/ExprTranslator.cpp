@@ -16,6 +16,9 @@ void ExprTranslator::fillAccessorSemantics(const T& ast, TrapClassOf<T>& entry) 
     case swift::AccessSemantics::Ordinary:
       entry.has_ordinary_semantics = true;
       break;
+    case swift::AccessSemantics::DistributedThunk:
+      entry.has_distributed_thunk_semantics = true;
+      break;
   }
 }
 
@@ -375,10 +378,10 @@ codeql::MemberRefExpr ExprTranslator::translateMemberRefExpr(const swift::Member
 
 codeql::KeyPathExpr ExprTranslator::translateKeyPathExpr(const swift::KeyPathExpr& expr) {
   auto entry = createExprEntry(expr);
-  // TODO this should be completely redone, as we are using internal stuff here instead of
-  // extracting expr.getComponents()
   if (!expr.isObjC()) {
-    entry.parsed_path = dispatcher.fetchOptionalLabel(expr.getParsedPath());
+    for (const auto& component : expr.getComponents()) {
+      entry.components.push_back(emitKeyPathComponent(component));
+    }
     if (auto rootTypeRepr = expr.getRootType()) {
       auto keyPathType = expr.getType()->getAs<swift::BoundGenericClassType>();
       assert(keyPathType && "KeyPathExpr must have BoundGenericClassType");
@@ -474,12 +477,33 @@ void ExprTranslator::fillAbstractClosureExpr(const swift::AbstractClosureExpr& e
   assert(expr.getParameters() && "AbstractClosureExpr has getParameters()");
   entry.params = dispatcher.fetchRepeatedLabels(*expr.getParameters());
   entry.body = dispatcher.fetchLabel(expr.getBody());
+  entry.captures = dispatcher.fetchRepeatedLabels(expr.getCaptureInfo().getCaptures());
 }
 
 TrapLabel<ArgumentTag> ExprTranslator::emitArgument(const swift::Argument& arg) {
   auto entry = dispatcher.createUncachedEntry(arg);
   entry.label = arg.getLabel().str().str();
   entry.expr = dispatcher.fetchLabel(arg.getExpr());
+  dispatcher.emit(entry);
+  return entry.id;
+}
+
+TrapLabel<KeyPathComponentTag> ExprTranslator::emitKeyPathComponent(
+    const swift::KeyPathExpr::Component& component) {
+  auto entry = dispatcher.createUncachedEntry(component);
+  entry.kind = static_cast<int>(component.getKind());
+  if (auto subscript_args = component.getSubscriptArgs()) {
+    for (const auto& arg : *subscript_args) {
+      entry.subscript_arguments.push_back(emitArgument(arg));
+    }
+  }
+  if (component.getKind() == swift::KeyPathExpr::Component::Kind::TupleElement) {
+    entry.tuple_index = static_cast<int>(component.getTupleIndex());
+  }
+  if (component.hasDeclRef()) {
+    entry.decl_ref = dispatcher.fetchLabel(component.getDeclRef().getDecl());
+  }
+  entry.component_type = dispatcher.fetchLabel(component.getComponentType());
   dispatcher.emit(entry);
   return entry.id;
 }
@@ -592,6 +616,16 @@ codeql::AppliedPropertyWrapperExpr ExprTranslator::translateAppliedPropertyWrapp
   entry.value =
       dispatcher.fetchLabel(const_cast<swift::AppliedPropertyWrapperExpr&>(expr).getValue());
   entry.param = dispatcher.fetchLabel(expr.getParamDecl());
+  return entry;
+}
+
+codeql::RegexLiteralExpr ExprTranslator::translateRegexLiteralExpr(
+    const swift::RegexLiteralExpr& expr) {
+  auto entry = createExprEntry(expr);
+  auto pattern = expr.getRegexText();
+  // the pattern has enclosing '/' delimiters, we'd rather get it without
+  entry.pattern = pattern.substr(1, pattern.size() - 2);
+  entry.version = expr.getVersion();
   return entry;
 }
 

@@ -1,0 +1,26 @@
+noStaticTarget
+#select
+| file://:0:0:0:0 | call to UnownedSerialExecutor.init(_:) | true |
+| file://:0:0:0:0 | call to buildDefaultActorExecutorRef(_:) | true |
+| methodlookup.swift:23:15:23:19 | call to Foo.init() | true |
+| methodlookup.swift:24:9:24:18 | call to Foo.init() | true |
+| methodlookup.swift:26:5:26:24 | call to instanceMethod() | true |
+| methodlookup.swift:27:5:27:27 | call to Foo.instanceMethod() | true |
+| methodlookup.swift:27:5:27:29 | call to { ... } | true |
+| methodlookup.swift:27:9:27:9 | call to instanceMethod() | true |
+| methodlookup.swift:29:5:29:21 | call to classMethod() | true |
+| methodlookup.swift:30:5:30:22 | call to staticMethod() | true |
+| methodlookup.swift:33:1:41:1 | call to Task<Success, Never>.init(priority:operation:) | true |
+| methodlookup.swift:34:15:34:19 | call to Bar.init() | true |
+| methodlookup.swift:35:9:35:18 | call to Bar.init() | true |
+| methodlookup.swift:37:11:37:30 | call to instanceMethod() | true |
+| methodlookup.swift:40:5:40:22 | call to staticMethod() | true |
+| methodlookup.swift:43:1:52:1 | call to Task<Success, Never>.init(priority:operation:) | true |
+| methodlookup.swift:44:21:44:25 | call to Baz.init() | true |
+| methodlookup.swift:45:15:45:24 | call to Baz.init() | true |
+| methodlookup.swift:47:11:47:30 | call to instanceMethod() | true |
+| methodlookup.swift:48:11:48:33 | call to Baz.instanceMethod() | true |
+| methodlookup.swift:48:11:48:35 | call to { ... } | true |
+| methodlookup.swift:48:15:48:15 | call to instanceMethod() | true |
+| methodlookup.swift:50:11:50:27 | call to classMethod() | true |
+| methodlookup.swift:51:11:51:28 | call to staticMethod() | true |

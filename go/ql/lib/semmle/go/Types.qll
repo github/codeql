@@ -112,22 +112,10 @@ class Type extends @type {
       or
       u instanceof ArrayType and u.(ArrayType).getElementType().implementsComparable()
       or
-      exists(InterfaceType uif | uif = u |
-        not uif instanceof BasicInterfaceType and
-        if exists(uif.getAnEmbeddedTypeSetLiteral())
-        then
-          // All types in the intersection of all the embedded type set
-          // literals must implement comparable.
-          forall(Type intersectionType |
-            intersectionType = uif.getAnEmbeddedTypeSetLiteral().getATerm().getType() and
-            forall(TypeSetLiteralType tslit | tslit = uif.getAnEmbeddedTypeSetLiteral() |
-              intersectionType = tslit.getATerm().getType()
-            )
-          |
-            intersectionType.implementsComparable()
-          )
-        else uif.isOrEmbedsComparable()
-      )
+      // As of Go 1.20, any interface type satisfies the `comparable` constraint, even though comparison
+      // may panic at runtime depending on the actual object's concrete type.
+      // Look at git history here if you need the old definition.
+      u instanceof InterfaceType
     )
   }
 
@@ -154,6 +142,26 @@ class Type extends @type {
    * Gets a basic textual representation of this type.
    */
   string toString() { result = this.getName() }
+
+  /**
+   * Holds if this element is at the specified location.
+   * The location spans column `startcolumn` of line `startline` to
+   * column `endcolumn` of line `endline` in file `filepath`.
+   * For more information, see
+   * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+   */
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    this.getEntity().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    or
+    not exists(this.getEntity()) and
+    filepath = "" and
+    startline = 0 and
+    startcolumn = 0 and
+    endline = 0 and
+    endcolumn = 0
+  }
 }
 
 /** An invalid type. */
@@ -164,7 +172,7 @@ class InvalidType extends @invalidtype, Type {
 /** A basic type. */
 class BasicType extends @basictype, Type { }
 
-/** Either the normal or literal boolean type */
+/** The normal boolean type or the literal boolean type */
 class BoolType extends @booltype, BasicType { }
 
 /** The `bool` type of a non-literal expression */
@@ -309,7 +317,7 @@ class Complex128Type extends @complex128type, ComplexType {
   override string getName() { result = "complex128" }
 }
 
-/** Either the normal or literal string type */
+/** The normal string type or the literal string type */
 class StringType extends @stringtype, BasicType { }
 
 /** The `string` type of a non-literal expression */

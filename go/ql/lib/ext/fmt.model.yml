@@ -1,0 +1,10 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["fmt", "GoStringer", True, "GoString", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]
+      - ["fmt", "ScanState", True, "Read", "", "", "Argument[-1]", "Argument[0]", "taint", "manual"]
+      - ["fmt", "ScanState", True, "Token", "", "", "Argument[-1]", "ReturnValue[0]", "taint", "manual"]
+      - ["fmt", "State", True, "Write", "", "", "Argument[0]", "Argument[-1]", "taint", "manual"]
+      - ["fmt", "Stringer", True, "String", "", "", "Argument[-1]", "ReturnValue", "taint", "manual"]

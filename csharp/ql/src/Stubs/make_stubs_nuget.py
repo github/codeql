@@ -8,7 +8,7 @@ import shutil
 def write_csproj_prefix(ioWrapper):
     ioWrapper.write('<Project Sdk="Microsoft.NET.Sdk">\n')
     ioWrapper.write('  <PropertyGroup>\n')
-    ioWrapper.write('    <TargetFramework>net6.0</TargetFramework>\n')
+    ioWrapper.write('    <TargetFramework>net7.0</TargetFramework>\n')
     ioWrapper.write('    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>\n')
     ioWrapper.write('    <OutputPath>bin\</OutputPath>\n')
     ioWrapper.write(
@@ -60,7 +60,7 @@ jsonFile = os.path.join(rawOutputDir, outputName + '.json')
 version = helpers.get_argv(2, "latest")
 
 print("\n* Creating new input project")
-run_cmd(['dotnet', 'new', 'classlib', "-f", "net6.0", "--language", "C#", '--name',
+run_cmd(['dotnet', 'new', 'classlib', "-f", "net7.0", "--language", "C#", '--name',
                  projectNameIn, '--output', projectDirIn])
 helpers.remove_files(projectDirIn, '.cs')
 
@@ -71,7 +71,7 @@ if (version != "latest"):
     cmd.append(version)
 run_cmd(cmd)
 
-sdk_version = '6.0.202'
+sdk_version = '7.0.102'
 print("\n* Creating new global.json file and setting SDK to " + sdk_version)
 run_cmd(['dotnet', 'new', 'globaljson', '--force', '--sdk-version', sdk_version, '--output', workDir])
 
@@ -109,7 +109,7 @@ with open(jsonFile) as json_data:
 print("\n --> Generated stub files: " + rawSrcOutputDir)
 
 print("\n* Formatting files")
-run_cmd(['dotnet', 'format', rawSrcOutputDir])
+run_cmd(['dotnet', 'format', 'whitespace', rawSrcOutputDir])
 
 print("\n --> Generated (formatted) stub files: " + rawSrcOutputDir)
 

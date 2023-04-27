@@ -17,7 +17,7 @@ getTarget
 | calls.rb:60:5:60:9 | call to new | calls.rb:117:5:117:16 | new |
 | calls.rb:61:1:61:5 | call to baz | calls.rb:51:5:57:7 | baz |
 | calls.rb:63:1:63:12 | call to instance_m | calls.rb:22:5:24:7 | instance_m |
-| calls.rb:67:9:67:13 | call to super | calls.rb:51:5:57:7 | baz |
+| calls.rb:67:9:67:13 | super call to baz | calls.rb:51:5:57:7 | baz |
 | calls.rb:71:5:71:9 | call to new | calls.rb:117:5:117:16 | new |
 | calls.rb:72:1:72:5 | call to baz | calls.rb:66:5:68:7 | baz |
 | calls.rb:74:1:74:12 | call to instance_m | calls.rb:22:5:24:7 | instance_m |
@@ -233,9 +233,21 @@ getTarget
 | calls.rb:614:1:614:31 | call to call_call_singleton1 | calls.rb:591:5:593:7 | call_call_singleton1 |
 | calls.rb:615:1:615:31 | call to call_call_singleton1 | calls.rb:591:5:593:7 | call_call_singleton1 |
 | calls.rb:616:1:616:31 | call to call_call_singleton1 | calls.rb:591:5:593:7 | call_call_singleton1 |
+| calls.rb:620:9:620:16 | call to bar | calls.rb:622:5:623:7 | bar |
+| calls.rb:620:9:620:16 | call to bar | calls.rb:628:5:630:7 | bar |
+| calls.rb:627:5:627:20 | call to include | calls.rb:108:5:110:7 | include |
+| calls.rb:629:9:629:13 | super call to bar | calls.rb:622:5:623:7 | bar |
+| calls.rb:635:9:635:14 | call to new | calls.rb:117:5:117:16 | new |
+| calls.rb:639:1:639:14 | call to new | calls.rb:117:5:117:16 | new |
+| calls.rb:639:1:639:14 | call to new | calls.rb:634:5:636:7 | new |
+| calls.rb:639:1:639:23 | call to instance | calls.rb:326:5:328:7 | instance |
+| calls.rb:647:9:647:34 | call to puts | calls.rb:102:5:102:30 | puts |
+| calls.rb:651:1:651:14 | call to new | calls.rb:117:5:117:16 | new |
+| calls.rb:651:1:651:14 | call to new | calls.rb:642:5:644:7 | new |
+| calls.rb:651:1:651:23 | call to instance | calls.rb:646:5:648:7 | instance |
 | hello.rb:12:5:12:24 | call to include | calls.rb:108:5:110:7 | include |
 | hello.rb:14:16:14:20 | call to hello | hello.rb:2:5:4:7 | hello |
-| hello.rb:20:16:20:20 | call to super | hello.rb:13:5:15:7 | message |
+| hello.rb:20:16:20:20 | super call to message | hello.rb:13:5:15:7 | message |
 | hello.rb:20:30:20:34 | call to world | hello.rb:5:5:7:7 | world |
 | instance_fields.rb:4:22:4:35 | call to new | calls.rb:117:5:117:16 | new |
 | instance_fields.rb:7:13:7:25 | call to target | instance_fields.rb:12:5:13:7 | target |
@@ -357,6 +369,7 @@ unresolvedCall
 | calls.rb:562:1:562:13 | call to [] |
 | calls.rb:562:1:562:39 | call to each |
 | calls.rb:570:5:570:14 | call to singleton2 |
+| calls.rb:643:9:643:21 | call to allocate |
 | hello.rb:20:16:20:26 | ... + ... |
 | hello.rb:20:16:20:34 | ... + ... |
 | hello.rb:20:16:20:40 | ... + ... |
@@ -476,6 +489,12 @@ publicMethod
 | calls.rb:600:5:602:7 | call_singleton1 |
 | calls.rb:606:5:607:7 | singleton1 |
 | calls.rb:609:5:611:7 | call_singleton1 |
+| calls.rb:619:5:621:7 | foo |
+| calls.rb:622:5:623:7 | bar |
+| calls.rb:628:5:630:7 | bar |
+| calls.rb:634:5:636:7 | new |
+| calls.rb:642:5:644:7 | new |
+| calls.rb:646:5:648:7 | instance |
 | hello.rb:2:5:4:7 | hello |
 | hello.rb:5:5:7:7 | world |
 | hello.rb:13:5:15:7 | message |

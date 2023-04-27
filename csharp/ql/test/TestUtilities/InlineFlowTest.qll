@@ -4,12 +4,13 @@
  * Example for a test.ql:
  * ```ql
  * import csharp
- * import DataFlow::PathGraph
+ * import DefaultValueFlow::PathGraph
  * import TestUtilities.InlineFlowTest
  *
- * from DataFlow::PathNode source, DataFlow::PathNode sink, DefaultValueFlowConf conf
- * where conf.hasFlowPath(source, sink)
+ * from DefaultValueFlow::PathNode source, DefaultValueFlow::PathNode sink
+ * where DefaultValueFlow::flowPath(source, sink)
  * select sink, source, sink, "$@", source, source.toString()
+ *
  * ```
  *
  * To declare expecations, you can use the $hasTaintFlow or $hasValueFlow comments within the test source files.
@@ -56,25 +57,17 @@ private predicate defaultSink(DataFlow::Node sink) {
   )
 }
 
-class DefaultValueFlowConf extends DataFlow::Configuration {
-  DefaultValueFlowConf() { this = "qltest:defaultValueFlowConf" }
+module DefaultFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { defaultSource(n) }
 
-  override predicate isSource(DataFlow::Node n) { defaultSource(n) }
+  predicate isSink(DataFlow::Node n) { defaultSink(n) }
 
-  override predicate isSink(DataFlow::Node n) { defaultSink(n) }
-
-  override int fieldFlowBranchLimit() { result = 1000 }
+  int fieldFlowBranchLimit() { result = 1000 }
 }
 
-class DefaultTaintFlowConf extends TaintTracking::Configuration {
-  DefaultTaintFlowConf() { this = "qltest:defaultTaintFlowConf" }
+module DefaultValueFlow = DataFlow::Global<DefaultFlowConfig>;
 
-  override predicate isSource(DataFlow::Node n) { defaultSource(n) }
-
-  override predicate isSink(DataFlow::Node n) { defaultSink(n) }
-
-  override int fieldFlowBranchLimit() { result = 1000 }
-}
+module DefaultTaintFlow = TaintTracking::Global<DefaultFlowConfig>;
 
 private string getSourceArgString(DataFlow::Node src) {
   defaultSource(src) and
@@ -88,7 +81,7 @@ class InlineFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasValueFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink | getValueFlowConfig().hasFlow(src, sink) |
+    exists(DataFlow::Node src, DataFlow::Node sink | DefaultValueFlow::flow(src, sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
@@ -96,15 +89,11 @@ class InlineFlowTest extends InlineExpectationsTest {
     or
     tag = "hasTaintFlow" and
     exists(DataFlow::Node src, DataFlow::Node sink |
-      getTaintFlowConfig().hasFlow(src, sink) and not getValueFlowConfig().hasFlow(src, sink)
+      DefaultTaintFlow::flow(src, sink) and not DefaultValueFlow::flow(src, sink)
     |
       sink.getLocation() = location and
       element = sink.toString() and
       if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
     )
   }
-
-  DataFlow::Configuration getValueFlowConfig() { result = any(DefaultValueFlowConf config) }
-
-  DataFlow::Configuration getTaintFlowConfig() { result = any(DefaultTaintFlowConf config) }
 }

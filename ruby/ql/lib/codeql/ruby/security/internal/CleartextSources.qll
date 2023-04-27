@@ -153,23 +153,21 @@ module CleartextSources {
   }
 
   /**
-   * A write to a hash entry with a value that may contain password information.
+   * A value written to a hash entry with a key that may contain password information.
    */
   private class HashKeyWritePasswordSource extends Source {
     private string name;
     private DataFlow::ExprNode recv;
 
     HashKeyWritePasswordSource() {
-      exists(DataFlow::Node val |
+      exists(DataFlow::CallNode writeNode |
         name.regexpMatch(maybePassword()) and
         not nameIsNotSensitive(name) and
         // avoid safe values assigned to presumably unsafe names
-        not val instanceof NonCleartextPassword and
-        (
-          // hash[name] = val
-          hashKeyWrite(this, name, val) and
-          recv = this.(DataFlow::CallNode).getReceiver()
-        )
+        not this instanceof NonCleartextPassword and
+        // hash[name] = val
+        hashKeyWrite(writeNode, name, this) and
+        recv = writeNode.getReceiver()
       )
     }
 
@@ -188,23 +186,21 @@ module CleartextSources {
   }
 
   /**
-   * A hash literal with an entry that may contain a password
+   * An entry into a hash literal that may contain a password
    */
   private class HashLiteralPasswordSource extends Source {
     private string name;
 
     HashLiteralPasswordSource() {
-      exists(DataFlow::Node val, CfgNodes::ExprNodes::HashLiteralCfgNode lit |
+      exists(CfgNodes::ExprNodes::HashLiteralCfgNode lit |
         name.regexpMatch(maybePassword()) and
         not nameIsNotSensitive(name) and
         // avoid safe values assigned to presumably unsafe names
-        not val instanceof NonCleartextPassword and
+        not this instanceof NonCleartextPassword and
         // hash = { name: val }
-        exists(CfgNodes::ExprNodes::PairCfgNode p |
-          this.asExpr() = lit and p = lit.getAKeyValuePair()
-        |
+        exists(CfgNodes::ExprNodes::PairCfgNode p | p = lit.getAKeyValuePair() |
           p.getKey().getConstantValue().getStringlikeValue() = name and
-          p.getValue() = val.asExpr()
+          p.getValue() = this.asExpr()
         )
       )
     }
@@ -261,7 +257,7 @@ module CleartextSources {
   }
 
   /** Holds if `nodeFrom` taints `nodeTo`. */
-  predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  deprecated predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(string name, ElementReference ref, LocalVariable hashVar |
       // from `hsh[password] = "changeme"` to a `hsh[password]` read
       nodeFrom.(HashKeyWritePasswordSource).getName() = name and

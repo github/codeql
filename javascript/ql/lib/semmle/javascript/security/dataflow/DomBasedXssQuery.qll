@@ -122,11 +122,20 @@ class Configuration extends TaintTracking::Configuration {
     TaintedUrlSuffix::step(src, trg, TaintedUrlSuffix::label(), DataFlow::FlowLabel::taint()) and
     inlbl = TaintedUrlSuffix::label() and
     outlbl = prefixLabel()
+    or
+    exists(DataFlow::FunctionNode callback, DataFlow::Node arg |
+      any(JQuery::MethodCall c).interpretsArgumentAsHtml(arg) and
+      callback = arg.getABoundFunctionValue(_) and
+      src = callback.getReturnNode() and
+      trg = callback and
+      inlbl = outlbl
+    )
   }
 }
 
 private class PrefixStringSanitizerActivated extends TaintTracking::SanitizerGuardNode,
-  PrefixStringSanitizer {
+  PrefixStringSanitizer
+{
   PrefixStringSanitizerActivated() { this = this }
 }
 
@@ -138,6 +147,7 @@ private class QuoteGuard extends TaintTracking::SanitizerGuardNode, Shared::Quot
   QuoteGuard() { this = this }
 }
 
-private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard {
+private class ContainsHtmlGuard extends TaintTracking::SanitizerGuardNode, Shared::ContainsHtmlGuard
+{
   ContainsHtmlGuard() { this = this }
 }

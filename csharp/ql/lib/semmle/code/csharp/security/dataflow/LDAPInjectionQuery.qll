@@ -25,9 +25,11 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
+ * DEPRECATED: Use `LdapInjection` instead.
+ *
  * A taint-tracking configuration for unvalidated user input that is used to construct LDAP queries.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
+deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
   TaintTrackingConfiguration() { this = "LDAPInjection" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -37,10 +39,34 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
 
-/** A source of remote user input. */
-class RemoteSource extends Source {
-  RemoteSource() { this instanceof RemoteFlowSource }
+/**
+ * A taint-tracking configuration for unvalidated user input that is used to construct LDAP queries.
+ */
+module LdapInjectionConfig implements DataFlow::ConfigSig {
+  /**
+   * Holds if `source` is a relevant data flow source.
+   */
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  /**
+   * Holds if `sink` is a relevant data flow sink.
+   */
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  /**
+   * Holds if data flow through `node` is prohibited. This completely removes
+   * `node` from the data flow graph.
+   */
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }
+
+/**
+ * A taint-tracking configuration for unvalidated user input that is used to construct LDAP queries.
+ */
+module LdapInjection = TaintTracking::Global<LdapInjectionConfig>;
+
+/** A source of remote user input. */
+class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /**
  * An argument that sets the `Path` property of a `DirectoryEntry` object that is a sink for LDAP

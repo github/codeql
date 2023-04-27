@@ -3,7 +3,9 @@
 Basic query for Java and Kotlin code
 ====================================
 
-Learn to write and run a simple CodeQL query using LGTM.
+Learn to write and run a simple CodeQL query using Visual Studio Code with the CodeQL extension.
+
+.. include:: ../reusables/vs-code-basic-instructions/setup-to-run-queries.rst
 
 About the query
 ---------------
@@ -29,65 +31,36 @@ or Kotlin code such as:
 In either case, replacing ``s.equals("")`` with ``s.isEmpty()``
 would be more efficient.
 
-Running the query
------------------
+.. include:: ../reusables/vs-code-basic-instructions/find-database.rst
 
-#. In the main search box on LGTM.com, search for the project you want to query. For tips, see `Searching <https://lgtm.com/help/lgtm/searching>`__.
+Running a quick query
+---------------------
 
-#. Click the project in the search results.
+.. include:: ../reusables/vs-code-basic-instructions/run-quick-query-1.rst
 
-#. Click **Query this project**.
-
-   This opens the query console. (For information about using this, see `Using the query console <https://lgtm.com/help/lgtm/using-query-console>`__.)
-
-   .. pull-quote::
-
-      Note
-
-      Alternatively, you can go straight to the query console by clicking **Query console** (at the top of any page), selecting **Java** from the **Language** drop-down list, then choosing one or more projects to query from those displayed in the **Project** drop-down list.
-
-#. Copy the following query into the text box in the query console:
+#. In the quick query tab, delete ``select ""`` and paste the following query beneath the import statement ``import java``.
 
    .. code-block:: ql
 
-      import java
-
-      from MethodAccess ma
-      where
-        ma.getMethod().hasName("equals") and
-        ma.getArgument(0).(StringLiteral).getValue() = ""
-      select ma, "This comparison to empty string is inefficient, use isEmpty() instead."
+        from MethodAccess ma
+        where
+            ma.getMethod().hasName("equals") and
+            ma.getArgument(0).(StringLiteral).getValue() = ""
+        select ma, "This comparison to empty string is inefficient, use isEmpty() instead."
 
    Note that CodeQL treats Java and Kotlin as part of the same language, so even though this query starts with ``import java``, it will work for both Java and Kotlin code.
 
-   LGTM checks whether your query compiles and, if all is well, the **Run** button changes to green to indicate that you can go ahead and run the query.
+ .. include:: ../reusables/vs-code-basic-instructions/run-quick-query-2.rst
 
-#. Click **Run**.
+.. image:: ../images/codeql-for-visual-studio-code/basic-java-query-results-1.png
+   :align: center
 
-   The name of the project you are querying, and the ID of the most recently analyzed commit to the project, are listed below the query box. To the right of this is an icon that indicates the progress of the query operation:
+If any matching code is found, click a link in the ``ma`` column to view the ``.equals`` expression in the code viewer.
 
-   .. image:: ../images/query-progress.png
-       :align: center
+.. image:: ../images/codeql-for-visual-studio-code/basic-java-query-results-2.png
+   :align: center
 
-   .. pull-quote::
-
-      Note
-
-      Your query is always run against the most recently analyzed commit to the selected project.
-
-   The query will take a few moments to return results. When the query completes, the results are displayed below the project name. The query results are listed in two columns, corresponding to the two expressions in the ``select`` clause of the query. The first column corresponds to the expression ``ma`` and is linked to the location in the source code of the project where ``ma`` occurs. The second column is the alert message.
-
-   ➤ `Example query results <https://lgtm.com/query/6863787472564633674/>`__
-
-   .. pull-quote::
-
-      Note
-
-      An ellipsis (…) at the bottom of the table indicates that the entire list is not displayed—click it to show more results.
-
-#. If any matching code is found, click a link in the ``ma`` column to view the ``.equals`` expression in the code viewer.
-
-   The matching ``.equals`` expression is highlighted with a yellow background in the code viewer. If any code in the file also matches a query from the standard query library for that language, you will see a red alert message at the appropriate point within the code.
+.. include:: ../reusables/vs-code-basic-instructions/note-store-quick-query.rst
 
 About the query structure
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -148,14 +121,24 @@ In this case, it is not possible to simply use ``o.isEmpty()`` instead, as ``o``
         ma.getMethod().hasName("equals") and
         ma.getArgument(0).(StringLiteral).getValue() = ""
 
-#. Click **Run**.
+#. Re-run the query.
 
    There are now fewer results because ``.equals`` expressions with different types are no longer included.
-
-➤ `See this in the query console <https://lgtm.com/query/3716567543394265485/>`__
 
 Further reading
 ---------------
 
 .. include:: ../reusables/java-further-reading.rst
 .. include:: ../reusables/codeql-ref-tools-further-reading.rst
+
+.. Article-specific substitutions for the reusables used in docs/codeql/reusables/vs-code-basic-instructions
+
+.. |language-text| replace:: Java
+
+.. |language-code| replace:: ``java``
+
+.. |example-url| replace:: https://github.com/apache/activemq
+
+.. |image-quick-query| image:: ../images/codeql-for-visual-studio-code/quick-query-tab-java.png
+
+.. |result-col-1|  replace:: The first column corresponds to the expression ``ma`` and is linked to the location in the source code of the project where ``ma`` occurs.

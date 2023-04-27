@@ -12,6 +12,7 @@ private import semmle.code.csharp.frameworks.system.web.ui.WebControls
 private import semmle.code.csharp.frameworks.WCF
 private import semmle.code.csharp.frameworks.microsoft.Owin
 private import semmle.code.csharp.frameworks.microsoft.AspNetCore
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /** A data flow source of remote user input. */
 abstract class RemoteFlowSource extends DataFlow::Node {
@@ -74,7 +75,8 @@ class AspNetQueryStringRemoteFlowSource extends AspNetRemoteFlowSource, DataFlow
 
 /** A data flow source of remote user input (ASP.NET unvalidated request data). */
 class AspNetUnvalidatedQueryStringRemoteFlowSource extends AspNetRemoteFlowSource,
-  DataFlow::ExprNode {
+  DataFlow::ExprNode
+{
   AspNetUnvalidatedQueryStringRemoteFlowSource() {
     this.getExpr() = any(SystemWebUnvalidatedRequestValues c).getAProperty().getGetter().getACall() or
     this.getExpr() =
@@ -260,4 +262,10 @@ class AspNetCoreActionMethodParameter extends AspNetCoreRemoteFlowSource, DataFl
   }
 
   override string getSourceType() { result = "ASP.NET Core MVC action method parameter" }
+}
+
+private class ExternalRemoteFlowSource extends RemoteFlowSource {
+  ExternalRemoteFlowSource() { sourceNode(this, "remote") }
+
+  override string getSourceType() { result = "external" }
 }

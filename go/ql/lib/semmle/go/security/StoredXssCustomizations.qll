@@ -24,9 +24,7 @@ module StoredXss {
   abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
   /** A shared XSS sanitizer as a sanitizer for stored XSS. */
-  private class SharedXssSanitizer extends Sanitizer {
-    SharedXssSanitizer() { this instanceof SharedXss::Sanitizer }
-  }
+  private class SharedXssSanitizer extends Sanitizer instanceof SharedXss::Sanitizer { }
 
   /** A shared XSS sanitizer guard as a sanitizer guard for stored XSS. */
   deprecated private class SharedXssSanitizerGuard extends SanitizerGuard {
@@ -59,7 +57,5 @@ module StoredXss {
   }
 
   /** An arbitrary XSS sink, considered as a flow sink for stored XSS. */
-  private class AnySink extends Sink {
-    AnySink() { this instanceof SharedXss::Sink }
-  }
+  private class AnySink extends Sink instanceof SharedXss::Sink { }
 }

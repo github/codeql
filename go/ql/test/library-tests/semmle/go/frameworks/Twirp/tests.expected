@@ -1,0 +1,31 @@
+passingPositiveTests
+| PASSED | clientConstructor | rpc/notes/service.twirp.go:53:114:53:139 | comment |
+| PASSED | clientConstructor | rpc/notes/service.twirp.go:192:110:192:135 | comment |
+| PASSED | message | rpc/notes/service.pb.go:23:20:23:35 | comment |
+| PASSED | message | rpc/notes/service.pb.go:86:32:86:47 | comment |
+| PASSED | message | rpc/notes/service.pb.go:133:33:133:48 | comment |
+| PASSED | message | rpc/notes/service.pb.go:171:33:171:48 | comment |
+| PASSED | request | server/main.go:19:111:19:140 | comment |
+| PASSED | request | server/main.go:40:126:40:155 | comment |
+| PASSED | serverConstructor | rpc/notes/service.twirp.go:334:81:334:106 | comment |
+| PASSED | serviceClient | rpc/notes/service.twirp.go:44:42:44:63 | comment |
+| PASSED | serviceClient | rpc/notes/service.twirp.go:183:38:183:59 | comment |
+| PASSED | serviceInterface | rpc/notes/service.twirp.go:34:31:34:55 | comment |
+| PASSED | serviceServer | rpc/notes/service.twirp.go:322:34:322:55 | comment |
+| PASSED | ssrf | server/main.go:30:97:30:119 | comment |
+| PASSED | ssrfSink | client/main.go:12:89:12:105 | comment |
+| PASSED | ssrfSink | server/main.go:30:97:30:119 | comment |
+| PASSED | ssrfSink | server/main.go:31:97:31:120 | comment |
+failingPositiveTests
+passingNegativeTests
+| PASSED | !handler | rpc/notes/service.twirp.go:87:109:87:125 | comment |
+| PASSED | !handler | rpc/notes/service.twirp.go:116:113:116:129 | comment |
+| PASSED | !handler | rpc/notes/service.twirp.go:133:124:133:140 | comment |
+| PASSED | !handler | rpc/notes/service.twirp.go:162:128:162:144 | comment |
+| PASSED | !handler | rpc/notes/service.twirp.go:226:105:226:121 | comment |
+| PASSED | !handler | rpc/notes/service.twirp.go:255:109:255:125 | comment |
+| PASSED | !handler | rpc/notes/service.twirp.go:272:120:272:136 | comment |
+| PASSED | !handler | rpc/notes/service.twirp.go:301:124:301:140 | comment |
+| PASSED | !ssrf | server/main.go:31:97:31:120 | comment |
+| PASSED | !ssrfSink | server/main.go:60:51:60:68 | comment |
+failingNegativeTests

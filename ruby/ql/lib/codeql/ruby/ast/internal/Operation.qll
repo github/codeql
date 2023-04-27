@@ -42,7 +42,10 @@ class SplatExprReal extends UnaryOperationImpl, TSplatExprReal {
 
   final override string getOperatorImpl() { result = "*" }
 
-  final override Expr getOperandImpl() { toGenerated(result) = g.getChild() }
+  final override Expr getOperandImpl() {
+    toGenerated(result) = g.getChild() or
+    synthChild(this, 0, result)
+  }
 }
 
 class SplatExprSynth extends UnaryOperationImpl, TSplatExprSynth {
@@ -56,7 +59,10 @@ class HashSplatExprImpl extends UnaryOperationImpl, THashSplatExpr {
 
   HashSplatExprImpl() { this = THashSplatExpr(g) }
 
-  final override Expr getOperandImpl() { toGenerated(result) = g.getChild() }
+  final override Expr getOperandImpl() {
+    toGenerated(result) = g.getChild() or
+    synthChild(this, 0, result)
+  }
 
   final override string getOperatorImpl() { result = "**" }
 }

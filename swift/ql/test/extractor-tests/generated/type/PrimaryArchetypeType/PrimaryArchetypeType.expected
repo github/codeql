@@ -1,4 +1,4 @@
-| Param | getName: | Param | getCanonicalType: | Param | getInterfaceType: | Param |
-| ParamWithProtocols | getName: | ParamWithProtocols | getCanonicalType: | ParamWithProtocols | getInterfaceType: | ParamWithProtocols |
-| ParamWithSuperclass | getName: | ParamWithSuperclass | getCanonicalType: | ParamWithSuperclass | getInterfaceType: | ParamWithSuperclass |
-| ParamWithSuperclassAndProtocols | getName: | ParamWithSuperclassAndProtocols | getCanonicalType: | ParamWithSuperclassAndProtocols | getInterfaceType: | ParamWithSuperclassAndProtocols |
+| Param | getName: | Param | getCanonicalType: | Param | getInterfaceType: | Param | hasSuperclass: | no | getNumberOfProtocols: | 0 |
+| ParamWithProtocols | getName: | ParamWithProtocols | getCanonicalType: | ParamWithProtocols | getInterfaceType: | ParamWithProtocols | hasSuperclass: | no | getNumberOfProtocols: | 2 |
+| ParamWithSuperclass | getName: | ParamWithSuperclass | getCanonicalType: | ParamWithSuperclass | getInterfaceType: | ParamWithSuperclass | hasSuperclass: | yes | getNumberOfProtocols: | 0 |
+| ParamWithSuperclassAndProtocols | getName: | ParamWithSuperclassAndProtocols | getCanonicalType: | ParamWithSuperclassAndProtocols | getInterfaceType: | ParamWithSuperclassAndProtocols | hasSuperclass: | yes | getNumberOfProtocols: | 2 |

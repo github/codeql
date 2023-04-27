@@ -3,6 +3,7 @@ package com.semmle.js.extractor;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.regex.Matcher;
@@ -13,7 +14,6 @@ import com.semmle.js.extractor.ExtractorConfig.ECMAVersion;
 import com.semmle.js.extractor.ExtractorConfig.Platform;
 import com.semmle.js.extractor.ExtractorConfig.SourceType;
 import com.semmle.js.parser.ParseError;
-import com.semmle.util.data.Option;
 import com.semmle.util.data.Pair;
 import com.semmle.util.data.StringUtil;
 import com.semmle.util.io.WholeIO;
@@ -30,7 +30,7 @@ import net.htmlparser.jericho.Source;
 
 /** Extractor for handling HTML and XHTML files. */
 public class HTMLExtractor implements IExtractor {
-  private LoCInfo locInfo = new LoCInfo(0, 0);
+  private ParseResultInfo locInfo = new ParseResultInfo(0, 0, Collections.emptyList());
 
   private class JavaScriptHTMLElementHandler implements HtmlPopulator.ElementHandler {
     private final ScopeManager scopeManager;
@@ -213,11 +213,11 @@ public class HTMLExtractor implements IExtractor {
   }
 
   @Override
-  public LoCInfo extract(TextualExtractor textualExtractor) throws IOException {
+  public ParseResultInfo extract(TextualExtractor textualExtractor) throws IOException {
     return extractEx(textualExtractor).snd();
   }
 
-  public Pair<List<Label>, LoCInfo> extractEx(TextualExtractor textualExtractor) {
+  public Pair<List<Label>, ParseResultInfo> extractEx(TextualExtractor textualExtractor) {
     // Angular templates contain attribute names that are not valid HTML/XML, such
     // as [foo], (foo), [(foo)], and *foo.
     // Allow a large number of errors in attribute names, so the Jericho parser does
@@ -239,7 +239,7 @@ public class HTMLExtractor implements IExtractor {
       extractor.setSourceMap(textualExtractor.getSourceMap());
     }
 
-    List<Label> rootNodes = extractor.doit(Option.some(eltHandler));
+    List<Label> rootNodes = extractor.doit(eltHandler);
 
     return Pair.make(rootNodes, locInfo);
   }
@@ -370,7 +370,7 @@ public class HTMLExtractor implements IExtractor {
               config.getExtractLines(),
               textualExtractor.getMetrics(),
               textualExtractor.getExtractedFile());
-      Pair<Label, LoCInfo> result = extractor.extract(tx, source, toplevelKind, scopeManager);
+      Pair<Label, ParseResultInfo> result = extractor.extract(tx, source, toplevelKind, scopeManager);
       Label toplevelLabel = result.fst();
       if (toplevelLabel != null) { // can be null when script ends up being parsed as JSON
         emitTopLevelXmlNodeBinding(parentLabel, toplevelLabel, trapWriter);

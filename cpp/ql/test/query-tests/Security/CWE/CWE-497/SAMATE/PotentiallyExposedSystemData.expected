@@ -1,8 +1,14 @@
 edges
-| tests.c:57:21:57:28 | password | tests.c:70:70:70:77 | array to pointer conversion |
+| tests.c:57:21:57:28 | password indirection | tests.c:70:70:70:77 | password indirection |
+| tests.c:57:21:57:28 | password indirection | tests.c:70:70:70:77 | password indirection |
+| tests.c:57:21:57:28 | password indirection | tests.c:70:70:70:77 | password indirection |
 nodes
-| tests.c:57:21:57:28 | password | semmle.label | password |
-| tests.c:70:70:70:77 | array to pointer conversion | semmle.label | array to pointer conversion |
+| tests.c:57:21:57:28 | password indirection | semmle.label | password indirection |
+| tests.c:57:21:57:28 | password indirection | semmle.label | password indirection |
+| tests.c:57:21:57:28 | password indirection | semmle.label | password indirection |
+| tests.c:70:70:70:77 | password indirection | semmle.label | password indirection |
 subpaths
 #select
-| tests.c:70:70:70:77 | array to pointer conversion | tests.c:57:21:57:28 | password | tests.c:70:70:70:77 | array to pointer conversion | This operation potentially exposes sensitive system data from $@. | tests.c:57:21:57:28 | password | password |
+| tests.c:70:70:70:77 | password indirection | tests.c:57:21:57:28 | password indirection | tests.c:70:70:70:77 | password indirection | This operation potentially exposes sensitive system data from $@. | tests.c:57:21:57:28 | password indirection | password indirection |
+| tests.c:70:70:70:77 | password indirection | tests.c:57:21:57:28 | password indirection | tests.c:70:70:70:77 | password indirection | This operation potentially exposes sensitive system data from $@. | tests.c:57:21:57:28 | password indirection | password indirection |
+| tests.c:70:70:70:77 | password indirection | tests.c:57:21:57:28 | password indirection | tests.c:70:70:70:77 | password indirection | This operation potentially exposes sensitive system data from $@. | tests.c:57:21:57:28 | password indirection | password indirection |

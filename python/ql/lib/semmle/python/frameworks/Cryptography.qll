@@ -82,7 +82,8 @@ private module CryptographyModel {
    * See https://cryptography.io/en/latest/hazmat/primitives/asymmetric/rsa.html#cryptography.hazmat.primitives.asymmetric.rsa.generate_private_key
    */
   class CryptographyRsaGeneratePrivateKeyCall extends Cryptography::PublicKey::KeyGeneration::RsaRange,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     CryptographyRsaGeneratePrivateKeyCall() {
       this =
         API::moduleImport("cryptography")
@@ -105,7 +106,8 @@ private module CryptographyModel {
    * See https://cryptography.io/en/latest/hazmat/primitives/asymmetric/dsa.html#cryptography.hazmat.primitives.asymmetric.dsa.generate_private_key
    */
   class CryptographyDsaGeneratePrivateKeyCall extends Cryptography::PublicKey::KeyGeneration::DsaRange,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     CryptographyDsaGeneratePrivateKeyCall() {
       this =
         API::moduleImport("cryptography")
@@ -128,7 +130,8 @@ private module CryptographyModel {
    * See https://cryptography.io/en/latest/hazmat/primitives/asymmetric/ec.html#cryptography.hazmat.primitives.asymmetric.ec.generate_private_key
    */
   class CryptographyEcGeneratePrivateKeyCall extends Cryptography::PublicKey::KeyGeneration::EccRange,
-    DataFlow::CallCfgNode {
+    DataFlow::CallCfgNode
+  {
     CryptographyEcGeneratePrivateKeyCall() {
       this =
         API::moduleImport("cryptography")
@@ -204,7 +207,8 @@ private module CryptographyModel {
      * An encrypt or decrypt operation from `cryptography.hazmat.primitives.ciphers`.
      */
     class CryptographyGenericCipherOperation extends Cryptography::CryptographicOperation::Range,
-      DataFlow::MethodCallNode {
+      DataFlow::MethodCallNode
+    {
       string algorithmName;
       string modeName;
 
@@ -262,7 +266,8 @@ private module CryptographyModel {
      * An hashing operation from `cryptography.hazmat.primitives.hashes`.
      */
     class CryptographyGenericHashOperation extends Cryptography::CryptographicOperation::Range,
-      DataFlow::MethodCallNode {
+      DataFlow::MethodCallNode
+    {
       string algorithmName;
 
       CryptographyGenericHashOperation() {

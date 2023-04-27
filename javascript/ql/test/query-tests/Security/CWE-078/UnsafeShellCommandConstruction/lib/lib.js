@@ -66,7 +66,7 @@ module.exports.stringConcat = function (name) {
 
 	cp.exec(name); // OK.
 
-	cp.exec("for foo in (" + name + ") do bla end"); // OK.
+	cp.exec("for foo in (" + name + ") do bla end"); // NOT OK.
 
 	cp.exec("cat /foO/BAR/" + name) // NOT OK.
 
@@ -544,4 +544,87 @@ module.exports.sanitizer4 = function (name) {
 	} else {
 		cp.exec("rm -rf " + name); // NOT OK
 	}
+}
+
+
+module.exports.shellThing = function (name) {
+    function indirectShell(cmd, args, spawnOpts) {
+        cp.spawn(cmd, args, spawnOpts); // NOT OK
+    }
+    
+    indirectShell("rm", ["-rf", name], {shell: true});
+}
+
+module.exports.badSanitizer = function (name) {
+    if (!name.match(/^(.|\.){1,64}$/)) { // <- bad sanitizer
+        exec("rm -rf " + name); // NOT OK
+    } else {
+        exec("rm -rf " + name); // NOT OK
+    }
+
+    if (!name.match(/^\w{1,64}$/)) { // <- good sanitizer
+        exec("rm -rf " + name); // NOT OK
+    } else {
+        exec("rm -rf " + name); // OK
+    }
+}
+
+module.exports.safeWithBool = function (name) {
+	cp.exec("rm -rf " + name); // NOT OK
+
+	if (isSafeName(name)) {
+		cp.exec("rm -rf " + name); // OK
+	}
+
+    cp.exec("rm -rf " + name); // NOT OK
+
+    if (isSafeName(name) === true) {
+        cp.exec("rm -rf " + name); // OK
+    }
+
+    if (isSafeName(name) !== false) {
+        cp.exec("rm -rf " + name); // OK
+    }
+
+    if (isSafeName(name) == false) {
+        cp.exec("rm -rf " + name); // NOT OK
+    }
+
+    cp.exec("rm -rf " + name); // NOT OK
+}
+
+function indirectThing(name) {
+    return isSafeName(name);
+}
+
+function indirectThing2(name) {
+    return isSafeName(name) === true;
+}
+
+function moreIndirect(name) {
+    return indirectThing2(name) !== false;
+}
+
+module.exports.veryIndeirect = function (name) {
+	cp.exec("rm -rf " + name); // NOT OK
+
+	if (indirectThing(name)) {
+        cp.exec("rm -rf " + name); // OK
+    }
+
+    if (indirectThing2(name)) {
+        cp.exec("rm -rf " + name); // OK
+    }
+
+    if (moreIndirect(name)) {
+        cp.exec("rm -rf " + name); // OK
+    }
+
+    if (moreIndirect(name) !== false) {
+        cp.exec("rm -rf " + name); // OK
+    } else {
+        cp.exec("rm -rf " + name); // NOT OK
+    }
+
+    cp.exec("rm -rf " + name); // NOT OK
 }

@@ -4,6 +4,4 @@ dependencies:
   codeql/csharp-all: ${workspace}
   codeql/csharp-queries: ${workspace}
 extractor: csharp
-dataExtensions:
-  - library-tests/dataflow/external-models/ext/*.model.yml
 tests: .

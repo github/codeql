@@ -2,17 +2,17 @@ import java
 import semmle.code.java.dataflow.FlowSources
 import TestUtilities.InlineExpectationsTest
 
-class TestConfig extends TaintTracking::Configuration {
-  TestConfig() { this = "TestConfig" }
+module TestConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodAccess call |
       call.getMethod().hasName("sink") and call.getArgument(0) = sink.asExpr()
     )
   }
 }
+
+module TestFlow = TaintTracking::Global<TestConfig>;
 
 class JmsFlowTest extends InlineExpectationsTest {
   JmsFlowTest() { this = "JmsFlowTest" }
@@ -21,9 +21,7 @@ class JmsFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "tainted" and
-    exists(DataFlow::PathNode source, DataFlow::PathNode sink, TestConfig conf |
-      conf.hasFlowPath(source, sink)
-    |
+    exists(TestFlow::PathNode sink | TestFlow::flowPath(_, sink) |
       location = sink.getNode().getLocation() and element = sink.getNode().toString() and value = ""
     )
   }

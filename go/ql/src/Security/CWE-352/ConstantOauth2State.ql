@@ -106,7 +106,11 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
     TaintTracking::referenceStep(pred, succ)
     or
     // Propagate across Sprintf and similar calls
-    any(Fmt::AppenderOrSprinter s).taintStep(pred, succ)
+    exists(DataFlow::CallNode cn |
+      cn.getACalleeIncludingExternals().asFunction() instanceof Fmt::AppenderOrSprinter
+    |
+      pred = cn.getAnArgument() and succ = cn.getResult()
+    )
   }
 
   predicate isSinkCall(DataFlow::Node sink, DataFlow::CallNode call) {
@@ -147,8 +151,8 @@ class FlowToPrint extends DataFlow::Configuration {
 
 /** Holds if the provided `CallNode`'s result flows to an argument of a printer call. */
 predicate resultFlowsToPrinter(DataFlow::CallNode authCodeUrlCall) {
-  exists(FlowToPrint cfg, DataFlow::PathNode source, DataFlow::PathNode sink |
-    cfg.hasFlowPath(source, sink) and
+  exists(FlowToPrint cfg, DataFlow::PathNode source |
+    cfg.hasFlowPath(source, _) and
     authCodeUrlCall.getResult() = source.getNode()
   )
 }

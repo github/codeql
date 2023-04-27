@@ -3,14 +3,12 @@
  */
 
 import csharp
-import DataFlow::PathGraph
+import CallSensitivity::PathGraph
 
-class Conf extends DataFlow::Configuration {
-  Conf() { this = "CallSensitiveFlowConf" }
+module CallSensitivityConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ObjectCreation }
 
-  override predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ObjectCreation }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(MethodCall mc |
       mc.getTarget().hasName("Sink") and
       mc.getAnArgument() = sink.asExpr()
@@ -18,6 +16,8 @@ class Conf extends DataFlow::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, Conf conf
-where conf.hasFlowPath(source, sink)
+module CallSensitivity = DataFlow::Global<CallSensitivityConfig>;
+
+from CallSensitivity::PathNode source, CallSensitivity::PathNode sink
+where CallSensitivity::flowPath(source, sink)
 select source, source, sink, "$@", sink, sink.toString()

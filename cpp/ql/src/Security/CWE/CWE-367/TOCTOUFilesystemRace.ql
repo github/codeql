@@ -106,8 +106,8 @@ predicate checksPath(Expr check, Expr checkPath) {
   // access to a member variable on the stat buf
   // (morally, this should be a use-use pair, but it seems unlikely
   // that this variable will get reused in practice)
-  exists(Expr call, Expr e, Variable v |
-    statCallWithPointer(checkPath, call, e, v) and
+  exists(Expr e, Variable v |
+    statCallWithPointer(checkPath, _, e, v) and
     check.(VariableAccess).getTarget() = v and
     not e.getAChild*() = check // the call that writes to the pointer is not where the pointer is checked.
   )

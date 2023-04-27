@@ -1,416 +1,425 @@
 edges
-| test.cpp:4:15:4:20 | call to malloc | test.cpp:5:15:5:15 | Load |
-| test.cpp:5:15:5:15 | Load | test.cpp:5:15:5:22 | ... + ... |
-| test.cpp:5:15:5:15 | Load | test.cpp:5:15:5:22 | ... + ... |
-| test.cpp:5:15:5:15 | Load | test.cpp:5:15:5:22 | Store |
-| test.cpp:5:15:5:15 | Load | test.cpp:5:15:5:22 | Store |
-| test.cpp:5:15:5:15 | Load | test.cpp:6:15:6:15 | Load |
-| test.cpp:5:15:5:15 | Load | test.cpp:6:15:6:15 | Load |
-| test.cpp:5:15:5:15 | Load | test.cpp:7:16:7:16 | Load |
-| test.cpp:5:15:5:15 | Load | test.cpp:7:16:7:16 | Load |
-| test.cpp:5:15:5:15 | Load | test.cpp:8:16:8:16 | Load |
-| test.cpp:5:15:5:15 | Load | test.cpp:8:16:8:16 | Load |
-| test.cpp:5:15:5:15 | Load | test.cpp:8:16:8:20 | ... + ... |
-| test.cpp:5:15:5:15 | Load | test.cpp:9:16:9:16 | Load |
-| test.cpp:5:15:5:15 | Load | test.cpp:9:16:9:16 | Load |
-| test.cpp:5:15:5:15 | Load | test.cpp:10:16:10:16 | Load |
-| test.cpp:5:15:5:15 | Load | test.cpp:10:16:10:16 | Load |
-| test.cpp:5:15:5:15 | Load | test.cpp:11:16:11:16 | Load |
-| test.cpp:5:15:5:15 | Load | test.cpp:11:16:11:16 | Load |
-| test.cpp:5:15:5:15 | Load | test.cpp:12:16:12:16 | Load |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:5:15:5:22 | Store |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:5:15:5:22 | Store |
+| test.cpp:4:15:4:20 | call to malloc | test.cpp:5:15:5:15 | p |
+| test.cpp:5:15:5:15 | p | test.cpp:5:15:5:22 | ... + ... |
+| test.cpp:5:15:5:15 | p | test.cpp:5:15:5:22 | ... + ... |
+| test.cpp:5:15:5:15 | p | test.cpp:5:15:5:22 | ... + ... |
+| test.cpp:5:15:5:15 | p | test.cpp:5:15:5:22 | ... + ... |
+| test.cpp:5:15:5:15 | p | test.cpp:6:15:6:15 | q |
+| test.cpp:5:15:5:15 | p | test.cpp:6:15:6:15 | q |
+| test.cpp:5:15:5:15 | p | test.cpp:7:16:7:16 | q |
+| test.cpp:5:15:5:15 | p | test.cpp:7:16:7:16 | q |
+| test.cpp:5:15:5:15 | p | test.cpp:8:16:8:16 | q |
+| test.cpp:5:15:5:15 | p | test.cpp:8:16:8:16 | q |
+| test.cpp:5:15:5:15 | p | test.cpp:8:16:8:20 | ... + ... |
+| test.cpp:5:15:5:15 | p | test.cpp:9:16:9:16 | q |
+| test.cpp:5:15:5:15 | p | test.cpp:9:16:9:16 | q |
+| test.cpp:5:15:5:15 | p | test.cpp:10:16:10:16 | q |
+| test.cpp:5:15:5:15 | p | test.cpp:10:16:10:16 | q |
+| test.cpp:5:15:5:15 | p | test.cpp:11:16:11:16 | q |
+| test.cpp:5:15:5:15 | p | test.cpp:11:16:11:16 | q |
+| test.cpp:5:15:5:15 | p | test.cpp:12:16:12:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:5:15:5:22 | ... + ... |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:5:15:5:22 | ... + ... |
 | test.cpp:5:15:5:22 | ... + ... | test.cpp:6:14:6:15 | Load: * ... |
 | test.cpp:5:15:5:22 | ... + ... | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:6:15:6:15 | Load |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:6:15:6:15 | Load |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:7:16:7:16 | Load |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:7:16:7:16 | Load |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:6:15:6:15 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:6:15:6:15 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:6:15:6:15 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:6:15:6:15 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:7:16:7:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:7:16:7:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:7:16:7:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:7:16:7:16 | q |
 | test.cpp:5:15:5:22 | ... + ... | test.cpp:8:14:8:21 | Load: * ... |
 | test.cpp:5:15:5:22 | ... + ... | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:8:16:8:16 | Load |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:8:16:8:16 | Load |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:9:16:9:16 | Load |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:9:16:9:16 | Load |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:10:16:10:16 | Load |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:10:16:10:16 | Load |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:11:16:11:16 | Load |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:11:16:11:16 | Load |
-| test.cpp:5:15:5:22 | ... + ... | test.cpp:12:16:12:16 | Load |
-| test.cpp:5:15:5:22 | Store | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:5:15:5:22 | Store | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:5:15:5:22 | Store | test.cpp:6:15:6:15 | Load |
-| test.cpp:5:15:5:22 | Store | test.cpp:6:15:6:15 | Load |
-| test.cpp:5:15:5:22 | Store | test.cpp:7:16:7:16 | Load |
-| test.cpp:5:15:5:22 | Store | test.cpp:7:16:7:16 | Load |
-| test.cpp:5:15:5:22 | Store | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:5:15:5:22 | Store | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:5:15:5:22 | Store | test.cpp:8:16:8:16 | Load |
-| test.cpp:5:15:5:22 | Store | test.cpp:8:16:8:16 | Load |
-| test.cpp:5:15:5:22 | Store | test.cpp:9:16:9:16 | Load |
-| test.cpp:5:15:5:22 | Store | test.cpp:9:16:9:16 | Load |
-| test.cpp:5:15:5:22 | Store | test.cpp:10:16:10:16 | Load |
-| test.cpp:5:15:5:22 | Store | test.cpp:10:16:10:16 | Load |
-| test.cpp:5:15:5:22 | Store | test.cpp:11:16:11:16 | Load |
-| test.cpp:5:15:5:22 | Store | test.cpp:11:16:11:16 | Load |
-| test.cpp:5:15:5:22 | Store | test.cpp:12:16:12:16 | Load |
-| test.cpp:6:15:6:15 | Load | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:6:15:6:15 | Load | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:6:15:6:15 | Load | test.cpp:7:16:7:16 | Load |
-| test.cpp:6:15:6:15 | Load | test.cpp:7:16:7:16 | Load |
-| test.cpp:6:15:6:15 | Load | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:6:15:6:15 | Load | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:6:15:6:15 | Load | test.cpp:8:16:8:16 | Load |
-| test.cpp:6:15:6:15 | Load | test.cpp:8:16:8:16 | Load |
-| test.cpp:6:15:6:15 | Load | test.cpp:9:16:9:16 | Load |
-| test.cpp:6:15:6:15 | Load | test.cpp:9:16:9:16 | Load |
-| test.cpp:6:15:6:15 | Load | test.cpp:10:16:10:16 | Load |
-| test.cpp:6:15:6:15 | Load | test.cpp:10:16:10:16 | Load |
-| test.cpp:6:15:6:15 | Load | test.cpp:11:16:11:16 | Load |
-| test.cpp:6:15:6:15 | Load | test.cpp:11:16:11:16 | Load |
-| test.cpp:6:15:6:15 | Load | test.cpp:12:16:12:16 | Load |
-| test.cpp:7:16:7:16 | Load | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:7:16:7:16 | Load | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:7:16:7:16 | Load | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:7:16:7:16 | Load | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:7:16:7:16 | Load | test.cpp:8:16:8:16 | Load |
-| test.cpp:7:16:7:16 | Load | test.cpp:8:16:8:16 | Load |
-| test.cpp:7:16:7:16 | Load | test.cpp:9:16:9:16 | Load |
-| test.cpp:7:16:7:16 | Load | test.cpp:9:16:9:16 | Load |
-| test.cpp:7:16:7:16 | Load | test.cpp:10:16:10:16 | Load |
-| test.cpp:7:16:7:16 | Load | test.cpp:10:16:10:16 | Load |
-| test.cpp:7:16:7:16 | Load | test.cpp:11:16:11:16 | Load |
-| test.cpp:7:16:7:16 | Load | test.cpp:11:16:11:16 | Load |
-| test.cpp:7:16:7:16 | Load | test.cpp:12:16:12:16 | Load |
-| test.cpp:8:16:8:16 | Load | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:8:16:8:16 | Load | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:8:16:8:16 | Load | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:8:16:8:16 | Load | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:8:16:8:16 | Load | test.cpp:9:16:9:16 | Load |
-| test.cpp:8:16:8:16 | Load | test.cpp:9:16:9:16 | Load |
-| test.cpp:8:16:8:16 | Load | test.cpp:10:16:10:16 | Load |
-| test.cpp:8:16:8:16 | Load | test.cpp:10:16:10:16 | Load |
-| test.cpp:8:16:8:16 | Load | test.cpp:11:16:11:16 | Load |
-| test.cpp:8:16:8:16 | Load | test.cpp:11:16:11:16 | Load |
-| test.cpp:8:16:8:16 | Load | test.cpp:12:16:12:16 | Load |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:8:16:8:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:8:16:8:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:8:16:8:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:8:16:8:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:9:16:9:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:9:16:9:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:9:16:9:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:9:16:9:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:10:16:10:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:10:16:10:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:10:16:10:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:10:16:10:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:11:16:11:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:11:16:11:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:11:16:11:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:11:16:11:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:12:16:12:16 | q |
+| test.cpp:5:15:5:22 | ... + ... | test.cpp:12:16:12:16 | q |
+| test.cpp:6:15:6:15 | q | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:6:15:6:15 | q | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:6:15:6:15 | q | test.cpp:7:16:7:16 | q |
+| test.cpp:6:15:6:15 | q | test.cpp:7:16:7:16 | q |
+| test.cpp:6:15:6:15 | q | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:6:15:6:15 | q | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:6:15:6:15 | q | test.cpp:8:16:8:16 | q |
+| test.cpp:6:15:6:15 | q | test.cpp:8:16:8:16 | q |
+| test.cpp:6:15:6:15 | q | test.cpp:9:16:9:16 | q |
+| test.cpp:6:15:6:15 | q | test.cpp:9:16:9:16 | q |
+| test.cpp:6:15:6:15 | q | test.cpp:10:16:10:16 | q |
+| test.cpp:6:15:6:15 | q | test.cpp:10:16:10:16 | q |
+| test.cpp:6:15:6:15 | q | test.cpp:11:16:11:16 | q |
+| test.cpp:6:15:6:15 | q | test.cpp:11:16:11:16 | q |
+| test.cpp:6:15:6:15 | q | test.cpp:12:16:12:16 | q |
+| test.cpp:7:16:7:16 | q | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:7:16:7:16 | q | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:7:16:7:16 | q | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:7:16:7:16 | q | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:7:16:7:16 | q | test.cpp:8:16:8:16 | q |
+| test.cpp:7:16:7:16 | q | test.cpp:8:16:8:16 | q |
+| test.cpp:7:16:7:16 | q | test.cpp:9:16:9:16 | q |
+| test.cpp:7:16:7:16 | q | test.cpp:9:16:9:16 | q |
+| test.cpp:7:16:7:16 | q | test.cpp:10:16:10:16 | q |
+| test.cpp:7:16:7:16 | q | test.cpp:10:16:10:16 | q |
+| test.cpp:7:16:7:16 | q | test.cpp:11:16:11:16 | q |
+| test.cpp:7:16:7:16 | q | test.cpp:11:16:11:16 | q |
+| test.cpp:7:16:7:16 | q | test.cpp:12:16:12:16 | q |
+| test.cpp:8:16:8:16 | q | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:8:16:8:16 | q | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:8:16:8:16 | q | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:8:16:8:16 | q | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:8:16:8:16 | q | test.cpp:9:16:9:16 | q |
+| test.cpp:8:16:8:16 | q | test.cpp:9:16:9:16 | q |
+| test.cpp:8:16:8:16 | q | test.cpp:10:16:10:16 | q |
+| test.cpp:8:16:8:16 | q | test.cpp:10:16:10:16 | q |
+| test.cpp:8:16:8:16 | q | test.cpp:11:16:11:16 | q |
+| test.cpp:8:16:8:16 | q | test.cpp:11:16:11:16 | q |
+| test.cpp:8:16:8:16 | q | test.cpp:12:16:12:16 | q |
 | test.cpp:8:16:8:20 | ... + ... | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:9:16:9:16 | Load | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:9:16:9:16 | Load | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:9:16:9:16 | Load | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:9:16:9:16 | Load | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:9:16:9:16 | Load | test.cpp:10:16:10:16 | Load |
-| test.cpp:9:16:9:16 | Load | test.cpp:10:16:10:16 | Load |
-| test.cpp:9:16:9:16 | Load | test.cpp:11:16:11:16 | Load |
-| test.cpp:9:16:9:16 | Load | test.cpp:11:16:11:16 | Load |
-| test.cpp:9:16:9:16 | Load | test.cpp:12:16:12:16 | Load |
-| test.cpp:10:16:10:16 | Load | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:10:16:10:16 | Load | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:10:16:10:16 | Load | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:10:16:10:16 | Load | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:10:16:10:16 | Load | test.cpp:11:16:11:16 | Load |
-| test.cpp:10:16:10:16 | Load | test.cpp:11:16:11:16 | Load |
-| test.cpp:10:16:10:16 | Load | test.cpp:12:16:12:16 | Load |
-| test.cpp:11:16:11:16 | Load | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:11:16:11:16 | Load | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:11:16:11:16 | Load | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:11:16:11:16 | Load | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:11:16:11:16 | Load | test.cpp:12:16:12:16 | Load |
-| test.cpp:12:16:12:16 | Load | test.cpp:6:14:6:15 | Load: * ... |
-| test.cpp:12:16:12:16 | Load | test.cpp:8:14:8:21 | Load: * ... |
-| test.cpp:16:15:16:20 | call to malloc | test.cpp:17:15:17:15 | Load |
-| test.cpp:17:15:17:15 | Load | test.cpp:17:15:17:22 | ... + ... |
-| test.cpp:17:15:17:15 | Load | test.cpp:20:16:20:20 | ... + ... |
+| test.cpp:9:16:9:16 | q | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:9:16:9:16 | q | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:9:16:9:16 | q | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:9:16:9:16 | q | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:9:16:9:16 | q | test.cpp:10:16:10:16 | q |
+| test.cpp:9:16:9:16 | q | test.cpp:10:16:10:16 | q |
+| test.cpp:9:16:9:16 | q | test.cpp:11:16:11:16 | q |
+| test.cpp:9:16:9:16 | q | test.cpp:11:16:11:16 | q |
+| test.cpp:9:16:9:16 | q | test.cpp:12:16:12:16 | q |
+| test.cpp:10:16:10:16 | q | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:10:16:10:16 | q | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:10:16:10:16 | q | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:10:16:10:16 | q | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:10:16:10:16 | q | test.cpp:11:16:11:16 | q |
+| test.cpp:10:16:10:16 | q | test.cpp:11:16:11:16 | q |
+| test.cpp:10:16:10:16 | q | test.cpp:12:16:12:16 | q |
+| test.cpp:11:16:11:16 | q | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:11:16:11:16 | q | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:11:16:11:16 | q | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:11:16:11:16 | q | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:11:16:11:16 | q | test.cpp:12:16:12:16 | q |
+| test.cpp:12:16:12:16 | q | test.cpp:6:14:6:15 | Load: * ... |
+| test.cpp:12:16:12:16 | q | test.cpp:8:14:8:21 | Load: * ... |
+| test.cpp:16:15:16:20 | call to malloc | test.cpp:17:15:17:15 | p |
+| test.cpp:17:15:17:15 | p | test.cpp:17:15:17:22 | ... + ... |
+| test.cpp:17:15:17:15 | p | test.cpp:20:16:20:20 | ... + ... |
 | test.cpp:17:15:17:22 | ... + ... | test.cpp:20:14:20:21 | Load: * ... |
 | test.cpp:20:16:20:20 | ... + ... | test.cpp:20:14:20:21 | Load: * ... |
-| test.cpp:28:15:28:20 | call to malloc | test.cpp:29:15:29:15 | Load |
-| test.cpp:29:15:29:15 | Load | test.cpp:29:15:29:28 | ... + ... |
-| test.cpp:29:15:29:15 | Load | test.cpp:29:15:29:28 | ... + ... |
-| test.cpp:29:15:29:15 | Load | test.cpp:29:15:29:28 | Store |
-| test.cpp:29:15:29:15 | Load | test.cpp:29:15:29:28 | Store |
-| test.cpp:29:15:29:15 | Load | test.cpp:30:15:30:15 | Load |
-| test.cpp:29:15:29:15 | Load | test.cpp:30:15:30:15 | Load |
-| test.cpp:29:15:29:15 | Load | test.cpp:31:16:31:16 | Load |
-| test.cpp:29:15:29:15 | Load | test.cpp:31:16:31:16 | Load |
-| test.cpp:29:15:29:15 | Load | test.cpp:32:16:32:16 | Load |
-| test.cpp:29:15:29:15 | Load | test.cpp:32:16:32:16 | Load |
-| test.cpp:29:15:29:15 | Load | test.cpp:32:16:32:20 | ... + ... |
-| test.cpp:29:15:29:15 | Load | test.cpp:33:16:33:16 | Load |
-| test.cpp:29:15:29:15 | Load | test.cpp:33:16:33:16 | Load |
-| test.cpp:29:15:29:15 | Load | test.cpp:34:16:34:16 | Load |
-| test.cpp:29:15:29:15 | Load | test.cpp:34:16:34:16 | Load |
-| test.cpp:29:15:29:15 | Load | test.cpp:35:16:35:16 | Load |
-| test.cpp:29:15:29:15 | Load | test.cpp:35:16:35:16 | Load |
-| test.cpp:29:15:29:15 | Load | test.cpp:36:16:36:16 | Load |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:29:15:29:28 | Store |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:29:15:29:28 | Store |
+| test.cpp:28:15:28:20 | call to malloc | test.cpp:29:15:29:15 | p |
+| test.cpp:29:15:29:15 | p | test.cpp:29:15:29:28 | ... + ... |
+| test.cpp:29:15:29:15 | p | test.cpp:29:15:29:28 | ... + ... |
+| test.cpp:29:15:29:15 | p | test.cpp:29:15:29:28 | ... + ... |
+| test.cpp:29:15:29:15 | p | test.cpp:29:15:29:28 | ... + ... |
+| test.cpp:29:15:29:15 | p | test.cpp:30:15:30:15 | q |
+| test.cpp:29:15:29:15 | p | test.cpp:30:15:30:15 | q |
+| test.cpp:29:15:29:15 | p | test.cpp:31:16:31:16 | q |
+| test.cpp:29:15:29:15 | p | test.cpp:31:16:31:16 | q |
+| test.cpp:29:15:29:15 | p | test.cpp:32:16:32:16 | q |
+| test.cpp:29:15:29:15 | p | test.cpp:32:16:32:16 | q |
+| test.cpp:29:15:29:15 | p | test.cpp:32:16:32:20 | ... + ... |
+| test.cpp:29:15:29:15 | p | test.cpp:33:16:33:16 | q |
+| test.cpp:29:15:29:15 | p | test.cpp:33:16:33:16 | q |
+| test.cpp:29:15:29:15 | p | test.cpp:34:16:34:16 | q |
+| test.cpp:29:15:29:15 | p | test.cpp:34:16:34:16 | q |
+| test.cpp:29:15:29:15 | p | test.cpp:35:16:35:16 | q |
+| test.cpp:29:15:29:15 | p | test.cpp:35:16:35:16 | q |
+| test.cpp:29:15:29:15 | p | test.cpp:36:16:36:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:29:15:29:28 | ... + ... |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:29:15:29:28 | ... + ... |
 | test.cpp:29:15:29:28 | ... + ... | test.cpp:30:14:30:15 | Load: * ... |
 | test.cpp:29:15:29:28 | ... + ... | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:30:15:30:15 | Load |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:30:15:30:15 | Load |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:31:16:31:16 | Load |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:31:16:31:16 | Load |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:30:15:30:15 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:30:15:30:15 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:30:15:30:15 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:30:15:30:15 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:31:16:31:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:31:16:31:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:31:16:31:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:31:16:31:16 | q |
 | test.cpp:29:15:29:28 | ... + ... | test.cpp:32:14:32:21 | Load: * ... |
 | test.cpp:29:15:29:28 | ... + ... | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:32:16:32:16 | Load |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:32:16:32:16 | Load |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:33:16:33:16 | Load |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:33:16:33:16 | Load |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:34:16:34:16 | Load |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:34:16:34:16 | Load |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:35:16:35:16 | Load |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:35:16:35:16 | Load |
-| test.cpp:29:15:29:28 | ... + ... | test.cpp:36:16:36:16 | Load |
-| test.cpp:29:15:29:28 | Store | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:29:15:29:28 | Store | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:29:15:29:28 | Store | test.cpp:30:15:30:15 | Load |
-| test.cpp:29:15:29:28 | Store | test.cpp:30:15:30:15 | Load |
-| test.cpp:29:15:29:28 | Store | test.cpp:31:16:31:16 | Load |
-| test.cpp:29:15:29:28 | Store | test.cpp:31:16:31:16 | Load |
-| test.cpp:29:15:29:28 | Store | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:29:15:29:28 | Store | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:29:15:29:28 | Store | test.cpp:32:16:32:16 | Load |
-| test.cpp:29:15:29:28 | Store | test.cpp:32:16:32:16 | Load |
-| test.cpp:29:15:29:28 | Store | test.cpp:33:16:33:16 | Load |
-| test.cpp:29:15:29:28 | Store | test.cpp:33:16:33:16 | Load |
-| test.cpp:29:15:29:28 | Store | test.cpp:34:16:34:16 | Load |
-| test.cpp:29:15:29:28 | Store | test.cpp:34:16:34:16 | Load |
-| test.cpp:29:15:29:28 | Store | test.cpp:35:16:35:16 | Load |
-| test.cpp:29:15:29:28 | Store | test.cpp:35:16:35:16 | Load |
-| test.cpp:29:15:29:28 | Store | test.cpp:36:16:36:16 | Load |
-| test.cpp:30:15:30:15 | Load | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:30:15:30:15 | Load | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:30:15:30:15 | Load | test.cpp:31:16:31:16 | Load |
-| test.cpp:30:15:30:15 | Load | test.cpp:31:16:31:16 | Load |
-| test.cpp:30:15:30:15 | Load | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:30:15:30:15 | Load | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:30:15:30:15 | Load | test.cpp:32:16:32:16 | Load |
-| test.cpp:30:15:30:15 | Load | test.cpp:32:16:32:16 | Load |
-| test.cpp:30:15:30:15 | Load | test.cpp:33:16:33:16 | Load |
-| test.cpp:30:15:30:15 | Load | test.cpp:33:16:33:16 | Load |
-| test.cpp:30:15:30:15 | Load | test.cpp:34:16:34:16 | Load |
-| test.cpp:30:15:30:15 | Load | test.cpp:34:16:34:16 | Load |
-| test.cpp:30:15:30:15 | Load | test.cpp:35:16:35:16 | Load |
-| test.cpp:30:15:30:15 | Load | test.cpp:35:16:35:16 | Load |
-| test.cpp:30:15:30:15 | Load | test.cpp:36:16:36:16 | Load |
-| test.cpp:31:16:31:16 | Load | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:31:16:31:16 | Load | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:31:16:31:16 | Load | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:31:16:31:16 | Load | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:31:16:31:16 | Load | test.cpp:32:16:32:16 | Load |
-| test.cpp:31:16:31:16 | Load | test.cpp:32:16:32:16 | Load |
-| test.cpp:31:16:31:16 | Load | test.cpp:33:16:33:16 | Load |
-| test.cpp:31:16:31:16 | Load | test.cpp:33:16:33:16 | Load |
-| test.cpp:31:16:31:16 | Load | test.cpp:34:16:34:16 | Load |
-| test.cpp:31:16:31:16 | Load | test.cpp:34:16:34:16 | Load |
-| test.cpp:31:16:31:16 | Load | test.cpp:35:16:35:16 | Load |
-| test.cpp:31:16:31:16 | Load | test.cpp:35:16:35:16 | Load |
-| test.cpp:31:16:31:16 | Load | test.cpp:36:16:36:16 | Load |
-| test.cpp:32:16:32:16 | Load | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:32:16:32:16 | Load | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:32:16:32:16 | Load | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:32:16:32:16 | Load | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:32:16:32:16 | Load | test.cpp:33:16:33:16 | Load |
-| test.cpp:32:16:32:16 | Load | test.cpp:33:16:33:16 | Load |
-| test.cpp:32:16:32:16 | Load | test.cpp:34:16:34:16 | Load |
-| test.cpp:32:16:32:16 | Load | test.cpp:34:16:34:16 | Load |
-| test.cpp:32:16:32:16 | Load | test.cpp:35:16:35:16 | Load |
-| test.cpp:32:16:32:16 | Load | test.cpp:35:16:35:16 | Load |
-| test.cpp:32:16:32:16 | Load | test.cpp:36:16:36:16 | Load |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:32:16:32:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:32:16:32:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:32:16:32:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:32:16:32:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:33:16:33:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:33:16:33:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:33:16:33:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:33:16:33:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:34:16:34:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:34:16:34:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:34:16:34:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:34:16:34:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:35:16:35:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:35:16:35:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:35:16:35:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:35:16:35:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:36:16:36:16 | q |
+| test.cpp:29:15:29:28 | ... + ... | test.cpp:36:16:36:16 | q |
+| test.cpp:30:15:30:15 | q | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:30:15:30:15 | q | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:30:15:30:15 | q | test.cpp:31:16:31:16 | q |
+| test.cpp:30:15:30:15 | q | test.cpp:31:16:31:16 | q |
+| test.cpp:30:15:30:15 | q | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:30:15:30:15 | q | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:30:15:30:15 | q | test.cpp:32:16:32:16 | q |
+| test.cpp:30:15:30:15 | q | test.cpp:32:16:32:16 | q |
+| test.cpp:30:15:30:15 | q | test.cpp:33:16:33:16 | q |
+| test.cpp:30:15:30:15 | q | test.cpp:33:16:33:16 | q |
+| test.cpp:30:15:30:15 | q | test.cpp:34:16:34:16 | q |
+| test.cpp:30:15:30:15 | q | test.cpp:34:16:34:16 | q |
+| test.cpp:30:15:30:15 | q | test.cpp:35:16:35:16 | q |
+| test.cpp:30:15:30:15 | q | test.cpp:35:16:35:16 | q |
+| test.cpp:30:15:30:15 | q | test.cpp:36:16:36:16 | q |
+| test.cpp:31:16:31:16 | q | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:31:16:31:16 | q | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:31:16:31:16 | q | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:31:16:31:16 | q | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:31:16:31:16 | q | test.cpp:32:16:32:16 | q |
+| test.cpp:31:16:31:16 | q | test.cpp:32:16:32:16 | q |
+| test.cpp:31:16:31:16 | q | test.cpp:33:16:33:16 | q |
+| test.cpp:31:16:31:16 | q | test.cpp:33:16:33:16 | q |
+| test.cpp:31:16:31:16 | q | test.cpp:34:16:34:16 | q |
+| test.cpp:31:16:31:16 | q | test.cpp:34:16:34:16 | q |
+| test.cpp:31:16:31:16 | q | test.cpp:35:16:35:16 | q |
+| test.cpp:31:16:31:16 | q | test.cpp:35:16:35:16 | q |
+| test.cpp:31:16:31:16 | q | test.cpp:36:16:36:16 | q |
+| test.cpp:32:16:32:16 | q | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:32:16:32:16 | q | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:32:16:32:16 | q | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:32:16:32:16 | q | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:32:16:32:16 | q | test.cpp:33:16:33:16 | q |
+| test.cpp:32:16:32:16 | q | test.cpp:33:16:33:16 | q |
+| test.cpp:32:16:32:16 | q | test.cpp:34:16:34:16 | q |
+| test.cpp:32:16:32:16 | q | test.cpp:34:16:34:16 | q |
+| test.cpp:32:16:32:16 | q | test.cpp:35:16:35:16 | q |
+| test.cpp:32:16:32:16 | q | test.cpp:35:16:35:16 | q |
+| test.cpp:32:16:32:16 | q | test.cpp:36:16:36:16 | q |
 | test.cpp:32:16:32:20 | ... + ... | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:33:16:33:16 | Load | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:33:16:33:16 | Load | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:33:16:33:16 | Load | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:33:16:33:16 | Load | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:33:16:33:16 | Load | test.cpp:34:16:34:16 | Load |
-| test.cpp:33:16:33:16 | Load | test.cpp:34:16:34:16 | Load |
-| test.cpp:33:16:33:16 | Load | test.cpp:35:16:35:16 | Load |
-| test.cpp:33:16:33:16 | Load | test.cpp:35:16:35:16 | Load |
-| test.cpp:33:16:33:16 | Load | test.cpp:36:16:36:16 | Load |
-| test.cpp:34:16:34:16 | Load | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:34:16:34:16 | Load | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:34:16:34:16 | Load | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:34:16:34:16 | Load | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:34:16:34:16 | Load | test.cpp:35:16:35:16 | Load |
-| test.cpp:34:16:34:16 | Load | test.cpp:35:16:35:16 | Load |
-| test.cpp:34:16:34:16 | Load | test.cpp:36:16:36:16 | Load |
-| test.cpp:35:16:35:16 | Load | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:35:16:35:16 | Load | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:35:16:35:16 | Load | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:35:16:35:16 | Load | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:35:16:35:16 | Load | test.cpp:36:16:36:16 | Load |
-| test.cpp:36:16:36:16 | Load | test.cpp:30:14:30:15 | Load: * ... |
-| test.cpp:36:16:36:16 | Load | test.cpp:32:14:32:21 | Load: * ... |
-| test.cpp:40:15:40:20 | call to malloc | test.cpp:41:15:41:15 | Load |
-| test.cpp:41:15:41:15 | Load | test.cpp:41:15:41:28 | ... + ... |
-| test.cpp:41:15:41:15 | Load | test.cpp:41:15:41:28 | ... + ... |
-| test.cpp:41:15:41:15 | Load | test.cpp:41:15:41:28 | Store |
-| test.cpp:41:15:41:15 | Load | test.cpp:41:15:41:28 | Store |
-| test.cpp:41:15:41:15 | Load | test.cpp:42:15:42:15 | Load |
-| test.cpp:41:15:41:15 | Load | test.cpp:42:15:42:15 | Load |
-| test.cpp:41:15:41:15 | Load | test.cpp:43:16:43:16 | Load |
-| test.cpp:41:15:41:15 | Load | test.cpp:43:16:43:16 | Load |
-| test.cpp:41:15:41:15 | Load | test.cpp:44:16:44:16 | Load |
-| test.cpp:41:15:41:15 | Load | test.cpp:44:16:44:16 | Load |
-| test.cpp:41:15:41:15 | Load | test.cpp:44:16:44:20 | ... + ... |
-| test.cpp:41:15:41:15 | Load | test.cpp:45:16:45:16 | Load |
-| test.cpp:41:15:41:15 | Load | test.cpp:45:16:45:16 | Load |
-| test.cpp:41:15:41:15 | Load | test.cpp:46:16:46:16 | Load |
-| test.cpp:41:15:41:15 | Load | test.cpp:46:16:46:16 | Load |
-| test.cpp:41:15:41:15 | Load | test.cpp:47:16:47:16 | Load |
-| test.cpp:41:15:41:15 | Load | test.cpp:47:16:47:16 | Load |
-| test.cpp:41:15:41:15 | Load | test.cpp:48:16:48:16 | Load |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:41:15:41:28 | Store |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:41:15:41:28 | Store |
+| test.cpp:33:16:33:16 | q | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:33:16:33:16 | q | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:33:16:33:16 | q | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:33:16:33:16 | q | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:33:16:33:16 | q | test.cpp:34:16:34:16 | q |
+| test.cpp:33:16:33:16 | q | test.cpp:34:16:34:16 | q |
+| test.cpp:33:16:33:16 | q | test.cpp:35:16:35:16 | q |
+| test.cpp:33:16:33:16 | q | test.cpp:35:16:35:16 | q |
+| test.cpp:33:16:33:16 | q | test.cpp:36:16:36:16 | q |
+| test.cpp:34:16:34:16 | q | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:34:16:34:16 | q | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:34:16:34:16 | q | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:34:16:34:16 | q | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:34:16:34:16 | q | test.cpp:35:16:35:16 | q |
+| test.cpp:34:16:34:16 | q | test.cpp:35:16:35:16 | q |
+| test.cpp:34:16:34:16 | q | test.cpp:36:16:36:16 | q |
+| test.cpp:35:16:35:16 | q | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:35:16:35:16 | q | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:35:16:35:16 | q | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:35:16:35:16 | q | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:35:16:35:16 | q | test.cpp:36:16:36:16 | q |
+| test.cpp:36:16:36:16 | q | test.cpp:30:14:30:15 | Load: * ... |
+| test.cpp:36:16:36:16 | q | test.cpp:32:14:32:21 | Load: * ... |
+| test.cpp:40:15:40:20 | call to malloc | test.cpp:41:15:41:15 | p |
+| test.cpp:41:15:41:15 | p | test.cpp:41:15:41:28 | ... + ... |
+| test.cpp:41:15:41:15 | p | test.cpp:41:15:41:28 | ... + ... |
+| test.cpp:41:15:41:15 | p | test.cpp:41:15:41:28 | ... + ... |
+| test.cpp:41:15:41:15 | p | test.cpp:41:15:41:28 | ... + ... |
+| test.cpp:41:15:41:15 | p | test.cpp:42:15:42:15 | q |
+| test.cpp:41:15:41:15 | p | test.cpp:42:15:42:15 | q |
+| test.cpp:41:15:41:15 | p | test.cpp:43:16:43:16 | q |
+| test.cpp:41:15:41:15 | p | test.cpp:43:16:43:16 | q |
+| test.cpp:41:15:41:15 | p | test.cpp:44:16:44:16 | q |
+| test.cpp:41:15:41:15 | p | test.cpp:44:16:44:16 | q |
+| test.cpp:41:15:41:15 | p | test.cpp:44:16:44:20 | ... + ... |
+| test.cpp:41:15:41:15 | p | test.cpp:45:16:45:16 | q |
+| test.cpp:41:15:41:15 | p | test.cpp:45:16:45:16 | q |
+| test.cpp:41:15:41:15 | p | test.cpp:46:16:46:16 | q |
+| test.cpp:41:15:41:15 | p | test.cpp:46:16:46:16 | q |
+| test.cpp:41:15:41:15 | p | test.cpp:47:16:47:16 | q |
+| test.cpp:41:15:41:15 | p | test.cpp:47:16:47:16 | q |
+| test.cpp:41:15:41:15 | p | test.cpp:48:16:48:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:41:15:41:28 | ... + ... |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:41:15:41:28 | ... + ... |
 | test.cpp:41:15:41:28 | ... + ... | test.cpp:42:14:42:15 | Load: * ... |
 | test.cpp:41:15:41:28 | ... + ... | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:42:15:42:15 | Load |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:42:15:42:15 | Load |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:43:16:43:16 | Load |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:43:16:43:16 | Load |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:42:15:42:15 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:42:15:42:15 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:42:15:42:15 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:42:15:42:15 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:43:16:43:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:43:16:43:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:43:16:43:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:43:16:43:16 | q |
 | test.cpp:41:15:41:28 | ... + ... | test.cpp:44:14:44:21 | Load: * ... |
 | test.cpp:41:15:41:28 | ... + ... | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:44:16:44:16 | Load |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:44:16:44:16 | Load |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:45:16:45:16 | Load |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:45:16:45:16 | Load |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:46:16:46:16 | Load |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:46:16:46:16 | Load |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:47:16:47:16 | Load |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:47:16:47:16 | Load |
-| test.cpp:41:15:41:28 | ... + ... | test.cpp:48:16:48:16 | Load |
-| test.cpp:41:15:41:28 | Store | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:41:15:41:28 | Store | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:41:15:41:28 | Store | test.cpp:42:15:42:15 | Load |
-| test.cpp:41:15:41:28 | Store | test.cpp:42:15:42:15 | Load |
-| test.cpp:41:15:41:28 | Store | test.cpp:43:16:43:16 | Load |
-| test.cpp:41:15:41:28 | Store | test.cpp:43:16:43:16 | Load |
-| test.cpp:41:15:41:28 | Store | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:41:15:41:28 | Store | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:41:15:41:28 | Store | test.cpp:44:16:44:16 | Load |
-| test.cpp:41:15:41:28 | Store | test.cpp:44:16:44:16 | Load |
-| test.cpp:41:15:41:28 | Store | test.cpp:45:16:45:16 | Load |
-| test.cpp:41:15:41:28 | Store | test.cpp:45:16:45:16 | Load |
-| test.cpp:41:15:41:28 | Store | test.cpp:46:16:46:16 | Load |
-| test.cpp:41:15:41:28 | Store | test.cpp:46:16:46:16 | Load |
-| test.cpp:41:15:41:28 | Store | test.cpp:47:16:47:16 | Load |
-| test.cpp:41:15:41:28 | Store | test.cpp:47:16:47:16 | Load |
-| test.cpp:41:15:41:28 | Store | test.cpp:48:16:48:16 | Load |
-| test.cpp:42:15:42:15 | Load | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:42:15:42:15 | Load | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:42:15:42:15 | Load | test.cpp:43:16:43:16 | Load |
-| test.cpp:42:15:42:15 | Load | test.cpp:43:16:43:16 | Load |
-| test.cpp:42:15:42:15 | Load | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:42:15:42:15 | Load | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:42:15:42:15 | Load | test.cpp:44:16:44:16 | Load |
-| test.cpp:42:15:42:15 | Load | test.cpp:44:16:44:16 | Load |
-| test.cpp:42:15:42:15 | Load | test.cpp:45:16:45:16 | Load |
-| test.cpp:42:15:42:15 | Load | test.cpp:45:16:45:16 | Load |
-| test.cpp:42:15:42:15 | Load | test.cpp:46:16:46:16 | Load |
-| test.cpp:42:15:42:15 | Load | test.cpp:46:16:46:16 | Load |
-| test.cpp:42:15:42:15 | Load | test.cpp:47:16:47:16 | Load |
-| test.cpp:42:15:42:15 | Load | test.cpp:47:16:47:16 | Load |
-| test.cpp:42:15:42:15 | Load | test.cpp:48:16:48:16 | Load |
-| test.cpp:43:16:43:16 | Load | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:43:16:43:16 | Load | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:43:16:43:16 | Load | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:43:16:43:16 | Load | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:43:16:43:16 | Load | test.cpp:44:16:44:16 | Load |
-| test.cpp:43:16:43:16 | Load | test.cpp:44:16:44:16 | Load |
-| test.cpp:43:16:43:16 | Load | test.cpp:45:16:45:16 | Load |
-| test.cpp:43:16:43:16 | Load | test.cpp:45:16:45:16 | Load |
-| test.cpp:43:16:43:16 | Load | test.cpp:46:16:46:16 | Load |
-| test.cpp:43:16:43:16 | Load | test.cpp:46:16:46:16 | Load |
-| test.cpp:43:16:43:16 | Load | test.cpp:47:16:47:16 | Load |
-| test.cpp:43:16:43:16 | Load | test.cpp:47:16:47:16 | Load |
-| test.cpp:43:16:43:16 | Load | test.cpp:48:16:48:16 | Load |
-| test.cpp:44:16:44:16 | Load | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:44:16:44:16 | Load | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:44:16:44:16 | Load | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:44:16:44:16 | Load | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:44:16:44:16 | Load | test.cpp:45:16:45:16 | Load |
-| test.cpp:44:16:44:16 | Load | test.cpp:45:16:45:16 | Load |
-| test.cpp:44:16:44:16 | Load | test.cpp:46:16:46:16 | Load |
-| test.cpp:44:16:44:16 | Load | test.cpp:46:16:46:16 | Load |
-| test.cpp:44:16:44:16 | Load | test.cpp:47:16:47:16 | Load |
-| test.cpp:44:16:44:16 | Load | test.cpp:47:16:47:16 | Load |
-| test.cpp:44:16:44:16 | Load | test.cpp:48:16:48:16 | Load |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:44:16:44:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:44:16:44:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:44:16:44:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:44:16:44:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:45:16:45:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:45:16:45:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:45:16:45:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:45:16:45:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:46:16:46:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:46:16:46:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:46:16:46:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:46:16:46:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:47:16:47:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:47:16:47:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:47:16:47:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:47:16:47:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:48:16:48:16 | q |
+| test.cpp:41:15:41:28 | ... + ... | test.cpp:48:16:48:16 | q |
+| test.cpp:42:15:42:15 | q | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:42:15:42:15 | q | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:42:15:42:15 | q | test.cpp:43:16:43:16 | q |
+| test.cpp:42:15:42:15 | q | test.cpp:43:16:43:16 | q |
+| test.cpp:42:15:42:15 | q | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:42:15:42:15 | q | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:42:15:42:15 | q | test.cpp:44:16:44:16 | q |
+| test.cpp:42:15:42:15 | q | test.cpp:44:16:44:16 | q |
+| test.cpp:42:15:42:15 | q | test.cpp:45:16:45:16 | q |
+| test.cpp:42:15:42:15 | q | test.cpp:45:16:45:16 | q |
+| test.cpp:42:15:42:15 | q | test.cpp:46:16:46:16 | q |
+| test.cpp:42:15:42:15 | q | test.cpp:46:16:46:16 | q |
+| test.cpp:42:15:42:15 | q | test.cpp:47:16:47:16 | q |
+| test.cpp:42:15:42:15 | q | test.cpp:47:16:47:16 | q |
+| test.cpp:42:15:42:15 | q | test.cpp:48:16:48:16 | q |
+| test.cpp:43:16:43:16 | q | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:43:16:43:16 | q | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:43:16:43:16 | q | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:43:16:43:16 | q | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:43:16:43:16 | q | test.cpp:44:16:44:16 | q |
+| test.cpp:43:16:43:16 | q | test.cpp:44:16:44:16 | q |
+| test.cpp:43:16:43:16 | q | test.cpp:45:16:45:16 | q |
+| test.cpp:43:16:43:16 | q | test.cpp:45:16:45:16 | q |
+| test.cpp:43:16:43:16 | q | test.cpp:46:16:46:16 | q |
+| test.cpp:43:16:43:16 | q | test.cpp:46:16:46:16 | q |
+| test.cpp:43:16:43:16 | q | test.cpp:47:16:47:16 | q |
+| test.cpp:43:16:43:16 | q | test.cpp:47:16:47:16 | q |
+| test.cpp:43:16:43:16 | q | test.cpp:48:16:48:16 | q |
+| test.cpp:44:16:44:16 | q | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:44:16:44:16 | q | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:44:16:44:16 | q | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:44:16:44:16 | q | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:44:16:44:16 | q | test.cpp:45:16:45:16 | q |
+| test.cpp:44:16:44:16 | q | test.cpp:45:16:45:16 | q |
+| test.cpp:44:16:44:16 | q | test.cpp:46:16:46:16 | q |
+| test.cpp:44:16:44:16 | q | test.cpp:46:16:46:16 | q |
+| test.cpp:44:16:44:16 | q | test.cpp:47:16:47:16 | q |
+| test.cpp:44:16:44:16 | q | test.cpp:47:16:47:16 | q |
+| test.cpp:44:16:44:16 | q | test.cpp:48:16:48:16 | q |
 | test.cpp:44:16:44:20 | ... + ... | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:45:16:45:16 | Load | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:45:16:45:16 | Load | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:45:16:45:16 | Load | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:45:16:45:16 | Load | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:45:16:45:16 | Load | test.cpp:46:16:46:16 | Load |
-| test.cpp:45:16:45:16 | Load | test.cpp:46:16:46:16 | Load |
-| test.cpp:45:16:45:16 | Load | test.cpp:47:16:47:16 | Load |
-| test.cpp:45:16:45:16 | Load | test.cpp:47:16:47:16 | Load |
-| test.cpp:45:16:45:16 | Load | test.cpp:48:16:48:16 | Load |
-| test.cpp:46:16:46:16 | Load | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:46:16:46:16 | Load | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:46:16:46:16 | Load | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:46:16:46:16 | Load | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:46:16:46:16 | Load | test.cpp:47:16:47:16 | Load |
-| test.cpp:46:16:46:16 | Load | test.cpp:47:16:47:16 | Load |
-| test.cpp:46:16:46:16 | Load | test.cpp:48:16:48:16 | Load |
-| test.cpp:47:16:47:16 | Load | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:47:16:47:16 | Load | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:47:16:47:16 | Load | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:47:16:47:16 | Load | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:47:16:47:16 | Load | test.cpp:48:16:48:16 | Load |
-| test.cpp:48:16:48:16 | Load | test.cpp:42:14:42:15 | Load: * ... |
-| test.cpp:48:16:48:16 | Load | test.cpp:44:14:44:21 | Load: * ... |
-| test.cpp:51:7:51:14 | VariableAddress indirection | test.cpp:62:39:62:39 | Load |
-| test.cpp:51:7:51:14 | VariableAddress indirection | test.cpp:66:39:66:39 | Load |
-| test.cpp:51:7:51:14 | VariableAddress indirection | test.cpp:70:38:70:38 | Load |
-| test.cpp:51:33:51:35 | Load indirection | test.cpp:60:34:60:37 | mk_array output argument |
-| test.cpp:52:19:52:24 | call to malloc | test.cpp:51:7:51:14 | VariableAddress indirection |
-| test.cpp:52:19:52:24 | call to malloc | test.cpp:53:12:53:16 | Load |
-| test.cpp:53:5:53:23 | Store | test.cpp:51:33:51:35 | Load indirection |
-| test.cpp:53:12:53:16 | Load | test.cpp:53:5:53:23 | Store |
-| test.cpp:53:12:53:16 | Load | test.cpp:53:12:53:23 | ... + ... |
-| test.cpp:53:12:53:23 | ... + ... | test.cpp:51:33:51:35 | Load indirection |
-| test.cpp:60:34:60:37 | mk_array output argument | test.cpp:62:32:62:34 | Load |
-| test.cpp:60:34:60:37 | mk_array output argument | test.cpp:66:32:66:34 | Load |
-| test.cpp:60:34:60:37 | mk_array output argument | test.cpp:70:31:70:33 | Load |
-| test.cpp:62:32:62:34 | Load | test.cpp:67:9:67:14 | Store: ... = ... |
-| test.cpp:66:32:66:34 | Load | test.cpp:67:9:67:14 | Store: ... = ... |
-| test.cpp:70:31:70:33 | Load | test.cpp:67:9:67:14 | Store: ... = ... |
-| test.cpp:80:9:80:16 | VariableAddress indirection [begin] | test.cpp:91:20:91:22 | arr indirection [begin] |
-| test.cpp:80:9:80:16 | VariableAddress indirection [begin] | test.cpp:95:20:95:22 | arr indirection [begin] |
-| test.cpp:80:9:80:16 | VariableAddress indirection [begin] | test.cpp:99:20:99:22 | arr indirection [begin] |
-| test.cpp:80:9:80:16 | VariableAddress indirection [begin] | test.cpp:119:18:119:25 | call to mk_array [begin] |
-| test.cpp:80:9:80:16 | VariableAddress indirection [end] | test.cpp:91:36:91:38 | arr indirection [end] |
-| test.cpp:80:9:80:16 | VariableAddress indirection [end] | test.cpp:95:36:95:38 | arr indirection [end] |
-| test.cpp:80:9:80:16 | VariableAddress indirection [end] | test.cpp:99:35:99:37 | arr indirection [end] |
-| test.cpp:80:9:80:16 | VariableAddress indirection [end] | test.cpp:119:18:119:25 | call to mk_array [end] |
-| test.cpp:82:5:82:28 | Store | test.cpp:82:9:82:13 | arr indirection [post update] [begin] |
-| test.cpp:82:9:82:13 | arr indirection [post update] [begin] | test.cpp:80:9:80:16 | VariableAddress indirection [begin] |
+| test.cpp:45:16:45:16 | q | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:45:16:45:16 | q | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:45:16:45:16 | q | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:45:16:45:16 | q | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:45:16:45:16 | q | test.cpp:46:16:46:16 | q |
+| test.cpp:45:16:45:16 | q | test.cpp:46:16:46:16 | q |
+| test.cpp:45:16:45:16 | q | test.cpp:47:16:47:16 | q |
+| test.cpp:45:16:45:16 | q | test.cpp:47:16:47:16 | q |
+| test.cpp:45:16:45:16 | q | test.cpp:48:16:48:16 | q |
+| test.cpp:46:16:46:16 | q | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:46:16:46:16 | q | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:46:16:46:16 | q | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:46:16:46:16 | q | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:46:16:46:16 | q | test.cpp:47:16:47:16 | q |
+| test.cpp:46:16:46:16 | q | test.cpp:47:16:47:16 | q |
+| test.cpp:46:16:46:16 | q | test.cpp:48:16:48:16 | q |
+| test.cpp:47:16:47:16 | q | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:47:16:47:16 | q | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:47:16:47:16 | q | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:47:16:47:16 | q | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:47:16:47:16 | q | test.cpp:48:16:48:16 | q |
+| test.cpp:48:16:48:16 | q | test.cpp:42:14:42:15 | Load: * ... |
+| test.cpp:48:16:48:16 | q | test.cpp:44:14:44:21 | Load: * ... |
+| test.cpp:51:7:51:14 | mk_array indirection | test.cpp:60:19:60:26 | call to mk_array |
+| test.cpp:51:33:51:35 | end | test.cpp:60:34:60:37 | mk_array output argument |
+| test.cpp:52:19:52:24 | call to malloc | test.cpp:51:7:51:14 | mk_array indirection |
+| test.cpp:52:19:52:24 | call to malloc | test.cpp:53:12:53:16 | begin |
+| test.cpp:53:5:53:23 | ... = ... | test.cpp:51:33:51:35 | end |
+| test.cpp:53:12:53:16 | begin | test.cpp:53:5:53:23 | ... = ... |
+| test.cpp:53:12:53:16 | begin | test.cpp:53:12:53:23 | ... + ... |
+| test.cpp:53:12:53:23 | ... + ... | test.cpp:51:33:51:35 | end |
+| test.cpp:60:19:60:26 | call to mk_array | test.cpp:62:39:62:39 | p |
+| test.cpp:60:19:60:26 | call to mk_array | test.cpp:66:39:66:39 | p |
+| test.cpp:60:19:60:26 | call to mk_array | test.cpp:70:38:70:38 | p |
+| test.cpp:60:34:60:37 | mk_array output argument | test.cpp:62:32:62:34 | end |
+| test.cpp:60:34:60:37 | mk_array output argument | test.cpp:66:32:66:34 | end |
+| test.cpp:60:34:60:37 | mk_array output argument | test.cpp:70:31:70:33 | end |
+| test.cpp:62:32:62:34 | end | test.cpp:67:9:67:14 | Store: ... = ... |
+| test.cpp:66:32:66:34 | end | test.cpp:67:9:67:14 | Store: ... = ... |
+| test.cpp:70:31:70:33 | end | test.cpp:67:9:67:14 | Store: ... = ... |
+| test.cpp:80:9:80:16 | mk_array indirection [begin] | test.cpp:89:19:89:26 | call to mk_array [begin] |
+| test.cpp:80:9:80:16 | mk_array indirection [begin] | test.cpp:119:18:119:25 | call to mk_array [begin] |
+| test.cpp:80:9:80:16 | mk_array indirection [end] | test.cpp:89:19:89:26 | call to mk_array [end] |
+| test.cpp:80:9:80:16 | mk_array indirection [end] | test.cpp:119:18:119:25 | call to mk_array [end] |
+| test.cpp:82:5:82:28 | ... = ... | test.cpp:82:9:82:13 | arr indirection [post update] [begin] |
+| test.cpp:82:9:82:13 | arr indirection [post update] [begin] | test.cpp:80:9:80:16 | mk_array indirection [begin] |
 | test.cpp:82:9:82:13 | arr indirection [post update] [begin] | test.cpp:83:15:83:17 | arr indirection [begin] |
-| test.cpp:82:17:82:22 | call to malloc | test.cpp:82:5:82:28 | Store |
-| test.cpp:83:5:83:30 | Store | test.cpp:83:9:83:11 | arr indirection [post update] [end] |
-| test.cpp:83:9:83:11 | arr indirection [post update] [end] | test.cpp:80:9:80:16 | VariableAddress indirection [end] |
-| test.cpp:83:15:83:17 | arr indirection [begin] | test.cpp:83:19:83:23 | begin |
-| test.cpp:83:15:83:30 | ... + ... | test.cpp:83:5:83:30 | Store |
-| test.cpp:83:19:83:23 | Load | test.cpp:83:5:83:30 | Store |
-| test.cpp:83:19:83:23 | Load | test.cpp:83:15:83:30 | ... + ... |
-| test.cpp:83:19:83:23 | begin | test.cpp:83:19:83:23 | Load |
+| test.cpp:82:17:82:22 | call to malloc | test.cpp:82:5:82:28 | ... = ... |
+| test.cpp:83:5:83:30 | ... = ... | test.cpp:83:9:83:11 | arr indirection [post update] [end] |
+| test.cpp:83:9:83:11 | arr indirection [post update] [end] | test.cpp:80:9:80:16 | mk_array indirection [end] |
+| test.cpp:83:15:83:17 | arr indirection [begin] | test.cpp:83:19:83:23 | begin indirection |
+| test.cpp:83:15:83:30 | ... + ... | test.cpp:83:5:83:30 | ... = ... |
+| test.cpp:83:19:83:23 | begin | test.cpp:83:5:83:30 | ... = ... |
+| test.cpp:83:19:83:23 | begin | test.cpp:83:15:83:30 | ... + ... |
+| test.cpp:83:19:83:23 | begin indirection | test.cpp:83:19:83:23 | begin |
+| test.cpp:89:19:89:26 | call to mk_array [begin] | test.cpp:91:20:91:22 | arr indirection [begin] |
+| test.cpp:89:19:89:26 | call to mk_array [begin] | test.cpp:95:20:95:22 | arr indirection [begin] |
+| test.cpp:89:19:89:26 | call to mk_array [begin] | test.cpp:99:20:99:22 | arr indirection [begin] |
+| test.cpp:89:19:89:26 | call to mk_array [end] | test.cpp:91:36:91:38 | arr indirection [end] |
+| test.cpp:89:19:89:26 | call to mk_array [end] | test.cpp:95:36:95:38 | arr indirection [end] |
+| test.cpp:89:19:89:26 | call to mk_array [end] | test.cpp:99:35:99:37 | arr indirection [end] |
 | test.cpp:91:20:91:22 | arr indirection [begin] | test.cpp:91:24:91:28 | begin |
-| test.cpp:91:20:91:22 | arr indirection [begin] | test.cpp:91:47:91:47 | Load |
-| test.cpp:91:24:91:28 | begin | test.cpp:91:47:91:47 | Load |
+| test.cpp:91:20:91:22 | arr indirection [begin] | test.cpp:91:24:91:28 | begin indirection |
+| test.cpp:91:24:91:28 | begin | test.cpp:91:47:91:47 | p |
+| test.cpp:91:24:91:28 | begin indirection | test.cpp:91:47:91:47 | p |
 | test.cpp:91:36:91:38 | arr indirection [end] | test.cpp:91:40:91:42 | end |
-| test.cpp:91:40:91:42 | Load | test.cpp:96:9:96:14 | Store: ... = ... |
-| test.cpp:91:40:91:42 | end | test.cpp:91:40:91:42 | Load |
+| test.cpp:91:36:91:38 | arr indirection [end] | test.cpp:91:40:91:42 | end indirection |
+| test.cpp:91:40:91:42 | end | test.cpp:96:9:96:14 | Store: ... = ... |
+| test.cpp:91:40:91:42 | end indirection | test.cpp:91:40:91:42 | end |
 | test.cpp:95:20:95:22 | arr indirection [begin] | test.cpp:95:24:95:28 | begin |
-| test.cpp:95:20:95:22 | arr indirection [begin] | test.cpp:95:47:95:47 | Load |
-| test.cpp:95:24:95:28 | begin | test.cpp:95:47:95:47 | Load |
+| test.cpp:95:20:95:22 | arr indirection [begin] | test.cpp:95:24:95:28 | begin indirection |
+| test.cpp:95:24:95:28 | begin | test.cpp:95:47:95:47 | p |
+| test.cpp:95:24:95:28 | begin indirection | test.cpp:95:47:95:47 | p |
 | test.cpp:95:36:95:38 | arr indirection [end] | test.cpp:95:40:95:42 | end |
-| test.cpp:95:40:95:42 | Load | test.cpp:96:9:96:14 | Store: ... = ... |
-| test.cpp:95:40:95:42 | end | test.cpp:95:40:95:42 | Load |
+| test.cpp:95:36:95:38 | arr indirection [end] | test.cpp:95:40:95:42 | end indirection |
+| test.cpp:95:40:95:42 | end | test.cpp:96:9:96:14 | Store: ... = ... |
+| test.cpp:95:40:95:42 | end indirection | test.cpp:95:40:95:42 | end |
 | test.cpp:99:20:99:22 | arr indirection [begin] | test.cpp:99:24:99:28 | begin |
-| test.cpp:99:20:99:22 | arr indirection [begin] | test.cpp:99:46:99:46 | Load |
-| test.cpp:99:24:99:28 | begin | test.cpp:99:46:99:46 | Load |
+| test.cpp:99:20:99:22 | arr indirection [begin] | test.cpp:99:24:99:28 | begin indirection |
+| test.cpp:99:24:99:28 | begin | test.cpp:99:46:99:46 | p |
+| test.cpp:99:24:99:28 | begin indirection | test.cpp:99:46:99:46 | p |
 | test.cpp:99:35:99:37 | arr indirection [end] | test.cpp:99:39:99:41 | end |
-| test.cpp:99:39:99:41 | Load | test.cpp:96:9:96:14 | Store: ... = ... |
-| test.cpp:99:39:99:41 | end | test.cpp:99:39:99:41 | Load |
+| test.cpp:99:35:99:37 | arr indirection [end] | test.cpp:99:39:99:41 | end indirection |
+| test.cpp:99:39:99:41 | end | test.cpp:96:9:96:14 | Store: ... = ... |
+| test.cpp:99:39:99:41 | end indirection | test.cpp:99:39:99:41 | end |
 | test.cpp:104:27:104:29 | arr [begin] | test.cpp:105:20:105:22 | arr indirection [begin] |
 | test.cpp:104:27:104:29 | arr [begin] | test.cpp:109:20:109:22 | arr indirection [begin] |
 | test.cpp:104:27:104:29 | arr [begin] | test.cpp:113:20:113:22 | arr indirection [begin] |
@@ -418,138 +427,154 @@ edges
 | test.cpp:104:27:104:29 | arr [end] | test.cpp:109:36:109:38 | arr indirection [end] |
 | test.cpp:104:27:104:29 | arr [end] | test.cpp:113:35:113:37 | arr indirection [end] |
 | test.cpp:105:20:105:22 | arr indirection [begin] | test.cpp:105:24:105:28 | begin |
-| test.cpp:105:20:105:22 | arr indirection [begin] | test.cpp:105:47:105:47 | Load |
-| test.cpp:105:24:105:28 | begin | test.cpp:105:47:105:47 | Load |
+| test.cpp:105:20:105:22 | arr indirection [begin] | test.cpp:105:24:105:28 | begin indirection |
+| test.cpp:105:24:105:28 | begin | test.cpp:105:47:105:47 | p |
+| test.cpp:105:24:105:28 | begin indirection | test.cpp:105:47:105:47 | p |
 | test.cpp:105:36:105:38 | arr indirection [end] | test.cpp:105:40:105:42 | end |
-| test.cpp:105:40:105:42 | Load | test.cpp:110:9:110:14 | Store: ... = ... |
-| test.cpp:105:40:105:42 | end | test.cpp:105:40:105:42 | Load |
+| test.cpp:105:36:105:38 | arr indirection [end] | test.cpp:105:40:105:42 | end indirection |
+| test.cpp:105:40:105:42 | end | test.cpp:110:9:110:14 | Store: ... = ... |
+| test.cpp:105:40:105:42 | end indirection | test.cpp:105:40:105:42 | end |
 | test.cpp:109:20:109:22 | arr indirection [begin] | test.cpp:109:24:109:28 | begin |
-| test.cpp:109:20:109:22 | arr indirection [begin] | test.cpp:109:47:109:47 | Load |
-| test.cpp:109:24:109:28 | begin | test.cpp:109:47:109:47 | Load |
+| test.cpp:109:20:109:22 | arr indirection [begin] | test.cpp:109:24:109:28 | begin indirection |
+| test.cpp:109:24:109:28 | begin | test.cpp:109:47:109:47 | p |
+| test.cpp:109:24:109:28 | begin indirection | test.cpp:109:47:109:47 | p |
 | test.cpp:109:36:109:38 | arr indirection [end] | test.cpp:109:40:109:42 | end |
-| test.cpp:109:40:109:42 | Load | test.cpp:110:9:110:14 | Store: ... = ... |
-| test.cpp:109:40:109:42 | end | test.cpp:109:40:109:42 | Load |
+| test.cpp:109:36:109:38 | arr indirection [end] | test.cpp:109:40:109:42 | end indirection |
+| test.cpp:109:40:109:42 | end | test.cpp:110:9:110:14 | Store: ... = ... |
+| test.cpp:109:40:109:42 | end indirection | test.cpp:109:40:109:42 | end |
 | test.cpp:113:20:113:22 | arr indirection [begin] | test.cpp:113:24:113:28 | begin |
-| test.cpp:113:20:113:22 | arr indirection [begin] | test.cpp:113:46:113:46 | Load |
-| test.cpp:113:24:113:28 | begin | test.cpp:113:46:113:46 | Load |
+| test.cpp:113:20:113:22 | arr indirection [begin] | test.cpp:113:24:113:28 | begin indirection |
+| test.cpp:113:24:113:28 | begin | test.cpp:113:46:113:46 | p |
+| test.cpp:113:24:113:28 | begin indirection | test.cpp:113:46:113:46 | p |
 | test.cpp:113:35:113:37 | arr indirection [end] | test.cpp:113:39:113:41 | end |
-| test.cpp:113:39:113:41 | Load | test.cpp:110:9:110:14 | Store: ... = ... |
-| test.cpp:113:39:113:41 | end | test.cpp:113:39:113:41 | Load |
+| test.cpp:113:35:113:37 | arr indirection [end] | test.cpp:113:39:113:41 | end indirection |
+| test.cpp:113:39:113:41 | end | test.cpp:110:9:110:14 | Store: ... = ... |
+| test.cpp:113:39:113:41 | end indirection | test.cpp:113:39:113:41 | end |
 | test.cpp:119:18:119:25 | call to mk_array [begin] | test.cpp:104:27:104:29 | arr [begin] |
 | test.cpp:119:18:119:25 | call to mk_array [end] | test.cpp:104:27:104:29 | arr [end] |
-| test.cpp:124:15:124:20 | call to malloc | test.cpp:125:5:125:17 | Store |
-| test.cpp:124:15:124:20 | call to malloc | test.cpp:126:15:126:15 | Load |
-| test.cpp:125:5:125:17 | Store | test.cpp:125:9:125:13 | arr indirection [post update] [begin] |
+| test.cpp:124:15:124:20 | call to malloc | test.cpp:125:5:125:17 | ... = ... |
+| test.cpp:124:15:124:20 | call to malloc | test.cpp:126:15:126:15 | p |
+| test.cpp:125:5:125:17 | ... = ... | test.cpp:125:9:125:13 | arr indirection [post update] [begin] |
 | test.cpp:125:9:125:13 | arr indirection [post update] [begin] | test.cpp:129:11:129:13 | arr indirection [begin] |
 | test.cpp:125:9:125:13 | arr indirection [post update] [begin] | test.cpp:133:11:133:13 | arr indirection [begin] |
 | test.cpp:125:9:125:13 | arr indirection [post update] [begin] | test.cpp:137:11:137:13 | arr indirection [begin] |
-| test.cpp:129:11:129:13 | arr indirection [begin] | test.cpp:129:15:129:19 | begin |
-| test.cpp:129:15:129:19 | begin | test.cpp:129:15:129:19 | Load |
-| test.cpp:133:11:133:13 | arr indirection [begin] | test.cpp:133:15:133:19 | begin |
-| test.cpp:133:15:133:19 | begin | test.cpp:133:15:133:19 | Load |
-| test.cpp:137:11:137:13 | arr indirection [begin] | test.cpp:137:15:137:19 | begin |
-| test.cpp:137:15:137:19 | begin | test.cpp:137:15:137:19 | Load |
-| test.cpp:141:10:141:19 | VariableAddress indirection [begin] | test.cpp:150:20:150:29 | Call indirection [begin] |
-| test.cpp:141:10:141:19 | VariableAddress indirection [begin] | test.cpp:180:19:180:28 | call to mk_array_p indirection [begin] |
-| test.cpp:141:10:141:19 | VariableAddress indirection [end] | test.cpp:150:20:150:29 | Call indirection [end] |
-| test.cpp:141:10:141:19 | VariableAddress indirection [end] | test.cpp:180:19:180:28 | call to mk_array_p indirection [end] |
-| test.cpp:143:5:143:29 | Store | test.cpp:143:10:143:14 | Load indirection [post update] [begin] |
-| test.cpp:143:10:143:14 | Load indirection [post update] [begin] | test.cpp:141:10:141:19 | VariableAddress indirection [begin] |
-| test.cpp:143:10:143:14 | Load indirection [post update] [begin] | test.cpp:144:16:144:18 | Load indirection [begin] |
-| test.cpp:143:18:143:23 | call to malloc | test.cpp:143:5:143:29 | Store |
-| test.cpp:144:5:144:32 | Store | test.cpp:144:10:144:12 | Load indirection [post update] [end] |
-| test.cpp:144:10:144:12 | Load indirection [post update] [end] | test.cpp:141:10:141:19 | VariableAddress indirection [end] |
-| test.cpp:144:16:144:18 | Load indirection [begin] | test.cpp:144:21:144:25 | begin |
-| test.cpp:144:16:144:32 | ... + ... | test.cpp:144:5:144:32 | Store |
-| test.cpp:144:21:144:25 | Load | test.cpp:144:5:144:32 | Store |
-| test.cpp:144:21:144:25 | Load | test.cpp:144:16:144:32 | ... + ... |
-| test.cpp:144:21:144:25 | begin | test.cpp:144:21:144:25 | Load |
-| test.cpp:150:20:150:29 | Call indirection [begin] | test.cpp:152:20:152:22 | Load indirection [begin] |
-| test.cpp:150:20:150:29 | Call indirection [begin] | test.cpp:156:20:156:22 | Load indirection [begin] |
-| test.cpp:150:20:150:29 | Call indirection [begin] | test.cpp:160:20:160:22 | Load indirection [begin] |
-| test.cpp:150:20:150:29 | Call indirection [end] | test.cpp:156:37:156:39 | Load indirection [end] |
-| test.cpp:152:20:152:22 | Load indirection [begin] | test.cpp:152:25:152:29 | begin |
-| test.cpp:152:20:152:22 | Load indirection [begin] | test.cpp:152:49:152:49 | Load |
-| test.cpp:152:25:152:29 | begin | test.cpp:152:49:152:49 | Load |
-| test.cpp:156:20:156:22 | Load indirection [begin] | test.cpp:156:25:156:29 | begin |
-| test.cpp:156:20:156:22 | Load indirection [begin] | test.cpp:156:49:156:49 | Load |
-| test.cpp:156:25:156:29 | begin | test.cpp:156:49:156:49 | Load |
-| test.cpp:156:37:156:39 | Load indirection [end] | test.cpp:156:42:156:44 | end |
-| test.cpp:156:42:156:44 | Load | test.cpp:157:9:157:14 | Store: ... = ... |
-| test.cpp:156:42:156:44 | end | test.cpp:156:42:156:44 | Load |
-| test.cpp:160:20:160:22 | Load indirection [begin] | test.cpp:160:25:160:29 | begin |
-| test.cpp:160:20:160:22 | Load indirection [begin] | test.cpp:160:48:160:48 | Load |
-| test.cpp:160:25:160:29 | begin | test.cpp:160:48:160:48 | Load |
-| test.cpp:165:29:165:31 | arr indirection [begin] | test.cpp:166:20:166:22 | Load indirection [begin] |
-| test.cpp:165:29:165:31 | arr indirection [begin] | test.cpp:170:20:170:22 | Load indirection [begin] |
-| test.cpp:165:29:165:31 | arr indirection [begin] | test.cpp:174:20:174:22 | Load indirection [begin] |
-| test.cpp:165:29:165:31 | arr indirection [end] | test.cpp:166:37:166:39 | Load indirection [end] |
-| test.cpp:165:29:165:31 | arr indirection [end] | test.cpp:170:37:170:39 | Load indirection [end] |
-| test.cpp:165:29:165:31 | arr indirection [end] | test.cpp:174:36:174:38 | Load indirection [end] |
-| test.cpp:166:20:166:22 | Load indirection [begin] | test.cpp:166:25:166:29 | begin |
-| test.cpp:166:20:166:22 | Load indirection [begin] | test.cpp:166:49:166:49 | Load |
-| test.cpp:166:25:166:29 | begin | test.cpp:166:49:166:49 | Load |
-| test.cpp:166:37:166:39 | Load indirection [end] | test.cpp:166:42:166:44 | end |
-| test.cpp:166:42:166:44 | Load | test.cpp:171:9:171:14 | Store: ... = ... |
-| test.cpp:166:42:166:44 | end | test.cpp:166:42:166:44 | Load |
-| test.cpp:170:20:170:22 | Load indirection [begin] | test.cpp:170:25:170:29 | begin |
-| test.cpp:170:20:170:22 | Load indirection [begin] | test.cpp:170:49:170:49 | Load |
-| test.cpp:170:25:170:29 | begin | test.cpp:170:49:170:49 | Load |
-| test.cpp:170:37:170:39 | Load indirection [end] | test.cpp:170:42:170:44 | end |
-| test.cpp:170:42:170:44 | Load | test.cpp:171:9:171:14 | Store: ... = ... |
-| test.cpp:170:42:170:44 | end | test.cpp:170:42:170:44 | Load |
-| test.cpp:174:20:174:22 | Load indirection [begin] | test.cpp:174:25:174:29 | begin |
-| test.cpp:174:20:174:22 | Load indirection [begin] | test.cpp:174:48:174:48 | Load |
-| test.cpp:174:25:174:29 | begin | test.cpp:174:48:174:48 | Load |
-| test.cpp:174:36:174:38 | Load indirection [end] | test.cpp:174:41:174:43 | end |
-| test.cpp:174:41:174:43 | Load | test.cpp:171:9:171:14 | Store: ... = ... |
-| test.cpp:174:41:174:43 | end | test.cpp:174:41:174:43 | Load |
+| test.cpp:129:11:129:13 | arr indirection [begin] | test.cpp:129:15:129:19 | begin indirection |
+| test.cpp:129:15:129:19 | begin indirection | test.cpp:129:15:129:19 | begin |
+| test.cpp:133:11:133:13 | arr indirection [begin] | test.cpp:133:15:133:19 | begin indirection |
+| test.cpp:133:15:133:19 | begin indirection | test.cpp:133:15:133:19 | begin |
+| test.cpp:137:11:137:13 | arr indirection [begin] | test.cpp:137:15:137:19 | begin indirection |
+| test.cpp:137:15:137:19 | begin indirection | test.cpp:137:15:137:19 | begin |
+| test.cpp:141:10:141:19 | mk_array_p indirection [begin] | test.cpp:150:20:150:29 | call to mk_array_p indirection [begin] |
+| test.cpp:141:10:141:19 | mk_array_p indirection [begin] | test.cpp:180:19:180:28 | call to mk_array_p indirection [begin] |
+| test.cpp:141:10:141:19 | mk_array_p indirection [end] | test.cpp:150:20:150:29 | call to mk_array_p indirection [end] |
+| test.cpp:141:10:141:19 | mk_array_p indirection [end] | test.cpp:180:19:180:28 | call to mk_array_p indirection [end] |
+| test.cpp:143:5:143:29 | ... = ... | test.cpp:143:10:143:14 | arr indirection [post update] [begin] |
+| test.cpp:143:10:143:14 | arr indirection [post update] [begin] | test.cpp:141:10:141:19 | mk_array_p indirection [begin] |
+| test.cpp:143:10:143:14 | arr indirection [post update] [begin] | test.cpp:144:16:144:18 | arr indirection [begin] |
+| test.cpp:143:18:143:23 | call to malloc | test.cpp:143:5:143:29 | ... = ... |
+| test.cpp:144:5:144:32 | ... = ... | test.cpp:144:10:144:12 | arr indirection [post update] [end] |
+| test.cpp:144:10:144:12 | arr indirection [post update] [end] | test.cpp:141:10:141:19 | mk_array_p indirection [end] |
+| test.cpp:144:16:144:18 | arr indirection [begin] | test.cpp:144:21:144:25 | begin indirection |
+| test.cpp:144:16:144:32 | ... + ... | test.cpp:144:5:144:32 | ... = ... |
+| test.cpp:144:21:144:25 | begin | test.cpp:144:5:144:32 | ... = ... |
+| test.cpp:144:21:144:25 | begin | test.cpp:144:16:144:32 | ... + ... |
+| test.cpp:144:21:144:25 | begin indirection | test.cpp:144:21:144:25 | begin |
+| test.cpp:150:20:150:29 | call to mk_array_p indirection [begin] | test.cpp:152:20:152:22 | arr indirection [begin] |
+| test.cpp:150:20:150:29 | call to mk_array_p indirection [begin] | test.cpp:156:20:156:22 | arr indirection [begin] |
+| test.cpp:150:20:150:29 | call to mk_array_p indirection [begin] | test.cpp:160:20:160:22 | arr indirection [begin] |
+| test.cpp:150:20:150:29 | call to mk_array_p indirection [end] | test.cpp:156:37:156:39 | arr indirection [end] |
+| test.cpp:152:20:152:22 | arr indirection [begin] | test.cpp:152:25:152:29 | begin |
+| test.cpp:152:20:152:22 | arr indirection [begin] | test.cpp:152:25:152:29 | begin indirection |
+| test.cpp:152:25:152:29 | begin | test.cpp:152:49:152:49 | p |
+| test.cpp:152:25:152:29 | begin indirection | test.cpp:152:49:152:49 | p |
+| test.cpp:156:20:156:22 | arr indirection [begin] | test.cpp:156:25:156:29 | begin |
+| test.cpp:156:20:156:22 | arr indirection [begin] | test.cpp:156:25:156:29 | begin indirection |
+| test.cpp:156:25:156:29 | begin | test.cpp:156:49:156:49 | p |
+| test.cpp:156:25:156:29 | begin indirection | test.cpp:156:49:156:49 | p |
+| test.cpp:156:37:156:39 | arr indirection [end] | test.cpp:156:42:156:44 | end |
+| test.cpp:156:37:156:39 | arr indirection [end] | test.cpp:156:42:156:44 | end indirection |
+| test.cpp:156:42:156:44 | end | test.cpp:157:9:157:14 | Store: ... = ... |
+| test.cpp:156:42:156:44 | end indirection | test.cpp:156:42:156:44 | end |
+| test.cpp:160:20:160:22 | arr indirection [begin] | test.cpp:160:25:160:29 | begin |
+| test.cpp:160:20:160:22 | arr indirection [begin] | test.cpp:160:25:160:29 | begin indirection |
+| test.cpp:160:25:160:29 | begin | test.cpp:160:48:160:48 | p |
+| test.cpp:160:25:160:29 | begin indirection | test.cpp:160:48:160:48 | p |
+| test.cpp:165:29:165:31 | arr indirection [begin] | test.cpp:166:20:166:22 | arr indirection [begin] |
+| test.cpp:165:29:165:31 | arr indirection [begin] | test.cpp:170:20:170:22 | arr indirection [begin] |
+| test.cpp:165:29:165:31 | arr indirection [begin] | test.cpp:174:20:174:22 | arr indirection [begin] |
+| test.cpp:165:29:165:31 | arr indirection [end] | test.cpp:166:37:166:39 | arr indirection [end] |
+| test.cpp:165:29:165:31 | arr indirection [end] | test.cpp:170:37:170:39 | arr indirection [end] |
+| test.cpp:165:29:165:31 | arr indirection [end] | test.cpp:174:36:174:38 | arr indirection [end] |
+| test.cpp:166:20:166:22 | arr indirection [begin] | test.cpp:166:25:166:29 | begin |
+| test.cpp:166:20:166:22 | arr indirection [begin] | test.cpp:166:25:166:29 | begin indirection |
+| test.cpp:166:25:166:29 | begin | test.cpp:166:49:166:49 | p |
+| test.cpp:166:25:166:29 | begin indirection | test.cpp:166:49:166:49 | p |
+| test.cpp:166:37:166:39 | arr indirection [end] | test.cpp:166:42:166:44 | end |
+| test.cpp:166:37:166:39 | arr indirection [end] | test.cpp:166:42:166:44 | end indirection |
+| test.cpp:166:42:166:44 | end | test.cpp:171:9:171:14 | Store: ... = ... |
+| test.cpp:166:42:166:44 | end indirection | test.cpp:166:42:166:44 | end |
+| test.cpp:170:20:170:22 | arr indirection [begin] | test.cpp:170:25:170:29 | begin |
+| test.cpp:170:20:170:22 | arr indirection [begin] | test.cpp:170:25:170:29 | begin indirection |
+| test.cpp:170:25:170:29 | begin | test.cpp:170:49:170:49 | p |
+| test.cpp:170:25:170:29 | begin indirection | test.cpp:170:49:170:49 | p |
+| test.cpp:170:37:170:39 | arr indirection [end] | test.cpp:170:42:170:44 | end |
+| test.cpp:170:37:170:39 | arr indirection [end] | test.cpp:170:42:170:44 | end indirection |
+| test.cpp:170:42:170:44 | end | test.cpp:171:9:171:14 | Store: ... = ... |
+| test.cpp:170:42:170:44 | end indirection | test.cpp:170:42:170:44 | end |
+| test.cpp:174:20:174:22 | arr indirection [begin] | test.cpp:174:25:174:29 | begin |
+| test.cpp:174:20:174:22 | arr indirection [begin] | test.cpp:174:25:174:29 | begin indirection |
+| test.cpp:174:25:174:29 | begin | test.cpp:174:48:174:48 | p |
+| test.cpp:174:25:174:29 | begin indirection | test.cpp:174:48:174:48 | p |
+| test.cpp:174:36:174:38 | arr indirection [end] | test.cpp:174:41:174:43 | end |
+| test.cpp:174:36:174:38 | arr indirection [end] | test.cpp:174:41:174:43 | end indirection |
+| test.cpp:174:41:174:43 | end | test.cpp:171:9:171:14 | Store: ... = ... |
+| test.cpp:174:41:174:43 | end indirection | test.cpp:174:41:174:43 | end |
 | test.cpp:180:19:180:28 | call to mk_array_p indirection [begin] | test.cpp:165:29:165:31 | arr indirection [begin] |
 | test.cpp:180:19:180:28 | call to mk_array_p indirection [end] | test.cpp:165:29:165:31 | arr indirection [end] |
-| test.cpp:188:15:188:20 | call to malloc | test.cpp:189:15:189:15 | Load |
-| test.cpp:194:23:194:28 | call to malloc | test.cpp:195:17:195:17 | Load |
-| test.cpp:194:23:194:28 | call to malloc | test.cpp:197:8:197:8 | Load |
-| test.cpp:194:23:194:28 | call to malloc | test.cpp:201:5:201:5 | Load |
-| test.cpp:195:17:195:17 | Load | test.cpp:195:17:195:23 | ... + ... |
-| test.cpp:195:17:195:17 | Load | test.cpp:195:17:195:23 | ... + ... |
-| test.cpp:195:17:195:17 | Load | test.cpp:195:17:195:23 | Store |
-| test.cpp:195:17:195:17 | Load | test.cpp:195:17:195:23 | Store |
-| test.cpp:195:17:195:17 | Load | test.cpp:197:20:197:22 | Load |
-| test.cpp:195:17:195:17 | Load | test.cpp:201:5:201:12 | access to array |
-| test.cpp:195:17:195:23 | ... + ... | test.cpp:195:17:195:23 | Store |
-| test.cpp:195:17:195:23 | ... + ... | test.cpp:195:17:195:23 | Store |
-| test.cpp:195:17:195:23 | ... + ... | test.cpp:197:20:197:22 | Load |
+| test.cpp:188:15:188:20 | call to malloc | test.cpp:189:15:189:15 | p |
+| test.cpp:194:23:194:28 | call to malloc | test.cpp:195:17:195:17 | p |
+| test.cpp:194:23:194:28 | call to malloc | test.cpp:197:8:197:8 | p |
+| test.cpp:194:23:194:28 | call to malloc | test.cpp:201:5:201:5 | p |
+| test.cpp:195:17:195:17 | p | test.cpp:195:17:195:23 | ... + ... |
+| test.cpp:195:17:195:17 | p | test.cpp:195:17:195:23 | ... + ... |
+| test.cpp:195:17:195:17 | p | test.cpp:195:17:195:23 | ... + ... |
+| test.cpp:195:17:195:17 | p | test.cpp:195:17:195:23 | ... + ... |
+| test.cpp:195:17:195:17 | p | test.cpp:197:20:197:22 | end |
+| test.cpp:195:17:195:17 | p | test.cpp:201:5:201:12 | access to array |
+| test.cpp:195:17:195:23 | ... + ... | test.cpp:195:17:195:23 | ... + ... |
+| test.cpp:195:17:195:23 | ... + ... | test.cpp:195:17:195:23 | ... + ... |
+| test.cpp:195:17:195:23 | ... + ... | test.cpp:197:20:197:22 | end |
+| test.cpp:195:17:195:23 | ... + ... | test.cpp:197:20:197:22 | end |
 | test.cpp:195:17:195:23 | ... + ... | test.cpp:201:5:201:19 | Store: ... = ... |
 | test.cpp:195:17:195:23 | ... + ... | test.cpp:201:5:201:19 | Store: ... = ... |
-| test.cpp:195:17:195:23 | Store | test.cpp:197:20:197:22 | Load |
-| test.cpp:195:17:195:23 | Store | test.cpp:201:5:201:19 | Store: ... = ... |
-| test.cpp:195:17:195:23 | Store | test.cpp:201:5:201:19 | Store: ... = ... |
-| test.cpp:197:20:197:22 | Load | test.cpp:201:5:201:19 | Store: ... = ... |
+| test.cpp:195:17:195:23 | ... + ... | test.cpp:201:5:201:19 | Store: ... = ... |
+| test.cpp:195:17:195:23 | ... + ... | test.cpp:201:5:201:19 | Store: ... = ... |
+| test.cpp:197:20:197:22 | end | test.cpp:201:5:201:19 | Store: ... = ... |
 | test.cpp:201:5:201:12 | access to array | test.cpp:201:5:201:19 | Store: ... = ... |
-| test.cpp:205:23:205:28 | call to malloc | test.cpp:206:17:206:17 | Load |
-| test.cpp:205:23:205:28 | call to malloc | test.cpp:208:15:208:15 | Load |
-| test.cpp:206:17:206:17 | Load | test.cpp:206:17:206:23 | ... + ... |
-| test.cpp:206:17:206:17 | Load | test.cpp:206:17:206:23 | ... + ... |
-| test.cpp:206:17:206:17 | Load | test.cpp:206:17:206:23 | Store |
-| test.cpp:206:17:206:17 | Load | test.cpp:206:17:206:23 | Store |
-| test.cpp:206:17:206:17 | Load | test.cpp:209:12:209:14 | Load |
-| test.cpp:206:17:206:17 | Load | test.cpp:213:5:213:6 | * ... |
-| test.cpp:206:17:206:17 | Load | test.cpp:213:6:213:6 | Load |
-| test.cpp:206:17:206:17 | Load | test.cpp:213:6:213:6 | Load |
-| test.cpp:206:17:206:23 | ... + ... | test.cpp:206:17:206:23 | Store |
-| test.cpp:206:17:206:23 | ... + ... | test.cpp:206:17:206:23 | Store |
-| test.cpp:206:17:206:23 | ... + ... | test.cpp:209:12:209:14 | Load |
+| test.cpp:205:23:205:28 | call to malloc | test.cpp:206:17:206:17 | p |
+| test.cpp:205:23:205:28 | call to malloc | test.cpp:208:15:208:15 | p |
+| test.cpp:206:17:206:17 | p | test.cpp:206:17:206:23 | ... + ... |
+| test.cpp:206:17:206:17 | p | test.cpp:206:17:206:23 | ... + ... |
+| test.cpp:206:17:206:17 | p | test.cpp:206:17:206:23 | ... + ... |
+| test.cpp:206:17:206:17 | p | test.cpp:206:17:206:23 | ... + ... |
+| test.cpp:206:17:206:17 | p | test.cpp:209:12:209:14 | end |
+| test.cpp:206:17:206:17 | p | test.cpp:213:5:213:6 | * ... |
+| test.cpp:206:17:206:17 | p | test.cpp:213:6:213:6 | q |
+| test.cpp:206:17:206:17 | p | test.cpp:213:6:213:6 | q |
+| test.cpp:206:17:206:23 | ... + ... | test.cpp:206:17:206:23 | ... + ... |
+| test.cpp:206:17:206:23 | ... + ... | test.cpp:206:17:206:23 | ... + ... |
+| test.cpp:206:17:206:23 | ... + ... | test.cpp:209:12:209:14 | end |
+| test.cpp:206:17:206:23 | ... + ... | test.cpp:209:12:209:14 | end |
 | test.cpp:206:17:206:23 | ... + ... | test.cpp:213:5:213:13 | Store: ... = ... |
 | test.cpp:206:17:206:23 | ... + ... | test.cpp:213:5:213:13 | Store: ... = ... |
-| test.cpp:206:17:206:23 | Store | test.cpp:209:12:209:14 | Load |
-| test.cpp:206:17:206:23 | Store | test.cpp:213:5:213:13 | Store: ... = ... |
-| test.cpp:206:17:206:23 | Store | test.cpp:213:5:213:13 | Store: ... = ... |
-| test.cpp:209:12:209:14 | Load | test.cpp:213:5:213:13 | Store: ... = ... |
+| test.cpp:206:17:206:23 | ... + ... | test.cpp:213:5:213:13 | Store: ... = ... |
+| test.cpp:206:17:206:23 | ... + ... | test.cpp:213:5:213:13 | Store: ... = ... |
+| test.cpp:209:12:209:14 | end | test.cpp:213:5:213:13 | Store: ... = ... |
 | test.cpp:213:5:213:6 | * ... | test.cpp:213:5:213:13 | Store: ... = ... |
-| test.cpp:213:6:213:6 | Load | test.cpp:213:5:213:6 | * ... |
-| test.cpp:213:6:213:6 | Load | test.cpp:213:5:213:13 | Store: ... = ... |
-| test.cpp:213:6:213:6 | Load | test.cpp:213:5:213:13 | Store: ... = ... |
-| test.cpp:221:17:221:22 | call to malloc | test.cpp:222:5:222:5 | Load |
+| test.cpp:213:6:213:6 | q | test.cpp:213:5:213:6 | * ... |
+| test.cpp:213:6:213:6 | q | test.cpp:213:5:213:13 | Store: ... = ... |
+| test.cpp:213:6:213:6 | q | test.cpp:213:5:213:13 | Store: ... = ... |
+| test.cpp:221:17:221:22 | call to malloc | test.cpp:222:5:222:5 | p |
 #select
 | test.cpp:6:14:6:15 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
 | test.cpp:8:14:8:21 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:8:14:8:21 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |

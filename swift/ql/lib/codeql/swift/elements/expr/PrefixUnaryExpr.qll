@@ -19,4 +19,6 @@ class PrefixUnaryExpr extends Generated::PrefixUnaryExpr {
    * Gets the operator of this prefix unary expression (the function that is called).
    */
   AbstractFunctionDecl getOperator() { result = this.getStaticTarget() }
+
+  override AbstractFunctionDecl getStaticTarget() { result = super.getStaticTarget() }
 }

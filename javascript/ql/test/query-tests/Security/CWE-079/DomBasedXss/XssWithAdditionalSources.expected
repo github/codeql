@@ -431,6 +431,11 @@ nodes
 | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
 | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
 | jquery.js:34:13:34:16 | hash |
+| jquery.js:36:25:36:31 | tainted |
+| jquery.js:36:25:36:31 | tainted |
+| jquery.js:37:25:37:37 | () => tainted |
+| jquery.js:37:25:37:37 | () => tainted |
+| jquery.js:37:31:37:37 | tainted |
 | json-stringify.jsx:5:9:5:36 | locale |
 | json-stringify.jsx:5:9:5:36 | locale |
 | json-stringify.jsx:5:18:5:36 | req.param("locale") |
@@ -567,6 +572,25 @@ nodes
 | react-use-context.js:16:26:16:36 | window.name |
 | react-use-context.js:16:26:16:36 | window.name |
 | react-use-context.js:16:26:16:36 | window.name |
+| react-use-router.js:4:9:4:28 | router |
+| react-use-router.js:4:18:4:28 | useRouter() |
+| react-use-router.js:8:21:8:26 | router |
+| react-use-router.js:8:21:8:32 | router.query |
+| react-use-router.js:8:21:8:32 | router.query |
+| react-use-router.js:8:21:8:39 | router.query.foobar |
+| react-use-router.js:8:21:8:39 | router.query.foobar |
+| react-use-router.js:11:24:11:29 | router |
+| react-use-router.js:11:24:11:35 | router.query |
+| react-use-router.js:11:24:11:35 | router.query |
+| react-use-router.js:11:24:11:42 | router.query.foobar |
+| react-use-router.js:11:24:11:42 | router.query.foobar |
+| react-use-router.js:22:15:22:24 | router |
+| react-use-router.js:22:17:22:22 | router |
+| react-use-router.js:23:43:23:48 | router |
+| react-use-router.js:23:43:23:54 | router.query |
+| react-use-router.js:23:43:23:54 | router.query |
+| react-use-router.js:23:43:23:61 | router.query.foobar |
+| react-use-router.js:23:43:23:61 | router.query.foobar |
 | react-use-state.js:4:9:4:49 | state |
 | react-use-state.js:4:9:4:49 | state |
 | react-use-state.js:4:10:4:14 | state |
@@ -701,14 +725,22 @@ nodes
 | translate.js:9:27:9:50 | searchP ... 'term') |
 | translate.js:9:27:9:50 | searchP ... 'term') |
 | translate.js:9:27:9:50 | searchP ... 'term') |
-| trusted-types.js:2:66:2:66 | x |
-| trusted-types.js:2:66:2:66 | x |
-| trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:3:24:3:34 | window.name |
-| trusted-types.js:3:24:3:34 | window.name |
-| trusted-types.js:3:24:3:34 | window.name |
+| trusted-types-lib.js:1:28:1:28 | x |
+| trusted-types-lib.js:1:28:1:28 | x |
+| trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types.js:3:62:3:62 | x |
+| trusted-types.js:3:62:3:62 | x |
+| trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:4:20:4:30 | window.name |
+| trusted-types.js:4:20:4:30 | window.name |
+| trusted-types.js:4:20:4:30 | window.name |
+| trusted-types.js:13:20:13:30 | window.name |
+| trusted-types.js:13:20:13:30 | window.name |
+| trusted-types.js:13:20:13:30 | window.name |
 | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) |
 | tst3.js:2:23:2:74 | decodeU ... str(1)) |
 | tst3.js:2:42:2:63 | window. ... .search |
@@ -1095,6 +1127,14 @@ nodes
 | tst.js:491:23:491:35 | location.hash |
 | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash |
+| tst.js:494:18:494:30 | location.hash |
+| tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash |
+| tst.js:501:43:501:62 | window.location.hash |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
@@ -1554,6 +1594,9 @@ edges
 | express.js:7:15:7:33 | req.param("wobble") | express.js:7:15:7:33 | req.param("wobble") |
 | jquery.js:2:7:2:40 | tainted | jquery.js:7:20:7:26 | tainted |
 | jquery.js:2:7:2:40 | tainted | jquery.js:8:28:8:34 | tainted |
+| jquery.js:2:7:2:40 | tainted | jquery.js:36:25:36:31 | tainted |
+| jquery.js:2:7:2:40 | tainted | jquery.js:36:25:36:31 | tainted |
+| jquery.js:2:7:2:40 | tainted | jquery.js:37:31:37:37 | tainted |
 | jquery.js:2:17:2:40 | documen ... .search | jquery.js:2:7:2:40 | tainted |
 | jquery.js:2:17:2:40 | documen ... .search | jquery.js:2:7:2:40 | tainted |
 | jquery.js:7:20:7:26 | tainted | jquery.js:7:5:7:34 | "<div i ... + "\\">" |
@@ -1607,6 +1650,8 @@ edges
 | jquery.js:28:5:28:26 | window. ... .search | jquery.js:28:5:28:43 | window. ... ?', '') |
 | jquery.js:34:13:34:16 | hash | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
 | jquery.js:34:13:34:16 | hash | jquery.js:34:5:34:25 | '<b>' + ...  '</b>' |
+| jquery.js:37:31:37:37 | tainted | jquery.js:37:25:37:37 | () => tainted |
+| jquery.js:37:31:37:37 | tainted | jquery.js:37:25:37:37 | () => tainted |
 | json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:11:51:11:56 | locale |
 | json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:19:56:19:61 | locale |
 | json-stringify.jsx:5:9:5:36 | locale | json-stringify.jsx:31:55:31:60 | locale |
@@ -1744,6 +1789,28 @@ edges
 | react-native.js:7:17:7:33 | req.param("code") | react-native.js:7:7:7:33 | tainted |
 | react-use-context.js:10:22:10:32 | window.name | react-use-context.js:10:22:10:32 | window.name |
 | react-use-context.js:16:26:16:36 | window.name | react-use-context.js:16:26:16:36 | window.name |
+| react-use-router.js:4:9:4:28 | router | react-use-router.js:8:21:8:26 | router |
+| react-use-router.js:4:9:4:28 | router | react-use-router.js:11:24:11:29 | router |
+| react-use-router.js:4:18:4:28 | useRouter() | react-use-router.js:4:9:4:28 | router |
+| react-use-router.js:8:21:8:26 | router | react-use-router.js:8:21:8:32 | router.query |
+| react-use-router.js:8:21:8:32 | router.query | react-use-router.js:8:21:8:39 | router.query.foobar |
+| react-use-router.js:8:21:8:32 | router.query | react-use-router.js:8:21:8:39 | router.query.foobar |
+| react-use-router.js:8:21:8:32 | router.query | react-use-router.js:8:21:8:39 | router.query.foobar |
+| react-use-router.js:8:21:8:32 | router.query | react-use-router.js:8:21:8:39 | router.query.foobar |
+| react-use-router.js:8:21:8:39 | router.query.foobar | react-use-router.js:4:18:4:28 | useRouter() |
+| react-use-router.js:11:24:11:29 | router | react-use-router.js:11:24:11:35 | router.query |
+| react-use-router.js:11:24:11:35 | router.query | react-use-router.js:11:24:11:42 | router.query.foobar |
+| react-use-router.js:11:24:11:35 | router.query | react-use-router.js:11:24:11:42 | router.query.foobar |
+| react-use-router.js:11:24:11:35 | router.query | react-use-router.js:11:24:11:42 | router.query.foobar |
+| react-use-router.js:11:24:11:35 | router.query | react-use-router.js:11:24:11:42 | router.query.foobar |
+| react-use-router.js:22:15:22:24 | router | react-use-router.js:23:43:23:48 | router |
+| react-use-router.js:22:17:22:22 | router | react-use-router.js:22:15:22:24 | router |
+| react-use-router.js:23:43:23:48 | router | react-use-router.js:23:43:23:54 | router.query |
+| react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar |
+| react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar |
+| react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar |
+| react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar |
+| react-use-router.js:23:43:23:61 | router.query.foobar | react-use-router.js:22:17:22:22 | router |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
@@ -1880,14 +1947,22 @@ edges
 | translate.js:9:27:9:38 | searchParams | translate.js:9:27:9:50 | searchP ... 'term') |
 | translate.js:9:27:9:38 | searchParams | translate.js:9:27:9:50 | searchP ... 'term') |
 | translate.js:9:27:9:38 | searchParams | translate.js:9:27:9:50 | searchP ... 'term') |
-| trusted-types.js:2:66:2:66 | x | trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:2:66:2:66 | x | trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:2:66:2:66 | x | trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:2:66:2:66 | x | trusted-types.js:2:71:2:71 | x |
-| trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:66:2:66 | x |
-| trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:66:2:66 | x |
-| trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:66:2:66 | x |
-| trusted-types.js:3:24:3:34 | window.name | trusted-types.js:2:66:2:66 | x |
+| trusted-types-lib.js:1:28:1:28 | x | trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types-lib.js:1:28:1:28 | x | trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types-lib.js:1:28:1:28 | x | trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types-lib.js:1:28:1:28 | x | trusted-types-lib.js:2:12:2:12 | x |
+| trusted-types.js:3:62:3:62 | x | trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:3:62:3:62 | x | trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:3:62:3:62 | x | trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:3:62:3:62 | x | trusted-types.js:3:67:3:67 | x |
+| trusted-types.js:4:20:4:30 | window.name | trusted-types.js:3:62:3:62 | x |
+| trusted-types.js:4:20:4:30 | window.name | trusted-types.js:3:62:3:62 | x |
+| trusted-types.js:4:20:4:30 | window.name | trusted-types.js:3:62:3:62 | x |
+| trusted-types.js:4:20:4:30 | window.name | trusted-types.js:3:62:3:62 | x |
+| trusted-types.js:13:20:13:30 | window.name | trusted-types-lib.js:1:28:1:28 | x |
+| trusted-types.js:13:20:13:30 | window.name | trusted-types-lib.js:1:28:1:28 | x |
+| trusted-types.js:13:20:13:30 | window.name | trusted-types-lib.js:1:28:1:28 | x |
+| trusted-types.js:13:20:13:30 | window.name | trusted-types-lib.js:1:28:1:28 | x |
 | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:4:25:4:28 | data |
 | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:5:26:5:29 | data |
 | tst3.js:2:12:2:75 | JSON.pa ... tr(1))) | tst3.js:7:32:7:35 | data |
@@ -2258,6 +2333,14 @@ edges
 | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |

@@ -24,9 +24,11 @@ module RequestForgery {
   abstract private class Barrier extends DataFlow::Node { }
 
   /**
+   * DEPRECATED: Use `RequestForgeryFlow` instead.
+   *
    * A data flow configuration for detecting server side request forgery vulnerabilities.
    */
-  class RequestForgeryConfiguration extends DataFlow::Configuration {
+  deprecated class RequestForgeryConfiguration extends DataFlow::Configuration {
     RequestForgeryConfiguration() { this = "Server Side Request forgery" }
 
     override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -55,12 +57,44 @@ module RequestForgery {
   }
 
   /**
+   * A data flow configuration for detecting server side request forgery vulnerabilities.
+   */
+  private module RequestForgeryFlowConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+    predicate isAdditionalFlowStep(DataFlow::Node prev, DataFlow::Node succ) {
+      interpolatedStringFlowStep(prev, succ)
+      or
+      stringReplaceStep(prev, succ)
+      or
+      uriCreationStep(prev, succ)
+      or
+      formatConvertStep(prev, succ)
+      or
+      toStringStep(prev, succ)
+      or
+      stringConcatStep(prev, succ)
+      or
+      stringFormatStep(prev, succ)
+      or
+      pathCombineStep(prev, succ)
+    }
+
+    predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
+  }
+
+  /**
+   * A data flow module for detecting server side request forgery vulnerabilities.
+   */
+  module RequestForgeryFlow = DataFlow::Global<RequestForgeryFlowConfig>;
+
+  /**
    * A remote data flow source taken as a source
    * for Server Side Request Forgery(SSRF) Vulnerabilities.
    */
-  private class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() { this instanceof RemoteFlowSource }
-  }
+  private class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource { }
 
   /**
    * An url argument to a `HttpRequestMessage` constructor call
@@ -68,7 +102,7 @@ module RequestForgery {
    */
   private class SystemWebHttpRequestMessageSink extends Sink {
     SystemWebHttpRequestMessageSink() {
-      exists(Class c | c.hasQualifiedName("System.Net.Http.HttpRequestMessage") |
+      exists(Class c | c.hasQualifiedName("System.Net.Http", "HttpRequestMessage") |
         c.getAConstructor().getACall().getArgument(1) = this.asExpr()
       )
     }
@@ -81,7 +115,7 @@ module RequestForgery {
   private class SystemNetWebRequestCreateSink extends Sink {
     SystemNetWebRequestCreateSink() {
       exists(Method m |
-        m.getDeclaringType().hasQualifiedName("System.Net.WebRequest") and m.hasName("Create")
+        m.getDeclaringType().hasQualifiedName("System.Net", "WebRequest") and m.hasName("Create")
       |
         m.getACall().getArgument(0) = this.asExpr()
       )
@@ -95,7 +129,7 @@ module RequestForgery {
   private class SystemNetHttpClientSink extends Sink {
     SystemNetHttpClientSink() {
       exists(Method m |
-        m.getDeclaringType().hasQualifiedName("System.Net.Http.HttpClient") and
+        m.getDeclaringType().hasQualifiedName("System.Net.Http", "HttpClient") and
         m.hasName([
             "DeleteAsync", "GetAsync", "GetByteArrayAsync", "GetStreamAsync", "GetStringAsync",
             "PatchAsync", "PostAsync", "PutAsync"
@@ -112,10 +146,13 @@ module RequestForgery {
    */
   private class SystemNetClientBaseAddressSink extends Sink {
     SystemNetClientBaseAddressSink() {
-      exists(Property p |
+      exists(Property p, Type t |
         p.hasName("BaseAddress") and
-        p.getDeclaringType()
-            .hasQualifiedName(["System.Net.WebClient", "System.Net.Http.HttpClient"])
+        t = p.getDeclaringType() and
+        (
+          t.hasQualifiedName("System.Net", "WebClient") or
+          t.hasQualifiedName("System.Net.Http", "HttpClient")
+        )
       |
         p.getAnAssignedValue() = this.asExpr()
       )
@@ -128,7 +165,7 @@ module RequestForgery {
    * This guard considers all checks as valid.
    */
   private predicate baseUriGuard(Guard g, Expr e, AbstractValue v) {
-    g.(MethodCall).getTarget().hasQualifiedName("System.Uri", "IsBaseOf") and
+    g.(MethodCall).getTarget().hasQualifiedName("System", "Uri", "IsBaseOf") and
     // we consider any checks against the tainted value to sainitize the taint.
     // This implies any check such as shown below block the taint flow.
     // Uri url = new Uri("whitelist.com")
@@ -147,7 +184,7 @@ module RequestForgery {
    * This guard considers all checks as valid.
    */
   private predicate stringStartsWithGuard(Guard g, Expr e, AbstractValue v) {
-    g.(MethodCall).getTarget().hasQualifiedName("System.String", "StartsWith") and
+    g.(MethodCall).getTarget().hasQualifiedName("System", "String", "StartsWith") and
     // Any check such as the ones shown below
     // "https://myurl.com/".startsWith(`taint`)
     // `taint`.startsWith("https://myurl.com/")
@@ -168,7 +205,7 @@ module RequestForgery {
 
   private predicate pathCombineStep(DataFlow::Node prev, DataFlow::Node succ) {
     exists(MethodCall combineCall |
-      combineCall.getTarget().hasQualifiedName("System.IO.Path", "Combine") and
+      combineCall.getTarget().hasQualifiedName("System.IO", "Path", "Combine") and
       combineCall.getArgument(0) = prev.asExpr() and
       combineCall = succ.asExpr()
     )
@@ -176,7 +213,7 @@ module RequestForgery {
 
   private predicate uriCreationStep(DataFlow::Node prev, DataFlow::Node succ) {
     exists(ObjectCreation oc |
-      oc.getTarget().getDeclaringType().hasQualifiedName("System.Uri") and
+      oc.getTarget().getDeclaringType().hasQualifiedName("System", "Uri") and
       oc.getArgument(0) = prev.asExpr() and
       oc = succ.asExpr()
     )
@@ -217,7 +254,7 @@ module RequestForgery {
 
   private predicate formatConvertStep(DataFlow::Node prev, DataFlow::Node succ) {
     exists(Method m |
-      m.hasQualifiedName("System.Convert",
+      m.hasQualifiedName("System", "Convert",
         ["FromBase64String", "FromHexString", "FromBase64CharArray"]) and
       m.getParameter(0) = prev.asParameter() and
       succ.asExpr() = m.getACall()

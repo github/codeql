@@ -39,11 +39,8 @@ module ClientSideUrlRedirect {
   }
 
   /** A source of remote user input, considered as a flow source for unvalidated URL redirects. */
-  class RemoteFlowSourceAsSource extends Source {
-    RemoteFlowSourceAsSource() {
-      this instanceof RemoteFlowSource and
-      not this.(ClientSideRemoteFlowSource).getKind().isPath()
-    }
+  class RemoteFlowSourceAsSource extends Source instanceof RemoteFlowSource {
+    RemoteFlowSourceAsSource() { not this.(ClientSideRemoteFlowSource).getKind().isPath() }
 
     override DataFlow::FlowLabel getAFlowLabel() {
       if this.(ClientSideRemoteFlowSource).getKind().isUrl()
@@ -225,6 +222,8 @@ module ClientSideUrlRedirect {
     HistoryWriteUrlSink() {
       this = History::getBrowserHistory().getMember(["push", "replace"]).getACall().getArgument(0)
     }
+
+    override predicate isXssSink() { any() }
   }
 
   /**
@@ -234,5 +233,11 @@ module ClientSideUrlRedirect {
     NextRoutePushUrlSink() {
       this = NextJS::nextRouter().getAMemberCall(["push", "replace"]).getArgument(0)
     }
+
+    override predicate isXssSink() { any() }
+  }
+
+  private class SinkFromModel extends Sink {
+    SinkFromModel() { this = ModelOutput::getASinkNode("url-redirection").asSink() }
   }
 }

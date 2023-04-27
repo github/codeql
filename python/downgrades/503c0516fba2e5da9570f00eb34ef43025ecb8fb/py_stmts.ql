@@ -23,10 +23,17 @@ class StmtList_ extends @py_stmt_list {
  * New kinds have been inserted such that
  * `@py_Nonlocal` which used to have index 14 now has index 16.
  * Entries with lower indices are unchanged.
+ *
+ * Note that if `14 <= new_index < 16`, it does not correspond
+ * to an old index.
  */
 bindingset[new_index]
 int old_index(int new_index) {
-  if new_index < 14 then result = new_index else result + (16 - 14) = new_index
+  // before inserted range
+  new_index < 14 and result = new_index
+  or
+  // after inserted range
+  new_index >= 16 and result + (16 - 14) = new_index
 }
 
 // The schema for py_stmts is:

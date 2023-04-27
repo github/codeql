@@ -7,6 +7,7 @@
  * @precision high
  * @id java/unsafe-url-forward-dispatch-load
  * @tags security
+ *       experimental
  *       external/cwe-552
  */
 
@@ -16,12 +17,10 @@ import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.dataflow.TaintTracking
 import experimental.semmle.code.java.frameworks.Jsf
 import semmle.code.java.security.PathSanitizer
-import DataFlow::PathGraph
+import UnsafeUrlForwardFlow::PathGraph
 
-class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
-  UnsafeUrlForwardFlowConfig() { this = "UnsafeUrlForwardFlowConfig" }
-
-  override predicate isSource(DataFlow::Node source) {
+module UnsafeUrlForwardFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     source instanceof RemoteFlowSource and
     not exists(MethodAccess ma, Method m | ma.getMethod() = m |
       (
@@ -33,18 +32,16 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeUrlForwardSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeUrlForwardSink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node instanceof UnsafeUrlForwardSanitizer or
     node instanceof PathInjectionSanitizer
   }
 
-  override DataFlow::FlowFeature getAFeature() {
-    result instanceof DataFlow::FeatureHasSourceCallContext
-  }
+  DataFlow::FlowFeature getAFeature() { result instanceof DataFlow::FeatureHasSourceCallContext }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node prev, DataFlow::Node succ) {
+  predicate isAdditionalFlowStep(DataFlow::Node prev, DataFlow::Node succ) {
     exists(MethodAccess ma |
       (
         ma.getMethod() instanceof GetServletResourceMethod or
@@ -59,7 +56,9 @@ class UnsafeUrlForwardFlowConfig extends TaintTracking::Configuration {
   }
 }
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, UnsafeUrlForwardFlowConfig conf
-where conf.hasFlowPath(source, sink)
+module UnsafeUrlForwardFlow = TaintTracking::Global<UnsafeUrlForwardFlowConfig>;
+
+from UnsafeUrlForwardFlow::PathNode source, UnsafeUrlForwardFlow::PathNode sink
+where UnsafeUrlForwardFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "Potentially untrusted URL forward due to $@.",
   source.getNode(), "user-provided value"

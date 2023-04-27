@@ -27,8 +27,12 @@ abstract class Sanitizer extends DataFlow::ExprNode { }
  */
 abstract deprecated class SanitizerGuard extends DataFlow::BarrierGuard { }
 
-/** A taint tracking configuration for Zip Slip */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
+/**
+ * DEPRECATED: Use `ZipSlip` instead.
+ *
+ * A taint tracking configuration for Zip Slip.
+ */
+deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
   TaintTrackingConfiguration() { this = "ZipSlipTaintTracking" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof Source }
@@ -42,11 +46,27 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
   }
 }
 
+/**
+ * A taint tracking configuration for Zip Slip.
+ */
+private module ZipSlipConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
+
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+}
+
+/**
+ * A taint tracking module for Zip Slip.
+ */
+module ZipSlip = TaintTracking::Global<ZipSlipConfig>;
+
 /** An access to the `FullName` property of a `ZipArchiveEntry`. */
 class ArchiveFullNameSource extends Source {
   ArchiveFullNameSource() {
     exists(PropertyAccess pa | this.asExpr() = pa |
-      pa.getTarget().getDeclaringType().hasQualifiedName("System.IO.Compression.ZipArchiveEntry") and
+      pa.getTarget().getDeclaringType().hasQualifiedName("System.IO.Compression", "ZipArchiveEntry") and
       pa.getTarget().getName() = "FullName"
     )
   }
@@ -56,7 +76,7 @@ class ArchiveFullNameSource extends Source {
 class ExtractToFileArgSink extends Sink {
   ExtractToFileArgSink() {
     exists(MethodCall mc |
-      mc.getTarget().hasQualifiedName("System.IO.Compression.ZipFileExtensions", "ExtractToFile") and
+      mc.getTarget().hasQualifiedName("System.IO.Compression", "ZipFileExtensions", "ExtractToFile") and
       this.asExpr() = mc.getArgumentForName("destinationFileName")
     )
   }
@@ -66,9 +86,9 @@ class ExtractToFileArgSink extends Sink {
 class FileOpenArgSink extends Sink {
   FileOpenArgSink() {
     exists(MethodCall mc |
-      mc.getTarget().hasQualifiedName("System.IO.File", "Open") or
-      mc.getTarget().hasQualifiedName("System.IO.File", "OpenWrite") or
-      mc.getTarget().hasQualifiedName("System.IO.File", "Create")
+      mc.getTarget().hasQualifiedName("System.IO", "File", "Open") or
+      mc.getTarget().hasQualifiedName("System.IO", "File", "OpenWrite") or
+      mc.getTarget().hasQualifiedName("System.IO", "File", "Create")
     |
       this.asExpr() = mc.getArgumentForName("path")
     )
@@ -79,7 +99,7 @@ class FileOpenArgSink extends Sink {
 class FileStreamArgSink extends Sink {
   FileStreamArgSink() {
     exists(ObjectCreation oc |
-      oc.getTarget().getDeclaringType().hasQualifiedName("System.IO.FileStream")
+      oc.getTarget().getDeclaringType().hasQualifiedName("System.IO", "FileStream")
     |
       this.asExpr() = oc.getArgumentForName("path")
     )
@@ -94,7 +114,7 @@ class FileStreamArgSink extends Sink {
 class FileInfoArgSink extends Sink {
   FileInfoArgSink() {
     exists(ObjectCreation oc |
-      oc.getTarget().getDeclaringType().hasQualifiedName("System.IO.FileInfo")
+      oc.getTarget().getDeclaringType().hasQualifiedName("System.IO", "FileInfo")
     |
       this.asExpr() = oc.getArgumentForName("fileName")
     )
@@ -108,7 +128,7 @@ class FileInfoArgSink extends Sink {
  */
 class GetFileNameSanitizer extends Sanitizer {
   GetFileNameSanitizer() {
-    exists(MethodCall mc | mc.getTarget().hasQualifiedName("System.IO.Path", "GetFileName") |
+    exists(MethodCall mc | mc.getTarget().hasQualifiedName("System.IO", "Path", "GetFileName") |
       this.asExpr() = mc
     )
   }
@@ -122,19 +142,19 @@ class GetFileNameSanitizer extends Sanitizer {
  */
 class SubstringSanitizer extends Sanitizer {
   SubstringSanitizer() {
-    exists(MethodCall mc | mc.getTarget().hasQualifiedName("System.String", "Substring") |
+    exists(MethodCall mc | mc.getTarget().hasQualifiedName("System", "String", "Substring") |
       this.asExpr() = mc
     )
   }
 }
 
 private predicate stringCheckGuard(Guard g, Expr e, AbstractValue v) {
-  g.(MethodCall).getTarget().hasQualifiedName("System.String", "StartsWith") and
+  g.(MethodCall).getTarget().hasQualifiedName("System", "String", "StartsWith") and
   g.(MethodCall).getQualifier() = e and
   // A StartsWith check against Path.Combine is not sufficient, because the ".." elements have
   // not yet been resolved.
   not exists(MethodCall combineCall |
-    combineCall.getTarget().hasQualifiedName("System.IO.Path", "Combine") and
+    combineCall.getTarget().hasQualifiedName("System.IO", "Path", "Combine") and
     DataFlow::localExprFlow(combineCall, e)
   ) and
   v.(AbstractValues::BooleanValue).getValue() = true

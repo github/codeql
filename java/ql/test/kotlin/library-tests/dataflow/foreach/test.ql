@@ -1,19 +1,16 @@
 import java
 import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.dataflow.ExternalFlow
 
-class Conf extends TaintTracking::Configuration {
-  Conf() { this = "qltest:foreach-array-iterator" }
-
-  override predicate isSource(DataFlow::Node n) {
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) {
     n.asExpr().(Argument).getCall().getCallee().hasName("taint")
   }
 
-  override predicate isSink(DataFlow::Node n) {
-    n.asExpr().(Argument).getCall().getCallee().hasName("sink")
-  }
+  predicate isSink(DataFlow::Node n) { n.asExpr().(Argument).getCall().getCallee().hasName("sink") }
 }
 
-from DataFlow::Node src, DataFlow::Node sink, Conf conf
-where conf.hasFlow(src, sink)
+module Flow = TaintTracking::Global<Config>;
+
+from DataFlow::Node src, DataFlow::Node sink
+where Flow::flow(src, sink)
 select src, sink

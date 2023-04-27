@@ -15,7 +15,9 @@ import Undefined
 import semmle.python.pointsto.PointsTo
 
 predicate uninitialized_local(NameNode use) {
-  exists(FastLocalVariable local | use.uses(local) or use.deletes(local) | not local.escapes()) and
+  exists(FastLocalVariable local | use.uses(local) or use.deletes(local) |
+    not local.escapes() and not local = any(Nonlocal nl).getAVariable()
+  ) and
   (
     any(Uninitialized uninit).taints(use) and
     PointsToInternal::reachableBlock(use.getBasicBlock(), _)

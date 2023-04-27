@@ -6,6 +6,10 @@ pull_request_triggers:
   - "**/glide.yaml"
   - "**/Gopkg.toml"
 column_kind: "utf8"
+github_api_languages:
+  - Go
+scc_languages:
+  - Go
 file_types:
   - name: go
     display_name: Go

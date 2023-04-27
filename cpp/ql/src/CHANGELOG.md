@@ -1,3 +1,57 @@
+## 0.6.0
+
+### New Queries
+
+* The query `cpp/redundant-null-check-simple` has been promoted to Code Scanning. The query finds cases where a pointer is compared to null after it has already been dereferenced. Such comparisons likely indicate a bug at the place where the pointer is dereferenced, or where the pointer is compared to null.
+
+### Minor Analysis Improvements
+
+* The query `cpp/tainted-arithmetic` now also flags possible overflows in arithmetic assignment operations.
+
+## 0.5.6
+
+No user-facing changes.
+
+## 0.5.5
+
+### Deprecated Queries
+
+* The `NetworkToBufferSizeConfiguration` and `UntrustedDataToExternalApiConfig` dataflow configurations have been deprecated. Please use `NetworkToBufferSizeFlow` and `UntrustedDataToExternalApiFlow`.
+* The `LeapYearCheckConfiguration`, `FiletimeYearArithmeticOperationCheckConfiguration`, and `PossibleYearArithmeticOperationCheckConfiguration` dataflow configurations have been deprecated. Please use `LeapYearCheckFlow`, `FiletimeYearArithmeticOperationCheckFlow` and `PossibleYearArithmeticOperationCheckFlow`.
+
+## 0.5.4
+
+No user-facing changes.
+
+## 0.5.3
+
+No user-facing changes.
+
+## 0.5.2
+
+No user-facing changes.
+
+## 0.5.1
+
+### Minor Analysis Improvements
+
+* The `cpp/no-space-for-terminator` and `cpp/uncontrolled-allocation-size` queries have been enhanced with heuristic detection of allocations. These queries now find more results.
+
+## 0.5.0
+
+### Minor Analysis Improvements
+
+* The `AlertSuppression.ql` query has been updated to support the new `// codeql[query-id]` supression comments. These comments can be used to suppress an alert and must be placed on a blank line before the alert. In addition the legacy `// lgtm` and `// lgtm[query-id]` comments can now also be placed on the line before an alert.
+* The `cpp/missing-check-scanf` query no longer reports the free'ing of `scanf` output variables as potential reads.
+
+## 0.4.6
+
+No user-facing changes.
+
+## 0.4.5
+
+No user-facing changes.
+
 ## 0.4.4
 
 No user-facing changes.

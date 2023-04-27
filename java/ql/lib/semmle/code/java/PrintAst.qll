@@ -120,16 +120,21 @@ private newtype TPrintAstNode =
     shouldPrint(lvde, _) and lvde.getParent() instanceof SingleLocalVarDeclParent
   } or
   TAnnotationsNode(Annotatable ann) {
-    shouldPrint(ann, _) and ann.hasDeclaredAnnotation() and not partOfAnnotation(ann)
+    shouldPrint(ann, _) and
+    ann.hasDeclaredAnnotation() and
+    not partOfAnnotation(ann) and
+    // The Kotlin compiler might add annotations that are only present in byte code, although the annotatable element is
+    // present in source code.
+    exists(Annotation a | a.getAnnotatedElement() = ann and shouldPrint(a, _))
   } or
   TParametersNode(Callable c) { shouldPrint(c, _) and not c.hasNoParameters() } or
   TBaseTypesNode(ClassOrInterface ty) { shouldPrint(ty, _) } or
   TGenericTypeNode(GenericType ty) { shouldPrint(ty, _) } or
   TGenericCallableNode(GenericCallable c) { shouldPrint(c, _) } or
   TDocumentableNode(Documentable d) { shouldPrint(d, _) and exists(d.getJavadoc()) } or
-  TJavadocNode(Javadoc jd) { exists(Documentable d | d.getJavadoc() = jd | shouldPrint(d, _)) } or
-  TJavadocElementNode(JavadocElement jd) {
-    exists(Documentable d | d.getJavadoc() = jd.getParent*() | shouldPrint(d, _))
+  TJavadocNode(Javadoc jd, Documentable d) { d.getJavadoc() = jd and shouldPrint(d, _) } or
+  TJavadocElementNode(JavadocElement jd, Documentable d) {
+    d.getJavadoc() = jd.getParent*() and shouldPrint(d, _)
   } or
   TImportsNode(CompilationUnit cu) {
     shouldPrint(cu, _) and exists(Import i | i.getCompilationUnit() = cu)
@@ -293,19 +298,21 @@ final class AnnotationPartNode extends ExprStmtNode {
 
   override ElementNode getChild(int childIndex) {
     result.getElement() =
-      rank[childIndex](Element ch, string file, int line, int column |
-        ch = this.getAnAnnotationChild() and locationSortKeys(ch, file, line, column)
+      rank[childIndex](Element ch, string file, int line, int column, int idx |
+        ch = this.getAnnotationChild(idx) and locationSortKeys(ch, file, line, column)
       |
-        ch order by file, line, column
+        ch order by file, line, column, idx
       )
   }
 
-  private Expr getAnAnnotationChild() {
-    result = element.(Annotation).getValue(_)
+  private Expr getAnnotationChild(int index) {
+    result = element.(Annotation).getValue(_) and
+    index >= 0 and
+    if exists(int x | x >= 0 | result.isNthChildOf(element, x))
+    then result.isNthChildOf(element, index)
+    else result.isNthChildOf(element, -(index + 1))
     or
-    result = element.(ArrayInit).getAnInit()
-    or
-    result = element.(ArrayInit).(Annotatable).getAnAnnotation()
+    result = element.(ArrayInit).getInit(index)
   }
 }
 
@@ -530,17 +537,13 @@ final class ClassInterfaceNode extends ElementNode {
     or
     childIndex >= 0 and
     result.(ElementNode).getElement() =
-      rank[childIndex](Element e, string file, int line, int column, string childStr, int argCount |
+      rank[childIndex](Element e, string file, int line, int column, string childStr, string sig |
         e = this.getADeclaration() and
         locationSortKeys(e, file, line, column) and
         childStr = e.toString() and
-        (
-          if e instanceof Callable
-          then argCount = e.(Callable).getNumberOfParameters()
-          else argCount = 0
-        )
+        (if e instanceof Callable then sig = e.(Callable).getStringSignature() else sig = "")
       |
-        e order by file, line, column, childStr, argCount
+        e order by file, line, column, childStr, sig
       )
   }
 }
@@ -672,10 +675,10 @@ final class AnnotationsNode extends PrintAstNode, TAnnotationsNode {
 
   override ElementNode getChild(int childIndex) {
     result.getElement() =
-      rank[childIndex](Element e, string file, int line, int column |
-        e = ann.getAnAnnotation() and locationSortKeys(e, file, line, column)
+      rank[childIndex](Element e, string file, int line, int column, string s |
+        e = ann.getAnAnnotation() and locationSortKeys(e, file, line, column) and s = e.toString()
       |
-        e order by file, line, column
+        e order by file, line, column, s
       )
   }
 
@@ -787,6 +790,7 @@ final class DocumentableNode extends PrintAstNode, TDocumentableNode {
   override Location getLocation() { none() }
 
   override JavadocNode getChild(int childIndex) {
+    result.getDocumentable() = d and
     result.getJavadoc() =
       rank[childIndex](Javadoc jd, string file, int line, int column |
         jd.getCommentedElement() = d and jd.getLocation().hasLocationInfo(file, line, column, _, _)
@@ -807,14 +811,16 @@ final class DocumentableNode extends PrintAstNode, TDocumentableNode {
  */
 final class JavadocNode extends PrintAstNode, TJavadocNode {
   Javadoc jd;
+  Documentable d;
 
-  JavadocNode() { this = TJavadocNode(jd) }
+  JavadocNode() { this = TJavadocNode(jd, d) and not duplicateMetadata(d) }
 
   override string toString() { result = getQlClass(jd) + jd.toString() }
 
   override Location getLocation() { result = jd.getLocation() }
 
   override JavadocElementNode getChild(int childIndex) {
+    result.getDocumentable() = d and
     result.getJavadocElement() = jd.getChild(childIndex)
   }
 
@@ -822,6 +828,11 @@ final class JavadocNode extends PrintAstNode, TJavadocNode {
    * Gets the `Javadoc` represented by this node.
    */
   Javadoc getJavadoc() { result = jd }
+
+  /**
+   * Gets the `Documentable` whose `Javadoc` is represented by this node.
+   */
+  Documentable getDocumentable() { result = d }
 }
 
 /**
@@ -830,14 +841,16 @@ final class JavadocNode extends PrintAstNode, TJavadocNode {
  */
 final class JavadocElementNode extends PrintAstNode, TJavadocElementNode {
   JavadocElement jd;
+  Documentable d;
 
-  JavadocElementNode() { this = TJavadocElementNode(jd) }
+  JavadocElementNode() { this = TJavadocElementNode(jd, d) and not duplicateMetadata(d) }
 
   override string toString() { result = getQlClass(jd) + jd.toString() }
 
   override Location getLocation() { result = jd.getLocation() }
 
   override JavadocElementNode getChild(int childIndex) {
+    result.getDocumentable() = d and
     result.getJavadocElement() = jd.(JavadocParent).getChild(childIndex)
   }
 
@@ -845,6 +858,11 @@ final class JavadocElementNode extends PrintAstNode, TJavadocElementNode {
    * Gets the `JavadocElement` represented by this node.
    */
   JavadocElement getJavadocElement() { result = jd }
+
+  /**
+   * Gets the `Documentable` whose `JavadocElement` is represented by this node.
+   */
+  Documentable getDocumentable() { result = d }
 }
 
 /**

@@ -16,12 +16,12 @@
  */
 
 import cpp
-import semmle.code.cpp.dataflow.DataFlow
+import semmle.code.cpp.ir.dataflow.DataFlow
 import semmle.code.cpp.models.interfaces.ArrayFunction
 import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.commons.NullTermination
 
-predicate terminationProblem(AllocationExpr malloc, string msg) {
+predicate terminationProblem(HeuristicAllocationExpr malloc, string msg) {
   // malloc(strlen(...))
   exists(StrlenCall strlen | DataFlow::localExprFlow(strlen, malloc.getSizeExpr())) and
   // flows to a call that implies this is a null-terminated string

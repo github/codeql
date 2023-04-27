@@ -19,11 +19,14 @@ private int numStmts(ForeachStmt fes) {
 }
 
 /** Holds if the type's qualified name is "System.Linq.Enumerable" */
-predicate isEnumerableType(ValueOrRefType t) { t.hasQualifiedName("System.Linq.Enumerable") }
+predicate isEnumerableType(ValueOrRefType t) { t.hasQualifiedName("System.Linq", "Enumerable") }
 
 /** Holds if the type's qualified name starts with "System.Collections.Generic.IEnumerable" */
 predicate isIEnumerableType(ValueOrRefType t) {
-  t.getQualifiedName().matches("System.Collections.Generic.IEnumerable%")
+  exists(string type |
+    t.hasQualifiedName("System.Collections.Generic", type) and
+    type.matches("IEnumerable%")
+  )
 }
 
 /**

@@ -81,7 +81,8 @@ module File {
   }
 
   private class FileModulePermissionModification extends FileSystemPermissionModification::Range,
-    DataFlow::CallNode {
+    DataFlow::CallNode
+  {
     private DataFlow::Node permissionArg;
 
     FileModulePermissionModification() {
@@ -133,7 +134,7 @@ module File {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      input = "Argument[0..]" and
+      input = "Argument[0,1..]" and
       output = "ReturnValue" and
       preservesValue = false
     }
@@ -164,7 +165,8 @@ module FileUtils {
   }
 
   private class FileUtilsPermissionModification extends FileSystemPermissionModification::Range,
-    DataFlow::CallNode {
+    DataFlow::CallNode
+  {
     private DataFlow::Node permissionArg;
 
     FileUtilsPermissionModification() {

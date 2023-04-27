@@ -117,9 +117,7 @@ module OpenUrlRedirect {
 }
 
 /** A sink for an open redirect, considered as a sink for safe URL flow. */
-private class SafeUrlSink extends SafeUrlFlow::Sink {
-  SafeUrlSink() { this instanceof OpenUrlRedirect::Sink }
-}
+private class SafeUrlSink extends SafeUrlFlow::Sink instanceof OpenUrlRedirect::Sink { }
 
 /**
  * A read of a field considered unsafe to redirect to, considered as a sanitizer for a safe

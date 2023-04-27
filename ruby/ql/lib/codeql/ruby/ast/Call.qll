@@ -53,9 +53,12 @@ class Call extends Expr instanceof CallImpl {
 
   /** Gets a potential target of this call, if any. */
   final Callable getATarget() {
-    exists(DataFlowCall c | this = c.asCall().getExpr() |
-      TCfgScope(result) = [viableCallable(c), viableCallableLambda(c, _)]
+    exists(DataFlowCall c |
+      this = c.asCall().getExpr() and
+      TCfgScope(result) = viableCallableLambda(c, _)
     )
+    or
+    result = getTarget(this.getAControlFlowNode())
   }
 
   override AstNode getAChild(string pred) {
@@ -94,6 +97,15 @@ class MethodCall extends Call instanceof MethodCallImpl {
    * ```
    *
    * the result is `"bar"`.
+   *
+   * Super calls call a method with the same name as the current method, so
+   * the result for a super call is the name of the current method.
+   * E.g:
+   * ```rb
+   * def foo
+   *  super # the result for this super call is "foo"
+   * end
+   * ```
    */
   final string getMethodName() { result = super.getMethodNameImpl() }
 
@@ -198,6 +210,8 @@ class YieldCall extends Call instanceof YieldCallImpl {
  */
 class SuperCall extends MethodCall instanceof SuperCallImpl {
   final override string getAPrimaryQlClass() { result = "SuperCall" }
+
+  override string toString() { result = "super call to " + this.getMethodName() }
 }
 
 /**

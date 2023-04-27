@@ -21,7 +21,7 @@ re.compile(u'[\uD800-\uDBFF][\uDC00-\uDFFF]') # not escapes
 #Outside BMP
 re.compile(u'[\U00010000-\U0010ffff]') # not escapes
 
-#Misparsed on LGTM
+#Misparsed
 re.compile(r"\[(?P<txt>[^[]*)\]\((?P<uri>[^)]*)") #$ escapedCharacter=0:2 escapedCharacter=16:18 escapedCharacter=18:20
 
 #Non-raw string

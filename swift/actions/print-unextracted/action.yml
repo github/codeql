@@ -1,9 +1,0 @@
-name: Print unextracted entities
-description: Prints all AST and Type entities that we do not extract yet. Must be run after `setup-env`
-runs:
-  using: composite
-  steps:
-    - name: Print unextracted entities
-      shell: bash
-      run: |
-        bazel run //swift/extractor/print_unextracted

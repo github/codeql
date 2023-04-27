@@ -10,16 +10,19 @@
  * @precision high
  * @id java/timing-attack-against-signature
  * @tags security
+ *       experimental
  *       external/cwe/cwe-208
  */
 
 import java
 import NonConstantTimeCheckOnSignatureQuery
-import DataFlow::PathGraph
+import NonConstantTimeCryptoComparisonFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, NonConstantTimeCryptoComparisonConfig conf
+from
+  NonConstantTimeCryptoComparisonFlow::PathNode source,
+  NonConstantTimeCryptoComparisonFlow::PathNode sink
 where
-  conf.hasFlowPath(source, sink) and
+  NonConstantTimeCryptoComparisonFlow::flowPath(source, sink) and
   (
     source.getNode().(CryptoOperationSource).includesUserInput() and
     sink.getNode().(NonConstantTimeComparisonSink).includesUserInput()

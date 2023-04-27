@@ -14,9 +14,9 @@
 import java
 import semmle.code.java.security.SpelInjectionQuery
 import semmle.code.java.dataflow.DataFlow
-import DataFlow::PathGraph
+import SpelInjectionFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, SpelInjectionConfig conf
-where conf.hasFlowPath(source, sink)
+from SpelInjectionFlow::PathNode source, SpelInjectionFlow::PathNode sink
+where SpelInjectionFlow::flowPath(source, sink)
 select sink.getNode(), source, sink, "SpEL expression depends on a $@.", source.getNode(),
   "user-provided value"

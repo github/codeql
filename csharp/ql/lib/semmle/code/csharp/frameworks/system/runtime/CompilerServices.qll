@@ -20,7 +20,8 @@ class SystemRuntimeCompilerServicesNamespaceUnboundGenericStruct extends Unbound
 }
 
 /** The `System.Runtime.CompilerServices.TaskAwaiter<>` struct. */
-class SystemRuntimeCompilerServicesTaskAwaiterStruct extends SystemRuntimeCompilerServicesNamespaceUnboundGenericStruct {
+class SystemRuntimeCompilerServicesTaskAwaiterStruct extends SystemRuntimeCompilerServicesNamespaceUnboundGenericStruct
+{
   SystemRuntimeCompilerServicesTaskAwaiterStruct() { this.hasName("TaskAwaiter<>") }
 
   /** Gets the `GetResult` method. */
@@ -31,7 +32,8 @@ class SystemRuntimeCompilerServicesTaskAwaiterStruct extends SystemRuntimeCompil
 }
 
 /** The `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>` struct. */
-class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct extends SystemRuntimeCompilerServicesNamespaceUnboundGenericStruct {
+class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct extends SystemRuntimeCompilerServicesNamespaceUnboundGenericStruct
+{
   SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct() {
     this.hasName("ConfiguredTaskAwaitable<>")
   }
@@ -55,7 +57,8 @@ private class SyntheticConfiguredTaskAwaiterField extends SyntheticField {
 }
 
 /** The `System.Runtime.CompilerServices.ConfiguredTaskAwaitable<>.ConfiguredTaskAwaiter` struct. */
-class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct extends Struct {
+class SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct extends Struct
+{
   SystemRuntimeCompilerServicesConfiguredTaskAwaitableTConfiguredTaskAwaiterStruct() {
     this = any(SystemRuntimeCompilerServicesConfiguredTaskAwaitableTStruct n).getANestedType() and
     this.hasName("ConfiguredTaskAwaiter")

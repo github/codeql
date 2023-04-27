@@ -52,7 +52,8 @@ int getASecureTlsVersion() {
 int getATlsVersion() { result = getASecureTlsVersion() or isInsecureTlsVersion(result, _, _) }
 
 /**
- * Flow of TLS versions into a `tls.Config` struct, to the `MinVersion` and `MaxVersion` fields.
+ * A taint-tracking configuration for tracking flow from TLS versions to the
+ * `tls.Config.MinVersion` and `tls.Config.MaxVersion` fields.
  */
 class TlsVersionFlowConfig extends TaintTracking::Configuration {
   TlsVersionFlowConfig() { this = "TlsVersionFlowConfig" }
@@ -103,11 +104,8 @@ predicate secureTlsVersionFlowsToSink(DataFlow::PathNode sink, Field fld) {
  * Holds if a secure TLS version may reach `accessPath`.`fld`
  */
 predicate secureTlsVersionFlowsToField(SsaWithFields accessPath, Field fld) {
-  exists(
-    TlsVersionFlowConfig config, DataFlow::PathNode source, DataFlow::PathNode sink,
-    DataFlow::Node base
-  |
-    secureTlsVersionFlow(config, source, sink, fld) and
+  exists(TlsVersionFlowConfig config, DataFlow::PathNode sink, DataFlow::Node base |
+    secureTlsVersionFlow(config, _, sink, fld) and
     config.isSink(sink.getNode(), fld, base, _) and
     accessPath.getAUse() = base
   )
@@ -155,8 +153,8 @@ predicate isInsecureTlsVersionFlow(
 }
 
 /**
- * Flow of unsecure TLS cipher suites into a `tls.Config` struct,
- * to the `CipherSuites` field.
+ * A taint-tracking configuration for tracking flow from insecure TLS cipher
+ * suites into a `tls.Config` struct, to the `CipherSuites` field.
  */
 class TlsInsecureCipherSuitesFlowConfig extends TaintTracking::Configuration {
   TlsInsecureCipherSuitesFlowConfig() { this = "TlsInsecureCipherSuitesFlowConfig" }
@@ -232,7 +230,7 @@ predicate isInsecureTlsCipherFlow(DataFlow::PathNode source, DataFlow::PathNode 
 }
 
 /**
- * Flags suggesting support for an old or legacy TLS version.
+ * A flag suggesting support for an old or legacy TLS version.
  *
  * We accept 'intermediate' because it appears to be common for TLS users
  * to define three profiles: modern, intermediate, legacy/old, perhaps based
@@ -243,9 +241,7 @@ class LegacyTlsVersionFlag extends FlagKind {
   LegacyTlsVersionFlag() { this = "legacyTlsVersion" }
 
   bindingset[result]
-  override string getAFlagName() {
-    result.toLowerCase().matches("%" + ["old", "intermediate", "legacy"] + "%")
-  }
+  override string getAFlagName() { result.regexpMatch("(?i).*(old|intermediate|legacy).*") }
 }
 
 /**

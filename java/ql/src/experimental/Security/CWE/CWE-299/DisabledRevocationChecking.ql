@@ -7,13 +7,14 @@
  * @precision high
  * @id java/disabled-certificate-revocation-checking
  * @tags security
+ *       experimental
  *       external/cwe/cwe-299
  */
 
 import java
 import RevocationCheckingLib
-import DataFlow::PathGraph
+import DisabledRevocationCheckingFlow::PathGraph
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, DisabledRevocationCheckingConfig config
-where config.hasFlowPath(source, sink)
+from DisabledRevocationCheckingFlow::PathNode source, DisabledRevocationCheckingFlow::PathNode sink
+where DisabledRevocationCheckingFlow::flowPath(source, sink)
 select source.getNode(), source, sink, "This disables revocation checking."

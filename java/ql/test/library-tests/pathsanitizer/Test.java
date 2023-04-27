@@ -279,7 +279,7 @@ public class Test {
     }
 
     private void blockListGuardValidation(String path) throws Exception {
-        if (path.contains("..") || !path.startsWith("/data"))
+        if (path.contains("..") || path.startsWith("/data"))
             throw new Exception();
     }
 

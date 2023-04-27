@@ -6,5 +6,6 @@
 | System.Reflection.AssemblyName.CultureInfo |
 | System.Reflection.AssemblyName.HashAlgorithm |
 | System.Reflection.AssemblyName.Name |
+| System.Reflection.AssemblyName.RawFlags |
 | System.Reflection.AssemblyName.Version |
 | System.Reflection.AssemblyName.VersionCompatibility |

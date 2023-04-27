@@ -17,8 +17,9 @@ module ActiveResource {
   /**
    * An ActiveResource model class. This is any (transitive) subclass of ActiveResource.
    */
+  pragma[nomagic]
   private API::Node modelApiNode() {
-    result = API::getTopLevelMember("ActiveResource").getMember("Base").getASubclass+()
+    result = API::getTopLevelMember("ActiveResource").getMember("Base").getASubclass()
   }
 
   /**
@@ -215,7 +216,8 @@ module ActiveResource {
   }
 
   private class ModelClassMethodCallAsHttpRequest extends Http::Client::Request::Range,
-    ModelClassMethodCall {
+    ModelClassMethodCall
+  {
     ModelClass cls;
 
     ModelClassMethodCallAsHttpRequest() {
@@ -239,7 +241,8 @@ module ActiveResource {
   }
 
   private class ModelInstanceMethodCallAsHttpRequest extends Http::Client::Request::Range,
-    ModelInstanceMethodCall {
+    ModelInstanceMethodCall
+  {
     ModelClass cls;
 
     ModelInstanceMethodCallAsHttpRequest() {

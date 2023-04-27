@@ -13,7 +13,7 @@ class ApiUseTest extends InlineExpectationsTest {
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(API::Node a, DataFlow::Node n | relevant_node(a, n, location) |
+    exists(DataFlow::Node n | relevant_node(_, n, location) |
       tag = "use" and
       // Only report the longest path on this line:
       value =

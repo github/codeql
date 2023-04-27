@@ -1,7 +1,7 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
-      extensible: extSummaryModel
+      extensible: summaryModel
     data:
       - ["System.Threading.Tasks", "Task", False, "ContinueWith", "(System.Action<System.Threading.Tasks.Task,System.Object>,System.Object)", "", "Argument[1]", "Argument[0].Parameter[1]", "value", "manual"]
       - ["System.Threading.Tasks", "Task", False, "ContinueWith", "(System.Action<System.Threading.Tasks.Task,System.Object>,System.Object,System.Threading.CancellationToken)", "", "Argument[1]", "Argument[0].Parameter[1]", "value", "manual"]

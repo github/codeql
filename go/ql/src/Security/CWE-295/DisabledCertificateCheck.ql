@@ -38,14 +38,14 @@ predicate becomesPartOf(DataFlow::Node part, DataFlow::Node whole) {
 }
 
 /**
- * Flags suggesting a deliberately insecure certificate setup.
+ * A flag suggesting a deliberately insecure certificate setup.
  */
 class InsecureCertificateFlag extends FlagKind {
   InsecureCertificateFlag() { this = "insecureCertificate" }
 
   bindingset[result]
   override string getAFlagName() {
-    result.toLowerCase().matches("%" + ["selfcert", "selfsign", "validat", "verif", "trust"] + "%")
+    result.regexpMatch("(?i).*(selfcert|selfsign|validat|verif|trust).*")
   }
 }
 

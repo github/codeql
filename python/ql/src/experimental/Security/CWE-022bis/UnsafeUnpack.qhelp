@@ -1,0 +1,56 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>Extracting files from a malicious tarball without validating that the destination file path
+is within the destination directory using <code>shutil.unpack_archive()</code> can cause files outside the 
+destination directory to be overwritten, due to the possible presence of directory traversal elements
+ (<code>..</code>) in archive path names.</p>
+
+<p>Tarball contain archive entries representing each file in the archive. These entries
+include a file path for the entry, but these file paths are not restricted and may contain
+unexpected special elements such as the directory traversal element (<code>..</code>). If these
+file paths are used to determine an output file to write the contents of the archive item to, then
+the file may be written to an unexpected location. This can result in sensitive information being
+revealed or deleted, or an attacker being able to influence behavior by modifying unexpected
+files.</p>
+
+<p>For example, if a tarball contains a file entry <code>../sneaky-file.txt</code>, and the tarball
+is extracted to the directory <code>/tmp/tmp123</code>, then naively combining the paths would result
+in an output file path of <code>/tmp/tmp123/../sneaky-file.txt</code>, which would cause the file to be
+written to <code>/tmp/</code>.</p>
+
+</overview>
+<recommendation>
+
+<p>Ensure that output paths constructed from tarball entries are validated
+to prevent writing files to unexpected locations.</p>
+
+<p>Consider using a safer module, such as: <code>zipfile</code></p>
+
+</recommendation>
+
+<example>
+<p>
+In this example an archive is extracted without validating file paths.
+</p>
+
+<sample src="examples/HIT_UnsafeUnpack.py" />
+
+<p>To fix this vulnerability, we need to call the function <code>tarfile.extract()</code> 
+  on each <code>member</code> after verifying that it does not contain either <code>..</code> or startswith <code>/</code>.
+</p>
+
+<sample src="examples/NoHIT_UnsafeUnpack.py" />
+
+</example>
+<references>
+
+<li>
+  Shutil official documentation
+  <a href="https://docs.python.org/3/library/shutil.html?highlight=unpack_archive#shutil.unpack_archive">shutil.unpack_archive() warning.</a>
+  </li>
+</references>
+</qhelp>

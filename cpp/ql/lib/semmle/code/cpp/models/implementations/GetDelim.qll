@@ -7,7 +7,8 @@ import semmle.code.cpp.models.interfaces.FlowSource
  * The standard functions `getdelim`, `getwdelim` and the glibc variant `__getdelim`.
  */
 private class GetDelimFunction extends TaintFunction, AliasFunction, SideEffectFunction,
-  RemoteFlowSourceFunction {
+  RemoteFlowSourceFunction
+{
   GetDelimFunction() { this.hasGlobalName(["getdelim", "getwdelim", "__getdelim"]) }
 
   override predicate hasTaintFlow(FunctionInput i, FunctionOutput o) {
@@ -36,6 +37,6 @@ private class GetDelimFunction extends TaintFunction, AliasFunction, SideEffectF
 
   override predicate hasRemoteFlowSource(FunctionOutput output, string description) {
     output.isParameterDeref(0) and
-    description = "String read by " + this.getName()
+    description = "string read by " + this.getName()
   }
 }

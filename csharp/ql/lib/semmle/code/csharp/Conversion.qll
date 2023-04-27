@@ -277,9 +277,7 @@ private module Identity {
     UnboundGenericType ugt, IdentityConvertibleGenericType fromType,
     IdentityConvertibleGenericType toType
   ) {
-    exists(TypeArgument fromTypeArgument, TypeArgument toTypeArgument |
-      convIdentitySingle0(ugt, toType, fromTypeArgument, toTypeArgument)
-    |
+    exists(TypeArgument fromTypeArgument | convIdentitySingle0(ugt, toType, fromTypeArgument, _) |
       fromTypeArgument = getTypeArgumentRanked(ugt, fromType, 0)
     )
   }
@@ -312,13 +310,10 @@ private module Identity {
     UnboundGenericType ugt, IdentityConvertibleGenericType fromType,
     IdentityConvertibleGenericType toType
   ) {
-    exists(
-      Type fromTypeArgument0, Type toTypeArgument0, Type fromTypeArgument1, Type toTypeArgument1
+    exists(Type fromTypeArgument0, Type toTypeArgument1 |
+      convIdentityMultiple01Aux0(ugt, toType, fromTypeArgument0, _, toTypeArgument1)
     |
-      convIdentityMultiple01Aux0(ugt, toType, fromTypeArgument0, toTypeArgument0, toTypeArgument1)
-    |
-      convIdentityMultiple01Aux1(ugt, fromType, fromTypeArgument0, fromTypeArgument1,
-        toTypeArgument1)
+      convIdentityMultiple01Aux1(ugt, fromType, fromTypeArgument0, _, toTypeArgument1)
     )
   }
 
@@ -336,8 +331,8 @@ private module Identity {
     UnboundGenericType ugt, IdentityConvertibleGenericType fromType,
     IdentityConvertibleGenericType toType, int i
   ) {
-    exists(TypeArgument fromTypeArgument, TypeArgument toTypeArgument |
-      convIdentityMultiple2Aux(ugt, toType, i, fromTypeArgument, toTypeArgument)
+    exists(TypeArgument fromTypeArgument |
+      convIdentityMultiple2Aux(ugt, toType, i, fromTypeArgument, _)
     |
       fromTypeArgument = getTypeArgumentRanked(ugt, fromType, i)
     )
@@ -938,9 +933,7 @@ private module Variance {
     UnboundGenericType ugt, VarianceConvertibleGenericType fromType,
     VarianceConvertibleGenericType toType
   ) {
-    exists(TypeArgument fromTypeArgument, TypeArgument toTypeArgument |
-      convVarianceSingle0(ugt, toType, fromTypeArgument, toTypeArgument)
-    |
+    exists(TypeArgument fromTypeArgument | convVarianceSingle0(ugt, toType, fromTypeArgument, _) |
       fromTypeArgument = getTypeArgumentRanked(ugt, fromType, 0, _)
     )
   }
@@ -973,14 +966,10 @@ private module Variance {
     UnboundGenericType ugt, VarianceConvertibleGenericType fromType,
     VarianceConvertibleGenericType toType
   ) {
-    exists(
-      TypeArgument fromTypeArgument0, TypeArgument toTypeArgument0, TypeArgument fromTypeArgument1,
-      TypeArgument toTypeArgument1
+    exists(TypeArgument fromTypeArgument0, TypeArgument toTypeArgument1 |
+      convVarianceMultiple01Aux0(ugt, toType, fromTypeArgument0, _, toTypeArgument1)
     |
-      convVarianceMultiple01Aux0(ugt, toType, fromTypeArgument0, toTypeArgument0, toTypeArgument1)
-    |
-      convVarianceMultiple01Aux1(ugt, fromType, fromTypeArgument0, fromTypeArgument1,
-        toTypeArgument1)
+      convVarianceMultiple01Aux1(ugt, fromType, fromTypeArgument0, _, toTypeArgument1)
     )
   }
 
@@ -998,8 +987,8 @@ private module Variance {
     UnboundGenericType ugt, VarianceConvertibleGenericType fromType,
     VarianceConvertibleGenericType toType, int i
   ) {
-    exists(TypeArgument fromTypeArgument, TypeArgument toTypeArgument |
-      convVarianceMultiple2Aux(ugt, toType, i, fromTypeArgument, toTypeArgument)
+    exists(TypeArgument fromTypeArgument |
+      convVarianceMultiple2Aux(ugt, toType, i, fromTypeArgument, _)
     |
       fromTypeArgument = getTypeArgumentRanked(ugt, fromType, i, _)
     )

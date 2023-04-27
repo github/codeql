@@ -14,20 +14,9 @@ predicate instanceofThisInCharPred(Class c, Type type) {
   |
     instanceOf.getExpr() instanceof ThisAccess and
     type = instanceOf.getType().getResolvedType()
-  )
-}
-
-/**
- * Holds if `c` uses the casting based range pattern, which could be replaced with `instanceof type`.
- */
-predicate usesCastingBasedInstanceof(Class c, Type type) {
-  instanceofThisInCharPred(c, type) and
-  // require that there is a call to the range class that matches the name of the enclosing predicate
-  exists(InlineCast cast, MemberCall call |
-    cast = getAThisCast(c, type) and
-    call.getBase() = cast and
-    cast.getEnclosingPredicate().getName() = call.getMemberName()
-  )
+  ) and
+  // no existing super-type corresponds to the instanceof type, that is benign.
+  not c.getType().getASuperType+() = type
 }
 
 /** Gets an inline cast that cases `this` to `type` inside a class predicate for `c`. */
@@ -40,7 +29,7 @@ InlineCast getAThisCast(Class c, Type type) {
   )
 }
 
-predicate usesFieldBasedInstanceof(Class c, TypeExpr type, FieldDecl field, ComparisonFormula comp) {
+predicate usesFieldBasedInstanceof(Class c, Type type, FieldDecl field, ComparisonFormula comp) {
   exists(FieldAccess fieldAccess |
     c.getCharPred().getBody() = comp or
     c.getCharPred().getBody().(Conjunction).getAnOperand() = comp
@@ -50,14 +39,9 @@ predicate usesFieldBasedInstanceof(Class c, TypeExpr type, FieldDecl field, Comp
     comp.getAnOperand() instanceof ThisAccess and
     comp.getAnOperand() = fieldAccess and
     fieldAccess.getDeclaration() = field and
-    field.getVarDecl().getTypeExpr() = type
+    field.getVarDecl().getType() = type
   ) and
-  // require that there is a call to the range field that matches the name of the enclosing predicate
-  exists(FieldAccess access, MemberCall call |
-    access = getARangeFieldAccess(c, field, _) and
-    call.getBase() = access and
-    access.getEnclosingPredicate().getName() = call.getMemberName()
-  )
+  not c.getType().getASuperType+() = type
 }
 
 FieldAccess getARangeFieldAccess(Class c, FieldDecl field, string name) {

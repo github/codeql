@@ -2,10 +2,14 @@
 import codeql.swift.elements
 import TestUtils
 
-from ConstructorRefCallExpr x, Expr getFunction, Expr getBase
+from
+  ConstructorRefCallExpr x, string hasType, Expr getFunction, int getNumberOfArguments, Expr getBase
 where
   toBeTested(x) and
   not x.isUnknown() and
+  (if x.hasType() then hasType = "yes" else hasType = "no") and
   getFunction = x.getFunction() and
+  getNumberOfArguments = x.getNumberOfArguments() and
   getBase = x.getBase()
-select x, "getFunction:", getFunction, "getBase:", getBase
+select x, "hasType:", hasType, "getFunction:", getFunction, "getNumberOfArguments:",
+  getNumberOfArguments, "getBase:", getBase

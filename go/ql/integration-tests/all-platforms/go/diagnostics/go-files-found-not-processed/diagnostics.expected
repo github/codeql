@@ -1,0 +1,14 @@
+{
+  "markdownMessage": "[Specify a custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages) that includes one or more `go build` commands to build the `.go` files to be analyzed.",
+  "severity": "error",
+  "source": {
+    "extractorName": "go",
+    "id": "go/autobuilder/go-files-found-but-not-processed",
+    "name": "Go files were found but not processed"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
