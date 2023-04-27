@@ -50,10 +50,10 @@ private class TlsExtensionsSinks extends SinkModelCsv {
     row =
       [
         // TLS-related properties of `URLSessionConfiguration`
-        ";URLSessionConfiguration;false;tlsMinimumSupportedProtocolVersion;;;;tls-protocol-version",
-        ";URLSessionConfiguration;false;tlsMinimumSupportedProtocol;;;;tls-protocol-version",
-        ";URLSessionConfiguration;false;tlsMaximumSupportedProtocolVersion;;;;tls-protocol-version",
-        ";URLSessionConfiguration;false;tlsMaximumSupportedProtocol;;;;tls-protocol-version",
+        ";URLSessionConfiguration;false;tlsMinimumSupportedProtocolVersion;;;PostUpdate;tls-protocol-version",
+        ";URLSessionConfiguration;false;tlsMinimumSupportedProtocol;;;PostUpdate;tls-protocol-version",
+        ";URLSessionConfiguration;false;tlsMaximumSupportedProtocolVersion;;;PostUpdate;tls-protocol-version",
+        ";URLSessionConfiguration;false;tlsMaximumSupportedProtocol;;;PostUpdate;tls-protocol-version",
       ]
   }
 }
@@ -62,7 +62,5 @@ private class TlsExtensionsSinks extends SinkModelCsv {
  * A sink defined in a CSV model.
  */
 private class DefaultTlsExtensionsSink extends InsecureTlsExtensionsSink {
-  DefaultTlsExtensionsSink() {
-    sinkNode(this.(DataFlow::PostUpdateNode).getPreUpdateNode(), "tls-protocol-version")
-  }
+  DefaultTlsExtensionsSink() { sinkNode(this, "tls-protocol-version") }
 }

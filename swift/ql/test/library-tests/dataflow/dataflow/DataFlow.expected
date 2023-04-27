@@ -235,7 +235,7 @@ edges
 | test.swift:536:10:536:13 | s :  | test.swift:537:13:537:13 | s :  |
 | test.swift:537:7:537:7 | [post] self [str] :  | test.swift:536:5:538:5 | self[return] [str] :  |
 | test.swift:537:13:537:13 | s :  | test.swift:537:7:537:7 | [post] self [str] :  |
-| test.swift:542:17:545:5 | self[return] [str] :  | test.swift:550:13:550:41 | call to Self.init(contentsOfFile:) [str] :  |
+| test.swift:542:17:545:5 | self[return] [str] :  | test.swift:550:13:550:41 | call to MyClass.init(contentsOfFile:) [str] :  |
 | test.swift:543:7:543:7 | [post] self [str] :  | test.swift:542:17:545:5 | self[return] [str] :  |
 | test.swift:543:7:543:7 | [post] self [str] :  | test.swift:544:17:544:17 | self [str] :  |
 | test.swift:543:20:543:28 | call to source3() :  | test.swift:536:10:536:13 | s :  |
@@ -245,8 +245,8 @@ edges
 | test.swift:549:13:549:33 | call to MyClass.init(s:) [str] :  | test.swift:549:13:549:35 | .str |
 | test.swift:549:24:549:32 | call to source3() :  | test.swift:536:10:536:13 | s :  |
 | test.swift:549:24:549:32 | call to source3() :  | test.swift:549:13:549:33 | call to MyClass.init(s:) [str] :  |
-| test.swift:550:13:550:41 | call to Self.init(contentsOfFile:) [str] :  | test.swift:535:9:535:9 | self [str] :  |
-| test.swift:550:13:550:41 | call to Self.init(contentsOfFile:) [str] :  | test.swift:550:13:550:43 | .str |
+| test.swift:550:13:550:41 | call to MyClass.init(contentsOfFile:) [str] :  | test.swift:535:9:535:9 | self [str] :  |
+| test.swift:550:13:550:41 | call to MyClass.init(contentsOfFile:) [str] :  | test.swift:550:13:550:43 | .str |
 | test.swift:567:8:567:11 | x :  | test.swift:568:14:568:14 | x :  |
 | test.swift:568:5:568:5 | [post] self [x] :  | test.swift:567:3:569:3 | self[return] [x] :  |
 | test.swift:568:14:568:14 | x :  | test.swift:568:5:568:5 | [post] self [x] :  |
@@ -541,7 +541,7 @@ nodes
 | test.swift:549:13:549:33 | call to MyClass.init(s:) [str] :  | semmle.label | call to MyClass.init(s:) [str] :  |
 | test.swift:549:13:549:35 | .str | semmle.label | .str |
 | test.swift:549:24:549:32 | call to source3() :  | semmle.label | call to source3() :  |
-| test.swift:550:13:550:41 | call to Self.init(contentsOfFile:) [str] :  | semmle.label | call to Self.init(contentsOfFile:) [str] :  |
+| test.swift:550:13:550:41 | call to MyClass.init(contentsOfFile:) [str] :  | semmle.label | call to MyClass.init(contentsOfFile:) [str] :  |
 | test.swift:550:13:550:43 | .str | semmle.label | .str |
 | test.swift:567:3:569:3 | self[return] [x] :  | semmle.label | self[return] [x] :  |
 | test.swift:567:8:567:11 | x :  | semmle.label | x :  |
@@ -609,7 +609,7 @@ subpaths
 | test.swift:543:20:543:28 | call to source3() :  | test.swift:536:10:536:13 | s :  | test.swift:537:7:537:7 | [post] self [str] :  | test.swift:543:7:543:7 | [post] self [str] :  |
 | test.swift:549:13:549:33 | call to MyClass.init(s:) [str] :  | test.swift:535:9:535:9 | self [str] :  | file://:0:0:0:0 | .str :  | test.swift:549:13:549:35 | .str |
 | test.swift:549:24:549:32 | call to source3() :  | test.swift:536:10:536:13 | s :  | test.swift:536:5:538:5 | self[return] [str] :  | test.swift:549:13:549:33 | call to MyClass.init(s:) [str] :  |
-| test.swift:550:13:550:41 | call to Self.init(contentsOfFile:) [str] :  | test.swift:535:9:535:9 | self [str] :  | file://:0:0:0:0 | .str :  | test.swift:550:13:550:43 | .str |
+| test.swift:550:13:550:41 | call to MyClass.init(contentsOfFile:) [str] :  | test.swift:535:9:535:9 | self [str] :  | file://:0:0:0:0 | .str :  | test.swift:550:13:550:43 | .str |
 | test.swift:573:16:573:23 | call to source() :  | test.swift:567:8:567:11 | x :  | test.swift:567:3:569:3 | self[return] [x] :  | test.swift:573:11:573:24 | call to S.init(x:) [x] :  |
 | test.swift:575:13:575:13 | s [x] :  | test.swift:574:11:574:14 | enter #keyPath(...) [x] :  | test.swift:574:11:574:14 | exit #keyPath(...) :  | test.swift:575:13:575:25 | \\...[...] |
 | test.swift:578:13:578:13 | s [x] :  | test.swift:577:36:577:38 | enter #keyPath(...) [x] :  | test.swift:577:36:577:38 | exit #keyPath(...) :  | test.swift:578:13:578:32 | \\...[...] |
