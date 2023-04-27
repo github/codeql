@@ -164,9 +164,9 @@ module Express {
      */
     DataFlow::Node getRouteHandlerNode(int index) {
       // The first argument is a URI pattern if it is a string. If it could possibly be
-      // a function, we consider it to be a route handler, otherwise a URI pattern.
+      // a non-string value, we consider it to be a route handler, otherwise a URI pattern.
       exists(AnalyzedNode firstArg | firstArg = this.getArgument(0).analyze() |
-        if firstArg.getAType() = TTFunction()
+        if firstArg.getAType() != TTString()
         then result = this.getArgument(index)
         else (
           index >= 0 and result = this.getArgument(index + 1)
