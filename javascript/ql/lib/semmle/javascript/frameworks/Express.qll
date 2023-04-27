@@ -777,12 +777,12 @@ module Express {
   /**
    * Holds if `e` is an HTTP request object.
    */
-  predicate isRequest(DataFlow::Node e) { any(RouteHandler rh).getARequestNode() = e }
+  predicate isRequest(DataFlow::Node e) { any(RequestSource src).ref().flowsTo(e) }
 
   /**
    * Holds if `e` is an HTTP response object.
    */
-  predicate isResponse(DataFlow::Node e) { any(RouteHandler rh).getAResponseNode() = e }
+  predicate isResponse(DataFlow::Node e) { any(ResponseSource src).ref().flowsTo(e) }
 
   /**
    * An access to the HTTP request body.
