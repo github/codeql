@@ -7,8 +7,6 @@
  */
 
 import javascript
-/*import semmle.javascript.Concepts
-import semmle.javascript.frameworks.CryptoLibraries*/
 
 class WeakBlockMode extends BlockMode {
   WeakBlockMode() {
@@ -24,4 +22,5 @@ where
   op.getBlockMode() = bm and
   bm = wbm
 select "A weak block cipher mode like " + bm + " does not secure sensitive data.",
-  "The data is encoded with the weak block cipher in $@. Make sure it is not sensitive data.", op , "this cryptographic operation"
+  "The data is encoded with the weak block cipher in $@. Make sure it is not sensitive data.", op,
+  "this cryptographic operation"
