@@ -10,8 +10,8 @@ edges
 | MybatisSqlInjection.java:109:46:109:70 | name : String | MybatisSqlInjection.java:110:40:110:43 | name : String |
 | MybatisSqlInjection.java:110:40:110:43 | name : String | MybatisSqlInjectionService.java:88:32:88:42 | name : String |
 | MybatisSqlInjectionService.java:48:19:48:29 | name : String | MybatisSqlInjectionService.java:50:23:50:26 | name : String |
-| MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] [<map.value>] : String | MybatisSqlInjectionService.java:51:27:51:33 | hashMap |
-| MybatisSqlInjectionService.java:50:23:50:26 | name : String | MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] [<map.value>] : String |
+| MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] : HashMap [<map.value>] : String | MybatisSqlInjectionService.java:51:27:51:33 | hashMap |
+| MybatisSqlInjectionService.java:50:23:50:26 | name : String | MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] : HashMap [<map.value>] : String |
 | MybatisSqlInjectionService.java:54:32:54:42 | name : String | MybatisSqlInjectionService.java:55:32:55:35 | name |
 | MybatisSqlInjectionService.java:80:20:80:30 | name : String | MybatisSqlInjectionService.java:81:28:81:31 | name |
 | MybatisSqlInjectionService.java:84:20:84:29 | age : String | MybatisSqlInjectionService.java:85:28:85:30 | age |
@@ -28,7 +28,7 @@ nodes
 | MybatisSqlInjection.java:109:46:109:70 | name : String | semmle.label | name : String |
 | MybatisSqlInjection.java:110:40:110:43 | name : String | semmle.label | name : String |
 | MybatisSqlInjectionService.java:48:19:48:29 | name : String | semmle.label | name : String |
-| MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] [<map.value>] : String | semmle.label | hashMap [post update] [<map.value>] : String |
+| MybatisSqlInjectionService.java:50:3:50:9 | hashMap [post update] : HashMap [<map.value>] : String | semmle.label | hashMap [post update] : HashMap [<map.value>] : String |
 | MybatisSqlInjectionService.java:50:23:50:26 | name : String | semmle.label | name : String |
 | MybatisSqlInjectionService.java:51:27:51:33 | hashMap | semmle.label | hashMap |
 | MybatisSqlInjectionService.java:54:32:54:42 | name : String | semmle.label | name : String |
