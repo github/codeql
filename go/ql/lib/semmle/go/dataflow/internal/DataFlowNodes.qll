@@ -551,7 +551,7 @@ module Public {
     }
 
     /**
-     * Gets the data flow node corresponding to an argument of this call, where
+     * Gets a data flow node corresponding to an argument of this call, where
      * tuple extraction has been done but arguments corresponding to a variadic
      * parameter are still considered separate.
      */
@@ -567,20 +567,17 @@ module Public {
      * For calls of the form `f(g())` where `g` has multiple results, the arguments of the call to
      * `i` are the (implicit) element extraction nodes for the call to `g`.
      *
-     * For calls to variadic functions without an ellipsis (`...`), there is a single argument of type
-     * `ImplicitVarargsSlice` corresponding to the variadic parameter. This is in contrast to the member
-     * predicate `getArgument` on `CallExpr`, which gets the syntactic arguments.
+     * Returns a single `Node` corresponding to a variadic parameter. If there is no corresponding
+     * argument with an ellipsis (`...`), then it is a `ImplicitVarargsSlice`. This is in contrast
+     * to `getArgument` on `CallExpr`, which gets the syntactic arguments. Use
+     * `getSyntacticArgument` to get that behavior.
      */
     Node getArgument(int i) {
-      exists(int lastParamIndex | lastParamIndex = expr.getCalleeType().getNumParameter() - 1 |
-        if
-          expr.hasImplicitVarargs() and
-          i >= lastParamIndex
-        then
-          result.(ImplicitVarargsSlice).getCallNode() = this and
-          i = lastParamIndex
-        else result = this.getSyntacticArgument(i)
-      )
+      result = this.getSyntacticArgument(i) and
+      not (expr.hasImplicitVarargs() and i >= expr.getCalleeType().getNumParameter() - 1)
+      or
+      i = expr.getCalleeType().getNumParameter() - 1 and
+      result.(ImplicitVarargsSlice).getCallNode() = this
     }
 
     /** Gets the data flow node corresponding to an argument of this call. */
