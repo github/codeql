@@ -24,8 +24,7 @@
     </example>
 
     <references>
-        <li>CWE-326 <a href="https://cwe.mitre.org/data/definitions/326.html"></a>.</li>
-        <li>Observed Example of CWE-326 <a href="https://www.cve.org/CVERecord?id=CVE-2002-1697">article</a>.</li>
-        <li>ECB in use <a href="https://miro.medium.com/v2/resize:fit:1400/1*zw8Juc6NoZheJt4k61tuEQ.png">tool</a>.</li>
+        <li><a href="https://www.cve.org/CVERecord?id=CVE-2002-1697">Observed Example of CWE-326 </a></li>
+        <li><a href="https://miro.medium.com/v2/resize:fit:1400/1*zw8Juc6NoZheJt4k61tuEQ.png">ECB in use</a></li>
     </references>
 </qhelp>
