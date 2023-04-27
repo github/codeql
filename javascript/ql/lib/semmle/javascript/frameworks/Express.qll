@@ -216,7 +216,8 @@ module Express {
         Http::routeHandlerStep(result, succ) and
         t = t2
         or
-        DataFlow::SharedFlowStep::storeStep(result, succ, DataFlow::PseudoProperties::arrayElement()) and
+        DataFlow::SharedFlowStep::storeStep(result.getALocalUse(), succ,
+          DataFlow::PseudoProperties::arrayElement()) and
         t = t2.continue()
       )
     }
