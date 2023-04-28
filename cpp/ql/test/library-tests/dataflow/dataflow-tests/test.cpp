@@ -642,7 +642,7 @@ void test_static_local_2() {
 
 void test_static_local_3() {
   static int x = 0;
-  sink(x); // $ MISSING: ast, ir
+  sink(x); // $ ir MISSING: ast
   x = source();
 }
 
@@ -655,7 +655,7 @@ void test_static_local_4() {
 
 void test_static_local_5() {
   static int x = 0;
-  sink(x); // $ MISSING: ast,ir
+  sink(x); // $ ir MISSING: ast
   x = 0;
   x = source();
 }
@@ -663,7 +663,7 @@ void test_static_local_5() {
 void test_static_local_6() {
   static int s = source();
   static int* ptr_to_s = &s;
-  sink(*ptr_to_s); // $ MISSING: ast,ir
+  sink(*ptr_to_s); // $ ir MISSING: ast
 }
 
 void test_static_local_7() {
@@ -676,7 +676,7 @@ void test_static_local_7() {
 void test_static_local_8() {
   static int s;
   static int* ptr_to_s = &s;
-  sink(*ptr_to_s); // $ MISSING: ast,ir
+  sink(*ptr_to_s); // $ ir MISSING: ast
 
   s = source();
 }

@@ -4,6 +4,14 @@ uniqueType
 uniqueNodeLocation
 missingLocation
 uniqueNodeToString
+| test.cpp:632:6:632:24 | Use of x indirection | Node should have one toString but has 2. |
+| test.cpp:632:6:632:24 | Use of x#init indirection | Node should have one toString but has 2. |
+| test.cpp:637:6:637:24 | Use of x indirection | Node should have one toString but has 2. |
+| test.cpp:637:6:637:24 | Use of x#init indirection | Node should have one toString but has 2. |
+| test.cpp:663:6:663:24 | Use of s indirection | Node should have one toString but has 2. |
+| test.cpp:663:6:663:24 | Use of s#init indirection | Node should have one toString but has 2. |
+| test.cpp:669:6:669:24 | Use of s indirection | Node should have one toString but has 2. |
+| test.cpp:669:6:669:24 | Use of s#init indirection | Node should have one toString but has 2. |
 missingToString
 parameterCallable
 localFlowIsLocal
