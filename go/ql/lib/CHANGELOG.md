@@ -1,3 +1,9 @@
+## 0.5.1
+
+### Minor Analysis Improvements
+
+* Taking a slice is now considered a sanitizer for `SafeUrlFlow`.
+
 ## 0.5.0
 
 ### Deprecated APIs
