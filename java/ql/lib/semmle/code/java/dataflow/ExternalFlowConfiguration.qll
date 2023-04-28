@@ -8,7 +8,7 @@ import ExternalFlowExtensions
 /**
  * Holds if the specified kind of source model is supported for the current query.
  */
-extensible predicate supportedThreatModel(string kind);
+private extensible predicate supportedThreatModel(string kind);
 
 /**
  * Holds if the specified kind of source model is containted within the specified group.
@@ -27,19 +27,9 @@ private string parentThreatModel(string kind) {
 }
 
 /**
- * Finds all of the threat models that are children of the specified group.
+ * Holds if source models of the specified kind are
+ * supported for the current query.
  */
-private string childThreatModel(string group) {
-  threatModelGrouping(result, group)
-  or exists(string child | childThreatModel(group) = child |
-    threatModelGrouping(result, child)
-  )
-}
-
- /**
-  * Holds if source models of the specified kind are
-  * supported for the current query.
-  */
 bindingset[kind]
 predicate supportedSourceModel(string kind) {
   // expansive threat model includes all kinds
