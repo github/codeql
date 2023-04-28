@@ -12,6 +12,8 @@
  */
 
 import java
+import semmle.code.java.security.internal.ArraySizing
+import semmle.code.java.security.internal.BoundingChecks
 import semmle.code.java.security.ImproperValidationOfArrayIndexCodeSpecifiedQuery
 import BoundedFlowSourceFlow::PathGraph
 

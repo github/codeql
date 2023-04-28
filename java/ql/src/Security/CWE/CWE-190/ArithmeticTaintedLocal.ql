@@ -13,6 +13,8 @@
  */
 
 import java
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.security.ArithmeticCommon
 import semmle.code.java.security.ArithmeticTaintedLocalQuery
 
 module Flow =

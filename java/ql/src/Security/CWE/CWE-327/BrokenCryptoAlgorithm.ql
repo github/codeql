@@ -12,6 +12,7 @@
  */
 
 import java
+import semmle.code.java.security.Encryption
 import semmle.code.java.security.BrokenCryptoAlgorithmQuery
 import InsecureCryptoFlow::PathGraph
 

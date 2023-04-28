@@ -1,8 +1,8 @@
 /** Provides a taint-tracking configuration to reason about improper validation of local user-provided array index. */
 
 import java
-import semmle.code.java.security.internal.ArraySizing
-import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.security.internal.ArraySizing
+private import semmle.code.java.dataflow.FlowSources
 
 /**
  * A taint-tracking configuration to reason about improper validation of local user-provided array index.

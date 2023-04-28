@@ -1,8 +1,8 @@
 /** Provides classes to reason about tainted permissions check vulnerabilities. */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.dataflow.TaintTracking
 
 /**
  * The `org.apache.shiro.subject.Subject` class.

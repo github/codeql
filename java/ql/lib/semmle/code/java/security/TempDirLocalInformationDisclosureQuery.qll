@@ -1,7 +1,7 @@
 /** Provides classes to reason about local information disclosure in a temporary directory. */
 
 import java
-import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.os.OSCheck
 private import semmle.code.java.security.TempDirUtils
 

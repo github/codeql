@@ -1,8 +1,8 @@
 /** Provides a dataflow configuration to reason about improper validation of code-specified size used for array construction. */
 
 import java
-import semmle.code.java.security.internal.ArraySizing
-import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.security.internal.ArraySizing
+private import semmle.code.java.dataflow.TaintTracking
 
 /**
  * A dataflow configuration to reason about improper validation of code-specified size used for array construction.

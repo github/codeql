@@ -11,6 +11,7 @@
  */
 
 import java
+import semmle.code.java.security.internal.ArraySizing
 import semmle.code.java.security.ImproperValidationOfArrayConstructionQuery
 import ImproperValidationOfArrayConstructionFlow::PathGraph
 

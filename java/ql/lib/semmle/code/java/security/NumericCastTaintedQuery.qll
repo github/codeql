@@ -1,11 +1,11 @@
 /** Provides classes to reason about possible truncation from casting of a user-provided value. */
 
 import java
-import semmle.code.java.arithmetic.Overflow
-import semmle.code.java.dataflow.SSA
-import semmle.code.java.controlflow.Guards
-import semmle.code.java.dataflow.RangeAnalysis
-import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.arithmetic.Overflow
+private import semmle.code.java.dataflow.SSA
+private import semmle.code.java.controlflow.Guards
+private import semmle.code.java.dataflow.RangeAnalysis
+private import semmle.code.java.dataflow.FlowSources
 
 /**
  * A `CastExpr` that is a narrowing cast.
@@ -37,7 +37,7 @@ class RightShiftOp extends Expr {
   }
 
   /**
-   * Gets the expression that is shifted.
+   * Gets the variable that is shifted.
    */
   Variable getShiftedVariable() {
     this.getLhs() = result.getAnAccess() or

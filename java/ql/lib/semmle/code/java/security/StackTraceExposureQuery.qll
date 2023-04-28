@@ -1,8 +1,8 @@
 /** Provides predicates to reason about exposure of stack-traces. */
 
 import java
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.InformationLeak
 
 /**

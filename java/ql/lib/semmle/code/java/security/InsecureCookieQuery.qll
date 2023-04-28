@@ -1,7 +1,7 @@
 /** Provides a dataflow configuration to reason about the failure to use secure cookies. */
 
 import java
-import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.frameworks.Servlets
 
 private predicate isSafeSecureCookieSetting(Expr e) {

@@ -3,9 +3,9 @@
  * that is used in a SQL query.
  */
 
-import semmle.code.java.Expr
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.SqlInjectionQuery
+import java
+private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.security.SqlInjectionQuery
 
 /**
  * A taint-tracking configuration for reasoning about local user input that is

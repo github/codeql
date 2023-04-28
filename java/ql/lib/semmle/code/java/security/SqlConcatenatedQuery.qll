@@ -1,7 +1,7 @@
 /** Provides classes and modules to reason about SqlInjection vulnerabilities from string concatentation. */
 
 import java
-import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.SqlConcatenatedLib
 private import semmle.code.java.security.SqlInjectionQuery
 

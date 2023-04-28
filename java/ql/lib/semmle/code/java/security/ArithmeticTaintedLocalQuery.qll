@@ -1,8 +1,8 @@
 /** Provides taint-tracking configurations to reason about arithmetic using local-user-controlled data. */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.ArithmeticCommon
+private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.security.ArithmeticCommon
 
 /**
  * A taint-tracking configuration to reason about arithmetic overflow using local-user-controlled data.

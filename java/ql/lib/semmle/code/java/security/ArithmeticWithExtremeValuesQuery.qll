@@ -1,8 +1,8 @@
 /** Provides predicates and classes for reasoning about arithmetic with extreme values. */
 
 import java
-import semmle.code.java.dataflow.DataFlow
-import ArithmeticCommon
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.security.ArithmeticCommon
 
 /**
  * A field representing an extreme value.
@@ -14,12 +14,12 @@ abstract class ExtremeValueField extends Field {
 }
 
 /** A field representing the minimum value of a primitive type. */
-class MinValueField extends ExtremeValueField {
+private class MinValueField extends ExtremeValueField {
   MinValueField() { this.getName() = "MIN_VALUE" }
 }
 
 /** A field representing the maximum value of a primitive type. */
-class MaxValueField extends ExtremeValueField {
+private class MaxValueField extends ExtremeValueField {
   MaxValueField() { this.getName() = "MAX_VALUE" }
 }
 

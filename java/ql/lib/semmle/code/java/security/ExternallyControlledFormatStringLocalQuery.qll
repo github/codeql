@@ -1,8 +1,8 @@
 /** Provides a taint-tracking configuration to reason about externally-controlled format strings from local sources. */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.StringFormat
+private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.StringFormat
 
 /** A taint-tracking configuration to reason about externally-controlled format strings from local sources. */
 module ExternallyControlledFormatStringLocalConfig implements DataFlow::ConfigSig {

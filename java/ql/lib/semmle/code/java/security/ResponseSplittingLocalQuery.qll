@@ -1,8 +1,8 @@
 /** Provides a taint-tracking configuration to reason about response splitting vulnerabilities from local user input. */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.ResponseSplitting
+private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.security.ResponseSplitting
 
 /**
  * A taint-tracking configuration to reason about response splitting vulnerabilities from local user input.

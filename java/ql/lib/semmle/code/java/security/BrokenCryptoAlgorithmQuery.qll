@@ -1,8 +1,8 @@
 /** Provides to taint-tracking configuration to reason about the use of broken or risky cryptographic algorithms. */
 
 import java
-import semmle.code.java.security.Encryption
-import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.security.Encryption
+private import semmle.code.java.dataflow.TaintTracking
 
 private class ShortStringLiteral extends StringLiteral {
   ShortStringLiteral() { this.getValue().length() < 100 }

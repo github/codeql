@@ -1,7 +1,7 @@
 /** Provides taint-tracking configuration to reason about arithmetic with uncontrolled values. */
 
 import java
-import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.RandomQuery
 private import semmle.code.java.security.SecurityTests
 private import semmle.code.java.security.ArithmeticCommon

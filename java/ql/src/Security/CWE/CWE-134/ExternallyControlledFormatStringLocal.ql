@@ -11,6 +11,7 @@
  */
 
 import java
+import semmle.code.java.StringFormat
 import semmle.code.java.security.ExternallyControlledFormatStringLocalQuery
 import ExternallyControlledFormatStringLocalFlow::PathGraph
 

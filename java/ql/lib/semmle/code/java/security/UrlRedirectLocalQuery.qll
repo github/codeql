@@ -1,8 +1,8 @@
 /** Provides a taint-tracking configuration to reason about URL redirection from local sources. */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.UrlRedirect
+private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.security.UrlRedirect
 
 /**
  * A taint-tracking configuration to reason about URL redirection from local sources.

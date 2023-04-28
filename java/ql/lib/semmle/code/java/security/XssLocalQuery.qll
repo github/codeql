@@ -1,9 +1,9 @@
 /** Provides a taint-tracking configuration to reason about cross-site scripting from a local source. */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.XSS
+private import semmle.code.java.dataflow.FlowSources
+private import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.security.XSS
 
 /**
  * A taint-tracking configuration for reasoning about cross-site scripting vulnerabilities from a local source.

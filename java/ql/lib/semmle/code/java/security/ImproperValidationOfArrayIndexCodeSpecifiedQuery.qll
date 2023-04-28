@@ -1,9 +1,9 @@
 /** Provides a dataflow configuration to reason about improper validation of code-specified array index. */
 
 import java
-import semmle.code.java.security.internal.ArraySizing
-import semmle.code.java.security.internal.BoundingChecks
-import semmle.code.java.dataflow.TaintTracking
+private import semmle.code.java.security.internal.ArraySizing
+private import semmle.code.java.security.internal.BoundingChecks
+private import semmle.code.java.dataflow.DataFlow
 
 /**
  * A dataflow configuration to reason about improper validation of code-specified array index.
