@@ -628,3 +628,65 @@ void test_def_via_phi_read(bool b)
   intPointerSource(buffer);
   sink(buffer); // $ ast,ir
 }
+
+void test_static_local_1() {
+  static int x = source();
+  sink(x); // $ ast,ir
+}
+
+void test_static_local_2() {
+  static int x = source();
+  x = 0;
+  sink(x); // clean
+}
+
+void test_static_local_3() {
+  static int x = 0;
+  sink(x); // $ MISSING: ast, ir
+  x = source();
+}
+
+void test_static_local_4() {
+  static int x = 0;
+  sink(x); // clean
+  x = source();
+  x = 0;
+}
+
+void test_static_local_5() {
+  static int x = 0;
+  sink(x); // $ MISSING: ast,ir
+  x = 0;
+  x = source();
+}
+
+void test_static_local_6() {
+  static int s = source();
+  static int* ptr_to_s = &s;
+  sink(*ptr_to_s); // $ MISSING: ast,ir
+}
+
+void test_static_local_7() {
+  static int s = source();
+  s = 0;
+  static int* ptr_to_s = &s;
+  sink(*ptr_to_s); // clean
+}
+
+void test_static_local_8() {
+  static int s;
+  static int* ptr_to_s = &s;
+  sink(*ptr_to_s); // $ MISSING: ast,ir
+
+  s = source();
+}
+
+void test_static_local_9() {
+  static int s;
+  static int* ptr_to_s = &s;
+  sink(*ptr_to_s); // clean
+
+  s = source();
+  s = 0;
+}
+
