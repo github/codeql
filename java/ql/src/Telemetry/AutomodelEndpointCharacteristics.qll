@@ -217,9 +217,6 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
 
 /**
  * A negative characteristic that indicates that an endpoint sits in a test file.
- *
- * WARNING: These endpoints should not be used as negative samples for training, because there can in fact be sinks in
- * test files -- we just don't care to model them because they aren't exploitable.
  */
 private class TestFileCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic {
   TestFileCharacteristic() { this = "test file" }
