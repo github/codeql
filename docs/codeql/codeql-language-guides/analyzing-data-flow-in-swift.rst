@@ -267,7 +267,7 @@ The following global taint-tracking query finds places where a value from a remo
 
      predicate isSink(DataFlow::Node node) {
        exists(CallExpr call |
-         call.getStaticTarget().(MethodDecl).hasQualifiedName("Connection", ["execute(_:)"]) and
+         call.getStaticTarget().(MethodDecl).hasQualifiedName("Connection", "execute(_:)") and
          call.getArgument(0).getExpr() = node.asExpr()
        )
      }

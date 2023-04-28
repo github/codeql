@@ -17,7 +17,7 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) {
     exists(CallExpr call |
-      call.getStaticTarget().(MethodDecl).hasQualifiedName("Connection", ["execute(_:)"]) and
+      call.getStaticTarget().(MethodDecl).hasQualifiedName("Connection", "execute(_:)") and
       call.getArgument(0).getExpr() = node.asExpr()
     )
   }
