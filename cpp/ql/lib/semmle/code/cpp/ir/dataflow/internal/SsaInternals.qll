@@ -145,14 +145,14 @@ private newtype TDefOrUseImpl =
       or
       // Since the pruning stage doesn't know about global variables we can't use the above check to
       // rule out dead assignments to globals.
-      base.(VariableAddressInstruction).getAstVariable() instanceof Cpp::GlobalOrNamespaceVariable
+      base.(VariableAddressInstruction).getAstVariable() instanceof GlobalLikeVariable
     )
   } or
   TUseImpl(Operand operand, int indirectionIndex) {
     isUse(_, operand, _, _, indirectionIndex) and
     not isDef(_, _, operand, _, _, _)
   } or
-  TGlobalUse(Cpp::GlobalOrNamespaceVariable v, IRFunction f, int indirectionIndex) {
+  TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents a final "use" of a global variable to ensure that
     // the assignment to a global variable isn't ruled out as dead.
     exists(VariableAddressInstruction vai, int defIndex |
@@ -162,7 +162,7 @@ private newtype TDefOrUseImpl =
       indirectionIndex = [0 .. defIndex] + 1
     )
   } or
-  TGlobalDefImpl(Cpp::GlobalOrNamespaceVariable v, IRFunction f, int indirectionIndex) {
+  TGlobalDefImpl(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents the initial "definition" of a global variable when entering
     // a function body.
     exists(VariableAddressInstruction vai |
@@ -458,7 +458,7 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
 }
 
 class GlobalUse extends UseImpl, TGlobalUse {
-  Cpp::GlobalOrNamespaceVariable global;
+  GlobalLikeVariable global;
   IRFunction f;
 
   GlobalUse() { this = TGlobalUse(global, f, ind) }
@@ -468,7 +468,7 @@ class GlobalUse extends UseImpl, TGlobalUse {
   override int getIndirection() { result = ind + 1 }
 
   /** Gets the global variable associated with this use. */
-  Cpp::GlobalOrNamespaceVariable getVariable() { result = global }
+  GlobalLikeVariable getVariable() { result = global }
 
   /** Gets the `IRFunction` whose body is exited from after this use. */
   IRFunction getIRFunction() { result = f }
@@ -496,14 +496,14 @@ class GlobalUse extends UseImpl, TGlobalUse {
 }
 
 class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
-  Cpp::GlobalOrNamespaceVariable global;
+  GlobalLikeVariable global;
   IRFunction f;
   int indirectionIndex;
 
   GlobalDefImpl() { this = TGlobalDefImpl(global, f, indirectionIndex) }
 
   /** Gets the global variable associated with this definition. */
-  Cpp::GlobalOrNamespaceVariable getVariable() { result = global }
+  GlobalLikeVariable getVariable() { result = global }
 
   /** Gets the `IRFunction` whose body is evaluated after this definition. */
   IRFunction getIRFunction() { result = f }
@@ -760,7 +760,7 @@ private predicate variableWriteCand(IRBlock bb, int i, SourceVariable v) {
 }
 
 private predicate sourceVariableIsGlobal(
-  SourceVariable sv, Cpp::GlobalOrNamespaceVariable global, IRFunction func, int indirectionIndex
+  SourceVariable sv, GlobalLikeVariable global, IRFunction func, int indirectionIndex
 ) {
   exists(IRVariable irVar, BaseIRVariable base |
     sourceVariableHasBaseAndIndex(sv, base, indirectionIndex) and
@@ -919,7 +919,7 @@ class GlobalDef extends TGlobalDef, SsaDefOrUse {
   IRFunction getIRFunction() { result = global.getIRFunction() }
 
   /** Gets the global variable associated with this definition. */
-  Cpp::GlobalOrNamespaceVariable getVariable() { result = global.getVariable() }
+  GlobalLikeVariable getVariable() { result = global.getVariable() }
 }
 
 class Phi extends TPhi, SsaDefOrUse {
