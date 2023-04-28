@@ -95,6 +95,8 @@ module IRTest {
       )
       or
       barrier = DataFlow::BarrierGuard<testBarrierGuard/3>::getABarrierNode()
+      or
+      barrier = DataFlow::BarrierGuard<testBarrierGuard/3>::getAnIndirectBarrierNode()
     }
   }
 }

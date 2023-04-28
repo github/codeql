@@ -1903,11 +1903,21 @@ signature predicate guardChecksSig(IRGuardCondition g, Expr e, boolean branch);
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
-  /** Gets a node that is safely guarded by the given guard check. */
+  /** Gets an expression node that is safely guarded by the given guard check. */
   ExprNode getABarrierNode() {
     exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
       e = value.getAnInstruction().getConvertedResultExpression() and
       result.getConvertedExpr() = e and
+      guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
+      g.controls(result.getBasicBlock(), edge)
+    )
+  }
+
+  /** Gets an indirect expression node that is safely guarded by the given guard check. */
+  IndirectExprNode getAnIndirectBarrierNode() {
+    exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
+      e = value.getAnInstruction().getConvertedResultExpression() and
+      result.getConvertedExpr(_) = e and
       guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
       g.controls(result.getBasicBlock(), edge)
     )

@@ -73,6 +73,6 @@ bool guarded(const int*);
 void bg_indirect_expr() {
   int *buf = indirect_source();
   if (guarded(buf)) {
-    sink(buf); // $ SPURIOUS: ir
+    sink(buf);
   }
 }
