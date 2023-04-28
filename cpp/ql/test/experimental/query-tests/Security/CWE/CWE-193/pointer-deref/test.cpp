@@ -255,13 +255,7 @@ void test17(unsigned *p, unsigned x, unsigned k) {
     }
 }
 
-struct array_with_size
-{
-  int *xs;
-  unsigned len;
-};
-
-void test17(unsigned len, array_with_size *s)
+void test17(unsigned len)
 {
   int *xs = new int[len];
   int *end = xs + len;
@@ -271,7 +265,7 @@ void test17(unsigned len, array_with_size *s)
   }
 }
 
-void test18(unsigned len, array_with_size *s)
+void test18(unsigned len)
 {
   int *xs = new int[len];
   int *end = xs + len;
@@ -281,7 +275,7 @@ void test18(unsigned len, array_with_size *s)
   }
 }
 
-void test19(unsigned len, array_with_size *s)
+void test19(unsigned len)
 {
   int *xs = new int[len];
   int *end = xs + len;
@@ -291,7 +285,7 @@ void test19(unsigned len, array_with_size *s)
   }
 }
 
-void test20(unsigned len, array_with_size *s)
+void test20(unsigned len)
 {
   int *xs = new int[len];
   int *end = xs + len;
