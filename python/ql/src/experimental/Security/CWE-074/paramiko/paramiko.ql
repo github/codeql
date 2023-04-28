@@ -22,8 +22,8 @@ private API::Node paramikoClient() {
   result = API::moduleImport("paramiko").getMember("SSHClient").getReturn()
 }
 
-class ParamikoCMDInjectionConfiguration extends TaintTracking::Configuration {
-  ParamikoCMDInjectionConfiguration() { this = "ParamikoCMDInjectionConfiguration" }
+class ParamikoCmdInjectionConfiguration extends TaintTracking::Configuration {
+  ParamikoCmdInjectionConfiguration() { this = "ParamikoCMDInjectionConfiguration" }
 
   override predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
@@ -51,7 +51,7 @@ class ParamikoCMDInjectionConfiguration extends TaintTracking::Configuration {
   }
 }
 
-from ParamikoCMDInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
+from ParamikoCmdInjectionConfiguration config, DataFlow::PathNode source, DataFlow::PathNode sink
 where config.hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "This code execution depends on a $@.", source.getNode(),
   "a user-provided value"
