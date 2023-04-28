@@ -766,7 +766,8 @@ private predicate sourceVariableIsGlobal(
     sourceVariableHasBaseAndIndex(sv, base, indirectionIndex) and
     irVar = base.getIRVariable() and
     irVar.getEnclosingIRFunction() = func and
-    global = irVar.getAst()
+    global = irVar.getAst() and
+    not irVar instanceof IRDynamicInitializationFlag
   )
 }
 
