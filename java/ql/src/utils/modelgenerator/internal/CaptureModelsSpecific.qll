@@ -236,7 +236,7 @@ predicate apiSource(DataFlow::Node source) {
 string asInputArgumentSpecific(DataFlow::Node source) {
   exists(int pos |
     source.(DataFlow::ParameterNode).isParameterOf(_, pos) and
-    result = "Argument[" + pos + "]"
+    if pos >= 0 then result = "Argument[" + pos + "]" else result = qualifierString()
   )
   or
   source.asExpr() instanceof J::FieldAccess and
