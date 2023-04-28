@@ -1886,4 +1886,12 @@ namespace missing_declaration_entries {
     }
 }
 
+template<typename T> T global_template = 42;
+
+int test_global_template_int() {
+    int local_int = global_template<int>;
+    char local_char = global_template<char>;
+    return local_int + (int)local_char;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

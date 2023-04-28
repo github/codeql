@@ -6841,6 +6841,28 @@ ir.cpp:
 # 1231|     v1231_8(void)        = AliasedUse               : ~m?
 # 1231|     v1231_9(void)        = ExitFunction             : 
 
+# 1232| int a
+# 1232|   Block 0
+# 1232|     v1232_1(void)       = EnterFunction      : 
+# 1232|     mu1232_2(unknown)   = AliasedDefinition  : 
+# 1232|     r1232_3(glval<int>) = VariableAddress[a] : 
+# 1232|     r1232_4(int)        = Constant[0]        : 
+# 1232|     mu1232_5(int)       = Store[a]           : &:r1232_3, r1232_4
+# 1232|     v1232_6(void)       = ReturnVoid         : 
+# 1232|     v1232_7(void)       = AliasedUse         : ~m?
+# 1232|     v1232_8(void)       = ExitFunction       : 
+
+# 1233| int b
+# 1233|   Block 0
+# 1233|     v1233_1(void)       = EnterFunction      : 
+# 1233|     mu1233_2(unknown)   = AliasedDefinition  : 
+# 1233|     r1233_3(glval<int>) = VariableAddress[b] : 
+# 1233|     r1233_4(int)        = Constant[4]        : 
+# 1233|     mu1233_5(int)       = Store[b]           : &:r1233_3, r1233_4
+# 1233|     v1233_6(void)       = ReturnVoid         : 
+# 1233|     v1233_7(void)       = AliasedUse         : ~m?
+# 1233|     v1233_8(void)       = ExitFunction       : 
+
 # 1240| void staticLocalWithConstructor(char const*)
 # 1240|   Block 0
 # 1240|     v1240_1(void)          = EnterFunction                  : 
@@ -10035,6 +10057,54 @@ ir.cpp:
 # 1883|     v1883_5(void)             = AliasedUse                                                : ~m?
 # 1883|     v1883_6(void)             = ExitFunction                                              : 
 
+# 1889| char global_template<char>
+# 1889|   Block 0
+# 1889|     v1889_1(void)        = EnterFunction                    : 
+# 1889|     mu1889_2(unknown)    = AliasedDefinition                : 
+# 1889|     r1889_3(glval<char>) = VariableAddress[global_template] : 
+# 1889|     r1889_4(char)        = Constant[42]                     : 
+# 1889|     mu1889_5(char)       = Store[global_template]           : &:r1889_3, r1889_4
+# 1889|     v1889_6(void)        = ReturnVoid                       : 
+# 1889|     v1889_7(void)        = AliasedUse                       : ~m?
+# 1889|     v1889_8(void)        = ExitFunction                     : 
+
+# 1889| int global_template<int>
+# 1889|   Block 0
+# 1889|     v1889_1(void)       = EnterFunction                    : 
+# 1889|     mu1889_2(unknown)   = AliasedDefinition                : 
+# 1889|     r1889_3(glval<int>) = VariableAddress[global_template] : 
+# 1889|     r1889_4(int)        = Constant[42]                     : 
+# 1889|     mu1889_5(int)       = Store[global_template]           : &:r1889_3, r1889_4
+# 1889|     v1889_6(void)       = ReturnVoid                       : 
+# 1889|     v1889_7(void)       = AliasedUse                       : ~m?
+# 1889|     v1889_8(void)       = ExitFunction                     : 
+
+# 1891| int test_global_template_int()
+# 1891|   Block 0
+# 1891|     v1891_1(void)        = EnterFunction                    : 
+# 1891|     mu1891_2(unknown)    = AliasedDefinition                : 
+# 1891|     mu1891_3(unknown)    = InitializeNonLocal               : 
+# 1892|     r1892_1(glval<int>)  = VariableAddress[local_int]       : 
+# 1892|     r1892_2(glval<int>)  = VariableAddress[global_template] : 
+# 1892|     r1892_3(int)         = Load[global_template]            : &:r1892_2, ~m?
+# 1892|     mu1892_4(int)        = Store[local_int]                 : &:r1892_1, r1892_3
+# 1893|     r1893_1(glval<char>) = VariableAddress[local_char]      : 
+# 1893|     r1893_2(glval<char>) = VariableAddress[global_template] : 
+# 1893|     r1893_3(char)        = Load[global_template]            : &:r1893_2, ~m?
+# 1893|     mu1893_4(char)       = Store[local_char]                : &:r1893_1, r1893_3
+# 1894|     r1894_1(glval<int>)  = VariableAddress[#return]         : 
+# 1894|     r1894_2(glval<int>)  = VariableAddress[local_int]       : 
+# 1894|     r1894_3(int)         = Load[local_int]                  : &:r1894_2, ~m?
+# 1894|     r1894_4(glval<char>) = VariableAddress[local_char]      : 
+# 1894|     r1894_5(char)        = Load[local_char]                 : &:r1894_4, ~m?
+# 1894|     r1894_6(int)         = Convert                          : r1894_5
+# 1894|     r1894_7(int)         = Add                              : r1894_3, r1894_6
+# 1894|     mu1894_8(int)        = Store[#return]                   : &:r1894_1, r1894_7
+# 1891|     r1891_4(glval<int>)  = VariableAddress[#return]         : 
+# 1891|     v1891_5(void)        = ReturnValue                      : &:r1891_4, ~m?
+# 1891|     v1891_6(void)        = AliasedUse                       : ~m?
+# 1891|     v1891_7(void)        = ExitFunction                     : 
+
 perf-regression.cpp:
 #    6| void Big::Big()
 #    6|   Block 0
@@ -10319,6 +10389,34 @@ struct_init.cpp:
 #   20|     v20_4(void)           = ReturnVoid                       : 
 #   20|     v20_5(void)           = AliasedUse                       : ~m?
 #   20|     v20_6(void)           = ExitFunction                     : 
+
+#   21| Info[] static_infos
+#   21|   Block 0
+#   21|     v21_1(void)             = EnterFunction                 : 
+#   21|     mu21_2(unknown)         = AliasedDefinition             : 
+#   21|     r21_3(glval<Info[]>)    = VariableAddress[static_infos] : 
+#   21|     r21_4(int)              = Constant[0]                   : 
+#   21|     r21_5(glval<Info>)      = PointerAdd[16]                : r21_3, r21_4
+#   22|     r22_1(glval<char *>)    = FieldAddress[name]            : r21_5
+#   22|     r22_2(glval<char[2]>)   = StringConstant["1"]           : 
+#   22|     r22_3(char *)           = Convert                       : r22_2
+#   22|     mu22_4(char *)          = Store[?]                      : &:r22_1, r22_3
+#   22|     r22_5(glval<..(*)(..)>) = FieldAddress[handler]         : r21_5
+#   22|     r22_6(..(*)(..))        = FunctionAddress[handler1]     : 
+#   22|     mu22_7(..(*)(..))       = Store[?]                      : &:r22_5, r22_6
+#   21|     r21_6(int)              = Constant[1]                   : 
+#   21|     r21_7(glval<Info>)      = PointerAdd[16]                : r21_3, r21_6
+#   23|     r23_1(glval<char *>)    = FieldAddress[name]            : r21_7
+#   23|     r23_2(glval<char[2]>)   = StringConstant["2"]           : 
+#   23|     r23_3(char *)           = Convert                       : r23_2
+#   23|     mu23_4(char *)          = Store[?]                      : &:r23_1, r23_3
+#   23|     r23_5(glval<..(*)(..)>) = FieldAddress[handler]         : r21_7
+#   23|     r23_6(glval<..()(..)>)  = FunctionAddress[handler2]     : 
+#   23|     r23_7(..(*)(..))        = CopyValue                     : r23_6
+#   23|     mu23_8(..(*)(..))       = Store[?]                      : &:r23_5, r23_7
+#   21|     v21_8(void)             = ReturnVoid                    : 
+#   21|     v21_9(void)             = AliasedUse                    : ~m?
+#   21|     v21_10(void)            = ExitFunction                  : 
 
 #   28| void declare_local_infos()
 #   28|   Block 0

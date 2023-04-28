@@ -37,7 +37,13 @@ module Raw {
   predicate functionHasIR(Function func) { exists(getTranslatedFunction(func)) }
 
   cached
-  predicate varHasIRFunc(GlobalOrNamespaceVariable var) {
+  predicate varHasIRFunc(Variable var) {
+    (
+      var instanceof GlobalOrNamespaceVariable
+      or
+      not var.isFromUninstantiatedTemplate(_) and
+      var instanceof StaticInitializedStaticLocalVariable
+    ) and
     var.hasInitializer() and
     (
       not var.getType().isDeeplyConst()
@@ -75,9 +81,10 @@ module Raw {
   }
 
   cached
-  predicate hasDynamicInitializationFlag(Function func, StaticLocalVariable var, CppType type) {
+  predicate hasDynamicInitializationFlag(
+    Function func, RuntimeInitializedStaticLocalVariable var, CppType type
+  ) {
     var.getFunction() = func and
-    var.hasDynamicInitialization() and
     type = getBoolType()
   }
 
