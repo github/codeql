@@ -12,8 +12,25 @@ class PackageJson extends JsonObject {
     this.isTopLevel()
   }
 
-  /** Gets the name of this package. */
-  string getPackageName() { result = this.getPropStringValue("name") }
+  /**
+   * Gets the name of this package.
+   * If the package is located under the package `foo` and its relative path is `bar`, it can be `foo/bar`
+   */
+  string getPackageName() {
+    result = this.getPropStringValue("name")
+    or
+    exists(
+      PackageJson parentPackage, string currentDir, string parentDir, string parentPackageName
+    |
+      currentDir = this.getJsonFile().getParentContainer().getAbsolutePath() and
+      parentDir = parentPackage.getJsonFile().getParentContainer().getAbsolutePath() and
+      parentPackageName = parentPackage.getPropStringValue("name") and
+      parentDir.indexOf("node_modules") != -1 and
+      currentDir != parentDir and
+      currentDir.indexOf(parentDir) = 0 and
+      result = parentPackageName + currentDir.suffix(parentDir.length())
+    )
+  }
 
   /** Gets the version of this package. */
   string getVersion() { result = this.getPropStringValue("version") }
