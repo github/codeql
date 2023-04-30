@@ -18,15 +18,5 @@ locations_default(#20003,#10000,3,12,3,18)
 json_locations(#20002,#20003)
 json_literals("world","""world""",#20002)
 json_properties(#20000,"hello",#20002)
-#20004=*
-json_errors(#20004,"Error: Comments are not legal in JSON.")
-#20005=@"loc,{#10000},2,3,2,3"
-locations_default(#20005,#10000,2,3,2,3)
-json_locations(#20004,#20005)
-#20006=*
-json_errors(#20006,"Error: Comments are not legal in JSON.")
-#20007=@"loc,{#10000},4,3,4,3"
-locations_default(#20007,#10000,4,3,4,3)
-json_locations(#20006,#20007)
 numlines(#10000,5,0,0)
 filetype(#10000,"json")
