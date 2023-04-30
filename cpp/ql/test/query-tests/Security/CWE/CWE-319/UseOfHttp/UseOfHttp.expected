@@ -43,6 +43,7 @@ nodes
 | test.cpp:110:21:110:40 | http://example.com indirection | semmle.label | http://example.com indirection |
 | test.cpp:110:21:110:40 | http://example.com indirection | semmle.label | http://example.com indirection |
 | test.cpp:121:11:121:13 | ptr indirection | semmle.label | ptr indirection |
+example
 subpaths
 #select
 | test.cpp:24:21:24:40 | http://example.com | test.cpp:24:21:24:40 | http://example.com indirection | test.cpp:15:30:15:32 | url indirection | This URL may be constructed with the HTTP protocol. |

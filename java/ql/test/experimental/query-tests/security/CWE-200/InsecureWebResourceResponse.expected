@@ -193,6 +193,7 @@ nodes
 | InsecureWebViewActivity.java:56:71:56:73 | uri : Uri | semmle.label | uri : Uri |
 | InsecureWebViewActivity.java:56:71:56:83 | getPath(...) : String | semmle.label | getPath(...) : String |
 | InsecureWebViewActivity.java:58:71:58:81 | inputStream | semmle.label | inputStream |
+example
 subpaths
 #select
 | InsecureWebResourceResponse.java:68:71:68:81 | inputStream | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) : Intent | InsecureWebResourceResponse.java:68:71:68:81 | inputStream | Leaking arbitrary content in Android from $@. | InsecureWebResourceResponse.java:28:27:28:37 | getIntent(...) | this user input |

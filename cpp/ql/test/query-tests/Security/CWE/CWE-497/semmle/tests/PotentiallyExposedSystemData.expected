@@ -84,6 +84,7 @@ nodes
 | tests_passwd.cpp:18:29:18:31 | pwd indirection | semmle.label | pwd indirection |
 | tests_passwd.cpp:19:26:19:28 | pwd indirection | semmle.label | pwd indirection |
 | tests_passwd.cpp:19:26:19:28 | pwd indirection | semmle.label | pwd indirection |
+example
 subpaths
 #select
 | tests.cpp:48:15:48:20 | call to getenv indirection | tests.cpp:48:15:48:20 | call to getenv indirection | tests.cpp:48:15:48:20 | call to getenv indirection | This operation potentially exposes sensitive system data from $@. | tests.cpp:48:15:48:20 | call to getenv indirection | call to getenv indirection |

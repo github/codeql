@@ -42,6 +42,7 @@ nodes
 | CommandInjection.cs:34:47:34:55 | access to local variable userInput | semmle.label | access to local variable userInput |
 | CommandInjection.cs:34:47:34:55 | access to local variable userInput : String | semmle.label | access to local variable userInput : String |
 | CommandInjection.cs:35:27:35:40 | access to local variable startInfoProps | semmle.label | access to local variable startInfoProps |
+example
 subpaths
 #select
 | CommandInjection.cs:26:27:26:47 | ... + ... | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox : TextBox | CommandInjection.cs:26:27:26:47 | ... + ... | This command line depends on a $@. | CommandInjection.cs:25:32:25:46 | access to field categoryTextBox | user-provided value |

@@ -56,6 +56,7 @@ nodes
 | MybatisSqlInjectionService.java:41:27:41:32 | params | semmle.label | params |
 | MybatisSqlInjectionService.java:44:19:44:33 | params : String[] | semmle.label | params : String[] |
 | MybatisSqlInjectionService.java:45:27:45:32 | params | semmle.label | params |
+example
 subpaths
 #select
 | MybatisSqlInjectionService.java:14:47:14:50 | name | MybatisSqlInjection.java:19:25:19:49 | name : String | MybatisSqlInjectionService.java:14:47:14:50 | name | MyBatis Mapper XML SQL injection might include code from $@ to $@. | MybatisSqlInjection.java:19:25:19:49 | name | this user input | SqlInjectionMapper.xml:23:3:25:12 | select | this SQL operation |

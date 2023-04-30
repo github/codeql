@@ -9,6 +9,7 @@ nodes
 | test.swift:38:84:38:84 | 80000 | semmle.label | 80000 |
 | test.swift:44:84:44:84 | lowIterations | semmle.label | lowIterations |
 | test.swift:45:84:45:84 | 80000 | semmle.label | 80000 |
+example
 subpaths
 #select
 | test.swift:37:84:37:84 | lowIterations | test.swift:20:45:20:45 | 99999 | test.swift:37:84:37:84 | lowIterations | The value '99999' is an insufficient number of iterations for secure password hashing. |

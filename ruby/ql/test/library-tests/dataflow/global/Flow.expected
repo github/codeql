@@ -454,6 +454,7 @@ nodes
 | instance_variables.rb:121:7:121:24 | call to new | semmle.label | call to new |
 | instance_variables.rb:122:6:122:8 | bar | semmle.label | bar |
 | instance_variables.rb:122:6:122:8 | bar | semmle.label | bar |
+example
 subpaths
 | instance_variables.rb:28:20:28:24 | field | instance_variables.rb:22:20:22:24 | field | instance_variables.rb:23:9:23:14 | [post] self [@field] | instance_variables.rb:28:9:28:25 | [post] self [@field] |
 | instance_variables.rb:28:20:28:24 | field | instance_variables.rb:22:20:22:24 | field | instance_variables.rb:23:9:23:14 | [post] self [@field] | instance_variables.rb:28:9:28:25 | [post] self [@field] |

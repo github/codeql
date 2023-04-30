@@ -105,6 +105,7 @@ nodes
 | test.go:49:22:49:32 | &... | semmle.label | &... |
 | test.go:49:22:49:32 | &... [pointer] | semmle.label | &... [pointer] |
 | test.go:49:23:49:32 | cleanNode2 | semmle.label | cleanNode2 |
+example
 subpaths
 #select
 | test.go:14:15:14:55 | type conversion | test.go:11:2:11:42 | ... := ...[0] | test.go:14:15:14:55 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:11:2:11:42 | ... := ...[0] | user-provided value | test.go:0:0:0:0 | test.go |  |

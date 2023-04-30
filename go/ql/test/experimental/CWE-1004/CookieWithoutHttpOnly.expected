@@ -581,6 +581,7 @@ nodes
 | CookieWithoutHttpOnly.go:195:16:195:20 | store | semmle.label | store |
 | CookieWithoutHttpOnly.go:202:19:202:25 | session | semmle.label | session |
 | CookieWithoutHttpOnly.go:214:66:214:70 | false | semmle.label | false |
+example
 subpaths
 #select
 | CookieWithoutHttpOnly.go:15:20:15:21 | &... | CookieWithoutHttpOnly.go:12:10:12:18 | "session" | CookieWithoutHttpOnly.go:15:20:15:21 | &... | Cookie attribute 'HttpOnly' is not set to true. |

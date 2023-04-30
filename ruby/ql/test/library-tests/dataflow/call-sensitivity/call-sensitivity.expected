@@ -331,6 +331,7 @@ nodes
 | call_sensitivity.rb:187:11:187:20 | ( ... ) | semmle.label | ( ... ) |
 | call_sensitivity.rb:187:12:187:19 | call to taint | semmle.label | call to taint |
 | call_sensitivity.rb:187:12:187:19 | call to taint | semmle.label | call to taint |
+example
 subpaths
 #select
 | call_sensitivity.rb:9:6:9:14 | ( ... ) | call_sensitivity.rb:9:7:9:13 | call to taint | call_sensitivity.rb:9:6:9:14 | ( ... ) | $@ | call_sensitivity.rb:9:7:9:13 | call to taint | call to taint |

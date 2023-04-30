@@ -20,6 +20,7 @@ nodes
 | mad/Test.java:9:16:9:41 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | mad/Test.java:14:22:14:38 | (...)... | semmle.label | (...)... |
 | mad/Test.java:14:31:14:38 | source(...) : String | semmle.label | source(...) : String |
+example
 subpaths
 | UrlRedirect.java:32:37:32:66 | getParameter(...) : String | UrlRedirect.java:45:28:45:39 | input : String | UrlRedirect.java:46:10:46:40 | replaceAll(...) : String | UrlRedirect.java:32:25:32:67 | weakCleanup(...) |
 #select

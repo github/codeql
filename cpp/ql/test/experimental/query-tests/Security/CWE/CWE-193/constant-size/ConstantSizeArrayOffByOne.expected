@@ -21,6 +21,7 @@ nodes
 | test.cpp:72:5:72:15 | access to array | semmle.label | access to array |
 | test.cpp:77:26:77:44 | & ... | semmle.label | & ... |
 | test.cpp:77:27:77:44 | access to array | semmle.label | access to array |
+example
 subpaths
 #select
 | test.cpp:35:5:35:22 | access to array | test.cpp:35:5:35:22 | access to array | test.cpp:35:5:35:22 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:35:5:35:26 | Store: ... = ... | write |

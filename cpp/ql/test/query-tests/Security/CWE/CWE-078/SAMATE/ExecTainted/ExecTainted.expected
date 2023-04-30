@@ -23,6 +23,7 @@ nodes
 | tests.cpp:51:22:51:25 | badSource output argument | semmle.label | badSource output argument |
 | tests.cpp:51:22:51:25 | data indirection | semmle.label | data indirection |
 | tests.cpp:53:16:53:19 | data indirection | semmle.label | data indirection |
+example
 subpaths
 | tests.cpp:51:22:51:25 | data indirection | tests.cpp:26:32:26:35 | data indirection | tests.cpp:26:15:26:23 | badSource indirection | tests.cpp:51:12:51:20 | call to badSource indirection |
 #select

@@ -40,6 +40,7 @@ nodes
 | DotRegexSpring.java:71:11:71:42 | decode(...) : String | semmle.label | decode(...) : String |
 | DotRegexSpring.java:71:29:71:32 | path : String | semmle.label | path : String |
 | DotRegexSpring.java:73:10:73:13 | path : String | semmle.label | path : String |
+example
 subpaths
 | DotRegexSpring.java:22:21:22:24 | path : String | DotRegexSpring.java:69:28:69:38 | path : String | DotRegexSpring.java:73:10:73:13 | path : String | DotRegexSpring.java:22:10:22:25 | decodePath(...) : String |
 | DotRegexSpring.java:39:21:39:24 | path : String | DotRegexSpring.java:69:28:69:38 | path : String | DotRegexSpring.java:73:10:73:13 | path : String | DotRegexSpring.java:39:10:39:25 | decodePath(...) : String |

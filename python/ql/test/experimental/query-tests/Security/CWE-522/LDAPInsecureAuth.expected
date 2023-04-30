@@ -24,6 +24,7 @@ nodes
 | ldap3_remote.py:138:21:138:32 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | ldap3_remote.py:138:21:138:40 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | ldap3_remote.py:139:18:139:21 | ControlFlowNode for host | semmle.label | ControlFlowNode for host |
+example
 subpaths
 #select
 | ldap2_remote.py:45:41:45:60 | ControlFlowNode for BinaryExpr | ldap2_remote.py:45:41:45:60 | ControlFlowNode for BinaryExpr | ldap2_remote.py:45:41:45:60 | ControlFlowNode for BinaryExpr | This LDAP host is authenticated insecurely. |

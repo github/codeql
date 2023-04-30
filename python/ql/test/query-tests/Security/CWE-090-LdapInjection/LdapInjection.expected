@@ -115,6 +115,7 @@ nodes
 | ldap_bad.py:48:21:48:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | ldap_bad.py:55:9:55:10 | ControlFlowNode for dn | semmle.label | ControlFlowNode for dn |
 | ldap_bad.py:55:43:55:55 | ControlFlowNode for search_filter | semmle.label | ControlFlowNode for search_filter |
+example
 subpaths
 #select
 | ldap3_bad.py:21:17:21:18 | ControlFlowNode for dn | ldap3_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | ldap3_bad.py:21:17:21:18 | ControlFlowNode for dn | LDAP query parameter (DN) depends on a $@. | ldap3_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |

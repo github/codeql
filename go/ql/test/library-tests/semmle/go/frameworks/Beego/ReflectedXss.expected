@@ -225,6 +225,7 @@ nodes
 | test.go:306:21:306:24 | bMap | semmle.label | bMap |
 | test.go:306:21:306:32 | call to Items | semmle.label | call to Items |
 | test.go:306:21:306:52 | type assertion | semmle.label | type assertion |
+example
 subpaths
 #select
 | test.go:29:13:29:30 | type conversion | test.go:27:6:27:10 | definition of bound | test.go:29:13:29:30 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:27:6:27:10 | definition of bound | user-provided value | test.go:0:0:0:0 | test.go |  |

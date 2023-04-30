@@ -34,6 +34,7 @@ nodes
 | UrlRedirect.rb:73:25:73:36 | ...[...] | semmle.label | ...[...] |
 | UrlRedirect.rb:93:21:93:32 | input_params | semmle.label | input_params |
 | UrlRedirect.rb:94:5:94:29 | call to permit | semmle.label | call to permit |
+example
 subpaths
 | UrlRedirect.rb:24:31:24:36 | call to params | UrlRedirect.rb:93:21:93:32 | input_params | UrlRedirect.rb:94:5:94:29 | call to permit | UrlRedirect.rb:24:17:24:37 | call to filter_params |
 #select

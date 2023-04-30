@@ -13,6 +13,7 @@ nodes
 | test.py:19:19:19:30 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:19:19:19:45 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test.py:30:34:30:44 | ControlFlowNode for xml_content | semmle.label | ControlFlowNode for xml_content |
+example
 subpaths
 #select
 | test.py:30:34:30:44 | ControlFlowNode for xml_content | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:30:34:30:44 | ControlFlowNode for xml_content | XML parsing depends on a $@ without guarding against uncontrolled entity expansion. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |

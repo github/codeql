@@ -96,6 +96,7 @@ nodes
 | lib/index.rb:8:13:8:13 | x | semmle.label | x |
 | lib/index.rb:9:15:9:15 | x | semmle.label | x |
 | lib/index.rb:11:16:11:16 | x | semmle.label | x |
+example
 subpaths
 #select
 | PolynomialReDoS.rb:10:5:10:17 | ... =~ ... | PolynomialReDoS.rb:4:12:4:17 | call to params | PolynomialReDoS.rb:10:5:10:8 | name | This $@ that depends on a $@ may run slow on strings with many repetitions of ' '. | PolynomialReDoS.rb:7:19:7:21 | \\s+ | regular expression | PolynomialReDoS.rb:4:12:4:17 | call to params | user-provided value |

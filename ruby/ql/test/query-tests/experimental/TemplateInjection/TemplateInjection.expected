@@ -32,6 +32,7 @@ nodes
 | SlimInjection.rb:14:25:14:32 | bad_text | semmle.label | bad_text |
 | SlimInjection.rb:17:5:17:13 | bad2_text | semmle.label | bad2_text |
 | SlimInjection.rb:23:25:23:33 | bad2_text | semmle.label | bad2_text |
+example
 subpaths
 #select
 | ErbInjection.rb:15:24:15:31 | bad_text | ErbInjection.rb:5:12:5:17 | call to params | ErbInjection.rb:15:24:15:31 | bad_text | This template depends on a $@. | ErbInjection.rb:5:12:5:17 | call to params | user-provided value |

@@ -105,6 +105,7 @@ nodes
 | tst.go:162:31:162:126 | ...+... | semmle.label | ...+... |
 | tst.go:171:21:171:116 | ...+... | semmle.label | ...+... |
 | tst.go:180:27:180:122 | ...+... | semmle.label | ...+... |
+example
 subpaths
 #select
 | XPathInjection.go:16:29:16:91 | ...+... | XPathInjection.go:13:14:13:19 | selection of Form | XPathInjection.go:16:29:16:91 | ...+... | XPath expression depends on a $@. | XPathInjection.go:13:14:13:19 | selection of Form | user-provided value |

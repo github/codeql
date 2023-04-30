@@ -12,6 +12,7 @@ nodes
 | WeakParams.rb:15:28:15:45 | ...[...] | semmle.label | ...[...] |
 | WeakParams.rb:20:28:20:38 | call to GET | semmle.label | call to GET |
 | WeakParams.rb:20:28:20:44 | ...[...] | semmle.label | ...[...] |
+example
 subpaths
 #select
 | WeakParams.rb:5:28:5:59 | ...[...] | WeakParams.rb:5:28:5:53 | call to request_parameters | WeakParams.rb:5:28:5:59 | ...[...] | By exposing all keys in request parameters or by blindy accessing them, unintended parameters could be used and lead to mass-assignment or have other unexpected side-effects. It is safer to follow the 'strong parameters' pattern in Rails, which is outlined here: https://api.rubyonrails.org/classes/ActionController/StrongParameters.html |

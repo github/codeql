@@ -25,6 +25,7 @@ nodes
 | tarslip.go:16:23:16:33 | selection of Name | semmle.label | selection of Name |
 | tst.go:23:2:43:2 | range statement[1] | semmle.label | range statement[1] |
 | tst.go:29:20:29:23 | path | semmle.label | path |
+example
 subpaths
 #select
 | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:72:3:72:25 | ... := ...[0] | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | Unsanitized archive entry, which may contain '..', is used in a $@. | UnsafeUnzipSymlinkGood.go:61:31:61:62 | call to Join | file system operation |

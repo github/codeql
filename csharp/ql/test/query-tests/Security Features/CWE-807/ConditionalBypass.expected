@@ -44,6 +44,7 @@ nodes
 | ConditionalBypass.cs:84:13:84:23 | access to local variable adminCookie : HttpCookie | semmle.label | access to local variable adminCookie : HttpCookie |
 | ConditionalBypass.cs:84:13:84:29 | access to property Value : String | semmle.label | access to property Value : String |
 | ConditionalBypass.cs:84:13:84:40 | ... == ... | semmle.label | ... == ... |
+example
 subpaths
 #select
 | ConditionalBypass.cs:16:13:16:30 | ... == ... | ConditionalBypass.cs:12:26:12:48 | access to property QueryString : NameValueCollection | ConditionalBypass.cs:16:13:16:30 | ... == ... | This condition guards a sensitive $@, but a $@ controls it. | ConditionalBypass.cs:17:13:17:33 | call to method login | action | ConditionalBypass.cs:12:26:12:48 | access to property QueryString | user-provided value |

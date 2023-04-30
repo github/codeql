@@ -52,6 +52,7 @@ nodes
 | ConstantOauth2State.go:272:17:272:21 | "oob" | semmle.label | "oob" |
 | ConstantOauth2State.go:282:9:282:12 | conf | semmle.label | conf |
 | ConstantOauth2State.go:282:26:282:41 | stateStringConst | semmle.label | stateStringConst |
+example
 subpaths
 #select
 | ConstantOauth2State.go:35:26:35:32 | "state" | ConstantOauth2State.go:35:26:35:32 | "state" | ConstantOauth2State.go:35:26:35:32 | "state" | Using a constant $@ to create oauth2 URLs. | ConstantOauth2State.go:35:26:35:32 | "state" | state string |

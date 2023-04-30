@@ -110,6 +110,7 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in String.init(decoding:as:) | semmle.label | [summary] to write: return (return) in String.init(decoding:as:) |
 | file://:0:0:0:0 | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:) | semmle.label | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:) |
 | file://:0:0:0:0 | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) | semmle.label | [summary] to write: return (return) in WKUserScript.init(source:injectionTime:forMainFrameOnly:in:) |
+example
 subpaths
 | UnsafeJsEval.swift:211:24:211:37 | .utf8 | UnsafeJsEval.swift:144:5:144:29 | [summary param] 0 in Data.init(_:) | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | UnsafeJsEval.swift:211:19:211:41 | call to Data.init(_:) |
 | UnsafeJsEval.swift:214:24:214:24 | remoteData | file://:0:0:0:0 | [summary param] 0 in String.init(decoding:as:) | file://:0:0:0:0 | [summary] to write: return (return) in String.init(decoding:as:) | UnsafeJsEval.swift:214:7:214:49 | call to String.init(decoding:as:) |

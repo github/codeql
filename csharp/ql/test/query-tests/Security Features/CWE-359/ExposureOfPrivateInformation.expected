@@ -5,6 +5,7 @@ nodes
 | ExposureOfPrivateInformation.cs:24:21:24:36 | call to method getTelephone | semmle.label | call to method getTelephone |
 | ExposureOfPrivateInformation.cs:30:26:30:41 | call to method getTelephone | semmle.label | call to method getTelephone |
 | ExposureOfPrivateInformation.cs:62:21:62:33 | access to property Text | semmle.label | access to property Text |
+example
 subpaths
 #select
 | ExposureOfPrivateInformation.cs:18:50:18:84 | access to indexer | ExposureOfPrivateInformation.cs:18:50:18:84 | access to indexer | ExposureOfPrivateInformation.cs:18:50:18:84 | access to indexer | Private data returned by $@ is written to an external location. | ExposureOfPrivateInformation.cs:18:50:18:84 | access to indexer | access to indexer |

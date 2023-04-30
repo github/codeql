@@ -6,6 +6,7 @@ nodes
 | test.go:311:13:311:27 | call to URI | semmle.label | call to URI |
 | test.go:312:20:312:34 | call to URL | semmle.label | call to URL |
 | test.go:312:20:312:34 | call to URL | semmle.label | call to URL |
+example
 subpaths
 #select
 | test.go:247:13:247:34 | call to GetString | test.go:247:13:247:34 | call to GetString | test.go:247:13:247:34 | call to GetString | This path to an untrusted URL redirection depends on a $@. | test.go:247:13:247:34 | call to GetString | user-provided value |

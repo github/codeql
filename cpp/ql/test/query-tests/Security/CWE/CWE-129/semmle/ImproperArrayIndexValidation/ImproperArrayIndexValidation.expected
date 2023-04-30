@@ -27,6 +27,7 @@ nodes
 | test1.c:33:11:33:11 | i | semmle.label | i |
 | test1.c:48:16:48:16 | i | semmle.label | i |
 | test1.c:53:15:53:15 | j | semmle.label | j |
+example
 subpaths
 #select
 | test1.c:18:16:18:16 | i | test1.c:7:26:7:29 | argv | test1.c:18:16:18:16 | i | An array indexing expression depends on $@ that might be outside the bounds of the array. | test1.c:7:26:7:29 | argv | a command-line argument |

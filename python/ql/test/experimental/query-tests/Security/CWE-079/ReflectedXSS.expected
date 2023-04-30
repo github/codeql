@@ -110,6 +110,7 @@ nodes
 | smtplib_bad_via_attach.py:20:12:20:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | smtplib_bad_via_attach.py:20:12:20:31 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | smtplib_bad_via_attach.py:27:22:27:25 | ControlFlowNode for html | semmle.label | ControlFlowNode for html |
+example
 subpaths
 #select
 | django_mail.py:14:48:14:82 | ControlFlowNode for Attribute() | django_mail.py:14:48:14:82 | ControlFlowNode for Attribute() | django_mail.py:14:48:14:82 | ControlFlowNode for Attribute() | Cross-site scripting vulnerability due to $@. | django_mail.py:14:48:14:82 | ControlFlowNode for Attribute() | a user-provided value |

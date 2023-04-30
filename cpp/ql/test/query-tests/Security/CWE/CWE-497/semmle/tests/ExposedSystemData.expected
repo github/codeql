@@ -84,6 +84,7 @@ nodes
 | tests_sysconf.cpp:39:19:39:25 | pathbuf indirection | semmle.label | pathbuf indirection |
 | tests_sysconf.cpp:39:19:39:25 | pathbuf indirection | semmle.label | pathbuf indirection |
 | tests_sysconf.cpp:39:19:39:25 | pathbuf indirection | semmle.label | pathbuf indirection |
+example
 subpaths
 #select
 | tests2.cpp:63:13:63:18 | call to getenv indirection | tests2.cpp:63:13:63:18 | call to getenv indirection | tests2.cpp:63:13:63:18 | call to getenv indirection | This operation exposes system data from $@. | tests2.cpp:63:13:63:18 | call to getenv indirection | call to getenv indirection |

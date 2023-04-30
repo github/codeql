@@ -6,6 +6,7 @@ nodes
 | JSchOSInjectionTest.java:27:52:27:68 | ... + ... | semmle.label | ... + ... |
 | JSchOSInjectionTest.java:40:30:40:60 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | JSchOSInjectionTest.java:53:36:53:52 | ... + ... | semmle.label | ... + ... |
+example
 subpaths
 #select
 | JSchOSInjectionTest.java:27:52:27:68 | ... + ... | JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) : String | JSchOSInjectionTest.java:27:52:27:68 | ... + ... | This command line depends on a $@. | JSchOSInjectionTest.java:14:30:14:60 | getParameter(...) | user-provided value |

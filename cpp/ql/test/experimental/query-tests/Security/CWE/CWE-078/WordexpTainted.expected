@@ -8,6 +8,7 @@ nodes
 | test.cpp:22:27:22:30 | argv indirection | semmle.label | argv indirection |
 | test.cpp:29:13:29:20 | filePath | semmle.label | filePath |
 | test.cpp:29:13:29:20 | filePath | semmle.label | filePath |
+example
 subpaths
 #select
 | test.cpp:29:13:29:20 | filePath | test.cpp:22:27:22:30 | argv | test.cpp:29:13:29:20 | filePath | Using user-supplied data in a `wordexp` command, without disabling command substitution, can make code vulnerable to command injection. |

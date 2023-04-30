@@ -80,6 +80,7 @@ nodes
 | test.go:158:13:158:28 | type conversion | semmle.label | type conversion |
 | test.go:161:15:161:24 | &... | semmle.label | &... |
 | test.go:162:13:162:32 | type conversion | semmle.label | type conversion |
+example
 subpaths
 #select
 | test.go:78:13:78:29 | type conversion | test.go:77:13:77:16 | &... | test.go:78:13:78:29 | type conversion | Stored cross-site scripting vulnerability due to $@. | test.go:77:13:77:16 | &... | stored value |

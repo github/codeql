@@ -7,6 +7,7 @@ nodes
 | Test.java:34:20:34:32 | userParameter : String | semmle.label | userParameter : String |
 | Test.java:37:31:37:43 | format : String | semmle.label | format : String |
 | Test.java:39:25:39:30 | format | semmle.label | format |
+example
 subpaths
 #select
 | Test.java:39:25:39:30 | format | Test.java:33:30:33:74 | getParameter(...) : String | Test.java:39:25:39:30 | format | Format string depends on a $@. | Test.java:33:30:33:74 | getParameter(...) | user-provided value |

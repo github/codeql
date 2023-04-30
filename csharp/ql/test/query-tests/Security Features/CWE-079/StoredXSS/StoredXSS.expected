@@ -3,6 +3,7 @@ edges
 nodes
 | StoredXSS.cs:24:44:24:86 | ... + ... | semmle.label | ... + ... |
 | StoredXSS.cs:24:60:24:86 | call to method GetString : String | semmle.label | call to method GetString : String |
+example
 subpaths
 #select
 | StoredXSS.cs:24:44:24:86 | ... + ... | StoredXSS.cs:24:60:24:86 | call to method GetString : String | StoredXSS.cs:24:44:24:86 | ... + ... | This HTML or JavaScript write depends on a $@. | StoredXSS.cs:24:60:24:86 | call to method GetString | stored (potentially user-provided) value |

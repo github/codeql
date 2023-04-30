@@ -9,6 +9,7 @@ nodes
 | impl/miss-anchor.rb:7:43:7:46 | name | semmle.label | name |
 | impl/miss-anchor.rb:14:12:14:15 | name | semmle.label | name |
 | impl/miss-anchor.rb:15:47:15:50 | name | semmle.label | name |
+example
 subpaths
 #select
 | impl/miss-anchor.rb:3:39:3:42 | name | impl/miss-anchor.rb:2:12:2:15 | name | impl/miss-anchor.rb:3:39:3:42 | name | This value depends on $@, and is $@ against a $@. | impl/miss-anchor.rb:2:12:2:15 | name | library input | impl/miss-anchor.rb:3:39:3:89 | ... !~ ... | checked | impl/miss-anchor.rb:3:48:3:88 | ^[A-Za-z0-9\\+\\-_]+(\\/[A-Za-z0-9\\+\\-_]+)*$ | badly anchored regular expression |

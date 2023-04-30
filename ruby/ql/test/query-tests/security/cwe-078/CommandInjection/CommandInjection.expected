@@ -55,6 +55,7 @@ nodes
 | CommandInjection.rb:103:16:103:21 | call to params | semmle.label | call to params |
 | CommandInjection.rb:103:16:103:28 | ...[...] | semmle.label | ...[...] |
 | CommandInjection.rb:104:16:104:28 | "cat #{...}" | semmle.label | "cat #{...}" |
+example
 subpaths
 #select
 | CommandInjection.rb:7:10:7:15 | #{...} | CommandInjection.rb:6:15:6:20 | call to params | CommandInjection.rb:7:10:7:15 | #{...} | This command depends on a $@. | CommandInjection.rb:6:15:6:20 | call to params | user-provided value |

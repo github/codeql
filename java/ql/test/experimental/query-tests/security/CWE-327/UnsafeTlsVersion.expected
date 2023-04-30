@@ -125,6 +125,7 @@ nodes
 | UnsafeTlsVersion.java:112:21:112:29 | "TLSv1.1" : String | semmle.label | "TLSv1.1" : String |
 | UnsafeTlsVersion.java:119:43:119:61 | protocols : String[] [[]] : String | semmle.label | protocols : String[] [[]] : String |
 | UnsafeTlsVersion.java:121:32:121:40 | protocols | semmle.label | protocols |
+example
 subpaths
 #select
 | UnsafeTlsVersion.java:16:28:16:32 | "SSL" | UnsafeTlsVersion.java:16:28:16:32 | "SSL" | UnsafeTlsVersion.java:16:28:16:32 | "SSL" | $@ is unsafe. | UnsafeTlsVersion.java:16:28:16:32 | "SSL" | SSL |

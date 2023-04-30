@@ -21,6 +21,7 @@ nodes
 | server/main.go:19:56:19:61 | definition of params | semmle.label | definition of params |
 | server/main.go:19:56:19:61 | definition of params | semmle.label | definition of params |
 | server/main.go:30:38:30:48 | selection of Text | semmle.label | selection of Text |
+example
 subpaths
 #select
 | server/main.go:30:38:30:48 | selection of Text | server/main.go:19:56:19:61 | definition of params | server/main.go:30:38:30:48 | selection of Text | The $@ of this request depends on a $@. | server/main.go:30:38:30:48 | selection of Text | URL | server/main.go:19:56:19:61 | definition of params | user-provided value |

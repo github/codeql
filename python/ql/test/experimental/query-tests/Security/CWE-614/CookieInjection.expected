@@ -41,6 +41,7 @@ nodes
 | flask_bad.py:32:60:32:66 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | flask_bad.py:32:60:32:71 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | flask_bad.py:32:60:32:80 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+example
 subpaths
 #select
 | django_bad.py:19:21:19:55 | ControlFlowNode for Attribute() | django_bad.py:19:21:19:55 | ControlFlowNode for Attribute() | django_bad.py:19:21:19:55 | ControlFlowNode for Attribute() | Cookie is constructed from a $@,and its httponly flag is not properly set. | django_bad.py:19:21:19:55 | ControlFlowNode for Attribute() | user-supplied input |

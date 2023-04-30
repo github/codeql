@@ -45,6 +45,7 @@ nodes
 | test.cpp:73:43:73:53 | thePassword | semmle.label | thePassword |
 | test.cpp:73:63:73:73 | thePassword | semmle.label | thePassword |
 | test.cpp:73:63:73:73 | thePassword | semmle.label | thePassword |
+example
 subpaths
 #select
 | test2.cpp:43:2:43:8 | call to fprintf | test2.cpp:43:36:43:43 | password | test2.cpp:43:36:43:43 | password | This write into file 'log' may contain unencrypted data from $@. | test2.cpp:43:36:43:43 | password | this source. |

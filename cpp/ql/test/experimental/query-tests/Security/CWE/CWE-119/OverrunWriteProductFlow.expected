@@ -374,6 +374,7 @@ nodes
 | test.cpp:207:17:207:19 | str indirection [string] | semmle.label | str indirection [string] |
 | test.cpp:207:22:207:27 | string | semmle.label | string |
 | test.cpp:207:22:207:27 | string indirection | semmle.label | string indirection |
+example
 subpaths
 #select
 | test.cpp:42:5:42:11 | call to strncpy | test.cpp:18:19:18:24 | call to malloc | test.cpp:42:18:42:23 | string | This write may overflow $@ by 1 element. | test.cpp:42:18:42:23 | string | string |

@@ -118,6 +118,7 @@ nodes
 | test3.cpp:572:14:572:16 | str | semmle.label | str |
 | test3.cpp:577:8:577:23 | call to get_home_address | semmle.label | call to get_home_address |
 | test3.cpp:578:14:578:16 | str | semmle.label | str |
+example
 subpaths
 | test3.cpp:138:24:138:32 | password1 | test3.cpp:117:28:117:33 | buffer | test3.cpp:117:13:117:14 | id indirection | test3.cpp:138:21:138:22 | call to id |
 #select

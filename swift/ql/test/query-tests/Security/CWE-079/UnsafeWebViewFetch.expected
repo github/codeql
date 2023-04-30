@@ -125,6 +125,7 @@ nodes
 | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | semmle.label | [summary] to write: return (return) in Data.init(_:) |
 | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:) | semmle.label | [summary] to write: return (return) in URL.init(string:) |
 | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:relativeTo:) | semmle.label | [summary] to write: return (return) in URL.init(string:relativeTo:) |
+example
 subpaths
 | UnsafeWebViewFetch.swift:131:30:131:30 | remoteString | UnsafeWebViewFetch.swift:10:2:10:25 | [summary param] 0 in URL.init(string:) | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:) | UnsafeWebViewFetch.swift:131:18:131:42 | call to URL.init(string:) |
 | UnsafeWebViewFetch.swift:132:52:132:52 | remoteURL | UnsafeWebViewFetch.swift:11:2:11:43 | [summary param] 1 in URL.init(string:relativeTo:) | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:relativeTo:) | UnsafeWebViewFetch.swift:132:19:132:61 | call to URL.init(string:relativeTo:) |

@@ -77,6 +77,7 @@ nodes
 | A.java:115:10:115:10 | o | semmle.label | o |
 | A.java:120:36:120:43 | o : Number | semmle.label | o : Number |
 | A.java:128:9:128:10 | o3 | semmle.label | o3 |
+example
 subpaths
 | A.java:69:20:69:33 | new Integer(...) : Number | A.java:6:28:6:35 | o : Number | A.java:8:11:8:11 | o : Number | A.java:69:8:69:40 | flowThrough(...) |
 | A.java:88:20:88:33 | new Integer(...) : Number | A.java:6:28:6:35 | o : Number | A.java:8:11:8:11 | o : Number | A.java:88:8:88:37 | flowThrough(...) |

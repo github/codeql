@@ -41,6 +41,7 @@ nodes
 | testURL.swift:16:22:16:55 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
 | testURL.swift:16:55:16:55 | credit_card_no | semmle.label | credit_card_no |
 | testURL.swift:20:22:20:22 | passwd | semmle.label | passwd |
+example
 subpaths
 | testSend.swift:33:19:33:19 | passwordPlain | testSend.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | testSend.swift:33:14:33:32 | call to Data.init(_:) |
 | testSend.swift:47:17:47:17 | password | testSend.swift:41:10:41:18 | data | testSend.swift:41:45:41:45 | data | testSend.swift:47:13:47:25 | call to pad(_:) |

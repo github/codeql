@@ -138,6 +138,7 @@ nodes
 | HTMLTemplateEscapingPassthrough.go:115:8:115:15 | call to getId | semmle.label | call to getId |
 | HTMLTemplateEscapingPassthrough.go:116:15:116:15 | x | semmle.label | x |
 | HTMLTemplateEscapingPassthrough.go:123:11:123:36 | call to passthrough | semmle.label | call to passthrough |
+example
 subpaths
 #select
 | HTMLTemplateEscapingPassthrough.go:30:39:30:39 | a | HTMLTemplateEscapingPassthrough.go:29:26:29:40 | call to UserAgent | HTMLTemplateEscapingPassthrough.go:30:39:30:39 | a | Data from an $@ will not be auto-escaped because it was $@ to template.HTML | HTMLTemplateEscapingPassthrough.go:29:26:29:40 | call to UserAgent | untrusted source | HTMLTemplateEscapingPassthrough.go:29:12:29:41 | type conversion | converted |

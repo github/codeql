@@ -88,6 +88,7 @@ nodes
 | CodeInjection.rb:112:10:112:13 | @foo | semmle.label | @foo |
 | CodeInjection.rb:112:10:112:13 | self [@foo] | semmle.label | self [@foo] |
 | CodeInjection.rb:112:10:112:13 | self [@foo] | semmle.label | self [@foo] |
+example
 subpaths
 #select
 | CodeInjection.rb:8:10:8:13 | code | CodeInjection.rb:5:12:5:17 | call to params | CodeInjection.rb:8:10:8:13 | code | This code execution depends on a $@. | CodeInjection.rb:5:12:5:17 | call to params | user-provided value |

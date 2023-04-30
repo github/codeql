@@ -160,6 +160,7 @@ nodes
 | pymongo_test.py:39:27:39:38 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | pymongo_test.py:39:27:39:50 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | pymongo_test.py:43:34:43:73 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
+example
 subpaths
 #select
 | flask_mongoengine_bad.py:22:34:22:44 | ControlFlowNode for json_search | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_mongoengine_bad.py:22:34:22:44 | ControlFlowNode for json_search | This NoSQL query contains an unsanitized $@. | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |

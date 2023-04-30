@@ -19,6 +19,7 @@ nodes
 | ExceptionInformationExposure.cs:41:28:41:40 | call to method ToString | semmle.label | call to method ToString |
 | ExceptionInformationExposure.cs:47:28:47:44 | object creation of type MyException : MyException | semmle.label | object creation of type MyException : MyException |
 | ExceptionInformationExposure.cs:47:28:47:55 | call to method ToString | semmle.label | call to method ToString |
+example
 subpaths
 #select
 | ExceptionInformationExposure.cs:19:32:19:44 | call to method ToString | ExceptionInformationExposure.cs:19:32:19:33 | access to local variable ex : Exception | ExceptionInformationExposure.cs:19:32:19:44 | call to method ToString | This information exposed to the user depends on $@. | ExceptionInformationExposure.cs:19:32:19:33 | access to local variable ex | exception information |

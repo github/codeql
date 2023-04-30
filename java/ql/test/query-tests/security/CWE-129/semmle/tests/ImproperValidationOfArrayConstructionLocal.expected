@@ -9,6 +9,7 @@ nodes
 | Test.java:78:37:78:55 | trim(...) : String | semmle.label | trim(...) : String |
 | Test.java:80:31:80:34 | size | semmle.label | size |
 | Test.java:86:34:86:37 | size | semmle.label | size |
+example
 subpaths
 #select
 | Test.java:83:34:83:34 | 0 | Test.java:76:27:76:60 | getProperty(...) : String | Test.java:80:31:80:34 | size | This accesses the $@, but the array is initialized using a $@ which may be zero. | Test.java:80:23:80:35 | new int[] | array | Test.java:76:27:76:60 | getProperty(...) | user-provided value |

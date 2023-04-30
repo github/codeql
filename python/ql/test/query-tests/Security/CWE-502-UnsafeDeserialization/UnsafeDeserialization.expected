@@ -17,6 +17,7 @@ nodes
 | unsafe_deserialization.py:16:15:16:21 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
 | unsafe_deserialization.py:18:19:18:25 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
 | unsafe_deserialization.py:21:16:21:22 | ControlFlowNode for payload | semmle.label | ControlFlowNode for payload |
+example
 subpaths
 #select
 | unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | unsafe_deserialization.py:15:18:15:24 | ControlFlowNode for payload | Unsafe deserialization depends on a $@. | unsafe_deserialization.py:8:26:8:32 | ControlFlowNode for ImportMember | user-provided value |

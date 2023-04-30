@@ -79,6 +79,7 @@ nodes
 | UnsafeUrlForward.java:49:33:49:62 | ... + ... | semmle.label | ... + ... |
 | UnsafeUrlForward.java:58:19:58:28 | url : String | semmle.label | url : String |
 | UnsafeUrlForward.java:60:33:60:62 | ... + ... | semmle.label | ... + ... |
+example
 subpaths
 #select
 | UnsafeLoadSpringResource.java:35:31:35:33 | clr | UnsafeLoadSpringResource.java:27:32:27:77 | fileName : String | UnsafeLoadSpringResource.java:35:31:35:33 | clr | Potentially untrusted URL forward due to $@. | UnsafeLoadSpringResource.java:27:32:27:77 | fileName | user-provided value |

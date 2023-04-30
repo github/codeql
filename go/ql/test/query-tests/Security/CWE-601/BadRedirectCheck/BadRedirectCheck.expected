@@ -45,6 +45,7 @@ nodes
 | main.go:77:36:77:38 | url | semmle.label | url |
 | main.go:87:9:87:14 | selection of Path | semmle.label | selection of Path |
 | main.go:91:25:91:39 | call to getTarget2 | semmle.label | call to getTarget2 |
+example
 subpaths
 | main.go:11:37:11:44 | redirect | BadRedirectCheck.go:3:18:3:22 | definition of redir | BadRedirectCheck.go:5:10:5:14 | redir | main.go:11:25:11:45 | call to sanitizeUrl |
 | main.go:77:36:77:38 | url | main.go:68:17:68:24 | definition of redirect | main.go:73:9:73:28 | call to Clean | main.go:77:25:77:39 | call to getTarget1 |

@@ -23,6 +23,7 @@ nodes
 | testCryptoSwift.swift:138:9:138:9 | passwdData | semmle.label | passwdData |
 | testCryptoSwift.swift:145:9:145:9 | passwd | semmle.label | passwd |
 | testCryptoSwift.swift:147:9:147:9 | passwd | semmle.label | passwd |
+example
 subpaths
 #select
 | testCryptoKit.swift:56:47:56:47 | passwd | testCryptoKit.swift:56:47:56:47 | passwd | testCryptoKit.swift:56:47:56:47 | passwd | Insecure hashing algorithm (MD5) depends on $@. | testCryptoKit.swift:56:47:56:47 | passwd | sensitive data (credential passwd) |

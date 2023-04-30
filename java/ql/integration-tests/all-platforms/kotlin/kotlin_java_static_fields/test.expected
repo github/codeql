@@ -19,6 +19,7 @@ nodes
 | hasFields.kt:9:5:9:50 | jvmFieldAnnotatedField : String | semmle.label | jvmFieldAnnotatedField : String |
 | hasFields.kt:9:44:9:50 | "taint" : String | semmle.label | "taint" : String |
 | hasFields.kt:14:22:14:26 | "taint" : String | semmle.label | "taint" : String |
+example
 subpaths
 #select
 | hasFields.kt:5:28:5:34 | "taint" : String | hasFields.kt:5:28:5:34 | "taint" : String | ReadsFields.java:5:10:5:29 | HasFields.constField | flow path |

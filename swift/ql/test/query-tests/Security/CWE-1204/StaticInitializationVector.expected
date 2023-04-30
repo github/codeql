@@ -83,6 +83,7 @@ nodes
 | test.swift:162:22:162:22 | iv | semmle.label | iv |
 | test.swift:167:22:167:22 | iv | semmle.label | iv |
 | test.swift:168:22:168:22 | iv | semmle.label | iv |
+example
 subpaths
 | rncryptor.swift:60:24:60:24 | 0 | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | rncryptor.swift:60:19:60:25 | call to Data.init(_:) |
 | rncryptor.swift:61:24:61:24 | 123 | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | rncryptor.swift:61:19:61:27 | call to Data.init(_:) |

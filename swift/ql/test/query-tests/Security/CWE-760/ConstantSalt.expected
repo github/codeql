@@ -40,6 +40,7 @@ nodes
 | test.swift:56:59:56:59 | constantSalt | semmle.label | constantSalt |
 | test.swift:62:59:62:59 | constantSalt | semmle.label | constantSalt |
 | test.swift:67:53:67:53 | constantSalt | semmle.label | constantSalt |
+example
 subpaths
 | rncryptor.swift:59:29:59:29 | abcdef123456 | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | rncryptor.swift:59:24:59:43 | call to Data.init(_:) |
 | rncryptor.swift:60:29:60:29 | 0 | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | rncryptor.swift:60:24:60:30 | call to Data.init(_:) |

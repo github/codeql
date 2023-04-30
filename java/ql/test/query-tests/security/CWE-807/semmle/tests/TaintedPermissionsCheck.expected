@@ -3,6 +3,7 @@ edges
 nodes
 | TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) : String | semmle.label | getParameter(...) : String |
 | TaintedPermissionsCheckTest.java:15:27:15:53 | ... + ... | semmle.label | ... + ... |
+example
 subpaths
 #select
 | TaintedPermissionsCheckTest.java:15:7:15:54 | isPermitted(...) | TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) : String | TaintedPermissionsCheckTest.java:15:27:15:53 | ... + ... | Permissions check depends on a $@. | TaintedPermissionsCheckTest.java:12:19:12:48 | getParameter(...) | user-controlled value |

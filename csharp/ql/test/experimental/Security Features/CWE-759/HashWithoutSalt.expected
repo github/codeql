@@ -13,6 +13,7 @@ nodes
 | HashWithoutSalt.cs:70:28:70:72 | call to method GetBytes : Byte[] | semmle.label | call to method GetBytes : Byte[] |
 | HashWithoutSalt.cs:70:64:70:71 | access to parameter password : String | semmle.label | access to parameter password : String |
 | HashWithoutSalt.cs:71:48:71:56 | access to local variable passBytes | semmle.label | access to local variable passBytes |
+example
 subpaths
 #select
 | HashWithoutSalt.cs:20:49:20:56 | access to local variable passBuff | HashWithoutSalt.cs:18:70:18:77 | access to parameter password : String | HashWithoutSalt.cs:20:49:20:56 | access to local variable passBuff | $@ is hashed without a salt. | HashWithoutSalt.cs:18:70:18:77 | access to parameter password | The password |

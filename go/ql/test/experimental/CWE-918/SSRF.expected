@@ -61,6 +61,7 @@ nodes
 | new-tests.go:88:11:88:46 | ...+... | semmle.label | ...+... |
 | new-tests.go:95:18:95:45 | call to URLParam | semmle.label | call to URLParam |
 | new-tests.go:96:11:96:46 | ...+... | semmle.label | ...+... |
+example
 subpaths
 #select
 | builtin.go:22:12:22:63 | call to Get | builtin.go:19:12:19:34 | call to FormValue | builtin.go:22:21:22:62 | ...+... | The URL of this request depends on a user-provided value. |

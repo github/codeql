@@ -28,6 +28,7 @@ nodes
 | MissingXMLValidation.cs:35:43:35:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
 | MissingXMLValidation.cs:45:26:45:58 | object creation of type StringReader | semmle.label | object creation of type StringReader |
 | MissingXMLValidation.cs:45:43:45:57 | access to local variable userProvidedXml : String | semmle.label | access to local variable userProvidedXml : String |
+example
 subpaths
 #select
 | MissingXMLValidation.cs:16:26:16:58 | object creation of type StringReader | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString : NameValueCollection | MissingXMLValidation.cs:16:26:16:58 | object creation of type StringReader | This XML processing depends on a $@ without validation because there is no 'XmlReaderSettings' instance specifying schema validation. | MissingXMLValidation.cs:12:34:12:56 | access to property QueryString | user-provided value |

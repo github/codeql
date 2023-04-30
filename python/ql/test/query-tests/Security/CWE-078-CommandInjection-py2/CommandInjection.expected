@@ -27,6 +27,7 @@ nodes
 | command_injection.py:27:19:27:31 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | command_injection.py:28:19:28:31 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
 | command_injection.py:29:19:29:31 | ControlFlowNode for BinaryExpr | semmle.label | ControlFlowNode for BinaryExpr |
+example
 subpaths
 #select
 | command_injection.py:19:15:19:27 | ControlFlowNode for BinaryExpr | command_injection.py:5:26:5:32 | ControlFlowNode for ImportMember | command_injection.py:19:15:19:27 | ControlFlowNode for BinaryExpr | This command line depends on a $@. | command_injection.py:5:26:5:32 | ControlFlowNode for ImportMember | user-provided value |

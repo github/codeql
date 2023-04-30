@@ -53,6 +53,7 @@ nodes
 | test.py:81:17:81:23 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | test.py:81:17:81:28 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:83:21:83:26 | ControlFlowNode for unsafe | semmle.label | ControlFlowNode for unsafe |
+example
 subpaths
 #select
 | test.py:8:21:8:26 | ControlFlowNode for target | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:8:21:8:26 | ControlFlowNode for target | Untrusted URL redirection depends on a $@. | test.py:1:26:1:32 | ControlFlowNode for ImportMember | user-provided value |

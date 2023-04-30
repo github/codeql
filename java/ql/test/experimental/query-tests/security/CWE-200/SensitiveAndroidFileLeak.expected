@@ -40,6 +40,7 @@ nodes
 | LeakFileActivity.java:19:31:19:53 | getData(...) : Object | semmle.label | getData(...) : Object |
 | LeakFileActivity.java:21:58:21:72 | streamsToUpload : Object | semmle.label | streamsToUpload : Object |
 | LeakFileActivity.java:21:58:21:82 | getPath(...) | semmle.label | getPath(...) |
+example
 subpaths
 | FileService.java:25:42:25:50 | localPath : Object | FileService.java:32:13:32:28 | sourceUri : Object | FileService.java:34:20:36:13 | new Object[] : Object[] [[]] : Object | FileService.java:25:13:25:51 | makeParamsToExecute(...) : Object[] [[]] : Object |
 #select

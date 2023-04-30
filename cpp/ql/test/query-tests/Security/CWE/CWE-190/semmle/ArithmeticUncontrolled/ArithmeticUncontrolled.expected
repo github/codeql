@@ -88,6 +88,7 @@ nodes
 | test.cpp:208:7:208:7 | y | semmle.label | y |
 | test.cpp:215:11:215:14 | call to rand | semmle.label | call to rand |
 | test.cpp:219:8:219:8 | x | semmle.label | x |
+example
 subpaths
 #select
 | test.c:21:17:21:17 | r | test.c:18:13:18:16 | call to rand | test.c:21:17:21:17 | r | This arithmetic expression depends on an $@, potentially causing an overflow. | test.c:18:13:18:16 | call to rand | uncontrolled value |

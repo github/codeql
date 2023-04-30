@@ -47,6 +47,7 @@ nodes
 | websocket.go:197:18:197:31 | untrustedInput | semmle.label | untrustedInput |
 | websocket.go:202:21:202:31 | call to Referer | semmle.label | call to Referer |
 | websocket.go:204:11:204:24 | untrustedInput | semmle.label | untrustedInput |
+example
 subpaths
 #select
 | RequestForgery.go:11:15:11:66 | call to Get | RequestForgery.go:8:12:8:34 | call to FormValue | RequestForgery.go:11:24:11:65 | ...+... | The $@ of this request depends on a $@. | RequestForgery.go:11:24:11:65 | ...+... | URL | RequestForgery.go:8:12:8:34 | call to FormValue | user-provided value |

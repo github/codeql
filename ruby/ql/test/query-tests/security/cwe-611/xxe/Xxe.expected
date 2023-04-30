@@ -56,6 +56,7 @@ nodes
 | Nokogiri.rb:25:26:25:32 | content | semmle.label | content |
 | Nokogiri.rb:27:26:27:32 | content | semmle.label | content |
 | Nokogiri.rb:28:26:28:32 | content | semmle.label | content |
+example
 subpaths
 #select
 | LibXmlRuby.rb:4:34:4:40 | content | LibXmlRuby.rb:3:15:3:20 | call to params | LibXmlRuby.rb:4:34:4:40 | content | XML parsing depends on a $@ without guarding against external entity expansion. | LibXmlRuby.rb:3:15:3:20 | call to params | user-provided value |

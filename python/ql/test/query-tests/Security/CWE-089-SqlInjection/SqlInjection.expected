@@ -34,6 +34,7 @@ nodes
 | sqlalchemy_textclause.py:48:52:48:59 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
 | sqlalchemy_textclause.py:50:18:50:25 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
 | sqlalchemy_textclause.py:51:24:51:31 | ControlFlowNode for username | semmle.label | ControlFlowNode for username |
+example
 subpaths
 #select
 | sql_injection.py:21:24:21:77 | ControlFlowNode for BinaryExpr | sql_injection.py:14:15:14:22 | ControlFlowNode for username | sql_injection.py:21:24:21:77 | ControlFlowNode for BinaryExpr | This SQL query depends on a $@. | sql_injection.py:14:15:14:22 | ControlFlowNode for username | user-provided value |

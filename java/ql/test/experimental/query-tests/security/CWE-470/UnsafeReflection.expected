@@ -45,6 +45,7 @@ nodes
 | UnsafeReflection.java:119:21:119:26 | method | semmle.label | method |
 | UnsafeReflection.java:119:35:119:38 | bean | semmle.label | bean |
 | UnsafeReflection.java:119:41:119:44 | data | semmle.label | data |
+example
 subpaths
 #select
 | UnsafeReflection.java:25:29:25:62 | ...[...] | UnsafeReflection.java:21:28:21:60 | getParameter(...) : String | UnsafeReflection.java:25:29:25:62 | ...[...] | Unsafe reflection of $@. | UnsafeReflection.java:21:28:21:60 | getParameter(...) | user input |

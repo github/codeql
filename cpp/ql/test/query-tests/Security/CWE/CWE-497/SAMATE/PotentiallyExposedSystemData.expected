@@ -7,6 +7,7 @@ nodes
 | tests.c:57:21:57:28 | password indirection | semmle.label | password indirection |
 | tests.c:57:21:57:28 | password indirection | semmle.label | password indirection |
 | tests.c:70:70:70:77 | password indirection | semmle.label | password indirection |
+example
 subpaths
 #select
 | tests.c:70:70:70:77 | password indirection | tests.c:57:21:57:28 | password indirection | tests.c:70:70:70:77 | password indirection | This operation potentially exposes sensitive system data from $@. | tests.c:57:21:57:28 | password indirection | password indirection |

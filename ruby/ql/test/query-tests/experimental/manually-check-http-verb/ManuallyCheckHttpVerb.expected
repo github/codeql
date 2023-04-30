@@ -31,6 +31,7 @@ nodes
 | ManuallyCheckHttpVerb.rb:52:10:52:23 | ... == ... | semmle.label | ... == ... |
 | ManuallyCheckHttpVerb.rb:59:10:59:20 | call to env | semmle.label | call to env |
 | ManuallyCheckHttpVerb.rb:59:10:59:38 | ...[...] | semmle.label | ...[...] |
+example
 subpaths
 #select
 | ManuallyCheckHttpVerb.rb:4:8:4:19 | call to get? | ManuallyCheckHttpVerb.rb:4:8:4:19 | call to get? | ManuallyCheckHttpVerb.rb:4:8:4:19 | call to get? | Manually checking HTTP verbs is an indication that multiple requests are routed to the same controller action. This could lead to bypassing necessary authorization methods and other protections, like CSRF protection. Prefer using different controller actions for each HTTP method and relying Rails routing to handle mapping resources and verbs to specific methods. |

@@ -54,6 +54,7 @@ nodes
 | impl/unsafeCode.rb:63:13:63:42 | call to join | semmle.label | call to join |
 | impl/unsafeCode.rb:63:30:63:30 | y | semmle.label | y |
 | impl/unsafeCode.rb:64:10:64:13 | arr2 | semmle.label | arr2 |
+example
 subpaths
 #select
 | impl/unsafeCode.rb:3:17:3:25 | #{...} | impl/unsafeCode.rb:2:12:2:17 | target | impl/unsafeCode.rb:3:17:3:25 | #{...} | This string interpolation which depends on $@ is later $@. | impl/unsafeCode.rb:2:12:2:17 | target | library input | impl/unsafeCode.rb:3:5:3:27 | call to eval | interpreted as code |

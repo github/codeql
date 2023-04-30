@@ -99,6 +99,7 @@ nodes
 | test.cpp:88:21:88:22 | d2 | semmle.label | d2 |
 | test.cpp:88:21:88:22 | d2 | semmle.label | d2 |
 | test.cpp:88:21:88:22 | d2 | semmle.label | d2 |
+example
 subpaths
 #select
 | test.cpp:27:2:27:2 | b | test.cpp:57:19:57:19 | d | test.cpp:27:2:27:2 | b | This pointer arithmetic may be done with the wrong type because of $@. | test.cpp:57:19:57:19 | d | this cast |

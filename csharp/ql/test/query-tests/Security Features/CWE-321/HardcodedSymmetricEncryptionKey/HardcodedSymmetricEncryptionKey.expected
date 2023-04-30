@@ -29,6 +29,7 @@ nodes
 | HardcodedSymmetricEncryptionKey.cs:108:23:108:25 | access to parameter key | semmle.label | access to parameter key |
 | HardcodedSymmetricEncryptionKey.cs:112:63:112:65 | key : Byte[] | semmle.label | key : Byte[] |
 | HardcodedSymmetricEncryptionKey.cs:121:87:121:89 | access to parameter key | semmle.label | access to parameter key |
+example
 subpaths
 #select
 | HardcodedSymmetricEncryptionKey.cs:17:21:17:97 | array creation of type Byte[] | HardcodedSymmetricEncryptionKey.cs:17:21:17:97 | array creation of type Byte[] | HardcodedSymmetricEncryptionKey.cs:17:21:17:97 | array creation of type Byte[] | This hard-coded $@ is used in symmetric algorithm in Key property assignment | HardcodedSymmetricEncryptionKey.cs:17:21:17:97 | array creation of type Byte[] | symmetric key |

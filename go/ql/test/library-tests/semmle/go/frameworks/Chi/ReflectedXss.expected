@@ -16,6 +16,7 @@ nodes
 | test.go:23:18:23:60 | call to URLParamFromCtx | semmle.label | call to URLParamFromCtx |
 | test.go:24:11:24:72 | type conversion | semmle.label | type conversion |
 | test.go:24:18:24:71 | call to URLParam | semmle.label | call to URLParam |
+example
 subpaths
 #select
 | test.go:21:11:21:24 | type conversion | test.go:13:12:13:16 | selection of URL | test.go:21:11:21:24 | type conversion | Cross-site scripting vulnerability due to $@. | test.go:13:12:13:16 | selection of URL | user-provided value | test.go:0:0:0:0 | test.go |  |

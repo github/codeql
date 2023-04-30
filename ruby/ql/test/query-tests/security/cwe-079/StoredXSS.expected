@@ -46,6 +46,7 @@ nodes
 | app/views/foo/stores/show.html.erb:82:5:82:24 | @other_user_raw_name | semmle.label | @other_user_raw_name |
 | app/views/foo/stores/show.html.erb:86:3:86:29 | call to sprintf | semmle.label | call to sprintf |
 | app/views/foo/stores/show.html.erb:86:17:86:28 | call to handle | semmle.label | call to handle |
+example
 subpaths
 #select
 | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read | app/views/foo/bars/_widget.html.erb:5:9:5:20 | call to display_text | Stored cross-site scripting vulnerability due to $@. | app/controllers/foo/stores_controller.rb:8:10:8:29 | call to read | stored value |

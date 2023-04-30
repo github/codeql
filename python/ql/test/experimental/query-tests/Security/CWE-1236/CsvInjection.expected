@@ -19,6 +19,7 @@ nodes
 | csv_bad.py:24:16:24:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | csv_bad.py:24:16:24:27 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | csv_bad.py:25:46:25:53 | ControlFlowNode for csv_data | semmle.label | ControlFlowNode for csv_data |
+example
 subpaths
 #select
 | csv_bad.py:18:24:18:31 | ControlFlowNode for csv_data | csv_bad.py:9:19:9:25 | ControlFlowNode for ImportMember | csv_bad.py:18:24:18:31 | ControlFlowNode for csv_data | Csv injection might include code from $@. | csv_bad.py:9:19:9:25 | ControlFlowNode for ImportMember | this user input |

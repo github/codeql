@@ -74,6 +74,7 @@ nodes
 | UnsafeDeserialization.rb:98:24:98:32 | call to read | semmle.label | call to read |
 | UnsafeDeserialization.rb:101:24:101:27 | call to gets | semmle.label | call to gets |
 | UnsafeDeserialization.rb:104:24:104:32 | call to readlines | semmle.label | call to readlines |
+example
 subpaths
 #select
 | UnsafeDeserialization.rb:11:27:11:41 | serialized_data | UnsafeDeserialization.rb:10:39:10:44 | call to params | UnsafeDeserialization.rb:11:27:11:41 | serialized_data | Unsafe deserialization depends on a $@. | UnsafeDeserialization.rb:10:39:10:44 | call to params | user-provided value |

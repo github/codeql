@@ -41,6 +41,7 @@ nodes
 | test.cpp:99:42:99:51 | theZipcode | semmle.label | theZipcode |
 | test.cpp:99:61:99:70 | theZipcode | semmle.label | theZipcode |
 | test.cpp:99:61:99:70 | theZipcode | semmle.label | theZipcode |
+example
 subpaths
 | test.cpp:81:22:81:28 | medical | test.cpp:45:18:45:23 | buffer | test.cpp:45:7:45:10 | func indirection | test.cpp:81:17:81:20 | call to func |
 #select

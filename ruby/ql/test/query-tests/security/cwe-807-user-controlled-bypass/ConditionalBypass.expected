@@ -19,6 +19,7 @@ nodes
 | ConditionalBypass.rb:25:10:25:22 | ...[...] | semmle.label | ...[...] |
 | ConditionalBypass.rb:25:10:25:22 | ...[...] | semmle.label | ...[...] |
 | ConditionalBypass.rb:27:8:27:8 | p | semmle.label | p |
+example
 subpaths
 #select
 | ConditionalBypass.rb:6:8:6:12 | check | ConditionalBypass.rb:3:13:3:18 | call to params | ConditionalBypass.rb:6:8:6:12 | check | This condition guards a sensitive $@, but a $@ controls it. | ConditionalBypass.rb:8:7:8:29 | call to authenticate_user! | action | ConditionalBypass.rb:3:13:3:18 | call to params | user-provided value |

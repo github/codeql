@@ -66,6 +66,7 @@ nodes
 | SanitizingDoubleDash.go:144:24:144:31 | arrayLit | semmle.label | arrayLit |
 | SanitizingDoubleDash.go:148:30:148:36 | tainted | semmle.label | tainted |
 | SanitizingDoubleDash.go:152:24:152:30 | tainted | semmle.label | tainted |
+example
 subpaths
 #select
 | ArgumentInjection.go:10:31:10:34 | path | ArgumentInjection.go:9:10:9:16 | selection of URL | ArgumentInjection.go:10:31:10:34 | path | This command depends on a $@. | ArgumentInjection.go:9:10:9:16 | selection of URL | user-provided value |

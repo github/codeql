@@ -43,6 +43,7 @@ nodes
 | test.py:54:12:54:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | test.py:54:12:54:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:55:17:55:20 | ControlFlowNode for data | semmle.label | ControlFlowNode for data |
+example
 subpaths
 #select
 | test.py:15:36:15:39 | ControlFlowNode for data | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:15:36:15:39 | ControlFlowNode for data | Call to hmac.new [position 1] with untrusted data from $@. | test.py:5:26:5:32 | ControlFlowNode for ImportMember | ControlFlowNode for ImportMember |

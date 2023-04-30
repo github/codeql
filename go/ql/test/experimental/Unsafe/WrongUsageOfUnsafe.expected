@@ -47,6 +47,7 @@ nodes
 | WrongUsageOfUnsafe.go:274:25:274:49 | type conversion | semmle.label | type conversion |
 | WrongUsageOfUnsafe.go:292:16:292:48 | type conversion | semmle.label | type conversion |
 | WrongUsageOfUnsafe.go:292:23:292:47 | type conversion | semmle.label | type conversion |
+example
 subpaths
 #select
 | WrongUsageOfUnsafe.go:77:16:77:55 | type conversion | WrongUsageOfUnsafe.go:77:27:77:54 | type conversion | WrongUsageOfUnsafe.go:77:16:77:55 | type conversion | $@. | WrongUsageOfUnsafe.go:77:27:77:54 | type conversion | Dangerous array type casting to [8]uint8 from an index expression ([8]uint8)[2] (the destination type is 2 elements longer) |

@@ -90,6 +90,7 @@ nodes
 | test.cpp:353:18:353:31 | call to getenv indirection | semmle.label | call to getenv indirection |
 | test.cpp:355:35:355:38 | size | semmle.label | size |
 | test.cpp:356:35:356:38 | size | semmle.label | size |
+example
 subpaths
 #select
 | test.cpp:43:31:43:36 | call to malloc | test.cpp:39:27:39:30 | argv | test.cpp:43:38:43:44 | tainted | This allocation size is derived from $@ and might overflow. | test.cpp:39:27:39:30 | argv | user input (a command-line argument) |

@@ -114,6 +114,7 @@ nodes
 | TarSlipImprov.py:306:5:306:10 | GSSA Variable member | semmle.label | GSSA Variable member |
 | TarSlipImprov.py:310:49:310:54 | ControlFlowNode for result | semmle.label | ControlFlowNode for result |
 | TarSlipImprov.py:316:1:316:46 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+example
 subpaths
 | TarSlipImprov.py:39:65:39:67 | ControlFlowNode for tar | TarSlipImprov.py:26:21:26:27 | ControlFlowNode for tarfile | TarSlipImprov.py:36:12:36:17 | ControlFlowNode for result | TarSlipImprov.py:39:49:39:68 | ControlFlowNode for members_filter1() |
 #select

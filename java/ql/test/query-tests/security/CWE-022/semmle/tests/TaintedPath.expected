@@ -251,6 +251,7 @@ nodes
 | mad/Test.java:142:26:142:33 | source(...) : String | semmle.label | source(...) : String |
 | mad/Test.java:147:20:147:36 | (...)... | semmle.label | (...)... |
 | mad/Test.java:147:29:147:36 | source(...) : String | semmle.label | source(...) : String |
+example
 subpaths
 #select
 | Test.java:24:11:24:24 | new File(...) | Test.java:19:18:19:38 | getHostName(...) : String | Test.java:24:20:24:23 | temp | This path depends on a $@. | Test.java:19:18:19:38 | getHostName(...) | user-provided value |

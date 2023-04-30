@@ -146,6 +146,7 @@ nodes
 | tainted_path.rb:90:40:90:45 | call to params | semmle.label | call to params |
 | tainted_path.rb:90:40:90:52 | ...[...] | semmle.label | ...[...] |
 | tainted_path.rb:92:11:92:14 | path | semmle.label | path |
+example
 subpaths
 #select
 | ArchiveApiPathTraversal.rb:59:21:59:36 | destination_file | ArchiveApiPathTraversal.rb:5:26:5:31 | call to params | ArchiveApiPathTraversal.rb:59:21:59:36 | destination_file | This path depends on a $@. | ArchiveApiPathTraversal.rb:5:26:5:31 | call to params | user-provided value |
