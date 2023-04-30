@@ -14,7 +14,7 @@ class PackageJson extends JsonObject {
 
   /**
    * Gets the name of this package.
-   * If the package is located under the package `pkg1` and its relative path is `foo/bar`, it can be `pkg1/foo/bar`
+   * If the package is located under the package `pkg1` and its relative path is `foo/bar`, it can be `pkg1/foo/bar`.
    */
   string getPackageName() {
     result = this.getPropStringValue("name")
