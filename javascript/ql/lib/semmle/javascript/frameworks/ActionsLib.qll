@@ -1,3 +1,7 @@
+/**
+ * Contains models for `@actions/core` related libraries.
+ */
+
 private import javascript
 
 private API::Node payload() {
