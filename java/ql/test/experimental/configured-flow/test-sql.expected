@@ -1,0 +1,19 @@
+edges
+| Test.java:12:20:12:61 | executeQuery(...) : ResultSet | Test.java:24:59:24:60 | rs : ResultSet |
+| Test.java:12:20:12:61 | executeQuery(...) : ResultSet | Test.java:26:34:26:35 | rs : ResultSet |
+| Test.java:24:59:24:60 | rs : ResultSet | Test.java:24:59:24:78 | getString(...) : String |
+| Test.java:24:59:24:78 | getString(...) : String | Test.java:24:29:24:85 | ... + ... |
+| Test.java:26:34:26:35 | rs : ResultSet | Test.java:26:34:26:53 | getString(...) : String |
+| Test.java:26:34:26:53 | getString(...) : String | Test.java:26:34:26:64 | getBytes(...) |
+nodes
+| Test.java:12:20:12:61 | executeQuery(...) : ResultSet | semmle.label | executeQuery(...) : ResultSet |
+| Test.java:24:29:24:85 | ... + ... | semmle.label | ... + ... |
+| Test.java:24:59:24:60 | rs : ResultSet | semmle.label | rs : ResultSet |
+| Test.java:24:59:24:78 | getString(...) : String | semmle.label | getString(...) : String |
+| Test.java:26:34:26:35 | rs : ResultSet | semmle.label | rs : ResultSet |
+| Test.java:26:34:26:53 | getString(...) : String | semmle.label | getString(...) : String |
+| Test.java:26:34:26:64 | getBytes(...) | semmle.label | getBytes(...) |
+subpaths
+#select
+| Test.java:24:29:24:85 | ... + ... | Test.java:12:20:12:61 | executeQuery(...) : ResultSet | Test.java:24:29:24:85 | ... + ... | This is some kind of threat model thingy $@. | Test.java:12:20:12:61 | executeQuery(...) | Source of that thingy |
+| Test.java:26:34:26:64 | getBytes(...) | Test.java:12:20:12:61 | executeQuery(...) : ResultSet | Test.java:26:34:26:64 | getBytes(...) | This is some kind of threat model thingy $@. | Test.java:12:20:12:61 | executeQuery(...) | Source of that thingy |

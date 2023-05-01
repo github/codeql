@@ -27,8 +27,8 @@ extensions:
       - ["", "SinkClass", True, "memberSink", "(int,int)", "", "Argument[0]", "kotlinMadFlowTest", "manual"]
       - ["", "SinkClass", True, "extensionMemberSink", "(String,int,int)", "", "Argument[1]", "kotlinMadFlowTest", "manual"]
 
-  - addsTo:
-      pack: codeql/java-all
-      extensible: supportedThreatModel
-    data:
-      - ["kotlinMadFlowTest"]
+  # - addsTo:
+  #     pack: codeql/java-all
+  #     extensible: supportedThreatModel
+  #   data:
+  #     - ["kotlinMadFlowTest"]

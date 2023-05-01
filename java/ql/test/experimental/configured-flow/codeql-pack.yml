@@ -1,9 +1,0 @@
-name: test/configured-threat-models
-version: 0.0.0
-dependencies:
-  codeql/java-all: "*"
-
-dataExtensions:
-  - ext/*.yml
-
-extractor: java

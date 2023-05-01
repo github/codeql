@@ -1,0 +1,7 @@
+extensions:
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: supportedThreatModel
+    data:
+      - ["remote"]

@@ -1,0 +1,11 @@
+edges
+| Test.java:15:15:15:42 | read(...) : Number | Test.java:18:34:18:36 | val |
+| Test.java:15:15:15:42 | read(...) : Number | Test.java:21:29:21:68 | ... + ... |
+nodes
+| Test.java:15:15:15:42 | read(...) : Number | semmle.label | read(...) : Number |
+| Test.java:18:34:18:36 | val | semmle.label | val |
+| Test.java:21:29:21:68 | ... + ... | semmle.label | ... + ... |
+subpaths
+#select
+| Test.java:18:34:18:36 | val | Test.java:15:15:15:42 | read(...) : Number | Test.java:18:34:18:36 | val | This is some kind of threat model thingy $@. | Test.java:15:15:15:42 | read(...) | Source of that thingy |
+| Test.java:21:29:21:68 | ... + ... | Test.java:15:15:15:42 | read(...) : Number | Test.java:21:29:21:68 | ... + ... | This is some kind of threat model thingy $@. | Test.java:15:15:15:42 | read(...) | Source of that thingy |
