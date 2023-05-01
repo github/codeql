@@ -40,3 +40,17 @@ private class GitHubActionsSource extends RemoteFlowSource {
 
   override string getSourceType() { result = "GitHub Actions input" }
 }
+
+private class ExecActionsCall extends SystemCommandExecution, DataFlow::CallNode {
+  ExecActionsCall() {
+    this = API::moduleImport("@actions/exec").getMember(["exec", "getExecOutput"]).getACall()
+  }
+
+  override DataFlow::Node getACommandArgument() { result = this.getArgument(0) }
+
+  override DataFlow::Node getArgumentList() { result = this.getArgument(1) }
+
+  override DataFlow::Node getOptionsArg() { result = this.getArgument(2) }
+
+  override predicate isSync() { none() }
+}
