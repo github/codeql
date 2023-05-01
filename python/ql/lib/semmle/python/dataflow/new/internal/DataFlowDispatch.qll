@@ -464,22 +464,55 @@ private predicate ignoreForCallGraph(File f) {
   f.getAbsolutePath().matches("%/site-packages/sympy/%")
 }
 
+bindingset[n]
+pragma[inline_late]
+private predicate includeInCallGraph(TypeTrackingNode n) {
+  not ignoreForCallGraph(n.getLocation().getFile())
+}
+
+pragma[nomagic]
+private predicate stepCallProj(TypeTrackingNode nodeFrom, StepSummary summary) {
+  StepSummary::stepCall(nodeFrom, _, summary)
+}
+
+bindingset[t, summary]
+pragma[inline_late]
+private TypeTracker append(TypeTracker t, StepSummary summary) { result = t.append(summary) }
+
 /**
  * Gets a reference to the function `func`.
  */
 private TypeTrackingNode functionTracker(TypeTracker t, Function func) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
+  includeInCallGraph(result) and
   (
-    result.asExpr() = func.getDefinition()
+    t.start() and
+    (
+      result.asExpr() = func.getDefinition()
+      or
+      // when a function is decorated, it's the result of the (last) decorator call that
+      // is used
+      result.asExpr() = func.getDefinition().(FunctionExpr).getADecoratorCall()
+    )
     or
-    // when a function is decorated, it's the result of the (last) decorator call that
-    // is used
-    result.asExpr() = func.getDefinition().(FunctionExpr).getADecoratorCall()
+    (
+      exists(TypeTracker t2 | t = t2.stepNoCall(functionTracker(t2, func), result))
+      or
+      exists(StepSummary summary |
+        // non-linear recursion
+        StepSummary::stepCall(functionTrackerCall(t, func, summary), result, summary)
+      )
+    )
   )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = functionTracker(t2, func).track(t2, t))
+}
+
+pragma[nomagic]
+private TypeTrackingNode functionTrackerCall(TypeTracker t, Function func, StepSummary summary) {
+  exists(TypeTracker t2 |
+    // non-linear recursion
+    result = functionTracker(t2, func) and
+    stepCallProj(result, summary) and
+    t = append(t2, summary)
+  )
 }
 
 /**
@@ -491,23 +524,41 @@ Node functionTracker(Function func) { functionTracker(TypeTracker::end(), func).
  * Gets a reference to the class `cls`.
  */
 private TypeTrackingNode classTracker(TypeTracker t, Class cls) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
+  includeInCallGraph(result) and
   (
-    result.asExpr() = cls.getParent()
+    t.start() and
+    (
+      result.asExpr() = cls.getParent()
+      or
+      // when a class is decorated, it's the result of the (last) decorator call that
+      // is used
+      result.asExpr() = cls.getParent().getADecoratorCall()
+      or
+      // `type(obj)`, where obj is an instance of this class
+      result = getTypeCall() and
+      result.(CallCfgNode).getArg(0) = classInstanceTracker(cls)
+    )
     or
-    // when a class is decorated, it's the result of the (last) decorator call that
-    // is used
-    result.asExpr() = cls.getParent().getADecoratorCall()
-    or
-    // `type(obj)`, where obj is an instance of this class
-    result = getTypeCall() and
-    result.(CallCfgNode).getArg(0) = classInstanceTracker(cls)
+    not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf())) and
+    (
+      exists(TypeTracker t2 | t = t2.stepNoCall(classTracker(t2, cls), result))
+      or
+      exists(StepSummary summary |
+        // non-linear recursion
+        StepSummary::stepCall(classTrackerCall(t, cls, summary), result, summary)
+      )
+    )
   )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = classTracker(t2, cls).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+}
+
+pragma[nomagic]
+private TypeTrackingNode classTrackerCall(TypeTracker t, Class cls, StepSummary summary) {
+  exists(TypeTracker t2 |
+    // non-linear recursion
+    result = classTracker(t2, cls) and
+    stepCallProj(result, summary) and
+    t = append(t2, summary)
+  )
 }
 
 /**
@@ -519,21 +570,38 @@ Node classTracker(Class cls) { classTracker(TypeTracker::end(), cls).flowsTo(res
  * Gets a reference to an instance of the class `cls`.
  */
 private TypeTrackingNode classInstanceTracker(TypeTracker t, Class cls) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  resolveClassCall(result.(CallCfgNode).asCfgNode(), cls)
-  or
-  // result of `super().__new__` as used in a `__new__` method implementation
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  exists(Class classUsedInSuper |
-    fromSuperNewCall(result.(CallCfgNode).asCfgNode(), classUsedInSuper, _, _) and
-    classUsedInSuper = getADirectSuperclass*(cls)
+  includeInCallGraph(result) and
+  (
+    t.start() and
+    resolveClassCall(result.(CallCfgNode).asCfgNode(), cls)
+    or
+    // result of `super().__new__` as used in a `__new__` method implementation
+    t.start() and
+    exists(Class classUsedInSuper |
+      fromSuperNewCall(result.(CallCfgNode).asCfgNode(), classUsedInSuper, _, _) and
+      classUsedInSuper = getADirectSuperclass*(cls)
+    )
+    or
+    not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf())) and
+    (
+      exists(TypeTracker t2 | t = t2.stepNoCall(classInstanceTracker(t2, cls), result))
+      or
+      exists(StepSummary summary |
+        // non-linear recursion
+        StepSummary::stepCall(classInstanceTrackerCall(t, cls, summary), result, summary)
+      )
+    )
   )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = classInstanceTracker(t2, cls).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+}
+
+pragma[nomagic]
+private TypeTrackingNode classInstanceTrackerCall(TypeTracker t, Class cls, StepSummary summary) {
+  exists(TypeTracker t2 |
+    // non-linear recursion
+    result = classInstanceTracker(t2, cls) and
+    stepCallProj(result, summary) and
+    t = append(t2, summary)
+  )
 }
 
 /**
@@ -548,19 +616,37 @@ Node classInstanceTracker(Class cls) {
  * The method cannot be a `staticmethod` or `classmethod`.
  */
 private TypeTrackingNode selfTracker(TypeTracker t, Class classWithMethod) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  exists(Function func |
-    func = classWithMethod.getAMethod() and
-    not isStaticmethod(func) and
-    not isClassmethod(func)
-  |
-    result.asExpr() = func.getArg(0)
+  includeInCallGraph(result) and
+  (
+    t.start() and
+    exists(Function func |
+      func = classWithMethod.getAMethod() and
+      not isStaticmethod(func) and
+      not isClassmethod(func)
+    |
+      result.asExpr() = func.getArg(0)
+    )
+    or
+    not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf())) and
+    (
+      exists(TypeTracker t2 | t = t2.stepNoCall(selfTracker(t2, classWithMethod), result))
+      or
+      exists(StepSummary summary |
+        // non-linear recursion
+        StepSummary::stepCall(selfTrackerCall(t, classWithMethod, summary), result, summary)
+      )
+    )
   )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = selfTracker(t2, classWithMethod).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+}
+
+pragma[nomagic]
+private TypeTrackingNode selfTrackerCall(TypeTracker t, Class classWithMethod, StepSummary summary) {
+  exists(TypeTracker t2 |
+    // non-linear recursion
+    result = selfTracker(t2, classWithMethod) and
+    stepCallProj(result, summary) and
+    t = append(t2, summary)
+  )
 }
 
 /**
@@ -577,24 +663,44 @@ Node selfTracker(Class classWithMethod) {
  * from a normal method.
  */
 private TypeTrackingNode clsArgumentTracker(TypeTracker t, Class classWithMethod) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
+  includeInCallGraph(result) and
   (
-    exists(Function func |
-      func = classWithMethod.getAMethod() and
-      isClassmethod(func)
-    |
-      result.asExpr() = func.getArg(0)
+    t.start() and
+    (
+      exists(Function func |
+        func = classWithMethod.getAMethod() and
+        isClassmethod(func)
+      |
+        result.asExpr() = func.getArg(0)
+      )
+      or
+      // type(self)
+      result = getTypeCall() and
+      result.(CallCfgNode).getArg(0) = selfTracker(classWithMethod)
     )
     or
-    // type(self)
-    result = getTypeCall() and
-    result.(CallCfgNode).getArg(0) = selfTracker(classWithMethod)
+    not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf())) and
+    (
+      exists(TypeTracker t2 | t = t2.stepNoCall(clsArgumentTracker(t2, classWithMethod), result))
+      or
+      exists(StepSummary summary |
+        // non-linear recursion
+        StepSummary::stepCall(clsArgumentTrackerCall(t, classWithMethod, summary), result, summary)
+      )
+    )
   )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = clsArgumentTracker(t2, classWithMethod).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+}
+
+pragma[nomagic]
+private TypeTrackingNode clsArgumentTrackerCall(
+  TypeTracker t, Class classWithMethod, StepSummary summary
+) {
+  exists(TypeTracker t2 |
+    // non-linear recursion
+    result = clsArgumentTracker(t2, classWithMethod) and
+    stepCallProj(result, summary) and
+    t = append(t2, summary)
+  )
 }
 
 /**
@@ -611,18 +717,38 @@ Node clsArgumentTracker(Class classWithMethod) {
  * call happened in the method `func` (either a method or a classmethod).
  */
 private TypeTrackingNode superCallNoArgumentTracker(TypeTracker t, Function func) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  not isStaticmethod(func) and
-  exists(CallCfgNode call | result = call |
-    call = getSuperCall() and
-    not exists(call.getArg(_)) and
-    call.getScope() = func
+  includeInCallGraph(result) and
+  (
+    t.start() and
+    not isStaticmethod(func) and
+    exists(CallCfgNode call | result = call |
+      call = getSuperCall() and
+      not exists(call.getArg(_)) and
+      call.getScope() = func
+    )
+    or
+    not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf())) and
+    (
+      exists(TypeTracker t2 | t = t2.stepNoCall(superCallNoArgumentTracker(t2, func), result))
+      or
+      exists(StepSummary summary |
+        // non-linear recursion
+        StepSummary::stepCall(superCallNoArgumentTrackerCall(t, func, summary), result, summary)
+      )
+    )
   )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = superCallNoArgumentTracker(t2, func).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+}
+
+pragma[nomagic]
+private TypeTrackingNode superCallNoArgumentTrackerCall(
+  TypeTracker t, Function func, StepSummary summary
+) {
+  exists(TypeTracker t2 |
+    // non-linear recursion
+    result = functionTracker(t2, func) and
+    stepCallProj(result, summary) and
+    t = append(t2, summary)
+  )
 }
 
 /**
@@ -638,17 +764,37 @@ Node superCallNoArgumentTracker(Function func) {
  * first is a reference to the class `cls`, and the second argument is `obj`.
  */
 private TypeTrackingNode superCallTwoArgumentTracker(TypeTracker t, Class cls, Node obj) {
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  t.start() and
-  exists(CallCfgNode call | result = call |
-    call = getSuperCall() and
-    call.getArg(0) = classTracker(cls) and
-    call.getArg(1) = obj
+  includeInCallGraph(result) and
+  (
+    t.start() and
+    exists(CallCfgNode call | result = call |
+      call = getSuperCall() and
+      call.getArg(0) = classTracker(cls) and
+      call.getArg(1) = obj
+    )
+    or
+    not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf())) and
+    (
+      exists(TypeTracker t2 | t = t2.stepNoCall(superCallTwoArgumentTracker(t2, cls, obj), result))
+      or
+      exists(StepSummary summary |
+        // non-linear recursion
+        StepSummary::stepCall(superCallTwoArgumentTrackerCall(t, cls, obj, summary), result, summary)
+      )
+    )
   )
-  or
-  not ignoreForCallGraph(result.getLocation().getFile()) and
-  exists(TypeTracker t2 | result = superCallTwoArgumentTracker(t2, cls, obj).track(t2, t)) and
-  not result.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pp | pp.isSelf()))
+}
+
+pragma[nomagic]
+private TypeTrackingNode superCallTwoArgumentTrackerCall(
+  TypeTracker t, Class cls, Node obj, StepSummary summary
+) {
+  exists(TypeTracker t2 |
+    // non-linear recursion
+    result = superCallTwoArgumentTracker(t2, cls, obj) and
+    stepCallProj(result, summary) and
+    t = append(t2, summary)
+  )
 }
 
 /**
@@ -809,7 +955,22 @@ private TypeTrackingNode attrReadTracker(TypeTracker t, AttrRead attr) {
       superCallNoArgumentTracker(_), superCallTwoArgumentTracker(_, _)
     ]
   or
-  exists(TypeTracker t2 | result = attrReadTracker(t2, attr).track(t2, t))
+  exists(TypeTracker t2 | t = t2.stepNoCall(attrReadTracker(t2, attr), result))
+  or
+  exists(StepSummary summary |
+    // non-linear recursion
+    StepSummary::stepCall(attrReadTrackerCall(t, attr, summary), result, summary)
+  )
+}
+
+pragma[nomagic]
+private TypeTrackingNode attrReadTrackerCall(TypeTracker t, AttrRead attr, StepSummary summary) {
+  exists(TypeTracker t2 |
+    // non-linear recursion
+    result = attrReadTracker(t2, attr) and
+    stepCallProj(result, summary) and
+    t = append(t2, summary)
+  )
 }
 
 /** Gets a reference to the attribute read `attr` */
