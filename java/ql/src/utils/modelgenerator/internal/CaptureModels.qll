@@ -139,9 +139,9 @@ module ThroughFlowConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    exists(DataFlowImplCommon::TypedContent tc |
-      DataFlowImplCommon::store(node1, tc, node2, _) and
-      isRelevantContent(tc.getContent()) and
+    exists(DataFlow::Content c |
+      DataFlowImplCommon::store(node1, c, node2, _, _) and
+      isRelevantContent(c) and
       (
         state1 instanceof TaintRead and state2.(TaintStore).getStep() = 1
         or
