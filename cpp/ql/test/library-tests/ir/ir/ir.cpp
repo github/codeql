@@ -1904,4 +1904,11 @@ int noreturnTest(int x) {
     }
 }
 
+int noreturnTest2(int x) {
+    if (x < 10) {
+        noreturnFunc();
+    }
+    return x;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

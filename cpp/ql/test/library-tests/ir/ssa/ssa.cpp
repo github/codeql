@@ -427,3 +427,10 @@ int noreturnTest(int x) {
         noreturnFunc();
     }
 }
+
+int noreturnTest2(int x) {
+    if (x < 10) {
+        noreturnFunc();
+    }
+    return x;
+}
