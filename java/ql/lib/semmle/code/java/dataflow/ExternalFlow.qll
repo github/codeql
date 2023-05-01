@@ -286,13 +286,13 @@ module ModelValidation {
       not kind.matches("qltest%") and
       result = "Invalid kind \"" + kind + "\" in sink model."
     )
-    // All source kinds are supported, but some may not be used in this query.
-    // or
-    // exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-    //   not ConfiguredExtensions::supportedSourceKind(kind) and
-    //   not kind.matches("qltest%") and
-    //   result = "Invalid kind \"" + kind + "\" in source model."
-    // )
+    or
+    exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
+      not kind =
+        ["remote", "sql", "contentprovider", "android-widget", "android-external-storage-dir"] and
+      not kind.matches("qltest%") and
+      result = "Invalid kind \"" + kind + "\" in source model."
+    )
   }
 
   private string getInvalidModelSignature() {
