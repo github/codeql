@@ -33,6 +33,9 @@ private API::Node taintSource() {
   result = commitObj().getMember("message")
   or
   result = commitObj().getMember(["author", "committer"]).getMember(["name", "email"])
+  or
+  result =
+    API::moduleImport("@actions/core").getMember(["getInput", "getMultilineInput"]).getReturn()
 }
 
 private class GitHubActionsSource extends RemoteFlowSource {
