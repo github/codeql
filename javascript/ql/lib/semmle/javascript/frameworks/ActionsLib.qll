@@ -26,11 +26,13 @@ private API::Node taintSource() {
   or
   result = payload().getMember(["review", "review_comment", "comment"]).getMember("body")
   or
-  result = workflowRun().getMember("head_branch")
+  result = workflowRun().getMember(["head_branch", "display_title"])
+  or
+  result = workflowRun().getMember("head_repository").getMember("description")
   or
   result = commitObj().getMember("message")
   or
-  result = commitObj().getMember("author").getMember(["name", "email"])
+  result = commitObj().getMember(["author", "committer"]).getMember(["name", "email"])
 }
 
 private class GitHubActionsSource extends RemoteFlowSource {
