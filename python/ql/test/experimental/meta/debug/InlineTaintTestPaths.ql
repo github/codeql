@@ -9,17 +9,29 @@
 // 3. if necessary, look at partial paths by (un)commenting appropriate lines
 import python
 import semmle.python.dataflow.new.DataFlow
+import semmle.python.dataflow.new.TaintTracking
 import experimental.meta.InlineTaintTest::Conf
-// import DataFlow::PartialPathGraph
-import DataFlow::PathGraph
 
-class Conf extends TestTaintTrackingConfiguration {
-  // override int explorationLimit() { result = 5 }
+module Conf implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    any (TestTaintTrackingConfiguration c).isSource(source)
+  }
+  predicate isSink(DataFlow::Node source) {
+    any (TestTaintTrackingConfiguration c).isSink(source)
+  }
 }
+int explorationLimit() { result = 5 }
 
-// from Conf config, DataFlow::PartialPathNode source, DataFlow::PartialPathNode sink
-// where config.hasPartialFlow(source, sink, _)
-from Conf config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+module Flows = TaintTracking::Global<Conf>;
+
+module FlowsPartial = Flows::FlowExploration<explorationLimit/0>;
+
+// import FlowsPartial::PartialPathGraph
+import Flows::PathGraph
+
+// from FlowsPartial::PartialPathNode source, FlowsPartial::PartialPathNode sink
+// where FlowsPartial::partialFlow(source, sink, _)
+from Flows::PathNode source, Flows::PathNode sink
+where Flows::flowPath(source, sink)
 select sink.getNode(), source, sink, "This node receives taint from $@.", source.getNode(),
   "this source"

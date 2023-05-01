@@ -46,6 +46,4 @@ class TestConfiguration extends DataFlow::Configuration {
   }
 
   override predicate isBarrierIn(DataFlow::Node node) { this.isSource(node) }
-
-  override int explorationLimit() { result = 5 }
 }
