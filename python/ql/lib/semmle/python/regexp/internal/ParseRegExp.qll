@@ -26,15 +26,11 @@ private module FindRegexMode {
         call.getArg(_) = sink and
         sink instanceof Concepts::RegExpInterpretation::Range
       |
-        exists(DataFlow::CallCfgNode callNode |
-          call = callNode and
-          result =
-            mode_from_node([
-                callNode
-                    .getArg(re_member_flags_arg(callNode.(DataFlow::MethodCallNode).getMethodName())),
-                callNode.getArgByName("flags")
-              ])
-        )
+        result =
+          mode_from_node([
+              call.getArg(re_member_flags_arg(call.(DataFlow::MethodCallNode).getMethodName())),
+              call.getArgByName("flags")
+            ])
       )
     )
   }

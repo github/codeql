@@ -525,6 +525,10 @@ module Impl implements RegexTreeViewSig {
      */
     private predicate isUnicode() { this.getText().prefix(2) = ["\\u", "\\U"] }
 
+    /**
+     * Gets the unicode char for this escape.
+     * E.g. for `\u0061` this returns "a".
+     */
     private string getUnicode() {
       result = Numbers::parseHexInt(this.getText().suffix(2)).toUnicode()
     }

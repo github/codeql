@@ -19,11 +19,13 @@ DataFlow::LocalSourceNode strStart() { result.asExpr() instanceof StrConst }
 
 private import semmle.python.regex as Regex
 
-/** Gets a node where regular expressions that flow to the node are used. */
-DataFlow::Node regSink() {
-  result = any(Concepts::RegexExecution exec).getRegex()
-  or
-  result instanceof Concepts::RegExpInterpretation
+/** A node where regular expressions that flow to the node are used. */
+class RegExpSink extends DataFlow::Node {
+  RegExpSink() {
+    this = any(Concepts::RegexExecution exec).getRegex()
+    or
+    this instanceof Concepts::RegExpInterpretation
+  }
 }
 
 /**
@@ -32,7 +34,7 @@ DataFlow::Node regSink() {
  */
 private DataFlow::TypeTrackingNode backwards(DataFlow::TypeBackTracker t) {
   t.start() and
-  result = regSink().getALocalSource()
+  result = any(RegExpSink sink).getALocalSource()
   or
   exists(DataFlow::TypeBackTracker t2 | result = backwards(t2).backtrack(t2, t))
 }
@@ -69,7 +71,6 @@ private DataFlow::TypeTrackingNode regexTracking(DataFlow::Node start, DataFlow:
 
 /** Gets a node holding a value for the regular expression that is evaluated at `re`. */
 cached
-DataFlow::Node regExpSource(DataFlow::Node re) {
-  re = regSink() and
+DataFlow::Node regExpSource(RegExpSink re) {
   regexTracking(result, DataFlow::TypeTracker::end()).flowsTo(re)
 }

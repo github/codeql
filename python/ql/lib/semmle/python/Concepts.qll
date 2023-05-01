@@ -422,9 +422,8 @@ module RegexExecution {
 }
 
 /**
- * A node that is not a regular expression literal, but is used in places that
- * may interpret it as one. Instances of this class are typically strings that
- * flow to method calls like `re.compile`.
+ * A node where a string is interpreted as a regular expression,
+ * for instance an argument to `re.compile`.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `RegExpInterpretation::Range` instead.
@@ -434,9 +433,8 @@ class RegExpInterpretation extends DataFlow::Node instanceof RegExpInterpretatio
 /** Provides a class for modeling regular expression interpretations. */
 module RegExpInterpretation {
   /**
-   * A node that is not a regular expression literal, but is used in places that
-   * may interpret it as one. Instances of this class are typically strings that
-   * flow to method calls like `re.compile`.
+   * A node where a string is interpreted as a regular expression,
+   * for instance an argument to `re.compile`.
    */
   abstract class Range extends DataFlow::Node { }
 }
