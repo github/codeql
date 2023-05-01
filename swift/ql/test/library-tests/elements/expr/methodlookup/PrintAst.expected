@@ -1,44 +1,44 @@
 methodlookup.swift:
 #    1| [ClassDecl] Foo
-#    2|   getMember(0): [ConstructorDecl] Foo.init()
+#    2|   getMember(0): [Initializer] Foo.init()
 #    2|       InterfaceType = (Foo.Type) -> () -> Foo
 #    2|     getSelfParam(): [ParamDecl] self
 #    2|         Type = Foo
 #    2|     getBody(): [BraceStmt] { ... }
 #    2|       getElement(0): [ReturnStmt] return
-#    3|   getMember(1): [ConcreteFuncDecl] instanceMethod()
+#    3|   getMember(1): [NamedFunction] instanceMethod()
 #    3|       InterfaceType = (Foo) -> () -> ()
 #    3|     getSelfParam(): [ParamDecl] self
 #    3|         Type = Foo
 #    3|     getBody(): [BraceStmt] { ... }
-#    4|   getMember(2): [ConcreteFuncDecl] staticMethod()
+#    4|   getMember(2): [NamedFunction] staticMethod()
 #    4|       InterfaceType = (Foo.Type) -> () -> ()
 #    4|     getSelfParam(): [ParamDecl] self
 #    4|         Type = Foo.Type
 #    4|     getBody(): [BraceStmt] { ... }
-#    5|   getMember(3): [ConcreteFuncDecl] classMethod()
+#    5|   getMember(3): [NamedFunction] classMethod()
 #    5|       InterfaceType = (Foo.Type) -> () -> ()
 #    5|     getSelfParam(): [ParamDecl] self
 #    5|         Type = Foo.Type
 #    5|     getBody(): [BraceStmt] { ... }
-#    1|   getMember(4): [DestructorDecl] Foo.deinit()
+#    1|   getMember(4): [Deinitializer] Foo.deinit()
 #    1|       InterfaceType = (Foo) -> () -> ()
 #    1|     getSelfParam(): [ParamDecl] self
 #    1|         Type = Foo
 #    1|     getBody(): [BraceStmt] { ... }
 #    8| [ClassDecl] Bar
-#    9|   getMember(0): [ConstructorDecl] Bar.init()
+#    9|   getMember(0): [Initializer] Bar.init()
 #    9|       InterfaceType = (Bar.Type) -> () -> Bar
 #    9|     getSelfParam(): [ParamDecl] self
 #    9|         Type = Bar
 #    9|     getBody(): [BraceStmt] { ... }
 #    9|       getElement(0): [ReturnStmt] return
-#   10|   getMember(1): [ConcreteFuncDecl] instanceMethod()
+#   10|   getMember(1): [NamedFunction] instanceMethod()
 #   10|       InterfaceType = (isolated Bar) -> () -> ()
 #   10|     getSelfParam(): [ParamDecl] self
 #   10|         Type = Bar
 #   10|     getBody(): [BraceStmt] { ... }
-#   11|   getMember(2): [ConcreteFuncDecl] staticMethod()
+#   11|   getMember(2): [NamedFunction] staticMethod()
 #   11|       InterfaceType = (Bar.Type) -> () -> ()
 #   11|     getSelfParam(): [ParamDecl] self
 #   11|         Type = Bar.Type
@@ -46,14 +46,14 @@ methodlookup.swift:
 #-----|   getMember(3): [PatternBindingDecl] var ... = ...
 #-----|     getPattern(0): [TypedPattern] ... as ...
 #-----|       getSubPattern(): [NamedPattern] unownedExecutor
-#    8|   getMember(4): [DestructorDecl] Bar.deinit()
+#    8|   getMember(4): [Deinitializer] Bar.deinit()
 #    8|       InterfaceType = (Bar) -> () -> ()
 #    8|     getSelfParam(): [ParamDecl] self
 #    8|         Type = Bar
 #    8|     getBody(): [BraceStmt] { ... }
 #-----|   getMember(5): [ConcreteVarDecl] unownedExecutor
 #-----|       Type = UnownedSerialExecutor
-#-----|     getAccessorDecl(0): [AccessorDecl] get
+#-----|     getAccessor(0): [Accessor] get
 #-----|         InterfaceType = (Bar) -> () -> UnownedSerialExecutor
 #-----|       getSelfParam(): [ParamDecl] self
 #-----|           Type = Bar
@@ -69,28 +69,28 @@ methodlookup.swift:
 #-----|                 getArgument(0): [Argument] : self
 #-----|                   getExpr(): [DeclRefExpr] self
 #   15| [ClassDecl] Baz
-#   16|   getMember(0): [ConstructorDecl] Baz.init()
+#   16|   getMember(0): [Initializer] Baz.init()
 #   16|       InterfaceType = (Baz.Type) -> () -> Baz
 #   16|     getSelfParam(): [ParamDecl] self
 #   16|         Type = Baz
 #   16|     getBody(): [BraceStmt] { ... }
 #   16|       getElement(0): [ReturnStmt] return
-#   17|   getMember(1): [ConcreteFuncDecl] instanceMethod()
+#   17|   getMember(1): [NamedFunction] instanceMethod()
 #   17|       InterfaceType = (Baz) -> () -> ()
 #   17|     getSelfParam(): [ParamDecl] self
 #   17|         Type = Baz
 #   17|     getBody(): [BraceStmt] { ... }
-#   18|   getMember(2): [ConcreteFuncDecl] staticMethod()
+#   18|   getMember(2): [NamedFunction] staticMethod()
 #   18|       InterfaceType = (Baz.Type) -> () -> ()
 #   18|     getSelfParam(): [ParamDecl] self
 #   18|         Type = Baz.Type
 #   18|     getBody(): [BraceStmt] { ... }
-#   19|   getMember(3): [ConcreteFuncDecl] classMethod()
+#   19|   getMember(3): [NamedFunction] classMethod()
 #   19|       InterfaceType = (Baz.Type) -> () -> ()
 #   19|     getSelfParam(): [ParamDecl] self
 #   19|         Type = Baz.Type
 #   19|     getBody(): [BraceStmt] { ... }
-#   15|   getMember(4): [DestructorDecl] Baz.deinit()
+#   15|   getMember(4): [Deinitializer] Baz.deinit()
 #   15|       InterfaceType = (Baz) -> () -> ()
 #   15|     getSelfParam(): [ParamDecl] self
 #   15|         Type = Baz
@@ -159,7 +159,7 @@ methodlookup.swift:
 #   33|       getArgument(0): [Argument] priority: default priority
 #   33|         getExpr(): [DefaultArgumentExpr] default priority
 #   33|       getArgument(1): [Argument] operation: { ... }
-#   33|         getExpr(): [ClosureExpr] { ... }
+#   33|         getExpr(): [ExplicitClosureExpr] { ... }
 #   33|           getBody(): [BraceStmt] { ... }
 #   34|             getElement(0): [PatternBindingDecl] var ... = ...
 #   34|               getInit(0): [CallExpr] call to Bar.init()
@@ -200,7 +200,7 @@ methodlookup.swift:
 #   43|       getArgument(0): [Argument] priority: default priority
 #   43|         getExpr(): [DefaultArgumentExpr] default priority
 #   43|       getArgument(1): [Argument] operation: { ... }
-#   43|         getExpr(): [ClosureExpr] { ... }
+#   43|         getExpr(): [ExplicitClosureExpr] { ... }
 #   43|           getBody(): [BraceStmt] { ... }
 #   44|             getElement(0): [PatternBindingDecl] var ... = ...
 #   44|               getInit(0): [CallExpr] call to Baz.init()

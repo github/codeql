@@ -107,7 +107,7 @@ module Ssa {
         certain = true
       )
       or
-      exists(ExitNode exit, AbstractFunctionDecl func |
+      exists(ExitNode exit, Function func |
         [func.getAParam(), func.getSelfParam()] = v.asVarDecl() and
         bb.getNode(i) = exit and
         modifiableParam(v.asVarDecl()) and
