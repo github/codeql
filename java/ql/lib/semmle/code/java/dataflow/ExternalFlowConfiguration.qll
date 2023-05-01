@@ -49,7 +49,7 @@ predicate supportedSourceModel(string kind) {
   exists(string group | group = parentThreatModel(kind) | supportedThreatModel(group))
   or
   // if supportedThreatModel is empty, check if kind is a subtype of "standard"
-  count(any(string s | supportedThreatModel(s))) = 0 and
+  not supportedThreatModel(_) and
   ("standard" = parentThreatModel(kind) or "standard" = kind)
 }
 
@@ -78,7 +78,7 @@ private class Kind extends string {
  */
 string relatedSourceModel(Kind kind) {
   // Use the kinds provided by the query if the standard threat model is enabled or if no threat models are provided.
-  (supportedThreatModel("standard") or not exists(string model | supportedThreatModel(model))) and
+  (supportedThreatModel("standard") or not supportedThreatModel(_)) and
   result = kind
   or
   // Use all kinds regardless of the query.
