@@ -14406,6 +14406,31 @@ ir.cpp:
 # 1895|               Type = [VoidType] void
 # 1895|               ValueCategory = prvalue
 # 1897|     getStmt(1): [ReturnStmt] return ...
+# 1899| [TopLevelFunction] int noreturnTest2(int)
+# 1899|   <params>: 
+# 1899|     getParameter(0): [Parameter] x
+# 1899|         Type = [IntType] int
+# 1899|   getEntryPoint(): [BlockStmt] { ... }
+# 1900|     getStmt(0): [IfStmt] if (...) ... 
+# 1900|       getCondition(): [LTExpr] ... < ...
+# 1900|           Type = [BoolType] bool
+# 1900|           ValueCategory = prvalue
+# 1900|         getLesserOperand(): [VariableAccess] x
+# 1900|             Type = [IntType] int
+# 1900|             ValueCategory = prvalue(load)
+# 1900|         getGreaterOperand(): [Literal] 10
+# 1900|             Type = [IntType] int
+# 1900|             Value = [Literal] 10
+# 1900|             ValueCategory = prvalue
+# 1900|       getThen(): [BlockStmt] { ... }
+# 1901|         getStmt(0): [ExprStmt] ExprStmt
+# 1901|           getExpr(): [FunctionCall] call to noreturnFunc
+# 1901|               Type = [VoidType] void
+# 1901|               ValueCategory = prvalue
+# 1903|     getStmt(1): [ReturnStmt] return ...
+# 1903|       getExpr(): [VariableAccess] x
+# 1903|           Type = [IntType] int
+# 1903|           ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 
