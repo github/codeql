@@ -33,21 +33,21 @@ extensions:
   - addsTo:
       pack: codeql/java-all
       extensible: threatModelGrouping
-    data:
-      - ["android-widget", "android"]
-      - ["android-external-storage-dir", "android"]
-      - ["contentprovider", "android"]
-      - ["request", "remote"]
-      - ["response", "remote"]
-      - ["sql", "local"]
-      - ["remote", "standard"]
+    data: []
+      # - ["android-widget", "android"]
+      # - ["android-external-storage-dir", "android"]
+      # - ["contentprovider", "android"]
+      # - ["request", "remote"]
+      # - ["response", "remote"]
+      # - ["sql", "local"]
+      # - ["remote", "standard"]
 
       # Not sure if these should really go in the standard threat model, but we need them for tests to pass
-      - ["android-external-storage-dir", "standard"]
-      - ["contentprovider", "standard"]
-      - ["android-widget", "standard"]
-      - ["android-web-resource-response", "standard"]
-      - ["uri-path", "standard"]
+      # - ["android-external-storage-dir", "standard"]
+      # - ["contentprovider", "standard"]
+      # - ["android-widget", "standard"]
+      # - ["android-web-resource-response", "standard"]
+      # - ["uri-path", "standard"]
 
   # Provide a default, empty supportedThreatModel
   - addsTo:

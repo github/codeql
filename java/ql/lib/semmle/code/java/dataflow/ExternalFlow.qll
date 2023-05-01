@@ -136,11 +136,12 @@ predicate sourceModel(
   string package, string type, boolean subtypes, string name, string signature, string ext,
   string output, string kind, string provenance
 ) {
-  ConfiguredExtensions::supportedSourceModel(kind) and (
-    Extensions::sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
+  exists(string relatedKind | relatedKind = ConfiguredExtensions::relatedSourceModel(kind) |
+    Extensions::sourceModel(package, type, subtypes, name, signature, ext, output, relatedKind,
+      provenance)
     or
     any(ActiveExperimentalModels q)
-        .sourceModel(package, type, subtypes, name, signature, ext, output, kind, provenance)
+        .sourceModel(package, type, subtypes, name, signature, ext, output, relatedKind, provenance)
   )
 }
 
