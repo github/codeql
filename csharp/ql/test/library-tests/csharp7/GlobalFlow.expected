@@ -7,11 +7,11 @@ edges
 | CSharp7.cs:55:11:55:19 | "tainted" : String | CSharp7.cs:55:30:55:31 | SSA def(t4) : String |
 | CSharp7.cs:55:30:55:31 | SSA def(t4) : String | CSharp7.cs:56:18:56:19 | access to local variable t4 |
 | CSharp7.cs:80:21:80:21 | x : String | CSharp7.cs:82:20:82:20 | access to parameter x : String |
-| CSharp7.cs:82:16:82:24 | (..., ...) [field Item1] : String | CSharp7.cs:82:16:82:26 | access to field Item1 : String |
-| CSharp7.cs:82:20:82:20 | access to parameter x : String | CSharp7.cs:82:16:82:24 | (..., ...) [field Item1] : String |
-| CSharp7.cs:87:18:87:34 | (..., ...) [field Item1] : String | CSharp7.cs:90:20:90:21 | access to local variable t1 [field Item1] : String |
-| CSharp7.cs:87:19:87:27 | "tainted" : String | CSharp7.cs:87:18:87:34 | (..., ...) [field Item1] : String |
-| CSharp7.cs:90:20:90:21 | access to local variable t1 [field Item1] : String | CSharp7.cs:90:20:90:27 | access to field Item1 : String |
+| CSharp7.cs:82:16:82:24 | (..., ...) : ValueTuple<String,Int32> [field Item1] : String | CSharp7.cs:82:16:82:26 | access to field Item1 : String |
+| CSharp7.cs:82:20:82:20 | access to parameter x : String | CSharp7.cs:82:16:82:24 | (..., ...) : ValueTuple<String,Int32> [field Item1] : String |
+| CSharp7.cs:87:18:87:34 | (..., ...) : ValueTuple<String,String> [field Item1] : String | CSharp7.cs:90:20:90:21 | access to local variable t1 : ValueTuple<String,String> [field Item1] : String |
+| CSharp7.cs:87:19:87:27 | "tainted" : String | CSharp7.cs:87:18:87:34 | (..., ...) : ValueTuple<String,String> [field Item1] : String |
+| CSharp7.cs:90:20:90:21 | access to local variable t1 : ValueTuple<String,String> [field Item1] : String | CSharp7.cs:90:20:90:27 | access to field Item1 : String |
 | CSharp7.cs:90:20:90:27 | access to field Item1 : String | CSharp7.cs:80:21:80:21 | x : String |
 | CSharp7.cs:90:20:90:27 | access to field Item1 : String | CSharp7.cs:90:18:90:28 | call to method I |
 | CSharp7.cs:175:22:175:30 | "tainted" : String | CSharp7.cs:181:23:181:25 | access to local variable src : String |
@@ -33,13 +33,13 @@ nodes
 | CSharp7.cs:55:30:55:31 | SSA def(t4) : String | semmle.label | SSA def(t4) : String |
 | CSharp7.cs:56:18:56:19 | access to local variable t4 | semmle.label | access to local variable t4 |
 | CSharp7.cs:80:21:80:21 | x : String | semmle.label | x : String |
-| CSharp7.cs:82:16:82:24 | (..., ...) [field Item1] : String | semmle.label | (..., ...) [field Item1] : String |
+| CSharp7.cs:82:16:82:24 | (..., ...) : ValueTuple<String,Int32> [field Item1] : String | semmle.label | (..., ...) : ValueTuple<String,Int32> [field Item1] : String |
 | CSharp7.cs:82:16:82:26 | access to field Item1 : String | semmle.label | access to field Item1 : String |
 | CSharp7.cs:82:20:82:20 | access to parameter x : String | semmle.label | access to parameter x : String |
-| CSharp7.cs:87:18:87:34 | (..., ...) [field Item1] : String | semmle.label | (..., ...) [field Item1] : String |
+| CSharp7.cs:87:18:87:34 | (..., ...) : ValueTuple<String,String> [field Item1] : String | semmle.label | (..., ...) : ValueTuple<String,String> [field Item1] : String |
 | CSharp7.cs:87:19:87:27 | "tainted" : String | semmle.label | "tainted" : String |
 | CSharp7.cs:90:18:90:28 | call to method I | semmle.label | call to method I |
-| CSharp7.cs:90:20:90:21 | access to local variable t1 [field Item1] : String | semmle.label | access to local variable t1 [field Item1] : String |
+| CSharp7.cs:90:20:90:21 | access to local variable t1 : ValueTuple<String,String> [field Item1] : String | semmle.label | access to local variable t1 : ValueTuple<String,String> [field Item1] : String |
 | CSharp7.cs:90:20:90:27 | access to field Item1 : String | semmle.label | access to field Item1 : String |
 | CSharp7.cs:175:22:175:30 | "tainted" | semmle.label | "tainted" |
 | CSharp7.cs:175:22:175:30 | "tainted" : String | semmle.label | "tainted" : String |

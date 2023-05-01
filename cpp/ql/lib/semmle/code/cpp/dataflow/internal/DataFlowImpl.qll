@@ -3031,6 +3031,17 @@ module Impl<FullStateConfigSig Config> {
       this instanceof PathNodeSinkGroup
     }
 
+    private string ppType() {
+      this instanceof PathNodeSink and result = ""
+      or
+      this.(PathNodeMid).getAp() instanceof AccessPathNil and result = ""
+      or
+      exists(DataFlowType t | t = this.(PathNodeMid).getAp().getHead().getContainerType() |
+        // The `concat` becomes "" if `ppReprType` has no result.
+        result = concat(" : " + ppReprType(t))
+      )
+    }
+
     private string ppAp() {
       this instanceof PathNodeSink and result = ""
       or
@@ -3046,14 +3057,14 @@ module Impl<FullStateConfigSig Config> {
     }
 
     /** Gets a textual representation of this element. */
-    string toString() { result = this.getNodeEx().toString() + this.ppAp() }
+    string toString() { result = this.getNodeEx().toString() + this.ppType() + this.ppAp() }
 
     /**
      * Gets a textual representation of this element, including a textual
      * representation of the call context.
      */
     string toStringWithContext() {
-      result = this.getNodeEx().toString() + this.ppAp() + this.ppCtx()
+      result = this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx()
     }
 
     /**
@@ -3998,14 +4009,14 @@ module Impl<FullStateConfigSig Config> {
      */
     class PartialPathNode extends TPartialPathNode {
       /** Gets a textual representation of this element. */
-      string toString() { result = this.getNodeEx().toString() + this.ppAp() }
+      string toString() { result = this.getNodeEx().toString() + this.ppType() + this.ppAp() }
 
       /**
        * Gets a textual representation of this element, including a textual
        * representation of the call context.
        */
       string toStringWithContext() {
-        result = this.getNodeEx().toString() + this.ppAp() + this.ppCtx()
+        result = this.getNodeEx().toString() + this.ppType() + this.ppAp() + this.ppCtx()
       }
 
       /**
@@ -4045,6 +4056,19 @@ module Impl<FullStateConfigSig Config> {
        * of interprocedural steps.
        */
       int getSinkDistance() { result = distSink(this.getNodeEx().getEnclosingCallable()) }
+
+      private string ppType() {
+        this instanceof PartialPathNodeRev and result = ""
+        or
+        this.(PartialPathNodeFwd).getAp() instanceof PartialAccessPathNil and result = ""
+        or
+        exists(DataFlowType t |
+          t = this.(PartialPathNodeFwd).getAp().(PartialAccessPathCons).getType()
+        |
+          // The `concat` becomes "" if `ppReprType` has no result.
+          result = concat(" : " + ppReprType(t))
+        )
+      }
 
       private string ppAp() {
         exists(string s |
