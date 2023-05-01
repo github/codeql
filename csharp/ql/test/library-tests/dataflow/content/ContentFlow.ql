@@ -1,7 +1,7 @@
 import csharp
 import semmle.code.csharp.dataflow.internal.ContentDataFlow as ContentDataFlow
 
-module ContentConfig implements ContentDataFlow::ContentConfigSig {
+module ContentConfig implements ContentDataFlow::ConfigSig {
   predicate isSource(DataFlow::Node src) { src.asExpr() instanceof ObjectCreation }
 
   predicate isSink(DataFlow::Node sink) {

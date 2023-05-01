@@ -24,6 +24,7 @@
  */
 
 private import csharp
+private import codeql.util.Boolean
 private import DataFlowImplCommon
 private import DataFlowImplSpecific::Private
 private import DataFlowImplSpecific::Private as DataFlowPrivate
@@ -31,7 +32,7 @@ private import DataFlowImplSpecific::Private as DataFlowPrivate
 /**
  * An input configuration for content data flow.
  */
-signature module ContentConfigSig {
+signature module ConfigSig {
   /**
    * Holds if `source` is a relevant data flow source.
    */
@@ -76,7 +77,7 @@ signature module ContentConfigSig {
 /**
  * Constructs a global content data flow computation.
  */
-module Global<ContentConfigSig ContentConfig> implements DataFlow::GlobalFlowSig {
+module Global<ConfigSig ContentConfig> {
   private module FlowConfig implements DataFlow::StateConfigSig {
     class FlowState = State;
 
@@ -116,8 +117,6 @@ module Global<ContentConfigSig ContentConfig> implements DataFlow::GlobalFlowSig
 
   private module Flow = DataFlow::GlobalWithState<FlowConfig>;
 
-  import Flow
-
   /**
    * Holds if data stored inside `sourceAp` on `source` flows to `sinkAp` inside `sink`
    * for this configuration. `preservesValue` indicates whether any of the additional
@@ -131,7 +130,7 @@ module Global<ContentConfigSig ContentConfig> implements DataFlow::GlobalFlowSig
    * that was last stored into. That is, if `sinkAp` is `Field1.Field2` (with `Field1`
    * being the top of the stack), then there is flow into `sink.Field1.Field2`.
    */
-  additional predicate flow(
+  predicate flow(
     DataFlow::Node source, AccessPath sourceAp, DataFlow::Node sink, AccessPath sinkAp,
     boolean preservesValue
   ) {
@@ -150,15 +149,11 @@ module Global<ContentConfigSig ContentConfig> implements DataFlow::GlobalFlowSig
   }
 
   private newtype TState =
-    TInitState(boolean preservesValue) { preservesValue in [false, true] } or
-    TStoreState(int size, boolean preservesValue) {
-      size in [1 .. ContentConfig::accessPathLimit()] and
-      preservesValue in [false, true]
+    TInitState(Boolean preservesValue) or
+    TStoreState(int size, Boolean preservesValue) {
+      size in [1 .. ContentConfig::accessPathLimit()]
     } or
-    TReadState(int size, boolean preservesValue) {
-      size in [1 .. ContentConfig::accessPathLimit()] and
-      preservesValue in [false, true]
-    }
+    TReadState(int size, Boolean preservesValue) { size in [1 .. ContentConfig::accessPathLimit()] }
 
   abstract private class State extends TState {
     abstract string toString();
@@ -260,7 +255,7 @@ module Global<ContentConfigSig ContentConfig> implements DataFlow::GlobalFlowSig
     }
 
   /** An access path. */
-  additional class AccessPath extends TAccessPath {
+  class AccessPath extends TAccessPath {
     /** Gets the head of this access path, if any. */
     DataFlow::ContentSet getHead() { this = TAccessPathCons(result, _) }
 
