@@ -4,13 +4,18 @@
  * Provides an implementation of global (interprocedural) data flow.
  */
 
-private import DataFlowImplCommon
-private import DataFlowImplSpecific::Private
-private import DataFlowImplSpecific::Public
-private import DataFlowImplCommonPublic
 private import codeql.util.Unit
 private import codeql.util.Option
-import DataFlow
+
+import DataFlowParameter
+
+module MakeImpl<DataFlowParameter Lang> {
+  private import Lang
+  private import DataFlow::DataFlowMake<Lang>
+  private import DataFlowImplCommon::MakeImplCommon<Lang>
+  private import DataFlowImplCommonPublic
+
+
 
 /**
  * An input configuration for data flow using flow state. This signature equals
@@ -4741,4 +4746,5 @@ module Impl<FullStateConfigSig Config> {
       dist = node.getSinkDistance()
     }
   }
+}
 }

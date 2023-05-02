@@ -5,11 +5,12 @@
  * through the `Global` and `GlobalWithState` modules.
  */
 
-private import DataFlowImplCommon
-private import DataFlowImplSpecific::Private
-import DataFlowImplSpecific::Public
-import DataFlowImplCommonPublic
-private import DataFlowImpl
+import DataFlowParameter
+
+module Configs<DataFlowParameter Lang> {
+  private import Lang
+  private import DataFlowImplCommon::MakeImplCommon<Lang>
+  import DataFlowImplCommonPublic
 
 /** An input configuration for data flow. */
 signature module ConfigSig {
@@ -201,6 +202,13 @@ signature module StateConfigSig {
    */
   default predicate includeHiddenNodes() { none() }
 }
+
+}
+
+module DataFlowMake<DataFlowParameter Lang> {
+  private import Lang
+  private import DataFlowImpl::MakeImpl<Lang>
+  import Configs<Lang>
 
 /**
  * Gets the exploration limit for `partialFlow` and `partialFlowRev`
@@ -447,4 +455,5 @@ module MergePathGraph3<
       Merged::PathGraph::subpaths(arg, par, ret, out)
     }
   }
+}
 }

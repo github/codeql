@@ -1,5 +1,7 @@
-private import DataFlowImplSpecific::Private
-private import DataFlowImplSpecific::Public
+import DataFlowParameter
+
+module MakeImplCommon<DataFlowParameter Lang> {
+  private import Lang
 import Cached
 
 module DataFlowImplCommonPublic {
@@ -1478,4 +1480,5 @@ class AccessPathFrontOption extends TAccessPathFrontOption {
     or
     this = TAccessPathFrontSome(any(AccessPathFront apf | result = apf.toString()))
   }
+}
 }
