@@ -54,9 +54,20 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
     exists(API::CallNode cn |
       cn = API::moduleImport("unicodedata").getMember("normalize").getACall() and
-      cn.getArg(0).asExpr().(Str).getS() = ["NFC", "NFKC"] and
-      sink = cn.getArg(1) and
-      state instanceof PostValidation
-    )
+      sink = cn.getArg(1)
+      or
+      cn = API::moduleImport("unidecode").getMember("unidecode").getACall() and
+      sink = cn.getArg(0)
+      or
+      cn = API::moduleImport("pyunormalize").getMember(["NFC", "NFD", "NFKC", "NFKD"]).getACall() and
+      sink = cn.getArg(0)
+      or
+      cn = API::moduleImport("pyunormalize").getMember(["normalize"]).getACall() and
+      sink = cn.getArg(1)
+      or
+      cn = API::moduleImport("textnorm").getMember(["normalize_unicode"]).getACall() and
+      sink = cn.getArg(0)
+    ) and
+    state instanceof PostValidation
   }
 }
