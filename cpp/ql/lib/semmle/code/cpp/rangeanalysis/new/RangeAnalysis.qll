@@ -36,6 +36,7 @@ predicate convertedBounded(Expr e, Bound b, float delta, boolean upper, Reason r
     semBounded(semExpr, b, delta, upper, reason)
   )
 }
+
 /**
  * A reason for an inferred bound. This can either be `CondReason` if the bound
  * is due to a specific condition, or `NoReason` if the bound is inferred
@@ -58,6 +59,7 @@ class NoReason extends Reason instanceof SemNoReason {
 class CondReason extends Reason instanceof SemCondReason {
   override string toString() { result = SemCondReason.super.toString() }
 
+  /** Gets the guard condition that caused the inferred bound */
   GuardCondition getCond() {
     result = super.getCond().(IRGuardCondition).getUnconvertedResultExpression()
   }
@@ -67,6 +69,7 @@ class CondReason extends Reason instanceof SemCondReason {
  * A bound that may be inferred for an expression plus/minus an integer delta.
  */
 class Bound instanceof IRBound::Bound {
+  /** Gets a string representation of this bound. */
   string toString() { none() }
 
   /** Gets an expression that equals this bound. */
