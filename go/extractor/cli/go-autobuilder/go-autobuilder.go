@@ -704,54 +704,75 @@ func outsideSupportedRange(version string) bool {
 	return semver.Compare(short, "v"+minGoVersion) < 0 || semver.Compare(short, "v"+maxGoVersion) > 0
 }
 
-func isGoInstalled() bool {
-	_, err := exec.LookPath("go")
-	return err == nil
+func checkForUnsupportedVersions(v versionInfo) (msg, version string) {
+	if v.goDirectiveFound && outsideSupportedRange(v.goModVersion) {
+		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
+			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ")."
+		version = ""
+		//TODO: emit diagnostic
+	}
+
+	if v.goInstallationFound && outsideSupportedRange(v.goEnvVersion) {
+		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
+			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ")."
+		version = ""
+		//TODO: emit diagnostic
+	}
+
+	return msg, version
 }
 
-func getVersionToInstall() string {
-	log.Printf("Autobuilder was built with %s, environment has %s\n", runtime.Version(), getEnvGoVersion())
-	depMode := getDepMode()
-	goModVersion, goDirectiveFound := tryReadGoDirective(depMode)
-
-	if outsideSupportedRange(goModVersion) {
-		log.Println("The version of Go specified in the go.mod file (" + goModVersion + ") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ").")
-		//TODO: emit diagnostic
-		return ""
+func checkForVersionsNotFound(v versionInfo) (msg, version string) {
+	if !v.goInstallationFound && !v.goDirectiveFound {
+		msg = "No version of Go installed and no `go.mod` file found. Writing an " +
+			"`environment.json` file specifying the maximum supported version of Go (" +
+			maxGoVersion + ")."
+		version = maxGoVersion
 	}
 
-	if !isGoInstalled() {
-		if goDirectiveFound {
-			log.Println("No version of Go installed. Writing an `environment.json` file specifying the version of Go from the go.mod file (" + goModVersion + ").")
-			return goModVersion
-		} else {
-			log.Println("No version of Go installed and no `go.mod` file found. Writing an `environment.json` file specifying the maximum supported version of Go (" + maxGoVersion + ").")
-			return maxGoVersion
-		}
+	if !v.goInstallationFound && v.goDirectiveFound {
+		msg = "No version of Go installed. Writing an `environment.json` file specifying the " +
+			"version of Go found in the `go.mod` file (" + v.goModVersion + ")."
+		version = v.goModVersion
 	}
 
-	envVersion := getEnvGoVersion()[2:]
-
-	if outsideSupportedRange(envVersion) {
-		log.Println("The version of Go installed in the environment (" + goModVersion + ") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ").")
-		//TODO: emit diagnostic
-		return ""
+	if v.goInstallationFound && !v.goDirectiveFound {
+		msg = "No `go.mod` file found. Version " + v.goEnvVersion + " installed in the environment."
+		version = ""
 	}
 
-	if !goDirectiveFound {
-		log.Println("No `go.mod` file found. Version " + envVersion + " installed in the environment.")
-		return ""
+	return msg, version
+}
+
+func compareVersions(v versionInfo) (msg, version string) {
+	if semver.Compare("v"+v.goModVersion, "v"+v.goEnvVersion) > 0 {
+		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
+			") is lower than the version found in the `go.mod` file (" + v.goModVersion +
+			").\nWriting an `environment.json` file specifying the version of Go from the " +
+			"`go.mod` file (" + v.goModVersion + ")."
+		version = v.goModVersion
+	} else {
+		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
+			") is high enough for the version found in the `go.mod` file (" + v.goModVersion + ")."
+		version = ""
 	}
 
-	if semver.Compare("v"+goModVersion, "v"+envVersion) > 0 {
-		log.Println(
-			"The version of Go installed in the environment (" + envVersion + ") is lower than the version specified in the go.mod file (" + goModVersion +
-				").\nWriting an `environment.json` file specifying the version of go from the go.mod file (" + goModVersion + ").")
-		return goModVersion
+	return msg, version
+}
+
+func getVersionToInstall(v versionInfo) (msg, version string) {
+	msg, version = checkForUnsupportedVersions(v)
+	if msg != "" {
+		return msg, version
 	}
 
-	// no need to install a version of Go
-	return ""
+	msg, version = checkForVersionsNotFound(v)
+	if msg != "" {
+		return msg, version
+	}
+
+	msg, version = compareVersions(v)
+	return msg, version
 }
 
 func writeEnvironmentFile(version string) {
@@ -782,8 +803,38 @@ func writeEnvironmentFile(version string) {
 	}
 }
 
+type versionInfo struct {
+	goModVersion        string
+	goDirectiveFound    bool
+	goEnvVersion        string
+	goInstallationFound bool
+}
+
+func (v versionInfo) String() string {
+	return fmt.Sprintf("go.mod version: %s, go.mod directive found: %t, go env version: %s, go installation found: %t", v.goModVersion, v.goDirectiveFound, v.goEnvVersion, v.goInstallationFound)
+}
+
+func isGoInstalled() bool {
+	_, err := exec.LookPath("go")
+	return err == nil
+}
+
 func identifyEnvironment() {
-	versionToInstall := getVersionToInstall()
+	var v versionInfo
+	depMode := getDepMode()
+	v.goModVersion, v.goDirectiveFound = tryReadGoDirective(depMode)
+
+	v.goInstallationFound = isGoInstalled()
+	if v.goInstallationFound {
+		v.goEnvVersion = getEnvGoVersion()[2:]
+	}
+
+	msg, versionToInstall := getVersionToInstall(v)
+
+	if msg != "" {
+		log.Println(msg)
+	}
+
 	writeEnvironmentFile(versionToInstall)
 }
 
