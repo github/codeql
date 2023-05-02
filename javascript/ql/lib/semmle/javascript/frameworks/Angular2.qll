@@ -547,4 +547,10 @@ module Angular2 {
       )
     }
   }
+
+  private class DomValueSources extends DOM::DomValueSource::Range {
+    DomValueSources() {
+      this = API::Node::ofType("@angular/core", "ElementRef").getMember("nativeElement").asSource()
+    }
+  }
 }

@@ -80,7 +80,7 @@ private class XmlDocumentXxeSink extends XxeSink {
 /** An `XMLDocument` that sets `nodeLoadExternalEntitiesAlways` in its options. */
 private class VulnerableXmlDocument extends ApplyExpr {
   VulnerableXmlDocument() {
-    this.getStaticTarget().(ConstructorDecl).getEnclosingDecl().(NominalTypeDecl).getFullName() =
+    this.getStaticTarget().(Initializer).getEnclosingDecl().(NominalTypeDecl).getFullName() =
       "XMLDocument" and
     this.getArgument(1).getExpr().(ArrayExpr).getAnElement().(MemberRefExpr).getMember() instanceof
       NodeLoadExternalEntitiesAlways
@@ -192,7 +192,7 @@ private predicate lib2xmlOptionLocalTaintStep(DataFlow::Node source, DataFlow::N
   exists(ApplyExpr int32Init |
     int32Init
         .getStaticTarget()
-        .(ConstructorDecl)
+        .(Initializer)
         .getEnclosingDecl()
         .(ExtensionDecl)
         .getExtendedTypeDecl()

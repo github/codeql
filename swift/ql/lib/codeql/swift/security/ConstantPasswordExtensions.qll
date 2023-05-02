@@ -35,7 +35,7 @@ class ConstantPasswordAdditionalTaintStep extends Unit {
 private class CryptoSwiftPasswordSink extends ConstantPasswordSink {
   CryptoSwiftPasswordSink() {
     // `password` arg in `init` is a sink
-    exists(NominalTypeDecl c, ConstructorDecl f, CallExpr call |
+    exists(NominalTypeDecl c, Initializer f, CallExpr call |
       c.getName() = ["HKDF", "PBKDF1", "PBKDF2", "Scrypt"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
@@ -50,7 +50,7 @@ private class CryptoSwiftPasswordSink extends ConstantPasswordSink {
 private class RnCryptorPasswordSink extends ConstantPasswordSink {
   RnCryptorPasswordSink() {
     // RNCryptor (labelled arguments)
-    exists(NominalTypeDecl c, MethodDecl f, CallExpr call |
+    exists(NominalTypeDecl c, Method f, CallExpr call |
       c.getFullName() =
         [
           "RNCryptor", "RNEncryptor", "RNDecryptor", "RNCryptor.EncryptorV3",
@@ -63,7 +63,7 @@ private class RnCryptorPasswordSink extends ConstantPasswordSink {
     )
     or
     // RNCryptor (unlabelled arguments)
-    exists(MethodDecl f, CallExpr call |
+    exists(Method f, CallExpr call |
       f.hasQualifiedName("RNCryptor", "keyForPassword(_:salt:settings:)") and
       call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this.asExpr()

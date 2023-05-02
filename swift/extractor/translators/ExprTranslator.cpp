@@ -211,7 +211,7 @@ codeql::OptionalEvaluationExpr ExprTranslator::translateOptionalEvaluationExpr(
   return entry;
 }
 
-codeql::RebindSelfInConstructorExpr ExprTranslator::translateRebindSelfInConstructorExpr(
+codeql::RebindSelfInInitializerExpr ExprTranslator::translateRebindSelfInConstructorExpr(
     const swift::RebindSelfInConstructorExpr& expr) {
   auto entry = createExprEntry(expr);
   entry.sub_expr = dispatcher.fetchLabel(expr.getSubExpr());
@@ -300,7 +300,7 @@ codeql::OptionalTryExpr ExprTranslator::translateOptionalTryExpr(
   return entry;
 }
 
-codeql::ConstructorRefCallExpr ExprTranslator::translateConstructorRefCallExpr(
+codeql::InitializerRefCallExpr ExprTranslator::translateConstructorRefCallExpr(
     const swift::ConstructorRefCallExpr& expr) {
   auto entry = createExprEntry(expr);
   fillSelfApplyExpr(expr, entry);
@@ -313,16 +313,16 @@ codeql::DiscardAssignmentExpr ExprTranslator::translateDiscardAssignmentExpr(
   return entry;
 }
 
-codeql::ClosureExpr ExprTranslator::translateClosureExpr(const swift::ClosureExpr& expr) {
+codeql::ExplicitClosureExpr ExprTranslator::translateClosureExpr(const swift::ClosureExpr& expr) {
   auto entry = createExprEntry(expr);
-  fillAbstractClosureExpr(expr, entry);
+  fillClosureExpr(expr, entry);
   return entry;
 }
 
 codeql::AutoClosureExpr ExprTranslator::translateAutoClosureExpr(
     const swift::AutoClosureExpr& expr) {
   auto entry = createExprEntry(expr);
-  fillAbstractClosureExpr(expr, entry);
+  fillClosureExpr(expr, entry);
   return entry;
 }
 
@@ -393,7 +393,7 @@ codeql::KeyPathExpr ExprTranslator::translateKeyPathExpr(const swift::KeyPathExp
   return entry;
 }
 
-codeql::LazyInitializerExpr ExprTranslator::translateLazyInitializerExpr(
+codeql::LazyInitializationExpr ExprTranslator::translateLazyInitializerExpr(
     const swift::LazyInitializerExpr& expr) {
   auto entry = createExprEntry(expr);
   entry.sub_expr = dispatcher.fetchLabel(expr.getSubExpr());
@@ -427,10 +427,10 @@ codeql::KeyPathApplicationExpr ExprTranslator::translateKeyPathApplicationExpr(
   return entry;
 }
 
-codeql::OtherConstructorDeclRefExpr ExprTranslator::translateOtherConstructorDeclRefExpr(
+codeql::OtherInitializerRefExpr ExprTranslator::translateOtherConstructorDeclRefExpr(
     const swift::OtherConstructorDeclRefExpr& expr) {
   auto entry = createExprEntry(expr);
-  entry.constructor_decl = dispatcher.fetchLabel(expr.getDecl());
+  entry.initializer = dispatcher.fetchLabel(expr.getDecl());
   return entry;
 }
 
@@ -472,8 +472,8 @@ codeql::ErrorExpr ExprTranslator::translateErrorExpr(const swift::ErrorExpr& exp
   return entry;
 }
 
-void ExprTranslator::fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,
-                                             codeql::AbstractClosureExpr& entry) {
+void ExprTranslator::fillClosureExpr(const swift::AbstractClosureExpr& expr,
+                                     codeql::ClosureExpr& entry) {
   assert(expr.getParameters() && "AbstractClosureExpr has getParameters()");
   entry.params = dispatcher.fetchRepeatedLabels(*expr.getParameters());
   entry.body = dispatcher.fetchLabel(expr.getBody());

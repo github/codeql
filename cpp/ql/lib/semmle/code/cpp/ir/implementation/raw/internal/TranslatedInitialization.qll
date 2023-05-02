@@ -138,8 +138,9 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
   final override string toString() { result = "init: " + expr.toString() }
 
   final override Declaration getFunction() {
-    result = expr.getEnclosingFunction() or
-    result = expr.getEnclosingVariable().(GlobalOrNamespaceVariable)
+    result = getEnclosingFunction(expr) or
+    result = getEnclosingVariable(expr).(GlobalOrNamespaceVariable) or
+    result = getEnclosingVariable(expr).(StaticInitializedStaticLocalVariable)
   }
 
   final override Locatable getAst() { result = expr }
@@ -159,7 +160,7 @@ abstract class TranslatedInitialization extends TranslatedElement, TTranslatedIn
   final InitializationContext getContext() { result = getParent() }
 
   final TranslatedFunction getEnclosingFunction() {
-    result = getTranslatedFunction(expr.getEnclosingFunction())
+    result = getTranslatedFunction(this.getFunction())
   }
 }
 
@@ -493,8 +494,9 @@ abstract class TranslatedFieldInitialization extends TranslatedElement {
   deprecated override Locatable getAST() { result = getAst() }
 
   final override Declaration getFunction() {
-    result = ast.getEnclosingFunction() or
-    result = ast.getEnclosingVariable().(GlobalOrNamespaceVariable)
+    result = getEnclosingFunction(ast) or
+    result = getEnclosingVariable(ast).(GlobalOrNamespaceVariable) or
+    result = getEnclosingVariable(ast).(StaticInitializedStaticLocalVariable)
   }
 
   final override Instruction getFirstInstruction() { result = getInstruction(getFieldAddressTag()) }
@@ -651,9 +653,11 @@ abstract class TranslatedElementInitialization extends TranslatedElement {
   deprecated override Locatable getAST() { result = getAst() }
 
   final override Declaration getFunction() {
-    result = initList.getEnclosingFunction()
+    result = getEnclosingFunction(initList)
     or
-    result = initList.getEnclosingVariable().(GlobalOrNamespaceVariable)
+    result = getEnclosingVariable(initList).(GlobalOrNamespaceVariable)
+    or
+    result = getEnclosingVariable(initList).(StaticInitializedStaticLocalVariable)
   }
 
   final override Instruction getFirstInstruction() { result = getInstruction(getElementIndexTag()) }
@@ -852,7 +856,7 @@ abstract class TranslatedStructorCallFromStructor extends TranslatedElement, Str
     result = getStructorCall()
   }
 
-  final override Function getFunction() { result = call.getEnclosingFunction() }
+  final override Function getFunction() { result = getEnclosingFunction(call) }
 
   final override Instruction getChildSuccessor(TranslatedElement child) {
     child = getStructorCall() and
@@ -989,7 +993,7 @@ class TranslatedConstructorBareInit extends TranslatedElement, TTranslatedConstr
 
   override TranslatedElement getChild(int id) { none() }
 
-  override Function getFunction() { result = getParent().getFunction() }
+  override Declaration getFunction() { result = this.getParent().getFunction() }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) { none() }
 
