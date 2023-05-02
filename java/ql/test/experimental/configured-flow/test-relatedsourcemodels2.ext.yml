@@ -1,0 +1,22 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: supportedThreatModel
+    data:
+      - ["standard"]
+      - ["group1"]
+
+  - addsTo:
+      pack: codeql/java-all
+      extensible: threatModelGrouping
+    data:
+      - ["kind10", "group1"]
+      - ["kind11", "group1"]
+      - ["subgroup1", "group1"]
+      - ["subkind10", "subgroup1"]
+      - ["subkind11", "subgroup1"]
+      - ["kind20", "group2"]
+      - ["kind21", "group2"]
+      - ["subgroup2", "group2"]
+      - ["subkind20", "subgroup2"]
+      - ["subkind21", "subgroup2"]
