@@ -19,6 +19,7 @@ class PathInjectionTest extends InlineExpectationsTest {
       location = sinkExpr.getLocation() and
       element = sinkExpr.toString() and
       tag = "hasPathInjection" and
+      location.getFile().getName() != "" and
       value = source.asExpr().getLocation().getStartLine().toString()
     )
   }
