@@ -16,6 +16,11 @@ signature module CandidateSig {
 
   class EndpointType;
 
+  /**
+   * An EndpointType that denotes the absence of any sink.
+   */
+  class NegativeEndpointType extends EndpointType;
+
   /** Gets the string representing the file+range of the endpoint. */
   string getLocationString(Endpoint e);
 
@@ -23,12 +28,6 @@ signature module CandidateSig {
    * Defines what labels are known, and what endpoint type they correspond to.
    */
   predicate isKnownLabel(string label, string humanReadableLabel, EndpointType type);
-
-  /**
-   * EndpointType must have a 'negative' type that denotes the absence of any sink.
-   * This predicate should hold for that type, and that type only.
-   */
-  predicate isNegative(EndpointType t);
 
   /**
    * Should hold for any endpoint that is a flow sanitizer.
@@ -68,8 +67,6 @@ signature module CandidateSig {
  *   implementations of endpoint characteristics exported by this module.
  */
 module SharedCharacteristics<CandidateSig Candidate> {
-  predicate isNegative(Candidate::EndpointType e) { Candidate::isNegative(e) }
-
   predicate isSink(Candidate::Endpoint e, string label) { Candidate::isSink(e, label) }
 
   predicate isNeutral(Candidate::Endpoint e) { Candidate::isNeutral(e) }
@@ -80,7 +77,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
   predicate isKnownSink(Candidate::Endpoint sink, Candidate::EndpointType endpointType) {
     // If the list of characteristics includes positive indicators with maximal confidence for this class, then it's a
     // known sink for the class.
-    not isNegative(endpointType) and
+    not endpointType instanceof Candidate::NegativeEndpointType and
     exists(EndpointCharacteristic characteristic |
       characteristic.appliesToEndpoint(sink) and
       characteristic.hasImplications(endpointType, true, maximalConfidence())
@@ -93,7 +90,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
    * characteristics.
    */
   predicate isSinkCandidate(Candidate::Endpoint candidateSink, Candidate::EndpointType sinkType) {
-    not isNegative(sinkType) and
+    not sinkType instanceof Candidate::NegativeEndpointType and
     not exists(getAReasonSinkExcluded(candidateSink, sinkType))
   }
 
@@ -109,13 +106,13 @@ module SharedCharacteristics<CandidateSig Candidate> {
     Candidate::Endpoint candidateSink, Candidate::EndpointType sinkType
   ) {
     // An endpoint is a sink candidate if none of its characteristics give much indication whether or not it is a sink.
-    not isNegative(sinkType) and
+    not sinkType instanceof Candidate::NegativeEndpointType and
     result.appliesToEndpoint(candidateSink) and
     // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
     (
       exists(float confidence |
         confidence >= mediumConfidence() and
-        result.hasImplications(any(Candidate::EndpointType t | isNegative(t)), true, confidence)
+        result.hasImplications(any(Candidate::NegativeEndpointType t), true, confidence)
       )
       or
       // Exclude endpoints that have a characteristic that implies they're not sinks for _this particular_ sink type.
@@ -195,7 +192,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
     override predicate hasImplications(
       Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
     ) {
-      Candidate::isNegative(endpointType) and
+      endpointType instanceof Candidate::NegativeEndpointType and
       isPositiveIndicator = true and
       confidence = highConfidence()
     }
@@ -214,7 +211,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
     override predicate hasImplications(
       Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
     ) {
-      Candidate::isNegative(endpointType) and
+      endpointType instanceof Candidate::NegativeEndpointType and
       isPositiveIndicator = true and
       confidence = mediumConfidence()
     }
@@ -235,7 +232,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
     override predicate hasImplications(
       Candidate::EndpointType endpointType, boolean isPositiveIndicator, float confidence
     ) {
-      Candidate::isNegative(endpointType) and
+      endpointType instanceof Candidate::NegativeEndpointType and
       isPositiveIndicator = true and
       confidence = mediumConfidence()
     }

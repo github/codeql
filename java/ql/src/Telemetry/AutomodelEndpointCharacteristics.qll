@@ -21,9 +21,7 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
 
   class EndpointType = AutomodelEndpointTypes::EndpointType;
 
-  predicate isNegative(AutomodelEndpointTypes::EndpointType t) {
-    t instanceof AutomodelEndpointTypes::NegativeSinkType
-  }
+  class NegativeEndpointType = AutomodelEndpointTypes::NegativeSinkType;
 
   // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
   predicate isSanitizer(Endpoint e, EndpointType t) { none() }
@@ -95,7 +93,13 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
       hasMetadata(e, package, type, name, signature, input, isFinal, isStatic, isPublic,
         calleeJavaDoc) and
       (if isFinal = true or isStatic = true then subtypes = false else subtypes = true) and
-      ext = "" and // see https://github.slack.com/archives/CP9127VUK/p1673979477496069
+      ext = "" and
+      /*
+       *       "ext" will always be empty for automodeling; it's a mechanism for
+       *       specifying that the model should apply for parameters that have
+       *        a certain annotation.
+       */
+
       provenance = "ai-generated" and
       metadata =
         "{" //
