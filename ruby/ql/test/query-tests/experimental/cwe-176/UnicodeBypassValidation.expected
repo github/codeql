@@ -1,0 +1,56 @@
+edges
+| unicode_normalization.rb:3:5:3:17 | unicode_input :  | unicode_normalization.rb:4:23:4:35 | unicode_input |
+| unicode_normalization.rb:3:5:3:17 | unicode_input :  | unicode_normalization.rb:5:22:5:34 | unicode_input |
+| unicode_normalization.rb:3:21:3:26 | call to params :  | unicode_normalization.rb:3:21:3:42 | ...[...] :  |
+| unicode_normalization.rb:3:21:3:42 | ...[...] :  | unicode_normalization.rb:3:5:3:17 | unicode_input :  |
+| unicode_normalization.rb:11:5:11:17 | unicode_input :  | unicode_normalization.rb:12:27:12:39 | unicode_input :  |
+| unicode_normalization.rb:11:5:11:17 | unicode_input :  | unicode_normalization.rb:12:27:12:39 | unicode_input :  |
+| unicode_normalization.rb:11:21:11:26 | call to params :  | unicode_normalization.rb:11:21:11:42 | ...[...] :  |
+| unicode_normalization.rb:11:21:11:26 | call to params :  | unicode_normalization.rb:11:21:11:42 | ...[...] :  |
+| unicode_normalization.rb:11:21:11:42 | ...[...] :  | unicode_normalization.rb:11:5:11:17 | unicode_input :  |
+| unicode_normalization.rb:11:21:11:42 | ...[...] :  | unicode_normalization.rb:11:5:11:17 | unicode_input :  |
+| unicode_normalization.rb:12:5:12:23 | unicode_input_manip :  | unicode_normalization.rb:13:23:13:41 | unicode_input_manip |
+| unicode_normalization.rb:12:5:12:23 | unicode_input_manip :  | unicode_normalization.rb:14:22:14:40 | unicode_input_manip |
+| unicode_normalization.rb:12:27:12:39 | unicode_input :  | unicode_normalization.rb:12:27:12:59 | call to sub :  |
+| unicode_normalization.rb:12:27:12:39 | unicode_input :  | unicode_normalization.rb:12:27:12:59 | call to sub :  |
+| unicode_normalization.rb:12:27:12:59 | call to sub :  | unicode_normalization.rb:12:5:12:23 | unicode_input_manip :  |
+| unicode_normalization.rb:20:5:20:17 | unicode_input :  | unicode_normalization.rb:21:25:21:37 | unicode_input :  |
+| unicode_normalization.rb:20:21:20:26 | call to params :  | unicode_normalization.rb:20:21:20:42 | ...[...] :  |
+| unicode_normalization.rb:20:21:20:42 | ...[...] :  | unicode_normalization.rb:20:5:20:17 | unicode_input :  |
+| unicode_normalization.rb:21:5:21:21 | unicode_html_safe :  | unicode_normalization.rb:22:23:22:39 | unicode_html_safe |
+| unicode_normalization.rb:21:5:21:21 | unicode_html_safe :  | unicode_normalization.rb:23:22:23:38 | unicode_html_safe |
+| unicode_normalization.rb:21:25:21:37 | unicode_input :  | unicode_normalization.rb:21:25:21:47 | call to html_safe :  |
+| unicode_normalization.rb:21:25:21:47 | call to html_safe :  | unicode_normalization.rb:21:5:21:21 | unicode_html_safe :  |
+nodes
+| unicode_normalization.rb:3:5:3:17 | unicode_input :  | semmle.label | unicode_input :  |
+| unicode_normalization.rb:3:21:3:26 | call to params :  | semmle.label | call to params :  |
+| unicode_normalization.rb:3:21:3:42 | ...[...] :  | semmle.label | ...[...] :  |
+| unicode_normalization.rb:4:23:4:35 | unicode_input | semmle.label | unicode_input |
+| unicode_normalization.rb:5:22:5:34 | unicode_input | semmle.label | unicode_input |
+| unicode_normalization.rb:11:5:11:17 | unicode_input :  | semmle.label | unicode_input :  |
+| unicode_normalization.rb:11:5:11:17 | unicode_input :  | semmle.label | unicode_input :  |
+| unicode_normalization.rb:11:21:11:26 | call to params :  | semmle.label | call to params :  |
+| unicode_normalization.rb:11:21:11:42 | ...[...] :  | semmle.label | ...[...] :  |
+| unicode_normalization.rb:11:21:11:42 | ...[...] :  | semmle.label | ...[...] :  |
+| unicode_normalization.rb:12:5:12:23 | unicode_input_manip :  | semmle.label | unicode_input_manip :  |
+| unicode_normalization.rb:12:27:12:39 | unicode_input :  | semmle.label | unicode_input :  |
+| unicode_normalization.rb:12:27:12:39 | unicode_input :  | semmle.label | unicode_input :  |
+| unicode_normalization.rb:12:27:12:59 | call to sub :  | semmle.label | call to sub :  |
+| unicode_normalization.rb:13:23:13:41 | unicode_input_manip | semmle.label | unicode_input_manip |
+| unicode_normalization.rb:14:22:14:40 | unicode_input_manip | semmle.label | unicode_input_manip |
+| unicode_normalization.rb:20:5:20:17 | unicode_input :  | semmle.label | unicode_input :  |
+| unicode_normalization.rb:20:21:20:26 | call to params :  | semmle.label | call to params :  |
+| unicode_normalization.rb:20:21:20:42 | ...[...] :  | semmle.label | ...[...] :  |
+| unicode_normalization.rb:21:5:21:21 | unicode_html_safe :  | semmle.label | unicode_html_safe :  |
+| unicode_normalization.rb:21:25:21:37 | unicode_input :  | semmle.label | unicode_input :  |
+| unicode_normalization.rb:21:25:21:47 | call to html_safe :  | semmle.label | call to html_safe :  |
+| unicode_normalization.rb:22:23:22:39 | unicode_html_safe | semmle.label | unicode_html_safe |
+| unicode_normalization.rb:23:22:23:38 | unicode_html_safe | semmle.label | unicode_html_safe |
+subpaths
+#select
+| unicode_normalization.rb:4:23:4:35 | unicode_input | unicode_normalization.rb:3:21:3:26 | call to params :  | unicode_normalization.rb:4:23:4:35 | unicode_input | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | unicode_normalization.rb:4:23:4:35 | unicode_input | Unicode transformation (Unicode normalization) | unicode_normalization.rb:3:21:3:26 | call to params | remote user-controlled data |
+| unicode_normalization.rb:5:22:5:34 | unicode_input | unicode_normalization.rb:3:21:3:26 | call to params :  | unicode_normalization.rb:5:22:5:34 | unicode_input | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | unicode_normalization.rb:5:22:5:34 | unicode_input | Unicode transformation (Unicode normalization) | unicode_normalization.rb:3:21:3:26 | call to params | remote user-controlled data |
+| unicode_normalization.rb:13:23:13:41 | unicode_input_manip | unicode_normalization.rb:11:21:11:26 | call to params :  | unicode_normalization.rb:13:23:13:41 | unicode_input_manip | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | unicode_normalization.rb:13:23:13:41 | unicode_input_manip | Unicode transformation (Unicode normalization) | unicode_normalization.rb:11:21:11:26 | call to params | remote user-controlled data |
+| unicode_normalization.rb:14:22:14:40 | unicode_input_manip | unicode_normalization.rb:11:21:11:26 | call to params :  | unicode_normalization.rb:14:22:14:40 | unicode_input_manip | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | unicode_normalization.rb:14:22:14:40 | unicode_input_manip | Unicode transformation (Unicode normalization) | unicode_normalization.rb:11:21:11:26 | call to params | remote user-controlled data |
+| unicode_normalization.rb:22:23:22:39 | unicode_html_safe | unicode_normalization.rb:20:21:20:26 | call to params :  | unicode_normalization.rb:22:23:22:39 | unicode_html_safe | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | unicode_normalization.rb:22:23:22:39 | unicode_html_safe | Unicode transformation (Unicode normalization) | unicode_normalization.rb:20:21:20:26 | call to params | remote user-controlled data |
+| unicode_normalization.rb:23:22:23:38 | unicode_html_safe | unicode_normalization.rb:20:21:20:26 | call to params :  | unicode_normalization.rb:23:22:23:38 | unicode_html_safe | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | unicode_normalization.rb:23:22:23:38 | unicode_html_safe | Unicode transformation (Unicode normalization) | unicode_normalization.rb:20:21:20:26 | call to params | remote user-controlled data |

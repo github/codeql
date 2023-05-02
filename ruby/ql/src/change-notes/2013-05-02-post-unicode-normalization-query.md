@@ -1,0 +1,4 @@
+---
+category: newQuery
+---
+* Added a new query, `ruby/post-unicode-normalization`, to detect a misuse of a post-unicode normalization.
