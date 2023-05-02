@@ -709,14 +709,14 @@ func checkForUnsupportedVersions(v versionInfo) (msg, version string) {
 		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
 			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ")."
 		version = ""
-		//TODO: emit diagnostic
+		diagnostics.EmitUnsupportedVersionGoMod(msg)
 	}
 
 	if v.goInstallationFound && outsideSupportedRange(v.goEnvVersion) {
 		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
 			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ")."
 		version = ""
-		//TODO: emit diagnostic
+		diagnostics.EmitUnsupportedVersionEnvironment(msg)
 	}
 
 	return msg, version
@@ -728,17 +728,20 @@ func checkForVersionsNotFound(v versionInfo) (msg, version string) {
 			"`environment.json` file specifying the maximum supported version of Go (" +
 			maxGoVersion + ")."
 		version = maxGoVersion
+		diagnostics.EmitNoGoModAndNoGoEnv(msg)
 	}
 
 	if !v.goInstallationFound && v.goDirectiveFound {
 		msg = "No version of Go installed. Writing an `environment.json` file specifying the " +
 			"version of Go found in the `go.mod` file (" + v.goModVersion + ")."
 		version = v.goModVersion
+		diagnostics.EmitNoGoEnv(msg)
 	}
 
 	if v.goInstallationFound && !v.goDirectiveFound {
 		msg = "No `go.mod` file found. Version " + v.goEnvVersion + " installed in the environment."
 		version = ""
+		diagnostics.EmitNoGoMod(msg)
 	}
 
 	return msg, version
@@ -751,10 +754,12 @@ func compareVersions(v versionInfo) (msg, version string) {
 			").\nWriting an `environment.json` file specifying the version of Go from the " +
 			"`go.mod` file (" + v.goModVersion + ")."
 		version = v.goModVersion
+		diagnostics.EmitVersionGoModHigherVersionEnvironment(msg)
 	} else {
 		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
 			") is high enough for the version found in the `go.mod` file (" + v.goModVersion + ")."
 		version = ""
+		diagnostics.EmitVersionGoModNotHigherVersionEnvironment(msg)
 	}
 
 	return msg, version

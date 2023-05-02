@@ -30,6 +30,7 @@ type visibilityStruct struct {
 }
 
 var fullVisibility *visibilityStruct = &visibilityStruct{true, true, true}
+var telemetryOnly *visibilityStruct = &visibilityStruct{false, false, true}
 
 type locationStruct struct {
 	File        string `json:"file,omitempty"`
@@ -189,6 +190,83 @@ func EmitRelativeImportPaths() {
 		"You should replace relative package paths (that contain `.` or `..`) with absolute paths. Alternatively you can [use a Go module](https://go.dev/blog/using-go-modules).",
 		severityError,
 		fullVisibility,
+		noLocation,
+	)
+}
+
+func EmitUnsupportedVersionGoMod(msg string) {
+	emitDiagnostic(
+		"go/identify-environment/unsupported-version-in-go-mod",
+		"Unsupported Go version in `go.mod` file",
+		msg,
+		severityError,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitUnsupportedVersionEnvironment(msg string) {
+	emitDiagnostic(
+		"go/identify-environment/unsupported-version-in-environment",
+		"Unsupported Go version in environment",
+		msg,
+		severityError,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitNoGoModAndNoGoEnv(msg string) {
+	emitDiagnostic(
+		"go/identify-environment/no-go-mod-and-no-go-env",
+		"No `go.mod` file found and no Go version in environment",
+		msg,
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitNoGoEnv(msg string) {
+	emitDiagnostic(
+		"go/identify-environment/no-go-mod-and-no-go-env",
+		"No Go version in environment",
+		msg,
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitNoGoMod(msg string) {
+	emitDiagnostic(
+		"go/identify-environment/no-go-mod",
+		"No `go.mod` file found",
+		msg,
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitVersionGoModHigherVersionEnvironment(msg string) {
+	emitDiagnostic(
+		"go/identify-environment/version-go-mod-higher-than-go-env",
+		"The Go version in `go.mod` file is higher than the Go version in environment",
+		msg,
+		severityWarning,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitVersionGoModNotHigherVersionEnvironment(msg string) {
+	emitDiagnostic(
+		"go/identify-environment/version-go-mod-not-higher-than-go-env",
+		"The Go version in `go.mod` file is not higher than the Go version in environment",
+		msg,
+		severityNote,
+		telemetryOnly,
 		noLocation,
 	)
 }
