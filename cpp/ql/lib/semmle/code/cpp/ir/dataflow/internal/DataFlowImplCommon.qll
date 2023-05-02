@@ -965,6 +965,12 @@ class CastingNode instanceof Node {
   CastingNode() { castingNode(this) }
 
   string toString() { result = super.toString() }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 private predicate readStepWithTypes(
@@ -1117,6 +1123,12 @@ class ParamNode instanceof Node {
 
   string toString() { result = super.toString() }
 
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
   /**
    * Holds if this node is the parameter of callable `c` at the specified
    * position.
@@ -1129,6 +1141,12 @@ class ArgNode instanceof Node {
   ArgNode() { argumentNode(this, _, _) }
 
   string toString() { result = super.toString() }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /** Holds if this argument occurs at the given position in the given call. */
   final predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
@@ -1145,6 +1163,12 @@ class ReturnNodeExt instanceof Node {
 
   string toString() { result = super.toString() }
 
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
+
   /** Gets the kind of this returned value. */
   ReturnKindExt getKind() { returnNodeExt(this, result) }
 }
@@ -1157,6 +1181,12 @@ class OutNodeExt instanceof Node {
   OutNodeExt() { outNodeExt(this) }
 
   string toString() { result = super.toString() }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 /**
