@@ -191,12 +191,6 @@ predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     // TODO: Properly handle defaultdict/namedtuple
   )
   or
-  // // functions operating on collections
-  // exists(DataFlow::CallCfgNode call | call = nodeTo |
-  //   call = API::builtin(["iter", "next"]).getACall() and
-  //   call.getArg(0) = nodeFrom
-  // )
-  // or
   // methods
   exists(DataFlow::MethodCallNode call, string methodName | call = nodeTo |
     methodName in [
