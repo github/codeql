@@ -317,9 +317,9 @@ func test() {
 
 	var config = Realm.Configuration() // GOOD
 	config.fileURL = safeUrl // GOOD
-	config.fileURL = remoteUrl // $ MISSING: hasPathInjection=208
+	config.fileURL = remoteUrl // $ hasPathInjection=208
 	config.seedFilePath = safeUrl // GOOD
-	config.seedFilePath = remoteUrl // $ MISSING: hasPathInjection=208
+	config.seedFilePath = remoteUrl // $ hasPathInjection=208
 }
 
 func testSanitizers() {

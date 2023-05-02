@@ -12,7 +12,10 @@ class PathInjectionTest extends InlineExpectationsTest {
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(DataFlow::Node source, DataFlow::Node sink, Expr sinkExpr |
       PathInjectionFlow::flow(source, sink) and
-      sinkExpr = sink.asExpr() and
+      (
+        sinkExpr = sink.asExpr() or
+        sinkExpr = sink.(DataFlow::PostUpdateNode).getPreUpdateNode().asExpr()
+      ) and
       location = sinkExpr.getLocation() and
       element = sinkExpr.toString() and
       tag = "hasPathInjection" and

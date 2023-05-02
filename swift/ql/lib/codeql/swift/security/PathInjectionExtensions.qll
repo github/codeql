@@ -132,8 +132,8 @@ private class PathInjectionSinks extends SinkModelCsv {
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:);;;Argument[0];path-injection",
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[0];path-injection",
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[10];path-injection",
-        ";Realm.Configuration;true;fileURL;;;;path-injection",
-        ";Realm.Configuration;true;seedFilePath;;;;path-injection",
+        ";Realm.Configuration;true;fileURL;;;PostUpdate;path-injection",
+        ";Realm.Configuration;true;seedFilePath;;;PostUpdate;path-injection",
       ]
   }
 }
