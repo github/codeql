@@ -34,7 +34,8 @@ def SINK_F(x):
 
 sinkO1 = ""
 sinkO2 = ""
-nonSink0 = ""
+nonSink1 = ""
+nonSink2 = ""
 
 def out():
     def captureOut1():
@@ -52,16 +53,17 @@ def out():
     SINK(sinkO2) #$ captured
 
     def captureOut1NotCalled():
-        global nonSink0
-        nonSink0 = SOURCE
-    SINK_F(nonSink0) #$ SPURIOUS: captured
+        global nonSink1
+        nonSink1 = SOURCE
+    SINK_F(nonSink1) #$ SPURIOUS: captured
 
     def captureOut2NotCalled():
+        # notice that `m` is not called
         def m():
-            global nonSink0
-            nonSink0 = SOURCE
+            global nonSink2
+            nonSink2 = SOURCE
     captureOut2NotCalled()
-    SINK_F(nonSink0) #$ SPURIOUS: captured
+    SINK_F(nonSink2) #$ SPURIOUS: captured
 
 @expects(4)
 def test_out():
@@ -69,7 +71,8 @@ def test_out():
 
 sinkT1 = ""
 sinkT2 = ""
-nonSinkT0 = ""
+nonSinkT1 = ""
+nonSinkT2 = ""
 def through(tainted):
     def captureOut1():
         global sinkT1
@@ -86,16 +89,17 @@ def through(tainted):
     SINK(sinkT2) #$ MISSING:captured
 
     def captureOut1NotCalled():
-        global nonSinkT0
-        nonSinkT0 = tainted
-    SINK_F(nonSinkT0)
+        global nonSinkT1
+        nonSinkT1 = tainted
+    SINK_F(nonSinkT1)
 
     def captureOut2NotCalled():
+        # notice that `m` is not called
         def m():
-            global nonSinkT0
-            nonSinkT0 = tainted
+            global nonSinkT2
+            nonSinkT2 = tainted
     captureOut2NotCalled()
-    SINK_F(nonSinkT0)
+    SINK_F(nonSinkT2)
 
 @expects(4)
 def test_through():
