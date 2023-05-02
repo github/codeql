@@ -184,13 +184,6 @@ predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // don't provide that right now.
   DataFlowPrivate::comprehensionStoreStep(nodeFrom, _, nodeTo)
   or
-  // constructor call
-  // exists(DataFlow::CallCfgNode call | call = nodeTo |
-  //   call = API::builtin(["set", "frozenset", "tuple"]).getACall() and
-  //   call.getArg(0) = nodeFrom
-  //   // TODO: Properly handle defaultdict/namedtuple
-  // )
-  // or
   // methods
   exists(DataFlow::MethodCallNode call, string methodName | call = nodeTo |
     methodName in [

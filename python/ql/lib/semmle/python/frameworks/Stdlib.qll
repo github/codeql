@@ -3832,6 +3832,66 @@ private module StdlibPrivate {
     }
   }
 
+  /** A flow summary for tuple */
+  class TupleSummary extends SummarizedCallable {
+    TupleSummary() { this = "builtins.tuple" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("tuple").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("tuple").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // TODO: We need to also translate iterable content such as list element
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for set */
+  class SetSummary extends SummarizedCallable {
+    SetSummary() { this = "builtins.set" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("set").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("set").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0].ListElement" and
+      output = "ReturnValue.SetElement" and
+      preservesValue = true
+      or
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for frozenset */
+  class FrozensetSummary extends SummarizedCallable {
+    FrozensetSummary() { this = "builtins.frozenset" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("frozenset").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("frozenset").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0].ListElement" and
+      output = "ReturnValue.SetElement" and
+      preservesValue = true
+      or
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // Flow summaries for functions operating on containers
   // ---------------------------------------------------------------------------
