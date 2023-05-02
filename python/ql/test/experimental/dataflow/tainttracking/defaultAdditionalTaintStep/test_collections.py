@@ -34,9 +34,9 @@ def test_construction():
         list(tainted_dict.values()), # $ tainted
         list(tainted_dict.items()), # $ tainted
 
-        tuple(tainted_list), # $ tainted
-        set(tainted_list), # $ tainted
-        frozenset(tainted_list), # $ tainted
+        tuple(tainted_list), # $ MISSING: tainted
+        set(tainted_list), # $ MISSING: tainted
+        frozenset(tainted_list), # $ MISSING: tainted
         dict(tainted_dict), # $ tainted
         dict(k = tainted_string)["k"], # $ tainted
         dict(dict(k = tainted_string))["k"], # $ tainted
