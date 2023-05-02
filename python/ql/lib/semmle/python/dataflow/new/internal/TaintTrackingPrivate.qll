@@ -184,17 +184,17 @@ predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // don't provide that right now.
   DataFlowPrivate::comprehensionStoreStep(nodeFrom, _, nodeTo)
   or
-  // methods
-  exists(DataFlow::MethodCallNode call, string methodName | call = nodeTo |
-    methodName in [
-        // general
-        "copy", "pop",
-        // dict
-        "values", "items", "get", "popitem"
-      ] and
-    call.calls(nodeFrom, methodName)
-  )
-  or
+  // // methods
+  // exists(DataFlow::MethodCallNode call, string methodName | call = nodeTo |
+  //   methodName in [
+  //       // general
+  //       "copy", "pop",
+  //       // dict
+  //       "values", "items", "get", "popitem"
+  //     ] and
+  //   call.calls(nodeFrom, methodName)
+  // )
+  // or
   // list.append, set.add
   exists(DataFlow::MethodCallNode call, DataFlow::Node obj |
     call.calls(obj, ["append", "add"]) and

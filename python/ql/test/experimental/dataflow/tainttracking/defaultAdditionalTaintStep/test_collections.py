@@ -31,8 +31,8 @@ def test_construction():
         list(tainted_list), # $ tainted
         list(tainted_tuple), # $ tainted
         list(tainted_set), # $ tainted
-        list(tainted_dict.values()), # $ tainted
-        list(tainted_dict.items()), # $ tainted
+        list(tainted_dict.values()), # $ MISSING: tainted
+        list(tainted_dict.items()), # $ MISSING: tainted
 
         tuple(tainted_list), # $ tainted
         set(tainted_list), # $ tainted
@@ -103,15 +103,15 @@ def test_dict_access(x):
 
     ensure_tainted(
         tainted_dict["name"], # $ tainted
-        tainted_dict.get("name"), # $ tainted
+        tainted_dict.get("name"), # $ MISSING: tainted
         tainted_dict[x], # $ tainted
-        tainted_dict.copy(), # $ tainted
+        tainted_dict.copy(), # $ MISSING: tainted
     )
 
     for v in tainted_dict.values():
-        ensure_tainted(v) # $ tainted
+        ensure_tainted(v) # $ MISSING: tainted
     for k, v in tainted_dict.items():
-        ensure_tainted(v) # $ tainted
+        ensure_tainted(v) # $ MISSING: tainted
 
 
 def test_named_tuple(): # TODO: namedtuple currently not handled
