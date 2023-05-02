@@ -3,14 +3,14 @@ import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.ModulusAnaly
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeUtils
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.FloatDelta
-import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysisSpecific
+import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysisRelativeSpecific
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysisImpl
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR as IR
 import TestUtilities.InlineExpectationsTest
 
 module ModulusAnalysisInstantiated =
-  ModulusAnalysis<FloatDelta, ConstantBounds, RangeUtil<FloatDelta, CppLangImpl>>;
+  ModulusAnalysis<FloatDelta, ConstantBounds, RangeUtil<FloatDelta, CppLangImplRelative>>;
 
 class ModulusAnalysisTest extends InlineExpectationsTest {
   ModulusAnalysisTest() { this = "ModulusAnalysisTest" }

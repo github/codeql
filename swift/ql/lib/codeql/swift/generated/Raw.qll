@@ -1,4 +1,11 @@
+/**
+ * INTERNAL: Do not use.
+ * This module holds thin fully generated class definitions around DB entities.
+ */
 module Raw {
+  /**
+   * INTERNAL: Do not use.
+   */
   class Element extends @element {
     string toString() { none() }
 
@@ -8,6 +15,9 @@ module Raw {
     predicate isUnknown() { element_is_unknown(this) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class Callable extends @callable, Element {
     /**
      * Gets the name of this callable, if it exists.
@@ -37,6 +47,9 @@ module Raw {
     CapturedDecl getCapture(int index) { callable_captures(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class File extends @file, Element {
     /**
      * Gets the name of this file.
@@ -49,6 +62,9 @@ module Raw {
     predicate isSuccessfullyExtracted() { file_is_successfully_extracted(this) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class Locatable extends @locatable, Element {
     /**
      * Gets the location associated with this element in the code, if it exists.
@@ -56,6 +72,9 @@ module Raw {
     Location getLocation() { locatable_locations(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class Location extends @location, Element {
     /**
      * Gets the file of this location.
@@ -83,8 +102,14 @@ module Raw {
     int getEndColumn() { locations(this, _, _, _, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class AstNode extends @ast_node, Locatable { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class Comment extends @comment, Locatable {
     override string toString() { result = "Comment" }
 
@@ -94,14 +119,23 @@ module Raw {
     string getText() { comments(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DbFile extends @db_file, File {
     override string toString() { result = "DbFile" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DbLocation extends @db_location, Location {
     override string toString() { result = "DbLocation" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class Diagnostics extends @diagnostics, Locatable {
     override string toString() { result = "Diagnostics" }
 
@@ -116,8 +150,28 @@ module Raw {
     int getKind() { diagnostics(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * The superclass of all elements indicating some kind of error.
+   */
   class ErrorElement extends @error_element, Locatable { }
 
+  /**
+   * INTERNAL: Do not use.
+   * An availability condition of an `if`, `while`, or `guard` statements.
+   *
+   * Examples:
+   * ```
+   * if #available(iOS 12, *) {
+   *   // Runs on iOS 12 and above
+   * } else {
+   *   // Runs only anything below iOS 12
+   * }
+   * if #unavailable(macOS 10.14, *) {
+   *   // Runs only on macOS 10 and below
+   * }
+   * ```
+   */
   class AvailabilityInfo extends @availability_info, AstNode {
     override string toString() { result = "AvailabilityInfo" }
 
@@ -132,8 +186,19 @@ module Raw {
     AvailabilitySpec getSpec(int index) { availability_info_specs(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * An availability spec, that is, part of an `AvailabilityInfo` condition. For example `iOS 12` and `*` in:
+   * ```
+   * if #available(iOS 12, *)
+   * ```
+   */
   class AvailabilitySpec extends @availability_spec, AstNode { }
 
+  /**
+   * INTERNAL: Do not use.
+   * A component of a `KeyPathExpr`.
+   */
   class KeyPathComponent extends @key_path_component, AstNode {
     override string toString() { result = "KeyPathComponent" }
 
@@ -179,6 +244,9 @@ module Raw {
     Type getComponentType() { key_path_components(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnspecifiedElement extends @unspecified_element, ErrorElement {
     override string toString() { result = "UnspecifiedElement" }
 
@@ -203,10 +271,18 @@ module Raw {
     string getError() { unspecified_elements(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * A wildcard availability spec `*`
+   */
   class OtherAvailabilitySpec extends @other_availability_spec, AvailabilitySpec {
     override string toString() { result = "OtherAvailabilitySpec" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * An availability spec based on platform and version, for example `macOS 12` or `watchOS 14`
+   */
   class PlatformVersionAvailabilitySpec extends @platform_version_availability_spec,
     AvailabilitySpec
   {
@@ -223,6 +299,9 @@ module Raw {
     string getVersion() { platform_version_availability_specs(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class Decl extends @decl, AstNode {
     /**
      * Gets the module of this declaration.
@@ -235,6 +314,9 @@ module Raw {
     Decl getMember(int index) { decl_members(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class GenericContext extends @generic_context, Element {
     /**
      * Gets the `index`th generic type parameter of this generic context (0-based).
@@ -244,6 +326,9 @@ module Raw {
     }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class CapturedDecl extends @captured_decl, Decl {
     override string toString() { result = "CapturedDecl" }
 
@@ -263,6 +348,9 @@ module Raw {
     predicate isEscaping() { captured_decl_is_escaping(this) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class EnumCaseDecl extends @enum_case_decl, Decl {
     override string toString() { result = "EnumCaseDecl" }
 
@@ -272,6 +360,9 @@ module Raw {
     EnumElementDecl getElement(int index) { enum_case_decl_elements(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ExtensionDecl extends @extension_decl, GenericContext, Decl {
     override string toString() { result = "ExtensionDecl" }
 
@@ -286,6 +377,9 @@ module Raw {
     ProtocolDecl getProtocol(int index) { extension_decl_protocols(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class IfConfigDecl extends @if_config_decl, Decl {
     override string toString() { result = "IfConfigDecl" }
 
@@ -295,6 +389,9 @@ module Raw {
     AstNode getActiveElement(int index) { if_config_decl_active_elements(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ImportDecl extends @import_decl, Decl {
     override string toString() { result = "ImportDecl" }
 
@@ -314,6 +411,10 @@ module Raw {
     ValueDecl getDeclaration(int index) { import_decl_declarations(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * A placeholder for missing declarations that can arise on object deserialization.
+   */
   class MissingMemberDecl extends @missing_member_decl, Decl {
     override string toString() { result = "MissingMemberDecl" }
 
@@ -323,6 +424,9 @@ module Raw {
     string getName() { missing_member_decls(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class OperatorDecl extends @operator_decl, Decl {
     /**
      * Gets the name of this operator declaration.
@@ -330,6 +434,9 @@ module Raw {
     string getName() { operator_decls(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class PatternBindingDecl extends @pattern_binding_decl, Decl {
     override string toString() { result = "PatternBindingDecl" }
 
@@ -344,6 +451,10 @@ module Raw {
     Pattern getPattern(int index) { pattern_binding_decl_patterns(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * A diagnostic directive, which is either `#error` or `#warning`.
+   */
   class PoundDiagnosticDecl extends @pound_diagnostic_decl, Decl {
     override string toString() { result = "PoundDiagnosticDecl" }
 
@@ -360,10 +471,16 @@ module Raw {
     StringLiteralExpr getMessage() { pound_diagnostic_decls(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class PrecedenceGroupDecl extends @precedence_group_decl, Decl {
     override string toString() { result = "PrecedenceGroupDecl" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class TopLevelCodeDecl extends @top_level_code_decl, Decl {
     override string toString() { result = "TopLevelCodeDecl" }
 
@@ -373,6 +490,9 @@ module Raw {
     BraceStmt getBody() { top_level_code_decls(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ValueDecl extends @value_decl, Decl {
     /**
      * Gets the interface type of this value declaration.
@@ -380,18 +500,19 @@ module Raw {
     Type getInterfaceType() { value_decls(this, result) }
   }
 
-  class AbstractFunctionDecl extends @abstract_function_decl, GenericContext, ValueDecl, Callable {
-  }
-
+  /**
+   * INTERNAL: Do not use.
+   */
   class AbstractStorageDecl extends @abstract_storage_decl, ValueDecl {
     /**
-     * Gets the `index`th accessor declaration of this abstract storage declaration (0-based).
+     * Gets the `index`th accessor of this abstract storage declaration (0-based).
      */
-    AccessorDecl getAccessorDecl(int index) {
-      abstract_storage_decl_accessor_decls(this, index, result)
-    }
+    Accessor getAccessor(int index) { abstract_storage_decl_accessors(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class EnumElementDecl extends @enum_element_decl, ValueDecl {
     override string toString() { result = "EnumElementDecl" }
 
@@ -406,6 +527,14 @@ module Raw {
     ParamDecl getParam(int index) { enum_element_decl_params(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Function extends @function, GenericContext, ValueDecl, Callable { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class InfixOperatorDecl extends @infix_operator_decl, OperatorDecl {
     override string toString() { result = "InfixOperatorDecl" }
 
@@ -415,14 +544,23 @@ module Raw {
     PrecedenceGroupDecl getPrecedenceGroup() { infix_operator_decl_precedence_groups(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class PostfixOperatorDecl extends @postfix_operator_decl, OperatorDecl {
     override string toString() { result = "PostfixOperatorDecl" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class PrefixOperatorDecl extends @prefix_operator_decl, OperatorDecl {
     override string toString() { result = "PrefixOperatorDecl" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class TypeDecl extends @type_decl, ValueDecl {
     /**
      * Gets the name of this type declaration.
@@ -435,20 +573,38 @@ module Raw {
     Type getBaseType(int index) { type_decl_base_types(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class AbstractTypeParamDecl extends @abstract_type_param_decl, TypeDecl { }
 
-  class ConstructorDecl extends @constructor_decl, AbstractFunctionDecl {
-    override string toString() { result = "ConstructorDecl" }
+  /**
+   * INTERNAL: Do not use.
+   */
+  class AccessorOrNamedFunction extends @accessor_or_named_function, Function { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Deinitializer extends @deinitializer, Function {
+    override string toString() { result = "Deinitializer" }
   }
 
-  class DestructorDecl extends @destructor_decl, AbstractFunctionDecl {
-    override string toString() { result = "DestructorDecl" }
-  }
-
-  class FuncDecl extends @func_decl, AbstractFunctionDecl { }
-
+  /**
+   * INTERNAL: Do not use.
+   */
   class GenericTypeDecl extends @generic_type_decl, GenericContext, TypeDecl { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Initializer extends @initializer, Function {
+    override string toString() { result = "Initializer" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class ModuleDecl extends @module_decl, TypeDecl {
     override string toString() { result = "ModuleDecl" }
 
@@ -475,6 +631,9 @@ module Raw {
     ModuleDecl getAnExportedModule() { module_decl_exported_modules(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class SubscriptDecl extends @subscript_decl, AbstractStorageDecl, GenericContext {
     override string toString() { result = "SubscriptDecl" }
 
@@ -489,6 +648,25 @@ module Raw {
     Type getElementType() { subscript_decls(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * A declaration of a variable such as
+   * * a local variable in a function:
+   * ```
+   * func foo() {
+   *   var x = 42  // <-
+   *   let y = "hello"  // <-
+   *   ...
+   * }
+   * ```
+   * * a member of a `struct` or `class`:
+   * ```
+   * struct S {
+   *   var size : Int  // <-
+   * }
+   * ```
+   * * ...
+   */
   class VarDecl extends @var_decl, AbstractStorageDecl {
     /**
      * Gets the name of this variable declaration.
@@ -586,58 +764,63 @@ module Raw {
     }
   }
 
-  class AccessorDecl extends @accessor_decl, FuncDecl {
-    override string toString() { result = "AccessorDecl" }
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Accessor extends @accessor, AccessorOrNamedFunction {
+    override string toString() { result = "Accessor" }
 
     /**
      * Holds if this accessor is a getter.
      */
-    predicate isGetter() { accessor_decl_is_getter(this) }
+    predicate isGetter() { accessor_is_getter(this) }
 
     /**
      * Holds if this accessor is a setter.
      */
-    predicate isSetter() { accessor_decl_is_setter(this) }
+    predicate isSetter() { accessor_is_setter(this) }
 
     /**
      * Holds if this accessor is a `willSet`, called before the property is set.
      */
-    predicate isWillSet() { accessor_decl_is_will_set(this) }
+    predicate isWillSet() { accessor_is_will_set(this) }
 
     /**
      * Holds if this accessor is a `didSet`, called after the property is set.
      */
-    predicate isDidSet() { accessor_decl_is_did_set(this) }
+    predicate isDidSet() { accessor_is_did_set(this) }
 
     /**
      * Holds if this accessor is a `_read` coroutine, yielding a borrowed value of the property.
      */
-    predicate isRead() { accessor_decl_is_read(this) }
+    predicate isRead() { accessor_is_read(this) }
 
     /**
      * Holds if this accessor is a `_modify` coroutine, yielding an inout value of the property.
      */
-    predicate isModify() { accessor_decl_is_modify(this) }
+    predicate isModify() { accessor_is_modify(this) }
 
     /**
      * Holds if this accessor is an `unsafeAddress` immutable addressor.
      */
-    predicate isUnsafeAddress() { accessor_decl_is_unsafe_address(this) }
+    predicate isUnsafeAddress() { accessor_is_unsafe_address(this) }
 
     /**
      * Holds if this accessor is an `unsafeMutableAddress` mutable addressor.
      */
-    predicate isUnsafeMutableAddress() { accessor_decl_is_unsafe_mutable_address(this) }
+    predicate isUnsafeMutableAddress() { accessor_is_unsafe_mutable_address(this) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class AssociatedTypeDecl extends @associated_type_decl, AbstractTypeParamDecl {
     override string toString() { result = "AssociatedTypeDecl" }
   }
 
-  class ConcreteFuncDecl extends @concrete_func_decl, FuncDecl {
-    override string toString() { result = "ConcreteFuncDecl" }
-  }
-
+  /**
+   * INTERNAL: Do not use.
+   */
   class ConcreteVarDecl extends @concrete_var_decl, VarDecl {
     override string toString() { result = "ConcreteVarDecl" }
 
@@ -649,10 +832,23 @@ module Raw {
     int getIntroducerInt() { concrete_var_decls(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class GenericTypeParamDecl extends @generic_type_param_decl, AbstractTypeParamDecl {
     override string toString() { result = "GenericTypeParamDecl" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
+  class NamedFunction extends @named_function, AccessorOrNamedFunction {
+    override string toString() { result = "NamedFunction" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class NominalTypeDecl extends @nominal_type_decl, GenericTypeDecl {
     /**
      * Gets the type of this nominal type declaration.
@@ -660,6 +856,18 @@ module Raw {
     Type getType() { nominal_type_decls(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * A declaration of an opaque type, that is formally equivalent to a given type but abstracts it
+   * away.
+   *
+   * Such a declaration is implicitly given when a declaration is written with an opaque result type,
+   * for example
+   * ```
+   * func opaque() -> some SignedInteger { return 1 }
+   * ```
+   * See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html.
+   */
   class OpaqueTypeDecl extends @opaque_type_decl, GenericTypeDecl {
     override string toString() { result = "OpaqueTypeDecl" }
 
@@ -676,6 +884,9 @@ module Raw {
     }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ParamDecl extends @param_decl, VarDecl {
     override string toString() { result = "ParamDecl" }
 
@@ -705,6 +916,13 @@ module Raw {
     }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * A declaration of a type alias to another type. For example:
+   * ```
+   * typealias MyInt = Int
+   * ```
+   */
   class TypeAliasDecl extends @type_alias_decl, GenericTypeDecl {
     override string toString() { result = "TypeAliasDecl" }
 
@@ -719,22 +937,37 @@ module Raw {
     Type getAliasedType() { type_alias_decls(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ClassDecl extends @class_decl, NominalTypeDecl {
     override string toString() { result = "ClassDecl" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class EnumDecl extends @enum_decl, NominalTypeDecl {
     override string toString() { result = "EnumDecl" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ProtocolDecl extends @protocol_decl, NominalTypeDecl {
     override string toString() { result = "ProtocolDecl" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class StructDecl extends @struct_decl, NominalTypeDecl {
     override string toString() { result = "StructDecl" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class Argument extends @argument, Locatable {
     override string toString() { result = "Argument" }
 
@@ -749,6 +982,10 @@ module Raw {
     Expr getExpr() { arguments(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * The base class for all expressions in Swift.
+   */
   class Expr extends @expr, AstNode {
     /**
      * Gets the type of this expression, if it exists.
@@ -756,8 +993,9 @@ module Raw {
     Type getType() { expr_types(this, result) }
   }
 
-  class AbstractClosureExpr extends @abstract_closure_expr, Expr, Callable { }
-
+  /**
+   * INTERNAL: Do not use.
+   */
   class AnyTryExpr extends @any_try_expr, Expr {
     /**
      * Gets the sub expression of this any try expression.
@@ -765,6 +1003,10 @@ module Raw {
     Expr getSubExpr() { any_try_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * An implicit application of a property wrapper on the argument of a call.
+   */
   class AppliedPropertyWrapperExpr extends @applied_property_wrapper_expr, Expr {
     override string toString() { result = "AppliedPropertyWrapperExpr" }
 
@@ -788,6 +1030,9 @@ module Raw {
     ParamDecl getParam() { applied_property_wrapper_exprs(this, _, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ApplyExpr extends @apply_expr, Expr {
     /**
      * Gets the function being applied.
@@ -800,6 +1045,9 @@ module Raw {
     Argument getArgument(int index) { apply_expr_arguments(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class AssignExpr extends @assign_expr, Expr {
     override string toString() { result = "AssignExpr" }
 
@@ -814,6 +1062,9 @@ module Raw {
     Expr getSource() { assign_exprs(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BindOptionalExpr extends @bind_optional_expr, Expr {
     override string toString() { result = "BindOptionalExpr" }
 
@@ -823,6 +1074,9 @@ module Raw {
     Expr getSubExpr() { bind_optional_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class CaptureListExpr extends @capture_list_expr, Expr {
     override string toString() { result = "CaptureListExpr" }
 
@@ -836,11 +1090,22 @@ module Raw {
     /**
      * Gets the closure body of this capture list expression.
      */
-    ClosureExpr getClosureBody() { capture_list_exprs(this, result) }
+    ExplicitClosureExpr getClosureBody() { capture_list_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ClosureExpr extends @closure_expr, Expr, Callable { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class CollectionExpr extends @collection_expr, Expr { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DeclRefExpr extends @decl_ref_expr, Expr {
     override string toString() { result = "DeclRefExpr" }
 
@@ -877,6 +1142,9 @@ module Raw {
     predicate hasDistributedThunkSemantics() { decl_ref_expr_has_distributed_thunk_semantics(this) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DefaultArgumentExpr extends @default_argument_expr, Expr {
     override string toString() { result = "DefaultArgumentExpr" }
 
@@ -896,10 +1164,16 @@ module Raw {
     Expr getCallerSideDefault() { default_argument_expr_caller_side_defaults(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DiscardAssignmentExpr extends @discard_assignment_expr, Expr {
     override string toString() { result = "DiscardAssignmentExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DotSyntaxBaseIgnoredExpr extends @dot_syntax_base_ignored_expr, Expr {
     override string toString() { result = "DotSyntaxBaseIgnoredExpr" }
 
@@ -914,6 +1188,9 @@ module Raw {
     Expr getSubExpr() { dot_syntax_base_ignored_exprs(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DynamicTypeExpr extends @dynamic_type_expr, Expr {
     override string toString() { result = "DynamicTypeExpr" }
 
@@ -923,6 +1200,9 @@ module Raw {
     Expr getBase() { dynamic_type_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class EnumIsCaseExpr extends @enum_is_case_expr, Expr {
     override string toString() { result = "EnumIsCaseExpr" }
 
@@ -937,10 +1217,16 @@ module Raw {
     EnumElementDecl getElement() { enum_is_case_exprs(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ErrorExpr extends @error_expr, Expr, ErrorElement {
     override string toString() { result = "ErrorExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ExplicitCastExpr extends @explicit_cast_expr, Expr {
     /**
      * Gets the sub expression of this explicit cast expression.
@@ -948,6 +1234,9 @@ module Raw {
     Expr getSubExpr() { explicit_cast_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ForceValueExpr extends @force_value_expr, Expr {
     override string toString() { result = "ForceValueExpr" }
 
@@ -957,6 +1246,9 @@ module Raw {
     Expr getSubExpr() { force_value_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class IdentityExpr extends @identity_expr, Expr {
     /**
      * Gets the sub expression of this identity expression.
@@ -964,6 +1256,9 @@ module Raw {
     Expr getSubExpr() { identity_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class IfExpr extends @if_expr, Expr {
     override string toString() { result = "IfExpr" }
 
@@ -983,6 +1278,9 @@ module Raw {
     Expr getElseExpr() { if_exprs(this, _, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ImplicitConversionExpr extends @implicit_conversion_expr, Expr {
     /**
      * Gets the sub expression of this implicit conversion expression.
@@ -990,6 +1288,9 @@ module Raw {
     Expr getSubExpr() { implicit_conversion_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class InOutExpr extends @in_out_expr, Expr {
     override string toString() { result = "InOutExpr" }
 
@@ -999,6 +1300,9 @@ module Raw {
     Expr getSubExpr() { in_out_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class KeyPathApplicationExpr extends @key_path_application_expr, Expr {
     override string toString() { result = "KeyPathApplicationExpr" }
 
@@ -1013,10 +1317,17 @@ module Raw {
     Expr getKeyPath() { key_path_application_exprs(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class KeyPathDotExpr extends @key_path_dot_expr, Expr {
     override string toString() { result = "KeyPathDotExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * A key-path expression.
+   */
   class KeyPathExpr extends @key_path_expr, Expr {
     override string toString() { result = "KeyPathExpr" }
 
@@ -1031,17 +1342,26 @@ module Raw {
     KeyPathComponent getComponent(int index) { key_path_expr_components(this, index, result) }
   }
 
-  class LazyInitializerExpr extends @lazy_initializer_expr, Expr {
-    override string toString() { result = "LazyInitializerExpr" }
+  /**
+   * INTERNAL: Do not use.
+   */
+  class LazyInitializationExpr extends @lazy_initialization_expr, Expr {
+    override string toString() { result = "LazyInitializationExpr" }
 
     /**
-     * Gets the sub expression of this lazy initializer expression.
+     * Gets the sub expression of this lazy initialization expression.
      */
-    Expr getSubExpr() { lazy_initializer_exprs(this, result) }
+    Expr getSubExpr() { lazy_initialization_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class LiteralExpr extends @literal_expr, Expr { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class LookupExpr extends @lookup_expr, Expr {
     /**
      * Gets the base of this lookup expression.
@@ -1054,6 +1374,9 @@ module Raw {
     Decl getMember() { lookup_expr_members(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class MakeTemporarilyEscapableExpr extends @make_temporarily_escapable_expr, Expr {
     override string toString() { result = "MakeTemporarilyEscapableExpr" }
 
@@ -1073,6 +1396,9 @@ module Raw {
     Expr getSubExpr() { make_temporarily_escapable_exprs(this, _, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ObjCSelectorExpr extends @obj_c_selector_expr, Expr {
     override string toString() { result = "ObjCSelectorExpr" }
 
@@ -1084,9 +1410,12 @@ module Raw {
     /**
      * Gets the method of this obj c selector expression.
      */
-    AbstractFunctionDecl getMethod() { obj_c_selector_exprs(this, _, result) }
+    Function getMethod() { obj_c_selector_exprs(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class OneWayExpr extends @one_way_expr, Expr {
     override string toString() { result = "OneWayExpr" }
 
@@ -1096,10 +1425,16 @@ module Raw {
     Expr getSubExpr() { one_way_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class OpaqueValueExpr extends @opaque_value_expr, Expr {
     override string toString() { result = "OpaqueValueExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class OpenExistentialExpr extends @open_existential_expr, Expr {
     override string toString() { result = "OpenExistentialExpr" }
 
@@ -1119,6 +1454,9 @@ module Raw {
     OpaqueValueExpr getOpaqueExpr() { open_existential_exprs(this, _, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class OptionalEvaluationExpr extends @optional_evaluation_expr, Expr {
     override string toString() { result = "OptionalEvaluationExpr" }
 
@@ -1128,15 +1466,23 @@ module Raw {
     Expr getSubExpr() { optional_evaluation_exprs(this, result) }
   }
 
-  class OtherConstructorDeclRefExpr extends @other_constructor_decl_ref_expr, Expr {
-    override string toString() { result = "OtherConstructorDeclRefExpr" }
+  /**
+   * INTERNAL: Do not use.
+   */
+  class OtherInitializerRefExpr extends @other_initializer_ref_expr, Expr {
+    override string toString() { result = "OtherInitializerRefExpr" }
 
     /**
-     * Gets the constructor declaration of this other constructor declaration reference expression.
+     * Gets the initializer of this other initializer reference expression.
      */
-    ConstructorDecl getConstructorDecl() { other_constructor_decl_ref_exprs(this, result) }
+    Initializer getInitializer() { other_initializer_ref_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * An ambiguous expression that might refer to multiple declarations. This will be present only
+   * for failing compilations.
+   */
   class OverloadedDeclRefExpr extends @overloaded_decl_ref_expr, Expr, ErrorElement {
     override string toString() { result = "OverloadedDeclRefExpr" }
 
@@ -1148,6 +1494,11 @@ module Raw {
     }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * A placeholder substituting property initializations with `=` when the property has a property
+   * wrapper with an initializer.
+   */
   class PropertyWrapperValuePlaceholderExpr extends @property_wrapper_value_placeholder_expr, Expr {
     override string toString() { result = "PropertyWrapperValuePlaceholderExpr" }
 
@@ -1162,20 +1513,26 @@ module Raw {
     OpaqueValueExpr getPlaceholder() { property_wrapper_value_placeholder_exprs(this, result) }
   }
 
-  class RebindSelfInConstructorExpr extends @rebind_self_in_constructor_expr, Expr {
-    override string toString() { result = "RebindSelfInConstructorExpr" }
+  /**
+   * INTERNAL: Do not use.
+   */
+  class RebindSelfInInitializerExpr extends @rebind_self_in_initializer_expr, Expr {
+    override string toString() { result = "RebindSelfInInitializerExpr" }
 
     /**
-     * Gets the sub expression of this rebind self in constructor expression.
+     * Gets the sub expression of this rebind self in initializer expression.
      */
-    Expr getSubExpr() { rebind_self_in_constructor_exprs(this, result, _) }
+    Expr getSubExpr() { rebind_self_in_initializer_exprs(this, result, _) }
 
     /**
-     * Gets the self of this rebind self in constructor expression.
+     * Gets the self of this rebind self in initializer expression.
      */
-    VarDecl getSelf() { rebind_self_in_constructor_exprs(this, _, result) }
+    VarDecl getSelf() { rebind_self_in_initializer_exprs(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class SequenceExpr extends @sequence_expr, Expr {
     override string toString() { result = "SequenceExpr" }
 
@@ -1185,6 +1542,9 @@ module Raw {
     Expr getElement(int index) { sequence_expr_elements(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class SuperRefExpr extends @super_ref_expr, Expr {
     override string toString() { result = "SuperRefExpr" }
 
@@ -1194,6 +1554,9 @@ module Raw {
     VarDecl getSelf() { super_ref_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class TapExpr extends @tap_expr, Expr {
     override string toString() { result = "TapExpr" }
 
@@ -1213,6 +1576,9 @@ module Raw {
     VarDecl getVar() { tap_exprs(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class TupleElementExpr extends @tuple_element_expr, Expr {
     override string toString() { result = "TupleElementExpr" }
 
@@ -1227,6 +1593,9 @@ module Raw {
     int getIndex() { tuple_element_exprs(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class TupleExpr extends @tuple_expr, Expr {
     override string toString() { result = "TupleExpr" }
 
@@ -1236,6 +1605,9 @@ module Raw {
     Expr getElement(int index) { tuple_expr_elements(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class TypeExpr extends @type_expr, Expr {
     override string toString() { result = "TypeExpr" }
 
@@ -1245,6 +1617,9 @@ module Raw {
     TypeRepr getTypeRepr() { type_expr_type_reprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnresolvedDeclRefExpr extends @unresolved_decl_ref_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedDeclRefExpr" }
 
@@ -1254,6 +1629,9 @@ module Raw {
     string getName() { unresolved_decl_ref_expr_names(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnresolvedDotExpr extends @unresolved_dot_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedDotExpr" }
 
@@ -1268,6 +1646,9 @@ module Raw {
     string getName() { unresolved_dot_exprs(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnresolvedMemberExpr extends @unresolved_member_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedMemberExpr" }
 
@@ -1277,6 +1658,9 @@ module Raw {
     string getName() { unresolved_member_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnresolvedPatternExpr extends @unresolved_pattern_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedPatternExpr" }
 
@@ -1286,6 +1670,9 @@ module Raw {
     Pattern getSubPattern() { unresolved_pattern_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnresolvedSpecializeExpr extends @unresolved_specialize_expr, Expr, ErrorElement {
     override string toString() { result = "UnresolvedSpecializeExpr" }
 
@@ -1295,6 +1682,9 @@ module Raw {
     Expr getSubExpr() { unresolved_specialize_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class VarargExpansionExpr extends @vararg_expansion_expr, Expr {
     override string toString() { result = "VarargExpansionExpr" }
 
@@ -1304,18 +1694,30 @@ module Raw {
     Expr getSubExpr() { vararg_expansion_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class AbiSafeConversionExpr extends @abi_safe_conversion_expr, ImplicitConversionExpr {
     override string toString() { result = "AbiSafeConversionExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class AnyHashableErasureExpr extends @any_hashable_erasure_expr, ImplicitConversionExpr {
     override string toString() { result = "AnyHashableErasureExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ArchetypeToSuperExpr extends @archetype_to_super_expr, ImplicitConversionExpr {
     override string toString() { result = "ArchetypeToSuperExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ArrayExpr extends @array_expr, CollectionExpr {
     override string toString() { result = "ArrayExpr" }
 
@@ -1325,82 +1727,132 @@ module Raw {
     Expr getElement(int index) { array_expr_elements(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ArrayToPointerExpr extends @array_to_pointer_expr, ImplicitConversionExpr {
     override string toString() { result = "ArrayToPointerExpr" }
   }
 
-  class AutoClosureExpr extends @auto_closure_expr, AbstractClosureExpr {
+  /**
+   * INTERNAL: Do not use.
+   */
+  class AutoClosureExpr extends @auto_closure_expr, ClosureExpr {
     override string toString() { result = "AutoClosureExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class AwaitExpr extends @await_expr, IdentityExpr {
     override string toString() { result = "AwaitExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BinaryExpr extends @binary_expr, ApplyExpr {
     override string toString() { result = "BinaryExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BridgeFromObjCExpr extends @bridge_from_obj_c_expr, ImplicitConversionExpr {
     override string toString() { result = "BridgeFromObjCExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BridgeToObjCExpr extends @bridge_to_obj_c_expr, ImplicitConversionExpr {
     override string toString() { result = "BridgeToObjCExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinLiteralExpr extends @builtin_literal_expr, LiteralExpr { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class CallExpr extends @call_expr, ApplyExpr {
     override string toString() { result = "CallExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class CheckedCastExpr extends @checked_cast_expr, ExplicitCastExpr { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ClassMetatypeToObjectExpr extends @class_metatype_to_object_expr, ImplicitConversionExpr {
     override string toString() { result = "ClassMetatypeToObjectExpr" }
   }
 
-  class ClosureExpr extends @closure_expr, AbstractClosureExpr {
-    override string toString() { result = "ClosureExpr" }
-  }
-
+  /**
+   * INTERNAL: Do not use.
+   */
   class CoerceExpr extends @coerce_expr, ExplicitCastExpr {
     override string toString() { result = "CoerceExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class CollectionUpcastConversionExpr extends @collection_upcast_conversion_expr,
     ImplicitConversionExpr
   {
     override string toString() { result = "CollectionUpcastConversionExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ConditionalBridgeFromObjCExpr extends @conditional_bridge_from_obj_c_expr,
     ImplicitConversionExpr
   {
     override string toString() { result = "ConditionalBridgeFromObjCExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class CovariantFunctionConversionExpr extends @covariant_function_conversion_expr,
     ImplicitConversionExpr
   {
     override string toString() { result = "CovariantFunctionConversionExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class CovariantReturnConversionExpr extends @covariant_return_conversion_expr,
     ImplicitConversionExpr
   {
     override string toString() { result = "CovariantReturnConversionExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DerivedToBaseExpr extends @derived_to_base_expr, ImplicitConversionExpr {
     override string toString() { result = "DerivedToBaseExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DestructureTupleExpr extends @destructure_tuple_expr, ImplicitConversionExpr {
     override string toString() { result = "DestructureTupleExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DictionaryExpr extends @dictionary_expr, CollectionExpr {
     override string toString() { result = "DictionaryExpr" }
 
@@ -1410,52 +1862,95 @@ module Raw {
     Expr getElement(int index) { dictionary_expr_elements(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DifferentiableFunctionExpr extends @differentiable_function_expr, ImplicitConversionExpr {
     override string toString() { result = "DifferentiableFunctionExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DifferentiableFunctionExtractOriginalExpr extends @differentiable_function_extract_original_expr,
     ImplicitConversionExpr
   {
     override string toString() { result = "DifferentiableFunctionExtractOriginalExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DotSelfExpr extends @dot_self_expr, IdentityExpr {
     override string toString() { result = "DotSelfExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DynamicLookupExpr extends @dynamic_lookup_expr, LookupExpr { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ErasureExpr extends @erasure_expr, ImplicitConversionExpr {
     override string toString() { result = "ErasureExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ExistentialMetatypeToObjectExpr extends @existential_metatype_to_object_expr,
     ImplicitConversionExpr
   {
     override string toString() { result = "ExistentialMetatypeToObjectExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ExplicitClosureExpr extends @explicit_closure_expr, ClosureExpr {
+    override string toString() { result = "ExplicitClosureExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class ForceTryExpr extends @force_try_expr, AnyTryExpr {
     override string toString() { result = "ForceTryExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ForeignObjectConversionExpr extends @foreign_object_conversion_expr, ImplicitConversionExpr {
     override string toString() { result = "ForeignObjectConversionExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class FunctionConversionExpr extends @function_conversion_expr, ImplicitConversionExpr {
     override string toString() { result = "FunctionConversionExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class InOutToPointerExpr extends @in_out_to_pointer_expr, ImplicitConversionExpr {
     override string toString() { result = "InOutToPointerExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class InjectIntoOptionalExpr extends @inject_into_optional_expr, ImplicitConversionExpr {
     override string toString() { result = "InjectIntoOptionalExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class InterpolatedStringLiteralExpr extends @interpolated_string_literal_expr, LiteralExpr {
     override string toString() { result = "InterpolatedStringLiteralExpr" }
 
@@ -1486,26 +1981,41 @@ module Raw {
     TapExpr getAppendingExpr() { interpolated_string_literal_expr_appending_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class LinearFunctionExpr extends @linear_function_expr, ImplicitConversionExpr {
     override string toString() { result = "LinearFunctionExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class LinearFunctionExtractOriginalExpr extends @linear_function_extract_original_expr,
     ImplicitConversionExpr
   {
     override string toString() { result = "LinearFunctionExtractOriginalExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class LinearToDifferentiableFunctionExpr extends @linear_to_differentiable_function_expr,
     ImplicitConversionExpr
   {
     override string toString() { result = "LinearToDifferentiableFunctionExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class LoadExpr extends @load_expr, ImplicitConversionExpr {
     override string toString() { result = "LoadExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class MemberRefExpr extends @member_ref_expr, LookupExpr {
     override string toString() { result = "MemberRefExpr" }
 
@@ -1536,14 +2046,24 @@ module Raw {
     }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class MetatypeConversionExpr extends @metatype_conversion_expr, ImplicitConversionExpr {
     override string toString() { result = "MetatypeConversionExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class NilLiteralExpr extends @nil_literal_expr, LiteralExpr {
     override string toString() { result = "NilLiteralExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * An instance of `#fileLiteral`, `#imageLiteral` or `#colorLiteral` expressions, which are used in playgrounds.
+   */
   class ObjectLiteralExpr extends @object_literal_expr, LiteralExpr {
     override string toString() { result = "ObjectLiteralExpr" }
 
@@ -1560,32 +2080,54 @@ module Raw {
     Argument getArgument(int index) { object_literal_expr_arguments(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class OptionalTryExpr extends @optional_try_expr, AnyTryExpr {
     override string toString() { result = "OptionalTryExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ParenExpr extends @paren_expr, IdentityExpr {
     override string toString() { result = "ParenExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class PointerToPointerExpr extends @pointer_to_pointer_expr, ImplicitConversionExpr {
     override string toString() { result = "PointerToPointerExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class PostfixUnaryExpr extends @postfix_unary_expr, ApplyExpr {
     override string toString() { result = "PostfixUnaryExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class PrefixUnaryExpr extends @prefix_unary_expr, ApplyExpr {
     override string toString() { result = "PrefixUnaryExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ProtocolMetatypeToObjectExpr extends @protocol_metatype_to_object_expr,
     ImplicitConversionExpr
   {
     override string toString() { result = "ProtocolMetatypeToObjectExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * A regular expression literal which is checked at compile time, for example `/a(a|b)*b/`.
+   */
   class RegexLiteralExpr extends @regex_literal_expr, LiteralExpr {
     override string toString() { result = "RegexLiteralExpr" }
 
@@ -1600,6 +2142,11 @@ module Raw {
     int getVersion() { regex_literal_exprs(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * An internal raw instance of method lookups like `x.foo` in `x.foo()`.
+   * This is completely replaced by the synthesized type `MethodLookupExpr`.
+   */
   class SelfApplyExpr extends @self_apply_expr, ApplyExpr {
     /**
      * Gets the base of this self apply expression.
@@ -1607,10 +2154,16 @@ module Raw {
     Expr getBase() { self_apply_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class StringToPointerExpr extends @string_to_pointer_expr, ImplicitConversionExpr {
     override string toString() { result = "StringToPointerExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class SubscriptExpr extends @subscript_expr, LookupExpr {
     override string toString() { result = "SubscriptExpr" }
 
@@ -1644,30 +2197,48 @@ module Raw {
     }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class TryExpr extends @try_expr, AnyTryExpr {
     override string toString() { result = "TryExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnderlyingToOpaqueExpr extends @underlying_to_opaque_expr, ImplicitConversionExpr {
     override string toString() { result = "UnderlyingToOpaqueExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnevaluatedInstanceExpr extends @unevaluated_instance_expr, ImplicitConversionExpr {
     override string toString() { result = "UnevaluatedInstanceExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnresolvedMemberChainResultExpr extends @unresolved_member_chain_result_expr, IdentityExpr,
     ErrorElement
   {
     override string toString() { result = "UnresolvedMemberChainResultExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnresolvedTypeConversionExpr extends @unresolved_type_conversion_expr,
     ImplicitConversionExpr, ErrorElement
   {
     override string toString() { result = "UnresolvedTypeConversionExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BooleanLiteralExpr extends @boolean_literal_expr, BuiltinLiteralExpr {
     override string toString() { result = "BooleanLiteralExpr" }
 
@@ -1677,34 +2248,58 @@ module Raw {
     boolean getValue() { boolean_literal_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ConditionalCheckedCastExpr extends @conditional_checked_cast_expr, CheckedCastExpr {
     override string toString() { result = "ConditionalCheckedCastExpr" }
   }
 
-  class ConstructorRefCallExpr extends @constructor_ref_call_expr, SelfApplyExpr {
-    override string toString() { result = "ConstructorRefCallExpr" }
-  }
-
+  /**
+   * INTERNAL: Do not use.
+   */
   class DotSyntaxCallExpr extends @dot_syntax_call_expr, SelfApplyExpr {
     override string toString() { result = "DotSyntaxCallExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DynamicMemberRefExpr extends @dynamic_member_ref_expr, DynamicLookupExpr {
     override string toString() { result = "DynamicMemberRefExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DynamicSubscriptExpr extends @dynamic_subscript_expr, DynamicLookupExpr {
     override string toString() { result = "DynamicSubscriptExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ForcedCheckedCastExpr extends @forced_checked_cast_expr, CheckedCastExpr {
     override string toString() { result = "ForcedCheckedCastExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
+  class InitializerRefCallExpr extends @initializer_ref_call_expr, SelfApplyExpr {
+    override string toString() { result = "InitializerRefCallExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class IsExpr extends @is_expr, CheckedCastExpr {
     override string toString() { result = "IsExpr" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class MagicIdentifierLiteralExpr extends @magic_identifier_literal_expr, BuiltinLiteralExpr {
     override string toString() { result = "MagicIdentifierLiteralExpr" }
 
@@ -1714,8 +2309,14 @@ module Raw {
     string getKind() { magic_identifier_literal_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class NumberLiteralExpr extends @number_literal_expr, BuiltinLiteralExpr { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class StringLiteralExpr extends @string_literal_expr, BuiltinLiteralExpr {
     override string toString() { result = "StringLiteralExpr" }
 
@@ -1725,6 +2326,9 @@ module Raw {
     string getValue() { string_literal_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class FloatLiteralExpr extends @float_literal_expr, NumberLiteralExpr {
     override string toString() { result = "FloatLiteralExpr" }
 
@@ -1734,6 +2338,9 @@ module Raw {
     string getStringValue() { float_literal_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class IntegerLiteralExpr extends @integer_literal_expr, NumberLiteralExpr {
     override string toString() { result = "IntegerLiteralExpr" }
 
@@ -1743,12 +2350,21 @@ module Raw {
     string getStringValue() { integer_literal_exprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class Pattern extends @pattern, AstNode { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class AnyPattern extends @any_pattern, Pattern {
     override string toString() { result = "AnyPattern" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BindingPattern extends @binding_pattern, Pattern {
     override string toString() { result = "BindingPattern" }
 
@@ -1758,6 +2374,9 @@ module Raw {
     Pattern getSubPattern() { binding_patterns(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BoolPattern extends @bool_pattern, Pattern {
     override string toString() { result = "BoolPattern" }
 
@@ -1767,6 +2386,9 @@ module Raw {
     boolean getValue() { bool_patterns(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class EnumElementPattern extends @enum_element_pattern, Pattern {
     override string toString() { result = "EnumElementPattern" }
 
@@ -1781,6 +2403,9 @@ module Raw {
     Pattern getSubPattern() { enum_element_pattern_sub_patterns(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ExprPattern extends @expr_pattern, Pattern {
     override string toString() { result = "ExprPattern" }
 
@@ -1790,6 +2415,9 @@ module Raw {
     Expr getSubExpr() { expr_patterns(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class IsPattern extends @is_pattern, Pattern {
     override string toString() { result = "IsPattern" }
 
@@ -1804,6 +2432,9 @@ module Raw {
     Pattern getSubPattern() { is_pattern_sub_patterns(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class NamedPattern extends @named_pattern, Pattern {
     override string toString() { result = "NamedPattern" }
 
@@ -1813,6 +2444,9 @@ module Raw {
     string getName() { named_patterns(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class OptionalSomePattern extends @optional_some_pattern, Pattern {
     override string toString() { result = "OptionalSomePattern" }
 
@@ -1822,6 +2456,9 @@ module Raw {
     Pattern getSubPattern() { optional_some_patterns(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ParenPattern extends @paren_pattern, Pattern {
     override string toString() { result = "ParenPattern" }
 
@@ -1831,6 +2468,9 @@ module Raw {
     Pattern getSubPattern() { paren_patterns(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class TuplePattern extends @tuple_pattern, Pattern {
     override string toString() { result = "TuplePattern" }
 
@@ -1840,6 +2480,9 @@ module Raw {
     Pattern getElement(int index) { tuple_pattern_elements(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class TypedPattern extends @typed_pattern, Pattern {
     override string toString() { result = "TypedPattern" }
 
@@ -1854,6 +2497,9 @@ module Raw {
     TypeRepr getTypeRepr() { typed_pattern_type_reprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class CaseLabelItem extends @case_label_item, AstNode {
     override string toString() { result = "CaseLabelItem" }
 
@@ -1868,6 +2514,9 @@ module Raw {
     Expr getGuard() { case_label_item_guards(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ConditionElement extends @condition_element, AstNode {
     override string toString() { result = "ConditionElement" }
 
@@ -1892,8 +2541,14 @@ module Raw {
     AvailabilityInfo getAvailability() { condition_element_availabilities(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class Stmt extends @stmt, AstNode { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class StmtCondition extends @stmt_condition, AstNode {
     override string toString() { result = "StmtCondition" }
 
@@ -1903,6 +2558,9 @@ module Raw {
     ConditionElement getElement(int index) { stmt_condition_elements(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BraceStmt extends @brace_stmt, Stmt {
     override string toString() { result = "BraceStmt" }
 
@@ -1912,6 +2570,9 @@ module Raw {
     AstNode getElement(int index) { brace_stmt_elements(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BreakStmt extends @break_stmt, Stmt {
     override string toString() { result = "BreakStmt" }
 
@@ -1926,6 +2587,9 @@ module Raw {
     Stmt getTarget() { break_stmt_targets(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class CaseStmt extends @case_stmt, Stmt {
     override string toString() { result = "CaseStmt" }
 
@@ -1945,6 +2609,9 @@ module Raw {
     VarDecl getVariable(int index) { case_stmt_variables(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ContinueStmt extends @continue_stmt, Stmt {
     override string toString() { result = "ContinueStmt" }
 
@@ -1959,6 +2626,9 @@ module Raw {
     Stmt getTarget() { continue_stmt_targets(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DeferStmt extends @defer_stmt, Stmt {
     override string toString() { result = "DeferStmt" }
 
@@ -1968,10 +2638,16 @@ module Raw {
     BraceStmt getBody() { defer_stmts(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class FailStmt extends @fail_stmt, Stmt {
     override string toString() { result = "FailStmt" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class FallthroughStmt extends @fallthrough_stmt, Stmt {
     override string toString() { result = "FallthroughStmt" }
 
@@ -1986,6 +2662,9 @@ module Raw {
     CaseStmt getFallthroughDest() { fallthrough_stmts(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class LabeledStmt extends @labeled_stmt, Stmt {
     /**
      * Gets the label of this labeled statement, if it exists.
@@ -1993,6 +2672,9 @@ module Raw {
     string getLabel() { labeled_stmt_labels(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class PoundAssertStmt extends @pound_assert_stmt, Stmt {
     override string toString() { result = "PoundAssertStmt" }
 
@@ -2007,6 +2689,9 @@ module Raw {
     string getMessage() { pound_assert_stmts(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ReturnStmt extends @return_stmt, Stmt {
     override string toString() { result = "ReturnStmt" }
 
@@ -2016,6 +2701,9 @@ module Raw {
     Expr getResult() { return_stmt_results(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ThrowStmt extends @throw_stmt, Stmt {
     override string toString() { result = "ThrowStmt" }
 
@@ -2025,6 +2713,9 @@ module Raw {
     Expr getSubExpr() { throw_stmts(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class YieldStmt extends @yield_stmt, Stmt {
     override string toString() { result = "YieldStmt" }
 
@@ -2034,6 +2725,9 @@ module Raw {
     Expr getResult(int index) { yield_stmt_results(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DoCatchStmt extends @do_catch_stmt, LabeledStmt {
     override string toString() { result = "DoCatchStmt" }
 
@@ -2048,6 +2742,9 @@ module Raw {
     CaseStmt getCatch(int index) { do_catch_stmt_catches(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DoStmt extends @do_stmt, LabeledStmt {
     override string toString() { result = "DoStmt" }
 
@@ -2057,6 +2754,9 @@ module Raw {
     BraceStmt getBody() { do_stmts(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ForEachStmt extends @for_each_stmt, LabeledStmt {
     override string toString() { result = "ForEachStmt" }
 
@@ -2081,6 +2781,9 @@ module Raw {
     BraceStmt getBody() { for_each_stmts(this, _, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class LabeledConditionalStmt extends @labeled_conditional_stmt, LabeledStmt {
     /**
      * Gets the condition of this labeled conditional statement.
@@ -2088,6 +2791,9 @@ module Raw {
     StmtCondition getCondition() { labeled_conditional_stmts(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class RepeatWhileStmt extends @repeat_while_stmt, LabeledStmt {
     override string toString() { result = "RepeatWhileStmt" }
 
@@ -2102,6 +2808,9 @@ module Raw {
     Stmt getBody() { repeat_while_stmts(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class SwitchStmt extends @switch_stmt, LabeledStmt {
     override string toString() { result = "SwitchStmt" }
 
@@ -2116,6 +2825,9 @@ module Raw {
     CaseStmt getCase(int index) { switch_stmt_cases(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class GuardStmt extends @guard_stmt, LabeledConditionalStmt {
     override string toString() { result = "GuardStmt" }
 
@@ -2125,6 +2837,9 @@ module Raw {
     BraceStmt getBody() { guard_stmts(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class IfStmt extends @if_stmt, LabeledConditionalStmt {
     override string toString() { result = "IfStmt" }
 
@@ -2139,6 +2854,9 @@ module Raw {
     Stmt getElse() { if_stmt_elses(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class WhileStmt extends @while_stmt, LabeledConditionalStmt {
     override string toString() { result = "WhileStmt" }
 
@@ -2148,6 +2866,9 @@ module Raw {
     Stmt getBody() { while_stmts(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class Type extends @type, Element {
     /**
      * Gets the name of this type.
@@ -2160,6 +2881,9 @@ module Raw {
     Type getCanonicalType() { types(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class TypeRepr extends @type_repr, AstNode {
     override string toString() { result = "TypeRepr" }
 
@@ -2169,6 +2893,9 @@ module Raw {
     Type getType() { type_reprs(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class AnyFunctionType extends @any_function_type, Type {
     /**
      * Gets the result of this function type.
@@ -2191,6 +2918,9 @@ module Raw {
     predicate isAsync() { any_function_type_is_async(this) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class AnyGenericType extends @any_generic_type, Type {
     /**
      * Gets the parent of this any generic type, if it exists.
@@ -2203,10 +2933,19 @@ module Raw {
     GenericTypeDecl getDeclaration() { any_generic_types(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class AnyMetatypeType extends @any_metatype_type, Type { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinType extends @builtin_type, Type { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DependentMemberType extends @dependent_member_type, Type {
     override string toString() { result = "DependentMemberType" }
 
@@ -2221,6 +2960,9 @@ module Raw {
     AssociatedTypeDecl getAssociatedTypeDecl() { dependent_member_types(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DynamicSelfType extends @dynamic_self_type, Type {
     override string toString() { result = "DynamicSelfType" }
 
@@ -2230,10 +2972,16 @@ module Raw {
     Type getStaticSelfType() { dynamic_self_types(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ErrorType extends @error_type, Type, ErrorElement {
     override string toString() { result = "ErrorType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ExistentialType extends @existential_type, Type {
     override string toString() { result = "ExistentialType" }
 
@@ -2243,6 +2991,9 @@ module Raw {
     Type getConstraint() { existential_types(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class InOutType extends @in_out_type, Type {
     override string toString() { result = "InOutType" }
 
@@ -2252,6 +3003,9 @@ module Raw {
     Type getObjectType() { in_out_types(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class LValueType extends @l_value_type, Type {
     override string toString() { result = "LValueType" }
 
@@ -2261,6 +3015,9 @@ module Raw {
     Type getObjectType() { l_value_types(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ModuleType extends @module_type, Type {
     override string toString() { result = "ModuleType" }
 
@@ -2270,6 +3027,12 @@ module Raw {
     ModuleDecl getModule() { module_types(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * A sugar type of the form `P<X>` with `P` a protocol.
+   *
+   * If `P` has primary associated type `A`, then `T: P<X>` is a shortcut for `T: P where T.A == X`.
+   */
   class ParameterizedProtocolType extends @parameterized_protocol_type, Type {
     override string toString() { result = "ParameterizedProtocolType" }
 
@@ -2284,6 +3047,9 @@ module Raw {
     Type getArg(int index) { parameterized_protocol_type_args(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ProtocolCompositionType extends @protocol_composition_type, Type {
     override string toString() { result = "ProtocolCompositionType" }
 
@@ -2293,6 +3059,9 @@ module Raw {
     Type getMember(int index) { protocol_composition_type_members(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ReferenceStorageType extends @reference_storage_type, Type {
     /**
      * Gets the referent type of this reference storage type.
@@ -2300,10 +3069,19 @@ module Raw {
     Type getReferentType() { reference_storage_types(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class SubstitutableType extends @substitutable_type, Type { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class SugarType extends @sugar_type, Type { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class TupleType extends @tuple_type, Type {
     override string toString() { result = "TupleType" }
 
@@ -2318,12 +3096,21 @@ module Raw {
     string getName(int index) { tuple_type_names(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnresolvedType extends @unresolved_type, Type, ErrorElement {
     override string toString() { result = "UnresolvedType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class AnyBuiltinIntegerType extends @any_builtin_integer_type, BuiltinType { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ArchetypeType extends @archetype_type, SubstitutableType {
     /**
      * Gets the interface type of this archetype type.
@@ -2341,54 +3128,94 @@ module Raw {
     ProtocolDecl getProtocol(int index) { archetype_type_protocols(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinBridgeObjectType extends @builtin_bridge_object_type, BuiltinType {
     override string toString() { result = "BuiltinBridgeObjectType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinDefaultActorStorageType extends @builtin_default_actor_storage_type, BuiltinType {
     override string toString() { result = "BuiltinDefaultActorStorageType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinExecutorType extends @builtin_executor_type, BuiltinType {
     override string toString() { result = "BuiltinExecutorType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinFloatType extends @builtin_float_type, BuiltinType {
     override string toString() { result = "BuiltinFloatType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinJobType extends @builtin_job_type, BuiltinType {
     override string toString() { result = "BuiltinJobType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinNativeObjectType extends @builtin_native_object_type, BuiltinType {
     override string toString() { result = "BuiltinNativeObjectType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinRawPointerType extends @builtin_raw_pointer_type, BuiltinType {
     override string toString() { result = "BuiltinRawPointerType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinRawUnsafeContinuationType extends @builtin_raw_unsafe_continuation_type, BuiltinType {
     override string toString() { result = "BuiltinRawUnsafeContinuationType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinUnsafeValueBufferType extends @builtin_unsafe_value_buffer_type, BuiltinType {
     override string toString() { result = "BuiltinUnsafeValueBufferType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinVectorType extends @builtin_vector_type, BuiltinType {
     override string toString() { result = "BuiltinVectorType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ExistentialMetatypeType extends @existential_metatype_type, AnyMetatypeType {
     override string toString() { result = "ExistentialMetatypeType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class FunctionType extends @function_type, AnyFunctionType {
     override string toString() { result = "FunctionType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   * The type of a generic function with type parameters
+   */
   class GenericFunctionType extends @generic_function_type, AnyFunctionType {
     override string toString() { result = "GenericFunctionType" }
 
@@ -2400,18 +3227,30 @@ module Raw {
     }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class GenericTypeParamType extends @generic_type_param_type, SubstitutableType {
     override string toString() { result = "GenericTypeParamType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class MetatypeType extends @metatype_type, AnyMetatypeType {
     override string toString() { result = "MetatypeType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class NominalOrBoundGenericNominalType extends @nominal_or_bound_generic_nominal_type,
     AnyGenericType
   { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ParenType extends @paren_type, SugarType {
     override string toString() { result = "ParenType" }
 
@@ -2421,8 +3260,14 @@ module Raw {
     Type getType() { paren_types(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class SyntaxSugarType extends @syntax_sugar_type, SugarType { }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class TypeAliasType extends @type_alias_type, SugarType {
     override string toString() { result = "TypeAliasType" }
 
@@ -2432,22 +3277,37 @@ module Raw {
     TypeAliasDecl getDecl() { type_alias_types(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnboundGenericType extends @unbound_generic_type, AnyGenericType {
     override string toString() { result = "UnboundGenericType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnmanagedStorageType extends @unmanaged_storage_type, ReferenceStorageType {
     override string toString() { result = "UnmanagedStorageType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnownedStorageType extends @unowned_storage_type, ReferenceStorageType {
     override string toString() { result = "UnownedStorageType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class WeakStorageType extends @weak_storage_type, ReferenceStorageType {
     override string toString() { result = "WeakStorageType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BoundGenericType extends @bound_generic_type, NominalOrBoundGenericNominalType {
     /**
      * Gets the `index`th argument type of this bound generic type (0-based).
@@ -2455,10 +3315,16 @@ module Raw {
     Type getArgType(int index) { bound_generic_type_arg_types(this, index, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinIntegerLiteralType extends @builtin_integer_literal_type, AnyBuiltinIntegerType {
     override string toString() { result = "BuiltinIntegerLiteralType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BuiltinIntegerType extends @builtin_integer_type, AnyBuiltinIntegerType {
     override string toString() { result = "BuiltinIntegerType" }
 
@@ -2468,6 +3334,9 @@ module Raw {
     int getWidth() { builtin_integer_type_widths(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class DictionaryType extends @dictionary_type, SyntaxSugarType {
     override string toString() { result = "DictionaryType" }
 
@@ -2482,8 +3351,17 @@ module Raw {
     Type getValueType() { dictionary_types(this, _, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class NominalType extends @nominal_type, NominalOrBoundGenericNominalType { }
 
+  /**
+   * INTERNAL: Do not use.
+   * An opaque type, that is a type formally equivalent to an underlying type but abstracting it away.
+   *
+   * See https://docs.swift.org/swift-book/LanguageGuide/OpaqueTypes.html.
+   */
   class OpaqueTypeArchetypeType extends @opaque_type_archetype_type, ArchetypeType {
     override string toString() { result = "OpaqueTypeArchetypeType" }
 
@@ -2493,14 +3371,23 @@ module Raw {
     OpaqueTypeDecl getDeclaration() { opaque_type_archetype_types(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class OpenedArchetypeType extends @opened_archetype_type, ArchetypeType {
     override string toString() { result = "OpenedArchetypeType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class PrimaryArchetypeType extends @primary_archetype_type, ArchetypeType {
     override string toString() { result = "PrimaryArchetypeType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class UnarySyntaxSugarType extends @unary_syntax_sugar_type, SyntaxSugarType {
     /**
      * Gets the base type of this unary syntax sugar type.
@@ -2508,42 +3395,72 @@ module Raw {
     Type getBaseType() { unary_syntax_sugar_types(this, result) }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ArraySliceType extends @array_slice_type, UnarySyntaxSugarType {
     override string toString() { result = "ArraySliceType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BoundGenericClassType extends @bound_generic_class_type, BoundGenericType {
     override string toString() { result = "BoundGenericClassType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BoundGenericEnumType extends @bound_generic_enum_type, BoundGenericType {
     override string toString() { result = "BoundGenericEnumType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class BoundGenericStructType extends @bound_generic_struct_type, BoundGenericType {
     override string toString() { result = "BoundGenericStructType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ClassType extends @class_type, NominalType {
     override string toString() { result = "ClassType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class EnumType extends @enum_type, NominalType {
     override string toString() { result = "EnumType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class OptionalType extends @optional_type, UnarySyntaxSugarType {
     override string toString() { result = "OptionalType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class ProtocolType extends @protocol_type, NominalType {
     override string toString() { result = "ProtocolType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class StructType extends @struct_type, NominalType {
     override string toString() { result = "StructType" }
   }
 
+  /**
+   * INTERNAL: Do not use.
+   */
   class VariadicSequenceType extends @variadic_sequence_type, UnarySyntaxSugarType {
     override string toString() { result = "VariadicSequenceType" }
   }

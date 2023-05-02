@@ -806,6 +806,10 @@ private predicate basicFlowStepNoBarrier(
   callStep(pred, succ) and
   summary = PathSummary::call()
   or
+  // Implied receiver flow
+  CallGraph::impliedReceiverStep(pred, succ) and
+  summary = PathSummary::call()
+  or
   // Flow out of function
   returnStep(pred, succ) and
   summary = PathSummary::return()

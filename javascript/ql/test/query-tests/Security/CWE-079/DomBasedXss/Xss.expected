@@ -579,6 +579,13 @@ nodes
 | react-use-router.js:23:43:23:54 | router.query |
 | react-use-router.js:23:43:23:61 | router.query.foobar |
 | react-use-router.js:23:43:23:61 | router.query.foobar |
+| react-use-router.js:29:9:29:30 | router |
+| react-use-router.js:29:18:29:30 | myUseRouter() |
+| react-use-router.js:33:21:33:26 | router |
+| react-use-router.js:33:21:33:32 | router.query |
+| react-use-router.js:33:21:33:32 | router.query |
+| react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:39 | router.query.foobar |
 | react-use-state.js:4:9:4:49 | state |
 | react-use-state.js:4:9:4:49 | state |
 | react-use-state.js:4:10:4:14 | state |
@@ -1115,6 +1122,14 @@ nodes
 | tst.js:491:23:491:35 | location.hash |
 | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash |
+| tst.js:494:18:494:30 | location.hash |
+| tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash |
+| tst.js:501:43:501:62 | window.location.hash |
 | typeahead.js:20:13:20:45 | target |
 | typeahead.js:20:22:20:45 | documen ... .search |
 | typeahead.js:20:22:20:45 | documen ... .search |
@@ -1741,6 +1756,14 @@ edges
 | react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar |
 | react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar |
 | react-use-router.js:23:43:23:61 | router.query.foobar | react-use-router.js:22:17:22:22 | router |
+| react-use-router.js:29:9:29:30 | router | react-use-router.js:33:21:33:26 | router |
+| react-use-router.js:29:18:29:30 | myUseRouter() | react-use-router.js:29:9:29:30 | router |
+| react-use-router.js:33:21:33:26 | router | react-use-router.js:33:21:33:32 | router.query |
+| react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:39 | router.query.foobar | react-use-router.js:29:18:29:30 | myUseRouter() |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
@@ -2263,6 +2286,14 @@ edges
 | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
 | typeahead.js:20:13:20:45 | target | typeahead.js:21:12:21:17 | target |
 | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:20:13:20:45 | target |
 | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:20:13:20:45 | target |
@@ -2431,6 +2462,7 @@ edges
 | react-use-router.js:11:24:11:42 | router.query.foobar | react-use-router.js:8:21:8:32 | router.query | react-use-router.js:11:24:11:42 | router.query.foobar | Cross-site scripting vulnerability due to $@. | react-use-router.js:8:21:8:32 | router.query | user-provided value |
 | react-use-router.js:11:24:11:42 | router.query.foobar | react-use-router.js:11:24:11:35 | router.query | react-use-router.js:11:24:11:42 | router.query.foobar | Cross-site scripting vulnerability due to $@. | react-use-router.js:11:24:11:35 | router.query | user-provided value |
 | react-use-router.js:23:43:23:61 | router.query.foobar | react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar | Cross-site scripting vulnerability due to $@. | react-use-router.js:23:43:23:54 | router.query | user-provided value |
+| react-use-router.js:33:21:33:39 | router.query.foobar | react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar | Cross-site scripting vulnerability due to $@. | react-use-router.js:33:21:33:32 | router.query | user-provided value |
 | react-use-state.js:5:51:5:55 | state | react-use-state.js:4:38:4:48 | window.name | react-use-state.js:5:51:5:55 | state | Cross-site scripting vulnerability due to $@. | react-use-state.js:4:38:4:48 | window.name | user-provided value |
 | react-use-state.js:11:51:11:55 | state | react-use-state.js:10:14:10:24 | window.name | react-use-state.js:11:51:11:55 | state | Cross-site scripting vulnerability due to $@. | react-use-state.js:10:14:10:24 | window.name | user-provided value |
 | react-use-state.js:17:51:17:55 | state | react-use-state.js:16:20:16:30 | window.name | react-use-state.js:17:51:17:55 | state | Cross-site scripting vulnerability due to $@. | react-use-state.js:16:20:16:30 | window.name | user-provided value |
@@ -2550,6 +2582,8 @@ edges
 | tst.js:476:20:476:22 | url | tst.js:471:13:471:36 | documen ... .search | tst.js:476:20:476:22 | url | Cross-site scripting vulnerability due to $@. | tst.js:471:13:471:36 | documen ... .search | user-provided value |
 | tst.js:486:22:486:24 | url | tst.js:471:13:471:36 | documen ... .search | tst.js:486:22:486:24 | url | Cross-site scripting vulnerability due to $@. | tst.js:471:13:471:36 | documen ... .search | user-provided value |
 | tst.js:491:23:491:45 | locatio ... bstr(1) | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) | Cross-site scripting vulnerability due to $@. | tst.js:491:23:491:35 | location.hash | user-provided value |
+| tst.js:494:18:494:40 | locatio ... bstr(1) | tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) | Cross-site scripting vulnerability due to $@. | tst.js:494:18:494:30 | location.hash | user-provided value |
+| tst.js:501:33:501:63 | decodeU ... n.hash) | tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) | Cross-site scripting vulnerability due to $@. | tst.js:501:43:501:62 | window.location.hash | user-provided value |
 | typeahead.js:25:18:25:20 | val | typeahead.js:20:22:20:45 | documen ... .search | typeahead.js:25:18:25:20 | val | Cross-site scripting vulnerability due to $@. | typeahead.js:20:22:20:45 | documen ... .search | user-provided value |
 | v-html.vue:2:8:2:23 | v-html=tainted | v-html.vue:6:42:6:58 | document.location | v-html.vue:2:8:2:23 | v-html=tainted | Cross-site scripting vulnerability due to $@. | v-html.vue:6:42:6:58 | document.location | user-provided value |
 | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" | various-concat-obfuscations.js:2:16:2:39 | documen ... .search | various-concat-obfuscations.js:4:4:4:31 | "<div>" ... </div>" | Cross-site scripting vulnerability due to $@. | various-concat-obfuscations.js:2:16:2:39 | documen ... .search | user-provided value |

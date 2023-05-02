@@ -5,6 +5,7 @@
 private import java as J
 private import semmle.code.java.dataflow.internal.DataFlowPrivate
 private import semmle.code.java.dataflow.internal.ContainerFlow as ContainerFlow
+private import semmle.code.java.dataflow.internal.ModelExclusions
 private import semmle.code.java.dataflow.DataFlow as Df
 private import semmle.code.java.dataflow.SSA as Ssa
 private import semmle.code.java.dataflow.TaintTracking as Tt
@@ -26,34 +27,6 @@ private J::Method superImpl(J::Method m) {
   not m instanceof J::ToStringMethod
 }
 
-private predicate isInTestFile(J::File file) {
-  file.getAbsolutePath().matches("%src/test/%") or
-  file.getAbsolutePath().matches("%/guava-tests/%") or
-  file.getAbsolutePath().matches("%/guava-testlib/%")
-}
-
-private predicate isJdkInternal(J::CompilationUnit cu) {
-  cu.getPackage().getName().matches("org.graalvm%") or
-  cu.getPackage().getName().matches("com.sun%") or
-  cu.getPackage().getName().matches("sun%") or
-  cu.getPackage().getName().matches("jdk%") or
-  cu.getPackage().getName().matches("java2d%") or
-  cu.getPackage().getName().matches("build.tools%") or
-  cu.getPackage().getName().matches("propertiesparser%") or
-  cu.getPackage().getName().matches("org.jcp%") or
-  cu.getPackage().getName().matches("org.w3c%") or
-  cu.getPackage().getName().matches("org.ietf.jgss%") or
-  cu.getPackage().getName().matches("org.xml.sax%") or
-  cu.getPackage().getName().matches("com.oracle%") or
-  cu.getPackage().getName().matches("org.omg%") or
-  cu.getPackage().getName().matches("org.relaxng%") or
-  cu.getPackage().getName() = "compileproperties" or
-  cu.getPackage().getName() = "transparentruler" or
-  cu.getPackage().getName() = "genstubs" or
-  cu.getPackage().getName() = "netscape.javascript" or
-  cu.getPackage().getName() = ""
-}
-
 private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
   cu.getPackage().getName().matches("javax.swing%") or
   cu.getPackage().getName().matches("java.awt%")
@@ -63,13 +36,8 @@ private predicate isInfrequentlyUsed(J::CompilationUnit cu) {
  * Holds if it is relevant to generate models for `api`.
  */
 private predicate isRelevantForModels(J::Callable api) {
-  not isInTestFile(api.getCompilationUnit().getFile()) and
-  not isJdkInternal(api.getCompilationUnit()) and
-  not isInfrequentlyUsed(api.getCompilationUnit()) and
-  not api instanceof J::MainMethod and
-  not api instanceof J::StaticInitializer and
-  not exists(J::FunctionalExpr funcExpr | api = funcExpr.asMethod()) and
-  not api.(J::Constructor).isParameterless()
+  not isUninterestingForModels(api) and
+  not isInfrequentlyUsed(api.getCompilationUnit())
 }
 
 /**
@@ -216,7 +184,7 @@ string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
     exists(int pos |
       pos = node.getKind().(DataFlowImplCommon::ParamUpdateReturnKind).getPosition()
     |
-      result = parameterAccess(node.getEnclosingCallable().getParameter(pos))
+      result = parameterAccess(node.(DataFlow::Node).getEnclosingCallable().getParameter(pos))
       or
       result = qualifierString() and pos = -1
     )
@@ -268,7 +236,7 @@ predicate apiSource(DataFlow::Node source) {
 string asInputArgumentSpecific(DataFlow::Node source) {
   exists(int pos |
     source.(DataFlow::ParameterNode).isParameterOf(_, pos) and
-    result = "Argument[" + pos + "]"
+    if pos >= 0 then result = "Argument[" + pos + "]" else result = qualifierString()
   )
   or
   source.asExpr() instanceof J::FieldAccess and

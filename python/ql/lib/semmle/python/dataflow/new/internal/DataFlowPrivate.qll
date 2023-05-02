@@ -588,6 +588,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   dictStoreStep(nodeFrom, c, nodeTo)
   or
+  moreDictStoreSteps(nodeFrom, c, nodeTo)
+  or
   comprehensionStoreStep(nodeFrom, c, nodeTo)
   or
   iterableUnpackingStoreStep(nodeFrom, c, nodeTo)
@@ -688,16 +690,45 @@ predicate tupleStoreStep(CfgNode nodeFrom, TupleElementContent c, CfgNode nodeTo
 }
 
 /** Data flows from an element of a dictionary to the dictionary at a specific key. */
-predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, CfgNode nodeTo) {
+predicate dictStoreStep(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
   // Dictionary
   //   `{..., "key" = 42, ...}`
   //   nodeFrom is `42`, cfg node
   //   nodeTo is the dict, `{..., "key" = 42, ...}`, cfg node
   //   c denotes element of dictionary and the key `"key"`
   exists(KeyValuePair item |
-    item = nodeTo.getNode().(DictNode).getNode().(Dict).getAnItem() and
+    item = nodeTo.asCfgNode().(DictNode).getNode().(Dict).getAnItem() and
     nodeFrom.getNode().getNode() = item.getValue() and
     c.getKey() = item.getKey().(StrConst).getS()
+  )
+}
+
+/**
+ * This has been made private since `dictStoreStep` is used by taint-tracking, and
+ * adding these extra steps made some alerts very noisy.
+ *
+ * TODO: Once TaintTracking no longer uses `dictStoreStep`, unify the two predicates.
+ */
+private predicate moreDictStoreSteps(CfgNode nodeFrom, DictionaryElementContent c, Node nodeTo) {
+  exists(SubscriptNode subscript |
+    nodeTo.(PostUpdateNode).getPreUpdateNode().asCfgNode() = subscript.getObject() and
+    nodeFrom.asCfgNode() = subscript.(DefinitionNode).getValue() and
+    c.getKey() = subscript.getIndex().getNode().(StrConst).getText()
+  )
+  or
+  // see https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
+  exists(MethodCallNode call |
+    call.calls(nodeTo.(PostUpdateNode).getPreUpdateNode(), "setdefault") and
+    call.getArg(0).asExpr().(StrConst).getText() = c.getKey() and
+    nodeFrom = call.getArg(1)
+  )
+}
+
+predicate dictClearStep(Node node, DictionaryElementContent c) {
+  exists(SubscriptNode subscript |
+    subscript instanceof DefinitionNode and
+    node.asCfgNode() = subscript.getObject() and
+    c.getKey() = subscript.getIndex().getNode().(StrConst).getText()
   )
 }
 
@@ -761,6 +792,8 @@ predicate defaultValueFlowStep(CfgNode nodeFrom, CfgNode nodeTo) {
 predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
+  dictReadStep(nodeFrom, c, nodeTo)
+  or
   iterableUnpackingReadStep(nodeFrom, c, nodeTo)
   or
   matchReadStep(nodeFrom, c, nodeTo)
@@ -796,6 +829,17 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
     or
     c.(DictionaryElementContent).getKey() =
       nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
+  )
+}
+
+predicate dictReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
+  // see
+  // - https://docs.python.org/3.10/library/stdtypes.html#dict.get
+  // - https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
+  exists(MethodCallNode call |
+    call.calls(nodeFrom, ["get", "setdefault"]) and
+    call.getArg(0).asExpr().(StrConst).getText() = c.(DictionaryElementContent).getKey() and
+    nodeTo = call
   )
 }
 
@@ -872,6 +916,8 @@ predicate clearsContent(Node n, Content c) {
   matchClearStep(n, c)
   or
   attributeClearStep(n, c)
+  or
+  dictClearStep(n, c)
   or
   FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
   or

@@ -1,4 +1,5 @@
 private import codeql.swift.generated.KeyPathComponent
+private import swift
 
 class KeyPathComponent extends Generated::KeyPathComponent {
   /**
@@ -35,4 +36,23 @@ class KeyPathComponent extends Generated::KeyPathComponent {
    * Tuple indexing like `.1`.
    */
   predicate isTupleIndexing() { getKind() = 9 }
+
+  /** Gets the underlying key-path expression which this is a component of. */
+  KeyPathExpr getKeyPathExpr() { result.getAComponent() = this }
+
+  /** Holds if this component is the i'th component of the underling key-path expression. */
+  predicate hasIndex(int i) { any(KeyPathExpr e).getComponent(i) = this }
+
+  /** Gets the next component of the underlying key-path expression. */
+  KeyPathComponent getNextComponent() {
+    exists(int i, KeyPathExpr e |
+      hasKeyPathExprAndIndex(e, i, this) and
+      hasKeyPathExprAndIndex(e, i + 1, result)
+    )
+  }
+}
+
+pragma[nomagic]
+private predicate hasKeyPathExprAndIndex(KeyPathExpr e, int i, KeyPathComponent c) {
+  e.getComponent(i) = c
 }

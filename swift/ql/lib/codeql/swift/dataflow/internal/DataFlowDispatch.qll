@@ -74,6 +74,7 @@ newtype TDataFlowCall =
   TPropertyGetterCall(PropertyGetterCfgNode getter) or
   TPropertySetterCall(PropertySetterCfgNode setter) or
   TPropertyObserverCall(PropertyObserverCfgNode observer) or
+  TKeyPathCall(KeyPathApplicationExprCfgNode keyPathApplication) or
   TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
     FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
   }
@@ -88,6 +89,9 @@ class DataFlowCall extends TDataFlowCall {
 
   /** Gets the underlying source code call, if any. */
   ApplyExprCfgNode asCall() { none() }
+
+  /** Gets the underlying key-path application node, if any. */
+  KeyPathApplicationExprCfgNode asKeyPath() { none() }
 
   /**
    * Gets the i'th argument of call.class
@@ -138,6 +142,25 @@ private class NormalCall extends DataFlowCall, TNormalCall {
   override Location getLocation() { result = apply.getLocation() }
 }
 
+private class KeyPathCall extends DataFlowCall, TKeyPathCall {
+  private KeyPathApplicationExprCfgNode apply;
+
+  KeyPathCall() { this = TKeyPathCall(apply) }
+
+  override KeyPathApplicationExprCfgNode asKeyPath() { result = apply }
+
+  override CfgNode getArgument(int i) {
+    i = -1 and
+    result = apply.getBase()
+  }
+
+  override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(apply.getScope()) }
+
+  override string toString() { result = apply.toString() }
+
+  override Location getLocation() { result = apply.getLocation() }
+}
+
 class PropertyGetterCall extends DataFlowCall, TPropertyGetterCall {
   private PropertyGetterCfgNode getter;
 
@@ -156,7 +179,7 @@ class PropertyGetterCall extends DataFlowCall, TPropertyGetterCall {
 
   override Location getLocation() { result = getter.getLocation() }
 
-  AccessorDecl getAccessorDecl() { result = getter.getAccessorDecl() }
+  Accessor getAccessor() { result = getter.getAccessor() }
 }
 
 class PropertySetterCall extends DataFlowCall, TPropertySetterCall {
@@ -180,7 +203,7 @@ class PropertySetterCall extends DataFlowCall, TPropertySetterCall {
 
   override Location getLocation() { result = setter.getLocation() }
 
-  AccessorDecl getAccessorDecl() { result = setter.getAccessorDecl() }
+  Accessor getAccessor() { result = setter.getAccessor() }
 }
 
 class PropertyObserverCall extends DataFlowCall, TPropertyObserverCall {
@@ -207,7 +230,7 @@ class PropertyObserverCall extends DataFlowCall, TPropertyObserverCall {
 
   override Location getLocation() { result = observer.getLocation() }
 
-  AccessorDecl getAccessorDecl() { result = observer.getAccessorDecl() }
+  Accessor getAccessor() { result = observer.getAccessor() }
 }
 
 class SummaryCall extends DataFlowCall, TSummaryCall {
@@ -238,11 +261,11 @@ private module Cached {
   DataFlowCallable viableCallable(DataFlowCall call) {
     result = TDataFlowFunc(call.asCall().getStaticTarget())
     or
-    result = TDataFlowFunc(call.(PropertyGetterCall).getAccessorDecl())
+    result = TDataFlowFunc(call.(PropertyGetterCall).getAccessor())
     or
-    result = TDataFlowFunc(call.(PropertySetterCall).getAccessorDecl())
+    result = TDataFlowFunc(call.(PropertySetterCall).getAccessor())
     or
-    result = TDataFlowFunc(call.(PropertyObserverCall).getAccessorDecl())
+    result = TDataFlowFunc(call.(PropertyObserverCall).getAccessor())
     or
     result = TSummarizedCallable(call.asCall().getStaticTarget())
   }

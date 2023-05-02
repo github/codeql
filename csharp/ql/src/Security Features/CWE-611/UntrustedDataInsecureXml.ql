@@ -14,10 +14,10 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.XMLEntityInjectionQuery
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import XmlEntityInjection::PathGraph
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from XmlEntityInjection::PathNode source, XmlEntityInjection::PathNode sink
+where XmlEntityInjection::flowPath(source, sink)
 select sink.getNode(), source, sink,
   "This insecure XML processing depends on a $@ (" + sink.getNode().(Sink).getReason() + ").",
   source.getNode(), "user-provided value"

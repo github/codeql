@@ -172,26 +172,24 @@ module XmlReader {
       isNetFrameworkBefore(this.(MethodCall).getTarget().getDeclaringType(), "4.0")
       or
       // bad settings flow here
-      exists(SettingsDataFlowConfig flow, ObjectCreation settings |
-        flow.hasFlow(DataFlow::exprNode(settings), DataFlow::exprNode(this.getSettings())) and
+      exists(ObjectCreation settings |
+        SettingsDataFlow::flow(DataFlow::exprNode(settings), DataFlow::exprNode(this.getSettings())) and
         XmlSettings::dtdEnabledSettings(settings, evidence, reason)
       )
     }
 
     private predicate insecureResolver(string reason, Expr evidence) {
       // bad settings flow here
-      exists(SettingsDataFlowConfig flow, ObjectCreation settings |
-        flow.hasFlow(DataFlow::exprNode(settings), DataFlow::exprNode(this.getSettings())) and
+      exists(ObjectCreation settings |
+        SettingsDataFlow::flow(DataFlow::exprNode(settings), DataFlow::exprNode(this.getSettings())) and
         XmlSettings::insecureResolverSettings(settings, evidence, reason)
       )
       // default is secure
     }
   }
 
-  private class SettingsDataFlowConfig extends DataFlow2::Configuration {
-    SettingsDataFlowConfig() { this = "SettingsDataFlowConfig" }
-
-    override predicate isSource(DataFlow::Node source) {
+  private module SettingsDataFlowConfig implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) {
       // flow from places where we construct an XmlReaderSettings
       source
           .asExpr()
@@ -202,10 +200,12 @@ module XmlReader {
           .hasQualifiedName("System.Xml", "XmlReaderSettings")
     }
 
-    override predicate isSink(DataFlow::Node sink) {
+    predicate isSink(DataFlow::Node sink) {
       sink.asExpr() = any(InsecureXmlReaderCreate create).getSettings()
     }
   }
+
+  private module SettingsDataFlow = DataFlow::Global<SettingsDataFlowConfig>;
 }
 
 /** Provides predicates related to `System.Xml.XmlTextReader`. */

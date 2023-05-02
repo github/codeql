@@ -591,6 +591,13 @@ nodes
 | react-use-router.js:23:43:23:54 | router.query |
 | react-use-router.js:23:43:23:61 | router.query.foobar |
 | react-use-router.js:23:43:23:61 | router.query.foobar |
+| react-use-router.js:29:9:29:30 | router |
+| react-use-router.js:29:18:29:30 | myUseRouter() |
+| react-use-router.js:33:21:33:26 | router |
+| react-use-router.js:33:21:33:32 | router.query |
+| react-use-router.js:33:21:33:32 | router.query |
+| react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:39 | router.query.foobar |
 | react-use-state.js:4:9:4:49 | state |
 | react-use-state.js:4:9:4:49 | state |
 | react-use-state.js:4:10:4:14 | state |
@@ -1127,6 +1134,14 @@ nodes
 | tst.js:491:23:491:35 | location.hash |
 | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash |
+| tst.js:494:18:494:30 | location.hash |
+| tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash |
+| tst.js:501:43:501:62 | window.location.hash |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
@@ -1803,6 +1818,14 @@ edges
 | react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar |
 | react-use-router.js:23:43:23:54 | router.query | react-use-router.js:23:43:23:61 | router.query.foobar |
 | react-use-router.js:23:43:23:61 | router.query.foobar | react-use-router.js:22:17:22:22 | router |
+| react-use-router.js:29:9:29:30 | router | react-use-router.js:33:21:33:26 | router |
+| react-use-router.js:29:18:29:30 | myUseRouter() | react-use-router.js:29:9:29:30 | router |
+| react-use-router.js:33:21:33:26 | router | react-use-router.js:33:21:33:32 | router.query |
+| react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:32 | router.query | react-use-router.js:33:21:33:39 | router.query.foobar |
+| react-use-router.js:33:21:33:39 | router.query.foobar | react-use-router.js:29:18:29:30 | myUseRouter() |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
 | react-use-state.js:4:9:4:49 | state | react-use-state.js:5:51:5:55 | state |
@@ -2325,6 +2348,14 @@ edges
 | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
