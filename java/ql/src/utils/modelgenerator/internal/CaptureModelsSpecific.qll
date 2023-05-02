@@ -184,7 +184,7 @@ string returnNodeAsOutput(DataFlowImplCommon::ReturnNodeExt node) {
     exists(int pos |
       pos = node.getKind().(DataFlowImplCommon::ParamUpdateReturnKind).getPosition()
     |
-      result = parameterAccess(node.getEnclosingCallable().getParameter(pos))
+      result = parameterAccess(node.(DataFlow::Node).getEnclosingCallable().getParameter(pos))
       or
       result = qualifierString() and pos = -1
     )

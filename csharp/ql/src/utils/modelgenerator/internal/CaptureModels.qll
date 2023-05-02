@@ -178,7 +178,7 @@ string captureThroughFlow(DataFlowTargetApi api) {
     string output
   |
     ThroughFlow::flow(p, returnNodeExt) and
-    returnNodeExt.getEnclosingCallable() = api and
+    returnNodeExt.(DataFlow::Node).getEnclosingCallable() = api and
     input = parameterNodeAsInput(p) and
     output = returnNodeAsOutput(returnNodeExt) and
     input != output and
