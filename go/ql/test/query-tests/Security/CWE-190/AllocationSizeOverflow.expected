@@ -28,6 +28,7 @@ nodes
 | tst.go:27:26:27:38 | call to len | semmle.label | call to len |
 | tst.go:34:2:34:30 | ... = ...[0] | semmle.label | ... = ...[0] |
 | tst.go:35:22:35:34 | call to len | semmle.label | call to len |
+example
 subpaths
 #select
 | AllocationSizeOverflow.go:10:10:10:22 | call to len | AllocationSizeOverflow.go:6:2:6:33 | ... := ...[0] | AllocationSizeOverflow.go:10:10:10:22 | call to len | This operation, which is used in an $@, involves a $@ and might overflow. | AllocationSizeOverflow.go:11:25:11:28 | size | allocation | AllocationSizeOverflow.go:6:2:6:33 | ... := ...[0] | potentially large value |

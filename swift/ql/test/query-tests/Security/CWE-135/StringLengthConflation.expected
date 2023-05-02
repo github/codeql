@@ -77,6 +77,7 @@ nodes
 | StringLengthConflation.swift:156:45:156:52 | .count | semmle.label | .count |
 | StringLengthConflation.swift:161:45:161:53 | .count | semmle.label | .count |
 | file://:0:0:0:0 | .length | semmle.label | .length |
+example
 subpaths
 #select
 | StringLengthConflation2.swift:35:36:35:46 | ... .-(_:_:) ... | StringLengthConflation2.swift:35:36:35:38 | .count | StringLengthConflation2.swift:35:36:35:46 | ... .-(_:_:) ... | This String length is used in an NSString, but it may not be equivalent. |

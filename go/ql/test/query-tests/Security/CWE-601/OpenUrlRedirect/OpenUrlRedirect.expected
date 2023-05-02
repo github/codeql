@@ -149,6 +149,7 @@ nodes
 | stdlib.go:192:23:192:33 | selection of Path | semmle.label | selection of Path |
 | stdlib.go:194:23:194:28 | target | semmle.label | target |
 | stdlib.go:194:23:194:42 | call to EscapedPath | semmle.label | call to EscapedPath |
+example
 subpaths
 #select
 | OpenUrlRedirect.go:10:23:10:42 | call to Get | OpenUrlRedirect.go:10:23:10:28 | selection of Form | OpenUrlRedirect.go:10:23:10:42 | call to Get | This path to an untrusted URL redirection depends on a $@. | OpenUrlRedirect.go:10:23:10:28 | selection of Form | user-provided value |

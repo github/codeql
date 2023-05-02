@@ -80,6 +80,7 @@ nodes
 | app/views/foo/bars/show.html.erb:73:19:73:34 | ...[...] | semmle.label | ...[...] |
 | app/views/foo/bars/show.html.erb:76:28:76:33 | call to params | semmle.label | call to params |
 | app/views/foo/bars/show.html.erb:76:28:76:39 | ...[...] | semmle.label | ...[...] |
+example
 subpaths
 #select
 | app/controllers/foo/bars_controller.rb:24:39:24:59 | ... = ... | app/controllers/foo/bars_controller.rb:24:39:24:44 | call to params | app/controllers/foo/bars_controller.rb:24:39:24:59 | ... = ... | Cross-site scripting vulnerability due to a $@. | app/controllers/foo/bars_controller.rb:24:39:24:44 | call to params | user-provided value |

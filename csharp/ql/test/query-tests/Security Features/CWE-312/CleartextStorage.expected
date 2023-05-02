@@ -9,6 +9,7 @@ nodes
 | CleartextStorage.cs:94:21:94:33 | access to property Text | semmle.label | access to property Text |
 | CleartextStorage.cs:95:21:95:29 | access to property Text | semmle.label | access to property Text |
 | CleartextStorage.cs:96:21:96:29 | access to property Text | semmle.label | access to property Text |
+example
 subpaths
 #select
 | CleartextStorage.cs:15:50:15:59 | access to field accountKey | CleartextStorage.cs:15:50:15:59 | access to field accountKey | CleartextStorage.cs:15:50:15:59 | access to field accountKey | This stores sensitive data returned by $@ as clear text. | CleartextStorage.cs:15:50:15:59 | access to field accountKey | access to field accountKey |

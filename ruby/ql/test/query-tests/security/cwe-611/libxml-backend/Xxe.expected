@@ -13,6 +13,7 @@ nodes
 | LibXmlBackend.rb:19:19:19:25 | content | semmle.label | content |
 | LibXmlBackend.rb:20:27:20:33 | content | semmle.label | content |
 | LibXmlBackend.rb:21:34:21:40 | content | semmle.label | content |
+example
 subpaths
 #select
 | LibXmlBackend.rb:18:30:18:36 | content | LibXmlBackend.rb:16:15:16:20 | call to params | LibXmlBackend.rb:18:30:18:36 | content | XML parsing depends on a $@ without guarding against external entity expansion. | LibXmlBackend.rb:16:15:16:20 | call to params | user-provided value |

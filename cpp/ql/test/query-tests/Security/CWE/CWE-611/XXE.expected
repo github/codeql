@@ -149,6 +149,7 @@ nodes
 | tests.cpp:122:23:122:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:126:18:126:18 | q indirection | semmle.label | q indirection |
 | tests.cpp:128:18:128:18 | q indirection | semmle.label | q indirection |
+example
 subpaths
 #select
 | tests2.cpp:22:2:22:2 | p indirection | tests2.cpp:20:17:20:31 | call to SAXParser | tests2.cpp:22:2:22:2 | p indirection | This $@ is not configured to prevent an XML external entity (XXE) attack. | tests2.cpp:20:17:20:31 | call to SAXParser | XML parser |

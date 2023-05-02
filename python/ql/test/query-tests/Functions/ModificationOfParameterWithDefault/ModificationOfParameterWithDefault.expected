@@ -81,6 +81,7 @@ nodes
 | test.py:140:9:140:9 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
 | test.py:145:23:145:23 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
 | test.py:147:9:147:9 | ControlFlowNode for l | semmle.label | ControlFlowNode for l |
+example
 subpaths
 #select
 | test.py:3:5:3:5 | ControlFlowNode for l | test.py:2:12:2:12 | ControlFlowNode for l | test.py:3:5:3:5 | ControlFlowNode for l | This expression mutates a $@. | test.py:2:12:2:12 | ControlFlowNode for l | default value |

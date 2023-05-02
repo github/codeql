@@ -96,6 +96,7 @@ nodes
 | test.cpp:93:14:93:14 | p | semmle.label | p |
 | test.cpp:93:14:93:14 | p indirection | semmle.label | p indirection |
 | test.cpp:98:18:98:27 | call to mk_array_p indirection [p] | semmle.label | call to mk_array_p indirection [p] |
+example
 subpaths
 #select
 | test.cpp:10:9:10:11 | arr | test.cpp:4:17:4:22 | call to malloc | test.cpp:10:9:10:11 | arr | Off-by one error allocated at $@ bounded by $@. | test.cpp:4:17:4:22 | call to malloc | call to malloc | test.cpp:4:24:4:27 | size | size |

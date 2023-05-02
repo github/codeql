@@ -9,6 +9,7 @@ nodes
 | test.cpp:53:27:53:30 | argv indirection | semmle.label | argv indirection |
 | test.cpp:58:25:58:29 | input indirection | semmle.label | input indirection |
 | test.cpp:58:25:58:29 | input indirection | semmle.label | input indirection |
+example
 subpaths
 #select
 | test2.cpp:110:3:110:6 | call to gets | test2.cpp:110:3:110:6 | call to gets indirection | test2.cpp:110:3:110:6 | call to gets indirection | This write into buffer 'password' may contain unencrypted data from $@. | test2.cpp:110:3:110:6 | call to gets indirection | user input (string read by gets) |

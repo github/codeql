@@ -56,6 +56,7 @@ nodes
 | UploadListener.java:33:7:33:17 | this <.field> : UploadListener [slowUploads] : Number | semmle.label | this <.field> : UploadListener [slowUploads] : Number |
 | UploadListener.java:35:18:35:28 | slowUploads | semmle.label | slowUploads |
 | UploadListener.java:35:18:35:28 | this <.field> : UploadListener [slowUploads] : Number | semmle.label | this <.field> : UploadListener [slowUploads] : Number |
+example
 subpaths
 | ThreadResourceAbuse.java:21:28:21:36 | delayTime : Number | ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number | ThreadResourceAbuse.java:67:4:67:7 | this [post update] : UncheckedSyncAction [waitTime] : Number | ThreadResourceAbuse.java:21:4:21:37 | new UncheckedSyncAction(...) : UncheckedSyncAction [waitTime] : Number |
 | ThreadResourceAbuse.java:30:28:30:36 | delayTime : Number | ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number | ThreadResourceAbuse.java:67:4:67:7 | this [post update] : UncheckedSyncAction [waitTime] : Number | ThreadResourceAbuse.java:30:4:30:37 | new UncheckedSyncAction(...) : UncheckedSyncAction [waitTime] : Number |

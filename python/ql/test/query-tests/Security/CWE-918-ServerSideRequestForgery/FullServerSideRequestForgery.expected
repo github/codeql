@@ -296,6 +296,7 @@ nodes
 | test_requests.py:6:18:6:48 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | test_requests.py:8:18:8:27 | ControlFlowNode for user_input | semmle.label | ControlFlowNode for user_input |
 | test_requests.py:8:18:8:27 | ControlFlowNode for user_input | semmle.label | ControlFlowNode for user_input |
+example
 subpaths
 #select
 | full_partial_test.py:10:5:10:28 | ControlFlowNode for Attribute() | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | full_partial_test.py:10:18:10:27 | ControlFlowNode for user_input | The full URL of this request depends on a $@. | full_partial_test.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value |

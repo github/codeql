@@ -22,6 +22,7 @@ nodes
 | sample.go:45:17:45:39 | call to Intn | semmle.label | call to Intn |
 | sample.go:46:17:46:39 | call to Intn | semmle.label | call to Intn |
 | sample.go:47:17:47:39 | call to Intn | semmle.label | call to Intn |
+example
 subpaths
 #select
 | InsecureRandomness.go:12:18:12:40 | call to Intn | InsecureRandomness.go:12:18:12:40 | call to Intn | InsecureRandomness.go:12:18:12:40 | call to Intn | A password-related function depends on a $@ generated with a cryptographically weak RNG. | InsecureRandomness.go:12:18:12:40 | call to Intn | random number |

@@ -43,6 +43,7 @@ nodes
 | flask_bad.py:35:18:35:29 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | flask_bad.py:35:18:35:43 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | flask_bad.py:38:24:38:33 | ControlFlowNode for rfs_header | semmle.label | ControlFlowNode for rfs_header |
+example
 subpaths
 #select
 | django_bad.py:7:40:7:49 | ControlFlowNode for rfs_header | django_bad.py:5:18:5:58 | ControlFlowNode for Attribute() | django_bad.py:7:40:7:49 | ControlFlowNode for rfs_header | This HTTP header is constructed from a $@. | django_bad.py:5:18:5:58 | ControlFlowNode for Attribute() | user-provided value |

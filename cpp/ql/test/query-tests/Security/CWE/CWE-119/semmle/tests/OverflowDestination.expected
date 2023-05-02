@@ -36,6 +36,7 @@ nodes
 | overflowdestination.cpp:73:8:73:10 | fgets output argument | semmle.label | fgets output argument |
 | overflowdestination.cpp:75:30:75:32 | src indirection | semmle.label | src indirection |
 | overflowdestination.cpp:76:30:76:32 | src indirection | semmle.label | src indirection |
+example
 subpaths
 #select
 | overflowdestination.cpp:30:2:30:8 | call to strncpy | main.cpp:6:27:6:30 | argv indirection | overflowdestination.cpp:30:17:30:20 | arg1 indirection | To avoid overflow, this operation should be bounded by destination-buffer size, not source-buffer size. |

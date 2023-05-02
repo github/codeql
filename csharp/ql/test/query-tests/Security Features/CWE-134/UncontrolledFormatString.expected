@@ -19,6 +19,7 @@ nodes
 | UncontrolledFormatStringBad.cs:9:25:9:47 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
 | UncontrolledFormatStringBad.cs:9:25:9:61 | access to indexer : String | semmle.label | access to indexer : String |
 | UncontrolledFormatStringBad.cs:12:39:12:44 | access to local variable format | semmle.label | access to local variable format |
+example
 subpaths
 #select
 | ConsoleUncontrolledFormatString.cs:11:31:11:36 | access to local variable format | ConsoleUncontrolledFormatString.cs:8:22:8:39 | call to method ReadLine : String | ConsoleUncontrolledFormatString.cs:11:31:11:36 | access to local variable format | This format string depends on $@. | ConsoleUncontrolledFormatString.cs:8:22:8:39 | call to method ReadLine | thisexternal |

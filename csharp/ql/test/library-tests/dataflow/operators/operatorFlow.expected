@@ -79,6 +79,7 @@ nodes
 | Operator.cs:78:14:78:14 | (...) ... | semmle.label | (...) ... |
 | Operator.cs:84:17:84:29 | call to method Source<C> : C | semmle.label | call to method Source<C> : C |
 | Operator.cs:85:18:85:18 | access to local variable y : C | semmle.label | access to local variable y : C |
+example
 subpaths
 | Operator.cs:29:17:29:17 | access to local variable x : C | Operator.cs:16:38:16:38 | x : C | Operator.cs:16:49:16:49 | access to parameter x : C | Operator.cs:29:17:29:21 | call to operator + : C |
 | Operator.cs:37:27:37:27 | access to local variable x : C | Operator.cs:19:38:19:38 | x : C | Operator.cs:19:49:19:49 | access to parameter x : C | Operator.cs:37:27:37:31 | call to operator - : C |

@@ -69,6 +69,7 @@ nodes
 | test.go:56:31:56:39 | untrusted | semmle.label | untrusted |
 | test.go:60:15:60:41 | call to UserAgent | semmle.label | call to UserAgent |
 | test.go:62:19:62:27 | untrusted | semmle.label | untrusted |
+example
 subpaths
 #select
 | test.go:12:11:12:19 | untrusted | test.go:10:15:10:41 | call to UserAgent | test.go:12:11:12:19 | untrusted | This query depends on a $@. | test.go:10:15:10:41 | call to UserAgent | user-provided value |

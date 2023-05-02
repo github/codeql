@@ -573,6 +573,7 @@ nodes
 | test.swift:592:17:592:17 | KeyPathComponent [x] | semmle.label | KeyPathComponent [x] |
 | test.swift:593:13:593:13 | s2 [s, x] | semmle.label | s2 [s, x] |
 | test.swift:593:13:593:26 | \\...[...] | semmle.label | \\...[...] |
+example
 subpaths
 | test.swift:75:21:75:22 | &... | test.swift:65:16:65:28 | arg1 | test.swift:65:1:70:1 | arg2[return] | test.swift:75:31:75:32 | [post] &... |
 | test.swift:114:19:114:19 | arg | test.swift:109:9:109:14 | arg | test.swift:110:12:110:12 | arg | test.swift:114:12:114:22 | call to ... |

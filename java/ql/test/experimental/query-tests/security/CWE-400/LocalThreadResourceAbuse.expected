@@ -17,6 +17,7 @@ nodes
 | ThreadResourceAbuse.java:71:15:71:17 | parameter this : UncheckedSyncAction [waitTime] : Number | semmle.label | parameter this : UncheckedSyncAction [waitTime] : Number |
 | ThreadResourceAbuse.java:74:18:74:25 | this <.field> : UncheckedSyncAction [waitTime] : Number | semmle.label | this <.field> : UncheckedSyncAction [waitTime] : Number |
 | ThreadResourceAbuse.java:74:18:74:25 | waitTime | semmle.label | waitTime |
+example
 subpaths
 | ThreadResourceAbuse.java:40:28:40:36 | delayTime : Number | ThreadResourceAbuse.java:66:30:66:41 | waitTime : Number | ThreadResourceAbuse.java:67:4:67:7 | this [post update] : UncheckedSyncAction [waitTime] : Number | ThreadResourceAbuse.java:40:4:40:37 | new UncheckedSyncAction(...) : UncheckedSyncAction [waitTime] : Number |
 #select

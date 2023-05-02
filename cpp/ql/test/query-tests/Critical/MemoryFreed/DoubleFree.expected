@@ -63,6 +63,7 @@ nodes
 | test_free.cpp:207:10:207:10 | a | semmle.label | a |
 | test_free.cpp:209:10:209:10 | a | semmle.label | a |
 | test_free.cpp:209:10:209:10 | a | semmle.label | a |
+example
 subpaths
 #select
 | test_free.cpp:14:10:14:10 | a | test_free.cpp:11:10:11:10 | a | test_free.cpp:14:10:14:10 | a | Memory pointed to by 'a' may already have been freed by $@. | test_free.cpp:11:5:11:8 | call to free | call to free |

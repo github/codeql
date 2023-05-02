@@ -7,6 +7,7 @@ nodes
 | test.py:12:21:12:24 | ControlFlowNode for cert | semmle.label | ControlFlowNode for cert |
 | test.py:13:22:13:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:15:26:15:29 | ControlFlowNode for cert | semmle.label | ControlFlowNode for cert |
+example
 subpaths
 #select
 | test.py:12:21:12:24 | ControlFlowNode for cert | test.py:9:12:9:21 | ControlFlowNode for get_cert() | test.py:12:21:12:24 | ControlFlowNode for cert | This expression stores $@ as clear text. | test.py:9:12:9:21 | ControlFlowNode for get_cert() | sensitive data (certificate) |

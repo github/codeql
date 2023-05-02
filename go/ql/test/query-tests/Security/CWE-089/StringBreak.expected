@@ -17,6 +17,7 @@ nodes
 | StringBreakMismatched.go:25:13:25:61 | call to Replace | semmle.label | call to Replace |
 | StringBreakMismatched.go:25:29:25:47 | type conversion | semmle.label | type conversion |
 | StringBreakMismatched.go:29:27:29:33 | escaped | semmle.label | escaped |
+example
 subpaths
 #select
 | StringBreak.go:14:47:14:57 | versionJSON | StringBreak.go:10:2:10:40 | ... := ...[0] | StringBreak.go:14:47:14:57 | versionJSON | If this $@ contains a single quote, it could break out of the enclosing quotes. | StringBreak.go:10:2:10:40 | ... := ...[0] | JSON value |

@@ -249,6 +249,7 @@ nodes
 | XmlInputFactoryTests.java:48:34:48:54 | getInputStream(...) | semmle.label | getInputStream(...) |
 | XmlInputFactoryTests.java:55:35:55:55 | getInputStream(...) | semmle.label | getInputStream(...) |
 | XmlInputFactoryTests.java:56:34:56:54 | getInputStream(...) | semmle.label | getInputStream(...) |
+example
 subpaths
 #select
 | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | user-provided value |

@@ -92,6 +92,7 @@ nodes
 | testapp/orm_security_tests.py:120:15:120:49 | ControlFlowNode for Attribute() [Attribute text] | semmle.label | ControlFlowNode for Attribute() [Attribute text] |
 | testapp/orm_security_tests.py:121:25:121:31 | ControlFlowNode for comment [Attribute text] | semmle.label | ControlFlowNode for comment [Attribute text] |
 | testapp/orm_security_tests.py:121:25:121:36 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+example
 subpaths
 #select
 | testapp/orm_security_tests.py:44:29:44:37 | ControlFlowNode for resp_text | testapp/orm_security_tests.py:19:12:19:18 | ControlFlowNode for request | testapp/orm_security_tests.py:44:29:44:37 | ControlFlowNode for resp_text | Cross-site scripting vulnerability due to a $@. | testapp/orm_security_tests.py:19:12:19:18 | ControlFlowNode for request | user-provided value |

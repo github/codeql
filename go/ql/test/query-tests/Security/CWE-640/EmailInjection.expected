@@ -45,6 +45,7 @@ nodes
 | main.go:91:15:91:62 | call to NewContent | semmle.label | call to NewContent |
 | main.go:91:48:91:61 | untrustedInput | semmle.label | untrustedInput |
 | main.go:93:16:93:23 | content2 | semmle.label | content2 |
+example
 subpaths
 #select
 | EmailBad.go:12:56:12:67 | type conversion | EmailBad.go:9:10:9:17 | selection of Header | EmailBad.go:12:56:12:67 | type conversion | Email content may contain $@. | EmailBad.go:9:10:9:17 | selection of Header | untrusted input |

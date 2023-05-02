@@ -459,6 +459,7 @@ nodes
 | CollectionFlow.cs:395:63:395:66 | access to parameter args : A[] [element] : A | semmle.label | access to parameter args : A[] [element] : A |
 | CollectionFlow.cs:395:63:395:66 | access to parameter args : null [element] : A | semmle.label | access to parameter args : null [element] : A |
 | CollectionFlow.cs:395:63:395:69 | access to array element | semmle.label | access to array element |
+example
 subpaths
 | CollectionFlow.cs:17:20:17:22 | access to local variable as : null [element] : A | CollectionFlow.cs:381:34:381:35 | ts : null [element] : A | CollectionFlow.cs:381:41:381:45 | access to array element : A | CollectionFlow.cs:17:14:17:23 | call to method First<A> |
 | CollectionFlow.cs:35:20:35:23 | access to field As : A[] [element] : A | CollectionFlow.cs:381:34:381:35 | ts : A[] [element] : A | CollectionFlow.cs:381:41:381:45 | access to array element : A | CollectionFlow.cs:35:14:35:24 | call to method First<A> |

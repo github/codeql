@@ -68,6 +68,7 @@ nodes
 | app/models/user.rb:15:5:15:16 | new_password | semmle.label | new_password |
 | app/models/user.rb:15:20:15:53 | "f982bf2531c149a8a1444a951b12e830" | semmle.label | "f982bf2531c149a8a1444a951b12e830" |
 | app/models/user.rb:17:21:17:32 | new_password | semmle.label | new_password |
+example
 subpaths
 #select
 | app/controllers/users_controller.rb:5:39:5:50 | new_password | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" | app/controllers/users_controller.rb:5:39:5:50 | new_password | This stores sensitive data returned by $@ as clear text. | app/controllers/users_controller.rb:3:20:3:53 | "043697b96909e03ca907599d6420555f" | an assignment to new_password |

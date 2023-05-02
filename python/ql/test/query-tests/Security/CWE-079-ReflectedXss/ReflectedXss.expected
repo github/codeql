@@ -23,6 +23,7 @@ nodes
 | reflected_xss.py:27:23:27:29 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | reflected_xss.py:27:23:27:34 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | reflected_xss.py:28:26:28:41 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
+example
 subpaths
 #select
 | reflected_xss.py:10:26:10:53 | ControlFlowNode for BinaryExpr | reflected_xss.py:2:26:2:32 | ControlFlowNode for ImportMember | reflected_xss.py:10:26:10:53 | ControlFlowNode for BinaryExpr | Cross-site scripting vulnerability due to a $@. | reflected_xss.py:2:26:2:32 | ControlFlowNode for ImportMember | user-provided value |

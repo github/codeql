@@ -17,6 +17,7 @@ nodes
 | test.swift:65:42:65:42 | ecb | semmle.label | ecb |
 | test.swift:66:42:66:46 | call to ECB.init() | semmle.label | call to ECB.init() |
 | test.swift:67:42:67:58 | call to getECBBlockMode() | semmle.label | call to getECBBlockMode() |
+example
 subpaths
 #select
 | test.swift:50:37:50:37 | ecb | test.swift:45:12:45:16 | call to ECB.init() | test.swift:50:37:50:37 | ecb | The initialization of the cipher 'ecb' uses the insecure ECB block mode from $@. | test.swift:45:12:45:16 | call to ECB.init() | call to ECB.init() |

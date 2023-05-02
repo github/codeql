@@ -29,6 +29,7 @@ nodes
 | re_bad.py:36:22:36:33 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | re_bad.py:36:22:36:44 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | re_bad.py:37:16:37:29 | ControlFlowNode for unsafe_pattern | semmle.label | ControlFlowNode for unsafe_pattern |
+example
 subpaths
 #select
 | re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | re_bad.py:14:15:14:28 | ControlFlowNode for unsafe_pattern | This regular expression depends on a $@ and is executed by $@. | re_bad.py:1:19:1:25 | ControlFlowNode for ImportMember | user-provided value | re_bad.py:14:5:14:33 | ControlFlowNode for Attribute() | re.search |

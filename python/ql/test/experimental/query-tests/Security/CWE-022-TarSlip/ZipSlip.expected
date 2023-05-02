@@ -25,6 +25,7 @@ nodes
 | zipslip_bad.py:34:16:34:28 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | zipslip_bad.py:35:9:35:9 | SSA variable x | semmle.label | SSA variable x |
 | zipslip_bad.py:37:32:37:32 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
+example
 subpaths
 #select
 | zipslip_bad.py:8:10:8:31 | ControlFlowNode for Attribute() | zipslip_bad.py:8:10:8:31 | ControlFlowNode for Attribute() | zipslip_bad.py:11:25:11:29 | ControlFlowNode for entry | This unsanitized archive entry, which may contain '..', is used in a $@. | zipslip_bad.py:11:25:11:29 | ControlFlowNode for entry | file system operation |

@@ -86,6 +86,7 @@ nodes
 | logging.rb:87:1:87:12 | password_arg | semmle.label | password_arg |
 | logging.rb:87:16:87:49 | "65f2950df2f0e2c38d7ba2ccca767291" | semmle.label | "65f2950df2f0e2c38d7ba2ccca767291" |
 | logging.rb:88:5:88:16 | password_arg | semmle.label | password_arg |
+example
 subpaths
 #select
 | logging.rb:6:20:6:27 | password | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" | logging.rb:6:20:6:27 | password | This logs sensitive data returned by $@ as clear text. | logging.rb:3:12:3:45 | "043697b96909e03ca907599d6420555f" | an assignment to password |

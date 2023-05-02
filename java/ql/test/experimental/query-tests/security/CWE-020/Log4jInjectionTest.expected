@@ -4199,6 +4199,7 @@ nodes
 | Log4jJndiInjectionTest.java:1119:42:1119:49 | source(...) : String | semmle.label | source(...) : String |
 | Log4jJndiInjectionTest.java:1120:43:1120:45 | map | semmle.label | map |
 | Log4jJndiInjectionTest.java:1121:63:1121:65 | map | semmle.label | map |
+example
 subpaths
 #select
 | Log4jJndiInjectionTest.java:31:26:31:48 | (...)... | Log4jJndiInjectionTest.java:24:16:24:45 | getParameter(...) : String | Log4jJndiInjectionTest.java:31:26:31:48 | (...)... | Log4j log entry depends on a $@. | Log4jJndiInjectionTest.java:24:16:24:45 | getParameter(...) | user-provided value |

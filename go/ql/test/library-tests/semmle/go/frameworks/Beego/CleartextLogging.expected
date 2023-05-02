@@ -34,6 +34,7 @@ nodes
 | test.go:179:14:179:21 | password | semmle.label | password |
 | test.go:180:17:180:24 | password | semmle.label | password |
 | test.go:181:16:181:23 | password | semmle.label | password |
+example
 subpaths
 #select
 | test.go:148:14:148:21 | password | test.go:148:14:148:21 | password | test.go:148:14:148:21 | password | $@ flows to a logging call. | test.go:148:14:148:21 | password | Sensitive data returned by an access to password |

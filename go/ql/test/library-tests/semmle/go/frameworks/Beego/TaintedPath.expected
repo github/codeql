@@ -12,6 +12,7 @@ nodes
 | test.go:318:17:318:37 | selection of RequestBody | semmle.label | selection of RequestBody |
 | test.go:318:40:318:43 | &... | semmle.label | &... |
 | test.go:320:35:320:43 | untrusted | semmle.label | untrusted |
+example
 subpaths
 #select
 | test.go:210:18:210:26 | untrusted | test.go:209:15:209:26 | call to Data | test.go:210:18:210:26 | untrusted | This path depends on a $@. | test.go:209:15:209:26 | call to Data | user-provided value |

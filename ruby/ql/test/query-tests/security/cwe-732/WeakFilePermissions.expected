@@ -24,6 +24,7 @@ nodes
 | FilePermissions.rb:63:19:63:29 | "u=rwx,o+r" | semmle.label | "u=rwx,o+r" |
 | FilePermissions.rb:67:19:67:24 | "a+rw" | semmle.label | "a+rw" |
 | FilePermissions.rb:72:21:72:24 | 0755 | semmle.label | 0755 |
+example
 subpaths
 #select
 | FilePermissions.rb:5:19:5:22 | 0222 | FilePermissions.rb:5:19:5:22 | 0222 | FilePermissions.rb:5:19:5:22 | 0222 | This overly permissive mask used in $@ allows read or write access to others. | FilePermissions.rb:5:3:5:32 | call to chmod | call to chmod |

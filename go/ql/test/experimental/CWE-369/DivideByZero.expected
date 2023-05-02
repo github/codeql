@@ -34,6 +34,7 @@ nodes
 | DivideByZero.go:54:12:54:24 | call to Query | semmle.label | call to Query |
 | DivideByZero.go:55:11:55:24 | type conversion | semmle.label | type conversion |
 | DivideByZero.go:57:17:57:21 | value | semmle.label | value |
+example
 subpaths
 #select
 | DivideByZero.go:12:16:12:20 | value | DivideByZero.go:10:12:10:16 | selection of URL | DivideByZero.go:12:16:12:20 | value | This variable might be zero leading to a division-by-zero panic. |

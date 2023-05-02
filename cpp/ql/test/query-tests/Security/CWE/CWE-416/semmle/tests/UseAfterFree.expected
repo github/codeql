@@ -50,6 +50,7 @@ nodes
 | test.cpp:207:8:207:11 | data | semmle.label | data |
 | test.cpp:209:6:209:9 | data | semmle.label | data |
 | test.cpp:209:6:209:9 | data | semmle.label | data |
+example
 subpaths
 #select
 | test.cpp:41:6:41:9 | data | test.cpp:39:7:39:10 | data | test.cpp:41:6:41:9 | data | Memory may have been previously freed by $@. | test.cpp:39:2:39:5 | call to free | call to free |

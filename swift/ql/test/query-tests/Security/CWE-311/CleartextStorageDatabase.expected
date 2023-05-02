@@ -445,6 +445,7 @@ nodes
 | testRealm.swift:73:2:73:2 | [post] h | semmle.label | [post] h |
 | testRealm.swift:73:2:73:2 | [post] h [password] | semmle.label | [post] h [password] |
 | testRealm.swift:73:15:73:15 | myPassword | semmle.label | myPassword |
+example
 subpaths
 | testCoreData2.swift:43:35:43:35 | bankAccountNo | testCoreData2.swift:23:13:23:13 | value | file://:0:0:0:0 | [post] self [notStoredBankAccountNumber] | testCoreData2.swift:43:2:43:2 | [post] obj [notStoredBankAccountNumber] |
 | testCoreData2.swift:52:41:52:41 | bankAccountNo | testCoreData2.swift:23:13:23:13 | value | file://:0:0:0:0 | [post] self [notStoredBankAccountNumber] | testCoreData2.swift:52:2:52:10 | [post] ...? [notStoredBankAccountNumber] |

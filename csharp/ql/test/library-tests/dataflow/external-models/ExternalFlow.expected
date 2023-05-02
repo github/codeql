@@ -162,6 +162,7 @@ nodes
 | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs | semmle.label | call to method MixedFlowArgs |
 | ExternalFlow.cs:206:38:206:39 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+example
 subpaths
 #select
 | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | $@ | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | object creation of type Object : Object |

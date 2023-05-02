@@ -186,6 +186,7 @@ nodes
 | try.swift:15:17:15:24 | call to source() | semmle.label | call to source() |
 | try.swift:18:12:18:27 | ...! | semmle.label | ...! |
 | try.swift:18:18:18:25 | call to source() | semmle.label | call to source() |
+example
 subpaths
 | stringinterpolation.swift:13:36:13:36 | pair [first] | stringinterpolation.swift:6:6:6:6 | self [first] | file://:0:0:0:0 | .first | stringinterpolation.swift:13:36:13:41 | .first |
 | stringinterpolation.swift:19:13:19:20 | call to source() | stringinterpolation.swift:6:6:6:6 | value | file://:0:0:0:0 | [post] self [first] | stringinterpolation.swift:19:2:19:2 | [post] p1 [first] |

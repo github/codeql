@@ -9,6 +9,7 @@ nodes
 | stored.go:30:22:30:25 | name | semmle.label | name |
 | stored.go:59:30:59:33 | definition of path | semmle.label | definition of path |
 | stored.go:61:22:61:25 | path | semmle.label | path |
+example
 subpaths
 #select
 | StoredXss.go:13:21:13:36 | ...+... | StoredXss.go:13:21:13:31 | call to Name | StoredXss.go:13:21:13:36 | ...+... | Stored cross-site scripting vulnerability due to $@. | StoredXss.go:13:21:13:31 | call to Name | stored value |

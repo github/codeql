@@ -66,6 +66,7 @@ nodes
 | test_free.cpp:245:10:245:11 | * ... | semmle.label | * ... |
 | test_free.cpp:246:9:246:10 | * ... | semmle.label | * ... |
 | test_free.cpp:246:9:246:10 | * ... | semmle.label | * ... |
+example
 subpaths
 #select
 | test_free.cpp:12:5:12:5 | a | test_free.cpp:11:10:11:10 | a | test_free.cpp:12:5:12:5 | a | Memory may have been previously freed by $@. | test_free.cpp:11:5:11:8 | call to free | call to free |

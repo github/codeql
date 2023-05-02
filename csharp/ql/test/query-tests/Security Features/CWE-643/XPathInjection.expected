@@ -41,6 +41,7 @@ nodes
 | XPathInjection.cs:40:21:40:21 | access to local variable s | semmle.label | access to local variable s |
 | XPathInjection.cs:46:22:46:22 | access to local variable s | semmle.label | access to local variable s |
 | XPathInjection.cs:52:21:52:21 | access to local variable s | semmle.label | access to local variable s |
+example
 subpaths
 #select
 | XPathInjection.cs:16:33:16:33 | access to local variable s | XPathInjection.cs:10:27:10:49 | access to property QueryString : NameValueCollection | XPathInjection.cs:16:33:16:33 | access to local variable s | This XPath expression depends on a $@. | XPathInjection.cs:10:27:10:49 | access to property QueryString | user-provided value |

@@ -31,6 +31,7 @@ nodes
 | Test.java:57:27:57:39 | args : String[] | semmle.label | args : String[] |
 | Test.java:60:20:60:22 | arg : String | semmle.label | arg : String |
 | Test.java:61:23:61:25 | arg : String | semmle.label | arg : String |
+example
 subpaths
 #select
 | Test.java:7:44:7:69 | ... + ... | Test.java:57:27:57:39 | args : String[] | Test.java:7:44:7:69 | ... + ... | This command line depends on a $@. | Test.java:57:27:57:39 | args | user-provided value |

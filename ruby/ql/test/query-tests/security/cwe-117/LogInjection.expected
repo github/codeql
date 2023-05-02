@@ -31,6 +31,7 @@ nodes
 | app/controllers/users_controller.rb:35:33:35:55 | ... + ... | semmle.label | ... + ... |
 | app/controllers/users_controller.rb:49:19:49:24 | call to params | semmle.label | call to params |
 | app/controllers/users_controller.rb:49:19:49:30 | ...[...] | semmle.label | ...[...] |
+example
 subpaths
 #select
 | app/controllers/users_controller.rb:16:19:16:29 | unsanitized | app/controllers/users_controller.rb:15:19:15:24 | call to params | app/controllers/users_controller.rb:16:19:16:29 | unsanitized | Log entry depends on a $@. | app/controllers/users_controller.rb:15:19:15:24 | call to params | user-provided value |

@@ -33,6 +33,7 @@ nodes
 | SqlInjectionSqlite.cs:56:31:56:33 | access to local variable sql : String | semmle.label | access to local variable sql : String |
 | SqlInjectionSqlite.cs:56:31:56:40 | call to method Trim : String | semmle.label | call to method Trim : String |
 | SqlInjectionSqlite.cs:61:53:61:55 | access to local variable sql | semmle.label | access to local variable sql |
+example
 subpaths
 #select
 | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString : String | SecondOrderSqlInjection.cs:25:71:25:145 | ... + ... | This SQL query depends on a $@. | SecondOrderSqlInjection.cs:25:119:25:145 | call to method GetString | stored user-provided value |

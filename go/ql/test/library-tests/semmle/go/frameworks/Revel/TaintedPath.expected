@@ -10,6 +10,7 @@ nodes
 | EndToEnd.go:64:26:64:33 | selection of Params | semmle.label | selection of Params |
 | EndToEnd.go:64:26:64:38 | selection of Form | semmle.label | selection of Form |
 | EndToEnd.go:64:26:64:55 | call to Get | semmle.label | call to Get |
+example
 subpaths
 #select
 | EndToEnd.go:58:18:58:47 | call to Get | EndToEnd.go:58:18:58:25 | selection of Params | EndToEnd.go:58:18:58:47 | call to Get | This path depends on a $@. | EndToEnd.go:58:18:58:25 | selection of Params | user-provided value |

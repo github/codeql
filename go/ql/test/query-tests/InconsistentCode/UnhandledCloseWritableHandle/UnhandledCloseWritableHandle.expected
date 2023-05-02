@@ -44,6 +44,7 @@ nodes
 | tests.go:110:9:110:9 | f | semmle.label | f |
 | tests.go:124:5:124:38 | ... := ...[0] | semmle.label | ... := ...[0] |
 | tests.go:128:3:128:3 | f | semmle.label | f |
+example
 subpaths
 #select
 | tests.go:22:8:22:8 | f | tests.go:9:2:9:74 | ... := ...[0] | tests.go:22:8:22:8 | f | File handle may be writable as a result of data flow from a $@ and closing it may result in data loss upon failure, which is not handled explicitly. | tests.go:9:12:9:74 | call to OpenFile | call to OpenFile |

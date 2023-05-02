@@ -132,6 +132,7 @@ nodes
 | test.cpp:220:19:220:26 | filename indirection | semmle.label | filename indirection |
 | test.cpp:222:32:222:38 | command indirection | semmle.label | command indirection |
 | test.cpp:222:32:222:38 | command indirection | semmle.label | command indirection |
+example
 subpaths
 | test.cpp:196:26:196:33 | filename indirection | test.cpp:186:47:186:54 | filename indirection | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |
 | test.cpp:196:26:196:33 | filename indirection | test.cpp:186:47:186:54 | filename indirection | test.cpp:188:11:188:17 | strncat output argument | test.cpp:196:10:196:16 | concat output argument |

@@ -693,6 +693,7 @@ nodes
 | Splitting.cs:48:36:48:49 | "taint source" : String | semmle.label | "taint source" : String |
 | Splitting.cs:50:19:50:19 | access to local variable s | semmle.label | access to local variable s |
 | Splitting.cs:52:19:52:19 | access to local variable s | semmle.label | access to local variable s |
+example
 subpaths
 | Capture.cs:194:25:194:31 | access to parameter tainted : String | Capture.cs:188:26:188:26 | s : String | Capture.cs:191:20:191:22 | call to local function M : String | Capture.cs:194:22:194:32 | call to local function Id : String |
 | GlobalDataFlow.cs:71:28:71:45 | access to property SinkProperty0 : String | GlobalDataFlow.cs:298:26:298:26 | x : String | GlobalDataFlow.cs:301:16:301:41 | ... ? ... : ... : String | GlobalDataFlow.cs:71:21:71:46 | call to method Return<String> : String |

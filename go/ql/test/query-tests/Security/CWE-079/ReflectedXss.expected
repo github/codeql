@@ -94,6 +94,7 @@ nodes
 | websocketXss.go:52:24:52:31 | gorilla2 | semmle.label | gorilla2 |
 | websocketXss.go:54:3:54:38 | ... := ...[1] | semmle.label | ... := ...[1] |
 | websocketXss.go:55:24:55:31 | gorilla3 | semmle.label | gorilla3 |
+example
 subpaths
 #select
 | ReflectedXss.go:14:44:14:51 | username | ReflectedXss.go:11:15:11:20 | selection of Form | ReflectedXss.go:14:44:14:51 | username | Cross-site scripting vulnerability due to $@. | ReflectedXss.go:11:15:11:20 | selection of Form | user-provided value | ReflectedXss.go:0:0:0:0 | ReflectedXss.go |  |

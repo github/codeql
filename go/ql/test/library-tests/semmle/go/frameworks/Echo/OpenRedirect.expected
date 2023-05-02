@@ -17,6 +17,7 @@ nodes
 | test.go:191:21:191:23 | url | semmle.label | url |
 | test.go:191:21:191:32 | call to String | semmle.label | call to String |
 | test.go:191:21:191:32 | call to String | semmle.label | call to String |
+example
 subpaths
 #select
 | test.go:171:20:171:24 | param | test.go:170:11:170:32 | call to Param | test.go:171:20:171:24 | param | This path to an untrusted URL redirection depends on a $@. | test.go:170:11:170:32 | call to Param | user-provided value |

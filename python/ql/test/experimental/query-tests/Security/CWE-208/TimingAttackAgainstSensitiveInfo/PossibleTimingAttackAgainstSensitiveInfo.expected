@@ -28,6 +28,7 @@ nodes
 | TimingAttackAgainstSensitiveInfo.py:21:20:21:31 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | TimingAttackAgainstSensitiveInfo.py:21:20:21:38 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
 | TimingAttackAgainstSensitiveInfo.py:22:38:22:45 | ControlFlowNode for password | semmle.label | ControlFlowNode for password |
+example
 subpaths
 #select
 | TimingAttackAgainstSensitiveInfo.py:16:16:16:23 | ControlFlowNode for password | TimingAttackAgainstSensitiveInfo.py:16:16:16:23 | ControlFlowNode for password | TimingAttackAgainstSensitiveInfo.py:16:16:16:23 | ControlFlowNode for password | Timing attack against $@ validation. | TimingAttackAgainstSensitiveInfo.py:16:16:16:23 | ControlFlowNode for password | client-supplied token |

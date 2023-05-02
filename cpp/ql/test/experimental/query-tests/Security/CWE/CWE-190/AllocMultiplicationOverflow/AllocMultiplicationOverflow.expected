@@ -33,6 +33,7 @@ nodes
 | test.cpp:46:36:46:40 | ... * ... | semmle.label | ... * ... |
 | test.cpp:46:36:46:40 | ... * ... | semmle.label | ... * ... |
 | test.cpp:46:36:46:40 | ... * ... | semmle.label | ... * ... |
+example
 subpaths
 #select
 | test.cpp:13:33:13:37 | ... * ... | test.cpp:13:33:13:37 | ... * ... | test.cpp:13:33:13:37 | ... * ... | Potentially overflowing value from $@ is used in the size of this allocation. | test.cpp:13:33:13:37 | ... * ... | multiplication |

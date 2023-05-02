@@ -68,6 +68,7 @@ nodes
 | UnsafeUnpack.py:176:1:176:34 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | UnsafeUnpack.py:194:53:194:55 | ControlFlowNode for tmp | semmle.label | ControlFlowNode for tmp |
 | UnsafeUnpack.py:201:29:201:36 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+example
 subpaths
 #select
 | UnsafeUnpack.py:19:35:19:41 | ControlFlowNode for tarpath | UnsafeUnpack.py:5:26:5:32 | ControlFlowNode for ImportMember | UnsafeUnpack.py:19:35:19:41 | ControlFlowNode for tarpath | Unsafe extraction from a malicious tarball retrieved from a remote location. |

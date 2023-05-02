@@ -11,6 +11,7 @@ nodes
 | test.go:21:21:21:36 | "hello\\\\\\aworld" | semmle.label | "hello\\\\\\aworld" |
 | test.go:22:21:22:34 | "hello\\bworld" | semmle.label | "hello\\bworld" |
 | test.go:23:21:23:36 | "hello\\\\\\bworld" | semmle.label | "hello\\\\\\bworld" |
+example
 subpaths
 #select
 | SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | This string literal that is $@ contains a literal backspace \\b; did you mean \\\\b, a word boundary? | SuspiciousCharacterInRegexp.go:6:34:6:55 | "\\bforbidden.host.org" | used as a regular expression |

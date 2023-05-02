@@ -1732,6 +1732,7 @@ nodes
 | struct_init.c:46:10:46:14 | outer indirection [pointerAB indirection, a] | semmle.label | outer indirection [pointerAB indirection, a] |
 | struct_init.c:46:16:46:24 | pointerAB indirection [a] | semmle.label | pointerAB indirection [a] |
 | struct_init.c:46:16:46:24 | pointerAB indirection [a] | semmle.label | pointerAB indirection [a] |
+example
 subpaths
 | A.cpp:31:20:31:20 | c | A.cpp:23:10:23:10 | c | A.cpp:25:13:25:13 | this indirection [post update] [c] | A.cpp:31:14:31:21 | call to B [c] |
 | A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c | A.cpp:29:15:29:18 | make indirection [c] | A.cpp:48:12:48:18 | call to make indirection [c] |

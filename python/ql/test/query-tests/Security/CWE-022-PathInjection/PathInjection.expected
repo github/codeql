@@ -159,6 +159,7 @@ nodes
 | test.py:48:13:48:24 | ControlFlowNode for normalize() | semmle.label | ControlFlowNode for normalize() |
 | test.py:48:23:48:23 | ControlFlowNode for x | semmle.label | ControlFlowNode for x |
 | test.py:49:14:49:14 | ControlFlowNode for y | semmle.label | ControlFlowNode for y |
+example
 subpaths
 | test.py:25:19:25:19 | ControlFlowNode for x | test.py:12:15:12:15 | ControlFlowNode for x | test.py:13:12:13:30 | ControlFlowNode for Attribute() | test.py:25:9:25:20 | ControlFlowNode for normalize() |
 | test.py:48:23:48:23 | ControlFlowNode for x | test.py:12:15:12:15 | ControlFlowNode for x | test.py:13:12:13:30 | ControlFlowNode for Attribute() | test.py:48:13:48:24 | ControlFlowNode for normalize() |

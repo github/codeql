@@ -972,6 +972,7 @@ nodes
 | J.cs:125:14:125:14 | access to local variable a : Int32[] [element] : Int32 | semmle.label | access to local variable a : Int32[] [element] : Int32 |
 | J.cs:125:14:125:17 | (...) ... | semmle.label | (...) ... |
 | J.cs:125:14:125:17 | access to array element : Int32 | semmle.label | access to array element : Int32 |
+example
 subpaths
 | A.cs:6:24:6:24 | access to local variable c : C | A.cs:147:32:147:32 | c : C | A.cs:149:20:149:27 | object creation of type B : B [field c] : C | A.cs:6:17:6:25 | call to method Make : B [field c] : C |
 | A.cs:13:15:13:29 | call to method Source<C1> : C1 | A.cs:145:27:145:27 | c : C1 | A.cs:145:32:145:35 | [post] this access : B [field c] : C1 | A.cs:13:9:13:9 | [post] access to local variable b : B [field c] : C1 |

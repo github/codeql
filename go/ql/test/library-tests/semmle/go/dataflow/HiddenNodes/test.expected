@@ -7,6 +7,7 @@ nodes
 | test.go:15:2:15:44 | ... := ...[0] | semmle.label | ... := ...[0] |
 | test.go:15:34:15:35 | fi | semmle.label | fi |
 | test.go:16:7:16:12 | header | semmle.label | header |
+example
 subpaths
 #select
 | test.go:14:8:14:15 | call to source | test.go:14:8:14:15 | call to source | test.go:16:7:16:12 | header | Path |

@@ -11,6 +11,7 @@ nodes
 | Test.java:23:23:23:34 | userProperty | semmle.label | userProperty |
 | Test.java:25:28:25:39 | userProperty | semmle.label | userProperty |
 | Test.java:27:44:27:55 | userProperty | semmle.label | userProperty |
+example
 subpaths
 #select
 | Test.java:19:19:19:30 | userProperty | Test.java:17:27:17:60 | getProperty(...) : String | Test.java:19:19:19:30 | userProperty | Format string depends on a $@. | Test.java:17:27:17:60 | getProperty(...) | user-provided value |

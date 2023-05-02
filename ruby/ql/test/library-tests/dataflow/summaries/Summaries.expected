@@ -474,6 +474,7 @@ nodes
 | summaries.rb:147:16:147:22 | tainted | semmle.label | tainted |
 | summaries.rb:150:39:150:45 | tainted | semmle.label | tainted |
 | summaries.rb:150:39:150:45 | tainted | semmle.label | tainted |
+example
 subpaths
 invalidSpecComponent
 #select

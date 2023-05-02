@@ -151,6 +151,7 @@ nodes
 | mongoDB.go:79:23:79:28 | filter | semmle.label | filter |
 | mongoDB.go:80:22:80:27 | filter | semmle.label | filter |
 | mongoDB.go:81:18:81:25 | pipeline | semmle.label | pipeline |
+example
 subpaths
 #select
 | SqlInjection.go:12:11:12:11 | q | SqlInjection.go:11:3:11:9 | selection of URL | SqlInjection.go:12:11:12:11 | q | This query depends on a $@. | SqlInjection.go:11:3:11:9 | selection of URL | user-provided value |

@@ -34,6 +34,7 @@ nodes
 | testUserDefaults.swift:59:28:59:28 | x | semmle.label | x |
 | testUserDefaults.swift:60:28:60:28 | y | semmle.label | y |
 | testUserDefaults.swift:61:28:61:28 | z | semmle.label | z |
+example
 subpaths
 #select
 | testNSUbiquitousKeyValueStore.swift:28:12:28:12 | password | testNSUbiquitousKeyValueStore.swift:28:12:28:12 | password | testNSUbiquitousKeyValueStore.swift:28:12:28:12 | password | This operation stores 'password' in iCloud. It may contain unencrypted sensitive data from $@. | testNSUbiquitousKeyValueStore.swift:28:12:28:12 | password | password |

@@ -23,6 +23,7 @@ nodes
 | test.py:70:14:73:5 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
 | test.py:72:21:72:37 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | test.py:74:11:74:31 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+example
 subpaths
 #select
 | test.py:20:48:20:55 | ControlFlowNode for password | test.py:19:16:19:29 | ControlFlowNode for get_password() | test.py:20:48:20:55 | ControlFlowNode for password | This expression logs $@ as clear text. | test.py:19:16:19:29 | ControlFlowNode for get_password() | sensitive data (password) |

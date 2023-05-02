@@ -1417,6 +1417,7 @@ nodes
 | struct_init.c:43:5:43:7 | & ... [a] | semmle.label | & ... [a] |
 | struct_init.c:46:10:46:14 | outer [pointerAB, a] | semmle.label | outer [pointerAB, a] |
 | struct_init.c:46:16:46:24 | pointerAB [a] | semmle.label | pointerAB [a] |
+example
 subpaths
 | A.cpp:31:20:31:20 | c | A.cpp:23:10:23:10 | c | A.cpp:25:7:25:10 | this [post update] [c] | A.cpp:31:14:31:21 | call to B [c] |
 | A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c | A.cpp:31:14:31:21 | new [c] | A.cpp:48:12:48:18 | call to make [c] |

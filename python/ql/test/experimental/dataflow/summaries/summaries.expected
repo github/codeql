@@ -64,6 +64,7 @@ nodes
 | summaries.py:67:33:67:38 | ControlFlowNode for SOURCE | semmle.label | ControlFlowNode for SOURCE |
 | summaries.py:68:6:68:23 | ControlFlowNode for tainted_resultlist [List element] | semmle.label | ControlFlowNode for tainted_resultlist [List element] |
 | summaries.py:68:6:68:26 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
+example
 subpaths
 invalidSpecComponent
 #select

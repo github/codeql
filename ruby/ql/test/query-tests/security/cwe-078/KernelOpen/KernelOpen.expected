@@ -27,6 +27,7 @@ nodes
 | KernelOpen.rb:13:13:13:31 | call to join | semmle.label | call to join |
 | KernelOpen.rb:13:23:13:26 | file | semmle.label | file |
 | KernelOpen.rb:26:10:26:13 | file | semmle.label | file |
+example
 subpaths
 #select
 | KernelOpen.rb:4:10:4:13 | file | KernelOpen.rb:3:12:3:17 | call to params | KernelOpen.rb:4:10:4:13 | file | This call to Kernel.open depends on a $@. Consider replacing it with File.open. | KernelOpen.rb:3:12:3:17 | call to params | user-provided value |

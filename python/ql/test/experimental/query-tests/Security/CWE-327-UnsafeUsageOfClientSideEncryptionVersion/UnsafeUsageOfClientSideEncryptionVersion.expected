@@ -57,6 +57,7 @@ nodes
 | test.py:69:12:69:22 | ControlFlowNode for blob_client | semmle.label | ControlFlowNode for blob_client |
 | test.py:73:10:73:33 | ControlFlowNode for get_unsafe_blob_client() | semmle.label | ControlFlowNode for get_unsafe_blob_client() |
 | test.py:75:9:75:10 | ControlFlowNode for bc | semmle.label | ControlFlowNode for bc |
+example
 subpaths
 #select
 | test.py:11:9:11:19 | ControlFlowNode for blob_client | test.py:3:7:3:51 | ControlFlowNode for Attribute() | test.py:11:9:11:19 | ControlFlowNode for blob_client | Unsafe usage of v1 version of Azure Storage client-side encryption |
