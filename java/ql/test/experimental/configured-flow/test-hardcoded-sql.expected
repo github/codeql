@@ -1,19 +1,19 @@
 edges
-| Test.java:19:20:19:59 | executeQuery(...) : ResultSet | Test.java:22:56:22:57 | rs : ResultSet |
-| Test.java:19:20:19:59 | executeQuery(...) : ResultSet | Test.java:26:34:26:35 | rs : ResultSet |
-| Test.java:22:56:22:57 | rs : ResultSet | Test.java:22:56:22:75 | getString(...) : String |
-| Test.java:22:56:22:75 | getString(...) : String | Test.java:22:26:22:82 | ... + ... |
-| Test.java:26:34:26:35 | rs : ResultSet | Test.java:26:34:26:53 | getString(...) : String |
-| Test.java:26:34:26:53 | getString(...) : String | Test.java:26:34:26:64 | getBytes(...) |
+| Test.java:25:20:25:59 | executeQuery(...) : ResultSet | Test.java:28:56:28:57 | rs : ResultSet |
+| Test.java:25:20:25:59 | executeQuery(...) : ResultSet | Test.java:32:34:32:35 | rs : ResultSet |
+| Test.java:28:56:28:57 | rs : ResultSet | Test.java:28:56:28:75 | getString(...) : String |
+| Test.java:28:56:28:75 | getString(...) : String | Test.java:28:26:28:82 | ... + ... |
+| Test.java:32:34:32:35 | rs : ResultSet | Test.java:32:34:32:53 | getString(...) : String |
+| Test.java:32:34:32:53 | getString(...) : String | Test.java:32:34:32:64 | getBytes(...) |
 nodes
-| Test.java:19:20:19:59 | executeQuery(...) : ResultSet | semmle.label | executeQuery(...) : ResultSet |
-| Test.java:22:26:22:82 | ... + ... | semmle.label | ... + ... |
-| Test.java:22:56:22:57 | rs : ResultSet | semmle.label | rs : ResultSet |
-| Test.java:22:56:22:75 | getString(...) : String | semmle.label | getString(...) : String |
-| Test.java:26:34:26:35 | rs : ResultSet | semmle.label | rs : ResultSet |
-| Test.java:26:34:26:53 | getString(...) : String | semmle.label | getString(...) : String |
-| Test.java:26:34:26:64 | getBytes(...) | semmle.label | getBytes(...) |
+| Test.java:25:20:25:59 | executeQuery(...) : ResultSet | semmle.label | executeQuery(...) : ResultSet |
+| Test.java:28:26:28:82 | ... + ... | semmle.label | ... + ... |
+| Test.java:28:56:28:57 | rs : ResultSet | semmle.label | rs : ResultSet |
+| Test.java:28:56:28:75 | getString(...) : String | semmle.label | getString(...) : String |
+| Test.java:32:34:32:35 | rs : ResultSet | semmle.label | rs : ResultSet |
+| Test.java:32:34:32:53 | getString(...) : String | semmle.label | getString(...) : String |
+| Test.java:32:34:32:64 | getBytes(...) | semmle.label | getBytes(...) |
 subpaths
 #select
-| Test.java:22:26:22:82 | ... + ... | Test.java:19:20:19:59 | executeQuery(...) : ResultSet | Test.java:22:26:22:82 | ... + ... | This is some kind of threat model thingy $@. | Test.java:19:20:19:59 | executeQuery(...) | Source of that thingy |
-| Test.java:26:34:26:64 | getBytes(...) | Test.java:19:20:19:59 | executeQuery(...) : ResultSet | Test.java:26:34:26:64 | getBytes(...) | This is some kind of threat model thingy $@. | Test.java:19:20:19:59 | executeQuery(...) | Source of that thingy |
+| Test.java:28:26:28:82 | ... + ... | Test.java:25:20:25:59 | executeQuery(...) : ResultSet | Test.java:28:26:28:82 | ... + ... | This is some kind of threat model thingy $@. | Test.java:25:20:25:59 | executeQuery(...) | Source of that thingy |
+| Test.java:32:34:32:64 | getBytes(...) | Test.java:25:20:25:59 | executeQuery(...) : ResultSet | Test.java:32:34:32:64 | getBytes(...) | This is some kind of threat model thingy $@. | Test.java:25:20:25:59 | executeQuery(...) | Source of that thingy |

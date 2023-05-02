@@ -24,9 +24,6 @@ extensions:
       - ["java.sql", "Statement", True, "getConnection", "()", "", "ReturnValue", "sql", "manual"]
       - ["java.sql", "ResultSet", True, "getInt", "(int)", "", "Argument[0]", "sql", "manual"]
 
-      # This one is not defined elsewhere. Why not? I can't get my example working without it.
-      - ["java.io", "InputStream", True, "read", "()", "", "ReturnValue", "remote", "manual"]
-
 
   # Create a graph of parent-child relationships between threat models and their kinds
   # The left side is a kind of threat model. The right side groups the kinds together.
