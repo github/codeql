@@ -4,8 +4,8 @@
  * @name Negative examples (experimental)
  * @kind problem
  * @severity info
- * @id java/ml-powered/non-sink
- * @tags automodel extract examples negative
+ * @id java/ml/non-sink
+ * @tags internal automodel extract examples negative
  */
 
 import AutomodelEndpointCharacteristics

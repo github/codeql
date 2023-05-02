@@ -4,8 +4,8 @@
  * @name Positive examples (experimental)
  * @kind problem
  * @severity info
- * @id java/ml-powered/known-sink
- * @tags automodel extract examples positive
+ * @id java/ml/known-sink
+ * @tags internal automodel extract examples positive
  */
 
 private import java

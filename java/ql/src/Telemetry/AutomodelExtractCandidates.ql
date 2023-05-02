@@ -8,8 +8,8 @@
  * @description A query to extract automodel candidates.
  * @kind problem
  * @severity info
- * @id java/ml-powered/extract-automodel-candidates
- * @tags automodel extract candidates
+ * @id java/ml/extract-automodel-candidates
+ * @tags internal automodel extract candidates
  */
 
 import AutomodelEndpointCharacteristics
