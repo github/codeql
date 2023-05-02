@@ -1,4 +1,6 @@
 import semmle.code.cpp.ir.dataflow.DataFlow
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import codeql.util.Unit
 
 module ProductFlow {
@@ -352,32 +354,63 @@ module ProductFlow {
         pragma[only_bind_out](succ.getNode().getEnclosingCallable())
     }
 
+    newtype TKind =
+      TInto(DataFlowCall call) {
+        [any(Flow1::PathNode n).getNode(), any(Flow2::PathNode n).getNode()]
+            .(ArgumentNode)
+            .getCall() = call
+      } or
+      TOutOf(DataFlowCall call) {
+        [any(Flow1::PathNode n).getNode(), any(Flow2::PathNode n).getNode()].(OutNode).getCall() =
+          call
+      }
+
     pragma[nomagic]
     private predicate interprocEdge1(
-      Declaration predDecl, Declaration succDecl, Flow1::PathNode pred1, Flow1::PathNode succ1
+      Declaration predDecl, Declaration succDecl, Flow1::PathNode pred1, Flow1::PathNode succ1,
+      TKind kind
     ) {
       Flow1::PathGraph::edges(pred1, succ1) and
       predDecl != succDecl and
       pred1.getNode().getEnclosingCallable() = predDecl and
-      succ1.getNode().getEnclosingCallable() = succDecl
+      succ1.getNode().getEnclosingCallable() = succDecl and
+      exists(DataFlowCall call |
+        kind = TInto(call) and
+        pred1.getNode().(ArgumentNode).getCall() = call and
+        succ1.getNode() instanceof ParameterNode
+        or
+        kind = TOutOf(call) and
+        succ1.getNode().(OutNode).getCall() = call and
+        pred1.getNode() instanceof ReturnNode
+      )
     }
 
     pragma[nomagic]
     private predicate interprocEdge2(
-      Declaration predDecl, Declaration succDecl, Flow2::PathNode pred2, Flow2::PathNode succ2
+      Declaration predDecl, Declaration succDecl, Flow2::PathNode pred2, Flow2::PathNode succ2,
+      TKind kind
     ) {
       Flow2::PathGraph::edges(pred2, succ2) and
       predDecl != succDecl and
       pred2.getNode().getEnclosingCallable() = predDecl and
-      succ2.getNode().getEnclosingCallable() = succDecl
+      succ2.getNode().getEnclosingCallable() = succDecl and
+      exists(DataFlowCall call |
+        kind = TInto(call) and
+        pred2.getNode().(ArgumentNode).getCall() = call and
+        succ2.getNode() instanceof ParameterNode
+        or
+        kind = TOutOf(call) and
+        succ2.getNode().(OutNode).getCall() = call and
+        pred2.getNode() instanceof ReturnNode
+      )
     }
 
     private predicate interprocEdgePair(
       Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode succ1, Flow2::PathNode succ2
     ) {
-      exists(Declaration predDecl, Declaration succDecl |
-        interprocEdge1(predDecl, succDecl, pred1, succ1) and
-        interprocEdge2(predDecl, succDecl, pred2, succ2)
+      exists(Declaration predDecl, Declaration succDecl, TKind kind |
+        interprocEdge1(predDecl, succDecl, pred1, succ1, kind) and
+        interprocEdge2(predDecl, succDecl, pred2, succ2, kind)
       )
     }
 

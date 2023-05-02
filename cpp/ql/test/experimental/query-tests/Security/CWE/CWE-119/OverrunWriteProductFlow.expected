@@ -398,4 +398,3 @@ subpaths
 | test.cpp:199:9:199:15 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:199:22:199:27 | string | This write may overflow $@ by 2 elements. | test.cpp:199:22:199:27 | string | string |
 | test.cpp:203:9:203:15 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:203:22:203:27 | string | This write may overflow $@ by 2 elements. | test.cpp:203:22:203:27 | string | string |
 | test.cpp:207:9:207:15 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:207:22:207:27 | string | This write may overflow $@ by 3 elements. | test.cpp:207:22:207:27 | string | string |
-| test.cpp:216:3:216:8 | call to memset | test.cpp:220:43:220:48 | call to malloc | test.cpp:216:10:216:10 | p | This write may overflow $@ by 5 elements. | test.cpp:216:10:216:10 | p | p |
