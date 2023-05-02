@@ -38,21 +38,6 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `TaintedWebClient` instead.
- *
- * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "TaintedWebClientLib" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for uncontrolled data in path expression vulnerabilities.
  */
 private module TaintedWebClientConfig implements DataFlow::ConfigSig {

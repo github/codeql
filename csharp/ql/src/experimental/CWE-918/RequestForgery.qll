@@ -24,39 +24,6 @@ module RequestForgery {
   abstract private class Barrier extends DataFlow::Node { }
 
   /**
-   * DEPRECATED: Use `RequestForgeryFlow` instead.
-   *
-   * A data flow configuration for detecting server side request forgery vulnerabilities.
-   */
-  deprecated class RequestForgeryConfiguration extends DataFlow::Configuration {
-    RequestForgeryConfiguration() { this = "Server Side Request forgery" }
-
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-    override predicate isAdditionalFlowStep(DataFlow::Node prev, DataFlow::Node succ) {
-      interpolatedStringFlowStep(prev, succ)
-      or
-      stringReplaceStep(prev, succ)
-      or
-      uriCreationStep(prev, succ)
-      or
-      formatConvertStep(prev, succ)
-      or
-      toStringStep(prev, succ)
-      or
-      stringConcatStep(prev, succ)
-      or
-      stringFormatStep(prev, succ)
-      or
-      pathCombineStep(prev, succ)
-    }
-
-    override predicate isBarrier(DataFlow::Node node) { node instanceof Barrier }
-  }
-
-  /**
    * A data flow configuration for detecting server side request forgery vulnerabilities.
    */
   private module RequestForgeryFlowConfig implements DataFlow::ConfigSig {

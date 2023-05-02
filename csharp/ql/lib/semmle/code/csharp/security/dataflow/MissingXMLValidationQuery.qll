@@ -29,22 +29,6 @@ abstract class Sink extends DataFlow::ExprNode {
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `MissingXxmlValidation` instead.
- *
- * A taint-tracking configuration for untrusted user input processed as XML without validation against a
- * known schema.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "MissingXMLValidation" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for untrusted user input processed as XML without validation against a
  * known schema.
  */

@@ -23,21 +23,6 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `CommandInjection` instead.
- *
- * A taint-tracking configuration for command injection vulnerabilities.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "CommandInjection" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for command injection vulnerabilities.
  */
 module CommandInjectionConfig implements DataFlow::ConfigSig {

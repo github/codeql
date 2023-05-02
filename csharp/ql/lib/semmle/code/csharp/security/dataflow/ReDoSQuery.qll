@@ -25,21 +25,6 @@ abstract class Sink extends DataFlow::ExprNode { }
 abstract class Sanitizer extends DataFlow::ExprNode { }
 
 /**
- * DEPRECATED: Use `ReDoS` instead.
- *
- * A taint-tracking configuration for untrusted user input used in dangerous regular expression operations.
- */
-deprecated class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "ReDoS" }
-
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
-
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
-}
-
-/**
  * A taint-tracking configuration for untrusted user input used in dangerous regular expression operations.
  */
 private module ReDoSConfig implements DataFlow::ConfigSig {
@@ -75,20 +60,6 @@ predicate isExponentialRegex(StringLiteral s) {
   or
   // Example: (([a-z])+.)+
   s.getValue().regexpMatch(".*\\(\\([^()*+\\]]+\\]?\\)(\\*|\\+)\\.?\\)(\\*|\\+).*")
-}
-
-/**
- * DEPRECATED: Use `ExponentialRegexDataflow` instead.
- *
- * A data flow configuration for tracking exponential worst case time regular expression string
- * literals to the pattern argument of a regex.
- */
-deprecated class ExponentialRegexDataflow extends DataFlow2::Configuration {
-  ExponentialRegexDataflow() { this = "ExponentialRegex" }
-
-  override predicate isSource(DataFlow::Node s) { isExponentialRegex(s.asExpr()) }
-
-  override predicate isSink(DataFlow::Node s) { s.asExpr() = any(RegexOperation c).getPattern() }
 }
 
 /**
