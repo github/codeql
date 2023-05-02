@@ -607,13 +607,21 @@ OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) {
   result.getReturnKind() = kind
 }
 
+/** A variable that behaves like a global variable. */
+class GlobalLikeVariable extends Variable {
+  GlobalLikeVariable() {
+    this instanceof Cpp::GlobalOrNamespaceVariable or
+    this instanceof Cpp::StaticLocalVariable
+  }
+}
+
 /**
  * Holds if data can flow from `node1` to `node2` in a way that loses the
  * calling context. For example, this would happen with flow through a
  * global or static variable.
  */
 predicate jumpStep(Node n1, Node n2) {
-  exists(Cpp::GlobalOrNamespaceVariable v |
+  exists(GlobalLikeVariable v |
     exists(Ssa::GlobalUse globalUse |
       v = globalUse.getVariable() and
       n1.(FinalGlobalValue).getGlobalUse() = globalUse
