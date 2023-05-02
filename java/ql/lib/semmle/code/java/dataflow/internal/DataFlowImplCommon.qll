@@ -961,8 +961,10 @@ predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
 /**
  * A `Node` at which a cast can occur such that the type should be checked.
  */
-class CastingNode extends Node {
+class CastingNode instanceof Node {
   CastingNode() { castingNode(this) }
+
+  string toString() { result = super.toString() }
 }
 
 private predicate readStepWithTypes(
@@ -1110,8 +1112,10 @@ LocalCallContext getLocalCallContext(CallContext ctx, DataFlowCallable callable)
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParamNode extends Node {
+class ParamNode instanceof Node {
   ParamNode() { parameterNode(this, _, _) }
+
+  string toString() { result = super.toString() }
 
   /**
    * Holds if this node is the parameter of callable `c` at the specified
@@ -1121,8 +1125,10 @@ class ParamNode extends Node {
 }
 
 /** A data-flow node that represents a call argument. */
-class ArgNode extends Node {
+class ArgNode instanceof Node {
   ArgNode() { argumentNode(this, _, _) }
+
+  string toString() { result = super.toString() }
 
   /** Holds if this argument occurs at the given position in the given call. */
   final predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
@@ -1134,8 +1140,10 @@ class ArgNode extends Node {
  * A node from which flow can return to the caller. This is either a regular
  * `ReturnNode` or a `PostUpdateNode` corresponding to the value of a parameter.
  */
-class ReturnNodeExt extends Node {
+class ReturnNodeExt instanceof Node {
   ReturnNodeExt() { returnNodeExt(this, _) }
+
+  string toString() { result = super.toString() }
 
   /** Gets the kind of this returned value. */
   ReturnKindExt getKind() { returnNodeExt(this, result) }
@@ -1145,8 +1153,10 @@ class ReturnNodeExt extends Node {
  * A node to which data can flow from a call. Either an ordinary out node
  * or a post-update node associated with a call argument.
  */
-class OutNodeExt extends Node {
+class OutNodeExt instanceof Node {
   OutNodeExt() { outNodeExt(this) }
+
+  string toString() { result = super.toString() }
 }
 
 /**
