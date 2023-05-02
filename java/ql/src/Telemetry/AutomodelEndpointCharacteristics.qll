@@ -88,10 +88,10 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
     exists(
       string package, string type, boolean subtypes, string name, string signature, string ext,
       int input, string provenance, boolean isPublic, boolean isFinal, boolean isStatic,
-      string calleeJavaDoc
+      string callableJavaDoc
     |
       hasMetadata(e, package, type, name, signature, input, isFinal, isStatic, isPublic,
-        calleeJavaDoc) and
+        callableJavaDoc) and
       (if isFinal = true or isStatic = true then subtypes = false else subtypes = true) and
       ext = "" and
       /*
@@ -113,7 +113,7 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
           + "', 'Argument index': " + input //
           + ", 'Provenance': '" + provenance //
           + "', 'Is public': " + isPublic //
-          + "', 'Callee JavaDoc': '" + calleeJavaDoc.replaceAll("'", "\"") //
+          + "', 'Callable JavaDoc': '" + callableJavaDoc.replaceAll("'", "\"") //
           + "'}" // TODO: Why are the curly braces added twice?
     )
   }
@@ -136,28 +136,28 @@ class Endpoint = CandidatesImpl::Endpoint;
  */
 predicate hasMetadata(
   Endpoint n, string package, string type, string name, string signature, int input,
-  boolean isFinal, boolean isStatic, boolean isPublic, string calleeJavaDoc
+  boolean isFinal, boolean isStatic, boolean isPublic, string callableJavaDoc
 ) {
-  exists(Callable callee |
-    n.asParameter() = callee.getParameter(input) and
-    package = callee.getDeclaringType().getPackage().getName() and
-    type = callee.getDeclaringType().getErasure().(RefType).nestedName() and
+  exists(Callable callable |
+    n.asParameter() = callable.getParameter(input) and
+    package = callable.getDeclaringType().getPackage().getName() and
+    type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
     (
-      if callee.isStatic() or callee.getDeclaringType().isStatic()
+      if callable.isStatic() or callable.getDeclaringType().isStatic()
       then isStatic = true
       else isStatic = false
     ) and
     (
-      if callee.isFinal() or callee.getDeclaringType().isFinal()
+      if callable.isFinal() or callable.getDeclaringType().isFinal()
       then isFinal = true
       else isFinal = false
     ) and
-    name = callee.getSourceDeclaration().getName() and
-    signature = ExternalFlow::paramsString(callee) and // TODO: Why are brackets being escaped (`\[\]` vs `[]`)?
-    (if callee.isPublic() then isPublic = true else isPublic = false) and
-    if exists(callee.(Documentable).getJavadoc())
-    then calleeJavaDoc = callee.(Documentable).getJavadoc().toString()
-    else calleeJavaDoc = ""
+    name = callable.getSourceDeclaration().getName() and
+    signature = ExternalFlow::paramsString(callable) and // TODO: Why are brackets being escaped (`\[\]` vs `[]`)?
+    (if callable.isPublic() then isPublic = true else isPublic = false) and
+    if exists(callable.(Documentable).getJavadoc())
+    then callableJavaDoc = callable.(Documentable).getJavadoc().toString()
+    else callableJavaDoc = ""
   )
 }
 
@@ -168,7 +168,7 @@ predicate hasMetadata(
 /**
  * A negative characteristic that indicates that an is-style boolean method is unexploitable even if it is a sink.
  *
- * A sink is highly unlikely to be exploitable if its callee's name starts with `is` and the callee has a boolean return
+ * A sink is highly unlikely to be exploitable if its callable's name starts with `is` and the callable has a boolean return
  * type (e.g. `isDirectory`). These kinds of calls normally do only checks, and appear before the proper call that does
  * the dangerous/interesting thing, so we want the latter to be modeled as the sink.
  *
@@ -188,7 +188,7 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
  * A negative characteristic that indicates that an existence-checking boolean method is unexploitable even if it is a
  * sink.
  *
- * A sink is highly unlikely to be exploitable if its callee's name is `exists` or `notExists` and the callee has a
+ * A sink is highly unlikely to be exploitable if its callable's name is `exists` or `notExists` and the callable has a
  * boolean return type. These kinds of calls normally do only checks, and appear before the proper call that does the
  * dangerous/interesting thing, so we want the latter to be modeled as the sink.
  */
@@ -197,13 +197,13 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
 
   override predicate appliesToEndpoint(Endpoint e) {
     not CandidatesImpl::isSink(e, _) and
-    exists(Callable callee |
-      callee = e.getEnclosingCallable() and
+    exists(Callable callable |
+      callable = e.getEnclosingCallable() and
       (
-        callee.getName().toLowerCase() = "exists" or
-        callee.getName().toLowerCase() = "notexists"
+        callable.getName().toLowerCase() = "exists" or
+        callable.getName().toLowerCase() = "notexists"
       ) and
-      callee.getReturnType() instanceof BooleanType
+      callable.getReturnType() instanceof BooleanType
     )
   }
 }
