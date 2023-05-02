@@ -7,7 +7,7 @@
  * @tags security
  */
 
-import Test
+import TestHardcoded
 import ThreatModel::PathGraph
 
 from ThreatModel::PathNode source, ThreatModel::PathNode sink
