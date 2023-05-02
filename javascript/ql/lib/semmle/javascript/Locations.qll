@@ -127,6 +127,7 @@ class Locatable extends @locatable {
   int getNumLines() { result = this.getLocation().getNumLines() }
 
   /** Gets a textual representation of this element. */
+  cached
   string toString() {
     // to be overridden by subclasses
     none()
