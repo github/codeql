@@ -47,7 +47,7 @@
 | Sources/deduplication/def.swift:30:7:30:7 | Class.init() | Initializer | (Class.Type) -> () -> Class [FunctionType] |
 | Sources/deduplication/def.swift:30:7:30:7 | self | ParamDecl | Class [ClassType] |
 | Sources/deduplication/def.swift:30:7:30:7 | self | ParamDecl | Class [ClassType] |
-| Sources/deduplication/def.swift:32:1:32:128 | def_generic_function_with_conformance(_:_:_:) | ConcreteFuncDecl | <A, B, C where A : Protocol1, A : Protocol2, B : Class, C == A.Associated> (A, B, C) -> () [GenericFunctionType] |
+| Sources/deduplication/def.swift:32:1:32:128 | def_generic_function_with_conformance(_:_:_:) | NamedFunction | <A, B, C where A : Protocol1, A : Protocol2, B : Class, C == A.Associated> (A, B, C) -> () [GenericFunctionType] |
 | Sources/deduplication/def.swift:32:44:32:60 | A | GenericTypeParamDecl | A.Type [MetatypeType] |
 | Sources/deduplication/def.swift:32:71:32:75 | B | GenericTypeParamDecl | B.Type [MetatypeType] |
 | Sources/deduplication/def.swift:32:82:32:82 | C | GenericTypeParamDecl | C.Type [MetatypeType] |
@@ -74,7 +74,7 @@
 | Sources/deduplication/use.swift:6:33:6:36 | _ | ParamDecl | Int [StructType] |
 | Sources/deduplication/use.swift:7:1:7:61 | use_async_throwing_function_type(_:) | NamedFunction | (Int) async throws -> () [FunctionType] |
 | Sources/deduplication/use.swift:7:39:7:42 | _ | ParamDecl | Int [StructType] |
-| Sources/deduplication/use.swift:8:1:8:150 | use_generic_function_with_conformance_type(_:_:_:) | ConcreteFuncDecl | <AA, BB, CC where AA : Protocol1, AA : Protocol2, BB : Class, CC == AA.Associated> (AA, BB, CC) -> () [GenericFunctionType] |
+| Sources/deduplication/use.swift:8:1:8:150 | use_generic_function_with_conformance_type(_:_:_:) | NamedFunction | <AA, BB, CC where AA : Protocol1, AA : Protocol2, BB : Class, CC == AA.Associated> (AA, BB, CC) -> () [GenericFunctionType] |
 | Sources/deduplication/use.swift:8:49:8:49 | AA | GenericTypeParamDecl | AA.Type [MetatypeType] |
 | Sources/deduplication/use.swift:8:53:8:53 | BB | GenericTypeParamDecl | BB.Type [MetatypeType] |
 | Sources/deduplication/use.swift:8:57:8:57 | CC | GenericTypeParamDecl | CC.Type [MetatypeType] |
