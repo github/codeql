@@ -129,7 +129,7 @@ func getImportPath() (importpath string) {
 // determined.
 func getImportPathFromRepoURL(repourl string) string {
 	// check for scp-like URL as in "git@github.com:github/codeql-go.git"
-	shorturl := regexp.MustCompile("^([^@]+@)?([^:]+):([^/].*?)(\\.git)?$")
+	shorturl := regexp.MustCompile(`^([^@]+@)?([^:]+):([^/].*?)(\.git)?$`)
 	m := shorturl.FindStringSubmatch(repourl)
 	if m != nil {
 		return m[2] + "/" + m[3]
@@ -153,7 +153,7 @@ func getImportPathFromRepoURL(repourl string) string {
 	host := u.Hostname()
 	path := u.Path
 	// strip off leading slashes and trailing `.git` if present
-	path = regexp.MustCompile("^/+|\\.git$").ReplaceAllString(path, "")
+	path = regexp.MustCompile(`^/+|\.git$`).ReplaceAllString(path, "")
 	return host + "/" + path
 }
 
