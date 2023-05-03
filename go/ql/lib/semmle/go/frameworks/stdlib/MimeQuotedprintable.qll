@@ -12,7 +12,7 @@ module MimeQuotedprintable {
 
     FunctionModels() {
       // signature: func NewWriter(w io.Writer) *Writer
-      hasQualifiedName("mime/quotedprintable", "NewWriter") and
+      this.hasQualifiedName("mime/quotedprintable", "NewWriter") and
       (inp.isResult() and outp.isParameter(0))
     }
 

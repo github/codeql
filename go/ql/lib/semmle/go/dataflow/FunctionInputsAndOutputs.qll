@@ -39,7 +39,7 @@ class FunctionInput extends TFunctionInput {
   predicate isResult(int i) { none() }
 
   /** Gets the data-flow node corresponding to this input for the call `c`. */
-  final DataFlow::Node getNode(DataFlow::CallNode c) { result = getEntryNode(c) }
+  final DataFlow::Node getNode(DataFlow::CallNode c) { result = this.getEntryNode(c) }
 
   /** Gets the data-flow node through which data is passed into this input for the call `c`. */
   abstract DataFlow::Node getEntryNode(DataFlow::CallNode c);
@@ -116,7 +116,7 @@ private class ResultInput extends FunctionInput, TInResult {
   override predicate isResult() { index = -1 }
 
   override predicate isResult(int i) {
-    i = 0 and isResult()
+    i = 0 and this.isResult()
     or
     i = index and i >= 0
   }
@@ -180,7 +180,7 @@ class FunctionOutput extends TFunctionOutput {
   predicate isParameter(int i) { none() }
 
   /** Gets the data-flow node corresponding to this output for the call `c`. */
-  final DataFlow::Node getNode(DataFlow::CallNode c) { result = getExitNode(c) }
+  final DataFlow::Node getNode(DataFlow::CallNode c) { result = this.getExitNode(c) }
 
   /** Gets the data-flow node through which data is passed into this output for the function `f`. */
   abstract DataFlow::Node getEntryNode(FuncDef f);
@@ -216,7 +216,7 @@ private class OutResult extends FunctionOutput, TOutResult {
   override predicate isResult() { index = -1 }
 
   override predicate isResult(int i) {
-    i = 0 and isResult()
+    i = 0 and this.isResult()
     or
     i = index and i >= 0
   }

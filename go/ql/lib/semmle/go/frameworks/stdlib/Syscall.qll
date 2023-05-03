@@ -13,7 +13,7 @@ module Syscall {
 
     MethodModels() {
       // signature: func (Conn) SyscallConn() (RawConn, error)
-      implements("syscall", "Conn", "SyscallConn") and
+      this.implements("syscall", "Conn", "SyscallConn") and
       (inp.isResult(0) and outp.isReceiver())
     }
 
