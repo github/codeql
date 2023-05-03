@@ -1,4 +1,4 @@
-# Here we test writing to a captured variable via the `nonlocal` keyword (see `out`).
+# Here we test writing to a captured global variable via the `global` keyword (see `out`).
 # We also test reading one captured variable and writing the value to another (see `through`).
 
 # All functions starting with "test_" should run and execute `print("OK")` exactly once.
