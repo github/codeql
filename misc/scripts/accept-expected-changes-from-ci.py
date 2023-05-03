@@ -350,6 +350,8 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None):
                             return True
                         if job_name.startswith("Test Linux"):
                             return True
+                        if job_name.startswith("integration-tests"):
+                            return True
                         return False
 
                     if job["name"] == check_run['name'] and job["workflow_name"] in OK_WORKFLOW_NAMES and ok_job_name(job["name"]):
