@@ -199,7 +199,7 @@ func EmitUnsupportedVersionGoMod(msg string) {
 		"go/autobuilder/env-unsupported-version-in-go-mod",
 		"Unsupported Go version in `go.mod` file",
 		msg,
-		severityError,
+		severityNote,
 		telemetryOnly,
 		noLocation,
 	)
@@ -210,7 +210,7 @@ func EmitUnsupportedVersionEnvironment(msg string) {
 		"go/autobuilder/env-unsupported-version-in-environment",
 		"Unsupported Go version in environment",
 		msg,
-		severityError,
+		severityNote,
 		telemetryOnly,
 		noLocation,
 	)
@@ -254,7 +254,7 @@ func EmitVersionGoModHigherVersionEnvironment(msg string) {
 		"go/autobuilder/env-version-go-mod-higher-than-go-env",
 		"The Go version in `go.mod` file is higher than the Go version in environment",
 		msg,
-		severityWarning,
+		severityNote,
 		telemetryOnly,
 		noLocation,
 	)
