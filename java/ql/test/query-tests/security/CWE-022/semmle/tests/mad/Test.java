@@ -19,6 +19,7 @@ import org.apache.tools.ant.types.FileSet;
 import org.codehaus.cargo.container.installer.ZipURLInstaller;
 import org.kohsuke.stapler.framework.io.LargeText;
 import org.openjdk.jmh.runner.options.ChainedOptionsBuilder;
+import org.springframework.util.FileCopyUtils;
 
 public class Test {
 
@@ -97,6 +98,12 @@ public class Test {
         new ZipURLInstaller((URL) null, (String) source(), "");
         // "org.codehaus.cargo.container.installer;ZipURLInstaller;true;ZipURLInstaller;(URL,String,String);;Argument[2];create-file;ai-generated"
         new ZipURLInstaller((URL) null, "", (String) source());
+        // "org.springframework.util;FileCopyUtils;false;copy;(byte[],File);;Argument[1];create-file;manual"
+        FileCopyUtils.copy((byte[]) null, (File) source());
+        // "org.springframework.util;FileCopyUtils;false;copy;(File,File);;Argument[0];create-file;manual"
+        FileCopyUtils.copy((File) source(), null);
+        // "org.springframework.util;FileCopyUtils;false;copy;(File,File);;Argument[1];create-file;manual"
+        FileCopyUtils.copy((File) null, (File) source());
     }
 
     void test(AntClassLoader acl) {

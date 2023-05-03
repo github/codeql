@@ -43,7 +43,7 @@ class EcbEncryptionAdditionalTaintStep extends Unit {
 private class CryptoSwiftEcb extends EcbEncryptionSource {
   CryptoSwiftEcb() {
     exists(CallExpr call |
-      call.getStaticTarget().(MethodDecl).hasQualifiedName("ECB", "init()") and
+      call.getStaticTarget().(Method).hasQualifiedName("ECB", "init()") and
       this.asExpr() = call
     )
   }

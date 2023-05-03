@@ -9,5 +9,6 @@ dependencies:
   codeql/regex: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
+  codeql/yaml: ${workspace}
 dataExtensions:
   - semmle/python/frameworks/**/model.yml

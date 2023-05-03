@@ -14,6 +14,10 @@ class FooController < ActionController::Base
     # where name is unsanitized
     template = ERB.new(bad_text).result(binding) 
 
+    # BAD: user input is evaluated
+    # where name is unsanitized
+    render inline: bad_text
+
     # Template with the source 
     good_text = "
       <!DOCTYPE html><html><body>
@@ -22,6 +26,9 @@ class FooController < ActionController::Base
 
     # GOOD: user input is not evaluated
     template2 = ERB.new(good_text).result(binding) 
+
+    # GOOD: user input is not evaluated
+    render inline: good_text
   end
 end
 

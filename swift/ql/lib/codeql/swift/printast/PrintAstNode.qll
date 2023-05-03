@@ -126,10 +126,10 @@ class PrintVarDecl extends PrintLocatable {
 }
 
 /**
- * A specialization of graph node for `AbstractFunctionDecl`, to add typing information.
+ * A specialization of graph node for `Function`, to add typing information.
  */
-class PrintAbstractFunctionDecl extends PrintLocatable {
-  override AbstractFunctionDecl ast;
+class PrintFunction extends PrintLocatable {
+  override Function ast;
 
   override string getProperty(string key) {
     key = "InterfaceType" and result = ast.getInterfaceType().toString()

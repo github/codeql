@@ -86,12 +86,12 @@ private class SensitiveVarDecl extends VarDecl {
 }
 
 /**
- * An `AbstractFunctionDecl` that might be used to contain sensitive data.
+ * A `Function` that might be used to contain sensitive data.
  */
-private class SensitiveFunctionDecl extends AbstractFunctionDecl {
+private class SensitiveFunction extends Function {
   SensitiveDataType sensitiveType;
 
-  SensitiveFunctionDecl() { this.getName().toLowerCase().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveFunction() { this.getName().toLowerCase().regexpMatch(sensitiveType.getRegexp()) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
     label = this.getName() and
@@ -129,7 +129,7 @@ class SensitiveExpr extends Expr {
       this.(MemberRefExpr).getMember().(SensitiveVarDecl).hasInfo(label, sensitiveType)
       or
       // function call
-      this.(ApplyExpr).getStaticTarget().(SensitiveFunctionDecl).hasInfo(label, sensitiveType)
+      this.(ApplyExpr).getStaticTarget().(SensitiveFunction).hasInfo(label, sensitiveType)
       or
       // sensitive argument
       exists(SensitiveArgument a |
@@ -155,7 +155,7 @@ class SensitiveExpr extends Expr {
 /**
  * A function that is likely used to encrypt or hash data.
  */
-private class EncryptionFunction extends AbstractFunctionDecl {
+private class EncryptionFunction extends Function {
   EncryptionFunction() { this.getName().regexpMatch(".*(crypt|hash|encode|protect).*") }
 }
 
