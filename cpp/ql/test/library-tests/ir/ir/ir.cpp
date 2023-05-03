@@ -1894,4 +1894,21 @@ int test_global_template_int() {
     return local_int + (int)local_char;
 }
 
+[[noreturn]] void noreturnFunc();
+
+int noreturnTest(int x) {
+    if (x < 10) {
+        return x;
+    } else {
+        noreturnFunc();
+    }
+}
+
+int noreturnTest2(int x) {
+    if (x < 10) {
+        noreturnFunc();
+    }
+    return x;
+}
+
 // semmle-extractor-options: -std=c++17 --clang
