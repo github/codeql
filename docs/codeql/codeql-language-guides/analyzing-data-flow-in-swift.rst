@@ -125,7 +125,7 @@ We can vary the source, for example, making the source the parameter of a functi
     import swift
     import codeql.swift.dataflow.DataFlow
 
-    from CallExpr call, MethodDecl method, ParamDecl sourceParam, Expr sinkExpr
+    from CallExpr call, Method method, ParamDecl sourceParam, Expr sinkExpr
     where
       call.getStaticTarget() = method and
       method.hasQualifiedName("String", "init(format:_:)") and
@@ -140,7 +140,7 @@ The following example finds calls to ``String.init(format:_:)`` where the format
     import swift
     import codeql.swift.dataflow.DataFlow
 
-    from CallExpr call, MethodDecl method, Expr sinkExpr
+    from CallExpr call, Method method, Expr sinkExpr
     where
       call.getStaticTarget() = method and
       method.hasQualifiedName("String", "init(format:_:)") and
