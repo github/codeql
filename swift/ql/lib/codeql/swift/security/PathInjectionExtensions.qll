@@ -39,7 +39,6 @@ private class DefaultPathInjectionSink extends PathInjectionSink {
 private class DefaultPathInjectionSanitizer extends PathInjectionSanitizer {
   DefaultPathInjectionSanitizer() {
     // This is a simplified implementation.
-    // TODO: Implement a complete path sanitizer when Guards are available.
     exists(CallExpr starts, CallExpr normalize, DataFlow::Node validated |
       starts.getStaticTarget().getName() = "starts(with:)" and
       starts.getStaticTarget().getEnclosingDecl() instanceof FilePath and
