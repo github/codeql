@@ -1,6 +1,7 @@
 import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
 private import codeql.util.Unit
 
 module ProductFlow {
@@ -363,7 +364,40 @@ module ProductFlow {
       TOutOf(DataFlowCall call) {
         [any(Flow1::PathNode n).getNode(), any(Flow2::PathNode n).getNode()].(OutNode).getCall() =
           call
-      }
+      } or
+      TJump()
+
+    private predicate into1(Flow1::PathNode pred1, Flow1::PathNode succ1, TKind kind) {
+      exists(DataFlowCall call |
+        kind = TInto(call) and
+        pred1.getNode().(ArgumentNode).getCall() = call and
+        succ1.getNode() instanceof ParameterNode
+      )
+    }
+
+    private predicate out1(Flow1::PathNode pred1, Flow1::PathNode succ1, TKind kind) {
+      exists(ReturnKindExt returnKind, DataFlowCall call |
+        kind = TOutOf(call) and
+        succ1.getNode() = returnKind.getAnOutNode(call) and
+        pred1.getNode().(ReturnNodeExt).getKind() = returnKind
+      )
+    }
+
+    private predicate into2(Flow2::PathNode pred1, Flow2::PathNode succ1, TKind kind) {
+      exists(DataFlowCall call |
+        kind = TInto(call) and
+        pred1.getNode().(ArgumentNode).getCall() = call and
+        succ1.getNode() instanceof ParameterNode
+      )
+    }
+
+    private predicate out2(Flow2::PathNode pred1, Flow2::PathNode succ1, TKind kind) {
+      exists(ReturnKindExt returnKind, DataFlowCall call |
+        kind = TOutOf(call) and
+        succ1.getNode() = returnKind.getAnOutNode(call) and
+        pred1.getNode().(ReturnNodeExt).getKind() = returnKind
+      )
+    }
 
     pragma[nomagic]
     private predicate interprocEdge1(
@@ -374,14 +408,14 @@ module ProductFlow {
       predDecl != succDecl and
       pred1.getNode().getEnclosingCallable() = predDecl and
       succ1.getNode().getEnclosingCallable() = succDecl and
-      exists(DataFlowCall call |
-        kind = TInto(call) and
-        pred1.getNode().(ArgumentNode).getCall() = call and
-        succ1.getNode() instanceof ParameterNode
+      (
+        into1(pred1, succ1, kind)
         or
-        kind = TOutOf(call) and
-        succ1.getNode().(OutNode).getCall() = call and
-        pred1.getNode() instanceof ReturnNode
+        out1(pred1, succ1, kind)
+        or
+        kind = TJump() and
+        not into1(pred1, succ1, _) and
+        not out1(pred1, succ1, _)
       )
     }
 
@@ -394,14 +428,14 @@ module ProductFlow {
       predDecl != succDecl and
       pred2.getNode().getEnclosingCallable() = predDecl and
       succ2.getNode().getEnclosingCallable() = succDecl and
-      exists(DataFlowCall call |
-        kind = TInto(call) and
-        pred2.getNode().(ArgumentNode).getCall() = call and
-        succ2.getNode() instanceof ParameterNode
+      (
+        into2(pred2, succ2, kind)
         or
-        kind = TOutOf(call) and
-        succ2.getNode().(OutNode).getCall() = call and
-        pred2.getNode() instanceof ReturnNode
+        out2(pred2, succ2, kind)
+        or
+        kind = TJump() and
+        not into2(pred2, succ2, _) and
+        not out2(pred2, succ2, _)
       )
     }
 
