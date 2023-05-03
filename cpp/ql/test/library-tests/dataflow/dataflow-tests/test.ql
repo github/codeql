@@ -47,6 +47,7 @@ module AstTest {
 }
 
 module IRTest {
+  private import cpp
   private import semmle.code.cpp.ir.dataflow.DataFlow
   private import semmle.code.cpp.ir.IR
   private import semmle.code.cpp.controlflow.IRGuards
@@ -56,10 +57,13 @@ module IRTest {
    * S in `if (guarded(x)) S`.
    */
   // This is tested in `BarrierGuard.cpp`.
-  predicate testBarrierGuard(IRGuardCondition g, Instruction checked, boolean isTrue) {
-    g.(CallInstruction).getStaticCallTarget().getName() = "guarded" and
-    checked = g.(CallInstruction).getPositionalArgument(0) and
-    isTrue = true
+  predicate testBarrierGuard(IRGuardCondition g, Expr checked, boolean isTrue) {
+    exists(Call call |
+      call = g.getUnconvertedResultExpression() and
+      call.getTarget().hasName("guarded") and
+      checked = call.getArgument(0) and
+      isTrue = true
+    )
   }
 
   /** Common data flow configuration to be used by tests. */
@@ -90,7 +94,9 @@ module IRTest {
         barrierExpr.(VariableAccess).getTarget().hasName("barrier")
       )
       or
-      barrier = DataFlow::InstructionBarrierGuard<testBarrierGuard/3>::getABarrierNode()
+      barrier = DataFlow::BarrierGuard<testBarrierGuard/3>::getABarrierNode()
+      or
+      barrier = DataFlow::BarrierGuard<testBarrierGuard/3>::getAnIndirectBarrierNode()
     }
   }
 }
