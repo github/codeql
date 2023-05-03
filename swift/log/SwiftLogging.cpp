@@ -1,4 +1,4 @@
-#include "swift/extractor/infra/log/SwiftLogging.h"
+#include "swift/log/SwiftLogging.h"
 
 #include <filesystem>
 #include <stdlib.h>

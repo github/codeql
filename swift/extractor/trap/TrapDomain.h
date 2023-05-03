@@ -5,7 +5,7 @@
 
 #include "swift/extractor/trap/TrapLabel.h"
 #include "swift/extractor/infra/file/TargetFile.h"
-#include "swift/extractor/infra/log/SwiftLogging.h"
+#include "swift/log/SwiftLogging.h"
 #include "swift/extractor/infra/SwiftMangledName.h"
 
 namespace codeql {

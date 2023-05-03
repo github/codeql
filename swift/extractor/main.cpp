@@ -18,7 +18,7 @@
 #include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/file/Path.h"
-#include "swift/extractor/infra/log/SwiftLogging.h"
+#include "swift/log/SwiftLogging.h"
 
 using namespace std::string_literals;
 
