@@ -5,7 +5,6 @@ cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "@binlog",
-        "@date",
         "@json",
     ],
 )

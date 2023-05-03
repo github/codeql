@@ -1,6 +1,5 @@
 #include "swift/log/SwiftDiagnostics.h"
 
-#include <date/date.h>
 #include <binlog/Entries.hpp>
 #include <nlohmann/json.hpp>
 

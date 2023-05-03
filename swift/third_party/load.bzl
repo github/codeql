@@ -70,11 +70,3 @@ def load_dependencies(workspace_name):
         commit = "6af826d0bdb55e4b69e3ad817576745335f243ca",
         sha256 = "702bb0231a5e21c0374230fed86c8ae3d07ee50f34ffd420e7f8249854b7d85b",
     )
-
-    _github_archive(
-        name = "date",
-        build_file = _build(workspace_name, "date"),
-        repository = "HowardHinnant/date",
-        commit = "6e921e1b1d21e84a5c82416ba7ecd98e33a436d0",
-        sha256 = "484c450ea1cec479716f7cfce9a54da1867dd4043dde08e7c262b812561fe3bc",
-    )
