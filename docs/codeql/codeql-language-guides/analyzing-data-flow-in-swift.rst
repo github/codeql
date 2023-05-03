@@ -29,12 +29,12 @@ The ``Node`` class has a number of useful subclasses, such as ``ExprNode`` for e
        /**
         * Gets this node's underlying expression, if any.
         */
-       Expr asExpr() { none() }
+       Expr asExpr() { ... }
 
        /**
         * Gets this data flow node's corresponding control flow node.
         */
-       ControlFlowNode getCfgNode() { none() }
+       ControlFlowNode getCfgNode() { ... }
 
        ...
      }
@@ -96,7 +96,7 @@ This query finds the ``format`` argument passed into each call to ``String.init(
 
     import swift
 
-    from CallExpr call, MethodDecl method
+    from CallExpr call, Method method
     where
       call.getStaticTarget() = method and
       method.hasQualifiedName("String", "init(format:_:)")
@@ -110,7 +110,7 @@ So we use local data flow to find all expressions that flow into the argument:
     import swift
     import codeql.swift.dataflow.DataFlow
 
-    from CallExpr call, MethodDecl method, Expr sourceExpr, Expr sinkExpr
+    from CallExpr call, Method method, Expr sourceExpr, Expr sinkExpr
     where
       call.getStaticTarget() = method and
       method.hasQualifiedName("String", "init(format:_:)") and
@@ -247,7 +247,7 @@ The following global taint-tracking query finds places where a string literal is
 
    from DataFlow::Node sourceNode, DataFlow::Node sinkNode
    where ConstantPasswordFlow::flow(sourceNode, sinkNode)
-   select sinkNode, "The value '" + sourceNode.toString() + "' is used as a constant password."
+   select sinkNode, "The value $@ is used as a constant password.", sourceNode, sourceNode.toString()
 
 
 The following global taint-tracking query finds places where a value from a remote or local user input is used as an argument to the SQLite ``Connection.execute(_:)`` function.
@@ -267,7 +267,7 @@ The following global taint-tracking query finds places where a value from a remo
 
      predicate isSink(DataFlow::Node node) {
        exists(CallExpr call |
-         call.getStaticTarget().(MethodDecl).hasQualifiedName("Connection", "execute(_:)") and
+         call.getStaticTarget().(Method).hasQualifiedName("Connection", "execute(_:)") and
          call.getArgument(0).getExpr() = node.asExpr()
        )
      }
