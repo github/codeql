@@ -1,4 +1,4 @@
 ---
 category: majorAnalysis
 ---
-* In the intermediate representation, nonreturning calls now have the `Unreached` instruction for their containing function as their control flow successor. This should remove false positives involving such calls.
+* In the intermediate representation, handling of control flow after non-returning calls has been improved. This should remove false positives in queries that use the intermedite representation or libraries based on it, including the new data flow library.
