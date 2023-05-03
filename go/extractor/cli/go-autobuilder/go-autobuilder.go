@@ -871,7 +871,9 @@ type versionInfo struct {
 }
 
 func (v versionInfo) String() string {
-	return fmt.Sprintf("go.mod version: %s, go.mod directive found: %t, go env version: %s, go installation found: %t", v.goModVersion, v.goDirectiveFound, v.goEnvVersion, v.goInstallationFound)
+	return fmt.Sprintf(
+		"go.mod version: %s, go.mod directive found: %t, go env version: %s, go installation found: %t",
+		v.goModVersion, v.goDirectiveFound, v.goEnvVersion, v.goInstallationFound)
 }
 
 // Check if Go is installed in the environment.
