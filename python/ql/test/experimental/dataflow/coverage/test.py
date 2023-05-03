@@ -123,23 +123,23 @@ def test_nested_list_display():
 # 6.2.6. Set displays
 def test_set_display():
     x = {SOURCE}
-    SINK(x.pop()) #$ flow="SOURCE, l:-1 -> x.pop()"
+    SINK(x.pop()) #$ MISSING: flow="SOURCE, l:-1 -> x.pop()"
 
 
 def test_set_comprehension():
     x = {SOURCE for y in [NONSOURCE]}
-    SINK(x.pop()) #$ flow="SOURCE, l:-1 -> x.pop()"
+    SINK(x.pop()) #$ MISSING: flow="SOURCE, l:-1 -> x.pop()"
 
 
 def test_set_comprehension_flow():
     x = {y for y in [SOURCE]}
-    SINK(x.pop()) #$ flow="SOURCE, l:-1 -> x.pop()"
+    SINK(x.pop()) #$ MISSING: flow="SOURCE, l:-1 -> x.pop()"
 
 
 def test_set_comprehension_inflow():
     l = {SOURCE}
     x = {y for y in l}
-    SINK(x.pop()) #$ flow="SOURCE, l:-2 -> x.pop()"
+    SINK(x.pop()) #$ MISSING: flow="SOURCE, l:-2 -> x.pop()"
 
 
 def test_nested_set_display():
@@ -155,7 +155,7 @@ def test_dict_display():
 
 def test_dict_display_pop():
     x = {"s": SOURCE}
-    SINK(x.pop("s")) #$ flow="SOURCE, l:-1 -> x.pop(..)"
+    SINK(x.pop("s")) #$ MISSING: flow="SOURCE, l:-1 -> x.pop(..)"
 
 
 def test_dict_comprehension():

@@ -765,8 +765,8 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   matchReadStep(nodeFrom, c, nodeTo)
   or
-  popReadStep(nodeFrom, c, nodeTo)
-  or
+  // popReadStep(nodeFrom, c, nodeTo)
+  // or
   forReadStep(nodeFrom, c, nodeTo)
   or
   attributeReadStep(nodeFrom, c, nodeTo)
