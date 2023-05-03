@@ -1,6 +1,4 @@
-# Here we test writing to a captured variable via the `nonlocal` keyword (see `out`).
-# We also test reading one captured variable and writing the value to another (see `through`).
-
+# Here we test capturing the _value_ of a variable (by using it as the default value for a parameter)
 # All functions starting with "test_" should run and execute `print("OK")` exactly once.
 # This can be checked by running validTest.py.
 
