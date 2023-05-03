@@ -208,3 +208,16 @@ void test5(unsigned size, char *buf, unsigned anotherSize) {
     }
 }
 
+
+void *memset(void *, int, unsigned);
+
+void call_memset(void *p, unsigned size)
+{
+  memset(p, 0, size); // GOOD [FALSE POSITIVE]
+}
+
+void test_missing_call_context(unsigned char *unrelated_buffer, unsigned size) {
+  unsigned char* buffer = (unsigned char*)malloc(size);
+  call_memset(unrelated_buffer, size + 5);
+  call_memset(buffer, size);
+}

@@ -35,7 +35,7 @@ class HardcodedEncryptionKeyAdditionalTaintStep extends Unit {
 private class CryptoSwiftEncryptionKeySink extends HardcodedEncryptionKeySink {
   CryptoSwiftEncryptionKeySink() {
     // `key` arg in `init` is a sink
-    exists(NominalTypeDecl c, ConstructorDecl f, CallExpr call |
+    exists(NominalTypeDecl c, Initializer f, CallExpr call |
       c.getName() = ["AES", "HMAC", "ChaCha20", "CBCMAC", "CMAC", "Poly1305", "Blowfish", "Rabbit"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
@@ -49,7 +49,7 @@ private class CryptoSwiftEncryptionKeySink extends HardcodedEncryptionKeySink {
  */
 private class RnCryptorEncryptionKeySink extends HardcodedEncryptionKeySink {
   RnCryptorEncryptionKeySink() {
-    exists(NominalTypeDecl c, MethodDecl f, CallExpr call |
+    exists(NominalTypeDecl c, Method f, CallExpr call |
       c.getFullName() =
         [
           "RNCryptor", "RNEncryptor", "RNDecryptor", "RNCryptor.EncryptorV3",

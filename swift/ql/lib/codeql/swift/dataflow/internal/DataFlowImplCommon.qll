@@ -815,24 +815,20 @@ private module Cached {
     )
   }
 
-  private predicate store(
-    Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
-  ) {
-    exists(ContentSet cs |
-      c = cs.getAStoreContent() and storeSet(node1, cs, node2, contentType, containerType)
-    )
-  }
-
   /**
    * Holds if data can flow from `node1` to `node2` via a direct assignment to
-   * `f`.
+   * `c`.
    *
    * This includes reverse steps through reads when the result of the read has
    * been stored into, in order to handle cases like `x.f1.f2 = y`.
    */
   cached
-  predicate store(Node node1, TypedContent tc, Node node2, DataFlowType contentType) {
-    store(node1, tc.getContent(), node2, contentType, tc.getContainerType())
+  predicate store(
+    Node node1, Content c, Node node2, DataFlowType contentType, DataFlowType containerType
+  ) {
+    exists(ContentSet cs |
+      c = cs.getAStoreContent() and storeSet(node1, cs, node2, contentType, containerType)
+    )
   }
 
   /**
@@ -933,35 +929,14 @@ private module Cached {
     TReturnCtxMaybeFlowThrough(ReturnPosition pos)
 
   cached
-  newtype TTypedContentApprox =
-    MkTypedContentApprox(ContentApprox c, DataFlowType t) {
-      exists(Content cont |
-        c = getContentApprox(cont) and
-        store(_, cont, _, _, t)
-      )
-    }
-
-  cached
-  newtype TTypedContent = MkTypedContent(Content c, DataFlowType t) { store(_, c, _, _, t) }
-
-  cached
-  TypedContent getATypedContent(TypedContentApprox c) {
-    exists(ContentApprox cls, DataFlowType t, Content cont |
-      c = MkTypedContentApprox(cls, pragma[only_bind_into](t)) and
-      result = MkTypedContent(cont, pragma[only_bind_into](t)) and
-      cls = getContentApprox(cont)
-    )
-  }
-
-  cached
   newtype TAccessPathFront =
-    TFrontNil(DataFlowType t) or
-    TFrontHead(TypedContent tc)
+    TFrontNil() or
+    TFrontHead(Content c)
 
   cached
   newtype TApproxAccessPathFront =
-    TApproxFrontNil(DataFlowType t) or
-    TApproxFrontHead(TypedContentApprox tc)
+    TApproxFrontNil() or
+    TApproxFrontHead(ContentApprox c)
 
   cached
   newtype TAccessPathFrontOption =
@@ -986,8 +961,16 @@ predicate recordDataFlowCallSite(DataFlowCall call, DataFlowCallable callable) {
 /**
  * A `Node` at which a cast can occur such that the type should be checked.
  */
-class CastingNode extends Node {
+class CastingNode instanceof Node {
   CastingNode() { castingNode(this) }
+
+  string toString() { result = super.toString() }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 private predicate readStepWithTypes(
@@ -1135,8 +1118,16 @@ LocalCallContext getLocalCallContext(CallContext ctx, DataFlowCallable callable)
  * The value of a parameter at function entry, viewed as a node in a data
  * flow graph.
  */
-class ParamNode extends Node {
+class ParamNode instanceof Node {
   ParamNode() { parameterNode(this, _, _) }
+
+  string toString() { result = super.toString() }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /**
    * Holds if this node is the parameter of callable `c` at the specified
@@ -1146,8 +1137,16 @@ class ParamNode extends Node {
 }
 
 /** A data-flow node that represents a call argument. */
-class ArgNode extends Node {
+class ArgNode instanceof Node {
   ArgNode() { argumentNode(this, _, _) }
+
+  string toString() { result = super.toString() }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /** Holds if this argument occurs at the given position in the given call. */
   final predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
@@ -1159,8 +1158,16 @@ class ArgNode extends Node {
  * A node from which flow can return to the caller. This is either a regular
  * `ReturnNode` or a `PostUpdateNode` corresponding to the value of a parameter.
  */
-class ReturnNodeExt extends Node {
+class ReturnNodeExt instanceof Node {
   ReturnNodeExt() { returnNodeExt(this, _) }
+
+  string toString() { result = super.toString() }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 
   /** Gets the kind of this returned value. */
   ReturnKindExt getKind() { returnNodeExt(this, result) }
@@ -1170,8 +1177,16 @@ class ReturnNodeExt extends Node {
  * A node to which data can flow from a call. Either an ordinary out node
  * or a post-update node associated with a call argument.
  */
-class OutNodeExt extends Node {
+class OutNodeExt instanceof Node {
   OutNodeExt() { outNodeExt(this) }
+
+  string toString() { result = super.toString() }
+
+  predicate hasLocationInfo(
+    string filepath, int startline, int startcolumn, int endline, int endcolumn
+  ) {
+    super.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+  }
 }
 
 /**
@@ -1387,67 +1402,37 @@ class ReturnCtx extends TReturnCtx {
   }
 }
 
-/** An approximated `Content` tagged with the type of a containing object. */
-class TypedContentApprox extends MkTypedContentApprox {
-  private ContentApprox c;
-  private DataFlowType t;
-
-  TypedContentApprox() { this = MkTypedContentApprox(c, t) }
-
-  /** Gets a typed content approximated by this value. */
-  TypedContent getATypedContent() { result = getATypedContent(this) }
-
-  /** Gets the content. */
-  ContentApprox getContent() { result = c }
-
-  /** Gets the container type. */
-  DataFlowType getContainerType() { result = t }
-
-  /** Gets a textual representation of this approximated content. */
-  string toString() { result = c.toString() }
-}
-
 /**
  * The front of an approximated access path. This is either a head or a nil.
  */
 abstract class ApproxAccessPathFront extends TApproxAccessPathFront {
   abstract string toString();
 
-  abstract DataFlowType getType();
-
   abstract boolean toBoolNonEmpty();
 
-  TypedContentApprox getHead() { this = TApproxFrontHead(result) }
+  ContentApprox getHead() { this = TApproxFrontHead(result) }
 
   pragma[nomagic]
-  TypedContent getAHead() {
-    exists(TypedContentApprox cont |
+  Content getAHead() {
+    exists(ContentApprox cont |
       this = TApproxFrontHead(cont) and
-      result = cont.getATypedContent()
+      cont = getContentApprox(result)
     )
   }
 }
 
 class ApproxAccessPathFrontNil extends ApproxAccessPathFront, TApproxFrontNil {
-  private DataFlowType t;
-
-  ApproxAccessPathFrontNil() { this = TApproxFrontNil(t) }
-
-  override string toString() { result = ppReprType(t) }
-
-  override DataFlowType getType() { result = t }
+  override string toString() { result = "nil" }
 
   override boolean toBoolNonEmpty() { result = false }
 }
 
 class ApproxAccessPathFrontHead extends ApproxAccessPathFront, TApproxFrontHead {
-  private TypedContentApprox tc;
+  private ContentApprox c;
 
-  ApproxAccessPathFrontHead() { this = TApproxFrontHead(tc) }
+  ApproxAccessPathFrontHead() { this = TApproxFrontHead(c) }
 
-  override string toString() { result = tc.toString() }
-
-  override DataFlowType getType() { result = tc.getContainerType() }
+  override string toString() { result = c.toString() }
 
   override boolean toBoolNonEmpty() { result = true }
 }
@@ -1461,65 +1446,31 @@ class ApproxAccessPathFrontOption extends TApproxAccessPathFrontOption {
   }
 }
 
-/** A `Content` tagged with the type of a containing object. */
-class TypedContent extends MkTypedContent {
-  private Content c;
-  private DataFlowType t;
-
-  TypedContent() { this = MkTypedContent(c, t) }
-
-  /** Gets the content. */
-  Content getContent() { result = c }
-
-  /** Gets the container type. */
-  DataFlowType getContainerType() { result = t }
-
-  /** Gets a textual representation of this content. */
-  string toString() { result = c.toString() }
-
-  /**
-   * Holds if access paths with this `TypedContent` at their head always should
-   * be tracked at high precision. This disables adaptive access path precision
-   * for such access paths.
-   */
-  predicate forceHighPrecision() { forceHighPrecision(c) }
-}
-
 /**
  * The front of an access path. This is either a head or a nil.
  */
 abstract class AccessPathFront extends TAccessPathFront {
   abstract string toString();
 
-  abstract DataFlowType getType();
-
   abstract ApproxAccessPathFront toApprox();
 
-  TypedContent getHead() { this = TFrontHead(result) }
+  Content getHead() { this = TFrontHead(result) }
 }
 
 class AccessPathFrontNil extends AccessPathFront, TFrontNil {
-  private DataFlowType t;
+  override string toString() { result = "nil" }
 
-  AccessPathFrontNil() { this = TFrontNil(t) }
-
-  override string toString() { result = ppReprType(t) }
-
-  override DataFlowType getType() { result = t }
-
-  override ApproxAccessPathFront toApprox() { result = TApproxFrontNil(t) }
+  override ApproxAccessPathFront toApprox() { result = TApproxFrontNil() }
 }
 
 class AccessPathFrontHead extends AccessPathFront, TFrontHead {
-  private TypedContent tc;
+  private Content c;
 
-  AccessPathFrontHead() { this = TFrontHead(tc) }
+  AccessPathFrontHead() { this = TFrontHead(c) }
 
-  override string toString() { result = tc.toString() }
+  override string toString() { result = c.toString() }
 
-  override DataFlowType getType() { result = tc.getContainerType() }
-
-  override ApproxAccessPathFront toApprox() { result.getAHead() = tc }
+  override ApproxAccessPathFront toApprox() { result.getAHead() = c }
 }
 
 /** An optional access path front. */

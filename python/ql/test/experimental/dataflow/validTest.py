@@ -72,6 +72,7 @@ if __name__ == "__main__":
     check_tests_valid("variable-capture.collections")
     check_tests_valid("module-initialization.multiphase")
     check_tests_valid("fieldflow.test")
+    check_tests_valid("fieldflow.test_dict")
     check_tests_valid_after_version("match.test", (3, 10))
     check_tests_valid("exceptions.test")
     check_tests_valid_after_version("exceptions.test_group", (3, 11))
