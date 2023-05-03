@@ -274,38 +274,39 @@ def main(pr_number: int):
     for lang_test_failure in lang_test_failures:
         job_failure_urls.add(lang_test_failure.target_url)
 
-    assert len(job_failure_urls) == 1, f"Multiple job failure URLs: {job_failure_urls}"
-    job_failure_url = job_failure_urls.pop()
+    if job_failure_urls:
+        assert len(job_failure_urls) == 1, f"Multiple job failure URLs: {job_failure_urls}"
+        job_failure_url = job_failure_urls.pop()
 
-    # fixup URL. On the status, the target URL is the run, and it's really hard to
-    # change this to link to the full `/runs/<run_id>/jobs/<numeric_job_id>` URL, since
-    # the `<numeric_job_id>` is not available in a context: https://github.com/community/community/discussions/40291
-    m = re.fullmatch(r"^https://github\.com/([^/]+/[^/]+)/actions/runs/(\d+)$", job_failure_url)
-    nwo = m.group(1)
-    run_id = m.group(2)
-    jobs_url = f"https://api.github.com/repos/{nwo}/actions/runs/{run_id}/jobs"
-    LOGGER.info(f"Fixing up target url from looking at {jobs_url}")
-    jobs = json.loads(subprocess.check_output(["gh", "api", "--paginate", jobs_url]).decode("utf-8"))
-    for lang_test_failure in lang_test_failures:
-        workflow_translation = {
-            "codeql-coding-standards Unit Tests Linux": "Start codeql-coding-standards"
-        }
-        expected_workflow_name = workflow_translation.get(lang_test_failure.context, lang_test_failure.context)
+        # fixup URL. On the status, the target URL is the run, and it's really hard to
+        # change this to link to the full `/runs/<run_id>/jobs/<numeric_job_id>` URL, since
+        # the `<numeric_job_id>` is not available in a context: https://github.com/community/community/discussions/40291
+        m = re.fullmatch(r"^https://github\.com/([^/]+/[^/]+)/actions/runs/(\d+)$", job_failure_url)
+        nwo = m.group(1)
+        run_id = m.group(2)
+        jobs_url = f"https://api.github.com/repos/{nwo}/actions/runs/{run_id}/jobs"
+        LOGGER.info(f"Fixing up target url from looking at {jobs_url}")
+        jobs = json.loads(subprocess.check_output(["gh", "api", "--paginate", jobs_url]).decode("utf-8"))
+        for lang_test_failure in lang_test_failures:
+            workflow_translation = {
+                "codeql-coding-standards Unit Tests Linux": "Start codeql-coding-standards"
+            }
+            expected_workflow_name = workflow_translation.get(lang_test_failure.context, lang_test_failure.context)
 
-        for job in jobs["jobs"]:
-            api_name: str = job["name"]
-            if " / " not in api_name:
-                continue
+            for job in jobs["jobs"]:
+                api_name: str = job["name"]
+                if " / " not in api_name:
+                    continue
 
-            workflow_name, job_name = api_name.split(" / ")
-            # The job names we're looking for looks like "Python2 Language Tests / Python2 Language Tests" or "Java Language Tests / Java Language Tests Linux"
-            # for "Java Integration Tests Linux / Java Integration tests Linux" we need to ignore case :|
-            if workflow_name == expected_workflow_name and job_name.lower().startswith(lang_test_failure.context.lower()):
-                lang_test_failure.job_id = job["id"]
-                break
-        else:
-            LOGGER.error(f"Could not find job for {lang_test_failure.context!r}")
-            sys.exit(1)
+                workflow_name, job_name = api_name.split(" / ")
+                # The job names we're looking for looks like "Python2 Language Tests / Python2 Language Tests" or "Java Language Tests / Java Language Tests Linux"
+                # for "Java Integration Tests Linux / Java Integration tests Linux" we need to ignore case :|
+                if workflow_name == expected_workflow_name and job_name.lower().startswith(lang_test_failure.context.lower()):
+                    lang_test_failure.job_id = job["id"]
+                    break
+            else:
+                LOGGER.error(f"Could not find job for {lang_test_failure.context!r}")
+                sys.exit(1)
 
     # Ruby/Swift/C#/Go use github actions, and not internal CI. These are not reported
     # from the /statuses API, but from the /check-suites API
