@@ -75,7 +75,7 @@ class MemoryLocation extends TMemoryLocation {
   final predicate canReuseSsa() { canReuseSsaForVariable(var) }
 
   /** DEPRECATED: Alias for canReuseSsa */
-  deprecated predicate canReuseSSA() { canReuseSsa() }
+  deprecated predicate canReuseSSA() { this.canReuseSsa() }
 }
 
 predicate canReuseSsaForOldResult(Instruction instr) { none() }

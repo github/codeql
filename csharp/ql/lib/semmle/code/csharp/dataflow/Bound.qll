@@ -23,7 +23,7 @@ abstract class Bound extends TBound {
   abstract Expr getExpr(int delta);
 
   /** Gets an expression that equals this bound. */
-  Expr getExpr() { result = getExpr(0) }
+  Expr getExpr() { result = this.getExpr(0) }
 
   /**
    * Holds if this element is at the specified location.
@@ -54,12 +54,12 @@ class SsaBound extends Bound, TBoundSsa {
   /** Gets the SSA variable that equals this bound. */
   SsaVariable getSsa() { this = TBoundSsa(result) }
 
-  override string toString() { result = getSsa().toString() }
+  override string toString() { result = this.getSsa().toString() }
 
-  override Expr getExpr(int delta) { result = getSsa().getAUse() and delta = 0 }
+  override Expr getExpr(int delta) { result = this.getSsa().getAUse() and delta = 0 }
 
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    getSsa().getLocation().hasLocationInfo(path, sl, sc, el, ec)
+    this.getSsa().getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
 }
 
@@ -68,11 +68,11 @@ class SsaBound extends Bound, TBoundSsa {
  * interesting, but isn't otherwise represented by the value of an SSA variable.
  */
 class ExprBound extends Bound, TBoundExpr {
-  override string toString() { result = getExpr().toString() }
+  override string toString() { result = this.getExpr().toString() }
 
   override Expr getExpr(int delta) { this = TBoundExpr(result) and delta = 0 }
 
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    getExpr().getLocation().hasLocationInfo(path, sl, sc, el, ec)
+    this.getExpr().getLocation().hasLocationInfo(path, sl, sc, el, ec)
   }
 }

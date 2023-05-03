@@ -238,5 +238,7 @@ abstract deprecated class StructuralComparisonConfiguration extends string {
    * flagged as candidates for structural equality, that is,
    * `candidate(x, y)` must hold.
    */
-  predicate same(ControlFlowElement x, ControlFlowElement y) { candidate(x, y) and sameGvn(x, y) }
+  predicate same(ControlFlowElement x, ControlFlowElement y) {
+    this.candidate(x, y) and sameGvn(x, y)
+  }
 }
