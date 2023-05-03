@@ -269,8 +269,6 @@ func getDepMode() DependencyInstallerMode {
 
 // Tries to open `go.mod` and read a go directive, returning the version and whether it was found.
 func tryReadGoDirective(depMode DependencyInstallerMode) (string, bool) {
-	version := ""
-	found := false
 	if depMode == GoGetWithModules {
 		versionRe := regexp.MustCompile(`(?m)^go[ \t\r]+([0-9]+\.[0-9]+)$`)
 		goMod, err := os.ReadFile("go.mod")
@@ -279,14 +277,13 @@ func tryReadGoDirective(depMode DependencyInstallerMode) (string, bool) {
 		} else {
 			matches := versionRe.FindSubmatch(goMod)
 			if matches != nil {
-				found = true
 				if len(matches) > 1 {
-					version = string(matches[1])
+					return string(matches[1]), true
 				}
 			}
 		}
 	}
-	return version, found
+	return "", false
 }
 
 // Returns the appropriate ModMode for the current project
