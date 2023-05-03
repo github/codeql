@@ -21,33 +21,37 @@ import (
 
 func usage() {
 	fmt.Fprintf(os.Stderr,
-		`When '--identify-environment' is passed then %s produces a file which specifies what Go
-version is needed. The location of this file is controlled by the environment variable
-CODEQL_EXTRACTOR_ENVIRONMENT_JSON, or defaults to "environment.json" if that is not set.
+		`%s is a wrapper script that installs dependencies and calls the extractor
 
-When no command line arguments are passed, %[1]s is a wrapper script that installs dependencies and
-calls the extractor.
+Options:
+  --identify-environment
+    Produce an environment file specifying which Go version should be installed in the environment
+	so that autobuilding will be successful. The location of this file is controlled by the
+    environment variable CODEQL_EXTRACTOR_ENVIRONMENT_JSON, or defaults to 'environment.json' if
+	that is not set.
 
-When LGTM_SRC is not set, the script installs dependencies as described below, and then invokes the
-extractor in the working directory.
+Build behavior:
 
-If LGTM_SRC is set, it checks for the presence of the files 'go.mod', 'Gopkg.toml', and
-'glide.yaml' to determine how to install dependencies: if a 'Gopkg.toml' file is present, it uses
-'dep ensure', if there is a 'glide.yaml' it uses 'glide install', and otherwise 'go get'.
-Additionally, unless a 'go.mod' file is detected, it sets up a temporary GOPATH and moves all
-source files into a folder corresponding to the package's import path before installing
-dependencies.
+    When LGTM_SRC is not set, the script installs dependencies as described below, and then invokes the
+    extractor in the working directory.
 
-This behavior can be further customized using environment variables: setting LGTM_INDEX_NEED_GOPATH
-to 'false' disables the GOPATH set-up, CODEQL_EXTRACTOR_GO_BUILD_COMMAND (or alternatively
-LGTM_INDEX_BUILD_COMMAND), can be set to a newline-separated list of commands to run in order to
-install dependencies, and LGTM_INDEX_IMPORT_PATH can be used to override the package import path,
-which is otherwise inferred from the SEMMLE_REPO_URL or GITHUB_REPOSITORY environment variables.
+    If LGTM_SRC is set, it checks for the presence of the files 'go.mod', 'Gopkg.toml', and
+    'glide.yaml' to determine how to install dependencies: if a 'Gopkg.toml' file is present, it uses
+    'dep ensure', if there is a 'glide.yaml' it uses 'glide install', and otherwise 'go get'.
+    Additionally, unless a 'go.mod' file is detected, it sets up a temporary GOPATH and moves all
+    source files into a folder corresponding to the package's import path before installing
+    dependencies.
 
-In resource-constrained environments, the environment variable CODEQL_EXTRACTOR_GO_MAX_GOROUTINES
-(or its legacy alias SEMMLE_MAX_GOROUTINES) can be used to limit the number of parallel goroutines
-started by the extractor, which reduces CPU and memory requirements. The default value for this
-variable is 32.
+    This behavior can be further customized using environment variables: setting LGTM_INDEX_NEED_GOPATH
+    to 'false' disables the GOPATH set-up, CODEQL_EXTRACTOR_GO_BUILD_COMMAND (or alternatively
+    LGTM_INDEX_BUILD_COMMAND), can be set to a newline-separated list of commands to run in order to
+    install dependencies, and LGTM_INDEX_IMPORT_PATH can be used to override the package import path,
+    which is otherwise inferred from the SEMMLE_REPO_URL or GITHUB_REPOSITORY environment variables.    
+
+    In resource-constrained environments, the environment variable CODEQL_EXTRACTOR_GO_MAX_GOROUTINES
+    (or its legacy alias SEMMLE_MAX_GOROUTINES) can be used to limit the number of parallel goroutines
+    started by the extractor, which reduces CPU and memory requirements. The default value for this
+    variable is 32.
 `,
 		os.Args[0])
 	fmt.Fprintf(os.Stderr, "Usage:\n\n  %s\n", os.Args[0])
