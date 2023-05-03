@@ -140,10 +140,12 @@ class LocalSourceNode extends Node {
 /**
  * A LocalSourceNode that is not a ModuleVariableNode
  * This class provides a positive formulation of that in its charpred.
+ *
+ * Aka FutureLocalSourceNode (see FutureWork below), but until the future is here...
  */
-class LocalSourceNodeNotModule extends LocalSourceNode {
+class LocalSourceNodeNotModuleVariableNode extends LocalSourceNode {
   cached
-  LocalSourceNodeNotModule() {
+  LocalSourceNodeNotModuleVariableNode() {
     this instanceof ExprNode
     or
     this.asVar() instanceof ScopeEntryDefinition
