@@ -4023,6 +4023,29 @@ private module StdlibPrivate {
       preservesValue = true
     }
   }
+
+  /** A flow summary for `dict.pop` */
+  class DictPopSummary extends SummarizedCallable {
+    string key;
+
+    DictPopSummary() {
+      this = "dict.pop(" + key + ")" and
+      exists(DataFlow::DictionaryElementContent dc | key = dc.getKey())
+    }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).getMethodName() = "pop" and
+      result.getArg(0).getALocalSource().asExpr().(StrConst).getText() = key
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self].DictionaryElement[" + key + "]" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------

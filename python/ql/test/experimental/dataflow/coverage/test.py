@@ -155,7 +155,7 @@ def test_dict_display():
 
 def test_dict_display_pop():
     x = {"s": SOURCE}
-    SINK(x.pop("s")) #$ MISSING: flow="SOURCE, l:-1 -> x.pop(..)"
+    SINK(x.pop("s")) #$ flow="SOURCE, l:-1 -> x.pop(..)"
 
 
 def test_dict_comprehension():
