@@ -196,7 +196,7 @@ func EmitRelativeImportPaths() {
 
 func EmitUnsupportedVersionGoMod(msg string) {
 	emitDiagnostic(
-		"go/identify-environment/unsupported-version-in-go-mod",
+		"go/autobuilder/env-unsupported-version-in-go-mod",
 		"Unsupported Go version in `go.mod` file",
 		msg,
 		severityError,
@@ -207,7 +207,7 @@ func EmitUnsupportedVersionGoMod(msg string) {
 
 func EmitUnsupportedVersionEnvironment(msg string) {
 	emitDiagnostic(
-		"go/identify-environment/unsupported-version-in-environment",
+		"go/autobuilder/env-unsupported-version-in-environment",
 		"Unsupported Go version in environment",
 		msg,
 		severityError,
@@ -218,7 +218,7 @@ func EmitUnsupportedVersionEnvironment(msg string) {
 
 func EmitNoGoModAndNoGoEnv(msg string) {
 	emitDiagnostic(
-		"go/identify-environment/no-go-mod-and-no-go-env",
+		"go/autobuilder/env-no-go-mod-and-no-go-env",
 		"No `go.mod` file found and no Go version in environment",
 		msg,
 		severityNote,
@@ -229,7 +229,7 @@ func EmitNoGoModAndNoGoEnv(msg string) {
 
 func EmitNoGoEnv(msg string) {
 	emitDiagnostic(
-		"go/identify-environment/no-go-mod-and-no-go-env",
+		"go/autobuilder/env-no-go-env",
 		"No Go version in environment",
 		msg,
 		severityNote,
@@ -240,7 +240,7 @@ func EmitNoGoEnv(msg string) {
 
 func EmitNoGoMod(msg string) {
 	emitDiagnostic(
-		"go/identify-environment/no-go-mod",
+		"go/autobuilder/env-no-go-mod",
 		"No `go.mod` file found",
 		msg,
 		severityNote,
@@ -251,7 +251,7 @@ func EmitNoGoMod(msg string) {
 
 func EmitVersionGoModHigherVersionEnvironment(msg string) {
 	emitDiagnostic(
-		"go/identify-environment/version-go-mod-higher-than-go-env",
+		"go/autobuilder/env-version-go-mod-higher-than-go-env",
 		"The Go version in `go.mod` file is higher than the Go version in environment",
 		msg,
 		severityWarning,
@@ -262,8 +262,8 @@ func EmitVersionGoModHigherVersionEnvironment(msg string) {
 
 func EmitVersionGoModNotHigherVersionEnvironment(msg string) {
 	emitDiagnostic(
-		"go/identify-environment/version-go-mod-not-higher-than-go-env",
-		"The Go version in `go.mod` file is not higher than the Go version in environment",
+		"go/autobuilder/env-version-go-mod-lower-than-or-equal-to-go-env",
+		"The Go version in `go.mod` file is lower than or equal to the Go version in environment",
 		msg,
 		severityNote,
 		telemetryOnly,
