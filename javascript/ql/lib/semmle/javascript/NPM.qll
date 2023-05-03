@@ -19,14 +19,20 @@ class PackageJson extends JsonObject {
   string getPackageName() {
     result = this.getPropStringValue("name")
     or
-    exists(PackageJson parentPkg, Container currentDir, Container parentDir |
+    exists(PackageJson parentPkg, Container currentDir, Container parentDir, string parentPkgName |
       currentDir = this.getJsonFile().getParentContainer() and
       parentDir = parentPkg.getJsonFile().getParentContainer() and
-      parentDir.getParentContainer+().getBaseName() = "node_modules" and
+      parentPkgName = parentPkg.getPropStringValue("name") and
+      (
+        parentDir.getParentContainer().getBaseName() = "node_modules"
+        or
+        // Scoped package is located in node_modules/@scope/pkgname
+        parentDir.getParentContainer().getParentContainer().getBaseName() = "node_modules" and
+        exists(parentPkgName.indexOf("/"))
+      ) and
       parentDir.getAChildContainer+() = currentDir and
       result =
-        parentPkg.getPropStringValue("name") +
-          currentDir.getAbsolutePath().suffix(parentDir.getAbsolutePath().length())
+        parentPkgName + currentDir.getAbsolutePath().suffix(parentDir.getAbsolutePath().length())
     )
   }
 
