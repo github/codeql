@@ -3978,6 +3978,51 @@ private module StdlibPrivate {
       preservesValue = true
     }
   }
+
+  // ---------------------------------------------------------------------------
+  // Flow summaries for container methods
+  // ---------------------------------------------------------------------------
+  /** A flow summary for `copy`. */
+  class CopySummary extends SummarizedCallable {
+    CopySummary() { this = "collection.copy" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).getMethodName() = "copy"
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * A flow summary for `pop` either for list or set.
+   * This ignores the index if given, since content is
+   * imprecise anyway.
+   */
+  class PopSummary extends SummarizedCallable {
+    PopSummary() { this = "collection.pop" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).getMethodName() = "pop"
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[self].ListElement" and
+      output = "ReturnValue" and
+      preservesValue = true
+      or
+      input = "Argument[self].SetElement" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
