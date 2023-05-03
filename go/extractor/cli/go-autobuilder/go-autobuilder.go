@@ -281,7 +281,7 @@ func tryReadGoDirective(depMode DependencyInstallerMode) (string, bool) {
 			if matches != nil {
 				found = true
 				if len(matches) > 1 {
-					version := string(matches[1])
+					version = string(matches[1])
 					semverVersion := "v" + version
 					if semver.Compare(semverVersion, getEnvGoSemVer()) >= 0 {
 						diagnostics.EmitNewerGoVersionNeeded()
