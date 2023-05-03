@@ -1,4 +1,14 @@
 nodes
+| actions.js:3:6:3:16 | process.env |
+| actions.js:3:6:3:16 | process.env |
+| actions.js:3:6:3:29 | process ... _DATA'] |
+| actions.js:3:6:3:29 | process ... _DATA'] |
+| actions.js:6:15:6:15 | e |
+| actions.js:7:10:7:10 | e |
+| actions.js:7:10:7:23 | e['TEST_DATA'] |
+| actions.js:7:10:7:23 | e['TEST_DATA'] |
+| actions.js:11:6:11:16 | process.env |
+| actions.js:11:6:11:16 | process.env |
 | command-line-parameter-command-injection.js:4:10:4:21 | process.argv |
 | command-line-parameter-command-injection.js:4:10:4:21 | process.argv |
 | command-line-parameter-command-injection.js:4:10:4:21 | process.argv |
@@ -212,6 +222,15 @@ nodes
 | command-line-parameter-command-injection.js:146:22:146:38 | program.pizzaType |
 | command-line-parameter-command-injection.js:146:22:146:38 | program.pizzaType |
 edges
+| actions.js:3:6:3:16 | process.env | actions.js:3:6:3:29 | process ... _DATA'] |
+| actions.js:3:6:3:16 | process.env | actions.js:3:6:3:29 | process ... _DATA'] |
+| actions.js:3:6:3:16 | process.env | actions.js:3:6:3:29 | process ... _DATA'] |
+| actions.js:3:6:3:16 | process.env | actions.js:3:6:3:29 | process ... _DATA'] |
+| actions.js:6:15:6:15 | e | actions.js:7:10:7:10 | e |
+| actions.js:7:10:7:10 | e | actions.js:7:10:7:23 | e['TEST_DATA'] |
+| actions.js:7:10:7:10 | e | actions.js:7:10:7:23 | e['TEST_DATA'] |
+| actions.js:11:6:11:16 | process.env | actions.js:6:15:6:15 | e |
+| actions.js:11:6:11:16 | process.env | actions.js:6:15:6:15 | e |
 | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv |
 | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line-parameter-command-injection.js:8:22:8:36 | process.argv[2] |
 | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line-parameter-command-injection.js:8:22:8:36 | process.argv[2] |
@@ -400,6 +419,8 @@ edges
 | command-line-parameter-command-injection.js:146:22:146:38 | program.pizzaType | command-line-parameter-command-injection.js:146:10:146:38 | "cmd.sh ... zzaType |
 | command-line-parameter-command-injection.js:146:22:146:38 | program.pizzaType | command-line-parameter-command-injection.js:146:10:146:38 | "cmd.sh ... zzaType |
 #select
+| actions.js:3:6:3:29 | process ... _DATA'] | actions.js:3:6:3:16 | process.env | actions.js:3:6:3:29 | process ... _DATA'] | This command depends on an unsanitized $@. | actions.js:3:6:3:16 | process.env | environment variable |
+| actions.js:7:10:7:23 | e['TEST_DATA'] | actions.js:11:6:11:16 | process.env | actions.js:7:10:7:23 | e['TEST_DATA'] | This command depends on an unsanitized $@. | actions.js:11:6:11:16 | process.env | environment variable |
 | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:4:10:4:21 | process.argv | command-line argument |
 | command-line-parameter-command-injection.js:8:10:8:36 | "cmd.sh ... argv[2] | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line-parameter-command-injection.js:8:10:8:36 | "cmd.sh ... argv[2] | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:8:22:8:33 | process.argv | command-line argument |
 | command-line-parameter-command-injection.js:11:14:11:20 | args[0] | command-line-parameter-command-injection.js:10:13:10:24 | process.argv | command-line-parameter-command-injection.js:11:14:11:20 | args[0] | This command depends on an unsanitized $@. | command-line-parameter-command-injection.js:10:13:10:24 | process.argv | command-line argument |
