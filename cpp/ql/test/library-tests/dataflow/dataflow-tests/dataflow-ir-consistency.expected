@@ -59,6 +59,8 @@ identityLocalStep
 | BarrierGuard.cpp:65:22:65:23 | p2 indirection | Node steps to itself |
 | BarrierGuard.cpp:66:10:66:11 | p1 | Node steps to itself |
 | BarrierGuard.cpp:66:10:66:11 | p1 indirection | Node steps to itself |
+| BarrierGuard.cpp:76:10:76:12 | buf | Node steps to itself |
+| BarrierGuard.cpp:76:10:76:12 | buf indirection | Node steps to itself |
 | clang.cpp:8:27:8:28 | this | Node steps to itself |
 | clang.cpp:8:27:8:28 | this indirection | Node steps to itself |
 | clang.cpp:20:8:20:19 | sourceArray1 | Node steps to itself |
