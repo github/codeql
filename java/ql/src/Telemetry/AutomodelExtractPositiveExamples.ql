@@ -26,7 +26,7 @@ where
         // Extract the needed metadata for this endpoint.
         any(string metadata | CharacteristicsImpl::hasMetadata(sink, metadata))
   )
-select sink, message + "\nrelated locations: $@, $@",
+select sink, message + "\nrelated locations: $@, $@.",
   CharacteristicsImpl::getRelatedLocationOrCandidate(sink, "Callable-JavaDoc"),
   "Callable-JavaDoc", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(sink, "Class-JavaDoc"), "Class-JavaDoc" //
