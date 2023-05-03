@@ -221,11 +221,18 @@ def get_log_content(status: GithubStatus) -> str:
     return content
 
 
-def main(pr_number: int):
-    LOGGER.info(f"Getting status URL for codeql PR #{pr_number}")
-    github_sha = subprocess.check_output(
-        ["gh", "api", f"repos/github/codeql/pulls/{pr_number}", "--jq", ".head.sha"]
-    ).decode("utf-8").strip()
+def main(pr_number: Optional[int], sha_override: Optional[str] = None):
+    if not pr_number and not sha_override:
+        raise Exception("Must specify either a PR number or a SHA")
+
+    if sha_override:
+        github_sha = sha_override
+    else:
+        LOGGER.info(f"Getting status URL for codeql PR #{pr_number}")
+        github_sha = subprocess.check_output(
+            ["gh", "api", f"repos/github/codeql/pulls/{pr_number}", "--jq", ".head.sha"]
+        ).decode("utf-8").strip()
+
     local_sha = subprocess.check_output(
         ["git", "rev-parse", "HEAD"]
     ).decode("utf-8").strip()
@@ -411,15 +418,22 @@ def main(pr_number: int):
     if semmle_code_changed:
         print("Expected output in semmle-code changed!")
 
-def get_pr_number() -> int:
+
+def call_main():
+    pr_number = None
+    override_sha = None
     if len(sys.argv) < 2:
         pr_number_response = subprocess.check_output([
             "gh", "pr", "view", "--json", "number"
         ]).decode("utf-8")
 
-        return json.loads(pr_number_response)["number"]
+        pr_number = json.loads(pr_number_response)["number"]
     else:
-        return int(sys.argv[1])
+        if len(sys.argv[1]) > 10:
+            override_sha = sys.argv[1]
+        else:
+            pr_number = int(sys.argv[1])
+    main(pr_number, override_sha)
 
 
 if __name__ == "__main__":
@@ -443,4 +457,4 @@ if __name__ == "__main__":
         sys.exit(1)
 
     os.chdir(CODEQL_REPO_DIR)
-    main(get_pr_number())
+    call_main()
