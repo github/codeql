@@ -22,7 +22,6 @@ extensions:
       - ["java.sql", "Statement", True, "getResultSet", "()", "", "ReturnValue", "sql", "manual"]
       - ["java.sql", "Statement", True, "getGeneratedKeys", "()", "", "ReturnValue", "sql", "manual"]
       - ["java.sql", "Statement", True, "getConnection", "()", "", "ReturnValue", "sql", "manual"]
-      - ["java.sql", "ResultSet", True, "getInt", "(int)", "", "Argument[0]", "sql", "manual"]
 
 
   # Create a graph of parent-child relationships between threat models and their kinds
