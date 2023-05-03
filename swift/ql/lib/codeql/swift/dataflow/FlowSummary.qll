@@ -10,7 +10,7 @@ class ArgumentPosition = DataFlowDispatch::ArgumentPosition;
 
 // import all instances below
 private module Summaries {
-  /* TODO */
+  private import codeql.swift.frameworks.Frameworks
 }
 
 class SummaryComponent = Impl::Public::SummaryComponent;
