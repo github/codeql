@@ -37,15 +37,34 @@ private API::Node taintSource() {
   result = commitObj().getMember("message")
   or
   result = commitObj().getMember(["author", "committer"]).getMember(["name", "email"])
-  or
-  result =
-    API::moduleImport("@actions/core").getMember(["getInput", "getMultilineInput"]).getReturn()
 }
 
-private class GitHubActionsSource extends RemoteFlowSource {
-  GitHubActionsSource() { this = taintSource().asSource() }
+/**
+ * A source of taint originating from the context.
+ */
+private class GitHubActionsContextSource extends RemoteFlowSource {
+  GitHubActionsContextSource() { this = taintSource().asSource() }
 
-  override string getSourceType() { result = "GitHub Actions input" }
+  override string getSourceType() { result = "GitHub Actions context" }
+}
+
+/**
+ * A source of taint originating from user input.
+ *
+ * At the momemnt this is treated as a remote flow source, although it is not
+ * always possible for an attacker to control this. In the future we might classify
+ * this differently.
+ */
+private class GitHubActionsInputSource extends RemoteFlowSource {
+  GitHubActionsInputSource() {
+    this =
+      API::moduleImport("@actions/core")
+          .getMember(["getInput", "getMultilineInput"])
+          .getReturn()
+          .asSource()
+  }
+
+  override string getSourceType() { result = "GitHub Actions user input" }
 }
 
 private class ExecActionsCall extends SystemCommandExecution, DataFlow::CallNode {
