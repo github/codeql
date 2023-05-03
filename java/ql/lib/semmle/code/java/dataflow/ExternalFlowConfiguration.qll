@@ -77,8 +77,7 @@ private class Kind extends string {
  * Gets the related source model kind(s) under the specified threat model.
  */
 string relatedSourceModel(Kind kind) {
-  // Use the kinds provided by the query if the standard threat model is enabled or if no threat models are provided.
-  (supportedThreatModel("standard") or not supportedThreatModel(_)) and
+  // Use the kinds provided by the query
   result = kind
   or
   // Use all kinds regardless of the query.
