@@ -23,4 +23,4 @@ module ConstantPasswordFlow = TaintTracking::Global<ConstantPasswordConfig>;
 
 from DataFlow::Node sourceNode, DataFlow::Node sinkNode
 where ConstantPasswordFlow::flow(sourceNode, sinkNode)
-select sinkNode, "The value '" + sourceNode.toString() + "' is used as a constant password."
+select sinkNode, "The value $@ is used as a constant password.", sourceNode, sourceNode.toString()
