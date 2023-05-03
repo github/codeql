@@ -4074,6 +4074,26 @@ private module StdlibPrivate {
       preservesValue = true
     }
   }
+
+  /** A flow summary for `dict.popitem` */
+  class DictPopitemSummary extends SummarizedCallable {
+    DictPopitemSummary() { this = "dict.popitem" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).getMethodName() = "popitem"
+    }
+
+    override DataFlow::ArgumentNode getACallback() { none() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
+        input = "Argument[self].DictionaryElement[" + key + "]" and
+        output = "ReturnValue.TupleElement[1]" and
+        preservesValue = true
+        // TODO: put `key` into "ReturnValue.TupleElement[0]"
+      )
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------
