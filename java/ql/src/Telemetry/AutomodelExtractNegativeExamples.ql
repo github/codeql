@@ -8,10 +8,13 @@
  * @tags internal automodel extract examples negative
  */
 
-import AutomodelEndpointCharacteristics
-import AutomodelEndpointTypes
+private import AutomodelFrameworkModeCharacteristics
+private import AutomodelEndpointTypes
 
-from Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string message
+from
+  Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string message,
+  MetadataExtractor meta, string package, string type, boolean subtypes, string name,
+  string signature, int input
 where
   characteristic.appliesToEndpoint(endpoint) and
   confidence >= SharedCharacteristics::highConfidence() and
@@ -19,6 +22,7 @@ where
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
   // certain about in the prompt.
   not erroneousEndpoints(endpoint, _, _, _, _, false) and
+  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input) and
   // It's valid for a node to satisfy the logic for both `isSink` and `isSanitizer`, but in that case it will be
   // treated by the actual query as a sanitizer, since the final logic is something like
   // `isSink(n) and not isSanitizer(n)`. We don't want to include such nodes as negative examples in the prompt, because
@@ -29,11 +33,11 @@ where
     confidence2 >= SharedCharacteristics::maximalConfidence() and
     characteristic2.hasImplications(positiveType, true, confidence2)
   ) and
-  message =
-    characteristic + "\n" +
-      // Extract the needed metadata for this endpoint.
-      any(string metadata | CharacteristicsImpl::hasMetadata(endpoint, metadata))
-select endpoint, message + "\nrelated locations: $@, $@.",
+  message = characteristic
+select endpoint,
+  message + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, "Callable-JavaDoc"),
-  "Callable-JavaDoc", //
-  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, "Class-JavaDoc"), "Class-JavaDoc" //
+  "Callable-JavaDoc", CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, "Class-JavaDoc"),
+  "Class-JavaDoc", //
+  package, "package", type, "type", subtypes.toString(), "subtypes", name, "name", signature,
+  "signature", input.toString(), "input" //

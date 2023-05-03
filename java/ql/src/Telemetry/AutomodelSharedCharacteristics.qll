@@ -55,19 +55,6 @@ signature module CandidateSig {
    */
   predicate isNeutral(Endpoint e);
 
-  /**
-   * Holds if `e` has the given metadata.
-   *
-   * This is a helper function to extract and export needed information about each endpoint in the sink candidate query
-   * as well as the queries that extract positive and negative examples for the prompt / training set. The metadata is
-   * extracted as a string in the format of a Python dictionary, eg.:
-   *
-   *     `{'Package': 'com.foo.util', 'Type': 'HelperClass', ... }`.
-   *
-   * The meta data will be passed on to the machine learning code by the extraction queries.
-   */
-  predicate hasMetadata(Endpoint e, string metadata);
-
   RelatedLocation getRelatedLocation(Endpoint e, string name);
 }
 
@@ -106,8 +93,6 @@ module SharedCharacteristics<CandidateSig Candidate> {
     not sinkType instanceof Candidate::NegativeEndpointType and
     not exists(getAReasonSinkExcluded(candidateSink, sinkType))
   }
-
-  predicate hasMetadata = Candidate::hasMetadata/2;
 
   /**
    * If it exists, gets a related location for a given endpoint or candidate.

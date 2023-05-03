@@ -12,9 +12,11 @@
  * @tags internal automodel extract candidates
  */
 
-import AutomodelEndpointCharacteristics
+private import AutomodelFrameworkModeCharacteristics
 
-from Endpoint endpoint, string message
+from
+  Endpoint endpoint, string message, MetadataExtractor meta, string package, string type,
+  boolean subtypes, string name, string signature, int input
 where
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
@@ -25,18 +27,20 @@ where
   // overlap between our detected sinks and the pre-existing modeling. We assume that, if a sink has already been
   // modeled in a MaD model, then it doesn't belong to any additional sink types, and we don't need to reexamine it.
   not CharacteristicsImpl::isSink(endpoint, _) and
+  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input) and
   // The message is the concatenation of all sink types for which this endpoint is known neither to be a sink nor to be
   // a non-sink, and we surface only endpoints that have at least one such sink type.
   message =
     strictconcat(AutomodelEndpointTypes::SinkType sinkType |
-        not CharacteristicsImpl::isKnownSink(endpoint, sinkType) and
-        CharacteristicsImpl::isSinkCandidate(endpoint, sinkType)
-      |
-        sinkType + ", "
-      ) + "\n" +
-      // Extract the needed metadata for this endpoint.
-      any(string metadata | CharacteristicsImpl::hasMetadata(endpoint, metadata))
-select endpoint, message + "\nrelated locations: $@, $@.", //
+      not CharacteristicsImpl::isKnownSink(endpoint, sinkType) and
+      CharacteristicsImpl::isSinkCandidate(endpoint, sinkType)
+    |
+      sinkType + ", "
+    )
+select endpoint,
+  message + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, "Callable-JavaDoc"),
-  "Callable-JavaDoc", //
-  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, "Class-JavaDoc"), "Class-JavaDoc" //
+  "Callable-JavaDoc", CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, "Class-JavaDoc"),
+  "Class-JavaDoc", //
+  package, "package", type, "type", subtypes.toString(), "subtypes", name, "name", signature,
+  "signature", input.toString(), "input" //

@@ -17,6 +17,22 @@ private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclus
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
+Callable getCallable(DataFlow::ParameterNode e) { result = e.getEnclosingCallable() }
+
+/**
+ * A meta data extractor. Any Java extraction mode needs to implement exactly
+ * one instance of this class.
+ */
+abstract class MetadataExtractor extends string {
+  bindingset[this]
+  MetadataExtractor() { any() }
+
+  abstract predicate hasMetadata(
+    DataFlow::ParameterNode e, string package, string type, boolean subtypes, string name,
+    string signature, int input
+  );
+}
+
 module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   class Endpoint = DataFlow::ParameterNode;
 
@@ -87,26 +103,6 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
     exists(int paramIdx | e.isParameterOf(_, paramIdx) | input = "Argument[" + paramIdx + "]")
   }
 
-  predicate hasMetadata(Endpoint e, string metadata) {
-    exists(
-      string package, string type, boolean subtypes, string name, string signature, int input,
-      boolean isPublic, boolean isFinal, boolean isStatic
-    |
-      hasMetadata(e, package, type, name, signature, input, isFinal, isStatic, isPublic) and
-      (if isFinal = true or isStatic = true then subtypes = false else subtypes = true) and
-      metadata =
-        "{" //
-          + "'Package': '" + package //
-          + "', 'Type': '" + type //
-          + "', 'Subtypes': " + subtypes //
-          + ", 'Name': '" + name //
-          + ", 'ParamName': '" + e.toString() //
-          + "', 'Signature': '" + signature //
-          + "', 'Argument index': " + input //
-          + "'}" // TODO: Why are the curly braces added twice?
-    )
-  }
-
   RelatedLocation getRelatedLocation(Endpoint e, string name) {
     name = "Callable-JavaDoc" and
     result = getCallable(e).(Documentable).getJavadoc()
@@ -115,8 +111,6 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
     result = getCallable(e).getDeclaringType().(Documentable).getJavadoc()
   }
 }
-
-Callable getCallable(Endpoint e) { result = e.getEnclosingCallable() }
 
 module CharacteristicsImpl = SharedCharacteristics::SharedCharacteristics<FrameworkCandidatesImpl>;
 
@@ -129,32 +123,32 @@ class Endpoint = FrameworkCandidatesImpl::Endpoint;
  */
 
 /**
- * Holds if `n` has the given metadata.
- *
- * This is a helper function to extract and export needed information about each endpoint.
+ * A MetadataExtractor that extracts metadata for framework mode.
  */
-predicate hasMetadata(
-  Endpoint n, string package, string type, string name, string signature, int input,
-  boolean isFinal, boolean isStatic, boolean isPublic
-) {
-  exists(Callable callable |
-    n.asParameter() = callable.getParameter(input) and
-    package = callable.getDeclaringType().getPackage().getName() and
-    type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
-    (
-      if callable.isStatic() or callable.getDeclaringType().isStatic()
-      then isStatic = true
-      else isStatic = false
-    ) and
-    (
-      if callable.isFinal() or callable.getDeclaringType().isFinal()
-      then isFinal = true
-      else isFinal = false
-    ) and
-    name = callable.getSourceDeclaration().getName() and
-    signature = ExternalFlow::paramsString(callable) and // TODO: Why are brackets being escaped (`\[\]` vs `[]`)?
-    (if callable.isPublic() then isPublic = true else isPublic = false)
-  )
+class FrameworkModeMetadataExtractor extends MetadataExtractor {
+  FrameworkModeMetadataExtractor() { this = "FrameworkModeMetadataExtractor" }
+
+  override predicate hasMetadata(
+    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
+    int input
+  ) {
+    exists(Callable callable |
+      e.asParameter() = callable.getParameter(input) and
+      package = callable.getDeclaringType().getPackage().getName() and
+      type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
+      (
+        if
+          callable.isStatic() or
+          callable.getDeclaringType().isStatic() or
+          callable.isFinal() or
+          callable.getDeclaringType().isFinal()
+        then subtypes = true
+        else subtypes = false
+      ) and
+      name = e.toString() and
+      signature = ExternalFlow::paramsString(callable)
+    )
+  }
 }
 
 /*
