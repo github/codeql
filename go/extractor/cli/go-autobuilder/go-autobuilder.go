@@ -21,8 +21,12 @@ import (
 
 func usage() {
 	fmt.Fprintf(os.Stderr,
-		`%s is a wrapper script that installs dependencies and calls the extractor, or if '--identify-environment'
-is passed then it produces a file 'environment.json' which specifies what go version is needed.
+		`When '--identify-environment' is passed then %s produces a file which specifies what Go
+version is needed. The location of this file is controlled by the environment variable
+CODEQL_EXTRACTOR_ENVIRONMENT_JSON, or defaults to "environment.json" if that is not set.
+
+When no command line arguments are passed, %[1]s is a wrapper script that installs dependencies and
+calls the extractor.
 
 When LGTM_SRC is not set, the script installs dependencies as described below, and then invokes the
 extractor in the working directory.
@@ -724,16 +728,15 @@ func checkForUnsupportedVersions(v versionInfo) (msg, version string) {
 
 func checkForVersionsNotFound(v versionInfo) (msg, version string) {
 	if !v.goInstallationFound && !v.goDirectiveFound {
-		msg = "No version of Go installed and no `go.mod` file found. Writing an " +
-			"`environment.json` file specifying the maximum supported version of Go (" +
-			maxGoVersion + ")."
+		msg = "No version of Go installed and no `go.mod` file found. Writing an environment " +
+			"file specifying the maximum supported version of Go (" + maxGoVersion + ")."
 		version = maxGoVersion
 		diagnostics.EmitNoGoModAndNoGoEnv(msg)
 	}
 
 	if !v.goInstallationFound && v.goDirectiveFound {
-		msg = "No version of Go installed. Writing an `environment.json` file specifying the " +
-			"version of Go found in the `go.mod` file (" + v.goModVersion + ")."
+		msg = "No version of Go installed. Writing an environment file specifying the version " +
+			"of Go found in the `go.mod` file (" + v.goModVersion + ")."
 		version = v.goModVersion
 		diagnostics.EmitNoGoEnv(msg)
 	}
@@ -751,8 +754,8 @@ func compareVersions(v versionInfo) (msg, version string) {
 	if semver.Compare("v"+v.goModVersion, "v"+v.goEnvVersion) > 0 {
 		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
 			") is lower than the version found in the `go.mod` file (" + v.goModVersion +
-			").\nWriting an `environment.json` file specifying the version of Go from the " +
-			"`go.mod` file (" + v.goModVersion + ")."
+			").\nWriting an environment file specifying the version of Go from the `go.mod` " +
+			"file (" + v.goModVersion + ")."
 		version = v.goModVersion
 		diagnostics.EmitVersionGoModHigherVersionEnvironment(msg)
 	} else {
@@ -788,22 +791,27 @@ func writeEnvironmentFile(version string) {
 		content = `{ "include": [ { "go": { "version": "` + version + `" } } ] }`
 	}
 
-	targetFile, err := os.Create("environment.json")
+	filename, ok := os.LookupEnv("CODEQL_EXTRACTOR_ENVIRONMENT_JSON")
+	if !ok {
+		filename = "environment.json"
+	}
+
+	targetFile, err := os.Create(filename)
 	if err != nil {
-		log.Println("Failed to create environment.json: ")
+		log.Println("Failed to create environment file " + filename + ": ")
 		log.Println(err)
 		return
 	}
 	defer func() {
 		if err := targetFile.Close(); err != nil {
-			log.Println("Failed to close environment.json:")
+			log.Println("Failed to close environment file " + filename + ":")
 			log.Println(err)
 		}
 	}()
 
 	_, err = targetFile.WriteString(content)
 	if err != nil {
-		log.Println("Failed to write to environment.json: ")
+		log.Println("Failed to write to environment file " + filename + ": ")
 		log.Println(err)
 	}
 }
