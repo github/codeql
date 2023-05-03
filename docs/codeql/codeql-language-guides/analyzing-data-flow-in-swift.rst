@@ -188,7 +188,7 @@ These predicates are defined in the configuration:
 -  ``isBarrier`` - optionally, restricts the data flow.
 -  ``isAdditionalFlowStep`` - optionally, adds additional flow steps.
 
-The last line (``module MyDataFlow = ...``) performs data flow analysis using the configuration, and its results can be accessed with ``MyDataFlow::flow(DataFlow::Node source, DataFlow::Node sink)``:
+The last line (``module MyDataFlow = ...``) instantiates the parameterized module for data flow analysis by passing the configuration to the parameterized module. Data flow analysis can then be performed using ``MyDataFlow::flow(DataFlow::Node source, DataFlow::Node sink)``:
 
 .. code-block:: ql
 
