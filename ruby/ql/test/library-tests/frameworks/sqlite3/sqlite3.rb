@@ -18,3 +18,14 @@ SQLite3::Database.new( "data.db" ) do |db|
     p row
   end
 end
+
+
+class MyDatabaseWrapper
+      def initialize(filename)
+      @db = SQLite3::Database.new(filename, results_as_hash: true)
+    end
+
+    def select_rows(category)
+      @db.execute("select * from table")
+    end
+end
