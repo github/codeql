@@ -41,7 +41,7 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
 
   std::error_code ec;
   fs::copy(source, destination, fs::copy_options::overwrite_existing, ec);
-  if (!ec) {
+  if (ec) {
     LOG_INFO(
         "Cannot archive source file {} -> {}, probably a harmless race with another process ({})",
         source, destination, ec);
