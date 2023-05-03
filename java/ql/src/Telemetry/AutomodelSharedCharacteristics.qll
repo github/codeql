@@ -12,8 +12,20 @@ float mediumConfidence() { result = 0.6 }
  *   "not any of the other known endpoint types".
  */
 signature module CandidateSig {
+  /**
+   * An endpoint is a potential candidate for modelling. This will typically be bound to the language's
+   * DataFlow node class, or a subtype thereof.
+   */
   class Endpoint;
 
+  /**
+   * A related location for an endpoint. This will typically be bound to the supertype of all AST nodes.
+   */
+  class RelatedLocation;
+
+  /**
+   * A class label for an endpoint.
+   */
   class EndpointType;
 
   /**
@@ -21,8 +33,7 @@ signature module CandidateSig {
    */
   class NegativeEndpointType extends EndpointType;
 
-  /** Gets the string representing the file+range of the endpoint. */
-  string getLocationString(Endpoint e);
+  RelatedLocation toRelatedLocation(Endpoint e);
 
   /**
    * Defines what labels are known, and what endpoint type they correspond to.
@@ -56,6 +67,8 @@ signature module CandidateSig {
    * The meta data will be passed on to the machine learning code by the extraction queries.
    */
   predicate hasMetadata(Endpoint e, string metadata);
+
+  RelatedLocation getRelatedLocation(Endpoint e, string name);
 }
 
 /**
@@ -67,9 +80,9 @@ signature module CandidateSig {
  *   implementations of endpoint characteristics exported by this module.
  */
 module SharedCharacteristics<CandidateSig Candidate> {
-  predicate isSink(Candidate::Endpoint e, string label) { Candidate::isSink(e, label) }
+  predicate isSink = Candidate::isSink/2;
 
-  predicate isNeutral(Candidate::Endpoint e) { Candidate::isNeutral(e) }
+  predicate isNeutral = Candidate::isNeutral/1;
 
   /**
    * Holds if `sink` is a known sink of type `endpointType`.
@@ -94,8 +107,17 @@ module SharedCharacteristics<CandidateSig Candidate> {
     not exists(getAReasonSinkExcluded(candidateSink, sinkType))
   }
 
-  predicate hasMetadata(Candidate::Endpoint n, string metadata) {
-    Candidate::hasMetadata(n, metadata)
+  predicate hasMetadata = Candidate::hasMetadata/2;
+
+  /**
+   * If it exists, gets a related location for a given endpoint or candidate.
+   * If it doesn't exist, returns the candidate itself as a 'null' value.
+   */
+  bindingset[name]
+  Candidate::RelatedLocation getRelatedLocationOrCandidate(Candidate::Endpoint e, string name) {
+    if exists(Candidate::getRelatedLocation(e, name))
+    then result = Candidate::getRelatedLocation(e, name)
+    else result = Candidate::toRelatedLocation(e)
   }
 
   /**

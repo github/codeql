@@ -33,4 +33,7 @@ where
       message =
         "Error: There are erroneous endpoints! Please check whether there's a codex-generated data extension file in `java/ql/lib/ext`."
   )
-select sink, message
+select sink, message + "\nrelated locations: $@, $@",
+  CharacteristicsImpl::getRelatedLocationOrCandidate(sink, "Callable-JavaDoc"),
+  "Callable-JavaDoc", //
+  CharacteristicsImpl::getRelatedLocationOrCandidate(sink, "Class-JavaDoc"), "Class-JavaDoc" //

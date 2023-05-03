@@ -3,6 +3,7 @@
  */
 
 private import java
+private import semmle.code.Location as Location
 private import semmle.code.java.dataflow.DataFlow
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.security.PathCreation
@@ -23,10 +24,12 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
 
   class NegativeEndpointType = AutomodelEndpointTypes::NegativeSinkType;
 
+  class RelatedLocation = Location::Top;
+
   // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
   predicate isSanitizer(Endpoint e, EndpointType t) { none() }
 
-  string getLocationString(Endpoint e) { result = e.getLocation().toString() }
+  RelatedLocation toRelatedLocation(Endpoint e) { result = e.asParameter() }
 
   predicate isKnownLabel(string label, string humanReadableLabel, EndpointType type) {
     label = "read-file" and
@@ -87,11 +90,9 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
   predicate hasMetadata(Endpoint e, string metadata) {
     exists(
       string package, string type, boolean subtypes, string name, string signature, string ext,
-      int input, string provenance, boolean isPublic, boolean isFinal, boolean isStatic,
-      string callableJavaDoc
+      int input, boolean isPublic, boolean isFinal, boolean isStatic
     |
-      hasMetadata(e, package, type, name, signature, input, isFinal, isStatic, isPublic,
-        callableJavaDoc) and
+      hasMetadata(e, package, type, name, signature, input, isFinal, isStatic, isPublic) and
       (if isFinal = true or isStatic = true then subtypes = false else subtypes = true) and
       ext = "" and
       /*
@@ -100,7 +101,6 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
        *        a certain annotation.
        */
 
-      provenance = "ai-generated" and
       metadata =
         "{" //
           + "'Package': '" + package //
@@ -109,13 +109,17 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
           + ", 'Name': '" + name //
           + ", 'ParamName': '" + e.toString() //
           + "', 'Signature': '" + signature //
-          + "', 'Ext': '" + ext //
           + "', 'Argument index': " + input //
-          + ", 'Provenance': '" + provenance //
-          + "', 'Is public': " + isPublic //
-          + "', 'Callable JavaDoc': '" + callableJavaDoc.replaceAll("'", "\"") //
           + "'}" // TODO: Why are the curly braces added twice?
     )
+  }
+
+  RelatedLocation getRelatedLocation(Endpoint e, string name) {
+    name = "Callable-JavaDoc" and
+    result = e.getEnclosingCallable().(Documentable).getJavadoc()
+    or
+    name = "Class-JavaDoc" and
+result = e.getEnclosingCallable().getDeclaringType().(Documentable).getJavadoc()
   }
 }
 
@@ -136,7 +140,7 @@ class Endpoint = CandidatesImpl::Endpoint;
  */
 predicate hasMetadata(
   Endpoint n, string package, string type, string name, string signature, int input,
-  boolean isFinal, boolean isStatic, boolean isPublic, string callableJavaDoc
+  boolean isFinal, boolean isStatic, boolean isPublic
 ) {
   exists(Callable callable |
     n.asParameter() = callable.getParameter(input) and
@@ -154,10 +158,7 @@ predicate hasMetadata(
     ) and
     name = callable.getSourceDeclaration().getName() and
     signature = ExternalFlow::paramsString(callable) and // TODO: Why are brackets being escaped (`\[\]` vs `[]`)?
-    (if callable.isPublic() then isPublic = true else isPublic = false) and
-    if exists(callable.(Documentable).getJavadoc())
-    then callableJavaDoc = callable.(Documentable).getJavadoc().toString()
-    else callableJavaDoc = ""
+    (if callable.isPublic() then isPublic = true else isPublic = false)
   )
 }
 
