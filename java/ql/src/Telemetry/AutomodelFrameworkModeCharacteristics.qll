@@ -17,7 +17,7 @@ private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclus
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
-module CandidatesImpl implements SharedCharacteristics::CandidateSig {
+module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   class Endpoint = DataFlow::ParameterNode;
 
   class EndpointType = AutomodelEndpointTypes::EndpointType;
@@ -29,7 +29,7 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
   // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
   predicate isSanitizer(Endpoint e, EndpointType t) { none() }
 
-  RelatedLocation toRelatedLocation(Endpoint e) { result = e.asParameter() }
+  RelatedLocation asLocation(Endpoint e) { result = e.asParameter() }
 
   predicate isKnownLabel(string label, string humanReadableLabel, EndpointType type) {
     label = "read-file" and
@@ -89,18 +89,11 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
 
   predicate hasMetadata(Endpoint e, string metadata) {
     exists(
-      string package, string type, boolean subtypes, string name, string signature, string ext,
-      int input, boolean isPublic, boolean isFinal, boolean isStatic
+      string package, string type, boolean subtypes, string name, string signature, int input,
+      boolean isPublic, boolean isFinal, boolean isStatic
     |
       hasMetadata(e, package, type, name, signature, input, isFinal, isStatic, isPublic) and
       (if isFinal = true or isStatic = true then subtypes = false else subtypes = true) and
-      ext = "" and
-      /*
-       *       "ext" will always be empty for automodeling; it's a mechanism for
-       *       specifying that the model should apply for parameters that have
-       *        a certain annotation.
-       */
-
       metadata =
         "{" //
           + "'Package': '" + package //
@@ -125,11 +118,11 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
 
 Callable getCallable(Endpoint e) { result = e.getEnclosingCallable() }
 
-module CharacteristicsImpl = SharedCharacteristics::SharedCharacteristics<CandidatesImpl>;
+module CharacteristicsImpl = SharedCharacteristics::SharedCharacteristics<FrameworkCandidatesImpl>;
 
 class EndpointCharacteristic = CharacteristicsImpl::EndpointCharacteristic;
 
-class Endpoint = CandidatesImpl::Endpoint;
+class Endpoint = FrameworkCandidatesImpl::Endpoint;
 
 /*
  * Predicates that are used to surface prompt examples and candidates for classification with an ML model.
@@ -181,7 +174,7 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
   UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not CandidatesImpl::isSink(e, _) and
+    not FrameworkCandidatesImpl::isSink(e, _) and
     getCallable(e).getName().matches("is%") and
     getCallable(e).getReturnType() instanceof BooleanType
   }
@@ -199,7 +192,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not CandidatesImpl::isSink(e, _) and
+    not FrameworkCandidatesImpl::isSink(e, _) and
     exists(Callable callable |
       callable = getCallable(e) and
       (

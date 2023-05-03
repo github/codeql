@@ -13,7 +13,7 @@ float mediumConfidence() { result = 0.6 }
  */
 signature module CandidateSig {
   /**
-   * An endpoint is a potential candidate for modelling. This will typically be bound to the language's
+   * An endpoint is a potential candidate for modeling. This will typically be bound to the language's
    * DataFlow node class, or a subtype thereof.
    */
   class Endpoint;
@@ -26,17 +26,17 @@ signature module CandidateSig {
   /**
    * A class label for an endpoint.
    */
-  class EndpointType;
+  class EndpointType extends string;
 
   /**
    * An EndpointType that denotes the absence of any sink.
    */
   class NegativeEndpointType extends EndpointType;
 
-  RelatedLocation toRelatedLocation(Endpoint e);
+  RelatedLocation asLocation(Endpoint e);
 
   /**
-   * Defines what labels are known, and what endpoint type they correspond to.
+   * Defines what MaD labels are known, and what endpoint type they correspond to.
    */
   predicate isKnownLabel(string label, string humanReadableLabel, EndpointType type);
 
@@ -117,7 +117,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
   Candidate::RelatedLocation getRelatedLocationOrCandidate(Candidate::Endpoint e, string name) {
     if exists(Candidate::getRelatedLocation(e, name))
     then result = Candidate::getRelatedLocation(e, name)
-    else result = Candidate::toRelatedLocation(e)
+    else result = Candidate::asLocation(e)
   }
 
   /**
@@ -152,8 +152,8 @@ module SharedCharacteristics<CandidateSig Candidate> {
    */
   abstract class EndpointCharacteristic extends string {
     /**
-     * Holds when the string matches the name of the characteristic, which should describe some characteristic of the
-     * endpoint that is meaningful for determining whether it's a sink and if so of which type
+     * The name of the characteristic. This should describe some property of an
+     * endpoint that is meaningful for determining whether it's a sink, and if so, of which sink type.
      */
     bindingset[this]
     EndpointCharacteristic() { any() }
