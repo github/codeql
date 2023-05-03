@@ -50,11 +50,10 @@
 #define DIAGNOSE_CRITICAL(ID, ...) DIAGNOSE_WITH_LEVEL(critical, ID, __VA_ARGS__)
 #define DIAGNOSE_ERROR(ID, ...) DIAGNOSE_WITH_LEVEL(error, ID, __VA_ARGS__)
 
-#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, ...)              \
-  do {                                                   \
-    static int _ignore = (codeql::diagnostics::ID(), 0); \
-    std::ignore = _ignore;                               \
-    LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, ID, __VA_ARGS__); \
+#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, ...)                                      \
+  do {                                                                           \
+    codeql::detail::createSwiftDiagnosticsSourceOnce<codeql::diagnostics::ID>(); \
+    LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, ID, __VA_ARGS__);                         \
   } while (false)
 
 // avoid calling into binlog's original macros

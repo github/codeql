@@ -83,4 +83,11 @@ inline void internal_error() {
 }
 }  // namespace diagnostics
 
+namespace detail {
+template <void (*Func)()>
+inline void createSwiftDiagnosticsSourceOnce() {
+  static int ignore = (Func(), 0);
+  std::ignore = ignore;
+}
+}  // namespace detail
 }  // namespace codeql
