@@ -3795,6 +3795,30 @@ private module StdlibPrivate {
       preservesValue = true
     }
   }
+
+  /**
+   * A flow summary for `dict.setdefault`.
+   *
+   * See https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
+   */
+  class DictSetdefaultSummary extends SummarizedCallable {
+    DictSetdefaultSummary() { this = "dict.setdefault" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).calls(_, "setdefault")
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result.(DataFlow::AttrRead).getAttributeName() = "setdefault"
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // store/read steps with dictionary content of this is modeled in DataFlowPrivate
+      input = "Argument[1]" and
+      output = "ReturnValue" and
+      preservesValue = true
+    }
+  }
 }
 
 // ---------------------------------------------------------------------------

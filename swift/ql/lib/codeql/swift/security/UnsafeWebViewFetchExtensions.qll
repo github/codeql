@@ -38,9 +38,7 @@ private class UIKitWebKitWebViewFetchSink extends UnsafeWebViewFetchSink {
   Expr baseUrl;
 
   UIKitWebKitWebViewFetchSink() {
-    exists(
-      MethodDecl funcDecl, CallExpr call, string className, string funcName, int arg, int baseArg
-    |
+    exists(Method funcDecl, CallExpr call, string className, string funcName, int arg, int baseArg |
       // arguments to method calls...
       (
         // `loadHTMLString`

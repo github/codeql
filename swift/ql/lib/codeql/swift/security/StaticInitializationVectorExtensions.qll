@@ -51,7 +51,7 @@ private class CryptoSwiftInitializationVectorSink extends StaticInitializationVe
  */
 private class RnCryptorInitializationVectorSink extends StaticInitializationVectorSink {
   RnCryptorInitializationVectorSink() {
-    exists(NominalTypeDecl c, MethodDecl f, CallExpr call |
+    exists(NominalTypeDecl c, Method f, CallExpr call |
       c.getFullName() =
         [
           "RNCryptor", "RNEncryptor", "RNDecryptor", "RNCryptor.EncryptorV3",

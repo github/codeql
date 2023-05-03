@@ -3,8 +3,7 @@
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.TaintTracking
-private import codeql.swift.frameworks.AEXML
-private import codeql.swift.frameworks.Libxml2
+private import codeql.swift.frameworks.Xml.Xml
 private import codeql.swift.dataflow.ExternalFlow
 
 /** A data flow sink for XML external entities (XXE) vulnerabilities. */
@@ -80,7 +79,7 @@ private class XmlDocumentXxeSink extends XxeSink {
 /** An `XMLDocument` that sets `nodeLoadExternalEntitiesAlways` in its options. */
 private class VulnerableXmlDocument extends ApplyExpr {
   VulnerableXmlDocument() {
-    this.getStaticTarget().(ConstructorDecl).getEnclosingDecl().(NominalTypeDecl).getFullName() =
+    this.getStaticTarget().(Initializer).getEnclosingDecl().(NominalTypeDecl).getFullName() =
       "XMLDocument" and
     this.getArgument(1).getExpr().(ArrayExpr).getAnElement().(MemberRefExpr).getMember() instanceof
       NodeLoadExternalEntitiesAlways
@@ -192,7 +191,7 @@ private predicate lib2xmlOptionLocalTaintStep(DataFlow::Node source, DataFlow::N
   exists(ApplyExpr int32Init |
     int32Init
         .getStaticTarget()
-        .(ConstructorDecl)
+        .(Initializer)
         .getEnclosingDecl()
         .(ExtensionDecl)
         .getExtendedTypeDecl()

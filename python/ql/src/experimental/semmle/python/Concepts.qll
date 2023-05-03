@@ -169,7 +169,7 @@ module LdapBind {
     abstract predicate useSsl();
 
     /** DEPRECATED: Alias for useSsl */
-    deprecated predicate useSSL() { useSsl() }
+    deprecated predicate useSSL() { this.useSsl() }
   }
 }
 
@@ -199,7 +199,7 @@ class LdapBind extends DataFlow::Node instanceof LdapBind::Range {
   predicate useSsl() { super.useSsl() }
 
   /** DEPRECATED: Alias for useSsl */
-  deprecated predicate useSSL() { useSsl() }
+  deprecated predicate useSSL() { this.useSsl() }
 }
 
 /** DEPRECATED: Alias for LdapBind */

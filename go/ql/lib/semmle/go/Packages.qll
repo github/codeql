@@ -22,7 +22,7 @@ class Package extends @package {
   PackageScope getScope() { packages(this, _, _, result) }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = "package " + getPath() }
+  string toString() { result = "package " + this.getPath() }
 }
 
 /**
