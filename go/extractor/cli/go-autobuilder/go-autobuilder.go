@@ -880,7 +880,7 @@ func isGoInstalled() bool {
 	return err == nil
 }
 
-// Get the version of Go to install in the environment and write to an environment file.
+// Get the version of Go to install and write it to an environment file.
 func identifyEnvironment() {
 	var v versionInfo
 	depMode := getDepMode()
@@ -892,10 +892,7 @@ func identifyEnvironment() {
 	}
 
 	msg, versionToInstall := getVersionToInstall(v)
-
-	if msg != "" {
-		log.Println(msg)
-	}
+	log.Println(msg)
 
 	writeEnvironmentFile(versionToInstall)
 }
