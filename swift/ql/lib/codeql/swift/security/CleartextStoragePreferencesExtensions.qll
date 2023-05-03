@@ -37,7 +37,7 @@ class CleartextStoragePreferencesAdditionalTaintStep extends Unit {
 private class UserDefaultsStore extends CleartextStoragePreferencesSink {
   UserDefaultsStore() {
     exists(CallExpr call |
-      call.getStaticTarget().(MethodDecl).hasQualifiedName("UserDefaults", "set(_:forKey:)") and
+      call.getStaticTarget().(Method).hasQualifiedName("UserDefaults", "set(_:forKey:)") and
       call.getArgument(0).getExpr() = this.asExpr()
     )
   }
@@ -50,7 +50,7 @@ private class NSUbiquitousKeyValueStore extends CleartextStoragePreferencesSink 
   NSUbiquitousKeyValueStore() {
     exists(CallExpr call |
       call.getStaticTarget()
-          .(MethodDecl)
+          .(Method)
           .hasQualifiedName("NSUbiquitousKeyValueStore", "set(_:forKey:)") and
       call.getArgument(0).getExpr() = this.asExpr()
     )

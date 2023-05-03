@@ -28,7 +28,11 @@ abstract class TranslatedCondition extends TranslatedElement {
 
   final Expr getExpr() { result = expr }
 
-  final override Function getFunction() { result = expr.getEnclosingFunction() }
+  final override Declaration getFunction() {
+    result = getEnclosingFunction(expr) or
+    result = getEnclosingVariable(expr).(GlobalOrNamespaceVariable) or
+    result = getEnclosingVariable(expr).(StaticInitializedStaticLocalVariable)
+  }
 
   final Type getResultType() { result = expr.getUnspecifiedType() }
 }

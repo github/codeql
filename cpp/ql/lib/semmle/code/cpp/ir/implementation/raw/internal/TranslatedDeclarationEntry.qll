@@ -28,9 +28,14 @@ abstract class TranslatedDeclarationEntry extends TranslatedElement, TTranslated
 
   TranslatedDeclarationEntry() { this = TTranslatedDeclarationEntry(entry) }
 
-  final override Function getFunction() {
-    exists(DeclStmt stmt |
-      stmt = entry.getStmt() and
+  final override Declaration getFunction() {
+    exists(DeclStmt stmt | stmt = entry.getStmt() |
+      result = entry.getDeclaration().(StaticInitializedStaticLocalVariable)
+      or
+      result = entry.getDeclaration().(GlobalOrNamespaceVariable)
+      or
+      not entry.getDeclaration() instanceof StaticInitializedStaticLocalVariable and
+      not entry.getDeclaration() instanceof GlobalOrNamespaceVariable and
       result = stmt.getEnclosingFunction()
     )
   }
@@ -237,7 +242,7 @@ class TranslatedStaticLocalVariableInitialization extends TranslatedElement,
 
   final override LocalVariable getVariable() { result = var }
 
-  final override Function getFunction() { result = var.getFunction() }
+  final override Declaration getFunction() { result = var.getFunction() }
 }
 
 TranslatedConditionDecl getTranslatedConditionDecl(ConditionDeclExpr expr) {
@@ -264,7 +269,7 @@ class TranslatedConditionDecl extends TranslatedLocalVariableDeclaration, TTrans
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = getAst() }
 
-  override Function getFunction() { result = conditionDeclExpr.getEnclosingFunction() }
+  override Declaration getFunction() { result = getEnclosingFunction(conditionDeclExpr) }
 
   override LocalVariable getVariable() { result = conditionDeclExpr.getVariable() }
 }

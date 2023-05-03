@@ -6,6 +6,7 @@
 #include "swift/extractor/translators/StmtTranslator.h"
 #include "swift/extractor/translators/TypeTranslator.h"
 #include "swift/extractor/translators/PatternTranslator.h"
+#include "swift/extractor/mangler/SwiftMangler.h"
 
 namespace codeql {
 
@@ -17,10 +18,13 @@ class SwiftVisitor : private SwiftDispatcher {
   template <typename T>
   void extract(const T& entity) {
     fetchLabel(entity);
+    visitPending();
   }
   void extract(swift::Token& comment) { emitComment(comment); }
 
  private:
+  SwiftMangledName name(const swift::Decl* decl) override { return mangler.mangleDecl(*decl); }
+  SwiftMangledName name(const swift::TypeBase* type) override { return mangler.mangleType(*type); }
   void visit(const swift::Decl* decl) override { declTranslator.translateAndEmit(*decl); }
   void visit(const swift::Stmt* stmt) override { stmtTranslator.translateAndEmit(*stmt); }
   void visit(const swift::StmtCondition* cond) override { stmtTranslator.translateAndEmit(*cond); }
@@ -54,6 +58,7 @@ class SwiftVisitor : private SwiftDispatcher {
   StmtTranslator stmtTranslator{*this};
   TypeTranslator typeTranslator{*this};
   PatternTranslator patternTranslator{*this};
+  SwiftMangler mangler{*this};
 };
 
 }  // namespace codeql

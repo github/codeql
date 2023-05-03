@@ -38,7 +38,7 @@ private class CoreDataStore extends CleartextStorageDatabaseSink {
     // values written into Core Data objects through `set*Value` methods are a sink.
     exists(CallExpr call |
       call.getStaticTarget()
-          .(MethodDecl)
+          .(Method)
           .hasQualifiedName("NSManagedObject",
             ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"]) and
       call.getArgument(0).getExpr() = this.asExpr()

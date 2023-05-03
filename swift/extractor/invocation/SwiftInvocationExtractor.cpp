@@ -5,6 +5,7 @@
 #include "swift/extractor/infra/file/TargetFile.h"
 #include "swift/extractor/infra/file/Path.h"
 #include "swift/extractor/infra/log/SwiftAssert.h"
+#include "swift/extractor/mangler/SwiftMangler.h"
 
 namespace fs = std::filesystem;
 using namespace std::string_literals;
@@ -71,7 +72,8 @@ std::vector<ModuleInfo> emitModuleImplementations(SwiftExtractorState& state,
     if (auto hash = getModuleHash(modulePath)) {
       auto target = getModuleTarget(moduleName, *hash);
       if (auto moduleTrap = createTargetTrapDomain(state, target, TrapType::linkage)) {
-        moduleTrap->createLabelWithImplementationId<ModuleDeclTag>(*hash, moduleName);
+        moduleTrap->createTypedLabelWithImplementationId<ModuleDeclTag>(
+            SwiftMangler::mangleModuleName(moduleName), *hash);
         ret.push_back({target, getModuleId(moduleName, *hash)});
       }
     }

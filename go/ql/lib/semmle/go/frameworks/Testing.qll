@@ -23,16 +23,16 @@ module TestCase {
   /** A `go test` style test (including benchmarks and examples). */
   private class GoTestFunction extends Range, FuncDef {
     GoTestFunction() {
-      getName().regexpMatch("Test(?![a-z]).*") and
-      getNumParameter() = 1 and
-      getParameter(0).getType().(PointerType).getBaseType().hasQualifiedName("testing", "T")
+      this.getName().regexpMatch("Test(?![a-z]).*") and
+      this.getNumParameter() = 1 and
+      this.getParameter(0).getType().(PointerType).getBaseType().hasQualifiedName("testing", "T")
       or
-      getName().regexpMatch("Benchmark(?![a-z]).*") and
-      getNumParameter() = 1 and
-      getParameter(0).getType().(PointerType).getBaseType().hasQualifiedName("testing", "B")
+      this.getName().regexpMatch("Benchmark(?![a-z]).*") and
+      this.getNumParameter() = 1 and
+      this.getParameter(0).getType().(PointerType).getBaseType().hasQualifiedName("testing", "B")
       or
-      getName().regexpMatch("Example(?![a-z]).*") and
-      getNumParameter() = 0
+      this.getName().regexpMatch("Example(?![a-z]).*") and
+      this.getNumParameter() = 0
     }
   }
 }
@@ -86,7 +86,7 @@ module Ginkgo {
 
   /** The Ginkgo `Fail` function, which always panics. */
   private class FailFunction extends Function {
-    FailFunction() { hasQualifiedName(packagePath(), "Fail") }
+    FailFunction() { this.hasQualifiedName(packagePath(), "Fail") }
 
     override predicate mustPanic() { any() }
   }
