@@ -22,7 +22,7 @@
 
 using namespace std::string_literals;
 
-const std::string_view codeql::logRootName = "extractor";
+const std::string_view codeql::programName = "extractor";
 
 // must be called before processFrontendOptions modifies output paths
 static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,
@@ -220,6 +220,7 @@ int main(int argc, char** argv, char** envp) {
     codeql::Logger logger{"main"};
     LOG_INFO("calling extractor with arguments \"{}\"", argDump(argc, argv));
     LOG_DEBUG("environment:\n{}\n", envDump(envp));
+    DIAGNOSE_ERROR(internal_error, "prout {}", 42);
   }
 
   auto openInterception = codeql::setupFileInterception(configuration);

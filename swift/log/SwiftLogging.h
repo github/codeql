@@ -12,6 +12,8 @@
 #include <binlog/adapt_stdoptional.hpp>
 #include <binlog/adapt_stdvariant.hpp>
 
+#include "swift/log/SwiftDiagnostics.h"
+
 // Logging macros. These will call `logger()` to get a Logger instance, picking up any `logger`
 // defined in the current scope. Domain-specific loggers can be added or used by either:
 // * providing a class field called `logger` (as `Logger::operator()()` returns itself)
@@ -20,23 +22,39 @@
 // * passing a logger around using a `Logger& logger` function parameter
 // They are created with a name that appears in the logs and can be used to filter debug levels (see
 // `Logger`).
-#define LOG_CRITICAL(...) LOG_WITH_LEVEL(codeql::Log::Level::critical, __VA_ARGS__)
-#define LOG_ERROR(...) LOG_WITH_LEVEL(codeql::Log::Level::error, __VA_ARGS__)
-#define LOG_WARNING(...) LOG_WITH_LEVEL(codeql::Log::Level::warning, __VA_ARGS__)
-#define LOG_INFO(...) LOG_WITH_LEVEL(codeql::Log::Level::info, __VA_ARGS__)
-#define LOG_DEBUG(...) LOG_WITH_LEVEL(codeql::Log::Level::debug, __VA_ARGS__)
-#define LOG_TRACE(...) LOG_WITH_LEVEL(codeql::Log::Level::trace, __VA_ARGS__)
+#define LOG_CRITICAL(...) LOG_WITH_LEVEL(critical, __VA_ARGS__)
+#define LOG_ERROR(...) LOG_WITH_LEVEL(error, __VA_ARGS__)
+#define LOG_WARNING(...) LOG_WITH_LEVEL(warning, __VA_ARGS__)
+#define LOG_INFO(...) LOG_WITH_LEVEL(info, __VA_ARGS__)
+#define LOG_DEBUG(...) LOG_WITH_LEVEL(debug, __VA_ARGS__)
+#define LOG_TRACE(...) LOG_WITH_LEVEL(trace, __VA_ARGS__)
 
 // only do the actual logging if the picked up `Logger` instance is configured to handle the
 // provided log level. `LEVEL` must be a compile-time constant. `logger()` is evaluated once
-#define LOG_WITH_LEVEL(LEVEL, ...)                                                                 \
-  do {                                                                                             \
-    constexpr codeql::Log::Level _level = LEVEL;                                                   \
-    codeql::Logger& _logger = logger();                                                            \
-    if (_level >= _logger.level()) {                                                               \
-      BINLOG_CREATE_SOURCE_AND_EVENT(_logger.writer(), _level, /* category */, binlog::clockNow(), \
-                                     __VA_ARGS__);                                                 \
-    }                                                                                              \
+#define LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, CATEGORY, ...)                                    \
+  do {                                                                                       \
+    constexpr codeql::Log::Level _level = codeql::Log::Level::LEVEL;                         \
+    codeql::Logger& _logger = logger();                                                      \
+    if (_level >= _logger.level()) {                                                         \
+      BINLOG_CREATE_SOURCE_AND_EVENT(_logger.writer(), _level, CATEGORY, binlog::clockNow(), \
+                                     __VA_ARGS__);                                           \
+    }                                                                                        \
+  } while (false)
+
+#define LOG_WITH_LEVEL(LEVEL, ...) LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, , __VA_ARGS__)
+
+// Emit errors with a specified diagnostics ID. This must be the name of a function in the
+// codeql::diagnostics namespace, which must call SwiftDiagnosticSource::create with ID as first
+// argument. This function will be called at most once during the program execution.
+// See codeql::diagnostics::internal_error below as an example.
+#define DIAGNOSE_CRITICAL(ID, ...) DIAGNOSE_WITH_LEVEL(critical, ID, __VA_ARGS__)
+#define DIAGNOSE_ERROR(ID, ...) DIAGNOSE_WITH_LEVEL(error, ID, __VA_ARGS__)
+
+#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, ...)              \
+  do {                                                   \
+    static int _ignore = (codeql::diagnostics::ID(), 0); \
+    std::ignore = _ignore;                               \
+    LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, ID, __VA_ARGS__); \
   } while (false)
 
 // avoid calling into binlog's original macros
@@ -68,7 +86,7 @@
 namespace codeql {
 
 // tools should define this to tweak the root name of all loggers
-extern const std::string_view logRootName;
+extern const std::string_view programName;
 
 // This class is responsible for the global log state (outputs, log level rules, flushing)
 // State is stored in the singleton `Log::instance()`.
@@ -76,7 +94,7 @@ extern const std::string_view logRootName;
 // `Log::configure("extractor")`). Then, `Log::flush()` should be regularly called.
 // Logging is configured upon first usage.  This consists in
 //  * using environment variable `CODEQL_EXTRACTOR_SWIFT_LOG_DIR` to choose where to dump the log
-//    file(s). Log files will go to a subdirectory thereof named after `logRootName`
+//    file(s). Log files will go to a subdirectory thereof named after `programName`
 //  * using environment variable `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` to configure levels for
 //    loggers and outputs. This must have the form of a comma separated `spec:level` list, where
 //    `spec` is either a glob pattern (made up of alphanumeric, `/`, `*` and `.` characters) for
@@ -122,21 +140,38 @@ class Log {
   friend binlog::Session;
   Log& write(const char* buffer, std::streamsize size);
 
+  struct OnlyWithCategory {};
+
   // Output filtered according to a configured log level
   template <typename Output>
   struct FilteredOutput {
     binlog::Severity level;
     Output output;
-    binlog::EventFilter filter{
-        [this](const binlog::EventSource& src) { return src.severity >= level; }};
+    binlog::EventFilter filter;
 
     template <typename... Args>
     FilteredOutput(Level level, Args&&... args)
-        : level{level}, output{std::forward<Args>(args)...} {}
+        : level{level}, output{std::forward<Args>(args)...}, filter{filterOnLevel()} {}
+
+    template <typename... Args>
+    FilteredOutput(OnlyWithCategory, Level level, Args&&... args)
+        : level{level},
+          output{std::forward<Args>(args)...},
+          filter{filterOnLevelAndNonEmptyCategory()} {}
 
     FilteredOutput& write(const char* buffer, std::streamsize size) {
       filter.writeAllowed(buffer, size, output);
       return *this;
+    }
+
+    binlog::EventFilter::Predicate filterOnLevel() const {
+      return [this](const binlog::EventSource& src) { return src.severity >= level; };
+    }
+
+    binlog::EventFilter::Predicate filterOnLevelAndNonEmptyCategory() const {
+      return [this](const binlog::EventSource& src) {
+        return !src.category.empty() && src.severity >= level;
+      };
     }
 
     // if configured as `no_logs`, the output is effectively disabled
@@ -151,14 +186,15 @@ class Log {
   FilteredOutput<std::ofstream> binary{Level::no_logs};
   FilteredOutput<binlog::TextOutputStream> text{Level::info, textFile, format};
   FilteredOutput<binlog::TextOutputStream> console{Level::warning, std::cerr, format};
+  FilteredOutput<SwiftDiagnosticsDumper> diagnostics{OnlyWithCategory{}, Level::error};
   LevelRules sourceRules;
-  std::vector<std::string> collectSeverityRulesAndReturnProblems(const char* envVar);
+  std::vector<std::string> collectLevelRulesAndReturnProblems(const char* envVar);
 };
 
 // This class represent a named domain-specific logger, responsible for pushing logs using the
 // underlying `binlog::SessionWriter` class. This has a configured log level, so that logs on this
 // `Logger` with a level lower than the configured one are no-ops. The level is configured based
-// on rules matching `<logRootName>/<name>` in `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` (see above).
+// on rules matching `<programName>/<name>` in `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` (see above).
 // `<name>` is provided in the constructor. If no rule matches the name, the log level defaults to
 // the minimum level of all outputs.
 class Logger {
