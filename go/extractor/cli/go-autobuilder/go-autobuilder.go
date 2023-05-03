@@ -92,14 +92,6 @@ func getEnvGoSemVer() string {
 	return "v" + goVersion[2:]
 }
 
-func tryBuild(buildFile, cmd string, args ...string) bool {
-	if util.FileExists(buildFile) {
-		log.Printf("%s found, running %s\n", buildFile, cmd)
-		return util.RunCmd(exec.Command(cmd, args...))
-	}
-	return false
-}
-
 // Returns the import path of the package being built, or "" if it cannot be determined.
 func getImportPath() (importpath string) {
 	importpath = os.Getenv("LGTM_INDEX_IMPORT_PATH")
