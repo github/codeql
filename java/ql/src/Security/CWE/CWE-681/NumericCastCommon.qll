@@ -7,7 +7,7 @@ import semmle.code.java.dataflow.RangeAnalysis
 class NumericNarrowingCastExpr extends CastExpr {
   NumericNarrowingCastExpr() {
     exists(NumericType sourceType, NumericType targetType |
-      sourceType = getExpr().getType() and targetType = getType()
+      sourceType = this.getExpr().getType() and targetType = this.getType()
     |
       not targetType.(NumType).widerThanOrEqualTo(sourceType)
     )
@@ -28,8 +28,8 @@ class RightShiftOp extends Expr {
   }
 
   Variable getShiftedVariable() {
-    getLhs() = result.getAnAccess() or
-    getLhs().(AndBitwiseExpr).getAnOperand() = result.getAnAccess()
+    this.getLhs() = result.getAnAccess() or
+    this.getLhs().(AndBitwiseExpr).getAnOperand() = result.getAnAccess()
   }
 }
 
