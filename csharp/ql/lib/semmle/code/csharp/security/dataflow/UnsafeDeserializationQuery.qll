@@ -381,16 +381,6 @@ private module WeakTypeCreationToUsageTrackingConfig implements DataFlow::Config
 module WeakTypeCreationToUsageTracking =
   TaintTracking::Global<WeakTypeCreationToUsageTrackingConfig>;
 
-/**
- * DEPRECATED: Do not extend this class.
- *
- * Safe deserializer creation to usage tracking config.
- */
-abstract deprecated class SafeConstructorTrackingConfig extends TaintTracking2::Configuration {
-  bindingset[this]
-  SafeConstructorTrackingConfig() { any() }
-}
-
 /** BinaryFormatter */
 private predicate isBinaryFormatterCall(MethodCall mc, Method m) {
   m = mc.getTarget() and
