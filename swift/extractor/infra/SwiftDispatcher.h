@@ -170,7 +170,13 @@ class SwiftDispatcher {
   TrapLabel<TypeTag> fetchLabel(swift::Type t) { return fetchLabel(t.getPointer()); }
 
   TrapLabel<AstNodeTag> fetchLabel(swift::ASTNode node) {
-    return fetchLabelFromUnion<AstNodeTag>(node);
+    auto ret = fetchLabelFromUnion<AstNodeTag>(node);
+    if (!ret.valid()) {
+      // TODO to be more useful, we need a generic way of attaching original source location info
+      // to logs, this will come in upcoming work
+      LOG_ERROR("Unable to fetch label for ASTNode");
+    }
+    return ret;
   }
 
   template <typename E, std::enable_if_t<IsStorable<E*>>* = nullptr>
@@ -289,7 +295,6 @@ class SwiftDispatcher {
     // with logical op short-circuiting, this will stop trying on the first successful fetch
     bool unionCaseFound = (... || fetchLabelFromUnionCase<Tag, Ts>(u, ret));
     if (!unionCaseFound) {
-      // TODO emit error/warning here
       return undefined_label;
     }
     return ret;
