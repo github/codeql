@@ -21,17 +21,10 @@ where
   // Extract positive examples of sinks belonging to the existing ATM query configurations.
   (
     CharacteristicsImpl::isKnownSink(sink, sinkType) and
-    // If there are _any_ erroneous endpoints, return an error message for all rows. This will prevent us from
-    // accidentally running this query when there's a codex-generated data extension file in `java/ql/lib/ext`.
-    if not erroneousEndpoints(_, _, _, _, _, true)
-    then
-      message =
-        sinkType + "\n" +
-          // Extract the needed metadata for this endpoint.
-          any(string metadata | CharacteristicsImpl::hasMetadata(sink, metadata))
-    else
-      message =
-        "Error: There are erroneous endpoints! Please check whether there's a codex-generated data extension file in `java/ql/lib/ext`."
+    message =
+      sinkType + "\n" +
+        // Extract the needed metadata for this endpoint.
+        any(string metadata | CharacteristicsImpl::hasMetadata(sink, metadata))
   )
 select sink, message + "\nrelated locations: $@, $@",
   CharacteristicsImpl::getRelatedLocationOrCandidate(sink, "Callable-JavaDoc"),

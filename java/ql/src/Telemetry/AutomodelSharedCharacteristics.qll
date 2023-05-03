@@ -19,7 +19,7 @@ signature module CandidateSig {
   class Endpoint;
 
   /**
-   * A related location for an endpoint. This will typically be bound to the supertype of all AST nodes.
+   * A related location for an endpoint. This will typically be bound to the supertype of all AST nodes (eg., `Top`).
    */
   class RelatedLocation;
 

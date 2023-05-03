@@ -78,11 +78,11 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
     Endpoint e, string package, string type, boolean subtypes, string name, string signature,
     string ext, string input
   ) {
-    package = e.getEnclosingCallable().getDeclaringType().getPackage().toString() and
-    type = e.getEnclosingCallable().getDeclaringType().getName() and
+    package = getCallable(e).getDeclaringType().getPackage().toString() and
+    type = getCallable(e).getDeclaringType().getName() and
     subtypes = false and
-    name = e.getEnclosingCallable().getName() and
-    signature = ExternalFlow::paramsString(e.getEnclosingCallable()) and
+    name = getCallable(e).getName() and
+    signature = ExternalFlow::paramsString(getCallable(e)) and
     ext = "" and
     exists(int paramIdx | e.isParameterOf(_, paramIdx) | input = "Argument[" + paramIdx + "]")
   }
@@ -116,12 +116,14 @@ module CandidatesImpl implements SharedCharacteristics::CandidateSig {
 
   RelatedLocation getRelatedLocation(Endpoint e, string name) {
     name = "Callable-JavaDoc" and
-    result = e.getEnclosingCallable().(Documentable).getJavadoc()
+    result = getCallable(e).(Documentable).getJavadoc()
     or
     name = "Class-JavaDoc" and
-result = e.getEnclosingCallable().getDeclaringType().(Documentable).getJavadoc()
+    result = getCallable(e).getDeclaringType().(Documentable).getJavadoc()
   }
 }
+
+Callable getCallable(Endpoint e) { result = e.getEnclosingCallable() }
 
 module CharacteristicsImpl = SharedCharacteristics::SharedCharacteristics<CandidatesImpl>;
 
@@ -180,8 +182,8 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
 
   override predicate appliesToEndpoint(Endpoint e) {
     not CandidatesImpl::isSink(e, _) and
-    e.getEnclosingCallable().getName().matches("is%") and
-    e.getEnclosingCallable().getReturnType() instanceof BooleanType
+    getCallable(e).getName().matches("is%") and
+    getCallable(e).getReturnType() instanceof BooleanType
   }
 }
 
@@ -199,7 +201,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   override predicate appliesToEndpoint(Endpoint e) {
     not CandidatesImpl::isSink(e, _) and
     exists(Callable callable |
-      callable = e.getEnclosingCallable() and
+      callable = getCallable(e) and
       (
         callable.getName().toLowerCase() = "exists" or
         callable.getName().toLowerCase() = "notexists"
@@ -216,7 +218,7 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    e.getEnclosingCallable().getDeclaringType().getASupertype*() instanceof TypeThrowable
+    getCallable(e).getDeclaringType().getASupertype*() instanceof TypeThrowable
   }
 }
 
@@ -257,7 +259,7 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
 {
   NonPublicMethodCharacteristic() { this = "non-public method" }
 
-  override predicate appliesToEndpoint(Endpoint e) { not e.getEnclosingCallable().isPublic() }
+  override predicate appliesToEndpoint(Endpoint e) { not getCallable(e).isPublic() }
 }
 
 /**
