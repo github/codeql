@@ -15,6 +15,7 @@ extensions:
       extensible: sourceModel
     data:
       # Create a few
+      # Package java.sql
       - ["java.sql", "PreparedStatement", True, "executeQuery", "()", "", "ReturnValue", "sql", "manual"]
       - ["java.sql", "PreparedStatement", True, "getMetaData", "()", "", "ReturnValue", "sql", "manual"]
       - ["java.sql", "PreparedStatement", True, "getParameterMetaData", "", "", "ReturnValue", "sql", "manual"]
@@ -22,6 +23,16 @@ extensions:
       - ["java.sql", "Statement", True, "getResultSet", "()", "", "ReturnValue", "sql", "manual"]
       - ["java.sql", "Statement", True, "getGeneratedKeys", "()", "", "ReturnValue", "sql", "manual"]
       - ["java.sql", "Statement", True, "getConnection", "()", "", "ReturnValue", "sql", "manual"]
+      # Package org.hibernate
+      - ["org.hibernate", "Query", True, "list", "()", "", ReturnValue", "sql", "manual"]
+      - ["org.hibernate", "Query", True, "scroll", "", "", ReturnValue", "sql", "manual"]
+      - ["org.hibernate", "Query", True, "iterate", "", "", ReturnValue", "sql", "manual"]
+      # Package org.jooq
+      - ["org.jooq", "ResultQuery", True, "fetch", "()", "", "ReturnValue", "sql", "manual"]
+      - ["org.jooq", "ResultQuery", True, "iterator", "()", "", "ReturnValue", "sql", "manual"]
+      # Package org.springframework.jdbc.object
+      - ["org.springframework.jdbc.object", "SqlQuery", True, "execute", "", "", "ReturnValue", "sql", "manual"]
+      - ["org.springframework.jdbc.object", "SqlQuery", True, "executeByNamedParam", "", "", "ReturnValue", "sql", "manual"]
 
 
   # Create a graph of parent-child relationships between threat models and their kinds
