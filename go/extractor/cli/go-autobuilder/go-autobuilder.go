@@ -308,7 +308,7 @@ func getModMode(depMode DependencyInstallerMode) ModMode {
 }
 
 // fixGoVendorIssues fixes issues with go vendor for go version >= 1.14
-func fixGoVendorIssues(modMode ModMode, depMode DependencyInstallerMode, goDirectiveFound bool) ModMode {
+func fixGoVendorIssues(modMode ModMode, depMode DependencyInstallerMode, goModVersionFound bool) ModMode {
 	if modMode == ModVendor {
 		// fix go vendor issues with go versions >= 1.14 when no go version is specified in the go.mod
 		// if this is the case, and dependencies were vendored with an old go version (and therefore
@@ -318,7 +318,7 @@ func fixGoVendorIssues(modMode ModMode, depMode DependencyInstallerMode, goDirec
 		// we work around this by adding an explicit go version of 1.13, which is the last version
 		// where this is not an issue
 		if depMode == GoGetWithModules {
-			if !goDirectiveFound {
+			if !goModVersionFound {
 				// if the go.mod does not contain a version line
 				modulesTxt, err := os.ReadFile("vendor/modules.txt")
 				if err != nil {
@@ -672,10 +672,10 @@ func installDependenciesAndBuild() {
 		os.Setenv("GO111MODULE", "auto")
 	}
 
-	_, goDirectiveFound := tryReadGoDirective(depMode)
+	_, goModVersionFound := tryReadGoDirective(depMode)
 
 	modMode := getModMode(depMode)
-	modMode = fixGoVendorIssues(modMode, depMode, goDirectiveFound)
+	modMode = fixGoVendorIssues(modMode, depMode, goModVersionFound)
 
 	tryUpdateGoModAndGoSum(modMode, depMode)
 
@@ -742,14 +742,14 @@ func outsideSupportedRange(version string) bool {
 // a diagnostic and return an empty version to indicate that we should not attempt to install a
 // different version of Go.
 func checkForUnsupportedVersions(v versionInfo) (msg, version string) {
-	if v.goDirectiveFound && outsideSupportedRange(v.goModVersion) {
+	if v.goModVersionFound && outsideSupportedRange(v.goModVersion) {
 		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
 			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ")."
 		version = ""
 		diagnostics.EmitUnsupportedVersionGoMod(msg)
 	}
 
-	if v.goInstallationFound && outsideSupportedRange(v.goEnvVersion) {
+	if v.goEnVersionFound && outsideSupportedRange(v.goEnvVersion) {
 		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
 			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ")."
 		version = ""
@@ -759,26 +759,26 @@ func checkForUnsupportedVersions(v versionInfo) (msg, version string) {
 	return msg, version
 }
 
-// Check if either `v.goInstallationFound` or `v.goDirectiveFound` are false. If so, emit
+// Check if either `v.goEnVersionFound` or `v.goModVersionFound` are false. If so, emit
 // a diagnostic and return the version to install, or the empty string if we should not attempt to
 // install a version of Go. We assume that `checkForUnsupportedVersions` has already been
 // called, so any versions that are found are within the supported range.
 func checkForVersionsNotFound(v versionInfo) (msg, version string) {
-	if !v.goInstallationFound && !v.goDirectiveFound {
+	if !v.goEnVersionFound && !v.goModVersionFound {
 		msg = "No version of Go installed and no `go.mod` file found. Writing an environment " +
 			"file specifying the maximum supported version of Go (" + maxGoVersion + ")."
 		version = maxGoVersion
 		diagnostics.EmitNoGoModAndNoGoEnv(msg)
 	}
 
-	if !v.goInstallationFound && v.goDirectiveFound {
+	if !v.goEnVersionFound && v.goModVersionFound {
 		msg = "No version of Go installed. Writing an environment file specifying the version " +
 			"of Go found in the `go.mod` file (" + v.goModVersion + ")."
 		version = v.goModVersion
 		diagnostics.EmitNoGoEnv(msg)
 	}
 
-	if v.goInstallationFound && !v.goDirectiveFound {
+	if v.goEnVersionFound && !v.goModVersionFound {
 		msg = "No `go.mod` file found. Version " + v.goEnvVersion + " installed in the environment."
 		version = ""
 		diagnostics.EmitNoGoMod(msg)
@@ -864,16 +864,16 @@ func writeEnvironmentFile(version string) {
 }
 
 type versionInfo struct {
-	goModVersion        string
-	goDirectiveFound    bool
-	goEnvVersion        string
-	goInstallationFound bool
+	goModVersion      string // The version of Go found in the go directive in the `go.mod` file.
+	goModVersionFound bool   // Whether a `go` directive was found in the `go.mod` file.
+	goEnvVersion      string // The version of Go found in the environment.
+	goEnVersionFound  bool   // Whether an installation of Go was found in the environment.
 }
 
 func (v versionInfo) String() string {
 	return fmt.Sprintf(
 		"go.mod version: %s, go.mod directive found: %t, go env version: %s, go installation found: %t",
-		v.goModVersion, v.goDirectiveFound, v.goEnvVersion, v.goInstallationFound)
+		v.goModVersion, v.goModVersionFound, v.goEnvVersion, v.goEnVersionFound)
 }
 
 // Check if Go is installed in the environment.
@@ -886,10 +886,10 @@ func isGoInstalled() bool {
 func identifyEnvironment() {
 	var v versionInfo
 	depMode := getDepMode()
-	v.goModVersion, v.goDirectiveFound = tryReadGoDirective(depMode)
+	v.goModVersion, v.goModVersionFound = tryReadGoDirective(depMode)
 
-	v.goInstallationFound = isGoInstalled()
-	if v.goInstallationFound {
+	v.goEnVersionFound = isGoInstalled()
+	if v.goEnVersionFound {
 		v.goEnvVersion = getEnvGoVersion()[2:]
 	}
 
