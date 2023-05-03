@@ -1,13 +1,13 @@
 extensions:
   - addsTo:
-      pack: codeql/java-all
+      pack: codeql/java-tests
       extensible: supportedThreatModel
     data:
       - ["standard"]
       - ["group1"]
 
   - addsTo:
-      pack: codeql/java-all
+      pack: codeql/java-tests
       extensible: threatModelGrouping
     data:
       - ["kind10", "group1"]
