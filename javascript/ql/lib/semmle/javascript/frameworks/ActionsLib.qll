@@ -3,6 +3,7 @@
  */
 
 private import javascript
+private import semmle.javascript.security.dataflow.IndirectCommandInjectionCustomizations
 
 private API::Node payload() {
   result = API::moduleImport("@actions/github").getMember("context").getMember("payload")
@@ -51,11 +52,10 @@ private class GitHubActionsContextSource extends RemoteFlowSource {
 /**
  * A source of taint originating from user input.
  *
- * At the momemnt this is treated as a remote flow source, although it is not
- * always possible for an attacker to control this. In the future we might classify
- * this differently.
+ * At the momemnt this is only treated as a taint source for the indirect-command injection
+ * query.
  */
-private class GitHubActionsInputSource extends RemoteFlowSource {
+private class GitHubActionsInputSource extends IndirectCommandInjection::Source {
   GitHubActionsInputSource() {
     this =
       API::moduleImport("@actions/core")
@@ -64,7 +64,7 @@ private class GitHubActionsInputSource extends RemoteFlowSource {
           .asSource()
   }
 
-  override string getSourceType() { result = "GitHub Actions user input" }
+  override string describe() { result = "GitHub Actions user input" }
 }
 
 private class ExecActionsCall extends SystemCommandExecution, DataFlow::CallNode {
