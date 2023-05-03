@@ -7,21 +7,21 @@ import swift
 /** The creation of an `AEXMLParser`. */
 class AexmlParser extends ApplyExpr {
   AexmlParser() {
-    this.getStaticTarget().(ConstructorDecl).getEnclosingDecl() instanceof AexmlParserDecl
+    this.getStaticTarget().(Initializer).getEnclosingDecl() instanceof AexmlParserDecl
   }
 }
 
 /** The creation of an `AEXMLDocument`. */
 class AexmlDocument extends ApplyExpr {
   AexmlDocument() {
-    this.getStaticTarget().(ConstructorDecl).getEnclosingDecl() instanceof AexmlDocumentDecl
+    this.getStaticTarget().(Initializer).getEnclosingDecl() instanceof AexmlDocumentDecl
   }
 }
 
 /** A call to `AEXMLDocument.loadXML(_:)`. */
 class AexmlDocumentLoadXml extends MethodApplyExpr {
   AexmlDocumentLoadXml() {
-    exists(MethodDecl f |
+    exists(Method f |
       this.getStaticTarget() = f and
       f.hasName("loadXML(_:)") and
       f.getEnclosingDecl() instanceof AexmlDocumentDecl

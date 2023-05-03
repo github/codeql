@@ -38,7 +38,7 @@ private class NWConnectionSendSink extends CleartextTransmissionSink {
     // `content` arg to `NWConnection.send` is a sink
     exists(CallExpr call |
       call.getStaticTarget()
-          .(MethodDecl)
+          .(Method)
           .hasQualifiedName("NWConnection", "send(content:contentContext:isComplete:completion:)") and
       call.getArgument(0).getExpr() = this.asExpr()
     )
@@ -55,7 +55,7 @@ private class UrlSink extends CleartextTransmissionSink {
     // (we assume here that the URL goes on to be used in a network operation)
     exists(CallExpr call |
       call.getStaticTarget()
-          .(MethodDecl)
+          .(Method)
           .hasQualifiedName("URL", ["init(string:)", "init(string:relativeTo:)"]) and
       call.getArgument(0).getExpr() = this.asExpr()
     )
@@ -70,7 +70,7 @@ private class AlamofireTransmittedSink extends CleartextTransmissionSink {
     // sinks are the first argument containing the URL, and the `parameters`
     // and `headers` arguments to appropriate methods of `Session`.
     exists(CallExpr call, string fName |
-      call.getStaticTarget().(MethodDecl).hasQualifiedName("Session", fName) and
+      call.getStaticTarget().(Method).hasQualifiedName("Session", fName) and
       fName.regexpMatch("(request|streamRequest|download)\\(.*") and
       (
         call.getArgument(0).getExpr() = this.asExpr() or

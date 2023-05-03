@@ -7,7 +7,7 @@ import swift
 /**
  * A function that takes a `printf` style format argument.
  */
-abstract class FormattingFunction extends AbstractFunctionDecl {
+abstract class FormattingFunction extends Function {
   /**
    * Gets the position of the format argument.
    */
@@ -32,7 +32,7 @@ class FormattingFunctionCall extends CallExpr {
  * An initializer for `String`, `NSString` or `NSMutableString` that takes a
  * `printf` style format argument.
  */
-class StringInitWithFormat extends FormattingFunction, MethodDecl {
+class StringInitWithFormat extends FormattingFunction, Method {
   StringInitWithFormat() {
     exists(string fName |
       this.hasQualifiedName(["String", "NSString", "NSMutableString"], fName) and
@@ -46,7 +46,7 @@ class StringInitWithFormat extends FormattingFunction, MethodDecl {
 /**
  * The `localizedStringWithFormat` method of `String`, `NSString` and `NSMutableString`.
  */
-class LocalizedStringWithFormat extends FormattingFunction, MethodDecl {
+class LocalizedStringWithFormat extends FormattingFunction, Method {
   LocalizedStringWithFormat() {
     this.hasQualifiedName(["String", "NSString", "NSMutableString"],
       "localizedStringWithFormat(_:_:)")
@@ -58,7 +58,7 @@ class LocalizedStringWithFormat extends FormattingFunction, MethodDecl {
 /**
  * The functions `NSLog` and `NSLogv`.
  */
-class NsLog extends FormattingFunction, FreeFunctionDecl {
+class NsLog extends FormattingFunction, FreeFunction {
   NsLog() { this.getName() = ["NSLog(_:_:)", "NSLogv(_:_:)"] }
 
   override int getFormatParameterIndex() { result = 0 }
@@ -67,7 +67,7 @@ class NsLog extends FormattingFunction, FreeFunctionDecl {
 /**
  * The `NSException.raise` method.
  */
-class NsExceptionRaise extends FormattingFunction, MethodDecl {
+class NsExceptionRaise extends FormattingFunction, Method {
   NsExceptionRaise() { this.hasQualifiedName("NSException", "raise(_:format:arguments:)") }
 
   override int getFormatParameterIndex() { result = 1 }

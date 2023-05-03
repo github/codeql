@@ -24,22 +24,21 @@ std::string constructName(const swift::DeclName& declName) {
 }
 }  // namespace
 
-codeql::ConcreteFuncDecl DeclTranslator::translateFuncDecl(const swift::FuncDecl& decl) {
+codeql::NamedFunction DeclTranslator::translateFuncDecl(const swift::FuncDecl& decl) {
   auto entry = createEntry(decl);
-  fillAbstractFunctionDecl(decl, entry);
+  fillFunction(decl, entry);
   return entry;
 }
 
-codeql::ConstructorDecl DeclTranslator::translateConstructorDecl(
-    const swift::ConstructorDecl& decl) {
+codeql::Initializer DeclTranslator::translateConstructorDecl(const swift::ConstructorDecl& decl) {
   auto entry = createEntry(decl);
-  fillAbstractFunctionDecl(decl, entry);
+  fillFunction(decl, entry);
   return entry;
 }
 
-codeql::DestructorDecl DeclTranslator::translateDestructorDecl(const swift::DestructorDecl& decl) {
+codeql::Deinitializer DeclTranslator::translateDestructorDecl(const swift::DestructorDecl& decl) {
   auto entry = createEntry(decl);
-  fillAbstractFunctionDecl(decl, entry);
+  fillFunction(decl, entry);
   return entry;
 }
 
@@ -173,7 +172,7 @@ codeql::TypeAliasDecl DeclTranslator::translateTypeAliasDecl(const swift::TypeAl
   return entry;
 }
 
-codeql::AccessorDecl DeclTranslator::translateAccessorDecl(const swift::AccessorDecl& decl) {
+codeql::Accessor DeclTranslator::translateAccessorDecl(const swift::AccessorDecl& decl) {
   auto entry = createEntry(decl);
   switch (decl.getAccessorKind()) {
     case swift::AccessorKind::Get:
@@ -201,7 +200,7 @@ codeql::AccessorDecl DeclTranslator::translateAccessorDecl(const swift::Accessor
       entry.is_unsafe_mutable_address = true;
       break;
   }
-  fillAbstractFunctionDecl(decl, entry);
+  fillFunction(decl, entry);
   return entry;
 }
 
@@ -251,8 +250,8 @@ codeql::ModuleDecl DeclTranslator::translateModuleDecl(const swift::ModuleDecl& 
   return entry;
 }
 
-void DeclTranslator::fillAbstractFunctionDecl(const swift::AbstractFunctionDecl& decl,
-                                              codeql::AbstractFunctionDecl& entry) {
+void DeclTranslator::fillFunction(const swift::AbstractFunctionDecl& decl,
+                                  codeql::Function& entry) {
   assert(decl.hasParameterList() && "Expect functions to have a parameter list");
   entry.name = !decl.hasName() ? "(unnamed function decl)" : constructName(decl.getName());
   entry.body = dispatcher.fetchOptionalLabel(decl.getBody());
@@ -328,7 +327,7 @@ void DeclTranslator::fillValueDecl(const swift::ValueDecl& decl, codeql::ValueDe
 
 void DeclTranslator::fillAbstractStorageDecl(const swift::AbstractStorageDecl& decl,
                                              codeql::AbstractStorageDecl& entry) {
-  entry.accessor_decls = dispatcher.fetchRepeatedLabels(decl.getAllAccessors());
+  entry.accessors = dispatcher.fetchRepeatedLabels(decl.getAllAccessors());
   fillValueDecl(decl, entry);
 }
 

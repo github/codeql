@@ -1,10 +1,10 @@
 private import codeql.swift.elements.expr.MethodLookupExpr
-private import codeql.swift.elements.decl.ConstructorDecl
+private import codeql.swift.elements.decl.Initializer
 
 class InitializerLookupExpr extends MethodLookupExpr {
-  InitializerLookupExpr() { super.getMethod() instanceof ConstructorDecl }
+  InitializerLookupExpr() { super.getMethod() instanceof Initializer }
 
-  override ConstructorDecl getMethod() { result = super.getMethod() }
+  override Initializer getMethod() { result = super.getMethod() }
 
   override string toString() { result = this.getMember().toString() }
 }
