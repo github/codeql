@@ -194,7 +194,7 @@ predicate isMultiPartBundle(TopLevel tl) {
  * A comment that starts with '!'. Minifiers avoid removing such comments.
  */
 class ExclamationPointComment extends Comment {
-  ExclamationPointComment() { getLine(0).matches("!%") }
+  ExclamationPointComment() { this.getLine(0).matches("!%") }
 }
 
 /**
