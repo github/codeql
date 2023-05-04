@@ -50,12 +50,8 @@ import com.semmle.util.trap.dependencies.TrapSet;
 import com.semmle.util.trap.pathtransformers.PathTransformer;
 
 public class OdasaOutput {
-	// either these are set ...
 	private final File trapFolder;
 	private final File sourceArchiveFolder;
-
-	// ... or this one is set
-	private final PopulationSpecFile specFile;
 
 	private File currentSourceFile;
 	private TrapSet trapsCreated;
@@ -72,29 +68,21 @@ public class OdasaOutput {
 	OdasaOutput(File outputRoot, Logger log) {
 		this.trapFolder = new File(outputRoot, "trap");
 		this.sourceArchiveFolder = new File(outputRoot, "src_archive");
-		this.specFile = null;
 		this.trackClassOrigins = false;
 		this.log = log;
 	}
 
 	public OdasaOutput(boolean trackClassOrigins, Logger log) {
 		String trapFolderVar = Env.systemEnv().getFirstNonEmpty("CODEQL_EXTRACTOR_JAVA_TRAP_DIR", Var.TRAP_FOLDER.name());
-		if (trapFolderVar != null) {
-			String sourceArchiveVar = Env.systemEnv().getFirstNonEmpty("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR", Var.SOURCE_ARCHIVE.name());
-			if (sourceArchiveVar == null)
-				throw new ResourceError(Var.TRAP_FOLDER + " was set to '" + trapFolderVar + "', but "
-						+ Var.SOURCE_ARCHIVE + " was not set");
-			this.trapFolder = new File(trapFolderVar);
-			this.sourceArchiveFolder = new File(sourceArchiveVar);
-			this.specFile = null;
-		} else {
-			this.trapFolder = null;
-			this.sourceArchiveFolder = null;
-			String specFileVar = Env.systemEnv().get(Var.ODASA_JAVA_LAYOUT);
-			if (specFileVar == null)
-				throw new ResourceError("Neither " + Var.TRAP_FOLDER + " nor " + Var.ODASA_JAVA_LAYOUT + " was set");
-			this.specFile = new PopulationSpecFile(new File(specFileVar));
+		if (trapFolderVar == null) {
+			throw new ResourceError(Var.ODASA_JAVA_LAYOUT + " was not set");
 		}
+		String sourceArchiveVar = Env.systemEnv().getFirstNonEmpty("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR", Var.SOURCE_ARCHIVE.name());
+		if (sourceArchiveVar == null) {
+			throw new ResourceError(Var.SOURCE_ARCHIVE + " was not set");
+    }
+		this.trapFolder = new File(trapFolderVar);
+		this.sourceArchiveFolder = new File(sourceArchiveVar);
 		this.trackClassOrigins = trackClassOrigins;
 		this.log = log;
 	}
@@ -123,11 +111,8 @@ public class OdasaOutput {
 
 	/** The output paths for that file, or null if it shouldn't be included */
 	private SpecFileEntry entryFor() {
-		if (specFile != null)
-			return specFile.getEntryFor(currentSourceFile);
-		else
-			return new SpecFileEntry(trapFolder, sourceArchiveFolder,
-					Arrays.asList(PathTransformer.std().fileAsDatabaseString(currentSourceFile)));
+		return new SpecFileEntry(trapFolder, sourceArchiveFolder,
+				Arrays.asList(PathTransformer.std().fileAsDatabaseString(currentSourceFile)));
 	}
 
 	/*
