@@ -428,18 +428,21 @@ module Filters {
      */
     override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
       exists(Method predMethod, Method succMethod | next(predMethod, succMethod) |
-        // Flow from a post-update node of self  in `pred` to the self parameter of `succ`
+        // Flow from the last post-update node of self  in `pred` to the self parameter of `succ`
         //
         // def a
-        //   foo() ---------+
-        //   @x = 1 ---+    |
-        // end         |    |
-        //             |    |
-        // def b  <----+----+
+        //   foo()
+        //   @x = 1 ---+
+        // end         |
+        //             |
+        // def b  <----+
         //  ...
         //
         selfPostUpdate(pred, predMethod) and
-        selfParameter(succ, succMethod)
+        selfParameter(succ, succMethod) and
+        not exists(DataFlow::Node pred2 |
+          selfPostUpdate(pred2, predMethod) and pred.(DataFlow::LocalSourceNode).flowsTo(pred2)
+          )
         or
         // Flow from the self parameter of `pred` to the self parameter of `succ`
         //
