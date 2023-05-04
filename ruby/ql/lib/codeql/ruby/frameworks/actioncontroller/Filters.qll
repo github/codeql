@@ -442,7 +442,7 @@ module Filters {
         selfParameter(succ, succMethod) and
         not exists(DataFlow::Node pred2 |
           selfPostUpdate(pred2, predMethod) and pred.(DataFlow::LocalSourceNode).flowsTo(pred2)
-          )
+        )
         or
         // Flow from the self parameter of `pred` to the self parameter of `succ`
         //
