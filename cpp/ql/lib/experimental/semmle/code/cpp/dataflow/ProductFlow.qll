@@ -368,6 +368,7 @@ module ProductFlow {
       TJump()
 
     private predicate into1(Flow1::PathNode pred1, Flow1::PathNode succ1, TKind kind) {
+      Flow1::PathGraph::edges(pred1, succ1) and
       exists(DataFlowCall call |
         kind = TInto(call) and
         pred1.getNode().(ArgumentNode).getCall() = call and
@@ -376,6 +377,7 @@ module ProductFlow {
     }
 
     private predicate out1(Flow1::PathNode pred1, Flow1::PathNode succ1, TKind kind) {
+      Flow1::PathGraph::edges(pred1, succ1) and
       exists(ReturnKindExt returnKind, DataFlowCall call |
         kind = TOutOf(call) and
         succ1.getNode() = returnKind.getAnOutNode(call) and
@@ -383,19 +385,21 @@ module ProductFlow {
       )
     }
 
-    private predicate into2(Flow2::PathNode pred1, Flow2::PathNode succ1, TKind kind) {
+    private predicate into2(Flow2::PathNode pred2, Flow2::PathNode succ2, TKind kind) {
+      Flow2::PathGraph::edges(pred2, succ2) and
       exists(DataFlowCall call |
         kind = TInto(call) and
-        pred1.getNode().(ArgumentNode).getCall() = call and
-        succ1.getNode() instanceof ParameterNode
+        pred2.getNode().(ArgumentNode).getCall() = call and
+        succ2.getNode() instanceof ParameterNode
       )
     }
 
-    private predicate out2(Flow2::PathNode pred1, Flow2::PathNode succ1, TKind kind) {
+    private predicate out2(Flow2::PathNode pred2, Flow2::PathNode succ2, TKind kind) {
+      Flow2::PathGraph::edges(pred2, succ2) and
       exists(ReturnKindExt returnKind, DataFlowCall call |
         kind = TOutOf(call) and
-        succ1.getNode() = returnKind.getAnOutNode(call) and
-        pred1.getNode().(ReturnNodeExt).getKind() = returnKind
+        succ2.getNode() = returnKind.getAnOutNode(call) and
+        pred2.getNode().(ReturnNodeExt).getKind() = returnKind
       )
     }
 
