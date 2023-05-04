@@ -741,12 +741,14 @@ func outsideSupportedRange(version string) bool {
 func checkForUnsupportedVersions(v versionInfo) (msg, version string) {
 	if v.goModVersionFound && outsideSupportedRange(v.goModVersion) {
 		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
-			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ")."
+			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion +
+			"). Writing an environment file not specifying any version of Go."
 		version = ""
 		diagnostics.EmitUnsupportedVersionGoMod(msg)
 	} else if v.goEnvVersionFound && outsideSupportedRange(v.goEnvVersion) {
 		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
-			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ")."
+			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion +
+			"). Writing an environment file not specifying any version of Go."
 		version = ""
 		diagnostics.EmitUnsupportedVersionEnvironment(msg)
 	}
@@ -774,7 +776,8 @@ func checkForVersionsNotFound(v versionInfo) (msg, version string) {
 	}
 
 	if v.goEnvVersionFound && !v.goModVersionFound {
-		msg = "No `go.mod` file found. Version " + v.goEnvVersion + " installed in the environment."
+		msg = "No `go.mod` file found. Version " + v.goEnvVersion + " installed in the " +
+			"environment. Writing an environment file not specifying any version of Go."
 		version = ""
 		diagnostics.EmitNoGoMod(msg)
 	}
@@ -796,7 +799,8 @@ func compareVersions(v versionInfo) (msg, version string) {
 		diagnostics.EmitVersionGoModHigherVersionEnvironment(msg)
 	} else {
 		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
-			") is high enough for the version found in the `go.mod` file (" + v.goModVersion + ")."
+			") is high enough for the version found in the `go.mod` file (" + v.goModVersion +
+			"). Writing an environment file not specifying any version of Go."
 		version = ""
 		diagnostics.EmitVersionGoModNotHigherVersionEnvironment(msg)
 	}
