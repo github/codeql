@@ -10,16 +10,17 @@ private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.dataflow.SSA
 
 /**
- * A `LocalSourceNode` for a `self` variable. This is either an implicit `self`
- * parameter or an implicit SSA entry definition.
+ * A `LocalSourceNode` for a `self` variable. This is the implicit `self`
+ * parameter, when it exists, otherwise the implicit SSA entry definition.
  */
 private class SelfLocalSourceNode extends DataFlow::LocalSourceNode {
   private SelfVariable self;
 
   SelfLocalSourceNode() {
-    self = this.(SelfParameterNode).getSelfVariable()
+    self = this.(SelfParameterNodeImpl).getSelfVariable()
     or
-    self = this.(SsaSelfDefinitionNode).getVariable()
+    self = this.(SsaSelfDefinitionNode).getVariable() and
+    not LocalFlow::localFlowSsaParamInput(_, this)
   }
 
   /** Gets the `self` variable. */
@@ -470,22 +471,42 @@ private module Cached {
 import Cached
 
 pragma[nomagic]
+private predicate stepCallProj(DataFlow::LocalSourceNode nodeFrom, StepSummary summary) {
+  StepSummary::stepCall(nodeFrom, _, summary)
+}
+
+pragma[nomagic]
+private predicate isNotSelf(DataFlow::Node n) { not n instanceof SelfParameterNodeImpl }
+
+pragma[nomagic]
 private DataFlow::LocalSourceNode trackModuleAccess(Module m, TypeTracker t) {
   t.start() and m = resolveConstantReadAccess(result.asExpr().getExpr())
   or
-  exists(TypeTracker t2, StepSummary summary |
-    result = trackModuleAccessRec(m, t2, summary) and t = t2.append(summary)
+  // We exclude steps into `self` parameters, and instead rely on the type of the
+  // enclosing module
+  isNotSelf(result) and
+  (
+    exists(TypeTracker t2 | t = t2.stepNoCall(trackModuleAccess(m, t2), result))
+    or
+    exists(StepSummary summary |
+      // non-linear recursion
+      StepSummary::stepCall(trackModuleAccessCall(m, t, summary), result, summary)
+    )
   )
 }
 
-/**
- * We exclude steps into `self` parameters, and instead rely on the type of the
- * enclosing module.
- */
+bindingset[t, summary]
+pragma[inline_late]
+private TypeTracker append(TypeTracker t, StepSummary summary) { result = t.append(summary) }
+
 pragma[nomagic]
-private DataFlow::LocalSourceNode trackModuleAccessRec(Module m, TypeTracker t, StepSummary summary) {
-  StepSummary::step(trackModuleAccess(m, t), result, summary) and
-  not result instanceof SelfParameterNode
+private DataFlow::LocalSourceNode trackModuleAccessCall(Module m, TypeTracker t, StepSummary summary) {
+  exists(TypeTracker t2 |
+    // non-linear recursion
+    result = trackModuleAccess(m, t2) and
+    stepCallProj(result, summary) and
+    t = append(t2, summary)
+  )
 }
 
 pragma[nomagic]
@@ -498,7 +519,7 @@ private predicate hasUserDefinedNew(Module m) {
   exists(DataFlow::MethodNode method |
     // not `getAnAncestor` because singleton methods cannot be included
     singletonMethodOnModule(method.asCallableAstNode(), "new", m.getSuperClass*()) and
-    not method.getSelfParameter().getAMethodCall("allocate").flowsTo(method.getAReturningNode())
+    not method.getSelfParameter().getAMethodCall("allocate").flowsTo(method.getAReturnNode())
   )
 }
 
@@ -610,6 +631,49 @@ private predicate isInstance(DataFlow::Node n, Module tp, boolean exact) {
   exact = false
 }
 
+private predicate localFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
+  localFlowStepTypeTracker(nodeFrom, nodeTo) and
+  summary.toString() = "level"
+}
+
+pragma[nomagic]
+private predicate hasAdjacentTypeCheckedReads(DataFlow::Node node) {
+  hasAdjacentTypeCheckedReads(_, _, node.asExpr(), _)
+}
+
+pragma[nomagic]
+private predicate smallStepNoCallForTrackInstance0(
+  DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary
+) {
+  // We exclude steps into `self` parameters. For those, we instead rely on the type of
+  // the enclosing module
+  StepSummary::smallstepNoCall(nodeFrom, nodeTo, summary) and
+  isNotSelf(nodeTo)
+  or
+  // We exclude steps into type checked variables. For those, we instead rely on the
+  // type being checked against
+  localFlowStep(nodeFrom, nodeTo, summary) and
+  not hasAdjacentTypeCheckedReads(nodeTo)
+}
+
+pragma[nomagic]
+private predicate smallStepNoCallForTrackInstance0Proj(DataFlow::Node nodeFrom, StepSummary summary) {
+  smallStepNoCallForTrackInstance0(nodeFrom, _, summary)
+}
+
+bindingset[t, nodeFrom]
+pragma[inline_late]
+pragma[noopt]
+private TypeTracker smallStepNoCallForTrackInstance(
+  TypeTracker t, DataFlow::Node nodeFrom, DataFlow::Node nodeTo
+) {
+  exists(StepSummary summary |
+    smallStepNoCallForTrackInstance0Proj(nodeFrom, summary) and
+    result = t.append(summary) and
+    smallStepNoCallForTrackInstance0(nodeFrom, nodeTo, summary)
+  )
+}
+
 pragma[nomagic]
 private DataFlow::Node trackInstance(Module tp, boolean exact, TypeTracker t) {
   t.start() and
@@ -631,35 +695,33 @@ private DataFlow::Node trackInstance(Module tp, boolean exact, TypeTracker t) {
     )
   )
   or
-  exists(TypeTracker t2, StepSummary summary |
-    result = trackInstanceRec(tp, t2, exact, summary) and t = t2.append(summary)
+  exists(TypeTracker t2 |
+    t = smallStepNoCallForTrackInstance(t2, trackInstance(tp, exact, t2), result)
+  )
+  or
+  // We exclude steps into `self` parameters. For those, we instead rely on the type of
+  // the enclosing module
+  exists(StepSummary summary |
+    // non-linear recursion
+    StepSummary::smallstepCall(trackInstanceCall(tp, t, exact, summary), result, summary) and
+    isNotSelf(result)
   )
 }
 
-private predicate localFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary) {
-  localFlowStepTypeTracker(nodeFrom, nodeTo) and
-  summary.toString() = "level"
+pragma[nomagic]
+private predicate smallStepCallProj(DataFlow::Node nodeFrom, StepSummary summary) {
+  StepSummary::smallstepCall(nodeFrom, _, summary)
 }
 
 pragma[nomagic]
-private predicate hasAdjacentTypeCheckedReads(DataFlow::Node node) {
-  hasAdjacentTypeCheckedReads(_, _, node.asExpr(), _)
-}
-
-/**
- * We exclude steps into `self` parameters and type checked variables. For those,
- * we instead rely on the type of the enclosing module resp. the type being checked
- * against, and apply an open-world assumption when determining possible dispatch
- * targets.
- */
-pragma[nomagic]
-private DataFlow::Node trackInstanceRec(Module tp, TypeTracker t, boolean exact, StepSummary summary) {
-  exists(DataFlow::Node mid | mid = trackInstance(tp, exact, t) |
-    StepSummary::smallstep(mid, result, summary) and
-    not result instanceof SelfParameterNode
-    or
-    localFlowStep(mid, result, summary) and
-    not hasAdjacentTypeCheckedReads(result)
+private DataFlow::Node trackInstanceCall(
+  Module tp, TypeTracker t, boolean exact, StepSummary summary
+) {
+  exists(TypeTracker t2 |
+    // non-linear recursion
+    result = trackInstance(tp, exact, t2) and
+    smallStepCallProj(result, summary) and
+    t = append(t2, summary)
   )
 }
 
@@ -710,20 +772,27 @@ pragma[nomagic]
 private DataFlow::LocalSourceNode trackBlock(Block block, TypeTracker t) {
   t.start() and result.asExpr().getExpr() = block
   or
-  exists(TypeTracker t2, StepSummary summary |
-    result = trackBlockRec(block, t2, summary) and
-    t = t2.append(summary)
+  // We exclude steps into `self` parameters, which may happen when the code
+  // base contains implementations of `call`.
+  isNotSelf(result) and
+  (
+    exists(TypeTracker t2 | t = t2.stepNoCall(trackBlock(block, t2), result))
+    or
+    exists(StepSummary summary |
+      // non-linear recursion
+      StepSummary::stepCall(trackBlockCall(block, t, summary), result, summary)
+    )
   )
 }
 
-/**
- * We exclude steps into `self` parameters, which may happen when the code
- * base contains implementations of `call`.
- */
 pragma[nomagic]
-private DataFlow::LocalSourceNode trackBlockRec(Block block, TypeTracker t, StepSummary summary) {
-  StepSummary::step(trackBlock(block, t), result, summary) and
-  not result instanceof SelfParameterNode
+private DataFlow::LocalSourceNode trackBlockCall(Block block, TypeTracker t, StepSummary summary) {
+  exists(TypeTracker t2 |
+    // non-linear recursion
+    result = trackBlock(block, t2) and
+    stepCallProj(result, summary) and
+    t = append(t2, summary)
+  )
 }
 
 pragma[nomagic]
@@ -942,7 +1011,7 @@ private predicate paramReturnFlow(
   |
     nodeFromPreExpr = p.getParameter().(NamedParameter).getVariable().getAnAccess()
     or
-    nodeFromPreExpr = p.(SelfParameterNode).getSelfVariable().getAnAccess()
+    nodeFromPreExpr = p.(SelfParameterNodeImpl).getSelfVariable().getAnAccess()
   )
 }
 
@@ -951,31 +1020,53 @@ private DataFlow::Node trackSingletonMethodOnInstance(MethodBase method, string 
   t.start() and
   singletonMethodOnInstance(method, name, result.asExpr().getExpr())
   or
-  exists(TypeTracker t2, StepSummary summary |
-    result = trackSingletonMethodOnInstanceRec(method, name, t2, summary) and
-    t = t2.append(summary) and
-    // Stop flow at redefinitions.
-    //
-    // Example:
-    // ```rb
-    // def x.foo; end
-    // def x.foo; end
-    // x.foo # <- we want to resolve this call to the second definition only
-    // ```
-    not singletonMethodOnInstance(_, name, result.asExpr().getExpr())
-  )
+  (
+    exists(TypeTracker t2 |
+      t = t2.smallstepNoCall(trackSingletonMethodOnInstance(method, name, t2), result)
+    )
+    or
+    exists(StepSummary summary |
+      // non-linear recursion
+      smallStepCallForTrackSingletonMethodOnInstance(trackSingletonMethodOnInstanceCall(method,
+          name, t, summary), result, summary)
+    )
+  ) and
+  // Stop flow at redefinitions.
+  //
+  // Example:
+  // ```rb
+  // def x.foo; end
+  // def x.foo; end
+  // x.foo # <- we want to resolve this call to the second definition only
+  // ```
+  not singletonMethodOnInstance(_, name, result.asExpr().getExpr())
 }
 
 pragma[nomagic]
-private DataFlow::Node trackSingletonMethodOnInstanceRec(
+private predicate smallStepCallForTrackSingletonMethodOnInstance(
+  DataFlow::Node nodeFrom, DataFlow::Node nodeTo, StepSummary summary
+) {
+  StepSummary::smallstepCall(nodeFrom, nodeTo, summary)
+  or
+  paramReturnFlow(nodeFrom, nodeTo, summary)
+}
+
+pragma[nomagic]
+private predicate smallStepCallForTrackSingletonMethodOnInstanceProj(
+  DataFlow::Node nodeFrom, StepSummary summary
+) {
+  smallStepCallForTrackSingletonMethodOnInstance(nodeFrom, _, summary)
+}
+
+pragma[nomagic]
+private DataFlow::Node trackSingletonMethodOnInstanceCall(
   MethodBase method, string name, TypeTracker t, StepSummary summary
 ) {
-  exists(DataFlow::Node mid | mid = trackSingletonMethodOnInstance(method, name, t) |
-    StepSummary::smallstep(mid, result, summary)
-    or
-    paramReturnFlow(mid, result, summary)
-    or
-    localFlowStep(mid, result, summary)
+  exists(TypeTracker t2 |
+    // non-linear recursion
+    result = trackSingletonMethodOnInstance(method, name, t2) and
+    smallStepCallForTrackSingletonMethodOnInstanceProj(result, summary) and
+    t = append(t2, summary)
   )
 }
 

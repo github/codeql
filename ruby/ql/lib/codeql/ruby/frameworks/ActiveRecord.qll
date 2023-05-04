@@ -7,7 +7,6 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.controlflow.CfgNodes
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.internal.DataFlowDispatch
-private import codeql.ruby.dataflow.internal.DataFlowPrivate
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.Stdlib
 private import codeql.ruby.frameworks.Core
@@ -319,19 +318,19 @@ private class ActiveRecordModelFinderCall extends ActiveRecordModelInstantiation
 
 // A `self` reference that may resolve to an active record model object
 private class ActiveRecordModelClassSelfReference extends ActiveRecordModelInstantiation,
-  SsaSelfDefinitionNode
+  DataFlow::SelfParameterNode
 {
   private ActiveRecordModelClass cls;
 
   ActiveRecordModelClassSelfReference() {
     exists(MethodBase m |
-      m = this.getCfgScope() and
+      m = this.getCallable() and
       m.getEnclosingModule() = cls and
       m = cls.getAMethod()
     ) and
     // In a singleton method, `self` refers to the class itself rather than an
     // instance of that class
-    not this.getSelfScope() instanceof SingletonMethod
+    not this.getSelfVariable().getDeclaringScope() instanceof SingletonMethod
   }
 
   final override ActiveRecordModelClass getClass() { result = cls }
