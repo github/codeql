@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include <queue>
 
+#include <picosha2.h>
 #include <swift/AST/SourceFile.h>
 #include <swift/AST/Builtins.h>
 
@@ -14,19 +15,23 @@
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
 #include "swift/extractor/infra/SwiftBodyEmissionStrategy.h"
 #include "swift/extractor/mangler/SwiftMangler.h"
-#include <picosha2.h>
+#include "swift/extractor/infra/log/SwiftAssert.h"
 
 using namespace codeql;
 using namespace std::string_literals;
 namespace fs = std::filesystem;
 
+Logger& main_logger::logger() {
+  static Logger ret{"main"};
+  return ret;
+}
+
+using namespace main_logger;
+
 static void ensureDirectory(const char* label, const fs::path& dir) {
   std::error_code ec;
   fs::create_directories(dir, ec);
-  if (ec) {
-    std::cerr << "Cannot create " << label << " directory: " << ec.message() << "\n";
-    std::abort();
-  }
+  CODEQL_ASSERT(!ec, "Cannot create {} directory ({})", label, ec);
 }
 
 static void archiveFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
@@ -37,10 +42,10 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
 
   std::error_code ec;
   fs::copy(source, destination, fs::copy_options::overwrite_existing, ec);
-
   if (ec) {
-    std::cerr << "Cannot archive source file " << source << " -> " << destination << ": "
-              << ec.message() << "\n";
+    LOG_INFO(
+        "Cannot archive source file {} -> {}, probably a harmless race with another process ({})",
+        source, destination, ec);
   }
 }
 
@@ -73,7 +78,7 @@ static fs::path getFilename(swift::ModuleDecl& module,
   if (lazyDeclaration) {
     // this code will be thrown away in the near future
     auto decl = llvm::dyn_cast<swift::ValueDecl>(lazyDeclaration);
-    assert(decl);
+    CODEQL_ASSERT(decl, "not a ValueDecl");
     auto mangled = mangledDeclName(*decl);
     // mangled name can be too long to use as a file name, so we can't use it directly
     mangled = picosha2::hash256_hex_string(mangled);
@@ -276,11 +281,9 @@ void codeql::extractExtractLazyDeclarations(SwiftExtractorState& state,
   // Just in case
   const int upperBound = 100;
   int iteration = 0;
-  while (!state.pendingDeclarations.empty() && iteration++ < upperBound) {
+  while (!state.pendingDeclarations.empty()) {
+    CODEQL_ASSERT(iteration++ < upperBound,
+                  "Swift extractor reached upper bound while extracting lazy declarations");
     extractLazy(state, compiler);
-  }
-  if (iteration >= upperBound) {
-    std::cerr << "Swift extractor reached upper bound while extracting lazy declarations\n";
-    abort();
   }
 }

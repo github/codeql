@@ -1,11 +1,10 @@
 edges
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:13:16:13:22 | ControlFlowNode for request |
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:23:16:23:22 | ControlFlowNode for request |
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:34:12:34:18 | ControlFlowNode for request |
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:42:12:42:18 | ControlFlowNode for request |
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:54:12:54:18 | ControlFlowNode for request |
 | test.py:5:26:5:32 | ControlFlowNode for ImportMember | test.py:5:26:5:32 | GSSA Variable request |
-| test.py:5:26:5:32 | GSSA Variable request | test.py:0:0:0:0 | ModuleVariableNode for test.request |
+| test.py:5:26:5:32 | GSSA Variable request | test.py:13:16:13:22 | ControlFlowNode for request |
+| test.py:5:26:5:32 | GSSA Variable request | test.py:23:16:23:22 | ControlFlowNode for request |
+| test.py:5:26:5:32 | GSSA Variable request | test.py:34:12:34:18 | ControlFlowNode for request |
+| test.py:5:26:5:32 | GSSA Variable request | test.py:42:12:42:18 | ControlFlowNode for request |
+| test.py:5:26:5:32 | GSSA Variable request | test.py:54:12:54:18 | ControlFlowNode for request |
 | test.py:13:16:13:22 | ControlFlowNode for request | test.py:13:16:13:27 | ControlFlowNode for Attribute |
 | test.py:13:16:13:27 | ControlFlowNode for Attribute | test.py:15:36:15:39 | ControlFlowNode for data |
 | test.py:23:16:23:22 | ControlFlowNode for request | test.py:23:16:23:27 | ControlFlowNode for Attribute |
@@ -21,7 +20,6 @@ edges
 | test.py:54:12:54:23 | ControlFlowNode for Attribute | test.py:55:17:55:20 | ControlFlowNode for data |
 | test.py:55:17:55:20 | ControlFlowNode for data | test.py:47:17:47:19 | ControlFlowNode for arg |
 nodes
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | semmle.label | ModuleVariableNode for test.request |
 | test.py:5:26:5:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | test.py:5:26:5:32 | GSSA Variable request | semmle.label | GSSA Variable request |
 | test.py:13:16:13:22 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |

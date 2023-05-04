@@ -4,6 +4,7 @@
 #include "swift/extractor/trap/generated/TrapTags.h"
 #include "swift/extractor/infra/file/TargetFile.h"
 #include "swift/extractor/infra/file/Path.h"
+#include "swift/extractor/infra/log/SwiftAssert.h"
 #include "swift/extractor/mangler/SwiftMangler.h"
 
 namespace fs = std::filesystem;
@@ -11,6 +12,12 @@ using namespace std::string_literals;
 
 namespace codeql {
 namespace {
+
+Logger& logger() {
+  static Logger ret{"invocation"};
+  return ret;
+}
+
 std::string getModuleId(const std::string_view& name, const std::string_view& hash) {
   auto ret = "module:"s;
   ret += name;
@@ -109,10 +116,8 @@ void replaceMergedModulesImplementation(const SwiftExtractorState& state,
   fs::copy(getTrapPath(state, mergeTarget, TrapType::linkage),
            getTrapPath(state, mergedPartTarget, TrapType::linkage),
            fs::copy_options::overwrite_existing, ec);
-  if (ec) {
-    std::cerr << "unable to replace trap implementation id for merged module '" << name << "' ("
-              << ec.message() << ")";
-  }
+  CODEQL_ASSERT(!ec, "Unable to replace trap implementation id for merged module '{}' ({})", name,
+                ec);
 }
 
 void emitModuleObjectDependencies(const SwiftExtractorState& state,

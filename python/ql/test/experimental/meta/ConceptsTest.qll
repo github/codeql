@@ -297,7 +297,7 @@ class HttpServerHttpResponseTest extends InlineExpectationsTest {
     location.getFile() = file and
     exists(file.getRelativePath()) and
     // we need to do this step since we expect subclasses could override getARelevantTag
-    tag = getARelevantTag() and
+    tag = this.getARelevantTag() and
     (
       exists(Http::Server::HttpResponse response |
         location = response.getLocation() and

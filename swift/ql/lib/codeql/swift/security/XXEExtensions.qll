@@ -3,8 +3,7 @@
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.TaintTracking
-private import codeql.swift.frameworks.AEXML
-private import codeql.swift.frameworks.Libxml2
+private import codeql.swift.frameworks.Xml.Xml
 private import codeql.swift.dataflow.ExternalFlow
 
 /** A data flow sink for XML external entities (XXE) vulnerabilities. */
