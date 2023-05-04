@@ -189,9 +189,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
     not FrameworkCandidatesImpl::isSink(e, _) and
     exists(Callable callable |
       callable = getCallable(e) and
-      (
-        callable.getName().toLowerCase() = ["exists", "notexists"]
-      ) and
+      callable.getName().toLowerCase() = ["exists", "notexists"] and
       callable.getReturnType() instanceof BooleanType
     )
   }
