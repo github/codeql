@@ -1,6 +1,0 @@
-cc_library(
-    name = "date",
-    hdrs = glob(["include/date/*.h"]),
-    includes = ["include"],
-    visibility = ["//visibility:public"],
-)
