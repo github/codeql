@@ -16,7 +16,8 @@ def func():
         # On the next line, we wish to express that it is not possible for `Bar` to be a subclass of `A`.
         # However, we have no "true negative" annotation, so we use the MISSING annotation instead.
         # (Normally, "true negative" is not needed as all applicable annotations must be present,
-        # but for type tracking tests, this would be excessive.)
+        # but these API graph tests work differently, since having all results recorded in annotations 
+        # would be excessive)
         print(Bar)  #$ use=moduleImport("foo").getMember("B").getASubclass() MISSING: use=moduleImport("foo").getMember("A").getASubclass()
         print(Baz)  #$ use=moduleImport("foo").getMember("B").getASubclass() SPURIOUS: use=moduleImport("foo").getMember("A").getASubclass()
 
