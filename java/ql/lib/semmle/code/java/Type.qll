@@ -192,13 +192,18 @@ private predicate typePrefixContains_ext_neq(ParameterizedPrefix pps, Parameteri
 }
 
 pragma[nomagic]
+private TTypeParam parameterizedPrefixWithWildcard(ParameterizedPrefix pps0, Wildcard s) {
+  result = TTypeParam(pps0, s)
+}
+
+pragma[nomagic]
 private predicate typePrefixContainsAux1(
   ParameterizedPrefix pps, ParameterizedPrefix ppt0, RefType s
 ) {
   exists(ParameterizedPrefix pps0 |
     typePrefixContains(pps0, ppt0) and
-    pps = TTypeParam(pps0, s) and
-    s instanceof Wildcard // manual magic, implied by `typeArgumentContains(_, s, t, _)`
+    // `s instanceof Wildcard` is manual magic, implied by `typeArgumentContains(_, s, t, _)`
+    pps = parameterizedPrefixWithWildcard(pps0, s)
   )
 }
 
