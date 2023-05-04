@@ -1,0 +1,7 @@
+extensions:
+
+  - addsTo:
+      pack: codeql/java-tests
+      extensible: supportedThreatModel
+    data:
+      - ["sql"]
