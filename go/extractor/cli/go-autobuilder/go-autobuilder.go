@@ -92,14 +92,6 @@ func getEnvGoSemVer() string {
 	return "v" + goVersion[2:]
 }
 
-func tryBuild(buildFile, cmd string, args ...string) bool {
-	if util.FileExists(buildFile) {
-		log.Printf("%s found, running %s\n", buildFile, cmd)
-		return util.RunCmd(exec.Command(cmd, args...))
-	}
-	return false
-}
-
 // Returns the import path of the package being built, or "" if it cannot be determined.
 func getImportPath() (importpath string) {
 	importpath = os.Getenv("LGTM_INDEX_IMPORT_PATH")
@@ -129,7 +121,7 @@ func getImportPath() (importpath string) {
 // determined.
 func getImportPathFromRepoURL(repourl string) string {
 	// check for scp-like URL as in "git@github.com:github/codeql-go.git"
-	shorturl := regexp.MustCompile("^([^@]+@)?([^:]+):([^/].*?)(\\.git)?$")
+	shorturl := regexp.MustCompile(`^([^@]+@)?([^:]+):([^/].*?)(\.git)?$`)
 	m := shorturl.FindStringSubmatch(repourl)
 	if m != nil {
 		return m[2] + "/" + m[3]
@@ -153,7 +145,7 @@ func getImportPathFromRepoURL(repourl string) string {
 	host := u.Hostname()
 	path := u.Path
 	// strip off leading slashes and trailing `.git` if present
-	path = regexp.MustCompile("^/+|\\.git$").ReplaceAllString(path, "")
+	path = regexp.MustCompile(`^/+|\.git$`).ReplaceAllString(path, "")
 	return host + "/" + path
 }
 
