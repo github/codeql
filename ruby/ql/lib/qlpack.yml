@@ -12,3 +12,4 @@ dependencies:
   codeql/util: ${workspace}
 dataExtensions:
   - codeql/ruby/frameworks/**/model.yml
+warnOnImplicitThis: true
