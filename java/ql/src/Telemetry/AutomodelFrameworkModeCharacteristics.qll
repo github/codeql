@@ -17,8 +17,6 @@ private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclus
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
-Callable getCallable(DataFlow::ParameterNode e) { result = e.getEnclosingCallable() }
-
 /**
  * A meta data extractor. Any Java extraction mode needs to implement exactly
  * one instance of this class.
@@ -94,10 +92,10 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
     Endpoint e, string package, string type, boolean subtypes, string name, string signature,
     string ext, string input
   ) {
-    package = getCallable(e).getDeclaringType().getPackage().toString() and
-    type = getCallable(e).getDeclaringType().getName() and
+    package = FrameworkCandidatesImpl::getCallable(e).getDeclaringType().getPackage().toString() and
+    type = FrameworkCandidatesImpl::getCallable(e).getDeclaringType().getName() and
     subtypes = false and
-    name = getCallable(e).getName() and
+    name = FrameworkCandidatesImpl::getCallable(e).getName() and
     signature = ExternalFlow::paramsString(getCallable(e)) and
     ext = "" and
     exists(int paramIdx | e.isParameterOf(_, paramIdx) | input = "Argument[" + paramIdx + "]")
@@ -105,11 +103,18 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
 
   RelatedLocation getRelatedLocation(Endpoint e, string name) {
     name = "Callable-JavaDoc" and
-    result = getCallable(e).(Documentable).getJavadoc()
+    result = FrameworkCandidatesImpl::getCallable(e).(Documentable).getJavadoc()
     or
     name = "Class-JavaDoc" and
-    result = getCallable(e).getDeclaringType().(Documentable).getJavadoc()
+    result = FrameworkCandidatesImpl::getCallable(e).getDeclaringType().(Documentable).getJavadoc()
   }
+
+  /**
+   * Returns the callable that contains the given endpoint.
+   *
+   * Each Java mode should implement this predicate.
+   */
+  additional Callable getCallable(Endpoint e) { result = e.getEnclosingCallable() }
 }
 
 module CharacteristicsImpl = SharedCharacteristics::SharedCharacteristics<FrameworkCandidatesImpl>;
@@ -169,8 +174,8 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
 
   override predicate appliesToEndpoint(Endpoint e) {
     not FrameworkCandidatesImpl::isSink(e, _) and
-    getCallable(e).getName().matches("is%") and
-    getCallable(e).getReturnType() instanceof BooleanType
+    FrameworkCandidatesImpl::getCallable(e).getName().matches("is%") and
+    FrameworkCandidatesImpl::getCallable(e).getReturnType() instanceof BooleanType
   }
 }
 
@@ -188,7 +193,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   override predicate appliesToEndpoint(Endpoint e) {
     not FrameworkCandidatesImpl::isSink(e, _) and
     exists(Callable callable |
-      callable = getCallable(e) and
+      callable = FrameworkCandidatesImpl::getCallable(e) and
       callable.getName().toLowerCase() = ["exists", "notexists"] and
       callable.getReturnType() instanceof BooleanType
     )
@@ -202,7 +207,8 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    getCallable(e).getDeclaringType().getASupertype*() instanceof TypeThrowable
+    FrameworkCandidatesImpl::getCallable(e).getDeclaringType().getASupertype*() instanceof
+      TypeThrowable
   }
 }
 
@@ -243,7 +249,9 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
 {
   NonPublicMethodCharacteristic() { this = "non-public method" }
 
-  override predicate appliesToEndpoint(Endpoint e) { not getCallable(e).isPublic() }
+  override predicate appliesToEndpoint(Endpoint e) {
+    not FrameworkCandidatesImpl::getCallable(e).isPublic()
+  }
 }
 
 /**
