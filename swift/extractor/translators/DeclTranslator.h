@@ -14,6 +14,8 @@ namespace codeql {
 // "forward declarations" while our extraction is incomplete
 class DeclTranslator : public AstTranslatorBase<DeclTranslator> {
  public:
+  static constexpr std::string_view name = "decl";
+
   using AstTranslatorBase<DeclTranslator>::AstTranslatorBase;
 
   codeql::NamedFunction translateFuncDecl(const swift::FuncDecl& decl);
