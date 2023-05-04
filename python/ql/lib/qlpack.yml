@@ -12,3 +12,4 @@ dependencies:
   codeql/yaml: ${workspace}
 dataExtensions:
   - semmle/python/frameworks/**/model.yml
+warnOnImplicitThis: true
