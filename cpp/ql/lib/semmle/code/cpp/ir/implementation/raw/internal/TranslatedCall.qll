@@ -8,6 +8,7 @@ private import SideEffects
 private import TranslatedElement
 private import TranslatedExpr
 private import TranslatedFunction
+private import DefaultOptions as DefaultOptions
 
 /**
  * Gets the `CallInstruction` from the `TranslatedCallExpr` for the specified expression.
@@ -66,7 +67,13 @@ abstract class TranslatedCall extends TranslatedExpr {
     )
     or
     child = getSideEffects() and
-    result = getParent().getChildSuccessor(this)
+    if this.isNoReturn()
+    then
+      result =
+        any(UnreachedInstruction instr |
+          this.getEnclosingFunction().getFunction() = instr.getEnclosingFunction()
+        )
+    else result = this.getParent().getChildSuccessor(this)
   }
 
   override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
@@ -161,6 +168,8 @@ abstract class TranslatedCall extends TranslatedExpr {
    */
   abstract predicate hasArguments();
 
+  predicate isNoReturn() { none() }
+
   final TranslatedSideEffects getSideEffects() { result.getExpr() = expr }
 }
 
@@ -180,7 +189,7 @@ abstract class TranslatedSideEffects extends TranslatedElement {
   /** DEPRECATED: Alias for getAst */
   deprecated override Locatable getAST() { result = getAst() }
 
-  final override Declaration getFunction() { result = getExpr().getEnclosingDeclaration() }
+  final override Declaration getFunction() { result = getEnclosingDeclaration(getExpr()) }
 
   final override TranslatedElement getChild(int i) {
     result =
@@ -266,6 +275,8 @@ abstract class TranslatedCallExpr extends TranslatedNonConstantExpr, TranslatedC
   }
 
   final override int getNumberOfArguments() { result = expr.getNumberOfArguments() }
+
+  final override predicate isNoReturn() { any(Options opt).exits(expr.getTarget()) }
 }
 
 /**

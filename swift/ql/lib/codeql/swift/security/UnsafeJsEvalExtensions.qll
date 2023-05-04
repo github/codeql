@@ -32,7 +32,7 @@ private class WKWebViewDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
   WKWebViewDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
       ce.getStaticTarget()
-          .(MethodDecl)
+          .(Method)
           .hasQualifiedName("WKWebView",
             [
               "evaluateJavaScript(_:)", "evaluateJavaScript(_:completionHandler:)",
@@ -51,9 +51,7 @@ private class WKWebViewDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
 private class WKUserContentControllerDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
   WKUserContentControllerDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
-      ce.getStaticTarget()
-          .(MethodDecl)
-          .hasQualifiedName("WKUserContentController", "addUserScript(_:)")
+      ce.getStaticTarget().(Method).hasQualifiedName("WKUserContentController", "addUserScript(_:)")
     ).getArgument(0).getExpr() = this.asExpr()
   }
 }
@@ -65,7 +63,7 @@ private class UIWebViewDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
   UIWebViewDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
       ce.getStaticTarget()
-          .(MethodDecl)
+          .(Method)
           .hasQualifiedName(["UIWebView", "WebView"], "stringByEvaluatingJavaScript(from:)")
     ).getArgument(0).getExpr() = this.asExpr()
   }
@@ -78,7 +76,7 @@ private class JSContextDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
   JSContextDefaultUnsafeJsEvalSink() {
     any(CallExpr ce |
       ce.getStaticTarget()
-          .(MethodDecl)
+          .(Method)
           .hasQualifiedName("JSContext", ["evaluateScript(_:)", "evaluateScript(_:withSourceURL:)"])
     ).getArgument(0).getExpr() = this.asExpr()
   }
@@ -89,9 +87,9 @@ private class JSContextDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
  */
 private class JSEvaluateScriptDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
   JSEvaluateScriptDefaultUnsafeJsEvalSink() {
-    any(CallExpr ce |
-      ce.getStaticTarget().(FreeFunctionDecl).hasName("JSEvaluateScript(_:_:_:_:_:_:)")
-    ).getArgument(1).getExpr() = this.asExpr()
+    any(CallExpr ce | ce.getStaticTarget().(FreeFunction).hasName("JSEvaluateScript(_:_:_:_:_:_:)"))
+        .getArgument(1)
+        .getExpr() = this.asExpr()
   }
 }
 
@@ -104,7 +102,7 @@ private class DefaultUnsafeJsEvalAdditionalTaintStep extends UnsafeJsEvalAdditio
       arg =
         any(CallExpr ce |
           ce.getStaticTarget()
-              .(FreeFunctionDecl)
+              .(FreeFunction)
               .hasName([
                   "JSStringCreateWithUTF8CString(_:)", "JSStringCreateWithCharacters(_:_:)",
                   "JSStringRetain(_:)"
@@ -115,7 +113,7 @@ private class DefaultUnsafeJsEvalAdditionalTaintStep extends UnsafeJsEvalAdditio
       nodeTo.asExpr() = arg.getApplyExpr()
     )
     or
-    exists(CallExpr ce, Expr self, AbstractClosureExpr closure |
+    exists(CallExpr ce, Expr self, ClosureExpr closure |
       ce.getStaticTarget()
           .getName()
           .matches(["withContiguousStorageIfAvailable(%)", "withUnsafeBufferPointer(%)"]) and

@@ -17,14 +17,14 @@ import semmle.code.java.dataflow.TaintTracking
 import DataFlow
 
 private class ShortStringLiteral extends StringLiteral {
-  ShortStringLiteral() { getValue().length() < 100 }
+  ShortStringLiteral() { this.getValue().length() < 100 }
 }
 
 class BrokenAlgoLiteral extends ShortStringLiteral {
   BrokenAlgoLiteral() {
-    getValue().regexpMatch(getInsecureAlgorithmRegex()) and
+    this.getValue().regexpMatch(getInsecureAlgorithmRegex()) and
     // Exclude German and French sentences.
-    not getValue().regexpMatch(".*\\p{IsLowercase} des \\p{IsLetter}.*")
+    not this.getValue().regexpMatch(".*\\p{IsLowercase} des \\p{IsLetter}.*")
   }
 }
 

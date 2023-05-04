@@ -51,7 +51,7 @@ private class UrlLaunchOptionsRemoteFlowSource extends RemoteFlowSource {
   }
 }
 
-private class ApplicationWithLaunchOptionsFunc extends FuncDecl {
+private class ApplicationWithLaunchOptionsFunc extends Function {
   ApplicationWithLaunchOptionsFunc() {
     this.getName() = "application(_:" + ["did", "will"] + "FinishLaunchingWithOptions:)" and
     this.getEnclosingDecl().(ClassOrStructDecl).getABaseTypeDecl*().(ProtocolDecl).getName() =

@@ -35,7 +35,7 @@ Type getBaseType(Type typ) {
 
 /* A conversion to a `unsafe.Pointer` */
 class ConversionToUnsafePointer extends DataFlow::TypeCastNode {
-  ConversionToUnsafePointer() { getFinalType(getResultType()) instanceof UnsafePointerType }
+  ConversionToUnsafePointer() { getFinalType(this.getResultType()) instanceof UnsafePointerType }
 }
 
 /* Type casting from a `unsafe.Pointer`.*/
@@ -51,9 +51,9 @@ class UnsafeTypeCastingConf extends TaintTracking::Configuration {
     sink = ca
   }
 
-  override predicate isSource(DataFlow::Node source) { conversionIsSource(source, _) }
+  override predicate isSource(DataFlow::Node source) { this.conversionIsSource(source, _) }
 
-  override predicate isSink(DataFlow::Node sink) { typeCastNodeIsSink(sink, _) }
+  override predicate isSink(DataFlow::Node sink) { this.typeCastNodeIsSink(sink, _) }
 }
 
 /*

@@ -32,7 +32,7 @@ class JsonStringifyCall extends DataFlow::CallNode {
   /**
    * Gets the data flow node holding the input object to be stringified.
    */
-  DataFlow::Node getInput() { result = getArgument(0) }
+  DataFlow::Node getInput() { result = this.getArgument(0) }
 
   /**
    * Gets the data flow node holding the resulting string.

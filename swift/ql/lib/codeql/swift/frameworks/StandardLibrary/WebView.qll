@@ -57,7 +57,7 @@ private class AdoptsWkNavigationDelegate extends Decl {
  */
 private class WKNavigationDelegateSource extends RemoteFlowSource {
   WKNavigationDelegateSource() {
-    exists(ParamDecl p, FuncDecl f, AdoptsWkNavigationDelegate t |
+    exists(ParamDecl p, Function f, AdoptsWkNavigationDelegate t |
       t.getAMember() = f and
       f.getName() =
         [
@@ -170,7 +170,7 @@ private class JsExportedType extends ClassOrStructDecl {
  */
 private class JsExportedSource extends RemoteFlowSource {
   JsExportedSource() {
-    exists(MethodDecl adopter, MethodDecl base |
+    exists(Method adopter, Method base |
       base.getEnclosingDecl() instanceof JsExportedProto and
       adopter.getEnclosingDecl() instanceof JsExportedType
     |

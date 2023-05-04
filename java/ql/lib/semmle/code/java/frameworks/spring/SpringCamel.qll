@@ -10,7 +10,7 @@ import semmle.code.java.frameworks.spring.SpringBean
  * An Apache Camel element in a Spring Beans file.
  */
 class SpringCamelXmlElement extends SpringXmlElement {
-  SpringCamelXmlElement() { getNamespace().getUri() = "http://camel.apache.org/schema/spring" }
+  SpringCamelXmlElement() { this.getNamespace().getUri() = "http://camel.apache.org/schema/spring" }
 }
 
 /** DEPRECATED: Alias for SpringCamelXmlElement */
@@ -22,7 +22,7 @@ deprecated class SpringCamelXMLElement = SpringCamelXmlElement;
  * All Apache Camel Spring elements are nested within a `<camelContext>` or a `<routeContext>`.
  */
 class SpringCamelXmlContext extends SpringCamelXmlElement {
-  SpringCamelXmlContext() { getName() = "camelContext" }
+  SpringCamelXmlContext() { this.getName() = "camelContext" }
 }
 
 /** DEPRECATED: Alias for SpringCamelXmlContext */
@@ -35,7 +35,7 @@ deprecated class SpringCamelXMLContext = SpringCamelXmlContext;
  * `<camelContext>`.
  */
 class SpringCamelXmlRouteContext extends SpringCamelXmlElement {
-  SpringCamelXmlRouteContext() { getName() = "routeContext" }
+  SpringCamelXmlRouteContext() { this.getName() = "routeContext" }
 }
 
 /** DEPRECATED: Alias for SpringCamelXmlRouteContext */
@@ -51,10 +51,10 @@ class SpringCamelXmlRoute extends SpringCamelXmlElement {
   SpringCamelXmlRoute() {
     // A route must either be in a `<routeContext>` or a `<camelContext>`.
     (
-      getParent() instanceof SpringCamelXmlRouteContext or
-      getParent() instanceof SpringCamelXmlContext
+      this.getParent() instanceof SpringCamelXmlRouteContext or
+      this.getParent() instanceof SpringCamelXmlContext
     ) and
-    getName() = "route"
+    this.getName() = "route"
   }
 }
 
@@ -66,8 +66,8 @@ deprecated class SpringCamelXMLRoute = SpringCamelXmlRoute;
  */
 class SpringCamelXmlRouteElement extends SpringCamelXmlElement {
   SpringCamelXmlRouteElement() {
-    getParent() instanceof SpringCamelXmlRoute or
-    getParent() instanceof SpringCamelXmlRouteElement
+    this.getParent() instanceof SpringCamelXmlRoute or
+    this.getParent() instanceof SpringCamelXmlRouteElement
   }
 }
 
@@ -82,12 +82,12 @@ deprecated class SpringCamelXMLRouteElement = SpringCamelXmlRouteElement;
  * route.
  */
 class SpringCamelXmlBeanRef extends SpringCamelXmlRouteElement {
-  SpringCamelXmlBeanRef() { getName() = "bean" }
+  SpringCamelXmlBeanRef() { this.getName() = "bean" }
 
   /**
    * Gets the Spring bean that is referenced by this route bean definition, if any.
    */
-  SpringBean getRefBean() { result.getBeanIdentifier() = getAttribute("ref").getValue() }
+  SpringBean getRefBean() { result.getBeanIdentifier() = this.getAttribute("ref").getValue() }
 
   /**
    * Gets the RefType referred to by `beanType` attribute, if any.
@@ -95,7 +95,7 @@ class SpringCamelXmlBeanRef extends SpringCamelXmlRouteElement {
    * This defines the bean that should be created by Apache Camel as a target of this route. In
    * this case, no pre-existing bean is required.
    */
-  RefType getBeanType() { result.getQualifiedName() = getAttribute("beanType").getValue() }
+  RefType getBeanType() { result.getQualifiedName() = this.getAttribute("beanType").getValue() }
 }
 
 /** DEPRECATED: Alias for SpringCamelXmlBeanRef */
@@ -109,15 +109,15 @@ deprecated class SpringCamelXMLBeanRef = SpringCamelXmlBeanRef;
  * consists of a bean name and optional method name.
  */
 class SpringCamelXmlToElement extends SpringCamelXmlRouteElement {
-  SpringCamelXmlToElement() { getName() = "to" }
+  SpringCamelXmlToElement() { this.getName() = "to" }
 
   /**
    * Gets the URI attribute for this `<to>` element.
    */
-  string getUri() { result = getAttribute("uri").getValue() }
+  string getUri() { result = this.getAttribute("uri").getValue() }
 
   /** DEPRECATED: Alias for getUri */
-  deprecated string getURI() { result = getUri() }
+  deprecated string getURI() { result = this.getUri() }
 }
 
 /** DEPRECATED: Alias for SpringCamelXmlToElement */
@@ -132,20 +132,20 @@ deprecated class SpringCamelXMLToElement = SpringCamelXmlToElement;
  * (if "beanType" is used.
  */
 class SpringCamelXmlMethodElement extends SpringCamelXmlElement {
-  SpringCamelXmlMethodElement() { getName() = "method" }
+  SpringCamelXmlMethodElement() { this.getName() = "method" }
 
   /**
    * Gets the `SpringBean` that this method expression refers to.
    */
   SpringBean getRefBean() {
-    result.getBeanIdentifier() = getAttribute("ref").getValue() or
-    result.getBeanIdentifier() = getAttribute("bean").getValue()
+    result.getBeanIdentifier() = this.getAttribute("ref").getValue() or
+    result.getBeanIdentifier() = this.getAttribute("bean").getValue()
   }
 
   /**
    * Gets the class based on the `beanType` attribute.
    */
-  RefType getBeanType() { result.getQualifiedName() = getAttribute("beanType").getValue() }
+  RefType getBeanType() { result.getQualifiedName() = this.getAttribute("beanType").getValue() }
 }
 
 /** DEPRECATED: Alias for SpringCamelXmlMethodElement */
