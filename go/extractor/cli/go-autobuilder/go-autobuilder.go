@@ -744,9 +744,7 @@ func checkForUnsupportedVersions(v versionInfo) (msg, version string) {
 			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ")."
 		version = ""
 		diagnostics.EmitUnsupportedVersionGoMod(msg)
-	}
-
-	if v.goEnvVersionFound && outsideSupportedRange(v.goEnvVersion) {
+	} else if v.goEnvVersionFound && outsideSupportedRange(v.goEnvVersion) {
 		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
 			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + ")."
 		version = ""
