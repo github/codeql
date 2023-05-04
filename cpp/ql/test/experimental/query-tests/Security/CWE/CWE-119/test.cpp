@@ -221,3 +221,13 @@ void test_missing_call_context(unsigned char *unrelated_buffer, unsigned size) {
   call_memset(unrelated_buffer, size + 5);
   call_memset(buffer, size);
 }
+
+bool unknown();
+
+void repeated_alerts(unsigned size, unsigned offset) {
+  unsigned char* buffer = (unsigned char*)malloc(size);
+  while(unknown()) {
+    ++size;
+  }
+  memset(buffer, 0, size); // BAD
+}
