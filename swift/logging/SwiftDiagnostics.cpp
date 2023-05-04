@@ -45,7 +45,7 @@ std::string SwiftDiagnosticsSource::sourceId() const {
   std::replace(ret.begin(), ret.end(), '_', '-');
   return ret;
 }
-void SwiftDiagnosticsSource::inscribeImpl(const SwiftDiagnosticsSource* source) {
+void SwiftDiagnosticsSource::registerImpl(const SwiftDiagnosticsSource* source) {
   auto [it, inserted] = map().emplace(source->id, source);
   CODEQL_ASSERT(inserted, "duplicate diagnostics source detected with id {}", source->id);
 }

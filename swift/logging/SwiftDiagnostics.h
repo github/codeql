@@ -23,15 +23,17 @@ struct SwiftDiagnosticsSource {
   std::string_view name;
   static constexpr std::string_view extractorName = "swift";
   std::string_view action;
-  std::string_view helpLinks;  // space separated if more than 1. Not a vector to allow constexpr
+  // space separated if more than 1. Not a vector to allow constexpr
+  // TODO(C++20) with vector going constexpr this can be turned to `std::vector<std::string_view>`
+  std::string_view helpLinks;
 
   // for the moment, we only output errors, so no need to store the severity
 
   // registers a diagnostics source for later retrieval with get, if not done yet
-  template <const SwiftDiagnosticsSource* Spec>
-  static void inscribe() {
+  template <const SwiftDiagnosticsSource* Source>
+  static void ensureRegistered() {
     static std::once_flag once;
-    std::call_once(once, inscribeImpl, Spec);
+    std::call_once(once, registerImpl, Source);
   }
 
   // gets a previously inscribed SwiftDiagnosticsSource for the given id. Will abort if none exists
@@ -44,7 +46,7 @@ struct SwiftDiagnosticsSource {
   void emit(std::ostream& out, std::string_view timestamp, std::string_view message) const;
 
  private:
-  static void inscribeImpl(const SwiftDiagnosticsSource* Spec);
+  static void registerImpl(const SwiftDiagnosticsSource* source);
 
   std::string sourceId() const;
   using Map = std::unordered_map<std::string, const SwiftDiagnosticsSource*>;
