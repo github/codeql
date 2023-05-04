@@ -84,6 +84,6 @@ void testInterproc(BigArray *arr) {
 void testCharIndex(BigArray *arr) {
     char *charBuf = (char*) arr->buf;
 
-    charBuf[MAX_SIZE_BYTES - 1] = 0; // GOOD [FALSE POSITIVE]
-    charBuf[MAX_SIZE_BYTES] = 0; // BAD
+    charBuf[MAX_SIZE_BYTES - 1] = 0; // GOOD
+    charBuf[MAX_SIZE_BYTES] = 0; // BAD [FALSE NEGATIVE]
 }

@@ -98,6 +98,7 @@ predicate isConstantSizeOverflowSource(Field f, FieldAddressToPointerArithmeticF
     FieldAddressToPointerArithmeticFlow::flowPath(fieldSource, sink) and
     isFieldAddressSource(f, fieldSource.getNode()) and
     pai.getLeft() = sink.getNode().(DataFlow::InstructionNode).asInstruction() and
+    pai.getElementSize() = f.getUnspecifiedType().(ArrayType).getBaseType().getSize() and
     f.getUnspecifiedType().(ArrayType).getArraySize() = size and
     semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), bound, true, _) and
     delta = bound - size and
