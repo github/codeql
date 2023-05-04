@@ -7,6 +7,9 @@ predicate isInfeasibleInstructionSuccessor(Instruction instr, EdgeKind kind) {
     conditionValue = getConstantValue(instr.(ConditionalBranchInstruction).getCondition()) and
     if conditionValue = 0 then kind instanceof TrueEdge else kind instanceof FalseEdge
   )
+  or
+  instr.getSuccessor(kind) instanceof UnreachedInstruction and
+  kind instanceof GotoEdge
 }
 
 pragma[noinline]
@@ -41,7 +44,9 @@ class ReachableBlock extends IRBlockBase {
  * An instruction that is contained in a reachable block.
  */
 class ReachableInstruction extends Instruction {
-  ReachableInstruction() { this.getBlock() instanceof ReachableBlock }
+  ReachableInstruction() {
+    this.getBlock() instanceof ReachableBlock and not this instanceof UnreachedInstruction
+  }
 }
 
 module Graph {
