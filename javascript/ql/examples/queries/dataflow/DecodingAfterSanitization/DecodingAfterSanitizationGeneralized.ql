@@ -21,8 +21,8 @@ class DecodingCall extends CallNode {
   Node input;
 
   DecodingCall() {
-    getCalleeName().matches("decodeURI%") and
-    input = getArgument(0) and
+    this.getCalleeName().matches("decodeURI%") and
+    input = this.getArgument(0) and
     kind = "URI decoding"
     or
     input = this.(JsonParserCall).getInput() and

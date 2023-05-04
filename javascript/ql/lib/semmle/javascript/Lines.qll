@@ -46,7 +46,7 @@ class Line extends @line, Locatable {
    * If the line does not start with a whitespace character, or with a mixture of
    * different whitespace characters, its indentation character is undefined.
    */
-  string getIndentChar() { result = getText().regexpCapture("(\\s)\\1*\\S.*", 1) }
+  string getIndentChar() { result = this.getText().regexpCapture("(\\s)\\1*\\S.*", 1) }
 
-  override string toString() { result = getText() }
+  override string toString() { result = this.getText() }
 }

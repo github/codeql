@@ -10,3 +10,4 @@ dependencies:
   codeql/util: ${workspace}
 dataExtensions:
   - ext/*.model.yml
+warnOnImplicitThis: true

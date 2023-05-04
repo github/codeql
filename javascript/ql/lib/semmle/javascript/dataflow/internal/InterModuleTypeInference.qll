@@ -426,7 +426,7 @@ private class AnalyzedExportNamespaceSpecifier extends AnalyzedPropertyWrite, Da
   }
 
   override predicate writesValue(AbstractValue baseVal, string propName, AbstractValue value) {
-    baseVal = TAbstractExportsObject(getTopLevel()) and
+    baseVal = TAbstractExportsObject(this.getTopLevel()) and
     propName = astNode.getExportedName() and
     value = TAbstractExportsObject(decl.getReExportedModule())
   }

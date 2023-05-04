@@ -154,6 +154,12 @@ void Log::configure() {
 
 void Log::flushImpl() {
   session.consume(*this);
+  if (text) {
+    textFile.flush();
+  }
+  if (binary) {
+    binary.output.flush();
+  }
 }
 
 Log::LoggerConfiguration Log::getLoggerConfigurationImpl(std::string_view name) {

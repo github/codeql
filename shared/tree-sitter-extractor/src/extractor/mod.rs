@@ -4,10 +4,11 @@ use crate::node_types::{self, EntryKind, Field, NodeTypeMap, Storage, TypeName};
 use crate::trap;
 use std::collections::BTreeMap as Map;
 use std::collections::BTreeSet as Set;
-use std::fmt;
 use std::path::Path;
 
 use tree_sitter::{Language, Node, Parser, Range, Tree};
+
+pub mod simple;
 
 pub fn populate_file(writer: &mut trap::Writer, absolute_path: &Path) -> trap::Label {
     let (file_label, fresh) = writer.global_id(&trap::full_id_for_file(
@@ -632,15 +633,5 @@ fn traverse(tree: &Tree, visitor: &mut Visitor) {
                 break;
             }
         }
-    }
-}
-
-// Numeric indices.
-#[derive(Debug, Copy, Clone)]
-struct Index(usize);
-
-impl fmt::Display for Index {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        write!(f, "{}", self.0)
     }
 }
