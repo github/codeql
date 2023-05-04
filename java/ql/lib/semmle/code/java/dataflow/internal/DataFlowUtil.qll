@@ -87,6 +87,30 @@ pragma[inline]
 predicate localExprFlow(Expr e1, Expr e2) { localFlow(exprNode(e1), exprNode(e2)) }
 
 /**
+ * Holds if data can flow from `e1` to `e2` in zero or more
+ * local (intra-procedural) steps or via local variable intializers
+ * for final variables.
+ */
+pragma[inline]
+predicate localExprOrInitializerFlow(Expr e1, Expr e2) {
+  localOrInitializerFlow(exprNode(e1), exprNode(e2))
+}
+
+/**
+ * Holds if data can flow from `pred` to `succ` in zero or more
+ * local (intra-procedural) steps or via instance or static variable intializers
+ * for final variables.
+ */
+pragma[inline]
+predicate localOrInitializerFlow(Node pred, Node succ) {
+  exists(Variable v | v.isFinal() and pred.asExpr() = v.getInitializer() |
+    localFlow(exprNode(v.getAnAccess()), succ)
+  )
+  or
+  localFlow(pred, succ)
+}
+
+/**
  * Holds if the `FieldRead` is not completely determined by explicit SSA
  * updates.
  */

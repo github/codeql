@@ -42,7 +42,7 @@ private MethodAccess getSystemPropertyFromSystemGetProperties(string propertyNam
     result.getMethod() = getMethod
   ) and
   result.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName and
-  localExprFlowPlusInitializers(any(MethodAccess m |
+  DataFlow::localExprOrInitializerFlow(any(MethodAccess m |
       m.getMethod().getDeclaringType() instanceof TypeSystem and
       m.getMethod().hasName("getProperties")
     ), result.getQualifier())
@@ -172,15 +172,16 @@ private MethodAccess getSystemPropertyFromGuava(string propertyName) {
     ec.getDeclaringType().hasQualifiedName("com.google.common.base", "StandardSystemProperty") and
     // Example: `StandardSystemProperty.JAVA_IO_TMPDIR.value()`
     (
-      localExprFlowPlusInitializers(ec.getAnAccess(), result.getQualifier()) and
+      DataFlow::localExprOrInitializerFlow(ec.getAnAccess(), result.getQualifier()) and
       result.getMethod().hasName("value")
     )
     or
     // Example: `System.getProperty(StandardSystemProperty.JAVA_IO_TMPDIR.key())`
     exists(MethodAccess keyMa |
-      localExprFlowPlusInitializers(ec.getAnAccess(), keyMa.getQualifier()) and
+      DataFlow::localExprOrInitializerFlow(ec.getAnAccess(), keyMa.getQualifier()) and
       keyMa.getMethod().hasName("key") and
-      localExprFlowPlusInitializers(keyMa, result.(MethodAccessSystemGetProperty).getArgument(0))
+      DataFlow::localExprOrInitializerFlow(keyMa,
+        result.(MethodAccessSystemGetProperty).getArgument(0))
     )
   |
     ec.hasName("JAVA_VERSION") and propertyName = "java.version"
@@ -261,26 +262,4 @@ private MethodAccess getSystemPropertyFromSpringProperties(string propertyName) 
     m.hasName("getProperty")
   ) and
   result.getArgument(0).(CompileTimeConstantExpr).getStringValue() = propertyName
-}
-
-/**
- * Holds if data can flow from `e1` to `e2` in zero or more
- * local (intra-procedural) steps or via local variable intializers
- * for final variables.
- */
-private predicate localExprFlowPlusInitializers(Expr e1, Expr e2) {
-  localFlowPlusInitializers(DataFlow::exprNode(e1), DataFlow::exprNode(e2))
-}
-
-/**
- * Holds if data can flow from `pred` to `succ` in zero or more
- * local (intra-procedural) steps or via instance or static variable intializers
- * for final variables.
- */
-private predicate localFlowPlusInitializers(DataFlow::Node pred, DataFlow::Node succ) {
-  exists(Variable v | v.isFinal() and pred.asExpr() = v.getInitializer() |
-    DataFlow::localFlow(DataFlow::exprNode(v.getAnAccess()), succ)
-  )
-  or
-  DataFlow::localFlow(pred, succ)
 }

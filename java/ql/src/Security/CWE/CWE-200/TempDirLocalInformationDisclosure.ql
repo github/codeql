@@ -20,8 +20,7 @@ abstract private class MethodFileSystemFileCreation extends Method {
   MethodFileSystemFileCreation() { this.getDeclaringType() instanceof TypeFile }
 }
 
-private class MethodFileDirectoryCreation extends MethodFileSystemFileCreation {
-  MethodFileDirectoryCreation() { this.hasName(["mkdir", "mkdirs"]) }
+private class MethodFileDirectoryCreation extends MethodFileSystemFileCreation instanceof MethodFileCreatesDirs {
 }
 
 private class MethodFileFileCreation extends MethodFileSystemFileCreation {
@@ -207,7 +206,7 @@ class MethodAccessInsecureFileCreateTempFile extends MethodAccessInsecureFileCre
       this.getNumArgument() = 2
       or
       // The default temporary directory is used when the last argument of `File.createTempFile(string, string, File)` is `null`
-      DataFlow::localExprFlow(any(NullLiteral n), this.getArgument(2))
+      DataFlow::localExprOrInitializerFlow(any(NullLiteral n), this.getArgument(2))
     )
   }
 
