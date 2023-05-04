@@ -5,8 +5,17 @@
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_cat.h"
 #include "absl/strings/str_split.h"
+#include "swift/logging/SwiftAssert.h"
 
 namespace codeql {
+
+namespace {
+Logger& logger() {
+  static Logger ret{"diagnostics"};
+  return ret;
+}
+}  // namespace
+
 void SwiftDiagnosticsSource::emit(std::ostream& out,
                                   std::string_view timestamp,
                                   std::string_view message) const {
@@ -35,6 +44,10 @@ std::string SwiftDiagnosticsSource::sourceId() const {
   auto ret = absl::StrJoin({extractorName, programName, id}, "/");
   std::replace(ret.begin(), ret.end(), '_', '-');
   return ret;
+}
+void SwiftDiagnosticsSource::inscribeImpl(const SwiftDiagnosticsSource* source) {
+  auto [it, inserted] = map().emplace(source->id, source);
+  CODEQL_ASSERT(inserted, "duplicate diagnostics source detected with id {}", source->id);
 }
 
 void SwiftDiagnosticsDumper::write(const char* buffer, std::size_t bufferSize) {

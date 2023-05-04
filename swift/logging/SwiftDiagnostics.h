@@ -31,10 +31,7 @@ struct SwiftDiagnosticsSource {
   template <const SwiftDiagnosticsSource* Spec>
   static void inscribe() {
     static std::once_flag once;
-    std::call_once(once, [] {
-      auto [it, inserted] = map().emplace(Spec->id, Spec);
-      assert(inserted);
-    });
+    std::call_once(once, inscribeImpl, Spec);
   }
 
   // gets a previously inscribed SwiftDiagnosticsSource for the given id. Will abort if none exists
@@ -47,6 +44,8 @@ struct SwiftDiagnosticsSource {
   void emit(std::ostream& out, std::string_view timestamp, std::string_view message) const;
 
  private:
+  static void inscribeImpl(const SwiftDiagnosticsSource* Spec);
+
   std::string sourceId() const;
   using Map = std::unordered_map<std::string, const SwiftDiagnosticsSource*>;
 
