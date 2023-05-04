@@ -25,19 +25,21 @@ defaults:
 
 jobs:
   test:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
       - name: Check formatting
         run: cargo fmt --all -- --check
       - name: Run tests
         run: cargo test --verbose
-      - name: Run clippy
   fmt:
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v3
       - name: Check formatting
         run: cargo fmt --check
   clippy:
+    runs-on: ubuntu-latest  
     steps:
       - uses: actions/checkout@v3
       - name: Run clippy
