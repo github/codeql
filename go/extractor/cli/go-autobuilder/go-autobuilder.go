@@ -793,7 +793,7 @@ func compareVersions(v versionInfo) (msg, version string) {
 	if semver.Compare("v"+v.goModVersion, "v"+v.goEnvVersion) > 0 {
 		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
 			") is lower than the version found in the `go.mod` file (" + v.goModVersion +
-			").\nWriting an environment file specifying the version of Go from the `go.mod` " +
+			"). Writing an environment file specifying the version of Go from the `go.mod` " +
 			"file (" + v.goModVersion + ")."
 		version = v.goModVersion
 		diagnostics.EmitVersionGoModHigherVersionEnvironment(msg)
