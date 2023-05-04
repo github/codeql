@@ -1,7 +1,11 @@
 cc_library(
-    name = "log",
+    name = "logging",
     srcs = glob(["*.cpp"]),
     hdrs = glob(["*.h"]),
     visibility = ["//visibility:public"],
-    deps = ["@binlog"],
+    deps = [
+        "@absl//absl/strings",
+        "@binlog",
+        "@json",
+    ],
 )

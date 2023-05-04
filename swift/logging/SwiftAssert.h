@@ -2,7 +2,7 @@
 
 #include <cstdlib>
 
-#include "swift/extractor/infra/log/SwiftLogging.h"
+#include "swift/logging/SwiftLogging.h"
 
 // assert CONDITION, which is always evaluated (once) regardless of the build type. If
 // CONDITION is not satisfied, emit a critical log optionally using provided format and arguments,

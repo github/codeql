@@ -13,7 +13,7 @@
 #include "swift/extractor/infra/SwiftBodyEmissionStrategy.h"
 #include "swift/extractor/infra/SwiftMangledName.h"
 #include "swift/extractor/config/SwiftExtractorState.h"
-#include "swift/extractor/infra/log/SwiftAssert.h"
+#include "swift/logging/SwiftAssert.h"
 
 namespace codeql {
 
