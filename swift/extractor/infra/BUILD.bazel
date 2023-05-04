@@ -9,7 +9,7 @@ swift_cc_library(
         "//swift/extractor/config",
         "//swift/extractor/infra/file",
         "//swift/extractor/trap",
-        "//swift/log",
+        "//swift/logging",
         "//swift/third_party/swift-llvm-support",
     ],
 )

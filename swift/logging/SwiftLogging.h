@@ -13,7 +13,7 @@
 #include <binlog/adapt_stdoptional.hpp>
 #include <binlog/adapt_stdvariant.hpp>
 
-#include "swift/log/SwiftDiagnostics.h"
+#include "swift/logging/SwiftDiagnostics.h"
 
 // Logging macros. These will call `logger()` to get a Logger instance, picking up any `logger`
 // defined in the current scope. Domain-specific loggers can be added or used by either:

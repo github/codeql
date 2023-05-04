@@ -1,4 +1,4 @@
-#include "swift/log/SwiftDiagnostics.h"
+#include "swift/logging/SwiftDiagnostics.h"
 
 #include <binlog/Entries.hpp>
 #include <nlohmann/json.hpp>

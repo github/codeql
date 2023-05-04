@@ -11,7 +11,7 @@ swift_cc_library(
         exclude = ["FsLogger.h"],
     ) + [":path_hash_workaround"],
     visibility = ["//swift:__subpackages__"],
-    deps = ["//swift/log"],
+    deps = ["//swift/logging"],
 )
 
 genrule(

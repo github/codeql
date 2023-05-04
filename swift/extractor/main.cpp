@@ -18,7 +18,7 @@
 #include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/file/Path.h"
-#include "swift/log/SwiftAssert.h"
+#include "swift/logging/SwiftAssert.h"
 
 using namespace std::string_literals;
 using namespace codeql::main_logger;

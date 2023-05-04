@@ -1,4 +1,4 @@
-#include "swift/log/SwiftLogging.h"
+#include "swift/logging/SwiftLogging.h"
 
 namespace codeql {
 namespace fs_logger {
