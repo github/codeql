@@ -190,8 +190,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
     exists(Callable callable |
       callable = getCallable(e) and
       (
-        callable.getName().toLowerCase() = "exists" or
-        callable.getName().toLowerCase() = "notexists"
+        callable.getName().toLowerCase() = ["exists", "notexists"]
       ) and
       callable.getReturnType() instanceof BooleanType
     )
