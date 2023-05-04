@@ -8,6 +8,8 @@
 #include <cassert>
 #include <fstream>
 #include <filesystem>
+#include <sstream>
+#include <mutex>
 
 namespace codeql {
 
@@ -16,16 +18,27 @@ extern const std::string_view programName;
 // Models a diagnostic source for Swift, holding static information that goes out into a diagnostic
 // These are internally stored into a map on id's. A specific error log can use binlog's category
 // as id, which will then be used to recover the diagnostic source while dumping.
-class SwiftDiagnosticsSource {
- public:
-  // creates a SwiftDiagnosticsSource with the given data
-  static void create(std::string_view id,
-                     std::string name,
-                     std::vector<std::string> helpLinks,
-                     std::string action);
+struct SwiftDiagnosticsSource {
+  std::string_view id;
+  std::string_view name;
+  static constexpr std::string_view extractorName = "swift";
+  std::string_view action;
+  std::string_view helpLinks;  // space separated if more than 1. Not a vector to allow constexpr
 
-  // gets a previously created SwiftDiagnosticsSource for the given id. Will abort if none exists
-  static const SwiftDiagnosticsSource& get(const std::string& id) { return map().at(id); }
+  // for the moment, we only output errors, so no need to store the severity
+
+  // registers a diagnostics source for later retrieval with get, if not done yet
+  template <const SwiftDiagnosticsSource* Spec>
+  static void inscribe() {
+    static std::once_flag once;
+    std::call_once(once, [] {
+      auto [it, inserted] = map().emplace(Spec->id, Spec);
+      assert(inserted);
+    });
+  }
+
+  // gets a previously inscribed SwiftDiagnosticsSource for the given id. Will abort if none exists
+  static const SwiftDiagnosticsSource& get(const std::string& id) { return *map().at(id); }
 
   // emit a JSON diagnostics for this source with the given timestamp and message to out
   // A plaintextMessage is used that includes both the message and the action to take. Dots are
@@ -34,26 +47,13 @@ class SwiftDiagnosticsSource {
   void emit(std::ostream& out, std::string_view timestamp, std::string_view message) const;
 
  private:
-  using Map = std::unordered_map<std::string, SwiftDiagnosticsSource>;
-
-  std::string id;
-  std::string name;
-  static constexpr std::string_view extractorName = "swift";
-
-  // for the moment, we only output errors, so no need to store the severity
-
-  std::vector<std::string> helpLinks;
-  std::string action;
+  std::string sourceId() const;
+  using Map = std::unordered_map<std::string, const SwiftDiagnosticsSource*>;
 
   static Map& map() {
     static Map ret;
     return ret;
   }
-
-  SwiftDiagnosticsSource(std::string_view internalId,
-                         std::string&& name,
-                         std::vector<std::string>&& helpLinks,
-                         std::string&& action);
 };
 
 // An output modeling binlog's output stream concept that intercepts binlog entries and translates
@@ -76,18 +76,12 @@ class SwiftDiagnosticsDumper {
   binlog::PrettyPrinter timestampedMessagePrinter{"%u %m", "%Y-%m-%dT%H:%M:%S.%NZ"};
 };
 
-namespace diagnostics {
-inline void internal_error() {
-  SwiftDiagnosticsSource::create("internal_error", "Internal error", {},
-                                 "Contact us about this issue");
-}
-}  // namespace diagnostics
-
-namespace detail {
-template <void (*Func)()>
-inline void createSwiftDiagnosticsSourceOnce() {
-  static int ignore = (Func(), 0);
-  std::ignore = ignore;
-}
-}  // namespace detail
 }  // namespace codeql
+
+namespace codeql_diagnostics {
+constexpr codeql::SwiftDiagnosticsSource internal_error{
+    "internal_error",
+    "Internal error",
+    "Contact us about this issue",
+};
+}  // namespace codeql_diagnostics

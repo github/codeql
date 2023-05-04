@@ -43,17 +43,15 @@
 
 #define LOG_WITH_LEVEL(LEVEL, ...) LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, , __VA_ARGS__)
 
-// Emit errors with a specified diagnostics ID. This must be the name of a function in the
-// codeql::diagnostics namespace, which must call SwiftDiagnosticSource::create with ID as first
-// argument. This function will be called at most once during the program execution.
-// See codeql::diagnostics::internal_error below as an example.
+// Emit errors with a specified diagnostics ID. This must be the name of a `SwiftDiagnosticsSource`
+// defined in the `codeql_diagnostics` namespace, which must have `id` equal to its name.
 #define DIAGNOSE_CRITICAL(ID, ...) DIAGNOSE_WITH_LEVEL(critical, ID, __VA_ARGS__)
 #define DIAGNOSE_ERROR(ID, ...) DIAGNOSE_WITH_LEVEL(error, ID, __VA_ARGS__)
 
-#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, ...)                                      \
-  do {                                                                           \
-    codeql::detail::createSwiftDiagnosticsSourceOnce<codeql::diagnostics::ID>(); \
-    LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, ID, __VA_ARGS__);                         \
+#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, ...)                              \
+  do {                                                                   \
+    codeql::SwiftDiagnosticsSource::inscribe<&codeql_diagnostics::ID>(); \
+    LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, ID, __VA_ARGS__);                 \
   } while (false)
 
 // avoid calling into binlog's original macros
