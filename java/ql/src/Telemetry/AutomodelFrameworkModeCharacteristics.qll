@@ -133,6 +133,23 @@ class Endpoint = FrameworkCandidatesImpl::Endpoint;
 class FrameworkModeMetadataExtractor extends MetadataExtractor {
   FrameworkModeMetadataExtractor() { this = "FrameworkModeMetadataExtractor" }
 
+  /**
+   * By convention, the subtypes property of the MaD declaration should only be
+   * true when there _can_ exist any subtypes with a different implementation.
+   *
+   * It would technically be ok to always use the value 'true', but this would
+   * break convention.
+   */
+  boolean considerSubtypes(Callable callable) {
+    if
+      callable.isStatic() or
+      callable.getDeclaringType().isStatic() or
+      callable.isFinal() or
+      callable.getDeclaringType().isFinal()
+    then result = false
+    else result = true
+  }
+
   override predicate hasMetadata(
     Endpoint e, string package, string type, boolean subtypes, string name, string signature,
     int input
@@ -141,15 +158,7 @@ class FrameworkModeMetadataExtractor extends MetadataExtractor {
       e.asParameter() = callable.getParameter(input) and
       package = callable.getDeclaringType().getPackage().getName() and
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
-      (
-        if
-          callable.isStatic() or
-          callable.getDeclaringType().isStatic() or
-          callable.isFinal() or
-          callable.getDeclaringType().isFinal()
-        then subtypes = true
-        else subtypes = false
-      ) and
+      subtypes = considerSubtypes(callable) and
       name = e.toString() and
       signature = ExternalFlow::paramsString(callable)
     )
