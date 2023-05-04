@@ -737,12 +737,6 @@ func checkForUnsupportedVersions(v versionInfo) (msg, version string) {
 			"). Writing an environment file not specifying any version of Go."
 		version = ""
 		diagnostics.EmitUnsupportedVersionGoMod(msg)
-	} else if v.goEnvVersionFound && outsideSupportedRange(v.goEnvVersion) {
-		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
-			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion +
-			"). Writing an environment file not specifying any version of Go."
-		version = ""
-		diagnostics.EmitUnsupportedVersionEnvironment(msg)
 	}
 
 	return msg, version
@@ -768,10 +762,20 @@ func checkForVersionsNotFound(v versionInfo) (msg, version string) {
 	}
 
 	if v.goEnvVersionFound && !v.goModVersionFound {
-		msg = "No `go.mod` file found. Version " + v.goEnvVersion + " installed in the " +
-			"environment. Writing an environment file not specifying any version of Go."
-		version = ""
-		diagnostics.EmitNoGoMod(msg)
+		if outsideSupportedRange(v.goEnvVersion) {
+			msg = "No `go.mod` file found. The version of Go installed in the environment (" +
+				v.goEnvVersion + ") is outside of the supported range (" + minGoVersion + "-" +
+				maxGoVersion + "). Writing an environment file specifying the maximum supported " +
+				"version of Go (" + maxGoVersion + ")."
+			version = maxGoVersion
+			diagnostics.EmitNoGoModAndGoEnvUnsupported(msg)
+		} else {
+			msg = "No `go.mod` file found. Version " + v.goEnvVersion + " installed in the " +
+				"environment is supported. Writing an environment file not specifying any " +
+				"version of Go."
+			version = ""
+			diagnostics.EmitNoGoModAndGoEnvSupported(msg)
+		}
 	}
 
 	return msg, version
@@ -789,10 +793,18 @@ func compareVersions(v versionInfo) (msg, version string) {
 			"file (" + v.goModVersion + ")."
 		version = v.goModVersion
 		diagnostics.EmitVersionGoModHigherVersionEnvironment(msg)
-	} else {
+	} else if outsideSupportedRange(v.goEnvVersion) {
 		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
-			") is high enough for the version found in the `go.mod` file (" + v.goModVersion +
-			"). Writing an environment file not specifying any version of Go."
+			") is outside of the supported range (" + minGoVersion + "-" + maxGoVersion + "). " +
+			"Writing an environment file specifying the version of Go from the `go.mod` file (" +
+			v.goModVersion + ")."
+		version = v.goModVersion
+		diagnostics.EmitVersionGoModSupportedAndGoEnvUnsupported(msg)
+	} else {
+
+		msg = "The version of Go installed in the environment (" + v.goEnvVersion +
+			") is supported and is high enough for the version found in the `go.mod` file (" +
+			v.goModVersion + "). Writing an environment file not specifying any version of Go."
 		version = ""
 		diagnostics.EmitVersionGoModNotHigherVersionEnvironment(msg)
 	}
