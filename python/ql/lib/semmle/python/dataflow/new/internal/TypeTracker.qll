@@ -224,6 +224,74 @@ private module Cached {
 
 private import Cached
 
+pragma[nomagic]
+private predicate stepNoCallProj(TypeTrackingNode nodeFrom, StepSummary summary) {
+  stepNoCall(nodeFrom, _, summary)
+}
+
+bindingset[nodeFrom, t]
+pragma[inline_late]
+pragma[noopt]
+private TypeTracker stepNoCallInlineLate(
+  TypeTracker t, TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo
+) {
+  exists(StepSummary summary |
+    stepNoCallProj(nodeFrom, summary) and
+    result = t.append(summary) and
+    stepNoCall(nodeFrom, nodeTo, summary)
+  )
+}
+
+pragma[nomagic]
+private predicate stepCallProj(TypeTrackingNode nodeFrom, StepSummary summary) {
+  stepCall(nodeFrom, _, summary)
+}
+
+bindingset[nodeFrom, t]
+pragma[inline_late]
+pragma[noopt]
+private TypeTracker stepCallInlineLate(
+  TypeTracker t, TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo
+) {
+  exists(StepSummary summary |
+    stepCallProj(nodeFrom, summary) and
+    result = t.append(summary) and
+    stepCall(nodeFrom, nodeTo, summary)
+  )
+}
+
+pragma[nomagic]
+private predicate smallstepNoCallProj(Node nodeFrom, StepSummary summary) {
+  smallstepNoCall(nodeFrom, _, summary)
+}
+
+bindingset[nodeFrom, t]
+pragma[inline_late]
+pragma[noopt]
+private TypeTracker smallstepNoCallInlineLate(TypeTracker t, Node nodeFrom, Node nodeTo) {
+  exists(StepSummary summary |
+    smallstepNoCallProj(nodeFrom, summary) and
+    result = t.append(summary) and
+    smallstepNoCall(nodeFrom, nodeTo, summary)
+  )
+}
+
+pragma[nomagic]
+private predicate smallstepCallProj(Node nodeFrom, StepSummary summary) {
+  smallstepCall(nodeFrom, _, summary)
+}
+
+bindingset[nodeFrom, t]
+pragma[inline_late]
+pragma[noopt]
+private TypeTracker smallstepCallInlineLate(TypeTracker t, Node nodeFrom, Node nodeTo) {
+  exists(StepSummary summary |
+    smallstepCallProj(nodeFrom, summary) and
+    result = t.append(summary) and
+    smallstepCall(nodeFrom, nodeTo, summary)
+  )
+}
+
 /**
  * Holds if `nodeFrom` is being written to the `content` of the object in `nodeTo`.
  *
@@ -298,6 +366,24 @@ class StepSummary extends TStepSummary {
 module StepSummary {
   /**
    * Gets the summary that corresponds to having taken a forwards
+   * inter-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate should normally not be used; consider using `step`
+   * instead.
+   */
+  predicate stepCall = Cached::stepCall/3;
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * intra-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate should normally not be used; consider using `step`
+   * instead.
+   */
+  predicate stepNoCall = Cached::stepNoCall/3;
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    *
    * This predicate is inlined, which enables better join-orders when
@@ -312,6 +398,24 @@ module StepSummary {
     or
     stepCall(nodeFrom, nodeTo, summary)
   }
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * inter-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate should normally not be used; consider using `step`
+   * instead.
+   */
+  predicate smallstepNoCall = Cached::smallstepNoCall/3;
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * intra-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate should normally not be used; consider using `step`
+   * instead.
+   */
+  predicate smallstepCall = Cached::smallstepCall/3;
 
   /**
    * Gets the summary that corresponds to having taken a forwards
@@ -427,14 +531,64 @@ class TypeTracker extends TTypeTracker {
 
   /**
    * Gets the summary that corresponds to having taken a forwards
+   * intra-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate should normally not be used; consider using `step`
+   * instead.
+   */
+  pragma[inline]
+  TypeTracker stepNoCall(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo) {
+    result = stepNoCallInlineLate(this, nodeFrom, nodeTo)
+  }
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * inter-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate should normally not be used; consider using `step`
+   * instead.
+   */
+  pragma[inline]
+  TypeTracker stepCall(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo) {
+    result = stepCallInlineLate(this, nodeFrom, nodeTo)
+  }
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
    * heap and/or inter-procedural step from `nodeFrom` to `nodeTo`.
    */
   pragma[inline]
   TypeTracker step(TypeTrackingNode nodeFrom, TypeTrackingNode nodeTo) {
-    exists(StepSummary summary |
-      StepSummary::step(nodeFrom, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
-      result = this.append(pragma[only_bind_into](summary))
-    )
+    result = this.stepNoCall(nodeFrom, nodeTo)
+    or
+    result = this.stepCall(nodeFrom, nodeTo)
+  }
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * intra-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate should normally not be used; consider using `step`
+   * instead.
+   */
+  pragma[inline]
+  TypeTracker smallstepNoCall(Node nodeFrom, Node nodeTo) {
+    result = smallstepNoCallInlineLate(this, nodeFrom, nodeTo)
+    or
+    simpleLocalFlowStep(nodeFrom, nodeTo) and
+    result = this
+  }
+
+  /**
+   * Gets the summary that corresponds to having taken a forwards
+   * inter-procedural step from `nodeFrom` to `nodeTo`.
+   *
+   * This predicate should normally not be used; consider using `step`
+   * instead.
+   */
+  pragma[inline]
+  TypeTracker smallstepCall(Node nodeFrom, Node nodeTo) {
+    result = smallstepCallInlineLate(this, nodeFrom, nodeTo)
   }
 
   /**
@@ -463,13 +617,9 @@ class TypeTracker extends TTypeTracker {
    */
   pragma[inline]
   TypeTracker smallstep(Node nodeFrom, Node nodeTo) {
-    exists(StepSummary summary |
-      StepSummary::smallstep(nodeFrom, nodeTo, summary) and
-      result = this.append(summary)
-    )
+    result = this.smallstepNoCall(nodeFrom, nodeTo)
     or
-    simpleLocalFlowStep(nodeFrom, nodeTo) and
-    result = this
+    result = this.smallstepCall(nodeFrom, nodeTo)
   }
 }
 
