@@ -137,8 +137,8 @@ module SharedCharacteristics<CandidateSig Candidate> {
    */
   abstract class EndpointCharacteristic extends string {
     /**
-     * The name of the characteristic. This should describe some property of an
-     * endpoint that is meaningful for determining whether it's a sink, and if so, of which sink type.
+     * Holds for the string that is the name of the characteristic. This should describe some property of an endpoint
+     * that is meaningful for determining whether it's a sink, and if so, of which sink type.
      */
     bindingset[this]
     EndpointCharacteristic() { any() }
