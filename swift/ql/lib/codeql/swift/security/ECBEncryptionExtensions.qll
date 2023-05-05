@@ -22,16 +22,16 @@ abstract class EcbEncryptionSource extends DataFlow::Node { }
 abstract class EcbEncryptionSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for ECB encryption vulnerabilities.
+ * A barrier for ECB encryption vulnerabilities.
  */
-abstract class EcbEncryptionSanitizer extends DataFlow::Node { }
+abstract class EcbEncryptionBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class EcbEncryptionAdditionalTaintStep extends Unit {
+class EcbEncryptionAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to ECB encryption vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
