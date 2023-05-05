@@ -20,9 +20,9 @@ abstract class UncontrolledFormatStringSink extends DataFlow::Node { }
 abstract class UncontrolledFormatStringBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class UncontrolledFormatStringAdditionalTaintStep extends Unit {
+class UncontrolledFormatStringAdditionalFlowStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 

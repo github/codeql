@@ -26,7 +26,7 @@ module UnsafeWebViewFetchConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof UnsafeWebViewFetchBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(UnsafeWebViewFetchAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(UnsafeWebViewFetchAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

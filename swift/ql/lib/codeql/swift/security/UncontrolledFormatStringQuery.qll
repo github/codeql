@@ -21,7 +21,7 @@ module TaintedFormatConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof UncontrolledFormatStringBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(UncontrolledFormatStringAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(UncontrolledFormatStringAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

@@ -23,7 +23,7 @@ module CleartextLoggingConfig implements DataFlow::ConfigSig {
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-    any(CleartextLoggingAdditionalTaintStep s).step(n1, n2)
+    any(CleartextLoggingAdditionalFlowStep s).step(n1, n2)
   }
 }
 

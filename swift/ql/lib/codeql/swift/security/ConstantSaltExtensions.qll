@@ -19,11 +19,11 @@ abstract class ConstantSaltSink extends DataFlow::Node { }
 abstract class ConstantSaltBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class ConstantSaltAdditionalTaintStep extends Unit {
+class ConstantSaltAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to constant salt vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);

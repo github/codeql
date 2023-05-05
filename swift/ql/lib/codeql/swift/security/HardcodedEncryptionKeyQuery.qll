@@ -37,7 +37,7 @@ module HardcodedKeyConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof HardcodedEncryptionKeyBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(HardcodedEncryptionKeyAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(HardcodedEncryptionKeyAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

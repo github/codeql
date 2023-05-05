@@ -23,11 +23,11 @@ abstract class CleartextStoragePreferencesSink extends DataFlow::Node {
 abstract class CleartextStoragePreferencesBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class CleartextStoragePreferencesAdditionalTaintStep extends Unit {
+class CleartextStoragePreferencesAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to cleartext preferences storage vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);

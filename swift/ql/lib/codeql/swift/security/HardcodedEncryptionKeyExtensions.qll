@@ -19,11 +19,11 @@ abstract class HardcodedEncryptionKeySink extends DataFlow::Node { }
 abstract class HardcodedEncryptionKeyBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class HardcodedEncryptionKeyAdditionalTaintStep extends Unit {
+class HardcodedEncryptionKeyAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to hard-coded encryption key vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);

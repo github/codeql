@@ -11,14 +11,14 @@ abstract class PredicateInjectionSink extends DataFlow::Node { }
 abstract class PredicateInjectionBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  *
- * Extend this class to add additional taint steps that should apply to paths related to
+ * Extend this class to add additional flow steps that should apply to paths related to
  * predicate injection vulnerabilities.
  */
-class PredicateInjectionAdditionalTaintStep extends Unit {
+class PredicateInjectionAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to predicate injection vulnerabilities.
    */
   abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);

@@ -23,7 +23,7 @@ module CleartextStoragePreferencesConfig implements DataFlow::ConfigSig {
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(CleartextStoragePreferencesAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(CleartextStoragePreferencesAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 
   predicate isBarrierIn(DataFlow::Node node) {

@@ -31,7 +31,7 @@ module WeakHashingConfig implements DataFlow::ConfigSig {
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(WeakSensitiveDataHashingAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(WeakSensitiveDataHashingAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

@@ -20,7 +20,7 @@ module EcbEncryptionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof EcbEncryptionBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(EcbEncryptionAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(EcbEncryptionAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

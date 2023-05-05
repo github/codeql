@@ -32,7 +32,7 @@ module ConstantSaltConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof ConstantSaltBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(ConstantSaltAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(ConstantSaltAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

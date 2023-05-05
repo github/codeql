@@ -19,9 +19,9 @@ abstract class UnsafeJsEvalSink extends DataFlow::Node { }
 abstract class UnsafeJsEvalBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class UnsafeJsEvalAdditionalTaintStep extends Unit {
+class UnsafeJsEvalAdditionalFlowStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
@@ -96,7 +96,7 @@ private class JSEvaluateScriptDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
 /**
  * A default SQL injection additional taint step.
  */
-private class DefaultUnsafeJsEvalAdditionalTaintStep extends UnsafeJsEvalAdditionalTaintStep {
+private class DefaultUnsafeJsEvalAdditionalFlowStep extends UnsafeJsEvalAdditionalFlowStep {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(Argument arg |
       arg =

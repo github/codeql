@@ -21,7 +21,7 @@ module SqlInjectionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof SqlInjectionBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(SqlInjectionAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(SqlInjectionAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

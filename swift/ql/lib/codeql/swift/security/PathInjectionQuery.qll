@@ -21,7 +21,7 @@ module PathInjectionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof PathInjectionBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
-    any(PathInjectionAdditionalTaintStep s).step(node1, node2)
+    any(PathInjectionAdditionalFlowStep s).step(node1, node2)
   }
 }
 

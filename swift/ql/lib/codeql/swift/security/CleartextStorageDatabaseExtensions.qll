@@ -20,11 +20,11 @@ abstract class CleartextStorageDatabaseSink extends DataFlow::Node { }
 abstract class CleartextStorageDatabaseBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class CleartextStorageDatabaseAdditionalTaintStep extends Unit {
+class CleartextStorageDatabaseAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to cleartext database storage vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
@@ -123,7 +123,7 @@ private class CleartextStorageDatabaseEncryptionBarrier extends CleartextStorage
 /**
  * An additional taint step for cleartext database storage vulnerabilities.
  */
-private class CleartextStorageDatabaseArrayAdditionalTaintStep extends CleartextStorageDatabaseAdditionalTaintStep
+private class CleartextStorageDatabaseArrayAdditionalFlowStep extends CleartextStorageDatabaseAdditionalFlowStep
 {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     // needed until we have proper content flow through arrays.

@@ -12,14 +12,14 @@ abstract class CleartextLoggingSink extends DataFlow::Node { }
 abstract class CleartextLoggingBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  *
- * Extend this class to add additional taint steps that should apply to paths related to
+ * Extend this class to add additional flow steps that should apply to paths related to
  * cleartext logging of sensitive data vulnerabilities.
  */
-class CleartextLoggingAdditionalTaintStep extends Unit {
+class CleartextLoggingAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `n1` to `n2` should be considered a taint
+   * Holds if the step from `n1` to `n2` should be considered a flow
    * step for flows related to cleartext logging of sensitive data vulnerabilities.
    */
   abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);

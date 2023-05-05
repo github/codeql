@@ -20,7 +20,7 @@ module UnsafeJsEvalConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof UnsafeJsEvalBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(UnsafeJsEvalAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(UnsafeJsEvalAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

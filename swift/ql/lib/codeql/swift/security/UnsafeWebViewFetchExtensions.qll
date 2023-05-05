@@ -24,9 +24,9 @@ abstract class UnsafeWebViewFetchSink extends DataFlow::Node {
 abstract class UnsafeWebViewFetchBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class UnsafeWebViewFetchAdditionalTaintStep extends Unit {
+class UnsafeWebViewFetchAdditionalFlowStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 

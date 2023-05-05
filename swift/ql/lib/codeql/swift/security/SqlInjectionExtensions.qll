@@ -19,9 +19,9 @@ abstract class SqlInjectionSink extends DataFlow::Node { }
 abstract class SqlInjectionBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class SqlInjectionAdditionalTaintStep extends Unit {
+class SqlInjectionAdditionalFlowStep extends Unit {
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 

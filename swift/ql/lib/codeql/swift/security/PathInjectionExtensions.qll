@@ -16,14 +16,14 @@ abstract class PathInjectionSink extends DataFlow::Node { }
 abstract class PathInjectionBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  *
- * Extend this class to add additional taint steps that should apply to paths related to
+ * Extend this class to add additional flow steps that should apply to paths related to
  * path injection vulnerabilities.
  */
-class PathInjectionAdditionalTaintStep extends Unit {
+class PathInjectionAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to path injection vulnerabilities.
    */
   abstract predicate step(DataFlow::Node node1, DataFlow::Node node2);

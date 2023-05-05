@@ -33,7 +33,7 @@ module StaticInitializationVectorConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node node) { node instanceof StaticInitializationVectorBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(StaticInitializationVectorAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(StaticInitializationVectorAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

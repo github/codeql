@@ -20,7 +20,7 @@ module PredicateInjectionConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node barrier) { barrier instanceof PredicateInjectionBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node n1, DataFlow::Node n2) {
-    any(PredicateInjectionAdditionalTaintStep s).step(n1, n2)
+    any(PredicateInjectionAdditionalFlowStep s).step(n1, n2)
   }
 }
 

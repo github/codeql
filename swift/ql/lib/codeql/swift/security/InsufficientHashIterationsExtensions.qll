@@ -20,11 +20,11 @@ abstract class InsufficientHashIterationsSink extends DataFlow::Node { }
 abstract class InsufficientHashIterationsBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class InsufficientHashIterationsAdditionalTaintStep extends Unit {
+class InsufficientHashIterationsAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to insufficient hash interation vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
