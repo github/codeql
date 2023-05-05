@@ -137,7 +137,6 @@ identityLocalStep
 | A.cpp:165:10:165:11 | l3 | Node steps to itself |
 | A.cpp:166:10:166:11 | l3 | Node steps to itself |
 | A.cpp:167:22:167:23 | l3 | Node steps to itself |
-| A.cpp:167:26:167:26 | Phi | Node steps to itself |
 | A.cpp:167:26:167:26 | l | Node steps to itself |
 | A.cpp:167:44:167:44 | l | Node steps to itself |
 | A.cpp:167:44:167:44 | l indirection | Node steps to itself |
@@ -361,30 +360,15 @@ identityLocalStep
 | realistic.cpp:27:12:27:12 | m | Node steps to itself |
 | realistic.cpp:32:13:32:13 | d | Node steps to itself |
 | realistic.cpp:32:17:32:19 | num | Node steps to itself |
-| realistic.cpp:33:11:33:11 | Phi | Node steps to itself |
-| realistic.cpp:33:11:33:11 | Phi | Node steps to itself |
-| realistic.cpp:33:11:33:11 | Phi | Node steps to itself |
-| realistic.cpp:33:11:33:11 | Phi | Node steps to itself |
-| realistic.cpp:33:11:33:11 | Phi | Node steps to itself |
 | realistic.cpp:33:11:33:11 | d | Node steps to itself |
 | realistic.cpp:33:16:33:16 | e | Node steps to itself |
 | realistic.cpp:36:12:36:22 | destination | Node steps to itself |
 | realistic.cpp:42:20:42:20 | o | Node steps to itself |
 | realistic.cpp:42:20:42:20 | o indirection | Node steps to itself |
 | realistic.cpp:42:20:42:20 | o indirection | Node steps to itself |
-| realistic.cpp:48:21:48:21 | Phi | Node steps to itself |
-| realistic.cpp:48:21:48:21 | Phi | Node steps to itself |
-| realistic.cpp:48:21:48:21 | Phi | Node steps to itself |
-| realistic.cpp:48:21:48:21 | Phi | Node steps to itself |
 | realistic.cpp:48:21:48:21 | i | Node steps to itself |
 | realistic.cpp:48:34:48:34 | i | Node steps to itself |
 | realistic.cpp:49:17:49:17 | i | Node steps to itself |
-| realistic.cpp:52:11:52:11 | Phi | Node steps to itself |
-| realistic.cpp:52:11:52:11 | Phi | Node steps to itself |
-| realistic.cpp:52:11:52:11 | Phi | Node steps to itself |
-| realistic.cpp:52:11:52:11 | Phi | Node steps to itself |
-| realistic.cpp:52:11:52:11 | Phi | Node steps to itself |
-| realistic.cpp:52:11:52:11 | Phi | Node steps to itself |
 | realistic.cpp:52:11:52:11 | i | Node steps to itself |
 | realistic.cpp:53:17:53:17 | i | Node steps to itself |
 | realistic.cpp:54:24:54:24 | i | Node steps to itself |
