@@ -677,7 +677,8 @@ private predicate ssaFlowImpl(SsaDefOrUse defOrUse, Node nodeFrom, Node nodeTo, 
     not nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
     nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
     adjacentDefRead(defOrUse, use) and
-    useToNode(use, nodeTo)
+    useToNode(use, nodeTo) and
+    nodeFrom != nodeTo
     or
     // Initial global variable value to a first use
     nodeFrom.(InitialGlobalValue).getGlobalDef() = defOrUse and
