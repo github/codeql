@@ -18,12 +18,12 @@
 #include "swift/extractor/invocation/SwiftInvocationExtractor.h"
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/file/Path.h"
-#include "swift/extractor/infra/log/SwiftAssert.h"
+#include "swift/logging/SwiftAssert.h"
 
 using namespace std::string_literals;
 using namespace codeql::main_logger;
 
-const std::string_view codeql::logRootName = "extractor";
+const std::string_view codeql::programName = "extractor";
 
 // must be called before processFrontendOptions modifies output paths
 static void lockOutputSwiftModuleTraps(codeql::SwiftExtractorState& state,

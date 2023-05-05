@@ -62,7 +62,7 @@ impl Extractor {
                 main_thread_logger.write(
                     main_thread_logger
                         .new_entry("configuration-error", "Configuration error")
-                        .message("{}; using gzip.", &[diagnostics::MessageArg::Code(&e)])
+                        .message("{}; using gzip.", &[diagnostics::MessageArg::Code(e)])
                         .severity(diagnostics::Severity::Warning),
                 );
                 trap::Compression::Gzip

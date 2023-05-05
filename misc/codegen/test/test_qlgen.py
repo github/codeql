@@ -26,7 +26,7 @@ def ql_output_path(): return paths.root_dir / "ql/lib/other/path"
 def ql_test_output_path(): return paths.root_dir / "ql/test/path"
 
 
-def generated_registry_path(): return paths.root_dir / "registry.list"
+def generated_registry_path(): return paths.root_dir / "ql/registry.list"
 
 
 def import_file(): return stub_path().with_suffix(".qll")

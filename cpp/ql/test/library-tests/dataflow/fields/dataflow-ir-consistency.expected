@@ -41,3 +41,380 @@ viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition
 uniqueContentApprox
+identityLocalStep
+| A.cpp:25:7:25:10 | this | Node steps to itself |
+| A.cpp:25:7:25:10 | this indirection | Node steps to itself |
+| A.cpp:25:17:25:17 | c | Node steps to itself |
+| A.cpp:27:22:27:25 | this | Node steps to itself |
+| A.cpp:27:22:27:25 | this indirection | Node steps to itself |
+| A.cpp:27:32:27:32 | c | Node steps to itself |
+| A.cpp:28:23:28:26 | this | Node steps to itself |
+| A.cpp:28:23:28:26 | this indirection | Node steps to itself |
+| A.cpp:31:20:31:20 | c | Node steps to itself |
+| A.cpp:31:20:31:20 | c indirection | Node steps to itself |
+| A.cpp:41:15:41:21 | new indirection | Node steps to itself |
+| A.cpp:48:20:48:20 | c | Node steps to itself |
+| A.cpp:48:20:48:20 | c indirection | Node steps to itself |
+| A.cpp:49:10:49:10 | b | Node steps to itself |
+| A.cpp:49:10:49:10 | b indirection | Node steps to itself |
+| A.cpp:55:5:55:5 | b | Node steps to itself |
+| A.cpp:55:12:55:19 | new indirection | Node steps to itself |
+| A.cpp:56:10:56:10 | b | Node steps to itself |
+| A.cpp:56:10:56:10 | b indirection | Node steps to itself |
+| A.cpp:64:10:64:15 | this | Node steps to itself |
+| A.cpp:64:10:64:15 | this indirection | Node steps to itself |
+| A.cpp:64:17:64:18 | b1 | Node steps to itself |
+| A.cpp:64:21:64:28 | new indirection | Node steps to itself |
+| A.cpp:65:10:65:11 | b1 | Node steps to itself |
+| A.cpp:65:10:65:11 | b1 indirection | Node steps to itself |
+| A.cpp:66:10:66:11 | b2 | Node steps to itself |
+| A.cpp:66:10:66:11 | b2 indirection | Node steps to itself |
+| A.cpp:73:10:73:19 | this | Node steps to itself |
+| A.cpp:73:10:73:19 | this indirection | Node steps to itself |
+| A.cpp:73:21:73:22 | b1 | Node steps to itself |
+| A.cpp:73:25:73:32 | new indirection | Node steps to itself |
+| A.cpp:74:10:74:11 | b1 | Node steps to itself |
+| A.cpp:74:10:74:11 | b1 indirection | Node steps to itself |
+| A.cpp:75:10:75:11 | b2 | Node steps to itself |
+| A.cpp:75:10:75:11 | b2 indirection | Node steps to itself |
+| A.cpp:81:10:81:15 | this | Node steps to itself |
+| A.cpp:81:17:81:18 | b1 | Node steps to itself |
+| A.cpp:81:21:81:21 | c | Node steps to itself |
+| A.cpp:81:21:81:21 | c indirection | Node steps to itself |
+| A.cpp:82:12:82:12 | this | Node steps to itself |
+| A.cpp:82:12:82:12 | this indirection | Node steps to itself |
+| A.cpp:82:12:82:24 | ... ? ... : ... | Node steps to itself |
+| A.cpp:82:18:82:19 | b1 | Node steps to itself |
+| A.cpp:82:23:82:24 | b2 | Node steps to itself |
+| A.cpp:87:9:87:9 | this | Node steps to itself |
+| A.cpp:87:9:87:9 | this indirection | Node steps to itself |
+| A.cpp:90:7:90:8 | b2 | Node steps to itself |
+| A.cpp:90:15:90:15 | c | Node steps to itself |
+| A.cpp:90:15:90:15 | c indirection | Node steps to itself |
+| A.cpp:91:14:91:15 | b2 | Node steps to itself |
+| A.cpp:93:12:93:13 | b1 | Node steps to itself |
+| A.cpp:100:5:100:6 | c1 | Node steps to itself |
+| A.cpp:100:13:100:13 | a | Node steps to itself |
+| A.cpp:101:5:101:6 | this | Node steps to itself |
+| A.cpp:101:5:101:6 | this indirection | Node steps to itself |
+| A.cpp:101:8:101:9 | c1 indirection | Node steps to itself |
+| A.cpp:105:13:105:14 | c1 | Node steps to itself |
+| A.cpp:107:12:107:13 | c1 | Node steps to itself |
+| A.cpp:107:12:107:13 | c1 indirection | Node steps to itself |
+| A.cpp:110:13:110:14 | c2 | Node steps to itself |
+| A.cpp:118:13:118:14 | c1 | Node steps to itself |
+| A.cpp:120:12:120:13 | c1 | Node steps to itself |
+| A.cpp:120:12:120:13 | c1 indirection | Node steps to itself |
+| A.cpp:126:5:126:5 | b | Node steps to itself |
+| A.cpp:126:5:126:5 | b indirection | Node steps to itself |
+| A.cpp:131:5:131:6 | this | Node steps to itself |
+| A.cpp:131:5:131:6 | this indirection | Node steps to itself |
+| A.cpp:131:8:131:8 | b | Node steps to itself |
+| A.cpp:132:10:132:10 | b | Node steps to itself |
+| A.cpp:132:10:132:10 | b indirection | Node steps to itself |
+| A.cpp:142:7:142:7 | b | Node steps to itself |
+| A.cpp:143:7:143:10 | this | Node steps to itself |
+| A.cpp:143:7:143:10 | this indirection | Node steps to itself |
+| A.cpp:143:17:143:17 | x | Node steps to itself |
+| A.cpp:143:17:143:31 | ... ? ... : ... | Node steps to itself |
+| A.cpp:143:21:143:21 | b | Node steps to itself |
+| A.cpp:151:18:151:18 | b | Node steps to itself |
+| A.cpp:151:21:151:21 | this | Node steps to itself |
+| A.cpp:151:21:151:21 | this indirection | Node steps to itself |
+| A.cpp:152:10:152:10 | d | Node steps to itself |
+| A.cpp:153:10:153:10 | d | Node steps to itself |
+| A.cpp:153:10:153:10 | d indirection | Node steps to itself |
+| A.cpp:154:10:154:10 | b | Node steps to itself |
+| A.cpp:154:10:154:10 | b indirection | Node steps to itself |
+| A.cpp:160:29:160:29 | b | Node steps to itself |
+| A.cpp:160:29:160:29 | b indirection | Node steps to itself |
+| A.cpp:161:38:161:39 | l1 | Node steps to itself |
+| A.cpp:161:38:161:39 | l1 indirection | Node steps to itself |
+| A.cpp:162:38:162:39 | l2 | Node steps to itself |
+| A.cpp:162:38:162:39 | l2 indirection | Node steps to itself |
+| A.cpp:163:10:163:11 | l3 | Node steps to itself |
+| A.cpp:164:10:164:11 | l3 | Node steps to itself |
+| A.cpp:165:10:165:11 | l3 | Node steps to itself |
+| A.cpp:166:10:166:11 | l3 | Node steps to itself |
+| A.cpp:167:22:167:23 | l3 | Node steps to itself |
+| A.cpp:167:26:167:26 | Phi | Node steps to itself |
+| A.cpp:167:26:167:26 | l | Node steps to itself |
+| A.cpp:167:44:167:44 | l | Node steps to itself |
+| A.cpp:167:44:167:44 | l indirection | Node steps to itself |
+| A.cpp:169:12:169:12 | l | Node steps to itself |
+| A.cpp:183:7:183:10 | this | Node steps to itself |
+| A.cpp:183:14:183:20 | newHead | Node steps to itself |
+| A.cpp:184:7:184:10 | this | Node steps to itself |
+| A.cpp:184:7:184:10 | this indirection | Node steps to itself |
+| A.cpp:184:20:184:23 | next | Node steps to itself |
+| B.cpp:7:25:7:25 | e | Node steps to itself |
+| B.cpp:7:25:7:25 | e indirection | Node steps to itself |
+| B.cpp:8:25:8:26 | b1 | Node steps to itself |
+| B.cpp:8:25:8:26 | b1 indirection | Node steps to itself |
+| B.cpp:9:10:9:11 | b2 | Node steps to itself |
+| B.cpp:10:10:10:11 | b2 | Node steps to itself |
+| B.cpp:10:10:10:11 | b2 indirection | Node steps to itself |
+| B.cpp:16:37:16:37 | e | Node steps to itself |
+| B.cpp:16:37:16:37 | e indirection | Node steps to itself |
+| B.cpp:17:25:17:26 | b1 | Node steps to itself |
+| B.cpp:17:25:17:26 | b1 indirection | Node steps to itself |
+| B.cpp:18:10:18:11 | b2 | Node steps to itself |
+| B.cpp:19:10:19:11 | b2 | Node steps to itself |
+| B.cpp:19:10:19:11 | b2 indirection | Node steps to itself |
+| B.cpp:35:7:35:10 | this | Node steps to itself |
+| B.cpp:35:21:35:22 | e1 | Node steps to itself |
+| B.cpp:36:7:36:10 | this | Node steps to itself |
+| B.cpp:36:7:36:10 | this indirection | Node steps to itself |
+| B.cpp:36:21:36:22 | e2 | Node steps to itself |
+| B.cpp:46:7:46:10 | this | Node steps to itself |
+| B.cpp:46:7:46:10 | this indirection | Node steps to itself |
+| B.cpp:46:20:46:21 | b1 | Node steps to itself |
+| C.cpp:19:5:19:5 | c | Node steps to itself |
+| C.cpp:19:5:19:5 | c indirection | Node steps to itself |
+| C.cpp:24:5:24:8 | this | Node steps to itself |
+| C.cpp:24:5:24:8 | this indirection | Node steps to itself |
+| C.cpp:29:10:29:11 | this | Node steps to itself |
+| C.cpp:30:10:30:11 | this | Node steps to itself |
+| C.cpp:31:10:31:11 | this | Node steps to itself |
+| C.cpp:31:10:31:11 | this indirection | Node steps to itself |
+| D.cpp:9:21:9:24 | this | Node steps to itself |
+| D.cpp:9:21:9:24 | this indirection | Node steps to itself |
+| D.cpp:9:28:9:28 | e | Node steps to itself |
+| D.cpp:10:30:10:33 | this | Node steps to itself |
+| D.cpp:10:30:10:33 | this indirection | Node steps to itself |
+| D.cpp:11:29:11:32 | this | Node steps to itself |
+| D.cpp:11:29:11:32 | this indirection | Node steps to itself |
+| D.cpp:11:36:11:36 | e | Node steps to itself |
+| D.cpp:16:21:16:23 | this | Node steps to itself |
+| D.cpp:16:21:16:23 | this indirection | Node steps to itself |
+| D.cpp:16:27:16:27 | b | Node steps to itself |
+| D.cpp:17:30:17:32 | this | Node steps to itself |
+| D.cpp:17:30:17:32 | this indirection | Node steps to itself |
+| D.cpp:18:29:18:31 | this | Node steps to itself |
+| D.cpp:18:29:18:31 | this indirection | Node steps to itself |
+| D.cpp:18:35:18:35 | b | Node steps to itself |
+| D.cpp:22:10:22:11 | b2 | Node steps to itself |
+| D.cpp:22:10:22:11 | b2 indirection | Node steps to itself |
+| D.cpp:30:5:30:5 | b | Node steps to itself |
+| D.cpp:30:20:30:20 | e | Node steps to itself |
+| D.cpp:31:14:31:14 | b | Node steps to itself |
+| D.cpp:31:14:31:14 | b indirection | Node steps to itself |
+| D.cpp:37:5:37:5 | b | Node steps to itself |
+| D.cpp:37:21:37:21 | e | Node steps to itself |
+| D.cpp:37:21:37:21 | e indirection | Node steps to itself |
+| D.cpp:38:14:38:14 | b | Node steps to itself |
+| D.cpp:38:14:38:14 | b indirection | Node steps to itself |
+| D.cpp:44:5:44:5 | b | Node steps to itself |
+| D.cpp:44:26:44:26 | e | Node steps to itself |
+| D.cpp:45:14:45:14 | b | Node steps to itself |
+| D.cpp:45:14:45:14 | b indirection | Node steps to itself |
+| D.cpp:51:5:51:5 | b | Node steps to itself |
+| D.cpp:51:27:51:27 | e | Node steps to itself |
+| D.cpp:51:27:51:27 | e indirection | Node steps to itself |
+| D.cpp:52:14:52:14 | b | Node steps to itself |
+| D.cpp:52:14:52:14 | b indirection | Node steps to itself |
+| D.cpp:57:5:57:12 | this | Node steps to itself |
+| D.cpp:58:5:58:12 | this | Node steps to itself |
+| D.cpp:58:27:58:27 | e | Node steps to itself |
+| D.cpp:59:5:59:7 | this | Node steps to itself |
+| D.cpp:59:5:59:7 | this indirection | Node steps to itself |
+| D.cpp:64:10:64:17 | this | Node steps to itself |
+| D.cpp:64:10:64:17 | this indirection | Node steps to itself |
+| E.cpp:21:10:21:10 | p | Node steps to itself |
+| E.cpp:21:10:21:10 | p indirection | Node steps to itself |
+| E.cpp:29:21:29:21 | b | Node steps to itself |
+| E.cpp:31:10:31:12 | raw | Node steps to itself |
+| E.cpp:31:10:31:12 | raw indirection | Node steps to itself |
+| E.cpp:32:10:32:10 | b | Node steps to itself |
+| E.cpp:32:10:32:10 | b indirection | Node steps to itself |
+| aliasing.cpp:9:3:9:3 | s | Node steps to itself |
+| aliasing.cpp:9:3:9:3 | s indirection | Node steps to itself |
+| aliasing.cpp:13:3:13:3 | s indirection | Node steps to itself |
+| aliasing.cpp:27:14:27:15 | s3 | Node steps to itself |
+| aliasing.cpp:37:3:37:6 | ref1 indirection | Node steps to itself |
+| aliasing.cpp:43:8:43:11 | ref2 indirection | Node steps to itself |
+| aliasing.cpp:48:13:48:14 | s1 | Node steps to itself |
+| aliasing.cpp:53:13:53:14 | s2 | Node steps to itself |
+| aliasing.cpp:61:13:61:14 | s2 | Node steps to itself |
+| aliasing.cpp:79:3:79:3 | s | Node steps to itself |
+| aliasing.cpp:79:3:79:3 | s indirection | Node steps to itself |
+| aliasing.cpp:86:3:86:3 | s indirection | Node steps to itself |
+| aliasing.cpp:100:14:100:14 | s | Node steps to itself |
+| aliasing.cpp:102:9:102:10 | px | Node steps to itself |
+| aliasing.cpp:121:15:121:16 | xs | Node steps to itself |
+| aliasing.cpp:122:8:122:9 | xs | Node steps to itself |
+| aliasing.cpp:126:15:126:16 | xs | Node steps to itself |
+| aliasing.cpp:127:10:127:11 | xs | Node steps to itself |
+| aliasing.cpp:131:15:131:16 | xs | Node steps to itself |
+| aliasing.cpp:147:16:147:16 | s | Node steps to itself |
+| aliasing.cpp:148:8:148:8 | s | Node steps to itself |
+| aliasing.cpp:188:13:188:14 | s2 | Node steps to itself |
+| aliasing.cpp:195:13:195:14 | s2 | Node steps to itself |
+| aliasing.cpp:200:16:200:18 | ps2 | Node steps to itself |
+| aliasing.cpp:201:8:201:10 | ps2 | Node steps to itself |
+| aliasing.cpp:201:8:201:10 | ps2 indirection | Node steps to itself |
+| aliasing.cpp:205:16:205:18 | ps2 | Node steps to itself |
+| aliasing.cpp:206:8:206:10 | ps2 | Node steps to itself |
+| aliasing.cpp:206:8:206:10 | ps2 indirection | Node steps to itself |
+| arrays.cpp:9:8:9:11 | * ... | Node steps to itself |
+| by_reference.cpp:12:5:12:5 | s | Node steps to itself |
+| by_reference.cpp:12:5:12:5 | s indirection | Node steps to itself |
+| by_reference.cpp:12:12:12:16 | value | Node steps to itself |
+| by_reference.cpp:16:5:16:8 | this | Node steps to itself |
+| by_reference.cpp:16:5:16:8 | this indirection | Node steps to itself |
+| by_reference.cpp:16:15:16:19 | value | Node steps to itself |
+| by_reference.cpp:20:5:20:8 | this | Node steps to itself |
+| by_reference.cpp:20:5:20:8 | this indirection | Node steps to itself |
+| by_reference.cpp:20:23:20:27 | value | Node steps to itself |
+| by_reference.cpp:20:23:20:27 | value indirection | Node steps to itself |
+| by_reference.cpp:20:23:20:27 | value indirection | Node steps to itself |
+| by_reference.cpp:24:19:24:22 | this | Node steps to itself |
+| by_reference.cpp:24:19:24:22 | this indirection | Node steps to itself |
+| by_reference.cpp:24:25:24:29 | value | Node steps to itself |
+| by_reference.cpp:24:25:24:29 | value indirection | Node steps to itself |
+| by_reference.cpp:24:25:24:29 | value indirection | Node steps to itself |
+| by_reference.cpp:32:12:32:12 | s | Node steps to itself |
+| by_reference.cpp:32:12:32:12 | s indirection | Node steps to itself |
+| by_reference.cpp:36:12:36:15 | this | Node steps to itself |
+| by_reference.cpp:36:12:36:15 | this indirection | Node steps to itself |
+| by_reference.cpp:40:12:40:15 | this | Node steps to itself |
+| by_reference.cpp:40:12:40:15 | this indirection | Node steps to itself |
+| by_reference.cpp:44:26:44:29 | this | Node steps to itself |
+| by_reference.cpp:44:26:44:29 | this indirection | Node steps to itself |
+| by_reference.cpp:84:3:84:7 | inner | Node steps to itself |
+| by_reference.cpp:84:3:84:7 | inner indirection | Node steps to itself |
+| by_reference.cpp:88:3:88:7 | inner indirection | Node steps to itself |
+| by_reference.cpp:106:22:106:27 | pouter | Node steps to itself |
+| by_reference.cpp:107:21:107:26 | pouter | Node steps to itself |
+| by_reference.cpp:108:16:108:21 | pouter | Node steps to itself |
+| by_reference.cpp:114:8:114:13 | pouter | Node steps to itself |
+| by_reference.cpp:115:8:115:13 | pouter | Node steps to itself |
+| by_reference.cpp:116:8:116:13 | pouter | Node steps to itself |
+| by_reference.cpp:116:8:116:13 | pouter indirection | Node steps to itself |
+| by_reference.cpp:126:21:126:26 | pouter | Node steps to itself |
+| by_reference.cpp:127:22:127:27 | pouter | Node steps to itself |
+| by_reference.cpp:128:15:128:20 | pouter | Node steps to itself |
+| by_reference.cpp:134:8:134:13 | pouter | Node steps to itself |
+| by_reference.cpp:135:8:135:13 | pouter | Node steps to itself |
+| by_reference.cpp:136:8:136:13 | pouter | Node steps to itself |
+| by_reference.cpp:136:8:136:13 | pouter indirection | Node steps to itself |
+| complex.cpp:9:20:9:21 | this | Node steps to itself |
+| complex.cpp:9:20:9:21 | this indirection | Node steps to itself |
+| complex.cpp:10:20:10:21 | this | Node steps to itself |
+| complex.cpp:10:20:10:21 | this indirection | Node steps to itself |
+| complex.cpp:11:22:11:23 | this | Node steps to itself |
+| complex.cpp:11:22:11:23 | this indirection | Node steps to itself |
+| complex.cpp:11:27:11:27 | a | Node steps to itself |
+| complex.cpp:12:22:12:23 | this | Node steps to itself |
+| complex.cpp:12:22:12:23 | this indirection | Node steps to itself |
+| complex.cpp:12:27:12:27 | b | Node steps to itself |
+| complex.cpp:14:26:14:26 | a | Node steps to itself |
+| complex.cpp:14:33:14:33 | b | Node steps to itself |
+| complex.cpp:43:8:43:8 | b indirection | Node steps to itself |
+| conflated.cpp:11:9:11:10 | ra indirection | Node steps to itself |
+| conflated.cpp:20:8:20:10 | raw indirection | Node steps to itself |
+| conflated.cpp:29:3:29:4 | pa | Node steps to itself |
+| conflated.cpp:30:8:30:9 | pa | Node steps to itself |
+| conflated.cpp:30:8:30:9 | pa indirection | Node steps to itself |
+| conflated.cpp:35:8:35:14 | unknown | Node steps to itself |
+| conflated.cpp:35:8:35:28 | ... ? ... : ... | Node steps to itself |
+| conflated.cpp:35:18:35:20 | arg | Node steps to itself |
+| conflated.cpp:36:3:36:4 | pa | Node steps to itself |
+| conflated.cpp:37:8:37:9 | pa | Node steps to itself |
+| conflated.cpp:37:8:37:9 | pa indirection | Node steps to itself |
+| conflated.cpp:45:39:45:42 | next | Node steps to itself |
+| conflated.cpp:53:3:53:4 | ll | Node steps to itself |
+| conflated.cpp:54:3:54:4 | ll | Node steps to itself |
+| conflated.cpp:55:8:55:9 | ll | Node steps to itself |
+| conflated.cpp:55:8:55:9 | ll indirection | Node steps to itself |
+| conflated.cpp:59:35:59:38 | next | Node steps to itself |
+| conflated.cpp:59:35:59:38 | next indirection | Node steps to itself |
+| conflated.cpp:60:3:60:4 | ll | Node steps to itself |
+| conflated.cpp:61:8:61:9 | ll | Node steps to itself |
+| conflated.cpp:61:8:61:9 | ll indirection | Node steps to itself |
+| constructors.cpp:18:22:18:23 | this | Node steps to itself |
+| constructors.cpp:18:22:18:23 | this indirection | Node steps to itself |
+| constructors.cpp:19:22:19:23 | this | Node steps to itself |
+| constructors.cpp:19:22:19:23 | this indirection | Node steps to itself |
+| constructors.cpp:20:24:20:25 | this | Node steps to itself |
+| constructors.cpp:20:24:20:25 | this indirection | Node steps to itself |
+| constructors.cpp:20:29:20:29 | a | Node steps to itself |
+| constructors.cpp:21:24:21:25 | this | Node steps to itself |
+| constructors.cpp:21:24:21:25 | this indirection | Node steps to itself |
+| constructors.cpp:21:29:21:29 | b | Node steps to itself |
+| constructors.cpp:23:28:23:28 | a | Node steps to itself |
+| constructors.cpp:23:35:23:35 | b | Node steps to itself |
+| constructors.cpp:29:10:29:10 | f indirection | Node steps to itself |
+| qualifiers.cpp:9:30:9:33 | this | Node steps to itself |
+| qualifiers.cpp:9:30:9:33 | this indirection | Node steps to itself |
+| qualifiers.cpp:9:40:9:44 | value | Node steps to itself |
+| qualifiers.cpp:12:49:12:53 | inner | Node steps to itself |
+| qualifiers.cpp:12:49:12:53 | inner indirection | Node steps to itself |
+| qualifiers.cpp:12:60:12:64 | value | Node steps to itself |
+| qualifiers.cpp:13:51:13:55 | inner indirection | Node steps to itself |
+| qualifiers.cpp:13:61:13:65 | value | Node steps to itself |
+| qualifiers.cpp:18:32:18:36 | this | Node steps to itself |
+| qualifiers.cpp:18:32:18:36 | this indirection | Node steps to itself |
+| realistic.cpp:24:9:24:12 | size | Node steps to itself |
+| realistic.cpp:25:30:25:35 | offset | Node steps to itself |
+| realistic.cpp:26:15:26:18 | size | Node steps to itself |
+| realistic.cpp:27:12:27:12 | m | Node steps to itself |
+| realistic.cpp:32:13:32:13 | d | Node steps to itself |
+| realistic.cpp:32:17:32:19 | num | Node steps to itself |
+| realistic.cpp:33:11:33:11 | Phi | Node steps to itself |
+| realistic.cpp:33:11:33:11 | Phi | Node steps to itself |
+| realistic.cpp:33:11:33:11 | Phi | Node steps to itself |
+| realistic.cpp:33:11:33:11 | Phi | Node steps to itself |
+| realistic.cpp:33:11:33:11 | Phi | Node steps to itself |
+| realistic.cpp:33:11:33:11 | d | Node steps to itself |
+| realistic.cpp:33:16:33:16 | e | Node steps to itself |
+| realistic.cpp:36:12:36:22 | destination | Node steps to itself |
+| realistic.cpp:42:20:42:20 | o | Node steps to itself |
+| realistic.cpp:42:20:42:20 | o indirection | Node steps to itself |
+| realistic.cpp:42:20:42:20 | o indirection | Node steps to itself |
+| realistic.cpp:48:21:48:21 | Phi | Node steps to itself |
+| realistic.cpp:48:21:48:21 | Phi | Node steps to itself |
+| realistic.cpp:48:21:48:21 | Phi | Node steps to itself |
+| realistic.cpp:48:21:48:21 | Phi | Node steps to itself |
+| realistic.cpp:48:21:48:21 | i | Node steps to itself |
+| realistic.cpp:48:34:48:34 | i | Node steps to itself |
+| realistic.cpp:49:17:49:17 | i | Node steps to itself |
+| realistic.cpp:52:11:52:11 | Phi | Node steps to itself |
+| realistic.cpp:52:11:52:11 | Phi | Node steps to itself |
+| realistic.cpp:52:11:52:11 | Phi | Node steps to itself |
+| realistic.cpp:52:11:52:11 | Phi | Node steps to itself |
+| realistic.cpp:52:11:52:11 | Phi | Node steps to itself |
+| realistic.cpp:52:11:52:11 | Phi | Node steps to itself |
+| realistic.cpp:52:11:52:11 | i | Node steps to itself |
+| realistic.cpp:53:17:53:17 | i | Node steps to itself |
+| realistic.cpp:54:24:54:24 | i | Node steps to itself |
+| realistic.cpp:55:20:55:20 | i | Node steps to itself |
+| realistic.cpp:57:96:57:96 | i | Node steps to itself |
+| realistic.cpp:60:29:60:29 | i | Node steps to itself |
+| realistic.cpp:60:63:60:63 | i | Node steps to itself |
+| realistic.cpp:61:29:61:29 | i | Node steps to itself |
+| realistic.cpp:65:29:65:29 | i | Node steps to itself |
+| realistic.cpp:67:9:67:9 | i | Node steps to itself |
+| simple.cpp:18:22:18:23 | this | Node steps to itself |
+| simple.cpp:18:22:18:23 | this indirection | Node steps to itself |
+| simple.cpp:19:22:19:23 | this | Node steps to itself |
+| simple.cpp:19:22:19:23 | this indirection | Node steps to itself |
+| simple.cpp:20:24:20:25 | this | Node steps to itself |
+| simple.cpp:20:24:20:25 | this indirection | Node steps to itself |
+| simple.cpp:20:29:20:29 | a | Node steps to itself |
+| simple.cpp:21:24:21:25 | this | Node steps to itself |
+| simple.cpp:21:24:21:25 | this indirection | Node steps to itself |
+| simple.cpp:21:29:21:29 | b | Node steps to itself |
+| simple.cpp:23:28:23:28 | a | Node steps to itself |
+| simple.cpp:23:35:23:35 | b | Node steps to itself |
+| simple.cpp:29:10:29:10 | f indirection | Node steps to itself |
+| simple.cpp:66:12:66:12 | a | Node steps to itself |
+| simple.cpp:79:16:79:17 | this | Node steps to itself |
+| simple.cpp:79:16:79:17 | this indirection | Node steps to itself |
+| simple.cpp:83:9:83:10 | this | Node steps to itself |
+| simple.cpp:84:14:84:20 | this | Node steps to itself |
+| simple.cpp:84:14:84:20 | this indirection | Node steps to itself |
+| simple.cpp:93:20:93:20 | a | Node steps to itself |
+| struct_init.c:15:8:15:9 | ab | Node steps to itself |
+| struct_init.c:16:8:16:9 | ab | Node steps to itself |
+| struct_init.c:16:8:16:9 | ab indirection | Node steps to itself |

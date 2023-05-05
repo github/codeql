@@ -13,38 +13,9 @@
  */
 
 import java
-import semmle.code.java.dataflow.TaintTracking
-import semmle.code.java.security.RandomQuery
-import semmle.code.java.security.SecurityTests
-import ArithmeticCommon
-
-class TaintSource extends DataFlow::ExprNode {
-  TaintSource() {
-    exists(RandomDataSource m | not m.resultMayBeBounded() | m.getOutput() = this.getExpr())
-  }
-}
-
-module ArithmeticUncontrolledOverflowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
-
-  predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
-
-  predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
-}
-
-module ArithmeticUncontrolledOverflowFlow =
-  TaintTracking::Global<ArithmeticUncontrolledOverflowConfig>;
-
-module ArithmeticUncontrolledUnderflowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof TaintSource }
-
-  predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
-
-  predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
-}
-
-module ArithmeticUncontrolledUnderflowFlow =
-  TaintTracking::Global<ArithmeticUncontrolledUnderflowConfig>;
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.security.ArithmeticCommon
+import semmle.code.java.security.ArithmeticUncontrolledQuery
 
 module Flow =
   DataFlow::MergePathGraph<ArithmeticUncontrolledOverflowFlow::PathNode,

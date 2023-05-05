@@ -1,7 +1,7 @@
 #include "swift/extractor/infra/file/TargetFile.h"
 #include "swift/extractor/infra/file/FsLogger.h"
-#include "swift/extractor/infra/log/SwiftLogging.h"
-#include "swift/extractor/infra/log/SwiftAssert.h"
+#include "swift/logging/SwiftLogging.h"
+#include "swift/logging/SwiftAssert.h"
 
 #include <cassert>
 #include <cstdio>
