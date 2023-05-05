@@ -713,8 +713,20 @@ private Node getAPriorDefinition(SsaDefOrUse defOrUse) {
 /** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
 predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   exists(Node nFrom, boolean uncertain, SsaDefOrUse defOrUse |
-    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and
+    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and nodeFrom != nodeTo
+  |
     if uncertain = true then nodeFrom = [nFrom, getAPriorDefinition(defOrUse)] else nodeFrom = nFrom
+  )
+}
+
+predicate postUpdateFlow(PostUpdateNode pun, Node nodeTo) {
+  exists(Node preUpdate, Node nFrom, boolean uncertain, SsaDefOrUse defOrUse |
+    preUpdate = pun.getPreUpdateNode() and
+    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain)
+  |
+    if uncertain = true
+    then preUpdate = [nFrom, getAPriorDefinition(defOrUse)]
+    else preUpdate = nFrom
   )
 }
 
