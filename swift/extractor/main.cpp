@@ -209,6 +209,17 @@ int main(int argc, char** argv, char** envp) {
     // TODO: print usage
     return 1;
   }
+  // EXTRACTOR="$CODEQL_EXTRACTOR_SWIFT_ROOT/tools/$CODEQL_PLATFORM/extractor"
+  auto extractorRoot = getenv_or("CODEQL_EXTRACTOR_SWIFT_ROOT", ".");
+  auto platformDir = getenv_or("CODEQL_PLATFORM", ".");
+  auto resourceDir = extractorRoot + "/qltest/" + platformDir + "/sdk/resource-dir";
+  for (int i = 0; i < argc; i++) {
+    auto arg = std::string(argv[i]);
+    if (arg == "-resource-dir" || arg == "--resource-dir") {
+      argv[i + 1] = strdup(resourceDir.c_str());
+      break;
+    }
+  }
 
   // Required by Swift/LLVM
   PROGRAM_START(argc, argv);
