@@ -22,6 +22,10 @@ abstract class UnsafeJsEvalBarrier extends DataFlow::Node { }
  * A unit class for adding additional flow steps.
  */
 class UnsafeJsEvalAdditionalFlowStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a flow
+   * step for paths related to javascript evaluation vulnerabilities.
+   */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 

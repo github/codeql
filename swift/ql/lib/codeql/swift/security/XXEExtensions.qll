@@ -14,11 +14,12 @@ abstract class XxeBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional flow steps.
- *
- * Extend this class to add additional flow steps that should apply to paths related to
- * XML external entities (XXE) vulnerabilities.
  */
 class XxeAdditionalFlowStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a flow
+   * step for paths related to XML external entities (XXE) vulnerabilities.
+   */
   abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
 }
 

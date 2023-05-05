@@ -23,6 +23,10 @@ abstract class UncontrolledFormatStringBarrier extends DataFlow::Node { }
  * A unit class for adding additional flow steps.
  */
 class UncontrolledFormatStringAdditionalFlowStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a flow
+   * step for paths related to uncontrolled format string vulnerabilities.
+   */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
