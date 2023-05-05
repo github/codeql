@@ -212,7 +212,7 @@ The global taint tracking library uses the same configuration module as the glob
    select source, "Taint flow to $@.", sink, sink.toString()
 
 Predefined sources
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
 
 The data flow library module ``codeql.swift.dataflow.FlowSources`` contains a number of predefined sources, providing a good starting point for defining data flow and taint flow based security queries.
 
