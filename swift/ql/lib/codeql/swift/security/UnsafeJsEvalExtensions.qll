@@ -14,9 +14,9 @@ private import codeql.swift.dataflow.ExternalFlow
 abstract class UnsafeJsEvalSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for javascript evaluation vulnerabilities.
+ * A barrier for javascript evaluation vulnerabilities.
  */
-abstract class UnsafeJsEvalSanitizer extends DataFlow::Node { }
+abstract class UnsafeJsEvalBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.
@@ -94,7 +94,7 @@ private class JSEvaluateScriptDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
 }
 
 /**
- * A default SQL injection sanitizer.
+ * A default SQL injection additional taint step.
  */
 private class DefaultUnsafeJsEvalAdditionalTaintStep extends UnsafeJsEvalAdditionalTaintStep {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {

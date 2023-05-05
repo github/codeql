@@ -15,9 +15,9 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class CleartextTransmissionSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for cleartext transmission vulnerabilities.
+ * A barrier for cleartext transmission vulnerabilities.
  */
-abstract class CleartextTransmissionSanitizer extends DataFlow::Node { }
+abstract class CleartextTransmissionBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.
@@ -81,10 +81,10 @@ private class AlamofireTransmittedSink extends CleartextTransmissionSink {
 }
 
 /**
- * An encryption sanitizer for cleartext transmission vulnerabilities.
+ * An encryption barrier for cleartext transmission vulnerabilities.
  */
-private class CleartextTransmissionEncryptionSanitizer extends CleartextTransmissionSanitizer {
-  CleartextTransmissionEncryptionSanitizer() { this.asExpr() instanceof EncryptedExpr }
+private class CleartextTransmissionEncryptionBarrier extends CleartextTransmissionBarrier {
+  CleartextTransmissionEncryptionBarrier() { this.asExpr() instanceof EncryptedExpr }
 }
 
 /**

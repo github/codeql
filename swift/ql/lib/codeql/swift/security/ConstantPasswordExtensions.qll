@@ -14,9 +14,9 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class ConstantPasswordSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for constant password vulnerabilities.
+ * A barrier for constant password vulnerabilities.
  */
-abstract class ConstantPasswordSanitizer extends DataFlow::Node { }
+abstract class ConstantPasswordBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

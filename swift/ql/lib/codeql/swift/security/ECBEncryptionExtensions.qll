@@ -22,9 +22,9 @@ abstract class EcbEncryptionSource extends DataFlow::Node { }
 abstract class EcbEncryptionSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for ECB encryption vulnerabilities.
+ * A barrier for ECB encryption vulnerabilities.
  */
-abstract class EcbEncryptionSanitizer extends DataFlow::Node { }
+abstract class EcbEncryptionBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

@@ -14,9 +14,9 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class HardcodedEncryptionKeySink extends DataFlow::Node { }
 
 /**
- * A sanitizer for hard-coded encryption key vulnerabilities.
+ * A barrier for hard-coded encryption key vulnerabilities.
  */
-abstract class HardcodedEncryptionKeySanitizer extends DataFlow::Node { }
+abstract class HardcodedEncryptionKeyBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

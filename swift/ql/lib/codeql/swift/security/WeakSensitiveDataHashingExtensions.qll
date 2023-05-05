@@ -20,9 +20,9 @@ abstract class WeakSensitiveDataHashingSink extends DataFlow::Node {
 }
 
 /**
- * A sanitizer for weak sensitive data hashing vulnerabilities.
+ * A barrier for weak sensitive data hashing vulnerabilities.
  */
-abstract class WeakSensitiveDataHashingSanitizer extends DataFlow::Node { }
+abstract class WeakSensitiveDataHashingBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

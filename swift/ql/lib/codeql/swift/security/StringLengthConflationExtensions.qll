@@ -99,9 +99,9 @@ abstract class StringLengthConflationSink extends DataFlow::Node {
 }
 
 /**
- * A sanitizer for string length conflation vulnerabilities.
+ * A barrier for string length conflation vulnerabilities.
  */
-abstract class StringLengthConflationSanitizer extends DataFlow::Node { }
+abstract class StringLengthConflationBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

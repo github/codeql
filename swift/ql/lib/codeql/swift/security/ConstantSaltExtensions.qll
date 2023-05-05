@@ -14,9 +14,9 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class ConstantSaltSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for constant salt vulnerabilities.
+ * A barrier for constant salt vulnerabilities.
  */
-abstract class ConstantSaltSanitizer extends DataFlow::Node { }
+abstract class ConstantSaltBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

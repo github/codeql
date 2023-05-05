@@ -17,7 +17,7 @@ module UnsafeJsEvalConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof UnsafeJsEvalSink }
 
-  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof UnsafeJsEvalSanitizer }
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof UnsafeJsEvalBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(UnsafeJsEvalAdditionalTaintStep s).step(nodeFrom, nodeTo)

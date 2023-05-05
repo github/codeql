@@ -15,9 +15,9 @@ private import codeql.swift.dataflow.ExternalFlow
 abstract class UncontrolledFormatStringSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for uncontrolled format string vulnerabilities.
+ * A barrier for uncontrolled format string vulnerabilities.
  */
-abstract class UncontrolledFormatStringSanitizer extends DataFlow::Node { }
+abstract class UncontrolledFormatStringBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

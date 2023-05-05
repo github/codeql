@@ -7,8 +7,8 @@ private import codeql.swift.dataflow.ExternalFlow
 /** A data flow sink for predicate injection vulnerabilities. */
 abstract class PredicateInjectionSink extends DataFlow::Node { }
 
-/** A sanitizer for predicate injection vulnerabilities. */
-abstract class PredicateInjectionSanitizer extends DataFlow::Node { }
+/** A barrier for predicate injection vulnerabilities. */
+abstract class PredicateInjectionBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

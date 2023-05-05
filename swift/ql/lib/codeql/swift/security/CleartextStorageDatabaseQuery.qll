@@ -18,8 +18,8 @@ module CleartextStorageDatabaseConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof CleartextStorageDatabaseSink }
 
-  predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer instanceof CleartextStorageDatabaseSanitizer
+  predicate isBarrier(DataFlow::Node barrier) {
+    barrier instanceof CleartextStorageDatabaseBarrier
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {

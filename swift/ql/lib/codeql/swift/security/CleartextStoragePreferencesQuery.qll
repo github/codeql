@@ -18,8 +18,8 @@ module CleartextStoragePreferencesConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof CleartextStoragePreferencesSink }
 
-  predicate isBarrier(DataFlow::Node sanitizer) {
-    sanitizer instanceof CleartextStoragePreferencesSanitizer
+  predicate isBarrier(DataFlow::Node barrier) {
+    barrier instanceof CleartextStoragePreferencesBarrier
   }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {

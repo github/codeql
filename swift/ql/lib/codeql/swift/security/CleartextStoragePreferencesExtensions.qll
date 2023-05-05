@@ -18,9 +18,9 @@ abstract class CleartextStoragePreferencesSink extends DataFlow::Node {
 }
 
 /**
- * A sanitizer for cleartext preferences storage vulnerabilities.
+ * A barrier for cleartext preferences storage vulnerabilities.
  */
-abstract class CleartextStoragePreferencesSanitizer extends DataFlow::Node { }
+abstract class CleartextStoragePreferencesBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.
@@ -72,11 +72,11 @@ private class NSUserDefaultsControllerStore extends CleartextStoragePreferencesS
 }
 
 /**
- * An encryption sanitizer for cleartext preferences storage vulnerabilities.
+ * An encryption barrier for cleartext preferences storage vulnerabilities.
  */
-private class CleartextStoragePreferencesEncryptionSanitizer extends CleartextStoragePreferencesSanitizer
+private class CleartextStoragePreferencesEncryptionBarrier extends CleartextStoragePreferencesBarrier
 {
-  CleartextStoragePreferencesEncryptionSanitizer() { this.asExpr() instanceof EncryptedExpr }
+  CleartextStoragePreferencesEncryptionBarrier() { this.asExpr() instanceof EncryptedExpr }
 }
 
 /**

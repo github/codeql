@@ -19,9 +19,9 @@ abstract class UnsafeWebViewFetchSink extends DataFlow::Node {
 }
 
 /**
- * A sanitizer for unsafe webview fetch vulnerabilities.
+ * A barrier for unsafe webview fetch vulnerabilities.
  */
-abstract class UnsafeWebViewFetchSanitizer extends DataFlow::Node { }
+abstract class UnsafeWebViewFetchBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

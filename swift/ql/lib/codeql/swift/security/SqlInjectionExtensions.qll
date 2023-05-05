@@ -14,9 +14,9 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class SqlInjectionSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for SQL injection vulnerabilities.
+ * A barrier for SQL injection vulnerabilities.
  */
-abstract class SqlInjectionSanitizer extends DataFlow::Node { }
+abstract class SqlInjectionBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

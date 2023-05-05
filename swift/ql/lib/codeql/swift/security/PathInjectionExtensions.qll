@@ -12,8 +12,8 @@ private import codeql.swift.frameworks.StandardLibrary.FilePath
 /** A data flow sink for path injection vulnerabilities. */
 abstract class PathInjectionSink extends DataFlow::Node { }
 
-/** A sanitizer for path injection vulnerabilities. */
-abstract class PathInjectionSanitizer extends DataFlow::Node { }
+/** A barrier for path injection vulnerabilities. */
+abstract class PathInjectionBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.
@@ -36,10 +36,10 @@ private class DefaultPathInjectionSink extends PathInjectionSink {
   DefaultPathInjectionSink() { sinkNode(this, "path-injection") }
 }
 
-private class DefaultPathInjectionSanitizer extends PathInjectionSanitizer {
-  DefaultPathInjectionSanitizer() {
+private class DefaultPathInjectionBarrier extends PathInjectionBarrier {
+  DefaultPathInjectionBarrier() {
     // This is a simplified implementation.
-    // TODO: Implement a complete path sanitizer when Guards are available.
+    // TODO: Implement a complete path barrier when Guards are available.
     exists(CallExpr starts, CallExpr normalize, DataFlow::Node validated |
       starts.getStaticTarget().getName() = "starts(with:)" and
       starts.getStaticTarget().getEnclosingDecl() instanceof FilePath and

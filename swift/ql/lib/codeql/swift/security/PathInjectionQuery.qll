@@ -18,7 +18,7 @@ module PathInjectionConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node sink) { sink instanceof PathInjectionSink }
 
-  predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof PathInjectionSanitizer }
+  predicate isBarrier(DataFlow::Node barrier) { barrier instanceof PathInjectionBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
     any(PathInjectionAdditionalTaintStep s).step(node1, node2)

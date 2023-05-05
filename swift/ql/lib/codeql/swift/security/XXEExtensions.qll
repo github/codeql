@@ -9,8 +9,8 @@ private import codeql.swift.dataflow.ExternalFlow
 /** A data flow sink for XML external entities (XXE) vulnerabilities. */
 abstract class XxeSink extends DataFlow::Node { }
 
-/** A sanitizer for XML external entities (XXE) vulnerabilities. */
-abstract class XxeSanitizer extends DataFlow::Node { }
+/** A barrier for XML external entities (XXE) vulnerabilities. */
+abstract class XxeBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

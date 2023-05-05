@@ -18,7 +18,7 @@ module WeakHashingConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof WeakSensitiveDataHashingSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof WeakSensitiveDataHashingSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof WeakSensitiveDataHashingBarrier }
 
   predicate isBarrierIn(DataFlow::Node node) {
     // make sources barriers so that we only report the closest instance

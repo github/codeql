@@ -20,9 +20,9 @@ abstract class InsecureTlsExtensionsSource extends DataFlow::Node { }
 abstract class InsecureTlsExtensionsSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for insecure TLS configuration vulnerabilities.
+ * A barrier for insecure TLS configuration vulnerabilities.
  */
-abstract class InsecureTlsExtensionsSanitizer extends DataFlow::Node { }
+abstract class InsecureTlsExtensionsBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

@@ -14,9 +14,9 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class StaticInitializationVectorSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for static initialization vector vulnerabilities.
+ * A barrier for static initialization vector vulnerabilities.
  */
-abstract class StaticInitializationVectorSanitizer extends DataFlow::Node { }
+abstract class StaticInitializationVectorBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

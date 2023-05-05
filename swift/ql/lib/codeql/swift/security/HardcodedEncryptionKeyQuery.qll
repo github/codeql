@@ -34,7 +34,7 @@ module HardcodedKeyConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof HardcodedEncryptionKeySink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof HardcodedEncryptionKeySanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof HardcodedEncryptionKeyBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(HardcodedEncryptionKeyAdditionalTaintStep s).step(nodeFrom, nodeTo)

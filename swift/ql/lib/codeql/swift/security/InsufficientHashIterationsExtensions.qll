@@ -15,9 +15,9 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class InsufficientHashIterationsSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for insufficient hash interation vulnerabilities.
+ * A barrier for insufficient hash interation vulnerabilities.
  */
-abstract class InsufficientHashIterationsSanitizer extends DataFlow::Node { }
+abstract class InsufficientHashIterationsBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.

@@ -15,9 +15,9 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class CleartextStorageDatabaseSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for cleartext database storage vulnerabilities.
+ * A barrier for cleartext database storage vulnerabilities.
  */
-abstract class CleartextStorageDatabaseSanitizer extends DataFlow::Node { }
+abstract class CleartextStorageDatabaseBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional taint steps.
@@ -114,10 +114,10 @@ private class CleartextStorageDatabaseSinks extends SinkModelCsv {
 }
 
 /**
- * An encryption sanitizer for cleartext database storage vulnerabilities.
+ * An encryption barrier for cleartext database storage vulnerabilities.
  */
-private class CleartextStorageDatabaseEncryptionSanitizer extends CleartextStorageDatabaseSanitizer {
-  CleartextStorageDatabaseEncryptionSanitizer() { this.asExpr() instanceof EncryptedExpr }
+private class CleartextStorageDatabaseEncryptionBarrier extends CleartextStorageDatabaseBarrier {
+  CleartextStorageDatabaseEncryptionBarrier() { this.asExpr() instanceof EncryptedExpr }
 }
 
 /**

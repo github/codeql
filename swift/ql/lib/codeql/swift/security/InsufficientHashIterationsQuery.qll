@@ -29,7 +29,7 @@ module InsufficientHashIterationsConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof InsufficientHashIterationsSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof InsufficientHashIterationsSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof InsufficientHashIterationsBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     any(InsufficientHashIterationsAdditionalTaintStep s).step(nodeFrom, nodeTo)
