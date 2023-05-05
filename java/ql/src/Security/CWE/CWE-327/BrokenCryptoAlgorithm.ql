@@ -13,41 +13,15 @@
 
 import java
 import semmle.code.java.security.Encryption
-import semmle.code.java.dataflow.TaintTracking
-import DataFlow
-
-private class ShortStringLiteral extends StringLiteral {
-  ShortStringLiteral() { this.getValue().length() < 100 }
-}
-
-class BrokenAlgoLiteral extends ShortStringLiteral {
-  BrokenAlgoLiteral() {
-    this.getValue().regexpMatch(getInsecureAlgorithmRegex()) and
-    // Exclude German and French sentences.
-    not this.getValue().regexpMatch(".*\\p{IsLowercase} des \\p{IsLetter}.*")
-  }
-}
-
-module InsecureCryptoConfig implements ConfigSig {
-  predicate isSource(Node n) { n.asExpr() instanceof BrokenAlgoLiteral }
-
-  predicate isSink(Node n) { exists(CryptoAlgoSpec c | n.asExpr() = c.getAlgoSpec()) }
-
-  predicate isBarrier(DataFlow::Node node) {
-    node.getType() instanceof PrimitiveType or node.getType() instanceof BoxedType
-  }
-}
-
-module InsecureCryptoFlow = TaintTracking::Global<InsecureCryptoConfig>;
-
+import semmle.code.java.security.BrokenCryptoAlgorithmQuery
 import InsecureCryptoFlow::PathGraph
 
 from
-  InsecureCryptoFlow::PathNode source, InsecureCryptoFlow::PathNode sink, CryptoAlgoSpec c,
-  BrokenAlgoLiteral s
+  InsecureCryptoFlow::PathNode source, InsecureCryptoFlow::PathNode sink, CryptoAlgoSpec spec,
+  BrokenAlgoLiteral algo
 where
-  sink.getNode().asExpr() = c.getAlgoSpec() and
-  source.getNode().asExpr() = s and
+  sink.getNode().asExpr() = spec.getAlgoSpec() and
+  source.getNode().asExpr() = algo and
   InsecureCryptoFlow::flowPath(source, sink)
-select c, source, sink, "Cryptographic algorithm $@ is weak and should not be used.", s,
-  s.getValue()
+select spec, source, sink, "Cryptographic algorithm $@ is weak and should not be used.", algo,
+  algo.getValue()
