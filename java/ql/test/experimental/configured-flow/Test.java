@@ -20,8 +20,8 @@ class Test {
     handle.executeUpdate("INSERT INTO foo VALUES ('" + byteToString(data) + "')");
   }
 
-  public void M2(Statement handle) throws Exception {    
-    // Only a source if "sql" is a selected threat model
+  public void M2(Statement handle) throws Exception {
+    // Only a source if "database" is a selected threat model
     ResultSet rs = handle.executeQuery("SELECT * FROM foo");
 
     // Sink

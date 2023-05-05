@@ -8,7 +8,7 @@ private import ExternalFlowExtensions
 /**
  * Holds if the specified kind of source model is supported for the current query.
  */
-extensible private predicate supportedThreatModel(string kind);
+extensible private predicate supportedThreatModels(string kind);
 
 /**
  * Holds if the specified kind of source model is containted within the specified group.
@@ -39,21 +39,21 @@ private string childThreatModel(string group) {
  */
 bindingset[kind]
 predicate supportedSourceModel(string kind) {
-  // expansive threat model includes all kinds
-  supportedThreatModel("expansive")
+  // all threat model includes all kinds
+  supportedThreatModels("all")
   or
   // check if this kind is supported directly
-  supportedThreatModel(kind)
+  supportedThreatModels(kind)
   or
   // check if one of this kind's ancestors are supported
-  exists(string group | group = parentThreatModel(kind) | supportedThreatModel(group))
+  exists(string group | group = parentThreatModel(kind) | supportedThreatModels(group))
   or
-  // if supportedThreatModel is empty, check if kind is a subtype of "standard"
-  not supportedThreatModel(_) and
-  ("standard" = parentThreatModel(kind) or "standard" = kind)
+  // if supportedThreatModels is empty, check if kind is a subtype of "default"
+  not supportedThreatModels(_) and
+  ("default" = parentThreatModel(kind) or "default" = kind)
 }
 
-private string getGlobalGroups() { result = ["standard", "expansive"] }
+private string getGlobalGroups() { result = ["default", "all"] }
 
 /**
  * A class that represents a kind of any model or group.
@@ -66,7 +66,7 @@ private class Kind extends string {
     experimentalSourceModel(_, _, _, _, _, _, _, this, _, _) or
     experimentalSinkModel(_, _, _, _, _, _, _, this, _, _) or
     experimentalSummaryModel(_, _, _, _, _, _, _, _, this, _, _) or
-    supportedThreatModel(this) or
+    supportedThreatModels(this) or
     threatModelGrouping(this, _) or
     threatModelGrouping(_, this) or
     this = getGlobalGroups()
@@ -81,12 +81,12 @@ string relatedSourceModel(Kind kind) {
   result = kind
   or
   // Use all kinds regardless of the query.
-  supportedThreatModel("expansive") and
+  supportedThreatModels("all") and
   result = kind and
   sourceModel(_, _, _, _, _, _, _, result, _)
   or
-  // Use the kinds that are provided by the threat model in case it is not standard or expansive.
-  exists(string model | not model = getGlobalGroups() and supportedThreatModel(model) |
+  // Use the kinds that are provided by the threat model in case it is not default or all.
+  exists(string model | not model = getGlobalGroups() and supportedThreatModels(model) |
     result = model
     or
     exists(string child | child = childThreatModel(model) | result = child)

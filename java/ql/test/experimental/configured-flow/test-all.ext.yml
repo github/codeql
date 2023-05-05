@@ -2,7 +2,7 @@ extensions:
 
   - addsTo:
       pack: codeql/java-tests
-      extensible: supportedThreatModel
+      extensible: supportedThreatModels
     data:
       - ["remote"]
-      - ["sql"]
+      - ["database"]

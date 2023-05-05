@@ -29,6 +29,6 @@ extensions:
 
   # - addsTo:
   #     pack: codeql/java-all
-  #     extensible: supportedThreatModel
+  #     extensible: supportedThreatModels
   #   data:
   #     - ["kotlinMadFlowTest"]
