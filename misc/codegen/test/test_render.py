@@ -45,7 +45,7 @@ def write_registry(file, *files_and_hashes):
 
 def assert_registry(file, *files_and_hashes):
     assert_file(file, create_registry(files_and_hashes))
-    files = [file.name] + [f for f, _, _ in files_and_hashes]
+    files = [file.name, ".gitattributes"] + [f for f, _, _ in files_and_hashes]
     assert_file(file.parent / ".gitattributes", "\n".join(f"{f} linguist-generated" for f in files) + "\n")
 
 

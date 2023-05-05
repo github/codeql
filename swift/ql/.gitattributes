@@ -1,4 +1,5 @@
 .generated.list linguist-generated
+.gitattributes linguist-generated
 lib/codeql/swift/elements/AvailabilityInfoConstructor.qll linguist-generated
 lib/codeql/swift/elements/AvailabilitySpec.qll linguist-generated
 lib/codeql/swift/elements/CommentConstructor.qll linguist-generated

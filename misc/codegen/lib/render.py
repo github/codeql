@@ -195,6 +195,7 @@ class RenderManager(Renderer):
         self._registry_path.parent.mkdir(parents=True, exist_ok=True)
         with open(self._registry_path, 'w') as out, open(self._registry_path.parent / ".gitattributes", "w") as attrs:
             print(self._registry_path.name, "linguist-generated", file=attrs)
+            print(".gitattributes", "linguist-generated", file=attrs)
             for f, hashes in sorted(self._hashes.items()):
                 print(f, hashes.pre, hashes.post, file=out)
                 print(f, "linguist-generated", file=attrs)
