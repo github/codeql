@@ -14,7 +14,7 @@
 
 #include "swift/extractor/infra/file/PathHash.h"
 #include "swift/extractor/infra/file/Path.h"
-#include "swift/extractor/infra/log/SwiftAssert.h"
+#include "swift/logging/SwiftAssert.h"
 
 #ifdef __APPLE__
 // path is hardcoded as otherwise redirection could break when setting DYLD_FALLBACK_LIBRARY_PATH

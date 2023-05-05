@@ -231,3 +231,15 @@ void repeated_alerts(unsigned size, unsigned offset) {
   }
   memset(buffer, 0, size); // BAD
 }
+
+void set_string(string_t* p_str, char* buffer) {
+    p_str->string = buffer;
+}
+
+void test_flow_through_setter(unsigned size) {
+    string_t str;
+    char* buffer = (char*)malloc(size);
+    set_string(&str, buffer);
+    memset(str.string, 0, size + 1); // BAD
+}
+

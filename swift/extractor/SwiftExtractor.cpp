@@ -15,7 +15,7 @@
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
 #include "swift/extractor/infra/SwiftBodyEmissionStrategy.h"
 #include "swift/extractor/mangler/SwiftMangler.h"
-#include "swift/extractor/infra/log/SwiftAssert.h"
+#include "swift/logging/SwiftAssert.h"
 
 using namespace codeql;
 using namespace std::string_literals;

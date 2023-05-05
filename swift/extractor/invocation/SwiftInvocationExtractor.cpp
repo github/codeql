@@ -4,7 +4,7 @@
 #include "swift/extractor/trap/generated/TrapTags.h"
 #include "swift/extractor/infra/file/TargetFile.h"
 #include "swift/extractor/infra/file/Path.h"
-#include "swift/extractor/infra/log/SwiftAssert.h"
+#include "swift/logging/SwiftAssert.h"
 #include "swift/extractor/mangler/SwiftMangler.h"
 
 namespace fs = std::filesystem;
