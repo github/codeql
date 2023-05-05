@@ -47,12 +47,7 @@ private newtype TRegExpParent =
   /** A special character */
   TRegExpSpecialChar(Regex re, int start, int end) { re.specialCharacter(start, end, _) } or
   /** A normal character */
-  TRegExpNormalChar(Regex re, int start, int end) {
-    re.normalCharacterSequence(start, end)
-    or
-    re.escapedCharacter(start, end) and
-    not re.specialCharacter(start, end, _)
-  } or
+  TRegExpNormalChar(Regex re, int start, int end) { re.normalCharacter(start, end) } or
   /** A back reference */
   TRegExpBackRef(Regex re, int start, int end) { re.backreference(start, end) }
 
