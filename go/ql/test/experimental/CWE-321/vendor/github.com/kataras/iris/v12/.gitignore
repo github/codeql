@@ -1,0 +1,13 @@
+.idea
+.vscode
+.directory
+coverage.out
+package-lock.json
+access.log
+node_modules
+issue-*/
+internalcode-*/
+/_examples/feature-*/
+_examples/**/uploads/*
+_issues/**
+.DS_STORE
