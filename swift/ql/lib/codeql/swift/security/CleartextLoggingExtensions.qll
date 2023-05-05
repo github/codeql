@@ -13,9 +13,6 @@ abstract class CleartextLoggingBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional flow steps.
- *
- * Extend this class to add additional flow steps that should apply to paths related to
- * cleartext logging of sensitive data vulnerabilities.
  */
 class CleartextLoggingAdditionalFlowStep extends Unit {
   /**

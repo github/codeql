@@ -12,9 +12,6 @@ abstract class PredicateInjectionBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional flow steps.
- *
- * Extend this class to add additional flow steps that should apply to paths related to
- * predicate injection vulnerabilities.
  */
 class PredicateInjectionAdditionalFlowStep extends Unit {
   /**

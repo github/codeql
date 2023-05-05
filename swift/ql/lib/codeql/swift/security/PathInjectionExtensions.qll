@@ -17,9 +17,6 @@ abstract class PathInjectionBarrier extends DataFlow::Node { }
 
 /**
  * A unit class for adding additional flow steps.
- *
- * Extend this class to add additional flow steps that should apply to paths related to
- * path injection vulnerabilities.
  */
 class PathInjectionAdditionalFlowStep extends Unit {
   /**
