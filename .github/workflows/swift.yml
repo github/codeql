@@ -15,6 +15,7 @@ on:
       - "!**/*.qhelp"
     branches:
       - main
+      - redsun82/swift-5.8
       - rc/*
   push:
     paths:
