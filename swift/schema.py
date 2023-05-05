@@ -56,7 +56,7 @@ class Diagnostics(Locatable):
     kind: int
 
 class DbFile(File):
-    pass
+    test_prop: int
 
 class DbLocation(Location):
     pass

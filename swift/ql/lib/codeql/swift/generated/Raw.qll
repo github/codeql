@@ -124,6 +124,11 @@ module Raw {
    */
   class DbFile extends @db_file, File {
     override string toString() { result = "DbFile" }
+
+    /**
+     * Gets the test prop of this db file.
+     */
+    int getTestProp() { db_files(this, result) }
   }
 
   /**

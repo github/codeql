@@ -6,5 +6,10 @@ import codeql.swift.elements.File
 module Generated {
   class DbFile extends Synth::TDbFile, File {
     override string getAPrimaryQlClass() { result = "DbFile" }
+
+    /**
+     * Gets the test prop of this db file.
+     */
+    int getTestProp() { result = Synth::convertDbFileToRaw(this).(Raw::DbFile).getTestProp() }
   }
 }

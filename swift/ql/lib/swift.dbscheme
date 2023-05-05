@@ -125,7 +125,8 @@ comments(
 );
 
 db_files(
-  unique int id: @db_file
+  unique int id: @db_file,
+  int test_prop: int ref
 );
 
 db_locations(
