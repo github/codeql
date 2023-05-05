@@ -1,7 +1,7 @@
 .. _basic-query-for-swift-code:
 
 Basic query for Swift code
-=========================
+==========================
 
 Learn to write and run a simple CodeQL query using Visual Studio Code with the CodeQL extension.
 
