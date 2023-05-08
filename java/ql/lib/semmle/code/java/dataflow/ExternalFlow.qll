@@ -13,7 +13,7 @@
  *   `package; type; subtypes; name; signature; ext; input; output; kind; provenance`
  * - Neutrals:
  *   `package; type; name; signature; kind; provenance`
- *   A neutral is used to indicate that there is no flow via a callable.
+ *   A neutral is used to indicate that a callable is neutral with respect to flow (no summary), source (is not a source) or sink (is not a sink).
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -166,7 +166,7 @@ predicate summaryModel(
       .summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
 }
 
-/** Holds if a neutral model exists indicating there is no flow for the given parameters. */
+/** Holds if a neutral model exists for the given parameters. */
 predicate neutralModel = Extensions::neutralModel/6;
 
 private predicate relevantPackage(string package) {
