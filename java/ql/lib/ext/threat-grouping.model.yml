@@ -41,15 +41,20 @@ extensions:
       pack: codeql/java-all
       extensible: threatModelGrouping
     data:
+      # Default
+      - ["remote", "default"]
+      - ["request", "remote"]
+      - ["response", "remote"]
+
+      # Local
+      - ["database", "local"]
+
+      # Android
       - ["android-widget", "android"]
       - ["android-external-storage-dir", "android"]
       - ["contentprovider", "android"]
-      - ["request", "remote"]
-      - ["response", "remote"]
-      - ["database", "local"]
-      # - ["remote", "default"]
 
-      # Not sure if these should really go in the default threat model, but we need them for tests to pass
+      # Not sure where we should put these in the hierarchy, so they are commented out for now.
       # - ["android-external-storage-dir", "default"]
       # - ["contentprovider", "default"]
       # - ["android-widget", "default"]
