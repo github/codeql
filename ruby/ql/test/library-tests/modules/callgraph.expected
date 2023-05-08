@@ -153,6 +153,7 @@ getTarget
 | calls.rb:383:1:383:23 | call to instance | calls.rb:326:5:328:7 | instance |
 | calls.rb:383:1:383:23 | call to instance | calls.rb:336:5:338:7 | instance |
 | calls.rb:383:1:383:23 | call to instance | calls.rb:342:5:344:7 | instance |
+| calls.rb:383:1:383:23 | call to instance | calls.rb:375:5:377:7 | instance |
 | calls.rb:388:13:388:48 | call to puts | calls.rb:102:5:102:30 | puts |
 | calls.rb:392:13:392:22 | call to singleton1 | calls.rb:387:9:389:11 | singleton1 |
 | calls.rb:392:13:392:22 | call to singleton1 | calls.rb:422:9:424:11 | singleton1 |
