@@ -4,7 +4,9 @@ extensions:
       pack: codeql/java-all
       extensible: sourceModel
     data:
-      # Create a few
+      # These are all sources of "database" kind of tainted data
+      # They are only enabled of the "database" threat model is enabled
+
       # Package java.sql
       - ["java.sql", "PreparedStatement", True, "executeQuery", "()", "", "ReturnValue", "database", "manual"]
       - ["java.sql", "PreparedStatement", True, "getMetaData", "()", "", "ReturnValue", "database", "manual"]
@@ -13,13 +15,16 @@ extensions:
       - ["java.sql", "Statement", True, "getResultSet", "()", "", "ReturnValue", "database", "manual"]
       - ["java.sql", "Statement", True, "getGeneratedKeys", "()", "", "ReturnValue", "database", "manual"]
       - ["java.sql", "Statement", True, "getConnection", "()", "", "ReturnValue", "database", "manual"]
+
       # Package org.hibernate
       - ["org.hibernate", "Query", True, "list", "()", "", ReturnValue", "database", "manual"]
       - ["org.hibernate", "Query", True, "scroll", "", "", ReturnValue", "database", "manual"]
       - ["org.hibernate", "Query", True, "iterate", "", "", ReturnValue", "database", "manual"]
+
       # Package org.jooq
       - ["org.jooq", "ResultQuery", True, "fetch", "()", "", "ReturnValue", "database", "manual"]
       - ["org.jooq", "ResultQuery", True, "iterator", "()", "", "ReturnValue", "database", "manual"]
+
       # Package org.springframework.jdbc.object
       - ["org.springframework.jdbc.object", "SqlQuery", True, "execute", "", "", "ReturnValue", "database", "manual"]
       - ["org.springframework.jdbc.object", "SqlQuery", True, "executeByNamedParam", "", "", "ReturnValue", "database", "manual"]
@@ -27,32 +32,37 @@ extensions:
 
   # Create a graph of parent-child relationships between threat models and their kinds
   # The left side is a kind of threat model. The right side groups the kinds together.
+  # This is unlikely to be directly added to by users.
   - addsTo:
       pack: codeql/java-all
       extensible: threatModelGrouping
     data:
-      # Default
+      # Default threat model
       - ["remote", "default"]
-      - ["request", "remote"]
-      - ["response", "remote"]
+      - ["uri-path", "default"]
 
-      # Local
-      - ["database", "local"]
-
-      # Android
+      # Android threat models
+      # TODO This part of the hierarchy may be removed when Android sources are refactored
       - ["android-widget", "android"]
       - ["android-external-storage-dir", "android"]
       - ["contentprovider", "android"]
+      - ["android-external-storage-dir", "standard"]
 
-      # Not sure where we should put these in the hierarchy, so they are commented out for now.
-      # - ["android-external-storage-dir", "default"]
-      # - ["contentprovider", "default"]
-      # - ["android-widget", "default"]
-      # - ["android-web-resource-response", "default"]
-      # - ["uri-path", "default"]
+      # Remote threat models
+      - ["request", "remote"]
+      - ["response", "remote"]
 
-  # Provide a default, empty supportedThreatModels
+      # Local threat models
+      - ["database", "local"]
+      - ["cli", "local"]
+      - ["environment", "local"]
+      - ["file", "local"]
+
+  # Provide an empty supportedThreatModels to make `resolve extensions` happy
   - addsTo:
       pack: codeql/java-all
       extensible: supportedThreatModels
+
+    # Choose which threat models are enabled in this query.
+    # The default threat model is implicitly enabled.
     data: []
