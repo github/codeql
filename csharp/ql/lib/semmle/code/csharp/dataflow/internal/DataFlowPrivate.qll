@@ -335,7 +335,8 @@ module LocalFlow {
     exists(ControlFlow::BasicBlock bb, int i |
       SsaImpl::lastRefBeforeRedefExt(def, bb, i, next.getDefinitionExt()) and
       def.definesAt(_, bb, i, _) and
-      def = getSsaDefinitionExt(nodeFrom)
+      def = getSsaDefinitionExt(nodeFrom) and
+      nodeFrom != next
     )
   }
 
@@ -414,7 +415,8 @@ module LocalFlow {
     ) {
       exists(CIL::BasicBlock bb, int i | CilSsaImpl::lastRefBeforeRedefExt(def, bb, i, next) |
         def.definesAt(_, bb, i, _) and
-        def = nodeFrom.(CilSsaDefinitionExtNode).getDefinition()
+        def = nodeFrom.(CilSsaDefinitionExtNode).getDefinition() and
+        def != next
         or
         nodeFrom = TCilExprNode(bb.getNode(i).(CIL::ReadAccess))
       )
