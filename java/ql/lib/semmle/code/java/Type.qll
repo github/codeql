@@ -804,7 +804,9 @@ class AnonymousClass extends NestedClass {
     // Include super.toString, i.e. the name given in the database, because for Kotlin anonymous
     // classes we can get specialisations of anonymous generic types, and this will supply the
     // trailing type arguments.
-    result = "new " + this.getClassInstanceExpr().getTypeName() + "(...) { ... }" + super.toString()
+    result =
+      "new " + pragma[only_bind_out](this.getClassInstanceExpr().getTypeName()).toString() +
+        "(...) { ... }" + super.toString()
   }
 
   /**
