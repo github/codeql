@@ -4,7 +4,6 @@
  */
 
 import csharp
-private import semmle.code.csharp.dataflow.DataFlow2
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.frameworks.system.text.RegularExpressions
 private import semmle.code.csharp.security.Sanitizers

@@ -7,8 +7,6 @@ import csharp
 private import XSSSinks
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
-private import semmle.code.csharp.dataflow.DataFlow2
-private import semmle.code.csharp.dataflow.TaintTracking2
 
 /**
  * Holds if there is tainted flow from `source` to `sink` that may lead to a

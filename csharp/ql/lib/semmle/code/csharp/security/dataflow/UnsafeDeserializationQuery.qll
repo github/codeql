@@ -5,7 +5,6 @@
 
 import csharp
 private import semmle.code.csharp.serialization.Deserializers
-private import semmle.code.csharp.dataflow.TaintTracking2
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 
 /**
