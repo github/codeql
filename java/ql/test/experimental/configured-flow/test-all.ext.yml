@@ -1,8 +1,0 @@
-extensions:
-
-  - addsTo:
-      pack: codeql/java-tests
-      extensible: supportedThreatModels
-    data:
-      - ["remote"]
-      - ["database"]

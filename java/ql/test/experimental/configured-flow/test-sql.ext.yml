@@ -1,7 +1,0 @@
-extensions:
-
-  - addsTo:
-      pack: codeql/java-tests
-      extensible: supportedThreatModels
-    data:
-      - ["database"]

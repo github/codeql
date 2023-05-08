@@ -3,11 +3,11 @@
  * @kind path-problem
  * @problem.severity warning
  * @precision low
- * @id java/threat-model-sql
+ * @id java/threat-model-hardcoded-default
  * @tags security
  */
 
-import Test
+import TestHardcoded
 import ThreatModel::PathGraph
 
 from ThreatModel::PathNode source, ThreatModel::PathNode sink

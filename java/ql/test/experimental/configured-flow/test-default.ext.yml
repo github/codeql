@@ -4,4 +4,4 @@ extensions:
       pack: codeql/java-tests
       extensible: supportedThreatModels
     data:
-      - ["remote"]
+      - ["default"] # Strictly not needed as all possible sources are already included.
