@@ -1,39 +1,41 @@
 edges
-| Test.java:6:31:6:41 | data : byte[] | Test.java:7:23:7:26 | data : byte[] |
-| Test.java:7:23:7:26 | data : byte[] | Test.java:7:12:7:51 | new String(...) : String |
-| Test.java:14:5:14:25 | getInputStream(...) : InputStream | Test.java:14:32:14:35 | data [post update] : byte[] |
-| Test.java:14:32:14:35 | data [post update] : byte[] | Test.java:17:34:17:37 | data |
-| Test.java:14:32:14:35 | data [post update] : byte[] | Test.java:20:69:20:72 | data : byte[] |
-| Test.java:20:56:20:73 | byteToString(...) : String | Test.java:20:26:20:80 | ... + ... |
-| Test.java:20:69:20:72 | data : byte[] | Test.java:6:31:6:41 | data : byte[] |
-| Test.java:20:69:20:72 | data : byte[] | Test.java:20:56:20:73 | byteToString(...) : String |
-| Test.java:25:20:25:59 | executeQuery(...) : ResultSet | Test.java:28:56:28:57 | rs : ResultSet |
-| Test.java:25:20:25:59 | executeQuery(...) : ResultSet | Test.java:32:34:32:35 | rs : ResultSet |
-| Test.java:28:56:28:57 | rs : ResultSet | Test.java:28:56:28:75 | getString(...) : String |
-| Test.java:28:56:28:75 | getString(...) : String | Test.java:28:26:28:82 | ... + ... |
-| Test.java:32:34:32:35 | rs : ResultSet | Test.java:32:34:32:53 | getString(...) : String |
-| Test.java:32:34:32:53 | getString(...) : String | Test.java:32:34:32:64 | getBytes(...) |
+| Test.java:7:31:7:41 | data : byte[] | Test.java:8:23:8:26 | data : byte[] |
+| Test.java:8:23:8:26 | data : byte[] | Test.java:8:12:8:51 | new String(...) : String |
+| Test.java:15:5:15:25 | getInputStream(...) : InputStream | Test.java:15:32:15:35 | data [post update] : byte[] |
+| Test.java:15:32:15:35 | data [post update] : byte[] | Test.java:19:32:19:35 | data : byte[] |
+| Test.java:15:32:15:35 | data [post update] : byte[] | Test.java:22:69:22:72 | data : byte[] |
+| Test.java:19:32:19:35 | data : byte[] | Test.java:7:31:7:41 | data : byte[] |
+| Test.java:19:32:19:35 | data : byte[] | Test.java:19:19:19:36 | byteToString(...) |
+| Test.java:22:56:22:73 | byteToString(...) : String | Test.java:22:26:22:80 | ... + ... |
+| Test.java:22:69:22:72 | data : byte[] | Test.java:7:31:7:41 | data : byte[] |
+| Test.java:22:69:22:72 | data : byte[] | Test.java:22:56:22:73 | byteToString(...) : String |
+| Test.java:27:20:27:59 | executeQuery(...) : ResultSet | Test.java:30:56:30:57 | rs : ResultSet |
+| Test.java:27:20:27:59 | executeQuery(...) : ResultSet | Test.java:34:19:34:20 | rs : ResultSet |
+| Test.java:30:56:30:57 | rs : ResultSet | Test.java:30:56:30:75 | getString(...) : String |
+| Test.java:30:56:30:75 | getString(...) : String | Test.java:30:26:30:82 | ... + ... |
+| Test.java:34:19:34:20 | rs : ResultSet | Test.java:34:19:34:38 | getString(...) |
 nodes
-| Test.java:6:31:6:41 | data : byte[] | semmle.label | data : byte[] |
-| Test.java:7:12:7:51 | new String(...) : String | semmle.label | new String(...) : String |
-| Test.java:7:23:7:26 | data : byte[] | semmle.label | data : byte[] |
-| Test.java:14:5:14:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| Test.java:14:32:14:35 | data [post update] : byte[] | semmle.label | data [post update] : byte[] |
-| Test.java:17:34:17:37 | data | semmle.label | data |
-| Test.java:20:26:20:80 | ... + ... | semmle.label | ... + ... |
-| Test.java:20:56:20:73 | byteToString(...) : String | semmle.label | byteToString(...) : String |
-| Test.java:20:69:20:72 | data : byte[] | semmle.label | data : byte[] |
-| Test.java:25:20:25:59 | executeQuery(...) : ResultSet | semmle.label | executeQuery(...) : ResultSet |
-| Test.java:28:26:28:82 | ... + ... | semmle.label | ... + ... |
-| Test.java:28:56:28:57 | rs : ResultSet | semmle.label | rs : ResultSet |
-| Test.java:28:56:28:75 | getString(...) : String | semmle.label | getString(...) : String |
-| Test.java:32:34:32:35 | rs : ResultSet | semmle.label | rs : ResultSet |
-| Test.java:32:34:32:53 | getString(...) : String | semmle.label | getString(...) : String |
-| Test.java:32:34:32:64 | getBytes(...) | semmle.label | getBytes(...) |
+| Test.java:7:31:7:41 | data : byte[] | semmle.label | data : byte[] |
+| Test.java:8:12:8:51 | new String(...) : String | semmle.label | new String(...) : String |
+| Test.java:8:23:8:26 | data : byte[] | semmle.label | data : byte[] |
+| Test.java:15:5:15:25 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| Test.java:15:32:15:35 | data [post update] : byte[] | semmle.label | data [post update] : byte[] |
+| Test.java:19:19:19:36 | byteToString(...) | semmle.label | byteToString(...) |
+| Test.java:19:32:19:35 | data : byte[] | semmle.label | data : byte[] |
+| Test.java:22:26:22:80 | ... + ... | semmle.label | ... + ... |
+| Test.java:22:56:22:73 | byteToString(...) : String | semmle.label | byteToString(...) : String |
+| Test.java:22:69:22:72 | data : byte[] | semmle.label | data : byte[] |
+| Test.java:27:20:27:59 | executeQuery(...) : ResultSet | semmle.label | executeQuery(...) : ResultSet |
+| Test.java:30:26:30:82 | ... + ... | semmle.label | ... + ... |
+| Test.java:30:56:30:57 | rs : ResultSet | semmle.label | rs : ResultSet |
+| Test.java:30:56:30:75 | getString(...) : String | semmle.label | getString(...) : String |
+| Test.java:34:19:34:20 | rs : ResultSet | semmle.label | rs : ResultSet |
+| Test.java:34:19:34:38 | getString(...) | semmle.label | getString(...) |
 subpaths
-| Test.java:20:69:20:72 | data : byte[] | Test.java:6:31:6:41 | data : byte[] | Test.java:7:12:7:51 | new String(...) : String | Test.java:20:56:20:73 | byteToString(...) : String |
+| Test.java:19:32:19:35 | data : byte[] | Test.java:7:31:7:41 | data : byte[] | Test.java:8:12:8:51 | new String(...) : String | Test.java:19:19:19:36 | byteToString(...) |
+| Test.java:22:69:22:72 | data : byte[] | Test.java:7:31:7:41 | data : byte[] | Test.java:8:12:8:51 | new String(...) : String | Test.java:22:56:22:73 | byteToString(...) : String |
 #select
-| Test.java:17:34:17:37 | data | Test.java:14:5:14:25 | getInputStream(...) : InputStream | Test.java:17:34:17:37 | data | This is some kind of threat model thingy $@. | Test.java:14:5:14:25 | getInputStream(...) | Source of that thingy |
-| Test.java:20:26:20:80 | ... + ... | Test.java:14:5:14:25 | getInputStream(...) : InputStream | Test.java:20:26:20:80 | ... + ... | This is some kind of threat model thingy $@. | Test.java:14:5:14:25 | getInputStream(...) | Source of that thingy |
-| Test.java:28:26:28:82 | ... + ... | Test.java:25:20:25:59 | executeQuery(...) : ResultSet | Test.java:28:26:28:82 | ... + ... | This is some kind of threat model thingy $@. | Test.java:25:20:25:59 | executeQuery(...) | Source of that thingy |
-| Test.java:32:34:32:64 | getBytes(...) | Test.java:25:20:25:59 | executeQuery(...) : ResultSet | Test.java:32:34:32:64 | getBytes(...) | This is some kind of threat model thingy $@. | Test.java:25:20:25:59 | executeQuery(...) | Source of that thingy |
+| Test.java:19:19:19:36 | byteToString(...) | Test.java:15:5:15:25 | getInputStream(...) : InputStream | Test.java:19:19:19:36 | byteToString(...) | This is some kind of threat model thingy $@. | Test.java:15:5:15:25 | getInputStream(...) | Source of that thingy |
+| Test.java:22:26:22:80 | ... + ... | Test.java:15:5:15:25 | getInputStream(...) : InputStream | Test.java:22:26:22:80 | ... + ... | This is some kind of threat model thingy $@. | Test.java:15:5:15:25 | getInputStream(...) | Source of that thingy |
+| Test.java:30:26:30:82 | ... + ... | Test.java:27:20:27:59 | executeQuery(...) : ResultSet | Test.java:30:26:30:82 | ... + ... | This is some kind of threat model thingy $@. | Test.java:27:20:27:59 | executeQuery(...) | Source of that thingy |
+| Test.java:34:19:34:38 | getString(...) | Test.java:27:20:27:59 | executeQuery(...) : ResultSet | Test.java:34:19:34:38 | getString(...) | This is some kind of threat model thingy $@. | Test.java:27:20:27:59 | executeQuery(...) | Source of that thingy |

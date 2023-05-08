@@ -1,5 +1,6 @@
 import java.sql.*;
 import java.net.*;
+import java.util.logging.*;
 import java.nio.charset.StandardCharsets;
 
 class Test {
@@ -13,10 +14,11 @@ class Test {
     byte[] data = new byte[1024];
     sock.getInputStream().read(data);
 
-    // Sink
-    sock.getOutputStream().write(data);
+    // Logging sink
+    Logger logger = Logger.getLogger("foo");
+    logger.severe(byteToString(data));
 
-    // Sink
+    // SQL sink
     handle.executeUpdate("INSERT INTO foo VALUES ('" + byteToString(data) + "')");
   }
 
@@ -24,11 +26,11 @@ class Test {
     // Only a source if "database" is a selected threat model
     ResultSet rs = handle.executeQuery("SELECT * FROM foo");
 
-    // Sink
+    // SQL sink
     handle.executeUpdate("INSERT INTO foo VALUES ('" + rs.getString("name") + "')");
 
-    // Sink
-    Socket sock = new Socket("localhost", 1234);
-    sock.getOutputStream().write(rs.getString("name").getBytes());
+    // Logging sink
+    Logger logger = Logger.getLogger("foo");
+    logger.severe(rs.getString("name"));
   }
 }
