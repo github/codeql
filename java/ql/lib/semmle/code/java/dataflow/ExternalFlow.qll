@@ -289,7 +289,7 @@ module ModelValidation {
     or
     exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
       not kind =
-        ["remote", "sql", "contentprovider", "android-widget", "android-external-storage-dir"] and
+        ["remote", "database", "contentprovider", "android-widget", "android-external-storage-dir"] and
       not kind.matches("qltest%") and
       result = "Invalid kind \"" + kind + "\" in source model."
     )
