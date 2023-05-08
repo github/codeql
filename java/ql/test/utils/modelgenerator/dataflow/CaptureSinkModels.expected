@@ -1,5 +1,3 @@
-| p;ParamFlow;true;writeChunked;(byte[],OutputStream);;Argument[0];sql;df-generated |
-| p;ParamFlow;true;writeChunked;(char[],OutputStream);;Argument[0];sql;df-generated |
 | p;PrivateFlowViaPublicInterface$SPI;true;openStream;();;Argument[this];create-file;df-generated |
 | p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[0];read-file;df-generated |
 | p;Sinks;true;copyFileToDirectory;(Path,Path,CopyOption[]);;Argument[1];create-file;df-generated |
