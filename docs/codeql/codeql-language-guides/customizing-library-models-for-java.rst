@@ -260,7 +260,7 @@ We need to add a tuple to the **neutralModel**\(package, type, name, signature, 
 
 
 Since we are adding a neutral model, we need to add tuples to the **neutralModel** extensible predicate.
-The first four values identify the callable (in this case a method) to be modeled as a neutral, the fourth value is the kind, and the sixth value is the provenance (origin) of the neutral.
+The first four values identify the callable (in this case a method) to be modeled as a neutral, the fifth value is the kind, and the sixth value is the provenance (origin) of the neutral.
 
 - The first value **java.time** is the package name.
 - The second value **Instant** is the class (type) name.
