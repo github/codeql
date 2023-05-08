@@ -1135,8 +1135,8 @@ module Impl<FullStateConfigSig Config> {
         DataFlowCall call, ArgNodeEx arg, ParamNodeEx p, boolean allowsFieldFlow
       );
 
-      bindingset[node, state, t, ap]
-      predicate filter(NodeEx node, FlowState state, Typ t, Ap ap);
+      bindingset[node, state, t0, ap]
+      predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t);
 
       bindingset[typ, contentType]
       predicate typecheckStore(Typ typ, DataFlowType contentType);
@@ -1199,9 +1199,20 @@ module Impl<FullStateConfigSig Config> {
         NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
         ApOption argAp, Typ t, Ap ap, ApApprox apa
       ) {
-        fwdFlow0(node, state, cc, summaryCtx, argT, argAp, t, ap, apa) and
+        fwdFlow1(node, state, cc, summaryCtx, argT, argAp, _, t, ap, apa)
+      }
+
+      private predicate fwdFlow1(
+        NodeEx node, FlowState state, Cc cc, ParamNodeOption summaryCtx, TypOption argT,
+        ApOption argAp, Typ t0, Typ t, Ap ap, ApApprox apa
+      ) {
+        fwdFlow0(node, state, cc, summaryCtx, argT, argAp, t0, ap, apa) and
         PrevStage::revFlow(node, state, apa) and
-        filter(node, state, t, ap)
+        filter(node, state, t0, ap, t)
+      }
+
+      private predicate typeStrengthen(Typ t0, Ap ap, Typ t) {
+        fwdFlow1(_, _, _, _, _, _, t0, t, ap, _) and t0 != t
       }
 
       pragma[assume_small_delta]
@@ -1331,6 +1342,11 @@ module Impl<FullStateConfigSig Config> {
       private predicate fwdFlowConsCand(Typ t2, Ap cons, Content c, Typ t1, Ap tail) {
         fwdFlowStore(_, t1, tail, c, t2, _, _, _, _, _, _) and
         cons = apCons(c, t1, tail)
+        or
+        exists(Typ t0 |
+          typeStrengthen(t0, cons, t2) and
+          fwdFlowConsCand(t0, cons, c, t1, tail)
+        )
       }
 
       pragma[nomagic]
@@ -1955,10 +1971,10 @@ module Impl<FullStateConfigSig Config> {
       )
     }
 
-    bindingset[node, state, t, ap]
-    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) {
+    bindingset[node, state, t0, ap]
+    predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
       PrevStage::revFlowState(state) and
-      exists(t) and
+      t0 = t and
       exists(ap) and
       not stateBarrier(node, state) and
       (
@@ -2210,10 +2226,16 @@ module Impl<FullStateConfigSig Config> {
       )
     }
 
-    bindingset[node, state, t, ap]
-    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) {
+    bindingset[node, state, t0, ap]
+    predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
       exists(state) and
-      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t) else any()) and
+      // We can get away with not using type strengthening here, since we aren't
+      // going to use the tracked types in the construction of Stage 4 access
+      // paths. For Stage 4 and onwards, the tracked types must be consistent as
+      // the cons candidates including types are used to construct subsequent
+      // access path approximations.
+      t0 = t and
+      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t0) else any()) and
       (
         notExpectsContent(node)
         or
@@ -2325,11 +2347,18 @@ module Impl<FullStateConfigSig Config> {
       )
     }
 
-    bindingset[node, state, t, ap]
-    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) {
+    bindingset[node, state, t0, ap]
+    predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
       exists(state) and
       not clear(node, ap) and
-      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t) else any()) and
+      (
+        if castingNodeEx(node)
+        then
+          exists(Typ nt | nt = node.getDataFlowType() |
+            if typeStrongerThan(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
+          )
+        else t = t0
+      ) and
       (
         notExpectsContent(node)
         or
@@ -2601,9 +2630,16 @@ module Impl<FullStateConfigSig Config> {
       )
     }
 
-    bindingset[node, state, t, ap]
-    predicate filter(NodeEx node, FlowState state, Typ t, Ap ap) {
-      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t) else any()) and
+    bindingset[node, state, t0, ap]
+    predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
+      (
+        if castingNodeEx(node)
+        then
+          exists(Typ nt | nt = node.getDataFlowType() |
+            if typeStrongerThan(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
+          )
+        else t = t0
+      ) and
       exists(state) and
       exists(ap)
     }
@@ -2812,9 +2848,7 @@ module Impl<FullStateConfigSig Config> {
       ap = TAccessPathNil()
       or
       // ... or a step from an existing PathNode to another node.
-      pathStep(_, node, state, cc, sc, t, ap) and
-      Stage5::revFlow(node, state, ap.getApprox()) and
-      (if castingNodeEx(node) then compatibleTypes(node.getDataFlowType(), t) else any())
+      pathStep(_, node, state, cc, sc, t, ap)
     } or
     TPathNodeSink(NodeEx node, FlowState state) {
       exists(PathNodeMid sink |
@@ -3332,13 +3366,31 @@ module Impl<FullStateConfigSig Config> {
     ap = mid.getAp()
   }
 
+  private predicate pathStep(
+    PathNodeMid mid, NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t,
+    AccessPath ap
+  ) {
+    exists(DataFlowType t0 |
+      pathStep0(mid, node, state, cc, sc, t0, ap) and
+      Stage5::revFlow(node, state, ap.getApprox()) and
+      (
+        if castingNodeEx(node)
+        then
+          exists(DataFlowType nt | nt = node.getDataFlowType() |
+            if typeStrongerThan(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
+          )
+        else t = t0
+      )
+    )
+  }
+
   /**
    * Holds if data may flow from `mid` to `node`. The last step in or out of
    * a callable is recorded by `cc`.
    */
   pragma[assume_small_delta]
   pragma[nomagic]
-  private predicate pathStep(
+  private predicate pathStep0(
     PathNodeMid mid, NodeEx node, FlowState state, CallContext cc, SummaryCtx sc, DataFlowType t,
     AccessPath ap
   ) {

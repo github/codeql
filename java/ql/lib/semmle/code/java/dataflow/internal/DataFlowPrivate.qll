@@ -176,7 +176,7 @@ predicate expectsContent(Node n, ContentSet c) {
  * possible flow. A single type is used for all numeric types to account for
  * numeric conversions, and otherwise the erasure is used.
  */
-DataFlowType getErasedRepr(Type t) {
+RefType getErasedRepr(Type t) {
   exists(Type e | e = t.getErasure() |
     if e instanceof NumericOrCharType
     then result.(BoxedType).getPrimitiveType().getName() = "double"
@@ -187,6 +187,15 @@ DataFlowType getErasedRepr(Type t) {
   )
   or
   t instanceof NullType and result instanceof TypeObject
+}
+
+class DataFlowType extends SrcRefType {
+  DataFlowType() { this = getErasedRepr(_) }
+}
+
+pragma[nomagic]
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
+  t1.getASourceSupertype+() = t2
 }
 
 pragma[noinline]
@@ -258,8 +267,6 @@ class DataFlowCallable extends TDataFlowCallable {
 }
 
 class DataFlowExpr = Expr;
-
-class DataFlowType = RefType;
 
 private newtype TDataFlowCall =
   TCall(Call c) or
