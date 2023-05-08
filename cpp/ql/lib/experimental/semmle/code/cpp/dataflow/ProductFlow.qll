@@ -1,4 +1,7 @@
 import semmle.code.cpp.ir.dataflow.DataFlow
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
 private import codeql.util.Unit
 
 module ProductFlow {
@@ -352,32 +355,119 @@ module ProductFlow {
         pragma[only_bind_out](succ.getNode().getEnclosingCallable())
     }
 
+    private newtype TKind =
+      TInto(DataFlowCall call) {
+        intoImpl1(_, _, call) or
+        intoImpl2(_, _, call)
+      } or
+      TOutOf(DataFlowCall call) {
+        outImpl1(_, _, call) or
+        outImpl2(_, _, call)
+      } or
+      TJump()
+
+    private predicate intoImpl1(Flow1::PathNode pred1, Flow1::PathNode succ1, DataFlowCall call) {
+      Flow1::PathGraph::edges(pred1, succ1) and
+      pred1.getNode().(ArgumentNode).getCall() = call and
+      succ1.getNode() instanceof ParameterNode
+    }
+
+    private predicate into1(Flow1::PathNode pred1, Flow1::PathNode succ1, TKind kind) {
+      exists(DataFlowCall call |
+        kind = TInto(call) and
+        intoImpl1(pred1, succ1, call)
+      )
+    }
+
+    private predicate outImpl1(Flow1::PathNode pred1, Flow1::PathNode succ1, DataFlowCall call) {
+      Flow1::PathGraph::edges(pred1, succ1) and
+      exists(ReturnKindExt returnKind |
+        succ1.getNode() = returnKind.getAnOutNode(call) and
+        pred1.getNode().(ReturnNodeExt).getKind() = returnKind
+      )
+    }
+
+    private predicate out1(Flow1::PathNode pred1, Flow1::PathNode succ1, TKind kind) {
+      exists(DataFlowCall call |
+        outImpl1(pred1, succ1, call) and
+        kind = TOutOf(call)
+      )
+    }
+
+    private predicate intoImpl2(Flow2::PathNode pred2, Flow2::PathNode succ2, DataFlowCall call) {
+      Flow2::PathGraph::edges(pred2, succ2) and
+      pred2.getNode().(ArgumentNode).getCall() = call and
+      succ2.getNode() instanceof ParameterNode
+    }
+
+    private predicate into2(Flow2::PathNode pred2, Flow2::PathNode succ2, TKind kind) {
+      exists(DataFlowCall call |
+        kind = TInto(call) and
+        intoImpl2(pred2, succ2, call)
+      )
+    }
+
+    private predicate outImpl2(Flow2::PathNode pred2, Flow2::PathNode succ2, DataFlowCall call) {
+      Flow2::PathGraph::edges(pred2, succ2) and
+      exists(ReturnKindExt returnKind |
+        succ2.getNode() = returnKind.getAnOutNode(call) and
+        pred2.getNode().(ReturnNodeExt).getKind() = returnKind
+      )
+    }
+
+    private predicate out2(Flow2::PathNode pred2, Flow2::PathNode succ2, TKind kind) {
+      exists(DataFlowCall call |
+        kind = TOutOf(call) and
+        outImpl2(pred2, succ2, call)
+      )
+    }
+
     pragma[nomagic]
     private predicate interprocEdge1(
-      Declaration predDecl, Declaration succDecl, Flow1::PathNode pred1, Flow1::PathNode succ1
+      Declaration predDecl, Declaration succDecl, Flow1::PathNode pred1, Flow1::PathNode succ1,
+      TKind kind
     ) {
       Flow1::PathGraph::edges(pred1, succ1) and
       predDecl != succDecl and
       pred1.getNode().getEnclosingCallable() = predDecl and
-      succ1.getNode().getEnclosingCallable() = succDecl
+      succ1.getNode().getEnclosingCallable() = succDecl and
+      (
+        into1(pred1, succ1, kind)
+        or
+        out1(pred1, succ1, kind)
+        or
+        kind = TJump() and
+        not into1(pred1, succ1, _) and
+        not out1(pred1, succ1, _)
+      )
     }
 
     pragma[nomagic]
     private predicate interprocEdge2(
-      Declaration predDecl, Declaration succDecl, Flow2::PathNode pred2, Flow2::PathNode succ2
+      Declaration predDecl, Declaration succDecl, Flow2::PathNode pred2, Flow2::PathNode succ2,
+      TKind kind
     ) {
       Flow2::PathGraph::edges(pred2, succ2) and
       predDecl != succDecl and
       pred2.getNode().getEnclosingCallable() = predDecl and
-      succ2.getNode().getEnclosingCallable() = succDecl
+      succ2.getNode().getEnclosingCallable() = succDecl and
+      (
+        into2(pred2, succ2, kind)
+        or
+        out2(pred2, succ2, kind)
+        or
+        kind = TJump() and
+        not into2(pred2, succ2, _) and
+        not out2(pred2, succ2, _)
+      )
     }
 
     private predicate interprocEdgePair(
       Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode succ1, Flow2::PathNode succ2
     ) {
-      exists(Declaration predDecl, Declaration succDecl |
-        interprocEdge1(predDecl, succDecl, pred1, succ1) and
-        interprocEdge2(predDecl, succDecl, pred2, succ2)
+      exists(Declaration predDecl, Declaration succDecl, TKind kind |
+        interprocEdge1(predDecl, succDecl, pred1, succ1, kind) and
+        interprocEdge2(predDecl, succDecl, pred2, succ2, kind)
       )
     }
 

@@ -183,7 +183,7 @@ class VarDef extends ControlFlowNode {
   Expr getTarget() { defn(this, result) }
 
   /** Gets a variable defined by this node, if any. */
-  Variable getAVariable() { result = getTarget().(BindingPattern).getAVariable() }
+  Variable getAVariable() { result = this.getTarget().(BindingPattern).getAVariable() }
 
   /**
    * Gets the source of this definition, that is, the data flow node representing
@@ -232,8 +232,8 @@ class VarUse extends ControlFlowNode, @varref instanceof RValue {
    * For global variables, each definition is considered to reach each use.
    */
   VarDef getADef() {
-    result = getSsaVariable().getDefinition().getAContributingVarDef() or
-    result.getAVariable() = getVariable().(GlobalVariable)
+    result = this.getSsaVariable().getDefinition().getAContributingVarDef() or
+    result.getAVariable() = this.getVariable().(GlobalVariable)
   }
 
   /**

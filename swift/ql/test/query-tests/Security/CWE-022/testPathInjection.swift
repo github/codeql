@@ -322,7 +322,7 @@ func test() {
 	config.seedFilePath = remoteUrl // $ MISSING: hasPathInjection=208
 }
 
-func testSanitizers() {
+func testBarriers() {
     let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
 
     let fm = FileManager()

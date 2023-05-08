@@ -84,7 +84,7 @@ The remaining values are used to define the **access path**, the **kind**, and t
 - The seventh value **Argument[0]** is the **access path** to the first argument passed to the method, which means that this is the location of the sink.
 - The eighth value **sql** is the kind of the sink. The sink kind is used to define the queries where the sink is in scope. In this case - the SQL injection queries.
 - The ninth value **manual** is the provenance of the sink, which is used to identify the origin of the sink.
- 
+
 Example: Taint source from the **java.net** package
 ----------------------------------------------------
 In this example we show how to model the return value from the **getInputStream** method as a **remote** source.
@@ -241,7 +241,7 @@ A neutral model is used to define that there is no flow through a method.
 Note that the neutral model for the **now** method is already added to the CodeQL Java analysis.
 
 .. code-block:: java
-   
+
    public static void taintflow() {
        Instant t = Instant.now(); // There is no flow from now to t.
        ...
@@ -334,7 +334,7 @@ Below is an enumeration of the remaining sinks, but they are out of scope for th
 
 - **open-url**, **jndi-injection**, **ldap**, **jdbc-url**
 - **mvel**, **xpath**, **groovy**, **ognl-injection**
-- **intent-start**, **pending-intent-sent**, **url-open-stream**, **url-redirect**
+- **intent-start**, **pending-intent-sent**, **url-redirect**
 - **create-file**, **read-file**, **write-file**, **set-hostname-verifier**
 - **header-splitting**, **information-leak**, **xslt**, **jexl**
 - **bean-validation**, **ssti**, **fragment-injection**, **regex-use[**\ `arg`\ **]**

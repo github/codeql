@@ -221,3 +221,14 @@ void test_missing_call_context(unsigned char *unrelated_buffer, unsigned size) {
   call_memset(unrelated_buffer, size + 5);
   call_memset(buffer, size);
 }
+
+void set_string(string_t* p_str, char* buffer) {
+    p_str->string = buffer;
+}
+
+void test_flow_through_setter(unsigned size) {
+    string_t str;
+    char* buffer = (char*)malloc(size);
+    set_string(&str, buffer);
+    memset(str.string, 0, size + 1); // BAD
+}

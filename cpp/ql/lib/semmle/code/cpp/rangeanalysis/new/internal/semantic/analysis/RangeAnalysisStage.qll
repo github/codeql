@@ -877,6 +877,22 @@ module RangeStage<
     )
   }
 
+  pragma[assume_small_delta]
+  pragma[nomagic]
+  private predicate boundedPhiRankStep(
+    SemSsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
+    D::Delta origdelta, SemReason reason, int rix
+  ) {
+    exists(SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge |
+      Utils::rankedPhiInput(phi, inp, edge, rix) and
+      boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
+    |
+      if rix = 1
+      then any()
+      else boundedPhiRankStep(phi, b, delta, upper, fromBackEdge, origdelta, reason, rix - 1)
+    )
+  }
+
   /**
    * Holds if `b + delta` is a valid bound for `phi`.
    * - `upper = true`  : `phi <= b + delta`
@@ -886,8 +902,9 @@ module RangeStage<
     SemSsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason
   ) {
-    forex(SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge | edge.phiInput(phi, inp) |
-      boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
+    exists(int r |
+      Utils::maxPhiInputRank(phi, r) and
+      boundedPhiRankStep(phi, b, delta, upper, fromBackEdge, origdelta, reason, r)
     )
   }
 
