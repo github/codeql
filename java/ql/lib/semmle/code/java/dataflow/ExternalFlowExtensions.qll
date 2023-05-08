@@ -27,7 +27,7 @@ extensible predicate summaryModel(
 );
 
 /**
- * Holds if a neutral model exists indicating there is no flow for the given parameters.
+ * Holds if a neutral model exists for the given parameters.
  */
 extensible predicate neutralModel(
   string package, string type, string name, string signature, string kind, string provenance

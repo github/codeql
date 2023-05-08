@@ -13,7 +13,7 @@
  *   `namespace; type; subtypes; name; signature; ext; input; output; kind; provenance`
  * - Neutrals:
  *   `namespace; type; name; signature; kind; provenance`
- *   A neutral is used to indicate that there is no flow via a callable.
+ *   A neutral is used to indicate that a callable is neutral with respect to flow (no summary), source (is not a source) or sink (is not a sink).
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -105,7 +105,7 @@ predicate sinkModel = Extensions::sinkModel/9;
 /** Holds if a summary model exists for the given parameters. */
 predicate summaryModel = Extensions::summaryModel/10;
 
-/** Holds if a model exists indicating there is no flow for the given parameters. */
+/** Holds if a neutral model exists for the given parameters. */
 predicate neutralModel = Extensions::neutralModel/6;
 
 private predicate relevantNamespace(string namespace) {
