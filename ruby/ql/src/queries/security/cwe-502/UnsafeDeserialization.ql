@@ -13,9 +13,9 @@
 
 import ruby
 import codeql.ruby.security.UnsafeDeserializationQuery
-import DataFlow::PathGraph
+import ConfigurationInst::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from ConfigurationInst::PathNode source, ConfigurationInst::PathNode sink
+where ConfigurationInst::flowPath(source, sink)
 select sink.getNode(), source, sink, "Unsafe deserialization depends on a $@.", source.getNode(),
   source.getNode().(UnsafeDeserialization::Source).describe()

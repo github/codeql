@@ -15,20 +15,16 @@ private import CleartextLoggingCustomizations::CleartextLogging as CleartextLogg
 /**
  * A taint-tracking configuration for detecting "Clear-text logging of sensitive information".
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "CleartextLogging" }
+module ConfigurationInst = TaintTracking::Global<ConfigurationImpl>;
 
-  override predicate isSource(DataFlow::Node source) { source instanceof CleartextLogging::Source }
+private module ConfigurationImpl implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof CleartextLogging::Source }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof CleartextLogging::Sink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof CleartextLogging::Sink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node)
-    or
-    node instanceof CleartextLogging::Sanitizer
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof CleartextLogging::Sanitizer }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     CleartextLogging::isAdditionalTaintStep(nodeFrom, nodeTo)
   }
 }

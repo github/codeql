@@ -16,11 +16,11 @@
  */
 
 import codeql.ruby.AST
-import DataFlow::PathGraph
+import ConfigurationInst::PathGraph
 import codeql.ruby.DataFlow
 import codeql.ruby.security.regexp.RegExpInjectionQuery
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from ConfigurationInst::PathNode source, ConfigurationInst::PathNode sink
+where ConfigurationInst::flowPath(source, sink)
 select sink.getNode(), source, sink, "This regular expression depends on a $@.", source.getNode(),
   "user-provided value"

@@ -14,17 +14,12 @@ import UnsafeDeserializationCustomizations
 /**
  * A taint-tracking configuration for reasoning about unsafe deserialization.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "UnsafeDeserialization" }
+module ConfigurationInst = TaintTracking::Global<ConfigurationImpl>;
 
-  override predicate isSource(DataFlow::Node source) {
-    source instanceof UnsafeDeserialization::Source
-  }
+private module ConfigurationImpl implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof UnsafeDeserialization::Source }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserialization::Sink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof UnsafeDeserialization::Sink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node) or
-    node instanceof UnsafeDeserialization::Sanitizer
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof UnsafeDeserialization::Sanitizer }
 }

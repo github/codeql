@@ -21,16 +21,16 @@ module PolynomialReDoS {
    * A taint-tracking configuration for detecting polynomial regular expression
    * denial of service vulnerabilities.
    */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "PolynomialReDoS" }
+  module ConfigurationInst = TaintTracking::Global<ConfigurationImpl>;
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  private module ConfigurationImpl implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard node) {
+    additional deprecated predicate isSanitizerGuard(DataFlow::BarrierGuard node) {
       node instanceof SanitizerGuard
     }
   }

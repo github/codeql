@@ -27,14 +27,14 @@ abstract class Sanitizer extends DataFlow::Node { }
 /**
  * A taint-tracking configuration for untrusted user input used in log entries.
  */
-class LogInjectionConfiguration extends TaintTracking::Configuration {
-  LogInjectionConfiguration() { this = "LogInjection" }
+module LogInjectionConfigurationInst = TaintTracking::Global<LogInjectionConfigurationImpl>;
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+private module LogInjectionConfigurationImpl implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }
 
 /**

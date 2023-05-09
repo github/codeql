@@ -15,9 +15,9 @@
 
 import codeql.ruby.DataFlow
 import codeql.ruby.security.StackTraceExposureQuery
-import DataFlow::PathGraph
+import ConfigurationInst::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from ConfigurationInst::PathNode source, ConfigurationInst::PathNode sink
+where ConfigurationInst::flowPath(source, sink)
 select sink.getNode(), source, sink, "$@ can be exposed to an external user.", source.getNode(),
   "Error information"

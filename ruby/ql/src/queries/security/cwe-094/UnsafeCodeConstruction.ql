@@ -14,10 +14,10 @@
  */
 
 import codeql.ruby.security.UnsafeCodeConstructionQuery
-import DataFlow::PathGraph
+import ConfigurationInst::PathGraph
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
-where cfg.hasFlowPath(source, sink) and sinkNode = sink.getNode()
+from ConfigurationInst::PathNode source, ConfigurationInst::PathNode sink, Sink sinkNode
+where ConfigurationInst::flowPath(source, sink) and sinkNode = sink.getNode()
 select sink.getNode(), source, sink,
   "This " + sinkNode.getSinkType() + " which depends on $@ is later $@.", source.getNode(),
   "library input", sinkNode.getCodeSink(), "interpreted as code"

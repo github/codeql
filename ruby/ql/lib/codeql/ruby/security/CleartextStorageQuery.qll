@@ -14,20 +14,16 @@ private import CleartextStorageCustomizations::CleartextStorage as CleartextStor
 /**
  * A taint-tracking configuration for detecting "Clear-text storage of sensitive information".
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "CleartextStorage" }
+module ConfigurationInst = TaintTracking::Global<ConfigurationImpl>;
 
-  override predicate isSource(DataFlow::Node source) { source instanceof CleartextStorage::Source }
+private module ConfigurationImpl implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof CleartextStorage::Source }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof CleartextStorage::Sink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof CleartextStorage::Sink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
-    super.isSanitizer(node)
-    or
-    node instanceof CleartextStorage::Sanitizer
-  }
+  predicate isBarrier(DataFlow::Node node) { node instanceof CleartextStorage::Sanitizer }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     CleartextStorage::isAdditionalTaintStep(nodeFrom, nodeTo)
   }
 }

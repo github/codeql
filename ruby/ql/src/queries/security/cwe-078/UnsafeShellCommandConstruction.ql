@@ -15,11 +15,11 @@
  */
 
 import codeql.ruby.security.UnsafeShellCommandConstructionQuery
-import DataFlow::PathGraph
+import ConfigurationInst::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
+from ConfigurationInst::PathNode source, ConfigurationInst::PathNode sink, Sink sinkNode
 where
-  config.hasFlowPath(source, sink) and
+  ConfigurationInst::flowPath(source, sink) and
   sinkNode = sink.getNode()
 select sinkNode.getStringConstruction(), source, sink,
   "This " + sinkNode.describe() + " which depends on $@ is later used in a $@.", source.getNode(),
