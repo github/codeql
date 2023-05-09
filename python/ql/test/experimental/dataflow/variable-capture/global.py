@@ -1,4 +1,4 @@
-# Here we test writing to a captured variable via the `nonlocal` keyword (see `out`).
+# Here we test writing to a captured global variable via the `global` keyword (see `out`).
 # We also test reading one captured variable and writing the value to another (see `through`).
 
 # All functions starting with "test_" should run and execute `print("OK")` exactly once.
@@ -32,73 +32,74 @@ def SINK_F(x):
         print("OK")
 
 
+sinkO1 = ""
+sinkO2 = ""
+nonSink1 = ""
+nonSink2 = ""
+
 def out():
-    sinkO1 = ""
     def captureOut1():
-        nonlocal sinkO1
+        global sinkO1
         sinkO1 = SOURCE
     captureOut1()
-    SINK(sinkO1) #$ MISSING:captured
+    SINK(sinkO1) #$ captured
 
-    sinkO2 = ""
     def captureOut2():
         def m():
-            nonlocal sinkO2
+            global sinkO2
             sinkO2 = SOURCE
         m()
     captureOut2()
-    SINK(sinkO2) #$ MISSING:captured
+    SINK(sinkO2) #$ captured
 
-    nonSink1 = ""
     def captureOut1NotCalled():
-        nonlocal nonSink1
+        global nonSink1
         nonSink1 = SOURCE
-    SINK_F(nonSink1)
+    SINK_F(nonSink1) #$ SPURIOUS: captured
 
-    nonSink2 = ""
     def captureOut2NotCalled():
         # notice that `m` is not called
         def m():
-            nonlocal nonSink2
+            global nonSink2
             nonSink2 = SOURCE
     captureOut2NotCalled()
-    SINK_F(nonSink2)
+    SINK_F(nonSink2) #$ SPURIOUS: captured
 
 @expects(4)
 def test_out():
     out()
 
+sinkT1 = ""
+sinkT2 = ""
+nonSinkT1 = ""
+nonSinkT2 = ""
 def through(tainted):
-    sinkO1 = ""
     def captureOut1():
-        nonlocal sinkO1
-        sinkO1 = tainted
+        global sinkT1
+        sinkT1 = tainted
     captureOut1()
-    SINK(sinkO1) #$ MISSING:captured
+    SINK(sinkT1) #$ MISSING:captured
 
-    sinkO2 = ""
     def captureOut2():
         def m():
-            nonlocal sinkO2
-            sinkO2 = tainted
+            global sinkT2
+            sinkT2 = tainted
         m()
     captureOut2()
-    SINK(sinkO2) #$ MISSING:captured
+    SINK(sinkT2) #$ MISSING:captured
 
-    nonSink1 = ""
     def captureOut1NotCalled():
-        nonlocal nonSink1
-        nonSink1 = tainted
-    SINK_F(nonSink1)
+        global nonSinkT1
+        nonSinkT1 = tainted
+    SINK_F(nonSinkT1)
 
-    nonSink2 = ""
     def captureOut2NotCalled():
         # notice that `m` is not called
         def m():
-            nonlocal nonSink2
-            nonSink2 = tainted
+            global nonSinkT2
+            nonSinkT2 = tainted
     captureOut2NotCalled()
-    SINK_F(nonSink2)
+    SINK_F(nonSinkT2)
 
 @expects(4)
 def test_through():
