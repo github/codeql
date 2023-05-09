@@ -48,5 +48,5 @@ from DecodingAfterSanitization cfg, PathNode source, PathNode sink, DecodingCall
 where
   cfg.hasFlowPath(source, sink) and
   decoder.getInput() = sink.getNode()
-select sink.getNode(), source, sink, decoder.getKind() + " invalidates .", source.getNode(),
-  "this HTML sanitization performed"
+select sink.getNode(), source, sink, decoder.getKind() + " invalidates $@.", source.getNode(),
+  "this HTML sanitization"
