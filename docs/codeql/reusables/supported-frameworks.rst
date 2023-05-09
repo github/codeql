@@ -292,7 +292,7 @@ and the CodeQL library pack ``codeql/swift-all`` (`changelog <https://github.com
    :widths: auto
 
    Name, Category
-   `AEXML <>`__, XML processing library
+   `AEXML <https://github.com/tadija/AEXML>`__, XML processing library
    `Alamofire <https://github.com/Alamofire/Alamofire>`__, Network communicator
    `Core Data <https://developer.apple.com/documentation/coredata/>`__, Database
    `CryptoKit <https://developer.apple.com/documentation/cryptokit/>`__, Cryptography library
