@@ -10,6 +10,8 @@ BINLOG_ADAPT_ENUM(codeql::Log::Level, trace, debug, info, warning, error, critic
 
 namespace codeql {
 
+bool Log::initialized{false};
+
 namespace {
 using LevelRule = std::pair<std::regex, Log::Level>;
 using LevelRules = std::vector<LevelRule>;
@@ -149,6 +151,7 @@ void Log::configure() {
   }
   LOG_INFO("Logging configured (binary: {}, text: {}, console: {})", binary.level, text.level,
            console.level);
+  initialized = true;
   flushImpl();
 }
 

@@ -32,14 +32,17 @@
 
 // only do the actual logging if the picked up `Logger` instance is configured to handle the
 // provided log level. `LEVEL` must be a compile-time constant. `logger()` is evaluated once
-#define LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, CATEGORY, ...)                                    \
-  do {                                                                                       \
-    constexpr codeql::Log::Level _level = codeql::Log::Level::LEVEL;                         \
-    codeql::Logger& _logger = logger();                                                      \
-    if (_level >= _logger.level()) {                                                         \
-      BINLOG_CREATE_SOURCE_AND_EVENT(_logger.writer(), _level, CATEGORY, binlog::clockNow(), \
-                                     __VA_ARGS__);                                           \
-    }                                                                                        \
+#define LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, CATEGORY, ...)                                      \
+  do {                                                                                         \
+    constexpr codeql::Log::Level _level = ::codeql::Log::Level::LEVEL;                         \
+    ::codeql::Logger& _logger = logger();                                                      \
+    if (_level >= _logger.level()) {                                                           \
+      BINLOG_CREATE_SOURCE_AND_EVENT(_logger.writer(), _level, CATEGORY, ::binlog::clockNow(), \
+                                     __VA_ARGS__);                                             \
+    }                                                                                          \
+    if (_level >= ::codeql::Log::Level::error) {                                               \
+      ::codeql::Log::flush();                                                                  \
+    }                                                                                          \
   } while (false)
 
 #define LOG_WITH_LEVEL(LEVEL, ...) LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, , __VA_ARGS__)
@@ -49,10 +52,10 @@
 #define DIAGNOSE_CRITICAL(ID, ...) DIAGNOSE_WITH_LEVEL(critical, ID, __VA_ARGS__)
 #define DIAGNOSE_ERROR(ID, ...) DIAGNOSE_WITH_LEVEL(error, ID, __VA_ARGS__)
 
-#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, ...)                                      \
-  do {                                                                           \
-    codeql::SwiftDiagnosticsSource::ensureRegistered<&codeql_diagnostics::ID>(); \
-    LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, ID, __VA_ARGS__);                         \
+#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, ...)                                          \
+  do {                                                                               \
+    ::codeql::SwiftDiagnosticsSource::ensureRegistered<&::codeql_diagnostics::ID>(); \
+    LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, ID, __VA_ARGS__);                             \
   } while (false)
 
 // avoid calling into binlog's original macros
@@ -111,7 +114,11 @@ class Log {
   };
 
   // Flush logs to the designated outputs
-  static void flush() { instance().flushImpl(); }
+  static void flush() {
+    if (initialized) {
+      instance().flushImpl();
+    }
+  }
 
   // create `Logger` configuration, used internally by `Logger`'s constructor
   static LoggerConfiguration getLoggerConfiguration(std::string_view name) {
@@ -120,6 +127,7 @@ class Log {
 
  private:
   static constexpr const char* format = "%u %S [%n] %m (%G:%L)\n";
+  static bool initialized;
 
   Log() { configure(); }
 
