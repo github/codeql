@@ -305,7 +305,6 @@
 /lib/codeql/swift/elements/type/DependentMemberTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/DictionaryType.qll linguist-generated
 /lib/codeql/swift/elements/type/DictionaryTypeConstructor.qll linguist-generated
-/lib/codeql/swift/elements/type/DynamicSelfType.qll linguist-generated
 /lib/codeql/swift/elements/type/DynamicSelfTypeConstructor.qll linguist-generated
 /lib/codeql/swift/elements/type/EnumType.qll linguist-generated
 /lib/codeql/swift/elements/type/EnumTypeConstructor.qll linguist-generated

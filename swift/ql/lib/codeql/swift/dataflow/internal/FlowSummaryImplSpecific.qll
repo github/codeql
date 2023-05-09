@@ -197,7 +197,22 @@ predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode nod
   )
 }
 
-predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) { none() }
+predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode node) {
+  exists(Node n, AstNode ast, MemberRefExpr e |
+    n = node.asNode() and
+    ast = mid.asElement() and
+    e.getMember() = ast
+  |
+    // Allow fields to be picked as input nodes.
+    c = "" and
+    e.getBase() = n.asExpr()
+    or
+    // Allow post update nodes to be picked as input nodes when the `input` column
+    // of the row is `PostUpdate`.
+    c = "PostUpdate" and
+    e.getBase() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
+  )
+}
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[s]
