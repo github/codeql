@@ -11,7 +11,7 @@ private import codeql.ruby.security.UrlRedirectCustomizations
 private import codeql.ruby.security.SqlInjectionCustomizations
 
 class RelevantFile extends File {
-  RelevantFile() { not getRelativePath().regexpMatch(".*/test(case)?s?/.*") }
+  RelevantFile() { not this.getRelativePath().regexpMatch(".*/test(case)?s?/.*") }
 }
 
 RemoteFlowSource relevantTaintSource(string kind) {
