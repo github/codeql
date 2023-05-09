@@ -10,15 +10,12 @@
 #include "swift/xcode-autobuilder/XcodeWorkspaceParser.h"
 #include "swift/xcode-autobuilder/CFHelpers.h"
 #include "swift/logging/SwiftLogging.h"
+#include "swift/xcode-autobuilder/CustomizingBuildDiagnostics.h"
 
 namespace codeql_diagnostics {
 constexpr codeql::SwiftDiagnosticsSource no_project_found{
-    "no_project_found",
-    "No Xcode project or workspace detected",
-    "Set up a manual build command",
-    "https://docs.github.com/en/enterprise-server/code-security/code-scanning/"
-    "automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning",
-};
+    "no_project_found", "No Xcode project or workspace detected", customizingBuildAction,
+    customizingBuildHelpLinks};
 }  // namespace codeql_diagnostics
 
 namespace fs = std::filesystem;
