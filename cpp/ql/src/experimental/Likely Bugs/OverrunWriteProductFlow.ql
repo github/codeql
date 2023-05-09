@@ -134,6 +134,16 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
 
 module StringSizeFlow = ProductFlow::GlobalWithState<StringSizeConfig>;
 
+/**
+ * Gets the maximum number of elements accessed past the buffer `buffer` by the formatting
+ * function call `c` when an overflow is detected starting at the `(source1, source2)` pair
+ * and ending at the `(sink1, sink2)` pair.
+ *
+ * Implementation note: Since the number of elements accessed past the buffer is computed
+ * using a `FlowState` on the second component of the `DataFlow::PathNode` pair we project
+ * the columns down to the underlying `DataFlow::Node` in order to deduplicate the flow
+ * state.
+ */
 int getOverflow(
   DataFlow::Node source1, DataFlow::Node source2, DataFlow::Node sink1, DataFlow::Node sink2,
   CallInstruction c, Expr buffer
