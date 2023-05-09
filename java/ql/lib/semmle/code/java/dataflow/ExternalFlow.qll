@@ -274,12 +274,12 @@ module ModelValidation {
     exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
       not kind =
         [
-          "open-url", "jndi-injection", "ldap", "sql-injection", "jdbc-url", "log-injection",
-          "mvel-injection", "xpath-injection", "groovy-injection", "xss", "ognl-injection",
-          "intent-start", "pending-intent-sent", "url-redirection", "create-file", "read-file",
-          "write-file", "set-hostname-verifier", "header-splitting", "information-leak",
-          "xslt-injection", "jexl-injection", "bean-validation", "template-injection",
-          "fragment-injection", "command-injection"
+          "open-url", "jndi-injection", "ldap-injection", "sql-injection", "jdbc-url",
+          "log-injection", "mvel-injection", "xpath-injection", "groovy-injection", "xss",
+          "ognl-injection", "intent-start", "pending-intent-sent", "url-redirection", "create-file",
+          "read-file", "write-file", "set-hostname-verifier", "header-splitting",
+          "information-leak", "xslt-injection", "jexl-injection", "bean-validation",
+          "template-injection", "fragment-injection", "command-injection"
         ] and
       not kind.matches("regex-use%") and
       not kind.matches("qltest%") and
