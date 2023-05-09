@@ -243,3 +243,15 @@ void test_flow_through_setter(unsigned size) {
     memset(str.string, 0, size + 1); // BAD
 }
 
+unsigned write(int, const void *, unsigned);
+
+void test_modify_pointer_and_size_in_sync(int sock, unsigned size) {
+  int *p = new int[size];
+  while (size > 0) {
+    unsigned n = write(sock, p, size); // GOOD [FALSE POSITIVE]
+    if (n > 0) {
+      size += 1;
+      p -= 1;
+    }
+  }
+}
