@@ -18,7 +18,7 @@ module Actions {
         (
           f.getRelativePath().regexpMatch("(^|.*/)\\.github/workflows/.*\\.ya?ml$")
           or
-          f.getBaseName() = "action.yml"
+          f.getBaseName() = ["action.yml", "action.yaml"]
         )
       )
     }
@@ -30,7 +30,7 @@ module Actions {
    */
   class CompositeAction extends Node, YamlDocument, YamlMapping {
     CompositeAction() {
-      this.getFile().getBaseName() = "action.yml" and
+      this.getFile().getBaseName() = ["action.yml", "action.yaml"] and
       this.lookup("runs").(YamlMapping).lookup("using").(YamlScalar).getValue() = "composite"
     }
 
