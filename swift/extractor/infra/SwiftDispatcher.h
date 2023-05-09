@@ -13,7 +13,7 @@
 #include "swift/extractor/infra/SwiftBodyEmissionStrategy.h"
 #include "swift/extractor/infra/SwiftMangledName.h"
 #include "swift/extractor/config/SwiftExtractorState.h"
-#include "swift/extractor/infra/log/SwiftLogging.h"
+#include "swift/logging/SwiftAssert.h"
 
 namespace codeql {
 
@@ -74,21 +74,20 @@ class SwiftDispatcher {
     entry.forEachLabel([&valid, &entry, this](const char* field, int index, auto& label) {
       using Label = std::remove_reference_t<decltype(label)>;
       if (!label.valid()) {
-        std::cerr << entry.NAME << " has undefined " << field;
-        if (index >= 0) {
-          std::cerr << '[' << index << ']';
-        }
+        const char* action;
         if constexpr (std::is_base_of_v<typename Label::Tag, UnspecifiedElementTag>) {
-          std::cerr << ", replacing with unspecified element\n";
+          action = "replacing with unspecified element";
           label = emitUnspecified(idOf(entry), field, index);
         } else {
-          std::cerr << ", skipping emission\n";
+          action = "skipping emission";
           valid = false;
         }
+        LOG_ERROR("{} has undefined field {}{}, {}", entry.NAME, field,
+                  index >= 0 ? ('[' + std::to_string(index) + ']') : "", action);
       }
     });
     if (valid) {
-      trap.emit(entry);
+      trap.emit(entry, /* check */ false);
     }
   }
 
@@ -153,7 +152,7 @@ class SwiftDispatcher {
     auto& stored = store[e];
     if (!stored.valid()) {
       auto inserted = fetching.insert(e);
-      assert(inserted.second && "detected infinite fetchLabel recursion");
+      CODEQL_ASSERT(inserted.second, "detected infinite fetchLabel recursion");
       stored = createLabel(e, type);
       fetching.erase(e);
     }
@@ -165,7 +164,13 @@ class SwiftDispatcher {
   TrapLabel<TypeTag> fetchLabel(swift::Type t) { return fetchLabel(t.getPointer()); }
 
   TrapLabel<AstNodeTag> fetchLabel(swift::ASTNode node) {
-    return fetchLabelFromUnion<AstNodeTag>(node);
+    auto ret = fetchLabelFromUnion<AstNodeTag>(node);
+    if (!ret.valid()) {
+      // TODO to be more useful, we need a generic way of attaching original source location info
+      // to logs, this will come in upcoming work
+      LOG_ERROR("Unable to fetch label for ASTNode");
+    }
+    return ret;
   }
 
   template <typename E, std::enable_if_t<IsFetchable<E*>>* = nullptr>
@@ -177,7 +182,7 @@ class SwiftDispatcher {
   template <typename E>
   auto createEntry(const E& e) {
     auto found = store.find(&e);
-    assert(found != store.end() && "createEntry called on non-fetched label");
+    CODEQL_ASSERT(found != store.end(), "createEntry called on non-fetched label");
     auto label = TrapLabel<ConcreteTrapTagOf<E>>::unsafeCreateFromUntyped(found->second);
     if constexpr (IsLocatable<E>) {
       locationExtractor.attachLocation(sourceManager, e, label);
@@ -307,7 +312,6 @@ class SwiftDispatcher {
     // with logical op short-circuiting, this will stop trying on the first successful fetch
     bool unionCaseFound = (... || fetchLabelFromUnionCase<Tag, Ts>(u, ret));
     if (!unionCaseFound) {
-      // TODO emit error/warning here
       return undefined_label;
     }
     return ret;
@@ -357,7 +361,10 @@ class SwiftDispatcher {
   SwiftLocationExtractor& locationExtractor;
   SwiftBodyEmissionStrategy& bodyEmissionStrategy;
   std::unordered_set<swift::ModuleDecl*> encounteredModules;
-  Logger logger{"dispatcher"};
+  Logger& logger() {
+    static Logger ret{"dispatcher"};
+    return ret;
+  }
 };
 
 }  // namespace codeql

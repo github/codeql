@@ -14,16 +14,16 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class HardcodedEncryptionKeySink extends DataFlow::Node { }
 
 /**
- * A sanitizer for hard-coded encryption key vulnerabilities.
+ * A barrier for hard-coded encryption key vulnerabilities.
  */
-abstract class HardcodedEncryptionKeySanitizer extends DataFlow::Node { }
+abstract class HardcodedEncryptionKeyBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class HardcodedEncryptionKeyAdditionalTaintStep extends Unit {
+class HardcodedEncryptionKeyAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to hard-coded encryption key vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
@@ -70,7 +70,7 @@ private class EncryptionKeySinks extends SinkModelCsv {
         // Realm database library.
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:);;;Argument[3];encryption-key",
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[3];encryption-key",
-        ";Realm.Configuration;true;encryptionKey;;;;encryption-key",
+        ";Realm.Configuration;true;encryptionKey;;;PostUpdate;encryption-key",
       ]
   }
 }

@@ -68,10 +68,10 @@ predicate summaryElement(Function c, string input, string output, string kind, s
 }
 
 /**
- * Holds if a neutral model exists for `c` with provenance `provenance`,
+ * Holds if a neutral summary model exists for `c` with provenance `provenance`,
  * which means that there is no flow through `c`.
  */
-predicate neutralElement(Function c, string provenance) { none() }
+predicate neutralSummaryElement(Function c, string provenance) { none() }
 
 /**
  * Holds if an external source specification exists for `e` with output specification
@@ -197,7 +197,22 @@ predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode nod
   )
 }
 
-predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) { none() }
+predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode node) {
+  exists(Node n, AstNode ast, MemberRefExpr e |
+    n = node.asNode() and
+    ast = mid.asElement() and
+    e.getMember() = ast
+  |
+    // Allow fields to be picked as input nodes.
+    c = "" and
+    e.getBase() = n.asExpr()
+    or
+    // Allow post update nodes to be picked as input nodes when the `input` column
+    // of the row is `PostUpdate`.
+    c = "PostUpdate" and
+    e.getBase() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
+  )
+}
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[s]

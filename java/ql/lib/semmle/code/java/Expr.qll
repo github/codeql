@@ -1644,7 +1644,9 @@ class TypeLiteral extends Expr, @typeliteral {
   Type getReferencedType() { result = this.getTypeName().getType() }
 
   /** Gets a printable representation of this expression. */
-  override string toString() { result = this.getTypeName().toString() + ".class" }
+  override string toString() {
+    result = pragma[only_bind_out](this.getTypeName()).toString() + ".class"
+  }
 
   override string getAPrimaryQlClass() { result = "TypeLiteral" }
 }
@@ -1752,7 +1754,7 @@ class VarAccess extends Expr, @varaccess {
     exists(Expr q | q = this.getQualifier() |
       if q.isParenthesized()
       then result = "(...)." + this.getVariable().getName()
-      else result = q.toString() + "." + this.getVariable().getName()
+      else result = pragma[only_bind_out](q).toString() + "." + this.getVariable().getName()
     )
     or
     not this.hasQualifier() and result = this.getVariable().getName()
