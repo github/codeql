@@ -2,10 +2,6 @@
 
 #include "swift/logging/SwiftLogging.h"
 
-namespace codeql {
-constexpr const std::string_view programName = "autobuilder";
-}
-
 namespace codeql_diagnostics {
 constexpr codeql::SwiftDiagnosticsSource build_command_failed{
     "build_command_failed",
