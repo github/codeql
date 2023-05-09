@@ -70,8 +70,8 @@ module LdapInjection = TaintTracking::Global<LdapInjectionConfig>;
 class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /** LDAP sinks defined through Models as Data. */
-private class ExternalLDAPExprSink extends Sink {
-  ExternalLDAPExprSink() { sinkNode(this, "ldap") }
+private class ExternalLdapExprSink extends Sink {
+  ExternalLdapExprSink() { sinkNode(this, "ldap") }
 }
 
 /**
