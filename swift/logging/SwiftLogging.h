@@ -99,7 +99,7 @@ extern const std::string_view programName;
 //  * using environment variable `CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS` to configure levels for
 //    loggers and outputs. This must have the form of a comma separated `spec:level` list, where
 //    `spec` is either a glob pattern (made up of alphanumeric, `/`, `*` and `.` characters) for
-//    matching logger names or one of `out:bin`, `out:text` or `out:console`.
+//    matching logger names or one of `out:binary`, `out:text`, `out:console` or `out:diagnostics`.
 //    Output default levels can be seen in the corresponding initializers below. By default, all
 //    loggers are configured with the lowest output level
 class Log {
