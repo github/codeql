@@ -16,7 +16,7 @@ module Actions {
       exists(File f |
         f = this.getLocation().getFile() and
         (
-          f.getRelativePath().regexpMatch("(^|.*/)\\.github/workflows/.*\\.y(?:a?)ml$")
+          f.getRelativePath().regexpMatch("(^|.*/)\\.github/workflows/.*\\.ya?ml$")
           or
           f.getBaseName() = "action.yml"
         )
