@@ -6,6 +6,7 @@ import csharp
 private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.frameworks.system.Diagnostics
 private import semmle.code.csharp.security.Sanitizers
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /**
  * A source specific to command injection vulnerabilities.
@@ -65,6 +66,11 @@ module CommandInjection = TaintTracking::Global<CommandInjectionConfig>;
 
 /** A source of remote user input. */
 class RemoteSource extends Source instanceof RemoteFlowSource { }
+
+/** Command Injection sinks defined through CSV models. */
+private class ExternalCommandInjectionExprSink extends Sink {
+  ExternalCommandInjectionExprSink() { sinkNode(this, "command-injection") }
+}
 
 /**
  * A sink in `System.Diagnostic.Process` or its related classes.
