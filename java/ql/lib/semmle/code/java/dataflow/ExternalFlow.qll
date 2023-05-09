@@ -278,7 +278,7 @@ module ModelValidation {
           "xpath-injection", "groovy", "xss", "ognl-injection", "intent-start",
           "pending-intent-sent", "url-redirection", "create-file", "read-file", "write-file",
           "set-hostname-verifier", "header-splitting", "information-leak", "xslt", "jexl",
-          "bean-validation", "ssti", "fragment-injection", "command-injection"
+          "bean-validation", "template-injection", "fragment-injection", "command-injection"
         ] and
       not kind.matches("regex-use%") and
       not kind.matches("qltest%") and
