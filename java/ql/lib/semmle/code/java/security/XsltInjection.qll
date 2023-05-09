@@ -12,7 +12,7 @@ abstract class XsltInjectionSink extends DataFlow::Node { }
 
 /** A default sink representing methods susceptible to XSLT Injection attacks. */
 private class DefaultXsltInjectionSink extends XsltInjectionSink {
-  DefaultXsltInjectionSink() { sinkNode(this, "xslt") }
+  DefaultXsltInjectionSink() { sinkNode(this, "xslt-injection") }
 }
 
 /**
