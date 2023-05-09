@@ -57,14 +57,6 @@ summary
 | Microsoft.EntityFrameworkCore;DbContext;false;SaveChangesAsync;();;Argument[this].Property[EFCoreTests.MyContext.Persons].Element.Property[EFCoreTests.Person.Id];ReturnValue[jump to get_Persons].Element.Property[EFCoreTests.Person.Id];value;manual |
 | Microsoft.EntityFrameworkCore;DbContext;false;SaveChangesAsync;();;Argument[this].Property[EFCoreTests.MyContext.Persons].Element.Property[EFCoreTests.Person.Name];ReturnValue[jump to get_PersonAddresses].Element.Property[EFCoreTests.PersonAddressMap.Person].Property[EFCoreTests.Person.Name];value;manual |
 | Microsoft.EntityFrameworkCore;DbContext;false;SaveChangesAsync;();;Argument[this].Property[EFCoreTests.MyContext.Persons].Element.Property[EFCoreTests.Person.Name];ReturnValue[jump to get_Persons].Element.Property[EFCoreTests.Person.Name];value;manual |
-| Microsoft.EntityFrameworkCore;DbSet<>;false;Add;(T);;Argument[0];Argument[this].Element;value;manual |
-| Microsoft.EntityFrameworkCore;DbSet<>;false;AddAsync;(T);;Argument[0];Argument[this].Element;value;manual |
-| Microsoft.EntityFrameworkCore;DbSet<>;false;AddRange;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this].Element;value;manual |
-| Microsoft.EntityFrameworkCore;DbSet<>;false;AddRangeAsync;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this].Element;value;manual |
-| Microsoft.EntityFrameworkCore;DbSet<>;false;Attach;(T);;Argument[0];Argument[this].Element;value;manual |
-| Microsoft.EntityFrameworkCore;DbSet<>;false;AttachRange;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this].Element;value;manual |
-| Microsoft.EntityFrameworkCore;DbSet<>;false;Update;(T);;Argument[0];Argument[this].Element;value;manual |
-| Microsoft.EntityFrameworkCore;DbSet<>;false;UpdateRange;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this].Element;value;manual |
 | System.Data.Entity;DbContext;false;SaveChanges;();;Argument[this].Property[EFTests.MyContext.Addresses].Element.Property[EFTests.Address.Id];ReturnValue[jump to get_Addresses].Element.Property[EFTests.Address.Id];value;manual |
 | System.Data.Entity;DbContext;false;SaveChanges;();;Argument[this].Property[EFTests.MyContext.Addresses].Element.Property[EFTests.Address.Id];ReturnValue[jump to get_PersonAddresses].Element.Property[EFTests.PersonAddressMap.Address].Property[EFTests.Address.Id];value;manual |
 | System.Data.Entity;DbContext;false;SaveChanges;();;Argument[this].Property[EFTests.MyContext.Addresses].Element.Property[EFTests.Address.Id];ReturnValue[jump to get_Persons].Element.Property[EFTests.Person.Addresses].Element.Property[EFTests.Address.Id];value;manual |
@@ -123,14 +115,6 @@ summary
 | System.Data.Entity;DbContext;false;SaveChangesAsync;();;Argument[this].Property[EFTests.MyContext.Persons].Element.Property[EFTests.Person.Id];ReturnValue[jump to get_Persons].Element.Property[EFTests.Person.Id];value;manual |
 | System.Data.Entity;DbContext;false;SaveChangesAsync;();;Argument[this].Property[EFTests.MyContext.Persons].Element.Property[EFTests.Person.Name];ReturnValue[jump to get_PersonAddresses].Element.Property[EFTests.PersonAddressMap.Person].Property[EFTests.Person.Name];value;manual |
 | System.Data.Entity;DbContext;false;SaveChangesAsync;();;Argument[this].Property[EFTests.MyContext.Persons].Element.Property[EFTests.Person.Name];ReturnValue[jump to get_Persons].Element.Property[EFTests.Person.Name];value;manual |
-| System.Data.Entity;DbSet<>;false;Add;(T);;Argument[0];Argument[this].Element;value;manual |
-| System.Data.Entity;DbSet<>;false;AddAsync;(T);;Argument[0];Argument[this].Element;value;manual |
-| System.Data.Entity;DbSet<>;false;AddRange;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this].Element;value;manual |
-| System.Data.Entity;DbSet<>;false;AddRangeAsync;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this].Element;value;manual |
-| System.Data.Entity;DbSet<>;false;Attach;(T);;Argument[0];Argument[this].Element;value;manual |
-| System.Data.Entity;DbSet<>;false;AttachRange;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this].Element;value;manual |
-| System.Data.Entity;DbSet<>;false;Update;(T);;Argument[0];Argument[this].Element;value;manual |
-| System.Data.Entity;DbSet<>;false;UpdateRange;(System.Collections.Generic.IEnumerable<T>);;Argument[0].Element;Argument[this].Element;value;manual |
 neutral
 sourceNode
 sinkNode
