@@ -11,24 +11,22 @@ import python
 import semmle.python.dataflow.new.DataFlow
 import experimental.dataflow.testConfig
 
-module Conf implements DataFlow::ConfigSig {
+module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { any(TestConfiguration c).isSource(source) }
 
   predicate isSink(DataFlow::Node source) { any(TestConfiguration c).isSink(source) }
 }
 
-int explorationLimit() { result = 5 }
+module Flows = DataFlow::Global<Config>;
 
-module Flows = DataFlow::Global<Conf>;
-
-module FlowsPartial = Flows::FlowExploration<explorationLimit/0>;
-
-// import FlowsPartial::PartialPathGraph
 import Flows::PathGraph
 
-// from FlowsPartial::PartialPathNode source, FlowsPartial::PartialPathNode sink
-// where FlowsPartial::partialFlow(source, sink, _)
+// int explorationLimit() { result = 5 }
+// module FlowsPartial = Flows::FlowExploration<explorationLimit/0>;
+// import FlowsPartial::PartialPathGraph
 from Flows::PathNode source, Flows::PathNode sink
 where Flows::flowPath(source, sink)
+// from FlowsPartial::PartialPathNode source, FlowsPartial::PartialPathNode sink
+// where FlowsPartial::partialFlow(source, sink, _)
 select sink.getNode(), source, sink, "This node receives flow from $@.", source.getNode(),
   "this source"
