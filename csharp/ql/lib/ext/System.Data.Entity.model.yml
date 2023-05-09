@@ -1,6 +1,19 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["System.Data.Entity", "DbSet<>", False, "Add", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Data.Entity", "DbSet<>", False, "AddAsync", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Data.Entity", "DbSet<>", False, "AddRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["System.Data.Entity", "DbSet<>", False, "AddRangeAsync", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["System.Data.Entity", "DbSet<>", False, "Attach", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Data.Entity", "DbSet<>", False, "AttachRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["System.Data.Entity", "DbSet<>", False, "Update", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["System.Data.Entity", "DbSet<>", False, "UpdateRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: sinkModel
     data:
       - ["System.Data.Entity", "Database", False, "ExecuteSqlCommand", "(System.Data.Entity.TransactionalBehavior,System.String,System.Object[])", "", "Argument[1]", "sql", "manual"]

@@ -1,6 +1,19 @@
 extensions:
   - addsTo:
       pack: codeql/csharp-all
+      extensible: summaryModel
+    data:
+      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "Add", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "AddAsync", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "AddRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "AddRangeAsync", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "Attach", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "AttachRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "Update", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "UpdateRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+
+  - addsTo:
+      pack: codeql/csharp-all
       extensible: sinkModel
     data:
       - ["Microsoft.EntityFrameworkCore", "RelationalDatabaseFacadeExtensions", False, "ExecuteSqlRaw", "(Microsoft.EntityFrameworkCore.Infrastructure.DatabaseFacade,System.String,System.Collections.Generic.IEnumerable<System.Object>)", "", "Argument[1]", "sql", "manual"]
