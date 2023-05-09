@@ -227,7 +227,5 @@ int main(int argc, char** argv, char** envp) {
     observer.markSuccessfullyExtractedFiles();
   }
 
-  codeql::Log::flush();
-
   return frontend_rc;
 }

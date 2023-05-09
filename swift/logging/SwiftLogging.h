@@ -110,6 +110,8 @@ class Log {
     Level level;
   };
 
+  ~Log() { flushImpl(); }
+
   // Flush logs to the designated outputs
   static void flush() { instance().flushImpl(); }
 
