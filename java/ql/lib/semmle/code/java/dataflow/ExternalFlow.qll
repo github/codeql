@@ -276,8 +276,8 @@ module ModelValidation {
         [
           "open-url", "jndi-injection", "ldap-injection", "sql-injection", "jdbc-url",
           "log-injection", "mvel-injection", "xpath-injection", "groovy-injection", "xss",
-          "ognl-injection", "intent-start", "pending-intents", "url-redirection", "create-file",
-          "read-file", "write-file", "set-hostname-verifier", "header-splitting",
+          "ognl-injection", "intent-redirection", "pending-intents", "url-redirection",
+          "create-file", "read-file", "write-file", "set-hostname-verifier", "header-splitting",
           "information-leak", "xslt-injection", "jexl-injection", "bean-validation",
           "template-injection", "fragment-injection", "command-injection"
         ] and

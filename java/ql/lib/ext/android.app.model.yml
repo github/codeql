@@ -3,14 +3,14 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["android.app", "Activity", True, "bindService", "", "", "Argument[0]", "intent-start", "manual"]
-      - ["android.app", "Activity", True, "bindServiceAsUser", "", "", "Argument[0]", "intent-start", "manual"]
+      - ["android.app", "Activity", True, "bindService", "", "", "Argument[0]", "intent-redirection", "manual"]
+      - ["android.app", "Activity", True, "bindServiceAsUser", "", "", "Argument[0]", "intent-redirection", "manual"]
       - ["android.app", "Activity", True, "setResult", "(int,Intent)", "", "Argument[1]", "pending-intents", "manual"]
-      - ["android.app", "Activity", True, "startActivityAsCaller", "", "", "Argument[0]", "intent-start", "manual"]
-      - ["android.app", "Activity", True, "startActivityForResult", "(Intent,int)", "", "Argument[0]", "intent-start", "manual"]
-      - ["android.app", "Activity", True, "startActivityForResult", "(Intent,int,Bundle)", "", "Argument[0]", "intent-start", "manual"]
-      - ["android.app", "Activity", True, "startActivityForResult", "(String,Intent,int,Bundle)", "", "Argument[1]", "intent-start", "manual"]
-      - ["android.app", "Activity", True, "startActivityForResultAsUser", "", "", "Argument[0]", "intent-start", "manual"]
+      - ["android.app", "Activity", True, "startActivityAsCaller", "", "", "Argument[0]", "intent-redirection", "manual"]
+      - ["android.app", "Activity", True, "startActivityForResult", "(Intent,int)", "", "Argument[0]", "intent-redirection", "manual"]
+      - ["android.app", "Activity", True, "startActivityForResult", "(Intent,int,Bundle)", "", "Argument[0]", "intent-redirection", "manual"]
+      - ["android.app", "Activity", True, "startActivityForResult", "(String,Intent,int,Bundle)", "", "Argument[1]", "intent-redirection", "manual"]
+      - ["android.app", "Activity", True, "startActivityForResultAsUser", "", "", "Argument[0]", "intent-redirection", "manual"]
       - ["android.app", "AlarmManager", True, "set", "(int,long,PendingIntent)", "", "Argument[2]", "pending-intents", "manual"]
       - ["android.app", "AlarmManager", True, "setAlarmClock", "", "", "Argument[1]", "pending-intents", "manual"]
       - ["android.app", "AlarmManager", True, "setAndAllowWhileIdle", "", "", "Argument[2]", "pending-intents", "manual"]
