@@ -274,8 +274,8 @@ module ModelValidation {
     exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
       not kind =
         [
-          "open-url", "jndi-injection", "ldap", "sql-injection", "jdbc-url", "logging", "mvel",
-          "xpath-injection", "groovy", "xss", "ognl-injection", "intent-start",
+          "open-url", "jndi-injection", "ldap", "sql-injection", "jdbc-url", "log-injection",
+          "mvel", "xpath-injection", "groovy", "xss", "ognl-injection", "intent-start",
           "pending-intent-sent", "url-redirection", "create-file", "read-file", "write-file",
           "set-hostname-verifier", "header-splitting", "information-leak", "xslt", "jexl",
           "bean-validation", "template-injection", "fragment-injection", "command-injection"
