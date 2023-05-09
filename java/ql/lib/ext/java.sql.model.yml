@@ -3,19 +3,19 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["java.sql", "Connection", True, "prepareCall", "", "", "Argument[0]", "sql", "manual"]
-      - ["java.sql", "Connection", True, "prepareStatement", "", "", "Argument[0]", "sql", "manual"]
-      - ["java.sql", "DatabaseMetaData", True, "getColumns", "(String,String,String,String)", "", "Argument[2]", "sql", "ai-manual"]
-      - ["java.sql", "DatabaseMetaData", True, "getPrimaryKeys", "(String,String,String)", "", "Argument[2]", "sql", "ai-manual"]
+      - ["java.sql", "Connection", True, "prepareCall", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["java.sql", "Connection", True, "prepareStatement", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["java.sql", "DatabaseMetaData", True, "getColumns", "(String,String,String,String)", "", "Argument[2]", "sql-injection", "ai-manual"]
+      - ["java.sql", "DatabaseMetaData", True, "getPrimaryKeys", "(String,String,String)", "", "Argument[2]", "sql-injection", "ai-manual"]
       - ["java.sql", "Driver", False, "connect", "(String,Properties)", "", "Argument[0]", "jdbc-url", "manual"]
       - ["java.sql", "DriverManager", False, "getConnection", "(String)", "", "Argument[0]", "jdbc-url", "manual"]
       - ["java.sql", "DriverManager", False, "getConnection", "(String,Properties)", "", "Argument[0]", "jdbc-url", "manual"]
       - ["java.sql", "DriverManager", False, "getConnection", "(String,String,String)", "", "Argument[0]", "jdbc-url", "manual"]
-      - ["java.sql", "Statement", True, "addBatch", "", "", "Argument[0]", "sql", "manual"]
-      - ["java.sql", "Statement", True, "execute", "", "", "Argument[0]", "sql", "manual"]
-      - ["java.sql", "Statement", True, "executeLargeUpdate", "", "", "Argument[0]", "sql", "manual"]
-      - ["java.sql", "Statement", True, "executeQuery", "", "", "Argument[0]", "sql", "manual"]
-      - ["java.sql", "Statement", True, "executeUpdate", "", "", "Argument[0]", "sql", "manual"]
+      - ["java.sql", "Statement", True, "addBatch", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["java.sql", "Statement", True, "execute", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["java.sql", "Statement", True, "executeLargeUpdate", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["java.sql", "Statement", True, "executeQuery", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["java.sql", "Statement", True, "executeUpdate", "", "", "Argument[0]", "sql-injection", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.jooq", "PlainSQL", False, "", "", "Annotated", "Argument[0]", "sql", "manual"]
+      - ["org.jooq", "PlainSQL", False, "", "", "Annotated", "Argument[0]", "sql-injection", "manual"]

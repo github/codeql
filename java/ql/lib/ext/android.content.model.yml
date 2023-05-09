@@ -39,14 +39,14 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["android.content", "ContentProvider", True, "delete", "(Uri,String,String[])", "", "Argument[1]", "sql", "manual"]
-      - ["android.content", "ContentProvider", True, "query", "(Uri,String[],String,String[],String)", "", "Argument[2]", "sql", "manual"]
-      - ["android.content", "ContentProvider", True, "query", "(Uri,String[],String,String[],String,CancellationSignal)", "", "Argument[2]", "sql", "manual"]
-      - ["android.content", "ContentProvider", True, "update", "(Uri,ContentValues,String,String[])", "", "Argument[2]", "sql", "manual"]
-      - ["android.content", "ContentResolver", True, "delete", "(Uri,String,String[])", "", "Argument[1]", "sql", "manual"]
-      - ["android.content", "ContentResolver", True, "query", "(Uri,String[],String,String[],String)", "", "Argument[2]", "sql", "manual"]
-      - ["android.content", "ContentResolver", True, "query", "(Uri,String[],String,String[],String,CancellationSignal)", "", "Argument[2]", "sql", "manual"]
-      - ["android.content", "ContentResolver", True, "update", "(Uri,ContentValues,String,String[])", "", "Argument[2]", "sql", "manual"]
+      - ["android.content", "ContentProvider", True, "delete", "(Uri,String,String[])", "", "Argument[1]", "sql-injection", "manual"]
+      - ["android.content", "ContentProvider", True, "query", "(Uri,String[],String,String[],String)", "", "Argument[2]", "sql-injection", "manual"]
+      - ["android.content", "ContentProvider", True, "query", "(Uri,String[],String,String[],String,CancellationSignal)", "", "Argument[2]", "sql-injection", "manual"]
+      - ["android.content", "ContentProvider", True, "update", "(Uri,ContentValues,String,String[])", "", "Argument[2]", "sql-injection", "manual"]
+      - ["android.content", "ContentResolver", True, "delete", "(Uri,String,String[])", "", "Argument[1]", "sql-injection", "manual"]
+      - ["android.content", "ContentResolver", True, "query", "(Uri,String[],String,String[],String)", "", "Argument[2]", "sql-injection", "manual"]
+      - ["android.content", "ContentResolver", True, "query", "(Uri,String[],String,String[],String,CancellationSignal)", "", "Argument[2]", "sql-injection", "manual"]
+      - ["android.content", "ContentResolver", True, "update", "(Uri,ContentValues,String,String[])", "", "Argument[2]", "sql-injection", "manual"]
       - ["android.content", "Context", True, "sendBroadcast", "", "", "Argument[0]", "intent-start", "manual"]
       - ["android.content", "Context", True, "sendBroadcastAsUser", "", "", "Argument[0]", "intent-start", "manual"]
       - ["android.content", "Context", True, "sendBroadcastWithMultiplePermissions", "", "", "Argument[0]", "intent-start", "manual"]
