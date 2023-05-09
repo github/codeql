@@ -63,7 +63,7 @@ private class SendPendingIntent extends ImplicitPendingIntentSink {
       this.asExpr() = ma.getArgument(0)
     )
     or
-    sinkNode(this, "pending-intent-sent")
+    sinkNode(this, "pending-intents")
   }
 
   override predicate hasState(DataFlow::FlowState state) { state = "MutablePendingIntent" }
