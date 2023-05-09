@@ -8,6 +8,7 @@ private import semmle.code.csharp.frameworks.System
 private import semmle.code.csharp.frameworks.system.text.RegularExpressions
 private import semmle.code.csharp.security.Sanitizers
 private import semmle.code.csharp.security.dataflow.flowsinks.ExternalLocationSink
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /**
  * A data flow source for untrusted user input used in log entries.
@@ -71,6 +72,11 @@ private class LogForgingLogMessageSink extends Sink, LogMessageSink { }
  * An argument to a call to a method on a trace class.
  */
 private class LogForgingTraceMessageSink extends Sink, TraceMessageSink { }
+
+/** Log Forging sinks defined through Models as Data. */
+private class ExternalLDAPExprSink extends Sink {
+  ExternalLDAPExprSink() { sinkNode(this, "logging") }
+}
 
 /**
  * A call to String replace or remove that is considered to sanitize replaced string.

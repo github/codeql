@@ -8,6 +8,7 @@ private import semmle.code.csharp.security.dataflow.flowsources.Remote
 private import semmle.code.csharp.frameworks.system.DirectoryServices
 private import semmle.code.csharp.frameworks.system.directoryservices.Protocols
 private import semmle.code.csharp.security.Sanitizers
+private import semmle.code.csharp.dataflow.ExternalFlow
 
 /**
  * A data flow source for unvalidated user input that is used to construct LDAP queries.
@@ -67,6 +68,11 @@ module LdapInjection = TaintTracking::Global<LdapInjectionConfig>;
 
 /** A source of remote user input. */
 class RemoteSource extends Source instanceof RemoteFlowSource { }
+
+/** LDAP sinks defined through Models as Data. */
+private class ExternalLDAPExprSink extends Sink {
+  ExternalLDAPExprSink() { sinkNode(this, "ldap") }
+}
 
 /**
  * An argument that sets the `Path` property of a `DirectoryEntry` object that is a sink for LDAP
