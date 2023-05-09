@@ -1984,6 +1984,21 @@ private class DataFlowUnknownType extends DataFlowType {
   DataFlowUnknownType() { this = Gvn::getGlobalValueNumber(any(UnknownType ut)) }
 }
 
+private predicate uselessTypebound(DataFlowType t) {
+  t instanceof DataFlowUnknownType or
+  t instanceof Gvn::TypeParameterGvnType
+}
+
+pragma[nomagic]
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) {
+  t1 != t2 and
+  t1 = getANonTypeParameterSubTypeRestricted(t2)
+  or
+  t1 instanceof RelevantDataFlowType and
+  not uselessTypebound(t1) and
+  uselessTypebound(t2)
+}
+
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
  * a node of type `t1` to a node of type `t2`.
