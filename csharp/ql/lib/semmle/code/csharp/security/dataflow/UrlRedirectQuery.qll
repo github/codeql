@@ -72,8 +72,8 @@ module UrlRedirect = TaintTracking::Global<UrlRedirectConfig>;
 class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /** URL Redirection sinks defined through Models as Data. */
-private class ExternalLDAPExprSink extends Sink {
-  ExternalLDAPExprSink() { sinkNode(this, "url-redirect") }
+private class ExternalUrlRedirectExprSink extends Sink {
+  ExternalUrlRedirectExprSink() { sinkNode(this, "url-redirect") }
 }
 
 /**
