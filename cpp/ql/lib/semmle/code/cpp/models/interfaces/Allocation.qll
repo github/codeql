@@ -96,7 +96,7 @@ abstract class AllocationFunction extends Function {
  */
 class OperatorNewAllocationFunction extends AllocationFunction {
   OperatorNewAllocationFunction() {
-    hasGlobalName([
+    this.hasGlobalName([
         "operator new", // operator new(bytes, ...)
         "operator new[]" // operator new[](bytes, ...)
       ])
@@ -104,15 +104,15 @@ class OperatorNewAllocationFunction extends AllocationFunction {
 
   override int getSizeArg() { result = 0 }
 
-  override predicate requiresDealloc() { not exists(getPlacementArgument()) }
+  override predicate requiresDealloc() { not exists(this.getPlacementArgument()) }
 
   /**
    * Gets the position of the placement pointer if this is a placement
    * `operator new` function.
    */
   int getPlacementArgument() {
-    getNumberOfParameters() = 2 and
-    getParameter(1).getType() instanceof VoidPointerType and
+    this.getNumberOfParameters() = 2 and
+    this.getParameter(1).getType() instanceof VoidPointerType and
     result = 1
   }
 }

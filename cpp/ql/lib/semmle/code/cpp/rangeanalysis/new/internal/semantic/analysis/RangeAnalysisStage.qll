@@ -536,7 +536,7 @@ module RangeStage<
     /** Gets the condition that is the reason for the bound. */
     SemGuard getCond() { this = TSemCondReason(result) }
 
-    override string toString() { result = getCond().toString() }
+    override string toString() { result = this.getCond().toString() }
   }
 
   /**
