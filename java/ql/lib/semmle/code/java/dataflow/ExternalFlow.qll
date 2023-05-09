@@ -275,10 +275,11 @@ module ModelValidation {
       not kind =
         [
           "open-url", "jndi-injection", "ldap", "sql-injection", "jdbc-url", "log-injection",
-          "mvel", "xpath-injection", "groovy-injection", "xss", "ognl-injection", "intent-start",
-          "pending-intent-sent", "url-redirection", "create-file", "read-file", "write-file",
-          "set-hostname-verifier", "header-splitting", "information-leak", "xslt", "jexl-injection",
-          "bean-validation", "template-injection", "fragment-injection", "command-injection"
+          "mvel-injection", "xpath-injection", "groovy-injection", "xss", "ognl-injection",
+          "intent-start", "pending-intent-sent", "url-redirection", "create-file", "read-file",
+          "write-file", "set-hostname-verifier", "header-splitting", "information-leak", "xslt",
+          "jexl-injection", "bean-validation", "template-injection", "fragment-injection",
+          "command-injection"
         ] and
       not kind.matches("regex-use%") and
       not kind.matches("qltest%") and

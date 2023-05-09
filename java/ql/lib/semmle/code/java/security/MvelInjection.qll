@@ -25,7 +25,7 @@ class MvelInjectionAdditionalTaintStep extends Unit {
 
 /** Default sink for MVEL injection vulnerabilities. */
 private class DefaultMvelEvaluationSink extends MvelEvaluationSink {
-  DefaultMvelEvaluationSink() { sinkNode(this, "mvel") }
+  DefaultMvelEvaluationSink() { sinkNode(this, "mvel-injection") }
 }
 
 /** A default sanitizer that considers numeric and boolean typed data safe for building MVEL expressions */
