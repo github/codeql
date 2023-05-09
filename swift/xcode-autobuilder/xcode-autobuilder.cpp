@@ -4,7 +4,7 @@
 #include "swift/xcode-autobuilder/XcodeTarget.h"
 #include "swift/xcode-autobuilder/XcodeBuildRunner.h"
 #include "swift/xcode-autobuilder/XcodeProjectParser.h"
-#include "swift/xcode-autobuilder/XcodeBuildLogging.h"
+#include "swift/logging/SwiftLogging.h"
 
 static const char* Application = "com.apple.product-type.application";
 static const char* Framework = "com.apple.product-type.framework";
