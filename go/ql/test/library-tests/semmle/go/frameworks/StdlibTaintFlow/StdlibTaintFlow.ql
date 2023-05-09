@@ -6,7 +6,7 @@ import go
 
 /* A special helper function used inside the test code */
 class Link extends TaintTracking::FunctionModel {
-  Link() { hasQualifiedName(_, "link") }
+  Link() { this.hasQualifiedName(_, "link") }
 
   override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
     inp.isParameter(0) and outp.isParameter(1)

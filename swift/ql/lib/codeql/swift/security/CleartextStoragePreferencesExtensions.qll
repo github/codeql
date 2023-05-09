@@ -18,16 +18,16 @@ abstract class CleartextStoragePreferencesSink extends DataFlow::Node {
 }
 
 /**
- * A sanitizer for cleartext preferences storage vulnerabilities.
+ * A barrier for cleartext preferences storage vulnerabilities.
  */
-abstract class CleartextStoragePreferencesSanitizer extends DataFlow::Node { }
+abstract class CleartextStoragePreferencesBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class CleartextStoragePreferencesAdditionalTaintStep extends Unit {
+class CleartextStoragePreferencesAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to cleartext preferences storage vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
@@ -37,7 +37,7 @@ class CleartextStoragePreferencesAdditionalTaintStep extends Unit {
 private class UserDefaultsStore extends CleartextStoragePreferencesSink {
   UserDefaultsStore() {
     exists(CallExpr call |
-      call.getStaticTarget().(MethodDecl).hasQualifiedName("UserDefaults", "set(_:forKey:)") and
+      call.getStaticTarget().(Method).hasQualifiedName("UserDefaults", "set(_:forKey:)") and
       call.getArgument(0).getExpr() = this.asExpr()
     )
   }
@@ -50,7 +50,7 @@ private class NSUbiquitousKeyValueStore extends CleartextStoragePreferencesSink 
   NSUbiquitousKeyValueStore() {
     exists(CallExpr call |
       call.getStaticTarget()
-          .(MethodDecl)
+          .(Method)
           .hasQualifiedName("NSUbiquitousKeyValueStore", "set(_:forKey:)") and
       call.getArgument(0).getExpr() = this.asExpr()
     )
@@ -72,11 +72,11 @@ private class NSUserDefaultsControllerStore extends CleartextStoragePreferencesS
 }
 
 /**
- * An encryption sanitizer for cleartext preferences storage vulnerabilities.
+ * An encryption barrier for cleartext preferences storage vulnerabilities.
  */
-private class CleartextStoragePreferencesEncryptionSanitizer extends CleartextStoragePreferencesSanitizer
+private class CleartextStoragePreferencesEncryptionBarrier extends CleartextStoragePreferencesBarrier
 {
-  CleartextStoragePreferencesEncryptionSanitizer() { this.asExpr() instanceof EncryptedExpr }
+  CleartextStoragePreferencesEncryptionBarrier() { this.asExpr() instanceof EncryptedExpr }
 }
 
 /**

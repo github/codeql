@@ -132,28 +132,28 @@ class InstanceAccessExt extends TInstanceAccessExt {
       result = enc.getQualifier().toString() + "(" + enc.getType() + ")enclosing"
     )
     or
-    isOwnInstanceAccess() and result = "this"
+    this.isOwnInstanceAccess() and result = "this"
   }
 
   private string ppKind() {
-    isExplicit(_) and result = " <" + getAssociatedExprOrStmt().toString() + ">"
+    this.isExplicit(_) and result = " <" + this.getAssociatedExprOrStmt().toString() + ">"
     or
-    isImplicitFieldQualifier(_) and result = " <.field>"
+    this.isImplicitFieldQualifier(_) and result = " <.field>"
     or
-    isImplicitMethodQualifier(_) and result = " <.method>"
+    this.isImplicitMethodQualifier(_) and result = " <.method>"
     or
-    isImplicitThisConstructorArgument(_) and result = " <constr(this)>"
+    this.isImplicitThisConstructorArgument(_) and result = " <constr(this)>"
     or
-    isImplicitEnclosingInstanceCapture(_) and result = " <.new>"
+    this.isImplicitEnclosingInstanceCapture(_) and result = " <.new>"
     or
-    isImplicitEnclosingInstanceQualifier(_) and result = "."
+    this.isImplicitEnclosingInstanceQualifier(_) and result = "."
   }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = ppBase() + ppKind() }
+  string toString() { result = this.ppBase() + this.ppKind() }
 
   /** Gets the source location for this element. */
-  Location getLocation() { result = getAssociatedExprOrStmt().getLocation() }
+  Location getLocation() { result = this.getAssociatedExprOrStmt().getLocation() }
 
   private ExprParent getAssociatedExprOrStmt() {
     this = TExplicitInstanceAccess(result) or
@@ -166,8 +166,8 @@ class InstanceAccessExt extends TInstanceAccessExt {
 
   /** Gets the callable in which this instance access occurs. */
   Callable getEnclosingCallable() {
-    result = getAssociatedExprOrStmt().(Expr).getEnclosingCallable() or
-    result = getAssociatedExprOrStmt().(Stmt).getEnclosingCallable()
+    result = this.getAssociatedExprOrStmt().(Expr).getEnclosingCallable() or
+    result = this.getAssociatedExprOrStmt().(Stmt).getEnclosingCallable()
   }
 
   /** Holds if this is the explicit instance access `ia`. */
@@ -206,7 +206,7 @@ class InstanceAccessExt extends TInstanceAccessExt {
   }
 
   /** Holds if this is an access to an object's own instance. */
-  predicate isOwnInstanceAccess() { not isEnclosingInstanceAccess(_) }
+  predicate isOwnInstanceAccess() { not this.isEnclosingInstanceAccess(_) }
 
   /** Holds if this is an access to an enclosing instance. */
   predicate isEnclosingInstanceAccess(RefType t) {
@@ -221,14 +221,14 @@ class InstanceAccessExt extends TInstanceAccessExt {
 
   /** Gets the type of this instance access. */
   RefType getType() {
-    isEnclosingInstanceAccess(result)
+    this.isEnclosingInstanceAccess(result)
     or
-    isOwnInstanceAccess() and result = getEnclosingCallable().getDeclaringType()
+    this.isOwnInstanceAccess() and result = this.getEnclosingCallable().getDeclaringType()
   }
 
   /** Gets the control flow node associated with this instance access. */
   ControlFlowNode getCfgNode() {
-    exists(ExprParent e | e = getAssociatedExprOrStmt() |
+    exists(ExprParent e | e = this.getAssociatedExprOrStmt() |
       e instanceof Call and result = e
       or
       e instanceof InstanceAccess and result = e
@@ -244,14 +244,14 @@ class InstanceAccessExt extends TInstanceAccessExt {
  * An access to an object's own instance.
  */
 class OwnInstanceAccess extends InstanceAccessExt {
-  OwnInstanceAccess() { isOwnInstanceAccess() }
+  OwnInstanceAccess() { this.isOwnInstanceAccess() }
 }
 
 /**
  * An access to an enclosing instance.
  */
 class EnclosingInstanceAccess extends InstanceAccessExt {
-  EnclosingInstanceAccess() { isEnclosingInstanceAccess(_) }
+  EnclosingInstanceAccess() { this.isEnclosingInstanceAccess(_) }
 
   /** Gets the implicit qualifier of this in the desugared representation. */
   InstanceAccessExt getQualifier() {

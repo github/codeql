@@ -224,7 +224,7 @@ class ExternalApiUsedWithUntrustedData extends MkExternalApi {
 
   /** Gets the number of untrusted sources used with this external API. */
   int getNumberOfUntrustedSources() {
-    result = count(getUntrustedDataNode().getAnUntrustedSource())
+    result = count(this.getUntrustedDataNode().getAnUntrustedSource())
   }
 
   /** Gets a textual representation of this element. */

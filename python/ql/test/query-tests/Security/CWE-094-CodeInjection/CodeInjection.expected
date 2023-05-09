@@ -1,8 +1,7 @@
 edges
-| code_injection.py:0:0:0:0 | ModuleVariableNode for code_injection.request | code_injection.py:6:12:6:18 | ControlFlowNode for request |
-| code_injection.py:0:0:0:0 | ModuleVariableNode for code_injection.request | code_injection.py:18:16:18:22 | ControlFlowNode for request |
 | code_injection.py:1:26:1:32 | ControlFlowNode for ImportMember | code_injection.py:1:26:1:32 | GSSA Variable request |
-| code_injection.py:1:26:1:32 | GSSA Variable request | code_injection.py:0:0:0:0 | ModuleVariableNode for code_injection.request |
+| code_injection.py:1:26:1:32 | GSSA Variable request | code_injection.py:6:12:6:18 | ControlFlowNode for request |
+| code_injection.py:1:26:1:32 | GSSA Variable request | code_injection.py:18:16:18:22 | ControlFlowNode for request |
 | code_injection.py:6:12:6:18 | ControlFlowNode for request | code_injection.py:6:12:6:23 | ControlFlowNode for Attribute |
 | code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | code_injection.py:7:10:7:13 | ControlFlowNode for code |
 | code_injection.py:6:12:6:23 | ControlFlowNode for Attribute | code_injection.py:8:10:8:13 | ControlFlowNode for code |
@@ -10,7 +9,6 @@ edges
 | code_injection.py:18:16:18:22 | ControlFlowNode for request | code_injection.py:18:16:18:27 | ControlFlowNode for Attribute |
 | code_injection.py:18:16:18:27 | ControlFlowNode for Attribute | code_injection.py:21:20:21:27 | ControlFlowNode for obj_name |
 nodes
-| code_injection.py:0:0:0:0 | ModuleVariableNode for code_injection.request | semmle.label | ModuleVariableNode for code_injection.request |
 | code_injection.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | code_injection.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
 | code_injection.py:6:12:6:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |

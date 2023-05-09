@@ -10,7 +10,7 @@ class TopLevel extends @toplevel {
   Location getLocation() { hasLocation(this, result) }
 
   pragma[nomagic]
-  predicate startsAtLine(@file file, int line) { getLocation().startsAtLine(file, line) }
+  predicate startsAtLine(@file file, int line) { this.getLocation().startsAtLine(file, line) }
 }
 
 class XmlNode extends @xmllocatable {
@@ -19,7 +19,7 @@ class XmlNode extends @xmllocatable {
   Location getLocation() { xmllocations(this, result) }
 
   pragma[nomagic]
-  predicate startsAtLine(@file file, int line) { getLocation().startsAtLine(file, line) }
+  predicate startsAtLine(@file file, int line) { this.getLocation().startsAtLine(file, line) }
 }
 
 // Based on previous implementation on HTMLNode.getCodeInAttribute and getInlineScript,

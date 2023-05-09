@@ -1,7 +1,7 @@
 private import codeql.swift.generated.AstNode
-private import codeql.swift.elements.decl.AbstractFunctionDecl
+private import codeql.swift.elements.decl.Function
 private import codeql.swift.elements.decl.Decl
-private import codeql.swift.elements.expr.AbstractClosureExpr
+private import codeql.swift.elements.expr.ClosureExpr
 private import codeql.swift.elements.Callable
 private import codeql.swift.generated.ParentChild
 
@@ -15,12 +15,12 @@ private module Cached {
   Decl getEnclosingDecl(AstNode ast) { result = getEnclosingDeclStep*(getImmediateParent(ast)) }
 
   private Element getEnclosingFunctionStep(Element e) {
-    not e instanceof AbstractFunctionDecl and
+    not e instanceof Function and
     result = getEnclosingDecl(e)
   }
 
   cached
-  AbstractFunctionDecl getEnclosingFunction(AstNode ast) {
+  Function getEnclosingFunction(AstNode ast) {
     result = getEnclosingFunctionStep*(getEnclosingDecl(ast))
   }
 
@@ -30,7 +30,7 @@ private module Cached {
   }
 
   cached
-  AbstractClosureExpr getEnclosingClosure(AstNode ast) {
+  ClosureExpr getEnclosingClosure(AstNode ast) {
     result = getEnclosingClosureStep*(getImmediateParent(ast))
   }
 }
@@ -53,7 +53,7 @@ class AstNode extends Generated::AstNode {
    * }
    * ```
    */
-  final AbstractFunctionDecl getEnclosingFunction() { result = Cached::getEnclosingFunction(this) }
+  final Function getEnclosingFunction() { result = Cached::getEnclosingFunction(this) }
 
   /**
    * Gets the nearest declaration that contains this AST node, if any.

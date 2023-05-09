@@ -11,32 +11,16 @@
  */
 
 import csharp
-import DataFlow
+import Flow::PathGraph
 
-query predicate nodes = PathGraph::nodes/3;
-
-query predicate edges(DataFlow::PathNode a, DataFlow::PathNode b) {
-  PathGraph::edges(a, b)
+query predicate edges(Flow::PathNode a, Flow::PathNode b) {
+  Flow::PathGraph::edges(a, b)
   or
-  exists(
-    FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable conf1,
-    FlowsFromTimeSpanArithmeticToTimeComparisonCallable conf2
-  |
-    conf1 = a.getConfiguration() and
-    conf1.isSink(a.getNode()) and
-    conf2 = b.getConfiguration() and
-    b.isSource()
-  )
+  FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallableConfig::isSink(a.getNode()) and
+  FlowsFromTimeSpanArithmeticToTimeComparisonCallableConfig::isSource(b.getNode())
   or
-  exists(
-    FlowsFromTimeSpanArithmeticToTimeComparisonCallable conf1,
-    FlowsFromTimeComparisonCallableToSelectionStatementCondition conf2
-  |
-    conf1 = a.getConfiguration() and
-    conf1.isSink(a.getNode()) and
-    conf2 = b.getConfiguration() and
-    b.isSource()
-  )
+  FlowsFromTimeSpanArithmeticToTimeComparisonCallableConfig::isSink(a.getNode()) and
+  FlowsFromTimeComparisonCallableToSelectionStatementConditionConfig::isSource(b.getNode())
 }
 
 /**
@@ -78,22 +62,19 @@ class DateTimeStruct extends Struct {
 }
 
 /**
- * Dataflow configuration to find flow from a GetLastWriteTime source to a DateTime arithmetic operation
+ * Configuration to find flow from a GetLastWriteTime source to a DateTime arithmetic operation
  */
-private class FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable extends TaintTracking::Configuration
+private module FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallableConfig implements
+  DataFlow::ConfigSig
 {
-  FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable() {
-    this = "FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable"
-  }
-
-  override predicate isSource(DataFlow::Node source) {
+  predicate isSource(DataFlow::Node source) {
     exists(Call call, GetLastWriteTimeMethod m |
       m.getACall() = call and
       source.asExpr() = call
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(Call call, DateTimeStruct dateTime |
       call.getAChild*() = sink.asExpr() and
       call = dateTime.getATimeSpanArithmeticCallable().getACall()
@@ -102,21 +83,24 @@ private class FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable extend
 }
 
 /**
- * Dataflow configuration to find flow from a DateTime arithmetic operation to a DateTime comparison operation
+ * Tainttracking module to find flow from a GetLastWriteTime source to a DateTime arithmetic operation
  */
-private class FlowsFromTimeSpanArithmeticToTimeComparisonCallable extends TaintTracking::Configuration
-{
-  FlowsFromTimeSpanArithmeticToTimeComparisonCallable() {
-    this = "FlowsFromTimeSpanArithmeticToTimeComparisonCallable"
-  }
+private module FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable =
+  TaintTracking::Global<FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallableConfig>;
 
-  override predicate isSource(DataFlow::Node source) {
+/**
+ * Configuration to find flow from a DateTime arithmetic operation to a DateTime comparison operation
+ */
+private module FlowsFromTimeSpanArithmeticToTimeComparisonCallableConfig implements
+  DataFlow::ConfigSig
+{
+  predicate isSource(DataFlow::Node source) {
     exists(DateTimeStruct dateTime, Call call | source.asExpr() = call |
       call = dateTime.getATimeSpanArithmeticCallable().getACall()
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(Call call, DateTimeStruct dateTime |
       call.getAnArgument().getAChild*() = sink.asExpr() and
       call = dateTime.getAComparisonCallable().getACall()
@@ -125,53 +109,69 @@ private class FlowsFromTimeSpanArithmeticToTimeComparisonCallable extends TaintT
 }
 
 /**
- * Dataflow configuration to find flow from a DateTime comparison operation to a Selection Statement (such as an If)
+ * Tainttracking module to find flow from a DateTime arithmetic operation to a DateTime comparison operation
  */
-private class FlowsFromTimeComparisonCallableToSelectionStatementCondition extends TaintTracking::Configuration
-{
-  FlowsFromTimeComparisonCallableToSelectionStatementCondition() {
-    this = "FlowsFromTimeComparisonCallableToSelectionStatementCondition"
-  }
+private module FlowsFromTimeSpanArithmeticToTimeComparisonCallable =
+  TaintTracking::Global<FlowsFromTimeSpanArithmeticToTimeComparisonCallableConfig>;
 
-  override predicate isSource(DataFlow::Node source) {
+/**
+ * Configuration to find flow from a DateTime comparison operation to a Selection Statement (such as an If)
+ */
+private module FlowsFromTimeComparisonCallableToSelectionStatementConditionConfig implements
+  DataFlow::ConfigSig
+{
+  predicate isSource(DataFlow::Node source) {
     exists(DateTimeStruct dateTime, Call call | source.asExpr() = call |
       call = dateTime.getAComparisonCallable().getACall()
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     exists(SelectionStmt sel | sel.getCondition().getAChild*() = sink.asExpr())
   }
 }
+
+/**
+ * Tainttracking module to find flow from a DateTime comparison operation to a Selection Statement (such as an If)
+ */
+private module FlowsFromTimeComparisonCallableToSelectionStatementCondition =
+  TaintTracking::Global<FlowsFromTimeComparisonCallableToSelectionStatementConditionConfig>;
+
+private module Flow =
+  DataFlow::MergePathGraph3<FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable::PathNode,
+    FlowsFromTimeSpanArithmeticToTimeComparisonCallable::PathNode,
+    FlowsFromTimeComparisonCallableToSelectionStatementCondition::PathNode,
+    FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable::PathGraph,
+    FlowsFromTimeSpanArithmeticToTimeComparisonCallable::PathGraph,
+    FlowsFromTimeComparisonCallableToSelectionStatementCondition::PathGraph>;
 
 /**
  * Holds if the last file modification date from the call to getLastWriteTimeMethodCall will be used in a DateTime arithmetic operation timeArithmeticCall,
  * which is then used for a DateTime comparison timeComparisonCall and the result flows to a Selection statement which is likely a TimeBomb trigger
  */
 predicate isPotentialTimeBomb(
-  DataFlow::PathNode pathSource, DataFlow::PathNode pathSink, Call getLastWriteTimeMethodCall,
+  Flow::PathNode pathSource, Flow::PathNode pathSink, Call getLastWriteTimeMethodCall,
   Call timeArithmeticCall, Call timeComparisonCall, SelectionStmt selStatement
 ) {
-  exists(
-    FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable config1, Node sink,
-    DateTimeStruct dateTime, FlowsFromTimeSpanArithmeticToTimeComparisonCallable config2,
-    Node sink2, FlowsFromTimeComparisonCallableToSelectionStatementCondition config3, Node sink3
-  |
-    pathSource.getNode() = exprNode(getLastWriteTimeMethodCall) and
-    config1.hasFlow(exprNode(getLastWriteTimeMethodCall), sink) and
+  exists(DataFlow::Node sink, DateTimeStruct dateTime, DataFlow::Node sink2, DataFlow::Node sink3 |
+    pathSource.getNode() = DataFlow::exprNode(getLastWriteTimeMethodCall) and
+    FlowsFromGetLastWriteTimeConfigToTimeSpanArithmeticCallable::flow(DataFlow::exprNode(getLastWriteTimeMethodCall),
+      sink) and
     timeArithmeticCall = dateTime.getATimeSpanArithmeticCallable().getACall() and
     timeArithmeticCall.getAChild*() = sink.asExpr() and
-    config2.hasFlow(exprNode(timeArithmeticCall), sink2) and
+    FlowsFromTimeSpanArithmeticToTimeComparisonCallable::flow(DataFlow::exprNode(timeArithmeticCall),
+      sink2) and
     timeComparisonCall = dateTime.getAComparisonCallable().getACall() and
     timeComparisonCall.getAnArgument().getAChild*() = sink2.asExpr() and
-    config3.hasFlow(exprNode(timeComparisonCall), sink3) and
+    FlowsFromTimeComparisonCallableToSelectionStatementCondition::flow(DataFlow::exprNode(timeComparisonCall),
+      sink3) and
     selStatement.getCondition().getAChild*() = sink3.asExpr() and
     pathSink.getNode() = sink3
   )
 }
 
 from
-  DataFlow::PathNode source, DataFlow::PathNode sink, Call getLastWriteTimeMethodCall,
+  Flow::PathNode source, Flow::PathNode sink, Call getLastWriteTimeMethodCall,
   Call timeArithmeticCall, Call timeComparisonCall, SelectionStmt selStatement
 where
   isPotentialTimeBomb(source, sink, getLastWriteTimeMethodCall, timeArithmeticCall,
