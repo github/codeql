@@ -72,6 +72,7 @@ void buildTarget(Target& target, bool dryRun) {
     if (!exec(argv)) {
       DIAGNOSE_ERROR(build_command_failed, "The detected build command failed (tried {})",
                      absl::StrJoin(argv, " "));
+      codeql::Log::flush();
       exit(1);
     }
   }
