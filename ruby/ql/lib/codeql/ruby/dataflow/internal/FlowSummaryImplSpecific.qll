@@ -62,10 +62,11 @@ predicate summaryElement(
 }
 
 /**
- * Holds if a neutral model exists for `c` with provenance `provenance`,
+ * Holds if a neutral summary model exists for `c` with provenance `provenance`,
  * which means that there is no flow through `c`.
+ * Note. Neutral models have not been implemented for Ruby.
  */
-predicate neutralElement(FlowSummary::SummarizedCallable c, string provenance) { none() }
+predicate neutralSummaryElement(FlowSummary::SummarizedCallable c, string provenance) { none() }
 
 bindingset[arg]
 private SummaryComponent interpretElementArg(string arg) {

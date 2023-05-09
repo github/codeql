@@ -68,10 +68,10 @@ predicate summaryElement(Function c, string input, string output, string kind, s
 }
 
 /**
- * Holds if a neutral model exists for `c` with provenance `provenance`,
+ * Holds if a neutral summary model exists for `c` with provenance `provenance`,
  * which means that there is no flow through `c`.
  */
-predicate neutralElement(Function c, string provenance) { none() }
+predicate neutralSummaryElement(Function c, string provenance) { none() }
 
 /**
  * Holds if an external source specification exists for `e` with output specification

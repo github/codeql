@@ -371,75 +371,75 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.util", "ArrayList", "ArrayList", "(int)", "manual"]
-      - ["java.util", "ArrayList", "isEmpty", "()", "manual"]
-      - ["java.util", "ArrayList", "size", "()", "manual"]
-      - ["java.util", "Arrays", "toString", "(Object[])", "manual"]
-      - ["java.util", "Calendar", "getInstance", "()", "manual"]
-      - ["java.util", "Collection", "contains", "(Object)", "manual"]
-      - ["java.util", "Collection", "isEmpty", "()", "manual"]
-      - ["java.util", "Collection", "size", "()", "manual"]
-      - ["java.util", "Collections", "emptyList", "()", "manual"]
-      - ["java.util", "Collections", "emptyMap", "()", "manual"]
-      - ["java.util", "Collections", "emptySet", "()", "manual"]
-      - ["java.util", "Collections", "sort", "", "manual"]
-      - ["java.util", "Enumeration", "hasMoreElements", "()", "manual"]
-      - ["java.util", "HashMap", "containsKey", "(Object)", "manual"]
-      - ["java.util", "HashMap", "HashMap", "(int)", "manual"]
-      - ["java.util", "HashMap", "size", "()", "manual"]
-      - ["java.util", "HashSet", "HashSet", "(int)", "manual"]
-      - ["java.util", "Iterator", "hasNext", "()", "manual"]
-      - ["java.util", "List", "contains", "(Object)", "manual"]
-      - ["java.util", "List", "equals", "(Object)", "manual"]
-      - ["java.util", "List", "hashCode", "()", "manual"]
-      - ["java.util", "List", "indexOf", "(Object)", "manual"]
-      - ["java.util", "List", "isEmpty", "()", "manual"]
-      - ["java.util", "List", "of", "()", "manual"]
-      - ["java.util", "List", "sort", "(Comparator)", "manual"]
-      - ["java.util", "List", "size", "()", "manual"]
-      - ["java.util", "Locale", "forLanguageTag", "(String)", "manual"]
-      - ["java.util", "Map", "containsKey", "(Object)", "manual"]
-      - ["java.util", "Map", "isEmpty", "()", "manual"]
-      - ["java.util", "Map", "size", "()", "manual"]
-      - ["java.util", "Objects", "equals", "(Object,Object)", "manual"]
-      - ["java.util", "Objects", "hash", "(Object[])", "manual"]
-      - ["java.util", "Objects", "hashCode", "(Object)", "manual"]
-      - ["java.util", "Objects", "isNull", "(Object)", "manual"]
-      - ["java.util", "Objects", "nonNull", "(Object)", "manual"]
-      - ["java.util", "Optional", "empty", "()", "manual"]
-      - ["java.util", "Optional", "isEmpty", "()", "manual"]
-      - ["java.util", "Optional", "isPresent", "()", "manual"]
-      - ["java.util", "Random", "nextInt", "(int)", "manual"]
-      - ["java.util", "Set", "contains", "(Object)", "manual"]
-      - ["java.util", "Set", "isEmpty", "()", "manual"]
-      - ["java.util", "Set", "size", "()", "manual"]
-      - ["java.util", "UUID", "equals", "(Object)", "manual"]
-      - ["java.util", "UUID", "fromString", "(String)", "manual"]
-      - ["java.util", "UUID", "randomUUID", "()", "manual"]
-      - ["java.util", "UUID", "toString", "()", "manual"]
-      - ["java.util", "TimeZone", "getTimeZone", "(String)", "manual"]
-      - ["java.util", "Vector", "size", "()", "manual"]
+      - ["java.util", "ArrayList", "ArrayList", "(int)", "summary", "manual"]
+      - ["java.util", "ArrayList", "isEmpty", "()", "summary", "manual"]
+      - ["java.util", "ArrayList", "size", "()", "summary", "manual"]
+      - ["java.util", "Arrays", "toString", "(Object[])", "summary", "manual"]
+      - ["java.util", "Calendar", "getInstance", "()", "summary", "manual"]
+      - ["java.util", "Collection", "contains", "(Object)", "summary", "manual"]
+      - ["java.util", "Collection", "isEmpty", "()", "summary", "manual"]
+      - ["java.util", "Collection", "size", "()", "summary", "manual"]
+      - ["java.util", "Collections", "emptyList", "()", "summary", "manual"]
+      - ["java.util", "Collections", "emptyMap", "()", "summary", "manual"]
+      - ["java.util", "Collections", "emptySet", "()", "summary", "manual"]
+      - ["java.util", "Collections", "sort", "", "summary", "manual"]
+      - ["java.util", "Enumeration", "hasMoreElements", "()", "summary", "manual"]
+      - ["java.util", "HashMap", "containsKey", "(Object)", "summary", "manual"]
+      - ["java.util", "HashMap", "HashMap", "(int)", "summary", "manual"]
+      - ["java.util", "HashMap", "size", "()", "summary", "manual"]
+      - ["java.util", "HashSet", "HashSet", "(int)", "summary", "manual"]
+      - ["java.util", "Iterator", "hasNext", "()", "summary", "manual"]
+      - ["java.util", "List", "contains", "(Object)", "summary", "manual"]
+      - ["java.util", "List", "equals", "(Object)", "summary", "manual"]
+      - ["java.util", "List", "hashCode", "()", "summary", "manual"]
+      - ["java.util", "List", "indexOf", "(Object)", "summary", "manual"]
+      - ["java.util", "List", "isEmpty", "()", "summary", "manual"]
+      - ["java.util", "List", "of", "()", "summary", "manual"]
+      - ["java.util", "List", "sort", "(Comparator)", "summary", "manual"]
+      - ["java.util", "List", "size", "()", "summary", "manual"]
+      - ["java.util", "Locale", "forLanguageTag", "(String)", "summary", "manual"]
+      - ["java.util", "Map", "containsKey", "(Object)", "summary", "manual"]
+      - ["java.util", "Map", "isEmpty", "()", "summary", "manual"]
+      - ["java.util", "Map", "size", "()", "summary", "manual"]
+      - ["java.util", "Objects", "equals", "(Object,Object)", "summary", "manual"]
+      - ["java.util", "Objects", "hash", "(Object[])", "summary", "manual"]
+      - ["java.util", "Objects", "hashCode", "(Object)", "summary", "manual"]
+      - ["java.util", "Objects", "isNull", "(Object)", "summary", "manual"]
+      - ["java.util", "Objects", "nonNull", "(Object)", "summary", "manual"]
+      - ["java.util", "Optional", "empty", "()", "summary", "manual"]
+      - ["java.util", "Optional", "isEmpty", "()", "summary", "manual"]
+      - ["java.util", "Optional", "isPresent", "()", "summary", "manual"]
+      - ["java.util", "Random", "nextInt", "(int)", "summary", "manual"]
+      - ["java.util", "Set", "contains", "(Object)", "summary", "manual"]
+      - ["java.util", "Set", "isEmpty", "()", "summary", "manual"]
+      - ["java.util", "Set", "size", "()", "summary", "manual"]
+      - ["java.util", "UUID", "equals", "(Object)", "summary", "manual"]
+      - ["java.util", "UUID", "fromString", "(String)", "summary", "manual"]
+      - ["java.util", "UUID", "randomUUID", "()", "summary", "manual"]
+      - ["java.util", "UUID", "toString", "()", "summary", "manual"]
+      - ["java.util", "TimeZone", "getTimeZone", "(String)", "summary", "manual"]
+      - ["java.util", "Vector", "size", "()", "summary", "manual"]
 
       # The below APIs are currently being stored as neutral models since `WithoutElement` has not yet been implemented for Java.
       # When `WithoutElement` is implemented, these should be changed to summary models of the form `Argument[this].WithoutElement -> Argument[this]`.
-      - ["java.util", "Collection", "removeIf", "(Predicate)", "manual"]
-      - ["java.util", "Iterator", "remove", "()", "manual"]
-      - ["java.util", "List", "clear", "()", "manual"]
-      - ["java.util", "List", "remove", "(Object)", "manual"]
-      - ["java.util", "Map", "clear", "()", "manual"]
-      - ["java.util", "Set", "clear", "()", "manual"]
-      - ["java.util", "Set", "remove", "(Object)", "manual"]
-      - ["java.util", "Set", "removeAll", "(Collection)", "manual"]
+      - ["java.util", "Collection", "removeIf", "(Predicate)", "summary", "manual"]
+      - ["java.util", "Iterator", "remove", "()", "summary", "manual"]
+      - ["java.util", "List", "clear", "()", "summary", "manual"]
+      - ["java.util", "List", "remove", "(Object)", "summary", "manual"]
+      - ["java.util", "Map", "clear", "()", "summary", "manual"]
+      - ["java.util", "Set", "clear", "()", "summary", "manual"]
+      - ["java.util", "Set", "remove", "(Object)", "summary", "manual"]
+      - ["java.util", "Set", "removeAll", "(Collection)", "summary", "manual"]
 
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.util", "Calendar", "add", "(int,int)", "manual"]      # taint-numeric
-      - ["java.util", "Calendar", "get", "(int)", "manual"]          # value-numeric
-      - ["java.util", "Calendar", "getTime", "()", "manual"]         # taint-numeric
-      - ["java.util", "Calendar", "getTimeInMillis", "()", "manual"] # taint-numeric
-      - ["java.util", "Calendar", "set", "(int,int)", "manual"]      # value-numeric
-      - ["java.util", "Calendar", "setTime", "(Date)", "manual"]     # taint-numeric
-      - ["java.util", "Date", "Date", "(long)", "manual"]            # taint-numeric
-      - ["java.util", "Date", "getTime", "()", "manual"]             # taint-numeric
-      - ["java.util", "Date", "from", "(Instant)", "manual"]         # taint-numeric
-      - ["java.util", "Date", "toInstant", "()", "manual"]           # taint-numeric
+      - ["java.util", "Calendar", "add", "(int,int)", "summary", "manual"]      # taint-numeric
+      - ["java.util", "Calendar", "get", "(int)", "summary", "manual"]          # value-numeric
+      - ["java.util", "Calendar", "getTime", "()", "summary", "manual"]         # taint-numeric
+      - ["java.util", "Calendar", "getTimeInMillis", "()", "summary", "manual"] # taint-numeric
+      - ["java.util", "Calendar", "set", "(int,int)", "summary", "manual"]      # value-numeric
+      - ["java.util", "Calendar", "setTime", "(Date)", "summary", "manual"]     # taint-numeric
+      - ["java.util", "Date", "Date", "(long)", "summary", "manual"]            # taint-numeric
+      - ["java.util", "Date", "getTime", "()", "summary", "manual"]             # taint-numeric
+      - ["java.util", "Date", "from", "(Instant)", "summary", "manual"]         # taint-numeric
+      - ["java.util", "Date", "toInstant", "()", "summary", "manual"]           # taint-numeric
