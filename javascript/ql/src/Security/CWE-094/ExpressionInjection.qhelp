@@ -21,7 +21,7 @@
 			The best practice to avoid code injection vulnerabilities
 			in GitHub workflows is to set the untrusted input value of the expression
 			to an intermediate environment variable and then use the environment variable
-			using the native syntax of the shell/script interpreter (i.e. <b>NOT</b> the <i>${{ env.VAR }}</i>).
+			using the native syntax of the shell/script interpreter (that is, not <i>${{ env.VAR }}</i>).
 		</p>
         <p>
             It is also recommended to limit the permissions of any tokens used 
