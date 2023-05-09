@@ -1,6 +1,4 @@
 #include "swift/xcode-autobuilder/XcodeProjectParser.h"
-#include "swift/xcode-autobuilder/XcodeWorkspaceParser.h"
-#include "swift/xcode-autobuilder/CFHelpers.h"
 
 #include <iostream>
 #include <filesystem>
@@ -9,7 +7,26 @@
 #include <fstream>
 #include <CoreFoundation/CoreFoundation.h>
 
+#include "swift/xcode-autobuilder/XcodeWorkspaceParser.h"
+#include "swift/xcode-autobuilder/CFHelpers.h"
+#include "swift/logging/SwiftLogging.h"
+
+namespace codeql_diagnostics {
+constexpr codeql::SwiftDiagnosticsSource no_project_found{
+    "no_project_found",
+    "No Xcode project or workspace detected",
+    "Set up a manual build command",
+    "https://docs.github.com/en/enterprise-server/code-security/code-scanning/"
+    "automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning",
+};
+}  // namespace codeql_diagnostics
+
 namespace fs = std::filesystem;
+
+static codeql::Logger& logger() {
+  static codeql::Logger ret{"project"};
+  return ret;
+}
 
 struct TargetData {
   std::string workspace;
@@ -253,7 +270,7 @@ std::vector<Target> collectTargets(const std::string& workingDir) {
   // Getting a list of workspaces and the project that belong to them
   auto workspaces = collectWorkspaces(workingDir);
   if (workspaces.empty()) {
-    std::cerr << "[xcode autobuilder] Xcode project or workspace not found\n";
+    DIAGNOSE_ERROR(no_project_found, "No Xcode project or workspace was found");
     exit(1);
   }
 
