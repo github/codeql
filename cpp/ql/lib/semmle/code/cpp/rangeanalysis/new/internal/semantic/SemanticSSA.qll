@@ -59,7 +59,7 @@ class SemSsaReadPositionBlock extends SemSsaReadPosition {
 
   SemBasicBlock getBlock() { result = block }
 
-  SemExpr getAnExpr() { result = getBlock().getAnExpr() }
+  SemExpr getAnExpr() { result = this.getBlock().getAnExpr() }
 }
 
 /**
