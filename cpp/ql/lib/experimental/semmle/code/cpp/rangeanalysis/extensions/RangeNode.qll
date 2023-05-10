@@ -86,7 +86,7 @@ private class ExprRangeNode extends DataFlow::ExprNode {
         concat(Expr arg, int i |
           arg = e.getArgument(i)
         |
-          this.getIntegralBounds(arg) order by i, ","
+          this.getIntegralBounds(arg), "," order by i
         ) + ")"
   }
 
