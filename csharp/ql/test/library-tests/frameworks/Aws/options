@@ -1,0 +1,1 @@
+semmle-extractor-options: --load-sources-from-project:${testdir}/../../../resources/stubs/Amazon.Lambda/2.1.0/Amazon.Lambda.csproj
