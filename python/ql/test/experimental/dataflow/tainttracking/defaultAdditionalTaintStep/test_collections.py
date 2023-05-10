@@ -37,6 +37,14 @@ def test_construction():
         tuple(tainted_list), # $ tainted
         set(tainted_list), # $ tainted
         frozenset(tainted_list), # $ tainted
+        dict(tainted_dict), # $ tainted
+        dict(k = tainted_string)["k"], # $ MISSING: tainted
+        dict(dict(k = tainted_string))["k"], # $ MISSING: tainted
+        dict(["k", tainted_string]), # $ tainted
+    )
+
+    ensure_not_tainted(
+        dict(k = tainted_string)["k1"]
     )
 
 
@@ -64,6 +72,29 @@ def test_access(x, y, z):
     for i in reversed(tainted_list):
         ensure_tainted(i) # $ tainted
 
+def test_access_explicit(x, y, z):
+    tainted_list = [TAINTED_STRING]
+
+    ensure_tainted(
+        tainted_list[0], # $ tainted
+        tainted_list[x], # $ tainted
+        tainted_list[y:z], # $ tainted
+
+        sorted(tainted_list)[0], # $ tainted
+        reversed(tainted_list)[0], # $ tainted
+        iter(tainted_list), # $ tainted
+        next(iter(tainted_list)), # $ tainted
+        [i for i in tainted_list], # $ tainted
+        [tainted_list for _i in [1,2,3]], # $ MISSING: tainted
+    )
+
+    a, b, c = tainted_list[0:3]
+    ensure_tainted(a, b, c) # $ tainted
+
+    for h in tainted_list:
+        ensure_tainted(h) # $ tainted
+    for i in reversed(tainted_list):
+        ensure_tainted(i) # $ tainted
 
 def test_dict_access(x):
     tainted_dict = TAINTED_DICT
