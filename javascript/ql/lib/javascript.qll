@@ -67,6 +67,7 @@ import semmle.javascript.YAML
 import semmle.javascript.dataflow.DataFlow
 import semmle.javascript.dataflow.TaintTracking
 import semmle.javascript.dataflow.TypeInference
+import semmle.javascript.frameworks.ActionsLib
 import semmle.javascript.frameworks.Angular2
 import semmle.javascript.frameworks.AngularJS
 import semmle.javascript.frameworks.Anser

@@ -164,9 +164,9 @@ module Express {
      */
     DataFlow::Node getRouteHandlerNode(int index) {
       // The first argument is a URI pattern if it is a string. If it could possibly be
-      // a function, we consider it to be a route handler, otherwise a URI pattern.
+      // a non-string value, we consider it to be a route handler, otherwise a URI pattern.
       exists(AnalyzedNode firstArg | firstArg = this.getArgument(0).analyze() |
-        if firstArg.getAType() = TTFunction()
+        if firstArg.getAType() != TTString()
         then result = this.getArgument(index)
         else (
           index >= 0 and result = this.getArgument(index + 1)
@@ -215,6 +215,10 @@ module Express {
         or
         Http::routeHandlerStep(result, succ) and
         t = t2
+        or
+        DataFlow::SharedFlowStep::storeStep(result.getALocalUse(), succ,
+          DataFlow::PseudoProperties::arrayElement()) and
+        t = t2.continue()
       )
     }
 
@@ -510,21 +514,6 @@ module Express {
     }
   }
 
-  /**
-   * Holds if `call` is a chainable method call on the response object of `handler`.
-   */
-  private predicate isChainableResponseMethodCall(
-    RouteHandler handler, DataFlow::MethodCallNode call
-  ) {
-    exists(string name | call.calls(handler.getAResponseNode(), name) |
-      name =
-        [
-          "append", "attachment", "location", "send", "sendStatus", "set", "status", "type", "vary",
-          "clearCookie", "contentType", "cookie", "format", "header", "json", "jsonp", "links"
-        ]
-    )
-  }
-
   /** An Express response source. */
   abstract class ResponseSource extends Http::Servers::ResponseSource { }
 
@@ -535,11 +524,7 @@ module Express {
   private class ExplicitResponseSource extends ResponseSource {
     RouteHandler rh;
 
-    ExplicitResponseSource() {
-      this = rh.getResponseParameter()
-      or
-      isChainableResponseMethodCall(rh, this)
-    }
+    ExplicitResponseSource() { this = rh.getResponseParameter() }
 
     /**
      * Gets the route handler that provides this response.
@@ -554,6 +539,22 @@ module Express {
     TypedResponseSource() { this.hasUnderlyingType("express", "Response") }
 
     override RouteHandler getRouteHandler() { none() } // Not known.
+  }
+
+  private class ChainedResponse extends ResponseSource {
+    private ResponseSource base;
+
+    ChainedResponse() {
+      this =
+        base.ref()
+            .getAMethodCall([
+                "append", "attachment", "location", "send", "sendStatus", "set", "status", "type",
+                "vary", "clearCookie", "contentType", "cookie", "format", "header", "json", "jsonp",
+                "links"
+              ])
+    }
+
+    override Http::RouteHandler getRouteHandler() { result = base.getRouteHandler() }
   }
 
   /** An Express request source. */
@@ -777,12 +778,12 @@ module Express {
   /**
    * Holds if `e` is an HTTP request object.
    */
-  predicate isRequest(DataFlow::Node e) { any(RouteHandler rh).getARequestNode() = e }
+  predicate isRequest(DataFlow::Node e) { any(RequestSource src).ref().flowsTo(e) }
 
   /**
    * Holds if `e` is an HTTP response object.
    */
-  predicate isResponse(DataFlow::Node e) { any(RouteHandler rh).getAResponseNode() = e }
+  predicate isResponse(DataFlow::Node e) { any(ResponseSource src).ref().flowsTo(e) }
 
   /**
    * An access to the HTTP request body.

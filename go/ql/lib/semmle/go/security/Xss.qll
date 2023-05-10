@@ -127,4 +127,20 @@ module SharedXss {
       )
     }
   }
+
+  /**
+   * A `Template` from `html/template` will HTML-escape data automatically
+   * and therefore acts as a sanitizer for XSS vulnerabilities.
+   */
+  class HtmlTemplateSanitizer extends Sanitizer, DataFlow::Node {
+    HtmlTemplateSanitizer() {
+      exists(Method m, DataFlow::CallNode call | m = call.getCall().getTarget() |
+        m.hasQualifiedName("html/template", "Template", "ExecuteTemplate") and
+        call.getArgument(2) = this
+        or
+        m.hasQualifiedName("html/template", "Template", "Execute") and
+        call.getArgument(1) = this
+      )
+    }
+  }
 }

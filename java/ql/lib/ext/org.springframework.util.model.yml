@@ -1,6 +1,14 @@
 extensions:
   - addsTo:
       pack: codeql/java-all
+      extensible: sinkModel
+    data:
+    - ["org.springframework.util", "FileCopyUtils", False, "copy", "(byte[],File)", "", "Argument[1]", "create-file", "manual"]
+    - ["org.springframework.util", "FileCopyUtils", False, "copy", "(File,File)", "", "Argument[0]", "read-file", "manual"]
+    - ["org.springframework.util", "FileCopyUtils", False, "copy", "(File,File)", "", "Argument[1]", "create-file", "manual"]
+
+  - addsTo:
+      pack: codeql/java-all
       extensible: summaryModel
     data:
       - ["org.springframework.util", "AntPathMatcher", False, "combine", "", "", "Argument[0..1]", "ReturnValue", "taint", "manual"]
@@ -42,7 +50,10 @@ extensions:
       - ["org.springframework.util", "FastByteArrayOutputStream", False, "toByteArray", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.util", "FastByteArrayOutputStream", False, "write", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["org.springframework.util", "FastByteArrayOutputStream", False, "writeTo", "", "", "Argument[this]", "Argument[0]", "taint", "manual"]
-      - ["org.springframework.util", "FileCopyUtils", False, "copy", "", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["org.springframework.util", "FileCopyUtils", False, "copy", "(byte[],OutputStream)", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["org.springframework.util", "FileCopyUtils", False, "copy", "(InputStream,OutputStream)", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["org.springframework.util", "FileCopyUtils", False, "copy", "(Reader,Writer)", "", "Argument[0]", "Argument[1]", "taint", "manual"]
+      - ["org.springframework.util", "FileCopyUtils", False, "copy", "(String,Writer)", "", "Argument[0]", "Argument[1]", "taint", "manual"]
       - ["org.springframework.util", "FileCopyUtils", False, "copyToByteArray", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.util", "FileCopyUtils", False, "copyToString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["org.springframework.util", "FileSystemUtils", False, "copyRecursively", "(java.io.File,java.io.File)", "", "Argument[0]", "Argument[1]", "taint", "manual"]

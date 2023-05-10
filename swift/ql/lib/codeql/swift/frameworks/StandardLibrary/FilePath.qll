@@ -15,7 +15,6 @@ class FilePath extends StructDecl {
  */
 private class FilePathSummaries extends SummaryModelCsv {
   override predicate row(string row) {
-    // TODO: Properly model this class
     row = ";FilePath;true;init(stringLiteral:);(String);;Argument[0];ReturnValue;taint"
   }
 }

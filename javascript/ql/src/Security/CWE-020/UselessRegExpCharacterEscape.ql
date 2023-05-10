@@ -73,8 +73,8 @@ class RegExpPatternMistake extends TRegExpPatternMistake {
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
     exists(int srcStartcolumn, int srcEndcolumn, int index |
-      index = getIndex() and
-      getRawStringNode()
+      index = this.getIndex() and
+      this.getRawStringNode()
           .getLocation()
           .hasLocationInfo(filepath, startline, srcStartcolumn, endline, srcEndcolumn)
     |
@@ -89,7 +89,7 @@ class RegExpPatternMistake extends TRegExpPatternMistake {
   }
 
   /** Gets a textual representation of this element. */
-  string toString() { result = getMessage() }
+  string toString() { result = this.getMessage() }
 
   abstract AstNode getRawStringNode();
 

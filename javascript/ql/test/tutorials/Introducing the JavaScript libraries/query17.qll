@@ -8,7 +8,7 @@ class PasswordTracker extends DataFlow::Configuration {
 
   override predicate isSource(DataFlow::Node nd) { nd.asExpr() instanceof StringLiteral }
 
-  override predicate isSink(DataFlow::Node nd) { passwordVarAssign(_, nd) }
+  override predicate isSink(DataFlow::Node nd) { this.passwordVarAssign(_, nd) }
 
   predicate passwordVarAssign(Variable v, DataFlow::Node nd) {
     exists(SsaExplicitDefinition def |

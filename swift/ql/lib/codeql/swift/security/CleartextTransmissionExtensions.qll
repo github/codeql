@@ -15,16 +15,16 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class CleartextTransmissionSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for cleartext transmission vulnerabilities.
+ * A barrier for cleartext transmission vulnerabilities.
  */
-abstract class CleartextTransmissionSanitizer extends DataFlow::Node { }
+abstract class CleartextTransmissionBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class CleartextTransmissionAdditionalTaintStep extends Unit {
+class CleartextTransmissionAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to cleartext transmission vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
@@ -38,7 +38,7 @@ private class NWConnectionSendSink extends CleartextTransmissionSink {
     // `content` arg to `NWConnection.send` is a sink
     exists(CallExpr call |
       call.getStaticTarget()
-          .(MethodDecl)
+          .(Method)
           .hasQualifiedName("NWConnection", "send(content:contentContext:isComplete:completion:)") and
       call.getArgument(0).getExpr() = this.asExpr()
     )
@@ -55,7 +55,7 @@ private class UrlSink extends CleartextTransmissionSink {
     // (we assume here that the URL goes on to be used in a network operation)
     exists(CallExpr call |
       call.getStaticTarget()
-          .(MethodDecl)
+          .(Method)
           .hasQualifiedName("URL", ["init(string:)", "init(string:relativeTo:)"]) and
       call.getArgument(0).getExpr() = this.asExpr()
     )
@@ -70,7 +70,7 @@ private class AlamofireTransmittedSink extends CleartextTransmissionSink {
     // sinks are the first argument containing the URL, and the `parameters`
     // and `headers` arguments to appropriate methods of `Session`.
     exists(CallExpr call, string fName |
-      call.getStaticTarget().(MethodDecl).hasQualifiedName("Session", fName) and
+      call.getStaticTarget().(Method).hasQualifiedName("Session", fName) and
       fName.regexpMatch("(request|streamRequest|download)\\(.*") and
       (
         call.getArgument(0).getExpr() = this.asExpr() or
@@ -81,10 +81,10 @@ private class AlamofireTransmittedSink extends CleartextTransmissionSink {
 }
 
 /**
- * An encryption sanitizer for cleartext transmission vulnerabilities.
+ * An encryption barrier for cleartext transmission vulnerabilities.
  */
-private class CleartextTransmissionEncryptionSanitizer extends CleartextTransmissionSanitizer {
-  CleartextTransmissionEncryptionSanitizer() { this.asExpr() instanceof EncryptedExpr }
+private class CleartextTransmissionEncryptionBarrier extends CleartextTransmissionBarrier {
+  CleartextTransmissionEncryptionBarrier() { this.asExpr() instanceof EncryptedExpr }
 }
 
 /**

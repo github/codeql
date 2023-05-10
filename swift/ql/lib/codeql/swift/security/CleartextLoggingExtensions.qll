@@ -8,18 +8,15 @@ private import codeql.swift.security.SensitiveExprs
 /** A data flow sink for cleartext logging of sensitive data vulnerabilities. */
 abstract class CleartextLoggingSink extends DataFlow::Node { }
 
-/** A sanitizer for cleartext logging of sensitive data vulnerabilities. */
-abstract class CleartextLoggingSanitizer extends DataFlow::Node { }
+/** A barrier for cleartext logging of sensitive data vulnerabilities. */
+abstract class CleartextLoggingBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
- *
- * Extend this class to add additional taint steps that should apply to paths related to
- * cleartext logging of sensitive data vulnerabilities.
+ * A unit class for adding additional flow steps.
  */
-class CleartextLoggingAdditionalTaintStep extends Unit {
+class CleartextLoggingAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `n1` to `n2` should be considered a taint
+   * Holds if the step from `n1` to `n2` should be considered a flow
    * step for flows related to cleartext logging of sensitive data vulnerabilities.
    */
   abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
@@ -33,12 +30,12 @@ private class DefaultCleartextLoggingSink extends CleartextLoggingSink {
 }
 
 /**
- * A sanitizer for `OSLogMessage`s configured with the appropriate privacy option.
+ * A barrier for `OSLogMessage`s configured with the appropriate privacy option.
  * Numeric and boolean arguments aren't redacted unless the `private` or `sensitive` options are used.
  * Arguments of other types are always redacted unless the `public` option is used.
  */
-private class OsLogPrivacyCleartextLoggingSanitizer extends CleartextLoggingSanitizer {
-  OsLogPrivacyCleartextLoggingSanitizer() {
+private class OsLogPrivacyCleartextLoggingBarrier extends CleartextLoggingBarrier {
+  OsLogPrivacyCleartextLoggingBarrier() {
     exists(CallExpr c, AutoClosureExpr e |
       c.getStaticTarget().getName().matches("appendInterpolation(_:%privacy:%)") and
       c.getArgument(0).getExpr() = e and

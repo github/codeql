@@ -10,7 +10,6 @@ import (
 	"go/token"
 	"go/types"
 	"io"
-	"io/ioutil"
 	"log"
 	"os"
 	"path/filepath"
@@ -1807,7 +1806,7 @@ func extractNumLines(tw *trap.Writer, fileName string, ast *ast.File) {
 
 	// count lines of code by tokenizing
 	linesOfCode := 0
-	src, err := ioutil.ReadFile(fileName)
+	src, err := os.ReadFile(fileName)
 	if err != nil {
 		log.Fatalf("Unable to read file %s.", fileName)
 	}

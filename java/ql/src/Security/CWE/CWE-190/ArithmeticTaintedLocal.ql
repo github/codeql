@@ -13,30 +13,9 @@
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import ArithmeticCommon
-
-module ArithmeticTaintedLocalOverflowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
-
-  predicate isSink(DataFlow::Node sink) { overflowSink(_, sink.asExpr()) }
-
-  predicate isBarrier(DataFlow::Node n) { overflowBarrier(n) }
-}
-
-module ArithmeticTaintedLocalOverflowFlow =
-  TaintTracking::Global<ArithmeticTaintedLocalOverflowConfig>;
-
-module ArithmeticTaintedLocalUnderflowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
-
-  predicate isSink(DataFlow::Node sink) { underflowSink(_, sink.asExpr()) }
-
-  predicate isBarrier(DataFlow::Node n) { underflowBarrier(n) }
-}
-
-module ArithmeticTaintedLocalUnderflowFlow =
-  TaintTracking::Global<ArithmeticTaintedLocalUnderflowConfig>;
+import semmle.code.java.dataflow.DataFlow
+import semmle.code.java.security.ArithmeticCommon
+import semmle.code.java.security.ArithmeticTaintedLocalQuery
 
 module Flow =
   DataFlow::MergePathGraph<ArithmeticTaintedLocalOverflowFlow::PathNode,

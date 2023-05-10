@@ -23,3 +23,15 @@ viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition
 uniqueContentApprox
+identityLocalStep
+| test_async.py:48:9:48:22 | ControlFlowNode for ensure_tainted | Node steps to itself |
+| test_collections.py:56:10:56:21 | ControlFlowNode for tainted_list | Node steps to itself |
+| test_collections.py:63:9:63:22 | ControlFlowNode for ensure_tainted | Node steps to itself |
+| test_collections.py:65:9:65:22 | ControlFlowNode for ensure_tainted | Node steps to itself |
+| test_collections.py:79:9:79:22 | ControlFlowNode for ensure_tainted | Node steps to itself |
+| test_collections.py:81:9:81:22 | ControlFlowNode for ensure_tainted | Node steps to itself |
+| test_collections.py:114:9:114:22 | ControlFlowNode for ensure_tainted | Node steps to itself |
+| test_collections.py:116:9:116:22 | ControlFlowNode for ensure_tainted | Node steps to itself |
+| test_collections.py:213:9:213:15 | ControlFlowNode for my_dict | Node steps to itself |
+| test_collections.py:213:22:213:33 | ControlFlowNode for tainted_dict | Node steps to itself |
+| test_for.py:24:9:24:22 | ControlFlowNode for ensure_tainted | Node steps to itself |

@@ -1,10 +1,10 @@
 closures.swift:
-#    1| [ConcreteFuncDecl] hello()
+#    1| [NamedFunction] hello()
 #    1|     InterfaceType = () -> String
 #    1|   getBody(): [BraceStmt] { ... }
 #    2|     getElement(0): [ReturnStmt] return ...
 #    2|       getResult(): [StringLiteralExpr] Hello world!
-#    5| [ConcreteFuncDecl] captureList()
+#    5| [NamedFunction] captureList()
 #    5|     InterfaceType = () -> ()
 #    5|   getBody(): [BraceStmt] { ... }
 #    6|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -18,7 +18,7 @@ closures.swift:
 #    7|           getInit(0): [CallExpr] call to hello()
 #    7|             getFunction(): [DeclRefExpr] hello()
 #    7|           getPattern(0): [NamedPattern] x
-#    7|         getClosureBody(): [ClosureExpr] { ... }
+#    7|         getClosureBody(): [ExplicitClosureExpr] { ... }
 #    7|           getBody(): [BraceStmt] { ... }
 #    8|             getElement(0): [CallExpr] call to print(_:separator:terminator:)
 #    8|               getFunction(): [DeclRefExpr] print(_:separator:terminator:)
@@ -55,7 +55,7 @@ closures.swift:
 #   12|         getTypeRepr(): [TypeRepr] (() -> ())?
 #   12| [ConcreteVarDecl] escape
 #   12|     Type = (() -> ())?
-#   14| [ConcreteFuncDecl] setEscape()
+#   14| [NamedFunction] setEscape()
 #   14|     InterfaceType = () -> ()
 #   14|   getBody(): [BraceStmt] { ... }
 #   15|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -65,7 +65,7 @@ closures.swift:
 #   15|         Type = Int
 #   16|     getElement(2): [AssignExpr]  ... = ...
 #   16|       getDest(): [DeclRefExpr] escape
-#   16|       getSource(): [ClosureExpr] { ... }
+#   16|       getSource(): [ExplicitClosureExpr] { ... }
 #   16|         getBody(): [BraceStmt] { ... }
 #   17|           getElement(0): [BinaryExpr] ... .+=(_:_:) ...
 #   17|             getFunction(): [MethodLookupExpr] .+=(_:_:)
@@ -92,7 +92,7 @@ closures.swift:
 #   17|         getCapture(0): [CapturedDecl] x
 #   16|       getSource().getFullyConverted(): [InjectIntoOptionalExpr] ((() -> ())?) ...
 #   16|   getCapture(0): [CapturedDecl] escape
-#   22| [ConcreteFuncDecl] callEscape()
+#   22| [NamedFunction] callEscape()
 #   22|     InterfaceType = () -> ()
 #   22|   getBody(): [BraceStmt] { ... }
 #   23|     getElement(0): [CallExpr] call to setEscape()
@@ -104,11 +104,11 @@ closures.swift:
 #   24|         getFunction().getFullyConverted(): [LoadExpr] ((() -> ())) ...
 #   24|       getSubExpr().getFullyConverted(): [InjectIntoOptionalExpr] (()?) ...
 #   24|   getCapture(0): [CapturedDecl] escape
-#   27| [ConcreteFuncDecl] logical()
+#   27| [NamedFunction] logical()
 #   27|     InterfaceType = () -> Bool
 #   27|   getBody(): [BraceStmt] { ... }
 #   28|     getElement(0): [PatternBindingDecl] var ... = ...
-#   28|       getInit(0): [ClosureExpr] { ... }
+#   28|       getInit(0): [ExplicitClosureExpr] { ... }
 #   28|         getParam(0): [ParamDecl] x
 #   28|             Type = Int
 #   28|         getBody(): [BraceStmt] { ... }
@@ -194,15 +194,15 @@ closures.swift:
 #   31|                 getResult().getFullyConverted(): [ParenExpr] (...)
 #   31|             getCapture(0): [CapturedDecl] x
 #   32|             getCapture(1): [CapturedDecl] f
-#   35| [ConcreteFuncDecl] asyncTest()
+#   35| [NamedFunction] asyncTest()
 #   35|     InterfaceType = () -> ()
 #   35|   getBody(): [BraceStmt] { ... }
-#   36|     getElement(0): [ConcreteFuncDecl] withCallback(_:)
+#   36|     getElement(0): [NamedFunction] withCallback(_:)
 #   36|         InterfaceType = (@escaping (Int) async -> Int) -> ()
 #   36|       getParam(0): [ParamDecl] callback
 #   36|           Type = (Int) async -> Int
 #   36|       getBody(): [BraceStmt] { ... }
-#   38|         getElement(0): [ConcreteFuncDecl] wrapper(_:)
+#   38|         getElement(0): [NamedFunction] wrapper(_:)
 #   38|             InterfaceType = @Sendable (Int) async -> Int
 #   38|           getParam(0): [ParamDecl] x
 #   38|               Type = Int
@@ -230,7 +230,7 @@ closures.swift:
 #   41|           getArgument(0): [Argument] priority: default priority
 #   41|             getExpr(): [DefaultArgumentExpr] default priority
 #   41|           getArgument(1): [Argument] operation: { ... }
-#   41|             getExpr(): [ClosureExpr] { ... }
+#   41|             getExpr(): [ExplicitClosureExpr] { ... }
 #   41|               getBody(): [BraceStmt] { ... }
 #   42|                 getElement(0): [ReturnStmt] return ...
 #   42|                   getResult(): [CallExpr] call to print(_:separator:terminator:)
@@ -254,7 +254,7 @@ closures.swift:
 #   45|     getElement(1): [CallExpr] call to withCallback(_:)
 #   45|       getFunction(): [DeclRefExpr] withCallback(_:)
 #   45|       getArgument(0): [Argument] : { ... }
-#   45|         getExpr(): [ClosureExpr] { ... }
+#   45|         getExpr(): [ExplicitClosureExpr] { ... }
 #   45|           getParam(0): [ParamDecl] x
 #   45|               Type = Int
 #   45|           getBody(): [BraceStmt] { ... }
@@ -269,7 +269,7 @@ closures.swift:
 #   46|                 getArgument(1): [Argument] : 1
 #   46|                   getExpr(): [IntegerLiteralExpr] 1
 #   41| [NilLiteralExpr] nil
-#   50| [ConcreteFuncDecl] foo()
+#   50| [NamedFunction] foo()
 #   50|     InterfaceType = () -> Int
 #   50|   getBody(): [BraceStmt] { ... }
 #   51|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -278,7 +278,7 @@ closures.swift:
 #   51|     getElement(1): [ConcreteVarDecl] x
 #   51|         Type = Int
 #   52|     getElement(2): [PatternBindingDecl] var ... = ...
-#   52|       getInit(0): [ClosureExpr] { ... }
+#   52|       getInit(0): [ExplicitClosureExpr] { ... }
 #   52|         getParam(0): [ParamDecl] y
 #   52|             Type = Int
 #   52|         getBody(): [BraceStmt] { ... }
@@ -308,7 +308,7 @@ closures.swift:
 #   53|       getArgument(1): [Argument] : 40
 #   53|         getExpr(): [IntegerLiteralExpr] 40
 #   54|     getElement(5): [PatternBindingDecl] var ... = ...
-#   54|       getInit(0): [ClosureExpr] { ... }
+#   54|       getInit(0): [ExplicitClosureExpr] { ... }
 #   54|         getBody(): [BraceStmt] { ... }
 #   54|           getElement(0): [ReturnStmt] return ...
 #   54|             getResult(): [DeclRefExpr] x
@@ -328,7 +328,7 @@ closures.swift:
 #   51| 
 #   56| [Comment] // 42
 #   56| 
-#   59| [ConcreteFuncDecl] bar()
+#   59| [NamedFunction] bar()
 #   59|     InterfaceType = () -> () -> Int
 #   59|   getBody(): [BraceStmt] { ... }
 #   60|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -337,7 +337,7 @@ closures.swift:
 #   60|     getElement(1): [ConcreteVarDecl] x
 #   60|         Type = Int
 #   61|     getElement(2): [PatternBindingDecl] var ... = ...
-#   61|       getInit(0): [ClosureExpr] { ... }
+#   61|       getInit(0): [ExplicitClosureExpr] { ... }
 #   61|         getParam(0): [ParamDecl] y
 #   61|             Type = Int
 #   61|         getBody(): [BraceStmt] { ... }
@@ -367,7 +367,7 @@ closures.swift:
 #   62|       getArgument(1): [Argument] : 40
 #   62|         getExpr(): [IntegerLiteralExpr] 40
 #   63|     getElement(5): [PatternBindingDecl] var ... = ...
-#   63|       getInit(0): [ClosureExpr] { ... }
+#   63|       getInit(0): [ExplicitClosureExpr] { ... }
 #   63|         getBody(): [BraceStmt] { ... }
 #   63|           getElement(0): [ReturnStmt] return ...
 #   63|             getResult(): [DeclRefExpr] x
@@ -395,7 +395,7 @@ closures.swift:
 #   68|         getTypeRepr(): [TypeRepr] ((Int) -> Void)?
 #   68| [ConcreteVarDecl] g
 #   68|     Type = ((Int) -> Void)?
-#   69| [ConcreteFuncDecl] baz()
+#   69| [NamedFunction] baz()
 #   69|     InterfaceType = () -> () -> Int
 #   69|   getBody(): [BraceStmt] { ... }
 #   70|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -405,7 +405,7 @@ closures.swift:
 #   70|         Type = Int
 #   71|     getElement(2): [AssignExpr]  ... = ...
 #   71|       getDest(): [DeclRefExpr] g
-#   71|       getSource(): [ClosureExpr] { ... }
+#   71|       getSource(): [ExplicitClosureExpr] { ... }
 #   71|         getParam(0): [ParamDecl] y
 #   71|             Type = Int
 #   71|         getBody(): [BraceStmt] { ... }
@@ -433,7 +433,7 @@ closures.swift:
 #   72|       getArgument(1): [Argument] : 40
 #   72|         getExpr(): [IntegerLiteralExpr] 40
 #   73|     getElement(4): [PatternBindingDecl] var ... = ...
-#   73|       getInit(0): [ClosureExpr] { ... }
+#   73|       getInit(0): [ExplicitClosureExpr] { ... }
 #   73|         getBody(): [BraceStmt] { ... }
 #   73|           getElement(0): [ReturnStmt] return ...
 #   73|             getResult(): [DeclRefExpr] x
@@ -455,7 +455,7 @@ closures.swift:
 #   70| 
 #   71| [Comment] // closure escapes!
 #   71| 
-#   78| [ConcreteFuncDecl] quux()
+#   78| [NamedFunction] quux()
 #   78|     InterfaceType = () -> Int
 #   78|   getBody(): [BraceStmt] { ... }
 #   79|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -463,7 +463,7 @@ closures.swift:
 #   79|       getPattern(0): [NamedPattern] y
 #   79|     getElement(1): [ConcreteVarDecl] y
 #   79|         Type = Int
-#   81|     getElement(2): [ConcreteFuncDecl] f()
+#   81|     getElement(2): [NamedFunction] f()
 #   81|         InterfaceType = () -> () -> Void
 #   81|       getBody(): [BraceStmt] { ... }
 #   82|         getElement(0): [PatternBindingDecl] var ... = ...
@@ -471,7 +471,7 @@ closures.swift:
 #   82|           getPattern(0): [NamedPattern] x
 #   82|         getElement(1): [ConcreteVarDecl] x
 #   82|             Type = Int
-#   84|         getElement(2): [ConcreteFuncDecl] a()
+#   84|         getElement(2): [NamedFunction] a()
 #   84|             InterfaceType = () -> ()
 #   84|           getBody(): [BraceStmt] { ... }
 #   85|             getElement(0): [AssignExpr]  ... = ...
@@ -524,7 +524,7 @@ closures.swift:
 #   85|           getCapture(0): [CapturedDecl] y
 #   85|           getCapture(1): [CapturedDecl] x
 #   88|           getCapture(2): [CapturedDecl] b()
-#   92|         getElement(3): [ConcreteFuncDecl] b()
+#   92|         getElement(3): [NamedFunction] b()
 #   92|             InterfaceType = () -> ()
 #   92|           getBody(): [BraceStmt] { ... }
 #   93|             getElement(0): [AssignExpr]  ... = ...
@@ -601,12 +601,12 @@ closures.swift:
 #  105|       getResult().getFullyConverted(): [LoadExpr] (Int) ...
 #  105| [Comment] // 58341
 #  105| 
-#  108| [ConcreteFuncDecl] sharedCapture()
+#  108| [NamedFunction] sharedCapture()
 #  108|     InterfaceType = () -> Int
 #  108|   getBody(): [BraceStmt] { ... }
 #  109|     getElement(0): [PatternBindingDecl] var ... = ...
 #  109|       getInit(0): [CallExpr] call to ...
-#  109|         getFunction(): [ClosureExpr] { ... }
+#  109|         getFunction(): [ExplicitClosureExpr] { ... }
 #  109|           getBody(): [BraceStmt] { ... }
 #  110|             getElement(0): [PatternBindingDecl] var ... = ...
 #  110|               getInit(0): [IntegerLiteralExpr] 0
@@ -615,7 +615,7 @@ closures.swift:
 #  110|                 Type = Int
 #  111|             getElement(2): [ReturnStmt] return ...
 #  111|               getResult(): [TupleExpr] (...)
-#  111|                 getElement(0): [ClosureExpr] { ... }
+#  111|                 getElement(0): [ExplicitClosureExpr] { ... }
 #  111|                   getBody(): [BraceStmt] { ... }
 #  111|                     getElement(0): [ReturnStmt] return ...
 #  111|                       getResult(): [BinaryExpr] ... .+=(_:_:) ...
@@ -629,7 +629,7 @@ closures.swift:
 #  111|                         getArgument(1): [Argument] : 1
 #  111|                           getExpr(): [IntegerLiteralExpr] 1
 #  111|                   getCapture(0): [CapturedDecl] x
-#  111|                 getElement(1): [ClosureExpr] { ... }
+#  111|                 getElement(1): [ExplicitClosureExpr] { ... }
 #  111|                   getBody(): [BraceStmt] { ... }
 #  111|                     getElement(0): [ReturnStmt] return ...
 #  111|                       getResult(): [DeclRefExpr] x
@@ -643,7 +643,7 @@ closures.swift:
 #  109|     getElement(2): [ConcreteVarDecl] getX
 #  109|         Type = () -> Int
 #  114|     getElement(3): [PatternBindingDecl] var ... = ...
-#  114|       getInit(0): [ClosureExpr] { ... }
+#  114|       getInit(0): [ExplicitClosureExpr] { ... }
 #  114|         getBody(): [BraceStmt] { ... }
 #  115|           getElement(0): [CallExpr] call to ...
 #  115|             getFunction(): [DeclRefExpr] incrX
@@ -662,7 +662,7 @@ closures.swift:
 #  121|         getFunction(): [DeclRefExpr] getX
 #  121| [Comment] // 4
 #  121| 
-#  124| [ConcreteFuncDecl] sink(_:)
+#  124| [NamedFunction] sink(_:)
 #  124|     InterfaceType = (Int) -> ()
 #  124|   getParam(0): [ParamDecl] x
 #  124|       Type = Int
@@ -680,12 +680,12 @@ closures.swift:
 #  124|         getExpr(): [DefaultArgumentExpr] default separator
 #  124|       getArgument(2): [Argument] terminator: default terminator
 #  124|         getExpr(): [DefaultArgumentExpr] default terminator
-#  125| [ConcreteFuncDecl] source()
+#  125| [NamedFunction] source()
 #  125|     InterfaceType = () -> Int
 #  125|   getBody(): [BraceStmt] { ... }
 #  125|     getElement(0): [ReturnStmt] return ...
 #  125|       getResult(): [IntegerLiteralExpr] -1
-#  127| [ConcreteFuncDecl] sharedCaptureMultipleWriters()
+#  127| [NamedFunction] sharedCaptureMultipleWriters()
 #  127|     InterfaceType = () -> ()
 #  127|   getBody(): [BraceStmt] { ... }
 #  128|     getElement(0): [PatternBindingDecl] var ... = ...
@@ -694,7 +694,7 @@ closures.swift:
 #  128|     getElement(1): [ConcreteVarDecl] x
 #  128|         Type = Int
 #  130|     getElement(2): [PatternBindingDecl] var ... = ...
-#  130|       getInit(0): [ClosureExpr] { ... }
+#  130|       getInit(0): [ExplicitClosureExpr] { ... }
 #  130|         getBody(): [BraceStmt] { ... }
 #  130|           getElement(0): [ReturnStmt] return ...
 #  130|             getResult(): [CallExpr] call to sink(_:)
@@ -707,12 +707,12 @@ closures.swift:
 #  130|     getElement(3): [ConcreteVarDecl] callSink
 #  130|         Type = () -> ()
 #  132|     getElement(4): [PatternBindingDecl] var ... = ...
-#  132|       getInit(0): [ClosureExpr] { ... }
+#  132|       getInit(0): [ExplicitClosureExpr] { ... }
 #  132|         getParam(0): [ParamDecl] y
 #  132|             Type = Int
 #  132|         getBody(): [BraceStmt] { ... }
 #  133|           getElement(0): [PatternBindingDecl] var ... = ...
-#  133|             getInit(0): [ClosureExpr] { ... }
+#  133|             getInit(0): [ExplicitClosureExpr] { ... }
 #  133|               getBody(): [BraceStmt] { ... }
 #  133|                 getElement(0): [ReturnStmt] return ...
 #  133|                   getResult(): [AssignExpr]  ... = ...
@@ -754,10 +754,10 @@ closures.swift:
 #  143|       getFunction(): [DeclRefExpr] badSetter
 #  144|     getElement(13): [CallExpr] call to ...
 #  144|       getFunction(): [DeclRefExpr] callSink
-#  147| [ConcreteFuncDecl] reentrant()
+#  147| [NamedFunction] reentrant()
 #  147|     InterfaceType = () -> Int
 #  147|   getBody(): [BraceStmt] { ... }
-#  149|     getElement(0): [ConcreteFuncDecl] f(_:)
+#  149|     getElement(0): [NamedFunction] f(_:)
 #  149|         InterfaceType = (Int) -> (Int) -> Int
 #  149|       getParam(0): [ParamDecl] x
 #  149|           Type = Int
@@ -776,7 +776,7 @@ closures.swift:
 #  150|                   getExpr(): [IntegerLiteralExpr] 0
 #  150|           getThen(): [BraceStmt] { ... }
 #  151|             getElement(0): [ReturnStmt] return ...
-#  151|               getResult(): [ClosureExpr] { ... }
+#  151|               getResult(): [ExplicitClosureExpr] { ... }
 #  151|                 getParam(0): [ParamDecl] _
 #  151|                     Type = Int
 #  151|                 getBody(): [BraceStmt] { ... }
@@ -800,7 +800,7 @@ closures.swift:
 #  154|         getElement(2): [ConcreteVarDecl] next
 #  154|             Type = (Int) -> Int
 #  155|         getElement(3): [ReturnStmt] return ...
-#  155|           getResult(): [ClosureExpr] { ... }
+#  155|           getResult(): [ExplicitClosureExpr] { ... }
 #  155|             getParam(0): [ParamDecl] k
 #  155|                 Type = Int
 #  155|             getBody(): [BraceStmt] { ... }
@@ -836,7 +836,7 @@ closures.swift:
 #  155|             getCapture(0): [CapturedDecl] next
 #  155|             getCapture(1): [CapturedDecl] x
 #  154|       getCapture(0): [CapturedDecl] g(_:)
-#  158|     getElement(1): [ConcreteFuncDecl] g(_:)
+#  158|     getElement(1): [NamedFunction] g(_:)
 #  158|         InterfaceType = (Int) -> (Int) -> Int
 #  158|       getParam(0): [ParamDecl] x
 #  158|           Type = Int
@@ -855,7 +855,7 @@ closures.swift:
 #  159|                   getExpr(): [IntegerLiteralExpr] 0
 #  159|           getThen(): [BraceStmt] { ... }
 #  160|             getElement(0): [ReturnStmt] return ...
-#  160|               getResult(): [ClosureExpr] { ... }
+#  160|               getResult(): [ExplicitClosureExpr] { ... }
 #  160|                 getParam(0): [ParamDecl] _
 #  160|                     Type = Int
 #  160|                 getBody(): [BraceStmt] { ... }
@@ -879,7 +879,7 @@ closures.swift:
 #  163|         getElement(2): [ConcreteVarDecl] next
 #  163|             Type = (Int) -> Int
 #  164|         getElement(3): [ReturnStmt] return ...
-#  164|           getResult(): [ClosureExpr] { ... }
+#  164|           getResult(): [ExplicitClosureExpr] { ... }
 #  164|             getParam(0): [ParamDecl] k
 #  164|                 Type = Int
 #  164|             getBody(): [BraceStmt] { ... }
@@ -943,7 +943,7 @@ closures.swift:
 #  171|       getResult(): [DeclRefExpr] y
 #  171| [Comment] // 10004003085
 #  171| 
-#  174| [ConcreteFuncDecl] main()
+#  174| [NamedFunction] main()
 #  174|     InterfaceType = () -> ()
 #  174|   getBody(): [BraceStmt] { ... }
 #  175|     getElement(0): [CallExpr] call to print(_:separator:terminator:)

@@ -43,7 +43,19 @@ predicate compatibleContents(TypeTrackerContent storeContent, TypeTrackerContent
 
 predicate simpleLocalFlowStep = DataFlowPrivate::simpleLocalFlowStepForTypetracking/2;
 
-predicate jumpStep = DataFlowPrivate::jumpStepSharedWithTypeTracker/2;
+predicate jumpStep(Node nodeFrom, Node nodeTo) {
+  DataFlowPrivate::jumpStepSharedWithTypeTracker(nodeFrom, nodeTo)
+  or
+  capturedJumpStep(nodeFrom, nodeTo)
+}
+
+predicate capturedJumpStep(Node nodeFrom, Node nodeTo) {
+  exists(SsaSourceVariable var, DefinitionNode def | var.hasDefiningNode(def) |
+    nodeTo.asVar().(ScopeEntryDefinition).getSourceVariable() = var and
+    nodeFrom.asCfgNode() = def.getValue() and
+    var.getScope().getScope*() = nodeFrom.getScope()
+  )
+}
 
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
 predicate levelStepCall(Node nodeFrom, Node nodeTo) { none() }

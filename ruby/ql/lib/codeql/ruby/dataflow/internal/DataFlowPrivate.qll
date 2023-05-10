@@ -96,7 +96,8 @@ module LocalFlow {
     exists(BasicBlock bb, int i |
       lastRefBeforeRedefExt(def, bb, i, next.getDefinitionExt()) and
       def = nodeFrom.getDefinitionExt() and
-      def.definesAt(_, bb, i, _)
+      def.definesAt(_, bb, i, _) and
+      nodeFrom != next
     )
   }
 
@@ -1279,7 +1280,7 @@ class DataFlowType extends TDataFlowType {
 DataFlowType getNodeType(NodeImpl n) { result = TTodoDataFlowType() and exists(n) }
 
 /** Gets a string representation of a `DataFlowType`. */
-string ppReprType(DataFlowType t) { result = t.toString() }
+string ppReprType(DataFlowType t) { none() }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
@@ -1377,18 +1378,28 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
   )
 }
 
-/** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
-predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+/**
+ * Holds if `call` is a from-source lambda call of kind `kind` where `receiver`
+ * is the lambda expression.
+ */
+predicate lambdaSourceCall(CfgNodes::ExprNodes::CallCfgNode call, LambdaCallKind kind, Node receiver) {
   kind = TYieldCallKind() and
-  receiver.(BlockParameterNode).getMethod() =
-    call.asCall().getExpr().(YieldCall).getEnclosingMethod()
+  receiver.(BlockParameterNode).getMethod() = call.getExpr().(YieldCall).getEnclosingMethod()
   or
   kind = TLambdaCallKind() and
-  call.asCall() =
+  call =
     any(CfgNodes::ExprNodes::MethodCallCfgNode mc |
       receiver.asExpr() = mc.getReceiver() and
       mc.getExpr().getMethodName() = "call"
     )
+}
+
+/**
+ * Holds if `call` is a (from-source or from-summary) lambda call of kind `kind`
+ * where `receiver` is the lambda expression.
+ */
+predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
+  lambdaSourceCall(call.asCall(), kind, receiver)
   or
   receiver = call.(SummaryCall).getReceiver() and
   if receiver.(ParameterNodeImpl).isParameterOf(_, any(ParameterPosition pos | pos.isBlock()))

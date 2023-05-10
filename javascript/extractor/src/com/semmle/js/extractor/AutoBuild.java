@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
@@ -1237,19 +1238,29 @@ protected DependencyInstallationResult preparePackagesAndDependencies(Set<Path> 
       List<ParseError> errors = loc == null ? Collections.emptyList() : loc.getParseErrors();
       for (ParseError err : errors) {
         String msg = "A parse error occurred: " + StringUtil.quoteWithBackticks(err.getMessage().trim())
-            + ". Check the syntax of the file. If the file is invalid, correct the error or [exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.";
-        // file, relative to the source root
-        DiagnosticLocation.Builder builder = DiagnosticLocation.builder();
+            + ".";
+
+        Optional<DiagnosticLocation> diagLoc = Optional.empty();
         if (file.startsWith(LGTM_SRC)) {
-          builder = builder.setFile(file.subpath(LGTM_SRC.getNameCount(), file.getNameCount()).toString());
-        }
-        DiagnosticLocation diagLoc = builder
+          diagLoc = DiagnosticLocation.builder()
+            .setFile(file.subpath(LGTM_SRC.getNameCount(), file.getNameCount()).toString()) // file, relative to the source root
             .setStartLine(err.getPosition().getLine())
             .setStartColumn(err.getPosition().getColumn() + 1) // convert from 0-based to 1-based
             .setEndLine(err.getPosition().getLine())
             .setEndColumn(err.getPosition().getColumn() + 1) // convert from 0-based to 1-based
-            .build();
-        writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR, diagLoc);
+            .build()
+            .getOk();
+    }
+    if (diagLoc.isPresent()) {
+      msg += " Check the syntax of the file. If the file is invalid, correct the error or "
+          + "[exclude](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-"
+          + "your-code-for-vulnerabilities-and-errors/customizing-code-scanning) the file from analysis.";
+      writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR, diagLoc.get());
+    } else {
+      msg += " The affected file is not located within the code being analyzed."
+          + (Env.systemEnv().isActions() ? " Please see the workflow run logs for more information." : "");
+      writeDiagnostics(msg, JSDiagnosticKind.PARSE_ERROR);
+    }
       }
       logEndProcess(start, "Done extracting " + file);
     } catch (OutOfMemoryError oom) {

@@ -18,7 +18,7 @@ import semmle.code.cpp.ir.dataflow.DataFlow
  * A call to `SSL_get_verify_result`.
  */
 class SslGetVerifyResultCall extends FunctionCall {
-  SslGetVerifyResultCall() { getTarget().getName() = "SSL_get_verify_result" }
+  SslGetVerifyResultCall() { this.getTarget().getName() = "SSL_get_verify_result" }
 }
 
 /**

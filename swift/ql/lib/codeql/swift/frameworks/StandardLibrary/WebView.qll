@@ -57,7 +57,7 @@ private class AdoptsWkNavigationDelegate extends Decl {
  */
 private class WKNavigationDelegateSource extends RemoteFlowSource {
   WKNavigationDelegateSource() {
-    exists(ParamDecl p, FuncDecl f, AdoptsWkNavigationDelegate t |
+    exists(ParamDecl p, Function f, AdoptsWkNavigationDelegate t |
       t.getAMember() = f and
       f.getName() =
         [
@@ -138,7 +138,6 @@ private class JsValueSummaries extends SummaryModelCsv {
         ";JSValue;true;toRange();;;Argument[-1];ReturnValue;taint",
         ";JSValue;true;toRect();;;Argument[-1];ReturnValue;taint",
         ";JSValue;true;toSize();;;Argument[-1];ReturnValue;taint",
-        // TODO: These models could use content flow to be more precise
         ";JSValue;true;atIndex(_:);;;Argument[-1];ReturnValue;taint",
         ";JSValue;true;defineProperty(_:descriptor:);;;Argument[1];Argument[-1];taint",
         ";JSValue;true;forProperty(_:);;;Argument[-1];ReturnValue;taint",
@@ -170,7 +169,7 @@ private class JsExportedType extends ClassOrStructDecl {
  */
 private class JsExportedSource extends RemoteFlowSource {
   JsExportedSource() {
-    exists(MethodDecl adopter, MethodDecl base |
+    exists(Method adopter, Method base |
       base.getEnclosingDecl() instanceof JsExportedProto and
       adopter.getEnclosingDecl() instanceof JsExportedType
     |
