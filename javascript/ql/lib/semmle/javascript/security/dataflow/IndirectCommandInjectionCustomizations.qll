@@ -58,7 +58,7 @@ module IndirectCommandInjection {
   }
 
   /** Gets a data flow node referring to `process.env`. */
-  DataFlow::SourceNode envObject() { result = envObject(DataFlow::TypeTracker::end()) }
+  private DataFlow::SourceNode envObject() { result = envObject(DataFlow::TypeTracker::end()) }
 
   /**
    * Gets the name of an environment variable that is assumed to be safe.
