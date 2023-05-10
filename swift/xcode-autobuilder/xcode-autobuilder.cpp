@@ -13,9 +13,17 @@ static const char* unitTest = "com.apple.product-type.bundle.unit-test";
 const std::string_view codeql::programName = "autobuilder";
 
 namespace codeql_diagnostics {
+constexpr codeql::SwiftDiagnosticsSource no_project_found{
+    "no_project_found", "No Xcode project or workspace detected", customizingBuildAction,
+    customizingBuildHelpLinks};
+
 constexpr codeql::SwiftDiagnosticsSource no_swift_target{
     "no_swift_target", "No Swift compilation target found", customizingBuildAction,
     customizingBuildHelpLinks};
+
+constexpr codeql::SwiftDiagnosticsSource spm_not_supported{
+    "spm_not_supported", "Swift Package Manager build unsupported by autobuild",
+    customizingBuildAction, customizingBuildHelpLinks};
 }  // namespace codeql_diagnostics
 
 static codeql::Logger& logger() {
@@ -29,7 +37,8 @@ struct CLIArgs {
 };
 
 static void autobuild(const CLIArgs& args) {
-  auto targets = collectTargets(args.workingDir);
+  auto collected = collectTargets(args.workingDir);
+  auto& targets = collected.targets;
   for (const auto& t : targets) {
     LOG_INFO("{}", t);
   }
@@ -43,14 +52,20 @@ static void autobuild(const CLIArgs& args) {
   // Sort targets by the amount of files in each
   std::sort(std::begin(targets), std::end(targets),
             [](Target& lhs, Target& rhs) { return lhs.fileCount > rhs.fileCount; });
-
-  if (targets.empty()) {
+  if ((!collected.xcodeEncountered || targets.empty()) && collected.swiftPackageEncountered) {
+    DIAGNOSE_ERROR(spm_not_supported,
+                   "No viable Swift Xcode target was found but a Swift package was detected. Swift "
+                   "Package Manager builds are not yet supported by the autobuilder");
+  } else if (!collected.xcodeEncountered) {
+    DIAGNOSE_ERROR(no_project_found, "No Xcode project or workspace was found");
+  } else if (targets.empty()) {
     DIAGNOSE_ERROR(no_swift_target, "All targets found within Xcode projects or workspaces either "
                                     "have no Swift sources or are tests");
-    exit(1);
+  } else {
+    LOG_INFO("Selected {}", targets.front());
+    buildTarget(targets.front(), args.dryRun);
+    return;
   }
-  LOG_INFO("Selected {}", targets.front());
-  buildTarget(targets.front(), args.dryRun);
 }
 
 static CLIArgs parseCLIArgs(int argc, char** argv) {
