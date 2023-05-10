@@ -268,7 +268,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
       string madLabel;
       Candidate::EndpointType endpointType;
 
-      KnownSinkCharacteristic() { Candidate::isKnownLabel(madLabel, this, endpointType) }
+      KnownSinkCharacteristic() { Candidate::isKnownKind(madLabel, this, endpointType) }
 
       override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isSink(e, madLabel) }
 
