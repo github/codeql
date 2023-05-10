@@ -1,22 +1,21 @@
 /**
  * A helper class to represent a string value that can be returned by a query using $@ notation.
  *
- * It extends `string`, but adds a mock `getURL` method that returns the string itself as a data URL.
+ * It extends `string`, but adds a mock `hasLocationInfo` method that returns the string itself as the file name.
  *
  * Use this, when you want to return a string value from a query using $@ notation — the string value
  * will be included in the sarif file.
  *
- * Note that the string should be URL-encoded, or the resulting URL will be invalid (this may be OK in your use case).
  *
- * Background information:
- *  - data URLs: https://developer.mozilla.org/en-US/docs/web/http/basics_of_http/data_urls
- *  - `getURL`:
- *      https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls
+ * Background information on `hasLocationInfo`:
+ * https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-location-information
  */
 class DollarAtString extends string {
   bindingset[this]
   DollarAtString() { any() }
 
   bindingset[this]
-  string getURL() { result = "data:text/plain," + this }
+  predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
+    path = this and sl = 1 and sc = 1 and el = 1 and ec = 1
+  }
 }
