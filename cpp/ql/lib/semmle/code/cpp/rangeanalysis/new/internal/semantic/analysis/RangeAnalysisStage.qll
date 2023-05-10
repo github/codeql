@@ -277,7 +277,7 @@ module RangeStage<
    */
   private class SafeCastExpr extends ConvertOrBoxExpr {
     SafeCastExpr() {
-      conversionCannotOverflow(getTrackedType(pragma[only_bind_into](getOperand())),
+      conversionCannotOverflow(getTrackedType(pragma[only_bind_into](this.getOperand())),
         pragma[only_bind_out](getTrackedType(this)))
     }
   }
