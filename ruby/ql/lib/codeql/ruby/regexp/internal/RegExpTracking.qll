@@ -108,6 +108,7 @@ private module Reach<ReachInputSig Input> {
     )
   }
 
+  /** Holds if `n` is forwards and backwards reachable with type tracker `t`. */
   pragma[nomagic]
   predicate reached(DataFlow::LocalSourceNode n, TypeTracker t) {
     n = forward(t) and
@@ -132,10 +133,11 @@ private module Reach<ReachInputSig Input> {
   }
 }
 
+/** Holds if `inputStr` is compiled to a regular expression that is returned at `call`. */
 pragma[nomagic]
-private predicate regFromString(DataFlow::LocalSourceNode n, DataFlow::CallNode call) {
+private predicate regFromString(DataFlow::LocalSourceNode inputStr, DataFlow::CallNode call) {
   exists(DataFlow::Node mid |
-    n.flowsTo(mid) and
+    inputStr.flowsTo(mid) and
     call = API::getTopLevelMember("Regexp").getAMethodCall(["compile", "new"]) and
     mid = call.getArgument(0)
   )
@@ -183,9 +185,10 @@ private DataFlow::LocalSourceNode trackStrings(DataFlow::Node start, TypeTracker
   exists(TypeTracker t2 | t = StringReach::stepReached(t2, trackStrings(start, t2), result))
 }
 
+/** Holds if `strConst` flows to a regex compilation (tracked by `t`), where the resulting regular expression is stored in `reg`. */
 pragma[nomagic]
-private predicate regFromStringStart(DataFlow::Node start, TypeTracker t, DataFlow::CallNode nodeTo) {
-  regFromString(trackStrings(start, t), nodeTo) and
+private predicate regFromStringStart(DataFlow::Node strConst, TypeTracker t, DataFlow::CallNode reg) {
+  regFromString(trackStrings(strConst, t), reg) and
   exists(t.continue())
 }
 
