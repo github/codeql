@@ -23,5 +23,20 @@ namespace LambdaTests {
                 StatusCode = 200
             };
         }
+
+        public void Logging(ILambdaContext context, string data)
+        {
+            // logging
+            context.Logger.Log($"Log Data :: {data}");
+            context.Logger.LogLine($"Log Data :: {data}");
+            context.Logger.Log("Information", $"Log Data :: {data}");
+            context.Logger.Log(LogLevel.Information, $"Log Data :: {data}");
+            context.Logger.LogTrace($"Log Data :: {data}");
+            context.Logger.LogDebug($"Log Data :: {data}");
+            context.Logger.LogInformation($"Log Data :: {data}");
+            context.Logger.LogWarning($"Log Data :: {data}");
+            context.Logger.LogError($"Log Data :: {data}");
+            context.Logger.LogCritical($"Log Data :: {data}");
+        }
     }
 }
