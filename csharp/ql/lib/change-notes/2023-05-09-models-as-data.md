@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* Additional support for `logging`, `ldap`, `command-injection`, and `url-redirect` sink kinds for Models as Data.
+* Additional support for `command-injection`, `ldap-injection`, `log-injection`, and `url-redirection` sink kinds for Models as Data.
