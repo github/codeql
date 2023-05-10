@@ -17,7 +17,7 @@ execution, but it might fail in some cases ¯\_(ツ)_/¯
 Code written to hack things together until they work, so don't expect much :D
 """
 
-
+import argparse
 import sys
 import re
 import tempfile
@@ -221,7 +221,7 @@ def get_log_content(status: GithubStatus) -> str:
     return content
 
 
-def main(pr_number: Optional[int], sha_override: Optional[str] = None):
+def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=False):
     if not pr_number and not sha_override:
         raise Exception("Must specify either a PR number or a SHA")
 
@@ -237,7 +237,7 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None):
         ["git", "rev-parse", "HEAD"]
     ).decode("utf-8").strip()
 
-    if local_sha != github_sha:
+    if local_sha != github_sha and not force:
         LOGGER.error(f"GitHub SHA ({github_sha}) different from your local SHA ({local_sha}), sync your changes first!")
         sys.exit(1)
     sha = github_sha
@@ -421,23 +421,6 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None):
         print("Expected output in semmle-code changed!")
 
 
-def call_main():
-    pr_number = None
-    override_sha = None
-    if len(sys.argv) < 2:
-        pr_number_response = subprocess.check_output([
-            "gh", "pr", "view", "--json", "number"
-        ]).decode("utf-8")
-
-        pr_number = json.loads(pr_number_response)["number"]
-    else:
-        if len(sys.argv[1]) > 10:
-            override_sha = sys.argv[1]
-        else:
-            pr_number = int(sys.argv[1])
-    main(pr_number, override_sha)
-
-
 if __name__ == "__main__":
 
     level = logging.INFO
@@ -448,6 +431,10 @@ if __name__ == "__main__":
     except ImportError:
         logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
 
+    # parse command line arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--force", action="store_true", help="Apply patches even if the local SHA is different from the GitHub PR SHA")
+    parser.add_argument("posarg", nargs="?", default=None)
 
     if DEBUG_LOG_FILE:
         patches = make_patches_from_log_file(open(DEBUG_LOG_FILE, "r").readlines())
@@ -459,4 +446,20 @@ if __name__ == "__main__":
         sys.exit(1)
 
     os.chdir(CODEQL_REPO_DIR)
-    call_main()
+
+    pr_number = None
+    override_sha = None
+    args = parser.parse_args()
+
+    if args.posarg is None:
+        pr_number_response = subprocess.check_output([
+            "gh", "pr", "view", "--json", "number"
+        ]).decode("utf-8")
+        pr_number = json.loads(pr_number_response)["number"]
+    else:
+        if len(args.posarg) > 10:
+            override_sha = args.posarg
+        else:
+            pr_number = int(args.posarg)
+
+    main(pr_number, override_sha, force=args.force)
