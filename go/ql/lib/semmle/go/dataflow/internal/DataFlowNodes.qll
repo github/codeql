@@ -598,6 +598,12 @@ module Public {
       )
     }
 
+    /**
+     * Gets an argument without an ellipsis after it which is passed to
+     * the varargs parameter of the target of this call (if there is one).
+     */
+    Node getAnImplicitVarargsArgument() { result = this.getImplicitVarargsArgument(_) }
+
     /** Gets a function passed as the `i`th argument of this call. */
     FunctionNode getCallback(int i) { result.getASuccessor*() = this.getArgument(i) }
 
@@ -772,7 +778,7 @@ module Public {
         (
           preupd instanceof ArgumentNode and not preupd instanceof ImplicitVarargsSlice
           or
-          preupd = any(CallNode c).getImplicitVarargsArgument(_)
+          preupd = any(CallNode c).getAnImplicitVarargsArgument()
         ) and
         mutableType(preupd.getType())
       ) and

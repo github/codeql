@@ -331,7 +331,7 @@ module StringOps {
         formatDirective = this.getComponent(n) and
         formatDirective.charAt(0) = "%" and
         formatDirective.charAt(1) != "%" and
-        result = this.getImplicitVarargsArgument((n / 2))
+        result = this.getImplicitVarargsArgument(n / 2)
       }
     }
   }

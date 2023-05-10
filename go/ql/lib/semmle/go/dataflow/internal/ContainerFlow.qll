@@ -23,7 +23,7 @@ predicate containerStoreStep(Node node1, Node node2, Content c) {
     (
       exists(Write w | w.writesElement(node2, _, node1))
       or
-      node1 = node2.(ImplicitVarargsSlice).getCallNode().getImplicitVarargsArgument(_)
+      node1 = node2.(ImplicitVarargsSlice).getCallNode().getAnImplicitVarargsArgument()
     )
   )
   or

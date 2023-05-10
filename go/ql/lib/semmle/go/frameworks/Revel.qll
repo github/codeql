@@ -124,7 +124,7 @@ module Revel {
         or
         methodName = "RenderText" and
         contentType = "text/plain" and
-        this = methodCall.getSyntacticArgument(_)
+        this = methodCall.getASyntacticArgument()
       )
     }
 

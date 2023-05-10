@@ -134,44 +134,43 @@ module NetHttp {
     result = call.getReceiver()
   }
 
-  private class ResponseBody extends Http::ResponseBody::Range, DataFlow::Node {
+  private class ResponseBody extends Http::ResponseBody::Range {
     DataFlow::Node responseWriter;
 
     ResponseBody() {
-      this = any(DataFlow::CallNode call).getASyntacticArgument() and
-      (
-        exists(DataFlow::CallNode call |
-          // A direct call to ResponseWriter.Write, conveying taint from the argument to the receiver
-          call.getTarget().(Method).implements("net/http", "ResponseWriter", "Write") and
-          this = call.getArgument(0) and
-          responseWriter = call.(DataFlow::MethodCallNode).getReceiver()
-        )
-        or
-        exists(TaintTracking::FunctionModel model |
-          // A modeled function conveying taint from some input to the response writer,
-          // e.g. `io.Copy(responseWriter, someTaintedReader)`
-          model.taintStep(this, responseWriter) and
-          responseWriter.getType().implements("net/http", "ResponseWriter")
-        )
-        or
-        exists(
-          SummarizedCallable callable, DataFlow::CallNode call, SummaryComponentStack input,
-          SummaryComponentStack output
-        |
-          callable = call.getACalleeIncludingExternals() and
-          callable.propagatesFlow(input, output, _)
-        |
-          // A modeled function conveying taint from some input to the response writer,
-          // e.g. `io.Copy(responseWriter, someTaintedReader)`
-          // NB. SummarizedCallables do not implement a direct call-site-crossing flow step; instead
-          // they are implemented by a function body with internal dataflow nodes, so we mimic the
-          // one-step style for the particular case of taint propagation direct from an argument or receiver
-          // to another argument, receiver or return value, matching the behavior for a `TaintTracking::FunctionModel`.
-          this = getSummaryInputOrOutputNode(call, input) and
-          responseWriter.(DataFlow::PostUpdateNode).getPreUpdateNode() =
-            getSummaryInputOrOutputNode(call, output) and
-          responseWriter.getType().implements("net/http", "ResponseWriter")
-        )
+      exists(DataFlow::CallNode call |
+        // A direct call to ResponseWriter.Write, conveying taint from the argument to the receiver
+        call.getTarget().(Method).implements("net/http", "ResponseWriter", "Write") and
+        this = call.getArgument(0) and
+        responseWriter = call.(DataFlow::MethodCallNode).getReceiver()
+      )
+      or
+      exists(TaintTracking::FunctionModel model |
+        // A modeled function conveying taint from some input to the response writer,
+        // e.g. `io.Copy(responseWriter, someTaintedReader)`
+        this = model.getACall().getASyntacticArgument() and
+        model.taintStep(this, responseWriter) and
+        responseWriter.getType().implements("net/http", "ResponseWriter")
+      )
+      or
+      exists(
+        SummarizedCallable callable, DataFlow::CallNode call, SummaryComponentStack input,
+        SummaryComponentStack output
+      |
+        this = call.getASyntacticArgument() and
+        callable = call.getACalleeIncludingExternals() and
+        callable.propagatesFlow(input, output, _)
+      |
+        // A modeled function conveying taint from some input to the response writer,
+        // e.g. `io.Copy(responseWriter, someTaintedReader)`
+        // NB. SummarizedCallables do not implement a direct call-site-crossing flow step; instead
+        // they are implemented by a function body with internal dataflow nodes, so we mimic the
+        // one-step style for the particular case of taint propagation direct from an argument or receiver
+        // to another argument, receiver or return value, matching the behavior for a `TaintTracking::FunctionModel`.
+        this = getSummaryInputOrOutputNode(call, input) and
+        responseWriter.(DataFlow::PostUpdateNode).getPreUpdateNode() =
+          getSummaryInputOrOutputNode(call, output) and
+        responseWriter.getType().implements("net/http", "ResponseWriter")
       )
     }
 

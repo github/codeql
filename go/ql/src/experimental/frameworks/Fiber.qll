@@ -270,7 +270,7 @@ private module Fiber {
           or
           // signature: func (*Ctx) Send(bodies ...interface{})
           methodName = "Send" and
-          bodyNode = bodySetterCall.getSyntacticArgument(_)
+          bodyNode = bodySetterCall.getASyntacticArgument()
           or
           // signature: func (*Ctx) SendBytes(body []byte)
           methodName = "SendBytes" and
@@ -286,7 +286,7 @@ private module Fiber {
           or
           // signature: func (*Ctx) Write(bodies ...interface{})
           methodName = "Write" and
-          bodyNode = bodySetterCall.getSyntacticArgument(_)
+          bodyNode = bodySetterCall.getASyntacticArgument()
         )
       )
     )
