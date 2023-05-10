@@ -81,8 +81,7 @@ predicate isInvalidPointerDerefSink2(DataFlow::Node sink, Instruction i, string 
 predicate pointerArithOverflow0(
   PointerArithmeticInstruction pai, Variable v, int size, int bound, int delta
 ) {
-  pai.getElementSize() = v.getUnspecifiedType().(ArrayType).getBaseType().getSize() and
-  v.getUnspecifiedType().(ArrayType).getArraySize() = size and
+  v.getUnspecifiedType().(ArrayType).getByteSize() / pai.getElementSize() = size and
   semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), bound, true, _) and
   delta = bound - size and
   delta >= 0 and
@@ -162,7 +161,7 @@ from
   Variable v, ArrayAddressToDerefFlow::PathNode source, PointerArithmeticInstruction pai,
   ArrayAddressToDerefFlow::PathNode sink, Instruction deref, string operation, int delta
 where
-ArrayAddressToDerefFlow::flowPath(source, sink) and
+  ArrayAddressToDerefFlow::flowPath(source, sink) and
   isInvalidPointerDerefSink2(sink.getNode(), deref, operation) and
   source.getState() = ArrayAddressToDerefConfig::TArray(v) and
   sink.getState() = ArrayAddressToDerefConfig::TOverflowArithmetic(pai) and

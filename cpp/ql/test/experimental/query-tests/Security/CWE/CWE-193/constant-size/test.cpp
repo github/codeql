@@ -85,7 +85,7 @@ void testCharIndex(BigArray *arr) {
     char *charBuf = (char*) arr->buf;
 
     charBuf[MAX_SIZE_BYTES - 1] = 0; // GOOD
-    charBuf[MAX_SIZE_BYTES] = 0; // BAD [FALSE NEGATIVE]
+    charBuf[MAX_SIZE_BYTES] = 0; // BAD
 }
 
 void testEqRefinement() {

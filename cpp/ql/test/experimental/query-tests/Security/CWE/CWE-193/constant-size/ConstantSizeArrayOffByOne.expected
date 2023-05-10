@@ -11,6 +11,7 @@ edges
 | test.cpp:77:32:77:34 | buf | test.cpp:77:26:77:44 | & ... |
 | test.cpp:79:27:79:34 | buf | test.cpp:70:33:70:33 | p |
 | test.cpp:79:32:79:34 | buf | test.cpp:79:27:79:34 | buf |
+| test.cpp:85:34:85:36 | buf | test.cpp:88:5:88:27 | access to array |
 | test.cpp:128:9:128:11 | arr | test.cpp:128:9:128:14 | access to array |
 nodes
 | test.cpp:35:5:35:22 | access to array | semmle.label | access to array |
@@ -34,6 +35,8 @@ nodes
 | test.cpp:77:32:77:34 | buf | semmle.label | buf |
 | test.cpp:79:27:79:34 | buf | semmle.label | buf |
 | test.cpp:79:32:79:34 | buf | semmle.label | buf |
+| test.cpp:85:34:85:36 | buf | semmle.label | buf |
+| test.cpp:88:5:88:27 | access to array | semmle.label | access to array |
 | test.cpp:128:9:128:11 | arr | semmle.label | arr |
 | test.cpp:128:9:128:14 | access to array | semmle.label | access to array |
 subpaths
@@ -47,4 +50,5 @@ subpaths
 | test.cpp:61:9:61:19 | PointerAdd: access to array | test.cpp:61:14:61:16 | buf | test.cpp:61:9:61:19 | access to array | This pointer arithmetic may have an off-by-2 error allowing it to overrun $@ at this $@. | test.cpp:19:9:19:11 | buf | buf | test.cpp:61:9:61:23 | Store: ... = ... | write |
 | test.cpp:72:5:72:15 | PointerAdd: access to array | test.cpp:79:32:79:34 | buf | test.cpp:72:5:72:15 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:72:5:72:19 | Store: ... = ... | write |
 | test.cpp:77:27:77:44 | PointerAdd: access to array | test.cpp:77:32:77:34 | buf | test.cpp:66:32:66:32 | p | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:67:5:67:10 | Store: ... = ... | write |
+| test.cpp:88:5:88:27 | PointerAdd: access to array | test.cpp:85:34:85:36 | buf | test.cpp:88:5:88:27 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:88:5:88:31 | Store: ... = ... | write |
 | test.cpp:128:9:128:14 | PointerAdd: access to array | test.cpp:128:9:128:11 | arr | test.cpp:128:9:128:14 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:125:11:125:13 | arr | arr | test.cpp:128:9:128:18 | Store: ... = ... | write |
