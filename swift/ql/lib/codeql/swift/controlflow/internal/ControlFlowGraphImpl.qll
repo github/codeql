@@ -767,8 +767,7 @@ module Stmts {
       astLast(ast.getACatch().getBody(), last, c)
       or
       // We failed to match on any of the clauses.
-      // TODO: This can actually only happen if the enclosing function is marked with 'throws'.
-      //       So we could make this more precise.
+      ast.getEnclosingFunction().isThrowing() and
       astLast(ast.getLastCatch(), last, c) and
       c = any(MatchingCompletion mc | not mc.isMatch())
     }
