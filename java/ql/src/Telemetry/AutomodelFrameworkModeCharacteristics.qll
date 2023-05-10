@@ -79,30 +79,23 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   }
 
   predicate isSink(Endpoint e, string kind) {
-    exists(
-      string package, string type, boolean subtypes, string name, string signature, string ext,
-      string input
-    |
-      sinkSpec(e, package, type, subtypes, name, signature, ext, input) and
-      ExternalFlow::sinkModel(package, type, subtypes, name, [signature, ""], ext, input, kind, _)
+    exists(string package, string type, string name, string signature, string ext, string input |
+      sinkSpec(e, package, type, name, signature, ext, input) and
+      ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, _)
     )
   }
 
   predicate isNeutral(Endpoint e) {
     exists(string package, string type, string name, string signature |
-      sinkSpec(e, package, type, _, name, signature, _, _) and
+      sinkSpec(e, package, type, name, signature, _, _) and
       ExternalFlow::neutralModel(package, type, name, [signature, ""], _)
     )
   }
 
   additional predicate sinkSpec(
-    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
-    string ext, string input
+    Endpoint e, string package, string type, string name, string signature, string ext, string input
   ) {
-    package = FrameworkCandidatesImpl::getCallable(e).getDeclaringType().getPackage().toString() and
-    type = FrameworkCandidatesImpl::getCallable(e).getDeclaringType().getName() and
-    subtypes = false and
-    name = FrameworkCandidatesImpl::getCallable(e).getName() and
+    FrameworkCandidatesImpl::getCallable(e).hasQualifiedName(package, type, name) and
     signature = ExternalFlow::paramsString(getCallable(e)) and
     ext = "" and
     exists(int paramIdx | e.isParameterOf(_, paramIdx) | input = "Argument[" + paramIdx + "]")
