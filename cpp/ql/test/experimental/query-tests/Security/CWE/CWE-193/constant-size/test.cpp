@@ -120,3 +120,11 @@ void testEqRefinement2() {
         }
     }
 }
+
+void testStackAllocated() {
+    char *arr[MAX_SIZE];
+
+    for(int i = 0; i <= MAX_SIZE; i++) {
+        arr[i] = 0; // BAD
+    }
+}

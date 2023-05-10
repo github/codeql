@@ -14,7 +14,7 @@ import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysi
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.DataFlow
-import FieldAddressToDerefFlow::PathGraph
+import ArrayAddressToDerefFlow::PathGraph
 
 pragma[nomagic]
 Instruction getABoundIn(SemBound b, IRFunction func) {
@@ -79,10 +79,10 @@ predicate isInvalidPointerDerefSink2(DataFlow::Node sink, Instruction i, string 
 }
 
 predicate pointerArithOverflow0(
-  PointerArithmeticInstruction pai, Field f, int size, int bound, int delta
+  PointerArithmeticInstruction pai, Variable v, int size, int bound, int delta
 ) {
-  pai.getElementSize() = f.getUnspecifiedType().(ArrayType).getBaseType().getSize() and
-  f.getUnspecifiedType().(ArrayType).getArraySize() = size and
+  pai.getElementSize() = v.getUnspecifiedType().(ArrayType).getBaseType().getSize() and
+  v.getUnspecifiedType().(ArrayType).getArraySize() = size and
   semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), bound, true, _) and
   delta = bound - size and
   delta >= 0 and
@@ -105,23 +105,28 @@ module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
 module PointerArithmeticToDerefFlow = DataFlow::Global<PointerArithmeticToDerefConfig>;
 
 predicate pointerArithOverflow(
-  PointerArithmeticInstruction pai, Field f, int size, int bound, int delta
+  PointerArithmeticInstruction pai, Variable v, int size, int bound, int delta
 ) {
-  pointerArithOverflow0(pai, f, size, bound, delta) and
+  pointerArithOverflow0(pai, v, size, bound, delta) and
   PointerArithmeticToDerefFlow::flow(DataFlow::instructionNode(pai), _)
 }
 
-module FieldAddressToDerefConfig implements DataFlow::StateConfigSig {
+module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
   newtype FlowState =
-    additional TArray(Field f) { pointerArithOverflow(_, f, _, _, _) } or
+    additional TArray(Variable v) { pointerArithOverflow(_, v, _, _, _) } or
     additional TOverflowArithmetic(PointerArithmeticInstruction pai) {
       pointerArithOverflow(pai, _, _, _, _)
     }
 
   predicate isSource(DataFlow::Node source, FlowState state) {
-    exists(Field f |
-      source.asInstruction().(FieldAddressInstruction).getField() = f and
-      state = TArray(f)
+    exists(Variable v |
+      (
+        source.asInstruction().(FieldAddressInstruction).getField() = v
+        or
+        source.asInstruction().(VariableAddressInstruction).getAstVariable() = v
+      ) and
+      exists(v.getUnspecifiedType().(ArrayType).getArraySize()) and
+      state = TArray(v)
     )
   }
 
@@ -141,27 +146,27 @@ module FieldAddressToDerefConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    exists(PointerArithmeticInstruction pai, Field f |
-      state1 = TArray(f) and
+    exists(PointerArithmeticInstruction pai, Variable v, int size, int delta |
+      state1 = TArray(v) and
       state2 = TOverflowArithmetic(pai) and
       pai.getLeft() = node1.asInstruction() and
       node2.asInstruction() = pai and
-      pointerArithOverflow(pai, f, _, _, _)
+      pointerArithOverflow(pai, v, size, _, delta)
     )
   }
 }
 
-module FieldAddressToDerefFlow = DataFlow::GlobalWithState<FieldAddressToDerefConfig>;
+module ArrayAddressToDerefFlow = DataFlow::GlobalWithState<ArrayAddressToDerefConfig>;
 
 from
-  Field f, FieldAddressToDerefFlow::PathNode source, PointerArithmeticInstruction pai,
-  FieldAddressToDerefFlow::PathNode sink, Instruction deref, string operation, int delta
+  Variable v, ArrayAddressToDerefFlow::PathNode source, PointerArithmeticInstruction pai,
+  ArrayAddressToDerefFlow::PathNode sink, Instruction deref, string operation, int delta
 where
-  FieldAddressToDerefFlow::flowPath(source, sink) and
+ArrayAddressToDerefFlow::flowPath(source, sink) and
   isInvalidPointerDerefSink2(sink.getNode(), deref, operation) and
-  source.getState() = FieldAddressToDerefConfig::TArray(f) and
-  sink.getState() = FieldAddressToDerefConfig::TOverflowArithmetic(pai) and
-  pointerArithOverflow(pai, f, _, _, delta)
+  source.getState() = ArrayAddressToDerefConfig::TArray(v) and
+  sink.getState() = ArrayAddressToDerefConfig::TOverflowArithmetic(pai) and
+  pointerArithOverflow(pai, v, _, _, delta)
 select pai, source, sink,
   "This pointer arithmetic may have an off-by-" + (delta + 1) +
-    " error allowing it to overrun $@ at this $@.", f, f.getName(), deref, operation
+    " error allowing it to overrun $@ at this $@.", v, v.getName(), deref, operation
