@@ -1540,7 +1540,7 @@ private module Cached {
   cached
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     // Post update node -> Node flow
-    Ssa::ssaFlow(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+    Ssa::postUpdateFlow(nodeFrom, nodeTo)
     or
     // Def-use/Use-use flow
     Ssa::ssaFlow(nodeFrom, nodeTo)
