@@ -773,15 +773,60 @@ func getVersionWhenGoModVersionNotFound(v versionInfo) (msg, version string) {
 }
 
 // Assuming `v.goModVersion` is above the supported range, emit a diagnostic and return the
-// empty string to indicate that we should not attempt to install a version of Go.
+// version to install, or the empty string if we should not attempt to install a version of Go.
 func getVersionWhenGoModVersionTooHigh(v versionInfo) (msg, version string) {
-	// The project is intended to be built with a version of Go that is above the supported
-	// range. We do not install a version of Go.
-	msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
-		") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
-		"). Not requesting any version of Go."
-	version = ""
-	diagnostics.EmitGoModVersionTooHigh(msg)
+	if !v.goEnvVersionFound {
+		// The version in the `go.mod` file is above the supported range. There is no Go version
+		// installed. We install the maximum supported version as a best effort.
+		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
+			") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
+			"). No version of Go installed. Requesting the maximum supported version of Go (" +
+			maxGoVersion + ")."
+		version = maxGoVersion
+		diagnostics.EmitGoModVersionTooHighAndNoGoEnv(msg)
+	} else if aboveSupportedRange(v.goEnvVersion) {
+		// The version in the `go.mod` file is above the supported range. The version of Go that
+		// is installed is above the supported range. We do not install a version of Go.
+		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
+			") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
+			"). The version of Go installed in the environment (" + v.goEnvVersion +
+			") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
+			"). Not requesting any version of Go."
+		version = ""
+		diagnostics.EmitGoModVersionTooHighAndEnvVersionTooHigh(msg)
+	} else if belowSupportedRange(v.goEnvVersion) {
+		// The version in the `go.mod` file is above the supported range. The version of Go that
+		// is installed is below the supported range. We install the maximum supported version as
+		// a best effort.
+		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
+			") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
+			"). The version of Go installed in the environment (" + v.goEnvVersion +
+			") is below the supported range (" + minGoVersion + "-" + maxGoVersion +
+			"). Requesting the maximum supported version of Go (" + maxGoVersion + ")."
+		version = maxGoVersion
+		diagnostics.EmitGoModVersionTooHighAndEnvVersionTooLow(msg)
+	} else if semver.Compare("v"+maxGoVersion, "v"+v.goEnvVersion) > 0 {
+		// The version in the `go.mod` file is above the supported range. The version of Go that
+		// is installed is supported and below the maximum supported version. We install the
+		// maximum supported version as a best effort.
+		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
+			") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
+			"). The version of Go installed in the environment (" + v.goEnvVersion +
+			") is below the maximum supported version (" + maxGoVersion +
+			"). Requesting the maximum supported version of Go (" + maxGoVersion + ")."
+		version = maxGoVersion
+		diagnostics.EmitGoModVersionTooHighAndEnvVersionBelowMax(msg)
+	} else {
+		// The version in the `go.mod` file is above the supported range. The version of Go that
+		// is installed is the maximum supported version. We do not install a version of Go.
+		msg = "The version of Go found in the `go.mod` file (" + v.goModVersion +
+			") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
+			"). The version of Go installed in the environment (" + v.goEnvVersion +
+			") is the maximum supported version (" + maxGoVersion +
+			"). Not requesting any version of Go."
+		version = ""
+		diagnostics.EmitGoModVersionTooHighAndEnvVersionMax(msg)
+	}
 
 	return msg, version
 }
