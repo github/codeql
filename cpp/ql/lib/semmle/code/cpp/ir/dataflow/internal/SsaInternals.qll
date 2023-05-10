@@ -1012,6 +1012,14 @@ class PhiNode extends SsaImpl::DefinitionExt {
     this instanceof SsaImpl::PhiNode or
     this instanceof SsaImpl::PhiReadNode
   }
+
+  /**
+   * Holds if this phi node is a phi-read node.
+   *
+   * Phi-read nodes are like normal phi nodes, but they are inserted based
+   * on reads instead of writes.
+   */
+  predicate isPhiRead() { this instanceof SsaImpl::PhiReadNode }
 }
 
 class DefinitionExt = SsaImpl::DefinitionExt;
