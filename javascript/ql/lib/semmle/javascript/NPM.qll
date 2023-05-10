@@ -23,13 +23,6 @@ class PackageJson extends JsonObject {
       currentDir = this.getJsonFile().getParentContainer() and
       parentDir = parentPkg.getJsonFile().getParentContainer() and
       parentPkgName = parentPkg.getPropStringValue("name") and
-      (
-        parentDir.getParentContainer().getBaseName() = "node_modules"
-        or
-        // Scoped package is located in node_modules/@scope/pkgname
-        parentDir.getParentContainer().getParentContainer().getBaseName() = "node_modules" and
-        exists(parentPkgName.indexOf("/"))
-      ) and
       parentDir.getAChildContainer+() = currentDir and
       result =
         parentPkgName + currentDir.getAbsolutePath().suffix(parentDir.getAbsolutePath().length())
