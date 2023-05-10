@@ -23,16 +23,16 @@ module Generated {
     /**
      * Gets the `index`th member of this protocol composition type (0-based).
      */
-    final Type getMember(int index) { result = getImmediateMember(index).resolve() }
+    final Type getMember(int index) { result = this.getImmediateMember(index).resolve() }
 
     /**
      * Gets any of the members of this protocol composition type.
      */
-    final Type getAMember() { result = getMember(_) }
+    final Type getAMember() { result = this.getMember(_) }
 
     /**
      * Gets the number of members of this protocol composition type.
      */
-    final int getNumberOfMembers() { result = count(int i | exists(getMember(i))) }
+    final int getNumberOfMembers() { result = count(int i | exists(this.getMember(i))) }
   }
 }

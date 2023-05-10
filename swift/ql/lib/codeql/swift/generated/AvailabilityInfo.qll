@@ -46,16 +46,16 @@ module Generated {
     /**
      * Gets the `index`th spec of this availability info (0-based).
      */
-    final AvailabilitySpec getSpec(int index) { result = getImmediateSpec(index).resolve() }
+    final AvailabilitySpec getSpec(int index) { result = this.getImmediateSpec(index).resolve() }
 
     /**
      * Gets any of the specs of this availability info.
      */
-    final AvailabilitySpec getASpec() { result = getSpec(_) }
+    final AvailabilitySpec getASpec() { result = this.getSpec(_) }
 
     /**
      * Gets the number of specs of this availability info.
      */
-    final int getNumberOfSpecs() { result = count(int i | exists(getSpec(i))) }
+    final int getNumberOfSpecs() { result = count(int i | exists(this.getSpec(i))) }
   }
 }

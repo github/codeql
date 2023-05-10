@@ -26,12 +26,12 @@ module Generated {
     /**
      * Gets the boolean of this condition element, if it exists.
      */
-    final Expr getBoolean() { result = getImmediateBoolean().resolve() }
+    final Expr getBoolean() { result = this.getImmediateBoolean().resolve() }
 
     /**
      * Holds if `getBoolean()` exists.
      */
-    final predicate hasBoolean() { exists(getBoolean()) }
+    final predicate hasBoolean() { exists(this.getBoolean()) }
 
     /**
      * Gets the pattern of this condition element, if it exists.
@@ -49,12 +49,12 @@ module Generated {
     /**
      * Gets the pattern of this condition element, if it exists.
      */
-    final Pattern getPattern() { result = getImmediatePattern().resolve() }
+    final Pattern getPattern() { result = this.getImmediatePattern().resolve() }
 
     /**
      * Holds if `getPattern()` exists.
      */
-    final predicate hasPattern() { exists(getPattern()) }
+    final predicate hasPattern() { exists(this.getPattern()) }
 
     /**
      * Gets the initializer of this condition element, if it exists.
@@ -72,12 +72,12 @@ module Generated {
     /**
      * Gets the initializer of this condition element, if it exists.
      */
-    final Expr getInitializer() { result = getImmediateInitializer().resolve() }
+    final Expr getInitializer() { result = this.getImmediateInitializer().resolve() }
 
     /**
      * Holds if `getInitializer()` exists.
      */
-    final predicate hasInitializer() { exists(getInitializer()) }
+    final predicate hasInitializer() { exists(this.getInitializer()) }
 
     /**
      * Gets the availability of this condition element, if it exists.
@@ -95,11 +95,11 @@ module Generated {
     /**
      * Gets the availability of this condition element, if it exists.
      */
-    final AvailabilityInfo getAvailability() { result = getImmediateAvailability().resolve() }
+    final AvailabilityInfo getAvailability() { result = this.getImmediateAvailability().resolve() }
 
     /**
      * Holds if `getAvailability()` exists.
      */
-    final predicate hasAvailability() { exists(getAvailability()) }
+    final predicate hasAvailability() { exists(this.getAvailability()) }
   }
 }

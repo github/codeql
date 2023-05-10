@@ -24,6 +24,6 @@ module Generated {
     /**
      * Gets the initializer of this other initializer reference expression.
      */
-    final Initializer getInitializer() { result = getImmediateInitializer().resolve() }
+    final Initializer getInitializer() { result = this.getImmediateInitializer().resolve() }
   }
 }

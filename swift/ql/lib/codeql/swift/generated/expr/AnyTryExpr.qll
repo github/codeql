@@ -19,6 +19,6 @@ module Generated {
     /**
      * Gets the sub expression of this any try expression.
      */
-    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
   }
 }

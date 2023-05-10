@@ -20,7 +20,7 @@ module Generated {
     /**
      * Gets the base of this lookup expression.
      */
-    final Expr getBase() { result = getImmediateBase().resolve() }
+    final Expr getBase() { result = this.getImmediateBase().resolve() }
 
     /**
      * Gets the member of this lookup expression, if it exists.
@@ -36,11 +36,11 @@ module Generated {
     /**
      * Gets the member of this lookup expression, if it exists.
      */
-    final Decl getMember() { result = getImmediateMember().resolve() }
+    final Decl getMember() { result = this.getImmediateMember().resolve() }
 
     /**
      * Holds if `getMember()` exists.
      */
-    final predicate hasMember() { exists(getMember()) }
+    final predicate hasMember() { exists(this.getMember()) }
   }
 }

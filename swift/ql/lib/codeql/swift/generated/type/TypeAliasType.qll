@@ -24,6 +24,6 @@ module Generated {
     /**
      * Gets the declaration of this type alias type.
      */
-    final TypeAliasDecl getDecl() { result = getImmediateDecl().resolve() }
+    final TypeAliasDecl getDecl() { result = this.getImmediateDecl().resolve() }
   }
 }

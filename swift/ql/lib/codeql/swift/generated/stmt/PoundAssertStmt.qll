@@ -24,7 +24,7 @@ module Generated {
     /**
      * Gets the condition of this pound assert statement.
      */
-    final Expr getCondition() { result = getImmediateCondition().resolve() }
+    final Expr getCondition() { result = this.getImmediateCondition().resolve() }
 
     /**
      * Gets the message of this pound assert statement.

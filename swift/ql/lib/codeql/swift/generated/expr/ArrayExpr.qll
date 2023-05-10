@@ -24,16 +24,16 @@ module Generated {
     /**
      * Gets the `index`th element of this array expression (0-based).
      */
-    final Expr getElement(int index) { result = getImmediateElement(index).resolve() }
+    final Expr getElement(int index) { result = this.getImmediateElement(index).resolve() }
 
     /**
      * Gets any of the elements of this array expression.
      */
-    final Expr getAnElement() { result = getElement(_) }
+    final Expr getAnElement() { result = this.getElement(_) }
 
     /**
      * Gets the number of elements of this array expression.
      */
-    final int getNumberOfElements() { result = count(int i | exists(getElement(i))) }
+    final int getNumberOfElements() { result = count(int i | exists(this.getElement(i))) }
   }
 }
