@@ -47,7 +47,7 @@ VariableAccess getAVariableAccess(Expr e) { e.getAChild*() = result }
  * Holds if `(n, state)` pair represents the source of flow for the size
  * expression associated with `alloc`.
  */
-predicate hasSize(AllocationExpr alloc, DataFlow::Node n, int state) {
+predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
   exists(VariableAccess va, Expr size, int delta |
     size = alloc.getSizeExpr() and
     // Get the unique variable in a size expression like `x` in `malloc(x + 1)`.
