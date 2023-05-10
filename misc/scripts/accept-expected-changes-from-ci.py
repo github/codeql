@@ -66,7 +66,7 @@ if SEMMLE_CODE_DIR is None:
 
 @dataclass(frozen=True, eq=True, order=True)
 class Patch:
-    filename: str
+    filename: Path
     dir: Optional[str]
     patch_first_line: str
     patch: List[str] = field(hash=False)
@@ -409,6 +409,13 @@ def main(pr_number: Optional[int], sha_override: Optional[str] = None, force=Fal
                     continue
 
                 subprocess.check_call(["git", "apply", temp.name], cwd=patch.dir)
+
+                if "CONSISTENCY" in patch.filename.parts:
+                    # delete if empty
+                    if os.path.getsize(patch.filename) == 1 and patch.filename.read_text() == "\n":
+                        os.remove(patch.filename)
+                        LOGGER.info(f"Deleted empty CONSISTENCY file '{patch.filename}'")
+
                 if patch.dir == SEMMLE_CODE_DIR:
                     semmle_code_changed = True
             except subprocess.CalledProcessError:
