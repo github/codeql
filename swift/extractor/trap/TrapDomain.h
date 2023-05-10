@@ -2,6 +2,7 @@
 
 #include <memory>
 #include <sstream>
+#include "absl/strings/str_cat.h"
 
 #include "swift/extractor/trap/TrapLabel.h"
 #include "swift/extractor/infra/file/TargetFile.h"
@@ -27,7 +28,7 @@ class TrapDomain {
       e.forEachLabel([&e, this](const char* field, int index, auto& label) {
         if (!label.valid()) {
           LOG_ERROR("{} has undefined field {}{}", e.NAME, field,
-                    index >= 0 ? ('[' + std::to_string(index) + ']') : "");
+                    index >= 0 ? absl::StrCat("[", index, "]") : "");
         }
       });
     }
