@@ -35,7 +35,7 @@ where
       not CharacteristicsImpl::isKnownSink(endpoint, sinkType) and
       CharacteristicsImpl::isSinkCandidate(endpoint, sinkType)
     |
-      sinkType + ", "
+      sinkType, ", "
     )
 select endpoint,
   message + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
