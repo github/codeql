@@ -31,6 +31,10 @@ abstract class MetadataExtractor extends string {
   );
 }
 
+newtype JavaRelatedLocationType =
+  MethodDoc() or
+  ClassDoc()
+
 // for documentation of the implementations here, see the QLDoc in the CandidateSig signature module.
 module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   class Endpoint = DataFlow::ParameterNode;
@@ -40,6 +44,8 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   class NegativeEndpointType = AutomodelEndpointTypes::NegativeSinkType;
 
   class RelatedLocation = Location::Top;
+
+  class RelatedLocationType = JavaRelatedLocationType;
 
   // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
   predicate isSanitizer(Endpoint e, EndpointType t) { none() }
@@ -107,11 +113,11 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
    *
    * Related locations can be JavaDoc comments of the class or the method.
    */
-  RelatedLocation getRelatedLocation(Endpoint e, string name) {
-    name = "Callable-JavaDoc" and
+  RelatedLocation getRelatedLocation(Endpoint e, RelatedLocationType type) {
+    type = MethodDoc() and
     result = FrameworkCandidatesImpl::getCallable(e).(Documentable).getJavadoc()
     or
-    name = "Class-JavaDoc" and
+    type = ClassDoc() and
     result = FrameworkCandidatesImpl::getCallable(e).getDeclaringType().(Documentable).getJavadoc()
   }
 

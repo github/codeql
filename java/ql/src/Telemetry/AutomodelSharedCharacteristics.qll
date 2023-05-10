@@ -24,6 +24,13 @@ signature module CandidateSig {
   class RelatedLocation;
 
   /**
+   * A label for a related location.
+   *
+   * Eg., method-doc, class-doc, etc.
+   */
+  class RelatedLocationType;
+
+  /**
    * A class kind for an endpoint.
    */
   class EndpointType extends string;
@@ -68,7 +75,7 @@ signature module CandidateSig {
    *
    * For example, a related location for a method call may be the documentation comment of a method.
    */
-  RelatedLocation getRelatedLocation(Endpoint e, string name);
+  RelatedLocation getRelatedLocation(Endpoint e, RelatedLocationType name);
 }
 
 /**
@@ -111,10 +118,11 @@ module SharedCharacteristics<CandidateSig Candidate> {
    * Gets the related location of `e` with name `name`, if it exists.
    * Otherwise, gets the candidate itself.
    */
-  bindingset[name]
-  Candidate::RelatedLocation getRelatedLocationOrCandidate(Candidate::Endpoint e, string name) {
-    if exists(Candidate::getRelatedLocation(e, name))
-    then result = Candidate::getRelatedLocation(e, name)
+  Candidate::RelatedLocation getRelatedLocationOrCandidate(
+    Candidate::Endpoint e, Candidate::RelatedLocationType type
+  ) {
+    if exists(Candidate::getRelatedLocation(e, type))
+    then result = Candidate::getRelatedLocation(e, type)
     else result = Candidate::asLocation(e)
   }
 
