@@ -56,8 +56,8 @@ You should use the following template:
      */
 
     import <language>
-    // For some languages (Java/C++/Python) you need to explicitly import the data flow library, such as
-    // import semmle.code.java.dataflow.DataFlow
+    // For some languages (Java/C++/Python/Swift) you need to explicitly import the data flow library, such as
+    // import semmle.code.java.dataflow.DataFlow or import codeql.swift.dataflow.DataFlow
     import DataFlow::PathGraph
     ...
 
