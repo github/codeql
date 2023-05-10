@@ -55,6 +55,12 @@ signature module CandidateSig {
    */
   predicate isNeutral(Endpoint e);
 
+  /**
+   * A related location is a source code location that may hold extra information about an endpoint that can be useful
+   * to the machine learning model.
+   *
+   * For example, a related location for a method call may be the documentation comment of a method.
+   */
   RelatedLocation getRelatedLocation(Endpoint e, string name);
 }
 
@@ -95,8 +101,8 @@ module SharedCharacteristics<CandidateSig Candidate> {
   }
 
   /**
-   * If it exists, gets a related location for a given endpoint or candidate.
-   * If it doesn't exist, returns the candidate itself as a 'null' value.
+   * Gets the related location of `e` with name `name`, if it exists.
+   * Otherwise, gets the candidate itself.
    */
   bindingset[name]
   Candidate::RelatedLocation getRelatedLocationOrCandidate(Candidate::Endpoint e, string name) {
@@ -115,8 +121,8 @@ module SharedCharacteristics<CandidateSig Candidate> {
     // An endpoint is a sink candidate if none of its characteristics give much indication whether or not it is a sink.
     not sinkType instanceof Candidate::NegativeEndpointType and
     result.appliesToEndpoint(candidateSink) and
-    // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
     (
+      // Exclude endpoints that have a characteristic that implies they're not sinks for _any_ sink type.
       exists(float confidence |
         confidence >= mediumConfidence() and
         result.hasImplications(any(Candidate::NegativeEndpointType t), true, confidence)
@@ -144,8 +150,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
     EndpointCharacteristic() { any() }
 
     /**
-     * Holds for parameters that have this characteristic. This predicate contains the logic that applies characteristics
-     * to the appropriate set of dataflow parameters.
+     * Holds for endpoints that have this characteristic.
      */
     abstract predicate appliesToEndpoint(Candidate::Endpoint n);
 

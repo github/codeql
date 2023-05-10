@@ -31,6 +31,7 @@ abstract class MetadataExtractor extends string {
   );
 }
 
+// for documentation of the implementations here, see the QLDoc in the CandidateSig signature module.
 module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   class Endpoint = DataFlow::ParameterNode;
 
@@ -101,6 +102,11 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
     exists(int paramIdx | e.isParameterOf(_, paramIdx) | input = "Argument[" + paramIdx + "]")
   }
 
+  /**
+   * Returns the related location for the given endpoint.
+   *
+   * Related locations can be JavaDoc comments of the class or the method.
+   */
   RelatedLocation getRelatedLocation(Endpoint e, string name) {
     name = "Callable-JavaDoc" and
     result = FrameworkCandidatesImpl::getCallable(e).(Documentable).getJavadoc()
