@@ -75,7 +75,7 @@ private class LogForgingTraceMessageSink extends Sink, TraceMessageSink { }
 
 /** Log Forging sinks defined through Models as Data. */
 private class ExternalLoggingExprSink extends Sink {
-  ExternalLoggingExprSink() { sinkNode(this, "logging") }
+  ExternalLoggingExprSink() { sinkNode(this, "log-injection") }
 }
 
 /**

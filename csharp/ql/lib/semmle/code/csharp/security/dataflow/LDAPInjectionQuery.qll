@@ -71,7 +71,7 @@ class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /** LDAP sinks defined through Models as Data. */
 private class ExternalLdapExprSink extends Sink {
-  ExternalLdapExprSink() { sinkNode(this, "ldap") }
+  ExternalLdapExprSink() { sinkNode(this, "ldap-injection") }
 }
 
 /**

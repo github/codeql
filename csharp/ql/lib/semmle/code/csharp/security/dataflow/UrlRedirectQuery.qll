@@ -73,7 +73,7 @@ class RemoteSource extends Source instanceof RemoteFlowSource { }
 
 /** URL Redirection sinks defined through Models as Data. */
 private class ExternalUrlRedirectExprSink extends Sink {
-  ExternalUrlRedirectExprSink() { sinkNode(this, "url-redirect") }
+  ExternalUrlRedirectExprSink() { sinkNode(this, "url-redirection") }
 }
 
 /**
