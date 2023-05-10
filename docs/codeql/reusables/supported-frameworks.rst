@@ -282,6 +282,8 @@ and the CodeQL library pack ``codeql/ruby-all`` (`changelog <https://github.com/
 Swift built-in support
 ================================
 
+.. include:: ../reusables/swift-beta-note.rst
+
 Provided by the current versions of the
 CodeQL query pack ``codeql/swift-queries`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/src/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/src>`__)
 and the CodeQL library pack ``codeql/swift-all`` (`changelog <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/lib/CHANGELOG.md>`__, `source <https://github.com/github/codeql/tree/codeql-cli/latest/swift/ql/lib>`__).
