@@ -55,23 +55,33 @@ DataFlow::Node stringSink() {
 /** Gets a node where regular expressions that flow to the node are used. */
 DataFlow::Node regSink() { result = any(RegexExecution exec).getRegex() }
 
-private signature module ReachInputSig {
-  DataFlow::LocalSourceNode start(TypeTracker t);
+private signature module TypeTrackInputSig {
+  DataFlow::LocalSourceNode start(TypeTracker t, DataFlow::Node start);
 
-  DataFlow::Node end();
+  predicate end(DataFlow::Node n);
 
-  predicate additionalStep(DataFlow::LocalSourceNode nodeFrom, DataFlow::LocalSourceNode nodeTo);
+  predicate additionalStep(DataFlow::Node nodeFrom, DataFlow::LocalSourceNode nodeTo);
 }
 
-private module Reach<ReachInputSig Input> {
+/**
+ * Provides a version of type tracking where we first prune for reachable nodes,
+ * before doing the type tracking computation.
+ */
+private module TypeTrack<TypeTrackInputSig Input> {
+  private predicate additionalStep(
+    DataFlow::LocalSourceNode nodeFrom, DataFlow::LocalSourceNode nodeTo
+  ) {
+    Input::additionalStep(nodeFrom.getALocalUse(), nodeTo)
+  }
+
   /** Gets a node that is forwards reachable by type-tracking. */
   pragma[nomagic]
   private DataFlow::LocalSourceNode forward(TypeTracker t) {
-    result = Input::start(t)
+    result = Input::start(t, _)
     or
     exists(TypeTracker t2 | result = forward(t2).track(t2, t))
     or
-    exists(TypeTracker t2 | t2 = t.continue() | Input::additionalStep(forward(t2), result))
+    exists(TypeTracker t2 | t2 = t.continue() | additionalStep(forward(t2), result))
   }
 
   bindingset[result, tbt]
@@ -90,11 +100,11 @@ private module Reach<ReachInputSig Input> {
     result = forwardLateInline(t) and
     (
       t.start() and
-      result.flowsTo(Input::end())
+      Input::end(result.getALocalUse())
       or
       exists(TypeBackTracker t2 | result = backwards(t2).backtrack(t2, t))
       or
-      exists(TypeBackTracker t2 | t2 = t.continue() | Input::additionalStep(result, backwards(t2)))
+      exists(TypeBackTracker t2 | t2 = t.continue() | additionalStep(result, backwards(t2)))
     )
   }
 
@@ -110,13 +120,13 @@ private module Reach<ReachInputSig Input> {
 
   /** Holds if `n` is forwards and backwards reachable with type tracker `t`. */
   pragma[nomagic]
-  predicate reached(DataFlow::LocalSourceNode n, TypeTracker t) {
+  private predicate reached(DataFlow::LocalSourceNode n, TypeTracker t) {
     n = forward(t) and
     n = backwardsInlineLate(t)
   }
 
   pragma[nomagic]
-  TypeTracker stepReached(
+  private TypeTracker stepReached(
     TypeTracker t, DataFlow::LocalSourceNode nodeFrom, DataFlow::LocalSourceNode nodeTo
   ) {
     exists(StepSummary summary |
@@ -126,10 +136,19 @@ private module Reach<ReachInputSig Input> {
       result = t.append(summary)
     )
     or
-    Input::additionalStep(nodeFrom, nodeTo) and
+    additionalStep(nodeFrom, nodeTo) and
     reached(nodeFrom, pragma[only_bind_into](t)) and
     reached(nodeTo, pragma[only_bind_into](t)) and
     result = t.continue()
+  }
+
+  /** Gets a node that has been tracked from the start node `start`. */
+  DataFlow::LocalSourceNode track(DataFlow::Node start, TypeTracker t) {
+    t.start() and
+    result = Input::start(t, start) and
+    reached(result, t)
+    or
+    exists(TypeTracker t2 | t = stepReached(t2, track(start, t2), result))
   }
 }
 
@@ -143,47 +162,40 @@ private predicate regFromString(DataFlow::LocalSourceNode inputStr, DataFlow::Ca
   )
 }
 
-private module StringReachInput implements ReachInputSig {
-  DataFlow::LocalSourceNode start(TypeTracker t) { result = strStart() and t.start() }
-
-  DataFlow::Node end() {
-    result = stringSink() or
-    regFromString(result, _)
+private module StringTypeTrackInput implements TypeTrackInputSig {
+  DataFlow::LocalSourceNode start(TypeTracker t, DataFlow::Node start) {
+    start = strStart() and t.start() and result = start
   }
 
-  predicate additionalStep(DataFlow::LocalSourceNode nodeFrom, DataFlow::LocalSourceNode nodeTo) {
-    exists(DataFlow::Node mid | nodeFrom.flowsTo(mid) |
-      // include taint flow through `String` summaries
-      TaintTrackingPrivate::summaryThroughStepTaint(mid, nodeTo, any(String::SummarizedCallable c))
-      or
-      // string concatenations, and
-      exists(CfgNodes::ExprNodes::OperationCfgNode op |
-        op = nodeTo.asExpr() and
-        op.getAnOperand() = mid.asExpr() and
-        op.getExpr().(Ast::BinaryOperation).getOperator() = "+"
-      )
-      or
-      // string interpolations
-      mid.asExpr() = nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
+  predicate end(DataFlow::Node n) {
+    n = stringSink() or
+    regFromString(n, _)
+  }
+
+  predicate additionalStep(DataFlow::Node nodeFrom, DataFlow::LocalSourceNode nodeTo) {
+    // include taint flow through `String` summaries
+    TaintTrackingPrivate::summaryThroughStepTaint(nodeFrom, nodeTo,
+      any(String::SummarizedCallable c))
+    or
+    // string concatenations, and
+    exists(CfgNodes::ExprNodes::OperationCfgNode op |
+      op = nodeTo.asExpr() and
+      op.getAnOperand() = nodeFrom.asExpr() and
+      op.getExpr().(Ast::BinaryOperation).getOperator() = "+"
     )
+    or
+    // string interpolations
+    nodeFrom.asExpr() =
+      nodeTo.asExpr().(CfgNodes::ExprNodes::StringlikeLiteralCfgNode).getAComponent()
   }
 }
-
-private module StringReach = Reach<StringReachInput>;
 
 /**
  * Gets a node that has been tracked from the string constant `start` to some node.
  * This is used to figure out where `start` is evaluated as a regular expression against an input string,
  * or where `start` is compiled into a regular expression.
  */
-private DataFlow::LocalSourceNode trackStrings(DataFlow::Node start, TypeTracker t) {
-  t.start() and
-  start = result and
-  result = strStart() and
-  StringReach::reached(result, t)
-  or
-  exists(TypeTracker t2 | t = StringReach::stepReached(t2, trackStrings(start, t2), result))
-}
+private predicate trackStrings = TypeTrack<StringTypeTrackInput>::track/2;
 
 /** Holds if `strConst` flows to a regex compilation (tracked by `t`), where the resulting regular expression is stored in `reg`. */
 pragma[nomagic]
@@ -192,39 +204,25 @@ private predicate regFromStringStart(DataFlow::Node strConst, TypeTracker t, Dat
   exists(t.continue())
 }
 
-private module RegReachInput implements ReachInputSig {
-  DataFlow::LocalSourceNode start(TypeTracker t) {
-    result = regStart() and
-    t.start()
+private module RegTypeTrackInput implements TypeTrackInputSig {
+  DataFlow::LocalSourceNode start(TypeTracker t, DataFlow::Node start) {
+    start = regStart() and
+    t.start() and
+    result = start
     or
-    regFromStringStart(_, t, result)
+    regFromStringStart(start, t, result)
   }
 
-  DataFlow::Node end() { result = regSink() }
+  predicate end(DataFlow::Node n) { n = regSink() }
 
-  predicate additionalStep(DataFlow::LocalSourceNode nodeFrom, DataFlow::LocalSourceNode nodeTo) {
-    none()
-  }
+  predicate additionalStep(DataFlow::Node nodeFrom, DataFlow::LocalSourceNode nodeTo) { none() }
 }
-
-private module RegReach = Reach<RegReachInput>;
 
 /**
  * Gets a node that has been tracked from the regular expression `start` to some node.
  * This is used to figure out where `start` is executed against an input string.
  */
-private DataFlow::LocalSourceNode trackRegs(DataFlow::Node start, TypeTracker t) {
-  RegReach::reached(result, t) and
-  (
-    t.start() and
-    start = result and
-    result = regStart()
-    or
-    regFromStringStart(start, t, result)
-  )
-  or
-  exists(TypeTracker t2 | t = RegReach::stepReached(t2, trackRegs(start, t2), result))
-}
+private predicate trackRegs = TypeTrack<RegTypeTrackInput>::track/2;
 
 /** Gets a node that references a regular expression. */
 private DataFlow::LocalSourceNode trackRegexpType(TypeTracker t) {
