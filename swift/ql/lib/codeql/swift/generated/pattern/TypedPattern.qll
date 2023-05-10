@@ -24,7 +24,7 @@ module Generated {
     /**
      * Gets the sub pattern of this typed pattern.
      */
-    final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
+    final Pattern getSubPattern() { result = this.getImmediateSubPattern().resolve() }
 
     /**
      * Gets the type representation of this typed pattern, if it exists.
@@ -42,11 +42,11 @@ module Generated {
     /**
      * Gets the type representation of this typed pattern, if it exists.
      */
-    final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }
+    final TypeRepr getTypeRepr() { result = this.getImmediateTypeRepr().resolve() }
 
     /**
      * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTypeRepr() { exists(getTypeRepr()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

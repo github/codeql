@@ -45,7 +45,7 @@ module Generated {
     /**
      * Gets the type of this variable declaration.
      */
-    final Type getType() { result = getImmediateType().resolve() }
+    final Type getType() { result = this.getImmediateType().resolve() }
 
     /**
      * Gets the attached property wrapper type of this variable declaration, if it exists.
@@ -64,13 +64,15 @@ module Generated {
      * Gets the attached property wrapper type of this variable declaration, if it exists.
      */
     final Type getAttachedPropertyWrapperType() {
-      result = getImmediateAttachedPropertyWrapperType().resolve()
+      result = this.getImmediateAttachedPropertyWrapperType().resolve()
     }
 
     /**
      * Holds if `getAttachedPropertyWrapperType()` exists.
      */
-    final predicate hasAttachedPropertyWrapperType() { exists(getAttachedPropertyWrapperType()) }
+    final predicate hasAttachedPropertyWrapperType() {
+      exists(this.getAttachedPropertyWrapperType())
+    }
 
     /**
      * Gets the parent pattern of this variable declaration, if it exists.
@@ -88,12 +90,12 @@ module Generated {
     /**
      * Gets the parent pattern of this variable declaration, if it exists.
      */
-    final Pattern getParentPattern() { result = getImmediateParentPattern().resolve() }
+    final Pattern getParentPattern() { result = this.getImmediateParentPattern().resolve() }
 
     /**
      * Holds if `getParentPattern()` exists.
      */
-    final predicate hasParentPattern() { exists(getParentPattern()) }
+    final predicate hasParentPattern() { exists(this.getParentPattern()) }
 
     /**
      * Gets the parent initializer of this variable declaration, if it exists.
@@ -111,12 +113,12 @@ module Generated {
     /**
      * Gets the parent initializer of this variable declaration, if it exists.
      */
-    final Expr getParentInitializer() { result = getImmediateParentInitializer().resolve() }
+    final Expr getParentInitializer() { result = this.getImmediateParentInitializer().resolve() }
 
     /**
      * Holds if `getParentInitializer()` exists.
      */
-    final predicate hasParentInitializer() { exists(getParentInitializer()) }
+    final predicate hasParentInitializer() { exists(this.getParentInitializer()) }
 
     /**
      * Gets the property wrapper backing variable binding of this variable declaration, if it exists.
@@ -138,14 +140,14 @@ module Generated {
      * variable, if any. See `getPropertyWrapperBackingVar`.
      */
     final PatternBindingDecl getPropertyWrapperBackingVarBinding() {
-      result = getImmediatePropertyWrapperBackingVarBinding().resolve()
+      result = this.getImmediatePropertyWrapperBackingVarBinding().resolve()
     }
 
     /**
      * Holds if `getPropertyWrapperBackingVarBinding()` exists.
      */
     final predicate hasPropertyWrapperBackingVarBinding() {
-      exists(getPropertyWrapperBackingVarBinding())
+      exists(this.getPropertyWrapperBackingVarBinding())
     }
 
     /**
@@ -181,13 +183,13 @@ module Generated {
      * This predicate returns such variable declaration.
      */
     final VarDecl getPropertyWrapperBackingVar() {
-      result = getImmediatePropertyWrapperBackingVar().resolve()
+      result = this.getImmediatePropertyWrapperBackingVar().resolve()
     }
 
     /**
      * Holds if `getPropertyWrapperBackingVar()` exists.
      */
-    final predicate hasPropertyWrapperBackingVar() { exists(getPropertyWrapperBackingVar()) }
+    final predicate hasPropertyWrapperBackingVar() { exists(this.getPropertyWrapperBackingVar()) }
 
     /**
      * Gets the property wrapper projection variable binding of this variable declaration, if it exists.
@@ -209,14 +211,14 @@ module Generated {
      * variable, if any. See `getPropertyWrapperProjectionVar`.
      */
     final PatternBindingDecl getPropertyWrapperProjectionVarBinding() {
-      result = getImmediatePropertyWrapperProjectionVarBinding().resolve()
+      result = this.getImmediatePropertyWrapperProjectionVarBinding().resolve()
     }
 
     /**
      * Holds if `getPropertyWrapperProjectionVarBinding()` exists.
      */
     final predicate hasPropertyWrapperProjectionVarBinding() {
-      exists(getPropertyWrapperProjectionVarBinding())
+      exists(this.getPropertyWrapperProjectionVarBinding())
     }
 
     /**
@@ -258,12 +260,14 @@ module Generated {
      * This predicate returns such variable declaration.
      */
     final VarDecl getPropertyWrapperProjectionVar() {
-      result = getImmediatePropertyWrapperProjectionVar().resolve()
+      result = this.getImmediatePropertyWrapperProjectionVar().resolve()
     }
 
     /**
      * Holds if `getPropertyWrapperProjectionVar()` exists.
      */
-    final predicate hasPropertyWrapperProjectionVar() { exists(getPropertyWrapperProjectionVar()) }
+    final predicate hasPropertyWrapperProjectionVar() {
+      exists(this.getPropertyWrapperProjectionVar())
+    }
   }
 }

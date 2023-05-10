@@ -24,7 +24,9 @@ module Generated {
     /**
      * Gets the fallthrough source of this fallthrough statement.
      */
-    final CaseStmt getFallthroughSource() { result = getImmediateFallthroughSource().resolve() }
+    final CaseStmt getFallthroughSource() {
+      result = this.getImmediateFallthroughSource().resolve()
+    }
 
     /**
      * Gets the fallthrough dest of this fallthrough statement.
@@ -42,6 +44,6 @@ module Generated {
     /**
      * Gets the fallthrough dest of this fallthrough statement.
      */
-    final CaseStmt getFallthroughDest() { result = getImmediateFallthroughDest().resolve() }
+    final CaseStmt getFallthroughDest() { result = this.getImmediateFallthroughDest().resolve() }
   }
 }

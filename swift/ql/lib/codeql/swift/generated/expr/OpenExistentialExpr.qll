@@ -24,7 +24,7 @@ module Generated {
     /**
      * Gets the sub expression of this open existential expression.
      */
-    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
 
     /**
      * Gets the existential of this open existential expression.
@@ -42,7 +42,7 @@ module Generated {
     /**
      * Gets the existential of this open existential expression.
      */
-    final Expr getExistential() { result = getImmediateExistential().resolve() }
+    final Expr getExistential() { result = this.getImmediateExistential().resolve() }
 
     /**
      * Gets the opaque expression of this open existential expression.
@@ -60,6 +60,6 @@ module Generated {
     /**
      * Gets the opaque expression of this open existential expression.
      */
-    final OpaqueValueExpr getOpaqueExpr() { result = getImmediateOpaqueExpr().resolve() }
+    final OpaqueValueExpr getOpaqueExpr() { result = this.getImmediateOpaqueExpr().resolve() }
   }
 }

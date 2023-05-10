@@ -20,7 +20,7 @@ module Generated {
     /**
      * Gets the file of this location.
      */
-    final File getFile() { result = getImmediateFile().resolve() }
+    final File getFile() { result = this.getImmediateFile().resolve() }
 
     /**
      * Gets the start line of this location.
