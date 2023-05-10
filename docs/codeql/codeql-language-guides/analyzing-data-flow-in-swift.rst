@@ -29,12 +29,12 @@ The ``Node`` class has a number of useful subclasses, such as ``ExprNode`` for e
 
      class Node {
        /**
-        * Gets this node's underlying expression, if any.
+        * Gets the expression that corresponds to this node, if any.
         */
        Expr asExpr() { ... }
 
        /**
-        * Gets this data flow node's corresponding control flow node.
+        * Gets the control flow node that corresponds to this data flow node. 
         */
        ControlFlowNode getCfgNode() { ... }
 
@@ -203,7 +203,7 @@ Using global taint tracking
 
 Global taint tracking is to global data flow what local taint tracking is to local data flow.
 That is, global taint tracking extends global data flow with additional non-value-preserving steps.
-The global taint tracking library uses the same configuration module as the global data flow library but taint flow analysis is performed with ``TaintTracking::Global``:
+The global taint tracking library uses the same configuration module as the global data flow library. You can perform taint flow analysis using ``TaintTracking::Global``:
 
 .. code-block:: ql
 
@@ -216,7 +216,7 @@ The global taint tracking library uses the same configuration module as the glob
 Predefined sources
 ~~~~~~~~~~~~~~~~~~
 
-The data flow library module ``codeql.swift.dataflow.FlowSources`` contains a number of predefined sources, providing a good starting point for defining data flow and taint flow based security queries.
+The data flow library module ``codeql.swift.dataflow.FlowSources`` contains a number of predefined sources that you can use to write security queries to track data flow and taint flow.
 
 -  The class ``RemoteFlowSource`` represents data flow from remote network inputs and from other applications.
 -  The class ``LocalFlowSource`` represents data flow from local user input.
@@ -229,7 +229,7 @@ The following global taint-tracking query finds places where a string literal is
   - Since this is a taint-tracking query, the ``TaintTracking::Global`` module is used.
   - The ``isSource`` predicate defines sources as any ``StringLiteralExpr``.
   - The ``isSink`` predicate defines sinks as arguments to a ``CallExpr`` called "password".
-  - The sources and sinks may need tuning to a particular use, for example if passwords are represented by a type other than ``String`` or passed in arguments of a different name than "password".
+  - The sources and sinks may need tuning to a particular use, for example, if passwords are represented by a type other than ``String`` or passed in arguments of a different name than "password".
 
 .. code-block:: ql
 
