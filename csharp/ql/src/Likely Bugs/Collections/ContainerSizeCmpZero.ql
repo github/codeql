@@ -38,7 +38,7 @@ private predicate containerSizeAccess(PropertyAccess pa, string containerKind) {
 }
 
 class ZeroLiteral extends Expr {
-  ZeroLiteral() { getValue() = "0" }
+  ZeroLiteral() { this.getValue() = "0" }
 }
 
 /**

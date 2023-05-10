@@ -46,6 +46,4 @@ class TestConfiguration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizerIn(DataFlow::Node node) { this.isSource(node) }
-
-  override int explorationLimit() { result = 5 }
 }

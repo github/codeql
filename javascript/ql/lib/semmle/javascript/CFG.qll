@@ -364,7 +364,9 @@ class SyntheticControlFlowNode extends @synthetic_cfg_node, ControlFlowNode {
 class ControlFlowEntryNode extends SyntheticControlFlowNode, @entry_node {
   override predicate isUnreachable() { none() }
 
-  override string toString() { result = "entry node of " + this.getContainer().toString() }
+  override string toString() {
+    result = "entry node of " + pragma[only_bind_out](this.getContainer()).toString()
+  }
 }
 
 /** A synthetic CFG node marking the exit of a function or toplevel script. */
@@ -373,7 +375,9 @@ class ControlFlowExitNode extends SyntheticControlFlowNode, @exit_node {
     exit_cfg_node(this, container)
   }
 
-  override string toString() { result = "exit node of " + this.getContainer().toString() }
+  override string toString() {
+    result = "exit node of " + pragma[only_bind_out](this.getContainer()).toString()
+  }
 }
 
 /**

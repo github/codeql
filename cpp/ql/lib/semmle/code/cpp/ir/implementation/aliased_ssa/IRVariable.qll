@@ -39,12 +39,12 @@ class IRVariable extends TIRVariable {
   /**
    * Gets the type of the variable.
    */
-  final Language::Type getType() { getLanguageType().hasType(result, false) }
+  final Language::Type getType() { this.getLanguageType().hasType(result, false) }
 
   /**
    * Gets the language-neutral type of the variable.
    */
-  final IRType getIRType() { result = getLanguageType().getIRType() }
+  final IRType getIRType() { result = this.getLanguageType().getIRType() }
 
   /**
    * Gets the type of the variable.
@@ -58,7 +58,7 @@ class IRVariable extends TIRVariable {
   Language::AST getAst() { none() }
 
   /** DEPRECATED: Alias for getAst */
-  deprecated Language::AST getAST() { result = getAst() }
+  deprecated Language::AST getAST() { result = this.getAst() }
 
   /**
    * Gets an identifier string for the variable. This identifier is unique
@@ -69,7 +69,7 @@ class IRVariable extends TIRVariable {
   /**
    * Gets the source location of this variable.
    */
-  final Language::Location getLocation() { result = getAst().getLocation() }
+  final Language::Location getLocation() { result = this.getAst().getLocation() }
 
   /**
    * Gets the IR for the function that references this variable.
@@ -91,15 +91,15 @@ class IRUserVariable extends IRVariable, TIRUserVariable {
 
   IRUserVariable() { this = TIRUserVariable(var, type, func) }
 
-  final override string toString() { result = getVariable().toString() }
+  final override string toString() { result = this.getVariable().toString() }
 
   final override Language::AST getAst() { result = var }
 
   /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = getAst() }
+  deprecated override Language::AST getAST() { result = this.getAst() }
 
   final override string getUniqueId() {
-    result = getVariable().toString() + " " + getVariable().getLocation().toString()
+    result = this.getVariable().toString() + " " + this.getVariable().getLocation().toString()
   }
 
   final override Language::LanguageType getLanguageType() { result = type }
@@ -166,9 +166,9 @@ class IRGeneratedVariable extends IRVariable {
   final override Language::AST getAst() { result = ast }
 
   /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = getAst() }
+  deprecated override Language::AST getAST() { result = this.getAst() }
 
-  override string toString() { result = getBaseString() + getLocationString() }
+  override string toString() { result = this.getBaseString() + this.getLocationString() }
 
   override string getUniqueId() { none() }
 
@@ -272,7 +272,7 @@ class IRStringLiteral extends IRGeneratedVariable, TIRStringLiteral {
   final override predicate isReadOnly() { any() }
 
   final override string getUniqueId() {
-    result = "String: " + getLocationString() + "=" + Language::getStringLiteralText(literal)
+    result = "String: " + this.getLocationString() + "=" + Language::getStringLiteralText(literal)
   }
 
   final override string getBaseString() { result = "#string" }
@@ -303,7 +303,8 @@ class IRDynamicInitializationFlag extends IRGeneratedVariable, TIRDynamicInitial
   final Language::Variable getVariable() { result = var }
 
   final override string getUniqueId() {
-    result = "Init: " + getVariable().toString() + " " + getVariable().getLocation().toString()
+    result =
+      "Init: " + this.getVariable().toString() + " " + this.getVariable().getLocation().toString()
   }
 
   final override string getBaseString() { result = "#init:" + var.toString() + ":" }
@@ -332,5 +333,5 @@ class IRParameter extends IRAutomaticVariable {
  * An IR variable representing a positional parameter.
  */
 class IRPositionalParameter extends IRParameter, IRAutomaticUserVariable {
-  final override int getIndex() { result = getVariable().(Language::Parameter).getIndex() }
+  final override int getIndex() { result = this.getVariable().(Language::Parameter).getIndex() }
 }

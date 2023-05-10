@@ -677,7 +677,8 @@ private predicate ssaFlowImpl(SsaDefOrUse defOrUse, Node nodeFrom, Node nodeTo, 
     not nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
     nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
     adjacentDefRead(defOrUse, use) and
-    useToNode(use, nodeTo)
+    useToNode(use, nodeTo) and
+    nodeFrom != nodeTo
     or
     // Initial global variable value to a first use
     nodeFrom.(InitialGlobalValue).getGlobalDef() = defOrUse and
@@ -712,8 +713,20 @@ private Node getAPriorDefinition(SsaDefOrUse defOrUse) {
 /** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
 predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   exists(Node nFrom, boolean uncertain, SsaDefOrUse defOrUse |
-    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and
+    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and nodeFrom != nodeTo
+  |
     if uncertain = true then nodeFrom = [nFrom, getAPriorDefinition(defOrUse)] else nodeFrom = nFrom
+  )
+}
+
+predicate postUpdateFlow(PostUpdateNode pun, Node nodeTo) {
+  exists(Node preUpdate, Node nFrom, boolean uncertain, SsaDefOrUse defOrUse |
+    preUpdate = pun.getPreUpdateNode() and
+    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain)
+  |
+    if uncertain = true
+    then preUpdate = [nFrom, getAPriorDefinition(defOrUse)]
+    else preUpdate = nFrom
   )
 }
 
@@ -742,6 +755,7 @@ predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
     fromPhiNodeToUse(phi, sv, bb1, i1, use)
     or
     exists(PhiNode phiTo |
+      phi != phiTo and
       lastRefRedefExt(phi, _, _, phiTo) and
       nodeTo.(SsaPhiNode).getPhiNode() = phiTo
     )
