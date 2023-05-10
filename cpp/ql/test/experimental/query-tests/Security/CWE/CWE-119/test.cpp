@@ -246,6 +246,6 @@ void test_flow_through_setter(unsigned size) {
 void* my_alloc(unsigned size);
 
 void foo(unsigned size) {
-    int* p = (int*)my_alloc(size); // BAD [NOT DETECTED]
+    int* p = (int*)my_alloc(size); // BAD
     memset(p, 0, size + 1);
 }
