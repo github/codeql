@@ -72,6 +72,10 @@ module SummaryComponent {
           jrk.getTargetReturnKind() instanceof DataFlowDispatch::NormalReturnKind
         ))
   }
+
+  predicate syntheticGlobal = SummaryComponentInternal::syntheticGlobal/1;
+
+  class SyntheticGlobal = SummaryComponentInternal::SyntheticGlobal;
 }
 
 class SummaryComponentStack = Impl::Public::SummaryComponentStack;
