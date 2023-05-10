@@ -222,23 +222,6 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
 }
 
 /**
- * A negative characteristic that indicates that an endpoint sits in a test file.
- */
-private class TestFileCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic {
-  TestFileCharacteristic() { this = "test file" }
-
-  override predicate appliesToEndpoint(Endpoint e) {
-    exists(File f | f = e.getLocation().getFile() and isInTestFile(f))
-  }
-
-  private predicate isInTestFile(File file) {
-    file.getAbsolutePath().matches("%src/test/%") or
-    file.getAbsolutePath().matches("%/guava-tests/%") or
-    file.getAbsolutePath().matches("%/guava-testlib/%")
-  }
-}
-
-/**
  * A characteristic that limits candidates to parameters of methods that are recognized as `ModelApi`, iow., APIs that
  * are considered worth modeling.
  */
