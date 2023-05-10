@@ -14,7 +14,7 @@ import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysi
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.ir.dataflow.DataFlow
-import StitchedPathGraph
+import FieldAddressToDerefFlow::PathGraph
 
 pragma[nomagic]
 Instruction getABoundIn(SemBound b, IRFunction func) {
@@ -41,21 +41,6 @@ predicate bounded1(Instruction i, Instruction b, int delta) { boundedImpl(i, b, 
 bindingset[b]
 pragma[inline_late]
 predicate bounded2(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
-
-module FieldAddressToPointerArithmeticConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { isFieldAddressSource(_, source) }
-
-  predicate isSink(DataFlow::Node sink) {
-    exists(PointerAddInstruction pai | pai.getLeft() = sink.asInstruction())
-  }
-}
-
-module FieldAddressToPointerArithmeticFlow =
-  DataFlow::Global<FieldAddressToPointerArithmeticConfig>;
-
-predicate isFieldAddressSource(Field f, DataFlow::Node source) {
-  source.asInstruction().(FieldAddressInstruction).getField() = f
-}
 
 bindingset[delta]
 predicate isInvalidPointerDerefSinkImpl(
@@ -93,56 +78,61 @@ predicate isInvalidPointerDerefSink2(DataFlow::Node sink, Instruction i, string 
   )
 }
 
-predicate isConstantSizeOverflowSource(Field f, FieldAddressToPointerArithmeticFlow::PathNode fieldSource, PointerAddInstruction pai, int delta) {
-  exists(int size, int bound, FieldAddressToPointerArithmeticFlow::PathNode sink |
-    FieldAddressToPointerArithmeticFlow::flowPath(fieldSource, sink) and
-    isFieldAddressSource(f, fieldSource.getNode()) and
-    pai.getLeft() = sink.getNode().(DataFlow::InstructionNode).asInstruction() and
-    pai.getElementSize() = f.getUnspecifiedType().(ArrayType).getBaseType().getSize() and
-    f.getUnspecifiedType().(ArrayType).getArraySize() = size and
-    semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), bound, true, _) and
-    delta = bound - size and
-    delta >= 0 and
-    size != 0 and
-    size != 1
-  )
+predicate pointerArithOverflow(
+  PointerArithmeticInstruction pai, Field f, int size, int bound, int delta
+) {
+  pai.getElementSize() = f.getUnspecifiedType().(ArrayType).getBaseType().getSize() and
+  f.getUnspecifiedType().(ArrayType).getArraySize() = size and
+  semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), bound, true, _) and
+  delta = bound - size
 }
 
-module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) {
-    isConstantSizeOverflowSource(_, _, source.asInstruction(), _)
+module FieldAddressToDerefConfig implements DataFlow::StateConfigSig {
+  newtype FlowState =
+    additional TArray(Field f) or
+    additional TOverflowArithmetic(PointerArithmeticInstruction pai)
+
+  predicate isSource(DataFlow::Node source, FlowState state) {
+    exists(Field f |
+      source.asInstruction().(FieldAddressInstruction).getField() = f and
+      state = TArray(f)
+    )
   }
 
-  pragma[inline]
-  predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink1(sink, _, _) }
+  predicate isSink(DataFlow::Node sink, FlowState state) {
+    isInvalidPointerDerefSink1(sink, _, _) and
+    state instanceof TOverflowArithmetic
+  }
+
+  predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
+
+  predicate isAdditionalFlowStep(
+    DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
+  ) {
+    exists(PointerArithmeticInstruction pai, Field f, int size, int delta |
+      state1 = TArray(f) and
+      state2 = TOverflowArithmetic(pai) and
+      pai.getLeft() = node1.asInstruction() and
+      node2.asInstruction() = pai and
+      pointerArithOverflow(pai, f, size, _, delta) and
+      delta >= 0 and
+      size != 0 and
+      size != 1
+    )
+  }
 }
 
-module MergedPathGraph = DataFlow::MergePathGraph<PointerArithmeticToDerefFlow::PathNode, FieldAddressToPointerArithmeticFlow::PathNode, PointerArithmeticToDerefFlow::PathGraph, FieldAddressToPointerArithmeticFlow::PathGraph>;
-class PathNode = MergedPathGraph::PathNode;
-module StitchedPathGraph implements DataFlow::PathGraphSig<PathNode>{
-  query predicate edges(PathNode a, PathNode b) {
-    MergedPathGraph::PathGraph::edges(a, b)
-    or
-    a.asPathNode2().getNode().(DataFlow::InstructionNode).asInstruction() = b.asPathNode1().getNode().(DataFlow::InstructionNode).asInstruction().(PointerAddInstruction).getLeft()
-  }
-
-  query predicate nodes(PathNode n, string key, string val) {
-    MergedPathGraph::PathGraph::nodes(n, key, val)
-  }
-
-  query predicate subpaths(PathNode arg, PathNode par, PathNode ret, PathNode out) {
-    MergedPathGraph::PathGraph::subpaths(arg, par, ret, out)
-  }
-}
-module PointerArithmeticToDerefFlow = DataFlow::Global<PointerArithmeticToDerefConfig>;
+module FieldAddressToDerefFlow = DataFlow::GlobalWithState<FieldAddressToDerefConfig>;
 
 from
-  Field f, PathNode fieldSource, PathNode paiNode,
-  PathNode sink, Instruction deref, string operation, int delta
+  Field f, FieldAddressToDerefFlow::PathNode source, PointerArithmeticInstruction pai,
+  FieldAddressToDerefFlow::PathNode sink, Instruction deref, string operation, int delta
 where
-  PointerArithmeticToDerefFlow::flowPath(paiNode.asPathNode1(), sink.asPathNode1()) and
+  FieldAddressToDerefFlow::flowPath(source, sink) and
   isInvalidPointerDerefSink2(sink.getNode(), deref, operation) and
-  isConstantSizeOverflowSource(f, fieldSource.asPathNode2(), paiNode.getNode().asInstruction(), delta)
-select paiNode, fieldSource, sink,
+  source.getState() = FieldAddressToDerefConfig::TArray(f) and
+  sink.getState() = FieldAddressToDerefConfig::TOverflowArithmetic(pai) and
+  pointerArithOverflow(pai, f, _, _, delta)
+select pai, source, sink,
   "This pointer arithmetic may have an off-by-" + (delta + 1) +
     " error allowing it to overrun $@ at this $@.", f, f.getName(), deref, operation
