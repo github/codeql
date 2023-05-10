@@ -742,17 +742,17 @@ func outsideSupportedRange(version string) bool {
 // or the empty string if we should not attempt to install a version of Go.
 func getVersionWhenGoModVersionNotFound(v versionInfo) (msg, version string) {
 	if !v.goEnvVersionFound {
-		// We definitely need to install a version. We have no indication which version was
-		// intended to be used to build this project. Go versions are generally backwards
+		// There is no Go version installed in the environment. We have no indication which version
+		// was intended to be used to build this project. Go versions are generally backwards
 		// compatible, so we install the maximum supported version.
 		msg = "No version of Go installed and no `go.mod` file found. Writing an environment " +
 			"file specifying the maximum supported version of Go (" + maxGoVersion + ")."
 		version = maxGoVersion
 		diagnostics.EmitNoGoModAndNoGoEnv(msg)
 	} else if outsideSupportedRange(v.goEnvVersion) {
-		// We definitely need to install a version. We have no indication which version was
-		// intended to be used to build this project. Go versions are generally backwards
-		// compatible, so we install the maximum supported version.
+		// The Go version installed in the environment is not supported. We have no indication
+		// which version was intended to be used to build this project. Go versions are generally
+		// backwards compatible, so we install the maximum supported version.
 		msg = "No `go.mod` file found. The version of Go installed in the environment (" +
 			v.goEnvVersion + ") is outside of the supported range (" + minGoVersion + "-" +
 			maxGoVersion + "). Writing an environment file specifying the maximum supported " +
@@ -774,7 +774,7 @@ func getVersionWhenGoModVersionNotFound(v versionInfo) (msg, version string) {
 }
 
 // Assuming `v.goModVersion` is above the supported range, emit a diagnostic and return the
-// version to install, or the empty string if we should not attempt to install a version of Go.
+// empty string to indicate that we should not attempt to install a version of Go.
 func getVersionWhenGoModVersionTooHigh(v versionInfo) (msg, version string) {
 	// The project is intended to be built with a version of Go that is above the supported
 	// range. We do not install a version of Go.
@@ -787,7 +787,7 @@ func getVersionWhenGoModVersionTooHigh(v versionInfo) (msg, version string) {
 	return msg, version
 }
 
-// Assuming `v.goModVersion` is above the supported range, emit a diagnostic and return the
+// Assuming `v.goModVersion` is below the supported range, emit a diagnostic and return the
 // version to install, or the empty string if we should not attempt to install a version of Go.
 func getVersionWhenGoModVersionTooLow(v versionInfo) (msg, version string) {
 	if !v.goEnvVersionFound {
