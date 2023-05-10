@@ -1,5 +1,5 @@
 /**
- * Helper class to represent a string value that can be returned by a query using $@ notation.
+ * A helper class to represent a string value that can be returned by a query using $@ notation.
  *
  * It extends `string`, but adds a mock `getURL` method that returns the string itself as a data URL.
  *
