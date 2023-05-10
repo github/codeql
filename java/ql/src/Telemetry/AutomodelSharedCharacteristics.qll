@@ -24,7 +24,7 @@ signature module CandidateSig {
   class RelatedLocation;
 
   /**
-   * A class label for an endpoint.
+   * A class kind for an endpoint.
    */
   class EndpointType extends string;
 
@@ -36,9 +36,9 @@ signature module CandidateSig {
   RelatedLocation asLocation(Endpoint e);
 
   /**
-   * Defines what MaD labels are known, and what endpoint type they correspond to.
+   * Defines what MaD kinds are known, and what endpoint type they correspond to.
    */
-  predicate isKnownLabel(string label, string humanReadableLabel, EndpointType type);
+  predicate isKnownLabel(string kind, string humanReadableLabel, EndpointType type);
 
   /**
    * Should hold for any endpoint that is a flow sanitizer.
@@ -46,9 +46,9 @@ signature module CandidateSig {
   predicate isSanitizer(Endpoint e, EndpointType t);
 
   /**
-   * Should hold for any endpoint that is a sink of the given (known or unknown) label.
+   * Should hold for any endpoint that is a sink of the given (known or unknown) kind.
    */
-  predicate isSink(Endpoint e, string label);
+  predicate isSink(Endpoint e, string kind);
 
   /**
    * Should hold for any endpoint that is known to not be any sink.
@@ -138,7 +138,7 @@ module SharedCharacteristics<CandidateSig Candidate> {
 
   /**
    * A set of characteristics that a particular endpoint might have. This set of characteristics is used to make decisions
-   * about whether to include the endpoint in the training set and with what label, as well as whether to score the
+   * about whether to include the endpoint in the training set and with what kind, as well as whether to score the
    * endpoint at inference time.
    */
   abstract class EndpointCharacteristic extends string {

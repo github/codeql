@@ -46,39 +46,39 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
 
   RelatedLocation asLocation(Endpoint e) { result = e.asParameter() }
 
-  predicate isKnownLabel(string label, string humanReadableLabel, EndpointType type) {
-    label = "read-file" and
-    humanReadableLabel = "read file" and
+  predicate isKnownKind(string kind, string humanReadableKind, EndpointType type) {
+    kind = "read-file" and
+    humanReadableKind = "read file" and
     type instanceof AutomodelEndpointTypes::TaintedPathSinkType
     or
-    label = "create-file" and
-    humanReadableLabel = "create file" and
+    kind = "create-file" and
+    humanReadableKind = "create file" and
     type instanceof AutomodelEndpointTypes::TaintedPathSinkType
     or
-    label = "sql" and
-    humanReadableLabel = "mad modeled sql" and
+    kind = "sql" and
+    humanReadableKind = "mad modeled sql" and
     type instanceof AutomodelEndpointTypes::SqlSinkType
     or
-    label = "open-url" and
-    humanReadableLabel = "open url" and
+    kind = "open-url" and
+    humanReadableKind = "open url" and
     type instanceof AutomodelEndpointTypes::RequestForgerySinkType
     or
-    label = "jdbc-url" and
-    humanReadableLabel = "jdbc url" and
+    kind = "jdbc-url" and
+    humanReadableKind = "jdbc url" and
     type instanceof AutomodelEndpointTypes::RequestForgerySinkType
     or
-    label = "command-injection" and
-    humanReadableLabel = "command injection" and
+    kind = "command-injection" and
+    humanReadableKind = "command injection" and
     type instanceof AutomodelEndpointTypes::CommandInjectionSinkType
   }
 
-  predicate isSink(Endpoint e, string label) {
+  predicate isSink(Endpoint e, string kind) {
     exists(
       string package, string type, boolean subtypes, string name, string signature, string ext,
       string input
     |
       sinkSpec(e, package, type, subtypes, name, signature, ext, input) and
-      ExternalFlow::sinkModel(package, type, subtypes, name, [signature, ""], ext, input, label, _)
+      ExternalFlow::sinkModel(package, type, subtypes, name, [signature, ""], ext, input, kind, _)
     )
   }
 
