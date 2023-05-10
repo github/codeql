@@ -36,7 +36,6 @@ private class DefaultPathInjectionSink extends PathInjectionSink {
 private class DefaultPathInjectionBarrier extends PathInjectionBarrier {
   DefaultPathInjectionBarrier() {
     // This is a simplified implementation.
-    // TODO: Implement a complete path barrier when Guards are available.
     exists(CallExpr starts, CallExpr normalize, DataFlow::Node validated |
       starts.getStaticTarget().getName() = "starts(with:)" and
       starts.getStaticTarget().getEnclosingDecl() instanceof FilePath and
