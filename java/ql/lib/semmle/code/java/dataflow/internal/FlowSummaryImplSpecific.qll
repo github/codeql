@@ -154,12 +154,12 @@ predicate summaryElement(
 }
 
 /**
- * Holds if a neutral model exists for `c` with provenance `provenance`,
+ * Holds if a neutral summary model exists for `c` with provenance `provenance`,
  * which means that there is no flow through `c`.
  */
-predicate neutralElement(SummarizedCallableBase c, string provenance) {
+predicate neutralSummaryElement(SummarizedCallableBase c, string provenance) {
   exists(string namespace, string type, string name, string signature |
-    neutralModel(namespace, type, name, signature, provenance) and
+    neutralModel(namespace, type, name, signature, "summary", provenance) and
     c.asCallable() = interpretElement(namespace, type, false, name, signature, "")
   )
 }

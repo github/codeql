@@ -1,0 +1,11 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: experimentalSinkModel
+    data:
+      - ["com.google.common.io", "Resources", False, "asByteSource", "(URL)", "", "Argument[0]", "url-open-stream", "manual", "openstream-called-on-tainted-url"]
+      - ["com.google.common.io", "Resources", False, "asCharSource", "(URL,Charset)", "", "Argument[0]", "url-open-stream", "manual", "openstream-called-on-tainted-url"]
+      - ["com.google.common.io", "Resources", False, "copy", "(URL,OutputStream)", "", "Argument[0]", "url-open-stream", "manual", "openstream-called-on-tainted-url"]
+      - ["com.google.common.io", "Resources", False, "readLines", "", "", "Argument[0]", "url-open-stream", "manual", "openstream-called-on-tainted-url"]
+      - ["com.google.common.io", "Resources", False, "toByteArray", "(URL)", "", "Argument[0]", "url-open-stream", "manual", "openstream-called-on-tainted-url"]
+      - ["com.google.common.io", "Resources", False, "toString", "(URL,Charset)", "", "Argument[0]", "url-open-stream", "manual", "openstream-called-on-tainted-url"]

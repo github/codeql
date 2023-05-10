@@ -35,10 +35,6 @@ class UntypedTrapLabel {
   explicit operator bool() const { return valid(); }
 
   friend std::ostream& operator<<(std::ostream& out, UntypedTrapLabel l) {
-    // TODO: this is a temporary fix to catch us from outputting undefined labels to trap
-    // this should be moved to a validity check, probably aided by code generation and carried out
-    // by `SwiftDispatcher`
-    assert(l && "outputting an undefined label!");
     out << '#' << std::hex << l.id_ << std::dec;
     return out;
   }

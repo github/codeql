@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.time.chrono", "ChronoZonedDateTime", "toInstant", "()", "manual"]
+      - ["java.time.chrono", "ChronoZonedDateTime", "toInstant", "()", "summary", "manual"]

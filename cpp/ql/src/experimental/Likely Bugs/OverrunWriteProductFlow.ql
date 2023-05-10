@@ -134,16 +134,44 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
 
 module StringSizeFlow = ProductFlow::GlobalWithState<StringSizeConfig>;
 
+/**
+ * Gets the maximum number of elements accessed past the buffer `buffer` by the formatting
+ * function call `c` when an overflow is detected starting at the `(source1, source2)` pair
+ * and ending at the `(sink1, sink2)` pair.
+ *
+ * Implementation note: Since the number of elements accessed past the buffer is computed
+ * using a `FlowState` on the second component of the `DataFlow::PathNode` pair we project
+ * the columns down to the underlying `DataFlow::Node` in order to deduplicate the flow
+ * state.
+ */
+int getOverflow(
+  DataFlow::Node source1, DataFlow::Node source2, DataFlow::Node sink1, DataFlow::Node sink2,
+  CallInstruction c, Expr buffer
+) {
+  result > 0 and
+  exists(
+    StringSizeFlow::PathNode1 pathSource1, StringSizeFlow::PathNode2 pathSource2,
+    StringSizeFlow::PathNode1 pathSink1, StringSizeFlow::PathNode2 pathSink2
+  |
+    StringSizeFlow::flowPath(pathSource1, pathSource2, pathSink1, pathSink2) and
+    source1 = pathSource1.getNode() and
+    source2 = pathSource2.getNode() and
+    sink1 = pathSink1.getNode() and
+    sink2 = pathSink2.getNode() and
+    isSinkPairImpl(c, sink1, sink2, result + pathSink2.getState(), buffer)
+  )
+}
+
 from
   StringSizeFlow::PathNode1 source1, StringSizeFlow::PathNode2 source2,
-  StringSizeFlow::PathNode1 sink1, StringSizeFlow::PathNode2 sink2, int overflow, int sinkState,
-  CallInstruction c, DataFlow::Node sourceNode, Expr buffer, string element
+  StringSizeFlow::PathNode1 sink1, StringSizeFlow::PathNode2 sink2, int overflow, CallInstruction c,
+  Expr buffer, string element
 where
   StringSizeFlow::flowPath(source1, source2, sink1, sink2) and
-  sinkState = sink2.getState() and
-  isSinkPairImpl(c, sink1.getNode(), sink2.getNode(), overflow + sinkState, buffer) and
-  overflow > 0 and
-  sourceNode = source1.getNode() and
+  overflow =
+    max(getOverflow(source1.getNode(), source2.getNode(), sink1.getNode(), sink2.getNode(), c,
+          buffer)
+    ) and
   if overflow = 1 then element = " element." else element = " elements."
 select c.getUnconvertedResultExpression(), source1, sink1,
   "This write may overflow $@ by " + overflow + element, buffer, buffer.toString()

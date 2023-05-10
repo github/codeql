@@ -9,7 +9,7 @@ import HardcodedCredentials
  * A call to a method that is or overrides `java.lang.Object.equals`.
  */
 class EqualsAccess extends MethodAccess {
-  EqualsAccess() { getMethod() instanceof EqualsMethod }
+  EqualsAccess() { this.getMethod() instanceof EqualsMethod }
 }
 
 /**

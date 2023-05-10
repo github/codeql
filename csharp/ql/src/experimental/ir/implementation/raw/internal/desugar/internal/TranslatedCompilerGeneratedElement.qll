@@ -22,5 +22,5 @@ abstract class TranslatedCompilerGeneratedElement extends TranslatedElement,
   final override Language::AST getAst() { result = generatedBy }
 
   /** DEPRECATED: Alias for getAst */
-  deprecated override Language::AST getAST() { result = getAst() }
+  deprecated override Language::AST getAST() { result = this.getAst() }
 }

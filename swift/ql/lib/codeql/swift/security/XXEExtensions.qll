@@ -3,23 +3,23 @@
 import swift
 private import codeql.swift.dataflow.DataFlow
 private import codeql.swift.dataflow.TaintTracking
-private import codeql.swift.frameworks.AEXML
-private import codeql.swift.frameworks.Libxml2
+private import codeql.swift.frameworks.Xml.Xml
 private import codeql.swift.dataflow.ExternalFlow
 
 /** A data flow sink for XML external entities (XXE) vulnerabilities. */
 abstract class XxeSink extends DataFlow::Node { }
 
-/** A sanitizer for XML external entities (XXE) vulnerabilities. */
-abstract class XxeSanitizer extends DataFlow::Node { }
+/** A barrier for XML external entities (XXE) vulnerabilities. */
+abstract class XxeBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
- *
- * Extend this class to add additional taint steps that should apply to paths related to
- * XML external entities (XXE) vulnerabilities.
+ * A unit class for adding additional flow steps.
  */
-class XxeAdditionalTaintStep extends Unit {
+class XxeAdditionalFlowStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a flow
+   * step for paths related to XML external entities (XXE) vulnerabilities.
+   */
   abstract predicate step(DataFlow::Node n1, DataFlow::Node n2);
 }
 
@@ -80,7 +80,7 @@ private class XmlDocumentXxeSink extends XxeSink {
 /** An `XMLDocument` that sets `nodeLoadExternalEntitiesAlways` in its options. */
 private class VulnerableXmlDocument extends ApplyExpr {
   VulnerableXmlDocument() {
-    this.getStaticTarget().(ConstructorDecl).getEnclosingDecl().(NominalTypeDecl).getFullName() =
+    this.getStaticTarget().(Initializer).getEnclosingDecl().(NominalTypeDecl).getFullName() =
       "XMLDocument" and
     this.getArgument(1).getExpr().(ArrayExpr).getAnElement().(MemberRefExpr).getMember() instanceof
       NodeLoadExternalEntitiesAlways
@@ -192,7 +192,7 @@ private predicate lib2xmlOptionLocalTaintStep(DataFlow::Node source, DataFlow::N
   exists(ApplyExpr int32Init |
     int32Init
         .getStaticTarget()
-        .(ConstructorDecl)
+        .(Initializer)
         .getEnclosingDecl()
         .(ExtensionDecl)
         .getExtendedTypeDecl()

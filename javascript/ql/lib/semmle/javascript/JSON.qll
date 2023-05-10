@@ -29,7 +29,7 @@ class JsonValue extends @json_value, Locatable {
   JsonValue getChild(int i) { json(result, _, this, i, _) }
 
   /** Holds if this JSON value is the top level element in its enclosing file. */
-  predicate isTopLevel() { not exists(getParent()) }
+  predicate isTopLevel() { not exists(this.getParent()) }
 
   override string toString() { json(this, _, _, _, result) }
 
@@ -167,7 +167,7 @@ class JsonArray extends @json_array, JsonValue {
   override string getAPrimaryQlClass() { result = "JsonArray" }
 
   /** Gets the string value of the `i`th element of this array. */
-  string getElementStringValue(int i) { result = getElementValue(i).getStringValue() }
+  string getElementStringValue(int i) { result = this.getElementValue(i).getStringValue() }
 }
 
 /** DEPRECATED: Alias for JsonArray */
@@ -186,7 +186,7 @@ class JsonObject extends @json_object, JsonValue {
   override string getAPrimaryQlClass() { result = "JsonObject" }
 
   /** Gets the string value of property `name` of this object. */
-  string getPropStringValue(string name) { result = getPropValue(name).getStringValue() }
+  string getPropStringValue(string name) { result = this.getPropValue(name).getStringValue() }
 }
 
 /** DEPRECATED: Alias for JsonObject */

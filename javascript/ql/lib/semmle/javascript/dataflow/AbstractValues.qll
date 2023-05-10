@@ -170,7 +170,7 @@ class AbstractBoolean extends PrimitiveAbstractValue, TAbstractBoolean {
 
   override predicate isCoercibleToNumber() { any() }
 
-  override string toString() { result = getBooleanValue().toString() }
+  override string toString() { result = this.getBooleanValue().toString() }
 }
 
 /**
@@ -280,7 +280,7 @@ abstract class AbstractCallable extends DefiniteAbstractValue {
 class AbstractFunction extends AbstractCallable, TAbstractFunction {
   override Function getFunction() { this = TAbstractFunction(result) }
 
-  override AST::ValueNode getDefinition() { result = getFunction() }
+  override AST::ValueNode getDefinition() { result = this.getFunction() }
 
   override boolean getBooleanValue() { result = true }
 
@@ -293,10 +293,12 @@ class AbstractFunction extends AbstractCallable, TAbstractFunction {
   override predicate hasLocationInfo(
     string path, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getFunction().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
+    this.getFunction()
+        .getLocation()
+        .hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
 
-  override string toString() { result = getFunction().describe() }
+  override string toString() { result = this.getFunction().describe() }
 }
 
 /**
@@ -308,9 +310,9 @@ class AbstractClass extends AbstractCallable, TAbstractClass {
    */
   ClassDefinition getClass() { this = TAbstractClass(result) }
 
-  override Function getFunction() { result = getClass().getConstructor().getBody() }
+  override Function getFunction() { result = this.getClass().getConstructor().getBody() }
 
-  override AST::ValueNode getDefinition() { result = getClass() }
+  override AST::ValueNode getDefinition() { result = this.getClass() }
 
   override boolean getBooleanValue() { result = true }
 
@@ -323,10 +325,10 @@ class AbstractClass extends AbstractCallable, TAbstractClass {
   override predicate hasLocationInfo(
     string path, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getClass().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
+    this.getClass().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
 
-  override string toString() { result = getClass().describe() }
+  override string toString() { result = this.getClass().describe() }
 }
 
 /**
@@ -362,10 +364,12 @@ class AbstractArguments extends DefiniteAbstractValue, TAbstractArguments {
   override predicate hasLocationInfo(
     string path, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getFunction().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
+    this.getFunction()
+        .getLocation()
+        .hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
 
-  override string toString() { result = "arguments object of " + getFunction().describe() }
+  override string toString() { result = "arguments object of " + this.getFunction().describe() }
 }
 
 /**
@@ -401,10 +405,10 @@ class AbstractModuleObject extends DefiniteAbstractValue, TAbstractModuleObject 
   override predicate hasLocationInfo(
     string path, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getModule().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
+    this.getModule().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
 
-  override string toString() { result = "module object of module " + getModule().getName() }
+  override string toString() { result = "module object of module " + this.getModule().getName() }
 }
 
 /**
@@ -425,10 +429,10 @@ class AbstractExportsObject extends DefiniteAbstractValue, TAbstractExportsObjec
   override predicate hasLocationInfo(
     string path, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getModule().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
+    this.getModule().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
 
-  override string toString() { result = "exports object of module " + getModule().getName() }
+  override string toString() { result = "exports object of module " + this.getModule().getName() }
 }
 
 /**
@@ -450,7 +454,9 @@ class AbstractObjectLiteral extends DefiniteAbstractValue, TAbstractObjectLitera
   override predicate hasLocationInfo(
     string path, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getObjectExpr().getLocation().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
+    this.getObjectExpr()
+        .getLocation()
+        .hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
 
   override string toString() { result = "object literal" }
@@ -476,10 +482,10 @@ class AbstractInstance extends DefiniteAbstractValue, TAbstractInstance {
   override predicate hasLocationInfo(
     string path, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    getConstructor().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
+    this.getConstructor().hasLocationInfo(path, startline, startcolumn, endline, endcolumn)
   }
 
-  override string toString() { result = "instance of " + getConstructor() }
+  override string toString() { result = "instance of " + this.getConstructor() }
 }
 
 module AbstractInstance {
@@ -526,7 +532,7 @@ class IndefiniteFunctionOrClass extends AbstractValue, TIndefiniteFunctionOrClas
   }
 
   override string toString() {
-    exists(DataFlow::Incompleteness cause | isIndefinite(cause) |
+    exists(DataFlow::Incompleteness cause | this.isIndefinite(cause) |
       result = "indefinite function or class (" + cause + ")"
     )
   }
@@ -553,7 +559,7 @@ class IndefiniteObject extends AbstractValue, TIndefiniteObject {
   }
 
   override string toString() {
-    exists(DataFlow::Incompleteness cause | isIndefinite(cause) |
+    exists(DataFlow::Incompleteness cause | this.isIndefinite(cause) |
       result = "indefinite object (" + cause + ")"
     )
   }
@@ -576,7 +582,7 @@ class IndefiniteAbstractValue extends AbstractValue, TIndefiniteAbstractValue {
   }
 
   override string toString() {
-    exists(DataFlow::Incompleteness cause | isIndefinite(cause) |
+    exists(DataFlow::Incompleteness cause | this.isIndefinite(cause) |
       result = "indefinite value (" + cause + ")"
     )
   }
@@ -589,7 +595,7 @@ class IndefiniteAbstractValue extends AbstractValue, TIndefiniteAbstractValue {
    * set of concrete values represented by this abstract value.
    */
   AbstractValue split() {
-    exists(string cause | isIndefinite(cause) |
+    exists(string cause | this.isIndefinite(cause) |
       result = TIndefiniteFunctionOrClass(cause) or
       result = TIndefiniteObject(cause) or
       result = abstractValueOfType(any(PrimitiveType pt))

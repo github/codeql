@@ -96,7 +96,8 @@ module LocalFlow {
     exists(BasicBlock bb, int i |
       lastRefBeforeRedefExt(def, bb, i, next.getDefinitionExt()) and
       def = nodeFrom.getDefinitionExt() and
-      def.definesAt(_, bb, i, _)
+      def.definesAt(_, bb, i, _) and
+      nodeFrom != next
     )
   }
 

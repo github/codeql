@@ -24,17 +24,17 @@ private newtype TTypeFlowNode =
  */
 private class TypeFlowNode extends TTypeFlowNode {
   string toString() {
-    result = asField().toString() or
-    result = asSsa().toString() or
-    result = asExpr().toString() or
-    result = asMethod().toString()
+    result = this.asField().toString() or
+    result = this.asSsa().toString() or
+    result = this.asExpr().toString() or
+    result = this.asMethod().toString()
   }
 
   Location getLocation() {
-    result = asField().getLocation() or
-    result = asSsa().getLocation() or
-    result = asExpr().getLocation() or
-    result = asMethod().getLocation()
+    result = this.asField().getLocation() or
+    result = this.asSsa().getLocation() or
+    result = this.asExpr().getLocation() or
+    result = this.asMethod().getLocation()
   }
 
   Field asField() { this = TField(result) }
@@ -46,10 +46,10 @@ private class TypeFlowNode extends TTypeFlowNode {
   Method asMethod() { this = TMethod(result) }
 
   RefType getType() {
-    result = asField().getType() or
-    result = asSsa().getSourceVariable().getType() or
-    result = boxIfNeeded(asExpr().getType()) or
-    result = asMethod().getReturnType()
+    result = this.asField().getType() or
+    result = this.asSsa().getSourceVariable().getType() or
+    result = boxIfNeeded(this.asExpr().getType()) or
+    result = this.asMethod().getReturnType()
   }
 }
 
