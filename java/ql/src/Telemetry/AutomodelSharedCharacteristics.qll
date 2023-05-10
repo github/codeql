@@ -33,12 +33,17 @@ signature module CandidateSig {
    */
   class NegativeEndpointType extends EndpointType;
 
+  /**
+   * Gets the endpoint as a location.
+   *
+   * This is a utility function to convert an endpoint to its corresponding location.
+   */
   RelatedLocation asLocation(Endpoint e);
 
   /**
    * Defines what MaD kinds are known, and what endpoint type they correspond to.
    */
-  predicate isKnownLabel(string kind, string humanReadableLabel, EndpointType type);
+  predicate isKnownKind(string kind, string humanReadableLabel, EndpointType type);
 
   /**
    * Should hold for any endpoint that is a flow sanitizer.
@@ -56,6 +61,8 @@ signature module CandidateSig {
   predicate isNeutral(Endpoint e);
 
   /**
+   * Gets a related location.
+   *
    * A related location is a source code location that may hold extra information about an endpoint that can be useful
    * to the machine learning model.
    *
