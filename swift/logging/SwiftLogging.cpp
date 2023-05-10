@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <optional>
 #include <unistd.h>
+#include "absl/strings/str_cat.h"
 
 #define LEVEL_REGEX_PATTERN "trace|debug|info|warning|error|critical|no_logs"
 
@@ -98,9 +99,8 @@ std::vector<std::string> Log::collectLevelRulesAndReturnProblems(const char* env
 void Log::configure() {
   // as we are configuring logging right now, we collect problems and log them at the end
   auto problems = collectLevelRulesAndReturnProblems("CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS");
-  auto logBaseName = std::to_string(std::chrono::system_clock::now().time_since_epoch().count());
-  logBaseName += '-';
-  logBaseName += std::to_string(getpid());
+  auto timestamp = std::chrono::system_clock::now().time_since_epoch().count();
+  auto logBaseName = absl::StrCat(timestamp, "-", getpid());
   if (text || binary) {
     std::filesystem::path logFile = getEnvOr("CODEQL_EXTRACTOR_SWIFT_LOG_DIR", "extractor-out/log");
     logFile /= "swift";
