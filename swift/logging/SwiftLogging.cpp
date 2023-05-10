@@ -131,24 +131,24 @@ void Log::configure() {
       binary.level = Level::no_logs;
       text.level = Level::no_logs;
     }
-    if (diagnostics) {
-      std::filesystem::path diagFile =
-          getEnvOr("CODEQL_EXTRACTOR_SWIFT_DIAGNOSTIC_DIR", "extractor-out/diagnostics");
-      diagFile /= programName;
-      diagFile /= logBaseName;
-      diagFile.replace_extension(".jsonl");
-      std::error_code ec;
-      std::filesystem::create_directories(diagFile.parent_path(), ec);
-      if (!ec) {
-        if (!diagnostics.output.open(diagFile)) {
-          problems.emplace_back("Unable to open diagnostics json file " + diagFile.string());
-          diagnostics.level = Level::no_logs;
-        }
-      } else {
-        problems.emplace_back("Unable to create diagnostics directory " +
-                              diagFile.parent_path().string() + ": " + ec.message());
+  }
+  if (diagnostics) {
+    std::filesystem::path diagFile =
+        getEnvOr("CODEQL_EXTRACTOR_SWIFT_DIAGNOSTIC_DIR", "extractor-out/diagnostics");
+    diagFile /= programName;
+    diagFile /= logBaseName;
+    diagFile.replace_extension(".jsonl");
+    std::error_code ec;
+    std::filesystem::create_directories(diagFile.parent_path(), ec);
+    if (!ec) {
+      if (!diagnostics.output.open(diagFile)) {
+        problems.emplace_back("Unable to open diagnostics json file " + diagFile.string());
         diagnostics.level = Level::no_logs;
       }
+    } else {
+      problems.emplace_back("Unable to create diagnostics directory " +
+                            diagFile.parent_path().string() + ": " + ec.message());
+      diagnostics.level = Level::no_logs;
     }
   }
   for (const auto& problem : problems) {
