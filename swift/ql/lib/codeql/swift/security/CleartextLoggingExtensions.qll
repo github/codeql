@@ -26,7 +26,11 @@ class CleartextLoggingAdditionalFlowStep extends Unit {
  * A sink defined in a CSV model.
  */
 private class DefaultCleartextLoggingSink extends CleartextLoggingSink {
-  DefaultCleartextLoggingSink() { sinkNode(this, "logging") }
+  DefaultCleartextLoggingSink() {
+    sinkNode(this, "log-injection")
+    or
+    sinkNode(this, "logging") // deprecated label
+  }
 }
 
 /**

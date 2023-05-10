@@ -39,6 +39,8 @@ private class DefaultUncontrolledFormatStringSink extends UncontrolledFormatStri
     this.asExpr() = any(FormattingFunctionCall fc).getFormat()
     or
     // a sink defined in a CSV model.
-    sinkNode(this, "uncontrolled-format-string")
+    sinkNode(this, "format-string")
+    or
+    sinkNode(this, "uncontrolled-format-string") // deprecated label
   }
 }

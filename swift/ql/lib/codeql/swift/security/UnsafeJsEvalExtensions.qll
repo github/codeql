@@ -144,5 +144,9 @@ private class DefaultUnsafeJsEvalAdditionalFlowStep extends UnsafeJsEvalAddition
  * A sink defined in a CSV model.
  */
 private class DefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
-  DefaultUnsafeJsEvalSink() { sinkNode(this, "js-eval") }
+  DefaultUnsafeJsEvalSink() {
+    sinkNode(this, "code-injection")
+    or
+    sinkNode(this, "js-eval") // deprecated label
+  }
 }
