@@ -12,6 +12,7 @@ View the query help for the queries included in the ``default``, ``security-exte
 - :doc:`CodeQL query help for Ruby <ruby>`
 
 .. include:: ../reusables/kotlin-beta-note.rst
+.. include:: ../reusables/swift-beta-note.rst
 
 .. pull-quote:: Information
 
