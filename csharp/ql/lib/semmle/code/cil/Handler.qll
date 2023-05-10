@@ -38,21 +38,21 @@ class Handler extends Element, EntryPoint, @cil_handler {
    * Holds if the instruction `i` is in the scope of this handler.
    */
   predicate isInScope(Instruction i) {
-    i.getImplementation() = getImplementation() and
-    i.getIndex() in [getTryStart().getIndex() .. getTryEnd().getIndex()]
+    i.getImplementation() = this.getImplementation() and
+    i.getIndex() in [this.getTryStart().getIndex() .. this.getTryEnd().getIndex()]
   }
 
   override string toString() { none() }
 
   override Instruction getASuccessorType(FlowType t) {
-    result = getHandlerStart() and
+    result = this.getHandlerStart() and
     t instanceof NormalFlow
   }
 
   /** Gets the type of the caught exception, if any. */
   Type getCaughtType() { cil_handler_type(this, result) }
 
-  override Location getLocation() { result = getTryStart().getLocation() }
+  override Location getLocation() { result = this.getTryStart().getLocation() }
 }
 
 /** A handler corresponding to a `finally` block. */
@@ -72,7 +72,7 @@ class FilterHandler extends Handler, @cil_filter_handler {
 
 /** A handler corresponding to a `catch` clause. */
 class CatchHandler extends Handler, @cil_catch_handler {
-  override string toString() { result = "catch(" + getCaughtType().getName() + ") {...}" }
+  override string toString() { result = "catch(" + this.getCaughtType().getName() + ") {...}" }
 
   override int getPushCount() { result = 1 }
 }
