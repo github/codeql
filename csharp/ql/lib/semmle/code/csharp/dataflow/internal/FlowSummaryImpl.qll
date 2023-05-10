@@ -335,7 +335,7 @@ module Public {
   class NeutralCallable extends SummarizedCallableBase {
     private Provenance provenance;
 
-    NeutralCallable() { neutralElement(this, provenance) }
+    NeutralCallable() { neutralSummaryElement(this, provenance) }
 
     /**
      * Holds if the neutral is auto generated.

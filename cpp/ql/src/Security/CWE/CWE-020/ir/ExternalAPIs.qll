@@ -38,7 +38,7 @@ class ExternalApiUsedWithUntrustedData extends TExternalApi {
 
   /** Gets the number of untrusted sources used with this external API. */
   int getNumberOfUntrustedSources() {
-    result = strictcount(getUntrustedDataNode().getAnUntrustedSource())
+    result = strictcount(this.getUntrustedDataNode().getAnUntrustedSource())
   }
 
   /** Gets a textual representation of this element. */

@@ -135,11 +135,11 @@ class Opcode extends TOpcode {
    * Holds if the instruction must have an operand with the specified `OperandTag`.
    */
   final predicate hasOperand(OperandTag tag) {
-    hasOperandInternal(tag)
+    this.hasOperandInternal(tag)
     or
-    hasAddressOperand() and tag instanceof AddressOperandTag
+    this.hasAddressOperand() and tag instanceof AddressOperandTag
     or
-    hasBufferSizeOperand() and tag instanceof BufferSizeOperandTag
+    this.hasBufferSizeOperand() and tag instanceof BufferSizeOperandTag
   }
 
   /**

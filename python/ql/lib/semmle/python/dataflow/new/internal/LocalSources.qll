@@ -51,6 +51,10 @@ class LocalSourceNode extends Node {
     // We explicitly include any read of a global variable, as some of these may have local flow going
     // into them.
     this = any(ModuleVariableNode mvn).getARead()
+    or
+    // We include all scope entry definitions, as these act as the local source within the scope they
+    // enter.
+    this.asVar() instanceof ScopeEntryDefinition
   }
 
   /** Holds if this `LocalSourceNode` can flow to `nodeTo` in one or more local flow steps. */
@@ -131,6 +135,21 @@ class LocalSourceNode extends Node {
    */
   pragma[inline]
   LocalSourceNode backtrack(TypeBackTracker t2, TypeBackTracker t) { t2 = t.step(result, this) }
+}
+
+/**
+ * A LocalSourceNode that is not a ModuleVariableNode
+ * This class provides a positive formulation of that in its charpred.
+ *
+ * Aka FutureLocalSourceNode (see FutureWork below), but until the future is here...
+ */
+class LocalSourceNodeNotModuleVariableNode extends LocalSourceNode {
+  cached
+  LocalSourceNodeNotModuleVariableNode() {
+    this instanceof ExprNode
+    or
+    this.asVar() instanceof ScopeEntryDefinition
+  }
 }
 
 /**

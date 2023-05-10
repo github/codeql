@@ -1540,7 +1540,7 @@ private module Cached {
   cached
   predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
     // Post update node -> Node flow
-    Ssa::ssaFlow(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
+    Ssa::postUpdateFlow(nodeFrom, nodeTo)
     or
     // Def-use/Use-use flow
     Ssa::ssaFlow(nodeFrom, nodeTo)
@@ -1903,11 +1903,120 @@ signature predicate guardChecksSig(IRGuardCondition g, Expr e, boolean branch);
  * in data flow and taint tracking.
  */
 module BarrierGuard<guardChecksSig/3 guardChecks> {
-  /** Gets a node that is safely guarded by the given guard check. */
+  /**
+   * Gets an expression node that is safely guarded by the given guard check.
+   *
+   * For example, given the following code:
+   * ```cpp
+   * int x = source();
+   * // ...
+   * if(is_safe_int(x)) {
+   *   sink(x);
+   * }
+   * ```
+   * and the following barrier guard predicate:
+   * ```ql
+   * predicate myGuardChecks(IRGuardCondition g, Expr e, boolean branch) {
+   *   exists(Call call |
+   *     g.getUnconvertedResultExpression() = call and
+   *     call.getTarget().hasName("is_safe_int") and
+   *     e = call.getAnArgument() and
+   *     branch = true
+   *   )
+   * }
+   * ```
+   * implementing `isBarrier` as:
+   * ```ql
+   * predicate isBarrier(DataFlow::Node barrier) {
+   *   barrier = DataFlow::BarrierGuard<myGuardChecks/3>::getABarrierNode()
+   * }
+   * ```
+   * will block flow from `x = source()` to `sink(x)`.
+   *
+   * NOTE: If an indirect expression is tracked, use `getAnIndirectBarrierNode` instead.
+   */
   ExprNode getABarrierNode() {
     exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
       e = value.getAnInstruction().getConvertedResultExpression() and
       result.getConvertedExpr() = e and
+      guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
+      g.controls(result.getBasicBlock(), edge)
+    )
+  }
+
+  /**
+   * Gets an indirect expression node that is safely guarded by the given guard check.
+   *
+   * For example, given the following code:
+   * ```cpp
+   * int* p;
+   * // ...
+   * *p = source();
+   * if(is_safe_pointer(p)) {
+   *   sink(*p);
+   * }
+   * ```
+   * and the following barrier guard check:
+   * ```ql
+   * predicate myGuardChecks(IRGuardCondition g, Expr e, boolean branch) {
+   *   exists(Call call |
+   *     g.getUnconvertedResultExpression() = call and
+   *     call.getTarget().hasName("is_safe_pointer") and
+   *     e = call.getAnArgument() and
+   *     branch = true
+   *   )
+   * }
+   * ```
+   * implementing `isBarrier` as:
+   * ```ql
+   * predicate isBarrier(DataFlow::Node barrier) {
+   *   barrier = DataFlow::BarrierGuard<myGuardChecks/3>::getAnIndirectBarrierNode()
+   * }
+   * ```
+   * will block flow from `x = source()` to `sink(x)`.
+   *
+   * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
+   */
+  IndirectExprNode getAnIndirectBarrierNode() { result = getAnIndirectBarrierNode(_) }
+
+  /**
+   * Gets an indirect expression node with indirection index `indirectionIndex` that is
+   * safely guarded by the given guard check.
+   *
+   * For example, given the following code:
+   * ```cpp
+   * int* p;
+   * // ...
+   * *p = source();
+   * if(is_safe_pointer(p)) {
+   *   sink(*p);
+   * }
+   * ```
+   * and the following barrier guard check:
+   * ```ql
+   * predicate myGuardChecks(IRGuardCondition g, Expr e, boolean branch) {
+   *   exists(Call call |
+   *     g.getUnconvertedResultExpression() = call and
+   *     call.getTarget().hasName("is_safe_pointer") and
+   *     e = call.getAnArgument() and
+   *     branch = true
+   *   )
+   * }
+   * ```
+   * implementing `isBarrier` as:
+   * ```ql
+   * predicate isBarrier(DataFlow::Node barrier) {
+   *   barrier = DataFlow::BarrierGuard<myGuardChecks/3>::getAnIndirectBarrierNode(1)
+   * }
+   * ```
+   * will block flow from `x = source()` to `sink(x)`.
+   *
+   * NOTE: If a non-indirect expression is tracked, use `getABarrierNode` instead.
+   */
+  IndirectExprNode getAnIndirectBarrierNode(int indirectionIndex) {
+    exists(IRGuardCondition g, Expr e, ValueNumber value, boolean edge |
+      e = value.getAnInstruction().getConvertedResultExpression() and
+      result.getConvertedExpr(indirectionIndex) = e and
       guardChecks(g, value.getAnInstruction().getConvertedResultExpression(), edge) and
       g.controls(result.getBasicBlock(), edge)
     )

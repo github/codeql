@@ -49,4 +49,4 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.util.logging", "Logger", "isLoggable", "(Level)", "manual"]
+      - ["java.util.logging", "Logger", "isLoggable", "(Level)", "summary", "manual"]

@@ -209,6 +209,19 @@ edges
 | test.cpp:207:17:207:19 | str indirection [string] | test.cpp:207:22:207:27 | string |
 | test.cpp:207:17:207:19 | str indirection [string] | test.cpp:207:22:207:27 | string indirection |
 | test.cpp:207:22:207:27 | string indirection | test.cpp:207:22:207:27 | string |
+| test.cpp:214:24:214:24 | p | test.cpp:216:10:216:10 | p |
+| test.cpp:220:43:220:48 | call to malloc | test.cpp:222:15:222:20 | buffer |
+| test.cpp:222:15:222:20 | buffer | test.cpp:214:24:214:24 | p |
+| test.cpp:228:43:228:48 | call to malloc | test.cpp:232:10:232:15 | buffer |
+| test.cpp:235:40:235:45 | buffer | test.cpp:236:5:236:26 | ... = ... |
+| test.cpp:236:5:236:26 | ... = ... | test.cpp:236:12:236:17 | p_str indirection [post update] [string] |
+| test.cpp:241:27:241:32 | call to malloc | test.cpp:242:22:242:27 | buffer |
+| test.cpp:242:16:242:19 | set_string output argument [string] | test.cpp:243:12:243:14 | str indirection [string] |
+| test.cpp:242:22:242:27 | buffer | test.cpp:235:40:235:45 | buffer |
+| test.cpp:242:22:242:27 | buffer | test.cpp:242:16:242:19 | set_string output argument [string] |
+| test.cpp:243:12:243:14 | str indirection [string] | test.cpp:243:12:243:21 | string |
+| test.cpp:243:12:243:14 | str indirection [string] | test.cpp:243:16:243:21 | string indirection |
+| test.cpp:243:16:243:21 | string indirection | test.cpp:243:12:243:21 | string |
 nodes
 | test.cpp:16:11:16:21 | mk_string_t indirection [string] | semmle.label | mk_string_t indirection [string] |
 | test.cpp:18:5:18:30 | ... = ... | semmle.label | ... = ... |
@@ -374,7 +387,23 @@ nodes
 | test.cpp:207:17:207:19 | str indirection [string] | semmle.label | str indirection [string] |
 | test.cpp:207:22:207:27 | string | semmle.label | string |
 | test.cpp:207:22:207:27 | string indirection | semmle.label | string indirection |
+| test.cpp:214:24:214:24 | p | semmle.label | p |
+| test.cpp:216:10:216:10 | p | semmle.label | p |
+| test.cpp:220:43:220:48 | call to malloc | semmle.label | call to malloc |
+| test.cpp:222:15:222:20 | buffer | semmle.label | buffer |
+| test.cpp:228:43:228:48 | call to malloc | semmle.label | call to malloc |
+| test.cpp:232:10:232:15 | buffer | semmle.label | buffer |
+| test.cpp:235:40:235:45 | buffer | semmle.label | buffer |
+| test.cpp:236:5:236:26 | ... = ... | semmle.label | ... = ... |
+| test.cpp:236:12:236:17 | p_str indirection [post update] [string] | semmle.label | p_str indirection [post update] [string] |
+| test.cpp:241:27:241:32 | call to malloc | semmle.label | call to malloc |
+| test.cpp:242:16:242:19 | set_string output argument [string] | semmle.label | set_string output argument [string] |
+| test.cpp:242:22:242:27 | buffer | semmle.label | buffer |
+| test.cpp:243:12:243:14 | str indirection [string] | semmle.label | str indirection [string] |
+| test.cpp:243:12:243:21 | string | semmle.label | string |
+| test.cpp:243:16:243:21 | string indirection | semmle.label | string indirection |
 subpaths
+| test.cpp:242:22:242:27 | buffer | test.cpp:235:40:235:45 | buffer | test.cpp:236:12:236:17 | p_str indirection [post update] [string] | test.cpp:242:16:242:19 | set_string output argument [string] |
 #select
 | test.cpp:42:5:42:11 | call to strncpy | test.cpp:18:19:18:24 | call to malloc | test.cpp:42:18:42:23 | string | This write may overflow $@ by 1 element. | test.cpp:42:18:42:23 | string | string |
 | test.cpp:72:9:72:15 | call to strncpy | test.cpp:18:19:18:24 | call to malloc | test.cpp:72:22:72:27 | string | This write may overflow $@ by 1 element. | test.cpp:72:22:72:27 | string | string |
@@ -391,3 +420,5 @@ subpaths
 | test.cpp:199:9:199:15 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:199:22:199:27 | string | This write may overflow $@ by 2 elements. | test.cpp:199:22:199:27 | string | string |
 | test.cpp:203:9:203:15 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:203:22:203:27 | string | This write may overflow $@ by 2 elements. | test.cpp:203:22:203:27 | string | string |
 | test.cpp:207:9:207:15 | call to strncpy | test.cpp:147:19:147:24 | call to malloc | test.cpp:207:22:207:27 | string | This write may overflow $@ by 3 elements. | test.cpp:207:22:207:27 | string | string |
+| test.cpp:232:3:232:8 | call to memset | test.cpp:228:43:228:48 | call to malloc | test.cpp:232:10:232:15 | buffer | This write may overflow $@ by 32 elements. | test.cpp:232:10:232:15 | buffer | buffer |
+| test.cpp:243:5:243:10 | call to memset | test.cpp:241:27:241:32 | call to malloc | test.cpp:243:12:243:21 | string | This write may overflow $@ by 1 element. | test.cpp:243:16:243:21 | string | string |
