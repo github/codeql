@@ -683,14 +683,14 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   // i.e. from `f(x)` where `x: T` into `f(.some(x))` where the context `f` expects a `T?`.
   exists(InjectIntoOptionalExpr e |
     e.convertsFrom(node1.asExpr()) and
-    node2 = node1 and // HACK: we should ideally have a separate Node case for the (hidden) InjectIntoOptionalExpr
+    node2 = node1 and // TODO: we should ideally have a separate Node case for the (hidden) InjectIntoOptionalExpr
     c instanceof OptionalSomeContentSet
   )
   or
   // creation of an optional by returning from a failable initializer (`init?`)
   exists(Initializer init |
     node1.asExpr().(CallExpr).getStaticTarget() = init and
-    node2 = node1 and // HACK: again, we should ideally have a separate Node case here, and not reuse the CallExpr
+    node2 = node1 and // TODO: again, we should ideally have a separate Node case here, and not reuse the CallExpr
     c instanceof OptionalSomeContentSet and
     init.isFailable()
   )
