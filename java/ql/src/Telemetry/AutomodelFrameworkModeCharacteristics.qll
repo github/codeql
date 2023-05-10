@@ -35,8 +35,16 @@ newtype JavaRelatedLocationType =
   MethodDoc() or
   ClassDoc()
 
-// for documentation of the implementations here, see the QLDoc in the CandidateSig signature module.
+/**
+ * A candidates implementation for framework mode.
+ *
+ * Some important notes:
+ *  - This mode is using parameters as endpoints.
+ *  - Sink- and neutral-information is being used from MaD models.
+ *  - When available, we use method- and class-java-docs as related locations.
+ */
 module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
+  // for documentation of the implementations here, see the QLDoc in the CandidateSig signature module.
   class Endpoint = DataFlow::ParameterNode;
 
   class EndpointType = AutomodelEndpointTypes::EndpointType;
