@@ -782,7 +782,7 @@ func getVersionWhenGoModVersionTooHigh(v versionInfo) (msg, version string) {
 		") is above the supported range (" + minGoVersion + "-" + maxGoVersion +
 		"). Writing an environment file not specifying any version of Go."
 	version = ""
-	diagnostics.EmitUnsupportedVersionGoMod(msg)
+	diagnostics.EmitGoModVersionTooHigh(msg)
 
 	return msg, version
 }
@@ -799,7 +799,7 @@ func getVersionWhenGoModVersionTooLow(v versionInfo) (msg, version string) {
 			"). No version of Go installed. Writing an environment file specifying the " +
 			"minimum supported version of Go (" + minGoVersion + ")."
 		version = minGoVersion
-		diagnostics.EmitNoGoEnv(msg)
+		diagnostics.EmitGoModVersionTooLowAndNoGoEnv(msg)
 	} else if outsideSupportedRange(v.goEnvVersion) {
 		// The version of Go that is installed is outside of the supported range. The version
 		// in the `go.mod` file is below the supported range. Go versions are generally
@@ -811,7 +811,7 @@ func getVersionWhenGoModVersionTooLow(v versionInfo) (msg, version string) {
 			"Writing an environment file specifying the minimum supported version of Go (" +
 			minGoVersion + ")."
 		version = minGoVersion
-		diagnostics.EmitVersionGoModSupportedAndGoEnvUnsupported(msg)
+		diagnostics.EmitGoModVersionTooLowAndEnvVersionUnsupported(msg)
 	} else {
 		// The version of Go that is installed is supported. The version in the `go.mod` file is
 		// below the supported range. We do not install a version of Go.
@@ -819,7 +819,7 @@ func getVersionWhenGoModVersionTooLow(v versionInfo) (msg, version string) {
 			") is supported and is high enough for the version found in the `go.mod` file (" +
 			v.goModVersion + "). Writing an environment file not specifying any version of Go."
 		version = ""
-		diagnostics.EmitVersionGoModNotHigherVersionEnvironment(msg)
+		diagnostics.EmitGoModVersionTooLowAndEnvVersionSupported(msg)
 	}
 
 	return msg, version
@@ -834,7 +834,7 @@ func getVersionWhenGoModVersionSupported(v versionInfo) (msg, version string) {
 		msg = "No version of Go installed. Writing an environment file specifying the version " +
 			"of Go found in the `go.mod` file (" + v.goModVersion + ")."
 		version = v.goModVersion
-		diagnostics.EmitNoGoEnv(msg)
+		diagnostics.EmitGoModVersionSupportedAndNoGoEnv(msg)
 	} else if outsideSupportedRange(v.goEnvVersion) {
 		// The version of Go that is installed is outside of the supported range. The version in
 		// the `go.mod` file is supported. We install the version from the `go.mod` file.
@@ -843,7 +843,7 @@ func getVersionWhenGoModVersionSupported(v versionInfo) (msg, version string) {
 			"Writing an environment file specifying the version of Go from the `go.mod` file (" +
 			v.goModVersion + ")."
 		version = v.goModVersion
-		diagnostics.EmitVersionGoModSupportedAndGoEnvUnsupported(msg)
+		diagnostics.EmitGoModVersionSupportedAndGoEnvUnsupported(msg)
 	} else if semver.Compare("v"+v.goModVersion, "v"+v.goEnvVersion) > 0 {
 		// The version of Go that is installed is supported. The version in the `go.mod` file is
 		// supported and is higher than the version that is installed. We install the version from
@@ -853,7 +853,7 @@ func getVersionWhenGoModVersionSupported(v versionInfo) (msg, version string) {
 			"). Writing an environment file specifying the version of Go from the `go.mod` " +
 			"file (" + v.goModVersion + ")."
 		version = v.goModVersion
-		diagnostics.EmitVersionGoModHigherVersionEnvironment(msg)
+		diagnostics.EmitGoModVersionSupportedHigherGoEnv(msg)
 	} else {
 		// The version of Go that is installed is supported. The version in the `go.mod` file is
 		// supported and is lower than or equal to the version that is installed. We do not install
@@ -862,7 +862,7 @@ func getVersionWhenGoModVersionSupported(v versionInfo) (msg, version string) {
 			") is supported and is high enough for the version found in the `go.mod` file (" +
 			v.goModVersion + "). Writing an environment file not specifying any version of Go."
 		version = ""
-		diagnostics.EmitVersionGoModNotHigherVersionEnvironment(msg)
+		diagnostics.EmitGoModVersionSupportedLowerEqualGoEnv(msg)
 	}
 
 	return msg, version
