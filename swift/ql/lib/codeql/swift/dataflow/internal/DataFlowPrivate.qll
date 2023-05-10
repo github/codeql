@@ -433,8 +433,6 @@ private module ArgumentNodes {
     ObserverArgumentNode() {
       observer.getBase() = this.getCfgNode()
       or
-      // TODO: This should be an rvalue representing the `getBase` when
-      // `observer` a `didSet` observer.
       observer.getSource() = this.getCfgNode()
     }
 
@@ -444,7 +442,6 @@ private module ArgumentNodes {
         pos = TThisArgument() and
         observer.getBase() = this.getCfgNode()
         or
-        // TODO: See the comment above for `didSet` observers.
         pos.(PositionalArgumentPosition).getIndex() = 0 and
         observer.getSource() = this.getCfgNode()
       )
