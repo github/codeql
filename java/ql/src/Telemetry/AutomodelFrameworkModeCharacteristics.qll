@@ -98,7 +98,9 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
     FrameworkCandidatesImpl::getCallable(e).hasQualifiedName(package, type, name) and
     signature = ExternalFlow::paramsString(getCallable(e)) and
     ext = "" and
-    exists(int paramIdx | e.isParameterOf(_, paramIdx) | input = "Argument[" + paramIdx + "]")
+    exists(int paramIdx | e.isParameterOf(_, paramIdx) |
+      if paramIdx = -1 then input = "Argument[this]" else input = "Argument[" + paramIdx + "]"
+    )
   }
 
   /**
