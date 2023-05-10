@@ -10,6 +10,7 @@
 
 private import AutomodelFrameworkModeCharacteristics
 private import AutomodelEndpointTypes
+private import AutomodelSharedUtil
 
 from
   Endpoint endpoint, SinkType sinkType, MetadataExtractor meta, string package, string type,
@@ -25,5 +26,9 @@ select endpoint,
   sinkType + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
-  package, "package", type, "type", subtypes.toString(), "subtypes", name, "name", signature,
-  "signature", input.toString(), "input" //
+  package.(DollarAtString), "package", //
+  type.(DollarAtString), "type", //
+  subtypes.toString().(DollarAtString), "subtypes", //
+  name.(DollarAtString), "name", //
+  signature.(DollarAtString), "signature", //
+  input.toString().(DollarAtString), "input" //
