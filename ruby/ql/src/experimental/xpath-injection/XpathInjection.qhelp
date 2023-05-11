@@ -1,0 +1,37 @@
+<!DOCTYPE qhelp PUBLIC "-//Semmle//qhelp//EN" "qhelp.dtd">
+<qhelp>
+
+<overview>
+<p>
+If an XPath expression is built using string concatenation, and the components of the concatenation
+include user input, it makes it very easy for a user to create a malicious XPath expression.
+</p>
+</overview>
+
+<recommendation>
+<p>
+If user input must be included in an XPath expression, either sanitize the data or use variable
+references to safely embed it without altering the structure of the expression.
+</p>
+</recommendation>
+
+<example>
+<p>
+The following example uses the <code>nokogiri</code>, <code>rexml</code> and <code>libxml</code> XML parsers to parse a string <code>xml</code>.
+Then the xpath query is controlled by the user and hence leads to a vulnerability.
+</p>
+<sample src="examples/XPathBad.rb"/>
+
+<p>
+To guard against XPath Injection attacks, the user input should be sanitized.
+</p>
+<sample src="examples/XPathGood.rb"/>
+</example>
+
+<references>
+<li>
+OWASP:
+<a href="https://owasp.org/www-community/attacks/XPATH_Injection">XPath injection</a>.
+</li>
+</references>
+</qhelp>

@@ -841,6 +841,58 @@ module XmlParserCall {
 }
 
 /**
+ * A data-flow node that constructs an XPath expression.
+ *
+ * If it is important that the XPath expression is indeed executed, then use `XPathExecution`.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `XPathConstruction::Range` instead.
+ */
+class XPathConstruction extends DataFlow::Node instanceof XPathConstruction::Range {
+  /** Gets the argument that specifies the XPath expressions to be constructed. */
+  DataFlow::Node getXPath() { result = super.getXPath() }
+}
+
+/** Provides a class for modeling new XPath construction APIs. */
+module XPathConstruction {
+  /**
+   * A data-flow node that constructs an XPath expression.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `XPathConstruction` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the XPath expressions to be constructed. */
+    abstract DataFlow::Node getXPath();
+  }
+}
+
+/**
+ * A data-flow node that executes an XPath expression.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `XPathExecution::Range` instead.
+ */
+class XPathExecution extends DataFlow::Node instanceof XPathExecution::Range {
+  /** Gets the argument that specifies the XPath expressions to be executed. */
+  DataFlow::Node getXPath() { result = super.getXPath() }
+}
+
+/** Provides a class for modeling new XPath execution APIs. */
+module XPathExecution {
+  /**
+   * A data-flow node that executes an XPath expression.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `XPathExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the XPath expressions to be executed. */
+    abstract DataFlow::Node getXPath();
+  }
+}
+
+/**
  * A data-flow node that may represent a database object in an ORM system.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
