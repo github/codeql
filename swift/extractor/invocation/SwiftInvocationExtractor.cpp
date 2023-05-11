@@ -4,13 +4,20 @@
 #include "swift/extractor/trap/generated/TrapTags.h"
 #include "swift/extractor/infra/file/TargetFile.h"
 #include "swift/extractor/infra/file/Path.h"
-#include "swift/extractor/trap/LinkDomain.h"
+#include "swift/logging/SwiftAssert.h"
+#include "swift/extractor/mangler/SwiftMangler.h"
 
 namespace fs = std::filesystem;
 using namespace std::string_literals;
 
 namespace codeql {
 namespace {
+
+Logger& logger() {
+  static Logger ret{"invocation"};
+  return ret;
+}
+
 std::string getModuleId(const std::string_view& name, const std::string_view& hash) {
   auto ret = "module:"s;
   ret += name;
@@ -65,7 +72,8 @@ std::vector<ModuleInfo> emitModuleImplementations(SwiftExtractorState& state,
     if (auto hash = getModuleHash(modulePath)) {
       auto target = getModuleTarget(moduleName, *hash);
       if (auto moduleTrap = createTargetTrapDomain(state, target, TrapType::linkage)) {
-        moduleTrap->createLabelWithImplementationId<ModuleDeclTag>(*hash, moduleName);
+        moduleTrap->createTypedLabelWithImplementationId<ModuleDeclTag>(
+            SwiftMangler::mangleModuleName(moduleName), *hash);
         ret.push_back({target, getModuleId(moduleName, *hash)});
       }
     }
@@ -108,10 +116,8 @@ void replaceMergedModulesImplementation(const SwiftExtractorState& state,
   fs::copy(getTrapPath(state, mergeTarget, TrapType::linkage),
            getTrapPath(state, mergedPartTarget, TrapType::linkage),
            fs::copy_options::overwrite_existing, ec);
-  if (ec) {
-    std::cerr << "unable to replace trap implementation id for merged module '" << name << "' ("
-              << ec.message() << ")";
-  }
+  CODEQL_ASSERT(!ec, "Unable to replace trap implementation id for merged module '{}' ({})", name,
+                ec);
 }
 
 void emitModuleObjectDependencies(const SwiftExtractorState& state,

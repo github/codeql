@@ -12,17 +12,7 @@
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.UrlRedirect
-
-module UrlRedirectLocalConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
-
-  predicate isSink(DataFlow::Node sink) { sink instanceof UrlRedirectSink }
-}
-
-module UrlRedirectLocalFlow = TaintTracking::Global<UrlRedirectLocalConfig>;
-
+import semmle.code.java.security.UrlRedirectLocalQuery
 import UrlRedirectLocalFlow::PathGraph
 
 from UrlRedirectLocalFlow::PathNode source, UrlRedirectLocalFlow::PathNode sink

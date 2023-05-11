@@ -17,33 +17,33 @@ import IDEContextual
  */
 private class LocationOverridingMethodAccess extends MethodAccess {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
-    exists(MemberRefExpr e | e.getReferencedCallable() = getMethod() |
+    exists(MemberRefExpr e | e.getReferencedCallable() = this.getMethod() |
       exists(int elRef, int ecRef | e.hasLocationInfo(path, _, _, elRef, ecRef) |
         sl = elRef and
-        sc = ecRef - getMethod().getName().length() + 1 and
+        sc = ecRef - this.getMethod().getName().length() + 1 and
         el = elRef and
         ec = ecRef
       )
     )
     or
-    not exists(MemberRefExpr e | e.getReferencedCallable() = getMethod()) and
+    not exists(MemberRefExpr e | e.getReferencedCallable() = this.getMethod()) and
     exists(int slSuper, int scSuper, int elSuper, int ecSuper |
       super.hasLocationInfo(path, slSuper, scSuper, elSuper, ecSuper)
     |
       (
-        if exists(getTypeArgument(_))
+        if exists(this.getTypeArgument(_))
         then
           exists(Location locTypeArg |
-            locTypeArg = getTypeArgument(count(getTypeArgument(_)) - 1).getLocation()
+            locTypeArg = this.getTypeArgument(count(this.getTypeArgument(_)) - 1).getLocation()
           |
             sl = locTypeArg.getEndLine() and
             sc = locTypeArg.getEndColumn() + 2
           )
         else (
-          if exists(getQualifier())
+          if exists(this.getQualifier())
           then
             // Note: this needs to be the original (full) location of the qualifier, not the modified one.
-            exists(Location locQual | locQual = getQualifier().getLocation() |
+            exists(Location locQual | locQual = this.getQualifier().getLocation() |
               sl = locQual.getEndLine() and
               sc = locQual.getEndColumn() + 2
             )
@@ -54,10 +54,10 @@ private class LocationOverridingMethodAccess extends MethodAccess {
         )
       ) and
       (
-        if getNumArgument() > 0
+        if this.getNumArgument() > 0
         then
           // Note: this needs to be the original (full) location of the first argument, not the modified one.
-          exists(Location locArg | locArg = getArgument(0).getLocation() |
+          exists(Location locArg | locArg = this.getArgument(0).getLocation() |
             el = locArg.getStartLine() and
             ec = locArg.getStartColumn() - 2
           )
@@ -80,10 +80,10 @@ private class LocationOverridingTypeAccess extends TypeAccess {
       super.hasLocationInfo(path, slSuper, scSuper, elSuper, ecSuper)
     |
       (
-        if exists(getQualifier())
+        if exists(this.getQualifier())
         then
           // Note: this needs to be the original (full) location of the qualifier, not the modified one.
-          exists(Location locQual | locQual = getQualifier().getLocation() |
+          exists(Location locQual | locQual = this.getQualifier().getLocation() |
             sl = locQual.getEndLine() and
             sc = locQual.getEndColumn() + 2
           )
@@ -93,10 +93,10 @@ private class LocationOverridingTypeAccess extends TypeAccess {
         )
       ) and
       (
-        if exists(getTypeArgument(_))
+        if exists(this.getTypeArgument(_))
         then
           // Note: this needs to be the original (full) location of the first type argument, not the modified one.
-          exists(Location locArg | locArg = getTypeArgument(0).getLocation() |
+          exists(Location locArg | locArg = this.getTypeArgument(0).getLocation() |
             el = locArg.getStartLine() and
             ec = locArg.getStartColumn() - 2
           )
@@ -117,7 +117,7 @@ private class LocationOverridingFieldAccess extends FieldAccess {
   override predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     super.hasLocationInfo(path, _, _, el, ec) and
     sl = el and
-    sc = ec - getField().getName().length() + 1
+    sc = ec - this.getField().getName().length() + 1
   }
 }
 
@@ -131,7 +131,7 @@ private class LocationOverridingImportType extends ImportType {
       el = elSuper and
       ec = ecSuper - 1 and
       sl = el and
-      sc = ecSuper - getImportedType().getName().length()
+      sc = ecSuper - this.getImportedType().getName().length()
     )
   }
 }
@@ -146,7 +146,7 @@ private class LocationOverridingImportStaticTypeMember extends ImportStaticTypeM
       el = elSuper and
       ec = ecSuper - 1 and
       sl = el and
-      sc = ecSuper - getName().length()
+      sc = ecSuper - this.getName().length()
     )
   }
 }

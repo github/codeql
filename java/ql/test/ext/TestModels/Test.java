@@ -93,7 +93,7 @@ public class Test {
             sink(sj1.add((CharSequence)source())); // $hasTaintFlow
 
             StringJoiner sj2 = (StringJoiner)source();
-            sink(sj2.add("test")); // $hasTaintFlow
+            sink(sj2.add("test")); // $hasValueFlow
         }
 
         // top 300-500 JDK APIs tests

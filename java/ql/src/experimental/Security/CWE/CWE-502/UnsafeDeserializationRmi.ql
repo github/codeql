@@ -24,10 +24,10 @@ import BindingUnsafeRemoteObjectFlow::PathGraph
 private class BindMethod extends Method {
   BindMethod() {
     (
-      getDeclaringType().hasQualifiedName("java.rmi", "Naming") or
-      getDeclaringType().hasQualifiedName("java.rmi.registry", "Registry")
+      this.getDeclaringType().hasQualifiedName("java.rmi", "Naming") or
+      this.getDeclaringType().hasQualifiedName("java.rmi.registry", "Registry")
     ) and
-    hasName(["bind", "rebind"])
+    this.hasName(["bind", "rebind"])
   }
 }
 

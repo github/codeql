@@ -5,14 +5,14 @@ import semmle.code.java.security.ExternalProcess
 
 /** The class `org.apache.commons.exec.CommandLine`. */
 private class TypeCommandLine extends Class {
-  TypeCommandLine() { hasQualifiedName("org.apache.commons.exec", "CommandLine") }
+  TypeCommandLine() { this.hasQualifiedName("org.apache.commons.exec", "CommandLine") }
 }
 
 /** The `parse()` method of the class `org.apache.commons.exec.CommandLine`. */
 private class MethodCommandLineParse extends Method, ExecCallable {
   MethodCommandLineParse() {
-    getDeclaringType() instanceof TypeCommandLine and
-    hasName("parse")
+    this.getDeclaringType() instanceof TypeCommandLine and
+    this.hasName("parse")
   }
 
   override int getAnExecutedArgument() { result = 0 }
@@ -21,8 +21,8 @@ private class MethodCommandLineParse extends Method, ExecCallable {
 /** The `addArguments()` method of the class `org.apache.commons.exec.CommandLine`. */
 private class MethodCommandLineAddArguments extends Method, ExecCallable {
   MethodCommandLineAddArguments() {
-    getDeclaringType() instanceof TypeCommandLine and
-    hasName("addArguments")
+    this.getDeclaringType() instanceof TypeCommandLine and
+    this.hasName("addArguments")
   }
 
   override int getAnExecutedArgument() { result = 0 }

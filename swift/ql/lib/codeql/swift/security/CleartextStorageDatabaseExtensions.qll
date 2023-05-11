@@ -15,16 +15,16 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class CleartextStorageDatabaseSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for cleartext database storage vulnerabilities.
+ * A barrier for cleartext database storage vulnerabilities.
  */
-abstract class CleartextStorageDatabaseSanitizer extends DataFlow::Node { }
+abstract class CleartextStorageDatabaseBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class CleartextStorageDatabaseAdditionalTaintStep extends Unit {
+class CleartextStorageDatabaseAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to cleartext database storage vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
@@ -38,7 +38,7 @@ private class CoreDataStore extends CleartextStorageDatabaseSink {
     // values written into Core Data objects through `set*Value` methods are a sink.
     exists(CallExpr call |
       call.getStaticTarget()
-          .(MethodDecl)
+          .(Method)
           .hasQualifiedName("NSManagedObject",
             ["setValue(_:forKey:)", "setPrimitiveValue(_:forKey:)"]) and
       call.getArgument(0).getExpr() = this.asExpr()
@@ -114,16 +114,16 @@ private class CleartextStorageDatabaseSinks extends SinkModelCsv {
 }
 
 /**
- * An encryption sanitizer for cleartext database storage vulnerabilities.
+ * An encryption barrier for cleartext database storage vulnerabilities.
  */
-private class CleartextStorageDatabaseEncryptionSanitizer extends CleartextStorageDatabaseSanitizer {
-  CleartextStorageDatabaseEncryptionSanitizer() { this.asExpr() instanceof EncryptedExpr }
+private class CleartextStorageDatabaseEncryptionBarrier extends CleartextStorageDatabaseBarrier {
+  CleartextStorageDatabaseEncryptionBarrier() { this.asExpr() instanceof EncryptedExpr }
 }
 
 /**
  * An additional taint step for cleartext database storage vulnerabilities.
  */
-private class CleartextStorageDatabaseArrayAdditionalTaintStep extends CleartextStorageDatabaseAdditionalTaintStep
+private class CleartextStorageDatabaseArrayAdditionalFlowStep extends CleartextStorageDatabaseAdditionalFlowStep
 {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     // needed until we have proper content flow through arrays.

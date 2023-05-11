@@ -50,7 +50,7 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
    * We don't handle the case where `a` and `b` are both non-constant values.
    */
   ConstantRShiftExprRange() {
-    getUnspecifiedType() instanceof IntegralType and
+    this.getUnspecifiedType() instanceof IntegralType and
     exists(Expr l, Expr r |
       l = this.(RShiftExpr).getLeftOperand() and
       r = this.(RShiftExpr).getRightOperand()
@@ -84,10 +84,10 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
 
   override float getLowerBounds() {
     exists(int lLower, int lUpper, int rLower, int rUpper |
-      lLower = getFullyConvertedLowerBounds(getLeftOperand()) and
-      lUpper = getFullyConvertedUpperBounds(getLeftOperand()) and
-      rLower = getFullyConvertedLowerBounds(getRightOperand()) and
-      rUpper = getFullyConvertedUpperBounds(getRightOperand()) and
+      lLower = getFullyConvertedLowerBounds(this.getLeftOperand()) and
+      lUpper = getFullyConvertedUpperBounds(this.getLeftOperand()) and
+      rLower = getFullyConvertedLowerBounds(this.getRightOperand()) and
+      rUpper = getFullyConvertedUpperBounds(this.getRightOperand()) and
       lLower <= lUpper and
       rLower <= rUpper
     |
@@ -95,8 +95,8 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
         lLower < 0
         or
         not (
-          isValidShiftExprShift(rLower, getLeftOperand()) and
-          isValidShiftExprShift(rUpper, getLeftOperand())
+          isValidShiftExprShift(rLower, this.getLeftOperand()) and
+          isValidShiftExprShift(rUpper, this.getLeftOperand())
         )
       then
         // We don't want to deal with shifting negative numbers at the moment,
@@ -111,10 +111,10 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
 
   override float getUpperBounds() {
     exists(int lLower, int lUpper, int rLower, int rUpper |
-      lLower = getFullyConvertedLowerBounds(getLeftOperand()) and
-      lUpper = getFullyConvertedUpperBounds(getLeftOperand()) and
-      rLower = getFullyConvertedLowerBounds(getRightOperand()) and
-      rUpper = getFullyConvertedUpperBounds(getRightOperand()) and
+      lLower = getFullyConvertedLowerBounds(this.getLeftOperand()) and
+      lUpper = getFullyConvertedUpperBounds(this.getLeftOperand()) and
+      rLower = getFullyConvertedLowerBounds(this.getRightOperand()) and
+      rUpper = getFullyConvertedUpperBounds(this.getRightOperand()) and
       lLower <= lUpper and
       rLower <= rUpper
     |
@@ -122,8 +122,8 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
         lLower < 0
         or
         not (
-          isValidShiftExprShift(rLower, getLeftOperand()) and
-          isValidShiftExprShift(rUpper, getLeftOperand())
+          isValidShiftExprShift(rLower, this.getLeftOperand()) and
+          isValidShiftExprShift(rUpper, this.getLeftOperand())
         )
       then
         // We don't want to deal with shifting negative numbers at the moment,
@@ -137,7 +137,7 @@ class ConstantRShiftExprRange extends SimpleRangeAnalysisExpr {
   }
 
   override predicate dependsOnChild(Expr child) {
-    child = getLeftOperand() or child = getRightOperand()
+    child = this.getLeftOperand() or child = this.getRightOperand()
   }
 }
 
@@ -163,7 +163,7 @@ class ConstantLShiftExprRange extends SimpleRangeAnalysisExpr {
    * We don't handle the case where `a` and `b` are both non-constant values.
    */
   ConstantLShiftExprRange() {
-    getUnspecifiedType() instanceof IntegralType and
+    this.getUnspecifiedType() instanceof IntegralType and
     exists(Expr l, Expr r |
       l = this.(LShiftExpr).getLeftOperand() and
       r = this.(LShiftExpr).getRightOperand()
@@ -197,10 +197,10 @@ class ConstantLShiftExprRange extends SimpleRangeAnalysisExpr {
 
   override float getLowerBounds() {
     exists(int lLower, int lUpper, int rLower, int rUpper |
-      lLower = getFullyConvertedLowerBounds(getLeftOperand()) and
-      lUpper = getFullyConvertedUpperBounds(getLeftOperand()) and
-      rLower = getFullyConvertedLowerBounds(getRightOperand()) and
-      rUpper = getFullyConvertedUpperBounds(getRightOperand()) and
+      lLower = getFullyConvertedLowerBounds(this.getLeftOperand()) and
+      lUpper = getFullyConvertedUpperBounds(this.getLeftOperand()) and
+      rLower = getFullyConvertedLowerBounds(this.getRightOperand()) and
+      rUpper = getFullyConvertedUpperBounds(this.getRightOperand()) and
       lLower <= lUpper and
       rLower <= rUpper
     |
@@ -208,8 +208,8 @@ class ConstantLShiftExprRange extends SimpleRangeAnalysisExpr {
         lLower < 0
         or
         not (
-          isValidShiftExprShift(rLower, getLeftOperand()) and
-          isValidShiftExprShift(rUpper, getLeftOperand())
+          isValidShiftExprShift(rLower, this.getLeftOperand()) and
+          isValidShiftExprShift(rUpper, this.getLeftOperand())
         )
       then
         // We don't want to deal with shifting negative numbers at the moment,
@@ -228,10 +228,10 @@ class ConstantLShiftExprRange extends SimpleRangeAnalysisExpr {
 
   override float getUpperBounds() {
     exists(int lLower, int lUpper, int rLower, int rUpper |
-      lLower = getFullyConvertedLowerBounds(getLeftOperand()) and
-      lUpper = getFullyConvertedUpperBounds(getLeftOperand()) and
-      rLower = getFullyConvertedLowerBounds(getRightOperand()) and
-      rUpper = getFullyConvertedUpperBounds(getRightOperand()) and
+      lLower = getFullyConvertedLowerBounds(this.getLeftOperand()) and
+      lUpper = getFullyConvertedUpperBounds(this.getLeftOperand()) and
+      rLower = getFullyConvertedLowerBounds(this.getRightOperand()) and
+      rUpper = getFullyConvertedUpperBounds(this.getRightOperand()) and
       lLower <= lUpper and
       rLower <= rUpper
     |
@@ -239,8 +239,8 @@ class ConstantLShiftExprRange extends SimpleRangeAnalysisExpr {
         lLower < 0
         or
         not (
-          isValidShiftExprShift(rLower, getLeftOperand()) and
-          isValidShiftExprShift(rUpper, getLeftOperand())
+          isValidShiftExprShift(rLower, this.getLeftOperand()) and
+          isValidShiftExprShift(rUpper, this.getLeftOperand())
         )
       then
         // We don't want to deal with shifting negative numbers at the moment,
@@ -258,6 +258,6 @@ class ConstantLShiftExprRange extends SimpleRangeAnalysisExpr {
   }
 
   override predicate dependsOnChild(Expr child) {
-    child = getLeftOperand() or child = getRightOperand()
+    child = this.getLeftOperand() or child = this.getRightOperand()
   }
 }

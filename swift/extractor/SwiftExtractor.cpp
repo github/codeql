@@ -5,6 +5,7 @@
 #include <unordered_set>
 #include <queue>
 
+#include <picosha2.h>
 #include <swift/AST/SourceFile.h>
 #include <swift/AST/Builtins.h>
 
@@ -14,19 +15,23 @@
 #include "swift/extractor/infra/SwiftLocationExtractor.h"
 #include "swift/extractor/infra/SwiftBodyEmissionStrategy.h"
 #include "swift/extractor/mangler/SwiftMangler.h"
-#include <picosha2.h>
+#include "swift/logging/SwiftAssert.h"
 
 using namespace codeql;
 using namespace std::string_literals;
 namespace fs = std::filesystem;
 
+Logger& main_logger::logger() {
+  static Logger ret{"main"};
+  return ret;
+}
+
+using namespace main_logger;
+
 static void ensureDirectory(const char* label, const fs::path& dir) {
   std::error_code ec;
   fs::create_directories(dir, ec);
-  if (ec) {
-    std::cerr << "Cannot create " << label << " directory: " << ec.message() << "\n";
-    std::abort();
-  }
+  CODEQL_ASSERT(!ec, "Cannot create {} directory ({})", label, ec);
 }
 
 static void archiveFile(const SwiftExtractorConfiguration& config, swift::SourceFile& file) {
@@ -37,11 +42,31 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
 
   std::error_code ec;
   fs::copy(source, destination, fs::copy_options::overwrite_existing, ec);
-
   if (ec) {
-    std::cerr << "Cannot archive source file " << source << " -> " << destination << ": "
-              << ec.message() << "\n";
+    LOG_INFO(
+        "Cannot archive source file {} -> {}, probably a harmless race with another process ({})",
+        source, destination, ec);
   }
+}
+
+// TODO: This should be factored out/replaced with simplified version of custom mangling
+static std::string mangledDeclName(const swift::ValueDecl& decl) {
+  std::string_view moduleName = decl.getModuleContext()->getRealName().str();
+  // ASTMangler::mangleAnyDecl crashes when called on `ModuleDecl`
+  if (decl.getKind() == swift::DeclKind::Module) {
+    return std::string{moduleName};
+  }
+  swift::Mangle::ASTMangler mangler;
+  if (decl.getKind() == swift::DeclKind::TypeAlias) {
+    // In cases like this (when coming from PCM)
+    //  typealias CFXMLTree = CFTree
+    //  typealias CFXMLTreeRef = CFXMLTree
+    // mangleAnyDecl mangles both CFXMLTree and CFXMLTreeRef into 'So12CFXMLTreeRefa'
+    // which is not correct and causes inconsistencies. mangleEntity makes these two distinct
+    // prefix adds a couple of special symbols, we don't necessary need them
+    return mangler.mangleEntity(&decl);
+  }
+  return mangler.mangleAnyDecl(&decl, /* prefix = */ false);
 }
 
 static fs::path getFilename(swift::ModuleDecl& module,
@@ -52,15 +77,15 @@ static fs::path getFilename(swift::ModuleDecl& module,
   }
   if (lazyDeclaration) {
     // this code will be thrown away in the near future
-    SwiftMangler mangler;
-    auto mangled = mangler.mangledName(*lazyDeclaration);
+    auto decl = llvm::dyn_cast<swift::ValueDecl>(lazyDeclaration);
+    CODEQL_ASSERT(decl, "not a ValueDecl");
+    auto mangled = mangledDeclName(*decl);
     // mangled name can be too long to use as a file name, so we can't use it directly
     mangled = picosha2::hash256_hex_string(mangled);
     std::string ret;
     ret += module.getRealName().str();
     ret += '_';
-    // lazyDeclaration must be a ValueDecl, as already asserted in SwiftMangler::mangledName
-    ret += llvm::cast<swift::ValueDecl>(lazyDeclaration)->getBaseName().userFacingName();
+    ret += decl->getBaseName().userFacingName();
     ret += '_';
     // half a SHA2 is enough
     ret += std::string_view(mangled).substr(0, mangled.size() / 2);
@@ -256,11 +281,9 @@ void codeql::extractExtractLazyDeclarations(SwiftExtractorState& state,
   // Just in case
   const int upperBound = 100;
   int iteration = 0;
-  while (!state.pendingDeclarations.empty() && iteration++ < upperBound) {
+  while (!state.pendingDeclarations.empty()) {
+    CODEQL_ASSERT(iteration++ < upperBound,
+                  "Swift extractor reached upper bound while extracting lazy declarations");
     extractLazy(state, compiler);
-  }
-  if (iteration >= upperBound) {
-    std::cerr << "Swift extractor reached upper bound while extracting lazy declarations\n";
-    abort();
   }
 }

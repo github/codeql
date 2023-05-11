@@ -115,7 +115,18 @@ postWithInFlow
 | test.cpp:602:3:602:7 | access to array [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:608:3:608:4 | * ... [post update] | PostUpdateNode should not be the target of local flow. |
 | test.cpp:608:4:608:4 | p [inner post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:639:3:639:3 | x [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:646:3:646:3 | x [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:652:3:652:3 | x [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:653:3:653:3 | x [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:659:3:659:3 | x [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:660:3:660:3 | x [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:671:3:671:3 | s [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:681:3:681:3 | s [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:689:3:689:3 | s [post update] | PostUpdateNode should not be the target of local flow. |
+| test.cpp:690:3:690:3 | s [post update] | PostUpdateNode should not be the target of local flow. |
 viableImplInCallContextTooLarge
 uniqueParameterNodeAtPosition
 uniqueParameterNodePosition
 uniqueContentApprox
+identityLocalStep
