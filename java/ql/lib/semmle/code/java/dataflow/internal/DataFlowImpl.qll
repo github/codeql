@@ -2677,7 +2677,7 @@ module Impl<FullStateConfigSig Config> {
     TSummaryCtxSome(ParamNodeEx p, FlowState state, DataFlowType t, AccessPath ap) {
       exists(AccessPathApprox apa | ap.getApprox() = apa |
         Stage5::parameterMayFlowThrough(p, apa) and
-        Stage5::fwdFlow(p, state, _, _, _, _, t, apa, _) and
+        Stage5::fwdFlow(p, state, _, _, Option<DataFlowType>::some(t), _, _, apa, _) and
         Stage5::revFlow(p, state, _)
       )
     }
