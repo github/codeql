@@ -49,13 +49,13 @@ func TestGetVersionToInstall(t *testing.T) {
 		{"9999.0", true, "1.1", true}:      "",
 		{"9999.0", true, "", false}:        "",
 		// Go installation found with version below minGoVersion
-		{"1.20", true, "1.2.2", true}: "",
-		{"1.11", true, "1.2.2", true}: "",
-		{"", false, "1.2.2", true}:    "",
+		{"1.20", true, "1.2.2", true}: "1.20",
+		{"1.11", true, "1.2.2", true}: "1.11",
+		{"", false, "1.2.2", true}:    maxGoVersion,
 		// Go installation found with version above maxGoVersion
-		{"1.20", true, "9999.0.1", true}: "",
-		{"1.11", true, "9999.0.1", true}: "",
-		{"", false, "9999.0.1", true}:    "",
+		{"1.20", true, "9999.0.1", true}: "1.20",
+		{"1.11", true, "9999.0.1", true}: "1.11",
+		{"", false, "9999.0.1", true}:    maxGoVersion,
 
 		// checkForVersionsNotFound()
 
