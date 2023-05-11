@@ -51,11 +51,12 @@
 | testCoreData.swift:48:15:48:15 | password | label:password, type:credential |
 | testCoreData.swift:51:24:51:24 | password | label:password, type:credential |
 | testCoreData.swift:58:15:58:15 | password | label:password, type:credential |
+| testCoreData.swift:59:15:59:15 | password_file | label:password_file, type:credential |
 | testCoreData.swift:61:25:61:25 | password | label:password, type:credential |
+| testCoreData.swift:62:25:62:25 | password_file | label:password_file, type:credential |
 | testCoreData.swift:64:16:64:16 | password | label:password, type:credential |
-| testCoreData.swift:77:2:77:25 | call to doSomething(password:) | label:doSomething(password:), type:credential |
+| testCoreData.swift:65:16:65:16 | password_file | label:password_file, type:credential |
 | testCoreData.swift:77:24:77:24 | x | label:password, type:credential |
-| testCoreData.swift:80:10:80:22 | call to getPassword() | label:getPassword(), type:credential |
 | testCoreData.swift:85:15:85:17 | .password | label:password, type:credential |
 | testCoreData.swift:91:10:91:10 | passwd | label:passwd, type:credential |
 | testCoreData.swift:92:10:92:10 | passwd | label:passwd, type:credential |

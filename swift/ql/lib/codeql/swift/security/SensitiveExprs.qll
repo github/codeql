@@ -5,6 +5,7 @@
  */
 
 import swift
+import internal.SensitiveDataHeuristics
 
 private newtype TSensitiveDataType =
   TCredential() or
@@ -69,7 +70,7 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
  * contain hashed or encrypted data, or are only a reference to data that is
  * actually stored elsewhere.
  */
-private string regexpProbablySafe() { result = ".*(hash|crypt|file|path|url|invalid).*" }
+private string regexpProbablySafe() { result = HeuristicNames::notSensitiveRegexp() }
 
 /**
  * A `VarDecl` that might be used to contain sensitive data.
