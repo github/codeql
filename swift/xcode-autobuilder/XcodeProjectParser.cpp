@@ -1,5 +1,6 @@
 #include "swift/xcode-autobuilder/XcodeProjectParser.h"
 
+#include <array>
 #include <iostream>
 #include <filesystem>
 #include <unordered_map>
@@ -232,7 +233,6 @@ static std::unordered_map<std::string, std::vector<std::string>> collectWorkspac
   std::unordered_set<std::string> projectsBelongingToWorkspace;
   std::vector<fs::path> files = collectFiles(workingDir);
   for (auto& path : files) {
-    std::cerr << path.c_str() << '\n';
     if (path.extension() == ".xcworkspace") {
       auto projects = readProjectsFromWorkspace(path.string());
       for (auto& project : projects) {
@@ -243,11 +243,11 @@ static std::unordered_map<std::string, std::vector<std::string>> collectWorkspac
       // a package manifest must begin with a specific header comment
       // see https://docs.swift.org/package-manager/PackageDescription/PackageDescription.html
       static constexpr std::string_view packageHeader = "// swift-tools-version:";
-      char buffer[packageHeader.size()];
-      if (std::ifstream{path}.read(buffer, packageHeader.size()) && buffer == packageHeader) {
+      std::array<char, packageHeader.size()> buffer;
+      std::string_view bufferView{buffer.data(), buffer.size()};
+      if (std::ifstream{path}.read(buffer.data(), buffer.size()) && bufferView == packageHeader) {
         swiftPackageEncountered = true;
       }
-      std::cerr << "  " << std::string_view{buffer} << '\n';
     }
   }
   // Collect all projects not belonging to any workspace into a separate empty bucket
