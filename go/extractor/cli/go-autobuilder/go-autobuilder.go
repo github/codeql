@@ -25,10 +25,8 @@ func usage() {
 
 Options:
   --identify-environment
-    Produce an environment file specifying which Go version should be installed in the environment
-	so that autobuilding will be successful. The location of this file is controlled by the
-    environment variable CODEQL_EXTRACTOR_ENVIRONMENT_JSON, or defaults to 'environment.json' if
-	that is not set.
+    Output some json on stdout specifying which Go version should be installed in the environment
+	so that autobuilding will be successful.
 
 Build behavior:
 
@@ -928,39 +926,19 @@ func getVersionToInstall(v versionInfo) (msg, version string) {
 	return getVersionWhenGoModVersionSupported(v)
 }
 
-// Write an environment file to the current directory. If `version` is the empty string then
-// write an empty environment file, otherwise write an environment file specifying the version
-// of Go to install. The path to the environment file is specified by the
-// CODEQL_EXTRACTOR_ENVIRONMENT_JSON environment variable, or defaults to `environment.json`.
-func writeEnvironmentFile(version string) {
+// Output some JSON to stdout specifying the version of Go to install, unless `version` is the
+// empty string.
+func outputEnvironmentJson(version string) {
 	var content string
 	if version == "" {
 		content = `{ "include": [] }`
 	} else {
 		content = `{ "include": [ { "go": { "version": "` + version + `" } } ] }`
 	}
+	_, err := fmt.Fprint(os.Stdout, content)
 
-	filename, ok := os.LookupEnv("CODEQL_EXTRACTOR_ENVIRONMENT_JSON")
-	if !ok {
-		filename = "environment.json"
-	}
-
-	targetFile, err := os.Create(filename)
 	if err != nil {
-		log.Println("Failed to create environment file " + filename + ": ")
-		log.Println(err)
-		return
-	}
-	defer func() {
-		if err := targetFile.Close(); err != nil {
-			log.Println("Failed to close environment file " + filename + ":")
-			log.Println(err)
-		}
-	}()
-
-	_, err = targetFile.WriteString(content)
-	if err != nil {
-		log.Println("Failed to write to environment file " + filename + ": ")
+		log.Println("Failed to write environment json to stdout: ")
 		log.Println(err)
 	}
 }
@@ -984,7 +962,7 @@ func isGoInstalled() bool {
 	return err == nil
 }
 
-// Get the version of Go to install and write it to an environment file.
+// Get the version of Go to install and output it to stdout as json.
 func identifyEnvironment() {
 	var v versionInfo
 	depMode := getDepMode()
@@ -998,7 +976,7 @@ func identifyEnvironment() {
 	msg, versionToInstall := getVersionToInstall(v)
 	log.Println(msg)
 
-	writeEnvironmentFile(versionToInstall)
+	outputEnvironmentJson(versionToInstall)
 }
 
 func main() {
