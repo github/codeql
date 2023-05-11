@@ -30,6 +30,7 @@ class HttpStringLiteral extends StringLiteral {
 abstract class UrlOpenSink extends DataFlow::Node { }
 
 private class DefaultUrlOpenSink extends UrlOpenSink {
+  // request-forgery sinks control the URL of a request
   DefaultUrlOpenSink() { sinkNode(this, "request-forgery") }
 }
 
