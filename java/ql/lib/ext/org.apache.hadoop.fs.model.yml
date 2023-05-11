@@ -7,6 +7,7 @@ extensions:
       - ["org.apache.hadoop.fs", "Path", True, "Path", "(Path,Path)", "", "Argument[1]", "Argument[this]", "taint", "ai-generated"]
       - ["org.apache.hadoop.fs", "Path", True, "Path", "(Path,String)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
       - ["org.apache.hadoop.fs", "Path", True, "Path", "(Path,String)", "", "Argument[1]", "Argument[this]", "taint", "ai-generated"]
+      - ["org.apache.hadoop.fs", "Path", True, "Path", "(String,String,String)", "", "Argument[1]", "Argument[this]", "taint", "ai-generated"]
       - ["org.apache.hadoop.fs", "Path", True, "Path", "(String,String,String)", "", "Argument[2]", "Argument[this]", "taint", "ai-generated"]
       - ["org.apache.hadoop.fs", "Path", True, "Path", "(String,String)", "", "Argument[0]", "Argument[this]", "taint", "ai-generated"]
       - ["org.apache.hadoop.fs", "Path", True, "Path", "(String,String)", "", "Argument[1]", "Argument[this]", "taint", "ai-generated"]
