@@ -1,7 +1,6 @@
 #pragma once
 
-#include <binlog/EventStream.hpp>
-#include <binlog/PrettyPrinter.hpp>
+#include <binlog/binlog.hpp>
 #include <string>
 #include <vector>
 #include <unordered_map>
@@ -10,10 +9,30 @@
 #include <filesystem>
 #include <sstream>
 #include <mutex>
+#include <fmt/format.h>
+#include <fmt/chrono.h>
+#include <nlohmann/json.hpp>
 
 namespace codeql {
 
 extern const std::string_view programName;
+
+struct SwiftDiagnosticsSource;
+
+struct SwiftDiagnosticsSourceWithLocation {
+  const SwiftDiagnosticsSource& source;
+  std::string_view file;
+  unsigned startLine;
+  unsigned startColumn;
+  unsigned endLine;
+  unsigned endColumn;
+
+  // see SwiftDiagnosticsSource::json
+  nlohmann::json json(const std::chrono::system_clock::time_point& timestamp,
+                      std::string_view message) const;
+
+  std::string str() const;
+};
 
 // Models a diagnostic source for Swift, holding static information that goes out into a diagnostic
 // These are internally stored into a map on id's. A specific error log can use binlog's category
@@ -29,36 +48,25 @@ struct SwiftDiagnosticsSource {
 
   // for the moment, we only output errors, so no need to store the severity
 
-  // registers a diagnostics source for later retrieval with get, if not done yet
-  template <const SwiftDiagnosticsSource* Source>
-  static void ensureRegistered() {
-    static std::once_flag once;
-    std::call_once(once, registerImpl, Source);
-  }
-
-  // gets a previously inscribed SwiftDiagnosticsSource for the given id. Will abort if none exists
-  static const SwiftDiagnosticsSource& get(const std::string& id) { return *map().at(id); }
-
-  // emit a JSON diagnostics for this source with the given timestamp and message to out
+  // create a JSON diagnostics for this source with the given timestamp and message to out
   // A plaintextMessage is used that includes both the message and the action to take. Dots are
   // appended to both. The id is used to construct the source id in the form
-  // `swift/<prog name>/<id with '-' replacing '_'>`
-  void emit(std::ostream& out, std::string_view timestamp, std::string_view message) const;
+  // `swift/<prog name>/<id>`
+  nlohmann::json json(const std::chrono::system_clock::time_point& timestamp,
+                      std::string_view message) const;
+
+  SwiftDiagnosticsSourceWithLocation withLocation(std::string_view file,
+                                                  unsigned startLine = 0,
+                                                  unsigned startColumn = 0,
+                                                  unsigned endLine = 0,
+                                                  unsigned endColumn = 0) const {
+    return {*this, file, startLine, startColumn, endLine, endColumn};
+  }
 
  private:
-  static void registerImpl(const SwiftDiagnosticsSource* source);
-
   std::string sourceId() const;
-  using Map = std::unordered_map<std::string, const SwiftDiagnosticsSource*>;
-
-  static Map& map() {
-    static Map ret;
-    return ret;
-  }
 };
 
-// An output modeling binlog's output stream concept that intercepts binlog entries and translates
-// them to appropriate diagnostics JSON entries
 class SwiftDiagnosticsDumper {
  public:
   // opens path for writing out JSON entries. Returns whether the operation was successful.
@@ -69,22 +77,65 @@ class SwiftDiagnosticsDumper {
 
   void flush() { output.flush(); }
 
-  // write out binlog entries as corresponding JSON diagnostics entries. Expects all entries to have
-  // a category equal to an id of a previously created SwiftDiagnosticSource.
-  void write(const char* buffer, std::size_t bufferSize);
+  template <typename Source>
+  void write(const Source& source,
+             const std::chrono::system_clock::time_point& timestamp,
+             std::string_view message) {
+    if (output) {
+      output << source.json(timestamp, message) << '\n';
+    }
+  }
+
+  bool good() const { return output.good(); }
+  explicit operator bool() const { return good(); }
 
  private:
-  binlog::EventStream events;
   std::ofstream output;
-  binlog::PrettyPrinter timestampedMessagePrinter{"%u %m", "%Y-%m-%dT%H:%M:%S.%NZ"};
 };
 
-}  // namespace codeql
-
-namespace codeql_diagnostics {
-constexpr codeql::SwiftDiagnosticsSource internal_error{
-    "internal_error",
+constexpr codeql::SwiftDiagnosticsSource internalError{
+    "internal-error",
     "Internal error",
     "Contact us about this issue",
 };
-}  // namespace codeql_diagnostics
+}  // namespace codeql
+
+namespace mserialize {
+// log diagnostic sources using just their id, using binlog/mserialize internal plumbing
+template <>
+struct CustomTag<codeql::SwiftDiagnosticsSource, void> : detail::BuiltinTag<std::string> {
+  using T = codeql::SwiftDiagnosticsSource;
+};
+
+template <>
+struct CustomSerializer<codeql::SwiftDiagnosticsSource, void> {
+  template <typename OutputStream>
+  static void serialize(const codeql::SwiftDiagnosticsSource& source, OutputStream& out) {
+    mserialize::serialize(source.id, out);
+  }
+
+  static size_t serialized_size(const codeql::SwiftDiagnosticsSource& source) {
+    return mserialize::serialized_size(source.id);
+  }
+};
+
+template <>
+struct CustomTag<codeql::SwiftDiagnosticsSourceWithLocation, void>
+    : detail::BuiltinTag<std::string> {
+  using T = codeql::SwiftDiagnosticsSourceWithLocation;
+};
+
+template <>
+struct CustomSerializer<codeql::SwiftDiagnosticsSourceWithLocation, void> {
+  template <typename OutputStream>
+  static void serialize(const codeql::SwiftDiagnosticsSourceWithLocation& source,
+                        OutputStream& out) {
+    mserialize::serialize(source.str(), out);
+  }
+
+  static size_t serialized_size(const codeql::SwiftDiagnosticsSourceWithLocation& source) {
+    return mserialize::serialized_size(source.str());
+  }
+};
+
+}  // namespace mserialize

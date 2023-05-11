@@ -23,6 +23,11 @@
 // * passing a logger around using a `Logger& logger` function parameter
 // They are created with a name that appears in the logs and can be used to filter debug levels (see
 // `Logger`).
+// If the first argument after the format is a SwiftDiagnosticSource or
+// SwiftDiagnosticSourceWithLocation, a JSON diagnostic entry is emitted. In this case the
+// format string **must** start with "[{}] " (which is checked at compile time), and everything
+// following that is used to form the message in the diagnostics using fmt::format instead of the
+// internal binlog formatting. The two are fairly compatible though.
 #define LOG_CRITICAL(...) LOG_WITH_LEVEL(critical, __VA_ARGS__)
 #define LOG_ERROR(...) LOG_WITH_LEVEL(error, __VA_ARGS__)
 #define LOG_WARNING(...) LOG_WITH_LEVEL(warning, __VA_ARGS__)
@@ -30,11 +35,18 @@
 #define LOG_DEBUG(...) LOG_WITH_LEVEL(debug, __VA_ARGS__)
 #define LOG_TRACE(...) LOG_WITH_LEVEL(trace, __VA_ARGS__)
 
+#define CODEQL_GET_SECOND(...) CODEQL_GET_SECOND_I(__VA_ARGS__, 0, 0)
+#define CODEQL_GET_SECOND_I(X, Y, ...) Y
+
 // only do the actual logging if the picked up `Logger` instance is configured to handle the
 // provided log level. `LEVEL` must be a compile-time constant. `logger()` is evaluated once
+// TODO(C++20) replace non-standard ##__VA_ARGS__ with __VA_OPT__(,) __VA_ARGS__
 #define LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, CATEGORY, ...)                                      \
   do {                                                                                         \
-    constexpr codeql::Log::Level _level = ::codeql::Log::Level::LEVEL;                         \
+    static_assert(::codeql::detail::checkLogArgs<decltype(CODEQL_GET_SECOND(__VA_ARGS__))>(    \
+                      MSERIALIZE_FIRST(__VA_ARGS__)),                                          \
+                  "diagnostics logs must have format starting with \"[{}]\"");                 \
+    constexpr auto _level = ::codeql::Log::Level::LEVEL;                                       \
     ::codeql::Logger& _logger = logger();                                                      \
     if (_level >= _logger.level()) {                                                           \
       BINLOG_CREATE_SOURCE_AND_EVENT(_logger.writer(), _level, CATEGORY, ::binlog::clockNow(), \
@@ -46,17 +58,6 @@
   } while (false)
 
 #define LOG_WITH_LEVEL(LEVEL, ...) LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, , __VA_ARGS__)
-
-// Emit errors with a specified diagnostics ID. This must be the name of a `SwiftDiagnosticsSource`
-// defined in the `codeql_diagnostics` namespace, which must have `id` equal to its name.
-#define DIAGNOSE_CRITICAL(ID, ...) DIAGNOSE_WITH_LEVEL(critical, ID, __VA_ARGS__)
-#define DIAGNOSE_ERROR(ID, ...) DIAGNOSE_WITH_LEVEL(error, ID, __VA_ARGS__)
-
-#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, ...)                                          \
-  do {                                                                               \
-    ::codeql::SwiftDiagnosticsSource::ensureRegistered<&::codeql_diagnostics::ID>(); \
-    LOG_WITH_LEVEL_AND_CATEGORY(LEVEL, ID, __VA_ARGS__);                             \
-  } while (false)
 
 // avoid calling into binlog's original macros
 #undef BINLOG_CRITICAL
@@ -125,6 +126,13 @@ class Log {
     return instance().getLoggerConfigurationImpl(name);
   }
 
+  template <typename Source>
+  static void diagnose(const Source& source,
+                       const std::chrono::system_clock::time_point& time,
+                       std::string_view message) {
+    instance().diagnostics.write(source, time, message);
+  }
+
  private:
   static constexpr const char* format = "%u %S [%n] %m (%G:%L)\n";
   static bool initialized;
@@ -140,13 +148,12 @@ class Log {
 
   void configure();
   void flushImpl();
+
   LoggerConfiguration getLoggerConfigurationImpl(std::string_view name);
 
   // make `session.consume(*this)` work, which requires access to `write`
   friend binlog::Session;
   Log& write(const char* buffer, std::streamsize size);
-
-  struct OnlyWithCategory {};
 
   // Output filtered according to a configured log level
   template <typename Output>
@@ -159,12 +166,6 @@ class Log {
     FilteredOutput(Level level, Args&&... args)
         : level{level}, output{std::forward<Args>(args)...}, filter{filterOnLevel()} {}
 
-    template <typename... Args>
-    FilteredOutput(OnlyWithCategory, Level level, Args&&... args)
-        : level{level},
-          output{std::forward<Args>(args)...},
-          filter{filterOnLevelAndNonEmptyCategory()} {}
-
     FilteredOutput& write(const char* buffer, std::streamsize size) {
       filter.writeAllowed(buffer, size, output);
       return *this;
@@ -172,12 +173,6 @@ class Log {
 
     binlog::EventFilter::Predicate filterOnLevel() const {
       return [this](const binlog::EventSource& src) { return src.severity >= level; };
-    }
-
-    binlog::EventFilter::Predicate filterOnLevelAndNonEmptyCategory() const {
-      return [this](const binlog::EventSource& src) {
-        return !src.category.empty() && src.severity >= level;
-      };
     }
 
     // if configured as `no_logs`, the output is effectively disabled
@@ -192,7 +187,7 @@ class Log {
   FilteredOutput<std::ofstream> binary{Level::no_logs};
   FilteredOutput<binlog::TextOutputStream> text{Level::info, textFile, format};
   FilteredOutput<binlog::TextOutputStream> console{Level::warning, std::cerr, format};
-  FilteredOutput<SwiftDiagnosticsDumper> diagnostics{OnlyWithCategory{}, Level::error};
+  SwiftDiagnosticsDumper diagnostics{};
   LevelRules sourceRules;
   std::vector<std::string> collectLevelRulesAndReturnProblems(const char* envVar);
 };
@@ -228,4 +223,71 @@ class Logger {
   Log::Level level_;
 };
 
+namespace detail {
+constexpr std::string_view diagnosticsFormatPrefix = "[{}] ";
+
+template <typename T>
+constexpr bool checkLogArgs(std::string_view format) {
+  using Type = std::remove_cv_t<std::remove_reference_t<T>>;
+  constexpr bool isDiagnostic = std::is_same_v<Type, SwiftDiagnosticsSource> ||
+                                std::is_same_v<Type, SwiftDiagnosticsSourceWithLocation>;
+  return !isDiagnostic ||
+         format.substr(0, diagnosticsFormatPrefix.size()) == diagnosticsFormatPrefix;
+}
+
+template <typename Writer, typename Source, typename... T>
+void binlogAddEventIgnoreFirstOverload(Writer& writer,
+                                       std::uint64_t eventSourceId,
+                                       std::uint64_t clock,
+                                       const char* format,
+                                       const Source& source,
+                                       T&&... t) {
+  std::chrono::system_clock::time_point point{
+      std::chrono::duration_cast<std::chrono::system_clock::duration>(
+          std::chrono::nanoseconds{clock})};
+  constexpr auto offset = ::codeql::detail::diagnosticsFormatPrefix.size();
+  ::codeql::Log::diagnose(source, point, fmt::format(format + offset, t...));
+  writer.addEvent(eventSourceId, clock, source, std::forward<T>(t)...);
+}
+
+}  // namespace detail
 }  // namespace codeql
+
+// we intercept this binlog plumbing function providing better overload resolution matches in
+// case the first non-format argument is a diagnostic source, and emit it in that case with the
+// same timestamp
+namespace binlog::detail {
+template <typename Writer, size_t N, typename... T>
+void addEventIgnoreFirst(Writer& writer,
+                         std::uint64_t eventSourceId,
+                         std::uint64_t clock,
+                         const char (&format)[N],
+                         const codeql::SwiftDiagnosticsSource& source,
+                         T&&... t) {
+  codeql::detail::binlogAddEventIgnoreFirstOverload(writer, eventSourceId, clock, format, source,
+                                                    std::forward<T>(t)...);
+}
+
+template <typename Writer, size_t N, typename... T>
+void addEventIgnoreFirst(Writer& writer,
+                         std::uint64_t eventSourceId,
+                         std::uint64_t clock,
+                         const char (&format)[N],
+                         codeql::SwiftDiagnosticsSourceWithLocation&& source,
+                         T&&... t) {
+  codeql::detail::binlogAddEventIgnoreFirstOverload(writer, eventSourceId, clock, format, source,
+                                                    std::forward<T>(t)...);
+}
+
+template <typename Writer, size_t N, typename... T>
+void addEventIgnoreFirst(Writer& writer,
+                         std::uint64_t eventSourceId,
+                         std::uint64_t clock,
+                         const char (&format)[N],
+                         const codeql::SwiftDiagnosticsSourceWithLocation& source,
+                         T&&... t) {
+  codeql::detail::binlogAddEventIgnoreFirstOverload(writer, eventSourceId, clock, format, source,
+                                                    std::forward<T>(t)...);
+}
+
+}  // namespace binlog::detail

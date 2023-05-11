@@ -1,7 +1,6 @@
 #include "swift/logging/SwiftDiagnostics.h"
 
 #include <binlog/Entries.hpp>
-#include <nlohmann/json.hpp>
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_cat.h"
 #include "absl/strings/str_split.h"
@@ -9,17 +8,9 @@
 
 namespace codeql {
 
-namespace {
-Logger& logger() {
-  static Logger ret{"diagnostics"};
-  return ret;
-}
-}  // namespace
-
-void SwiftDiagnosticsSource::emit(std::ostream& out,
-                                  std::string_view timestamp,
-                                  std::string_view message) const {
-  nlohmann::json entry = {
+nlohmann::json SwiftDiagnosticsSource::json(const std::chrono::system_clock::time_point& timestamp,
+                                            std::string_view message) const {
+  return {
       {"source",
        {
            {"id", sourceId()},
@@ -35,34 +26,28 @@ void SwiftDiagnosticsSource::emit(std::ostream& out,
       {"severity", "error"},
       {"helpLinks", std::vector<std::string_view>(absl::StrSplit(helpLinks, ' '))},
       {"plaintextMessage", absl::StrCat(message, ".\n\n", action, ".")},
-      {"timestamp", timestamp},
+      {"timestamp", fmt::format("{:%FT%T%z}", timestamp)},
   };
-  out << entry << '\n';
 }
 
 std::string SwiftDiagnosticsSource::sourceId() const {
-  auto ret = absl::StrJoin({extractorName, programName, id}, "/");
-  std::replace(ret.begin(), ret.end(), '_', '-');
-  return ret;
-}
-void SwiftDiagnosticsSource::registerImpl(const SwiftDiagnosticsSource* source) {
-  auto [it, inserted] = map().emplace(source->id, source);
-  CODEQL_ASSERT(inserted, "duplicate diagnostics source detected with id {}", source->id);
+  return absl::StrJoin({extractorName, programName, id}, "/");
 }
 
-void SwiftDiagnosticsDumper::write(const char* buffer, std::size_t bufferSize) {
-  binlog::Range range{buffer, bufferSize};
-  binlog::RangeEntryStream input{range};
-  while (auto event = events.nextEvent(input)) {
-    const auto& source = SwiftDiagnosticsSource::get(event->source->category);
-    std::ostringstream oss;
-    timestampedMessagePrinter.printEvent(oss, *event, events.writerProp(), events.clockSync());
-    // TODO(C++20) use oss.view() directly
-    auto data = oss.str();
-    std::string_view view = data;
-    using ViewPair = std::pair<std::string_view, std::string_view>;
-    auto [timestamp, message] = ViewPair(absl::StrSplit(view, absl::MaxSplits(' ', 1)));
-    source.emit(output, timestamp, message);
-  }
+nlohmann::json SwiftDiagnosticsSourceWithLocation::json(
+    const std::chrono::system_clock::time_point& timestamp,
+    std::string_view message) const {
+  auto ret = source.json(timestamp, message);
+  auto& location = ret["location"] = {{"file", file}};
+  if (startLine) location["startLine"] = startLine;
+  if (startColumn) location["startColumn"] = startColumn;
+  if (endLine) location["endLine"] = endLine;
+  if (endColumn) location["endColumn"] = endColumn;
+  return ret;
+}
+
+std::string SwiftDiagnosticsSourceWithLocation::str() const {
+  return absl::StrCat(source.id, "@", file, ":", startLine, ":", startColumn, ":", endLine, ":",
+                      endColumn);
 }
 }  // namespace codeql
