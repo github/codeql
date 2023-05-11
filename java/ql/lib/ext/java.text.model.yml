@@ -11,6 +11,6 @@ extensions:
       - ["java.text", "SimpleDateFormat", "SimpleDateFormat", "(String)", "summary", "manual"] # taint-numeric
 
       # sink neutrals
-      - ["java.text", "Collator" "compare", "", "sink", "manual"]
-      - ["java.text", "Collator" "equals", "", "sink", "manual"]
-      - ["java.text", "RuleBasedCollator", "compare", "", "sink", "manual"]
+      - ["java.text", "Collator" "compare", "", "sink", "hq-manual"]
+      - ["java.text", "Collator" "equals", "", "sink", "hq-manual"]
+      - ["java.text", "RuleBasedCollator", "compare", "", "sink", "hq-manual"]

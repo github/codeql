@@ -4,5 +4,5 @@ extensions:
       extensible: neutralModel
     data:
       # sink neutrals
-      - ["java.nio.file.spi", "FileSystemProvider" "isHidden", "", "sink", "manual"]
-      - ["java.nio.file.spi", "FileSystemProvider" "isSameFile", "", "sink", "manual"]
+      - ["java.nio.file.spi", "FileSystemProvider" "isHidden", "", "sink", "hq-manual"]
+      - ["java.nio.file.spi", "FileSystemProvider" "isSameFile", "", "sink", "hq-manual"]

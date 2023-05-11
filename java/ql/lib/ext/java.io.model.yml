@@ -120,5 +120,5 @@ extensions:
       - ["java.io", "DataOutput", "writeLong", "(long)", "summary", "manual"]  # taint-numeric
 
       # sink neutrals
-      - ["java.io", "File", "compareTo", "", "sink", "manual"]
-      - ["java.io", "File", "exists", "()", "sink", "manual"]
+      - ["java.io", "File", "compareTo", "", "sink", "hq-manual"]
+      - ["java.io", "File", "exists", "()", "sink", "hq-manual"]
