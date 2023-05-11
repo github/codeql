@@ -4246,6 +4246,7 @@ module Impl<FullStateConfigSig Config> {
       }
     }
 
+    pragma[nomagic]
     private predicate partialPathStep0(
       PartialPathNodeFwd mid, NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1,
       TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
