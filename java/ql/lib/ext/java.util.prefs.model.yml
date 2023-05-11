@@ -3,5 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.util.prefs", "AbstractPreferences", "nodeExists", "", "manual"]
-      - ["java.util.prefs", "Preferences", "nodeExists", "", "manual"]
+      # sink neutrals
+      - ["java.util.prefs", "AbstractPreferences", "nodeExists", "", "sink", "manual"]
+      - ["java.util.prefs", "Preferences", "nodeExists", "", "sink", "manual"]

@@ -3,4 +3,5 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["org.apache.hc.client5.http.protocol", "RedirectLocations", "contains", "", "manual"]
+      # sink neutrals
+      - ["org.apache.hc.client5.http.protocol", "RedirectLocations", "contains", "", "sink", "manual"]
