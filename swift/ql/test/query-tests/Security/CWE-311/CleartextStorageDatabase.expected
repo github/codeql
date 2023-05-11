@@ -118,6 +118,7 @@ edges
 | testCoreData.swift:65:16:65:16 | password_file | testCoreData.swift:31:3:31:3 | newValue |
 | testCoreData.swift:65:16:65:16 | password_file | testCoreData.swift:65:2:65:2 | [post] obj [myValue] |
 | testCoreData.swift:77:24:77:24 | x | testCoreData.swift:78:15:78:15 | x |
+| testCoreData.swift:80:10:80:22 | call to getPassword() | testCoreData.swift:81:15:81:15 | y |
 | testCoreData.swift:91:10:91:10 | passwd | testCoreData.swift:95:15:95:15 | x |
 | testCoreData.swift:92:10:92:10 | passwd | testCoreData.swift:96:15:96:15 | y |
 | testCoreData.swift:93:10:93:10 | passwd | testCoreData.swift:97:15:97:15 | z |
@@ -325,6 +326,8 @@ nodes
 | testCoreData.swift:65:16:65:16 | password_file | semmle.label | password_file |
 | testCoreData.swift:77:24:77:24 | x | semmle.label | x |
 | testCoreData.swift:78:15:78:15 | x | semmle.label | x |
+| testCoreData.swift:80:10:80:22 | call to getPassword() | semmle.label | call to getPassword() |
+| testCoreData.swift:81:15:81:15 | y | semmle.label | y |
 | testCoreData.swift:85:15:85:17 | .password | semmle.label | .password |
 | testCoreData.swift:91:10:91:10 | passwd | semmle.label | passwd |
 | testCoreData.swift:92:10:92:10 | passwd | semmle.label | passwd |
@@ -508,6 +511,7 @@ subpaths
 | testCoreData.swift:64:2:64:2 | obj | testCoreData.swift:64:16:64:16 | password | testCoreData.swift:64:2:64:2 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:64:16:64:16 | password | password |
 | testCoreData.swift:65:2:65:2 | obj | testCoreData.swift:65:16:65:16 | password_file | testCoreData.swift:65:2:65:2 | [post] obj | This operation stores 'obj' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:65:16:65:16 | password_file | password_file |
 | testCoreData.swift:78:15:78:15 | x | testCoreData.swift:77:24:77:24 | x | testCoreData.swift:78:15:78:15 | x | This operation stores 'x' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:77:24:77:24 | x | x |
+| testCoreData.swift:81:15:81:15 | y | testCoreData.swift:80:10:80:22 | call to getPassword() | testCoreData.swift:81:15:81:15 | y | This operation stores 'y' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:80:10:80:22 | call to getPassword() | call to getPassword() |
 | testCoreData.swift:85:15:85:17 | .password | testCoreData.swift:85:15:85:17 | .password | testCoreData.swift:85:15:85:17 | .password | This operation stores '.password' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:85:15:85:17 | .password | .password |
 | testCoreData.swift:95:15:95:15 | x | testCoreData.swift:91:10:91:10 | passwd | testCoreData.swift:95:15:95:15 | x | This operation stores 'x' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:91:10:91:10 | passwd | passwd |
 | testCoreData.swift:96:15:96:15 | y | testCoreData.swift:92:10:92:10 | passwd | testCoreData.swift:96:15:96:15 | y | This operation stores 'y' in a database. It may contain unencrypted sensitive data from $@. | testCoreData.swift:92:10:92:10 | passwd | passwd |

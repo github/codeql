@@ -91,11 +91,15 @@ private class SensitiveVarDecl extends VarDecl {
  */
 private class SensitiveFunction extends Function {
   SensitiveDataType sensitiveType;
+  string name; // name of the function, not including the argument list.
 
-  SensitiveFunction() { this.getName().toLowerCase().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveFunction() {
+    name = this.getName().splitAt("(", 0) and
+    name.toLowerCase().regexpMatch(sensitiveType.getRegexp())
+  }
 
   predicate hasInfo(string label, SensitiveDataType type) {
-    label = this.getName() and
+    label = name and
     sensitiveType = type
   }
 }

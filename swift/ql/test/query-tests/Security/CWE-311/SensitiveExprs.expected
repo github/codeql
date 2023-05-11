@@ -57,6 +57,7 @@
 | testCoreData.swift:64:16:64:16 | password | label:password, type:credential |
 | testCoreData.swift:65:16:65:16 | password_file | label:password_file, type:credential |
 | testCoreData.swift:77:24:77:24 | x | label:password, type:credential |
+| testCoreData.swift:80:10:80:22 | call to getPassword() | label:getPassword, type:credential |
 | testCoreData.swift:85:15:85:17 | .password | label:password, type:credential |
 | testCoreData.swift:91:10:91:10 | passwd | label:passwd, type:credential |
 | testCoreData.swift:92:10:92:10 | passwd | label:passwd, type:credential |
