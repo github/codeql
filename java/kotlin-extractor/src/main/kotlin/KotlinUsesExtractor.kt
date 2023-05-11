@@ -1365,7 +1365,7 @@ open class KotlinUsesExtractor(
                 val boundResults = useType(arg.type, TypeContext.GENERIC_ARGUMENT)
                 val boundLabel = boundResults.javaResult.id.cast<DbReftype>()
 
-                return if(arg.variance == Variance.INVARIANT)
+                if(arg.variance == Variance.INVARIANT)
                     boundResults.javaResult.cast<DbReftype>().forgetSignature()
                 else {
                     val keyPrefix = if (arg.variance == Variance.IN_VARIANCE) "super" else "extends"
@@ -1379,7 +1379,7 @@ open class KotlinUsesExtractor(
             }
             else -> {
                 logger.error("Unexpected type argument.")
-                return extractJavaErrorType().forgetSignature()
+                extractJavaErrorType().forgetSignature()
             }
         }
     }
