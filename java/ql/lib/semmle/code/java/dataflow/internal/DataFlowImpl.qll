@@ -4008,7 +4008,7 @@ module Impl<FullStateConfigSig Config> {
         ap = TPartialNil() and
         exists(explorationLimit())
         or
-        partialPathNodeMk0(node, state, cc, sc1, sc2, sc3, sc4, t, ap) and
+        partialPathStep(_, node, state, cc, sc1, sc2, sc3, sc4, t, ap) and
         distSrc(node.getEnclosingCallable()) <= explorationLimit()
       } or
       TPartialPathNodeRev(
@@ -4034,11 +4034,20 @@ module Impl<FullStateConfigSig Config> {
       }
 
     pragma[nomagic]
-    private predicate partialPathNodeMk0(
-      NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1, TSummaryCtx2 sc2,
-      TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
+    private predicate partialPathStep(
+      PartialPathNodeFwd mid, NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1,
+      TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
     ) {
-      partialPathStep(_, node, state, cc, sc1, sc2, sc3, sc4, t, ap) and
+      partialPathStep1(mid, node, state, cc, sc1, sc2, sc3, sc4, _, t, ap)
+    }
+
+    pragma[nomagic]
+    private predicate partialPathStep1(
+      PartialPathNodeFwd mid, NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1,
+      TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t0, DataFlowType t,
+      PartialAccessPath ap
+    ) {
+      partialPathStep0(mid, node, state, cc, sc1, sc2, sc3, sc4, t0, ap) and
       not fullBarrier(node) and
       not stateBarrier(node, state) and
       not clearsContentEx(node, ap.getHead()) and
@@ -4046,9 +4055,19 @@ module Impl<FullStateConfigSig Config> {
         notExpectsContent(node) or
         expectsContentEx(node, ap.getHead())
       ) and
-      if node.asNode() instanceof CastingNode
-      then compatibleTypes(node.getDataFlowType(), t)
-      else any()
+      if castingNodeEx(node)
+      then
+        exists(DataFlowType nt | nt = node.getDataFlowType() |
+          if typeStrongerThan(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
+        )
+      else t = t0
+    }
+
+    pragma[nomagic]
+    private predicate partialPathTypeStrengthen(
+      DataFlowType t0, PartialAccessPath ap, DataFlowType t
+    ) {
+      partialPathStep1(_, _, _, _, _, _, _, _, t0, t, ap) and t0 != t
     }
 
     /**
@@ -4227,7 +4246,7 @@ module Impl<FullStateConfigSig Config> {
       }
     }
 
-    private predicate partialPathStep(
+    private predicate partialPathStep0(
       PartialPathNodeFwd mid, NodeEx node, FlowState state, CallContext cc, TSummaryCtx1 sc1,
       TSummaryCtx2 sc2, TSummaryCtx3 sc3, TSummaryCtx4 sc4, DataFlowType t, PartialAccessPath ap
     ) {
@@ -4353,6 +4372,11 @@ module Impl<FullStateConfigSig Config> {
       DataFlowType t1, PartialAccessPath ap1, Content c, DataFlowType t2, PartialAccessPath ap2
     ) {
       partialPathStoreStep(_, t1, ap1, c, _, t2, ap2)
+      or
+      exists(DataFlowType t0 |
+        partialPathTypeStrengthen(t0, ap2, t2) and
+        apConsFwd(t1, ap1, c, t0, ap2)
+      )
     }
 
     pragma[nomagic]
