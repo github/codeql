@@ -281,7 +281,7 @@ void test19(unsigned len)
   int *end = xs + len;
   for (int *x = xs; x < end; x++)
   {
-    int i = *x; // GOOD [FALSE POSITIVE]
+    int i = *x; // GOOD
   }
 }
 
@@ -291,6 +291,6 @@ void test20(unsigned len)
   int *end = xs + len;
   for (int *x = xs; x < end; x++)
   {
-    *x = 0; // GOOD [FALSE POSITIVE]
+    *x = 0; // GOOD
   }
 }

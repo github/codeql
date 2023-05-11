@@ -562,6 +562,14 @@ class SsaPhiNode extends Node, TSsaPhiNode {
 
   /** Gets the source variable underlying this phi node. */
   Ssa::SourceVariable getSourceVariable() { result = phi.getSourceVariable() }
+
+  /**
+   * Holds if this phi node is a phi-read node.
+   *
+   * Phi-read nodes are like normal phi nodes, but they are inserted based
+   * on reads instead of writes.
+   */
+  predicate isPhiRead() { phi.isPhiRead() }
 }
 
 /**
