@@ -243,7 +243,7 @@ static std::unordered_map<std::string, std::vector<std::string>> collectWorkspac
       // a package manifest must begin with a specific header comment
       // see https://docs.swift.org/package-manager/PackageDescription/PackageDescription.html
       static constexpr std::string_view packageHeader = "// swift-tools-version:";
-      std::array<char, packageHeader.size()> buffer;
+      std::array<char, packageHeader.size()> buffer{};
       std::string_view bufferView{buffer.data(), buffer.size()};
       if (std::ifstream{path}.read(buffer.data(), buffer.size()) && bufferView == packageHeader) {
         swiftPackageEncountered = true;
