@@ -53,17 +53,17 @@ signature module CandidateSig {
   predicate isKnownKind(string kind, string humanReadableLabel, EndpointType type);
 
   /**
-   * Should hold for any endpoint that is a flow sanitizer.
+   * Holds if `e` is a flow sanitizer, and has type `t`.
    */
   predicate isSanitizer(Endpoint e, EndpointType t);
 
   /**
-   * Should hold for any endpoint that is a sink of the given (known or unknown) kind.
+   * Holds if `e` is a sink with the label `label`.
    */
   predicate isSink(Endpoint e, string kind);
 
   /**
-   * Should hold for any endpoint that is known to not be any sink.
+   * Holds if `e` is not a sink of any kind.
    */
   predicate isNeutral(Endpoint e);
 
