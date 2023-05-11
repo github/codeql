@@ -1,7 +1,7 @@
 ---
 category: minorAnalysis
 ---
-* Updated the following Java sink kind names:
+* Updated the following Java sink kind names. Any custom data extensions will need to be updated accordingly in order to continue working.
   * `sql` to `sql-injection`
   * `url-redirect` to `url-redirection`
   * `xpath` to `xpath-injection`
