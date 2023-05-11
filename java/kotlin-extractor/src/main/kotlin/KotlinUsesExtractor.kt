@@ -1450,21 +1450,21 @@ open class KotlinUsesExtractor(
 
     fun getTypeParameterParentLabel(param: IrTypeParameter) =
         param.parent.let {
-            (it as? IrFunction)?.let { fn ->
-                if (this is KotlinFileExtractor)
-                    this.declarationStack.findOverriddenAttributes(fn)?.takeUnless {
-                        // When extracting the `static fun f$default(...)` that accompanies `fun <T> f(val x: T? = defaultExpr, ...)`,
-                        // `f$default` has no type parameters, and so there is no `f$default::T` to refer to.
-                        // We have no good way to extract references to `T` in `defaultExpr`, so we just fall back on describing it
-                        // in terms of `f::T`, even though that type variable ought to be out of scope here.
-                        attribs -> attribs.typeParameters?.isEmpty() == true
-                    }?.id
-                else
-                    null
-            } ?:
             when (it) {
                 is IrClass -> useClassSource(it)
-                is IrFunction -> useFunction(it, noReplace = true)
+                is IrFunction ->
+                    (if (this is KotlinFileExtractor)
+                        this.declarationStack.findOverriddenAttributes(it)?.takeUnless {
+                            // When extracting the `static fun f$default(...)` that accompanies `fun <T> f(val x: T? = defaultExpr, ...)`,
+                            // `f$default` has no type parameters, and so there is no `f$default::T` to refer to.
+                            // We have no good way to extract references to `T` in `defaultExpr`, so we just fall back on describing it
+                            // in terms of `f::T`, even though that type variable ought to be out of scope here.
+                            attribs -> attribs.typeParameters?.isEmpty() == true
+                        }?.id
+                    else
+                        null
+                    ) ?:
+                    useFunction(it, noReplace = true)
                 else -> { logger.error("Unexpected type parameter parent $it"); null }
             }
         }
