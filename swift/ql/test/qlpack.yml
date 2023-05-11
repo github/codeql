@@ -5,3 +5,4 @@ dependencies:
     codeql/swift-queries: ${workspace}
 tests: .
 extractor: swift
+warnOnImplicitThis: true
