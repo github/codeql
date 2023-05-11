@@ -14,7 +14,7 @@
 
   <example>
     <p>In the following examples, the code accepts a secret via a HTTP header in variable <code>
-      secretHeader</code> and a secret from the user in the<code>headerSecret</code> variable, which
+      secretHeader</code> and a secret from the user in the <code>headerSecret</code> variable, which
       are then compared with a system stored secret to perform authentication.</p>
 
 
