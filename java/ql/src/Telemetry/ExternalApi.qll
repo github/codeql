@@ -10,10 +10,6 @@ private import semmle.code.java.dataflow.internal.FlowSummaryImpl as FlowSummary
 private import semmle.code.java.dataflow.TaintTracking
 private import semmle.code.java.dataflow.internal.ModelExclusions
 
-private string containerAsJar(Container container) {
-  if container instanceof JarFile then result = container.getBaseName() else result = "rt.jar"
-}
-
 /** Holds if the given callable is not worth supporting. */
 private predicate isUninteresting(Callable c) {
   c.getDeclaringType() instanceof TestLibrary or
@@ -35,10 +31,18 @@ class ExternalApi extends Callable {
         "#" + this.getName() + paramsString(this)
   }
 
+  private string getJarName() {
+    result = this.getCompilationUnit().getParentContainer*().(JarFile).getBaseName()
+  }
+
   /**
    * Gets the jar file containing this API. Normalizes the Java Runtime to "rt.jar" despite the presence of modules.
    */
-  string jarContainer() { result = containerAsJar(this.getCompilationUnit().getParentContainer*()) }
+  string jarContainer() {
+    result = this.getJarName()
+    or
+    not exists(this.getJarName()) and result = "rt.jar"
+  }
 
   /** Gets a node that is an input to a call to this API. */
   private DataFlow::Node getAnInput() {
