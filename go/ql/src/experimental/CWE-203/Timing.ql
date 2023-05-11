@@ -1,6 +1,6 @@
 /**
  * @name Timing attacks due to comparison of sensitive secrets
- * @description using a non-constant time comparison method to comapre secrets can lead to authoriztion vulnerabilities
+ * @description using a non-constant time comparison method to compare secrets can lead to authoriztion vulnerabilities
  * @kind path-problem
  * @problem.severity warning
  * @id go/timing-attack
