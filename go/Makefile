@@ -115,7 +115,7 @@ test: all build/testdb/check-upgrade-path
 	codeql test run -j0 ql/test --search-path build/codeql-extractor-go --consistency-queries ql/test/consistency --compilation-cache=$(cache)
   #	use GOOS=linux because GOOS=darwin GOARCH=386 is no longer supported
 	env GOOS=linux GOARCH=386 codeql$(EXE) test run -j0 ql/test/query-tests/Security/CWE-681 --search-path build/codeql-extractor-go --consistency-queries ql/test/consistency --compilation-cache=$(cache)
-	cd extractor; go test -mod=vendor ./... | grep -vF "[no test files]"
+	cd extractor; go test -mod=vendor ./...
 	bash extractor-smoke-test/test.sh || (echo "Extractor smoke test FAILED"; exit 1)
 
 .PHONY: build/testdb/check-upgrade-path
