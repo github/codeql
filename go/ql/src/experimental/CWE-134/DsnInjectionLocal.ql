@@ -3,7 +3,7 @@
  * @description Building an SQL data-source URI from untrusted sources can allow attacker to compromise security
  * @kind path-problem
  * @problem.severity error
- * @id go/dsn-injection
+ * @id go/dsn-injection-local
  * @tags security
  *       experimental
  *       external/cwe/cwe-134
