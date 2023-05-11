@@ -75,11 +75,11 @@ public class OdasaOutput {
 	public OdasaOutput(boolean trackClassOrigins, Logger log) {
 		String trapFolderVar = Env.systemEnv().getFirstNonEmpty("CODEQL_EXTRACTOR_JAVA_TRAP_DIR", Var.TRAP_FOLDER.name());
 		if (trapFolderVar == null) {
-			throw new ResourceError(Var.ODASA_JAVA_LAYOUT + " was not set");
+			throw new ResourceError("CODEQL_EXTRACTOR_JAVA_TRAP_DIR was not set");
 		}
 		String sourceArchiveVar = Env.systemEnv().getFirstNonEmpty("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR", Var.SOURCE_ARCHIVE.name());
 		if (sourceArchiveVar == null) {
-			throw new ResourceError(Var.SOURCE_ARCHIVE + " was not set");
+			throw new ResourceError("CODEQL_EXTRACTOR_JAVA_SOURCE_ARCHIVE_DIR was not set");
     }
 		this.trapFolder = new File(trapFolderVar);
 		this.sourceArchiveFolder = new File(sourceArchiveVar);
