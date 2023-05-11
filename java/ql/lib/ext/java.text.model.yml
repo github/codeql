@@ -3,6 +3,10 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      - ["java.text", "Collator" "compare", "", "manual"]
+      - ["java.text", "Collator" "equals", "", "manual"]
+      - ["java.text", "RuleBasedCollator", "compare", "", "manual"]
+
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
       - ["java.text", "DateFormat", "format", "(Date)", "summary", "manual"]                   # taint-numeric
