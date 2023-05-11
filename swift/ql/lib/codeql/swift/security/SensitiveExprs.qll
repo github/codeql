@@ -29,9 +29,7 @@ abstract class SensitiveDataType extends TSensitiveDataType {
 class SensitiveCredential extends SensitiveDataType, TCredential {
   override string toString() { result = "credential" }
 
-  override string getRegexp() {
-    result = ".*(password|passwd|accountid|account.?key|accnt.?key|license.?key|trusted).*"
-  }
+  override string getRegexp() { result = HeuristicNames::maybeSensitiveRegexp(_) }
 }
 
 /**
