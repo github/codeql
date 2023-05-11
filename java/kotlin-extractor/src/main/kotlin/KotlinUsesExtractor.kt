@@ -551,6 +551,20 @@ open class KotlinUsesExtractor(
                 )
         }
 
+    /*
+    Kotlin arrays can be broken down as:
+
+    isArray(t)
+    |- t.isBoxedArray
+    |  |- t.isArray()         e.g. Array<Boolean>, Array<Boolean?>
+    |  |- t.isNullableArray() e.g. Array<Boolean>?, Array<Boolean?>?
+    |- t.isPrimitiveArray()   e.g. BooleanArray
+
+    For the corresponding Java types:
+    Boxed arrays are represented as e.g. java.lang.Boolean[].
+    Primitive arrays are represented as e.g. boolean[].
+    */
+
     data class ArrayInfo(val elementTypeResults: TypeResults,
                          val componentTypeResults: TypeResults,
                          val dimensions: Int)
