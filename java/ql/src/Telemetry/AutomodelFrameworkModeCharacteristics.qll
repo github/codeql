@@ -173,7 +173,7 @@ class FrameworkModeMetadataExtractor extends MetadataExtractor {
       e.asParameter() = callable.getParameter(input) and
       package = callable.getDeclaringType().getPackage().getName() and
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
-      subtypes = considerSubtypes(callable) and
+      subtypes = this.considerSubtypes(callable) and
       name = e.toString() and
       signature = ExternalFlow::paramsString(callable)
     )

@@ -58,7 +58,7 @@ signature module CandidateSig {
   predicate isSanitizer(Endpoint e, EndpointType t);
 
   /**
-   * Holds if `e` is a sink with the label `label`.
+   * Holds if `e` is a sink with the label `kind`.
    */
   predicate isSink(Endpoint e, string kind);
 
@@ -273,12 +273,12 @@ module SharedCharacteristics<CandidateSig Candidate> {
      * Endpoints identified as sinks by the `CandidateSig` implementation are sinks with maximal confidence.
      */
     private class KnownSinkCharacteristic extends SinkCharacteristic {
-      string madLabel;
+      string madKind;
       Candidate::EndpointType endpointType;
 
-      KnownSinkCharacteristic() { Candidate::isKnownKind(madLabel, this, endpointType) }
+      KnownSinkCharacteristic() { Candidate::isKnownKind(madKind, this, endpointType) }
 
-      override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isSink(e, madLabel) }
+      override predicate appliesToEndpoint(Candidate::Endpoint e) { Candidate::isSink(e, madKind) }
 
       override Candidate::EndpointType getSinkType() { result = endpointType }
     }
