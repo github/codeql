@@ -1,3 +1,30 @@
+| SQLite.swift:112:70:112:70 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:113:50:113:50 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:140:32:140:32 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:141:28:141:28 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:142:31:142:31 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:145:21:145:21 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:146:20:146:20 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:147:23:147:23 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:151:33:151:33 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:152:29:152:29 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:153:32:153:32 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:156:22:156:22 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:157:21:157:21 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:158:24:158:24 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:162:53:162:53 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:163:49:163:49 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:164:52:164:52 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:167:42:167:42 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:168:41:168:41 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:169:44:169:44 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:179:54:179:54 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:182:40:182:40 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:184:41:184:41 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| SQLite.swift:186:72:186:72 | mobilePhoneNumber | label:mobilePhoneNumber, type:private information |
+| sqlite3_c_api.swift:42:69:42:69 | medicalNotes | label:medicalNotes, type:private information |
+| sqlite3_c_api.swift:43:49:43:49 | medicalNotes | label:medicalNotes, type:private information |
+| sqlite3_c_api.swift:58:36:58:36 | medicalNotes | label:medicalNotes, type:private information |
 | testAlamofire.swift:150:45:150:45 | password | label:password, type:credential |
 | testAlamofire.swift:152:51:152:51 | password | label:password, type:credential |
 | testAlamofire.swift:154:38:154:38 | email | label:email, type:private information |
