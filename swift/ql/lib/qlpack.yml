@@ -9,3 +9,4 @@ dependencies:
   codeql/ssa: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
+warnOnImplicitThis: true
