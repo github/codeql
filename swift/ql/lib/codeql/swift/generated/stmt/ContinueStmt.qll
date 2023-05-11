@@ -17,7 +17,7 @@ module Generated {
     /**
      * Holds if `getTargetName()` exists.
      */
-    final predicate hasTargetName() { exists(getTargetName()) }
+    final predicate hasTargetName() { exists(this.getTargetName()) }
 
     /**
      * Gets the target of this continue statement, if it exists.
@@ -35,11 +35,11 @@ module Generated {
     /**
      * Gets the target of this continue statement, if it exists.
      */
-    final Stmt getTarget() { result = getImmediateTarget().resolve() }
+    final Stmt getTarget() { result = this.getImmediateTarget().resolve() }
 
     /**
      * Holds if `getTarget()` exists.
      */
-    final predicate hasTarget() { exists(getTarget()) }
+    final predicate hasTarget() { exists(this.getTarget()) }
   }
 }

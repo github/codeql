@@ -23,7 +23,7 @@ module Generated {
     /**
      * Gets the qualifier of this dot syntax base ignored expression.
      */
-    final Expr getQualifier() { result = getImmediateQualifier().resolve() }
+    final Expr getQualifier() { result = this.getImmediateQualifier().resolve() }
 
     /**
      * Gets the sub expression of this dot syntax base ignored expression.
@@ -41,6 +41,6 @@ module Generated {
     /**
      * Gets the sub expression of this dot syntax base ignored expression.
      */
-    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
   }
 }

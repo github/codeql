@@ -23,6 +23,6 @@ module Generated {
     /**
      * Gets the object type of this l value type.
      */
-    final Type getObjectType() { result = getImmediateObjectType().resolve() }
+    final Type getObjectType() { result = this.getImmediateObjectType().resolve() }
   }
 }

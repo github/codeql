@@ -35,6 +35,6 @@ module Generated {
      * typealias MyInt = Int
      * ```
      */
-    final Type getAliasedType() { result = getImmediateAliasedType().resolve() }
+    final Type getAliasedType() { result = this.getImmediateAliasedType().resolve() }
   }
 }

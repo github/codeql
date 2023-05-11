@@ -26,7 +26,7 @@ module Generated {
     /**
      * Gets the pattern of this for each statement.
      */
-    final Pattern getPattern() { result = getImmediatePattern().resolve() }
+    final Pattern getPattern() { result = this.getImmediatePattern().resolve() }
 
     /**
      * Gets the sequence of this for each statement.
@@ -44,7 +44,7 @@ module Generated {
     /**
      * Gets the sequence of this for each statement.
      */
-    final Expr getSequence() { result = getImmediateSequence().resolve() }
+    final Expr getSequence() { result = this.getImmediateSequence().resolve() }
 
     /**
      * Gets the where of this for each statement, if it exists.
@@ -60,12 +60,12 @@ module Generated {
     /**
      * Gets the where of this for each statement, if it exists.
      */
-    final Expr getWhere() { result = getImmediateWhere().resolve() }
+    final Expr getWhere() { result = this.getImmediateWhere().resolve() }
 
     /**
      * Holds if `getWhere()` exists.
      */
-    final predicate hasWhere() { exists(getWhere()) }
+    final predicate hasWhere() { exists(this.getWhere()) }
 
     /**
      * Gets the body of this for each statement.
@@ -83,6 +83,6 @@ module Generated {
     /**
      * Gets the body of this for each statement.
      */
-    final BraceStmt getBody() { result = getImmediateBody().resolve() }
+    final BraceStmt getBody() { result = this.getImmediateBody().resolve() }
   }
 }

@@ -23,7 +23,7 @@ module Generated {
     /**
      * Gets the body of this do catch statement.
      */
-    final Stmt getBody() { result = getImmediateBody().resolve() }
+    final Stmt getBody() { result = this.getImmediateBody().resolve() }
 
     /**
      * Gets the `index`th catch of this do catch statement (0-based).
@@ -41,16 +41,16 @@ module Generated {
     /**
      * Gets the `index`th catch of this do catch statement (0-based).
      */
-    final CaseStmt getCatch(int index) { result = getImmediateCatch(index).resolve() }
+    final CaseStmt getCatch(int index) { result = this.getImmediateCatch(index).resolve() }
 
     /**
      * Gets any of the catches of this do catch statement.
      */
-    final CaseStmt getACatch() { result = getCatch(_) }
+    final CaseStmt getACatch() { result = this.getCatch(_) }
 
     /**
      * Gets the number of catches of this do catch statement.
      */
-    final int getNumberOfCatches() { result = count(int i | exists(getCatch(i))) }
+    final int getNumberOfCatches() { result = count(int i | exists(this.getCatch(i))) }
   }
 }

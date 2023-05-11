@@ -24,7 +24,7 @@ module Generated {
     /**
      * Gets the sub expression of this obj c selector expression.
      */
-    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
 
     /**
      * Gets the method of this obj c selector expression.
@@ -42,6 +42,6 @@ module Generated {
     /**
      * Gets the method of this obj c selector expression.
      */
-    final Function getMethod() { result = getImmediateMethod().resolve() }
+    final Function getMethod() { result = this.getImmediateMethod().resolve() }
   }
 }

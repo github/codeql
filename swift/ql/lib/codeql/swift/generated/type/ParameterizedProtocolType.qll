@@ -29,7 +29,7 @@ module Generated {
     /**
      * Gets the base of this parameterized protocol type.
      */
-    final ProtocolType getBase() { result = getImmediateBase().resolve() }
+    final ProtocolType getBase() { result = this.getImmediateBase().resolve() }
 
     /**
      * Gets the `index`th argument of this parameterized protocol type (0-based).
@@ -47,16 +47,16 @@ module Generated {
     /**
      * Gets the `index`th argument of this parameterized protocol type (0-based).
      */
-    final Type getArg(int index) { result = getImmediateArg(index).resolve() }
+    final Type getArg(int index) { result = this.getImmediateArg(index).resolve() }
 
     /**
      * Gets any of the arguments of this parameterized protocol type.
      */
-    final Type getAnArg() { result = getArg(_) }
+    final Type getAnArg() { result = this.getArg(_) }
 
     /**
      * Gets the number of arguments of this parameterized protocol type.
      */
-    final int getNumberOfArgs() { result = count(int i | exists(getArg(i))) }
+    final int getNumberOfArgs() { result = count(int i | exists(this.getArg(i))) }
   }
 }
