@@ -40,7 +40,5 @@ private class DefaultUncontrolledFormatStringSink extends UncontrolledFormatStri
     or
     // a sink defined in a CSV model.
     sinkNode(this, "format-string")
-    or
-    sinkNode(this, "uncontrolled-format-string") // deprecated label
   }
 }
