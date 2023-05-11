@@ -51,6 +51,24 @@ func bad2(w http.ResponseWriter, req *http.Request) interface{} {
 	return db
 }
 
+type Config struct {
+	dsn string
+}
+
+func NewConfig() *Config            { return &Config{dsn: ""} }
+func (Config) Parse([]string) error { return nil }
+
+func RegexFuncModelTest(w http.ResponseWriter, req *http.Request) (interface{}, error) {
+	cfg := NewConfig()
+	err := cfg.Parse(os.Args[1:]) // This is bad. `name` can be something like `test?allowAllFiles=true&` which will allow an attacker to access local files.
+	if err != nil {
+		return nil, err
+	}
+	dbDSN := fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?charset=utf8", "username", "password", "127.0.0.1", 3306, cfg.dsn)
+	db, _ := sql.Open("mysql", dbDSN)
+	return db, nil
+}
+
 func main() {
 	bad2(nil, nil)
 	good()

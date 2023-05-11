@@ -27,7 +27,7 @@ private class DecodeFunctionModel extends TaintTracking::FunctionModel {
   DecodeFunctionModel() {
     // This matches any function with a name like `Decode`,`Unmarshal` or `Parse`.
     // This is done to allow taints stored in encoded forms, such as in toml or json to flow freely.
-    this.getName().matches("(?i).*(parse|decode|unmarshal).*")
+    this.getName().regexpMatch("(?i).*(parse|decode|unmarshal).*")
   }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
@@ -38,9 +38,6 @@ private class DecodeFunctionModel extends TaintTracking::FunctionModel {
 
 /** A model of `flag.Parse`, propagating tainted input passed via CLI flags to `Parse`'s result. */
 private class FlagSetFunctionModel extends TaintTracking::FunctionModel {
-  FunctionInput inp;
-  FunctionOutput outp;
-
   FlagSetFunctionModel() { this.hasQualifiedName("flag", "Parse") }
 
   override predicate hasTaintFlow(FunctionInput input, FunctionOutput output) {
