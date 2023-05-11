@@ -3,7 +3,7 @@
  *
  * It extends `string`, but adds a mock `hasLocationInfo` method that returns the string itself as the file name.
  *
- * Use this, when you want to return a string value from a query using $@ notation — the string value
+ * Use this, when you want to return a string value from a query using $@ notation - the string value
  * will be included in the sarif file.
  *
  *
