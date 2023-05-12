@@ -121,6 +121,9 @@ module SummaryComponentStack {
   SummaryComponentStack syntheticGlobal(string synthetic) {
     result = singleton(SummaryComponent::syntheticGlobal(synthetic))
   }
+
+  /** Gets a textual representation of this stack used for flow summaries. */
+  string getComponentStack(SummaryComponentStack s) { result = Impl::Public::getComponentStack(s) }
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
