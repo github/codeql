@@ -54,6 +54,16 @@ struct SwiftDiagnostic {
 
   std::optional<SwiftDiagnosticsLocation> location{};
 
+  constexpr SwiftDiagnostic(std::string_view id,
+                            std::string_view name,
+                            std::string_view action = "",
+                            std::string_view helpLinks = "",
+                            Visibility visibility = Visibility::all)
+      : id{id}, name{name}, action{action}, helpLinks{helpLinks}, visibility{visibility} {}
+
+  constexpr SwiftDiagnostic(std::string_view id, std::string_view name, Visibility visibility)
+      : SwiftDiagnostic(id, name, "", "", visibility) {}
+
   // create a JSON diagnostics for this source with the given timestamp and message to out
   // A plaintextMessage is used that includes both the message and the action to take. Dots are
   // appended to both. The id is used to construct the source id in the form
@@ -93,6 +103,6 @@ inline constexpr SwiftDiagnostic::Visibility operator&(SwiftDiagnostic::Visibili
 constexpr SwiftDiagnostic internalError{
     "internal-error",
     "Internal error",
-    "Contact us about this issue",
+    SwiftDiagnostic::Visibility::telemetry,
 };
 }  // namespace codeql
