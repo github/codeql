@@ -116,6 +116,11 @@ module SummaryComponentStack {
 
   /** Gets a singleton stack representing a jump to `c`. */
   SummaryComponentStack jump(Callable c) { result = singleton(SummaryComponent::jump(c)) }
+
+  /** Gets a singleton stack representing a synthetic global with name `name`. */
+  SummaryComponentStack syntheticGlobal(string synthetic) {
+    result = singleton(SummaryComponent::syntheticGlobal(synthetic))
+  }
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
