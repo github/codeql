@@ -337,10 +337,7 @@ module ProductFlow {
     private predicate fwdReachableInterprocEntry(Flow1::PathNode node1, Flow2::PathNode node2) {
       isSourcePair(node1, node2)
       or
-      exists(Flow1::PathNode pred1, Flow2::PathNode pred2 |
-        fwdReachableInterprocEntry(pred1, pred2) and
-        isSuccessor(pred1, pred2, node1, node2)
-      )
+      fwdIsSuccessor(_, _, node1, node2)
     }
 
     pragma[assume_small_delta]
@@ -424,11 +421,10 @@ module ProductFlow {
       localPathStep2SuccPlus(n1, n2) or n1 = n2
     }
 
-    bindingset[pred1, pred2]
-    bindingset[succ1, succ2]
-    private predicate isSuccessor(
+    private predicate fwdIsSuccessor(
       Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode succ1, Flow2::PathNode succ2
     ) {
+      fwdReachableInterprocEntry(pred1, pred2) and
       exists(Flow1::PathNode mid1, Flow2::PathNode mid2 |
         localPathStep1Tc(pred1, mid1) and
         localPathStep2Tc(pred2, mid2)
@@ -445,13 +441,11 @@ module ProductFlow {
     pragma[nomagic]
     private predicate revReachableInterprocEntry(Flow1::PathNode node1, Flow2::PathNode node2) {
       fwdReachableInterprocEntry(node1, node2) and
-      (
-        isSinkPair(node1, node2)
-        or
-        exists(Flow1::PathNode succ1, Flow2::PathNode succ2 |
-          revReachableInterprocEntry(succ1, succ2) and
-          isSuccessor(node1, node2, succ1, succ2)
-        )
+      isSinkPair(node1, node2)
+      or
+      exists(Flow1::PathNode succ1, Flow2::PathNode succ2 |
+        revReachableInterprocEntry(succ1, succ2) and
+        fwdIsSuccessor(node1, node2, succ1, succ2)
       )
     }
 
@@ -464,7 +458,7 @@ module ProductFlow {
       exists(Flow1::PathNode n11, Flow2::PathNode n12, Flow1::PathNode n21, Flow2::PathNode n22 |
         n1 = TMkNodePair(n11, n12) and
         n2 = TMkNodePair(n21, n22) and
-        isSuccessor(n11, n12, n21, n22)
+        fwdIsSuccessor(n11, n12, n21, n22)
       )
     }
 
