@@ -19,9 +19,9 @@ nlohmann::json SwiftDiagnostic::json(const std::chrono::system_clock::time_point
        }},
       {"visibility",
        {
-           {"statusPage", true},
-           {"cliSummaryTable", true},
-           {"telemetry", true},
+           {"statusPage", has(Visibility::statusPage)},
+           {"cliSummaryTable", has(Visibility::cliSummaryTable)},
+           {"telemetry", has(Visibility::telemetry)},
        }},
       {"severity", "error"},
       {"helpLinks", std::vector<std::string_view>(absl::StrSplit(helpLinks, ' '))},
@@ -39,6 +39,10 @@ std::string SwiftDiagnostic::abbreviation() const {
     return absl::StrCat(id, "@", location->str());
   }
   return std::string{id};
+}
+
+bool SwiftDiagnostic::has(SwiftDiagnostic::Visibility v) const {
+  return (visibility & v) != Visibility::none;
 }
 
 nlohmann::json SwiftDiagnosticsLocation::json() const {

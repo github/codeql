@@ -26,7 +26,6 @@ struct SwiftDiagnosticsLocation {
   unsigned endColumn;
 
   nlohmann::json json() const;
-
   std::string str() const;
 };
 
@@ -34,6 +33,14 @@ struct SwiftDiagnosticsLocation {
 // These are internally stored into a map on id's. A specific error log can use binlog's category
 // as id, which will then be used to recover the diagnostic source while dumping.
 struct SwiftDiagnostic {
+  enum class Visibility : unsigned char {
+    none = 0b000,
+    statusPage = 0b001,
+    cliSummaryTable = 0b010,
+    telemetry = 0b100,
+    all = 0b111,
+  };
+
   std::string_view id;
   std::string_view name;
   static constexpr std::string_view extractorName = "swift";
@@ -41,9 +48,11 @@ struct SwiftDiagnostic {
   // space separated if more than 1. Not a vector to allow constexpr
   // TODO(C++20) with vector going constexpr this can be turned to `std::vector<std::string_view>`
   std::string_view helpLinks;
-
-  std::optional<SwiftDiagnosticsLocation> location;
   // for the moment, we only output errors, so no need to store the severity
+
+  Visibility visibility{Visibility::all};
+
+  std::optional<SwiftDiagnosticsLocation> location{};
 
   // create a JSON diagnostics for this source with the given timestamp and message to out
   // A plaintextMessage is used that includes both the message and the action to take. Dots are
@@ -64,7 +73,22 @@ struct SwiftDiagnostic {
     ret.location = SwiftDiagnosticsLocation{file, startLine, startColumn, endLine, endColumn};
     return ret;
   }
+
+ private:
+  bool has(Visibility v) const;
 };
+
+inline constexpr SwiftDiagnostic::Visibility operator|(SwiftDiagnostic::Visibility lhs,
+                                                       SwiftDiagnostic::Visibility rhs) {
+  return static_cast<SwiftDiagnostic::Visibility>(static_cast<unsigned char>(lhs) |
+                                                  static_cast<unsigned char>(rhs));
+}
+
+inline constexpr SwiftDiagnostic::Visibility operator&(SwiftDiagnostic::Visibility lhs,
+                                                       SwiftDiagnostic::Visibility rhs) {
+  return static_cast<SwiftDiagnostic::Visibility>(static_cast<unsigned char>(lhs) &
+                                                  static_cast<unsigned char>(rhs));
+}
 
 constexpr SwiftDiagnostic internalError{
     "internal-error",
