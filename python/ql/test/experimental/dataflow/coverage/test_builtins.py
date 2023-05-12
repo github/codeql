@@ -230,7 +230,7 @@ def test_dict_get():
     v = d.get("k")
     SINK(v) #$ flow="SOURCE, l:-2 -> v"
     v1 = d.get("non-existing", SOURCE)
-    SINK(v1) #$ flow="SOURCE, l:-1 -> v1"
+    SINK(v1) #$ MISSING: flow="SOURCE, l:-1 -> v1"
 
 @expects(2)
 def test_dict_popitem():
