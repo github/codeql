@@ -138,7 +138,8 @@ void Log::configure() {
     std::error_code ec;
     std::filesystem::create_directories(diagFile.parent_path(), ec);
     if (!ec) {
-      if (!diagnostics.open(diagFile)) {
+      diagnostics.open(diagFile);
+      if (!diagnostics) {
         problems.emplace_back("Unable to open diagnostics json file " + diagFile.string());
       }
     } else {
@@ -165,6 +166,14 @@ void Log::flushImpl() {
   }
   if (diagnostics) {
     diagnostics.flush();
+  }
+}
+
+void Log::diagnoseImpl(const SwiftDiagnostic& source,
+                       const std::chrono::system_clock::time_point& time,
+                       std::string_view message) {
+  if (diagnostics) {
+    diagnostics << source.json(time, message) << '\n';
   }
 }
 

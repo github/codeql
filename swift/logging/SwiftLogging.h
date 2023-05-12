@@ -126,7 +126,7 @@ class Log {
   static void diagnose(const SwiftDiagnostic& source,
                        const std::chrono::system_clock::time_point& time,
                        std::string_view message) {
-    instance().diagnostics.write(source, time, message);
+    instance().diagnoseImpl(source, time, message);
   }
 
  private:
@@ -144,6 +144,9 @@ class Log {
 
   void configure();
   void flushImpl();
+  void diagnoseImpl(const SwiftDiagnostic& source,
+                    const std::chrono::system_clock::time_point& time,
+                    std::string_view message);
 
   LoggerConfiguration getLoggerConfigurationImpl(std::string_view name);
 
@@ -183,7 +186,7 @@ class Log {
   FilteredOutput<std::ofstream> binary{Level::no_logs};
   FilteredOutput<binlog::TextOutputStream> text{Level::info, textFile, format};
   FilteredOutput<binlog::TextOutputStream> console{Level::warning, std::cerr, format};
-  SwiftDiagnosticsDumper diagnostics{};
+  std::ofstream diagnostics{};
   LevelRules sourceRules;
   std::vector<std::string> collectLevelRulesAndReturnProblems(const char* envVar);
 };

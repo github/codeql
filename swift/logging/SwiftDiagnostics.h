@@ -66,31 +66,6 @@ struct SwiftDiagnostic {
   }
 };
 
-class SwiftDiagnosticsDumper {
- public:
-  // opens path for writing out JSON entries. Returns whether the operation was successful.
-  bool open(const std::filesystem::path& path) {
-    output.open(path);
-    return output.good();
-  }
-
-  void flush() { output.flush(); }
-
-  void write(const SwiftDiagnostic& source,
-             const std::chrono::system_clock::time_point& timestamp,
-             std::string_view message) {
-    if (output) {
-      output << source.json(timestamp, message) << '\n';
-    }
-  }
-
-  bool good() const { return output.good(); }
-  explicit operator bool() const { return good(); }
-
- private:
-  std::ofstream output;
-};
-
 constexpr SwiftDiagnostic internalError{
     "internal-error",
     "Internal error",
