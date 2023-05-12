@@ -42,7 +42,7 @@ async def test_taint(request: web.Request): # $ requestHandler
         request.cookies.keys(), # $ MISSING: tainted
         request.cookies.values(), # $ tainted
         request.cookies.items(), # $ tainted
-        list(request.cookies), # $ tainted
+        list(request.cookies), # $ MISSING: tainted
         iter(request.cookies), # $ tainted
 
 

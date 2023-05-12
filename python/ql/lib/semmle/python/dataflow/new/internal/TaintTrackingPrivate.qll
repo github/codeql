@@ -181,13 +181,6 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   // don't provide that right now.
   DataFlowPrivate::comprehensionStoreStep(nodeFrom, _, nodeTo)
   or
-  // constructor call
-  exists(DataFlow::CallCfgNode call | call = nodeTo |
-    call = API::builtin(["list", "set", "frozenset", "dict", "tuple"]).getACall() and
-    call.getArg(0) = nodeFrom
-    // TODO: Properly handle defaultdict/namedtuple
-  )
-  or
   // functions operating on collections
   exists(DataFlow::CallCfgNode call | call = nodeTo |
     call = API::builtin(["sorted", "reversed", "iter", "next"]).getACall() and

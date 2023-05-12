@@ -16,7 +16,7 @@ ensure_tainted(
     mdp.values(), # $ tainted
     mdp.items(), # $ tainted
     mdp.copy(), # $ tainted
-    list(mdp), # $ tainted
+    list(mdp), # $ MISSING: tainted
     iter(mdp), # $ tainted
 )
 
@@ -36,6 +36,6 @@ ensure_tainted(
     ci_mdp.values(), # $ tainted
     ci_mdp.items(), # $ tainted
     ci_mdp.copy(), # $ tainted
-    list(ci_mdp), # $ tainted
+    list(ci_mdp), # $ MISSING: tainted
     iter(ci_mdp), # $ tainted
 )
