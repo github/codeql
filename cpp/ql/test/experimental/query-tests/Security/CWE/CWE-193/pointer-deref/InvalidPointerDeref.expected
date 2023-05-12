@@ -649,6 +649,10 @@ edges
 | test.cpp:280:13:280:24 | new[] | test.cpp:281:14:281:15 | xs |
 | test.cpp:290:13:290:24 | new[] | test.cpp:291:14:291:15 | xs |
 | test.cpp:290:13:290:24 | new[] | test.cpp:292:30:292:30 | x |
+| test.cpp:304:15:304:26 | new[] | test.cpp:307:5:307:6 | xs |
+| test.cpp:304:15:304:26 | new[] | test.cpp:308:5:308:6 | xs |
+| test.cpp:308:5:308:6 | xs | test.cpp:308:5:308:11 | access to array |
+| test.cpp:308:5:308:11 | access to array | test.cpp:308:5:308:29 | Store: ... = ... |
 #select
 | test.cpp:6:14:6:15 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
 | test.cpp:8:14:8:21 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:8:14:8:21 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
@@ -672,3 +676,4 @@ edges
 | test.cpp:254:9:254:16 | Store: ... = ... | test.cpp:248:24:248:30 | call to realloc | test.cpp:254:9:254:16 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:248:24:248:30 | call to realloc | call to realloc | test.cpp:254:11:254:11 | i | i |
 | test.cpp:264:13:264:14 | Load: * ... | test.cpp:260:13:260:24 | new[] | test.cpp:264:13:264:14 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:260:13:260:24 | new[] | new[] | test.cpp:261:19:261:21 | len | len |
 | test.cpp:274:5:274:10 | Store: ... = ... | test.cpp:270:13:270:24 | new[] | test.cpp:274:5:274:10 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:270:13:270:24 | new[] | new[] | test.cpp:271:19:271:21 | len | len |
+| test.cpp:308:5:308:29 | Store: ... = ... | test.cpp:304:15:304:26 | new[] | test.cpp:308:5:308:29 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:304:15:304:26 | new[] | new[] | test.cpp:308:8:308:10 | ... + ... | ... + ... |
