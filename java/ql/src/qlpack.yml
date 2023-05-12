@@ -12,4 +12,4 @@ dependencies:
   codeql/util: ${workspace}
 dataExtensions:
   - Telemetry/ExtractorInformation.yml
-warnOmImplicitThis: true
+warnOnImplicitThis: true
