@@ -23,11 +23,6 @@
 // * passing a logger around using a `Logger& logger` function parameter
 // They are created with a name that appears in the logs and can be used to filter debug levels (see
 // `Logger`).
-// If the first argument after the format is a SwiftDiagnosticSource or
-// SwiftDiagnosticSourceWithLocation, a JSON diagnostic entry is emitted. In this case the
-// format string **must** start with "[{}] " (which is checked at compile time), and everything
-// following that is used to form the message in the diagnostics using fmt::format instead of the
-// internal binlog formatting. The two are fairly compatible though.
 #define LOG_CRITICAL(...) LOG_WITH_LEVEL(critical, __VA_ARGS__)
 #define LOG_ERROR(...) LOG_WITH_LEVEL(error, __VA_ARGS__)
 #define LOG_WARNING(...) LOG_WITH_LEVEL(warning, __VA_ARGS__)
