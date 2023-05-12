@@ -208,12 +208,12 @@ An import directive refers to a module identifier:
 
 ::
 
-   import ::= annotations "import" importModuleId ("as" modulename)?
+   import ::= annotations "import" importModuleExpr ("as" modulename)?
 
    qualId ::= simpleId | qualId "." simpleId
 
-   importModuleId ::= qualId
-                  | importModuleId "::" simpleId
+   importModuleExpr ::= qualId
+                    | importModuleExpr "::" simpleId
 
 An import directive may optionally name the imported module using an ``as`` declaration. If a name is defined, then the import directive adds to the declared module environment of the current module a mapping from the name to the declaration of the imported module. Otherwise, the current module *directly imports* the imported module.
 
@@ -280,9 +280,9 @@ With the exception of class domain types and character types (which cannot be re
 
 ::
 
-   type ::= (moduleId "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
+   type ::= (moduleExpr "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
 
-   moduleId ::= simpleId | moduleId "::" simpleId
+   moduleExpr ::= simpleId | moduleExpr "::" simpleId
 
 A type reference is resolved to a type as follows:
 
@@ -597,7 +597,7 @@ Identifiers are used in following syntactic constructs:
    modulename    ::= simpleId
    classname     ::= upperId
    dbasetype     ::= atLowerId
-   predicateRef  ::= (moduleId "::")? literalId
+   predicateRef  ::= (moduleExpr "::")? literalId
    predicateName ::= lowerId
    varname       ::= lowerId
    literalId     ::= lowerId | atLowerId
@@ -1615,7 +1615,7 @@ Aliases define new names for existing QL entities.
 
    alias ::= qldoc? annotations "predicate" literalId "=" predicateRef "/" int ";"
          |   qldoc? annotations "class" classname "=" type ";"
-         |   qldoc? annotations "module" modulename "=" moduleId ";"
+         |   qldoc? annotations "module" modulename "=" moduleExpr ";"
 
 
 An alias introduces a binding from the new name to the entity referred to by the right-hand side in the current module's declared predicate, type, or module environment respectively.
@@ -2068,12 +2068,12 @@ The complete grammar for QL is as follows:
 
    moduleBody ::= (import | predicate | class | module | alias | select)*
 
-   import ::= annotations "import" importModuleId ("as" modulename)?
+   import ::= annotations "import" importModuleExpr ("as" modulename)?
 
    qualId ::= simpleId | qualId "." simpleId
 
-   importModuleId ::= qualId
-                  | importModuleId "::" simpleId
+   importModuleExpr ::= qualId
+                    | importModuleExpr "::" simpleId
 
    select ::= ("from" var_decls)? ("where" formula)? "select" as_exprs ("order" "by" orderbys)?
 
@@ -2120,15 +2120,15 @@ The complete grammar for QL is as follows:
 
    field ::= qldoc? annotations var_decl ";"
 
-   moduleId ::= simpleId | moduleId "::" simpleId
+   moduleExpr ::= simpleId | moduleExpr "::" simpleId
 
-   type ::= (moduleId "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
+   type ::= (moduleExpr "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
 
    exprs ::= expr ("," expr)*
 
    alias ::= qldoc? annotations "predicate" literalId "=" predicateRef "/" int ";"
          |  qldoc? annotations "class" classname "=" type ";"
-         |  qldoc? annotations "module" modulename "=" moduleId ";"
+         |  qldoc? annotations "module" modulename "=" moduleExpr ";"
 
    var_decls ::= (var_decl ("," var_decl)*)?
 
@@ -2249,7 +2249,7 @@ The complete grammar for QL is as follows:
 
    dbasetype ::= atLowerId
 
-   predicateRef ::= (moduleId "::")? literalId
+   predicateRef ::= (moduleExpr "::")? literalId
 
    predicateName ::= lowerId
 
