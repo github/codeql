@@ -43,7 +43,7 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
 
   override string getRegexp() {
     result =
-      ".*(" +
+      "(?is).*(" +
         // Inspired by the list on https://cwe.mitre.org/data/definitions/359.html
         // Government identifiers, such as Social Security Numbers
         "social.?security|national.?insurance|" +
@@ -82,7 +82,7 @@ private string regexpProbablySafe() {
 private class SensitiveVarDecl extends VarDecl {
   SensitiveDataType sensitiveType;
 
-  SensitiveVarDecl() { this.getName().toLowerCase().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveVarDecl() { this.getName().regexpMatch(sensitiveType.getRegexp()) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
     label = this.getName() and
@@ -99,7 +99,7 @@ private class SensitiveFunction extends Function {
 
   SensitiveFunction() {
     name = this.getName().splitAt("(", 0) and
-    name.toLowerCase().regexpMatch(sensitiveType.getRegexp())
+    name.regexpMatch(sensitiveType.getRegexp())
   }
 
   predicate hasInfo(string label, SensitiveDataType type) {
@@ -114,7 +114,7 @@ private class SensitiveFunction extends Function {
 private class SensitiveArgument extends Argument {
   SensitiveDataType sensitiveType;
 
-  SensitiveArgument() { this.getLabel().toLowerCase().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveArgument() { this.getLabel().regexpMatch(sensitiveType.getRegexp()) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
     label = this.getLabel() and
@@ -147,7 +147,7 @@ class SensitiveExpr extends Expr {
       )
     ) and
     // do not mark as sensitive it if it is probably safe
-    not label.toLowerCase().regexpMatch(regexpProbablySafe())
+    not label.regexpMatch(regexpProbablySafe())
   }
 
   /**
@@ -165,7 +165,7 @@ class SensitiveExpr extends Expr {
  * A function that is likely used to encrypt or hash data.
  */
 private class EncryptionFunction extends Function {
-  EncryptionFunction() { this.getName().regexpMatch(".*(crypt|hash|encode|protect).*") }
+  EncryptionFunction() { this.getName().regexpMatch("(?is).*(crypt|hash|encode|protect).*") }
 }
 
 /**
