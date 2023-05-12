@@ -8,12 +8,12 @@
 
 namespace codeql {
 
-nlohmann::json SwiftDiagnosticsSource::json(const std::chrono::system_clock::time_point& timestamp,
-                                            std::string_view message) const {
-  return {
+nlohmann::json SwiftDiagnostic::json(const std::chrono::system_clock::time_point& timestamp,
+                                     std::string_view message) const {
+  nlohmann::json ret{
       {"source",
        {
-           {"id", sourceId()},
+           {"id", absl::StrJoin({extractorName, programName, id}, "/")},
            {"name", name},
            {"extractorName", extractorName},
        }},
@@ -28,26 +28,29 @@ nlohmann::json SwiftDiagnosticsSource::json(const std::chrono::system_clock::tim
       {"plaintextMessage", absl::StrCat(message, ".\n\n", action, ".")},
       {"timestamp", fmt::format("{:%FT%T%z}", timestamp)},
   };
-}
-
-std::string SwiftDiagnosticsSource::sourceId() const {
-  return absl::StrJoin({extractorName, programName, id}, "/");
-}
-
-nlohmann::json SwiftDiagnosticsSourceWithLocation::json(
-    const std::chrono::system_clock::time_point& timestamp,
-    std::string_view message) const {
-  auto ret = source.json(timestamp, message);
-  auto& location = ret["location"] = {{"file", file}};
-  if (startLine) location["startLine"] = startLine;
-  if (startColumn) location["startColumn"] = startColumn;
-  if (endLine) location["endLine"] = endLine;
-  if (endColumn) location["endColumn"] = endColumn;
+  if (location) {
+    ret["location"] = location->json();
+  }
   return ret;
 }
 
-std::string SwiftDiagnosticsSourceWithLocation::str() const {
-  return absl::StrCat(source.id, "@", file, ":", startLine, ":", startColumn, ":", endLine, ":",
-                      endColumn);
+std::string SwiftDiagnostic::abbreviation() const {
+  if (location) {
+    return absl::StrCat(id, "@", location->str());
+  }
+  return std::string{id};
+}
+
+nlohmann::json SwiftDiagnosticsLocation::json() const {
+  nlohmann::json ret{{"file", file}};
+  if (startLine) ret["startLine"] = startLine;
+  if (startColumn) ret["startColumn"] = startColumn;
+  if (endLine) ret["endLine"] = endLine;
+  if (endColumn) ret["endColumn"] = endColumn;
+  return ret;
+}
+
+std::string SwiftDiagnosticsLocation::str() const {
+  return absl::StrJoin(std::tuple{file, startLine, startColumn, endLine, endColumn}, ":");
 }
 }  // namespace codeql
