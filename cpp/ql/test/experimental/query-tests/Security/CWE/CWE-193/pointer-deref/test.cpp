@@ -294,3 +294,17 @@ void test20(unsigned len)
     *x = 0; // GOOD
   }
 }
+
+void* test21_get(int n);
+
+void test21() {
+  int n = 0;
+  while (test21_get(n)) n+=2;
+
+  void** xs = new void*[n];
+
+  for (int i = 0; i < n; i += 2) {
+    xs[i] = test21_get(i);
+    xs[i+1] = test21_get(i+1);
+  }
+}

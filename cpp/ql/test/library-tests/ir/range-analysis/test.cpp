@@ -49,3 +49,13 @@
     return 0;
   }
 
+  void* f3_get(int n);
+
+  void f3() {
+    int n = 0;
+    while (f3_get(n)) n+=2;
+
+    for (int i = 0; i < n; i += 2) {
+      range(i); // $ range=>=0 SPURIOUS: range="<=call to f3_get-1" range="<=call to f3_get-2"
+    }
+  }
