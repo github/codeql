@@ -70,7 +70,10 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
  * contain hashed or encrypted data, or are only a reference to data that is
  * actually stored elsewhere.
  */
-private string regexpProbablySafe() { result = HeuristicNames::notSensitiveRegexp() }
+private string regexpProbablySafe() {
+  result = HeuristicNames::notSensitiveRegexp() or
+  result = "(?is).*(file|path|url|invalid).*"
+}
 
 /**
  * A `VarDecl` that might be used to contain sensitive data.
