@@ -89,8 +89,10 @@ predicate pointerArithOverflow(
 
 module FieldAddressToDerefConfig implements DataFlow::StateConfigSig {
   newtype FlowState =
-    additional TArray(Field f) or
-    additional TOverflowArithmetic(PointerArithmeticInstruction pai)
+    additional TArray(Field f) { pointerArithOverflow(_, f, _, _, _) } or
+    additional TOverflowArithmetic(PointerArithmeticInstruction pai) {
+      pointerArithOverflow(pai, _, _, _, _)
+    }
 
   predicate isSource(DataFlow::Node source, FlowState state) {
     exists(Field f |
