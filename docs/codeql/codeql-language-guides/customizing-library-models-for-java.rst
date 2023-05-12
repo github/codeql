@@ -315,7 +315,7 @@ The following source kinds are supported:
 
 Below is an enumeration of the remaining source kinds, but they are out of scope for this documentation:
 
-- **contentprovider**, **android-widget**, **android-external-storage-dir**.
+- **contentprovider**, **android-external-storage-dir**.
 
 sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
