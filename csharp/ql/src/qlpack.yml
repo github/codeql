@@ -10,3 +10,4 @@ dependencies:
   codeql/csharp-all: ${workspace}
   codeql/suite-helpers: ${workspace}
   codeql/util: ${workspace}
+warnOnImplicitThis: true

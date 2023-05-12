@@ -78,7 +78,7 @@ class InlineFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasValueFlow" and
-    exists(DataFlow::Node sink | getValueFlowConfig().hasFlowTo(sink) |
+    exists(DataFlow::Node sink | this.getValueFlowConfig().hasFlowTo(sink) |
       sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and
       element = sink.toString() and
@@ -87,7 +87,8 @@ class InlineFlowTest extends InlineExpectationsTest {
     or
     tag = "hasTaintFlow" and
     exists(DataFlow::Node src, DataFlow::Node sink |
-      getTaintFlowConfig().hasFlow(src, sink) and not getValueFlowConfig().hasFlow(src, sink)
+      this.getTaintFlowConfig().hasFlow(src, sink) and
+      not this.getValueFlowConfig().hasFlow(src, sink)
     |
       sink.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
         location.getStartColumn(), location.getEndLine(), location.getEndColumn()) and

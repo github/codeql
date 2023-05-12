@@ -20,7 +20,7 @@ module Generated {
     /**
      * Gets the module of this declaration.
      */
-    final ModuleDecl getModule() { result = getImmediateModule().resolve() }
+    final ModuleDecl getModule() { result = this.getImmediateModule().resolve() }
 
     /**
      * Gets the `index`th member of this declaration (0-based).
@@ -35,16 +35,16 @@ module Generated {
     /**
      * Gets the `index`th member of this declaration (0-based).
      */
-    final Decl getMember(int index) { result = getImmediateMember(index).resolve() }
+    final Decl getMember(int index) { result = this.getImmediateMember(index).resolve() }
 
     /**
      * Gets any of the members of this declaration.
      */
-    final Decl getAMember() { result = getMember(_) }
+    final Decl getAMember() { result = this.getMember(_) }
 
     /**
      * Gets the number of members of this declaration.
      */
-    final int getNumberOfMembers() { result = count(int i | exists(getMember(i))) }
+    final int getNumberOfMembers() { result = count(int i | exists(this.getMember(i))) }
   }
 }

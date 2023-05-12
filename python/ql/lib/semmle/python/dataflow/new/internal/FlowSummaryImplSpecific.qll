@@ -105,6 +105,27 @@ predicate neutralSummaryElement(FlowSummary::SummarizedCallable c, string proven
 SummaryComponent interpretComponentSpecific(AccessPathToken c) {
   c = "ListElement" and
   result = FlowSummary::SummaryComponent::listElement()
+  or
+  c = "SetElement" and
+  result = FlowSummary::SummaryComponent::setElement()
+  or
+  exists(int index |
+    c.getAnArgument("TupleElement") = index.toString() and
+    result = FlowSummary::SummaryComponent::tupleElement(index)
+  )
+  or
+  exists(string key |
+    c.getAnArgument("DictionaryElement") = key and
+    result = FlowSummary::SummaryComponent::dictionaryElement(key)
+  )
+  or
+  c = "DictionaryElementAny" and
+  result = FlowSummary::SummaryComponent::dictionaryElementAny()
+  or
+  exists(string attr |
+    c.getAnArgument("Attribute") = attr and
+    result = FlowSummary::SummaryComponent::attribute(attr)
+  )
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */

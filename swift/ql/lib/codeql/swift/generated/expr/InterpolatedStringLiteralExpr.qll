@@ -27,13 +27,13 @@ module Generated {
      * Gets the interpolation expression of this interpolated string literal expression, if it exists.
      */
     final OpaqueValueExpr getInterpolationExpr() {
-      result = getImmediateInterpolationExpr().resolve()
+      result = this.getImmediateInterpolationExpr().resolve()
     }
 
     /**
      * Holds if `getInterpolationExpr()` exists.
      */
-    final predicate hasInterpolationExpr() { exists(getInterpolationExpr()) }
+    final predicate hasInterpolationExpr() { exists(this.getInterpolationExpr()) }
 
     /**
      * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
@@ -52,13 +52,13 @@ module Generated {
      * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
      */
     final Expr getInterpolationCountExpr() {
-      result = getImmediateInterpolationCountExpr().resolve()
+      result = this.getImmediateInterpolationCountExpr().resolve()
     }
 
     /**
      * Holds if `getInterpolationCountExpr()` exists.
      */
-    final predicate hasInterpolationCountExpr() { exists(getInterpolationCountExpr()) }
+    final predicate hasInterpolationCountExpr() { exists(this.getInterpolationCountExpr()) }
 
     /**
      * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
@@ -76,12 +76,14 @@ module Generated {
     /**
      * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
      */
-    final Expr getLiteralCapacityExpr() { result = getImmediateLiteralCapacityExpr().resolve() }
+    final Expr getLiteralCapacityExpr() {
+      result = this.getImmediateLiteralCapacityExpr().resolve()
+    }
 
     /**
      * Holds if `getLiteralCapacityExpr()` exists.
      */
-    final predicate hasLiteralCapacityExpr() { exists(getLiteralCapacityExpr()) }
+    final predicate hasLiteralCapacityExpr() { exists(this.getLiteralCapacityExpr()) }
 
     /**
      * Gets the appending expression of this interpolated string literal expression, if it exists.
@@ -99,11 +101,11 @@ module Generated {
     /**
      * Gets the appending expression of this interpolated string literal expression, if it exists.
      */
-    final TapExpr getAppendingExpr() { result = getImmediateAppendingExpr().resolve() }
+    final TapExpr getAppendingExpr() { result = this.getImmediateAppendingExpr().resolve() }
 
     /**
      * Holds if `getAppendingExpr()` exists.
      */
-    final predicate hasAppendingExpr() { exists(getAppendingExpr()) }
+    final predicate hasAppendingExpr() { exists(this.getAppendingExpr()) }
   }
 }

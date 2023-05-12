@@ -31,25 +31,19 @@ DataFlowType getContentType(ContentSet c) { any() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c]
-DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  any() // TODO once we have type pruning
-}
+DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) { any() }
 
 /**
  * Gets the type of the parameter matching arguments at position `pos` in a
  * synthesized call that targets a callback of type `t`.
  */
-DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
-  any() // TODO once we have type pruning
-}
+DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) { any() }
 
 /**
  * Gets the return type of kind `rk` in a synthesized call that targets a
  * callback of type `t`.
  */
-DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
-  any() // TODO once we have type pruning
-}
+DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) { any() }
 
 /** Gets the type of synthetic global `sg`. */
 DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any() }

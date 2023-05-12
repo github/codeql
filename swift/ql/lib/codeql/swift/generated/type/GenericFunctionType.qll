@@ -28,17 +28,17 @@ module Generated {
      * Gets the `index`th type parameter of this generic type (0-based).
      */
     final GenericTypeParamType getGenericParam(int index) {
-      result = getImmediateGenericParam(index).resolve()
+      result = this.getImmediateGenericParam(index).resolve()
     }
 
     /**
      * Gets any of the type parameters of this generic type.
      */
-    final GenericTypeParamType getAGenericParam() { result = getGenericParam(_) }
+    final GenericTypeParamType getAGenericParam() { result = this.getGenericParam(_) }
 
     /**
      * Gets the number of type parameters of this generic type.
      */
-    final int getNumberOfGenericParams() { result = count(int i | exists(getGenericParam(i))) }
+    final int getNumberOfGenericParams() { result = count(int i | exists(this.getGenericParam(i))) }
   }
 }

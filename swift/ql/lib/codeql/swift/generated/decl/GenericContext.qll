@@ -23,19 +23,19 @@ module Generated {
      * Gets the `index`th generic type parameter of this generic context (0-based).
      */
     final GenericTypeParamDecl getGenericTypeParam(int index) {
-      result = getImmediateGenericTypeParam(index).resolve()
+      result = this.getImmediateGenericTypeParam(index).resolve()
     }
 
     /**
      * Gets any of the generic type parameters of this generic context.
      */
-    final GenericTypeParamDecl getAGenericTypeParam() { result = getGenericTypeParam(_) }
+    final GenericTypeParamDecl getAGenericTypeParam() { result = this.getGenericTypeParam(_) }
 
     /**
      * Gets the number of generic type parameters of this generic context.
      */
     final int getNumberOfGenericTypeParams() {
-      result = count(int i | exists(getGenericTypeParam(i)))
+      result = count(int i | exists(this.getGenericTypeParam(i)))
     }
   }
 }

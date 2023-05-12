@@ -9,3 +9,4 @@ dependencies:
   codeql/ruby-all: ${workspace}
   codeql/suite-helpers: ${workspace}
   codeql/util: ${workspace}
+warnOnImplicitThis: true

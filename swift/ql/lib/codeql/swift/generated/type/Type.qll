@@ -24,6 +24,6 @@ module Generated {
     /**
      * Gets the canonical type of this type.
      */
-    final Type getCanonicalType() { result = getImmediateCanonicalType().resolve() }
+    final Type getCanonicalType() { result = this.getImmediateCanonicalType().resolve() }
   }
 }

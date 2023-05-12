@@ -24,7 +24,7 @@ module Generated {
     /**
      * Gets the base type of this dependent member type.
      */
-    final Type getBaseType() { result = getImmediateBaseType().resolve() }
+    final Type getBaseType() { result = this.getImmediateBaseType().resolve() }
 
     /**
      * Gets the associated type declaration of this dependent member type.
@@ -43,7 +43,7 @@ module Generated {
      * Gets the associated type declaration of this dependent member type.
      */
     final AssociatedTypeDecl getAssociatedTypeDecl() {
-      result = getImmediateAssociatedTypeDecl().resolve()
+      result = this.getImmediateAssociatedTypeDecl().resolve()
     }
   }
 }

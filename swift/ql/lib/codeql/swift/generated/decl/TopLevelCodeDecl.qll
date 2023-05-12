@@ -24,6 +24,6 @@ module Generated {
     /**
      * Gets the body of this top level code declaration.
      */
-    final BraceStmt getBody() { result = getImmediateBody().resolve() }
+    final BraceStmt getBody() { result = this.getImmediateBody().resolve() }
   }
 }

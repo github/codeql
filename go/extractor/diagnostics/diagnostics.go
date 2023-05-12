@@ -154,8 +154,8 @@ func EmitCannotFindPackages(pkgPaths []string) {
 	emitDiagnostic(
 		"go/autobuilder/package-not-found",
 		"Some packages could not be found",
-		fmt.Sprintf("%d package%s could not be found.\n\n%s.\n\nCheck that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).", numPkgPaths, ending, secondLine),
-		severityError,
+		fmt.Sprintf("%d package%s could not be found:\n\n%s.\n\nDefinitions in those packages may not be recognized by CodeQL, and files that use them may only be partially analyzed.\n\nCheck that the paths are correct and make sure any private packages can be accessed. If any of the packages are present in the repository then you may need a [custom build command](https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages).", numPkgPaths, ending, secondLine),
+		severityWarning,
 		fullVisibility,
 		noLocation,
 	)
@@ -194,31 +194,9 @@ func EmitRelativeImportPaths() {
 	)
 }
 
-func EmitUnsupportedVersionGoMod(msg string) {
-	emitDiagnostic(
-		"go/autobuilder/env-unsupported-version-in-go-mod",
-		"Unsupported Go version in `go.mod` file",
-		msg,
-		severityNote,
-		telemetryOnly,
-		noLocation,
-	)
-}
-
-func EmitUnsupportedVersionEnvironment(msg string) {
-	emitDiagnostic(
-		"go/autobuilder/env-unsupported-version-in-environment",
-		"Unsupported Go version in environment",
-		msg,
-		severityNote,
-		telemetryOnly,
-		noLocation,
-	)
-}
-
 func EmitNoGoModAndNoGoEnv(msg string) {
 	emitDiagnostic(
-		"go/autobuilder/env-no-go-mod-and-no-go-env",
+		"go/autobuilder/env-no-go-mod-no-go-env",
 		"No `go.mod` file found and no Go version in environment",
 		msg,
 		severityNote,
@@ -227,10 +205,10 @@ func EmitNoGoModAndNoGoEnv(msg string) {
 	)
 }
 
-func EmitNoGoEnv(msg string) {
+func EmitNoGoModAndGoEnvUnsupported(msg string) {
 	emitDiagnostic(
-		"go/autobuilder/env-no-go-env",
-		"No Go version in environment",
+		"go/autobuilder/env-no-go-mod-go-env-unsupported",
+		"No `go.mod` file found and Go version in environment is unsupported",
 		msg,
 		severityNote,
 		telemetryOnly,
@@ -238,10 +216,10 @@ func EmitNoGoEnv(msg string) {
 	)
 }
 
-func EmitNoGoMod(msg string) {
+func EmitNoGoModAndGoEnvSupported(msg string) {
 	emitDiagnostic(
-		"go/autobuilder/env-no-go-mod",
-		"No `go.mod` file found",
+		"go/autobuilder/env-no-go-mod-go-env-supported",
+		"No `go.mod` file found and Go version in environment is supported",
 		msg,
 		severityNote,
 		telemetryOnly,
@@ -249,10 +227,10 @@ func EmitNoGoMod(msg string) {
 	)
 }
 
-func EmitVersionGoModHigherVersionEnvironment(msg string) {
+func EmitGoModVersionTooHighAndNoGoEnv(msg string) {
 	emitDiagnostic(
-		"go/autobuilder/env-version-go-mod-higher-than-go-env",
-		"The Go version in `go.mod` file is higher than the Go version in environment",
+		"go/autobuilder/env-go-mod-version-too-high-no-go-env",
+		"Go version in `go.mod` file above supported range and no Go version in environment",
 		msg,
 		severityNote,
 		telemetryOnly,
@@ -260,10 +238,120 @@ func EmitVersionGoModHigherVersionEnvironment(msg string) {
 	)
 }
 
-func EmitVersionGoModNotHigherVersionEnvironment(msg string) {
+func EmitGoModVersionTooHighAndEnvVersionTooHigh(msg string) {
 	emitDiagnostic(
-		"go/autobuilder/env-version-go-mod-lower-than-or-equal-to-go-env",
-		"The Go version in `go.mod` file is lower than or equal to the Go version in environment",
+		"go/autobuilder/env-go-mod-version-too-high-go-env-too-high",
+		"Go version in `go.mod` file above supported range and Go version in environment above supported range",
+		msg,
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoModVersionTooHighAndEnvVersionTooLow(msg string) {
+	emitDiagnostic(
+		"go/autobuilder/env-go-mod-version-too-high-go-env-too-low",
+		"Go version in `go.mod` file above supported range and Go version in environment below supported range",
+		msg,
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoModVersionTooHighAndEnvVersionBelowMax(msg string) {
+	emitDiagnostic(
+		"go/autobuilder/env-go-mod-version-too-high-go-env-below-max",
+		"Go version in `go.mod` file above supported range and Go version in environment is supported and below the maximum supported version",
+		msg,
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoModVersionTooHighAndEnvVersionMax(msg string) {
+	emitDiagnostic(
+		"go/autobuilder/env-go-mod-version-too-high-go-env-max",
+		"Go version in `go.mod` file above supported range and Go version in environment is the maximum supported version",
+		msg,
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoModVersionTooLowAndNoGoEnv(msg string) {
+	emitDiagnostic(
+		"go/autobuilder/env-go-mod-version-too-low-no-go-env",
+		"Go version in `go.mod` file below supported range and no Go version in environment",
+		msg,
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoModVersionTooLowAndEnvVersionUnsupported(msg string) {
+	emitDiagnostic(
+		"go/autobuilder/env-go-mod-version-too-low-go-env-unsupported",
+		"Go version in `go.mod` file below supported range and Go version in environment unsupported",
+		msg,
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoModVersionTooLowAndEnvVersionSupported(msg string) {
+	emitDiagnostic(
+		"go/autobuilder/env-go-mod-version-too-low-go-env-supported",
+		"Go version in `go.mod` file below supported range and Go version in environment supported",
+		msg,
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoModVersionSupportedAndNoGoEnv(msg string) {
+	emitDiagnostic(
+		"go/autobuilder/env-go-mod-version-supported-no-go-env",
+		"Go version in `go.mod` file in supported range and no Go version in environment",
+		msg,
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoModVersionSupportedAndGoEnvUnsupported(msg string) {
+	emitDiagnostic(
+		"go/autobuilder/env-go-mod-version-supported-go-env-unsupported",
+		"Go version in `go.mod` file in supported range and Go version in environment unsupported",
+		msg,
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoModVersionSupportedHigherGoEnv(msg string) {
+	emitDiagnostic(
+		"go/autobuilder/env-go-mod-version-supported-higher-than-go-env",
+		"The Go version in `go.mod` file is supported and higher than the Go version in environment",
+		msg,
+		severityNote,
+		telemetryOnly,
+		noLocation,
+	)
+}
+
+func EmitGoModVersionSupportedLowerEqualGoEnv(msg string) {
+	emitDiagnostic(
+		"go/autobuilder/env-go-mod-version-supported-lower-than-or-equal-to-go-env",
+		"The Go version in `go.mod` file is supported and lower than or equal to the Go version in environment",
 		msg,
 		severityNote,
 		telemetryOnly,

@@ -22,6 +22,6 @@ module Generated {
     /**
      * Gets the body of this while statement.
      */
-    final Stmt getBody() { result = getImmediateBody().resolve() }
+    final Stmt getBody() { result = this.getImmediateBody().resolve() }
   }
 }

@@ -67,6 +67,8 @@ class SwiftDiagnosticsDumper {
     return output.good();
   }
 
+  void flush() { output.flush(); }
+
   // write out binlog entries as corresponding JSON diagnostics entries. Expects all entries to have
   // a category equal to an id of a previously created SwiftDiagnosticSource.
   void write(const char* buffer, std::size_t bufferSize);

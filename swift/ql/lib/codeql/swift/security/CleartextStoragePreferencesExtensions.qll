@@ -63,10 +63,12 @@ private class NSUbiquitousKeyValueStore extends CleartextStoragePreferencesSink 
  * A more complicated case, this is a macOS-only way of writing to
  * NSUserDefaults by modifying the `NSUserDefaultsController.values: Any`
  * object via reflection (`perform(Selector)`) or the `NSKeyValueCoding`,
- * `NSKeyValueBindingCreation` APIs. (TODO)
+ * `NSKeyValueBindingCreation` APIs.
  */
 private class NSUserDefaultsControllerStore extends CleartextStoragePreferencesSink {
-  NSUserDefaultsControllerStore() { none() }
+  NSUserDefaultsControllerStore() {
+    none() // not yet implemented
+  }
 
   override string getStoreName() { result = "the user defaults database" }
 }

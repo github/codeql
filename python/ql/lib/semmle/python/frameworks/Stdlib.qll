@@ -3015,6 +3015,17 @@ private module StdlibPrivate {
     override string getKind() { result = Escaping::getRegexKind() }
   }
 
+  /**
+   * A node interpreted as a regular expression.
+   * Speficically nodes where string values are interpreted as regular expressions.
+   */
+  private class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
+    StdLibRegExpInterpretation() {
+      this =
+        API::moduleImport("re").getMember("compile").getACall().getParameter(0, "pattern").asSink()
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // urllib
   // ---------------------------------------------------------------------------
