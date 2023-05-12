@@ -176,7 +176,11 @@ A QL module definition has the following syntax:
 
 ::
 
-   module ::= annotation* "module" modulename "{" moduleBody "}"
+   module ::= annotation* "module" modulename parameters? implements? "{" moduleBody "}"
+
+   parameters ::= "<" signatureExpr simpleId ("," signatureExpr simpleId)* ">"
+
+   implements ::= "implements" moduleSignatureExpr ("," moduleSignatureExpr)*
 
    moduleBody ::= (import | predicate | class | module | alias | select)*
 
@@ -212,8 +216,11 @@ An import directive refers to a module identifier:
 
    qualId ::= simpleId | qualId "." simpleId
 
-   importModuleExpr ::= qualId
-                    | importModuleExpr "::" simpleId
+   importModuleExpr ::= qualId | importModuleExpr "::" simpleId arguments?
+
+   arguments ::= "<" argument ("," argument)* ">"
+
+   argument ::= moduleExpr | type | predicateRef "/" int
 
 An import directive may optionally name the imported module using an ``as`` declaration. If a name is defined, then the import directive adds to the declared module environment of the current module a mapping from the name to the declaration of the imported module. Otherwise, the current module *directly imports* the imported module.
 
@@ -282,7 +289,7 @@ With the exception of class domain types and character types (which cannot be re
 
    type ::= (moduleExpr "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
 
-   moduleExpr ::= simpleId | moduleExpr "::" simpleId
+   moduleExpr ::= simpleId arguments? | moduleExpr "::" simpleId arguments?
 
 A type reference is resolved to a type as follows:
 
@@ -2064,7 +2071,11 @@ The complete grammar for QL is as follows:
 
    ql ::= qldoc? moduleBody
 
-   module ::= annotation* "module" modulename "{" moduleBody "}"
+   module ::= annotation* "module" modulename parameters? implements? "{" moduleBody "}"
+
+   parameters ::= "<" signatureExpr simpleId ("," signatureExpr simpleId)* ">"
+
+   implements ::= "implements" moduleSignatureExpr ("," moduleSignatureExpr)*
 
    moduleBody ::= (import | predicate | class | module | alias | select)*
 
@@ -2072,8 +2083,11 @@ The complete grammar for QL is as follows:
 
    qualId ::= simpleId | qualId "." simpleId
 
-   importModuleExpr ::= qualId
-                    | importModuleExpr "::" simpleId
+   importModuleExpr ::= qualId | importModuleExpr "::" simpleId arguments?
+
+   arguments ::= "<" argument ("," argument)* ">"
+
+   argument ::= moduleExpr | type | predicateRef "/" int
 
    select ::= ("from" var_decls)? ("where" formula)? "select" as_exprs ("order" "by" orderbys)?
 
@@ -2120,7 +2134,11 @@ The complete grammar for QL is as follows:
 
    field ::= qldoc? annotations var_decl ";"
 
-   moduleExpr ::= simpleId | moduleExpr "::" simpleId
+   moduleExpr ::= simpleId arguments? | moduleExpr "::" simpleId arguments?
+
+   moduleSignatureExpr ::= (moduleExpr "::")? upperId arguments?
+
+   signatureExpr : (moduleExpr "::")? simpleId ("/" Integer | arguments)?;
 
    type ::= (moduleExpr "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
 
