@@ -5,7 +5,7 @@ private import semmle.code.java.dataflow.ExternalFlow
 private import semmle.code.java.dataflow.FlowSources
 
 private class DefaultAndroidWidgetSources extends RemoteFlowSource {
-  DefaultAndroidWidgetSources() { sourceNode(this, "android-widget") }
+  DefaultAndroidWidgetSources() { sourceNode(this, "remote") }
 
   override string getSourceType() { result = "Android widget source" }
 }
