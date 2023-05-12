@@ -219,16 +219,18 @@ def test_dict_pop():
     d = {'k': SOURCE}
     v = d.pop("k")
     SINK(v) #$ flow="SOURCE, l:-2 -> v"
-    v1 = d.pop("k", SOURCE)
-    SINK(v1) #$ flow="SOURCE, l:-4 -> v1"
+    v1 = d.pop("k", NONSOURCE)
+    SINK_F(v1) #$ SPURIOUS: flow="SOURCE, l:-4 -> v1"
+    v2 = d.pop("non-existing", SOURCE)
+    SINK(v2) #$ MISSING: flow="SOURCE, l:-1 -> v2"
 
 @expects(2)
 def test_dict_get():
     d = {'k': SOURCE}
     v = d.get("k")
     SINK(v) #$ flow="SOURCE, l:-2 -> v"
-    v1 = d.get("k", SOURCE)
-    SINK(v1) #$ flow="SOURCE, l:-4 -> v1"
+    v1 = d.get("non-existing", SOURCE)
+    SINK(v1) #$ flow="SOURCE, l:-1 -> v1"
 
 @expects(2)
 def test_dict_popitem():
@@ -318,6 +320,13 @@ def test_iter_set():
 def test_iter_dict():
     d = {SOURCE: "val"}
     i = iter(d)
+    l = list(i)
+    SINK(l[0]) #$ MISSING: flow="SOURCE, l:-3 -> l[0]"
+
+def test_iter_iter():
+    # applying iter() to the result of iter() is basically a no-op
+    l0 = [SOURCE]
+    i = iter(iter(l0))
     l = list(i)
     SINK(l[0]) #$ MISSING: flow="SOURCE, l:-3 -> l[0]"
 
