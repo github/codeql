@@ -214,7 +214,7 @@ def test_dict_items():
     SINK(item_list[1][0]) #$ MISSING: flow="SOURCE, l:-5 -> item_list[1][0]"
     SINK_F(item_list[1][1]) # expecting FP due to imprecise flow
 
-@expects(2)
+@expects(3)
 def test_dict_pop():
     d = {'k': SOURCE}
     v = d.pop("k")
