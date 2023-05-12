@@ -239,8 +239,6 @@ open class KotlinUsesExtractor(
         return UseClassInstanceResult(classTypeResult, extractClass)
     }
 
-    private fun isArray(t: IrSimpleType) = t.isBoxedArray || t.isPrimitiveArray()
-
     private fun extractClassLaterIfExternal(c: IrClass) {
         if (isExternalDeclaration(c)) {
             extractExternalClassLater(c)
@@ -565,6 +563,8 @@ open class KotlinUsesExtractor(
     Primitive arrays are represented as e.g. boolean[].
     */
 
+    private fun isArray(t: IrType) = t.isBoxedArray || t.isPrimitiveArray()
+
     data class ArrayInfo(val elementTypeResults: TypeResults,
                          val componentTypeResults: TypeResults,
                          val dimensions: Int)
@@ -579,7 +579,7 @@ open class KotlinUsesExtractor(
      */
     private fun useArrayType(t: IrType, isPrimitiveArray: Boolean): ArrayInfo {
 
-        if (!t.isBoxedArray && !t.isPrimitiveArray()) {
+        if (!isArray(t)) {
             val nullableT = if (t.isPrimitiveType() && !isPrimitiveArray) t.makeNullable() else t
             val typeResults = useType(nullableT)
             return ArrayInfo(typeResults, typeResults, 0)
@@ -1155,13 +1155,13 @@ open class KotlinUsesExtractor(
                     }
                 } else {
                     t.classOrNull?.let { tCls ->
-                        if (t.isArray() || t.isNullableArray()) {
+                        if (t.isBoxedArray) {
                             (t.arguments.singleOrNull() as? IrTypeProjection)?.let { elementTypeArg ->
                                 val elementType = elementTypeArg.type
                                 val replacedElementType = kClassToJavaClass(elementType)
                                 if (replacedElementType !== elementType) {
                                     val newArg = makeTypeProjection(replacedElementType, elementTypeArg.variance)
-                                    return tCls.typeWithArguments(listOf(newArg)).codeQlWithHasQuestionMark(t.isNullableArray())
+                                    return tCls.typeWithArguments(listOf(newArg)).codeQlWithHasQuestionMark(t.isNullable())
                                 }
                             }
                         }
@@ -1592,7 +1592,7 @@ open class KotlinUsesExtractor(
             }
 
             if (owner is IrClass) {
-                if (t.isArray() || t.isNullableArray()) {
+                if (t.isBoxedArray) {
                     val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
                     val erasedElementType = erase(elementType)
                     return owner.typeWith(erasedElementType).codeQlWithHasQuestionMark(t.isNullable())
