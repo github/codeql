@@ -85,7 +85,9 @@ def test_access_explicit(x, y, z):
         iter(tainted_list), # $ tainted
         next(iter(tainted_list)), # $ tainted
         [i for i in tainted_list], # $ tainted
-        [tainted_list for _i in [1,2,3]], # $ MISSING: tainted
+        [tainted_list for i in [1,2,3]], # $ MISSING: tainted
+        [TAINTED_STRING for i in [1,2,3]], # $ tainted
+        [tainted_list], # $ tainted
     )
 
     a, b, c = tainted_list[0:3]
