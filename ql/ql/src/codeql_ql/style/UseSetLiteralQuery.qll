@@ -16,7 +16,7 @@ class DisjunctionChain extends Disjunction {
   Formula getOperand(int i) {
     result =
       rank[i + 1](Formula operand, Location l |
-        operand = getAnOperand*() and
+        operand = this.getAnOperand*() and
         not operand instanceof Disjunction and
         l = operand.getLocation()
       |
@@ -33,16 +33,16 @@ class DisjunctionChain extends Disjunction {
  */
 class EqualsLiteral extends ComparisonFormula {
   EqualsLiteral() {
-    getOperator() = "=" and
-    getAnOperand() instanceof Literal
+    this.getOperator() = "=" and
+    this.getAnOperand() instanceof Literal
   }
 
   AstNode getOther() {
-    result = getAnOperand() and
+    result = this.getAnOperand() and
     not result instanceof Literal
   }
 
-  Literal getLiteral() { result = getAnOperand() }
+  Literal getLiteral() { result = this.getAnOperand() }
 }
 
 /**
@@ -60,29 +60,33 @@ class DisjunctionEqualsLiteral extends DisjunctionChain {
   DisjunctionEqualsLiteral() {
     // VarAccess on the same variable
     exists(VarDef v |
-      forex(Formula f | f = getOperand(_) |
+      forex(Formula f | f = this.getOperand(_) |
         f.(EqualsLiteral).getAnOperand().(VarAccess).getDeclaration() = v
       ) and
-      firstOperand = getOperand(0).(EqualsLiteral).getAnOperand() and
+      firstOperand = this.getOperand(0).(EqualsLiteral).getAnOperand() and
       firstOperand.(VarAccess).getDeclaration() = v
     )
     or
     // FieldAccess on the same variable
     exists(FieldDecl v |
-      forex(Formula f | f = getOperand(_) |
+      forex(Formula f | f = this.getOperand(_) |
         f.(EqualsLiteral).getAnOperand().(FieldAccess).getDeclaration() = v
       ) and
-      firstOperand = getOperand(0).(EqualsLiteral).getAnOperand() and
+      firstOperand = this.getOperand(0).(EqualsLiteral).getAnOperand() and
       firstOperand.(FieldAccess).getDeclaration() = v
     )
     or
     // ThisAccess
-    forex(Formula f | f = getOperand(_) | f.(EqualsLiteral).getAnOperand() instanceof ThisAccess) and
-    firstOperand = getOperand(0).(EqualsLiteral).getAnOperand().(ThisAccess)
+    forex(Formula f | f = this.getOperand(_) |
+      f.(EqualsLiteral).getAnOperand() instanceof ThisAccess
+    ) and
+    firstOperand = this.getOperand(0).(EqualsLiteral).getAnOperand().(ThisAccess)
     or
     // ResultAccess
-    forex(Formula f | f = getOperand(_) | f.(EqualsLiteral).getAnOperand() instanceof ResultAccess) and
-    firstOperand = getOperand(0).(EqualsLiteral).getAnOperand().(ResultAccess)
+    forex(Formula f | f = this.getOperand(_) |
+      f.(EqualsLiteral).getAnOperand() instanceof ResultAccess
+    ) and
+    firstOperand = this.getOperand(0).(EqualsLiteral).getAnOperand().(ResultAccess)
     // (in principle something like GlobalValueNumbering could be used to generalize this)
   }
 
@@ -100,8 +104,8 @@ class DisjunctionEqualsLiteral extends DisjunctionChain {
  */
 class CallLiteral extends Call {
   CallLiteral() {
-    getNumberOfArguments() = 1 and
-    getArgument(0) instanceof Literal
+    this.getNumberOfArguments() = 1 and
+    this.getArgument(0) instanceof Literal
   }
 }
 
@@ -118,7 +122,7 @@ class DisjunctionPredicateLiteral extends DisjunctionChain {
   DisjunctionPredicateLiteral() {
     // Call to the same target
     exists(PredicateOrBuiltin target |
-      forex(Formula f | f = getOperand(_) | f.(CallLiteral).getTarget() = target)
+      forex(Formula f | f = this.getOperand(_) | f.(CallLiteral).getTarget() = target)
     )
   }
 }
