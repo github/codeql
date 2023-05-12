@@ -92,6 +92,7 @@ org.apache.commons.net,9,12,,,,,,,,,,,,,,,,6,,3,,,,,,,,,,,,,,,,,,,12,,
 org.apache.commons.ognl,6,,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,,,,,,,,,,,
 org.apache.commons.text,,,272,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,220,52
 org.apache.directory.ldap.client.api,1,,,,,,,,,,,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,
+org.apache.hadoop.fs,,,10,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,10,
 org.apache.hadoop.hive.metastore,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,3,,,,,,,,,,,,
 org.apache.hc.client5.http.async.methods,84,,,,,,,,,,,,,,,,,84,,,,,,,,,,,,,,,,,,,,,,,
 org.apache.hc.client5.http.classic.methods,37,,,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,,,,,,,,,,
