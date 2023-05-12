@@ -255,6 +255,7 @@ private class BulkData extends RefType {
  * status of its argument.
  */
 private predicate inputStreamWrapper(Constructor c, int argi) {
+  not c.fromSource() and
   c.getParameterType(argi) instanceof BulkData and
   c.getDeclaringType().getASourceSupertype+().hasQualifiedName("java.io", "InputStream")
 }
