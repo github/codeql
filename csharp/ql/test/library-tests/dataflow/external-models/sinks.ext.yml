@@ -8,4 +8,4 @@ extensions:
       - ["My.Qltest", "B", false, "SinkMethod", "()", "", "ReturnValue", "xss", "manual"]
       - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "ReturnValue", "html", "manual"]
       - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "Argument", "remote", "manual"]
-      - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "", "sql", "manual"]
+      - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "", "sql-injection", "manual"]
