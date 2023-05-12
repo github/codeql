@@ -249,3 +249,11 @@ void foo(unsigned size) {
     int* p = (int*)my_alloc(size); // BAD
     memset(p, 0, size + 1);
 }
+
+void test6(unsigned long n, char *p) {
+  while (unknown()) {
+    n++;
+    p = (char *)malloc(n);
+    memset(p, 0, n); // GOOD [FALSE POSITIVE]
+  }
+}
