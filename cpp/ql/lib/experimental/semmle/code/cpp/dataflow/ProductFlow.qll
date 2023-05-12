@@ -343,14 +343,95 @@ module ProductFlow {
       )
     }
 
+    pragma[assume_small_delta]
+    pragma[nomagic]
+    private predicate fwdLocalPathStep1(Flow1::PathNode n) {
+      fwdReachableInterprocEntry(n, _)
+      or
+      exists(Flow1::PathNode mid |
+        fwdLocalPathStep1(mid) and
+        localPathStep1(mid, n)
+      )
+    }
+
+    pragma[assume_small_delta]
+    pragma[nomagic]
+    private predicate revLocalPathStep1(Flow1::PathNode n) {
+      fwdLocalPathStep1(n) and
+      (
+        isSinkPair(n, _)
+        or
+        interprocEdgePair(n, _, _, _)
+        or
+        exists(Flow1::PathNode mid |
+          revLocalPathStep1(mid) and
+          localPathStep1(n, mid)
+        )
+      )
+    }
+
+    pragma[assume_small_delta]
+    private predicate prunedLocalPathStep1(Flow1::PathNode n1, Flow1::PathNode n2) {
+      revLocalPathStep1(n1) and
+      revLocalPathStep1(n2) and
+      localPathStep1(n1, n2)
+    }
+
+    pragma[nomagic]
+    private predicate fwdLocalPathStep2(Flow2::PathNode n) {
+      fwdReachableInterprocEntry(_, n)
+      or
+      exists(Flow2::PathNode mid |
+        fwdLocalPathStep2(mid) and
+        localPathStep2(mid, n)
+      )
+    }
+
+    pragma[assume_small_delta]
+    pragma[nomagic]
+    private predicate revLocalPathStep2(Flow2::PathNode n) {
+      fwdLocalPathStep2(n) and
+      (
+        isSinkPair(_, n)
+        or
+        interprocEdgePair(_, n, _, _)
+        or
+        exists(Flow2::PathNode mid |
+          revLocalPathStep2(mid) and
+          localPathStep2(n, mid)
+        )
+      )
+    }
+
+    pragma[assume_small_delta]
+    private predicate prunedLocalPathStep2(Flow2::PathNode n1, Flow2::PathNode n2) {
+      revLocalPathStep2(n1) and
+      revLocalPathStep2(n2) and
+      localPathStep2(n1, n2)
+    }
+
+    private predicate localPathStep1SuccPlus(Flow1::PathNode n1, Flow1::PathNode n2) =
+      fastTC(prunedLocalPathStep1/2)(n1, n2)
+
+    private predicate localPathStep2SuccPlus(Flow2::PathNode n1, Flow2::PathNode n2) =
+      fastTC(prunedLocalPathStep2/2)(n1, n2)
+
+    private predicate localPathStep1Tc(Flow1::PathNode n1, Flow1::PathNode n2) {
+      localPathStep1SuccPlus(n1, n2) or n1 = n2
+    }
+
+    private predicate localPathStep2Tc(Flow2::PathNode n1, Flow2::PathNode n2) {
+      localPathStep2SuccPlus(n1, n2) or n1 = n2
+    }
+
     bindingset[pred1, pred2]
     bindingset[succ1, succ2]
     private predicate isSuccessor(
       Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode succ1, Flow2::PathNode succ2
     ) {
       exists(Flow1::PathNode mid1, Flow2::PathNode mid2 |
-        localPathStep1*(pred1, mid1) and
-        localPathStep2*(pred2, mid2)
+        localPathStep1Tc(pred1, mid1) and
+        localPathStep2Tc(pred2, mid2)
       |
         isSinkPair(mid1, mid2) and
         succ1 = mid1 and
