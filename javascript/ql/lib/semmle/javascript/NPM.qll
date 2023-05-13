@@ -19,7 +19,10 @@ class PackageJson extends JsonObject {
   string getPackageName() {
     result = this.getPropStringValue("name")
     or
-    exists(PackageJson parentPkg, Container currentDir, Container parentDir, string parentPkgName, string pkgNameDiff |
+    exists(
+      PackageJson parentPkg, Container currentDir, Container parentDir, string parentPkgName,
+      string pkgNameDiff
+    |
       currentDir = this.getJsonFile().getParentContainer() and
       parentDir = parentPkg.getJsonFile().getParentContainer() and
       parentPkgName = parentPkg.getPropStringValue("name") and
