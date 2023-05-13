@@ -19,13 +19,14 @@ class PackageJson extends JsonObject {
   string getPackageName() {
     result = this.getPropStringValue("name")
     or
-    exists(PackageJson parentPkg, Container currentDir, Container parentDir, string parentPkgName |
+    exists(PackageJson parentPkg, Container currentDir, Container parentDir, string parentPkgName, string pkgNameDiff |
       currentDir = this.getJsonFile().getParentContainer() and
       parentDir = parentPkg.getJsonFile().getParentContainer() and
       parentPkgName = parentPkg.getPropStringValue("name") and
       parentDir.getAChildContainer+() = currentDir and
-      result =
-        parentPkgName + currentDir.getAbsolutePath().suffix(parentDir.getAbsolutePath().length())
+      pkgNameDiff = currentDir.getAbsolutePath().suffix(parentDir.getAbsolutePath().length()) and
+      not exists(pkgNameDiff.indexOf("/node_modules/")) and
+      result = parentPkgName + pkgNameDiff
     )
   }
 
