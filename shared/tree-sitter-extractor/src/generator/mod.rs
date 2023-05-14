@@ -23,22 +23,22 @@ pub fn generate(
         e
     })?;
     let mut dbscheme_writer = LineWriter::new(dbscheme_file);
-    write!(
+    writeln!(
         dbscheme_writer,
         "// CodeQL database schema for {}\n\
-         // Automatically generated from the tree-sitter grammar; do not edit\n\n",
+         // Automatically generated from the tree-sitter grammar; do not edit\n",
         languages[0].name
     )?;
 
-    write!(dbscheme_writer, include_str!("prefix.dbscheme"))?;
+    writeln!(dbscheme_writer, include_str!("prefix.dbscheme"))?;
 
     let mut ql_writer = LineWriter::new(File::create(ql_library_path)?);
-    write!(
+    writeln!(
         ql_writer,
         "/**\n\
           * CodeQL library for {}
           * Automatically generated from the tree-sitter grammar; do not edit\n\
-          */\n\n",
+          */\n",
         languages[0].name
     )?;
     ql::write(
@@ -60,7 +60,7 @@ pub fn generate(
         let nodes = node_types::read_node_types_str(&prefix, language.node_types)?;
         let (dbscheme_entries, mut ast_node_members, token_kinds) = convert_nodes(&nodes);
         ast_node_members.insert(&token_name);
-        write!(&mut dbscheme_writer, "/*- {} dbscheme -*/\n", language.name)?;
+        writeln!(&mut dbscheme_writer, "/*- {} dbscheme -*/", language.name)?;
         dbscheme::write(&mut dbscheme_writer, &dbscheme_entries)?;
         let token_case = create_token_case(&token_name, token_kinds);
         dbscheme::write(
