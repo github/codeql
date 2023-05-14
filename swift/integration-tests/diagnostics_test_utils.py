@@ -40,6 +40,9 @@ def _load_concatenated_json(text):
 
 
 def _normalize_json(data):
+    # at the moment helpLinks are a set within the codeql cli
+    for e in data:
+        e.get("helpLinks", []).sort()
     entries = [json.dumps(e, sort_keys=True, indent=2) for e in data]
     entries.sort()
     entries.append("")
