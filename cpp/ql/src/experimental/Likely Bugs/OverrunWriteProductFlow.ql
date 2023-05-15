@@ -149,10 +149,30 @@ module ValidState {
    * ```
    */
   private predicate validStateImpl(PathNode n, int value) {
+    // If the dataflow node depends recursively on itself we restrict the range.
     (inLoop(n) implies value = [-2 .. 2]) and
     (
+      // For the dataflow source we have an allocation such as `malloc(size + k)`,
+      // and the value of the flow-state is then `k`.
       hasSize(_, n.getNode(), value)
       or
+      // For a dataflow sink any `value` that is strictly smaller than the delta
+      // needs to be a valid flow-state. That is, for a snippet like:
+      // ```
+      // p = new char[size];
+      // memset(p, 0, size + 2);
+      // ```
+      // the valid flow-states at the `memset` must include `0` since the flow-state
+      // at the source is `0`. Similarly, for an example such as:
+      // ```
+      // p = new char[size + 1];
+      // memset(p, 0, size + 2);
+      // ```
+      // the flow-state at the `memset` must include `1` since `1` is the flow-state
+      // after the source.
+      //
+      // So we find a valid flow-state at the sink's predecessor, and use the definition
+      // of our sink predicate to compute the valid flow-states at the sink.
       exists(int delta, PathNode n0 |
         n0.getASuccessor() = n and
         validStateImpl(n0, value) and
@@ -160,6 +180,14 @@ module ValidState {
         delta > value
       )
       or
+      // For a non-source and non-sink node there is two cases to consider.
+      // 1. A node where we have to update the flow-state, or
+      // 2. A node that doesn't update the flow-state.
+      //
+      // For case 1, we compute the new flow-state by adding the constant operand of the
+      // `AddInstruction` to the flow-state of any predecessor node.
+      // For case 2 we simply propagate the valid flow-states from the predecessor node to
+      // the next one.
       exists(PathNode n0, DataFlow::Node node, int value0 |
         n0.getASuccessor() = n and
         validStateImpl(n0, value0) and
