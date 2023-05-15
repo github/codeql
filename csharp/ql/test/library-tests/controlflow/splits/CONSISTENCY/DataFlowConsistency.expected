@@ -1,7 +1,0 @@
-identityLocalStep
-| SplittingStressTest.cs:172:16:172:16 | SSA phi read(b29) | Node steps to itself |
-| SplittingStressTest.cs:179:13:183:13 | [b1 (line 170): false] SSA phi read(b1) | Node steps to itself |
-| SplittingStressTest.cs:184:13:188:13 | [b2 (line 170): false] SSA phi read(b2) | Node steps to itself |
-| SplittingStressTest.cs:189:13:193:13 | [b3 (line 170): false] SSA phi read(b3) | Node steps to itself |
-| SplittingStressTest.cs:194:13:198:13 | [b4 (line 170): false] SSA phi read(b4) | Node steps to itself |
-| SplittingStressTest.cs:199:13:203:13 | [b5 (line 170): false] SSA phi read(b5) | Node steps to itself |

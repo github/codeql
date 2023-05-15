@@ -1,4 +1,0 @@
-identityLocalStep
-| D.cs:320:17:320:25 | this access | Node steps to itself |
-| E.cs:123:21:123:24 | SSA phi read(x) | Node steps to itself |
-| E.cs:123:21:123:24 | SSA phi(i) | Node steps to itself |
