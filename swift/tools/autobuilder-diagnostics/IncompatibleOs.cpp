@@ -8,9 +8,8 @@
 
 const std::string_view codeql::programName = "autobuilder";
 
-namespace codeql_diagnostics {
-constexpr codeql::SwiftDiagnosticsSource incompatible_os{
-    "incompatible_os", "Incompatible operating system for autobuild (expected macOS)",
+constexpr codeql::SwiftDiagnostic incompatibleOs{
+    "incompatible-os", "Incompatible operating system for autobuild (expected macOS)",
     "Change the action runner to a macOS one. Analysis on Linux might work, but requires setting "
     "up a custom build command",
     "https://docs.github.com/en/actions/using-workflows/"
@@ -21,7 +20,6 @@ constexpr codeql::SwiftDiagnosticsSource incompatible_os{
     "automatically-scanning-your-code-for-vulnerabilities-and-errors/"
     "configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-"
     "language"};
-}  // namespace codeql_diagnostics
 
 static codeql::Logger& logger() {
   static codeql::Logger ret{"main"};
@@ -29,7 +27,7 @@ static codeql::Logger& logger() {
 }
 
 int main() {
-  DIAGNOSE_ERROR(incompatible_os,
+  DIAGNOSE_ERROR(incompatibleOs,
                  "CodeQL Swift analysis is currently only officially supported on macOS");
   return 1;
 }
