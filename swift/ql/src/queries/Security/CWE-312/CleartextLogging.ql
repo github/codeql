@@ -18,7 +18,9 @@ import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.CleartextLoggingQuery
 import CleartextLoggingFlow::PathGraph
 
-from CleartextLoggingFlow::PathNode src, CleartextLoggingFlow::PathNode sink
-where CleartextLoggingFlow::flowPath(src, sink)
-select sink.getNode(), src, sink, "This $@ is written to a log file.", src.getNode(),
-  "potentially sensitive information"
+from CleartextLoggingFlow::PathNode source, CleartextLoggingFlow::PathNode sink
+where CleartextLoggingFlow::flowPath(source, sink)
+select sink, source, sink,
+  "This operation writes '" + sink.toString() +
+    "' to a log file. It may contain unencrypted sensitive data from $@.", source,
+  source.getNode().toString()
