@@ -103,6 +103,34 @@
 
 	</example>
 
+    <example>
+        <p>
+            Sometimes it's unclear how a regular expression can be rewritten to
+            avoid the problem. In such cases, it often suffices to limit the
+            length of the input string. For instance, the following complicated 
+            regular expression is used to match numbers, and on some non-number 
+            inputs it can have quadratic time complexity:
+        </p>
+
+        <sample language="javascript">
+            /^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$/.test(str) // BAD
+        </sample>
+
+        <p>
+            It's not immediately obvious how to rewrite this regular expression 
+            to avoid the problem. However, it might be fine to limit the length
+            to 1000 characters, which will always finish in a reasonable amount
+            of time.
+        </p>
+
+        <sample language="javascript">
+            if (str.length &gt; 1000) {
+                throw new Error("Input too long");
+            }
+            /^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$/.test(str)
+        </sample>
+    </example>
+
 	<include src="ReDoSReferences.inc.qhelp"/>
 
 </qhelp>
