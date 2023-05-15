@@ -48,6 +48,12 @@
   </p>
 
   <sample src="examples/PrototypePollutingAssignmentFixed.js"/>
+
+  <p>
+    Another way to fix it is to prevent the <code>__proto__</code> property from being used as a key, as shown below:
+  </p>
+
+  <sample src="examples/PrototypePollutingAssignmentFixed2.js"/>
   
 </example>
 
