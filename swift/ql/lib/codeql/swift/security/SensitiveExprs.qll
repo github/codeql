@@ -69,7 +69,7 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
  * contain hashed or encrypted data, or are only a reference to data that is
  * actually stored elsewhere.
  */
-private string regexpProbablySafe() { result = ".*(hash|crypt|file|path|invalid).*" }
+private string regexpProbablySafe() { result = ".*(hash|crypt|file|path|url|invalid).*" }
 
 /**
  * A `VarDecl` that might be used to contain sensitive data.

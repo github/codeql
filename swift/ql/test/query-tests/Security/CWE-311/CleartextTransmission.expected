@@ -38,7 +38,6 @@ nodes
 | testSend.swift:61:27:61:27 | str3 | semmle.label | str3 |
 | testSend.swift:65:27:65:27 | license_key | semmle.label | license_key |
 | testSend.swift:66:27:66:30 | .mobileNumber | semmle.label | .mobileNumber |
-| testSend.swift:67:27:67:30 | .mobileUrl | semmle.label | .mobileUrl |
 | testSend.swift:68:27:68:30 | .mobilePlayer | semmle.label | .mobilePlayer |
 | testSend.swift:69:27:69:30 | .passwordFeatureEnabled | semmle.label | .passwordFeatureEnabled |
 | testURL.swift:13:22:13:54 | ... .+(_:_:) ... | semmle.label | ... .+(_:_:) ... |
@@ -60,7 +59,6 @@ subpaths
 | testSend.swift:61:27:61:27 | str3 | testSend.swift:54:17:54:17 | password | testSend.swift:61:27:61:27 | str3 | This operation transmits 'str3', which may contain unencrypted sensitive data from $@. | testSend.swift:54:17:54:17 | password | password |
 | testSend.swift:65:27:65:27 | license_key | testSend.swift:65:27:65:27 | license_key | testSend.swift:65:27:65:27 | license_key | This operation transmits 'license_key', which may contain unencrypted sensitive data from $@. | testSend.swift:65:27:65:27 | license_key | license_key |
 | testSend.swift:66:27:66:30 | .mobileNumber | testSend.swift:66:27:66:30 | .mobileNumber | testSend.swift:66:27:66:30 | .mobileNumber | This operation transmits '.mobileNumber', which may contain unencrypted sensitive data from $@. | testSend.swift:66:27:66:30 | .mobileNumber | .mobileNumber |
-| testSend.swift:67:27:67:30 | .mobileUrl | testSend.swift:67:27:67:30 | .mobileUrl | testSend.swift:67:27:67:30 | .mobileUrl | This operation transmits '.mobileUrl', which may contain unencrypted sensitive data from $@. | testSend.swift:67:27:67:30 | .mobileUrl | .mobileUrl |
 | testSend.swift:68:27:68:30 | .mobilePlayer | testSend.swift:68:27:68:30 | .mobilePlayer | testSend.swift:68:27:68:30 | .mobilePlayer | This operation transmits '.mobilePlayer', which may contain unencrypted sensitive data from $@. | testSend.swift:68:27:68:30 | .mobilePlayer | .mobilePlayer |
 | testSend.swift:69:27:69:30 | .passwordFeatureEnabled | testSend.swift:69:27:69:30 | .passwordFeatureEnabled | testSend.swift:69:27:69:30 | .passwordFeatureEnabled | This operation transmits '.passwordFeatureEnabled', which may contain unencrypted sensitive data from $@. | testSend.swift:69:27:69:30 | .passwordFeatureEnabled | .passwordFeatureEnabled |
 | testURL.swift:13:22:13:54 | ... .+(_:_:) ... | testURL.swift:13:54:13:54 | passwd | testURL.swift:13:22:13:54 | ... .+(_:_:) ... | This operation transmits '... .+(_:_:) ...', which may contain unencrypted sensitive data from $@. | testURL.swift:13:54:13:54 | passwd | passwd |

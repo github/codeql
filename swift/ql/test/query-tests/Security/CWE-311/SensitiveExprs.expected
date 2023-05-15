@@ -128,7 +128,6 @@
 | testSend.swift:57:27:57:27 | password | label:password, type:credential |
 | testSend.swift:65:27:65:27 | license_key | label:license_key, type:credential |
 | testSend.swift:66:27:66:30 | .mobileNumber | label:mobileNumber, type:private information |
-| testSend.swift:67:27:67:30 | .mobileUrl | label:mobileUrl, type:private information |
 | testSend.swift:68:27:68:30 | .mobilePlayer | label:mobilePlayer, type:private information |
 | testSend.swift:69:27:69:30 | .passwordFeatureEnabled | label:passwordFeatureEnabled, type:credential |
 | testURL.swift:13:54:13:54 | passwd | label:passwd, type:credential |

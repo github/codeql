@@ -64,7 +64,7 @@ func test2(password : String, license_key: String, ms: MyStruct, connection : NW
 	connection.send(content: str6, completion: .idempotent) // GOOD (encrypted)
 	connection.send(content: license_key, completion: .idempotent) // BAD
 	connection.send(content: ms.mobileNumber, completion: .idempotent) // BAD
-	connection.send(content: ms.mobileUrl, completion: .idempotent) // GOOD (not sensitive) [FALSE POSITIVE]
+	connection.send(content: ms.mobileUrl, completion: .idempotent) // GOOD (not sensitive)
 	connection.send(content: ms.mobilePlayer, completion: .idempotent) // GOOD (not sensitive) [FALSE POSITIVE]
 	connection.send(content: ms.passwordFeatureEnabled, completion: .idempotent) // GOOD (not sensitive) [FALSE POSITIVE]
 }
