@@ -29,15 +29,15 @@ private module SourceVariables {
 import SourceVariables
 
 private newtype TDefOrUseImpl =
-  TDefImpl(Operand address) { isDef(_, _, address, _, _, _) } or
-  TUseImpl(Operand operand) {
+  TDefImpl(DataFlowOperand address) { isDef(_, _, address, _, _, _) } or
+  TUseImpl(DataFlowOperand operand) {
     isUse(_, operand, _, _, _) and
     not isDef(true, _, operand, _, _, _)
   } or
-  TIteratorDef(BaseSourceVariableInstruction container, Operand iteratorAddress) {
+  TIteratorDef(BaseSourceVariableInstruction container, DataFlowOperand iteratorAddress) {
     isIteratorDef(container, iteratorAddress, _, _, _)
   } or
-  TIteratorUse(BaseSourceVariableInstruction container, Operand iteratorAddress) {
+  TIteratorUse(BaseSourceVariableInstruction container, DataFlowOperand iteratorAddress) {
     isIteratorUse(container, iteratorAddress, _, _)
   } or
   TFinalParameterUse(Parameter p) {
@@ -77,9 +77,9 @@ abstract private class DefOrUseImpl extends TDefOrUseImpl {
 }
 
 abstract class DefImpl extends DefOrUseImpl {
-  Operand address;
+  DataFlowOperand address;
 
-  Operand getAddressOperand() { result = address }
+  DataFlowOperand getAddressOperand() { result = address }
 
   abstract Node0Impl getValue();
 
@@ -88,7 +88,7 @@ abstract class DefImpl extends DefOrUseImpl {
   override Cpp::Location getLocation() { result = this.getAddressOperand().getLocation() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    this.getAddressOperand().getUse() = block.getInstruction(index)
+    this.getAddressOperand().getUse().getConvertedInstruction() = block.getInstruction(index)
   }
 }
 
@@ -117,12 +117,12 @@ private class IteratorDef extends DefImpl, TIteratorDef {
 abstract class UseImpl extends DefOrUseImpl { }
 
 abstract private class OperandBasedUse extends UseImpl {
-  Operand operand;
+  DataFlowOperand operand;
 
   override string toString() { result = operand.toString() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    operand.getUse() = block.getInstruction(index)
+    operand.getUse().getConvertedInstruction() = block.getInstruction(index)
   }
 
   final override Cpp::Location getLocation() { result = operand.getLocation() }
@@ -183,7 +183,7 @@ private class FinalParameterUse extends UseImpl, TFinalParameterUse {
   }
 
   override BaseSourceVariableInstruction getBase() {
-    exists(InitializeParameterInstruction init |
+    exists(DataFlowInitializeParameterInstruction init |
       init.getParameter() = p and
       // This is always a `VariableAddressInstruction`
       result = init.getAnOperand().getDef()
@@ -286,9 +286,9 @@ class UseOrPhi extends SsaDefOrUse {
 class Def extends DefOrUse {
   override DefImpl defOrUse;
 
-  Operand getAddressOperand() { result = defOrUse.getAddressOperand() }
+  DataFlowOperand getAddressOperand() { result = defOrUse.getAddressOperand() }
 
-  Instruction getAddress() { result = this.getAddressOperand().getDef() }
+  DataFlowInstruction getAddress() { result = this.getAddressOperand().getDef() }
 
   Node0Impl getValue() { result = defOrUse.getValue() }
 

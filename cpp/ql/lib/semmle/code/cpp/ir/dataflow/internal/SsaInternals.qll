@@ -25,7 +25,7 @@ private module SourceVariables {
       ind = [0 .. getMaxIndirectionForIRVariable(baseVar.getIRVariable())]
     } or
     TCallVariable(AllocationInstruction call, int ind) {
-      ind = [0 .. countIndirectionsForCppType(getResultLanguageType(call))]
+      ind = [0 .. countIndirectionsForCppType(call.getResultLanguageType())]
     }
 
   abstract class SourceVariable extends TSourceVariable {
@@ -111,10 +111,9 @@ import SourceVariables
  * Holds if the `(operand, indirectionIndex)` columns should be
  * assigned a `RawIndirectOperand` value.
  */
-predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
+predicate hasRawIndirectOperand(DataFlowOperand op, int indirectionIndex) {
   exists(CppType type, int m |
-    not ignoreOperand(op) and
-    type = getLanguageType(op) and
+    type = getLanguageType(op.getConvertedOperand()) and
     m = countIndirectionsForCppType(type) and
     indirectionIndex = [1 .. m] and
     not exists(getIRRepresentationOfIndirectOperand(op, indirectionIndex))
@@ -125,10 +124,9 @@ predicate hasRawIndirectOperand(Operand op, int indirectionIndex) {
  * Holds if the `(instr, indirectionIndex)` columns should be
  * assigned a `RawIndirectInstruction` value.
  */
-predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
+predicate hasRawIndirectInstruction(DataFlowInstruction instr, int indirectionIndex) {
   exists(CppType type, int m |
-    not ignoreInstruction(instr) and
-    type = getResultLanguageType(instr) and
+    type = getResultLanguageType(instr.getConvertedInstruction()) and
     m = countIndirectionsForCppType(type) and
     indirectionIndex = [1 .. m] and
     not exists(getIRRepresentationOfIndirectInstruction(instr, indirectionIndex))
@@ -137,25 +135,25 @@ predicate hasRawIndirectInstruction(Instruction instr, int indirectionIndex) {
 
 cached
 private newtype TDefOrUseImpl =
-  TDefImpl(Operand address, int indirectionIndex) {
-    exists(Instruction base | isDef(_, _, address, base, _, indirectionIndex) |
+  TDefImpl(DataFlowOperand address, int indirectionIndex) {
+    exists(DataFlowInstruction base | isDef(_, _, address, base, _, indirectionIndex) |
       // We only include the definition if the SSA pruning stage
       // concluded that the definition is live after the write.
       any(SsaInternals0::Def def).getAddressOperand() = address
       or
       // Since the pruning stage doesn't know about global variables we can't use the above check to
       // rule out dead assignments to globals.
-      base.(VariableAddressInstruction).getAstVariable() instanceof GlobalLikeVariable
+      base.(DataFlowVariableAddressInstruction).getAstVariable() instanceof GlobalLikeVariable
     )
   } or
-  TUseImpl(Operand operand, int indirectionIndex) {
+  TUseImpl(DataFlowOperand operand, int indirectionIndex) {
     isUse(_, operand, _, _, indirectionIndex) and
     not isDef(_, _, operand, _, _, _)
   } or
   TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents a final "use" of a global variable to ensure that
     // the assignment to a global variable isn't ruled out as dead.
-    exists(VariableAddressInstruction vai, int defIndex |
+    exists(DataFlowVariableAddressInstruction vai, int defIndex |
       vai.getEnclosingIRFunction() = f and
       vai.getAstVariable() = v and
       isDef(_, _, _, vai, _, defIndex) and
@@ -165,7 +163,7 @@ private newtype TDefOrUseImpl =
   TGlobalDefImpl(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents the initial "definition" of a global variable when entering
     // a function body.
-    exists(VariableAddressInstruction vai |
+    exists(DataFlowVariableAddressInstruction vai |
       vai.getEnclosingIRFunction() = f and
       vai.getAstVariable() = v and
       isUse(_, _, vai, _, indirectionIndex) and
@@ -173,13 +171,14 @@ private newtype TDefOrUseImpl =
     )
   } or
   TIteratorDef(
-    Operand iteratorDerefAddress, BaseSourceVariableInstruction container, int indirectionIndex
+    DataFlowOperand iteratorDerefAddress, BaseSourceVariableInstruction container,
+    int indirectionIndex
   ) {
     isIteratorDef(container, iteratorDerefAddress, _, _, indirectionIndex) and
     any(SsaInternals0::Def def | def.isIteratorDef()).getAddressOperand() = iteratorDerefAddress
   } or
   TIteratorUse(
-    Operand iteratorAddress, BaseSourceVariableInstruction container, int indirectionIndex
+    DataFlowOperand iteratorAddress, BaseSourceVariableInstruction container, int indirectionIndex
   ) {
     isIteratorUse(container, iteratorAddress, _, indirectionIndex)
   } or
@@ -187,7 +186,7 @@ private newtype TDefOrUseImpl =
     // Avoid creating parameter nodes if there is no definitions of the variable other than the initializaion.
     exists(SsaInternals0::Def def |
       def.getSourceVariable().getBaseVariable().(BaseIRVariable).getIRVariable().getAst() = p and
-      not def.getValue().asInstruction() instanceof InitializeParameterInstruction and
+      not def.getValue().asInstruction() instanceof DataFlowInitializeParameterInstruction and
       unspecifiedTypeIsModifiableAt(p.getUnspecifiedType(), indirectionIndex)
     )
   }
@@ -282,7 +281,7 @@ private predicate sourceVariableHasBaseAndIndex(SourceVariable v, BaseSourceVari
 }
 
 abstract class DefImpl extends DefOrUseImpl {
-  Operand address;
+  DataFlowOperand address;
   int ind;
 
   bindingset[ind]
@@ -294,7 +293,7 @@ abstract class DefImpl extends DefOrUseImpl {
 
   abstract predicate isCertain();
 
-  Operand getAddressOperand() { result = address }
+  DataFlowOperand getAddressOperand() { result = address }
 
   override int getIndirectionIndex() { result = ind }
 
@@ -303,7 +302,7 @@ abstract class DefImpl extends DefOrUseImpl {
   override Cpp::Location getLocation() { result = this.getAddressOperand().getUse().getLocation() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    this.getAddressOperand().getUse() = block.getInstruction(index)
+    this.getAddressOperand().getUse().getConvertedInstruction() = block.getInstruction(index)
   }
 }
 
@@ -358,16 +357,16 @@ abstract class UseImpl extends DefOrUseImpl {
 }
 
 abstract private class OperandBasedUse extends UseImpl {
-  Operand operand;
+  DataFlowOperand operand;
 
   bindingset[ind]
   OperandBasedUse() { any() }
 
   final override predicate hasIndexInBlock(IRBlock block, int index) {
-    operand.getUse() = block.getInstruction(index)
+    operand.getUse().getConvertedInstruction() = block.getInstruction(index)
   }
 
-  final Operand getOperand() { result = operand }
+  final DataFlowOperand getOperand() { result = operand }
 
   final override Cpp::Location getLocation() { result = operand.getLocation() }
 }
@@ -449,7 +448,7 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
   }
 
   override BaseSourceVariableInstruction getBase() {
-    exists(InitializeParameterInstruction init |
+    exists(DataFlowInitializeParameterInstruction init |
       init.getParameter() = p and
       // This is always a `VariableAddressInstruction`
       result = init.getAnOperand().getDef()
@@ -587,7 +586,7 @@ private predicate useToNode(UseOrPhi use, Node nodeTo) { use.getNode() = nodeTo 
 
 pragma[noinline]
 predicate outNodeHasAddressAndIndex(
-  IndirectArgumentOutNode out, Operand address, int indirectionIndex
+  IndirectArgumentOutNode out, DataFlowOperand address, int indirectionIndex
 ) {
   out.getAddressOperand() = address and
   out.getIndirectionIndex() = indirectionIndex
@@ -626,14 +625,18 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
     adjacentDefRead(defOrUse, _)
   ) and
   (
-    exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
+    exists(
+      DataFlowOperand op1, DataFlowOperand op2, int indirectionIndex, DataFlowInstruction instr
+    |
       hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
       hasOperandAndIndex(nTo, op2, pragma[only_bind_into](indirectionIndex)) and
       instr = op2.getDef() and
-      conversionFlow(op1, instr, _, _)
+      conversionFlow(op1.getConvertedOperand(), instr.getUnconvertedInstruction(), _, _)
     )
     or
-    exists(Operand op1, Operand op2, int indirectionIndex, Instruction instr |
+    exists(
+      DataFlowOperand op1, DataFlowOperand op2, int indirectionIndex, DataFlowInstruction instr
+    |
       hasOperandAndIndex(nFrom, op1, pragma[only_bind_into](indirectionIndex)) and
       hasOperandAndIndex(nTo, op2, indirectionIndex - 1) and
       instr = op2.getDef() and
@@ -969,9 +972,9 @@ class UseOrPhi extends SsaDefOrUse {
 class Def extends DefOrUse {
   override DefImpl defOrUse;
 
-  Operand getAddressOperand() { result = defOrUse.getAddressOperand() }
+  DataFlowOperand getAddressOperand() { result = defOrUse.getAddressOperand() }
 
-  Instruction getAddress() { result = this.getAddressOperand().getDef() }
+  DataFlowInstruction getAddress() { result = this.getAddressOperand().getDef() }
 
   /**
    * Gets the indirection index of this definition.
