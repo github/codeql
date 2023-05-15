@@ -6,6 +6,7 @@
 import cpp
 private import semmle.code.cpp.ir.ValueNumbering
 private import internal.DataFlowDispatch
+private import internal.DataFlowPrivate
 private import semmle.code.cpp.ir.IR
 
 /**
@@ -16,8 +17,8 @@ private import semmle.code.cpp.ir.IR
  * to identify the possible target(s).
  */
 Function resolveCall(Call call) {
-  exists(CallInstruction callInstruction |
-    callInstruction.getAst() = call and
+  exists(DataFlowCallInstruction callInstruction |
+    callInstruction.getAnAst() = call and
     result = viableCallable(callInstruction)
   )
 }

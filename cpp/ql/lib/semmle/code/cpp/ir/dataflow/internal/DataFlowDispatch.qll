@@ -9,7 +9,7 @@ private import DataFlowImplCommon as DataFlowImplCommon
  * Gets a function that might be called by `call`.
  */
 cached
-Function viableCallable(CallInstruction call) {
+Function viableCallable(DataFlowCallInstruction call) {
   DataFlowImplCommon::forceCachingInSameStage() and
   result = call.getStaticCallTarget()
   or
@@ -84,9 +84,9 @@ private module VirtualDispatch {
         allowFromArg = allowOtherFromArg
         or
         // Flow from global variable to load.
-        exists(LoadInstruction load, GlobalOrNamespaceVariable var |
+        exists(DataFlowLoadInstruction load, GlobalOrNamespaceVariable var |
           var = src.asVariable() and
-          other.asInstruction() = load and
+          asInstruction(other) = load and
           addressOfGlobal(load.getSourceAddress(), var) and
           // The `allowFromArg` concept doesn't play a role when `src` is a
           // global variable, so we just set it to a single arbitrary value for
@@ -95,9 +95,9 @@ private module VirtualDispatch {
         )
         or
         // Flow from store to global variable.
-        exists(StoreInstruction store, GlobalOrNamespaceVariable var |
+        exists(DataFlowStoreInstruction store, GlobalOrNamespaceVariable var |
           var = other.asVariable() and
-          store = src.asInstruction() and
+          store = asInstruction(src) and
           storeIntoGlobal(store, var) and
           // Setting `allowFromArg` to `true` like in the base case means we
           // treat a store to a global variable like the dispatch itself: flow
@@ -109,19 +109,19 @@ private module VirtualDispatch {
   }
 
   pragma[noinline]
-  private predicate storeIntoGlobal(StoreInstruction store, GlobalOrNamespaceVariable var) {
+  private predicate storeIntoGlobal(DataFlowStoreInstruction store, GlobalOrNamespaceVariable var) {
     addressOfGlobal(store.getDestinationAddress(), var)
   }
 
   /** Holds if `addressInstr` is an instruction that produces the address of `var`. */
-  private predicate addressOfGlobal(Instruction addressInstr, GlobalOrNamespaceVariable var) {
+  private predicate addressOfGlobal(DataFlowInstruction addressInstr, GlobalOrNamespaceVariable var) {
     // Access directly to the global variable
-    addressInstr.(VariableAddressInstruction).getAstVariable() = var
+    addressInstr.(DataFlowVariableAddressInstruction).getAstVariable() = var
     or
     // Access to a field on a global union
-    exists(FieldAddressInstruction fa |
+    exists(DataFlowFieldAddressInstruction fa |
       fa = addressInstr and
-      fa.getObjectAddress().(VariableAddressInstruction).getAstVariable() = var and
+      fa.getObjectAddress().(DataFlowVariableAddressInstruction).getAstVariable() = var and
       fa.getField().getDeclaringType() instanceof Union
     )
   }
@@ -143,7 +143,7 @@ private module VirtualDispatch {
   private class DataSensitiveExprCall extends DataSensitiveCall {
     DataSensitiveExprCall() { not exists(this.getStaticCallTarget()) }
 
-    override DataFlow::Node getDispatchValue() { result.asOperand() = this.getCallTargetOperand() }
+    override DataFlow::Node getDispatchValue() { asOperand(result) = this.getCallTargetOperand() }
 
     override Function resolve() {
       exists(FunctionInstruction fi |
@@ -151,8 +151,8 @@ private module VirtualDispatch {
         result = fi.getFunctionSymbol()
       ) and
       (
-        this.getNumberOfArguments() <= result.getEffectiveNumberOfParameters() and
-        this.getNumberOfArguments() >= result.getEffectiveNumberOfParameters()
+        pragma[only_bind_out](this.getNumberOfArguments()) =
+          pragma[only_bind_out](result.getEffectiveNumberOfParameters())
         or
         result.isVarargs()
       )
@@ -165,7 +165,7 @@ private module VirtualDispatch {
       exists(this.getStaticCallTarget().(VirtualFunction).getAnOverridingFunction())
     }
 
-    override DataFlow::Node getDispatchValue() { result.asInstruction() = this.getThisArgument() }
+    override DataFlow::Node getDispatchValue() { asInstruction(result) = this.getThisArgument() }
 
     override MemberFunction resolve() {
       exists(Class overridingClass |
@@ -212,7 +212,9 @@ private predicate functionSignatureWithBody(string qualifiedName, int nparams, F
  * name `qualifiedName` and `nparams` parameter count. See `functionSignature`.
  */
 pragma[noinline]
-private predicate callSignatureWithoutBody(string qualifiedName, int nparams, CallInstruction call) {
+private predicate callSignatureWithoutBody(
+  string qualifiedName, int nparams, DataFlowCallInstruction call
+) {
   exists(Function target |
     target = call.getStaticCallTarget() and
     not exists(target.getBlock()) and
@@ -235,7 +237,7 @@ private predicate functionSignature(Function f, string qualifiedName, int nparam
  * Holds if the set of viable implementations that can be called by `call`
  * might be improved by knowing the call context.
  */
-predicate mayBenefitFromCallContext(CallInstruction call, Function f) {
+predicate mayBenefitFromCallContext(DataFlowCallInstruction call, Function f) {
   mayBenefitFromCallContext(call, f, _)
 }
 
@@ -259,12 +261,12 @@ private predicate mayBenefitFromCallContext(
  * Gets a viable dispatch target of `call` in the context `ctx`. This is
  * restricted to those `call`s for which a context might make a difference.
  */
-Function viableImplInCallContext(CallInstruction call, CallInstruction ctx) {
+Function viableImplInCallContext(DataFlowCallInstruction call, DataFlowCallInstruction ctx) {
   result = viableCallable(call) and
   exists(int i, Function f |
     mayBenefitFromCallContext(pragma[only_bind_into](call), f, i) and
     f = ctx.getStaticCallTarget() and
-    result = ctx.getArgument(i).getUnconvertedResultExpression().(FunctionAccess).getTarget()
+    result = ctx.getArgument(i).getAnUnconvertedResultExpression().(FunctionAccess).getTarget()
   )
 }
 
