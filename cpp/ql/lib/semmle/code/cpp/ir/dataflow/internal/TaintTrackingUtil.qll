@@ -24,14 +24,14 @@ predicate localTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
  */
 cached
 predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-  operandToInstructionTaintStep(nodeFrom.asOperand(), nodeTo.asInstruction())
+  operandToInstructionTaintStep(asOperand(nodeFrom), asInstruction(nodeTo))
   or
   modeledTaintStep(nodeFrom, nodeTo)
   or
   // Flow from (the indirection of) an operand of a pointer arithmetic instruction to the
   // indirection of the pointer arithmetic instruction. This provides flow from `source`
   // in `x[source]` to the result of the associated load instruction.
-  exists(PointerArithmeticInstruction pai, int indirectionIndex |
+  exists(DataFlowPointerArithmeticInstruction pai, int indirectionIndex |
     nodeHasOperand(nodeFrom, pai.getAnOperand(), pragma[only_bind_into](indirectionIndex)) and
     hasInstructionAndIndex(nodeTo, pai, indirectionIndex + 1)
   )
@@ -43,17 +43,17 @@ predicate localAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeT
  * Holds if taint propagates from `nodeFrom` to `nodeTo` in exactly one local
  * (intra-procedural) step.
  */
-private predicate operandToInstructionTaintStep(Operand opFrom, Instruction instrTo) {
+private predicate operandToInstructionTaintStep(DataFlowOperand opFrom, DataFlowInstruction instrTo) {
   // Taint can flow through expressions that alter the value but preserve
   // more than one bit of it _or_ expressions that follow data through
   // pointer indirections.
   instrTo.getAnOperand() = opFrom and
   (
-    instrTo instanceof ArithmeticInstruction
+    instrTo.getUnconvertedInstruction() instanceof ArithmeticInstruction
     or
-    instrTo instanceof BitwiseInstruction
+    instrTo.getUnconvertedInstruction() instanceof BitwiseInstruction
     or
-    instrTo instanceof PointerArithmeticInstruction
+    instrTo.getUnconvertedInstruction() instanceof PointerArithmeticInstruction
   )
   or
   // Taint flow from an address to its dereference.
@@ -66,11 +66,11 @@ private predicate operandToInstructionTaintStep(Operand opFrom, Instruction inst
   // could cause flow into one field to come out an unrelated field.
   // This would happen across function boundaries, where the IR would not be able to
   // match loads to stores.
-  instrTo.(UnaryInstruction).getUnaryOperand() = opFrom and
+  instrTo.(DataFlowUnaryInstruction).getUnaryOperand() = opFrom and
   (
-    not instrTo instanceof FieldAddressInstruction
+    not instrTo instanceof DataFlowFieldAddressInstruction
     or
-    instrTo.(FieldAddressInstruction).getField().getDeclaringType() instanceof Union
+    instrTo.(DataFlowFieldAddressInstruction).getField().getDeclaringType() instanceof Union
   )
 }
 
@@ -126,7 +126,9 @@ predicate defaultTaintSanitizer(DataFlow::Node node) { none() }
  */
 predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
   // Normal taint steps
-  exists(CallInstruction call, TaintFunction func, FunctionInput modelIn, FunctionOutput modelOut |
+  exists(
+    DataFlowCallInstruction call, TaintFunction func, FunctionInput modelIn, FunctionOutput modelOut
+  |
     call.getStaticCallTarget() = func and
     func.hasTaintFlow(modelIn, modelOut)
   |
@@ -141,8 +143,8 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
   // flow from the write side-effect to the call instruction, which may not be
   // desirable.
   exists(
-    CallInstruction call, Function func, FunctionInput modelIn, OutParameterDeref modelMidOut,
-    int indexMid, InParameter modelMidIn, OutReturnValue modelOut
+    DataFlowCallInstruction call, Function func, FunctionInput modelIn,
+    OutParameterDeref modelMidOut, int indexMid, InParameter modelMidIn, OutReturnValue modelOut
   |
     nodeIn = callInput(call, modelIn) and
     nodeOut = callOutput(call, modelOut) and
@@ -156,11 +158,11 @@ predicate modeledTaintStep(DataFlow::Node nodeIn, DataFlow::Node nodeOut) {
   // Taint flow from a pointer argument to an output, when the model specifies flow from the deref
   // to that output, but the deref is not modeled in the IR for the caller.
   exists(
-    CallInstruction call, DataFlow::SideEffectOperandNode indirectArgument, Function func,
+    DataFlowCallInstruction call, DataFlow::SideEffectOperandNode indirectArgument, Function func,
     FunctionInput modelIn, FunctionOutput modelOut
   |
     indirectArgument = callInput(call, modelIn) and
-    indirectArgument.getAddressOperand() = nodeIn.asOperand() and
+    indirectArgument.getAddressOperand() = asOperand(nodeIn) and
     call.getStaticCallTarget() = func and
     (
       func.(DataFlowFunction).hasDataFlow(modelIn, modelOut)
