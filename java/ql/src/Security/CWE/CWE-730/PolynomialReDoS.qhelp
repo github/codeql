@@ -15,8 +15,7 @@
 		</p>
 
 		<sample language="java">
-			Pattern.compile("^\\s+|\\s+$").matcher(text).replaceAll("") // BAD
-		</sample>
+Pattern.compile("^\\s+|\\s+$").matcher(text).replaceAll("") // BAD</sample>
 
 		<p>
 
@@ -71,8 +70,7 @@
 		</p>
 
 		<sample language="java">
-			"^0\\.\\d+E?\\d+$"" 
-		</sample>
+"^0\\.\\d+E?\\d+$"" </sample>
 
 		<p>
 
@@ -113,8 +111,7 @@
         </p>
 
         <sample language="java">
-            Pattern.matches("^(\\+|-)?(\\d+|(\\d*\\.\\d*))?(E|e)?([-+])?(\\d+)?$", str);
-        </sample>
+Pattern.matches("^(\\+|-)?(\\d+|(\\d*\\.\\d*))?(E|e)?([-+])?(\\d+)?$", str); </sample>
 
         <p>
             It's not immediately obvious how to rewrite this regular expression 
@@ -124,12 +121,11 @@
         </p>
 
         <sample language="java">
-            if (str.length() &gt; 1000) {
-                throw new IllegalArgumentException("Input too long");
-            }
+if (str.length() &gt; 1000) {
+    throw new IllegalArgumentException("Input too long");
+}
 
-            Pattern.matches("^(\\+|-)?(\\d+|(\\d*\\.\\d*))?(E|e)?([-+])?(\\d+)?$", str);
-        </sample>
+Pattern.matches("^(\\+|-)?(\\d+|(\\d*\\.\\d*))?(E|e)?([-+])?(\\d+)?$", str); </sample>
     </example>
 
 	<include src="ReDoSReferences.inc.qhelp"/>

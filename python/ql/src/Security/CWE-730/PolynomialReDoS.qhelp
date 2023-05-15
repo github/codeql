@@ -15,8 +15,7 @@
 		</p>
 
 		<sample language="python">
-			re.sub(r"^\s+|\s+$", "", text) # BAD
-		</sample>
+re.sub(r"^\s+|\s+$", "", text) # BAD</sample>
 
 		<p>
 
@@ -71,8 +70,7 @@
 		</p>
 
 		<sample language="python">
-			^0\.\d+E?\d+$ # BAD
-		</sample>
+^0\.\d+E?\d+$ # BAD</sample>
 
 		<p>
 
@@ -113,8 +111,7 @@
         </p>
 
         <sample language="python">
-            match = re.search(r'^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$', str) 
-        </sample>
+match = re.search(r'^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$', str) </sample>
 
         <p>
             It's not immediately obvious how to rewrite this regular expression 
@@ -124,11 +121,10 @@
         </p>
 
         <sample language="python">
-            if len(str) &gt; 1000:
-                raise ValueError("Input too long")
+if len(str) &gt; 1000:
+    raise ValueError("Input too long")
 
-            match = re.search(r'^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$', str) 
-        </sample>
+match = re.search(r'^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$', str) </sample>
     </example>
 
 	<include src="ReDoSReferences.inc.qhelp"/>

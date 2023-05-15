@@ -15,8 +15,7 @@
 		</p>
 
 		<sample language="javascript">
-			text.replace(/^\s+|\s+$/g, ''); // BAD
-		</sample>
+text.replace(/^\s+|\s+$/g, ''); // BAD</sample>
 
 		<p>
 
@@ -71,8 +70,7 @@
 		</p>
 
 		<sample language="javascript">
-			/^0\.\d+E?\d+$/.test(str) // BAD
-		</sample>
+/^0\.\d+E?\d+$/.test(str) // BAD</sample>
 
 		<p>
 
@@ -113,8 +111,7 @@
         </p>
 
         <sample language="javascript">
-            /^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$/.test(str) // BAD
-        </sample>
+/^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$/.test(str) // BAD</sample>
 
         <p>
             It's not immediately obvious how to rewrite this regular expression 
@@ -124,11 +121,10 @@
         </p>
 
         <sample language="javascript">
-            if (str.length &gt; 1000) {
-                throw new Error("Input too long");
-            }
-            /^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$/.test(str)
-        </sample>
+if (str.length &gt; 1000) {
+    throw new Error("Input too long");
+}
+/^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$/.test(str)</sample>
     </example>
 
 	<include src="ReDoSReferences.inc.qhelp"/>
