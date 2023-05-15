@@ -74,7 +74,8 @@ edges
 | XMLReaderTests.java:86:34:86:54 | getInputStream(...) : InputStream | XMLReaderTests.java:86:18:86:55 | new InputSource(...) |
 | XMLReaderTests.java:94:34:94:54 | getInputStream(...) : InputStream | XMLReaderTests.java:94:18:94:55 | new InputSource(...) |
 | XMLReaderTests.java:100:34:100:54 | getInputStream(...) : InputStream | XMLReaderTests.java:100:18:100:55 | new InputSource(...) |
-| XPathExpressionTests.java:27:37:27:57 | getInputStream(...) : InputStream | XPathExpressionTests.java:27:21:27:58 | new InputSource(...) |
+| XPathExpressionTests.java:27:35:27:55 | getInputStream(...) : InputStream | XPathExpressionTests.java:27:19:27:56 | new InputSource(...) |
+| XPathExpressionTests.java:42:39:42:59 | getInputStream(...) : InputStream | XPathExpressionTests.java:42:23:42:60 | new InputSource(...) |
 nodes
 | DocumentBuilderTests.java:14:19:14:39 | getInputStream(...) | semmle.label | getInputStream(...) |
 | DocumentBuilderTests.java:28:19:28:39 | getInputStream(...) | semmle.label | getInputStream(...) |
@@ -235,8 +236,10 @@ nodes
 | XMLReaderTests.java:94:34:94:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | XMLReaderTests.java:100:18:100:55 | new InputSource(...) | semmle.label | new InputSource(...) |
 | XMLReaderTests.java:100:34:100:54 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
-| XPathExpressionTests.java:27:21:27:58 | new InputSource(...) | semmle.label | new InputSource(...) |
-| XPathExpressionTests.java:27:37:27:57 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XPathExpressionTests.java:27:19:27:56 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XPathExpressionTests.java:27:35:27:55 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
+| XPathExpressionTests.java:42:23:42:60 | new InputSource(...) | semmle.label | new InputSource(...) |
+| XPathExpressionTests.java:42:39:42:59 | getInputStream(...) : InputStream | semmle.label | getInputStream(...) : InputStream |
 | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | semmle.label | getInputStream(...) |
 | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | semmle.label | getInputStream(...) |
 | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | semmle.label | getInputStream(...) |
@@ -336,7 +339,8 @@ subpaths
 | XMLReaderTests.java:86:18:86:55 | new InputSource(...) | XMLReaderTests.java:86:34:86:54 | getInputStream(...) : InputStream | XMLReaderTests.java:86:18:86:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:86:34:86:54 | getInputStream(...) | user-provided value |
 | XMLReaderTests.java:94:18:94:55 | new InputSource(...) | XMLReaderTests.java:94:34:94:54 | getInputStream(...) : InputStream | XMLReaderTests.java:94:18:94:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:94:34:94:54 | getInputStream(...) | user-provided value |
 | XMLReaderTests.java:100:18:100:55 | new InputSource(...) | XMLReaderTests.java:100:34:100:54 | getInputStream(...) : InputStream | XMLReaderTests.java:100:18:100:55 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XMLReaderTests.java:100:34:100:54 | getInputStream(...) | user-provided value |
-| XPathExpressionTests.java:27:21:27:58 | new InputSource(...) | XPathExpressionTests.java:27:37:27:57 | getInputStream(...) : InputStream | XPathExpressionTests.java:27:21:27:58 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XPathExpressionTests.java:27:37:27:57 | getInputStream(...) | user-provided value |
+| XPathExpressionTests.java:27:19:27:56 | new InputSource(...) | XPathExpressionTests.java:27:35:27:55 | getInputStream(...) : InputStream | XPathExpressionTests.java:27:19:27:56 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XPathExpressionTests.java:27:35:27:55 | getInputStream(...) | user-provided value |
+| XPathExpressionTests.java:42:23:42:60 | new InputSource(...) | XPathExpressionTests.java:42:39:42:59 | getInputStream(...) : InputStream | XPathExpressionTests.java:42:23:42:60 | new InputSource(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XPathExpressionTests.java:42:39:42:59 | getInputStream(...) | user-provided value |
 | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:9:35:9:55 | getInputStream(...) | user-provided value |
 | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:10:34:10:54 | getInputStream(...) | user-provided value |
 | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | XML parsing depends on a $@ without guarding against external entity expansion. | XmlInputFactoryTests.java:24:35:24:55 | getInputStream(...) | user-provided value |
