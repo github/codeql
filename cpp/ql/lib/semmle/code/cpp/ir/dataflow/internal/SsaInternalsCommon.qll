@@ -140,7 +140,7 @@ int countIndirectionsForCppType(LanguageType langType) {
  * A `CallInstruction` that calls an allocation function such
  * as `malloc` or `operator new`.
  */
-class AllocationInstruction extends CallInstruction {
+class AllocationInstruction extends DataFlowCallInstruction {
   AllocationInstruction() { this.getStaticCallTarget() instanceof Cpp::AllocationFunction }
 }
 
@@ -168,14 +168,14 @@ abstract class Indirection extends Type {
    * Holds if `deref` is an instruction that behaves as a `LoadInstruction`
    * that loads the value computed by `address`.
    */
-  predicate isAdditionalDereference(Instruction deref, Operand address) { none() }
+  predicate isAdditionalDereference(DataFlowInstruction deref, DataFlowOperand address) { none() }
 
   /**
    * Holds if `value` is written to the address computed by `address`.
    *
    * `certain` is `true` if this write is guaranteed to write to the address.
    */
-  predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) { none() }
+  predicate isAdditionalWrite(Node0Impl value, DataFlowOperand address, boolean certain) { none() }
 
   /**
    * Gets the base type of this indirection, after specifiers have been deeply
@@ -213,9 +213,9 @@ private class PointerWrapperTypeIndirection extends Indirection instanceof Point
     result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
   }
 
-  override predicate isAdditionalDereference(Instruction deref, Operand address) {
-    exists(CallInstruction call |
-      operandForFullyConvertedCall(getAUse(deref), call) and
+  override predicate isAdditionalDereference(DataFlowInstruction deref, DataFlowOperand address) {
+    exists(DataFlowCallInstruction call |
+      operandForFullyConvertedCall(deref.getAUse(), call) and
       this = call.getStaticCallTarget().getClassAndName("operator*") and
       address = call.getThisArgumentOperand()
     )
@@ -237,16 +237,16 @@ private module IteratorIndirections {
       result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
     }
 
-    override predicate isAdditionalDereference(Instruction deref, Operand address) {
-      exists(CallInstruction call |
-        operandForFullyConvertedCall(getAUse(deref), call) and
+    override predicate isAdditionalDereference(DataFlowInstruction deref, DataFlowOperand address) {
+      exists(DataFlowCallInstruction call |
+        operandForFullyConvertedCall(deref.getAUse(), call) and
         this = call.getStaticCallTarget().getClassAndName("operator*") and
         address = call.getThisArgumentOperand()
       )
     }
 
-    override predicate isAdditionalWrite(Node0Impl value, Operand address, boolean certain) {
-      exists(CallInstruction call | call.getArgumentOperand(0) = value.asOperand() |
+    override predicate isAdditionalWrite(Node0Impl value, DataFlowOperand address, boolean certain) {
+      exists(DataFlowCallInstruction call | call.getArgumentOperand(0) = value.asOperand() |
         this = call.getStaticCallTarget().getClassAndName("operator=") and
         address = call.getThisArgumentOperand() and
         certain = false
@@ -254,7 +254,7 @@ private module IteratorIndirections {
     }
 
     override predicate isAdditionalTaintStep(Node node1, Node node2) {
-      exists(CallInstruction call |
+      exists(DataFlowCallInstruction call |
         // Taint through `operator+=` and `operator-=` on iterators.
         call.getStaticCallTarget() instanceof Iterator::IteratorAssignArithmeticOperator and
         node2.(IndirectArgumentOutNode).getPreUpdateNode() = node1 and
@@ -312,33 +312,33 @@ private module IteratorIndirections {
   }
 }
 
-predicate isDereference(Instruction deref, Operand address) {
+predicate isDereference(DataFlowInstruction deref, DataFlowOperand address) {
   any(Indirection ind).isAdditionalDereference(deref, address)
   or
-  deref.(LoadInstruction).getSourceAddressOperand() = address
+  deref.(DataFlowLoadInstruction).getSourceAddressOperand() = address
 }
 
-predicate isWrite(Node0Impl value, Operand address, boolean certain) {
+predicate isWrite(Node0Impl value, DataFlowOperand address, boolean certain) {
   any(Indirection ind).isAdditionalWrite(value, address, certain)
   or
   certain = true and
   (
-    exists(StoreInstruction store |
+    exists(DataFlowStoreInstruction store |
       value.asInstruction() = store and
       address = store.getDestinationAddressOperand()
     )
     or
-    exists(InitializeParameterInstruction init |
+    exists(DataFlowInitializeParameterInstruction init |
       value.asInstruction() = init and
       address = init.getAnOperand()
     )
     or
-    exists(InitializeDynamicAllocationInstruction init |
+    exists(DataFlowInitializeDynamicAllocationInstruction init |
       value.asInstruction() = init and
       address = init.getAllocationAddressOperand()
     )
     or
-    exists(UninitializedInstruction uninitialized |
+    exists(DataFlowUninitializedInstruction uninitialized |
       value.asInstruction() = uninitialized and
       address = uninitialized.getAnOperand()
     )
@@ -473,13 +473,13 @@ predicate isModifiableAt(CppType cppType, int indirectionIndex) {
   )
 }
 
-abstract class BaseSourceVariableInstruction extends Instruction {
+abstract class BaseSourceVariableInstruction extends DataFlowInstruction {
   /** Gets the base source variable accessed by this instruction. */
   abstract BaseSourceVariable getBaseSourceVariable();
 }
 
 private class BaseIRVariableInstruction extends BaseSourceVariableInstruction,
-  VariableAddressInstruction
+  DataFlowVariableAddressInstruction
 {
   override BaseIRVariable getBaseSourceVariable() { result.getIRVariable() = this.getIRVariable() }
 }
@@ -523,17 +523,18 @@ private module Cached {
    * on the underlying container that produced the iterator.
    */
   private predicate isChiAfterIteratorDef(
-    Instruction memory, Operand iteratorDerefAddress, Node0Impl value, int numberOfLoads
+    Instruction memory, DataFlowOperand iteratorDerefAddress, Node0Impl value, int numberOfLoads
   ) {
     exists(
       BaseSourceVariableInstruction iteratorBase, ReadSideEffectInstruction read,
-      Operand iteratorAddress
+      DataFlowOperand iteratorAddress
     |
       numberOfLoads >= 0 and
       isDef(_, value, iteratorDerefAddress, iteratorBase, numberOfLoads + 2, 0) and
       isUse(_, iteratorAddress, iteratorBase, numberOfLoads + 1, 0) and
       iteratorBase.getResultType() instanceof Interfaces::Iterator and
-      isDereference(iteratorAddress.getDef(), read.getArgumentDef().getAUse()) and
+      isDereference(iteratorAddress.getDef(),
+        any(DataFlowOperand op | op.getAnOperand() = read.getArgumentDef().getAUse())) and
       memory = read.getSideEffectOperand().getAnyDef()
     )
   }
@@ -543,7 +544,8 @@ private module Cached {
     exists(BaseSourceVariableInstruction iteratorBase |
       iteratorBase.getResultType() instanceof Interfaces::Iterator and
       not iteratorBase.getResultType() instanceof Cpp::PointerType and
-      isUse(_, iteratorAddress, iteratorBase, numberOfLoads - 1, 0)
+      isUse(_, any(DataFlowOperand op | op.getAnOperand() = iteratorAddress), iteratorBase,
+        numberOfLoads - 1, 0)
     )
   }
 
@@ -623,10 +625,10 @@ private module Cached {
    * `containerBase` will be the address of `v`.
    */
   private predicate isChiAfterBegin(
-    BaseSourceVariableInstruction containerBase, StoreInstruction iterator
+    BaseSourceVariableInstruction containerBase, DataFlowStoreInstruction iterator
   ) {
     exists(
-      CallInstruction getIterator, Iterator::GetIteratorFunction getIteratorFunction,
+      DataFlowCallInstruction getIterator, Iterator::GetIteratorFunction getIteratorFunction,
       IO::FunctionInput input, int i
     |
       getIterator = iterator.getSourceValue() and
@@ -647,18 +649,18 @@ private module Cached {
    * this read corresponds to on the underlying container that produced the iterator.
    */
   private predicate isChiBeforeIteratorUse(
-    Operand iteratorAddress, Instruction memory, int numberOfLoads
+    DataFlowOperand iteratorAddress, Instruction memory, int numberOfLoads
   ) {
     exists(
-      BaseSourceVariableInstruction iteratorBase, LoadInstruction load,
-      ReadSideEffectInstruction read, Operand iteratorDerefAddress
+      BaseSourceVariableInstruction iteratorBase, DataFlowLoadInstruction load,
+      ReadSideEffectInstruction read, DataFlowOperand iteratorDerefAddress
     |
       numberOfLoads >= 0 and
       isUse(_, iteratorAddress, iteratorBase, numberOfLoads + 1, 0) and
       isUse(_, iteratorDerefAddress, iteratorBase, numberOfLoads + 2, 0) and
       iteratorBase.getResultType() instanceof Interfaces::Iterator and
       load.getSourceAddressOperand() = iteratorDerefAddress and
-      read.getPrimaryInstruction() = load.getSourceAddress() and
+      read.getPrimaryInstruction() = load.getSourceAddress().getUnconvertedInstruction() and
       memory = read.getSideEffectOperand().getAnyDef()
     )
   }
@@ -671,14 +673,14 @@ private module Cached {
    */
   cached
   predicate isIteratorDef(
-    BaseSourceVariableInstruction container, Operand iteratorDerefAddress, Node0Impl value,
+    BaseSourceVariableInstruction container, DataFlowOperand iteratorDerefAddress, Node0Impl value,
     int numberOfLoads, int indirectionIndex
   ) {
-    exists(Instruction memory, Instruction begin, int upper, int ind |
+    exists(Instruction memory, DataFlowInstruction begin, int upper, int ind |
       isChiAfterIteratorDef(memory, iteratorDerefAddress, value, numberOfLoads) and
-      memorySucc*(begin, memory) and
+      memorySucc*(begin.getUnconvertedInstruction(), memory) and
       isChiAfterBegin(container, begin) and
-      upper = countIndirectionsForCppType(getResultLanguageType(container)) and
+      upper = countIndirectionsForCppType(container.getResultLanguageType()) and
       ind = numberOfLoads + [1 .. upper] and
       indirectionIndex = ind - (numberOfLoads + 1)
     )
@@ -692,25 +694,25 @@ private module Cached {
    */
   cached
   predicate isIteratorUse(
-    BaseSourceVariableInstruction container, Operand iteratorAddress, int numberOfLoads,
+    BaseSourceVariableInstruction container, DataFlowOperand iteratorAddress, int numberOfLoads,
     int indirectionIndex
   ) {
     // Direct use
-    exists(Instruction begin, Instruction memory, int upper, int ind |
+    exists(DataFlowInstruction begin, Instruction memory, int upper, int ind |
       isChiBeforeIteratorUse(iteratorAddress, memory, numberOfLoads) and
-      memorySucc*(begin, memory) and
+      memorySucc*(begin.getUnconvertedInstruction(), memory) and
       isChiAfterBegin(container, begin) and
-      upper = countIndirectionsForCppType(getResultLanguageType(container)) and
+      upper = countIndirectionsForCppType(container.getResultLanguageType()) and
       ind = numberOfLoads + [1 .. upper] and
       indirectionIndex = ind - (numberOfLoads + 1)
     )
     or
     // Use through function output
-    exists(Instruction memory, Instruction begin, int upper, int ind |
-      isChiAfterIteratorArgument(memory, iteratorAddress, numberOfLoads) and
-      memorySucc*(begin, memory) and
+    exists(Instruction memory, DataFlowInstruction begin, int upper, int ind |
+      isChiAfterIteratorArgument(memory, iteratorAddress.getAnOperand(), numberOfLoads) and
+      memorySucc*(begin.getUnconvertedInstruction(), memory) and
       isChiAfterBegin(container, begin) and
-      upper = countIndirectionsForCppType(getResultLanguageType(container)) and
+      upper = countIndirectionsForCppType(container.getResultLanguageType()) and
       ind = numberOfLoads + [1 .. upper] and
       indirectionIndex = ind - (numberOfLoads - 1)
     )
@@ -734,17 +736,17 @@ private module Cached {
    */
   cached
   predicate isUse(
-    boolean certain, Operand op, BaseSourceVariableInstruction base, int ind, int indirectionIndex
+    boolean certain, DataFlowOperand op, BaseSourceVariableInstruction base, int ind,
+    int indirectionIndex
   ) {
-    not ignoreOperand(op) and
     certain = true and
     exists(LanguageType type, int upper, int ind0 |
-      type = getLanguageType(op) and
+      type = getLanguageType(op.getConvertedOperand()) and
       upper = countIndirectionsForCppType(type) and
       isUseImpl(op, base, ind0) and
       // Don't count every conversion as their own use. Instead, only the first
       // use (i.e., before any conversions are applied) will count as a use.
-      not isConversion(op) and
+      not isConversion(op.getConvertedOperand()) and
       ind = ind0 + [0 .. upper] and
       indirectionIndex = ind - ind0
     )
@@ -758,8 +760,8 @@ private module Cached {
    * instead associated with the instruction returned by this predicate.
    */
   cached
-  Instruction getIRRepresentationOfOperand(Operand operand) {
-    operand = unique( | | getAUse(result))
+  DataFlowInstruction getIRRepresentationOfOperand(DataFlowOperand operand) {
+    operand = unique( | | result.getAUse())
   }
 
   /**
@@ -770,10 +772,10 @@ private module Cached {
    * instead associated with the operand returned by this predicate.
    */
   cached
-  Operand getIRRepresentationOfIndirectOperand(Operand operand, int indirectionIndex) {
-    exists(Instruction load |
+  DataFlowOperand getIRRepresentationOfIndirectOperand(DataFlowOperand operand, int indirectionIndex) {
+    exists(DataFlowInstruction load |
       isDereference(load, operand) and
-      result = unique( | | getAUse(load)) and
+      result = unique( | | load.getAUse()) and
       isUseImpl(operand, _, indirectionIndex - 1)
     )
   }
@@ -786,8 +788,10 @@ private module Cached {
    * instead associated with the instruction returned by this predicate.
    */
   cached
-  Instruction getIRRepresentationOfIndirectInstruction(Instruction instr, int indirectionIndex) {
-    exists(Instruction load, Operand address |
+  DataFlowInstruction getIRRepresentationOfIndirectInstruction(
+    DataFlowInstruction instr, int indirectionIndex
+  ) {
+    exists(DataFlowInstruction load, DataFlowOperand address |
       address.getDef() = instr and
       isDereference(load, address) and
       isUseImpl(address, _, indirectionIndex - 1) and
@@ -799,24 +803,24 @@ private module Cached {
    * Holds if `operand` is a use of an SSA variable rooted at `base`, and the
    * path from `base` to `operand` passes through `ind` load-like instructions.
    */
-  private predicate isUseImpl(Operand operand, BaseSourceVariableInstruction base, int ind) {
+  private predicate isUseImpl(DataFlowOperand operand, BaseSourceVariableInstruction base, int ind) {
     DataFlowImplCommon::forceCachingInSameStage() and
     ind = 0 and
     operand = base.getAUse()
     or
-    exists(Operand mid, Instruction instr |
+    exists(DataFlowOperand mid, DataFlowInstruction instr |
       isUseImpl(mid, base, ind) and
       instr = operand.getDef() and
-      conversionFlow(mid, instr, false, _)
+      conversionFlow(mid.getConvertedOperand(), instr.getUnconvertedInstruction(), false, _)
     )
     or
     exists(int ind0 |
-      exists(Operand address |
+      exists(DataFlowOperand address |
         isDereference(operand.getDef(), address) and
         isUseImpl(address, base, ind0)
       )
       or
-      isUseImpl(operand.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind0)
+      isUseImpl(operand.getDef().(DataFlowInitializeParameterInstruction).getOperand(0), base, ind0)
     |
       ind0 = ind - 1
     )
@@ -832,8 +836,8 @@ private module Cached {
    */
   cached
   predicate isDef(
-    boolean certain, Node0Impl value, Operand address, BaseSourceVariableInstruction base, int ind,
-    int indirectionIndex
+    boolean certain, Node0Impl value, DataFlowOperand address, BaseSourceVariableInstruction base,
+    int ind, int indirectionIndex
   ) {
     exists(
       boolean writeIsCertain, boolean addressIsCertain, int ind0, CppType type, int lower, int upper
@@ -841,7 +845,7 @@ private module Cached {
       isWrite(value, address, writeIsCertain) and
       isDefImpl(address, base, ind0, addressIsCertain) and
       certain = writeIsCertain.booleanAnd(addressIsCertain) and
-      type = getLanguageType(address) and
+      type = getLanguageType(address.getConvertedOperand()) and
       upper = countIndirectionsForCppType(type) and
       ind = ind0 + [lower .. upper] and
       indirectionIndex = ind - (ind0 + lower) and
@@ -853,10 +857,10 @@ private module Cached {
    * Holds if the address computed by `operand` is guaranteed to write
    * to a specific address.
    */
-  private predicate isCertainAddress(Operand operand) {
-    operand.getDef() instanceof VariableAddressInstruction
+  private predicate isCertainAddress(DataFlowOperand operand) {
+    operand.getDef() instanceof DataFlowVariableAddressInstruction
     or
-    operand.getType() instanceof Cpp::ReferenceType
+    operand.getUnconvertedType() instanceof Cpp::ReferenceType
   }
 
   /**
@@ -867,28 +871,31 @@ private module Cached {
    * instructions.
    */
   private predicate isDefImpl(
-    Operand operand, BaseSourceVariableInstruction base, int ind, boolean certain
+    DataFlowOperand operand, BaseSourceVariableInstruction base, int ind, boolean certain
   ) {
     DataFlowImplCommon::forceCachingInSameStage() and
     ind = 0 and
     operand = base.getAUse() and
     (if isCertainAddress(operand) then certain = true else certain = false)
     or
-    exists(Operand mid, Instruction instr, boolean certain0, boolean isPointerArith |
+    exists(
+      DataFlowOperand mid, DataFlowInstruction instr, boolean certain0, boolean isPointerArith
+    |
       isDefImpl(mid, base, ind, certain0) and
       instr = operand.getDef() and
-      conversionFlow(mid, instr, isPointerArith, _) and
+      conversionFlow(mid.getConvertedOperand(), instr.getUnconvertedInstruction(), isPointerArith, _) and
       if isPointerArith = true then certain = false else certain = certain0
     )
     or
-    exists(Operand address, boolean certain0 |
+    exists(DataFlowOperand address, boolean certain0 |
       isDereference(operand.getDef(), address) and
       isDefImpl(address, base, ind - 1, certain0)
     |
       if isCertainAddress(operand) then certain = certain0 else certain = false
     )
     or
-    isDefImpl(operand.getDef().(InitializeParameterInstruction).getAnOperand(), base, ind - 1, _) and
+    isDefImpl(operand.getDef().(DataFlowInitializeParameterInstruction).getOperand(0), base,
+      ind - 1, _) and
     certain = true
   }
 }
