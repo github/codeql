@@ -28,19 +28,19 @@ def test_construction():
     )
 
     ensure_tainted(
-        list(tainted_list), # $ MISSING: tainted
-        list(tainted_tuple), # $ MISSING: tainted
-        list(tainted_set), # $ MISSING: tainted
-        list(tainted_dict.values()), # $ MISSING: tainted
-        list(tainted_dict.items()), # $ MISSING: tainted
+        list(tainted_list), # $ tainted
+        list(tainted_tuple), # $ tainted
+        list(tainted_set), # $ tainted
+        list(tainted_dict.values()), # $ tainted
+        list(tainted_dict.items()), # $ tainted
 
-        tuple(tainted_list), # $ MISSING: tainted
-        set(tainted_list), # $ MISSING: tainted
-        frozenset(tainted_list), # $ MISSING: tainted
-        dict(tainted_dict), # $ MISSING: tainted
-        dict(k = tainted_string)["k"], # $ MISSING: tainted
-        dict(dict(k = tainted_string))["k"], # $ MISSING: tainted
-        dict(["k", tainted_string]), # $ MISSING: tainted
+        tuple(tainted_list), # $ tainted
+        set(tainted_list), # $ tainted
+        frozenset(tainted_list), # $ tainted
+        dict(tainted_dict), # $ tainted
+        dict(k = tainted_string)["k"], # $ tainted
+        dict(dict(k = tainted_string))["k"], # $ tainted
+        dict(["k", tainted_string]), # $ tainted
     )
 
     ensure_not_tainted(
