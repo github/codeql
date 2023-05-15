@@ -1211,6 +1211,7 @@ module Impl<FullStateConfigSig Config> {
         filter(node, state, t0, ap, t)
       }
 
+      pragma[nomagic]
       private predicate typeStrengthen(Typ t0, Ap ap, Typ t) {
         fwdFlow1(_, _, _, _, _, _, t0, t, ap, _) and t0 != t
       }
@@ -2255,6 +2256,16 @@ module Impl<FullStateConfigSig Config> {
     import MkStage<Stage2>::Stage<Stage3Param>
   }
 
+  bindingset[node, t0]
+  private predicate strengthenType(NodeEx node, DataFlowType t0, DataFlowType t) {
+    if castingNodeEx(node)
+    then
+      exists(DataFlowType nt | nt = node.getDataFlowType() |
+        if typeStrongerThan(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
+      )
+    else t = t0
+  }
+
   private module Stage4Param implements MkStage<Stage3>::StageParam {
     private module PrevStage = Stage3;
 
@@ -2351,14 +2362,7 @@ module Impl<FullStateConfigSig Config> {
     predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
       exists(state) and
       not clear(node, ap) and
-      (
-        if castingNodeEx(node)
-        then
-          exists(Typ nt | nt = node.getDataFlowType() |
-            if typeStrongerThan(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
-          )
-        else t = t0
-      ) and
+      strengthenType(node, t0, t) and
       (
         notExpectsContent(node)
         or
@@ -2632,14 +2636,7 @@ module Impl<FullStateConfigSig Config> {
 
     bindingset[node, state, t0, ap]
     predicate filter(NodeEx node, FlowState state, Typ t0, Ap ap, Typ t) {
-      (
-        if castingNodeEx(node)
-        then
-          exists(Typ nt | nt = node.getDataFlowType() |
-            if typeStrongerThan(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
-          )
-        else t = t0
-      ) and
+      strengthenType(node, t0, t) and
       exists(state) and
       exists(ap)
     }
@@ -3373,14 +3370,7 @@ module Impl<FullStateConfigSig Config> {
     exists(DataFlowType t0 |
       pathStep0(mid, node, state, cc, sc, t0, ap) and
       Stage5::revFlow(node, state, ap.getApprox()) and
-      (
-        if castingNodeEx(node)
-        then
-          exists(DataFlowType nt | nt = node.getDataFlowType() |
-            if typeStrongerThan(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
-          )
-        else t = t0
-      )
+      strengthenType(node, t0, t)
     )
   }
 
@@ -4055,12 +4045,7 @@ module Impl<FullStateConfigSig Config> {
         notExpectsContent(node) or
         expectsContentEx(node, ap.getHead())
       ) and
-      if castingNodeEx(node)
-      then
-        exists(DataFlowType nt | nt = node.getDataFlowType() |
-          if typeStrongerThan(nt, t0) then t = nt else (compatibleTypes(nt, t0) and t = t0)
-        )
-      else t = t0
+      strengthenType(node, t0, t)
     }
 
     pragma[nomagic]
