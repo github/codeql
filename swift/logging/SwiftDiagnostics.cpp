@@ -25,7 +25,8 @@ nlohmann::json SwiftDiagnostic::json(const std::chrono::system_clock::time_point
        }},
       {"severity", "error"},
       {"helpLinks", std::vector<std::string_view>(absl::StrSplit(helpLinks, ' '))},
-      {"plaintextMessage", absl::StrCat(message, ".\n\n", action, ".")},
+      {format == Format::markdown ? "markdownMessage" : "plaintextMessage",
+       absl::StrCat(message, ".\n\n", action)},
       {"timestamp", fmt::format("{:%FT%T%z}", timestamp)},
   };
   if (location) {
