@@ -35,12 +35,14 @@ module Mysql2 {
     private DataFlow::Node query;
 
     Mysql2Execution() {
-      exists(Mysql2Connection mysql2Connection, DataFlow::CallNode prepareCall |
+      exists(Mysql2Connection mysql2Connection |
         this = mysql2Connection.getAMethodCall("query") and query = this.getArgument(0)
         or
-        prepareCall = mysql2Connection.getAMethodCall("prepare") and
-        query = prepareCall.getArgument(0) and
-        this = prepareCall.getAMethodCall("execute")
+        exists(DataFlow::CallNode prepareCall |
+          prepareCall = mysql2Connection.getAMethodCall("prepare") and
+          query = prepareCall.getArgument(0) and
+          this = prepareCall.getAMethodCall("execute")
+        )
       )
     }
 
