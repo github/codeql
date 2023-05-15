@@ -56,14 +56,14 @@
 
 #define CODEQL_DIAGNOSTIC_LOG_FORMAT_PREFIX "[{}] "
 // TODO(C++20) replace non-standard , ##__VA_ARGS__ with __VA_OPT__(,) __VA_ARGS__
-#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, FORMAT, ...)                                           \
-  do {                                                                                        \
-    auto _now = ::binlog::clockNow();                                                         \
-    const ::codeql::SwiftDiagnostic& _id = ID;                                                \
-    ::codeql::Log::diagnose(_id, std::chrono::nanoseconds{_now},                              \
-                            fmt::format(FORMAT, ##__VA_ARGS__));                              \
-    LOG_WITH_LEVEL_AND_TIME(LEVEL, _now, CODEQL_DIAGNOSTIC_LOG_FORMAT_PREFIX FORMAT,          \
-                            ::codeql::detail::SwiftDiagnosticLogWrapper{_id}, ##__VA_ARGS__); \
+#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, FORMAT, ...)                                  \
+  do {                                                                               \
+    auto _now = ::binlog::clockNow();                                                \
+    const ::codeql::SwiftDiagnostic& _id = ID;                                       \
+    ::codeql::Log::diagnose(_id, std::chrono::nanoseconds{_now},                     \
+                            fmt::format(FORMAT, ##__VA_ARGS__));                     \
+    LOG_WITH_LEVEL_AND_TIME(LEVEL, _now, CODEQL_DIAGNOSTIC_LOG_FORMAT_PREFIX FORMAT, \
+                            _id.abbreviation(), ##__VA_ARGS__);                      \
   } while (false)
 
 // avoid calling into binlog's original macros
@@ -232,34 +232,4 @@ class Logger {
   Log::Level level_;
 };
 
-namespace detail {
-struct SwiftDiagnosticLogWrapper {
-  const SwiftDiagnostic& value;
-};
-
-}  // namespace detail
 }  // namespace codeql
-
-namespace mserialize {
-// log diagnostics wrapper using the abbreviation of the underlying diagnostic, using
-// binlog/mserialize internal plumbing
-template <>
-struct CustomTag<codeql::detail::SwiftDiagnosticLogWrapper, void>
-    : detail::BuiltinTag<std::string> {
-  using T = codeql::detail::SwiftDiagnosticLogWrapper;
-};
-
-template <>
-struct CustomSerializer<codeql::detail::SwiftDiagnosticLogWrapper, void> {
-  template <typename OutputStream>
-  static void serialize(const codeql::detail::SwiftDiagnosticLogWrapper& source,
-                        OutputStream& out) {
-    mserialize::serialize(source.value.abbreviation(), out);
-  }
-
-  static size_t serialized_size(const codeql::detail::SwiftDiagnosticLogWrapper& source) {
-    return mserialize::serialized_size(source.value.abbreviation());
-  }
-};
-
-}  // namespace mserialize
