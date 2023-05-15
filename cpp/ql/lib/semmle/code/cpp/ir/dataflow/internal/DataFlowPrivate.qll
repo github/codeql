@@ -479,9 +479,9 @@ abstract class InstructionNode0 extends Node0Impl {
   override DataFlowType getType() { result = getInstructionType(instr, _) }
 
   override string toStringImpl() {
-    // This predicate is overridden in subclasses. This default implementation
-    // does not use `Instruction.toString` because that's expensive to compute.
-    result = instr.getOpcode().toString()
+    if instr.(DataFlowInitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
+    then result = "this"
+    else result = instr.getUnconvertedInstruction().getAst().toString()
   }
 
   final override predicate isGLValue() { exists(getInstructionType(instr, true)) }
@@ -525,7 +525,12 @@ abstract class OperandNode0 extends Node0Impl {
 
   override DataFlowType getType() { result = getOperandType(op, _) }
 
-  override string toStringImpl() { result = op.toString() }
+  override string toStringImpl() {
+    if
+      op.getDef().(DataFlowInitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
+    then result = "this"
+    else result = op.getDef().getUnconvertedInstruction().getAst().toString()
+  }
 
   final override predicate isGLValue() { exists(getOperandType(op, true)) }
 }

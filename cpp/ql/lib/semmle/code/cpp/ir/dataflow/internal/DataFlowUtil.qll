@@ -397,9 +397,15 @@ class Node extends TIRDataFlowNode {
 }
 
 private string toExprString(Node n) {
-  result = n.asExpr().toString()
+  exists(int i |
+    i = min(int k | exists(n.(ExprNode).getExpr(k))) and
+    result = n.(ExprNode).getExpr(i).toString()
+  )
   or
-  result = n.asIndirectExpr().toString() + " indirection"
+  exists(int i |
+    i = min(int k | exists(n.(IndirectExprNode).getExpr(_, k))) and
+    result = n.(IndirectExprNode).getExpr(_, i).toString() + " indirection"
+  )
 }
 
 /**
@@ -417,6 +423,8 @@ private class Node0 extends Node, TNode0 {
   override DataFlowType getType() { result = node.getType() }
 
   override predicate isGLValue() { node.isGLValue() }
+
+  override string toStringImpl() { result = node.toString() }
 }
 
 /**
@@ -436,15 +444,9 @@ class InstructionNode extends Node0 {
   Instruction getUnconvertedInstruction() { result = instr.getUnconvertedInstruction() }
 
   override Location getLocationImpl() {
-    if exists(instr.getAst().getLocation())
-    then result = instr.getAst().getLocation()
+    if exists(instr.getUnconvertedAst().getLocation())
+    then result = instr.getUnconvertedAst().getLocation()
     else result instanceof UnknownDefaultLocation
-  }
-
-  override string toStringImpl() {
-    if instr.(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = instr.getAst().toString()
   }
 }
 
@@ -465,15 +467,9 @@ class OperandNode extends Node, Node0 {
   Operand getUnconvertedOperand() { result = op.getUnconvertedOperand() }
 
   override Location getLocationImpl() {
-    if exists(op.getDef().getAst().getLocation())
-    then result = op.getDef().getAst().getLocation()
+    if exists(op.getDef().getUnconvertedAst().getLocation())
+    then result = op.getDef().getUnconvertedAst().getLocation()
     else result instanceof UnknownDefaultLocation
-  }
-
-  override string toStringImpl() {
-    if op.getDef().(InitializeParameterInstruction).getIRVariable() instanceof IRThisVariable
-    then result = "this"
-    else result = op.getDef().getAst().toString()
   }
 }
 
@@ -956,8 +952,7 @@ class RawIndirectOperand extends Node, TRawIndirectOperand {
   }
 
   override string toStringImpl() {
-    result =
-      this.getOperand().getDef().getUnconvertedInstruction().getAst().toString() + " indirection"
+    result = this.getOperand().getDef().getUnconvertedAst().toString() + " indirection"
   }
 }
 
@@ -1064,7 +1059,8 @@ class RawIndirectInstruction extends Node, TRawIndirectInstruction {
   }
 
   override string toStringImpl() {
-    result = instructionNode(this.getInstruction()).toStringImpl() + " indirection"
+    not instr instanceof DataFlowInitializeParameterInstruction and
+    result = this.getInstruction().getUnconvertedAst().toString() + " indirection"
   }
 }
 
