@@ -75,10 +75,10 @@ struct SwiftDiagnostic {
         helpLinks{helpLinks},
         visibility{visibility} {}
 
-  // create a JSON diagnostics for this source with the given timestamp and message to out
-  // A plaintextMessage is used that includes both the message and the action to take. Dots are
-  // appended to both. The id is used to construct the source id in the form
-  // `swift/<prog name>/<id>`
+  // create a JSON diagnostics for this source with the given `timestamp` and `message`
+  // Depending on format, either a plaintextMessage or markdownMessage is used that includes both
+  // the message and the action to take. A dot '.' is appended to `message`. The id is used to
+  // construct the source id in the form `swift/<prog name>/<id>`
   nlohmann::json json(const std::chrono::system_clock::time_point& timestamp,
                       std::string_view message) const;
 
