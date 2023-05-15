@@ -77,13 +77,13 @@ private DataFlow::Node getNodeForExpr(Expr node) {
 
 private predicate conflatePointerAndPointee(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // Flow from `op` to `*op`.
-  exists(Operand operand, int indirectionIndex |
+  exists(DataFlowOperand operand, int indirectionIndex |
     nodeHasOperand(nodeFrom, operand, indirectionIndex) and
     nodeHasOperand(nodeTo, operand, indirectionIndex - 1)
   )
   or
   // Flow from `instr` to `*instr`.
-  exists(Instruction instr, int indirectionIndex |
+  exists(DataFlowInstruction instr, int indirectionIndex |
     nodeHasInstruction(nodeFrom, instr, indirectionIndex) and
     nodeHasInstruction(nodeTo, instr, indirectionIndex - 1)
   )
@@ -185,8 +185,8 @@ private predicate hasUpperBoundsCheck(Variable var) {
 private predicate nodeIsBarrierEqualityCandidate(
   DataFlow::Node node, Operand access, Variable checkedVar
 ) {
-  exists(Instruction instr | instr = node.asOperand().getDef() |
-    readsVariable(instr, checkedVar) and
+  exists(DataFlowInstruction instr | instr = asOperand(node).getDef() |
+    readsVariable(instr.getUnconvertedInstruction(), checkedVar) and
     any(IRGuardCondition guard).ensuresEq(access, _, _, instr.getBlock(), true)
   )
 }
@@ -195,8 +195,8 @@ cached
 private module Cached {
   cached
   predicate nodeIsBarrier(DataFlow::Node node) {
-    exists(Variable checkedVar, Instruction instr | instr = node.asOperand().getDef() |
-      readsVariable(instr, checkedVar) and
+    exists(Variable checkedVar, DataFlowInstruction instr | instr = asOperand(node).getDef() |
+      readsVariable(instr.getUnconvertedInstruction(), checkedVar) and
       hasUpperBoundsCheck(checkedVar)
     )
     or
@@ -302,7 +302,9 @@ private module Cached {
    */
   cached
   predicate additionalTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
-    exists(CallInstruction call, Function func, FunctionInput modelIn, FunctionOutput modelOut |
+    exists(
+      DataFlowCallInstruction call, Function func, FunctionInput modelIn, FunctionOutput modelOut
+    |
       n1 = callInput(call, modelIn) and
       (
         func.(TaintFunction).hasTaintFlow(modelIn, modelOut)
@@ -311,7 +313,7 @@ private module Cached {
       ) and
       call.getStaticCallTarget() = func and
       modelOut.isReturnValueDeref() and
-      call = n2.asInstruction()
+      call.getUnconvertedInstruction() = n2.asInstruction()
     )
   }
 }
