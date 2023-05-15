@@ -143,7 +143,148 @@ module DataFlowInstructions {
       result = this.getConvertedInstruction().getEnclosingIRFunction()
     }
   }
+
+  class DataFlowCallInstruction extends DataFlowInstruction {
+    private CallInstruction call;
+
+    DataFlowCallInstruction() { call = this.getAnInstruction() }
+
+    DataFlowOperand getAnArgumentOperand() { result = this.getArgumentOperand(_) }
+
+    DataFlowOperand getArgumentOperand(int i) { result.getAnOperand() = call.getArgumentOperand(i) }
+
+    DataFlowInstruction getArgument(int i) { result = this.getArgumentOperand(i).getDef() }
+
+    Function getStaticCallTarget() { result = call.getStaticCallTarget() }
+
+    DataFlowOperand getThisArgumentOperand() {
+      result.getAnOperand() = call.getThisArgumentOperand()
+    }
+
+    DataFlowInstruction getThisArgument() { result = this.getThisArgumentOperand().getDef() }
+
+    DataFlowOperand getCallTargetOperand() { result.getAnOperand() = call.getCallTargetOperand() }
+
+    int getNumberOfArguments() { result = call.getNumberOfArguments() }
+  }
+
+  class DataFlowUnaryInstruction extends DataFlowInstruction {
+    UnaryInstruction unary;
+
+    DataFlowUnaryInstruction() { this.getAnInstruction() = unary }
+
+    DataFlowOperand getUnaryOperand() { result.getAnOperand() = unary.getUnaryOperand() }
+  }
+
+  class DataFlowFieldAddressInstruction extends DataFlowInstruction {
+    FieldAddressInstruction fai;
+
+    DataFlowFieldAddressInstruction() { fai = this.getAnInstruction() }
+
+    Field getField() { result = fai.getField() }
+
+    DataFlowOperand getObjectAddressOperand() {
+      result.getAnOperand() = fai.getObjectAddressOperand()
+    }
+
+    DataFlowInstruction getObjectAddress() { result = this.getObjectAddressOperand().getDef() }
+  }
+
+  class DataFlowReturnValueInstruction extends DataFlowInstruction {
+    ReturnValueInstruction rvi;
+
+    DataFlowReturnValueInstruction() { rvi = this.getAnInstruction() }
+
+    DataFlowOperand getReturnAddressOperand() {
+      result.getAnOperand() = rvi.getReturnAddressOperand()
+    }
+
+    DataFlowInstruction getReturnAddress() { result = this.getReturnAddressOperand().getDef() }
+  }
+
+  class DataFlowStoreInstruction extends DataFlowInstruction {
+    StoreInstruction store;
+
+    DataFlowStoreInstruction() { store = this.getAnInstruction() }
+
+    DataFlowOperand getDestinationAddressOperand() {
+      result.getAnOperand() = store.getDestinationAddressOperand()
+    }
+
+    DataFlowInstruction getDestinationAddress() {
+      result = this.getDestinationAddressOperand().getDef()
+    }
+
+    DataFlowOperand getSourceValueOperand() {
+      result.getAnOperand() = store.getSourceValueOperand()
+    }
+
+    DataFlowInstruction getSourceValue() { result = this.getSourceValueOperand().getDef() }
+  }
+
+  class DataFlowVariableAddressInstruction extends DataFlowInstruction {
+    VariableAddressInstruction vai;
+
+    DataFlowVariableAddressInstruction() { vai = this.getAnInstruction() }
+
+    IRVariable getIRVariable() { result = vai.getIRVariable() }
+
+    Variable getAstVariable() { result = vai.getAstVariable() }
+  }
+
+  class DataFlowInitializeParameterInstruction extends DataFlowInstruction {
+    InitializeParameterInstruction init;
+
+    DataFlowInitializeParameterInstruction() { init = this.getUnconvertedInstruction() }
+
+    IRVariable getIRVariable() { result = init.getIRVariable() }
+
+    Parameter getParameter() { result = init.getParameter() }
+
+    predicate hasIndex(int index) { init.hasIndex(index) }
+  }
+
+  class DataFlowInitializeDynamicAllocationInstruction extends DataFlowInstruction {
+    InitializeDynamicAllocationInstruction init;
+
+    DataFlowInitializeDynamicAllocationInstruction() { init = this.getUnconvertedInstruction() }
+
+    DataFlowOperand getAllocationAddressOperand() {
+      result.getAnOperand() = init.getAllocationAddressOperand()
+    }
+  }
+
+  class DataFlowUninitializedInstruction extends DataFlowInstruction {
+    UninitializedInstruction init;
+
+    DataFlowUninitializedInstruction() { init = this.getUnconvertedInstruction() }
+  }
+
+  class DataFlowLoadInstruction extends DataFlowInstruction {
+    LoadInstruction load;
+
+    DataFlowLoadInstruction() { load = this.getUnconvertedInstruction() }
+
+    DataFlowOperand getSourceAddressOperand() {
+      result.getAnOperand() = load.getSourceAddressOperand()
+    }
+
+    DataFlowInstruction getSourceAddress() { result = this.getSourceAddressOperand().getDef() }
+  }
+
+  class DataFlowPointerArithmeticInstruction extends DataFlowInstruction {
+    PointerArithmeticInstruction pai;
+
+    DataFlowPointerArithmeticInstruction() { pai = this.getUnconvertedInstruction() }
+
+    DataFlowOperand getLeftOperand() { result.getAnOperand() = pai.getLeftOperand() }
+  }
+
+  /** Gets the `DataFlowInstruction` corresponding to `n`, if any. */
+  DataFlowInstruction asInstruction(Node n) { result = n.(InstructionNode).getInstruction() }
 }
+
+import DataFlowInstructions
 
 cached
 private module Cached {
