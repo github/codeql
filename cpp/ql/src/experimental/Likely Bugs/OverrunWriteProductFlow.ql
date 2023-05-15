@@ -183,19 +183,18 @@ module ValidState {
       // `AddInstruction` to the flow-state of any predecessor node.
       // For case 2 we simply propagate the valid flow-states from the predecessor node to
       // the next one.
-      exists(PathNode n0, DataFlow::Node node, int value0 |
+      exists(PathNode n0, DataFlow::Node node0, DataFlow::Node node, int value0 |
         n0.getASuccessor() = n and
         validStateImpl(n0, value0) and
-        node = n.getNode()
+        node = n.getNode() and
+        node0 = n0.getNode()
       |
-        exists(AddInstruction add, Operand op1, Operand op2, int delta |
-          add = node.asInstruction() and
-          add.hasOperands(op1, op2) and
-          value0 = value + delta and
-          semBounded(getSemanticExpr([op1, op2].getDef()), any(SemZeroBound zero), delta, true, _)
+        exists(int delta |
+          isAdditionalFlowStep2(node0, node, delta) and
+          value0 = value + delta
         )
         or
-        not node.asInstruction() instanceof AddInstruction and
+        not isAdditionalFlowStep2(node0, node, _) and
         value = value0
       )
     )
@@ -207,6 +206,20 @@ module ValidState {
 }
 
 import ValidState
+
+/**
+ * Holds if `node2` is a dataflow node that represents an addition of two operands `op1`
+ * and `op2` such that:
+ * 1. `node1` is the dataflow node that represents `op1`, and
+ * 2. the value of `op2` can be upper bounded by `delta.`
+ */
+predicate isAdditionalFlowStep2(DataFlow::Node node1, DataFlow::Node node2, int delta) {
+  exists(AddInstruction add, Operand op |
+    add.hasOperands(node1.asOperand(), op) and
+    semBounded(getSemanticExpr(op.getDef()), any(SemZeroBound zero), delta, true, _) and
+    node2.asInstruction() = add
+  )
+}
 
 module StringSizeConfig implements ProductFlow::StateConfigSig {
   class FlowState1 = Unit;
@@ -251,13 +264,9 @@ module StringSizeConfig implements ProductFlow::StateConfigSig {
     DataFlow::Node node1, FlowState2 state1, DataFlow::Node node2, FlowState2 state2
   ) {
     validState(node2, state2) and
-    exists(AddInstruction add, Operand op, int delta, int s1, int s2 |
-      state1 = s1 and
-      state2 = s2 and
-      add.hasOperands(node1.asOperand(), op) and
-      semBounded(getSemanticExpr(op.getDef()), any(SemZeroBound zero), delta, true, _) and
-      node2.asInstruction() = add and
-      s1 = s2 + delta
+    exists(int delta |
+      isAdditionalFlowStep2(node1, node2, delta) and
+      state1 = state2 + delta
     )
   }
 }
