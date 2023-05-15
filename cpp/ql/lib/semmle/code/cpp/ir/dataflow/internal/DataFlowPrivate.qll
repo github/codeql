@@ -286,6 +286,76 @@ module DataFlowInstructions {
 
 import DataFlowInstructions
 
+module DataFlowOperands {
+  private predicate conversion(Operand op, Operand conv) {
+    not Ssa::ignoreOperand(op) and
+    not Ssa::ignoreOperand(conv) and
+    (
+      op = conv // we make this predicate reflexive so that the relation is onto
+      or
+      conversionStep(op.getDef(), conv.getDef())
+    )
+  }
+
+  private module DataFlowOperandImpl = QlBuiltins::EquivalenceRelation<Operand, conversion/2>;
+
+  class DataFlowOperand extends DataFlowOperandImpl::EquivalenceClass {
+    Operand getOperand(int i) {
+      result =
+        rank[i + 1](Operand op, int index, IRBlock b |
+          b.getInstruction(index) = op.getUse() and
+          this = DataFlowOperandImpl::getEquivalenceClass(op)
+        |
+          op order by index
+        )
+    }
+
+    DataFlowInstruction getUse() { result.getAnOperand() = this }
+
+    DataFlowInstruction getDef() { result.getAUse() = this }
+
+    Operand getAnOperand() { result = this.getOperand(_) }
+
+    Operand getUnconvertedOperand() { result = this.getOperand(0) }
+
+    int getNumberOfOperands() { result = strictcount(this.getOperand(_)) }
+
+    Operand getConvertedOperand() { result = this.getOperand(this.getNumberOfOperands() - 1) }
+
+    string toString() {
+      result =
+        concat(Operand operand |
+          operand = this.getAnOperand()
+        |
+          operand.getUse().getResultId() + "." + operand.getDumpId(), ", "
+        )
+    }
+
+    Cpp::Location getLocation() { result = this.getConvertedOperand().getLocation() }
+
+    Type getUnconvertedType() { result = this.getUnconvertedOperand().getType() }
+
+    Type getConvertedType() { result = this.getConvertedOperand().getType() }
+
+    Type getType() { result = this.getConvertedType() }
+
+    predicate isGLValue() { this.getConvertedOperand().isGLValue() }
+
+    Cpp::Declaration getEnclosingFunction() {
+      result = this.getConvertedOperand().getUse().getEnclosingFunction()
+    }
+  }
+
+  class DataFlowArgumentOperand extends DataFlowOperand {
+    DataFlowArgumentOperand() { this.getAnOperand() instanceof ArgumentOperand }
+  }
+
+  /** Gets the `DataFlowOperand` corresponding to `n`, if any. */
+  DataFlowOperand asOperand(Node n) { result = n.(OperandNode).getOperand() }
+}
+
+import DataFlowOperands
+
 cached
 private module Cached {
   cached
