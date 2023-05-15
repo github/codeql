@@ -362,23 +362,18 @@ private module Cached {
   module Nodes0 {
     cached
     newtype TIRDataFlowNode0 =
-      TInstructionNode0(Instruction i) {
-        not Ssa::ignoreInstruction(i) and
-        not exists(Operand op |
-          not Ssa::ignoreOperand(op) and i = Ssa::getIRRepresentationOfOperand(op)
-        ) and
+      TInstructionNode0(DataFlowInstruction i) {
+        not exists(DataFlowOperand op | i = Ssa::getIRRepresentationOfOperand(op)) and
         // We exclude `void`-typed instructions because they cannot contain data.
         // However, if the instruction is a glvalue, and their type is `void`, then the result
         // type of the instruction is really `void*`, and thus we still want to have a dataflow
         // node for it.
         (not i.getResultType() instanceof VoidType or i.isGLValue())
       } or
-      TMultipleUseOperandNode0(Operand op) {
-        not Ssa::ignoreOperand(op) and not exists(Ssa::getIRRepresentationOfOperand(op))
+      TMultipleUseOperandNode0(DataFlowOperand op) {
+        not exists(Ssa::getIRRepresentationOfOperand(op))
       } or
-      TSingleUseOperandNode0(Operand op) {
-        not Ssa::ignoreOperand(op) and exists(Ssa::getIRRepresentationOfOperand(op))
-      }
+      TSingleUseOperandNode0(DataFlowOperand op) { exists(Ssa::getIRRepresentationOfOperand(op)) }
   }
 
   /**
@@ -425,10 +420,10 @@ class Node0Impl extends TIRDataFlowNode0 {
   DataFlowType getType() { none() } // overridden in subclasses
 
   /** Gets the instruction corresponding to this node, if any. */
-  Instruction asInstruction() { result = this.(InstructionNode0).getInstruction() }
+  DataFlowInstruction asInstruction() { result = this.(InstructionNode0).getInstruction() }
 
   /** Gets the operands corresponding to this node, if any. */
-  Operand asOperand() { result = this.(OperandNode0).getOperand() }
+  DataFlowOperand asOperand() { result = this.(OperandNode0).getOperand() }
 
   /** INTERNAL: Do not use. */
   string toStringImpl() {
@@ -443,35 +438,39 @@ class Node0Impl extends TIRDataFlowNode0 {
 }
 
 /**
- * Gets the type of the operand `op`.
+ * Gets the converted type of the operand `op`.
  *
  * The boolean `isGLValue` is true if the operand represents a glvalue. In that case,
  * the returned type should be thought of as a pointer type whose base type is given
  * by this predicate.
  */
-DataFlowType getOperandType(Operand op, boolean isGLValue) {
-  Ssa::getLanguageType(op).hasType(result, isGLValue)
+DataFlowType getOperandType(DataFlowOperand op, boolean isGLValue) {
+  Ssa::getLanguageType(op.getConvertedOperand()).hasType(result, isGLValue)
 }
 
 /**
- * Gets the type of the instruction `instr`.
+ * Gets the converted type of the instruction `instr`.
  *
  * The boolean `isGLValue` is true if the operand represents a glvalue. In that case,
  * the returned type should be thought of as a pointer type whose base type is given
  * by this predicate.
  */
-DataFlowType getInstructionType(Instruction instr, boolean isGLValue) {
-  Ssa::getResultLanguageType(instr).hasType(result, isGLValue)
+DataFlowType getInstructionType(DataFlowInstruction instr, boolean isGLValue) {
+  instr.getResultLanguageType().hasType(result, isGLValue)
 }
 
 /**
  * An instruction, viewed as a node in a data flow graph.
  */
 abstract class InstructionNode0 extends Node0Impl {
-  Instruction instr;
+  DataFlowInstruction instr;
 
   /** Gets the instruction corresponding to this node. */
-  Instruction getInstruction() { result = instr }
+  DataFlowInstruction getInstruction() { result = instr }
+
+  Instruction getConvertedtInstruction() { result = instr.getConvertedInstruction() }
+
+  Instruction getUnconvertedtInstruction() { result = instr.getUnconvertedInstruction() }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
@@ -500,7 +499,7 @@ private class InstructionInstructionNode0 extends InstructionNode0, TInstruction
  */
 private class SingleUseOperandInstructionNode0 extends InstructionNode0, TSingleUseOperandNode0 {
   SingleUseOperandInstructionNode0() {
-    exists(Operand op |
+    exists(DataFlowOperand op |
       this = TSingleUseOperandNode0(op) and
       instr = Ssa::getIRRepresentationOfOperand(op)
     )
@@ -511,10 +510,14 @@ private class SingleUseOperandInstructionNode0 extends InstructionNode0, TSingle
  * An operand, viewed as a node in a data flow graph.
  */
 abstract class OperandNode0 extends Node0Impl {
-  Operand op;
+  DataFlowOperand op;
 
   /** Gets the operand corresponding to this node. */
-  Operand getOperand() { result = op }
+  DataFlowOperand getOperand() { result = op }
+
+  Operand getConvertedOperand() { result = op.getConvertedOperand() }
+
+  Operand getUnconvertedOperand() { result = op.getUnconvertedOperand() }
 
   override Declaration getEnclosingCallable() { result = this.getFunction() }
 
@@ -551,7 +554,7 @@ private class SingleUseOperandNode0 extends OperandNode0, TSingleUseOperandNode0
  * be an `OperandNode`.
  */
 class IndirectOperand extends Node {
-  Operand operand;
+  DataFlowOperand operand;
   int indirectionIndex;
 
   IndirectOperand() {
@@ -563,7 +566,11 @@ class IndirectOperand extends Node {
   }
 
   /** Gets the underlying operand. */
-  Operand getOperand() { result = operand }
+  DataFlowOperand getOperand() { result = operand }
+
+  Operand getUnconvertedOperand() { result = operand.getUnconvertedOperand() }
+
+  Operand getConvertedOperand() { result = operand.getConvertedOperand() }
 
   /** Gets the underlying indirection index. */
   int getIndirectionIndex() { result = indirectionIndex }
@@ -572,7 +579,7 @@ class IndirectOperand extends Node {
    * Holds if this `IndirectOperand` is represented directly in the IR instead of
    * a `RawIndirectionOperand` with operand `op` and indirection index `index`.
    */
-  predicate isIRRepresentationOf(Operand op, int index) {
+  predicate isIRRepresentationOf(DataFlowOperand op, int index) {
     this instanceof OperandNode and
     (
       op = operand and
@@ -591,7 +598,7 @@ class IndirectOperand extends Node {
  * be an `InstructionNode`.
  */
 class IndirectInstruction extends Node {
-  Instruction instr;
+  DataFlowInstruction instr;
   int indirectionIndex;
 
   IndirectInstruction() {
@@ -603,7 +610,11 @@ class IndirectInstruction extends Node {
   }
 
   /** Gets the underlying instruction. */
-  Instruction getInstruction() { result = instr }
+  DataFlowInstruction getInstruction() { result = instr }
+
+  Instruction getConvertedInstruction() { result = instr.getConvertedInstruction() }
+
+  Instruction getUnconvertedInstruction() { result = instr.getUnconvertedInstruction() }
 
   /** Gets the underlying indirection index. */
   int getIndirectionIndex() { result = indirectionIndex }
@@ -612,7 +623,7 @@ class IndirectInstruction extends Node {
    * Holds if this `IndirectInstruction` is represented directly in the IR instead of
    * a `RawIndirectionInstruction` with instruction `i` and indirection index `index`.
    */
-  predicate isIRRepresentationOf(Instruction i, int index) {
+  predicate isIRRepresentationOf(DataFlowInstruction i, int index) {
     this instanceof InstructionNode and
     (
       i = instr and
@@ -655,9 +666,11 @@ abstract class ArgumentNode extends Node {
  * implicit `this` pointer argument.
  */
 private class PrimaryArgumentNode extends ArgumentNode, OperandNode {
-  override ArgumentOperand op;
+  override DataFlowArgumentOperand op;
 
-  PrimaryArgumentNode() { exists(CallInstruction call | op = call.getAnArgumentOperand()) }
+  PrimaryArgumentNode() {
+    exists(CallInstruction call | op.getAnOperand() = call.getAnArgumentOperand())
+  }
 
   override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
     op = call.getArgumentOperand(pos.(DirectPosition).getIndex())
@@ -721,7 +734,7 @@ class IndirectionPosition extends Position, TIndirectionPosition {
 newtype TPosition =
   TDirectPosition(int index) { exists(any(CallInstruction c).getArgument(index)) } or
   TIndirectionPosition(int argumentIndex, int indirectionIndex) {
-    hasOperandAndIndex(_, any(CallInstruction call).getArgumentOperand(argumentIndex),
+    hasOperandAndIndex(_, any(DataFlowCallInstruction call).getArgumentOperand(argumentIndex),
       indirectionIndex)
   }
 
@@ -781,10 +794,10 @@ private predicate finalParameterNodeHasArgumentAndIndex(
 
 class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
   override ReturnKind getKind() {
-    exists(Operand op, int indirectionIndex |
+    exists(DataFlowOperand op, int indirectionIndex |
       hasOperandAndIndex(this, pragma[only_bind_into](op), pragma[only_bind_into](indirectionIndex))
     |
-      exists(ReturnValueInstruction return |
+      exists(DataFlowReturnValueInstruction return |
         op = return.getReturnAddressOperand() and
         result = TNormalReturnKind(indirectionIndex - 1)
       )
@@ -797,25 +810,16 @@ class ReturnIndirectionNode extends IndirectReturnNode, ReturnNode {
   }
 }
 
-private Operand fullyConvertedCallStepImpl(Operand op) {
+private DataFlowOperand fullyConvertedCallStepImpl(DataFlowOperand op) {
   not exists(getANonConversionUse(op)) and
-  exists(Instruction instr |
-    conversionFlow(op, instr, _, _) and
-    result = getAUse(instr)
+  exists(DataFlowInstruction instr |
+    conversionFlow(op.getConvertedOperand(), instr.getUnconvertedInstruction(), _, _) and
+    result = instr.getAUse()
   )
 }
 
-private Operand fullyConvertedCallStep(Operand op) {
+private DataFlowOperand fullyConvertedCallStep(DataFlowOperand op) {
   result = unique( | | fullyConvertedCallStepImpl(op))
-}
-
-/**
- * Gets the instruction that uses this operand, if the instruction is not
- * ignored for dataflow purposes.
- */
-private Instruction getUse(Operand op) {
-  result = op.getUse() and
-  not Ssa::ignoreInstruction(result)
 }
 
 /** Gets a use of the instruction `instr` that is not ignored for dataflow purposes. */
@@ -829,9 +833,9 @@ Operand getAUse(Instruction instr) {
  * - not ignored for dataflow purposes, and
  * - not a conversion-like instruction.
  */
-private Instruction getANonConversionUse(Operand operand) {
-  result = getUse(operand) and
-  not conversionFlow(_, result, _, _)
+private DataFlowInstruction getANonConversionUse(DataFlowOperand operand) {
+  result = operand.getUse() and
+  not conversionFlow(_, result.getUnconvertedInstruction(), _, _)
 }
 
 /**
@@ -849,12 +853,14 @@ private Instruction getANonConversionUse(Operand operand) {
  * in this case, there'll be a long-to-int conversion on `f()` before the value is assigned to `y`,
  * and there will be an int-to-long conversion on `(int)f()` before the value is assigned to `x`.
  */
-private predicate operandForFullyConvertedCallImpl(Operand operand, CallInstruction call) {
+private predicate operandForFullyConvertedCallImpl(
+  DataFlowOperand operand, DataFlowCallInstruction call
+) {
   exists(getANonConversionUse(operand)) and
   (
-    operand = getAUse(call)
+    operand = call.getAUse()
     or
-    operand = fullyConvertedCallStep*(getAUse(call))
+    operand = fullyConvertedCallStep*(call.getAUse())
   )
 }
 
@@ -862,18 +868,18 @@ private predicate operandForFullyConvertedCallImpl(Operand operand, CallInstruct
  * Gets the operand that represents the use of the value of `call` following
  * a sequence of conversion-like instructions, if a unique operand exists.
  */
-predicate operandForFullyConvertedCall(Operand operand, CallInstruction call) {
-  operand = unique(Operand cand | operandForFullyConvertedCallImpl(cand, call))
+predicate operandForFullyConvertedCall(DataFlowOperand operand, DataFlowCallInstruction call) {
+  operand = unique(DataFlowOperand cand | operandForFullyConvertedCallImpl(cand, call))
 }
 
 private predicate instructionForFullyConvertedCallWithConversions(
-  Instruction instr, CallInstruction call
+  DataFlowInstruction instr, DataFlowCallInstruction call
 ) {
   instr =
-    getUse(unique(Operand operand |
-        operand = fullyConvertedCallStep*(getAUse(call)) and
-        not exists(fullyConvertedCallStep(operand))
-      ))
+    unique(DataFlowOperand operand |
+      operand = fullyConvertedCallStep*(call.getAUse()) and
+      not exists(fullyConvertedCallStep(operand))
+    ).getUse()
 }
 
 /**
@@ -883,7 +889,7 @@ private predicate instructionForFullyConvertedCallWithConversions(
  * This predicate only holds if there is no suitable operand (i.e., no operand of a non-
  * conversion instruction) to use to represent the value of `call` after conversions.
  */
-predicate instructionForFullyConvertedCall(Instruction instr, CallInstruction call) {
+predicate instructionForFullyConvertedCall(DataFlowInstruction instr, DataFlowCallInstruction call) {
   // Only pick an instruction for the call if we cannot pick a unique operand.
   not operandForFullyConvertedCall(_, call) and
   (
@@ -897,10 +903,10 @@ predicate instructionForFullyConvertedCall(Instruction instr, CallInstruction ca
 }
 
 /** Holds if `node` represents the output node for `call`. */
-private predicate simpleOutNode(Node node, CallInstruction call) {
-  operandForFullyConvertedCall(node.asOperand(), call)
+private predicate simpleOutNode(Node node, DataFlowCallInstruction call) {
+  operandForFullyConvertedCall(asOperand(node), call)
   or
-  instructionForFullyConvertedCall(node.asInstruction(), call)
+  instructionForFullyConvertedCall(asInstruction(node), call)
 }
 
 /** A data flow node that represents the output of a call. */
@@ -923,7 +929,7 @@ class OutNode extends Node {
 }
 
 private class DirectCallOutNode extends OutNode {
-  CallInstruction call;
+  DataFlowCallInstruction call;
 
   DirectCallOutNode() { simpleOutNode(this, call) }
 
@@ -998,7 +1004,7 @@ predicate jumpStep(Node n1, Node n2) {
  * value of `node1`.
  */
 predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
-  exists(int indirectionIndex1, int numberOfLoads, StoreInstruction store |
+  exists(int indirectionIndex1, int numberOfLoads, DataFlowStoreInstruction store |
     nodeHasInstruction(node1, store, pragma[only_bind_into](indirectionIndex1)) and
     node2.getIndirectionIndex() = 1 and
     numberOfLoadsFromOperand(node2.getFieldAddress(), store.getDestinationAddressOperand(),
@@ -1020,16 +1026,18 @@ predicate storeStep(Node node1, Content c, PostFieldUpdateNode node2) {
  * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
  * operations and exactly `n` `LoadInstruction` operations.
  */
-private predicate numberOfLoadsFromOperandRec(Operand operandFrom, Operand operandTo, int ind) {
-  exists(Instruction load | Ssa::isDereference(load, operandFrom) |
+private predicate numberOfLoadsFromOperandRec(
+  DataFlowOperand operandFrom, DataFlowOperand operandTo, int ind
+) {
+  exists(DataFlowInstruction load | Ssa::isDereference(load, operandFrom) |
     operandTo = operandFrom and ind = 0
     or
     numberOfLoadsFromOperand(load.getAUse(), operandTo, ind - 1)
   )
   or
-  exists(Operand op, Instruction instr |
+  exists(DataFlowOperand op, DataFlowInstruction instr |
     instr = op.getDef() and
-    conversionFlow(operandFrom, instr, _, _) and
+    conversionFlow(operandFrom.getConvertedOperand(), instr.getUnconvertedInstruction(), _, _) and
     numberOfLoadsFromOperand(op, operandTo, ind)
   )
 }
@@ -1038,27 +1046,29 @@ private predicate numberOfLoadsFromOperandRec(Operand operandFrom, Operand opera
  * Holds if `operandFrom` flows to `operandTo` using a sequence of conversion-like
  * operations and exactly `n` `LoadInstruction` operations.
  */
-private predicate numberOfLoadsFromOperand(Operand operandFrom, Operand operandTo, int n) {
+private predicate numberOfLoadsFromOperand(
+  DataFlowOperand operandFrom, DataFlowOperand operandTo, int n
+) {
   numberOfLoadsFromOperandRec(operandFrom, operandTo, n)
   or
   not Ssa::isDereference(_, operandFrom) and
-  not conversionFlow(operandFrom, _, _, _) and
+  not conversionFlow(operandFrom.getConvertedOperand(), _, _, _) and
   operandFrom = operandTo and
   n = 0
 }
 
 // Needed to join on both an operand and an index at the same time.
 pragma[noinline]
-predicate nodeHasOperand(Node node, Operand operand, int indirectionIndex) {
-  node.asOperand() = operand and indirectionIndex = 0
+predicate nodeHasOperand(Node node, DataFlowOperand operand, int indirectionIndex) {
+  asOperand(node) = operand and indirectionIndex = 0
   or
   hasOperandAndIndex(node, operand, indirectionIndex)
 }
 
 // Needed to join on both an instruction and an index at the same time.
 pragma[noinline]
-predicate nodeHasInstruction(Node node, Instruction instr, int indirectionIndex) {
-  node.asInstruction() = instr and indirectionIndex = 0
+predicate nodeHasInstruction(Node node, DataFlowInstruction instr, int indirectionIndex) {
+  asInstruction(node) = instr and indirectionIndex = 0
   or
   hasInstructionAndIndex(node, instr, indirectionIndex)
 }
@@ -1069,7 +1079,7 @@ predicate nodeHasInstruction(Node node, Instruction instr, int indirectionIndex)
  * `node2`.
  */
 predicate readStep(Node node1, Content c, Node node2) {
-  exists(FieldAddress fa1, Operand operand, int numberOfLoads, int indirectionIndex2 |
+  exists(FieldAddress fa1, DataFlowOperand operand, int numberOfLoads, int indirectionIndex2 |
     nodeHasOperand(node2, operand, indirectionIndex2) and
     // The `1` here matches the `node2.getIndirectionIndex() = 1` conjunct
     // in `storeStep`.
@@ -1142,7 +1152,7 @@ class DataFlowExpr = Expr;
 class DataFlowType = Type;
 
 /** A function call relevant for data flow. */
-class DataFlowCall extends CallInstruction {
+class DataFlowCall extends DataFlowCallInstruction {
   Function getEnclosingCallable() { result = this.getEnclosingFunction() }
 }
 
@@ -1160,7 +1170,7 @@ predicate forceHighPrecision(Content c) { none() }
 predicate nodeIsHidden(Node n) {
   n instanceof OperandNode and
   not n instanceof ArgumentNode and
-  not n.asOperand() instanceof StoreValueOperand
+  not asOperand(n).getAnOperand() instanceof StoreValueOperand
   or
   n instanceof FinalGlobalValue
   or
@@ -1267,7 +1277,7 @@ private predicate localFlowStepWithSummaries(Node node1, Node node2) {
 
 /** Holds if `node` flows to a node that is used in a `SwitchInstruction`. */
 private predicate localStepsToSwitch(Node node) {
-  node.asOperand() = any(SwitchInstruction switch).getExpressionOperand()
+  asOperand(node).getAnOperand() = any(SwitchInstruction switch).getExpressionOperand()
   or
   exists(Node succ |
     localStepsToSwitch(succ) and
