@@ -57,7 +57,7 @@ module SqlInjection {
   /**
    * A call to `Mysql2::Client.escape`, considered as a sanitizer.
    */
-  class Mysql2EscapeSanitization extends Sanitizer {
+  private class Mysql2EscapeSanitization extends Sanitizer {
     Mysql2EscapeSanitization() {
       this = API::getTopLevelMember("Mysql2").getMember("Client").getAMethodCall("escape")
     }
@@ -66,7 +66,7 @@ module SqlInjection {
   /**
    * A call to `SQLite3::Database.quote`, considered as a sanitizer.
    */
-  class SQLite3EscapeSanitization extends Sanitizer {
+  private class SQLite3EscapeSanitization extends Sanitizer {
     SQLite3EscapeSanitization() {
       this = API::getTopLevelMember("SQLite3").getMember("Database").getAMethodCall("quote")
     }
