@@ -1,0 +1,19 @@
+{
+  "helpLinks": [
+    "https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions#jobsjob_idruns-on",
+    "https://docs.github.com/en/enterprise-server/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/customizing-code-scanning",
+    "https://docs.github.com/en/enterprise-server/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-language"
+  ],
+  "plaintextMessage": "CodeQL Swift analysis is currently only officially supported on macOS.\n\nChange the action runner to a macOS one. Analysis on Linux might work, but requires setting up a custom build command.",
+  "severity": "error",
+  "source": {
+    "extractorName": "swift",
+    "id": "swift/autobuilder/incompatible-os",
+    "name": "Incompatible operating system for autobuild (expected macOS)"
+  },
+  "visibility": {
+    "cliSummaryTable": true,
+    "statusPage": true,
+    "telemetry": true
+  }
+}
