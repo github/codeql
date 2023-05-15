@@ -5,6 +5,7 @@
 import cpp
 import semmle.code.cpp.ir.dataflow.DataFlow
 private import semmle.code.cpp.ir.IR
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
 import semmle.code.cpp.models.interfaces.FlowSource
 private import semmle.code.cpp.ir.dataflow.internal.ModelUtil
 
@@ -24,7 +25,7 @@ private class RemoteModelSource extends RemoteFlowSource {
   string sourceType;
 
   RemoteModelSource() {
-    exists(CallInstruction call, RemoteFlowSourceFunction func, FunctionOutput output |
+    exists(DataFlowCallInstruction call, RemoteFlowSourceFunction func, FunctionOutput output |
       call.getStaticCallTarget() = func and
       func.hasRemoteFlowSource(output, sourceType) and
       this = callOutput(call, output)
@@ -38,7 +39,7 @@ private class LocalModelSource extends LocalFlowSource {
   string sourceType;
 
   LocalModelSource() {
-    exists(CallInstruction call, LocalFlowSourceFunction func, FunctionOutput output |
+    exists(DataFlowCallInstruction call, LocalFlowSourceFunction func, FunctionOutput output |
       call.getStaticCallTarget() = func and
       func.hasLocalFlowSource(output, sourceType) and
       this = callOutput(call, output)
@@ -70,7 +71,7 @@ private class RemoteParameterSink extends RemoteFlowSink {
   string sourceType;
 
   RemoteParameterSink() {
-    exists(CallInstruction call, RemoteFlowSinkFunction func, FunctionInput input |
+    exists(DataFlowCallInstruction call, RemoteFlowSinkFunction func, FunctionInput input |
       call.getStaticCallTarget() = func and
       func.hasRemoteFlowSink(input, sourceType) and
       this = callInput(call, input)
