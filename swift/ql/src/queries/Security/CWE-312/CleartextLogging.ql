@@ -6,7 +6,7 @@
  * @problem.severity error
  * @security-severity 7.5
  * @precision high
- * @id swift/clear-text-logging
+ * @id swift/cleartext-logging
  * @tags security
  *       external/cwe/cwe-312
  *       external/cwe/cwe-359
