@@ -1,3 +1,9 @@
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* Updated the `neutralModel` extensible predicate to include a `kind` column.
+
 ## 0.6.1
 
 No user-facing changes.
