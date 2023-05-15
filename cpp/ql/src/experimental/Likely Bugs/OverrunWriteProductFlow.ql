@@ -162,7 +162,7 @@ module ValidState {
       // p = b ? new char[size] : new char[size + 1];
       // memset(p, 0, size + 2);
       // ```
-      // the valid flow-states at the `memset` must include set set `{0, 1}` since the
+      // the valid flow-states at the `memset` must include the set `{0, 1}` since the
       // flow-state at `new char[size]` is `0`, and the flow-state at `new char[size + 1]`
       // is `1`.
       //
