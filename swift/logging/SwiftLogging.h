@@ -1,5 +1,6 @@
 #pragma once
 
+#include <chrono>
 #include <fstream>
 #include <iostream>
 #include <regex>
@@ -30,31 +31,40 @@
 #define LOG_DEBUG(...) LOG_WITH_LEVEL(debug, __VA_ARGS__)
 #define LOG_TRACE(...) LOG_WITH_LEVEL(trace, __VA_ARGS__)
 
+#define LOG_WITH_LEVEL(LEVEL, ...) LOG_WITH_LEVEL_AND_TIME(LEVEL, ::binlog::clockNow(), __VA_ARGS__)
 // only do the actual logging if the picked up `Logger` instance is configured to handle the
 // provided log level. `LEVEL` must be a compile-time constant. `logger()` is evaluated once
-#define LOG_WITH_LEVEL(LEVEL, ...)                                                                 \
-  do {                                                                                             \
-    constexpr auto _level = ::codeql::Log::Level::LEVEL;                                           \
-    ::codeql::Logger& _logger = logger();                                                          \
-    if (_level >= _logger.level()) {                                                               \
-      BINLOG_CREATE_SOURCE_AND_EVENT(_logger.writer(), _level, /*category*/, ::binlog::clockNow(), \
-                                     __VA_ARGS__);                                                 \
-    }                                                                                              \
-    if (_level >= ::codeql::Log::Level::error) {                                                   \
-      ::codeql::Log::flush();                                                                      \
-    }                                                                                              \
+#define LOG_WITH_LEVEL_AND_TIME(LEVEL, TIME, ...)                                                \
+  do {                                                                                           \
+    constexpr auto _level = ::codeql::Log::Level::LEVEL;                                         \
+    ::codeql::Logger& _logger = logger();                                                        \
+    if (_level >= _logger.level()) {                                                             \
+      BINLOG_CREATE_SOURCE_AND_EVENT(_logger.writer(), _level, /*category*/, TIME, __VA_ARGS__); \
+    }                                                                                            \
+    if (_level >= ::codeql::Log::Level::error) {                                                 \
+      ::codeql::Log::flush();                                                                    \
+    }                                                                                            \
   } while (false)
 
 // Emit errors with a specified SwiftDiagnostic object. These will be both logged and outputted as
-// JSON DB diagnostics
-#define DIAGNOSE_CRITICAL(ID, ...) DIAGNOSE_WITH_LEVEL(critical, ID, __VA_ARGS__)
+// JSON DB diagnostics. The format must be appliable to the following arguments both as binlog and
+// as fmt::format formatting.
+// Beware that contrary to LOG_* macros, arguments right of the format will be evaluated twice. ID
+// is evaluated once though.
 #define DIAGNOSE_ERROR(ID, ...) DIAGNOSE_WITH_LEVEL(error, ID, __VA_ARGS__)
+#define DIAGNOSE_CRITICAL(ID, ...) DIAGNOSE_WITH_LEVEL(critical, ID, __VA_ARGS__)
 
 #define CODEQL_DIAGNOSTIC_LOG_FORMAT_PREFIX "[{}] "
 // TODO(C++20) replace non-standard , ##__VA_ARGS__ with __VA_OPT__(,) __VA_ARGS__
-#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, FORMAT, ...)                 \
-  LOG_WITH_LEVEL(LEVEL, CODEQL_DIAGNOSTIC_LOG_FORMAT_PREFIX FORMAT, \
-                 ::codeql::detail::SwiftDiagnosticLogWrapper{ID}, ##__VA_ARGS__);
+#define DIAGNOSE_WITH_LEVEL(LEVEL, ID, FORMAT, ...)                                           \
+  do {                                                                                        \
+    auto _now = ::binlog::clockNow();                                                         \
+    const ::codeql::SwiftDiagnostic& _id = ID;                                                \
+    ::codeql::Log::diagnose(_id, std::chrono::nanoseconds{_now},                              \
+                            fmt::format(FORMAT, ##__VA_ARGS__));                              \
+    LOG_WITH_LEVEL_AND_TIME(LEVEL, _now, CODEQL_DIAGNOSTIC_LOG_FORMAT_PREFIX FORMAT,          \
+                            ::codeql::detail::SwiftDiagnosticLogWrapper{_id}, ##__VA_ARGS__); \
+  } while (false)
 
 // avoid calling into binlog's original macros
 #undef BINLOG_CRITICAL
@@ -124,9 +134,9 @@ class Log {
   }
 
   static void diagnose(const SwiftDiagnostic& source,
-                       const std::chrono::system_clock::time_point& time,
+                       const std::chrono::nanoseconds& elapsed,
                        std::string_view message) {
-    instance().diagnoseImpl(source, time, message);
+    instance().diagnoseImpl(source, elapsed, message);
   }
 
  private:
@@ -145,7 +155,7 @@ class Log {
   void configure();
   void flushImpl();
   void diagnoseImpl(const SwiftDiagnostic& source,
-                    const std::chrono::system_clock::time_point& time,
+                    const std::chrono::nanoseconds& elapsed,
                     std::string_view message);
 
   LoggerConfiguration getLoggerConfigurationImpl(std::string_view name);
@@ -229,26 +239,6 @@ struct SwiftDiagnosticLogWrapper {
 
 }  // namespace detail
 }  // namespace codeql
-
-// we intercept this binlog plumbing function providing better overload resolution matches in
-// case the first non-format argument is a diagnostic source, and emit it in that case with the
-// same timestamp
-namespace binlog::detail {
-template <typename Writer, size_t N, typename... T>
-void addEventIgnoreFirst(Writer& writer,
-                         std::uint64_t eventSourceId,
-                         std::uint64_t clock,
-                         const char (&format)[N],
-                         codeql::detail::SwiftDiagnosticLogWrapper&& source,
-                         T&&... t) {
-  std::chrono::system_clock::time_point point{
-      std::chrono::duration_cast<std::chrono::system_clock::duration>(
-          std::chrono::nanoseconds{clock})};
-  constexpr std::string_view prefix = CODEQL_DIAGNOSTIC_LOG_FORMAT_PREFIX;
-  ::codeql::Log::diagnose(source.value, point, fmt::format(format + prefix.size(), t...));
-  writer.addEvent(eventSourceId, clock, source, std::forward<T>(t)...);
-}
-}  // namespace binlog::detail
 
 namespace mserialize {
 // log diagnostics wrapper using the abbreviation of the underlying diagnostic, using

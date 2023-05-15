@@ -170,8 +170,10 @@ void Log::flushImpl() {
 }
 
 void Log::diagnoseImpl(const SwiftDiagnostic& source,
-                       const std::chrono::system_clock::time_point& time,
+                       const std::chrono::nanoseconds& elapsed,
                        std::string_view message) {
+  using Clock = std::chrono::system_clock;
+  Clock::time_point time{std::chrono::duration_cast<Clock::duration>(elapsed)};
   if (diagnostics) {
     diagnostics << source.json(time, message) << '\n';
   }
