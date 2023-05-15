@@ -159,17 +159,12 @@ module ValidState {
       // For a dataflow sink any `value` that is strictly smaller than the delta
       // needs to be a valid flow-state. That is, for a snippet like:
       // ```
-      // p = new char[size];
+      // p = b ? new char[size] : new char[size + 1];
       // memset(p, 0, size + 2);
       // ```
-      // the valid flow-states at the `memset` must include `0` since the flow-state
-      // at the source is `0`. Similarly, for an example such as:
-      // ```
-      // p = new char[size + 1];
-      // memset(p, 0, size + 2);
-      // ```
-      // the flow-state at the `memset` must include `1` since `1` is the flow-state
-      // after the source.
+      // the valid flow-states at the `memset` must include set set `{0, 1}` since the
+      // flow-state at `new char[size]` is `0`, and the flow-state at `new char[size + 1]`
+      // is `1`.
       //
       // So we find a valid flow-state at the sink's predecessor, and use the definition
       // of our sink predicate to compute the valid flow-states at the sink.
