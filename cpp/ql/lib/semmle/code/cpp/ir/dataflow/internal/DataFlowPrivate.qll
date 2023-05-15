@@ -8,6 +8,143 @@ private import SsaInternals as Ssa
 private import DataFlowImplCommon as DataFlowImplCommon
 private import codeql.util.Unit
 
+private predicate conversionStep(Instruction i, Instruction conv) {
+  pragma[only_bind_out](i.getBlock()) = pragma[only_bind_out](conv.getBlock()) and
+  exists(Operand use |
+    use = unique( | | getAUse(i)) and
+    conversionFlow(use, conv, false, false)
+  )
+}
+
+module DataFlowInstructions {
+  private predicate conversion(Instruction i, Instruction conv) {
+    not Ssa::ignoreInstruction(i) and
+    not Ssa::ignoreInstruction(conv) and
+    (
+      i = conv // we make this predicate reflexive so that the relation is onto
+      or
+      conversionStep(i, conv)
+    )
+  }
+
+  private module DataFlowInstructionImpl =
+    QlBuiltins::EquivalenceRelation<Instruction, conversion/2>;
+
+  class DataFlowInstruction extends DataFlowInstructionImpl::EquivalenceClass {
+    Instruction getInstruction(int i) {
+      result =
+        rank[i + 1](Instruction instr, int index, IRBlock b |
+          b.getInstruction(index) = instr and
+          this = DataFlowInstructionImpl::getEquivalenceClass(instr)
+        |
+          instr order by index
+        )
+    }
+
+    DataFlowOperand getAUse() { result.getAnOperand() = getAUse(this.getAnInstruction()) }
+
+    DataFlowOperand getAnOperand() { result = this.getOperand(_) }
+
+    DataFlowOperand getOperand(int i) {
+      exists(Operand op |
+        op = this.getInstruction(i).getAnOperand() and
+        result.getAnOperand() = op
+      )
+    }
+
+    Instruction getAnInstruction() { result = this.getInstruction(_) }
+
+    Instruction getUnconvertedInstruction() { result = this.getInstruction(0) }
+
+    int getNumberOfInstructions() { result = strictcount(this.getInstruction(_)) }
+
+    Instruction getConvertedInstruction() {
+      result = this.getInstruction(this.getNumberOfInstructions() - 1)
+    }
+
+    AST getAst(int i) { result = this.getInstruction(i).getAst() }
+
+    AST getAnAst() { result = this.getAst(_) }
+
+    AST getUnconvertedAst() { result = this.getUnconvertedInstruction().getAst() }
+
+    AST getConvertedAst() { result = this.getConvertedInstruction().getAst() }
+
+    string toString() { result = this.getUnconvertedInstruction().getOpcode().toString() }
+
+    Cpp::Location getLocation() { result = this.getConvertedInstruction().getLocation() }
+
+    Type getResultType() { result = this.getConvertedInstruction().getResultType() }
+
+    predicate isGLValue() { this.getConvertedInstruction().isGLValue() }
+
+    Cpp::Declaration getEnclosingFunction() {
+      result = this.getConvertedInstruction().getEnclosingFunction()
+    }
+
+    Expr getUnconvertedResultExpression(int i) {
+      // The instruction that contains the result of an `AssignOperation` is
+      // the unloaded left operand (see the comments in `TranslatedAssignOperation`).
+      // That means that for cases like
+      // ```cpp
+      // int x = ...;
+      // x += 1;
+      // ```
+      // the result of `x += 1` is the `VariableAddressInstruction` that represents `x`. But
+      // that instruction doesn't receive the flow from this `AssignOperation`. So instead we
+      // map the operation to the `AddInstruction`.
+      this.getAst(i) = result.(Cpp::AssignOperation)
+      or
+      // Same story for `CrementOperation`s (cf. the comments in the subclasses
+      // of `TranslatedCrementOperation`).
+      this.getAst(i) = result.(Cpp::CrementOperation)
+      or
+      not this.getAst(i) instanceof Cpp::AssignOperation and
+      not this.getAst(i) instanceof Cpp::CrementOperation and
+      result = this.getInstruction(i).getUnconvertedResultExpression()
+    }
+
+    Expr getUnconvertedResultExpression() {
+      exists(int i |
+        result = this.getInstruction(i).getUnconvertedResultExpression() and
+        not exists(this.getInstruction(i - 1).getUnconvertedResultExpression())
+      )
+    }
+
+    Expr getAnUnconvertedResultExpression() { result = this.getUnconvertedResultExpression(_) }
+
+    Expr getConvertedResultExpression(int i) {
+      // See `getUnconvertedResultExpression` for an explanation of why these cases are necessary.
+      this.getAst(i) = result.(Cpp::AssignOperation)
+      or
+      this.getAst(i) = result.(Cpp::CrementOperation)
+      or
+      not this.getAst(i) instanceof Cpp::AssignOperation and
+      not this.getAst(i) instanceof Cpp::CrementOperation and
+      result = this.getInstruction(i).getConvertedResultExpression()
+    }
+
+    Expr getConvertedResultExpression() {
+      exists(int i |
+        result = this.getInstruction(i).getConvertedResultExpression() and
+        not exists(this.getInstruction(i + 1).getConvertedResultExpression())
+      )
+    }
+
+    Expr getAConvertedResultExpression() { result = this.getConvertedResultExpression(_) }
+
+    LanguageType getResultLanguageType() {
+      result = Ssa::getResultLanguageType(this.getConvertedInstruction())
+    }
+
+    IRBlock getBlock() { result = this.getConvertedInstruction().getBlock() }
+
+    IRFunction getEnclosingIRFunction() {
+      result = this.getConvertedInstruction().getEnclosingIRFunction()
+    }
+  }
+}
+
 cached
 private module Cached {
   cached
