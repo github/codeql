@@ -1,7 +1,0 @@
-identityLocalStep
-| test.cs:17:41:17:44 | this access | Node steps to itself |
-| test.cs:34:41:34:44 | this access | Node steps to itself |
-| test.cs:52:41:52:44 | this access | Node steps to itself |
-| test.cs:67:41:67:44 | this access | Node steps to itself |
-| test.cs:77:22:77:24 | this access | Node steps to itself |
-| test.cs:90:41:90:44 | this access | Node steps to itself |

@@ -40,6 +40,9 @@ def _load_concatenated_json(text):
 
 
 def _normalize_json(data):
+    # at the moment helpLinks are a set within the codeql cli
+    for e in data:
+        e.get("helpLinks", []).sort()
     entries = [json.dumps(e, sort_keys=True, indent=2) for e in data]
     entries.sort()
     entries.append("")
@@ -60,5 +63,5 @@ def check_diagnostics(test_dir=".", test_db="db"):
             actual_out.write(actual)
         actual = actual.splitlines(keepends=True)
         expected = expected.splitlines(keepends=True)
-        print("".join(difflib.unified_diff(actual, expected, fromfile="diagnostics.actual", tofile="diagnostics.expected")), file=sys.stderr)
+        print("".join(difflib.unified_diff(expected, actual, fromfile="diagnostics.expected", tofile="diagnostics.actual")), file=sys.stderr)
         sys.exit(1)

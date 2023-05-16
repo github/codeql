@@ -690,3 +690,16 @@ void test_static_local_9() {
   s = 0;
 }
 
+void increment_buf(int** buf) { // $ ast-def=buf ir-def=*buf ir-def=**buf
+  *buf += 10;
+  sink(buf); // $ SPURIOUS: ast,ir // should only be flow to the indirect argument, but there's also flow to the non-indirect argument
+}
+
+void call_increment_buf(int** buf) { // $ ast-def=buf
+  increment_buf(buf);
+}
+
+void test_conflation_regression(int* source) { // $ ast-def=source
+  int* buf = source;
+  call_increment_buf(&buf);
+}

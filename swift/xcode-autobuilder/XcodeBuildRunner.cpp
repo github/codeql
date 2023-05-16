@@ -8,11 +8,9 @@
 #include "swift/logging/SwiftLogging.h"
 #include "swift/xcode-autobuilder/CustomizingBuildDiagnostics.h"
 
-namespace codeql_diagnostics {
-constexpr codeql::SwiftDiagnosticsSource build_command_failed{
-    "build_command_failed", "Detected build command failed", customizingBuildAction,
-    customizingBuildHelpLinks};
-}
+constexpr codeql::SwiftDiagnostic buildCommandFailed{
+    "build-command-failed", "Detected build command failed", codeql::customizingBuildAction,
+    codeql::SwiftDiagnostic::Format::plaintext, codeql::customizingBuildHelpLinks};
 
 static codeql::Logger& logger() {
   static codeql::Logger ret{"build"};
@@ -70,7 +68,7 @@ void buildTarget(Target& target, bool dryRun) {
     std::cout << absl::StrJoin(argv, " ") << "\n";
   } else {
     if (!exec(argv)) {
-      DIAGNOSE_ERROR(build_command_failed, "The detected build command failed (tried {})",
+      DIAGNOSE_ERROR(buildCommandFailed, "The detected build command failed (tried {})",
                      absl::StrJoin(argv, " "));
       codeql::Log::flush();
       exit(1);

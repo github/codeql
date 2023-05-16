@@ -33,7 +33,7 @@ class Node extends TNode {
   }
 
   /**
-   * Gets this node's underlying expression, if any.
+   * Gets the expression that corresponds to this node, if any.
    */
   Expr asExpr() { none() }
 
@@ -43,7 +43,7 @@ class Node extends TNode {
   Pattern asPattern() { none() }
 
   /**
-   * Gets this data flow node's corresponding control flow node.
+   * Gets the control flow node that corresponds to this data flow node.
    */
   ControlFlowNode getCfgNode() { none() }
 
