@@ -156,7 +156,7 @@ private module DispatchImpl {
 
   private module Unification = MkUnification<unificationTargetLeft/1, unificationTargetRight/1>;
 
-  private int parameterPosition() { result in [-1, any(Parameter p).getPosition()] }
+  private int parameterPosition() { result in [-2, -1, any(Parameter p).getPosition()] }
 
   /** A parameter position represented by an integer. */
   class ParameterPosition extends int {

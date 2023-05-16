@@ -135,6 +135,10 @@ private module Cached {
 
 import Cached
 
+private predicate capturedVariableRead(Node n) {
+  n.asExpr().(RValue).getVariable() instanceof CapturedVariable
+}
+
 private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   TaintTrackingUtil::forceCachingInSameStage() and
   // Variable flow steps through adjacent def-use and use-use pairs.
@@ -142,23 +146,27 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
     upd.getDefiningExpr().(VariableAssign).getSource() = node1.asExpr() or
     upd.getDefiningExpr().(AssignOp) = node1.asExpr()
   |
-    node2.asExpr() = upd.getAFirstUse()
+    node2.asExpr() = upd.getAFirstUse() and
+    not capturedVariableRead(node2)
   )
   or
   exists(SsaImplicitInit init |
     init.isParameterDefinition(node1.asParameter()) and
-    node2.asExpr() = init.getAFirstUse()
+    node2.asExpr() = init.getAFirstUse() and
+    not capturedVariableRead(node2)
   )
   or
   adjacentUseUse(node1.asExpr(), node2.asExpr()) and
   not exists(FieldRead fr |
     hasNonlocalValue(fr) and fr.getField().isStatic() and fr = node1.asExpr()
   ) and
-  not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1, _)
+  not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(node1, _) and
+  not capturedVariableRead(node2)
   or
   ThisFlow::adjacentThisRefs(node1, node2)
   or
-  adjacentUseUse(node1.(PostUpdateNode).getPreUpdateNode().asExpr(), node2.asExpr())
+  adjacentUseUse(node1.(PostUpdateNode).getPreUpdateNode().asExpr(), node2.asExpr()) and
+  not capturedVariableRead(node2)
   or
   ThisFlow::adjacentThisRefs(node1.(PostUpdateNode).getPreUpdateNode(), node2)
   or
@@ -185,6 +193,8 @@ private predicate simpleLocalFlowStep0(Node node1, Node node2) {
   or
   FlowSummaryImpl::Private::Steps::summaryLocalStep(node1.(FlowSummaryNode).getSummaryNode(),
     node2.(FlowSummaryNode).getSummaryNode(), true)
+  or
+  captureValueStep(node1, node2)
 }
 
 /**
@@ -254,6 +264,19 @@ class MapValueContent extends Content, TMapValueContent {
   override DataFlowType getType() { result instanceof TypeObject }
 
   override string toString() { result = "<map.value>" }
+}
+
+/** A captured variable. */
+class ClosureContent extends Content, TClosureContent {
+  CapturedVariable v;
+
+  ClosureContent() { this = TClosureContent(v) }
+
+  CapturedVariable getVariable() { result = v }
+
+  override DataFlowType getType() { result = getErasedRepr(v.(Variable).getType()) }
+
+  override string toString() { result = v.toString() }
 }
 
 /** A reference through a synthetic instance field. */

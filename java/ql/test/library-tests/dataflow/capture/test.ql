@@ -1,7 +1,10 @@
 import java
 import semmle.code.java.dataflow.DataFlow
 
-StringLiteral src() { result.getCompilationUnit().fromSource() }
+StringLiteral src() {
+  result.getCompilationUnit().fromSource() and
+  result.getFile().toString() = "A"
+}
 
 module Config implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node n) { n.asExpr() = src() }
