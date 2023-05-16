@@ -30,6 +30,18 @@ private class DefaultCleartextLoggingSink extends CleartextLoggingSink {
 }
 
 /**
+ * An barrier for cleartext logging vulnerabilities.
+ *  - encryption; encrypted values are not cleartext.
+ *  - booleans; these are more likely to be settings, rather than actual sensitive data.
+ */
+private class CleartextLoggingDefaultBarrier extends CleartextLoggingBarrier {
+  CleartextLoggingDefaultBarrier() {
+    this.asExpr() instanceof EncryptedExpr or
+    this.asExpr().getType().getUnderlyingType() instanceof BoolType
+  }
+}
+
+/**
  * A barrier for `OSLogMessage`s configured with the appropriate privacy option.
  * Numeric and boolean arguments aren't redacted unless the `private` or `sensitive` options are used.
  * Arguments of other types are always redacted unless the `public` option is used.

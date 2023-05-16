@@ -114,10 +114,15 @@ private class CleartextStorageDatabaseSinks extends SinkModelCsv {
 }
 
 /**
- * An encryption barrier for cleartext database storage vulnerabilities.
+ * An barrier for cleartext database storage vulnerabilities.
+ *  - encryption; encrypted values are not cleartext.
+ *  - booleans; these are more likely to be settings, rather than actual sensitive data.
  */
-private class CleartextStorageDatabaseEncryptionBarrier extends CleartextStorageDatabaseBarrier {
-  CleartextStorageDatabaseEncryptionBarrier() { this.asExpr() instanceof EncryptedExpr }
+private class CleartextStorageDatabaseDefaultBarrier extends CleartextStorageDatabaseBarrier {
+  CleartextStorageDatabaseDefaultBarrier() {
+    this.asExpr() instanceof EncryptedExpr or
+    this.asExpr().getType().getUnderlyingType() instanceof BoolType
+  }
 }
 
 /**
