@@ -7,5 +7,5 @@ extensions:
       - ["My.Qltest", "B", false, "Sink1", "(System.Object)", "", "Argument[0]", "code-injection", "manual"]
       - ["My.Qltest", "B", false, "SinkMethod", "()", "", "ReturnValue", "js-injection", "manual"]
       - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "ReturnValue", "html-injection", "manual"]
-      - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "Argument", "remote", "manual"]
+      - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "Argument", "file-content-store", "manual"]
       - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "", "sql-injection", "manual"]
