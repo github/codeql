@@ -3015,6 +3015,17 @@ private module StdlibPrivate {
     override string getKind() { result = Escaping::getRegexKind() }
   }
 
+  /**
+   * A node interpreted as a regular expression.
+   * Speficically nodes where string values are interpreted as regular expressions.
+   */
+  private class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
+    StdLibRegExpInterpretation() {
+      this =
+        API::moduleImport("re").getMember("compile").getACall().getParameter(0, "pattern").asSink()
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // urllib
   // ---------------------------------------------------------------------------
@@ -3792,6 +3803,30 @@ private module StdlibPrivate {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[0].ListElement" and
       output = "ReturnValue.ListElement" and
+      preservesValue = true
+    }
+  }
+
+  /**
+   * A flow summary for `dict.setdefault`.
+   *
+   * See https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
+   */
+  class DictSetdefaultSummary extends SummarizedCallable {
+    DictSetdefaultSummary() { this = "dict.setdefault" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).calls(_, "setdefault")
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result.(DataFlow::AttrRead).getAttributeName() = "setdefault"
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // store/read steps with dictionary content of this is modeled in DataFlowPrivate
+      input = "Argument[1]" and
+      output = "ReturnValue" and
       preservesValue = true
     }
   }

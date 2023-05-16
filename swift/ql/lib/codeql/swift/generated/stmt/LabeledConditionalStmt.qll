@@ -22,6 +22,6 @@ module Generated {
     /**
      * Gets the condition of this labeled conditional statement.
      */
-    final StmtCondition getCondition() { result = getImmediateCondition().resolve() }
+    final StmtCondition getCondition() { result = this.getImmediateCondition().resolve() }
   }
 }

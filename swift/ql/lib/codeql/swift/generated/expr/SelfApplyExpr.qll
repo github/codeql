@@ -27,6 +27,6 @@ module Generated {
     /**
      * Gets the base of this self apply expression.
      */
-    final Expr getBase() { result = getImmediateBase().resolve() }
+    final Expr getBase() { result = this.getImmediateBase().resolve() }
   }
 }

@@ -179,7 +179,7 @@ class PropertyGetterCall extends DataFlowCall, TPropertyGetterCall {
 
   override Location getLocation() { result = getter.getLocation() }
 
-  AccessorDecl getAccessorDecl() { result = getter.getAccessorDecl() }
+  Accessor getAccessor() { result = getter.getAccessor() }
 }
 
 class PropertySetterCall extends DataFlowCall, TPropertySetterCall {
@@ -203,7 +203,7 @@ class PropertySetterCall extends DataFlowCall, TPropertySetterCall {
 
   override Location getLocation() { result = setter.getLocation() }
 
-  AccessorDecl getAccessorDecl() { result = setter.getAccessorDecl() }
+  Accessor getAccessor() { result = setter.getAccessor() }
 }
 
 class PropertyObserverCall extends DataFlowCall, TPropertyObserverCall {
@@ -215,9 +215,6 @@ class PropertyObserverCall extends DataFlowCall, TPropertyObserverCall {
     i = -1 and
     result = observer.getBase()
     or
-    // TODO: This is correct for `willSet` (which takes a `newValue` parameter),
-    // but for `didSet` (which takes an `oldValue` parameter) we need an rvalue
-    // for `getBase()`.
     i = 0 and
     result = observer.getSource()
   }
@@ -230,7 +227,7 @@ class PropertyObserverCall extends DataFlowCall, TPropertyObserverCall {
 
   override Location getLocation() { result = observer.getLocation() }
 
-  AccessorDecl getAccessorDecl() { result = observer.getAccessorDecl() }
+  Accessor getAccessor() { result = observer.getAccessor() }
 }
 
 class SummaryCall extends DataFlowCall, TSummaryCall {
@@ -261,11 +258,11 @@ private module Cached {
   DataFlowCallable viableCallable(DataFlowCall call) {
     result = TDataFlowFunc(call.asCall().getStaticTarget())
     or
-    result = TDataFlowFunc(call.(PropertyGetterCall).getAccessorDecl())
+    result = TDataFlowFunc(call.(PropertyGetterCall).getAccessor())
     or
-    result = TDataFlowFunc(call.(PropertySetterCall).getAccessorDecl())
+    result = TDataFlowFunc(call.(PropertySetterCall).getAccessor())
     or
-    result = TDataFlowFunc(call.(PropertyObserverCall).getAccessorDecl())
+    result = TDataFlowFunc(call.(PropertyObserverCall).getAccessor())
     or
     result = TSummarizedCallable(call.asCall().getStaticTarget())
   }

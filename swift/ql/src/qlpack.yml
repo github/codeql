@@ -10,3 +10,4 @@ dependencies:
   codeql/swift-all: ${workspace}
   codeql/suite-helpers: ${workspace}
   codeql/util: ${workspace}
+warnOnImplicitThis: true

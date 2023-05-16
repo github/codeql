@@ -30,4 +30,4 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.util.regex", "Matcher", "find", "()", "manual"]
+      - ["java.util.regex", "Matcher", "find", "()", "summary", "manual"]

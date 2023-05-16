@@ -26,9 +26,9 @@ class TaintTransitsFunctionConfig extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isSource(DataFlow::Node n) { isSourceSinkPair(n, _) }
+  override predicate isSource(DataFlow::Node n) { this.isSourceSinkPair(n, _) }
 
-  override predicate isSink(DataFlow::Node n) { isSourceSinkPair(_, n) }
+  override predicate isSink(DataFlow::Node n) { this.isSourceSinkPair(_, n) }
 }
 
 class TaintFunctionModelTest extends InlineExpectationsTest {

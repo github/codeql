@@ -129,7 +129,9 @@ class PostUpdateNode extends Node instanceof PostUpdateNodeImpl {
   Node getPreUpdateNode() { result = super.getPreUpdateNode() }
 }
 
-/** Gets a node corresponding to expression `e`. */
+/**
+ * Gets a node corresponding to expression `e`.
+ */
 ExprNode exprNode(DataFlowExpr e) { result.asExpr() = e }
 
 /**

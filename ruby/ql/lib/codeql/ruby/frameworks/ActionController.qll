@@ -511,6 +511,23 @@ ActionControllerClass getAssociatedControllerClass(ErbFile f) {
   )
 }
 
+pragma[nomagic]
+private string getActionControllerClassRelativePath(ActionControllerClass cls) {
+  result = cls.getLocation().getFile().getRelativePath()
+}
+
+pragma[nomagic]
+private string getErbFileRelativePath(ErbFile templateFile) {
+  result = templateFile.getRelativePath() and
+  result.matches("%app/views/layouts/%")
+}
+
+bindingset[result]
+pragma[inline_late]
+private string getErbFileRelativePathInlineLate(ErbFile templateFile) {
+  result = getErbFileRelativePath(templateFile)
+}
+
 // TODO: improve layout support, e.g. for `layout` method
 // https://guides.rubyonrails.org/layouts_and_rendering.html
 /**
@@ -522,15 +539,18 @@ ActionControllerClass getAssociatedControllerClass(ErbFile f) {
  */
 predicate controllerTemplateFile(ActionControllerClass cls, ErbFile templateFile) {
   exists(string sourcePrefix, string subPath, string controllerPath |
-    controllerPath = cls.getLocation().getFile().getRelativePath() and
+    controllerPath = getActionControllerClassRelativePath(cls) and
     // `sourcePrefix` is either a prefix path ending in a slash, or empty if
     // the rails app is at the source root
     sourcePrefix = [controllerPath.regexpCapture("^(.*/)app/controllers/(?:.*?)/(?:[^/]*)$", 1), ""] and
-    controllerPath = sourcePrefix + "app/controllers/" + subPath + "_controller.rb" and
-    (
-      sourcePrefix + "app/views/" + subPath = templateFile.getParentContainer().getRelativePath()
-      or
-      templateFile.getRelativePath().matches(sourcePrefix + "app/views/layouts/" + subPath + "%")
+    controllerPath = sourcePrefix + "app/controllers/" + subPath + "_controller.rb"
+  |
+    sourcePrefix + "app/views/" + subPath = templateFile.getParentContainer().getRelativePath()
+    or
+    exists(string path |
+      path = getErbFileRelativePath(_) and
+      path.matches(sourcePrefix + "app/views/layouts/" + subPath + "%") and
+      path = getErbFileRelativePathInlineLate(templateFile)
     )
   )
 }

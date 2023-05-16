@@ -128,7 +128,7 @@ predicate missedWhereOpportunity(ForeachStmt fes, IfStmt is) {
 class AnyCall extends MethodCall {
   AnyCall() {
     exists(Method m |
-      m = getTarget().getUnboundDeclaration() and
+      m = this.getTarget().getUnboundDeclaration() and
       isEnumerableType(m.getDeclaringType()) and
       m.hasName("Any<>")
     )
@@ -139,7 +139,7 @@ class AnyCall extends MethodCall {
 class CountCall extends MethodCall {
   CountCall() {
     exists(Method m |
-      m = getTarget().getUnboundDeclaration() and
+      m = this.getTarget().getUnboundDeclaration() and
       isEnumerableType(m.getDeclaringType()) and
       m.hasName("Count<>")
     )
@@ -148,19 +148,19 @@ class CountCall extends MethodCall {
 
 /** A variable of type IEnumerable&lt;T>, for some T. */
 class IEnumerableSequence extends Variable {
-  IEnumerableSequence() { isIEnumerableType(getType()) }
+  IEnumerableSequence() { isIEnumerableType(this.getType()) }
 }
 
 /** A LINQ Select(...) call. */
 class SelectCall extends ExtensionMethodCall {
   SelectCall() {
     exists(Method m |
-      m = getTarget().getUnboundDeclaration() and
+      m = this.getTarget().getUnboundDeclaration() and
       isEnumerableType(m.getDeclaringType()) and
       m.hasName("Select<,>")
     )
   }
 
   /** Gets the anonymous function expression supplied as the argument to the Select (if possible). */
-  AnonymousFunctionExpr getFunctionExpr() { result = getArgument(1) }
+  AnonymousFunctionExpr getFunctionExpr() { result = this.getArgument(1) }
 }

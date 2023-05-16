@@ -3,6 +3,20 @@
 #include <vector>
 #include <iostream>
 #include <spawn.h>
+#include "absl/strings/str_join.h"
+
+#include "swift/logging/SwiftLogging.h"
+#include "swift/xcode-autobuilder/CustomizingBuildDiagnostics.h"
+
+constexpr codeql::SwiftDiagnostic buildCommandFailed{
+    "build-command-failed", "Detected build command failed",
+    codeql::SwiftDiagnostic::Format::plaintext, codeql::customizingBuildAction,
+    codeql::customizingBuildHelpLinks};
+
+static codeql::Logger& logger() {
+  static codeql::Logger ret{"build"};
+  return ret;
+}
 
 static int waitpid_status(pid_t child) {
   int status;
@@ -52,13 +66,12 @@ void buildTarget(Target& target, bool dryRun) {
   argv.push_back("CODE_SIGNING_ALLOWED=NO");
 
   if (dryRun) {
-    for (auto& arg : argv) {
-      std::cout << arg + " ";
-    }
-    std::cout << "\n";
+    std::cout << absl::StrJoin(argv, " ") << "\n";
   } else {
     if (!exec(argv)) {
-      std::cerr << "Build failed\n";
+      DIAGNOSE_ERROR(buildCommandFailed, "The detected build command failed (tried {})",
+                     absl::StrJoin(argv, " "));
+      codeql::Log::flush();
       exit(1);
     }
   }

@@ -25,6 +25,6 @@ module Generated {
     /**
      * Gets the sub pattern of this unresolved pattern expression.
      */
-    final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
+    final Pattern getSubPattern() { result = this.getImmediateSubPattern().resolve() }
   }
 }

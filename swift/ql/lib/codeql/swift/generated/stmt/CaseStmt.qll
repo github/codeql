@@ -23,7 +23,7 @@ module Generated {
     /**
      * Gets the body of this case statement.
      */
-    final Stmt getBody() { result = getImmediateBody().resolve() }
+    final Stmt getBody() { result = this.getImmediateBody().resolve() }
 
     /**
      * Gets the `index`th label of this case statement (0-based).
@@ -41,17 +41,17 @@ module Generated {
     /**
      * Gets the `index`th label of this case statement (0-based).
      */
-    final CaseLabelItem getLabel(int index) { result = getImmediateLabel(index).resolve() }
+    final CaseLabelItem getLabel(int index) { result = this.getImmediateLabel(index).resolve() }
 
     /**
      * Gets any of the labels of this case statement.
      */
-    final CaseLabelItem getALabel() { result = getLabel(_) }
+    final CaseLabelItem getALabel() { result = this.getLabel(_) }
 
     /**
      * Gets the number of labels of this case statement.
      */
-    final int getNumberOfLabels() { result = count(int i | exists(getLabel(i))) }
+    final int getNumberOfLabels() { result = count(int i | exists(this.getLabel(i))) }
 
     /**
      * Gets the `index`th variable of this case statement (0-based).
@@ -69,16 +69,16 @@ module Generated {
     /**
      * Gets the `index`th variable of this case statement (0-based).
      */
-    final VarDecl getVariable(int index) { result = getImmediateVariable(index).resolve() }
+    final VarDecl getVariable(int index) { result = this.getImmediateVariable(index).resolve() }
 
     /**
      * Gets any of the variables of this case statement.
      */
-    final VarDecl getAVariable() { result = getVariable(_) }
+    final VarDecl getAVariable() { result = this.getVariable(_) }
 
     /**
      * Gets the number of variables of this case statement.
      */
-    final int getNumberOfVariables() { result = count(int i | exists(getVariable(i))) }
+    final int getNumberOfVariables() { result = count(int i | exists(this.getVariable(i))) }
   }
 }

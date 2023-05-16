@@ -24,6 +24,6 @@ module Generated {
     /**
      * Gets the self of this super reference expression.
      */
-    final VarDecl getSelf() { result = getImmediateSelf().resolve() }
+    final VarDecl getSelf() { result = this.getImmediateSelf().resolve() }
   }
 }

@@ -55,16 +55,16 @@ deprecated class CustomPathNode extends TCustomPathNode {
   predicate hasLocationInfo(
     string filepath, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    asNode1().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.asNode1().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
     or
-    asNode2().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    this.asNode2().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
   }
 
   /** Gets a textual representation of this element. */
   string toString() {
-    result = asNode1().toString()
+    result = this.asNode1().toString()
     or
-    result = asNode2().toString()
+    result = this.asNode2().toString()
   }
 }
 

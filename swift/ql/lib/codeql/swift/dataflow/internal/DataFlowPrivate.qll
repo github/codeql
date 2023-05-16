@@ -187,7 +187,7 @@ private module Cached {
     or
     // flow through nil-coalescing operator `??`
     exists(BinaryExpr nco |
-      nco.getOperator().(FreeFunctionDecl).getName() = "??(_:_:)" and
+      nco.getOperator().(FreeFunction).getName() = "??(_:_:)" and
       nodeTo.asExpr() = nco
     |
       // value argument
@@ -433,8 +433,6 @@ private module ArgumentNodes {
     ObserverArgumentNode() {
       observer.getBase() = this.getCfgNode()
       or
-      // TODO: This should be an rvalue representing the `getBase` when
-      // `observer` a `didSet` observer.
       observer.getSource() = this.getCfgNode()
     }
 
@@ -444,7 +442,6 @@ private module ArgumentNodes {
         pos = TThisArgument() and
         observer.getBase() = this.getCfgNode()
         or
-        // TODO: See the comment above for `didSet` observers.
         pos.(PositionalArgumentPosition).getIndex() = 0 and
         observer.getSource() = this.getCfgNode()
       )
@@ -487,12 +484,12 @@ private module ReturnNodes {
   }
 
   /**
-   * A data-flow node that represents the `self` value in a constructor being
+   * A data-flow node that represents the `self` value in an initializer being
    * implicitly returned as the newly-constructed object
    */
   class SelfReturnNode extends InoutReturnNodeImpl {
     SelfReturnNode() {
-      exit.getScope() instanceof ConstructorDecl and
+      exit.getScope() instanceof Initializer and
       param instanceof SelfParamDecl
     }
 
@@ -683,14 +680,14 @@ predicate storeStep(Node node1, ContentSet c, Node node2) {
   // i.e. from `f(x)` where `x: T` into `f(.some(x))` where the context `f` expects a `T?`.
   exists(InjectIntoOptionalExpr e |
     e.convertsFrom(node1.asExpr()) and
-    node2 = node1 and // HACK: we should ideally have a separate Node case for the (hidden) InjectIntoOptionalExpr
+    node2 = node1 and // TODO: we should ideally have a separate Node case for the (hidden) InjectIntoOptionalExpr
     c instanceof OptionalSomeContentSet
   )
   or
   // creation of an optional by returning from a failable initializer (`init?`)
-  exists(ConstructorDecl init |
+  exists(Initializer init |
     node1.asExpr().(CallExpr).getStaticTarget() = init and
-    node2 = node1 and // HACK: again, we should ideally have a separate Node case here, and not reuse the CallExpr
+    node2 = node1 and // TODO: again, we should ideally have a separate Node case here, and not reuse the CallExpr
     c instanceof OptionalSomeContentSet and
     init.isFailable()
   )
@@ -802,7 +799,7 @@ DataFlowType getNodeType(NodeImpl n) {
 }
 
 /** Gets a string representation of a `DataFlowType`. */
-string ppReprType(DataFlowType t) { result = t.toString() }
+string ppReprType(DataFlowType t) { none() }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from

@@ -19,10 +19,6 @@ private class CustomUrlRemoteFlowSource extends SourceModelCsv {
         ";UIApplicationDelegate;true;application(_:open:options:);;;Parameter[1];remote",
         ";UIApplicationDelegate;true;application(_:handleOpen:);;;Parameter[1];remote",
         ";UIApplicationDelegate;true;application(_:open:sourceApplication:annotation:);;;Parameter[1];remote",
-        // TODO 1: The actual source is the value of `UIApplication.LaunchOptionsKey.url` in the launchOptions dictionary.
-        //       Use dictionary value contents when available.
-        // ";UIApplicationDelegate;true;application(_:didFinishLaunchingWithOptions:);;;Parameter[1].MapValue;remote",
-        // ";UIApplicationDelegate;true;application(_:willFinishLaunchingWithOptions:);;;Parameter[1].MapValue;remote"
         ";UISceneDelegate;true;scene(_:continue:);;;Parameter[1];remote",
         ";UISceneDelegate;true;scene(_:didUpdate:);;;Parameter[1];remote",
         ";UISceneDelegate;true;scene(_:openURLContexts:);;;Parameter[1];remote",
@@ -36,7 +32,6 @@ private class CustomUrlRemoteFlowSource extends SourceModelCsv {
  * `UIApplicationDelegate.application(_:didFinishLaunchingWithOptions:)` or
  * `UIApplicationDelegate.application(_:willFinishLaunchingWithOptions:)`.
  */
-// This is a temporary workaround until the TODO 1 above is addressed.
 private class UrlLaunchOptionsRemoteFlowSource extends RemoteFlowSource {
   UrlLaunchOptionsRemoteFlowSource() {
     exists(ApplicationWithLaunchOptionsFunc f, SubscriptExpr e |
@@ -51,7 +46,7 @@ private class UrlLaunchOptionsRemoteFlowSource extends RemoteFlowSource {
   }
 }
 
-private class ApplicationWithLaunchOptionsFunc extends FuncDecl {
+private class ApplicationWithLaunchOptionsFunc extends Function {
   ApplicationWithLaunchOptionsFunc() {
     this.getName() = "application(_:" + ["did", "will"] + "FinishLaunchingWithOptions:)" and
     this.getEnclosingDecl().(ClassOrStructDecl).getABaseTypeDecl*().(ProtocolDecl).getName() =

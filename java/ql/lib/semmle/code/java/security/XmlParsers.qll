@@ -635,6 +635,11 @@ class XmlReader extends RefType {
   XmlReader() { this.hasQualifiedName("org.xml.sax", "XMLReader") }
 }
 
+/** The class `org.xml.sax.InputSource`. */
+class InputSource extends Class {
+  InputSource() { this.hasQualifiedName("org.xml.sax", "InputSource") }
+}
+
 /** DEPRECATED: Alias for XmlReader */
 deprecated class XMLReader = XmlReader;
 
@@ -1144,22 +1149,34 @@ class XmlUnmarshal extends XmlParserCall {
 }
 
 /* XPathExpression: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#xpathexpression */
-/** The class `javax.xml.xpath.XPathExpression`. */
-class XPathExpression extends RefType {
+/** The interface `javax.xml.xpath.XPathExpression`. */
+class XPathExpression extends Interface {
   XPathExpression() { this.hasQualifiedName("javax.xml.xpath", "XPathExpression") }
 }
 
-/** A call to `XPathExpression.evaluate`. */
+/** The interface `java.xml.xpath.XPath`. */
+class XPath extends Interface {
+  XPath() { this.hasQualifiedName("javax.xml.xpath", "XPath") }
+}
+
+/** A call to the method `evaluate` of the classes `XPathExpression` or `XPath`. */
 class XPathEvaluate extends XmlParserCall {
+  Argument sink;
+
   XPathEvaluate() {
     exists(Method m |
       this.getMethod() = m and
-      m.getDeclaringType() instanceof XPathExpression and
       m.hasName("evaluate")
+    |
+      m.getDeclaringType().getASourceSupertype*() instanceof XPathExpression and
+      sink = this.getArgument(0)
+      or
+      m.getDeclaringType().getASourceSupertype*() instanceof XPath and
+      sink = this.getArgument(1)
     )
   }
 
-  override Expr getSink() { result = this.getArgument(0) }
+  override Expr getSink() { result = sink }
 
   override predicate isSafe() { none() }
 }

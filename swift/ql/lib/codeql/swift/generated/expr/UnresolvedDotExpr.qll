@@ -24,7 +24,7 @@ module Generated {
     /**
      * Gets the base of this unresolved dot expression.
      */
-    final Expr getBase() { result = getImmediateBase().resolve() }
+    final Expr getBase() { result = this.getImmediateBase().resolve() }
 
     /**
      * Gets the name of this unresolved dot expression.

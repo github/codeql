@@ -101,7 +101,7 @@ private module Micro {
     override string getKind() { result = "body" }
 
     override Http::RouteHandler getRouteHandler() {
-      result = getRouteHandlerFromReqRes(getArgument(0))
+      result = getRouteHandlerFromReqRes(this.getArgument(0))
     }
 
     override predicate isUserControlledObject() { name = "json" }

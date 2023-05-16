@@ -141,7 +141,7 @@ class ValueDecl(Decl):
     interface_type: Type
 
 class AbstractStorageDecl(ValueDecl):
-    accessor_decls: list["AccessorDecl"] | child
+    accessors: list["Accessor"] | child
 
 class VarDecl(AbstractStorageDecl):
     """
@@ -234,7 +234,8 @@ class Callable(Element):
     body: optional["BraceStmt"] | child | desc("The body is absent within protocol declarations.")
     captures: list["CapturedDecl"] | child
 
-class AbstractFunctionDecl(GenericContext, ValueDecl, Callable):
+@group("decl")
+class Function(GenericContext, ValueDecl, Callable):
     pass
 
 class EnumElementDecl(ValueDecl):
@@ -257,13 +258,17 @@ class TypeDecl(ValueDecl):
 class AbstractTypeParamDecl(TypeDecl):
     pass
 
-class ConstructorDecl(AbstractFunctionDecl):
+@group("decl")
+class Initializer(Function):
     pass
 
-class DestructorDecl(AbstractFunctionDecl):
+@group("decl")
+class Deinitializer(Function):
     pass
 
-class FuncDecl(AbstractFunctionDecl):
+@ql.internal
+@group("decl")
+class AccessorOrNamedFunction(Function):
     pass
 
 class GenericTypeDecl(GenericContext, TypeDecl):
@@ -280,7 +285,8 @@ class SubscriptDecl(AbstractStorageDecl, GenericContext):
     element_type: Type
     element_type: Type
 
-class AccessorDecl(FuncDecl):
+@group("decl")
+class Accessor(AccessorOrNamedFunction):
     is_getter: predicate | doc('this accessor is a getter')
     is_setter: predicate | doc('this accessor is a setter')
     is_will_set: predicate | doc('this accessor is a `willSet`, called before the property is set')
@@ -293,7 +299,8 @@ class AccessorDecl(FuncDecl):
 class AssociatedTypeDecl(AbstractTypeParamDecl):
     pass
 
-class ConcreteFuncDecl(FuncDecl):
+@group("decl")
+class NamedFunction(AccessorOrNamedFunction):
     pass
 
 class ConcreteVarDecl(VarDecl):
@@ -354,7 +361,7 @@ class Argument(Locatable):
     label: string
     expr: Expr | child
 
-class AbstractClosureExpr(Expr, Callable):
+class ClosureExpr(Expr, Callable):
     pass
 
 class AnyTryExpr(Expr):
@@ -384,7 +391,7 @@ class CapturedDecl(Decl):
 
 class CaptureListExpr(Expr):
     binding_decls: list[PatternBindingDecl] | child
-    closure_body: "ClosureExpr" | child
+    closure_body: "ExplicitClosureExpr" | child
 
 class CollectionExpr(Expr):
     pass
@@ -482,7 +489,7 @@ class KeyPathExpr(Expr):
     root: optional["TypeRepr"] | child
     components: list[KeyPathComponent] | child
 
-class LazyInitializerExpr(Expr):
+class LazyInitializationExpr(Expr):
     sub_expr: Expr | child
 
 class LiteralExpr(Expr):
@@ -500,7 +507,7 @@ class MakeTemporarilyEscapableExpr(Expr):
 @qltest.skip
 class ObjCSelectorExpr(Expr):
     sub_expr: Expr | child
-    method: AbstractFunctionDecl
+    method: Function
 
 class OneWayExpr(Expr):
     sub_expr: Expr | child
@@ -516,8 +523,8 @@ class OpenExistentialExpr(Expr):
 class OptionalEvaluationExpr(Expr):
     sub_expr: Expr | child
 
-class OtherConstructorDeclRefExpr(Expr):
-    constructor_decl: ConstructorDecl
+class OtherInitializerRefExpr(Expr):
+    initializer: Initializer
 
 class PropertyWrapperValuePlaceholderExpr(Expr):
     """
@@ -527,7 +534,7 @@ class PropertyWrapperValuePlaceholderExpr(Expr):
     wrapped_value: optional[Expr]
     placeholder: OpaqueValueExpr
 
-class RebindSelfInConstructorExpr(Expr):
+class RebindSelfInInitializerExpr(Expr):
     sub_expr: Expr | child
     self: VarDecl
 
@@ -579,7 +586,7 @@ class ArrayExpr(CollectionExpr):
 class ArrayToPointerExpr(ImplicitConversionExpr):
     pass
 
-class AutoClosureExpr(AbstractClosureExpr):
+class AutoClosureExpr(ClosureExpr):
     pass
 
 class AwaitExpr(IdentityExpr):
@@ -608,7 +615,7 @@ class CheckedCastExpr(ExplicitCastExpr):
 class ClassMetatypeToObjectExpr(ImplicitConversionExpr):
     pass
 
-class ClosureExpr(AbstractClosureExpr):
+class ExplicitClosureExpr(ClosureExpr):
     pass
 
 class CoerceExpr(ExplicitCastExpr):
@@ -776,9 +783,11 @@ class BooleanLiteralExpr(BuiltinLiteralExpr):
 class ConditionalCheckedCastExpr(CheckedCastExpr):
     pass
 
-class ConstructorRefCallExpr(SelfApplyExpr):
+@ql.internal
+class InitializerRefCallExpr(SelfApplyExpr):
     pass
 
+@ql.internal
 class DotSyntaxCallExpr(SelfApplyExpr):
     pass
 

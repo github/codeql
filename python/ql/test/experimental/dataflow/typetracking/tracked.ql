@@ -24,6 +24,11 @@ class TrackedTest extends InlineExpectationsTest {
       tracked(t).flowsTo(e) and
       // Module variables have no sensible location, and hence can't be annotated.
       not e instanceof DataFlow::ModuleVariableNode and
+      // Global variables on line 0 also cannot be annotated
+      not e.getLocation().getStartLine() = 0 and
+      // We do not wish to annotate scope entry definitions,
+      // as they do not appear in the source code.
+      not e.asVar() instanceof ScopeEntryDefinition and
       tag = "tracked" and
       location = e.getLocation() and
       value = t.getAttr() and
