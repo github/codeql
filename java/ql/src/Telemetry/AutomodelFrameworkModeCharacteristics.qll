@@ -175,7 +175,7 @@ class FrameworkModeMetadataExtractor extends MetadataExtractor {
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
       subtypes = this.considerSubtypes(callable) and
       name = callable.getName() and
-      parameterName = e.toString() and
+      parameterName = e.asParameter().getName() and
       signature = ExternalFlow::paramsString(callable)
     )
   }
