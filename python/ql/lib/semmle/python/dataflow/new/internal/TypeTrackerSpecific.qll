@@ -61,7 +61,9 @@ predicate capturedJumpStep(Node nodeFrom, Node nodeTo) {
 predicate levelStepCall(Node nodeFrom, Node nodeTo) { none() }
 
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which does not depend on the call graph. */
-predicate levelStepNoCall(Node nodeFrom, Node nodeTo) { none() }
+predicate levelStepNoCall(Node nodeFrom, Node nodeTo) {
+  TypeTrackerSummaryFlow::levelStepNoCall(nodeFrom, nodeTo)
+}
 
 /**
  * Gets the name of a possible piece of content. For Python, this is currently only attribute names,
@@ -108,6 +110,12 @@ predicate basicStoreStep(Node nodeFrom, Node nodeTo, string content) {
     nodeFrom = a.getValue() and
     nodeTo = a.getObject()
   )
+  or
+  exists(DataFlowPublic::ContentSet contents |
+    contents.(DataFlowPublic::AttributeContent).getAttribute() = content
+  |
+    TypeTrackerSummaryFlow::basicStoreStep(nodeFrom, nodeTo, contents)
+  )
 }
 
 /**
@@ -119,13 +127,24 @@ predicate basicLoadStep(Node nodeFrom, Node nodeTo, string content) {
     nodeFrom = a.getObject() and
     nodeTo = a
   )
+  or
+  exists(DataFlowPublic::ContentSet contents |
+    contents.(DataFlowPublic::AttributeContent).getAttribute() = content
+  |
+    TypeTrackerSummaryFlow::basicLoadStep(nodeFrom, nodeTo, contents)
+  )
 }
 
 /**
  * Holds if the `loadContent` of `nodeFrom` is stored in the `storeContent` of `nodeTo`.
  */
 predicate basicLoadStoreStep(Node nodeFrom, Node nodeTo, string loadContent, string storeContent) {
-  none()
+  exists(DataFlowPublic::ContentSet loadContents, DataFlowPublic::ContentSet storeContents |
+    loadContents.(DataFlowPublic::AttributeContent).getAttribute() = loadContent and
+    storeContents.(DataFlowPublic::AttributeContent).getAttribute() = storeContent
+  |
+    TypeTrackerSummaryFlow::basicLoadStoreStep(nodeFrom, nodeTo, loadContents, storeContents)
+  )
 }
 
 /**
@@ -144,3 +163,108 @@ predicate basicWithContentStep(Node nodeFrom, Node nodeTo, ContentFilter filter)
 class Boolean extends boolean {
   Boolean() { this = true or this = false }
 }
+
+private import SummaryTypeTracker as SummaryTypeTracker
+private import semmle.python.dataflow.new.FlowSummary as FlowSummary
+private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowDispatch
+
+pragma[noinline]
+private predicate argumentPositionMatch(
+  DataFlowPublic::CallCfgNode call, DataFlowPublic::ArgumentNode arg,
+  DataFlowDispatch::ParameterPosition ppos
+) {
+  exists(DataFlowDispatch::ArgumentPosition apos, DataFlowPrivate::DataFlowCall c |
+    c.getNode() = call.asCfgNode() and
+    arg.argumentOf(c, apos) and
+    DataFlowDispatch::parameterMatch(ppos, apos)
+  )
+}
+
+module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
+  // Dataflow nodes
+  class Node = DataFlowPublic::Node;
+
+  // Content
+  class TypeTrackerContent = DataFlowPublic::ContentSet;
+
+  class TypeTrackerContentFilter = ContentFilter;
+
+  TypeTrackerContentFilter getFilterFromWithoutContentStep(TypeTrackerContent content) { none() }
+
+  TypeTrackerContentFilter getFilterFromWithContentStep(TypeTrackerContent content) { none() }
+
+  // Callables
+  class SummarizedCallable = FlowSummary::SummarizedCallable;
+
+  // Summaries and their stacks
+  class SummaryComponent = FlowSummary::SummaryComponent;
+
+  class SummaryComponentStack = FlowSummary::SummaryComponentStack;
+
+  SummaryComponentStack singleton(SummaryComponent component) {
+    result = FlowSummary::SummaryComponentStack::singleton(component)
+  }
+
+  SummaryComponentStack push(SummaryComponent component, SummaryComponentStack stack) {
+    result = FlowSummary::SummaryComponentStack::push(component, stack)
+  }
+
+  // Relating content to summaries
+  SummaryComponent content(TypeTrackerContent contents) {
+    result = FlowSummary::SummaryComponent::content(contents)
+  }
+
+  SummaryComponent withoutContent(TypeTrackerContent contents) { none() }
+
+  SummaryComponent withContent(TypeTrackerContent contents) { none() }
+
+  SummaryComponent return() { result = FlowSummary::SummaryComponent::return() }
+
+  // Relating nodes to summaries
+  Node argumentOf(Node call, SummaryComponent arg) {
+    exists(DataFlowDispatch::ParameterPosition pos |
+      arg = FlowSummary::SummaryComponent::argument(pos) and
+      argumentPositionMatch(call, result, pos)
+    )
+  }
+
+  Node parameterOf(Node callable, SummaryComponent param) {
+    exists(
+      DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos, Parameter p
+    |
+      param = FlowSummary::SummaryComponent::parameter(apos) and
+      DataFlowDispatch::parameterMatch(ppos, apos) and
+      // pick the SsaNode rather than the CfgNode
+      result.asVar().getDefinition().(ParameterDefinition).getParameter() = p and
+      (
+        exists(int i | ppos.isPositional(i) |
+          p = callable.getALocalSource().asExpr().(CallableExpr).getInnerScope().getArg(i)
+        )
+        or
+        exists(string name | ppos.isKeyword(name) |
+          p = callable.getALocalSource().asExpr().(CallableExpr).getInnerScope().getArgByName(name)
+        )
+      )
+    )
+  }
+
+  Node returnOf(Node callable, SummaryComponent return) {
+    return = FlowSummary::SummaryComponent::return() and
+    // result should be return value of callable which should be a lambda
+    result.asCfgNode() =
+      callable.getALocalSource().asExpr().(CallableExpr).getInnerScope().getAReturnValueFlowNode()
+  }
+
+  // Specific summary handling
+  predicate componentLevelStep(SummaryComponent component) { none() }
+
+  pragma[nomagic]
+  predicate isNonLocal(SummaryComponent component) {
+    component = FlowSummary::SummaryComponent::content(_)
+  }
+
+  // Relating callables to nodes
+  Node callTo(SummarizedCallable callable) { result = callable.getACallSimple() }
+}
+
+module TypeTrackerSummaryFlow = SummaryTypeTracker::SummaryFlow<SummaryTypeTrackerInput>;

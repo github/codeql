@@ -3,7 +3,7 @@ import os
 
 # Simple summary
 tainted = identity(tracked)  # $ tracked
-tainted  # $ MISSING: tracked
+tainted  # $ tracked
 
 # Lambda summary
 # I think the missing result is expected because type tracking
@@ -13,7 +13,7 @@ tainted_lambda  # $ MISSING: tracked
 
 # A lambda that directly introduces taint
 bad_lambda = apply_lambda(lambda x: tracked, 1)  # $ tracked
-bad_lambda  # $ MISSING: tracked
+bad_lambda  # $ tracked
 
 # A lambda that breaks the flow
 untainted_lambda = apply_lambda(lambda x: 1, tracked)  # $ tracked
@@ -52,9 +52,9 @@ tr = tainted_resultlist[0]
 tr  # $ MISSING: tracked
 
 x.secret = tracked # $ tracked=secret tracked
-r = read_secret(x) # $ tracked=secret MISSING: tracked
-r  # $ MISSING: tracked
+r = read_secret(x) # $ tracked=secret tracked
+r  # $ tracked
 
-y # $ MISSING: tracked=secret
-set_secret(y, tracked) # $ tracked MISSING: tracked=secret
-y.secret  # $ MISSING: tracked tracked=secret
+y # $ tracked=secret
+set_secret(y, tracked) # $ tracked tracked=secret
+y.secret  # $ tracked tracked=secret
