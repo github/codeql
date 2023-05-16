@@ -30,14 +30,14 @@ module Rack {
     DataFlow::ParameterNode getEnv() { result = call.getParameter(0) }
   }
 
-  private predicate isRackResponse(DataFlow::Node r) {
+  class ResponseNode extends DataFlow::ArrayLiteralNode {
     // [status, headers, body]
-    r.asExpr().(ArrayLiteralCfgNode).getNumberOfArguments() = 3
+    ResponseNode() { this.getNumberOfArguments() = 3 }
   }
 
   private DataFlow::LocalSourceNode trackRackResponse(TypeTracker t) {
     t.start() and
-    isRackResponse(result)
+    result instanceof ResponseNode
     or
     exists(TypeTracker t2 | result = trackRackResponse(t2).track(t2, t))
   }
