@@ -2,3 +2,4 @@ name: codeql/yaml
 version: 0.0.2-dev
 groups: shared
 library: true
+warnOnImplicitThis: true
