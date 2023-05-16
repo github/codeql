@@ -5,7 +5,7 @@ extensions:
     data:
     # "namespace", "type", "overrides", "name", "signature", "ext", "spec", "kind", "provenance"
       - ["My.Qltest", "B", false, "Sink1", "(System.Object)", "", "Argument[0]", "code-injection", "manual"]
-      - ["My.Qltest", "B", false, "SinkMethod", "()", "", "ReturnValue", "xss", "manual"]
+      - ["My.Qltest", "B", false, "SinkMethod", "()", "", "ReturnValue", "js-injection", "manual"]
       - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "ReturnValue", "html-injection", "manual"]
       - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "Argument", "remote", "manual"]
       - ["My.Qltest", "SinkAttribute", false, "", "", "Attribute", "", "sql-injection", "manual"]
