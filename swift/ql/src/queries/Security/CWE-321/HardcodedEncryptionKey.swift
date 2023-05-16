@@ -14,7 +14,7 @@ func encrypt(padding : Padding) {
 
 	// GOOD: Using randomly generated keys for encryption
 	var key = [Int8](repeating: 0, count: 10)
-	let status = SecRandomCopyBytes(kSecRandomDefault, key.count, &key)
+	let status = SecRandomCopyBytes(kSecRandomDefault, key.count - 1, &key)
 	if status == errSecSuccess {
 		let keyString = String(cString: key)
 		let ivString = getRandomIV()
