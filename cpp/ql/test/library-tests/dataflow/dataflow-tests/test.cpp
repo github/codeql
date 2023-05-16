@@ -1,5 +1,5 @@
 int source();
-void sink(int); void sink(const int *); void sink(int **);
+void sink(int); void sink(const int *); void sink(int **); void indirect_sink(...);
 
 void intraprocedural_with_local_flow() {
   int t2;
@@ -626,7 +626,7 @@ void test_def_via_phi_read(bool b)
     use(buffer);
   }
   intPointerSource(buffer);
-  sink(buffer); // $ ast,ir
+  indirect_sink(buffer); // $ ast,ir
 }
 
 void test_static_local_1() {
@@ -692,7 +692,7 @@ void test_static_local_9() {
 
 void increment_buf(int** buf) { // $ ast-def=buf ir-def=*buf ir-def=**buf
   *buf += 10;
-  sink(buf); // $ SPURIOUS: ast,ir // should only be flow to the indirect argument, but there's also flow to the non-indirect argument
+  sink(buf); // $ SPURIOUS: ast,ir
 }
 
 void call_increment_buf(int** buf) { // $ ast-def=buf
