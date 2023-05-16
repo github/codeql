@@ -9,9 +9,8 @@
 #include "swift/xcode-autobuilder/CustomizingBuildDiagnostics.h"
 
 constexpr codeql::SwiftDiagnostic buildCommandFailed{
-    "build-command-failed", "Detected build command failed",
-    codeql::SwiftDiagnostic::Format::plaintext, codeql::customizingBuildAction,
-    codeql::customizingBuildHelpLinks};
+    "build-command-failed", "Detected build command failed", codeql::customizingBuildAction,
+    codeql::SwiftDiagnostic::Format::plaintext, codeql::customizingBuildHelpLinks};
 
 static codeql::Logger& logger() {
   static codeql::Logger ret{"build"};

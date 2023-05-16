@@ -9,8 +9,8 @@
 const std::string_view codeql::programName = "autobuilder";
 
 constexpr codeql::SwiftDiagnostic incompatibleOs{
-    "incompatible-os", "Incompatible operating system (expected macOS)",
-    codeql::SwiftDiagnostic::Format::markdown,
+    "incompatible-os",
+    "Incompatible operating system (expected macOS)",
     "[Change the Actions runner][1] to run on macOS.\n"
     "\n"
     "You may be able to run analysis on Linux by setting up a [manual build command][2].\n"
@@ -22,7 +22,8 @@ constexpr codeql::SwiftDiagnostic incompatibleOs{
     "https://docs.github.com/en/enterprise-server/code-security/code-scanning/"
     "automatically-scanning-your-code-for-vulnerabilities-and-errors/"
     "configuring-the-codeql-workflow-for-compiled-languages#adding-build-steps-for-a-compiled-"
-    "language"};
+    "language",
+};
 
 static codeql::Logger& logger() {
   static codeql::Logger ret{"main"};
