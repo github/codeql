@@ -8,6 +8,11 @@ if "JAVA_HOME_8_X64" in os.environ:
   sep = ";" if platform.system() == "Windows" else ":"
   os.environ["PATH"] = "".join([os.path.join(os.environ["JAVA_HOME"], "bin"), sep, os.environ["PATH"]])
 
+# Ensure the autobuilder *doesn't* see Java 11 or 17, which it could switch to in order to build the project:
+for k in ["JAVA_HOME_11_X64", "JAVA_HOME_17_X64"]:
+  if k in os.environ:
+    del os.environ[k]
+
 run_codeql_database_create([], lang="java", runFunction = runUnsuccessfully, db = None)
 
 check_diagnostics()
