@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
+import argparse
 import json
 import os
+import pathlib
 import re
 
 
@@ -24,7 +26,15 @@ def validate_fragments(fragments):
 
 
 def main():
-    script_dir = os.path.dirname(os.path.realpath(__file__))
+    script_path = os.path.realpath(__file__)
+    script_dir = os.path.dirname(script_path)
+    parser = argparse.ArgumentParser(
+        prog=os.path.basename(script_path),
+        description='Sync dbscheme fragments across files.'
+    )
+    parser.add_argument('files', metavar='dbscheme_file', type=pathlib.Path, nargs='*', default=[],
+                        help='dbscheme files to check')
+    args = parser.parse_args()
 
     with open(os.path.join(script_dir, "dbscheme-fragments.json"), "r") as f:
         config = json.load(f)
@@ -32,7 +42,7 @@ def main():
     fragment_headers = set(config["fragments"])
     fragments = {}
     ok = True
-    for file in config["files"]:
+    for file in args.files + config["files"]:
         with open(os.path.join(os.path.dirname(script_dir), file), "r") as dbscheme:
             header = None
             line_number = 1
