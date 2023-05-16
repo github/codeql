@@ -54,6 +54,11 @@ struct SwiftDiagnostic {
     error,
   };
 
+  // wrapper for passing optional help links to constructor
+  struct HelpLinks {
+    std::string_view value;
+  };
+
   static constexpr std::string_view extractorName = "swift";
 
   std::string_view id;
@@ -72,9 +77,9 @@ struct SwiftDiagnostic {
 
   // notice help links are really required only for plaintext messages, otherwise they should be
   // directly embedded in the markdown message
-  // optional arguments can be any of
-  // * std::string_view for setting helpLinks
-  // * Severity, Visibility or Format to set the corresponding field
+  // optional arguments can be any of HelpLinks, Severity, Visibility or Format to set the
+  // corresponding field
+  // TODO(C++20) this constructor won't really be necessary anymore with designated initializers
   template <typename... OptionalArgs>
   constexpr SwiftDiagnostic(std::string_view id,
                             std::string_view name,
@@ -107,10 +112,14 @@ struct SwiftDiagnostic {
  private:
   bool has(Visibility v) const;
 
-  constexpr void setOptionalArg(std::string_view h) { helpLinks = h; }
+  constexpr void setOptionalArg(HelpLinks h) { helpLinks = h.value; }
   constexpr void setOptionalArg(Format f) { format = f; }
   constexpr void setOptionalArg(Visibility v) { visibility = v; }
   constexpr void setOptionalArg(Severity s) { severity = s; }
+
+  // intentionally left undefined
+  template <typename T>
+  constexpr void setOptionalArg(T);
 };
 
 inline constexpr SwiftDiagnostic::Visibility operator|(SwiftDiagnostic::Visibility lhs,
