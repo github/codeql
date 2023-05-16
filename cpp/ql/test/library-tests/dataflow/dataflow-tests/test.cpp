@@ -692,7 +692,7 @@ void test_static_local_9() {
 
 void increment_buf(int** buf) { // $ ast-def=buf ir-def=*buf ir-def=**buf
   *buf += 10;
-  sink(buf); // $ SPURIOUS: ast,ir
+  sink(buf); // $ SPURIOUS: ast
 }
 
 void call_increment_buf(int** buf) { // $ ast-def=buf
