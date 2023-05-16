@@ -12,43 +12,40 @@ edges
 | A.cpp:31:14:31:21 | call to B [c] | A.cpp:29:15:29:18 | make indirection [c] |
 | A.cpp:31:20:31:20 | c | A.cpp:23:10:23:10 | c |
 | A.cpp:31:20:31:20 | c | A.cpp:31:14:31:21 | call to B [c] |
-| A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection |
-| A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection |
+| A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | ct indirection |
+| A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | ct indirection |
+| A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | ct indirection |
 | A.cpp:47:12:47:18 | new | A.cpp:48:20:48:20 | c |
 | A.cpp:48:12:48:18 | call to make indirection [c] | A.cpp:49:10:49:10 | b indirection [c] |
 | A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c |
 | A.cpp:48:20:48:20 | c | A.cpp:48:12:48:18 | call to make indirection [c] |
-| A.cpp:49:10:49:10 | b indirection [c] | A.cpp:49:10:49:13 | c |
+| A.cpp:49:10:49:10 | b indirection [c] | A.cpp:49:13:49:13 | c |
 | A.cpp:49:10:49:10 | b indirection [c] | A.cpp:49:13:49:13 | c indirection |
-| A.cpp:49:13:49:13 | c indirection | A.cpp:49:10:49:13 | c |
 | A.cpp:49:13:49:13 | c indirection | A.cpp:49:13:49:13 | c |
 | A.cpp:55:5:55:5 | set output argument [c] | A.cpp:56:10:56:10 | b indirection [c] |
 | A.cpp:55:12:55:19 | new | A.cpp:27:17:27:17 | c |
 | A.cpp:55:12:55:19 | new | A.cpp:55:5:55:5 | set output argument [c] |
 | A.cpp:55:12:55:19 | new | A.cpp:55:12:55:19 | new |
 | A.cpp:56:10:56:10 | b indirection [c] | A.cpp:28:8:28:10 | this indirection [c] |
-| A.cpp:56:10:56:10 | b indirection [c] | A.cpp:56:10:56:17 | call to get |
+| A.cpp:56:10:56:10 | b indirection [c] | A.cpp:56:13:56:15 | call to get |
 | A.cpp:57:11:57:24 | call to B [c] | A.cpp:57:11:57:24 | new indirection [c] |
 | A.cpp:57:11:57:24 | new indirection [c] | A.cpp:28:8:28:10 | this indirection [c] |
-| A.cpp:57:11:57:24 | new indirection [c] | A.cpp:57:10:57:32 | call to get |
+| A.cpp:57:11:57:24 | new indirection [c] | A.cpp:57:28:57:30 | call to get |
 | A.cpp:57:17:57:23 | new | A.cpp:23:10:23:10 | c |
 | A.cpp:57:17:57:23 | new | A.cpp:57:11:57:24 | call to B [c] |
-| A.cpp:57:17:57:23 | new | A.cpp:57:17:57:23 | new |
 | A.cpp:64:10:64:15 | call to setOnB indirection [c] | A.cpp:66:10:66:11 | b2 indirection [c] |
 | A.cpp:64:21:64:28 | new | A.cpp:64:10:64:15 | call to setOnB indirection [c] |
 | A.cpp:64:21:64:28 | new | A.cpp:64:21:64:28 | new |
 | A.cpp:64:21:64:28 | new | A.cpp:85:26:85:26 | c |
-| A.cpp:66:10:66:11 | b2 indirection [c] | A.cpp:66:10:66:14 | c |
+| A.cpp:66:10:66:11 | b2 indirection [c] | A.cpp:66:14:66:14 | c |
 | A.cpp:66:10:66:11 | b2 indirection [c] | A.cpp:66:14:66:14 | c indirection |
-| A.cpp:66:14:66:14 | c indirection | A.cpp:66:10:66:14 | c |
 | A.cpp:66:14:66:14 | c indirection | A.cpp:66:14:66:14 | c |
 | A.cpp:73:10:73:19 | call to setOnBWrap indirection [c] | A.cpp:75:10:75:11 | b2 indirection [c] |
 | A.cpp:73:25:73:32 | new | A.cpp:73:10:73:19 | call to setOnBWrap indirection [c] |
 | A.cpp:73:25:73:32 | new | A.cpp:73:25:73:32 | new |
 | A.cpp:73:25:73:32 | new | A.cpp:78:27:78:27 | c |
-| A.cpp:75:10:75:11 | b2 indirection [c] | A.cpp:75:10:75:14 | c |
+| A.cpp:75:10:75:11 | b2 indirection [c] | A.cpp:75:14:75:14 | c |
 | A.cpp:75:10:75:11 | b2 indirection [c] | A.cpp:75:14:75:14 | c indirection |
-| A.cpp:75:14:75:14 | c indirection | A.cpp:75:10:75:14 | c |
 | A.cpp:75:14:75:14 | c indirection | A.cpp:75:14:75:14 | c |
 | A.cpp:78:27:78:27 | c | A.cpp:81:21:81:21 | c |
 | A.cpp:81:10:81:15 | call to setOnB indirection [c] | A.cpp:78:6:78:15 | setOnBWrap indirection [c] |
@@ -64,22 +61,18 @@ edges
 | A.cpp:101:8:101:9 | c1 indirection [a] | A.cpp:103:14:103:14 | c indirection [a] |
 | A.cpp:103:14:103:14 | c indirection [a] | A.cpp:107:12:107:13 | c1 indirection [a] |
 | A.cpp:103:14:103:14 | c indirection [a] | A.cpp:120:12:120:13 | c1 indirection [a] |
-| A.cpp:107:12:107:13 | c1 indirection [a] | A.cpp:107:12:107:16 | a |
+| A.cpp:107:12:107:13 | c1 indirection [a] | A.cpp:107:16:107:16 | a |
 | A.cpp:107:12:107:13 | c1 indirection [a] | A.cpp:107:16:107:16 | a indirection |
-| A.cpp:107:16:107:16 | a indirection | A.cpp:107:12:107:16 | a |
 | A.cpp:107:16:107:16 | a indirection | A.cpp:107:16:107:16 | a |
-| A.cpp:120:12:120:13 | c1 indirection [a] | A.cpp:120:12:120:16 | a |
+| A.cpp:120:12:120:13 | c1 indirection [a] | A.cpp:120:16:120:16 | a |
 | A.cpp:120:12:120:13 | c1 indirection [a] | A.cpp:120:16:120:16 | a indirection |
-| A.cpp:120:16:120:16 | a indirection | A.cpp:120:12:120:16 | a |
 | A.cpp:120:16:120:16 | a indirection | A.cpp:120:16:120:16 | a |
 | A.cpp:126:5:126:5 | set output argument [c] | A.cpp:131:8:131:8 | f7 output argument [c] |
 | A.cpp:126:12:126:18 | new | A.cpp:27:17:27:17 | c |
 | A.cpp:126:12:126:18 | new | A.cpp:126:5:126:5 | set output argument [c] |
-| A.cpp:126:12:126:18 | new | A.cpp:126:12:126:18 | new |
 | A.cpp:131:8:131:8 | f7 output argument [c] | A.cpp:132:10:132:10 | b indirection [c] |
-| A.cpp:132:10:132:10 | b indirection [c] | A.cpp:132:10:132:13 | c |
+| A.cpp:132:10:132:10 | b indirection [c] | A.cpp:132:13:132:13 | c |
 | A.cpp:132:10:132:10 | b indirection [c] | A.cpp:132:13:132:13 | c indirection |
-| A.cpp:132:13:132:13 | c indirection | A.cpp:132:10:132:13 | c |
 | A.cpp:132:13:132:13 | c indirection | A.cpp:132:13:132:13 | c |
 | A.cpp:140:13:140:13 | b | A.cpp:143:7:143:31 | ... = ... |
 | A.cpp:142:7:142:20 | ... = ... | A.cpp:142:10:142:10 | b indirection [post update] [c] |
@@ -98,20 +91,17 @@ edges
 | A.cpp:151:18:151:18 | D output argument [c] | A.cpp:154:10:154:10 | b indirection [c] |
 | A.cpp:151:18:151:18 | b | A.cpp:140:13:140:13 | b |
 | A.cpp:151:18:151:18 | b | A.cpp:151:12:151:24 | call to D [b] |
-| A.cpp:152:10:152:10 | d indirection [b] | A.cpp:152:10:152:13 | b |
+| A.cpp:152:10:152:10 | d indirection [b] | A.cpp:152:13:152:13 | b |
 | A.cpp:152:10:152:10 | d indirection [b] | A.cpp:152:13:152:13 | b indirection |
-| A.cpp:152:13:152:13 | b indirection | A.cpp:152:10:152:13 | b |
 | A.cpp:152:13:152:13 | b indirection | A.cpp:152:13:152:13 | b |
 | A.cpp:153:10:153:10 | d indirection [b indirection, c] | A.cpp:153:13:153:13 | b indirection [c] |
 | A.cpp:153:10:153:10 | d indirection [b indirection, c] | A.cpp:153:13:153:13 | b indirection [c] |
-| A.cpp:153:13:153:13 | b indirection [c] | A.cpp:153:10:153:16 | c |
 | A.cpp:153:13:153:13 | b indirection [c] | A.cpp:153:13:153:13 | b indirection [c] |
+| A.cpp:153:13:153:13 | b indirection [c] | A.cpp:153:16:153:16 | c |
 | A.cpp:153:13:153:13 | b indirection [c] | A.cpp:153:16:153:16 | c indirection |
-| A.cpp:153:16:153:16 | c indirection | A.cpp:153:10:153:16 | c |
 | A.cpp:153:16:153:16 | c indirection | A.cpp:153:16:153:16 | c |
-| A.cpp:154:10:154:10 | b indirection [c] | A.cpp:154:10:154:13 | c |
+| A.cpp:154:10:154:10 | b indirection [c] | A.cpp:154:13:154:13 | c |
 | A.cpp:154:10:154:10 | b indirection [c] | A.cpp:154:13:154:13 | c indirection |
-| A.cpp:154:13:154:13 | c indirection | A.cpp:154:10:154:13 | c |
 | A.cpp:154:13:154:13 | c indirection | A.cpp:154:13:154:13 | c |
 | A.cpp:159:12:159:18 | new | A.cpp:160:29:160:29 | b |
 | A.cpp:160:18:160:60 | call to MyList [head] | A.cpp:161:38:161:39 | l1 indirection [head] |
@@ -129,10 +119,9 @@ edges
 | A.cpp:165:14:165:17 | next indirection [next indirection, head] | A.cpp:165:14:165:17 | next indirection [next indirection, head] |
 | A.cpp:165:14:165:17 | next indirection [next indirection, head] | A.cpp:165:20:165:23 | next indirection [head] |
 | A.cpp:165:14:165:17 | next indirection [next indirection, head] | A.cpp:165:20:165:23 | next indirection [head] |
-| A.cpp:165:20:165:23 | next indirection [head] | A.cpp:165:10:165:29 | head |
 | A.cpp:165:20:165:23 | next indirection [head] | A.cpp:165:20:165:23 | next indirection [head] |
+| A.cpp:165:20:165:23 | next indirection [head] | A.cpp:165:26:165:29 | head |
 | A.cpp:165:20:165:23 | next indirection [head] | A.cpp:165:26:165:29 | head indirection |
-| A.cpp:165:26:165:29 | head indirection | A.cpp:165:10:165:29 | head |
 | A.cpp:165:26:165:29 | head indirection | A.cpp:165:26:165:29 | head |
 | A.cpp:167:44:167:44 | l indirection [next indirection, head] | A.cpp:167:47:167:50 | next indirection [head] |
 | A.cpp:167:44:167:44 | l indirection [next indirection, head] | A.cpp:167:47:167:50 | next indirection [head] |
@@ -142,9 +131,8 @@ edges
 | A.cpp:167:47:167:50 | next indirection [head] | A.cpp:169:12:169:12 | l indirection [head] |
 | A.cpp:167:47:167:50 | next indirection [next indirection, head] | A.cpp:167:44:167:44 | l indirection [next indirection, head] |
 | A.cpp:167:47:167:50 | next indirection [next indirection, head] | A.cpp:167:44:167:44 | l indirection [next indirection, head] |
-| A.cpp:169:12:169:12 | l indirection [head] | A.cpp:169:12:169:18 | head |
+| A.cpp:169:12:169:12 | l indirection [head] | A.cpp:169:15:169:18 | head |
 | A.cpp:169:12:169:12 | l indirection [head] | A.cpp:169:15:169:18 | head indirection |
-| A.cpp:169:15:169:18 | head indirection | A.cpp:169:12:169:18 | head |
 | A.cpp:169:15:169:18 | head indirection | A.cpp:169:15:169:18 | head |
 | A.cpp:181:15:181:21 | newHead | A.cpp:183:7:183:20 | ... = ... |
 | A.cpp:181:32:181:35 | next indirection [head] | A.cpp:184:7:184:23 | ... = ... indirection [head] |
@@ -161,10 +149,9 @@ edges
 | B.cpp:8:25:8:26 | b1 indirection [elem1] | B.cpp:44:16:44:17 | b1 indirection [elem1] |
 | B.cpp:9:10:9:11 | b2 indirection [box1 indirection, elem1] | B.cpp:9:14:9:17 | box1 indirection [elem1] |
 | B.cpp:9:10:9:11 | b2 indirection [box1 indirection, elem1] | B.cpp:9:14:9:17 | box1 indirection [elem1] |
-| B.cpp:9:14:9:17 | box1 indirection [elem1] | B.cpp:9:10:9:24 | elem1 |
 | B.cpp:9:14:9:17 | box1 indirection [elem1] | B.cpp:9:14:9:17 | box1 indirection [elem1] |
+| B.cpp:9:14:9:17 | box1 indirection [elem1] | B.cpp:9:20:9:24 | elem1 |
 | B.cpp:9:14:9:17 | box1 indirection [elem1] | B.cpp:9:20:9:24 | elem1 indirection |
-| B.cpp:9:20:9:24 | elem1 indirection | B.cpp:9:10:9:24 | elem1 |
 | B.cpp:9:20:9:24 | elem1 indirection | B.cpp:9:20:9:24 | elem1 |
 | B.cpp:15:15:15:27 | new | B.cpp:16:37:16:37 | e |
 | B.cpp:16:16:16:38 | call to Box1 [elem2] | B.cpp:17:25:17:26 | b1 indirection [elem2] |
@@ -175,10 +162,9 @@ edges
 | B.cpp:17:25:17:26 | b1 indirection [elem2] | B.cpp:44:16:44:17 | b1 indirection [elem2] |
 | B.cpp:19:10:19:11 | b2 indirection [box1 indirection, elem2] | B.cpp:19:14:19:17 | box1 indirection [elem2] |
 | B.cpp:19:10:19:11 | b2 indirection [box1 indirection, elem2] | B.cpp:19:14:19:17 | box1 indirection [elem2] |
-| B.cpp:19:14:19:17 | box1 indirection [elem2] | B.cpp:19:10:19:24 | elem2 |
 | B.cpp:19:14:19:17 | box1 indirection [elem2] | B.cpp:19:14:19:17 | box1 indirection [elem2] |
+| B.cpp:19:14:19:17 | box1 indirection [elem2] | B.cpp:19:20:19:24 | elem2 |
 | B.cpp:19:14:19:17 | box1 indirection [elem2] | B.cpp:19:20:19:24 | elem2 indirection |
-| B.cpp:19:20:19:24 | elem2 indirection | B.cpp:19:10:19:24 | elem2 |
 | B.cpp:19:20:19:24 | elem2 indirection | B.cpp:19:20:19:24 | elem2 |
 | B.cpp:33:16:33:17 | e1 | B.cpp:35:7:35:22 | ... = ... |
 | B.cpp:33:26:33:27 | e2 | B.cpp:36:7:36:22 | ... = ... |
@@ -192,8 +178,8 @@ edges
 | C.cpp:18:12:18:18 | call to C [s3] | C.cpp:19:5:19:5 | c indirection [s3] |
 | C.cpp:19:5:19:5 | c indirection [s1] | C.cpp:27:8:27:11 | this indirection [s1] |
 | C.cpp:19:5:19:5 | c indirection [s3] | C.cpp:27:8:27:11 | this indirection [s3] |
-| C.cpp:22:9:22:22 | this indirection [post update] [s1] | C.cpp:18:12:18:18 | call to C [s1] |
-| C.cpp:22:12:22:21 | new | C.cpp:22:9:22:22 | this indirection [post update] [s1] |
+| C.cpp:22:9:22:22 | C indirection [post update] [s1] | C.cpp:18:12:18:18 | call to C [s1] |
+| C.cpp:22:12:22:21 | new | C.cpp:22:9:22:22 | C indirection [post update] [s1] |
 | C.cpp:22:12:22:21 | new | C.cpp:22:12:22:21 | new |
 | C.cpp:24:5:24:25 | ... = ... | C.cpp:24:11:24:12 | this indirection [post update] [s3] |
 | C.cpp:24:11:24:12 | this indirection [post update] [s3] | C.cpp:18:12:18:18 | call to C [s3] |
@@ -222,7 +208,7 @@ edges
 | D.cpp:22:10:22:11 | b2 indirection [box indirection, elem] | D.cpp:17:11:17:17 | this indirection [box indirection, elem] |
 | D.cpp:22:10:22:11 | b2 indirection [box indirection, elem] | D.cpp:22:14:22:20 | call to getBox1 indirection [elem] |
 | D.cpp:22:14:22:20 | call to getBox1 indirection [elem] | D.cpp:10:11:10:17 | this indirection [elem] |
-| D.cpp:22:14:22:20 | call to getBox1 indirection [elem] | D.cpp:22:10:22:33 | call to getElem |
+| D.cpp:22:14:22:20 | call to getBox1 indirection [elem] | D.cpp:22:25:22:31 | call to getElem |
 | D.cpp:28:15:28:24 | new | D.cpp:30:5:30:20 | ... = ... |
 | D.cpp:30:5:30:20 | ... = ... | D.cpp:30:13:30:16 | box indirection [post update] [elem] |
 | D.cpp:30:8:30:10 | b indirection [post update] [box indirection, elem] | D.cpp:31:14:31:14 | b indirection [box indirection, elem] |
@@ -257,10 +243,9 @@ edges
 | D.cpp:64:10:64:17 | boxfield indirection [box indirection, elem] | D.cpp:64:20:64:22 | box indirection [elem] |
 | D.cpp:64:10:64:17 | this indirection [boxfield indirection, box indirection, elem] | D.cpp:64:10:64:17 | boxfield indirection [box indirection, elem] |
 | D.cpp:64:10:64:17 | this indirection [boxfield indirection, box indirection, elem] | D.cpp:64:10:64:17 | boxfield indirection [box indirection, elem] |
-| D.cpp:64:20:64:22 | box indirection [elem] | D.cpp:64:10:64:28 | elem |
 | D.cpp:64:20:64:22 | box indirection [elem] | D.cpp:64:20:64:22 | box indirection [elem] |
+| D.cpp:64:20:64:22 | box indirection [elem] | D.cpp:64:25:64:28 | elem |
 | D.cpp:64:20:64:22 | box indirection [elem] | D.cpp:64:25:64:28 | elem indirection |
-| D.cpp:64:25:64:28 | elem indirection | D.cpp:64:10:64:28 | elem |
 | D.cpp:64:25:64:28 | elem indirection | D.cpp:64:25:64:28 | elem |
 | E.cpp:19:27:19:27 | p indirection [data, buffer indirection] | E.cpp:21:10:21:10 | p indirection [data, buffer indirection] |
 | E.cpp:21:10:21:10 | p indirection [data, buffer indirection] | E.cpp:21:13:21:16 | data indirection [buffer indirection] |
@@ -272,12 +257,12 @@ edges
 | E.cpp:29:21:29:29 | argument_source output argument | E.cpp:29:24:29:29 | b indirection [post update] [buffer indirection] |
 | E.cpp:29:24:29:29 | b indirection [post update] [buffer indirection] | E.cpp:32:10:32:10 | b indirection [buffer indirection] |
 | E.cpp:30:21:30:33 | argument_source output argument | E.cpp:30:28:30:33 | data indirection [post update] [buffer indirection] |
-| E.cpp:30:23:30:26 | p indirection [post update] [data, buffer indirection] | E.cpp:33:18:33:19 | & ... indirection [data, buffer indirection] |
+| E.cpp:30:23:30:26 | p indirection [post update] [data, buffer indirection] | E.cpp:33:18:33:19 | p indirection [data, buffer indirection] |
 | E.cpp:30:28:30:33 | data indirection [post update] [buffer indirection] | E.cpp:30:23:30:26 | p indirection [post update] [data, buffer indirection] |
 | E.cpp:32:10:32:10 | b indirection [buffer indirection] | E.cpp:32:13:32:18 | buffer indirection |
 | E.cpp:32:10:32:10 | b indirection [buffer indirection] | E.cpp:32:13:32:18 | buffer indirection |
 | E.cpp:32:13:32:18 | buffer indirection | E.cpp:32:13:32:18 | buffer indirection |
-| E.cpp:33:18:33:19 | & ... indirection [data, buffer indirection] | E.cpp:19:27:19:27 | p indirection [data, buffer indirection] |
+| E.cpp:33:18:33:19 | p indirection [data, buffer indirection] | E.cpp:19:27:19:27 | p indirection [data, buffer indirection] |
 | aliasing.cpp:9:3:9:22 | ... = ... | aliasing.cpp:9:6:9:7 | s indirection [post update] [m1] |
 | aliasing.cpp:9:6:9:7 | s indirection [post update] [m1] | aliasing.cpp:25:17:25:19 | pointerSetter output argument [m1] |
 | aliasing.cpp:9:11:9:20 | call to user_input | aliasing.cpp:9:3:9:22 | ... = ... |
@@ -309,8 +294,8 @@ edges
 | aliasing.cpp:98:3:98:21 | ... = ... | aliasing.cpp:98:5:98:6 | s indirection [post update] [m1] |
 | aliasing.cpp:98:5:98:6 | s indirection [post update] [m1] | aliasing.cpp:101:14:101:19 | s_copy indirection [m1] |
 | aliasing.cpp:98:10:98:19 | call to user_input | aliasing.cpp:98:3:98:21 | ... = ... |
-| aliasing.cpp:101:13:101:22 | & ... indirection | aliasing.cpp:102:8:102:10 | * ... |
-| aliasing.cpp:101:14:101:19 | s_copy indirection [m1] | aliasing.cpp:101:13:101:22 | & ... indirection |
+| aliasing.cpp:101:13:101:22 | m1 indirection | aliasing.cpp:102:8:102:10 | * ... |
+| aliasing.cpp:101:14:101:19 | s_copy indirection [m1] | aliasing.cpp:101:13:101:22 | m1 indirection |
 | aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:121:15:121:16 | taint_a_ptr output argument |
 | aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:126:15:126:20 | taint_a_ptr output argument |
 | aliasing.cpp:105:23:105:24 | pa | aliasing.cpp:131:15:131:16 | taint_a_ptr output argument |
@@ -333,33 +318,33 @@ edges
 | aliasing.cpp:143:8:143:8 | s indirection [data indirection] | aliasing.cpp:143:10:143:13 | data indirection |
 | aliasing.cpp:143:8:143:16 | access to array indirection | aliasing.cpp:143:8:143:16 | access to array |
 | aliasing.cpp:143:10:143:13 | data indirection | aliasing.cpp:143:8:143:16 | access to array |
-| aliasing.cpp:158:15:158:20 | taint_a_ptr output argument | aliasing.cpp:158:17:158:20 | s indirection [post update] [data] |
-| aliasing.cpp:158:17:158:20 | s indirection [post update] [data] | aliasing.cpp:159:9:159:9 | s indirection [data] |
+| aliasing.cpp:158:15:158:20 | s indirection [post update] [data] | aliasing.cpp:159:9:159:9 | s indirection [data] |
+| aliasing.cpp:158:15:158:20 | taint_a_ptr output argument | aliasing.cpp:158:15:158:20 | s indirection [post update] [data] |
 | aliasing.cpp:159:9:159:9 | s indirection [data] | aliasing.cpp:159:8:159:14 | * ... |
 | aliasing.cpp:159:9:159:9 | s indirection [data] | aliasing.cpp:159:9:159:14 | data indirection |
 | aliasing.cpp:159:9:159:14 | data indirection | aliasing.cpp:159:8:159:14 | * ... |
-| aliasing.cpp:164:15:164:20 | taint_a_ptr output argument | aliasing.cpp:164:17:164:20 | s indirection [post update] [data] |
-| aliasing.cpp:164:17:164:20 | s indirection [post update] [data] | aliasing.cpp:165:8:165:8 | s indirection [data] |
+| aliasing.cpp:164:15:164:20 | s indirection [post update] [data] | aliasing.cpp:165:8:165:8 | s indirection [data] |
+| aliasing.cpp:164:15:164:20 | taint_a_ptr output argument | aliasing.cpp:164:15:164:20 | s indirection [post update] [data] |
 | aliasing.cpp:165:8:165:8 | s indirection [data] | aliasing.cpp:165:8:165:16 | access to array |
 | aliasing.cpp:165:8:165:8 | s indirection [data] | aliasing.cpp:165:8:165:16 | access to array indirection |
 | aliasing.cpp:165:8:165:16 | access to array indirection | aliasing.cpp:165:8:165:16 | access to array |
-| aliasing.cpp:175:15:175:22 | taint_a_ptr output argument | aliasing.cpp:175:21:175:22 | s indirection [post update] [m1] |
+| aliasing.cpp:175:15:175:22 | s indirection [post update] [m1] | aliasing.cpp:175:19:175:19 | s2 indirection [post update] [s, m1] |
+| aliasing.cpp:175:15:175:22 | taint_a_ptr output argument | aliasing.cpp:175:15:175:22 | s indirection [post update] [m1] |
 | aliasing.cpp:175:19:175:19 | s2 indirection [post update] [s, m1] | aliasing.cpp:176:8:176:9 | s2 indirection [s, m1] |
-| aliasing.cpp:175:21:175:22 | s indirection [post update] [m1] | aliasing.cpp:175:19:175:19 | s2 indirection [post update] [s, m1] |
 | aliasing.cpp:176:8:176:9 | s2 indirection [s, m1] | aliasing.cpp:176:11:176:11 | s indirection [m1] |
 | aliasing.cpp:176:11:176:11 | s indirection [m1] | aliasing.cpp:176:13:176:14 | m1 |
 | aliasing.cpp:176:11:176:11 | s indirection [m1] | aliasing.cpp:176:13:176:14 | m1 indirection |
 | aliasing.cpp:176:13:176:14 | m1 indirection | aliasing.cpp:176:13:176:14 | m1 |
-| aliasing.cpp:187:15:187:22 | taint_a_ptr output argument | aliasing.cpp:187:21:187:22 | s indirection [post update] [m1] |
+| aliasing.cpp:187:15:187:22 | s indirection [post update] [m1] | aliasing.cpp:187:19:187:19 | s2 indirection [post update] [s, m1] |
+| aliasing.cpp:187:15:187:22 | taint_a_ptr output argument | aliasing.cpp:187:15:187:22 | s indirection [post update] [m1] |
 | aliasing.cpp:187:19:187:19 | s2 indirection [post update] [s, m1] | aliasing.cpp:189:8:189:11 | s2_2 indirection [s, m1] |
-| aliasing.cpp:187:21:187:22 | s indirection [post update] [m1] | aliasing.cpp:187:19:187:19 | s2 indirection [post update] [s, m1] |
 | aliasing.cpp:189:8:189:11 | s2_2 indirection [s, m1] | aliasing.cpp:189:13:189:13 | s indirection [m1] |
 | aliasing.cpp:189:13:189:13 | s indirection [m1] | aliasing.cpp:189:15:189:16 | m1 |
 | aliasing.cpp:189:13:189:13 | s indirection [m1] | aliasing.cpp:189:15:189:16 | m1 indirection |
 | aliasing.cpp:189:15:189:16 | m1 indirection | aliasing.cpp:189:15:189:16 | m1 |
-| aliasing.cpp:200:15:200:24 | taint_a_ptr output argument | aliasing.cpp:200:23:200:24 | s indirection [post update] [m1] |
+| aliasing.cpp:200:15:200:24 | s indirection [post update] [m1] | aliasing.cpp:200:21:200:21 | ps2 indirection [post update] [s, m1] |
+| aliasing.cpp:200:15:200:24 | taint_a_ptr output argument | aliasing.cpp:200:15:200:24 | s indirection [post update] [m1] |
 | aliasing.cpp:200:21:200:21 | ps2 indirection [post update] [s, m1] | aliasing.cpp:201:8:201:10 | ps2 indirection [s, m1] |
-| aliasing.cpp:200:23:200:24 | s indirection [post update] [m1] | aliasing.cpp:200:21:200:21 | ps2 indirection [post update] [s, m1] |
 | aliasing.cpp:201:8:201:10 | ps2 indirection [s, m1] | aliasing.cpp:201:13:201:13 | s indirection [m1] |
 | aliasing.cpp:201:13:201:13 | s indirection [m1] | aliasing.cpp:201:15:201:16 | m1 |
 | aliasing.cpp:201:13:201:13 | s indirection [m1] | aliasing.cpp:201:15:201:16 | m1 indirection |
@@ -370,11 +355,11 @@ edges
 | arrays.cpp:6:12:6:21 | call to user_input | arrays.cpp:10:8:10:15 | * ... |
 | arrays.cpp:15:14:15:23 | call to user_input | arrays.cpp:16:8:16:13 | access to array |
 | arrays.cpp:15:14:15:23 | call to user_input | arrays.cpp:17:8:17:13 | access to array |
+| arrays.cpp:36:3:36:14 | nested indirection [post update] [arr, data] | arrays.cpp:36:5:36:10 | o indirection [post update] [nested, arr, data] |
 | arrays.cpp:36:3:36:37 | ... = ... | arrays.cpp:36:19:36:22 | access to array indirection [post update] [data] |
 | arrays.cpp:36:5:36:10 | o indirection [post update] [nested, arr, data] | arrays.cpp:37:8:37:8 | o indirection [nested, arr, data] |
 | arrays.cpp:36:5:36:10 | o indirection [post update] [nested, arr, data] | arrays.cpp:38:8:38:8 | o indirection [nested, arr, data] |
-| arrays.cpp:36:12:36:14 | nested indirection [post update] [arr, data] | arrays.cpp:36:5:36:10 | o indirection [post update] [nested, arr, data] |
-| arrays.cpp:36:19:36:22 | access to array indirection [post update] [data] | arrays.cpp:36:12:36:14 | nested indirection [post update] [arr, data] |
+| arrays.cpp:36:19:36:22 | access to array indirection [post update] [data] | arrays.cpp:36:3:36:14 | nested indirection [post update] [arr, data] |
 | arrays.cpp:36:26:36:35 | call to user_input | arrays.cpp:36:3:36:37 | ... = ... |
 | arrays.cpp:37:8:37:8 | o indirection [nested, arr, data] | arrays.cpp:37:10:37:15 | nested indirection [arr, data] |
 | arrays.cpp:37:8:37:22 | access to array indirection [data] | arrays.cpp:37:24:37:27 | data |
@@ -386,11 +371,11 @@ edges
 | arrays.cpp:38:8:38:22 | access to array indirection [data] | arrays.cpp:38:24:38:27 | data indirection |
 | arrays.cpp:38:10:38:15 | nested indirection [arr, data] | arrays.cpp:38:8:38:22 | access to array indirection [data] |
 | arrays.cpp:38:24:38:27 | data indirection | arrays.cpp:38:24:38:27 | data |
+| arrays.cpp:42:3:42:17 | indirect indirection [post update] [arr, data] | arrays.cpp:42:5:42:12 | o indirection [post update] [indirect indirection, arr, data] |
 | arrays.cpp:42:3:42:40 | ... = ... | arrays.cpp:42:22:42:25 | access to array indirection [post update] [data] |
 | arrays.cpp:42:5:42:12 | o indirection [post update] [indirect indirection, arr, data] | arrays.cpp:43:8:43:8 | o indirection [indirect indirection, arr, data] |
 | arrays.cpp:42:5:42:12 | o indirection [post update] [indirect indirection, arr, data] | arrays.cpp:44:8:44:8 | o indirection [indirect indirection, arr, data] |
-| arrays.cpp:42:15:42:17 | indirect indirection [post update] [arr, data] | arrays.cpp:42:5:42:12 | o indirection [post update] [indirect indirection, arr, data] |
-| arrays.cpp:42:22:42:25 | access to array indirection [post update] [data] | arrays.cpp:42:15:42:17 | indirect indirection [post update] [arr, data] |
+| arrays.cpp:42:22:42:25 | access to array indirection [post update] [data] | arrays.cpp:42:3:42:17 | indirect indirection [post update] [arr, data] |
 | arrays.cpp:42:29:42:38 | call to user_input | arrays.cpp:42:3:42:40 | ... = ... |
 | arrays.cpp:43:8:43:8 | o indirection [indirect indirection, arr, data] | arrays.cpp:43:10:43:17 | indirect indirection [arr, data] |
 | arrays.cpp:43:8:43:8 | o indirection [indirect indirection, arr, data] | arrays.cpp:43:10:43:17 | indirect indirection [arr, data] |
@@ -473,11 +458,11 @@ edges
 | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] |
 | by_reference.cpp:63:8:63:8 | s indirection [a] | by_reference.cpp:43:9:43:27 | this indirection [a] |
 | by_reference.cpp:63:8:63:8 | s indirection [a] | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
-| by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] | by_reference.cpp:69:22:69:23 | & ... indirection [a] |
+| by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] | by_reference.cpp:69:22:69:23 | s indirection [a] |
 | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:11:48:11:52 | value |
 | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] |
-| by_reference.cpp:69:22:69:23 | & ... indirection [a] | by_reference.cpp:31:46:31:46 | s indirection [a] |
-| by_reference.cpp:69:22:69:23 | & ... indirection [a] | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
+| by_reference.cpp:69:22:69:23 | s indirection [a] | by_reference.cpp:31:46:31:46 | s indirection [a] |
+| by_reference.cpp:69:22:69:23 | s indirection [a] | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
 | by_reference.cpp:84:3:84:25 | ... = ... | by_reference.cpp:84:10:84:10 | inner indirection [post update] [a] |
 | by_reference.cpp:84:10:84:10 | inner indirection [post update] [a] | by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] |
 | by_reference.cpp:84:10:84:10 | inner indirection [post update] [a] | by_reference.cpp:103:27:103:35 | taint_inner_a_ptr output argument [a] |
@@ -496,18 +481,18 @@ edges
 | by_reference.cpp:95:25:95:26 | pa | by_reference.cpp:124:15:124:21 | taint_a_ref output argument |
 | by_reference.cpp:95:25:95:26 | pa | by_reference.cpp:128:15:128:23 | taint_a_ref output argument |
 | by_reference.cpp:96:8:96:17 | call to user_input | by_reference.cpp:95:25:95:26 | pa |
-| by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] | by_reference.cpp:102:28:102:39 | outer indirection [post update] [inner_nested, a] |
-| by_reference.cpp:102:28:102:39 | outer indirection [post update] [inner_nested, a] | by_reference.cpp:110:8:110:12 | outer indirection [inner_nested, a] |
+| by_reference.cpp:102:21:102:39 | outer indirection [post update] [inner_nested, a] | by_reference.cpp:110:8:110:12 | outer indirection [inner_nested, a] |
+| by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] | by_reference.cpp:102:21:102:39 | outer indirection [post update] [inner_nested, a] |
 | by_reference.cpp:103:27:103:35 | outer indirection [post update] [inner_ptr indirection, a] | by_reference.cpp:111:8:111:12 | outer indirection [inner_ptr indirection, a] |
 | by_reference.cpp:103:27:103:35 | taint_inner_a_ptr output argument [a] | by_reference.cpp:103:27:103:35 | outer indirection [post update] [inner_ptr indirection, a] |
-| by_reference.cpp:104:15:104:22 | taint_a_ptr output argument | by_reference.cpp:104:22:104:22 | outer indirection [post update] [a] |
-| by_reference.cpp:104:22:104:22 | outer indirection [post update] [a] | by_reference.cpp:112:8:112:12 | outer indirection [a] |
-| by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a] | by_reference.cpp:106:30:106:41 | pouter indirection [post update] [inner_nested, a] |
-| by_reference.cpp:106:30:106:41 | pouter indirection [post update] [inner_nested, a] | by_reference.cpp:114:8:114:13 | pouter indirection [inner_nested, a] |
+| by_reference.cpp:104:15:104:22 | outer indirection [post update] [a] | by_reference.cpp:112:8:112:12 | outer indirection [a] |
+| by_reference.cpp:104:15:104:22 | taint_a_ptr output argument | by_reference.cpp:104:15:104:22 | outer indirection [post update] [a] |
+| by_reference.cpp:106:21:106:41 | pouter indirection [post update] [inner_nested, a] | by_reference.cpp:114:8:114:13 | pouter indirection [inner_nested, a] |
+| by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a] | by_reference.cpp:106:21:106:41 | pouter indirection [post update] [inner_nested, a] |
 | by_reference.cpp:107:29:107:37 | pouter indirection [post update] [inner_ptr indirection, a] | by_reference.cpp:115:8:115:13 | pouter indirection [inner_ptr indirection, a] |
 | by_reference.cpp:107:29:107:37 | taint_inner_a_ptr output argument [a] | by_reference.cpp:107:29:107:37 | pouter indirection [post update] [inner_ptr indirection, a] |
-| by_reference.cpp:108:15:108:24 | taint_a_ptr output argument | by_reference.cpp:108:24:108:24 | pouter indirection [post update] [a] |
-| by_reference.cpp:108:24:108:24 | pouter indirection [post update] [a] | by_reference.cpp:116:8:116:13 | pouter indirection [a] |
+| by_reference.cpp:108:15:108:24 | pouter indirection [post update] [a] | by_reference.cpp:116:8:116:13 | pouter indirection [a] |
+| by_reference.cpp:108:15:108:24 | taint_a_ptr output argument | by_reference.cpp:108:15:108:24 | pouter indirection [post update] [a] |
 | by_reference.cpp:110:8:110:12 | outer indirection [inner_nested, a] | by_reference.cpp:110:14:110:25 | inner_nested indirection [a] |
 | by_reference.cpp:110:14:110:25 | inner_nested indirection [a] | by_reference.cpp:110:27:110:27 | a |
 | by_reference.cpp:110:14:110:25 | inner_nested indirection [a] | by_reference.cpp:110:27:110:27 | a indirection |
@@ -534,18 +519,18 @@ edges
 | by_reference.cpp:116:8:116:13 | pouter indirection [a] | by_reference.cpp:116:16:116:16 | a |
 | by_reference.cpp:116:8:116:13 | pouter indirection [a] | by_reference.cpp:116:16:116:16 | a indirection |
 | by_reference.cpp:116:16:116:16 | a indirection | by_reference.cpp:116:16:116:16 | a |
-| by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] | by_reference.cpp:122:27:122:38 | outer indirection [post update] [inner_nested, a] |
-| by_reference.cpp:122:27:122:38 | outer indirection [post update] [inner_nested, a] | by_reference.cpp:130:8:130:12 | outer indirection [inner_nested, a] |
+| by_reference.cpp:122:21:122:38 | outer indirection [post update] [inner_nested, a] | by_reference.cpp:130:8:130:12 | outer indirection [inner_nested, a] |
+| by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] | by_reference.cpp:122:21:122:38 | outer indirection [post update] [inner_nested, a] |
 | by_reference.cpp:123:21:123:36 | taint_inner_a_ref output argument [a] | by_reference.cpp:123:28:123:36 | outer indirection [post update] [inner_ptr indirection, a] |
 | by_reference.cpp:123:28:123:36 | outer indirection [post update] [inner_ptr indirection, a] | by_reference.cpp:131:8:131:12 | outer indirection [inner_ptr indirection, a] |
-| by_reference.cpp:124:15:124:21 | taint_a_ref output argument | by_reference.cpp:124:21:124:21 | outer indirection [post update] [a] |
-| by_reference.cpp:124:21:124:21 | outer indirection [post update] [a] | by_reference.cpp:132:8:132:12 | outer indirection [a] |
-| by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] | by_reference.cpp:126:29:126:40 | pouter indirection [post update] [inner_nested, a] |
-| by_reference.cpp:126:29:126:40 | pouter indirection [post update] [inner_nested, a] | by_reference.cpp:134:8:134:13 | pouter indirection [inner_nested, a] |
+| by_reference.cpp:124:15:124:21 | outer indirection [post update] [a] | by_reference.cpp:132:8:132:12 | outer indirection [a] |
+| by_reference.cpp:124:15:124:21 | taint_a_ref output argument | by_reference.cpp:124:15:124:21 | outer indirection [post update] [a] |
+| by_reference.cpp:126:21:126:40 | pouter indirection [post update] [inner_nested, a] | by_reference.cpp:134:8:134:13 | pouter indirection [inner_nested, a] |
+| by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] | by_reference.cpp:126:21:126:40 | pouter indirection [post update] [inner_nested, a] |
 | by_reference.cpp:127:21:127:38 | taint_inner_a_ref output argument [a] | by_reference.cpp:127:30:127:38 | pouter indirection [post update] [inner_ptr indirection, a] |
 | by_reference.cpp:127:30:127:38 | pouter indirection [post update] [inner_ptr indirection, a] | by_reference.cpp:135:8:135:13 | pouter indirection [inner_ptr indirection, a] |
-| by_reference.cpp:128:15:128:23 | taint_a_ref output argument | by_reference.cpp:128:23:128:23 | pouter indirection [post update] [a] |
-| by_reference.cpp:128:23:128:23 | pouter indirection [post update] [a] | by_reference.cpp:136:8:136:13 | pouter indirection [a] |
+| by_reference.cpp:128:15:128:23 | pouter indirection [post update] [a] | by_reference.cpp:136:8:136:13 | pouter indirection [a] |
+| by_reference.cpp:128:15:128:23 | taint_a_ref output argument | by_reference.cpp:128:15:128:23 | pouter indirection [post update] [a] |
 | by_reference.cpp:130:8:130:12 | outer indirection [inner_nested, a] | by_reference.cpp:130:14:130:25 | inner_nested indirection [a] |
 | by_reference.cpp:130:14:130:25 | inner_nested indirection [a] | by_reference.cpp:130:27:130:27 | a |
 | by_reference.cpp:130:14:130:25 | inner_nested indirection [a] | by_reference.cpp:130:27:130:27 | a indirection |
@@ -598,37 +583,21 @@ edges
 | complex.cpp:43:16:43:16 | f indirection [b_] | complex.cpp:43:18:43:18 | call to b |
 | complex.cpp:53:6:53:10 | b1 indirection [post update] [inner, f, a_] | complex.cpp:59:7:59:8 | b1 indirection [inner, f, a_] |
 | complex.cpp:53:12:53:12 | inner indirection [post update] [f, a_] | complex.cpp:53:6:53:10 | b1 indirection [post update] [inner, f, a_] |
-| complex.cpp:53:12:53:12 | inner indirection [post update] [f, a_] | complex.cpp:53:6:53:10 | b1 indirection [post update] [inner, f, a_] |
-| complex.cpp:53:12:53:12 | inner indirection [post update] [f, a_] | complex.cpp:53:6:53:10 | b1 indirection [post update] [inner, f, a_] |
-| complex.cpp:53:12:53:12 | setA output argument [a_] | complex.cpp:53:12:53:12 | inner indirection [post update] [f, a_] |
-| complex.cpp:53:12:53:12 | setA output argument [a_] | complex.cpp:53:12:53:12 | inner indirection [post update] [f, a_] |
 | complex.cpp:53:12:53:12 | setA output argument [a_] | complex.cpp:53:12:53:12 | inner indirection [post update] [f, a_] |
 | complex.cpp:53:19:53:28 | call to user_input | complex.cpp:11:17:11:17 | a |
 | complex.cpp:53:19:53:28 | call to user_input | complex.cpp:53:12:53:12 | setA output argument [a_] |
 | complex.cpp:54:6:54:10 | b2 indirection [post update] [inner, f, b_] | complex.cpp:62:7:62:8 | b2 indirection [inner, f, b_] |
 | complex.cpp:54:12:54:12 | inner indirection [post update] [f, b_] | complex.cpp:54:6:54:10 | b2 indirection [post update] [inner, f, b_] |
-| complex.cpp:54:12:54:12 | inner indirection [post update] [f, b_] | complex.cpp:54:6:54:10 | b2 indirection [post update] [inner, f, b_] |
-| complex.cpp:54:12:54:12 | inner indirection [post update] [f, b_] | complex.cpp:54:6:54:10 | b2 indirection [post update] [inner, f, b_] |
-| complex.cpp:54:12:54:12 | setB output argument [b_] | complex.cpp:54:12:54:12 | inner indirection [post update] [f, b_] |
-| complex.cpp:54:12:54:12 | setB output argument [b_] | complex.cpp:54:12:54:12 | inner indirection [post update] [f, b_] |
 | complex.cpp:54:12:54:12 | setB output argument [b_] | complex.cpp:54:12:54:12 | inner indirection [post update] [f, b_] |
 | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:12:17:12:17 | b |
 | complex.cpp:54:19:54:28 | call to user_input | complex.cpp:54:12:54:12 | setB output argument [b_] |
 | complex.cpp:55:6:55:10 | b3 indirection [post update] [inner, f, a_] | complex.cpp:65:7:65:8 | b3 indirection [inner, f, a_] |
 | complex.cpp:55:12:55:12 | inner indirection [post update] [f, a_] | complex.cpp:55:6:55:10 | b3 indirection [post update] [inner, f, a_] |
-| complex.cpp:55:12:55:12 | inner indirection [post update] [f, a_] | complex.cpp:55:6:55:10 | b3 indirection [post update] [inner, f, a_] |
-| complex.cpp:55:12:55:12 | inner indirection [post update] [f, a_] | complex.cpp:55:6:55:10 | b3 indirection [post update] [inner, f, a_] |
-| complex.cpp:55:12:55:12 | setA output argument [a_] | complex.cpp:55:12:55:12 | inner indirection [post update] [f, a_] |
-| complex.cpp:55:12:55:12 | setA output argument [a_] | complex.cpp:55:12:55:12 | inner indirection [post update] [f, a_] |
 | complex.cpp:55:12:55:12 | setA output argument [a_] | complex.cpp:55:12:55:12 | inner indirection [post update] [f, a_] |
 | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:11:17:11:17 | a |
 | complex.cpp:55:19:55:28 | call to user_input | complex.cpp:55:12:55:12 | setA output argument [a_] |
 | complex.cpp:56:6:56:10 | b3 indirection [post update] [inner, f, b_] | complex.cpp:65:7:65:8 | b3 indirection [inner, f, b_] |
 | complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] | complex.cpp:56:6:56:10 | b3 indirection [post update] [inner, f, b_] |
-| complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] | complex.cpp:56:6:56:10 | b3 indirection [post update] [inner, f, b_] |
-| complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] | complex.cpp:56:6:56:10 | b3 indirection [post update] [inner, f, b_] |
-| complex.cpp:56:12:56:12 | setB output argument [b_] | complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] |
-| complex.cpp:56:12:56:12 | setB output argument [b_] | complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] |
 | complex.cpp:56:12:56:12 | setB output argument [b_] | complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] |
 | complex.cpp:56:19:56:28 | call to user_input | complex.cpp:12:17:12:17 | b |
 | complex.cpp:56:19:56:28 | call to user_input | complex.cpp:56:12:56:12 | setB output argument [b_] |
@@ -644,7 +613,6 @@ edges
 | conflated.cpp:11:9:11:10 | ra indirection [p indirection] | conflated.cpp:11:12:11:12 | p indirection |
 | conflated.cpp:11:12:11:12 | p indirection | conflated.cpp:11:8:11:12 | * ... |
 | conflated.cpp:11:12:11:12 | p indirection | conflated.cpp:11:8:11:12 | * ... |
-| conflated.cpp:19:19:19:21 | argument_source output argument | conflated.cpp:20:8:20:10 | raw indirection |
 | conflated.cpp:19:19:19:21 | argument_source output argument | conflated.cpp:20:8:20:10 | raw indirection |
 | conflated.cpp:19:19:19:21 | argument_source output argument | conflated.cpp:20:8:20:10 | raw indirection |
 | conflated.cpp:29:3:29:22 | ... = ... | conflated.cpp:29:7:29:7 | pa indirection [post update] [x] |
@@ -691,8 +659,8 @@ edges
 | constructors.cpp:19:22:19:23 | this indirection [b_] | constructors.cpp:19:22:19:23 | b_ indirection |
 | constructors.cpp:23:13:23:13 | a | constructors.cpp:23:28:23:28 | a |
 | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:35:23:35 | b |
-| constructors.cpp:23:28:23:28 | a | constructors.cpp:23:25:23:29 | this indirection [post update] [a_] |
-| constructors.cpp:23:35:23:35 | b | constructors.cpp:23:32:23:36 | this indirection [post update] [b_] |
+| constructors.cpp:23:28:23:28 | a | constructors.cpp:23:25:23:29 | Foo indirection [post update] [a_] |
+| constructors.cpp:23:35:23:35 | b | constructors.cpp:23:32:23:36 | Foo indirection [post update] [b_] |
 | constructors.cpp:26:15:26:15 | f indirection [a_] | constructors.cpp:28:10:28:10 | f indirection [a_] |
 | constructors.cpp:26:15:26:15 | f indirection [b_] | constructors.cpp:29:10:29:10 | f indirection [b_] |
 | constructors.cpp:28:10:28:10 | f indirection [a_] | constructors.cpp:18:9:18:9 | this indirection [a_] |
@@ -761,9 +729,9 @@ edges
 | qualifiers.cpp:38:16:38:20 | inner indirection [a] | qualifiers.cpp:38:23:38:23 | a |
 | qualifiers.cpp:38:16:38:20 | inner indirection [a] | qualifiers.cpp:38:23:38:23 | a indirection |
 | qualifiers.cpp:38:23:38:23 | a indirection | qualifiers.cpp:38:23:38:23 | a |
-| qualifiers.cpp:42:5:42:40 | ... = ... | qualifiers.cpp:42:25:42:25 | * ... indirection [post update] [a] |
+| qualifiers.cpp:42:5:42:40 | ... = ... | qualifiers.cpp:42:25:42:25 | call to getInner indirection [post update] [a] |
 | qualifiers.cpp:42:7:42:11 | getInner output argument [inner indirection, a] | qualifiers.cpp:43:10:43:14 | outer indirection [inner indirection, a] |
-| qualifiers.cpp:42:25:42:25 | * ... indirection [post update] [a] | qualifiers.cpp:42:7:42:11 | getInner output argument [inner indirection, a] |
+| qualifiers.cpp:42:25:42:25 | call to getInner indirection [post update] [a] | qualifiers.cpp:42:7:42:11 | getInner output argument [inner indirection, a] |
 | qualifiers.cpp:42:29:42:38 | call to user_input | qualifiers.cpp:42:5:42:40 | ... = ... |
 | qualifiers.cpp:43:10:43:14 | outer indirection [inner indirection, a] | qualifiers.cpp:43:16:43:20 | inner indirection [a] |
 | qualifiers.cpp:43:10:43:14 | outer indirection [inner indirection, a] | qualifiers.cpp:43:16:43:20 | inner indirection [a] |
@@ -781,21 +749,19 @@ edges
 | qualifiers.cpp:48:16:48:20 | inner indirection [a] | qualifiers.cpp:48:23:48:23 | a |
 | qualifiers.cpp:48:16:48:20 | inner indirection [a] | qualifiers.cpp:48:23:48:23 | a indirection |
 | qualifiers.cpp:48:23:48:23 | a indirection | qualifiers.cpp:48:23:48:23 | a |
+| realistic.cpp:53:9:53:15 | foo indirection [post update] [bar, baz indirection, userInput, bufferLen] | realistic.cpp:61:21:61:23 | foo indirection [bar, baz indirection, userInput, bufferLen] |
 | realistic.cpp:53:9:53:66 | ... = ... | realistic.cpp:53:35:53:43 | userInput indirection [post update] [bufferLen] |
-| realistic.cpp:53:13:53:15 | foo indirection [post update] [bar, baz indirection, userInput, bufferLen] | realistic.cpp:61:21:61:23 | foo indirection [bar, baz indirection, userInput, bufferLen] |
-| realistic.cpp:53:20:53:22 | access to array indirection [post update] [baz indirection, userInput, bufferLen] | realistic.cpp:53:13:53:15 | foo indirection [post update] [bar, baz indirection, userInput, bufferLen] |
+| realistic.cpp:53:20:53:22 | access to array indirection [post update] [baz indirection, userInput, bufferLen] | realistic.cpp:53:9:53:15 | foo indirection [post update] [bar, baz indirection, userInput, bufferLen] |
 | realistic.cpp:53:25:53:33 | baz indirection [post update] [userInput, bufferLen] | realistic.cpp:53:20:53:22 | access to array indirection [post update] [baz indirection, userInput, bufferLen] |
 | realistic.cpp:53:35:53:43 | userInput indirection [post update] [bufferLen] | realistic.cpp:53:25:53:33 | baz indirection [post update] [userInput, bufferLen] |
-| realistic.cpp:53:47:53:66 | call to user_input | realistic.cpp:53:9:53:66 | ... = ... |
 | realistic.cpp:53:55:53:64 | call to user_input | realistic.cpp:53:9:53:66 | ... = ... |
 | realistic.cpp:61:21:61:23 | foo indirection [bar, baz indirection, userInput, bufferLen] | realistic.cpp:61:21:61:30 | access to array indirection [baz indirection, userInput, bufferLen] |
 | realistic.cpp:61:21:61:30 | access to array indirection [baz indirection, userInput, bufferLen] | realistic.cpp:61:32:61:34 | baz indirection [userInput, bufferLen] |
 | realistic.cpp:61:21:61:30 | access to array indirection [baz indirection, userInput, bufferLen] | realistic.cpp:61:32:61:34 | baz indirection [userInput, bufferLen] |
 | realistic.cpp:61:32:61:34 | baz indirection [userInput, bufferLen] | realistic.cpp:61:32:61:34 | baz indirection [userInput, bufferLen] |
 | realistic.cpp:61:32:61:34 | baz indirection [userInput, bufferLen] | realistic.cpp:61:37:61:45 | userInput indirection [bufferLen] |
-| realistic.cpp:61:37:61:45 | userInput indirection [bufferLen] | realistic.cpp:61:14:61:55 | bufferLen |
+| realistic.cpp:61:37:61:45 | userInput indirection [bufferLen] | realistic.cpp:61:47:61:55 | bufferLen |
 | realistic.cpp:61:37:61:45 | userInput indirection [bufferLen] | realistic.cpp:61:47:61:55 | bufferLen indirection |
-| realistic.cpp:61:47:61:55 | bufferLen indirection | realistic.cpp:61:14:61:55 | bufferLen |
 | realistic.cpp:61:47:61:55 | bufferLen indirection | realistic.cpp:61:47:61:55 | bufferLen |
 | simple.cpp:18:9:18:9 | this indirection [a_] | simple.cpp:18:22:18:23 | this indirection [a_] |
 | simple.cpp:18:22:18:23 | a_ | simple.cpp:18:9:18:9 | a indirection |
@@ -862,14 +828,14 @@ edges
 | struct_init.c:15:8:15:9 | ab indirection [a] | struct_init.c:15:12:15:12 | a indirection |
 | struct_init.c:15:12:15:12 | a indirection | struct_init.c:15:12:15:12 | a |
 | struct_init.c:20:17:20:36 | definition of ab indirection [post update] [a] | struct_init.c:22:8:22:9 | ab indirection [a] |
-| struct_init.c:20:17:20:36 | definition of ab indirection [post update] [a] | struct_init.c:24:10:24:12 | & ... indirection [a] |
+| struct_init.c:20:17:20:36 | definition of ab indirection [post update] [a] | struct_init.c:24:10:24:12 | ab indirection [a] |
 | struct_init.c:20:17:20:36 | definition of ab indirection [post update] [a] | struct_init.c:28:5:28:7 | & ... indirection [a] |
 | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:20:17:20:36 | definition of ab indirection [post update] [a] |
 | struct_init.c:20:20:20:29 | call to user_input | struct_init.c:20:20:20:29 | call to user_input |
 | struct_init.c:22:8:22:9 | ab indirection [a] | struct_init.c:22:11:22:11 | a |
 | struct_init.c:22:8:22:9 | ab indirection [a] | struct_init.c:22:11:22:11 | a indirection |
 | struct_init.c:22:11:22:11 | a indirection | struct_init.c:22:11:22:11 | a |
-| struct_init.c:24:10:24:12 | & ... indirection [a] | struct_init.c:14:24:14:25 | ab indirection [a] |
+| struct_init.c:24:10:24:12 | ab indirection [a] | struct_init.c:14:24:14:25 | ab indirection [a] |
 | struct_init.c:26:23:29:3 | definition of outer indirection [post update] [nestedAB, a] | struct_init.c:31:8:31:12 | outer indirection [nestedAB, a] |
 | struct_init.c:26:23:29:3 | definition of outer indirection [post update] [nestedAB, a] | struct_init.c:31:8:31:12 | outer indirection [nestedAB, a] |
 | struct_init.c:26:23:29:3 | definition of outer indirection [post update] [nestedAB, a] | struct_init.c:36:11:36:15 | outer indirection [nestedAB, a] |
@@ -890,8 +856,9 @@ edges
 | struct_init.c:33:14:33:22 | pointerAB indirection [a] | struct_init.c:33:25:33:25 | a |
 | struct_init.c:33:14:33:22 | pointerAB indirection [a] | struct_init.c:33:25:33:25 | a indirection |
 | struct_init.c:33:25:33:25 | a indirection | struct_init.c:33:25:33:25 | a |
-| struct_init.c:36:10:36:24 | & ... indirection [a] | struct_init.c:14:24:14:25 | ab indirection [a] |
-| struct_init.c:36:11:36:15 | outer indirection [nestedAB, a] | struct_init.c:36:10:36:24 | & ... indirection [a] |
+| struct_init.c:36:10:36:24 | nestedAB indirection [a] | struct_init.c:14:24:14:25 | ab indirection [a] |
+| struct_init.c:36:10:36:24 | nestedAB indirection [a] | struct_init.c:36:10:36:24 | nestedAB indirection [a] |
+| struct_init.c:36:11:36:15 | outer indirection [nestedAB, a] | struct_init.c:36:10:36:24 | nestedAB indirection [a] |
 | struct_init.c:40:17:40:36 | definition of ab indirection [post update] [a] | struct_init.c:43:5:43:7 | & ... indirection [a] |
 | struct_init.c:40:20:40:29 | call to user_input | struct_init.c:40:17:40:36 | definition of ab indirection [post update] [a] |
 | struct_init.c:40:20:40:29 | call to user_input | struct_init.c:40:20:40:29 | call to user_input |
@@ -919,36 +886,33 @@ nodes
 | A.cpp:31:20:31:20 | c | semmle.label | c |
 | A.cpp:41:15:41:21 | new | semmle.label | new |
 | A.cpp:41:15:41:21 | new | semmle.label | new |
-| A.cpp:43:10:43:12 | & ... indirection | semmle.label | & ... indirection |
+| A.cpp:41:15:41:21 | new | semmle.label | new |
+| A.cpp:43:10:43:12 | ct indirection | semmle.label | ct indirection |
 | A.cpp:47:12:47:18 | new | semmle.label | new |
 | A.cpp:48:12:48:18 | call to make indirection [c] | semmle.label | call to make indirection [c] |
 | A.cpp:48:20:48:20 | c | semmle.label | c |
 | A.cpp:49:10:49:10 | b indirection [c] | semmle.label | b indirection [c] |
-| A.cpp:49:10:49:13 | c | semmle.label | c |
 | A.cpp:49:13:49:13 | c | semmle.label | c |
 | A.cpp:49:13:49:13 | c indirection | semmle.label | c indirection |
 | A.cpp:55:5:55:5 | set output argument [c] | semmle.label | set output argument [c] |
 | A.cpp:55:12:55:19 | new | semmle.label | new |
 | A.cpp:55:12:55:19 | new | semmle.label | new |
 | A.cpp:56:10:56:10 | b indirection [c] | semmle.label | b indirection [c] |
-| A.cpp:56:10:56:17 | call to get | semmle.label | call to get |
-| A.cpp:57:10:57:32 | call to get | semmle.label | call to get |
+| A.cpp:56:13:56:15 | call to get | semmle.label | call to get |
 | A.cpp:57:11:57:24 | call to B [c] | semmle.label | call to B [c] |
 | A.cpp:57:11:57:24 | new indirection [c] | semmle.label | new indirection [c] |
 | A.cpp:57:17:57:23 | new | semmle.label | new |
-| A.cpp:57:17:57:23 | new | semmle.label | new |
+| A.cpp:57:28:57:30 | call to get | semmle.label | call to get |
 | A.cpp:64:10:64:15 | call to setOnB indirection [c] | semmle.label | call to setOnB indirection [c] |
 | A.cpp:64:21:64:28 | new | semmle.label | new |
 | A.cpp:64:21:64:28 | new | semmle.label | new |
 | A.cpp:66:10:66:11 | b2 indirection [c] | semmle.label | b2 indirection [c] |
-| A.cpp:66:10:66:14 | c | semmle.label | c |
 | A.cpp:66:14:66:14 | c | semmle.label | c |
 | A.cpp:66:14:66:14 | c indirection | semmle.label | c indirection |
 | A.cpp:73:10:73:19 | call to setOnBWrap indirection [c] | semmle.label | call to setOnBWrap indirection [c] |
 | A.cpp:73:25:73:32 | new | semmle.label | new |
 | A.cpp:73:25:73:32 | new | semmle.label | new |
 | A.cpp:75:10:75:11 | b2 indirection [c] | semmle.label | b2 indirection [c] |
-| A.cpp:75:10:75:14 | c | semmle.label | c |
 | A.cpp:75:14:75:14 | c | semmle.label | c |
 | A.cpp:75:14:75:14 | c indirection | semmle.label | c indirection |
 | A.cpp:78:6:78:15 | setOnBWrap indirection [c] | semmle.label | setOnBWrap indirection [c] |
@@ -965,19 +929,15 @@ nodes
 | A.cpp:101:8:101:9 | c1 indirection [a] | semmle.label | c1 indirection [a] |
 | A.cpp:103:14:103:14 | c indirection [a] | semmle.label | c indirection [a] |
 | A.cpp:107:12:107:13 | c1 indirection [a] | semmle.label | c1 indirection [a] |
-| A.cpp:107:12:107:16 | a | semmle.label | a |
 | A.cpp:107:16:107:16 | a | semmle.label | a |
 | A.cpp:107:16:107:16 | a indirection | semmle.label | a indirection |
 | A.cpp:120:12:120:13 | c1 indirection [a] | semmle.label | c1 indirection [a] |
-| A.cpp:120:12:120:16 | a | semmle.label | a |
 | A.cpp:120:16:120:16 | a | semmle.label | a |
 | A.cpp:120:16:120:16 | a indirection | semmle.label | a indirection |
 | A.cpp:126:5:126:5 | set output argument [c] | semmle.label | set output argument [c] |
 | A.cpp:126:12:126:18 | new | semmle.label | new |
-| A.cpp:126:12:126:18 | new | semmle.label | new |
 | A.cpp:131:8:131:8 | f7 output argument [c] | semmle.label | f7 output argument [c] |
 | A.cpp:132:10:132:10 | b indirection [c] | semmle.label | b indirection [c] |
-| A.cpp:132:10:132:13 | c | semmle.label | c |
 | A.cpp:132:13:132:13 | c | semmle.label | c |
 | A.cpp:132:13:132:13 | c indirection | semmle.label | c indirection |
 | A.cpp:140:13:140:13 | b | semmle.label | b |
@@ -997,17 +957,14 @@ nodes
 | A.cpp:151:18:151:18 | D output argument [c] | semmle.label | D output argument [c] |
 | A.cpp:151:18:151:18 | b | semmle.label | b |
 | A.cpp:152:10:152:10 | d indirection [b] | semmle.label | d indirection [b] |
-| A.cpp:152:10:152:13 | b | semmle.label | b |
 | A.cpp:152:13:152:13 | b | semmle.label | b |
 | A.cpp:152:13:152:13 | b indirection | semmle.label | b indirection |
 | A.cpp:153:10:153:10 | d indirection [b indirection, c] | semmle.label | d indirection [b indirection, c] |
-| A.cpp:153:10:153:16 | c | semmle.label | c |
 | A.cpp:153:13:153:13 | b indirection [c] | semmle.label | b indirection [c] |
 | A.cpp:153:13:153:13 | b indirection [c] | semmle.label | b indirection [c] |
 | A.cpp:153:16:153:16 | c | semmle.label | c |
 | A.cpp:153:16:153:16 | c indirection | semmle.label | c indirection |
 | A.cpp:154:10:154:10 | b indirection [c] | semmle.label | b indirection [c] |
-| A.cpp:154:10:154:13 | c | semmle.label | c |
 | A.cpp:154:13:154:13 | c | semmle.label | c |
 | A.cpp:154:13:154:13 | c indirection | semmle.label | c indirection |
 | A.cpp:159:12:159:18 | new | semmle.label | new |
@@ -1018,7 +975,6 @@ nodes
 | A.cpp:162:18:162:40 | call to MyList [next indirection, next indirection, head] | semmle.label | call to MyList [next indirection, next indirection, head] |
 | A.cpp:162:38:162:39 | l2 indirection [next indirection, head] | semmle.label | l2 indirection [next indirection, head] |
 | A.cpp:165:10:165:11 | l3 indirection [next indirection, next indirection, head] | semmle.label | l3 indirection [next indirection, next indirection, head] |
-| A.cpp:165:10:165:29 | head | semmle.label | head |
 | A.cpp:165:14:165:17 | next indirection [next indirection, head] | semmle.label | next indirection [next indirection, head] |
 | A.cpp:165:14:165:17 | next indirection [next indirection, head] | semmle.label | next indirection [next indirection, head] |
 | A.cpp:165:20:165:23 | next indirection [head] | semmle.label | next indirection [head] |
@@ -1032,7 +988,6 @@ nodes
 | A.cpp:167:47:167:50 | next indirection [next indirection, head] | semmle.label | next indirection [next indirection, head] |
 | A.cpp:167:47:167:50 | next indirection [next indirection, head] | semmle.label | next indirection [next indirection, head] |
 | A.cpp:169:12:169:12 | l indirection [head] | semmle.label | l indirection [head] |
-| A.cpp:169:12:169:18 | head | semmle.label | head |
 | A.cpp:169:15:169:18 | head | semmle.label | head |
 | A.cpp:169:15:169:18 | head indirection | semmle.label | head indirection |
 | A.cpp:181:15:181:21 | newHead | semmle.label | newHead |
@@ -1050,7 +1005,6 @@ nodes
 | B.cpp:8:16:8:27 | call to Box2 [box1 indirection, elem1] | semmle.label | call to Box2 [box1 indirection, elem1] |
 | B.cpp:8:25:8:26 | b1 indirection [elem1] | semmle.label | b1 indirection [elem1] |
 | B.cpp:9:10:9:11 | b2 indirection [box1 indirection, elem1] | semmle.label | b2 indirection [box1 indirection, elem1] |
-| B.cpp:9:10:9:24 | elem1 | semmle.label | elem1 |
 | B.cpp:9:14:9:17 | box1 indirection [elem1] | semmle.label | box1 indirection [elem1] |
 | B.cpp:9:14:9:17 | box1 indirection [elem1] | semmle.label | box1 indirection [elem1] |
 | B.cpp:9:20:9:24 | elem1 | semmle.label | elem1 |
@@ -1061,7 +1015,6 @@ nodes
 | B.cpp:17:16:17:27 | call to Box2 [box1 indirection, elem2] | semmle.label | call to Box2 [box1 indirection, elem2] |
 | B.cpp:17:25:17:26 | b1 indirection [elem2] | semmle.label | b1 indirection [elem2] |
 | B.cpp:19:10:19:11 | b2 indirection [box1 indirection, elem2] | semmle.label | b2 indirection [box1 indirection, elem2] |
-| B.cpp:19:10:19:24 | elem2 | semmle.label | elem2 |
 | B.cpp:19:14:19:17 | box1 indirection [elem2] | semmle.label | box1 indirection [elem2] |
 | B.cpp:19:14:19:17 | box1 indirection [elem2] | semmle.label | box1 indirection [elem2] |
 | B.cpp:19:20:19:24 | elem2 | semmle.label | elem2 |
@@ -1082,7 +1035,7 @@ nodes
 | C.cpp:18:12:18:18 | call to C [s3] | semmle.label | call to C [s3] |
 | C.cpp:19:5:19:5 | c indirection [s1] | semmle.label | c indirection [s1] |
 | C.cpp:19:5:19:5 | c indirection [s3] | semmle.label | c indirection [s3] |
-| C.cpp:22:9:22:22 | this indirection [post update] [s1] | semmle.label | this indirection [post update] [s1] |
+| C.cpp:22:9:22:22 | C indirection [post update] [s1] | semmle.label | C indirection [post update] [s1] |
 | C.cpp:22:12:22:21 | new | semmle.label | new |
 | C.cpp:22:12:22:21 | new | semmle.label | new |
 | C.cpp:24:5:24:25 | ... = ... | semmle.label | ... = ... |
@@ -1111,8 +1064,8 @@ nodes
 | D.cpp:17:30:17:32 | this indirection [box indirection, elem] | semmle.label | this indirection [box indirection, elem] |
 | D.cpp:21:30:21:31 | b2 indirection [box indirection, elem] | semmle.label | b2 indirection [box indirection, elem] |
 | D.cpp:22:10:22:11 | b2 indirection [box indirection, elem] | semmle.label | b2 indirection [box indirection, elem] |
-| D.cpp:22:10:22:33 | call to getElem | semmle.label | call to getElem |
 | D.cpp:22:14:22:20 | call to getBox1 indirection [elem] | semmle.label | call to getBox1 indirection [elem] |
+| D.cpp:22:25:22:31 | call to getElem | semmle.label | call to getElem |
 | D.cpp:28:15:28:24 | new | semmle.label | new |
 | D.cpp:30:5:30:20 | ... = ... | semmle.label | ... = ... |
 | D.cpp:30:8:30:10 | b indirection [post update] [box indirection, elem] | semmle.label | b indirection [post update] [box indirection, elem] |
@@ -1143,7 +1096,6 @@ nodes
 | D.cpp:64:10:64:17 | boxfield indirection [box indirection, elem] | semmle.label | boxfield indirection [box indirection, elem] |
 | D.cpp:64:10:64:17 | boxfield indirection [box indirection, elem] | semmle.label | boxfield indirection [box indirection, elem] |
 | D.cpp:64:10:64:17 | this indirection [boxfield indirection, box indirection, elem] | semmle.label | this indirection [boxfield indirection, box indirection, elem] |
-| D.cpp:64:10:64:28 | elem | semmle.label | elem |
 | D.cpp:64:20:64:22 | box indirection [elem] | semmle.label | box indirection [elem] |
 | D.cpp:64:20:64:22 | box indirection [elem] | semmle.label | box indirection [elem] |
 | D.cpp:64:25:64:28 | elem | semmle.label | elem |
@@ -1164,7 +1116,7 @@ nodes
 | E.cpp:32:10:32:10 | b indirection [buffer indirection] | semmle.label | b indirection [buffer indirection] |
 | E.cpp:32:13:32:18 | buffer indirection | semmle.label | buffer indirection |
 | E.cpp:32:13:32:18 | buffer indirection | semmle.label | buffer indirection |
-| E.cpp:33:18:33:19 | & ... indirection [data, buffer indirection] | semmle.label | & ... indirection [data, buffer indirection] |
+| E.cpp:33:18:33:19 | p indirection [data, buffer indirection] | semmle.label | p indirection [data, buffer indirection] |
 | aliasing.cpp:9:3:9:22 | ... = ... | semmle.label | ... = ... |
 | aliasing.cpp:9:6:9:7 | s indirection [post update] [m1] | semmle.label | s indirection [post update] [m1] |
 | aliasing.cpp:9:11:9:20 | call to user_input | semmle.label | call to user_input |
@@ -1196,7 +1148,7 @@ nodes
 | aliasing.cpp:98:3:98:21 | ... = ... | semmle.label | ... = ... |
 | aliasing.cpp:98:5:98:6 | s indirection [post update] [m1] | semmle.label | s indirection [post update] [m1] |
 | aliasing.cpp:98:10:98:19 | call to user_input | semmle.label | call to user_input |
-| aliasing.cpp:101:13:101:22 | & ... indirection | semmle.label | & ... indirection |
+| aliasing.cpp:101:13:101:22 | m1 indirection | semmle.label | m1 indirection |
 | aliasing.cpp:101:14:101:19 | s_copy indirection [m1] | semmle.label | s_copy indirection [m1] |
 | aliasing.cpp:102:8:102:10 | * ... | semmle.label | * ... |
 | aliasing.cpp:105:23:105:24 | pa | semmle.label | pa |
@@ -1215,33 +1167,33 @@ nodes
 | aliasing.cpp:143:8:143:16 | access to array | semmle.label | access to array |
 | aliasing.cpp:143:8:143:16 | access to array indirection | semmle.label | access to array indirection |
 | aliasing.cpp:143:10:143:13 | data indirection | semmle.label | data indirection |
+| aliasing.cpp:158:15:158:20 | s indirection [post update] [data] | semmle.label | s indirection [post update] [data] |
 | aliasing.cpp:158:15:158:20 | taint_a_ptr output argument | semmle.label | taint_a_ptr output argument |
-| aliasing.cpp:158:17:158:20 | s indirection [post update] [data] | semmle.label | s indirection [post update] [data] |
 | aliasing.cpp:159:8:159:14 | * ... | semmle.label | * ... |
 | aliasing.cpp:159:9:159:9 | s indirection [data] | semmle.label | s indirection [data] |
 | aliasing.cpp:159:9:159:14 | data indirection | semmle.label | data indirection |
+| aliasing.cpp:164:15:164:20 | s indirection [post update] [data] | semmle.label | s indirection [post update] [data] |
 | aliasing.cpp:164:15:164:20 | taint_a_ptr output argument | semmle.label | taint_a_ptr output argument |
-| aliasing.cpp:164:17:164:20 | s indirection [post update] [data] | semmle.label | s indirection [post update] [data] |
 | aliasing.cpp:165:8:165:8 | s indirection [data] | semmle.label | s indirection [data] |
 | aliasing.cpp:165:8:165:16 | access to array | semmle.label | access to array |
 | aliasing.cpp:165:8:165:16 | access to array indirection | semmle.label | access to array indirection |
+| aliasing.cpp:175:15:175:22 | s indirection [post update] [m1] | semmle.label | s indirection [post update] [m1] |
 | aliasing.cpp:175:15:175:22 | taint_a_ptr output argument | semmle.label | taint_a_ptr output argument |
 | aliasing.cpp:175:19:175:19 | s2 indirection [post update] [s, m1] | semmle.label | s2 indirection [post update] [s, m1] |
-| aliasing.cpp:175:21:175:22 | s indirection [post update] [m1] | semmle.label | s indirection [post update] [m1] |
 | aliasing.cpp:176:8:176:9 | s2 indirection [s, m1] | semmle.label | s2 indirection [s, m1] |
 | aliasing.cpp:176:11:176:11 | s indirection [m1] | semmle.label | s indirection [m1] |
 | aliasing.cpp:176:13:176:14 | m1 | semmle.label | m1 |
 | aliasing.cpp:176:13:176:14 | m1 indirection | semmle.label | m1 indirection |
+| aliasing.cpp:187:15:187:22 | s indirection [post update] [m1] | semmle.label | s indirection [post update] [m1] |
 | aliasing.cpp:187:15:187:22 | taint_a_ptr output argument | semmle.label | taint_a_ptr output argument |
 | aliasing.cpp:187:19:187:19 | s2 indirection [post update] [s, m1] | semmle.label | s2 indirection [post update] [s, m1] |
-| aliasing.cpp:187:21:187:22 | s indirection [post update] [m1] | semmle.label | s indirection [post update] [m1] |
 | aliasing.cpp:189:8:189:11 | s2_2 indirection [s, m1] | semmle.label | s2_2 indirection [s, m1] |
 | aliasing.cpp:189:13:189:13 | s indirection [m1] | semmle.label | s indirection [m1] |
 | aliasing.cpp:189:15:189:16 | m1 | semmle.label | m1 |
 | aliasing.cpp:189:15:189:16 | m1 indirection | semmle.label | m1 indirection |
+| aliasing.cpp:200:15:200:24 | s indirection [post update] [m1] | semmle.label | s indirection [post update] [m1] |
 | aliasing.cpp:200:15:200:24 | taint_a_ptr output argument | semmle.label | taint_a_ptr output argument |
 | aliasing.cpp:200:21:200:21 | ps2 indirection [post update] [s, m1] | semmle.label | ps2 indirection [post update] [s, m1] |
-| aliasing.cpp:200:23:200:24 | s indirection [post update] [m1] | semmle.label | s indirection [post update] [m1] |
 | aliasing.cpp:201:8:201:10 | ps2 indirection [s, m1] | semmle.label | ps2 indirection [s, m1] |
 | aliasing.cpp:201:13:201:13 | s indirection [m1] | semmle.label | s indirection [m1] |
 | aliasing.cpp:201:15:201:16 | m1 | semmle.label | m1 |
@@ -1254,9 +1206,9 @@ nodes
 | arrays.cpp:15:14:15:23 | call to user_input | semmle.label | call to user_input |
 | arrays.cpp:16:8:16:13 | access to array | semmle.label | access to array |
 | arrays.cpp:17:8:17:13 | access to array | semmle.label | access to array |
+| arrays.cpp:36:3:36:14 | nested indirection [post update] [arr, data] | semmle.label | nested indirection [post update] [arr, data] |
 | arrays.cpp:36:3:36:37 | ... = ... | semmle.label | ... = ... |
 | arrays.cpp:36:5:36:10 | o indirection [post update] [nested, arr, data] | semmle.label | o indirection [post update] [nested, arr, data] |
-| arrays.cpp:36:12:36:14 | nested indirection [post update] [arr, data] | semmle.label | nested indirection [post update] [arr, data] |
 | arrays.cpp:36:19:36:22 | access to array indirection [post update] [data] | semmle.label | access to array indirection [post update] [data] |
 | arrays.cpp:36:26:36:35 | call to user_input | semmle.label | call to user_input |
 | arrays.cpp:37:8:37:8 | o indirection [nested, arr, data] | semmle.label | o indirection [nested, arr, data] |
@@ -1269,9 +1221,9 @@ nodes
 | arrays.cpp:38:10:38:15 | nested indirection [arr, data] | semmle.label | nested indirection [arr, data] |
 | arrays.cpp:38:24:38:27 | data | semmle.label | data |
 | arrays.cpp:38:24:38:27 | data indirection | semmle.label | data indirection |
+| arrays.cpp:42:3:42:17 | indirect indirection [post update] [arr, data] | semmle.label | indirect indirection [post update] [arr, data] |
 | arrays.cpp:42:3:42:40 | ... = ... | semmle.label | ... = ... |
 | arrays.cpp:42:5:42:12 | o indirection [post update] [indirect indirection, arr, data] | semmle.label | o indirection [post update] [indirect indirection, arr, data] |
-| arrays.cpp:42:15:42:17 | indirect indirection [post update] [arr, data] | semmle.label | indirect indirection [post update] [arr, data] |
 | arrays.cpp:42:22:42:25 | access to array indirection [post update] [data] | semmle.label | access to array indirection [post update] [data] |
 | arrays.cpp:42:29:42:38 | call to user_input | semmle.label | call to user_input |
 | arrays.cpp:43:8:43:8 | o indirection [indirect indirection, arr, data] | semmle.label | o indirection [indirect indirection, arr, data] |
@@ -1350,7 +1302,7 @@ nodes
 | by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] | semmle.label | nonMemberSetA output argument [a] |
 | by_reference.cpp:68:21:68:30 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:69:8:69:20 | call to nonMemberGetA | semmle.label | call to nonMemberGetA |
-| by_reference.cpp:69:22:69:23 | & ... indirection [a] | semmle.label | & ... indirection [a] |
+| by_reference.cpp:69:22:69:23 | s indirection [a] | semmle.label | s indirection [a] |
 | by_reference.cpp:84:3:84:25 | ... = ... | semmle.label | ... = ... |
 | by_reference.cpp:84:10:84:10 | inner indirection [post update] [a] | semmle.label | inner indirection [post update] [a] |
 | by_reference.cpp:84:14:84:23 | call to user_input | semmle.label | call to user_input |
@@ -1361,18 +1313,18 @@ nodes
 | by_reference.cpp:92:9:92:18 | call to user_input | semmle.label | call to user_input |
 | by_reference.cpp:95:25:95:26 | pa | semmle.label | pa |
 | by_reference.cpp:96:8:96:17 | call to user_input | semmle.label | call to user_input |
+| by_reference.cpp:102:21:102:39 | outer indirection [post update] [inner_nested, a] | semmle.label | outer indirection [post update] [inner_nested, a] |
 | by_reference.cpp:102:21:102:39 | taint_inner_a_ptr output argument [a] | semmle.label | taint_inner_a_ptr output argument [a] |
-| by_reference.cpp:102:28:102:39 | outer indirection [post update] [inner_nested, a] | semmle.label | outer indirection [post update] [inner_nested, a] |
 | by_reference.cpp:103:27:103:35 | outer indirection [post update] [inner_ptr indirection, a] | semmle.label | outer indirection [post update] [inner_ptr indirection, a] |
 | by_reference.cpp:103:27:103:35 | taint_inner_a_ptr output argument [a] | semmle.label | taint_inner_a_ptr output argument [a] |
+| by_reference.cpp:104:15:104:22 | outer indirection [post update] [a] | semmle.label | outer indirection [post update] [a] |
 | by_reference.cpp:104:15:104:22 | taint_a_ptr output argument | semmle.label | taint_a_ptr output argument |
-| by_reference.cpp:104:22:104:22 | outer indirection [post update] [a] | semmle.label | outer indirection [post update] [a] |
+| by_reference.cpp:106:21:106:41 | pouter indirection [post update] [inner_nested, a] | semmle.label | pouter indirection [post update] [inner_nested, a] |
 | by_reference.cpp:106:21:106:41 | taint_inner_a_ptr output argument [a] | semmle.label | taint_inner_a_ptr output argument [a] |
-| by_reference.cpp:106:30:106:41 | pouter indirection [post update] [inner_nested, a] | semmle.label | pouter indirection [post update] [inner_nested, a] |
 | by_reference.cpp:107:29:107:37 | pouter indirection [post update] [inner_ptr indirection, a] | semmle.label | pouter indirection [post update] [inner_ptr indirection, a] |
 | by_reference.cpp:107:29:107:37 | taint_inner_a_ptr output argument [a] | semmle.label | taint_inner_a_ptr output argument [a] |
+| by_reference.cpp:108:15:108:24 | pouter indirection [post update] [a] | semmle.label | pouter indirection [post update] [a] |
 | by_reference.cpp:108:15:108:24 | taint_a_ptr output argument | semmle.label | taint_a_ptr output argument |
-| by_reference.cpp:108:24:108:24 | pouter indirection [post update] [a] | semmle.label | pouter indirection [post update] [a] |
 | by_reference.cpp:110:8:110:12 | outer indirection [inner_nested, a] | semmle.label | outer indirection [inner_nested, a] |
 | by_reference.cpp:110:14:110:25 | inner_nested indirection [a] | semmle.label | inner_nested indirection [a] |
 | by_reference.cpp:110:27:110:27 | a | semmle.label | a |
@@ -1397,18 +1349,18 @@ nodes
 | by_reference.cpp:116:8:116:13 | pouter indirection [a] | semmle.label | pouter indirection [a] |
 | by_reference.cpp:116:16:116:16 | a | semmle.label | a |
 | by_reference.cpp:116:16:116:16 | a indirection | semmle.label | a indirection |
+| by_reference.cpp:122:21:122:38 | outer indirection [post update] [inner_nested, a] | semmle.label | outer indirection [post update] [inner_nested, a] |
 | by_reference.cpp:122:21:122:38 | taint_inner_a_ref output argument [a] | semmle.label | taint_inner_a_ref output argument [a] |
-| by_reference.cpp:122:27:122:38 | outer indirection [post update] [inner_nested, a] | semmle.label | outer indirection [post update] [inner_nested, a] |
 | by_reference.cpp:123:21:123:36 | taint_inner_a_ref output argument [a] | semmle.label | taint_inner_a_ref output argument [a] |
 | by_reference.cpp:123:28:123:36 | outer indirection [post update] [inner_ptr indirection, a] | semmle.label | outer indirection [post update] [inner_ptr indirection, a] |
+| by_reference.cpp:124:15:124:21 | outer indirection [post update] [a] | semmle.label | outer indirection [post update] [a] |
 | by_reference.cpp:124:15:124:21 | taint_a_ref output argument | semmle.label | taint_a_ref output argument |
-| by_reference.cpp:124:21:124:21 | outer indirection [post update] [a] | semmle.label | outer indirection [post update] [a] |
+| by_reference.cpp:126:21:126:40 | pouter indirection [post update] [inner_nested, a] | semmle.label | pouter indirection [post update] [inner_nested, a] |
 | by_reference.cpp:126:21:126:40 | taint_inner_a_ref output argument [a] | semmle.label | taint_inner_a_ref output argument [a] |
-| by_reference.cpp:126:29:126:40 | pouter indirection [post update] [inner_nested, a] | semmle.label | pouter indirection [post update] [inner_nested, a] |
 | by_reference.cpp:127:21:127:38 | taint_inner_a_ref output argument [a] | semmle.label | taint_inner_a_ref output argument [a] |
 | by_reference.cpp:127:30:127:38 | pouter indirection [post update] [inner_ptr indirection, a] | semmle.label | pouter indirection [post update] [inner_ptr indirection, a] |
+| by_reference.cpp:128:15:128:23 | pouter indirection [post update] [a] | semmle.label | pouter indirection [post update] [a] |
 | by_reference.cpp:128:15:128:23 | taint_a_ref output argument | semmle.label | taint_a_ref output argument |
-| by_reference.cpp:128:23:128:23 | pouter indirection [post update] [a] | semmle.label | pouter indirection [post update] [a] |
 | by_reference.cpp:130:8:130:12 | outer indirection [inner_nested, a] | semmle.label | outer indirection [inner_nested, a] |
 | by_reference.cpp:130:14:130:25 | inner_nested indirection [a] | semmle.label | inner_nested indirection [a] |
 | by_reference.cpp:130:27:130:27 | a | semmle.label | a |
@@ -1461,25 +1413,17 @@ nodes
 | complex.cpp:43:18:43:18 | call to b | semmle.label | call to b |
 | complex.cpp:53:6:53:10 | b1 indirection [post update] [inner, f, a_] | semmle.label | b1 indirection [post update] [inner, f, a_] |
 | complex.cpp:53:12:53:12 | inner indirection [post update] [f, a_] | semmle.label | inner indirection [post update] [f, a_] |
-| complex.cpp:53:12:53:12 | inner indirection [post update] [f, a_] | semmle.label | inner indirection [post update] [f, a_] |
-| complex.cpp:53:12:53:12 | inner indirection [post update] [f, a_] | semmle.label | inner indirection [post update] [f, a_] |
 | complex.cpp:53:12:53:12 | setA output argument [a_] | semmle.label | setA output argument [a_] |
 | complex.cpp:53:19:53:28 | call to user_input | semmle.label | call to user_input |
 | complex.cpp:54:6:54:10 | b2 indirection [post update] [inner, f, b_] | semmle.label | b2 indirection [post update] [inner, f, b_] |
-| complex.cpp:54:12:54:12 | inner indirection [post update] [f, b_] | semmle.label | inner indirection [post update] [f, b_] |
-| complex.cpp:54:12:54:12 | inner indirection [post update] [f, b_] | semmle.label | inner indirection [post update] [f, b_] |
 | complex.cpp:54:12:54:12 | inner indirection [post update] [f, b_] | semmle.label | inner indirection [post update] [f, b_] |
 | complex.cpp:54:12:54:12 | setB output argument [b_] | semmle.label | setB output argument [b_] |
 | complex.cpp:54:19:54:28 | call to user_input | semmle.label | call to user_input |
 | complex.cpp:55:6:55:10 | b3 indirection [post update] [inner, f, a_] | semmle.label | b3 indirection [post update] [inner, f, a_] |
 | complex.cpp:55:12:55:12 | inner indirection [post update] [f, a_] | semmle.label | inner indirection [post update] [f, a_] |
-| complex.cpp:55:12:55:12 | inner indirection [post update] [f, a_] | semmle.label | inner indirection [post update] [f, a_] |
-| complex.cpp:55:12:55:12 | inner indirection [post update] [f, a_] | semmle.label | inner indirection [post update] [f, a_] |
 | complex.cpp:55:12:55:12 | setA output argument [a_] | semmle.label | setA output argument [a_] |
 | complex.cpp:55:19:55:28 | call to user_input | semmle.label | call to user_input |
 | complex.cpp:56:6:56:10 | b3 indirection [post update] [inner, f, b_] | semmle.label | b3 indirection [post update] [inner, f, b_] |
-| complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] | semmle.label | inner indirection [post update] [f, b_] |
-| complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] | semmle.label | inner indirection [post update] [f, b_] |
 | complex.cpp:56:12:56:12 | inner indirection [post update] [f, b_] | semmle.label | inner indirection [post update] [f, b_] |
 | complex.cpp:56:12:56:12 | setB output argument [b_] | semmle.label | setB output argument [b_] |
 | complex.cpp:56:19:56:28 | call to user_input | semmle.label | call to user_input |
@@ -1495,7 +1439,6 @@ nodes
 | conflated.cpp:11:12:11:12 | p indirection | semmle.label | p indirection |
 | conflated.cpp:11:12:11:12 | p indirection | semmle.label | p indirection |
 | conflated.cpp:19:19:19:21 | argument_source output argument | semmle.label | argument_source output argument |
-| conflated.cpp:20:8:20:10 | raw indirection | semmle.label | raw indirection |
 | conflated.cpp:20:8:20:10 | raw indirection | semmle.label | raw indirection |
 | conflated.cpp:20:8:20:10 | raw indirection | semmle.label | raw indirection |
 | conflated.cpp:29:3:29:22 | ... = ... | semmle.label | ... = ... |
@@ -1540,9 +1483,9 @@ nodes
 | constructors.cpp:19:22:19:23 | this indirection [b_] | semmle.label | this indirection [b_] |
 | constructors.cpp:23:13:23:13 | a | semmle.label | a |
 | constructors.cpp:23:20:23:20 | b | semmle.label | b |
-| constructors.cpp:23:25:23:29 | this indirection [post update] [a_] | semmle.label | this indirection [post update] [a_] |
+| constructors.cpp:23:25:23:29 | Foo indirection [post update] [a_] | semmle.label | Foo indirection [post update] [a_] |
 | constructors.cpp:23:28:23:28 | a | semmle.label | a |
-| constructors.cpp:23:32:23:36 | this indirection [post update] [b_] | semmle.label | this indirection [post update] [b_] |
+| constructors.cpp:23:32:23:36 | Foo indirection [post update] [b_] | semmle.label | Foo indirection [post update] [b_] |
 | constructors.cpp:23:35:23:35 | b | semmle.label | b |
 | constructors.cpp:26:15:26:15 | f indirection [a_] | semmle.label | f indirection [a_] |
 | constructors.cpp:26:15:26:15 | f indirection [b_] | semmle.label | f indirection [b_] |
@@ -1606,7 +1549,7 @@ nodes
 | qualifiers.cpp:38:23:38:23 | a indirection | semmle.label | a indirection |
 | qualifiers.cpp:42:5:42:40 | ... = ... | semmle.label | ... = ... |
 | qualifiers.cpp:42:7:42:11 | getInner output argument [inner indirection, a] | semmle.label | getInner output argument [inner indirection, a] |
-| qualifiers.cpp:42:25:42:25 | * ... indirection [post update] [a] | semmle.label | * ... indirection [post update] [a] |
+| qualifiers.cpp:42:25:42:25 | call to getInner indirection [post update] [a] | semmle.label | call to getInner indirection [post update] [a] |
 | qualifiers.cpp:42:29:42:38 | call to user_input | semmle.label | call to user_input |
 | qualifiers.cpp:43:10:43:14 | outer indirection [inner indirection, a] | semmle.label | outer indirection [inner indirection, a] |
 | qualifiers.cpp:43:16:43:20 | inner indirection [a] | semmle.label | inner indirection [a] |
@@ -1622,14 +1565,12 @@ nodes
 | qualifiers.cpp:48:16:48:20 | inner indirection [a] | semmle.label | inner indirection [a] |
 | qualifiers.cpp:48:23:48:23 | a | semmle.label | a |
 | qualifiers.cpp:48:23:48:23 | a indirection | semmle.label | a indirection |
+| realistic.cpp:53:9:53:15 | foo indirection [post update] [bar, baz indirection, userInput, bufferLen] | semmle.label | foo indirection [post update] [bar, baz indirection, userInput, bufferLen] |
 | realistic.cpp:53:9:53:66 | ... = ... | semmle.label | ... = ... |
-| realistic.cpp:53:13:53:15 | foo indirection [post update] [bar, baz indirection, userInput, bufferLen] | semmle.label | foo indirection [post update] [bar, baz indirection, userInput, bufferLen] |
 | realistic.cpp:53:20:53:22 | access to array indirection [post update] [baz indirection, userInput, bufferLen] | semmle.label | access to array indirection [post update] [baz indirection, userInput, bufferLen] |
 | realistic.cpp:53:25:53:33 | baz indirection [post update] [userInput, bufferLen] | semmle.label | baz indirection [post update] [userInput, bufferLen] |
 | realistic.cpp:53:35:53:43 | userInput indirection [post update] [bufferLen] | semmle.label | userInput indirection [post update] [bufferLen] |
-| realistic.cpp:53:47:53:66 | call to user_input | semmle.label | call to user_input |
 | realistic.cpp:53:55:53:64 | call to user_input | semmle.label | call to user_input |
-| realistic.cpp:61:14:61:55 | bufferLen | semmle.label | bufferLen |
 | realistic.cpp:61:21:61:23 | foo indirection [bar, baz indirection, userInput, bufferLen] | semmle.label | foo indirection [bar, baz indirection, userInput, bufferLen] |
 | realistic.cpp:61:21:61:30 | access to array indirection [baz indirection, userInput, bufferLen] | semmle.label | access to array indirection [baz indirection, userInput, bufferLen] |
 | realistic.cpp:61:32:61:34 | baz indirection [userInput, bufferLen] | semmle.label | baz indirection [userInput, bufferLen] |
@@ -1705,7 +1646,7 @@ nodes
 | struct_init.c:22:8:22:9 | ab indirection [a] | semmle.label | ab indirection [a] |
 | struct_init.c:22:11:22:11 | a | semmle.label | a |
 | struct_init.c:22:11:22:11 | a indirection | semmle.label | a indirection |
-| struct_init.c:24:10:24:12 | & ... indirection [a] | semmle.label | & ... indirection [a] |
+| struct_init.c:24:10:24:12 | ab indirection [a] | semmle.label | ab indirection [a] |
 | struct_init.c:26:23:29:3 | definition of outer indirection [post update] [nestedAB, a] | semmle.label | definition of outer indirection [post update] [nestedAB, a] |
 | struct_init.c:26:23:29:3 | definition of outer indirection [post update] [nestedAB, a] | semmle.label | definition of outer indirection [post update] [nestedAB, a] |
 | struct_init.c:26:23:29:3 | definition of outer indirection [post update] [pointerAB indirection, a] | semmle.label | definition of outer indirection [post update] [pointerAB indirection, a] |
@@ -1722,7 +1663,7 @@ nodes
 | struct_init.c:33:14:33:22 | pointerAB indirection [a] | semmle.label | pointerAB indirection [a] |
 | struct_init.c:33:25:33:25 | a | semmle.label | a |
 | struct_init.c:33:25:33:25 | a indirection | semmle.label | a indirection |
-| struct_init.c:36:10:36:24 | & ... indirection [a] | semmle.label | & ... indirection [a] |
+| struct_init.c:36:10:36:24 | nestedAB indirection [a] | semmle.label | nestedAB indirection [a] |
 | struct_init.c:36:11:36:15 | outer indirection [nestedAB, a] | semmle.label | outer indirection [nestedAB, a] |
 | struct_init.c:40:17:40:36 | definition of ab indirection [post update] [a] | semmle.label | definition of ab indirection [post update] [a] |
 | struct_init.c:40:20:40:29 | call to user_input | semmle.label | call to user_input |
@@ -1736,8 +1677,8 @@ subpaths
 | A.cpp:31:20:31:20 | c | A.cpp:23:10:23:10 | c | A.cpp:25:13:25:13 | this indirection [post update] [c] | A.cpp:31:14:31:21 | call to B [c] |
 | A.cpp:48:20:48:20 | c | A.cpp:29:23:29:23 | c | A.cpp:29:15:29:18 | make indirection [c] | A.cpp:48:12:48:18 | call to make indirection [c] |
 | A.cpp:55:12:55:19 | new | A.cpp:27:17:27:17 | c | A.cpp:27:28:27:28 | this indirection [post update] [c] | A.cpp:55:5:55:5 | set output argument [c] |
-| A.cpp:56:10:56:10 | b indirection [c] | A.cpp:28:8:28:10 | this indirection [c] | A.cpp:28:8:28:10 | get indirection | A.cpp:56:10:56:17 | call to get |
-| A.cpp:57:11:57:24 | new indirection [c] | A.cpp:28:8:28:10 | this indirection [c] | A.cpp:28:8:28:10 | get indirection | A.cpp:57:10:57:32 | call to get |
+| A.cpp:56:10:56:10 | b indirection [c] | A.cpp:28:8:28:10 | this indirection [c] | A.cpp:28:8:28:10 | get indirection | A.cpp:56:13:56:15 | call to get |
+| A.cpp:57:11:57:24 | new indirection [c] | A.cpp:28:8:28:10 | this indirection [c] | A.cpp:28:8:28:10 | get indirection | A.cpp:57:28:57:30 | call to get |
 | A.cpp:57:17:57:23 | new | A.cpp:23:10:23:10 | c | A.cpp:25:13:25:13 | this indirection [post update] [c] | A.cpp:57:11:57:24 | call to B [c] |
 | A.cpp:64:21:64:28 | new | A.cpp:85:26:85:26 | c | A.cpp:85:9:85:14 | setOnB indirection [c] | A.cpp:64:10:64:15 | call to setOnB indirection [c] |
 | A.cpp:73:25:73:32 | new | A.cpp:78:27:78:27 | c | A.cpp:78:6:78:15 | setOnBWrap indirection [c] | A.cpp:73:10:73:19 | call to setOnBWrap indirection [c] |
@@ -1753,7 +1694,7 @@ subpaths
 | B.cpp:16:37:16:37 | e | B.cpp:33:26:33:27 | e2 | B.cpp:36:13:36:17 | this indirection [post update] [elem2] | B.cpp:16:16:16:38 | call to Box1 [elem2] |
 | B.cpp:17:25:17:26 | b1 indirection [elem2] | B.cpp:44:16:44:17 | b1 indirection [elem2] | B.cpp:46:13:46:16 | this indirection [post update] [box1 indirection, elem2] | B.cpp:17:16:17:27 | call to Box2 [box1 indirection, elem2] |
 | D.cpp:22:10:22:11 | b2 indirection [box indirection, elem] | D.cpp:17:11:17:17 | this indirection [box indirection, elem] | D.cpp:17:11:17:17 | getBox1 indirection [elem] | D.cpp:22:14:22:20 | call to getBox1 indirection [elem] |
-| D.cpp:22:14:22:20 | call to getBox1 indirection [elem] | D.cpp:10:11:10:17 | this indirection [elem] | D.cpp:10:11:10:17 | getElem indirection | D.cpp:22:10:22:33 | call to getElem |
+| D.cpp:22:14:22:20 | call to getBox1 indirection [elem] | D.cpp:10:11:10:17 | this indirection [elem] | D.cpp:10:11:10:17 | getElem indirection | D.cpp:22:25:22:31 | call to getElem |
 | D.cpp:37:21:37:21 | e | D.cpp:11:24:11:24 | e | D.cpp:11:29:11:32 | this indirection [post update] [elem] | D.cpp:37:8:37:10 | setElem output argument [elem] |
 | D.cpp:51:27:51:27 | e | D.cpp:11:24:11:24 | e | D.cpp:11:29:11:32 | this indirection [post update] [elem] | D.cpp:51:8:51:14 | setElem output argument [elem] |
 | by_reference.cpp:20:23:20:27 | value | by_reference.cpp:15:26:15:30 | value | by_reference.cpp:16:11:16:11 | this indirection [post update] [a] | by_reference.cpp:20:5:20:8 | setDirectly output argument [a] |
@@ -1767,7 +1708,7 @@ subpaths
 | by_reference.cpp:62:25:62:34 | call to user_input | by_reference.cpp:23:34:23:38 | value | by_reference.cpp:24:19:24:22 | nonMemberSetA output argument [a] | by_reference.cpp:62:3:62:3 | setThroughNonMember output argument [a] |
 | by_reference.cpp:63:8:63:8 | s indirection [a] | by_reference.cpp:43:9:43:27 | this indirection [a] | by_reference.cpp:43:9:43:27 | getThroughNonMember indirection | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
 | by_reference.cpp:68:21:68:30 | call to user_input | by_reference.cpp:11:48:11:52 | value | by_reference.cpp:12:8:12:8 | s indirection [post update] [a] | by_reference.cpp:68:17:68:18 | nonMemberSetA output argument [a] |
-| by_reference.cpp:69:22:69:23 | & ... indirection [a] | by_reference.cpp:31:46:31:46 | s indirection [a] | by_reference.cpp:31:16:31:28 | nonMemberGetA indirection | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
+| by_reference.cpp:69:22:69:23 | s indirection [a] | by_reference.cpp:31:46:31:46 | s indirection [a] | by_reference.cpp:31:16:31:28 | nonMemberGetA indirection | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
 | complex.cpp:42:16:42:16 | f indirection [a_] | complex.cpp:9:7:9:7 | this indirection [a_] | complex.cpp:9:7:9:7 | a indirection | complex.cpp:42:18:42:18 | call to a |
 | complex.cpp:43:16:43:16 | f indirection [b_] | complex.cpp:10:7:10:7 | this indirection [b_] | complex.cpp:10:7:10:7 | b indirection | complex.cpp:43:18:43:18 | call to b |
 | complex.cpp:53:19:53:28 | call to user_input | complex.cpp:11:17:11:17 | a | complex.cpp:11:22:11:23 | this indirection [post update] [a_] | complex.cpp:53:12:53:12 | setA output argument [a_] |
@@ -1776,10 +1717,10 @@ subpaths
 | complex.cpp:56:19:56:28 | call to user_input | complex.cpp:12:17:12:17 | b | complex.cpp:12:22:12:23 | this indirection [post update] [b_] | complex.cpp:56:12:56:12 | setB output argument [b_] |
 | constructors.cpp:28:10:28:10 | f indirection [a_] | constructors.cpp:18:9:18:9 | this indirection [a_] | constructors.cpp:18:9:18:9 | a indirection | constructors.cpp:28:12:28:12 | call to a |
 | constructors.cpp:29:10:29:10 | f indirection [b_] | constructors.cpp:19:9:19:9 | this indirection [b_] | constructors.cpp:19:9:19:9 | b indirection | constructors.cpp:29:12:29:12 | call to b |
-| constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:23:13:23:13 | a | constructors.cpp:23:25:23:29 | this indirection [post update] [a_] | constructors.cpp:34:9:34:9 | call to Foo [a_] |
-| constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:32:23:36 | this indirection [post update] [b_] | constructors.cpp:35:9:35:9 | call to Foo [b_] |
-| constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:23:13:23:13 | a | constructors.cpp:23:25:23:29 | this indirection [post update] [a_] | constructors.cpp:36:9:36:9 | call to Foo [a_] |
-| constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:32:23:36 | this indirection [post update] [b_] | constructors.cpp:36:9:36:9 | call to Foo [b_] |
+| constructors.cpp:34:11:34:20 | call to user_input | constructors.cpp:23:13:23:13 | a | constructors.cpp:23:25:23:29 | Foo indirection [post update] [a_] | constructors.cpp:34:9:34:9 | call to Foo [a_] |
+| constructors.cpp:35:14:35:23 | call to user_input | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:32:23:36 | Foo indirection [post update] [b_] | constructors.cpp:35:9:35:9 | call to Foo [b_] |
+| constructors.cpp:36:11:36:20 | call to user_input | constructors.cpp:23:13:23:13 | a | constructors.cpp:23:25:23:29 | Foo indirection [post update] [a_] | constructors.cpp:36:9:36:9 | call to Foo [a_] |
+| constructors.cpp:36:25:36:34 | call to user_input | constructors.cpp:23:20:23:20 | b | constructors.cpp:23:32:23:36 | Foo indirection [post update] [b_] | constructors.cpp:36:9:36:9 | call to Foo [b_] |
 | qualifiers.cpp:27:28:27:37 | call to user_input | qualifiers.cpp:9:21:9:25 | value | qualifiers.cpp:9:36:9:36 | this indirection [post update] [a] | qualifiers.cpp:27:11:27:18 | setA output argument [a] |
 | qualifiers.cpp:32:35:32:44 | call to user_input | qualifiers.cpp:12:40:12:44 | value | qualifiers.cpp:12:56:12:56 | inner indirection [post update] [a] | qualifiers.cpp:32:23:32:30 | pointerSetA output argument [a] |
 | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:13:42:13:46 | value | qualifiers.cpp:13:57:13:57 | inner indirection [post update] [a] | qualifiers.cpp:37:19:37:35 | referenceSetA output argument [a] |
@@ -1791,50 +1732,34 @@ subpaths
 | simple.cpp:42:12:42:21 | call to user_input | simple.cpp:21:19:21:19 | b | simple.cpp:21:24:21:25 | this indirection [post update] [b_] | simple.cpp:42:5:42:5 | setB output argument [b_] |
 | simple.cpp:84:14:84:20 | this indirection [f2, f1] | simple.cpp:78:9:78:15 | this indirection [f2, f1] | simple.cpp:78:9:78:15 | getf2f1 indirection | simple.cpp:84:14:84:20 | call to getf2f1 |
 #select
-| A.cpp:43:10:43:12 | & ... indirection | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection | & ... indirection flows from $@ | A.cpp:41:15:41:21 | new | new |
-| A.cpp:43:10:43:12 | & ... indirection | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | & ... indirection | & ... indirection flows from $@ | A.cpp:41:15:41:21 | new | new |
-| A.cpp:49:10:49:13 | c | A.cpp:47:12:47:18 | new | A.cpp:49:10:49:13 | c | c flows from $@ | A.cpp:47:12:47:18 | new | new |
+| A.cpp:43:10:43:12 | ct indirection | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | ct indirection | ct indirection flows from $@ | A.cpp:41:15:41:21 | new | new |
+| A.cpp:43:10:43:12 | ct indirection | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | ct indirection | ct indirection flows from $@ | A.cpp:41:15:41:21 | new | new |
+| A.cpp:43:10:43:12 | ct indirection | A.cpp:41:15:41:21 | new | A.cpp:43:10:43:12 | ct indirection | ct indirection flows from $@ | A.cpp:41:15:41:21 | new | new |
 | A.cpp:49:13:49:13 | c | A.cpp:47:12:47:18 | new | A.cpp:49:13:49:13 | c | c flows from $@ | A.cpp:47:12:47:18 | new | new |
-| A.cpp:56:10:56:17 | call to get | A.cpp:55:12:55:19 | new | A.cpp:56:10:56:17 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | new | new |
-| A.cpp:56:10:56:17 | call to get | A.cpp:55:12:55:19 | new | A.cpp:56:10:56:17 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | new | new |
-| A.cpp:57:10:57:32 | call to get | A.cpp:57:17:57:23 | new | A.cpp:57:10:57:32 | call to get | call to get flows from $@ | A.cpp:57:17:57:23 | new | new |
-| A.cpp:66:10:66:14 | c | A.cpp:64:21:64:28 | new | A.cpp:66:10:66:14 | c | c flows from $@ | A.cpp:64:21:64:28 | new | new |
-| A.cpp:66:10:66:14 | c | A.cpp:64:21:64:28 | new | A.cpp:66:10:66:14 | c | c flows from $@ | A.cpp:64:21:64:28 | new | new |
+| A.cpp:56:13:56:15 | call to get | A.cpp:55:12:55:19 | new | A.cpp:56:13:56:15 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | new | new |
+| A.cpp:56:13:56:15 | call to get | A.cpp:55:12:55:19 | new | A.cpp:56:13:56:15 | call to get | call to get flows from $@ | A.cpp:55:12:55:19 | new | new |
+| A.cpp:57:28:57:30 | call to get | A.cpp:57:17:57:23 | new | A.cpp:57:28:57:30 | call to get | call to get flows from $@ | A.cpp:57:17:57:23 | new | new |
 | A.cpp:66:14:66:14 | c | A.cpp:64:21:64:28 | new | A.cpp:66:14:66:14 | c | c flows from $@ | A.cpp:64:21:64:28 | new | new |
 | A.cpp:66:14:66:14 | c | A.cpp:64:21:64:28 | new | A.cpp:66:14:66:14 | c | c flows from $@ | A.cpp:64:21:64:28 | new | new |
-| A.cpp:75:10:75:14 | c | A.cpp:73:25:73:32 | new | A.cpp:75:10:75:14 | c | c flows from $@ | A.cpp:73:25:73:32 | new | new |
-| A.cpp:75:10:75:14 | c | A.cpp:73:25:73:32 | new | A.cpp:75:10:75:14 | c | c flows from $@ | A.cpp:73:25:73:32 | new | new |
 | A.cpp:75:14:75:14 | c | A.cpp:73:25:73:32 | new | A.cpp:75:14:75:14 | c | c flows from $@ | A.cpp:73:25:73:32 | new | new |
 | A.cpp:75:14:75:14 | c | A.cpp:73:25:73:32 | new | A.cpp:75:14:75:14 | c | c flows from $@ | A.cpp:73:25:73:32 | new | new |
-| A.cpp:107:12:107:16 | a | A.cpp:98:12:98:18 | new | A.cpp:107:12:107:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new | new |
 | A.cpp:107:16:107:16 | a | A.cpp:98:12:98:18 | new | A.cpp:107:16:107:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new | new |
-| A.cpp:120:12:120:16 | a | A.cpp:98:12:98:18 | new | A.cpp:120:12:120:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new | new |
 | A.cpp:120:16:120:16 | a | A.cpp:98:12:98:18 | new | A.cpp:120:16:120:16 | a | a flows from $@ | A.cpp:98:12:98:18 | new | new |
-| A.cpp:132:10:132:13 | c | A.cpp:126:12:126:18 | new | A.cpp:132:10:132:13 | c | c flows from $@ | A.cpp:126:12:126:18 | new | new |
 | A.cpp:132:13:132:13 | c | A.cpp:126:12:126:18 | new | A.cpp:132:13:132:13 | c | c flows from $@ | A.cpp:126:12:126:18 | new | new |
-| A.cpp:152:10:152:13 | b | A.cpp:143:25:143:31 | new | A.cpp:152:10:152:13 | b | b flows from $@ | A.cpp:143:25:143:31 | new | new |
-| A.cpp:152:10:152:13 | b | A.cpp:150:12:150:18 | new | A.cpp:152:10:152:13 | b | b flows from $@ | A.cpp:150:12:150:18 | new | new |
 | A.cpp:152:13:152:13 | b | A.cpp:143:25:143:31 | new | A.cpp:152:13:152:13 | b | b flows from $@ | A.cpp:143:25:143:31 | new | new |
 | A.cpp:152:13:152:13 | b | A.cpp:150:12:150:18 | new | A.cpp:152:13:152:13 | b | b flows from $@ | A.cpp:150:12:150:18 | new | new |
-| A.cpp:153:10:153:16 | c | A.cpp:142:14:142:20 | new | A.cpp:153:10:153:16 | c | c flows from $@ | A.cpp:142:14:142:20 | new | new |
 | A.cpp:153:16:153:16 | c | A.cpp:142:14:142:20 | new | A.cpp:153:16:153:16 | c | c flows from $@ | A.cpp:142:14:142:20 | new | new |
-| A.cpp:154:10:154:13 | c | A.cpp:142:14:142:20 | new | A.cpp:154:10:154:13 | c | c flows from $@ | A.cpp:142:14:142:20 | new | new |
 | A.cpp:154:13:154:13 | c | A.cpp:142:14:142:20 | new | A.cpp:154:13:154:13 | c | c flows from $@ | A.cpp:142:14:142:20 | new | new |
-| A.cpp:165:10:165:29 | head | A.cpp:159:12:159:18 | new | A.cpp:165:10:165:29 | head | head flows from $@ | A.cpp:159:12:159:18 | new | new |
 | A.cpp:165:26:165:29 | head | A.cpp:159:12:159:18 | new | A.cpp:165:26:165:29 | head | head flows from $@ | A.cpp:159:12:159:18 | new | new |
-| A.cpp:169:12:169:18 | head | A.cpp:159:12:159:18 | new | A.cpp:169:12:169:18 | head | head flows from $@ | A.cpp:159:12:159:18 | new | new |
 | A.cpp:169:15:169:18 | head | A.cpp:159:12:159:18 | new | A.cpp:169:15:169:18 | head | head flows from $@ | A.cpp:159:12:159:18 | new | new |
-| B.cpp:9:10:9:24 | elem1 | B.cpp:6:15:6:24 | new | B.cpp:9:10:9:24 | elem1 | elem1 flows from $@ | B.cpp:6:15:6:24 | new | new |
 | B.cpp:9:20:9:24 | elem1 | B.cpp:6:15:6:24 | new | B.cpp:9:20:9:24 | elem1 | elem1 flows from $@ | B.cpp:6:15:6:24 | new | new |
-| B.cpp:19:10:19:24 | elem2 | B.cpp:15:15:15:27 | new | B.cpp:19:10:19:24 | elem2 | elem2 flows from $@ | B.cpp:15:15:15:27 | new | new |
 | B.cpp:19:20:19:24 | elem2 | B.cpp:15:15:15:27 | new | B.cpp:19:20:19:24 | elem2 | elem2 flows from $@ | B.cpp:15:15:15:27 | new | new |
 | C.cpp:29:10:29:11 | s1 | C.cpp:22:12:22:21 | new | C.cpp:29:10:29:11 | s1 | s1 flows from $@ | C.cpp:22:12:22:21 | new | new |
 | C.cpp:31:10:31:11 | s3 | C.cpp:24:16:24:25 | new | C.cpp:31:10:31:11 | s3 | s3 flows from $@ | C.cpp:24:16:24:25 | new | new |
-| D.cpp:22:10:22:33 | call to getElem | D.cpp:28:15:28:24 | new | D.cpp:22:10:22:33 | call to getElem | call to getElem flows from $@ | D.cpp:28:15:28:24 | new | new |
-| D.cpp:22:10:22:33 | call to getElem | D.cpp:35:15:35:24 | new | D.cpp:22:10:22:33 | call to getElem | call to getElem flows from $@ | D.cpp:35:15:35:24 | new | new |
-| D.cpp:22:10:22:33 | call to getElem | D.cpp:42:15:42:24 | new | D.cpp:22:10:22:33 | call to getElem | call to getElem flows from $@ | D.cpp:42:15:42:24 | new | new |
-| D.cpp:22:10:22:33 | call to getElem | D.cpp:49:15:49:24 | new | D.cpp:22:10:22:33 | call to getElem | call to getElem flows from $@ | D.cpp:49:15:49:24 | new | new |
-| D.cpp:64:10:64:28 | elem | D.cpp:56:15:56:24 | new | D.cpp:64:10:64:28 | elem | elem flows from $@ | D.cpp:56:15:56:24 | new | new |
+| D.cpp:22:25:22:31 | call to getElem | D.cpp:28:15:28:24 | new | D.cpp:22:25:22:31 | call to getElem | call to getElem flows from $@ | D.cpp:28:15:28:24 | new | new |
+| D.cpp:22:25:22:31 | call to getElem | D.cpp:35:15:35:24 | new | D.cpp:22:25:22:31 | call to getElem | call to getElem flows from $@ | D.cpp:35:15:35:24 | new | new |
+| D.cpp:22:25:22:31 | call to getElem | D.cpp:42:15:42:24 | new | D.cpp:22:25:22:31 | call to getElem | call to getElem flows from $@ | D.cpp:42:15:42:24 | new | new |
+| D.cpp:22:25:22:31 | call to getElem | D.cpp:49:15:49:24 | new | D.cpp:22:25:22:31 | call to getElem | call to getElem flows from $@ | D.cpp:49:15:49:24 | new | new |
 | D.cpp:64:25:64:28 | elem | D.cpp:56:15:56:24 | new | D.cpp:64:25:64:28 | elem | elem flows from $@ | D.cpp:56:15:56:24 | new | new |
 | E.cpp:21:18:21:23 | buffer indirection | E.cpp:30:21:30:33 | argument_source output argument | E.cpp:21:18:21:23 | buffer indirection | buffer indirection flows from $@ | E.cpp:30:21:30:33 | argument_source output argument | argument_source output argument |
 | E.cpp:31:10:31:12 | raw indirection | E.cpp:28:21:28:23 | argument_source output argument | E.cpp:31:10:31:12 | raw indirection | raw indirection flows from $@ | E.cpp:28:21:28:23 | argument_source output argument | argument_source output argument |
@@ -1890,7 +1815,6 @@ subpaths
 | conflated.cpp:11:8:11:12 | * ... | conflated.cpp:10:11:10:20 | call to user_input | conflated.cpp:11:8:11:12 | * ... | * ... flows from $@ | conflated.cpp:10:11:10:20 | call to user_input | call to user_input |
 | conflated.cpp:20:8:20:10 | raw indirection | conflated.cpp:19:19:19:21 | argument_source output argument | conflated.cpp:20:8:20:10 | raw indirection | raw indirection flows from $@ | conflated.cpp:19:19:19:21 | argument_source output argument | argument_source output argument |
 | conflated.cpp:20:8:20:10 | raw indirection | conflated.cpp:19:19:19:21 | argument_source output argument | conflated.cpp:20:8:20:10 | raw indirection | raw indirection flows from $@ | conflated.cpp:19:19:19:21 | argument_source output argument | argument_source output argument |
-| conflated.cpp:20:8:20:10 | raw indirection | conflated.cpp:19:19:19:21 | argument_source output argument | conflated.cpp:20:8:20:10 | raw indirection | raw indirection flows from $@ | conflated.cpp:19:19:19:21 | argument_source output argument | argument_source output argument |
 | conflated.cpp:30:12:30:12 | x | conflated.cpp:29:11:29:20 | call to user_input | conflated.cpp:30:12:30:12 | x | x flows from $@ | conflated.cpp:29:11:29:20 | call to user_input | call to user_input |
 | conflated.cpp:37:12:37:12 | x | conflated.cpp:36:11:36:20 | call to user_input | conflated.cpp:37:12:37:12 | x | x flows from $@ | conflated.cpp:36:11:36:20 | call to user_input | call to user_input |
 | conflated.cpp:55:18:55:18 | y | conflated.cpp:54:17:54:26 | call to user_input | conflated.cpp:55:18:55:18 | y | y flows from $@ | conflated.cpp:54:17:54:26 | call to user_input | call to user_input |
@@ -1905,9 +1829,6 @@ subpaths
 | qualifiers.cpp:38:23:38:23 | a | qualifiers.cpp:37:38:37:47 | call to user_input | qualifiers.cpp:38:23:38:23 | a | a flows from $@ | qualifiers.cpp:37:38:37:47 | call to user_input | call to user_input |
 | qualifiers.cpp:43:23:43:23 | a | qualifiers.cpp:42:29:42:38 | call to user_input | qualifiers.cpp:43:23:43:23 | a | a flows from $@ | qualifiers.cpp:42:29:42:38 | call to user_input | call to user_input |
 | qualifiers.cpp:48:23:48:23 | a | qualifiers.cpp:47:31:47:40 | call to user_input | qualifiers.cpp:48:23:48:23 | a | a flows from $@ | qualifiers.cpp:47:31:47:40 | call to user_input | call to user_input |
-| realistic.cpp:61:14:61:55 | bufferLen | realistic.cpp:53:47:53:66 | call to user_input | realistic.cpp:61:14:61:55 | bufferLen | bufferLen flows from $@ | realistic.cpp:53:47:53:66 | call to user_input | call to user_input |
-| realistic.cpp:61:14:61:55 | bufferLen | realistic.cpp:53:55:53:64 | call to user_input | realistic.cpp:61:14:61:55 | bufferLen | bufferLen flows from $@ | realistic.cpp:53:55:53:64 | call to user_input | call to user_input |
-| realistic.cpp:61:47:61:55 | bufferLen | realistic.cpp:53:47:53:66 | call to user_input | realistic.cpp:61:47:61:55 | bufferLen | bufferLen flows from $@ | realistic.cpp:53:47:53:66 | call to user_input | call to user_input |
 | realistic.cpp:61:47:61:55 | bufferLen | realistic.cpp:53:55:53:64 | call to user_input | realistic.cpp:61:47:61:55 | bufferLen | bufferLen flows from $@ | realistic.cpp:53:55:53:64 | call to user_input | call to user_input |
 | simple.cpp:28:12:28:12 | call to a | simple.cpp:39:12:39:21 | call to user_input | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:39:12:39:21 | call to user_input | call to user_input |
 | simple.cpp:28:12:28:12 | call to a | simple.cpp:41:12:41:21 | call to user_input | simple.cpp:28:12:28:12 | call to a | call to a flows from $@ | simple.cpp:41:12:41:21 | call to user_input | call to user_input |

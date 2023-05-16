@@ -37,18 +37,31 @@ edges
 | tests.cpp:28:23:28:43 | call to XercesDOMParser | tests.cpp:31:2:31:2 | p indirection |
 | tests.cpp:35:23:35:43 | call to XercesDOMParser | tests.cpp:35:23:35:43 | new indirection |
 | tests.cpp:35:23:35:43 | new indirection | tests.cpp:37:2:37:2 | p indirection |
+| tests.cpp:35:23:35:43 | new indirection | tests.cpp:37:2:37:2 | p indirection |
+| tests.cpp:37:2:37:2 | p indirection | tests.cpp:37:2:37:2 | p indirection |
 | tests.cpp:37:2:37:2 | p indirection | tests.cpp:37:2:37:2 | p indirection |
 | tests.cpp:37:2:37:2 | p indirection | tests.cpp:38:2:38:2 | p indirection |
+| tests.cpp:37:2:37:2 | p indirection | tests.cpp:38:2:38:2 | p indirection |
+| tests.cpp:38:2:38:2 | p indirection | tests.cpp:39:2:39:2 | p indirection |
 | tests.cpp:38:2:38:2 | p indirection | tests.cpp:39:2:39:2 | p indirection |
 | tests.cpp:51:23:51:43 | call to XercesDOMParser | tests.cpp:51:23:51:43 | new indirection |
 | tests.cpp:51:23:51:43 | new indirection | tests.cpp:53:2:53:2 | p indirection |
+| tests.cpp:51:23:51:43 | new indirection | tests.cpp:53:2:53:2 | p indirection |
 | tests.cpp:53:2:53:2 | p indirection | tests.cpp:54:2:54:2 | p indirection |
+| tests.cpp:53:2:53:2 | p indirection | tests.cpp:54:2:54:2 | p indirection |
+| tests.cpp:54:2:54:2 | p indirection | tests.cpp:55:2:55:2 | p indirection |
 | tests.cpp:54:2:54:2 | p indirection | tests.cpp:55:2:55:2 | p indirection |
 | tests.cpp:55:2:55:2 | p indirection | tests.cpp:56:2:56:2 | p indirection |
 | tests.cpp:55:2:55:2 | p indirection | tests.cpp:56:2:56:2 | p indirection |
+| tests.cpp:55:2:55:2 | p indirection | tests.cpp:56:2:56:2 | p indirection |
+| tests.cpp:55:2:55:2 | p indirection | tests.cpp:56:2:56:2 | p indirection |
+| tests.cpp:56:2:56:2 | p indirection | tests.cpp:57:2:57:2 | p indirection |
 | tests.cpp:56:2:56:2 | p indirection | tests.cpp:57:2:57:2 | p indirection |
 | tests.cpp:57:2:57:2 | p indirection | tests.cpp:58:2:58:2 | p indirection |
+| tests.cpp:57:2:57:2 | p indirection | tests.cpp:58:2:58:2 | p indirection |
 | tests.cpp:58:2:58:2 | p indirection | tests.cpp:59:2:59:2 | p indirection |
+| tests.cpp:58:2:58:2 | p indirection | tests.cpp:59:2:59:2 | p indirection |
+| tests.cpp:59:2:59:2 | p indirection | tests.cpp:60:2:60:2 | p indirection |
 | tests.cpp:59:2:59:2 | p indirection | tests.cpp:60:2:60:2 | p indirection |
 | tests.cpp:66:23:66:43 | call to XercesDOMParser | tests.cpp:69:2:69:2 | p indirection |
 | tests.cpp:73:23:73:43 | call to XercesDOMParser | tests.cpp:80:2:80:2 | p indirection |
@@ -122,16 +135,21 @@ nodes
 | tests.cpp:37:2:37:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:37:2:37:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:38:2:38:2 | p indirection | semmle.label | p indirection |
+| tests.cpp:38:2:38:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:39:2:39:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:51:23:51:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |
 | tests.cpp:51:23:51:43 | new indirection | semmle.label | new indirection |
 | tests.cpp:53:2:53:2 | p indirection | semmle.label | p indirection |
+| tests.cpp:53:2:53:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:54:2:54:2 | p indirection | semmle.label | p indirection |
+| tests.cpp:55:2:55:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:55:2:55:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:56:2:56:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:56:2:56:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:57:2:57:2 | p indirection | semmle.label | p indirection |
+| tests.cpp:57:2:57:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:58:2:58:2 | p indirection | semmle.label | p indirection |
+| tests.cpp:59:2:59:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:59:2:59:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:60:2:60:2 | p indirection | semmle.label | p indirection |
 | tests.cpp:66:23:66:43 | call to XercesDOMParser | semmle.label | call to XercesDOMParser |

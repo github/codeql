@@ -8,7 +8,9 @@
 | A.cpp:41:5:41:6 | ct |
 | A.cpp:41:15:41:21 | new |
 | A.cpp:42:10:42:12 | & ... |
+| A.cpp:42:11:42:12 | cc |
 | A.cpp:43:10:43:12 | & ... |
+| A.cpp:43:11:43:12 | ct |
 | A.cpp:47:12:47:18 | new |
 | A.cpp:48:20:48:20 | c |
 | A.cpp:49:10:49:10 | b |
@@ -200,10 +202,12 @@
 | E.cpp:32:10:32:10 | b |
 | E.cpp:32:13:32:18 | buffer |
 | E.cpp:33:18:33:19 | & ... |
+| E.cpp:33:19:33:19 | p |
 | aliasing.cpp:9:3:9:3 | s |
 | aliasing.cpp:13:3:13:3 | s |
 | aliasing.cpp:17:3:17:3 | s |
 | aliasing.cpp:25:17:25:19 | & ... |
+| aliasing.cpp:25:18:25:19 | s1 |
 | aliasing.cpp:26:19:26:20 | s2 |
 | aliasing.cpp:29:8:29:9 | s1 |
 | aliasing.cpp:30:8:30:9 | s2 |
@@ -238,16 +242,19 @@
 | aliasing.cpp:101:14:101:19 | s_copy |
 | aliasing.cpp:111:15:111:19 | & ... |
 | aliasing.cpp:111:16:111:16 | s |
+| aliasing.cpp:111:18:111:19 | m1 |
 | aliasing.cpp:112:8:112:8 | s |
 | aliasing.cpp:121:15:121:16 | xs |
 | aliasing.cpp:126:15:126:20 | ... - ... |
 | aliasing.cpp:131:15:131:16 | xs |
 | aliasing.cpp:136:15:136:17 | + ... |
+| aliasing.cpp:136:16:136:17 | xs |
 | aliasing.cpp:141:15:141:15 | s |
 | aliasing.cpp:141:17:141:20 | data |
 | aliasing.cpp:143:8:143:8 | s |
 | aliasing.cpp:147:15:147:22 | & ... |
 | aliasing.cpp:147:16:147:19 | access to array |
+| aliasing.cpp:147:21:147:22 | m1 |
 | aliasing.cpp:148:8:148:11 | access to array |
 | aliasing.cpp:158:15:158:15 | s |
 | aliasing.cpp:158:17:158:20 | data |
@@ -258,31 +265,37 @@
 | aliasing.cpp:175:15:175:22 | & ... |
 | aliasing.cpp:175:16:175:17 | s2 |
 | aliasing.cpp:175:19:175:19 | s |
+| aliasing.cpp:175:21:175:22 | m1 |
 | aliasing.cpp:176:8:176:9 | s2 |
 | aliasing.cpp:176:11:176:11 | s |
 | aliasing.cpp:181:15:181:22 | & ... |
 | aliasing.cpp:181:16:181:17 | s2 |
 | aliasing.cpp:181:19:181:19 | s |
+| aliasing.cpp:181:21:181:22 | m1 |
 | aliasing.cpp:182:8:182:9 | s2 |
 | aliasing.cpp:182:11:182:11 | s |
 | aliasing.cpp:187:15:187:22 | & ... |
 | aliasing.cpp:187:16:187:17 | s2 |
 | aliasing.cpp:187:19:187:19 | s |
+| aliasing.cpp:187:21:187:22 | m1 |
 | aliasing.cpp:189:8:189:11 | s2_2 |
 | aliasing.cpp:189:13:189:13 | s |
 | aliasing.cpp:194:15:194:22 | & ... |
 | aliasing.cpp:194:16:194:17 | s2 |
 | aliasing.cpp:194:19:194:19 | s |
+| aliasing.cpp:194:21:194:22 | m1 |
 | aliasing.cpp:196:8:196:11 | s2_2 |
 | aliasing.cpp:196:13:196:13 | s |
 | aliasing.cpp:200:15:200:24 | & ... |
 | aliasing.cpp:200:16:200:18 | ps2 |
 | aliasing.cpp:200:21:200:21 | s |
+| aliasing.cpp:200:23:200:24 | m1 |
 | aliasing.cpp:201:8:201:10 | ps2 |
 | aliasing.cpp:201:13:201:13 | s |
 | aliasing.cpp:205:15:205:24 | & ... |
 | aliasing.cpp:205:16:205:18 | ps2 |
 | aliasing.cpp:205:21:205:21 | s |
+| aliasing.cpp:205:23:205:24 | m1 |
 | aliasing.cpp:206:8:206:10 | ps2 |
 | aliasing.cpp:206:13:206:13 | s |
 | arrays.cpp:7:8:7:13 | access to array |
@@ -347,23 +360,29 @@
 | by_reference.cpp:63:8:63:8 | s |
 | by_reference.cpp:63:10:63:28 | call to getThroughNonMember |
 | by_reference.cpp:68:17:68:18 | & ... |
+| by_reference.cpp:68:18:68:18 | s |
 | by_reference.cpp:68:21:68:30 | call to user_input |
 | by_reference.cpp:69:8:69:20 | call to nonMemberGetA |
 | by_reference.cpp:69:22:69:23 | & ... |
+| by_reference.cpp:69:23:69:23 | s |
 | by_reference.cpp:84:3:84:7 | inner |
 | by_reference.cpp:88:3:88:7 | inner |
 | by_reference.cpp:102:21:102:39 | & ... |
 | by_reference.cpp:102:22:102:26 | outer |
+| by_reference.cpp:102:28:102:39 | inner_nested |
 | by_reference.cpp:103:21:103:25 | outer |
 | by_reference.cpp:103:27:103:35 | inner_ptr |
 | by_reference.cpp:104:15:104:22 | & ... |
 | by_reference.cpp:104:16:104:20 | outer |
+| by_reference.cpp:104:22:104:22 | a |
 | by_reference.cpp:106:21:106:41 | & ... |
 | by_reference.cpp:106:22:106:27 | pouter |
+| by_reference.cpp:106:30:106:41 | inner_nested |
 | by_reference.cpp:107:21:107:26 | pouter |
 | by_reference.cpp:107:29:107:37 | inner_ptr |
 | by_reference.cpp:108:15:108:24 | & ... |
 | by_reference.cpp:108:16:108:21 | pouter |
+| by_reference.cpp:108:24:108:24 | a |
 | by_reference.cpp:110:8:110:12 | outer |
 | by_reference.cpp:110:14:110:25 | inner_nested |
 | by_reference.cpp:110:27:110:27 | a |
@@ -384,12 +403,14 @@
 | by_reference.cpp:122:27:122:38 | inner_nested |
 | by_reference.cpp:123:21:123:36 | * ... |
 | by_reference.cpp:123:22:123:26 | outer |
+| by_reference.cpp:123:28:123:36 | inner_ptr |
 | by_reference.cpp:124:15:124:19 | outer |
 | by_reference.cpp:124:21:124:21 | a |
 | by_reference.cpp:126:21:126:26 | pouter |
 | by_reference.cpp:126:29:126:40 | inner_nested |
 | by_reference.cpp:127:21:127:38 | * ... |
 | by_reference.cpp:127:22:127:27 | pouter |
+| by_reference.cpp:127:30:127:38 | inner_ptr |
 | by_reference.cpp:128:15:128:20 | pouter |
 | by_reference.cpp:128:23:128:23 | a |
 | by_reference.cpp:130:8:130:12 | outer |
@@ -486,16 +507,19 @@
 | qualifiers.cpp:33:23:33:23 | a |
 | qualifiers.cpp:37:19:37:35 | * ... |
 | qualifiers.cpp:37:20:37:24 | outer |
+| qualifiers.cpp:37:26:37:33 | call to getInner |
 | qualifiers.cpp:37:38:37:47 | call to user_input |
 | qualifiers.cpp:38:10:38:14 | outer |
 | qualifiers.cpp:38:16:38:20 | inner |
 | qualifiers.cpp:38:23:38:23 | a |
 | qualifiers.cpp:42:6:42:22 | * ... |
 | qualifiers.cpp:42:7:42:11 | outer |
+| qualifiers.cpp:42:13:42:20 | call to getInner |
 | qualifiers.cpp:43:10:43:14 | outer |
 | qualifiers.cpp:43:16:43:20 | inner |
 | qualifiers.cpp:43:23:43:23 | a |
 | qualifiers.cpp:47:6:47:11 | & ... |
+| qualifiers.cpp:47:7:47:11 | outer |
 | qualifiers.cpp:47:15:47:22 | call to getInner |
 | qualifiers.cpp:48:10:48:14 | outer |
 | qualifiers.cpp:48:16:48:20 | inner |
@@ -574,6 +598,7 @@
 | struct_init.c:23:8:23:9 | ab |
 | struct_init.c:23:11:23:11 | b |
 | struct_init.c:24:10:24:12 | & ... |
+| struct_init.c:24:11:24:12 | ab |
 | struct_init.c:31:8:31:12 | outer |
 | struct_init.c:31:14:31:21 | nestedAB |
 | struct_init.c:31:23:31:23 | a |
@@ -588,5 +613,6 @@
 | struct_init.c:34:25:34:25 | b |
 | struct_init.c:36:10:36:24 | & ... |
 | struct_init.c:36:11:36:15 | outer |
+| struct_init.c:36:17:36:24 | nestedAB |
 | struct_init.c:46:10:46:14 | outer |
 | struct_init.c:46:16:46:24 | pointerAB |
