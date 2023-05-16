@@ -229,7 +229,7 @@ void repeated_alerts(unsigned size, unsigned offset) {
   while(unknown()) {
     ++size;
   }
-  memset(buffer, 0, size); // BAD
+  memset(buffer, 0, size); // BAD [NOT DETECTED]
 }
 
 void set_string(string_t* p_str, char* buffer) {
@@ -248,4 +248,12 @@ void* my_alloc(unsigned size);
 void foo(unsigned size) {
     int* p = (int*)my_alloc(size); // BAD
     memset(p, 0, size + 1);
+}
+
+void test6(unsigned long n, char *p) {
+  while (unknown()) {
+    n++;
+    p = (char *)malloc(n);
+    memset(p, 0, n); // GOOD
+  }
 }
