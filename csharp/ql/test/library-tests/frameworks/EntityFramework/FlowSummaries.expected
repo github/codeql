@@ -134,9 +134,9 @@ summary
 neutral
 sourceNode
 sinkNode
-| EntityFrameworkCore.cs:72:36:72:40 | "sql-injection" | sql |
-| EntityFrameworkCore.cs:73:40:73:44 | "sql-injection" | sql |
-| EntityFrameworkCore.cs:74:40:74:44 | "sql-injection" | sql |
-| EntityFrameworkCore.cs:75:51:75:55 | "sql-injection" | sql |
-| EntityFrameworkCore.cs:76:51:76:55 | "sql-injection" | sql |
-| EntityFrameworkCore.cs:77:51:77:55 | "sql-injection" | sql |
+| EntityFrameworkCore.cs:72:36:72:40 | "sql" | sql-injection |
+| EntityFrameworkCore.cs:73:40:73:44 | "sql" | sql-injection |
+| EntityFrameworkCore.cs:74:40:74:44 | "sql" | sql-injection |
+| EntityFrameworkCore.cs:75:51:75:55 | "sql" | sql-injection |
+| EntityFrameworkCore.cs:76:51:76:55 | "sql" | sql-injection |
+| EntityFrameworkCore.cs:77:51:77:55 | "sql" | sql-injection |
