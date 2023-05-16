@@ -1,0 +1,13 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: summaryModel
+    data:
+      - ["com.google.gson", "Gson", False, "toJson", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["com.google.gson", "Gson", False, "toJsonTree", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["com.google.gson", "Gson", False, "toString", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["com.google.gson", "Gson", False, "fromJson", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["com.google.gson", "Gson", False, "newJsonReader", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["com.google.gson", "Gson", False, "newJsonWriter", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["com.google.gson.stream", "JsonReader", False, "nextName", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["com.google.gson.stream", "JsonReader", False, "nextString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
