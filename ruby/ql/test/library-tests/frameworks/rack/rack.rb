@@ -1,6 +1,10 @@
 class HelloWorld
   def call(env)
-    [200, {'Content-Type' => 'text/plain'}, ['Hello World']]
+    status = 200
+    if something_goes_wrong(env)
+      status = 500
+    end
+    [status, {'Content-Type' => 'text/plain'}, ['Hello World']]
   end
 end
 

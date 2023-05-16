@@ -30,9 +30,25 @@ module Rack {
     DataFlow::ParameterNode getEnv() { result = call.getParameter(0) }
   }
 
+  private DataFlow::LocalSourceNode trackStatusCode(TypeTracker t, int i) {
+    t.start() and
+    result.getConstantValue().isInt(i)
+    or
+    exists(TypeTracker t2 | result = trackStatusCode(t2, i).track(t2, t))
+  }
+
+  private DataFlow::Node trackStatusCode(int i) {
+    trackStatusCode(TypeTracker::end(), i).flowsTo(result)
+  }
+
   class ResponseNode extends DataFlow::ArrayLiteralNode {
     // [status, headers, body]
     ResponseNode() { this.getNumberOfArguments() = 3 }
+
+    /**
+     * Gets an HTTP status code that may be returned in this response.
+     */
+    int getAStatusCode() { this.getElement(0) = trackStatusCode(result) }
   }
 
   private DataFlow::LocalSourceNode trackRackResponse(TypeTracker t) {

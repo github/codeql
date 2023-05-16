@@ -1,4 +1,11 @@
-| rack.rb:1:1:5:3 | HelloWorld | rack.rb:2:12:2:14 | env |
-| rack.rb:7:1:16:3 | Proxy | rack.rb:12:12:12:18 | the_env |
-| rack.rb:18:1:31:3 | Logger | rack.rb:24:12:24:14 | env |
-| rack.rb:45:1:61:3 | Baz | rack.rb:46:12:46:14 | env |
+rackApps
+| rack.rb:1:1:9:3 | HelloWorld | rack.rb:2:12:2:14 | env |
+| rack.rb:11:1:20:3 | Proxy | rack.rb:16:12:16:18 | the_env |
+| rack.rb:22:1:35:3 | Logger | rack.rb:28:12:28:14 | env |
+| rack.rb:49:1:65:3 | Baz | rack.rb:50:12:50:14 | env |
+rackResponseStatusCodes
+| rack.rb:7:5:7:63 | call to [] | 200 |
+| rack.rb:7:5:7:63 | call to [] | 500 |
+| rack.rb:39:5:39:13 | call to [] | 1 |
+| rack.rb:56:7:56:22 | call to [] | 200 |
+| rack.rb:63:5:63:21 | call to [] | 400 |
