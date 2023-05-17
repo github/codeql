@@ -199,9 +199,13 @@ module IndirectCommandInjection {
   }
 
   /**
-   * A command argument to a function that initiates an operating system command.
+   * A command argument to a function that initiates an operating system command as a shell invocation.
    */
   private class SystemCommandExecutionSink extends Sink, DataFlow::ValueNode {
-    SystemCommandExecutionSink() { this = any(SystemCommandExecution sys).getACommandArgument() }
+    SystemCommandExecutionSink() {
+      exists(SystemCommandExecution sys |
+        sys.isShellInterpreted(this) and this = sys.getACommandArgument()
+      )
+    }
   }
 }
