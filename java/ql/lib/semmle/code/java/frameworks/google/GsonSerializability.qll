@@ -39,10 +39,6 @@ private class ExplicitlyReadGsonDeserializableType extends GsonDeserializableTyp
   }
 }
 
-predicate test(MethodAccess ma) {
-  ma.getMethod() instanceof GsonReadValueMethod 
-}
-
 /** A type used in a `GsonDeserializableField` declaration. */
 private class FieldReferencedGsonDeserializableType extends GsonDeserializableType {
   FieldReferencedGsonDeserializableType() {
@@ -56,7 +52,7 @@ class GsonDeserializableField extends DeserializableField {
   GsonDeserializableField() {
     exists(GsonDeserializableType superType |
       superType = this.getDeclaringType().getAnAncestor() and
-      not superType instanceof TypeObject and 
+      not superType instanceof TypeObject and
       // TODO: if we have the source, can we just track the flow through the backing fields?
       //superType.fromSource()
       not superType.(RefType).getPackage().getName().matches("java%")
@@ -65,7 +61,5 @@ class GsonDeserializableField extends DeserializableField {
 }
 
 private class GsonInheritTaint extends DataFlow::FieldContent, TaintInheritingContent {
-  GsonInheritTaint() {
-    this.getField() instanceof GsonDeserializableField
-  }
+  GsonInheritTaint() { this.getField() instanceof GsonDeserializableField }
 }
