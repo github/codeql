@@ -324,24 +324,87 @@ module ProductFlow {
 
     private module Flow2 = DataFlow::GlobalWithState<Config2>;
 
+    private predicate isSourcePair(Flow1::PathNode node1, Flow2::PathNode node2) {
+      Config::isSourcePair(node1.getNode(), node1.getState(), node2.getNode(), node2.getState())
+    }
+
+    private predicate isSinkPair(Flow1::PathNode node1, Flow2::PathNode node2) {
+      Config::isSinkPair(node1.getNode(), node1.getState(), node2.getNode(), node2.getState())
+    }
+
+    pragma[assume_small_delta]
     pragma[nomagic]
-    private predicate reachableInterprocEntry(
-      Flow1::PathNode source1, Flow2::PathNode source2, Flow1::PathNode node1, Flow2::PathNode node2
-    ) {
-      Config::isSourcePair(node1.getNode(), node1.getState(), node2.getNode(), node2.getState()) and
-      node1 = source1 and
-      node2 = source2
+    private predicate fwdReachableInterprocEntry(Flow1::PathNode node1, Flow2::PathNode node2) {
+      isSourcePair(node1, node2)
       or
-      exists(
-        Flow1::PathNode midEntry1, Flow2::PathNode midEntry2, Flow1::PathNode midExit1,
-        Flow2::PathNode midExit2
-      |
-        reachableInterprocEntry(source1, source2, midEntry1, midEntry2) and
-        interprocEdgePair(midExit1, midExit2, node1, node2) and
-        localPathStep1*(midEntry1, midExit1) and
-        localPathStep2*(midEntry2, midExit2)
+      fwdIsSuccessor(_, _, node1, node2)
+    }
+
+    pragma[nomagic]
+    private predicate fwdIsSuccessorExit(
+      Flow1::PathNode mid1, Flow2::PathNode mid2, Flow1::PathNode succ1, Flow2::PathNode succ2
+    ) {
+      isSinkPair(mid1, mid2) and
+      succ1 = mid1 and
+      succ2 = mid2
+      or
+      interprocEdgePair(mid1, mid2, succ1, succ2)
+    }
+
+    private predicate fwdIsSuccessor1(
+      Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode mid1, Flow2::PathNode mid2,
+      Flow1::PathNode succ1, Flow2::PathNode succ2
+    ) {
+      fwdReachableInterprocEntry(pred1, pred2) and
+      localPathStep1*(pred1, mid1) and
+      fwdIsSuccessorExit(pragma[only_bind_into](mid1), pragma[only_bind_into](mid2), succ1, succ2)
+    }
+
+    private predicate fwdIsSuccessor2(
+      Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode mid1, Flow2::PathNode mid2,
+      Flow1::PathNode succ1, Flow2::PathNode succ2
+    ) {
+      fwdReachableInterprocEntry(pred1, pred2) and
+      localPathStep2*(pred2, mid2) and
+      fwdIsSuccessorExit(pragma[only_bind_into](mid1), pragma[only_bind_into](mid2), succ1, succ2)
+    }
+
+    pragma[assume_small_delta]
+    private predicate fwdIsSuccessor(
+      Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode succ1, Flow2::PathNode succ2
+    ) {
+      exists(Flow1::PathNode mid1, Flow2::PathNode mid2 |
+        fwdIsSuccessor1(pred1, pred2, mid1, mid2, succ1, succ2) and
+        fwdIsSuccessor2(pred1, pred2, mid1, mid2, succ1, succ2)
       )
     }
+
+    pragma[assume_small_delta]
+    pragma[nomagic]
+    private predicate revReachableInterprocEntry(Flow1::PathNode node1, Flow2::PathNode node2) {
+      fwdReachableInterprocEntry(node1, node2) and
+      isSinkPair(node1, node2)
+      or
+      exists(Flow1::PathNode succ1, Flow2::PathNode succ2 |
+        revReachableInterprocEntry(succ1, succ2) and
+        fwdIsSuccessor(node1, node2, succ1, succ2)
+      )
+    }
+
+    private newtype TNodePair =
+      TMkNodePair(Flow1::PathNode node1, Flow2::PathNode node2) {
+        revReachableInterprocEntry(node1, node2)
+      }
+
+    private predicate pathSucc(TNodePair n1, TNodePair n2) {
+      exists(Flow1::PathNode n11, Flow2::PathNode n12, Flow1::PathNode n21, Flow2::PathNode n22 |
+        n1 = TMkNodePair(n11, n12) and
+        n2 = TMkNodePair(n21, n22) and
+        fwdIsSuccessor(n11, n12, n21, n22)
+      )
+    }
+
+    private predicate pathSuccPlus(TNodePair n1, TNodePair n2) = fastTC(pathSucc/2)(n1, n2)
 
     private predicate localPathStep1(Flow1::PathNode pred, Flow1::PathNode succ) {
       Flow1::PathGraph::edges(pred, succ) and
@@ -474,11 +537,14 @@ module ProductFlow {
     private predicate reachable(
       Flow1::PathNode source1, Flow2::PathNode source2, Flow1::PathNode sink1, Flow2::PathNode sink2
     ) {
-      exists(Flow1::PathNode mid1, Flow2::PathNode mid2 |
-        reachableInterprocEntry(source1, source2, mid1, mid2) and
-        Config::isSinkPair(sink1.getNode(), sink1.getState(), sink2.getNode(), sink2.getState()) and
-        localPathStep1*(mid1, sink1) and
-        localPathStep2*(mid2, sink2)
+      isSourcePair(source1, source2) and
+      isSinkPair(sink1, sink2) and
+      exists(TNodePair n1, TNodePair n2 |
+        n1 = TMkNodePair(source1, source2) and
+        n2 = TMkNodePair(sink1, sink2)
+      |
+        pathSuccPlus(n1, n2) or
+        n1 = n2
       )
     }
   }
