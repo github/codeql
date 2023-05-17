@@ -33,3 +33,7 @@ function l(x, y, x) {
 }
 
 var j, j;
+
+function foo() {
+  var password = "blah";
+}
