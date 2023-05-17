@@ -11,10 +11,6 @@ noDefaultValue
 | Parameters.dll:0:0:0:0 | M2 | Parameters.dll:0:0:0:0 | a | 0 |
 | Parameters.dll:0:0:0:0 | M6 | Parameters.dll:0:0:0:0 | s1 | 0 |
 | Parameters.dll:0:0:0:0 | M7 | Parameters.dll:0:0:0:0 | e1 | 0 |
-| Parameters.dll:0:0:0:0 | NullableAttribute | Parameters.dll:0:0:0:0 | value | 0 |
-| Parameters.dll:0:0:0:0 | NullableAttribute | Parameters.dll:0:0:0:0 | value | 0 |
-| Parameters.dll:0:0:0:0 | NullableContextAttribute | Parameters.dll:0:0:0:0 | value | 0 |
-| Parameters.dll:0:0:0:0 | RefSafetyRulesAttribute | Parameters.dll:0:0:0:0 | value | 0 |
 withDefaultValue
 | Parameters.cs:8:17:8:18 | M2 | Parameters.cs:8:34:8:34 | b | 1 | Parameters.cs:8:38:8:41 | null | null |
 | Parameters.cs:8:17:8:18 | M2 | Parameters.cs:8:51:8:51 | c | 2 | Parameters.cs:8:55:8:70 | "default string" | default string |
