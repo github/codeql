@@ -5,12 +5,12 @@ extensions:
     data:
       - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "Add", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "AddAsync", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
-      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "AddRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
-      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "AddRangeAsync", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "AddRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "AddRangeAsync", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
       - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "Attach", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
-      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "AttachRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "AttachRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
       - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "Update", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
-      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "UpdateRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["Microsoft.EntityFrameworkCore", "DbSet<>", False, "UpdateRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
 
   - addsTo:
       pack: codeql/csharp-all

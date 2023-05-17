@@ -5,12 +5,12 @@ extensions:
     data:
       - ["System.Data.Entity", "DbSet<>", False, "Add", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
       - ["System.Data.Entity", "DbSet<>", False, "AddAsync", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
-      - ["System.Data.Entity", "DbSet<>", False, "AddRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
-      - ["System.Data.Entity", "DbSet<>", False, "AddRangeAsync", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["System.Data.Entity", "DbSet<>", False, "AddRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
+      - ["System.Data.Entity", "DbSet<>", False, "AddRangeAsync", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
       - ["System.Data.Entity", "DbSet<>", False, "Attach", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
-      - ["System.Data.Entity", "DbSet<>", False, "AttachRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["System.Data.Entity", "DbSet<>", False, "AttachRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
       - ["System.Data.Entity", "DbSet<>", False, "Update", "(T)", "", "Argument[0]", "Argument[this].Element", "value", "manual"]
-      - ["System.Data.Entity", "DbSet<>", False, "UpdateRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].Element", "Argument[this].Element", "value", "manual"]
+      - ["System.Data.Entity", "DbSet<>", False, "UpdateRange", "(System.Collections.Generic.IEnumerable<T>)", "", "Argument[0].WithElement", "Argument[this]", "value", "manual"]
 
   - addsTo:
       pack: codeql/csharp-all
