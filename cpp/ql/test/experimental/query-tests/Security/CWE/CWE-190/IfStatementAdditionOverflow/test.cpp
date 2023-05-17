@@ -57,4 +57,7 @@ void test()
 	if (a+b>c) { b++; a = c-b; } // GOOD
 	if (a+d>c) a = c-d; // GOOD
 	if (a1+b1>c1) a1 = c1-b1; // GOOD
+	
+	if (a+b<=c) { /* ... */ } else { a = c-b; } // BAD
+	if (a+b<=c) { return; } a = c-b; // BAD
 }
