@@ -2,7 +2,7 @@ name: Check change note
 
 on:
   pull_request_target:
-    types: [labeled, unlabeled, opened, synchronize, reopened, ready_for_review]q
+    types: [labeled, unlabeled, opened, synchronize, reopened, ready_for_review]
     paths:
       - "*/ql/src/**/*.ql"
       - "*/ql/src/**/*.qll"
