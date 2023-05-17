@@ -15,89 +15,89 @@ import cpp
 import semmle.code.cpp.controlflow.StackVariableReachability
 import semmle.code.cpp.controlflow.Guards
 
-abstract class GSSResource extends Type {
+abstract class GssResource extends Type {
   abstract string getDeallocationFunctionName();
 }
 
-abstract class GSSResourcePointer extends GSSResource, PointerType { }
+abstract class GssResourcePointer extends GssResource, PointerType { }
 
-abstract class GSSResourceStruct extends GSSResource, Struct { }
+abstract class GssResourceStruct extends GssResource, Struct { }
 
-class GSSOIDDescStruct extends GSSResourcePointer {
-  GSSOIDDescStruct() { this.getBaseType().hasName("gss_OID_desc_struct") }
+class GssOidDescStruct extends GssResourcePointer {
+  GssOidDescStruct() { this.getBaseType().hasName("gss_OID_desc_struct") }
 
   override string getDeallocationFunctionName() { result = "gss_release_oid" }
 }
 
-class GSSOIDSetDescStruct extends GSSResourcePointer {
-  GSSOIDSetDescStruct() { this.getBaseType().hasName("gss_OID_set_desc_struct") }
+class GssOidSetDescStruct extends GssResourcePointer {
+  GssOidSetDescStruct() { this.getBaseType().hasName("gss_OID_set_desc_struct") }
 
   override string getDeallocationFunctionName() { result = "gss_release_oid_set" }
 }
 
-class GSSBufferDescStruct extends GSSResourceStruct {
-  GSSBufferDescStruct() { this.hasGlobalName("gss_buffer_desc_struct") }
+class GssBufferDescStruct extends GssResourceStruct {
+  GssBufferDescStruct() { this.hasGlobalName("gss_buffer_desc_struct") }
 
   override string getDeallocationFunctionName() { result = "gss_release_buffer" }
 }
 
-class GSSNameStruct extends GSSResourcePointer {
-  GSSNameStruct() { this.getBaseType().hasName("gss_name_struct") }
+class GssNameStruct extends GssResourcePointer {
+  GssNameStruct() { this.getBaseType().hasName("gss_name_struct") }
 
   override string getDeallocationFunctionName() { result = "gss_release_name" }
 }
 
-class GSSResourceAllocFunctionCall extends FunctionCall {
+class GssResourceAllocFunctionCall extends FunctionCall {
   int argIndex;
-  GSSResource resourceType;
+  GssResource resourceType;
 
-  GSSResourceAllocFunctionCall() {
+  GssResourceAllocFunctionCall() {
     exists(string name |
       this.getTarget().hasGlobalName(name) and
       (
         name = "gss_accept_sec_context" and
         argIndex = 7 and
-        resourceType instanceof GSSBufferDescStruct
+        resourceType instanceof GssBufferDescStruct
         or
         name = "gss_acquire_cred" and
         argIndex = 6 and
-        resourceType instanceof GSSOIDSetDescStruct
+        resourceType instanceof GssOidSetDescStruct
         or
         name = "gss_create_empty_oid_set" and
         argIndex = 1 and
-        resourceType instanceof GSSOIDSetDescStruct
+        resourceType instanceof GssOidSetDescStruct
         or
         name = "gss_display_name" and
         argIndex = 2 and
-        resourceType instanceof GSSBufferDescStruct
+        resourceType instanceof GssBufferDescStruct
         or
         name = "gss_display_status" and
         argIndex = 5 and
-        resourceType instanceof GSSBufferDescStruct
+        resourceType instanceof GssBufferDescStruct
         or
         name = "gss_export_name" and
         argIndex = 2 and
-        resourceType instanceof GSSBufferDescStruct
+        resourceType instanceof GssBufferDescStruct
         or
         name = "gss_get_mic" and
         argIndex = 4 and
-        resourceType instanceof GSSBufferDescStruct
+        resourceType instanceof GssBufferDescStruct
         or
         name = "gss_import_name" and
         argIndex = 3 and
-        resourceType instanceof GSSNameStruct
+        resourceType instanceof GssNameStruct
         or
         name = "gss_indicate_mechs" and
         argIndex = 1 and
-        resourceType instanceof GSSOIDSetDescStruct
+        resourceType instanceof GssOidSetDescStruct
         or
         name = "gss_init_sec_context" and
         argIndex = 10 and
-        resourceType instanceof GSSBufferDescStruct
+        resourceType instanceof GssBufferDescStruct
         or
         name = "gss_inquire_cred" and
         argIndex = 5 and
-        resourceType instanceof GSSBufferDescStruct
+        resourceType instanceof GssBufferDescStruct
       )
     )
   }
@@ -106,7 +106,7 @@ class GSSResourceAllocFunctionCall extends FunctionCall {
 
   Expr getResourceArgExpr() { result = this.getArgument(this.getResourceArgIndex()) }
 
-  GSSResource getResourceType() { result = resourceType }
+  GssResource getResourceType() { result = resourceType }
 }
 
 class StatusStackVariable extends StackVariable {
@@ -115,7 +115,7 @@ class StatusStackVariable extends StackVariable {
 
 predicate resourceIsAllocated(
   ControlFlowNode def, ControlFlowNode node, StackVariable v, StatusStackVariable status,
-  GSSResourceAllocFunctionCall allocCall
+  GssResourceAllocFunctionCall allocCall
 ) {
   allocCall = node and
   allocCall.getResourceArgExpr().(AddressOfExpr).getOperand().(VariableAccess).getTarget() = v and
@@ -124,7 +124,7 @@ predicate resourceIsAllocated(
 
 class ResourceWithStatus extends StackVariable {
   StatusStackVariable status;
-  GSSResource resourceType;
+  GssResource resourceType;
 
   ResourceWithStatus() {
     resourceIsAllocated(_, _, this, status, _) and resourceType = this.getUnderlyingType()
@@ -132,7 +132,7 @@ class ResourceWithStatus extends StackVariable {
 
   StatusStackVariable getStatus() { result = status }
 
-  GSSResource getResourceType() { result = resourceType }
+  GssResource getResourceType() { result = resourceType }
 }
 
 predicate resourceIsFreed(ControlFlowNode node, ResourceWithStatus resource) {
@@ -169,7 +169,7 @@ predicate assignedToFieldOrGlobal(StackVariable v, Expr e) {
   or
   // resource is a pointer, so passed directly
   exists(Expr midExpr, Function mid, int arg |
-    v.getUnderlyingType() instanceof GSSResourcePointer and
+    v.getUnderlyingType() instanceof GssResourcePointer and
     e.(FunctionCall).getArgument(arg) = v.getAnAccess() and
     mayCallFunction(e, mid) and
     midExpr.getEnclosingFunction() = mid and
@@ -183,9 +183,9 @@ ControlFlowNode statusCheckSuccessor(ControlFlowNode node, StatusStackVariable s
   node.(AnalysedExpr).getNullSuccessor(status) = result
 }
 
-class GSSAllocVariableReachabilityWithReassignment extends StackVariableReachabilityWithReassignment {
-  GSSAllocVariableReachabilityWithReassignment() {
-    this = "GSSAllocVariableReachabilityWithReassignment"
+class GssAllocVariableReachabilityWithReassignment extends StackVariableReachabilityWithReassignment {
+  GssAllocVariableReachabilityWithReassignment() {
+    this = "GssAllocVariableReachabilityWithReassignment"
   }
 
   override predicate isSourceActual(ControlFlowNode node, StackVariable v) {
@@ -219,7 +219,7 @@ class GSSAllocVariableReachabilityWithReassignment extends StackVariableReachabi
  * The value from allocation `def` is still held in Variable `v` upon entering `node`.
  */
 predicate allocatedVariableReaches(StackVariable v, ControlFlowNode def, ControlFlowNode node) {
-  exists(GSSAllocVariableReachabilityWithReassignment r |
+  exists(GssAllocVariableReachabilityWithReassignment r |
     // reachability
     r.reachesTo(def, _, node, v)
     or
@@ -229,8 +229,8 @@ predicate allocatedVariableReaches(StackVariable v, ControlFlowNode def, Control
   )
 }
 
-class GSSAllocReachability extends StackVariableReachabilityExt {
-  GSSAllocReachability() { this = "GSSAllocReachability" }
+class GssAllocReachability extends StackVariableReachabilityExt {
+  GssAllocReachability() { this = "GssAllocReachability" }
 
   override predicate isSource(ControlFlowNode node, StackVariable v) {
     exists(ResourceWithStatus rws |
@@ -251,7 +251,7 @@ class GSSAllocReachability extends StackVariableReachabilityExt {
     node.(AnalysedExpr).getNonNullSuccessor(rws.getStatus()) = next
   }
 
-  predicate isGSSErrorStatusCheck(ControlFlowNode node, ControlFlowNode next, ResourceWithStatus rws) {
+  predicate isGssErrorStatusCheck(ControlFlowNode node, ControlFlowNode next, ResourceWithStatus rws) {
     // status = gss_foo(&resource);
     // if (GSS_ERROR(status)) {
     //    ...
@@ -303,7 +303,7 @@ class GSSAllocReachability extends StackVariableReachabilityExt {
       (
         isStatusCheck(node, next, rws)
         or
-        isGSSErrorStatusCheck(node, next, rws)
+        isGssErrorStatusCheck(node, next, rws)
         or
         isValueCheck(node, next, rws)
         or
@@ -320,10 +320,10 @@ class GSSAllocReachability extends StackVariableReachabilityExt {
 }
 
 predicate allocationReaches(ControlFlowNode def, ControlFlowNode node) {
-  exists(GSSAllocReachability r | r.reaches(def, _, node))
+  exists(GssAllocReachability r | r.reaches(def, _, node))
 }
 
-from GSSResourceAllocFunctionCall def, ReturnStmt ret
+from GssResourceAllocFunctionCall def, ReturnStmt ret
 where
   allocationReaches(def, ret) and
   not exists(StackVariable v |
