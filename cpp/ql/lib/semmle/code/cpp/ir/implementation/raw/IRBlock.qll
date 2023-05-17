@@ -271,8 +271,9 @@ private module Cached {
   /** Holds if `i` is the `index`th instruction in `block`. */
   cached
   Instruction getInstruction(TIRBlock block, int index) {
-    exists(Instruction first |
-      block = MkIRBlock(first) and
+    exists(Instruction first | block = MkIRBlock(first) |
+      first = result and index = 0
+      or
       index = getMemberIndex(result) and
       BlockAdjacency::getEquivalenceClass(first) = BlockAdjacency::getEquivalenceClass(result)
     )
