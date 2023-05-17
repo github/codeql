@@ -183,7 +183,8 @@ ControlFlowNode statusCheckSuccessor(ControlFlowNode node, StatusStackVariable s
   node.(AnalysedExpr).getNullSuccessor(status) = result
 }
 
-class GssAllocVariableReachabilityWithReassignment extends StackVariableReachabilityWithReassignment {
+class GssAllocVariableReachabilityWithReassignment extends StackVariableReachabilityWithReassignment
+{
   GssAllocVariableReachabilityWithReassignment() {
     this = "GssAllocVariableReachabilityWithReassignment"
   }
