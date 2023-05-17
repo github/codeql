@@ -53,7 +53,6 @@ class GsonDeserializableField extends DeserializableField {
     exists(GsonDeserializableType superType |
       superType = this.getDeclaringType().getAnAncestor() and
       not superType instanceof TypeObject and
-      // TODO: if we have the source, can we just track the flow through the backing fields?
       //superType.fromSource()
       not superType.(RefType).getPackage().getName().matches("java%")
     )
