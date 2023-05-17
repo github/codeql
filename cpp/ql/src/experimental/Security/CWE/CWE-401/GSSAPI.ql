@@ -113,10 +113,6 @@ class StatusStackVariable extends StackVariable {
   StatusStackVariable() { this.getType().hasName("OM_uint32") }
 }
 
-class ResourceStackVariable extends StackVariable {
-  ResourceStackVariable() { this.getType() instanceof GSSResource }
-}
-
 predicate resourceIsAllocated(
   ControlFlowNode def, ControlFlowNode node, StackVariable v, StatusStackVariable status,
   GSSResourceAllocFunctionCall allocCall
