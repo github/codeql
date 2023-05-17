@@ -1,12 +1,8 @@
 /**
  * @name Integer addition may overflow inside if statement
- * @description Detects "if (a+b>c) a=c-b", which incorrectly implements
- *              a = min(a,c-b) if a+b overflows. Should be replaced by
- *              "if (a>c-b) a=c-b". Also detects "if (b+a>c) a=c-b"
- *              (swapped terms in addition), if (a+b>c) { a=c-b }"
- *              (assignment inside block), "c<a+b" (swapped operands) and
- *              ">=", "<", "<=" instead of ">" (all operators). This
- *              integer overflow is the root cause of the buffer overflow
+ * @description Writing 'if (a+b>c) a=c-b' incorrectly implements
+ *              'a = min(a,c-b)' if 'a+b' overflows. This integer
+ *              overflow is the root cause of the buffer overflow
  *              in the SHA-3 reference implementation (CVE-2022-37454).
  * @kind problem
  * @problem.severity warning
@@ -21,22 +17,26 @@ import cpp
 import semmle.code.cpp.valuenumbering.GlobalValueNumbering
 import semmle.code.cpp.valuenumbering.HashCons
 import semmle.code.cpp.rangeanalysis.SimpleRangeAnalysis
-import semmle.code.cpp.commons.Exclusions
+import semmle.code.cpp.controlflow.Guards
 
-from IfStmt ifstmt, RelationalOperation relop, ExprStmt exprstmt, BlockStmt blockstmt, AssignExpr assignexpr, AddExpr addexpr, SubExpr subexpr
-where ifstmt.getCondition() = relop and
-  relop.getAnOperand() = addexpr and
+from
+  GuardCondition guard, Expr expr, ExprStmt exprstmt, BasicBlock block, AssignExpr assignexpr,
+  AddExpr addexpr, SubExpr subexpr
+where
+  (guard.ensuresLt(expr, addexpr, 0, block, _) or guard.ensuresLt(addexpr, expr, 0, block, _)) and
   addexpr.getUnspecifiedType() instanceof IntegralType and
-  not isFromMacroDefinition(relop) and
   exprMightOverflowPositively(addexpr) and
-  (ifstmt.getThen() = exprstmt or
-  (ifstmt.getThen() = blockstmt and
-  blockstmt.getAStmt() = exprstmt)) and
+  block.getANode() = exprstmt and
   exprstmt.getExpr() = assignexpr and
   assignexpr.getRValue() = subexpr and
-  ((hashCons(addexpr.getLeftOperand()) = hashCons(assignexpr.getLValue()) and
-  globalValueNumber(addexpr.getRightOperand()) = globalValueNumber(subexpr.getRightOperand())) or
-  (hashCons(addexpr.getRightOperand()) = hashCons(assignexpr.getLValue()) and
-  globalValueNumber(addexpr.getLeftOperand()) = globalValueNumber(subexpr.getRightOperand()))) and
-  globalValueNumber(relop.getAnOperand()) = globalValueNumber(subexpr.getLeftOperand())
-select ifstmt, "\"if (a+b>c) a=c-b\" was detected where the $@ may potentially overflow/wraparound. The code can be rewritten as \"if (a>c-b) a=c-b\" which avoids the overflow.", addexpr, "addition"
+  (
+    hashCons(addexpr.getLeftOperand()) = hashCons(assignexpr.getLValue()) and
+    globalValueNumber(addexpr.getRightOperand()) = globalValueNumber(subexpr.getRightOperand())
+    or
+    hashCons(addexpr.getRightOperand()) = hashCons(assignexpr.getLValue()) and
+    globalValueNumber(addexpr.getLeftOperand()) = globalValueNumber(subexpr.getRightOperand())
+  ) and
+  globalValueNumber(expr) = globalValueNumber(subexpr.getLeftOperand())
+select guard,
+  "\"if (a+b>c) a=c-b\" was detected where the $@ may potentially overflow/wraparound. The code can be rewritten as \"if (a>c-b) a=c-b\" which avoids the overflow.",
+  addexpr, "addition"
