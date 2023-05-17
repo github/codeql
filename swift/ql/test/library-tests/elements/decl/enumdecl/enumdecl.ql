@@ -1,11 +1,11 @@
 import swift
 
 string describe(Decl d) {
-  (d instanceof EnumDecl and result = "(EnumDecl)")
+  d instanceof EnumDecl and result = "(EnumDecl)"
   or
-  (d instanceof EnumCaseDecl and result = "(EnumCaseDecl)")
+  d instanceof EnumCaseDecl and result = "(EnumCaseDecl)"
   or
-  (d instanceof EnumElementDecl and result = "(EnumElementDecl)")
+  d instanceof EnumElementDecl and result = "(EnumElementDecl)"
   or
   result = ".getType = " + d.(EnumDecl).getType().toString()
   or
