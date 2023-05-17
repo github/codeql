@@ -193,7 +193,7 @@ The class `ASTNode <https://codeql.github.com/codeql-standard-libraries/javascri
 .. pull-quote::
 
    Note
-   
+
    These predicates should only be used to perform generic AST traversal. To access children of specific AST node types, the specialized predicates introduced below should be used instead. In particular, queries should not rely on the numeric indices of child nodes relative to their parent nodes: these are considered an implementation detail that may change between versions of the library.
 
 Top-levels
@@ -771,7 +771,7 @@ The ``semmle.javascript.frameworks.AngularJS`` library provides support for work
 HTTP framework libraries
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-The library ``semmle.javacript.frameworks.HTTP`` provides classes modeling common concepts from various HTTP frameworks. 
+The library ``semmle.javacript.frameworks.HTTP`` provides classes modeling common concepts from various HTTP frameworks.
 
 Currently supported frameworks are `Express <https://expressjs.com/>`__, the standard Node.js ``http`` and ``https`` modules, `Connect <https://github.com/senchalabs/connect>`__, `Koa <https://koajs.com>`__, `Hapi <https://hapi.dev/>`__ and `Restify <http://restify.com/>`__.
 
