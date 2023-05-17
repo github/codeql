@@ -12,8 +12,6 @@ string describe(Decl d) {
   result = ".getDeclaringDecl = " + d.getDeclaringDecl().toString()
   or
   exists(int i |
-    result = ".getMember(" + i.toString() + ") = " + d.getMember(i).toString()
-    or
     result = ".getElement(" + i.toString() + ") = " + d.(EnumCaseDecl).getElement(i).toString()
     or
     result = ".getParam(" + i.toString() + ") = " + d.(EnumElementDecl).getParam(i).toString()
