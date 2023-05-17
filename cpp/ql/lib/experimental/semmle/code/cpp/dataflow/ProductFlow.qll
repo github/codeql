@@ -290,9 +290,9 @@ module ProductFlow {
       predicate isBarrierIn(DataFlow::Node node) { Config::isBarrierIn1(node) }
     }
 
-    module Flow1 = DataFlow::GlobalWithState<Config1>;
+    private module Flow1 = DataFlow::GlobalWithState<Config1>;
 
-    module Config2 implements DataFlow::StateConfigSig {
+    private module Config2 implements DataFlow::StateConfigSig {
       class FlowState = FlowState2;
 
       predicate isSource(DataFlow::Node source, FlowState state) {
@@ -322,7 +322,7 @@ module ProductFlow {
       predicate isBarrierIn(DataFlow::Node node) { Config::isBarrierIn2(node) }
     }
 
-    module Flow2 = DataFlow::GlobalWithState<Config2>;
+    private module Flow2 = DataFlow::GlobalWithState<Config2>;
 
     pragma[nomagic]
     private predicate reachableInterprocEntry(
