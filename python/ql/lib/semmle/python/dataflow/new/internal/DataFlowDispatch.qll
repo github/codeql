@@ -250,6 +250,9 @@ abstract class LibraryCallable extends string {
   /** Gets a call to this library callable. */
   abstract CallCfgNode getACall();
 
+  /** Same as `getACall` but without referring to the call graph or API graph. */
+  CallCfgNode getACallSimple() { none() }
+
   /** Gets a data-flow node, where this library callable is used as a call-back. */
   abstract ArgumentNode getACallback();
 }
