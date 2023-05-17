@@ -345,6 +345,16 @@ query predicate edges(MergedPathNode node1, MergedPathNode node2) {
   joinOn2(node1.asPathNode3(), node2.asSinkNode(), _)
 }
 
+query predicate subpaths(
+  MergedPathNode arg, MergedPathNode par, MergedPathNode ret, MergedPathNode out
+) {
+  AllocToInvalidPointerFlow::PathGraph1::subpaths(arg.asPathNode1(), par.asPathNode1(),
+    ret.asPathNode1(), out.asPathNode1())
+  or
+  InvalidPointerToDerefFlow::PathGraph::subpaths(arg.asPathNode3(), par.asPathNode3(),
+    ret.asPathNode3(), out.asPathNode3())
+}
+
 /**
  * Holds if `p1` is a sink of `AllocToInvalidPointerConf` and `p2` is a source
  * of `InvalidPointerToDerefConf`, and they are connected through `pai`.
