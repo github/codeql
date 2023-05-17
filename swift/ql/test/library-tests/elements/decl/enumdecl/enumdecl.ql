@@ -17,6 +17,8 @@ string describe(Decl d) {
     result = ".getElement(" + i.toString() + ") = " + d.(EnumCaseDecl).getElement(i).toString()
     or
     result = ".getParam(" + i.toString() + ") = " + d.(EnumElementDecl).getParam(i).toString()
+    or
+    result = ".getEnumElement(" + i.toString() + ") = " + d.(EnumDecl).getEnumElement(i).toString()
   )
 }
 
