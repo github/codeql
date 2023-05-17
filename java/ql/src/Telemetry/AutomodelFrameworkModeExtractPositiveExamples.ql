@@ -23,7 +23,7 @@ where
   // Extract positive examples of sinks belonging to the existing ATM query configurations.
   CharacteristicsImpl::isKnownSink(endpoint, sinkType)
 select endpoint,
-  sinkType + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
+  sinkType + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
   package.(DollarAtString), "package", //
