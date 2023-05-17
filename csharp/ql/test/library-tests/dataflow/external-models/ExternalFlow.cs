@@ -214,4 +214,25 @@ namespace My.Qltest
 
         static void Sink(object o) { }
     }
+
+    public interface HI { }
+
+    public class HC : HI { }
+
+    public static class HE
+    {
+        public static object ExtensionMethod(this HI h) => throw null;
+    }
+
+    public class H
+    {
+        void M1()
+        {
+            var h = new HC();
+            var o = h.ExtensionMethod();
+            Sink(o);
+        }
+
+        static void Sink(object o) { }
+    }
 }
