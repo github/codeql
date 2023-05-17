@@ -17,3 +17,14 @@ query predicate withDefaultValue(Parameterizable container, Parameter p, int i, 
   p.getDefaultValue() = e and
   if exists(e.getValue()) then value = e.getValue() else value = "-"
 }
+
+query predicate dateTimeDefaults(
+  Parameterizable container, Parameter p, ObjectCreation o, string constructor, string value
+) {
+  fromTestLocation(container) and
+  p.hasDefaultValue() and
+  container.getAParameter() = p and
+  p.getDefaultValue() = o and
+  o.getTarget().toStringWithTypes() = constructor and
+  o.getAnArgument().getValue() = value
+}
