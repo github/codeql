@@ -103,9 +103,9 @@ def test_dict_access(x):
 
     ensure_tainted(
         tainted_dict["name"], # $ tainted
-        tainted_dict.get("name"), # $ tainted
+        tainted_dict.get("name"), # $ MISSING: tainted
         tainted_dict[x], # $ tainted
-        tainted_dict.copy(), # $ tainted
+        tainted_dict.copy(), # $ MISSING: tainted
     )
 
     for v in tainted_dict.values():

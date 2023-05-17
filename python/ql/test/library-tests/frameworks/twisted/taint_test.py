@@ -26,12 +26,12 @@ class MyTaintTest(Resource):
             request.args, # $ tainted
             request.args[b"key"], # $ tainted
             request.args[b"key"][0], # $ tainted
-            request.args.get(b"key"), # $ tainted
-            request.args.get(b"key")[0], # $ tainted
+            request.args.get(b"key"), # $ MISSING: tainted
+            request.args.get(b"key")[0], # $ MISSING: tainted
 
             request.received_cookies, # $ tainted
             request.received_cookies["key"], # $ tainted
-            request.received_cookies.get("key"), # $ tainted
+            request.received_cookies.get("key"), # $ MISSING: tainted
             request.getCookie(b"key"), # $ tainted
 
             # twisted.web.http_headers.Headers

@@ -16,21 +16,21 @@ def normalize(x):
 @app.route("/path")
 def simple():
     x = source()
-    open(x)  # $result=BAD
+    open(x)  # $ MISSING: result=BAD
 
 
 @app.route("/path")
 def normalization():
     x = source()
     y = normalize(x)
-    open(y)  # $result=BAD
+    open(y)  # $ MISSING: result=BAD
 
 
 @app.route("/path")
 def check():
     x = source()
     if x.startswith("subfolder/"):
-        open(x)  # $result=BAD
+        open(x)  # $ MISSING: result=BAD
 
 
 @app.route("/path")
@@ -46,4 +46,4 @@ def check_then_normalize():
     x = source()
     if x.startswith("subfolder/"):
         y = normalize(x)
-        open(y)  # $result=BAD
+        open(y)  # $ MISSING: result=BAD

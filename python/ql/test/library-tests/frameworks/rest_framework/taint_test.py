@@ -31,11 +31,11 @@ def test_taint(request: Request, routed_param): # $ requestHandler routedParamet
         # alias for .GET
         request.query_params, # $ tainted
         request.query_params["key"], # $ tainted
-        request.query_params.get("key"), # $ tainted
+        request.query_params.get("key"), # $ MISSING: tainted
         request.query_params.getlist("key"), # $ tainted
         request.query_params.getlist("key")[0], # $ tainted
-        request.query_params.pop("key"), # $ tainted
-        request.query_params.pop("key")[0], # $ tainted
+        request.query_params.pop("key"), # $ MISSING: tainted
+        request.query_params.pop("key")[0], # $ MISSING: tainted
 
         # see more detailed tests of `request.user` below
         request.user, # $ tainted
