@@ -216,7 +216,7 @@ class GssAllocVariableReachabilityWithReassignment extends StackVariableReachabi
 }
 
 /**
- * The value from allocation `def` is still held in Variable `v` upon entering `node`.
+ * Holds if the value from allocation `def` is still held in Variable `v` upon entering `node`.
  */
 predicate allocatedVariableReaches(StackVariable v, ControlFlowNode def, ControlFlowNode node) {
   exists(GssAllocVariableReachabilityWithReassignment r |
