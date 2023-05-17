@@ -5249,11 +5249,17 @@ open class KotlinFileExtractor(
     /**
      * Extracts a single wildcard type access expression with no enclosing callable and statement.
      */
-    private fun extractWildcardTypeAccess(type: TypeResultsWithoutSignatures, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int): Label<out DbExpr> {
+    private fun extractWildcardTypeAccess(type: TypeResultsWithoutSignatures, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?): Label<out DbExpr> {
         val id = tw.getFreshIdLabel<DbWildcardtypeaccess>()
         tw.writeExprs_wildcardtypeaccess(id, type.javaResult.id, parent, idx)
         tw.writeExprsKotlinType(id, type.kotlinResult.id)
         tw.writeHasLocation(id, location)
+        if (enclosingCallable != null) {
+            tw.writeCallableEnclosingExpr(id, enclosingCallable)
+        }
+        if (enclosingStmt != null) {
+            tw.writeStatementEnclosingExpr(id, enclosingStmt)
+        }
         return id
     }
 
@@ -5274,7 +5280,7 @@ open class KotlinFileExtractor(
     /**
      * Extracts a single type access expression with enclosing callable and statement.
      */
-    private fun extractTypeAccess(type: TypeResults, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?, overrideId: Label<out DbExpr>? = null): Label<out DbExpr> {
+    private fun extractTypeAccess(type: TypeResults, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?, overrideId: Label<out DbExpr>? = null): Label<out DbExpr> {
         val id = extractTypeAccess(type, location, parent, idx, overrideId = overrideId)
         if (enclosingCallable != null) {
             tw.writeCallableEnclosingExpr(id, enclosingCallable)
@@ -5290,17 +5296,17 @@ open class KotlinFileExtractor(
      * `extractTypeAccessRecursive` if the argument is invariant.
      * No enclosing callable and statement is extracted, this is useful for type access extraction in field declarations.
      */
-    private fun extractWildcardTypeAccessRecursive(t: IrTypeArgument, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int) {
+    private fun extractWildcardTypeAccessRecursive(t: IrTypeArgument, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?) {
         val typeLabels by lazy { TypeResultsWithoutSignatures(getTypeArgumentLabel(t), TypeResultWithoutSignature(fakeKotlinType(), Unit, "TODO")) }
         when (t) {
-            is IrStarProjection -> extractWildcardTypeAccess(typeLabels, location, parent, idx)
+            is IrStarProjection -> extractWildcardTypeAccess(typeLabels, location, parent, idx, enclosingCallable, enclosingStmt)
             is IrTypeProjection -> when(t.variance) {
-                Variance.INVARIANT -> extractTypeAccessRecursive(t.type, location, parent, idx, TypeContext.GENERIC_ARGUMENT)
+                Variance.INVARIANT -> extractTypeAccessRecursive(t.type, location, parent, idx, enclosingCallable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
                 else -> {
-                    val wildcardLabel = extractWildcardTypeAccess(typeLabels, location, parent, idx)
+                    val wildcardLabel = extractWildcardTypeAccess(typeLabels, location, parent, idx, enclosingCallable, enclosingStmt)
                     // Mimic a Java extractor oddity, that it uses the child index to indicate what kind of wildcard this is
                     val boundChildIdx = if (t.variance == Variance.OUT_VARIANCE) 0 else 1
-                    extractTypeAccessRecursive(t.type, location, wildcardLabel, boundChildIdx, TypeContext.GENERIC_ARGUMENT)
+                    extractTypeAccessRecursive(t.type, location, wildcardLabel, boundChildIdx, enclosingCallable, enclosingStmt, TypeContext.GENERIC_ARGUMENT)
                 }
             }
         }
@@ -5308,22 +5314,16 @@ open class KotlinFileExtractor(
 
     /**
      * Extracts a type access expression and its child type access expressions in case of a generic type. Nested generics are also handled.
-     * No enclosing callable and statement is extracted, this is useful for type access extraction in field declarations.
+     * No enclosing callable and statement is extracted; this is useful for type access extraction in field declarations.
      */
     private fun extractTypeAccessRecursive(t: IrType, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
-        val typeAccessId = extractTypeAccess(useType(t, typeContext), location, parent, idx)
-        if (t is IrSimpleType) {
-            t.arguments.forEachIndexed { argIdx, arg ->
-                extractWildcardTypeAccessRecursive(arg, location, typeAccessId, argIdx)
-            }
-        }
-        return typeAccessId
+        return extractTypeAccessRecursive(t, location, parent, idx, null, null, typeContext)
     }
 
     /**
      * Extracts a type access expression and its child type access expressions in case of a generic type. Nested generics are also handled.
      */
-    private fun extractTypeAccessRecursive(t: IrType, location: Label<DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?, typeContext: TypeContext = TypeContext.OTHER, overrideId: Label<out DbExpr>? = null): Label<out DbExpr> {
+    private fun extractTypeAccessRecursive(t: IrType, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, enclosingCallable: Label<out DbCallable>?, enclosingStmt: Label<out DbStmt>?, typeContext: TypeContext = TypeContext.OTHER, overrideId: Label<out DbExpr>? = null): Label<out DbExpr> {
         // TODO: `useType` substitutes types to their java equivalent, and sometimes that also means changing the number of type arguments. The below logic doesn't take this into account.
         // For example `KFunction2<Int,Double,String>` becomes `KFunction<String>` with three child type access expressions: `Int`, `Double`, `String`.
         val typeAccessId = extractTypeAccess(useType(t, typeContext), location, parent, idx, enclosingCallable, enclosingStmt, overrideId = overrideId)
@@ -5331,7 +5331,9 @@ open class KotlinFileExtractor(
             if (t.arguments.isNotEmpty() && overrideId != null) {
                 logger.error("Unexpected parameterized type with an overridden expression ID; children will be assigned fresh IDs")
             }
-            extractTypeArguments(t.arguments.filterIsInstance<IrType>(), location, typeAccessId, enclosingCallable, enclosingStmt)
+            t.arguments.forEachIndexed { argIdx, arg ->
+                extractWildcardTypeAccessRecursive(arg, location, typeAccessId, argIdx, enclosingCallable, enclosingStmt)
+            }
         }
         return typeAccessId
     }

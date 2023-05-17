@@ -261,6 +261,7 @@ app/src/main/kotlin/testProject/App.kt:
 #    7|             0: [ArrayCreationExpr] new KSerializer<?>[]
 #    7|               -2: [ArrayInit] {...}
 #    7|               -1: [TypeAccess] KSerializer<?>
+#    7|                 0: [WildcardTypeAccess] ? ...
 #    7|               0: [IntegerLiteral] 2
 #    0|       3: [Method] deserialize
 #-----|         1: (Annotations)
@@ -658,6 +659,7 @@ app/src/main/kotlin/testProject/App.kt:
 #   14|             0: [ArrayCreationExpr] new KSerializer<?>[]
 #   14|               -2: [ArrayInit] {...}
 #   14|               -1: [TypeAccess] KSerializer<?>
+#   14|                 0: [WildcardTypeAccess] ? ...
 #   14|               0: [IntegerLiteral] 1
 #    0|       3: [Method] deserialize
 #-----|         1: (Annotations)

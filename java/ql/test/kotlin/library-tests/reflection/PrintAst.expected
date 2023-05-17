@@ -1006,6 +1006,7 @@ reflection.kt:
 #   24|                 2: [TypeAccess] Integer
 #   24|               1: [MethodAccess] single(...)
 #   24|                 -2: [TypeAccess] KCallable<?>
+#   24|                   0: [WildcardTypeAccess] ? ...
 #   24|                 -1: [TypeAccess] CollectionsKt
 #   24|                 0: [MethodAccess] getMembers(...)
 #   24|                   -1: [TypeLiteral] C.class
@@ -1029,6 +1030,7 @@ reflection.kt:
 #   24|                             1: [StringLiteral] "p3"
 #   24|                   -3: [TypeAccess] Function1<KCallable<?>,Boolean>
 #   24|                     0: [TypeAccess] KCallable<?>
+#   24|                       0: [WildcardTypeAccess] ? ...
 #   24|                     1: [TypeAccess] Boolean
 #   25|         15: [LocalVariableDeclStmt] var ...;
 #   25|           1: [LocalVariableDeclExpr] z0

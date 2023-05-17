@@ -206,6 +206,7 @@
 | delegates.kt:8:35:11:5 | observable(...) | MethodAccess |
 | delegates.kt:8:57:8:62 | "<none>" | StringLiteral |
 | delegates.kt:8:66:11:5 | ...->... | LambdaExpr |
+| delegates.kt:8:66:11:5 | ? ... | WildcardTypeAccess |
 | delegates.kt:8:66:11:5 | Function3<KProperty<?>,String,String,Unit> | TypeAccess |
 | delegates.kt:8:66:11:5 | KProperty<?> | TypeAccess |
 | delegates.kt:8:66:11:5 | String | TypeAccess |
