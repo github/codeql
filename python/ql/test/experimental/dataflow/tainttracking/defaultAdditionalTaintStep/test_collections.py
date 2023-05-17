@@ -38,8 +38,8 @@ def test_construction():
         set(tainted_list), # $ tainted
         frozenset(tainted_list), # $ tainted
         dict(tainted_dict), # $ tainted
-        dict(k = tainted_string)["k"], # $ MISSING: tainted
-        dict(dict(k = tainted_string))["k"], # $ MISSING: tainted
+        dict(k = tainted_string)["k"], # $ tainted
+        dict(dict(k = tainted_string))["k"], # $ tainted
         dict(["k", tainted_string]), # $ tainted
     )
 

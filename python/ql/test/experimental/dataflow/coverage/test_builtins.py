@@ -41,8 +41,8 @@ def SINK_F(x):
 def test_list_from_list():
     l1 = [SOURCE, NONSOURCE]
     l2 = list(l1)
-    SINK(l2[0]) #$ MISSING: flow="SOURCE, l:-2 -> l2[0]"
-    SINK_F(l2[1]) # expecting FP due to imprecise flow
+    SINK(l2[0]) #$ flow="SOURCE, l:-2 -> l2[0]"
+    SINK_F(l2[1]) #$ SPURIOUS: flow="SOURCE, l:-3 -> l2[1]"
 
 # -- skip list_from_string
 
@@ -50,13 +50,13 @@ def test_list_from_list():
 def test_list_from_tuple():
     t = (SOURCE, NONSOURCE)
     l = list(t)
-    SINK(l[0]) #$ MISSING: flow="SOURCE, l:-2 -> l[0]"
-    SINK_F(l[1]) # expecting FP due to imprecise flow
+    SINK(l[0]) #$ flow="SOURCE, l:-2 -> l[0]"
+    SINK_F(l[1]) #$ SPURIOUS: flow="SOURCE, l:-3 -> l[1]"
 
 def test_list_from_set():
     s = {SOURCE}
     l = list(s)
-    SINK(l[0]) #$ MISSING: flow="SOURCE, l:-2 -> l[0]"
+    SINK(l[0]) #$ flow="SOURCE, l:-2 -> l[0]"
     
 @expects(2)
 def test_list_from_dict():
@@ -78,7 +78,7 @@ def test_tuple_from_list():
 def test_tuple_from_tuple():
     t0 = (SOURCE, NONSOURCE)
     t = tuple(t0)
-    SINK(t[0]) #$ MISSING: flow="SOURCE, l:-2 -> t[0]"
+    SINK(t[0]) #$ flow="SOURCE, l:-2 -> t[0]"
     SINK_F(t[1])
 
 def test_tuple_from_set():
@@ -100,19 +100,19 @@ def test_set_from_list():
     l = [SOURCE]
     s = set(l)
     v = s.pop()
-    SINK(v) #$ MISSING: flow="SOURCE, l:-3 -> v"
+    SINK(v) #$ flow="SOURCE, l:-3 -> v"
 
 def test_set_from_tuple():
     t = (SOURCE,)
     s = set(t)
     v = s.pop()
-    SINK(v) #$ MISSING: flow="SOURCE, l:-3 -> v"
+    SINK(v) #$ flow="SOURCE, l:-3 -> v"
 
 def test_set_from_set():
     s0 = {SOURCE}
     s = set(s0)
     v = s.pop()
-    SINK(v) #$ MISSING: flow="SOURCE, l:-3 -> v"
+    SINK(v) #$ flow="SOURCE, l:-3 -> v"
 
 def test_set_from_dict():
     d = {SOURCE: "val"}
@@ -126,7 +126,7 @@ def test_set_from_dict():
 @expects(2)
 def test_dict_from_keyword():
     d = dict(k = SOURCE, k1 = NONSOURCE)
-    SINK(d["k"]) #$ MISSING: flow="SOURCE, l:-1 -> d[k]"
+    SINK(d["k"]) #$ flow="SOURCE, l:-1 -> d['k']"
     SINK_F(d["k1"])
 
 @expects(2)
@@ -139,7 +139,7 @@ def test_dict_from_list():
 def test_dict_from_dict():
     d1 = {'k': SOURCE, 'k1': NONSOURCE}
     d2 = dict(d1)
-    SINK(d2["k"]) #$ MISSING: flow="SOURCE, l:-2 -> d[k]"
+    SINK(d2["k"]) #$ flow="SOURCE, l:-2 -> d2['k']"
     SINK_F(d2["k1"])
 
 ## Container methods
@@ -278,8 +278,8 @@ def test_reversed_list():
     l0 = [SOURCE, NONSOURCE]
     r = reversed(l0)
     l = list(r)
-    SINK_F(l[0])
-    SINK(l[1]) #$ MISSING: flow="SOURCE, l:-4 -> l[1]"
+    SINK_F(l[0]) #$ SPURIOUS: flow="SOURCE, l:-3 -> l[0]"
+    SINK(l[1]) #$ flow="SOURCE, l:-4 -> l[1]"
 
 @expects(2)
 def test_reversed_tuple():

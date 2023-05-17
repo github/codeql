@@ -27,7 +27,7 @@ abstract class MetadataExtractor extends string {
 
   abstract predicate hasMetadata(
     DataFlow::ParameterNode e, string package, string type, boolean subtypes, string name,
-    string signature, int input
+    string signature, int input, string parameterName
   );
 }
 
@@ -167,14 +167,15 @@ class FrameworkModeMetadataExtractor extends MetadataExtractor {
 
   override predicate hasMetadata(
     Endpoint e, string package, string type, boolean subtypes, string name, string signature,
-    int input
+    int input, string parameterName
   ) {
     exists(Callable callable |
       e.asParameter() = callable.getParameter(input) and
       package = callable.getDeclaringType().getPackage().getName() and
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
       subtypes = this.considerSubtypes(callable) and
-      name = e.toString() and
+      name = callable.getName() and
+      parameterName = e.asParameter().getName() and
       signature = ExternalFlow::paramsString(callable)
     )
   }

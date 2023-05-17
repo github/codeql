@@ -14,15 +14,16 @@ const std::string_view codeql::programName = "autobuilder";
 
 constexpr codeql::SwiftDiagnostic noProjectFound{
     "no-project-found", "No Xcode project or workspace detected", codeql::customizingBuildAction,
-    codeql::customizingBuildHelpLinks};
+    codeql::SwiftDiagnostic::Format::plaintext, codeql::customizingBuildHelpLinks};
 
 constexpr codeql::SwiftDiagnostic noSwiftTarget{
     "no-swift-target", "No Swift compilation target found", codeql::customizingBuildAction,
-    codeql::customizingBuildHelpLinks};
+    codeql::SwiftDiagnostic::Format::plaintext, codeql::customizingBuildHelpLinks};
 
 constexpr codeql::SwiftDiagnostic spmNotSupported{
     "spm-not-supported", "Swift Package Manager build unsupported by autobuild",
-    codeql::customizingBuildAction, codeql::customizingBuildHelpLinks};
+    codeql::customizingBuildAction, codeql::SwiftDiagnostic::Format::plaintext,
+    codeql::customizingBuildHelpLinks};
 
 static codeql::Logger& logger() {
   static codeql::Logger ret{"main"};
