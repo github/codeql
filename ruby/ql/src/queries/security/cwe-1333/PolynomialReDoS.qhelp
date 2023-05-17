@@ -108,7 +108,7 @@ text.gsub!(/^\s+|\s+$/, '') # BAD</sample>
 
     <example>
         <p>
-            Sometimes it's unclear how a regular expression can be rewritten to
+            Sometimes it is unclear how a regular expression can be rewritten to
             avoid the problem. In such cases, it often suffices to limit the
             length of the input string. For instance, the following complicated 
             regular expression is used to match numbers, and on some non-number 
@@ -119,7 +119,7 @@ text.gsub!(/^\s+|\s+$/, '') # BAD</sample>
 is_matching = /^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$/.match?(str)</sample>
 
         <p>
-            It's not immediately obvious how to rewrite this regular expression 
+            It is not immediately obvious how to rewrite this regular expression 
             to avoid the problem. However, it might be fine to limit the length
             to 1000 characters, which will always finish in a reasonable amount
             of time.
