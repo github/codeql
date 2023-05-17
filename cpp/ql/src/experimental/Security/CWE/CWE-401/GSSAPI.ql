@@ -298,16 +298,16 @@ class GssAllocReachability extends StackVariableReachabilityExt {
   ) {
     exists(ResourceWithStatus rws |
       rws = v and
-      isSource(source, v) and
+      this.isSource(source, v) and
       next = node.getASuccessor() and
       (
-        isStatusCheck(node, next, rws)
+        this.isStatusCheck(node, next, rws)
         or
-        isGssErrorStatusCheck(node, next, rws)
+        this.isGssErrorStatusCheck(node, next, rws)
         or
-        isValueCheck(node, next, rws)
+        this.isValueCheck(node, next, rws)
         or
-        isLengthCheck(node, next, rws)
+        this.isLengthCheck(node, next, rws)
         or
         exists(StackVariable v0 | v0 = v |
           node.(AnalysedExpr).getNullSuccessor(v0) = next or
