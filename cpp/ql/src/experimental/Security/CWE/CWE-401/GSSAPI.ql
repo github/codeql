@@ -199,14 +199,16 @@ class GssAllocVariableReachabilityWithReassignment extends StackVariableReachabi
   override predicate isSinkActual(ControlFlowNode node, StackVariable v) {
     exists(ResourceWithStatus rws |
       rws = v and
-      exists(statusCheckSuccessor(node, rws.getStatus()))
-      or
-      resourceIsFreed(node, rws)
-      or
-      assignedToFieldOrGlobal(rws, node)
-      or
-      // node may be used directly in query
-      rws.getFunction() = node.(ReturnStmt).getEnclosingFunction()
+      (
+        exists(statusCheckSuccessor(node, rws.getStatus()))
+        or
+        resourceIsFreed(node, rws)
+        or
+        assignedToFieldOrGlobal(rws, node)
+        or
+        // node may be used directly in query
+        rws.getFunction() = node.(ReturnStmt).getEnclosingFunction()
+      )
     )
   }
 
