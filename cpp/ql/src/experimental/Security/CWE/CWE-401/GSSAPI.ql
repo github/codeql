@@ -202,10 +202,10 @@ class GssAllocVariableReachabilityWithReassignment extends StackVariableReachabi
       or
       resourceIsFreed(node, rws)
       or
-      assignedToFieldOrGlobal(v, node)
+      assignedToFieldOrGlobal(rws, node)
       or
       // node may be used directly in query
-      v.getFunction() = node.(ReturnStmt).getEnclosingFunction()
+      rws.getFunction() = node.(ReturnStmt).getEnclosingFunction()
     )
   }
 
