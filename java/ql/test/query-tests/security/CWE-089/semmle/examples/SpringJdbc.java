@@ -62,6 +62,8 @@ public class SpringJdbc {
     namedParamTemplate.query(source(), (RowCallbackHandler) null); // $ sqlInjection
     namedParamTemplate.queryForList(source(), (Map<String, ?>) null); // $ sqlInjection
     namedParamTemplate.queryForList(source(), (Map<String, ?>) null, (Class) null); // $ sqlInjection
+    namedParamTemplate.queryForList(source(), (SqlParameterSource) null); // $ sqlInjection
+    namedParamTemplate.queryForList(source(), (SqlParameterSource) null, (Class) null); // $ sqlInjection
     namedParamTemplate.queryForMap(source(), (Map<String, ?>) null); // $ sqlInjection
     namedParamTemplate.queryForMap(source(), (SqlParameterSource) null); // $ sqlInjection
     namedParamTemplate.queryForObject(source(), (Map<String, ?>) null, (Class) null); // $ sqlInjection

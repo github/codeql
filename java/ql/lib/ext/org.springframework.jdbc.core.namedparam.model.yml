@@ -4,7 +4,6 @@ extensions:
       extensible: sinkModel
     data:
       - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "batchUpdate", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "batchUpdate", "(String[])", "", "Argument[0]", "sql", "manual"]
       - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "execute", "", "", "Argument[0]", "sql", "manual"]
       - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "query", "", "", "Argument[0]", "sql", "manual"]
       - ["org.springframework.jdbc.core.namedparam", "NamedParameterJdbcOperations", True, "queryForList", "", "", "Argument[0]", "sql", "manual"]
