@@ -1703,7 +1703,7 @@ private predicate suppressUnusedThis(Type t) { any() }
  * A source code location referring to a user-defined type.
  *
  * Note that only _user-defined_ types have `TypeMention`s. In particular,
- * built-in types, and derived types with build-in types as their base don't
+ * built-in types, and derived types with built-in types as their base don't
  * have any `TypeMention`s. For example, given
  * ```cpp
  * struct S { ... };
