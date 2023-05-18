@@ -26,7 +26,6 @@
 /lib/codeql/swift/elements/decl/ConcreteVarDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/DeinitializerConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/EnumCaseDeclConstructor.qll linguist-generated
-/lib/codeql/swift/elements/decl/EnumDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/EnumDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/EnumElementDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/ExtensionDeclConstructor.qll linguist-generated
