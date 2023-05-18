@@ -15,7 +15,7 @@ private import codeql.swift.elements.decl.Decl
  */
 class EnumDecl extends Generated::EnumDecl {
   /**
-   * Gets the number of `EnumElementDecl`s in this enumeration before the `index`th member. Some
+   * Gets the number of `EnumElementDecl`s in this enumeration before the `memberIndex`th member. Some
    * of the members of an `EnumDecl` are `EnumCaseDecls` (representing the `case` lines), each of
    * which holds one or more `EnumElementDecl`s.
    */
