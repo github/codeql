@@ -122,13 +122,9 @@ module ValidState {
     predicate isAdditionalFlowStep(
       DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
     ) {
-      exists(AddInstruction add, Operand op, int delta |
-        add.hasOperands(node1.asOperand(), op) and
-        semBounded(getSemanticExpr(op.getDef()), any(SemZeroBound zero), delta, true, _) and
-        node2.asInstruction() = add and
-        state1 = [false, true] and
-        state2 = state1.booleanNot()
-      )
+      isAdditionalFlowStep2(node1, node2, _) and
+      state1 = [false, true] and
+      state2 = state1.booleanNot()
     }
 
     predicate includeHiddenNodes() { any() }
