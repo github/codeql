@@ -14,8 +14,7 @@ import semmle.code.java.dataflow.FlowSteps
  */
 private class GsonReadValueMethod extends Method {
   GsonReadValueMethod() {
-    this.getDeclaringType().hasQualifiedName("com.google.gson", "Gson") and
-    this.getName().matches("fromJson")
+    this.hasQualifiedName("com.google.gson", "Gson", "fromJson")
   }
 }
 
