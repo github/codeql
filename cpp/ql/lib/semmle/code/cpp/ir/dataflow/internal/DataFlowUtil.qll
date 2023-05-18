@@ -1128,7 +1128,7 @@ abstract private class ExprNodeBase extends Node {
 
   final Expr getAConvertedExpr() { result = this.getConvertedExpr(_) }
 
-  /** Gets the non-conversion expression corresponding to this node, if any. */
+  /** Gets the i'th non-conversion expression corresponding to this node, if any. */
   abstract Expr getExpr(int i);
 
   final Expr getAnExpr() { result = this.getExpr(_) }
@@ -1218,6 +1218,9 @@ class ExprNode extends Node instanceof ExprNodeBase {
   final Expr getAnExpr() { result = super.getExpr(_) }
 
   Expr getExpr(int i) { result = super.getExpr(i) }
+
+  /** Gets the non-conversion expression corresponding to this node, if any. */
+  final Expr getExpr() { result = this.getExpr(0) }
 
   /**
    * Gets the expression corresponding to this node, if any. The returned
