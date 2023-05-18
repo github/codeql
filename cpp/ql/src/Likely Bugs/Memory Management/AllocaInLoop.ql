@@ -193,9 +193,9 @@ class LoopWithAlloca extends Stmt {
     or
     result = node.asOperand().getUse().getAst()
     or
-    result = node.(DataFlow::RawIndirectInstruction).getInstruction().getAst()
+    result = node.(DataFlow::RawIndirectInstruction).getInstruction().getUnconvertedAst()
     or
-    result = node.(DataFlow::RawIndirectOperand).getOperand().getUse().getAst()
+    result = node.(DataFlow::RawIndirectOperand).getOperand().getUse().getUnconvertedAst()
   }
 
   /**
