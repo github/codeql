@@ -107,9 +107,9 @@ func test_files(e1: Encoder) {
 	// --- FilePath.Root, FilePath.Component ---
 
 	sink(string: FilePath.Root("/")!.string)
-	sink(string: FilePath.Root(sourceString())!.string) // $ MISSING: tainted=
+	sink(string: FilePath.Root(sourceString())!.string) // $ tainted=110
 	sink(string: FilePath.Component("path")!.string)
-	sink(string: FilePath.Component(sourceString())!.string) // $ MISSING: tainted=
+	sink(string: FilePath.Component(sourceString())!.string) // $ tainted=112
 
 	// --- FilePath constructors ---
 
@@ -117,14 +117,14 @@ func test_files(e1: Encoder) {
 	let taintedUrl = URL(string: sourceString())!
 
 	sink(filePath: FilePath("my/path"))
-	sink(filePath: FilePath(sourceString())) // $ MISSING: tainted=
+	sink(filePath: FilePath(sourceString())) // $ tainted=120
 	sink(filePath: FilePath(cleanUrl)!)
-	sink(filePath: FilePath(taintedUrl)!) // $ MISSING: tainted=
-	sink(filePath: FilePath(from: sourceDecoder())) // $ MISSING: tainted=
-	sink(filePath: FilePath(cString: sourceCCharArray())) // $ MISSING: tainted=
-	sink(filePath: FilePath(cString: sourceCString())) // $ MISSING: tainted=
+	sink(filePath: FilePath(taintedUrl)!) // $ tainted=117
+	sink(filePath: FilePath(from: sourceDecoder())) // $ tainted=123
+	sink(filePath: FilePath(cString: sourceCCharArray())) // $ tainted=124
+	sink(filePath: FilePath(cString: sourceCString())) // $ tainted=125
 	sink(filePath: FilePath(root: FilePath.Root("/"), [FilePath.Component("my")!, FilePath.Component("path")!]))
-	sink(filePath: FilePath(root: FilePath.Root(sourceString()), [FilePath.Component("my")!, FilePath.Component("path")!])) // $ MISSING: tainted=
+	sink(filePath: FilePath(root: FilePath.Root(sourceString()), [FilePath.Component("my")!, FilePath.Component("path")!])) // $ tainted=127
 	sink(filePath: FilePath(root: FilePath.Root("/"), [FilePath.Component("my")!, FilePath.Component(sourceString())!])) // $ MISSING: tainted=
 
 	// --- FilePath methods ---
@@ -133,7 +133,7 @@ func test_files(e1: Encoder) {
 	let tainted = FilePath(sourceString())
 
 	sink(filePath: clean)
-	sink(filePath: tainted) // $ MISSING: tainted=
+	sink(filePath: tainted) // $ tainted=133
 
 	sink(encoder: e1)
 	try! clean.encode(to: e1)
@@ -141,12 +141,12 @@ func test_files(e1: Encoder) {
 	try! tainted.encode(to: e1)
 	sink(encoder: e1) // $ MISSING: tainted=
 
-	sink(string: String(decoding: tainted)) // $ MISSING: tainted=
-	sink(string: String(validating: tainted)!) // $ MISSING: tainted=
+	sink(string: String(decoding: tainted)) // $ tainted=133
+	sink(string: String(validating: tainted)!) // $ tainted=133
 
 	sink(filePath: clean.lexicallyResolving(clean)!)
-	sink(filePath: tainted.lexicallyResolving(clean)!) // $ MISSING: tainted=
-	sink(filePath: clean.lexicallyResolving(tainted)!) // $ MISSING: tainted=
+	sink(filePath: tainted.lexicallyResolving(clean)!) // $ tainted=133
+	sink(filePath: clean.lexicallyResolving(tainted)!) // $ tainted=133
 
 	let _ = clean.withCString({
 		ptr in
@@ -154,7 +154,7 @@ func test_files(e1: Encoder) {
 	})
 	let _ = tainted.withCString({
 		ptr in
-		sink(ptr: ptr) // $ MISSING: tainted=
+		sink(ptr: ptr) // $ tainted=133
 	})
 
 	let _ = clean.withPlatformString({
@@ -165,37 +165,37 @@ func test_files(e1: Encoder) {
 	})
 	let _ = tainted.withPlatformString({
 		ptr in
-		sink(ptr: ptr) // $ MISSING: tainted=
-		sink(string: String(platformString: ptr)) // $ MISSING: tainted=
-		sink(string: String(validatingPlatformString: ptr)!) // $ MISSING: tainted=
+		sink(ptr: ptr) // $ tainted=133
+		sink(string: String(platformString: ptr)) // $ tainted=133
+		sink(string: String(validatingPlatformString: ptr)!) // $ tainted=133
 	})
 
  	var fp1 = FilePath("")
 	sink(filePath: fp1)
 	fp1.append(sourceString())
-	sink(filePath: fp1) // $ MISSING: tainted=
+	sink(filePath: fp1) // $ tainted=175
 	fp1.append("")
-	sink(filePath: fp1) // $ MISSING: tainted=
+	sink(filePath: fp1) // $ tainted=175
 
 	sink(filePath: clean.appending(""))
-	sink(filePath: clean.appending(sourceString())) // $ MISSING: tainted=
-	sink(filePath: tainted.appending("")) // $ MISSING: tainted=
-	sink(filePath: tainted.appending(sourceString())) // $ MISSING: tainted=
+	sink(filePath: clean.appending(sourceString())) // $ tainted=181
+	sink(filePath: tainted.appending("")) // $ tainted=133
+	sink(filePath: tainted.appending(sourceString())) // $ tainted=133 tainted=183
 
 	// --- FilePath member variables ---
 
-	sink(string: tainted.description) // $ MISSING: tainted=
-	sink(string: tainted.debugDescription) // $ MISSING: tainted=
-	sink(string: tainted.extension!) // $ MISSING: tainted=
-	sink(string: tainted.stem!) // $ MISSING: tainted=
-	sink(string: tainted.string) // $ MISSING: tainted=
+	sink(string: tainted.description) // $ tainted=133
+	sink(string: tainted.debugDescription) // $ tainted=133
+	sink(string: tainted.extension!) // $ tainted=133
+	sink(string: tainted.stem!) // $ tainted=133
+	sink(string: tainted.string) // $ tainted=133
 
-	sink(component: tainted.lastComponent!) // $ MISSING: tainted=
-	sink(string: tainted.lastComponent!.string) // $ MISSING: tainted=
-	sink(root: tainted.root!) // $ MISSING: tainted=
-	sink(string: tainted.root!.string) // $ MISSING: tainted=
+	sink(component: tainted.lastComponent!) // $ tainted=133
+	sink(string: tainted.lastComponent!.string) // $ tainted=133
+	sink(root: tainted.root!) // $ tainted=133
+	sink(string: tainted.root!.string) // $ tainted=133
 
 	let taintedComponents = tainted.components
-	sink(componentView: taintedComponents) // $ MISSING: tainted=
-	sink(string: taintedComponents[taintedComponents.startIndex].string) // $ MISSING: tainted=
+	sink(componentView: taintedComponents) // $ tainted=133
+	sink(string: taintedComponents[taintedComponents.startIndex].string) // $ tainted=133
 }
