@@ -14,6 +14,8 @@
 #include <fmt/chrono.h>
 #include <nlohmann/json.hpp>
 
+#include "swift/logging/Formatters.h"
+
 namespace codeql {
 
 extern const std::string_view programName;
