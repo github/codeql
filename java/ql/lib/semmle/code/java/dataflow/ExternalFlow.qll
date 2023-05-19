@@ -265,13 +265,72 @@ module ModelValidation {
     )
   }
 
+  private class DeprecatedSinkKind extends string {
+    DeprecatedSinkKind() {
+      this =
+        [
+          "sql", "url-redirect", "xpath", "ssti", "logging", "groovy", "jexl", "mvel", "xslt",
+          "ldap", "pending-intent-sent", "intent-start", "set-hostname-verifier",
+          "header-splitting", "xss", "write-file", "create-file", "read-file", "open-url",
+          "jdbc-url"
+        ]
+    }
+
+    private string replacementKind() {
+      this = "sql" and result = "\"sql-injection\""
+      or
+      this = "url-redirect" and result = "\"url-redirection\""
+      or
+      this = "xpath" and result = "\"xpath-injection\""
+      or
+      this = "ssti" and result = "\"template-injection\""
+      or
+      this = "logging" and result = "\"log-injection\""
+      or
+      this = "groovy" and result = "\"groovy-injection\""
+      or
+      this = "jexl" and result = "\"jexl-injection\""
+      or
+      this = "mvel" and result = "\"mvel-injection\""
+      or
+      this = "xslt" and result = "\"xslt-injection\""
+      or
+      this = "ldap" and result = "\"ldap-injection\""
+      or
+      this = "pending-intent-sent" and result = "\"pending-intents\""
+      or
+      this = "intent-start" and result = "\"intent-redirection\""
+      or
+      this = "set-hostname-verifier" and result = "\"hostname-verification\""
+      or
+      this = "header-splitting" and result = "\"response-splitting\""
+      or
+      this = "xss" and result = "\"html-injection\" or \"js-injection\""
+      or
+      this = "write-file" and result = "\"file-content-store\""
+      or
+      this = "create-file" and result = "\"path-injection\""
+      or
+      this = "read-file" and result = "\"path-injection\""
+      or
+      this = "open-url" and result = "\"request-forgery\""
+      or
+      this = "jdbc-url" and result = "\"request-forgery\""
+    }
+
+    string deprecationMessage() {
+      result =
+        "The kind \"" + this + "\" is deprecated. Use " + this.replacementKind() + " instead."
+    }
+  }
+
   private string getInvalidModelKind() {
     exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
       not kind = ["taint", "value"] and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
     or
-    exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
+    exists(string kind, string msg | sinkModel(_, _, _, _, _, _, _, kind, _) |
       not kind =
         [
           "request-forgery", "jndi-injection", "ldap-injection", "sql-injection", "log-injection",
@@ -283,7 +342,10 @@ module ModelValidation {
         ] and
       not kind.matches("regex-use%") and
       not kind.matches("qltest%") and
-      result = "Invalid kind \"" + kind + "\" in sink model."
+      msg = "Invalid kind \"" + kind + "\" in sink model." and
+      if kind instanceof DeprecatedSinkKind
+      then result = msg + " " + kind.(DeprecatedSinkKind).deprecationMessage()
+      else result = msg
     )
     or
     exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
