@@ -182,7 +182,7 @@ A QL module definition has the following syntax:
 
    implements ::= "implements" moduleSignatureExpr ("," moduleSignatureExpr)*
 
-   moduleBody ::= (import | predicate | class | module | alias | select)*
+   moduleBody ::= (import | predicate | class | module | signature | alias | select)*
 
 A module definition extends the current module's declared module environment with a mapping from the module name to the module definition.
 
@@ -333,6 +333,40 @@ Active types
 ~~~~~~~~~~~~
 
 In a QL program, the *active* types are those defined in active modules. In the remainder of this specification, any reference to the types in the program refers only to the active types.
+
+
+Signatures
+----------
+
+Signature definitions
+~~~~~~~~~~~~~~~~~~~~~
+
+A QL signature definition has the following syntax:
+
+::
+
+   signature ::= predicateSignature | typeSignature | moduleSignature
+
+   predicateSignature ::= qldoc? annotations "signature" head ";"
+
+   typeSignature ::= qldoc? annotations "signature" "class" upperId ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
+
+   moduleSignature ::= qldoc? annotation* "signature" "module" upperId parameters? "{" moduleSignatureBody "}"
+
+   moduleSignatureBody ::= (signaturePredicate | defaultPredicate | signatureType)*
+
+   signaturePredicate ::= qldoc? annotations head ";"
+
+   defaultPredicate ::= qldoc? annotations "default" head "{" formula "}"
+
+   signatureType ::= qldoc? annotations "class" upperId ("extends" type ("," type)*)? "{" signaturePredicate* "}"
+
+
+A predicate signature definition extends the current module's declared predicate signature environment with a mapping from the predicate signature name and arity to the predicate signature definition.
+
+A type signature definition extends the current module's declared type signature environment with a mapping from the type signature name to the type signature definition.
+
+A module signature definition extends the current module's declared module signature environment with a mapping from the module signature name to the module signature definition.
 
 Values
 ------
@@ -2088,6 +2122,22 @@ The complete grammar for QL is as follows:
    arguments ::= "<" argument ("," argument)* ">"
 
    argument ::= moduleExpr | type | predicateRef "/" int
+
+   signature ::= predicateSignature | typeSignature | moduleSignature
+
+   predicateSignature ::= qldoc? annotations "signature" head ";"
+
+   typeSignature ::= qldoc? annotations "signature" "class" upperId ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
+
+   moduleSignature ::= qldoc? annotation* "signature" "module" upperId parameters? "{" moduleSignatureBody "}"
+
+   moduleSignatureBody ::= (signaturePredicate | defaultPredicate | signatureType)*
+
+   signaturePredicate ::= qldoc? annotations head ";"
+
+   defaultPredicate ::= qldoc? annotations "default" head "{" formula "}"
+
+   signatureType ::= qldoc? annotations "class" upperId ("extends" type ("," type)*)? "{" signaturePredicate* "}"
 
    select ::= ("from" var_decls)? ("where" formula)? "select" as_exprs ("order" "by" orderbys)?
 
