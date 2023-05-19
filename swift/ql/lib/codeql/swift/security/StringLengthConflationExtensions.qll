@@ -180,14 +180,6 @@ private class StringLengthConflationSinks extends SinkModelCsv {
   override predicate row(string row) {
     row =
       [
-        ";Sequence;true;dropFirst(_:);;;Argument[0];string-length",
-        ";Sequence;true;dropLast(_:);;;Argument[0];string-length",
-        ";Sequence;true;prefix(_:);;;Argument[0];string-length",
-        ";Sequence;true;suffix(_:);;;Argument[0];string-length",
-        ";Collection;true;formIndex(_:offsetBy:);;;Argument[0..1];string-length",
-        ";Collection;true;formIndex(_:offsetBy:limitBy:);;;Argument[0..1];string-length",
-        ";Collection;true;removeFirst(_:);;;Argument[0];string-length",
-        ";RangeReplaceableCollection;true;removeLast(_:);;;Argument[0];string-length",
         ";String;true;index(_:offsetBy:);;;Argument[0..1];string-length",
         ";String;true;index(_:offsetBy:limitBy:);;;Argument[0..1];string-length",
         ";String.Index;true;init(encodedOffset:);;;Argument[0];string-length",
@@ -202,4 +194,53 @@ private class StringLengthConflationSinks extends SinkModelCsv {
         ";;false;NSMakeRange(_:_:);;;Argument[0..1];nsstring-length",
       ]
   }
+}
+
+/**
+ * An extra sink that don't fit into the CSV scheme (because we care about the actual
+ * type the method is being called on, not just the type it's declared on).
+ */
+private class ExtraStringLengthConflationSink extends StringLengthConflationSink {
+  StringType stringType;
+
+  ExtraStringLengthConflationSink() {
+    exists(CallExpr call, string typeName |
+      (
+        // `String`
+        typeName = "String" and
+        stringType = TString()
+        or
+        // `String.utf8`
+        typeName = "String.UTF8View" and
+        stringType = TStringUtf8()
+        or
+        // `String.utf16`
+        typeName = "String.UTF16View" and
+        stringType = TStringUtf16()
+        or
+        // `String.unicodeScalars`
+        typeName = "String.UnicodeScalarView" and
+        stringType = TStringUnicodeScalars()
+      ) and
+      // sink is a length or offset argument to [type].[method]
+      (
+        call.getQualifier().getType().(NominalType).getName() = typeName or
+        call.getQualifier().getType().(InOutType).getObjectType().(NominalType).getName() = typeName
+      ) and
+      (
+        call.getStaticTarget().getName() =
+          [
+            "dropFirst(_:)", "dropLast(_:)", "prefix(_:)", "suffix(_:)", "removeFirst(_:)",
+            "removeLast(_:)"
+          ] and
+        this.asExpr() = call.getArgument(0).getExpr()
+        or
+        call.getStaticTarget().getName() =
+          ["formIndex(_:offsetBy:)", "formIndex(_:offsetBy:limitBy:)"] and
+        this.asExpr() = call.getArgument([0, 1]).getExpr()
+      )
+    )
+  }
+
+  override StringType getCorrectStringType() { result = stringType }
 }
