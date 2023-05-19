@@ -15,31 +15,16 @@ private import codeql.swift.elements.decl.Decl
  */
 class EnumDecl extends Generated::EnumDecl {
   /**
-   * Gets the number of `EnumElementDecl`s in this enumeration before the `memberIndex`th member. Some
-   * of the members of an `EnumDecl` are `EnumCaseDecls` (representing the `case` lines), each of
-   * which holds one or more `EnumElementDecl`s.
-   */
-  private int countEnumElementsTo(int memberIndex) {
-    memberIndex = 0 and result = 0
-    or
-    exists(Decl prev | prev = this.getMember(memberIndex - 1) |
-      result = this.countEnumElementsTo(memberIndex - 1) + prev.(EnumCaseDecl).getNumberOfElements()
-      or
-      not prev instanceof EnumCaseDecl and
-      result = this.countEnumElementsTo(memberIndex - 1)
-    )
-  }
-
-  /**
    * Gets the `index`th enumeration element of this enumeration (0-based).
    */
   final EnumElementDecl getEnumElement(int index) {
-    exists(int memberIndex |
-      result =
-        this.getMember(memberIndex)
-            .(EnumCaseDecl)
-            .getElement(index - this.countEnumElementsTo(memberIndex))
-    )
+    result =
+      rank[index + 1](int memberIndex, Decl d |
+        d = this.getMember(memberIndex) and
+        d instanceof EnumElementDecl
+      |
+        d order by memberIndex
+      )
   }
 
   /**
