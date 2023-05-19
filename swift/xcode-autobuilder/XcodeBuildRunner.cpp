@@ -70,7 +70,7 @@ void buildTarget(Target& target, bool dryRun) {
   } else {
     if (!exec(argv)) {
       DIAGNOSE_ERROR(buildCommandFailed,
-                     "`autobuild` failed to run the detected build command:\n```\n{}\n```",
+                     "`autobuild` failed to run the detected build command:\n\n```\n{}\n```",
                      absl::StrJoin(argv, " "));
       codeql::Log::flush();
       exit(1);
