@@ -85,7 +85,7 @@ private class FilePathComponentFieldsInheritTaint extends TaintInheritingContent
       (
         f.getEnclosingDecl().(NominalTypeDecl).getFullName() =
           ["FilePath.Component", "FilePath.Root"] or
-        f.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getName() =
+        f.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getFullName() =
           ["FilePath.Component", "FilePath.Root"]
       ) and
       f.getName() = ["extension", "stem", "string"]
