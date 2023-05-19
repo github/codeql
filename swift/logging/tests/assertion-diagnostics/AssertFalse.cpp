@@ -8,5 +8,6 @@ static codeql::Logger& logger() {
 }
 
 int main() {
-  CODEQL_ASSERT(false, "Format the int {} and string {} if this assertion fails", 1234, "myString");
+  CODEQL_ASSERT(false, "Format the int {} and string {} if this assertion fails.", 1234,
+                "myString");
 }

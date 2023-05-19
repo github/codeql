@@ -32,6 +32,6 @@ static codeql::Logger& logger() {
 
 int main() {
   DIAGNOSE_ERROR(incompatibleOs,
-                 "Currently, `autobuild` for Swift analysis is only supported on macOS");
+                 "Currently, `autobuild` for Swift analysis is only supported on macOS.");
   return 1;
 }
