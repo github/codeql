@@ -61,7 +61,7 @@ static void autobuild(const CLIArgs& args) {
     DIAGNOSE_ERROR(noProjectFound, "`autobuild` could not detect an Xcode project or workspace.");
   } else if (targets.empty()) {
     DIAGNOSE_ERROR(noSwiftTarget, "All targets found within Xcode projects or workspaces either "
-                                  "have no Swift sources or are tests.");
+                                  "contain no Swift source files, or are tests.");
   } else {
     LOG_INFO("Selected {}", targets.front());
     buildTarget(targets.front(), args.dryRun);
