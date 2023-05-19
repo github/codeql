@@ -30,8 +30,6 @@ private class FilePathSummaries extends SummaryModelCsv {
         ";FilePath;true;init(platformString:);;;Argument[0];ReturnValue;taint",
         ";FilePath;true;init(root:_:);;;Argument[0..1];ReturnValue;taint",
         ";FilePath;true;init(root:components:);;;Argument[0..1];ReturnValue;taint",
-        ";FilePath;true;init();;;Argument[0];ReturnValue;taint",
-        ";FilePath;true;init();;;Argument[0];ReturnValue;taint",
         ";FilePath;true;encode(to:);;;Argument[-1];Argument[0];taint",
         ";FilePath;true;withCString(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
         ";FilePath;true;withPlatformString(_:);;;Argument[-1];Argument[0].Parameter[0];taint",
