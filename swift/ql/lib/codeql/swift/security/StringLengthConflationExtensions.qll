@@ -38,26 +38,33 @@ class StringType extends TStringType {
     csvLabel = "nsstring-length"
     or
     this = TStringUtf8() and
-    name = "String.utf8" and
-    singular = "a String.utf8" and
+    name = "String.UTF8View" and
+    singular = "a String.UTF8View" and
     equivClass = this and
     csvLabel = "string-utf8-length"
     or
     this = TStringUtf16() and
-    name = "String.utf16" and
-    singular = "a String.utf16" and
+    name = "String.UTF16View" and
+    singular = "a String.UTF16View" and
     equivClass = TNsString() and
     csvLabel = "string-utf16-length"
     or
     this = TStringUnicodeScalars() and
-    name = "String.unicodeScalars" and
-    singular = "a String.unicodeScalars" and
+    name = "String.UnicodeScalarView" and
+    singular = "a String.UnicodeScalarView" and
     equivClass = this and
     csvLabel = "string-unicodescalars-length"
   }
 
-  /** Gets a textual representation of this string type. */
+  /**
+   * Gets a textual representation of this string type.
+   */
   string toString() { result = name }
+
+  /**
+   * Gets the name of this string type.
+   */
+  string getName() { result = name }
 
   /**
    * Gets the equivalence class for this string type. If these are equal,
@@ -142,21 +149,16 @@ private class ExtraStringLengthConflationSource extends StringLengthConflationSo
   StringType stringType;
 
   ExtraStringLengthConflationSource() {
-    exists(MemberRefExpr memberRef, string typeName |
+    // source is the result of a call to `[stringType].count`.
+    exists(MemberRefExpr memberRef |
       (
-        // result of a call to `String.utf8.count`
-        typeName = "String.UTF8View" and
         stringType = TStringUtf8()
         or
-        // result of a call to `String.utf16.count`
-        typeName = "String.UTF16View" and
         stringType = TStringUtf16()
         or
-        // result of a call to `String.unicodeScalars.count`
-        typeName = "String.UnicodeScalarView" and
         stringType = TStringUnicodeScalars()
       ) and
-      memberRef.getBase().getType().(NominalType).getName() = typeName and
+      memberRef.getBase().getType().(NominalType).getName() = stringType.getName() and
       memberRef.getMember().(VarDecl).getName() = "count" and
       this.asExpr() = memberRef
     )
@@ -204,28 +206,21 @@ private class ExtraStringLengthConflationSink extends StringLengthConflationSink
   StringType stringType;
 
   ExtraStringLengthConflationSink() {
-    exists(CallExpr call, string typeName |
+    // sink is a length or offset argument of a call to `[stringType].[method]`.
+    exists(CallExpr call |
       (
-        // `String`
-        typeName = "String" and
         stringType = TString()
         or
-        // `String.utf8`
-        typeName = "String.UTF8View" and
         stringType = TStringUtf8()
         or
-        // `String.utf16`
-        typeName = "String.UTF16View" and
         stringType = TStringUtf16()
         or
-        // `String.unicodeScalars`
-        typeName = "String.UnicodeScalarView" and
         stringType = TStringUnicodeScalars()
       ) and
-      // sink is a length or offset argument to [type].[method]
       (
-        call.getQualifier().getType().(NominalType).getName() = typeName or
-        call.getQualifier().getType().(InOutType).getObjectType().(NominalType).getName() = typeName
+        call.getQualifier().getType().(NominalType).getName() = stringType.getName() or
+        call.getQualifier().getType().(InOutType).getObjectType().(NominalType).getName() =
+          stringType.getName()
       ) and
       (
         call.getStaticTarget().getName() =
