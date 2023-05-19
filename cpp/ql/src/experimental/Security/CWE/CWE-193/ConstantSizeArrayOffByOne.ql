@@ -87,6 +87,18 @@ predicate pointerArithOverflow(
   delta = bound - size
 }
 
+module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
+    pointerArithOverflow(source.asInstruction(), _, _, _, _)
+  }
+
+  predicate isSink(DataFlow::Node sink) {
+    isInvalidPointerDerefSink1(sink, _, _)
+  }
+}
+
+module PointerArithmeticToDerefFlow = DataFlow::Global<PointerArithmeticToDerefConfig>;
+
 module FieldAddressToDerefConfig implements DataFlow::StateConfigSig {
   newtype FlowState =
     additional TArray(Field f) { pointerArithOverflow(_, f, _, _, _) } or
@@ -101,9 +113,12 @@ module FieldAddressToDerefConfig implements DataFlow::StateConfigSig {
     )
   }
 
+  pragma[inline]
   predicate isSink(DataFlow::Node sink, FlowState state) {
-    isInvalidPointerDerefSink1(sink, _, _) and
-    state instanceof TOverflowArithmetic
+    exists(DataFlow::Node pai |
+      state = TOverflowArithmetic(pai.asInstruction()) and
+      PointerArithmeticToDerefFlow::flow(pai, sink)
+    )
   }
 
   predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
