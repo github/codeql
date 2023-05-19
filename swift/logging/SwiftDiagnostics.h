@@ -35,11 +35,6 @@ struct SwiftDiagnosticsLocation {
 // These are internally stored into a map on id's. A specific error log can use binlog's category
 // as id, which will then be used to recover the diagnostic source while dumping.
 struct SwiftDiagnostic {
-  enum class Format {
-    plaintext,
-    markdown,
-  };
-
   enum class Visibility : unsigned char {
     none = 0b000,
     statusPage = 0b001,
@@ -56,31 +51,18 @@ struct SwiftDiagnostic {
     error,
   };
 
-  // wrapper for passing optional help links to constructor
-  struct HelpLinks {
-    std::string_view value;
-  };
-
   static constexpr std::string_view extractorName = "swift";
 
   std::string_view id;
   std::string_view name;
   std::string_view action;
 
-  Format format{Format::markdown};
   Visibility visibility{Visibility::all};
   Severity severity{Severity::error};
 
-  // space separated if more than 1. Not a vector to allow constexpr
-  // TODO(C++20) with vector going constexpr this can be turned to `std::vector<std::string_view>`
-  std::string_view helpLinks{""};
-
   std::optional<SwiftDiagnosticsLocation> location{};
 
-  // notice help links are really required only for plaintext messages, otherwise they should be
-  // directly embedded in the markdown message
-  // optional arguments can be any of HelpLinks, Severity, Visibility or Format to set the
-  // corresponding field
+  // optional arguments can be either Severity or Visibility to set the corresponding field.
   // TODO(C++20) this constructor won't really be necessary anymore with designated initializers
   template <typename... OptionalArgs>
   constexpr SwiftDiagnostic(std::string_view id,
@@ -91,10 +73,9 @@ struct SwiftDiagnostic {
     (setOptionalArg(optionalArgs), ...);
   }
 
-  // create a JSON diagnostics for this source with the given `timestamp` and `message`
-  // Depending on format, either a plaintextMessage or markdownMessage is used that includes both
-  // the message and the action to take. The id is used to construct the source id in the form
-  // `swift/<prog name>/<id>`
+  // create a JSON diagnostics for this source with the given `timestamp` and Markdown `message`
+  // A markdownMessage is emitted that includes both the message and the action to take. The id is
+  // used to construct the source id in the form `swift/<prog name>/<id>`
   nlohmann::json json(const std::chrono::system_clock::time_point& timestamp,
                       std::string_view message) const;
 
@@ -114,8 +95,6 @@ struct SwiftDiagnostic {
  private:
   bool has(Visibility v) const;
 
-  constexpr void setOptionalArg(HelpLinks h) { helpLinks = h.value; }
-  constexpr void setOptionalArg(Format f) { format = f; }
   constexpr void setOptionalArg(Visibility v) { visibility = v; }
   constexpr void setOptionalArg(Severity s) { severity = s; }
 
