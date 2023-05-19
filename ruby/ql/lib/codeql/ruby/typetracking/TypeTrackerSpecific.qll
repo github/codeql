@@ -80,10 +80,8 @@ predicate jumpStep = DataFlowPrivate::jumpStep/2;
 pragma[nomagic]
 private predicate flowThrough(DataFlowPublic::ParameterNode param) {
   exists(DataFlowPrivate::ReturningNode returnNode, DataFlowDispatch::ReturnKind rk |
-    DataFlowPrivate::LocalFlow::getParameterDefNode(param.getParameter())
-        .(TypeTrackingNode)
-        .flowsTo(returnNode) and
-    rk = returnNode.getKind()
+    param.flowsTo(returnNode) and
+    returnNode.hasKind(rk, param.(DataFlowPrivate::NodeImpl).getCfgScope())
   |
     rk instanceof DataFlowDispatch::NormalReturnKind
     or

@@ -304,7 +304,7 @@ void test21() {
   void** xs = new void*[n];
 
   for (int i = 0; i < n; i += 2) {
-    xs[i] = test21_get(i);
-    xs[i+1] = test21_get(i+1);
+    xs[i] = test21_get(i); // GOOD
+    xs[i+1] = test21_get(i+1); // GOOD [FALSE POSITIVE]
   }
 }

@@ -40,3 +40,6 @@ WORKSPACE.bazel @github/codeql-ci-reviewers
 /.github/workflows/ql-for-ql-* @github/codeql-ql-for-ql-reviewers
 /.github/workflows/ruby-* @github/codeql-ruby
 /.github/workflows/swift.yml @github/codeql-swift
+
+# Misc
+/misc/scripts/accept-expected-changes-from-ci.py @RasmusWL

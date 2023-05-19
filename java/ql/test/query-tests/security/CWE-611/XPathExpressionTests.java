@@ -24,7 +24,7 @@ public class XPathExpressionTests {
     XPathFactory xFactory = XPathFactory.newInstance();
     XPath path = xFactory.newXPath();
     XPathExpression expr = path.compile("");
-    expr.evaluate(new InputSource(sock.getInputStream())); // unsafe
+    expr.evaluate(new InputSource(sock.getInputStream())); // $ hasTaintFlow
   }
 
   public void safeXPathEvaluateTest(Socket sock) throws Exception {
@@ -33,12 +33,12 @@ public class XPathExpressionTests {
     DocumentBuilder builder = factory.newDocumentBuilder();
     XPathFactory xFactory = XPathFactory.newInstance();
     XPath path = xFactory.newXPath();
-    path.evaluate("", builder.parse(sock.getInputStream()));
+    path.evaluate("", builder.parse(sock.getInputStream())); // safe
   }
 
   public void unsafeXPathEvaluateTest(Socket sock) throws Exception {
     XPathFactory xFactory = XPathFactory.newInstance();
     XPath path = xFactory.newXPath();
-    path.evaluate("", new InputSource(sock.getInputStream())); // unsafe
+    path.evaluate("", new InputSource(sock.getInputStream())); // $ hasTaintFlow
   }
 }

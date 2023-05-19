@@ -4,7 +4,7 @@
    :stub-columns: 1
 
    Language,Variants,Compilers,Extensions
-   C/C++,"C89, C99, C11, C18, C++98, C++03, C++11, C++14, C++17, C++20 [1]_","Clang (and clang-cl [2]_) extensions (up to Clang 12.0),
+   C/C++,"C89, C99, C11, C17, C++98, C++03, C++11, C++14, C++17, C++20 [1]_","Clang (and clang-cl [2]_) extensions (up to Clang 12.0),
 
    GNU extensions (up to GCC 11.1),
 

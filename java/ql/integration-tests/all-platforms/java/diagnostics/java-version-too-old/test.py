@@ -13,6 +13,12 @@ for k in ["JAVA_HOME_11_X64", "JAVA_HOME_17_X64"]:
   if k in os.environ:
     del os.environ[k]
 
-run_codeql_database_create([], lang="java", runFunction = runUnsuccessfully, db = None)
+# Use a custom, empty toolchains.xml file so the autobuilder doesn't see any Java versions that may be
+# in a system-level toolchains file
+toolchains_path = os.path.join(os.getcwd(), 'toolchains.xml')
+
+run_codeql_database_create([], lang="java", runFunction = runUnsuccessfully, db = None, extra_env={
+  'LGTM_INDEX_MAVEN_TOOLCHAINS_FILE': toolchains_path
+})
 
 check_diagnostics()
