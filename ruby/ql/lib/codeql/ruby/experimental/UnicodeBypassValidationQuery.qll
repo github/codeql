@@ -50,7 +50,7 @@ class Configuration extends TaintTracking::Configuration {
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
     exists(DataFlow::CallNode cn |
       cn.getMethodName() = "unicode_normalize" and
-      cn.getArgument(0).toString() = [":nfkc", ":nfc"] and
+      cn.getArgument(0).getConstantValue().getSymbol() = [":nfkc", ":nfc"] and
       sink = cn.getReceiver()
     ) and
     state instanceof PostValidation
