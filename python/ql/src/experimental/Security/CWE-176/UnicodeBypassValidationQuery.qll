@@ -62,10 +62,10 @@ class Configuration extends TaintTracking::Configuration {
       cn = API::moduleImport("pyunormalize").getMember(["NFC", "NFD", "NFKC", "NFKD"]).getACall() and
       sink = cn.getArg(0)
       or
-      cn = API::moduleImport("pyunormalize").getMember(["normalize"]).getACall() and
+      cn = API::moduleImport("pyunormalize").getMember("normalize").getACall() and
       sink = cn.getArg(1)
       or
-      cn = API::moduleImport("textnorm").getMember(["normalize_unicode"]).getACall() and
+      cn = API::moduleImport("textnorm").getMember("normalize_unicode").getACall() and
       sink = cn.getArg(0)
     ) and
     state instanceof PostValidation
