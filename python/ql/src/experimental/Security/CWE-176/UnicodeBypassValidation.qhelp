@@ -3,11 +3,8 @@
     <overview>
         <p>Security checks bypass due to a Unicode transformation</p>
         <p>
-            If ever a unicode tranformation is performed after some security checks or logical
-            validation, the
-            latter could be bypassed due to a potential Unicode characters collision.
-            The validation of concern are any character escaping, any regex validation or any string
-            verification.
+            If security checks or logical validation is performed before unicode normalization, the security checks or logical validation could be bypassed due to a potential Unicode character collision.
+            The validation we consider are: any character escaping, any regex validation, or any string manipulation (such as <code>str.split</code>).
         </p>
         <img src="./vulnerability-flow.png" alt="Security checks bypassed" />
     </overview>
