@@ -12,7 +12,7 @@
         <img src="./vulnerability-flow.png" alt="Security checks bypassed" />
     </overview>
     <recommendation>
-        <p> Perform a Unicode normalization before the logical validation. </p>
+        <p> Perform Unicode normalization before the logical validation. </p>
     </recommendation>
     <example>
 
