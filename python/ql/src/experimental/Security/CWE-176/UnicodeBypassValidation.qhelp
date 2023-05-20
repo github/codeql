@@ -2,11 +2,10 @@
 <qhelp>
     <overview>
         <p>Security checks bypass due to a Unicode transformation</p>
-        <p>
-            If security checks or logical validation is performed before unicode normalization, the security checks or logical validation could be bypassed due to a potential Unicode character collision.
-            The validation we consider are: any character escaping, any regex validation, or any string manipulation (such as <code>str.split</code>).
-        </p>
-        <img src="./vulnerability-flow.png" alt="Security checks bypassed" />
+        <p> If security checks or logical validation is performed before unicode normalization, the
+            security checks or logical validation could be bypassed due to a potential Unicode
+            character collision. The validation we consider are: any character escaping, any regex
+            validation, or any string manipulation (such as <code>str.split</code>). </p>
     </overview>
     <recommendation>
         <p> Perform Unicode normalization before the logical validation. </p>
