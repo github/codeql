@@ -28,7 +28,10 @@
         <li> Research study: <a
                 href="https://gosecure.github.io/presentations/2021-02-unicode-owasp-toronto/philippe_arteau_owasp_unicode_v4.pdf">
             Unicode vulnerabilities that could bYte you
-            </a> and <a
+            </a>
+        </li>
+        <li>
+            <a
                 href="https://gosecure.github.io/unicode-pentester-cheatsheet/">Unicode pentest
             cheatsheet</a>. </li>
     </references>
