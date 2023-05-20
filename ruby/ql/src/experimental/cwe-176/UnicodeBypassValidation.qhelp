@@ -16,10 +16,10 @@
     <example>
 
         <p> The following example showcases the bypass of all checks performed by <code>
-            flask.escape()</code> due to a post-unicode normalization.</p>
-        <p>For instance: the character U+FE64 (<code>﹤</code>) is not filtered-out by the flask
-            escape function. But due to the Unicode normalization, the character is transformed and
-            would become U+003C (<code> &lt; </code> ).</p>
+            html_escape()</code> due to a post-unicode normalization.</p>
+        <p>For instance: the character U+FE64 (<code>﹤</code>) is not filtered-out by the
+            html_escape() function. But due to the Unicode normalization, the character is
+            transformed and would become U+003C (<code> &lt; </code> ).</p>
 
         <sample src="./examples/unicode_normalization.rb" />
 
