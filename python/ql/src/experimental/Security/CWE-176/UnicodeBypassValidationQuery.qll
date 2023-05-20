@@ -5,7 +5,6 @@
 private import python
 import semmle.python.ApiGraphs
 import semmle.python.Concepts
-import semmle.python.dataflow.new.DataFlow
 import semmle.python.dataflow.new.internal.DataFlowPublic
 import semmle.python.dataflow.new.TaintTracking
 import semmle.python.dataflow.new.internal.TaintTrackingPrivate
