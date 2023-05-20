@@ -13,7 +13,7 @@
  */
 
 import python
-import semmle.python.security.dataflow.UnicodeBypassValidationQuery
+import UnicodeBypassValidationQuery
 import DataFlow::PathGraph
 
 from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
