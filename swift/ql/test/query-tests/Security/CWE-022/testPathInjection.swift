@@ -33,17 +33,29 @@ extension String {
 }
 
 class NSString {
+    init() { }
+    init(string aString: String) { }
     convenience init(contentsOfFile path: String, encoding enc: UInt) throws { self.init() }
     convenience init(contentsOfFile path: String, usedEncoding enc: UnsafeMutablePointer<UInt>?) throws { self.init() }
 
     func write(toFile: String, atomically: Bool, encoding: UInt) {}
     func write(to: URL, atomically: Bool, encoding: UInt) {}
+
+    var utf8String: UnsafePointer<CChar>? { get { return nil } }
 }
 
 class Data {
+	struct ReadingOptions : OptionSet { let rawValue: Int }
     struct WritingOptions : OptionSet { let rawValue: Int }
-    init<S>(_ elements: S) {}
+
+    init<S>(_ elements: S) { count = 0 }
+	init(contentsOf: URL, options: ReadingOptions) { count = 0 }
+
+	func copyBytes(to: UnsafeMutablePointer<UInt8>, count: Int) {}
+
     func write(to: URL, options: Data.WritingOptions = []) {}
+
+	var count: Int
 }
 
 class NSData {
@@ -202,124 +214,183 @@ extension Realm {
 	}
 }
 
+// sqlite3
+
+func sqlite3_open(
+    _ filename: UnsafePointer<CChar>?,
+    _ ppDb: UnsafeMutablePointer<OpaquePointer?>?) -> Int32 { return 0 }
+
+func sqlite3_open16(
+    _ filename: UnsafeRawPointer?,
+    _ ppDb: UnsafeMutablePointer<OpaquePointer?>?) -> Int32 { return 0 }
+
+func sqlite3_open_v2(
+    _ filename: UnsafePointer<CChar>?,
+    _ ppDb: UnsafeMutablePointer<OpaquePointer?>?,
+    _ flags: Int32,
+    _ zVfs: UnsafePointer<CChar>?) -> Int32 { return 0 }
+
+var sqlite3_temp_directory: UnsafeMutablePointer<CChar>?
+
+// SQLite.swift
+
+enum URIQueryParameter {
+}
+
+class Connection {
+	enum Location {
+		case inMemory
+		case uri(String, parameters: [URIQueryParameter] = [])
+	}
+
+	init(_ location: Location = .inMemory, readonly: Bool = false) throws { }
+	convenience init(_ filename: String, readonly: Bool = false) throws { try self.init() }
+}
+
 // --- tests ---
 
-func test() {
+func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UInt8>) {
     let remoteString = String(contentsOf: URL(string: "http://example.com/")!)
     let remoteUrl = URL(string: remoteString)!
     let remoteNsUrl = NSURL(string: remoteString)!
     let safeUrl =  URL(string: "")!
     let safeNsUrl = NSURL(string: "")!
 
-    Data("").write(to: remoteUrl, options: []) // $ hasPathInjection=208
+    Data("").write(to: remoteUrl, options: []) // $ hasPathInjection=253
 
     let nsData = NSData()
-    let _ = nsData.write(to: remoteUrl, atomically: false) // $ hasPathInjection=208
-    nsData.write(to: remoteUrl, options: []) // $ hasPathInjection=208
-    let _ = nsData.write(toFile: remoteString, atomically: false) // $ hasPathInjection=208
-    nsData.write(toFile: remoteString, options: []) // $ hasPathInjection=208
+    let _ = nsData.write(to: remoteUrl, atomically: false) // $ hasPathInjection=253
+    nsData.write(to: remoteUrl, options: []) // $ hasPathInjection=253
+    let _ = nsData.write(toFile: remoteString, atomically: false) // $ hasPathInjection=253
+    nsData.write(toFile: remoteString, options: []) // $ hasPathInjection=253
 
     let fm = FileManager()
-    let _ = fm.contentsOfDirectory(at: remoteUrl, includingPropertiesForKeys: [], options: []) // $ hasPathInjection=208
-    let _ = fm.contentsOfDirectory(atPath: remoteString) // $ hasPathInjection=208
-    let _ = fm.enumerator(at: remoteUrl, includingPropertiesForKeys: [], options: [], errorHandler: nil) // $ hasPathInjection=208
-    let _ = fm.enumerator(atPath: remoteString) // $ hasPathInjection=208
-    let _ = fm.subpathsOfDirectory(atPath: remoteString) // $ hasPathInjection=208
-    let _ = fm.subpaths(atPath: remoteString) // $ hasPathInjection=208
-    fm.createDirectory(at: remoteUrl, withIntermediateDirectories: false, attributes: [:]) // $ hasPathInjection=208
-    let _ = fm.createDirectory(atPath: remoteString, attributes: [:]) // $ hasPathInjection=208
-    let _ = fm.createFile(atPath: remoteString, contents: nil, attributes: [:]) // $ hasPathInjection=208
-    fm.removeItem(at: remoteUrl) // $ hasPathInjection=208
-    fm.removeItem(atPath: remoteString) // $ hasPathInjection=208
-    fm.trashItem(at: remoteUrl, resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>()) // $ hasPathInjection=208
-    let _ = fm.replaceItemAt(remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: []) // $ hasPathInjection=208
-    let _ = fm.replaceItemAt(safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: []) // $ hasPathInjection=208
-    fm.replaceItem(at: remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [], resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>()) // $ hasPathInjection=208
-    fm.replaceItem(at: safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [], resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>()) // $ hasPathInjection=208
-    fm.copyItem(at: remoteUrl, to: safeUrl) // $ hasPathInjection=208
-    fm.copyItem(at: safeUrl, to: remoteUrl) // $ hasPathInjection=208
-    fm.copyItem(atPath: remoteString, toPath: "") // $ hasPathInjection=208
-    fm.copyItem(atPath: "", toPath: remoteString) // $ hasPathInjection=208
-    fm.moveItem(at: remoteUrl, to: safeUrl) // $ hasPathInjection=208
-    fm.moveItem(at: safeUrl, to: remoteUrl) // $ hasPathInjection=208
-    fm.moveItem(atPath: remoteString, toPath: "") // $ hasPathInjection=208
-    fm.moveItem(atPath: "", toPath: remoteString) // $ hasPathInjection=208
-    fm.createSymbolicLink(at: remoteUrl, withDestinationURL: safeUrl) // $ hasPathInjection=208
-    fm.createSymbolicLink(at: safeUrl, withDestinationURL: remoteUrl) // $ hasPathInjection=208
-    fm.createSymbolicLink(atPath: remoteString, withDestinationPath: "") // $ hasPathInjection=208
-    fm.createSymbolicLink(atPath: "", withDestinationPath: remoteString) // $ hasPathInjection=208
-    fm.linkItem(at: remoteUrl, to: safeUrl) // $ hasPathInjection=208
-    fm.linkItem(at: safeUrl, to: remoteUrl) // $ hasPathInjection=208
-    fm.linkItem(atPath: remoteString, toPath: "") // $ hasPathInjection=208
-    fm.linkItem(atPath: "", toPath: remoteString) // $ hasPathInjection=208
-    let _ = fm.destinationOfSymbolicLink(atPath: remoteString) // $ hasPathInjection=208
-    let _ = fm.fileExists(atPath: remoteString) // $ hasPathInjection=208
-    let _ = fm.fileExists(atPath: remoteString, isDirectory: UnsafeMutablePointer<ObjCBool>.init(bitPattern: 0)) // $ hasPathInjection=208
-    fm.setAttributes([:], ofItemAtPath: remoteString) // $ hasPathInjection=208
-    let _ = fm.contents(atPath: remoteString) // $ hasPathInjection=208
-    let _ = fm.contentsEqual(atPath: remoteString, andPath: "") // $ hasPathInjection=208
-    let _ = fm.contentsEqual(atPath: "", andPath: remoteString) // $ hasPathInjection=208
-    let _ = fm.changeCurrentDirectoryPath(remoteString) // $ hasPathInjection=208
-    let _ = fm.unmountVolume(at: remoteUrl, options: [], completionHandler: { _ in }) // $ hasPathInjection=208
+    let _ = fm.contentsOfDirectory(at: remoteUrl, includingPropertiesForKeys: [], options: []) // $ hasPathInjection=253
+    let _ = fm.contentsOfDirectory(atPath: remoteString) // $ hasPathInjection=253
+    let _ = fm.enumerator(at: remoteUrl, includingPropertiesForKeys: [], options: [], errorHandler: nil) // $ hasPathInjection=253
+    let _ = fm.enumerator(atPath: remoteString) // $ hasPathInjection=253
+    let _ = fm.subpathsOfDirectory(atPath: remoteString) // $ hasPathInjection=253
+    let _ = fm.subpaths(atPath: remoteString) // $ hasPathInjection=253
+    fm.createDirectory(at: remoteUrl, withIntermediateDirectories: false, attributes: [:]) // $ hasPathInjection=253
+    let _ = fm.createDirectory(atPath: remoteString, attributes: [:]) // $ hasPathInjection=253
+    let _ = fm.createFile(atPath: remoteString, contents: nil, attributes: [:]) // $ hasPathInjection=253
+    fm.removeItem(at: remoteUrl) // $ hasPathInjection=253
+    fm.removeItem(atPath: remoteString) // $ hasPathInjection=253
+    fm.trashItem(at: remoteUrl, resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>()) // $ hasPathInjection=253
+    let _ = fm.replaceItemAt(remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: []) // $ hasPathInjection=253
+    let _ = fm.replaceItemAt(safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: []) // $ hasPathInjection=253
+    fm.replaceItem(at: remoteUrl, withItemAt: safeUrl, backupItemName: nil, options: [], resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>()) // $ hasPathInjection=253
+    fm.replaceItem(at: safeUrl, withItemAt: remoteUrl, backupItemName: nil, options: [], resultingItemURL: AutoreleasingUnsafeMutablePointer<NSURL?>()) // $ hasPathInjection=253
+    fm.copyItem(at: remoteUrl, to: safeUrl) // $ hasPathInjection=253
+    fm.copyItem(at: safeUrl, to: remoteUrl) // $ hasPathInjection=253
+    fm.copyItem(atPath: remoteString, toPath: "") // $ hasPathInjection=253
+    fm.copyItem(atPath: "", toPath: remoteString) // $ hasPathInjection=253
+    fm.moveItem(at: remoteUrl, to: safeUrl) // $ hasPathInjection=253
+    fm.moveItem(at: safeUrl, to: remoteUrl) // $ hasPathInjection=253
+    fm.moveItem(atPath: remoteString, toPath: "") // $ hasPathInjection=253
+    fm.moveItem(atPath: "", toPath: remoteString) // $ hasPathInjection=253
+    fm.createSymbolicLink(at: remoteUrl, withDestinationURL: safeUrl) // $ hasPathInjection=253
+    fm.createSymbolicLink(at: safeUrl, withDestinationURL: remoteUrl) // $ hasPathInjection=253
+    fm.createSymbolicLink(atPath: remoteString, withDestinationPath: "") // $ hasPathInjection=253
+    fm.createSymbolicLink(atPath: "", withDestinationPath: remoteString) // $ hasPathInjection=253
+    fm.linkItem(at: remoteUrl, to: safeUrl) // $ hasPathInjection=253
+    fm.linkItem(at: safeUrl, to: remoteUrl) // $ hasPathInjection=253
+    fm.linkItem(atPath: remoteString, toPath: "") // $ hasPathInjection=253
+    fm.linkItem(atPath: "", toPath: remoteString) // $ hasPathInjection=253
+    let _ = fm.destinationOfSymbolicLink(atPath: remoteString) // $ hasPathInjection=253
+    let _ = fm.fileExists(atPath: remoteString) // $ hasPathInjection=253
+    let _ = fm.fileExists(atPath: remoteString, isDirectory: UnsafeMutablePointer<ObjCBool>.init(bitPattern: 0)) // $ hasPathInjection=253
+    fm.setAttributes([:], ofItemAtPath: remoteString) // $ hasPathInjection=253
+    let _ = fm.contents(atPath: remoteString) // $ hasPathInjection=253
+    let _ = fm.contentsEqual(atPath: remoteString, andPath: "") // $ hasPathInjection=253
+    let _ = fm.contentsEqual(atPath: "", andPath: remoteString) // $ hasPathInjection=253
+    let _ = fm.changeCurrentDirectoryPath(remoteString) // $ hasPathInjection=253
+    let _ = fm.unmountVolume(at: remoteUrl, options: [], completionHandler: { _ in }) // $ hasPathInjection=253
     // Deprecated methods
-    let _ = fm.changeFileAttributes([:], atPath: remoteString) // $ hasPathInjection=208
-    let _ = fm.directoryContents(atPath: remoteString) // $ hasPathInjection=208
-    let _ = fm.createDirectory(atPath: remoteString, attributes: [:]) // $ hasPathInjection=208
-    let _ = fm.createSymbolicLink(atPath: remoteString, pathContent: "") // $ hasPathInjection=208
-    let _ = fm.createSymbolicLink(atPath: "", pathContent: remoteString) // $ hasPathInjection=208
-    let _ = fm.pathContentOfSymbolicLink(atPath: remoteString) // $ hasPathInjection=208
-    let _ = fm.replaceItemAtURL(originalItemURL: remoteNsUrl, withItemAtURL: safeNsUrl, backupItemName: nil, options: []) // $ hasPathInjection=208
-    let _ = fm.replaceItemAtURL(originalItemURL: safeNsUrl, withItemAtURL: remoteNsUrl, backupItemName: nil, options: []) // $ hasPathInjection=208
+    let _ = fm.changeFileAttributes([:], atPath: remoteString) // $ hasPathInjection=253
+    let _ = fm.directoryContents(atPath: remoteString) // $ hasPathInjection=253
+    let _ = fm.createDirectory(atPath: remoteString, attributes: [:]) // $ hasPathInjection=253
+    let _ = fm.createSymbolicLink(atPath: remoteString, pathContent: "") // $ hasPathInjection=253
+    let _ = fm.createSymbolicLink(atPath: "", pathContent: remoteString) // $ hasPathInjection=253
+    let _ = fm.pathContentOfSymbolicLink(atPath: remoteString) // $ hasPathInjection=253
+    let _ = fm.replaceItemAtURL(originalItemURL: remoteNsUrl, withItemAtURL: safeNsUrl, backupItemName: nil, options: []) // $ hasPathInjection=253
+    let _ = fm.replaceItemAtURL(originalItemURL: safeNsUrl, withItemAtURL: remoteNsUrl, backupItemName: nil, options: []) // $ hasPathInjection=253
 
     var encoding = String.Encoding.utf8
-    let _ = try! String(contentsOfFile: remoteString) // $ hasPathInjection=208
-    let _ = try! String(contentsOfFile: remoteString, encoding: String.Encoding.utf8) // $ hasPathInjection=208
-    let _ = try! String(contentsOfFile: remoteString, usedEncoding: &encoding) // $ hasPathInjection=208
+    let _ = try! String(contentsOfFile: remoteString) // $ hasPathInjection=253
+    let _ = try! String(contentsOfFile: remoteString, encoding: String.Encoding.utf8) // $ hasPathInjection=253
+    let _ = try! String(contentsOfFile: remoteString, usedEncoding: &encoding) // $ hasPathInjection=253
 
-    let _ = try! NSString(contentsOfFile: remoteString, encoding: 0) // $ hasPathInjection=208
-    let _ = try! NSString(contentsOfFile: remoteString, usedEncoding: nil) // $ hasPathInjection=208
-    NSString().write(to: remoteUrl, atomically: true, encoding: 0)  // $ hasPathInjection=208
-    NSString().write(toFile: remoteString, atomically: true, encoding: 0) // $ hasPathInjection=208
+    let _ = try! NSString(contentsOfFile: remoteString, encoding: 0) // $ hasPathInjection=253
+    let _ = try! NSString(contentsOfFile: remoteString, usedEncoding: nil) // $ hasPathInjection=253
+    NSString().write(to: remoteUrl, atomically: true, encoding: 0)  // $ hasPathInjection=253
+    NSString().write(toFile: remoteString, atomically: true, encoding: 0) // $ hasPathInjection=253
 
-    let _ = NSKeyedUnarchiver().unarchiveObject(withFile: remoteString) // $ hasPathInjection=208
-    let _ = ArchiveByteStream.fileStream(fd: remoteString as! FileDescriptor, automaticClose: true) // $ hasPathInjection=208
-    ArchiveByteStream.withFileStream(fd: remoteString as! FileDescriptor, automaticClose: true) { _ in } // $ hasPathInjection=208
-    let _ = ArchiveByteStream.fileStream(path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append, permissions: .ownerRead) // $ hasPathInjection=208
-    ArchiveByteStream.withFileStream(path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append, permissions: .ownerRead) { _ in } // $ hasPathInjection=208
-    let _ = Bundle(url: remoteUrl) // $ hasPathInjection=208
-    let _ = Bundle(path: remoteString) // $ hasPathInjection=208
+    let _ = NSKeyedUnarchiver().unarchiveObject(withFile: remoteString) // $ hasPathInjection=253
+    let _ = ArchiveByteStream.fileStream(fd: remoteString as! FileDescriptor, automaticClose: true) // $ hasPathInjection=253
+    ArchiveByteStream.withFileStream(fd: remoteString as! FileDescriptor, automaticClose: true) { _ in } // $ hasPathInjection=253
+    let _ = ArchiveByteStream.fileStream(path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append, permissions: .ownerRead) // $ hasPathInjection=253
+    ArchiveByteStream.withFileStream(path: FilePath(stringLiteral: remoteString), mode: .readOnly, options: .append, permissions: .ownerRead) { _ in } // $ hasPathInjection=253
+    let _ = Bundle(url: remoteUrl) // $ hasPathInjection=253
+    let _ = Bundle(path: remoteString) // $ hasPathInjection=253
 
     // GRDB
 
-    let _ = Database(path: remoteString, description: "", configuration: Configuration()) // $ hasPathInjection=208
+    let _ = Database(path: remoteString, description: "", configuration: Configuration()) // $ hasPathInjection=253
     let _ = Database(path: "", description: "", configuration: Configuration()) // Safe
-    let _ = DatabasePool(path: remoteString, configuration: Configuration()) // $ hasPathInjection=208
+    let _ = DatabasePool(path: remoteString, configuration: Configuration()) // $ hasPathInjection=253
     let _ = DatabasePool(path: "", configuration: Configuration()) // Safe
-    let _ = DatabaseQueue(path: remoteString, configuration: Configuration()) // $ hasPathInjection=208
+    let _ = DatabaseQueue(path: remoteString, configuration: Configuration()) // $ hasPathInjection=253
     let _ = DatabaseQueue(path: "", configuration: Configuration()) // Safe
-    let _ = DatabaseSnapshotPool(path: remoteString, configuration: Configuration()) // $ hasPathInjection=208
+    let _ = DatabaseSnapshotPool(path: remoteString, configuration: Configuration()) // $ hasPathInjection=253
     let _ = DatabaseSnapshotPool(path: "", configuration: Configuration()) // Safe
-    let _ = SerializedDatabase(path: remoteString, defaultLabel: "") // $ hasPathInjection=208
+    let _ = SerializedDatabase(path: remoteString, defaultLabel: "") // $ hasPathInjection=253
     let _ = SerializedDatabase(path: "", defaultLabel: "") // Safe
-    let _ = SerializedDatabase(path: remoteString, defaultLabel: "", purpose: nil) // $ hasPathInjection=208
+    let _ = SerializedDatabase(path: remoteString, defaultLabel: "", purpose: nil) // $ hasPathInjection=253
     let _ = SerializedDatabase(path: "", defaultLabel: "", purpose: nil) // Safe
-    let _ = SerializedDatabase(path: remoteString, configuration: Configuration(), defaultLabel: "") // $ hasPathInjection=208
+    let _ = SerializedDatabase(path: remoteString, configuration: Configuration(), defaultLabel: "") // $ hasPathInjection=253
     let _ = SerializedDatabase(path: "", configuration: Configuration(), defaultLabel: "") // Safe
-    let _ = SerializedDatabase(path: remoteString, configuration: Configuration(), defaultLabel: "", purpose: nil) // $ hasPathInjection=208
+    let _ = SerializedDatabase(path: remoteString, configuration: Configuration(), defaultLabel: "", purpose: nil) // $ hasPathInjection=253
     let _ = SerializedDatabase(path: "", configuration: Configuration(), defaultLabel: "", purpose: nil) // Safe
 
     // Realm
 
 	_ = Realm.Configuration(fileURL: safeUrl) // GOOD
-	_ = Realm.Configuration(fileURL: remoteUrl) // $ hasPathInjection=208
+	_ = Realm.Configuration(fileURL: remoteUrl) // $ hasPathInjection=253
 	_ = Realm.Configuration(seedFilePath: safeUrl) // GOOD
-	_ = Realm.Configuration(seedFilePath: remoteUrl) // $ hasPathInjection=208
+	_ = Realm.Configuration(seedFilePath: remoteUrl) // $ hasPathInjection=253
 
 	var config = Realm.Configuration() // GOOD
 	config.fileURL = safeUrl // GOOD
-	config.fileURL = remoteUrl // $ hasPathInjection=208
+	config.fileURL = remoteUrl // $ hasPathInjection=253
 	config.seedFilePath = safeUrl // GOOD
-	config.seedFilePath = remoteUrl // $ hasPathInjection=208
+	config.seedFilePath = remoteUrl // $ hasPathInjection=253
+
+    // sqlite3
+
+    var db: OpaquePointer?
+	let localData = Data(0)
+	let remoteData = Data(contentsOf: URL(string: "http://example.com/")!, options: [])
+	localData.copyBytes(to: buffer1, count: localData.count)
+	remoteData.copyBytes(to: buffer2, count: remoteData.count)
+
+    _ = sqlite3_open("myFile.sqlite3", &db) // GOOD
+    _ = sqlite3_open(remoteString, &db) // $ MISSING: hasPathInjection=253
+    _ = sqlite3_open16(buffer1, &db) // GOOD
+    _ = sqlite3_open16(buffer2, &db) // $ MISSING: hasPathInjection=253
+    _ = sqlite3_open_v2("myFile.sqlite3", &db, 0, nil) // GOOD
+    _ = sqlite3_open_v2(remoteString, &db, 0, nil) // $ MISSING: hasPathInjection=253
+
+    sqlite3_temp_directory = UnsafeMutablePointer<CChar>(mutating: NSString(string: "myFile.sqlite3").utf8String) // GOOD
+    sqlite3_temp_directory = UnsafeMutablePointer<CChar>(mutating: NSString(string: remoteString).utf8String) // $ MISSING: hasPathInjection=253
+
+    // SQLite.swift
+
+	try! _ = Connection()
+    try! _ = Connection(Connection.Location.uri("myFile.sqlite3")) // GOOD
+    try! _ = Connection(Connection.Location.uri(remoteString)) // $ MISSING: hasPathInjection=253
+    try! _ = Connection("myFile.sqlite3") // GOOD
+    try! _ = Connection(remoteString) // $ MISSING: hasPathInjection=253
 }
 
 func testBarriers() {
@@ -331,5 +402,5 @@ func testBarriers() {
     if (filePath.lexicallyNormalized().starts(with: "/safe")) {
         let _ = fm.contents(atPath: remoteString) // Safe
     }
-    let _ = fm.contents(atPath: remoteString) // $ hasPathInjection=326
+    let _ = fm.contents(atPath: remoteString) // $ hasPathInjection=397
 }
