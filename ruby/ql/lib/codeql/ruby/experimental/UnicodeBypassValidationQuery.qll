@@ -6,6 +6,7 @@ private import ruby
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.Concepts
 private import codeql.ruby.TaintTracking
+private import codeql.ruby.ApiGraphs
 import UnicodeBypassValidationCustomizations::UnicodeBypassValidation
 
 /** A state signifying that a logical validation has not been performed. */
@@ -39,8 +40,40 @@ class Configuration extends TaintTracking::Configuration {
       exists(Escaping escaping | nodeFrom = escaping.getAnInput() and nodeTo = escaping.getOutput())
       or
       exists(RegexExecution re | nodeFrom = re.getString() and nodeTo = re)
-      // or
-      // stringManipulation(nodeFrom, nodeTo)
+      or
+      // String Manipulation Method Calls
+      // https://ruby-doc.org/core-2.7.0/String.html
+      exists(DataFlow::CallNode cn |
+        cn.getMethodName() =
+          [
+            [
+                "ljust", "lstrip", "succ", "next", "rjust", "capitalize", "chomp", "gsub", "chop",
+                "downcase", "swapcase", "uprcase", "scrub", "slice", "squeeze", "strip", "sub",
+                "tr", "tr_s", "reverse"
+              ] + ["", "!"], "concat", "dump", "each_line", "replace", "insert", "inspect", "lines",
+            "partition", "prepend", "replace", "rpartition", "scan", "split", "undump",
+            "unpack" + ["", "1"]
+          ] and
+        nodeFrom = cn.getReceiver() and
+        nodeTo = cn
+      )
+      or
+      exists(DataFlow::CallNode cn |
+        cn.getMethodName() =
+          [
+            "casecmp" + ["", "?"], "center", "count", "each_char", "index", "rindex", "sum",
+            ["delete", "delete_prefix", "delete_suffix"] + ["", "!"],
+            ["start_with", "end_with" + "eql", "include"] + ["?", "!"], "match" + ["", "?"],
+          ] and
+        nodeFrom = cn.getReceiver() and
+        nodeTo = nodeFrom
+      )
+      or
+      exists(DataFlow::CallNode cn |
+        cn = API::getTopLevelMember("CGI").getAMethodCall("escapeHTML") and
+        nodeFrom = cn.getArgument(0) and
+        nodeTo = cn
+      )
     ) and
     stateFrom instanceof PreValidation and
     stateTo instanceof PostValidation
