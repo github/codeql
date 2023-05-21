@@ -105,7 +105,7 @@ Pattern.compile("^\\s+|\\s+$").matcher(text).replaceAll("") // BAD</sample>
         <p>
             Sometimes it is unclear how a regular expression can be rewritten to
             avoid the problem. In such cases, it often suffices to limit the
-            length of the input string. For instance, the following complicated 
+            length of the input string. For instance, the following 
             regular expression is used to match numbers, and on some non-number 
             inputs it can have quadratic time complexity:
         </p>
@@ -115,7 +115,7 @@ Pattern.matches("^(\\+|-)?(\\d+|(\\d*\\.\\d*))?(E|e)?([-+])?(\\d+)?$", str); </s
 
         <p>
             It is not immediately obvious how to rewrite this regular expression 
-            to avoid the problem. However, it might be fine to limit the length
+            to avoid the problem. However, you can mitigate performance issues by limiting the length
             to 1000 characters, which will always finish in a reasonable amount
             of time.
         </p>
