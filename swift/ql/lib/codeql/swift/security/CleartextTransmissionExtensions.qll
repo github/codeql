@@ -81,10 +81,15 @@ private class AlamofireTransmittedSink extends CleartextTransmissionSink {
 }
 
 /**
- * An encryption barrier for cleartext transmission vulnerabilities.
+ * An barrier for cleartext transmission vulnerabilities.
+ *  - encryption; encrypted values are not cleartext.
+ *  - booleans; these are more likely to be settings, rather than actual sensitive data.
  */
-private class CleartextTransmissionEncryptionBarrier extends CleartextTransmissionBarrier {
-  CleartextTransmissionEncryptionBarrier() { this.asExpr() instanceof EncryptedExpr }
+private class CleartextTransmissionDefaultBarrier extends CleartextTransmissionBarrier {
+  CleartextTransmissionDefaultBarrier() {
+    this.asExpr() instanceof EncryptedExpr or
+    this.asExpr().getType().getUnderlyingType() instanceof BoolType
+  }
 }
 
 /**

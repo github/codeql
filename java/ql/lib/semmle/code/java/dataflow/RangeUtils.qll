@@ -104,6 +104,17 @@ private predicate constantBooleanExpr(Expr e, boolean val) {
   CalcConstants::calculateBooleanValue(e) = val
 }
 
+pragma[nomagic]
+private predicate constantStringExpr(Expr e, string val) {
+  e.(CompileTimeConstantExpr).getStringValue() = val
+  or
+  exists(SsaExplicitUpdate v, Expr src |
+    e = v.getAUse() and
+    src = v.getDefiningExpr().(VariableAssign).getSource() and
+    constantStringExpr(src, val)
+  )
+}
+
 private boolean getBoolValue(Expr e) { constantBooleanExpr(e, result) }
 
 private int getIntValue(Expr e) { constantIntegerExpr(e, result) }
@@ -124,6 +135,14 @@ class ConstantBooleanExpr extends Expr {
 
   /** Gets the boolean value of this expression. */
   boolean getBooleanValue() { constantBooleanExpr(this, result) }
+}
+
+/** An expression that always has the same string value. */
+class ConstantStringExpr extends Expr {
+  ConstantStringExpr() { constantStringExpr(this, _) }
+
+  /** Get the string value of this expression. */
+  string getStringValue() { constantStringExpr(this, result) }
 }
 
 /**

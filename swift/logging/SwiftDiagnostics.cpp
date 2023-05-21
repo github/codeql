@@ -8,6 +8,22 @@
 
 namespace codeql {
 
+namespace {
+std::string_view severityToString(SwiftDiagnostic::Severity severity) {
+  using S = SwiftDiagnostic::Severity;
+  switch (severity) {
+    case S::note:
+      return "note";
+    case S::warning:
+      return "warning";
+    case S::error:
+      return "error";
+    default:
+      return "unknown";
+  }
+}
+}  // namespace
+
 nlohmann::json SwiftDiagnostic::json(const std::chrono::system_clock::time_point& timestamp,
                                      std::string_view message) const {
   nlohmann::json ret{
@@ -23,9 +39,8 @@ nlohmann::json SwiftDiagnostic::json(const std::chrono::system_clock::time_point
            {"cliSummaryTable", has(Visibility::cliSummaryTable)},
            {"telemetry", has(Visibility::telemetry)},
        }},
-      {"severity", "error"},
-      {"helpLinks", std::vector<std::string_view>(absl::StrSplit(helpLinks, ' '))},
-      {"plaintextMessage", absl::StrCat(message, ".\n\n", action, ".")},
+      {"severity", severityToString(severity)},
+      {"markdownMessage", absl::StrCat(message, "\n\n", action)},
       {"timestamp", fmt::format("{:%FT%T%z}", timestamp)},
   };
   if (location) {

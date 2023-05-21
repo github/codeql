@@ -13,13 +13,16 @@ func encrypt(padding : Padding) {
 
 
 	// GOOD: Using randomly generated keys for encryption
-	let key = (0..<10).map({ _ in UInt8.random(in: 0...UInt8.max) })
-	let keyString = String(cString: key)
-	let ivString = getRandomIV()
-	_ = try AES(key: key, blockMode: CBC(), padding: padding)
-	_ = try AES(key: keyString, iv: ivString)
-	_ = try Blowfish(key: key, blockMode: CBC(), padding: padding)
-	_ = try Blowfish(key: keyString, iv: ivString)
+	var key = [Int8](repeating: 0, count: 10)
+	let status = SecRandomCopyBytes(kSecRandomDefault, key.count - 1, &key)
+	if status == errSecSuccess {
+		let keyString = String(cString: key)
+		let ivString = getRandomIV()
+		_ = try AES(key: key, blockMode: CBC(), padding: padding)
+		_ = try AES(key: keyString, iv: ivString)
+		_ = try Blowfish(key: key, blockMode: CBC(), padding: padding)
+		_ = try Blowfish(key: keyString, iv: ivString)
+	}
 
 	// ...
 }

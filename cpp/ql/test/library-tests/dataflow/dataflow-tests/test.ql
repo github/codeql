@@ -34,7 +34,7 @@ module AstTest {
 
     override predicate isSink(DataFlow::Node sink) {
       exists(FunctionCall call |
-        call.getTarget().getName() = "sink" and
+        call.getTarget().getName() = ["sink", "indirect_sink"] and
         sink.asExpr() = call.getAnArgument()
       )
     }
@@ -83,9 +83,12 @@ module IRTest {
     }
 
     override predicate isSink(DataFlow::Node sink) {
-      exists(FunctionCall call |
+      exists(FunctionCall call, Expr e | e = call.getAnArgument() |
         call.getTarget().getName() = "sink" and
-        call.getAnArgument() in [sink.asExpr(), sink.asIndirectExpr()]
+        sink.asExpr() = e
+        or
+        call.getTarget().getName() = "indirect_sink" and
+        sink.asIndirectExpr() = e
       )
     }
 
