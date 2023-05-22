@@ -213,7 +213,7 @@ void *memset(void *, int, unsigned);
 
 void call_memset(void *p, unsigned size)
 {
-  memset(p, 0, size); // GOOD [FALSE POSITIVE]
+  memset(p, 0, size); // GOOD
 }
 
 void test_missing_call_context(unsigned char *unrelated_buffer, unsigned size) {
@@ -256,4 +256,12 @@ void test6(unsigned long n, char *p) {
     p = (char *)malloc(n);
     memset(p, 0, n); // GOOD
   }
+}
+
+void test7(unsigned n) {
+    char* p = (char*)malloc(n);
+    if(!p) {
+        p = (char*)malloc(++n);
+    }
+    memset(p, 0, n); // GOOD [FALSE POSITIVE]
 }
