@@ -49,3 +49,13 @@
     return 0;
   }
 
+int f3(int x) {
+  for (int i = 0; i <= 100; i++) {
+    range(i); // $ range=<=100 range=>=0
+    if(i == 100) {
+      range(i); // $ range===100
+    } else {
+      range(i); // $ range=<=99 range=>=0
+    }
+  }
+}
