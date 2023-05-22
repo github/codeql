@@ -92,9 +92,7 @@ module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
     pointerArithOverflow(source.asInstruction(), _, _, _, _)
   }
 
-  predicate isSink(DataFlow::Node sink) {
-    isInvalidPointerDerefSink1(sink, _, _)
-  }
+  predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink1(sink, _, _) }
 }
 
 module PointerArithmeticToDerefFlow = DataFlow::Global<PointerArithmeticToDerefConfig>;
