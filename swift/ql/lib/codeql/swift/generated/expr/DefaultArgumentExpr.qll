@@ -24,7 +24,12 @@ module Generated {
     /**
      * Gets the parameter declaration of this default argument expression.
      */
-    final ParamDecl getParamDecl() { result = this.getImmediateParamDecl().resolve() }
+    final ParamDecl getParamDecl() {
+      exists(ParamDecl immediate |
+        immediate = this.getImmediateParamDecl() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the parameter index of this default argument expression.
@@ -50,7 +55,12 @@ module Generated {
     /**
      * Gets the caller side default of this default argument expression, if it exists.
      */
-    final Expr getCallerSideDefault() { result = this.getImmediateCallerSideDefault().resolve() }
+    final Expr getCallerSideDefault() {
+      exists(Expr immediate |
+        immediate = this.getImmediateCallerSideDefault() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getCallerSideDefault()` exists.

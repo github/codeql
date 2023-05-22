@@ -37,7 +37,10 @@ module Generated {
      * Gets the naming declaration of this opaque type declaration.
      */
     final ValueDecl getNamingDeclaration() {
-      result = this.getImmediateNamingDeclaration().resolve()
+      exists(ValueDecl immediate |
+        immediate = this.getImmediateNamingDeclaration() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -57,7 +60,10 @@ module Generated {
      * Gets the `index`th opaque generic parameter of this opaque type declaration (0-based).
      */
     final GenericTypeParamType getOpaqueGenericParam(int index) {
-      result = this.getImmediateOpaqueGenericParam(index).resolve()
+      exists(GenericTypeParamType immediate |
+        immediate = this.getImmediateOpaqueGenericParam(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**

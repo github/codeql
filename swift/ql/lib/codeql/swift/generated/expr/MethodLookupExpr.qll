@@ -19,6 +19,11 @@ module Generated {
     /**
      * Gets the the underlying method declaration reference expression.
      */
-    final Expr getMethodRef() { result = this.getImmediateMethodRef().resolve() }
+    final Expr getMethodRef() {
+      exists(Expr immediate |
+        immediate = this.getImmediateMethodRef() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

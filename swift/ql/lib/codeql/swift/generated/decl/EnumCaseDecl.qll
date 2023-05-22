@@ -25,7 +25,10 @@ module Generated {
      * Gets the `index`th element of this enum case declaration (0-based).
      */
     final EnumElementDecl getElement(int index) {
-      result = this.getImmediateElement(index).resolve()
+      exists(EnumElementDecl immediate |
+        immediate = this.getImmediateElement(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**

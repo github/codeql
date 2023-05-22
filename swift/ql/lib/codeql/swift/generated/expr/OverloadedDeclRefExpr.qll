@@ -30,7 +30,10 @@ module Generated {
      * Gets the `index`th possible declaration of this overloaded declaration reference expression (0-based).
      */
     final ValueDecl getPossibleDeclaration(int index) {
-      result = this.getImmediatePossibleDeclaration(index).resolve()
+      exists(ValueDecl immediate |
+        immediate = this.getImmediatePossibleDeclaration(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**

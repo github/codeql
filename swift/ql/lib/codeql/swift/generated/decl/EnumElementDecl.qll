@@ -31,7 +31,12 @@ module Generated {
     /**
      * Gets the `index`th parameter of this enum element declaration (0-based).
      */
-    final ParamDecl getParam(int index) { result = this.getImmediateParam(index).resolve() }
+    final ParamDecl getParam(int index) {
+      exists(ParamDecl immediate |
+        immediate = this.getImmediateParam(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the parameters of this enum element declaration.

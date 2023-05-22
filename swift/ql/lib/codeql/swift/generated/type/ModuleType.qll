@@ -24,6 +24,11 @@ module Generated {
     /**
      * Gets the module of this module type.
      */
-    final ModuleDecl getModule() { result = this.getImmediateModule().resolve() }
+    final ModuleDecl getModule() {
+      exists(ModuleDecl immediate |
+        immediate = this.getImmediateModule() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }
