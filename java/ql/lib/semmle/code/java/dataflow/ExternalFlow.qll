@@ -247,6 +247,8 @@ module ModelValidation {
     )
   }
 
+  /**
+   */
   private string getInvalidModelOutput() {
     exists(string pred, AccessPath output, AccessPathToken part |
       sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
@@ -328,6 +330,7 @@ module ModelValidation {
       not kind.matches("regex-use%") and
       not kind.matches("qltest%") and
       msg = "Invalid kind \"" + kind + "\" in sink model." and
+      // The deprecation part of this message can be deleted after June 1st, 2024.
       if kind instanceof DeprecatedSinkKind
       then result = msg + " " + kind.(DeprecatedSinkKind).deprecationMessage()
       else result = msg
