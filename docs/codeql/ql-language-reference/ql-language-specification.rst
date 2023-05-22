@@ -351,7 +351,7 @@ A QL signature definition has the following syntax:
 
    typeSignature ::= qldoc? annotations "signature" "class" upperId ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
 
-   moduleSignature ::= qldoc? annotation* "signature" "module" upperId parameters? "{" moduleSignatureBody "}"
+   moduleSignature ::= qldoc? annotation* "signature" "module" moduleSignatureName parameters? "{" moduleSignatureBody "}"
 
    moduleSignatureBody ::= (signaturePredicate | defaultPredicate | signatureType)*
 
@@ -632,14 +632,15 @@ Identifiers are used in following syntactic constructs:
 
 ::
 
-   simpleId      ::= lowerId | upperId
-   modulename    ::= simpleId
-   classname     ::= upperId
-   dbasetype     ::= atLowerId
-   predicateRef  ::= (moduleExpr "::")? literalId
-   predicateName ::= lowerId
-   varname       ::= lowerId
-   literalId     ::= lowerId | atLowerId
+   simpleId            ::= lowerId | upperId
+   modulename          ::= simpleId
+   moduleSignatureName ::= upperId
+   classname           ::= upperId
+   dbasetype           ::= atLowerId
+   predicateRef        ::= (moduleExpr "::")? literalId
+   predicateName       ::= lowerId
+   varname             ::= lowerId
+   literalId           ::= lowerId | atLowerId
 
 Integer literals (int)
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -2127,7 +2128,7 @@ The complete grammar for QL is as follows:
 
    typeSignature ::= qldoc? annotations "signature" "class" upperId ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
 
-   moduleSignature ::= qldoc? annotation* "signature" "module" upperId parameters? "{" moduleSignatureBody "}"
+   moduleSignature ::= qldoc? annotation* "signature" "module" moduleSignatureName parameters? "{" moduleSignatureBody "}"
 
    moduleSignatureBody ::= (signaturePredicate | defaultPredicate | signatureType)*
 
@@ -2184,7 +2185,7 @@ The complete grammar for QL is as follows:
 
    moduleExpr ::= simpleId arguments? | moduleExpr "::" simpleId arguments?
 
-   moduleSignatureExpr ::= (moduleExpr "::")? upperId arguments?
+   moduleSignatureExpr ::= (moduleExpr "::")? moduleSignatureName arguments?
 
    signatureExpr : (moduleExpr "::")? simpleId ("/" Integer | arguments)?;
 
@@ -2310,6 +2311,8 @@ The complete grammar for QL is as follows:
    simpleId ::= lowerId | upperId
 
    modulename ::= simpleId
+
+   moduleSignatureName ::= upperId
 
    classname ::= upperId
 
