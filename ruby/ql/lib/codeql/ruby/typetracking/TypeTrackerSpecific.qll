@@ -615,7 +615,7 @@ private DataFlow::Node evaluateSummaryComponentStackLocal(
       head = SummaryComponent::return() and
       ret.getCfgScope() = prev.asExpr().getExpr() and
       // We need to include both `ret` and `ret.getAnInput()`, since in type-tracking
-      // the step from `ret.getAnInput()` to `ret` is considered a call step.
+      // the step from `ret.getAnInput()` to `ret` is considered a return step.
       result = [ret.(DataFlow::Node), ret.getAnInput()]
     )
     or
