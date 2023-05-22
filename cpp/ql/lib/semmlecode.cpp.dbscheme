@@ -1,3 +1,4 @@
+/*- Compilations -*/
 
 /**
  * An invocation of the compiler. Note that more than one file may be
@@ -122,6 +123,7 @@ compilation_finished(
     float elapsed_seconds : float ref
 );
 
+/*- External data -*/
 
 /**
  * External data, loaded from CSV files during snapshot creation. See
@@ -135,37 +137,11 @@ externalData(
     string value : string ref
 );
 
-/**
- * The source location of the snapshot.
- */
+/*- Source location prefix -*/
+
 sourceLocationPrefix(string prefix : string ref);
 
-/**
- * Information about packages that provide code used during compilation.
- * The `id` is just a unique identifier.
- * The `namespace` is typically the name of the package manager that
- * provided the package (e.g. "dpkg" or "yum").
- * The `package_name` is the name of the package, and `version` is its
- * version (as a string).
- */
-external_packages(
-    unique int id: @external_package,
-    string namespace : string ref,
-    string package_name : string ref,
-    string version : string ref
-);
-
-/**
- * Holds if File `fileid` was provided by package `package`.
- */
-header_to_external_package(
-    int fileid : @file ref,
-    int package : @external_package ref
-);
-
-/*
- * Version history
- */
+/*- DEPRECATED: Version control data -*/
 
 svnentries(
     unique int id : @svnentry,
@@ -193,11 +169,7 @@ svnchurn(
     int deletedLines : int ref
 )
 
-/*
- * C++ dbscheme
- */
-
-@location = @location_stmt | @location_expr | @location_default ;
+/*- Files and folders -*/
 
 /**
  * The location of an element that is not an expression or a statement.
@@ -215,6 +187,70 @@ locations_default(
     int endLine: int ref,
     int endColumn: int ref
 );
+
+files(
+    unique int id: @file,
+    string name: string ref
+);
+
+folders(
+    unique int id: @folder,
+    string name: string ref
+);
+
+@container = @folder | @file
+
+containerparent(
+    int parent: @container ref,
+    unique int child: @container ref
+);
+
+/*- Lines of code -*/
+
+numlines(
+    int element_id: @sourceline ref,
+    int num_lines: int ref,
+    int num_code: int ref,
+    int num_comment: int ref
+);
+
+/*- Diagnostic messages -*/
+
+diagnostics(
+    unique int id: @diagnostic,
+    int severity: int ref,
+    string error_tag: string ref,
+    string error_message: string ref,
+    string full_error_message: string ref,
+    int location: @location_default ref
+);
+
+/*- C++ dbscheme -*/
+
+/**
+ * Information about packages that provide code used during compilation.
+ * The `id` is just a unique identifier.
+ * The `namespace` is typically the name of the package manager that
+ * provided the package (e.g. "dpkg" or "yum").
+ * The `package_name` is the name of the package, and `version` is its
+ * version (as a string).
+ */
+external_packages(
+    unique int id: @external_package,
+    string namespace : string ref,
+    string package_name : string ref,
+    string version : string ref
+);
+
+/**
+ * Holds if File `fileid` was provided by package `package`.
+ */
+header_to_external_package(
+    int fileid : @file ref,
+    int package : @external_package ref
+);
+
+@location = @location_stmt | @location_expr | @location_default ;
 
 /**
  * The location of a statement.
@@ -252,39 +288,6 @@ locations_expr(
 
 /** An element for which line-count information is available. */
 @sourceline = @file | @function | @variable | @enumconstant | @xmllocatable;
-
-numlines(
-    int element_id: @sourceline ref,
-    int num_lines: int ref,
-    int num_code: int ref,
-    int num_comment: int ref
-);
-
-diagnostics(
-    unique int id: @diagnostic,
-    int severity: int ref,
-    string error_tag: string ref,
-    string error_message: string ref,
-    string full_error_message: string ref,
-    int location: @location_default ref
-);
-
-files(
-    unique int id: @file,
-    string name: string ref
-);
-
-folders(
-    unique int id: @folder,
-    string name: string ref
-);
-
-@container = @folder | @file
-
-containerparent(
-    int parent: @container ref,
-    unique int child: @container ref
-);
 
 fileannotations(
     int id: @file ref,
@@ -2137,7 +2140,7 @@ link_parent(
     int link_target : @link_target ref
 );
 
-/* XML Files */
+/*- XML Files -*/
 
 xmlEncoding(unique int id: @file ref, string encoding: string ref);
 
