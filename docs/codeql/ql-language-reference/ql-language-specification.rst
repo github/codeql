@@ -628,8 +628,6 @@ There are several kinds of identifiers:
 
 -  ``atLowerId``: an identifier that starts with an "@" sign and then a lower-case letter.
 
--  ``atUpperId``: an identifier that starts with an "@" sign and then an upper-case letter.
-
 Identifiers are used in following syntactic constructs:
 
 ::
