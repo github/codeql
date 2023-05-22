@@ -349,7 +349,7 @@ A QL signature definition has the following syntax:
 
    predicateSignature ::= qldoc? annotations "signature" head ";"
 
-   typeSignature ::= qldoc? annotations "signature" "class" upperId ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
+   typeSignature ::= qldoc? annotations "signature" "class" classname ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
 
    moduleSignature ::= qldoc? annotation* "signature" "module" moduleSignatureName parameters? "{" moduleSignatureBody "}"
 
@@ -359,7 +359,7 @@ A QL signature definition has the following syntax:
 
    defaultPredicate ::= qldoc? annotations "default" head "{" formula "}"
 
-   signatureType ::= qldoc? annotations "class" upperId ("extends" type ("," type)*)? "{" signaturePredicate* "}"
+   signatureType ::= qldoc? annotations "class" classname ("extends" type ("," type)*)? "{" signaturePredicate* "}"
 
 
 A predicate signature definition extends the current module's declared predicate signature environment with a mapping from the predicate signature name and arity to the predicate signature definition.
@@ -2126,7 +2126,7 @@ The complete grammar for QL is as follows:
 
    predicateSignature ::= qldoc? annotations "signature" head ";"
 
-   typeSignature ::= qldoc? annotations "signature" "class" upperId ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
+   typeSignature ::= qldoc? annotations "signature" "class" classname ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
 
    moduleSignature ::= qldoc? annotation* "signature" "module" moduleSignatureName parameters? "{" moduleSignatureBody "}"
 
@@ -2136,7 +2136,7 @@ The complete grammar for QL is as follows:
 
    defaultPredicate ::= qldoc? annotations "default" head "{" formula "}"
 
-   signatureType ::= qldoc? annotations "class" upperId ("extends" type ("," type)*)? "{" signaturePredicate* "}"
+   signatureType ::= qldoc? annotations "class" classname ("extends" type ("," type)*)? "{" signaturePredicate* "}"
 
    select ::= ("from" var_decls)? ("where" formula)? "select" as_exprs ("order" "by" orderbys)?
 
