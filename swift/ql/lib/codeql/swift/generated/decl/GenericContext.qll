@@ -23,7 +23,10 @@ module Generated {
      * Gets the `index`th generic type parameter of this generic context (0-based).
      */
     final GenericTypeParamDecl getGenericTypeParam(int index) {
-      result = this.getImmediateGenericTypeParam(index).resolve()
+      exists(GenericTypeParamDecl immediate |
+        immediate = this.getImmediateGenericTypeParam(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**

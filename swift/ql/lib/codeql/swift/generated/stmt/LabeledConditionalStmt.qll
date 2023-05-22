@@ -22,6 +22,11 @@ module Generated {
     /**
      * Gets the condition of this labeled conditional statement.
      */
-    final StmtCondition getCondition() { result = this.getImmediateCondition().resolve() }
+    final StmtCondition getCondition() {
+      exists(StmtCondition immediate |
+        immediate = this.getImmediateCondition() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

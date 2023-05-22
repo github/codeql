@@ -21,7 +21,12 @@ module Generated {
     /**
      * Gets the dest of this assign expression.
      */
-    final Expr getDest() { result = this.getImmediateDest().resolve() }
+    final Expr getDest() {
+      exists(Expr immediate |
+        immediate = this.getImmediateDest() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the source of this assign expression.
@@ -37,6 +42,11 @@ module Generated {
     /**
      * Gets the source of this assign expression.
      */
-    final Expr getSource() { result = this.getImmediateSource().resolve() }
+    final Expr getSource() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSource() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

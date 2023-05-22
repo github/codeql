@@ -20,7 +20,12 @@ module Generated {
     /**
      * Gets the module of this declaration.
      */
-    final ModuleDecl getModule() { result = this.getImmediateModule().resolve() }
+    final ModuleDecl getModule() {
+      exists(ModuleDecl immediate |
+        immediate = this.getImmediateModule() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the `index`th member of this declaration (0-based).
@@ -35,7 +40,12 @@ module Generated {
     /**
      * Gets the `index`th member of this declaration (0-based).
      */
-    final Decl getMember(int index) { result = this.getImmediateMember(index).resolve() }
+    final Decl getMember(int index) {
+      exists(Decl immediate |
+        immediate = this.getImmediateMember(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the members of this declaration.

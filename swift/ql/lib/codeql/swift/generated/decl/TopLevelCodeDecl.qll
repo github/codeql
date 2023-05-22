@@ -24,6 +24,11 @@ module Generated {
     /**
      * Gets the body of this top level code declaration.
      */
-    final BraceStmt getBody() { result = this.getImmediateBody().resolve() }
+    final BraceStmt getBody() {
+      exists(BraceStmt immediate |
+        immediate = this.getImmediateBody() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

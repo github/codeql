@@ -84,7 +84,8 @@ module Generated {
     {{/has_description}}
      */
     final {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
-      result = this.get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}index{{/is_indexed}}).resolve()
+      exists({{type}} immediate | immediate = this.get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}index{{/is_indexed}}) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve())
     }
 
     {{/type_is_class}}

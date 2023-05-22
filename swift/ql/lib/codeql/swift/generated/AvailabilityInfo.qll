@@ -46,7 +46,12 @@ module Generated {
     /**
      * Gets the `index`th spec of this availability info (0-based).
      */
-    final AvailabilitySpec getSpec(int index) { result = this.getImmediateSpec(index).resolve() }
+    final AvailabilitySpec getSpec(int index) {
+      exists(AvailabilitySpec immediate |
+        immediate = this.getImmediateSpec(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the specs of this availability info.

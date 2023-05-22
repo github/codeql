@@ -24,7 +24,12 @@ module Generated {
     /**
      * Gets the cast type representation of this is pattern, if it exists.
      */
-    final TypeRepr getCastTypeRepr() { result = this.getImmediateCastTypeRepr().resolve() }
+    final TypeRepr getCastTypeRepr() {
+      exists(TypeRepr immediate |
+        immediate = this.getImmediateCastTypeRepr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getCastTypeRepr()` exists.
@@ -47,7 +52,12 @@ module Generated {
     /**
      * Gets the sub pattern of this is pattern, if it exists.
      */
-    final Pattern getSubPattern() { result = this.getImmediateSubPattern().resolve() }
+    final Pattern getSubPattern() {
+      exists(Pattern immediate |
+        immediate = this.getImmediateSubPattern() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getSubPattern()` exists.

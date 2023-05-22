@@ -21,7 +21,12 @@ module Generated {
     /**
      * Gets the condition of this if expression.
      */
-    final Expr getCondition() { result = this.getImmediateCondition().resolve() }
+    final Expr getCondition() {
+      exists(Expr immediate |
+        immediate = this.getImmediateCondition() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the then expression of this if expression.
@@ -37,7 +42,12 @@ module Generated {
     /**
      * Gets the then expression of this if expression.
      */
-    final Expr getThenExpr() { result = this.getImmediateThenExpr().resolve() }
+    final Expr getThenExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateThenExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the else expression of this if expression.
@@ -53,6 +63,11 @@ module Generated {
     /**
      * Gets the else expression of this if expression.
      */
-    final Expr getElseExpr() { result = this.getImmediateElseExpr().resolve() }
+    final Expr getElseExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateElseExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }
