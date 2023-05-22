@@ -638,6 +638,7 @@ Identifiers are used in following syntactic constructs:
    classname           ::= upperId
    dbasetype           ::= atLowerId
    predicateRef        ::= (moduleExpr "::")? literalId
+   signatureExpr       ::= (moduleExpr "::")? simpleId ("/" Integer | arguments)?;
    predicateName       ::= lowerId
    varname             ::= lowerId
    literalId           ::= lowerId | atLowerId
