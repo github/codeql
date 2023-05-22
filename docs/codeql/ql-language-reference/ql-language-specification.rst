@@ -216,7 +216,7 @@ An import directive refers to a module identifier:
 
    qualId ::= simpleId | qualId "." simpleId
 
-   importModuleExpr ::= qualId | importModuleExpr "::" simpleId arguments?
+   importModuleExpr ::= qualId | importModuleExpr "::" modulename arguments?
 
    arguments ::= "<" argument ("," argument)* ">"
 
@@ -289,7 +289,7 @@ With the exception of class domain types and character types (which cannot be re
 
    type ::= (moduleExpr "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
 
-   moduleExpr ::= simpleId arguments? | moduleExpr "::" simpleId arguments?
+   moduleExpr ::= modulename arguments? | moduleExpr "::" modulename arguments?
 
 A type reference is resolved to a type as follows:
 
@@ -2116,7 +2116,7 @@ The complete grammar for QL is as follows:
 
    qualId ::= simpleId | qualId "." simpleId
 
-   importModuleExpr ::= qualId | importModuleExpr "::" simpleId arguments?
+   importModuleExpr ::= qualId | importModuleExpr "::" modulename arguments?
 
    arguments ::= "<" argument ("," argument)* ">"
 
@@ -2183,7 +2183,7 @@ The complete grammar for QL is as follows:
 
    field ::= qldoc? annotations var_decl ";"
 
-   moduleExpr ::= simpleId arguments? | moduleExpr "::" simpleId arguments?
+   moduleExpr ::= modulename arguments? | moduleExpr "::" modulename arguments?
 
    moduleSignatureExpr ::= (moduleExpr "::")? moduleSignatureName arguments?
 
