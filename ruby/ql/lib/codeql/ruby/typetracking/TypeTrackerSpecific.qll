@@ -611,8 +611,13 @@ private DataFlow::Node evaluateSummaryComponentStackLocal(
         [p.(DataFlow::Node), DataFlowPrivate::LocalFlow::getParameterDefNode(p.getParameter())]
     )
     or
-    head = SummaryComponent::return() and
-    result.(DataFlowPrivate::SynthReturnNode).getCfgScope() = prev.asExpr().getExpr()
+    exists(DataFlowPrivate::SynthReturnNode ret |
+      head = SummaryComponent::return() and
+      ret.getCfgScope() = prev.asExpr().getExpr() and
+      // We need to include both `ret` and `ret.getAnInput()`, since in type-tracking
+      // the step from `ret.getAnInput()` to `ret` is considered a call step.
+      result = [ret.(DataFlow::Node), ret.getAnInput()]
+    )
     or
     exists(DataFlow::ContentSet content |
       head = SummaryComponent::withoutContent(content) and
