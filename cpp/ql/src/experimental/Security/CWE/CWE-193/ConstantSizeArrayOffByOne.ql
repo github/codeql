@@ -111,7 +111,6 @@ module FieldAddressToDerefConfig implements DataFlow::StateConfigSig {
     )
   }
 
-  pragma[inline]
   predicate isSink(DataFlow::Node sink, FlowState state) {
     exists(DataFlow::Node pai |
       state = TOverflowArithmetic(pai.asInstruction()) and
