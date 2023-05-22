@@ -277,50 +277,35 @@ module ModelValidation {
     }
 
     private string replacementKind() {
-      this = "sql" and result = "\"sql-injection\""
+      this = ["sql", "xpath", "groovy", "jexl", "mvel", "xslt", "ldap"] and
+      result = this + "-injection"
       or
-      this = "url-redirect" and result = "\"url-redirection\""
+      this = "url-redirect" and result = "url-redirection"
       or
-      this = "xpath" and result = "\"xpath-injection\""
+      this = "ssti" and result = "template-injection"
       or
-      this = "ssti" and result = "\"template-injection\""
+      this = "logging" and result = "log-injection"
       or
-      this = "logging" and result = "\"log-injection\""
+      this = "pending-intent-sent" and result = "pending-intents"
       or
-      this = "groovy" and result = "\"groovy-injection\""
+      this = "intent-start" and result = "intent-redirection"
       or
-      this = "jexl" and result = "\"jexl-injection\""
+      this = "set-hostname-verifier" and result = "hostname-verification"
       or
-      this = "mvel" and result = "\"mvel-injection\""
+      this = "header-splitting" and result = "response-splitting"
       or
-      this = "xslt" and result = "\"xslt-injection\""
+      this = "xss" and result = "html-injection\" or \"js-injection"
       or
-      this = "ldap" and result = "\"ldap-injection\""
+      this = "write-file" and result = "file-content-store"
       or
-      this = "pending-intent-sent" and result = "\"pending-intents\""
+      this = ["create-file", "read-file"] and result = "path-injection"
       or
-      this = "intent-start" and result = "\"intent-redirection\""
-      or
-      this = "set-hostname-verifier" and result = "\"hostname-verification\""
-      or
-      this = "header-splitting" and result = "\"response-splitting\""
-      or
-      this = "xss" and result = "\"html-injection\" or \"js-injection\""
-      or
-      this = "write-file" and result = "\"file-content-store\""
-      or
-      this = "create-file" and result = "\"path-injection\""
-      or
-      this = "read-file" and result = "\"path-injection\""
-      or
-      this = "open-url" and result = "\"request-forgery\""
-      or
-      this = "jdbc-url" and result = "\"request-forgery\""
+      this = ["open-url", "jdbc-url"] and result = "request-forgery"
     }
 
     string deprecationMessage() {
       result =
-        "The kind \"" + this + "\" is deprecated. Use " + this.replacementKind() + " instead."
+        "The kind \"" + this + "\" is deprecated. Use \"" + this.replacementKind() + "\" instead."
     }
   }
 
