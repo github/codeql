@@ -26,7 +26,10 @@ module Generated {
      * Gets the `index`th binding declaration of this capture list expression (0-based).
      */
     final PatternBindingDecl getBindingDecl(int index) {
-      result = this.getImmediateBindingDecl(index).resolve()
+      exists(PatternBindingDecl immediate |
+        immediate = this.getImmediateBindingDecl(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -55,6 +58,11 @@ module Generated {
     /**
      * Gets the closure body of this capture list expression.
      */
-    final ExplicitClosureExpr getClosureBody() { result = this.getImmediateClosureBody().resolve() }
+    final ExplicitClosureExpr getClosureBody() {
+      exists(ExplicitClosureExpr immediate |
+        immediate = this.getImmediateClosureBody() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

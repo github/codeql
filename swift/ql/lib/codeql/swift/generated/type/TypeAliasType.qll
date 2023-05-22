@@ -24,6 +24,11 @@ module Generated {
     /**
      * Gets the declaration of this type alias type.
      */
-    final TypeAliasDecl getDecl() { result = this.getImmediateDecl().resolve() }
+    final TypeAliasDecl getDecl() {
+      exists(TypeAliasDecl immediate |
+        immediate = this.getImmediateDecl() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

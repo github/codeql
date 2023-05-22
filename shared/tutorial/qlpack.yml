@@ -3,3 +3,4 @@ description: Library for the CodeQL detective tutorials, helping new users learn
 version: 0.0.10-dev
 groups: shared
 library: true
+warnOnImplicitThis: true

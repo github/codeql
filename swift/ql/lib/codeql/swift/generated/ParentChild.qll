@@ -5317,7 +5317,7 @@ Element getImmediateParent(Element e) {
 Element getImmediateChildAndAccessor(Element e, int index, string accessor) {
   exists(string partialAccessor |
     result = Impl::getImmediateChild(e, index, partialAccessor) and
-    accessor = "getImmediate" + partialAccessor
+    accessor = "get" + partialAccessor
   )
 }
 

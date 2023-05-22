@@ -2,9 +2,10 @@
  * Provides classes for working with regular expressions.
  */
 
-private import semmle.python.RegexTreeView
+private import semmle.python.regexp.RegexTreeView
 private import semmle.python.regex
 private import semmle.python.dataflow.new.DataFlow
+private import semmle.python.regexp.internal.RegExpTracking
 
 /**
  * Provides utility predicates related to regular expressions.
@@ -25,18 +26,18 @@ deprecated module RegExpPatterns {
  * as a part of a regular expression.
  */
 class RegExpPatternSource extends DataFlow::CfgNode {
-  private Regex astNode;
+  private RegExpSink sink;
 
-  RegExpPatternSource() { astNode = this.asExpr() }
+  RegExpPatternSource() { this = regExpSource(sink) }
 
   /**
    * Gets a node where the pattern of this node is parsed as a part of
    * a regular expression.
    */
-  DataFlow::Node getAParse() { result = this }
+  RegExpSink getAParse() { result = sink }
 
   /**
    * Gets the root term of the regular expression parsed from this pattern.
    */
-  RegExpTerm getRegExpTerm() { result.getRegex() = astNode }
+  RegExpTerm getRegExpTerm() { result.getRegex() = this.asExpr() }
 }

@@ -24,6 +24,11 @@ module Generated {
     /**
      * Gets the initializer of this other initializer reference expression.
      */
-    final Initializer getInitializer() { result = this.getImmediateInitializer().resolve() }
+    final Initializer getInitializer() {
+      exists(Initializer immediate |
+        immediate = this.getImmediateInitializer() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

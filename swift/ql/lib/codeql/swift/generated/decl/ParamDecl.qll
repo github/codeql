@@ -33,7 +33,10 @@ module Generated {
      * variable for this variable, if any.
      */
     final PatternBindingDecl getPropertyWrapperLocalWrappedVarBinding() {
-      result = this.getImmediatePropertyWrapperLocalWrappedVarBinding().resolve()
+      exists(PatternBindingDecl immediate |
+        immediate = this.getImmediatePropertyWrapperLocalWrappedVarBinding() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -63,7 +66,10 @@ module Generated {
      * has a property wrapper.
      */
     final VarDecl getPropertyWrapperLocalWrappedVar() {
-      result = this.getImmediatePropertyWrapperLocalWrappedVar().resolve()
+      exists(VarDecl immediate |
+        immediate = this.getImmediatePropertyWrapperLocalWrappedVar() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**

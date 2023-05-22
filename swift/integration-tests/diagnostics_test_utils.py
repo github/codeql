@@ -10,11 +10,12 @@ import os
 import difflib
 import sys
 
-
-def _normalize_actual(test_dir, database_dir):
-    proc = subprocess.run(['codeql', 'database', 'export-diagnostics', '--format', 'raw', '--', database_dir],
+def _get_actual(database_dir):
+    return subprocess.run(['codeql', 'database', 'export-diagnostics', '--format', 'raw', '--', database_dir],
                           stdout=subprocess.PIPE, universal_newlines=True, check=True, text=True)
-    data = proc.stdout.replace(str(test_dir.absolute()), "<test-root-directory>")
+
+def _normalize_actual(test_dir, data):
+    data = data.replace(str(test_dir.absolute()), "<test-root-directory>")
     data = json.loads(data)
     data[:] = [e for e in data if not e["source"]["id"].startswith("cli/")]
     for e in data:
@@ -40,16 +41,21 @@ def _load_concatenated_json(text):
 
 
 def _normalize_json(data):
+    # at the moment helpLinks are a set within the codeql cli
+    for e in data:
+        e.get("helpLinks", []).sort()
     entries = [json.dumps(e, sort_keys=True, indent=2) for e in data]
     entries.sort()
     entries.append("")
     return "\n".join(entries)
 
 
-def check_diagnostics(test_dir=".", test_db="db"):
+def check_diagnostics(test_dir=".", test_db="db", actual = None):
     test_dir = pathlib.Path(test_dir)
     test_db = pathlib.Path(test_db)
-    actual = _normalize_actual(test_dir, test_db)
+    if actual is None:
+        actual = _get_actual(test_db).stdout
+    actual = _normalize_actual(test_dir, actual)
     if os.environ.get("CODEQL_INTEGRATION_TEST_LEARN") == "true":
         with open(test_dir / "diagnostics.expected", "w") as expected:
             expected.write(actual)
@@ -60,5 +66,5 @@ def check_diagnostics(test_dir=".", test_db="db"):
             actual_out.write(actual)
         actual = actual.splitlines(keepends=True)
         expected = expected.splitlines(keepends=True)
-        print("".join(difflib.unified_diff(actual, expected, fromfile="diagnostics.actual", tofile="diagnostics.expected")), file=sys.stderr)
+        print("".join(difflib.unified_diff(expected, actual, fromfile="diagnostics.expected", tofile="diagnostics.actual")), file=sys.stderr)
         sys.exit(1)

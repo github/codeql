@@ -23,7 +23,12 @@ module Generated {
     /**
      * Gets the expression of this switch statement.
      */
-    final Expr getExpr() { result = this.getImmediateExpr().resolve() }
+    final Expr getExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the `index`th case of this switch statement (0-based).
@@ -41,7 +46,12 @@ module Generated {
     /**
      * Gets the `index`th case of this switch statement (0-based).
      */
-    final CaseStmt getCase(int index) { result = this.getImmediateCase(index).resolve() }
+    final CaseStmt getCase(int index) {
+      exists(CaseStmt immediate |
+        immediate = this.getImmediateCase(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the cases of this switch statement.

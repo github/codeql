@@ -1,6 +1,7 @@
 private import python
 private import semmle.python.dataflow.new.DataFlow
 private import semmle.python.dataflow.new.internal.DataFlowPrivate as DataFlowPrivate
+private import FlowSummaryImpl as FlowSummaryImpl
 private import semmle.python.dataflow.new.internal.TaintTrackingPublic
 private import semmle.python.ApiGraphs
 
@@ -55,6 +56,8 @@ private module Cached {
     awaitStep(nodeFrom, nodeTo)
     or
     asyncWithStep(nodeFrom, nodeTo)
+    or
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
   }
 }
 
@@ -159,7 +162,7 @@ predicate stringManipulation(DataFlow::CfgNode nodeFrom, DataFlow::CfgNode nodeT
  * is currently very imprecise, as an example, since we model `dict.get`, we treat any
  * `<tainted object>.get(<arg>)` will be tainted, whether it's true or not.
  */
-predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
+predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // construction by literal
   //
   // TODO: once we have proper flow-summary modeling, we might not need this step any
@@ -180,13 +183,6 @@ predicate containerStep(DataFlow::CfgNode nodeFrom, DataFlow::Node nodeTo) {
   // longer -- but there needs to be a matching read-step for the store-step, and we
   // don't provide that right now.
   DataFlowPrivate::comprehensionStoreStep(nodeFrom, _, nodeTo)
-  or
-  // constructor call
-  exists(DataFlow::CallCfgNode call | call = nodeTo |
-    call = API::builtin(["list", "set", "frozenset", "dict", "tuple"]).getACall() and
-    call.getArg(0) = nodeFrom
-    // TODO: Properly handle defaultdict/namedtuple
-  )
   or
   // functions operating on collections
   exists(DataFlow::CallCfgNode call | call = nodeTo |

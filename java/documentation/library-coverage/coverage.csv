@@ -92,6 +92,7 @@ org.apache.commons.net,9,12,,,,,,,,,,,,,,,,6,,3,,,,,,,,,,,,,,,,,,,12,,
 org.apache.commons.ognl,6,,,,,,,,,,,,,,,,6,,,,,,,,,,,,,,,,,,,,,,,,
 org.apache.commons.text,,,272,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,220,52
 org.apache.directory.ldap.client.api,1,,,,,,,,,,,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,
+org.apache.hadoop.fs,,,10,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,10,
 org.apache.hadoop.hive.metastore,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,3,,,,,,,,,,,,
 org.apache.hc.client5.http.async.methods,84,,,,,,,,,,,,,,,,,84,,,,,,,,,,,,,,,,,,,,,,,
 org.apache.hc.client5.http.classic.methods,37,,,,,,,,,,,,,,,,,37,,,,,,,,,,,,,,,,,,,,,,,
@@ -133,7 +134,7 @@ org.springframework.cache,,,13,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,13
 org.springframework.context,,,3,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,3,
 org.springframework.data.repository,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,1
 org.springframework.http,14,,71,,,,,,,,,,,,,,,14,,,,,,,,,,,,,,,,,,,,,,61,10
-org.springframework.jdbc.core,10,,,,,,,,,,,,,,,,,,,,,,,,,,,,10,,,,,,,,,,,,
+org.springframework.jdbc.core,19,,,,,,,,,,,,,,,,,,,,,,,,,,,,19,,,,,,,,,,,,
 org.springframework.jdbc.datasource,4,,,,,,,,,,4,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 org.springframework.jdbc.object,9,,,,,,,,,,,,,,,,,,,,,,,,,,,,9,,,,,,,,,,,,
 org.springframework.jndi,1,,,,,,,,,,,,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,

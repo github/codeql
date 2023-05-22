@@ -414,7 +414,7 @@ private module HeuristicAllocation {
     int sizeArg;
 
     HeuristicAllocationFunctionByName() {
-      Function.super.getName().matches("%alloc%") and
+      Function.super.getName().matches(["%alloc%", "%Alloc%"]) and
       Function.super.getUnspecifiedType() instanceof PointerType and
       sizeArg = unique( | | getAnUnsignedParameter(this))
     }

@@ -23,7 +23,12 @@ module Generated {
     /**
      * Gets the `index`th member of this protocol composition type (0-based).
      */
-    final Type getMember(int index) { result = this.getImmediateMember(index).resolve() }
+    final Type getMember(int index) {
+      exists(Type immediate |
+        immediate = this.getImmediateMember(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the members of this protocol composition type.

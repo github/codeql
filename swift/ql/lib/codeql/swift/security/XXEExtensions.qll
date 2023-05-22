@@ -80,7 +80,7 @@ private class XmlDocumentXxeSink extends XxeSink {
 /** An `XMLDocument` that sets `nodeLoadExternalEntitiesAlways` in its options. */
 private class VulnerableXmlDocument extends ApplyExpr {
   VulnerableXmlDocument() {
-    this.getStaticTarget().(Initializer).getEnclosingDecl().(NominalTypeDecl).getFullName() =
+    this.getStaticTarget().(Initializer).getEnclosingDecl().asNominalTypeDecl().getFullName() =
       "XMLDocument" and
     this.getArgument(1).getExpr().(ArrayExpr).getAnElement().(MemberRefExpr).getMember() instanceof
       NodeLoadExternalEntitiesAlways
@@ -91,7 +91,7 @@ private class VulnerableXmlDocument extends ApplyExpr {
 private class NodeLoadExternalEntitiesAlways extends VarDecl {
   NodeLoadExternalEntitiesAlways() {
     this.getName() = "nodeLoadExternalEntitiesAlways" and
-    this.getEnclosingDecl().(StructDecl).getFullName() = "XMLNode.Options"
+    this.getEnclosingDecl().asNominalTypeDecl().(StructDecl).getFullName() = "XMLNode.Options"
   }
 }
 
@@ -190,13 +190,8 @@ private predicate lib2xmlOptionLocalTaintStep(DataFlow::Node source, DataFlow::N
   )
   or
   exists(ApplyExpr int32Init |
-    int32Init
-        .getStaticTarget()
-        .(Initializer)
-        .getEnclosingDecl()
-        .(ExtensionDecl)
-        .getExtendedTypeDecl()
-        .getName() = "SignedInteger"
+    int32Init.getStaticTarget().(Initializer).getEnclosingDecl().asNominalTypeDecl().getName() =
+      "SignedInteger"
   |
     source.asExpr() = int32Init.getAnArgument().getExpr() and sink.asExpr() = int32Init
   )

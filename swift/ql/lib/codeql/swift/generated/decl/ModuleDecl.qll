@@ -40,7 +40,10 @@ module Generated {
      *Gets any of the imported modules of this module declaration.
      */
     final ModuleDecl getAnImportedModule() {
-      result = this.getAnImmediateImportedModule().resolve()
+      exists(ModuleDecl immediate |
+        immediate = this.getAnImmediateImportedModule() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -67,7 +70,10 @@ module Generated {
      *Gets any of the exported modules of this module declaration.
      */
     final ModuleDecl getAnExportedModule() {
-      result = this.getAnImmediateExportedModule().resolve()
+      exists(ModuleDecl immediate |
+        immediate = this.getAnImmediateExportedModule() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**

@@ -34,7 +34,12 @@ module Generated {
     /**
      * Gets the self parameter of this callable, if it exists.
      */
-    final ParamDecl getSelfParam() { result = this.getImmediateSelfParam().resolve() }
+    final ParamDecl getSelfParam() {
+      exists(ParamDecl immediate |
+        immediate = this.getImmediateSelfParam() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getSelfParam()` exists.
@@ -57,7 +62,12 @@ module Generated {
     /**
      * Gets the `index`th parameter of this callable (0-based).
      */
-    final ParamDecl getParam(int index) { result = this.getImmediateParam(index).resolve() }
+    final ParamDecl getParam(int index) {
+      exists(ParamDecl immediate |
+        immediate = this.getImmediateParam(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the parameters of this callable.
@@ -85,7 +95,12 @@ module Generated {
      *
      * The body is absent within protocol declarations.
      */
-    final BraceStmt getBody() { result = this.getImmediateBody().resolve() }
+    final BraceStmt getBody() {
+      exists(BraceStmt immediate |
+        immediate = this.getImmediateBody() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getBody()` exists.
@@ -108,7 +123,12 @@ module Generated {
     /**
      * Gets the `index`th capture of this callable (0-based).
      */
-    final CapturedDecl getCapture(int index) { result = this.getImmediateCapture(index).resolve() }
+    final CapturedDecl getCapture(int index) {
+      exists(CapturedDecl immediate |
+        immediate = this.getImmediateCapture(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the captures of this callable.
