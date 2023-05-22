@@ -1,8 +1,7 @@
 edges
-| samples.py:0:0:0:0 | ModuleVariableNode for samples.request | samples.py:9:25:9:31 | ControlFlowNode for request |
-| samples.py:0:0:0:0 | ModuleVariableNode for samples.request | samples.py:16:25:16:31 | ControlFlowNode for request |
 | samples.py:2:26:2:32 | ControlFlowNode for ImportMember | samples.py:2:26:2:32 | GSSA Variable request |
-| samples.py:2:26:2:32 | GSSA Variable request | samples.py:0:0:0:0 | ModuleVariableNode for samples.request |
+| samples.py:2:26:2:32 | GSSA Variable request | samples.py:9:25:9:31 | ControlFlowNode for request |
+| samples.py:2:26:2:32 | GSSA Variable request | samples.py:16:25:16:31 | ControlFlowNode for request |
 | samples.py:9:18:9:47 | ControlFlowNode for escape() | samples.py:10:59:10:68 | ControlFlowNode for user_input |
 | samples.py:9:25:9:31 | ControlFlowNode for request | samples.py:9:25:9:36 | ControlFlowNode for Attribute |
 | samples.py:9:25:9:36 | ControlFlowNode for Attribute | samples.py:9:25:9:46 | ControlFlowNode for Attribute() |
@@ -12,7 +11,6 @@ edges
 | samples.py:16:25:16:36 | ControlFlowNode for Attribute | samples.py:16:25:16:46 | ControlFlowNode for Attribute() |
 | samples.py:16:25:16:46 | ControlFlowNode for Attribute() | samples.py:16:18:16:47 | ControlFlowNode for escape() |
 nodes
-| samples.py:0:0:0:0 | ModuleVariableNode for samples.request | semmle.label | ModuleVariableNode for samples.request |
 | samples.py:2:26:2:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | samples.py:2:26:2:32 | GSSA Variable request | semmle.label | GSSA Variable request |
 | samples.py:9:18:9:47 | ControlFlowNode for escape() | semmle.label | ControlFlowNode for escape() |
