@@ -291,6 +291,21 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
 }
 
 /**
+ * A negative characteristic that filters out qualifiers that are classes (i.e. static calls). These
+ *are unlikely to have any non-trivial flow going into them.
+ */
+private class ClassQualifierCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
+  ClassQualifierCharacteristic() { this = "class qualifier" }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    exists(Call c |
+      e.asExpr() = c.getQualifier() and
+      c.getCallee().isStatic()
+    )
+  }
+}
+
+/**
  * Holds if the given endpoint has a self-contradictory combination of characteristics. Detects errors in our endpoint
  * characteristics. Lists the problematic characteristics and their implications for all such endpoints, together with
  * an error message indicating why this combination is problematic.
