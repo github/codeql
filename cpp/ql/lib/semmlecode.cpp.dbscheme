@@ -172,37 +172,36 @@ svnchurn(
 /*- Files and folders -*/
 
 /**
- * The location of an element that is not an expression or a statement.
+ * The location of an element.
  * The location spans column `startcolumn` of line `startline` to
  * column `endcolumn` of line `endline` in file `file`.
  * For more information, see
  * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
  */
 locations_default(
-    /** The location of an element that is not an expression or a statement. */
-    unique int id: @location_default,
-    int container: @container ref,
-    int startLine: int ref,
-    int startColumn: int ref,
-    int endLine: int ref,
-    int endColumn: int ref
+  unique int id: @location_default,
+  int file: @file ref,
+  int beginLine: int ref,
+  int beginColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref
 );
 
 files(
-    unique int id: @file,
-    string name: string ref
+  unique int id: @file,
+  string name: string ref
 );
 
 folders(
-    unique int id: @folder,
-    string name: string ref
+  unique int id: @folder,
+  string name: string ref
 );
 
-@container = @folder | @file
+@container = @file | @folder
 
 containerparent(
-    int parent: @container ref,
-    unique int child: @container ref
+  int parent: @container ref,
+  unique int child: @container ref
 );
 
 /*- Lines of code -*/
