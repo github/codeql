@@ -7,7 +7,7 @@ private import AliasConfigurationImports
 class Allocation extends IRAutomaticVariable {
   VariableAddressInstruction getABaseInstruction() { result.getIRVariable() = this }
 
-  final string getAllocationString() { result = toString() }
+  final string getAllocationString() { result = this.toString() }
 
   predicate alwaysEscapes() {
     // An automatic variable only escapes if its address is taken and escapes.

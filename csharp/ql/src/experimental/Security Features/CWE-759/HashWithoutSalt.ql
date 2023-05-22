@@ -10,8 +10,6 @@
  */
 
 import csharp
-import semmle.code.csharp.dataflow.DataFlow2
-import semmle.code.csharp.dataflow.TaintTracking2
 import HashWithoutSalt::PathGraph
 
 /** The C# class `Windows.Security.Cryptography.Core.HashAlgorithmProvider`. */
@@ -77,7 +75,7 @@ predicate isHashCall(MethodCall mc) {
 
 /** Holds if there is another hashing method call. */
 predicate hasAnotherHashCall(MethodCall mc) {
-  exists(MethodCall mc2, DataFlow2::Node src, DataFlow2::Node sink |
+  exists(MethodCall mc2, DataFlow::Node src, DataFlow::Node sink |
     isHashCall(mc2) and
     mc2 != mc and
     (

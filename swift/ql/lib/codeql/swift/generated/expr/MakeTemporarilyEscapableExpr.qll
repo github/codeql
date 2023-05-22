@@ -24,7 +24,9 @@ module Generated {
     /**
      * Gets the escaping closure of this make temporarily escapable expression.
      */
-    final OpaqueValueExpr getEscapingClosure() { result = getImmediateEscapingClosure().resolve() }
+    final OpaqueValueExpr getEscapingClosure() {
+      result = this.getImmediateEscapingClosure().resolve()
+    }
 
     /**
      * Gets the nonescaping closure of this make temporarily escapable expression.
@@ -42,7 +44,7 @@ module Generated {
     /**
      * Gets the nonescaping closure of this make temporarily escapable expression.
      */
-    final Expr getNonescapingClosure() { result = getImmediateNonescapingClosure().resolve() }
+    final Expr getNonescapingClosure() { result = this.getImmediateNonescapingClosure().resolve() }
 
     /**
      * Gets the sub expression of this make temporarily escapable expression.
@@ -60,6 +62,6 @@ module Generated {
     /**
      * Gets the sub expression of this make temporarily escapable expression.
      */
-    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
   }
 }

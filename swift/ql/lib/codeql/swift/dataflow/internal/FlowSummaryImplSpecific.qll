@@ -31,25 +31,19 @@ DataFlowType getContentType(ContentSet c) { any() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c]
-DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  any() // TODO once we have type pruning
-}
+DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) { any() }
 
 /**
  * Gets the type of the parameter matching arguments at position `pos` in a
  * synthesized call that targets a callback of type `t`.
  */
-DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
-  any() // TODO once we have type pruning
-}
+DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) { any() }
 
 /**
  * Gets the return type of kind `rk` in a synthesized call that targets a
  * callback of type `t`.
  */
-DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
-  any() // TODO once we have type pruning
-}
+DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) { any() }
 
 /** Gets the type of synthetic global `sg`. */
 DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any() }
@@ -68,10 +62,10 @@ predicate summaryElement(Function c, string input, string output, string kind, s
 }
 
 /**
- * Holds if a neutral model exists for `c` with provenance `provenance`,
+ * Holds if a neutral summary model exists for `c` with provenance `provenance`,
  * which means that there is no flow through `c`.
  */
-predicate neutralElement(Function c, string provenance) { none() }
+predicate neutralSummaryElement(Function c, string provenance) { none() }
 
 /**
  * Holds if an external source specification exists for `e` with output specification
@@ -197,7 +191,22 @@ predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode nod
   )
 }
 
-predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) { none() }
+predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode node) {
+  exists(Node n, AstNode ast, MemberRefExpr e |
+    n = node.asNode() and
+    ast = mid.asElement() and
+    e.getMember() = ast
+  |
+    // Allow fields to be picked as input nodes.
+    c = "" and
+    e.getBase() = n.asExpr()
+    or
+    // Allow post update nodes to be picked as input nodes when the `input` column
+    // of the row is `PostUpdate`.
+    c = "PostUpdate" and
+    e.getBase() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
+  )
+}
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[s]

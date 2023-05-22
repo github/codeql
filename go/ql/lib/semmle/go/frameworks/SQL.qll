@@ -225,7 +225,7 @@ module SQL {
     GormSink() {
       exists(Method meth, string package, string name |
         meth.hasQualifiedName(package, "DB", name) and
-        this = meth.getACall().getArgument(0) and
+        this = meth.getACall().getSyntacticArgument(0) and
         package = Gorm::packagePath() and
         name in [
             "Where", "Raw", "Order", "Not", "Or", "Select", "Table", "Group", "Having", "Joins",
@@ -272,7 +272,7 @@ module Xorm {
     XormSink() {
       exists(Method meth, string type, string name, int n |
         meth.hasQualifiedName(Xorm::packagePath(), type, name) and
-        this = meth.getACall().getArgument(n) and
+        this = meth.getACall().getSyntacticArgument(n) and
         type = ["Engine", "Session"]
       |
         name =

@@ -23,6 +23,6 @@ module Generated {
     /**
      * Gets the constraint of this existential type.
      */
-    final Type getConstraint() { result = getImmediateConstraint().resolve() }
+    final Type getConstraint() { result = this.getImmediateConstraint().resolve() }
   }
 }

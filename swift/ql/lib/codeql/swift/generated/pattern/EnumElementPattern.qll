@@ -24,7 +24,7 @@ module Generated {
     /**
      * Gets the element of this enum element pattern.
      */
-    final EnumElementDecl getElement() { result = getImmediateElement().resolve() }
+    final EnumElementDecl getElement() { result = this.getImmediateElement().resolve() }
 
     /**
      * Gets the sub pattern of this enum element pattern, if it exists.
@@ -42,11 +42,11 @@ module Generated {
     /**
      * Gets the sub pattern of this enum element pattern, if it exists.
      */
-    final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
+    final Pattern getSubPattern() { result = this.getImmediateSubPattern().resolve() }
 
     /**
      * Holds if `getSubPattern()` exists.
      */
-    final predicate hasSubPattern() { exists(getSubPattern()) }
+    final predicate hasSubPattern() { exists(this.getSubPattern()) }
   }
 }

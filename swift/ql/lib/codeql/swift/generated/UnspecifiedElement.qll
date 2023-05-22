@@ -24,12 +24,12 @@ module Generated {
     /**
      * Gets the parent of this unspecified element, if it exists.
      */
-    final Element getParent() { result = getImmediateParent().resolve() }
+    final Element getParent() { result = this.getImmediateParent().resolve() }
 
     /**
      * Holds if `getParent()` exists.
      */
-    final predicate hasParent() { exists(getParent()) }
+    final predicate hasParent() { exists(this.getParent()) }
 
     /**
      * Gets the property of this unspecified element.
@@ -48,7 +48,7 @@ module Generated {
     /**
      * Holds if `getIndex()` exists.
      */
-    final predicate hasIndex() { exists(getIndex()) }
+    final predicate hasIndex() { exists(this.getIndex()) }
 
     /**
      * Gets the error of this unspecified element.

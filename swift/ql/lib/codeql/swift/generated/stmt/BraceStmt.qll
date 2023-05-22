@@ -24,16 +24,16 @@ module Generated {
     /**
      * Gets the `index`th element of this brace statement (0-based).
      */
-    final AstNode getElement(int index) { result = getImmediateElement(index).resolve() }
+    final AstNode getElement(int index) { result = this.getImmediateElement(index).resolve() }
 
     /**
      * Gets any of the elements of this brace statement.
      */
-    final AstNode getAnElement() { result = getElement(_) }
+    final AstNode getAnElement() { result = this.getElement(_) }
 
     /**
      * Gets the number of elements of this brace statement.
      */
-    final int getNumberOfElements() { result = count(int i | exists(getElement(i))) }
+    final int getNumberOfElements() { result = count(int i | exists(this.getElement(i))) }
   }
 }

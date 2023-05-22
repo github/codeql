@@ -1,3 +1,9 @@
+## 0.6.1
+
+### Minor Analysis Improvements
+
+* Additional sinks modelling writes to unencrypted local files have been added to `ExternalLocationSink`, used by the `cs/cleartext-storage` and `cs/exposure-of-sensitive-information` queries.
+
 ## 0.6.0
 
 ### Minor Analysis Improvements

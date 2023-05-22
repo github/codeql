@@ -19,6 +19,6 @@ module Generated {
     /**
      * Gets the the underlying method declaration reference expression.
      */
-    final Expr getMethodRef() { result = getImmediateMethodRef().resolve() }
+    final Expr getMethodRef() { result = this.getImmediateMethodRef().resolve() }
   }
 }

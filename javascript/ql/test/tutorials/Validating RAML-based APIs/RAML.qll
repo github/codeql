@@ -34,7 +34,7 @@ class RamlResource extends YamlMapping {
   /** Get the method for this resource with the given verb. */
   RamlMethod getMethod(string verb) {
     verb = httpVerb() and
-    result = lookup(verb)
+    result = this.lookup(verb)
   }
 }
 

@@ -14,5 +14,5 @@ class Locatable extends Generated::Locatable {
   /**
    * Gets the primary file where this element occurs.
    */
-  File getFile() { result = getLocation().getFile() }
+  File getFile() { result = this.getLocation().getFile() }
 }

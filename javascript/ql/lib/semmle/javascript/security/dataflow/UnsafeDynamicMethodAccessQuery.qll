@@ -53,7 +53,7 @@ class Configuration extends TaintTracking::Configuration {
   ) {
     // Reading a property of the global object or of a function
     exists(DataFlow::PropRead read |
-      hasUnsafeMethods(read.getBase().getALocalSource()) and
+      this.hasUnsafeMethods(read.getBase().getALocalSource()) and
       src = read.getPropertyNameExpr().flow() and
       dst = read and
       srclabel.isTaint() and

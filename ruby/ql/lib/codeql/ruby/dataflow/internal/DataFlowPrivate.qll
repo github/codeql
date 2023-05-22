@@ -96,7 +96,8 @@ module LocalFlow {
     exists(BasicBlock bb, int i |
       lastRefBeforeRedefExt(def, bb, i, next.getDefinitionExt()) and
       def = nodeFrom.getDefinitionExt() and
-      def.definesAt(_, bb, i, _)
+      def.definesAt(_, bb, i, _) and
+      nodeFrom != next
     )
   }
 
@@ -939,6 +940,12 @@ private class NewCall extends DataFlowCall {
 abstract class ReturningNode extends Node {
   /** Gets the kind of this return node. */
   abstract ReturnKind getKind();
+
+  pragma[nomagic]
+  predicate hasKind(ReturnKind kind, CfgScope scope) {
+    kind = this.getKind() and
+    scope = this.(NodeImpl).getCfgScope()
+  }
 }
 
 /** A data-flow node that represents a value returned by a callable. */
@@ -1059,10 +1066,8 @@ private module ReturnNodes {
     SynthReturnNode() { this = TSynthReturnNode(scope, kind) }
 
     /** Gets a syntactic return node that flows into this synthetic node. */
-    ReturningNode getAnInput() {
-      result.(NodeImpl).getCfgScope() = scope and
-      result.getKind() = kind
-    }
+    pragma[nomagic]
+    ReturningNode getAnInput() { result.hasKind(kind, scope) }
 
     override ReturnKind getKind() { result = kind }
 

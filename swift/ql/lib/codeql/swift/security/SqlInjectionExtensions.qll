@@ -14,14 +14,18 @@ import codeql.swift.dataflow.ExternalFlow
 abstract class SqlInjectionSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for SQL injection vulnerabilities.
+ * A barrier for SQL injection vulnerabilities.
  */
-abstract class SqlInjectionSanitizer extends DataFlow::Node { }
+abstract class SqlInjectionBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class SqlInjectionAdditionalTaintStep extends Unit {
+class SqlInjectionAdditionalFlowStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a flow
+   * step for paths related to SQL injection vulnerabilities.
+   */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
@@ -147,5 +151,5 @@ private class GrdbDefaultSqlInjectionSink extends SqlInjectionSink {
  * A sink defined in a CSV model.
  */
 private class DefaultSqlInjectionSink extends SqlInjectionSink {
-  DefaultSqlInjectionSink() { sinkNode(this, "sql") }
+  DefaultSqlInjectionSink() { sinkNode(this, "sql-injection") }
 }

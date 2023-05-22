@@ -1,4 +1,7 @@
 import semmle.code.cpp.ir.dataflow.DataFlow
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
+private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
 private import codeql.util.Unit
 
 module ProductFlow {
@@ -287,9 +290,9 @@ module ProductFlow {
       predicate isBarrierIn(DataFlow::Node node) { Config::isBarrierIn1(node) }
     }
 
-    module Flow1 = DataFlow::GlobalWithState<Config1>;
+    private module Flow1 = DataFlow::GlobalWithState<Config1>;
 
-    module Config2 implements DataFlow::StateConfigSig {
+    private module Config2 implements DataFlow::StateConfigSig {
       class FlowState = FlowState2;
 
       predicate isSource(DataFlow::Node source, FlowState state) {
@@ -319,26 +322,89 @@ module ProductFlow {
       predicate isBarrierIn(DataFlow::Node node) { Config::isBarrierIn2(node) }
     }
 
-    module Flow2 = DataFlow::GlobalWithState<Config2>;
+    private module Flow2 = DataFlow::GlobalWithState<Config2>;
+
+    private predicate isSourcePair(Flow1::PathNode node1, Flow2::PathNode node2) {
+      Config::isSourcePair(node1.getNode(), node1.getState(), node2.getNode(), node2.getState())
+    }
+
+    private predicate isSinkPair(Flow1::PathNode node1, Flow2::PathNode node2) {
+      Config::isSinkPair(node1.getNode(), node1.getState(), node2.getNode(), node2.getState())
+    }
+
+    pragma[assume_small_delta]
+    pragma[nomagic]
+    private predicate fwdReachableInterprocEntry(Flow1::PathNode node1, Flow2::PathNode node2) {
+      isSourcePair(node1, node2)
+      or
+      fwdIsSuccessor(_, _, node1, node2)
+    }
 
     pragma[nomagic]
-    private predicate reachableInterprocEntry(
-      Flow1::PathNode source1, Flow2::PathNode source2, Flow1::PathNode node1, Flow2::PathNode node2
+    private predicate fwdIsSuccessorExit(
+      Flow1::PathNode mid1, Flow2::PathNode mid2, Flow1::PathNode succ1, Flow2::PathNode succ2
     ) {
-      Config::isSourcePair(node1.getNode(), node1.getState(), node2.getNode(), node2.getState()) and
-      node1 = source1 and
-      node2 = source2
+      isSinkPair(mid1, mid2) and
+      succ1 = mid1 and
+      succ2 = mid2
       or
-      exists(
-        Flow1::PathNode midEntry1, Flow2::PathNode midEntry2, Flow1::PathNode midExit1,
-        Flow2::PathNode midExit2
-      |
-        reachableInterprocEntry(source1, source2, midEntry1, midEntry2) and
-        interprocEdgePair(midExit1, midExit2, node1, node2) and
-        localPathStep1*(midEntry1, midExit1) and
-        localPathStep2*(midEntry2, midExit2)
+      interprocEdgePair(mid1, mid2, succ1, succ2)
+    }
+
+    private predicate fwdIsSuccessor1(
+      Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode mid1, Flow2::PathNode mid2,
+      Flow1::PathNode succ1, Flow2::PathNode succ2
+    ) {
+      fwdReachableInterprocEntry(pred1, pred2) and
+      localPathStep1*(pred1, mid1) and
+      fwdIsSuccessorExit(pragma[only_bind_into](mid1), pragma[only_bind_into](mid2), succ1, succ2)
+    }
+
+    private predicate fwdIsSuccessor2(
+      Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode mid1, Flow2::PathNode mid2,
+      Flow1::PathNode succ1, Flow2::PathNode succ2
+    ) {
+      fwdReachableInterprocEntry(pred1, pred2) and
+      localPathStep2*(pred2, mid2) and
+      fwdIsSuccessorExit(pragma[only_bind_into](mid1), pragma[only_bind_into](mid2), succ1, succ2)
+    }
+
+    pragma[assume_small_delta]
+    private predicate fwdIsSuccessor(
+      Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode succ1, Flow2::PathNode succ2
+    ) {
+      exists(Flow1::PathNode mid1, Flow2::PathNode mid2 |
+        fwdIsSuccessor1(pred1, pred2, mid1, mid2, succ1, succ2) and
+        fwdIsSuccessor2(pred1, pred2, mid1, mid2, succ1, succ2)
       )
     }
+
+    pragma[assume_small_delta]
+    pragma[nomagic]
+    private predicate revReachableInterprocEntry(Flow1::PathNode node1, Flow2::PathNode node2) {
+      fwdReachableInterprocEntry(node1, node2) and
+      isSinkPair(node1, node2)
+      or
+      exists(Flow1::PathNode succ1, Flow2::PathNode succ2 |
+        revReachableInterprocEntry(succ1, succ2) and
+        fwdIsSuccessor(node1, node2, succ1, succ2)
+      )
+    }
+
+    private newtype TNodePair =
+      TMkNodePair(Flow1::PathNode node1, Flow2::PathNode node2) {
+        revReachableInterprocEntry(node1, node2)
+      }
+
+    private predicate pathSucc(TNodePair n1, TNodePair n2) {
+      exists(Flow1::PathNode n11, Flow2::PathNode n12, Flow1::PathNode n21, Flow2::PathNode n22 |
+        n1 = TMkNodePair(n11, n12) and
+        n2 = TMkNodePair(n21, n22) and
+        fwdIsSuccessor(n11, n12, n21, n22)
+      )
+    }
+
+    private predicate pathSuccPlus(TNodePair n1, TNodePair n2) = fastTC(pathSucc/2)(n1, n2)
 
     private predicate localPathStep1(Flow1::PathNode pred, Flow1::PathNode succ) {
       Flow1::PathGraph::edges(pred, succ) and
@@ -352,43 +418,133 @@ module ProductFlow {
         pragma[only_bind_out](succ.getNode().getEnclosingCallable())
     }
 
+    private newtype TKind =
+      TInto(DataFlowCall call) {
+        intoImpl1(_, _, call) or
+        intoImpl2(_, _, call)
+      } or
+      TOutOf(DataFlowCall call) {
+        outImpl1(_, _, call) or
+        outImpl2(_, _, call)
+      } or
+      TJump()
+
+    private predicate intoImpl1(Flow1::PathNode pred1, Flow1::PathNode succ1, DataFlowCall call) {
+      Flow1::PathGraph::edges(pred1, succ1) and
+      pred1.getNode().(ArgumentNode).getCall() = call and
+      succ1.getNode() instanceof ParameterNode
+    }
+
+    private predicate into1(Flow1::PathNode pred1, Flow1::PathNode succ1, TKind kind) {
+      exists(DataFlowCall call |
+        kind = TInto(call) and
+        intoImpl1(pred1, succ1, call)
+      )
+    }
+
+    private predicate outImpl1(Flow1::PathNode pred1, Flow1::PathNode succ1, DataFlowCall call) {
+      Flow1::PathGraph::edges(pred1, succ1) and
+      exists(ReturnKindExt returnKind |
+        succ1.getNode() = returnKind.getAnOutNode(call) and
+        pred1.getNode().(ReturnNodeExt).getKind() = returnKind
+      )
+    }
+
+    private predicate out1(Flow1::PathNode pred1, Flow1::PathNode succ1, TKind kind) {
+      exists(DataFlowCall call |
+        outImpl1(pred1, succ1, call) and
+        kind = TOutOf(call)
+      )
+    }
+
+    private predicate intoImpl2(Flow2::PathNode pred2, Flow2::PathNode succ2, DataFlowCall call) {
+      Flow2::PathGraph::edges(pred2, succ2) and
+      pred2.getNode().(ArgumentNode).getCall() = call and
+      succ2.getNode() instanceof ParameterNode
+    }
+
+    private predicate into2(Flow2::PathNode pred2, Flow2::PathNode succ2, TKind kind) {
+      exists(DataFlowCall call |
+        kind = TInto(call) and
+        intoImpl2(pred2, succ2, call)
+      )
+    }
+
+    private predicate outImpl2(Flow2::PathNode pred2, Flow2::PathNode succ2, DataFlowCall call) {
+      Flow2::PathGraph::edges(pred2, succ2) and
+      exists(ReturnKindExt returnKind |
+        succ2.getNode() = returnKind.getAnOutNode(call) and
+        pred2.getNode().(ReturnNodeExt).getKind() = returnKind
+      )
+    }
+
+    private predicate out2(Flow2::PathNode pred2, Flow2::PathNode succ2, TKind kind) {
+      exists(DataFlowCall call |
+        kind = TOutOf(call) and
+        outImpl2(pred2, succ2, call)
+      )
+    }
+
     pragma[nomagic]
     private predicate interprocEdge1(
-      Declaration predDecl, Declaration succDecl, Flow1::PathNode pred1, Flow1::PathNode succ1
+      Declaration predDecl, Declaration succDecl, Flow1::PathNode pred1, Flow1::PathNode succ1,
+      TKind kind
     ) {
       Flow1::PathGraph::edges(pred1, succ1) and
       predDecl != succDecl and
       pred1.getNode().getEnclosingCallable() = predDecl and
-      succ1.getNode().getEnclosingCallable() = succDecl
+      succ1.getNode().getEnclosingCallable() = succDecl and
+      (
+        into1(pred1, succ1, kind)
+        or
+        out1(pred1, succ1, kind)
+        or
+        kind = TJump() and
+        not into1(pred1, succ1, _) and
+        not out1(pred1, succ1, _)
+      )
     }
 
     pragma[nomagic]
     private predicate interprocEdge2(
-      Declaration predDecl, Declaration succDecl, Flow2::PathNode pred2, Flow2::PathNode succ2
+      Declaration predDecl, Declaration succDecl, Flow2::PathNode pred2, Flow2::PathNode succ2,
+      TKind kind
     ) {
       Flow2::PathGraph::edges(pred2, succ2) and
       predDecl != succDecl and
       pred2.getNode().getEnclosingCallable() = predDecl and
-      succ2.getNode().getEnclosingCallable() = succDecl
+      succ2.getNode().getEnclosingCallable() = succDecl and
+      (
+        into2(pred2, succ2, kind)
+        or
+        out2(pred2, succ2, kind)
+        or
+        kind = TJump() and
+        not into2(pred2, succ2, _) and
+        not out2(pred2, succ2, _)
+      )
     }
 
     private predicate interprocEdgePair(
       Flow1::PathNode pred1, Flow2::PathNode pred2, Flow1::PathNode succ1, Flow2::PathNode succ2
     ) {
-      exists(Declaration predDecl, Declaration succDecl |
-        interprocEdge1(predDecl, succDecl, pred1, succ1) and
-        interprocEdge2(predDecl, succDecl, pred2, succ2)
+      exists(Declaration predDecl, Declaration succDecl, TKind kind |
+        interprocEdge1(predDecl, succDecl, pred1, succ1, kind) and
+        interprocEdge2(predDecl, succDecl, pred2, succ2, kind)
       )
     }
 
     private predicate reachable(
       Flow1::PathNode source1, Flow2::PathNode source2, Flow1::PathNode sink1, Flow2::PathNode sink2
     ) {
-      exists(Flow1::PathNode mid1, Flow2::PathNode mid2 |
-        reachableInterprocEntry(source1, source2, mid1, mid2) and
-        Config::isSinkPair(sink1.getNode(), sink1.getState(), sink2.getNode(), sink2.getState()) and
-        localPathStep1*(mid1, sink1) and
-        localPathStep2*(mid2, sink2)
+      isSourcePair(source1, source2) and
+      isSinkPair(sink1, sink2) and
+      exists(TNodePair n1, TNodePair n2 |
+        n1 = TMkNodePair(source1, source2) and
+        n2 = TMkNodePair(sink1, sink2)
+      |
+        pathSuccPlus(n1, n2) or
+        n1 = n2
       )
     }
   }

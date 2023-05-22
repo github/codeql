@@ -21,17 +21,17 @@ module Generated {
     /**
      * Gets the `index`th type of this tuple type (0-based).
      */
-    final Type getType(int index) { result = getImmediateType(index).resolve() }
+    final Type getType(int index) { result = this.getImmediateType(index).resolve() }
 
     /**
      * Gets any of the types of this tuple type.
      */
-    final Type getAType() { result = getType(_) }
+    final Type getAType() { result = this.getType(_) }
 
     /**
      * Gets the number of types of this tuple type.
      */
-    final int getNumberOfTypes() { result = count(int i | exists(getType(i))) }
+    final int getNumberOfTypes() { result = count(int i | exists(this.getType(i))) }
 
     /**
      * Gets the `index`th name of this tuple type (0-based), if it exists.
@@ -43,11 +43,11 @@ module Generated {
     /**
      * Holds if `getName(index)` exists.
      */
-    final predicate hasName(int index) { exists(getName(index)) }
+    final predicate hasName(int index) { exists(this.getName(index)) }
 
     /**
      * Gets any of the names of this tuple type.
      */
-    final string getAName() { result = getName(_) }
+    final string getAName() { result = this.getName(_) }
   }
 }

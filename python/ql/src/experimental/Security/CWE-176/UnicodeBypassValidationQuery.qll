@@ -43,35 +43,8 @@ class Configuration extends TaintTracking::Configuration {
       or
       exists(RegexExecution re | nodeFrom = re.getString() and nodeTo = re)
       or
-      // String methods
-      exists(MethodCallNode call, string method_name |
-        nodeTo = call and call.getMethodName() = method_name
-      |
-        call.calls(nodeFrom, method_name) and
-        method_name in [
-            "capitalize", "casefold", "center", "expandtabs", "format", "format_map", "join",
-            "ljust", "lstrip", "lower", "replace", "rjust", "rstrip", "strip", "swapcase", "title",
-            "upper", "zfill", "encode", "decode"
-          ]
-        or
-        method_name = "replace" and
-        nodeFrom = call.getArg(1)
-        or
-        method_name = "format" and
-        nodeFrom = call.getArg(_)
-        or
-        // str -> List[str]
-        call.calls(nodeFrom, method_name) and
-        method_name in ["partition", "rpartition", "rsplit", "split", "splitlines"]
-        or
-        // Iterable[str] -> str
-        method_name = "join" and
-        nodeFrom = call.getArg(0)
-        or
-        // Mapping[str, Any] -> str
-        method_name = "format_map" and
-        nodeFrom = call.getArg(0)
-      )
+      stringManipulation(nodeFrom, nodeTo) and
+      not nodeTo.(DataFlow::MethodCallNode).getMethodName() in ["encode", "decode"]
     ) and
     stateFrom instanceof PreValidation and
     stateTo instanceof PostValidation

@@ -12,8 +12,10 @@ import SensitiveApi
  */
 private class HardcodedByteArray extends ArrayCreationExpr {
   HardcodedByteArray() {
-    getType().(Array).getElementType().(PrimitiveType).getName() = "byte" and
-    forex(Expr elem | elem = getInit().getAChildExpr() | elem instanceof CompileTimeConstantExpr)
+    this.getType().(Array).getElementType().(PrimitiveType).getName() = "byte" and
+    forex(Expr elem | elem = this.getInit().getAChildExpr() |
+      elem instanceof CompileTimeConstantExpr
+    )
   }
 }
 
@@ -24,8 +26,10 @@ private class HardcodedByteArray extends ArrayCreationExpr {
  */
 private class HardcodedCharArray extends ArrayCreationExpr {
   HardcodedCharArray() {
-    getType().(Array).getElementType().(PrimitiveType).getName() = "char" and
-    forex(Expr elem | elem = getInit().getAChildExpr() | elem instanceof CompileTimeConstantExpr)
+    this.getType().(Array).getElementType().(PrimitiveType).getName() = "char" and
+    forex(Expr elem | elem = this.getInit().getAChildExpr() |
+      elem instanceof CompileTimeConstantExpr
+    )
   }
 }
 
@@ -72,7 +76,7 @@ class CredentialsApiSink extends CredentialsSink {
  */
 class PasswordVariable extends Variable {
   PasswordVariable() {
-    getName().regexpMatch("(?i)(encrypted|old|new)?pass(wd|word|code|phrase)(chars|value)?")
+    this.getName().regexpMatch("(?i)(encrypted|old|new)?pass(wd|word|code|phrase)(chars|value)?")
   }
 }
 
@@ -80,7 +84,7 @@ class PasswordVariable extends Variable {
  * A variable whose name indicates that it may hold a user name.
  */
 class UsernameVariable extends Variable {
-  UsernameVariable() { getName().regexpMatch("(?i)(user|username)") }
+  UsernameVariable() { this.getName().regexpMatch("(?i)(user|username)") }
 }
 
 /**

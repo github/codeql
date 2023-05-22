@@ -23,7 +23,7 @@ module Generated {
     /**
      * Gets the base of this key path application expression.
      */
-    final Expr getBase() { result = getImmediateBase().resolve() }
+    final Expr getBase() { result = this.getImmediateBase().resolve() }
 
     /**
      * Gets the key path of this key path application expression.
@@ -41,6 +41,6 @@ module Generated {
     /**
      * Gets the key path of this key path application expression.
      */
-    final Expr getKeyPath() { result = getImmediateKeyPath().resolve() }
+    final Expr getKeyPath() { result = this.getImmediateKeyPath().resolve() }
   }
 }

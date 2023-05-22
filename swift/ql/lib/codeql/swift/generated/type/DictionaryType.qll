@@ -24,7 +24,7 @@ module Generated {
     /**
      * Gets the key type of this dictionary type.
      */
-    final Type getKeyType() { result = getImmediateKeyType().resolve() }
+    final Type getKeyType() { result = this.getImmediateKeyType().resolve() }
 
     /**
      * Gets the value type of this dictionary type.
@@ -42,6 +42,6 @@ module Generated {
     /**
      * Gets the value type of this dictionary type.
      */
-    final Type getValueType() { result = getImmediateValueType().resolve() }
+    final Type getValueType() { result = this.getImmediateValueType().resolve() }
   }
 }

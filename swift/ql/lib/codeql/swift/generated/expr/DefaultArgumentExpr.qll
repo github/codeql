@@ -24,7 +24,7 @@ module Generated {
     /**
      * Gets the parameter declaration of this default argument expression.
      */
-    final ParamDecl getParamDecl() { result = getImmediateParamDecl().resolve() }
+    final ParamDecl getParamDecl() { result = this.getImmediateParamDecl().resolve() }
 
     /**
      * Gets the parameter index of this default argument expression.
@@ -50,11 +50,11 @@ module Generated {
     /**
      * Gets the caller side default of this default argument expression, if it exists.
      */
-    final Expr getCallerSideDefault() { result = getImmediateCallerSideDefault().resolve() }
+    final Expr getCallerSideDefault() { result = this.getImmediateCallerSideDefault().resolve() }
 
     /**
      * Holds if `getCallerSideDefault()` exists.
      */
-    final predicate hasCallerSideDefault() { exists(getCallerSideDefault()) }
+    final predicate hasCallerSideDefault() { exists(this.getCallerSideDefault()) }
   }
 }

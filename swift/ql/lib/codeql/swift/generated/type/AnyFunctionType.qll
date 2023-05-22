@@ -21,7 +21,7 @@ module Generated {
     /**
      * Gets the result of this function type.
      */
-    final Type getResult() { result = getImmediateResult().resolve() }
+    final Type getResult() { result = this.getImmediateResult().resolve() }
 
     /**
      * Gets the `index`th parameter type of this function type (0-based).
@@ -39,17 +39,17 @@ module Generated {
     /**
      * Gets the `index`th parameter type of this function type (0-based).
      */
-    final Type getParamType(int index) { result = getImmediateParamType(index).resolve() }
+    final Type getParamType(int index) { result = this.getImmediateParamType(index).resolve() }
 
     /**
      * Gets any of the parameter types of this function type.
      */
-    final Type getAParamType() { result = getParamType(_) }
+    final Type getAParamType() { result = this.getParamType(_) }
 
     /**
      * Gets the number of parameter types of this function type.
      */
-    final int getNumberOfParamTypes() { result = count(int i | exists(getParamType(i))) }
+    final int getNumberOfParamTypes() { result = count(int i | exists(this.getParamType(i))) }
 
     /**
      * Holds if this type refers to a throwing function.

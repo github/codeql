@@ -127,13 +127,13 @@ abstract private class PrintableIRNode extends TPrintableIRNode {
    * Gets the value of the node property with the specified key.
    */
   string getProperty(string key) {
-    key = "semmle.label" and result = getLabel()
+    key = "semmle.label" and result = this.getLabel()
     or
-    key = "semmle.order" and result = getOrder().toString()
+    key = "semmle.order" and result = this.getOrder().toString()
     or
-    key = "semmle.graphKind" and result = getGraphKind()
+    key = "semmle.graphKind" and result = this.getGraphKind()
     or
-    key = "semmle.forceText" and forceText() and result = "true"
+    key = "semmle.forceText" and this.forceText() and result = "true"
   }
 }
 
@@ -178,7 +178,7 @@ private class PrintableIRBlock extends PrintableIRNode, TPrintableIRBlock {
 
   PrintableIRBlock() { this = TPrintableIRBlock(block) }
 
-  override string toString() { result = getLabel() }
+  override string toString() { result = this.getLabel() }
 
   override Language::Location getLocation() { result = block.getLocation() }
 
@@ -223,7 +223,7 @@ private class PrintableInstruction extends PrintableIRNode, TPrintableInstructio
       |
         resultString = instr.getResultString() and
         operationString = instr.getOperationString() and
-        operandsString = getOperandsString() and
+        operandsString = this.getOperandsString() and
         columnWidths(block, resultWidth, operationWidth) and
         result =
           resultString + getPaddingString(resultWidth - resultString.length()) + " = " +

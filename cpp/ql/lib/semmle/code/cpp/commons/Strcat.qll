@@ -8,7 +8,7 @@ import cpp
  */
 deprecated class StrcatFunction extends Function {
   StrcatFunction() {
-    getName() =
+    this.getName() =
       [
         "strcat", // strcat(dst, src)
         "strncat", // strncat(dst, src, max_amount)

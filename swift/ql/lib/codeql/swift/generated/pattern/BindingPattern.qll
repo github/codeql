@@ -23,6 +23,6 @@ module Generated {
     /**
      * Gets the sub pattern of this binding pattern.
      */
-    final Pattern getSubPattern() { result = getImmediateSubPattern().resolve() }
+    final Pattern getSubPattern() { result = this.getImmediateSubPattern().resolve() }
   }
 }

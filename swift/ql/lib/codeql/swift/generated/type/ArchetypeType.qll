@@ -23,7 +23,7 @@ module Generated {
     /**
      * Gets the interface type of this archetype type.
      */
-    final Type getInterfaceType() { result = getImmediateInterfaceType().resolve() }
+    final Type getInterfaceType() { result = this.getImmediateInterfaceType().resolve() }
 
     /**
      * Gets the superclass of this archetype type, if it exists.
@@ -41,12 +41,12 @@ module Generated {
     /**
      * Gets the superclass of this archetype type, if it exists.
      */
-    final Type getSuperclass() { result = getImmediateSuperclass().resolve() }
+    final Type getSuperclass() { result = this.getImmediateSuperclass().resolve() }
 
     /**
      * Holds if `getSuperclass()` exists.
      */
-    final predicate hasSuperclass() { exists(getSuperclass()) }
+    final predicate hasSuperclass() { exists(this.getSuperclass()) }
 
     /**
      * Gets the `index`th protocol of this archetype type (0-based).
@@ -64,16 +64,18 @@ module Generated {
     /**
      * Gets the `index`th protocol of this archetype type (0-based).
      */
-    final ProtocolDecl getProtocol(int index) { result = getImmediateProtocol(index).resolve() }
+    final ProtocolDecl getProtocol(int index) {
+      result = this.getImmediateProtocol(index).resolve()
+    }
 
     /**
      * Gets any of the protocols of this archetype type.
      */
-    final ProtocolDecl getAProtocol() { result = getProtocol(_) }
+    final ProtocolDecl getAProtocol() { result = this.getProtocol(_) }
 
     /**
      * Gets the number of protocols of this archetype type.
      */
-    final int getNumberOfProtocols() { result = count(int i | exists(getProtocol(i))) }
+    final int getNumberOfProtocols() { result = count(int i | exists(this.getProtocol(i))) }
   }
 }

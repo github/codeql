@@ -24,7 +24,7 @@ module Generated {
     /**
      * Gets the the declaration captured by the parent closure.
      */
-    final ValueDecl getDecl() { result = getImmediateDecl().resolve() }
+    final ValueDecl getDecl() { result = this.getImmediateDecl().resolve() }
 
     /**
      * Holds if this captured declaration is direct.
