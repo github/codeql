@@ -22,6 +22,9 @@ public class Parameters
     public void M14([Optional, DateTimeConstant(14L)] DateTime arg4) => throw null;
     public void M15([Optional, DateTimeConstant(10001L)] DateTime? arg5) => throw null;
     public void M16([Optional, DefaultParameterValue(6L)] long arg6) => throw null;
+    public void M17([Optional, DefaultParameterValue(null)] object arg7) => throw null;
+    public void M18([Optional, DefaultParameterValue(3)] int? arg8) => throw null;
+    public void M19([Optional, DecimalConstant(1, 0, 0, 0, 103)] decimal arg9) => throw null;
 
     public struct MyStruct { }
     public enum MyEnum { A = 1, B = 2 }

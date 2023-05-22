@@ -36,6 +36,9 @@ withDefaultValue
 | Parameters.cs:22:17:22:19 | M14 | Parameters.cs:22:64:22:67 | arg4 | 0 | Parameters.cs:22:21:22:67 | object creation of type DateTime | - |
 | Parameters.cs:23:17:23:19 | M15 | Parameters.cs:23:68:23:71 | arg5 | 0 | Parameters.cs:23:21:23:71 | object creation of type DateTime | - |
 | Parameters.cs:24:17:24:19 | M16 | Parameters.cs:24:64:24:67 | arg6 | 0 | Parameters.cs:24:21:24:67 | 6 | 6 |
+| Parameters.cs:25:17:25:19 | M17 | Parameters.cs:25:68:25:71 | arg7 | 0 | Parameters.cs:25:21:25:71 | default | null |
+| Parameters.cs:26:17:26:19 | M18 | Parameters.cs:26:63:26:66 | arg8 | 0 | Parameters.cs:26:21:26:66 | 3 | 3 |
+| Parameters.cs:27:17:27:19 | M19 | Parameters.cs:27:74:27:77 | arg9 | 0 | Parameters.cs:27:21:27:77 | 10.3 | 10.3 |
 | Parameters.dll:0:0:0:0 | M2 | Parameters.dll:0:0:0:0 | b | 1 | Parameters.dll:0:0:0:0 | default | null |
 | Parameters.dll:0:0:0:0 | M2 | Parameters.dll:0:0:0:0 | c | 2 | Parameters.dll:0:0:0:0 | "default string" | default string |
 | Parameters.dll:0:0:0:0 | M3 | Parameters.dll:0:0:0:0 | a | 0 | Parameters.dll:0:0:0:0 | 1 | 1 |
@@ -60,6 +63,9 @@ withDefaultValue
 | Parameters.dll:0:0:0:0 | M14 | Parameters.dll:0:0:0:0 | arg4 | 0 | Parameters.dll:0:0:0:0 | object creation of type DateTime | - |
 | Parameters.dll:0:0:0:0 | M15 | Parameters.dll:0:0:0:0 | arg5 | 0 | Parameters.dll:0:0:0:0 | object creation of type DateTime | - |
 | Parameters.dll:0:0:0:0 | M16 | Parameters.dll:0:0:0:0 | arg6 | 0 | Parameters.dll:0:0:0:0 | 6 | 6 |
+| Parameters.dll:0:0:0:0 | M17 | Parameters.dll:0:0:0:0 | arg7 | 0 | Parameters.dll:0:0:0:0 | default | null |
+| Parameters.dll:0:0:0:0 | M18 | Parameters.dll:0:0:0:0 | arg8 | 0 | Parameters.dll:0:0:0:0 | 3 | 3 |
+| Parameters.dll:0:0:0:0 | M19 | Parameters.dll:0:0:0:0 | arg9 | 0 | Parameters.dll:0:0:0:0 | 10.3 | 10.3 |
 dateTimeDefaults
 | Parameters.cs:22:17:22:19 | M14 | Parameters.cs:22:64:22:67 | arg4 | Parameters.cs:22:21:22:67 | object creation of type DateTime | DateTime(long) | 14 |
 | Parameters.cs:23:17:23:19 | M15 | Parameters.cs:23:68:23:71 | arg5 | Parameters.cs:23:21:23:71 | object creation of type DateTime | DateTime(long) | 10001 |
