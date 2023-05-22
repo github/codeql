@@ -247,8 +247,6 @@ module ModelValidation {
     )
   }
 
-  /**
-   */
   private string getInvalidModelOutput() {
     exists(string pred, AccessPath output, AccessPathToken part |
       sourceModel(_, _, _, _, _, _, output, _, _) and pred = "source"
