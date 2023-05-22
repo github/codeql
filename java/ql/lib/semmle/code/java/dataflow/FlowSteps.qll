@@ -18,6 +18,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.ApacheHttp
   private import semmle.code.java.frameworks.guava.Guava
   private import semmle.code.java.frameworks.Guice
+  private import semmle.code.java.frameworks.IoJsonWebToken
   private import semmle.code.java.frameworks.jackson.JacksonSerializability
   private import semmle.code.java.frameworks.Properties
   private import semmle.code.java.frameworks.Protobuf

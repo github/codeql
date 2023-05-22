@@ -22,16 +22,16 @@ module Generated {
     /**
      * Gets the `index`th accessor of this abstract storage declaration (0-based).
      */
-    final Accessor getAccessor(int index) { result = getImmediateAccessor(index).resolve() }
+    final Accessor getAccessor(int index) { result = this.getImmediateAccessor(index).resolve() }
 
     /**
      * Gets any of the accessors of this abstract storage declaration.
      */
-    final Accessor getAnAccessor() { result = getAccessor(_) }
+    final Accessor getAnAccessor() { result = this.getAccessor(_) }
 
     /**
      * Gets the number of accessors of this abstract storage declaration.
      */
-    final int getNumberOfAccessors() { result = count(int i | exists(getAccessor(i))) }
+    final int getNumberOfAccessors() { result = count(int i | exists(this.getAccessor(i))) }
   }
 }

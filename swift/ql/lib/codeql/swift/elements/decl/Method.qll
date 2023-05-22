@@ -32,16 +32,9 @@ class Method extends Function {
   cached
   predicate hasQualifiedName(string typeName, string funcName) {
     this.getName() = funcName and
-    (
-      exists(NominalTypeDecl c |
-        c.getFullName() = typeName and
-        c.getAMember() = this
-      )
-      or
-      exists(ExtensionDecl e |
-        e.getExtendedTypeDecl().getFullName() = typeName and
-        e.getAMember() = this
-      )
+    exists(Decl d |
+      d.asNominalTypeDecl().getFullName() = typeName and
+      d.getAMember() = this
     )
   }
 

@@ -374,7 +374,7 @@ int accessPathLimit() { result = 5 }
  * precision. This disables adaptive access path precision for such access paths.
  */
 predicate forceHighPrecision(Content c) {
-  c instanceof ArrayContent or c instanceof CollectionContent
+  c instanceof ArrayContent or c instanceof CollectionContent or c instanceof MapValueContent
 }
 
 /** Holds if `n` should be hidden from path explanations. */

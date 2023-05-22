@@ -21,6 +21,6 @@ module Generated {
     /**
      * Gets the sub expression of this one way expression.
      */
-    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
   }
 }

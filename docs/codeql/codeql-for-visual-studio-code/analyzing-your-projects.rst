@@ -153,7 +153,7 @@ To use standard code navigation features in the source code, you can right-click
 
      If you're using an older database, code navigation commands such as **Go to Definition** and **Go to References** may not work.
      To use code navigation, try unzipping the database and running ``codeql database cleanup <database>`` on the unzipped database using the CodeQL CLI. Then, re-add the database to Visual Studio Code.
-     For more information, see the `database cleanup <../../codeql-cli/manual/database-cleanup>`__ reference documentation.
+     For more information, see `database cleanup <https://docs.github.com/en/code-security/codeql-cli/codeql-cli-manual/database-cleanup>`__ in the documentation for CodeQL CLI.
 
 Comparing query results
 ------------------------

@@ -64,7 +64,7 @@ class AssertionMethod extends Method {
 
   /** Gets a call to the assertion method with `checkedArg` as argument. */
   MethodAccess getACheck(Expr checkedArg) {
-    result = getACheck() and checkedArg = result.getAnArgument()
+    result = this.getACheck() and checkedArg = result.getAnArgument()
   }
 }
 

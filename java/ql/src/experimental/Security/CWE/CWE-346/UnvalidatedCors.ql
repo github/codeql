@@ -31,14 +31,14 @@ private predicate setsAllowCredentials(MethodAccess header) {
 
 private class CorsProbableCheckAccess extends MethodAccess {
   CorsProbableCheckAccess() {
-    getMethod().hasName("contains") and
-    getMethod().getDeclaringType().getASourceSupertype*() instanceof CollectionType
+    this.getMethod().hasName("contains") and
+    this.getMethod().getDeclaringType().getASourceSupertype*() instanceof CollectionType
     or
-    getMethod().hasName("containsKey") and
-    getMethod().getDeclaringType().getASourceSupertype*() instanceof MapType
+    this.getMethod().hasName("containsKey") and
+    this.getMethod().getDeclaringType().getASourceSupertype*() instanceof MapType
     or
-    getMethod().hasName("equals") and
-    getQualifier().getType() instanceof TypeString
+    this.getMethod().hasName("equals") and
+    this.getQualifier().getType() instanceof TypeString
   }
 }
 

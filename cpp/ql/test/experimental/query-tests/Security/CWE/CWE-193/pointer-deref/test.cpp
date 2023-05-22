@@ -281,7 +281,7 @@ void test19(unsigned len)
   int *end = xs + len;
   for (int *x = xs; x < end; x++)
   {
-    int i = *x; // GOOD [FALSE POSITIVE]
+    int i = *x; // GOOD
   }
 }
 
@@ -291,6 +291,20 @@ void test20(unsigned len)
   int *end = xs + len;
   for (int *x = xs; x < end; x++)
   {
-    *x = 0; // GOOD [FALSE POSITIVE]
+    *x = 0; // GOOD
+  }
+}
+
+void* test21_get(int n);
+
+void test21() {
+  int n = 0;
+  while (test21_get(n)) n+=2;
+
+  void** xs = new void*[n];
+
+  for (int i = 0; i < n; i += 2) {
+    xs[i] = test21_get(i); // GOOD
+    xs[i+1] = test21_get(i+1); // GOOD [FALSE POSITIVE]
   }
 }

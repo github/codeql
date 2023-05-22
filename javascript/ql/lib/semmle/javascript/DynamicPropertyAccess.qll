@@ -42,7 +42,7 @@ abstract class EnumeratedPropName extends DataFlow::Node {
    * Gets a source node that refers to the object whose properties are being enumerated.
    */
   DataFlow::SourceNode getASourceObjectRef() {
-    result = AccessPath::getAnAliasedSourceNode(getSourceObject())
+    result = AccessPath::getAnAliasedSourceNode(this.getSourceObject())
   }
 
   /**
@@ -53,7 +53,7 @@ abstract class EnumeratedPropName extends DataFlow::Node {
   SourceNode getASourceProp() {
     exists(Node base, Node key |
       dynamicPropReadStep(base, key, result) and
-      getASourceObjectRef().flowsTo(base) and
+      this.getASourceObjectRef().flowsTo(base) and
       key.getImmediatePredecessor*() = this
     )
   }

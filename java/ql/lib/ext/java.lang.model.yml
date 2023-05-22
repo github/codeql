@@ -138,89 +138,89 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.lang", "AbstractStringBuilder", "length", "()", "manual"]
-      - ["java.lang", "AbstractStringBuilder", "setCharAt", "(int,char)", "manual"]
-      - ["java.lang", "AbstractStringBuilder", "setLength", "(int)", "manual"]
-      - ["java.lang", "Boolean", "booleanValue", "()", "manual"]
-      - ["java.lang", "Boolean", "equals", "(Object)", "manual"]
-      - ["java.lang", "Boolean", "parseBoolean", "(String)", "manual"]
-      - ["java.lang", "Boolean", "valueOf", "(boolean)", "manual"]
-      - ["java.lang", "CharSequence", "length", "()", "manual"]
-      - ["java.lang", "Class", "forName", "(String)", "manual"]
-      - ["java.lang", "Class", "getCanonicalName", "()", "manual"]
-      - ["java.lang", "Class", "getClassLoader", "()", "manual"]
-      - ["java.lang", "Class", "getDeclaredConstructor", "(Class[])", "manual"]  # This model may be changed to a taint step for an unsafe reflection query in the future.
-      - ["java.lang", "Class", "getDeclaredField", "(String)", "manual"]         # This model may be changed to a taint step for an unsafe reflection query in the future.
-      - ["java.lang", "Class", "getMethod", "(String,Class[])", "manual"]        # This model may be changed to a taint step for an unsafe reflection query in the future.
-      - ["java.lang", "Class", "getName", "()", "manual"]
-      - ["java.lang", "Class", "getResource", "(String)", "manual"]
-      - ["java.lang", "Class", "getResourceAsStream", "(String)", "manual"]
-      - ["java.lang", "Class", "getSimpleName", "()", "manual"]
-      - ["java.lang", "Class", "isAssignableFrom", "(Class)", "manual"]
-      - ["java.lang", "Class", "isInstance", "(Object)", "manual"]
-      - ["java.lang", "Class", "toString", "()", "manual"]
-      - ["java.lang", "ClassLoader", "getResource", "(String)", "manual"]
-      - ["java.lang", "ClassLoader", "getResourceAsStream", "(String)", "manual"]
-      - ["java.lang", "Enum", "Enum", "(String,int)", "manual"]
-      - ["java.lang", "Enum", "equals", "(Object)", "manual"]
-      - ["java.lang", "Enum", "hashCode", "()", "manual"]
-      - ["java.lang", "Enum", "name", "()", "manual"]
-      - ["java.lang", "Enum", "ordinal", "()", "manual"]
-      - ["java.lang", "Enum", "toString", "()", "manual"]
-      - ["java.lang", "Integer", "equals", "(Object)", "manual"]
-      - ["java.lang", "Long", "equals", "(Object)", "manual"]
-      - ["java.lang", "Object", "equals", "(Object)", "manual"]
-      - ["java.lang", "Object", "getClass", "()", "manual"]
-      - ["java.lang", "Object", "hashCode", "()", "manual"]
-      - ["java.lang", "Object", "toString", "()", "manual"]
-      - ["java.lang", "Runnable", "run", "()", "manual"]
-      - ["java.lang", "Runtime", "getRuntime", "()", "manual"]
-      - ["java.lang", "String", "compareTo", "(String)", "manual"]
-      - ["java.lang", "String", "contains", "(CharSequence)", "manual"]
-      - ["java.lang", "String", "endsWith", "(String)", "manual"]
-      - ["java.lang", "String", "equals", "(Object)", "manual"]
-      - ["java.lang", "String", "equalsIgnoreCase", "(String)", "manual"]
-      - ["java.lang", "String", "hashCode", "()", "manual"]
-      - ["java.lang", "String", "indexOf", "(int)", "manual"]
-      - ["java.lang", "String", "indexOf", "(String)", "manual"]
-      - ["java.lang", "String", "isEmpty", "()", "manual"]
-      - ["java.lang", "String", "lastIndexOf", "(int)", "manual"]
-      - ["java.lang", "String", "lastIndexOf", "(String)", "manual"]
-      - ["java.lang", "String", "length", "()", "manual"]
-      - ["java.lang", "String", "startsWith", "(String)", "manual"]
-      - ["java.lang", "String", "valueOf", "(boolean)", "manual"]
-      - ["java.lang", "System", "currentTimeMillis", "()", "manual"]
-      - ["java.lang", "System", "exit", "(int)", "manual"]
-      - ["java.lang", "System", "getenv", "(String)", "manual"]
-      - ["java.lang", "System", "identityHashCode", "(Object)", "manual"]
-      - ["java.lang", "System", "lineSeparator", "()", "manual"]
-      - ["java.lang", "System", "nanoTime", "()", "manual"]
-      - ["java.lang", "Thread", "currentThread", "()", "manual"]
-      - ["java.lang", "Thread", "getContextClassLoader", "()", "manual"]
-      - ["java.lang", "Thread", "interrupt", "()", "manual"]
-      - ["java.lang", "Thread", "sleep", "(long)", "manual"]
-      - ["java.lang", "Thread", "start", "()", "manual"]
+      - ["java.lang", "AbstractStringBuilder", "length", "()", "summary", "manual"]
+      - ["java.lang", "AbstractStringBuilder", "setCharAt", "(int,char)", "summary", "manual"]
+      - ["java.lang", "AbstractStringBuilder", "setLength", "(int)", "summary", "manual"]
+      - ["java.lang", "Boolean", "booleanValue", "()", "summary", "manual"]
+      - ["java.lang", "Boolean", "equals", "(Object)", "summary", "manual"]
+      - ["java.lang", "Boolean", "parseBoolean", "(String)", "summary", "manual"]
+      - ["java.lang", "Boolean", "valueOf", "(boolean)", "summary", "manual"]
+      - ["java.lang", "CharSequence", "length", "()", "summary", "manual"]
+      - ["java.lang", "Class", "forName", "(String)", "summary", "manual"]
+      - ["java.lang", "Class", "getCanonicalName", "()", "summary", "manual"]
+      - ["java.lang", "Class", "getClassLoader", "()", "summary", "manual"]
+      - ["java.lang", "Class", "getDeclaredConstructor", "(Class[])", "summary", "manual"]  # This model may be changed to a taint step for an unsafe reflection query in the future.
+      - ["java.lang", "Class", "getDeclaredField", "(String)", "summary", "manual"]         # This model may be changed to a taint step for an unsafe reflection query in the future.
+      - ["java.lang", "Class", "getMethod", "(String,Class[])", "summary", "manual"]        # This model may be changed to a taint step for an unsafe reflection query in the future.
+      - ["java.lang", "Class", "getName", "()", "summary", "manual"]
+      - ["java.lang", "Class", "getResource", "(String)", "summary", "manual"]
+      - ["java.lang", "Class", "getResourceAsStream", "(String)", "summary", "manual"]
+      - ["java.lang", "Class", "getSimpleName", "()", "summary", "manual"]
+      - ["java.lang", "Class", "isAssignableFrom", "(Class)", "summary", "manual"]
+      - ["java.lang", "Class", "isInstance", "(Object)", "summary", "manual"]
+      - ["java.lang", "Class", "toString", "()", "summary", "manual"]
+      - ["java.lang", "ClassLoader", "getResource", "(String)", "summary", "manual"]
+      - ["java.lang", "ClassLoader", "getResourceAsStream", "(String)", "summary", "manual"]
+      - ["java.lang", "Enum", "Enum", "(String,int)", "summary", "manual"]
+      - ["java.lang", "Enum", "equals", "(Object)", "summary", "manual"]
+      - ["java.lang", "Enum", "hashCode", "()", "summary", "manual"]
+      - ["java.lang", "Enum", "name", "()", "summary", "manual"]
+      - ["java.lang", "Enum", "ordinal", "()", "summary", "manual"]
+      - ["java.lang", "Enum", "toString", "()", "summary", "manual"]
+      - ["java.lang", "Integer", "equals", "(Object)", "summary", "manual"]
+      - ["java.lang", "Long", "equals", "(Object)", "summary", "manual"]
+      - ["java.lang", "Object", "equals", "(Object)", "summary", "manual"]
+      - ["java.lang", "Object", "getClass", "()", "summary", "manual"]
+      - ["java.lang", "Object", "hashCode", "()", "summary", "manual"]
+      - ["java.lang", "Object", "toString", "()", "summary", "manual"]
+      - ["java.lang", "Runnable", "run", "()", "summary", "manual"]
+      - ["java.lang", "Runtime", "getRuntime", "()", "summary", "manual"]
+      - ["java.lang", "String", "compareTo", "(String)", "summary", "manual"]
+      - ["java.lang", "String", "contains", "(CharSequence)", "summary", "manual"]
+      - ["java.lang", "String", "endsWith", "(String)", "summary", "manual"]
+      - ["java.lang", "String", "equals", "(Object)", "summary", "manual"]
+      - ["java.lang", "String", "equalsIgnoreCase", "(String)", "summary", "manual"]
+      - ["java.lang", "String", "hashCode", "()", "summary", "manual"]
+      - ["java.lang", "String", "indexOf", "(int)", "summary", "manual"]
+      - ["java.lang", "String", "indexOf", "(String)", "summary", "manual"]
+      - ["java.lang", "String", "isEmpty", "()", "summary", "manual"]
+      - ["java.lang", "String", "lastIndexOf", "(int)", "summary", "manual"]
+      - ["java.lang", "String", "lastIndexOf", "(String)", "summary", "manual"]
+      - ["java.lang", "String", "length", "()", "summary", "manual"]
+      - ["java.lang", "String", "startsWith", "(String)", "summary", "manual"]
+      - ["java.lang", "String", "valueOf", "(boolean)", "summary", "manual"]
+      - ["java.lang", "System", "currentTimeMillis", "()", "summary", "manual"]
+      - ["java.lang", "System", "exit", "(int)", "summary", "manual"]
+      - ["java.lang", "System", "getenv", "(String)", "summary", "manual"]
+      - ["java.lang", "System", "identityHashCode", "(Object)", "summary", "manual"]
+      - ["java.lang", "System", "lineSeparator", "()", "summary", "manual"]
+      - ["java.lang", "System", "nanoTime", "()", "summary", "manual"]
+      - ["java.lang", "Thread", "currentThread", "()", "summary", "manual"]
+      - ["java.lang", "Thread", "getContextClassLoader", "()", "summary", "manual"]
+      - ["java.lang", "Thread", "interrupt", "()", "summary", "manual"]
+      - ["java.lang", "Thread", "sleep", "(long)", "summary", "manual"]
+      - ["java.lang", "Thread", "start", "()", "summary", "manual"]
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.lang", "Double", "doubleToLongBits", "(double)", "manual"] # taint-numeric
-      - ["java.lang", "Double", "parseDouble", "(String)", "manual"]      # taint-numeric
-      - ["java.lang", "Double", "valueOf", "(double)", "manual"]          # taint-numeric
-      - ["java.lang", "Integer", "Integer", "(int)", "manual"]            # taint-numeric
-      - ["java.lang", "Integer", "intValue", "()", "manual"]              # taint-numeric
-      - ["java.lang", "Integer", "parseInt", "(String)", "manual"]        # taint-numeric
-      - ["java.lang", "Integer", "toHexString", "(int)", "manual"]        # taint-numeric
-      - ["java.lang", "Integer", "toString", "", "manual"]                # taint-numeric
-      - ["java.lang", "Integer", "valueOf", "", "manual"]                 # taint-numeric
-      - ["java.lang", "Long", "Long", "(long)", "manual"]                 # taint-numeric
-      - ["java.lang", "Long", "intValue", "()", "manual"]                 # taint-numeric
-      - ["java.lang", "Long", "longValue", "()", "manual"]                # taint-numeric
-      - ["java.lang", "Long", "parseLong", "(String)", "manual"]          # taint-numeric
-      - ["java.lang", "Long", "toString", "", "manual"]                   # taint-numeric
-      - ["java.lang", "Long", "valueOf", "", "manual"]                    # taint-numeric
-      - ["java.lang", "Math", "max", "", "manual"]                        # value-numeric
-      - ["java.lang", "Math", "min", "", "manual"]                        # value-numeric
-      - ["java.lang", "Number", "doubleValue", "()", "manual"]            # taint-numeric
-      - ["java.lang", "Number", "intValue", "()", "manual"]               # taint-numeric
-      - ["java.lang", "Number", "longValue", "()", "manual"]              # taint-numeric
-      - ["java.lang", "String", "valueOf", "(int)", "manual"]             # taint-numeric
-      - ["java.lang", "String", "valueOf", "(long)", "manual"]            # taint-numeric
+      - ["java.lang", "Double", "doubleToLongBits", "(double)", "summary", "manual"] # taint-numeric
+      - ["java.lang", "Double", "parseDouble", "(String)", "summary", "manual"]      # taint-numeric
+      - ["java.lang", "Double", "valueOf", "(double)", "summary", "manual"]          # taint-numeric
+      - ["java.lang", "Integer", "Integer", "(int)", "summary", "manual"]            # taint-numeric
+      - ["java.lang", "Integer", "intValue", "()", "summary", "manual"]              # taint-numeric
+      - ["java.lang", "Integer", "parseInt", "(String)", "summary", "manual"]        # taint-numeric
+      - ["java.lang", "Integer", "toHexString", "(int)", "summary", "manual"]        # taint-numeric
+      - ["java.lang", "Integer", "toString", "", "summary", "manual"]                # taint-numeric
+      - ["java.lang", "Integer", "valueOf", "", "summary", "manual"]                 # taint-numeric
+      - ["java.lang", "Long", "Long", "(long)", "summary", "manual"]                 # taint-numeric
+      - ["java.lang", "Long", "intValue", "()", "summary", "manual"]                 # taint-numeric
+      - ["java.lang", "Long", "longValue", "()", "summary", "manual"]                # taint-numeric
+      - ["java.lang", "Long", "parseLong", "(String)", "summary", "manual"]          # taint-numeric
+      - ["java.lang", "Long", "toString", "", "summary", "manual"]                   # taint-numeric
+      - ["java.lang", "Long", "valueOf", "", "summary", "manual"]                    # taint-numeric
+      - ["java.lang", "Math", "max", "", "summary", "manual"]                        # value-numeric
+      - ["java.lang", "Math", "min", "", "summary", "manual"]                        # value-numeric
+      - ["java.lang", "Number", "doubleValue", "()", "summary", "manual"]            # taint-numeric
+      - ["java.lang", "Number", "intValue", "()", "summary", "manual"]               # taint-numeric
+      - ["java.lang", "Number", "longValue", "()", "summary", "manual"]              # taint-numeric
+      - ["java.lang", "String", "valueOf", "(int)", "summary", "manual"]             # taint-numeric
+      - ["java.lang", "String", "valueOf", "(long)", "summary", "manual"]            # taint-numeric

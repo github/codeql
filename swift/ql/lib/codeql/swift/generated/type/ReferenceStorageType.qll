@@ -21,6 +21,6 @@ module Generated {
     /**
      * Gets the referent type of this reference storage type.
      */
-    final Type getReferentType() { result = getImmediateReferentType().resolve() }
+    final Type getReferentType() { result = this.getImmediateReferentType().resolve() }
   }
 }

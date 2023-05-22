@@ -5,8 +5,8 @@ import java
  */
 class SetWritable extends Method {
   SetWritable() {
-    getDeclaringType() instanceof TypeFile and
-    hasName("setWritable")
+    this.getDeclaringType() instanceof TypeFile and
+    this.hasName("setWritable")
   }
 }
 

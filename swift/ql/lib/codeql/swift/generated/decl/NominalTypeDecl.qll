@@ -22,6 +22,6 @@ module Generated {
     /**
      * Gets the type of this nominal type declaration.
      */
-    final Type getType() { result = getImmediateType().resolve() }
+    final Type getType() { result = this.getImmediateType().resolve() }
   }
 }

@@ -1,5 +1,5 @@
 name: codeql/swift-queries
-version: 0.0.0
+version: 0.1.0
 groups:
   - swift
   - queries
@@ -10,3 +10,4 @@ dependencies:
   codeql/swift-all: ${workspace}
   codeql/suite-helpers: ${workspace}
   codeql/util: ${workspace}
+warnOnImplicitThis: true

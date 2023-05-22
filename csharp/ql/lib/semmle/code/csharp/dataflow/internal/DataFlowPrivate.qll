@@ -335,7 +335,8 @@ module LocalFlow {
     exists(ControlFlow::BasicBlock bb, int i |
       SsaImpl::lastRefBeforeRedefExt(def, bb, i, next.getDefinitionExt()) and
       def.definesAt(_, bb, i, _) and
-      def = getSsaDefinitionExt(nodeFrom)
+      def = getSsaDefinitionExt(nodeFrom) and
+      nodeFrom != next
     )
   }
 
@@ -414,7 +415,8 @@ module LocalFlow {
     ) {
       exists(CIL::BasicBlock bb, int i | CilSsaImpl::lastRefBeforeRedefExt(def, bb, i, next) |
         def.definesAt(_, bb, i, _) and
-        def = nodeFrom.(CilSsaDefinitionExtNode).getDefinition()
+        def = nodeFrom.(CilSsaDefinitionExtNode).getDefinition() and
+        def != next
         or
         nodeFrom = TCilExprNode(bb.getNode(i).(CIL::ReadAccess))
       )
@@ -440,7 +442,8 @@ module LocalFlow {
       exists(CIL::ReadAccess readFrom, CIL::ReadAccess readTo |
         CilSsaImpl::hasAdjacentReadsExt(def, readFrom, readTo) and
         nodeTo = TCilExprNode(readTo) and
-        nodeFrom = TCilExprNode(readFrom)
+        nodeFrom = TCilExprNode(readFrom) and
+        nodeFrom != nodeTo
       )
       or
       // Flow into phi (read) node
@@ -483,7 +486,8 @@ module LocalFlow {
     or
     hasNodePath(any(LocalExprStepConfiguration x), nodeFrom, nodeTo)
     or
-    ThisFlow::adjacentThisRefs(nodeFrom, nodeTo)
+    ThisFlow::adjacentThisRefs(nodeFrom, nodeTo) and
+    nodeFrom != nodeTo
     or
     ThisFlow::adjacentThisRefs(nodeFrom.(PostUpdateNode).getPreUpdateNode(), nodeTo)
     or
@@ -541,7 +545,8 @@ predicate simpleLocalFlowStep(Node nodeFrom, Node nodeTo) {
   exists(SsaImpl::DefinitionExt def |
     LocalFlow::localSsaFlowStepUseUse(def, nodeFrom, nodeTo) and
     not FlowSummaryImpl::Private::Steps::prohibitsUseUseFlow(nodeFrom, _) and
-    not LocalFlow::usesInstanceField(def)
+    not LocalFlow::usesInstanceField(def) and
+    nodeFrom != nodeTo
   )
   or
   // Flow into phi (read)/uncertain SSA definition node from read
@@ -880,7 +885,8 @@ private module Cached {
   predicate localFlowStepImpl(Node nodeFrom, Node nodeTo) {
     LocalFlow::localFlowStepCommon(nodeFrom, nodeTo)
     or
-    LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo)
+    LocalFlow::localSsaFlowStepUseUse(_, nodeFrom, nodeTo) and
+    nodeFrom != nodeTo
     or
     exists(SsaImpl::DefinitionExt def |
       LocalFlow::localSsaFlowStep(def, nodeFrom, nodeTo) and

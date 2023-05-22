@@ -26,18 +26,18 @@ module Generated {
      * Gets the `index`th binding declaration of this capture list expression (0-based).
      */
     final PatternBindingDecl getBindingDecl(int index) {
-      result = getImmediateBindingDecl(index).resolve()
+      result = this.getImmediateBindingDecl(index).resolve()
     }
 
     /**
      * Gets any of the binding declarations of this capture list expression.
      */
-    final PatternBindingDecl getABindingDecl() { result = getBindingDecl(_) }
+    final PatternBindingDecl getABindingDecl() { result = this.getBindingDecl(_) }
 
     /**
      * Gets the number of binding declarations of this capture list expression.
      */
-    final int getNumberOfBindingDecls() { result = count(int i | exists(getBindingDecl(i))) }
+    final int getNumberOfBindingDecls() { result = count(int i | exists(this.getBindingDecl(i))) }
 
     /**
      * Gets the closure body of this capture list expression.
@@ -55,6 +55,6 @@ module Generated {
     /**
      * Gets the closure body of this capture list expression.
      */
-    final ExplicitClosureExpr getClosureBody() { result = getImmediateClosureBody().resolve() }
+    final ExplicitClosureExpr getClosureBody() { result = this.getImmediateClosureBody().resolve() }
   }
 }

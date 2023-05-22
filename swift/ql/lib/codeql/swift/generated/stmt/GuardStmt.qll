@@ -22,6 +22,6 @@ module Generated {
     /**
      * Gets the body of this guard statement.
      */
-    final BraceStmt getBody() { result = getImmediateBody().resolve() }
+    final BraceStmt getBody() { result = this.getImmediateBody().resolve() }
   }
 }

@@ -22,6 +22,6 @@ module Generated {
     /**
      * Gets the base type of this unary syntax sugar type.
      */
-    final Type getBaseType() { result = getImmediateBaseType().resolve() }
+    final Type getBaseType() { result = this.getImmediateBaseType().resolve() }
   }
 }

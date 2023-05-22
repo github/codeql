@@ -1,14 +1,13 @@
 edges
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:7:14:7:20 | ControlFlowNode for request |
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:30:17:30:23 | ControlFlowNode for request |
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:37:17:37:23 | ControlFlowNode for request |
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:44:17:44:23 | ControlFlowNode for request |
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:60:17:60:23 | ControlFlowNode for request |
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:67:17:67:23 | ControlFlowNode for request |
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:74:17:74:23 | ControlFlowNode for request |
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | test.py:81:17:81:23 | ControlFlowNode for request |
 | test.py:1:26:1:32 | ControlFlowNode for ImportMember | test.py:1:26:1:32 | GSSA Variable request |
-| test.py:1:26:1:32 | GSSA Variable request | test.py:0:0:0:0 | ModuleVariableNode for test.request |
+| test.py:1:26:1:32 | GSSA Variable request | test.py:7:14:7:20 | ControlFlowNode for request |
+| test.py:1:26:1:32 | GSSA Variable request | test.py:30:17:30:23 | ControlFlowNode for request |
+| test.py:1:26:1:32 | GSSA Variable request | test.py:37:17:37:23 | ControlFlowNode for request |
+| test.py:1:26:1:32 | GSSA Variable request | test.py:44:17:44:23 | ControlFlowNode for request |
+| test.py:1:26:1:32 | GSSA Variable request | test.py:60:17:60:23 | ControlFlowNode for request |
+| test.py:1:26:1:32 | GSSA Variable request | test.py:67:17:67:23 | ControlFlowNode for request |
+| test.py:1:26:1:32 | GSSA Variable request | test.py:74:17:74:23 | ControlFlowNode for request |
+| test.py:1:26:1:32 | GSSA Variable request | test.py:81:17:81:23 | ControlFlowNode for request |
 | test.py:7:14:7:20 | ControlFlowNode for request | test.py:7:14:7:25 | ControlFlowNode for Attribute |
 | test.py:7:14:7:25 | ControlFlowNode for Attribute | test.py:8:21:8:26 | ControlFlowNode for target |
 | test.py:30:17:30:23 | ControlFlowNode for request | test.py:30:17:30:28 | ControlFlowNode for Attribute |
@@ -26,7 +25,6 @@ edges
 | test.py:81:17:81:23 | ControlFlowNode for request | test.py:81:17:81:28 | ControlFlowNode for Attribute |
 | test.py:81:17:81:28 | ControlFlowNode for Attribute | test.py:83:21:83:26 | ControlFlowNode for unsafe |
 nodes
-| test.py:0:0:0:0 | ModuleVariableNode for test.request | semmle.label | ModuleVariableNode for test.request |
 | test.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | test.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
 | test.py:7:14:7:20 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
