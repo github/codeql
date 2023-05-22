@@ -8,16 +8,16 @@
  * @description A query to extract automodel candidates.
  * @kind problem
  * @severity info
- * @id java/ml/extract-automodel-framework-candidates
+ * @id java/ml/extract-automodel-application-candidates
  * @tags internal automodel extract candidates
  */
 
-private import AutomodelFrameworkModeCharacteristics
+private import AutomodelApplicationModeCharacteristics
 private import AutomodelSharedUtil
 
 from
   Endpoint endpoint, string message, MetadataExtractor meta, string package, string type,
-  boolean subtypes, string name, string signature, int input, string parameterName
+  boolean subtypes, string name, string signature, int input
 where
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
@@ -28,7 +28,7 @@ where
   // overlap between our detected sinks and the pre-existing modeling. We assume that, if a sink has already been
   // modeled in a MaD model, then it doesn't belong to any additional sink types, and we don't need to reexamine it.
   not CharacteristicsImpl::isSink(endpoint, _) and
-  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input, parameterName) and
+  meta.hasMetadata(endpoint, package, type, subtypes, name, signature, input) and
   // The message is the concatenation of all sink types for which this endpoint is known neither to be a sink nor to be
   // a non-sink, and we surface only endpoints that have at least one such sink type.
   message =
@@ -38,14 +38,11 @@ where
     |
       sinkType, ", "
     )
-select endpoint,
-  message + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@.", //
-  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
-  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
+select endpoint, message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
+  CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
   package.(DollarAtString), "package", //
   type.(DollarAtString), "type", //
   subtypes.toString().(DollarAtString), "subtypes", //
-  name.(DollarAtString), "name", //
+  name.(DollarAtString), "name", // method name
   signature.(DollarAtString), "signature", //
-  input.toString().(DollarAtString), "input", //
-  parameterName.(DollarAtString), "parameterName" //
+  input.toString().(DollarAtString), "input" //
