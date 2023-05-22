@@ -178,7 +178,7 @@ A QL module definition has the following syntax:
 
    module ::= annotation* "module" modulename parameters? implements? "{" moduleBody "}"
 
-   parameters ::= "<" signatureExpr simpleId ("," signatureExpr simpleId)* ">"
+   parameters ::= "<" signatureExpr parameterName ("," signatureExpr parameterName)* ">"
 
    implements ::= "implements" moduleSignatureExpr ("," moduleSignatureExpr)*
 
@@ -216,7 +216,7 @@ An import directive refers to a module identifier:
 
    qualId ::= simpleId | qualId "." simpleId
 
-   importModuleExpr ::= qualId | importModuleExpr "::" simpleId arguments?
+   importModuleExpr ::= qualId | importModuleExpr "::" modulename arguments?
 
    arguments ::= "<" argument ("," argument)* ">"
 
@@ -289,7 +289,7 @@ With the exception of class domain types and character types (which cannot be re
 
    type ::= (moduleExpr "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
 
-   moduleExpr ::= simpleId arguments? | moduleExpr "::" simpleId arguments?
+   moduleExpr ::= modulename arguments? | moduleExpr "::" modulename arguments?
 
 A type reference is resolved to a type as follows:
 
@@ -349,9 +349,9 @@ A QL signature definition has the following syntax:
 
    predicateSignature ::= qldoc? annotations "signature" head ";"
 
-   typeSignature ::= qldoc? annotations "signature" "class" upperId ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
+   typeSignature ::= qldoc? annotations "signature" "class" classname ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
 
-   moduleSignature ::= qldoc? annotation* "signature" "module" upperId parameters? "{" moduleSignatureBody "}"
+   moduleSignature ::= qldoc? annotation* "signature" "module" moduleSignatureName parameters? "{" moduleSignatureBody "}"
 
    moduleSignatureBody ::= (signaturePredicate | defaultPredicate | signatureType)*
 
@@ -359,7 +359,7 @@ A QL signature definition has the following syntax:
 
    defaultPredicate ::= qldoc? annotations "default" head "{" formula "}"
 
-   signatureType ::= qldoc? annotations "class" upperId ("extends" type ("," type)*)? "{" signaturePredicate* "}"
+   signatureType ::= qldoc? annotations "class" classname ("extends" type ("," type)*)? "{" signaturePredicate* "}"
 
 
 A predicate signature definition extends the current module's declared predicate signature environment with a mapping from the predicate signature name and arity to the predicate signature definition.
@@ -628,20 +628,21 @@ There are several kinds of identifiers:
 
 -  ``atLowerId``: an identifier that starts with an "@" sign and then a lower-case letter.
 
--  ``atUpperId``: an identifier that starts with an "@" sign and then an upper-case letter.
-
 Identifiers are used in following syntactic constructs:
 
 ::
 
-   simpleId      ::= lowerId | upperId
-   modulename    ::= simpleId
-   classname     ::= upperId
-   dbasetype     ::= atLowerId
-   predicateRef  ::= (moduleExpr "::")? literalId
-   predicateName ::= lowerId
-   varname       ::= lowerId
-   literalId     ::= lowerId | atLowerId
+   simpleId            ::= lowerId | upperId
+   modulename          ::= simpleId
+   moduleSignatureName ::= upperId
+   classname           ::= upperId
+   dbasetype           ::= atLowerId
+   predicateRef        ::= (moduleExpr "::")? literalId
+   signatureExpr       ::= (moduleExpr "::")? simpleId ("/" Integer | arguments)?;
+   predicateName       ::= lowerId
+   parameterName       ::= simpleId
+   varname             ::= lowerId
+   literalId           ::= lowerId | atLowerId
 
 Integer literals (int)
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -2107,7 +2108,7 @@ The complete grammar for QL is as follows:
 
    module ::= annotation* "module" modulename parameters? implements? "{" moduleBody "}"
 
-   parameters ::= "<" signatureExpr simpleId ("," signatureExpr simpleId)* ">"
+   parameters ::= "<" signatureExpr parameterName ("," signatureExpr parameterName)* ">"
 
    implements ::= "implements" moduleSignatureExpr ("," moduleSignatureExpr)*
 
@@ -2117,7 +2118,7 @@ The complete grammar for QL is as follows:
 
    qualId ::= simpleId | qualId "." simpleId
 
-   importModuleExpr ::= qualId | importModuleExpr "::" simpleId arguments?
+   importModuleExpr ::= qualId | importModuleExpr "::" modulename arguments?
 
    arguments ::= "<" argument ("," argument)* ">"
 
@@ -2127,9 +2128,9 @@ The complete grammar for QL is as follows:
 
    predicateSignature ::= qldoc? annotations "signature" head ";"
 
-   typeSignature ::= qldoc? annotations "signature" "class" upperId ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
+   typeSignature ::= qldoc? annotations "signature" "class" classname ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
 
-   moduleSignature ::= qldoc? annotation* "signature" "module" upperId parameters? "{" moduleSignatureBody "}"
+   moduleSignature ::= qldoc? annotation* "signature" "module" moduleSignatureName parameters? "{" moduleSignatureBody "}"
 
    moduleSignatureBody ::= (signaturePredicate | defaultPredicate | signatureType)*
 
@@ -2137,7 +2138,7 @@ The complete grammar for QL is as follows:
 
    defaultPredicate ::= qldoc? annotations "default" head "{" formula "}"
 
-   signatureType ::= qldoc? annotations "class" upperId ("extends" type ("," type)*)? "{" signaturePredicate* "}"
+   signatureType ::= qldoc? annotations "class" classname ("extends" type ("," type)*)? "{" signaturePredicate* "}"
 
    select ::= ("from" var_decls)? ("where" formula)? "select" as_exprs ("order" "by" orderbys)?
 
@@ -2184,9 +2185,9 @@ The complete grammar for QL is as follows:
 
    field ::= qldoc? annotations var_decl ";"
 
-   moduleExpr ::= simpleId arguments? | moduleExpr "::" simpleId arguments?
+   moduleExpr ::= modulename arguments? | moduleExpr "::" modulename arguments?
 
-   moduleSignatureExpr ::= (moduleExpr "::")? upperId arguments?
+   moduleSignatureExpr ::= (moduleExpr "::")? moduleSignatureName arguments?
 
    signatureExpr : (moduleExpr "::")? simpleId ("/" Integer | arguments)?;
 
@@ -2313,6 +2314,8 @@ The complete grammar for QL is as follows:
 
    modulename ::= simpleId
 
+   moduleSignatureName ::= upperId
+
    classname ::= upperId
 
    dbasetype ::= atLowerId
@@ -2320,6 +2323,8 @@ The complete grammar for QL is as follows:
    predicateRef ::= (moduleExpr "::")? literalId
 
    predicateName ::= lowerId
+
+   parameterName ::= simpleId
 
    varname ::= lowerId
 
