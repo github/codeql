@@ -79,9 +79,14 @@ predicate jumpStep = DataFlowPrivate::jumpStep/2;
 /** Holds if there is direct flow from `param` to a return. */
 pragma[nomagic]
 private predicate flowThrough(DataFlowPublic::ParameterNode param) {
-  exists(DataFlowPrivate::ReturningNode returnNode, DataFlowDispatch::ReturnKind rk |
+  exists(
+    DataFlowPrivate::ReturningNode returnNode, DataFlowDispatch::ReturnKind rk,
+    DataFlowDispatch::ParameterPosition pos
+  |
     param.flowsTo(returnNode) and
-    returnNode.hasKind(rk, param.(DataFlowPrivate::NodeImpl).getCfgScope())
+    returnNode.hasKind(rk, param.(DataFlowPrivate::NodeImpl).getCfgScope()) and
+    param.(DataFlowPrivate::ParameterNodeImpl).isParameterOf(_, pos) and
+    not pos.isBlock()
   |
     rk instanceof DataFlowDispatch::NormalReturnKind
     or
