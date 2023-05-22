@@ -36,6 +36,14 @@ class Logger
   end
 end
 
+class Redirector
+  def call(env)
+    status = 302
+    headers = {'location' => '/foo.html'}
+    [status, headers, ['this is a redirect']]
+  end
+end
+
 class Foo
   def not_call(env)
     [1, 2, 3]

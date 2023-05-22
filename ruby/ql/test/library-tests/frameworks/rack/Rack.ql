@@ -15,3 +15,7 @@ query predicate rackResponseContentTypes(Rack::ResponseNode resp, DataFlow::Node
 }
 
 query predicate mimetypeCalls(Rack::MimetypeCall c, string mimetype) { mimetype = c.getMimeType() }
+
+query predicate redirectResponses(Rack::RedirectResponse resp, DataFlow::Node location) {
+  location = resp.getRedirectLocation()
+}

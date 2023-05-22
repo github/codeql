@@ -82,6 +82,34 @@ class MimetypeCall extends DataFlow::CallNode {
   string getMimeType() { mimeTypeMatches(this.getExtension(), result) }
 }
 
+bindingset[headerName]
+private DataFlow::Node getHeaderValue(ResponseNode resp, string headerName) {
+  exists(DataFlow::Node headers | headers = resp.getHeaders() |
+    // set via `headers.<header_name>=`
+    exists(
+      DataFlow::CallNode contentTypeAssignment, Assignment assignment,
+      DataFlow::PostUpdateNode postUpdateHeaders
+    |
+      contentTypeAssignment.getMethodName() = headerName.replaceAll("-", "_").toLowerCase() + "=" and
+      assignment =
+        contentTypeAssignment.getArgument(0).(DataFlow::OperationNode).asOperationAstNode() and
+      postUpdateHeaders.(DataFlow::LocalSourceNode).flowsTo(headers) and
+      postUpdateHeaders.getPreUpdateNode() = contentTypeAssignment.getReceiver()
+    |
+      result.asExpr().getExpr() = assignment.getRightOperand()
+    )
+    or
+    // set within a hash
+    exists(DataFlow::HashLiteralNode headersHash | headersHash.flowsTo(headers) |
+      result =
+        headersHash
+            .getElementFromKey(any(ConstantValue v |
+                v.getStringlikeValue().toLowerCase() = headerName.toLowerCase()
+              ))
+    )
+  )
+}
+
 /** A `DataFlow::Node` returned from a rack request. */
 class ResponseNode extends PotentialResponseNode, Http::Server::HttpResponse::Range {
   ResponseNode() { this = any(AppCandidate app).getResponse() }
@@ -89,32 +117,15 @@ class ResponseNode extends PotentialResponseNode, Http::Server::HttpResponse::Ra
   override DataFlow::Node getBody() { result = this.getElement(2) }
 
   override DataFlow::Node getMimetypeOrContentTypeArg() {
-    exists(DataFlow::Node headers | headers = this.getHeaders() |
-      // set via `headers.content_type=`
-      exists(
-        DataFlow::CallNode contentTypeAssignment, Assignment assignment,
-        DataFlow::PostUpdateNode postUpdateHeaders
-      |
-        contentTypeAssignment.getMethodName() = "content_type=" and
-        assignment =
-          contentTypeAssignment.getArgument(0).(DataFlow::OperationNode).asOperationAstNode() and
-        postUpdateHeaders.(DataFlow::LocalSourceNode).flowsTo(headers) and
-        postUpdateHeaders.getPreUpdateNode() = contentTypeAssignment.getReceiver()
-      |
-        result.asExpr().getExpr() = assignment.getRightOperand()
-      )
-      or
-      // set within a hash
-      exists(DataFlow::HashLiteralNode headersHash | headersHash.flowsTo(headers) |
-        result =
-          headersHash
-              .getElementFromKey(any(ConstantValue v |
-                  v.getStringlikeValue().toLowerCase() = "content-type"
-                ))
-      )
-    )
+    result = getHeaderValue(this, "content-type")
   }
 
   // TODO
   override string getMimetypeDefault() { none() }
+}
+
+class RedirectResponse extends ResponseNode, Http::Server::HttpRedirectResponse::Range {
+  RedirectResponse() { this.getAStatusCode() = [300, 301, 302, 303, 307, 308] }
+
+  override DataFlow::Node getRedirectLocation() { result = getHeaderValue(this, "location") }
 }
