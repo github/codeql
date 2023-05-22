@@ -4,7 +4,8 @@ class HelloWorld
     if something_goes_wrong(env)
       status = 500
     end
-    [status, {'Content-Type' => 'text/plain'}, ['Hello World']]
+    headers = {'Content-Type' => 'text/plain'}
+    [status, headers, ['Hello World']]
   end
 end
 
@@ -15,6 +16,7 @@ class Proxy
 
   def call(the_env)
     status, headers, body = @app.call(the_env)
+    headers.content_type = Rack::Mime.mime_type(".gz")
     [status, headers, body]
   end
 end

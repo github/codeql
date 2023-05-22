@@ -1,3 +1,4 @@
+private import codeql.ruby.AST
 private import codeql.ruby.frameworks.Rack
 private import codeql.ruby.DataFlow
 
@@ -8,3 +9,9 @@ query predicate rackResponseStatusCodes(Rack::ResponseNode resp, string status) 
   then status = resp.getAStatusCode().toString()
   else status = "<unknown>"
 }
+
+query predicate rackResponseContentTypes(Rack::ResponseNode resp, DataFlow::Node contentType) {
+  contentType = resp.getMimetypeOrContentTypeArg()
+}
+
+query predicate mimetypeCalls(Rack::MimetypeCall c, string mimetype) { mimetype = c.getMimeType() }
