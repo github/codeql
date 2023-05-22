@@ -178,7 +178,7 @@ A QL module definition has the following syntax:
 
    module ::= annotation* "module" modulename parameters? implements? "{" moduleBody "}"
 
-   parameters ::= "<" signatureExpr simpleId ("," signatureExpr simpleId)* ">"
+   parameters ::= "<" signatureExpr parameterName ("," signatureExpr parameterName)* ">"
 
    implements ::= "implements" moduleSignatureExpr ("," moduleSignatureExpr)*
 
@@ -640,6 +640,7 @@ Identifiers are used in following syntactic constructs:
    predicateRef        ::= (moduleExpr "::")? literalId
    signatureExpr       ::= (moduleExpr "::")? simpleId ("/" Integer | arguments)?;
    predicateName       ::= lowerId
+   parameterName       ::= simpleId
    varname             ::= lowerId
    literalId           ::= lowerId | atLowerId
 
@@ -2107,7 +2108,7 @@ The complete grammar for QL is as follows:
 
    module ::= annotation* "module" modulename parameters? implements? "{" moduleBody "}"
 
-   parameters ::= "<" signatureExpr simpleId ("," signatureExpr simpleId)* ">"
+   parameters ::= "<" signatureExpr parameterName ("," signatureExpr parameterName)* ">"
 
    implements ::= "implements" moduleSignatureExpr ("," moduleSignatureExpr)*
 
@@ -2322,6 +2323,8 @@ The complete grammar for QL is as follows:
    predicateRef ::= (moduleExpr "::")? literalId
 
    predicateName ::= lowerId
+
+   parameterName ::= simpleId
 
    varname ::= lowerId
 
