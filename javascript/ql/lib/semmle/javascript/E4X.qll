@@ -37,14 +37,14 @@ module E4X {
      * Gets the left operand of this qualified identifier, which is either
      * an identifier or a wildcard.
      */
-    Expr getLeft() { result = getChildExpr(0) }
+    Expr getLeft() { result = this.getChildExpr(0) }
 
     /**
      * Gets the right operand of this qualified identifer, which is either
      * an identifier, or an arbitrary expression for computed qualified
      * identifiers.
      */
-    Expr getRight() { result = getChildExpr(1) }
+    Expr getRight() { result = this.getChildExpr(1) }
 
     /**
      * Holds if this is a qualified identifier with a computed name, as in
@@ -53,7 +53,7 @@ module E4X {
     predicate isComputed() { this instanceof @e4x_xml_dynamic_qualident }
 
     override ControlFlowNode getFirstControlFlowNode() {
-      result = getLeft().getFirstControlFlowNode()
+      result = this.getLeft().getFirstControlFlowNode()
     }
   }
 
@@ -76,7 +76,7 @@ module E4X {
      * wildcard identifier or a possibly qualified name), or an arbitrary
      * expression for computed attribute selectors.
      */
-    Expr getAttribute() { result = getChildExpr(0) }
+    Expr getAttribute() { result = this.getChildExpr(0) }
 
     /**
      * Holds if this is an attribute selector with a computed name, as in
@@ -85,7 +85,7 @@ module E4X {
     predicate isComputed() { this instanceof @e4x_xml_dynamic_attribute_selector }
 
     override ControlFlowNode getFirstControlFlowNode() {
-      result = getAttribute().getFirstControlFlowNode()
+      result = this.getAttribute().getFirstControlFlowNode()
     }
   }
 
@@ -105,15 +105,15 @@ module E4X {
     /**
      * Gets the left operand of this filter expression.
      */
-    Expr getLeft() { result = getChildExpr(0) }
+    Expr getLeft() { result = this.getChildExpr(0) }
 
     /**
      * Gets the right operand of this filter expression.
      */
-    Expr getRight() { result = getChildExpr(1) }
+    Expr getRight() { result = this.getChildExpr(1) }
 
     override ControlFlowNode getFirstControlFlowNode() {
-      result = getLeft().getFirstControlFlowNode()
+      result = this.getLeft().getFirstControlFlowNode()
     }
   }
 
@@ -133,15 +133,15 @@ module E4X {
     /**
      * Gets the base expression of this dot-dot expression.
      */
-    Expr getBase() { result = getChildExpr(0) }
+    Expr getBase() { result = this.getChildExpr(0) }
 
     /**
      * Gets the index expression of this dot-dot expression.
      */
-    Expr getIndex() { result = getChildExpr(1) }
+    Expr getIndex() { result = this.getChildExpr(1) }
 
     override ControlFlowNode getFirstControlFlowNode() {
-      result = getBase().getFirstControlFlowNode()
+      result = this.getBase().getFirstControlFlowNode()
     }
   }
 

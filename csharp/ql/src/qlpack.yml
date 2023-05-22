@@ -1,5 +1,5 @@
 name: codeql/csharp-queries
-version: 0.5.6-dev
+version: 0.6.2-dev
 groups: 
   - csharp
   - queries
@@ -10,3 +10,4 @@ dependencies:
   codeql/csharp-all: ${workspace}
   codeql/suite-helpers: ${workspace}
   codeql/util: ${workspace}
+warnOnImplicitThis: true

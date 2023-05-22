@@ -1,3 +1,19 @@
+## 0.6.1
+
+### Minor Analysis Improvements
+
+* Additional sinks modelling writes to unencrypted local files have been added to `ExternalLocationSink`, used by the `cs/cleartext-storage` and `cs/exposure-of-sensitive-information` queries.
+
+## 0.6.0
+
+### Minor Analysis Improvements
+
+* The query `cs/web/debug-binary` now disregards the `debug` attribute in case there is a transformation that removes it.
+
+## 0.5.6
+
+No user-facing changes.
+
 ## 0.5.5
 
 No user-facing changes.

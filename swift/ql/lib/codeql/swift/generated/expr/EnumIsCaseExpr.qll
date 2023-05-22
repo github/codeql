@@ -24,7 +24,12 @@ module Generated {
     /**
      * Gets the sub expression of this enum is case expression.
      */
-    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSubExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the element of this enum is case expression.
@@ -42,6 +47,11 @@ module Generated {
     /**
      * Gets the element of this enum is case expression.
      */
-    final EnumElementDecl getElement() { result = getImmediateElement().resolve() }
+    final EnumElementDecl getElement() {
+      exists(EnumElementDecl immediate |
+        immediate = this.getImmediateElement() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

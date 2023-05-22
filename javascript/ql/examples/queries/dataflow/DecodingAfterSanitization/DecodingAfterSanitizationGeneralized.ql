@@ -21,8 +21,8 @@ class DecodingCall extends CallNode {
   Node input;
 
   DecodingCall() {
-    getCalleeName().matches("decodeURI%") and
-    input = getArgument(0) and
+    this.getCalleeName().matches("decodeURI%") and
+    input = this.getArgument(0) and
     kind = "URI decoding"
     or
     input = this.(JsonParserCall).getInput() and
@@ -48,5 +48,5 @@ from DecodingAfterSanitization cfg, PathNode source, PathNode sink, DecodingCall
 where
   cfg.hasFlowPath(source, sink) and
   decoder.getInput() = sink.getNode()
-select sink.getNode(), source, sink, decoder.getKind() + " invalidates .", source.getNode(),
-  "this HTML sanitization performed"
+select sink.getNode(), source, sink, decoder.getKind() + " invalidates $@.", source.getNode(),
+  "this HTML sanitization"

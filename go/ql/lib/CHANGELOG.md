@@ -1,3 +1,25 @@
+## 0.5.1
+
+### Minor Analysis Improvements
+
+* Taking a slice is now considered a sanitizer for `SafeUrlFlow`.
+
+## 0.5.0
+
+### Deprecated APIs
+
+* The recently introduced new data flow and taint tracking APIs have had a
+  number of module and predicate renamings. The old APIs remain in place for
+  now.
+
+### Bug Fixes
+
+* Fixed some accidental predicate visibility in the backwards-compatible wrapper for data flow configurations. In particular `DataFlow::hasFlowPath`, `DataFlow::hasFlow`, `DataFlow::hasFlowTo`, and `DataFlow::hasFlowToExpr` were accidentally exposed in a single version.
+
+## 0.4.6
+
+No user-facing changes.
+
 ## 0.4.5
 
 ### New Features

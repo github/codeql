@@ -24,11 +24,16 @@ module Generated {
     /**
      * Gets the type representation of this type expression, if it exists.
      */
-    final TypeRepr getTypeRepr() { result = getImmediateTypeRepr().resolve() }
+    final TypeRepr getTypeRepr() {
+      exists(TypeRepr immediate |
+        immediate = this.getImmediateTypeRepr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getTypeRepr()` exists.
      */
-    final predicate hasTypeRepr() { exists(getTypeRepr()) }
+    final predicate hasTypeRepr() { exists(this.getTypeRepr()) }
   }
 }

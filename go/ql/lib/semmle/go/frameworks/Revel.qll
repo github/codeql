@@ -8,7 +8,9 @@ private import semmle.go.security.OpenUrlRedirectCustomizations
 /** Provides classes and methods modeling the Revel web framework. */
 module Revel {
   /** Gets the package name `github.com/revel/revel`. */
-  string packagePath() { result = package(["github.com/revel", "github.com/robfig"], "revel") }
+  string packagePath() {
+    result = package(["github.com/revel", "github.com/robfig"] + "/revel", "")
+  }
 
   private class ControllerParams extends UntrustedFlowSource::Range, DataFlow::FieldReadNode {
     ControllerParams() {
@@ -27,14 +29,6 @@ module Revel {
         this.readsField(_, f) and
         f.hasQualifiedName(packagePath(), "Params", "Fixed")
       )
-    }
-  }
-
-  private class ParamsBind extends TaintTracking::FunctionModel, Method {
-    ParamsBind() { this.hasQualifiedName(packagePath(), "Params", ["Bind", "BindJSON"]) }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp.isParameter(0)
     }
   }
 
@@ -72,24 +66,6 @@ module Revel {
               "FormValue", "PostFormValue", "GetQuery", "GetForm", "GetMultipartForm", "GetBody",
               "Cookie", "GetHttpHeader", "GetRequestURI", "MultipartReader", "Referer", "UserAgent"
             ])
-    }
-  }
-
-  private class ServerCookieGetValue extends TaintTracking::FunctionModel, Method {
-    ServerCookieGetValue() { this.implements(packagePath(), "ServerCookie", "GetValue") }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp.isResult()
-    }
-  }
-
-  private class ServerMultipartFormGetFiles extends TaintTracking::FunctionModel, Method {
-    ServerMultipartFormGetFiles() {
-      this.implements(packagePath(), "ServerMultipartForm", ["GetFiles", "GetValues"])
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp.isReceiver() and outp.isResult()
     }
   }
 
@@ -148,7 +124,7 @@ module Revel {
         or
         methodName = "RenderText" and
         contentType = "text/plain" and
-        this = methodCall.getAnArgument()
+        this = methodCall.getASyntacticArgument()
       )
     }
 
@@ -190,34 +166,6 @@ module Revel {
   }
 
   /**
-   * The getter and setter methods of `revel.RevelHeader`.
-   *
-   * Note we currently don't implement `HeaderWrite` and related concepts, as they are currently only used
-   * to track content-type, and directly setting headers does not seem to be the usual way to set the response
-   * content-type for this framework. If and when the `HeaderWrite` concept has a more abstract idea of the
-   * relationship between header-writes and HTTP responses than looking for a particular `http.ResponseWriter`
-   * instance connecting the two, then we may implement it here for completeness.
-   */
-  private class RevelHeaderMethods extends TaintTracking::FunctionModel {
-    FunctionInput input;
-    FunctionOutput output;
-
-    RevelHeaderMethods() {
-      exists(string name | this.(Method).hasQualifiedName(packagePath(), "RevelHeader", name) |
-        name = ["Add", "Set"] and input.isParameter([0, 1]) and output.isReceiver()
-        or
-        name = ["Get", "GetAll"] and input.isReceiver() and output.isResult()
-        or
-        name = "SetCookie" and input.isParameter(0) and output.isReceiver()
-      )
-    }
-
-    override predicate hasTaintFlow(FunctionInput inp, FunctionOutput outp) {
-      inp = input and outp = output
-    }
-  }
-
-  /**
    * A read in a Revel template that uses Revel's `raw` function.
    */
   class RawTemplateRead extends HtmlTemplate::TemplateRead {
@@ -253,7 +201,7 @@ module Revel {
         )
         or
         // a revel controller.Render(arg) will set controller.ViewArgs["arg"] = arg
-        exists(Variable arg | arg.getARead() = render.(ControllerRender).getAnArgument() |
+        exists(Variable arg | arg.getARead() = render.(ControllerRender).getASyntacticArgument() |
           var.getBaseVariable() = arg and
           var.getQualifiedName() = read.getFieldName()
         )

@@ -1200,6 +1200,7 @@ predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
  * time the bound method is used, such that the `clear()` call would essentially be
  * translated into `l.clear()`, and we can still have use-use flow.
  */
+pragma[assume_small_delta]
 cached
 predicate getCallArg(CallNode call, Function target, CallType type, Node arg, ArgumentPosition apos) {
   Stages::DataFlow::ref() and
@@ -1614,3 +1615,13 @@ private module OutNodes {
  * `kind`.
  */
 OutNode getAnOutNode(DataFlowCall call, ReturnKind kind) { call = result.getCall(kind) }
+
+/**
+ * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
+ *
+ * This is a temporary hook to support technical debt in the Go language; do not use.
+ */
+pragma[inline]
+predicate golangSpecificParamArgFilter(DataFlowCall call, ParameterNode p, ArgumentNode arg) {
+  any()
+}

@@ -16,7 +16,7 @@ module Generated {
     /**
      * Holds if `getName()` exists.
      */
-    final predicate hasName() { exists(getName()) }
+    final predicate hasName() { exists(this.getName()) }
 
     /**
      * Gets the self parameter of this callable, if it exists.
@@ -34,12 +34,17 @@ module Generated {
     /**
      * Gets the self parameter of this callable, if it exists.
      */
-    final ParamDecl getSelfParam() { result = getImmediateSelfParam().resolve() }
+    final ParamDecl getSelfParam() {
+      exists(ParamDecl immediate |
+        immediate = this.getImmediateSelfParam() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getSelfParam()` exists.
      */
-    final predicate hasSelfParam() { exists(getSelfParam()) }
+    final predicate hasSelfParam() { exists(this.getSelfParam()) }
 
     /**
      * Gets the `index`th parameter of this callable (0-based).
@@ -57,17 +62,22 @@ module Generated {
     /**
      * Gets the `index`th parameter of this callable (0-based).
      */
-    final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
+    final ParamDecl getParam(int index) {
+      exists(ParamDecl immediate |
+        immediate = this.getImmediateParam(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the parameters of this callable.
      */
-    final ParamDecl getAParam() { result = getParam(_) }
+    final ParamDecl getAParam() { result = this.getParam(_) }
 
     /**
      * Gets the number of parameters of this callable.
      */
-    final int getNumberOfParams() { result = count(int i | exists(getParam(i))) }
+    final int getNumberOfParams() { result = count(int i | exists(this.getParam(i))) }
 
     /**
      * Gets the body of this callable, if it exists.
@@ -85,12 +95,17 @@ module Generated {
      *
      * The body is absent within protocol declarations.
      */
-    final BraceStmt getBody() { result = getImmediateBody().resolve() }
+    final BraceStmt getBody() {
+      exists(BraceStmt immediate |
+        immediate = this.getImmediateBody() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getBody()` exists.
      */
-    final predicate hasBody() { exists(getBody()) }
+    final predicate hasBody() { exists(this.getBody()) }
 
     /**
      * Gets the `index`th capture of this callable (0-based).
@@ -108,16 +123,21 @@ module Generated {
     /**
      * Gets the `index`th capture of this callable (0-based).
      */
-    final CapturedDecl getCapture(int index) { result = getImmediateCapture(index).resolve() }
+    final CapturedDecl getCapture(int index) {
+      exists(CapturedDecl immediate |
+        immediate = this.getImmediateCapture(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the captures of this callable.
      */
-    final CapturedDecl getACapture() { result = getCapture(_) }
+    final CapturedDecl getACapture() { result = this.getCapture(_) }
 
     /**
      * Gets the number of captures of this callable.
      */
-    final int getNumberOfCaptures() { result = count(int i | exists(getCapture(i))) }
+    final int getNumberOfCaptures() { result = count(int i | exists(this.getCapture(i))) }
   }
 }

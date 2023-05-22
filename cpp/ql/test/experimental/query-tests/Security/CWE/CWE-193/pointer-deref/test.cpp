@@ -222,3 +222,89 @@ void test14(unsigned long n, char *p) {
     p[n - 1] = 'a'; // GOOD
   }
 }
+
+void test15(unsigned index) {
+  unsigned size = index + 13;
+  if(size < index) {
+    return;
+  }
+  int* newname = new int[size];
+  newname[index] = 0; // GOOD [FALSE POSITIVE]
+}
+
+void test16(unsigned index) {
+  unsigned size = index + 13;
+  if(size >= index) {
+    int* newname = new int[size];
+    newname[index] = 0; // GOOD [FALSE POSITIVE]
+  }
+}
+
+void *realloc(void *, unsigned);
+
+void test17(unsigned *p, unsigned x, unsigned k) {
+    if(k > 0 && p[1] <= p[0]){
+        unsigned n = 3*p[0] + k;
+        p = (unsigned*)realloc(p, n);
+        p[0] = n;
+        unsigned i = p[1];
+        // The following access is okay because:
+        // n = 3*p[0] + k >= p[0] + k >= p[1] + k > p[1] = i
+        // (where p[0] denotes the original value for p[0])
+        p[i] = x; // GOOD [FALSE POSITIVE]
+    }
+}
+
+void test17(unsigned len)
+{
+  int *xs = new int[len];
+  int *end = xs + len;
+  for (int *x = xs; x <= end; x++)
+  {
+    int i = *x; // BAD
+  }
+}
+
+void test18(unsigned len)
+{
+  int *xs = new int[len];
+  int *end = xs + len;
+  for (int *x = xs; x <= end; x++)
+  {
+    *x = 0; // BAD
+  }
+}
+
+void test19(unsigned len)
+{
+  int *xs = new int[len];
+  int *end = xs + len;
+  for (int *x = xs; x < end; x++)
+  {
+    int i = *x; // GOOD
+  }
+}
+
+void test20(unsigned len)
+{
+  int *xs = new int[len];
+  int *end = xs + len;
+  for (int *x = xs; x < end; x++)
+  {
+    *x = 0; // GOOD
+  }
+}
+
+void* test21_get(int n);
+
+void test21() {
+  int n = 0;
+  while (test21_get(n)) n+=2;
+
+  void** xs = new void*[n];
+
+  for (int i = 0; i < n; i += 2) {
+    xs[i] = test21_get(i); // GOOD
+    xs[i+1] = test21_get(i+1); // GOOD [FALSE POSITIVE]
+  }
+}

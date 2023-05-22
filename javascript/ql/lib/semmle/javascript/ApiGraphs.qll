@@ -348,6 +348,46 @@ module API {
     }
 
     /**
+     * Gets a node representing a function that is a wrapper around the function represented by this node.
+     *
+     * Concretely, a function that forwards all its parameters to a call to `f` and returns the result of that call
+     * is considered a wrapper around `f`.
+     *
+     * Examples:
+     * ```js
+     * function f(x) {
+     *   return g(x); // f = g.getForwardingFunction()
+     * }
+     *
+     * function doExec(x) {
+     *   console.log(x);
+     *   return exec(x); // doExec = exec.getForwardingFunction()
+     * }
+     *
+     * function doEither(x, y) {
+     *   if (x > y) {
+     *     return foo(x, y); // doEither = foo.getForwardingFunction()
+     *   } else {
+     *     return bar(x, y); // doEither = bar.getForwardingFunction()
+     *   }
+     * }
+     *
+     * function wrapWithLogging(f) {
+     *   return (x) => {
+     *     console.log(x);
+     *     return f(x); // f.getForwardingFunction() = anonymous arrow function
+     *   }
+     * }
+     * wrapWithLogging(g); // g.getForwardingFunction() = wrapWithLogging(g)
+     * ```
+     */
+    cached
+    Node getForwardingFunction() {
+      Stages::ApiStage::ref() and
+      result = this.getASuccessor(Label::forwardingFunction())
+    }
+
+    /**
      * Gets any class that has this value as a decorator.
      *
      * For example:
@@ -451,6 +491,7 @@ module API {
      * In other words, the value of a use of `that` may flow into the right-hand side of a
      * definition of this node.
      */
+    pragma[inline]
     predicate refersTo(Node that) { this.asSink() = that.getAValueReachableFromSource() }
 
     /**
@@ -901,6 +942,9 @@ module API {
           or
           lbl = Label::return() and
           ref = pred.getAnInvocation()
+          or
+          lbl = Label::forwardingFunction() and
+          DataFlow::functionForwardingStep(pred.getALocalUse(), ref)
         )
         or
         exists(DataFlow::Node def, DataFlow::FunctionNode fn |
@@ -1431,6 +1475,9 @@ module API {
     /** Gets the `return` edge label. */
     LabelReturn return() { any() }
 
+    /** Gets the label representing a function wrapper that forwards to an underlying function. */
+    LabelForwardingFunction forwardingFunction() { any() }
+
     /** Gets the `promised` edge label connecting a promise to its contained value. */
     LabelPromised promised() { any() }
 
@@ -1483,6 +1530,7 @@ module API {
         MkLabelDecoratedClass() or
         MkLabelDecoratedMember() or
         MkLabelDecoratedParameter() or
+        MkLabelForwardingFunction() or
         MkLabelEntryPoint(API::EntryPoint e)
 
       /** A label for an entry-point. */
@@ -1564,6 +1612,11 @@ module API {
       /** A label for the receiver of call, that is, the value passed as `this`. */
       class LabelReceiver extends ApiLabel, MkLabelReceiver {
         override string toString() { result = "getReceiver()" }
+      }
+
+      /** A label for a function that is a wrapper around another function. */
+      class LabelForwardingFunction extends ApiLabel, MkLabelForwardingFunction {
+        override string toString() { result = "getForwardingFunction()" }
       }
 
       /** A label for a class decorated by the current value. */

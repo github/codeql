@@ -3,13 +3,15 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["java.io", "File", True, "createTempFile", "(String,String,File)", "", "Argument[2]", "create-file", "ai-generated"]
-      - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[0]", "create-file", "ai-generated"]
-      - ["java.io", "FileInputStream", True, "FileInputStream", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.io", "File", True, "createTempFile", "(String,String,File)", "", "Argument[2]", "create-file", "ai-manual"]
+      - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[0]", "create-file", "ai-manual"]
+      - ["java.io", "FileInputStream", True, "FileInputStream", "(File)", "", "Argument[0]", "read-file", "ai-manual"]
+      - ["java.io", "FileInputStream", True, "FileInputStream", "(String)", "", "Argument[0]", "read-file", "ai-manual"]
       - ["java.io", "FileOutputStream", False, "FileOutputStream", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.io", "FileOutputStream", False, "write", "", "", "Argument[0]", "write-file", "manual"]
-      - ["java.io", "FileReader", True, "FileReader", "(File)", "", "Argument[0]", "read-file", "ai-generated"]
-      - ["java.io", "FileReader", True, "FileReader", "(String)", "", "Argument[0]", "read-file", "ai-generated"]
+      - ["java.io", "FileReader", True, "FileReader", "(File)", "", "Argument[0]", "read-file", "ai-manual"]
+      - ["java.io", "FileReader", True, "FileReader", "(String)", "", "Argument[0]", "read-file", "ai-manual"]
+      - ["java.io", "FileSystem", True, "createDirectory", "(File)", "", "Argument[0]", "create-file", "ai-manual"]
       - ["java.io", "FileWriter", False, "FileWriter", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.io", "PrintStream", False, "PrintStream", "(File)", "", "Argument[0]", "create-file", "manual"]
       - ["java.io", "PrintStream", False, "PrintStream", "(File,Charset)", "", "Argument[0]", "create-file", "manual"]
@@ -98,20 +100,20 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.io", "Closeable", "close", "()", "manual"]
-      - ["java.io", "DataOutput", "writeBoolean", "(boolean)", "manual"]
-      - ["java.io", "File", "delete", "()", "manual"]
-      - ["java.io", "File", "exists", "()", "manual"]
-      - ["java.io", "File", "isFile", "()", "manual"]
-      - ["java.io", "File", "length", "()", "manual"]
-      - ["java.io", "File", "isDirectory", "()", "manual"]
-      - ["java.io", "File", "mkdirs", "()", "manual"]
-      - ["java.io", "FileInputStream", "FileInputStream", "(File)", "manual"]
-      - ["java.io", "InputStream", "close", "()", "manual"]
-      - ["java.io", "OutputStream", "flush", "()", "manual"]
+      - ["java.io", "Closeable", "close", "()", "summary", "manual"]
+      - ["java.io", "DataOutput", "writeBoolean", "(boolean)", "summary", "manual"]
+      - ["java.io", "File", "delete", "()", "summary", "manual"]
+      - ["java.io", "File", "exists", "()", "summary", "manual"]
+      - ["java.io", "File", "isFile", "()", "summary", "manual"]
+      - ["java.io", "File", "length", "()", "summary", "manual"]
+      - ["java.io", "File", "isDirectory", "()", "summary", "manual"]
+      - ["java.io", "File", "mkdirs", "()", "summary", "manual"]
+      - ["java.io", "FileInputStream", "FileInputStream", "(File)", "summary", "manual"]
+      - ["java.io", "InputStream", "close", "()", "summary", "manual"]
+      - ["java.io", "OutputStream", "flush", "()", "summary", "manual"]
       # The below APIs have numeric flow and are currently being stored as neutral models.
       # These may be changed to summary models with kinds "value-numeric" and "taint-numeric" (or similar) in the future.
-      - ["java.io", "DataInput", "readInt", "()", "manual"]         # taint-numeric
-      - ["java.io", "DataInput", "readLong", "()", "manual"]        # taint-numeric
-      - ["java.io", "DataOutput", "writeInt", "(int)", "manual"]    # taint-numeric
-      - ["java.io", "DataOutput", "writeLong", "(long)", "manual"]  # taint-numeric
+      - ["java.io", "DataInput", "readInt", "()", "summary", "manual"]         # taint-numeric
+      - ["java.io", "DataInput", "readLong", "()", "summary", "manual"]        # taint-numeric
+      - ["java.io", "DataOutput", "writeInt", "(int)", "summary", "manual"]    # taint-numeric
+      - ["java.io", "DataOutput", "writeLong", "(long)", "summary", "manual"]  # taint-numeric

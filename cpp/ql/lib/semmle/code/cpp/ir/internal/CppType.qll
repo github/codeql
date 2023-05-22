@@ -208,10 +208,10 @@ class CppType extends TCppType {
   string toString() { none() }
 
   /** Gets a string used in IR dumps */
-  string getDumpString() { result = toString() }
+  string getDumpString() { result = this.toString() }
 
   /** Gets the size of the type in bytes, if known. */
-  final int getByteSize() { result = getIRType().getByteSize() }
+  final int getByteSize() { result = this.getIRType().getByteSize() }
 
   /**
    * Gets the `IRType` that represents this `CppType`. Many different `CppType`s can map to a single
@@ -232,7 +232,7 @@ class CppType extends TCppType {
    */
   final predicate hasUnspecifiedType(Type type, boolean isGLValue) {
     exists(Type specifiedType |
-      hasType(specifiedType, isGLValue) and
+      this.hasType(specifiedType, isGLValue) and
       type = specifiedType.getUnspecifiedType()
     )
   }

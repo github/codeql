@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for constant password vulnerabilities. That is,
@@ -13,16 +14,16 @@ import codeql.swift.dataflow.DataFlow
 abstract class ConstantPasswordSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for constant password vulnerabilities.
+ * A barrier for constant password vulnerabilities.
  */
-abstract class ConstantPasswordSanitizer extends DataFlow::Node { }
+abstract class ConstantPasswordBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class ConstantPasswordAdditionalTaintStep extends Unit {
+class ConstantPasswordAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to constant password vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
@@ -31,10 +32,10 @@ class ConstantPasswordAdditionalTaintStep extends Unit {
 /**
  * A password sink for the CryptoSwift library.
  */
-private class DefaultConstantPasswordSink extends ConstantPasswordSink {
-  DefaultConstantPasswordSink() {
+private class CryptoSwiftPasswordSink extends ConstantPasswordSink {
+  CryptoSwiftPasswordSink() {
     // `password` arg in `init` is a sink
-    exists(ClassOrStructDecl c, ConstructorDecl f, CallExpr call |
+    exists(NominalTypeDecl c, Initializer f, CallExpr call |
       c.getName() = ["HKDF", "PBKDF1", "PBKDF2", "Scrypt"] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
@@ -49,8 +50,12 @@ private class DefaultConstantPasswordSink extends ConstantPasswordSink {
 private class RnCryptorPasswordSink extends ConstantPasswordSink {
   RnCryptorPasswordSink() {
     // RNCryptor (labelled arguments)
-    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
-      c.getName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+    exists(NominalTypeDecl c, Method f, CallExpr call |
+      c.getFullName() =
+        [
+          "RNCryptor", "RNEncryptor", "RNDecryptor", "RNCryptor.EncryptorV3",
+          "RNCryptor.DecryptorV3"
+        ] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
       call.getArgumentWithLabel(["password", "withPassword", "forPassword"]).getExpr() =
@@ -58,10 +63,17 @@ private class RnCryptorPasswordSink extends ConstantPasswordSink {
     )
     or
     // RNCryptor (unlabelled arguments)
-    exists(MethodDecl f, CallExpr call |
+    exists(Method f, CallExpr call |
       f.hasQualifiedName("RNCryptor", "keyForPassword(_:salt:settings:)") and
       call.getStaticTarget() = f and
       call.getArgument(0).getExpr() = this.asExpr()
     )
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultPasswordSink extends ConstantPasswordSink {
+  DefaultPasswordSink() { sinkNode(this, "encryption-password") }
 }

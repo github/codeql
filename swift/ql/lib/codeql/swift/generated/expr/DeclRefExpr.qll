@@ -23,7 +23,12 @@ module Generated {
     /**
      * Gets the declaration of this declaration reference expression.
      */
-    final Decl getDecl() { result = getImmediateDecl().resolve() }
+    final Decl getDecl() {
+      exists(Decl immediate |
+        immediate = this.getImmediateDecl() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the `index`th replacement type of this declaration reference expression (0-based).
@@ -42,19 +47,22 @@ module Generated {
      * Gets the `index`th replacement type of this declaration reference expression (0-based).
      */
     final Type getReplacementType(int index) {
-      result = getImmediateReplacementType(index).resolve()
+      exists(Type immediate |
+        immediate = this.getImmediateReplacementType(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
      * Gets any of the replacement types of this declaration reference expression.
      */
-    final Type getAReplacementType() { result = getReplacementType(_) }
+    final Type getAReplacementType() { result = this.getReplacementType(_) }
 
     /**
      * Gets the number of replacement types of this declaration reference expression.
      */
     final int getNumberOfReplacementTypes() {
-      result = count(int i | exists(getReplacementType(i)))
+      result = count(int i | exists(this.getReplacementType(i)))
     }
 
     /**

@@ -1,3 +1,24 @@
+## 0.6.1
+
+### New Queries
+
+* A new query `cpp/double-free` has been added. The query finds possible cases of deallocating the same pointer twice. The precision of the query has been set to "medium".
+* The query `cpp/use-after-free` has been modernized and assigned the precision "medium". The query finds cases of where a pointer is dereferenced after its memory has been deallocated.
+
+## 0.6.0
+
+### New Queries
+
+* The query `cpp/redundant-null-check-simple` has been promoted to Code Scanning. The query finds cases where a pointer is compared to null after it has already been dereferenced. Such comparisons likely indicate a bug at the place where the pointer is dereferenced, or where the pointer is compared to null.
+
+### Minor Analysis Improvements
+
+* The query `cpp/tainted-arithmetic` now also flags possible overflows in arithmetic assignment operations.
+
+## 0.5.6
+
+No user-facing changes.
+
 ## 0.5.5
 
 ### Deprecated Queries

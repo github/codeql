@@ -56,7 +56,8 @@ predicate topJdkApiName(string apiName) {
       "java.lang.StringBuilder#append(int)", "java.util.Objects#requireNonNull(Object,String)",
       "java.nio.file.Path#resolve(String)", "java.lang.Enum#toString()",
       "java.lang.RuntimeException#RuntimeException(Throwable)", "java.util.Collection#size()",
-      "java.lang.String#charAt(int)", "java.util.stream.Stream#forEach(Consumer)",
+      "java.lang.String#charAt(int)",
+      "java.lang.UnsupportedOperationException#UnsupportedOperationException(String)",
       "java.util.Map#isEmpty()", "java.lang.String#valueOf(int)",
       // top 200 JDK APIs
       "java.lang.Integer#intValue()", "java.util.ArrayList#size()",
@@ -295,11 +296,11 @@ class TopJdkApi extends SummarizedCallableBase {
   }
 
   /** Holds if this API has a manual summary model. */
-  private predicate hasManualSummary() { this.(SummarizedCallable).isManual() }
+  private predicate hasManualSummary() { this.(SummarizedCallable).hasManualModel() }
 
   /** Holds if this API has a manual neutral model. */
   private predicate hasManualNeutral() {
-    this.(FlowSummaryImpl::Public::NeutralCallable).isManual()
+    this.(FlowSummaryImpl::Public::NeutralCallable).hasManualModel()
   }
 
   /** Holds if this API has a manual MaD model. */

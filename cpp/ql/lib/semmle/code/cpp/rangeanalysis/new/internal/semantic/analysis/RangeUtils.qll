@@ -3,7 +3,7 @@
  */
 
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.Semantic
-private import RangeAnalysisSpecific
+private import RangeAnalysisRelativeSpecific
 private import RangeAnalysisStage as Range
 private import ConstantAnalysis
 
@@ -137,4 +137,27 @@ module RangeUtil<Range::DeltaSig D, Range::LangSig<D> Lang> implements Range::Ut
     or
     not exists(Lang::getAlternateTypeForSsaVariable(var)) and result = var.getType()
   }
+}
+
+/**
+ * Holds if `rix` is the number of input edges to `phi`.
+ */
+predicate maxPhiInputRank(SemSsaPhiNode phi, int rix) {
+  rix = max(int r | rankedPhiInput(phi, _, _, r))
+}
+
+/**
+ * Holds if `inp` is an input to `phi` along `edge` and this input has index `r`
+ * in an arbitrary 1-based numbering of the input edges to `phi`.
+ */
+predicate rankedPhiInput(
+  SemSsaPhiNode phi, SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge, int r
+) {
+  edge.phiInput(phi, inp) and
+  edge =
+    rank[r](SemSsaReadPositionPhiInputEdge e |
+      e.phiInput(phi, _)
+    |
+      e order by e.getOrigBlock().getUniqueId()
+    )
 }

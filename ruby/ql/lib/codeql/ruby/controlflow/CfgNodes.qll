@@ -936,10 +936,10 @@ module ExprNodes {
   }
 
   /** A control-flow node that wraps a `StringLiteral` AST expression. */
-  class StringLiteralCfgNode extends ExprCfgNode {
-    override string getAPrimaryQlClass() { result = "StringLiteralCfgNode" }
+  class StringLiteralCfgNode extends StringlikeLiteralCfgNode {
+    StringLiteralCfgNode() { e instanceof StringLiteral }
 
-    override StringLiteral e;
+    override string getAPrimaryQlClass() { result = "StringLiteralCfgNode" }
 
     final override StringLiteral getExpr() { result = super.getExpr() }
   }

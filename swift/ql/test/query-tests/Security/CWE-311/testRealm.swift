@@ -30,11 +30,11 @@ class MyRealmSwiftObject : RealmSwiftObject {
 class MyRealmSwiftObject2 : Object {
 	override init() { password = "" }
 
-	var username: String?
+	var harmless: String?
 	var password: String?
 }
 
-func test1(realm : Realm, myUsername: String, myPassword : String, myHashedPassword : String) {
+func test1(realm : Realm, myHarmless: String, myPassword : String, myHashedPassword : String) {
 	// add objects (within a transaction) ...
 
 	let a = MyRealmSwiftObject()
@@ -69,7 +69,7 @@ func test1(realm : Realm, myUsername: String, myPassword : String, myHashedPassw
 	// MyRealmSwiftObject2...
 
 	let h = MyRealmSwiftObject2()
-	h.username = myUsername // GOOD (not sensitive)
+	h.harmless = myHarmless // GOOD (not sensitive)
 	h.password = myPassword // BAD
 	realm.add(h)
 }

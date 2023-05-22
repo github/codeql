@@ -32,9 +32,11 @@ class TargetFile {
   TargetFile& operator<<(T&& value) {
     errno = 0;
     out << value;
-    checkOutput("write to file");
+    checkOutput("write to");
     return *this;
   }
+
+  const std::filesystem::path& target() const { return targetPath; }
 
  private:
   TargetFile(const std::filesystem::path& target,

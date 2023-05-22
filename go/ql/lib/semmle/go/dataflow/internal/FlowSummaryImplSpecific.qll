@@ -17,7 +17,7 @@ private module FlowSummaries {
 
 class SummarizedCallableBase = Callable;
 
-DataFlowCallable inject(SummarizedCallable c) { result.asCallable() = c }
+DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition callbackSelfParameterPosition() { result = -1 }
@@ -72,11 +72,11 @@ predicate summaryElement(
 }
 
 /**
- * Holds if a neutral model exists for `c` with provenance `provenance`,
+ * Holds if a neutral summary model exists for `c` with provenance `provenance`,
  * which means that there is no flow through `c`.
  * Note. Neutral models have not been implemented for Go.
  */
-predicate neutralElement(SummarizedCallable c, string provenance) { none() }
+predicate neutralSummaryElement(SummarizedCallable c, string provenance) { none() }
 
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
@@ -189,9 +189,7 @@ class InterpretNode extends TInterpretNode {
 
   /** Gets the callable that this node corresponds to, if any. */
   DataFlowCallable asCallable() {
-    result.asFunction() = this.asElement().asEntity()
-    or
-    result.asFuncLit() = this.asElement().asAstNode()
+    result.asSummarizedCallable().asFunction() = this.asElement().asEntity()
   }
 
   /** Gets the target of this call, if any. */

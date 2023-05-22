@@ -2,15 +2,19 @@ edges
 | sample.go:15:24:15:63 | type conversion | sample.go:16:9:16:15 | slice expression |
 | sample.go:15:49:15:61 | call to Uint32 | sample.go:15:24:15:63 | type conversion |
 | sample.go:16:9:16:15 | slice expression | sample.go:26:25:26:30 | call to Guid |
-| sample.go:34:12:34:40 | call to New | sample.go:37:25:37:29 | nonce |
-| sample.go:34:12:34:40 | call to New | sample.go:37:32:37:36 | nonce |
+| sample.go:33:2:33:6 | definition of nonce | sample.go:37:25:37:29 | nonce |
+| sample.go:33:2:33:6 | definition of nonce | sample.go:37:32:37:36 | nonce |
+| sample.go:34:12:34:40 | call to New | sample.go:35:14:35:19 | random |
+| sample.go:35:14:35:19 | random | sample.go:33:2:33:6 | definition of nonce |
 nodes
 | InsecureRandomness.go:12:18:12:40 | call to Intn | semmle.label | call to Intn |
 | sample.go:15:24:15:63 | type conversion | semmle.label | type conversion |
 | sample.go:15:49:15:61 | call to Uint32 | semmle.label | call to Uint32 |
 | sample.go:16:9:16:15 | slice expression | semmle.label | slice expression |
 | sample.go:26:25:26:30 | call to Guid | semmle.label | call to Guid |
+| sample.go:33:2:33:6 | definition of nonce | semmle.label | definition of nonce |
 | sample.go:34:12:34:40 | call to New | semmle.label | call to New |
+| sample.go:35:14:35:19 | random | semmle.label | random |
 | sample.go:37:25:37:29 | nonce | semmle.label | nonce |
 | sample.go:37:32:37:36 | nonce | semmle.label | nonce |
 | sample.go:43:17:43:39 | call to Intn | semmle.label | call to Intn |

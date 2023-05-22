@@ -22,6 +22,11 @@ module Generated {
     /**
      * Gets the body of this guard statement.
      */
-    final BraceStmt getBody() { result = getImmediateBody().resolve() }
+    final BraceStmt getBody() {
+      exists(BraceStmt immediate |
+        immediate = this.getImmediateBody() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

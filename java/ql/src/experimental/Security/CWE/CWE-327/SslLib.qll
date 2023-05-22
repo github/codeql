@@ -1,24 +1,22 @@
 import java
 import semmle.code.java.security.Encryption
 import semmle.code.java.dataflow.TaintTracking
-import DataFlow
-import PathGraph
 
 /**
  * A taint-tracking configuration for unsafe SSL and TLS versions.
  */
-class UnsafeTlsVersionConfig extends TaintTracking::Configuration {
-  UnsafeTlsVersionConfig() { this = "UnsafeTlsVersion::UnsafeTlsVersionConfig" }
+module UnsafeTlsVersionConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source.asExpr() instanceof UnsafeTlsVersion }
 
-  override predicate isSource(DataFlow::Node source) { source.asExpr() instanceof UnsafeTlsVersion }
-
-  override predicate isSink(DataFlow::Node sink) {
+  predicate isSink(DataFlow::Node sink) {
     sink instanceof SslContextGetInstanceSink or
     sink instanceof CreateSslParametersSink or
     sink instanceof SslParametersSetProtocolsSink or
     sink instanceof SetEnabledProtocolsSink
   }
 }
+
+module UnsafeTlsVersionFlow = TaintTracking::Global<UnsafeTlsVersionConfig>;
 
 /**
  * A sink that sets protocol versions in `SSLContext`,
@@ -29,7 +27,7 @@ class SslContextGetInstanceSink extends DataFlow::ExprNode {
     exists(StaticMethodAccess ma, Method m | m = ma.getMethod() |
       m.getDeclaringType() instanceof SslContext and
       m.hasName("getInstance") and
-      ma.getArgument(0) = asExpr()
+      ma.getArgument(0) = this.asExpr()
     )
   }
 }
@@ -41,7 +39,7 @@ class SslContextGetInstanceSink extends DataFlow::ExprNode {
 class CreateSslParametersSink extends DataFlow::ExprNode {
   CreateSslParametersSink() {
     exists(ConstructorCall cc | cc.getConstructedType() instanceof SslParameters |
-      cc.getArgument(1) = asExpr()
+      cc.getArgument(1) = this.asExpr()
     )
   }
 }
@@ -55,7 +53,7 @@ class SslParametersSetProtocolsSink extends DataFlow::ExprNode {
     exists(MethodAccess ma, Method m | m = ma.getMethod() |
       m.getDeclaringType() instanceof SslParameters and
       m.hasName("setProtocols") and
-      ma.getArgument(0) = asExpr()
+      ma.getArgument(0) = this.asExpr()
     )
   }
 }
@@ -75,7 +73,7 @@ class SetEnabledProtocolsSink extends DataFlow::ExprNode {
         type instanceof SslEngine
       ) and
       m.hasName("setEnabledProtocols") and
-      ma.getArgument(0) = asExpr()
+      ma.getArgument(0) = this.asExpr()
     )
   }
 }
@@ -85,15 +83,15 @@ class SetEnabledProtocolsSink extends DataFlow::ExprNode {
  */
 class UnsafeTlsVersion extends StringLiteral {
   UnsafeTlsVersion() {
-    getValue() = "SSL" or
-    getValue() = "SSLv2" or
-    getValue() = "SSLv3" or
-    getValue() = "TLS" or
-    getValue() = "TLSv1" or
-    getValue() = "TLSv1.1"
+    this.getValue() = "SSL" or
+    this.getValue() = "SSLv2" or
+    this.getValue() = "SSLv3" or
+    this.getValue() = "TLS" or
+    this.getValue() = "TLSv1" or
+    this.getValue() = "TLSv1.1"
   }
 }
 
 class SslServerSocket extends RefType {
-  SslServerSocket() { hasQualifiedName("javax.net.ssl", "SSLServerSocket") }
+  SslServerSocket() { this.hasQualifiedName("javax.net.ssl", "SSLServerSocket") }
 }

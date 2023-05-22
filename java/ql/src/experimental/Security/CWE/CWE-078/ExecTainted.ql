@@ -13,16 +13,14 @@
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.ExternalProcess
 import semmle.code.java.security.CommandLineQuery
-import JSchOSInjection
 import RemoteUserInputToArgumentToExecFlow::PathGraph
+import JSchOSInjection
 
 // This is a clone of query `java/command-line-injection` that also includes experimental sinks.
 from
   RemoteUserInputToArgumentToExecFlow::PathNode source,
-  RemoteUserInputToArgumentToExecFlow::PathNode sink, ArgumentToExec execArg
+  RemoteUserInputToArgumentToExecFlow::PathNode sink, Expr execArg
 where execIsTainted(source, sink, execArg)
 select execArg, source, sink, "This command line depends on a $@.", source.getNode(),
   "user-provided value"

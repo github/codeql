@@ -2,11 +2,12 @@
 
 #include "swift/extractor/translators/TranslatorBase.h"
 #include "swift/extractor/trap/generated/type/TrapClasses.h"
-#include "swift/extractor/mangler/SwiftMangler.h"
 
 namespace codeql {
 class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
  public:
+  static constexpr std::string_view name = "type";
+
   using TypeTranslatorBase<TypeTranslator>::TypeTranslatorBase;
   using TypeTranslatorBase<TypeTranslator>::translateAndEmit;
 
@@ -89,22 +90,11 @@ class TypeTranslator : public TypeTranslatorBase<TypeTranslator> {
   void fillAnyGenericType(const swift::AnyGenericType& type, codeql::AnyGenericType& entry);
 
   template <typename T>
-  auto createMangledTypeEntry(const T& type) {
-    auto mangledName = mangler.mangleType(type);
-    if (mangledName) {
-      return dispatcher.createEntry(type, mangledName.value());
-    }
-    return dispatcher.createEntry(type);
-  }
-
-  template <typename T>
   auto createTypeEntry(const T& type) {
-    auto entry = createMangledTypeEntry(type);
+    auto entry = dispatcher.createEntry(type);
     fillType(type, entry);
     return entry;
   }
-
-  SwiftMangler mangler;
 };
 
 }  // namespace codeql

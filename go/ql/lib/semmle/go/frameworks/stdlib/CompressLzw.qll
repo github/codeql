@@ -4,6 +4,7 @@
 
 import go
 
+// These models are not implemented using Models-as-Data because they represent reverse flow.
 /** Provides models of commonly used functions in the `compress/lzw` package. */
 module CompressLzw {
   private class FunctionModels extends TaintTracking::FunctionModel {
@@ -11,12 +12,8 @@ module CompressLzw {
     FunctionOutput outp;
 
     FunctionModels() {
-      // signature: func NewReader(r io.Reader, order Order, litWidth int) io.ReadCloser
-      hasQualifiedName("compress/lzw", "NewReader") and
-      (inp.isParameter(0) and outp.isResult())
-      or
       // signature: func NewWriter(w io.Writer, order Order, litWidth int) io.WriteCloser
-      hasQualifiedName("compress/lzw", "NewWriter") and
+      this.hasQualifiedName("compress/lzw", "NewWriter") and
       (inp.isResult() and outp.isParameter(0))
     }
 

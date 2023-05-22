@@ -211,7 +211,7 @@ codeql::OptionalEvaluationExpr ExprTranslator::translateOptionalEvaluationExpr(
   return entry;
 }
 
-codeql::RebindSelfInConstructorExpr ExprTranslator::translateRebindSelfInConstructorExpr(
+codeql::RebindSelfInInitializerExpr ExprTranslator::translateRebindSelfInConstructorExpr(
     const swift::RebindSelfInConstructorExpr& expr) {
   auto entry = createExprEntry(expr);
   entry.sub_expr = dispatcher.fetchLabel(expr.getSubExpr());
@@ -300,7 +300,7 @@ codeql::OptionalTryExpr ExprTranslator::translateOptionalTryExpr(
   return entry;
 }
 
-codeql::ConstructorRefCallExpr ExprTranslator::translateConstructorRefCallExpr(
+codeql::InitializerRefCallExpr ExprTranslator::translateConstructorRefCallExpr(
     const swift::ConstructorRefCallExpr& expr) {
   auto entry = createExprEntry(expr);
   fillSelfApplyExpr(expr, entry);
@@ -313,16 +313,16 @@ codeql::DiscardAssignmentExpr ExprTranslator::translateDiscardAssignmentExpr(
   return entry;
 }
 
-codeql::ClosureExpr ExprTranslator::translateClosureExpr(const swift::ClosureExpr& expr) {
+codeql::ExplicitClosureExpr ExprTranslator::translateClosureExpr(const swift::ClosureExpr& expr) {
   auto entry = createExprEntry(expr);
-  fillAbstractClosureExpr(expr, entry);
+  fillClosureExpr(expr, entry);
   return entry;
 }
 
 codeql::AutoClosureExpr ExprTranslator::translateAutoClosureExpr(
     const swift::AutoClosureExpr& expr) {
   auto entry = createExprEntry(expr);
-  fillAbstractClosureExpr(expr, entry);
+  fillClosureExpr(expr, entry);
   return entry;
 }
 
@@ -355,11 +355,11 @@ codeql::IsExpr ExprTranslator::translateIsExpr(const swift::IsExpr& expr) {
 codeql::SubscriptExpr ExprTranslator::translateSubscriptExpr(const swift::SubscriptExpr& expr) {
   auto entry = createExprEntry(expr);
   fillAccessorSemantics(expr, entry);
-  assert(expr.getArgs() && "SubscriptExpr has getArgs");
+  fillLookupExpr(expr, entry);
+  CODEQL_EXPECT_OR(return entry, expr.getArgs(), "SubscriptExpr has null getArgs");
   for (const auto& arg : *expr.getArgs()) {
     entry.arguments.push_back(emitArgument(arg));
   }
-  fillLookupExpr(expr, entry);
   return entry;
 }
 
@@ -378,22 +378,23 @@ codeql::MemberRefExpr ExprTranslator::translateMemberRefExpr(const swift::Member
 
 codeql::KeyPathExpr ExprTranslator::translateKeyPathExpr(const swift::KeyPathExpr& expr) {
   auto entry = createExprEntry(expr);
-  // TODO this should be completely redone, as we are using internal stuff here instead of
-  // extracting expr.getComponents()
   if (!expr.isObjC()) {
-    entry.parsed_path = dispatcher.fetchOptionalLabel(expr.getParsedPath());
+    for (const auto& component : expr.getComponents()) {
+      entry.components.push_back(emitKeyPathComponent(component));
+    }
     if (auto rootTypeRepr = expr.getRootType()) {
       auto keyPathType = expr.getType()->getAs<swift::BoundGenericClassType>();
-      assert(keyPathType && "KeyPathExpr must have BoundGenericClassType");
+      CODEQL_EXPECT_OR(return entry, keyPathType, "KeyPathExpr must have BoundGenericClassType");
       auto keyPathTypeArgs = keyPathType->getGenericArgs();
-      assert(keyPathTypeArgs.size() != 0 && "KeyPathExpr type must have generic args");
+      CODEQL_EXPECT_OR(return entry, keyPathTypeArgs.size() != 0,
+                              "KeyPathExpr type must have generic args");
       entry.root = dispatcher.fetchLabel(rootTypeRepr, keyPathTypeArgs[0]);
     }
   }
   return entry;
 }
 
-codeql::LazyInitializerExpr ExprTranslator::translateLazyInitializerExpr(
+codeql::LazyInitializationExpr ExprTranslator::translateLazyInitializerExpr(
     const swift::LazyInitializerExpr& expr) {
   auto entry = createExprEntry(expr);
   entry.sub_expr = dispatcher.fetchLabel(expr.getSubExpr());
@@ -427,10 +428,10 @@ codeql::KeyPathApplicationExpr ExprTranslator::translateKeyPathApplicationExpr(
   return entry;
 }
 
-codeql::OtherConstructorDeclRefExpr ExprTranslator::translateOtherConstructorDeclRefExpr(
+codeql::OtherInitializerRefExpr ExprTranslator::translateOtherConstructorDeclRefExpr(
     const swift::OtherConstructorDeclRefExpr& expr) {
   auto entry = createExprEntry(expr);
-  entry.constructor_decl = dispatcher.fetchLabel(expr.getDecl());
+  entry.initializer = dispatcher.fetchLabel(expr.getDecl());
   return entry;
 }
 
@@ -472,18 +473,38 @@ codeql::ErrorExpr ExprTranslator::translateErrorExpr(const swift::ErrorExpr& exp
   return entry;
 }
 
-void ExprTranslator::fillAbstractClosureExpr(const swift::AbstractClosureExpr& expr,
-                                             codeql::AbstractClosureExpr& entry) {
-  assert(expr.getParameters() && "AbstractClosureExpr has getParameters()");
-  entry.params = dispatcher.fetchRepeatedLabels(*expr.getParameters());
+void ExprTranslator::fillClosureExpr(const swift::AbstractClosureExpr& expr,
+                                     codeql::ClosureExpr& entry) {
   entry.body = dispatcher.fetchLabel(expr.getBody());
   entry.captures = dispatcher.fetchRepeatedLabels(expr.getCaptureInfo().getCaptures());
+  CODEQL_EXPECT_OR(return, expr.getParameters(), "AbstractClosureExpr has null getParameters()");
+  entry.params = dispatcher.fetchRepeatedLabels(*expr.getParameters());
 }
 
 TrapLabel<ArgumentTag> ExprTranslator::emitArgument(const swift::Argument& arg) {
   auto entry = dispatcher.createUncachedEntry(arg);
   entry.label = arg.getLabel().str().str();
   entry.expr = dispatcher.fetchLabel(arg.getExpr());
+  dispatcher.emit(entry);
+  return entry.id;
+}
+
+TrapLabel<KeyPathComponentTag> ExprTranslator::emitKeyPathComponent(
+    const swift::KeyPathExpr::Component& component) {
+  auto entry = dispatcher.createUncachedEntry(component);
+  entry.kind = static_cast<int>(component.getKind());
+  if (auto subscript_args = component.getSubscriptArgs()) {
+    for (const auto& arg : *subscript_args) {
+      entry.subscript_arguments.push_back(emitArgument(arg));
+    }
+  }
+  if (component.getKind() == swift::KeyPathExpr::Component::Kind::TupleElement) {
+    entry.tuple_index = static_cast<int>(component.getTupleIndex());
+  }
+  if (component.hasDeclRef()) {
+    entry.decl_ref = dispatcher.fetchLabel(component.getDeclRef().getDecl());
+  }
+  entry.component_type = dispatcher.fetchLabel(component.getComponentType());
   dispatcher.emit(entry);
   return entry.id;
 }
@@ -504,7 +525,7 @@ void ExprTranslator::fillAnyTryExpr(const swift::AnyTryExpr& expr, codeql::AnyTr
 
 void ExprTranslator::fillApplyExpr(const swift::ApplyExpr& expr, codeql::ApplyExpr& entry) {
   entry.function = dispatcher.fetchLabel(expr.getFn());
-  assert(expr.getArgs() && "ApplyExpr has getArgs");
+  CODEQL_EXPECT_OR(return, expr.getArgs(), "ApplyExpr has null getArgs");
   for (const auto& arg : *expr.getArgs()) {
     entry.arguments.push_back(emitArgument(arg));
   }

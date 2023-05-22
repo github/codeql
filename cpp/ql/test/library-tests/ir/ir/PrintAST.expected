@@ -14377,6 +14377,91 @@ ir.cpp:
 # 1885|             Type = [ClassTemplateInstantiation,Struct] Bar2<int>
 # 1885|             ValueCategory = lvalue
 # 1886|     getStmt(2): [ReturnStmt] return ...
+# 1891| [TopLevelFunction] int test_global_template_int()
+# 1891|   <params>: 
+# 1891|   getEntryPoint(): [BlockStmt] { ... }
+# 1892|     getStmt(0): [DeclStmt] declaration
+# 1892|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of local_int
+# 1892|           Type = [IntType] int
+# 1892|         getVariable().getInitializer(): [Initializer] initializer for local_int
+# 1892|           getExpr(): [VariableAccess] global_template
+# 1892|               Type = [IntType] int
+# 1892|               ValueCategory = prvalue(load)
+# 1893|     getStmt(1): [DeclStmt] declaration
+# 1893|       getDeclarationEntry(0): [VariableDeclarationEntry] definition of local_char
+# 1893|           Type = [PlainCharType] char
+# 1893|         getVariable().getInitializer(): [Initializer] initializer for local_char
+# 1893|           getExpr(): [VariableAccess] global_template
+# 1893|               Type = [PlainCharType] char
+# 1893|               ValueCategory = prvalue(load)
+# 1894|     getStmt(2): [ReturnStmt] return ...
+# 1894|       getExpr(): [AddExpr] ... + ...
+# 1894|           Type = [IntType] int
+# 1894|           ValueCategory = prvalue
+# 1894|         getLeftOperand(): [VariableAccess] local_int
+# 1894|             Type = [IntType] int
+# 1894|             ValueCategory = prvalue(load)
+# 1894|         getRightOperand(): [VariableAccess] local_char
+# 1894|             Type = [PlainCharType] char
+# 1894|             ValueCategory = prvalue(load)
+# 1894|         getRightOperand().getFullyConverted(): [CStyleCast] (int)...
+# 1894|             Conversion = [IntegralConversion] integral conversion
+# 1894|             Type = [IntType] int
+# 1894|             ValueCategory = prvalue
+# 1897| [TopLevelFunction] void noreturnFunc()
+# 1897|   <params>: 
+# 1899| [TopLevelFunction] int noreturnTest(int)
+# 1899|   <params>: 
+# 1899|     getParameter(0): [Parameter] x
+# 1899|         Type = [IntType] int
+# 1899|   getEntryPoint(): [BlockStmt] { ... }
+# 1900|     getStmt(0): [IfStmt] if (...) ... 
+# 1900|       getCondition(): [LTExpr] ... < ...
+# 1900|           Type = [BoolType] bool
+# 1900|           ValueCategory = prvalue
+# 1900|         getLesserOperand(): [VariableAccess] x
+# 1900|             Type = [IntType] int
+# 1900|             ValueCategory = prvalue(load)
+# 1900|         getGreaterOperand(): [Literal] 10
+# 1900|             Type = [IntType] int
+# 1900|             Value = [Literal] 10
+# 1900|             ValueCategory = prvalue
+# 1900|       getThen(): [BlockStmt] { ... }
+# 1901|         getStmt(0): [ReturnStmt] return ...
+# 1901|           getExpr(): [VariableAccess] x
+# 1901|               Type = [IntType] int
+# 1901|               ValueCategory = prvalue(load)
+# 1902|       getElse(): [BlockStmt] { ... }
+# 1903|         getStmt(0): [ExprStmt] ExprStmt
+# 1903|           getExpr(): [FunctionCall] call to noreturnFunc
+# 1903|               Type = [VoidType] void
+# 1903|               ValueCategory = prvalue
+# 1905|     getStmt(1): [ReturnStmt] return ...
+# 1907| [TopLevelFunction] int noreturnTest2(int)
+# 1907|   <params>: 
+# 1907|     getParameter(0): [Parameter] x
+# 1907|         Type = [IntType] int
+# 1907|   getEntryPoint(): [BlockStmt] { ... }
+# 1908|     getStmt(0): [IfStmt] if (...) ... 
+# 1908|       getCondition(): [LTExpr] ... < ...
+# 1908|           Type = [BoolType] bool
+# 1908|           ValueCategory = prvalue
+# 1908|         getLesserOperand(): [VariableAccess] x
+# 1908|             Type = [IntType] int
+# 1908|             ValueCategory = prvalue(load)
+# 1908|         getGreaterOperand(): [Literal] 10
+# 1908|             Type = [IntType] int
+# 1908|             Value = [Literal] 10
+# 1908|             ValueCategory = prvalue
+# 1908|       getThen(): [BlockStmt] { ... }
+# 1909|         getStmt(0): [ExprStmt] ExprStmt
+# 1909|           getExpr(): [FunctionCall] call to noreturnFunc
+# 1909|               Type = [VoidType] void
+# 1909|               ValueCategory = prvalue
+# 1911|     getStmt(1): [ReturnStmt] return ...
+# 1911|       getExpr(): [VariableAccess] x
+# 1911|           Type = [IntType] int
+# 1911|           ValueCategory = prvalue(load)
 perf-regression.cpp:
 #    4| [CopyAssignmentOperator] Big& Big::operator=(Big const&)
 #    4|   <params>: 

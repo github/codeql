@@ -1,5 +1,5 @@
 name: codeql/go-all
-version: 0.4.6-dev
+version: 0.5.2-dev
 groups: go
 dbscheme: go.dbscheme
 extractor: go
@@ -10,3 +10,4 @@ dependencies:
   codeql/util: ${workspace}
 dataExtensions:
   - ext/*.model.yml
+warnOnImplicitThis: true

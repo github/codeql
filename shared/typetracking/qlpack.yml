@@ -1,6 +1,7 @@
 name: codeql/typetracking
-version: 0.0.7-dev
+version: 0.0.10-dev
 groups: shared
 library: true
 dependencies:
   codeql/util: ${workspace}
+warnOnImplicitThis: true

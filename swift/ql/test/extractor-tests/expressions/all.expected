@@ -86,7 +86,7 @@
 | expressions.swift:38:14:38:14 | 7 | IntegerLiteralExpr |
 | expressions.swift:41:1:41:1 | closured(closure:) | DeclRefExpr |
 | expressions.swift:41:1:43:1 | call to closured(closure:) | CallExpr |
-| expressions.swift:41:10:43:1 | { ... } | ClosureExpr |
+| expressions.swift:41:10:43:1 | { ... } | ExplicitClosureExpr |
 | expressions.swift:42:12:42:12 | x | DeclRefExpr |
 | expressions.swift:42:12:42:16 | ... .+(_:_:) ... | BinaryExpr |
 | expressions.swift:42:14:42:14 | +(_:_:) | DeclRefExpr |
@@ -95,7 +95,7 @@
 | expressions.swift:42:16:42:16 | y | DeclRefExpr |
 | expressions.swift:44:1:44:1 | closured(closure:) | DeclRefExpr |
 | expressions.swift:44:1:46:1 | call to closured(closure:) | CallExpr |
-| expressions.swift:44:10:46:1 | { ... } | ClosureExpr |
+| expressions.swift:44:10:46:1 | { ... } | ExplicitClosureExpr |
 | expressions.swift:45:12:45:12 | x | DeclRefExpr |
 | expressions.swift:45:12:45:16 | ... .+(_:_:) ... | BinaryExpr |
 | expressions.swift:45:14:45:14 | +(_:_:) | DeclRefExpr |
@@ -104,7 +104,7 @@
 | expressions.swift:45:16:45:16 | y | DeclRefExpr |
 | expressions.swift:47:1:47:1 | closured(closure:) | DeclRefExpr |
 | expressions.swift:47:1:47:27 | call to closured(closure:) | CallExpr |
-| expressions.swift:47:10:47:27 | { ... } | ClosureExpr |
+| expressions.swift:47:10:47:27 | { ... } | ExplicitClosureExpr |
 | expressions.swift:47:19:47:19 | $0 | DeclRefExpr |
 | expressions.swift:47:19:47:24 | ... .+(_:_:) ... | BinaryExpr |
 | expressions.swift:47:22:47:22 | +(_:_:) | DeclRefExpr |
@@ -113,7 +113,7 @@
 | expressions.swift:47:24:47:24 | $1 | DeclRefExpr |
 | expressions.swift:48:1:48:1 | closured(closure:) | DeclRefExpr |
 | expressions.swift:48:1:48:20 | call to closured(closure:) | CallExpr |
-| expressions.swift:48:10:48:20 | { ... } | ClosureExpr |
+| expressions.swift:48:10:48:20 | { ... } | ExplicitClosureExpr |
 | expressions.swift:48:12:48:12 | $0 | DeclRefExpr |
 | expressions.swift:48:12:48:17 | ... .+(_:_:) ... | BinaryExpr |
 | expressions.swift:48:15:48:15 | +(_:_:) | DeclRefExpr |
@@ -134,7 +134,7 @@
 | expressions.swift:60:23:60:23 | (Int) ... | LoadExpr |
 | expressions.swift:60:23:60:23 | myNumber | DeclRefExpr |
 | expressions.swift:60:33:60:63 | ((UnsafePointer<Int>) throws -> ()) ... | FunctionConversionExpr |
-| expressions.swift:60:33:60:63 | { ... } | ClosureExpr |
+| expressions.swift:60:33:60:63 | { ... } | ExplicitClosureExpr |
 | expressions.swift:60:35:60:35 | unsafeFunction(pointer:) | DeclRefExpr |
 | expressions.swift:60:35:60:61 | call to unsafeFunction(pointer:) | CallExpr |
 | expressions.swift:60:59:60:59 | $0 | DeclRefExpr |
@@ -158,8 +158,8 @@
 | expressions.swift:79:5:79:5 | super | SuperRefExpr |
 | expressions.swift:79:5:79:11 | Base.init(x:) | MethodLookupExpr |
 | expressions.swift:79:5:79:21 | call to Base.init(x:) | CallExpr |
-| expressions.swift:79:5:79:21 | self = ... | RebindSelfInConstructorExpr |
-| expressions.swift:79:11:79:11 | Base.init(x:) | OtherConstructorDeclRefExpr |
+| expressions.swift:79:5:79:21 | self = ... | RebindSelfInInitializerExpr |
+| expressions.swift:79:11:79:11 | Base.init(x:) | OtherInitializerRefExpr |
 | expressions.swift:79:19:79:19 | 22 | IntegerLiteralExpr |
 | expressions.swift:83:15:83:15 | Derived.Type | TypeExpr |
 | expressions.swift:83:15:83:15 | Derived.init() | DeclRefExpr |
@@ -287,3 +287,13 @@
 | expressions.swift:163:9:163:9 | >>(_:_:) | DeclRefExpr |
 | expressions.swift:163:9:163:9 | Int.Type | TypeExpr |
 | expressions.swift:163:12:163:12 | 0 | IntegerLiteralExpr |
+| expressions.swift:176:12:176:17 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:177:18:177:26 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:177:25:177:25 | 0 | IntegerLiteralExpr |
+| expressions.swift:178:19:178:38 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:178:35:178:35 | a | StringLiteralExpr |
+| expressions.swift:179:16:179:35 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:180:16:180:26 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:181:20:181:30 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:182:11:182:16 | #keyPath(...) | KeyPathExpr |
+| expressions.swift:183:20:183:32 | #keyPath(...) | KeyPathExpr |

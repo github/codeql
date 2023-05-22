@@ -1,0 +1,18 @@
+extensions:
+  - addsTo:
+      pack: codeql/go-all
+      extensible: summaryModel
+    data:
+      - ["path/filepath", "", False, "Abs", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["path/filepath", "", False, "Base", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["path/filepath", "", False, "Clean", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["path/filepath", "", False, "Dir", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["path/filepath", "", False, "EvalSymlinks", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["path/filepath", "", False, "Ext", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["path/filepath", "", False, "FromSlash", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["path/filepath", "", False, "Glob", "", "", "Argument[0]", "ReturnValue[0]", "taint", "manual"]
+      - ["path/filepath", "", False, "Rel", "", "", "Argument[0..1]", "ReturnValue[0]", "taint", "manual"]
+      - ["path/filepath", "", False, "Split", "", "", "Argument[0]", "ReturnValue[0..1]", "taint", "manual"]
+      - ["path/filepath", "", False, "SplitList", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["path/filepath", "", False, "ToSlash", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
+      - ["path/filepath", "", False, "VolumeName", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]

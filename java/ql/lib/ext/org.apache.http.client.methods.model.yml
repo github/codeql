@@ -11,6 +11,7 @@ extensions:
       - ["org.apache.http.client.methods", "HttpPost", False, "HttpPost", "", "", "Argument[0]", "open-url", "manual"]
       - ["org.apache.http.client.methods", "HttpPut", False, "HttpPut", "", "", "Argument[0]", "open-url", "manual"]
       - ["org.apache.http.client.methods", "HttpRequestBase", True, "setURI", "", "", "Argument[0]", "open-url", "manual"]
+      - ["org.apache.http.client.methods", "HttpRequestWrapper", True, "setURI", "(URI)", "", "Argument[0]", "open-url", "hq-manual"]
       - ["org.apache.http.client.methods", "HttpTrace", False, "HttpTrace", "", "", "Argument[0]", "open-url", "manual"]
       - ["org.apache.http.client.methods", "RequestBuilder", False, "delete", "", "", "Argument[0]", "open-url", "manual"]
       - ["org.apache.http.client.methods", "RequestBuilder", False, "get", "", "", "Argument[0]", "open-url", "manual"]

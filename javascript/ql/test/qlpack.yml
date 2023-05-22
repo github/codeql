@@ -7,3 +7,4 @@ extractor: javascript
 tests: .
 dataExtensions:
   - library-tests/DataExtensions/*.model.yml
+warnOnImplicitThis: true

@@ -7,8 +7,9 @@
 import csharp
 import semmle.code.csharp.dataflow.ExternalFlow
 
-from string package, string type, string name, string signature, string provenance
+from string package, string type, string name, string signature, string kind, string provenance
 where
-  neutralModel(package, type, name, signature, provenance) and
-  provenance != "generated"
-select package, type, name, signature, provenance order by package, type, name, signature
+  neutralModel(package, type, name, signature, kind, provenance) and
+  not provenance.matches("%generated")
+select package, type, name, signature, kind, provenance order by
+    package, type, name, signature, kind

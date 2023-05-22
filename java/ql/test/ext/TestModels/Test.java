@@ -44,6 +44,9 @@ public class Test {
             Exception e4 = new IllegalStateException((String)source());
             sink((String)e4.getMessage()); // $hasValueFlow
 
+            Exception e5 = new UnsupportedOperationException((String)source());
+            sink((String)e5.getMessage()); // $hasValueFlow
+
             Throwable t = new Throwable((Throwable)source());
             sink((Throwable)t.getCause()); // $hasValueFlow
 
@@ -90,7 +93,7 @@ public class Test {
             sink(sj1.add((CharSequence)source())); // $hasTaintFlow
 
             StringJoiner sj2 = (StringJoiner)source();
-            sink(sj2.add("test")); // $hasTaintFlow
+            sink(sj2.add("test")); // $hasValueFlow
         }
 
         // top 300-500 JDK APIs tests

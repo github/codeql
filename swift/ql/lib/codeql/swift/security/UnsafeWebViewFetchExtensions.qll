@@ -19,14 +19,18 @@ abstract class UnsafeWebViewFetchSink extends DataFlow::Node {
 }
 
 /**
- * A sanitizer for unsafe webview fetch vulnerabilities.
+ * A barrier for unsafe webview fetch vulnerabilities.
  */
-abstract class UnsafeWebViewFetchSanitizer extends DataFlow::Node { }
+abstract class UnsafeWebViewFetchBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class UnsafeWebViewFetchAdditionalTaintStep extends Unit {
+class UnsafeWebViewFetchAdditionalFlowStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a flow
+   * step for paths related to unsafe webview fetch vulnerabilities.
+   */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
@@ -38,9 +42,7 @@ private class UIKitWebKitWebViewFetchSink extends UnsafeWebViewFetchSink {
   Expr baseUrl;
 
   UIKitWebKitWebViewFetchSink() {
-    exists(
-      MethodDecl funcDecl, CallExpr call, string className, string funcName, int arg, int baseArg
-    |
+    exists(Method funcDecl, CallExpr call, string className, string funcName, int arg, int baseArg |
       // arguments to method calls...
       (
         // `loadHTMLString`

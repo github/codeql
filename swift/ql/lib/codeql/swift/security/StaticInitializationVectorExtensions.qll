@@ -5,6 +5,7 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
+import codeql.swift.dataflow.ExternalFlow
 
 /**
  * A dataflow sink for static initialization vector vulnerabilities. That is,
@@ -13,16 +14,16 @@ import codeql.swift.dataflow.DataFlow
 abstract class StaticInitializationVectorSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for static initialization vector vulnerabilities.
+ * A barrier for static initialization vector vulnerabilities.
  */
-abstract class StaticInitializationVectorSanitizer extends DataFlow::Node { }
+abstract class StaticInitializationVectorBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class StaticInitializationVectorAdditionalTaintStep extends Unit {
+class StaticInitializationVectorAdditionalFlowStep extends Unit {
   /**
-   * Holds if the step from `node1` to `node2` should be considered a taint
+   * Holds if the step from `node1` to `node2` should be considered a flow
    * step for paths related to static initialization vector vulnerabilities.
    */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
@@ -50,11 +51,22 @@ private class CryptoSwiftInitializationVectorSink extends StaticInitializationVe
  */
 private class RnCryptorInitializationVectorSink extends StaticInitializationVectorSink {
   RnCryptorInitializationVectorSink() {
-    exists(ClassOrStructDecl c, MethodDecl f, CallExpr call |
-      c.getFullName() = ["RNCryptor", "RNEncryptor", "RNDecryptor"] and
+    exists(NominalTypeDecl c, Method f, CallExpr call |
+      c.getFullName() =
+        [
+          "RNCryptor", "RNEncryptor", "RNDecryptor", "RNCryptor.EncryptorV3",
+          "RNCryptor.DecryptorV3"
+        ] and
       c.getAMember() = f and
       call.getStaticTarget() = f and
       call.getArgumentWithLabel(["iv", "IV"]).getExpr() = this.asExpr()
     )
   }
+}
+
+/**
+ * A sink defined in a CSV model.
+ */
+private class DefaultInitializationVectorSink extends StaticInitializationVectorSink {
+  DefaultInitializationVectorSink() { sinkNode(this, "encryption-iv") }
 }

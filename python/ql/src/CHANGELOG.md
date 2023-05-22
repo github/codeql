@@ -1,3 +1,17 @@
+## 0.7.1
+
+No user-facing changes.
+
+## 0.7.0
+
+### Bug Fixes
+
+* Nonlocal variables are excluded from alerts.
+
+## 0.6.6
+
+No user-facing changes.
+
 ## 0.6.5
 
 ### New Queries

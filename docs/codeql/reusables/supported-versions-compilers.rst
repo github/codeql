@@ -4,7 +4,7 @@
    :stub-columns: 1
 
    Language,Variants,Compilers,Extensions
-   C/C++,"C89, C99, C11, C18, C++98, C++03, C++11, C++14, C++17, C++20 [1]_","Clang (and clang-cl [2]_) extensions (up to Clang 12.0),
+   C/C++,"C89, C99, C11, C17, C++98, C++03, C++11, C++14, C++17, C++20 [1]_","Clang (and clang-cl [2]_) extensions (up to Clang 12.0),
 
    GNU extensions (up to GCC 11.1),
 
@@ -23,8 +23,9 @@
    Kotlin [6]_,"Kotlin 1.5.0 to 1.8.20","kotlinc",``.kt``
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [7]_"
    Python [8]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11",Not applicable,``.py``
-   Ruby [9]_,"up to 3.1",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
-   TypeScript [10]_,"2.6-5.0",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
+   Ruby [9]_,"up to 3.2",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"
+   Swift [10]_,"Swift 5.4-5.7","Swift compiler","``.swift``"
+   TypeScript [11]_,"2.6-5.0",Standard TypeScript compiler,"``.ts``, ``.tsx``, ``.mts``, ``.cts``"
 
 .. container:: footnote-group
 
@@ -37,4 +38,5 @@
     .. [7] JSX and Flow code, YAML, JSON, HTML, and XML files may also be analyzed with JavaScript files.
     .. [8] The extractor requires Python 3 to run. To analyze Python 2.7 you should install both versions of Python.
     .. [9] Requires glibc 2.17.
-    .. [10] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.
+    .. [10] Swift support is currently in beta. Support for the analysis of Swift 5.4-5.7 requires macOS. Swift 5.7.3 can also be analyzed using Linux.
+    .. [11] TypeScript analysis is performed by running the JavaScript extractor with TypeScript enabled. This is the default.

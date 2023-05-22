@@ -143,7 +143,7 @@ abstract class Configuration extends string {
    * indicating whether the step preserves values or just taintedness.
    */
   predicate isAdditionalFlowStep(DataFlow::Node src, DataFlow::Node trg, boolean valuePreserving) {
-    isAdditionalFlowStep(src, trg) and valuePreserving = true
+    this.isAdditionalFlowStep(src, trg) and valuePreserving = true
   }
 
   /**
@@ -205,7 +205,7 @@ abstract class Configuration extends string {
     isSource(_, this, _) and
     isSink(_, this, _) and
     exists(SourcePathNode flowsource, SinkPathNode flowsink |
-      hasFlowPath(flowsource, flowsink) and
+      this.hasFlowPath(flowsource, flowsink) and
       source = flowsource.getNode() and
       sink = flowsink.getNode()
     )
@@ -297,7 +297,7 @@ abstract class FlowLabel extends string {
    * Holds if this is one of the standard flow labels `FlowLabel::data()`
    * or `FlowLabel::taint()`.
    */
-  final predicate isDataOrTaint() { isData() or isTaint() }
+  final predicate isDataOrTaint() { this.isData() or this.isTaint() }
 }
 
 /**
@@ -804,6 +804,10 @@ private predicate basicFlowStepNoBarrier(
   or
   // Flow into function
   callStep(pred, succ) and
+  summary = PathSummary::call()
+  or
+  // Implied receiver flow
+  CallGraph::impliedReceiverStep(pred, succ) and
   summary = PathSummary::call()
   or
   // Flow out of function
@@ -1722,7 +1726,7 @@ class PathNode extends TPathNode {
   /**
    * Gets a flow label for the path node.
    */
-  FlowLabel getFlowLabel() { result = getPathSummary().getEndLabel() }
+  FlowLabel getFlowLabel() { result = this.getPathSummary().getEndLabel() }
 }
 
 /** Gets the mid node corresponding to `src`. */
@@ -1953,15 +1957,15 @@ private class BarrierGuardFunction extends Function {
       |
         exists(SsaExplicitDefinition ssa |
           ssa.getDef().getSource() = returnExpr and
-          ssa.getVariable().getAUse() = getAReturnedExpr()
+          ssa.getVariable().getAUse() = this.getAReturnedExpr()
         )
         or
-        returnExpr = getAReturnedExpr()
+        returnExpr = this.getAReturnedExpr()
       ) and
       sanitizedParameter.flowsToExpr(e) and
       barrierGuardBlocksExpr(guard, guardOutcome, e, label)
     ) and
-    sanitizedParameter.getParameter() = getParameter(paramIndex)
+    sanitizedParameter.getParameter() = this.getParameter(paramIndex)
   }
 
   /**

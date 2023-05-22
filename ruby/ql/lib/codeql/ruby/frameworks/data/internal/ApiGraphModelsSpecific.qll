@@ -113,16 +113,18 @@ API::Node getExtraNodeFromType(string type) {
   |
     suffix = "!" and
     (
-      result.asSource() = constRef
+      result.(API::Node::Internal).asSourceInternal() = constRef
       or
-      result.asSource() = constRef.getADescendentModule().getAnOwnModuleSelf()
+      result.(API::Node::Internal).asSourceInternal() =
+        constRef.getADescendentModule().getAnOwnModuleSelf()
     )
     or
     suffix = "" and
     (
-      result.asSource() = constRef.getAMethodCall("new")
+      result.(API::Node::Internal).asSourceInternal() = constRef.getAMethodCall("new")
       or
-      result.asSource() = constRef.getADescendentModule().getAnInstanceSelf()
+      result.(API::Node::Internal).asSourceInternal() =
+        constRef.getADescendentModule().getAnInstanceSelf()
     )
   )
   or
@@ -209,7 +211,7 @@ predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathToke
 /** An API graph node representing a method call. */
 class InvokeNode extends API::MethodAccessNode {
   /** Gets the number of arguments to the call. */
-  int getNumArgument() { result = getCallNode().getNumberOfArguments() }
+  int getNumArgument() { result = this.getCallNode().getNumberOfArguments() }
 }
 
 /** Gets the `InvokeNode` corresponding to a specific invocation of `node`. */

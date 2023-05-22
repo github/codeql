@@ -22,11 +22,16 @@ module Generated {
     /**
      * Gets the location associated with this element in the code, if it exists.
      */
-    final Location getLocation() { result = getImmediateLocation().resolve() }
+    final Location getLocation() {
+      exists(Location immediate |
+        immediate = this.getImmediateLocation() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getLocation()` exists.
      */
-    final predicate hasLocation() { exists(getLocation()) }
+    final predicate hasLocation() { exists(this.getLocation()) }
   }
 }

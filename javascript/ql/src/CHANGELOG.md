@@ -1,3 +1,34 @@
+## 0.6.1
+
+### Minor Analysis Improvements
+
+* Improved the call graph to better handle the case where a function is stored on
+  a plain object and subsequently copied to a new host object via an `extend` call.
+
+### Bug Fixes
+
+* Fixes an issue that would cause TypeScript extraction to hang in rare cases when extracting
+  code containing recursive generic type aliases.
+
+## 0.6.0
+
+### Minor Analysis Improvements
+
+* The `DisablingCertificateValidation.ql` query has been updated to check `createServer` from `https` for disabled certificate validation.
+* Improved the model of jQuery to account for XSS sinks where the HTML string
+  is provided via a callback. This may lead to more results for the `js/xss` query.
+* The `js/weak-cryptographic-algorithm` query now flags cryptograhic operations using a weak block mode,
+  such as AES-ECB.
+
+### Bug Fixes
+
+* Fixed a bug where a destructuring pattern could not be parsed if it had a property
+  named `get` or `set` with a default value.
+
+## 0.5.6
+
+No user-facing changes.
+
 ## 0.5.5
 
 ### Minor Analysis Improvements

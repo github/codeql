@@ -5,6 +5,8 @@
 #include <iostream>
 #include <optional>
 #include <vector>
+#include <binlog/binlog.hpp>
+#include <binlog/adapt_stdoptional.hpp>
 
 #include "{{trap_library}}/TrapLabel.h"
 #include "{{trap_library}}/TrapTagTraits.h"
@@ -40,34 +42,12 @@ struct {{name}}{{#has_bases}} : {{#bases}}{{^first}}, {{/first}}{{ref.name}}{{/b
  {{/final}}
   template <typename F>
   void forEachLabel(F f) {
-    {{#final}}
-    f("id", -1, id);
-    {{/final}}
-    {{#bases}}
-    {{ref.name}}::forEachLabel(f);
-    {{/bases}}
-    {{#fields}}
-    {{#is_label}}
-    {{#is_repeated}}
-    for (auto i = 0u; i < {{field_name}}.size(); ++i) {
-      {{#is_optional}}
-      if ({{field_name}}[i]) f("{{field_name}}", i, *{{field_name}}[i]);
-      {{/is_optional}}
-      {{^is_optional}}
-      f("{{field_name}}", i, {{field_name}}[i]);
-      {{/is_optional}}
-    }
-    {{/is_repeated}}
-    {{^is_repeated}}
-    {{#is_optional}}
-    if ({{field_name}}) f("{{field_name}}", -1, *{{field_name}});
-    {{/is_optional}}
-    {{^is_optional}}
-    f("{{field_name}}", -1, {{field_name}});
-    {{/is_optional}}
-    {{/is_repeated}}
-    {{/is_label}}
-    {{/fields}}
+    {{>cpp_for_each_label_body}}
+  }
+
+  template <typename F>
+  void forEachLabel(F f) const {
+    {{>cpp_for_each_label_body}}
   }
 
  protected:
@@ -80,3 +60,9 @@ struct detail::ToTrapClassFunctor<{{name}}Tag> {
 };
 {{/classes}}
 }
+
+{{#classes}}
+{{#final}}
+BINLOG_ADAPT_STRUCT(codeql::{{name}}, id{{> cpp_list_fields}});
+{{/final}}
+{{/classes}}

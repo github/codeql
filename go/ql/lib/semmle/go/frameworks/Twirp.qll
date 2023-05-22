@@ -165,8 +165,8 @@ module Twirp {
    */
   class Request extends UntrustedFlowSource::Range instanceof DataFlow::ParameterNode {
     Request() {
-      exists(Callable c, ServiceHandler handler | c.asFunction() = handler |
-        this.isParameterOf(c, 1) and
+      exists(FuncDef c, ServiceHandler handler | handler.getFuncDecl() = c |
+        this.asParameter().isParameterOf(c, 1) and
         handler.getParameterType(0).hasQualifiedName("context", "Context") and
         this.getType().(PointerType).getBaseType() instanceof ProtobufMessageType
       )

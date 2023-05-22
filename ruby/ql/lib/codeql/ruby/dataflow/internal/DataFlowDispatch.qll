@@ -191,13 +191,7 @@ private predicate moduleFlowsToMethodCallReceiver(RelevantCall call, Module m, s
   flowsToMethodCallReceiver(call, trackModuleAccess(m), method)
 }
 
-private Block yieldCall(RelevantCall call) {
-  call.getExpr() instanceof YieldCall and
-  exists(BlockParameterNode node |
-    node = trackBlock(result) and
-    node.getMethod() = call.getExpr().getEnclosingMethod()
-  )
-}
+private Block blockCall(RelevantCall call) { lambdaSourceCall(call, _, trackBlock(result)) }
 
 pragma[nomagic]
 private predicate superCall(RelevantCall call, Module cls, string method) {
@@ -297,7 +291,7 @@ predicate isUserDefinedNew(SingletonMethod new) {
 
 private Callable viableSourceCallableNonInit(RelevantCall call) {
   result = getTarget(call) and
-  not call.getExpr() instanceof YieldCall // handled by `lambdaCreation`/`lambdaCall`
+  not result = blockCall(call) // handled by `lambdaCreation`/`lambdaCall`
 }
 
 private Callable viableSourceCallableInit(RelevantCall call) { result = getInitializeTarget(call) }
@@ -394,7 +388,7 @@ private module Cached {
       result = lookupMethod(cls.getAnImmediateAncestor(), method)
     )
     or
-    result = yieldCall(call)
+    result = blockCall(call)
   }
 
   /** Gets a viable run-time target for the call `call`. */
@@ -700,13 +694,19 @@ private DataFlow::LocalSourceNode trackBlock(Block block, TypeTracker t) {
   t.start() and result.asExpr().getExpr() = block
   or
   exists(TypeTracker t2, StepSummary summary |
-    result = trackBlockRec(block, t2, summary) and t = t2.append(summary)
+    result = trackBlockRec(block, t2, summary) and
+    t = t2.append(summary)
   )
 }
 
+/**
+ * We exclude steps into `self` parameters, which may happen when the code
+ * base contains implementations of `call`.
+ */
 pragma[nomagic]
 private DataFlow::LocalSourceNode trackBlockRec(Block block, TypeTracker t, StepSummary summary) {
-  StepSummary::step(trackBlock(block, t), result, summary)
+  StepSummary::step(trackBlock(block, t), result, summary) and
+  not result instanceof SelfParameterNode
 }
 
 pragma[nomagic]
@@ -1379,4 +1379,14 @@ predicate parameterMatch(ParameterPosition ppos, ArgumentPosition apos) {
   ppos.isAnyNamed() and apos.isKeyword(_)
   or
   apos.isAnyNamed() and ppos.isKeyword(_)
+}
+
+/**
+ * Holds if flow from `call`'s argument `arg` to parameter `p` is permissible.
+ *
+ * This is a temporary hook to support technical debt in the Go language; do not use.
+ */
+pragma[inline]
+predicate golangSpecificParamArgFilter(DataFlowCall call, DataFlow::Node p, ArgumentNode arg) {
+  any()
 }
