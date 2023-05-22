@@ -1962,20 +1962,6 @@ module Raw {
     }
 
     /**
-     * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
-     */
-    Expr getInterpolationCountExpr() {
-      interpolated_string_literal_expr_interpolation_count_exprs(this, result)
-    }
-
-    /**
-     * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
-     */
-    Expr getLiteralCapacityExpr() {
-      interpolated_string_literal_expr_literal_capacity_exprs(this, result)
-    }
-
-    /**
      * Gets the appending expression of this interpolated string literal expression, if it exists.
      */
     TapExpr getAppendingExpr() { interpolated_string_literal_expr_appending_exprs(this, result) }

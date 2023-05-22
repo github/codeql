@@ -679,8 +679,6 @@ class InjectIntoOptionalExpr(ImplicitConversionExpr):
 
 class InterpolatedStringLiteralExpr(LiteralExpr):
     interpolation_expr: optional[OpaqueValueExpr]
-    interpolation_count_expr: optional[Expr] | child
-    literal_capacity_expr: optional[Expr] | child
     appending_expr: optional[TapExpr] | child
 
 class LinearFunctionExpr(ImplicitConversionExpr):
