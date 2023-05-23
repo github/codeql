@@ -10,7 +10,7 @@ STATIC_DIR = "/server/static/"
 @app.route("/path1")
 def path_injection():
     filename = request.args.get('filename', '')
-    f = open(os.path.join(STATIC_DIR, filename)) # $ MISSING: result=BAD
+    f = open(os.path.join(STATIC_DIR, filename)) # $result=BAD
 
 
 @app.route("/path2")
@@ -18,7 +18,7 @@ def path_injection():
     # Normalized, but not checked
     filename = request.args.get('filename', '')
     npath = os.path.normpath(os.path.join(STATIC_DIR, filename))
-    f = open(npath)  # $ MISSING: result=BAD
+    f = open(npath)  # $result=BAD
 
 
 @app.route("/path3")
@@ -28,7 +28,7 @@ def unsafe_path_normpath():
     npath = os.path.normpath(os.path.join(STATIC_DIR, filename))
     if npath.startswith(STATIC_DIR):
         pass
-    f = open(npath)  # $ MISSING: result=BAD
+    f = open(npath)  # $result=BAD
 
 
 @app.route("/path4")
@@ -45,7 +45,7 @@ def unsafe_path_realpath():
     # Normalized (by `realpath` that also follows symlinks), but not checked properly
     filename = request.args.get('filename', '')
     npath = os.path.realpath(os.path.join(STATIC_DIR, filename))
-    f = open(npath)  # $ MISSING: result=BAD
+    f = open(npath)  # $result=BAD
 
 
 @app.route("/path6")
@@ -62,7 +62,7 @@ def unsafe_path_abspath():
     # Normalized (by `abspath`), but not checked properly
     filename = request.args.get('filename', '')
     npath = os.path.abspath(os.path.join(STATIC_DIR, filename))
-    f = open(npath)  # $ MISSING: result=BAD
+    f = open(npath)  # $result=BAD
 
 
 @app.route("/path7")
@@ -84,7 +84,7 @@ def safe_path_abspath_tricky():
     filename = request.args.get('filename', '')
     possibly_unsafe_path = os.path.join(STATIC_DIR, filename)
     if os.path.abspath(possibly_unsafe_path).startswith(STATIC_DIR):
-        f = open(possibly_unsafe_path) # $ result=OK
+        f = open(possibly_unsafe_path)  # $SPURIOUS: result=BAD
 
 
 @app.route("/int-only/<int:foo_id>")
@@ -110,7 +110,7 @@ def no_dot_dot():
     # handle if `filename` is an absolute path
     if '../' in path:
         return "not this time"
-    f = open(path)  # $ MISSING: result=BAD
+    f = open(path)  # $result=BAD
 
 
 @app.route("/no-dot-dot-with-prefix")
@@ -121,7 +121,7 @@ def no_dot_dot_with_prefix():
     # Therefore, for UNIX-only programs, the `../` check is enough to stop path injections.
     if '../' in path:
         return "not this time"
-    f = open(path)  # $ MISSING: result=BAD // OK if only running on UNIX systems, NOT OK if could be running on windows
+    f = open(path)  # $result=BAD // OK if only running on UNIX systems, NOT OK if could be running on windows
 
 
 @app.route("/replace-slash")
@@ -129,7 +129,7 @@ def replace_slash():
     filename = request.args.get('filename', '')
     path = os.path.join(STATIC_DIR, filename)
     sanitized = path.replace("/", "_")
-    f = open(sanitized)  # $ MISSING: result=BAD // OK if only running on UNIX systems, NOT OK if could be running on windows
+    f = open(sanitized)  # $result=BAD // OK if only running on UNIX systems, NOT OK if could be running on windows
 
 
 @app.route("/stackoverflow-solution")
@@ -139,7 +139,7 @@ def stackoverflow_solution():
     path = os.path.join(STATIC_DIR, filename)
     if os.path.commonprefix((os.path.realpath(path), STATIC_DIR)) != STATIC_DIR:
         return "not this time"
-    f = open(path) # $ result=OK
+    f = open(path) # $SPURIOUS: result=BAD
 
 
 SAFE_FILES = ['foo', 'bar', 'baz']
@@ -149,4 +149,4 @@ def safe_set_of_files():
     filename = request.args.get('filename', '')
     if filename in SAFE_FILES:
         path = os.path.join(STATIC_DIR, filename)
-        f = open(path) # $ result=OK
+        f = open(path) # $SPURIOUS: result=BAD

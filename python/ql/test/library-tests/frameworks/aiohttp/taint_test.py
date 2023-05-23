@@ -23,7 +23,7 @@ async def test_taint(request: web.Request): # $ requestHandler
         # dict-like for captured parts of the URL
         request.match_info, # $ tainted
         request.match_info["key"], # $ tainted
-        request.match_info.get("key"), # $ MISSING: tainted
+        request.match_info.get("key"), # $ tainted
 
         # multidict.MultiDictProxy[str] (see `multidict` framework tests)
         request.query, # $ tainted
@@ -38,7 +38,7 @@ async def test_taint(request: web.Request): # $ requestHandler
         # dict-like (readonly)
         request.cookies, # $ tainted
         request.cookies["key"], # $ tainted
-        request.cookies.get("key"), # $ MISSING: tainted
+        request.cookies.get("key"), # $ tainted
         request.cookies.keys(), # $ MISSING: tainted
         request.cookies.values(), # $ tainted
         request.cookies.items(), # $ tainted

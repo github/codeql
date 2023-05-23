@@ -13,7 +13,7 @@ def test_access():
     tainted_list = TAINTED_LIST
 
     ensure_tainted(
-        tainted_list.copy(), # $ MISSING: tainted
+        tainted_list.copy(), # $ tainted
     )
 
     for ((x, y, *z), a, b) in tainted_list:

@@ -32,13 +32,13 @@ class MyForm(django.forms.Form):
         ensure_tainted(
             cleaned_data, # $ tainted
             cleaned_data["key"], # $ tainted
-            cleaned_data.get("key"), # $ MISSING: tainted
+            cleaned_data.get("key"), # $ tainted
         )
 
         ensure_tainted(
             self.cleaned_data, # $ tainted
             self.cleaned_data["key"], # $ tainted
-            self.cleaned_data.get("key"), # $ MISSING: tainted
+            self.cleaned_data.get("key"), # $ tainted
         )
 
     def clean_foo(self):

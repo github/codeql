@@ -30,15 +30,15 @@ def test_taint(): # $ requestHandler
 
         resp.links, # $ tainted
         resp.links['key'], # $ tainted
-        resp.links.get('key'), # $ MISSING: tainted
+        resp.links.get('key'), # $ tainted
 
         resp.cookies, # $ tainted
         resp.cookies['key'], # $ tainted
-        resp.cookies.get('key'), # $ MISSING: tainted
+        resp.cookies.get('key'), # $ tainted
 
         resp.headers, # $ tainted
         resp.headers['key'], # $ tainted
-        resp.headers.get('key'), # $ MISSING: tainted
+        resp.headers.get('key'), # $ tainted
     )
 
     for content_chunk in resp.iter_content():

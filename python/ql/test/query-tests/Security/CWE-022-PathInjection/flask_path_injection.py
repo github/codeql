@@ -18,4 +18,4 @@ def download_file():
 def download_file():
     dirname = request.args.get('dirname', '')
     filename = request.args.get('filename', '')
-    return send_from_directory(dirname, filename) # $ result=OK(filename) MISSING: result=BAD
+    return send_from_directory(dirname, filename) # $result=BAD result=OK(filename)

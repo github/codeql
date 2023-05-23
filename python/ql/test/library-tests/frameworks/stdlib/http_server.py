@@ -57,7 +57,7 @@ class MyHandler(BaseHTTPRequestHandler):
 
             self.headers, # $ tainted
             self.headers['Foo'], # $ tainted
-            self.headers.get('Foo'), # $ MISSING: tainted
+            self.headers.get('Foo'), # $ tainted
             self.headers.get_all('Foo'), # $ tainted
             self.headers.keys(), # $ tainted
             self.headers.values(), # $ tainted

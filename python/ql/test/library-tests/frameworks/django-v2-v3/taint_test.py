@@ -31,17 +31,17 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
         # Dict[str, str]
         request.content_params, # $ tainted
         request.content_params["key"], # $ tainted
-        request.content_params.get("key"), # $ MISSING: tainted
+        request.content_params.get("key"), # $ tainted
 
         # django.http.QueryDict
         # see https://docs.djangoproject.com/en/3.0/ref/request-response/#querydict-objects
         request.GET, # $ tainted
         request.GET["key"], # $ tainted
-        request.GET.get("key"), # $ MISSING: tainted
+        request.GET.get("key"), # $ tainted
         request.GET.getlist("key"), # $ tainted
         request.GET.getlist("key")[0], # $ tainted
-        request.GET.pop("key"), # $ MISSING: tainted
-        request.GET.pop("key")[0], # $ MISSING: tainted
+        request.GET.pop("key"), # $ tainted
+        request.GET.pop("key")[0], # $ tainted
         # key
         request.GET.popitem()[0], # $ tainted
         # values
@@ -59,7 +59,7 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
         # Dict[str, str]
         request.COOKIES, # $ tainted
         request.COOKIES["key"], # $ tainted
-        request.COOKIES.get("key"), # $ MISSING: tainted
+        request.COOKIES.get("key"), # $ tainted
 
         # MultiValueDict[str, UploadedFile]
         request.FILES, # $ tainted
@@ -73,20 +73,20 @@ def test_taint(request: HttpRequest, foo, bar, baz=None):  # $requestHandler rou
         request.FILES["key"].file.read(), # $ tainted
         request.FILES["key"].read(), # $ tainted
 
-        request.FILES.get("key"), # $ MISSING: tainted
-        request.FILES.get("key").name, # $ MISSING:tainted
+        request.FILES.get("key"), # $ tainted
+        request.FILES.get("key").name, # $ tainted
         request.FILES.getlist("key"), # $ tainted
         request.FILES.getlist("key")[0], # $ tainted
         request.FILES.getlist("key")[0].name, # $ tainted
         request.FILES.dict(), # $ tainted
         request.FILES.dict()["key"], # $ tainted
         request.FILES.dict()["key"].name, # $ tainted
-        request.FILES.dict().get("key").name, # $ MISSING: tainted
+        request.FILES.dict().get("key").name, # $ tainted
 
         # Dict[str, Any]
         request.META, # $ tainted
         request.META["HTTP_USER_AGENT"], # $ tainted
-        request.META.get("HTTP_USER_AGENT"), # $ MISSING: tainted
+        request.META.get("HTTP_USER_AGENT"), # $ tainted
 
         # HttpHeaders (case insensitive dict-like)
         request.headers, # $ tainted

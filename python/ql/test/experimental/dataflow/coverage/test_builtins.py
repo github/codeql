@@ -100,19 +100,19 @@ def test_set_from_list():
     l = [SOURCE]
     s = set(l)
     v = s.pop()
-    SINK(v) #$ MISSING:flow="SOURCE, l:-3 -> v"
+    SINK(v) #$ flow="SOURCE, l:-3 -> v"
 
 def test_set_from_tuple():
     t = (SOURCE,)
     s = set(t)
     v = s.pop()
-    SINK(v) #$ MISSING:flow="SOURCE, l:-3 -> v"
+    SINK(v) #$ flow="SOURCE, l:-3 -> v"
 
 def test_set_from_set():
     s0 = {SOURCE}
     s = set(s0)
     v = s.pop()
-    SINK(v) #$ MISSING:flow="SOURCE, l:-3 -> v"
+    SINK(v) #$ flow="SOURCE, l:-3 -> v"
 
 def test_set_from_dict():
     d = {SOURCE: "val"}
@@ -149,24 +149,24 @@ def test_dict_from_dict():
 def test_list_pop():
     l = [SOURCE]
     v = l.pop()
-    SINK(v) #$ MISSING:flow="SOURCE, l:-2 -> v"
+    SINK(v) #$ flow="SOURCE, l:-2 -> v"
 
 def test_list_pop_index():
     l = [SOURCE]
     v = l.pop(0)
-    SINK(v) #$ MISSING: flow="SOURCE, l:-2 -> v"
+    SINK(v) #$ flow="SOURCE, l:-2 -> v"
 
 def test_list_pop_index_imprecise():
     l = [SOURCE, NONSOURCE]
     v = l.pop(1)
-    SINK_F(v)
+    SINK_F(v) #$ SPURIOUS: flow="SOURCE, l:-2 -> v"
 
 @expects(2)
 def test_list_copy():
     l0 = [SOURCE, NONSOURCE]
     l = l0.copy()
-    SINK(l[0]) #$ MISSING: flow="SOURCE, l:-2 -> l[0]"
-    SINK_F(l[1])
+    SINK(l[0]) #$ flow="SOURCE, l:-2 -> l[0]"
+    SINK_F(l[1]) #$ SPURIOUS: flow="SOURCE, l:-3 -> l[1]"
 
 def test_list_append():
     l = [NONSOURCE]
@@ -178,12 +178,12 @@ def test_list_append():
 def test_set_pop():
     s = {SOURCE}
     v = s.pop()
-    SINK(v) #$ MISSING:flow="SOURCE, l:-2 -> v"
+    SINK(v) #$ flow="SOURCE, l:-2 -> v"
 
 def test_set_copy():
     s0 = {SOURCE}
     s = s0.copy()
-    SINK(s.pop()) #$ MISSING: flow="SOURCE, l:-2 -> s.pop()"
+    SINK(s.pop()) #$ flow="SOURCE, l:-2 -> s.pop()"
 
 def test_set_add():
     s = set([])
@@ -218,32 +218,32 @@ def test_dict_items():
 def test_dict_pop():
     d = {'k': SOURCE}
     v = d.pop("k")
-    SINK(v) #$ MISSING:flow="SOURCE, l:-2 -> v"
+    SINK(v) #$ flow="SOURCE, l:-2 -> v"
     v1 = d.pop("k", NONSOURCE)
-    SINK_F(v1)
+    SINK_F(v1) #$ SPURIOUS: flow="SOURCE, l:-4 -> v1"
     v2 = d.pop("non-existing", SOURCE)
-    SINK(v2) #$ MISSING: flow="SOURCE, l:-1 -> v2"
+    SINK(v2) #$ flow="SOURCE, l:-1 -> v2"
 
 @expects(2)
 def test_dict_get():
     d = {'k': SOURCE}
     v = d.get("k")
-    SINK(v) #$ MISSING:flow="SOURCE, l:-2 -> v"
+    SINK(v) #$ flow="SOURCE, l:-2 -> v"
     v1 = d.get("non-existing", SOURCE)
-    SINK(v1) #$ MISSING: flow="SOURCE, l:-1 -> v1"
+    SINK(v1) #$ flow="SOURCE, l:-1 -> v1"
 
 @expects(2)
 def test_dict_popitem():
     d = {'k': SOURCE}
     t = d.popitem() # could be any pair (before 3.7), but we only have one
     SINK_F(t[0])
-    SINK(t[1]) #$ MISSING: flow="SOURCE, l:-3 -> t[1]"
+    SINK(t[1]) #$ flow="SOURCE, l:-3 -> t[1]"
 
 @expects(2)
 def test_dict_copy():
     d = {'k': SOURCE, 'k1': NONSOURCE}
     d1 = d.copy()
-    SINK(d1["k"]) #$ MISSING: flow="SOURCE, l:-2 -> d[k]"
+    SINK(d1["k"]) #$ flow="SOURCE, l:-2 -> d1['k']"
     SINK_F(d1["k1"])
 
 
