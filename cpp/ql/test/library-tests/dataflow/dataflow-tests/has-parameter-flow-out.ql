@@ -19,10 +19,6 @@ module AstTest {
         value = p.getName()
       )
     }
-
-    predicate hasOptionalResult(Location location, string element, string tag, string value) {
-      none()
-    }
   }
 }
 
@@ -48,10 +44,6 @@ module IRTest {
         tag = "ir-def" and
         value = stars(n.getIndirectionIndex()) + p.getName()
       )
-    }
-
-    predicate hasOptionalResult(Location location, string element, string tag, string value) {
-      none()
     }
   }
 }

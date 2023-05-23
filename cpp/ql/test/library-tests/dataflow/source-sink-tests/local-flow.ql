@@ -27,10 +27,6 @@ module LocalFlowSourceTest implements TestSig {
       element = node.toString()
     )
   }
-
-  predicate hasOptionalResult(Location location, string element, string tag, string value) {
-    none()
-  }
 }
 
 import MakeTest<LocalFlowSourceTest>

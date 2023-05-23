@@ -156,7 +156,11 @@ module Make<InlineExpectationsTestSig Impl> {
      * A failure will still arise if there is an annotation that does not match any results, but not vice versa.
      * Override this predicate to specify optional results.
      */
-    predicate hasOptionalResult(Impl::Location location, string element, string tag, string value);
+    default predicate hasOptionalResult(
+      Impl::Location location, string element, string tag, string value
+    ) {
+      none()
+    }
   }
 
   /**
