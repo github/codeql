@@ -872,7 +872,7 @@ module Private {
     }
 
     pragma[nomagic]
-    private ParamNode summaryArgParam0(DataFlowCall call, ArgNode arg, SummarizedCallable sc) {
+    private ParamNode summaryArgParam(DataFlowCall call, ArgNode arg, SummarizedCallable sc) {
       exists(ParameterPosition ppos |
         argumentPositionMatch(call, arg, ppos) and
         viableParam(call, sc, ppos, result)
@@ -911,18 +911,18 @@ module Private {
     predicate prohibitsUseUseFlow(ArgNode arg, SummarizedCallable sc) {
       exists(ParamNode p, ParameterPosition ppos, Node ret |
         paramReachesLocal(p, ret, true) and
-        p = summaryArgParam0(_, arg, sc) and
+        p = summaryArgParam(_, arg, sc) and
         p.isParameterOf(_, pragma[only_bind_into](ppos)) and
         isParameterPostUpdate(ret, _, pragma[only_bind_into](ppos))
       )
     }
 
     bindingset[ret]
-    private ParamNode summaryArgParam(
+    private ParamNode summaryArgParamRetOut(
       ArgNode arg, ReturnNodeExt ret, OutNodeExt out, SummarizedCallable sc
     ) {
       exists(DataFlowCall call, ReturnKindExt rk |
-        result = summaryArgParam0(call, arg, sc) and
+        result = summaryArgParam(call, arg, sc) and
         ret.getKind() = pragma[only_bind_into](rk) and
         out = pragma[only_bind_into](rk).getAnOutNode(call)
       )
@@ -937,7 +937,7 @@ module Private {
      */
     predicate summaryThroughStepValue(ArgNode arg, Node out, SummarizedCallable sc) {
       exists(ReturnKind rk, ReturnNode ret, DataFlowCall call |
-        summaryLocalStep(summaryArgParam0(call, arg, sc), ret, true) and
+        summaryLocalStep(summaryArgParam(call, arg, sc), ret, true) and
         ret.getKind() = pragma[only_bind_into](rk) and
         out = getAnOutNode(call, pragma[only_bind_into](rk))
       )
@@ -951,7 +951,7 @@ module Private {
      * be useful to include in the exposed local data-flow/taint-tracking relations.
      */
     predicate summaryThroughStepTaint(ArgNode arg, Node out, SummarizedCallable sc) {
-      exists(ReturnNodeExt ret | summaryLocalStep(summaryArgParam(arg, ret, out, sc), ret, false))
+      exists(ReturnNodeExt ret | summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), ret, false))
     }
 
     /**
@@ -963,7 +963,7 @@ module Private {
      */
     predicate summaryGetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
       exists(Node mid, ReturnNodeExt ret |
-        summaryReadStep(summaryArgParam(arg, ret, out, sc), c, mid) and
+        summaryReadStep(summaryArgParamRetOut(arg, ret, out, sc), c, mid) and
         summaryLocalStep(mid, ret, _)
       )
     }
@@ -977,7 +977,7 @@ module Private {
      */
     predicate summarySetterStep(ArgNode arg, ContentSet c, Node out, SummarizedCallable sc) {
       exists(Node mid, ReturnNodeExt ret |
-        summaryLocalStep(summaryArgParam(arg, ret, out, sc), mid, _) and
+        summaryLocalStep(summaryArgParamRetOut(arg, ret, out, sc), mid, _) and
         summaryStoreStep(mid, c, ret)
       )
     }
