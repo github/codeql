@@ -37,7 +37,9 @@ def _get_class(cls: type) -> schema.Class:
                         derived={d.__name__ for d in cls.__subclasses__()},
                         # getattr to inherit from bases
                         group=getattr(cls, "_group", ""),
+                        hideable=getattr(cls, "_hideable", False),
                         # in the following we don't use `getattr` to avoid inheriting
+                        hideable_root=cls.__dict__.get("_hideable", False),
                         pragmas=cls.__dict__.get("_pragmas", []),
                         ipa=cls.__dict__.get("_ipa", None),
                         properties=[
