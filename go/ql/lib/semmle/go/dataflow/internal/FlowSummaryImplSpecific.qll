@@ -111,10 +111,10 @@ private string getContentSpecific(Content c) {
 string getComponentSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
-  exists(ReturnKind rk, int n | n = rk.getIndex() |
+  exists(ReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
-    result = "ReturnValue[" + n + "]" and
-    n != 0
+    not rk = getReturnValueKind() and
+    result = "ReturnValue[" + rk.getIndex() + "]"
   )
 }
 
