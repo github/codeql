@@ -47,7 +47,10 @@ module Generated {
      * Gets the `index`th argument to an array or dictionary subscript expression (0-based).
      */
     final Argument getSubscriptArgument(int index) {
-      result = this.getImmediateSubscriptArgument(index).resolve()
+      exists(Argument immediate |
+        immediate = this.getImmediateSubscriptArgument(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -90,7 +93,12 @@ module Generated {
     /**
      * Gets the property or subscript operator, if it exists.
      */
-    final ValueDecl getDeclRef() { result = this.getImmediateDeclRef().resolve() }
+    final ValueDecl getDeclRef() {
+      exists(ValueDecl immediate |
+        immediate = this.getImmediateDeclRef() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getDeclRef()` exists.
@@ -117,6 +125,11 @@ module Generated {
      * path; an optional-wrapping component is inserted if required to produce an optional type
      * as the final output.
      */
-    final Type getComponentType() { result = this.getImmediateComponentType().resolve() }
+    final Type getComponentType() {
+      exists(Type immediate |
+        immediate = this.getImmediateComponentType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

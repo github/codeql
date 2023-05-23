@@ -598,14 +598,26 @@ private DataFlow::Node evaluateSummaryComponentStackLocal(
       pragma[only_bind_out](tail)) and
     stack = SCS::push(pragma[only_bind_out](head), pragma[only_bind_out](tail))
   |
-    exists(DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos |
+    exists(
+      DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos,
+      DataFlowPrivate::ParameterNodeImpl p
+    |
       head = SummaryComponent::parameter(apos) and
       DataFlowDispatch::parameterMatch(ppos, apos) and
-      result.(DataFlowPrivate::ParameterNodeImpl).isSourceParameterOf(prev.asExpr().getExpr(), ppos)
+      p.isSourceParameterOf(prev.asExpr().getExpr(), ppos) and
+      // We need to include both `p` and the SSA definition for `p`, since in type-tracking
+      // the step from `p` to the SSA definition is considered a call step.
+      result =
+        [p.(DataFlow::Node), DataFlowPrivate::LocalFlow::getParameterDefNode(p.getParameter())]
     )
     or
-    head = SummaryComponent::return() and
-    result.(DataFlowPrivate::SynthReturnNode).getCfgScope() = prev.asExpr().getExpr()
+    exists(DataFlowPrivate::SynthReturnNode ret |
+      head = SummaryComponent::return() and
+      ret.getCfgScope() = prev.asExpr().getExpr() and
+      // We need to include both `ret` and `ret.getAnInput()`, since in type-tracking
+      // the step from `ret.getAnInput()` to `ret` is considered a return step.
+      result = [ret.(DataFlow::Node), ret.getAnInput()]
+    )
     or
     exists(DataFlow::ContentSet content |
       head = SummaryComponent::withoutContent(content) and

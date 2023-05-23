@@ -36,7 +36,12 @@ module Generated {
     /**
      * Gets the `index`th argument of this object literal expression (0-based).
      */
-    final Argument getArgument(int index) { result = this.getImmediateArgument(index).resolve() }
+    final Argument getArgument(int index) {
+      exists(Argument immediate |
+        immediate = this.getImmediateArgument(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the arguments of this object literal expression.

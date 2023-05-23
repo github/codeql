@@ -23,6 +23,11 @@ module Generated {
     /**
      * Gets the static self type of this dynamic self type.
      */
-    final Type getStaticSelfType() { result = this.getImmediateStaticSelfType().resolve() }
+    final Type getStaticSelfType() {
+      exists(Type immediate |
+        immediate = this.getImmediateStaticSelfType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

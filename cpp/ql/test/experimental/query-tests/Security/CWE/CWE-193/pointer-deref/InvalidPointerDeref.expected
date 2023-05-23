@@ -653,6 +653,7 @@ edges
 | test.cpp:304:15:304:26 | new[] | test.cpp:308:5:308:6 | xs |
 | test.cpp:308:5:308:6 | xs | test.cpp:308:5:308:11 | access to array |
 | test.cpp:308:5:308:11 | access to array | test.cpp:308:5:308:29 | Store: ... = ... |
+| test.cpp:313:16:313:29 | new[] | test.cpp:314:17:314:18 | xs |
 subpaths
 #select
 | test.cpp:6:14:6:15 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |

@@ -1,10 +1,29 @@
-import semmle.code.cpp.ir.dataflow.DataFlow
-private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
-private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
-private import semmle.code.cpp.ir.dataflow.internal.DataFlowImplCommon
+/**
+ * Provides a library for global (inter-procedural) data flow analysis of two
+ * values "simultaneously". This can be used, for example, if you want to track
+ * a memory allocation as well as the size of the allocation.
+ *
+ * Intuitively, you can think of this as regular dataflow, but where each node
+ * in the dataflow graph has been replaced by a pair of nodes `(node1, node2)`,
+ * and two node pairs `(n11, n12)`, `(n21, n22)` is then connected by a dataflow
+ * edge if there's a regular dataflow edge between `n11` and `n21`, and `n12`
+ * and `n22`.
+ *
+ * Note that the above intuition does not reflect the actual implementation.
+ */
+
+import semmle.code.cpp.dataflow.new.DataFlow
+private import DataFlowPrivate
+private import DataFlowUtil
+private import DataFlowImplCommon
 private import codeql.util.Unit
 
+/**
+ * Provides classes for performing global (inter-procedural) data flow analyses
+ * on a product dataflow graph.
+ */
 module ProductFlow {
+  /** An input configuration for product data-flow. */
   signature module ConfigSig {
     /**
      * Holds if `(source1, source2)` is a relevant data flow source.
@@ -70,6 +89,9 @@ module ProductFlow {
     default predicate isBarrierIn2(DataFlow::Node node) { none() }
   }
 
+  /**
+   * The output of a global data flow computation.
+   */
   module Global<ConfigSig Config> {
     private module StateConfig implements StateConfigSig {
       class FlowState1 = Unit;
@@ -138,6 +160,7 @@ module ProductFlow {
     import GlobalWithState<StateConfig>
   }
 
+  /** An input configuration for data flow using flow state. */
   signature module StateConfigSig {
     bindingset[this]
     class FlowState1;
@@ -247,6 +270,9 @@ module ProductFlow {
     default predicate isBarrierIn2(DataFlow::Node node) { none() }
   }
 
+  /**
+   * The output of a global data flow computation.
+   */
   module GlobalWithState<StateConfigSig Config> {
     class PathNode1 = Flow1::PathNode;
 
@@ -260,6 +286,7 @@ module ProductFlow {
 
     class FlowState2 = Config::FlowState2;
 
+    /** Holds if data can flow from `(source1, source2)` to `(sink1, sink2)`. */
     predicate flowPath(
       Flow1::PathNode source1, Flow2::PathNode source2, Flow1::PathNode sink1, Flow2::PathNode sink2
     ) {

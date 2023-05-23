@@ -178,11 +178,11 @@ A QL module definition has the following syntax:
 
    module ::= annotation* "module" modulename parameters? implements? "{" moduleBody "}"
 
-   parameters ::= "<" signatureExpr simpleId ("," signatureExpr simpleId)* ">"
+   parameters ::= "<" signatureExpr parameterName ("," signatureExpr parameterName)* ">"
 
    implements ::= "implements" moduleSignatureExpr ("," moduleSignatureExpr)*
 
-   moduleBody ::= (import | predicate | class | module | alias | select)*
+   moduleBody ::= (import | predicate | class | module | signature | alias | select)*
 
 A module definition extends the current module's declared module environment with a mapping from the module name to the module definition.
 
@@ -216,7 +216,7 @@ An import directive refers to a module identifier:
 
    qualId ::= simpleId | qualId "." simpleId
 
-   importModuleExpr ::= qualId | importModuleExpr "::" simpleId arguments?
+   importModuleExpr ::= qualId | importModuleExpr "::" modulename arguments?
 
    arguments ::= "<" argument ("," argument)* ">"
 
@@ -289,7 +289,7 @@ With the exception of class domain types and character types (which cannot be re
 
    type ::= (moduleExpr "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
 
-   moduleExpr ::= simpleId arguments? | moduleExpr "::" simpleId arguments?
+   moduleExpr ::= modulename arguments? | moduleExpr "::" modulename arguments?
 
 A type reference is resolved to a type as follows:
 
@@ -594,20 +594,21 @@ There are several kinds of identifiers:
 
 -  ``atLowerId``: an identifier that starts with an "@" sign and then a lower-case letter.
 
--  ``atUpperId``: an identifier that starts with an "@" sign and then an upper-case letter.
-
 Identifiers are used in following syntactic constructs:
 
 ::
 
-   simpleId      ::= lowerId | upperId
-   modulename    ::= simpleId
-   classname     ::= upperId
-   dbasetype     ::= atLowerId
-   predicateRef  ::= (moduleExpr "::")? literalId
-   predicateName ::= lowerId
-   varname       ::= lowerId
-   literalId     ::= lowerId | atLowerId
+   simpleId            ::= lowerId | upperId
+   modulename          ::= simpleId
+   moduleSignatureName ::= upperId
+   classname           ::= upperId
+   dbasetype           ::= atLowerId
+   predicateRef        ::= (moduleExpr "::")? literalId
+   signatureExpr       ::= (moduleExpr "::")? simpleId ("/" Integer | arguments)?;
+   predicateName       ::= lowerId
+   parameterName       ::= simpleId
+   varname             ::= lowerId
+   literalId           ::= lowerId | atLowerId
 
 Integer literals (int)
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -669,12 +670,14 @@ Various kinds of syntax can have *annotations* applied to them. Annotations are 
    simpleAnnotation ::= "abstract"
                     |   "cached"
                     |   "external"
+                    |   "extensible"
                     |   "final"
                     |   "transient"
                     |   "library"
                     |   "private"
                     |   "deprecated"
                     |   "override"
+                    |   "additional"
                     |   "query"
 
    argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
@@ -690,31 +693,36 @@ Simple annotations
 
 The following table summarizes the syntactic constructs which can be marked with each annotation in a valid program; for example, an ``abstract`` annotation preceding a character is invalid.
 
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| Annotation     | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases |
-+================+=========+============+===================+=======================+=========+========+=========+=========+
-| ``abstract``   | yes     |            | yes               |                       |         |        |         |         |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``cached``     | yes     | yes        | yes               | yes                   |         |        | yes     |         |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``external``   |         |            |                   | yes                   |         |        |         |         |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``final``      | yes     |            | yes               |                       |         | yes    |         | yes     |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``transient``  |         |            |                   | yes                   |         |        |         |         |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``library``    | yes     |            |                   |                       |         |        |         |         |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``private``    | yes     |            | yes               | yes                   | yes     | yes    | yes     | yes     |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``deprecated`` | yes     |            | yes               | yes                   |         | yes    | yes     | yes     |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``override``   |         |            | yes               |                       |         | yes    |         |         |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| ``query``      |         |            |                   | yes                   |         |        |         | yes     |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| Annotation     | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases | Signatures |
++================+=========+============+===================+=======================+=========+========+=========+=========+============+
+| ``abstract``   | yes     |            | yes               |                       |         |        |         |         |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``cached``     | yes     | yes        | yes               | yes                   |         |        | yes     |         |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``external``   |         |            |                   | yes                   |         |        |         |         |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``extensible`` |         |            |                   | yes                   |         |        |         |         |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``final``      | yes     |            | yes               |                       |         | yes    |         | (yes)   |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``transient``  |         |            |                   | yes                   |         |        |         |         |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``library``    | (yes)   |            |                   |                       |         |        |         |         |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``private``    | yes     |            | yes               | yes                   | yes     | yes    | yes     | yes     | yes        |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``deprecated`` | yes     |            | yes               | yes                   |         | yes    | yes     | yes     | yes        |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``override``   |         |            | yes               |                       |         | yes    |         |         |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``additional`` | yes     |            |                   | yes                   |         |        | yes     | yes     | yes        |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| ``query``      |         |            |                   | yes                   |         |        |         | yes     |            |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 
 The ``library`` annotation is only usable within a QLL file, not a QL file.
+The ``final`` annotation is usable on type aliases, but not on module aliases and predicate aliases.
 
 Annotations on aliases apply to the name introduced by the alias. An alias may, for example, have different privacy to the name it aliases.
 
@@ -764,11 +772,13 @@ Binding sets are checked by the QL compiler in the following way:
 
 A predicate may have several different binding sets, which can be stated by using multiple ``bindingset`` annotations on the same predicate.
 
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
-| Pragma         | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases |
-+================+=========+============+===================+=======================+=========+========+=========+=========+
-| ``bindingset`` |         | yes        | yes               | yes                   |         |        |         |         |
-+----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+| Pragma         | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases | Signatures |
++================+=========+============+===================+=======================+=========+========+=========+=========+============+
+| ``bindingset`` |         | yes        | yes               | yes                   |         |        |         |         | (yes)      |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+
+The ``bindingset`` pragma is usable with type signatures and predicate signatures, but not with module signatures.
 
 QLDoc
 -----
@@ -815,7 +825,7 @@ If the query file starts with whitespace followed by a QLDoc comment, then the t
 Top-level entities
 ------------------
 
-Modules include five kinds of top-level entity: predicates, classes, modules, aliases, and select clauses.
+Modules include five kinds of top-level entity: predicates, classes, modules, aliases, signatures, and select clauses.
 
 Non-member predicates
 ~~~~~~~~~~~~~~~~~~~~~
@@ -968,6 +978,37 @@ A valid class may not inherit from two different classes that include a field wi
 A valid field must override another field if it is annotated ``override``.
 
 When field ``f`` overrides field ``g`` the type of ``f`` must be a subtype of the type of ``g``. ``f`` may not be a final field.
+
+
+Signatures
+~~~~~~~~~~
+
+A signature definition has the following syntax:
+
+::
+
+   signature ::= predicateSignature | typeSignature | moduleSignature
+
+   predicateSignature ::= qldoc? annotations "signature" head ";"
+
+   typeSignature ::= qldoc? annotations "signature" "class" classname ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
+
+   moduleSignature ::= qldoc? annotation* "signature" "module" moduleSignatureName parameters? "{" moduleSignatureBody "}"
+
+   moduleSignatureBody ::= (signaturePredicate | defaultPredicate | signatureType)*
+
+   signaturePredicate ::= qldoc? annotations head ";"
+
+   defaultPredicate ::= qldoc? annotations "default" head "{" formula "}"
+
+   signatureType ::= qldoc? annotations "class" classname ("extends" type ("," type)*)? "{" signaturePredicate* "}"
+
+
+A predicate signature definition extends the current module's declared predicate signature environment with a mapping from the predicate signature name and arity to the predicate signature definition.
+
+A type signature definition extends the current module's declared type signature environment with a mapping from the type signature name to the type signature definition.
+
+A module signature definition extends the current module's declared module signature environment with a mapping from the module signature name to the module signature definition.
 
 Select clauses
 ~~~~~~~~~~~~~~
@@ -2073,7 +2114,7 @@ The complete grammar for QL is as follows:
 
    module ::= annotation* "module" modulename parameters? implements? "{" moduleBody "}"
 
-   parameters ::= "<" signatureExpr simpleId ("," signatureExpr simpleId)* ">"
+   parameters ::= "<" signatureExpr parameterName ("," signatureExpr parameterName)* ">"
 
    implements ::= "implements" moduleSignatureExpr ("," moduleSignatureExpr)*
 
@@ -2083,11 +2124,27 @@ The complete grammar for QL is as follows:
 
    qualId ::= simpleId | qualId "." simpleId
 
-   importModuleExpr ::= qualId | importModuleExpr "::" simpleId arguments?
+   importModuleExpr ::= qualId | importModuleExpr "::" modulename arguments?
 
    arguments ::= "<" argument ("," argument)* ">"
 
    argument ::= moduleExpr | type | predicateRef "/" int
+
+   signature ::= predicateSignature | typeSignature | moduleSignature
+
+   predicateSignature ::= qldoc? annotations "signature" head ";"
+
+   typeSignature ::= qldoc? annotations "signature" "class" classname ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
+
+   moduleSignature ::= qldoc? annotation* "signature" "module" moduleSignatureName parameters? "{" moduleSignatureBody "}"
+
+   moduleSignatureBody ::= (signaturePredicate | defaultPredicate | signatureType)*
+
+   signaturePredicate ::= qldoc? annotations head ";"
+
+   defaultPredicate ::= qldoc? annotations "default" head "{" formula "}"
+
+   signatureType ::= qldoc? annotations "class" classname ("extends" type ("," type)*)? "{" signaturePredicate* "}"
 
    select ::= ("from" var_decls)? ("where" formula)? "select" as_exprs ("order" "by" orderbys)?
 
@@ -2108,12 +2165,14 @@ The complete grammar for QL is as follows:
    simpleAnnotation ::= "abstract"
                     |   "cached"
                     |   "external"
+                    |   "extensible"
                     |   "final"
                     |   "transient"
                     |   "library"
                     |   "private"
                     |   "deprecated"
                     |   "override"
+                    |   "additional"
                     |   "query"
 
    argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
@@ -2134,9 +2193,9 @@ The complete grammar for QL is as follows:
 
    field ::= qldoc? annotations var_decl ";"
 
-   moduleExpr ::= simpleId arguments? | moduleExpr "::" simpleId arguments?
+   moduleExpr ::= modulename arguments? | moduleExpr "::" modulename arguments?
 
-   moduleSignatureExpr ::= (moduleExpr "::")? upperId arguments?
+   moduleSignatureExpr ::= (moduleExpr "::")? moduleSignatureName arguments?
 
    signatureExpr : (moduleExpr "::")? simpleId ("/" Integer | arguments)?;
 
@@ -2263,6 +2322,8 @@ The complete grammar for QL is as follows:
 
    modulename ::= simpleId
 
+   moduleSignatureName ::= upperId
+
    classname ::= upperId
 
    dbasetype ::= atLowerId
@@ -2270,6 +2331,8 @@ The complete grammar for QL is as follows:
    predicateRef ::= (moduleExpr "::")? literalId
 
    predicateName ::= lowerId
+
+   parameterName ::= simpleId
 
    varname ::= lowerId
 

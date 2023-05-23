@@ -28,7 +28,10 @@ module Generated {
      * Gets the `index`th type parameter of this generic type (0-based).
      */
     final GenericTypeParamType getGenericParam(int index) {
-      result = this.getImmediateGenericParam(index).resolve()
+      exists(GenericTypeParamType immediate |
+        immediate = this.getImmediateGenericParam(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**

@@ -308,3 +308,17 @@ void test21() {
     xs[i+1] = test21_get(i+1); // GOOD [FALSE POSITIVE]
   }
 }
+
+void test22(unsigned size, int val) {
+    char *xs = new char[size];
+    char *end = xs + size; // GOOD
+    char **current = &end;
+    do
+    {
+        if( *current - xs < 1 ) // GOOD
+            return;
+        *--(*current) = 0; // GOOD
+        val >>= 8;
+    }
+    while( val > 0 );
+}
