@@ -34,6 +34,7 @@ class Property:
     pragmas: List[str] = field(default_factory=list)
     doc: Optional[str] = None
     description: List[str] = field(default_factory=list)
+    synth: bool = False
 
     @property
     def is_single(self) -> bool:

@@ -111,7 +111,7 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
         is_predicate=prop.is_predicate,
         is_unordered=prop.is_unordered,
         description=prop.description,
-        synth=bool(cls.ipa),
+        synth=bool(cls.ipa) or prop.synth,
     )
     if prop.is_single:
         args.update(

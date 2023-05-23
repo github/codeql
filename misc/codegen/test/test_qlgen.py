@@ -891,5 +891,19 @@ def test_stub_on_class_with_ipa_on_arguments(generate_classes):
     }
 
 
+def test_synth_property(generate_classes):
+    assert generate_classes([
+        schema.Class("MyObject", properties=[
+            schema.SingleProperty("foo", "bar", synth=True)]),
+    ]) == {
+        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+                         a_ql_class(name="MyObject", final=True,
+                                    properties=[
+                                        ql.Property(singular="Foo", type="bar", tablename="my_objects", synth=True,
+                                                    tableparams=["this", "result"], doc="foo of this my object"),
+                                    ])),
+    }
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))
