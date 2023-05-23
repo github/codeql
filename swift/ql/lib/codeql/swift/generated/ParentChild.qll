@@ -2513,31 +2513,18 @@ private module Impl {
   private Element getImmediateChildOfInterpolatedStringLiteralExpr(
     InterpolatedStringLiteralExpr e, int index, string partialPredicateCall
   ) {
-    exists(
-      int b, int bLiteralExpr, int n, int nInterpolationCountExpr, int nLiteralCapacityExpr,
-      int nAppendingExpr
-    |
+    exists(int b, int bLiteralExpr, int n, int nAppendingExpr |
       b = 0 and
       bLiteralExpr =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLiteralExpr(e, i, _)) | i) and
       n = bLiteralExpr and
-      nInterpolationCountExpr = n + 1 and
-      nLiteralCapacityExpr = nInterpolationCountExpr + 1 and
-      nAppendingExpr = nLiteralCapacityExpr + 1 and
+      nAppendingExpr = n + 1 and
       (
         none()
         or
         result = getImmediateChildOfLiteralExpr(e, index - b, partialPredicateCall)
         or
         index = n and
-        result = e.getImmediateInterpolationCountExpr() and
-        partialPredicateCall = "InterpolationCountExpr()"
-        or
-        index = nInterpolationCountExpr and
-        result = e.getImmediateLiteralCapacityExpr() and
-        partialPredicateCall = "LiteralCapacityExpr()"
-        or
-        index = nLiteralCapacityExpr and
         result = e.getImmediateAppendingExpr() and
         partialPredicateCall = "AppendingExpr()"
       )
