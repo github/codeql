@@ -334,40 +334,6 @@ Active types
 
 In a QL program, the *active* types are those defined in active modules. In the remainder of this specification, any reference to the types in the program refers only to the active types.
 
-
-Signatures
-----------
-
-Signature definitions
-~~~~~~~~~~~~~~~~~~~~~
-
-A QL signature definition has the following syntax:
-
-::
-
-   signature ::= predicateSignature | typeSignature | moduleSignature
-
-   predicateSignature ::= qldoc? annotations "signature" head ";"
-
-   typeSignature ::= qldoc? annotations "signature" "class" classname ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
-
-   moduleSignature ::= qldoc? annotation* "signature" "module" moduleSignatureName parameters? "{" moduleSignatureBody "}"
-
-   moduleSignatureBody ::= (signaturePredicate | defaultPredicate | signatureType)*
-
-   signaturePredicate ::= qldoc? annotations head ";"
-
-   defaultPredicate ::= qldoc? annotations "default" head "{" formula "}"
-
-   signatureType ::= qldoc? annotations "class" classname ("extends" type ("," type)*)? "{" signaturePredicate* "}"
-
-
-A predicate signature definition extends the current module's declared predicate signature environment with a mapping from the predicate signature name and arity to the predicate signature definition.
-
-A type signature definition extends the current module's declared type signature environment with a mapping from the type signature name to the type signature definition.
-
-A module signature definition extends the current module's declared module signature environment with a mapping from the module signature name to the module signature definition.
-
 Values
 ------
 
@@ -859,7 +825,7 @@ If the query file starts with whitespace followed by a QLDoc comment, then the t
 Top-level entities
 ------------------
 
-Modules include five kinds of top-level entity: predicates, classes, modules, aliases, and select clauses.
+Modules include five kinds of top-level entity: predicates, classes, modules, aliases, signatures, and select clauses.
 
 Non-member predicates
 ~~~~~~~~~~~~~~~~~~~~~
@@ -1012,6 +978,37 @@ A valid class may not inherit from two different classes that include a field wi
 A valid field must override another field if it is annotated ``override``.
 
 When field ``f`` overrides field ``g`` the type of ``f`` must be a subtype of the type of ``g``. ``f`` may not be a final field.
+
+
+Signatures
+~~~~~~~~~~
+
+A signature definition has the following syntax:
+
+::
+
+   signature ::= predicateSignature | typeSignature | moduleSignature
+
+   predicateSignature ::= qldoc? annotations "signature" head ";"
+
+   typeSignature ::= qldoc? annotations "signature" "class" classname ("extends" type ("," type)*)? (";" | "{" signaturePredicate* "}")
+
+   moduleSignature ::= qldoc? annotation* "signature" "module" moduleSignatureName parameters? "{" moduleSignatureBody "}"
+
+   moduleSignatureBody ::= (signaturePredicate | defaultPredicate | signatureType)*
+
+   signaturePredicate ::= qldoc? annotations head ";"
+
+   defaultPredicate ::= qldoc? annotations "default" head "{" formula "}"
+
+   signatureType ::= qldoc? annotations "class" classname ("extends" type ("," type)*)? "{" signaturePredicate* "}"
+
+
+A predicate signature definition extends the current module's declared predicate signature environment with a mapping from the predicate signature name and arity to the predicate signature definition.
+
+A type signature definition extends the current module's declared type signature environment with a mapping from the type signature name to the type signature definition.
+
+A module signature definition extends the current module's declared module signature environment with a mapping from the module signature name to the module signature definition.
 
 Select clauses
 ~~~~~~~~~~~~~~
