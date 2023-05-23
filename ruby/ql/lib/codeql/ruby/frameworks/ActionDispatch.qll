@@ -8,9 +8,9 @@
  * Version: 7.1.0.
  */
 module ActionDispatch {
-  private import actiondispatch.Mime
-  private import actiondispatch.Request
-  import actiondispatch.Routing
+  private import actiondispatch.internal.Mime
+  private import actiondispatch.internal.Request
+  import actiondispatch.internal.Routing
 
   class MimeTypeMatchRegExpInterpretation = Mime::MimeTypeMatchRegExpInterpretation;
 }
