@@ -455,6 +455,17 @@ def test_ipa_class_hierarchy():
     }
 
 
+def test_synthesized_property():
+    @load
+    class data:
+        class A:
+            x: defs.int | defs.synth
+
+    assert data.classes["A"].properties == [
+        schema.SingleProperty("x", "int", synth=True)
+    ]
+
+
 def test_class_docstring():
     @load
     class data:

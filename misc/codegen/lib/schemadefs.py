@@ -44,10 +44,15 @@ class _Namespace:
         self.__dict__.update(kwargs)
 
 
+class _SynthModifier(_schema.PropertyModifier, _Namespace):
+    def modify(self, prop: _schema.Property):
+        prop.synth = True
+
+
 qltest = _Namespace()
 ql = _Namespace()
 cpp = _Namespace()
-synth = _Namespace()
+synth = _SynthModifier()
 
 
 @_dataclass
