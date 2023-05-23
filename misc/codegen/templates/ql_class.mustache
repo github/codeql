@@ -67,12 +67,12 @@ module Generated {
      * behavior of both the `Immediate` and non-`Immediate` versions.
      */
     {{type}} get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}int index{{/is_indexed}}) {
-      {{^ipa}}
+      {{^synth}}
       result = Synth::convert{{type}}FromRaw(Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_indexed}}index{{/is_indexed}}))
-      {{/ipa}}
-      {{#ipa}}
+      {{/synth}}
+      {{#synth}}
       none()
-      {{/ipa}}
+      {{/synth}}
     }
 
     /**
@@ -99,12 +99,12 @@ module Generated {
     {{/has_description}}
      */
     {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
-      {{^ipa}}
+      {{^synth}}
       {{^is_predicate}}result = {{/is_predicate}}Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_indexed}}index{{/is_indexed}})
-      {{/ipa}}
-      {{#ipa}}
+      {{/synth}}
+      {{#synth}}
       none()
-      {{/ipa}}
+      {{/synth}}
     }
 
     {{/type_is_class}}

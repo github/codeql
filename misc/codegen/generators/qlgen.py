@@ -110,7 +110,8 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
         is_optional=prop.is_optional,
         is_predicate=prop.is_predicate,
         is_unordered=prop.is_unordered,
-        description=prop.description
+        description=prop.description,
+        synth=bool(cls.ipa),
     )
     if prop.is_single:
         args.update(
@@ -162,7 +163,6 @@ def get_ql_class(cls: schema.Class) -> ql.Class:
         final=not cls.derived,
         properties=properties,
         dir=pathlib.Path(cls.group or ""),
-        ipa=bool(cls.ipa),
         doc=cls.doc,
         **pragmas,
     )
@@ -342,7 +342,7 @@ def generate(opts, renderer):
     with renderer.manage(generated=generated, stubs=stubs, registry=opts.generated_registry,
                          force=opts.force) as renderer:
 
-        db_classes = [cls for cls in classes.values() if not cls.ipa]
+        db_classes = [cls for name, cls in classes.items() if not data.classes[name].ipa]
         renderer.render(ql.DbClasses(db_classes), out / "Raw.qll")
 
         classes_by_dir_and_name = sorted(classes.values(), key=lambda cls: (cls.dir, cls.name))

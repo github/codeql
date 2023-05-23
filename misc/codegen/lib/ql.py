@@ -42,6 +42,7 @@ class Property:
     description: List[str] = field(default_factory=list)
     doc: Optional[str] = None
     doc_plural: Optional[str] = None
+    synth: bool = False
 
     def __post_init__(self):
         if self.tableparams:
@@ -111,7 +112,6 @@ class Class:
     qltest_collapse_hierarchy: bool = False
     qltest_uncollapse_hierarchy: bool = False
     ql_internal: bool = False
-    ipa: bool = False
     doc: List[str] = field(default_factory=list)
 
     def __post_init__(self):
