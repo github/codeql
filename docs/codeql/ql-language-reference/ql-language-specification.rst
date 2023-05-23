@@ -704,6 +704,7 @@ Various kinds of syntax can have *annotations* applied to them. Annotations are 
    simpleAnnotation ::= "abstract"
                     |   "cached"
                     |   "external"
+                    |   "extensible"
                     |   "final"
                     |   "transient"
                     |   "library"
@@ -734,6 +735,8 @@ The following table summarizes the syntactic constructs which can be marked with
 | ``cached``     | yes     | yes        | yes               | yes                   |         |        | yes     |         |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 | ``external``   |         |            |                   | yes                   |         |        |         |         |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``extensible`` |         |            |                   | yes                   |         |        |         |         |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 | ``final``      | yes     |            | yes               |                       |         | yes    |         | yes     |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
@@ -2162,6 +2165,7 @@ The complete grammar for QL is as follows:
    simpleAnnotation ::= "abstract"
                     |   "cached"
                     |   "external"
+                    |   "extensible"
                     |   "final"
                     |   "transient"
                     |   "library"
