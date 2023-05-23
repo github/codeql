@@ -1769,6 +1769,13 @@ brace_stmts(  //dir=stmt
 );
 
 #keyset[id, index]
+brace_stmt_variables(  //dir=stmt
+  int id: @brace_stmt ref,
+  int index: int ref,
+  int variable: @var_decl_or_none ref
+);
+
+#keyset[id, index]
 brace_stmt_elements(  //dir=stmt
   int id: @brace_stmt ref,
   int index: int ref,
