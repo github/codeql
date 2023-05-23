@@ -49,7 +49,7 @@ def cls_to_dbscheme(cls: schema.Class, lookup: typing.Dict[str, schema.Class], a
     # Leaf classes need a table to bind the `@` ids
     # 1-to-1 properties are added to a class specific table
     # in other cases, separate tables are used for the properties, and a class specific table is unneeded
-    if not cls.derived or any(f.is_single for f in cls.properties):
+    if not cls.derived or any(f.is_single and not f.synth for f in cls.properties):
         binding = not cls.derived
         keyset = KeySet(["id"]) if cls.derived else None
         yield Table(
@@ -58,12 +58,15 @@ def cls_to_dbscheme(cls: schema.Class, lookup: typing.Dict[str, schema.Class], a
             columns=[
                 Column("id", type=dbtype(cls.name), binding=binding),
             ] + [
-                Column(f.name, dbtype(f.type, add_or_none_except)) for f in cls.properties if f.is_single
+                Column(f.name, dbtype(f.type, add_or_none_except))
+                for f in cls.properties if f.is_single and not f.synth
             ],
             dir=dir,
         )
     # use property-specific tables for 1-to-many and 1-to-at-most-1 properties
     for f in cls.properties:
+        if f.synth:
+            continue
         if f.is_unordered:
             yield Table(
                 name=inflection.tableize(f"{cls.name}_{f.name}"),
