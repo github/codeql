@@ -14,6 +14,7 @@ private import semmle.code.java.Expr as Expr
 private import semmle.code.java.security.QueryInjection
 private import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclusions
+private import AutomodelSharedUtil as AutomodelSharedUtil
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
@@ -46,31 +47,7 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
 
   RelatedLocation asLocation(Endpoint e) { result = e.asParameter() }
 
-  predicate isKnownKind(string kind, string humanReadableKind, EndpointType type) {
-    kind = "read-file" and
-    humanReadableKind = "read file" and
-    type instanceof AutomodelEndpointTypes::TaintedPathSinkType
-    or
-    kind = "create-file" and
-    humanReadableKind = "create file" and
-    type instanceof AutomodelEndpointTypes::TaintedPathSinkType
-    or
-    kind = "sql" and
-    humanReadableKind = "mad modeled sql" and
-    type instanceof AutomodelEndpointTypes::SqlSinkType
-    or
-    kind = "open-url" and
-    humanReadableKind = "open url" and
-    type instanceof AutomodelEndpointTypes::RequestForgerySinkType
-    or
-    kind = "jdbc-url" and
-    humanReadableKind = "jdbc url" and
-    type instanceof AutomodelEndpointTypes::RequestForgerySinkType
-    or
-    kind = "command-injection" and
-    humanReadableKind = "command injection" and
-    type instanceof AutomodelEndpointTypes::CommandInjectionSinkType
-  }
+  predicate isKnownKind = AutomodelSharedUtil::isKnownKind/3;
 
   predicate isSink(Endpoint e, string kind) {
     exists(string package, string type, string name, string signature, string ext, string input |

@@ -1,3 +1,5 @@
+import AutomodelEndpointTypes as AutomodelEndpointTypes
+
 /**
  * A helper class to represent a string value that can be returned by a query using $@ notation.
  *
@@ -18,4 +20,32 @@ class DollarAtString extends string {
   predicate hasLocationInfo(string path, int sl, int sc, int el, int ec) {
     path = this and sl = 1 and sc = 1 and el = 1 and ec = 1
   }
+}
+
+predicate isKnownKind(
+  string kind, string humanReadableKind, AutomodelEndpointTypes::EndpointType type
+) {
+  kind = "read-file" and
+  humanReadableKind = "read file" and
+  type instanceof AutomodelEndpointTypes::TaintedPathSinkType
+  or
+  kind = "create-file" and
+  humanReadableKind = "create file" and
+  type instanceof AutomodelEndpointTypes::TaintedPathSinkType
+  or
+  kind = "sql" and
+  humanReadableKind = "mad modeled sql" and
+  type instanceof AutomodelEndpointTypes::SqlSinkType
+  or
+  kind = "open-url" and
+  humanReadableKind = "open url" and
+  type instanceof AutomodelEndpointTypes::RequestForgerySinkType
+  or
+  kind = "jdbc-url" and
+  humanReadableKind = "jdbc url" and
+  type instanceof AutomodelEndpointTypes::RequestForgerySinkType
+  or
+  kind = "command-injection" and
+  humanReadableKind = "command injection" and
+  type instanceof AutomodelEndpointTypes::CommandInjectionSinkType
 }
