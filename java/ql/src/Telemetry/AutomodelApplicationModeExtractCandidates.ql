@@ -4,12 +4,12 @@
  *
  * Note: This query does not actually classify the endpoints using the model.
  *
- * @name Automodel candidates
- * @description A query to extract automodel candidates.
+ * @name Automodel candidates (application mode)
+ * @description A query to extract automodel candidates in application mode.
  * @kind problem
  * @severity info
  * @id java/ml/extract-automodel-application-candidates
- * @tags internal automodel extract candidates application-mode
+ * @tags internal extract automodel application-mode candidates
  */
 
 private import AutomodelApplicationModeCharacteristics

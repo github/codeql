@@ -4,12 +4,12 @@
  *
  * Note: This query does not actually classify the endpoints using the model.
  *
- * @name Automodel candidates
- * @description A query to extract automodel candidates.
+ * @name Automodel candidates (framework mode)
+ * @description A query to extract automodel candidates in framework mode.
  * @kind problem
  * @severity info
  * @id java/ml/extract-automodel-framework-candidates
- * @tags internal automodel extract candidates framework-mode
+ * @tags internal extract automodel framework-mode candidates
  */
 
 private import AutomodelFrameworkModeCharacteristics
