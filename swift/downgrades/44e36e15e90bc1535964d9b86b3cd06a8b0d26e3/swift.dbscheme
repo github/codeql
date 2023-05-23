@@ -1383,6 +1383,18 @@ interpolated_string_literal_expr_interpolation_exprs(  //dir=expr
 );
 
 #keyset[id]
+interpolated_string_literal_expr_interpolation_count_exprs(  //dir=expr
+  int id: @interpolated_string_literal_expr ref,
+  int interpolation_count_expr: @expr_or_none ref
+);
+
+#keyset[id]
+interpolated_string_literal_expr_literal_capacity_exprs(  //dir=expr
+  int id: @interpolated_string_literal_expr ref,
+  int literal_capacity_expr: @expr_or_none ref
+);
+
+#keyset[id]
 interpolated_string_literal_expr_appending_exprs(  //dir=expr
   int id: @interpolated_string_literal_expr ref,
   int appending_expr: @tap_expr_or_none ref

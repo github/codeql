@@ -206,8 +206,6 @@ cfg.swift:
 #   40|               getExpr(): [VarargExpansionExpr] [...]
 #   40|                 getSubExpr(): [ArrayExpr] [...]
 #   40|                   getElement(0): [InterpolatedStringLiteralExpr] "..."
-#-----|                     getInterpolationCountExpr(): [IntegerLiteralExpr] 1
-#-----|                     getLiteralCapacityExpr(): [IntegerLiteralExpr] 14
 #   40|                     getAppendingExpr(): [TapExpr] TapExpr
 #   40|                       getSubExpr(): [OpaqueValueExpr] OpaqueValueExpr
 #   40|                       getBody(): [BraceStmt] { ... }
@@ -1422,8 +1420,6 @@ cfg.swift:
 #  262|   getBody(): [BraceStmt] { ... }
 #  263|     getElement(0): [ReturnStmt] return ...
 #  263|       getResult(): [InterpolatedStringLiteralExpr] "..."
-#-----|         getInterpolationCountExpr(): [IntegerLiteralExpr] 4
-#-----|         getLiteralCapacityExpr(): [IntegerLiteralExpr] 37
 #  263|         getAppendingExpr(): [TapExpr] TapExpr
 #  263|           getSubExpr(): [OpaqueValueExpr] OpaqueValueExpr
 #  263|           getBody(): [BraceStmt] { ... }
@@ -4293,8 +4289,6 @@ expressions.swift:
 #    7|   getBody(): [BraceStmt] { ... }
 #    7|     getElement(0): [PatternBindingDecl] var ... = ...
 #    7|       getInit(0): [InterpolatedStringLiteralExpr] "..."
-#-----|         getInterpolationCountExpr(): [IntegerLiteralExpr] 1
-#-----|         getLiteralCapacityExpr(): [IntegerLiteralExpr] 6
 #    7|         getAppendingExpr(): [TapExpr] TapExpr
 #    7|           getSubExpr(): [OpaqueValueExpr] OpaqueValueExpr
 #    7|           getBody(): [BraceStmt] { ... }
