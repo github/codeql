@@ -738,11 +738,11 @@ The following table summarizes the syntactic constructs which can be marked with
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | ``extensible`` |         |            |                   | yes                   |         |        |         |         |            |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``final``      | yes     |            | yes               |                       |         | yes    |         | yes     |            |
+| ``final``      | yes     |            | yes               |                       |         | yes    |         | (yes)   |            |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | ``transient``  |         |            |                   | yes                   |         |        |         |         |            |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| ``library``    | yes     |            |                   |                       |         |        |         |         |            |
+| ``library``    | (yes)   |            |                   |                       |         |        |         |         |            |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | ``private``    | yes     |            | yes               | yes                   | yes     | yes    | yes     | yes     | yes        |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
@@ -756,6 +756,7 @@ The following table summarizes the syntactic constructs which can be marked with
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 
 The ``library`` annotation is only usable within a QLL file, not a QL file.
+The ``final`` annotation is usable on type aliases, but not on module aliases and predicate aliases.
 
 Annotations on aliases apply to the name introduced by the alias. An alias may, for example, have different privacy to the name it aliases.
 
@@ -808,8 +809,10 @@ A predicate may have several different binding sets, which can be stated by usin
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
 | Pragma         | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases | Signatures |
 +================+=========+============+===================+=======================+=========+========+=========+=========+============+
-| ``bindingset`` |         | yes        | yes               | yes                   |         |        |         |         | yes        |
+| ``bindingset`` |         | yes        | yes               | yes                   |         |        |         |         | (yes)      |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
+
+The ``bindingset`` pragma is usable with type signatures and predicate signatures, but not with module signatures.
 
 QLDoc
 -----
