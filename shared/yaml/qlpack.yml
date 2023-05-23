@@ -1,0 +1,4 @@
+name: codeql/yaml
+version: 0.0.1
+groups: shared
+library: true

@@ -11,3 +11,10 @@ client.set_missing_host_key_policy(WarningPolicy) # bad
 client.set_missing_host_key_policy(AutoAddPolicy()) # bad
 client.set_missing_host_key_policy(RejectPolicy())  # good
 client.set_missing_host_key_policy(WarningPolicy()) # bad
+
+# different import
+
+import paramiko
+
+client = paramiko.SSHClient()
+client.set_missing_host_key_policy(paramiko.AutoAddPolicy) # bad

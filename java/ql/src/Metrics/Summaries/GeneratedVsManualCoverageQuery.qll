@@ -1,9 +1,9 @@
 private import semmle.code.java.dataflow.FlowSummary
-private import utils.modelgenerator.internal.CaptureModels
+private import semmle.code.java.dataflow.internal.ModelExclusions
 private import TopJdkApis
 
 /**
- * Returns the number of `DataFlowTargetApi`s with Summary MaD models
+ * Returns the number of `ModelApi`s with Summary MaD models
  * for a given package and provenance.
  */
 bindingset[package, apiSubset]
@@ -13,7 +13,7 @@ private int getNumMadModeledApis(string package, string provenance, string apiSu
     count(SummarizedCallable sc |
       callableSubset(sc.asCallable(), apiSubset) and
       package = sc.asCallable().getCompilationUnit().getPackage().getName() and
-      sc.asCallable() instanceof DataFlowTargetApi and
+      sc.asCallable() instanceof ModelApi and
       (
         // "auto-only"
         not sc.hasManualModel() and
@@ -34,12 +34,12 @@ private int getNumMadModeledApis(string package, string provenance, string apiSu
     )
 }
 
-/** Returns the total number of `DataFlowTargetApi`s for a given package. */
+/** Returns the total number of `ModelApi`s for a given package. */
 private int getNumApis(string package, string apiSubset) {
   result =
-    strictcount(DataFlowTargetApi dataFlowTargApi |
-      callableSubset(dataFlowTargApi, apiSubset) and
-      package = dataFlowTargApi.getCompilationUnit().getPackage().getName()
+    strictcount(ModelApi api |
+      callableSubset(api, apiSubset) and
+      package = api.getCompilationUnit().getPackage().getName()
     )
 }
 
@@ -70,7 +70,7 @@ predicate modelCoverageGenVsMan(
     // calculate the total generated and total manual numbers
     generated = generatedOnly + both and
     manual = manualOnly + both and
-    // count the total number of `DataFlowTargetApi`s for each package
+    // count the total number of `ModelApi`s for each package
     all = getNumApis(package, apiSubset) and
     non = all - (generatedOnly + both + manualOnly) and
     // Proportion of coverage

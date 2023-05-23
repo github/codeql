@@ -49,5 +49,7 @@ swift_cc_library(
     visibility = ["//visibility:public"],
     deps = [
         "//swift/extractor/infra/file",
+        "//swift/extractor/infra/log",
+        "@absl//absl/numeric:bits",
     ],
 )

@@ -51,7 +51,7 @@ private predicate isNotNeeded(Locatable el) {
 private string getQlClass(Locatable el) {
   result = "[" + el.getPrimaryQlClasses() + "] "
   // Alternative implementation -- do not delete. It is useful for QL class discovery.
-  // not el.getAPrimaryQlClass() = "???" and result = "[" + getPrimaryQlClasses() + "] " or el.getAPrimaryQlClass() = "???" and result = "??[" + concat(el.getAQlClass(), ",") + "] "
+  // not el.getAPrimaryQlClass() = "???" and result = "[" + el.getPrimaryQlClasses() + "] " or el.getAPrimaryQlClass() = "???" and result = "??[" + concat(el.getAQlClass(), ",") + "] "
 }
 
 /**

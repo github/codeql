@@ -1127,6 +1127,14 @@ nodes
 | tst.js:491:23:491:35 | location.hash |
 | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash |
+| tst.js:494:18:494:30 | location.hash |
+| tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash |
+| tst.js:501:43:501:62 | window.location.hash |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
 | typeahead.js:9:28:9:30 | loc |
@@ -2325,6 +2333,14 @@ edges
 | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
 | tst.js:491:23:491:35 | location.hash | tst.js:491:23:491:45 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:494:18:494:30 | location.hash | tst.js:494:18:494:40 | locatio ... bstr(1) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
+| tst.js:501:43:501:62 | window.location.hash | tst.js:501:33:501:63 | decodeU ... n.hash) |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |
 | typeahead.js:9:28:9:30 | loc | typeahead.js:10:16:10:18 | loc |

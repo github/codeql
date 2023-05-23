@@ -4134,7 +4134,7 @@ declarations.swift:
 #   90| 
 #   95| [Comment] // Or by adding an access declaration
 #   95| 
-#  138| [ExtensionDecl] extension
+#  138| [ExtensionDecl] extension of Int
 #  139|   getMember(0): [ConcreteFuncDecl] id()
 #  139|       InterfaceType = (Int) -> () -> Int
 #  139|     getSelfParam(): [ParamDecl] self

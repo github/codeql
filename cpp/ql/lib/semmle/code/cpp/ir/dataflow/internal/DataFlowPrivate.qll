@@ -898,23 +898,6 @@ private class MyConsistencyConfiguration extends Consistency::ConsistencyConfigu
 }
 
 /**
- * Gets the basic block of `node`.
- */
-IRBlock getBasicBlock(Node node) {
-  node.asInstruction().getBlock() = result
-  or
-  node.asOperand().getUse().getBlock() = result
-  or
-  node.(SsaPhiNode).getPhiNode().getBasicBlock() = result
-  or
-  node.(RawIndirectOperand).getOperand().getUse().getBlock() = result
-  or
-  node.(RawIndirectInstruction).getInstruction().getBlock() = result
-  or
-  result = getBasicBlock(node.(PostUpdateNode).getPreUpdateNode())
-}
-
-/**
  * A local flow relation that includes both local steps, read steps and
  * argument-to-return flow through summarized functions.
  */
@@ -999,7 +982,8 @@ private int countNumberOfBranchesUsingParameter(SwitchInstruction switch, Parame
     // we pick the one with the highest edge count.
     result =
       max(SsaPhiNode phi |
-        switch.getSuccessor(caseOrDefaultEdge()).getBlock().dominanceFrontier() = getBasicBlock(phi) and
+        switch.getSuccessor(caseOrDefaultEdge()).getBlock().dominanceFrontier() =
+          phi.getBasicBlock() and
         phi.getSourceVariable() = sv
       |
         strictcount(phi.getAnInput())

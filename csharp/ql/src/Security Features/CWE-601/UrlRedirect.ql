@@ -13,9 +13,9 @@
 
 import csharp
 import semmle.code.csharp.security.dataflow.UrlRedirectQuery
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import UrlRedirect::PathGraph
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+from UrlRedirect::PathNode source, UrlRedirect::PathNode sink
+where UrlRedirect::flowPath(source, sink)
 select sink.getNode(), source, sink, "Untrusted URL redirection due to $@.", source.getNode(),
   "user-provided value"

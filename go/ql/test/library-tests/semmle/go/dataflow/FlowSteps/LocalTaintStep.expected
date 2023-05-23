@@ -73,7 +73,6 @@
 | file://:0:0:0:0 | parameter 0 of Store | file://:0:0:0:0 | [summary] to write: argument -1 in Store |
 | file://:0:0:0:0 | parameter 0 of StringBytePtr | file://:0:0:0:0 | [summary] to write: return (return[0]) in StringBytePtr |
 | file://:0:0:0:0 | parameter 0 of StringByteSlice | file://:0:0:0:0 | [summary] to write: return (return[0]) in StringByteSlice |
-| file://:0:0:0:0 | parameter 0 of StringSlicePtr | file://:0:0:0:0 | [summary] to write: return (return[0]) in StringSlicePtr |
 | file://:0:0:0:0 | parameter 0 of Sub | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sub |
 | file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
 | file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
@@ -184,7 +183,6 @@
 | file://:0:0:0:0 | parameter -1 of Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
 | file://:0:0:0:0 | parameter -1 of Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
 | file://:0:0:0:0 | parameter -1 of Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
-| file://:0:0:0:0 | parameter -1 of Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
 | file://:0:0:0:0 | parameter -1 of Interface | file://:0:0:0:0 | [summary] to write: return (return[0]) in Interface |
 | file://:0:0:0:0 | parameter -1 of InterfaceData | file://:0:0:0:0 | [summary] to write: return (return[0]) in InterfaceData |
 | file://:0:0:0:0 | parameter -1 of Key | file://:0:0:0:0 | [summary] to write: return (return[0]) in Key |
@@ -200,7 +198,6 @@
 | file://:0:0:0:0 | parameter -1 of MarshalBinary | file://:0:0:0:0 | [summary] to write: return (return[0]) in MarshalBinary |
 | file://:0:0:0:0 | parameter -1 of Method | file://:0:0:0:0 | [summary] to write: return (return[0]) in Method |
 | file://:0:0:0:0 | parameter -1 of MethodByName | file://:0:0:0:0 | [summary] to write: return (return[0]) in MethodByName |
-| file://:0:0:0:0 | parameter -1 of Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |
 | file://:0:0:0:0 | parameter -1 of Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |
 | file://:0:0:0:0 | parameter -1 of Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |
 | file://:0:0:0:0 | parameter -1 of Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |

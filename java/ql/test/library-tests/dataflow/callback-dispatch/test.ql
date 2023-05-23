@@ -2,17 +2,15 @@ import java
 import semmle.code.java.dataflow.DataFlow
 import TestUtilities.InlineExpectationsTest
 
-class Conf extends DataFlow::Configuration {
-  Conf() { this = "qltest:callback-dispatch" }
+module Config implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node n) { n.asExpr().(MethodAccess).getMethod().hasName("source") }
 
-  override predicate isSource(DataFlow::Node n) {
-    n.asExpr().(MethodAccess).getMethod().hasName("source")
-  }
-
-  override predicate isSink(DataFlow::Node n) {
+  predicate isSink(DataFlow::Node n) {
     exists(MethodAccess ma | ma.getMethod().hasName("sink") | n.asExpr() = ma.getAnArgument())
   }
 }
+
+module Flow = DataFlow::Global<Config>;
 
 class HasFlowTest extends InlineExpectationsTest {
   HasFlowTest() { this = "HasFlowTest" }
@@ -21,7 +19,7 @@ class HasFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "flow" and
-    exists(DataFlow::Node src, DataFlow::Node sink, Conf conf | conf.hasFlow(src, sink) |
+    exists(DataFlow::Node src, DataFlow::Node sink | Flow::flow(src, sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       value = src.asExpr().(MethodAccess).getAnArgument().toString()

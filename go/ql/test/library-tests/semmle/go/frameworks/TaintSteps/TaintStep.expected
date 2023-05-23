@@ -191,7 +191,6 @@
 | file://:0:0:0:0 | parameter 0 of Store | file://:0:0:0:0 | [summary] to write: argument -1 in Store |
 | file://:0:0:0:0 | parameter 0 of StringBytePtr | file://:0:0:0:0 | [summary] to write: return (return[0]) in StringBytePtr |
 | file://:0:0:0:0 | parameter 0 of StringByteSlice | file://:0:0:0:0 | [summary] to write: return (return[0]) in StringByteSlice |
-| file://:0:0:0:0 | parameter 0 of StringSlicePtr | file://:0:0:0:0 | [summary] to write: return (return[0]) in StringSlicePtr |
 | file://:0:0:0:0 | parameter 0 of Sub | file://:0:0:0:0 | [summary] to write: return (return[0]) in Sub |
 | file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
 | file://:0:0:0:0 | parameter 0 of Swap | file://:0:0:0:0 | [summary] to write: argument -1 in Swap |
@@ -274,6 +273,7 @@
 | file://:0:0:0:0 | parameter 0 of WithDeadline | file://:0:0:0:0 | [summary] to write: return (return[0]) in WithDeadline |
 | file://:0:0:0:0 | parameter 0 of WithTimeout | file://:0:0:0:0 | [summary] to write: return (return[0]) in WithTimeout |
 | file://:0:0:0:0 | parameter 0 of WithValue | file://:0:0:0:0 | [summary] to write: return (return[0]) in WithValue |
+| file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
 | file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
 | file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
 | file://:0:0:0:0 | parameter 0 of Write | file://:0:0:0:0 | [summary] to write: argument -1 in Write |
@@ -537,7 +537,6 @@
 | file://:0:0:0:0 | parameter -1 of Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
 | file://:0:0:0:0 | parameter -1 of Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
 | file://:0:0:0:0 | parameter -1 of Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
-| file://:0:0:0:0 | parameter -1 of Info | file://:0:0:0:0 | [summary] to write: return (return[0]) in Info |
 | file://:0:0:0:0 | parameter -1 of Init | file://:0:0:0:0 | [summary] to write: return (return[0]) in Init |
 | file://:0:0:0:0 | parameter -1 of Interface | file://:0:0:0:0 | [summary] to write: return (return[0]) in Interface |
 | file://:0:0:0:0 | parameter -1 of InterfaceData | file://:0:0:0:0 | [summary] to write: return (return[0]) in InterfaceData |
@@ -583,7 +582,6 @@
 | file://:0:0:0:0 | parameter -1 of Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |
 | file://:0:0:0:0 | parameter -1 of Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |
 | file://:0:0:0:0 | parameter -1 of Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |
-| file://:0:0:0:0 | parameter -1 of Name | file://:0:0:0:0 | [summary] to write: return (return[0]) in Name |
 | file://:0:0:0:0 | parameter -1 of Next | file://:0:0:0:0 | [summary] to write: return (return[0]) in Next |
 | file://:0:0:0:0 | parameter -1 of Next | file://:0:0:0:0 | [summary] to write: return (return[0]) in Next |
 | file://:0:0:0:0 | parameter -1 of NextPart | file://:0:0:0:0 | [summary] to write: return (return[0]) in NextPart |
@@ -600,8 +598,6 @@
 | file://:0:0:0:0 | parameter -1 of Port | file://:0:0:0:0 | [summary] to write: return (return[0]) in Port |
 | file://:0:0:0:0 | parameter -1 of Prev | file://:0:0:0:0 | [summary] to write: return (return[0]) in Prev |
 | file://:0:0:0:0 | parameter -1 of Query | file://:0:0:0:0 | [summary] to write: return (return[0]) in Query |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
-| file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
 | file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
 | file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
 | file://:0:0:0:0 | parameter -1 of Read | file://:0:0:0:0 | [summary] to write: argument 0 in Read |
