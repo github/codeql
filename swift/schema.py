@@ -14,7 +14,6 @@ from misc.codegen.lib.schemadefs import *
 include("prefix.dbscheme")
 
 @qltest.skip
-@ql.hideable
 class Element:
     is_unknown: predicate | cpp.skip
 
@@ -73,8 +72,12 @@ class UnknownLocation(Location):
 class AstNode(Locatable):
     pass
 
+@ql.hideable
+class HideableElement(Element):
+    pass
+
 @group("type")
-class Type(Element):
+class Type(HideableElement):
     name: string
     canonical_type: "Type"
 
@@ -84,12 +87,12 @@ class Decl(AstNode):
     members: list["Decl"] | child
 
 @group("expr")
-class Expr(AstNode):
+class Expr(AstNode, HideableElement):
     """The base class for all expressions in Swift."""
     type: optional[Type]
 
 @group("pattern")
-class Pattern(AstNode):
+class Pattern(AstNode, HideableElement):
     pass
 
 @group("stmt")

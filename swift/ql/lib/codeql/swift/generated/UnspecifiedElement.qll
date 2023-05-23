@@ -10,25 +10,12 @@ module Generated {
 
     /**
      * Gets the parent of this unspecified element, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Element getImmediateParent() {
+    Element getParent() {
       result =
         Synth::convertElementFromRaw(Synth::convertUnspecifiedElementToRaw(this)
               .(Raw::UnspecifiedElement)
               .getParent())
-    }
-
-    /**
-     * Gets the parent of this unspecified element, if it exists.
-     */
-    final Element getParent() {
-      exists(Element immediate |
-        immediate = this.getImmediateParent() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

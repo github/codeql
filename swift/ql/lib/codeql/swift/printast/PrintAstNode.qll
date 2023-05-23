@@ -66,7 +66,7 @@ private string prettyPrint(Locatable e) {
   result = "[" + concat(e.getPrimaryQlClasses(), ", ") + "] " + e
 }
 
-private class Unresolved extends Locatable {
+private class Unresolved extends HideableElement, Locatable {
   Unresolved() { this != this.resolve() }
 }
 
@@ -89,7 +89,7 @@ class PrintLocatable extends PrintAstNode, TLocatable {
         // use even indexes for normal children, leaving odd slots for conversions if any
         child = TLocatable(c) and index = 2 * i and label = accessor
         or
-        child = TLocatable(c.getFullyUnresolved().(Unresolved)) and
+        child = TLocatable(c.(HideableElement).getFullyUnresolved().(Unresolved)) and
         index = 2 * i + 1 and
         (
           if c instanceof Expr

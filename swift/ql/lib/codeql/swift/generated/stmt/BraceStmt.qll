@@ -10,25 +10,12 @@ module Generated {
 
     /**
      * Gets the `index`th element of this brace statement (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    AstNode getImmediateElement(int index) {
+    AstNode getElement(int index) {
       result =
         Synth::convertAstNodeFromRaw(Synth::convertBraceStmtToRaw(this)
               .(Raw::BraceStmt)
               .getElement(index))
-    }
-
-    /**
-     * Gets the `index`th element of this brace statement (0-based).
-     */
-    final AstNode getElement(int index) {
-      exists(AstNode immediate |
-        immediate = this.getImmediateElement(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

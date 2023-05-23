@@ -2,13 +2,14 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
+import codeql.swift.elements.HideableElement
 import codeql.swift.elements.type.Type
 
 module Generated {
   /**
    * The base class for all expressions in Swift.
    */
-  class Expr extends Synth::TExpr, AstNode {
+  class Expr extends Synth::TExpr, AstNode, HideableElement {
     /**
      * Gets the type of this expression, if it exists.
      *

@@ -2,7 +2,8 @@
 private import codeql.swift.generated.Synth
 private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
+import codeql.swift.elements.HideableElement
 
 module Generated {
-  class Pattern extends Synth::TPattern, AstNode { }
+  class Pattern extends Synth::TPattern, AstNode, HideableElement { }
 }

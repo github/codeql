@@ -10,25 +10,12 @@ module Generated {
 
     /**
      * Gets the the declaration captured by the parent closure.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ValueDecl getImmediateDecl() {
+    ValueDecl getDecl() {
       result =
         Synth::convertValueDeclFromRaw(Synth::convertCapturedDeclToRaw(this)
               .(Raw::CapturedDecl)
               .getDecl())
-    }
-
-    /**
-     * Gets the the declaration captured by the parent closure.
-     */
-    final ValueDecl getDecl() {
-      exists(ValueDecl immediate |
-        immediate = this.getImmediateDecl() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

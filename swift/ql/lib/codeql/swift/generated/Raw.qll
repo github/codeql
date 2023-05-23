@@ -65,6 +65,11 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class HideableElement extends @hideable_element, Element { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class Locatable extends @locatable, Element {
     /**
      * Gets the location associated with this element in the code, if it exists.
@@ -986,7 +991,7 @@ module Raw {
    * INTERNAL: Do not use.
    * The base class for all expressions in Swift.
    */
-  class Expr extends @expr, AstNode {
+  class Expr extends @expr, AstNode, HideableElement {
     /**
      * Gets the type of this expression, if it exists.
      */
@@ -2353,7 +2358,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Pattern extends @pattern, AstNode { }
+  class Pattern extends @pattern, AstNode, HideableElement { }
 
   /**
    * INTERNAL: Do not use.
@@ -2869,7 +2874,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class Type extends @type, Element {
+  class Type extends @type, HideableElement {
     /**
      * Gets the name of this type.
      */
