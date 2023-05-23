@@ -84,7 +84,7 @@ void testEqRefinement() {
 
     for(int i = 0; i <= MAX_SIZE; i++) {
         if(i != MAX_SIZE) {
-            arr[i] = 0;
+            arr[i] = 0; // GOOD
         }
     }
 }
@@ -99,7 +99,7 @@ void testEqRefinement2() {
             if(i == MAX_SIZE) {
                 break;
             }
-            n = arr[i];
+            n = arr[i]; // GOOD
             continue;
         }
 
@@ -107,7 +107,7 @@ void testEqRefinement2() {
             if (i == MAX_SIZE) {
                 break;
             }
-            n = arr[i];
+            n = arr[i]; // GOOD
         }
     }
 }
