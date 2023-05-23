@@ -27,7 +27,7 @@ abstract class MetadataExtractor extends string {
 
   abstract predicate hasMetadata(
     Endpoint e, string package, string type, boolean subtypes, string name, string signature,
-    int input
+    string input
   );
 }
 
@@ -182,14 +182,14 @@ class FrameworkModeMetadataExtractor extends MetadataExtractor {
 
   override predicate hasMetadata(
     Endpoint e, string package, string type, boolean subtypes, string name, string signature,
-    int input
+    string input
   ) {
-    exists(Call call, Callable callable |
+    exists(Call call, Callable callable, int argIdx |
       call.getCallee() = callable and
       (
-        e.asExpr() = call.getArgument(input)
+        e.asExpr() = call.getArgument(argIdx) and input = "Argument[" + argIdx + "]"
         or
-        e.asExpr() = call.getQualifier() and input = -1
+        e.asExpr() = call.getQualifier() and argIdx = -1 and input = "Argument[this]"
       ) and
       package = callable.getDeclaringType().getPackage().getName() and
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and

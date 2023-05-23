@@ -14,7 +14,7 @@ private import AutomodelSharedUtil
 
 from
   Endpoint endpoint, SinkType sinkType, MetadataExtractor meta, string package, string type,
-  boolean subtypes, string name, string signature, int input, string parameterName
+  boolean subtypes, string name, string signature, string input, string parameterName
 where
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
   // certain about in the prompt.
@@ -31,5 +31,5 @@ select endpoint,
   subtypes.toString().(DollarAtString), "subtypes", //
   name.(DollarAtString), "name", //
   signature.(DollarAtString), "signature", //
-  input.toString().(DollarAtString), "input", //
+  input.(DollarAtString), "input", //
   parameterName.(DollarAtString), "parameterName" //

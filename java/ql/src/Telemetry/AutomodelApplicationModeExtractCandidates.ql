@@ -17,7 +17,7 @@ private import AutomodelSharedUtil
 
 from
   Endpoint endpoint, string message, MetadataExtractor meta, string package, string type,
-  boolean subtypes, string name, string signature, int input
+  boolean subtypes, string name, string signature, string input
 where
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
@@ -45,4 +45,4 @@ select endpoint, message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@,
   subtypes.toString().(DollarAtString), "subtypes", //
   name.(DollarAtString), "name", // method name
   signature.(DollarAtString), "signature", //
-  input.toString().(DollarAtString), "input" //
+  input.(DollarAtString), "input" //

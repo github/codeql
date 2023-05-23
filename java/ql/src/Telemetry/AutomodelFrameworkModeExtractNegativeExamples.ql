@@ -15,7 +15,7 @@ private import AutomodelSharedUtil
 from
   Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string message,
   MetadataExtractor meta, string package, string type, boolean subtypes, string name,
-  string signature, int input, string parameterName
+  string signature, string input, string parameterName
 where
   characteristic.appliesToEndpoint(endpoint) and
   confidence >= SharedCharacteristics::highConfidence() and
@@ -44,5 +44,5 @@ select endpoint,
   subtypes.toString().(DollarAtString), "subtypes", //
   name.(DollarAtString), "name", //
   signature.(DollarAtString), "signature", //
-  input.toString().(DollarAtString), "input", //
+  input.(DollarAtString), "input", //
   parameterName.(DollarAtString), "parameterName" //

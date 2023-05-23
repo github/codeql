@@ -17,7 +17,7 @@ private import AutomodelSharedUtil
 
 from
   Endpoint endpoint, string message, MetadataExtractor meta, string package, string type,
-  boolean subtypes, string name, string signature, int input, string parameterName
+  boolean subtypes, string name, string signature, string input, string parameterName
 where
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
@@ -47,5 +47,5 @@ select endpoint,
   subtypes.toString().(DollarAtString), "subtypes", //
   name.(DollarAtString), "name", //
   signature.(DollarAtString), "signature", //
-  input.toString().(DollarAtString), "input", //
+  input.(DollarAtString), "input", //
   parameterName.(DollarAtString), "parameterName" //
