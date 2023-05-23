@@ -710,6 +710,7 @@ Various kinds of syntax can have *annotations* applied to them. Annotations are 
                     |   "private"
                     |   "deprecated"
                     |   "override"
+                    |   "additional"
                     |   "query"
 
    argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
@@ -745,6 +746,8 @@ The following table summarizes the syntactic constructs which can be marked with
 | ``deprecated`` | yes     |            | yes               | yes                   |         | yes    | yes     | yes     |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 | ``override``   |         |            | yes               |                       |         | yes    |         |         |
++----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
+| ``additional`` | yes     |            |                   | yes                   |         |        | yes     | yes     |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
 | ``query``      |         |            |                   | yes                   |         |        |         | yes     |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+
@@ -2165,6 +2168,7 @@ The complete grammar for QL is as follows:
                     |   "private"
                     |   "deprecated"
                     |   "override"
+                    |   "additional"
                     |   "query"
 
    argsAnnotation ::= "pragma" "[" ("inline" | "inline_late" | "noinline" | "nomagic" | "noopt" | "assume_small_delta") "]"
