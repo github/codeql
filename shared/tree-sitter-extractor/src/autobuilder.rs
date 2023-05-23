@@ -15,7 +15,7 @@ impl Autobuilder {
     pub fn new(language: &str, database: PathBuf) -> Self {
         Self {
             language: language.to_string(),
-            database: database,
+            database,
             include_extensions: vec![],
             include_globs: vec![],
             exclude_globs: vec![],
@@ -24,17 +24,17 @@ impl Autobuilder {
     }
 
     pub fn include_extensions(&mut self, exts: &[&str]) -> &mut Self {
-        self.include_extensions = exts.into_iter().map(|s| String::from(*s)).collect();
+        self.include_extensions = exts.iter().map(|s| String::from(*s)).collect();
         self
     }
 
     pub fn include_globs(&mut self, globs: &[&str]) -> &mut Self {
-        self.include_globs = globs.into_iter().map(|s| String::from(*s)).collect();
+        self.include_globs = globs.iter().map(|s| String::from(*s)).collect();
         self
     }
 
     pub fn exclude_globs(&mut self, globs: &[&str]) -> &mut Self {
-        self.exclude_globs = globs.into_iter().map(|s| String::from(*s)).collect();
+        self.exclude_globs = globs.iter().map(|s| String::from(*s)).collect();
         self
     }
 

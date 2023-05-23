@@ -1,15 +1,22 @@
 // CodeQL database schema for QL
 // Automatically generated from the tree-sitter grammar; do not edit
 
-@location = @location_default
+/*- Files and folders -*/
 
+/**
+ * The location of an element.
+ * The location spans column `startcolumn` of line `startline` to
+ * column `endcolumn` of line `endline` in file `file`.
+ * For more information, see
+ * [Locations](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/).
+ */
 locations_default(
   unique int id: @location_default,
   int file: @file ref,
-  int start_line: int ref,
-  int start_column: int ref,
-  int end_line: int ref,
-  int end_column: int ref
+  int beginLine: int ref,
+  int beginColumn: int ref,
+  int endLine: int ref,
+  int endColumn: int ref
 );
 
 files(
@@ -29,9 +36,14 @@ containerparent(
   unique int child: @container ref
 );
 
-sourceLocationPrefix(
-  string prefix: string ref
-);
+/*- Source location prefix -*/
+
+/**
+ * The source location of the snapshot.
+ */
+sourceLocationPrefix(string prefix : string ref);
+
+/*- Diagnostic messages -*/
 
 diagnostics(
   unique int id: @diagnostic,
@@ -42,6 +54,8 @@ diagnostics(
   int location: @location_default ref
 );
 
+/*- Diagnostic messages: severity -*/
+
 case @diagnostic.severity of
   10 = @diagnostic_debug
 | 20 = @diagnostic_info
@@ -49,7 +63,46 @@ case @diagnostic.severity of
 | 40 = @diagnostic_error
 ;
 
+/*- YAML -*/
 
+#keyset[parent, idx]
+yaml (unique int id: @yaml_node,
+      int kind: int ref,
+      int parent: @yaml_node_parent ref,
+      int idx: int ref,
+      string tag: string ref,
+      string tostring: string ref);
+
+case @yaml_node.kind of
+  0 = @yaml_scalar_node
+| 1 = @yaml_mapping_node
+| 2 = @yaml_sequence_node
+| 3 = @yaml_alias_node
+;
+
+@yaml_collection_node = @yaml_mapping_node | @yaml_sequence_node;
+
+@yaml_node_parent = @yaml_collection_node | @file;
+
+yaml_anchors (unique int node: @yaml_node ref,
+              string anchor: string ref);
+
+yaml_aliases (unique int alias: @yaml_alias_node ref,
+              string target: string ref);
+
+yaml_scalars (unique int scalar: @yaml_scalar_node ref,
+              int style: int ref,
+              string value: string ref);
+
+yaml_errors (unique int id: @yaml_error,
+             string message: string ref);
+
+yaml_locations(unique int locatable: @yaml_locatable ref,
+             int location: @location_default ref);
+
+@yaml_locatable = @yaml_node | @yaml_error;
+
+/*- QL dbscheme -*/
 @ql_add_expr_left_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
 
 @ql_add_expr_right_type = @ql_add_expr | @ql_aggregate | @ql_call_or_unqual_agg_expr | @ql_comp_term | @ql_conjunction | @ql_disjunction | @ql_expr_annotation | @ql_if_term | @ql_implication | @ql_in_expr | @ql_instance_of | @ql_literal | @ql_mul_expr | @ql_negation | @ql_par_expr | @ql_prefix_cast | @ql_qualified_expr | @ql_quantified | @ql_range | @ql_set_literal | @ql_special_call | @ql_super_ref | @ql_unary_expr | @ql_variable
@@ -926,9 +979,10 @@ ql_ast_node_info(
   unique int node: @ql_ast_node ref,
   int parent: @ql_ast_node_parent ref,
   int parent_index: int ref,
-  int loc: @location ref
+  int loc: @location_default ref
 );
 
+/*- Dbscheme dbscheme -*/
 dbscheme_annotation_args_annotation(
   unique int dbscheme_annotation: @dbscheme_annotation ref,
   unique int args_annotation: @dbscheme_args_annotation ref
@@ -1112,81 +1166,10 @@ dbscheme_ast_node_info(
   unique int node: @dbscheme_ast_node ref,
   int parent: @dbscheme_ast_node_parent ref,
   int parent_index: int ref,
-  int loc: @location ref
+  int loc: @location_default ref
 );
 
-yaml_comment_def(
-  unique int id: @yaml_comment,
-  int child: @yaml_token_value ref
-);
-
-@yaml_entry_child_type = @yaml_comment | @yaml_keyvaluepair | @yaml_listitem
-
-yaml_entry_def(
-  unique int id: @yaml_entry,
-  int child: @yaml_entry_child_type ref
-);
-
-@yaml_key_child_type = @yaml_key__ | @yaml_token_simple_id
-
-#keyset[yaml_key__, index]
-yaml_key_child(
-  int yaml_key__: @yaml_key__ ref,
-  int index: int ref,
-  unique int child: @yaml_key_child_type ref
-);
-
-yaml_key_def(
-  unique int id: @yaml_key__
-);
-
-yaml_keyvaluepair_def(
-  unique int id: @yaml_keyvaluepair,
-  int key__: @yaml_key__ ref,
-  int value: @yaml_token_value ref
-);
-
-yaml_listitem_def(
-  unique int id: @yaml_listitem,
-  int child: @yaml_token_value ref
-);
-
-#keyset[yaml_yaml, index]
-yaml_yaml_child(
-  int yaml_yaml: @yaml_yaml ref,
-  int index: int ref,
-  unique int child: @yaml_entry ref
-);
-
-yaml_yaml_def(
-  unique int id: @yaml_yaml
-);
-
-yaml_tokeninfo(
-  unique int id: @yaml_token,
-  int kind: int ref,
-  string value: string ref
-);
-
-case @yaml_token.kind of
-  0 = @yaml_reserved_word
-| 1 = @yaml_token_simple_id
-| 2 = @yaml_token_value
-;
-
-
-@yaml_ast_node = @yaml_comment | @yaml_entry | @yaml_key__ | @yaml_keyvaluepair | @yaml_listitem | @yaml_token | @yaml_yaml
-
-@yaml_ast_node_parent = @file | @yaml_ast_node
-
-#keyset[parent, parent_index]
-yaml_ast_node_info(
-  unique int node: @yaml_ast_node ref,
-  int parent: @yaml_ast_node_parent ref,
-  int parent_index: int ref,
-  int loc: @location ref
-);
-
+/*- Blame dbscheme -*/
 #keyset[blame_blame_entry, index]
 blame_blame_entry_line(
   int blame_blame_entry: @blame_blame_entry ref,
@@ -1246,9 +1229,10 @@ blame_ast_node_info(
   unique int node: @blame_ast_node ref,
   int parent: @blame_ast_node_parent ref,
   int parent_index: int ref,
-  int loc: @location ref
+  int loc: @location_default ref
 );
 
+/*- JSON dbscheme -*/
 #keyset[json_array, index]
 json_array_child(
   int json_array: @json_array ref,
@@ -1327,6 +1311,6 @@ json_ast_node_info(
   unique int node: @json_ast_node ref,
   int parent: @json_ast_node_parent ref,
   int parent_index: int ref,
-  int loc: @location ref
+  int loc: @location_default ref
 );
 
