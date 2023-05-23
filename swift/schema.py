@@ -935,6 +935,7 @@ class StmtCondition(AstNode):
     elements: list[ConditionElement] | child
 
 class BraceStmt(Stmt):
+    variables: list[VarDecl] | child | doc("variable declared in the scope of this brace statement")
     elements: list[AstNode] | child
 
 class BreakStmt(Stmt):
