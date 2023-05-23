@@ -41,6 +41,7 @@ abstract class RemoteFlowSource extends DataFlow::Node {
  */
 private module FlowSources {
   private import semmle.code.java.frameworks.hudson.Hudson
+  private import semmle.code.java.frameworks.stapler.Stapler
 }
 
 private class ExternalRemoteFlowSource extends RemoteFlowSource {

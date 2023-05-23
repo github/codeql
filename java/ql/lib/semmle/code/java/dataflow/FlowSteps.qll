@@ -23,6 +23,7 @@ private module Frameworks {
   private import semmle.code.java.frameworks.Properties
   private import semmle.code.java.frameworks.Protobuf
   private import semmle.code.java.frameworks.ratpack.RatpackExec
+  private import semmle.code.java.frameworks.stapler.Stapler
   private import semmle.code.java.JDK
 }
 
