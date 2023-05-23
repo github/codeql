@@ -25,7 +25,10 @@ module Generated {
      * Gets the `index`th element of this statement condition (0-based).
      */
     final ConditionElement getElement(int index) {
-      result = this.getImmediateElement(index).resolve()
+      exists(ConditionElement immediate |
+        immediate = this.getImmediateElement(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**

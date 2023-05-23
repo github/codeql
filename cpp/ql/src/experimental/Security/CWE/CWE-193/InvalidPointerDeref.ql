@@ -48,44 +48,23 @@ bindingset[b]
 pragma[inline_late]
 predicate bounded2(Instruction i, Instruction b, int delta) { boundedImpl(i, b, delta) }
 
-/**
- * Holds if the combination of `n` and `state` represents an appropriate
- * source for the expression `e` suitable for use-use flow.
- */
-private predicate hasSizeImpl(Expr e, DataFlow::Node n, int state) {
-  // The simple case: If the size is a variable access with no qualifier we can just use the
-  // dataflow node for that expression and no state.
-  exists(VariableAccess va |
-    va = e and
-    not va instanceof FieldAccess and
-    n.asConvertedExpr() = va.getFullyConverted() and
-    state = 0
-  )
-  or
-  // If the size is a choice between two expressions we allow both to be nodes representing the size.
-  exists(ConditionalExpr cond | cond = e | hasSizeImpl([cond.getThen(), cond.getElse()], n, state))
-  or
-  // If the size is an expression plus a constant, we pick the dataflow node of the expression and
-  // remember the constant in the state.
-  exists(Expr const, Expr nonconst |
-    e.(AddExpr).hasOperands(const, nonconst) and
-    state = const.getValue().toInt() and
-    hasSizeImpl(nonconst, n, _)
-  )
-  or
-  exists(Expr const, Expr nonconst |
-    e.(SubExpr).hasOperands(const, nonconst) and
-    state = -const.getValue().toInt() and
-    hasSizeImpl(nonconst, n, _)
-  )
-}
+VariableAccess getAVariableAccess(Expr e) { e.getAChild*() = result }
 
 /**
  * Holds if `(n, state)` pair represents the source of flow for the size
  * expression associated with `alloc`.
  */
 predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
-  hasSizeImpl(alloc.getSizeExpr(), n, state)
+  exists(VariableAccess va, Expr size, int delta |
+    size = alloc.getSizeExpr() and
+    // Get the unique variable in a size expression like `x` in `malloc(x + 1)`.
+    va = unique( | | getAVariableAccess(size)) and
+    // Compute `delta` as the constant difference between `x` and `x + 1`.
+    bounded1(any(Instruction instr | instr.getUnconvertedResultExpression() = size),
+      any(LoadInstruction load | load.getUnconvertedResultExpression() = va), delta) and
+    n.asConvertedExpr() = va.getFullyConverted() and
+    state = delta
+  )
 }
 
 /**
@@ -343,6 +322,16 @@ query predicate edges(MergedPathNode node1, MergedPathNode node2) {
   node1.asPathNode3().getASuccessor() = node2.asPathNode3()
   or
   joinOn2(node1.asPathNode3(), node2.asSinkNode(), _)
+}
+
+query predicate subpaths(
+  MergedPathNode arg, MergedPathNode par, MergedPathNode ret, MergedPathNode out
+) {
+  AllocToInvalidPointerFlow::PathGraph1::subpaths(arg.asPathNode1(), par.asPathNode1(),
+    ret.asPathNode1(), out.asPathNode1())
+  or
+  InvalidPointerToDerefFlow::PathGraph::subpaths(arg.asPathNode3(), par.asPathNode3(),
+    ret.asPathNode3(), out.asPathNode3())
 }
 
 /**

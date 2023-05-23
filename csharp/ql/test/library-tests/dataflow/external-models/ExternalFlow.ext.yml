@@ -29,3 +29,4 @@ extensions:
       - ["My.Qltest", "G", false, "GeneratedFlowArgs", "(System.Object,System.Object)", "", "Argument[1]", "ReturnValue", "value", "df-generated"]
       - ["My.Qltest", "G", false, "MixedFlowArgs", "(System.Object,System.Object)", "", "Argument[0]", "ReturnValue", "value", "df-generated"]
       - ["My.Qltest", "G", false, "MixedFlowArgs", "(System.Object,System.Object)", "", "Argument[1]", "ReturnValue", "value", "manual"]
+      - ["My.Qltest", "HE", false, "ExtensionMethod", "(My.Qltest.HI)", "", "Argument[0]", "ReturnValue", "value", "manual"]

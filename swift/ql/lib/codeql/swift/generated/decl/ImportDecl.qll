@@ -30,7 +30,12 @@ module Generated {
     /**
      * Gets the imported module of this import declaration, if it exists.
      */
-    final ModuleDecl getImportedModule() { result = this.getImmediateImportedModule().resolve() }
+    final ModuleDecl getImportedModule() {
+      exists(ModuleDecl immediate |
+        immediate = this.getImmediateImportedModule() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getImportedModule()` exists.
@@ -54,7 +59,10 @@ module Generated {
      * Gets the `index`th declaration of this import declaration (0-based).
      */
     final ValueDecl getDeclaration(int index) {
-      result = this.getImmediateDeclaration(index).resolve()
+      exists(ValueDecl immediate |
+        immediate = this.getImmediateDeclaration(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**

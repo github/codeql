@@ -25,7 +25,12 @@ module Generated {
     /**
      * Gets the condition of this repeat while statement.
      */
-    final Expr getCondition() { result = this.getImmediateCondition().resolve() }
+    final Expr getCondition() {
+      exists(Expr immediate |
+        immediate = this.getImmediateCondition() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the body of this repeat while statement.
@@ -43,6 +48,11 @@ module Generated {
     /**
      * Gets the body of this repeat while statement.
      */
-    final Stmt getBody() { result = this.getImmediateBody().resolve() }
+    final Stmt getBody() {
+      exists(Stmt immediate |
+        immediate = this.getImmediateBody() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

@@ -649,6 +649,36 @@ edges
 | test.cpp:280:13:280:24 | new[] | test.cpp:281:14:281:15 | xs |
 | test.cpp:290:13:290:24 | new[] | test.cpp:291:14:291:15 | xs |
 | test.cpp:290:13:290:24 | new[] | test.cpp:292:30:292:30 | x |
+| test.cpp:304:15:304:26 | new[] | test.cpp:307:5:307:6 | xs |
+| test.cpp:304:15:304:26 | new[] | test.cpp:308:5:308:6 | xs |
+| test.cpp:308:5:308:6 | xs | test.cpp:308:5:308:11 | access to array |
+| test.cpp:308:5:308:11 | access to array | test.cpp:308:5:308:29 | Store: ... = ... |
+| test.cpp:313:16:313:29 | new[] | test.cpp:314:17:314:18 | xs |
+| test.cpp:314:17:314:18 | xs | test.cpp:314:17:314:25 | ... + ... |
+| test.cpp:314:17:314:18 | xs | test.cpp:314:17:314:25 | ... + ... |
+| test.cpp:314:17:314:18 | xs | test.cpp:318:13:318:20 | * ... |
+| test.cpp:314:17:314:25 | ... + ... | test.cpp:318:14:318:20 | current |
+| test.cpp:314:17:314:25 | ... + ... | test.cpp:318:14:318:20 | current |
+| test.cpp:314:17:314:25 | ... + ... | test.cpp:320:13:320:20 | * ... |
+| test.cpp:314:17:314:25 | ... + ... | test.cpp:320:13:320:20 | * ... |
+| test.cpp:314:17:314:25 | ... + ... | test.cpp:320:14:320:20 | current |
+| test.cpp:314:17:314:25 | ... + ... | test.cpp:320:14:320:20 | current |
+| test.cpp:318:13:318:20 | * ... | test.cpp:318:14:318:20 | current |
+| test.cpp:318:13:318:20 | * ... | test.cpp:320:13:320:20 | * ... |
+| test.cpp:318:13:318:20 | * ... | test.cpp:320:14:320:20 | current |
+| test.cpp:318:14:318:20 | current | test.cpp:314:17:314:25 | Store: ... + ... |
+| test.cpp:318:14:318:20 | current | test.cpp:318:13:318:20 | Load: * ... |
+| test.cpp:318:14:318:20 | current | test.cpp:320:10:320:21 | Store: -- ... |
+| test.cpp:318:14:318:20 | current | test.cpp:320:12:320:21 | Load: (...) |
+| test.cpp:320:13:320:20 | * ... | test.cpp:314:17:314:25 | Store: ... + ... |
+| test.cpp:320:13:320:20 | * ... | test.cpp:318:13:318:20 | Load: * ... |
+| test.cpp:320:13:320:20 | * ... | test.cpp:320:10:320:21 | Store: -- ... |
+| test.cpp:320:13:320:20 | * ... | test.cpp:320:12:320:21 | Load: (...) |
+| test.cpp:320:14:320:20 | current | test.cpp:314:17:314:25 | Store: ... + ... |
+| test.cpp:320:14:320:20 | current | test.cpp:318:13:318:20 | Load: * ... |
+| test.cpp:320:14:320:20 | current | test.cpp:320:10:320:21 | Store: -- ... |
+| test.cpp:320:14:320:20 | current | test.cpp:320:12:320:21 | Load: (...) |
+subpaths
 #select
 | test.cpp:6:14:6:15 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
 | test.cpp:8:14:8:21 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:8:14:8:21 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
@@ -672,3 +702,8 @@ edges
 | test.cpp:254:9:254:16 | Store: ... = ... | test.cpp:248:24:248:30 | call to realloc | test.cpp:254:9:254:16 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:248:24:248:30 | call to realloc | call to realloc | test.cpp:254:11:254:11 | i | i |
 | test.cpp:264:13:264:14 | Load: * ... | test.cpp:260:13:260:24 | new[] | test.cpp:264:13:264:14 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:260:13:260:24 | new[] | new[] | test.cpp:261:19:261:21 | len | len |
 | test.cpp:274:5:274:10 | Store: ... = ... | test.cpp:270:13:270:24 | new[] | test.cpp:274:5:274:10 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:270:13:270:24 | new[] | new[] | test.cpp:271:19:271:21 | len | len |
+| test.cpp:308:5:308:29 | Store: ... = ... | test.cpp:304:15:304:26 | new[] | test.cpp:308:5:308:29 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:304:15:304:26 | new[] | new[] | test.cpp:308:8:308:10 | ... + ... | ... + ... |
+| test.cpp:314:17:314:25 | Store: ... + ... | test.cpp:313:16:313:29 | new[] | test.cpp:314:17:314:25 | Store: ... + ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:313:16:313:29 | new[] | new[] | test.cpp:314:22:314:25 | size | size |
+| test.cpp:318:13:318:20 | Load: * ... | test.cpp:313:16:313:29 | new[] | test.cpp:318:13:318:20 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:313:16:313:29 | new[] | new[] | test.cpp:314:22:314:25 | size | size |
+| test.cpp:320:10:320:21 | Store: -- ... | test.cpp:313:16:313:29 | new[] | test.cpp:320:10:320:21 | Store: -- ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:313:16:313:29 | new[] | new[] | test.cpp:314:22:314:25 | size | size |
+| test.cpp:320:12:320:21 | Load: (...) | test.cpp:313:16:313:29 | new[] | test.cpp:320:12:320:21 | Load: (...) | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:313:16:313:29 | new[] | new[] | test.cpp:314:22:314:25 | size | size |

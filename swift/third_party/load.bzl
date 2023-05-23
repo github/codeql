@@ -70,3 +70,11 @@ def load_dependencies(workspace_name):
         commit = "6af826d0bdb55e4b69e3ad817576745335f243ca",
         sha256 = "702bb0231a5e21c0374230fed86c8ae3d07ee50f34ffd420e7f8249854b7d85b",
     )
+
+    _github_archive(
+        name = "fmt",
+        repository = "fmtlib/fmt",
+        build_file = _build(workspace_name, "fmt"),
+        commit = "a0b8a92e3d1532361c2f7feb63babc5c18d00ef2",
+        sha256 = "ccf872fd4aa9ab3d030d62cffcb258ca27f021b2023a0244b2cf476f984be955",
+    )

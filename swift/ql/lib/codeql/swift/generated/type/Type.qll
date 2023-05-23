@@ -24,6 +24,11 @@ module Generated {
     /**
      * Gets the canonical type of this type.
      */
-    final Type getCanonicalType() { result = this.getImmediateCanonicalType().resolve() }
+    final Type getCanonicalType() {
+      exists(Type immediate |
+        immediate = this.getImmediateCanonicalType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

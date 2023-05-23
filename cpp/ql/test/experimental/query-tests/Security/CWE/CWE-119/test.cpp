@@ -213,7 +213,7 @@ void *memset(void *, int, unsigned);
 
 void call_memset(void *p, unsigned size)
 {
-  memset(p, 0, size); // GOOD [FALSE POSITIVE]
+  memset(p, 0, size); // GOOD
 }
 
 void test_missing_call_context(unsigned char *unrelated_buffer, unsigned size) {
@@ -229,7 +229,7 @@ void repeated_alerts(unsigned size, unsigned offset) {
   while(unknown()) {
     ++size;
   }
-  memset(buffer, 0, size); // BAD
+  memset(buffer, 0, size); // BAD [NOT DETECTED]
 }
 
 void set_string(string_t* p_str, char* buffer) {
@@ -243,3 +243,25 @@ void test_flow_through_setter(unsigned size) {
     memset(str.string, 0, size + 1); // BAD
 }
 
+void* my_alloc(unsigned size);
+
+void foo(unsigned size) {
+    int* p = (int*)my_alloc(size); // BAD
+    memset(p, 0, size + 1);
+}
+
+void test6(unsigned long n, char *p) {
+  while (unknown()) {
+    n++;
+    p = (char *)malloc(n);
+    memset(p, 0, n); // GOOD
+  }
+}
+
+void test7(unsigned n) {
+    char* p = (char*)malloc(n);
+    if(!p) {
+        p = (char*)malloc(++n);
+    }
+    memset(p, 0, n); // GOOD [FALSE POSITIVE]
+}

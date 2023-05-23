@@ -25,7 +25,10 @@ module Generated {
      * Gets the fallthrough source of this fallthrough statement.
      */
     final CaseStmt getFallthroughSource() {
-      result = this.getImmediateFallthroughSource().resolve()
+      exists(CaseStmt immediate |
+        immediate = this.getImmediateFallthroughSource() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -44,6 +47,11 @@ module Generated {
     /**
      * Gets the fallthrough dest of this fallthrough statement.
      */
-    final CaseStmt getFallthroughDest() { result = this.getImmediateFallthroughDest().resolve() }
+    final CaseStmt getFallthroughDest() {
+      exists(CaseStmt immediate |
+        immediate = this.getImmediateFallthroughDest() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

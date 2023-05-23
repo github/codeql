@@ -294,3 +294,31 @@ void test20(unsigned len)
     *x = 0; // GOOD
   }
 }
+
+void* test21_get(int n);
+
+void test21() {
+  int n = 0;
+  while (test21_get(n)) n+=2;
+
+  void** xs = new void*[n];
+
+  for (int i = 0; i < n; i += 2) {
+    xs[i] = test21_get(i); // GOOD
+    xs[i+1] = test21_get(i+1); // GOOD [FALSE POSITIVE]
+  }
+}
+
+void test22(unsigned size, int val) {
+    char *xs = new char[size];
+    char *end = xs + size; // GOOD [FALSE POSITIVE]
+    char **current = &end;
+    do
+    {
+        if( *current - xs < 1 ) // GOOD [FALSE POSITIVE]
+            return;
+        *--(*current) = 0; // GOOD [FALSE POSITIVE]
+        val >>= 8;
+    }
+    while( val > 0 );
+}
