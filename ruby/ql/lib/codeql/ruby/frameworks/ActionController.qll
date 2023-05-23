@@ -83,8 +83,7 @@ class ActionControllerClass extends DataFlow::ClassNode {
   }
 }
 
-// TODO: private
-DataFlow::LocalSourceNode actionControllerInstance() {
+private DataFlow::LocalSourceNode actionControllerInstance() {
   result = any(ActionControllerClass cls).getSelf()
 }
 

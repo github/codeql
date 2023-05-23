@@ -2,23 +2,26 @@
 
 private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
+private import codeql.ruby.ApiGraphs
 private import codeql.ruby.frameworks.ActionController
 
 /** Modeling for `ActionDispatch::Request`. */
 module Request {
   /**
-   * An instance of `ActionDispatch::Request`.
-   */
-  private class RequestNode extends DataFlow::CallNode {
-    RequestNode() { this = actionControllerInstance().getAMethodCall("request") }
-  }
-
-  /**
-   * A method call on `request`.
+   * A method call against an `ActionDispatch::Request` instance.
    */
   private class RequestMethodCall extends DataFlow::CallNode {
     RequestMethodCall() {
-      any(RequestNode r).(DataFlow::LocalSourceNode).flowsTo(this.getReceiver())
+      any(ActionControllerClass cls)
+          .getSelf()
+          .getAMethodCall("request")
+          .(DataFlow::LocalSourceNode)
+          .flowsTo(this.getReceiver()) or
+      this =
+        API::getTopLevelMember("ActionDispatch")
+            .getMember("Request")
+            .getInstance()
+            .getAMethodCall(_)
     }
   }
 
