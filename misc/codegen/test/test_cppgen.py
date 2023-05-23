@@ -203,5 +203,27 @@ def test_ipa_classes_ignored(generate):
     ]
 
 
+def test_synth_properties_ignored(generate):
+    assert generate([
+        schema.Class(
+            name="X",
+            properties=[
+                schema.SingleProperty("x", "a"),
+                schema.SingleProperty("y", "b", synth=True),
+                schema.SingleProperty("z", "c"),
+                schema.OptionalProperty("foo", "bar", synth=True),
+                schema.RepeatedProperty("baz", "bazz", synth=True),
+                schema.RepeatedOptionalProperty("bazzz", "bazzzz", synth=True),
+                schema.RepeatedUnorderedProperty("bazzzzz", "bazzzzzz", synth=True),
+            ],
+        ),
+    ]) == [
+        cpp.Class(name="X", final=True, trap_name="Xes", fields=[
+            cpp.Field("x", "a"),
+            cpp.Field("z", "c"),
+        ]),
+    ]
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

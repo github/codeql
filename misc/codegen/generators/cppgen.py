@@ -76,7 +76,7 @@ class Processor:
             bases=[self._get_class(b) for b in cls.bases],
             fields=[
                 _get_field(cls, p, self._add_or_none_except)
-                for p in cls.properties if "cpp_skip" not in p.pragmas
+                for p in cls.properties if "cpp_skip" not in p.pragmas and not p.synth
             ],
             final=not cls.derived,
             trap_name=trap_name,
