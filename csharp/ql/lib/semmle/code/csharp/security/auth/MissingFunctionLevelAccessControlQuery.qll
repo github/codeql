@@ -19,10 +19,13 @@ abstract class ActionMethod extends Method {
   }
 
   Callable getAnAuthorizingCallable() { result = this }
+
+  string getARoute() { result = this.getDeclaringType().getFile().getRelativePath() }
 }
 
 private class MvcActionMethod extends ActionMethod {
   MvcActionMethod() { this = any(MicrosoftAspNetCoreMvcController c).getAnActionMethod() }
+  // override string getARoute() { none() }
 }
 
 private class WebFormActionMethod extends ActionMethod {
@@ -83,6 +86,15 @@ class AuthorizationXmlElement extends XmlElement {
       result = path.getValue()
     )
   }
+
+  string getARoute() {
+    result = this.getLocationTagPath()
+    or
+    result = this.getPhysicalPath() + "/" + this.getLocationTagPath()
+    or
+    not exists(this.getLocationTagPath()) and
+    result = this.getPhysicalPath()
+  }
 }
 
 /**
@@ -90,19 +102,22 @@ class AuthorizationXmlElement extends XmlElement {
  * TODO: Currently only supports physical paths, however virtual paths defined by `AddRoute` can also be used.
  */
 predicate hasAuthViaXml(ActionMethod m) {
-  exists(AuthorizationXmlElement el, string path, string rest |
-    path = (el.getPhysicalPath() + "/" + el.getLocationTagPath())
-    or
-    not exists(el.getLocationTagPath()) and
-    path = el.getPhysicalPath()
-  |
+  exists(AuthorizationXmlElement el, string rest |
     el.hasDenyElement() and
-    m.getDeclaringType().getFile().getRelativePath() = path + rest
+    m.getARoute() = el.getARoute() + rest
   )
+}
+
+predicate hasAuthViaAttribute(ActionMethod m) {
+  [m.getAnAttribute(), m.getDeclaringType().getAnAttribute()]
+      .getType()
+      .hasQualifiedName("Microsoft.AspNetCore.Authorization", "AuthorizeAttribute")
 }
 
 /** Holds if `m` is a method that should have an auth check, but is missing it. */
 predicate missingAuth(ActionMethod m) {
   m.needsAuth() and
-  not hasAuthViaCode(m)
+  not hasAuthViaCode(m) and
+  not hasAuthViaXml(m) and
+  not hasAuthViaAttribute(m)
 }
