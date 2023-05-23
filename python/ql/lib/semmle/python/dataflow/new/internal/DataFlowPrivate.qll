@@ -792,13 +792,9 @@ predicate defaultValueFlowStep(CfgNode nodeFrom, CfgNode nodeTo) {
 predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
-  dictReadStep(nodeFrom, c, nodeTo)
-  or
   iterableUnpackingReadStep(nodeFrom, c, nodeTo)
   or
   matchReadStep(nodeFrom, c, nodeTo)
-  or
-  popReadStep(nodeFrom, c, nodeTo)
   or
   forReadStep(nodeFrom, c, nodeTo)
   or
@@ -829,51 +825,6 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
     or
     c.(DictionaryElementContent).getKey() =
       nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
-  )
-}
-
-predicate dictReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
-  // see
-  // - https://docs.python.org/3.10/library/stdtypes.html#dict.get
-  // - https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
-  exists(MethodCallNode call |
-    call.calls(nodeFrom, ["get", "setdefault"]) and
-    call.getArg(0).asExpr().(StrConst).getText() = c.(DictionaryElementContent).getKey() and
-    nodeTo = call
-  )
-}
-
-/** Data flows from a sequence to a call to `pop` on the sequence. */
-predicate popReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
-  // set.pop or list.pop
-  //   `s.pop()`
-  //   nodeFrom is `s`, cfg node
-  //   nodeTo is `s.pop()`, cfg node
-  //   c denotes element of list or set
-  exists(CallNode call, AttrNode a |
-    call.getFunction() = a and
-    a.getName() = "pop" and // Should match appropriate call since we tracked a sequence here.
-    not exists(call.getAnArg()) and
-    nodeFrom.getNode() = a.getObject() and
-    nodeTo.getNode() = call and
-    (
-      c instanceof ListElementContent
-      or
-      c instanceof SetElementContent
-    )
-  )
-  or
-  // dict.pop
-  //   `d.pop("key")`
-  //   nodeFrom is `d`, cfg node
-  //   nodeTo is `d.pop("key")`, cfg node
-  //   c denotes the key `"key"`
-  exists(CallNode call, AttrNode a |
-    call.getFunction() = a and
-    a.getName() = "pop" and // Should match appropriate call since we tracked a dictionary here.
-    nodeFrom.getNode() = a.getObject() and
-    nodeTo.getNode() = call and
-    c.(DictionaryElementContent).getKey() = call.getArg(0).getNode().(StrConst).getS()
   )
 }
 
