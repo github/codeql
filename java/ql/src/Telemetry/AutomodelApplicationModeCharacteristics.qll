@@ -17,20 +17,6 @@ private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclus
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
-/**
- * A meta data extractor. Any Java extraction mode needs to implement exactly
- * one instance of this class.
- */
-abstract class MetadataExtractor extends string {
-  bindingset[this]
-  MetadataExtractor() { any() }
-
-  abstract predicate hasMetadata(
-    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
-    string input
-  );
-}
-
 newtype JavaRelatedLocationType = CallContext()
 
 /**
@@ -41,14 +27,14 @@ private class ArgumentNode extends DataFlow::Node {
 }
 
 /**
- * A candidates implementation for framework mode.
+ * A candidates implementation.
  *
  * Some important notes:
  *  - This mode is using parameters as endpoints.
  *  - Sink- and neutral-information is being used from MaD models.
  *  - When available, we use method- and class-java-docs as related locations.
  */
-module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
+module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig {
   // for documentation of the implementations here, see the QLDoc in the CandidateSig signature module.
   class Endpoint = ArgumentNode;
 
@@ -108,7 +94,7 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   additional predicate sinkSpec(
     Endpoint e, string package, string type, string name, string signature, string ext, string input
   ) {
-    FrameworkCandidatesImpl::getCallable(e).hasQualifiedName(package, type, name) and
+    ApplicationCandidatesImpl::getCallable(e).hasQualifiedName(package, type, name) and
     signature = ExternalFlow::paramsString(getCallable(e)) and
     ext = "" and
     (
@@ -147,21 +133,22 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   }
 }
 
-module CharacteristicsImpl = SharedCharacteristics::SharedCharacteristics<FrameworkCandidatesImpl>;
+module CharacteristicsImpl =
+  SharedCharacteristics::SharedCharacteristics<ApplicationCandidatesImpl>;
 
 class EndpointCharacteristic = CharacteristicsImpl::EndpointCharacteristic;
 
-class Endpoint = FrameworkCandidatesImpl::Endpoint;
+class Endpoint = ApplicationCandidatesImpl::Endpoint;
 
 /*
  * Predicates that are used to surface prompt examples and candidates for classification with an ML model.
  */
 
 /**
- * A MetadataExtractor that extracts metadata for framework mode.
+ * A MetadataExtractor that extracts metadata for application mode.
  */
-class FrameworkModeMetadataExtractor extends MetadataExtractor {
-  FrameworkModeMetadataExtractor() { this = "FrameworkModeMetadataExtractor" }
+class ApplicationModeMetadataExtractor extends string {
+  ApplicationModeMetadataExtractor() { this = "ApplicationModeMetadataExtractor" }
 
   /**
    * By convention, the subtypes property of the MaD declaration should only be
@@ -180,7 +167,7 @@ class FrameworkModeMetadataExtractor extends MetadataExtractor {
     else result = true
   }
 
-  override predicate hasMetadata(
+  predicate hasMetadata(
     Endpoint e, string package, string type, boolean subtypes, string name, string signature,
     string input
   ) {
@@ -217,9 +204,9 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
   UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _) and
-    FrameworkCandidatesImpl::getCallable(e).getName().matches("is%") and
-    FrameworkCandidatesImpl::getCallable(e).getReturnType() instanceof BooleanType
+    not ApplicationCandidatesImpl::isSink(e, _) and
+    ApplicationCandidatesImpl::getCallable(e).getName().matches("is%") and
+    ApplicationCandidatesImpl::getCallable(e).getReturnType() instanceof BooleanType
   }
 }
 
@@ -235,9 +222,9 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _) and
+    not ApplicationCandidatesImpl::isSink(e, _) and
     exists(Callable callable |
-      callable = FrameworkCandidatesImpl::getCallable(e) and
+      callable = ApplicationCandidatesImpl::getCallable(e) and
       callable.getName().toLowerCase() = ["exists", "notexists"] and
       callable.getReturnType() instanceof BooleanType
     )
@@ -251,7 +238,7 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    FrameworkCandidatesImpl::getCallable(e).getDeclaringType().getASupertype*() instanceof
+    ApplicationCandidatesImpl::getCallable(e).getDeclaringType().getASupertype*() instanceof
       TypeThrowable
   }
 }
@@ -286,7 +273,7 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
   NonPublicMethodCharacteristic() { this = "non-public method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::getCallable(e).isPublic()
+    not ApplicationCandidatesImpl::getCallable(e).isPublic()
   }
 }
 

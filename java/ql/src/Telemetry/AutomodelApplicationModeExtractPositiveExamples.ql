@@ -13,8 +13,8 @@ private import AutomodelEndpointTypes
 private import AutomodelSharedUtil
 
 from
-  Endpoint endpoint, SinkType sinkType, MetadataExtractor meta, string package, string type,
-  boolean subtypes, string name, string signature, string input
+  Endpoint endpoint, SinkType sinkType, ApplicationModeMetadataExtractor meta, string package,
+  string type, boolean subtypes, string name, string signature, string input
 where
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
   // certain about in the prompt.

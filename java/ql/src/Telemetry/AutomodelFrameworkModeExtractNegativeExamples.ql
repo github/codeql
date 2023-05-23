@@ -14,7 +14,7 @@ private import AutomodelSharedUtil
 
 from
   Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string message,
-  MetadataExtractor meta, string package, string type, boolean subtypes, string name,
+  FrameworkModeMetadataExtractor meta, string package, string type, boolean subtypes, string name,
   string signature, string input, string parameterName
 where
   characteristic.appliesToEndpoint(endpoint) and

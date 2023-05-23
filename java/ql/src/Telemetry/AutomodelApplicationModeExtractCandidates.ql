@@ -16,8 +16,8 @@ private import AutomodelApplicationModeCharacteristics
 private import AutomodelSharedUtil
 
 from
-  Endpoint endpoint, string message, MetadataExtractor meta, string package, string type,
-  boolean subtypes, string name, string signature, string input
+  Endpoint endpoint, string message, ApplicationModeMetadataExtractor meta, string package,
+  string type, boolean subtypes, string name, string signature, string input
 where
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)

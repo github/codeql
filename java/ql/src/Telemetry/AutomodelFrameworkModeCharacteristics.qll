@@ -17,20 +17,6 @@ private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclus
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
-/**
- * A meta data extractor. Any Java extraction mode needs to implement exactly
- * one instance of this class.
- */
-abstract class MetadataExtractor extends string {
-  bindingset[this]
-  MetadataExtractor() { any() }
-
-  abstract predicate hasMetadata(
-    DataFlow::ParameterNode e, string package, string type, boolean subtypes, string name,
-    string signature, string input, string parameterName
-  );
-}
-
 newtype JavaRelatedLocationType =
   MethodDoc() or
   ClassDoc()
@@ -145,7 +131,7 @@ class Endpoint = FrameworkCandidatesImpl::Endpoint;
 /**
  * A MetadataExtractor that extracts metadata for framework mode.
  */
-class FrameworkModeMetadataExtractor extends MetadataExtractor {
+class FrameworkModeMetadataExtractor extends string {
   FrameworkModeMetadataExtractor() { this = "FrameworkModeMetadataExtractor" }
 
   /**
@@ -165,7 +151,7 @@ class FrameworkModeMetadataExtractor extends MetadataExtractor {
     else result = true
   }
 
-  override predicate hasMetadata(
+  predicate hasMetadata(
     Endpoint e, string package, string type, boolean subtypes, string name, string signature,
     string input, string parameterName
   ) {
