@@ -77,10 +77,12 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
     (
       exists(Call c, int argIdx |
         e.asExpr() = c.getArgument(argIdx) and
-        input = "Argument[" + argIdx + "]"
+        input = AutomodelSharedUtil::getArgumentForIndex(argIdx)
       )
       or
-      exists(Call c | e.asExpr() = c.getQualifier() and input = "Argument[this]")
+      exists(Call c |
+        e.asExpr() = c.getQualifier() and input = AutomodelSharedUtil::getArgumentForIndex(-1)
+      )
     )
   }
 
@@ -148,10 +150,11 @@ class ApplicationModeMetadataExtractor extends string {
     exists(Call call, Callable callable, int argIdx |
       call.getCallee() = callable and
       (
-        e.asExpr() = call.getArgument(argIdx) and input = "Argument[" + argIdx + "]"
+        e.asExpr() = call.getArgument(argIdx)
         or
-        e.asExpr() = call.getQualifier() and argIdx = -1 and input = "Argument[this]"
+        e.asExpr() = call.getQualifier() and argIdx = -1
       ) and
+      input = AutomodelSharedUtil::getArgumentForIndex(argIdx) and
       package = callable.getDeclaringType().getPackage().getName() and
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
       subtypes = this.considerSubtypes(callable) and
@@ -231,7 +234,7 @@ private class NotAModelApiParameter extends CharacteristicsImpl::UninterestingTo
         exists(int argIdx | exists(api.getParameter(argIdx)) |
           argIdx = -1 and e.asExpr() = c.getQualifier()
           or
-          argIdx >= 0 and e.asExpr() = c.getArgument(argIdx)
+          e.asExpr() = c.getArgument(argIdx)
         )
       )
     )

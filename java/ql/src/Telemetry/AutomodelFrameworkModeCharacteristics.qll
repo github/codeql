@@ -70,7 +70,7 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
     signature = ExternalFlow::paramsString(getCallable(e)) and
     ext = "" and
     exists(int paramIdx | e.isParameterOf(_, paramIdx) |
-      if paramIdx = -1 then input = "Argument[this]" else input = "Argument[" + paramIdx + "]"
+      input = AutomodelSharedUtil::getArgumentForIndex(paramIdx)
     )
   }
 
@@ -134,7 +134,7 @@ class FrameworkModeMetadataExtractor extends string {
   ) {
     exists(Callable callable, int paramIdx |
       e.asParameter() = callable.getParameter(paramIdx) and
-      (if paramIdx = -1 then input = "Argument[this]" else input = "Argument[" + paramIdx + "]") and
+      input = AutomodelSharedUtil::getArgumentForIndex(paramIdx) and
       package = callable.getDeclaringType().getPackage().getName() and
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
       subtypes = this.considerSubtypes(callable) and

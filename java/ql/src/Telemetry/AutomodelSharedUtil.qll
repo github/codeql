@@ -49,3 +49,11 @@ predicate isKnownKind(
   humanReadableKind = "command injection" and
   type instanceof AutomodelEndpointTypes::CommandInjectionSinkType
 }
+
+/** Gets the argument name for the argument with the index `index`. */
+bindingset[index]
+string getArgumentForIndex(int index) {
+  index = -1 and result = "Argument[this]"
+  or
+  index >= 0 and result = "Argument[" + index + "]"
+}
