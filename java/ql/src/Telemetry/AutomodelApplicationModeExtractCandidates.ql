@@ -9,7 +9,7 @@
  * @kind problem
  * @severity info
  * @id java/ml/extract-automodel-application-candidates
- * @tags internal automodel extract candidates
+ * @tags internal automodel extract candidates application-mode
  */
 
 private import AutomodelApplicationModeCharacteristics

@@ -9,7 +9,7 @@
  * @kind problem
  * @severity info
  * @id java/ml/extract-automodel-framework-candidates
- * @tags internal automodel extract candidates
+ * @tags internal automodel extract candidates framework-mode
  */
 
 private import AutomodelFrameworkModeCharacteristics

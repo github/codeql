@@ -5,7 +5,7 @@
  * @kind problem
  * @severity info
  * @id java/ml/non-sink
- * @tags internal automodel extract examples negative
+ * @tags internal automodel extract examples negative framework-mode
  */
 
 private import AutomodelFrameworkModeCharacteristics

@@ -5,7 +5,7 @@
  * @kind problem
  * @severity info
  * @id java/ml/known-sink
- * @tags internal automodel extract examples positive
+ * @tags internal automodel extract examples positive framework-mode
  */
 
 private import AutomodelFrameworkModeCharacteristics
