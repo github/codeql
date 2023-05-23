@@ -379,7 +379,6 @@
 /lib/codeql/swift/generated/Element.qll linguist-generated
 /lib/codeql/swift/generated/ErrorElement.qll linguist-generated
 /lib/codeql/swift/generated/File.qll linguist-generated
-/lib/codeql/swift/generated/HideableElement.qll linguist-generated
 /lib/codeql/swift/generated/KeyPathComponent.qll linguist-generated
 /lib/codeql/swift/generated/Locatable.qll linguist-generated
 /lib/codeql/swift/generated/Location.qll linguist-generated

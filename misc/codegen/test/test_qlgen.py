@@ -880,14 +880,6 @@ def test_hideable_class(generate_classes):
     }
 
 
-def test_hideable_root_class(generate_classes):
-    assert generate_classes([
-        schema.Class("MyObject", hideable_root=True),
-    ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject"), a_ql_class(name="MyObject", final=True, hideable_root=True)),
-    }
-
-
 def test_hideable_property(generate_classes):
     assert generate_classes([
         schema.Class("MyObject", hideable=True),

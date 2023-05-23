@@ -15,9 +15,9 @@ sourceLocationPrefix(
   @callable
 | @file
 | @generic_context
-| @hideable_element
 | @locatable
 | @location
+| @type
 ;
 
 #keyset[id]
@@ -76,12 +76,6 @@ files(
 file_is_successfully_extracted(
   int id: @file ref
 );
-
-@hideable_element =
-  @expr
-| @pattern
-| @type
-;
 
 @locatable =
   @argument

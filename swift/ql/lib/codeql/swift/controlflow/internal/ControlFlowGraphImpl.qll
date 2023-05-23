@@ -264,7 +264,7 @@ module Stmts {
       or
       child.asAstNode() = ast.getAnElement().getBoolean().getFullyConverted()
       or
-      child.asAstNode() = ast.getAnElement().getAvailability()
+      child.asAstNode() = ast.getAnElement().getAvailability().getFullyUnresolved()
     }
 
     predicate firstElement(int i, ControlFlowElement first) {
@@ -278,7 +278,7 @@ module Stmts {
         astFirst(ast.getElement(i).getBoolean().getFullyConverted(), first)
         or
         // ... or an availability check.
-        astFirst(ast.getElement(i).getAvailability(), first)
+        astFirst(ast.getElement(i).getAvailability().getFullyUnresolved(), first)
       )
     }
 
@@ -296,7 +296,7 @@ module Stmts {
         astLast(ast.getElement(i).getBoolean().getFullyConverted(), pred, c)
         or
         // ... or the availability check ...
-        astLast(ast.getElement(i).getAvailability(), pred, c)
+        astLast(ast.getElement(i).getAvailability().getFullyUnresolved(), pred, c)
       ) and
       // We evaluate the next element
       c instanceof NormalCompletion and
@@ -313,7 +313,7 @@ module Stmts {
       not c.(MatchingCompletion).isMatch()
       or
       // Stop if an availability check failed
-      astLast(ast.getAnElement().getAvailability(), last, c) and
+      astLast(ast.getAnElement().getAvailability().getFullyUnresolved(), last, c) and
       c instanceof FalseCompletion
       or
       // Stop if we successfully evaluated all the conditionals
@@ -322,7 +322,7 @@ module Stmts {
         or
         astLast(ast.getLastElement().getPattern().getFullyUnresolved(), last, c)
         or
-        astLast(ast.getLastElement().getAvailability(), last, c)
+        astLast(ast.getLastElement().getAvailability().getFullyUnresolved(), last, c)
       ) and
       c instanceof NormalCompletion
     }
@@ -342,14 +342,14 @@ module Stmts {
     override IfStmt ast;
 
     final override predicate propagatesAbnormal(ControlFlowElement child) {
-      child.asAstNode() = ast.getCondition() or
+      child.asAstNode() = ast.getCondition().getFullyUnresolved() or
       child.asAstNode() = ast.getThen() or
       child.asAstNode() = ast.getElse()
     }
 
     final override predicate last(ControlFlowElement last, Completion c) {
       // Condition exits with a false completion and there is no `else` branch
-      astLast(ast.getCondition(), last, c) and
+      astLast(ast.getCondition().getFullyUnresolved(), last, c) and
       c instanceof FalseOrNonMatchCompletion and
       not exists(ast.getElse())
       or
@@ -360,10 +360,10 @@ module Stmts {
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       // Pre-order: flow from statement itself to first element of condition
       pred.asAstNode() = ast and
-      astFirst(ast.getCondition(), succ) and
+      astFirst(ast.getCondition().getFullyUnresolved(), succ) and
       c instanceof SimpleCompletion
       or
-      astLast(ast.getCondition(), pred, c) and
+      astLast(ast.getCondition().getFullyUnresolved(), pred, c) and
       (
         // Flow from last element of condition to first element of then branch
         c instanceof TrueOrMatchCompletion and
@@ -380,7 +380,7 @@ module Stmts {
     override GuardStmt ast;
 
     final override predicate propagatesAbnormal(ControlFlowElement child) {
-      child.asAstNode() = ast.getCondition() or
+      child.asAstNode() = ast.getCondition().getFullyUnresolved() or
       child.asAstNode() = ast.getBody()
     }
 
@@ -390,18 +390,18 @@ module Stmts {
       c instanceof NormalCompletion
       or
       // Exit when a condition is true
-      astLast(ast.getCondition(), last, c) and
+      astLast(ast.getCondition().getFullyUnresolved(), last, c) and
       c instanceof TrueOrMatchCompletion
     }
 
     final override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       // Pre-order: flow from statement itself to first element of condition
       pred.asAstNode() = ast and
-      astFirst(ast.getCondition(), succ) and
+      astFirst(ast.getCondition().getFullyUnresolved(), succ) and
       c instanceof SimpleCompletion
       or
       // Flow to the body when the condition is false
-      astLast(ast.getCondition(), pred, c) and
+      astLast(ast.getCondition().getFullyUnresolved(), pred, c) and
       c instanceof FalseOrNonMatchCompletion and
       astFirst(ast.getBody(), succ)
     }
@@ -458,7 +458,9 @@ module Stmts {
     private class WhileTree extends LoopTree {
       override WhileStmt ast;
 
-      final override ControlFlowElement getCondition() { result.asAstNode() = ast.getCondition() }
+      final override ControlFlowElement getCondition() {
+        result.asAstNode() = ast.getCondition().getFullyUnresolved()
+      }
 
       final override ControlFlowElement getBody() { result.asAstNode() = ast.getBody() }
 
@@ -672,7 +674,7 @@ module Stmts {
 
     final override predicate last(ControlFlowElement last, Completion c) {
       // Case pattern exits with a non-match
-      astLast(ast.getLastLabel(), last, c) and
+      astLast(ast.getLastLabel().getFullyUnresolved(), last, c) and
       not c.(MatchingCompletion).isMatch()
       or
       // Case body exits with any completion
@@ -682,18 +684,18 @@ module Stmts {
     override predicate succ(ControlFlowElement pred, ControlFlowElement succ, Completion c) {
       // Pre-order: Flow from the case statement itself to the first label
       pred.asAstNode() = ast and
-      astFirst(ast.getFirstLabel(), succ) and
+      astFirst(ast.getFirstLabel().getFullyUnresolved(), succ) and
       c instanceof SimpleCompletion
       or
       // Left-to-right evaluation of labels until we find a match
       exists(int i |
-        astLast(ast.getLabel(i), pred, c) and
-        astFirst(ast.getLabel(i + 1), succ) and
+        astLast(ast.getLabel(i).getFullyUnresolved(), pred, c) and
+        astFirst(ast.getLabel(i + 1).getFullyUnresolved(), succ) and
         c.(MatchingCompletion).isNonMatch()
       )
       or
       // Flow from last element of pattern to first element of body
-      astLast(ast.getALabel(), pred, c) and
+      astLast(ast.getALabel().getFullyUnresolved(), pred, c) and
       astFirst(ast.getBody(), succ) and
       c.(MatchingCompletion).isMatch()
     }
@@ -1162,7 +1164,7 @@ module Exprs {
     override CaptureListExpr ast;
 
     final override ControlFlowElement getChildElement(int i) {
-      result.asAstNode() = ast.getBindingDecl(i)
+      result.asAstNode() = ast.getBindingDecl(i).getFullyUnresolved()
       or
       i = ast.getNumberOfBindingDecls() and
       result.asAstNode() = ast.getClosureBody().getFullyConverted()
@@ -1794,7 +1796,9 @@ module AvailabilityInfo {
   private class AvailabilityInfoTree extends AstStandardPostOrderTree {
     override AvailabilityInfo ast;
 
-    final override ControlFlowElement getChildElement(int i) { result.asAstNode() = ast.getSpec(i) }
+    final override ControlFlowElement getChildElement(int i) {
+      result.asAstNode() = ast.getSpec(i).getFullyUnresolved()
+    }
   }
 
   private class AvailabilitySpecTree extends AstLeafTree {

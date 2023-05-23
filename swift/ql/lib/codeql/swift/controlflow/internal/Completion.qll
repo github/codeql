@@ -98,7 +98,7 @@ private predicate isBooleanConstant(ControlFlowElement n, boolean value) {
   // Boolean constants hidden inside conversions are also
   // constants that resolve to the same value.
   exists(ControlFlowElement parent |
-    parent.asAstNode() = n.asAstNode().(HideableElement).getResolveStep() and
+    parent.asAstNode() = n.asAstNode().getResolveStep() and
     isBooleanConstant(parent, value)
   )
 }
@@ -122,9 +122,9 @@ private predicate inBooleanContext(ControlFlowElement n) {
 private predicate astInBooleanContext(AstNode n) {
   n = any(ConditionElement condElem).getBoolean().getFullyUnresolved()
   or
-  n = any(ConditionElement condElem).getAvailability()
+  n = any(ConditionElement condElem).getAvailability().getFullyUnresolved()
   or
-  n = any(StmtCondition stmtCond)
+  n = any(StmtCondition stmtCond).getFullyUnresolved()
   or
   exists(RepeatWhileStmt repeat | n = repeat.getCondition().getFullyConverted())
   or

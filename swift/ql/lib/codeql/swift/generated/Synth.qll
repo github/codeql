@@ -1046,11 +1046,6 @@ module Synth {
   /**
    * INTERNAL: Do not use.
    */
-  class THideableElement = TExpr or TPattern or TType;
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class TLocatable = TArgument or TAstNode or TComment or TDiagnostics or TErrorElement;
 
   /**
@@ -3228,11 +3223,11 @@ module Synth {
     or
     result = convertGenericContextFromRaw(e)
     or
-    result = convertHideableElementFromRaw(e)
-    or
     result = convertLocatableFromRaw(e)
     or
     result = convertLocationFromRaw(e)
+    or
+    result = convertTypeFromRaw(e)
   }
 
   /**
@@ -3275,19 +3270,6 @@ module Synth {
     result = convertDbFileFromRaw(e)
     or
     result = convertUnknownFileFromRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a raw DB element to a synthesized `THideableElement`, if possible.
-   */
-  cached
-  THideableElement convertHideableElementFromRaw(Raw::Element e) {
-    result = convertExprFromRaw(e)
-    or
-    result = convertPatternFromRaw(e)
-    or
-    result = convertTypeFromRaw(e)
   }
 
   /**
@@ -6046,11 +6028,11 @@ module Synth {
     or
     result = convertGenericContextToRaw(e)
     or
-    result = convertHideableElementToRaw(e)
-    or
     result = convertLocatableToRaw(e)
     or
     result = convertLocationToRaw(e)
+    or
+    result = convertTypeToRaw(e)
   }
 
   /**
@@ -6093,19 +6075,6 @@ module Synth {
     result = convertDbFileToRaw(e)
     or
     result = convertUnknownFileToRaw(e)
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   * Converts a synthesized `THideableElement` to a raw DB element, if possible.
-   */
-  cached
-  Raw::Element convertHideableElementToRaw(THideableElement e) {
-    result = convertExprToRaw(e)
-    or
-    result = convertPatternToRaw(e)
-    or
-    result = convertTypeToRaw(e)
   }
 
   /**

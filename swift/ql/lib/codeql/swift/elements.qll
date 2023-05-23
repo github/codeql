@@ -10,7 +10,6 @@ import codeql.swift.elements.Diagnostics
 import codeql.swift.elements.Element
 import codeql.swift.elements.ErrorElement
 import codeql.swift.elements.File
-import codeql.swift.elements.HideableElement
 import codeql.swift.elements.KeyPathComponent
 import codeql.swift.elements.Locatable
 import codeql.swift.elements.Location

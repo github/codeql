@@ -39,7 +39,6 @@ def _get_class(cls: type) -> schema.Class:
                         group=getattr(cls, "_group", ""),
                         hideable=getattr(cls, "_hideable", False),
                         # in the following we don't use `getattr` to avoid inheriting
-                        hideable_root=cls.__dict__.get("_hideable", False),
                         pragmas=cls.__dict__.get("_pragmas", []),
                         ipa=cls.__dict__.get("_ipa", None),
                         properties=[
@@ -96,6 +95,18 @@ def _fill_ipa_information(classes: typing.Dict[str, schema.Class]):
             cls.ipa = True
 
 
+def _fill_hideable_information(classes: typing.Dict[str, schema.Class]):
+    """ Update the class map propagating the `hideable` attribute upwards in the hierarchy """
+    todo = [cls for cls in classes.values() if cls.hideable]
+    while todo:
+        cls = todo.pop()
+        for base in cls.bases:
+            supercls = classes[base]
+            if not supercls.hideable:
+                supercls.hideable = True
+                todo.append(supercls)
+
+
 def load(m: types.ModuleType) -> schema.Schema:
     includes = set()
     classes = {}
@@ -124,6 +135,7 @@ def load(m: types.ModuleType) -> schema.Schema:
             cls.is_null_class = True
 
     _fill_ipa_information(classes)
+    _fill_hideable_information(classes)
 
     return schema.Schema(includes=includes, classes=_toposort_classes_by_group(classes), null=null)
 

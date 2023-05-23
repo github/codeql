@@ -72,12 +72,9 @@ class UnknownLocation(Location):
 class AstNode(Locatable):
     pass
 
-@ql.hideable
-class HideableElement(Element):
-    pass
-
 @group("type")
-class Type(HideableElement):
+@ql.hideable
+class Type(Element):
     name: string
     canonical_type: "Type"
 
@@ -87,12 +84,14 @@ class Decl(AstNode):
     members: list["Decl"] | child
 
 @group("expr")
-class Expr(AstNode, HideableElement):
+@ql.hideable
+class Expr(AstNode):
     """The base class for all expressions in Swift."""
     type: optional[Type]
 
 @group("pattern")
-class Pattern(AstNode, HideableElement):
+@ql.hideable
+class Pattern(AstNode):
     pass
 
 @group("stmt")

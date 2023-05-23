@@ -25,6 +25,23 @@ module Generated {
     final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
 
     /**
+     * Gets the most immediate element that should substitute this element in the explicit AST, if any.
+     * Classes can override this to indicate this node should be in the "hidden" AST, mostly reserved
+     * for conversions and syntactic sugar nodes like parentheses.
+     */
+    Element getResolveStep() { none() } // overridden by subclasses
+
+    /**
+     * Gets the element that should substitute this element in the explicit AST, applying `getResolveStep`
+     * transitively.
+     */
+    final Element resolve() {
+      not exists(this.getResolveStep()) and result = this
+      or
+      result = this.getResolveStep().resolve()
+    }
+
+    /**
      * Holds if this element is unknown.
      */
     predicate isUnknown() { Synth::convertElementToRaw(this).isUnknown() }

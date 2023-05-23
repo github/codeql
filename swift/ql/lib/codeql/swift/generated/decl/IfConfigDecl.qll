@@ -10,12 +10,25 @@ module Generated {
 
     /**
      * Gets the `index`th active element of this if config declaration (0-based).
+     *
+     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
+     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    AstNode getActiveElement(int index) {
+    AstNode getImmediateActiveElement(int index) {
       result =
         Synth::convertAstNodeFromRaw(Synth::convertIfConfigDeclToRaw(this)
               .(Raw::IfConfigDecl)
               .getActiveElement(index))
+    }
+
+    /**
+     * Gets the `index`th active element of this if config declaration (0-based).
+     */
+    final AstNode getActiveElement(int index) {
+      exists(AstNode immediate |
+        immediate = this.getImmediateActiveElement(index) and
+        result = immediate.resolve()
+      )
     }
 
     /**

@@ -114,7 +114,6 @@ class Class:
     ql_internal: bool = False
     ipa: bool = False
     doc: List[str] = field(default_factory=list)
-    hideable_root: bool = False
     hideable: bool = False
 
     def __post_init__(self):

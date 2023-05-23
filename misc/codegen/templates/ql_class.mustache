@@ -37,8 +37,7 @@ module Generated {
      * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
      */
     final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
-    {{/root}}
-    {{#hideable_root}}
+
     /**
      * Gets the most immediate element that should substitute this element in the explicit AST, if any.
      * Classes can override this to indicate this node should be in the "hidden" AST, mostly reserved
@@ -55,7 +54,7 @@ module Generated {
       or
       result = this.getResolveStep().resolve()
     }
-    {{/hideable_root}}
+    {{/root}}
     {{#final}}
     override string getAPrimaryQlClass() { result = "{{name}}" }
     {{/final}}

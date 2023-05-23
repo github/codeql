@@ -64,10 +64,6 @@ none()
     {{/final}}
 {{/classes}}
 }
-
-Element resolve(Element e) {
-  {{#classes}}{{#hideable_root}}if e instanceof {{name}} then result = e.({{name}}).resolve() else {{/hideable_root}}{{/classes}}result = e
-}
 }
 
 /**
@@ -75,21 +71,21 @@ Element resolve(Element e) {
 * if `e` has conversions, `getImmediateParent(e)` will give the innermost conversion in the hidden AST.
 */
 Element getImmediateParent(Element e) {
-// `unique` is used here to tell the optimizer that there is in fact only one result
-// this is tested by the `library-tests/parent/no_double_parents.ql` test
-result = unique(Element x | e = Impl::getImmediateChild(x, _, _) | x)
+    // `unique` is used here to tell the optimizer that there is in fact only one result
+    // this is tested by the `library-tests/parent/no_double_parents.ql` test
+    result = unique(Element x | e = Impl::getImmediateChild(x, _, _) | x)
 }
 
 /**
 * Gets the immediate child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
 */
 Element getImmediateChildAndAccessor(Element e, int index, string accessor) {
-exists(string partialAccessor | result = Impl::getImmediateChild(e, index, partialAccessor) and accessor = "get" + partialAccessor)
+    exists(string partialAccessor | result = Impl::getImmediateChild(e, index, partialAccessor) and accessor = "get" + partialAccessor)
 }
 
 /**
 * Gets the child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
 */
 Element getChildAndAccessor(Element e, int index, string accessor) {
-exists(string partialAccessor | result = Impl::resolve(Impl::getImmediateChild(e, index, partialAccessor)) and accessor = "get" + partialAccessor)
+    exists(string partialAccessor | result = Impl::getImmediateChild(e, index, partialAccessor).resolve() and accessor = "get" + partialAccessor)
 }

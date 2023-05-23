@@ -50,21 +50,6 @@ private module Impl {
     )
   }
 
-  private Element getImmediateChildOfHideableElement(
-    HideableElement e, int index, string partialPredicateCall
-  ) {
-    exists(int b, int bElement, int n |
-      b = 0 and
-      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
-      n = bElement and
-      (
-        none()
-        or
-        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
-      )
-    )
-  }
-
   private Element getImmediateChildOfLocatable(Locatable e, int index, string partialPredicateCall) {
     exists(int b, int bElement, int n |
       b = 0 and
@@ -1043,19 +1028,14 @@ private module Impl {
   }
 
   private Element getImmediateChildOfExpr(Expr e, int index, string partialPredicateCall) {
-    exists(int b, int bAstNode, int bHideableElement, int n |
+    exists(int b, int bAstNode, int n |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
-      bHideableElement =
-        bAstNode + 1 +
-          max(int i | i = -1 or exists(getImmediateChildOfHideableElement(e, i, _)) | i) and
-      n = bHideableElement and
+      n = bAstNode and
       (
         none()
         or
         result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
-        or
-        result = getImmediateChildOfHideableElement(e, index - bAstNode, partialPredicateCall)
       )
     )
   }
@@ -3179,19 +3159,14 @@ private module Impl {
   }
 
   private Element getImmediateChildOfPattern(Pattern e, int index, string partialPredicateCall) {
-    exists(int b, int bAstNode, int bHideableElement, int n |
+    exists(int b, int bAstNode, int n |
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
-      bHideableElement =
-        bAstNode + 1 +
-          max(int i | i = -1 or exists(getImmediateChildOfHideableElement(e, i, _)) | i) and
-      n = bHideableElement and
+      n = bAstNode and
       (
         none()
         or
         result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
-        or
-        result = getImmediateChildOfHideableElement(e, index - bAstNode, partialPredicateCall)
       )
     )
   }
@@ -3481,13 +3456,13 @@ private module Impl {
       b = 0 and
       bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
       n = bStmt and
-      nElement = n + 1 + max(int i | i = -1 or exists(e.getElement(i)) | i) and
+      nElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
         or
-        result = e.getElement(index - n) and
+        result = e.getImmediateElement(index - n) and
         partialPredicateCall = "Element(" + (index - n).toString() + ")"
       )
     )
@@ -3854,15 +3829,14 @@ private module Impl {
   }
 
   private Element getImmediateChildOfType(Type e, int index, string partialPredicateCall) {
-    exists(int b, int bHideableElement, int n |
+    exists(int b, int bElement, int n |
       b = 0 and
-      bHideableElement =
-        b + 1 + max(int i | i = -1 or exists(getImmediateChildOfHideableElement(e, i, _)) | i) and
-      n = bHideableElement and
+      bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
+      n = bElement and
       (
         none()
         or
-        result = getImmediateChildOfHideableElement(e, index - b, partialPredicateCall)
+        result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
       )
     )
   }
@@ -5319,10 +5293,6 @@ private module Impl {
     or
     result = getImmediateChildOfVariadicSequenceType(e, index, partialAccessor)
   }
-
-  Element resolve(Element e) {
-    if e instanceof HideableElement then result = e.(HideableElement).resolve() else result = e
-  }
 }
 
 /**
@@ -5350,7 +5320,7 @@ Element getImmediateChildAndAccessor(Element e, int index, string accessor) {
  */
 Element getChildAndAccessor(Element e, int index, string accessor) {
   exists(string partialAccessor |
-    result = Impl::resolve(Impl::getImmediateChild(e, index, partialAccessor)) and
+    result = Impl::getImmediateChild(e, index, partialAccessor).resolve() and
     accessor = "get" + partialAccessor
   )
 }
