@@ -8,9 +8,7 @@ private import semmle.code.cpp.ir.dataflow.internal.DataFlowUtil
 private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
 private import PrintIRUtilities
 
-/**
- * Property provider for local IR dataflow store steps.
- */
+/** A property provider for local IR dataflow store steps. */
 class FieldFlowPropertyProvider extends IRPropertyProvider {
   override string getOperandProperty(Operand operand, string key) {
     exists(PostFieldUpdateNode pfun, Content content |
