@@ -102,7 +102,7 @@ def _get_doc(cls: schema.Class, prop: schema.Property, plural=None):
     return f"{prop_name} of this {class_name}"
 
 
-def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = "") -> ql.Property:
+def get_ql_property(cls: schema.Class, prop: schema.Property, lookup: typing.Dict[str, schema.Class], prev_child: str = "") -> ql.Property:
     args = dict(
         type=prop.type if not prop.is_predicate else "predicate",
         qltest_skip="qltest_skip" in prop.pragmas,
@@ -110,7 +110,8 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
         is_optional=prop.is_optional,
         is_predicate=prop.is_predicate,
         is_unordered=prop.is_unordered,
-        description=prop.description
+        description=prop.description,
+        type_is_hideable=lookup[prop.type].hideable if prop.type in lookup else False,
     )
     if prop.is_single:
         args.update(
@@ -147,12 +148,12 @@ def get_ql_property(cls: schema.Class, prop: schema.Property, prev_child: str = 
     return ql.Property(**args)
 
 
-def get_ql_class(cls: schema.Class) -> ql.Class:
+def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> ql.Class:
     pragmas = {k: True for k in cls.pragmas if k.startswith("ql")}
     prev_child = ""
     properties = []
     for p in cls.properties:
-        prop = get_ql_property(cls, p, prev_child)
+        prop = get_ql_property(cls, p, lookup, prev_child)
         if prop.is_child:
             prev_child = prop.singular
         properties.append(prop)
@@ -164,6 +165,8 @@ def get_ql_class(cls: schema.Class) -> ql.Class:
         dir=pathlib.Path(cls.group or ""),
         ipa=bool(cls.ipa),
         doc=cls.doc,
+        hideable=cls.hideable,
+        hideable_root=cls.hideable_root,
         **pragmas,
     )
 
@@ -254,7 +257,7 @@ def _get_all_properties_to_be_tested(cls: schema.Class, lookup: typing.Dict[str,
     for c, p in _get_all_properties(cls, lookup):
         if not ("qltest_skip" in c.pragmas or "qltest_skip" in p.pragmas):
             # TODO here operations are duplicated, but should be better if we split ql and qltest generation
-            p = get_ql_property(c, p)
+            p = get_ql_property(c, p, lookup)
             yield ql.PropertyForTest(p.getter, is_total=p.is_single or p.is_predicate,
                                      type=p.type if not p.is_predicate else None, is_indexed=p.is_indexed)
             if p.is_repeated and not p.is_optional:
@@ -329,7 +332,7 @@ def generate(opts, renderer):
 
     data = schemaloader.load_file(input)
 
-    classes = {name: get_ql_class(cls) for name, cls in data.classes.items()}
+    classes = {name: get_ql_class(cls, data.classes) for name, cls in data.classes.items()}
     if not classes:
         raise NoClasses
     root = next(iter(classes.values()))

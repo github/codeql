@@ -42,6 +42,7 @@ class Property:
     description: List[str] = field(default_factory=list)
     doc: Optional[str] = None
     doc_plural: Optional[str] = None
+    type_is_hideable: bool = False
 
     def __post_init__(self):
         if self.tableparams:
@@ -113,6 +114,8 @@ class Class:
     ql_internal: bool = False
     ipa: bool = False
     doc: List[str] = field(default_factory=list)
+    hideable_root: bool = False
+    hideable: bool = False
 
     def __post_init__(self):
         self.bases = [Base(str(b), str(prev)) for b, prev in zip(self.bases, itertools.chain([""], self.bases))]

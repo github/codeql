@@ -37,7 +37,8 @@ module Generated {
      * Gets a comma-separated list of the names of the primary CodeQL classes to which this element belongs.
      */
     final string getPrimaryQlClasses() { result = concat(this.getAPrimaryQlClass(), ",") }
-
+    {{/root}}
+    {{#hideable_root}}
     /**
      * Gets the most immediate element that should substitute this element in the explicit AST, if any.
      * Classes can override this to indicate this node should be in the "hidden" AST, mostly reserved
@@ -54,13 +55,13 @@ module Generated {
       or
       result = this.getResolveStep().resolve()
     }
-    {{/root}}
+    {{/hideable_root}}
     {{#final}}
     override string getAPrimaryQlClass() { result = "{{name}}" }
     {{/final}}
     {{#properties}}
 
-    {{#type_is_class}}
+    {{#type_is_hideable}}
     /**
      * {{>ql_property_doc}}     *
      * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
@@ -85,11 +86,11 @@ module Generated {
      */
     final {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       exists({{type}} immediate | immediate = this.get{{#is_unordered}}An{{/is_unordered}}Immediate{{singular}}({{#is_indexed}}index{{/is_indexed}}) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve())
+        {{#hideable}}if exists(this.getResolveStep()) then result = immediate else {{/hideable}}result = immediate.resolve())
     }
 
-    {{/type_is_class}}
-    {{^type_is_class}}
+    {{/type_is_hideable}}
+    {{^type_is_hideable}}
     /**
      * {{>ql_property_doc}}     *
     {{#has_description}}
@@ -100,14 +101,14 @@ module Generated {
      */
     {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       {{^ipa}}
-      {{^is_predicate}}result = {{/is_predicate}}Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_indexed}}index{{/is_indexed}})
+      {{^is_predicate}}result = {{/is_predicate}}{{#type_is_class}}Synth::convert{{type}}FromRaw({{/type_is_class}}Synth::convert{{name}}ToRaw(this){{^root}}.(Raw::{{name}}){{/root}}.{{getter}}({{#is_indexed}}index{{/is_indexed}}){{#type_is_class}}){{/type_is_class}}
       {{/ipa}}
       {{#ipa}}
       none()
       {{/ipa}}
     }
 
-    {{/type_is_class}}
+    {{/type_is_hideable}}
     {{#is_optional}}
     /**
      * Holds if `{{getter}}({{#is_repeated}}index{{/is_repeated}})` exists.

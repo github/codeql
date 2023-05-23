@@ -14,6 +14,7 @@ from misc.codegen.lib.schemadefs import *
 include("prefix.dbscheme")
 
 @qltest.skip
+@ql.hideable
 class Element:
     is_unknown: predicate | cpp.skip
 

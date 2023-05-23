@@ -28,7 +28,7 @@ private module Impl {
             {{! for single and optional properties it adds 1 (regardless of whether the optional property exists) }}
             {{! for repeated it adds 1 + the maximum index (which works for repeated optional as well) }}
                 and
-                n{{singular}} = n{{prev_child}} + 1{{#is_repeated}}+ max(int i | i = -1 or exists(e.getImmediate{{singular}}(i)) | i){{/is_repeated}}
+                n{{singular}} = n{{prev_child}} + 1{{#is_repeated}}+ max(int i | i = -1 or exists(e.get{{#type_is_hideable}}Immediate{{/type_is_hideable}}{{singular}}(i)) | i){{/is_repeated}}
             {{/is_child}}
         {{/properties}} and (
         none()
@@ -40,10 +40,10 @@ private module Impl {
             {{#is_child}}
                 or
                 {{#is_repeated}}
-                    result = e.getImmediate{{singular}}(index - n{{prev_child}}) and partialPredicateCall = "{{singular}}(" + (index - n{{prev_child}}).toString() + ")"
+                    result = e.get{{#type_is_hideable}}Immediate{{/type_is_hideable}}{{singular}}(index - n{{prev_child}}) and partialPredicateCall = "{{singular}}(" + (index - n{{prev_child}}).toString() + ")"
                 {{/is_repeated}}
                 {{^is_repeated}}
-                    index = n{{prev_child}} and result = e.getImmediate{{singular}}() and partialPredicateCall = "{{singular}}()"
+                    index = n{{prev_child}} and result = e.get{{#type_is_hideable}}Immediate{{/type_is_hideable}}{{singular}}() and partialPredicateCall = "{{singular}}()"
                 {{/is_repeated}}
             {{/is_child}}
         {{/properties}}
@@ -63,6 +63,10 @@ none()
         result = getImmediateChildOf{{name}}(e, index, partialAccessor)
     {{/final}}
 {{/classes}}
+}
+
+Element resolve(Element e) {
+  {{#classes}}{{#hideable_root}}if e instanceof {{name}} then result = e.({{name}}).resolve() else {{/hideable_root}}{{/classes}}result = e
 }
 }
 
@@ -87,5 +91,5 @@ exists(string partialAccessor | result = Impl::getImmediateChild(e, index, parti
 * Gets the child indexed at `index`. Indexes are not guaranteed to be contiguous, but are guaranteed to be distinct. `accessor` is bound the member predicate call resulting in the given child.
 */
 Element getChildAndAccessor(Element e, int index, string accessor) {
-exists(string partialAccessor | result = Impl::getImmediateChild(e, index, partialAccessor).resolve() and accessor = "get" + partialAccessor)
+exists(string partialAccessor | result = Impl::resolve(Impl::getImmediateChild(e, index, partialAccessor)) and accessor = "get" + partialAccessor)
 }

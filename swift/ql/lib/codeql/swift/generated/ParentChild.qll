@@ -5299,6 +5299,10 @@ private module Impl {
     or
     result = getImmediateChildOfVariadicSequenceType(e, index, partialAccessor)
   }
+
+  Element resolve(Element e) {
+    if e instanceof Element then result = e.(Element).resolve() else result = e
+  }
 }
 
 /**
@@ -5326,7 +5330,7 @@ Element getImmediateChildAndAccessor(Element e, int index, string accessor) {
  */
 Element getChildAndAccessor(Element e, int index, string accessor) {
   exists(string partialAccessor |
-    result = Impl::getImmediateChild(e, index, partialAccessor).resolve() and
+    result = Impl::resolve(Impl::getImmediateChild(e, index, partialAccessor)) and
     accessor = "get" + partialAccessor
   )
 }
