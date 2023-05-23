@@ -130,6 +130,19 @@ private class PathInjectionSinks extends SinkModelCsv {
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[10];path-injection",
         ";Realm.Configuration;true;fileURL;;;PostUpdate;path-injection",
         ";Realm.Configuration;true;seedFilePath;;;PostUpdate;path-injection",
+        // sqlite3
+        ";;false;sqlite3_open(_:_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_open16(_:_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_open_v2(_:_:_:_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_database_file_object(_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_filename_database(_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_filename_journal(_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_filename_wal(_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_free_filename(_:);;;Argument[0];path-injection",
+        ";;false;sqlite3_temp_directory;;;PostUpdate;path-injection",
+        // SQLite.swift
+        ";Connection.Location.uri;true;init(_:parameters:);;;Argument[0];path-injection",
+        ";Connection;true;init(_:readonly:);;;Argument[0];path-injection",
       ]
   }
 }

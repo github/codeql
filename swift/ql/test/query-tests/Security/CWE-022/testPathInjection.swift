@@ -375,11 +375,11 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
 	remoteData.copyBytes(to: buffer2, count: remoteData.count)
 
     _ = sqlite3_open("myFile.sqlite3", &db) // GOOD
-    _ = sqlite3_open(remoteString, &db) // $ MISSING: hasPathInjection=253
+    _ = sqlite3_open(remoteString, &db) // $ hasPathInjection=253
     _ = sqlite3_open16(buffer1, &db) // GOOD
-    _ = sqlite3_open16(buffer2, &db) // $ MISSING: hasPathInjection=253
+    _ = sqlite3_open16(buffer2, &db) // $ hasPathInjection=373
     _ = sqlite3_open_v2("myFile.sqlite3", &db, 0, nil) // GOOD
-    _ = sqlite3_open_v2(remoteString, &db, 0, nil) // $ MISSING: hasPathInjection=253
+    _ = sqlite3_open_v2(remoteString, &db, 0, nil) // $ hasPathInjection=253
 
     sqlite3_temp_directory = UnsafeMutablePointer<CChar>(mutating: NSString(string: "myFile.sqlite3").utf8String) // GOOD
     sqlite3_temp_directory = UnsafeMutablePointer<CChar>(mutating: NSString(string: remoteString).utf8String) // $ MISSING: hasPathInjection=253
@@ -390,7 +390,7 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     try! _ = Connection(Connection.Location.uri("myFile.sqlite3")) // GOOD
     try! _ = Connection(Connection.Location.uri(remoteString)) // $ MISSING: hasPathInjection=253
     try! _ = Connection("myFile.sqlite3") // GOOD
-    try! _ = Connection(remoteString) // $ MISSING: hasPathInjection=253
+    try! _ = Connection(remoteString) // $ hasPathInjection=253
 }
 
 func testBarriers() {
