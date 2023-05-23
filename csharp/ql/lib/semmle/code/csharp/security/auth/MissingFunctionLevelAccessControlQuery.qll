@@ -15,7 +15,10 @@ abstract class ActionMethod extends Method {
   }
 
   predicate needsAuth() {
-    this.getADescription().toLowerCase().regexpMatch(".*(edit|delete|modify|admin|superuser).*")
+    this.getADescription()
+        .regexpReplaceAll("([a-z])([A-Z])", "$1_$2")
+        .toLowerCase()
+        .regexpMatch(".*(edit|delete|modify|admin|superuser).*")
   }
 
   Callable getAnAuthorizingCallable() { result = this }
@@ -40,6 +43,38 @@ private class WebFormActionMethod extends ActionMethod {
     result.getDeclaringType() = this.getDeclaringType() and
     result.getName() = "Page_Load"
   }
+
+  override string getARoute() {
+    exists(string physicalRoute | physicalRoute = super.getARoute() |
+      result = physicalRoute
+      or
+      exists(string absolutePhysical |
+        virtualRouteMapping(result, absolutePhysical) and
+        physicalRouteMatches(absolutePhysical, physicalRoute)
+      )
+    )
+  }
+}
+
+private predicate virtualRouteMapping(string virtualRoute, string physicalRoute) {
+  exists(MethodCall mapPageRouteCall, StringLiteral virtualLit, StringLiteral physicalLit |
+    mapPageRouteCall
+        .getTarget()
+        .hasQualifiedName("System.Web.Routing", "RouteCollection", "MapPageRoute") and
+    virtualLit = mapPageRouteCall.getArgument(1) and
+    physicalLit = mapPageRouteCall.getArgument(2) and
+    virtualLit.getValue() = virtualRoute and
+    physicalLit.getValue() = physicalRoute
+    // physicalRouteMatches(physicalLit.getValue(), physicalRoute)
+  )
+}
+
+bindingset[route, actual]
+private predicate physicalRouteMatches(string route, string actual) {
+  route = actual
+  or
+  route.charAt(0) = "~" and
+  exists(string dir | actual = dir + route.substring(1, route.length()) + ".cs")
 }
 
 /** An expression that indicates that some authorization/authentication check is being performed. */
