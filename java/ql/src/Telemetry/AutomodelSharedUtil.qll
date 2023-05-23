@@ -1,4 +1,4 @@
-import AutomodelEndpointTypes as AutomodelEndpointTypes
+private import AutomodelEndpointTypes as AutomodelEndpointTypes
 
 /**
  * A helper class to represent a string value that can be returned by a query using $@ notation.
