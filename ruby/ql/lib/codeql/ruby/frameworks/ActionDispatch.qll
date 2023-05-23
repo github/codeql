@@ -9,6 +9,7 @@
  */
 module ActionDispatch {
   private import actiondispatch.Mime
+  private import actiondispatch.Request
   import actiondispatch.Routing
 
   class MimeTypeMatchRegExpInterpretation = Mime::MimeTypeMatchRegExpInterpretation;
