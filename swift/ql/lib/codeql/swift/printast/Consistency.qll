@@ -1,23 +1,28 @@
 private import codeql.swift.printast.PrintAstNode
 
 query predicate doubleChildren(
-  PrintAstNode parent, int index, PrintAstNode child1, PrintAstNode child2
+  PrintAstNode parent, int index, string label1, PrintAstNode child1, string label2,
+  PrintAstNode child2
 ) {
   child1 != child2 and
-  parent.hasChild(child1, index, _) and
-  parent.hasChild(child2, index, _)
+  parent.hasChild(child1, index, label1) and
+  parent.hasChild(child2, index, label2)
 }
 
-query predicate doubleIndexes(PrintAstNode parent, int index1, int index2, PrintAstNode child) {
+query predicate doubleIndexes(
+  PrintAstNode parent, int index1, string label1, int index2, string label2, PrintAstNode child
+) {
   index1 != index2 and
-  parent.hasChild(child, index1, _) and
-  parent.hasChild(child, index2, _)
+  parent.hasChild(child, index1, label1) and
+  parent.hasChild(child, index2, label2)
 }
 
-query predicate doubleParents(PrintAstNode parent1, PrintAstNode parent2, PrintAstNode child) {
+query predicate doubleParents(
+  PrintAstNode parent1, string label1, PrintAstNode parent2, string label2, PrintAstNode child
+) {
   parent1 != parent2 and
-  parent1.hasChild(child, _, _) and
-  parent2.hasChild(child, _, _)
+  parent1.hasChild(child, _, label1) and
+  parent2.hasChild(child, _, label2)
 }
 
 private predicate isChildOf(PrintAstNode parent, PrintAstNode child) {
