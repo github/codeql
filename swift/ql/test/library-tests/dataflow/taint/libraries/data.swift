@@ -277,10 +277,10 @@ func taintThroughData() {
 	let dataTainted43 = source() as! UnsafeRawBufferPointer
 	let pointerTainted43 = UnsafeMutableRawBufferPointer.allocate(byteCount: 0, alignment: 0)
 	dataTainted43.copyBytes(to: pointerTainted43)
-	sink(arg: pointerTainted43) // $ MISSING: tainted=277
+	sink(arg: pointerTainted43) // $ tainted=277
 
 	let dataTainted44 = source() as! Array<UInt8>
 	let pointerTainted44 = UnsafeMutableRawBufferPointer.allocate(byteCount: 0, alignment: 0)
 	dataTainted44.copyBytes(to: pointerTainted44)
-	sink(arg: pointerTainted44) // $ MISSING: tainted=282
+	sink(arg: pointerTainted44) // $ tainted=282
 }
