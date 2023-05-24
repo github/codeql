@@ -14,14 +14,18 @@ private import codeql.swift.dataflow.ExternalFlow
 abstract class UnsafeJsEvalSink extends DataFlow::Node { }
 
 /**
- * A sanitizer for javascript evaluation vulnerabilities.
+ * A barrier for javascript evaluation vulnerabilities.
  */
-abstract class UnsafeJsEvalSanitizer extends DataFlow::Node { }
+abstract class UnsafeJsEvalBarrier extends DataFlow::Node { }
 
 /**
- * A unit class for adding additional taint steps.
+ * A unit class for adding additional flow steps.
  */
-class UnsafeJsEvalAdditionalTaintStep extends Unit {
+class UnsafeJsEvalAdditionalFlowStep extends Unit {
+  /**
+   * Holds if the step from `node1` to `node2` should be considered a flow
+   * step for paths related to javascript evaluation vulnerabilities.
+   */
   abstract predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo);
 }
 
@@ -94,9 +98,9 @@ private class JSEvaluateScriptDefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
 }
 
 /**
- * A default SQL injection sanitizer.
+ * A default SQL injection additional taint step.
  */
-private class DefaultUnsafeJsEvalAdditionalTaintStep extends UnsafeJsEvalAdditionalTaintStep {
+private class DefaultUnsafeJsEvalAdditionalFlowStep extends UnsafeJsEvalAdditionalFlowStep {
   override predicate step(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     exists(Argument arg |
       arg =
@@ -140,5 +144,5 @@ private class DefaultUnsafeJsEvalAdditionalTaintStep extends UnsafeJsEvalAdditio
  * A sink defined in a CSV model.
  */
 private class DefaultUnsafeJsEvalSink extends UnsafeJsEvalSink {
-  DefaultUnsafeJsEvalSink() { sinkNode(this, "js-eval") }
+  DefaultUnsafeJsEvalSink() { sinkNode(this, "code-injection") }
 }

@@ -1,6 +1,8 @@
 #include "swift/extractor/infra/file/TargetFile.h"
+#include "swift/extractor/infra/file/FsLogger.h"
+#include "swift/logging/SwiftLogging.h"
+#include "swift/logging/SwiftAssert.h"
 
-#include <iostream>
 #include <cassert>
 #include <cstdio>
 #include <cerrno>
@@ -10,32 +12,24 @@
 namespace fs = std::filesystem;
 
 namespace codeql {
+
+using namespace fs_logger;
+
 namespace {
-[[noreturn]] void error(const char* action, const fs::path& arg, std::error_code ec) {
-  std::cerr << "Unable to " << action << ": " << arg << " (" << ec.message() << ")\n";
-  std::abort();
-}
-
-[[noreturn]] void error(const char* action, const fs::path& arg) {
-  error(action, arg, {errno, std::system_category()});
-}
-
-void check(const char* action, const fs::path& arg, std::error_code ec) {
-  if (ec) {
-    error(action, arg, ec);
-  }
+std::error_code currentErrorCode() {
+  return {errno, std::system_category()};
 }
 
 void ensureParentDir(const fs::path& path) {
   auto parent = path.parent_path();
   std::error_code ec;
   fs::create_directories(parent, ec);
-  check("create directory", parent, ec);
+  CODEQL_ASSERT(!ec, "Unable to create directory {} ({})", parent, ec);
 }
 
 fs::path initPath(const std::filesystem::path& target, const std::filesystem::path& dir) {
   fs::path ret{dir};
-  assert(!target.empty() && "target must be a non-empty path");
+  CODEQL_ASSERT(!target.empty());
   ret /= target.relative_path();
   ensureParentDir(ret);
   return ret;
@@ -53,13 +47,12 @@ bool TargetFile::init() {
   if (auto f = std::fopen(targetPath.c_str(), "wx")) {
     std::fclose(f);
     out.open(workingPath);
-    checkOutput("open file for writing");
+    checkOutput("open");
     return true;
   }
-  if (errno != EEXIST) {
-    error("open file for writing", targetPath);
-  }
-  // else we just lost the race
+  CODEQL_ASSERT(errno == EEXIST, "Unable to open {} for writing ({})", targetPath,
+                currentErrorCode());
+  // else the file already exists and we just lost the race
   return false;
 }
 
@@ -76,13 +69,11 @@ void TargetFile::commit() {
     out.close();
     std::error_code ec;
     fs::rename(workingPath, targetPath, ec);
-    check("rename file", targetPath, ec);
+    CODEQL_ASSERT(!ec, "Unable to rename {} -> {} ({})", workingPath, targetPath, ec);
   }
 }
 
 void TargetFile::checkOutput(const char* action) {
-  if (!out) {
-    error(action, workingPath);
-  }
+  CODEQL_ASSERT(out, "Unable to {} {} ({})", action, workingPath, currentErrorCode());
 }
 }  // namespace codeql

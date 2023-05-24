@@ -7,6 +7,8 @@ namespace codeql {
 
 class ExprTranslator : public AstTranslatorBase<ExprTranslator> {
  public:
+  static constexpr std::string_view name = "expr";
+
   using AstTranslatorBase<ExprTranslator>::AstTranslatorBase;
 
   codeql::IntegerLiteralExpr translateIntegerLiteralExpr(const swift::IntegerLiteralExpr& expr);

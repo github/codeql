@@ -2,10 +2,11 @@
 
 #include <memory>
 #include <sstream>
+#include "absl/strings/str_cat.h"
 
 #include "swift/extractor/trap/TrapLabel.h"
 #include "swift/extractor/infra/file/TargetFile.h"
-#include "swift/extractor/infra/log/SwiftLogging.h"
+#include "swift/logging/SwiftLogging.h"
 #include "swift/extractor/infra/SwiftMangledName.h"
 
 namespace codeql {
@@ -21,9 +22,24 @@ class TrapDomain {
   }
 
   template <typename Entry>
-  void emit(const Entry& e) {
+  void emit(const Entry& e, bool check = true) {
     LOG_TRACE("{}", e);
+    if (check) {
+      e.forEachLabel([&e, this](const char* field, int index, auto& label) {
+        if (!label.valid()) {
+          LOG_ERROR("{} has undefined field {}{}", e.NAME, field,
+                    index >= 0 ? absl::StrCat("[", index, "]") : "");
+        }
+      });
+    }
     out << e << '\n';
+  }
+
+  template <typename... Args>
+  void emitComment(const Args&... args) {
+    out << "/* ";
+    (out << ... << args);
+    out << " */\n";
   }
 
   template <typename... Args>

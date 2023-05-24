@@ -417,3 +417,20 @@ void vla(int n1, int n2, int n3, bool b1) {
 void nested_array_designators() {
   int x[1][2] = {[0][0] = 1234, [0][1] = 5678};
 }
+
+[[noreturn]] void noreturnFunc();
+
+int noreturnTest(int x) {
+    if (x < 10) {
+        return x;
+    } else {
+        noreturnFunc();
+    }
+}
+
+int noreturnTest2(int x) {
+    if (x < 10) {
+        noreturnFunc();
+    }
+    return x;
+}

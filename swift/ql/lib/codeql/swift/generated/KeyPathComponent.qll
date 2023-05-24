@@ -47,19 +47,22 @@ module Generated {
      * Gets the `index`th argument to an array or dictionary subscript expression (0-based).
      */
     final Argument getSubscriptArgument(int index) {
-      result = getImmediateSubscriptArgument(index).resolve()
+      exists(Argument immediate |
+        immediate = this.getImmediateSubscriptArgument(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
      * Gets any of the arguments to an array or dictionary subscript expression.
      */
-    final Argument getASubscriptArgument() { result = getSubscriptArgument(_) }
+    final Argument getASubscriptArgument() { result = this.getSubscriptArgument(_) }
 
     /**
      * Gets the number of arguments to an array or dictionary subscript expression.
      */
     final int getNumberOfSubscriptArguments() {
-      result = count(int i | exists(getSubscriptArgument(i)))
+      result = count(int i | exists(this.getSubscriptArgument(i)))
     }
 
     /**
@@ -72,7 +75,7 @@ module Generated {
     /**
      * Holds if `getTupleIndex()` exists.
      */
-    final predicate hasTupleIndex() { exists(getTupleIndex()) }
+    final predicate hasTupleIndex() { exists(this.getTupleIndex()) }
 
     /**
      * Gets the property or subscript operator, if it exists.
@@ -90,12 +93,17 @@ module Generated {
     /**
      * Gets the property or subscript operator, if it exists.
      */
-    final ValueDecl getDeclRef() { result = getImmediateDeclRef().resolve() }
+    final ValueDecl getDeclRef() {
+      exists(ValueDecl immediate |
+        immediate = this.getImmediateDeclRef() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getDeclRef()` exists.
      */
-    final predicate hasDeclRef() { exists(getDeclRef()) }
+    final predicate hasDeclRef() { exists(this.getDeclRef()) }
 
     /**
      * Gets the return type of this component application.
@@ -117,6 +125,11 @@ module Generated {
      * path; an optional-wrapping component is inserted if required to produce an optional type
      * as the final output.
      */
-    final Type getComponentType() { result = getImmediateComponentType().resolve() }
+    final Type getComponentType() {
+      exists(Type immediate |
+        immediate = this.getImmediateComponentType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

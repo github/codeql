@@ -73,7 +73,7 @@ module Base64 {
 private class Btoa extends Base64::Encode::Range, DataFlow::CallNode {
   Btoa() { this = DataFlow::globalVarRef("btoa").getACall() }
 
-  override DataFlow::Node getInput() { result = getArgument(0) }
+  override DataFlow::Node getInput() { result = this.getArgument(0) }
 
   override DataFlow::Node getOutput() { result = this }
 }
@@ -82,7 +82,7 @@ private class Btoa extends Base64::Encode::Range, DataFlow::CallNode {
 private class Atob extends Base64::Decode::Range, DataFlow::CallNode {
   Atob() { this = DataFlow::globalVarRef("atob").getACall() }
 
-  override DataFlow::Node getInput() { result = getArgument(0) }
+  override DataFlow::Node getInput() { result = this.getArgument(0) }
 
   override DataFlow::Node getOutput() { result = this }
 }
@@ -93,11 +93,11 @@ private class Atob extends Base64::Decode::Range, DataFlow::CallNode {
  */
 private class Buffer_toString extends Base64::Encode::Range, DataFlow::MethodCallNode {
   Buffer_toString() {
-    getMethodName() = "toString" and
-    getArgument(0).mayHaveStringValue("base64")
+    this.getMethodName() = "toString" and
+    this.getArgument(0).mayHaveStringValue("base64")
   }
 
-  override DataFlow::Node getInput() { result = getReceiver() }
+  override DataFlow::Node getInput() { result = this.getReceiver() }
 
   override DataFlow::Node getOutput() { result = this }
 }
@@ -106,10 +106,10 @@ private class Buffer_toString extends Base64::Encode::Range, DataFlow::MethodCal
 private class Buffer_from extends Base64::Decode::Range, DataFlow::CallNode {
   Buffer_from() {
     this = DataFlow::globalVarRef("Buffer").getAMemberCall("from") and
-    getArgument(1).mayHaveStringValue("base64")
+    this.getArgument(1).mayHaveStringValue("base64")
   }
 
-  override DataFlow::Node getInput() { result = getArgument(0) }
+  override DataFlow::Node getInput() { result = this.getArgument(0) }
 
   override DataFlow::Node getOutput() { result = this }
 }
@@ -149,7 +149,7 @@ private class NpmBase64Encode extends Base64::Encode::Range, DataFlow::CallNode 
     )
   }
 
-  override DataFlow::Node getInput() { result = getArgument(0) }
+  override DataFlow::Node getInput() { result = this.getArgument(0) }
 
   override DataFlow::Node getOutput() { result = this }
 }
@@ -186,7 +186,7 @@ private class NpmBase64Decode extends Base64::Decode::Range, DataFlow::CallNode 
     )
   }
 
-  override DataFlow::Node getInput() { result = getArgument(0) }
+  override DataFlow::Node getInput() { result = this.getArgument(0) }
 
   override DataFlow::Node getOutput() { result = this }
 }

@@ -13,7 +13,7 @@ module PathFilepath {
 
     FunctionModels() {
       // signature: func Join(elem ...string) string
-      hasQualifiedName("path/filepath", "Join") and
+      this.hasQualifiedName("path/filepath", "Join") and
       (inp.isParameter(_) and outp.isResult())
     }
 

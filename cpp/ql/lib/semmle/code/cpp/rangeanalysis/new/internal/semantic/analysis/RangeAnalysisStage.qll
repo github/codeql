@@ -277,7 +277,7 @@ module RangeStage<
    */
   private class SafeCastExpr extends ConvertOrBoxExpr {
     SafeCastExpr() {
-      conversionCannotOverflow(getTrackedType(pragma[only_bind_into](getOperand())),
+      conversionCannotOverflow(getTrackedType(pragma[only_bind_into](this.getOperand())),
         pragma[only_bind_out](getTrackedType(this)))
     }
   }
@@ -536,7 +536,7 @@ module RangeStage<
     /** Gets the condition that is the reason for the bound. */
     SemGuard getCond() { this = TSemCondReason(result) }
 
-    override string toString() { result = getCond().toString() }
+    override string toString() { result = this.getCond().toString() }
   }
 
   /**
@@ -729,7 +729,7 @@ module RangeStage<
   ) {
     exists(SemExpr e, D::Delta d1, D::Delta d2 |
       unequalFlowStepIntegralSsa(v, pos, e, d1, reason) and
-      boundedUpper(e, b, d1) and
+      boundedUpper(e, b, d2) and
       boundedLower(e, b, d2) and
       delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2))
     )
@@ -877,6 +877,22 @@ module RangeStage<
     )
   }
 
+  pragma[assume_small_delta]
+  pragma[nomagic]
+  private predicate boundedPhiRankStep(
+    SemSsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
+    D::Delta origdelta, SemReason reason, int rix
+  ) {
+    exists(SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge |
+      Utils::rankedPhiInput(phi, inp, edge, rix) and
+      boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
+    |
+      if rix = 1
+      then any()
+      else boundedPhiRankStep(phi, b, delta, upper, fromBackEdge, origdelta, reason, rix - 1)
+    )
+  }
+
   /**
    * Holds if `b + delta` is a valid bound for `phi`.
    * - `upper = true`  : `phi <= b + delta`
@@ -886,8 +902,9 @@ module RangeStage<
     SemSsaPhiNode phi, SemBound b, D::Delta delta, boolean upper, boolean fromBackEdge,
     D::Delta origdelta, SemReason reason
   ) {
-    forex(SemSsaVariable inp, SemSsaReadPositionPhiInputEdge edge | edge.phiInput(phi, inp) |
-      boundedPhiCandValidForEdge(phi, b, delta, upper, fromBackEdge, origdelta, reason, inp, edge)
+    exists(int r |
+      Utils::maxPhiInputRank(phi, r) and
+      boundedPhiRankStep(phi, b, delta, upper, fromBackEdge, origdelta, reason, r)
     )
   }
 

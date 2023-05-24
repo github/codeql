@@ -974,6 +974,8 @@ predicate forceHighPrecision(Content c) { none() }
 
 /** Holds if `n` should be hidden from path explanations. */
 predicate nodeIsHidden(Node n) {
+  n instanceof ModuleVariableNode
+  or
   n instanceof SummaryNode
   or
   n instanceof SummaryParameterNode

@@ -13,6 +13,10 @@ swift_cc_binary(
         "-framework CoreFoundation",
     ],
     target_compatible_with = ["@platforms//os:macos"],
+    deps = [
+        "@absl//absl/strings",
+        "//swift/logging",
+    ],
 )
 
 generate_cmake(

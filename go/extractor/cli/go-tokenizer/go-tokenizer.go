@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"go/scanner"
 	"go/token"
-	"io/ioutil"
 	"log"
 	"os"
 	"strings"
@@ -20,7 +19,7 @@ func main() {
 	defer csv.Flush()
 
 	for _, fileName := range flag.Args() {
-		src, err := ioutil.ReadFile(fileName)
+		src, err := os.ReadFile(fileName)
 		if err != nil {
 			log.Fatalf("Unable to read file %s.", fileName)
 		}

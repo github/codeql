@@ -63,7 +63,7 @@ class FlowConfFromUntrustedToPassthroughTypeConversion extends TaintTracking::Co
     )
   }
 
-  override predicate isSink(DataFlow::Node sink) { isSinkToPassthroughType(sink, dstTypeName) }
+  override predicate isSink(DataFlow::Node sink) { this.isSinkToPassthroughType(sink, dstTypeName) }
 
   override predicate isSanitizer(DataFlow::Node sanitizer) {
     sanitizer instanceof SharedXss::Sanitizer or sanitizer.getType() instanceof NumericType
@@ -104,7 +104,7 @@ class FlowConfPassthroughTypeConversionToTemplateExecutionCall extends TaintTrac
   PassthroughTypeName getDstTypeName() { result = dstTypeName }
 
   override predicate isSource(DataFlow::Node source) {
-    isSourceConversionToPassthroughType(source, dstTypeName)
+    this.isSourceConversionToPassthroughType(source, dstTypeName)
   }
 
   private predicate isSourceConversionToPassthroughType(

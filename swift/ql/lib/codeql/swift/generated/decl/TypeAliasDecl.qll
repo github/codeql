@@ -35,6 +35,11 @@ module Generated {
      * typealias MyInt = Int
      * ```
      */
-    final Type getAliasedType() { result = getImmediateAliasedType().resolve() }
+    final Type getAliasedType() {
+      exists(Type immediate |
+        immediate = this.getImmediateAliasedType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

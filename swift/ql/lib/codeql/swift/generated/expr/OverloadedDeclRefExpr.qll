@@ -30,19 +30,22 @@ module Generated {
      * Gets the `index`th possible declaration of this overloaded declaration reference expression (0-based).
      */
     final ValueDecl getPossibleDeclaration(int index) {
-      result = getImmediatePossibleDeclaration(index).resolve()
+      exists(ValueDecl immediate |
+        immediate = this.getImmediatePossibleDeclaration(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
      * Gets any of the possible declarations of this overloaded declaration reference expression.
      */
-    final ValueDecl getAPossibleDeclaration() { result = getPossibleDeclaration(_) }
+    final ValueDecl getAPossibleDeclaration() { result = this.getPossibleDeclaration(_) }
 
     /**
      * Gets the number of possible declarations of this overloaded declaration reference expression.
      */
     final int getNumberOfPossibleDeclarations() {
-      result = count(int i | exists(getPossibleDeclaration(i)))
+      result = count(int i | exists(this.getPossibleDeclaration(i)))
     }
   }
 }

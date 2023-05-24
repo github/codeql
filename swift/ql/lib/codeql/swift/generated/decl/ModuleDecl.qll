@@ -39,12 +39,17 @@ module Generated {
      * Gets the `index`th imported module of this module declaration (0-based).
      *Gets any of the imported modules of this module declaration.
      */
-    final ModuleDecl getAnImportedModule() { result = getAnImmediateImportedModule().resolve() }
+    final ModuleDecl getAnImportedModule() {
+      exists(ModuleDecl immediate |
+        immediate = this.getAnImmediateImportedModule() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the number of imported modules of this module declaration.
      */
-    final int getNumberOfImportedModules() { result = count(getAnImportedModule()) }
+    final int getNumberOfImportedModules() { result = count(this.getAnImportedModule()) }
 
     /**
      * Gets the `index`th exported module of this module declaration (0-based).
@@ -64,11 +69,16 @@ module Generated {
      * Gets the `index`th exported module of this module declaration (0-based).
      *Gets any of the exported modules of this module declaration.
      */
-    final ModuleDecl getAnExportedModule() { result = getAnImmediateExportedModule().resolve() }
+    final ModuleDecl getAnExportedModule() {
+      exists(ModuleDecl immediate |
+        immediate = this.getAnImmediateExportedModule() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the number of exported modules of this module declaration.
      */
-    final int getNumberOfExportedModules() { result = count(getAnExportedModule()) }
+    final int getNumberOfExportedModules() { result = count(this.getAnExportedModule()) }
   }
 }

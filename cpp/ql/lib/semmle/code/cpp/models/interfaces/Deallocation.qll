@@ -41,7 +41,7 @@ abstract class DeallocationFunction extends Function {
  */
 class OperatorDeleteDeallocationFunction extends DeallocationFunction {
   OperatorDeleteDeallocationFunction() {
-    hasGlobalName([
+    this.hasGlobalName([
         "operator delete", // operator delete(pointer, ...)
         "operator delete[]" // operator delete[](pointer, ...)
       ])

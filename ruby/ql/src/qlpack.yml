@@ -1,5 +1,5 @@
 name: codeql/ruby-queries
-version: 0.6.1-dev
+version: 0.6.2-dev
 groups: 
   - ruby
   - queries
@@ -9,3 +9,4 @@ dependencies:
   codeql/ruby-all: ${workspace}
   codeql/suite-helpers: ${workspace}
   codeql/util: ${workspace}
+warnOnImplicitThis: true
