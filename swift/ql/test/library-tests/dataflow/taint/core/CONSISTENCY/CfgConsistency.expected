@@ -1,0 +1,15 @@
+multipleSuccessors
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:13:23:13:23 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:13:24:13:24 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:22:12:22:12 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:22:13:22:13 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:23:12:23:12 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:23:13:23:13 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:24:12:24:12 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:24:13:24:13 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:30:12:30:12 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:30:13:30:13 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:31:12:31:12 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:31:13:31:13 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:32:12:32:12 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | stringinterpolation.swift:32:13:32:13 | .appendLiteral(_:) |

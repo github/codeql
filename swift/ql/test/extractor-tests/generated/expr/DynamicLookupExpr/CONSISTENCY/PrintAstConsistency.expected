@@ -1,0 +1,5 @@
+doubleParents
+| dynamic_lookup.swift:15:1:15:3 | [DynamicMemberRefExpr] .foo(_:) | getBase() | dynamic_lookup.swift:15:1:15:3 | [OpenExistentialExpr] OpenExistentialExpr | getOpaqueExpr() | dynamic_lookup.swift:15:1:15:1 | [OpaqueValueExpr] OpaqueValueExpr |
+| dynamic_lookup.swift:15:1:15:3 | [OpenExistentialExpr] OpenExistentialExpr | getOpaqueExpr() | dynamic_lookup.swift:15:1:15:3 | [DynamicMemberRefExpr] .foo(_:) | getBase() | dynamic_lookup.swift:15:1:15:1 | [OpaqueValueExpr] OpaqueValueExpr |
+| dynamic_lookup.swift:16:5:16:9 | [DynamicSubscriptExpr] subscript ...[...] | getBase() | dynamic_lookup.swift:16:5:16:9 | [OpenExistentialExpr] OpenExistentialExpr | getOpaqueExpr() | dynamic_lookup.swift:16:5:16:5 | [OpaqueValueExpr] OpaqueValueExpr |
+| dynamic_lookup.swift:16:5:16:9 | [OpenExistentialExpr] OpenExistentialExpr | getOpaqueExpr() | dynamic_lookup.swift:16:5:16:9 | [DynamicSubscriptExpr] subscript ...[...] | getBase() | dynamic_lookup.swift:16:5:16:5 | [OpaqueValueExpr] OpaqueValueExpr |
