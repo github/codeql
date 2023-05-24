@@ -959,6 +959,9 @@ module Decls {
         result.asAstNode() = ast.getPattern(j).getFullyUnresolved()
       )
       or
+      // PropertyWrapperBackingVarBinding is a special case as it shares the init
+      // with the original variable binding (see also PrintAstNode.qll)
+      ast != any(VarDecl d).getPropertyWrapperBackingVarBinding() and
       exists(int j |
         i = 2 * j + 1 and
         result.asAstNode() = ast.getInit(j).getFullyConverted()
