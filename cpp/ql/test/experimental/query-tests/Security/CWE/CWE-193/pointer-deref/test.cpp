@@ -342,3 +342,11 @@ void test23(unsigned size, int val) {
     *--(*current) = 0; // GOOD
   }
 }
+
+void test24(unsigned size) {
+  char *xs = new char[size];
+  char *end = xs + size;
+  if (xs < end) {
+    int val = *xs++; // GOOD [FALSE POSITIVE]
+  }
+}

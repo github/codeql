@@ -665,6 +665,12 @@ edges
 | test.cpp:341:8:341:17 | * ... | test.cpp:342:8:342:17 | * ... |
 | test.cpp:342:8:342:17 | * ... | test.cpp:333:5:333:21 | Store: ... = ... |
 | test.cpp:342:8:342:17 | * ... | test.cpp:341:5:341:21 | Store: ... = ... |
+| test.cpp:347:14:347:27 | new[] | test.cpp:348:15:348:16 | xs |
+| test.cpp:348:15:348:16 | xs | test.cpp:350:16:350:19 | ... ++ |
+| test.cpp:348:15:348:16 | xs | test.cpp:350:16:350:19 | ... ++ |
+| test.cpp:350:16:350:19 | ... ++ | test.cpp:350:15:350:19 | Load: * ... |
+| test.cpp:350:16:350:19 | ... ++ | test.cpp:350:16:350:19 | ... ++ |
+| test.cpp:350:16:350:19 | ... ++ | test.cpp:350:16:350:19 | ... ++ |
 subpaths
 #select
 | test.cpp:6:14:6:15 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
@@ -692,3 +698,4 @@ subpaths
 | test.cpp:308:5:308:29 | Store: ... = ... | test.cpp:304:15:304:26 | new[] | test.cpp:308:5:308:29 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:304:15:304:26 | new[] | new[] | test.cpp:308:8:308:10 | ... + ... | ... + ... |
 | test.cpp:333:5:333:21 | Store: ... = ... | test.cpp:325:14:325:27 | new[] | test.cpp:333:5:333:21 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:325:14:325:27 | new[] | new[] | test.cpp:326:20:326:23 | size | size |
 | test.cpp:341:5:341:21 | Store: ... = ... | test.cpp:325:14:325:27 | new[] | test.cpp:341:5:341:21 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:325:14:325:27 | new[] | new[] | test.cpp:326:20:326:23 | size | size |
+| test.cpp:350:15:350:19 | Load: * ... | test.cpp:347:14:347:27 | new[] | test.cpp:350:15:350:19 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:347:14:347:27 | new[] | new[] | test.cpp:348:20:348:23 | size | size |
