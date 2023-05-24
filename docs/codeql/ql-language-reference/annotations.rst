@@ -292,7 +292,7 @@ at the places where it is called.
 ``pragma[inline_late]``
 -----------------------
 
-**Available for**: |non-member predicates|
+**Available for**: |characteristic predicates|, |member predicates|, |non-member predicates|
 
 The ``pragma[inline_late]`` annotation must be used in conjunction with a
 ``bindingset[...]`` pragma. Together, they tell the QL optimiser to use the
