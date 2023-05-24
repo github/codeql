@@ -110,6 +110,5 @@ predicate hasClashBreakSymmetry(
 from SummarizedCallableImpl class1, SummarizedCallableImpl class2, string name
 where hasClashBreakSymmetry(class1, class2, name)
 select class1,
-  "$@ and $@ both bind 'this' to the string \"" + name +
-    "\". They may accidentally apply to each others' call sites.", class1, class1.getName(), class2,
-  class2.getName()
+  class1.getName() + " and $@ both bind 'this' to the string \"" + name +
+    "\". They may accidentally apply to each others' call sites.", class2, class2.getName()
