@@ -2827,6 +2827,7 @@
 | file://:0:0:0:0 | parameter self of ActiveSupportStringTransform | file://:0:0:0:0 | [summary] to write: return (return) in ActiveSupportStringTransform |
 | file://:0:0:0:0 | parameter self of [] | file://:0:0:0:0 | [summary] to write: return (return) in [] |
 | file://:0:0:0:0 | parameter self of \| | file://:0:0:0:0 | [summary] read: argument self.any element in \| |
+| file://:0:0:0:0 | parameter self of assoc-unknown-arg | file://:0:0:0:0 | [summary] read: argument self.any element in assoc-unknown-arg |
 | file://:0:0:0:0 | parameter self of each(0) | file://:0:0:0:0 | [summary] read: argument self.any element in each(0) |
 | local_dataflow.rb:1:1:7:3 | self (foo) | local_dataflow.rb:3:8:3:10 | self |
 | local_dataflow.rb:1:1:7:3 | self in foo | local_dataflow.rb:1:1:7:3 | self (foo) |

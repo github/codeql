@@ -28,12 +28,17 @@ module Generated {
     /**
      * Gets the root of this key path expression, if it exists.
      */
-    final TypeRepr getRoot() { result = getImmediateRoot().resolve() }
+    final TypeRepr getRoot() {
+      exists(TypeRepr immediate |
+        immediate = this.getImmediateRoot() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getRoot()` exists.
      */
-    final predicate hasRoot() { exists(getRoot()) }
+    final predicate hasRoot() { exists(this.getRoot()) }
 
     /**
      * Gets the `index`th component of this key path expression (0-based).
@@ -52,17 +57,20 @@ module Generated {
      * Gets the `index`th component of this key path expression (0-based).
      */
     final KeyPathComponent getComponent(int index) {
-      result = getImmediateComponent(index).resolve()
+      exists(KeyPathComponent immediate |
+        immediate = this.getImmediateComponent(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
      * Gets any of the components of this key path expression.
      */
-    final KeyPathComponent getAComponent() { result = getComponent(_) }
+    final KeyPathComponent getAComponent() { result = this.getComponent(_) }
 
     /**
      * Gets the number of components of this key path expression.
      */
-    final int getNumberOfComponents() { result = count(int i | exists(getComponent(i))) }
+    final int getNumberOfComponents() { result = count(int i | exists(this.getComponent(i))) }
   }
 }

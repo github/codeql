@@ -821,7 +821,7 @@ abstract class TranslatedElement extends TTranslatedElement {
   abstract Locatable getAst();
 
   /** DEPRECATED: Alias for getAst */
-  deprecated Locatable getAST() { result = getAst() }
+  deprecated Locatable getAST() { result = this.getAst() }
 
   /**
    * Get the first instruction to be executed in the evaluation of this element.
@@ -831,7 +831,7 @@ abstract class TranslatedElement extends TTranslatedElement {
   /**
    * Get the immediate child elements of this element.
    */
-  final TranslatedElement getAChild() { result = getChild(_) }
+  final TranslatedElement getAChild() { result = this.getChild(_) }
 
   /**
    * Gets the immediate child element of this element. The `id` is unique
@@ -844,25 +844,29 @@ abstract class TranslatedElement extends TTranslatedElement {
    * Gets the an identifier string for the element. This id is unique within
    * the scope of the element's function.
    */
-  final int getId() { result = getUniqueId() }
+  final int getId() { result = this.getUniqueId() }
 
   private TranslatedElement getChildByRank(int rankIndex) {
     result =
-      rank[rankIndex + 1](TranslatedElement child, int id | child = getChild(id) | child order by id)
+      rank[rankIndex + 1](TranslatedElement child, int id |
+        child = this.getChild(id)
+      |
+        child order by id
+      )
   }
 
   language[monotonicAggregates]
   private int getDescendantCount() {
     result =
-      1 + sum(TranslatedElement child | child = getChildByRank(_) | child.getDescendantCount())
+      1 + sum(TranslatedElement child | child = this.getChildByRank(_) | child.getDescendantCount())
   }
 
   private int getUniqueId() {
-    if not exists(getParent())
+    if not exists(this.getParent())
     then result = 0
     else
       exists(TranslatedElement parent |
-        parent = getParent() and
+        parent = this.getParent() and
         if this = parent.getChildByRank(0)
         then result = 1 + parent.getUniqueId()
         else
@@ -908,7 +912,7 @@ abstract class TranslatedElement extends TTranslatedElement {
    * there is no enclosing `try`.
    */
   Instruction getExceptionSuccessorInstruction() {
-    result = getParent().getExceptionSuccessorInstruction()
+    result = this.getParent().getExceptionSuccessorInstruction()
   }
 
   /**
@@ -1022,14 +1026,14 @@ abstract class TranslatedElement extends TTranslatedElement {
     exists(Locatable ast |
       result.getAst() = ast and
       result.getTag() = tag and
-      hasTempVariableAndAst(tag, ast)
+      this.hasTempVariableAndAst(tag, ast)
     )
   }
 
   pragma[noinline]
   private predicate hasTempVariableAndAst(TempVariableTag tag, Locatable ast) {
-    hasTempVariable(tag, _) and
-    ast = getAst()
+    this.hasTempVariable(tag, _) and
+    ast = this.getAst()
   }
 
   /**

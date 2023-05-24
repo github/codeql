@@ -20,7 +20,12 @@ module Generated {
     /**
      * Gets the function being applied.
      */
-    final Expr getFunction() { result = getImmediateFunction().resolve() }
+    final Expr getFunction() {
+      exists(Expr immediate |
+        immediate = this.getImmediateFunction() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the `index`th argument passed to the applied function (0-based).
@@ -38,16 +43,21 @@ module Generated {
     /**
      * Gets the `index`th argument passed to the applied function (0-based).
      */
-    final Argument getArgument(int index) { result = getImmediateArgument(index).resolve() }
+    final Argument getArgument(int index) {
+      exists(Argument immediate |
+        immediate = this.getImmediateArgument(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the arguments passed to the applied function.
      */
-    final Argument getAnArgument() { result = getArgument(_) }
+    final Argument getAnArgument() { result = this.getArgument(_) }
 
     /**
      * Gets the number of arguments passed to the applied function.
      */
-    final int getNumberOfArguments() { result = count(int i | exists(getArgument(i))) }
+    final int getNumberOfArguments() { result = count(int i | exists(this.getArgument(i))) }
   }
 }

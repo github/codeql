@@ -22,6 +22,11 @@ module Generated {
     /**
      * Gets the body of this while statement.
      */
-    final Stmt getBody() { result = getImmediateBody().resolve() }
+    final Stmt getBody() {
+      exists(Stmt immediate |
+        immediate = this.getImmediateBody() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

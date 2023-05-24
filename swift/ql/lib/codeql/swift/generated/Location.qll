@@ -20,7 +20,12 @@ module Generated {
     /**
      * Gets the file of this location.
      */
-    final File getFile() { result = getImmediateFile().resolve() }
+    final File getFile() {
+      exists(File immediate |
+        immediate = this.getImmediateFile() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the start line of this location.

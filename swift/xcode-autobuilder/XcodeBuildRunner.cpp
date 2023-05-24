@@ -3,6 +3,20 @@
 #include <vector>
 #include <iostream>
 #include <spawn.h>
+#include "absl/strings/str_join.h"
+
+#include "swift/logging/SwiftLogging.h"
+#include "swift/xcode-autobuilder/CustomizingBuildLink.h"
+
+constexpr codeql::SwiftDiagnostic buildCommandFailed{
+    "build-command-failed", "Detected build command failed",
+    "Set up a [manual build command][1] or [check the logs of the autobuild step][2].\n"
+    "\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK "\n[2]: " CHECK_LOGS_HELP_LINK};
+
+static codeql::Logger& logger() {
+  static codeql::Logger ret{"build"};
+  return ret;
+}
 
 static int waitpid_status(pid_t child) {
   int status;
@@ -52,13 +66,13 @@ void buildTarget(Target& target, bool dryRun) {
   argv.push_back("CODE_SIGNING_ALLOWED=NO");
 
   if (dryRun) {
-    for (auto& arg : argv) {
-      std::cout << arg + " ";
-    }
-    std::cout << "\n";
+    std::cout << absl::StrJoin(argv, " ") << "\n";
   } else {
     if (!exec(argv)) {
-      std::cerr << "Build failed\n";
+      DIAGNOSE_ERROR(buildCommandFailed,
+                     "`autobuild` failed to run the detected build command:\n\n```\n{}\n```",
+                     absl::StrJoin(argv, " "));
+      codeql::Log::flush();
       exit(1);
     }
   }

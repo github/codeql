@@ -41,7 +41,12 @@ module Generated {
      *
      * The value on which the wrapper is applied.
      */
-    final Expr getValue() { result = getImmediateValue().resolve() }
+    final Expr getValue() {
+      exists(Expr immediate |
+        immediate = this.getImmediateValue() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the parameter declaration owning this wrapper application.
@@ -59,6 +64,11 @@ module Generated {
     /**
      * Gets the parameter declaration owning this wrapper application.
      */
-    final ParamDecl getParam() { result = getImmediateParam().resolve() }
+    final ParamDecl getParam() {
+      exists(ParamDecl immediate |
+        immediate = this.getImmediateParam() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

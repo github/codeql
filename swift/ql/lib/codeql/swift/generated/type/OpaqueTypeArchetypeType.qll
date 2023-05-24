@@ -29,6 +29,11 @@ module Generated {
     /**
      * Gets the declaration of this opaque type archetype type.
      */
-    final OpaqueTypeDecl getDeclaration() { result = getImmediateDeclaration().resolve() }
+    final OpaqueTypeDecl getDeclaration() {
+      exists(OpaqueTypeDecl immediate |
+        immediate = this.getImmediateDeclaration() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

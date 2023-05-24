@@ -27,16 +27,21 @@ module Generated {
     /**
      * Gets the `index`th base type of this type declaration (0-based).
      */
-    final Type getBaseType(int index) { result = getImmediateBaseType(index).resolve() }
+    final Type getBaseType(int index) {
+      exists(Type immediate |
+        immediate = this.getImmediateBaseType(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the base types of this type declaration.
      */
-    final Type getABaseType() { result = getBaseType(_) }
+    final Type getABaseType() { result = this.getBaseType(_) }
 
     /**
      * Gets the number of base types of this type declaration.
      */
-    final int getNumberOfBaseTypes() { result = count(int i | exists(getBaseType(i))) }
+    final int getNumberOfBaseTypes() { result = count(int i | exists(this.getBaseType(i))) }
   }
 }

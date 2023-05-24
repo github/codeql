@@ -1,8 +1,7 @@
 edges
-| flask_mongoengine_bad.py:0:0:0:0 | ModuleVariableNode for flask_mongoengine_bad.request | flask_mongoengine_bad.py:19:21:19:27 | ControlFlowNode for request |
-| flask_mongoengine_bad.py:0:0:0:0 | ModuleVariableNode for flask_mongoengine_bad.request | flask_mongoengine_bad.py:26:21:26:27 | ControlFlowNode for request |
 | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_mongoengine_bad.py:1:26:1:32 | GSSA Variable request |
-| flask_mongoengine_bad.py:1:26:1:32 | GSSA Variable request | flask_mongoengine_bad.py:0:0:0:0 | ModuleVariableNode for flask_mongoengine_bad.request |
+| flask_mongoengine_bad.py:1:26:1:32 | GSSA Variable request | flask_mongoengine_bad.py:19:21:19:27 | ControlFlowNode for request |
+| flask_mongoengine_bad.py:1:26:1:32 | GSSA Variable request | flask_mongoengine_bad.py:26:21:26:27 | ControlFlowNode for request |
 | flask_mongoengine_bad.py:19:21:19:27 | ControlFlowNode for request | flask_mongoengine_bad.py:19:21:19:32 | ControlFlowNode for Attribute |
 | flask_mongoengine_bad.py:19:21:19:32 | ControlFlowNode for Attribute | flask_mongoengine_bad.py:19:21:19:42 | ControlFlowNode for Subscript |
 | flask_mongoengine_bad.py:19:21:19:42 | ControlFlowNode for Subscript | flask_mongoengine_bad.py:20:30:20:42 | ControlFlowNode for unsafe_search |
@@ -13,22 +12,20 @@ edges
 | flask_mongoengine_bad.py:26:21:26:42 | ControlFlowNode for Subscript | flask_mongoengine_bad.py:27:30:27:42 | ControlFlowNode for unsafe_search |
 | flask_mongoengine_bad.py:27:19:27:43 | ControlFlowNode for Attribute() | flask_mongoengine_bad.py:30:39:30:59 | ControlFlowNode for Dict |
 | flask_mongoengine_bad.py:27:30:27:42 | ControlFlowNode for unsafe_search | flask_mongoengine_bad.py:27:19:27:43 | ControlFlowNode for Attribute() |
-| flask_pymongo_bad.py:0:0:0:0 | ModuleVariableNode for flask_pymongo_bad.request | flask_pymongo_bad.py:11:21:11:27 | ControlFlowNode for request |
 | flask_pymongo_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | flask_pymongo_bad.py:1:26:1:32 | GSSA Variable request |
-| flask_pymongo_bad.py:1:26:1:32 | GSSA Variable request | flask_pymongo_bad.py:0:0:0:0 | ModuleVariableNode for flask_pymongo_bad.request |
+| flask_pymongo_bad.py:1:26:1:32 | GSSA Variable request | flask_pymongo_bad.py:11:21:11:27 | ControlFlowNode for request |
 | flask_pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | flask_pymongo_bad.py:11:21:11:32 | ControlFlowNode for Attribute |
 | flask_pymongo_bad.py:11:21:11:32 | ControlFlowNode for Attribute | flask_pymongo_bad.py:11:21:11:42 | ControlFlowNode for Subscript |
 | flask_pymongo_bad.py:11:21:11:42 | ControlFlowNode for Subscript | flask_pymongo_bad.py:12:30:12:42 | ControlFlowNode for unsafe_search |
 | flask_pymongo_bad.py:12:19:12:43 | ControlFlowNode for Attribute() | flask_pymongo_bad.py:14:31:14:51 | ControlFlowNode for Dict |
 | flask_pymongo_bad.py:12:30:12:42 | ControlFlowNode for unsafe_search | flask_pymongo_bad.py:12:19:12:43 | ControlFlowNode for Attribute() |
-| mongoengine_bad.py:0:0:0:0 | ModuleVariableNode for mongoengine_bad.request | mongoengine_bad.py:18:21:18:27 | ControlFlowNode for request |
-| mongoengine_bad.py:0:0:0:0 | ModuleVariableNode for mongoengine_bad.request | mongoengine_bad.py:26:21:26:27 | ControlFlowNode for request |
-| mongoengine_bad.py:0:0:0:0 | ModuleVariableNode for mongoengine_bad.request | mongoengine_bad.py:34:21:34:27 | ControlFlowNode for request |
-| mongoengine_bad.py:0:0:0:0 | ModuleVariableNode for mongoengine_bad.request | mongoengine_bad.py:42:21:42:27 | ControlFlowNode for request |
-| mongoengine_bad.py:0:0:0:0 | ModuleVariableNode for mongoengine_bad.request | mongoengine_bad.py:50:21:50:27 | ControlFlowNode for request |
-| mongoengine_bad.py:0:0:0:0 | ModuleVariableNode for mongoengine_bad.request | mongoengine_bad.py:57:21:57:27 | ControlFlowNode for request |
 | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | mongoengine_bad.py:1:26:1:32 | GSSA Variable request |
-| mongoengine_bad.py:1:26:1:32 | GSSA Variable request | mongoengine_bad.py:0:0:0:0 | ModuleVariableNode for mongoengine_bad.request |
+| mongoengine_bad.py:1:26:1:32 | GSSA Variable request | mongoengine_bad.py:18:21:18:27 | ControlFlowNode for request |
+| mongoengine_bad.py:1:26:1:32 | GSSA Variable request | mongoengine_bad.py:26:21:26:27 | ControlFlowNode for request |
+| mongoengine_bad.py:1:26:1:32 | GSSA Variable request | mongoengine_bad.py:34:21:34:27 | ControlFlowNode for request |
+| mongoengine_bad.py:1:26:1:32 | GSSA Variable request | mongoengine_bad.py:42:21:42:27 | ControlFlowNode for request |
+| mongoengine_bad.py:1:26:1:32 | GSSA Variable request | mongoengine_bad.py:50:21:50:27 | ControlFlowNode for request |
+| mongoengine_bad.py:1:26:1:32 | GSSA Variable request | mongoengine_bad.py:57:21:57:27 | ControlFlowNode for request |
 | mongoengine_bad.py:18:21:18:27 | ControlFlowNode for request | mongoengine_bad.py:18:21:18:32 | ControlFlowNode for Attribute |
 | mongoengine_bad.py:18:21:18:32 | ControlFlowNode for Attribute | mongoengine_bad.py:18:21:18:42 | ControlFlowNode for Subscript |
 | mongoengine_bad.py:18:21:18:42 | ControlFlowNode for Subscript | mongoengine_bad.py:19:30:19:42 | ControlFlowNode for unsafe_search |
@@ -59,11 +56,10 @@ edges
 | mongoengine_bad.py:57:21:57:42 | ControlFlowNode for Subscript | mongoengine_bad.py:58:30:58:42 | ControlFlowNode for unsafe_search |
 | mongoengine_bad.py:58:19:58:43 | ControlFlowNode for Attribute() | mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict |
 | mongoengine_bad.py:58:30:58:42 | ControlFlowNode for unsafe_search | mongoengine_bad.py:58:19:58:43 | ControlFlowNode for Attribute() |
-| pymongo_test.py:0:0:0:0 | ModuleVariableNode for pymongo_test.request | pymongo_test.py:12:21:12:27 | ControlFlowNode for request |
-| pymongo_test.py:0:0:0:0 | ModuleVariableNode for pymongo_test.request | pymongo_test.py:29:27:29:33 | ControlFlowNode for request |
-| pymongo_test.py:0:0:0:0 | ModuleVariableNode for pymongo_test.request | pymongo_test.py:39:27:39:33 | ControlFlowNode for request |
 | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | pymongo_test.py:1:26:1:32 | GSSA Variable request |
-| pymongo_test.py:1:26:1:32 | GSSA Variable request | pymongo_test.py:0:0:0:0 | ModuleVariableNode for pymongo_test.request |
+| pymongo_test.py:1:26:1:32 | GSSA Variable request | pymongo_test.py:12:21:12:27 | ControlFlowNode for request |
+| pymongo_test.py:1:26:1:32 | GSSA Variable request | pymongo_test.py:29:27:29:33 | ControlFlowNode for request |
+| pymongo_test.py:1:26:1:32 | GSSA Variable request | pymongo_test.py:39:27:39:33 | ControlFlowNode for request |
 | pymongo_test.py:12:21:12:27 | ControlFlowNode for request | pymongo_test.py:12:21:12:32 | ControlFlowNode for Attribute |
 | pymongo_test.py:12:21:12:32 | ControlFlowNode for Attribute | pymongo_test.py:12:21:12:42 | ControlFlowNode for Subscript |
 | pymongo_test.py:12:21:12:42 | ControlFlowNode for Subscript | pymongo_test.py:13:30:13:42 | ControlFlowNode for unsafe_search |
@@ -78,7 +74,6 @@ edges
 | pymongo_test.py:39:27:39:38 | ControlFlowNode for Attribute | pymongo_test.py:39:27:39:50 | ControlFlowNode for Subscript |
 | pymongo_test.py:39:27:39:50 | ControlFlowNode for Subscript | pymongo_test.py:39:16:39:51 | ControlFlowNode for Attribute() |
 nodes
-| flask_mongoengine_bad.py:0:0:0:0 | ModuleVariableNode for flask_mongoengine_bad.request | semmle.label | ModuleVariableNode for flask_mongoengine_bad.request |
 | flask_mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | flask_mongoengine_bad.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
 | flask_mongoengine_bad.py:19:21:19:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -93,7 +88,6 @@ nodes
 | flask_mongoengine_bad.py:27:19:27:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | flask_mongoengine_bad.py:27:30:27:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
 | flask_mongoengine_bad.py:30:39:30:59 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
-| flask_pymongo_bad.py:0:0:0:0 | ModuleVariableNode for flask_pymongo_bad.request | semmle.label | ModuleVariableNode for flask_pymongo_bad.request |
 | flask_pymongo_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | flask_pymongo_bad.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
 | flask_pymongo_bad.py:11:21:11:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -102,7 +96,6 @@ nodes
 | flask_pymongo_bad.py:12:19:12:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | flask_pymongo_bad.py:12:30:12:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
 | flask_pymongo_bad.py:14:31:14:51 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
-| mongoengine_bad.py:0:0:0:0 | ModuleVariableNode for mongoengine_bad.request | semmle.label | ModuleVariableNode for mongoengine_bad.request |
 | mongoengine_bad.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | mongoengine_bad.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
 | mongoengine_bad.py:18:21:18:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
@@ -141,7 +134,6 @@ nodes
 | mongoengine_bad.py:58:19:58:43 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | mongoengine_bad.py:58:30:58:42 | ControlFlowNode for unsafe_search | semmle.label | ControlFlowNode for unsafe_search |
 | mongoengine_bad.py:61:29:61:49 | ControlFlowNode for Dict | semmle.label | ControlFlowNode for Dict |
-| pymongo_test.py:0:0:0:0 | ModuleVariableNode for pymongo_test.request | semmle.label | ModuleVariableNode for pymongo_test.request |
 | pymongo_test.py:1:26:1:32 | ControlFlowNode for ImportMember | semmle.label | ControlFlowNode for ImportMember |
 | pymongo_test.py:1:26:1:32 | GSSA Variable request | semmle.label | GSSA Variable request |
 | pymongo_test.py:12:21:12:27 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |

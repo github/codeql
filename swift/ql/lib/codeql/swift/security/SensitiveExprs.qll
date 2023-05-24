@@ -48,7 +48,7 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
         // Contact information, such as home addresses
         "post.?code|zip.?code|home.?address|" +
         // and telephone numbers
-        "telephone|home.?phone|mobile|fax.?no|fax.?number|" +
+        "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax).?(num|no)|telephone|" +
         // Geographic location - where the user is (or was)
         "latitude|longitude|" +
         // Financial data - such as credit card numbers, salary, bank accounts, and debts
@@ -69,7 +69,7 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
  * contain hashed or encrypted data, or are only a reference to data that is
  * actually stored elsewhere.
  */
-private string regexpProbablySafe() { result = ".*(hash|crypt|file|path|invalid).*" }
+private string regexpProbablySafe() { result = ".*(hash|crypt|file|path|url|invalid).*" }
 
 /**
  * A `VarDecl` that might be used to contain sensitive data.

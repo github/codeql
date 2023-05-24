@@ -12,6 +12,7 @@
  *       external/cwe/cwe-088
  */
 
+import java
 import semmle.code.java.security.CommandLineQuery
 import LocalUserInputToArgumentToExecFlow::PathGraph
 

@@ -215,9 +215,6 @@ class PropertyObserverCall extends DataFlowCall, TPropertyObserverCall {
     i = -1 and
     result = observer.getBase()
     or
-    // TODO: This is correct for `willSet` (which takes a `newValue` parameter),
-    // but for `didSet` (which takes an `oldValue` parameter) we need an rvalue
-    // for `getBase()`.
     i = 0 and
     result = observer.getSource()
   }

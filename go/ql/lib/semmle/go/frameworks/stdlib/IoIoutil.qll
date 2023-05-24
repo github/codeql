@@ -8,11 +8,11 @@ import go
 module IoIoutil {
   private class IoUtilFileSystemAccess extends FileSystemAccess::Range, DataFlow::CallNode {
     IoUtilFileSystemAccess() {
-      exists(string fn | getTarget().hasQualifiedName("io/ioutil", fn) |
+      exists(string fn | this.getTarget().hasQualifiedName("io/ioutil", fn) |
         fn = ["ReadDir", "ReadFile", "TempDir", "TempFile", "WriteFile"]
       )
     }
 
-    override DataFlow::Node getAPathArgument() { result = getAnArgument() }
+    override DataFlow::Node getAPathArgument() { result = this.getAnArgument() }
   }
 }

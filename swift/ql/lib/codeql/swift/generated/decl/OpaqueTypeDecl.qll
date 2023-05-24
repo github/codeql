@@ -36,7 +36,12 @@ module Generated {
     /**
      * Gets the naming declaration of this opaque type declaration.
      */
-    final ValueDecl getNamingDeclaration() { result = getImmediateNamingDeclaration().resolve() }
+    final ValueDecl getNamingDeclaration() {
+      exists(ValueDecl immediate |
+        immediate = this.getImmediateNamingDeclaration() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the `index`th opaque generic parameter of this opaque type declaration (0-based).
@@ -55,19 +60,22 @@ module Generated {
      * Gets the `index`th opaque generic parameter of this opaque type declaration (0-based).
      */
     final GenericTypeParamType getOpaqueGenericParam(int index) {
-      result = getImmediateOpaqueGenericParam(index).resolve()
+      exists(GenericTypeParamType immediate |
+        immediate = this.getImmediateOpaqueGenericParam(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
      * Gets any of the opaque generic parameters of this opaque type declaration.
      */
-    final GenericTypeParamType getAnOpaqueGenericParam() { result = getOpaqueGenericParam(_) }
+    final GenericTypeParamType getAnOpaqueGenericParam() { result = this.getOpaqueGenericParam(_) }
 
     /**
      * Gets the number of opaque generic parameters of this opaque type declaration.
      */
     final int getNumberOfOpaqueGenericParams() {
-      result = count(int i | exists(getOpaqueGenericParam(i)))
+      result = count(int i | exists(this.getOpaqueGenericParam(i)))
     }
   }
 }

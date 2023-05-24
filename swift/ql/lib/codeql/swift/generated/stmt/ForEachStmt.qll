@@ -26,7 +26,12 @@ module Generated {
     /**
      * Gets the pattern of this for each statement.
      */
-    final Pattern getPattern() { result = getImmediatePattern().resolve() }
+    final Pattern getPattern() {
+      exists(Pattern immediate |
+        immediate = this.getImmediatePattern() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the sequence of this for each statement.
@@ -44,7 +49,12 @@ module Generated {
     /**
      * Gets the sequence of this for each statement.
      */
-    final Expr getSequence() { result = getImmediateSequence().resolve() }
+    final Expr getSequence() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSequence() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the where of this for each statement, if it exists.
@@ -60,12 +70,17 @@ module Generated {
     /**
      * Gets the where of this for each statement, if it exists.
      */
-    final Expr getWhere() { result = getImmediateWhere().resolve() }
+    final Expr getWhere() {
+      exists(Expr immediate |
+        immediate = this.getImmediateWhere() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getWhere()` exists.
      */
-    final predicate hasWhere() { exists(getWhere()) }
+    final predicate hasWhere() { exists(this.getWhere()) }
 
     /**
      * Gets the body of this for each statement.
@@ -83,6 +98,11 @@ module Generated {
     /**
      * Gets the body of this for each statement.
      */
-    final BraceStmt getBody() { result = getImmediateBody().resolve() }
+    final BraceStmt getBody() {
+      exists(BraceStmt immediate |
+        immediate = this.getImmediateBody() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

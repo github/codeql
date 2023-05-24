@@ -21,31 +21,31 @@ class AbstractProperty extends TAbstractProperty {
    * Gets an initial value that is implicitly assigned to this property.
    */
   AbstractValue getAnInitialValue() {
-    result = getAnInitialPropertyValue(getBase(), getPropertyName())
+    result = getAnInitialPropertyValue(this.getBase(), this.getPropertyName())
   }
 
   /**
    * Gets a value of this property for the purposes of `AnalyzedNode.getALocalValue`.
    */
   AbstractValue getALocalValue() {
-    result = getAnInitialPropertyValue(getBase(), getPropertyName())
+    result = getAnInitialPropertyValue(this.getBase(), this.getPropertyName())
     or
-    shouldAlwaysTrackProperties(getBase()) and
-    result = getAnAssignedValue(getBase(), getPropertyName())
+    shouldAlwaysTrackProperties(this.getBase()) and
+    result = getAnAssignedValue(this.getBase(), this.getPropertyName())
   }
 
   /**
    * Gets a value of this property for the purposes of `AnalyzedNode.getAValue`.
    */
   AbstractValue getAValue() {
-    result = getALocalValue() or
-    result = getAnAssignedValue(getBase(), getPropertyName())
+    result = this.getALocalValue() or
+    result = getAnAssignedValue(this.getBase(), this.getPropertyName())
   }
 
   /**
    * Gets a textual representation of this element.
    */
-  string toString() { result = "property " + getPropertyName() + " of " + getBase() }
+  string toString() { result = "property " + this.getPropertyName() + " of " + this.getBase() }
 }
 
 /**
@@ -53,7 +53,7 @@ class AbstractProperty extends TAbstractProperty {
  * class instance.
  */
 class AbstractProtoProperty extends AbstractProperty {
-  AbstractProtoProperty() { getPropertyName() = "__proto__" }
+  AbstractProtoProperty() { this.getPropertyName() = "__proto__" }
 
   override AbstractValue getAValue() {
     result = super.getAValue() and
@@ -62,7 +62,7 @@ class AbstractProtoProperty extends AbstractProperty {
       result instanceof AbstractNull
     )
     or
-    exists(AbstractCallable ctor | getBase() = TAbstractInstance(ctor) |
+    exists(AbstractCallable ctor | this.getBase() = TAbstractInstance(ctor) |
       // the value of `ctor.prototype`
       exists(AbstractProperty prototype |
         prototype = MkAbstractProperty(ctor.(AbstractFunction), "prototype") and

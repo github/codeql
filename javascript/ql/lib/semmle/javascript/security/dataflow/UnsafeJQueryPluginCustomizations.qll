@@ -46,7 +46,7 @@ module UnsafeJQueryPlugin {
   {
     AmbiguousHtmlOrSelectorArgument() {
       // any fixed prefix makes the call unambiguous
-      not exists(getAPrefix())
+      not exists(this.getAPrefix())
     }
   }
 
@@ -91,12 +91,12 @@ module UnsafeJQueryPlugin {
         if method.getAParameter().getName().regexpMatch(optionsPattern)
         then (
           // use the last parameter named something like "options" if it exists ...
-          getName().regexpMatch(optionsPattern) and
+          this.getName().regexpMatch(optionsPattern) and
           this = method.getAParameter()
         ) else (
           // ... otherwise, use the last parameter, unless it looks like a DOM node
           this = method.getLastParameter() and
-          not getName().regexpMatch("(?i)(e(l(em(ent(s)?)?)?)?)")
+          not this.getName().regexpMatch("(?i)(e(l(em(ent(s)?)?)?)?)")
         )
       )
     }
@@ -113,13 +113,13 @@ module UnsafeJQueryPlugin {
   class IsElementSanitizer extends TaintTracking::SanitizerGuardNode, DataFlow::CallNode {
     IsElementSanitizer() {
       // common ad hoc sanitizing calls
-      exists(string name | getCalleeName() = name |
+      exists(string name | this.getCalleeName() = name |
         name = "isElement" or name = "isDocument" or name = "isWindow"
       )
     }
 
     override predicate sanitizes(boolean outcome, Expr e) {
-      outcome = true and e = getArgument(0).asExpr()
+      outcome = true and e = this.getArgument(0).asExpr()
     }
   }
 

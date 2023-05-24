@@ -24,7 +24,12 @@ module Generated {
     /**
      * Gets the sub expression of this rebind self in initializer expression.
      */
-    final Expr getSubExpr() { result = getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSubExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the self of this rebind self in initializer expression.
@@ -42,6 +47,11 @@ module Generated {
     /**
      * Gets the self of this rebind self in initializer expression.
      */
-    final VarDecl getSelf() { result = getImmediateSelf().resolve() }
+    final VarDecl getSelf() {
+      exists(VarDecl immediate |
+        immediate = this.getImmediateSelf() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

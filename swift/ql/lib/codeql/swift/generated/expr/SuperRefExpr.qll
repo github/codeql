@@ -24,6 +24,11 @@ module Generated {
     /**
      * Gets the self of this super reference expression.
      */
-    final VarDecl getSelf() { result = getImmediateSelf().resolve() }
+    final VarDecl getSelf() {
+      exists(VarDecl immediate |
+        immediate = this.getImmediateSelf() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

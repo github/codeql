@@ -1,4 +1,5 @@
 #include "swift/extractor/infra/SwiftMangledName.h"
+#include "absl/strings/str_cat.h"
 
 namespace codeql {
 
@@ -8,13 +9,11 @@ void appendPart(std::string& out, const std::string& prefix) {
 }
 
 void appendPart(std::string& out, UntypedTrapLabel label) {
-  out += '{';
-  out += label.str();
-  out += '}';
+  absl::StrAppend(&out, "{", label.str(), "}");
 }
 
 void appendPart(std::string& out, unsigned index) {
-  out += std::to_string(index);
+  absl::StrAppend(&out, index);
 }
 
 }  // namespace

@@ -24,16 +24,21 @@ module Generated {
     /**
      * Gets the `index`th result of this yield statement (0-based).
      */
-    final Expr getResult(int index) { result = getImmediateResult(index).resolve() }
+    final Expr getResult(int index) {
+      exists(Expr immediate |
+        immediate = this.getImmediateResult(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the results of this yield statement.
      */
-    final Expr getAResult() { result = getResult(_) }
+    final Expr getAResult() { result = this.getResult(_) }
 
     /**
      * Gets the number of results of this yield statement.
      */
-    final int getNumberOfResults() { result = count(int i | exists(getResult(i))) }
+    final int getNumberOfResults() { result = count(int i | exists(this.getResult(i))) }
   }
 }

@@ -25,13 +25,9 @@ class Error(Exception):
 class Renderer:
     """ Template renderer using mustache templates in the `templates` directory """
 
-    def __init__(self, generator: pathlib.Path, root_dir: pathlib.Path):
+    def __init__(self, generator: pathlib.Path):
         self._r = pystache.Renderer(search_dirs=str(paths.templates_dir), escape=lambda u: u)
-        self._root_dir = root_dir
         self._generator = generator
-
-    def _get_path(self, file: pathlib.Path):
-        return file.relative_to(self._root_dir)
 
     def render(self, data: object, output: pathlib.Path):
         """ Render `data` to `output`.
@@ -60,7 +56,7 @@ class Renderer:
 
     def manage(self, generated: typing.Iterable[pathlib.Path], stubs: typing.Iterable[pathlib.Path],
                registry: pathlib.Path, force: bool = False) -> "RenderManager":
-        return RenderManager(self._generator, self._root_dir, generated, stubs, registry, force)
+        return RenderManager(self._generator, generated, stubs, registry, force)
 
 
 class RenderManager(Renderer):
@@ -85,10 +81,10 @@ class RenderManager(Renderer):
         pre: str
         post: typing.Optional[str] = None
 
-    def __init__(self, generator: pathlib.Path, root_dir: pathlib.Path, generated: typing.Iterable[pathlib.Path],
+    def __init__(self, generator: pathlib.Path, generated: typing.Iterable[pathlib.Path],
                  stubs: typing.Iterable[pathlib.Path],
                  registry: pathlib.Path, force: bool = False):
-        super().__init__(generator, root_dir)
+        super().__init__(generator)
         self._registry_path = registry
         self._force = force
         self._hashes = {}
@@ -117,9 +113,12 @@ class RenderManager(Renderer):
                 self._hashes.pop(self._get_path(f), None)
         # clean up the registry from files that do not exist any more
         for f in list(self._hashes):
-            if not (self._root_dir / f).exists():
+            if not (self._registry_path.parent / f).exists():
                 self._hashes.pop(f)
         self._dump_registry()
+
+    def _get_path(self, file: pathlib.Path):
+        return file.relative_to(self._registry_path.parent)
 
     def _do_write(self, mnemonic: str, contents: str, output: pathlib.Path):
         hash = self._hash_string(contents)
@@ -186,13 +185,17 @@ class RenderManager(Renderer):
         try:
             with open(self._registry_path) as reg:
                 for line in reg:
-                    filename, prehash, posthash = line.split()
-                    self._hashes[pathlib.Path(filename)] = self.Hashes(prehash, posthash)
+                    if line.strip():
+                        filename, prehash, posthash = line.split()
+                        self._hashes[pathlib.Path(filename)] = self.Hashes(prehash, posthash)
         except FileNotFoundError:
             pass
 
     def _dump_registry(self):
         self._registry_path.parent.mkdir(parents=True, exist_ok=True)
-        with open(self._registry_path, 'w') as out:
+        with open(self._registry_path, 'w') as out, open(self._registry_path.parent / ".gitattributes", "w") as attrs:
+            print(f"/{self._registry_path.name}", "linguist-generated", file=attrs)
+            print("/.gitattributes", "linguist-generated", file=attrs)
             for f, hashes in sorted(self._hashes.items()):
                 print(f, hashes.pre, hashes.post, file=out)
+                print(f"/{f}", "linguist-generated", file=attrs)

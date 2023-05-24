@@ -16,7 +16,9 @@ class UrlDecl extends StructDecl {
  * A content implying that, if a `URL` is tainted, then all its fields are tainted.
  */
 private class UriFieldsInheritTaint extends TaintInheritingContent, DataFlow::Content::FieldContent {
-  UriFieldsInheritTaint() { this.getField().getEnclosingDecl() instanceof UrlDecl }
+  UriFieldsInheritTaint() {
+    this.getField().getEnclosingDecl().asNominalTypeDecl() instanceof UrlDecl
+  }
 }
 
 /**
@@ -27,7 +29,7 @@ private class UrlRequestFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
   UrlRequestFieldsInheritTaint() {
-    this.getField().getEnclosingDecl().(NominalTypeDecl).getName() = "URLRequest" and
+    this.getField().getEnclosingDecl().asNominalTypeDecl().getName() = "URLRequest" and
     this.getField().getName() =
       ["url", "httpBody", "httpBodyStream", "mainDocument", "allHTTPHeaderFields"]
   }

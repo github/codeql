@@ -11,20 +11,8 @@
  */
 
 import java
-import semmle.code.java.dataflow.FlowSources
 import semmle.code.java.StringFormat
-
-module ExternallyControlledFormatStringLocalConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node source) { source instanceof LocalUserInput }
-
-  predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(StringFormat formatCall).getFormatArgument()
-  }
-}
-
-module ExternallyControlledFormatStringLocalFlow =
-  TaintTracking::Global<ExternallyControlledFormatStringLocalConfig>;
-
+import semmle.code.java.security.ExternallyControlledFormatStringLocalQuery
 import ExternallyControlledFormatStringLocalFlow::PathGraph
 
 from

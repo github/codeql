@@ -25,12 +25,15 @@ module Generated {
      * Gets the precedence group of this infix operator declaration, if it exists.
      */
     final PrecedenceGroupDecl getPrecedenceGroup() {
-      result = getImmediatePrecedenceGroup().resolve()
+      exists(PrecedenceGroupDecl immediate |
+        immediate = this.getImmediatePrecedenceGroup() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
      * Holds if `getPrecedenceGroup()` exists.
      */
-    final predicate hasPrecedenceGroup() { exists(getPrecedenceGroup()) }
+    final predicate hasPrecedenceGroup() { exists(this.getPrecedenceGroup()) }
   }
 }

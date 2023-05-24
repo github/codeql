@@ -27,7 +27,10 @@ module Generated {
      * Gets the extended type declaration of this extension declaration.
      */
     final NominalTypeDecl getExtendedTypeDecl() {
-      result = getImmediateExtendedTypeDecl().resolve()
+      exists(NominalTypeDecl immediate |
+        immediate = this.getImmediateExtendedTypeDecl() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -46,16 +49,21 @@ module Generated {
     /**
      * Gets the `index`th protocol of this extension declaration (0-based).
      */
-    final ProtocolDecl getProtocol(int index) { result = getImmediateProtocol(index).resolve() }
+    final ProtocolDecl getProtocol(int index) {
+      exists(ProtocolDecl immediate |
+        immediate = this.getImmediateProtocol(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the protocols of this extension declaration.
      */
-    final ProtocolDecl getAProtocol() { result = getProtocol(_) }
+    final ProtocolDecl getAProtocol() { result = this.getProtocol(_) }
 
     /**
      * Gets the number of protocols of this extension declaration.
      */
-    final int getNumberOfProtocols() { result = count(int i | exists(getProtocol(i))) }
+    final int getNumberOfProtocols() { result = count(int i | exists(this.getProtocol(i))) }
   }
 }
