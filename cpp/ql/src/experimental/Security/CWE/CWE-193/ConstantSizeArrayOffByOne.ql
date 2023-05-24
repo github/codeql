@@ -84,13 +84,18 @@ predicate pointerArithOverflow0(
   pai.getElementSize() = f.getUnspecifiedType().(ArrayType).getBaseType().getSize() and
   f.getUnspecifiedType().(ArrayType).getArraySize() = size and
   semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), bound, true, _) and
-  delta = bound - size
+  delta = bound - size and
+  delta >= 0 and
+  size != 0 and
+  size != 1
 }
 
 module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
     pointerArithOverflow0(source.asInstruction(), _, _, _, _)
   }
+
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
   predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink1(sink, _, _) }
 }
@@ -127,18 +132,17 @@ module FieldAddressToDerefConfig implements DataFlow::StateConfigSig {
 
   predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 
+  predicate isBarrierIn(DataFlow::Node node) { isSource(node, _) }
+
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    exists(PointerArithmeticInstruction pai, Field f, int size, int delta |
+    exists(PointerArithmeticInstruction pai, Field f |
       state1 = TArray(f) and
       state2 = TOverflowArithmetic(pai) and
       pai.getLeft() = node1.asInstruction() and
       node2.asInstruction() = pai and
-      pointerArithOverflow(pai, f, size, _, delta) and
-      delta >= 0 and
-      size != 0 and
-      size != 1
+      pointerArithOverflow(pai, f, _, _, _)
     )
   }
 }
