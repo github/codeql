@@ -16,15 +16,13 @@
 import csharp
 import semmle.code.csharp.frameworks.System
 import semmle.code.csharp.security.dataflow.flowsinks.Remote
-import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
+import ExceptionInformationExposure::PathGraph
 
 /**
  * A taint-tracking configuration for reasoning about stack traces that flow to web page outputs.
  */
-class TaintTrackingConfiguration extends TaintTracking::Configuration {
-  TaintTrackingConfiguration() { this = "StackTrace" }
-
-  override predicate isSource(DataFlow::Node source) {
+module ExceptionInformationExposureConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) {
     exists(Expr exceptionExpr |
       // Writing an exception directly is bad
       source.asExpr() = exceptionExpr
@@ -40,7 +38,7 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
     )
   }
 
-  override predicate isAdditionalTaintStep(DataFlow::Node source, DataFlow::Node sink) {
+  predicate isAdditionalFlowStep(DataFlow::Node source, DataFlow::Node sink) {
     sink.asExpr() =
       any(MethodCall mc |
         source.asExpr() = mc.getQualifier() and
@@ -49,20 +47,25 @@ class TaintTrackingConfiguration extends TaintTracking::Configuration {
       )
   }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof RemoteFlowSink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof RemoteFlowSink }
 
-  override predicate isSanitizer(DataFlow::Node sanitizer) {
+  predicate isBarrier(DataFlow::Node sanitizer) {
     // Do not flow through Message
     sanitizer.asExpr() = any(SystemExceptionClass se).getProperty("Message").getAnAccess()
   }
 
-  override predicate isSanitizerIn(DataFlow::Node sanitizer) {
+  predicate isBarrierIn(DataFlow::Node sanitizer) {
     // Do not flow through Message
     sanitizer.asExpr().getType().(RefType).getABaseType*() instanceof SystemExceptionClass
   }
 }
 
-from TaintTrackingConfiguration c, DataFlow::PathNode source, DataFlow::PathNode sink
-where c.hasFlowPath(source, sink)
+/**
+ * A taint-tracking module for reasoning about stack traces that flow to web page outputs.
+ */
+module ExceptionInformationExposure = TaintTracking::Global<ExceptionInformationExposureConfig>;
+
+from ExceptionInformationExposure::PathNode source, ExceptionInformationExposure::PathNode sink
+where ExceptionInformationExposure::flowPath(source, sink)
 select sink.getNode(), source, sink, "This information exposed to the user depends on $@.",
   source.getNode(), "exception information"

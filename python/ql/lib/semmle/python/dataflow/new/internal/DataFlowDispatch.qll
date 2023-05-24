@@ -1200,6 +1200,7 @@ predicate normalCallArg(CallNode call, Node arg, ArgumentPosition apos) {
  * time the bound method is used, such that the `clear()` call would essentially be
  * translated into `l.clear()`, and we can still have use-use flow.
  */
+pragma[assume_small_delta]
 cached
 predicate getCallArg(CallNode call, Function target, CallType type, Node arg, ArgumentPosition apos) {
   Stages::DataFlow::ref() and

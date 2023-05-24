@@ -40,6 +40,22 @@ private class ExprNodeImpl extends ExprNode, NodeImpl {
   override DataFlowCallable getEnclosingCallable() { result = TDataFlowFunc(n.getScope()) }
 }
 
+private class KeyPathComponentNodeImpl extends TKeyPathComponentNode, NodeImpl {
+  KeyPathComponent component;
+
+  KeyPathComponentNodeImpl() { this = TKeyPathComponentNode(component) }
+
+  override Location getLocationImpl() { result = component.getLocation() }
+
+  override string toStringImpl() { result = component.toString() }
+
+  override DataFlowCallable getEnclosingCallable() {
+    result.asSourceCallable() = component.getKeyPathExpr()
+  }
+
+  KeyPathComponent getComponent() { result = component }
+}
+
 private class PatternNodeImpl extends PatternNode, NodeImpl {
   override Location getLocationImpl() { result = pattern.getLocation() }
 
@@ -78,6 +94,9 @@ private module Cached {
       FlowSummaryImpl::Private::summaryNodeRange(c, state)
     } or
     TSourceParameterNode(ParamDecl param) or
+    TKeyPathParameterNode(EntryNode entry) { entry.getScope() instanceof KeyPathExpr } or
+    TKeyPathReturnNode(ExitNode exit) { exit.getScope() instanceof KeyPathExpr } or
+    TKeyPathComponentNode(KeyPathComponent component) or
     TSummaryParameterNode(FlowSummary::SummarizedCallable c, ParameterPosition pos) {
       FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
     } or
@@ -105,7 +124,7 @@ private module Cached {
     (
       nodeTo instanceof InoutReturnNode
       implies
-      nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable()
+      nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable().asVarDecl()
     )
   }
 
@@ -135,7 +154,7 @@ private module Cached {
       (
         nodeTo instanceof InoutReturnNode
         implies
-        nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable()
+        nodeTo.(InoutReturnNode).getParameter() = def.getSourceVariable().asVarDecl()
       )
       or
       // use-use flow
@@ -197,6 +216,11 @@ private module Cached {
         nodeFrom.asPattern().(IsPattern).getSubPattern(),
         nodeFrom.asPattern().(TypedPattern).getSubPattern()
       ]
+    or
+    // Flow from the unique parameter of a key path expression to
+    // the first component in the chain.
+    nodeTo.(KeyPathComponentNodeImpl).getComponent() =
+      nodeFrom.(KeyPathParameterNode).getComponent(0)
     or
     // flow through a flow summary (extension of `SummaryModelCsv`)
     FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
@@ -311,6 +335,28 @@ private module ParameterNodes {
 
     override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
   }
+
+  class KeyPathParameterNode extends ParameterNodeImpl, TKeyPathParameterNode {
+    private EntryNode entry;
+
+    KeyPathParameterNode() { this = TKeyPathParameterNode(entry) }
+
+    override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
+      c.asSourceCallable() = entry.getScope() and pos = TThisParameter()
+    }
+
+    override Location getLocationImpl() { result = entry.getLocation() }
+
+    override string toStringImpl() { result = entry.toString() }
+
+    override DataFlowCallable getEnclosingCallable() { this.isParameterOf(result, _) }
+
+    KeyPathComponent getComponent(int i) { result = entry.getScope().(KeyPathExpr).getComponent(i) }
+
+    KeyPathComponent getAComponent() { result = this.getComponent(_) }
+
+    KeyPathExpr getKeyPathExpr() { result = entry.getScope() }
+  }
 }
 
 import ParameterNodes
@@ -412,6 +458,17 @@ private module ArgumentNodes {
       FlowSummaryImpl::Private::summaryArgumentNode(call, this, pos)
     }
   }
+
+  class KeyPathArgumentNode extends ExprNode, ArgumentNode {
+    private KeyPathApplicationExprCfgNode keyPath;
+
+    KeyPathArgumentNode() { keyPath.getBase() = this.getCfgNode() }
+
+    override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
+      call.asKeyPath() = keyPath and
+      pos = TThisArgument()
+    }
+  }
 }
 
 import ArgumentNodes
@@ -474,6 +531,24 @@ private module ReturnNodes {
 
     override ReturnKind getKind() { result = rk }
   }
+
+  class KeyPathReturnNodeImpl extends ReturnNode, TKeyPathReturnNode, NodeImpl {
+    ExitNode exit;
+
+    KeyPathReturnNodeImpl() { this = TKeyPathReturnNode(exit) }
+
+    override ReturnKind getKind() { result instanceof NormalReturnKind }
+
+    override ControlFlowNode getCfgNode() { result = exit }
+
+    override DataFlowCallable getEnclosingCallable() { result.asSourceCallable() = exit.getScope() }
+
+    override Location getLocationImpl() { result = exit.getLocation() }
+
+    override string toStringImpl() { result = exit.toString() }
+
+    KeyPathExpr getKeyPathExpr() { result = exit.getScope() }
+  }
 }
 
 import ReturnNodes
@@ -492,6 +567,16 @@ private module OutNodes {
 
     override DataFlowCall getCall(ReturnKind kind) {
       result.asCall() = apply and kind instanceof NormalReturnKind
+    }
+  }
+
+  class KeyPathOutNode extends OutNode, ExprNodeImpl {
+    KeyPathApplicationExprCfgNode keyPath;
+
+    KeyPathOutNode() { keyPath = this.getCfgNode() }
+
+    override DataFlowCall getCall(ReturnKind kind) {
+      result.asKeyPath() = keyPath and kind instanceof NormalReturnKind
     }
   }
 
@@ -658,6 +743,20 @@ predicate readStep(Node node1, ContentSet c, Node node2) {
     node2.asPattern() = pat.getSubPattern() and
     c instanceof OptionalSomeContentSet
   )
+  or
+  // read of a component in a key-path expression chain
+  exists(KeyPathComponent component, FieldDecl f |
+    component = node1.(KeyPathComponentNodeImpl).getComponent() and
+    f = component.getDeclRef() and
+    c.isSingleton(any(Content::FieldContent ct | ct.getField() = f))
+  |
+    // the next node is either the next element in the chain
+    node2.(KeyPathComponentNodeImpl).getComponent() = component.getNextComponent()
+    or
+    // or the return node, if this is the last component in the chain
+    not exists(component.getNextComponent()) and
+    node2.(KeyPathReturnNodeImpl).getKeyPathExpr() = component.getKeyPathExpr()
+  )
 }
 
 /**
@@ -703,7 +802,7 @@ DataFlowType getNodeType(NodeImpl n) {
 }
 
 /** Gets a string representation of a `DataFlowType`. */
-string ppReprType(DataFlowType t) { result = t.toString() }
+string ppReprType(DataFlowType t) { none() }
 
 /**
  * Holds if `t1` and `t2` are compatible, that is, whether data can flow from
@@ -786,6 +885,9 @@ predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
   or
   kind = TLambdaCallKind() and
   receiver = call.(SummaryCall).getReceiver()
+  or
+  kind = TLambdaCallKind() and
+  receiver.asExpr() = call.asKeyPath().getExpr().(KeyPathApplicationExpr).getKeyPath()
 }
 
 /** Extra data-flow steps needed for lambda flow analysis. */

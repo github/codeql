@@ -3,7 +3,8 @@
   "qhelp.dtd">
 <qhelp>
 <overview>
-<p>Fetching data in a WebView without restricting the base URL may allow an attacker to access sensitive local data, for example using <code>file://</code>. Data can then be extracted from the software using the URL of a machine under the attackers control. More generally, an attacker may use a URL under their control as part of a cross-site scripting attack.</p>
+
+<p>Fetching data in a web view without restricting the base URL may allow an attacker to access sensitive local data, for example using <code>file://</code>. Data can then be extracted from the software using the URL of a machine under the attacker's control. More generally, an attacker may use a URL under their control as part of a cross-site scripting attack.</p>
 
 </overview>
 <recommendation>
@@ -25,7 +26,7 @@
 <references>
 
 <li>
-  <a href="https://www.allysonomalley.com/2018/12/03/ios-bug-hunting-web-view-xss/">iOS Bug Hunting - Web View XSS</a>
+  <a href="https://www.allysonomalley.com/2018/12/03/ios-bug-hunting-web-view-xss/">iOS Bug Hunting - Web View XSS</a>.
 </li>
 
 </references>

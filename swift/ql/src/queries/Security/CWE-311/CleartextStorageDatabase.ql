@@ -5,7 +5,7 @@
  * @kind path-problem
  * @problem.severity warning
  * @security-severity 7.5
- * @precision medium
+ * @precision high
  * @id swift/cleartext-storage-database
  * @tags security
  *       external/cwe/cwe-312
@@ -14,7 +14,7 @@
 import swift
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.security.CleartextStorageDatabaseQuery
-import CleartextStorageFlow::PathGraph
+import CleartextStorageDatabaseFlow::PathGraph
 
 /**
  * Gets a prettier node to use in the results.
@@ -27,10 +27,10 @@ DataFlow::Node cleanupNode(DataFlow::Node n) {
 }
 
 from
-  CleartextStorageFlow::PathNode sourceNode, CleartextStorageFlow::PathNode sinkNode,
-  DataFlow::Node cleanSink
+  CleartextStorageDatabaseFlow::PathNode sourceNode,
+  CleartextStorageDatabaseFlow::PathNode sinkNode, DataFlow::Node cleanSink
 where
-  CleartextStorageFlow::flowPath(sourceNode, sinkNode) and
+  CleartextStorageDatabaseFlow::flowPath(sourceNode, sinkNode) and
   cleanSink = cleanupNode(sinkNode.getNode())
 select cleanSink, sourceNode, sinkNode,
   "This operation stores '" + cleanSink.toString() +
