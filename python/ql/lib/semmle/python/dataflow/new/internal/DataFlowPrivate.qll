@@ -441,14 +441,16 @@ predicate importTimeSummaryFlowStep(Node nodeFrom, Node nodeTo) {
   // This will miss statements inside functions called from the top level.
   isTopLevel(nodeFrom) and
   isTopLevel(nodeTo) and
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
 }
 
 predicate runtimeSummaryFlowStep(Node nodeFrom, Node nodeTo) {
   // Anything not at the top level can be executed at runtime.
   not isTopLevel(nodeFrom) and
   not isTopLevel(nodeTo) and
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
 }
 
 /** `ModuleVariable`s are accessed via jump steps at runtime. */
@@ -529,7 +531,8 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
   or
   jumpStepNotSharedWithTypeTracker(nodeFrom, nodeTo)
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(nodeFrom, nodeTo)
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+    nodeTo.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -602,7 +605,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   any(Orm::AdditionalOrmSteps es).storeStep(nodeFrom, c, nodeTo)
   or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom, c, nodeTo)
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom.(FlowSummaryNode).getSummaryNode(), c,
+    nodeTo.(FlowSummaryNode).getSummaryNode())
   or
   synthStarArgsElementParameterNodeStoreStep(nodeFrom, c, nodeTo)
   or
@@ -806,7 +810,8 @@ predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   attributeReadStep(nodeFrom, c, nodeTo)
   or
-  FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom, c, nodeTo)
+  FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom.(FlowSummaryNode).getSummaryNode(), c,
+    nodeTo.(FlowSummaryNode).getSummaryNode())
   or
   synthDictSplatParameterNodeReadStep(nodeFrom, c, nodeTo)
 }
@@ -921,7 +926,7 @@ predicate clearsContent(Node n, Content c) {
   or
   dictClearStep(n, c)
   or
-  FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
   or
   dictSplatParameterNodeClearStep(n, c)
 }
@@ -978,9 +983,7 @@ predicate forceHighPrecision(Content c) { none() }
 predicate nodeIsHidden(Node n) {
   n instanceof ModuleVariableNode
   or
-  n instanceof SummaryNode
-  or
-  n instanceof SummaryParameterNode
+  n instanceof FlowSummaryNode
   or
   n instanceof SynthStarArgsElementParameterNode
   or
@@ -1007,7 +1010,7 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
-  receiver = call.(SummaryCall).getReceiver() and
+  receiver.(FlowSummaryNode).getSummaryNode() = call.(SummaryCall).getReceiver() and
   exists(kind)
 }
 

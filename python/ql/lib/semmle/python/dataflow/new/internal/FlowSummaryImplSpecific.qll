@@ -47,11 +47,8 @@ DataFlowCallable inject(SummarizedCallable c) { result.asLibraryCallable() = c }
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition callbackSelfParameterPosition() { none() } // disables implicit summary flow to `this` for callbacks
 
-/** Gets the synthesized summary data-flow node for the given values. */
-Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = TSummaryNode(c, state) }
-
 /** Gets the synthesized data-flow call for `receiver`. */
-SummaryCall summaryDataFlowCall(Node receiver) { receiver = result.getReceiver() }
+SummaryCall summaryDataFlowCall(SummaryNode receiver) { receiver = result.getReceiver() }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) { any() }
