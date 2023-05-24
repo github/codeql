@@ -171,22 +171,24 @@ module Make<InlineExpectationsTestSig Impl> {
    */
   module MakeTest<TestSig TestImpl> {
     private predicate hasFailureMessage(FailureLocatable element, string message) {
-      exists(ActualResult actualResult |
+      exists(ActualTestResult actualResult |
         actualResult.getTag() = TestImpl::getARelevantTag() and
         element = actualResult and
         (
-          exists(FalseNegativeExpectation falseNegative |
+          exists(FalseNegativeTestExpectation falseNegative |
             falseNegative.matchesActualResult(actualResult) and
             message = "Fixed missing result:" + falseNegative.getExpectationText()
           )
           or
-          not exists(ValidExpectation expectation | expectation.matchesActualResult(actualResult)) and
+          not exists(ValidTestExpectation expectation |
+            expectation.matchesActualResult(actualResult)
+          ) and
           message = "Unexpected result: " + actualResult.getExpectationText() and
           not actualResult.isOptional()
         )
       )
       or
-      exists(ActualResult actualResult |
+      exists(ActualTestResult actualResult |
         not actualResult.getTag() = TestImpl::getARelevantTag() and
         element = actualResult and
         message =
@@ -194,20 +196,20 @@ module Make<InlineExpectationsTestSig Impl> {
             "' that is not part of getARelevantTag()"
       )
       or
-      exists(ValidExpectation expectation |
-        not exists(ActualResult actualResult | expectation.matchesActualResult(actualResult)) and
+      exists(ValidTestExpectation expectation |
+        not exists(ActualTestResult actualResult | expectation.matchesActualResult(actualResult)) and
         expectation.getTag() = TestImpl::getARelevantTag() and
         element = expectation and
         (
-          expectation instanceof GoodExpectation and
+          expectation instanceof GoodTestExpectation and
           message = "Missing result:" + expectation.getExpectationText()
           or
-          expectation instanceof FalsePositiveExpectation and
+          expectation instanceof FalsePositiveTestExpectation and
           message = "Fixed spurious result:" + expectation.getExpectationText()
         )
       )
       or
-      exists(InvalidExpectation expectation |
+      exists(InvalidTestExpectation expectation |
         element = expectation and
         message = "Invalid expectation syntax: " + expectation.getExpectation()
       )
@@ -247,14 +249,14 @@ module Make<InlineExpectationsTestSig Impl> {
       string getValue() { none() }
     }
 
-    class ActualResult extends FailureLocatable, TActualResult {
+    class ActualTestResult extends FailureLocatable, TActualResult {
       Impl::Location location;
       string element;
       string tag;
       string value;
       boolean optional;
 
-      ActualResult() { this = TActualResult(location, element, tag, value, optional) }
+      ActualTestResult() { this = TActualResult(location, element, tag, value, optional) }
 
       override string toString() { result = element }
 
@@ -275,7 +277,7 @@ module Make<InlineExpectationsTestSig Impl> {
       override Impl::Location getLocation() { result = comment.getLocation() }
     }
 
-    private predicate onSameLine(ValidExpectation a, ActualResult b) {
+    private predicate onSameLine(ValidTestExpectation a, ActualTestResult b) {
       exists(string fname, int line, Impl::Location la, Impl::Location lb |
         // Join order intent:
         // Take the locations of ActualResults,
@@ -288,12 +290,12 @@ module Make<InlineExpectationsTestSig Impl> {
       )
     }
 
-    private class ValidExpectation extends Expectation, TValidExpectation {
+    private class ValidTestExpectation extends Expectation, TValidExpectation {
       string tag;
       string value;
       string knownFailure;
 
-      ValidExpectation() { this = TValidExpectation(comment, tag, value, knownFailure) }
+      ValidTestExpectation() { this = TValidExpectation(comment, tag, value, knownFailure) }
 
       override string getTag() { result = tag }
 
@@ -301,7 +303,7 @@ module Make<InlineExpectationsTestSig Impl> {
 
       string getKnownFailure() { result = knownFailure }
 
-      predicate matchesActualResult(ActualResult actualResult) {
+      predicate matchesActualResult(ActualTestResult actualResult) {
         onSameLine(pragma[only_bind_into](this), actualResult) and
         this.getTag() = actualResult.getTag() and
         this.getValue() = actualResult.getValue()
@@ -309,22 +311,22 @@ module Make<InlineExpectationsTestSig Impl> {
     }
 
     // Note: These next three classes correspond to all the possible values of type `TColumn`.
-    class GoodExpectation extends ValidExpectation {
-      GoodExpectation() { this.getKnownFailure() = "" }
+    class GoodTestExpectation extends ValidTestExpectation {
+      GoodTestExpectation() { this.getKnownFailure() = "" }
     }
 
-    class FalsePositiveExpectation extends ValidExpectation {
-      FalsePositiveExpectation() { this.getKnownFailure() = "SPURIOUS" }
+    class FalsePositiveTestExpectation extends ValidTestExpectation {
+      FalsePositiveTestExpectation() { this.getKnownFailure() = "SPURIOUS" }
     }
 
-    class FalseNegativeExpectation extends ValidExpectation {
-      FalseNegativeExpectation() { this.getKnownFailure() = "MISSING" }
+    class FalseNegativeTestExpectation extends ValidTestExpectation {
+      FalseNegativeTestExpectation() { this.getKnownFailure() = "MISSING" }
     }
 
-    class InvalidExpectation extends Expectation, TInvalidExpectation {
+    class InvalidTestExpectation extends Expectation, TInvalidExpectation {
       string expectation;
 
-      InvalidExpectation() { this = TInvalidExpectation(comment, expectation) }
+      InvalidTestExpectation() { this = TInvalidExpectation(comment, expectation) }
 
       string getExpectation() { result = expectation }
     }
@@ -432,6 +434,16 @@ module Make<InlineExpectationsTestSig Impl> {
   import MakeTest<LegacyImpl> as LegacyTest
 
   query predicate failures = LegacyTest::testFailures/2;
+
+  class ActualResult = LegacyTest::ActualTestResult;
+
+  class GoodExpectation = LegacyTest::GoodTestExpectation;
+
+  class FalsePositiveExpectation = LegacyTest::FalsePositiveTestExpectation;
+
+  class FalseNegativeExpectation = LegacyTest::FalseNegativeTestExpectation;
+
+  class InvalidExpectation = LegacyTest::InvalidTestExpectation;
 }
 
 /**
