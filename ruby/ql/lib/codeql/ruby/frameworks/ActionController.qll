@@ -326,7 +326,7 @@ private module Request {
     private import codeql.ruby.frameworks.Rack
 
     private class RackEnv extends Env {
-      RackEnv() { this = any(Rack::AppCandidate app).getEnv().getALocalUse() }
+      RackEnv() { this = any(Rack::App::AppCandidate app).getEnv().getALocalUse() }
     }
 
     /**

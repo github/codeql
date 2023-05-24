@@ -1,3 +1,6 @@
+private import codeql.ruby.ApiGraphs
+private import codeql.ruby.DataFlow
+
 predicate mimeTypeMatches(string ext, string mimeType) {
   ext = ".123" and mimeType = "application/vnd.lotus-1-2-3"
   or
@@ -1282,4 +1285,18 @@ predicate mimeTypeMatches(string ext, string mimeType) {
   ext = ".zip" and mimeType = "application/zip"
   or
   ext = ".zmm" and mimeType = "application/vnd.handheld-entertainment+xml"
+}
+
+module Mime {
+  class MimetypeCall extends DataFlow::CallNode {
+    MimetypeCall() {
+      this = API::getTopLevelMember("Rack").getMember("Mime").getAMethodCall("mime_type")
+    }
+
+    private string getExtension() {
+      result = this.getArgument(0).getConstantValue().getStringlikeValue()
+    }
+
+    string getMimeType() { mimeTypeMatches(this.getExtension(), result) }
+  }
 }
