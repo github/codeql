@@ -135,3 +135,20 @@ class PrintFunction extends PrintLocatable {
     key = "InterfaceType" and result = ast.getInterfaceType().toString()
   }
 }
+
+/**
+ * A specialization for `PatternBindingDecl`s that are backing a property wrapper, required as the
+ * `getInit` in these cases points to the same `Expr` that the `PatternBindingDecl` of the original
+ * variable. We therefore need to skip it to avoid double parents.
+ */
+class PrintPropertyWrapperPatternBindingDecl extends PrintLocatable {
+  override PatternBindingDecl ast;
+
+  PrintPropertyWrapperPatternBindingDecl() {
+    ast = any(VarDecl d).getPropertyWrapperBackingVarBinding()
+  }
+
+  override predicate hasChild(PrintAstNode child, int index, string label) {
+    PrintLocatable.super.hasChild(child, index, label) and label != "getInit(0)"
+  }
+}
