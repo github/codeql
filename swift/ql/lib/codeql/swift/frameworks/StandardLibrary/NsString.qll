@@ -133,10 +133,7 @@ private class NsStringFieldsInheritTaint extends TaintInheritingContent,
 {
   NsStringFieldsInheritTaint() {
     exists(FieldDecl f | this.getField() = f |
-      (
-        f.getEnclosingDecl().(NominalTypeDecl).getName() = "NSString" or
-        f.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getName() = "NSString"
-      ) and
+      f.getEnclosingDecl().asNominalTypeDecl().getName() = "NSString" and
       f.getName() =
         [
           "utf8String", "lowercased", "localizedLowedCase", "uppercased", "localizedUppercase",

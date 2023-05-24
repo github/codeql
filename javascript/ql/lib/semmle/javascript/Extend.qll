@@ -29,8 +29,8 @@ abstract class ExtendCall extends DataFlow::CallNode {
    * Gets an object from which properties are taken or stored.
    */
   DataFlow::Node getAnOperand() {
-    result = getASourceOperand() or
-    result = getDestinationOperand()
+    result = this.getASourceOperand() or
+    result = this.getDestinationOperand()
   }
 }
 
@@ -55,22 +55,22 @@ private class ExtendCallWithFlag extends ExtendCall {
   /**
    * Holds if the first argument appears to be a boolean flag.
    */
-  predicate hasFlag() { getArgument(0).mayHaveBooleanValue(_) }
+  predicate hasFlag() { this.getArgument(0).mayHaveBooleanValue(_) }
 
   /**
    * Gets the `n`th argument after the optional boolean flag.
    */
   DataFlow::Node getTranslatedArgument(int n) {
-    if hasFlag() then result = getArgument(n + 1) else result = getArgument(n)
+    if this.hasFlag() then result = this.getArgument(n + 1) else result = this.getArgument(n)
   }
 
   override DataFlow::Node getASourceOperand() {
-    exists(int n | n >= 1 | result = getTranslatedArgument(n))
+    exists(int n | n >= 1 | result = this.getTranslatedArgument(n))
   }
 
-  override DataFlow::Node getDestinationOperand() { result = getTranslatedArgument(0) }
+  override DataFlow::Node getDestinationOperand() { result = this.getTranslatedArgument(0) }
 
-  override predicate isDeep() { getArgument(0).mayHaveBooleanValue(true) }
+  override predicate isDeep() { this.getArgument(0).mayHaveBooleanValue(true) }
 }
 
 /**
@@ -100,9 +100,11 @@ private class ExtendCallDeep extends ExtendCall {
     )
   }
 
-  override DataFlow::Node getASourceOperand() { exists(int n | n >= 1 | result = getArgument(n)) }
+  override DataFlow::Node getASourceOperand() {
+    exists(int n | n >= 1 | result = this.getArgument(n))
+  }
 
-  override DataFlow::Node getDestinationOperand() { result = getArgument(0) }
+  override DataFlow::Node getDestinationOperand() { result = this.getArgument(0) }
 
   override predicate isDeep() { any() }
 }
@@ -130,9 +132,11 @@ private class ExtendCallShallow extends ExtendCall {
     )
   }
 
-  override DataFlow::Node getASourceOperand() { exists(int n | n >= 1 | result = getArgument(n)) }
+  override DataFlow::Node getASourceOperand() {
+    exists(int n | n >= 1 | result = this.getArgument(n))
+  }
 
-  override DataFlow::Node getDestinationOperand() { result = getArgument(0) }
+  override DataFlow::Node getDestinationOperand() { result = this.getArgument(0) }
 
   override predicate isDeep() { none() }
 }
@@ -149,7 +153,7 @@ private class FunctionalExtendCallShallow extends ExtendCall {
     )
   }
 
-  override DataFlow::Node getASourceOperand() { result = getAnArgument() }
+  override DataFlow::Node getASourceOperand() { result = this.getAnArgument() }
 
   override DataFlow::Node getDestinationOperand() { none() }
 
@@ -206,7 +210,7 @@ private class WebpackMergeDeep extends ExtendCall, DataFlow::CallNode {
           .getACall()
   }
 
-  override DataFlow::Node getASourceOperand() { result = getAnArgument() }
+  override DataFlow::Node getASourceOperand() { result = this.getAnArgument() }
 
   override DataFlow::Node getDestinationOperand() { none() }
 

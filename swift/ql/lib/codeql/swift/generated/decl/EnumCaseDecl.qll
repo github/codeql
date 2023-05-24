@@ -24,16 +24,21 @@ module Generated {
     /**
      * Gets the `index`th element of this enum case declaration (0-based).
      */
-    final EnumElementDecl getElement(int index) { result = getImmediateElement(index).resolve() }
+    final EnumElementDecl getElement(int index) {
+      exists(EnumElementDecl immediate |
+        immediate = this.getImmediateElement(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the elements of this enum case declaration.
      */
-    final EnumElementDecl getAnElement() { result = getElement(_) }
+    final EnumElementDecl getAnElement() { result = this.getElement(_) }
 
     /**
      * Gets the number of elements of this enum case declaration.
      */
-    final int getNumberOfElements() { result = count(int i | exists(getElement(i))) }
+    final int getNumberOfElements() { result = count(int i | exists(this.getElement(i))) }
   }
 }

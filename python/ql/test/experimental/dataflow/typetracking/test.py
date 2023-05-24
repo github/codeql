@@ -60,10 +60,10 @@ def test_import():
 def to_inner_scope():
     x = tracked # $tracked
     def foo():
-        y = x # $ MISSING: tracked
-        return y # $ MISSING: tracked
-    also_x = foo() # $ MISSING: tracked
-    print(also_x) # $ MISSING: tracked
+        y = x # $ tracked
+        return y # $ tracked
+    also_x = foo() # $ tracked
+    print(also_x) # $ tracked
 
 # ------------------------------------------------------------------------------
 # Function decorator

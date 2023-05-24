@@ -21,7 +21,12 @@ module Generated {
     /**
      * Gets the then of this if statement.
      */
-    final Stmt getThen() { result = getImmediateThen().resolve() }
+    final Stmt getThen() {
+      exists(Stmt immediate |
+        immediate = this.getImmediateThen() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the else of this if statement, if it exists.
@@ -36,11 +41,16 @@ module Generated {
     /**
      * Gets the else of this if statement, if it exists.
      */
-    final Stmt getElse() { result = getImmediateElse().resolve() }
+    final Stmt getElse() {
+      exists(Stmt immediate |
+        immediate = this.getImmediateElse() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getElse()` exists.
      */
-    final predicate hasElse() { exists(getElse()) }
+    final predicate hasElse() { exists(this.getElse()) }
   }
 }

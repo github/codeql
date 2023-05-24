@@ -31,16 +31,21 @@ module Generated {
     /**
      * Gets the `index`th parameter of this enum element declaration (0-based).
      */
-    final ParamDecl getParam(int index) { result = getImmediateParam(index).resolve() }
+    final ParamDecl getParam(int index) {
+      exists(ParamDecl immediate |
+        immediate = this.getImmediateParam(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the parameters of this enum element declaration.
      */
-    final ParamDecl getAParam() { result = getParam(_) }
+    final ParamDecl getAParam() { result = this.getParam(_) }
 
     /**
      * Gets the number of parameters of this enum element declaration.
      */
-    final int getNumberOfParams() { result = count(int i | exists(getParam(i))) }
+    final int getNumberOfParams() { result = count(int i | exists(this.getParam(i))) }
   }
 }

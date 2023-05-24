@@ -192,13 +192,18 @@ private predicate typePrefixContains_ext_neq(ParameterizedPrefix pps, Parameteri
 }
 
 pragma[nomagic]
+private TTypeParam parameterizedPrefixWithWildcard(ParameterizedPrefix pps0, Wildcard s) {
+  result = TTypeParam(pps0, s)
+}
+
+pragma[nomagic]
 private predicate typePrefixContainsAux1(
   ParameterizedPrefix pps, ParameterizedPrefix ppt0, RefType s
 ) {
   exists(ParameterizedPrefix pps0 |
     typePrefixContains(pps0, ppt0) and
-    pps = TTypeParam(pps0, s) and
-    s instanceof Wildcard // manual magic, implied by `typeArgumentContains(_, s, t, _)`
+    // `s instanceof Wildcard` is manual magic, implied by `typeArgumentContains(_, s, t, _)`
+    pps = parameterizedPrefixWithWildcard(pps0, s)
   )
 }
 
@@ -804,7 +809,9 @@ class AnonymousClass extends NestedClass {
     // Include super.toString, i.e. the name given in the database, because for Kotlin anonymous
     // classes we can get specialisations of anonymous generic types, and this will supply the
     // trailing type arguments.
-    result = "new " + this.getClassInstanceExpr().getTypeName() + "(...) { ... }" + super.toString()
+    result =
+      "new " + pragma[only_bind_out](this.getClassInstanceExpr().getTypeName()).toString() +
+        "(...) { ... }" + super.toString()
   }
 
   /**

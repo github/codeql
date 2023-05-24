@@ -22,12 +22,17 @@ module Generated {
     /**
      * Gets the parent of this any generic type, if it exists.
      */
-    final Type getParent() { result = getImmediateParent().resolve() }
+    final Type getParent() {
+      exists(Type immediate |
+        immediate = this.getImmediateParent() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getParent()` exists.
      */
-    final predicate hasParent() { exists(getParent()) }
+    final predicate hasParent() { exists(this.getParent()) }
 
     /**
      * Gets the declaration of this any generic type.
@@ -45,6 +50,11 @@ module Generated {
     /**
      * Gets the declaration of this any generic type.
      */
-    final GenericTypeDecl getDeclaration() { result = getImmediateDeclaration().resolve() }
+    final GenericTypeDecl getDeclaration() {
+      exists(GenericTypeDecl immediate |
+        immediate = this.getImmediateDeclaration() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

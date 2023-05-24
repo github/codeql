@@ -16,10 +16,10 @@ module InsecureTlsConfig implements DataFlow::ConfigSig {
 
   predicate isSink(DataFlow::Node node) { node instanceof InsecureTlsExtensionsSink }
 
-  predicate isBarrier(DataFlow::Node node) { node instanceof InsecureTlsExtensionsSanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof InsecureTlsExtensionsBarrier }
 
   predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    any(InsecureTlsExtensionsAdditionalTaintStep s).step(nodeFrom, nodeTo)
+    any(InsecureTlsExtensionsAdditionalFlowStep s).step(nodeFrom, nodeTo)
   }
 }
 

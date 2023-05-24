@@ -17,7 +17,7 @@ module Generated {
     /**
      * Holds if `getTargetName()` exists.
      */
-    final predicate hasTargetName() { exists(getTargetName()) }
+    final predicate hasTargetName() { exists(this.getTargetName()) }
 
     /**
      * Gets the target of this break statement, if it exists.
@@ -33,11 +33,16 @@ module Generated {
     /**
      * Gets the target of this break statement, if it exists.
      */
-    final Stmt getTarget() { result = getImmediateTarget().resolve() }
+    final Stmt getTarget() {
+      exists(Stmt immediate |
+        immediate = this.getImmediateTarget() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getTarget()` exists.
      */
-    final predicate hasTarget() { exists(getTarget()) }
+    final predicate hasTarget() { exists(this.getTarget()) }
   }
 }

@@ -14,7 +14,7 @@ class ModificationOfParameterWithDefaultTest extends InlineExpectationsTest {
   }
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(DataFlow::Node n | relevant_node(n) |
+    exists(DataFlow::Node n | this.relevant_node(n) |
       n.getLocation() = location and
       tag = "modification" and
       value = prettyNode(n) and

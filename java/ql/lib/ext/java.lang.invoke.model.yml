@@ -3,4 +3,4 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.lang.invoke", "MethodHandles", "lookup", "()", "manual"]
+      - ["java.lang.invoke", "MethodHandles", "lookup", "()", "summary", "manual"]

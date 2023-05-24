@@ -613,8 +613,17 @@ class TypeBackTracker extends TTypeBackTracker {
    * also flow to `sink`.
    */
   TypeTracker getACompatibleTypeTracker() {
-    exists(boolean hasCall | result = MkTypeTracker(hasCall, content) |
-      hasCall = false or this.hasReturn() = false
+    exists(boolean hasCall, OptionalTypeTrackerContent c |
+      result = MkTypeTracker(hasCall, c) and
+      (
+        compatibleContents(c, content)
+        or
+        content = noContent() and c = content
+      )
+    |
+      hasCall = false
+      or
+      this.hasReturn() = false
     )
   }
 }

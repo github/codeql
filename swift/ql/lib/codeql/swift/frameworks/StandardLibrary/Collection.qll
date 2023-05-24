@@ -48,11 +48,7 @@ private class CollectionFieldsInheritTaint extends TaintInheritingContent,
 {
   CollectionFieldsInheritTaint() {
     exists(FieldDecl f | this.getField() = f |
-      (
-        f.getEnclosingDecl().(NominalTypeDecl).getName() = ["Collection", "BidirectionalCollection"] or
-        f.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getName() =
-          ["Collection", "BidirectionalCollection"]
-      ) and
+      f.getEnclosingDecl().asNominalTypeDecl().getName() = ["Collection", "BidirectionalCollection"] and
       f.getName() = ["first", "last"]
     )
   }

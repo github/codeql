@@ -145,14 +145,14 @@ private newtype TDefOrUseImpl =
       or
       // Since the pruning stage doesn't know about global variables we can't use the above check to
       // rule out dead assignments to globals.
-      base.(VariableAddressInstruction).getAstVariable() instanceof Cpp::GlobalOrNamespaceVariable
+      base.(VariableAddressInstruction).getAstVariable() instanceof GlobalLikeVariable
     )
   } or
   TUseImpl(Operand operand, int indirectionIndex) {
     isUse(_, operand, _, _, indirectionIndex) and
     not isDef(_, _, operand, _, _, _)
   } or
-  TGlobalUse(Cpp::GlobalOrNamespaceVariable v, IRFunction f, int indirectionIndex) {
+  TGlobalUse(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents a final "use" of a global variable to ensure that
     // the assignment to a global variable isn't ruled out as dead.
     exists(VariableAddressInstruction vai, int defIndex |
@@ -162,7 +162,7 @@ private newtype TDefOrUseImpl =
       indirectionIndex = [0 .. defIndex] + 1
     )
   } or
-  TGlobalDefImpl(Cpp::GlobalOrNamespaceVariable v, IRFunction f, int indirectionIndex) {
+  TGlobalDefImpl(GlobalLikeVariable v, IRFunction f, int indirectionIndex) {
     // Represents the initial "definition" of a global variable when entering
     // a function body.
     exists(VariableAddressInstruction vai |
@@ -458,7 +458,7 @@ class FinalParameterUse extends UseImpl, TFinalParameterUse {
 }
 
 class GlobalUse extends UseImpl, TGlobalUse {
-  Cpp::GlobalOrNamespaceVariable global;
+  GlobalLikeVariable global;
   IRFunction f;
 
   GlobalUse() { this = TGlobalUse(global, f, ind) }
@@ -468,7 +468,7 @@ class GlobalUse extends UseImpl, TGlobalUse {
   override int getIndirection() { result = ind + 1 }
 
   /** Gets the global variable associated with this use. */
-  Cpp::GlobalOrNamespaceVariable getVariable() { result = global }
+  GlobalLikeVariable getVariable() { result = global }
 
   /** Gets the `IRFunction` whose body is exited from after this use. */
   IRFunction getIRFunction() { result = f }
@@ -496,14 +496,14 @@ class GlobalUse extends UseImpl, TGlobalUse {
 }
 
 class GlobalDefImpl extends DefOrUseImpl, TGlobalDefImpl {
-  Cpp::GlobalOrNamespaceVariable global;
+  GlobalLikeVariable global;
   IRFunction f;
   int indirectionIndex;
 
   GlobalDefImpl() { this = TGlobalDefImpl(global, f, indirectionIndex) }
 
   /** Gets the global variable associated with this definition. */
-  Cpp::GlobalOrNamespaceVariable getVariable() { result = global }
+  GlobalLikeVariable getVariable() { result = global }
 
   /** Gets the `IRFunction` whose body is evaluated after this definition. */
   IRFunction getIRFunction() { result = f }
@@ -657,27 +657,20 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
  * So this predicate recurses back along conversions and `PointerArithmeticInstruction`s to find the
  * first use that has provides use-use flow, and uses that target as the target of the `nodeFrom`.
  */
-private predicate adjustForPointerArith(
-  DefOrUse defOrUse, Node nodeFrom, UseOrPhi use, boolean uncertain
-) {
-  nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
-  exists(Node adjusted |
-    indirectConversionFlowStep*(adjusted, nodeFrom) and
-    nodeToDefOrUse(adjusted, defOrUse, uncertain) and
+private predicate adjustForPointerArith(PostUpdateNode pun, UseOrPhi use) {
+  exists(DefOrUse defOrUse, Node adjusted |
+    indirectConversionFlowStep*(adjusted, pun.getPreUpdateNode()) and
+    nodeToDefOrUse(adjusted, defOrUse, _) and
     adjacentDefRead(defOrUse, use)
   )
 }
 
 private predicate ssaFlowImpl(SsaDefOrUse defOrUse, Node nodeFrom, Node nodeTo, boolean uncertain) {
-  // `nodeFrom = any(PostUpdateNode pun).getPreUpdateNode()` is implied by adjustedForPointerArith.
   exists(UseOrPhi use |
-    adjustForPointerArith(defOrUse, nodeFrom, use, uncertain) and
-    useToNode(use, nodeTo)
-    or
-    not nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
     nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
     adjacentDefRead(defOrUse, use) and
-    useToNode(use, nodeTo)
+    useToNode(use, nodeTo) and
+    nodeFrom != nodeTo
     or
     // Initial global variable value to a first use
     nodeFrom.(InitialGlobalValue).getGlobalDef() = defOrUse and
@@ -712,8 +705,25 @@ private Node getAPriorDefinition(SsaDefOrUse defOrUse) {
 /** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
 predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   exists(Node nFrom, boolean uncertain, SsaDefOrUse defOrUse |
-    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and
+    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and nodeFrom != nodeTo
+  |
     if uncertain = true then nodeFrom = [nFrom, getAPriorDefinition(defOrUse)] else nodeFrom = nFrom
+  )
+}
+
+private predicate isArgumentOfCallable(DataFlowCall call, ArgumentNode arg) {
+  arg.argumentOf(call, _)
+}
+
+/** Holds if there is def-use or use-use flow from `pun` to `nodeTo`. */
+predicate postUpdateFlow(PostUpdateNode pun, Node nodeTo) {
+  exists(UseOrPhi use, Node preUpdate |
+    adjustForPointerArith(pun, use) and
+    useToNode(use, nodeTo) and
+    preUpdate = pun.getPreUpdateNode() and
+    not exists(DataFlowCall call |
+      isArgumentOfCallable(call, preUpdate) and isArgumentOfCallable(call, nodeTo)
+    )
   )
 }
 
@@ -742,6 +752,7 @@ predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
     fromPhiNodeToUse(phi, sv, bb1, i1, use)
     or
     exists(PhiNode phiTo |
+      phi != phiTo and
       lastRefRedefExt(phi, _, _, phiTo) and
       nodeTo.(SsaPhiNode).getPhiNode() = phiTo
     )
@@ -760,13 +771,14 @@ private predicate variableWriteCand(IRBlock bb, int i, SourceVariable v) {
 }
 
 private predicate sourceVariableIsGlobal(
-  SourceVariable sv, Cpp::GlobalOrNamespaceVariable global, IRFunction func, int indirectionIndex
+  SourceVariable sv, GlobalLikeVariable global, IRFunction func, int indirectionIndex
 ) {
   exists(IRVariable irVar, BaseIRVariable base |
     sourceVariableHasBaseAndIndex(sv, base, indirectionIndex) and
     irVar = base.getIRVariable() and
     irVar.getEnclosingIRFunction() = func and
-    global = irVar.getAst()
+    global = irVar.getAst() and
+    not irVar instanceof IRDynamicInitializationFlag
   )
 }
 
@@ -919,7 +931,7 @@ class GlobalDef extends TGlobalDef, SsaDefOrUse {
   IRFunction getIRFunction() { result = global.getIRFunction() }
 
   /** Gets the global variable associated with this definition. */
-  Cpp::GlobalOrNamespaceVariable getVariable() { result = global.getVariable() }
+  GlobalLikeVariable getVariable() { result = global.getVariable() }
 }
 
 class Phi extends TPhi, SsaDefOrUse {
@@ -997,6 +1009,14 @@ class PhiNode extends SsaImpl::DefinitionExt {
     this instanceof SsaImpl::PhiNode or
     this instanceof SsaImpl::PhiReadNode
   }
+
+  /**
+   * Holds if this phi node is a phi-read node.
+   *
+   * Phi-read nodes are like normal phi nodes, but they are inserted based
+   * on reads instead of writes.
+   */
+  predicate isPhiRead() { this instanceof SsaImpl::PhiReadNode }
 }
 
 class DefinitionExt = SsaImpl::DefinitionExt;

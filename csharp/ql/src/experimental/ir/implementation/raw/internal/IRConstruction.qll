@@ -414,6 +414,8 @@ private module Cached {
   }
 }
 
+predicate hasUnreachedInstruction(IRFunction func) { none() }
+
 import CachedForDebugging
 
 cached
