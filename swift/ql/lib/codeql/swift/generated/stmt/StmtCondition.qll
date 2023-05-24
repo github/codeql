@@ -6,6 +6,12 @@ import codeql.swift.elements.stmt.ConditionElement
 
 module Generated {
   class StmtCondition extends Synth::TStmtCondition, AstNode {
+    /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final StmtCondition getResolveStep() { none() }
+
     override string getAPrimaryQlClass() { result = "StmtCondition" }
 
     /**

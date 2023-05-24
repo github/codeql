@@ -5,6 +5,12 @@ import codeql.swift.elements.Locatable
 
 module Generated {
   class Comment extends Synth::TComment, Locatable {
+    /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final Comment getResolveStep() { none() }
+
     override string getAPrimaryQlClass() { result = "Comment" }
 
     /**

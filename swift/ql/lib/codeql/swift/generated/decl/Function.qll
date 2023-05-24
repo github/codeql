@@ -6,5 +6,11 @@ import codeql.swift.elements.decl.GenericContext
 import codeql.swift.elements.decl.ValueDecl
 
 module Generated {
-  class Function extends Synth::TFunction, GenericContext, ValueDecl, Callable { }
+  class Function extends Synth::TFunction, GenericContext, ValueDecl, Callable {
+    /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final Function getResolveStep() { none() }
+  }
 }

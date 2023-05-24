@@ -4,5 +4,11 @@ private import codeql.swift.generated.Raw
 import codeql.swift.elements.AstNode
 
 module Generated {
-  class Stmt extends Synth::TStmt, AstNode { }
+  class Stmt extends Synth::TStmt, AstNode {
+    /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final Stmt getResolveStep() { none() }
+  }
 }

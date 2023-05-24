@@ -166,6 +166,7 @@ def get_ql_class(cls: schema.Class, lookup: typing.Dict[str, schema.Class]) -> q
         ipa=bool(cls.ipa),
         doc=cls.doc,
         hideable=cls.hideable,
+        non_hideable_root=not cls.hideable and any(lookup[b].hideable for b in cls.bases),
         **pragmas,
     )
 

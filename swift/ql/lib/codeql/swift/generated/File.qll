@@ -6,6 +6,12 @@ import codeql.swift.elements.Element
 module Generated {
   class File extends Synth::TFile, Element {
     /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final File getResolveStep() { none() }
+
+    /**
      * Gets the name of this file.
      */
     string getName() { result = Synth::convertFileToRaw(this).(Raw::File).getName() }

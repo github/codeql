@@ -6,6 +6,12 @@ import codeql.swift.elements.type.Type
 
 module Generated {
   class TypeRepr extends Synth::TTypeRepr, AstNode {
+    /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final TypeRepr getResolveStep() { none() }
+
     override string getAPrimaryQlClass() { result = "TypeRepr" }
 
     /**

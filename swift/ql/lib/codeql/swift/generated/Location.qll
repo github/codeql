@@ -7,6 +7,12 @@ import codeql.swift.elements.File
 module Generated {
   class Location extends Synth::TLocation, Element {
     /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final Location getResolveStep() { none() }
+
+    /**
      * Gets the file of this location.
      */
     File getFile() {

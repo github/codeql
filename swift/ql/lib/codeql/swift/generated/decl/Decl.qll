@@ -7,6 +7,12 @@ import codeql.swift.elements.decl.ModuleDecl
 module Generated {
   class Decl extends Synth::TDecl, AstNode {
     /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final Decl getResolveStep() { none() }
+
+    /**
      * Gets the module of this declaration.
      */
     ModuleDecl getModule() {

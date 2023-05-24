@@ -55,6 +55,13 @@ module Generated {
       result = this.getResolveStep().resolve()
     }
     {{/root}}
+    {{#non_hideable_root}}
+    /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final {{name}} getResolveStep() { none() }
+    {{/non_hideable_root}}
     {{#final}}
     override string getAPrimaryQlClass() { result = "{{name}}" }
     {{/final}}

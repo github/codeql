@@ -6,6 +6,12 @@ import codeql.swift.elements.ErrorElement
 
 module Generated {
   class UnspecifiedElement extends Synth::TUnspecifiedElement, ErrorElement {
+    /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final UnspecifiedElement getResolveStep() { none() }
+
     override string getAPrimaryQlClass() { result = "UnspecifiedElement" }
 
     /**

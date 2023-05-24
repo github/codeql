@@ -21,6 +21,12 @@ module Generated {
    * ```
    */
   class AvailabilityInfo extends Synth::TAvailabilityInfo, AstNode {
+    /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final AvailabilityInfo getResolveStep() { none() }
+
     override string getAPrimaryQlClass() { result = "AvailabilityInfo" }
 
     /**

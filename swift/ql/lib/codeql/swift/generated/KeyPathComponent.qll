@@ -11,6 +11,12 @@ module Generated {
    * A component of a `KeyPathExpr`.
    */
   class KeyPathComponent extends Synth::TKeyPathComponent, AstNode {
+    /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final KeyPathComponent getResolveStep() { none() }
+
     override string getAPrimaryQlClass() { result = "KeyPathComponent" }
 
     /**

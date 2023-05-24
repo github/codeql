@@ -415,7 +415,8 @@ def test_class_dir(generate_classes):
         schema.Class("A", derived={"B"}, group=dir),
         schema.Class("B", bases=["A"]),
     ]) == {
-        f"{dir}/A.qll": (a_ql_stub(name="A", import_prefix="another.rel.path."), a_ql_class(name="A", dir=pathlib.Path(dir))),
+        f"{dir}/A.qll": (
+            a_ql_stub(name="A", import_prefix="another.rel.path."), a_ql_class(name="A", dir=pathlib.Path(dir))),
         "B.qll": (a_ql_stub(name="B"),
                   a_ql_class(name="B", final=True, bases=["A"],
                              imports=[stub_import_prefix + "another.rel.path.A"])),
@@ -891,9 +892,30 @@ def test_hideable_property(generate_classes):
         "Other.qll": (a_ql_stub(name="Other"),
                       a_ql_class(name="Other", imports=[stub_import_prefix + "MyObject"],
                                  final=True, properties=[
-                          ql.Property(singular="X", type="MyObject", tablename="others", type_is_hideable=True,
-                                      tableparams=["this", "result"], doc="x of this other"),
-                      ])),
+                                 ql.Property(singular="X", type="MyObject", tablename="others",
+                                             type_is_hideable=True,
+                                             tableparams=["this", "result"], doc="x of this other"),
+                                 ])),
+    }
+
+
+def test_non_hideable_root_class(generate_classes):
+    assert generate_classes([
+        schema.Class("Root", derived={"Hideable", "NonHideable"}, hideable=True),
+        schema.Class("Hideable", bases=["Root"], hideable=True),
+        schema.Class("NonHideable", bases=["Root"], derived={"NonHideableDerived"}),
+        schema.Class("NonHideableDerived", bases=["NonHideable"]),
+    ]) == {
+        "Root.qll": (a_ql_stub(name="Root"), a_ql_class(name="Root", hideable=True)),
+        "Hideable.qll": (a_ql_stub(name="Hideable"),
+                         a_ql_class(name="Hideable", bases=["Root"], imports=[stub_import_prefix + "Root"],
+                                    final=True, hideable=True)),
+        "NonHideable.qll": (a_ql_stub(name="NonHideable"),
+                            a_ql_class(name="NonHideable", bases=["Root"], imports=[stub_import_prefix + "Root"],
+                                       non_hideable_root=True)),
+        "NonHideableDerived.qll": (a_ql_stub(name="NonHideableDerived"),
+                                   a_ql_class(name="NonHideableDerived", bases=["NonHideable"],
+                                              imports=[stub_import_prefix + "NonHideable"], final=True)),
     }
 
 

@@ -115,6 +115,7 @@ class Class:
     ipa: bool = False
     doc: List[str] = field(default_factory=list)
     hideable: bool = False
+    non_hideable_root: bool = False
 
     def __post_init__(self):
         self.bases = [Base(str(b), str(prev)) for b, prev in zip(self.bases, itertools.chain([""], self.bases))]

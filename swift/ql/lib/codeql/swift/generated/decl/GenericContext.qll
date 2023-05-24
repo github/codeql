@@ -7,6 +7,12 @@ import codeql.swift.elements.decl.GenericTypeParamDecl
 module Generated {
   class GenericContext extends Synth::TGenericContext, Element {
     /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final GenericContext getResolveStep() { none() }
+
+    /**
      * Gets the `index`th generic type parameter of this generic context (0-based).
      */
     GenericTypeParamDecl getGenericTypeParam(int index) {

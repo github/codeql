@@ -10,5 +10,11 @@ module Generated {
    * if #available(iOS 12, *)
    * ```
    */
-  class AvailabilitySpec extends Synth::TAvailabilitySpec, AstNode { }
+  class AvailabilitySpec extends Synth::TAvailabilitySpec, AstNode {
+    /**
+     * Would get the most immediate element that should substitute this element in the explicit AST.
+     * There is no such element for this class, which cannot be hidden in the AST.
+     */
+    final AvailabilitySpec getResolveStep() { none() }
+  }
 }
