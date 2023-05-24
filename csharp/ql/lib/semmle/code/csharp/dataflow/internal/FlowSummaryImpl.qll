@@ -170,16 +170,14 @@ module Public {
   private string getComponent(SummaryComponent sc) {
     result = getComponentSpecific(sc)
     or
-    (
-      exists(ArgumentPosition pos |
-        sc = TParameterSummaryComponent(pos) and
-        result = "Parameter[" + getArgumentPosition(pos) + "]"
-      )
-      or
-      exists(ParameterPosition pos |
-        sc = TArgumentSummaryComponent(pos) and
-        result = "Argument[" + getParameterPosition(pos) + "]"
-      )
+    exists(ArgumentPosition pos |
+      sc = TParameterSummaryComponent(pos) and
+      result = "Parameter[" + getArgumentPosition(pos) + "]"
+    )
+    or
+    exists(ParameterPosition pos |
+      sc = TArgumentSummaryComponent(pos) and
+      result = "Argument[" + getParameterPosition(pos) + "]"
     )
     or
     sc = TReturnSummaryComponent(getReturnValueKind()) and result = "ReturnValue"
