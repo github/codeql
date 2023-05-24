@@ -59,6 +59,8 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
       sinkSpec(e, package, type, name, signature, ext, input) and
       ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, _)
     )
+    or
+    isCustomSink(e, kind)
   }
 
   predicate isNeutral(Endpoint e) {
@@ -107,6 +109,18 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
       result = c.getCallee()
     )
   }
+}
+
+/**
+ * Contains endpoints that are defined in QL code rather than as a MaD model. Ideally this predicate
+ * should be empty.
+ */
+private predicate isCustomSink(Endpoint e, string kind) {
+  e.asExpr() instanceof ArgumentToExec and kind = "command injection"
+  or
+  e instanceof RequestForgerySink and kind = "request forgery"
+  or
+  e instanceof QueryInjectionSink and kind = "sql"
 }
 
 module CharacteristicsImpl =
@@ -221,6 +235,37 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
 }
 
 /**
+ * A negative characteristic that indicates that an endpoint is a MaD taint step. MaD modeled taint steps are global,
+ * so they are not sinks for any query. Non-MaD taint steps might be specific to a particular query, so we don't
+ * filter those out.
+ */
+private class IsMaDTaintStepCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
+  IsMaDTaintStepCharacteristic() { this = "taint step" }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(e, _, _) or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(e, _, _) or
+    FlowSummaryImpl::Private::Steps::summaryGetterStep(e, _, _, _) or
+    FlowSummaryImpl::Private::Steps::summarySetterStep(e, _, _, _)
+  }
+}
+
+/**
+ * A negative characteristic that filters out qualifiers that are classes (i.e. static calls). These
+ *are unlikely to have any non-trivial flow going into them.
+ */
+private class ClassQualifierCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
+  ClassQualifierCharacteristic() { this = "class qualifier" }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    exists(Call c |
+      e.asExpr() = c.getQualifier() and
+      c.getQualifier() instanceof TypeAccess
+    )
+  }
+}
+
+/**
  * A characteristic that limits candidates to parameters of methods that are recognized as `ModelApi`, iow., APIs that
  * are considered worth modeling.
  */
@@ -255,17 +300,70 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
 }
 
 /**
- * A negative characteristic that filters out qualifiers that are classes (i.e. static calls). These
- *are unlikely to have any non-trivial flow going into them.
+ * A negative characteristic that indicates that an endpoint is a non-sink argument to a method whose sinks have already
+ * been modeled.
+ *
+ * WARNING: These endpoints should not be used as negative samples for training, because some sinks may have been missed
+ * when the method was modeled. Specifically, as we start using ATM to merge in new declarations, we can be less sure
+ * that a method with one argument modeled as a MaD sink has also had its remaining arguments manually reviewed. The
+ * ML model might have predicted argument 0 of some method to be a sink but not argument 1, when in fact argument 1 is
+ * also a sink.
  */
-private class ClassQualifierCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
-  ClassQualifierCharacteristic() { this = "class qualifier" }
+private class OtherArgumentToModeledMethodCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic
+{
+  OtherArgumentToModeledMethodCharacteristic() {
+    this = "other argument to a method that has already been modeled"
+  }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    exists(Call c |
-      e.asExpr() = c.getQualifier() and
-      c.getCallee().isStatic()
+    not ApplicationCandidatesImpl::isSink(e, _) and
+    exists(DataFlow::Node otherSink |
+      ApplicationCandidatesImpl::isSink(otherSink, _) and
+      e.asExpr() = otherSink.asExpr().(Argument).getCall().getAnArgument() and
+      e != otherSink
     )
+  }
+}
+
+/**
+ * A negative characteristic that indicates that an endpoint is not part of the source code for the project being
+ * analyzed.
+ *
+ * WARNING: These endpoints should not be used as negative samples for training, because they are not necessarily
+ * non-sinks. They are merely not interesting sinks to run through the ML model.
+ *
+ * TODO: Check that this actually does anything.
+ */
+private class IsExternalCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic {
+  IsExternalCharacteristic() { this = "external" }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    not exists(e.getLocation().getFile().getRelativePath())
+  }
+}
+
+/**
+ * A negative characteristic that indicates that an endpoint is not a `to` node for any known taint step. Such a node
+ * cannot be tainted, because taint can't flow into it.
+ *
+ * WARNING: These endpoints should not be used as negative samples for training, because they may include sinks for
+ * which our taint tracking modeling is incomplete.
+ */
+private class CannotBeTaintedCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic
+{
+  CannotBeTaintedCharacteristic() { this = "cannot be tainted" }
+
+  override predicate appliesToEndpoint(Endpoint e) { not this.isKnownOutNodeForStep(e) }
+
+  /**
+   * Holds if the node `n` is known as the predecessor in a modeled flow step.
+   */
+  private predicate isKnownOutNodeForStep(Endpoint e) {
+    TaintTracking::localTaintStep(_, e) or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(_, e, _) or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(_, e, _) or
+    FlowSummaryImpl::Private::Steps::summaryGetterStep(_, _, e, _) or
+    FlowSummaryImpl::Private::Steps::summarySetterStep(_, _, e, _)
   }
 }
 
