@@ -16,22 +16,22 @@ private module Impl {
       bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
       n = bElement and
       nSelfParam = n + 1 and
-      nParam = nSelfParam + 1 + max(int i | i = -1 or exists(e.getImmediateParam(i)) | i) and
+      nParam = nSelfParam + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
       nBody = nParam + 1 and
-      nCapture = nBody + 1 + max(int i | i = -1 or exists(e.getImmediateCapture(i)) | i) and
+      nCapture = nBody + 1 + max(int i | i = -1 or exists(e.getCapture(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getImmediateSelfParam() and partialPredicateCall = "SelfParam()"
+        index = n and result = e.getSelfParam() and partialPredicateCall = "SelfParam()"
         or
-        result = e.getImmediateParam(index - nSelfParam) and
+        result = e.getParam(index - nSelfParam) and
         partialPredicateCall = "Param(" + (index - nSelfParam).toString() + ")"
         or
-        index = nParam and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        index = nParam and result = e.getBody() and partialPredicateCall = "Body()"
         or
-        result = e.getImmediateCapture(index - nBody) and
+        result = e.getCapture(index - nBody) and
         partialPredicateCall = "Capture(" + (index - nBody).toString() + ")"
       )
     )
@@ -195,13 +195,13 @@ private module Impl {
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
-      nSpec = n + 1 + max(int i | i = -1 or exists(e.getImmediateSpec(i)) | i) and
+      nSpec = n + 1 + max(int i | i = -1 or exists(e.getSpec(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
         or
-        result = e.getImmediateSpec(index - n) and
+        result = e.getSpec(index - n) and
         partialPredicateCall = "Spec(" + (index - n).toString() + ")"
       )
     )
@@ -229,14 +229,13 @@ private module Impl {
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
-      nSubscriptArgument =
-        n + 1 + max(int i | i = -1 or exists(e.getImmediateSubscriptArgument(i)) | i) and
+      nSubscriptArgument = n + 1 + max(int i | i = -1 or exists(e.getSubscriptArgument(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
         or
-        result = e.getImmediateSubscriptArgument(index - n) and
+        result = e.getSubscriptArgument(index - n) and
         partialPredicateCall = "SubscriptArgument(" + (index - n).toString() + ")"
       )
     )
@@ -295,13 +294,13 @@ private module Impl {
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
-      nMember = n + 1 + max(int i | i = -1 or exists(e.getImmediateMember(i)) | i) and
+      nMember = n + 1 + max(int i | i = -1 or exists(e.getMember(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
         or
-        result = e.getImmediateMember(index - n) and
+        result = e.getMember(index - n) and
         partialPredicateCall = "Member(" + (index - n).toString() + ")"
       )
     )
@@ -314,14 +313,13 @@ private module Impl {
       b = 0 and
       bElement = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfElement(e, i, _)) | i) and
       n = bElement and
-      nGenericTypeParam =
-        n + 1 + max(int i | i = -1 or exists(e.getImmediateGenericTypeParam(i)) | i) and
+      nGenericTypeParam = n + 1 + max(int i | i = -1 or exists(e.getGenericTypeParam(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfElement(e, index - b, partialPredicateCall)
         or
-        result = e.getImmediateGenericTypeParam(index - n) and
+        result = e.getGenericTypeParam(index - n) and
         partialPredicateCall = "GenericTypeParam(" + (index - n).toString() + ")"
       )
     )
@@ -504,7 +502,7 @@ private module Impl {
         or
         result = getImmediateChildOfDecl(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        index = n and result = e.getBody() and partialPredicateCall = "Body()"
       )
     )
   }
@@ -529,13 +527,13 @@ private module Impl {
       b = 0 and
       bValueDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfValueDecl(e, i, _)) | i) and
       n = bValueDecl and
-      nAccessor = n + 1 + max(int i | i = -1 or exists(e.getImmediateAccessor(i)) | i) and
+      nAccessor = n + 1 + max(int i | i = -1 or exists(e.getAccessor(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfValueDecl(e, index - b, partialPredicateCall)
         or
-        result = e.getImmediateAccessor(index - n) and
+        result = e.getAccessor(index - n) and
         partialPredicateCall = "Accessor(" + (index - n).toString() + ")"
       )
     )
@@ -548,13 +546,13 @@ private module Impl {
       b = 0 and
       bValueDecl = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfValueDecl(e, i, _)) | i) and
       n = bValueDecl and
-      nParam = n + 1 + max(int i | i = -1 or exists(e.getImmediateParam(i)) | i) and
+      nParam = n + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfValueDecl(e, index - b, partialPredicateCall)
         or
-        result = e.getImmediateParam(index - n) and
+        result = e.getParam(index - n) and
         partialPredicateCall = "Param(" + (index - n).toString() + ")"
       )
     )
@@ -749,7 +747,7 @@ private module Impl {
         bAbstractStorageDecl + 1 +
           max(int i | i = -1 or exists(getImmediateChildOfGenericContext(e, i, _)) | i) and
       n = bGenericContext and
-      nParam = n + 1 + max(int i | i = -1 or exists(e.getImmediateParam(i)) | i) and
+      nParam = n + 1 + max(int i | i = -1 or exists(e.getParam(i)) | i) and
       (
         none()
         or
@@ -758,7 +756,7 @@ private module Impl {
         result =
           getImmediateChildOfGenericContext(e, index - bAbstractStorageDecl, partialPredicateCall)
         or
-        result = e.getImmediateParam(index - n) and
+        result = e.getParam(index - n) and
         partialPredicateCall = "Param(" + (index - n).toString() + ")"
       )
     )
@@ -784,19 +782,19 @@ private module Impl {
         result = getImmediateChildOfAbstractStorageDecl(e, index - b, partialPredicateCall)
         or
         index = n and
-        result = e.getImmediatePropertyWrapperBackingVarBinding() and
+        result = e.getPropertyWrapperBackingVarBinding() and
         partialPredicateCall = "PropertyWrapperBackingVarBinding()"
         or
         index = nPropertyWrapperBackingVarBinding and
-        result = e.getImmediatePropertyWrapperBackingVar() and
+        result = e.getPropertyWrapperBackingVar() and
         partialPredicateCall = "PropertyWrapperBackingVar()"
         or
         index = nPropertyWrapperBackingVar and
-        result = e.getImmediatePropertyWrapperProjectionVarBinding() and
+        result = e.getPropertyWrapperProjectionVarBinding() and
         partialPredicateCall = "PropertyWrapperProjectionVarBinding()"
         or
         index = nPropertyWrapperProjectionVarBinding and
-        result = e.getImmediatePropertyWrapperProjectionVar() and
+        result = e.getPropertyWrapperProjectionVar() and
         partialPredicateCall = "PropertyWrapperProjectionVar()"
       )
     )
@@ -929,11 +927,11 @@ private module Impl {
         result = getImmediateChildOfVarDecl(e, index - b, partialPredicateCall)
         or
         index = n and
-        result = e.getImmediatePropertyWrapperLocalWrappedVarBinding() and
+        result = e.getPropertyWrapperLocalWrappedVarBinding() and
         partialPredicateCall = "PropertyWrapperLocalWrappedVarBinding()"
         or
         index = nPropertyWrapperLocalWrappedVarBinding and
-        result = e.getImmediatePropertyWrapperLocalWrappedVar() and
+        result = e.getPropertyWrapperLocalWrappedVar() and
         partialPredicateCall = "PropertyWrapperLocalWrappedVar()"
       )
     )
@@ -1082,7 +1080,7 @@ private module Impl {
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nFunction = n + 1 and
-      nArgument = nFunction + 1 + max(int i | i = -1 or exists(e.getImmediateArgument(i)) | i) and
+      nArgument = nFunction + 1 + max(int i | i = -1 or exists(e.getArgument(i)) | i) and
       (
         none()
         or
@@ -1090,7 +1088,7 @@ private module Impl {
         or
         index = n and result = e.getImmediateFunction() and partialPredicateCall = "Function()"
         or
-        result = e.getImmediateArgument(index - nFunction) and
+        result = e.getArgument(index - nFunction) and
         partialPredicateCall = "Argument(" + (index - nFunction).toString() + ")"
       )
     )
@@ -1140,14 +1138,14 @@ private module Impl {
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
-      nBindingDecl = n + 1 + max(int i | i = -1 or exists(e.getImmediateBindingDecl(i)) | i) and
+      nBindingDecl = n + 1 + max(int i | i = -1 or exists(e.getBindingDecl(i)) | i) and
       nClosureBody = nBindingDecl + 1 and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
-        result = e.getImmediateBindingDecl(index - n) and
+        result = e.getBindingDecl(index - n) and
         partialPredicateCall = "BindingDecl(" + (index - n).toString() + ")"
         or
         index = nBindingDecl and
@@ -1470,15 +1468,15 @@ private module Impl {
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nRoot = n + 1 and
-      nComponent = nRoot + 1 + max(int i | i = -1 or exists(e.getImmediateComponent(i)) | i) and
+      nComponent = nRoot + 1 + max(int i | i = -1 or exists(e.getComponent(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getImmediateRoot() and partialPredicateCall = "Root()"
+        index = n and result = e.getRoot() and partialPredicateCall = "Root()"
         or
-        result = e.getImmediateComponent(index - nRoot) and
+        result = e.getComponent(index - nRoot) and
         partialPredicateCall = "Component(" + (index - nRoot).toString() + ")"
       )
     )
@@ -1773,7 +1771,7 @@ private module Impl {
         or
         index = n and result = e.getImmediateSubExpr() and partialPredicateCall = "SubExpr()"
         or
-        index = nSubExpr and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        index = nSubExpr and result = e.getBody() and partialPredicateCall = "Body()"
       )
     )
   }
@@ -1824,7 +1822,7 @@ private module Impl {
         or
         result = getImmediateChildOfExpr(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getImmediateTypeRepr() and partialPredicateCall = "TypeRepr()"
+        index = n and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
       )
     )
   }
@@ -2675,13 +2673,13 @@ private module Impl {
       bLiteralExpr =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLiteralExpr(e, i, _)) | i) and
       n = bLiteralExpr and
-      nArgument = n + 1 + max(int i | i = -1 or exists(e.getImmediateArgument(i)) | i) and
+      nArgument = n + 1 + max(int i | i = -1 or exists(e.getArgument(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfLiteralExpr(e, index - b, partialPredicateCall)
         or
-        result = e.getImmediateArgument(index - n) and
+        result = e.getArgument(index - n) and
         partialPredicateCall = "Argument(" + (index - n).toString() + ")"
       )
     )
@@ -2837,13 +2835,13 @@ private module Impl {
       bLookupExpr =
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLookupExpr(e, i, _)) | i) and
       n = bLookupExpr and
-      nArgument = n + 1 + max(int i | i = -1 or exists(e.getImmediateArgument(i)) | i) and
+      nArgument = n + 1 + max(int i | i = -1 or exists(e.getArgument(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfLookupExpr(e, index - b, partialPredicateCall)
         or
-        result = e.getImmediateArgument(index - n) and
+        result = e.getArgument(index - n) and
         partialPredicateCall = "Argument(" + (index - n).toString() + ")"
       )
     )
@@ -3254,9 +3252,7 @@ private module Impl {
         or
         result = getImmediateChildOfPattern(e, index - b, partialPredicateCall)
         or
-        index = n and
-        result = e.getImmediateCastTypeRepr() and
-        partialPredicateCall = "CastTypeRepr()"
+        index = n and result = e.getCastTypeRepr() and partialPredicateCall = "CastTypeRepr()"
         or
         index = nCastTypeRepr and
         result = e.getImmediateSubPattern() and
@@ -3351,9 +3347,7 @@ private module Impl {
         or
         index = n and result = e.getImmediateSubPattern() and partialPredicateCall = "SubPattern()"
         or
-        index = nSubPattern and
-        result = e.getImmediateTypeRepr() and
-        partialPredicateCall = "TypeRepr()"
+        index = nSubPattern and result = e.getTypeRepr() and partialPredicateCall = "TypeRepr()"
       )
     )
   }
@@ -3406,7 +3400,7 @@ private module Impl {
         partialPredicateCall = "Initializer()"
         or
         index = nInitializer and
-        result = e.getImmediateAvailability() and
+        result = e.getAvailability() and
         partialPredicateCall = "Availability()"
       )
     )
@@ -3432,13 +3426,13 @@ private module Impl {
       b = 0 and
       bAstNode = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfAstNode(e, i, _)) | i) and
       n = bAstNode and
-      nElement = n + 1 + max(int i | i = -1 or exists(e.getImmediateElement(i)) | i) and
+      nElement = n + 1 + max(int i | i = -1 or exists(e.getElement(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfAstNode(e, index - b, partialPredicateCall)
         or
-        result = e.getImmediateElement(index - n) and
+        result = e.getElement(index - n) and
         partialPredicateCall = "Element(" + (index - n).toString() + ")"
       )
     )
@@ -3480,15 +3474,15 @@ private module Impl {
       bStmt = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfStmt(e, i, _)) | i) and
       n = bStmt and
       nBody = n + 1 and
-      nLabel = nBody + 1 + max(int i | i = -1 or exists(e.getImmediateLabel(i)) | i) and
+      nLabel = nBody + 1 + max(int i | i = -1 or exists(e.getLabel(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        index = n and result = e.getBody() and partialPredicateCall = "Body()"
         or
-        result = e.getImmediateLabel(index - nBody) and
+        result = e.getLabel(index - nBody) and
         partialPredicateCall = "Label(" + (index - nBody).toString() + ")"
       )
     )
@@ -3520,7 +3514,7 @@ private module Impl {
         or
         result = getImmediateChildOfStmt(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        index = n and result = e.getBody() and partialPredicateCall = "Body()"
       )
     )
   }
@@ -3641,15 +3635,15 @@ private module Impl {
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabeledStmt(e, i, _)) | i) and
       n = bLabeledStmt and
       nBody = n + 1 and
-      nCatch = nBody + 1 + max(int i | i = -1 or exists(e.getImmediateCatch(i)) | i) and
+      nCatch = nBody + 1 + max(int i | i = -1 or exists(e.getCatch(i)) | i) and
       (
         none()
         or
         result = getImmediateChildOfLabeledStmt(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        index = n and result = e.getBody() and partialPredicateCall = "Body()"
         or
-        result = e.getImmediateCatch(index - nBody) and
+        result = e.getCatch(index - nBody) and
         partialPredicateCall = "Catch(" + (index - nBody).toString() + ")"
       )
     )
@@ -3667,7 +3661,7 @@ private module Impl {
         or
         result = getImmediateChildOfLabeledStmt(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        index = n and result = e.getBody() and partialPredicateCall = "Body()"
       )
     )
   }
@@ -3697,7 +3691,7 @@ private module Impl {
         or
         index = nSequence and result = e.getImmediateWhere() and partialPredicateCall = "Where()"
         or
-        index = nWhere and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        index = nWhere and result = e.getBody() and partialPredicateCall = "Body()"
       )
     )
   }
@@ -3716,7 +3710,7 @@ private module Impl {
         or
         result = getImmediateChildOfLabeledStmt(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getImmediateCondition() and partialPredicateCall = "Condition()"
+        index = n and result = e.getCondition() and partialPredicateCall = "Condition()"
       )
     )
   }
@@ -3738,7 +3732,7 @@ private module Impl {
         or
         index = n and result = e.getImmediateCondition() and partialPredicateCall = "Condition()"
         or
-        index = nCondition and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        index = nCondition and result = e.getBody() and partialPredicateCall = "Body()"
       )
     )
   }
@@ -3750,7 +3744,7 @@ private module Impl {
         b + 1 + max(int i | i = -1 or exists(getImmediateChildOfLabeledStmt(e, i, _)) | i) and
       n = bLabeledStmt and
       nExpr = n + 1 and
-      nCase = nExpr + 1 + max(int i | i = -1 or exists(e.getImmediateCase(i)) | i) and
+      nCase = nExpr + 1 + max(int i | i = -1 or exists(e.getCase(i)) | i) and
       (
         none()
         or
@@ -3758,7 +3752,7 @@ private module Impl {
         or
         index = n and result = e.getImmediateExpr() and partialPredicateCall = "Expr()"
         or
-        result = e.getImmediateCase(index - nExpr) and
+        result = e.getCase(index - nExpr) and
         partialPredicateCall = "Case(" + (index - nExpr).toString() + ")"
       )
     )
@@ -3777,7 +3771,7 @@ private module Impl {
         or
         result = getImmediateChildOfLabeledConditionalStmt(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        index = n and result = e.getBody() and partialPredicateCall = "Body()"
       )
     )
   }
@@ -3796,9 +3790,9 @@ private module Impl {
         or
         result = getImmediateChildOfLabeledConditionalStmt(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getImmediateThen() and partialPredicateCall = "Then()"
+        index = n and result = e.getThen() and partialPredicateCall = "Then()"
         or
-        index = nThen and result = e.getImmediateElse() and partialPredicateCall = "Else()"
+        index = nThen and result = e.getElse() and partialPredicateCall = "Else()"
       )
     )
   }
@@ -3816,7 +3810,7 @@ private module Impl {
         or
         result = getImmediateChildOfLabeledConditionalStmt(e, index - b, partialPredicateCall)
         or
-        index = n and result = e.getImmediateBody() and partialPredicateCall = "Body()"
+        index = n and result = e.getBody() and partialPredicateCall = "Body()"
       )
     )
   }
