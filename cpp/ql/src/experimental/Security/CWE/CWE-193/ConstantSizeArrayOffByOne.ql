@@ -78,7 +78,7 @@ predicate isInvalidPointerDerefSink2(DataFlow::Node sink, Instruction i, string 
   )
 }
 
-predicate pointerArithOverflow(
+predicate pointerArithOverflow0(
   PointerArithmeticInstruction pai, Field f, int size, int bound, int delta
 ) {
   pai.getElementSize() = f.getUnspecifiedType().(ArrayType).getBaseType().getSize() and
@@ -89,13 +89,20 @@ predicate pointerArithOverflow(
 
 module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) {
-    pointerArithOverflow(source.asInstruction(), _, _, _, _)
+    pointerArithOverflow0(source.asInstruction(), _, _, _, _)
   }
 
   predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink1(sink, _, _) }
 }
 
 module PointerArithmeticToDerefFlow = DataFlow::Global<PointerArithmeticToDerefConfig>;
+
+predicate pointerArithOverflow(
+  PointerArithmeticInstruction pai, Field f, int size, int bound, int delta
+) {
+  pointerArithOverflow0(pai, f, size, bound, delta) and
+  PointerArithmeticToDerefFlow::flow(DataFlow::instructionNode(pai), _)
+}
 
 module FieldAddressToDerefConfig implements DataFlow::StateConfigSig {
   newtype FlowState =
