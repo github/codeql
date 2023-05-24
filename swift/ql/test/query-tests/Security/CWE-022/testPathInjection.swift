@@ -45,7 +45,7 @@ class NSString {
 }
 
 class Data {
-	struct ReadingOptions : OptionSet { let rawValue: Int }
+    struct ReadingOptions : OptionSet { let rawValue: Int }
     struct WritingOptions : OptionSet { let rawValue: Int }
 
     init<S>(_ elements: S) { count = 0 }
@@ -369,10 +369,10 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
     // sqlite3
 
     var db: OpaquePointer?
-	let localData = Data(0)
-	let remoteData = Data(contentsOf: URL(string: "http://example.com/")!, options: [])
-	localData.copyBytes(to: buffer1, count: localData.count)
-	remoteData.copyBytes(to: buffer2, count: remoteData.count)
+    let localData = Data(0)
+    let remoteData = Data(contentsOf: URL(string: "http://example.com/")!, options: [])
+    localData.copyBytes(to: buffer1, count: localData.count)
+    remoteData.copyBytes(to: buffer2, count: remoteData.count)
 
     _ = sqlite3_open("myFile.sqlite3", &db) // GOOD
     _ = sqlite3_open(remoteString, &db) // $ hasPathInjection=253
@@ -386,7 +386,7 @@ func test(buffer1: UnsafeMutablePointer<UInt8>, buffer2: UnsafeMutablePointer<UI
 
     // SQLite.swift
 
-	try! _ = Connection()
+    try! _ = Connection()
     try! _ = Connection(Connection.Location.uri("myFile.sqlite3")) // GOOD
     try! _ = Connection(Connection.Location.uri(remoteString)) // $ MISSING: hasPathInjection=253
     try! _ = Connection("myFile.sqlite3") // GOOD
