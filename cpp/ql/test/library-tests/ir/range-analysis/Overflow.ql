@@ -2,12 +2,10 @@ import cpp
 import semmle.code.cpp.rangeanalysis.new.SimpleRangeAnalysis
 import TestUtilities.InlineExpectationsTest
 
-class RangeAnalysisTest extends InlineExpectationsTest {
-  RangeAnalysisTest() { this = "RangeAnalysisTest" }
+module RangeAnalysisTest implements TestSig {
+  string getARelevantTag() { result = "overflow" }
 
-  override string getARelevantTag() { result = "overflow" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(Expr e |
       tag = "overflow" and
       element = e.toString() and
@@ -21,3 +19,5 @@ class RangeAnalysisTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<RangeAnalysisTest>
