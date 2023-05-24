@@ -326,23 +326,6 @@ private class OtherArgumentToModeledMethodCharacteristic extends Characteristics
 }
 
 /**
- * A negative characteristic that indicates that an endpoint is not part of the source code for the project being
- * analyzed.
- *
- * WARNING: These endpoints should not be used as negative samples for training, because they are not necessarily
- * non-sinks. They are merely not interesting sinks to run through the ML model.
- *
- * TODO: Check that this actually does anything.
- */
-private class IsExternalCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic {
-  IsExternalCharacteristic() { this = "external" }
-
-  override predicate appliesToEndpoint(Endpoint e) {
-    not exists(e.getLocation().getFile().getRelativePath())
-  }
-}
-
-/**
  * A negative characteristic that indicates that an endpoint is not a `to` node for any known taint step. Such a node
  * cannot be tainted, because taint can't flow into it.
  *
