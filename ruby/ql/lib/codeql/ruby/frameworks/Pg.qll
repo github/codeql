@@ -35,7 +35,7 @@ module Pg {
     }
   }
 
-  /** A call that prepares an SQL statment to be executed later. */
+  /** A call that prepares an SQL statement to be executed later. */
   private class PgPrepareCall extends SqlConstruction::Range, DataFlow::CallNode {
     private DataFlow::Node query;
     private PgConnection pgConnection;
