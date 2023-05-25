@@ -30,7 +30,11 @@ class SensitiveCredential extends SensitiveDataType, TCredential {
   override string toString() { result = "credential" }
 
   override string getRegexp() {
-    result = HeuristicNames::maybeSensitiveRegexp(_) or
+    exists(SensitiveDataClassification classification |
+      not classification = SensitiveDataClassification::id() and // not accurate enough
+      result = HeuristicNames::maybeSensitiveRegexp(classification)
+    )
+    or
     result = "(?is).*(license.?key).*"
   }
 }
@@ -54,7 +58,7 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
         // Geographic location - where the user is (or was)
         "latitude|longitude|" +
         // Financial data - such as credit card numbers, salary, bank accounts, and debts
-        "credit.?card|debit.?card|salary|" +
+        "credit.?card|debit.?card|salary|bank.?account|" +
         // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
         "email|" +
         // Health - medical conditions, insurance status, prescription records

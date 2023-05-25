@@ -56,14 +56,14 @@ func testHashMethods(passwd : UnsafeRawBufferPointer, cert: String, encrypted_pa
     var hash = Crypto.Insecure.MD5.hash(data: passwd)  // BAD
     hash = Crypto.Insecure.MD5.hash(data: cert)   // BAD
     hash = Crypto.Insecure.MD5.hash(data: encrypted_passwd)  // GOOD  (not sensitive)
-    hash = Crypto.Insecure.MD5.hash(data: account_no)   // BAD
+    hash = Crypto.Insecure.MD5.hash(data: account_no)   // BAD [NOT DETECTED]
     hash = Crypto.Insecure.MD5.hash(data: credit_card_no)   // BAD
     hash = Crypto.Insecure.MD5.hash(data: credit_card_no)   // BAD
 
     hash = Crypto.Insecure.SHA1.hash(data: passwd)  // BAD
     hash = Crypto.Insecure.SHA1.hash(data: cert)   // BAD
     hash = Crypto.Insecure.SHA1.hash(data: encrypted_passwd)  // GOOD  (not sensitive)
-    hash = Crypto.Insecure.SHA1.hash(data: account_no)   // BAD
+    hash = Crypto.Insecure.SHA1.hash(data: account_no)   // BAD [NOT DETECTED]
     hash = Crypto.Insecure.SHA1.hash(data: credit_card_no)   // BAD
 
     hash = Crypto.SHA256.hash(data: passwd)   // BAD [NOT DETECTED] not a computationally expensive hash
@@ -90,7 +90,7 @@ func testMD5UpdateWithData(passwd : String, cert: String, encrypted_passwd : Str
     hash.update(data: passwd)  // BAD
     hash.update(data: cert)  // BAD
     hash.update(data: encrypted_passwd)  // GOOD  (not sensitive)
-    hash.update(data: account_no)   // BAD
+    hash.update(data: account_no)   // BAD [NOT DETECTED]
     hash.update(data: credit_card_no)   // BAD
 }
 
@@ -99,7 +99,7 @@ func testSHA1UpdateWithData(passwd : String, cert: String, encrypted_passwd : St
     hash.update(data: passwd)  // BAD
     hash.update(data: cert)  // BAD
     hash.update(data: encrypted_passwd)  // GOOD  (not sensitive)
-    hash.update(data: account_no)   // BAD
+    hash.update(data: account_no)   // BAD [NOT DETECTED]
     hash.update(data: credit_card_no)   // BAD
 }
 
@@ -132,7 +132,7 @@ func testMD5UpdateWithUnsafeRawBufferPointer(passwd : UnsafeRawBufferPointer, ce
     hash.update(bufferPointer: passwd)  // BAD
     hash.update(bufferPointer: cert)  // BAD
     hash.update(bufferPointer: encrypted_passwd)  // GOOD  (not sensitive)
-    hash.update(bufferPointer: account_no)   // BAD
+    hash.update(bufferPointer: account_no)   // BAD [NOT DETECTED]
     hash.update(bufferPointer: credit_card_no)   // BAD
 }
 
@@ -141,7 +141,7 @@ func testSHA1UpdateWithUnsafeRawBufferPointer(passwd : UnsafeRawBufferPointer, c
     hash.update(bufferPointer: passwd)  // BAD
     hash.update(bufferPointer: cert)  // BAD
     hash.update(bufferPointer: encrypted_passwd)  // GOOD  (not sensitive)
-    hash.update(bufferPointer: account_no)   // BAD
+    hash.update(bufferPointer: account_no)   // BAD [NOT DETECTED]
     hash.update(bufferPointer: credit_card_no)   // BAD
 }
 
