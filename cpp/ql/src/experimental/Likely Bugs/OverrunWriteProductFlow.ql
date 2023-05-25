@@ -13,7 +13,7 @@
  */
 
 import cpp
-import experimental.semmle.code.cpp.dataflow.ProductFlow
+import semmle.code.cpp.ir.dataflow.internal.ProductFlow
 import semmle.code.cpp.ir.IR
 import semmle.code.cpp.models.interfaces.Allocation
 import semmle.code.cpp.models.interfaces.ArrayFunction

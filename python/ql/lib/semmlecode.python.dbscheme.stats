@@ -1056,7 +1056,7 @@
 <v>20</v>
 </e>
 <e>
-<k>queryPath</k>
+<k>path</k>
 <v>2</v>
 </e>
 <e>
@@ -1064,14 +1064,14 @@
 <v>5</v>
 </e>
 <e>
-<k>data</k>
+<k>value</k>
 <v>41</v>
 </e>
 </columnsizes>
 <dependencies>
 <dep>
 <src>id</src>
-<trg>queryPath</trg>
+<trg>path</trg>
 <val>
 <hist>
 <budget>12</budget>
@@ -1103,7 +1103,7 @@
 </dep>
 <dep>
 <src>id</src>
-<trg>data</trg>
+<trg>value</trg>
 <val>
 <hist>
 <budget>12</budget>
@@ -1118,7 +1118,7 @@
 </val>
 </dep>
 <dep>
-<src>queryPath</src>
+<src>path</src>
 <trg>id</trg>
 <val>
 <hist>
@@ -1134,7 +1134,7 @@
 </val>
 </dep>
 <dep>
-<src>queryPath</src>
+<src>path</src>
 <trg>column</trg>
 <val>
 <hist>
@@ -1150,8 +1150,8 @@
 </val>
 </dep>
 <dep>
-<src>queryPath</src>
-<trg>data</trg>
+<src>path</src>
+<trg>value</trg>
 <val>
 <hist>
 <budget>12</budget>
@@ -1183,7 +1183,7 @@
 </dep>
 <dep>
 <src>column</src>
-<trg>queryPath</trg>
+<trg>path</trg>
 <val>
 <hist>
 <budget>12</budget>
@@ -1199,7 +1199,7 @@
 </dep>
 <dep>
 <src>column</src>
-<trg>data</trg>
+<trg>value</trg>
 <val>
 <hist>
 <budget>12</budget>
@@ -1214,7 +1214,7 @@
 </val>
 </dep>
 <dep>
-<src>data</src>
+<src>value</src>
 <trg>id</trg>
 <val>
 <hist>
@@ -1230,8 +1230,8 @@
 </val>
 </dep>
 <dep>
-<src>data</src>
-<trg>queryPath</trg>
+<src>value</src>
+<trg>path</trg>
 <val>
 <hist>
 <budget>12</budget>
@@ -1246,7 +1246,7 @@
 </val>
 </dep>
 <dep>
-<src>data</src>
+<src>value</src>
 <trg>column</trg>
 <val>
 <hist>
