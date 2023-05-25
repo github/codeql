@@ -89,12 +89,23 @@ private predicate flowThrough(DataFlowPublic::ParameterNode param) {
   )
 }
 
+/** Holds if there is flow from `arg` to `p` via the call `call`, not counting `new -> initialize` call steps. */
+pragma[nomagic]
+predicate callStepNoInitialize(
+  ExprNodes::CallCfgNode call, Node arg, DataFlowPrivate::ParameterNodeImpl p
+) {
+  exists(DataFlowDispatch::ParameterPosition pos |
+    argumentPositionMatch(call, arg, pos) and
+    p.isSourceParameterOf(DataFlowDispatch::getTarget(call), pos)
+  )
+}
+
 /** Holds if there is a level step from `nodeFrom` to `nodeTo`, which may depend on the call graph. */
 pragma[nomagic]
 predicate levelStepCall(Node nodeFrom, Node nodeTo) {
   exists(DataFlowPublic::ParameterNode param |
     flowThrough(param) and
-    callStep(nodeTo.asExpr(), nodeFrom, param)
+    callStepNoInitialize(nodeTo.asExpr(), nodeFrom, param)
   )
 }
 
