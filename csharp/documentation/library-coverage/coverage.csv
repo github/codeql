@@ -3,7 +3,7 @@ Dapper,55,,,,,,,,,,55,,,,,,,
 JsonToItemsTaskFactory,,,7,,,,,,,,,,,,,,7,
 Microsoft.ApplicationBlocks.Data,28,,,,,,,,,,28,,,,,,,
 Microsoft.CSharp,,,24,,,,,,,,,,,,,,24,
-Microsoft.EntityFrameworkCore,6,,,,,,,,,,6,,,,,,,
+Microsoft.EntityFrameworkCore,6,,12,,,,,,,,6,,,,,,,12
 Microsoft.Extensions.Caching.Distributed,,,15,,,,,,,,,,,,,,15,
 Microsoft.Extensions.Caching.Memory,,,46,,,,,,,,,,,,,,45,1
 Microsoft.Extensions.Configuration,,,83,,,,,,,,,,,,,,80,3
@@ -24,5 +24,5 @@ Microsoft.Win32,,,8,,,,,,,,,,,,,,8,
 MySql.Data.MySqlClient,48,,,,,,,,,,48,,,,,,,
 Newtonsoft.Json,,,91,,,,,,,,,,,,,,73,18
 ServiceStack,194,,7,27,,,,,,75,92,,,,,,7,
-System,65,25,12154,,8,8,9,,4,,33,3,1,17,3,4,10163,1991
+System,65,25,12157,,8,8,9,,4,,33,3,1,17,3,4,10163,1994
 Windows.Security.Cryptography.Core,1,,,,,,,1,,,,,,,,,,
