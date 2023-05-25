@@ -1645,7 +1645,7 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
  *
  * Ideally this module would be private, but the `asExprInternal` predicate is
  * needed in `DefaultTaintTrackingImpl`. Once `DefaultTaintTrackingImpl` is gone
- * we can make this module private again.
+ * we can make this module private.
  */
 cached
 module ExprFlowCached {
