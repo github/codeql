@@ -329,6 +329,17 @@ private class OtherArgumentToModeledMethodCharacteristic extends Characteristics
 }
 
 /**
+ * A characteristic that marks functional expression as likely not sinks.
+ *
+ * These expressions may well _contain_ sinks, but rarely are sinks themselves.
+ */
+private class FunctionValueCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic {
+  FunctionValueCharacteristic() { this = "function value" }
+
+  override predicate appliesToEndpoint(Endpoint e) { e.asExpr() instanceof FunctionalExpr }
+}
+
+/**
  * A negative characteristic that indicates that an endpoint is not a `to` node for any known taint step. Such a node
  * cannot be tainted, because taint can't flow into it.
  *
