@@ -969,6 +969,15 @@ module Decls {
         result.asAstNode() = ast.getPattern(j).getFullyUnresolved()
       )
       or
+      // synthesized pattern bindings for property wrappers may be sharing the init with the backed
+      // variable declaration, so we need to skip those
+      not exists(VarDecl decl |
+        ast =
+          [
+            decl.getPropertyWrapperBackingVarBinding(),
+            decl.getPropertyWrapperProjectionVarBinding()
+          ]
+      ) and
       exists(int j |
         i = 2 * j + 1 and
         result.asAstNode() = ast.getInit(j).getFullyConverted()
