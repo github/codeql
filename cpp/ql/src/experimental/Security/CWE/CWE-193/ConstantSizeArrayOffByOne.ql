@@ -97,6 +97,8 @@ module PointerArithmeticToDerefConfig implements DataFlow::ConfigSig {
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node) }
 
+  predicate isBarrierOut(DataFlow::Node node) { isSink(node) }
+
   predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink1(sink, _, _) }
 }
 
@@ -133,6 +135,8 @@ module FieldAddressToDerefConfig implements DataFlow::StateConfigSig {
   predicate isBarrier(DataFlow::Node node, FlowState state) { none() }
 
   predicate isBarrierIn(DataFlow::Node node) { isSource(node, _) }
+
+  predicate isBarrierOut(DataFlow::Node node) { isSink(node, _) }
 
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
