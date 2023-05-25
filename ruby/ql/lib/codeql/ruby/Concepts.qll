@@ -212,8 +212,7 @@ module FileSystemWriteAccess {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `FileSystemPermissionModification::Range` instead.
  */
-class FileSystemPermissionModification extends DataFlow::Node instanceof FileSystemPermissionModification::Range
-{
+class FileSystemPermissionModification extends DataFlow::Node instanceof FileSystemPermissionModification::Range {
   /**
    * Gets an argument to this permission modification that is interpreted as a
    * set of permissions.
@@ -469,8 +468,7 @@ module Http {
       }
     }
 
-    private class RequestInputAccessAsRemoteFlowSource extends RemoteFlowSource::Range instanceof RequestInputAccess
-    {
+    private class RequestInputAccessAsRemoteFlowSource extends RemoteFlowSource::Range instanceof RequestInputAccess {
       override string getSourceType() { result = this.(RequestInputAccess).getSourceType() }
     }
 
@@ -959,8 +957,7 @@ module Path {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `CookieSecurityConfigurationSetting::Range` instead.
  */
-class CookieSecurityConfigurationSetting extends DataFlow::Node instanceof CookieSecurityConfigurationSetting::Range
-{
+class CookieSecurityConfigurationSetting extends DataFlow::Node instanceof CookieSecurityConfigurationSetting::Range {
   /**
    * Gets a description of how this cookie setting may weaken application security.
    * This predicate has no results if the setting is considered to be safe.
@@ -1040,8 +1037,7 @@ module Cryptography {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `CryptographicOperation::Range` instead.
    */
-  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range
-  {
+  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range {
     /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
     deprecated predicate isWeak() { super.isWeak() }
   }
@@ -1127,5 +1123,71 @@ module TemplateRendering {
   abstract class Range extends DataFlow::Node {
     /** Gets the argument that specifies the template to be rendered. */
     abstract DataFlow::Node getTemplate();
+  }
+}
+
+/**
+ * A data-flow node that constructs a LDAP query.
+ *
+ * Often, it is worthy of an alert if an LDAP query is constructed such that
+ * executing it would be a security risk.
+ *
+ * If it is important that the query is executed, use `LdapExecution`.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `LdapConstruction::Range` instead.
+ */
+class LdapConstruction extends DataFlow::Node instanceof LdapConstruction::Range {
+  /** Gets the argument that specifies the query to be constructed. */
+  DataFlow::Node getQuery() { result = super.getQuery() }
+}
+
+/** Provides a class for modeling new LDAP query construction APIs. */
+module LdapConstruction {
+  /**
+   * A data-flow node that constructs a LDAP query.
+   *
+   * Often, it is worthy of an alert if an LDAP query is constructed such that
+   * executing it would be a security risk.
+   *
+   * If it is important that the query is executed, use `LdapExecution`.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `LdapConstruction` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument that specifies the query to be constructed. */
+    abstract DataFlow::Node getQuery();
+  }
+}
+
+/**
+ * A data-flow node that executes LDAP queries.
+ *
+ * If the context of interest is such that merely constructing a LDAP query
+ * would be valuable to report, consider using `LdapConstruction`.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `LdapExecution::Range` instead.
+ */
+class LdapExecution extends DataFlow::Node instanceof LdapExecution::Range {
+  /** Gets the argument that specifies the query to be executed. */
+  DataFlow::Node getQuery() { result = super.getQuery() }
+}
+
+/** Provides a class for modeling new LDAP query execution APIs. */
+module LdapExecution {
+  /**
+   * A data-flow node that executes LDAP queries.
+   *
+   * If the context of interest is such that merely constructing a LDAP query
+   * would be valuable to report, consider using `LdapConstruction`.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `LdapExecution` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    //** Gets the argument that specifies the query to be executed. */
+    abstract DataFlow::Node getQuery();
   }
 }
