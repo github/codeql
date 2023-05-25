@@ -21,8 +21,7 @@
       repetition:
     </p>
     <sample language="ruby">
-      /^_(__|[^_])+_$/
-    </sample>
+/^_(__|[^_])+_$/</sample>
   </example>
   <include src="ReDoSReferences.inc.qhelp"/>
 </qhelp>
