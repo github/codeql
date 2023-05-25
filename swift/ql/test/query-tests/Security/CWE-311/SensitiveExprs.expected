@@ -129,5 +129,6 @@
 | testSend.swift:66:27:66:30 | .mobileNumber | label:mobileNumber, type:private information |
 | testSend.swift:69:27:69:30 | .passwordFeatureEnabled | label:passwordFeatureEnabled, type:credential |
 | testURL.swift:13:54:13:54 | passwd | label:passwd, type:credential |
+| testURL.swift:15:55:15:55 | account_no | label:account_no, type:private information |
 | testURL.swift:16:55:16:55 | credit_card_no | label:credit_card_no, type:private information |
 | testURL.swift:20:22:20:22 | passwd | label:passwd, type:credential |

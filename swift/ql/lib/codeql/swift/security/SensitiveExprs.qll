@@ -58,7 +58,7 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
         // Geographic location - where the user is (or was)
         "latitude|longitude|" +
         // Financial data - such as credit card numbers, salary, bank accounts, and debts
-        "credit.?card|debit.?card|salary|bank.?account|" +
+        "credit.?card|debit.?card|salary|bank.?account|acc(ou)?nt.?(no|num)|" +
         // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
         "email|" +
         // Health - medical conditions, insurance status, prescription records
