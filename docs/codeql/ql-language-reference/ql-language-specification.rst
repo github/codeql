@@ -773,7 +773,7 @@ Binding sets are checked by the QL compiler in the following way:
 A predicate may have several different binding sets, which can be stated by using multiple ``bindingset`` annotations on the same predicate.
 
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
-| Pragma         | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases | Signatures |
+| Annotation     | Classes | Characters | Member predicates | Non-member predicates | Imports | Fields | Modules | Aliases | Signatures |
 +================+=========+============+===================+=======================+=========+========+=========+=========+============+
 | ``bindingset`` |         | yes        | yes               | yes                   |         |        |         |         | (yes)      |
 +----------------+---------+------------+-------------------+-----------------------+---------+--------+---------+---------+------------+
