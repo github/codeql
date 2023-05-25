@@ -1,0 +1,9 @@
+multipleSuccessors
+| file://:0:0:0:0 | $interpolation | successor | UnsafeWebViewFetch.swift:126:25:126:25 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | UnsafeWebViewFetch.swift:126:26:126:26 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | UnsafeWebViewFetch.swift:127:25:127:25 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | UnsafeWebViewFetch.swift:127:26:127:26 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | UnsafeWebViewFetch.swift:173:25:173:25 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | UnsafeWebViewFetch.swift:173:26:173:26 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | UnsafeWebViewFetch.swift:174:25:174:25 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | UnsafeWebViewFetch.swift:174:26:174:26 | .appendLiteral(_:) |

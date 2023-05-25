@@ -1,0 +1,15 @@
+multipleSuccessors
+| file://:0:0:0:0 | $interpolation | successor | SQLite.swift:67:21:67:21 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | SQLite.swift:67:22:67:22 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | SQLite.swift:68:19:68:19 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | SQLite.swift:68:20:68:20 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | SQLite.swift:69:19:69:19 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | SQLite.swift:69:20:69:20 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | sqlite3_c_api.swift:127:21:127:21 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | sqlite3_c_api.swift:127:22:127:22 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | sqlite3_c_api.swift:128:19:128:19 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | sqlite3_c_api.swift:128:20:128:20 | .appendLiteral(_:) |
+| file://:0:0:0:0 | $interpolation | successor | sqlite3_c_api.swift:129:19:129:19 | OpaqueValueExpr |
+| file://:0:0:0:0 | $interpolation | successor | sqlite3_c_api.swift:129:20:129:20 | .appendLiteral(_:) |
+deadEnd
+| file://:0:0:0:0 |  ... = ... |
