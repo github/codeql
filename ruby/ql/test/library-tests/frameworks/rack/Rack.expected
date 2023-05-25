@@ -1,12 +1,21 @@
 rackApps
-| rack.rb:1:1:9:3 | HelloWorld | rack.rb:2:12:2:14 | env |
-| rack.rb:11:1:20:3 | Proxy | rack.rb:16:12:16:18 | the_env |
-| rack.rb:22:1:35:3 | Logger | rack.rb:28:12:28:14 | env |
-| rack.rb:49:1:65:3 | Baz | rack.rb:50:12:50:14 | env |
+| rack.rb:1:1:10:3 | HelloWorld | rack.rb:2:12:2:14 | env |
+| rack.rb:12:1:22:3 | Proxy | rack.rb:17:12:17:18 | the_env |
+| rack.rb:24:1:37:3 | Logger | rack.rb:30:12:30:14 | env |
+| rack.rb:39:1:45:3 | Redirector | rack.rb:40:12:40:14 | env |
+| rack.rb:59:1:75:3 | Baz | rack.rb:60:12:60:14 | env |
 rackResponseStatusCodes
-| rack.rb:7:5:7:63 | call to [] | 200 |
-| rack.rb:7:5:7:63 | call to [] | 500 |
-| rack.rb:18:5:18:27 | call to [] | <unknown> |
-| rack.rb:33:5:33:26 | call to [] | <unknown> |
-| rack.rb:56:7:56:22 | call to [] | 200 |
-| rack.rb:63:5:63:21 | call to [] | 400 |
+| rack.rb:8:5:8:38 | call to [] | 200 |
+| rack.rb:8:5:8:38 | call to [] | 500 |
+| rack.rb:20:5:20:27 | call to [] | <unknown> |
+| rack.rb:35:5:35:26 | call to [] | <unknown> |
+| rack.rb:43:5:43:45 | call to [] | 302 |
+| rack.rb:66:7:66:22 | call to [] | 200 |
+| rack.rb:73:5:73:21 | call to [] | 400 |
+rackResponseContentTypes
+| rack.rb:8:5:8:38 | call to [] | rack.rb:7:34:7:45 | "text/plain" |
+| rack.rb:20:5:20:27 | call to [] | rack.rb:19:28:19:54 | call to mime_type |
+mimetypeCalls
+| rack.rb:19:28:19:54 | call to mime_type | application/x-gzip |
+redirectResponses
+| rack.rb:43:5:43:45 | call to [] | rack.rb:42:30:42:40 | "/foo.html" |
