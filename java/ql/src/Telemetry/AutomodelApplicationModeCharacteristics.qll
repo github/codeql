@@ -278,6 +278,29 @@ private class ArgumentToLocalCall extends CharacteristicsImpl::UninterestingToMo
 }
 
 /**
+ * A characteristic that avoids modeling endpoint that are passed to frameworks
+ * in application mode.
+ *
+ * It's much more economical to use framework mode for those.
+ */
+private class SkipFrameworkModeling extends CharacteristicsImpl::UninterestingToModelCharacteristic {
+  SkipFrameworkModeling() { this = "skip modeling of large frameworks" }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    ApplicationCandidatesImpl::getCallable(e)
+        .getDeclaringType()
+        .getPackage()
+        .getName()
+        .matches([
+            "com.google%", //
+            "java.%", //
+            "javax.%", //
+            "org.apache%", //
+          ])
+  }
+}
+
+/**
  * A Characteristic that marks endpoints as uninteresting to model, according to the Java ModelExclusions module.
  */
 private class ExcludedFromModeling extends CharacteristicsImpl::UninterestingToModelCharacteristic {
