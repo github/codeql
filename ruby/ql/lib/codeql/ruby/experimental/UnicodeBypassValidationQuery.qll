@@ -105,6 +105,18 @@ class Configuration extends TaintTracking::Configuration {
         mac = API::getTopLevelMember("UNF").getMember("Normalizer").getMethod("normalize") and
         sink = mac.getParameter(0).asSink()
       )
+      or
+      // ActiveSupport::Multibyte::Chars
+      exists(DataFlow::CallNode cn, DataFlow::CallNode n |
+        cn =
+          API::getTopLevelMember("ActiveSupport")
+              .getMember("Multibyte")
+              .getMember("Chars")
+              .getMethod("new")
+              .getCallNode() and
+        n = cn.(DataFlow::CallNode).getAMethodCall("normalize") and
+        sink = cn.getArgument(0)
+      )
     ) and
     state instanceof PostValidation
   }
