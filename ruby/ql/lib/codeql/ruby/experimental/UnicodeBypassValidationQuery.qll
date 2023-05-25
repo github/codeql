@@ -81,10 +81,30 @@ class Configuration extends TaintTracking::Configuration {
 
   /* A Unicode Tranformation (Unicode tranformation) is considered a sink when the algorithm used is either NFC or NFKC.  */
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    exists(DataFlow::CallNode cn |
-      cn.getMethodName() = "unicode_normalize" and
-      cn.getArgument(0).getConstantValue().getSymbol() = ["nfkc", "nfc", "nfkd", "nfd"] and
-      sink = cn.getReceiver()
+    (
+      exists(DataFlow::CallNode cn |
+        cn.getMethodName() = "unicode_normalize" and
+        cn.getArgument(0).getConstantValue().getSymbol() = ["nfkc", "nfc", "nfkd", "nfd"] and
+        sink = cn.getReceiver()
+      )
+      or
+      // unicode_utils
+      exists(API::MethodAccessNode mac |
+        mac = API::getTopLevelMember("UnicodeUtils").getMethod(["nfkd", "nfc", "nfd", "nfkc"]) and
+        sink = mac.getParameter(0).asSink()
+      )
+      or
+      // eprun
+      exists(API::MethodAccessNode mac |
+        mac = API::getTopLevelMember("Eprun").getMethod("normalize") and
+        sink = mac.getParameter(0).asSink()
+      )
+      or
+      // unf
+      exists(API::MethodAccessNode mac |
+        mac = API::getTopLevelMember("UNF").getMember("Normalizer").getMethod("normalize") and
+        sink = mac.getParameter(0).asSink()
+      )
     ) and
     state instanceof PostValidation
   }
