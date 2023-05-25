@@ -72,7 +72,7 @@ module Public {
       result = getHeaderValue(this, "content-type")
     }
 
-    // TODO
+    // TODO: is there a sensible value for this?
     override string getMimetypeDefault() { none() }
   }
 
