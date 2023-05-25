@@ -5,7 +5,12 @@ import semmle.code.csharp.frameworks.microsoft.AspNetCore
 import semmle.code.csharp.frameworks.system.web.UI
 import semmle.code.asp.WebConfig
 
+/** A method representing an action for a web endpoint. */
 abstract class ActionMethod extends Method {
+  /**
+   * Gets a string that can indicate what this method does to determine if it should have an auth check;
+   * such as its method name, class name, or file path.
+   */
   string getADescription() {
     result =
       [
@@ -14,23 +19,31 @@ abstract class ActionMethod extends Method {
       ]
   }
 
+  /** Holds if this method may need an authorization check. */
   predicate needsAuth() {
     this.getADescription()
         .regexpReplaceAll("([a-z])([A-Z])", "$1_$2")
+        // separate camelCase words
         .toLowerCase()
         .regexpMatch(".*(edit|delete|modify|admin|superuser).*")
   }
 
+  /** Gets a callable for which if it contains an auth check, this method should be considered authenticated. */
   Callable getAnAuthorizingCallable() { result = this }
 
+  /**
+   * Gets a possible url route that could refer to this action,
+   * which would be covered by `<location>` configurations specifying a prefix of it.
+   */
   string getARoute() { result = this.getDeclaringType().getFile().getRelativePath() }
 }
 
+/** An action method in the MVC framework. */
 private class MvcActionMethod extends ActionMethod {
   MvcActionMethod() { this = any(MicrosoftAspNetCoreMvcController c).getAnActionMethod() }
-  // override string getARoute() { none() }
 }
 
+/** An action method on a subclass of `System.Web.UI.Page`. */
 private class WebFormActionMethod extends ActionMethod {
   WebFormActionMethod() {
     this.getDeclaringType().getBaseClass*() instanceof SystemWebUIPageClass and
@@ -56,6 +69,11 @@ private class WebFormActionMethod extends ActionMethod {
   }
 }
 
+/**
+ * Holds if `virtualRoute` is a URL path
+ * that can map to the corresponding `physicalRoute` filepath
+ * through a call to `MapPageRoute`
+ */
 private predicate virtualRouteMapping(string virtualRoute, string physicalRoute) {
   exists(MethodCall mapPageRouteCall, StringLiteral virtualLit, StringLiteral physicalLit |
     mapPageRouteCall
@@ -69,6 +87,7 @@ private predicate virtualRouteMapping(string virtualRoute, string physicalRoute)
   )
 }
 
+/** Holds if the filepath `route` can refer to `actual` after expanding a '~". */
 bindingset[route, actual]
 private predicate physicalRouteMatches(string route, string actual) {
   route = actual
@@ -103,16 +122,20 @@ predicate hasAuthViaCode(ActionMethod m) {
   )
 }
 
+/** An `<authorization>` XML element that */
 class AuthorizationXmlElement extends XmlElement {
   AuthorizationXmlElement() {
     this.getParent() instanceof SystemWebXmlElement and
     this.getName().toLowerCase() = "authorization"
   }
 
+  /** Holds if this element has a `<deny>` element to deny access to a resource. */
   predicate hasDenyElement() { this.getAChild().getName().toLowerCase() = "deny" }
 
+  /** Gets the physical filepath of this element. */
   string getPhysicalPath() { result = this.getFile().getParentContainer().getRelativePath() }
 
+  /** Gets the path specified by a `<location>` tag containing this element, if any. */
   string getLocationTagPath() {
     exists(LocationXmlElement loc, XmlAttribute path |
       loc = this.getParent().(SystemWebXmlElement).getParent() and
@@ -122,6 +145,7 @@ class AuthorizationXmlElement extends XmlElement {
     )
   }
 
+  /** Gets a route prefix that this configuration can refer to. */
   string getARoute() {
     result = this.getLocationTagPath()
     or
@@ -134,7 +158,6 @@ class AuthorizationXmlElement extends XmlElement {
 
 /**
  * Holds if the given action has an xml `authorization` tag that refers to it.
- * TODO: Currently only supports physical paths, however virtual paths defined by `AddRoute` can also be used.
  */
 predicate hasAuthViaXml(ActionMethod m) {
   exists(AuthorizationXmlElement el, string rest |
@@ -143,6 +166,7 @@ predicate hasAuthViaXml(ActionMethod m) {
   )
 }
 
+/** Holds if the given action has an `Authorize` attribute. */
 predicate hasAuthViaAttribute(ActionMethod m) {
   [m.getAnAttribute(), m.getDeclaringType().getAnAttribute()]
       .getType()
@@ -154,5 +178,6 @@ predicate missingAuth(ActionMethod m) {
   m.needsAuth() and
   not hasAuthViaCode(m) and
   not hasAuthViaXml(m) and
-  not hasAuthViaAttribute(m)
+  not hasAuthViaAttribute(m) and
+  exists(m.getBody().getAChildStmt()) // exclude empty methods
 }
