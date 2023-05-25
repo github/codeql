@@ -14,6 +14,9 @@ private DataFlow::Node trackRackResponse(RP::PotentialResponseNode n) {
   trackRackResponse(TypeTracker::end(), n).flowsTo(result)
 }
 
+/**
+ * Provides modeling for Rack applications.
+ */
 module App {
   /**
    * A class that may be a rack application.

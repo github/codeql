@@ -1287,6 +1287,9 @@ private predicate mimeTypeMatches(string ext, string mimeType) {
   ext = ".zmm" and mimeType = "application/vnd.handheld-entertainment+xml"
 }
 
+/**
+ * Provides modeling for the `Response` component of the `Rack` library.
+ */
 module Mime {
   class MimetypeCall extends DataFlow::CallNode {
     MimetypeCall() {

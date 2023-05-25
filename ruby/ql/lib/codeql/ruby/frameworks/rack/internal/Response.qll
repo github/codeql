@@ -6,6 +6,7 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.TypeTracker
 private import App as A
 
+/** Contains implementation details for modelling `Rack::Response`. */
 module Private {
   private DataFlow::LocalSourceNode trackInt(TypeTracker t, int i) {
     t.start() and
@@ -33,6 +34,9 @@ module Private {
   }
 }
 
+/**
+ * Provides modeling for the `Response` component of the `Rack` library.
+ */
 module Public {
   bindingset[headerName]
   private DataFlow::Node getHeaderValue(ResponseNode resp, string headerName) {
