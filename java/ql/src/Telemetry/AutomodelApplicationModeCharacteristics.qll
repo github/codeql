@@ -95,7 +95,7 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
    */
   RelatedLocation getRelatedLocation(Endpoint e, RelatedLocationType type) {
     type = CallContext() and
-    result = asLocation(e)
+    result = any(Call c | e.asExpr() = [c.getAnArgument(), c.getQualifier()])
   }
 
   /**
