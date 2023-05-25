@@ -516,9 +516,22 @@ class OpaqueValueExpr(Expr):
     pass
 
 class OpenExistentialExpr(Expr):
-    sub_expr: Expr | child
-    existential: Expr | child
-    opaque_expr: OpaqueValueExpr | child
+    """ An implicit expression created by the compiler when a method is called on a protocol. For example in
+    ```
+    protocol P {
+      func foo() -> Int
+    }
+    func bar(x: P) -> Int {
+      return x.foo()
+    }
+    `x.foo()` is actually wrapped in an `OpenExistentialExpr` that "opens" `x` replacing it in its subexpression with
+    an `OpaqueValueExpr`.
+    ```
+    """
+    sub_expr: Expr | child | desc("""
+        This wrapped subexpression is where the opaque value and the dynamic type under the protocol type may be used.""")
+    existential: Expr | child | doc("protocol-typed expression opened by this expression")
+    opaque_expr: OpaqueValueExpr | doc("opaque value expression embedded within `getSubExpr()`")
 
 class OptionalEvaluationExpr(Expr):
     sub_expr: Expr | child
