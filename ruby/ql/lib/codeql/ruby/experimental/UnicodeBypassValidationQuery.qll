@@ -114,7 +114,7 @@ class Configuration extends TaintTracking::Configuration {
               .getMember("Chars")
               .getMethod("new")
               .getCallNode() and
-        n = cn.(DataFlow::CallNode).getAMethodCall("normalize") and
+        n = cn.getAMethodCall("normalize") and
         sink = cn.getArgument(0)
       )
     ) and
