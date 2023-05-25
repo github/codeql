@@ -186,21 +186,21 @@ A QL module definition has the following syntax:
 
 A module definition extends the current module's declared module environment with a mapping from the module name to the module definition.
 
-QL files consist of simply a module body without a name and surrounding braces:
+QL files and QLL files consist of simply a module body without a name and surrounding braces:
 
 ::
 
    ql ::= moduleBody
 
-QL files define a module corresponding to the file, whose name is the same as the filename.
+QL files and QLL files define a module corresponding to the file, whose name is the same as the filename.
 
 Kinds of modules
 ~~~~~~~~~~~~~~~~
 
 A module may be:
 
--  A *file module*, if it is defined implicitly by a QL file.
--  A *query module*, if it is defined by a QL file.
+-  A *file module*, if it is defined implicitly by a QL file or a QLL file.
+-  A *query module*, if it is defined implicitly by a QL file.
 -  A *library module*, if it is not a query module.
 
 A query module must contain one or more queries.
