@@ -269,20 +269,23 @@ private class ClassQualifierCharacteristic extends CharacteristicsImpl::NotASink
  * A characteristic that limits candidates to parameters of methods that are recognized as `ModelApi`, iow., APIs that
  * are considered worth modeling.
  */
-private class NotAModelApiParameter extends CharacteristicsImpl::UninterestingToModelCharacteristic {
-  NotAModelApiParameter() { this = "not a model API parameter" }
+private class ArgumentToLocalCall extends CharacteristicsImpl::UninterestingToModelCharacteristic {
+  ArgumentToLocalCall() { this = "argument to local call" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not exists(ModelExclusions::ModelApi api |
-      exists(Call c |
-        c.getCallee() = api and
-        exists(int argIdx | exists(api.getParameter(argIdx)) |
-          argIdx = -1 and e.asExpr() = c.getQualifier()
-          or
-          e.asExpr() = c.getArgument(argIdx)
-        )
-      )
-    )
+    ApplicationCandidatesImpl::getCallable(e).fromSource()
+  }
+}
+
+/**
+ * A Characteristic that marks endpoints as uninteresting to model, according to the Java ModelExclusions module.
+ */
+private class ExcludedFromModeling extends CharacteristicsImpl::UninterestingToModelCharacteristic {
+  ExcludedFromModeling() { this = "excluded from modeling" }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    ModelExclusions::isUninterestingForModels(ApplicationCandidatesImpl::getCallable(e)) or
+    ModelExclusions::isUninterestingForModels(e.getEnclosingCallable())
   }
 }
 
