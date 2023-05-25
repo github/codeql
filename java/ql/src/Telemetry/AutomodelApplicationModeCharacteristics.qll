@@ -345,6 +345,7 @@ private class CannotBeTaintedCharacteristic extends CharacteristicsImpl::LikelyN
    * Holds if the node `n` is known as the predecessor in a modeled flow step.
    */
   private predicate isKnownOutNodeForStep(Endpoint e) {
+    e.asExpr() instanceof Call or // we just assume flow in that case
     TaintTracking::localTaintStep(_, e) or
     FlowSummaryImpl::Private::Steps::summaryThroughStepValue(_, e, _) or
     FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(_, e, _) or
