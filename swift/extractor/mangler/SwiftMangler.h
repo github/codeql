@@ -69,7 +69,6 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
 
   // default fallback for non mangled types. This covers types that should not appear in normal
   // successful extractor runs, like ErrorType
-  // TODO: log this properly once we have logging infrastructure
   SwiftMangledName visitType(const swift::TypeBase* type);
 
   SwiftMangledName visitModuleType(const swift::ModuleType* type);

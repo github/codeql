@@ -1,6 +1,8 @@
 #include "swift/extractor/mangler/SwiftMangler.h"
 #include "swift/extractor/infra/SwiftDispatcher.h"
 #include "swift/extractor/trap/generated/decl/TrapClasses.h"
+#include "swift/logging/SwiftLogging.h"
+
 #include <swift/AST/Module.h>
 #include <swift/AST/ParameterList.h>
 #include <swift/AST/ASTContext.h>
@@ -10,6 +12,11 @@
 using namespace codeql;
 
 namespace {
+Logger& logger() {
+  static Logger ret{"mangler"};
+  return ret;
+}
+
 const swift::Decl* getParent(const swift::Decl* decl) {
   auto context = decl->getDeclContext();
   if (context->getContextKind() == swift::DeclContextKind::FileUnit) {
@@ -189,7 +196,7 @@ SwiftMangledName SwiftMangler::visitAnyGenericType(const swift::AnyGenericType* 
 }
 
 SwiftMangledName SwiftMangler::visitType(const swift::TypeBase* type) {
-  dispatcher.emitDebugInfo("no name for ", getTypeKindStr(type));
+  LOG_WARNING("encountered {} for which we give no name", getTypeKindStr(type));
   return {};
 }
 
@@ -238,7 +245,7 @@ SwiftMangledName SwiftMangler::visitAnyFunctionType(const swift::AnyFunctionType
     ret << "_actor" << fetch(type->getGlobalActor());
   }
   // TODO: see if this needs to be used in identifying types, if not it needs to be removed from
-  // type printing
+  // type printing in the Swift compiler code
   assert(type->hasExtInfo() && "type must have ext info");
   auto info = type->getExtInfo();
   auto convention = info.getSILRepresentation();
