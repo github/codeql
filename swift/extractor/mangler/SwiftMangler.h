@@ -16,6 +16,20 @@ namespace codeql {
 
 class SwiftDispatcher;
 
+// This class is tasked with assigning unique names to entities that need it (non-local
+// declarations and types), to be used as trap keys.
+// When the identity depends on some other entity (like the parent of a declaration, or the
+// declaration introducing a user type) a [trap id-ref][1] is used, using the dispatcher to give us
+// a label reference to that entity. Because that entity will also generally have a mangled name,
+// it is important that this does not lead to any recursive loop (which is checked at runtime
+// within the dispatcher).
+//
+// [1]: https://github.com/github/codeql-core/blob/main/wiki/extractors/trap.md#ids
+//
+// * all names are prefixed with the name of the entity class (for example `ParamDecl_`)
+// * declarations usually use a reference to their declaration context as first element, followed
+//   by whatever distinguishes them within that context (the name, or the signature for function)
+// * user defined types have a name that is a simple wrapper around a reference to their declaration
 class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
                      private swift::DeclVisitor<SwiftMangler, SwiftMangledName> {
   using TypeVisitor = swift::TypeVisitor<SwiftMangler, SwiftMangledName>;
@@ -26,7 +40,6 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
 
   static SwiftMangledName mangleModuleName(std::string_view name);
 
-  // TODO actual visit
   SwiftMangledName mangleDecl(const swift::Decl& decl) {
     return DeclVisitor::visit(const_cast<swift::Decl*>(&decl));
   }

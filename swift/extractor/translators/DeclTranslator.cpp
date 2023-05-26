@@ -4,7 +4,6 @@
 #include <swift/AST/ParameterList.h>
 #include "swift/extractor/infra/SwiftDiagnosticKind.h"
 #include <swift/AST/PropertyWrappers.h>
-#include <swift/AST/ASTMangler.h>
 
 namespace codeql {
 namespace {
