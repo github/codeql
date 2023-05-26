@@ -296,6 +296,9 @@ private class SkipFrameworkModeling extends CharacteristicsImpl::UninterestingTo
             "java.%", //
             "javax.%", //
             "org.apache%", //
+            "org.eclipse%", //
+            "org.gradle%", //
+            "org.slf4j%", //
           ])
   }
 }

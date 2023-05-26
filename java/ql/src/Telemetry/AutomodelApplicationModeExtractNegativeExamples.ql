@@ -17,6 +17,7 @@ from
   ApplicationModeMetadataExtractor meta, string package, string type, boolean subtypes, string name,
   string signature, string input
 where
+  endpoint.getLocation().getStartLine() % 100 = 0 and
   characteristic.appliesToEndpoint(endpoint) and
   confidence >= SharedCharacteristics::highConfidence() and
   characteristic.hasImplications(any(NegativeSinkType negative), true, confidence) and
