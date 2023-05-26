@@ -26,7 +26,7 @@ module NetLdap {
     }
   }
 
-  /** Net LDAP Api Nodde */
+  /** Net LDAP Api Node */
   private API::Node ldap() { result = API::getTopLevelMember("Net").getMember("LDAP") }
 
   /** A call that establishes a LDAP Connection */
