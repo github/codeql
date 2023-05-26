@@ -8,26 +8,41 @@ private import semmle.code.csharp.dataflow.DataFlow::DataFlow::PathGraph
 
 abstract private class AbstractSanitizerMethod extends Method { }
 
+/**
+ * An alias for System.String.StartsWith, declaring it as a sanitizer.
+ */
 class MethodSystemStringStartsWith extends AbstractSanitizerMethod {
   MethodSystemStringStartsWith() { this.getQualifiedName() = "System.String.StartsWith" }
 }
 
 abstract private class UnsanitizedPathCombiner extends Expr { }
 
+/**
+ * A call to System.IO.Path.Combine, declaring it as a Path Combiner method.
+ */
 class PathCombinerViaMethodCall extends UnsanitizedPathCombiner {
   PathCombinerViaMethodCall() {
     this.(MethodCall).getTarget().hasQualifiedName("System.IO.Path", "Combine")
   }
 }
 
+/**
+ * A Path Combining operation by String interpolation.
+ */
 class PathCombinerViaStringInterpolation extends UnsanitizedPathCombiner {
-  PathCombinerViaStringInterpolation() { exists(InterpolatedStringExpr e | this = e) }
+  PathCombinerViaStringInterpolation() { this instanceof InterpolatedStringExpr }
 }
 
+/**
+ * A Path combining operation by String concatenation.
+ */
 class PathCombinerViaStringConcatenation extends UnsanitizedPathCombiner {
-  PathCombinerViaStringConcatenation() { exists(AddExpr e | this = e) }
+  PathCombinerViaStringConcatenation() { this instanceof AddExpr }
 }
 
+/**
+ * A call to System.IO.Path.GetFullPath
+ */
 class MethodCallGetFullPath extends MethodCall {
   MethodCallGetFullPath() { this.getTarget().hasQualifiedName("System.IO.Path", "GetFullPath") }
 }
@@ -36,9 +51,9 @@ class MethodCallGetFullPath extends MethodCall {
  * A taint tracking module for GetFullPath to String.StartsWith.
  */
 module GetFullPathToQualifierTT =
-  TaintTracking::Global<GetFullPathToQualifierTaintTrackingConfiguration>;
+  TaintTracking::Global<GetFullPathToQualifierTaintTrackingConfig>;
 
-private module GetFullPathToQualifierTaintTrackingConfiguration implements DataFlow::ConfigSig {
+private module GetFullPathToQualifierTaintTrackingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node node) {
     exists(MethodCallGetFullPath mcGetFullPath | node = DataFlow::exprNode(mcGetFullPath))
   }
@@ -107,11 +122,11 @@ class ArchiveFullNameSource extends Source {
  * A taint tracking module for String combining to GetFullPath.
  */
 module PathCombinerToGetFullPathTT =
-  TaintTracking::Global<PathCombinerToGetFullPathTaintTrackingConfiguration>;
+  TaintTracking::Global<PathCombinerToGetFullPathTaintTrackingConfig>;
 
 /**
- * PathCombinerToGetFullPathTaintTrackingConfiguration - A Taint Tracking configuration that tracks
- * a File path combining expression (Such as string concatenation, Path.Combine, or string interpolation),
+ * A Taint Tracking configuration that tracks a File path combining expression 
+ * (Such as string concatenation, Path.Combine, or string interpolation),
  * to a Path.GetFullPath method call's argument.
  *
  * We need this because we need to find a safe sequence of operations wherein
@@ -121,7 +136,7 @@ module PathCombinerToGetFullPathTT =
  * If the operations are in the opposite order, the resultant may still contain path traversal characters,
  * as you cannot fully resolve a relative path. So we must ascertain that they are conducted in this sequence.
  */
-private module PathCombinerToGetFullPathTaintTrackingConfiguration implements DataFlow::ConfigSig {
+private module PathCombinerToGetFullPathTaintTrackingConfig implements DataFlow::ConfigSig {
   /**
    * We are looking for the result of some Path combining operation (String concat, Path.Combine, etc.)
    */
@@ -166,7 +181,7 @@ private predicate safeCombineGetFullPathSequence(MethodCallGetFullPath mcGetFull
  */
 class RootSanitizerMethodCall extends SanitizerMethodCall {
   RootSanitizerMethodCall() {
-    exists(MethodSystemStringStartsWith sm | this.getTarget() = sm) and
+    this.getTarget() instanceof MethodSystemStringStartsWith and
     exists(Expr q, AbstractValue v |
       this.getQualifier() = q and
       v.(AbstractValues::BooleanValue).getValue() = true and
@@ -174,6 +189,9 @@ class RootSanitizerMethodCall extends SanitizerMethodCall {
     )
   }
 
+  /**
+   * Gets the expression corresponding to the FilePath that this Sanitizer checks
+   */
   override Expr getFilePathArgument() { result = this.getQualifier() }
 }
 
@@ -185,22 +203,28 @@ class RootSanitizerMethodCall extends SanitizerMethodCall {
 class ZipSlipGuard extends Guard {
   ZipSlipGuard() { this instanceof SanitizerMethodCall }
 
+  /**
+   * Gets the expression corresponding to the FilePath that this Sanitizer checks
+   */
   Expr getFilePathArgument() { result = this.(SanitizerMethodCall).getFilePathArgument() }
 }
 
+/**
+ * A call to a function that sanitizes a FilePath.
+ * Provides a member predicate to extract the expression that corresponds to the FilePath being
+ * sanitized (whether it is a qualifier or function argument)
+ */
 abstract private class SanitizerMethodCall extends MethodCall {
-  SanitizerMethodCall() { this instanceof MethodCall }
-
   abstract Expr getFilePathArgument();
 }
 
 /**
  * A taint tracking module for Zip Slip Guard.
  */
-module SanitizedGuardTT = TaintTracking::Global<SanitizedGuardTaintTrackingConfiguration>;
+module SanitizedGuardTT = TaintTracking::Global<SanitizedGuardTaintTrackingConfig>;
 
 /**
- * SanitizedGuardTaintTrackingConfiguration - A Taint Tracking configuration class to trace
+ * SanitizedGuardTaintTrackingConfig - A Taint Tracking configuration class to trace
  * parameters of a function to calls to RootSanitizerMethodCall (String.StartsWith).
  *
  * For example, the following function:
@@ -212,7 +236,7 @@ module SanitizedGuardTT = TaintTracking::Global<SanitizedGuardTaintTrackingConfi
  *    ...
  *  }
  */
-private module SanitizedGuardTaintTrackingConfiguration implements DataFlow::ConfigSig {
+private module SanitizedGuardTaintTrackingConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof DataFlow::ParameterNode }
 
   predicate isSink(DataFlow::Node sink) {
@@ -239,6 +263,9 @@ abstract private class AbstractWrapperSanitizerMethod extends AbstractSanitizerM
     this.getAParameter() = paramFilename
   }
 
+  /**
+   * Extracts the filepath of this Sanitizer Method
+   */
   Parameter paramFilePath() { result = paramFilename }
 }
 
@@ -361,8 +388,10 @@ private predicate wrapperCheckGuard(Guard g, Expr e, AbstractValue v) {
  */
 abstract private class Sanitizer extends DataFlow::ExprNode { }
 
+/**
+ * A Wrapped RootSanitizer that is an explicit subset of RootSanitizer
+ */
 class WrapperCheckSanitizer extends Sanitizer {
-  // A Wrapped RootSanitizer that is an explicit subset of RootSanitizer
   WrapperCheckSanitizer() { this = DataFlow::BarrierGuard<wrapperCheckGuard/3>::getABarrierNode() }
 }
 
@@ -372,7 +401,7 @@ class WrapperCheckSanitizer extends Sanitizer {
 abstract private class Source extends DataFlow::Node { }
 
 /**
- * Access to the `FullName` property of the archive item
+ * An access to the `FullName` property of the archive item
  */
 class ArchiveEntryFullName extends Source {
   ArchiveEntryFullName() {
@@ -389,7 +418,7 @@ class ArchiveEntryFullName extends Source {
 abstract private class Sink extends DataFlow::Node { }
 
 /**
- * Argument to extract to file extension method
+ * An argument to extract to file extension method
  */
 class SinkCompressionExtractToFileArgument extends Sink {
   SinkCompressionExtractToFileArgument() {
@@ -401,7 +430,7 @@ class SinkCompressionExtractToFileArgument extends Sink {
 }
 
 /**
- * File Stream created from tainted file name through File.Open/File.Create
+ * A File Stream created from tainted file name through File.Open/File.Create
  */
 class SinkFileOpenArgument extends Sink {
   SinkFileOpenArgument() {
@@ -417,7 +446,7 @@ class SinkFileOpenArgument extends Sink {
 }
 
 /**
- * File Stream created from tainted file name passed directly to the constructor
+ * A File Stream created from tainted file name passed directly to the constructor
  */
 class SinkStreamConstructorArgument extends Sink {
   SinkStreamConstructorArgument() {
@@ -429,7 +458,7 @@ class SinkStreamConstructorArgument extends Sink {
 }
 
 /**
- * Constructor to FileInfo can take tainted file name and subsequently be used to open file stream
+ * A constructor to FileInfo can take a tainted file name and subsequently be used to open file stream
  */
 class SinkFileInfoConstructorArgument extends Sink {
   SinkFileInfoConstructorArgument() {
@@ -441,7 +470,7 @@ class SinkFileInfoConstructorArgument extends Sink {
 }
 
 /**
- * Extracting just file name from a ZipEntry, not the full path
+ * An extraction using just file name from a ZipEntry, not the full path
  */
 class FileNameExtrationSanitizer extends Sanitizer {
   FileNameExtrationSanitizer() {
@@ -453,7 +482,7 @@ class FileNameExtrationSanitizer extends Sanitizer {
 }
 
 /**
- * Checks the string for relative path,
+ * A String substring sanitizer, that checks the string for relative path,
  * or checks the destination folder for whitelisted/target path, etc
  */
 class StringCheckSanitizer extends Sanitizer {
@@ -466,20 +495,4 @@ class StringCheckSanitizer extends Sanitizer {
       this = DataFlow::exprNode(mc.getQualifier())
     )
   }
-}
-
-final class ZipSlipTaintTrackingConfiguration extends TaintTracking::Configuration {
-  ZipSlipTaintTrackingConfiguration() { this = "ZipSlipTaintTrackingConfiguration" }
-
-  override predicate isSource(DataFlow::Node node) { node instanceof Source }
-
-  override predicate isSink(DataFlow::Node node) { node instanceof Sink }
-
-  override predicate isAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    super.isAdditionalTaintStep(pred, succ)
-    or
-    exists(MethodCall mc | succ.asExpr() = mc and pred.asExpr() = mc.getAnArgument())
-  }
-
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
 }
