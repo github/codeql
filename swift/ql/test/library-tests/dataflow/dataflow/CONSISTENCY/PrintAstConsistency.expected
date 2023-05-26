@@ -1,3 +1,0 @@
-doubleParents
-| file://:0:0:0:0 | [PatternBindingDecl] var ... = ... | getInit(0) | test.swift:252:19:252:27 | [PatternBindingDecl] var ... = ... | getInit(0) | test.swift:252:6:252:27 | [CallExpr] call to DidSetSource.init(wrappedValue:) |
-| test.swift:252:19:252:27 | [PatternBindingDecl] var ... = ... | getInit(0) | file://:0:0:0:0 | [PatternBindingDecl] var ... = ... | getInit(0) | test.swift:252:6:252:27 | [CallExpr] call to DidSetSource.init(wrappedValue:) |
