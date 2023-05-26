@@ -43,8 +43,8 @@ class NSString {
 
     var utf8String: UnsafePointer<CChar>? { get { return nil } }
 }
-
-class Data {
+protocol DataProtocol { }
+class Data : DataProtocol {
     struct ReadingOptions : OptionSet { let rawValue: Int }
     struct WritingOptions : OptionSet { let rawValue: Int }
 
