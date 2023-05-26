@@ -8,8 +8,6 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.ApiGraphs
-private import codeql.ruby.dataflow.FlowSummary
-private import codeql.ruby.CFG
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
@@ -29,12 +27,18 @@ module LdapInjection {
    * Additional taint steps for "LDAP Injection" vulnerabilities.
    */
   predicate isAdditionalTaintStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
-    exists(API::Node n, API::Node n2 |
-      n = API::getTopLevelMember("Net").getMember("LDAP").getMember("Filter")
-    |
-      n2 = API::getTopLevelMember("Net").getMember("LDAP") and
-      nodeTo = n2.getAMethodCall(["new"]).getAMethodCall(["search"]) and
-      nodeFrom = n.getAMethodCall(["eq"]).getArgument([0, 1])
+    filterTaintStep(nodeFrom, nodeTo)
+  }
+
+  private predicate filterTaintStep(DataFlow::Node n1, DataFlow::Node n2) {
+    exists(DataFlow::CallNode filterCall |
+      (
+        filterCall =
+          API::getTopLevelMember("Net").getMember("LDAP").getMember("Filter").getAMethodCall(["eq"]) or
+        filterCall.getMethodName() = ["[]"]
+      ) and
+      n1 = filterCall.getArgument([0, 1]) and
+      n2 = filterCall
     )
   }
 

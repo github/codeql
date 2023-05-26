@@ -5,8 +5,8 @@
 
 private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking
-import LdapInjectionCustomizations
-import LdapInjectionCustomizations::LdapInjection
+private import LdapInjectionCustomizations
+private import LdapInjectionCustomizations::LdapInjection
 
 /**
  * A taint-tracking configuration for detecting LDAP Injections vulnerabilities.
