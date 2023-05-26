@@ -406,6 +406,32 @@ module Directive {
   class BundleDirective extends KnownDirective {
     BundleDirective() { this.getDirectiveText() = "bundle" }
   }
+
+  /**
+   * A `use server` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "use server";
+   * ```
+   */
+  class UseServerDirective extends KnownDirective {
+    UseServerDirective() { this.getDirectiveText() = "use server" }
+  }
+
+  /**
+   * A `use client` directive.
+   *
+   * Example:
+   *
+   * ```
+   * "use client";
+   * ```
+   */
+  class UseClientDirective extends KnownDirective {
+    UseClientDirective() { this.getDirectiveText() = "use client" }
+  }
 }
 
 /** DEPRECATED. Use `Directive::KnownDirective` instead. */
