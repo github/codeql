@@ -134,7 +134,7 @@ func test1(password: String, passwordHash : String, passphrase: String, pass_phr
     log.fault("\(passwordHash, privacy: .public)") // Safe
 
     NSLog(passphrase) // $ hasCleartextLogging=136
-    NSLog(pass_phrase) // $ MISSING: hasCleartextLogging=137
+    NSLog(pass_phrase) // $ hasCleartextLogging=137
 }
 
 class MyClass {

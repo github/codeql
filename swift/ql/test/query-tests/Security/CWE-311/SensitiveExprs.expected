@@ -129,7 +129,14 @@
 | testSend.swift:72:27:72:30 | .mobileNumber | label:mobileNumber, type:private information |
 | testSend.swift:75:27:75:30 | .passwordFeatureEnabled | label:passwordFeatureEnabled, type:credential |
 | testSend.swift:76:27:76:30 | .Telephone | label:Telephone, type:private information |
+| testSend.swift:77:27:77:30 | .birth_day | label:birth_day, type:private information |
+| testSend.swift:78:27:78:30 | .CarePlanID | label:CarePlanID, type:private information |
+| testSend.swift:79:27:79:30 | .BankCardNo | label:BankCardNo, type:private information |
+| testSend.swift:80:27:80:30 | .MyCreditRating | label:MyCreditRating, type:private information |
 | testURL.swift:17:54:17:54 | passwd | label:passwd, type:credential |
 | testURL.swift:19:55:19:55 | account_no | label:account_no, type:private information |
 | testURL.swift:20:55:20:55 | credit_card_no | label:credit_card_no, type:private information |
 | testURL.swift:24:22:24:22 | passwd | label:passwd, type:credential |
+| testURL.swift:28:55:28:55 | e_mail | label:e_mail, type:private information |
+| testURL.swift:30:57:30:57 | a_homeaddr_z | label:a_homeaddr_z, type:private information |
+| testURL.swift:32:55:32:55 | resident_ID | label:resident_ID, type:private information |

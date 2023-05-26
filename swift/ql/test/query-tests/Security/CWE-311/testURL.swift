@@ -25,9 +25,9 @@ func test1(passwd : String, encrypted_passwd : String, account_no : String, cred
 	let g = URL(string: "abc", relativeTo: f); // BAD (reported on line above)
 
 	let e_mail = myString
-	let h = URL(string: "http://example.com/login?em=" + e_mail); // BAD [NOT DETECTED]
+	let h = URL(string: "http://example.com/login?em=" + e_mail); // BAD
 	var a_homeaddr_z = getMyString()
-	let i = URL(string: "http://example.com/login?home=" + a_homeaddr_z); // BAD [NOT DETECTED]
+	let i = URL(string: "http://example.com/login?home=" + a_homeaddr_z); // BAD
 	var resident_ID = getMyString()
-	let j = URL(string: "http://example.com/login?id=" + resident_ID); // BAD [NOT DETECTED]
+	let j = URL(string: "http://example.com/login?id=" + resident_ID); // BAD
 }

@@ -74,9 +74,9 @@ func test2(password : String, license_key: String, ms: MyStruct, connection : NW
 	connection.send(content: ms.mobilePlayer, completion: .idempotent) // GOOD (not sensitive)
 	connection.send(content: ms.passwordFeatureEnabled, completion: .idempotent) // GOOD (not sensitive)
 	connection.send(content: ms.Telephone, completion: .idempotent) // BAD
-	connection.send(content: ms.birth_day, completion: .idempotent) // BAD [NOT DETECTED]
-	connection.send(content: ms.CarePlanID, completion: .idempotent) // BAD [NOT DETECTED]
-	connection.send(content: ms.BankCardNo, completion: .idempotent) // BAD [NOT DETECTED]
-	connection.send(content: ms.MyCreditRating, completion: .idempotent) // BAD [NOT DETECTED]
+	connection.send(content: ms.birth_day, completion: .idempotent) // BAD
+	connection.send(content: ms.CarePlanID, completion: .idempotent) // BAD
+	connection.send(content: ms.BankCardNo, completion: .idempotent) // BAD
+	connection.send(content: ms.MyCreditRating, completion: .idempotent) // BAD
 	connection.send(content: ms.OneTimeCode, completion: .idempotent) // BAD [NOT DETECTED]
 }

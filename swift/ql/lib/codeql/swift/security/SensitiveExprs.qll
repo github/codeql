@@ -35,7 +35,7 @@ class SensitiveCredential extends SensitiveDataType, TCredential {
       result = HeuristicNames::maybeSensitiveRegexp(classification)
     )
     or
-    result = "(?is).*(account|accnt|license).?(id|key).*"
+    result = "(?is).*((account|accnt|license).?(id|key)|one.?time.?code|pass.?phrase).*"
   }
 }
 
@@ -50,21 +50,27 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
       "(?is).*(" +
         // Inspired by the list on https://cwe.mitre.org/data/definitions/359.html
         // Government identifiers, such as Social Security Numbers
-        "social.?security|national.?insurance|" +
+        "social.?security|employer.?identification|national.?insurance|resident.?id|" +
+        "passport.?(num|no)|" +
         // Contact information, such as home addresses
-        "post.?code|zip.?code|home.?address|" +
+        "post.?code|zip.?code|home.?addr|" +
         // and telephone numbers
-        "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax).?(num|no)|telephone|" +
+        "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax).?(num|no|phone)|" +
+        "emergency.?contact|" +
         // Geographic location - where the user is (or was)
-        "latitude|longitude|" +
+        "latitude|longitude|nationality|" +
         // Financial data - such as credit card numbers, salary, bank accounts, and debts
-        "credit.?card|debit.?card|salary|bank.?account|acc(ou)?nt.?(no|num)|" +
+        "(credit|debit|bank|visa).?(card|num|no|acc(ou?)nt)|acc(ou)?nt.?(no|num|credit)|" +
+        "salary|billing|credit.?(rating|score)|" +
         // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
-        "email|" +
+        "e.?mail|" +
         // Health - medical conditions, insurance status, prescription records
-        "birthday|birth.?date|date.?of.?birth|medical|" +
+        "birth.?(date|day)|(date|day).?(of.?)?birth|" +
+        "medical|(health|care).?plan|healthkit|appointment|prescription|" +
+        "blood.?(type|alcohol|glucose|pressure)|heart.?(rate|rhythm)|body.?(mass|fat)|" +
+        "menstrua|pregnan|insulin|inhaler|" +
         // Relationships - work and family
-        "employer|spouse" +
+        "employer|employee|spouse|maiden.?name" +
         // ---
         ").*"
   }
