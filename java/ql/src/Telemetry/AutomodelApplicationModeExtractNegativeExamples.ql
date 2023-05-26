@@ -12,13 +12,25 @@ private import AutomodelApplicationModeCharacteristics
 private import AutomodelEndpointTypes
 private import AutomodelSharedUtil
 
+/**
+ * Gets a sample of endpoints for which the given characteristic applies.
+ */
+bindingset[limit]
+Endpoint getSampleForCharacteristic(EndpointCharacteristic c, int limit) {
+  exists(int n |
+    result =
+      rank[n](Endpoint e2 | c.appliesToEndpoint(e2) | e2 order by e2.getLocation().toString()) and
+    // we order the endpoints by location, but (to avoid bias) we select the indices semi-randomly
+    n = 1 + (([1 .. limit] * 271) % count(Endpoint e | c.appliesToEndpoint(e)))
+  )
+}
+
 from
   Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string message,
   ApplicationModeMetadataExtractor meta, string package, string type, boolean subtypes, string name,
   string signature, string input
 where
-  endpoint.getLocation().getStartLine() % 100 = 0 and
-  characteristic.appliesToEndpoint(endpoint) and
+  endpoint = getSampleForCharacteristic(characteristic, 100) and
   confidence >= SharedCharacteristics::highConfidence() and
   characteristic.hasImplications(any(NegativeSinkType negative), true, confidence) and
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
