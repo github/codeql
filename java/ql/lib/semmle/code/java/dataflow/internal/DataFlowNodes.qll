@@ -127,8 +127,6 @@ module Public {
       or
       result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getType()
       or
-      result = this.(SummaryParameterNode).getTypeImpl()
-      or
       result = this.(FieldValueNode).getField().getType()
     }
 
@@ -491,10 +489,6 @@ module Private {
 
     override predicate isParameterOf(DataFlowCallable c, int pos) {
       c.asSummarizedCallable() = this.getSummarizedCallable() and pos = this.getPosition()
-    }
-
-    Type getTypeImpl() {
-      result = this.getSummarizedCallable().getParameterType(this.getPosition())
     }
   }
 }

@@ -32,6 +32,11 @@ SummaryCall summaryDataFlowCall(SummaryNode receiver) { result.getReceiver() = r
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) { result = c.getType() }
 
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
+  result = getErasedRepr(c.getParameterType(pos))
+}
+
 /** Gets the return type of kind `rk` for callable `c`. */
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
   result = getErasedRepr(c.getReturnType()) and
