@@ -505,6 +505,9 @@ module Private {
     or
     // Add the post-update node corresponding to the requested argument node
     outputState(c, s) and isCallbackParameter(s)
+    or
+    // Add the parameter node for parameter side-effects
+    outputState(c, s) and s = SummaryComponentStack::argument(_)
   }
 
   private newtype TSummaryNodeState =
@@ -712,6 +715,11 @@ module Private {
         exists(SummaryComponent::SyntheticGlobal sg |
           head = TSyntheticGlobalSummaryComponent(sg) and
           result = getSyntheticGlobalType(sg)
+        )
+        or
+        exists(ParameterPosition pos |
+          head = TArgumentSummaryComponent(pos) and
+          result = getParameterType(c, pos)
         )
       )
       or
