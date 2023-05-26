@@ -4,10 +4,11 @@
  *              may result in a buffer overflow.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 9.3
+ * @precision medium
  * @id cpp/overrun-write
  * @tags reliability
  *       security
- *       experimental
  *       external/cwe/cwe-119
  *       external/cwe/cwe-131
  */
