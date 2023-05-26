@@ -78,11 +78,16 @@ predicate isInvalidPointerDerefSink2(DataFlow::Node sink, Instruction i, string 
   )
 }
 
+pragma[nomagic]
+predicate arrayTypeHasSizes(ArrayType arr, int baseTypeSize, int arraySize) {
+  arr.getBaseType().getSize() = baseTypeSize and
+  arr.getArraySize() = arraySize
+}
+
 predicate pointerArithOverflow0(
   PointerArithmeticInstruction pai, Field f, int size, int bound, int delta
 ) {
-  pai.getElementSize() = f.getUnspecifiedType().(ArrayType).getBaseType().getSize() and
-  f.getUnspecifiedType().(ArrayType).getArraySize() = size and
+  arrayTypeHasSizes(f.getUnspecifiedType(), pai.getElementSize(), size) and
   semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), bound, true, _) and
   delta = bound - size and
   delta >= 0 and
