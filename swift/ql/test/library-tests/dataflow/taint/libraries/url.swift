@@ -277,13 +277,13 @@ func taintThroughURL() {
 		sink(data: data!) // $ tainted=210
 	}
 
-	sink(arg: URL(fileURLWithPath: tainted)) // $ MISSING: tainted=210
-	sink(arg: URL(fileURLWithPath: tainted, isDirectory: false)) // $ MISSING: tainted=210
-	sink(arg: URL(fileURLWithPath: tainted, relativeTo: urlClean)) // $ MISSING: tainted=210
-	sink(arg: URL(fileURLWithPath: clean, relativeTo: urlTainted)) // $ MISSING: tainted=210
-	sink(arg: URL(fileURLWithPath: tainted, isDirectory: false, relativeTo: urlClean)) // $ MISSING: tainted=210
-	sink(arg: URL(fileURLWithPath: clean, isDirectory: false, relativeTo: urlTainted)) // $ MISSING: tainted=210
-	sink(arg: URL(fileURLWithPath: tainted)) // $ MISSING: tainted=
+	sink(arg: URL(fileURLWithPath: tainted)) // $ tainted=210
+	sink(arg: URL(fileURLWithPath: tainted, isDirectory: false)) // $ tainted=210
+	sink(arg: URL(fileURLWithPath: tainted, relativeTo: urlClean)) // $ tainted=210
+	sink(arg: URL(fileURLWithPath: clean, relativeTo: urlTainted)) // $ tainted=210
+	sink(arg: URL(fileURLWithPath: tainted, isDirectory: false, relativeTo: urlClean)) // $ tainted=210
+	sink(arg: URL(fileURLWithPath: clean, isDirectory: false, relativeTo: urlTainted)) // $ tainted=210
+	sink(arg: URL(fileURLWithPath: tainted)) // $ tainted=210
 
 	let _ = clean.withCString({
 		ptrClean in
@@ -295,27 +295,27 @@ func taintThroughURL() {
 		sink(arg: URL(fileURLWithFileSystemRepresentation: ptrTainted, isDirectory: false, relativeTo: nil)) // $ MISSING: tainted=210
 	})
 
-	sink(arg: URL(fileReferenceLiteralResourceName: tainted)) // $ MISSING: tainted=210
-	sink(arg: URL(FilePath(tainted))!) // $ MISSING: tainted=210
-	sink(arg: URL(FilePath(tainted), isDirectory: false)!) // $ MISSING: tainted=210
+	sink(arg: URL(fileReferenceLiteralResourceName: tainted)) // $ tainted=210
+	sink(arg: URL(FilePath(tainted))!) // $ tainted=210
+	sink(arg: URL(FilePath(tainted), isDirectory: false)!) // $ tainted=210
 
 	if let values = try? urlTainted.resourceValues(forKeys: []) {
-		sink(any: values)
-		sink(string: values.name!) // $ MISSING: tainted=210
-		sink(string: values.path!) // $ MISSING: tainted=210
-		sink(string: values.canonicalPath!) // $ MISSING: tainted=210
-		sink(string: values.localizedLabel!) // $ MISSING: tainted=210
-		sink(string: values.localizedName!) // $ MISSING: tainted=210
-		sink(any: values.parentDirectory!) // $ MISSING: tainted=210
+		sink(any: values) // $ tainted=210
+		sink(string: values.name!) // $ tainted=210
+		sink(string: values.path!) // $ tainted=210
+		sink(string: values.canonicalPath!) // $ tainted=210
+		sink(string: values.localizedLabel!) // $ tainted=210
+		sink(string: values.localizedName!) // $ tainted=210
+		sink(any: values.parentDirectory!) // $ tainted=210
 	}
 	if let values = try? urlTainted.promisedItemResourceValues(forKeys: []) {
-		sink(any: values)
-		sink(string: values.name!) // $ MISSING: tainted=210
-		sink(string: values.path!) // $ MISSING: tainted=210
-		sink(string: values.canonicalPath!) // $ MISSING: tainted=210
-		sink(string: values.localizedLabel!) // $ MISSING: tainted=210
-		sink(string: values.localizedName!) // $ MISSING: tainted=210
-		sink(any: values.parentDirectory!) // $ MISSING: tainted=210
+		sink(any: values) // $ tainted=210
+		sink(string: values.name!) // $ tainted=210
+		sink(string: values.path!) // $ tainted=210
+		sink(string: values.canonicalPath!) // $ tainted=210
+		sink(string: values.localizedLabel!) // $ tainted=210
+		sink(string: values.localizedName!) // $ tainted=210
+		sink(any: values.parentDirectory!) // $ tainted=210
 	}
 
 	urlClean.withUnsafeFileSystemRepresentation({
@@ -327,47 +327,47 @@ func taintThroughURL() {
 		sink(any: ptr!) // $ MISSING: tainted=210
 	})
 
-	sink(arg: urlTainted.resolvingSymlinksInPath()) // $ MISSING: tainted=210
-	sink(arg: urlTainted.appendingPathComponent(clean)) // $ MISSING: tainted=210
-	sink(arg: urlClean.appendingPathComponent(tainted)) // $ MISSING: tainted=210
-	sink(arg: urlTainted.appendingPathComponent(clean, isDirectory: false)) // $ MISSING: tainted=210
-	sink(arg: urlClean.appendingPathComponent(tainted, isDirectory: false)) // $ MISSING: tainted=210
-	sink(arg: urlTainted.appendingPathExtension(clean)) // $ MISSING: tainted=210
-	sink(arg: urlClean.appendingPathExtension(tainted)) // $ MISSING: tainted=210
-	sink(arg: urlTainted.deletingLastPathComponent()) // $ MISSING: tainted=210
-	sink(arg: urlTainted.deletingPathExtension()) // $ MISSING: tainted=210
-	sink(arg: urlTainted.appending(component: clean)) // $ MISSING: tainted=210
-	sink(arg: urlClean.appending(component: tainted)) // $ MISSING: tainted=210
-	sink(arg: urlTainted.appending(components: clean)) // $ MISSING: tainted=210
+	sink(arg: urlTainted.resolvingSymlinksInPath()) // $ tainted=210
+	sink(arg: urlTainted.appendingPathComponent(clean)) // $ tainted=210
+	sink(arg: urlClean.appendingPathComponent(tainted)) // $ tainted=210
+	sink(arg: urlTainted.appendingPathComponent(clean, isDirectory: false)) // $ tainted=210
+	sink(arg: urlClean.appendingPathComponent(tainted, isDirectory: false)) // $ tainted=210
+	sink(arg: urlTainted.appendingPathExtension(clean)) // $ tainted=210
+	sink(arg: urlClean.appendingPathExtension(tainted)) // $ tainted=210
+	sink(arg: urlTainted.deletingLastPathComponent()) // $ tainted=210
+	sink(arg: urlTainted.deletingPathExtension()) // $ tainted=210
+	sink(arg: urlTainted.appending(component: clean)) // $ tainted=210
+	sink(arg: urlClean.appending(component: tainted)) // $ tainted=210
+	sink(arg: urlTainted.appending(components: clean)) // $ tainted=210
 	sink(arg: urlClean.appending(components: tainted)) // $ MISSING: tainted=210
 	sink(arg: urlClean.appending(components: clean, tainted)) // $ MISSING: tainted=210
-	sink(arg: urlTainted.appending(path: clean)) // $ MISSING: tainted=210
-	sink(arg: urlClean.appending(path: tainted)) // $ MISSING: tainted=210
-	sink(arg: urlTainted.appending(queryItems: [])) // $ MISSING: tainted=210
+	sink(arg: urlTainted.appending(path: clean)) // $ tainted=210
+	sink(arg: urlClean.appending(path: tainted)) // $ tainted=210
+	sink(arg: urlTainted.appending(queryItems: [])) // $ tainted=210
 	sink(arg: urlClean.appending(queryItems: [source() as! URLQueryItem])) // $ MISSING: tainted=210
 
-	sink(arg: URL(filePath: tainted)) // $ MISSING: tainted=210
-	sink(arg: URL(filePath: tainted, relativeTo: nil)) // $ MISSING: tainted=210
-	sink(arg: URL(filePath: clean, relativeTo: urlTainted)) // $ MISSING: tainted=210
-	sink(arg: try! URL(resolvingAliasFileAt: urlTainted)) // $ MISSING: tainted=210
-	sink(arg: URL(resource: URLResource(name: tainted))!) // $ MISSING: tainted=210
-	sink(arg: URL(resource: URLResource(name: clean, subdirectory: tainted))!) // $ MISSING: tainted=210
+	sink(arg: URL(filePath: tainted)) // $ tainted=210
+	sink(arg: URL(filePath: tainted, relativeTo: nil)) // $ tainted=210
+	sink(arg: URL(filePath: clean, relativeTo: urlTainted)) // $ tainted=210
+	sink(arg: try! URL(resolvingAliasFileAt: urlTainted)) // $ tainted=210
+	sink(arg: URL(resource: URLResource(name: tainted))!) // $ tainted=210
+	sink(arg: URL(resource: URLResource(name: clean, subdirectory: tainted))!) // $ tainted=210
 
 	let dataClean = Data(clean)
 	let dataTainted = Data(tainted)
 	var stale = true
-	sink(arg: URL(dataRepresentation: dataTainted, relativeTo: urlClean)!) // $ MISSING: tainted=210
-	sink(arg: URL(dataRepresentation: dataClean, relativeTo: urlTainted)!) // $ MISSING: tainted=210
-	sink(arg: try! URL(resolvingBookmarkData: dataTainted, bookmarkDataIsStale: &stale)) // $ MISSING: tainted=210
-	sink(arg: try! URL(resolvingBookmarkData: dataClean, relativeTo: urlTainted, bookmarkDataIsStale: &stale)) // $ MISSING: tainted=210
+	sink(arg: URL(dataRepresentation: dataTainted, relativeTo: urlClean)!) // $ tainted=210
+	sink(arg: URL(dataRepresentation: dataClean, relativeTo: urlTainted)!) // $ tainted=210
+	sink(arg: try! URL(resolvingBookmarkData: dataTainted, bookmarkDataIsStale: &stale)) // $ tainted=210
+	sink(arg: try! URL(resolvingBookmarkData: dataClean, relativeTo: urlTainted, bookmarkDataIsStale: &stale)) // $ tainted=210
 
-	sink(string: urlTainted.formatted()) // $ MISSING: tainted=210
-	sink(string: urlTainted.fragment()!) // $ MISSING: tainted=210
-	sink(string: urlTainted.host()!) // $ MISSING: tainted=210
-	sink(string: urlTainted.password()!) // $ MISSING: tainted=210
-	sink(string: urlTainted.path()) // $ MISSING: tainted=210
-	sink(string: urlTainted.query()!) // $ MISSING: tainted=210
-	sink(string: urlTainted.user()!) // $ MISSING: tainted=210
+	sink(string: urlTainted.formatted()) // $ tainted=210
+	sink(string: urlTainted.fragment()!) // $ tainted=210
+	sink(string: urlTainted.host()!) // $ tainted=210
+	sink(string: urlTainted.password()!) // $ tainted=210
+	sink(string: urlTainted.path()) // $ tainted=210
+	sink(string: urlTainted.query()!) // $ tainted=210
+	sink(string: urlTainted.user()!) // $ tainted=210
 
 	var url1 = URL(string: clean)!
 	if let values = try? urlClean.resourceValues(forKeys: []) {
@@ -377,29 +377,29 @@ func taintThroughURL() {
 	if let values = try? urlTainted.resourceValues(forKeys: []) {
 		try! url1.setResourceValues(values)
 	}
-	sink(arg: url1) // $ MISSING: tainted=210
+	sink(arg: url1) // $ tainted=210
 
 	var url2 = URL(string: clean)!
-	url2.setTemporaryResourceValue(source() as Sendable, forKey: URL.URLResourceKey(""))
-	sink(arg: url2) // $ MISSING: tainted=210
+	url2.setTemporaryResourceValue(source(), forKey: URL.URLResourceKey(""))
+	sink(arg: url2) // $ tainted=383
 
 	var url3 = URL(string: clean)!
 	url3.appendPathComponent(clean)
 	sink(arg: url3)
 	url3.appendPathComponent(tainted)
-	sink(arg: url3) // $ MISSING: tainted=210
+	sink(arg: url3) // $ tainted=210
 
 	var url4 = URL(string: clean)!
 	url4.appendPathComponent(tainted, isDirectory: false)
-	sink(arg: url4) // $ MISSING: tainted=210
+	sink(arg: url4) // $ tainted=210
 
 	var url5 = URL(string: clean)!
 	url5.appendPathExtension(tainted)
-	sink(arg: url5) // $ MISSING: tainted=210
+	sink(arg: url5) // $ tainted=210
 
 	var url6 = URL(string: clean)!
 	url6.append(component: tainted)
-	sink(arg: url6) // $ MISSING: tainted=210
+	sink(arg: url6) // $ tainted=210
 
 	var url7 = URL(string: clean)!
 	url7.append(components: tainted)
@@ -411,19 +411,19 @@ func taintThroughURL() {
 
 	var url9 = URL(string: clean)!
 	url9.append(path: tainted)
-	sink(arg: url9) // $ MISSING: tainted=210
+	sink(arg: url9) // $ tainted=210
 
 	var url10 = URL(string: clean)!
 	url10.append(queryItems: [source() as! URLQueryItem])
 	sink(arg: url10) // $ MISSING: tainted=210
 
-	sink(data: try! urlTainted.bookmarkData()) // $ MISSING: tainted=210
-	sink(data: try! URL.bookmarkData(withContentsOf: urlTainted)) // $ MISSING: tainted=210
-	sink(any: URL.resourceValues(forKeys: [], fromBookmarkData: dataTainted)!) // $ MISSING: tainted=210
+	sink(data: try! urlTainted.bookmarkData()) // $ tainted=210
+	sink(data: try! URL.bookmarkData(withContentsOf: urlTainted)) // $ tainted=210
+	sink(any: URL.resourceValues(forKeys: [], fromBookmarkData: dataTainted)!) // $ tainted=210
 
 	sink(arg: URL.homeDirectory) // (static var, not tainted)
 	sink(arg: URL.homeDirectory(forUser: clean)!)
-	sink(arg: URL.homeDirectory(forUser: tainted)!) // $ MISSING: tainted=210
+	sink(arg: URL.homeDirectory(forUser: tainted)!) // $ tainted=210
 }
 
 func taintThroughUrlRequest() {
@@ -481,9 +481,9 @@ func taintThroughUrlResource() {
 	let tainted = source() as! URLResource
 
 	sink(string: clean.name)
-	sink(string: tainted.name) // $ MISSING: tainted=481
+	sink(string: tainted.name) // $ tainted=481
 	sink(string: clean.subdirectory!)
-	sink(string: tainted.subdirectory!) // $ MISSING: tainted=481
+	sink(string: tainted.subdirectory!) // $ tainted=481
 }
 
 func taintUrlAsync() async throws {
