@@ -1136,16 +1136,6 @@ private module ParameterNodes {
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
       this.getSummarizedCallable() = c.asSummarizedCallable() and pos = this.getPosition()
     }
-
-    override Type getTypeImpl() {
-      exists(int i |
-        this.getPosition().getPosition() = i and
-        result = this.getSummarizedCallable().getParameter(i).getType()
-      )
-      or
-      this.getPosition().isThisParameter() and
-      result = this.getSummarizedCallable().getDeclaringType()
-    }
   }
 }
 

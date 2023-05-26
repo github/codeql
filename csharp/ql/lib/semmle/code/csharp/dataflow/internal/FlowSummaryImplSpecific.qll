@@ -41,6 +41,19 @@ DataFlowType getContentType(Content c) {
   )
 }
 
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
+  exists(Type t | result = Gvn::getGlobalValueNumber(t) |
+    exists(int i |
+      pos.getPosition() = i and
+      t = c.getParameter(i).getType()
+    )
+    or
+    pos.isThisParameter() and
+    t = c.getDeclaringType()
+  )
+}
+
 private DataFlowType getReturnTypeBase(DotNet::Callable c, ReturnKind rk) {
   exists(Type t | result = Gvn::getGlobalValueNumber(t) |
     rk instanceof NormalReturnKind and
