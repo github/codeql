@@ -1280,9 +1280,7 @@ class HashLiteralNode extends LocalSourceNode, ExprNode {
  * explicit calls.
  */
 class ArrayLiteralNode extends LocalSourceNode, CallNode {
-  private CfgNodes::ExprNodes::ArrayLiteralCfgNode arrayNode;
-
-  ArrayLiteralNode() { super.getExprNode() = arrayNode }
+  ArrayLiteralNode() { super.getExprNode() instanceof CfgNodes::ExprNodes::ArrayLiteralCfgNode }
 
   /**
    * Gets an element of the array.
