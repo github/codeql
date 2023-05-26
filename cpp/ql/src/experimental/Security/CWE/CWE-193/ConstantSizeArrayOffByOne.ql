@@ -87,6 +87,7 @@ predicate arrayTypeHasSizes(ArrayType arr, int baseTypeSize, int arraySize) {
 predicate pointerArithOverflow0(
   PointerArithmeticInstruction pai, Field f, int size, int bound, int delta
 ) {
+  not f.getNamespace() instanceof StdNamespace and
   arrayTypeHasSizes(f.getUnspecifiedType(), pai.getElementSize(), size) and
   semBounded(getSemanticExpr(pai.getRight()), any(SemZeroBound b), bound, true, _) and
   delta = bound - size and
