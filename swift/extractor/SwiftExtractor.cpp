@@ -49,7 +49,7 @@ static void archiveFile(const SwiftExtractorConfiguration& config, swift::Source
   }
 }
 
-// TODO: This should be factored out/replaced with simplified version of custom mangling
+// TODO: This will be factored out/replaced with a simplified version of custom mangling
 static std::string mangledDeclName(const swift::ValueDecl& decl) {
   std::string_view moduleName = decl.getModuleContext()->getRealName().str();
   // ASTMangler::mangleAnyDecl crashes when called on `ModuleDecl`
