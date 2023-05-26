@@ -22,7 +22,12 @@ module Generated {
     /**
      * Gets the `index`th accessor of this abstract storage declaration (0-based).
      */
-    final Accessor getAccessor(int index) { result = this.getImmediateAccessor(index).resolve() }
+    final Accessor getAccessor(int index) {
+      exists(Accessor immediate |
+        immediate = this.getImmediateAccessor(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the accessors of this abstract storage declaration.

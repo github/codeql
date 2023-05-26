@@ -1640,8 +1640,15 @@ predicate localInstructionFlow(Instruction e1, Instruction e2) {
   localFlow(instructionNode(e1), instructionNode(e2))
 }
 
+/**
+ * INTERNAL: Do not use.
+ *
+ * Ideally this module would be private, but the `asExprInternal` predicate is
+ * needed in `DefaultTaintTrackingImpl`. Once `DefaultTaintTrackingImpl` is gone
+ * we can make this module private.
+ */
 cached
-private module ExprFlowCached {
+module ExprFlowCached {
   /**
    * Holds if `n` is an indirect operand of a `PointerArithmeticInstruction`, and
    * `e` is the result of loading from the `PointerArithmeticInstruction`.
@@ -1692,7 +1699,8 @@ private module ExprFlowCached {
    * `x[i]` steps to the expression `x[i - 1]` without traversing the
    * entire chain.
    */
-  private Expr asExpr(Node n) {
+  cached
+  Expr asExprInternal(Node n) {
     isIndirectBaseOfArrayAccess(n, result)
     or
     not isIndirectBaseOfArrayAccess(n, _) and
@@ -1704,7 +1712,7 @@ private module ExprFlowCached {
    * dataflow step.
    */
   private predicate localStepFromNonExpr(Node n1, Node n2) {
-    not exists(asExpr(n1)) and
+    not exists(asExprInternal(n1)) and
     localFlowStep(n1, n2)
   }
 
@@ -1715,7 +1723,7 @@ private module ExprFlowCached {
   pragma[nomagic]
   private predicate localStepsToExpr(Node n1, Node n2, Expr e2) {
     localStepFromNonExpr*(n1, n2) and
-    e2 = asExpr(n2)
+    e2 = asExprInternal(n2)
   }
 
   /**
@@ -1726,7 +1734,7 @@ private module ExprFlowCached {
     exists(Node mid |
       localFlowStep(n1, mid) and
       localStepsToExpr(mid, n2, e2) and
-      e1 = asExpr(n1)
+      e1 = asExprInternal(n1)
     )
   }
 

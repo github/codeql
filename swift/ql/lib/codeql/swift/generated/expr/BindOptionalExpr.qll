@@ -23,6 +23,11 @@ module Generated {
     /**
      * Gets the sub expression of this bind optional expression.
      */
-    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSubExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

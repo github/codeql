@@ -2,3 +2,4 @@ name: codeql/typos
 version: 0.0.17-dev
 groups: shared
 library: true
+warnOnImplicitThis: true

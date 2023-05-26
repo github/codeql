@@ -57,6 +57,9 @@ class AstNode extends Generated::AstNode {
 
   /**
    * Gets the nearest declaration that contains this AST node, if any.
+   *
+   * Note that the nearest declaration may be an extension of a type declaration. If you always
+   * want the type declaration and not the extension, use `getEnclosingDecl().asNominalTypeDecl()`.
    */
   final Decl getEnclosingDecl() { result = Cached::getEnclosingDecl(this) }
 

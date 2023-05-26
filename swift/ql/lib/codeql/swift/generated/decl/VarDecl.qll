@@ -45,7 +45,12 @@ module Generated {
     /**
      * Gets the type of this variable declaration.
      */
-    final Type getType() { result = this.getImmediateType().resolve() }
+    final Type getType() {
+      exists(Type immediate |
+        immediate = this.getImmediateType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the attached property wrapper type of this variable declaration, if it exists.
@@ -64,7 +69,10 @@ module Generated {
      * Gets the attached property wrapper type of this variable declaration, if it exists.
      */
     final Type getAttachedPropertyWrapperType() {
-      result = this.getImmediateAttachedPropertyWrapperType().resolve()
+      exists(Type immediate |
+        immediate = this.getImmediateAttachedPropertyWrapperType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -90,7 +98,12 @@ module Generated {
     /**
      * Gets the parent pattern of this variable declaration, if it exists.
      */
-    final Pattern getParentPattern() { result = this.getImmediateParentPattern().resolve() }
+    final Pattern getParentPattern() {
+      exists(Pattern immediate |
+        immediate = this.getImmediateParentPattern() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getParentPattern()` exists.
@@ -113,7 +126,12 @@ module Generated {
     /**
      * Gets the parent initializer of this variable declaration, if it exists.
      */
-    final Expr getParentInitializer() { result = this.getImmediateParentInitializer().resolve() }
+    final Expr getParentInitializer() {
+      exists(Expr immediate |
+        immediate = this.getImmediateParentInitializer() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getParentInitializer()` exists.
@@ -140,7 +158,10 @@ module Generated {
      * variable, if any. See `getPropertyWrapperBackingVar`.
      */
     final PatternBindingDecl getPropertyWrapperBackingVarBinding() {
-      result = this.getImmediatePropertyWrapperBackingVarBinding().resolve()
+      exists(PatternBindingDecl immediate |
+        immediate = this.getImmediatePropertyWrapperBackingVarBinding() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -183,7 +204,10 @@ module Generated {
      * This predicate returns such variable declaration.
      */
     final VarDecl getPropertyWrapperBackingVar() {
-      result = this.getImmediatePropertyWrapperBackingVar().resolve()
+      exists(VarDecl immediate |
+        immediate = this.getImmediatePropertyWrapperBackingVar() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -211,7 +235,10 @@ module Generated {
      * variable, if any. See `getPropertyWrapperProjectionVar`.
      */
     final PatternBindingDecl getPropertyWrapperProjectionVarBinding() {
-      result = this.getImmediatePropertyWrapperProjectionVarBinding().resolve()
+      exists(PatternBindingDecl immediate |
+        immediate = this.getImmediatePropertyWrapperProjectionVarBinding() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -260,7 +287,10 @@ module Generated {
      * This predicate returns such variable declaration.
      */
     final VarDecl getPropertyWrapperProjectionVar() {
-      result = this.getImmediatePropertyWrapperProjectionVar().resolve()
+      exists(VarDecl immediate |
+        immediate = this.getImmediatePropertyWrapperProjectionVar() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**

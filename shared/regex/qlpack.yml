@@ -3,3 +3,4 @@ version: 0.0.13-dev
 groups: shared
 library: true
 dependencies:
+warnOnImplicitThis: true

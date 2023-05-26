@@ -28,6 +28,27 @@ module SummaryComponent {
   /** Gets a summary component that represents a list element. */
   SummaryComponent listElement() { result = content(any(ListElementContent c)) }
 
+  /** Gets a summary component that represents a set element. */
+  SummaryComponent setElement() { result = content(any(SetElementContent c)) }
+
+  /** Gets a summary component that represents a tuple element. */
+  SummaryComponent tupleElement(int index) {
+    exists(TupleElementContent c | c.getIndex() = index and result = content(c))
+  }
+
+  /** Gets a summary component that represents a dictionary element. */
+  SummaryComponent dictionaryElement(string key) {
+    exists(DictionaryElementContent c | c.getKey() = key and result = content(c))
+  }
+
+  /** Gets a summary component that represents a dictionary element at any key. */
+  SummaryComponent dictionaryElementAny() { result = content(any(DictionaryElementAnyContent c)) }
+
+  /** Gets a summary component that represents an attribute element. */
+  SummaryComponent attribute(string attr) {
+    exists(AttributeContent c | c.getAttribute() = attr and result = content(c))
+  }
+
   /** Gets a summary component that represents the return value of a call. */
   SummaryComponent return() { result = SC::return(any(ReturnKind rk)) }
 }

@@ -23,7 +23,12 @@ module Generated {
     /**
      * Gets the sub expression of this tap expression, if it exists.
      */
-    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSubExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getSubExpr()` exists.
@@ -44,7 +49,12 @@ module Generated {
     /**
      * Gets the body of this tap expression.
      */
-    final BraceStmt getBody() { result = this.getImmediateBody().resolve() }
+    final BraceStmt getBody() {
+      exists(BraceStmt immediate |
+        immediate = this.getImmediateBody() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the variable of this tap expression.
@@ -60,6 +70,11 @@ module Generated {
     /**
      * Gets the variable of this tap expression.
      */
-    final VarDecl getVar() { result = this.getImmediateVar().resolve() }
+    final VarDecl getVar() {
+      exists(VarDecl immediate |
+        immediate = this.getImmediateVar() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }
