@@ -285,14 +285,19 @@ private string stubQualifier(RefType t) {
     else result = ""
 }
 
+pragma[nomagic]
+private predicate needsPackageNameHelper(RefType t, GeneratedTopLevel top, string name) {
+  t.getSourceDeclaration() = [getAReferencedType(top), top].getSourceDeclaration() and
+  name = t.getName()
+}
+
 /**
  * Holds if `t` may clash with another type of the same name, so should be referred to using the fully qualified name
  */
 private predicate needsPackageName(RefType t) {
-  exists(GeneratedTopLevel top, RefType other |
-    t.getSourceDeclaration() = [getAReferencedType(top), top].getSourceDeclaration() and
-    other.getSourceDeclaration() = [getAReferencedType(top), top].getSourceDeclaration() and
-    t.getName() = other.getName() and
+  exists(GeneratedTopLevel top, RefType other, string name |
+    needsPackageNameHelper(t, top, name) and
+    needsPackageNameHelper(other, top, name) and
     t != other
   )
 }
