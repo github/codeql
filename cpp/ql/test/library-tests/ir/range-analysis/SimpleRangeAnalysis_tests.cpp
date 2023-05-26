@@ -8,7 +8,7 @@ int test1(struct List* p) {
   int count = 0;
   for (; p; p = p->next) {
     count = count+1;
-    range(count); // $ range="==Phi: p:Store: count+1"
+    range(count); // $ range="==Phi: p | Store: count+1"
   }
   range(count);
   return count;
@@ -18,7 +18,7 @@ int test2(struct List* p) {
   int count = 0;
   for (; p; p = p->next) {
     count = (count+1) % 10;
-    range(count); // $ range=<=9 range=>=-9 range="<=Phi: p:Store: count+1"
+    range(count); // $ range=<=9 range=>=-9 range="<=Phi: p | Store: count+1"
   }
   range(count); // $ range=>=-9 range=<=9
   return count;
@@ -29,7 +29,7 @@ int test3(struct List* p) {
   for (; p; p = p->next) {
     range(count++); // $ range=>=-9 range=<=9
     count = count % 10;
-    range(count); // $ range=<=9 range=>=-9 range="<=Store: ... +++0" range="<=Phi: p:Store: count+1" 
+    range(count); // $ range=<=9 range=>=-9 range="<=Store: ... +++0" range="<=Phi: p | Store: count+1" 
   }
   range(count); // $ range=>=-9 range=<=9
   return count;
@@ -93,12 +93,12 @@ int test8(int x, int y) {
   if (-1000 < y && y < 10) {
     range(y); // $ range=<=9 range=>=-999
     if (x < y-2) {
-      range(x); // $ range=<=6 range="<=InitializeParameter: y:Store: y-3"
-      range(y); // $ range=<=9 range=>=-999 range=">=InitializeParameter: x:Store: x+3"
+      range(x); // $ range=<=6 range="<=InitializeParameter: y | Store: y-3"
+      range(y); // $ range=<=9 range=>=-999 range=">=InitializeParameter: x | Store: x+3"
       return x;
     }
-    range(x); // $ range=>=-1001 range=">=InitializeParameter: y:Store: y-2"
-    range(y); // $ range=<=9 range="<=InitializeParameter: x:Store: x+2" range=>=-999
+    range(x); // $ range=>=-1001 range=">=InitializeParameter: y | Store: y-2"
+    range(y); // $ range=<=9 range="<=InitializeParameter: x | Store: x+2" range=>=-999
   }
   range(x);
   range(y);
@@ -128,11 +128,11 @@ int test10(int x, int y) {
     range(y); // $ range=>=8
     if (x < y) {
       range(x); // $ range="<=InitializeParameter: y-1"
-      range(y); // $ range=>=8 range=">=InitializeParameter: x:Store: x+1"
+      range(y); // $ range=>=8 range=">=InitializeParameter: x | Store: x+1"
       return 0;
     }
     range(x); // $ range=>=8 range=">=InitializeParameter: y+0"
-    range(y); // $ range="<=InitializeParameter: x:Store: x+0" range=>=8
+    range(y); // $ range="<=InitializeParameter: x | Store: x+0" range=>=8
     return x;
   }
   range(y); // $ range=<=7
@@ -541,7 +541,7 @@ int test16(int x) {
   while (i < 3) {
     range(i); // $ range=<=2 range=>=0
     i++;
-    range(i); // $ range=<=3 range=>=1 range="==Phi: i:Store: ... = ...+1"
+    range(i); // $ range=<=3 range=>=1 range="==Phi: i | Store: ... = ...+1"
   }
   range(d);
   d = i;
@@ -640,14 +640,14 @@ unsigned int test_comma01(unsigned int x) {
   unsigned int y1;
   unsigned int y2;
   y1 = (++y, y);
-  range(y1); // $ range=<=101 range="==Phi: ... ? ... : ...:Store: ... ? ... : ...+1"
+  range(y1); // $ range=<=101 range="==Phi: ... ? ... : ... | Store: ... ? ... : ...+1"
   y2 = (y++,
-        range(y), // $ range=<=102 range="==Store: ++ ...:Store: ... = ...+1" range="==Phi: ... ? ... : ...:Store: ... ? ... : ...+2"
+        range(y), // $ range=<=102 range="==Store: ++ ... | Store: ... = ...+1" range="==Phi: ... ? ... : ... | Store: ... ? ... : ...+2"
         y += 3,
-        range(y), // $ range=<=105 range="==Store: ++ ...:Store: ... = ...+4" range="==Store: ... +++3" range="==Phi: ... ? ... : ...:Store: ... ? ... : ...+5"
+        range(y), // $ range=<=105 range="==Store: ++ ... | Store: ... = ...+4" range="==Store: ... +++3" range="==Phi: ... ? ... : ... | Store: ... ? ... : ...+5"
         y);
-  range(y2); // $ range=<=105 range="==Store: ++ ...:Store: ... = ...+4" range="==Store: ... +++3" Unexpected result: range="==Phi: ... ? ... : ...:Store: ... ? ... : ...+5"
-  range(y1 + y2); // $ range=<=206 range="<=Phi: ... ? ... : ...:Store: ... ? ... : ...+106" MISSING: range=">=++ ...:... = ...+5" range=">=... +++4" range=">=... += ...:... = ...+1" range=">=... ? ... : ...+6"
+  range(y2); // $ range=<=105 range="==Store: ++ ... | Store: ... = ...+4" range="==Store: ... +++3" Unexpected result: range="==Phi: ... ? ... : ... | Store: ... ? ... : ...+5"
+  range(y1 + y2); // $ range=<=206 range="<=Phi: ... ? ... : ... | Store: ... ? ... : ...+106" MISSING: range=">=++ ...:... = ...+5" range=">=... +++4" range=">=... += ...:... = ...+1" range=">=... ? ... : ...+6"
   return y1 + y2;
 }
 
@@ -672,7 +672,7 @@ void test17() {
   range(i); // $ range===50
 
   i = 20 + (j -= 10);
-  range(i); // $ range="==Store: ... += ...:Store: ... = ...+10" range===60
+  range(i); // $ range="==Store: ... += ... | Store: ... = ...+10" range===60
 }
 
 // Tests for unsigned multiplication.

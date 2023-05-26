@@ -17,7 +17,7 @@
       } else {
         if (y > 300) {
           range(x); // $ range=>=302 range=<=400 range="<=InitializeParameter: y+1" MISSING: range===y+1
-          range(y); // $ range=>=301 range=<=399 range="==InitializeParameter: x:Store: x-1"
+          range(y); // $ range=>=301 range=<=399 range="==InitializeParameter: x | Store: x-1"
           int sum = x + y;
         }
       }
@@ -40,7 +40,7 @@
 
       if (y == x - 1 && y > 300 && y + 2 == z && z == 350) { // $ overflow=+ overflow=-
         range(x);  // $ range===349 range="==InitializeParameter: y+1" range="==InitializeParameter: z-1"
-        range(y);  // $ range===348 range=">=InitializeParameter: x:Store: x-1" range="==InitializeParameter: z-2" MISSING: range===x-1 
+        range(y);  // $ range===348 range=">=InitializeParameter: x | Store: x-1" range="==InitializeParameter: z-2" MISSING: range===x-1 
         range(z);  // $ range===350 range="<=InitializeParameter: y+2" MISSING: range===x+1 range===y+2
         return x + y + z;
       }

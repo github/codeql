@@ -40,7 +40,7 @@ bindingset[delta]
 private string getBoundString(SemBound b, float delta) {
   b instanceof SemZeroBound and result = delta.toString()
   or
-  result = strictconcat(b.(SemSsaBound).getAVariable().toString(), ":") + getOffsetString(delta)
+  result = strictconcat(b.(SemSsaBound).getAVariable().toString(), " | ") + getOffsetString(delta)
 }
 
 private string getARangeString(SemExpr e) {
