@@ -79,6 +79,15 @@ void testInterproc(BigArray *arr) {
     addToPointerAndAssign(arr->buf);
 }
 
+#define MAX_SIZE_BYTES 4096
+
+void testCharIndex(BigArray *arr) {
+    char *charBuf = (char*) arr->buf;
+
+    charBuf[MAX_SIZE_BYTES - 1] = 0; // GOOD
+    charBuf[MAX_SIZE_BYTES] = 0; // BAD [FALSE NEGATIVE]
+}
+
 void testEqRefinement() {
     int arr[MAX_SIZE];
 
