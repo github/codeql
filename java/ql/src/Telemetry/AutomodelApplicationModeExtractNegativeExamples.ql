@@ -8,6 +8,7 @@
  * @tags internal extract automodel application-mode negative examples
  */
 
+private import java
 private import AutomodelApplicationModeCharacteristics
 private import AutomodelEndpointTypes
 private import AutomodelSharedUtil
@@ -19,7 +20,14 @@ bindingset[limit]
 Endpoint getSampleForCharacteristic(EndpointCharacteristic c, int limit) {
   exists(int n |
     result =
-      rank[n](Endpoint e2 | c.appliesToEndpoint(e2) | e2 order by e2.getLocation().toString()) and
+      rank[n](Endpoint e, Location loc |
+        loc = e.getLocation() and c.appliesToEndpoint(e)
+      |
+        e
+        order by
+          loc.getFile().getAbsolutePath(), loc.getStartLine(), loc.getStartColumn(),
+          loc.getEndLine(), loc.getEndColumn()
+      ) and
     // we order the endpoints by location, but (to avoid bias) we select the indices semi-randomly
     n = 1 + (([1 .. limit] * 271) % count(Endpoint e | c.appliesToEndpoint(e)))
   )
