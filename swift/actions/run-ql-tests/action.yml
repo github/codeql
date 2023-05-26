@@ -26,6 +26,7 @@ runs:
           --check-repeated-labels \
           --check-redefined-labels \
           --check-use-before-definition \
+          --consistency-queries "${{ github.workspace }}/swift/ql/consistency-queries" \
           --compilation-cache "${{ steps.query-cache.outputs.cache-dir }}" \
           ${{ inputs.flags }} \
           swift/ql/test

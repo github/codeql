@@ -1,8 +1,3 @@
-nonUniqueSetRepresentation
-breakInvariant2
-breakInvariant3
-breakInvariant4
-breakInvariant5
 multipleSuccessors
 | cfg.swift:33:28:33:28 | ... is ... | no-match | cfg.swift:33:49:33:60 | call to isZero(x:) |
 | cfg.swift:33:28:33:28 | ... is ... | no-match | cfg.swift:35:5:37:3 | case ... |
@@ -14,11 +9,16 @@ multipleSuccessors
 | file://:0:0:0:0 | $interpolation | successor | cfg.swift:40:12:40:12 | .appendLiteral(_:) |
 | file://:0:0:0:0 | $interpolation | successor | cfg.swift:263:10:263:10 | OpaqueValueExpr |
 | file://:0:0:0:0 | $interpolation | successor | cfg.swift:263:11:263:11 | .appendLiteral(_:) |
-simpleAndNormalSuccessors
 deadEnd
 | cfg.swift:33:49:33:60 | call to isZero(x:) |
 | cfg.swift:144:18:144:34 | ... .&&(_:_:) ... |
 | file://:0:0:0:0 |  ... = ... |
 | file://:0:0:0:0 |  ... = ... |
-nonUniqueSplitKind
-nonUniqueListOrder
+| file://:0:0:0:0 |  ... = ... |
+| file://:0:0:0:0 |  ... = ... |
+| file://:0:0:0:0 |  ... = ... |
+| file://:0:0:0:0 |  ... = ... |
+| file://:0:0:0:0 |  ... = ... |
+| file://:0:0:0:0 |  ... = ... |
+| file://:0:0:0:0 |  ... = ... |
+| patterns.swift:16:10:16:14 | =~ ... |
