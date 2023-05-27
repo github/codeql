@@ -37,14 +37,19 @@ class Configuration extends TaintTracking::Configuration {
     DataFlow::FlowState stateTo
   ) {
     (
-      exists(DataFlow::CallNode cn | 
-        cn.getACalleeIncludingExternals() instanceof EscapeFunction |
+      exists(DataFlow::CallNode cn |
+        cn.getACalleeIncludingExternals().asFunction() instanceof EscapeFunction and
         nodeFrom = cn.getAnArgument() and
         nodeTo = cn.getResult()
       )
       or
-      exists(RegexpMatchFunction re |
-        nodeFrom = re.getACall().getAnArgument() and nodeTo = re.getACall()
+      exists(DataFlow::CallNode cn |
+        (
+          cn.getACalleeIncludingExternals().asFunction() instanceof RegexpMatchFunction or
+          cn.getACalleeIncludingExternals().asFunction() instanceof RegexpReplaceFunction
+        ) and
+        nodeFrom = cn.getAnArgument() and
+        nodeTo = cn.getResult()
       )
       //or
       //stringManipulation(nodeFrom, nodeTo)
