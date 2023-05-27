@@ -37,9 +37,10 @@ class Configuration extends TaintTracking::Configuration {
     DataFlow::FlowState stateTo
   ) {
     (
-      exists(EscapeFunction escaping |
-        nodeFrom = escaping.getACall().getAnArgument() and
-        nodeTo = escaping.getACall()
+      exists(DataFlow::CallNode cn | 
+        cn.getACalleeIncludingExternals() instanceof EscapeFunction |
+        nodeFrom = cn.getAnArgument() and
+        nodeTo = cn.getResult()
       )
       or
       exists(RegexpMatchFunction re |
