@@ -5,7 +5,6 @@
  */
 
 private import go
-private import semmle.go.dataflow.DataFlow
 
 /**
  * Provides default sources, sinks and sanitizers for detecting
