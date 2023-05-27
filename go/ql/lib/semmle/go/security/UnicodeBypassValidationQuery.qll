@@ -28,7 +28,7 @@ class Configuration extends TaintTracking::Configuration {
   Configuration() { this = "UnicodeBypassValidation" }
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
-    source instanceof UntrustedFlowSource and
+    (source instanceof UntrustedFlowSource or source instanceof Source) and
     state instanceof PreValidation
   }
 
