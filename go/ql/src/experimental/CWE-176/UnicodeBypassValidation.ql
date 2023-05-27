@@ -1,13 +1,15 @@
 /**
  * @name Bypass Logical Validation Using Unicode Characters
- * @description A Unicode transformation is using a remote user-controlled data. The transformation is a Unicode normalization using the algorithms "NFC" or "NFKC". In all cases, the security measures implemented or the logical validation performed to escape any injection characters, to validate using regex patterns or to perform string-based checks, before the Unicode transformation are **bypassable** by special Unicode characters.
+ * @description A Unicode transformation is using a remote user-controlled data. The transformation is a Unicode normalization . In all cases, the security measures implemented or the logical validation performed to escape any injection characters, to validate using regex patterns or to perform string-based checks, before the Unicode transformation are **bypassable** by special Unicode characters.
  * @kind path-problem
- * @id py/unicode-bypass-validation
+ * @id go/unicode-bypass-validation
  * @precision high
  * @problem.severity error
  * @tags security
  *       experimental
  *       external/cwe/cwe-176
+ *       external/cwe/cwe-179
+ *       external/cwe/cwe-180
  */
 
 import go
