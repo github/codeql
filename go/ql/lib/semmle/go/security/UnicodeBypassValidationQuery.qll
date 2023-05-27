@@ -51,8 +51,22 @@ class Configuration extends TaintTracking::Configuration {
         nodeFrom = cn.getAnArgument() and
         nodeTo = cn.getResult()
       )
-      //or
-      //stringManipulation(nodeFrom, nodeTo)
+      or
+      exists(DataFlow::CallNode cn |
+        cn.getCalleeName() =
+          [
+            "Clone", "Compare", "Contains", "ContainsAny", "ContainsRune", "Count", "Cut",
+            "CutPrefix", "CutSuffix", "EqualFold", "Fields", "FieldsFunc", "HasPrefix", "HasSuffix",
+            "Index", "IndexAny", "IndexByte", "IndexFunc", "IndexRune", "Join", "LastIndex",
+            "LastIndexAny", "LastIndexByte", "LastIndexFunc", "Map", "Repeat", "Replace",
+            "ReplaceAll", "Split", "SplitAfter", "SplitAfterN", "SplitN", "Title", "ToLower",
+            "ToLowerSpecial", "ToTitle", "ToTitleSpecial", "ToUpper", "ToUpperSpecial",
+            "ToValidUTF8", "Trim", "TrimFunc", "TrimLeft", "TrimLeftFunc", "TrimPrefix",
+            "TrimRight", "TrimRightFunc", "TrimSpace", "TrimSuffix"
+          ] and
+        nodeFrom = cn.getAnArgument() and
+        nodeTo = cn.getResult()
+      )
     ) and
     stateFrom instanceof PreValidation and
     stateTo instanceof PostValidation
