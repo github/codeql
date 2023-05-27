@@ -9,7 +9,6 @@
             The validation of concern are any character escaping, any regex validation or any string
             verification.
         </p>
-        <img src="./vulnerability-flow.png" alt="Security checks bypassed" />
     </overview>
     <recommendation>
         <p> Perform a Unicode normalization before the logical validation. </p>
