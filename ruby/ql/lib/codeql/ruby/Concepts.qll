@@ -212,7 +212,8 @@ module FileSystemWriteAccess {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `FileSystemPermissionModification::Range` instead.
  */
-class FileSystemPermissionModification extends DataFlow::Node instanceof FileSystemPermissionModification::Range {
+class FileSystemPermissionModification extends DataFlow::Node instanceof FileSystemPermissionModification::Range 
+{
   /**
    * Gets an argument to this permission modification that is interpreted as a
    * set of permissions.
@@ -468,7 +469,8 @@ module Http {
       }
     }
 
-    private class RequestInputAccessAsRemoteFlowSource extends RemoteFlowSource::Range instanceof RequestInputAccess {
+    private class RequestInputAccessAsRemoteFlowSource extends RemoteFlowSource::Range instanceof RequestInputAccess 
+    {
       override string getSourceType() { result = this.(RequestInputAccess).getSourceType() }
     }
 
@@ -957,7 +959,8 @@ module Path {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `CookieSecurityConfigurationSetting::Range` instead.
  */
-class CookieSecurityConfigurationSetting extends DataFlow::Node instanceof CookieSecurityConfigurationSetting::Range {
+class CookieSecurityConfigurationSetting extends DataFlow::Node instanceof CookieSecurityConfigurationSetting::Range 
+{
   /**
    * Gets a description of how this cookie setting may weaken application security.
    * This predicate has no results if the setting is considered to be safe.
@@ -1037,7 +1040,8 @@ module Cryptography {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `CryptographicOperation::Range` instead.
    */
-  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range {
+  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range 
+  {
     /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
     deprecated predicate isWeak() { super.isWeak() }
   }
