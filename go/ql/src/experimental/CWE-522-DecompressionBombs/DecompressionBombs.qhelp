@@ -1,0 +1,33 @@
+<!DOCTYPE qhelp PUBLIC
+  "-//Semmle//qhelp//EN"
+  "qhelp.dtd">
+<qhelp>
+<overview>
+<p>Extracting Compressed files with any compression algorithm like gzip can cause to denial of service attacks.</p>
+<p>Attackers can compress a huge file which created by repeated similiar byte and convert it to a small compressed file.</p>
+
+</overview>
+<recommendation>
+
+<p>When you want to decompress a user-provided compressed file you must be careful about the decompression ratio or read these files within a loop byte by byte to be able to manage the decompressed size in each cycle of the loop. Also you can limit the size of reader buffer.</p>
+
+</recommendation>
+<example>
+<p>
+Using "io.LimitReader" and "io.CopyN" are the best option to prevent decompression bomb attacks.
+</p>
+<sample src="example_good.go"/>
+
+<sample src="example_good_2.go" />
+</example>
+<references>
+
+<li>
+<a href="https://github.com/russellhaering/gosaml2/security/advisories/GHSA-6gc3-crp7-25w5">CVE-2023-26483 </a>
+</li>
+<li>
+<a href="https://www.bamsoftware.com/hacks/zipbomb/">A great research to gain more impact by this kind of attacks</a>
+</li>
+
+</references>
+</qhelp>

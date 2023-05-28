@@ -1,0 +1,167 @@
+WARNING: Unused predicate test (/home/am/CodeQL-home/codeql-repo/go/ql/src/experimental/CWE-522-DecompressionBombs/DecompressionBombs.ql:224,11-15)
+WARNING: test is always true, as DataFlowNodes::Public::Node is a supertype of the expression type DataFlowNodes::Public::Node. (/home/am/CodeQL-home/codeql-repo/go/ql/src/experimental/CWE-522-DecompressionBombs/DecompressionBombs.ql:235,68-82)
+WARNING: test is always true, as the expression already has type DataFlowNodes::Public::Node. (/home/am/CodeQL-home/codeql-repo/go/ql/src/experimental/CWE-522-DecompressionBombs/DecompressionBombs.ql:235,68-82)
+edges
+| archive_zip.go:41:18:41:29 | selection of Body | archive_zip.go:142:22:142:25 | definition of file |
+| archive_zip.go:42:15:42:26 | selection of Body | archive_zip.go:120:19:120:22 | definition of file |
+| archive_zip.go:44:16:44:44 | call to PostFormValue | archive_zip.go:90:20:90:27 | definition of filename |
+| archive_zip.go:45:20:45:48 | call to PostFormValue | archive_zip.go:61:24:61:31 | definition of filename |
+| archive_zip.go:61:24:61:31 | definition of filename | archive_zip.go:62:25:62:32 | filename |
+| archive_zip.go:62:2:62:33 | ... := ...[0] | archive_zip.go:65:12:65:12 | f |
+| archive_zip.go:62:25:62:32 | filename | archive_zip.go:62:2:62:33 | ... := ...[0] |
+| archive_zip.go:65:3:65:19 | ... := ...[0] | archive_zip.go:67:37:67:38 | rc |
+| archive_zip.go:65:3:65:19 | ... := ...[0] | archive_zip.go:67:37:67:38 | rc |
+| archive_zip.go:65:12:65:12 | f | archive_zip.go:65:3:65:19 | ... := ...[0] |
+| archive_zip.go:67:4:67:43 | ... := ...[0] | archive_zip.go:67:4:67:9 | definition of result |
+| archive_zip.go:67:4:67:43 | ... := ...[0] | archive_zip.go:68:7:68:12 | result |
+| archive_zip.go:67:4:67:43 | ... := ...[0] | archive_zip.go:72:30:72:35 | result |
+| archive_zip.go:67:37:67:38 | rc | archive_zip.go:67:26:67:34 | selection of Stdout |
+| archive_zip.go:90:20:90:27 | definition of filename | archive_zip.go:92:25:92:32 | filename |
+| archive_zip.go:92:2:92:33 | ... := ...[0] | archive_zip.go:94:12:94:12 | f |
+| archive_zip.go:92:25:92:32 | filename | archive_zip.go:92:2:92:33 | ... := ...[0] |
+| archive_zip.go:94:3:94:19 | ... := ...[0] | archive_zip.go:96:37:96:38 | rc |
+| archive_zip.go:94:3:94:19 | ... := ...[0] | archive_zip.go:96:37:96:38 | rc |
+| archive_zip.go:94:12:94:12 | f | archive_zip.go:94:3:94:19 | ... := ...[0] |
+| archive_zip.go:96:4:96:43 | ... := ...[0] | archive_zip.go:96:4:96:9 | definition of result |
+| archive_zip.go:96:4:96:43 | ... := ...[0] | archive_zip.go:97:7:97:12 | result |
+| archive_zip.go:96:4:96:43 | ... := ...[0] | archive_zip.go:101:14:101:19 | result |
+| archive_zip.go:96:37:96:38 | rc | archive_zip.go:96:26:96:34 | selection of Stdout |
+| archive_zip.go:109:4:109:43 | ... := ...[0] | archive_zip.go:109:4:109:9 | definition of result |
+| archive_zip.go:109:4:109:43 | ... := ...[0] | archive_zip.go:110:7:110:12 | result |
+| archive_zip.go:109:4:109:43 | ... := ...[0] | archive_zip.go:114:14:114:19 | result |
+| archive_zip.go:120:19:120:22 | definition of file | archive_zip.go:121:25:121:28 | file |
+| archive_zip.go:121:2:121:29 | ... := ...[0] | archive_zip.go:122:48:122:52 | file1 |
+| archive_zip.go:121:25:121:28 | file | archive_zip.go:121:2:121:29 | ... := ...[0] |
+| archive_zip.go:122:2:122:69 | ... := ...[0] | archive_zip.go:125:26:125:29 | file |
+| archive_zip.go:122:32:122:53 | call to NewReader | archive_zip.go:122:2:122:69 | ... := ...[0] |
+| archive_zip.go:122:48:122:52 | file1 | archive_zip.go:122:32:122:53 | call to NewReader |
+| archive_zip.go:124:3:124:12 | definition of fileWriter | archive_zip.go:126:24:126:33 | fileWriter |
+| archive_zip.go:125:3:125:36 | ... := ...[0] | archive_zip.go:126:36:126:51 | fileReaderCloser |
+| archive_zip.go:125:3:125:36 | ... := ...[0] | archive_zip.go:126:36:126:51 | fileReaderCloser |
+| archive_zip.go:125:26:125:29 | file | archive_zip.go:125:3:125:36 | ... := ...[0] |
+| archive_zip.go:126:36:126:51 | fileReaderCloser | archive_zip.go:124:3:124:12 | definition of fileWriter |
+| archive_zip.go:142:22:142:25 | definition of file | archive_zip.go:151:28:151:31 | file |
+| archive_zip.go:142:22:142:25 | definition of file | archive_zip.go:158:28:158:31 | file |
+| archive_zip.go:142:22:142:25 | definition of file | archive_zip.go:185:29:185:32 | file |
+| archive_zip.go:142:22:142:25 | definition of file | archive_zip.go:217:33:217:36 | file |
+| archive_zip.go:151:12:151:32 | call to NewReader | archive_zip.go:153:3:153:7 | Bzip2 |
+| archive_zip.go:151:12:151:32 | call to NewReader | archive_zip.go:154:27:154:31 | Bzip2 |
+| archive_zip.go:151:28:151:31 | file | archive_zip.go:151:12:151:32 | call to NewReader |
+| archive_zip.go:154:13:154:32 | call to NewReader | archive_zip.go:263:2:263:8 | tarRead |
+| archive_zip.go:154:13:154:32 | call to NewReader | archive_zip.go:273:25:273:31 | tarRead |
+| archive_zip.go:154:27:154:31 | Bzip2 | archive_zip.go:154:13:154:32 | call to NewReader |
+| archive_zip.go:158:12:158:32 | call to NewReader | archive_zip.go:160:3:160:7 | Flate |
+| archive_zip.go:158:12:158:32 | call to NewReader | archive_zip.go:161:27:161:31 | Flate |
+| archive_zip.go:158:28:158:31 | file | archive_zip.go:158:12:158:32 | call to NewReader |
+| archive_zip.go:161:13:161:32 | call to NewReader | archive_zip.go:263:2:263:8 | tarRead |
+| archive_zip.go:161:13:161:32 | call to NewReader | archive_zip.go:273:25:273:31 | tarRead |
+| archive_zip.go:161:27:161:31 | Flate | archive_zip.go:161:13:161:32 | call to NewReader |
+| archive_zip.go:185:3:185:33 | ... := ...[0] | archive_zip.go:187:3:187:6 | Zlib |
+| archive_zip.go:185:3:185:33 | ... := ...[0] | archive_zip.go:188:27:188:30 | Zlib |
+| archive_zip.go:185:29:185:32 | file | archive_zip.go:185:3:185:33 | ... := ...[0] |
+| archive_zip.go:188:13:188:31 | call to NewReader | archive_zip.go:263:2:263:8 | tarRead |
+| archive_zip.go:188:13:188:31 | call to NewReader | archive_zip.go:273:25:273:31 | tarRead |
+| archive_zip.go:188:27:188:30 | Zlib | archive_zip.go:188:13:188:31 | call to NewReader |
+| archive_zip.go:217:3:217:37 | ... := ...[0] | archive_zip.go:219:3:219:10 | gzipRead |
+| archive_zip.go:217:3:217:37 | ... := ...[0] | archive_zip.go:220:27:220:34 | gzipRead |
+| archive_zip.go:217:33:217:36 | file | archive_zip.go:217:3:217:37 | ... := ...[0] |
+| archive_zip.go:220:13:220:35 | call to NewReader | archive_zip.go:263:2:263:8 | tarRead |
+| archive_zip.go:220:13:220:35 | call to NewReader | archive_zip.go:273:25:273:31 | tarRead |
+| archive_zip.go:220:27:220:34 | gzipRead | archive_zip.go:220:13:220:35 | call to NewReader |
+nodes
+| archive_zip.go:41:18:41:29 | selection of Body | semmle.label | selection of Body |
+| archive_zip.go:42:15:42:26 | selection of Body | semmle.label | selection of Body |
+| archive_zip.go:44:16:44:44 | call to PostFormValue | semmle.label | call to PostFormValue |
+| archive_zip.go:45:20:45:48 | call to PostFormValue | semmle.label | call to PostFormValue |
+| archive_zip.go:61:24:61:31 | definition of filename | semmle.label | definition of filename |
+| archive_zip.go:62:2:62:33 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:62:25:62:32 | filename | semmle.label | filename |
+| archive_zip.go:65:3:65:19 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:65:12:65:12 | f | semmle.label | f |
+| archive_zip.go:67:4:67:9 | definition of result | semmle.label | definition of result |
+| archive_zip.go:67:4:67:43 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:67:4:67:43 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:67:26:67:34 | selection of Stdout | semmle.label | selection of Stdout |
+| archive_zip.go:67:37:67:38 | rc | semmle.label | rc |
+| archive_zip.go:67:37:67:38 | rc | semmle.label | rc |
+| archive_zip.go:68:7:68:12 | result | semmle.label | result |
+| archive_zip.go:72:30:72:35 | result | semmle.label | result |
+| archive_zip.go:90:20:90:27 | definition of filename | semmle.label | definition of filename |
+| archive_zip.go:92:2:92:33 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:92:25:92:32 | filename | semmle.label | filename |
+| archive_zip.go:94:3:94:19 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:94:12:94:12 | f | semmle.label | f |
+| archive_zip.go:96:4:96:9 | definition of result | semmle.label | definition of result |
+| archive_zip.go:96:4:96:43 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:96:4:96:43 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:96:26:96:34 | selection of Stdout | semmle.label | selection of Stdout |
+| archive_zip.go:96:37:96:38 | rc | semmle.label | rc |
+| archive_zip.go:96:37:96:38 | rc | semmle.label | rc |
+| archive_zip.go:97:7:97:12 | result | semmle.label | result |
+| archive_zip.go:101:14:101:19 | result | semmle.label | result |
+| archive_zip.go:109:4:109:9 | definition of result | semmle.label | definition of result |
+| archive_zip.go:109:4:109:43 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:109:4:109:43 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:110:7:110:12 | result | semmle.label | result |
+| archive_zip.go:114:14:114:19 | result | semmle.label | result |
+| archive_zip.go:120:19:120:22 | definition of file | semmle.label | definition of file |
+| archive_zip.go:121:2:121:29 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:121:25:121:28 | file | semmle.label | file |
+| archive_zip.go:122:2:122:69 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:122:32:122:53 | call to NewReader | semmle.label | call to NewReader |
+| archive_zip.go:122:48:122:52 | file1 | semmle.label | file1 |
+| archive_zip.go:124:3:124:12 | definition of fileWriter | semmle.label | definition of fileWriter |
+| archive_zip.go:125:3:125:36 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:125:26:125:29 | file | semmle.label | file |
+| archive_zip.go:126:24:126:33 | fileWriter | semmle.label | fileWriter |
+| archive_zip.go:126:36:126:51 | fileReaderCloser | semmle.label | fileReaderCloser |
+| archive_zip.go:126:36:126:51 | fileReaderCloser | semmle.label | fileReaderCloser |
+| archive_zip.go:142:22:142:25 | definition of file | semmle.label | definition of file |
+| archive_zip.go:151:12:151:32 | call to NewReader | semmle.label | call to NewReader |
+| archive_zip.go:151:28:151:31 | file | semmle.label | file |
+| archive_zip.go:153:3:153:7 | Bzip2 | semmle.label | Bzip2 |
+| archive_zip.go:154:13:154:32 | call to NewReader | semmle.label | call to NewReader |
+| archive_zip.go:154:27:154:31 | Bzip2 | semmle.label | Bzip2 |
+| archive_zip.go:158:12:158:32 | call to NewReader | semmle.label | call to NewReader |
+| archive_zip.go:158:28:158:31 | file | semmle.label | file |
+| archive_zip.go:160:3:160:7 | Flate | semmle.label | Flate |
+| archive_zip.go:161:13:161:32 | call to NewReader | semmle.label | call to NewReader |
+| archive_zip.go:161:27:161:31 | Flate | semmle.label | Flate |
+| archive_zip.go:185:3:185:33 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:185:29:185:32 | file | semmle.label | file |
+| archive_zip.go:187:3:187:6 | Zlib | semmle.label | Zlib |
+| archive_zip.go:188:13:188:31 | call to NewReader | semmle.label | call to NewReader |
+| archive_zip.go:188:27:188:30 | Zlib | semmle.label | Zlib |
+| archive_zip.go:217:3:217:37 | ... := ...[0] | semmle.label | ... := ...[0] |
+| archive_zip.go:217:33:217:36 | file | semmle.label | file |
+| archive_zip.go:219:3:219:10 | gzipRead | semmle.label | gzipRead |
+| archive_zip.go:220:13:220:35 | call to NewReader | semmle.label | call to NewReader |
+| archive_zip.go:220:27:220:34 | gzipRead | semmle.label | gzipRead |
+| archive_zip.go:263:2:263:8 | tarRead | semmle.label | tarRead |
+| archive_zip.go:263:2:263:8 | tarRead | semmle.label | tarRead |
+| archive_zip.go:263:2:263:8 | tarRead | semmle.label | tarRead |
+| archive_zip.go:263:2:263:8 | tarRead | semmle.label | tarRead |
+| archive_zip.go:273:25:273:31 | tarRead | semmle.label | tarRead |
+| archive_zip.go:273:25:273:31 | tarRead | semmle.label | tarRead |
+| archive_zip.go:273:25:273:31 | tarRead | semmle.label | tarRead |
+| archive_zip.go:273:25:273:31 | tarRead | semmle.label | tarRead |
+subpaths
+#select
+| archive_zip.go:67:26:67:34 | selection of Stdout | archive_zip.go:45:20:45:48 | call to PostFormValue | archive_zip.go:67:26:67:34 | selection of Stdout | This file extraction depends on a $@. | archive_zip.go:45:20:45:48 | call to PostFormValue | potentially untrusted source |
+| archive_zip.go:67:37:67:38 | rc | archive_zip.go:45:20:45:48 | call to PostFormValue | archive_zip.go:67:37:67:38 | rc | This file extraction depends on a $@. | archive_zip.go:45:20:45:48 | call to PostFormValue | potentially untrusted source |
+| archive_zip.go:96:26:96:34 | selection of Stdout | archive_zip.go:44:16:44:44 | call to PostFormValue | archive_zip.go:96:26:96:34 | selection of Stdout | This file extraction depends on a $@. | archive_zip.go:44:16:44:44 | call to PostFormValue | potentially untrusted source |
+| archive_zip.go:96:37:96:38 | rc | archive_zip.go:44:16:44:44 | call to PostFormValue | archive_zip.go:96:37:96:38 | rc | This file extraction depends on a $@. | archive_zip.go:44:16:44:44 | call to PostFormValue | potentially untrusted source |
+| archive_zip.go:126:24:126:33 | fileWriter | archive_zip.go:42:15:42:26 | selection of Body | archive_zip.go:126:24:126:33 | fileWriter | This file extraction depends on a $@. | archive_zip.go:42:15:42:26 | selection of Body | potentially untrusted source |
+| archive_zip.go:126:36:126:51 | fileReaderCloser | archive_zip.go:42:15:42:26 | selection of Body | archive_zip.go:126:36:126:51 | fileReaderCloser | This file extraction depends on a $@. | archive_zip.go:42:15:42:26 | selection of Body | potentially untrusted source |
+| archive_zip.go:153:3:153:7 | Bzip2 | archive_zip.go:41:18:41:29 | selection of Body | archive_zip.go:153:3:153:7 | Bzip2 | This file extraction depends on a $@. | archive_zip.go:41:18:41:29 | selection of Body | potentially untrusted source |
+| archive_zip.go:160:3:160:7 | Flate | archive_zip.go:41:18:41:29 | selection of Body | archive_zip.go:160:3:160:7 | Flate | This file extraction depends on a $@. | archive_zip.go:41:18:41:29 | selection of Body | potentially untrusted source |
+| archive_zip.go:187:3:187:6 | Zlib | archive_zip.go:41:18:41:29 | selection of Body | archive_zip.go:187:3:187:6 | Zlib | This file extraction depends on a $@. | archive_zip.go:41:18:41:29 | selection of Body | potentially untrusted source |
+| archive_zip.go:219:3:219:10 | gzipRead | archive_zip.go:41:18:41:29 | selection of Body | archive_zip.go:219:3:219:10 | gzipRead | This file extraction depends on a $@. | archive_zip.go:41:18:41:29 | selection of Body | potentially untrusted source |
+| archive_zip.go:263:2:263:8 | tarRead | archive_zip.go:41:18:41:29 | selection of Body | archive_zip.go:263:2:263:8 | tarRead | This file extraction depends on a $@. | archive_zip.go:41:18:41:29 | selection of Body | potentially untrusted source |
+| archive_zip.go:263:2:263:8 | tarRead | archive_zip.go:41:18:41:29 | selection of Body | archive_zip.go:263:2:263:8 | tarRead | This file extraction depends on a $@. | archive_zip.go:41:18:41:29 | selection of Body | potentially untrusted source |
+| archive_zip.go:263:2:263:8 | tarRead | archive_zip.go:41:18:41:29 | selection of Body | archive_zip.go:263:2:263:8 | tarRead | This file extraction depends on a $@. | archive_zip.go:41:18:41:29 | selection of Body | potentially untrusted source |
+| archive_zip.go:263:2:263:8 | tarRead | archive_zip.go:41:18:41:29 | selection of Body | archive_zip.go:263:2:263:8 | tarRead | This file extraction depends on a $@. | archive_zip.go:41:18:41:29 | selection of Body | potentially untrusted source |
+| archive_zip.go:273:25:273:31 | tarRead | archive_zip.go:41:18:41:29 | selection of Body | archive_zip.go:273:25:273:31 | tarRead | This file extraction depends on a $@. | archive_zip.go:41:18:41:29 | selection of Body | potentially untrusted source |
+| archive_zip.go:273:25:273:31 | tarRead | archive_zip.go:41:18:41:29 | selection of Body | archive_zip.go:273:25:273:31 | tarRead | This file extraction depends on a $@. | archive_zip.go:41:18:41:29 | selection of Body | potentially untrusted source |
+| archive_zip.go:273:25:273:31 | tarRead | archive_zip.go:41:18:41:29 | selection of Body | archive_zip.go:273:25:273:31 | tarRead | This file extraction depends on a $@. | archive_zip.go:41:18:41:29 | selection of Body | potentially untrusted source |
+| archive_zip.go:273:25:273:31 | tarRead | archive_zip.go:41:18:41:29 | selection of Body | archive_zip.go:273:25:273:31 | tarRead | This file extraction depends on a $@. | archive_zip.go:41:18:41:29 | selection of Body | potentially untrusted source |
