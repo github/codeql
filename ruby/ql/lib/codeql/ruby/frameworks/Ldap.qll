@@ -6,8 +6,6 @@ private import ruby
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.dataflow.FlowSummary
 private import codeql.ruby.Concepts
-private import codeql.ruby.CFG
-private import codeql.ruby.AST
 
 /**
  * Provides modeling for `net-ldap` a ruby library for LDAP.
