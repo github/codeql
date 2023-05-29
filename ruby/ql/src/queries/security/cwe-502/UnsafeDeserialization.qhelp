@@ -19,13 +19,12 @@ deserialization of arbitrary objects.
 </p>
 
 <p>
-If deserializing an untrusted YAML document using the <code>psych</code> gem
-prior to version 4.0.0, the <code>load</code> method is vulnerable. Use
-<code>safe_load</code> instead. With <code>psych</code> version 4.0.0 and later,
-the <code>load</code> is safe. The same applies to <code>load_file</code>.
-<code>load_stream</code> is vulnerable in all versions. The safe versions of these
-methods (<code>safe_load</code> and <code>safe_load_file</code>) are not vulnerable
-in any known version.
+If deserializing an untrusted YAML document using the <code>psych</code> gem,
+prefer the <code>safe_load</code> and <code>safe_load_file</code> methods over
+<code>load</code> and <code>load_file</code>, as the former will safely
+handle untrusted data. Avoid passing untrusted data to the <code>load_stream</code>
+method. In <code>psych</code> version 4.0.0 and above, the <code>load</code> can
+safely be used.
 </p>
 
 <p>
