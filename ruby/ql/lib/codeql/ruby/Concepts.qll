@@ -212,8 +212,7 @@ module FileSystemWriteAccess {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `FileSystemPermissionModification::Range` instead.
  */
-class FileSystemPermissionModification extends DataFlow::Node instanceof FileSystemPermissionModification::Range
-{
+class FileSystemPermissionModification extends DataFlow::Node instanceof FileSystemPermissionModification::Range {
   /**
    * Gets an argument to this permission modification that is interpreted as a
    * set of permissions.
@@ -469,8 +468,7 @@ module Http {
       }
     }
 
-    private class RequestInputAccessAsRemoteFlowSource extends RemoteFlowSource::Range instanceof RequestInputAccess
-    {
+    private class RequestInputAccessAsRemoteFlowSource extends RemoteFlowSource::Range instanceof RequestInputAccess {
       override string getSourceType() { result = this.(RequestInputAccess).getSourceType() }
     }
 
@@ -959,8 +957,7 @@ module Path {
  * Extend this class to refine existing API models. If you want to model new APIs,
  * extend `CookieSecurityConfigurationSetting::Range` instead.
  */
-class CookieSecurityConfigurationSetting extends DataFlow::Node instanceof CookieSecurityConfigurationSetting::Range
-{
+class CookieSecurityConfigurationSetting extends DataFlow::Node instanceof CookieSecurityConfigurationSetting::Range {
   /**
    * Gets a description of how this cookie setting may weaken application security.
    * This predicate has no results if the setting is considered to be safe.
@@ -1040,8 +1037,7 @@ module Cryptography {
    * Extend this class to refine existing API models. If you want to model new APIs,
    * extend `CryptographicOperation::Range` instead.
    */
-  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range
-  {
+  class CryptographicOperation extends SC::CryptographicOperation instanceof CryptographicOperation::Range {
     /** DEPRECATED: Use `getAlgorithm().isWeak() or getBlockMode().isWeak()` instead */
     deprecated predicate isWeak() { super.isWeak() }
   }
@@ -1193,5 +1189,52 @@ module LdapExecution {
   abstract class Range extends DataFlow::Node {
     //** Gets the argument that specifies the query to be executed. */
     abstract DataFlow::Node getQuery();
+  }
+}
+
+/**
+ * A data-flow node that collects methods binding a LDAP connection.
+ *
+ * Extend this class to refine existing API models. If you want to model new APIs,
+ * extend `LdapBind::Range` instead.
+ */
+class LdapBind extends DataFlow::Node instanceof LdapBind::Range {
+  /** Gets the argument containing the binding host */
+  DataFlow::Node getHost() { result = super.getHost() }
+
+  /** Gets the argument containing the binding expression. */
+  DataFlow::Node getPassword() { result = super.getPassword() }
+
+  /** Holds if the binding process is anonymous. */
+  predicate isEmptyPassword() {
+    (
+      this.getPassword().getConstantValue().isStringlikeValue("")
+      or
+      this.getPassword().(DataFlow::ExprNode).getExprNode().getConstantValue().getValueType() =
+        "nil"
+    )
+  }
+
+  /** Holds if the binding process use SSL. */
+  predicate useSsl() { super.useSsl() }
+}
+
+/** Provides classes for modeling LDAP bind-related APIs. */
+module LdapBind {
+  /**
+   * A data-flow node that collects methods binding a LDAP connection.
+   *
+   * Extend this class to model new APIs. If you want to refine existing API models,
+   * extend `LdapBind` instead.
+   */
+  abstract class Range extends DataFlow::Node {
+    /** Gets the argument containing the binding host. */
+    abstract DataFlow::Node getHost();
+
+    /** Gets the argument containing the binding expression. */
+    abstract DataFlow::Node getPassword();
+
+    /** Holds if the binding process use SSL. */
+    abstract predicate useSsl();
   }
 }

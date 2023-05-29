@@ -30,6 +30,24 @@ module NetLdap {
   /** A call that establishes a LDAP Connection */
   private class NetLdapConnection extends DataFlow::CallNode {
     NetLdapConnection() { this in [ldap().getAnInstantiation(), ldap().getAMethodCall(["open"])] }
+
+    predicate useSsl() {
+      this.getKeywordArgument("encryption").getConstantValue().isStringlikeValue("simple_tls")
+      or
+      this.getAMethodCall("encryption")
+          .getArgument(0)
+          .getConstantValue()
+          .isStringlikeValue(":simple_tls")
+      or
+      this.getAMethodCall("encryption")
+          .getKeywordArgument("method")
+          .getConstantValue()
+          .isStringlikeValue("simple_tls")
+    }
+
+    DataFlow::Node getAuthValue(string arg) {
+      result = this.getKeywordArgument("auth").(DataFlow::CallNode).getKeywordArgument(arg)
+    }
   }
 
   /** A call that constructs a LDAP query */
@@ -44,5 +62,28 @@ module NetLdap {
     NetLdapExecution() { this = any(NetLdapConnection l).getAMethodCall("search") }
 
     override DataFlow::Node getQuery() { result = this.getKeywordArgument(_) }
+  }
+
+  /** A call considered as a LDAP bind. */
+  private class NetLdapBind extends LdapBind::Range, DataFlow::CallNode {
+    NetLdapConnection l;
+
+    NetLdapBind() { this = l.getAMethodCall("bind") }
+
+    override DataFlow::Node getHost() {
+      (
+        result = l.getKeywordArgument("encryption")
+        or
+        result = l.getAMethodCall("encryption").getArgument(0)
+      ) and
+      result.getConstantValue().isStringlikeValue(":simple_tls")
+    }
+
+    override DataFlow::Node getPassword() {
+      result = l.getAuthValue("password") or
+      result = l.getAMethodCall("auth").getArgument(1)
+    }
+
+    override predicate useSsl() { l.useSsl() }
   }
 }
