@@ -653,21 +653,25 @@ module ModelOutput {
 
   import Cached
   import Specific::ModelOutputSpecific
+  private import SharedModelValidation
 
   private string getInvalidModelKind() {
+    exists(string kind | summaryModel(_, _, _, _, kind) |
+      not kind instanceof ValidSummaryKind and
+      result = "Invalid kind \"" + kind + "\" in summary model."
+    )
+    or
     exists(string kind | sinkModel(_, _, kind) |
-      not kind =
-        [
-          "request-forgery", "jndi-injection", "ldap-injection", "sql-injection", "log-injection",
-          "mvel-injection", "xpath-injection", "groovy-injection", "html-injection", "js-injection",
-          "ognl-injection", "intent-redirection", "pending-intents", "url-redirection",
-          "path-injection", "file-content-store", "hostname-verification", "response-splitting",
-          "information-leak", "xslt-injection", "jexl-injection", "bean-validation",
-          "template-injection", "fragment-injection", "command-injection"
-        ] and
+      not kind instanceof ValidSinkKind and
       not kind.matches("credentials-%") and
       not kind.matches("test-%") and
       result = "Invalid kind \"" + kind + "\" in sink model."
+    )
+    or
+    exists(string kind | sourceModel(_, _, kind) |
+      not kind instanceof ValidSourceKind and
+      not kind.matches("qltest%") and
+      result = "Invalid kind \"" + kind + "\" in source model."
     )
   }
 
