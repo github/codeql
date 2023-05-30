@@ -547,7 +547,7 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
     )
   }
 
-  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+  override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
     tag = CrementConstantTag() and
     opcode instanceof Opcode::Constant and
     resultType = this.getConstantType()
@@ -561,7 +561,7 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
     resultType = getTypeForPRValue(expr.getType())
   }
 
-  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+  override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     tag = CrementOpTag() and
     (
       operandTag instanceof LeftOperandTag and
@@ -585,7 +585,7 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
     result = this.getLoadedOperand().getFirstInstruction()
   }
 
-  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+  override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
     kind instanceof GotoEdge and
     (
       tag = CrementConstantTag() and
@@ -597,10 +597,6 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
       tag = CrementStoreTag() and
       result = this.getParent().getChildSuccessor(this)
     )
-  }
-
-  final override Instruction getChildSuccessor(TranslatedElement child) {
-    child = this.getLoadedOperand() and result = this.getInstruction(CrementConstantTag())
   }
 
   final override int getInstructionElementSize(InstructionTag tag) {
@@ -651,6 +647,10 @@ abstract class TranslatedCrementOperation extends TranslatedNonConstantExpr {
 class TranslatedPrefixCrementOperation extends TranslatedCrementOperation {
   override PrefixCrementOperation expr;
 
+  final override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getLoadedOperand() and result = this.getInstruction(CrementConstantTag())
+  }
+
   override Instruction getResult() {
     if expr.isPRValueCategory()
     then
@@ -666,10 +666,109 @@ class TranslatedPrefixCrementOperation extends TranslatedCrementOperation {
   }
 }
 
+/**
+ * The IR translation of a postfix increment or decrement operation.
+ *
+ * Ideally, this class would do nothing except override `getResult` to specify that
+ * the result of the operation is the instruction whose result is the value of the
+ * loaded operand, but since dataflow does not look at the memory operands of the IR it
+ * can't distinquish between the IR for `++x` and `x++`. For this reason, when the
+ * expression is not in a void context, we generate the following IR for postfix crement
+ * operations:
+ * ```
+ * r1(glval<int>) = VariableAddress[x]     :
+ * r2(int)        = Load[x]                : &:r1, m1
+ * r3(glval<int>) = VariableAddress[#temp] :
+ * r4(int)        = Store[#temp]           : &:r3, r2
+ * r5(int)        = Constant[1]            :
+ * r6(int)        = Add                    : r2, r5
+ * m2(int)        = Store[x]               : &:r1, r6
+ * ```
+ * and `getResult` specifies that the result of the operation is `r4`. This ensures
+ * that dataflow correctly recognizes that a dereference such as `*x++` dereferences
+ * the value of `x` _before_ the increment.
+ *
+ * As a small optimization, when the expression occurs in a void context we generate the
+ * much simpler:
+ * ```
+ * r1(glval<int>) = VariableAddress[x]     :
+ * r2(int)        = Load[x]                : &:r1, m1
+ * r3(int)        = Constant[1]            :
+ * r4(int)        = Add                    : r2, r3
+ * m2(int)        = Store[x]               : &:r1, r4
+ * ```
+ * and `getResult` specifies that the result of the operation is `r2`.
+ */
 class TranslatedPostfixCrementOperation extends TranslatedCrementOperation {
   override PostfixCrementOperation expr;
 
-  override Instruction getResult() { result = this.getLoadedOperand().getResult() }
+  override Instruction getResult() {
+    if expr instanceof ExprInVoidContext
+    then result = this.getLoadedOperand().getResult()
+    else result = this.getInstruction(CrementTempStoreTag())
+  }
+
+  final override predicate hasTempVariable(TempVariableTag tag, CppType type) {
+    not expr instanceof ExprInVoidContext and
+    tag = PostCrementTempVar() and
+    type = getTypeForPRValue(expr.getType())
+  }
+
+  override IRVariable getInstructionVariable(InstructionTag tag) {
+    not expr instanceof ExprInVoidContext and
+    tag = CrementTempAddressTag() and
+    result = this.getTempVariable(PostCrementTempVar())
+  }
+
+  final override predicate hasInstruction(Opcode opcode, InstructionTag tag, CppType resultType) {
+    not expr instanceof ExprInVoidContext and
+    (
+      tag = CrementTempAddressTag() and
+      opcode instanceof Opcode::VariableAddress and
+      resultType = getTypeForGLValue(expr.getType())
+      or
+      tag = CrementTempStoreTag() and
+      opcode instanceof Opcode::Store and
+      resultType = getTypeForPRValue(expr.getType())
+    )
+    or
+    super.hasInstruction(opcode, tag, resultType)
+  }
+
+  final override Instruction getChildSuccessor(TranslatedElement child) {
+    child = this.getLoadedOperand() and
+    if expr instanceof ExprInVoidContext
+    then result = this.getInstruction(CrementConstantTag())
+    else result = this.getInstruction(CrementTempAddressTag())
+  }
+
+  final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
+    not expr instanceof ExprInVoidContext and
+    tag = CrementTempStoreTag() and
+    (
+      operandTag instanceof AddressOperandTag and
+      result = this.getInstruction(CrementTempAddressTag())
+      or
+      operandTag instanceof StoreValueOperandTag and
+      result = this.getLoadedOperand().getResult()
+    )
+    or
+    result = super.getInstructionRegisterOperand(tag, operandTag)
+  }
+
+  final override Instruction getInstructionSuccessor(InstructionTag tag, EdgeKind kind) {
+    not expr instanceof ExprInVoidContext and
+    kind instanceof GotoEdge and
+    (
+      tag = CrementTempAddressTag() and
+      result = this.getInstruction(CrementTempStoreTag())
+      or
+      tag = CrementTempStoreTag() and
+      result = this.getInstruction(CrementConstantTag())
+    )
+    or
+    result = super.getInstructionSuccessor(tag, kind)
+  }
 }
 
 /**

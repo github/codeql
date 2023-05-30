@@ -5,7 +5,8 @@ newtype TTempVariableTag =
   LambdaTempVar() or
   EllipsisTempVar() or
   ThisTempVar() or
-  TempObjectTempVar()
+  TempObjectTempVar() or
+  PostCrementTempVar()
 
 string getTempVariableTagId(TTempVariableTag tag) {
   tag = ConditionValueTempVar() and result = "CondVal"
@@ -21,4 +22,6 @@ string getTempVariableTagId(TTempVariableTag tag) {
   tag = ThisTempVar() and result = "This"
   or
   tag = TempObjectTempVar() and result = "Temp"
+  or
+  tag = PostCrementTempVar() and result = "PostCrement"
 }

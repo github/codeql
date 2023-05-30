@@ -23,6 +23,8 @@ newtype TInstructionTag =
   CrementConstantTag() or
   CrementOpTag() or
   CrementStoreTag() or
+  CrementTempAddressTag() or
+  CrementTempStoreTag() or
   EnterFunctionTag() or
   ReturnValueAddressTag() or
   ReturnTag() or
@@ -131,6 +133,10 @@ string getInstructionTagId(TInstructionTag tag) {
   tag = CrementOpTag() and result = "CrementOp"
   or
   tag = CrementStoreTag() and result = "CrementStore"
+  or
+  tag = CrementTempAddressTag() and result = "CrementTempAddress"
+  or
+  tag = CrementTempStoreTag() and result = "CrementTempStore"
   or
   tag = EnterFunctionTag() and result = "EnterFunc"
   or
