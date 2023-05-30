@@ -4,5 +4,5 @@ extensions:
       extensible: sinkModel
     data:
       - ["org.codehaus.cargo.container.installer", "ZipURLInstaller", True, "ZipURLInstaller", "(URL,String,String)", "", "Argument[0]", "open-url", "ai-manual"]
-      - ["org.codehaus.cargo.container.installer", "ZipURLInstaller", True, "ZipURLInstaller", "(URL,String,String)", "", "Argument[1]", "create-file", "ai-manual"]
-      - ["org.codehaus.cargo.container.installer", "ZipURLInstaller", True, "ZipURLInstaller", "(URL,String,String)", "", "Argument[2]", "create-file", "ai-manual"]
+      - ["org.codehaus.cargo.container.installer", "ZipURLInstaller", True, "ZipURLInstaller", "(URL,String,String)", "", "Argument[1]", "path-injection", "ai-manual"]
+      - ["org.codehaus.cargo.container.installer", "ZipURLInstaller", True, "ZipURLInstaller", "(URL,String,String)", "", "Argument[2]", "path-injection", "ai-manual"]

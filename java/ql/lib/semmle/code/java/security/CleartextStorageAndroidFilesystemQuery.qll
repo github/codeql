@@ -20,7 +20,7 @@ private class AndroidFilesystemCleartextStorageSink extends CleartextStorageSink
 /** A call to a method or constructor that may write to files to the local filesystem. */
 class LocalFileOpenCall extends Storable {
   LocalFileOpenCall() {
-    this = any(DataFlow::Node sink | sinkNode(sink, "create-file")).asExpr().(Argument).getCall()
+    this = any(DataFlow::Node sink | sinkNode(sink, "path-injection")).asExpr().(Argument).getCall()
   }
 
   override Expr getAnInput() {
