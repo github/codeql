@@ -19,7 +19,10 @@ module Private {
 
   class PotentialResponseNode extends DataFlow::ArrayLiteralNode {
     // [status, headers, body]
-    PotentialResponseNode() { this.getNumberOfArguments() = 3 }
+    PotentialResponseNode() {
+      this.getNumberOfArguments() = 3 and
+      this.asExpr().getExpr().getEnclosingModule+().getAMethod().getName() = "call"
+    }
 
     /**
      * Gets an HTTP status code that may be returned in this response.
