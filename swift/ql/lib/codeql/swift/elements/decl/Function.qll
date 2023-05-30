@@ -1,11 +1,24 @@
+private import swift
 private import codeql.swift.generated.decl.Function
-private import codeql.swift.elements.decl.Method
 
 /**
  * A function.
  */
 class Function extends Generated::Function, Callable {
   override string toString() { result = this.getName() }
+
+  /**
+   * Holds if this is a throwing function.
+   *
+   * For example, this function is a throwing function:
+   *
+   * ```swift
+   * func myFunc() throws -> String {
+   *   // ...
+   * }
+   * ```
+   */
+  predicate isThrowing() { this.getInterfaceType().(AnyFunctionType).isThrowing() }
 }
 
 /**
