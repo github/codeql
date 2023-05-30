@@ -63,7 +63,6 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitAbstractFunctionDecl(const swift::AbstractFunctionDecl* decl);
   SwiftMangledName visitSubscriptDecl(const swift::SubscriptDecl* decl);
   SwiftMangledName visitVarDecl(const swift::VarDecl* decl);
-  SwiftMangledName visitGenericTypeDecl(const swift::GenericTypeDecl* decl);
   SwiftMangledName visitAbstractTypeParamDecl(const swift::AbstractTypeParamDecl* decl);
   SwiftMangledName visitGenericTypeParamDecl(const swift::GenericTypeParamDecl* decl);
 

@@ -40,20 +40,22 @@ std::string_view getTypeKindStr(const swift::TypeBase* type) {
 
 template <typename E>
 UntypedTrapLabel SwiftMangler::fetch(E&& e) {
-  return dispatcher.fetchLabel(std::forward<E>(e));
+  auto ret = dispatcher.fetchLabel(std::forward<E>(e));
+  // TODO use a generic logging handle for Swift entities here, once it's available
+  CODEQL_ASSERT(ret.valid(), "using an undefined label in mangling");
+  return ret;
 }
 
 SwiftMangledName SwiftMangler::initMangled(const swift::TypeBase* type) {
-  return SwiftMangledName() << getTypeKindStr(type) << '_';
+  return {getTypeKindStr(type), '_'};
 }
 
 SwiftMangledName SwiftMangler::initMangled(const swift::Decl* decl) {
-  return SwiftMangledName() << swift::Decl::getKindName(decl->getKind()) << "Decl_"
-                            << fetch(getParent(decl));
+  return {swift::Decl::getKindName(decl->getKind()), "Decl_", fetch(getParent(decl))};
 }
 
 SwiftMangledName SwiftMangler::mangleModuleName(std::string_view name) {
-  return SwiftMangledName() << "ModuleDecl_" << name;
+  return {"ModuleDecl_", name};
 }
 
 SwiftMangledName SwiftMangler::visitModuleDecl(const swift::ModuleDecl* decl) {
@@ -124,10 +126,12 @@ unsigned SwiftMangler::getExtensionIndex(const swift::ExtensionDecl* decl,
   } else if (auto iterableParent = llvm::dyn_cast<swift::IterableDeclContext>(parent)) {
     indexExtensions(iterableParent->getAllMembers());
   } else {
-    assert(false && "non-local context must be module or iterable decl context");
+    // TODO use a generic logging handle for Swift entities here, once it's available
+    CODEQL_ASSERT(false, "non-local context must be module or iterable decl context");
   }
   auto found = preloadedExtensionIndexes.extract(decl);
-  assert(found && "extension not found within parent");
+  // TODO use a generic logging handle for Swift entities here, once it's available
+  CODEQL_ASSERT(found, "extension not found within parent");
   return found.mapped();
 }
 
@@ -141,32 +145,17 @@ void SwiftMangler::indexExtensions(llvm::ArrayRef<swift::Decl*> siblings) {
   }
 }
 
-SwiftMangledName SwiftMangler::visitGenericTypeDecl(const swift::GenericTypeDecl* decl) {
-  auto ret = visitValueDecl(decl);
-  if (!ret) {
-    return {};
-  }
-  if (auto genericParams = decl->getParsedGenericParams()) {
-    ret << '<' << genericParams->size() << '>';
-  }
-  return ret;
-}
-
 SwiftMangledName SwiftMangler::visitAbstractTypeParamDecl(
     const swift::AbstractTypeParamDecl* decl) {
   return visitValueDecl(decl, /* force */ true);
 }
 
 SwiftMangledName SwiftMangler::visitGenericTypeParamDecl(const swift::GenericTypeParamDecl* decl) {
-  auto ret = visitAbstractTypeParamDecl(decl);
-  ret << '_' << decl->getDepth() << '_' << decl->getIndex();
-  return ret;
+  return visitAbstractTypeParamDecl(decl) << '_' << decl->getDepth() << '_' << decl->getIndex();
 }
 
 SwiftMangledName SwiftMangler::visitModuleType(const swift::ModuleType* type) {
-  auto ret = initMangled(type);
-  ret << fetch(type->getModule());
-  return ret;
+  return initMangled(type) << fetch(type->getModule());
 }
 
 SwiftMangledName SwiftMangler::visitTupleType(const swift::TupleType* type) {

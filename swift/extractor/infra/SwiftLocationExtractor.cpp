@@ -25,8 +25,8 @@ void SwiftLocationExtractor::attachLocationImpl(const swift::SourceManager& sour
   entry.file = fetchFileLabel(file);
   std::tie(entry.start_line, entry.start_column) = sourceManager.getLineAndColumnInBuffer(start);
   std::tie(entry.end_line, entry.end_column) = sourceManager.getLineAndColumnInBuffer(end);
-  SwiftMangledName locName{{"loc", entry.file, ":", entry.start_line, ":", entry.start_column, ":",
-                            entry.end_line, ":", entry.end_column}};
+  SwiftMangledName locName{"loc", entry.file,     ':', entry.start_line, ':', entry.start_column,
+                           ':',   entry.end_line, ':', entry.end_column};
   entry.id = trap.createTypedLabel<DbLocationTag>(locName);
   trap.emit(entry);
   trap.emit(LocatableLocationsTrap{locatableLabel, entry.id});
@@ -99,7 +99,7 @@ TrapLabel<FileTag> SwiftLocationExtractor::fetchFileLabel(const std::filesystem:
   }
 
   DbFile entry({});
-  entry.id = trap.createTypedLabel<DbFileTag>({{"file_", file.string()}});
+  entry.id = trap.createTypedLabel<DbFileTag>({"file_", file.string()});
   entry.name = file.string();
   trap.emit(entry);
   store[file] = entry.id;

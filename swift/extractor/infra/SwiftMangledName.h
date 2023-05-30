@@ -9,14 +9,13 @@
 
 namespace codeql {
 
-struct SwiftMangledName {
+class SwiftMangledName {
+ public:
   using Part = std::variant<UntypedTrapLabel, std::string, unsigned>;
 
-  std::vector<Part> parts;
+  explicit operator bool() const { return !value.empty(); }
 
-  explicit operator bool() const { return !parts.empty(); }
-
-  std::string str() const;
+  const std::string& str() const { return value; }
 
   // let's avoid copying as long as we don't need it
   SwiftMangledName() = default;
@@ -25,28 +24,40 @@ struct SwiftMangledName {
   SwiftMangledName(SwiftMangledName&&) = default;
   SwiftMangledName& operator=(SwiftMangledName&&) = default;
 
+  template <typename... Args>
+  SwiftMangledName(Args&&... args) {
+    (operator<<(std::forward<Args>(args)), ...);
+  }
+
   // streaming labels or ints into a SwiftMangledName just appends them
   SwiftMangledName& operator<<(UntypedTrapLabel label) &;
   SwiftMangledName& operator<<(unsigned i) &;
+
+  template <typename Tag>
+  SwiftMangledName& operator<<(TrapLabel<Tag> label) & {
+    return operator<<(static_cast<UntypedTrapLabel>(label));
+  }
 
   // streaming string-like stuff will add a new part it only if strictly required, otherwise it will
   // append to the last part if it is a string
   template <typename T>
   SwiftMangledName& operator<<(T&& arg) & {
-    if (parts.empty() || !std::holds_alternative<std::string>(parts.back())) {
-      parts.emplace_back("");
-    }
-    std::get<std::string>(parts.back()) += std::forward<T>(arg);
+    value += arg;
     return *this;
   }
 
-  SwiftMangledName& operator<<(SwiftMangledName&& other) &;
-  SwiftMangledName& operator<<(const SwiftMangledName& other) &;
+  SwiftMangledName& operator<<(const SwiftMangledName& other) {
+    value += other.value;
+    return *this;
+  }
 
   template <typename T>
   SwiftMangledName&& operator<<(T&& arg) && {
     return std::move(operator<<(std::forward<T>(arg)));
   }
+
+ private:
+  std::string value;
 };
 
 }  // namespace codeql
