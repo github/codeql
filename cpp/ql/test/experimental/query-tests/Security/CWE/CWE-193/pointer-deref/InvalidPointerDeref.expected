@@ -671,6 +671,58 @@ edges
 | test.cpp:350:16:350:19 | ... ++ | test.cpp:350:15:350:19 | Load: * ... |
 | test.cpp:350:16:350:19 | ... ++ | test.cpp:350:16:350:19 | ... ++ |
 | test.cpp:350:16:350:19 | ... ++ | test.cpp:350:16:350:19 | ... ++ |
+| test.cpp:355:14:355:27 | new[] | test.cpp:356:15:356:16 | xs |
+| test.cpp:356:15:356:16 | xs | test.cpp:356:15:356:23 | ... + ... |
+| test.cpp:356:15:356:16 | xs | test.cpp:356:15:356:23 | ... + ... |
+| test.cpp:356:15:356:16 | xs | test.cpp:356:15:356:23 | ... + ... |
+| test.cpp:356:15:356:16 | xs | test.cpp:356:15:356:23 | ... + ... |
+| test.cpp:356:15:356:16 | xs | test.cpp:357:24:357:26 | end |
+| test.cpp:356:15:356:16 | xs | test.cpp:357:24:357:30 | ... + ... |
+| test.cpp:356:15:356:16 | xs | test.cpp:357:24:357:30 | ... + ... |
+| test.cpp:356:15:356:16 | xs | test.cpp:357:24:357:30 | ... + ... |
+| test.cpp:356:15:356:16 | xs | test.cpp:357:24:357:30 | ... + ... |
+| test.cpp:356:15:356:16 | xs | test.cpp:358:15:358:26 | end_plus_one |
+| test.cpp:356:15:356:16 | xs | test.cpp:358:15:358:26 | end_plus_one |
+| test.cpp:356:15:356:16 | xs | test.cpp:359:16:359:27 | end_plus_one |
+| test.cpp:356:15:356:16 | xs | test.cpp:359:16:359:31 | ... + ... |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:356:15:356:23 | ... + ... |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:356:15:356:23 | ... + ... |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:357:24:357:26 | end |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:357:24:357:26 | end |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:358:14:358:26 | Load: * ... |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:358:14:358:26 | Load: * ... |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:358:14:358:26 | Load: * ... |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:358:14:358:26 | Load: * ... |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:359:14:359:32 | Load: * ... |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:359:14:359:32 | Load: * ... |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:359:14:359:32 | Load: * ... |
+| test.cpp:356:15:356:23 | ... + ... | test.cpp:359:14:359:32 | Load: * ... |
+| test.cpp:357:24:357:26 | end | test.cpp:358:14:358:26 | Load: * ... |
+| test.cpp:357:24:357:26 | end | test.cpp:359:14:359:32 | Load: * ... |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:357:24:357:30 | ... + ... |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:357:24:357:30 | ... + ... |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:358:14:358:26 | Load: * ... |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:358:14:358:26 | Load: * ... |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:358:14:358:26 | Load: * ... |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:358:14:358:26 | Load: * ... |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:358:15:358:26 | end_plus_one |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:358:15:358:26 | end_plus_one |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:358:15:358:26 | end_plus_one |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:358:15:358:26 | end_plus_one |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:359:14:359:32 | Load: * ... |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:359:14:359:32 | Load: * ... |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:359:14:359:32 | Load: * ... |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:359:14:359:32 | Load: * ... |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:359:16:359:27 | end_plus_one |
+| test.cpp:357:24:357:30 | ... + ... | test.cpp:359:16:359:27 | end_plus_one |
+| test.cpp:358:15:358:26 | end_plus_one | test.cpp:358:14:358:26 | Load: * ... |
+| test.cpp:358:15:358:26 | end_plus_one | test.cpp:358:14:358:26 | Load: * ... |
+| test.cpp:358:15:358:26 | end_plus_one | test.cpp:359:14:359:32 | Load: * ... |
+| test.cpp:358:15:358:26 | end_plus_one | test.cpp:359:14:359:32 | Load: * ... |
+| test.cpp:358:15:358:26 | end_plus_one | test.cpp:359:16:359:27 | end_plus_one |
+| test.cpp:359:16:359:27 | end_plus_one | test.cpp:358:14:358:26 | Load: * ... |
+| test.cpp:359:16:359:27 | end_plus_one | test.cpp:359:14:359:32 | Load: * ... |
+| test.cpp:359:16:359:31 | ... + ... | test.cpp:359:14:359:32 | Load: * ... |
 subpaths
 #select
 | test.cpp:6:14:6:15 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
@@ -699,3 +751,8 @@ subpaths
 | test.cpp:333:5:333:21 | Store: ... = ... | test.cpp:325:14:325:27 | new[] | test.cpp:333:5:333:21 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:325:14:325:27 | new[] | new[] | test.cpp:326:20:326:23 | size | size |
 | test.cpp:341:5:341:21 | Store: ... = ... | test.cpp:325:14:325:27 | new[] | test.cpp:341:5:341:21 | Store: ... = ... | This write might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:325:14:325:27 | new[] | new[] | test.cpp:326:20:326:23 | size | size |
 | test.cpp:350:15:350:19 | Load: * ... | test.cpp:347:14:347:27 | new[] | test.cpp:350:15:350:19 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:347:14:347:27 | new[] | new[] | test.cpp:348:20:348:23 | size | size |
+| test.cpp:358:14:358:26 | Load: * ... | test.cpp:355:14:355:27 | new[] | test.cpp:358:14:358:26 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:355:14:355:27 | new[] | new[] | test.cpp:356:20:356:23 | size | size |
+| test.cpp:358:14:358:26 | Load: * ... | test.cpp:355:14:355:27 | new[] | test.cpp:358:14:358:26 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:355:14:355:27 | new[] | new[] | test.cpp:356:20:356:23 | size | size |
+| test.cpp:359:14:359:32 | Load: * ... | test.cpp:355:14:355:27 | new[] | test.cpp:359:14:359:32 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:355:14:355:27 | new[] | new[] | test.cpp:356:20:356:23 | size | size |
+| test.cpp:359:14:359:32 | Load: * ... | test.cpp:355:14:355:27 | new[] | test.cpp:359:14:359:32 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 2. | test.cpp:355:14:355:27 | new[] | new[] | test.cpp:356:20:356:23 | size | size |
+| test.cpp:359:14:359:32 | Load: * ... | test.cpp:355:14:355:27 | new[] | test.cpp:359:14:359:32 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:355:14:355:27 | new[] | new[] | test.cpp:356:20:356:23 | size | size |
