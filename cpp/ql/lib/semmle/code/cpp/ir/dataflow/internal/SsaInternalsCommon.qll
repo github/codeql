@@ -139,6 +139,20 @@ class AllocationInstruction extends CallInstruction {
   AllocationInstruction() { this.getStaticCallTarget() instanceof Cpp::AllocationFunction }
 }
 
+private predicate isIndirectionType(Type t) { t instanceof Indirection }
+
+private predicate hasUnspecifiedBaseType(Indirection t, Type base) {
+  base = t.getBaseType().getUnspecifiedType()
+}
+
+/**
+ * Holds if `t2` is the same type as `t1`, but after stripping away `result` number
+ * of indirections.
+ * Furthermore, specifies in `t2` been deeply stripped and typedefs has been resolved.
+ */
+private int getNumberOfIndirectionsImpl(Type t1, Type t2) =
+  shortestDistances(isIndirectionType/1, hasUnspecifiedBaseType/2)(t1, t2, result)
+
 /**
  * An abstract class for handling indirections.
  *
@@ -157,7 +171,10 @@ abstract class Indirection extends Type {
    * For example, the number of indirections of a variable `p` of type
    * `int**` is `3` (i.e., `p`, `*p` and `**p`).
    */
-  abstract int getNumberOfIndirections();
+  final int getNumberOfIndirections() {
+    result =
+      getNumberOfIndirectionsImpl(this.getType(), any(Type end | not end instanceof Indirection))
+  }
 
   /**
    * Holds if `deref` is an instruction that behaves as a `LoadInstruction`
@@ -195,18 +212,10 @@ private class PointerOrArrayOrReferenceTypeIndirection extends Indirection insta
   PointerOrArrayOrReferenceTypeIndirection() {
     baseType = PointerOrArrayOrReferenceType.super.getBaseType()
   }
-
-  override int getNumberOfIndirections() {
-    result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
-  }
 }
 
 private class PointerWrapperTypeIndirection extends Indirection instanceof PointerWrapper {
   PointerWrapperTypeIndirection() { baseType = PointerWrapper.super.getBaseType() }
-
-  override int getNumberOfIndirections() {
-    result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
-  }
 
   override predicate isAdditionalDereference(Instruction deref, Operand address) {
     exists(CallInstruction call |
@@ -226,10 +235,6 @@ private module IteratorIndirections {
     IteratorIndirection() {
       not this instanceof PointerOrArrayOrReferenceTypeIndirection and
       baseType = super.getValueType()
-    }
-
-    override int getNumberOfIndirections() {
-      result = 1 + countIndirections(this.getBaseType().getUnspecifiedType())
     }
 
     override predicate isAdditionalDereference(Instruction deref, Operand address) {
