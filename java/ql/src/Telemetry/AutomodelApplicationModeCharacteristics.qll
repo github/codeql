@@ -15,6 +15,7 @@ private import semmle.code.java.security.QueryInjection
 private import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclusions
 private import AutomodelSharedUtil as AutomodelSharedUtil
+private import semmle.code.java.security.PathSanitizer as PathSanitizer
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
@@ -48,7 +49,19 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   class RelatedLocationType = JavaRelatedLocationType;
 
   // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
-  predicate isSanitizer(Endpoint e, EndpointType t) { none() }
+  predicate isSanitizer(Endpoint e, EndpointType t) {
+    (
+      exists(t) and
+      e.getType() instanceof BoxedType
+      or
+      e.getType() instanceof PrimitiveType
+      or
+      e.getType() instanceof NumberType
+    )
+    or
+    t instanceof AutomodelEndpointTypes::TaintedPathSinkType and
+    e instanceof PathSanitizer::PathInjectionSanitizer
+  }
 
   RelatedLocation asLocation(Endpoint e) { result = e.asExpr() }
 
