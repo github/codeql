@@ -324,6 +324,14 @@ query predicate edges(MergedPathNode node1, MergedPathNode node2) {
   joinOn2(node1.asPathNode3(), node2.asSinkNode(), _, _)
 }
 
+query predicate nodes(MergedPathNode n, string key, string val) {
+  AllocToInvalidPointerFlow::PathGraph1::nodes(n.asPathNode1(), key, val)
+  or
+  InvalidPointerToDerefFlow::PathGraph::nodes(n.asPathNode3(), key, val)
+  or
+  key = "semmle.label" and val = n.asSinkNode().toString()
+}
+
 query predicate subpaths(
   MergedPathNode arg, MergedPathNode par, MergedPathNode ret, MergedPathNode out
 ) {
