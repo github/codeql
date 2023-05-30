@@ -83,7 +83,7 @@ struct Logger {
 
 // --- tests ---
 
-func test1(password: String, passwordHash : String) {
+func test1(password: String, passwordHash : String, passphrase: String, pass_phrase: String) {
 	print(password) // $ MISSING: hasCleartextLogging=87
 	print(password, separator: "") // $ MISSING: $ hasCleartextLogging=88
 	print("", separator: password) // $ hasCleartextLogging=89
@@ -132,6 +132,9 @@ func test1(password: String, passwordHash : String) {
     log.critical("\(passwordHash, privacy: .public)") // Safe
     log.fault("\(password, privacy: .public)") // $ MISSING: hasCleartextLogging=133
     log.fault("\(passwordHash, privacy: .public)") // Safe
+
+    NSLog(passphrase) // $ hasCleartextLogging=136
+    NSLog(pass_phrase) // $ MISSING: hasCleartextLogging=137
 }
 
 class MyClass {
@@ -145,14 +148,14 @@ func doSomething(password: String) { }
 func test3(x: String) {
 	// alternative evidence of sensitivity...
 
-	NSLog(x) // $ MISSING: hasCleartextLogging=148
+	NSLog(x) // $ MISSING: hasCleartextLogging=152
 	doSomething(password: x);
-	NSLog(x) // $ hasCleartextLogging=149
+	NSLog(x) // $ hasCleartextLogging=152
 
 	let y = getPassword();
-	NSLog(y) // $ hasCleartextLogging=152
+	NSLog(y) // $ hasCleartextLogging=155
 
 	let z = MyClass()
 	NSLog(z.harmless) // Safe
-	NSLog(z.password) // $ hasCleartextLogging=157
+	NSLog(z.password) // $ hasCleartextLogging=160
 }

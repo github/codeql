@@ -119,16 +119,17 @@
 | testRealm.swift:73:15:73:15 | myPassword | label:myPassword, type:credential |
 | testSend.swift:29:19:29:19 | passwordPlain | label:passwordPlain, type:credential |
 | testSend.swift:33:19:33:19 | passwordPlain | label:passwordPlain, type:credential |
-| testSend.swift:52:13:52:13 | password | label:password, type:credential |
-| testSend.swift:53:13:53:13 | password | label:password, type:credential |
-| testSend.swift:54:17:54:17 | password | label:password, type:credential |
-| testSend.swift:55:23:55:23 | password | label:password, type:credential |
-| testSend.swift:56:27:56:27 | password | label:password, type:credential |
-| testSend.swift:57:27:57:27 | password | label:password, type:credential |
-| testSend.swift:65:27:65:27 | license_key | label:license_key, type:credential |
-| testSend.swift:66:27:66:30 | .mobileNumber | label:mobileNumber, type:private information |
-| testSend.swift:69:27:69:30 | .passwordFeatureEnabled | label:passwordFeatureEnabled, type:credential |
-| testURL.swift:13:54:13:54 | passwd | label:passwd, type:credential |
-| testURL.swift:15:55:15:55 | account_no | label:account_no, type:private information |
-| testURL.swift:16:55:16:55 | credit_card_no | label:credit_card_no, type:private information |
-| testURL.swift:20:22:20:22 | passwd | label:passwd, type:credential |
+| testSend.swift:58:13:58:13 | password | label:password, type:credential |
+| testSend.swift:59:13:59:13 | password | label:password, type:credential |
+| testSend.swift:60:17:60:17 | password | label:password, type:credential |
+| testSend.swift:61:23:61:23 | password | label:password, type:credential |
+| testSend.swift:62:27:62:27 | password | label:password, type:credential |
+| testSend.swift:63:27:63:27 | password | label:password, type:credential |
+| testSend.swift:71:27:71:27 | license_key | label:license_key, type:credential |
+| testSend.swift:72:27:72:30 | .mobileNumber | label:mobileNumber, type:private information |
+| testSend.swift:75:27:75:30 | .passwordFeatureEnabled | label:passwordFeatureEnabled, type:credential |
+| testSend.swift:76:27:76:30 | .Telephone | label:Telephone, type:private information |
+| testURL.swift:17:54:17:54 | passwd | label:passwd, type:credential |
+| testURL.swift:19:55:19:55 | account_no | label:account_no, type:private information |
+| testURL.swift:20:55:20:55 | credit_card_no | label:credit_card_no, type:private information |
+| testURL.swift:24:22:24:22 | passwd | label:passwd, type:credential |
