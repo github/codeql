@@ -81,8 +81,8 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
  * ```
  *
  * We do this by splitting the task up into two configurations:
- * 1. `AllocToInvalidPointerConf` find flow from `malloc(size)` to `begin + size`, and
- * 2. `InvalidPointerToDerefConf` finds flow from `begin + size` to an `end` (on line 3).
+ * 1. `AllocToInvalidPointerConfig` find flow from `malloc(size)` to `begin + size`, and
+ * 2. `InvalidPointerToDerefConfig` finds flow from `begin + size` to an `end` (on line 3).
  *
  * Finally, the range-analysis library will find a load from (or store to) an address that
  * is non-strictly upper-bounded by `end` (which in this case is `*p`).
@@ -180,7 +180,7 @@ predicate isSinkImpl(
 }
 
 /**
- * Holds if `sink` is a sink for `InvalidPointerToDerefConf` and `i` is a `StoreInstruction` that
+ * Holds if `sink` is a sink for `InvalidPointerToDerefConfig` and `i` is a `StoreInstruction` that
  * writes to an address that non-strictly upper-bounds `sink`, or `i` is a `LoadInstruction` that
  * reads from an address that non-strictly upper-bounds `sink`.
  */
@@ -201,7 +201,7 @@ predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string o
 
 /**
  * A configuration to track flow from a pointer-arithmetic operation found
- * by `AllocToInvalidPointerConf` to a dereference of the pointer.
+ * by `AllocToInvalidPointerConfig` to a dereference of the pointer.
  */
 module InvalidPointerToDerefConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { invalidPointerToDerefSource(_, source, _) }
@@ -237,12 +237,12 @@ predicate invalidPointerToDerefSource(
 }
 
 newtype TMergedPathNode =
-  // The path nodes computed by the first projection of `AllocToInvalidPointerConf`
+  // The path nodes computed by the first projection of `AllocToInvalidPointerConfig`
   TPathNode1(AllocToInvalidPointerFlow::PathNode1 p) or
-  // The path nodes computed by `InvalidPointerToDerefConf`
+  // The path nodes computed by `InvalidPointerToDerefConfig`
   TPathNode3(InvalidPointerToDerefFlow::PathNode p) or
-  // The read/write that uses the invalid pointer identified by `InvalidPointerToDerefConf`.
-  // This one is needed because the sink identified by `InvalidPointerToDerefConf` is the
+  // The read/write that uses the invalid pointer identified by `InvalidPointerToDerefConfig`.
+  // This one is needed because the sink identified by `InvalidPointerToDerefConfig` is the
   // pointer, but we want to raise an alert at the dereference.
   TPathNodeSink(Instruction i) {
     exists(DataFlow::Node n |
@@ -335,8 +335,8 @@ query predicate subpaths(
 }
 
 /**
- * Holds if `p1` is a sink of `AllocToInvalidPointerConf` and `p2` is a source
- * of `InvalidPointerToDerefConf`, and they are connected through `pai`.
+ * Holds if `p1` is a sink of `AllocToInvalidPointerConfig` and `p2` is a source
+ * of `InvalidPointerToDerefConfig`, and they are connected through `pai`.
  */
 predicate joinOn1(
   PointerArithmeticInstruction pai, AllocToInvalidPointerFlow::PathNode1 p1,
@@ -347,7 +347,7 @@ predicate joinOn1(
 }
 
 /**
- * Holds if `p1` is a sink of `InvalidPointerToDerefConf` and `i` is the instruction
+ * Holds if `p1` is a sink of `InvalidPointerToDerefConfig` and `i` is the instruction
  * that dereferences `p1`. The string `operation` describes whether the `i` is
  * a `StoreInstruction` or `LoadInstruction`.
  */
