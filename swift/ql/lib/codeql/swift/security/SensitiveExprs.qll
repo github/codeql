@@ -35,7 +35,7 @@ class SensitiveCredential extends SensitiveDataType, TCredential {
       result = HeuristicNames::maybeSensitiveRegexp(classification)
     )
     or
-    result = "(?is).*(license.?key).*"
+    result = "(?is).*(account|accnt|license).?(id|key).*"
   }
 }
 
