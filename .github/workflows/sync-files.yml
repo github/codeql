@@ -17,4 +17,6 @@ jobs:
       - uses: actions/checkout@v3
       - name: Check synchronized files
         run: python config/sync-files.py
+      - name: Check dbscheme fragments
+        run: python config/sync-dbscheme-fragments.py
 

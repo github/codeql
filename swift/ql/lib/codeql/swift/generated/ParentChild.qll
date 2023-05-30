@@ -1613,13 +1613,12 @@ private module Impl {
   private Element getImmediateChildOfOpenExistentialExpr(
     OpenExistentialExpr e, int index, string partialPredicateCall
   ) {
-    exists(int b, int bExpr, int n, int nSubExpr, int nExistential, int nOpaqueExpr |
+    exists(int b, int bExpr, int n, int nSubExpr, int nExistential |
       b = 0 and
       bExpr = b + 1 + max(int i | i = -1 or exists(getImmediateChildOfExpr(e, i, _)) | i) and
       n = bExpr and
       nSubExpr = n + 1 and
       nExistential = nSubExpr + 1 and
-      nOpaqueExpr = nExistential + 1 and
       (
         none()
         or
@@ -1630,10 +1629,6 @@ private module Impl {
         index = nSubExpr and
         result = e.getImmediateExistential() and
         partialPredicateCall = "Existential()"
-        or
-        index = nExistential and
-        result = e.getImmediateOpaqueExpr() and
-        partialPredicateCall = "OpaqueExpr()"
       )
     )
   }

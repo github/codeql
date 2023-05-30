@@ -28,7 +28,7 @@ private predicate shouldPrint(Locatable e) { any(PrintAstConfiguration config).s
 /**
  * An AST node that should be printed.
  */
-private newtype TPrintAstNode = TLocatable(Locatable ast)
+private newtype TPrintAstNode = TPrintLocatable(Locatable ast)
 
 /**
  * A node in the output tree.
@@ -60,6 +60,11 @@ class PrintAstNode extends TPrintAstNode {
    * the property is `key`.
    */
   string getProperty(string key) { none() }
+
+  /**
+   * Gets the underlying AST node, if any.
+   */
+  abstract Locatable getAstNode();
 }
 
 private string prettyPrint(Locatable e) {
@@ -73,10 +78,10 @@ private class Unresolved extends Locatable {
 /**
  * A graph node representing a real Locatable node.
  */
-class PrintLocatable extends PrintAstNode, TLocatable {
+class PrintLocatable extends PrintAstNode, TPrintLocatable {
   Locatable ast;
 
-  PrintLocatable() { this = TLocatable(ast) }
+  PrintLocatable() { this = TPrintLocatable(ast) }
 
   override string toString() { result = prettyPrint(ast) }
 
@@ -87,9 +92,9 @@ class PrintLocatable extends PrintAstNode, TLocatable {
       c = getChildAndAccessor(ast, i, accessor) and
       (
         // use even indexes for normal children, leaving odd slots for conversions if any
-        child = TLocatable(c) and index = 2 * i and label = accessor
+        child = TPrintLocatable(c) and index = 2 * i and label = accessor
         or
-        child = TLocatable(c.getFullyUnresolved().(Unresolved)) and
+        child = TPrintLocatable(c.getFullyUnresolved().(Unresolved)) and
         index = 2 * i + 1 and
         (
           if c instanceof Expr
@@ -99,6 +104,8 @@ class PrintLocatable extends PrintAstNode, TLocatable {
       )
     )
   }
+
+  final override Locatable getAstNode() { result = ast }
 
   final override Location getLocation() { result = ast.getLocation() }
 }
@@ -112,17 +119,38 @@ class PrintUnresolved extends PrintLocatable {
 
   override predicate hasChild(PrintAstNode child, int index, string label) {
     // only print immediate unresolved children from the "parallel" AST
-    child = TLocatable(getImmediateChildAndAccessor(ast, index, label).(Unresolved))
+    child = TPrintLocatable(getImmediateChildAndAccessor(ast, index, label).(Unresolved))
   }
 }
 
+private predicate hasPropertyWrapperElement(VarDecl d, Locatable a) {
+  a = [d.getPropertyWrapperBackingVar(), d.getPropertyWrapperProjectionVar()] or
+  a = [d.getPropertyWrapperBackingVarBinding(), d.getPropertyWrapperProjectionVarBinding()]
+}
+
 /**
- * A specialization of graph node for `VarDecl`, to add typing information.
+ * A specialization of graph node for `VarDecl`, to add typing information and deal with ambiguity
+ * over property wrapper children.
  */
 class PrintVarDecl extends PrintLocatable {
   override VarDecl ast;
 
   override string getProperty(string key) { key = "Type" and result = ast.getType().toString() }
+
+  override predicate hasChild(PrintAstNode child, int index, string label) {
+    PrintLocatable.super.hasChild(child, index, label) and
+    // exclude property wrapper related children when they are already listed in the enclosing
+    // nominal type declaration or for a wrapped parameter for which this is a virtual local variable copy
+    not exists(Locatable childAst |
+      childAst = child.getAstNode() and
+      hasPropertyWrapperElement(ast, childAst) and
+      (
+        childAst = ast.getDeclaringDecl().getAMember()
+        or
+        ast instanceof ConcreteVarDecl and hasPropertyWrapperElement(any(ParamDecl p), childAst)
+      )
+    )
+  }
 }
 
 /**
@@ -133,5 +161,25 @@ class PrintFunction extends PrintLocatable {
 
   override string getProperty(string key) {
     key = "InterfaceType" and result = ast.getInterfaceType().toString()
+  }
+}
+
+/**
+ * A specialization of graph node for `PatternBindingDecl`, to solve ambiguity on `getInit`.
+ * When a property wrapper is involved, `getInit` may become shared between the explicit binding and
+ * the implicit compiler synthesized one.
+ */
+class PrintPatternBindingDecl extends PrintLocatable {
+  override PatternBindingDecl ast;
+
+  override predicate hasChild(PrintAstNode child, int index, string label) {
+    PrintLocatable.super.hasChild(child, index, label) and
+    // exclude `getInit` that are already the initializer of a variable that has this as a property wrapper backer
+    not exists(Expr init, VarDecl var |
+      init = child.getAstNode() and
+      init = ast.getAnInit() and
+      var.getPropertyWrapperBackingVarBinding() = ast and
+      var.getParentInitializer() = init
+    )
   }
 }

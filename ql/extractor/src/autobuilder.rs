@@ -15,7 +15,7 @@ pub fn run(_: Options) -> std::io::Result<()> {
 
     autobuilder::Autobuilder::new("ql", PathBuf::from(database))
         .include_extensions(&[".ql", ".qll", ".dbscheme", ".json", ".jsonc", ".jsonl"])
-        .include_globs(&["**/qlpack.yml", "deprecated.blame"])
+        .include_globs(&["deprecated.blame"])
         .size_limit("10m")
         .run()
 }

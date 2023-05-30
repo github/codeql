@@ -144,12 +144,13 @@ module LocalFlow {
    * This is intended to recover from flow not currently recognised by ordinary capture flow.
    */
   predicate localFlowSsaParamCaptureInput(Node nodeFrom, Node nodeTo) {
-    exists(Ssa::CapturedEntryDefinition def |
-      nodeFrom.asParameter().(NamedParameter).getVariable() = def.getSourceVariable()
-      or
-      nodeFrom.(SelfParameterNode).getSelfVariable() = def.getSourceVariable()
-    |
+    exists(Ssa::CapturedEntryDefinition def, ParameterNodeImpl p |
+      (nodeFrom = p or LocalFlow::localFlowSsaParamInput(p, nodeFrom)) and
       nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def
+    |
+      p.getParameter().(NamedParameter).getVariable() = def.getSourceVariable()
+      or
+      p.(SelfParameterNode).getSelfVariable() = def.getSourceVariable()
     )
   }
 
