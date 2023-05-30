@@ -3,8 +3,8 @@
     <overview>
         <p>
             If ever a unicode tranformation is performed after some security checks or logical
-            validation, the
-            latter could be bypassed due to a potential Unicode characters collision.
+            validation, those
+            checks could be bypassed due to a potential Unicode characters collision.
             The validation of concern are any character escaping, any regex validation or any string
             verification.
         </p>
