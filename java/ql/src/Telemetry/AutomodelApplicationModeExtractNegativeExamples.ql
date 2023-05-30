@@ -18,7 +18,7 @@ private import AutomodelSharedUtil
  */
 bindingset[limit]
 Endpoint getSampleForCharacteristic(EndpointCharacteristic c, int limit) {
-  exists(int n |
+  exists(int n, int num_endpoints | num_endpoints = count(Endpoint e | c.appliesToEndpoint(e)) |
     result =
       rank[n](Endpoint e, Location loc |
         loc = e.getLocation() and c.appliesToEndpoint(e)
@@ -29,7 +29,7 @@ Endpoint getSampleForCharacteristic(EndpointCharacteristic c, int limit) {
           loc.getEndLine(), loc.getEndColumn()
       ) and
     // we order the endpoints by location, but (to avoid bias) we select the indices semi-randomly
-    n = 1 + (([1 .. limit] * 271) % count(Endpoint e | c.appliesToEndpoint(e)))
+    n = 1 + (([0 .. limit - 1] * (num_endpoints / limit).floor() + 46337) % num_endpoints)
   )
 }
 
