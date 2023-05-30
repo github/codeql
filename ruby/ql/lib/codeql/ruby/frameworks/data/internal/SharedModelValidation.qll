@@ -4,6 +4,8 @@
  * Provides classes for validating kinds in models as data rows.
  * Such that we can share this logic across our CodeQL analysis of different languages.
  */
+
+/** A valid models-as-data sink kind. */
 class ValidSinkKind extends string {
   ValidSinkKind() {
     this =
@@ -25,6 +27,39 @@ class ValidSinkKind extends string {
         // Swift only
         "preferences-store", "transmission", "predicate-injection", "webview-fetch",
         "tls-protocol-version", "hash-iteration-count" // .matches("%string-%length"), .matches("weak-hash-input-")
+      ]
+  }
+}
+
+/** A valid models-as-data source kind. */
+class ValidSourceKind extends string {
+  ValidSourceKind() {
+    this =
+      [
+        // shared ALL languages
+        "remote", "local"
+      ]
+  }
+}
+
+/** A valid models-as-data summary kind. */
+class ValidSummaryKind extends string {
+  ValidSummaryKind() {
+    this =
+      [
+        // shared ALL languages
+        "taint", "value"
+      ]
+  }
+}
+
+/** A valid models-as-data neutral kind. */
+class ValidNeutralKind extends string {
+  ValidNeutralKind() {
+    this =
+      [
+        // shared ALL languages
+        "summary", "source", "sink"
       ]
   }
 }
