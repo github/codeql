@@ -13,9 +13,7 @@ import semmle.code.java.dataflow.FlowSteps
  * deserialized.
  */
 private class GsonReadValueMethod extends Method {
-  GsonReadValueMethod() {
-    this.hasQualifiedName("com.google.gson", "Gson", "fromJson")
-  }
+  GsonReadValueMethod() { this.hasQualifiedName("com.google.gson", "Gson", "fromJson") }
 }
 
 /** A type whose values may be deserialized by the Gson JSON framework. */
