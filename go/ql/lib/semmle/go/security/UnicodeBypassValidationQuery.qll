@@ -101,10 +101,14 @@ class Configuration extends TaintTracking::Configuration {
 
   /* A Unicode Tranformation (Unicode tranformation) is considered a sink when the algorithm used is either NFC or NFKC.  */
   override predicate isSink(DataFlow::Node sink, DataFlow::FlowState state) {
-    exists(string unicodeNorm, DataFlow::MethodCallNode cn |
-      unicodeNorm = package("golang.org/x/text", "unicode/norm") and
-      cn.getTarget().hasQualifiedName(unicodeNorm, "Form", "String") and
-      sink = cn.getArgument(0)
+    (
+      exists(string unicodeNorm, DataFlow::MethodCallNode cn |
+        unicodeNorm = package("golang.org/x/text", "unicode/norm") and
+        cn.getTarget().hasQualifiedName(unicodeNorm, "Form", "String") and
+        sink = cn.getArgument(0)
+      )
+      or
+      sink instanceof Sink
     ) and
     state instanceof PostValidation
   }
