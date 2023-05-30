@@ -347,6 +347,6 @@ void test24(unsigned size) {
   char *xs = new char[size];
   char *end = xs + size;
   if (xs < end) {
-    int val = *xs++; // GOOD [FALSE POSITIVE]
+    int val = *xs++; // GOOD
   }
 }
