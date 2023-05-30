@@ -15,11 +15,10 @@ extensions:
       - ["hudson.util", "TextFile", True, "lines", "()", "", "Argument[this]", "read-file", "manual"]
       - ["hudson.util", "TextFile", True, "read", "()", "", "Argument[this]", "read-file", "manual"]
       - ["hudson.util", "TextFile", True, "readTrim", "()", "", "Argument[this]", "read-file", "manual"]
-      - ["hudson.util", "TextFile", True, "write", "(String)", "", "Argument[0]", "write-file", "manual"]
+      - ["hudson.util", "TextFile", True, "write", "(String)", "", "Argument[0]", "file-content-store", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel
     data:
       - ["hudson.util", "QuotedStringTokenizer", True, "tokenize", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["hudson.util", "TextFile", True, "TextFile", "(File)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
-      

@@ -7,7 +7,7 @@ extensions:
       - ["hudson", "FilePath", False, "copyFrom", "(URL)", "", "Argument[0]", "read-file", "manual"]
       - ["hudson", "FilePath", False, "copyFrom", "(FileItem)", "", "Argument[0]", "read-file", "ai-manual"]
       - ["hudson", "FilePath", False, "copyRecursiveTo", "(DirScanner,FilePath,String,TarCompression)", "", "Argument[1]", "create-file", "ai-manual"]
-      - ["hudson", "FilePath", False, "copyRecursiveTo", "(DirScanner,FilePath,String)", "", "Argument[1]", "write-file", "ai-manual"]
+      - ["hudson", "FilePath", False, "copyRecursiveTo", "(DirScanner,FilePath,String)", "", "Argument[1]", "file-content-store", "ai-manual"]
       - ["hudson", "FilePath", False, "copyRecursiveTo", "(String,FilePath)", "", "Argument[1]", "create-file", "ai-manual"]
       - ["hudson", "FilePath", False, "copyRecursiveTo", "(String,String,FilePath)", "", "Argument[0]", "read-file", "ai-manual"]
       - ["hudson", "FilePath", False, "copyRecursiveTo", "(String,String,FilePath)", "", "Argument[2]", "create-file", "ai-manual"]

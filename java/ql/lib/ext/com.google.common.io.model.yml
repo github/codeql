@@ -9,7 +9,7 @@ extensions:
       - ["com.google.common.io", "Files", False, "readLines", "(File,Charset)", "", "Argument[0]", "read-file", "ai-manual"]
       - ["com.google.common.io", "Files", False, "toByteArray", "(File)", "", "Argument[0]", "read-file", "ai-manual"]
       - ["com.google.common.io", "Files", False, "toString", "(File,Charset)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["com.google.common.io", "Files", False, "write", "(byte[],File)", "", "Argument[0]", "write-file", "ai-manual"]
+      - ["com.google.common.io", "Files", False, "write", "(byte[],File)", "", "Argument[0]", "file-content-store", "ai-manual"]
       - ["com.google.common.io", "Files", False, "write", "(byte[],File)", "", "Argument[1]", "create-file", "manual"]
   - addsTo:
       pack: codeql/java-all

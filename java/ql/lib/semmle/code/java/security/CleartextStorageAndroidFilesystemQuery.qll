@@ -40,7 +40,7 @@ class LocalFileOpenCall extends Storable {
 
 /** Holds if `input` is written into `file`. */
 private predicate filesystemInput(DataFlow::Node file, Argument input) {
-  exists(DataFlow::Node write | sinkNode(write, "write-file") |
+  exists(DataFlow::Node write | sinkNode(write, "file-content-store") |
     input = write.asExpr() or
     isVarargs(input, write)
   ) and
