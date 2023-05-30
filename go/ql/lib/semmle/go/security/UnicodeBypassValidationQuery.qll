@@ -56,17 +56,43 @@ class Configuration extends TaintTracking::Configuration {
         cn.getTarget()
             .hasQualifiedName("strings",
               [
-                "Clone", "Compare", "Contains", "ContainsAny", "ContainsRune", "Count", "Cut",
-                "CutPrefix", "CutSuffix", "EqualFold", "Fields", "FieldsFunc", "HasPrefix",
-                "HasSuffix", "Index", "IndexAny", "IndexByte", "IndexFunc", "IndexRune", "Join",
-                "LastIndex", "LastIndexAny", "LastIndexByte", "LastIndexFunc", "Map", "Repeat",
-                "Replace", "ReplaceAll", "Split", "SplitAfter", "SplitAfterN", "SplitN", "Title",
-                "ToLower", "ToLowerSpecial", "ToTitle", "ToTitleSpecial", "ToUpper",
-                "ToUpperSpecial", "ToValidUTF8", "Trim", "TrimFunc", "TrimLeft", "TrimLeftFunc",
-                "TrimPrefix", "TrimRight", "TrimRightFunc", "TrimSpace", "TrimSuffix"
+                "Contains", "ContainsAny", "ContainsRune", "Count", "EqualFold", "HasPrefix",
+                "HasSuffix", "Index", "IndexAny", "IndexByte", "IndexFunc", "IndexRune",
+                "LastIndex", "LastIndexAny", "LastIndexByte", "LastIndexFunc",
               ]) and
+        nodeFrom = cn.getArgument(0) and
+        nodeTo = nodeFrom
+      )
+      or
+      exists(DataFlow::CallNode cn |
+        cn.getTarget().hasQualifiedName("strings", "Compare") and
         nodeFrom = cn.getAnArgument() and
-        nodeTo = cn
+        nodeTo = nodeFrom
+      )
+      or
+      exists(DataFlow::CallNode cn |
+        cn.getTarget().hasQualifiedName("strings", "Cut") and
+        nodeFrom = cn.getArgument(0) and
+        nodeTo = cn.getResult([0, 1])
+      )
+      or
+      exists(DataFlow::CallNode cn |
+        cn.getTarget().hasQualifiedName("strings", ["CutPrefix", "CutSuffix"]) and
+        nodeFrom = cn.getArgument(0) and
+        nodeTo = cn.getResult(0)
+      )
+      or
+      exists(DataFlow::CallNode cn |
+        cn.getTarget()
+            .hasQualifiedName("strings",
+              [
+                "Fields", "FieldsFunc", "Replace", "ReplaceAll", "Split", "SplitAfter",
+                "SplitAfterN", "SplitN", "ToLower", "ToLowerSpecial", "ToTitle", "ToTitleSpecial",
+                "ToUpper", "ToUpperSpecial", "Trim", "TrimFunc", "TrimLeft", "TrimLeftFunc",
+                "TrimPrefix", "TrimRight", "TrimRightFunc", "TrimSpace", "TrimSuffix",
+              ]) and
+        nodeFrom = cn.getArgument(0) and
+        nodeTo = cn.getAResult()
       )
     ) and
     stateFrom instanceof PreValidation and
