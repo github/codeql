@@ -4,9 +4,9 @@
  */
 
 import java
-import semmle.code.java.Serializability
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.FlowSteps
+private import semmle.code.java.Serializability
+private import semmle.code.java.dataflow.DataFlow
+private import semmle.code.java.dataflow.FlowSteps
 
 /**
  * A method used for deserializing objects using Gson. The first parameter is the object to be
@@ -44,7 +44,7 @@ private class FieldReferencedGsonDeserializableType extends GsonDeserializableTy
 }
 
 /** A field that may be deserialized using the Gson JSON framework. */
-class GsonDeserializableField extends DeserializableField {
+private class GsonDeserializableField extends DeserializableField {
   pragma[assume_small_delta]
   GsonDeserializableField() {
     exists(GsonDeserializableType superType |
