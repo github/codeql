@@ -654,6 +654,23 @@ module ModelOutput {
   import Cached
   import Specific::ModelOutputSpecific
 
+  private string getInvalidModelKind() {
+    exists(string kind | sinkModel(_, _, kind) |
+      not kind =
+        [
+          "request-forgery", "jndi-injection", "ldap-injection", "sql-injection", "log-injection",
+          "mvel-injection", "xpath-injection", "groovy-injection", "html-injection", "js-injection",
+          "ognl-injection", "intent-redirection", "pending-intents", "url-redirection",
+          "path-injection", "file-content-store", "hostname-verification", "response-splitting",
+          "information-leak", "xslt-injection", "jexl-injection", "bean-validation",
+          "template-injection", "fragment-injection", "command-injection"
+        ] and
+      not kind.matches("credentials-%") and
+      not kind.matches("test-%") and
+      result = "Invalid kind \"" + kind + "\" in sink model."
+    )
+  }
+
   /**
    * Gets an error message relating to an invalid CSV row in a model.
    */
@@ -698,5 +715,8 @@ module ModelOutput {
       not isValidNoArgumentTokenInIdentifyingAccessPath(token.getName()) and
       result = "Invalid token '" + token + "' is missing its arguments, in access path: " + path
     )
+    or
+    // Check for valid model kinds
+    result = getInvalidModelKind()
   }
 }
