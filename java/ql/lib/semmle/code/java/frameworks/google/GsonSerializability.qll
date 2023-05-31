@@ -50,8 +50,7 @@ private class GsonDeserializableField extends DeserializableField {
     exists(GsonDeserializableType superType |
       superType = this.getDeclaringType().getAnAncestor() and
       not superType instanceof TypeObject and
-      //superType.fromSource()
-      not superType.(RefType).getPackage().getName().matches("java%")
+      superType.fromSource()
     )
   }
 }
