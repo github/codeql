@@ -180,6 +180,11 @@ module Public {
       result = "Argument[" + getParameterPosition(pos) + "]"
     )
     or
+    exists(string synthetic |
+      sc = TSyntheticGlobalSummaryComponent(synthetic) and
+      result = "SyntheticGlobal[" + synthetic + "]"
+    )
+    or
     sc = TReturnSummaryComponent(getReturnValueKind()) and result = "ReturnValue"
   }
 
