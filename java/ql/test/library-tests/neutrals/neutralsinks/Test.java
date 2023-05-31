@@ -14,48 +14,48 @@ public class Test {
 
         // java.io
         File file = null;
-        file.exists(); // Neutral Sink
-        file.compareTo(null); // Neutral Sink
+        file.exists(); // $ isNeutralSink
+        file.compareTo(null); // $ isNeutralSink
 
         // java.nio.file
-        Files.exists(null, (LinkOption[])null); // Neutral Sink
-        Files.getLastModifiedTime(null, (LinkOption[])null); // Neutral Sink
-        Files.getOwner(null, (LinkOption[])null); // Neutral Sink
-        Files.getPosixFilePermissions(null, (LinkOption[])null); // Neutral Sink
-        Files.isDirectory(null, (LinkOption[])null); // Neutral Sink
-        Files.isExecutable(null); // Neutral Sink
-        Files.isHidden(null); // Neutral Sink
-        Files.isReadable(null); // Neutral Sink
-        Files.isRegularFile(null, (LinkOption[])null); // Neutral Sink
-        Files.isSameFile(null, null); // Neutral Sink
-        Files.isSymbolicLink(null); // Neutral Sink
-        Files.isWritable(null); // Neutral Sink
-        Files.notExists(null, (LinkOption[])null); // Neutral Sink
-        Files.setLastModifiedTime(null, null); // Neutral Sink
-        Files.size(null); // Neutral Sink
+        Files.exists(null, (LinkOption[])null); // $ isNeutralSink
+        Files.getLastModifiedTime(null, (LinkOption[])null); // $ isNeutralSink
+        Files.getOwner(null, (LinkOption[])null); // $ isNeutralSink
+        Files.getPosixFilePermissions(null, (LinkOption[])null); // $ isNeutralSink
+        Files.isDirectory(null, (LinkOption[])null); // $ isNeutralSink
+        Files.isExecutable(null); // $ isNeutralSink
+        Files.isHidden(null); // $ isNeutralSink
+        Files.isReadable(null); // $ isNeutralSink
+        Files.isRegularFile(null, (LinkOption[])null); // $ isNeutralSink
+        Files.isSameFile(null, null); // $ isNeutralSink
+        Files.isSymbolicLink(null); // $ isNeutralSink
+        Files.isWritable(null); // $ isNeutralSink
+        Files.notExists(null, (LinkOption[])null); // $ isNeutralSink
+        Files.setLastModifiedTime(null, null); // $ isNeutralSink
+        Files.size(null); // $ isNeutralSink
 
         // java.nio.file.spi
         FileSystemProvider fsp = null;
-        fsp.isHidden(null); // Neutral Sink
-        fsp.isSameFile(null, null); // Neutral Sink
+        fsp.isHidden(null); // $ isNeutralSink
+        fsp.isSameFile(null, null); // $ isNeutralSink
 
         // java.text
         Collator c = null;
-        c.compare(null, null); // Neutral Sink
-        c.equals(null); // Neutral Sink
-        c.equals(null, null); // Neutral Sink
+        c.compare(null, null); // $ isNeutralSink
+        c.equals(null); // $ isNeutralSink
+        c.equals(null, null); // $ isNeutralSink
         RuleBasedCollator rbc = null;
-        rbc.compare(null, null); // Neutral Sink
+        rbc.compare(null, null); // $ isNeutralSink
 
         // java.util.prefs
         AbstractPreferences ap = null;
-        ap.nodeExists(null); // Neutral Sink
+        ap.nodeExists(null); // $ isNeutralSink
         Preferences p = null;
-        p.nodeExists(null); // Neutral Sink
+        p.nodeExists(null); // $ isNeutralSink
 
         // org.apache.hc.client5.http.protocol
         RedirectLocations rl = null;
-        rl.contains(null); // Neutral Sink
+        rl.contains(null); // $ isNeutralSink
     }
 
 }
