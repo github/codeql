@@ -27,8 +27,8 @@ private class ExplicitlyReadGsonDeserializableType extends GsonDeserializableTyp
       ma.getMethod() instanceof GsonReadValueMethod and
       // ...where `this` is used in the final argument, indicating that this type will be deserialized.
       // TODO: find a way to get the type represented by java.lang.reflect.Type and com.google.gson.reflect.TypeToken
-      // fromJson​(String json, TypeToken<T> typeOfT)
-      // fromJson​(String json, Type typeOfT)
+      // fromJson(String json, TypeToken<T> typeOfT)
+      // fromJson(String json, Type typeOfT)
       usesType(ma.getArgument(1).getType(), this) and
       not this instanceof TypeClass and
       not this instanceof TypeObject
