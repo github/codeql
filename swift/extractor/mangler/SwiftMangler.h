@@ -18,18 +18,15 @@ class SwiftDispatcher;
 
 // This class is tasked with assigning unique names to entities that need it (non-local
 // declarations and types), to be used as trap keys.
-// When the identity depends on some other entity (like the parent of a declaration, or the
-// declaration introducing a user type) a [trap id-ref][1] is used, using the dispatcher to give us
-// a label reference to that entity. Because that entity will also generally have a mangled name,
-// it is important that this does not lead to any recursive loop (which is checked at runtime
-// within the dispatcher).
-//
-// [1]: https://github.com/github/codeql-core/blob/main/wiki/extractors/trap.md#ids
+// This uses the Template Method design pattern (or Non-Virtual Interface). The actual behavior
+// when the identity depends on some other entity (like the parent of a declaration, or the
+// declaration introducing a user type) depends on a private virtual fetch method. See below for
+// the specific implementations.
 //
 // * all names are prefixed with the name of the entity class (for example `ParamDecl_`)
-// * declarations usually use a reference to their declaration context as first element, followed
+// * declarations usually use a fetch of their declaration context as first element, followed
 //   by whatever distinguishes them within that context (the name, or the signature for function)
-// * user defined types have a name that is a simple wrapper around a reference to their declaration
+// * user defined types have a name that is a simple wrapper around a fetch of their declaration
 class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
                      private swift::DeclVisitor<SwiftMangler, SwiftMangledName> {
   using TypeVisitor = swift::TypeVisitor<SwiftMangler, SwiftMangledName>;
@@ -117,6 +114,12 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitTypeDiscriminatedValueDecl(const swift::ValueDecl* decl);
 };
 
+// This implementation is indented for use in defining trap keys. In this case fetching gives
+// a [trap id-ref][1] is used, using the dispatcher to give us a label reference to that entity.
+// Because that entity will also generally have a mangled name, it is important that this does not
+// lead to any recursive loop (which is checked at runtime within the dispatcher).
+//
+// [1]: https://github.com/github/codeql-core/blob/main/wiki/extractors/trap.md#ids
 class SwiftTrapMangler : public SwiftMangler {
  public:
   explicit SwiftTrapMangler(SwiftDispatcher& dispatcher) : dispatcher(dispatcher) {}
@@ -128,6 +131,8 @@ class SwiftTrapMangler : public SwiftMangler {
   SwiftDispatcher& dispatcher;
 };
 
+// In this implementation, fetching gives a hash of the mangled name itself, leading to a direct
+// recursion. This is intended for use in trap file names.
 class SwiftRecursiveMangler : public SwiftMangler {
   SwiftMangledName fetch(const swift::Decl* decl) override;
   SwiftMangledName fetch(const swift::TypeBase* type) override;
