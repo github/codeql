@@ -55,6 +55,12 @@ immune to injection attacks.
 </p>
 
 <sample src="examples/SqlInjectionFix.js" />
+
+<p>
+Alternatively, we can use a library like <code>sqlstring</code> to
+escape the user input before embedding it into the query string:
+</p>
+<sample src="examples/SqlInjectionFix2.js" />
 </example>
 
 <example>
