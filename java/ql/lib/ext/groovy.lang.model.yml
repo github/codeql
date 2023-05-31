@@ -29,3 +29,4 @@ extensions:
       - ["groovy.lang", "GroovyShell", False, "run", "(String,String,String[])", "", "Argument[0]", "groovy", "manual"]
       - ["groovy.lang", "GroovyShell", False, "run", "(URI,List)", "", "Argument[0]", "groovy", "manual"]
       - ["groovy.lang", "GroovyShell", False, "run", "(URI,String[])", "", "Argument[0]", "groovy", "manual"]
+      - ["groovy.text", "TemplateEngine", True, "createTemplate", "", "", "Argument[0]", "groovy", "manual"]

@@ -24,6 +24,11 @@ module Generated {
     /**
      * Gets the sub expression of this unresolved specialize expression.
      */
-    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSubExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

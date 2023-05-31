@@ -43,12 +43,6 @@ pub fn run(options: Options) -> std::io::Result<()> {
                 file_extensions: vec!["dbscheme".into()],
             },
             simple::LanguageSpec {
-                prefix: "yaml",
-                ts_language: tree_sitter_ql_yaml::language(),
-                node_types: tree_sitter_ql_yaml::NODE_TYPES,
-                file_extensions: vec!["yml".into()],
-            },
-            simple::LanguageSpec {
                 prefix: "json",
                 ts_language: tree_sitter_json::language(),
                 node_types: tree_sitter_json::NODE_TYPES,

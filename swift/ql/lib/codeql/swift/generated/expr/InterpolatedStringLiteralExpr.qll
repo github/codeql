@@ -27,7 +27,10 @@ module Generated {
      * Gets the interpolation expression of this interpolated string literal expression, if it exists.
      */
     final OpaqueValueExpr getInterpolationExpr() {
-      result = this.getImmediateInterpolationExpr().resolve()
+      exists(OpaqueValueExpr immediate |
+        immediate = this.getImmediateInterpolationExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -52,7 +55,10 @@ module Generated {
      * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
      */
     final Expr getInterpolationCountExpr() {
-      result = this.getImmediateInterpolationCountExpr().resolve()
+      exists(Expr immediate |
+        immediate = this.getImmediateInterpolationCountExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -77,7 +83,10 @@ module Generated {
      * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
      */
     final Expr getLiteralCapacityExpr() {
-      result = this.getImmediateLiteralCapacityExpr().resolve()
+      exists(Expr immediate |
+        immediate = this.getImmediateLiteralCapacityExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
@@ -101,7 +110,12 @@ module Generated {
     /**
      * Gets the appending expression of this interpolated string literal expression, if it exists.
      */
-    final TapExpr getAppendingExpr() { result = this.getImmediateAppendingExpr().resolve() }
+    final TapExpr getAppendingExpr() {
+      exists(TapExpr immediate |
+        immediate = this.getImmediateAppendingExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getAppendingExpr()` exists.

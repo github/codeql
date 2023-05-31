@@ -381,8 +381,17 @@ namespace Semmle.Extraction.CSharp
                 references => ResolveReferences(compilerArguments, analyser, canonicalPathCache, references),
                 (analyser, syntaxTrees) =>
                 {
+                    var paths = compilerArguments.SourceFiles
+                        .Select(src => src.Path)
+                        .ToList();
+
+                    if (compilerArguments.GeneratedFilesOutputDirectory is not null)
+                    {
+                        paths.AddRange(Directory.GetFiles(compilerArguments.GeneratedFilesOutputDirectory, "*.cs", SearchOption.AllDirectories));
+                    }
+
                     return ReadSyntaxTrees(
-                        compilerArguments.SourceFiles.Select(src => canonicalPathCache.GetCanonicalPath(src.Path)),
+                        paths.Select(canonicalPathCache.GetCanonicalPath),
                         analyser,
                         compilerArguments.ParseOptions,
                         compilerArguments.Encoding,

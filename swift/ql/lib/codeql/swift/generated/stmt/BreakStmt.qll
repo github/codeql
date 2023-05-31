@@ -33,7 +33,12 @@ module Generated {
     /**
      * Gets the target of this break statement, if it exists.
      */
-    final Stmt getTarget() { result = this.getImmediateTarget().resolve() }
+    final Stmt getTarget() {
+      exists(Stmt immediate |
+        immediate = this.getImmediateTarget() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getTarget()` exists.

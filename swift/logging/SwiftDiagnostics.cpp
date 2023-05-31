@@ -1,7 +1,6 @@
 #include "swift/logging/SwiftDiagnostics.h"
 
 #include <binlog/Entries.hpp>
-#include <nlohmann/json.hpp>
 #include "absl/strings/str_join.h"
 #include "absl/strings/str_cat.h"
 #include "absl/strings/str_split.h"
@@ -10,59 +9,67 @@
 namespace codeql {
 
 namespace {
-Logger& logger() {
-  static Logger ret{"diagnostics"};
-  return ret;
+std::string_view severityToString(SwiftDiagnostic::Severity severity) {
+  using S = SwiftDiagnostic::Severity;
+  switch (severity) {
+    case S::note:
+      return "note";
+    case S::warning:
+      return "warning";
+    case S::error:
+      return "error";
+    default:
+      return "unknown";
+  }
 }
 }  // namespace
 
-void SwiftDiagnosticsSource::emit(std::ostream& out,
-                                  std::string_view timestamp,
-                                  std::string_view message) const {
-  nlohmann::json entry = {
+nlohmann::json SwiftDiagnostic::json(const std::chrono::system_clock::time_point& timestamp,
+                                     std::string_view message) const {
+  nlohmann::json ret{
       {"source",
        {
-           {"id", sourceId()},
+           {"id", absl::StrJoin({extractorName, programName, id}, "/")},
            {"name", name},
            {"extractorName", extractorName},
        }},
       {"visibility",
        {
-           {"statusPage", true},
-           {"cliSummaryTable", true},
-           {"telemetry", true},
+           {"statusPage", has(Visibility::statusPage)},
+           {"cliSummaryTable", has(Visibility::cliSummaryTable)},
+           {"telemetry", has(Visibility::telemetry)},
        }},
-      {"severity", "error"},
-      {"helpLinks", std::vector<std::string_view>(absl::StrSplit(helpLinks, ' '))},
-      {"plaintextMessage", absl::StrCat(message, ".\n\n", action, ".")},
-      {"timestamp", timestamp},
+      {"severity", severityToString(severity)},
+      {"markdownMessage", absl::StrCat(message, "\n\n", action)},
+      {"timestamp", fmt::format("{:%FT%T%z}", timestamp)},
   };
-  out << entry << '\n';
-}
-
-std::string SwiftDiagnosticsSource::sourceId() const {
-  auto ret = absl::StrJoin({extractorName, programName, id}, "/");
-  std::replace(ret.begin(), ret.end(), '_', '-');
+  if (location) {
+    ret["location"] = location->json();
+  }
   return ret;
 }
-void SwiftDiagnosticsSource::registerImpl(const SwiftDiagnosticsSource* source) {
-  auto [it, inserted] = map().emplace(source->id, source);
-  CODEQL_ASSERT(inserted, "duplicate diagnostics source detected with id {}", source->id);
+
+std::string SwiftDiagnostic::abbreviation() const {
+  if (location) {
+    return absl::StrCat(id, "@", location->str());
+  }
+  return std::string{id};
 }
 
-void SwiftDiagnosticsDumper::write(const char* buffer, std::size_t bufferSize) {
-  binlog::Range range{buffer, bufferSize};
-  binlog::RangeEntryStream input{range};
-  while (auto event = events.nextEvent(input)) {
-    const auto& source = SwiftDiagnosticsSource::get(event->source->category);
-    std::ostringstream oss;
-    timestampedMessagePrinter.printEvent(oss, *event, events.writerProp(), events.clockSync());
-    // TODO(C++20) use oss.view() directly
-    auto data = oss.str();
-    std::string_view view = data;
-    using ViewPair = std::pair<std::string_view, std::string_view>;
-    auto [timestamp, message] = ViewPair(absl::StrSplit(view, absl::MaxSplits(' ', 1)));
-    source.emit(output, timestamp, message);
-  }
+bool SwiftDiagnostic::has(SwiftDiagnostic::Visibility v) const {
+  return (visibility & v) != Visibility::none;
+}
+
+nlohmann::json SwiftDiagnosticsLocation::json() const {
+  nlohmann::json ret{{"file", file}};
+  if (startLine) ret["startLine"] = startLine;
+  if (startColumn) ret["startColumn"] = startColumn;
+  if (endLine) ret["endLine"] = endLine;
+  if (endColumn) ret["endColumn"] = endColumn;
+  return ret;
+}
+
+std::string SwiftDiagnosticsLocation::str() const {
+  return absl::StrJoin(std::tuple{file, startLine, startColumn, endLine, endColumn}, ":");
 }
 }  // namespace codeql
