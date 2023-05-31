@@ -32,9 +32,8 @@ private class ArgumentNode extends DataFlow::Node {
  * A candidates implementation.
  *
  * Some important notes:
- *  - This mode is using parameters as endpoints.
- *  - Sink- and neutral-information is being used from MaD models.
- *  - When available, we use method- and class-java-docs as related locations.
+ *  - This mode is using arguments as endpoints.
+ *  - We use the `CallContext` (the surrounding call expression) as related location.
  */
 module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig {
   // for documentation of the implementations here, see the QLDoc in the CandidateSig signature module.
@@ -112,7 +111,7 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   }
 
   /**
-   * Returns the callable that contains the given endpoint.
+   * Returns the API callable being modelled.
    *
    * Each Java mode should implement this predicate.
    */
@@ -279,8 +278,10 @@ private class ClassQualifierCharacteristic extends CharacteristicsImpl::NotASink
 }
 
 /**
- * A characteristic that limits candidates to parameters of methods that are recognized as `ModelApi`, iow., APIs that
- * are considered worth modeling.
+ * A call to a method that's known locally will not be considered as a candidate to model.
+ *
+ * The reason is that we would expect data/taint flow into the method implementation to uncover
+ * any sinks that are present there.
  */
 private class ArgumentToLocalCall extends CharacteristicsImpl::UninterestingToModelCharacteristic {
   ArgumentToLocalCall() { this = "argument to local call" }
