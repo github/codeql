@@ -50,7 +50,7 @@ predicate isKnownKind(
   type instanceof AutomodelEndpointTypes::CommandInjectionSinkType
 }
 
-/** Gets the argument name for the argument with the index `index`. */
+/** Gets the models-as-data description for the method argument with the index `index`. */
 bindingset[index]
 string getArgumentForIndex(int index) {
   index = -1 and result = "Argument[this]"
