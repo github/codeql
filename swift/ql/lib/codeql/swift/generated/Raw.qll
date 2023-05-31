@@ -21,6 +21,8 @@ module Raw {
   class Callable extends @callable, Element {
     /**
      * Gets the name of this callable, if it exists.
+     *
+     * The name includes any arguments of the callable, for example `myFunction(arg:)`.
      */
     string getName() { callable_names(this, result) }
 
