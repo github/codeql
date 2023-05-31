@@ -1,5 +1,5 @@
 name: codeql/cpp-queries
-version: 0.6.1
+version: 0.6.2
 groups: 
   - cpp
   - queries
@@ -10,3 +10,4 @@ dependencies:
 suites: codeql-suites
 extractor: cpp
 defaultSuiteFile: codeql-suites/cpp-code-scanning.qls
+warnOnImplicitThis: true

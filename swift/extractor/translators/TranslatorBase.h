@@ -11,10 +11,11 @@ namespace detail {
 class TranslatorBase {
  protected:
   SwiftDispatcher& dispatcher;
+  Logger logger;
 
- public:
   // SwiftDispatcher should outlive this instance
-  TranslatorBase(SwiftDispatcher& dispatcher) : dispatcher{dispatcher} {}
+  TranslatorBase(SwiftDispatcher& dispatcher, std::string_view name)
+      : dispatcher{dispatcher}, logger{"translator/" + std::string(name)} {}
 };
 
 // define by macro metaprogramming member checkers
@@ -90,7 +91,7 @@ enum class TranslatorPolicy {
   void visit##CLASS##KIND(swift::CLASS##KIND* e) {                                   \
     constexpr auto policy = getPolicyFor##CLASS##KIND();                             \
     if constexpr (policy == TranslatorPolicy::ignore) {                              \
-      std::cerr << "Unexpected " #CLASS #KIND "\n";                                  \
+      LOG_ERROR("Unexpected " #CLASS #KIND);                                         \
       return;                                                                        \
     } else if constexpr (policy == TranslatorPolicy::translate) {                    \
       dispatcher.emit(static_cast<CrtpSubclass*>(this)->translate##CLASS##KIND(*e)); \
@@ -108,7 +109,7 @@ template <typename CrtpSubclass>
 class AstTranslatorBase : private swift::ASTVisitor<CrtpSubclass>,
                           protected detail::TranslatorBase {
  public:
-  using TranslatorBase::TranslatorBase;
+  AstTranslatorBase(SwiftDispatcher& dispatcher) : TranslatorBase(dispatcher, CrtpSubclass::name) {}
 
   // swift does not provide const visitors. The following const_cast is safe, as we privately
   // route the visit to translateXXX functions only if they take const references to swift
@@ -145,7 +146,8 @@ template <typename CrtpSubclass>
 class TypeTranslatorBase : private swift::TypeVisitor<CrtpSubclass>,
                            protected detail::TranslatorBase {
  public:
-  using TranslatorBase::TranslatorBase;
+  TypeTranslatorBase(SwiftDispatcher& dispatcher)
+      : TranslatorBase(dispatcher, CrtpSubclass::name) {}
 
   // swift does not provide const visitors. The following const_cast is safe, as we privately
   // route the visit to translateXXX functions only if they take const references to swift

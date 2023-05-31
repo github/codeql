@@ -73,37 +73,7 @@ private import internal.DataFlowPublic
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
-
-/**
- * A module importing the frameworks that provide external flow data,
- * ensuring that they are visible to the taint tracking / data flow library.
- */
-private module Frameworks {
-  private import codeql.swift.frameworks.StandardLibrary.Collection
-  private import codeql.swift.frameworks.StandardLibrary.CustomUrlSchemes
-  private import codeql.swift.frameworks.StandardLibrary.Data
-  private import codeql.swift.frameworks.StandardLibrary.FileManager
-  private import codeql.swift.frameworks.StandardLibrary.FilePath
-  private import codeql.swift.frameworks.StandardLibrary.InputStream
-  private import codeql.swift.frameworks.StandardLibrary.NsData
-  private import codeql.swift.frameworks.StandardLibrary.NsObject
-  private import codeql.swift.frameworks.StandardLibrary.NsString
-  private import codeql.swift.frameworks.StandardLibrary.NsUrl
-  private import codeql.swift.frameworks.StandardLibrary.Sequence
-  private import codeql.swift.frameworks.StandardLibrary.String
-  private import codeql.swift.frameworks.StandardLibrary.Url
-  private import codeql.swift.frameworks.StandardLibrary.UrlSession
-  private import codeql.swift.frameworks.StandardLibrary.WebView
-  private import codeql.swift.frameworks.Alamofire.Alamofire
-  private import codeql.swift.security.CleartextLoggingExtensions
-  private import codeql.swift.security.CleartextStorageDatabaseExtensions
-  private import codeql.swift.security.ECBEncryptionExtensions
-  private import codeql.swift.security.HardcodedEncryptionKeyExtensions
-  private import codeql.swift.security.PathInjectionExtensions
-  private import codeql.swift.security.PredicateInjectionExtensions
-  private import codeql.swift.security.StringLengthConflationExtensions
-  private import codeql.swift.security.WeakSensitiveDataHashingExtensions
-}
+private import FlowSummary as FlowSummary
 
 /**
  * A unit class for adding additional source model rows.
@@ -378,7 +348,7 @@ private predicate elementSpec(
   summaryModel(namespace, type, subtypes, name, signature, ext, _, _, _, _)
 }
 
-private string paramsStringPart(AbstractFunctionDecl c, int i) {
+private string paramsStringPart(Function c, int i) {
   i = -1 and result = "(" and exists(c)
   or
   exists(int n, string p | c.getParam(n).getType().toString() = p |
@@ -397,12 +367,10 @@ private string paramsStringPart(AbstractFunctionDecl c, int i) {
  * Parameter types are represented by their type erasure.
  */
 cached
-string paramsString(AbstractFunctionDecl c) {
-  result = concat(int i | | paramsStringPart(c, i) order by i)
-}
+string paramsString(Function c) { result = concat(int i | | paramsStringPart(c, i) order by i) }
 
 bindingset[func]
-predicate matchesSignature(AbstractFunctionDecl func, string signature) {
+predicate matchesSignature(Function func, string signature) {
   signature = "" or
   paramsString(func) = signature
 }
@@ -425,17 +393,17 @@ private Element interpretElement0(
   namespace = "" and // TODO: Fill out when we properly extract modules.
   (
     // Non-member functions
-    exists(AbstractFunctionDecl func |
+    exists(Function func |
       func.getName() = name and
       type = "" and
       matchesSignature(func, signature) and
       subtypes = false and
-      not result instanceof MethodDecl and
+      not result instanceof Method and
       result = func
     )
     or
     // Member functions
-    exists(NominalTypeDecl namedTypeDecl, Decl declWithMethod, MethodDecl method |
+    exists(NominalTypeDecl namedTypeDecl, Decl declWithMethod, Method method |
       method.getName() = name and
       method = declWithMethod.getAMember() and
       namedTypeDecl.getFullName() = type and

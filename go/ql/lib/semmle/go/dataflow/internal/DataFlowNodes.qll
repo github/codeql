@@ -10,6 +10,7 @@ private newtype TNode =
   MkInstructionNode(IR::Instruction insn) or
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
+  MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
   MkSummarizedParameterNode(SummarizedCallable c, int i) {
     FlowSummaryImpl::Private::summaryParameterNodeRange(c, i)
   } or
@@ -427,6 +428,41 @@ module Public {
   }
 
   /**
+   * An implicit varargs slice creation expression.
+   *
+   * A variadic function like `f(t1 T1, ..., Tm tm, A... x)` actually sees the
+   * varargs parameter as a slice `[]A`. A call `f(t1, ..., tm, x1, ..., xn)`
+   * desugars to `f(t1, ..., tm, []A{x1, ..., xn})`, and this node corresponds
+   * to this implicit slice creation.
+   */
+  class ImplicitVarargsSlice extends Node, MkImplicitVarargsSlice {
+    CallNode call;
+
+    ImplicitVarargsSlice() { this = MkImplicitVarargsSlice(call.getCall()) }
+
+    override ControlFlow::Root getRoot() { result = call.getRoot() }
+
+    /** Gets the call containing this varargs slice creation argument. */
+    CallNode getCallNode() { result = call }
+
+    override Type getType() {
+      exists(Function f | f = call.getTarget() |
+        result = f.getParameterType(f.getNumParameter() - 1)
+      )
+    }
+
+    override string getNodeKind() { result = "implicit varargs slice" }
+
+    override string toString() { result = "[]type{args}" }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      call.hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
+  }
+
+  /**
    * Gets a possible target of call `cn`.class
    *
    * This is written explicitly like this instead of using `getCalleeNode().getAPredecessor*()`
@@ -498,16 +534,11 @@ module Public {
     CallExpr getCall() { result = this.getExpr() }
 
     /**
-     * Gets the data flow node corresponding to the `i`th argument of this call.
-     *
-     * Note that the first argument in calls to the built-in function `make` is a type, which is
-     * not a data-flow node. It is skipped for the purposes of this predicate, so the (syntactically)
-     * second argument becomes the first argument in terms of data flow.
-     *
-     * For calls of the form `f(g())` where `g` has multiple results, the arguments of the call to
-     * `i` are the (implicit) element extraction nodes for the call to `g`.
+     * Gets the `i`th argument of this call, where tuple extraction has been
+     * done but arguments corresponding to a variadic parameter are still
+     * considered separate.
      */
-    Node getArgument(int i) {
+    Node getSyntacticArgument(int i) {
       if expr.getArgument(0).getType() instanceof TupleType
       then result = DataFlow::extractTupleElement(DataFlow::exprNode(expr.getArgument(0)), i)
       else
@@ -519,11 +550,59 @@ module Public {
           )
     }
 
+    /**
+     * Gets a data flow node corresponding to an argument of this call, where
+     * tuple extraction has been done but arguments corresponding to a variadic
+     * parameter are still considered separate.
+     */
+    Node getASyntacticArgument() { result = this.getSyntacticArgument(_) }
+
+    /**
+     * Gets the data flow node corresponding to the `i`th argument of this call.
+     *
+     * Note that the first argument in calls to the built-in function `make` is a type, which is
+     * not a data-flow node. It is skipped for the purposes of this predicate, so the (syntactically)
+     * second argument becomes the first argument in terms of data flow.
+     *
+     * For calls of the form `f(g())` where `g` has multiple results, the arguments of the call to
+     * `i` are the (implicit) element extraction nodes for the call to `g`.
+     *
+     * Returns a single `Node` corresponding to a variadic parameter. If there is no corresponding
+     * argument with an ellipsis (`...`), then it is a `ImplicitVarargsSlice`. This is in contrast
+     * to `getArgument` on `CallExpr`, which gets the syntactic arguments. Use
+     * `getSyntacticArgument` to get that behavior.
+     */
+    Node getArgument(int i) {
+      result = this.getSyntacticArgument(i) and
+      not (expr.hasImplicitVarargs() and i >= expr.getCalleeType().getNumParameter() - 1)
+      or
+      i = expr.getCalleeType().getNumParameter() - 1 and
+      result.(ImplicitVarargsSlice).getCallNode() = this
+    }
+
     /** Gets the data flow node corresponding to an argument of this call. */
     Node getAnArgument() { result = this.getArgument(_) }
 
     /** Gets the number of arguments of this call, if it can be determined. */
     int getNumArgument() { result = count(this.getAnArgument()) }
+
+    /**
+     * Gets the 'i'th argument without an ellipsis after it which is passed to
+     * the varargs parameter of the target of this call (if there is one).
+     */
+    Node getImplicitVarargsArgument(int i) {
+      i >= 0 and
+      expr.hasImplicitVarargs() and
+      exists(int lastParamIndex | lastParamIndex = expr.getCalleeType().getNumParameter() - 1 |
+        result = this.getSyntacticArgument(lastParamIndex + i)
+      )
+    }
+
+    /**
+     * Gets an argument without an ellipsis after it which is passed to
+     * the varargs parameter of the target of this call (if there is one).
+     */
+    Node getAnImplicitVarargsArgument() { result = this.getImplicitVarargsArgument(_) }
 
     /** Gets a function passed as the `i`th argument of this call. */
     FunctionNode getCallback(int i) { result.getASuccessor*() = this.getArgument(i) }
@@ -696,7 +775,11 @@ module Public {
         or
         preupd = getAWrittenNode()
         or
-        preupd instanceof ArgumentNode and
+        (
+          preupd instanceof ArgumentNode and not preupd instanceof ImplicitVarargsSlice
+          or
+          preupd = any(CallNode c).getAnImplicitVarargsArgument()
+        ) and
         mutableType(preupd.getType())
       ) and
       (

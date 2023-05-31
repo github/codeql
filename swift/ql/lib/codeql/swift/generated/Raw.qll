@@ -310,6 +310,10 @@ module Raw {
 
     /**
      * Gets the `index`th member of this declaration (0-based).
+     *
+     * Prefer to use more specific methods (such as `EnumDecl.getEnumElement`) rather than relying
+     * on the order of members given by `getMember`. In some cases the order of members may not
+     * align with expectations, and could change in future releases.
      */
     Decl getMember(int index) { decl_members(this, index, result) }
   }
@@ -503,19 +507,11 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class AbstractFunctionDecl extends @abstract_function_decl, GenericContext, ValueDecl, Callable {
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class AbstractStorageDecl extends @abstract_storage_decl, ValueDecl {
     /**
-     * Gets the `index`th accessor declaration of this abstract storage declaration (0-based).
+     * Gets the `index`th accessor of this abstract storage declaration (0-based).
      */
-    AccessorDecl getAccessorDecl(int index) {
-      abstract_storage_decl_accessor_decls(this, index, result)
-    }
+    Accessor getAccessor(int index) { abstract_storage_decl_accessors(this, index, result) }
   }
 
   /**
@@ -534,6 +530,11 @@ module Raw {
      */
     ParamDecl getParam(int index) { enum_element_decl_params(this, index, result) }
   }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Function extends @function, GenericContext, ValueDecl, Callable { }
 
   /**
    * INTERNAL: Do not use.
@@ -584,26 +585,26 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class ConstructorDecl extends @constructor_decl, AbstractFunctionDecl {
-    override string toString() { result = "ConstructorDecl" }
-  }
+  class AccessorOrNamedFunction extends @accessor_or_named_function, Function { }
 
   /**
    * INTERNAL: Do not use.
    */
-  class DestructorDecl extends @destructor_decl, AbstractFunctionDecl {
-    override string toString() { result = "DestructorDecl" }
+  class Deinitializer extends @deinitializer, Function {
+    override string toString() { result = "Deinitializer" }
   }
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  class FuncDecl extends @func_decl, AbstractFunctionDecl { }
 
   /**
    * INTERNAL: Do not use.
    */
   class GenericTypeDecl extends @generic_type_decl, GenericContext, TypeDecl { }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class Initializer extends @initializer, Function {
+    override string toString() { result = "Initializer" }
+  }
 
   /**
    * INTERNAL: Do not use.
@@ -770,48 +771,48 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class AccessorDecl extends @accessor_decl, FuncDecl {
-    override string toString() { result = "AccessorDecl" }
+  class Accessor extends @accessor, AccessorOrNamedFunction {
+    override string toString() { result = "Accessor" }
 
     /**
      * Holds if this accessor is a getter.
      */
-    predicate isGetter() { accessor_decl_is_getter(this) }
+    predicate isGetter() { accessor_is_getter(this) }
 
     /**
      * Holds if this accessor is a setter.
      */
-    predicate isSetter() { accessor_decl_is_setter(this) }
+    predicate isSetter() { accessor_is_setter(this) }
 
     /**
      * Holds if this accessor is a `willSet`, called before the property is set.
      */
-    predicate isWillSet() { accessor_decl_is_will_set(this) }
+    predicate isWillSet() { accessor_is_will_set(this) }
 
     /**
      * Holds if this accessor is a `didSet`, called after the property is set.
      */
-    predicate isDidSet() { accessor_decl_is_did_set(this) }
+    predicate isDidSet() { accessor_is_did_set(this) }
 
     /**
      * Holds if this accessor is a `_read` coroutine, yielding a borrowed value of the property.
      */
-    predicate isRead() { accessor_decl_is_read(this) }
+    predicate isRead() { accessor_is_read(this) }
 
     /**
      * Holds if this accessor is a `_modify` coroutine, yielding an inout value of the property.
      */
-    predicate isModify() { accessor_decl_is_modify(this) }
+    predicate isModify() { accessor_is_modify(this) }
 
     /**
      * Holds if this accessor is an `unsafeAddress` immutable addressor.
      */
-    predicate isUnsafeAddress() { accessor_decl_is_unsafe_address(this) }
+    predicate isUnsafeAddress() { accessor_is_unsafe_address(this) }
 
     /**
      * Holds if this accessor is an `unsafeMutableAddress` mutable addressor.
      */
-    predicate isUnsafeMutableAddress() { accessor_decl_is_unsafe_mutable_address(this) }
+    predicate isUnsafeMutableAddress() { accessor_is_unsafe_mutable_address(this) }
   }
 
   /**
@@ -819,13 +820,6 @@ module Raw {
    */
   class AssociatedTypeDecl extends @associated_type_decl, AbstractTypeParamDecl {
     override string toString() { result = "AssociatedTypeDecl" }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  class ConcreteFuncDecl extends @concrete_func_decl, FuncDecl {
-    override string toString() { result = "ConcreteFuncDecl" }
   }
 
   /**
@@ -847,6 +841,13 @@ module Raw {
    */
   class GenericTypeParamDecl extends @generic_type_param_decl, AbstractTypeParamDecl {
     override string toString() { result = "GenericTypeParamDecl" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class NamedFunction extends @named_function, AccessorOrNamedFunction {
+    override string toString() { result = "NamedFunction" }
   }
 
   /**
@@ -999,11 +1000,6 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class AbstractClosureExpr extends @abstract_closure_expr, Expr, Callable { }
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class AnyTryExpr extends @any_try_expr, Expr {
     /**
      * Gets the sub expression of this any try expression.
@@ -1098,8 +1094,13 @@ module Raw {
     /**
      * Gets the closure body of this capture list expression.
      */
-    ClosureExpr getClosureBody() { capture_list_exprs(this, result) }
+    ExplicitClosureExpr getClosureBody() { capture_list_exprs(this, result) }
   }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class ClosureExpr extends @closure_expr, Expr, Callable { }
 
   /**
    * INTERNAL: Do not use.
@@ -1348,13 +1349,13 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class LazyInitializerExpr extends @lazy_initializer_expr, Expr {
-    override string toString() { result = "LazyInitializerExpr" }
+  class LazyInitializationExpr extends @lazy_initialization_expr, Expr {
+    override string toString() { result = "LazyInitializationExpr" }
 
     /**
-     * Gets the sub expression of this lazy initializer expression.
+     * Gets the sub expression of this lazy initialization expression.
      */
-    Expr getSubExpr() { lazy_initializer_exprs(this, result) }
+    Expr getSubExpr() { lazy_initialization_exprs(this, result) }
   }
 
   /**
@@ -1413,7 +1414,7 @@ module Raw {
     /**
      * Gets the method of this obj c selector expression.
      */
-    AbstractFunctionDecl getMethod() { obj_c_selector_exprs(this, _, result) }
+    Function getMethod() { obj_c_selector_exprs(this, _, result) }
   }
 
   /**
@@ -1472,13 +1473,13 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class OtherConstructorDeclRefExpr extends @other_constructor_decl_ref_expr, Expr {
-    override string toString() { result = "OtherConstructorDeclRefExpr" }
+  class OtherInitializerRefExpr extends @other_initializer_ref_expr, Expr {
+    override string toString() { result = "OtherInitializerRefExpr" }
 
     /**
-     * Gets the constructor declaration of this other constructor declaration reference expression.
+     * Gets the initializer of this other initializer reference expression.
      */
-    ConstructorDecl getConstructorDecl() { other_constructor_decl_ref_exprs(this, result) }
+    Initializer getInitializer() { other_initializer_ref_exprs(this, result) }
   }
 
   /**
@@ -1519,18 +1520,18 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class RebindSelfInConstructorExpr extends @rebind_self_in_constructor_expr, Expr {
-    override string toString() { result = "RebindSelfInConstructorExpr" }
+  class RebindSelfInInitializerExpr extends @rebind_self_in_initializer_expr, Expr {
+    override string toString() { result = "RebindSelfInInitializerExpr" }
 
     /**
-     * Gets the sub expression of this rebind self in constructor expression.
+     * Gets the sub expression of this rebind self in initializer expression.
      */
-    Expr getSubExpr() { rebind_self_in_constructor_exprs(this, result, _) }
+    Expr getSubExpr() { rebind_self_in_initializer_exprs(this, result, _) }
 
     /**
-     * Gets the self of this rebind self in constructor expression.
+     * Gets the self of this rebind self in initializer expression.
      */
-    VarDecl getSelf() { rebind_self_in_constructor_exprs(this, _, result) }
+    VarDecl getSelf() { rebind_self_in_initializer_exprs(this, _, result) }
   }
 
   /**
@@ -1740,7 +1741,7 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class AutoClosureExpr extends @auto_closure_expr, AbstractClosureExpr {
+  class AutoClosureExpr extends @auto_closure_expr, ClosureExpr {
     override string toString() { result = "AutoClosureExpr" }
   }
 
@@ -1794,13 +1795,6 @@ module Raw {
    */
   class ClassMetatypeToObjectExpr extends @class_metatype_to_object_expr, ImplicitConversionExpr {
     override string toString() { result = "ClassMetatypeToObjectExpr" }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
-  class ClosureExpr extends @closure_expr, AbstractClosureExpr {
-    override string toString() { result = "ClosureExpr" }
   }
 
   /**
@@ -1919,6 +1913,13 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
+  class ExplicitClosureExpr extends @explicit_closure_expr, ClosureExpr {
+    override string toString() { result = "ExplicitClosureExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
   class ForceTryExpr extends @force_try_expr, AnyTryExpr {
     override string toString() { result = "ForceTryExpr" }
   }
@@ -1962,20 +1963,6 @@ module Raw {
      */
     OpaqueValueExpr getInterpolationExpr() {
       interpolated_string_literal_expr_interpolation_exprs(this, result)
-    }
-
-    /**
-     * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
-     */
-    Expr getInterpolationCountExpr() {
-      interpolated_string_literal_expr_interpolation_count_exprs(this, result)
-    }
-
-    /**
-     * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
-     */
-    Expr getLiteralCapacityExpr() {
-      interpolated_string_literal_expr_literal_capacity_exprs(this, result)
     }
 
     /**
@@ -2261,13 +2248,6 @@ module Raw {
   /**
    * INTERNAL: Do not use.
    */
-  class ConstructorRefCallExpr extends @constructor_ref_call_expr, SelfApplyExpr {
-    override string toString() { result = "ConstructorRefCallExpr" }
-  }
-
-  /**
-   * INTERNAL: Do not use.
-   */
   class DotSyntaxCallExpr extends @dot_syntax_call_expr, SelfApplyExpr {
     override string toString() { result = "DotSyntaxCallExpr" }
   }
@@ -2291,6 +2271,13 @@ module Raw {
    */
   class ForcedCheckedCastExpr extends @forced_checked_cast_expr, CheckedCastExpr {
     override string toString() { result = "ForcedCheckedCastExpr" }
+  }
+
+  /**
+   * INTERNAL: Do not use.
+   */
+  class InitializerRefCallExpr extends @initializer_ref_call_expr, SelfApplyExpr {
+    override string toString() { result = "InitializerRefCallExpr" }
   }
 
   /**

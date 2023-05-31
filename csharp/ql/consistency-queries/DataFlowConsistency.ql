@@ -71,4 +71,6 @@ private class MyConsistencyConfiguration extends ConsistencyConfiguration {
   }
 
   override predicate reverseReadExclude(Node n) { n.asExpr() = any(AwaitExpr ae).getExpr() }
+
+  override predicate identityLocalStepExclude(Node n) { none() }
 }

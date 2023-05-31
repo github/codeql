@@ -62,14 +62,14 @@ class GVN extends TValueNumber {
 
   final string toString() { result = "GVN" }
 
-  final string getDebugString() { result = strictconcat(getAnExpr().toString(), ", ") }
+  final string getDebugString() { result = strictconcat(this.getAnExpr().toString(), ", ") }
 
   final Location getLocation() {
-    if exists(Expr e | e = getAnExpr() and not e.getLocation() instanceof UnknownLocation)
+    if exists(Expr e | e = this.getAnExpr() and not e.getLocation() instanceof UnknownLocation)
     then
       result =
         min(Location l |
-          l = getAnExpr().getLocation() and not l instanceof UnknownLocation
+          l = this.getAnExpr().getLocation() and not l instanceof UnknownLocation
         |
           l
           order by
@@ -102,13 +102,13 @@ class GVN extends TValueNumber {
   }
 
   /** Gets an expression that has this GVN. */
-  Expr getAnExpr() { result = getAnUnconvertedExpr() }
+  Expr getAnExpr() { result = this.getAnUnconvertedExpr() }
 
   /** Gets an expression that has this GVN. */
-  Expr getAnUnconvertedExpr() { result = getAnInstruction().getUnconvertedResultExpression() }
+  Expr getAnUnconvertedExpr() { result = this.getAnInstruction().getUnconvertedResultExpression() }
 
   /** Gets an expression that has this GVN. */
-  Expr getAConvertedExpr() { result = getAnInstruction().getConvertedResultExpression() }
+  Expr getAConvertedExpr() { result = this.getAnInstruction().getConvertedResultExpression() }
 }
 
 /** Gets the global value number of expression `e`. */

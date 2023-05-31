@@ -211,7 +211,7 @@ predicate invocationMatchesExtraCallSiteFilter(InvokeNode invoke, AccessPathToke
 /** An API graph node representing a method call. */
 class InvokeNode extends API::MethodAccessNode {
   /** Gets the number of arguments to the call. */
-  int getNumArgument() { result = getCallNode().getNumberOfArguments() }
+  int getNumArgument() { result = this.getCallNode().getNumberOfArguments() }
 }
 
 /** Gets the `InvokeNode` corresponding to a specific invocation of `node`. */
