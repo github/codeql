@@ -705,7 +705,7 @@ class TranslatedPostfixCrementOperation extends TranslatedCrementOperation {
   override Instruction getResult() {
     if expr instanceof ExprInVoidContext
     then result = this.getLoadedOperand().getResult()
-    else result = this.getInstruction(CrementTempStoreTag())
+    else result = this.getInstruction(CrementTempLoadTag())
   }
 
   final override predicate hasTempVariable(TempVariableTag tag, CppType type) {
@@ -730,6 +730,10 @@ class TranslatedPostfixCrementOperation extends TranslatedCrementOperation {
       tag = CrementTempStoreTag() and
       opcode instanceof Opcode::Store and
       resultType = getTypeForPRValue(expr.getType())
+      or
+      tag = CrementTempLoadTag() and
+      opcode instanceof Opcode::Load and
+      resultType = getTypeForPRValue(expr.getType())
     )
     or
     super.hasInstruction(opcode, tag, resultType)
@@ -744,13 +748,19 @@ class TranslatedPostfixCrementOperation extends TranslatedCrementOperation {
 
   final override Instruction getInstructionRegisterOperand(InstructionTag tag, OperandTag operandTag) {
     not expr instanceof ExprInVoidContext and
-    tag = CrementTempStoreTag() and
     (
+      tag = CrementTempStoreTag() and
+      (
+        operandTag instanceof AddressOperandTag and
+        result = this.getInstruction(CrementTempAddressTag())
+        or
+        operandTag instanceof StoreValueOperandTag and
+        result = this.getLoadedOperand().getResult()
+      )
+      or
+      tag = CrementTempLoadTag() and
       operandTag instanceof AddressOperandTag and
       result = this.getInstruction(CrementTempAddressTag())
-      or
-      operandTag instanceof StoreValueOperandTag and
-      result = this.getLoadedOperand().getResult()
     )
     or
     result = super.getInstructionRegisterOperand(tag, operandTag)
@@ -764,6 +774,9 @@ class TranslatedPostfixCrementOperation extends TranslatedCrementOperation {
       result = this.getInstruction(CrementTempStoreTag())
       or
       tag = CrementTempStoreTag() and
+      result = this.getInstruction(CrementTempLoadTag())
+      or
+      tag = CrementTempLoadTag() and
       result = this.getInstruction(CrementConstantTag())
     )
     or
@@ -3329,6 +3342,7 @@ predicate exprNeedsCopyIfNotLoaded(Expr expr) {
     not expr.isPRValueCategory() // is C++
     or
     // Because the load is on the `e` in `e++`.
+    expr instanceof ExprInVoidContext and
     expr instanceof PostfixCrementOperation
     or
     expr instanceof PointerDereferenceExpr
