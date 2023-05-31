@@ -22,6 +22,10 @@ class DollarAtString extends string {
   }
 }
 
+/**
+ * Holds for all combinations of MaD kinds (`kind`) and their human readable
+ * descriptions.
+ */
 predicate isKnownKind(
   string kind, string humanReadableKind, AutomodelEndpointTypes::EndpointType type
 ) {
