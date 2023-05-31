@@ -80,14 +80,14 @@ to ensure that the user input is interpreted as a literal value
 and not as a query object:
 </p>
 
-<sample src="examples/NoSqlInjectionFix2.js" />
+<sample src="examples/NoSqlInjectionFix.js" />
 
 <p>
 Alternatively check that the user input is a
 literal value and not a query object before using it:
 </p>
 
-<sample src="examples/NoSqlInjectionFix.js" />
+<sample src="examples/NoSqlInjectionFix2.js" />
 </example>
 
 <references>
