@@ -29,7 +29,7 @@ int test3(struct List* p) {
   for (; p; p = p->next) {
     range(count++); // $ range=>=-9 range=<=9
     count = count % 10;
-    range(count); // $ range=<=9 range=>=-9 range="<=Store: ... +++0" range="<=Phi: p | Store: count+1" 
+    range(count); // $ range=<=9 range=>=-9 range="<=Store: ... +++0" range="<=Phi: p | Store: ... ++ | Store: count+1"
   }
   range(count); // $ range=>=-9 range=<=9
   return count;
@@ -145,7 +145,7 @@ int test11(char *p) {
   range(*p);
   if (c != '\0') {
     *p++ = '\0';
-    range(p); // $ range="==InitializeParameter: p+1"
+    range(p); // $ range="==InitializeParameter: p | Store: ... +++1"
     range(*p);
   }
   if (c == ':') {
@@ -155,7 +155,7 @@ int test11(char *p) {
     if (c != '\0') {
       range(c);
       *p++ = '\0';
-      range(p); // $ range="<=InitializeParameter: p+2" range="==Phi: c+1" range=">=InitializeParameter: p+1"
+      range(p); // $ range="<=InitializeParameter: p | Store: ... +++2" range=">=InitializeParameter: p | Store: ... +++1" range="==Phi: c | Store: ... +++1"
     }
     if (c != ',') {
       return 1;
