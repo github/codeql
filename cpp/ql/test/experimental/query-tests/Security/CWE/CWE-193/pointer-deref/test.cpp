@@ -358,3 +358,17 @@ void test25(unsigned size) {
   int val1 = *end_plus_one; // BAD
   int val2 = *(end_plus_one + 1); // BAD
 }
+
+void test26(unsigned size) {
+  char *xs = new char[size];
+  char *p = xs;
+  char *end = p + size;
+
+  if (p + 4 <= end) {
+    p += 4;
+  }
+
+  if (p < end) {
+    int val = *p; // GOOD [FALSE POSITIVE]
+  }
+}
