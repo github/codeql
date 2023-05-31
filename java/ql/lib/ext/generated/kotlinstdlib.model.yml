@@ -16,8 +16,8 @@ extensions:
       - ["kotlin.io", "FilesKt", false, "writeBytes", "(File,byte[])", "", "Argument[0]", "path-injection", "df-generated"]
       - ["kotlin.io", "FilesKt", false, "writeText", "(File,String,Charset)", "", "Argument[0]", "path-injection", "df-generated"]
       - ["kotlin.io", "FilesKt", false, "writer", "(File,Charset)", "", "Argument[0]", "path-injection", "df-generated"]
-      - ["kotlin.io", "TextStreamsKt", false, "readBytes", "(URL)", "", "Argument[0]", "open-url", "df-generated"]
-      - ["kotlin.io", "TextStreamsKt", false, "readText", "(URL,Charset)", "", "Argument[0]", "open-url", "df-generated"]
+      - ["kotlin.io", "TextStreamsKt", false, "readBytes", "(URL)", "", "Argument[0]", "request-forgery", "df-generated"]
+      - ["kotlin.io", "TextStreamsKt", false, "readText", "(URL,Charset)", "", "Argument[0]", "request-forgery", "df-generated"]
 
 
   - addsTo:
