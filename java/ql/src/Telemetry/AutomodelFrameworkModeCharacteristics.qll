@@ -129,7 +129,7 @@ class FrameworkModeMetadataExtractor extends string {
   }
 
   predicate hasMetadata(
-    Endpoint e, string package, string type, boolean subtypes, string name, string signature,
+    Endpoint e, string package, string type, string subtypes, string name, string signature,
     string input, string parameterName
   ) {
     exists(Callable callable, int paramIdx |
@@ -137,7 +137,7 @@ class FrameworkModeMetadataExtractor extends string {
       input = AutomodelSharedUtil::getArgumentForIndex(paramIdx) and
       package = callable.getDeclaringType().getPackage().getName() and
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
-      subtypes = this.considerSubtypes(callable) and
+      subtypes = this.considerSubtypes(callable).toString() and
       name = callable.getName() and
       parameterName = e.asParameter().getName() and
       signature = ExternalFlow::paramsString(callable)

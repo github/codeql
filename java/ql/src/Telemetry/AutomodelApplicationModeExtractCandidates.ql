@@ -16,8 +16,9 @@ private import AutomodelApplicationModeCharacteristics
 private import AutomodelSharedUtil
 
 from
-  Endpoint endpoint, string message, ApplicationModeMetadataExtractor meta, string package,
-  string type, boolean subtypes, string name, string signature, string input
+  Endpoint endpoint, string message, ApplicationModeMetadataExtractor meta, DollarAtString package,
+  DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
+  DollarAtString input
 where
   not exists(CharacteristicsImpl::UninterestingToModelCharacteristic u |
     u.appliesToEndpoint(endpoint)
@@ -40,9 +41,9 @@ where
     )
 select endpoint, message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
-  package.(DollarAtString), "package", //
-  type.(DollarAtString), "type", //
-  subtypes.toString().(DollarAtString), "subtypes", //
-  name.(DollarAtString), "name", // method name
-  signature.(DollarAtString), "signature", //
-  input.(DollarAtString), "input" //
+  package, "package", //
+  type, "type", //
+  subtypes, "subtypes", //
+  name, "name", // method name
+  signature, "signature", //
+  input, "input" //

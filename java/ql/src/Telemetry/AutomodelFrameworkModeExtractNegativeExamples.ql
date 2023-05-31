@@ -13,9 +13,10 @@ private import AutomodelEndpointTypes
 private import AutomodelSharedUtil
 
 from
-  Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string message,
-  FrameworkModeMetadataExtractor meta, string package, string type, boolean subtypes, string name,
-  string signature, string input, string parameterName
+  Endpoint endpoint, EndpointCharacteristic characteristic, float confidence,
+  DollarAtString message, FrameworkModeMetadataExtractor meta, DollarAtString package,
+  DollarAtString type, DollarAtString subtypes, DollarAtString name, DollarAtString signature,
+  DollarAtString input, DollarAtString parameterName
 where
   characteristic.appliesToEndpoint(endpoint) and
   confidence >= SharedCharacteristics::highConfidence() and
@@ -39,10 +40,10 @@ select endpoint,
   message + "\nrelated locations: $@, $@." + "\nmetadata: $@, $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, MethodDoc()), "MethodDoc", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, ClassDoc()), "ClassDoc", //
-  package.(DollarAtString), "package", //
-  type.(DollarAtString), "type", //
-  subtypes.toString().(DollarAtString), "subtypes", //
-  name.(DollarAtString), "name", //
-  signature.(DollarAtString), "signature", //
-  input.(DollarAtString), "input", //
-  parameterName.(DollarAtString), "parameterName" //
+  package, "package", //
+  type, "type", //
+  subtypes, "subtypes", //
+  name, "name", //
+  signature, "signature", //
+  input, "input", //
+  parameterName, "parameterName" //

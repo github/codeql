@@ -35,8 +35,8 @@ Endpoint getSampleForCharacteristic(EndpointCharacteristic c, int limit) {
 
 from
   Endpoint endpoint, EndpointCharacteristic characteristic, float confidence, string message,
-  ApplicationModeMetadataExtractor meta, string package, string type, boolean subtypes, string name,
-  string signature, string input
+  ApplicationModeMetadataExtractor meta, DollarAtString package, DollarAtString type,
+  DollarAtString subtypes, DollarAtString name, DollarAtString signature, DollarAtString input
 where
   endpoint = getSampleForCharacteristic(characteristic, 100) and
   confidence >= SharedCharacteristics::highConfidence() and
@@ -58,9 +58,9 @@ where
   message = characteristic
 select endpoint, message + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
-  package.(DollarAtString), "package", //
-  type.(DollarAtString), "type", //
-  subtypes.toString().(DollarAtString), "subtypes", //
-  name.(DollarAtString), "name", //
-  signature.(DollarAtString), "signature", //
-  input.(DollarAtString), "input" //
+  package, "package", //
+  type, "type", //
+  subtypes, "subtypes", //
+  name, "name", //
+  signature, "signature", //
+  input, "input" //

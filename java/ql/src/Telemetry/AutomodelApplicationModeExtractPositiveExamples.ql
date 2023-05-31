@@ -13,8 +13,9 @@ private import AutomodelEndpointTypes
 private import AutomodelSharedUtil
 
 from
-  Endpoint endpoint, SinkType sinkType, ApplicationModeMetadataExtractor meta, string package,
-  string type, boolean subtypes, string name, string signature, string input
+  Endpoint endpoint, SinkType sinkType, ApplicationModeMetadataExtractor meta,
+  DollarAtString package, DollarAtString type, DollarAtString subtypes, DollarAtString name,
+  DollarAtString signature, DollarAtString input
 where
   // Exclude endpoints that have contradictory endpoint characteristics, because we only want examples we're highly
   // certain about in the prompt.
@@ -24,9 +25,9 @@ where
   CharacteristicsImpl::isKnownSink(endpoint, sinkType)
 select endpoint, sinkType + "\nrelated locations: $@." + "\nmetadata: $@, $@, $@, $@, $@, $@.", //
   CharacteristicsImpl::getRelatedLocationOrCandidate(endpoint, CallContext()), "CallContext", //
-  package.(DollarAtString), "package", //
-  type.(DollarAtString), "type", //
-  subtypes.toString().(DollarAtString), "subtypes", //
-  name.(DollarAtString), "name", //
-  signature.(DollarAtString), "signature", //
-  input.(DollarAtString), "input" //
+  package, "package", //
+  type, "type", //
+  subtypes, "subtypes", //
+  name, "name", //
+  signature, "signature", //
+  input, "input" //
