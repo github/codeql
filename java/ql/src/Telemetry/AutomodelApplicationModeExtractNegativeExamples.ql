@@ -14,7 +14,10 @@ private import AutomodelEndpointTypes
 private import AutomodelSharedUtil
 
 /**
- * Gets a sample of endpoints for which the given characteristic applies.
+ * Gets a sample of endpoints (of at most `limit` samples) for which the given characteristic applies.
+ *
+ * The main purpose of this helper predicate is to avoid selecting too many samples, as this may
+ * cause the SARIF file to exceed the maximum size limit.
  */
 bindingset[limit]
 Endpoint getSampleForCharacteristic(EndpointCharacteristic c, int limit) {
@@ -28,7 +31,11 @@ Endpoint getSampleForCharacteristic(EndpointCharacteristic c, int limit) {
           loc.getFile().getAbsolutePath(), loc.getStartLine(), loc.getStartColumn(),
           loc.getEndLine(), loc.getEndColumn()
       ) and
-    // we order the endpoints by location, but (to avoid bias) we select the indices semi-randomly
+    // To avoid selecting samples that are too close together (as the ranking above goes by file
+    // path first), we select `limit` evenly spaced samples from the ranked list of endpoints. By
+    // default this would always include the first sample, so we add a random-chosen prime offset
+    // to the first sample index, and reduce modulo the number of endpoints.
+    // Finally, we add 1 to the result, as ranking results in a 1-indexed relation.
     n = 1 + (([0 .. limit - 1] * (num_endpoints / limit).floor() + 46337) % num_endpoints)
   )
 }
