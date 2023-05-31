@@ -49,8 +49,8 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
 
   // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
   predicate isSanitizer(Endpoint e, EndpointType t) {
+    exists(t) and
     (
-      exists(t) and
       e.getType() instanceof BoxedType
       or
       e.getType() instanceof PrimitiveType
