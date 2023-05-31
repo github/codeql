@@ -69,8 +69,16 @@ object, so this code is vulnerable to a NoSQL injection attack.
 <sample src="examples/NoSqlInjection.js" />
 
 <p>
-To fix this vulnerability, we can check that the user input is a
-literal value and not a query object before using it in a query.
+To fix this vulnerability we can use the <code>$eq</code> operator
+to ensure that the user input is interpreted as a literal value
+and not as a query object:
+</p>
+
+<sample src="examples/NoSqlInjectionFix2.js" />
+
+<p>
+Alternatively check that the user input is a
+literal value and not a query object before using it:
 </p>
 
 <sample src="examples/NoSqlInjectionFix.js" />

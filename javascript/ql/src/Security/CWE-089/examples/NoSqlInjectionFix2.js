@@ -11,7 +11,11 @@ app.use(express.urlencoded({ extended: false }));
 
 app.delete("/api/delete", async (req, res) => {
   let id = req.body.id;
-  await Todo.deleteOne({ _id: { $eq: id } }); // GOOD: using $eq operator for the comparison
+  if (typeof id !== "string") {
+    res.status(400).json({ status: "error" });
+    return;
+  }
+  await Todo.deleteOne({ _id: id }); // GOOD: id is guaranteed to be a string
 
   res.json({ status: "ok" });
 });
