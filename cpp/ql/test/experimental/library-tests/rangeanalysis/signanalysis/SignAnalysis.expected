@@ -140,7 +140,8 @@
 | test.c:119:10:119:10 | Load: n | positive |
 | test.c:119:10:119:12 | Add: ... ++ | positive strictlyPositive |
 | test.c:119:10:119:12 | Constant: ... ++ | positive strictlyPositive |
-| test.c:119:10:119:12 | CopyValue: ... ++ | positive |
+| test.c:119:10:119:12 | Load: ... ++ | positive |
+| test.c:119:10:119:12 | Store: ... ++ | positive |
 | test.c:119:10:119:12 | Store: ... ++ | positive |
 | test.c:119:10:119:12 | Store: ... ++ | positive strictlyPositive |
 | test.c:124:11:124:15 | Load: Start | positive |
