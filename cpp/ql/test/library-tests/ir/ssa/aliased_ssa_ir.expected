@@ -381,32 +381,36 @@ ssa.cpp:
 #-----|   Goto -> Block 1
 
 #   69|   Block 1
-#   69|     m69_1(unknown)    = Phi                : from 0:~m68_4, from 2:~m70_10
-#   69|     m69_2(char *)     = Phi                : from 0:m68_8, from 2:m70_6
-#   69|     m69_3(int)        = Phi                : from 0:m68_6, from 2:m69_8
-#   69|     r69_4(glval<int>) = VariableAddress[n] : 
-#   69|     r69_5(int)        = Load[n]            : &:r69_4, m69_3
-#   69|     r69_6(int)        = Constant[1]        : 
-#   69|     r69_7(int)        = Sub                : r69_5, r69_6
-#   69|     m69_8(int)        = Store[n]           : &:r69_4, r69_7
-#   69|     r69_9(int)        = CopyValue          : r69_5
-#   69|     r69_10(int)       = Constant[0]        : 
-#   69|     r69_11(bool)      = CompareGT          : r69_9, r69_10
-#   69|     v69_12(void)      = ConditionalBranch  : r69_11
+#   69|     m69_1(unknown)    = Phi                         : from 0:~m68_4, from 2:~m70_12
+#   69|     m69_2(char *)     = Phi                         : from 0:m68_8, from 2:m70_8
+#   69|     m69_3(int)        = Phi                         : from 0:m68_6, from 2:m69_10
+#   69|     r69_4(glval<int>) = VariableAddress[n]          : 
+#   69|     r69_5(int)        = Load[n]                     : &:r69_4, m69_3
+#   69|     r69_6(glval<int>) = VariableAddress[#temp69:10] : 
+#   69|     m69_7(int)        = Store[#temp69:10]           : &:r69_6, r69_5
+#   69|     r69_8(int)        = Constant[1]                 : 
+#   69|     r69_9(int)        = Sub                         : r69_5, r69_8
+#   69|     m69_10(int)       = Store[n]                    : &:r69_4, r69_9
+#   69|     r69_11(int)       = CopyValue                   : m69_7
+#   69|     r69_12(int)       = Constant[0]                 : 
+#   69|     r69_13(bool)      = CompareGT                   : r69_11, r69_12
+#   69|     v69_14(void)      = ConditionalBranch           : r69_13
 #-----|   False -> Block 3
 #-----|   True -> Block 2
 
 #   70|   Block 2
-#   70|     r70_1(char)          = Constant[0]        : 
-#   70|     r70_2(glval<char *>) = VariableAddress[p] : 
-#   70|     r70_3(char *)        = Load[p]            : &:r70_2, m69_2
-#   70|     r70_4(int)           = Constant[1]        : 
-#   70|     r70_5(char *)        = PointerAdd[1]      : r70_3, r70_4
-#   70|     m70_6(char *)        = Store[p]           : &:r70_2, r70_5
-#   70|     r70_7(char *)        = CopyValue          : r70_3
-#   70|     r70_8(glval<char>)   = CopyValue          : r70_7
-#   70|     m70_9(char)          = Store[?]           : &:r70_8, r70_1
-#   70|     m70_10(unknown)      = Chi                : total:m69_1, partial:m70_9
+#   70|     r70_1(char)          = Constant[0]                : 
+#   70|     r70_2(glval<char *>) = VariableAddress[p]         : 
+#   70|     r70_3(char *)        = Load[p]                    : &:r70_2, m69_2
+#   70|     r70_4(glval<char *>) = VariableAddress[#temp70:7] : 
+#   70|     m70_5(char *)        = Store[#temp70:7]           : &:r70_4, r70_3
+#   70|     r70_6(int)           = Constant[1]                : 
+#   70|     r70_7(char *)        = PointerAdd[1]              : r70_3, r70_6
+#   70|     m70_8(char *)        = Store[p]                   : &:r70_2, r70_7
+#   70|     r70_9(char *)        = CopyValue                  : m70_5
+#   70|     r70_10(glval<char>)  = CopyValue                  : r70_9
+#   70|     m70_11(char)         = Store[?]                   : &:r70_10, r70_1
+#   70|     m70_12(unknown)      = Chi                        : total:m69_1, partial:m70_11
 #-----|   Goto (back edge) -> Block 1
 
 #   71|   Block 3
