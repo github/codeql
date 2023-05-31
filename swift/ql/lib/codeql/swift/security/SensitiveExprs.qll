@@ -102,7 +102,7 @@ private class SensitiveFunction extends Function {
   string name; // name of the function, not including the argument list.
 
   SensitiveFunction() {
-    name = this.getName().splitAt("(", 0) and
+    name = this.getShortName() and
     name.regexpMatch(sensitiveType.getRegexp())
   }
 
