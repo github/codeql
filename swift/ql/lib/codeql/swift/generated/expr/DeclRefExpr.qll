@@ -11,23 +11,10 @@ module Generated {
 
     /**
      * Gets the declaration of this declaration reference expression.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Decl getImmediateDecl() {
+    Decl getDecl() {
       result =
         Synth::convertDeclFromRaw(Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).getDecl())
-    }
-
-    /**
-     * Gets the declaration of this declaration reference expression.
-     */
-    final Decl getDecl() {
-      exists(Decl immediate |
-        immediate = this.getImmediateDecl() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

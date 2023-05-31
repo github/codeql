@@ -11,25 +11,12 @@ module Generated {
 
     /**
      * Gets the `index`th binding declaration of this capture list expression (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    PatternBindingDecl getImmediateBindingDecl(int index) {
+    PatternBindingDecl getBindingDecl(int index) {
       result =
         Synth::convertPatternBindingDeclFromRaw(Synth::convertCaptureListExprToRaw(this)
               .(Raw::CaptureListExpr)
               .getBindingDecl(index))
-    }
-
-    /**
-     * Gets the `index`th binding declaration of this capture list expression (0-based).
-     */
-    final PatternBindingDecl getBindingDecl(int index) {
-      exists(PatternBindingDecl immediate |
-        immediate = this.getImmediateBindingDecl(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

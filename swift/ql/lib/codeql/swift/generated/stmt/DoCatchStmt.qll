@@ -11,46 +11,20 @@ module Generated {
 
     /**
      * Gets the body of this do catch statement.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Stmt getImmediateBody() {
+    Stmt getBody() {
       result =
         Synth::convertStmtFromRaw(Synth::convertDoCatchStmtToRaw(this).(Raw::DoCatchStmt).getBody())
     }
 
     /**
-     * Gets the body of this do catch statement.
-     */
-    final Stmt getBody() {
-      exists(Stmt immediate |
-        immediate = this.getImmediateBody() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
-    }
-
-    /**
      * Gets the `index`th catch of this do catch statement (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    CaseStmt getImmediateCatch(int index) {
+    CaseStmt getCatch(int index) {
       result =
         Synth::convertCaseStmtFromRaw(Synth::convertDoCatchStmtToRaw(this)
               .(Raw::DoCatchStmt)
               .getCatch(index))
-    }
-
-    /**
-     * Gets the `index`th catch of this do catch statement (0-based).
-     */
-    final CaseStmt getCatch(int index) {
-      exists(CaseStmt immediate |
-        immediate = this.getImmediateCatch(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

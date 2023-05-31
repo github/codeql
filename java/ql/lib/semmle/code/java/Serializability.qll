@@ -4,6 +4,7 @@
 
 import java
 private import frameworks.jackson.JacksonSerializability
+private import frameworks.google.GsonSerializability
 private import frameworks.google.GoogleHttpClientApi
 
 /**

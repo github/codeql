@@ -10,25 +10,12 @@ module Generated {
 
     /**
      * Gets the parameter declaration of this default argument expression.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ParamDecl getImmediateParamDecl() {
+    ParamDecl getParamDecl() {
       result =
         Synth::convertParamDeclFromRaw(Synth::convertDefaultArgumentExprToRaw(this)
               .(Raw::DefaultArgumentExpr)
               .getParamDecl())
-    }
-
-    /**
-     * Gets the parameter declaration of this default argument expression.
-     */
-    final ParamDecl getParamDecl() {
-      exists(ParamDecl immediate |
-        immediate = this.getImmediateParamDecl() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**
