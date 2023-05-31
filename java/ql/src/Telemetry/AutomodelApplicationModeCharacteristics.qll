@@ -111,7 +111,7 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   }
 
   /**
-   * Returns the API callable being modelled.
+   * Returns the API callable being modeled.
    *
    * Each Java mode should implement this predicate.
    */
