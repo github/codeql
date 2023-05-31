@@ -1,6 +1,8 @@
 var def_int = 42
 
-struct Generic<T> {}
+struct Generic<T> {
+    func def_generic_method<U, V>(t: T, u: U, v: V) -> T { return t; }
+}
 
 var def_instantiated_generic = Generic<Int>()
 

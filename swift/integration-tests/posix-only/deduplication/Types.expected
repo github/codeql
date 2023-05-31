@@ -12,7 +12,9 @@
 | <A, B, C> (A, B, C) -> () | GenericFunctionType | def_generic_function(_:_:_:) | <\u03c4_0_0, \u03c4_0_1, \u03c4_0_2> (\u03c4_0_0, \u03c4_0_1, \u03c4_0_2) -> () |
 | <AA, BB, CC where AA : Protocol1, AA : Protocol2, BB : Class, CC == AA.Associated> (AA, BB, CC) -> () | GenericFunctionType | use_generic_function_with_conformance_type(_:_:_:) | <\u03c4_0_0, \u03c4_0_1, \u03c4_0_2 where \u03c4_0_0 : Protocol1, \u03c4_0_0 : Protocol2, \u03c4_0_1 : Class, \u03c4_0_2 == \u03c4_0_0.Associated> (\u03c4_0_0, \u03c4_0_1, \u03c4_0_2) -> () |
 | <AA, BB, CC> (AA, BB, CC) -> () | GenericFunctionType | use_generic_function_type(_:_:_:) | <\u03c4_0_0, \u03c4_0_1, \u03c4_0_2> (\u03c4_0_0, \u03c4_0_1, \u03c4_0_2) -> () |
+| <T, U, V> (Generic<T>) -> (T, U, V) -> T | GenericFunctionType | def_generic_method(t:u:v:) | <\u03c4_0_0, \u03c4_1_0, \u03c4_1_1> (Generic<\u03c4_0_0>) -> (\u03c4_0_0, \u03c4_1_0, \u03c4_1_1) -> \u03c4_0_0 |
 | <\u03c4_0_0, \u03c4_0_1, \u03c4_0_2 where \u03c4_0_0 : Protocol1, \u03c4_0_0 : Protocol2, \u03c4_0_1 : Class, \u03c4_0_2 == \u03c4_0_0.Associated> (\u03c4_0_0, \u03c4_0_1, \u03c4_0_2) -> () | GenericFunctionType | def_generic_function_with_conformance(_:_:_:), use_generic_function_with_conformance_type(_:_:_:) |  |
 | <\u03c4_0_0, \u03c4_0_1, \u03c4_0_2> (\u03c4_0_0, \u03c4_0_1, \u03c4_0_2) -> () | GenericFunctionType | def_generic_function(_:_:_:), use_generic_function_type(_:_:_:) |  |
+| <\u03c4_0_0, \u03c4_1_0, \u03c4_1_1> (Generic<\u03c4_0_0>) -> (\u03c4_0_0, \u03c4_1_0, \u03c4_1_1) -> \u03c4_0_0 | GenericFunctionType | def_generic_method(t:u:v:) |  |
 | Generic<Int> | BoundGenericStructType | def_instantiated_generic, use_instantiated_generic |  |
 | Int | StructType | def_int, use_int |  |
