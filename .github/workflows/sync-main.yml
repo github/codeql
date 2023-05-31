@@ -37,3 +37,4 @@ jobs:
           git merge codeql-cli/latest
           git push origin main
           git push origin --tags --force
+
