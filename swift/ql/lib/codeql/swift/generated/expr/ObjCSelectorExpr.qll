@@ -33,25 +33,12 @@ module Generated {
 
     /**
      * Gets the method of this obj c selector expression.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Function getImmediateMethod() {
+    Function getMethod() {
       result =
         Synth::convertFunctionFromRaw(Synth::convertObjCSelectorExprToRaw(this)
               .(Raw::ObjCSelectorExpr)
               .getMethod())
-    }
-
-    /**
-     * Gets the method of this obj c selector expression.
-     */
-    final Function getMethod() {
-      exists(Function immediate |
-        immediate = this.getImmediateMethod() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
   }
 }

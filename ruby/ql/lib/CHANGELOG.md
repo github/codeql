@@ -1,3 +1,9 @@
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* Support for the `sqlite3` gem has been added. Method calls that execute queries against an SQLite3 database that may be vulnerable to injection attacks will now be recognized.
+
 ## 0.6.1
 
 No user-facing changes.
