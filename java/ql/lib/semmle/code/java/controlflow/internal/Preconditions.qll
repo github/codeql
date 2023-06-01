@@ -7,15 +7,6 @@
 import java
 
 /**
- * DEPRECATED: Use `conditionCheckMethodArgument` instead.
- * Holds if `m` is a non-overridable method that checks that its first argument
- * is equal to `checkTrue` and throws otherwise.
- */
-deprecated predicate conditionCheckMethod(Method m, boolean checkTrue) {
-  conditionCheckMethodArgument(m, 0, checkTrue)
-}
-
-/**
  * Holds if `m` is a non-overridable method that checks that its zero-indexed `argument`
  * is equal to `checkTrue` and throws otherwise.
  */

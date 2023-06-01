@@ -20,9 +20,6 @@ class JacksonJsonIgnoreAnnotation extends NonReflectiveAnnotation {
   }
 }
 
-/** DEPRECATED: Alias for JacksonJsonIgnoreAnnotation */
-deprecated class JacksonJSONIgnoreAnnotation = JacksonJsonIgnoreAnnotation;
-
 /** A type whose values may be serialized using the Jackson JSON framework. */
 abstract class JacksonSerializableType extends Type { }
 

@@ -716,14 +716,6 @@ module Http {
         abstract DataFlow::Node getResponseBody();
 
         /**
-         * DEPRECATED: overwrite `getAUrlPart` instead.
-         *
-         * Gets a node that contributes to the URL of the request.
-         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-         */
-        deprecated DataFlow::Node getURL() { none() }
-
-        /**
          * DEPRECATED: override `disablesCertificateValidation/2` instead.
          *
          * Holds if this request is made using a mode that disables SSL/TLS
