@@ -35,14 +35,6 @@ class Container extends Locatable, @container {
   string getAbsolutePath() { none() } // overridden by subclasses
 
   /**
-   * DEPRECATED: Use `getLocation` instead.
-   * Gets a URL representing the location of this container.
-   *
-   * For more information see [Providing URLs](https://codeql.github.com/docs/writing-codeql-queries/providing-locations-in-codeql-queries/#providing-urls).
-   */
-  deprecated string getURL() { none() } // overridden by subclasses
-
-  /**
    * Gets the relative path of this file or folder from the root folder of the
    * analyzed source location. The relative path of the root folder itself is
    * the empty string.
@@ -183,12 +175,6 @@ class Folder extends Container, @folder {
   }
 
   override string getAPrimaryQlClass() { result = "Folder" }
-
-  /**
-   * DEPRECATED: Use `getLocation` instead.
-   * Gets the URL of this folder.
-   */
-  deprecated override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 }
 
 /**
@@ -212,12 +198,6 @@ class File extends Container, @file {
     result.getContainer() = this and
     result.hasLocationInfo(_, 0, 0, 0, 0)
   }
-
-  /**
-   * DEPRECATED: Use `getLocation` instead.
-   * Gets the URL of this file.
-   */
-  deprecated override string getURL() { result = "file://" + this.getAbsolutePath() + ":0:0:0:0" }
 
   /** Holds if this file was compiled as C (at any point). */
   predicate compiledAsC() { fileannotations(underlyingElement(this), 1, "compiled as c", "1") }
