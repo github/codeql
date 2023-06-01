@@ -146,12 +146,12 @@ module ArrayAddressToDerefConfig implements DataFlow::StateConfigSig {
   predicate isAdditionalFlowStep(
     DataFlow::Node node1, FlowState state1, DataFlow::Node node2, FlowState state2
   ) {
-    exists(PointerArithmeticInstruction pai, Variable v, int size, int delta |
+    exists(PointerArithmeticInstruction pai, Variable v |
       state1 = TArray(v) and
       state2 = TOverflowArithmetic(pai) and
       pai.getLeft() = node1.asInstruction() and
       node2.asInstruction() = pai and
-      pointerArithOverflow(pai, v, size, _, delta)
+      pointerArithOverflow(pai, v, _, _, _)
     )
   }
 }
