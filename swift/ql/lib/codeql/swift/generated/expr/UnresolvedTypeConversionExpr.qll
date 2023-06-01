@@ -6,8 +6,7 @@ import codeql.swift.elements.expr.ImplicitConversionExpr
 
 module Generated {
   class UnresolvedTypeConversionExpr extends Synth::TUnresolvedTypeConversionExpr,
-    ImplicitConversionExpr, ErrorElement
-  {
+    ImplicitConversionExpr, ErrorElement {
     override string getAPrimaryQlClass() { result = "UnresolvedTypeConversionExpr" }
   }
 }

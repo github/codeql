@@ -166,28 +166,21 @@ module Public {
     SummaryComponentStack return(ReturnKind rk) { result = singleton(SummaryComponent::return(rk)) }
   }
 
-  private predicate noComponentSpecific(SummaryComponent sc) {
-    not exists(getComponentSpecific(sc))
-  }
-
   /** Gets a textual representation of this component used for flow summaries. */
   private string getComponent(SummaryComponent sc) {
     result = getComponentSpecific(sc)
     or
-    noComponentSpecific(sc) and
-    (
-      exists(ArgumentPosition pos |
-        sc = TParameterSummaryComponent(pos) and
-        result = "Parameter[" + getArgumentPosition(pos) + "]"
-      )
-      or
-      exists(ParameterPosition pos |
-        sc = TArgumentSummaryComponent(pos) and
-        result = "Argument[" + getParameterPosition(pos) + "]"
-      )
-      or
-      sc = TReturnSummaryComponent(getReturnValueKind()) and result = "ReturnValue"
+    exists(ArgumentPosition pos |
+      sc = TParameterSummaryComponent(pos) and
+      result = "Parameter[" + getArgumentPosition(pos) + "]"
     )
+    or
+    exists(ParameterPosition pos |
+      sc = TArgumentSummaryComponent(pos) and
+      result = "Argument[" + getParameterPosition(pos) + "]"
+    )
+    or
+    sc = TReturnSummaryComponent(getReturnValueKind()) and result = "ReturnValue"
   }
 
   /** Gets a textual representation of this stack used for flow summaries. */
@@ -335,7 +328,7 @@ module Public {
   class NeutralCallable extends SummarizedCallableBase {
     private Provenance provenance;
 
-    NeutralCallable() { neutralElement(this, provenance) }
+    NeutralCallable() { neutralSummaryElement(this, provenance) }
 
     /**
      * Holds if the neutral is auto generated.

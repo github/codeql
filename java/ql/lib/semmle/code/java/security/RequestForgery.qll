@@ -79,10 +79,7 @@ private class HostnameSanitizingPrefix extends InterestingPrefix {
     // the host or entity addressed: for example, anything containing `?` or `#`, or a slash that
     // doesn't appear to be a protocol specifier (e.g. `http://` is not sanitizing), or specifically
     // the string "/".
-    exists(
-      this.getStringValue()
-          .regexpFind(".*([?#]|[^?#:/\\\\][/\\\\]).*|[/\\\\][^/\\\\].*|^/$", 0, offset)
-    )
+    exists(this.getStringValue().regexpFind("([?#]|[^?#:/\\\\][/\\\\])|^/$", 0, offset))
   }
 
   override int getOffset() { result = offset }

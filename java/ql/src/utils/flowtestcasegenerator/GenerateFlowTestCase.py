@@ -18,7 +18,7 @@ GenerateFlowTestCase.py specsToTest projectPom.xml outdir [--force]
 This generates test cases exercising function model specifications found in specsToTest
 producing files Test.java, test.ql, test.ext.yml and test.expected in outdir.
 
-specsToTest should either be a .csv file, a .yml file, or a directory of .yml files, containing the 
+specsToTest should either be a .csv file, a .yml file, or a directory of .yml files, containing the
 model specifications to test.
 
 projectPom.xml should be a Maven pom sufficient to resolve the classes named in specsToTest.csv.
@@ -276,7 +276,7 @@ if len(supportModelRows) != 0:
                            modelSpecRow[0].strip() for modelSpecRow in supportModelRows)
         dataextensions = f"""extensions:
   - addsTo:
-      pack: codeql/java-tests
+      pack: codeql/java-all
       extensible: summaryModel
     data:
 {models}

@@ -4,39 +4,77 @@
 #include "swift/xcode-autobuilder/XcodeTarget.h"
 #include "swift/xcode-autobuilder/XcodeBuildRunner.h"
 #include "swift/xcode-autobuilder/XcodeProjectParser.h"
+#include "swift/logging/SwiftLogging.h"
+#include "swift/xcode-autobuilder/CustomizingBuildLink.h"
 
-static const char* Application = "com.apple.product-type.application";
-static const char* Framework = "com.apple.product-type.framework";
+static constexpr std::string_view uiTest = "com.apple.product-type.bundle.ui-testing";
+static constexpr std::string_view unitTest = "com.apple.product-type.bundle.unit-test";
+static constexpr std::string_view unknownType = "<unknown_target_type>";
+
+const std::string_view codeql::programName = "autobuilder";
+
+constexpr codeql::SwiftDiagnostic noProjectFound{"no-project-found",
+                                                 "No Xcode project or workspace found",
+                                                 "Set up a [manual build command][1].\n"
+                                                 "\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
+
+constexpr codeql::SwiftDiagnostic noSwiftTarget{
+    "no-swift-target", "No Swift compilation target found",
+    "To analyze a custom set of source files, set up a [manual build command][1].\n"
+    "\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
+
+constexpr codeql::SwiftDiagnostic spmNotSupported{
+    "spm-not-supported", "Swift Package Manager is not supported",
+    "Swift Package Manager builds are not currently supported by `autobuild`. Set up a [manual "
+    "build command][1].\n"
+    "\n[1]: " MANUAL_BUILD_COMMAND_HELP_LINK};
+
+static codeql::Logger& logger() {
+  static codeql::Logger ret{"main"};
+  return ret;
+}
 
 struct CLIArgs {
   std::string workingDir;
   bool dryRun;
 };
 
-static void autobuild(const CLIArgs& args) {
-  auto targets = collectTargets(args.workingDir);
+static bool endsWith(std::string_view s, std::string_view suffix) {
+  return s.size() >= suffix.size() && s.substr(s.size() - suffix.size()) == suffix;
+}
 
-  // Filter out non-application/framework targets
-  targets.erase(std::remove_if(std::begin(targets), std::end(targets),
-                               [&](Target& t) -> bool {
-                                 return t.type != Application && t.type != Framework;
-                               }),
+static bool isNonSwiftOrTestTarget(const Target& t) {
+  return t.fileCount == 0 || t.type == uiTest || t.type == unitTest ||
+         // unknown target types can be legitimate, let's do a name-based heuristic then
+         (t.type == unknownType && (endsWith(t.name, "Tests") || endsWith(t.name, "Test")));
+}
+
+static void autobuild(const CLIArgs& args) {
+  auto collected = collectTargets(args.workingDir);
+  auto& targets = collected.targets;
+  for (const auto& t : targets) {
+    LOG_INFO("{}", t);
+  }
+  // Filter out targets that are tests or have no swift source files
+  targets.erase(std::remove_if(std::begin(targets), std::end(targets), isNonSwiftOrTestTarget),
                 std::end(targets));
 
   // Sort targets by the amount of files in each
   std::sort(std::begin(targets), std::end(targets),
             [](Target& lhs, Target& rhs) { return lhs.fileCount > rhs.fileCount; });
-
-  for (auto& t : targets) {
-    std::cerr << t.workspace << " " << t.project << " " << t.type << " " << t.name << " "
-              << t.fileCount << "\n";
+  if ((!collected.xcodeEncountered || targets.empty()) && collected.swiftPackageEncountered) {
+    DIAGNOSE_ERROR(spmNotSupported,
+                   "A Swift package was detected, but no viable Xcode target was found.");
+  } else if (!collected.xcodeEncountered) {
+    DIAGNOSE_ERROR(noProjectFound, "`autobuild` could not detect an Xcode project or workspace.");
+  } else if (targets.empty()) {
+    DIAGNOSE_ERROR(noSwiftTarget, "All targets found within Xcode projects or workspaces either "
+                                  "contain no Swift source files, or are tests.");
+  } else {
+    LOG_INFO("Selected {}", targets.front());
+    buildTarget(targets.front(), args.dryRun);
+    return;
   }
-  if (targets.empty()) {
-    std::cerr << "[xcode autobuilder] Suitable targets not found\n";
-    exit(1);
-  }
-
-  buildTarget(targets.front(), args.dryRun);
 }
 
 static CLIArgs parseCLIArgs(int argc, char** argv) {
@@ -58,5 +96,6 @@ static CLIArgs parseCLIArgs(int argc, char** argv) {
 int main(int argc, char** argv) {
   auto args = parseCLIArgs(argc, argv);
   autobuild(args);
+  codeql::Log::flush();
   return 0;
 }

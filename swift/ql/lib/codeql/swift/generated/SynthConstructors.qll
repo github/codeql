@@ -8,14 +8,12 @@ import codeql.swift.elements.KeyPathComponentConstructor
 import codeql.swift.elements.OtherAvailabilitySpecConstructor
 import codeql.swift.elements.PlatformVersionAvailabilitySpecConstructor
 import codeql.swift.elements.UnspecifiedElementConstructor
-import codeql.swift.elements.decl.AccessorDeclConstructor
+import codeql.swift.elements.decl.AccessorConstructor
 import codeql.swift.elements.decl.AssociatedTypeDeclConstructor
 import codeql.swift.elements.decl.CapturedDeclConstructor
 import codeql.swift.elements.decl.ClassDeclConstructor
-import codeql.swift.elements.decl.ConcreteFuncDeclConstructor
 import codeql.swift.elements.decl.ConcreteVarDeclConstructor
-import codeql.swift.elements.decl.ConstructorDeclConstructor
-import codeql.swift.elements.decl.DestructorDeclConstructor
+import codeql.swift.elements.decl.DeinitializerConstructor
 import codeql.swift.elements.decl.EnumCaseDeclConstructor
 import codeql.swift.elements.decl.EnumDeclConstructor
 import codeql.swift.elements.decl.EnumElementDeclConstructor
@@ -24,8 +22,10 @@ import codeql.swift.elements.decl.GenericTypeParamDeclConstructor
 import codeql.swift.elements.decl.IfConfigDeclConstructor
 import codeql.swift.elements.decl.ImportDeclConstructor
 import codeql.swift.elements.decl.InfixOperatorDeclConstructor
+import codeql.swift.elements.decl.InitializerConstructor
 import codeql.swift.elements.decl.MissingMemberDeclConstructor
 import codeql.swift.elements.decl.ModuleDeclConstructor
+import codeql.swift.elements.decl.NamedFunctionConstructor
 import codeql.swift.elements.decl.OpaqueTypeDeclConstructor
 import codeql.swift.elements.decl.ParamDeclConstructor
 import codeql.swift.elements.decl.PatternBindingDeclConstructor
@@ -56,12 +56,10 @@ import codeql.swift.elements.expr.BridgeToObjCExprConstructor
 import codeql.swift.elements.expr.CallExprConstructor
 import codeql.swift.elements.expr.CaptureListExprConstructor
 import codeql.swift.elements.expr.ClassMetatypeToObjectExprConstructor
-import codeql.swift.elements.expr.ClosureExprConstructor
 import codeql.swift.elements.expr.CoerceExprConstructor
 import codeql.swift.elements.expr.CollectionUpcastConversionExprConstructor
 import codeql.swift.elements.expr.ConditionalBridgeFromObjCExprConstructor
 import codeql.swift.elements.expr.ConditionalCheckedCastExprConstructor
-import codeql.swift.elements.expr.ConstructorRefCallExprConstructor
 import codeql.swift.elements.expr.CovariantFunctionConversionExprConstructor
 import codeql.swift.elements.expr.CovariantReturnConversionExprConstructor
 import codeql.swift.elements.expr.DeclRefExprConstructor
@@ -82,6 +80,7 @@ import codeql.swift.elements.expr.EnumIsCaseExprConstructor
 import codeql.swift.elements.expr.ErasureExprConstructor
 import codeql.swift.elements.expr.ErrorExprConstructor
 import codeql.swift.elements.expr.ExistentialMetatypeToObjectExprConstructor
+import codeql.swift.elements.expr.ExplicitClosureExprConstructor
 import codeql.swift.elements.expr.FloatLiteralExprConstructor
 import codeql.swift.elements.expr.ForceTryExprConstructor
 import codeql.swift.elements.expr.ForceValueExprConstructor
@@ -91,6 +90,7 @@ import codeql.swift.elements.expr.FunctionConversionExprConstructor
 import codeql.swift.elements.expr.IfExprConstructor
 import codeql.swift.elements.expr.InOutExprConstructor
 import codeql.swift.elements.expr.InOutToPointerExprConstructor
+import codeql.swift.elements.expr.InitializerRefCallExprConstructor
 import codeql.swift.elements.expr.InjectIntoOptionalExprConstructor
 import codeql.swift.elements.expr.IntegerLiteralExprConstructor
 import codeql.swift.elements.expr.InterpolatedStringLiteralExprConstructor
@@ -98,7 +98,7 @@ import codeql.swift.elements.expr.IsExprConstructor
 import codeql.swift.elements.expr.KeyPathApplicationExprConstructor
 import codeql.swift.elements.expr.KeyPathDotExprConstructor
 import codeql.swift.elements.expr.KeyPathExprConstructor
-import codeql.swift.elements.expr.LazyInitializerExprConstructor
+import codeql.swift.elements.expr.LazyInitializationExprConstructor
 import codeql.swift.elements.expr.LinearFunctionExprConstructor
 import codeql.swift.elements.expr.LinearFunctionExtractOriginalExprConstructor
 import codeql.swift.elements.expr.LinearToDifferentiableFunctionExprConstructor
@@ -116,7 +116,7 @@ import codeql.swift.elements.expr.OpaqueValueExprConstructor
 import codeql.swift.elements.expr.OpenExistentialExprConstructor
 import codeql.swift.elements.expr.OptionalEvaluationExprConstructor
 import codeql.swift.elements.expr.OptionalTryExprConstructor
-import codeql.swift.elements.expr.OtherConstructorDeclRefExprConstructor
+import codeql.swift.elements.expr.OtherInitializerRefExprConstructor
 import codeql.swift.elements.expr.OverloadedDeclRefExprConstructor
 import codeql.swift.elements.expr.ParenExprConstructor
 import codeql.swift.elements.expr.PointerToPointerExprConstructor
@@ -124,7 +124,7 @@ import codeql.swift.elements.expr.PostfixUnaryExprConstructor
 import codeql.swift.elements.expr.PrefixUnaryExprConstructor
 import codeql.swift.elements.expr.PropertyWrapperValuePlaceholderExprConstructor
 import codeql.swift.elements.expr.ProtocolMetatypeToObjectExprConstructor
-import codeql.swift.elements.expr.RebindSelfInConstructorExprConstructor
+import codeql.swift.elements.expr.RebindSelfInInitializerExprConstructor
 import codeql.swift.elements.expr.RegexLiteralExprConstructor
 import codeql.swift.elements.expr.SequenceExprConstructor
 import codeql.swift.elements.expr.StringLiteralExprConstructor

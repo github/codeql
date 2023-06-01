@@ -1,3 +1,35 @@
+## 0.6.2
+
+### Major Analysis Improvements
+
+* Added taint sources from the `@actions/core` and `@actions/github` packages.
+* Added command-injection sinks from the `@actions/exec` package.
+
+### Minor Analysis Improvements
+
+* The `js/indirect-command-line-injection` query no longer flags command arguments that cannot be interpreted as a shell string.
+* The `js/unsafe-deserialization` query no longer flags deserialization through the `js-yaml` library, except
+  when it is used with an unsafe schema.
+* The Forge module in `CryptoLibraries.qll` now correctly classifies SHA-512/224,
+  SHA-512/256, and SHA-512/384 hashes used in message digests as NonKeyCiphers.
+
+### Bug Fixes
+
+* Fixed a spurious diagnostic warning about comments in JSON files being illegal.
+  Comments in JSON files are in fact fully supported, and the diagnostic message was misleading.
+
+## 0.6.1
+
+### Minor Analysis Improvements
+
+* Improved the call graph to better handle the case where a function is stored on
+  a plain object and subsequently copied to a new host object via an `extend` call.
+
+### Bug Fixes
+
+* Fixes an issue that would cause TypeScript extraction to hang in rare cases when extracting
+  code containing recursive generic type aliases.
+
 ## 0.6.0
 
 ### Minor Analysis Improvements

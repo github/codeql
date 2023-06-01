@@ -47,7 +47,7 @@ class Variable = Cpp::Variable;
 
 class AutomaticVariable = Cpp::StackVariable;
 
-class StaticVariable = Cpp::Variable;
+class StaticVariable = Cpp::StaticStorageDurationVariable;
 
 class GlobalVariable = Cpp::GlobalOrNamespaceVariable;
 

@@ -5,12 +5,10 @@ module AstTest {
   private import semmle.code.cpp.dataflow.DataFlow::DataFlow
   private import semmle.code.cpp.dataflow.internal.DataFlowPrivate
 
-  class AstMultipleOutNodesTest extends InlineExpectationsTest {
-    AstMultipleOutNodesTest() { this = "AstMultipleOutNodesTest" }
+  module AstMultipleOutNodesTest implements TestSig {
+    string getARelevantTag() { result = "ast-count(" + any(ReturnKind k).toString() + ")" }
 
-    override string getARelevantTag() { result = "ast-count(" + any(ReturnKind k).toString() + ")" }
-
-    override predicate hasActualResult(Location location, string element, string tag, string value) {
+    predicate hasActualResult(Location location, string element, string tag, string value) {
       exists(DataFlowCall call, int n, ReturnKind kind |
         call.getLocation() = location and
         n = strictcount(getAnOutNode(call, kind)) and
@@ -27,12 +25,10 @@ module IRTest {
   private import semmle.code.cpp.ir.dataflow.DataFlow
   private import semmle.code.cpp.ir.dataflow.internal.DataFlowPrivate
 
-  class IRMultipleOutNodesTest extends InlineExpectationsTest {
-    IRMultipleOutNodesTest() { this = "IRMultipleOutNodesTest" }
+  module IRMultipleOutNodesTest implements TestSig {
+    string getARelevantTag() { result = "ir-count(" + any(ReturnKind k).toString() + ")" }
 
-    override string getARelevantTag() { result = "ir-count(" + any(ReturnKind k).toString() + ")" }
-
-    override predicate hasActualResult(Location location, string element, string tag, string value) {
+    predicate hasActualResult(Location location, string element, string tag, string value) {
       exists(DataFlowCall call, int n, ReturnKind kind |
         call.getLocation() = location and
         n = strictcount(getAnOutNode(call, kind)) and
@@ -44,3 +40,5 @@ module IRTest {
     }
   }
 }
+
+import MakeTest<MergeTests<AstTest::AstMultipleOutNodesTest, IRTest::IRMultipleOutNodesTest>>

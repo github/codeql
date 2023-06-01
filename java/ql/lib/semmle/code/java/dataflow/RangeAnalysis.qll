@@ -292,7 +292,7 @@ class CondReason extends Reason, TCondReason {
   /** Gets the condition that is the reason for the bound. */
   Guard getCond() { this = TCondReason(result) }
 
-  override string toString() { result = getCond().toString() }
+  override string toString() { result = this.getCond().toString() }
 }
 
 /**
@@ -362,7 +362,7 @@ private predicate safeCast(Type fromtyp, Type totyp) {
  */
 private class RangeAnalysisSafeCastingExpr extends CastingExpr {
   RangeAnalysisSafeCastingExpr() {
-    safeCast(getExpr().getType(), getType()) or
+    safeCast(this.getExpr().getType(), this.getType()) or
     this instanceof ImplicitCastExpr or
     this instanceof ImplicitNotNullExpr or
     this instanceof ImplicitCoercionToUnitExpr
@@ -388,14 +388,14 @@ private predicate typeBound(Type typ, int lowerbound, int upperbound) {
 private class NarrowingCastingExpr extends CastingExpr {
   NarrowingCastingExpr() {
     not this instanceof RangeAnalysisSafeCastingExpr and
-    typeBound(getType(), _, _)
+    typeBound(this.getType(), _, _)
   }
 
   /** Gets the lower bound of the resulting type. */
-  int getLowerBound() { typeBound(getType(), result, _) }
+  int getLowerBound() { typeBound(this.getType(), result, _) }
 
   /** Gets the upper bound of the resulting type. */
-  int getUpperBound() { typeBound(getType(), _, result) }
+  int getUpperBound() { typeBound(this.getType(), _, result) }
 }
 
 /** Holds if `e >= 1` as determined by sign analysis. */

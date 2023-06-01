@@ -491,6 +491,7 @@ module API {
      * In other words, the value of a use of `that` may flow into the right-hand side of a
      * definition of this node.
      */
+    pragma[inline]
     predicate refersTo(Node that) { this.asSink() = that.getAValueReachableFromSource() }
 
     /**

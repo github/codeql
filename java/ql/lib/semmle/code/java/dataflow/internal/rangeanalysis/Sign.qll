@@ -90,7 +90,7 @@ class Sign extends TSign {
    * Gets a possible sign after subtracting an expression with sign `s` from an expression
    * that has this sign.
    */
-  Sign sub(Sign s) { result = add(s.neg()) }
+  Sign sub(Sign s) { result = this.add(s.neg()) }
 
   /**
    * Gets a possible sign after multiplying an expression with sign `s` to an expression
@@ -244,37 +244,37 @@ class Sign extends TSign {
 
   /** Perform `op` on this sign. */
   Sign applyUnaryOp(TUnarySignOperation op) {
-    op = TIncOp() and result = inc()
+    op = TIncOp() and result = this.inc()
     or
-    op = TDecOp() and result = dec()
+    op = TDecOp() and result = this.dec()
     or
-    op = TNegOp() and result = neg()
+    op = TNegOp() and result = this.neg()
     or
-    op = TBitNotOp() and result = bitnot()
+    op = TBitNotOp() and result = this.bitnot()
   }
 
   /** Perform `op` on this sign and sign `s`. */
   Sign applyBinaryOp(Sign s, TBinarySignOperation op) {
-    op = TAddOp() and result = add(s)
+    op = TAddOp() and result = this.add(s)
     or
-    op = TSubOp() and result = sub(s)
+    op = TSubOp() and result = this.sub(s)
     or
-    op = TMulOp() and result = mul(s)
+    op = TMulOp() and result = this.mul(s)
     or
-    op = TDivOp() and result = div(s)
+    op = TDivOp() and result = this.div(s)
     or
-    op = TRemOp() and result = rem(s)
+    op = TRemOp() and result = this.rem(s)
     or
-    op = TBitAndOp() and result = bitand(s)
+    op = TBitAndOp() and result = this.bitand(s)
     or
-    op = TBitOrOp() and result = bitor(s)
+    op = TBitOrOp() and result = this.bitor(s)
     or
-    op = TBitXorOp() and result = bitxor(s)
+    op = TBitXorOp() and result = this.bitxor(s)
     or
-    op = TLeftShiftOp() and result = lshift(s)
+    op = TLeftShiftOp() and result = this.lshift(s)
     or
-    op = TRightShiftOp() and result = rshift(s)
+    op = TRightShiftOp() and result = this.rshift(s)
     or
-    op = TUnsignedRightShiftOp() and result = urshift(s)
+    op = TUnsignedRightShiftOp() and result = this.urshift(s)
   }
 }

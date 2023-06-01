@@ -1,3 +1,15 @@
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* Improved the queries for injection vulnerabilities in GitHub Actions workflows (`js/actions/command-injection` and `js/actions/pull-request-target`) and the associated library `semmle.javascript.Actions`. These now support steps defined in composite actions, in addition to steps defined in Actions workflow files. It supports more potentially untrusted input values. Additionally to the shell injections it now also detects injections in `actions/github-script`. It also detects simple injections from user controlled `${{ env.name }}`. Additionally to the `yml` extension now it also supports workflows with the `yaml` extension.
+
+## 0.6.1
+
+### Major Analysis Improvements
+
+* The Yaml.qll library was moved into a shared library pack named `codeql/yaml` to make it possible for other languages to re-use it. This change should be backwards compatible for existing JavaScript queries.
+
 ## 0.6.0
 
 ### Major Analysis Improvements

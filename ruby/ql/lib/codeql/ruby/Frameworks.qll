@@ -31,3 +31,5 @@ private import codeql.ruby.frameworks.Erb
 private import codeql.ruby.frameworks.Slim
 private import codeql.ruby.frameworks.Sinatra
 private import codeql.ruby.frameworks.Twirp
+private import codeql.ruby.frameworks.Sqlite3
+private import codeql.ruby.frameworks.Pg

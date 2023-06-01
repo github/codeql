@@ -26,8 +26,8 @@ element_is_unknown(
 );
 
 @callable =
-  @abstract_closure_expr
-| @abstract_function_decl
+  @closure_expr
+| @function
 ;
 
 #keyset[id]
@@ -256,8 +256,8 @@ decl_members(  //dir=decl
 );
 
 @generic_context =
-  @abstract_function_decl
-| @extension_decl
+  @extension_decl
+| @function
 | @generic_type_decl
 | @subscript_decl
 ;
@@ -391,9 +391,9 @@ top_level_code_decls(  //dir=decl
 );
 
 @value_decl =
-  @abstract_function_decl
-| @abstract_storage_decl
+  @abstract_storage_decl
 | @enum_element_decl
+| @function
 | @type_decl
 ;
 
@@ -403,22 +403,16 @@ value_decls(  //dir=decl
   int interface_type: @type_or_none ref
 );
 
-@abstract_function_decl =
-  @constructor_decl
-| @destructor_decl
-| @func_decl
-;
-
 @abstract_storage_decl =
   @subscript_decl
 | @var_decl
 ;
 
 #keyset[id, index]
-abstract_storage_decl_accessor_decls(  //dir=decl
+abstract_storage_decl_accessors(  //dir=decl
   int id: @abstract_storage_decl ref,
   int index: int ref,
-  int accessor_decl: @accessor_decl_or_none ref
+  int accessor: @accessor_or_none ref
 );
 
 enum_element_decls(  //dir=decl
@@ -432,6 +426,12 @@ enum_element_decl_params(  //dir=decl
   int index: int ref,
   int param: @param_decl_or_none ref
 );
+
+@function =
+  @accessor_or_named_function
+| @deinitializer
+| @initializer
+;
 
 infix_operator_decls(  //dir=decl
   unique int id: @infix_operator_decl
@@ -475,24 +475,24 @@ type_decl_base_types(  //dir=decl
 | @generic_type_param_decl
 ;
 
-constructor_decls(  //dir=decl
-  unique int id: @constructor_decl
-);
-
-destructor_decls(  //dir=decl
-  unique int id: @destructor_decl
-);
-
-@func_decl =
-  @accessor_decl
-| @concrete_func_decl
+@accessor_or_named_function =
+  @accessor
+| @named_function
 ;
+
+deinitializers(  //dir=decl
+  unique int id: @deinitializer
+);
 
 @generic_type_decl =
   @nominal_type_decl
 | @opaque_type_decl
 | @type_alias_decl
 ;
+
+initializers(  //dir=decl
+  unique int id: @initializer
+);
 
 module_decls(  //dir=decl
   unique int id: @module_decl
@@ -584,56 +584,52 @@ var_decl_property_wrapper_projection_vars(  //dir=decl
   int property_wrapper_projection_var: @var_decl_or_none ref
 );
 
-accessor_decls(  //dir=decl
-  unique int id: @accessor_decl
+accessors(  //dir=decl
+  unique int id: @accessor
 );
 
 #keyset[id]
-accessor_decl_is_getter(  //dir=decl
-  int id: @accessor_decl ref
+accessor_is_getter(  //dir=decl
+  int id: @accessor ref
 );
 
 #keyset[id]
-accessor_decl_is_setter(  //dir=decl
-  int id: @accessor_decl ref
+accessor_is_setter(  //dir=decl
+  int id: @accessor ref
 );
 
 #keyset[id]
-accessor_decl_is_will_set(  //dir=decl
-  int id: @accessor_decl ref
+accessor_is_will_set(  //dir=decl
+  int id: @accessor ref
 );
 
 #keyset[id]
-accessor_decl_is_did_set(  //dir=decl
-  int id: @accessor_decl ref
+accessor_is_did_set(  //dir=decl
+  int id: @accessor ref
 );
 
 #keyset[id]
-accessor_decl_is_read(  //dir=decl
-  int id: @accessor_decl ref
+accessor_is_read(  //dir=decl
+  int id: @accessor ref
 );
 
 #keyset[id]
-accessor_decl_is_modify(  //dir=decl
-  int id: @accessor_decl ref
+accessor_is_modify(  //dir=decl
+  int id: @accessor ref
 );
 
 #keyset[id]
-accessor_decl_is_unsafe_address(  //dir=decl
-  int id: @accessor_decl ref
+accessor_is_unsafe_address(  //dir=decl
+  int id: @accessor ref
 );
 
 #keyset[id]
-accessor_decl_is_unsafe_mutable_address(  //dir=decl
-  int id: @accessor_decl ref
+accessor_is_unsafe_mutable_address(  //dir=decl
+  int id: @accessor ref
 );
 
 associated_type_decls(  //dir=decl
   unique int id: @associated_type_decl
-);
-
-concrete_func_decls(  //dir=decl
-  unique int id: @concrete_func_decl
 );
 
 concrete_var_decls(  //dir=decl
@@ -643,6 +639,10 @@ concrete_var_decls(  //dir=decl
 
 generic_type_param_decls(  //dir=decl
   unique int id: @generic_type_param_decl
+);
+
+named_functions(  //dir=decl
+  unique int id: @named_function
 );
 
 @nominal_type_decl =
@@ -719,13 +719,13 @@ arguments(  //dir=expr
 );
 
 @expr =
-  @abstract_closure_expr
-| @any_try_expr
+  @any_try_expr
 | @applied_property_wrapper_expr
 | @apply_expr
 | @assign_expr
 | @bind_optional_expr
 | @capture_list_expr
+| @closure_expr
 | @collection_expr
 | @decl_ref_expr
 | @default_argument_expr
@@ -743,7 +743,7 @@ arguments(  //dir=expr
 | @key_path_application_expr
 | @key_path_dot_expr
 | @key_path_expr
-| @lazy_initializer_expr
+| @lazy_initialization_expr
 | @literal_expr
 | @lookup_expr
 | @make_temporarily_escapable_expr
@@ -752,10 +752,10 @@ arguments(  //dir=expr
 | @opaque_value_expr
 | @open_existential_expr
 | @optional_evaluation_expr
-| @other_constructor_decl_ref_expr
+| @other_initializer_ref_expr
 | @overloaded_decl_ref_expr
 | @property_wrapper_value_placeholder_expr
-| @rebind_self_in_constructor_expr
+| @rebind_self_in_initializer_expr
 | @sequence_expr
 | @super_ref_expr
 | @tap_expr
@@ -775,11 +775,6 @@ expr_types(  //dir=expr
   int id: @expr ref,
   int type_: @type_or_none ref
 );
-
-@abstract_closure_expr =
-  @auto_closure_expr
-| @closure_expr
-;
 
 @any_try_expr =
   @force_try_expr
@@ -834,7 +829,7 @@ bind_optional_exprs(  //dir=expr
 
 capture_list_exprs(  //dir=expr
   unique int id: @capture_list_expr,
-  int closure_body: @abstract_closure_expr_or_none ref
+  int closure_body: @closure_expr_or_none ref
 );
 
 #keyset[id, index]
@@ -843,6 +838,11 @@ capture_list_expr_binding_decls(  //dir=expr
   int index: int ref,
   int binding_decl: @pattern_binding_decl_or_none ref
 );
+
+@closure_expr =
+  @auto_closure_expr
+| @explicit_closure_expr
+;
 
 @collection_expr =
   @array_expr
@@ -1027,8 +1027,8 @@ key_path_expr_components(  //dir=expr
   int component: @key_path_component_or_none ref
 );
 
-lazy_initializer_exprs(  //dir=expr
-  unique int id: @lazy_initializer_expr,
+lazy_initialization_exprs(  //dir=expr
+  unique int id: @lazy_initialization_expr,
   int sub_expr: @expr_or_none ref
 );
 
@@ -1068,7 +1068,7 @@ make_temporarily_escapable_exprs(  //dir=expr
 obj_c_selector_exprs(  //dir=expr
   unique int id: @obj_c_selector_expr,
   int sub_expr: @expr_or_none ref,
-  int method: @abstract_function_decl_or_none ref
+  int method: @function_or_none ref
 );
 
 one_way_exprs(  //dir=expr
@@ -1092,9 +1092,9 @@ optional_evaluation_exprs(  //dir=expr
   int sub_expr: @expr_or_none ref
 );
 
-other_constructor_decl_ref_exprs(  //dir=expr
-  unique int id: @other_constructor_decl_ref_expr,
-  int constructor_decl: @constructor_decl_or_none ref
+other_initializer_ref_exprs(  //dir=expr
+  unique int id: @other_initializer_ref_expr,
+  int initializer: @initializer_or_none ref
 );
 
 overloaded_decl_ref_exprs(  //dir=expr
@@ -1119,8 +1119,8 @@ property_wrapper_value_placeholder_expr_wrapped_values(  //dir=expr
   int wrapped_value: @expr_or_none ref
 );
 
-rebind_self_in_constructor_exprs(  //dir=expr
-  unique int id: @rebind_self_in_constructor_expr,
+rebind_self_in_initializer_exprs(  //dir=expr
+  unique int id: @rebind_self_in_initializer_expr,
   int sub_expr: @expr_or_none ref,
   int self: @var_decl_or_none ref
 );
@@ -1284,10 +1284,6 @@ class_metatype_to_object_exprs(  //dir=expr
   unique int id: @class_metatype_to_object_expr
 );
 
-closure_exprs(  //dir=expr
-  unique int id: @closure_expr
-);
-
 coerce_exprs(  //dir=expr
   unique int id: @coerce_expr
 );
@@ -1352,6 +1348,10 @@ existential_metatype_to_object_exprs(  //dir=expr
   unique int id: @existential_metatype_to_object_expr
 );
 
+explicit_closure_exprs(  //dir=expr
+  unique int id: @explicit_closure_expr
+);
+
 force_try_exprs(  //dir=expr
   unique int id: @force_try_expr
 );
@@ -1380,18 +1380,6 @@ interpolated_string_literal_exprs(  //dir=expr
 interpolated_string_literal_expr_interpolation_exprs(  //dir=expr
   int id: @interpolated_string_literal_expr ref,
   int interpolation_expr: @opaque_value_expr_or_none ref
-);
-
-#keyset[id]
-interpolated_string_literal_expr_interpolation_count_exprs(  //dir=expr
-  int id: @interpolated_string_literal_expr ref,
-  int interpolation_count_expr: @expr_or_none ref
-);
-
-#keyset[id]
-interpolated_string_literal_expr_literal_capacity_exprs(  //dir=expr
-  int id: @interpolated_string_literal_expr ref,
-  int literal_capacity_expr: @expr_or_none ref
 );
 
 #keyset[id]
@@ -1491,8 +1479,8 @@ regex_literal_exprs(  //dir=expr
 );
 
 @self_apply_expr =
-  @constructor_ref_call_expr
-| @dot_syntax_call_expr
+  @dot_syntax_call_expr
+| @initializer_ref_call_expr
 ;
 
 #keyset[id]
@@ -1565,10 +1553,6 @@ conditional_checked_cast_exprs(  //dir=expr
   unique int id: @conditional_checked_cast_expr
 );
 
-constructor_ref_call_exprs(  //dir=expr
-  unique int id: @constructor_ref_call_expr
-);
-
 dot_syntax_call_exprs(  //dir=expr
   unique int id: @dot_syntax_call_expr
 );
@@ -1583,6 +1567,10 @@ dynamic_subscript_exprs(  //dir=expr
 
 forced_checked_cast_exprs(  //dir=expr
   unique int id: @forced_checked_cast_expr
+);
+
+initializer_ref_call_exprs(  //dir=expr
+  unique int id: @initializer_ref_call_expr
 );
 
 is_exprs(  //dir=expr
@@ -2419,18 +2407,8 @@ variadic_sequence_types(  //dir=type
   unique int id: @variadic_sequence_type
 );
 
-@abstract_closure_expr_or_none =
-  @abstract_closure_expr
-| @unspecified_element
-;
-
-@abstract_function_decl_or_none =
-  @abstract_function_decl
-| @unspecified_element
-;
-
-@accessor_decl_or_none =
-  @accessor_decl
+@accessor_or_none =
+  @accessor
 | @unspecified_element
 ;
 
@@ -2479,13 +2457,13 @@ variadic_sequence_types(  //dir=type
 | @unspecified_element
 ;
 
-@condition_element_or_none =
-  @condition_element
+@closure_expr_or_none =
+  @closure_expr
 | @unspecified_element
 ;
 
-@constructor_decl_or_none =
-  @constructor_decl
+@condition_element_or_none =
+  @condition_element
 | @unspecified_element
 ;
 
@@ -2509,6 +2487,11 @@ variadic_sequence_types(  //dir=type
 | @unspecified_element
 ;
 
+@function_or_none =
+  @function
+| @unspecified_element
+;
+
 @generic_type_decl_or_none =
   @generic_type_decl
 | @unspecified_element
@@ -2521,6 +2504,11 @@ variadic_sequence_types(  //dir=type
 
 @generic_type_param_type_or_none =
   @generic_type_param_type
+| @unspecified_element
+;
+
+@initializer_or_none =
+  @initializer
 | @unspecified_element
 ;
 
