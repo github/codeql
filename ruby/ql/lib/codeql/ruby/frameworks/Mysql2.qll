@@ -48,4 +48,26 @@ module Mysql2 {
 
     override DataFlow::Node getSql() { result = query }
   }
+
+  /**
+   * A call to `Mysql2::Client.escape`, considered as a sanitizer for SQL statements.
+   */
+  private class Mysql2EscapeSanitization extends SqlSanitization::Range {
+    Mysql2EscapeSanitization() {
+      this = API::getTopLevelMember("Mysql2").getMember("Client").getAMethodCall("escape")
+    }
+  }
+
+  /**
+   * Flow summary for `Mysql2::Client.escape()`.
+   */
+  private class EscapeSummary extends SummarizedCallable {
+    EscapeSummary() { this = "Mysql2::Client.escape()" }
+
+    override MethodCall getACall() { result = any(Mysql2EscapeSanitization c).asExpr().getExpr() }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and output = "ReturnValue" and preservesValue = false
+    }
+  }
 }
