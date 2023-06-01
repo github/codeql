@@ -100,6 +100,7 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      # summary neutrals
       - ["java.io", "Closeable", "close", "()", "summary", "manual"]
       - ["java.io", "DataOutput", "writeBoolean", "(boolean)", "summary", "manual"]
       - ["java.io", "File", "delete", "()", "summary", "manual"]
@@ -117,3 +118,7 @@ extensions:
       - ["java.io", "DataInput", "readLong", "()", "summary", "manual"]        # taint-numeric
       - ["java.io", "DataOutput", "writeInt", "(int)", "summary", "manual"]    # taint-numeric
       - ["java.io", "DataOutput", "writeLong", "(long)", "summary", "manual"]  # taint-numeric
+
+      # sink neutrals
+      - ["java.io", "File", "compareTo", "", "sink", "hq-manual"]
+      - ["java.io", "File", "exists", "()", "sink", "hq-manual"]

@@ -81,4 +81,22 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
+      # summary neutrals
       - ["java.nio.file", "Files", "exists", "(Path,LinkOption[])", "summary", "manual"]
+
+      # sink neutrals
+      - ["java.nio.file", "Files", "exists", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "getLastModifiedTime", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "getOwner", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "getPosixFilePermissions", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isDirectory", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isExecutable", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isHidden", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isReadable", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isRegularFile", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isSameFile", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isSymbolicLink", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "isWritable", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "notExists", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "setLastModifiedTime", "", "sink", "hq-manual"]
+      - ["java.nio.file", "Files", "size", "", "sink", "hq-manual"]
