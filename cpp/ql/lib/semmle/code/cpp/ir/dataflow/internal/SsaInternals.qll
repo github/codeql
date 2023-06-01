@@ -657,27 +657,20 @@ private predicate indirectConversionFlowStep(Node nFrom, Node nTo) {
  * So this predicate recurses back along conversions and `PointerArithmeticInstruction`s to find the
  * first use that has provides use-use flow, and uses that target as the target of the `nodeFrom`.
  */
-private predicate adjustForPointerArith(
-  DefOrUse defOrUse, Node nodeFrom, UseOrPhi use, boolean uncertain
-) {
-  nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
-  exists(Node adjusted |
-    indirectConversionFlowStep*(adjusted, nodeFrom) and
-    nodeToDefOrUse(adjusted, defOrUse, uncertain) and
+private predicate adjustForPointerArith(PostUpdateNode pun, UseOrPhi use) {
+  exists(DefOrUse defOrUse, Node adjusted |
+    indirectConversionFlowStep*(adjusted, pun.getPreUpdateNode()) and
+    nodeToDefOrUse(adjusted, defOrUse, _) and
     adjacentDefRead(defOrUse, use)
   )
 }
 
 private predicate ssaFlowImpl(SsaDefOrUse defOrUse, Node nodeFrom, Node nodeTo, boolean uncertain) {
-  // `nodeFrom = any(PostUpdateNode pun).getPreUpdateNode()` is implied by adjustedForPointerArith.
   exists(UseOrPhi use |
-    adjustForPointerArith(defOrUse, nodeFrom, use, uncertain) and
-    useToNode(use, nodeTo)
-    or
-    not nodeFrom = any(PostUpdateNode pun).getPreUpdateNode() and
     nodeToDefOrUse(nodeFrom, defOrUse, uncertain) and
     adjacentDefRead(defOrUse, use) and
-    useToNode(use, nodeTo)
+    useToNode(use, nodeTo) and
+    nodeFrom != nodeTo
     or
     // Initial global variable value to a first use
     nodeFrom.(InitialGlobalValue).getGlobalDef() = defOrUse and
@@ -712,8 +705,25 @@ private Node getAPriorDefinition(SsaDefOrUse defOrUse) {
 /** Holds if there is def-use or use-use flow from `nodeFrom` to `nodeTo`. */
 predicate ssaFlow(Node nodeFrom, Node nodeTo) {
   exists(Node nFrom, boolean uncertain, SsaDefOrUse defOrUse |
-    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and
+    ssaFlowImpl(defOrUse, nFrom, nodeTo, uncertain) and nodeFrom != nodeTo
+  |
     if uncertain = true then nodeFrom = [nFrom, getAPriorDefinition(defOrUse)] else nodeFrom = nFrom
+  )
+}
+
+private predicate isArgumentOfCallable(DataFlowCall call, ArgumentNode arg) {
+  arg.argumentOf(call, _)
+}
+
+/** Holds if there is def-use or use-use flow from `pun` to `nodeTo`. */
+predicate postUpdateFlow(PostUpdateNode pun, Node nodeTo) {
+  exists(UseOrPhi use, Node preUpdate |
+    adjustForPointerArith(pun, use) and
+    useToNode(use, nodeTo) and
+    preUpdate = pun.getPreUpdateNode() and
+    not exists(DataFlowCall call |
+      isArgumentOfCallable(call, preUpdate) and isArgumentOfCallable(call, nodeTo)
+    )
   )
 }
 
@@ -742,6 +752,7 @@ predicate fromPhiNode(SsaPhiNode nodeFrom, Node nodeTo) {
     fromPhiNodeToUse(phi, sv, bb1, i1, use)
     or
     exists(PhiNode phiTo |
+      phi != phiTo and
       lastRefRedefExt(phi, _, _, phiTo) and
       nodeTo.(SsaPhiNode).getPhiNode() = phiTo
     )
@@ -998,6 +1009,14 @@ class PhiNode extends SsaImpl::DefinitionExt {
     this instanceof SsaImpl::PhiNode or
     this instanceof SsaImpl::PhiReadNode
   }
+
+  /**
+   * Holds if this phi node is a phi-read node.
+   *
+   * Phi-read nodes are like normal phi nodes, but they are inserted based
+   * on reads instead of writes.
+   */
+  predicate isPhiRead() { this instanceof SsaImpl::PhiReadNode }
 }
 
 class DefinitionExt = SsaImpl::DefinitionExt;

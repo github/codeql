@@ -78,7 +78,7 @@ class SqlInjectionExprSink extends Sink {
 
 /** SQL sinks defined through CSV models. */
 private class ExternalSqlInjectionExprSink extends Sink {
-  ExternalSqlInjectionExprSink() { sinkNode(this, "sql") }
+  ExternalSqlInjectionExprSink() { sinkNode(this, "sql-injection") }
 }
 
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }

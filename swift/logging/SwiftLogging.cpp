@@ -3,12 +3,16 @@
 #include <filesystem>
 #include <stdlib.h>
 #include <optional>
+#include <unistd.h>
+#include "absl/strings/str_cat.h"
 
 #define LEVEL_REGEX_PATTERN "trace|debug|info|warning|error|critical|no_logs"
 
 BINLOG_ADAPT_ENUM(codeql::Log::Level, trace, debug, info, warning, error, critical, no_logs)
 
 namespace codeql {
+
+bool Log::initialized{false};
 
 namespace {
 using LevelRule = std::pair<std::regex, Log::Level>;
@@ -55,8 +59,8 @@ std::vector<std::string> Log::collectLevelRulesAndReturnProblems(const char* env
   if (auto levels = getEnvOr(envVar, nullptr)) {
     // expect comma-separated <glob pattern>:<log severity>
     std::regex comma{","};
-    std::regex levelAssignment{R"((?:([*./\w]+)|(?:out:(bin|text|console))):()" LEVEL_REGEX_PATTERN
-                               ")"};
+    std::regex levelAssignment{
+        R"((?:([*./\w]+)|(?:out:(binary|text|console))):()" LEVEL_REGEX_PATTERN ")"};
     std::cregex_token_iterator begin{levels, levels + strlen(levels), comma, -1};
     std::cregex_token_iterator end{};
     for (auto it = begin; it != end; ++it) {
@@ -74,7 +78,7 @@ std::vector<std::string> Log::collectLevelRulesAndReturnProblems(const char* env
           sourceRules.emplace_back(pattern, level);
         } else {
           auto out = matchToView(match[2]);
-          if (out == "bin") {
+          if (out == "binary") {
             binary.level = level;
           } else if (out == "text") {
             text.level = level;
@@ -93,12 +97,13 @@ std::vector<std::string> Log::collectLevelRulesAndReturnProblems(const char* env
 void Log::configure() {
   // as we are configuring logging right now, we collect problems and log them at the end
   auto problems = collectLevelRulesAndReturnProblems("CODEQL_EXTRACTOR_SWIFT_LOG_LEVELS");
-  auto now = std::to_string(std::chrono::system_clock::now().time_since_epoch().count());
+  auto timestamp = std::chrono::system_clock::now().time_since_epoch().count();
+  auto logBaseName = absl::StrCat(timestamp, "-", getpid());
   if (text || binary) {
     std::filesystem::path logFile = getEnvOr("CODEQL_EXTRACTOR_SWIFT_LOG_DIR", "extractor-out/log");
     logFile /= "swift";
     logFile /= programName;
-    logFile /= now;
+    logFile /= logBaseName;
     std::error_code ec;
     std::filesystem::create_directories(logFile.parent_path(), ec);
     if (!ec) {
@@ -124,31 +129,30 @@ void Log::configure() {
       binary.level = Level::no_logs;
       text.level = Level::no_logs;
     }
-    if (diagnostics) {
-      std::filesystem::path diagFile =
-          getEnvOr("CODEQL_EXTRACTOR_SWIFT_DIAGNOSTIC_DIR", "extractor-out/diagnostics");
-      diagFile /= programName;
-      diagFile /= now;
-      diagFile.replace_extension(".jsonl");
-      std::error_code ec;
-      std::filesystem::create_directories(diagFile.parent_path(), ec);
-      if (!ec) {
-        if (!diagnostics.output.open(diagFile)) {
-          problems.emplace_back("Unable to open diagnostics json file " + diagFile.string());
-          diagnostics.level = Level::no_logs;
-        }
-      } else {
-        problems.emplace_back("Unable to create diagnostics directory " +
-                              diagFile.parent_path().string() + ": " + ec.message());
-        diagnostics.level = Level::no_logs;
+  }
+  if (auto diagDir = getEnvOr("CODEQL_EXTRACTOR_SWIFT_DIAGNOSTIC_DIR", nullptr)) {
+    std::filesystem::path diagFile = diagDir;
+    diagFile /= programName;
+    diagFile /= logBaseName;
+    diagFile.replace_extension(".jsonl");
+    std::error_code ec;
+    std::filesystem::create_directories(diagFile.parent_path(), ec);
+    if (!ec) {
+      diagnostics.open(diagFile);
+      if (!diagnostics) {
+        problems.emplace_back("Unable to open diagnostics json file " + diagFile.string());
       }
+    } else {
+      problems.emplace_back("Unable to create diagnostics directory " +
+                            diagFile.parent_path().string() + ": " + ec.message());
     }
   }
   for (const auto& problem : problems) {
     LOG_ERROR("{}", problem);
   }
-  LOG_INFO("Logging configured (binary: {}, text: {}, console: {})", binary.level, text.level,
-           console.level);
+  LOG_INFO("Logging configured (binary: {}, text: {}, console: {}, diagnostics: {})", binary.level,
+           text.level, console.level, diagnostics.good());
+  initialized = true;
   flushImpl();
 }
 
@@ -159,6 +163,19 @@ void Log::flushImpl() {
   }
   if (binary) {
     binary.output.flush();
+  }
+  if (diagnostics) {
+    diagnostics.flush();
+  }
+}
+
+void Log::diagnoseImpl(const SwiftDiagnostic& source,
+                       const std::chrono::nanoseconds& elapsed,
+                       std::string_view message) {
+  using Clock = std::chrono::system_clock;
+  Clock::time_point time{std::chrono::duration_cast<Clock::duration>(elapsed)};
+  if (diagnostics) {
+    diagnostics << source.json(time, message) << '\n';
   }
 }
 
@@ -179,7 +196,6 @@ Log& Log::write(const char* buffer, std::streamsize size) {
   if (text) text.write(buffer, size);
   if (binary) binary.write(buffer, size);
   if (console) console.write(buffer, size);
-  if (diagnostics) diagnostics.write(buffer, size);
   return *this;
 }
 
@@ -187,5 +203,4 @@ Logger& Log::logger() {
   static Logger ret{getLoggerConfigurationImpl("logging")};
   return ret;
 }
-
 }  // namespace codeql

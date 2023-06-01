@@ -10,6 +10,7 @@
 #include <swift/Basic/InitializeSwiftModules.h>
 
 #include "absl/strings/str_join.h"
+#include "absl/strings/str_cat.h"
 
 #include "swift/extractor/SwiftExtractor.h"
 #include "swift/extractor/infra/TargetDomains.h"
@@ -166,7 +167,7 @@ static void checkWhetherToRunUnderTool(int argc, char* const* argv) {
 // compilations, diagnostics, etc.
 codeql::TrapDomain invocationTrapDomain(codeql::SwiftExtractorState& state) {
   auto timestamp = std::chrono::system_clock::now().time_since_epoch().count();
-  auto filename = std::to_string(timestamp) + '-' + std::to_string(getpid());
+  auto filename = absl::StrCat(timestamp, "-", getpid());
   auto target = std::filesystem::path("invocations") / std::filesystem::path(filename);
   auto maybeDomain = codeql::createTargetTrapDomain(state, target, codeql::TrapType::invocation);
   CODEQL_ASSERT(maybeDomain, "Cannot create invocation trap file for {}", target);

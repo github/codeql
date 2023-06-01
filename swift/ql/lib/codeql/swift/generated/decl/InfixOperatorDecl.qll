@@ -10,11 +10,8 @@ module Generated {
 
     /**
      * Gets the precedence group of this infix operator declaration, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    PrecedenceGroupDecl getImmediatePrecedenceGroup() {
+    PrecedenceGroupDecl getPrecedenceGroup() {
       result =
         Synth::convertPrecedenceGroupDeclFromRaw(Synth::convertInfixOperatorDeclToRaw(this)
               .(Raw::InfixOperatorDecl)
@@ -22,15 +19,8 @@ module Generated {
     }
 
     /**
-     * Gets the precedence group of this infix operator declaration, if it exists.
-     */
-    final PrecedenceGroupDecl getPrecedenceGroup() {
-      result = getImmediatePrecedenceGroup().resolve()
-    }
-
-    /**
      * Holds if `getPrecedenceGroup()` exists.
      */
-    final predicate hasPrecedenceGroup() { exists(getPrecedenceGroup()) }
+    final predicate hasPrecedenceGroup() { exists(this.getPrecedenceGroup()) }
   }
 }

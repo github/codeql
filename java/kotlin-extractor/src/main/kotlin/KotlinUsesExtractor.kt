@@ -239,8 +239,6 @@ open class KotlinUsesExtractor(
         return UseClassInstanceResult(classTypeResult, extractClass)
     }
 
-    private fun isArray(t: IrSimpleType) = t.isBoxedArray || t.isPrimitiveArray()
-
     private fun extractClassLaterIfExternal(c: IrClass) {
         if (isExternalDeclaration(c)) {
             extractExternalClassLater(c)
@@ -551,6 +549,22 @@ open class KotlinUsesExtractor(
                 )
         }
 
+    /*
+    Kotlin arrays can be broken down as:
+
+    isArray(t)
+    |- t.isBoxedArray
+    |  |- t.isArray()         e.g. Array<Boolean>, Array<Boolean?>
+    |  |- t.isNullableArray() e.g. Array<Boolean>?, Array<Boolean?>?
+    |- t.isPrimitiveArray()   e.g. BooleanArray
+
+    For the corresponding Java types:
+    Boxed arrays are represented as e.g. java.lang.Boolean[].
+    Primitive arrays are represented as e.g. boolean[].
+    */
+
+    private fun isArray(t: IrType) = t.isBoxedArray || t.isPrimitiveArray()
+
     data class ArrayInfo(val elementTypeResults: TypeResults,
                          val componentTypeResults: TypeResults,
                          val dimensions: Int)
@@ -565,7 +579,7 @@ open class KotlinUsesExtractor(
      */
     private fun useArrayType(t: IrType, isPrimitiveArray: Boolean): ArrayInfo {
 
-        if (!t.isBoxedArray && !t.isPrimitiveArray()) {
+        if (!isArray(t)) {
             val nullableT = if (t.isPrimitiveType() && !isPrimitiveArray) t.makeNullable() else t
             val typeResults = useType(nullableT)
             return ArrayInfo(typeResults, typeResults, 0)
@@ -1141,13 +1155,13 @@ open class KotlinUsesExtractor(
                     }
                 } else {
                     t.classOrNull?.let { tCls ->
-                        if (t.isArray() || t.isNullableArray()) {
+                        if (t.isBoxedArray) {
                             (t.arguments.singleOrNull() as? IrTypeProjection)?.let { elementTypeArg ->
                                 val elementType = elementTypeArg.type
                                 val replacedElementType = kClassToJavaClass(elementType)
                                 if (replacedElementType !== elementType) {
                                     val newArg = makeTypeProjection(replacedElementType, elementTypeArg.variance)
-                                    return tCls.typeWithArguments(listOf(newArg)).codeQlWithHasQuestionMark(t.isNullableArray())
+                                    return tCls.typeWithArguments(listOf(newArg)).codeQlWithHasQuestionMark(t.isNullable())
                                 }
                             }
                         }
@@ -1365,7 +1379,7 @@ open class KotlinUsesExtractor(
                 val boundResults = useType(arg.type, TypeContext.GENERIC_ARGUMENT)
                 val boundLabel = boundResults.javaResult.id.cast<DbReftype>()
 
-                return if(arg.variance == Variance.INVARIANT)
+                if(arg.variance == Variance.INVARIANT)
                     boundResults.javaResult.cast<DbReftype>().forgetSignature()
                 else {
                     val keyPrefix = if (arg.variance == Variance.IN_VARIANCE) "super" else "extends"
@@ -1379,7 +1393,7 @@ open class KotlinUsesExtractor(
             }
             else -> {
                 logger.error("Unexpected type argument.")
-                return extractJavaErrorType().forgetSignature()
+                extractJavaErrorType().forgetSignature()
             }
         }
     }
@@ -1450,21 +1464,21 @@ open class KotlinUsesExtractor(
 
     fun getTypeParameterParentLabel(param: IrTypeParameter) =
         param.parent.let {
-            (it as? IrFunction)?.let { fn ->
-                if (this is KotlinFileExtractor)
-                    this.declarationStack.findOverriddenAttributes(fn)?.takeUnless {
-                        // When extracting the `static fun f$default(...)` that accompanies `fun <T> f(val x: T? = defaultExpr, ...)`,
-                        // `f$default` has no type parameters, and so there is no `f$default::T` to refer to.
-                        // We have no good way to extract references to `T` in `defaultExpr`, so we just fall back on describing it
-                        // in terms of `f::T`, even though that type variable ought to be out of scope here.
-                        attribs -> attribs.typeParameters?.isEmpty() == true
-                    }?.id
-                else
-                    null
-            } ?:
             when (it) {
                 is IrClass -> useClassSource(it)
-                is IrFunction -> useFunction(it, noReplace = true)
+                is IrFunction ->
+                    (if (this is KotlinFileExtractor)
+                        this.declarationStack.findOverriddenAttributes(it)?.takeUnless {
+                            // When extracting the `static fun f$default(...)` that accompanies `fun <T> f(val x: T? = defaultExpr, ...)`,
+                            // `f$default` has no type parameters, and so there is no `f$default::T` to refer to.
+                            // We have no good way to extract references to `T` in `defaultExpr`, so we just fall back on describing it
+                            // in terms of `f::T`, even though that type variable ought to be out of scope here.
+                            attribs -> attribs.typeParameters?.isEmpty() == true
+                        }?.id
+                    else
+                        null
+                    ) ?:
+                    useFunction(it, noReplace = true)
                 else -> { logger.error("Unexpected type parameter parent $it"); null }
             }
         }
@@ -1578,7 +1592,7 @@ open class KotlinUsesExtractor(
             }
 
             if (owner is IrClass) {
-                if (t.isArray() || t.isNullableArray()) {
+                if (t.isBoxedArray) {
                     val elementType = t.getArrayElementType(pluginContext.irBuiltIns)
                     val erasedElementType = erase(elementType)
                     return owner.typeWith(erasedElementType).codeQlWithHasQuestionMark(t.isNullable())

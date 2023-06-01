@@ -70,6 +70,9 @@ edges
 | ExternalFlow.cs:197:42:197:43 | access to local variable o2 : Object | ExternalFlow.cs:197:18:197:44 | call to method GeneratedFlowArgs |
 | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | ExternalFlow.cs:206:38:206:39 | access to local variable o2 : Object |
 | ExternalFlow.cs:206:38:206:39 | access to local variable o2 : Object | ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs |
+| ExternalFlow.cs:231:21:231:28 | object creation of type HC : HC | ExternalFlow.cs:232:21:232:21 | access to local variable h : HC |
+| ExternalFlow.cs:232:21:232:21 | access to local variable h : HC | ExternalFlow.cs:232:21:232:39 | call to method ExtensionMethod : HC |
+| ExternalFlow.cs:232:21:232:39 | call to method ExtensionMethod : HC | ExternalFlow.cs:233:18:233:18 | access to local variable o |
 nodes
 | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | semmle.label | call to method StepArgRes |
@@ -162,6 +165,10 @@ nodes
 | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | semmle.label | object creation of type Object : Object |
 | ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs | semmle.label | call to method MixedFlowArgs |
 | ExternalFlow.cs:206:38:206:39 | access to local variable o2 : Object | semmle.label | access to local variable o2 : Object |
+| ExternalFlow.cs:231:21:231:28 | object creation of type HC : HC | semmle.label | object creation of type HC : HC |
+| ExternalFlow.cs:232:21:232:21 | access to local variable h : HC | semmle.label | access to local variable h : HC |
+| ExternalFlow.cs:232:21:232:39 | call to method ExtensionMethod : HC | semmle.label | call to method ExtensionMethod : HC |
+| ExternalFlow.cs:233:18:233:18 | access to local variable o | semmle.label | access to local variable o |
 subpaths
 #select
 | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | ExternalFlow.cs:10:18:10:33 | call to method StepArgRes | $@ | ExternalFlow.cs:9:27:9:38 | object creation of type Object : Object | object creation of type Object : Object |
@@ -188,3 +195,4 @@ subpaths
 | ExternalFlow.cs:194:18:194:44 | call to method GeneratedFlowArgs | ExternalFlow.cs:193:22:193:33 | object creation of type Object : Object | ExternalFlow.cs:194:18:194:44 | call to method GeneratedFlowArgs | $@ | ExternalFlow.cs:193:22:193:33 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:197:18:197:44 | call to method GeneratedFlowArgs | ExternalFlow.cs:196:22:196:33 | object creation of type Object : Object | ExternalFlow.cs:197:18:197:44 | call to method GeneratedFlowArgs | $@ | ExternalFlow.cs:196:22:196:33 | object creation of type Object : Object | object creation of type Object : Object |
 | ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | ExternalFlow.cs:206:18:206:40 | call to method MixedFlowArgs | $@ | ExternalFlow.cs:205:22:205:33 | object creation of type Object : Object | object creation of type Object : Object |
+| ExternalFlow.cs:233:18:233:18 | access to local variable o | ExternalFlow.cs:231:21:231:28 | object creation of type HC : HC | ExternalFlow.cs:233:18:233:18 | access to local variable o | $@ | ExternalFlow.cs:231:21:231:28 | object creation of type HC : HC | object creation of type HC : HC |

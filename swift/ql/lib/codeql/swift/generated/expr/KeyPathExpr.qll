@@ -14,11 +14,8 @@ module Generated {
 
     /**
      * Gets the root of this key path expression, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    TypeRepr getImmediateRoot() {
+    TypeRepr getRoot() {
       result =
         Synth::convertTypeReprFromRaw(Synth::convertKeyPathExprToRaw(this)
               .(Raw::KeyPathExpr)
@@ -26,22 +23,14 @@ module Generated {
     }
 
     /**
-     * Gets the root of this key path expression, if it exists.
-     */
-    final TypeRepr getRoot() { result = getImmediateRoot().resolve() }
-
-    /**
      * Holds if `getRoot()` exists.
      */
-    final predicate hasRoot() { exists(getRoot()) }
+    final predicate hasRoot() { exists(this.getRoot()) }
 
     /**
      * Gets the `index`th component of this key path expression (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    KeyPathComponent getImmediateComponent(int index) {
+    KeyPathComponent getComponent(int index) {
       result =
         Synth::convertKeyPathComponentFromRaw(Synth::convertKeyPathExprToRaw(this)
               .(Raw::KeyPathExpr)
@@ -49,20 +38,13 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th component of this key path expression (0-based).
-     */
-    final KeyPathComponent getComponent(int index) {
-      result = getImmediateComponent(index).resolve()
-    }
-
-    /**
      * Gets any of the components of this key path expression.
      */
-    final KeyPathComponent getAComponent() { result = getComponent(_) }
+    final KeyPathComponent getAComponent() { result = this.getComponent(_) }
 
     /**
      * Gets the number of components of this key path expression.
      */
-    final int getNumberOfComponents() { result = count(int i | exists(getComponent(i))) }
+    final int getNumberOfComponents() { result = count(int i | exists(this.getComponent(i))) }
   }
 }

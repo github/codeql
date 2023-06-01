@@ -8,11 +8,8 @@ module Generated {
   class AbstractStorageDecl extends Synth::TAbstractStorageDecl, ValueDecl {
     /**
      * Gets the `index`th accessor of this abstract storage declaration (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Accessor getImmediateAccessor(int index) {
+    Accessor getAccessor(int index) {
       result =
         Synth::convertAccessorFromRaw(Synth::convertAbstractStorageDeclToRaw(this)
               .(Raw::AbstractStorageDecl)
@@ -20,18 +17,13 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th accessor of this abstract storage declaration (0-based).
-     */
-    final Accessor getAccessor(int index) { result = getImmediateAccessor(index).resolve() }
-
-    /**
      * Gets any of the accessors of this abstract storage declaration.
      */
-    final Accessor getAnAccessor() { result = getAccessor(_) }
+    final Accessor getAnAccessor() { result = this.getAccessor(_) }
 
     /**
      * Gets the number of accessors of this abstract storage declaration.
      */
-    final int getNumberOfAccessors() { result = count(int i | exists(getAccessor(i))) }
+    final int getNumberOfAccessors() { result = count(int i | exists(this.getAccessor(i))) }
   }
 }
