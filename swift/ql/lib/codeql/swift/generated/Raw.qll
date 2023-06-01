@@ -312,6 +312,10 @@ module Raw {
 
     /**
      * Gets the `index`th member of this declaration (0-based).
+     *
+     * Prefer to use more specific methods (such as `EnumDecl.getEnumElement`) rather than relying
+     * on the order of members given by `getMember`. In some cases the order of members may not
+     * align with expectations, and could change in future releases.
      */
     Decl getMember(int index) { decl_members(this, index, result) }
   }
@@ -1974,20 +1978,6 @@ module Raw {
      */
     OpaqueValueExpr getInterpolationExpr() {
       interpolated_string_literal_expr_interpolation_exprs(this, result)
-    }
-
-    /**
-     * Gets the interpolation count expression of this interpolated string literal expression, if it exists.
-     */
-    Expr getInterpolationCountExpr() {
-      interpolated_string_literal_expr_interpolation_count_exprs(this, result)
-    }
-
-    /**
-     * Gets the literal capacity expression of this interpolated string literal expression, if it exists.
-     */
-    Expr getLiteralCapacityExpr() {
-      interpolated_string_literal_expr_literal_capacity_exprs(this, result)
     }
 
     /**

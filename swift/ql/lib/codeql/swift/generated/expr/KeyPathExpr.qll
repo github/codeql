@@ -14,25 +14,12 @@ module Generated {
 
     /**
      * Gets the root of this key path expression, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    TypeRepr getImmediateRoot() {
+    TypeRepr getRoot() {
       result =
         Synth::convertTypeReprFromRaw(Synth::convertKeyPathExprToRaw(this)
               .(Raw::KeyPathExpr)
               .getRoot())
-    }
-
-    /**
-     * Gets the root of this key path expression, if it exists.
-     */
-    final TypeRepr getRoot() {
-      exists(TypeRepr immediate |
-        immediate = this.getImmediateRoot() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**
@@ -42,25 +29,12 @@ module Generated {
 
     /**
      * Gets the `index`th component of this key path expression (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    KeyPathComponent getImmediateComponent(int index) {
+    KeyPathComponent getComponent(int index) {
       result =
         Synth::convertKeyPathComponentFromRaw(Synth::convertKeyPathExprToRaw(this)
               .(Raw::KeyPathExpr)
               .getComponent(index))
-    }
-
-    /**
-     * Gets the `index`th component of this key path expression (0-based).
-     */
-    final KeyPathComponent getComponent(int index) {
-      exists(KeyPathComponent immediate |
-        immediate = this.getImmediateComponent(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

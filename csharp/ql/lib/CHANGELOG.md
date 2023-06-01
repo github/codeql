@@ -1,3 +1,10 @@
+## 0.6.2
+
+### Minor Analysis Improvements
+
+* The `cs/log-forging`, `cs/cleartext-storage`, and `cs/exposure-of-sensitive-information` queries now correctly handle unsanitized arguments to `ILogger` extension methods.
+* Updated the `neutralModel` extensible predicate to include a `kind` column.
+
 ## 0.6.1
 
 No user-facing changes.

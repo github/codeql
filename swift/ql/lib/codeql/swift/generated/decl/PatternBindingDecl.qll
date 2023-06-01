@@ -28,7 +28,7 @@ module Generated {
     final Expr getInit(int index) {
       exists(Expr immediate |
         immediate = this.getImmediateInit(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 
@@ -61,7 +61,7 @@ module Generated {
     final Pattern getPattern(int index) {
       exists(Pattern immediate |
         immediate = this.getImmediatePattern(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 

@@ -60,25 +60,12 @@ module Generated {
 
     /**
      * Gets the `index`th protocol of this archetype type (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ProtocolDecl getImmediateProtocol(int index) {
+    ProtocolDecl getProtocol(int index) {
       result =
         Synth::convertProtocolDeclFromRaw(Synth::convertArchetypeTypeToRaw(this)
               .(Raw::ArchetypeType)
               .getProtocol(index))
-    }
-
-    /**
-     * Gets the `index`th protocol of this archetype type (0-based).
-     */
-    final ProtocolDecl getProtocol(int index) {
-      exists(ProtocolDecl immediate |
-        immediate = this.getImmediateProtocol(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

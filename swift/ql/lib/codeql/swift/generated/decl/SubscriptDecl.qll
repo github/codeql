@@ -12,25 +12,12 @@ module Generated {
 
     /**
      * Gets the `index`th parameter of this subscript declaration (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ParamDecl getImmediateParam(int index) {
+    ParamDecl getParam(int index) {
       result =
         Synth::convertParamDeclFromRaw(Synth::convertSubscriptDeclToRaw(this)
               .(Raw::SubscriptDecl)
               .getParam(index))
-    }
-
-    /**
-     * Gets the `index`th parameter of this subscript declaration (0-based).
-     */
-    final ParamDecl getParam(int index) {
-      exists(ParamDecl immediate |
-        immediate = this.getImmediateParam(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**
@@ -62,7 +49,7 @@ module Generated {
     final Type getElementType() {
       exists(Type immediate |
         immediate = this.getImmediateElementType() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
   }
