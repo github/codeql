@@ -42,13 +42,12 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
         private static IMethodSymbol? GetImplicitConversionMethod(ITypeSymbol type, object value) =>
             type
                 .GetMembers()
-                .Where(m =>
-                    m is IMethodSymbol method &&
+                .OfType<IMethodSymbol>()
+                .Where(method =>
                     method.GetName() == "op_Implicit" &&
                     method.Parameters.Length == 1 &&
                     method.Parameters[0].Type.Name == value.GetType().Name
                 )
-                .Cast<IMethodSymbol>()
                 .FirstOrDefault();
 
         // Creates a new generated expression with an implicit cast added, if needed.
