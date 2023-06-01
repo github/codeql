@@ -41,7 +41,14 @@ func test1(passwordPlain : String, passwordHash : String) {
 func pad(_ data: String) -> String { return data }
 func aes_crypt(_ data: String) -> String { return data }
 
-func test2(password : String, connection : NWConnection) {
+struct MyStruct {
+	var mobileNumber: String
+	var mobileUrl: String
+	var mobilePlayer: String
+	var passwordFeatureEnabled: Bool
+}
+
+func test2(password : String, license_key: String, ms: MyStruct, connection : NWConnection) {
 	let str1 = password
 	let str2 = password + " "
 	let str3 = pad(password)
@@ -55,4 +62,9 @@ func test2(password : String, connection : NWConnection) {
 	connection.send(content: str4, completion: .idempotent) // GOOD (encrypted)
 	connection.send(content: str5, completion: .idempotent) // GOOD (encrypted)
 	connection.send(content: str6, completion: .idempotent) // GOOD (encrypted)
+	connection.send(content: license_key, completion: .idempotent) // BAD
+	connection.send(content: ms.mobileNumber, completion: .idempotent) // BAD
+	connection.send(content: ms.mobileUrl, completion: .idempotent) // GOOD (not sensitive)
+	connection.send(content: ms.mobilePlayer, completion: .idempotent) // GOOD (not sensitive)
+	connection.send(content: ms.passwordFeatureEnabled, completion: .idempotent) // GOOD (not sensitive)
 }

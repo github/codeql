@@ -24,11 +24,8 @@ module Generated {
     /**
      * Gets the `index`th imported module of this module declaration (0-based).
      *Gets any of the imported modules of this module declaration.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ModuleDecl getAnImmediateImportedModule() {
+    ModuleDecl getAnImportedModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertModuleDeclToRaw(this)
               .(Raw::ModuleDecl)
@@ -36,24 +33,15 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th imported module of this module declaration (0-based).
-     *Gets any of the imported modules of this module declaration.
-     */
-    final ModuleDecl getAnImportedModule() { result = getAnImmediateImportedModule().resolve() }
-
-    /**
      * Gets the number of imported modules of this module declaration.
      */
-    final int getNumberOfImportedModules() { result = count(getAnImportedModule()) }
+    final int getNumberOfImportedModules() { result = count(this.getAnImportedModule()) }
 
     /**
      * Gets the `index`th exported module of this module declaration (0-based).
      *Gets any of the exported modules of this module declaration.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ModuleDecl getAnImmediateExportedModule() {
+    ModuleDecl getAnExportedModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertModuleDeclToRaw(this)
               .(Raw::ModuleDecl)
@@ -61,14 +49,8 @@ module Generated {
     }
 
     /**
-     * Gets the `index`th exported module of this module declaration (0-based).
-     *Gets any of the exported modules of this module declaration.
-     */
-    final ModuleDecl getAnExportedModule() { result = getAnImmediateExportedModule().resolve() }
-
-    /**
      * Gets the number of exported modules of this module declaration.
      */
-    final int getNumberOfExportedModules() { result = count(getAnExportedModule()) }
+    final int getNumberOfExportedModules() { result = count(this.getAnExportedModule()) }
   }
 }

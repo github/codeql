@@ -80,14 +80,23 @@ predicate jumpStep = DataFlowPrivate::jumpStep/2;
 pragma[nomagic]
 private predicate flowThrough(DataFlowPublic::ParameterNode param) {
   exists(DataFlowPrivate::ReturningNode returnNode, DataFlowDispatch::ReturnKind rk |
-    DataFlowPrivate::LocalFlow::getParameterDefNode(param.getParameter())
-        .(TypeTrackingNode)
-        .flowsTo(returnNode) and
-    rk = returnNode.getKind()
+    param.flowsTo(returnNode) and
+    returnNode.hasKind(rk, param.(DataFlowPrivate::NodeImpl).getCfgScope())
   |
     rk instanceof DataFlowDispatch::NormalReturnKind
     or
     rk instanceof DataFlowDispatch::BreakReturnKind
+  )
+}
+
+/** Holds if there is flow from `arg` to `p` via the call `call`, not counting `new -> initialize` call steps. */
+pragma[nomagic]
+predicate callStepNoInitialize(
+  ExprNodes::CallCfgNode call, Node arg, DataFlowPrivate::ParameterNodeImpl p
+) {
+  exists(DataFlowDispatch::ParameterPosition pos |
+    argumentPositionMatch(call, arg, pos) and
+    p.isSourceParameterOf(DataFlowDispatch::getTarget(call), pos)
   )
 }
 
@@ -96,7 +105,7 @@ pragma[nomagic]
 predicate levelStepCall(Node nodeFrom, Node nodeTo) {
   exists(DataFlowPublic::ParameterNode param |
     flowThrough(param) and
-    callStep(nodeTo.asExpr(), nodeFrom, param)
+    callStepNoInitialize(nodeTo.asExpr(), nodeFrom, param)
   )
 }
 
@@ -600,14 +609,26 @@ private DataFlow::Node evaluateSummaryComponentStackLocal(
       pragma[only_bind_out](tail)) and
     stack = SCS::push(pragma[only_bind_out](head), pragma[only_bind_out](tail))
   |
-    exists(DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos |
+    exists(
+      DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos,
+      DataFlowPrivate::ParameterNodeImpl p
+    |
       head = SummaryComponent::parameter(apos) and
       DataFlowDispatch::parameterMatch(ppos, apos) and
-      result.(DataFlowPrivate::ParameterNodeImpl).isSourceParameterOf(prev.asExpr().getExpr(), ppos)
+      p.isSourceParameterOf(prev.asExpr().getExpr(), ppos) and
+      // We need to include both `p` and the SSA definition for `p`, since in type-tracking
+      // the step from `p` to the SSA definition is considered a call step.
+      result =
+        [p.(DataFlow::Node), DataFlowPrivate::LocalFlow::getParameterDefNode(p.getParameter())]
     )
     or
-    head = SummaryComponent::return() and
-    result.(DataFlowPrivate::SynthReturnNode).getCfgScope() = prev.asExpr().getExpr()
+    exists(DataFlowPrivate::SynthReturnNode ret |
+      head = SummaryComponent::return() and
+      ret.getCfgScope() = prev.asExpr().getExpr() and
+      // We need to include both `ret` and `ret.getAnInput()`, since in type-tracking
+      // the step from `ret.getAnInput()` to `ret` is considered a return step.
+      result = [ret.(DataFlow::Node), ret.getAnInput()]
+    )
     or
     exists(DataFlow::ContentSet content |
       head = SummaryComponent::withoutContent(content) and

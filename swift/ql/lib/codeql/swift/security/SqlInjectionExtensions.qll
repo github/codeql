@@ -151,5 +151,5 @@ private class GrdbDefaultSqlInjectionSink extends SqlInjectionSink {
  * A sink defined in a CSV model.
  */
 private class DefaultSqlInjectionSink extends SqlInjectionSink {
-  DefaultSqlInjectionSink() { sinkNode(this, "sql") }
+  DefaultSqlInjectionSink() { sinkNode(this, "sql-injection") }
 }

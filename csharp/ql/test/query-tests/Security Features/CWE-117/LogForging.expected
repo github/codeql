@@ -1,19 +1,23 @@
 edges
-| LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | LogForging.cs:17:27:17:61 | access to indexer : String |
-| LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | LogForging.cs:20:21:20:43 | ... + ... |
-| LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | LogForging.cs:26:50:26:72 | ... + ... |
-| LogForging.cs:17:27:17:61 | access to indexer : String | LogForging.cs:20:21:20:43 | ... + ... |
-| LogForging.cs:17:27:17:61 | access to indexer : String | LogForging.cs:26:50:26:72 | ... + ... |
+| LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:18:27:18:61 | access to indexer : String |
+| LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:21:21:21:43 | ... + ... |
+| LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:27:50:27:72 | ... + ... |
+| LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:31:26:31:33 | access to local variable username |
+| LogForging.cs:18:27:18:61 | access to indexer : String | LogForging.cs:21:21:21:43 | ... + ... |
+| LogForging.cs:18:27:18:61 | access to indexer : String | LogForging.cs:27:50:27:72 | ... + ... |
+| LogForging.cs:18:27:18:61 | access to indexer : String | LogForging.cs:31:26:31:33 | access to local variable username |
 | LogForgingAsp.cs:8:32:8:39 | username : String | LogForgingAsp.cs:12:21:12:43 | ... + ... |
 nodes
-| LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
-| LogForging.cs:17:27:17:61 | access to indexer : String | semmle.label | access to indexer : String |
-| LogForging.cs:20:21:20:43 | ... + ... | semmle.label | ... + ... |
-| LogForging.cs:26:50:26:72 | ... + ... | semmle.label | ... + ... |
+| LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | semmle.label | access to property QueryString : NameValueCollection |
+| LogForging.cs:18:27:18:61 | access to indexer : String | semmle.label | access to indexer : String |
+| LogForging.cs:21:21:21:43 | ... + ... | semmle.label | ... + ... |
+| LogForging.cs:27:50:27:72 | ... + ... | semmle.label | ... + ... |
+| LogForging.cs:31:26:31:33 | access to local variable username | semmle.label | access to local variable username |
 | LogForgingAsp.cs:8:32:8:39 | username : String | semmle.label | username : String |
 | LogForgingAsp.cs:12:21:12:43 | ... + ... | semmle.label | ... + ... |
 subpaths
 #select
-| LogForging.cs:20:21:20:43 | ... + ... | LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | LogForging.cs:20:21:20:43 | ... + ... | This log entry depends on a $@. | LogForging.cs:17:27:17:49 | access to property QueryString | user-provided value |
-| LogForging.cs:26:50:26:72 | ... + ... | LogForging.cs:17:27:17:49 | access to property QueryString : NameValueCollection | LogForging.cs:26:50:26:72 | ... + ... | This log entry depends on a $@. | LogForging.cs:17:27:17:49 | access to property QueryString | user-provided value |
+| LogForging.cs:21:21:21:43 | ... + ... | LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:21:21:21:43 | ... + ... | This log entry depends on a $@. | LogForging.cs:18:27:18:49 | access to property QueryString | user-provided value |
+| LogForging.cs:27:50:27:72 | ... + ... | LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:27:50:27:72 | ... + ... | This log entry depends on a $@. | LogForging.cs:18:27:18:49 | access to property QueryString | user-provided value |
+| LogForging.cs:31:26:31:33 | access to local variable username | LogForging.cs:18:27:18:49 | access to property QueryString : NameValueCollection | LogForging.cs:31:26:31:33 | access to local variable username | This log entry depends on a $@. | LogForging.cs:18:27:18:49 | access to property QueryString | user-provided value |
 | LogForgingAsp.cs:12:21:12:43 | ... + ... | LogForgingAsp.cs:8:32:8:39 | username : String | LogForgingAsp.cs:12:21:12:43 | ... + ... | This log entry depends on a $@. | LogForgingAsp.cs:8:32:8:39 | username | user-provided value |

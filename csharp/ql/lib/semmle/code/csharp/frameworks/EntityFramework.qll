@@ -88,31 +88,6 @@ module EntityFramework {
     EFSummarizedCallable() { any() }
   }
 
-  private class DbSetAddOrUpdateRequiredSummaryComponentStack extends RequiredSummaryComponentStack {
-    override predicate required(SummaryComponent head, SummaryComponentStack tail) {
-      head = SummaryComponent::element() and
-      tail = SummaryComponentStack::argument([-1, 0])
-    }
-  }
-
-  private class DbSetAddOrUpdate extends EFSummarizedCallable {
-    private boolean range;
-
-    DbSetAddOrUpdate() { this = any(DbSet c).getAnAddOrUpdateMethod(range) }
-
-    override predicate propagatesFlow(
-      SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
-    ) {
-      (
-        if range = true
-        then input = SummaryComponentStack::elementOf(SummaryComponentStack::argument(0))
-        else input = SummaryComponentStack::argument(0)
-      ) and
-      output = SummaryComponentStack::elementOf(SummaryComponentStack::qualifier()) and
-      preservesValue = true
-    }
-  }
-
   /** The class `Microsoft.EntityFrameworkCore.DbQuery<>` or `System.Data.Entity.DbQuery<>`. */
   class DbQuery extends EFClass, UnboundGenericClass {
     DbQuery() { this.hasName("DbQuery<>") }

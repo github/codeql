@@ -2,15 +2,15 @@
 
 import java
 import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.DataFlow2
 import semmle.code.java.dataflow.DataFlow3
-import semmle.code.java.dataflow.DataFlow4
-import semmle.code.java.dataflow.DataFlow5
-private import semmle.code.java.dataflow.SSA
+private import semmle.code.java.dataflow.RangeUtils
 
-/*
- * Various XML parsers in Java.
- */
+private module Frameworks {
+  private import semmle.code.java.frameworks.apache.CommonsXml
+  private import semmle.code.java.frameworks.javaee.Xml
+  private import semmle.code.java.frameworks.javase.Beans
+  private import semmle.code.java.frameworks.rundeck.RundeckXml
+}
 
 /**
  * An abstract type representing a call to parse XML files.
@@ -128,26 +128,6 @@ class DocumentBuilderFactoryConfig extends ParserConfig {
       m.hasName("setFeature")
     )
   }
-}
-
-private predicate constantStringExpr(Expr e, string val) {
-  e.(CompileTimeConstantExpr).getStringValue() = val
-  or
-  exists(SsaExplicitUpdate v, Expr src |
-    e = v.getAUse() and
-    src = v.getDefiningExpr().(VariableAssign).getSource() and
-    constantStringExpr(src, val)
-  )
-}
-
-/** An expression that always has the same string value. */
-private class ConstantStringExpr extends Expr {
-  string value;
-
-  ConstantStringExpr() { constantStringExpr(this, value) }
-
-  /** Get the string value of this expression. */
-  string getStringValue() { result = value }
 }
 
 /**
@@ -655,6 +635,11 @@ class XmlReader extends RefType {
   XmlReader() { this.hasQualifiedName("org.xml.sax", "XMLReader") }
 }
 
+/** The class `org.xml.sax.InputSource`. */
+class InputSource extends Class {
+  InputSource() { this.hasQualifiedName("org.xml.sax", "InputSource") }
+}
+
 /** DEPRECATED: Alias for XmlReader */
 deprecated class XMLReader = XmlReader;
 
@@ -968,7 +953,7 @@ class TransformerFactorySource extends XmlParserCall {
     exists(Method m |
       this.getMethod() = m and
       m.getDeclaringType() instanceof TransformerFactory and
-      m.hasName("newTransformer")
+      m.hasName(["newTransformer", "newTransformerHandler"])
     )
   }
 
@@ -1164,22 +1149,34 @@ class XmlUnmarshal extends XmlParserCall {
 }
 
 /* XPathExpression: https://cheatsheetseries.owasp.org/cheatsheets/XML_External_Entity_Prevention_Cheat_Sheet.html#xpathexpression */
-/** The class `javax.xml.xpath.XPathExpression`. */
-class XPathExpression extends RefType {
+/** The interface `javax.xml.xpath.XPathExpression`. */
+class XPathExpression extends Interface {
   XPathExpression() { this.hasQualifiedName("javax.xml.xpath", "XPathExpression") }
 }
 
-/** A call to `XPathExpression.evaluate`. */
+/** The interface `java.xml.xpath.XPath`. */
+class XPath extends Interface {
+  XPath() { this.hasQualifiedName("javax.xml.xpath", "XPath") }
+}
+
+/** A call to the method `evaluate` of the classes `XPathExpression` or `XPath`. */
 class XPathEvaluate extends XmlParserCall {
+  Argument sink;
+
   XPathEvaluate() {
     exists(Method m |
       this.getMethod() = m and
-      m.getDeclaringType() instanceof XPathExpression and
       m.hasName("evaluate")
+    |
+      m.getDeclaringType().getASourceSupertype*() instanceof XPathExpression and
+      sink = this.getArgument(0)
+      or
+      m.getDeclaringType().getASourceSupertype*() instanceof XPath and
+      sink = this.getArgument(1)
     )
   }
 
-  override Expr getSink() { result = this.getArgument(0) }
+  override Expr getSink() { result = sink }
 
   override predicate isSafe() { none() }
 }

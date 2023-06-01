@@ -1,5 +1,5 @@
 name: codeql/java-queries
-version: 0.6.2-dev
+version: 0.6.3-dev
 groups: 
   - java
   - queries
@@ -12,3 +12,4 @@ dependencies:
   codeql/util: ${workspace}
 dataExtensions:
   - Telemetry/ExtractorInformation.yml
+warnOnImplicitThis: true

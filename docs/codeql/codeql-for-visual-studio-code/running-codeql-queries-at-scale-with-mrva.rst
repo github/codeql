@@ -23,7 +23,7 @@ If you want to run variant analysis on your repositories, you need to enable cod
 Setting a controller repository for variant analysis
 ----------------------------------------------------
 
-When you run variant analysis, the analysis is run entirely using GitHub Actions. You don't need to create any workflows, but you must specify which GitHub repository the CodeQL extension should use as the "controller repository." Controller repositories can be empty, but they must have at least one commit. The ``GITHUB_TOKEN`` must also have "Read and write permissions" to run workflows in that repository. For more information, see "`Managing GitHub Actions settings for a repository <https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/enabling-features-for-your-repository/managing-github-actions-settings-for-a-repository#setting-the-permissions-of-the-github_token-for-your-repository>`__."
+When you run variant analysis, the analysis is run entirely using GitHub Actions. You don't need to create any workflows, but you must specify which GitHub repository the CodeQL extension should use as the "controller repository." Controller repositories can be empty, but they must have at least one commit. 
 
 .. pull-quote::
    

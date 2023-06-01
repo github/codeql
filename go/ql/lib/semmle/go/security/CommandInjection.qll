@@ -47,7 +47,7 @@ module CommandInjection {
       exists(DataFlow::CallNode c |
         this = c and
         (c = Builtin::append().getACall() or c = any(SystemCommandExecution sce)) and
-        c.getArgument(doubleDashIndex).getStringValue() = "--"
+        c.getSyntacticArgument(doubleDashIndex).getStringValue() = "--"
       )
       or
       // array/slice literal containing a "--"
@@ -63,7 +63,7 @@ module CommandInjection {
           alreadyHasDoubleDash.getType() instanceof SliceType
         ) and
         this = userCall and
-        DataFlow::localFlow(alreadyHasDoubleDash, userCall.getArgument(doubleDashIndex))
+        DataFlow::localFlow(alreadyHasDoubleDash, userCall.getSyntacticArgument(doubleDashIndex))
       )
     }
 
@@ -71,7 +71,7 @@ module CommandInjection {
       exists(int sanitizedIndex |
         sanitizedIndex > doubleDashIndex and
         (
-          result = this.(DataFlow::CallNode).getArgument(sanitizedIndex) or
+          result = this.(DataFlow::CallNode).getSyntacticArgument(sanitizedIndex) or
           result = DataFlow::exprNode(this.asExpr().(ArrayOrSliceLit).getElement(sanitizedIndex))
         )
       )

@@ -206,8 +206,6 @@ cfg.swift:
 #   40|               getExpr(): [VarargExpansionExpr] [...]
 #   40|                 getSubExpr(): [ArrayExpr] [...]
 #   40|                   getElement(0): [InterpolatedStringLiteralExpr] "..."
-#-----|                     getInterpolationCountExpr(): [IntegerLiteralExpr] 1
-#-----|                     getLiteralCapacityExpr(): [IntegerLiteralExpr] 14
 #   40|                     getAppendingExpr(): [TapExpr] TapExpr
 #   40|                       getSubExpr(): [OpaqueValueExpr] OpaqueValueExpr
 #   40|                       getBody(): [BraceStmt] { ... }
@@ -595,7 +593,7 @@ cfg.swift:
 #  122|       getInit(0): [MemberRefExpr] .myInt
 #  122|         getBase(): [DeclRefExpr] inoutParam
 #  122|         getBase().getFullyConverted(): [LoadExpr] (C) ...
-#  122|           getImmediateSubExpr(): [DotSelfExpr] .self
+#  122|           getSubExpr(): [DotSelfExpr] .self
 #  122|       getPattern(0): [NamedPattern] n10
 #  122|     getElement(21): [ConcreteVarDecl] n10
 #  122|         Type = Int
@@ -613,7 +611,7 @@ cfg.swift:
 #  124|         getFunction(): [MethodLookupExpr] .getMyInt()
 #  124|           getBase(): [DeclRefExpr] inoutParam
 #  124|           getBase().getFullyConverted(): [LoadExpr] (C) ...
-#  124|             getImmediateSubExpr(): [DotSelfExpr] .self
+#  124|             getSubExpr(): [DotSelfExpr] .self
 #  124|           getMethodRef(): [DeclRefExpr] getMyInt()
 #  124|       getPattern(0): [NamedPattern] n12
 #  124|     getElement(25): [ConcreteVarDecl] n12
@@ -787,7 +785,7 @@ cfg.swift:
 #  151|         getElement(0): [ConditionElement] obj
 #  151|           getBoolean(): [DeclRefExpr] obj
 #  151|           getBoolean().getFullyConverted(): [IsExpr] ... is ...
-#  151|             getImmediateSubExpr(): [LoadExpr] (AnyObject) ...
+#  151|             getSubExpr(): [LoadExpr] (AnyObject) ...
 #  151|       getThen(): [BraceStmt] { ... }
 #  152|         getElement(0): [ReturnStmt] return ...
 #  152|           getResult(): [BooleanLiteralExpr] true
@@ -805,7 +803,7 @@ cfg.swift:
 #  156|           getPattern(): [EnumElementPattern] .some(...)
 #  156|             getSubPattern(): [NamedPattern] x
 #  156|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
-#  156|               getImmediateSubPattern(): [BindingPattern] let ...
+#  156|               getSubPattern(): [BindingPattern] let ...
 #  156|           getInitializer(): [DeclRefExpr] xOptional
 #  156|       getThen(): [BraceStmt] { ... }
 #  157|         getElement(0): [ReturnStmt] return ...
@@ -1422,8 +1420,6 @@ cfg.swift:
 #  262|   getBody(): [BraceStmt] { ... }
 #  263|     getElement(0): [ReturnStmt] return ...
 #  263|       getResult(): [InterpolatedStringLiteralExpr] "..."
-#-----|         getInterpolationCountExpr(): [IntegerLiteralExpr] 4
-#-----|         getLiteralCapacityExpr(): [IntegerLiteralExpr] 37
 #  263|         getAppendingExpr(): [TapExpr] TapExpr
 #  263|           getSubExpr(): [OpaqueValueExpr] OpaqueValueExpr
 #  263|           getBody(): [BraceStmt] { ... }
@@ -2048,7 +2044,7 @@ cfg.swift:
 #  301|               getSubExpr(): [ArrayExpr] [...]
 #  301|                 getElement(0): [DeclRefExpr] x
 #  301|                 getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
-#  301|                   getImmediateSubExpr(): [LoadExpr] (Int) ...
+#  301|                   getSubExpr(): [LoadExpr] (Int) ...
 #  301|           getArgument(1): [Argument] separator: default separator
 #  301|             getExpr(): [DefaultArgumentExpr] default separator
 #  301|           getArgument(2): [Argument] terminator: default terminator
@@ -2089,7 +2085,7 @@ cfg.swift:
 #  308|               getSubExpr(): [ArrayExpr] [...]
 #  308|                 getElement(0): [DeclRefExpr] x
 #  308|                 getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
-#  308|                   getImmediateSubExpr(): [LoadExpr] (Int) ...
+#  308|                   getSubExpr(): [LoadExpr] (Int) ...
 #  308|           getArgument(1): [Argument] separator: default separator
 #  308|             getExpr(): [DefaultArgumentExpr] default separator
 #  308|           getArgument(2): [Argument] terminator: default terminator
@@ -2196,7 +2192,7 @@ cfg.swift:
 #  324|                   getSubExpr(): [ArrayExpr] [...]
 #  324|                     getElement(0): [DeclRefExpr] x
 #  324|                     getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
-#  324|                       getImmediateSubExpr(): [LoadExpr] (Int) ...
+#  324|                       getSubExpr(): [LoadExpr] (Int) ...
 #  324|               getArgument(1): [Argument] separator: default separator
 #  324|                 getExpr(): [DefaultArgumentExpr] default separator
 #  324|               getArgument(2): [Argument] terminator: default terminator
@@ -2287,7 +2283,7 @@ cfg.swift:
 #  340|               getSubExpr(): [ArrayExpr] [...]
 #  340|                 getElement(0): [DeclRefExpr] x
 #  340|                 getElement(0).getFullyConverted(): [ErasureExpr] (Any) ...
-#  340|                   getImmediateSubExpr(): [LoadExpr] (Int) ...
+#  340|                   getSubExpr(): [LoadExpr] (Int) ...
 #  340|           getArgument(1): [Argument] separator: default separator
 #  340|             getExpr(): [DefaultArgumentExpr] default separator
 #  340|           getArgument(2): [Argument] terminator: default terminator
@@ -4214,8 +4210,8 @@ declarations.swift:
 #  155|             getTypeRepr(): [TypeRepr] Derived
 #  155|           getMethodRef(): [DeclRefExpr] Derived.init()
 #  155|       getInit(0).getFullyConverted(): [InjectIntoOptionalExpr] (Baz?) ...
-#  155|         getImmediateSubExpr(): [CoerceExpr] (Baz) ...
-#  155|           getImmediateSubExpr(): [DerivedToBaseExpr] (Baz) ...
+#  155|         getSubExpr(): [CoerceExpr] (Baz) ...
+#  155|           getSubExpr(): [DerivedToBaseExpr] (Baz) ...
 #  155|       getPattern(0): [TypedPattern] ... as ...
 #  155|         getSubPattern(): [NamedPattern] d
 #  155|         getTypeRepr(): [TypeRepr] Baz?
@@ -4293,8 +4289,6 @@ expressions.swift:
 #    7|   getBody(): [BraceStmt] { ... }
 #    7|     getElement(0): [PatternBindingDecl] var ... = ...
 #    7|       getInit(0): [InterpolatedStringLiteralExpr] "..."
-#-----|         getInterpolationCountExpr(): [IntegerLiteralExpr] 1
-#-----|         getLiteralCapacityExpr(): [IntegerLiteralExpr] 6
 #    7|         getAppendingExpr(): [TapExpr] TapExpr
 #    7|           getSubExpr(): [OpaqueValueExpr] OpaqueValueExpr
 #    7|           getBody(): [BraceStmt] { ... }
@@ -5912,7 +5906,7 @@ patterns.swift:
 #   83|           getPattern(): [EnumElementPattern] .mySingle(...)
 #   83|             getSubPattern(): [NamedPattern] a
 #   83|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
-#   83|               getImmediateSubPattern(): [BindingPattern] let ...
+#   83|               getSubPattern(): [BindingPattern] let ...
 #   85|       getCase(2): [CaseStmt] case ...
 #   86|         getBody(): [BraceStmt] { ... }
 #   86|           getElement(0): [CallExpr] call to sink(arg:)
@@ -5948,7 +5942,7 @@ patterns.swift:
 #   92|           getPattern(): [EnumElementPattern] .mySingle(...)
 #   92|             getSubPattern(): [NamedPattern] x
 #   92|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
-#   92|               getImmediateSubPattern(): [BindingPattern] let ...
+#   92|               getSubPattern(): [BindingPattern] let ...
 #   92|           getInitializer(): [DeclRefExpr] a
 #   92|           getInitializer().getFullyConverted(): [LoadExpr] (MyEnum) ...
 #   92|       getThen(): [BraceStmt] { ... }
@@ -6004,7 +5998,7 @@ patterns.swift:
 #  105|           getPattern(): [EnumElementPattern] .mySingle(...)
 #  105|             getSubPattern(): [NamedPattern] a
 #  105|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
-#  105|               getImmediateSubPattern(): [BindingPattern] let ...
+#  105|               getSubPattern(): [BindingPattern] let ...
 #  107|       getCase(2): [CaseStmt] case ...
 #  108|         getBody(): [BraceStmt] { ... }
 #  108|           getElement(0): [CallExpr] call to sink(arg:)
@@ -6040,7 +6034,7 @@ patterns.swift:
 #  114|           getPattern(): [EnumElementPattern] .mySingle(...)
 #  114|             getSubPattern(): [NamedPattern] x
 #  114|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
-#  114|               getImmediateSubPattern(): [BindingPattern] let ...
+#  114|               getSubPattern(): [BindingPattern] let ...
 #  114|           getInitializer(): [DeclRefExpr] a
 #  114|           getInitializer().getFullyConverted(): [LoadExpr] (MyEnum) ...
 #  114|       getThen(): [BraceStmt] { ... }
@@ -6098,7 +6092,7 @@ patterns.swift:
 #  127|           getPattern(): [EnumElementPattern] .mySingle(...)
 #  127|             getSubPattern(): [NamedPattern] a
 #  127|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
-#  127|               getImmediateSubPattern(): [BindingPattern] let ...
+#  127|               getSubPattern(): [BindingPattern] let ...
 #  129|       getCase(2): [CaseStmt] case ...
 #  130|         getBody(): [BraceStmt] { ... }
 #  130|           getElement(0): [CallExpr] call to sink(arg:)
@@ -6134,7 +6128,7 @@ patterns.swift:
 #  136|           getPattern(): [EnumElementPattern] .mySingle(...)
 #  136|             getSubPattern(): [NamedPattern] x
 #  136|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
-#  136|               getImmediateSubPattern(): [BindingPattern] let ...
+#  136|               getSubPattern(): [BindingPattern] let ...
 #  136|           getInitializer(): [DeclRefExpr] a
 #  136|           getInitializer().getFullyConverted(): [LoadExpr] (MyEnum) ...
 #  136|       getThen(): [BraceStmt] { ... }
@@ -6195,7 +6189,7 @@ patterns.swift:
 #  149|           getPattern(): [EnumElementPattern] .mySingle(...)
 #  149|             getSubPattern(): [NamedPattern] a
 #  149|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
-#  149|               getImmediateSubPattern(): [BindingPattern] let ...
+#  149|               getSubPattern(): [BindingPattern] let ...
 #  151|       getCase(2): [CaseStmt] case ...
 #  152|         getBody(): [BraceStmt] { ... }
 #  152|           getElement(0): [CallExpr] call to sink(arg:)
@@ -6254,7 +6248,7 @@ patterns.swift:
 #  162|           getPattern(): [EnumElementPattern] .mySingle(...)
 #  162|             getSubPattern(): [NamedPattern] x
 #  162|             getSubPattern().getFullyUnresolved(): [ParenPattern] (...)
-#  162|               getImmediateSubPattern(): [BindingPattern] let ...
+#  162|               getSubPattern(): [BindingPattern] let ...
 #  162|           getInitializer(): [CallExpr] call to ...
 #  162|             getFunction(): [MethodLookupExpr] .myPair
 #  162|               getBase(): [TypeExpr] MyEnum.Type

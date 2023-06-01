@@ -45,19 +45,16 @@ private class EnumInsecureTlsExtensionsSource extends InsecureTlsExtensionsSourc
   }
 }
 
-/**
- * A sink for assignment of TLS-related properties of `NSURLSessionConfiguration`.
- */
-private class NsUrlTlsExtensionsSink extends InsecureTlsExtensionsSink {
-  NsUrlTlsExtensionsSink() {
-    exists(AssignExpr assign |
-      assign.getSource() = this.asExpr() and
-      assign.getDest().(MemberRefExpr).getMember().(ConcreteVarDecl).getName() =
-        [
-          "tlsMinimumSupportedProtocolVersion", "tlsMinimumSupportedProtocol",
-          "tlsMaximumSupportedProtocolVersion", "tlsMaximumSupportedProtocol"
-        ]
-    )
+private class TlsExtensionsSinks extends SinkModelCsv {
+  override predicate row(string row) {
+    row =
+      [
+        // TLS-related properties of `URLSessionConfiguration`
+        ";URLSessionConfiguration;false;tlsMinimumSupportedProtocolVersion;;;PostUpdate;tls-protocol-version",
+        ";URLSessionConfiguration;false;tlsMinimumSupportedProtocol;;;PostUpdate;tls-protocol-version",
+        ";URLSessionConfiguration;false;tlsMaximumSupportedProtocolVersion;;;PostUpdate;tls-protocol-version",
+        ";URLSessionConfiguration;false;tlsMaximumSupportedProtocol;;;PostUpdate;tls-protocol-version",
+      ]
   }
 }
 

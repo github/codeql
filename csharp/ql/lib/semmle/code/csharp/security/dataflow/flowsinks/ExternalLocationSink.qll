@@ -19,14 +19,21 @@ private import semmle.code.csharp.dataflow.ExternalFlow
 abstract class ExternalLocationSink extends DataFlow::ExprNode { }
 
 private class ExternalModelSink extends ExternalLocationSink {
-  ExternalModelSink() { sinkNode(this, "remote") }
+  ExternalModelSink() { sinkNode(this, "file-content-store") }
 }
 
 /**
  * An argument to a call to a method on a logger class.
  */
 class LogMessageSink extends ExternalLocationSink {
-  LogMessageSink() { this.getExpr() = any(LoggerType i).getAMethod().getACall().getAnArgument() }
+  LogMessageSink() {
+    this.getExpr() = any(LoggerType i).getAMethod().getACall().getAnArgument()
+    or
+    this.getExpr() =
+      any(ExtensionMethodCall call |
+        call.getTarget().(ExtensionMethod).getExtendedType() instanceof LoggerType
+      ).getArgument(any(int i | i > 0))
+  }
 }
 
 /**

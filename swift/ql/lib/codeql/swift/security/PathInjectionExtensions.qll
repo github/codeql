@@ -36,12 +36,11 @@ private class DefaultPathInjectionSink extends PathInjectionSink {
 private class DefaultPathInjectionBarrier extends PathInjectionBarrier {
   DefaultPathInjectionBarrier() {
     // This is a simplified implementation.
-    // TODO: Implement a complete path barrier when Guards are available.
     exists(CallExpr starts, CallExpr normalize, DataFlow::Node validated |
       starts.getStaticTarget().getName() = "starts(with:)" and
-      starts.getStaticTarget().getEnclosingDecl() instanceof FilePath and
+      starts.getStaticTarget().getEnclosingDecl().asNominalTypeDecl() instanceof FilePath and
       normalize.getStaticTarget().getName() = "lexicallyNormalized()" and
-      normalize.getStaticTarget().getEnclosingDecl() instanceof FilePath
+      normalize.getStaticTarget().getEnclosingDecl().asNominalTypeDecl() instanceof FilePath
     |
       TaintTracking::localTaint(validated, DataFlow::exprNode(normalize.getQualifier())) and
       DataFlow::localExprFlow(normalize, starts.getQualifier()) and
@@ -129,8 +128,8 @@ private class PathInjectionSinks extends SinkModelCsv {
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:);;;Argument[0];path-injection",
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[0];path-injection",
         ";Realm.Configuration;true;init(fileURL:inMemoryIdentifier:syncConfiguration:encryptionKey:readOnly:schemaVersion:migrationBlock:deleteRealmIfMigrationNeeded:shouldCompactOnLaunch:objectTypes:seedFilePath:);;;Argument[10];path-injection",
-        ";Realm.Configuration;true;fileURL;;;;path-injection",
-        ";Realm.Configuration;true;seedFilePath;;;;path-injection",
+        ";Realm.Configuration;true;fileURL;;;PostUpdate;path-injection",
+        ";Realm.Configuration;true;seedFilePath;;;PostUpdate;path-injection",
       ]
   }
 }

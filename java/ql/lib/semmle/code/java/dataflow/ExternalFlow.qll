@@ -12,8 +12,8 @@
  * - Summaries:
  *   `package; type; subtypes; name; signature; ext; input; output; kind; provenance`
  * - Neutrals:
- *   `package; type; name; signature; provenance`
- *   A neutral is used to indicate that there is no flow via a callable.
+ *   `package; type; name; signature; kind; provenance`
+ *   A neutral is used to indicate that a callable is neutral with respect to flow (no summary), source (is not a source) or sink (is not a sink).
  *
  * The interpretation of a row is similar to API-graphs with a left-to-right
  * reading.
@@ -65,7 +65,9 @@
  *    which classes the interpreted elements should be added. For example, for
  *    sources "remote" indicates a default remote flow source, and for summaries
  *    "taint" indicates a default additional taint step and "value" indicates a
- *    globally applicable value-preserving step.
+ *    globally applicable value-preserving step. For neutrals the kind can be `summary`,
+ *    `source` or `sink` to indicate that the neutral is neutral with respect to
+ *    flow (no summary), source (is not a source) or sink (is not a sink).
  * 9. The `provenance` column is a tag to indicate the origin and verification of a model.
  *    The format is {origin}-{verification} or just "manual" where the origin describes
  *    the origin of the model and verification describes how the model has been verified.
@@ -164,8 +166,8 @@ predicate summaryModel(
       .summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
 }
 
-/** Holds if a neutral model exists indicating there is no flow for the given parameters. */
-predicate neutralModel = Extensions::neutralModel/5;
+/** Holds if a neutral model exists for the given parameters. */
+predicate neutralModel = Extensions::neutralModel/6;
 
 private predicate relevantPackage(string package) {
   sourceModel(package, _, _, _, _, _, _, _, _) or
@@ -288,6 +290,11 @@ module ModelValidation {
       not kind.matches("qltest%") and
       result = "Invalid kind \"" + kind + "\" in source model."
     )
+    or
+    exists(string kind | neutralModel(_, _, _, _, kind, _) |
+      not kind = ["summary", "source", "sink"] and
+      result = "Invalid kind \"" + kind + "\" in neutral model."
+    )
   }
 
   private string getInvalidModelSignature() {
@@ -302,7 +309,7 @@ module ModelValidation {
       summaryModel(package, type, _, name, signature, ext, _, _, _, provenance) and
       pred = "summary"
       or
-      neutralModel(package, type, name, signature, provenance) and
+      neutralModel(package, type, name, signature, _, provenance) and
       ext = "" and
       pred = "neutral"
     |
@@ -346,7 +353,7 @@ private predicate elementSpec(
   or
   summaryModel(package, type, subtypes, name, signature, ext, _, _, _, _)
   or
-  neutralModel(package, type, name, signature, _) and ext = "" and subtypes = false
+  neutralModel(package, type, name, signature, _, _) and ext = "" and subtypes = false
 }
 
 /**
