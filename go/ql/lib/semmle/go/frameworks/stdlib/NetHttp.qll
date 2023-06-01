@@ -134,7 +134,7 @@ module NetHttp {
     result = call.getReceiver()
   }
 
-  private class ResponseBody extends Http::ResponseBody::Range, DataFlow::ArgumentNode {
+  private class ResponseBody extends Http::ResponseBody::Range {
     DataFlow::Node responseWriter;
 
     ResponseBody() {
@@ -148,6 +148,7 @@ module NetHttp {
       exists(TaintTracking::FunctionModel model |
         // A modeled function conveying taint from some input to the response writer,
         // e.g. `io.Copy(responseWriter, someTaintedReader)`
+        this = model.getACall().getASyntacticArgument() and
         model.taintStep(this, responseWriter) and
         responseWriter.getType().implements("net/http", "ResponseWriter")
       )
@@ -156,7 +157,9 @@ module NetHttp {
         SummarizedCallable callable, DataFlow::CallNode call, SummaryComponentStack input,
         SummaryComponentStack output
       |
-        callable = call.getACalleeIncludingExternals() and callable.propagatesFlow(input, output, _)
+        this = call.getASyntacticArgument() and
+        callable = call.getACalleeIncludingExternals() and
+        callable.propagatesFlow(input, output, _)
       |
         // A modeled function conveying taint from some input to the response writer,
         // e.g. `io.Copy(responseWriter, someTaintedReader)`

@@ -47,10 +47,10 @@ private class AssertionComment extends LineComment {
   boolean shouldHaveAlert;
 
   AssertionComment() {
-    if getText().regexpMatch("\\s*(NOT OK|BAD).*")
+    if this.getText().regexpMatch("\\s*(NOT OK|BAD).*")
     then shouldHaveAlert = true
     else (
-      getText().regexpMatch("\\s*(OK|GOOD).*") and shouldHaveAlert = false
+      this.getText().regexpMatch("\\s*(OK|GOOD).*") and shouldHaveAlert = false
     )
   }
 
@@ -62,7 +62,7 @@ private class AssertionComment extends LineComment {
   /**
    * Holds if a consistency issue is expected at this location.
    */
-  predicate expectConsistencyError() { getText().matches("%[INCONSISTENCY]%") }
+  predicate expectConsistencyError() { this.getText().matches("%[INCONSISTENCY]%") }
 }
 
 private DataFlow::Node getASink() { exists(DataFlow::Configuration cfg | cfg.hasFlow(_, result)) }

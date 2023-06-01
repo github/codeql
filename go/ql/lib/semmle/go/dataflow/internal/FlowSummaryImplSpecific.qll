@@ -72,11 +72,11 @@ predicate summaryElement(
 }
 
 /**
- * Holds if a neutral model exists for `c` with provenance `provenance`,
+ * Holds if a neutral summary model exists for `c` with provenance `provenance`,
  * which means that there is no flow through `c`.
  * Note. Neutral models have not been implemented for Go.
  */
-predicate neutralElement(SummarizedCallable c, string provenance) { none() }
+predicate neutralSummaryElement(SummarizedCallable c, string provenance) { none() }
 
 /** Gets the summary component for specification component `c`, if any. */
 bindingset[c]
@@ -111,10 +111,10 @@ private string getContentSpecific(Content c) {
 string getComponentSpecific(SummaryComponent sc) {
   exists(Content c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
-  exists(ReturnKind rk, int n | n = rk.getIndex() |
+  exists(ReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
-    result = "ReturnValue[" + n + "]" and
-    n != 0
+    not rk = getReturnValueKind() and
+    result = "ReturnValue[" + rk.getIndex() + "]"
   )
 }
 

@@ -3,9 +3,11 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["java.nio.file", "Files", False, "copy", "", "", "Argument[0]", "read-file", "manual"]
+      - ["java.nio.file", "Files", False, "copy", "(Path,OutputStream)", "", "Argument[0]", "read-file", "manual"]
+      - ["java.nio.file", "Files", False, "copy", "(Path,Path,CopyOption[])", "", "Argument[0]", "read-file", "manual"]
+      - ["java.nio.file", "Files", False, "copy", "(Path,Path,CopyOption[])", "", "Argument[1]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "copy", "(InputStream,Path,CopyOption[])", "", "Argument[0]", "write-file", "manual"]
-      - ["java.nio.file", "Files", False, "copy", "", "", "Argument[1]", "create-file", "manual"]
+      - ["java.nio.file", "Files", False, "copy", "(InputStream,Path,CopyOption[])", "", "Argument[1]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "createDirectories", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "createDirectory", "", "", "Argument[0]", "create-file", "manual"]
       - ["java.nio.file", "Files", False, "createFile", "", "", "Argument[0]", "create-file", "manual"]
@@ -79,4 +81,4 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.nio.file", "Files", "exists", "(Path,LinkOption[])", "manual"]
+      - ["java.nio.file", "Files", "exists", "(Path,LinkOption[])", "summary", "manual"]

@@ -25,7 +25,12 @@ module Generated {
     /**
      * Gets the pattern of this case label item.
      */
-    final Pattern getPattern() { result = getImmediatePattern().resolve() }
+    final Pattern getPattern() {
+      exists(Pattern immediate |
+        immediate = this.getImmediatePattern() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the guard of this case label item, if it exists.
@@ -43,11 +48,16 @@ module Generated {
     /**
      * Gets the guard of this case label item, if it exists.
      */
-    final Expr getGuard() { result = getImmediateGuard().resolve() }
+    final Expr getGuard() {
+      exists(Expr immediate |
+        immediate = this.getImmediateGuard() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getGuard()` exists.
      */
-    final predicate hasGuard() { exists(getGuard()) }
+    final predicate hasGuard() { exists(this.getGuard()) }
   }
 }

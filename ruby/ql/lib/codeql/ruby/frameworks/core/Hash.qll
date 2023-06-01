@@ -199,11 +199,13 @@ module Hash {
     }
   }
 
-  private class AssocUnknownSummary extends AssocSummary {
-    AssocUnknownSummary() {
-      this = "assoc" and
-      mc.getNumberOfArguments() = 1 and
-      not exists(DataFlow::Content::getKnownElementIndex(mc.getArgument(0)))
+  private class AssocUnknownSummary extends SummarizedCallable {
+    AssocUnknownSummary() { this = "assoc-unknown-arg" }
+
+    override MethodCall getACallSimple() {
+      result.getMethodName() = "assoc" and
+      result.getNumberOfArguments() = 1 and
+      not exists(DataFlow::Content::getKnownElementIndex(result.getArgument(0)))
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {

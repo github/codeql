@@ -5,8 +5,7 @@ import codeql.swift.elements.type.BuiltinType
 
 module Generated {
   class BuiltinRawUnsafeContinuationType extends Synth::TBuiltinRawUnsafeContinuationType,
-    BuiltinType
-  {
+    BuiltinType {
     override string getAPrimaryQlClass() { result = "BuiltinRawUnsafeContinuationType" }
   }
 }

@@ -15,8 +15,7 @@
 		</p>
 
 		<sample language="ruby">
-			text.gsub!(/^\s+|\s+$/, '') # BAD
-		</sample>
+text.gsub!(/^\s+|\s+$/, '') # BAD</sample>
 
 		<p>
 
@@ -74,8 +73,7 @@
 		</p>
 
 		<sample language="ruby">
-			/^0\.\d+E?\d+$/ # BAD
-		</sample>
+/^0\.\d+E?\d+$/ # BAD</sample>
 
 		<p>
 
@@ -107,6 +105,33 @@
 		</p>
 
 	</example>
+
+    <example>
+        <p>
+            Sometimes it is unclear how a regular expression can be rewritten to
+            avoid the problem. In such cases, it often suffices to limit the
+            length of the input string. For instance, the following 
+            regular expression is used to match numbers, and on some non-number 
+            inputs it can have quadratic time complexity:
+        </p>
+
+        <sample language="ruby">
+is_matching = /^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$/.match?(str)</sample>
+
+        <p>
+            It is not immediately obvious how to rewrite this regular expression 
+            to avoid the problem. However, you can mitigate performance issues by limiting the length
+            to 1000 characters, which will always finish in a reasonable amount
+            of time.
+        </p>
+
+        <sample language="ruby">
+if str.length &gt; 1000
+    raise ArgumentError, "Input too long"
+end
+
+is_matching = /^(\+|-)?(\d+|(\d*\.\d*))?(E|e)?([-+])?(\d+)?$/.match?(str)</sample>
+    </example>
 
 	<include src="ReDoSReferences.inc.qhelp"/>
 

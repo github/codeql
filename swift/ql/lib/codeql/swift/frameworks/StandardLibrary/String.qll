@@ -125,11 +125,7 @@ private class StringFieldsInheritTaint extends TaintInheritingContent,
 {
   StringFieldsInheritTaint() {
     exists(FieldDecl f | this.getField() = f |
-      (
-        f.getEnclosingDecl().(NominalTypeDecl).getName() = ["String", "StringProtocol"] or
-        f.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getName() =
-          ["String", "StringProtocol"]
-      ) and
+      f.getEnclosingDecl().asNominalTypeDecl().getName() = ["String", "StringProtocol"] and
       f.getName() =
         [
           "unicodeScalars", "utf8", "utf16", "lazy", "utf8CString", "description",

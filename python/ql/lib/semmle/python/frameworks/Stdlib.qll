@@ -3015,6 +3015,17 @@ private module StdlibPrivate {
     override string getKind() { result = Escaping::getRegexKind() }
   }
 
+  /**
+   * A node interpreted as a regular expression.
+   * Speficically nodes where string values are interpreted as regular expressions.
+   */
+  private class StdLibRegExpInterpretation extends RegExpInterpretation::Range {
+    StdLibRegExpInterpretation() {
+      this =
+        API::moduleImport("re").getMember("compile").getACall().getParameter(0, "pattern").asSink()
+    }
+  }
+
   // ---------------------------------------------------------------------------
   // urllib
   // ---------------------------------------------------------------------------
@@ -3779,6 +3790,138 @@ private module StdlibPrivate {
     override DataFlow::Node getAPathArgument() { result = this.getAnInput() }
   }
 
+  // ---------------------------------------------------------------------------
+  // Flow summaries for functions contructing containers
+  // ---------------------------------------------------------------------------
+  /** A flow summary for `dict`. */
+  class DictSummary extends SummarizedCallable {
+    DictSummary() { this = "builtins.dict" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("dict").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("dict").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
+        input = "Argument[0].DictionaryElement[" + key + "]" and
+        output = "ReturnValue.DictionaryElement[" + key + "]" and
+        preservesValue = true
+      )
+      or
+      exists(DataFlow::DictionaryElementContent dc, string key | key = dc.getKey() |
+        input = "Argument[" + key + ":]" and
+        output = "ReturnValue.DictionaryElement[" + key + "]" and
+        preservesValue = true
+      )
+      or
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for `list`. */
+  class ListSummary extends SummarizedCallable {
+    ListSummary() { this = "builtins.list" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("list").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("list").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        input = "Argument[0].ListElement"
+        or
+        input = "Argument[0].SetElement"
+        or
+        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
+          input = "Argument[0].TupleElement[" + i.toString() + "]"
+        )
+        // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
+      ) and
+      output = "ReturnValue.ListElement" and
+      preservesValue = true
+      or
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for tuple */
+  class TupleSummary extends SummarizedCallable {
+    TupleSummary() { this = "builtins.tuple" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("tuple").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("tuple").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
+        input = "Argument[0].TupleElement[" + i.toString() + "]" and
+        output = "ReturnValue.TupleElement[" + i.toString() + "]" and
+        preservesValue = true
+      )
+      or
+      // TODO: We need to also translate iterable content such as list element
+      //       but we currently lack TupleElementAny
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for set */
+  class SetSummary extends SummarizedCallable {
+    SetSummary() { this = "builtins.set" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("set").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("set").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      (
+        input = "Argument[0].ListElement"
+        or
+        input = "Argument[0].SetElement"
+        or
+        exists(DataFlow::TupleElementContent tc, int i | i = tc.getIndex() |
+          input = "Argument[0].TupleElement[" + i.toString() + "]"
+        )
+        // TODO: Once we have DictKeyContent, we need to transform that into ListElementContent
+      ) and
+      output = "ReturnValue.SetElement" and
+      preservesValue = true
+      or
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /** A flow summary for frozenset */
+  class FrozensetSummary extends SummarizedCallable {
+    FrozensetSummary() { this = "builtins.frozenset" }
+
+    override DataFlow::CallCfgNode getACall() { result = API::builtin("frozenset").getACall() }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result = API::builtin("frozenset").getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      any(SetSummary s).propagatesFlowExt(input, output, preservesValue)
+    }
+  }
+
   /** A flow summary for `reversed`. */
   class ReversedSummary extends SummarizedCallable {
     ReversedSummary() { this = "builtins.reversed" }
@@ -3792,6 +3935,30 @@ private module StdlibPrivate {
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
       input = "Argument[0].ListElement" and
       output = "ReturnValue.ListElement" and
+      preservesValue = true
+    }
+  }
+
+  /**
+   * A flow summary for `dict.setdefault`.
+   *
+   * See https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
+   */
+  class DictSetdefaultSummary extends SummarizedCallable {
+    DictSetdefaultSummary() { this = "dict.setdefault" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result.(DataFlow::MethodCallNode).calls(_, "setdefault")
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result.(DataFlow::AttrRead).getAttributeName() = "setdefault"
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      // store/read steps with dictionary content of this is modeled in DataFlowPrivate
+      input = "Argument[1]" and
+      output = "ReturnValue" and
       preservesValue = true
     }
   }

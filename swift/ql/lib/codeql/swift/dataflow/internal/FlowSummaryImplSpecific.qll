@@ -13,7 +13,7 @@ private import codeql.swift.dataflow.ExternalFlow
 private import codeql.swift.dataflow.FlowSummary as FlowSummary
 private import codeql.swift.controlflow.CfgNodes
 
-class SummarizedCallableBase = AbstractFunctionDecl;
+class SummarizedCallableBase = Function;
 
 DataFlowCallable inject(SummarizedCallable c) { result.getUnderlyingCallable() = c }
 
@@ -31,25 +31,19 @@ DataFlowType getContentType(ContentSet c) { any() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c]
-DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) {
-  any() // TODO once we have type pruning
-}
+DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) { any() }
 
 /**
  * Gets the type of the parameter matching arguments at position `pos` in a
  * synthesized call that targets a callback of type `t`.
  */
-DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) {
-  any() // TODO once we have type pruning
-}
+DataFlowType getCallbackParameterType(DataFlowType t, ArgumentPosition pos) { any() }
 
 /**
  * Gets the return type of kind `rk` in a synthesized call that targets a
  * callback of type `t`.
  */
-DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) {
-  any() // TODO once we have type pruning
-}
+DataFlowType getCallbackReturnType(DataFlowType t, ReturnKind rk) { any() }
 
 /** Gets the type of synthetic global `sg`. */
 DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any() }
@@ -58,9 +52,7 @@ DataFlowType getSyntheticGlobalType(SummaryComponent::SyntheticGlobal sg) { any(
  * Holds if an external flow summary exists for `c` with input specification
  * `input`, output specification `output`, kind `kind`, and provenance `provenance`.
  */
-predicate summaryElement(
-  AbstractFunctionDecl c, string input, string output, string kind, string provenance
-) {
+predicate summaryElement(Function c, string input, string output, string kind, string provenance) {
   exists(
     string namespace, string type, boolean subtypes, string name, string signature, string ext
   |
@@ -70,10 +62,10 @@ predicate summaryElement(
 }
 
 /**
- * Holds if a neutral model exists for `c` with provenance `provenance`,
+ * Holds if a neutral summary model exists for `c` with provenance `provenance`,
  * which means that there is no flow through `c`.
  */
-predicate neutralElement(AbstractFunctionDecl c, string provenance) { none() }
+predicate neutralSummaryElement(Function c, string provenance) { none() }
 
 /**
  * Holds if an external source specification exists for `e` with output specification
@@ -125,8 +117,8 @@ string getComponentSpecific(SummaryComponent sc) {
   or
   exists(ReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
-    result = "ReturnValue[" + rk + "]" and
-    not rk instanceof NormalReturnKind
+    not rk = getReturnValueKind() and
+    result = "ReturnValue" + "[" + rk + "]"
   )
 }
 
@@ -167,7 +159,7 @@ class InterpretNode extends TInterpretNode {
   DataFlowCallable asCallable() { result.getUnderlyingCallable() = this.asElement() }
 
   /** Gets the target of this call, if any. */
-  AbstractFunctionDecl getCallTarget() { result = this.asCall().asCall().getStaticTarget() }
+  Function getCallTarget() { result = this.asCall().asCall().getStaticTarget() }
 
   /** Gets a textual representation of this node. */
   string toString() {
@@ -199,7 +191,22 @@ predicate interpretOutputSpecific(string c, InterpretNode mid, InterpretNode nod
   )
 }
 
-predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode n) { none() }
+predicate interpretInputSpecific(string c, InterpretNode mid, InterpretNode node) {
+  exists(Node n, AstNode ast, MemberRefExpr e |
+    n = node.asNode() and
+    ast = mid.asElement() and
+    e.getMember() = ast
+  |
+    // Allow fields to be picked as input nodes.
+    c = "" and
+    e.getBase() = n.asExpr()
+    or
+    // Allow post update nodes to be picked as input nodes when the `input` column
+    // of the row is `PostUpdate`.
+    c = "PostUpdate" and
+    e.getBase() = n.(PostUpdateNode).getPreUpdateNode().asExpr()
+  )
+}
 
 /** Gets the argument position obtained by parsing `X` in `Parameter[X]`. */
 bindingset[s]

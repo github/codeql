@@ -111,12 +111,12 @@ predicate summaryElement(Callable c, string input, string output, string kind, s
 }
 
 /**
- * Holds if a neutral model exists for `c` with provenance `provenace`,
+ * Holds if a neutral summary model exists for `c` with provenance `provenace`,
  * which means that there is no flow through `c`.
  */
-predicate neutralElement(Callable c, string provenance) {
+predicate neutralSummaryElement(Callable c, string provenance) {
   exists(string namespace, string type, string name, string signature |
-    neutralModel(namespace, type, name, signature, provenance) and
+    neutralModel(namespace, type, name, signature, "summary", provenance) and
     c = interpretElement(namespace, type, false, name, signature, "")
   )
 }
@@ -198,8 +198,8 @@ string getComponentSpecific(SummaryComponent sc) {
   or
   exists(ReturnKind rk |
     sc = TReturnSummaryComponent(rk) and
-    result = "ReturnValue[" + rk + "]" and
-    not rk instanceof NormalReturnKind
+    not rk = getReturnValueKind() and
+    result = "ReturnValue[" + rk + "]"
   )
 }
 

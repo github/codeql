@@ -8,8 +8,7 @@ module Generated {
    * An availability spec based on platform and version, for example `macOS 12` or `watchOS 14`
    */
   class PlatformVersionAvailabilitySpec extends Synth::TPlatformVersionAvailabilitySpec,
-    AvailabilitySpec
-  {
+    AvailabilitySpec {
     override string getAPrimaryQlClass() { result = "PlatformVersionAvailabilitySpec" }
 
     /**

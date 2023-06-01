@@ -1,5 +1,5 @@
 name: codeql/javascript-all
-version: 0.6.1-dev
+version: 0.6.3-dev
 groups: javascript
 dbscheme: semmlecode.javascript.dbscheme
 extractor: javascript
@@ -12,3 +12,4 @@ dependencies:
   codeql/yaml: ${workspace}
 dataExtensions:
   - semmle/javascript/frameworks/**/model.yml
+warnOnImplicitThis: true

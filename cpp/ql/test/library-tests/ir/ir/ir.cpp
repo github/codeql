@@ -1886,4 +1886,29 @@ namespace missing_declaration_entries {
     }
 }
 
+template<typename T> T global_template = 42;
+
+int test_global_template_int() {
+    int local_int = global_template<int>;
+    char local_char = global_template<char>;
+    return local_int + (int)local_char;
+}
+
+[[noreturn]] void noreturnFunc();
+
+int noreturnTest(int x) {
+    if (x < 10) {
+        return x;
+    } else {
+        noreturnFunc();
+    }
+}
+
+int noreturnTest2(int x) {
+    if (x < 10) {
+        noreturnFunc();
+    }
+    return x;
+}
+
 // semmle-extractor-options: -std=c++17 --clang

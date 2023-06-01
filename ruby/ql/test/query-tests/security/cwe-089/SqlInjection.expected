@@ -55,6 +55,18 @@ edges
 | ArelInjection.rb:4:5:4:8 | name | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." |
 | ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:4:12:4:29 | ...[...] |
 | ArelInjection.rb:4:12:4:29 | ...[...] | ArelInjection.rb:4:5:4:8 | name |
+| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:13:5:13:8 | qry1 |
+| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:19:5:19:8 | qry2 |
+| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:31:5:31:8 | qry3 |
+| PgInjection.rb:6:5:6:8 | name | PgInjection.rb:43:5:43:8 | qry3 |
+| PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:6:12:6:24 | ...[...] |
+| PgInjection.rb:6:12:6:24 | ...[...] | PgInjection.rb:6:5:6:8 | name |
+| PgInjection.rb:13:5:13:8 | qry1 | PgInjection.rb:14:15:14:18 | qry1 |
+| PgInjection.rb:13:5:13:8 | qry1 | PgInjection.rb:15:21:15:24 | qry1 |
+| PgInjection.rb:19:5:19:8 | qry2 | PgInjection.rb:20:22:20:25 | qry2 |
+| PgInjection.rb:19:5:19:8 | qry2 | PgInjection.rb:21:28:21:31 | qry2 |
+| PgInjection.rb:31:5:31:8 | qry3 | PgInjection.rb:32:29:32:32 | qry3 |
+| PgInjection.rb:43:5:43:8 | qry3 | PgInjection.rb:44:29:44:32 | qry3 |
 nodes
 | ActiveRecordInjection.rb:8:25:8:28 | name | semmle.label | name |
 | ActiveRecordInjection.rb:8:31:8:34 | pass | semmle.label | pass |
@@ -133,6 +145,19 @@ nodes
 | ArelInjection.rb:4:12:4:17 | call to params | semmle.label | call to params |
 | ArelInjection.rb:4:12:4:29 | ...[...] | semmle.label | ...[...] |
 | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | semmle.label | "SELECT * FROM users WHERE nam..." |
+| PgInjection.rb:6:5:6:8 | name | semmle.label | name |
+| PgInjection.rb:6:12:6:17 | call to params | semmle.label | call to params |
+| PgInjection.rb:6:12:6:24 | ...[...] | semmle.label | ...[...] |
+| PgInjection.rb:13:5:13:8 | qry1 | semmle.label | qry1 |
+| PgInjection.rb:14:15:14:18 | qry1 | semmle.label | qry1 |
+| PgInjection.rb:15:21:15:24 | qry1 | semmle.label | qry1 |
+| PgInjection.rb:19:5:19:8 | qry2 | semmle.label | qry2 |
+| PgInjection.rb:20:22:20:25 | qry2 | semmle.label | qry2 |
+| PgInjection.rb:21:28:21:31 | qry2 | semmle.label | qry2 |
+| PgInjection.rb:31:5:31:8 | qry3 | semmle.label | qry3 |
+| PgInjection.rb:32:29:32:32 | qry3 | semmle.label | qry3 |
+| PgInjection.rb:43:5:43:8 | qry3 | semmle.label | qry3 |
+| PgInjection.rb:44:29:44:32 | qry3 | semmle.label | qry3 |
 subpaths
 #select
 | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | ActiveRecordInjection.rb:70:23:70:28 | call to params | ActiveRecordInjection.rb:10:33:10:67 | "name='#{...}' and pass='#{...}'" | This SQL query depends on a $@. | ActiveRecordInjection.rb:70:23:70:28 | call to params | user-provided value |
@@ -159,3 +184,9 @@ subpaths
 | ActiveRecordInjection.rb:177:43:177:104 | "SELECT * FROM users WHERE id ..." | ActiveRecordInjection.rb:173:5:173:10 | call to params | ActiveRecordInjection.rb:177:43:177:104 | "SELECT * FROM users WHERE id ..." | This SQL query depends on a $@. | ActiveRecordInjection.rb:173:5:173:10 | call to params | user-provided value |
 | ActiveRecordInjection.rb:178:35:178:96 | "SELECT * FROM users WHERE id ..." | ActiveRecordInjection.rb:173:5:173:10 | call to params | ActiveRecordInjection.rb:178:35:178:96 | "SELECT * FROM users WHERE id ..." | This SQL query depends on a $@. | ActiveRecordInjection.rb:173:5:173:10 | call to params | user-provided value |
 | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | ArelInjection.rb:4:12:4:17 | call to params | ArelInjection.rb:6:20:6:61 | "SELECT * FROM users WHERE nam..." | This SQL query depends on a $@. | ArelInjection.rb:4:12:4:17 | call to params | user-provided value |
+| PgInjection.rb:14:15:14:18 | qry1 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:14:15:14:18 | qry1 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
+| PgInjection.rb:15:21:15:24 | qry1 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:15:21:15:24 | qry1 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
+| PgInjection.rb:20:22:20:25 | qry2 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:20:22:20:25 | qry2 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
+| PgInjection.rb:21:28:21:31 | qry2 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:21:28:21:31 | qry2 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
+| PgInjection.rb:32:29:32:32 | qry3 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:32:29:32:32 | qry3 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
+| PgInjection.rb:44:29:44:32 | qry3 | PgInjection.rb:6:12:6:17 | call to params | PgInjection.rb:44:29:44:32 | qry3 | This SQL query depends on a $@. | PgInjection.rb:6:12:6:17 | call to params | user-provided value |
