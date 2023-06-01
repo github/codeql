@@ -18,6 +18,29 @@ class PostValidation extends DataFlow::FlowState {
   PostValidation() { this = "PostValidation" }
 }
 
+private predicate untrustedUnicodeCharCheckGuard(DataFlow::Node cn, Expr e, boolean outcome) {
+  cn.(DataFlow::CallNode)
+      .getTarget()
+      .hasQualifiedName("strings",
+        [
+          "Contains", "ContainsAny", "ContainsRune", "Count", "EqualFold", "HasPrefix", "HasSuffix",
+          "Index", "IndexAny", "IndexByte", "IndexFunc", "IndexRune", "LastIndex", "LastIndexAny",
+          "LastIndexByte", "LastIndexFunc",
+        ]) and
+  cn.(DataFlow::CallNode).getArgument(0).asExpr() = e and
+  outcome = true
+}
+
+/**
+ * A call to a function called `Index`, `ContainsAny`, or similar, which may be
+ * considered a barrier guard for eliminating untrusted Unicode characters.
+ */
+class UntrustedUnicodeCharCheckBarrier extends DataFlow::Node {
+  UntrustedUnicodeCharCheckBarrier() {
+    this = DataFlow::BarrierGuard<untrustedUnicodeCharCheckGuard/3>::getABarrierNode()
+  }
+}
+
 /**
  * A taint-tracking configuration for detecting "Unicode transformation mishandling" vulnerabilities.
  *
@@ -29,6 +52,14 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSource(DataFlow::Node source, DataFlow::FlowState state) {
     (source instanceof UntrustedFlowSource or source instanceof Source) and
+    state instanceof PreValidation
+  }
+
+  override predicate isSanitizer(DataFlow::Node sanitizer, DataFlow::FlowState state) {
+    (
+      sanitizer instanceof UntrustedUnicodeCharCheckBarrier or
+      sanitizer instanceof Sanitizer
+    ) and
     state instanceof PreValidation
   }
 
@@ -50,18 +81,6 @@ class Configuration extends TaintTracking::Configuration {
         ) and
         nodeFrom = cn.getAnArgument() and
         nodeTo = cn.getResult()
-      )
-      or
-      exists(DataFlow::CallNode cn |
-        cn.getTarget()
-            .hasQualifiedName("strings",
-              [
-                "Contains", "ContainsAny", "ContainsRune", "Count", "EqualFold", "HasPrefix",
-                "HasSuffix", "Index", "IndexAny", "IndexByte", "IndexFunc", "IndexRune",
-                "LastIndex", "LastIndexAny", "LastIndexByte", "LastIndexFunc",
-              ]) and
-        nodeFrom = cn.getArgument(0) and
-        nodeTo = nodeFrom
       )
       or
       exists(DataFlow::CallNode cn |
