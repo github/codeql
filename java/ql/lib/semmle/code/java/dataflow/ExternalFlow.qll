@@ -265,8 +265,8 @@ module ModelValidation {
     )
   }
 
-  private class DeprecatedSinkKind extends string {
-    DeprecatedSinkKind() {
+  private class OutdatedSinkKind extends string {
+    OutdatedSinkKind() {
       this =
         [
           "sql", "url-redirect", "xpath", "ssti", "logging", "groovy", "jexl", "mvel", "xslt",
@@ -303,9 +303,9 @@ module ModelValidation {
       this = ["open-url", "jdbc-url"] and result = "request-forgery"
     }
 
-    string deprecationMessage() {
+    string outdatedMessage() {
       result =
-        "The kind \"" + this + "\" is deprecated. Use \"" + this.replacementKind() + "\" instead."
+        "The kind \"" + this + "\" is outdated. Use \"" + this.replacementKind() + "\" instead."
     }
   }
 
@@ -328,9 +328,9 @@ module ModelValidation {
       not kind.matches("regex-use%") and
       not kind.matches("qltest%") and
       msg = "Invalid kind \"" + kind + "\" in sink model." and
-      // The deprecation part of this message can be deleted after June 1st, 2024.
-      if kind instanceof DeprecatedSinkKind
-      then result = msg + " " + kind.(DeprecatedSinkKind).deprecationMessage()
+      // The part of this message that refers to outdated sink kinds can be deleted after June 1st, 2024.
+      if kind instanceof OutdatedSinkKind
+      then result = msg + " " + kind.(OutdatedSinkKind).outdatedMessage()
       else result = msg
     )
     or
