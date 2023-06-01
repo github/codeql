@@ -3,10 +3,10 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["kotlin.io", "FilesKt", False, "deleteRecursively", "(File)", "", "Argument[0]", "create-file", "ai-manual"] # should be delete-file
-      - ["kotlin.io", "FilesKt", False, "inputStream", "(File)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["kotlin.io", "FilesKt", False, "readBytes", "(File)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["kotlin.io", "FilesKt", False, "readText", "(File,Charset)", "", "Argument[0]", "read-file", "ai-manual"]
+      - ["kotlin.io", "FilesKt", False, "deleteRecursively", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["kotlin.io", "FilesKt", False, "inputStream", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["kotlin.io", "FilesKt", False, "readBytes", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["kotlin.io", "FilesKt", False, "readText", "(File,Charset)", "", "Argument[0]", "path-injection", "ai-manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

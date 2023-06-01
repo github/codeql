@@ -25,7 +25,7 @@ class AdditionalQueryInjectionTaintStep extends Unit {
 
 /** A sink for SQL injection vulnerabilities. */
 private class SqlInjectionSink extends QueryInjectionSink {
-  SqlInjectionSink() { sinkNode(this, "sql") }
+  SqlInjectionSink() { sinkNode(this, "sql-injection") }
 }
 
 /** A sink for Java Persistence Query Language injection vulnerabilities. */
