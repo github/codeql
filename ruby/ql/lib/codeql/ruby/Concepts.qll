@@ -687,9 +687,7 @@ module Http {
        * Gets a node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
-      deprecated DataFlow::Node getURL() {
-        result = super.getURL() or result = Request::Range.super.getAUrlPart()
-      }
+      deprecated DataFlow::Node getURL() { result = Request::Range.super.getAUrlPart() }
 
       /**
        * Holds if this request is made using a mode that disables SSL/TLS
