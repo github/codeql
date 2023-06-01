@@ -12,11 +12,8 @@ module Generated {
 
     /**
      * Gets the extended type declaration of this extension declaration.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    NominalTypeDecl getImmediateExtendedTypeDecl() {
+    NominalTypeDecl getExtendedTypeDecl() {
       result =
         Synth::convertNominalTypeDeclFromRaw(Synth::convertExtensionDeclToRaw(this)
               .(Raw::ExtensionDecl)
@@ -24,30 +21,13 @@ module Generated {
     }
 
     /**
-     * Gets the extended type declaration of this extension declaration.
-     */
-    final NominalTypeDecl getExtendedTypeDecl() {
-      result = this.getImmediateExtendedTypeDecl().resolve()
-    }
-
-    /**
      * Gets the `index`th protocol of this extension declaration (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ProtocolDecl getImmediateProtocol(int index) {
+    ProtocolDecl getProtocol(int index) {
       result =
         Synth::convertProtocolDeclFromRaw(Synth::convertExtensionDeclToRaw(this)
               .(Raw::ExtensionDecl)
               .getProtocol(index))
-    }
-
-    /**
-     * Gets the `index`th protocol of this extension declaration (0-based).
-     */
-    final ProtocolDecl getProtocol(int index) {
-      result = this.getImmediateProtocol(index).resolve()
     }
 
     /**

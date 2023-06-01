@@ -27,7 +27,12 @@ module Generated {
     /**
      * Gets the `index`th base type of this type declaration (0-based).
      */
-    final Type getBaseType(int index) { result = this.getImmediateBaseType(index).resolve() }
+    final Type getBaseType(int index) {
+      exists(Type immediate |
+        immediate = this.getImmediateBaseType(index) and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the base types of this type declaration.

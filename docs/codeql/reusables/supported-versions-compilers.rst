@@ -4,7 +4,7 @@
    :stub-columns: 1
 
    Language,Variants,Compilers,Extensions
-   C/C++,"C89, C99, C11, C18, C++98, C++03, C++11, C++14, C++17, C++20 [1]_","Clang (and clang-cl [2]_) extensions (up to Clang 12.0),
+   C/C++,"C89, C99, C11, C17, C++98, C++03, C++11, C++14, C++17, C++20 [1]_","Clang (and clang-cl [2]_) extensions (up to Clang 12.0),
 
    GNU extensions (up to GCC 11.1),
 
@@ -20,7 +20,7 @@
    Java,"Java 7 to 20 [4]_","javac (OpenJDK and Oracle JDK),
 
    Eclipse compiler for Java (ECJ) [5]_",``.java``
-   Kotlin [6]_,"Kotlin 1.5.0 to 1.8.20","kotlinc",``.kt``
+   Kotlin [6]_,"Kotlin 1.5.0 to 1.9.0","kotlinc",``.kt``
    JavaScript,ECMAScript 2022 or lower,Not applicable,"``.js``, ``.jsx``, ``.mjs``, ``.es``, ``.es6``, ``.htm``, ``.html``, ``.xhtm``, ``.xhtml``, ``.vue``, ``.hbs``, ``.ejs``, ``.njk``, ``.json``, ``.yaml``, ``.yml``, ``.raml``, ``.xml`` [7]_"
    Python [8]_,"2.7, 3.5, 3.6, 3.7, 3.8, 3.9, 3.10, 3.11",Not applicable,``.py``
    Ruby [9]_,"up to 3.2",Not applicable,"``.rb``, ``.erb``, ``.gemspec``, ``Gemfile``"

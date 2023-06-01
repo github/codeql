@@ -22,7 +22,12 @@ module Generated {
     /**
      * Gets the parent of this any generic type, if it exists.
      */
-    final Type getParent() { result = this.getImmediateParent().resolve() }
+    final Type getParent() {
+      exists(Type immediate |
+        immediate = this.getImmediateParent() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getParent()` exists.
@@ -31,20 +36,12 @@ module Generated {
 
     /**
      * Gets the declaration of this any generic type.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    GenericTypeDecl getImmediateDeclaration() {
+    GenericTypeDecl getDeclaration() {
       result =
         Synth::convertGenericTypeDeclFromRaw(Synth::convertAnyGenericTypeToRaw(this)
               .(Raw::AnyGenericType)
               .getDeclaration())
     }
-
-    /**
-     * Gets the declaration of this any generic type.
-     */
-    final GenericTypeDecl getDeclaration() { result = this.getImmediateDeclaration().resolve() }
   }
 }

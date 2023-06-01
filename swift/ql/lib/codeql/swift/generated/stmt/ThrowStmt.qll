@@ -22,6 +22,11 @@ module Generated {
     /**
      * Gets the sub expression of this throw statement.
      */
-    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSubExpr() and
+        result = immediate.resolve()
+      )
+    }
   }
 }

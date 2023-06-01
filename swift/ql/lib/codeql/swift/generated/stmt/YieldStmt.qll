@@ -24,7 +24,12 @@ module Generated {
     /**
      * Gets the `index`th result of this yield statement (0-based).
      */
-    final Expr getResult(int index) { result = this.getImmediateResult(index).resolve() }
+    final Expr getResult(int index) {
+      exists(Expr immediate |
+        immediate = this.getImmediateResult(index) and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the results of this yield statement.

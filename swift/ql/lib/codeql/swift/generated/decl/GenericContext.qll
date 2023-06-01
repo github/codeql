@@ -8,22 +8,12 @@ module Generated {
   class GenericContext extends Synth::TGenericContext, Element {
     /**
      * Gets the `index`th generic type parameter of this generic context (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    GenericTypeParamDecl getImmediateGenericTypeParam(int index) {
+    GenericTypeParamDecl getGenericTypeParam(int index) {
       result =
         Synth::convertGenericTypeParamDeclFromRaw(Synth::convertGenericContextToRaw(this)
               .(Raw::GenericContext)
               .getGenericTypeParam(index))
-    }
-
-    /**
-     * Gets the `index`th generic type parameter of this generic context (0-based).
-     */
-    final GenericTypeParamDecl getGenericTypeParam(int index) {
-      result = this.getImmediateGenericTypeParam(index).resolve()
     }
 
     /**

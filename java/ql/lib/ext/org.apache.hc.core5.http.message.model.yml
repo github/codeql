@@ -3,14 +3,14 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(Method,HttpHost,String)", "", "Argument[1]", "open-url", "hq-manual"]
-      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(Method,URI)", "", "Argument[1]", "open-url", "hq-manual"]
-      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "open-url", "hq-manual"]
-      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(String,URI)", "", "Argument[1]", "open-url", "hq-manual"]
-      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(Method,HttpHost,String)", "", "Argument[1]", "open-url", "hq-manual"]
-      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(Method,URI)", "", "Argument[1]", "open-url", "hq-manual"]
-      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "open-url", "hq-manual"]
-      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(String,URI)", "", "Argument[1]", "open-url", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(Method,HttpHost,String)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(Method,URI)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicClassicHttpRequest", True, "BasicClassicHttpRequest", "(String,URI)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(Method,HttpHost,String)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(Method,URI)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(String,HttpHost,String)", "", "Argument[1]", "request-forgery", "hq-manual"]
+      - ["org.apache.hc.core5.http.message", "BasicHttpRequest", True, "BasicHttpRequest", "(String,URI)", "", "Argument[1]", "request-forgery", "hq-manual"]
 
   - addsTo:
       pack: codeql/java-all

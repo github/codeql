@@ -38,10 +38,7 @@ private class SequenceFieldsInheritTaint extends TaintInheritingContent,
 {
   SequenceFieldsInheritTaint() {
     exists(FieldDecl f | this.getField() = f |
-      (
-        f.getEnclosingDecl().(NominalTypeDecl).getName() = "Sequence" or
-        f.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getName() = "Sequence"
-      ) and
+      f.getEnclosingDecl().asNominalTypeDecl().getName() = "Sequence" and
       f.getName() = "lazy"
     )
   }

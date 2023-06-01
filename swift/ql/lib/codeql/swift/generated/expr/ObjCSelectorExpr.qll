@@ -24,24 +24,21 @@ module Generated {
     /**
      * Gets the sub expression of this obj c selector expression.
      */
-    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
-
-    /**
-     * Gets the method of this obj c selector expression.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
-     */
-    Function getImmediateMethod() {
-      result =
-        Synth::convertFunctionFromRaw(Synth::convertObjCSelectorExprToRaw(this)
-              .(Raw::ObjCSelectorExpr)
-              .getMethod())
+    final Expr getSubExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSubExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
      * Gets the method of this obj c selector expression.
      */
-    final Function getMethod() { result = this.getImmediateMethod().resolve() }
+    Function getMethod() {
+      result =
+        Synth::convertFunctionFromRaw(Synth::convertObjCSelectorExprToRaw(this)
+              .(Raw::ObjCSelectorExpr)
+              .getMethod())
+    }
   }
 }

@@ -30,7 +30,7 @@ class IntentRedirectionAdditionalTaintStep extends Unit {
 
 /** Default sink for Intent redirection vulnerabilities. */
 private class DefaultIntentRedirectionSink extends IntentRedirectionSink {
-  DefaultIntentRedirectionSink() { sinkNode(this, "intent-start") }
+  DefaultIntentRedirectionSink() { sinkNode(this, "intent-redirection") }
 }
 
 /**

@@ -21,7 +21,12 @@ module Generated {
     /**
      * Gets the `index`th type of this tuple type (0-based).
      */
-    final Type getType(int index) { result = this.getImmediateType(index).resolve() }
+    final Type getType(int index) {
+      exists(Type immediate |
+        immediate = this.getImmediateType(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets any of the types of this tuple type.

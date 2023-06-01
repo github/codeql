@@ -23,7 +23,12 @@ module Generated {
     /**
      * Gets the qualifier of this dot syntax base ignored expression.
      */
-    final Expr getQualifier() { result = this.getImmediateQualifier().resolve() }
+    final Expr getQualifier() {
+      exists(Expr immediate |
+        immediate = this.getImmediateQualifier() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Gets the sub expression of this dot syntax base ignored expression.
@@ -41,6 +46,11 @@ module Generated {
     /**
      * Gets the sub expression of this dot syntax base ignored expression.
      */
-    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
+    final Expr getSubExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSubExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

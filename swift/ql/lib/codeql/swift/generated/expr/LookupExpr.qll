@@ -20,23 +20,20 @@ module Generated {
     /**
      * Gets the base of this lookup expression.
      */
-    final Expr getBase() { result = this.getImmediateBase().resolve() }
-
-    /**
-     * Gets the member of this lookup expression, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
-     */
-    Decl getImmediateMember() {
-      result =
-        Synth::convertDeclFromRaw(Synth::convertLookupExprToRaw(this).(Raw::LookupExpr).getMember())
+    final Expr getBase() {
+      exists(Expr immediate |
+        immediate = this.getImmediateBase() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
      * Gets the member of this lookup expression, if it exists.
      */
-    final Decl getMember() { result = this.getImmediateMember().resolve() }
+    Decl getMember() {
+      result =
+        Synth::convertDeclFromRaw(Synth::convertLookupExprToRaw(this).(Raw::LookupExpr).getMember())
+    }
 
     /**
      * Holds if `getMember()` exists.

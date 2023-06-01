@@ -10,21 +10,13 @@ module Generated {
 
     /**
      * Gets the cast type representation of this is pattern, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    TypeRepr getImmediateCastTypeRepr() {
+    TypeRepr getCastTypeRepr() {
       result =
         Synth::convertTypeReprFromRaw(Synth::convertIsPatternToRaw(this)
               .(Raw::IsPattern)
               .getCastTypeRepr())
     }
-
-    /**
-     * Gets the cast type representation of this is pattern, if it exists.
-     */
-    final TypeRepr getCastTypeRepr() { result = this.getImmediateCastTypeRepr().resolve() }
 
     /**
      * Holds if `getCastTypeRepr()` exists.
@@ -47,7 +39,12 @@ module Generated {
     /**
      * Gets the sub pattern of this is pattern, if it exists.
      */
-    final Pattern getSubPattern() { result = this.getImmediateSubPattern().resolve() }
+    final Pattern getSubPattern() {
+      exists(Pattern immediate |
+        immediate = this.getImmediateSubPattern() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getSubPattern()` exists.

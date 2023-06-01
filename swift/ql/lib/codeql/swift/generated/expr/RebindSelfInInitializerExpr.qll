@@ -24,24 +24,21 @@ module Generated {
     /**
      * Gets the sub expression of this rebind self in initializer expression.
      */
-    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
-
-    /**
-     * Gets the self of this rebind self in initializer expression.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
-     */
-    VarDecl getImmediateSelf() {
-      result =
-        Synth::convertVarDeclFromRaw(Synth::convertRebindSelfInInitializerExprToRaw(this)
-              .(Raw::RebindSelfInInitializerExpr)
-              .getSelf())
+    final Expr getSubExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSubExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
      * Gets the self of this rebind self in initializer expression.
      */
-    final VarDecl getSelf() { result = this.getImmediateSelf().resolve() }
+    VarDecl getSelf() {
+      result =
+        Synth::convertVarDeclFromRaw(Synth::convertRebindSelfInInitializerExprToRaw(this)
+              .(Raw::RebindSelfInInitializerExpr)
+              .getSelf())
+    }
   }
 }

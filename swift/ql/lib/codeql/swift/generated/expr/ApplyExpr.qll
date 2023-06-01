@@ -20,25 +20,22 @@ module Generated {
     /**
      * Gets the function being applied.
      */
-    final Expr getFunction() { result = this.getImmediateFunction().resolve() }
-
-    /**
-     * Gets the `index`th argument passed to the applied function (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
-     */
-    Argument getImmediateArgument(int index) {
-      result =
-        Synth::convertArgumentFromRaw(Synth::convertApplyExprToRaw(this)
-              .(Raw::ApplyExpr)
-              .getArgument(index))
+    final Expr getFunction() {
+      exists(Expr immediate |
+        immediate = this.getImmediateFunction() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
      * Gets the `index`th argument passed to the applied function (0-based).
      */
-    final Argument getArgument(int index) { result = this.getImmediateArgument(index).resolve() }
+    Argument getArgument(int index) {
+      result =
+        Synth::convertArgumentFromRaw(Synth::convertApplyExprToRaw(this)
+              .(Raw::ApplyExpr)
+              .getArgument(index))
+    }
 
     /**
      * Gets any of the arguments passed to the applied function.

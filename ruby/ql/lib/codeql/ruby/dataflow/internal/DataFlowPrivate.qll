@@ -144,12 +144,13 @@ module LocalFlow {
    * This is intended to recover from flow not currently recognised by ordinary capture flow.
    */
   predicate localFlowSsaParamCaptureInput(Node nodeFrom, Node nodeTo) {
-    exists(Ssa::CapturedEntryDefinition def |
-      nodeFrom.asParameter().(NamedParameter).getVariable() = def.getSourceVariable()
-      or
-      nodeFrom.(SelfParameterNode).getSelfVariable() = def.getSourceVariable()
-    |
+    exists(Ssa::CapturedEntryDefinition def, ParameterNodeImpl p |
+      (nodeFrom = p or LocalFlow::localFlowSsaParamInput(p, nodeFrom)) and
       nodeTo.(SsaDefinitionExtNode).getDefinitionExt() = def
+    |
+      p.getParameter().(NamedParameter).getVariable() = def.getSourceVariable()
+      or
+      p.(SelfParameterNode).getSelfVariable() = def.getSourceVariable()
     )
   }
 
@@ -940,6 +941,12 @@ private class NewCall extends DataFlowCall {
 abstract class ReturningNode extends Node {
   /** Gets the kind of this return node. */
   abstract ReturnKind getKind();
+
+  pragma[nomagic]
+  predicate hasKind(ReturnKind kind, CfgScope scope) {
+    kind = this.getKind() and
+    scope = this.(NodeImpl).getCfgScope()
+  }
 }
 
 /** A data-flow node that represents a value returned by a callable. */
@@ -1060,10 +1067,8 @@ private module ReturnNodes {
     SynthReturnNode() { this = TSynthReturnNode(scope, kind) }
 
     /** Gets a syntactic return node that flows into this synthetic node. */
-    ReturningNode getAnInput() {
-      result.(NodeImpl).getCfgScope() = scope and
-      result.getKind() = kind
-    }
+    pragma[nomagic]
+    ReturningNode getAnInput() { result.hasKind(kind, scope) }
 
     override ReturnKind getKind() { result = kind }
 

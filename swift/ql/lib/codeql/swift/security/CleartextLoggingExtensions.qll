@@ -76,7 +76,7 @@ private class OsLogPrivacyRef extends MemberRefExpr {
 
   OsLogPrivacyRef() {
     exists(FieldDecl f | this.getMember() = f |
-      f.getEnclosingDecl().(NominalTypeDecl).getName() = "OSLogPrivacy" and
+      f.getEnclosingDecl().asNominalTypeDecl().getName() = "OSLogPrivacy" and
       optionName = f.getName()
     )
   }

@@ -688,5 +688,33 @@ def test_uppercase_acronyms_are_rejected():
                 pass
 
 
+def test_hideable():
+    @load
+    class data:
+        class Root:
+            pass
+
+        @defs.ql.hideable
+        class A(Root):
+            pass
+
+        class IndirectlyHideable(Root):
+            pass
+
+        class B(A, IndirectlyHideable):
+            pass
+
+        class NonHideable(Root):
+            pass
+
+    assert data.classes == {
+        "Root": schema.Class("Root", derived={"A", "IndirectlyHideable", "NonHideable"}, hideable=True),
+        "A": schema.Class("A", bases=["Root"], derived={"B"}, hideable=True),
+        "IndirectlyHideable": schema.Class("IndirectlyHideable", bases=["Root"], derived={"B"}, hideable=True),
+        "B": schema.Class("B", bases=["A", "IndirectlyHideable"], hideable=True),
+        "NonHideable": schema.Class("NonHideable", bases=["Root"], hideable=False),
+    }
+
+
 if __name__ == '__main__':
     sys.exit(pytest.main([__file__] + sys.argv[1:]))

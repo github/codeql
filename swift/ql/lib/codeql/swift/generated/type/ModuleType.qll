@@ -10,20 +10,12 @@ module Generated {
 
     /**
      * Gets the module of this module type.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ModuleDecl getImmediateModule() {
+    ModuleDecl getModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertModuleTypeToRaw(this)
               .(Raw::ModuleType)
               .getModule())
     }
-
-    /**
-     * Gets the module of this module type.
-     */
-    final ModuleDecl getModule() { result = this.getImmediateModule().resolve() }
   }
 }

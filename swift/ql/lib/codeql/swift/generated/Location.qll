@@ -8,19 +8,11 @@ module Generated {
   class Location extends Synth::TLocation, Element {
     /**
      * Gets the file of this location.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    File getImmediateFile() {
+    File getFile() {
       result =
         Synth::convertFileFromRaw(Synth::convertLocationToRaw(this).(Raw::Location).getFile())
     }
-
-    /**
-     * Gets the file of this location.
-     */
-    final File getFile() { result = this.getImmediateFile().resolve() }
 
     /**
      * Gets the start line of this location.

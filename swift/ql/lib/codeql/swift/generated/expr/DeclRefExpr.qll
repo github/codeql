@@ -11,19 +11,11 @@ module Generated {
 
     /**
      * Gets the declaration of this declaration reference expression.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Decl getImmediateDecl() {
+    Decl getDecl() {
       result =
         Synth::convertDeclFromRaw(Synth::convertDeclRefExprToRaw(this).(Raw::DeclRefExpr).getDecl())
     }
-
-    /**
-     * Gets the declaration of this declaration reference expression.
-     */
-    final Decl getDecl() { result = this.getImmediateDecl().resolve() }
 
     /**
      * Gets the `index`th replacement type of this declaration reference expression (0-based).
@@ -42,7 +34,10 @@ module Generated {
      * Gets the `index`th replacement type of this declaration reference expression (0-based).
      */
     final Type getReplacementType(int index) {
-      result = this.getImmediateReplacementType(index).resolve()
+      exists(Type immediate |
+        immediate = this.getImmediateReplacementType(index) and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**

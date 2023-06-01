@@ -22,6 +22,11 @@ module Generated {
     /**
      * Gets the interface type of this value declaration.
      */
-    final Type getInterfaceType() { result = this.getImmediateInterfaceType().resolve() }
+    final Type getInterfaceType() {
+      exists(Type immediate |
+        immediate = this.getImmediateInterfaceType() and
+        result = immediate.resolve()
+      )
+    }
   }
 }

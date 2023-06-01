@@ -10,18 +10,10 @@ module Generated {
 
     /**
      * Gets the body of this guard statement.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    BraceStmt getImmediateBody() {
+    BraceStmt getBody() {
       result =
         Synth::convertBraceStmtFromRaw(Synth::convertGuardStmtToRaw(this).(Raw::GuardStmt).getBody())
     }
-
-    /**
-     * Gets the body of this guard statement.
-     */
-    final BraceStmt getBody() { result = this.getImmediateBody().resolve() }
   }
 }

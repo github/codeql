@@ -38,8 +38,6 @@ class AstNode extends TAstNode {
       result = node.getLocation()
     )
     or
-    result = toGenerateYaml(this).getLocation()
-    or
     result = toDbscheme(this).getLocation()
   }
 
@@ -2573,126 +2571,49 @@ class BindingSet extends Annotation {
  * Classes modeling YAML AST nodes.
  */
 module YAML {
-  /** A node in a YAML file */
-  class YamlNode extends TYamlNode, AstNode {
-    /** Holds if the predicate is a root node (has no parent) */
-    predicate isRoot() { not exists(this.getParent()) }
+  private import codeql.yaml.Yaml as LibYaml
 
-    override AstNode getParent() { toGenerateYaml(result) = toGenerateYaml(this).getParent() }
-  }
+  private module YamlSig implements LibYaml::InputSig {
+    import codeql.Locations
 
-  /** DEPRECATED: Alias for YamlNode */
-  deprecated class YAMLNode = YamlNode;
+    class LocatableBase extends @yaml_locatable {
+      Location getLocation() { yaml_locations(this, result) }
 
-  /** A YAML comment. */
-  class YamlComment extends TYamlComment, YamlNode {
-    Yaml::Comment yamlcomment;
-
-    YamlComment() { this = TYamlComment(yamlcomment) }
-
-    override string getAPrimaryQlClass() { result = "YamlComment" }
-  }
-
-  /** DEPRECATED: Alias for YamlComment */
-  deprecated class YAMLComment = YamlComment;
-
-  /** A YAML entry. */
-  class YamlEntry extends TYamlEntry, YamlNode {
-    Yaml::Entry yamle;
-
-    YamlEntry() { this = TYamlEntry(yamle) }
-
-    /** Gets the key of this YAML entry. */
-    YamlKey getKey() {
-      exists(Yaml::Keyvaluepair pair |
-        pair.getParent() = yamle and
-        result = TYamlKey(pair.getKey())
-      )
+      string toString() { none() }
     }
 
-    YamlListItem getListItem() { toGenerateYaml(result).getParent() = yamle }
+    class NodeBase extends LocatableBase, @yaml_node {
+      NodeBase getChildNode(int i) { yaml(result, _, this, i, _, _) }
 
-    /** Gets the value of this YAML entry. */
-    YamlValue getValue() {
-      exists(Yaml::Keyvaluepair pair |
-        pair.getParent() = yamle and
-        result = TYamlValue(pair.getValue())
-      )
+      string getTag() { yaml(this, _, _, _, result, _) }
+
+      string getAnchor() { yaml_anchors(this, result) }
+
+      override string toString() { yaml(this, _, _, _, _, result) }
     }
 
-    override string getAPrimaryQlClass() { result = "YamlEntry" }
-  }
+    class ScalarNodeBase extends NodeBase, @yaml_scalar_node {
+      int getStyle() { yaml_scalars(this, result, _) }
 
-  /** DEPRECATED: Alias for YamlEntry */
-  deprecated class YAMLEntry = YamlEntry;
-
-  /** A YAML key. */
-  class YamlKey extends TYamlKey, YamlNode {
-    Yaml::Key yamlkey;
-
-    YamlKey() { this = TYamlKey(yamlkey) }
-
-    /**
-     * Gets the value of this YAML key.
-     */
-    YamlValue getValue() {
-      exists(Yaml::Keyvaluepair pair |
-        pair.getKey() = yamlkey and result = TYamlValue(pair.getValue())
-      )
+      string getValue() { yaml_scalars(this, _, result) }
     }
 
-    override string getAPrimaryQlClass() { result = "YamlKey" }
+    class CollectionNodeBase extends NodeBase, @yaml_collection_node { }
 
-    /** Gets the value of this YAML value. */
-    string getNamePart(int i) {
-      i = 0 and result = yamlkey.getChild(0).(Yaml::SimpleId).getValue()
-      or
-      exists(YamlKey child |
-        child = TYamlKey(yamlkey.getChild(1)) and
-        result = child.getNamePart(i - 1)
-      )
+    class MappingNodeBase extends CollectionNodeBase, @yaml_mapping_node { }
+
+    class SequenceNodeBase extends CollectionNodeBase, @yaml_sequence_node { }
+
+    class AliasNodeBase extends NodeBase, @yaml_alias_node {
+      string getTarget() { yaml_aliases(this, result) }
     }
 
-    /**
-     * Gets all the name parts of this YAML key concatenated with `/`.
-     * Dashes are replaced with `/` (because we don't have that information in the generated AST).
-     */
-    string getQualifiedName() {
-      result = concat(string part, int i | part = this.getNamePart(i) | part, "/" order by i)
+    class ParseErrorBase extends LocatableBase, @yaml_error {
+      string getMessage() { yaml_errors(this, result) }
     }
   }
 
-  /** DEPRECATED: Alias for YamlKey */
-  deprecated class YAMLKey = YamlKey;
-
-  /** A YAML list item. */
-  class YamlListItem extends TYamlListitem, YamlNode {
-    Yaml::Listitem yamllistitem;
-
-    YamlListItem() { this = TYamlListitem(yamllistitem) }
-
-    /**
-     * Gets the value of this YAML list item.
-     */
-    YamlValue getValue() { result = TYamlValue(yamllistitem.getChild()) }
-
-    override string getAPrimaryQlClass() { result = "YamlListItem" }
-  }
-
-  /** DEPRECATED: Alias for YamlListItem */
-  deprecated class YAMLListItem = YamlListItem;
-
-  /** A YAML value. */
-  class YamlValue extends TYamlValue, YamlNode {
-    Yaml::Value yamlvalue;
-
-    YamlValue() { this = TYamlValue(yamlvalue) }
-
-    override string getAPrimaryQlClass() { result = "YamlValue" }
-
-    /** Gets the value of this YAML value. */
-    string getValue() { result = yamlvalue.getValue() }
-  }
+  import LibYaml::Make<YamlSig>
 
   // to not expose the entire `File` API on `QlPack`.
   private newtype TQLPack = MKQlPack(File file) { file.getBaseName() = "qlpack.yml" }
@@ -2705,14 +2626,15 @@ module YAML {
 
     QLPack() { this = MKQlPack(file) }
 
-    private string getProperty(string name) {
-      exists(YamlEntry entry |
-        entry.isRoot() and
-        entry.getKey().getQualifiedName() = name and
-        result = entry.getValue().getValue().trim() and
-        entry.getLocation().getFile() = file
+    private YamlValue get(string name) {
+      exists(YamlMapping m |
+        m instanceof YamlDocument and
+        m.getFile() = file and
+        result = m.lookup(name)
       )
     }
+
+    private string getProperty(string name) { result = this.get(name).(YamlScalar).getValue() }
 
     /** Gets the name of this qlpack */
     string getName() { result = this.getProperty("name") }
@@ -2728,32 +2650,12 @@ module YAML {
     /** Gets the file that this `QLPack` represents. */
     File getFile() { result = file }
 
-    private predicate isADependency(YamlEntry entry) {
-      exists(YamlEntry deps |
-        deps.getLocation().getFile() = file and entry.getLocation().getFile() = file
-      |
-        deps.isRoot() and
-        deps.getKey().getQualifiedName() = ["dependencies", "libraryPathDependencies"] and
-        entry.getLocation().getStartLine() = 1 + deps.getLocation().getStartLine() and
-        entry.getLocation().getStartColumn() > deps.getLocation().getStartColumn()
-      )
-      or
-      exists(YamlEntry prev | this.isADependency(prev) |
-        prev.getLocation().getFile() = file and
-        entry.getLocation().getFile() = file and
-        entry.getLocation().getStartLine() = 1 + prev.getLocation().getStartLine() and
-        entry.getLocation().getStartColumn() = prev.getLocation().getStartColumn()
-      )
-    }
-
     predicate hasDependency(string name, string version) {
-      exists(YamlEntry entry | this.isADependency(entry) |
-        entry.getKey().getQualifiedName().trim() = name and
-        entry.getValue().getValue() = version
-        or
-        name = entry.getListItem().getValue().getValue().trim() and
-        version = "\"*\""
-      )
+      version = this.get("dependencies").(YamlMapping).lookup(name).(YamlScalar).getValue()
+      or
+      name =
+        this.get("libraryPathDependencies").(YamlCollection).getAChild().(YamlScalar).getValue() and
+      version = "\"*\""
       or
       name = this.getProperty("libraryPathDependencies") and
       version = "\"*\""

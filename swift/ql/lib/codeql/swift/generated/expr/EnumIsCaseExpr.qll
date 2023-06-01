@@ -24,24 +24,21 @@ module Generated {
     /**
      * Gets the sub expression of this enum is case expression.
      */
-    final Expr getSubExpr() { result = this.getImmediateSubExpr().resolve() }
-
-    /**
-     * Gets the element of this enum is case expression.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
-     */
-    EnumElementDecl getImmediateElement() {
-      result =
-        Synth::convertEnumElementDeclFromRaw(Synth::convertEnumIsCaseExprToRaw(this)
-              .(Raw::EnumIsCaseExpr)
-              .getElement())
+    final Expr getSubExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateSubExpr() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
     }
 
     /**
      * Gets the element of this enum is case expression.
      */
-    final EnumElementDecl getElement() { result = this.getImmediateElement().resolve() }
+    EnumElementDecl getElement() {
+      result =
+        Synth::convertEnumElementDeclFromRaw(Synth::convertEnumIsCaseExprToRaw(this)
+              .(Raw::EnumIsCaseExpr)
+              .getElement())
+    }
   }
 }

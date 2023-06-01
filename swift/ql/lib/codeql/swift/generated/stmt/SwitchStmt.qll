@@ -23,25 +23,22 @@ module Generated {
     /**
      * Gets the expression of this switch statement.
      */
-    final Expr getExpr() { result = this.getImmediateExpr().resolve() }
-
-    /**
-     * Gets the `index`th case of this switch statement (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
-     */
-    CaseStmt getImmediateCase(int index) {
-      result =
-        Synth::convertCaseStmtFromRaw(Synth::convertSwitchStmtToRaw(this)
-              .(Raw::SwitchStmt)
-              .getCase(index))
+    final Expr getExpr() {
+      exists(Expr immediate |
+        immediate = this.getImmediateExpr() and
+        result = immediate.resolve()
+      )
     }
 
     /**
      * Gets the `index`th case of this switch statement (0-based).
      */
-    final CaseStmt getCase(int index) { result = this.getImmediateCase(index).resolve() }
+    CaseStmt getCase(int index) {
+      result =
+        Synth::convertCaseStmtFromRaw(Synth::convertSwitchStmtToRaw(this)
+              .(Raw::SwitchStmt)
+              .getCase(index))
+    }
 
     /**
      * Gets any of the cases of this switch statement.

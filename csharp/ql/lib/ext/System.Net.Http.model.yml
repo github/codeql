@@ -3,7 +3,7 @@ extensions:
       pack: codeql/csharp-all
       extensible: sinkModel
     data:
-      - ["System.Net.Http", "StringContent", False, "StringContent", "", "", "Argument[0]", "xss", "manual"]
+      - ["System.Net.Http", "StringContent", False, "StringContent", "", "", "Argument[0]", "js-injection", "manual"]
   - addsTo:
       pack: codeql/csharp-all
       extensible: summaryModel

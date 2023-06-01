@@ -23,6 +23,11 @@ module Generated {
     /**
      * Gets the object type of this in out type.
      */
-    final Type getObjectType() { result = this.getImmediateObjectType().resolve() }
+    final Type getObjectType() {
+      exists(Type immediate |
+        immediate = this.getImmediateObjectType() and
+        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+      )
+    }
   }
 }

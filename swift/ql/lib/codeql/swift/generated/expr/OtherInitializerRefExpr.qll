@@ -10,20 +10,12 @@ module Generated {
 
     /**
      * Gets the initializer of this other initializer reference expression.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Initializer getImmediateInitializer() {
+    Initializer getInitializer() {
       result =
         Synth::convertInitializerFromRaw(Synth::convertOtherInitializerRefExprToRaw(this)
               .(Raw::OtherInitializerRefExpr)
               .getInitializer())
     }
-
-    /**
-     * Gets the initializer of this other initializer reference expression.
-     */
-    final Initializer getInitializer() { result = this.getImmediateInitializer().resolve() }
   }
 }

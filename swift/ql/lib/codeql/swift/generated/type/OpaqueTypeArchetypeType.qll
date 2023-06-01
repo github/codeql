@@ -15,20 +15,12 @@ module Generated {
 
     /**
      * Gets the declaration of this opaque type archetype type.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    OpaqueTypeDecl getImmediateDeclaration() {
+    OpaqueTypeDecl getDeclaration() {
       result =
         Synth::convertOpaqueTypeDeclFromRaw(Synth::convertOpaqueTypeArchetypeTypeToRaw(this)
               .(Raw::OpaqueTypeArchetypeType)
               .getDeclaration())
     }
-
-    /**
-     * Gets the declaration of this opaque type archetype type.
-     */
-    final OpaqueTypeDecl getDeclaration() { result = this.getImmediateDeclaration().resolve() }
   }
 }
