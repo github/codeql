@@ -40,7 +40,7 @@ an HTTP request handler in a web application, whose parameter
 <p>
 The handler constructs constructs an SQL query string from user input
 and executes it as a database query using the <code>pg</code> library. 
-THe user input may contain quote characters, so this code is vulnerable
+The user input may contain quote characters, so this code is vulnerable
 to a SQL injection attack.
 </p>
 
