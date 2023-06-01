@@ -19,8 +19,7 @@ class SnakeYamlSafeConstructor extends RefType {
  */
 class SafeSnakeYamlConstruction extends ClassInstanceExpr {
   SafeSnakeYamlConstruction() {
-    this.getConstructedType() instanceof SnakeYamlSafeConstructor or
-    this.getConstructedType().extendsOrImplements(any(SnakeYamlSafeConstructor s))
+    this.getConstructedType().getASourceSupertype*() instanceof SnakeYamlSafeConstructor
   }
 }
 
