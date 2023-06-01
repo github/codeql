@@ -17,5 +17,5 @@ _arch_override = {
             for arch in ("linux", "darwin_x86_64", "darwin_arm64")
         }),
     )
-    for name in ("swift-llvm-support", "swift-test-sdk")
+    for name in ("swift-llvm-support", "swift-test-sdk", "swift-resource-dir")
 ]

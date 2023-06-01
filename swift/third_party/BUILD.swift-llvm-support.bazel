@@ -31,3 +31,12 @@ pkg_files(
     strip_prefix = strip_prefix.from_pkg(),
     visibility = ["//visibility:public"],
 )
+
+pkg_files(
+    name = "swift-resource-dir",
+    srcs = glob([
+        "toolchain/lib/swift/**/*",
+    ]),
+    strip_prefix = "toolchain/lib/swift",
+    visibility = ["//visibility:public"],
+)
