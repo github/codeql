@@ -78,18 +78,18 @@ module SqlExecution {
   }
 }
 
-  /**
-   * A data-flow node that performs SQL sanitization. 
-   */
-  class SqlSanitization extends DataFlow::Node instanceof SqlSanitization::Range { }
+/**
+ * A data-flow node that performs SQL sanitization.
+ */
+class SqlSanitization extends DataFlow::Node instanceof SqlSanitization::Range { }
 
-  /** Provides a class for modeling new SQL sanitization APIs. */
-  module SqlSanitization {
-    /**
-     * A data-flow node that performs SQL sanitization. 
-     */
-    abstract class Range extends DataFlow::Node { }
-  }
+/** Provides a class for modeling new SQL sanitization APIs. */
+module SqlSanitization {
+  /**
+   * A data-flow node that performs SQL sanitization.
+   */
+  abstract class Range extends DataFlow::Node { }
+}
 
 /**
  * A data-flow node that executes a regular expression.
