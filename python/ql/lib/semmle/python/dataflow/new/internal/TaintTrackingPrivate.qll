@@ -202,19 +202,6 @@ predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     obj = nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() and
     call.getArg(0) = nodeFrom
   )
-  or
-  // Although flow through collections is modeled precisely using stores/reads, we still
-  // allow flow out of a _tainted_ collection. This is needed in order to support taint-
-  // tracking configurations where the source is a collection.
-  exists(DataFlow::Content c | DataFlowPrivate::readStep(nodeFrom, c, nodeTo) |
-    // c instanceof DataFlow::ListElementContent
-    // or
-    // c instanceof DataFlow::SetElementContent
-    // or
-    c instanceof DataFlow::DictionaryElementContent
-    // or
-    // c instanceof DataFlow::DictionaryElementAnyContent
-  )
 }
 
 /**
