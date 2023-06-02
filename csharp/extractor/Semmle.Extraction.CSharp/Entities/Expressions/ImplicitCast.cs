@@ -1,3 +1,4 @@
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Semmle.Extraction.Kinds;
 
@@ -11,33 +12,73 @@ namespace Semmle.Extraction.CSharp.Entities.Expressions
             private set;
         }
 
-        public ImplicitCast(ExpressionNodeInfo info)
+        private ImplicitCast(ExpressionNodeInfo info)
             : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.CAST, info.Parent, info.Child, true, info.ExprValue))
         {
             Expr = Factory.Create(new ExpressionNodeInfo(Context, info.Node, this, 0));
         }
 
-        public ImplicitCast(ExpressionNodeInfo info, IMethodSymbol method)
+        private ImplicitCast(ExpressionNodeInfo info, IMethodSymbol method)
             : base(new ExpressionInfo(info.Context, info.ConvertedType, info.Location, ExprKind.OPERATOR_INVOCATION, info.Parent, info.Child, true, info.ExprValue))
         {
             Expr = Factory.Create(info.SetParent(this, 0));
 
-            var target = Method.Create(Context, method);
-            if (target is not null)
-                Context.TrapWriter.Writer.expr_call(this, target);
-            else
-                Context.ModelError(info.Node, "Failed to resolve target for operator invocation");
+            AddOperatorCall(method);
         }
 
-        /// <summary>
-        /// Creates a new expression, adding casts as required.
-        /// </summary>
-        /// <param name="cx">The extraction context.</param>
-        /// <param name="node">The expression node.</param>
-        /// <param name="parent">The parent of the expression.</param>
-        /// <param name="child">The child number.</param>
-        /// <param name="type">A type hint.</param>
-        /// <returns>A new expression.</returns>
+        private ImplicitCast(ExpressionInfo info, IMethodSymbol method, object value) : base(info)
+        {
+            Expr = Literal.CreateGenerated(Context, this, 0, method.Parameters[0].Type, value, info.Location);
+
+            AddOperatorCall(method);
+        }
+
+        private void AddOperatorCall(IMethodSymbol method)
+        {
+            var target = Method.Create(Context, method);
+            Context.TrapWriter.Writer.expr_call(this, target);
+        }
+
+        private static IMethodSymbol? GetImplicitConversionMethod(ITypeSymbol type, object value) =>
+            type
+                .GetMembers()
+                .OfType<IMethodSymbol>()
+                .Where(method =>
+                    method.GetName() == "op_Implicit" &&
+                    method.Parameters.Length == 1 &&
+                    method.Parameters[0].Type.Name == value.GetType().Name
+                )
+                .FirstOrDefault();
+
+        // Creates a new generated expression with an implicit cast added, if needed.
+        public static Expression CreateGenerated(Context cx, IExpressionParentEntity parent, int childIndex, ITypeSymbol type, object value,
+            Extraction.Entities.Location location)
+        {
+            ExpressionInfo create(ExprKind kind, string? v) =>
+                new ExpressionInfo(
+                    cx,
+                    AnnotatedTypeSymbol.CreateNotAnnotated(type),
+                    location,
+                    kind,
+                    parent,
+                    childIndex,
+                    true,
+                    v);
+
+            var method = GetImplicitConversionMethod(type, value);
+            if (method is not null)
+            {
+                var info = create(ExprKind.OPERATOR_INVOCATION, null);
+                return new ImplicitCast(info, method, value);
+            }
+            else
+            {
+                cx.ModelError(location, "Failed to resolve target for implicit operator invocation for a parameter default.");
+                return new Expression(create(ExprKind.UNKNOWN, ValueAsString(value)));
+            }
+        }
+
+        // Creates a new expression, adding casts as required.
         public static Expression Create(ExpressionNodeInfo info)
         {
             var resolvedType = info.ResolvedType;
