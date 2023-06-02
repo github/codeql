@@ -55,8 +55,7 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
         // Contact information, such as home addresses
         "post.?code|zip.?code|home.?addr|" +
         // and telephone numbers
-        "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax).?(num|no|phone)|" +
-        "emergency.?contact|" +
+        "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax).?(num|no|phone)|" + "emergency.?contact|" +
         // Geographic location - where the user is (or was)
         "latitude|longitude|nationality|" +
         // Financial data - such as credit card numbers, salary, bank accounts, and debts
