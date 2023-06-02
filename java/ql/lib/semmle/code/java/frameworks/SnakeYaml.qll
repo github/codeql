@@ -66,7 +66,7 @@ private class IsGlobalTagAllowed extends Method {
 /**
  * Holds if `m` always returns `true` ignoring any exceptional flow.
  */
-private predicate alwaysReturnsTrue(IsGlobalTagAllowed m) {
+private predicate alwaysAllowsGlobalTags(IsGlobalTagAllowed m) {
   forex(ReturnStmt rs | rs.getEnclosingCallable() = m |
     rs.getResult().(CompileTimeConstantExpr).getBooleanValue() = true
   )
@@ -79,7 +79,7 @@ private predicate alwaysReturnsTrue(IsGlobalTagAllowed m) {
 private class UnsafeTagInspector extends RefType {
   UnsafeTagInspector() {
     this.getAnAncestor() instanceof TagInspector and
-    alwaysReturnsTrue(this.getAMethod().(IsGlobalTagAllowed))
+    alwaysAllowsGlobalTags(this.getAMethod())
   }
 }
 
