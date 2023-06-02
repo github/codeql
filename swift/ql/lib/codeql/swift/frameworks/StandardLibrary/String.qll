@@ -125,7 +125,6 @@ private class StringFieldsInheritTaint extends TaintInheritingContent,
 {
   StringFieldsInheritTaint() {
     this.getField()
-        .(FieldDecl)
         .hasQualifiedName(["String", "StringProtocol"],
           [
             "unicodeScalars", "utf8", "utf16", "lazy", "utf8CString", "description",

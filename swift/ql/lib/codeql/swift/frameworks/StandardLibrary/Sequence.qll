@@ -36,5 +36,5 @@ private class SequenceSummaries extends SummaryModelCsv {
 private class SequenceFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
-  SequenceFieldsInheritTaint() { this.getField().(FieldDecl).hasQualifiedName("Sequence", "lazy") }
+  SequenceFieldsInheritTaint() { this.getField().hasQualifiedName("Sequence", "lazy") }
 }

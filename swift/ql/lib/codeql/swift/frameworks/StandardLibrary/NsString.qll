@@ -133,7 +133,6 @@ private class NsStringFieldsInheritTaint extends TaintInheritingContent,
 {
   NsStringFieldsInheritTaint() {
     this.getField()
-        .(FieldDecl)
         .hasQualifiedName("NSString",
           [
             "utf8String", "lowercased", "localizedLowedCase", "uppercased", "localizedUppercase",
