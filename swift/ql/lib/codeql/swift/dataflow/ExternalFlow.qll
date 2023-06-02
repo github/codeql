@@ -268,7 +268,6 @@ module CsvValidation {
     exists(string row, string kind | summaryModel(row) |
       kind = row.splitAt(";", 8) and
       not kind instanceof ValidSummaryKind and
-      //not kind = ["taint", "value"] and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
   }

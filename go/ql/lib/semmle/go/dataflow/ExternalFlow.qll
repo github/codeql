@@ -192,7 +192,6 @@ module ModelValidation {
   private string getInvalidModelKind() {
     exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
       not kind instanceof ValidSummaryKind and
-      //not kind = ["taint", "value"] and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
   }

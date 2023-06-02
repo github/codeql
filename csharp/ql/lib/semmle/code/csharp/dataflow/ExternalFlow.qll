@@ -208,27 +208,21 @@ module ModelValidation {
   private string getInvalidModelKind() {
     exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
       not kind instanceof ValidSummaryKind and
-      //not kind = ["taint", "value"] and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
     or
     exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
       not kind instanceof ValidSinkKind and
-      // not kind =
-      //   ["code-injection", "sql-injection", "js-injection", "html-injection", "file-content-store"] and
-      not kind.matches("encryption-%") and
       result = "Invalid kind \"" + kind + "\" in sink model."
     )
     or
     exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
       not kind instanceof ValidSourceKind and
-      //not kind = ["local", "remote", "file", "file-write"] and
       result = "Invalid kind \"" + kind + "\" in source model."
     )
     or
     exists(string kind | neutralModel(_, _, _, _, kind, _) |
       not kind instanceof ValidNeutralKind and
-      //not kind = ["summary", "source", "sink"] and
       result = "Invalid kind \"" + kind + "\" in neutral model."
     )
   }
