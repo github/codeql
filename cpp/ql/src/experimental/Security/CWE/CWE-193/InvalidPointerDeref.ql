@@ -182,6 +182,8 @@ predicate isSinkImpl(
 /**
  * Yields any instruction that is control-flow reachable from `instr`.
  */
+bindingset[instr, result]
+pragma[inline_late]
 Instruction getASuccessor(Instruction instr) {
   exists(IRBlock b, int instrIndex, int resultIndex |
     result.getBlock() = b and
@@ -202,11 +204,12 @@ Instruction getASuccessor(Instruction instr) {
  */
 pragma[inline]
 predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string operation, int delta) {
-  exists(AddressOperand addr |
-    bounded1(addr.getDef(), sink.asInstruction(), delta) and
+  exists(AddressOperand addr, Instruction s |
+    s = sink.asInstruction() and
+    bounded1(addr.getDef(), s, delta) and
     delta >= 0 and
     i.getAnOperand() = addr and
-    i = getASuccessor(sink.asInstruction())
+    i = getASuccessor(s)
   |
     i instanceof StoreInstruction and
     operation = "write"
