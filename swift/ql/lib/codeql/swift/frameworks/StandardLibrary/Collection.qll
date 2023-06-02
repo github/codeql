@@ -47,9 +47,8 @@ private class CollectionFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
   CollectionFieldsInheritTaint() {
-    exists(FieldDecl f | this.getField() = f |
-      f.getEnclosingDecl().asNominalTypeDecl().getName() = ["Collection", "BidirectionalCollection"] and
-      f.getName() = ["first", "last"]
-    )
+    this.getField()
+        .(FieldDecl)
+        .hasQualifiedName(["Collection", "BidirectionalCollection"], ["first", "last"])
   }
 }

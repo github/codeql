@@ -132,20 +132,19 @@ private class NsStringFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
   NsStringFieldsInheritTaint() {
-    exists(FieldDecl f | this.getField() = f |
-      f.getEnclosingDecl().asNominalTypeDecl().getName() = "NSString" and
-      f.getName() =
-        [
-          "utf8String", "lowercased", "localizedLowedCase", "uppercased", "localizedUppercase",
-          "capitalized", "localizedCapitalized", "decomposedStringWithCanonicalMapping",
-          "decomposedStringWithCompatibilityMapping", "precomposedStringWithCanonicalMapping",
-          "precomposedStringWithCompatibilityMapping", "doubleValue", "floatValue", "intValue",
-          "integerValue", "longLongValue", "boolValue", "description", "pathComponents",
-          "fileSystemRepresentation", "lastPathComponent", "pathExtension",
-          "abbreviatingWithTildeInPath", "deletingLastPathComponent", "deletingPathExtension",
-          "expandingTildeInPath", "resolvingSymlinksInPath", "standardizingPath",
-          "removingPercentEncoding"
-        ]
-    )
+    this.getField()
+        .(FieldDecl)
+        .hasQualifiedName("NSString",
+          [
+            "utf8String", "lowercased", "localizedLowedCase", "uppercased", "localizedUppercase",
+            "capitalized", "localizedCapitalized", "decomposedStringWithCanonicalMapping",
+            "decomposedStringWithCompatibilityMapping", "precomposedStringWithCanonicalMapping",
+            "precomposedStringWithCompatibilityMapping", "doubleValue", "floatValue", "intValue",
+            "integerValue", "longLongValue", "boolValue", "description", "pathComponents",
+            "fileSystemRepresentation", "lastPathComponent", "pathExtension",
+            "abbreviatingWithTildeInPath", "deletingLastPathComponent", "deletingPathExtension",
+            "expandingTildeInPath", "resolvingSymlinksInPath", "standardizingPath",
+            "removingPercentEncoding"
+          ])
   }
 }
