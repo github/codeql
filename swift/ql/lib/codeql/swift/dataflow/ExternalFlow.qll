@@ -74,6 +74,7 @@ private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
 private import FlowSummary as FlowSummary
+private import SharedModelValidation
 
 /**
  * A unit class for adding additional source model rows.
@@ -266,7 +267,8 @@ module CsvValidation {
   private string getInvalidModelKind() {
     exists(string row, string kind | summaryModel(row) |
       kind = row.splitAt(";", 8) and
-      not kind = ["taint", "value"] and
+      not kind instanceof ValidSummaryKind and
+      //not kind = ["taint", "value"] and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
   }

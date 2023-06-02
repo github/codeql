@@ -95,6 +95,7 @@ private import internal.DataFlowPublic
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
+private import SharedModelValidation
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel = Extensions::sourceModel/9;
@@ -206,24 +207,28 @@ module ModelValidation {
 
   private string getInvalidModelKind() {
     exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
-      not kind = ["taint", "value"] and
+      not kind instanceof ValidSummaryKind and
+      //not kind = ["taint", "value"] and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
     or
     exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
-      not kind =
-        ["code-injection", "sql-injection", "js-injection", "html-injection", "file-content-store"] and
+      not kind instanceof ValidSinkKind and
+      // not kind =
+      //   ["code-injection", "sql-injection", "js-injection", "html-injection", "file-content-store"] and
       not kind.matches("encryption-%") and
       result = "Invalid kind \"" + kind + "\" in sink model."
     )
     or
     exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["local", "remote", "file", "file-write"] and
+      not kind instanceof ValidSourceKind and
+      //not kind = ["local", "remote", "file", "file-write"] and
       result = "Invalid kind \"" + kind + "\" in source model."
     )
     or
     exists(string kind | neutralModel(_, _, _, _, kind, _) |
-      not kind = ["summary", "source", "sink"] and
+      not kind instanceof ValidNeutralKind and
+      //not kind = ["summary", "source", "sink"] and
       result = "Invalid kind \"" + kind + "\" in neutral model."
     )
   }

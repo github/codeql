@@ -68,6 +68,7 @@ private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
 private import FlowSummary
+private import SharedModelValidation
 
 /**
  * A module importing the frameworks that provide external flow data,
@@ -190,7 +191,8 @@ module ModelValidation {
 
   private string getInvalidModelKind() {
     exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
-      not kind = ["taint", "value"] and
+      not kind instanceof ValidSummaryKind and
+      //not kind = ["taint", "value"] and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
   }

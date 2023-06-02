@@ -87,6 +87,7 @@ private import internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
 private import ExternalFlowExtensions as Extensions
 private import FlowSummary
+private import SharedModelValidation
 
 /**
  * A class for activating additional model rows.
@@ -311,20 +312,22 @@ module ModelValidation {
 
   private string getInvalidModelKind() {
     exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
-      not kind = ["taint", "value"] and
+      not kind instanceof ValidSummaryKind and
+      //not kind = ["taint", "value"] and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
     or
     exists(string kind, string msg | sinkModel(_, _, _, _, _, _, _, kind, _) |
-      not kind =
-        [
-          "request-forgery", "jndi-injection", "ldap-injection", "sql-injection", "log-injection",
-          "mvel-injection", "xpath-injection", "groovy-injection", "html-injection", "js-injection",
-          "ognl-injection", "intent-redirection", "pending-intents", "url-redirection",
-          "path-injection", "file-content-store", "hostname-verification", "response-splitting",
-          "information-leak", "xslt-injection", "jexl-injection", "bean-validation",
-          "template-injection", "fragment-injection", "command-injection"
-        ] and
+      not kind instanceof ValidSinkKind and
+      // not kind =
+      //   [
+      //     "request-forgery", "jndi-injection", "ldap-injection", "sql-injection", "log-injection",
+      //     "mvel-injection", "xpath-injection", "groovy-injection", "html-injection", "js-injection",
+      //     "ognl-injection", "intent-redirection", "pending-intents", "url-redirection",
+      //     "path-injection", "file-content-store", "hostname-verification", "response-splitting",
+      //     "information-leak", "xslt-injection", "jexl-injection", "bean-validation",
+      //     "template-injection", "fragment-injection", "command-injection"
+      //   ] and
       not kind.matches("regex-use%") and
       not kind.matches("qltest%") and
       msg = "Invalid kind \"" + kind + "\" in sink model." and
@@ -335,13 +338,15 @@ module ModelValidation {
     )
     or
     exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind = ["remote", "contentprovider", "android-external-storage-dir"] and
+      not kind instanceof ValidSourceKind and
+      // not kind = ["remote", "contentprovider", "android-widget", "android-external-storage-dir"] and
       not kind.matches("qltest%") and
       result = "Invalid kind \"" + kind + "\" in source model."
     )
     or
     exists(string kind | neutralModel(_, _, _, _, kind, _) |
-      not kind = ["summary", "source", "sink"] and
+      not kind instanceof ValidNeutralKind and
+      //not kind = ["summary", "source", "sink"] and
       result = "Invalid kind \"" + kind + "\" in neutral model."
     )
   }
