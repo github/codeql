@@ -663,14 +663,12 @@ module ModelOutput {
     or
     exists(string kind | sinkModel(_, _, kind) |
       not kind instanceof ValidSinkKind and
-      not kind.matches("credentials-%") and
       not kind.matches("test-%") and
       result = "Invalid kind \"" + kind + "\" in sink model."
     )
     or
     exists(string kind | sourceModel(_, _, kind) |
       not kind instanceof ValidSourceKind and
-      not kind.matches("qltest%") and
       result = "Invalid kind \"" + kind + "\" in source model."
     )
   }
