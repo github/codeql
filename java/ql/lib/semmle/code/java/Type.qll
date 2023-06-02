@@ -987,6 +987,12 @@ private string getAPublicObjectMethodSignature() {
   )
 }
 
+pragma[noinline]
+private Method getAnInterfaceConcreteMethod(Interface interface) {
+  interface.inherits(result) and
+  not result.isAbstract()
+}
+
 private Method getAnAbstractMethod(Interface interface) {
   interface.inherits(result) and
   result.isAbstract() and
@@ -995,9 +1001,8 @@ private Method getAnAbstractMethod(Interface interface) {
   // Make sure that there is no other non-abstract method
   // (e.g. `default`) which overrides the abstract one
   not exists(Method m |
-    interface.inherits(m) and
-    not m.isAbstract() and
-    m.overrides(result)
+    m = getAnInterfaceConcreteMethod(interface) and
+    pragma[only_bind_out](m).overrides(result)
   )
 }
 
