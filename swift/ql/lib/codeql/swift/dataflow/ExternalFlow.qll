@@ -270,6 +270,16 @@ module CsvValidation {
       not kind instanceof ValidSummaryKind and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
+    or
+    exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
+      not kind instanceof ValidSinkKind and
+      result = "Invalid kind \"" + kind + "\" in sink model."
+    )
+    or
+    exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
+      not kind instanceof ValidSourceKind and
+      result = "Invalid kind \"" + kind + "\" in source model."
+    )
   }
 
   private string getInvalidModelSubtype() {
