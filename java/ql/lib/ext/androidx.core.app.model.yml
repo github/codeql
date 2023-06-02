@@ -3,12 +3,12 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["androidx.core.app", "AlarmManagerCompat", True, "setAlarmClock", "", "", "Argument[2..3]", "pending-intent-sent", "manual"]
-      - ["androidx.core.app", "AlarmManagerCompat", True, "setAndAllowWhileIdle", "", "", "Argument[3]", "pending-intent-sent", "manual"]
-      - ["androidx.core.app", "AlarmManagerCompat", True, "setExact", "", "", "Argument[3]", "pending-intent-sent", "manual"]
-      - ["androidx.core.app", "AlarmManagerCompat", True, "setExactAndAllowWhileIdle", "", "", "Argument[3]", "pending-intent-sent", "manual"]
-      - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(String,int,Notification)", "", "Argument[2]", "pending-intent-sent", "manual"]
-      - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(int,Notification)", "", "Argument[1]", "pending-intent-sent", "manual"]
+      - ["androidx.core.app", "AlarmManagerCompat", True, "setAlarmClock", "", "", "Argument[2..3]", "pending-intents", "manual"]
+      - ["androidx.core.app", "AlarmManagerCompat", True, "setAndAllowWhileIdle", "", "", "Argument[3]", "pending-intents", "manual"]
+      - ["androidx.core.app", "AlarmManagerCompat", True, "setExact", "", "", "Argument[3]", "pending-intents", "manual"]
+      - ["androidx.core.app", "AlarmManagerCompat", True, "setExactAndAllowWhileIdle", "", "", "Argument[3]", "pending-intents", "manual"]
+      - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(String,int,Notification)", "", "Argument[2]", "pending-intents", "manual"]
+      - ["androidx.core.app", "NotificationManagerCompat", True, "notify", "(int,Notification)", "", "Argument[1]", "pending-intents", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

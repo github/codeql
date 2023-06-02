@@ -13,7 +13,7 @@ abstract class JexlEvaluationSink extends DataFlow::ExprNode { }
 
 /** Default sink for JXEL injection vulnerabilities. */
 private class DefaultJexlEvaluationSink extends JexlEvaluationSink {
-  DefaultJexlEvaluationSink() { sinkNode(this, "jexl") }
+  DefaultJexlEvaluationSink() { sinkNode(this, "jexl-injection") }
 }
 
 /**
