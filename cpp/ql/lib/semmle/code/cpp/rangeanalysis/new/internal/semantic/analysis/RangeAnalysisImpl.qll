@@ -7,32 +7,8 @@ private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticBound
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticLocation
 private import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticSSA
 
-module ConstantBounds implements BoundSig<FloatDelta> {
-  class SemBound instanceof SemanticBound::SemBound {
-    SemBound() {
-      this instanceof SemanticBound::SemZeroBound
-      or
-      this.(SemanticBound::SemSsaBound).getAVariable() instanceof SemSsaPhiNode
-    }
-
-    string toString() { result = super.toString() }
-
-    SemLocation getLocation() { result = super.getLocation() }
-
-    SemExpr getExpr(float delta) { result = super.getExpr(delta) }
-  }
-
-  class SemZeroBound extends SemBound instanceof SemanticBound::SemZeroBound { }
-
-  class SemSsaBound extends SemBound instanceof SemanticBound::SemSsaBound {
-    SemSsaVariable getAVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
-  }
-}
-
 module RelativeBounds implements BoundSig<FloatDelta> {
   class SemBound instanceof SemanticBound::SemBound {
-    SemBound() { not this instanceof SemanticBound::SemZeroBound }
-
     string toString() { result = super.toString() }
 
     SemLocation getLocation() { result = super.getLocation() }
@@ -46,10 +22,6 @@ module RelativeBounds implements BoundSig<FloatDelta> {
     SemSsaVariable getAVariable() { result = this.(SemanticBound::SemSsaBound).getAVariable() }
   }
 }
-
-module ConstantStage =
-  RangeStage<FloatDelta, ConstantBounds, FloatOverflow, CppLangImplConstant,
-    RangeUtil<FloatDelta, CppLangImplConstant>>;
 
 module RelativeStage =
   RangeStage<FloatDelta, RelativeBounds, FloatOverflow, CppLangImplRelative,
@@ -57,17 +29,7 @@ module RelativeStage =
 
 private newtype TSemReason =
   TSemNoReason() or
-  TSemCondReason(SemGuard guard) {
-    guard = any(ConstantStage::SemCondReason reason).getCond()
-    or
-    guard = any(RelativeStage::SemCondReason reason).getCond()
-  }
-
-ConstantStage::SemReason constantReason(SemReason reason) {
-  result instanceof ConstantStage::SemNoReason and reason instanceof SemNoReason
-  or
-  result.(ConstantStage::SemCondReason).getCond() = reason.(SemCondReason).getCond()
-}
+  TSemCondReason(SemGuard guard) { guard = any(RelativeStage::SemCondReason reason).getCond() }
 
 RelativeStage::SemReason relativeReason(SemReason reason) {
   result instanceof RelativeStage::SemNoReason and reason instanceof SemNoReason
@@ -81,8 +43,6 @@ module Public {
   predicate semBounded(
     SemExpr e, SemanticBound::SemBound b, float delta, boolean upper, SemReason reason
   ) {
-    ConstantStage::semBounded(e, b, delta, upper, constantReason(reason))
-    or
     RelativeStage::semBounded(e, b, delta, upper, relativeReason(reason))
   }
 

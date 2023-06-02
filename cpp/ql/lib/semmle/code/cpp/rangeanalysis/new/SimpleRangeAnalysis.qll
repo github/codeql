@@ -24,10 +24,10 @@ private import semmle.code.cpp.rangeanalysis.RangeAnalysisUtils
  *    `lowerBound(expr.getFullyConverted())`
  */
 float lowerBound(Expr expr) {
-  exists(Instruction i, ConstantBounds::SemBound b |
-    i.getAst() = expr and b instanceof ConstantBounds::SemZeroBound
+  exists(Instruction i, RelativeBounds::SemBound b |
+    i.getAst() = expr and b instanceof RelativeBounds::SemZeroBound
   |
-    ConstantStage::semBounded(getSemanticExpr(i), b, result, false, _)
+    RelativeStage::semBounded(getSemanticExpr(i), b, result, false, _)
   )
 }
 
@@ -44,10 +44,10 @@ float lowerBound(Expr expr) {
  *    `upperBound(expr.getFullyConverted())`
  */
 float upperBound(Expr expr) {
-  exists(Instruction i, ConstantBounds::SemBound b |
-    i.getAst() = expr and b instanceof ConstantBounds::SemZeroBound
+  exists(Instruction i, RelativeBounds::SemBound b |
+    i.getAst() = expr and b instanceof RelativeBounds::SemZeroBound
   |
-    ConstantStage::semBounded(getSemanticExpr(i), b, result, true, _)
+    RelativeStage::semBounded(getSemanticExpr(i), b, result, true, _)
   )
 }
 
@@ -101,8 +101,8 @@ predicate exprMightOverflowNegatively(Expr expr) {
   or
   exists(SemanticExprConfig::Expr semExpr |
     semExpr.getUnconverted().getAst() = expr and
-    ConstantStage::potentiallyOverflowingExpr(false, semExpr) and
-    not ConstantStage::initialBounded(semExpr, _, _, false, _, _, _)
+    RelativeStage::potentiallyOverflowingExpr(false, semExpr) and
+    not RelativeStage::initialBounded(semExpr, _, _, false, _, _, _)
   )
 }
 
@@ -127,8 +127,8 @@ predicate exprMightOverflowPositively(Expr expr) {
   or
   exists(SemanticExprConfig::Expr semExpr |
     semExpr.getUnconverted().getAst() = expr and
-    ConstantStage::potentiallyOverflowingExpr(true, semExpr) and
-    not ConstantStage::initialBounded(semExpr, _, _, true, _, _, _)
+    RelativeStage::potentiallyOverflowingExpr(true, semExpr) and
+    not RelativeStage::initialBounded(semExpr, _, _, true, _, _, _)
   )
 }
 
