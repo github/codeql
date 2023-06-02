@@ -180,6 +180,22 @@ predicate isSinkImpl(
 }
 
 /**
+ * Yields any instruction that is control-flow reachable from `instr`.
+ */
+Instruction getASuccessor(Instruction instr) {
+  exists(IRBlock b, int instrIndex, int resultIndex |
+    result.getBlock() = b and
+    instr.getBlock() = b and
+    b.getInstruction(instrIndex) = instr and
+    b.getInstruction(resultIndex) = result
+  |
+    resultIndex >= instrIndex
+  )
+  or
+  instr.getBlock().getASuccessor+() = result.getBlock()
+}
+
+/**
  * Holds if `sink` is a sink for `InvalidPointerToDerefConfig` and `i` is a `StoreInstruction` that
  * writes to an address that non-strictly upper-bounds `sink`, or `i` is a `LoadInstruction` that
  * reads from an address that non-strictly upper-bounds `sink`.
@@ -189,7 +205,8 @@ predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string o
   exists(AddressOperand addr |
     bounded1(addr.getDef(), sink.asInstruction(), delta) and
     delta >= 0 and
-    i.getAnOperand() = addr
+    i.getAnOperand() = addr and
+    i = getASuccessor(sink.asInstruction())
   |
     i instanceof StoreInstruction and
     operation = "write"
