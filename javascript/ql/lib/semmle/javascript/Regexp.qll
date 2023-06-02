@@ -959,7 +959,7 @@ private predicate isUsedAsNonMatchObject(DataFlow::MethodCallNode call) {
 }
 
 /**
- * Holds if `call` is a call to `search` whose result is used in a way that suggests it returns a number.
+ * Holds if `value` is used in a way that suggests it returns a number.
  */
 pragma[inline]
 private predicate isUsedAsNumber(DataFlow::LocalSourceNode value) {
