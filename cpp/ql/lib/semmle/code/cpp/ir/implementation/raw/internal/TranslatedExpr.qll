@@ -679,7 +679,8 @@ class TranslatedPrefixCrementOperation extends TranslatedCrementOperation {
  * r1(glval<int>) = VariableAddress[x]     :
  * r2(int)        = Load[x]                : &:r1, m1
  * r3(glval<int>) = VariableAddress[#temp] :
- * r4(int)        = Store[#temp]           : &:r3, r2
+ * m1(int)        = Store[#temp]           : &:r3, r2
+ * r4(int)        = Load[#temp]            : &:r3, m1
  * r5(int)        = Constant[1]            :
  * r6(int)        = Add                    : r2, r5
  * m2(int)        = Store[x]               : &:r1, r6
