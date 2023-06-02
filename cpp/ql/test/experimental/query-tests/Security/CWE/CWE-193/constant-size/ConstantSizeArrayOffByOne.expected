@@ -1,37 +1,46 @@
 edges
-| test.cpp:66:32:66:32 | p | test.cpp:66:32:66:32 | p |
-| test.cpp:66:32:66:32 | p | test.cpp:67:5:67:6 | * ... |
-| test.cpp:66:32:66:32 | p | test.cpp:67:6:67:6 | p |
+| test.cpp:35:10:35:12 | buf | test.cpp:35:5:35:22 | access to array |
+| test.cpp:36:10:36:12 | buf | test.cpp:36:5:36:24 | access to array |
+| test.cpp:43:14:43:16 | buf | test.cpp:43:9:43:19 | access to array |
+| test.cpp:49:10:49:12 | buf | test.cpp:49:5:49:22 | access to array |
+| test.cpp:50:10:50:12 | buf | test.cpp:50:5:50:24 | access to array |
+| test.cpp:57:14:57:16 | buf | test.cpp:57:9:57:19 | access to array |
+| test.cpp:61:14:61:16 | buf | test.cpp:61:9:61:19 | access to array |
+| test.cpp:70:33:70:33 | p | test.cpp:72:5:72:15 | access to array |
 | test.cpp:77:26:77:44 | & ... | test.cpp:66:32:66:32 | p |
-| test.cpp:77:26:77:44 | & ... | test.cpp:66:32:66:32 | p |
-| test.cpp:77:27:77:44 | access to array | test.cpp:77:26:77:44 | & ... |
+| test.cpp:77:32:77:34 | buf | test.cpp:77:26:77:44 | & ... |
+| test.cpp:79:27:79:34 | buf | test.cpp:70:33:70:33 | p |
+| test.cpp:79:32:79:34 | buf | test.cpp:79:27:79:34 | buf |
 nodes
 | test.cpp:35:5:35:22 | access to array | semmle.label | access to array |
+| test.cpp:35:10:35:12 | buf | semmle.label | buf |
 | test.cpp:36:5:36:24 | access to array | semmle.label | access to array |
+| test.cpp:36:10:36:12 | buf | semmle.label | buf |
 | test.cpp:43:9:43:19 | access to array | semmle.label | access to array |
+| test.cpp:43:14:43:16 | buf | semmle.label | buf |
 | test.cpp:49:5:49:22 | access to array | semmle.label | access to array |
+| test.cpp:49:10:49:12 | buf | semmle.label | buf |
 | test.cpp:50:5:50:24 | access to array | semmle.label | access to array |
+| test.cpp:50:10:50:12 | buf | semmle.label | buf |
 | test.cpp:57:9:57:19 | access to array | semmle.label | access to array |
+| test.cpp:57:14:57:16 | buf | semmle.label | buf |
 | test.cpp:61:9:61:19 | access to array | semmle.label | access to array |
+| test.cpp:61:14:61:16 | buf | semmle.label | buf |
 | test.cpp:66:32:66:32 | p | semmle.label | p |
-| test.cpp:66:32:66:32 | p | semmle.label | p |
-| test.cpp:66:32:66:32 | p | semmle.label | p |
-| test.cpp:67:5:67:6 | * ... | semmle.label | * ... |
-| test.cpp:67:6:67:6 | p | semmle.label | p |
+| test.cpp:70:33:70:33 | p | semmle.label | p |
 | test.cpp:72:5:72:15 | access to array | semmle.label | access to array |
 | test.cpp:77:26:77:44 | & ... | semmle.label | & ... |
-| test.cpp:77:27:77:44 | access to array | semmle.label | access to array |
+| test.cpp:77:32:77:34 | buf | semmle.label | buf |
+| test.cpp:79:27:79:34 | buf | semmle.label | buf |
+| test.cpp:79:32:79:34 | buf | semmle.label | buf |
 subpaths
 #select
-| test.cpp:35:5:35:22 | access to array | test.cpp:35:5:35:22 | access to array | test.cpp:35:5:35:22 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:35:5:35:26 | Store: ... = ... | write |
-| test.cpp:36:5:36:24 | access to array | test.cpp:36:5:36:24 | access to array | test.cpp:36:5:36:24 | access to array | This pointer arithmetic may have an off-by-2 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:36:5:36:28 | Store: ... = ... | write |
-| test.cpp:43:9:43:19 | access to array | test.cpp:43:9:43:19 | access to array | test.cpp:43:9:43:19 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:43:9:43:23 | Store: ... = ... | write |
-| test.cpp:49:5:49:22 | access to array | test.cpp:49:5:49:22 | access to array | test.cpp:49:5:49:22 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:19:9:19:11 | buf | buf | test.cpp:49:5:49:26 | Store: ... = ... | write |
-| test.cpp:50:5:50:24 | access to array | test.cpp:50:5:50:24 | access to array | test.cpp:50:5:50:24 | access to array | This pointer arithmetic may have an off-by-2 error allowing it to overrun $@ at this $@. | test.cpp:19:9:19:11 | buf | buf | test.cpp:50:5:50:28 | Store: ... = ... | write |
-| test.cpp:57:9:57:19 | access to array | test.cpp:57:9:57:19 | access to array | test.cpp:57:9:57:19 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:19:9:19:11 | buf | buf | test.cpp:57:9:57:23 | Store: ... = ... | write |
-| test.cpp:61:9:61:19 | access to array | test.cpp:61:9:61:19 | access to array | test.cpp:61:9:61:19 | access to array | This pointer arithmetic may have an off-by-2 error allowing it to overrun $@ at this $@. | test.cpp:19:9:19:11 | buf | buf | test.cpp:61:9:61:23 | Store: ... = ... | write |
-| test.cpp:72:5:72:15 | access to array | test.cpp:72:5:72:15 | access to array | test.cpp:72:5:72:15 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:72:5:72:19 | Store: ... = ... | write |
-| test.cpp:77:27:77:44 | access to array | test.cpp:77:27:77:44 | access to array | test.cpp:66:32:66:32 | p | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:67:5:67:10 | Store: ... = ... | write |
-| test.cpp:77:27:77:44 | access to array | test.cpp:77:27:77:44 | access to array | test.cpp:66:32:66:32 | p | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:67:5:67:10 | Store: ... = ... | write |
-| test.cpp:77:27:77:44 | access to array | test.cpp:77:27:77:44 | access to array | test.cpp:67:5:67:6 | * ... | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:67:5:67:10 | Store: ... = ... | write |
-| test.cpp:77:27:77:44 | access to array | test.cpp:77:27:77:44 | access to array | test.cpp:67:6:67:6 | p | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:67:5:67:10 | Store: ... = ... | write |
+| test.cpp:35:5:35:22 | PointerAdd: access to array | test.cpp:35:10:35:12 | buf | test.cpp:35:5:35:22 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:35:5:35:26 | Store: ... = ... | write |
+| test.cpp:36:5:36:24 | PointerAdd: access to array | test.cpp:36:10:36:12 | buf | test.cpp:36:5:36:24 | access to array | This pointer arithmetic may have an off-by-2 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:36:5:36:28 | Store: ... = ... | write |
+| test.cpp:43:9:43:19 | PointerAdd: access to array | test.cpp:43:14:43:16 | buf | test.cpp:43:9:43:19 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:43:9:43:23 | Store: ... = ... | write |
+| test.cpp:49:5:49:22 | PointerAdd: access to array | test.cpp:49:10:49:12 | buf | test.cpp:49:5:49:22 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:19:9:19:11 | buf | buf | test.cpp:49:5:49:26 | Store: ... = ... | write |
+| test.cpp:50:5:50:24 | PointerAdd: access to array | test.cpp:50:10:50:12 | buf | test.cpp:50:5:50:24 | access to array | This pointer arithmetic may have an off-by-2 error allowing it to overrun $@ at this $@. | test.cpp:19:9:19:11 | buf | buf | test.cpp:50:5:50:28 | Store: ... = ... | write |
+| test.cpp:57:9:57:19 | PointerAdd: access to array | test.cpp:57:14:57:16 | buf | test.cpp:57:9:57:19 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:19:9:19:11 | buf | buf | test.cpp:57:9:57:23 | Store: ... = ... | write |
+| test.cpp:61:9:61:19 | PointerAdd: access to array | test.cpp:61:14:61:16 | buf | test.cpp:61:9:61:19 | access to array | This pointer arithmetic may have an off-by-2 error allowing it to overrun $@ at this $@. | test.cpp:19:9:19:11 | buf | buf | test.cpp:61:9:61:23 | Store: ... = ... | write |
+| test.cpp:72:5:72:15 | PointerAdd: access to array | test.cpp:79:32:79:34 | buf | test.cpp:72:5:72:15 | access to array | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:72:5:72:19 | Store: ... = ... | write |
+| test.cpp:77:27:77:44 | PointerAdd: access to array | test.cpp:77:32:77:34 | buf | test.cpp:66:32:66:32 | p | This pointer arithmetic may have an off-by-1 error allowing it to overrun $@ at this $@. | test.cpp:15:9:15:11 | buf | buf | test.cpp:67:5:67:10 | Store: ... = ... | write |

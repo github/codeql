@@ -19,7 +19,7 @@ private import semmle.code.csharp.dataflow.ExternalFlow
 abstract class ExternalLocationSink extends DataFlow::ExprNode { }
 
 private class ExternalModelSink extends ExternalLocationSink {
-  ExternalModelSink() { sinkNode(this, "remote") }
+  ExternalModelSink() { sinkNode(this, "file-content-store") }
 }
 
 /**

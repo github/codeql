@@ -16,7 +16,7 @@
  */
 
 import cpp
-import experimental.semmle.code.cpp.dataflow.ProductFlow
+import semmle.code.cpp.ir.dataflow.internal.ProductFlow
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.analysis.RangeAnalysis
 import semmle.code.cpp.rangeanalysis.new.internal.semantic.SemanticExprSpecific
 import semmle.code.cpp.ir.IR
@@ -81,8 +81,8 @@ predicate hasSize(HeuristicAllocationExpr alloc, DataFlow::Node n, int state) {
  * ```
  *
  * We do this by splitting the task up into two configurations:
- * 1. `AllocToInvalidPointerConf` find flow from `malloc(size)` to `begin + size`, and
- * 2. `InvalidPointerToDerefConf` finds flow from `begin + size` to an `end` (on line 3).
+ * 1. `AllocToInvalidPointerConfig` find flow from `malloc(size)` to `begin + size`, and
+ * 2. `InvalidPointerToDerefConfig` finds flow from `begin + size` to an `end` (on line 3).
  *
  * Finally, the range-analysis library will find a load from (or store to) an address that
  * is non-strictly upper-bounded by `end` (which in this case is `*p`).
@@ -180,13 +180,13 @@ predicate isSinkImpl(
 }
 
 /**
- * Holds if `sink` is a sink for `InvalidPointerToDerefConf` and `i` is a `StoreInstruction` that
+ * Holds if `sink` is a sink for `InvalidPointerToDerefConfig` and `i` is a `StoreInstruction` that
  * writes to an address that non-strictly upper-bounds `sink`, or `i` is a `LoadInstruction` that
  * reads from an address that non-strictly upper-bounds `sink`.
  */
 pragma[inline]
-predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string operation) {
-  exists(AddressOperand addr, int delta |
+predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string operation, int delta) {
+  exists(AddressOperand addr |
     bounded1(addr.getDef(), sink.asInstruction(), delta) and
     delta >= 0 and
     i.getAnOperand() = addr
@@ -201,13 +201,13 @@ predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string o
 
 /**
  * A configuration to track flow from a pointer-arithmetic operation found
- * by `AllocToInvalidPointerConf` to a dereference of the pointer.
+ * by `AllocToInvalidPointerConfig` to a dereference of the pointer.
  */
 module InvalidPointerToDerefConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { invalidPointerToDerefSource(_, source, _) }
 
   pragma[inline]
-  predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _) }
+  predicate isSink(DataFlow::Node sink) { isInvalidPointerDerefSink(sink, _, _, _) }
 
   predicate isBarrier(DataFlow::Node node) {
     node = any(DataFlow::SsaPhiNode phi | not phi.isPhiRead()).getAnInput(true)
@@ -237,17 +237,17 @@ predicate invalidPointerToDerefSource(
 }
 
 newtype TMergedPathNode =
-  // The path nodes computed by the first projection of `AllocToInvalidPointerConf`
+  // The path nodes computed by the first projection of `AllocToInvalidPointerConfig`
   TPathNode1(AllocToInvalidPointerFlow::PathNode1 p) or
-  // The path nodes computed by `InvalidPointerToDerefConf`
+  // The path nodes computed by `InvalidPointerToDerefConfig`
   TPathNode3(InvalidPointerToDerefFlow::PathNode p) or
-  // The read/write that uses the invalid pointer identified by `InvalidPointerToDerefConf`.
-  // This one is needed because the sink identified by `InvalidPointerToDerefConf` is the
+  // The read/write that uses the invalid pointer identified by `InvalidPointerToDerefConfig`.
+  // This one is needed because the sink identified by `InvalidPointerToDerefConfig` is the
   // pointer, but we want to raise an alert at the dereference.
   TPathNodeSink(Instruction i) {
     exists(DataFlow::Node n |
       InvalidPointerToDerefFlow::flowTo(n) and
-      isInvalidPointerDerefSink(n, i, _)
+      isInvalidPointerDerefSink(n, i, _, _)
     )
   }
 
@@ -321,7 +321,15 @@ query predicate edges(MergedPathNode node1, MergedPathNode node2) {
   or
   node1.asPathNode3().getASuccessor() = node2.asPathNode3()
   or
-  joinOn2(node1.asPathNode3(), node2.asSinkNode(), _)
+  joinOn2(node1.asPathNode3(), node2.asSinkNode(), _, _)
+}
+
+query predicate nodes(MergedPathNode n, string key, string val) {
+  AllocToInvalidPointerFlow::PathGraph1::nodes(n.asPathNode1(), key, val)
+  or
+  InvalidPointerToDerefFlow::PathGraph::nodes(n.asPathNode3(), key, val)
+  or
+  key = "semmle.label" and val = n.asSinkNode().toString()
 }
 
 query predicate subpaths(
@@ -335,8 +343,8 @@ query predicate subpaths(
 }
 
 /**
- * Holds if `p1` is a sink of `AllocToInvalidPointerConf` and `p2` is a source
- * of `InvalidPointerToDerefConf`, and they are connected through `pai`.
+ * Holds if `p1` is a sink of `AllocToInvalidPointerConfig` and `p2` is a source
+ * of `InvalidPointerToDerefConfig`, and they are connected through `pai`.
  */
 predicate joinOn1(
   PointerArithmeticInstruction pai, AllocToInvalidPointerFlow::PathNode1 p1,
@@ -347,37 +355,37 @@ predicate joinOn1(
 }
 
 /**
- * Holds if `p1` is a sink of `InvalidPointerToDerefConf` and `i` is the instruction
+ * Holds if `p1` is a sink of `InvalidPointerToDerefConfig` and `i` is the instruction
  * that dereferences `p1`. The string `operation` describes whether the `i` is
  * a `StoreInstruction` or `LoadInstruction`.
  */
 pragma[inline]
-predicate joinOn2(InvalidPointerToDerefFlow::PathNode p1, Instruction i, string operation) {
-  isInvalidPointerDerefSink(p1.getNode(), i, operation)
+predicate joinOn2(InvalidPointerToDerefFlow::PathNode p1, Instruction i, string operation, int delta) {
+  isInvalidPointerDerefSink(p1.getNode(), i, operation, delta)
 }
 
 predicate hasFlowPath(
   MergedPathNode source1, MergedPathNode sink, InvalidPointerToDerefFlow::PathNode source3,
-  PointerArithmeticInstruction pai, string operation
+  PointerArithmeticInstruction pai, string operation, int delta
 ) {
   exists(InvalidPointerToDerefFlow::PathNode sink3, AllocToInvalidPointerFlow::PathNode1 sink1 |
     AllocToInvalidPointerFlow::flowPath(source1.asPathNode1(), _, sink1, _) and
     joinOn1(pai, sink1, source3) and
     InvalidPointerToDerefFlow::flowPath(source3, sink3) and
-    joinOn2(sink3, sink.asSinkNode(), operation)
+    joinOn2(sink3, sink.asSinkNode(), operation, delta)
   )
 }
 
 from
-  MergedPathNode source, MergedPathNode sink, int k, string kstr,
+  MergedPathNode source, MergedPathNode sink, int k2, int k3, string kstr,
   InvalidPointerToDerefFlow::PathNode source3, PointerArithmeticInstruction pai, string operation,
   Expr offset, DataFlow::Node n
 where
-  hasFlowPath(source, sink, source3, pai, operation) and
-  invalidPointerToDerefSource(pai, source3.getNode(), k) and
+  hasFlowPath(source, sink, source3, pai, operation, k3) and
+  invalidPointerToDerefSource(pai, source3.getNode(), k2) and
   offset = pai.getRight().getUnconvertedResultExpression() and
   n = source.asPathNode1().getNode() and
-  if k = 0 then kstr = "" else kstr = " + " + k
+  if (k2 + k3) = 0 then kstr = "" else kstr = " + " + (k2 + k3)
 select sink, source, sink,
   "This " + operation + " might be out of bounds, as the pointer might be equal to $@ + $@" + kstr +
     ".", n, n.toString(), offset, offset.toString()
