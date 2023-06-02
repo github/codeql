@@ -7,38 +7,57 @@
 
 /** A valid models-as-data sink kind. */
 class ValidSinkKind extends string {
+  bindingset[this]
   ValidSinkKind() {
     this =
       [
-        // shared ALL languages
-        "request-forgery", "ldap-injection", "sql-injection", "nosql-injection", "log-injection",
-        "xpath-injection", "html-injection", "js-injection", "url-redirection", "path-injection",
-        "file-content-store", "hostname-verification", "response-splitting", "information-leak",
-        "xslt-injection", "template-injection", "fragment-injection", "command-injection",
-        "unsafe-deserialization", "xxe", "database-store", "format-string",
-        // .matches("credentials-%"), .matches("regex-use%")"
-        // shared MOST languages
-        "code-injection", // .matches("encryption-%"),
-        // Java only
-        "jndi-injection", "mvel-injection", "groovy-injection", "ognl-injection", "jexl-injection",
-        "bean-validation", "intent-redirection", "pending-intents",
-        // JS only
-        "mongodb.sink",
-        // Swift only
-        "preferences-store", "transmission", "predicate-injection", "webview-fetch",
-        "tls-protocol-version", "hash-iteration-count" // .matches("%string-%length"), .matches("weak-hash-input-")
+        // shared
+        "code-injection", "command-injection", "file-content-store", "html-injection",
+        "js-injection", "ldap-injection", "log-injection", "path-injection", "request-forgery",
+        "sql-injection", "url-redirection",
+        // Java-only currently, but may be shared in the future
+        "bean-validation", "fragment-injection", "groovy-injection", "hostname-verification",
+        "information-leak", "intent-redirection", "jexl-injection", "jndi-injection",
+        "mvel-injection", "ognl-injection", "pending-intents", "response-splitting",
+        "template-injection", "xpath-injection", "xslt-injection",
+        // JavaScript-only currently, but may be shared in the future
+        "mongodb.sink", "nosql-injection", "unsafe-deserialization",
+        // Swift-only currently, but may be shared in the future
+        "database-store", "format-string", "hash-iteration-count", "predicate-injection",
+        "preferences-store", "tls-protocol-version", "transmission", "webview-fetch", "xxe"
       ]
+    or
+    this.matches([
+        // shared
+        "encryption-%",
+        // Java-only currently, but may be shared in the future
+        "regex-use%",
+        // JavaScript-only currently, but may be shared in the future
+        "credentials-%",
+        // Swift-only currently, but may be shared in the future
+        "%string-%length", "weak-hash-input-%"
+      ])
   }
 }
 
 /** A valid models-as-data source kind. */
 class ValidSourceKind extends string {
+  bindingset[this]
   ValidSourceKind() {
     this =
       [
-        // shared ALL languages
-        "remote", "local"
+        // shared
+        "local", "remote",
+        // Java
+        "android-external-storage-dir", "contentprovider",
+        // C#
+        "file", "file-write",
+        // JavaScript
+        "database-access-result"
       ]
+    or
+    // Swift
+    this.matches("%string-%length")
   }
 }
 
@@ -47,8 +66,10 @@ class ValidSummaryKind extends string {
   ValidSummaryKind() {
     this =
       [
-        // shared ALL languages
-        "taint", "value"
+        // shared
+        "taint", "value",
+        // JavaScript
+        "type"
       ]
   }
 }
@@ -58,8 +79,8 @@ class ValidNeutralKind extends string {
   ValidNeutralKind() {
     this =
       [
-        // shared ALL languages
-        "summary", "source", "sink"
+        // Java/C# currently
+        "sink", "source", "summary"
       ]
   }
 }
