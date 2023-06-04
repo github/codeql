@@ -45,10 +45,14 @@ class RegexpCheckAsBarrierGuard extends RegexpCheckBarrier, LdapSanitizer { }
 private predicate equalityAsSanitizerGuard(DataFlow::Node g, Expr e, boolean outcome) {
   exists(DataFlow::Node passwd, DataFlow::EqualityTestNode eq |
     g = eq and
-    exists(eq.getAnOperand().getStringValue()) and
     passwd = eq.getAnOperand() and
     e = passwd.asExpr() and
-    outcome = true
+    (
+      eq.getAnOperand().getStringValue().length() > 0 and outcome = eq.getPolarity()
+      or
+      eq.getAnOperand().getStringValue().length() = 0 and
+      outcome = eq.getPolarity().booleanNot()
+    )
   )
 }
 
@@ -64,7 +68,7 @@ class EqualityAsSanitizerGuard extends LdapSanitizer {
 
 /**
  * A taint-tracking configuration for reasoning about when an `UntrustedFlowSource`
- * flows into an argument or field that is vulnerable to LDAP injection.
+ * flows into an argument or field that is vulnerable to Improper LDAP Authentication.
  */
 class ImproperLdapAuthConfiguration extends TaintTracking::Configuration {
   ImproperLdapAuthConfiguration() { this = "Improper LDAP Auth" }

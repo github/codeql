@@ -1,13 +1,12 @@
 /**
- * @name LDAP query built from user-controlled sources
- * @description Building an LDAP query from user-controlled sources is vulnerable to insertion of
- *              malicious LDAP code by the user.
+ * @name Improper LDAP Authentication
+ * @description A user-controlled query carries no authentication
  * @kind path-problem
- * @problem.severity error
- * @id go/ldap-injection
+ * @problem.severity warning
+ * @id go/improper-ldap-auth
  * @tags security
  *       experimental
- *       external/cwe/cwe-90
+ *       external/cwe/cwe-287
  */
 
 import go
