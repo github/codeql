@@ -6,6 +6,13 @@ import java.nio.file.Files;
 
 
 public class PartialPathTraversalTest {
+
+    private final String basePath;
+
+    PartialPathTraversalTest(File baseFile) throws IOException {
+        basePath = baseFile.getCanonicalPath();
+    }
+
     public void esapiExample(File dir, File parent) throws IOException {
         if (!dir.getCanonicalPath().startsWith(parent.getCanonicalPath())) { // $hasTaintFlow
             throw new IOException("Invalid directory: " + dir.getCanonicalPath());
@@ -225,6 +232,24 @@ public class PartialPathTraversalTest {
         }
     }
 
+    boolean foo25(String path) {
+        return path.startsWith(basePath); // $hasTaintFlow
+    }
+
+    static boolean testFoo25() throws IOException {
+        // An explicit insantiation is required to generate a data flow path
+        PartialPathTraversalTest test = new PartialPathTraversalTest(null);
+        return test.foo25("/hello");
+    }
+
+    boolean foo26(String parent, String path) {
+        return path.startsWith(parent); // $hasTaintFlow
+    }
+
+    boolean foo26Use(File parent, String path) throws IOException {
+        return foo26(parent.getCanonicalPath(), path);
+    }
+
     public void doesNotFlagOptimalSafeVersion(File dir, File parent) throws IOException {
         if (!dir.toPath().normalize().startsWith(parent.toPath())) { // Safe
             throw new IOException("Path traversal attempt: " + dir.getCanonicalPath());
@@ -239,6 +264,16 @@ public class PartialPathTraversalTest {
         // https://github.com/jenkinsci/jenkins/blob/be3cf6bffe7aa2fe2307c424fa418519f3bbd73b/core/src/main/java/hudson/util/jna/Kernel32Utils.java#L77-L77
         if (!file.getCanonicalPath().startsWith("\\\\")) {
             throw new RuntimeException("Boom");
+        }
+    }
+
+    void doesNotFlagWhenSlashAppended(File dir, File parent) throws IOException {
+        String parentCanonical = parent.getCanonicalPath();
+        if (!parentCanonical.endsWith("/")) {
+            parentCanonical += "/";
+        }
+        if (!dir.getCanonicalPath().startsWith(parentCanonical)) {
+            throw new IOException("Invalid directory: " + dir.getCanonicalPath());
         }
     }
 
