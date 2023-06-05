@@ -208,8 +208,7 @@ predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string o
     s = sink.asInstruction() and
     bounded1(addr.getDef(), s, delta) and
     delta >= 0 and
-    i.getAnOperand() = addr and
-    i = getASuccessor(s)
+    i.getAnOperand() = addr
   |
     i instanceof StoreInstruction and
     operation = "write"
@@ -267,7 +266,8 @@ newtype TMergedPathNode =
   TPathNodeSink(Instruction i) {
     exists(DataFlow::Node n |
       InvalidPointerToDerefFlow::flowTo(n) and
-      isInvalidPointerDerefSink(n, i, _, _)
+      isInvalidPointerDerefSink(n, i, _, _) and
+      i = getASuccessor(n.asInstruction())
     )
   }
 
