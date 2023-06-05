@@ -330,7 +330,7 @@ void test23(unsigned size, int val) {
     if(*current - xs < 1)
       return;
 
-    *--(*current) = 0; // GOOD [FALSE POSITIVE]
+    *--(*current) = 0; // GOOD
     return;
   }
 
@@ -338,7 +338,7 @@ void test23(unsigned size, int val) {
     if(*current - xs < 2)
       return;
 
-    *--(*current) = 0; // GOOD [FALSE POSITIVE]
+    *--(*current) = 0; // GOOD
     *--(*current) = 0; // GOOD
   }
 }
