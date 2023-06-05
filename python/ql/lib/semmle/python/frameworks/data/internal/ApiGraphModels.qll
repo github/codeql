@@ -661,9 +661,13 @@ module ModelOutput {
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
     or
-    exists(string kind | sinkModel(_, _, kind) |
+    exists(string kind, string msg | sinkModel(_, _, kind) |
       not kind instanceof ValidSinkKind and
-      result = "Invalid kind \"" + kind + "\" in sink model."
+      msg = "Invalid kind \"" + kind + "\" in sink model." and
+      // The part of this message that refers to outdated sink kinds can be deleted after June 1st, 2024.
+      if kind instanceof OutdatedSinkKind
+      then result = msg + " " + kind.(OutdatedSinkKind).outdatedMessage()
+      else result = msg
     )
     or
     exists(string kind | sourceModel(_, _, kind) |
