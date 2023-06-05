@@ -385,7 +385,7 @@ where
       hasFlowPath(source, sink, source3, pai, operation, k3) and
       invalidPointerToDerefSource(pai, source3.getNode(), k2)
     |
-       k2 + k3
+      k2 + k3
     ) and
   offset = pai.getRight().getUnconvertedResultExpression() and
   n = source.asPathNode1().getNode() and
