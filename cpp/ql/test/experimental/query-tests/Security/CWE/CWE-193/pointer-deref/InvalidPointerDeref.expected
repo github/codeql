@@ -730,6 +730,29 @@ edges
 | test.cpp:368:5:368:10 | ... += ... | test.cpp:372:16:372:16 | p |
 | test.cpp:371:7:371:7 | p | test.cpp:372:15:372:16 | Load: * ... |
 | test.cpp:372:16:372:16 | p | test.cpp:372:15:372:16 | Load: * ... |
+| test.cpp:377:14:377:27 | new[] | test.cpp:378:15:378:16 | xs |
+| test.cpp:378:15:378:16 | xs | test.cpp:378:15:378:23 | ... + ... |
+| test.cpp:378:15:378:16 | xs | test.cpp:378:15:378:23 | ... + ... |
+| test.cpp:378:15:378:16 | xs | test.cpp:378:15:378:23 | ... + ... |
+| test.cpp:378:15:378:16 | xs | test.cpp:378:15:378:23 | ... + ... |
+| test.cpp:378:15:378:16 | xs | test.cpp:381:5:381:7 | end |
+| test.cpp:378:15:378:16 | xs | test.cpp:381:5:381:9 | ... ++ |
+| test.cpp:378:15:378:16 | xs | test.cpp:381:5:381:9 | ... ++ |
+| test.cpp:378:15:378:16 | xs | test.cpp:384:14:384:16 | end |
+| test.cpp:378:15:378:23 | ... + ... | test.cpp:378:15:378:23 | ... + ... |
+| test.cpp:378:15:378:23 | ... + ... | test.cpp:378:15:378:23 | ... + ... |
+| test.cpp:378:15:378:23 | ... + ... | test.cpp:381:5:381:7 | end |
+| test.cpp:378:15:378:23 | ... + ... | test.cpp:381:5:381:7 | end |
+| test.cpp:378:15:378:23 | ... + ... | test.cpp:384:13:384:16 | Load: * ... |
+| test.cpp:378:15:378:23 | ... + ... | test.cpp:384:13:384:16 | Load: * ... |
+| test.cpp:378:15:378:23 | ... + ... | test.cpp:384:13:384:16 | Load: * ... |
+| test.cpp:378:15:378:23 | ... + ... | test.cpp:384:13:384:16 | Load: * ... |
+| test.cpp:378:15:378:23 | ... + ... | test.cpp:384:14:384:16 | end |
+| test.cpp:378:15:378:23 | ... + ... | test.cpp:384:14:384:16 | end |
+| test.cpp:381:5:381:7 | end | test.cpp:384:13:384:16 | Load: * ... |
+| test.cpp:381:5:381:9 | ... ++ | test.cpp:384:14:384:16 | end |
+| test.cpp:381:5:381:9 | ... ++ | test.cpp:384:14:384:16 | end |
+| test.cpp:384:14:384:16 | end | test.cpp:384:13:384:16 | Load: * ... |
 nodes
 | test.cpp:4:15:4:20 | call to malloc | semmle.label | call to malloc |
 | test.cpp:5:15:5:15 | p | semmle.label | p |
@@ -1062,6 +1085,17 @@ nodes
 | test.cpp:371:7:371:7 | p | semmle.label | p |
 | test.cpp:372:15:372:16 | Load: * ... | semmle.label | Load: * ... |
 | test.cpp:372:16:372:16 | p | semmle.label | p |
+| test.cpp:377:14:377:27 | new[] | semmle.label | new[] |
+| test.cpp:378:15:378:16 | xs | semmle.label | xs |
+| test.cpp:378:15:378:23 | ... + ... | semmle.label | ... + ... |
+| test.cpp:378:15:378:23 | ... + ... | semmle.label | ... + ... |
+| test.cpp:378:15:378:23 | ... + ... | semmle.label | ... + ... |
+| test.cpp:378:15:378:23 | ... + ... | semmle.label | ... + ... |
+| test.cpp:381:5:381:7 | end | semmle.label | end |
+| test.cpp:381:5:381:9 | ... ++ | semmle.label | ... ++ |
+| test.cpp:381:5:381:9 | ... ++ | semmle.label | ... ++ |
+| test.cpp:384:13:384:16 | Load: * ... | semmle.label | Load: * ... |
+| test.cpp:384:14:384:16 | end | semmle.label | end |
 subpaths
 #select
 | test.cpp:6:14:6:15 | Load: * ... | test.cpp:4:15:4:20 | call to malloc | test.cpp:6:14:6:15 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:4:15:4:20 | call to malloc | call to malloc | test.cpp:5:19:5:22 | size | size |
@@ -1088,3 +1122,4 @@ subpaths
 | test.cpp:358:14:358:26 | Load: * ... | test.cpp:355:14:355:27 | new[] | test.cpp:358:14:358:26 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 1. | test.cpp:355:14:355:27 | new[] | new[] | test.cpp:356:20:356:23 | size | size |
 | test.cpp:359:14:359:32 | Load: * ... | test.cpp:355:14:355:27 | new[] | test.cpp:359:14:359:32 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@ + 2. | test.cpp:355:14:355:27 | new[] | new[] | test.cpp:356:20:356:23 | size | size |
 | test.cpp:372:15:372:16 | Load: * ... | test.cpp:363:14:363:27 | new[] | test.cpp:372:15:372:16 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:363:14:363:27 | new[] | new[] | test.cpp:365:19:365:22 | size | size |
+| test.cpp:384:13:384:16 | Load: * ... | test.cpp:377:14:377:27 | new[] | test.cpp:384:13:384:16 | Load: * ... | This read might be out of bounds, as the pointer might be equal to $@ + $@. | test.cpp:377:14:377:27 | new[] | new[] | test.cpp:378:20:378:23 | size | size |
