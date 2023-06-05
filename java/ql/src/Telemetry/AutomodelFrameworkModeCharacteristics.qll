@@ -263,6 +263,28 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
 }
 
 /**
+ * A characteristic that makes sources of MaD-modeled taint steps uninteresting to model.
+ *
+ * These are usually not sinks at the same time.
+ *
+ * In future work, it may be a good idea to test marking these as `NotASinkModel` instead,
+ * which would mean they'd be included as negative examples in the model. However, it appears
+ * there are currently some MaD models that mark some stream creations as summary steps, which
+ * could lead to model confusion.
+ */
+private class IsSummaryStepSrcCharacteristic extends CharacteristicsImpl::UninterestingToModelCharacteristic
+{
+  IsSummaryStepSrcCharacteristic() { this = "summary step source" }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    exists(string package, string type, string name, string signature, string ext, string input |
+      FrameworkCandidatesImpl::sinkSpec(e, package, type, name, signature, ext, input) and
+      ExternalFlow::summaryModel(package, type, _, name, signature, ext, input, _, _, _)
+    )
+  }
+}
+
+/**
  * Holds if the given endpoint has a self-contradictory combination of characteristics. Detects errors in our endpoint
  * characteristics. Lists the problematic characteristics and their implications for all such endpoints, together with
  * an error message indicating why this combination is problematic.
