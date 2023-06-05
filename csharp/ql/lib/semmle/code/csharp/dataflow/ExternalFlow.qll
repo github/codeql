@@ -212,18 +212,18 @@ module ModelValidation {
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
     or
-    exists(string kind | sinkModel(_, _, _, _, _, _, _, kind, _) |
+    exists(string kind, string msg | sinkModel(_, _, _, _, _, _, _, kind, _) |
       not kind instanceof ValidSinkKind and
-      result = "Invalid kind \"" + kind + "\" in sink model."
-    )
-    or
-    exists(string kind, string msg | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind instanceof ValidSourceKind and
       msg = "Invalid kind \"" + kind + "\" in sink model." and
       // The part of this message that refers to outdated sink kinds can be deleted after June 1st, 2024.
       if kind instanceof OutdatedSinkKind
       then result = msg + " " + kind.(OutdatedSinkKind).outdatedMessage()
       else result = msg
+    )
+    or
+    exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
+      not kind instanceof ValidSourceKind and
+      result = "Invalid kind \"" + kind + "\" in source model."
     )
     or
     exists(string kind | neutralModel(_, _, _, _, kind, _) |
