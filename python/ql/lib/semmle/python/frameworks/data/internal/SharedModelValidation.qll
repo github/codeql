@@ -1,7 +1,7 @@
 /**
  * INTERNAL: Do not use.
  *
- * Provides classes and predicates related to validating models as data rows.
+ * Provides classes and predicates related to validating models-as-data rows.
  * Such that we can share this logic across our CodeQL analysis of different languages.
  */
 

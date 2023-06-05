@@ -722,7 +722,7 @@ module ModelOutput {
       result = "Invalid token '" + token + "' is missing its arguments, in access path: " + path
     )
     or
-    // Check for valid model kinds
+    // Check for invalid model kinds
     result = getInvalidModelKind()
   }
 }
