@@ -377,15 +377,19 @@ predicate hasFlowPath(
 }
 
 from
-  MergedPathNode source, MergedPathNode sink, int k2, int k3, string kstr,
-  InvalidPointerToDerefFlow::PathNode source3, PointerArithmeticInstruction pai, string operation,
-  Expr offset, DataFlow::Node n
+  MergedPathNode source, MergedPathNode sink, int k, string kstr, PointerArithmeticInstruction pai,
+  string operation, Expr offset, DataFlow::Node n
 where
-  hasFlowPath(source, sink, source3, pai, operation, k3) and
-  invalidPointerToDerefSource(pai, source3.getNode(), k2) and
+  k =
+    min(int k2, int k3, InvalidPointerToDerefFlow::PathNode source3 |
+      hasFlowPath(source, sink, source3, pai, operation, k3) and
+      invalidPointerToDerefSource(pai, source3.getNode(), k2)
+    |
+       k2 + k3
+    ) and
   offset = pai.getRight().getUnconvertedResultExpression() and
   n = source.asPathNode1().getNode() and
-  if (k2 + k3) = 0 then kstr = "" else kstr = " + " + (k2 + k3)
+  if k = 0 then kstr = "" else kstr = " + " + k
 select sink, source, sink,
   "This " + operation + " might be out of bounds, as the pointer might be equal to $@ + $@" + kstr +
     ".", n, n.toString(), offset, offset.toString()
