@@ -68,7 +68,7 @@ private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
 private import FlowSummary
-private import SharedModelValidation
+private import internal.SharedModelValidation
 
 /**
  * A module importing the frameworks that provide external flow data,

@@ -74,7 +74,7 @@ private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
 private import FlowSummary as FlowSummary
-private import SharedModelValidation
+private import internal.SharedModelValidation
 
 /**
  * A unit class for adding additional source model rows.

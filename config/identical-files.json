@@ -600,10 +600,10 @@
     "java/ql/lib/semmle/code/java/security/internal/EncryptionKeySizes.qll"
   ],
   "SharedModelValidation Java/C#/Go/JS/Python/Ruby/Swift": [
-    "java/ql/lib/semmle/code/java/dataflow/SharedModelValidation.qll",
-    "csharp/ql/lib/semmle/code/csharp/dataflow/SharedModelValidation.qll",
-    "go/ql/lib/semmle/go/dataflow/SharedModelValidation.qll",
-    "swift/ql/lib/codeql/swift/dataflow/SharedModelValidation.qll",
+    "java/ql/lib/semmle/code/java/dataflow/internal/SharedModelValidation.qll",
+    "csharp/ql/lib/semmle/code/csharp/dataflow/internal/SharedModelValidation.qll",
+    "go/ql/lib/semmle/go/dataflow/internal/SharedModelValidation.qll",
+    "swift/ql/lib/codeql/swift/dataflow/internal/SharedModelValidation.qll",
     "javascript/ql/lib/semmle/javascript/frameworks/data/internal/SharedModelValidation.qll",
     "python/ql/lib/semmle/python/frameworks/data/internal/SharedModelValidation.qll",
     "ruby/ql/lib/codeql/ruby/frameworks/data/internal/SharedModelValidation.qll"

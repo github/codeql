@@ -87,7 +87,7 @@ private import internal.FlowSummaryImplSpecific as FlowSummaryImplSpecific
 private import internal.AccessPathSyntax
 private import ExternalFlowExtensions as Extensions
 private import FlowSummary
-private import SharedModelValidation
+private import internal.SharedModelValidation
 
 /**
  * A class for activating additional model rows.

@@ -95,7 +95,7 @@ private import internal.DataFlowPublic
 private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
-private import SharedModelValidation
+private import internal.SharedModelValidation
 
 /** Holds if a source model exists for the given parameters. */
 predicate sourceModel = Extensions::sourceModel/9;
