@@ -212,7 +212,7 @@ def _map_cmake_info(info, is_windows):
 
 GeneratedCmakeFiles = provider(
     fields = {
-        "files": "",
+        "targets": "",
     },
 )
 
@@ -221,7 +221,11 @@ def _generate_cmake_impl(ctx):
     inputs = []
 
     infos = {}
-    for dep in ctx.attr.targets:
+    targets = list(ctx.attr.targets)
+    for include in ctx.attr.includes:
+        targets += include[GeneratedCmakeFiles].targets.to_list()
+
+    for dep in targets:
         for info in [dep[CmakeInfo]] + dep[CmakeInfo].transitive_deps.to_list():
             if info.name != None:
                 inputs += info.inputs
@@ -233,11 +237,6 @@ def _generate_cmake_impl(ctx):
         commands += _map_cmake_info(info, is_windows)
         commands.append("")
 
-    for include in ctx.attr.includes:
-        for file in include[GeneratedCmakeFiles].files.to_list():
-            inputs.append(file)
-            commands.append("include(${BAZEL_EXEC_ROOT}/%s)" % file.path)
-
     # we want to use a run or run_shell action to register a bunch of files like inputs, but we cannot write all
     # in a shell command as we would hit the command size limit. So we first write the file and then copy it with
     # the dummy inputs
@@ -248,7 +247,7 @@ def _generate_cmake_impl(ctx):
 
     return [
         DefaultInfo(files = depset([output])),
-        GeneratedCmakeFiles(files = depset([output])),
+        GeneratedCmakeFiles(targets = depset(ctx.attr.targets)),
     ]
 
 generate_cmake = rule(
