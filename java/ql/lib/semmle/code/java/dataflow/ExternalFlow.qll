@@ -266,50 +266,6 @@ module ModelValidation {
     )
   }
 
-  private class OutdatedSinkKind extends string {
-    OutdatedSinkKind() {
-      this =
-        [
-          "sql", "url-redirect", "xpath", "ssti", "logging", "groovy", "jexl", "mvel", "xslt",
-          "ldap", "pending-intent-sent", "intent-start", "set-hostname-verifier",
-          "header-splitting", "xss", "write-file", "create-file", "read-file", "open-url",
-          "jdbc-url"
-        ]
-    }
-
-    private string replacementKind() {
-      this = ["sql", "xpath", "groovy", "jexl", "mvel", "xslt", "ldap"] and
-      result = this + "-injection"
-      or
-      this = "url-redirect" and result = "url-redirection"
-      or
-      this = "ssti" and result = "template-injection"
-      or
-      this = "logging" and result = "log-injection"
-      or
-      this = "pending-intent-sent" and result = "pending-intents"
-      or
-      this = "intent-start" and result = "intent-redirection"
-      or
-      this = "set-hostname-verifier" and result = "hostname-verification"
-      or
-      this = "header-splitting" and result = "response-splitting"
-      or
-      this = "xss" and result = "html-injection\" or \"js-injection"
-      or
-      this = "write-file" and result = "file-content-store"
-      or
-      this = ["create-file", "read-file"] and result = "path-injection"
-      or
-      this = ["open-url", "jdbc-url"] and result = "request-forgery"
-    }
-
-    string outdatedMessage() {
-      result =
-        "The kind \"" + this + "\" is outdated. Use \"" + this.replacementKind() + "\" instead."
-    }
-  }
-
   private string getInvalidModelKind() {
     exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
       not kind instanceof ValidSummaryKind and

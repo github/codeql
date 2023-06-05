@@ -40,6 +40,52 @@ class ValidSinkKind extends string {
   }
 }
 
+class OutdatedSinkKind extends string {
+  OutdatedSinkKind() {
+    this =
+      [
+        "sql", "url-redirect", "xpath", "ssti", "logging", "groovy", "jexl", "mvel", "xslt", "ldap",
+        "pending-intent-sent", "intent-start", "set-hostname-verifier", "header-splitting", "xss",
+        "write-file", "create-file", "read-file", "open-url", "jdbc-url", "command-line-injection",
+        "code", "html", "remote"
+      ]
+  }
+
+  private string replacementKind() {
+    this = ["sql", "xpath", "groovy", "jexl", "mvel", "xslt", "ldap", "code", "html"] and
+    result = this + "-injection"
+    or
+    this = "url-redirect" and result = "url-redirection"
+    or
+    this = "ssti" and result = "template-injection"
+    or
+    this = "logging" and result = "log-injection"
+    or
+    this = "pending-intent-sent" and result = "pending-intents"
+    or
+    this = "intent-start" and result = "intent-redirection"
+    or
+    this = "set-hostname-verifier" and result = "hostname-verification"
+    or
+    this = "header-splitting" and result = "response-splitting"
+    or
+    this = "xss" and result = "html-injection\" or \"js-injection"
+    or
+    this = ["write-file", "remote"] and result = "file-content-store"
+    or
+    this = ["create-file", "read-file"] and result = "path-injection"
+    or
+    this = ["open-url", "jdbc-url"] and result = "request-forgery"
+    or
+    this = "command-line-injection" and result = "command-injection"
+  }
+
+  string outdatedMessage() {
+    result =
+      "The kind \"" + this + "\" is outdated. Use \"" + this.replacementKind() + "\" instead."
+  }
+}
+
 /** A valid models-as-data source kind. */
 class ValidSourceKind extends string {
   bindingset[this]
