@@ -2,12 +2,10 @@ import java
 import semmle.code.java.security.ConditionalBypassQuery
 import TestUtilities.InlineExpectationsTest
 
-class ConditionalBypassTest extends InlineExpectationsTest {
-  ConditionalBypassTest() { this = "ConditionalBypassTest" }
+module ConditionalBypassTest implements TestSig {
+  string getARelevantTag() { result = "hasConditionalBypassTest" }
 
-  override string getARelevantTag() { result = "hasConditionalBypassTest" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasConditionalBypassTest" and
     exists(DataFlow::Node sink | ConditionalBypassFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -16,3 +14,5 @@ class ConditionalBypassTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<ConditionalBypassTest>

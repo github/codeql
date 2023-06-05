@@ -2,12 +2,10 @@ import java
 import semmle.code.java.security.UnsafeCertTrustQuery
 import TestUtilities.InlineExpectationsTest
 
-class UnsafeCertTrustTest extends InlineExpectationsTest {
-  UnsafeCertTrustTest() { this = "HasUnsafeCertTrustTest" }
+module UnsafeCertTrustTest implements TestSig {
+  string getARelevantTag() { result = "hasUnsafeCertTrust" }
 
-  override string getARelevantTag() { result = "hasUnsafeCertTrust" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasUnsafeCertTrust" and
     exists(Expr unsafeTrust |
       unsafeTrust instanceof RabbitMQEnableHostnameVerificationNotSet
@@ -20,3 +18,5 @@ class UnsafeCertTrustTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<UnsafeCertTrustTest>
