@@ -29,7 +29,7 @@ class ValidSinkKind extends string {
     or
     this.matches([
         // shared
-        "encryption-%",
+        "encryption-%", "qltest%", "test-%",
         // Java-only currently, but may be shared in the future
         "regex-use%",
         // JavaScript-only currently, but may be shared in the future
@@ -53,11 +53,15 @@ class ValidSourceKind extends string {
         // C#
         "file", "file-write",
         // JavaScript
-        "database-access-result"
+        "database-access-result", "remote-flow"
       ]
     or
-    // Swift
-    this.matches("%string-%length")
+    this.matches([
+        // shared
+        "qltest%", "test-%",
+        // Swift
+        "%string-%length"
+      ])
   }
 }
 

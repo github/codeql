@@ -318,7 +318,6 @@ module ModelValidation {
     or
     exists(string kind, string msg | sinkModel(_, _, _, _, _, _, _, kind, _) |
       not kind instanceof ValidSinkKind and
-      not kind.matches("qltest%") and
       msg = "Invalid kind \"" + kind + "\" in sink model." and
       // The part of this message that refers to outdated sink kinds can be deleted after June 1st, 2024.
       if kind instanceof OutdatedSinkKind
@@ -328,7 +327,6 @@ module ModelValidation {
     or
     exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
       not kind instanceof ValidSourceKind and
-      not kind.matches("qltest%") and
       result = "Invalid kind \"" + kind + "\" in source model."
     )
     or

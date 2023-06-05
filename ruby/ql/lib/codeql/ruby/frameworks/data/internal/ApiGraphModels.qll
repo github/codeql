@@ -663,7 +663,6 @@ module ModelOutput {
     or
     exists(string kind | sinkModel(_, _, kind) |
       not kind instanceof ValidSinkKind and
-      not kind.matches("test-%") and
       result = "Invalid kind \"" + kind + "\" in sink model."
     )
     or
