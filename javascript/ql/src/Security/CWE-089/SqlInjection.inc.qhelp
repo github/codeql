@@ -38,7 +38,7 @@ an HTTP request handler in a web application, whose parameter
 </p>
 
 <p>
-The handler constructs constructs an SQL query string from user input
+The handler constructs an SQL query string from user input
 and executes it as a database query using the <code>pg</code> library. 
 The user input may contain quote characters, so this code is vulnerable
 to a SQL injection attack.
@@ -65,7 +65,7 @@ escape the user input before embedding it into the query string:
 
 <example>
 <p>
-In the following example an express handler attempts to delete
+In the following example, an express handler attempts to delete
 a single document from a MongoDB collection. The document to be
 deleted is identified by its <code>_id</code> field, which is
 constructed from user input. The user input may contain a query
@@ -75,7 +75,7 @@ object, so this code is vulnerable to a NoSQL injection attack.
 <sample src="examples/NoSqlInjection.js" />
 
 <p>
-To fix this vulnerability we can use the <code>$eq</code> operator
+To fix this vulnerability, we can use the <code>$eq</code> operator
 to ensure that the user input is interpreted as a literal value
 and not as a query object:
 </p>
