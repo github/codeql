@@ -264,6 +264,7 @@ module CsvValidation {
     )
   }
 
+  /** Gets an error message relating to an invalid kind in a model. */
   private string getInvalidModelKind() {
     exists(string row, string kind | summaryModel(row) |
       kind = row.splitAt(";", 8) and

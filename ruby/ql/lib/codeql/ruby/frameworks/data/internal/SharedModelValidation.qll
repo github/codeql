@@ -1,7 +1,7 @@
 /**
  * INTERNAL: Do not use.
  *
- * Provides classes for validating kinds in models as data rows.
+ * Provides classes and predicates related to validating models as data rows.
  * Such that we can share this logic across our CodeQL analysis of different languages.
  */
 
@@ -40,6 +40,7 @@ class ValidSinkKind extends string {
   }
 }
 
+/** An outdated models-as-data sink kind. */
 class OutdatedSinkKind extends string {
   OutdatedSinkKind() {
     this =
@@ -51,6 +52,7 @@ class OutdatedSinkKind extends string {
       ]
   }
 
+  /** Gets a replacement kind for an outdated sink kind. */
   private string replacementKind() {
     this = ["sql", "xpath", "groovy", "jexl", "mvel", "xslt", "ldap", "code", "html"] and
     result = this + "-injection"
@@ -84,6 +86,7 @@ class OutdatedSinkKind extends string {
     this = "uncontrolled-format-string" and result = "format-string"
   }
 
+  /** Gets an error message for an outdated sink kind. */
   string outdatedMessage() {
     result =
       "The kind \"" + this + "\" is outdated. Use \"" + this.replacementKind() + "\" instead."

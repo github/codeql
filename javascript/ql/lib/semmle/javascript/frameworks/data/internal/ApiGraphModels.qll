@@ -655,6 +655,7 @@ module ModelOutput {
   import Specific::ModelOutputSpecific
   private import SharedModelValidation
 
+  /** Gets an error message relating to an invalid kind in a model. */
   private string getInvalidModelKind() {
     exists(string kind | summaryModel(_, _, _, _, kind) |
       not kind instanceof ValidSummaryKind and

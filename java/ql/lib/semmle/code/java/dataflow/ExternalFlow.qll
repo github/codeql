@@ -266,6 +266,7 @@ module ModelValidation {
     )
   }
 
+  /** Gets an error message relating to an invalid kind in a model. */
   private string getInvalidModelKind() {
     exists(string kind | summaryModel(_, _, _, _, _, _, _, _, kind, _) |
       not kind instanceof ValidSummaryKind and
