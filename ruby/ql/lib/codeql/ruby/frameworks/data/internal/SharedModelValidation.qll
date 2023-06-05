@@ -47,13 +47,15 @@ class OutdatedSinkKind extends string {
         "sql", "url-redirect", "xpath", "ssti", "logging", "groovy", "jexl", "mvel", "xslt", "ldap",
         "pending-intent-sent", "intent-start", "set-hostname-verifier", "header-splitting", "xss",
         "write-file", "create-file", "read-file", "open-url", "jdbc-url", "command-line-injection",
-        "code", "html", "remote"
+        "code", "html", "remote", "uncontrolled-format-string", "js-eval"
       ]
   }
 
   private string replacementKind() {
     this = ["sql", "xpath", "groovy", "jexl", "mvel", "xslt", "ldap", "code", "html"] and
     result = this + "-injection"
+    or
+    this = "js-eval" and result = "code-injection"
     or
     this = "url-redirect" and result = "url-redirection"
     or
@@ -78,6 +80,8 @@ class OutdatedSinkKind extends string {
     this = ["open-url", "jdbc-url"] and result = "request-forgery"
     or
     this = "command-line-injection" and result = "command-injection"
+    or
+    this = "uncontrolled-format-string" and result = "format-string"
   }
 
   string outdatedMessage() {
