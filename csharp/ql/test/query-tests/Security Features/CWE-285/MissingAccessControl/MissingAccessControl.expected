@@ -1,0 +1,2 @@
+| Test1/EditProfile.aspx.cs:9:20:9:29 | btn1_Click | This action is missing an authorization check. |
+| Test1/ViewProfile.aspx.cs:14:20:14:36 | btn_delete1_Click | This action is missing an authorization check. |
