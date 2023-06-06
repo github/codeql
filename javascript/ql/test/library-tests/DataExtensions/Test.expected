@@ -5,3 +5,4 @@ sqlInjectionSinks
 | connection.example.ts:9:18:9:18 | q |
 remoteFlowSources
 | message.example.js:1:46:1:50 | event |
+| message.example.js:2:16:2:25 | event.data |
