@@ -16,25 +16,12 @@ module Generated {
 
     /**
      * Gets the imported module of this import declaration, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ModuleDecl getImmediateImportedModule() {
+    ModuleDecl getImportedModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertImportDeclToRaw(this)
               .(Raw::ImportDecl)
               .getImportedModule())
-    }
-
-    /**
-     * Gets the imported module of this import declaration, if it exists.
-     */
-    final ModuleDecl getImportedModule() {
-      exists(ModuleDecl immediate |
-        immediate = this.getImmediateImportedModule() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**
@@ -44,25 +31,12 @@ module Generated {
 
     /**
      * Gets the `index`th declaration of this import declaration (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ValueDecl getImmediateDeclaration(int index) {
+    ValueDecl getDeclaration(int index) {
       result =
         Synth::convertValueDeclFromRaw(Synth::convertImportDeclToRaw(this)
               .(Raw::ImportDecl)
               .getDeclaration(index))
-    }
-
-    /**
-     * Gets the `index`th declaration of this import declaration (0-based).
-     */
-    final ValueDecl getDeclaration(int index) {
-      exists(ValueDecl immediate |
-        immediate = this.getImmediateDeclaration(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

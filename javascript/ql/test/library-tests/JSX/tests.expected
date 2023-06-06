@@ -3,6 +3,7 @@ htmlElements
 | tst.js:6:1:6:10 | <Foo-Bar/> |
 | tstest.tsx:3:1:3:106 | <a href ... */}</a> |
 | tstest.tsx:6:1:6:10 | <Foo-Bar/> |
+| tstest.tsx:18:12:18:36 | <div>{p ... }</div> |
 jsxElementAttribute
 | tst.js:3:1:3:106 | <a href ... */}</a> | 0 | tst.js:3:4:3:14 | href={href} |
 | tst.js:3:1:3:106 | <a href ... */}</a> | 1 | tst.js:3:16:3:30 | target="_blank" |
@@ -12,6 +13,8 @@ jsxElementAttribute
 | tstest.tsx:3:1:3:106 | <a href ... */}</a> | 1 | tstest.tsx:3:16:3:30 | target="_blank" |
 | tstest.tsx:3:1:3:106 | <a href ... */}</a> | 2 | tstest.tsx:3:32:3:45 | {...linkTypes} |
 | tstest.tsx:4:1:4:35 | <MyComp ... "bar"/> | 0 | tstest.tsx:4:25:4:33 | foo="bar" |
+| tstest.tsx:10:11:10:29 | <Bar a:b="hello" /> | 0 | tstest.tsx:10:16:10:26 | a:b="hello" |
+| tstest.tsx:11:11:11:31 | <Bar a  ... llo" /> | 0 | tstest.tsx:11:16:11:28 | a : b="hello" |
 jsxElementAttributeName
 | tst.js:3:1:3:106 | <a href ... */}</a> | 0 | href |
 | tst.js:3:1:3:106 | <a href ... */}</a> | 1 | target |
@@ -19,6 +22,8 @@ jsxElementAttributeName
 | tstest.tsx:3:1:3:106 | <a href ... */}</a> | 0 | href |
 | tstest.tsx:3:1:3:106 | <a href ... */}</a> | 1 | target |
 | tstest.tsx:4:1:4:35 | <MyComp ... "bar"/> | 0 | foo |
+| tstest.tsx:10:11:10:29 | <Bar a:b="hello" /> | 0 | b |
+| tstest.tsx:11:11:11:31 | <Bar a  ... llo" /> | 0 | b |
 jsxElementBody
 | tst.js:3:1:3:106 | <a href ... */}</a> | 0 | tst.js:3:47:3:54 | Link to  |
 | tst.js:3:1:3:106 | <a href ... */}</a> | 1 | tst.js:3:56:3:59 | href |
@@ -28,6 +33,7 @@ jsxElementBody
 | tstest.tsx:3:1:3:106 | <a href ... */}</a> | 1 | tstest.tsx:3:56:3:59 | href |
 | tstest.tsx:3:1:3:106 | <a href ... */}</a> | 2 | tstest.tsx:3:61:3:62 | .  |
 | tstest.tsx:3:1:3:106 | <a href ... */}</a> | 3 | tstest.tsx:3:63:3:102 | {/*TODO ... text*/} |
+| tstest.tsx:18:12:18:36 | <div>{p ... }</div> | 0 | tstest.tsx:18:18:18:29 | props["a:b"] |
 jsxElementName
 | tst.js:3:1:3:106 | <a href ... */}</a> | tst.js:3:2:3:2 | a | a |
 | tst.js:4:1:4:35 | <MyComp ... "bar"/> | tst.js:4:2:4:23 | MyCompo ... ncyLink | MyComponents.FancyLink |
@@ -39,6 +45,9 @@ jsxElementName
 | tstest.tsx:5:1:5:6 | <Foo/> | tstest.tsx:5:2:5:4 | Foo | Foo |
 | tstest.tsx:6:1:6:10 | <Foo-Bar/> | tstest.tsx:6:2:6:8 | Foo-Bar | Foo-Bar |
 | tstest.tsx:7:33:7:38 | <Foo/> | tstest.tsx:7:34:7:36 | Foo | Foo |
+| tstest.tsx:10:11:10:29 | <Bar a:b="hello" /> | tstest.tsx:10:12:10:14 | Bar | Bar |
+| tstest.tsx:11:11:11:31 | <Bar a  ... llo" /> | tstest.tsx:11:12:11:14 | Bar | Bar |
+| tstest.tsx:18:12:18:36 | <div>{p ... }</div> | tstest.tsx:18:13:18:15 | div | div |
 jsxFragments
 | tst.js:7:16:7:52 | <> frag ... ext </> | 0 | tst.js:7:18:7:32 |  fragment text  |
 | tst.js:7:16:7:52 | <> frag ... ext </> | 1 | tst.js:7:33:7:38 | <Foo/> |

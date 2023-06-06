@@ -315,7 +315,7 @@ The following source kinds are supported:
 
 Below is an enumeration of the remaining source kinds, but they are out of scope for this documentation:
 
-- **contentprovider**, **android-widget**, **android-external-storage-dir**.
+- **contentprovider**, **android-external-storage-dir**.
 
 sinkModel(package, type, subtypes, name, signature, ext, input, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -327,18 +327,31 @@ Taint sink. As opposed to source kinds, there are many different kinds of sinks 
 
 The following sink kinds are supported:
 
-- **sql**: A SQL injection vulnerability sink.
-- **xss**: A cross-site scripting vulnerability sink.
-- **logging**: A log output sink.
-
-Below is an enumeration of the remaining sinks, but they are out of scope for this documentation:
-
-- **open-url**, **jndi-injection**, **ldap**, **jdbc-url**
-- **mvel**, **xpath**, **groovy**, **ognl-injection**
-- **intent-start**, **pending-intent-sent**, **url-redirect**
-- **create-file**, **read-file**, **write-file**, **set-hostname-verifier**
-- **header-splitting**, **information-leak**, **xslt**, **jexl**
-- **bean-validation**, **ssti**, **fragment-injection**, **regex-use[**\ `arg`\ **]**
+- **bean-validation**: A sink that can be used for insecure bean validation, such as in calls to **ConstraintValidatorContext.buildConstraintViolationWithTemplate**.
+- **command-injection**: A sink that can be used to inject shell commands, such as in calls to **Runtime.exec**.
+- **file-content-store**: A sink that can be used to control the contents of a file, such as in a **Files.write** call.
+- **fragment-injection**: A sink that can be used for Android fragment injection, such as in a **FragmentTransaction.replace** call.
+- **groovy-injection**: A sink that can be used for Groovy injection, such as in a **GroovyShell.evaluate** call.
+- **hostname-verification**: A sink that can be used for unsafe hostname verification, such as in calls to **HttpsURLConnection.setHostnameVerifier**.
+- **html-injection**: A sink that can be used for XSS via HTML injection, such as in a **ResponseStream.write** call.
+- **information-leak**: A sink that can be used to leak information to an HTTP response, such as in calls to **HttpServletResponse.sendError**.
+- **intent-redirection**: A sink that can be used for Android intent redirection, such as in a **Context.startActivity** call.
+- **jexl-injection**: A sink that can be used for JEXL expression injection, such as in a **JexlExpression.evaluate** call.
+- **jndi-injection**: A sink that can be used for JNDI injection, such as in a **Context.lookup** call.
+- **js-injection**: A sink that can be used for XSS via JavaScript injection, such as in a **Webview.evaluateJavaScript** call.
+- **ldap-injection**: A sink that can be used for LDAP injection, such as in a **DirContext.search** call.
+- **log-injection**: A sink that can be used for log injection, such as in a **Logger.warn** call.
+- **mvel-injection**: A sink that can be used for MVEL expression injection, such as in a **MVEL.eval** call.
+- **ognl-injection**: A sink that can be used for OGNL injection, such as in an **Ognl.getValue** call.
+- **path-injection**: A sink that can be used for path injection in a file system access, such as in calls to **new FileReader**.
+- **pending-intents**: A sink that can be used to send an implicit and mutable `PendingIntent` to a third party, such as in an **Activity.setResult** call.
+- **request-forgery**: A sink that controls the URL of a request, such as in an **HttpRequest.newBuilder** call.
+- **response-splitting**: A sink that can be used for HTTP response splitting, such as in calls to **HttpServletResponse.setHeader**.
+- **sql-injection**: A sink that can be used for SQL injection, such as in a **Statement.executeQuery** call.
+- **template-injection**: A sink that can be used for server side template injection, such as in a **Velocity.evaluate** call.
+- **url-redirection**: A sink that can be used to redirect the user to a malicious URL, such as in a **Response.temporaryRedirect** call.
+- **xpath-injection**: A sink that can be used for XPath injection, such as in a **XPath.evaluate** call.
+- **xslt-injection**: A sink that can be used for XSLT injection, such as in a **Transformer.transform** call.
 
 summaryModel(package, type, subtypes, name, signature, ext, input, output, kind, provenance)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

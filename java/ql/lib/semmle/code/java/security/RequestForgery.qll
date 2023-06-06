@@ -52,12 +52,8 @@ private class TypePropertiesRequestForgeryAdditionalTaintStep extends RequestFor
 /** A data flow sink for server-side request forgery (SSRF) vulnerabilities. */
 abstract class RequestForgerySink extends DataFlow::Node { }
 
-private class UrlOpenSinkAsRequestForgerySink extends RequestForgerySink {
-  UrlOpenSinkAsRequestForgerySink() { sinkNode(this, "open-url") }
-}
-
-private class JdbcUrlSinkAsRequestForgerySink extends RequestForgerySink {
-  JdbcUrlSinkAsRequestForgerySink() { sinkNode(this, "jdbc-url") }
+private class DefaultRequestForgerySink extends RequestForgerySink {
+  DefaultRequestForgerySink() { sinkNode(this, "request-forgery") }
 }
 
 /** A sanitizer for request forgery vulnerabilities. */

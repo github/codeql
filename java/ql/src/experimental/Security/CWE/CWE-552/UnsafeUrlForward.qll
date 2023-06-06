@@ -89,7 +89,7 @@ class GetVirtualFileChildMethod extends Method {
 /** An argument to `getResource()` or `getResourceAsStream()`. */
 private class GetResourceSink extends UnsafeUrlForwardSink {
   GetResourceSink() {
-    sinkNode(this, "open-url")
+    sinkNode(this, "request-forgery")
     or
     sinkNode(this, "get-resource")
     or

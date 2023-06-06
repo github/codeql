@@ -255,28 +255,14 @@ private module Cached {
   cached
   newtype TIRBlock = MkIRBlock(Instruction firstInstr) { startsBasicBlock(firstInstr) }
 
-  /** Gets the index of `i` in its `IRBlock`. */
-  private int getMemberIndex(Instruction i) {
-    startsBasicBlock(i) and
-    result = 0
-    or
-    exists(Instruction iPrev |
-      adjacentInBlock(iPrev, i) and
-      result = getMemberIndex(iPrev) + 1
-    )
-  }
-
-  private module BlockAdjacency = QlBuiltins::EquivalenceRelation<Instruction, adjacentInBlock/2>;
+  /** Holds if `i` is the `index`th instruction the block starting with `first`. */
+  private Instruction getInstructionFromFirst(Instruction first, int index) =
+    shortestDistances(startsBasicBlock/1, adjacentInBlock/2)(first, result, index)
 
   /** Holds if `i` is the `index`th instruction in `block`. */
   cached
   Instruction getInstruction(TIRBlock block, int index) {
-    exists(Instruction first | block = MkIRBlock(first) |
-      first = result and index = 0
-      or
-      index = getMemberIndex(result) and
-      BlockAdjacency::getEquivalenceClass(first) = BlockAdjacency::getEquivalenceClass(result)
-    )
+    result = getInstructionFromFirst(getFirstInstruction(block), index)
   }
 
   cached

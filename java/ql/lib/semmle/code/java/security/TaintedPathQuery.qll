@@ -58,7 +58,7 @@ module TaintedPathConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PathCreation p).getAnInput()
     or
-    sinkNode(sink, ["create-file", "read-file"])
+    sinkNode(sink, "path-injection")
   }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
@@ -85,7 +85,7 @@ module TaintedPathLocalConfig implements DataFlow::ConfigSig {
   predicate isSink(DataFlow::Node sink) {
     sink.asExpr() = any(PathCreation p).getAnInput()
     or
-    sinkNode(sink, "create-file")
+    sinkNode(sink, "path-injection")
   }
 
   predicate isBarrier(DataFlow::Node sanitizer) {
