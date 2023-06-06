@@ -18,26 +18,40 @@ class PostValidation extends DataFlow::FlowState {
   PostValidation() { this = "PostValidation" }
 }
 
-private predicate untrustedUnicodeCharCheckGuard(DataFlow::Node cn, Expr e, boolean outcome) {
+private predicate intCheck(DataFlow::Node g, Expr e, boolean outcome) {
+  exists(DataFlow::CallNode cn, DataFlow::EqualityTestNode etn |
+    g = etn and
+    DataFlow::localFlow(cn.getResult(), etn.getAnOperand()) and
+    cn.getTarget()
+        .hasQualifiedName("strings",
+          [
+            "Index", "IndexAny", "IndexByte", "IndexFunc", "IndexRune", "LastIndex", "LastIndexAny",
+            "LastIndexByte", "LastIndexFunc", "Count",
+          ]) and
+    cn.getArgument(0).asExpr() = e and
+    etn.getAnOperand().getIntValue() = -1 and
+    outcome = etn.getPolarity()
+  )
+}
+
+private predicate boolCheck(DataFlow::Node cn, Expr e, boolean outcome) {
   cn.(DataFlow::CallNode)
       .getTarget()
       .hasQualifiedName("strings",
-        [
-          "Contains", "ContainsAny", "ContainsRune", "Count", "EqualFold", "HasPrefix", "HasSuffix",
-          "Index", "IndexAny", "IndexByte", "IndexFunc", "IndexRune", "LastIndex", "LastIndexAny",
-          "LastIndexByte", "LastIndexFunc",
-        ]) and
+        ["Contains", "ContainsAny", "ContainsRune", "HasPrefix", "HasSuffix", "EqualFold"]) and
   cn.(DataFlow::CallNode).getArgument(0).asExpr() = e and
-  outcome = true
+  outcome = false
 }
 
 /**
  * A call to a function called `Index`, `ContainsAny`, or similar, which may be
  * considered a barrier guard for eliminating untrusted Unicode characters.
  */
-class UntrustedUnicodeCharCheckBarrier extends DataFlow::Node {
-  UntrustedUnicodeCharCheckBarrier() {
-    this = DataFlow::BarrierGuard<untrustedUnicodeCharCheckGuard/3>::getABarrierNode()
+class UntrustedUnicodeCharChecks extends DataFlow::Node {
+  UntrustedUnicodeCharChecks() {
+    this = DataFlow::BarrierGuard<intCheck/3>::getABarrierNode()
+    or
+    this = DataFlow::BarrierGuard<boolCheck/3>::getABarrierNode()
   }
 }
 
@@ -57,10 +71,10 @@ class Configuration extends TaintTracking::Configuration {
 
   override predicate isSanitizer(DataFlow::Node sanitizer, DataFlow::FlowState state) {
     (
-      sanitizer instanceof UntrustedUnicodeCharCheckBarrier or
+      sanitizer instanceof UntrustedUnicodeCharChecks or
       sanitizer instanceof Sanitizer
     ) and
-    state instanceof PreValidation
+    state instanceof PostValidation
   }
 
   override predicate isAdditionalTaintStep(
