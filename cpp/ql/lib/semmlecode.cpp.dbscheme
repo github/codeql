@@ -224,7 +224,7 @@ header_to_external_package(
     int package : @external_package ref
 );
 
-@location = @location_stmt | @location_expr | @location_default ;
+@location = @location_stmt | @location_expr | @location_default | @container;
 
 /**
  * The location of a statement.

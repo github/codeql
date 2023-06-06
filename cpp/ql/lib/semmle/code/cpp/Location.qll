@@ -9,6 +9,8 @@ import semmle.code.cpp.File
  * A location of a C/C++ artifact.
  */
 class Location extends @location {
+  Location() { not files(this, "") }
+
   /** Gets the container corresponding to this location. */
   pragma[nomagic]
   Container getContainer() { this.fullLocationInfo(result, _, _, _, _) }
@@ -53,9 +55,20 @@ class Location extends @location {
   predicate fullLocationInfo(
     Container container, int startline, int startcolumn, int endline, int endcolumn
   ) {
-    locations_default(this, unresolveElement(container), startline, startcolumn, endline, endcolumn) or
-    locations_expr(this, unresolveElement(container), startline, startcolumn, endline, endcolumn) or
+    locations_default(this, unresolveElement(container), startline, startcolumn, endline, endcolumn)
+    or
+    locations_expr(this, unresolveElement(container), startline, startcolumn, endline, endcolumn)
+    or
     locations_stmt(this, unresolveElement(container), startline, startcolumn, endline, endcolumn)
+    or
+    exists(@container c, string name | files(c, name) or folders(c, name) |
+      container = c and
+      this = c and
+      startline = 0 and
+      startcolumn = 0 and
+      endline = 0 and
+      endcolumn = 0
+    )
   }
 
   /**
