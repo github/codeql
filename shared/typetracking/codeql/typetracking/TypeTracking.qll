@@ -630,6 +630,42 @@ module TypeTracking<TypeTrackingInput I> {
     TypeTracker end() { result.end() }
   }
 
+  pragma[nomagic]
+  private predicate backStepProj(LocalSourceNode nodeTo, StepSummary summary) {
+    step(_, nodeTo, summary)
+  }
+
+  bindingset[t, nodeTo]
+  pragma[inline_late]
+  pragma[noopt]
+  private TypeBackTracker backStepInlineLate(
+    TypeBackTracker t, LocalSourceNode nodeFrom, LocalSourceNode nodeTo
+  ) {
+    exists(StepSummary summary |
+      backStepProj(nodeTo, summary) and
+      result = prepend(t, summary) and
+      step(nodeFrom, nodeTo, summary)
+    )
+  }
+
+  pragma[nomagic]
+  private predicate backSmallStepProj(LocalSourceNode nodeTo, StepSummary summary) {
+    smallStep(_, nodeTo, summary)
+  }
+
+  bindingset[t, nodeTo]
+  pragma[inline_late]
+  pragma[noopt]
+  private TypeBackTracker backSmallStepInlineLate(
+    TypeBackTracker t, LocalSourceNode nodeFrom, LocalSourceNode nodeTo
+  ) {
+    exists(StepSummary summary |
+      backSmallStepProj(nodeTo, summary) and
+      result = prepend(t, summary) and
+      smallStep(nodeFrom, nodeTo, summary)
+    )
+  }
+
   /**
    * A summary of the steps needed to back-track a use of a value to a given dataflow node.
    *
@@ -664,9 +700,6 @@ module TypeTracking<TypeTrackingInput I> {
     private ContentOption content;
 
     TypeBackTracker() { this = MkTypeBackTracker(hasReturn, content) }
-
-    /** Gets the summary resulting from prepending `step` to this type-tracking summary. */
-    private TypeBackTracker prepend(StepSummary step) { result = prepend(this, step) }
 
     /** Gets a textual representation of this summary. */
     string toString() {
@@ -704,13 +737,9 @@ module TypeTracking<TypeTrackingInput I> {
      * Gets the summary that corresponds to having taken a backwards
      * heap and/or inter-procedural step from `nodeTo` to `nodeFrom`.
      */
-    bindingset[nodeTo, this]
+    pragma[inline]
     TypeBackTracker step(LocalSourceNode nodeFrom, LocalSourceNode nodeTo) {
-      exists(StepSummary summary |
-        step(_, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
-        result = pragma[only_bind_into](pragma[only_bind_out](this)).prepend(summary) and
-        step(nodeFrom, pragma[only_bind_into](pragma[only_bind_out](nodeTo)), summary)
-      )
+      result = backStepInlineLate(this, nodeFrom, nodeTo)
     }
 
     /**
@@ -737,13 +766,9 @@ module TypeTracking<TypeTrackingInput I> {
      * }
      * ```
      */
-    bindingset[nodeTo, this]
+    pragma[inline]
     TypeBackTracker smallstep(Node nodeFrom, Node nodeTo) {
-      exists(StepSummary summary |
-        smallStep(_, pragma[only_bind_out](nodeTo), pragma[only_bind_into](summary)) and
-        result = pragma[only_bind_into](pragma[only_bind_out](this)).prepend(summary) and
-        smallStep(nodeFrom, pragma[only_bind_into](pragma[only_bind_out](nodeTo)), summary)
-      )
+      result = backSmallStepInlineLate(this, nodeFrom, nodeTo)
       or
       simpleLocalSmallStep(nodeFrom, nodeTo) and
       result = this
