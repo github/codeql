@@ -104,7 +104,7 @@ app.post('/documents/find', (req, res) => {
 	new innocent(X, Y, query);
 
 	function getQueryConstructor() {
-		return Mongoose.Query;
+	return Mongoose.Query;
 	}
 
 	var C = getQueryConstructor();
@@ -129,4 +129,10 @@ app.post('/documents/find', (req, res) => {
 	Document.updateOne(cond, Y); // NOT OK
 	Document.find({ _id: id }); // NOT OK
 	Document.find({ _id: { $eq: id } }); // OK
+
+    if (Mongoose.Types.ObjectId.isValid(query)) {
+    	Document.findByIdAndUpdate(query, X, function(){}); // OK - is sanitized
+    } else {
+    	Document.findByIdAndUpdate(query, X, function(){}); // NOT OK
+    }
 });

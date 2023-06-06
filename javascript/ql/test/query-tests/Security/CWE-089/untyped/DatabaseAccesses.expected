@@ -42,6 +42,8 @@
 | mongoose.js:97:2:97:52 | Documen ... query)) |
 | mongoose.js:99:2:99:50 | Documen ... query)) |
 | mongoose.js:113:2:113:53 | Documen ... () { }) |
+| mongoose.js:134:6:134:55 | Documen ... on(){}) |
+| mongoose.js:136:6:136:55 | Documen ... on(){}) |
 | mysql.js:8:9:11:47 | connect ... ds) {}) |
 | mysql.js:14:9:16:47 | connect ... ds) {}) |
 | mysql.js:19:9:20:48 | connect ... ds) {}) |

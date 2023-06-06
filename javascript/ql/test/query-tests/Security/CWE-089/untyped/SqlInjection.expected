@@ -283,6 +283,8 @@ nodes
 | mongoose.js:130:16:130:26 | { _id: id } |
 | mongoose.js:130:16:130:26 | { _id: id } |
 | mongoose.js:130:23:130:24 | id |
+| mongoose.js:136:33:136:37 | query |
+| mongoose.js:136:33:136:37 | query |
 | mongooseJsonParse.js:19:11:19:20 | query |
 | mongooseJsonParse.js:19:19:19:20 | {} |
 | mongooseJsonParse.js:20:19:20:44 | JSON.pa ... y.data) |
@@ -688,6 +690,8 @@ edges
 | mongoose.js:20:11:20:20 | query | mongoose.js:111:14:111:18 | query |
 | mongoose.js:20:11:20:20 | query | mongoose.js:113:31:113:35 | query |
 | mongoose.js:20:11:20:20 | query | mongoose.js:113:31:113:35 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:136:33:136:37 | query |
+| mongoose.js:20:11:20:20 | query | mongoose.js:136:33:136:37 | query |
 | mongoose.js:20:19:20:20 | {} | mongoose.js:20:11:20:20 | query |
 | mongoose.js:21:19:21:26 | req.body | mongoose.js:21:19:21:32 | req.body.title |
 | mongoose.js:21:19:21:26 | req.body | mongoose.js:21:19:21:32 | req.body.title |
@@ -758,6 +762,8 @@ edges
 | mongoose.js:21:19:21:32 | req.body.title | mongoose.js:111:14:111:18 | query |
 | mongoose.js:21:19:21:32 | req.body.title | mongoose.js:113:31:113:35 | query |
 | mongoose.js:21:19:21:32 | req.body.title | mongoose.js:113:31:113:35 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:136:33:136:37 | query |
+| mongoose.js:21:19:21:32 | req.body.title | mongoose.js:136:33:136:37 | query |
 | mongoose.js:24:25:24:29 | query | mongoose.js:24:24:24:30 | [query] |
 | mongoose.js:24:25:24:29 | query | mongoose.js:24:24:24:30 | [query] |
 | mongoose.js:115:6:115:22 | id | mongoose.js:123:20:123:21 | id |
@@ -1008,6 +1014,7 @@ edges
 | mongoose.js:128:22:128:25 | cond | mongoose.js:115:32:115:45 | req.query.cond | mongoose.js:128:22:128:25 | cond | This query object depends on a $@. | mongoose.js:115:32:115:45 | req.query.cond | user-provided value |
 | mongoose.js:129:21:129:24 | cond | mongoose.js:115:32:115:45 | req.query.cond | mongoose.js:129:21:129:24 | cond | This query object depends on a $@. | mongoose.js:115:32:115:45 | req.query.cond | user-provided value |
 | mongoose.js:130:16:130:26 | { _id: id } | mongoose.js:115:11:115:22 | req.query.id | mongoose.js:130:16:130:26 | { _id: id } | This query object depends on a $@. | mongoose.js:115:11:115:22 | req.query.id | user-provided value |
+| mongoose.js:136:33:136:37 | query | mongoose.js:21:19:21:26 | req.body | mongoose.js:136:33:136:37 | query | This query object depends on a $@. | mongoose.js:21:19:21:26 | req.body | user-provided value |
 | mongooseJsonParse.js:23:19:23:23 | query | mongooseJsonParse.js:20:30:20:43 | req.query.data | mongooseJsonParse.js:23:19:23:23 | query | This query object depends on a $@. | mongooseJsonParse.js:20:30:20:43 | req.query.data | user-provided value |
 | mongooseModelClient.js:11:16:11:24 | { id: v } | mongooseModelClient.js:10:22:10:29 | req.body | mongooseModelClient.js:11:16:11:24 | { id: v } | This query object depends on a $@. | mongooseModelClient.js:10:22:10:29 | req.body | user-provided value |
 | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } | mongooseModelClient.js:12:22:12:29 | req.body | mongooseModelClient.js:12:16:12:34 | { id: req.body.id } | This query object depends on a $@. | mongooseModelClient.js:12:22:12:29 | req.body | user-provided value |
