@@ -23,6 +23,7 @@ function RegisterExtractorPack(id)
         local match = false
         local dotnetRunNeedsSeparator = false;
         local dotnetRunInjectionIndex = nil;
+        local libOrExe = false;
         local argv = compilerArguments.argv
         if OperatingSystem == 'windows' then
             -- let's hope that this split matches the escaping rules `dotnet` applies to command line arguments
@@ -37,7 +38,7 @@ function RegisterExtractorPack(id)
                 if (not match) then
                     Log(1, 'Dotnet subcommand detected: %s', arg)
                 end
-                if arg == 'build' or arg == 'msbuild' or arg == 'publish' or arg == 'pack' or arg == 'test' then
+                if arg == 'build' or arg == 'msbuild' or arg == 'publish' or arg == 'pack' then
                     match = true
                     break
                 end
@@ -47,6 +48,14 @@ function RegisterExtractorPack(id)
                     match = true
                     dotnetRunNeedsSeparator = true
                     dotnetRunInjectionIndex = i + 1
+                end
+                if arg == 'test' then
+                    match = true
+                end
+                -- for `dotnet test`, we should not append `-p:UseSharedCompilation=false` to the command line
+                -- if a library or executable is being provided as an argument.
+                if arg:match('%.exe$') or arg:match('%.dll')  then
+                    libOrExe = true
                 end
             end
             -- if we see a separator to `dotnet run`, inject just prior to the existing separator
@@ -62,7 +71,7 @@ function RegisterExtractorPack(id)
                 dotnetRunInjectionIndex = i
             end
         end
-        if match then
+        if match and not libOrExe then
             local injections = { '-p:UseSharedCompilation=false', '-p:EmitCompilerGeneratedFiles=true' }
             if dotnetRunNeedsSeparator then
                 table.insert(injections, '--')
