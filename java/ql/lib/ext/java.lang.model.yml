@@ -8,8 +8,9 @@ extensions:
       - ["java.lang", "ClassLoader", True, "getSystemResource", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "ClassLoader", True, "getSystemResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.lang", "Module", True, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
-      - ["java.lang", "Runtime", False, "load", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
-      - ["java.lang", "Runtime", False, "loadLibrary", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
+      # These are potential vulnerabilities, but not for command-injection. No query for this kind of vulnerability currently exists.
+      # - ["java.lang", "Runtime", False, "load", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
+      # - ["java.lang", "Runtime", False, "loadLibrary", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
       # These are modeled in plain CodeQL. TODO: migrate them.
       # - ["java.lang", "ProcessBuilder", False, "command", "(String[])", "", "Argument[0]", "command-injection", "ai-manual"]
       # - ["java.lang", "ProcessBuilder", False, "directory", "(File)", "", "Argument[0]", "command-injection", "ai-manual"]
