@@ -2570,11 +2570,6 @@ module Raw {
     override string toString() { result = "BraceStmt" }
 
     /**
-     * Gets the `index`th variable declared in the scope of this brace statement (0-based).
-     */
-    VarDecl getVariable(int index) { brace_stmt_variables(this, index, result) }
-
-    /**
      * Gets the `index`th element of this brace statement (0-based).
      */
     AstNode getElement(int index) { brace_stmt_elements(this, index, result) }

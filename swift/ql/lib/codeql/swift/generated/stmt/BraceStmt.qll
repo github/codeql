@@ -12,12 +12,7 @@ module Generated {
     /**
      * Gets the `index`th variable declared in the scope of this brace statement (0-based).
      */
-    VarDecl getVariable(int index) {
-      result =
-        Synth::convertVarDeclFromRaw(Synth::convertBraceStmtToRaw(this)
-              .(Raw::BraceStmt)
-              .getVariable(index))
-    }
+    VarDecl getVariable(int index) { none() }
 
     /**
      * Gets any of the variables declared in the scope of this brace statement.
