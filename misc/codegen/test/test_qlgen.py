@@ -885,7 +885,7 @@ def test_synth_property(generate_classes):
         schema.Class("MyObject", properties=[
             schema.SingleProperty("foo", "bar", synth=True)]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", base_import=gen_import_prefix + "MyObject"),
+        "MyObject.qll": (a_ql_stub(name="MyObject"),
                          a_ql_class(name="MyObject", final=True,
                                     properties=[
                                         ql.Property(singular="Foo", type="bar", tablename="my_objects", synth=True,
