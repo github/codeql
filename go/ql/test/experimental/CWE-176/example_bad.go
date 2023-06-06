@@ -20,12 +20,21 @@ func bad() {
 		fmt.Println(w, "Results: %q", unicode_norm)
 	})
 
-	http.HandleFunc("/bad2", func(w http.ResponseWriter, req *http.Request) {
+	http.HandleFunc("/good1_for_lt", func(w http.ResponseWriter, req *http.Request) {
 
 		unicode_input := req.URL.Query().Get("unicode_input")
-		escaped := html.EscapeString(unicode_input)
-		if strings.Index(escaped, "<") == -1 {
-			unicode_norm := norm.NFKC.String(escaped) // $result=BAD
+		if strings.IndexAny(unicode_input, "<﹤＜") == -1 {
+			unicode_norm := norm.NFKC.String(unicode_input) // $result=OK
+			fmt.Println(w, "Results: %q", unicode_norm)
+		}
+
+	})
+
+	http.HandleFunc("/good2_for_lt", func(w http.ResponseWriter, req *http.Request) {
+
+		unicode_input := req.URL.Query().Get("unicode_input")
+		if !strings.ContainsAny(unicode_input, "<﹤＜") {
+			unicode_norm := norm.NFKC.String(unicode_input) // $result=OK
 			fmt.Println(w, "Results: %q", unicode_norm)
 		}
 
