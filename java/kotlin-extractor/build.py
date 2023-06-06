@@ -80,25 +80,37 @@ def run_process(cmd, capture_output=False):
                   errors='replace'), file=sys.stderr)
         raise e
 
+def write_arg_file(arg_file, args):
+    with open(arg_file, 'w') as f:
+        for arg in args:
+            if "'" in arg:
+                raise Exception('Single quote in argument: ' + arg)
+            f.write("'" + arg.replace('\\', '/') + "'\n")
 
-def compile_to_dir(srcs, classpath, java_classpath, output):
+def compile_to_dir(build_dir, srcs, classpath, java_classpath, output):
     # Use kotlinc to compile .kt files:
+    kotlin_arg_file = build_dir + '/kotlin.args'
+    kotlin_args = ['-Werror',
+                   '-opt-in=kotlin.RequiresOptIn',
+                   '-d', output,
+                   '-module-name', 'codeql-kotlin-extractor',
+                   '-no-reflect', '-no-stdlib',
+                   '-jvm-target', '1.8',
+                   '-classpath', classpath] + srcs
+    write_arg_file(kotlin_arg_file, kotlin_args)
     run_process([kotlinc,
-                 # kotlinc can default to 256M, which isn't enough when we are extracting the build
-                 '-J-Xmx2G',
-                 '-Werror',
-                 '-opt-in=kotlin.RequiresOptIn',
-                 '-d', output,
-                 '-module-name', 'codeql-kotlin-extractor',
-                 '-no-reflect', '-no-stdlib',
-                 '-jvm-target', '1.8',
-                 '-classpath', classpath] + srcs)
+                # kotlinc can default to 256M, which isn't enough when we are extracting the build
+                '-J-Xmx2G',
+                '@' + kotlin_arg_file])
 
     # Use javac to compile .java files, referencing the Kotlin class files:
-    run_process([javac,
-                 '-d', output,
+    java_arg_file = build_dir + '/java.args'
+    java_args = ['-d', output,
                  '-source', '8', '-target', '8',
-                 '-classpath', os.path.pathsep.join([output, classpath, java_classpath])] + [s for s in srcs if s.endswith(".java")])
+                 '-classpath', os.path.pathsep.join([output, classpath, java_classpath])] \
+              + [s for s in srcs if s.endswith(".java")]
+    write_arg_file(java_arg_file, java_args)
+    run_process([javac, '@' + java_arg_file])
 
 
 def compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, output):
@@ -108,7 +120,7 @@ def compile_to_jar(build_dir, tmp_src_dir, srcs, classpath, java_classpath, outp
         shutil.rmtree(class_dir)
     os.makedirs(class_dir)
 
-    compile_to_dir(srcs, classpath, java_classpath, class_dir)
+    compile_to_dir(build_dir, srcs, classpath, java_classpath, class_dir)
 
     run_process(['jar', 'cf', output,
                  '-C', class_dir, '.',

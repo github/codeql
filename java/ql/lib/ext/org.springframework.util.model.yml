@@ -3,9 +3,9 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-    - ["org.springframework.util", "FileCopyUtils", False, "copy", "(byte[],File)", "", "Argument[1]", "create-file", "manual"]
-    - ["org.springframework.util", "FileCopyUtils", False, "copy", "(File,File)", "", "Argument[0]", "read-file", "manual"]
-    - ["org.springframework.util", "FileCopyUtils", False, "copy", "(File,File)", "", "Argument[1]", "create-file", "manual"]
+    - ["org.springframework.util", "FileCopyUtils", False, "copy", "(byte[],File)", "", "Argument[1]", "path-injection", "manual"]
+    - ["org.springframework.util", "FileCopyUtils", False, "copy", "(File,File)", "", "Argument[0]", "path-injection", "manual"]
+    - ["org.springframework.util", "FileCopyUtils", False, "copy", "(File,File)", "", "Argument[1]", "path-injection", "manual"]
 
   - addsTo:
       pack: codeql/java-all

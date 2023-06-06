@@ -43,6 +43,7 @@ class Property:
     doc: Optional[str] = None
     doc_plural: Optional[str] = None
     synth: bool = False
+    type_is_hideable: bool = False
 
     def __post_init__(self):
         if self.tableparams:
@@ -113,6 +114,7 @@ class Class:
     qltest_uncollapse_hierarchy: bool = False
     ql_internal: bool = False
     doc: List[str] = field(default_factory=list)
+    hideable: bool = False
 
     def __post_init__(self):
         self.bases = [Base(str(b), str(prev)) for b, prev in zip(self.bases, itertools.chain([""], self.bases))]

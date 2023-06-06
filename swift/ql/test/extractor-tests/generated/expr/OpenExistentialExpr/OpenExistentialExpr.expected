@@ -1,0 +1,1 @@
+| open_existentials.swift:14:5:14:19 | OpenExistentialExpr | hasType: | yes | getSubExpr: | open_existentials.swift:14:5:14:19 | call to foo() | getExistential: | open_existentials.swift:14:5:14:13 | call to createP() | getOpaqueExpr: | open_existentials.swift:14:5:14:13 | OpaqueValueExpr |

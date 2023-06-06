@@ -92,6 +92,7 @@ class Class:
     """^^^ filled with `True` for non-final classes with only synthesized final descendants """
     doc: List[str] = field(default_factory=list)
     default_doc_name: Optional[str] = None
+    hideable: bool = False
 
     @property
     def final(self):
