@@ -6,7 +6,6 @@ extensions:
       - ["java.nio", "ByteBuffer", False, "array", "()", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.nio", "ByteBuffer", False, "get", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.nio", "ByteBuffer", False, "wrap", "(byte[])", "", "Argument[0]", "ReturnValue", "taint", "manual"]
-      - ["java.nio", "Paths", False, "get", "(URI)", "", "Argument[0]", "ReturnValue", "taint", "manual"] # old PathCreation
 
   - addsTo:
       pack: codeql/java-all
