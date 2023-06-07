@@ -1,8 +1,69 @@
 /**
- * Provides classes and predicates for reasoning about use of regular expressions.
+ * Provides classes and predicates for reasoning about regular expressions.
  */
 
 import swift
+import codeql.swift.dataflow.DataFlow
+
+import codeql.swift.regex.RegexTreeView // re-export
+private import internal.ParseRegex
+//private import codeql.regex.internal.RegExpTracking as RegExpTracking
+
+/**
+ * A node whose value may flow to a position where it is interpreted
+ * as a part of a regular expression.
+ */
+abstract class RegExpPatternSource extends DataFlow::Node {
+  /**
+   * Gets a node where the pattern of this node is parsed as a part of
+   * a regular expression.
+   */
+  abstract DataFlow::Node getAParse();
+
+  /**
+   * Gets the root term of the regular expression parsed from this pattern.
+   */
+  abstract RegExpTerm getRegExpTerm();
+}
+
+/* *
+ * A node whose string value may flow to a position where it is interpreted
+ * as a part of a regular expression.
+ *
+private class StringRegExpPatternSource extends RegExpPatternSource {
+  private DataFlow::Node parse;
+
+  StringRegExpPatternSource() {
+    this = regExpSource(parse) and
+    // `regExpSource()` tracks both strings and regex literals, narrow it down to strings.
+    this.asExpr().getConstantValue().isString(_)
+  }
+
+  override DataFlow::Node getAParse() { result = parse }
+
+  override RegExpTerm getRegExpTerm() { result.getRegExp() = this.asExpr().getExpr() }
+}*/
+
+/**
+ * TODO
+ * "(a|b).*"
+ */
+private class ParsedStringRegExp extends RegExp, StringLiteralExpr {
+  private DataFlow::Node parse;
+
+  ParsedStringRegExp() {
+    //this = regExpSource(parse).asExpr().getExpr()
+    parse.asExpr() = this
+  }
+
+  DataFlow::Node getAParse() { result = parse }
+ /*
+  override predicate isDotAll() { none() }
+
+  override predicate isIgnoreCase() { none() }
+
+  override string getFlags() { none() }*/
+}
 
 /**
  * A call that evaluates a regular expression. For example:

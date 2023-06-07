@@ -40,11 +40,11 @@ func myRegexpVariantsTests(myUrl: URL) throws {
 	_ = try Regex("a*b").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted
 	_ = try Regex("(a*)b").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted
 	_ = try Regex("(a)*b").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted
-	_ = try Regex("(a*)*b").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted MISSING: redos-vulnerable=
-	_ = try Regex("((a*)*b)").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted MISSING: redos-vulnerable=
+	_ = try Regex("(a*)*b").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted redos-vulnerable=
+	_ = try Regex("((a*)*b)").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted redos-vulnerable=
 
 	_ = try Regex("(a|aa?)b").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted
-	_ = try Regex("(a|aa?)*b").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted MISSING: redos-vulnerable=
+	_ = try Regex("(a|aa?)*b").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted redos-vulnerable=
 
 	// TODO: test more variant expressions.
 }
