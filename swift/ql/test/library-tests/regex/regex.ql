@@ -1,12 +1,14 @@
 import swift
 import codeql.swift.regex.Regex
+private import codeql.swift.regex.RegexTreeView::RegexTreeView as TreeView
+import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView>
 import TestUtilities.InlineExpectationsTest
 
 bindingset[s]
 string quote(string s) { if s.matches("% %") then result = "\"" + s + "\"" else result = s }
 
 module RegexTest implements TestSig {
-  string getARelevantTag() { result = ["regex", "input"] }
+  string getARelevantTag() { result = ["regex", "input", "redos-vulnerable"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(RegexEval eval, Expr regex |
@@ -23,6 +25,14 @@ module RegexTest implements TestSig {
       element = input.toString() and
       tag = "input" and
       value = quote(input.toString())
+    )
+    or
+    exists(TreeView::RegExpTerm t, string pump, State s, string prefixMsg |
+      hasReDoSResult(t, pump, s, prefixMsg) and
+      location = t.getLocation() and
+      element = t.toString() and
+      tag = "redos-vulnerable" and
+      value = ""
     )
   }
 }
