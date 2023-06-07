@@ -76,7 +76,7 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   }
 
   /**
-   * Returns the related location for the given endpoint.
+   * Gets the related location for the given endpoint.
    *
    * Related locations can be JavaDoc comments of the class or the method.
    */
