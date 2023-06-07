@@ -1,4 +1,4 @@
 ---
 category: minorAnalysis
 ---
-* C#: Update the LUA tracer such that `-p:SharedCompilation=false` is not injected when `dotnet test` is applied to a `dll` or `exe` file.
+* C#: Analysis of the `dotnet test` command supplied with a `dll` or `exe` file as argument no longer fails due to the addition of an erroneous `-p:SharedCompilation=false` argument.
