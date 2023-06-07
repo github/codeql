@@ -260,23 +260,30 @@ public class Test {
 			sink(getElement(out)); // $ hasTaintFlow
 		}
 		{
-			// "com.google.gson;JsonArray;true;add;(JsonArray);;Argument[0].Element;Argument[this].Element;value;manual"
+			// "com.google.gson;JsonArray;true;add;(String);;Argument[0];Argument[this].Element;taint;manual"
 			JsonArray out = null;
-			JsonElement in = (JsonElement)source();
+			String in = (String)source();
 			out.add(in);
+			sink(getElement(out)); // $ hasTaintFlow
+		}
+		{
+			// "com.google.gson;JsonArray;true;addAll;(JsonArray);;Argument[0].Element;Argument[this].Element;value;manual"
+			JsonArray out = null;
+			JsonArray in = newWithElementDefault((JsonElement) source());
+			out.addAll(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.gson;JsonArray;true;asList;;;Argument[this].Element;ReturnValue.Element;value;manual"
 			List out = null;
-			JsonArray in = (JsonArray)newWithElementDefault((JsonElement) source());
+			JsonArray in = newWithElementDefault((JsonElement) source());
 			out = in.asList();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.gson;JsonArray;true;get;;;Argument[this].Element;ReturnValue;value;manual"
 			JsonElement out = null;
-			JsonArray in = (JsonArray)newWithElementDefault((JsonElement) source());
+			JsonArray in = newWithElementDefault((JsonElement) source());
 			out = in.get(0);
 			sink(out); // $ hasValueFlow
 		}
