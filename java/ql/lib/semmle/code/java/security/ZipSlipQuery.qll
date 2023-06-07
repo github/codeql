@@ -50,7 +50,7 @@ private class FileCreationSink extends DataFlow::Node {
 /**
  * Holds if `sink` is a path creation node that doesn't imply a read/write filesystem operation.
  * This is to avoid creating new spurious alerts, since `PathCreation` sinks weren't
- * previosuly part of this query.
+ * previously part of this query.
  */
 private predicate isPathCreation(DataFlow::Node sink) {
   exists(PathCreation pc |
