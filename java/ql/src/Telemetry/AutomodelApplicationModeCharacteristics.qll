@@ -264,7 +264,10 @@ private class IsMaDTaintStepCharacteristic extends CharacteristicsImpl::NotASink
 
 /**
  * A negative characteristic that filters out qualifiers that are classes (i.e. static calls). These
- *are unlikely to have any non-trivial flow going into them.
+ * are unlikely to have any non-trivial flow going into them.
+ *
+ * Technically, an accessed type _could_ come from outside of the source code, but there's not
+ * much likelihood of that being user-controlled.
  */
 private class ClassQualifierCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
   ClassQualifierCharacteristic() { this = "class qualifier" }
