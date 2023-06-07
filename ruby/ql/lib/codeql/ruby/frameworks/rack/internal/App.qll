@@ -7,15 +7,20 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.TypeTracker
 private import Response::Private as RP
 
-private DataFlow::LocalSourceNode trackRackResponse(TypeTracker t, RP::PotentialResponseNode n) {
-  t.start() and
-  result = n
-  or
-  exists(TypeTracker t2 | result = trackRackResponse(t2, n).track(t2, t))
+/** A method node for a method named `call`. */
+private class CallMethodNode extends DataFlow::MethodNode {
+  CallMethodNode() { this.getMethodName() = "call" }
 }
 
-private DataFlow::Node trackRackResponse(RP::PotentialResponseNode n) {
-  trackRackResponse(TypeTracker::end(), n).flowsTo(result)
+private DataFlow::LocalSourceNode trackRackResponse(TypeBackTracker t, CallMethodNode call) {
+  t.start() and
+  result = call.getAReturningNode()
+  or
+  exists(TypeBackTracker t2 | result = trackRackResponse(t2, call).backtrack(t2, t))
+}
+
+private RP::PotentialResponseNode trackRackResponse(CallMethodNode call) {
+  result = trackRackResponse(TypeBackTracker::end(), call)
 }
 
 /**
@@ -28,13 +33,13 @@ module App {
    * (traditionally called `env`) and returns a rack-compatible response.
    */
   class AppCandidate extends DataFlow::ClassNode {
-    private DataFlow::MethodNode call;
+    private CallMethodNode call;
     private RP::PotentialResponseNode resp;
 
     AppCandidate() {
       call = this.getInstanceMethod("call") and
       call.getNumberOfParameters() = 1 and
-      call.getAReturningNode() = trackRackResponse(resp)
+      resp = trackRackResponse(call)
     }
 
     /**
@@ -42,7 +47,7 @@ module App {
      */
     DataFlow::ParameterNode getEnv() { result = call.getParameter(0) }
 
-    /** Gets the response returned from the request. */
+    /** Gets the response returned from a request to this application. */
     RP::PotentialResponseNode getResponse() { result = resp }
   }
 }

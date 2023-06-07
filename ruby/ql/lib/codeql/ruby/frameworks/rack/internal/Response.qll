@@ -24,10 +24,7 @@ module Private {
   /** A `DataFlow::Node` that may be a rack response. This is detected heuristically, if something "looks like" a rack response syntactically then we consider it to be a potential response node. */
   class PotentialResponseNode extends DataFlow::ArrayLiteralNode {
     // [status, headers, body]
-    PotentialResponseNode() {
-      this.getNumberOfArguments() = 3 and
-      this.asExpr().getExpr().getEnclosingModule+().getAMethod().getName() = "call"
-    }
+    PotentialResponseNode() { this.getNumberOfArguments() = 3 }
 
     /**
      * Gets an HTTP status code that may be returned in this response.
