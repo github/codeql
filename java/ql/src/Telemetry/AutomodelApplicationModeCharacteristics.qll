@@ -103,7 +103,8 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   /**
    * Returns the related location for the given endpoint.
    *
-   * Related locations can be JavaDoc comments of the class or the method.
+   * The only related location we model is the the call expression surrounding to
+   * which the endpoint is either argument or qualifier (known as the call context).
    */
   RelatedLocation getRelatedLocation(Endpoint e, RelatedLocationType type) {
     type = CallContext() and
