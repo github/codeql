@@ -1,19 +1,18 @@
 /**
- * Library for parsing for Ruby regular expressions.
+ * Library for parsing Swift regular expressions.
  *
  * N.B. does not yet handle stripping whitespace and comments in regexes with
  * the `x` (free-spacing) flag.
  */
 
-private import codeql.ruby.AST as Ast
-private import codeql.Locations
+import swift
 
 /**
- * A `StringlikeLiteral` containing a regular expression term, that is, either
+ * A `Expr` containing a regular expression term, that is, either
  * a regular expression literal, or a string literal used in a context where
  * it is parsed as regular expression.
  */
-abstract class RegExp extends Ast::StringlikeLiteral {
+abstract class RegExp extends Expr {
   /**
    * Holds if this `RegExp` has the `s` flag for multi-line matching.
    */
@@ -253,11 +252,11 @@ abstract class RegExp extends Ast::StringlikeLiteral {
     this.getChar(pos) != "\\" and result = false
   }
 
-  /** Gets the text of this regex */
+  /**
+   * Gets the text of this regex.
+   */
   string getText() {
-    exists(Ast::ConstantValue c | c = this.getConstantValue() |
-      result = [this.getConstantValue().getString(), this.getConstantValue().getRegExp()]
-    )
+    result = this.(StringLiteralExpr).getValue()
   }
 
   /** Gets the `i`th character of this regex */

@@ -1,19 +1,15 @@
-/** Provides a class hierarchy corresponding to a parse tree of regular expressions. */
+/**
+ * Provides a class hierarchy corresponding to a parse tree of regular expressions.
+ */
 
-private import internal.ParseRegExp
+import swift
+private import internal.ParseRegex
 private import codeql.util.Numbers
-private import codeql.ruby.ast.Literal as Ast
-private import codeql.Locations
 private import codeql.regex.nfa.NfaUtils as NfaUtils
 private import codeql.regex.RegexTreeView
 // exporting as RegexTreeView, and in the top-level scope.
 import Impl as RegexTreeView
 import Impl
-
-/** Gets the parse tree resulting from parsing `re`, if such has been constructed. */
-RegExpTerm getParsedRegExp(Ast::RegExpLiteral re) {
-  result.getRegExp() = re and result.isRootTerm()
-}
 
 /**
  * An element containing a regular expression term, that is, either
@@ -211,25 +207,30 @@ private module Impl implements RegexTreeViewSig {
      */
     Location getLocation() { result = re.getLocation() }
 
-    pragma[noinline]
+    /*pragma[noinline]
     private predicate componentHasLocationInfo(
       int i, string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
       re.getComponent(i)
           .getLocation()
           .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }
+    }*/
 
     /** Holds if this term is found at the specified location offsets. */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      exists(int re_start |
+      /*exists(int re_start |
         this.componentHasLocationInfo(0, filepath, startline, re_start, _, _) and
         this.componentHasLocationInfo(re.getNumberOfComponents() - 1, filepath, _, _, endline, _) and
         startcolumn = re_start + start and
         endcolumn = re_start + end - 1
-      )
+      )*/
+      filepath = re.getFile().getAbsolutePath() and
+      startline = re.getLocation().getStartLine() and
+      startcolumn = re.getLocation().getStartColumn() and
+      endline = re.getLocation().getEndLine() and
+      endcolumn = re.getLocation().getEndColumn()
     }
 
     /** Gets the file in which this term is found. */
@@ -1196,7 +1197,7 @@ private module Impl implements RegexTreeViewSig {
    * Holds if the regular expression should not be considered.
    */
   predicate isExcluded(RegExpParent parent) {
-    parent.(RegExpTerm).getRegExp().(Ast::RegExpLiteral).hasFreeSpacingFlag() // exclude free-spacing mode regexes
+    none()//parent.(RegExpTerm).getRegExp().(Ast::RegExpLiteral).hasFreeSpacingFlag() // exclude free-spacing mode regexes
   }
 
   /**
@@ -1207,13 +1208,13 @@ private module Impl implements RegexTreeViewSig {
 
   /**
    * Holds if the regex that `term` is part of is used in a way that ignores any leading prefix of the input it's matched against.
-   * Not yet implemented for Ruby.
+   * Not yet implemented for Swift.
    */
   predicate matchesAnyPrefix(RegExpTerm term) { any() }
 
   /**
    * Holds if the regex that `term` is part of is used in a way that ignores any trailing suffix of the input it's matched against.
-   * Not yet implemented for Ruby.
+   * Not yet implemented for Swift.
    */
   predicate matchesAnySuffix(RegExpTerm term) { any() }
 
