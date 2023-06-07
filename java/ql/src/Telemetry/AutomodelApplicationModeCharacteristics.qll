@@ -16,6 +16,7 @@ private import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclusions
 private import AutomodelSharedUtil as AutomodelSharedUtil
 private import semmle.code.java.security.PathSanitizer as PathSanitizer
+private import AutomodelSharedGetCallable as AutomodelSharedGetCallable
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
@@ -85,8 +86,8 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
   additional predicate sinkSpec(
     Endpoint e, string package, string type, string name, string signature, string ext, string input
   ) {
-    ApplicationCandidatesImpl::getCallable(e).hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(getCallable(e)) and
+    ApplicationModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
+    signature = ExternalFlow::paramsString(ApplicationModeGetCallable::getCallable(e)) and
     ext = "" and
     (
       exists(Call c, int argIdx |
@@ -110,13 +111,19 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
     type = CallContext() and
     result = any(Call c | e.asExpr() = [c.getAnArgument(), c.getQualifier()])
   }
+}
+
+private class JavaCallable = Callable;
+
+private module ApplicationModeGetCallable implements AutomodelSharedGetCallable::GetCallableSig {
+  class Callable = JavaCallable;
+
+  class Endpoint = ApplicationCandidatesImpl::Endpoint;
 
   /**
    * Returns the API callable being modeled.
-   *
-   * Each Java mode should implement this predicate.
    */
-  additional Callable getCallable(Endpoint e) {
+  Callable getCallable(Endpoint e) {
     exists(Call c |
       e.asExpr() = [c.getAnArgument(), c.getQualifier()] and
       result = c.getCallee()
@@ -209,8 +216,8 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
 
   override predicate appliesToEndpoint(Endpoint e) {
     not ApplicationCandidatesImpl::isSink(e, _) and
-    ApplicationCandidatesImpl::getCallable(e).getName().matches("is%") and
-    ApplicationCandidatesImpl::getCallable(e).getReturnType() instanceof BooleanType
+    ApplicationModeGetCallable::getCallable(e).getName().matches("is%") and
+    ApplicationModeGetCallable::getCallable(e).getReturnType() instanceof BooleanType
   }
 }
 
@@ -228,7 +235,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   override predicate appliesToEndpoint(Endpoint e) {
     not ApplicationCandidatesImpl::isSink(e, _) and
     exists(Callable callable |
-      callable = ApplicationCandidatesImpl::getCallable(e) and
+      callable = ApplicationModeGetCallable::getCallable(e) and
       callable.getName().toLowerCase() = ["exists", "notexists"] and
       callable.getReturnType() instanceof BooleanType
     )
@@ -242,7 +249,7 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    ApplicationCandidatesImpl::getCallable(e).getDeclaringType().getASupertype*() instanceof
+    ApplicationModeGetCallable::getCallable(e).getDeclaringType().getASupertype*() instanceof
       TypeThrowable
   }
 }
@@ -291,7 +298,7 @@ private class ArgumentToLocalCall extends CharacteristicsImpl::UninterestingToMo
   ArgumentToLocalCall() { this = "argument to local call" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    ApplicationCandidatesImpl::getCallable(e).fromSource()
+    ApplicationModeGetCallable::getCallable(e).fromSource()
   }
 }
 
@@ -302,7 +309,7 @@ private class ExcludedFromModeling extends CharacteristicsImpl::UninterestingToM
   ExcludedFromModeling() { this = "excluded from modeling" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    ModelExclusions::isUninterestingForModels(ApplicationCandidatesImpl::getCallable(e)) or
+    ModelExclusions::isUninterestingForModels(ApplicationModeGetCallable::getCallable(e)) or
     ModelExclusions::isUninterestingForModels(e.getEnclosingCallable())
   }
 }
@@ -316,7 +323,7 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
   NonPublicMethodCharacteristic() { this = "non-public method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not ApplicationCandidatesImpl::getCallable(e).isPublic()
+    not ApplicationModeGetCallable::getCallable(e).isPublic()
   }
 }
 

@@ -15,6 +15,7 @@ private import semmle.code.java.security.QueryInjection
 private import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclusions
 private import AutomodelSharedUtil as AutomodelSharedUtil
+private import AutomodelSharedGetCallable as AutomodelSharedGetCallable
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
@@ -66,8 +67,8 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   additional predicate sinkSpec(
     Endpoint e, string package, string type, string name, string signature, string ext, string input
   ) {
-    FrameworkCandidatesImpl::getCallable(e).hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(getCallable(e)) and
+    FrameworkModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
+    signature = ExternalFlow::paramsString(FrameworkModeGetCallable::getCallable(e)) and
     ext = "" and
     exists(int paramIdx | e.isParameterOf(_, paramIdx) |
       input = AutomodelSharedUtil::getArgumentForIndex(paramIdx)
@@ -81,18 +82,26 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
    */
   RelatedLocation getRelatedLocation(Endpoint e, RelatedLocationType type) {
     type = MethodDoc() and
-    result = FrameworkCandidatesImpl::getCallable(e).(Documentable).getJavadoc()
+    result = FrameworkModeGetCallable::getCallable(e).(Documentable).getJavadoc()
     or
     type = ClassDoc() and
-    result = FrameworkCandidatesImpl::getCallable(e).getDeclaringType().(Documentable).getJavadoc()
+    result = FrameworkModeGetCallable::getCallable(e).getDeclaringType().(Documentable).getJavadoc()
   }
+}
+
+private class JavaCallable = Callable;
+
+private module FrameworkModeGetCallable implements AutomodelSharedGetCallable::GetCallableSig {
+  class Callable = JavaCallable;
+
+  class Endpoint = FrameworkCandidatesImpl::Endpoint;
 
   /**
    * Returns the callable that contains the given endpoint.
    *
    * Each Java mode should implement this predicate.
    */
-  additional Callable getCallable(Endpoint e) { result = e.getEnclosingCallable() }
+  Callable getCallable(Endpoint e) { result = e.getEnclosingCallable() }
 }
 
 module CharacteristicsImpl = SharedCharacteristics::SharedCharacteristics<FrameworkCandidatesImpl>;
@@ -163,8 +172,8 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
 
   override predicate appliesToEndpoint(Endpoint e) {
     not FrameworkCandidatesImpl::isSink(e, _) and
-    FrameworkCandidatesImpl::getCallable(e).getName().matches("is%") and
-    FrameworkCandidatesImpl::getCallable(e).getReturnType() instanceof BooleanType
+    FrameworkModeGetCallable::getCallable(e).getName().matches("is%") and
+    FrameworkModeGetCallable::getCallable(e).getReturnType() instanceof BooleanType
   }
 }
 
@@ -182,7 +191,7 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   override predicate appliesToEndpoint(Endpoint e) {
     not FrameworkCandidatesImpl::isSink(e, _) and
     exists(Callable callable |
-      callable = FrameworkCandidatesImpl::getCallable(e) and
+      callable = FrameworkModeGetCallable::getCallable(e) and
       callable.getName().toLowerCase() = ["exists", "notexists"] and
       callable.getReturnType() instanceof BooleanType
     )
@@ -196,7 +205,7 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    FrameworkCandidatesImpl::getCallable(e).getDeclaringType().getASupertype*() instanceof
+    FrameworkModeGetCallable::getCallable(e).getDeclaringType().getASupertype*() instanceof
       TypeThrowable
   }
 }
@@ -222,7 +231,7 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
   NonPublicMethodCharacteristic() { this = "non-public method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::getCallable(e).isPublic()
+    not FrameworkModeGetCallable::getCallable(e).isPublic()
   }
 }
 
