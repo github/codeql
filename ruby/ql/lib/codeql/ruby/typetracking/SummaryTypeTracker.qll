@@ -1,10 +1,10 @@
 /**
- * Provides the implementation of a summary type tracker, that is type tracking through flow summaries.
+ * Provides the implementation of type tracking steps through flow summaries.
  * To use this, you must implement the `Input` signature. You can then use the predicates in the `Output`
  * signature to implement the predicates of the same names inside `TypeTrackerSpecific.qll`.
  */
 
-/** The classes and predicates needed to generate a summary type tracker. */
+/** The classes and predicates needed to generate type-tracking steps from summaries. */
 signature module Input {
   // Dataflow nodes
   class Node;
