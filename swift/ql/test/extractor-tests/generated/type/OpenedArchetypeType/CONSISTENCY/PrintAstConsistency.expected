@@ -1,3 +1,0 @@
-doubleParents
-| opened_archetypes.swift:24:10:24:16 | [MemberRefExpr] .isFooMember | getBase() | opened_archetypes.swift:24:10:24:16 | [OpenExistentialExpr] OpenExistentialExpr | getOpaqueExpr() | opened_archetypes.swift:24:10:24:10 | [OpaqueValueExpr] OpaqueValueExpr |
-| opened_archetypes.swift:24:10:24:16 | [OpenExistentialExpr] OpenExistentialExpr | getOpaqueExpr() | opened_archetypes.swift:24:10:24:16 | [MemberRefExpr] .isFooMember | getBase() | opened_archetypes.swift:24:10:24:10 | [OpaqueValueExpr] OpaqueValueExpr |

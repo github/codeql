@@ -40,5 +40,5 @@ module ZipSlipFlow = TaintTracking::Global<ZipSlipConfig>;
  * A sink that represents a file creation, such as a file write, copy or move operation.
  */
 private class FileCreationSink extends DataFlow::Node {
-  FileCreationSink() { sinkNode(this, "create-file") }
+  FileCreationSink() { sinkNode(this, "path-injection") }
 }

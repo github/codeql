@@ -337,7 +337,7 @@ def test_class_with_pragmas():
     }
 
 
-def test_ipa_from_class():
+def test_synth_from_class():
     @load
     class data:
         class A:
@@ -348,12 +348,12 @@ def test_ipa_from_class():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, ipa=True),
-        'B': schema.Class('B', bases=['A'], ipa=schema.IpaInfo(from_class="A")),
+        'A': schema.Class('A', derived={'B'}, synth=True),
+        'B': schema.Class('B', bases=['A'], synth=schema.SynthInfo(from_class="A")),
     }
 
 
-def test_ipa_from_class_ref():
+def test_synth_from_class_ref():
     @load
     class data:
         @defs.synth.from_class("B")
@@ -364,12 +364,12 @@ def test_ipa_from_class_ref():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, ipa=schema.IpaInfo(from_class="B")),
+        'A': schema.Class('A', derived={'B'}, synth=schema.SynthInfo(from_class="B")),
         'B': schema.Class('B', bases=['A']),
     }
 
 
-def test_ipa_from_class_dangling():
+def test_synth_from_class_dangling():
     with pytest.raises(schema.Error):
         @load
         class data:
@@ -378,7 +378,7 @@ def test_ipa_from_class_dangling():
                 pass
 
 
-def test_ipa_class_on():
+def test_synth_class_on():
     @load
     class data:
         class A:
@@ -389,12 +389,12 @@ def test_ipa_class_on():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, ipa=True),
-        'B': schema.Class('B', bases=['A'], ipa=schema.IpaInfo(on_arguments={'a': 'A', 'i': 'int'})),
+        'A': schema.Class('A', derived={'B'}, synth=True),
+        'B': schema.Class('B', bases=['A'], synth=schema.SynthInfo(on_arguments={'a': 'A', 'i': 'int'})),
     }
 
 
-def test_ipa_class_on_ref():
+def test_synth_class_on_ref():
     class A:
         pass
 
@@ -408,12 +408,12 @@ def test_ipa_class_on_ref():
             pass
 
     assert data.classes == {
-        'A': schema.Class('A', derived={'B'}, ipa=schema.IpaInfo(on_arguments={'b': 'B', 'i': 'int'})),
+        'A': schema.Class('A', derived={'B'}, synth=schema.SynthInfo(on_arguments={'b': 'B', 'i': 'int'})),
         'B': schema.Class('B', bases=['A']),
     }
 
 
-def test_ipa_class_on_dangling():
+def test_synth_class_on_dangling():
     with pytest.raises(schema.Error):
         @load
         class data:
@@ -422,7 +422,7 @@ def test_ipa_class_on_dangling():
                 pass
 
 
-def test_ipa_class_hierarchy():
+def test_synth_class_hierarchy():
     @load
     class data:
         class Root:
@@ -447,12 +447,23 @@ def test_ipa_class_hierarchy():
 
     assert data.classes == {
         'Root': schema.Class('Root', derived={'Base', 'C'}),
-        'Base': schema.Class('Base', bases=['Root'], derived={'Intermediate', 'B'}, ipa=True),
-        'Intermediate': schema.Class('Intermediate', bases=['Base'], derived={'A'}, ipa=True),
-        'A': schema.Class('A', bases=['Intermediate'], ipa=schema.IpaInfo(on_arguments={'a': 'Base', 'i': 'int'})),
-        'B': schema.Class('B', bases=['Base'], ipa=schema.IpaInfo(from_class='Base')),
+        'Base': schema.Class('Base', bases=['Root'], derived={'Intermediate', 'B'}, synth=True),
+        'Intermediate': schema.Class('Intermediate', bases=['Base'], derived={'A'}, synth=True),
+        'A': schema.Class('A', bases=['Intermediate'], synth=schema.SynthInfo(on_arguments={'a': 'Base', 'i': 'int'})),
+        'B': schema.Class('B', bases=['Base'], synth=schema.SynthInfo(from_class='Base')),
         'C': schema.Class('C', bases=['Root']),
     }
+
+
+def test_synthesized_property():
+    @load
+    class data:
+        class A:
+            x: defs.int | defs.synth
+
+    assert data.classes["A"].properties == [
+        schema.SingleProperty("x", "int", synth=True)
+    ]
 
 
 def test_class_docstring():
@@ -686,6 +697,34 @@ def test_uppercase_acronyms_are_rejected():
 
             class ROTFLNode(Root):
                 pass
+
+
+def test_hideable():
+    @load
+    class data:
+        class Root:
+            pass
+
+        @defs.ql.hideable
+        class A(Root):
+            pass
+
+        class IndirectlyHideable(Root):
+            pass
+
+        class B(A, IndirectlyHideable):
+            pass
+
+        class NonHideable(Root):
+            pass
+
+    assert data.classes == {
+        "Root": schema.Class("Root", derived={"A", "IndirectlyHideable", "NonHideable"}, hideable=True),
+        "A": schema.Class("A", bases=["Root"], derived={"B"}, hideable=True),
+        "IndirectlyHideable": schema.Class("IndirectlyHideable", bases=["Root"], derived={"B"}, hideable=True),
+        "B": schema.Class("B", bases=["A", "IndirectlyHideable"], hideable=True),
+        "NonHideable": schema.Class("NonHideable", bases=["Root"], hideable=False),
+    }
 
 
 if __name__ == '__main__':

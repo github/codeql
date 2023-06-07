@@ -7,6 +7,7 @@ private import codeql.ruby.Concepts
 private import codeql.ruby.DataFlow
 private import codeql.ruby.dataflow.BarrierGuards
 private import codeql.ruby.dataflow.RemoteFlowSources
+private import codeql.ruby.ApiGraphs
 
 /**
  * Provides default sources, sinks and sanitizers for detecting SQL injection
@@ -53,4 +54,6 @@ module SqlInjection {
   class StringConstArrayInclusionCallAsSanitizer extends Sanitizer,
     StringConstArrayInclusionCallBarrier
   { }
+
+  private class SqlSanitizationAsSanitizer extends Sanitizer, SqlSanitization { }
 }

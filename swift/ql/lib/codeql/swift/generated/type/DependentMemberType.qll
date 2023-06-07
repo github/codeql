@@ -33,25 +33,12 @@ module Generated {
 
     /**
      * Gets the associated type declaration of this dependent member type.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    AssociatedTypeDecl getImmediateAssociatedTypeDecl() {
+    AssociatedTypeDecl getAssociatedTypeDecl() {
       result =
         Synth::convertAssociatedTypeDeclFromRaw(Synth::convertDependentMemberTypeToRaw(this)
               .(Raw::DependentMemberType)
               .getAssociatedTypeDecl())
-    }
-
-    /**
-     * Gets the associated type declaration of this dependent member type.
-     */
-    final AssociatedTypeDecl getAssociatedTypeDecl() {
-      exists(AssociatedTypeDecl immediate |
-        immediate = this.getImmediateAssociatedTypeDecl() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
   }
 }

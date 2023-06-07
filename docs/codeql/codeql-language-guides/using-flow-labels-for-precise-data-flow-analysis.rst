@@ -70,18 +70,22 @@ For example, we would like to flag this code:
 
 .. code-block:: javascript
 
-  var data = JSON.parse(str);
-  if (data.length > 0) {  // problematic: `data` may be `null`
-    ...
+  function test(str) {
+    var data = JSON.parse(str);
+    if (data.length > 0) {  // problematic: `data` may be `null`
+      ...
+    }
   }
 
 This code, on the other hand, should not be flagged:
 
 .. code-block:: javascript
 
-  var data = JSON.parse(str);
-  if (data && data.length > 0) { // unproblematic: `data` is first checked for nullness
-    ...
+  function test(str) {
+    var data = JSON.parse(str);
+    if (data && data.length > 0) { // unproblematic: `data` is first checked for nullness
+      ...
+    }
   }
 
 We will first try to write a query to find this kind of problem without flow labels, and use the
@@ -168,11 +172,13 @@ checked for null-guardedness:
 
 .. code-block:: javascript
 
-  var root = JSON.parse(str);
-  if (root) {
-    var payload = root.data;   // unproblematic: `root` cannot be `null` here
-    if (payload.length > 0) {  // problematic: `payload` may be `null` here
-      ...
+  function test(str) {
+    var root = JSON.parse(str);
+    if (root) {
+      var payload = root.data;   // unproblematic: `root` cannot be `null` here
+      if (payload.length > 0) {  // problematic: `payload` may be `null` here
+        ...
+      }
     }
   }
 

@@ -53,7 +53,7 @@ Note that this sink is already recognized by the CodeQL JS analysis, but for thi
         pack: codeql/javascript-all
         extensible: sinkModel
       data:
-        - ["execa", "Member[shell].Argument[0]", "command-line-injection"]
+        - ["execa", "Member[shell].Argument[0]", "command-injection"]
 
 
 - Since we're adding a new sink, we add a tuple to the **sinkModel** extensible predicate.
@@ -64,7 +64,7 @@ Note that this sink is already recognized by the CodeQL JS analysis, but for thi
   - **Member[shell]** selects accesses to the **shell** member of the **execa** package.
   - **Argument[0]** selects the first argument to calls to that member.
 
-- **command-line-injection** indicates that this is considered a sink for the command injection query.
+- **command-injection** indicates that this is considered a sink for the command injection query.
 
 Example: Taint sources from window 'message' events
 ---------------------------------------------------
@@ -463,7 +463,7 @@ Sink kinds
 Unlike sources, sinks tend to be highly query-specific, rarely affecting more than one or two queries. Not every query supports customizable sinks. If the following sinks are not suitable for your use case, you should add a new query.
 
 - **code-injection**: A sink that can be used to inject code, such as in calls to **eval**.
-- **command-line-injection**: A sink that can be used to inject shell commands, such as in calls to **child_process.spawn**.
+- **command-injection**: A sink that can be used to inject shell commands, such as in calls to **child_process.spawn**.
 - **path-injection**: A sink that can be used for path injection in a file system access, such as in calls to **fs.readFile**.
 - **sql-injection**: A sink that can be used for SQL injection, such as in a MySQL **query** call.
 - **nosql-injection**: A sink that can be used for NoSQL injection, such as in a MongoDB **findOne** call.
