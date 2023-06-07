@@ -6,6 +6,7 @@ dbscheme: swift.dbscheme
 upgrades: upgrades
 library: true
 dependencies:
+  codeql/regex: ${workspace}
   codeql/ssa: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
