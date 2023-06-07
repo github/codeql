@@ -77,9 +77,6 @@ StrutsXmlFile getRootXmlFile(RefType refType) {
   )
 }
 
-/** DEPRECATED: Alias for getRootXmlFile */
-deprecated StrutsXMLFile getRootXMLFile(RefType refType) { result = getRootXmlFile(refType) }
-
 /**
  * Gets the suffix used for automatically identifying actions when using the convention plugin.
  *

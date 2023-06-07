@@ -60,11 +60,6 @@ class Class extends ValueOrRefType {
   Class() { this.isClass() }
 }
 
-/** A `record`. */
-deprecated class Record extends Class {
-  Record() { this.isRecord() }
-}
-
 /** An `interface`. */
 class Interface extends ValueOrRefType {
   Interface() { this.isInterface() }
