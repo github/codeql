@@ -848,13 +848,13 @@ def test_property_on_class_with_default_doc_name(generate_classes):
     }
 
 
-def test_stub_on_class_with_ipa_from_class(generate_classes):
+def test_stub_on_class_with_synth_from_class(generate_classes):
     assert generate_classes([
-        schema.Class("MyObject", ipa=schema.IpaInfo(from_class="A"),
+        schema.Class("MyObject", synth=schema.SynthInfo(from_class="A"),
                      properties=[schema.SingleProperty("foo", "bar")]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", ipa_accessors=[
-            ql.IpaUnderlyingAccessor(argument="Entity", type="Raw::A", constructorparams=["result"]),
+        "MyObject.qll": (a_ql_stub(name="MyObject", synth_accessors=[
+            ql.SynthUnderlyingAccessor(argument="Entity", type="Raw::A", constructorparams=["result"]),
         ]),
             a_ql_class(name="MyObject", final=True, properties=[
                 ql.Property(singular="Foo", type="bar", tablename="my_objects", synth=True,
@@ -863,15 +863,15 @@ def test_stub_on_class_with_ipa_from_class(generate_classes):
     }
 
 
-def test_stub_on_class_with_ipa_on_arguments(generate_classes):
+def test_stub_on_class_with_synth_on_arguments(generate_classes):
     assert generate_classes([
-        schema.Class("MyObject", ipa=schema.IpaInfo(on_arguments={"base": "A", "index": "int", "label": "string"}),
+        schema.Class("MyObject", synth=schema.SynthInfo(on_arguments={"base": "A", "index": "int", "label": "string"}),
                      properties=[schema.SingleProperty("foo", "bar")]),
     ]) == {
-        "MyObject.qll": (a_ql_stub(name="MyObject", ipa_accessors=[
-            ql.IpaUnderlyingAccessor(argument="Base", type="Raw::A", constructorparams=["result", "_", "_"]),
-            ql.IpaUnderlyingAccessor(argument="Index", type="int", constructorparams=["_", "result", "_"]),
-            ql.IpaUnderlyingAccessor(argument="Label", type="string", constructorparams=["_", "_", "result"]),
+        "MyObject.qll": (a_ql_stub(name="MyObject", synth_accessors=[
+            ql.SynthUnderlyingAccessor(argument="Base", type="Raw::A", constructorparams=["result", "_", "_"]),
+            ql.SynthUnderlyingAccessor(argument="Index", type="int", constructorparams=["_", "result", "_"]),
+            ql.SynthUnderlyingAccessor(argument="Label", type="string", constructorparams=["_", "_", "result"]),
         ]),
             a_ql_class(name="MyObject", final=True, properties=[
                 ql.Property(singular="Foo", type="bar", tablename="my_objects", synth=True,

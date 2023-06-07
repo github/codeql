@@ -85,7 +85,7 @@ class Processor:
     def get_classes(self):
         ret = {'': []}
         for k, cls in self._classmap.items():
-            if not cls.ipa:
+            if not cls.synth:
                 ret.setdefault(cls.group, []).append(self._get_class(cls.name))
         return ret
 

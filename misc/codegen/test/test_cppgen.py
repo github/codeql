@@ -181,19 +181,19 @@ def test_cpp_skip_pragma(generate):
     ]
 
 
-def test_ipa_classes_ignored(generate):
+def test_synth_classes_ignored(generate):
     assert generate([
         schema.Class(
             name="W",
-            ipa=schema.IpaInfo(),
+            synth=schema.SynthInfo(),
         ),
         schema.Class(
             name="X",
-            ipa=schema.IpaInfo(from_class="A"),
+            synth=schema.SynthInfo(from_class="A"),
         ),
         schema.Class(
             name="Y",
-            ipa=schema.IpaInfo(on_arguments={"a": "A", "b": "int"}),
+            synth=schema.SynthInfo(on_arguments={"a": "A", "b": "int"}),
         ),
         schema.Class(
             name="Z",
