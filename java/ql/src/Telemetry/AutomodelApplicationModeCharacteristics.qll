@@ -190,6 +190,8 @@ class ApplicationModeMetadataExtractor extends string {
       ) and
       input = AutomodelSharedUtil::getArgumentForIndex(argIdx) and
       package = callable.getDeclaringType().getPackage().getName() and
+      // we're using the erased types because the MaD convention is to not specify type parameters.
+      // Whether something is or isn't a sink doesn't usually depend on the type parameters.
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
       subtypes = this.considerSubtypes(callable).toString() and
       name = callable.getName() and
