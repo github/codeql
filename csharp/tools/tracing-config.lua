@@ -21,7 +21,6 @@ function RegisterExtractorPack(id)
         -- if that's `build`, we append `-p:UseSharedCompilation=false` to the command line,
         -- otherwise we do nothing.
         local match = false
-        local testMatch = false;
         local dotnetRunNeedsSeparator = false;
         local dotnetRunInjectionIndex = nil;
         local argv = compilerArguments.argv
@@ -35,7 +34,7 @@ function RegisterExtractorPack(id)
             -- dotnet options start with either - or / (both are legal)
             local firstCharacter = string.sub(arg, 1, 1)
             if not (firstCharacter == '-') and not (firstCharacter == '/') then
-                if (not match and not testMatch) then
+                if (not match) then
                     Log(1, 'Dotnet subcommand detected: %s', arg)
                 end
                 if arg == 'build' or arg == 'msbuild' or arg == 'publish' or arg == 'pack' then
@@ -50,12 +49,13 @@ function RegisterExtractorPack(id)
                     dotnetRunInjectionIndex = i + 1
                 end
                 if arg == 'test' then
-                    testMatch = true
+                    match = true
                 end
-                -- for `dotnet test`, we should not append `-p:UseSharedCompilation=false` to the command line
+                -- for `dotnet [test|run]`, we should not append `-p:UseSharedCompilation=false` to the command line
                 -- if a library or executable is being provided as an argument.
-                if testMatch and (arg:match('%.exe$') or arg:match('%.dll'))  then
-                    testMatch = false
+                if arg:match('%.exe$') or arg:match('%.dll')  then
+                    match = false
+                    break
                 end
             end
             -- if we see a separator to `dotnet run`, inject just prior to the existing separator
@@ -71,7 +71,7 @@ function RegisterExtractorPack(id)
                 dotnetRunInjectionIndex = i
             end
         end
-        if match or testMatch then
+        if match then
             local injections = { '-p:UseSharedCompilation=false', '-p:EmitCompilerGeneratedFiles=true' }
             if dotnetRunNeedsSeparator then
                 table.insert(injections, '--')
