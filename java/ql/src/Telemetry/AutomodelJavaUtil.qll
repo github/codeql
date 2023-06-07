@@ -1,3 +1,4 @@
+private import java
 private import AutomodelEndpointTypes as AutomodelEndpointTypes
 
 /**
@@ -60,4 +61,21 @@ string getArgumentForIndex(int index) {
   index = -1 and result = "Argument[this]"
   or
   index >= 0 and result = "Argument[" + index + "]"
+}
+
+/**
+ * By convention, the subtypes property of the MaD declaration should only be
+ * true when there _can_ exist any subtypes with a different implementation.
+ *
+ * It would technically be ok to always use the value 'true', but this would
+ * break convention.
+ */
+boolean considerSubtypes(Callable callable) {
+  if
+    callable.isStatic() or
+    callable.getDeclaringType().isStatic() or
+    callable.isFinal() or
+    callable.getDeclaringType().isFinal()
+  then result = false
+  else result = true
 }

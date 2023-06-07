@@ -11,7 +11,7 @@
 private import java
 private import AutomodelApplicationModeCharacteristics
 private import AutomodelEndpointTypes
-private import AutomodelSharedUtil
+private import AutomodelJavaUtil
 
 /**
  * Gets a sample of endpoints (of at most `limit` samples) for which the given characteristic applies.

@@ -14,7 +14,7 @@ private import semmle.code.java.Expr as Expr
 private import semmle.code.java.security.QueryInjection
 private import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclusions
-private import AutomodelSharedUtil as AutomodelSharedUtil
+private import AutomodelJavaUtil as AutomodelJavaUtil
 private import AutomodelSharedGetCallable as AutomodelSharedGetCallable
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
@@ -48,7 +48,7 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
 
   RelatedLocation asLocation(Endpoint e) { result = e.asParameter() }
 
-  predicate isKnownKind = AutomodelSharedUtil::isKnownKind/3;
+  predicate isKnownKind = AutomodelJavaUtil::isKnownKind/3;
 
   predicate isSink(Endpoint e, string kind) {
     exists(string package, string type, string name, string signature, string ext, string input |
@@ -71,7 +71,7 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
     signature = ExternalFlow::paramsString(FrameworkModeGetCallable::getCallable(e)) and
     ext = "" and
     exists(int paramIdx | e.isParameterOf(_, paramIdx) |
-      input = AutomodelSharedUtil::getArgumentForIndex(paramIdx)
+      input = AutomodelJavaUtil::getArgumentForIndex(paramIdx)
     )
   }
 
@@ -120,33 +120,16 @@ class Endpoint = FrameworkCandidatesImpl::Endpoint;
 class FrameworkModeMetadataExtractor extends string {
   FrameworkModeMetadataExtractor() { this = "FrameworkModeMetadataExtractor" }
 
-  /**
-   * By convention, the subtypes property of the MaD declaration should only be
-   * true when there _can_ exist any subtypes with a different implementation.
-   *
-   * It would technically be ok to always use the value 'true', but this would
-   * break convention.
-   */
-  boolean considerSubtypes(Callable callable) {
-    if
-      callable.isStatic() or
-      callable.getDeclaringType().isStatic() or
-      callable.isFinal() or
-      callable.getDeclaringType().isFinal()
-    then result = false
-    else result = true
-  }
-
   predicate hasMetadata(
     Endpoint e, string package, string type, string subtypes, string name, string signature,
     string input, string parameterName
   ) {
     exists(Callable callable, int paramIdx |
       e.asParameter() = callable.getParameter(paramIdx) and
-      input = AutomodelSharedUtil::getArgumentForIndex(paramIdx) and
+      input = AutomodelJavaUtil::getArgumentForIndex(paramIdx) and
       package = callable.getDeclaringType().getPackage().getName() and
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
-      subtypes = this.considerSubtypes(callable).toString() and
+      subtypes = AutomodelJavaUtil::considerSubtypes(callable).toString() and
       name = callable.getName() and
       parameterName = e.asParameter().getName() and
       signature = ExternalFlow::paramsString(callable)

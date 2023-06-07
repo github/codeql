@@ -10,7 +10,7 @@
 
 private import AutomodelFrameworkModeCharacteristics
 private import AutomodelEndpointTypes
-private import AutomodelSharedUtil
+private import AutomodelJavaUtil
 
 from
   Endpoint endpoint, EndpointCharacteristic characteristic, float confidence,

@@ -13,7 +13,7 @@
  */
 
 private import AutomodelFrameworkModeCharacteristics
-private import AutomodelSharedUtil
+private import AutomodelJavaUtil
 
 from
   Endpoint endpoint, string message, FrameworkModeMetadataExtractor meta, DollarAtString package,
