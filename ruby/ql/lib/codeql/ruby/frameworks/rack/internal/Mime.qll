@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the `Mime` component of the `Rack` library.
+ */
+
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
 
@@ -1288,7 +1292,7 @@ private predicate mimeTypeMatches(string ext, string mimeType) {
 }
 
 /**
- * Provides modeling for the `Response` component of the `Rack` library.
+ * Provides modeling for the `Mime` component of the `Rack` library.
  */
 module Mime {
   class MimetypeCall extends DataFlow::CallNode {
@@ -1300,6 +1304,7 @@ module Mime {
       result = this.getArgument(0).getConstantValue().getStringlikeValue()
     }
 
+    /** Gets the canonical MIME type string returned by this call. */
     string getMimeType() { mimeTypeMatches(this.getExtension(), result) }
   }
 }

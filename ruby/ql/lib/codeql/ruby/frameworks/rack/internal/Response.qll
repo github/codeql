@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for the `Response` component of the `Rack` library.
+ */
+
 private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.Concepts
@@ -17,6 +21,7 @@ module Private {
 
   private DataFlow::Node trackInt(int i) { trackInt(TypeTracker::end(), i).flowsTo(result) }
 
+  /** A `DataFlow::Node` that may be a rack response. This is detected heuristically, if something "looks like" a rack response syntactically then we consider it to be a potential response node. */
   class PotentialResponseNode extends DataFlow::ArrayLiteralNode {
     // [status, headers, body]
     PotentialResponseNode() {
@@ -83,6 +88,7 @@ module Public {
     override string getMimetypeDefault() { none() }
   }
 
+  /** A `DataFlow::Node` returned from a rack request that has a redirect HTTP status code. */
   class RedirectResponse extends ResponseNode, Http::Server::HttpRedirectResponse::Range {
     RedirectResponse() { this.getAStatusCode() = [300, 301, 302, 303, 307, 308] }
 

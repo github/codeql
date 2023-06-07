@@ -1,6 +1,10 @@
 /**
  * Provides modeling for the Rack library.
  */
+
+/**
+ * Provides modeling for the Rack library.
+ */
 module Rack {
   import rack.internal.App
   import rack.internal.Mime

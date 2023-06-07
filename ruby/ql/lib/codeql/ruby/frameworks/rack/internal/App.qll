@@ -1,3 +1,7 @@
+/**
+ * Provides modeling for Rack applications.
+ */
+
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.TypeTracker
