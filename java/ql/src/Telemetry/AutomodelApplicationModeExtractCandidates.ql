@@ -7,7 +7,7 @@
  * @name Automodel candidates (application mode)
  * @description A query to extract automodel candidates in application mode.
  * @kind problem
- * @severity info
+ * @problem.severity recommendation
  * @id java/ml/extract-automodel-application-candidates
  * @tags internal extract automodel application-mode candidates
  */

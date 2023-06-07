@@ -3,7 +3,7 @@
  *
  * @name Negative examples (framework mode)
  * @kind problem
- * @severity info
+ * @problem.severity recommendation
  * @id java/ml/extract-automodel-framework-negative-examples
  * @tags internal extract automodel framework-mode negative examples
  */

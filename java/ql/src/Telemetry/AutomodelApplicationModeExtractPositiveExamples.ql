@@ -3,7 +3,7 @@
  *
  * @name Positive examples (application mode)
  * @kind problem
- * @severity info
+ * @problem.severity recommendation
  * @id java/ml/extract-automodel-application-positive-examples
  * @tags internal extract automodel application-mode positive examples
  */

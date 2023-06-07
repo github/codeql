@@ -3,7 +3,7 @@
  *
  * @name Negative examples (application mode)
  * @kind problem
- * @severity info
+ * @problem.severity recommendation
  * @id java/ml/extract-automodel-application-negative-examples
  * @tags internal extract automodel application-mode negative examples
  */

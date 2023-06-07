@@ -3,7 +3,7 @@
  *
  * @name Positive examples (framework mode)
  * @kind problem
- * @severity info
+ * @problem.severity recommendation
  * @id java/ml/extract-automodel-framework-positive-examples
  * @tags internal extract automodel framework-mode positive examples
  */
