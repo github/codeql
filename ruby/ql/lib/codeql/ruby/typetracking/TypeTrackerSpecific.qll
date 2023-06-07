@@ -467,21 +467,6 @@ module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
     )
   }
 
-  // Specific summary handling
-  predicate componentLevelStep(SummaryComponent component) {
-    exists(TypeTrackerContent content |
-      component = SummaryComponent::withoutContent(content) and
-      not exists(getFilterFromWithoutContentStep(content))
-    )
-  }
-
-  pragma[nomagic]
-  predicate isNonLocal(SummaryComponent component) {
-    component = SC::content(_)
-    or
-    component = SC::withContent(_)
-  }
-
   // Relating callables to nodes
   Node callTo(SummarizedCallable callable) { result.asExpr().getExpr() = callable.getACallSimple() }
 }

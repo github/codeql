@@ -255,14 +255,6 @@ module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
       callable.getALocalSource().asExpr().(CallableExpr).getInnerScope().getAReturnValueFlowNode()
   }
 
-  // Specific summary handling
-  predicate componentLevelStep(SummaryComponent component) { none() }
-
-  pragma[nomagic]
-  predicate isNonLocal(SummaryComponent component) {
-    component = FlowSummary::SummaryComponent::content(_)
-  }
-
   // Relating callables to nodes
   Node callTo(SummarizedCallable callable) { result = callable.getACallSimple() }
 }

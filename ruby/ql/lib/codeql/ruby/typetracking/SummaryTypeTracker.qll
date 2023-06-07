@@ -80,13 +80,6 @@ signature module Input {
   /** Gets a dataflow node respresenting the return of `callable` indicated by `return`. */
   Node returnOf(Node callable, SummaryComponent return);
 
-  // Specific summary handling
-  /** Holds if component should be treated as a level step by type tracking. */
-  predicate componentLevelStep(SummaryComponent component);
-
-  /** Holds if the given component can't be evaluated by `evaluateSummaryComponentStackLocal`. */
-  predicate isNonLocal(SummaryComponent component);
-
   // Relating callables to nodes
   /** Gets a dataflow node respresenting a call to `callable`. */
   Node callTo(SummarizedCallable callable);
@@ -146,8 +139,8 @@ module SummaryFlow<Input I> implements Output<I> {
     I::SummaryComponentStack output
   ) {
     callable.propagatesFlow(I::push(I::content(contents), input), output, true) and
-    not I::isNonLocal(input.head()) and
-    not I::isNonLocal(output.head())
+    not isNonLocal(input.head()) and
+    not isNonLocal(output.head())
   }
 
   pragma[nomagic]
@@ -155,8 +148,8 @@ module SummaryFlow<Input I> implements Output<I> {
     I::SummarizedCallable callable, I::TypeTrackerContent contents, I::SummaryComponentStack input,
     I::SummaryComponentStack output
   ) {
-    not I::isNonLocal(input.head()) and
-    not I::isNonLocal(output.head()) and
+    not isNonLocal(input.head()) and
+    not isNonLocal(output.head()) and
     (
       callable.propagatesFlow(input, I::push(I::content(contents), output), true)
       or
@@ -178,8 +171,8 @@ module SummaryFlow<Input I> implements Output<I> {
     callable
         .propagatesFlow(I::push(I::content(loadContents), input),
           I::push(I::content(storeContents), output), true) and
-    not I::isNonLocal(input.head()) and
-    not I::isNonLocal(output.head())
+    not isNonLocal(input.head()) and
+    not isNonLocal(output.head())
   }
 
   pragma[nomagic]
@@ -190,8 +183,8 @@ module SummaryFlow<Input I> implements Output<I> {
     exists(I::TypeTrackerContent content |
       callable.propagatesFlow(I::push(I::withoutContent(content), input), output, true) and
       filter = I::getFilterFromWithoutContentStep(content) and
-      not I::isNonLocal(input.head()) and
-      not I::isNonLocal(output.head()) and
+      not isNonLocal(input.head()) and
+      not isNonLocal(output.head()) and
       input != output
     )
   }
@@ -204,10 +197,24 @@ module SummaryFlow<Input I> implements Output<I> {
     exists(I::TypeTrackerContent content |
       callable.propagatesFlow(I::push(I::withContent(content), input), output, true) and
       filter = I::getFilterFromWithContentStep(content) and
-      not I::isNonLocal(input.head()) and
-      not I::isNonLocal(output.head()) and
+      not isNonLocal(input.head()) and
+      not isNonLocal(output.head()) and
       input != output
     )
+  }
+
+  private predicate componentLevelStep(I::SummaryComponent component) {
+    exists(I::TypeTrackerContent content |
+      component = I::withoutContent(content) and
+      not exists(I::getFilterFromWithoutContentStep(content))
+    )
+  }
+
+  pragma[nomagic]
+  private predicate isNonLocal(I::SummaryComponent component) {
+    component = I::content(_)
+    or
+    component = I::withContent(_)
   }
 
   /**
@@ -255,7 +262,7 @@ module SummaryFlow<Input I> implements Output<I> {
     I::SummarizedCallable callable, I::SummaryComponent head, I::SummaryComponentStack tail
   ) {
     dependsOnSummaryComponentStackCons(callable, head, tail) and
-    not I::isNonLocal(head)
+    not isNonLocal(head)
   }
 
   pragma[nomagic]
@@ -290,7 +297,7 @@ module SummaryFlow<Input I> implements Output<I> {
       or
       result = I::returnOf(prev, head)
       or
-      I::componentLevelStep(head) and
+      componentLevelStep(head) and
       result = prev
     )
   }
