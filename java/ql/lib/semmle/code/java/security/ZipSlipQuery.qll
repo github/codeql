@@ -54,7 +54,10 @@ private class FileCreationSink extends DataFlow::Node {
  */
 private predicate isPathCreation(DataFlow::Node sink) {
   exists(PathCreation pc |
-    pc.getAnInput() = sink.asExpr() and
+    pc.getAnInput() = sink.asExpr()
+    or
+    pc.getAnInput().(Argument).isVararg() and sink.(DataFlow::ImplicitVarargsArray).getCall() = pc
+  |
     // exclude actual read/write operations included in `PathCreation`
     not pc.(Call)
         .getCallee()
