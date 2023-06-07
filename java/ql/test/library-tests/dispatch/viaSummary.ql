@@ -5,5 +5,5 @@ from MethodAccess ma, Method m
 where
   m = viableImpl(ma) and
   m.fromSource() and
-  ma.getFile().toString().matches("CallableViaSummary")
+  ma.getFile().toString() = "CallableViaSummary"
 select ma, m
