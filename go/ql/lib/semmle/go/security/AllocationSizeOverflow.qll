@@ -92,6 +92,8 @@ module AllocationSizeOverflow {
 
     predicate isSink(DataFlow::Node sink) { isSinkWithAllocationSize(sink, _) }
 
+    predicate isBarrier(DataFlow::Node nd) { nd instanceof Sanitizer }
+
     predicate isAdditionalFlowStep(DataFlow::Node pred, DataFlow::Node succ) {
       additionalStep(pred, succ)
       or
