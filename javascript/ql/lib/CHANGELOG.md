@@ -16,7 +16,7 @@
 * Updated the following JavaScript sink kind names. Any custom data extensions that use these sink kinds will need to be updated accordingly in order to continue working.
   * `command-line-injection` to `command-injection`
   * `credentials[kind]` to `credentials-kind`
-- Added a support of sub modules in `node_modules`.
+* Added a support of sub modules in `node_modules`.
 
 ## 0.6.2
 
