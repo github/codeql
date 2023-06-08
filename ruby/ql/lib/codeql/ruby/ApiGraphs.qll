@@ -778,7 +778,7 @@ module API {
       or
       exists(TypeTracker t2 |
         result = trackUseNode(src, t2).track(t2, t) and
-        not result instanceof DataFlowPrivate::SelfParameterNode
+        not result instanceof DataFlow::SelfParameterNode
       )
     }
 
@@ -800,7 +800,7 @@ module API {
       or
       exists(TypeBackTracker t2, DataFlow::LocalSourceNode mid |
         mid = trackDefNode(rhs, t2) and
-        not mid instanceof DataFlowPrivate::SelfParameterNode and
+        not mid instanceof DataFlow::SelfParameterNode and
         result = mid.backtrack(t2, t)
       )
     }

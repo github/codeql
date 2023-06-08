@@ -243,9 +243,6 @@ private module Shared {
     or
     isFlowFromHelperMethod(node1, node2)
   }
-
-  /** DEPRECATED: Alias for isAdditionalXssFlowStep */
-  deprecated predicate isAdditionalXSSFlowStep = isAdditionalXssFlowStep/2;
 }
 
 /**
@@ -275,9 +272,6 @@ module ReflectedXss {
    */
   predicate isAdditionalXssTaintStep = Shared::isAdditionalXssFlowStep/2;
 
-  /** DEPRECATED: Alias for isAdditionalXssTaintStep */
-  deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
-
   /**
    * A HTTP request input, considered as a flow source.
    */
@@ -285,9 +279,6 @@ module ReflectedXss {
     HttpRequestInputAccessAsSource() { this.isThirdPartyControllable() }
   }
 }
-
-/** DEPRECATED: Alias for ReflectedXss */
-deprecated module ReflectedXSS = ReflectedXss;
 
 private module OrmTracking {
   /**
@@ -330,9 +321,6 @@ module StoredXss {
    */
   predicate isAdditionalXssTaintStep = Shared::isAdditionalXssFlowStep/2;
 
-  /** DEPRECATED: Alias for isAdditionalXssTaintStep */
-  deprecated predicate isAdditionalXSSTaintStep = isAdditionalXssTaintStep/2;
-
   private class OrmFieldAsSource extends Source instanceof DataFlow::CallNode {
     OrmFieldAsSource() {
       exists(DataFlow::CallNode subSrc |
@@ -346,6 +334,3 @@ module StoredXss {
   private class FileSystemReadAccessAsSource extends Source instanceof FileSystemReadAccess { }
   // TODO: Consider `FileNameSource` flowing to script tag `src` attributes and similar
 }
-
-/** DEPRECATED: Alias for StoredXss */
-deprecated module StoredXSS = StoredXss;

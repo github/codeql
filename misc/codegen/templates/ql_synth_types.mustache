@@ -38,12 +38,12 @@ cached module Synth {
    * Converts a raw element to a synthesized `T{{name}}`, if possible.
    */
   cached T{{name}} convert{{name}}FromRaw(Raw::Element e) {
-    {{^is_fresh_ipa}}
+    {{^is_fresh_synth}}
     result = T{{name}}(e)
-    {{/is_fresh_ipa}}
-    {{#is_fresh_ipa}}
+    {{/is_fresh_synth}}
+    {{#is_fresh_synth}}
     none()
-    {{/is_fresh_ipa}}
+    {{/is_fresh_synth}}
   }
   {{/final_classes}}
 
@@ -68,12 +68,12 @@ cached module Synth {
    * Converts a synthesized `T{{name}}` to a raw DB element, if possible.
    */
   cached Raw::Element convert{{name}}ToRaw(T{{name}} e) {
-    {{^is_fresh_ipa}}
+    {{^is_fresh_synth}}
     e = T{{name}}(result)
-    {{/is_fresh_ipa}}
-    {{#is_fresh_ipa}}
+    {{/is_fresh_synth}}
+    {{#is_fresh_synth}}
     none()
-    {{/is_fresh_ipa}}
+    {{/is_fresh_synth}}
   }
   {{/final_classes}}
 

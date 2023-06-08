@@ -180,14 +180,33 @@ predicate isSinkImpl(
 }
 
 /**
+ * Yields any instruction that is control-flow reachable from `instr`.
+ */
+bindingset[instr, result]
+pragma[inline_late]
+Instruction getASuccessor(Instruction instr) {
+  exists(IRBlock b, int instrIndex, int resultIndex |
+    result.getBlock() = b and
+    instr.getBlock() = b and
+    b.getInstruction(instrIndex) = instr and
+    b.getInstruction(resultIndex) = result
+  |
+    resultIndex >= instrIndex
+  )
+  or
+  instr.getBlock().getASuccessor+() = result.getBlock()
+}
+
+/**
  * Holds if `sink` is a sink for `InvalidPointerToDerefConfig` and `i` is a `StoreInstruction` that
  * writes to an address that non-strictly upper-bounds `sink`, or `i` is a `LoadInstruction` that
  * reads from an address that non-strictly upper-bounds `sink`.
  */
 pragma[inline]
 predicate isInvalidPointerDerefSink(DataFlow::Node sink, Instruction i, string operation, int delta) {
-  exists(AddressOperand addr |
-    bounded1(addr.getDef(), sink.asInstruction(), delta) and
+  exists(AddressOperand addr, Instruction s |
+    s = sink.asInstruction() and
+    bounded1(addr.getDef(), s, delta) and
     delta >= 0 and
     i.getAnOperand() = addr
   |
@@ -247,7 +266,8 @@ newtype TMergedPathNode =
   TPathNodeSink(Instruction i) {
     exists(DataFlow::Node n |
       InvalidPointerToDerefFlow::flowTo(n) and
-      isInvalidPointerDerefSink(n, i, _, _)
+      isInvalidPointerDerefSink(n, i, _, _) and
+      i = getASuccessor(n.asInstruction())
     )
   }
 
@@ -377,15 +397,19 @@ predicate hasFlowPath(
 }
 
 from
-  MergedPathNode source, MergedPathNode sink, int k2, int k3, string kstr,
-  InvalidPointerToDerefFlow::PathNode source3, PointerArithmeticInstruction pai, string operation,
-  Expr offset, DataFlow::Node n
+  MergedPathNode source, MergedPathNode sink, int k, string kstr, PointerArithmeticInstruction pai,
+  string operation, Expr offset, DataFlow::Node n
 where
-  hasFlowPath(source, sink, source3, pai, operation, k3) and
-  invalidPointerToDerefSource(pai, source3.getNode(), k2) and
+  k =
+    min(int k2, int k3, InvalidPointerToDerefFlow::PathNode source3 |
+      hasFlowPath(source, sink, source3, pai, operation, k3) and
+      invalidPointerToDerefSource(pai, source3.getNode(), k2)
+    |
+      k2 + k3
+    ) and
   offset = pai.getRight().getUnconvertedResultExpression() and
   n = source.asPathNode1().getNode() and
-  if (k2 + k3) = 0 then kstr = "" else kstr = " + " + (k2 + k3)
+  if k = 0 then kstr = "" else kstr = " + " + k
 select sink, source, sink,
   "This " + operation + " might be out of bounds, as the pointer might be equal to $@ + $@" + kstr +
     ".", n, n.toString(), offset, offset.toString()

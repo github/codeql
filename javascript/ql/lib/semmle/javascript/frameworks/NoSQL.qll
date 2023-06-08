@@ -17,9 +17,6 @@ module NoSql {
   }
 }
 
-/** DEPRECATED: Alias for NoSql */
-deprecated module NoSQL = NoSql;
-
 /**
  * Provides classes modeling the `mongodb` and `mongoose` libraries.
  */

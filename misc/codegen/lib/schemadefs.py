@@ -44,10 +44,15 @@ class _Namespace:
         self.__dict__.update(kwargs)
 
 
+class _SynthModifier(_schema.PropertyModifier, _Namespace):
+    def modify(self, prop: _schema.Property):
+        prop.synth = True
+
+
 qltest = _Namespace()
 ql = _Namespace()
 cpp = _Namespace()
-synth = _Namespace()
+synth = _SynthModifier()
 
 
 @_dataclass
@@ -155,7 +160,7 @@ def group(name: str = "") -> _ClassDecorator:
     return _annotate(group=name)
 
 
-synth.from_class = lambda ref: _annotate(ipa=_schema.IpaInfo(
+synth.from_class = lambda ref: _annotate(synth=_schema.SynthInfo(
     from_class=_schema.get_type_name(ref)))
 synth.on_arguments = lambda **kwargs: _annotate(
-    ipa=_schema.IpaInfo(on_arguments={k: _schema.get_type_name(t) for k, t in kwargs.items()}))
+    synth=_schema.SynthInfo(on_arguments={k: _schema.get_type_name(t) for k, t in kwargs.items()}))

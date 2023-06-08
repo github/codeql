@@ -15,6 +15,7 @@ module Raw {
     {{#final}}override string toString() { result = "{{name}}" }{{/final}}
 
     {{#properties}}
+    {{^synth}}
     /**
      * {{>ql_property_doc}}     *
     {{#has_description}}
@@ -26,6 +27,7 @@ module Raw {
     {{type}} {{getter}}({{#is_indexed}}int index{{/is_indexed}}) {
       {{tablename}}({{#tableparams}}{{^first}}, {{/first}}{{param}}{{/tableparams}})
     }
+    {{/synth}}
     {{/properties}}
   }
 

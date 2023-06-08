@@ -243,7 +243,12 @@ namespace Semmle.Extraction.CSharp.Entities
             if (methodKind == MethodKind.ExplicitInterfaceImplementation)
             {
                 // Retrieve the original method kind
-                methodKind = methodDecl.ExplicitInterfaceImplementations.Select(m => m.MethodKind).FirstOrDefault();
+                if (methodDecl.ExplicitInterfaceImplementations.IsEmpty)
+                {
+                    throw new InternalError(methodDecl, "Couldn't get the original method kind for an explicit interface implementation");
+                }
+
+                methodKind = methodDecl.ExplicitInterfaceImplementations.Select(m => m.MethodKind).First();
             }
 
             switch (methodKind)
