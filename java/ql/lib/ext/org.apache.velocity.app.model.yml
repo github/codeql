@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.apache.velocity.app", "Velocity", True, "evaluate", "", "", "Argument[3]", "ssti", "manual"]
-      - ["org.apache.velocity.app", "Velocity", True, "mergeTemplate", "", "", "Argument[2]", "ssti", "manual"]
-      - ["org.apache.velocity.app", "VelocityEngine", True, "evaluate", "", "", "Argument[3]", "ssti", "manual"]
-      - ["org.apache.velocity.app", "VelocityEngine", True, "mergeTemplate", "", "", "Argument[2]", "ssti", "manual"]
+      - ["org.apache.velocity.app", "Velocity", True, "evaluate", "", "", "Argument[3]", "template-injection", "manual"]
+      - ["org.apache.velocity.app", "Velocity", True, "mergeTemplate", "", "", "Argument[2]", "template-injection", "manual"]
+      - ["org.apache.velocity.app", "VelocityEngine", True, "evaluate", "", "", "Argument[3]", "template-injection", "manual"]
+      - ["org.apache.velocity.app", "VelocityEngine", True, "mergeTemplate", "", "", "Argument[2]", "template-injection", "manual"]

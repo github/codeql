@@ -124,20 +124,15 @@ private class StringFieldsInheritTaint extends TaintInheritingContent,
   DataFlow::Content::FieldContent
 {
   StringFieldsInheritTaint() {
-    exists(FieldDecl f | this.getField() = f |
-      (
-        f.getEnclosingDecl().(NominalTypeDecl).getName() = ["String", "StringProtocol"] or
-        f.getEnclosingDecl().(ExtensionDecl).getExtendedTypeDecl().getName() =
-          ["String", "StringProtocol"]
-      ) and
-      f.getName() =
-        [
-          "unicodeScalars", "utf8", "utf16", "lazy", "utf8CString", "description",
-          "debugDescription", "dataValue", "identifierValue", "capitalized", "localizedCapitalized",
-          "localizedLowercase", "localizedUppercase", "decomposedStringWithCanonicalMapping",
-          "decomposedStringWithCompatibilityMapping", "precomposedStringWithCanonicalMapping",
-          "precomposedStringWithCompatibilityMapping", "removingPercentEncoding"
-        ]
-    )
+    this.getField()
+        .hasQualifiedName(["String", "StringProtocol"],
+          [
+            "unicodeScalars", "utf8", "utf16", "lazy", "utf8CString", "description",
+            "debugDescription", "dataValue", "identifierValue", "capitalized",
+            "localizedCapitalized", "localizedLowercase", "localizedUppercase",
+            "decomposedStringWithCanonicalMapping", "decomposedStringWithCompatibilityMapping",
+            "precomposedStringWithCanonicalMapping", "precomposedStringWithCompatibilityMapping",
+            "removingPercentEncoding"
+          ])
   }
 }

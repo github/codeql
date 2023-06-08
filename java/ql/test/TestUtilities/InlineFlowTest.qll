@@ -7,7 +7,7 @@
  * import TestUtilities.InlineFlowTest
  * ```
  *
- * To declare expecations, you can use the $hasTaintFlow or $hasValueFlow comments within the test source files.
+ * To declare expectations, you can use the $hasTaintFlow or $hasValueFlow comments within the test source files.
  * Example of the corresponding test file, e.g. Test.java
  * ```java
  * public class Test {
@@ -73,7 +73,7 @@ class InlineFlowTest extends InlineExpectationsTest {
 
   override predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasValueFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink | hasValueFlow(src, sink) |
+    exists(DataFlow::Node src, DataFlow::Node sink | this.hasValueFlow(src, sink) |
       sink.getLocation() = location and
       element = sink.toString() and
       if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
@@ -81,7 +81,7 @@ class InlineFlowTest extends InlineExpectationsTest {
     or
     tag = "hasTaintFlow" and
     exists(DataFlow::Node src, DataFlow::Node sink |
-      hasTaintFlow(src, sink) and not hasValueFlow(src, sink)
+      this.hasTaintFlow(src, sink) and not this.hasValueFlow(src, sink)
     |
       sink.getLocation() = location and
       element = sink.toString() and

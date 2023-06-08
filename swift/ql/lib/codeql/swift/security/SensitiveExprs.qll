@@ -5,6 +5,7 @@
  */
 
 import swift
+import internal.SensitiveDataHeuristics
 
 private newtype TSensitiveDataType =
   TCredential() or
@@ -29,7 +30,12 @@ class SensitiveCredential extends SensitiveDataType, TCredential {
   override string toString() { result = "credential" }
 
   override string getRegexp() {
-    result = ".*(password|passwd|accountid|account.?key|accnt.?key|license.?key|trusted).*"
+    exists(SensitiveDataClassification classification |
+      not classification = SensitiveDataClassification::id() and // not accurate enough
+      result = HeuristicNames::maybeSensitiveRegexp(classification)
+    )
+    or
+    result = "(?is).*(account|accnt|license).?(id|key).*"
   }
 }
 
@@ -41,18 +47,18 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
 
   override string getRegexp() {
     result =
-      ".*(" +
+      "(?is).*(" +
         // Inspired by the list on https://cwe.mitre.org/data/definitions/359.html
         // Government identifiers, such as Social Security Numbers
         "social.?security|national.?insurance|" +
         // Contact information, such as home addresses
         "post.?code|zip.?code|home.?address|" +
         // and telephone numbers
-        "telephone|home.?phone|mobile|fax.?no|fax.?number|" +
+        "(mob(ile)?|home).?(num|no|tel|phone)|(tel|fax).?(num|no)|telephone|" +
         // Geographic location - where the user is (or was)
         "latitude|longitude|" +
         // Financial data - such as credit card numbers, salary, bank accounts, and debts
-        "credit.?card|debit.?card|salary|bank.?account|" +
+        "credit.?card|debit.?card|salary|bank.?account|acc(ou)?nt.?(no|num)|" +
         // Communications - e-mail addresses, private e-mail messages, SMS text messages, chat logs, etc.
         "email|" +
         // Health - medical conditions, insurance status, prescription records
@@ -69,7 +75,10 @@ class SensitivePrivateInfo extends SensitiveDataType, TPrivateInfo {
  * contain hashed or encrypted data, or are only a reference to data that is
  * actually stored elsewhere.
  */
-private string regexpProbablySafe() { result = ".*(hash|crypt|file|path|invalid).*" }
+private string regexpProbablySafe() {
+  result = HeuristicNames::notSensitiveRegexp() or
+  result = "(?is).*(file|path|url|invalid).*"
+}
 
 /**
  * A `VarDecl` that might be used to contain sensitive data.
@@ -77,7 +86,7 @@ private string regexpProbablySafe() { result = ".*(hash|crypt|file|path|invalid)
 private class SensitiveVarDecl extends VarDecl {
   SensitiveDataType sensitiveType;
 
-  SensitiveVarDecl() { this.getName().toLowerCase().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveVarDecl() { this.getName().regexpMatch(sensitiveType.getRegexp()) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
     label = this.getName() and
@@ -90,11 +99,15 @@ private class SensitiveVarDecl extends VarDecl {
  */
 private class SensitiveFunction extends Function {
   SensitiveDataType sensitiveType;
+  string name; // name of the function, not including the argument list.
 
-  SensitiveFunction() { this.getName().toLowerCase().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveFunction() {
+    name = this.getShortName() and
+    name.regexpMatch(sensitiveType.getRegexp())
+  }
 
   predicate hasInfo(string label, SensitiveDataType type) {
-    label = this.getName() and
+    label = name and
     sensitiveType = type
   }
 }
@@ -105,7 +118,7 @@ private class SensitiveFunction extends Function {
 private class SensitiveArgument extends Argument {
   SensitiveDataType sensitiveType;
 
-  SensitiveArgument() { this.getLabel().toLowerCase().regexpMatch(sensitiveType.getRegexp()) }
+  SensitiveArgument() { this.getLabel().regexpMatch(sensitiveType.getRegexp()) }
 
   predicate hasInfo(string label, SensitiveDataType type) {
     label = this.getLabel() and
@@ -138,7 +151,7 @@ class SensitiveExpr extends Expr {
       )
     ) and
     // do not mark as sensitive it if it is probably safe
-    not label.toLowerCase().regexpMatch(regexpProbablySafe())
+    not label.regexpMatch(regexpProbablySafe())
   }
 
   /**
@@ -156,7 +169,7 @@ class SensitiveExpr extends Expr {
  * A function that is likely used to encrypt or hash data.
  */
 private class EncryptionFunction extends Function {
-  EncryptionFunction() { this.getName().regexpMatch(".*(crypt|hash|encode|protect).*") }
+  EncryptionFunction() { this.getName().regexpMatch("(?is).*(crypt|hash|encode|protect).*") }
 }
 
 /**

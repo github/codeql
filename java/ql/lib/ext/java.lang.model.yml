@@ -3,11 +3,14 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["java.lang", "Class", False, "getResource", "(String)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.lang", "Class", False, "getResourceAsStream", "(String)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.lang", "ClassLoader", True, "getSystemResource", "(String)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.lang", "ClassLoader", True, "getSystemResourceAsStream", "(String)", "", "Argument[0]", "read-file", "ai-manual"]
-      - ["java.lang", "Module", True, "getResourceAsStream", "(String)", "", "Argument[0]", "read-file", "ai-manual"]
+      - ["java.lang", "Class", False, "getResource", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.lang", "Class", False, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.lang", "ClassLoader", True, "getSystemResource", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.lang", "ClassLoader", True, "getSystemResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.lang", "Module", True, "getResourceAsStream", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
+      # These are potential vulnerabilities, but not for command-injection. No query for this kind of vulnerability currently exists.
+      # - ["java.lang", "Runtime", False, "load", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
+      # - ["java.lang", "Runtime", False, "loadLibrary", "(String)", "", "Argument[0]", "command-injection", "ai-manual"]
       # These are modeled in plain CodeQL. TODO: migrate them.
       # - ["java.lang", "ProcessBuilder", False, "command", "(String[])", "", "Argument[0]", "command-injection", "ai-manual"]
       # - ["java.lang", "ProcessBuilder", False, "directory", "(File)", "", "Argument[0]", "command-injection", "ai-manual"]
@@ -29,14 +32,14 @@ extensions:
       # These are modeled in plain CodeQL. TODO: migrate them.
       # - ["java.lang", "System", False, "load", "(String)", "", "Argument[0]", "command-injection", "ai-manual"] # This is actually injecting a library.
       # - ["java.lang", "System", False, "loadLibrary", "(String)", "", "Argument[0]", "command-injection", "ai-manual"] # This is actually injecting a library.
-      - ["java.lang", "System$Logger", True, "log", "(Level,Object)", "", "Argument[1]", "logging", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Object[])", "", "Argument[2..3]", "logging", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Throwable)", "", "Argument[2]", "logging", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String)", "", "Argument[1]", "logging", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Object[])", "", "Argument[1..2]", "logging", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Supplier)", "", "Argument[1..2]", "logging", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Supplier,Throwable)", "", "Argument[1..2]", "logging", "manual"]
-      - ["java.lang", "System$Logger", True, "log", "(Level,String,Throwable)", "", "Argument[1]", "logging", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(Level,Object)", "", "Argument[1]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Object[])", "", "Argument[2..3]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(Level,ResourceBundle,String,Throwable)", "", "Argument[2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(Level,String)", "", "Argument[1]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(Level,String,Object[])", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(Level,String,Supplier)", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(Level,String,Supplier,Throwable)", "", "Argument[1..2]", "log-injection", "manual"]
+      - ["java.lang", "System$Logger", True, "log", "(Level,String,Throwable)", "", "Argument[1]", "log-injection", "manual"]
   - addsTo:
       pack: codeql/java-all
       extensible: summaryModel

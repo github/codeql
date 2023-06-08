@@ -26,7 +26,6 @@
 /lib/codeql/swift/elements/decl/ConcreteVarDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/DeinitializerConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/EnumCaseDeclConstructor.qll linguist-generated
-/lib/codeql/swift/elements/decl/EnumDecl.qll linguist-generated
 /lib/codeql/swift/elements/decl/EnumDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/EnumElementDeclConstructor.qll linguist-generated
 /lib/codeql/swift/elements/decl/ExtensionDeclConstructor.qll linguist-generated
@@ -821,7 +820,8 @@
 /test/extractor-tests/generated/expr/ObjectLiteralExpr/ObjectLiteralExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/OneWayExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/OpaqueValueExpr/MISSING_SOURCE.txt linguist-generated
-/test/extractor-tests/generated/expr/OpenExistentialExpr/MISSING_SOURCE.txt linguist-generated
+/test/extractor-tests/generated/expr/OpenExistentialExpr/OpenExistentialExpr.ql linguist-generated
+/test/extractor-tests/generated/expr/OpenExistentialExpr/OpenExistentialExpr_getType.ql linguist-generated
 /test/extractor-tests/generated/expr/OptionalEvaluationExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/OptionalTryExpr/MISSING_SOURCE.txt linguist-generated
 /test/extractor-tests/generated/expr/OtherInitializerRefExpr/MISSING_SOURCE.txt linguist-generated

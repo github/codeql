@@ -184,9 +184,7 @@ module Ssa {
      */
     cached
     predicate assigns(CfgNode value) {
-      exists(
-        AssignExpr a, SsaInput::BasicBlock bb, int i // TODO: use CFG node for assignment expr
-      |
+      exists(AssignExpr a, SsaInput::BasicBlock bb, int i |
         this.definesAt(_, bb, i) and
         a = bb.getNode(i).getNode().asAstNode() and
         value.getNode().asAstNode() = a.getSource()

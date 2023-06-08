@@ -1,5 +1,5 @@
 int source();
-void sink(int); void sink(const int *); void sink(int **);
+void sink(int); void sink(const int *); void sink(int **); void indirect_sink(...);
 
 void intraprocedural_with_local_flow() {
   int t2;
@@ -626,7 +626,7 @@ void test_def_via_phi_read(bool b)
     use(buffer);
   }
   intPointerSource(buffer);
-  sink(buffer); // $ ast,ir
+  indirect_sink(buffer); // $ ast,ir
 }
 
 void test_static_local_1() {
@@ -690,3 +690,16 @@ void test_static_local_9() {
   s = 0;
 }
 
+void increment_buf(int** buf) { // $ ast-def=buf ir-def=*buf ir-def=**buf
+  *buf += 10;
+  sink(buf); // $ SPURIOUS: ast
+}
+
+void call_increment_buf(int** buf) { // $ ast-def=buf
+  increment_buf(buf);
+}
+
+void test_conflation_regression(int* source) { // $ ast-def=source
+  int* buf = source;
+  call_increment_buf(&buf);
+}

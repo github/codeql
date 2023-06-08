@@ -22,11 +22,16 @@ module Generated {
     /**
      * Gets the result of this return statement, if it exists.
      */
-    final Expr getResult() { result = getImmediateResult().resolve() }
+    final Expr getResult() {
+      exists(Expr immediate |
+        immediate = this.getImmediateResult() and
+        result = immediate.resolve()
+      )
+    }
 
     /**
      * Holds if `getResult()` exists.
      */
-    final predicate hasResult() { exists(getResult()) }
+    final predicate hasResult() { exists(this.getResult()) }
   }
 }

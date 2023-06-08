@@ -286,9 +286,6 @@ module Stages {
     }
   }
 
-  /** DEPRECATED: Alias for ApiStage */
-  deprecated module APIStage = ApiStage;
-
   /**
    * The `taint` stage.
    */

@@ -1,0 +1,22 @@
+load("//swift:rules.bzl", "swift_cc_binary")
+load("//misc/bazel/cmake:cmake.bzl", "generate_cmake")
+
+swift_cc_binary(
+    name = "assert-false",
+    srcs = ["AssertFalse.cpp"],
+    visibility = ["//swift:__pkg__"],
+    deps = [
+        "//swift/logging",
+    ],
+)
+
+py_test(
+    name = "test",
+    size = "small",
+    srcs = ["test.py"],
+    data = [
+        "diagnostics.expected",
+        ":assert-false",
+    ],
+    deps = ["//swift/integration-tests:integration_tests"],
+)

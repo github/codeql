@@ -63,7 +63,7 @@ function RegisterExtractorPack(id)
             end
         end
         if match then
-            local injections = { '-p:UseSharedCompilation=false' }
+            local injections = { '-p:UseSharedCompilation=false', '-p:EmitCompilerGeneratedFiles=true' }
             if dotnetRunNeedsSeparator then
                 table.insert(injections, '--')
             end
@@ -118,7 +118,8 @@ function RegisterExtractorPack(id)
                     compilerArguments,
                     nil, {
                     '/p:UseSharedCompilation=false',
-                    '/p:MvcBuildViews=true'
+                    '/p:MvcBuildViews=true',
+                    '/p:EmitCompilerGeneratedFiles=true',
                 })
 
             }
@@ -154,7 +155,7 @@ function RegisterExtractorPack(id)
 
             if seenCompilerCall then
                 return {
-                    order = ORDER_BEFORE,
+                    order = ORDER_AFTER,
                     invocation = {
                         path = AbsolutifyExtractorPath(id, extractor),
                         arguments = {
@@ -194,7 +195,7 @@ function RegisterExtractorPack(id)
 
             if seenCompilerCall then
                 return {
-                    order = ORDER_BEFORE,
+                    order = ORDER_AFTER,
                     invocation = {
                         path = AbsolutifyExtractorPath(id, extractor),
                         arguments = {

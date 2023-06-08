@@ -277,7 +277,7 @@ module RangeStage<
    */
   private class SafeCastExpr extends ConvertOrBoxExpr {
     SafeCastExpr() {
-      conversionCannotOverflow(getTrackedType(pragma[only_bind_into](getOperand())),
+      conversionCannotOverflow(getTrackedType(pragma[only_bind_into](this.getOperand())),
         pragma[only_bind_out](getTrackedType(this)))
     }
   }
@@ -536,7 +536,7 @@ module RangeStage<
     /** Gets the condition that is the reason for the bound. */
     SemGuard getCond() { this = TSemCondReason(result) }
 
-    override string toString() { result = getCond().toString() }
+    override string toString() { result = this.getCond().toString() }
   }
 
   /**
@@ -729,7 +729,7 @@ module RangeStage<
   ) {
     exists(SemExpr e, D::Delta d1, D::Delta d2 |
       unequalFlowStepIntegralSsa(v, pos, e, d1, reason) and
-      boundedUpper(e, b, d1) and
+      boundedUpper(e, b, d2) and
       boundedLower(e, b, d2) and
       delta = D::fromFloat(D::toFloat(d1) + D::toFloat(d2))
     )

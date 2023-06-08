@@ -3,6 +3,6 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["org.hibernate.query", "QueryProducer", True, "createNativeQuery", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.hibernate.query", "QueryProducer", True, "createQuery", "", "", "Argument[0]", "sql", "manual"]
-      - ["org.hibernate.query", "QueryProducer", True, "createSQLQuery", "", "", "Argument[0]", "sql", "manual"]
+      - ["org.hibernate.query", "QueryProducer", True, "createNativeQuery", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.hibernate.query", "QueryProducer", True, "createQuery", "", "", "Argument[0]", "sql-injection", "manual"]
+      - ["org.hibernate.query", "QueryProducer", True, "createSQLQuery", "", "", "Argument[0]", "sql-injection", "manual"]

@@ -79,15 +79,24 @@ predicate jumpStep = DataFlowPrivate::jumpStep/2;
 /** Holds if there is direct flow from `param` to a return. */
 pragma[nomagic]
 private predicate flowThrough(DataFlowPublic::ParameterNode param) {
-  exists(DataFlowPrivate::ReturningNode returnNode, DataFlowDispatch::ReturnKind rk |
-    DataFlowPrivate::LocalFlow::getParameterDefNode(param.getParameter())
-        .(TypeTrackingNode)
-        .flowsTo(returnNode) and
-    rk = returnNode.getKind()
+  exists(DataFlowPrivate::SourceReturnNode returnNode, DataFlowDispatch::ReturnKind rk |
+    param.flowsTo(returnNode) and
+    returnNode.hasKind(rk, param.(DataFlowPrivate::NodeImpl).getCfgScope())
   |
     rk instanceof DataFlowDispatch::NormalReturnKind
     or
     rk instanceof DataFlowDispatch::BreakReturnKind
+  )
+}
+
+/** Holds if there is flow from `arg` to `p` via the call `call`, not counting `new -> initialize` call steps. */
+pragma[nomagic]
+predicate callStepNoInitialize(
+  ExprNodes::CallCfgNode call, Node arg, DataFlowPrivate::ParameterNodeImpl p
+) {
+  exists(DataFlowDispatch::ParameterPosition pos |
+    argumentPositionMatch(call, arg, pos) and
+    p.isSourceParameterOf(DataFlowDispatch::getTarget(call), pos)
   )
 }
 
@@ -96,7 +105,7 @@ pragma[nomagic]
 predicate levelStepCall(Node nodeFrom, Node nodeTo) {
   exists(DataFlowPublic::ParameterNode param |
     flowThrough(param) and
-    callStep(nodeTo.asExpr(), nodeFrom, param)
+    callStepNoInitialize(nodeTo.asExpr(), nodeFrom, param)
   )
 }
 
@@ -212,15 +221,7 @@ predicate callStep(ExprNodes::CallCfgNode call, Node arg, DataFlowPrivate::Param
  * recursion (or, at best, terrible performance), since identifying calls to library
  * methods is done using API graphs (which uses type tracking).
  */
-predicate callStep(Node nodeFrom, Node nodeTo) {
-  callStep(_, nodeFrom, nodeTo)
-  or
-  // In normal data-flow, this will be a local flow step. But for type tracking
-  // we model it as a call step, in order to avoid computing a potential
-  // self-cross product of all calls to a function that returns one of its parameters
-  // (only to later filter that flow out using `TypeTracker::append`).
-  DataFlowPrivate::LocalFlow::localFlowSsaParamInput(nodeFrom, nodeTo)
-}
+predicate callStep(Node nodeFrom, Node nodeTo) { callStep(_, nodeFrom, nodeTo) }
 
 /**
  * Holds if `nodeFrom` steps to `nodeTo` by being returned from a call.
@@ -232,19 +233,13 @@ predicate callStep(Node nodeFrom, Node nodeTo) {
 predicate returnStep(Node nodeFrom, Node nodeTo) {
   exists(ExprNodes::CallCfgNode call |
     nodeFrom instanceof DataFlowPrivate::ReturnNode and
+    not nodeFrom instanceof DataFlowPrivate::InitializeReturnNode and
     nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() = DataFlowDispatch::getTarget(call) and
     // deliberately do not include `getInitializeTarget`, since calls to `new` should not
     // get the return value from `initialize`. Any fields being set in the initializer
     // will reach all reads via `callStep` and `localFieldStep`.
     nodeTo.asExpr().getNode() = call.getNode()
   )
-  or
-  // In normal data-flow, this will be a local flow step. But for type tracking
-  // we model it as a returning flow step, in order to avoid computing a potential
-  // self-cross product of all calls to a function that returns one of its parameters
-  // (only to later filter that flow out using `TypeTracker::append`).
-  nodeTo.(DataFlowPrivate::SynthReturnNode).getAnInput() = nodeFrom and
-  not nodeFrom instanceof DataFlowPrivate::InitializeReturnNode
 }
 
 /**
@@ -607,7 +602,8 @@ private DataFlow::Node evaluateSummaryComponentStackLocal(
     )
     or
     head = SummaryComponent::return() and
-    result.(DataFlowPrivate::SynthReturnNode).getCfgScope() = prev.asExpr().getExpr()
+    result.(DataFlowPrivate::ReturnNode).(DataFlowPrivate::NodeImpl).getCfgScope() =
+      prev.asExpr().getExpr()
     or
     exists(DataFlow::ContentSet content |
       head = SummaryComponent::withoutContent(content) and

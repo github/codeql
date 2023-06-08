@@ -155,9 +155,6 @@ class LdapEncodeSanitizer extends Sanitizer {
   }
 }
 
-/** DEPRECATED: Alias for LdapEncodeSanitizer */
-deprecated class LDAPEncodeSanitizer = LdapEncodeSanitizer;
-
 private class SimpleTypeSanitizer extends Sanitizer, SimpleTypeSanitizedExpr { }
 
 private class GuidSanitizer extends Sanitizer, GuidSanitizedExpr { }

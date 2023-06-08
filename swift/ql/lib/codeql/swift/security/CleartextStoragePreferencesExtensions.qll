@@ -63,20 +63,26 @@ private class NSUbiquitousKeyValueStore extends CleartextStoragePreferencesSink 
  * A more complicated case, this is a macOS-only way of writing to
  * NSUserDefaults by modifying the `NSUserDefaultsController.values: Any`
  * object via reflection (`perform(Selector)`) or the `NSKeyValueCoding`,
- * `NSKeyValueBindingCreation` APIs. (TODO)
+ * `NSKeyValueBindingCreation` APIs.
  */
 private class NSUserDefaultsControllerStore extends CleartextStoragePreferencesSink {
-  NSUserDefaultsControllerStore() { none() }
+  NSUserDefaultsControllerStore() {
+    none() // not yet implemented
+  }
 
   override string getStoreName() { result = "the user defaults database" }
 }
 
 /**
- * An encryption barrier for cleartext preferences storage vulnerabilities.
+ * An barrier for cleartext preferences storage vulnerabilities.
+ *  - encryption; encrypted values are not cleartext.
+ *  - booleans; these are more likely to be settings, rather than actual sensitive data.
  */
-private class CleartextStoragePreferencesEncryptionBarrier extends CleartextStoragePreferencesBarrier
-{
-  CleartextStoragePreferencesEncryptionBarrier() { this.asExpr() instanceof EncryptedExpr }
+private class CleartextStoragePreferencesDefaultBarrier extends CleartextStoragePreferencesBarrier {
+  CleartextStoragePreferencesDefaultBarrier() {
+    this.asExpr() instanceof EncryptedExpr or
+    this.asExpr().getType().getUnderlyingType() instanceof BoolType
+  }
 }
 
 /**

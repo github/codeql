@@ -5,6 +5,7 @@
 #include <swift/AST/SourceFile.h>
 #include <swift/Basic/SourceManager.h>
 #include <swift/Parse/Token.h>
+#include "absl/strings/str_cat.h"
 
 #include "swift/extractor/trap/TrapDomain.h"
 #include "swift/extractor/infra/SwiftTagTraits.h"
@@ -83,7 +84,7 @@ class SwiftDispatcher {
           valid = false;
         }
         LOG_ERROR("{} has undefined field {}{}, {}", entry.NAME, field,
-                  index >= 0 ? ('[' + std::to_string(index) + ']') : "", action);
+                  index >= 0 ? absl::StrCat("[", index, "]") : "", action);
       }
     });
     if (valid) {

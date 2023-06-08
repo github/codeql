@@ -1,0 +1,30 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.apache.commons.net", "SocketClient", true, "connect", "(InetAddress)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.apache.commons.net", "SocketClient", true, "connect", "(InetAddress,int)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.apache.commons.net", "SocketClient", true, "connect", "(InetAddress,int,InetAddress,int)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.apache.commons.net", "SocketClient", true, "connect", "(String)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.apache.commons.net", "SocketClient", true, "connect", "(String,int)", "", "Argument[0]", "request-forgery", "df-manual"]
+      - ["org.apache.commons.net", "SocketClient", true, "connect", "(String,int,InetAddress,int)", "", "Argument[0]", "request-forgery", "manual"]
+      - ["org.apache.commons.net.util", "KeyManagerUtils", false, "createClientKeyManager", "(File,String)", "", "Argument[0]", "path-injection", "df-manual"]
+      - ["org.apache.commons.net.util", "KeyManagerUtils", false, "createClientKeyManager", "(File,String,String)", "", "Argument[0]", "path-injection", "df-manual"]
+      - ["org.apache.commons.net.util", "KeyManagerUtils", false, "createClientKeyManager", "(String,File,String,String,String)", "", "Argument[1]", "path-injection", "df-manual"]
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sourceModel
+    data:
+      - ["org.apache.commons.net.ftp", "FTPClient", true, "listDirectories", "()", "", "ReturnValue", "remote", "df-manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", true, "listDirectories", "(String)", "", "ReturnValue", "remote", "df-manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", true, "listFiles", "()", "", "ReturnValue", "remote", "df-manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", true, "listFiles", "(String)", "", "ReturnValue", "remote", "df-manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", true, "listFiles", "(String,FTPFileFilter)", "", "ReturnValue", "remote", "df-manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", true, "listNames", "()", "", "ReturnValue", "remote", "df-manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", true, "listNames", "(String)", "", "ReturnValue", "remote", "df-manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", true, "mlistDir", "()", "", "ReturnValue", "remote", "df-manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", true, "mlistDir", "(String)", "", "ReturnValue", "remote", "df-manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", true, "mlistDir", "(String,FTPFileFilter)", "", "ReturnValue", "remote", "df-manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", true, "retrieveFile", "(String,OutputStream)", "", "Argument[1]", "remote", "df-manual"]
+      - ["org.apache.commons.net.ftp", "FTPClient", true, "retrieveFileStream", "(String)", "", "ReturnValue", "remote", "df-manual"]

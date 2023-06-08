@@ -211,6 +211,16 @@ namespace Semmle.Extraction.CSharp.Entities
                 return Default.CreateGenerated(cx, parent, childIndex, location, ValueAsString(null));
             }
 
+            if (type.SpecialType is SpecialType.None)
+            {
+                return ImplicitCast.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
+            }
+
+            if (type.SpecialType is SpecialType.System_DateTime)
+            {
+                return DateTimeObjectCreation.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
+            }
+
             // const literal:
             return Literal.CreateGenerated(cx, parent, childIndex, type, defaultValue, location);
         }

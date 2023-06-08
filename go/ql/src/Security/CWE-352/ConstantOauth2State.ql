@@ -109,7 +109,7 @@ class PrivateUrlFlowsToAuthCodeUrlCall extends DataFlow::Configuration {
     exists(DataFlow::CallNode cn |
       cn.getACalleeIncludingExternals().asFunction() instanceof Fmt::AppenderOrSprinter
     |
-      pred = cn.getAnArgument() and succ = cn.getResult()
+      pred = cn.getASyntacticArgument() and succ = cn.getResult()
     )
   }
 
