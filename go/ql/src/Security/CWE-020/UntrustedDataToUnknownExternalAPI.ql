@@ -11,7 +11,7 @@
 
 import go
 import semmle.go.security.ExternalAPIs
-import DataFlow::PathGraph
+import UntrustedDataToUnknownExternalApi::PathGraph
 
 from
   UntrustedDataToUnknownExternalApi::PathNode source,
