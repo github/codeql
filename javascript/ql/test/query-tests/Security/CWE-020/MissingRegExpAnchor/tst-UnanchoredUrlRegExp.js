@@ -10,7 +10,7 @@
 	/https?:\/\/good.com/.exec("http://evil.com/?http://good.com"); // NOT OK
 	new RegExp("https?://good.com").exec("http://evil.com/?http://good.com"); // NOT OK
 
-	"http://evil.com/?http://good.com".search("https?://good.com"); // NOT OK
+	if ("http://evil.com/?http://good.com".search("https?://good.com") > -1) {} // NOT OK
 
 	new RegExp("https?://good.com").test("http://evil.com/?http://good.com"); // NOT OK
 

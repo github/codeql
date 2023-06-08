@@ -210,9 +210,6 @@ class Instruction extends Construction::TStageInstruction {
    */
   final Language::AST getAst() { result = Construction::getInstructionAst(this) }
 
-  /** DEPRECATED: Alias for getAst */
-  deprecated Language::AST getAST() { result = this.getAst() }
-
   /**
    * Gets the location of the source code for this instruction.
    */
@@ -463,9 +460,6 @@ class VariableInstruction extends Instruction {
    * Gets the AST variable that this instruction's IR variable refers to, if one exists.
    */
   final Language::Variable getAstVariable() { result = var.(IRUserVariable).getVariable() }
-
-  /** DEPRECATED: Alias for getAstVariable */
-  deprecated Language::Variable getASTVariable() { result = this.getAstVariable() }
 }
 
 /**
