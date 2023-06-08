@@ -19,8 +19,9 @@ class NamedPattern extends Generated::NamedPattern {
    * This will be the case as long as the variable is subsequently used.
    */
   VarDecl getVarDecl() {
-    this.getImmediateEnclosingPattern*() = result.getParentPattern().getFullyUnresolved() and
-    result.getName() = this.getName()
+    this.getImmediateEnclosingPattern*() = result.getImmediateParentPattern() and
+    pragma[only_bind_out](pragma[only_bind_into](result).getName()) =
+      pragma[only_bind_out](pragma[only_bind_into](this).getName())
   }
 
   override string toString() { result = this.getName() }
