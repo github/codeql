@@ -1,3 +1,9 @@
+## 0.6.3
+
+### Minor Analysis Improvements
+
+* The `java/summary/lines-of-code` query now only counts lines of Java code. The new `java/summary/lines-of-code-kotlin` counts lines of Kotlin code.
+
 ## 0.6.2
 
 ### Minor Analysis Improvements

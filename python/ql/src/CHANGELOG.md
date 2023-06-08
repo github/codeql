@@ -1,3 +1,9 @@
+## 0.7.3
+
+### Bug Fixes
+
+* The display name (`@name`) of the `py/unsafe-deserialization` query has been updated in favor of consistency with other languages.
+
 ## 0.7.2
 
 No user-facing changes.
