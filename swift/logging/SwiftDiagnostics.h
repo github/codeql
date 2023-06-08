@@ -83,13 +83,6 @@ struct SwiftDiagnostic {
 
  private:
   bool has(Visibility v) const;
-
-  constexpr void setOptionalArg(Visibility v) { visibility = v; }
-  constexpr void setOptionalArg(Severity s) { severity = s; }
-
-  // intentionally left undefined
-  template <typename T>
-  constexpr void setOptionalArg(T);
 };
 
 inline constexpr SwiftDiagnostic::Visibility operator|(SwiftDiagnostic::Visibility lhs,
