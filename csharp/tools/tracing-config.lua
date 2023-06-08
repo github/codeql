@@ -21,6 +21,7 @@ function RegisterExtractorPack(id)
         -- if that's `build`, we append `-p:UseSharedCompilation=false` to the command line,
         -- otherwise we do nothing.
         local match = false
+        local testMatch = false
         local dotnetRunNeedsSeparator = false;
         local dotnetRunInjectionIndex = nil;
         local argv = compilerArguments.argv
@@ -50,10 +51,11 @@ function RegisterExtractorPack(id)
                 end
                 if arg == 'test' then
                     match = true
+                    testMatch = true
                 end
-                -- for `dotnet [test|run]`, we should not append `-p:UseSharedCompilation=false` to the command line
-                -- if a library or executable is being provided as an argument.
-                if arg:match('%.exe$') or arg:match('%.dll')  then
+                -- for `dotnet test`, we should not append `-p:UseSharedCompilation=false` to the command line
+                -- if an `exe` or `dll` is passed as an argument as the call is forwarded to vstest.
+                if testMatch and (arg:match('%.exe$') or arg:match('%.dll'))  then
                     match = false
                     break
                 end
