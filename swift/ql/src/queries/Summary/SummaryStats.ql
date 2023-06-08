@@ -12,15 +12,6 @@ import codeql.swift.security.SensitiveExprs
 import codeql.swift.dataflow.DataFlow
 import codeql.swift.dataflow.TaintTracking
 
-int linesOfCode() {
-  // approximate number of lines of code in the database
-  result = count(File f, int line |
-    exists(Location loc |
-      not loc instanceof UnknownLocation and loc.getFile() = f and loc.getStartLine() = line
-    )
-  )
-}
-
 /**
  * A taint configuration for tainted data reaching any node.
  */
@@ -46,7 +37,7 @@ float taintReach() { result = (taintedNodesCount() * 1000000.0) / count(DataFlow
 predicate statistic(string what, string value) {
   what = "Files" and value = count(File f).toString()
   or
-  what = "Lines of code" and value = linesOfCode().toString()
+  what = "Lines of code" and value = sum(File f | | f.getNumberOfLinesOfCode()).toString()
   or
   what = "Compiler errors" and value = count(CompilerError d).toString()
   or
