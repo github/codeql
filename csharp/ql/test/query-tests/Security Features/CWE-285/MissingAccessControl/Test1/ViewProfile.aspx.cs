@@ -5,8 +5,6 @@ using System.Web.Security;
 class ViewProfile : System.Web.UI.Page {
     private void doThings() { }
 
-    public System.Security.Principal.IPrincipal User { get; } // TODO: this should be in the stubs
-
     protected void btn_safe_Click(object sender, EventArgs e) {
         doThings();
     }

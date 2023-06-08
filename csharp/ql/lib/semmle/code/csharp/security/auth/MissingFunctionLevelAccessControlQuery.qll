@@ -122,7 +122,7 @@ predicate hasAuthViaCode(ActionMethod m) {
   )
 }
 
-/** An `<authorization>` XML element that */
+/** An `<authorization>` XML element. */
 class AuthorizationXmlElement extends XmlElement {
   AuthorizationXmlElement() {
     this.getParent() instanceof SystemWebXmlElement and
