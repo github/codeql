@@ -1295,6 +1295,7 @@ private predicate mimeTypeMatches(string ext, string mimeType) {
  * Provides modeling for the `Mime` component of the `Rack` library.
  */
 module Mime {
+  /** A call to `Rack::Mime.mime_type`. This method maps file extensions to MIME types. */
   class MimetypeCall extends DataFlow::CallNode {
     MimetypeCall() {
       this = API::getTopLevelMember("Rack").getMember("Mime").getAMethodCall("mime_type")
