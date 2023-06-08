@@ -48,6 +48,10 @@ predicate statistic(string what, string value) {
   or
   what = "Lines of code" and value = linesOfCode().toString()
   or
+  what = "Compiler errors" and value = count(CompilerError d).toString()
+  or
+  what = "Compiler warnings" and value = count(CompilerWarning d).toString()
+  or
   what = "Expressions" and value = count(Expr e | not e.getFile() instanceof UnknownFile).toString()
   or
   what = "Local flow sources" and value = count(LocalFlowSource s).toString()
