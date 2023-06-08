@@ -7,14 +7,15 @@
  * @problem.severity error
  * @security-severity 7.5
  * @precision high
- * @id rb/redos
+ * @id swift/redos
  * @tags security
  *       external/cwe/cwe-1333
  *       external/cwe/cwe-730
  *       external/cwe/cwe-400
  */
 
-private import codeql.ruby.regexp.RegExpTreeView::RegexTreeView as TreeView
+import codeql.swift.regex.Regex
+private import codeql.swift.regex.RegexTreeView::RegexTreeView as TreeView
 import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView>
 
 from TreeView::RegExpTerm t, string pump, State s, string prefixMsg
