@@ -40,6 +40,8 @@ extensions:
       - ["java.nio.file", "Files", True, "delete", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", True, "newInputStream", "(Path,OpenOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "Files", True, "newOutputStream", "(Path,OpenOption[])", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "FileSystems", False, "newFileSystem", "(URI,Map)", "", "Argument[0]", "path-injection", "ai-manual"]
+      - ["java.nio.file", "FileSystems", False, "newFileSystem", "(URI,Map)", "", "Argument[0]", "request-forgery", "ai-manual"]
       - ["java.nio.file", "SecureDirectoryStream", True, "deleteDirectory", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.nio.file", "SecureDirectoryStream", True, "deleteFile", "(Path)", "", "Argument[0]", "path-injection", "ai-manual"]
   - addsTo:
@@ -66,6 +68,7 @@ extensions:
       - ["java.nio.file", "Path", True, "relativize", "(Path)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "Path", True, "resolve", "", "", "Argument[0]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "resolve", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.nio.file", "Path", True, "resolveSibling", "(String)", "", "Argument[0]", "ReturnValue", "taint", "ai-manual"]
       - ["java.nio.file", "Path", True, "toAbsolutePath", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", False, "toFile", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.nio.file", "Path", True, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
@@ -83,7 +86,6 @@ extensions:
     data:
       # summary neutrals
       - ["java.nio.file", "Files", "exists", "(Path,LinkOption[])", "summary", "manual"]
-
       # sink neutrals
       - ["java.nio.file", "Files", "exists", "", "sink", "hq-manual"]
       - ["java.nio.file", "Files", "getLastModifiedTime", "", "sink", "hq-manual"]

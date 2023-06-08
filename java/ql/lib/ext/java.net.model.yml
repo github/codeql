@@ -43,6 +43,8 @@ extensions:
       - ["java.net", "URI", False, "toASCIIString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URI", False, "toString", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
       - ["java.net", "URI", False, "toURL", "", "", "Argument[this]", "ReturnValue", "taint", "manual"]
+      - ["java.net", "URL", False, "getFile", "()", "", "Argument[undefined]", "ReturnValue", "taint", "ai-manual"]
+      - ["java.net", "URL", False, "getPath", "()", "", "Argument[undefined]", "ReturnValue", "taint", "ai-manual"]
       - ["java.net", "URL", False, "URL", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.net", "URL", False, "URL", "(URL,String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
       - ["java.net", "URL", False, "URL", "(URL,String)", "", "Argument[1]", "Argument[this]", "taint", "ai-manual"] # @atorralba: review for consistency

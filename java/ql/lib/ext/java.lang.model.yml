@@ -44,6 +44,7 @@ extensions:
       - ["java.lang", "AbstractStringBuilder", True, "AbstractStringBuilder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "manual"]
       - ["java.lang", "AbstractStringBuilder", True, "append", "", "", "Argument[this]", "ReturnValue", "value", "manual"]
       - ["java.lang", "AbstractStringBuilder", True, "append", "", "", "Argument[0]", "Argument[this]", "taint", "manual"]
+      - ["java.lang", "ProcessBuilder", False, "environment", "()", "", "Argument[undefined]", "ReturnValue", "taint", "ai-manual"]
       # When `WithoutElement` is implemented for Java, `java.lang.AbstractStringBuilder#delete` might require a `taint` step of the form `Argument[this].WithoutElement -> Argument[this]` in addition to the below `value` step.
       - ["java.lang", "AbstractStringBuilder", True, "delete", "(int,int)", "", "Argument[this]", "ReturnValue", "value", "manual"]
       - ["java.lang", "AbstractStringBuilder", True, "getChars", "", "", "Argument[this]", "Argument[2]", "taint", "manual"]
@@ -133,7 +134,6 @@ extensions:
       - ["java.lang", "Throwable", True, "getLocalizedMessage", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "value", "manual"]
       - ["java.lang", "Throwable", True, "toString", "()", "", "Argument[this].SyntheticField[java.lang.Throwable.message]", "ReturnValue", "taint", "manual"]
       - ["java.lang", "UnsupportedOperationException", False, "UnsupportedOperationException", "(String)", "", "Argument[0]", "Argument[this].SyntheticField[java.lang.Throwable.message]", "value", "manual"]
-
   - addsTo:
       pack: codeql/java-all
       extensible: neutralModel

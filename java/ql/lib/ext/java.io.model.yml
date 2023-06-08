@@ -3,6 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
+      - ["java.io", "File", True, "createNewFile", "()", "", "Argument[undefined]", "path-injection", "ai-manual"]
       - ["java.io", "File", True, "createTempFile", "(String,String,File)", "", "Argument[2]", "path-injection", "ai-manual"]
       - ["java.io", "File", True, "renameTo", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
       - ["java.io", "FileInputStream", True, "FileInputStream", "(File)", "", "Argument[0]", "path-injection", "ai-manual"]
@@ -118,7 +119,6 @@ extensions:
       - ["java.io", "DataInput", "readLong", "()", "summary", "manual"]        # taint-numeric
       - ["java.io", "DataOutput", "writeInt", "(int)", "summary", "manual"]    # taint-numeric
       - ["java.io", "DataOutput", "writeLong", "(long)", "summary", "manual"]  # taint-numeric
-
       # sink neutrals
       - ["java.io", "File", "compareTo", "", "sink", "hq-manual"]
       - ["java.io", "File", "exists", "()", "sink", "hq-manual"]
