@@ -79,6 +79,19 @@ module SqlExecution {
 }
 
 /**
+ * A data-flow node that performs SQL sanitization.
+ */
+class SqlSanitization extends DataFlow::Node instanceof SqlSanitization::Range { }
+
+/** Provides a class for modeling new SQL sanitization APIs. */
+module SqlSanitization {
+  /**
+   * A data-flow node that performs SQL sanitization.
+   */
+  abstract class Range extends DataFlow::Node { }
+}
+
+/**
  * A data-flow node that executes a regular expression.
  *
  * Extend this class to refine existing API models. If you want to model new APIs,
@@ -687,9 +700,7 @@ module Http {
        * Gets a node that contributes to the URL of the request.
        * Depending on the framework, a request may have multiple nodes which contribute to the URL.
        */
-      deprecated DataFlow::Node getURL() {
-        result = super.getURL() or result = Request::Range.super.getAUrlPart()
-      }
+      deprecated DataFlow::Node getURL() { result = Request::Range.super.getAUrlPart() }
 
       /**
        * Holds if this request is made using a mode that disables SSL/TLS
@@ -714,14 +725,6 @@ module Http {
       abstract class Range extends SC::Request::Range {
         /** Gets a node which returns the body of the response */
         abstract DataFlow::Node getResponseBody();
-
-        /**
-         * DEPRECATED: overwrite `getAUrlPart` instead.
-         *
-         * Gets a node that contributes to the URL of the request.
-         * Depending on the framework, a request may have multiple nodes which contribute to the URL.
-         */
-        deprecated DataFlow::Node getURL() { none() }
 
         /**
          * DEPRECATED: override `disablesCertificateValidation/2` instead.

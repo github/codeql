@@ -25,7 +25,7 @@ public class Test {
 	<K> K getMapKeyDefault(Map.Entry<K,?> container) { return container.getKey(); }
 	JsonElement getMapValueDefault(JsonObject container) { return container.get(null); }
 	<V> V  getMapValueDefault(Map.Entry<?,V> container) { return container.getValue(); }
-	JsonArray newWithElementDefault(String element) { JsonArray a = new JsonArray(); a.add(element); return a; }
+	JsonArray newWithElementDefault(JsonElement element) { JsonArray a = new JsonArray(); a.add(element); return a; }
 	JsonObject newWithMapKeyDefault(String key) { JsonObject o = new JsonObject(); o.add(key, (JsonElement) null); return o; }
 	JsonObject newWithMapValueDefault(JsonElement element) { JsonObject o = new JsonObject(); o.add(null, element); return o; }
 	Object source() { return null; }
@@ -232,51 +232,58 @@ public class Test {
 			sink(out); // $ hasTaintFlow
 		}
 		{
-			// "com.google.gson;JsonArray;true;add;;;Argument[0];Argument[this].Element;value;manual"
+			// "com.google.gson;JsonArray;true;add;(Boolean);;Argument[0];Argument[this].Element;taint;manual"
 			JsonArray out = null;
 			Boolean in = (Boolean)source();
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement(out)); // $ hasTaintFlow
 		}
 		{
-			// "com.google.gson;JsonArray;true;add;;;Argument[0];Argument[this].Element;value;manual"
+			// "com.google.gson;JsonArray;true;add;(Character);;Argument[0];Argument[this].Element;taint;manual"
 			JsonArray out = null;
 			Character in = (Character)source();
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement(out)); // $ hasTaintFlow
 		}
 		{
-			// "com.google.gson;JsonArray;true;add;;;Argument[0];Argument[this].Element;value;manual"
+			// "com.google.gson;JsonArray;true;add;(JsonElement);;Argument[0];Argument[this].Element;value;manual"
 			JsonArray out = null;
 			JsonElement in = (JsonElement)source();
 			out.add(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
-			// "com.google.gson;JsonArray;true;add;;;Argument[0];Argument[this].Element;value;manual"
+			// "com.google.gson;JsonArray;true;add;(Number);;Argument[0];Argument[this].Element;taint;manual"
 			JsonArray out = null;
 			Number in = (Number)source();
 			out.add(in);
-			sink(getElement(out)); // $ hasValueFlow
+			sink(getElement(out)); // $ hasTaintFlow
 		}
 		{
-			// "com.google.gson;JsonArray;true;add;;;Argument[0];Argument[this].Element;value;manual"
+			// "com.google.gson;JsonArray;true;add;(String);;Argument[0];Argument[this].Element;taint;manual"
 			JsonArray out = null;
 			String in = (String)source();
 			out.add(in);
+			sink(getElement(out)); // $ hasTaintFlow
+		}
+		{
+			// "com.google.gson;JsonArray;true;addAll;(JsonArray);;Argument[0].Element;Argument[this].Element;value;manual"
+			JsonArray out = null;
+			JsonArray in = newWithElementDefault((JsonElement) source());
+			out.addAll(in);
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.gson;JsonArray;true;asList;;;Argument[this].Element;ReturnValue.Element;value;manual"
 			List out = null;
-			JsonArray in = (JsonArray)newWithElementDefault((String) source());
+			JsonArray in = newWithElementDefault((JsonElement) source());
 			out = in.asList();
 			sink(getElement(out)); // $ hasValueFlow
 		}
 		{
 			// "com.google.gson;JsonArray;true;get;;;Argument[this].Element;ReturnValue;value;manual"
 			JsonElement out = null;
-			JsonArray in = (JsonArray)newWithElementDefault((String) source());
+			JsonArray in = newWithElementDefault((JsonElement) source());
 			out = in.get(0);
 			sink(out); // $ hasValueFlow
 		}

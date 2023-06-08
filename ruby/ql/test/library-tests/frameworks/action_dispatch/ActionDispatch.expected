@@ -36,8 +36,8 @@ actionDispatchRoutes
 actionDispatchControllerMethods
 | app/config/routes.rb:2:3:8:5 | call to resources | app/controllers/posts_controller.rb:2:3:3:5 | index |
 | app/config/routes.rb:2:3:8:5 | call to resources | app/controllers/posts_controller.rb:5:3:6:5 | show |
-| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:2:3:36:5 | index |
-| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:38:3:39:5 | show |
+| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:2:3:39:5 | index |
+| app/config/routes.rb:3:5:6:7 | call to resources | app/controllers/comments_controller.rb:41:3:42:5 | show |
 | app/config/routes.rb:7:5:7:37 | call to post | app/controllers/posts_controller.rb:8:3:9:5 | upvote |
 | app/config/routes.rb:27:3:27:48 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
 | app/config/routes.rb:28:3:28:50 | call to match | app/controllers/photos_controller.rb:2:3:3:5 | show |
@@ -66,3 +66,17 @@ mimeTypeMatchRegExpInterpretations
 | mime_type.rb:12:7:12:15 | "foo/bar" |
 | mime_type.rb:13:11:13:11 | s |
 | mime_type.rb:14:7:14:7 | s |
+requestInputAccesses
+| app/controllers/comments_controller.rb:3:5:3:18 | call to params |
+| app/controllers/comments_controller.rb:4:5:4:22 | call to parameters |
+| app/controllers/comments_controller.rb:5:5:5:15 | call to GET |
+| app/controllers/comments_controller.rb:6:5:6:16 | call to POST |
+| app/controllers/comments_controller.rb:7:5:7:28 | call to query_parameters |
+| app/controllers/comments_controller.rb:8:5:8:30 | call to request_parameters |
+| app/controllers/comments_controller.rb:9:5:9:31 | call to filtered_parameters |
+| app/controllers/comments_controller.rb:38:5:38:14 | call to params |
+| app/controllers/foo/bars_controller.rb:10:27:10:33 | call to cookies |
+| app/controllers/foo/bars_controller.rb:13:21:13:26 | call to params |
+| app/controllers/foo/bars_controller.rb:14:10:14:15 | call to params |
+| app/controllers/foo/bars_controller.rb:21:21:21:26 | call to params |
+| app/controllers/foo/bars_controller.rb:22:10:22:15 | call to params |

@@ -11,7 +11,7 @@ Go:
   - change-notes/**/*go.*
 
 Java:
-  - any: [ 'java/**/*', '!java/kotlin-extractor/**/*', '!java/kotlin-explorer/**/*', '!java/ql/test/kotlin/**/*' ]
+  - any: [ 'java/**/*', '!java/kotlin-extractor/**/*', '!java/ql/test/kotlin/**/*' ]
   - change-notes/**/*java.*
 
 JS:
@@ -20,7 +20,6 @@ JS:
 
 Kotlin:
   - java/kotlin-extractor/**/*
-  - java/kotlin-explorer/**/*
   - java/ql/test/kotlin/**/*
 
 Python:

@@ -25,7 +25,14 @@ public class Parameters
     public void M17([Optional, DefaultParameterValue(null)] object arg7) => throw null;
     public void M18([Optional, DefaultParameterValue(3)] int? arg8) => throw null;
     public void M19([Optional, DecimalConstant(1, 0, 0, 0, 103)] decimal arg9) => throw null;
+    public void M20([Optional, DefaultParameterValue(7)] MyStruct arg10) => throw null;
+    public void M21([Optional, DefaultParameterValue("mystring")] MyStruct arg10) => throw null;
 
-    public struct MyStruct { }
+    public struct MyStruct
+    {
+        public static implicit operator MyStruct(int i) => new MyStruct();
+        public static implicit operator MyStruct(string s) => new MyStruct();
+
+    }
     public enum MyEnum { A = 1, B = 2 }
 }

@@ -19,10 +19,10 @@
             "sequelize.Sequelize;Member[query].Argument[0].Member[query];sql-injection",
             "sequelize.Sequelize;Member[query].Argument[0];sql-injection",
             "sequelize.SequelizeStaticAndInstance;Member[asIs,literal].Argument[0];sql-injection",
-            "sequelize;Argument[0..].Member[password];credentials[password]",
-            "sequelize;Argument[0..].Member[username];credentials[username]",
-            "sequelize;Argument[1];credentials[username]",
-            "sequelize;Argument[2];credentials[password]"
+            "sequelize;Argument[0..].Member[password];credentials-password",
+            "sequelize;Argument[0..].Member[username];credentials-username",
+            "sequelize;Argument[1];credentials-username",
+            "sequelize;Argument[2];credentials-password"
         ],
         "typeDefinitions": [
             "sequelize.Sequelize;sequelize-typescript.Sequelize;"
