@@ -171,7 +171,7 @@ Custom lists can contain a maximum of 1000 repositories, so at most only the fir
     .. image:: ../images/codeql-for-visual-studio-code/variant-analysis-code-search-language.png
         :alt: Screenshot of the search bar for using code search to add repositories to a custom list. The search bar asks you to choose a language for your search and has a dropdown list of languages to choose from.
 
-#. Type the search query that you want to use and press **Enter**.
+#. In the search bar, type the search query that you want to use and press **Enter**.
 
 #. You can view the progress of your search in the bottom right corner of the application in a box with the text "Searching for repositories...". If you click **Cancel**, no repositories will be added to your list.
 
