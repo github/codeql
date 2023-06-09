@@ -371,12 +371,14 @@ module EntityFramework {
     }
 
     pragma[nomagic]
-    string getInputSynthetic(SummaryComponentStack output, DbContextClassSetProperty p) {
-      exists(SummaryComponentStack synthetic, Property mapped |
-        this = p.getDbContextClass() and
-        input(this, synthetic, mapped) and
-        output(this, output, mapped, p) and
-        result = getFullSyntheticName(p.getSyntheticName(), synthetic, output)
+    string getSyntheticNames(
+      SummaryComponentStack input, SummaryComponentStack output, DbContextClassSetProperty dbSet
+    ) {
+      exists(Property mapped |
+        this = dbSet.getDbContextClass() and
+        input(this, input, mapped) and
+        output(this, output, mapped, dbSet) and
+        result = dbSet.getSyntheticName() + "#" + SummaryComponentStack::getComponentStack(output)
       )
     }
   }
@@ -433,16 +435,6 @@ module EntityFramework {
     )
   }
 
-  bindingset[prop, stack1, stack2]
-  private string getFullSyntheticName(
-    string prop, SummaryComponentStack stack1, SummaryComponentStack stack2
-  ) {
-    result =
-      prop + "#" //
-        + SummaryComponentStack::getComponentStack(stack1) + "#" //
-        + SummaryComponentStack::getComponentStack(stack2)
-  }
-
   private class DbContextClassSetPropertySynthetic extends EFSummarizedCallable {
     private DbContextClassSetProperty p;
 
@@ -453,7 +445,7 @@ module EntityFramework {
     ) {
       exists(string name, DbContextClass c |
         preservesValue = true and
-        name = c.getInputSynthetic(output, p) and
+        name = c.getSyntheticNames(_, output, p) and
         input = SummaryComponentStack::syntheticGlobal(name)
       )
     }
@@ -464,21 +456,12 @@ module EntityFramework {
 
     DbContextSaveChanges() { this = c.getASaveChanges() }
 
-    pragma[nomagic]
-    string getOutputSynthetic(SummaryComponentStack input) {
-      exists(SummaryComponentStack synthetic, Property mapped, DbContextClassSetProperty dbSet |
-        input(c, input, mapped) and
-        output(c, synthetic, mapped, dbSet) and
-        result = getFullSyntheticName(dbSet.getSyntheticName(), input, synthetic)
-      )
-    }
-
     override predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
       exists(string name |
         preservesValue = true and
-        name = this.getOutputSynthetic(input) and
+        name = c.getSyntheticNames(input, _, _) and
         output = SummaryComponentStack::syntheticGlobal(name)
       )
     }
@@ -489,8 +472,7 @@ module EntityFramework {
    */
   private class EFSummarizedCallableSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
     EFSummarizedCallableSyntheticGlobal() {
-      this = any(DbContextClass c).getInputSynthetic(_, _) or
-      this = any(DbContextSaveChanges c).getOutputSynthetic(_)
+      this = any(DbContextClass c).getSyntheticNames(_, _, _)
     }
   }
 
