@@ -170,13 +170,12 @@ private import semmle.python.dataflow.new.internal.DataFlowDispatch as DataFlowD
 
 pragma[noinline]
 private predicate argumentPositionMatch(
-  DataFlowPublic::CallCfgNode call, DataFlowPublic::ArgumentNode arg,
+  DataFlowPublic::CallCfgNode call, DataFlowPublic::Node arg,
   DataFlowDispatch::ParameterPosition ppos
 ) {
-  exists(DataFlowDispatch::ArgumentPosition apos, DataFlowPrivate::DataFlowCall c |
-    c.getNode() = call.asCfgNode() and
-    arg.argumentOf(c, apos) and
-    DataFlowDispatch::parameterMatch(ppos, apos)
+  exists(DataFlowDispatch::ArgumentPosition apos |
+    DataFlowDispatch::parameterMatch(ppos, apos) and
+    DataFlowDispatch::normalCallArg(call.getNode(), arg, apos)
   )
 }
 
