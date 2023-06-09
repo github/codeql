@@ -74,7 +74,7 @@ private import internal.FlowSummaryImpl::Public
 private import internal.FlowSummaryImpl::Private::External
 private import internal.FlowSummaryImplSpecific
 private import FlowSummary as FlowSummary
-private import internal.SharedModelValidation
+private import codeql.mad.ModelValidation as SharedModelVal
 
 /**
  * A unit class for adding additional source model rows.
@@ -264,28 +264,20 @@ module CsvValidation {
     )
   }
 
-  /** Gets an error message relating to an invalid kind in a model. */
-  private string getInvalidModelKind() {
-    exists(string row, string kind | summaryModel(row) |
-      kind = row.splitAt(";", 8) and
-      not kind instanceof ValidSummaryKind and
-      result = "Invalid kind \"" + kind + "\" in summary model."
-    )
-    or
-    exists(string kind, string msg | sinkModel(_, _, _, _, _, _, _, kind, _) |
-      not kind instanceof ValidSinkKind and
-      msg = "Invalid kind \"" + kind + "\" in sink model." and
-      // The part of this message that refers to outdated sink kinds can be deleted after June 1st, 2024.
-      if kind instanceof OutdatedSinkKind
-      then result = msg + " " + kind.(OutdatedSinkKind).outdatedMessage()
-      else result = msg
-    )
-    or
-    exists(string kind | sourceModel(_, _, _, _, _, _, _, kind, _) |
-      not kind instanceof ValidSourceKind and
-      result = "Invalid kind \"" + kind + "\" in source model."
-    )
-  }
+  /** Holds if a summary model exists for the given `kind`. */
+  private predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
+
+  /** Holds if a sink model exists for the given `kind`. */
+  private predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
+
+  /** Holds if a source model exists for the given `kind`. */
+  private predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
+
+  /** Holds if a neutral model exists for the given `kind`. */
+  private predicate neutralKind(string kind) { none() }
+
+  private module KindVal =
+    SharedModelVal::KindValidation<summaryKind/1, sinkKind/1, sourceKind/1, neutralKind/1>;
 
   private string getInvalidModelSubtype() {
     exists(string pred, string row |
@@ -351,7 +343,7 @@ module CsvValidation {
     msg =
       [
         getInvalidModelSignature(), getInvalidModelInput(), getInvalidModelOutput(),
-        getInvalidModelSubtype(), getInvalidModelColumnCount(), getInvalidModelKind()
+        getInvalidModelSubtype(), getInvalidModelColumnCount(), KindVal::getInvalidModelKind()
       ]
   }
 }

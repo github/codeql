@@ -653,29 +653,22 @@ module ModelOutput {
 
   import Cached
   import Specific::ModelOutputSpecific
-  private import SharedModelValidation
+  private import codeql.mad.ModelValidation as SharedModelVal
 
-  /** Gets an error message relating to an invalid kind in a model. */
-  private string getInvalidModelKind() {
-    exists(string kind | summaryModel(_, _, _, _, kind) |
-      not kind instanceof ValidSummaryKind and
-      result = "Invalid kind \"" + kind + "\" in summary model."
-    )
-    or
-    exists(string kind, string msg | sinkModel(_, _, kind) |
-      not kind instanceof ValidSinkKind and
-      msg = "Invalid kind \"" + kind + "\" in sink model." and
-      // The part of this message that refers to outdated sink kinds can be deleted after June 1st, 2024.
-      if kind instanceof OutdatedSinkKind
-      then result = msg + " " + kind.(OutdatedSinkKind).outdatedMessage()
-      else result = msg
-    )
-    or
-    exists(string kind | sourceModel(_, _, kind) |
-      not kind instanceof ValidSourceKind and
-      result = "Invalid kind \"" + kind + "\" in source model."
-    )
-  }
+  /** Holds if a summary model exists for the given `kind`. */
+  private predicate summaryKind(string kind) { summaryModel(_, _, _, _, kind) }
+
+  /** Holds if a sink model exists for the given `kind`. */
+  private predicate sinkKind(string kind) { sinkModel(_, _, kind) }
+
+  /** Holds if a source model exists for the given `kind`. */
+  private predicate sourceKind(string kind) { sourceModel(_, _, kind) }
+
+  /** Holds if a neutral model exists for the given `kind`. */
+  private predicate neutralKind(string kind) { none() }
+
+  private module KindVal =
+    SharedModelVal::KindValidation<summaryKind/1, sinkKind/1, sourceKind/1, neutralKind/1>;
 
   /**
    * Gets an error message relating to an invalid CSV row in a model.
@@ -723,6 +716,6 @@ module ModelOutput {
     )
     or
     // Check for invalid model kinds
-    result = getInvalidModelKind()
+    result = KindVal::getInvalidModelKind()
   }
 }

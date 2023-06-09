@@ -6,6 +6,7 @@ extractor: javascript
 library: true
 upgrades: upgrades
 dependencies:
+  codeql/mad: ${workspace}
   codeql/regex: ${workspace}
   codeql/tutorial: ${workspace}
   codeql/util: ${workspace}
