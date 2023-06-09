@@ -189,20 +189,15 @@ module ModelValidation {
     )
   }
 
-  /** Holds if a summary model exists for the given `kind`. */
-  private predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
+  private module KindValConfig implements SharedModelVal::KindValidationConfigSig {
+    predicate summaryKind(string kind) { summaryModel(_, _, _, _, _, _, _, _, kind, _) }
 
-  /** Holds if a sink model exists for the given `kind`. */
-  private predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
+    predicate sinkKind(string kind) { sinkModel(_, _, _, _, _, _, _, kind, _) }
 
-  /** Holds if a source model exists for the given `kind`. */
-  private predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
+    predicate sourceKind(string kind) { sourceModel(_, _, _, _, _, _, _, kind, _) }
+  }
 
-  /** Holds if a neutral model exists for the given `kind`. */
-  private predicate neutralKind(string kind) { none() }
-
-  private module KindVal =
-    SharedModelVal::KindValidation<summaryKind/1, sinkKind/1, sourceKind/1, neutralKind/1>;
+  private module KindVal = SharedModelVal::KindValidation<KindValConfig>;
 
   private string getInvalidModelSignature() {
     exists(

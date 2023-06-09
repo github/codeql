@@ -2,14 +2,23 @@
  * Provides classes and predicates related to validating models-as-data rows.
  */
 
-/** Holds if a model exists for the given `kind`. */
-signature predicate modelKindSig(string kind);
+/** Provides predicates for determining if a model exists for a given `kind`. */
+signature module KindValidationConfigSig {
+  /** Holds if a summary model exists for the given `kind`. */
+  predicate summaryKind(string kind);
+
+  /** Holds if a sink model exists for the given `kind`. */
+  predicate sinkKind(string kind);
+
+  /** Holds if a source model exists for the given `kind`. */
+  predicate sourceKind(string kind);
+
+  /** Holds if a neutral model exists for the given `kind`. */
+  default predicate neutralKind(string kind) { none() }
+}
 
 /** Provides validation for models-as-data summary, sink, source, and neutral kinds. */
-module KindValidation<
-  modelKindSig/1 summaryKind, modelKindSig/1 sinkKind, modelKindSig/1 sourceKind,
-  modelKindSig/1 neutralKind>
-{
+module KindValidation<KindValidationConfigSig Config> {
   /** A valid models-as-data sink kind. */
   private class ValidSinkKind extends string {
     bindingset[this]
@@ -150,12 +159,12 @@ module KindValidation<
 
   /** Gets an error message relating to an invalid kind in a model. */
   string getInvalidModelKind() {
-    exists(string kind | summaryKind(kind) |
+    exists(string kind | Config::summaryKind(kind) |
       not kind instanceof ValidSummaryKind and
       result = "Invalid kind \"" + kind + "\" in summary model."
     )
     or
-    exists(string kind, string msg | sinkKind(kind) |
+    exists(string kind, string msg | Config::sinkKind(kind) |
       not kind instanceof ValidSinkKind and
       msg = "Invalid kind \"" + kind + "\" in sink model." and
       // The part of this message that refers to outdated sink kinds can be deleted after June 1st, 2024.
@@ -164,12 +173,12 @@ module KindValidation<
       else result = msg
     )
     or
-    exists(string kind | sourceKind(kind) |
+    exists(string kind | Config::sourceKind(kind) |
       not kind instanceof ValidSourceKind and
       result = "Invalid kind \"" + kind + "\" in source model."
     )
     or
-    exists(string kind | neutralKind(kind) |
+    exists(string kind | Config::neutralKind(kind) |
       not kind instanceof ValidNeutralKind and
       result = "Invalid kind \"" + kind + "\" in neutral model."
     )
