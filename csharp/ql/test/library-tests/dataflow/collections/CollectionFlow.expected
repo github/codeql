@@ -214,8 +214,8 @@ edges
 | CollectionFlow.cs:385:58:385:61 | dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:385:67:385:70 | access to parameter dict : Dictionary<T,T> [element, property Value] : A |
 | CollectionFlow.cs:385:67:385:70 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:385:67:385:73 | access to indexer : A |
 | CollectionFlow.cs:387:59:387:62 | dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:387:68:387:71 | access to parameter dict : Dictionary<T,T> [element, property Value] : A |
-| CollectionFlow.cs:387:68:387:71 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:387:68:387:79 | call to method First<KeyValuePair<Int32,T>> : Object [property Value] : A |
-| CollectionFlow.cs:387:68:387:79 | call to method First<KeyValuePair<Int32,T>> : Object [property Value] : A | CollectionFlow.cs:387:68:387:85 | access to property Value : A |
+| CollectionFlow.cs:387:68:387:71 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:387:68:387:79 | call to method First<KeyValuePair<Int32,T>> : KeyValuePair<Int32,T> [property Value] : A |
+| CollectionFlow.cs:387:68:387:79 | call to method First<KeyValuePair<Int32,T>> : KeyValuePair<Int32,T> [property Value] : A | CollectionFlow.cs:387:68:387:85 | access to property Value : A |
 | CollectionFlow.cs:389:60:389:63 | dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:389:69:389:72 | access to parameter dict : Dictionary<T,T> [element, property Value] : A |
 | CollectionFlow.cs:389:69:389:72 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | CollectionFlow.cs:389:69:389:79 | access to property Values : ICollection<T> [element] : A |
 | CollectionFlow.cs:389:69:389:79 | access to property Values : ICollection<T> [element] : A | CollectionFlow.cs:389:69:389:87 | call to method First<T> : A |
@@ -223,8 +223,8 @@ edges
 | CollectionFlow.cs:391:67:391:70 | access to parameter dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:391:67:391:75 | access to property Keys : ICollection<T> [element] : A |
 | CollectionFlow.cs:391:67:391:75 | access to property Keys : ICollection<T> [element] : A | CollectionFlow.cs:391:67:391:83 | call to method First<T> : A |
 | CollectionFlow.cs:393:57:393:60 | dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:393:66:393:69 | access to parameter dict : Dictionary<T,T> [element, property Key] : A |
-| CollectionFlow.cs:393:66:393:69 | access to parameter dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:393:66:393:77 | call to method First<KeyValuePair<T,Int32>> : Object [property Key] : A |
-| CollectionFlow.cs:393:66:393:77 | call to method First<KeyValuePair<T,Int32>> : Object [property Key] : A | CollectionFlow.cs:393:66:393:81 | access to property Key : A |
+| CollectionFlow.cs:393:66:393:69 | access to parameter dict : Dictionary<T,T> [element, property Key] : A | CollectionFlow.cs:393:66:393:77 | call to method First<KeyValuePair<T,Int32>> : KeyValuePair<T,Int32> [property Key] : A |
+| CollectionFlow.cs:393:66:393:77 | call to method First<KeyValuePair<T,Int32>> : KeyValuePair<T,Int32> [property Key] : A | CollectionFlow.cs:393:66:393:81 | access to property Key : A |
 | CollectionFlow.cs:395:49:395:52 | args : A[] [element] : A | CollectionFlow.cs:395:63:395:66 | access to parameter args : A[] [element] : A |
 | CollectionFlow.cs:395:49:395:52 | args : null [element] : A | CollectionFlow.cs:395:63:395:66 | access to parameter args : null [element] : A |
 | CollectionFlow.cs:395:63:395:66 | access to parameter args : A[] [element] : A | CollectionFlow.cs:395:63:395:69 | access to array element |
@@ -440,7 +440,7 @@ nodes
 | CollectionFlow.cs:385:67:385:73 | access to indexer : A | semmle.label | access to indexer : A |
 | CollectionFlow.cs:387:59:387:62 | dict : Dictionary<T,T> [element, property Value] : A | semmle.label | dict : Dictionary<T,T> [element, property Value] : A |
 | CollectionFlow.cs:387:68:387:71 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | semmle.label | access to parameter dict : Dictionary<T,T> [element, property Value] : A |
-| CollectionFlow.cs:387:68:387:79 | call to method First<KeyValuePair<Int32,T>> : Object [property Value] : A | semmle.label | call to method First<KeyValuePair<Int32,T>> : Object [property Value] : A |
+| CollectionFlow.cs:387:68:387:79 | call to method First<KeyValuePair<Int32,T>> : KeyValuePair<Int32,T> [property Value] : A | semmle.label | call to method First<KeyValuePair<Int32,T>> : KeyValuePair<Int32,T> [property Value] : A |
 | CollectionFlow.cs:387:68:387:85 | access to property Value : A | semmle.label | access to property Value : A |
 | CollectionFlow.cs:389:60:389:63 | dict : Dictionary<T,T> [element, property Value] : A | semmle.label | dict : Dictionary<T,T> [element, property Value] : A |
 | CollectionFlow.cs:389:69:389:72 | access to parameter dict : Dictionary<T,T> [element, property Value] : A | semmle.label | access to parameter dict : Dictionary<T,T> [element, property Value] : A |
@@ -452,7 +452,7 @@ nodes
 | CollectionFlow.cs:391:67:391:83 | call to method First<T> : A | semmle.label | call to method First<T> : A |
 | CollectionFlow.cs:393:57:393:60 | dict : Dictionary<T,T> [element, property Key] : A | semmle.label | dict : Dictionary<T,T> [element, property Key] : A |
 | CollectionFlow.cs:393:66:393:69 | access to parameter dict : Dictionary<T,T> [element, property Key] : A | semmle.label | access to parameter dict : Dictionary<T,T> [element, property Key] : A |
-| CollectionFlow.cs:393:66:393:77 | call to method First<KeyValuePair<T,Int32>> : Object [property Key] : A | semmle.label | call to method First<KeyValuePair<T,Int32>> : Object [property Key] : A |
+| CollectionFlow.cs:393:66:393:77 | call to method First<KeyValuePair<T,Int32>> : KeyValuePair<T,Int32> [property Key] : A | semmle.label | call to method First<KeyValuePair<T,Int32>> : KeyValuePair<T,Int32> [property Key] : A |
 | CollectionFlow.cs:393:66:393:81 | access to property Key : A | semmle.label | access to property Key : A |
 | CollectionFlow.cs:395:49:395:52 | args : A[] [element] : A | semmle.label | args : A[] [element] : A |
 | CollectionFlow.cs:395:49:395:52 | args : null [element] : A | semmle.label | args : null [element] : A |
