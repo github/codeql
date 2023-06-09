@@ -112,7 +112,7 @@ module KindValidation<
           // C#
           "file", "file-write",
           // JavaScript
-          "database-access-result", "remote-flow"
+          "database-access-result"
         ]
       or
       this.matches([
@@ -131,7 +131,7 @@ module KindValidation<
         [
           // shared
           "taint", "value",
-          // JavaScript
+          // Dynamic languages
           "type"
         ]
     }
