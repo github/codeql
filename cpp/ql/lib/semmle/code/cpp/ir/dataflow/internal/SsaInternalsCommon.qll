@@ -263,7 +263,7 @@ private module IteratorIndirections {
         // Taint through `operator+=` and `operator-=` on iterators.
         call.getStaticCallTarget() instanceof Iterator::IteratorAssignArithmeticOperator and
         node2.(IndirectArgumentOutNode).getPreUpdateNode() = node1 and
-        node1.(IndirectOperand).getOperand() = call.getArgumentOperand(0) and
+        node1.(IndirectOperand).hasOperandAndIndirectionIndex(call.getArgumentOperand(0), _) and
         node1.getType().getUnspecifiedType() = this
       )
     }

@@ -323,7 +323,7 @@ private class SideEffectArgumentNode extends ArgumentNode, SideEffectOperandNode
   override predicate argumentOf(DataFlowCall dfCall, ArgumentPosition pos) {
     this.getCallInstruction() = dfCall and
     pos.(IndirectionPosition).getArgumentIndex() = this.getArgumentIndex() and
-    pos.(IndirectionPosition).getIndirectionIndex() = super.getIndirectionIndex()
+    super.hasAddressOperandAndIndirectionIndex(_, pos.(IndirectionPosition).getIndirectionIndex())
   }
 }
 
