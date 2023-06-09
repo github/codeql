@@ -24,6 +24,9 @@ SummaryCall summaryDataFlowCall(SummaryNode receiver) { receiver = result.getRec
 /** Gets the type of content `c`. */
 DataFlowType getContentType(ContentSet c) { any() }
 
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) { any() }
+
 /** Gets the return type of kind `rk` for callable `c`. */
 bindingset[c, rk]
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) { any() }
