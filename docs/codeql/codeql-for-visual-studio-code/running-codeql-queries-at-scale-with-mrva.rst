@@ -156,7 +156,7 @@ You can then insert the ``new-repo-list`` of repositories into your list of cust
 Using code search to add repositories to a custom list 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can use code search directly in the CodeQL extension on VSCode to add a subset of repositories from GitHub.com to a custom list. Note that this feature uses the legacy code search via the code search API. For more information on the syntax to use, see "`Searching code (legacy) <https://docs.github.com/en/search-github/searching-on-github/searching-code>`__."
+You can use code search directly in the CodeQL extension to add a subset of repositories from GitHub.com to a custom list. Note that this feature uses the legacy code search via the code search API. For more information on the syntax to use, see "`Searching code (legacy) <https://docs.github.com/en/search-github/searching-on-github/searching-code>`__."
 
 For example, to add all repositories in the `rails` organization on GitHub, you can search `org:rails`. 
 
@@ -173,7 +173,7 @@ Custom lists can contain a maximum of 1000 repositories, so at most only the fir
 
 #. Type the search query that you want to use and press **Enter**.
 
-#. You will see a box in the lower right of VSCode with the text "Searching for repositories...". If you click **Cancel**, no repositories will be added to your list.
+#. You can view the progress of your search in the bottom right corner of the application in a box with the text "Searching for repositories...". If you click **Cancel**, no repositories will be added to your list.
 
 #. Once complete, you will see the resulting repositories appear in the dropdown under your custom list in the Variant Analysis Repositories panel.
 
