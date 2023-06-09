@@ -153,10 +153,16 @@ For example, if you want to continue analyzing a set of repositories that had re
 
 You can then insert the ``new-repo-list`` of repositories into your list of custom repository lists for easy access in the Variant Analysis Repositories panel.
 
-Using code search to add repositories to a custom list 
+Using GitHub code search to add repositories to a custom list 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-You can use code search directly in the CodeQL extension to add a subset of repositories from GitHub.com to a custom list. Note that this feature uses the legacy code search via the code search API. For more information on the syntax to use, see "`Searching code (legacy) <https://docs.github.com/en/search-github/searching-on-github/searching-code>`__."
+You can use code search directly in the CodeQL extension to add a subset of repositories from GitHub.com to a custom list. 
+
+.. pull-quote::
+
+    Note
+
+    This feature uses the legacy code search via the code search API. For more information on the syntax to use, see "`Searching code (legacy) <https://docs.github.com/en/search-github/searching-on-github/searching-code>`__."
 
 For example, to add all repositories in the ``rails`` organization on GitHub, you can search ``org:rails``. 
 
@@ -166,18 +172,16 @@ Custom lists can contain a maximum of 1000 repositories, so at most only the fir
 
 #. Right-click on the list you have chosen and then click **Add repositories with GitHub Code Search**. 
 
-#. In the search bar, select a language for your search from the choices in the dropdown. 
+#. In the pop-up that appears at the top of the application, under the search bar, select a language for your search from the choices in the dropdown. 
 
     .. image:: ../images/codeql-for-visual-studio-code/variant-analysis-code-search-language.png
         :alt: Screenshot of the search bar for using code search to add repositories to a custom list. The search bar asks you to choose a language for your search and has a dropdown list of languages to choose from.
 
 #. In the search bar, type the search query that you want to use and press **Enter**.
 
-#. You can view the progress of your search in the bottom right corner of the application in a box with the text "Searching for repositories...". If you click **Cancel**, no repositories will be added to your list.
+You can view the progress of your search in the bottom right corner of the application in a box with the text "Searching for repositories...". If you click **Cancel**, no repositories will be added to your list. Once complete, you will see the resulting repositories appear in the dropdown under your custom list in the Variant Analysis Repositories panel.
 
-#. Once complete, you will see the resulting repositories appear in the dropdown under your custom list in the Variant Analysis Repositories panel.
-
-It is possible that some of the resulting repositories do not have CodeQL databases or are not accessible. When you run an analysis on the list, the results view will show you which repositories could not be analyzed.
+Not all resulting repositories will have CodeQL databases or allow access to be analyzed. When you run an analysis on the list, the Variant Analysis Results view will show you which repositories could not be analyzed.
 
 Troubleshooting variant analysis
 --------------------------------
