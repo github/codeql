@@ -718,5 +718,5 @@ void write_to_star_buf(unsigned char *buf) // $ ast-def=buf
 void test(unsigned char *source) // $ ast-def=source
 {
   write_to_star_buf(source);
-  sink(*source); // $ SPURIOUS: ir
+  sink(*source); // clean
 }
