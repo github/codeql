@@ -796,7 +796,7 @@ private module Cached {
       address.getDef() = instr and
       isDereference(load, address) and
       isUseImpl(address, _, indirectionIndex - 1) and
-      result = instr
+      result = load
     )
   }
 
