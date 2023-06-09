@@ -164,7 +164,7 @@ def simple_upload(request):
                       if member.issym():  
                           raise ValueError("But it is a symlink")       
                       result.append(member)     
-                  tar.extractall(path=tempfile.mkdtemp(), members=result) # $ MISSING: result=BAD   
+                  tar.extractall(path=tempfile.mkdtemp(), members=result) # $result=BAD   
                   tar.close()
 
 

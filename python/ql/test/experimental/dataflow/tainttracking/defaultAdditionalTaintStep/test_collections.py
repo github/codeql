@@ -31,8 +31,8 @@ def test_construction():
         list(tainted_list), # $ tainted
         list(tainted_tuple), # $ tainted
         list(tainted_set), # $ tainted
-        list(tainted_dict.values()), # $ MISSING: tainted
-        list(tainted_dict.items()), # $ MISSING: tainted
+        list(tainted_dict.values()), # $ tainted
+        list(tainted_dict.items()), # $ tainted
 
         tuple(tainted_list), # $ tainted
         set(tainted_list), # $ tainted
@@ -56,9 +56,9 @@ def test_access(x, y, z):
         tainted_list[x], # $ tainted
         tainted_list[y:z], # $ tainted
 
-        sorted(tainted_list), # $ MISSING: tainted
-        reversed(tainted_list), # $ MISSING: tainted
-        iter(tainted_list), # $ MISSING: tainted
+        sorted(tainted_list), # $ tainted
+        reversed(tainted_list), # $ tainted
+        iter(tainted_list), # $ tainted
         next(iter(tainted_list)), # $ MISSING: tainted
         [i for i in tainted_list], # $ tainted
         [tainted_list for _i in [1,2,3]], # $ MISSING: tainted
@@ -70,7 +70,7 @@ def test_access(x, y, z):
     for h in tainted_list:
         ensure_tainted(h) # $ tainted
     for i in reversed(tainted_list):
-        ensure_tainted(i) # $ MISSING: tainted
+        ensure_tainted(i) # $ tainted
 
 def test_access_explicit(x, y, z):
     tainted_list = [TAINTED_STRING]
@@ -80,10 +80,10 @@ def test_access_explicit(x, y, z):
         tainted_list[x], # $ tainted
         tainted_list[y:z], # $ tainted
 
-        sorted(tainted_list)[0], # $ MISSING: tainted
+        sorted(tainted_list)[0], # $ tainted
         reversed(tainted_list)[0], # $ tainted
-        iter(tainted_list), # $ MISSING: tainted
-        next(iter(tainted_list)), # $ MISSING: tainted
+        iter(tainted_list), # $ tainted
+        next(iter(tainted_list)), # $ tainted
         [i for i in tainted_list], # $ tainted
         [tainted_list for i in [1,2,3]], # $ MISSING: tainted
         [TAINTED_STRING for i in [1,2,3]], # $ tainted
@@ -109,9 +109,9 @@ def test_dict_access(x):
     )
 
     for v in tainted_dict.values():
-        ensure_tainted(v) # $ MISSING: tainted
+        ensure_tainted(v) # $ tainted
     for k, v in tainted_dict.items():
-        ensure_tainted(v) # $ MISSING: tainted
+        ensure_tainted(v) # $ tainted
 
 
 def test_named_tuple(): # TODO: namedtuple currently not handled
@@ -194,7 +194,7 @@ def list_append():
     ensure_not_tainted(my_list)
 
     my_list.append(tainted_string)
-    ensure_tainted(my_list) # $ MISSING: tainted
+    ensure_tainted(my_list) # $ tainted
 
 
 def list_extend():
@@ -262,7 +262,7 @@ def set_add():
     ensure_not_tainted(my_set)
 
     my_set.add(tainted_string)
-    ensure_tainted(my_set) # $ MISSING: tainted
+    ensure_tainted(my_set) # $ tainted
 
 
 # Make tests runable
