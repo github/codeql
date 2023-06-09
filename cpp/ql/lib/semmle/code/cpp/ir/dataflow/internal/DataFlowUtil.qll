@@ -587,6 +587,7 @@ class SideEffectOperandNode extends Node instanceof IndirectOperand {
 
   CallInstruction getCallInstruction() { result = call }
 
+  /** Gets the underlying operand and the underlying indirection index. */
   predicate hasAddressOperandAndIndirectionIndex(Operand operand, int indirectionIndex) {
     IndirectOperand.super.hasOperandAndIndirectionIndex(operand, indirectionIndex)
   }
