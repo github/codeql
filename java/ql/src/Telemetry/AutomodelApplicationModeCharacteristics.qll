@@ -294,8 +294,7 @@ private class ExcludedFromModeling extends CharacteristicsImpl::UninterestingToM
   ExcludedFromModeling() { this = "excluded from modeling" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    ModelExclusions::isUninterestingForModels(ApplicationModeGetCallable::getCallable(e)) or
-    ModelExclusions::isUninterestingForModels(e.getEnclosingCallable())
+    ModelExclusions::isUninterestingForModels(ApplicationModeGetCallable::getCallable(e))
   }
 }
 
