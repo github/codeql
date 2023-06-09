@@ -10,6 +10,7 @@ on:
       - "*/ql/src/**/*.qll"
       - "*/ql/lib/**/*.ql"
       - "*/ql/lib/**/*.qll"
+      - "*/ql/lib/ext/**/*.yml"
       - "misc/scripts/library-coverage/*.py"
       # input data files
       - "*/documentation/library-coverage/cwe-sink.csv"

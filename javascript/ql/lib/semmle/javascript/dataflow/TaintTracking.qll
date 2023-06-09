@@ -420,16 +420,6 @@ module TaintTracking {
   import Cached::Public
 
   /**
-   * Holds if `pred -> succ` is a taint propagating data flow edge through a string operation.
-   * DEPRECATED: Use `stringConcatenationStep` and `stringManipulationStep` instead.
-   */
-  pragma[inline]
-  deprecated predicate stringStep(DataFlow::Node pred, DataFlow::Node succ) {
-    stringConcatenationStep(pred, succ) or
-    stringManipulationStep(pred, succ)
-  }
-
-  /**
    * Holds if `pred -> succ` is an edge used by all taint-tracking configurations.
    */
   predicate sharedTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
@@ -1240,14 +1230,5 @@ module TaintTracking {
     }
 
     override predicate appliesTo(Configuration cfg) { any() }
-  }
-
-  /**
-   * Holds if taint propagates from `pred` to `succ` in one local (intra-procedural) step.
-   * DEPRECATED: Use `TaintTracking::sharedTaintStep` and `DataFlow::Node::getALocalSource()` instead.
-   */
-  deprecated predicate localTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
-    DataFlow::localFlowStep(pred, succ) or
-    sharedTaintStep(pred, succ)
   }
 }

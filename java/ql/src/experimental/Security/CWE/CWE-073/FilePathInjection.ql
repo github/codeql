@@ -16,7 +16,6 @@ import java
 import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.dataflow.ExternalFlow
 import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.security.PathCreation
 import JFinalController
 import semmle.code.java.security.PathSanitizer
 import InjectFilePathFlow::PathGraph
@@ -52,7 +51,7 @@ module InjectFilePathConfig implements DataFlow::ConfigSig {
   predicate isSource(DataFlow::Node source) { source instanceof RemoteFlowSource }
 
   predicate isSink(DataFlow::Node sink) {
-    sink.asExpr() = any(PathCreation p).getAnInput() and
+    sinkNode(sink, "path-injection") and
     not sink instanceof NormalizedPathNode
   }
 

@@ -79,7 +79,7 @@ predicate jumpStep = DataFlowPrivate::jumpStep/2;
 /** Holds if there is direct flow from `param` to a return. */
 pragma[nomagic]
 private predicate flowThrough(DataFlowPublic::ParameterNode param) {
-  exists(DataFlowPrivate::ReturningNode returnNode, DataFlowDispatch::ReturnKind rk |
+  exists(DataFlowPrivate::SourceReturnNode returnNode, DataFlowDispatch::ReturnKind rk |
     param.flowsTo(returnNode) and
     returnNode.hasKind(rk, param.(DataFlowPrivate::NodeImpl).getCfgScope())
   |
@@ -213,15 +213,7 @@ predicate callStep(ExprNodes::CallCfgNode call, Node arg, DataFlowPrivate::Param
  * recursion (or, at best, terrible performance), since identifying calls to library
  * methods is done using API graphs (which uses type tracking).
  */
-predicate callStep(Node nodeFrom, Node nodeTo) {
-  callStep(_, nodeFrom, nodeTo)
-  or
-  // In normal data-flow, this will be a local flow step. But for type tracking
-  // we model it as a call step, in order to avoid computing a potential
-  // self-cross product of all calls to a function that returns one of its parameters
-  // (only to later filter that flow out using `TypeTracker::append`).
-  DataFlowPrivate::LocalFlow::localFlowSsaParamInput(nodeFrom, nodeTo)
-}
+predicate callStep(Node nodeFrom, Node nodeTo) { callStep(_, nodeFrom, nodeTo) }
 
 /**
  * Holds if `nodeFrom` steps to `nodeTo` by being returned from a call.
@@ -233,19 +225,13 @@ predicate callStep(Node nodeFrom, Node nodeTo) {
 predicate returnStep(Node nodeFrom, Node nodeTo) {
   exists(ExprNodes::CallCfgNode call |
     nodeFrom instanceof DataFlowPrivate::ReturnNode and
+    not nodeFrom instanceof DataFlowPrivate::InitializeReturnNode and
     nodeFrom.(DataFlowPrivate::NodeImpl).getCfgScope() = DataFlowDispatch::getTarget(call) and
     // deliberately do not include `getInitializeTarget`, since calls to `new` should not
     // get the return value from `initialize`. Any fields being set in the initializer
     // will reach all reads via `callStep` and `localFieldStep`.
     nodeTo.asExpr().getNode() = call.getNode()
   )
-  or
-  // In normal data-flow, this will be a local flow step. But for type tracking
-  // we model it as a returning flow step, in order to avoid computing a potential
-  // self-cross product of all calls to a function that returns one of its parameters
-  // (only to later filter that flow out using `TypeTracker::append`).
-  nodeTo.(DataFlowPrivate::SynthReturnNode).getAnInput() = nodeFrom and
-  not nodeFrom instanceof DataFlowPrivate::InitializeReturnNode
 }
 
 /**
@@ -443,28 +429,19 @@ module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   }
 
   Node parameterOf(Node callable, SummaryComponent param) {
-    exists(
-      DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos,
-      DataFlowPrivate::ParameterNodeImpl p
-    |
+    exists(DataFlowDispatch::ArgumentPosition apos, DataFlowDispatch::ParameterPosition ppos |
       param = SummaryComponent::parameter(apos) and
       DataFlowDispatch::parameterMatch(ppos, apos) and
-      p.isSourceParameterOf(callable.asExpr().getExpr(), ppos) and
-      // We need to include both `p` and the SSA definition for `p`, since in type-tracking
-      // the step from `p` to the SSA definition is considered a call step.
-      result =
-        [p.(DataFlow::Node), DataFlowPrivate::LocalFlow::getParameterDefNode(p.getParameter())]
+      result
+          .(DataFlowPrivate::ParameterNodeImpl)
+          .isSourceParameterOf(callable.asExpr().getExpr(), ppos)
     )
   }
 
   Node returnOf(Node callable, SummaryComponent return) {
-    exists(DataFlowPrivate::SynthReturnNode ret |
-      return = SummaryComponent::return() and
-      ret.getCfgScope() = callable.asExpr().getExpr() and
-      // We need to include both `ret` and `ret.getAnInput()`, since in type-tracking
-      // the step from `ret.getAnInput()` to `ret` is considered a return step.
-      result = [ret.(DataFlow::Node), ret.getAnInput()]
-    )
+    return = SummaryComponent::return() and
+    result.(DataFlowPrivate::ReturnNode).(DataFlowPrivate::NodeImpl).getCfgScope() =
+      callable.asExpr().getExpr()
   }
 
   // Relating callables to nodes

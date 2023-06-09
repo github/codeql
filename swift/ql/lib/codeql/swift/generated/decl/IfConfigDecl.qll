@@ -27,7 +27,7 @@ module Generated {
     final AstNode getActiveElement(int index) {
       exists(AstNode immediate |
         immediate = this.getImmediateActiveElement(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 

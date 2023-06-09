@@ -14,7 +14,7 @@ class MethodLookupExpr extends Generated::MethodLookupExpr {
     result = Synth::convertExprFromRaw(this.getUnderlying().getBase())
   }
 
-  override Decl getImmediateMember() {
+  override Decl getMember() {
     result = this.getMethodRef().(DeclRefExpr).getDecl()
     or
     result = this.getMethodRef().(OtherInitializerRefExpr).getInitializer()

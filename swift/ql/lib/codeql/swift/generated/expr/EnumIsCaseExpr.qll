@@ -33,25 +33,12 @@ module Generated {
 
     /**
      * Gets the element of this enum is case expression.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    EnumElementDecl getImmediateElement() {
+    EnumElementDecl getElement() {
       result =
         Synth::convertEnumElementDeclFromRaw(Synth::convertEnumIsCaseExprToRaw(this)
               .(Raw::EnumIsCaseExpr)
               .getElement())
-    }
-
-    /**
-     * Gets the element of this enum is case expression.
-     */
-    final EnumElementDecl getElement() {
-      exists(EnumElementDecl immediate |
-        immediate = this.getImmediateElement() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
   }
 }

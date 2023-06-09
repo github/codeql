@@ -24,8 +24,7 @@ def version_string_to_tuple(version):
 # Version number used by CI.
 ci_version = '1.8.10'
 
-# Version numbers in the list need to be in semantically increasing order
-many_versions = [ '1.4.32', '1.5.0', '1.5.10', '1.5.20', '1.5.30', '1.6.0', '1.6.20', '1.7.0', '1.7.20', '1.8.0' ]
+many_versions = [ '1.4.32', '1.5.0', '1.5.10', '1.5.20', '1.5.30', '1.6.0', '1.6.20', '1.7.0', '1.7.20', '1.8.0', '1.9.0-Beta' ]
 
 many_versions_tuples = [version_string_to_tuple(v) for v in many_versions]
 
@@ -42,17 +41,12 @@ def get_single_version(fakeVersionOutput = None):
     if m is None:
         raise Exception('Cannot detect version of kotlinc (got ' + str(versionOutput) + ')')
     current_version = version_string_to_tuple(m.group(1))
-    matching_minor_versions = [ version for version in many_versions_tuples if version[0:2] == current_version[0:2] ]
-    if len(matching_minor_versions) == 0:
-        raise Exception(f'Cannot find a matching minor version for kotlinc version {current_version} (got {versionOutput}; know about {str(many_versions)})')
 
-    matching_minor_versions.sort(reverse = True)
+    many_versions_tuples.sort(reverse = True)
 
-    for version in matching_minor_versions:
+    for version in many_versions_tuples:
         if version[0:3] <= current_version[0:3]:
             return version_tuple_to_string(version)
-
-    return version_tuple_to_string(matching_minor_versions[-1])
 
     raise Exception(f'No suitable kotlinc version found for {current_version} (got {versionOutput}; know about {str(many_versions)})')
 

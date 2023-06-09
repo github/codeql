@@ -255,9 +255,6 @@ module CodeInjection {
     NoSqlCodeInjectionSink() { any(NoSql::Query q).getACodeOperator() = this }
   }
 
-  /** DEPRECATED: Alias for NoSqlCodeInjectionSink */
-  deprecated class NoSQLCodeInjectionSink = NoSqlCodeInjectionSink;
-
   /**
    * The first argument to `Module.prototype._compile`, considered as a code-injection sink.
    */
@@ -426,9 +423,6 @@ module CodeInjection {
    * A call to JSON.stringify() seen as a sanitizer.
    */
   class JsonStringifySanitizer extends Sanitizer, JsonStringifyCall { }
-
-  /** DEPRECATED: Alias for JsonStringifySanitizer */
-  deprecated class JSONStringifySanitizer = JsonStringifySanitizer;
 
   private class SinkFromModel extends Sink {
     SinkFromModel() { this = ModelOutput::getASinkNode("code-injection").asSink() }

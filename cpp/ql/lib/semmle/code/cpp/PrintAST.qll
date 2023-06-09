@@ -27,9 +27,6 @@ class PrintAstConfiguration extends TPrintAstConfiguration {
   predicate shouldPrintFunction(Function func) { any() }
 }
 
-/** DEPRECATED: Alias for PrintAstConfiguration */
-deprecated class PrintASTConfiguration = PrintAstConfiguration;
-
 private predicate shouldPrintFunction(Function func) {
   exists(PrintAstConfiguration config | config.shouldPrintFunction(func))
 }
@@ -239,9 +236,6 @@ class PrintAstNode extends TPrintAstNode {
   }
 }
 
-/** DEPRECATED: Alias for PrintAstNode */
-deprecated class PrintASTNode = PrintAstNode;
-
 /**
  * Class that restricts the elements that we compute `qlClass` for.
  */
@@ -286,18 +280,12 @@ abstract class BaseAstNode extends PrintAstNode {
   deprecated Locatable getAST() { result = this.getAst() }
 }
 
-/** DEPRECATED: Alias for BaseAstNode */
-deprecated class BaseASTNode = BaseAstNode;
-
 /**
  * A node representing an AST node other than a `DeclarationEntry`.
  */
 abstract class AstNode extends BaseAstNode, TAstNode {
   AstNode() { this = TAstNode(ast) }
 }
-
-/** DEPRECATED: Alias for AstNode */
-deprecated class ASTNode = AstNode;
 
 /**
  * A node representing an `Expr`.

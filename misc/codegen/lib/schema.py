@@ -34,6 +34,7 @@ class Property:
     pragmas: List[str] = field(default_factory=list)
     doc: Optional[str] = None
     description: List[str] = field(default_factory=list)
+    synth: bool = False
 
     @property
     def is_single(self) -> bool:
@@ -74,7 +75,7 @@ RepeatedUnorderedProperty = functools.partial(Property, Property.Kind.REPEATED_U
 
 
 @dataclass
-class IpaInfo:
+class SynthInfo:
     from_class: Optional[str] = None
     on_arguments: Optional[Dict[str, str]] = None
 
@@ -87,10 +88,11 @@ class Class:
     properties: List[Property] = field(default_factory=list)
     group: str = ""
     pragmas: List[str] = field(default_factory=list)
-    ipa: Optional[Union[IpaInfo, bool]] = None
+    synth: Optional[Union[SynthInfo, bool]] = None
     """^^^ filled with `True` for non-final classes with only synthesized final descendants """
     doc: List[str] = field(default_factory=list)
     default_doc_name: Optional[str] = None
+    hideable: bool = False
 
     @property
     def final(self):
@@ -103,10 +105,10 @@ class Class:
             _check_type(d, known)
         for p in self.properties:
             _check_type(p.type, known)
-        if self.ipa is not None:
-            _check_type(self.ipa.from_class, known)
-            if self.ipa.on_arguments is not None:
-                for t in self.ipa.on_arguments.values():
+        if self.synth is not None:
+            _check_type(self.synth.from_class, known)
+            if self.synth.on_arguments is not None:
+                for t in self.synth.on_arguments.values():
                     _check_type(t, known)
 
 

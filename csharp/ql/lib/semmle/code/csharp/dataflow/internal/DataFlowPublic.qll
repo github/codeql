@@ -106,16 +106,6 @@ class ParameterNode extends Node instanceof ParameterNodeImpl {
       result = c.asCallable().getParameter(ppos.getPosition())
     )
   }
-
-  /**
-   * DEPRECATED
-   *
-   * Holds if this node is the parameter of callable `c` at the specified
-   * (zero-based) position.
-   */
-  deprecated predicate isParameterOf(DataFlowCallable c, int i) {
-    super.isParameterOf(c, any(ParameterPosition pos | i = pos.getPosition()))
-  }
 }
 
 /** A definition, viewed as a node in a data flow graph. */

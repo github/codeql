@@ -26,4 +26,4 @@ where
   operators =
     count(BinaryLogicalOperation op | logicalParent*(op, e) and nontrivialLogicalOperator(op)) and
   operators > 3
-select e.getLocation(), "Complex condition: too many logical operations in this expression."
+select e, "Complex condition: too many logical operations in this expression."

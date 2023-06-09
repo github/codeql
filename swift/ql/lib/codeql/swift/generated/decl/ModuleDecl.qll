@@ -24,26 +24,12 @@ module Generated {
     /**
      * Gets the `index`th imported module of this module declaration (0-based).
      *Gets any of the imported modules of this module declaration.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ModuleDecl getAnImmediateImportedModule() {
+    ModuleDecl getAnImportedModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertModuleDeclToRaw(this)
               .(Raw::ModuleDecl)
               .getAnImportedModule())
-    }
-
-    /**
-     * Gets the `index`th imported module of this module declaration (0-based).
-     *Gets any of the imported modules of this module declaration.
-     */
-    final ModuleDecl getAnImportedModule() {
-      exists(ModuleDecl immediate |
-        immediate = this.getAnImmediateImportedModule() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**
@@ -54,26 +40,12 @@ module Generated {
     /**
      * Gets the `index`th exported module of this module declaration (0-based).
      *Gets any of the exported modules of this module declaration.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    ModuleDecl getAnImmediateExportedModule() {
+    ModuleDecl getAnExportedModule() {
       result =
         Synth::convertModuleDeclFromRaw(Synth::convertModuleDeclToRaw(this)
               .(Raw::ModuleDecl)
               .getAnExportedModule())
-    }
-
-    /**
-     * Gets the `index`th exported module of this module declaration (0-based).
-     *Gets any of the exported modules of this module declaration.
-     */
-    final ModuleDecl getAnExportedModule() {
-      exists(ModuleDecl immediate |
-        immediate = this.getAnImmediateExportedModule() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**
