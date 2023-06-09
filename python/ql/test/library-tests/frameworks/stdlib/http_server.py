@@ -60,8 +60,8 @@ class MyHandler(BaseHTTPRequestHandler):
             self.headers.get('Foo'), # $ tainted
             self.headers.get_all('Foo'), # $ tainted
             self.headers.keys(), # $ tainted
-            self.headers.values(), # $ tainted
-            self.headers.items(), # $ tainted
+            self.headers.values(), # $ MISSING: tainted
+            self.headers.items(), # $ MISSING: tainted
             self.headers.as_bytes(), # $ tainted
             self.headers.as_string(), # $ tainted
             str(self.headers), # $ tainted

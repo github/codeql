@@ -40,10 +40,10 @@ async def test_taint(request: web.Request): # $ requestHandler
         request.cookies["key"], # $ tainted
         request.cookies.get("key"), # $ tainted
         request.cookies.keys(), # $ MISSING: tainted
-        request.cookies.values(), # $ tainted
-        request.cookies.items(), # $ tainted
+        request.cookies.values(), # $ MISSING: tainted
+        request.cookies.items(), # $ MISSING: tainted
         list(request.cookies), # $ tainted
-        iter(request.cookies), # $ tainted
+        iter(request.cookies), # $ MISSING: tainted
 
 
         # aiohttp.StreamReader

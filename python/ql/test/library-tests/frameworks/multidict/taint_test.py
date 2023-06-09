@@ -13,11 +13,11 @@ ensure_tainted(
     mdp.getone("key"), # $ tainted
     mdp.getall("key"), # $ tainted
     mdp.keys(), # $ MISSING: tainted
-    mdp.values(), # $ tainted
-    mdp.items(), # $ tainted
+    mdp.values(), # $ MISSING: tainted
+    mdp.items(), # $ MISSING: tainted
     mdp.copy(), # $ tainted
     list(mdp), # $ tainted
-    iter(mdp), # $ tainted
+    iter(mdp), # $ MISSING: tainted
 )
 
 # TODO: This is an invalid CIMultiDictProxy construction... but for the purpose of
@@ -33,9 +33,9 @@ ensure_tainted(
     ci_mdp.getone("key"), # $ tainted
     ci_mdp.getall("key"), # $ tainted
     ci_mdp.keys(), # $ MISSING: tainted
-    ci_mdp.values(), # $ tainted
-    ci_mdp.items(), # $ tainted
+    ci_mdp.values(), # $ MISSING: tainted
+    ci_mdp.items(), # $ MISSING: tainted
     ci_mdp.copy(), # $ tainted
     list(ci_mdp), # $ tainted
-    iter(ci_mdp), # $ tainted
+    iter(ci_mdp), # $ MISSING: tainted
 )

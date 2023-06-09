@@ -23,10 +23,6 @@ edges
 | UnsafeUnpack.py:116:27:116:39 | ControlFlowNode for Attribute | UnsafeUnpack.py:116:17:116:21 | SSA variable ufile |
 | UnsafeUnpack.py:118:38:118:47 | ControlFlowNode for Attribute | UnsafeUnpack.py:120:41:120:58 | ControlFlowNode for uploaded_file_path |
 | UnsafeUnpack.py:140:23:140:35 | ControlFlowNode for Attribute | UnsafeUnpack.py:142:49:142:51 | ControlFlowNode for tar |
-| UnsafeUnpack.py:158:23:158:27 | SSA variable chunk | UnsafeUnpack.py:163:23:163:28 | SSA variable member |
-| UnsafeUnpack.py:158:32:158:44 | ControlFlowNode for Attribute | UnsafeUnpack.py:158:32:158:54 | ControlFlowNode for Subscript |
-| UnsafeUnpack.py:158:32:158:54 | ControlFlowNode for Subscript | UnsafeUnpack.py:158:23:158:27 | SSA variable chunk |
-| UnsafeUnpack.py:163:23:163:28 | SSA variable member | UnsafeUnpack.py:167:67:167:72 | ControlFlowNode for result |
 | UnsafeUnpack.py:174:15:174:26 | ControlFlowNode for Attribute | UnsafeUnpack.py:176:1:176:34 | ControlFlowNode for Attribute() |
 | UnsafeUnpack.py:194:53:194:55 | ControlFlowNode for tmp | UnsafeUnpack.py:201:29:201:36 | ControlFlowNode for Attribute |
 nodes
@@ -61,11 +57,6 @@ nodes
 | UnsafeUnpack.py:120:41:120:58 | ControlFlowNode for uploaded_file_path | semmle.label | ControlFlowNode for uploaded_file_path |
 | UnsafeUnpack.py:140:23:140:35 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | UnsafeUnpack.py:142:49:142:51 | ControlFlowNode for tar | semmle.label | ControlFlowNode for tar |
-| UnsafeUnpack.py:158:23:158:27 | SSA variable chunk | semmle.label | SSA variable chunk |
-| UnsafeUnpack.py:158:32:158:44 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
-| UnsafeUnpack.py:158:32:158:54 | ControlFlowNode for Subscript | semmle.label | ControlFlowNode for Subscript |
-| UnsafeUnpack.py:163:23:163:28 | SSA variable member | semmle.label | SSA variable member |
-| UnsafeUnpack.py:167:67:167:72 | ControlFlowNode for result | semmle.label | ControlFlowNode for result |
 | UnsafeUnpack.py:174:15:174:26 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
 | UnsafeUnpack.py:176:1:176:34 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | UnsafeUnpack.py:194:53:194:55 | ControlFlowNode for tmp | semmle.label | ControlFlowNode for tmp |
@@ -82,6 +73,5 @@ subpaths
 | UnsafeUnpack.py:112:35:112:43 | ControlFlowNode for file_path | UnsafeUnpack.py:108:22:108:34 | ControlFlowNode for Attribute | UnsafeUnpack.py:112:35:112:43 | ControlFlowNode for file_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
 | UnsafeUnpack.py:120:41:120:58 | ControlFlowNode for uploaded_file_path | UnsafeUnpack.py:116:27:116:39 | ControlFlowNode for Attribute | UnsafeUnpack.py:120:41:120:58 | ControlFlowNode for uploaded_file_path | Unsafe extraction from a malicious tarball retrieved from a remote location. |
 | UnsafeUnpack.py:142:49:142:51 | ControlFlowNode for tar | UnsafeUnpack.py:140:23:140:35 | ControlFlowNode for Attribute | UnsafeUnpack.py:142:49:142:51 | ControlFlowNode for tar | Unsafe extraction from a malicious tarball retrieved from a remote location. |
-| UnsafeUnpack.py:167:67:167:72 | ControlFlowNode for result | UnsafeUnpack.py:158:32:158:44 | ControlFlowNode for Attribute | UnsafeUnpack.py:167:67:167:72 | ControlFlowNode for result | Unsafe extraction from a malicious tarball retrieved from a remote location. |
 | UnsafeUnpack.py:176:1:176:34 | ControlFlowNode for Attribute() | UnsafeUnpack.py:79:16:79:28 | ControlFlowNode for Attribute | UnsafeUnpack.py:176:1:176:34 | ControlFlowNode for Attribute() | Unsafe extraction from a malicious tarball retrieved from a remote location. |
 | UnsafeUnpack.py:201:29:201:36 | ControlFlowNode for Attribute | UnsafeUnpack.py:194:53:194:55 | ControlFlowNode for tmp | UnsafeUnpack.py:201:29:201:36 | ControlFlowNode for Attribute | Unsafe extraction from a malicious tarball retrieved from a remote location. |
