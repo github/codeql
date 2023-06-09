@@ -21,7 +21,7 @@ module Rack {
     AppCandidate() {
       call = this.getInstanceMethod("call") and
       call.getNumberOfParameters() = 1 and
-      call.getReturn() = trackRackResponse()
+      call.getAReturnNode() = trackRackResponse()
     }
 
     /**

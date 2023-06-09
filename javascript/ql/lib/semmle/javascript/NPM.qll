@@ -262,9 +262,6 @@ class PackageJson extends JsonObject {
   Module getTypingsModule() { result.getFile() = this.getTypingsFile() }
 }
 
-/** DEPRECATED: Alias for PackageJson */
-deprecated class PackageJSON = PackageJson;
-
 /**
  * A representation of bug tracker information for an NPM package.
  */
@@ -370,9 +367,6 @@ class NpmPackage extends @folder {
   /** Gets the `package.json` object of this package. */
   PackageJson getPackageJson() { result = pkg }
 
-  /** DEPRECATED: Alias for getPackageJson */
-  deprecated PackageJSON getPackageJSON() { result = this.getPackageJson() }
-
   /** Gets the name of this package. */
   string getPackageName() { result = this.getPackageJson().getPackageName() }
 
@@ -410,9 +404,6 @@ class NpmPackage extends @folder {
    */
   predicate declaresDependency(string p, string v) { pkg.declaresDependency(p, v) }
 }
-
-/** DEPRECATED: Alias for NpmPackage */
-deprecated class NPMPackage = NpmPackage;
 
 /**
  * Gets the parent folder of `c`, provided that they belong to the same NPM

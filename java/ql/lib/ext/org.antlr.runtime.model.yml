@@ -1,0 +1,6 @@
+extensions:
+  - addsTo:
+      pack: codeql/java-all
+      extensible: sinkModel
+    data:
+      - ["org.antlr.runtime", "ANTLRFileStream", True, "ANTLRFileStream", "(String,String)", "", "Argument[0]", "path-injection", "ai-manual"]

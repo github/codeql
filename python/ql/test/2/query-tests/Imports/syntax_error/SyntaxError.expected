@@ -1,1 +1,1 @@
-| nonsense.py:0:1:0:1 | Syntax Error | Syntax Error (in Python 2). |
+| nonsense.py:1:1:1:1 | Syntax Error | Syntax Error (in Python 2). |

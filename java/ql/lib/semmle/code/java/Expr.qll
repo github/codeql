@@ -1809,9 +1809,6 @@ class LValue extends VarAccess {
    * are source expressions of the assignment.
    */
   Expr getRhs() { exists(Assignment e | e.getDest() = this and e.getSource() = result) }
-
-  /** DEPRECATED: Alias for getRhs */
-  deprecated Expr getRHS() { result = this.getRhs() }
 }
 
 /**
