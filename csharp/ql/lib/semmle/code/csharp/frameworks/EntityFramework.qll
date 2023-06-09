@@ -335,18 +335,6 @@ module EntityFramework {
       result.getName().matches("SaveChanges%")
     }
 
-    /**
-     * Gets the string representation for synthetic identifiers for SaveChanges methods
-     * on this.
-     */
-    private string getSyntheticNames() {
-      exists(string qualifier, string type, string name |
-        this.getASaveChanges().hasQualifiedName(qualifier, type, name)
-      |
-        result = getQualifiedName(qualifier, type, name)
-      )
-    }
-
     /** Holds if component stack `head :: tail` is required for the input specification. */
     predicate requiresComponentStackIn(
       Content head, Type headType, SummaryComponentStack tail, int dist
@@ -388,8 +376,7 @@ module EntityFramework {
         this = p.getDbContextClass() and
         input(this, synthetic, mapped) and
         output(this, output, mapped, p) and
-        result =
-          getFullSyntheticName(this.getSyntheticNames(), p.getSyntheticName(), synthetic, output)
+        result = getFullSyntheticName(p.getSyntheticName(), synthetic, output)
       )
     }
   }
@@ -446,13 +433,12 @@ module EntityFramework {
     )
   }
 
-  bindingset[save, prop, stack1, stack2]
+  bindingset[prop, stack1, stack2]
   private string getFullSyntheticName(
-    string save, string prop, SummaryComponentStack stack1, SummaryComponentStack stack2
+    string prop, SummaryComponentStack stack1, SummaryComponentStack stack2
   ) {
     result =
-      save + "#" //
-        + prop + "#" //
+      prop + "#" //
         + SummaryComponentStack::getComponentStack(stack1) + "#" //
         + SummaryComponentStack::getComponentStack(stack2)
   }
@@ -478,21 +464,12 @@ module EntityFramework {
 
     DbContextSaveChanges() { this = c.getASaveChanges() }
 
-    private string getSyntheticName() {
-      exists(string qualifier, string type, string name |
-        this.(Method).hasQualifiedName(qualifier, type, name)
-      |
-        result = getQualifiedName(qualifier, type, name)
-      )
-    }
-
     pragma[nomagic]
     string getOutputSynthetic(SummaryComponentStack input) {
       exists(SummaryComponentStack synthetic, Property mapped, DbContextClassSetProperty dbSet |
         input(c, input, mapped) and
         output(c, synthetic, mapped, dbSet) and
-        result =
-          getFullSyntheticName(this.getSyntheticName(), dbSet.getSyntheticName(), input, synthetic)
+        result = getFullSyntheticName(dbSet.getSyntheticName(), input, synthetic)
       )
     }
 
