@@ -158,7 +158,7 @@ Using code search to add repositories to a custom list
 
 You can use code search directly in the CodeQL extension to add a subset of repositories from GitHub.com to a custom list. Note that this feature uses the legacy code search via the code search API. For more information on the syntax to use, see "`Searching code (legacy) <https://docs.github.com/en/search-github/searching-on-github/searching-code>`__."
 
-For example, to add all repositories in the ``rails`` organization on GitHub, you can search ```org:rails``. 
+For example, to add all repositories in the ``rails`` organization on GitHub, you can search ``org:rails``. 
 
 Custom lists can contain a maximum of 1000 repositories, so at most only the first 1000 repositories returned from your search will be added to your list.
 
