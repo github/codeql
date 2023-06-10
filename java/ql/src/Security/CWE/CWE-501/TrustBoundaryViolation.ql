@@ -11,14 +11,10 @@
  */
 
 import java
-import semmle.code.java.dataflow.DataFlow
-import semmle.code.java.dataflow.FlowSources
-import semmle.code.java.dataflow.TaintTracking
 import semmle.code.java.security.TrustBoundaryViolationQuery
 import TrustBoundaryFlow::PathGraph
 
 from TrustBoundaryFlow::PathNode source, TrustBoundaryFlow::PathNode sink
 where TrustBoundaryFlow::flowPath(source, sink)
 select sink.getNode(), sink, source,
-  "This servlet reads data from a remote source and writes it to a $@.", sink.getNode(),
-  "session variable"
+  "This servlet reads data from a remote source and writes it to a session variable."
