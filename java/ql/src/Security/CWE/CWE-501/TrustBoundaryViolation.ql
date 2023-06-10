@@ -4,6 +4,7 @@
  * @description A user-provided value is used to set a session attribute.
  * @kind path-problem
  * @problem.severity error
+ * @security-severity 8.8
  * @precision medium
  * @tags security
  *      external/cwe/cwe-501
