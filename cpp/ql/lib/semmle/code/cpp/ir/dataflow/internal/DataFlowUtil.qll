@@ -684,7 +684,7 @@ class IndirectParameterNode extends Node instanceof IndirectInstruction {
 
   override Declaration getFunction() { result = init.getEnclosingFunction() }
 
-  /** Gets the underlying instruction. */
+  /** Gets the underlying operand and the underlying indirection index. */
   predicate hasInstructionAndIndirectionIndex(Instruction instr, int index) {
     IndirectInstruction.super.hasInstructionAndIndirectionIndex(instr, index)
   }
