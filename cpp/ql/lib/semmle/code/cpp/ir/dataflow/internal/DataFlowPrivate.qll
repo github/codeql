@@ -245,7 +245,7 @@ private module IndirectInstructions {
    * be an `InstructionNode`.
    */
   abstract class IndirectInstruction extends Node {
-    /** Gets the underlying instruction. */
+    /** Gets the underlying operand and the underlying indirection index. */
     abstract predicate hasInstructionAndIndirectionIndex(Instruction instr, int index);
   }
 
