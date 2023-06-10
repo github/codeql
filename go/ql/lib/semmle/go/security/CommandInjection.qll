@@ -49,7 +49,7 @@ module CommandInjection {
     predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
   }
 
-  module TaintConfiguration = DataFlow::Global<CommandInjectionConfig>;
+  module TaintConfiguration = TaintTracking::Global<CommandInjectionConfig>;
 
   private class ArgumentArrayWithDoubleDash extends DataFlow::Node {
     int doubleDashIndex;
@@ -125,5 +125,5 @@ module CommandInjection {
     }
   }
 
-  module DoubleDashSanitizing = DataFlow::Global<DoubleDashSanitizingConfig>;
+  module DoubleDashSanitizing = TaintTracking::Global<DoubleDashSanitizingConfig>;
 }
