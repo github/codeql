@@ -204,7 +204,7 @@ private module IndirectOperands {
    * be an `OperandNode`.
    */
   abstract class IndirectOperand extends Node {
-    /** Gets the underlying operand. */
+    /** Gets the underlying operand and the underlying indirection index. */
     abstract predicate hasOperandAndIndirectionIndex(Operand operand, int indirectionIndex);
   }
 
