@@ -154,7 +154,7 @@ For example, if you want to continue analyzing a set of repositories that had re
 You can then insert the ``new-repo-list`` of repositories into your list of custom repository lists for easy access in the Variant Analysis Repositories panel.
 
 Using GitHub code search to add repositories to a custom list 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can use code search directly in the CodeQL extension to add a subset of repositories from GitHub.com to a custom list. 
 
@@ -181,7 +181,7 @@ You can add a maximum of 1000 repositories to a custom list per search.
 
 You can view the progress of your search in the bottom right corner of the application in a box with the text "Searching for repositories...". If you click **Cancel**, no repositories will be added to your list. Once complete, you will see the resulting repositories appear in the dropdown under your custom list in the Variant Analysis Repositories panel.
 
-Not all resulting repositories will have CodeQL databases or allow access to be analyzed. When you run an analysis on the list, the Variant Analysis Results view will show you which repositories were analyzed, which denied access, and which had no CodeQL database.
+Some of the resulting repositories will not have CodeQL databases and some may not allow access by the CodeQL extension for Visual Studio Code. When you run an analysis on the list, the Variant Analysis Results view will show you which repositories were analyzed, which denied access, and which had no CodeQL database.
 
 Troubleshooting variant analysis
 --------------------------------
