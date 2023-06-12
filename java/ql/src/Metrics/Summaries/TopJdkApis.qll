@@ -287,16 +287,19 @@ predicate hasApiName(Callable c, string apiName) {
 }
 
 /** A top JDK API. */
-class TopJdkApi extends SummarizedCallableBase {
+class TopJdkApi extends Callable {
   TopJdkApi() {
+    this.isSourceDeclaration() and
     exists(string apiName |
-      hasApiName(this.asCallable(), apiName) and
+      hasApiName(this, apiName) and
       topJdkApiName(apiName)
     )
   }
 
   /** Holds if this API has a manual summary model. */
-  private predicate hasManualSummary() { this.(SummarizedCallable).hasManualModel() }
+  private predicate hasManualSummary() {
+    exists(SummarizedCallable sc | sc.asCallable() = this and sc.hasManualModel())
+  }
 
   /** Holds if this API has a manual neutral model. */
   private predicate hasManualNeutral() {
