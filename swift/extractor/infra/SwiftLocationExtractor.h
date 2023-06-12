@@ -9,7 +9,6 @@
 #include <filesystem>
 
 #include "swift/extractor/trap/generated/TrapEntries.h"
-#include "swift/extractor/infra/file/PathHash.h"
 
 namespace codeql {
 
