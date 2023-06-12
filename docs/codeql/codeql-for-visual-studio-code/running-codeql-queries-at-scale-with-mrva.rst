@@ -154,7 +154,7 @@ For example, if you want to continue analyzing a set of repositories that had re
 You can then insert the ``new-repo-list`` of repositories into your list of custom repository lists for easy access in the Variant Analysis Repositories panel.
 
 Using GitHub code search to add repositories to a custom list 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 You can use code search directly in the CodeQL extension to add a subset of repositories from GitHub.com to a custom list. 
 
