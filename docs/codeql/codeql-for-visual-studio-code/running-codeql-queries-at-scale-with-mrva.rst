@@ -166,7 +166,7 @@ You can use code search directly in the CodeQL extension to add a subset of repo
 
 For example, to add all repositories in the ``rails`` organization on GitHub, you can search ``org:rails``. 
 
-Custom lists can contain a maximum of 1000 repositories, so at most only the first 1000 repositories returned from your search will be added to your list.
+You can add a maximum of 1000 repositories to a custom list per search. 
 
 #. In the Variant Analysis Repositories panel, choose the list that you want to add repositories to. You can create a new list or choose an existing list that already contains repositories.
 
