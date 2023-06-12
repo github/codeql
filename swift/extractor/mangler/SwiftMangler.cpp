@@ -65,7 +65,7 @@ SwiftMangledName SwiftMangler::visitValueDecl(const swift::ValueDecl* decl, bool
   auto ret = initMangled(decl);
   std::string name;
   llvm::raw_string_ostream oss{name};
-  decl->getName().print(oss);
+  oss << decl->getName();
   ret << name;
   if (decl->isStatic()) {
     ret << "|static";
@@ -73,8 +73,9 @@ SwiftMangledName SwiftMangler::visitValueDecl(const swift::ValueDecl* decl, bool
   return ret;
 }
 
-SwiftMangledName SwiftMangler::visitTypeDiscriminatedValueDecl(const swift::ValueDecl* decl) {
-  if (auto ret = visitValueDecl(decl)) {
+SwiftMangledName SwiftMangler::visitTypeDiscriminatedValueDecl(const swift::ValueDecl* decl,
+                                                               bool force) {
+  if (auto ret = visitValueDecl(decl, force)) {
     ret << fetch(decl->getInterfaceType()->getCanonicalType());
     return ret;
   }
@@ -85,12 +86,23 @@ SwiftMangledName SwiftMangler::visitAbstractFunctionDecl(const swift::AbstractFu
   return visitTypeDiscriminatedValueDecl(decl);
 }
 
+SwiftMangledName SwiftMangler::visitAccessorDecl(const swift::AccessorDecl* decl) {
+  std::string name;
+  llvm::raw_string_ostream oss{name};
+  decl->printUserFacingName(oss);
+  return visitTypeDiscriminatedValueDecl(decl, /*force=*/true) << '_' << name;
+}
+
 SwiftMangledName SwiftMangler::visitSubscriptDecl(const swift::SubscriptDecl* decl) {
   return visitTypeDiscriminatedValueDecl(decl);
 }
 
 SwiftMangledName SwiftMangler::visitVarDecl(const swift::VarDecl* decl) {
   return visitTypeDiscriminatedValueDecl(decl);
+}
+
+SwiftMangledName SwiftMangler::visitParamDecl(const swift::ParamDecl* decl) {
+  return visitTypeDiscriminatedValueDecl(decl, /*force=*/true);
 }
 
 SwiftMangledName SwiftMangler::visitExtensionDecl(const swift::ExtensionDecl* decl) {

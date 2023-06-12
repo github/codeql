@@ -58,8 +58,10 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   SwiftMangledName visitModuleDecl(const swift::ModuleDecl* decl);
   SwiftMangledName visitExtensionDecl(const swift::ExtensionDecl* decl);
   SwiftMangledName visitAbstractFunctionDecl(const swift::AbstractFunctionDecl* decl);
+  SwiftMangledName visitAccessorDecl(const swift::AccessorDecl* decl);
   SwiftMangledName visitSubscriptDecl(const swift::SubscriptDecl* decl);
   SwiftMangledName visitVarDecl(const swift::VarDecl* decl);
+  SwiftMangledName visitParamDecl(const swift::ParamDecl* decl);
   SwiftMangledName visitAbstractTypeParamDecl(const swift::AbstractTypeParamDecl* decl);
   SwiftMangledName visitGenericTypeParamDecl(const swift::GenericTypeParamDecl* decl);
 
@@ -111,7 +113,8 @@ class SwiftMangler : private swift::TypeVisitor<SwiftMangler, SwiftMangledName>,
   unsigned int getExtensionIndex(const swift::ExtensionDecl* decl, const swift::Decl* parent);
   static SwiftMangledName initMangled(const swift::TypeBase* type);
   SwiftMangledName initMangled(const swift::Decl* decl);
-  SwiftMangledName visitTypeDiscriminatedValueDecl(const swift::ValueDecl* decl);
+  SwiftMangledName visitTypeDiscriminatedValueDecl(const swift::ValueDecl* decl,
+                                                   bool force = false);
 };
 
 // This implementation is indented for use in defining trap keys. In this case fetching gives
