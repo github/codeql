@@ -12,29 +12,6 @@ namespace System
 
         namespace Common
         {
-            // Generated from `System.Data.Common.DbConnectionStringBuilder` in `System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
-            public class DbConnectionStringBuilder : System.Collections.IEnumerable, System.Collections.IDictionary, System.Collections.ICollection
-            {
-                System.Collections.IDictionaryEnumerator System.Collections.IDictionary.GetEnumerator() => throw null;
-                System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator() => throw null;
-                bool System.Collections.ICollection.IsSynchronized { get => throw null; }
-                bool System.Collections.IDictionary.Contains(object keyword) => throw null;
-                object System.Collections.ICollection.SyncRoot { get => throw null; }
-                public object this[object keyword] { get => throw null; set => throw null; }
-                public bool IsReadOnly { get => throw null; }
-                public override string ToString() => throw null;
-                public string ConnectionString { get => throw null; set => throw null; }
-                public virtual System.Collections.ICollection Keys { get => throw null; }
-                public virtual System.Collections.ICollection Values { get => throw null; }
-                public virtual bool IsFixedSize { get => throw null; }
-                public virtual int Count { get => throw null; }
-                public virtual void Clear() => throw null;
-                void System.Collections.ICollection.CopyTo(System.Array array, int index) => throw null;
-                void System.Collections.IDictionary.Add(object keyword, object value) => throw null;
-                void System.Collections.IDictionary.Remove(object keyword) => throw null;
-                public void Dispose() => throw null;
-            }
-
             // Generated from `System.Data.Common.DbConnection` in `System.Data, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089`
             abstract public class DbConnection : System.IDisposable, System.Data.IDbConnection
             {

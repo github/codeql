@@ -38,21 +38,3 @@ namespace RequestForgery.Controllers
         }
     }
 }
-// Missing stubs:
-namespace System.Net.Http
-{
-    public class HttpClient
-    {
-        public async Task SendAsync(HttpRequestMessage request) => throw null;
-    }
-
-    public class HttpRequestMessage
-    {
-        public HttpRequestMessage(HttpMethod method, string requestUri) => throw null;
-    }
-
-    public class HttpMethod
-    {
-        public static readonly HttpMethod Get;
-    }
-}
