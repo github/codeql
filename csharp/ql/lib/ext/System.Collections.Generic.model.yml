@@ -50,8 +50,6 @@ extensions:
       - ["System.Collections.Generic", "List<>", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Collections.Generic.List<>+Enumerator.Current]", "value", "manual"]
       - ["System.Collections.Generic", "List<>", False, "GetRange", "(System.Int32,System.Int32)", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Collections.Generic", "List<>", False, "InsertRange", "(System.Int32,System.Collections.Generic.IEnumerable<T>)", "", "Argument[1].Element", "Argument[this].Element", "value", "manual"]
-      - ["System.Collections.Generic", "List<>", False, "Reverse", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
-      - ["System.Collections.Generic", "List<>", False, "Reverse", "(System.Int32,System.Int32)", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Collections.Generic", "Queue<>", False, "Clear", "()", "", "Argument[this].WithoutElement", "Argument[this]", "value", "manual"]
       - ["System.Collections.Generic", "Queue<>", False, "CopyTo", "(T[],System.Int32)", "", "Argument[this].Element", "Argument[0].Element", "value", "manual"]
       - ["System.Collections.Generic", "Queue<>", False, "GetEnumerator", "()", "", "Argument[this].Element", "ReturnValue.Property[System.Collections.Generic.Queue<>+Enumerator.Current]", "value", "manual"]

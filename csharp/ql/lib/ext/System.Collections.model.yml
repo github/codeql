@@ -11,8 +11,6 @@ extensions:
       - ["System.Collections", "ArrayList", False, "GetRange", "(System.Int32,System.Int32)", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Collections", "ArrayList", False, "InsertRange", "(System.Int32,System.Collections.ICollection)", "", "Argument[1].Element", "Argument[this].Element", "value", "manual"]
       - ["System.Collections", "ArrayList", False, "Repeat", "(System.Object,System.Int32)", "", "Argument[0]", "ReturnValue.Element", "value", "manual"]
-      - ["System.Collections", "ArrayList", False, "Reverse", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
-      - ["System.Collections", "ArrayList", False, "Reverse", "(System.Int32,System.Int32)", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Collections", "BitArray", False, "Clone", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Collections", "Hashtable", False, "Clone", "()", "", "Argument[this].Element", "ReturnValue.Element", "value", "manual"]
       - ["System.Collections", "Hashtable", False, "Hashtable", "(System.Collections.IDictionary)", "", "Argument[0].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key]", "Argument[this].Element.Property[System.Collections.Generic.KeyValuePair<,>.Key]", "value", "manual"]
