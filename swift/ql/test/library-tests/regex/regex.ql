@@ -12,15 +12,15 @@ module RegexTest implements TestSig {
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(RegexEval eval, Expr regex |
-      eval.getRegex() = regex and
-      location = regex.getLocation() and
-      element = regex.toString() and
+      eval.getARegex() = regex and
+      location = eval.getLocation() and
+      element = eval.toString() and
       tag = "regex" and
       value = quote(regex.toString())
     )
     or
     exists(RegexEval eval, Expr input |
-      eval.getInput() = input and
+      eval.getStringInput() = input and
       location = input.getLocation() and
       element = input.toString() and
       tag = "input" and

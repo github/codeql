@@ -4,65 +4,53 @@
 
 import swift
 import codeql.swift.dataflow.DataFlow
-
 import codeql.swift.regex.RegexTreeView // re-export
 private import internal.ParseRegex
-//private import codeql.regex.internal.RegExpTracking as RegExpTracking
 
 /**
- * A node whose value may flow to a position where it is interpreted
- * as a part of a regular expression.
+ * A data flow configuration for tracking string literals that are used as
+ * regular expressions.
  */
-abstract class RegExpPatternSource extends DataFlow::Node {
-  /**
-   * Gets a node where the pattern of this node is parsed as a part of
-   * a regular expression.
-   */
-  abstract DataFlow::Node getAParse();
+private module RegexUseConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node node) { node.asExpr() instanceof StringLiteralExpr }
 
-  /**
-   * Gets the root term of the regular expression parsed from this pattern.
-   */
-  abstract RegExpTerm getRegExpTerm();
+  predicate isSink(DataFlow::Node node) { node.asExpr() = any(RegexEval eval).getRegexInput() }
+
+  predicate isAdditionalFlowStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
+    // flow through `Regex` initializer, i.e. from a string to a `Regex` object.
+    exists(CallExpr call |
+      (
+        call.getStaticTarget().(Method).hasQualifiedName("Regex", ["init(_:)", "init(_:as:)"]) or
+        call.getStaticTarget()
+            .(Method)
+            .hasQualifiedName("NSRegularExpression", "init(pattern:options:)")
+      ) and
+      nodeFrom.asExpr() = call.getArgument(0).getExpr() and
+      nodeTo.asExpr() = call
+    )
+  }
 }
 
-/* *
- * A node whose string value may flow to a position where it is interpreted
- * as a part of a regular expression.
- *
-private class StringRegExpPatternSource extends RegExpPatternSource {
-  private DataFlow::Node parse;
-
-  StringRegExpPatternSource() {
-    this = regExpSource(parse) and
-    // `regExpSource()` tracks both strings and regex literals, narrow it down to strings.
-    this.asExpr().getConstantValue().isString(_)
-  }
-
-  override DataFlow::Node getAParse() { result = parse }
-
-  override RegExpTerm getRegExpTerm() { result.getRegExp() = this.asExpr().getExpr() }
-}*/
+private module RegexUseFlow = DataFlow::Global<RegexUseConfig>;
 
 /**
- * TODO
- * "(a|b).*"
+ * A string literal that is used as a regular expression in a regular
+ * expression evaluation. For example the string literal `"(a|b).*"` in:
+ * ```
+ * Regex("(a|b).*").firstMatch(in: myString)
+ * ```
  */
-private class ParsedStringRegExp extends RegExp, StringLiteralExpr {
-  private DataFlow::Node parse;
+private class ParsedStringRegex extends RegExp, StringLiteralExpr {
+  RegexEval eval;
 
-  ParsedStringRegExp() {
-    //this = regExpSource(parse).asExpr().getExpr()
-    parse.asExpr() = this
+  ParsedStringRegex() {
+    RegexUseFlow::flow(DataFlow::exprNode(this), DataFlow::exprNode(eval.getRegexInput()))
   }
 
-  DataFlow::Node getAParse() { result = parse }
- /*
-  override predicate isDotAll() { none() }
-
-  override predicate isIgnoreCase() { none() }
-
-  override string getFlags() { none() }*/
+  /**
+   * Gets a call that evaluates this regular expression.
+   */
+  RegexEval getEval() { result = eval }
 }
 
 /**
@@ -72,18 +60,23 @@ private class ParsedStringRegExp extends RegExp, StringLiteralExpr {
  * ```
  */
 abstract class RegexEval extends CallExpr {
-  Expr regex;
-  Expr input;
+  Expr regexInput;
+  Expr stringInput;
 
   /**
-   * Gets the regular expression that is evaluated.
+   * Gets the input to this call that is the regular expression.
    */
-  Expr getRegex() { result = regex }
+  Expr getRegexInput() { result = regexInput }
 
   /**
-   * Gets the input string the regular expression is evaluated on.
+   * Gets the input to this call that is the string the regular expression is evaluated on.
    */
-  Expr getInput() { result = input }
+  Expr getStringInput() { result = stringInput }
+
+  /**
+   * Gets a regular expression value that is evaluated here (if any can be identified).
+   */
+  RegExp getARegex() { exists(ParsedStringRegex regex | regex.getEval() = this and result = regex) }
 }
 
 /**
@@ -94,8 +87,8 @@ private class AlwaysRegexEval extends RegexEval {
     this.getStaticTarget()
         .(Method)
         .hasQualifiedName("Regex", ["firstMatch(in:)", "prefixMatch(in:)", "wholeMatch(in:)"]) and
-    regex = this.getQualifier() and
-    input = this.getArgument(0).getExpr()
+    regexInput = this.getQualifier() and
+    stringInput = this.getArgument(0).getExpr()
     or
     this.getStaticTarget()
         .(Method)
@@ -107,8 +100,8 @@ private class AlwaysRegexEval extends RegexEval {
             "replaceMatches(in:options:range:withTemplate:)",
             "stringByReplacingMatches(in:options:range:withTemplate:)"
           ]) and
-    regex = this.getQualifier() and
-    input = this.getArgument(0).getExpr()
+    regexInput = this.getQualifier() and
+    stringInput = this.getArgument(0).getExpr()
     or
     this.getStaticTarget()
         .(Method)
@@ -119,8 +112,8 @@ private class AlwaysRegexEval extends RegexEval {
             "split(separator:maxSplits:omittingEmptySubsequences:)", "starts(with:)",
             "trimmingPrefix(_:)", "wholeMatch(of:)"
           ]) and
-    regex = this.getArgument(0).getExpr() and
-    input = this.getQualifier()
+    regexInput = this.getArgument(0).getExpr() and
+    stringInput = this.getQualifier()
     or
     this.getStaticTarget()
         .(Method)
@@ -131,7 +124,7 @@ private class AlwaysRegexEval extends RegexEval {
             "replacing(_:with:maxReplacements:)", "replacing(_:with:subrange:maxReplacements:)",
             "trimPrefix(_:)"
           ]) and
-    regex = this.getArgument(0).getExpr() and
-    input = this.getQualifier()
+    regexInput = this.getArgument(0).getExpr() and
+    stringInput = this.getQualifier()
   }
 }

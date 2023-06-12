@@ -96,42 +96,51 @@ class NSRegularExpression : NSObject {
 
 // --- tests ---
 
-func myRegexpMethodsTests() throws {
+func myRegexpMethodsTests(b: Bool) throws {
 	let input = "abcdef"
 	let regex = try Regex(".*")
 
 	// --- Regex ---
 
-	_ = try regex.firstMatch(in: input) // $ regex=regex input=input
-	_ = try regex.prefixMatch(in: input) // $ regex=regex input=input
-	_ = try regex.wholeMatch(in: input) // $ regex=regex input=input
+	_ = try regex.firstMatch(in: input) // $ regex=.* input=input
+	_ = try regex.prefixMatch(in: input) // $ regex=.* input=input
+	_ = try regex.wholeMatch(in: input) // $ regex=.* input=input
 
 	// --- RangeReplaceableCollection ---
 
 	var inputVar = input
-	inputVar.replace(regex, with: "") // $ regex=regex input=&...
-	_ = input.replacing(regex, with: "") // $ regex=regex input=input
-	inputVar.trimPrefix(regex) // $ regex=regex input=&...
+	inputVar.replace(regex, with: "") // $ regex=.* input=&...
+	_ = input.replacing(regex, with: "") // $ regex=.* input=input
+	inputVar.trimPrefix(regex) // $ regex=.* input=&...
 
 	// --- StringProtocol ---
 
-	_ = input.range(of: ".*", options: .regularExpression, range: nil, locale: nil) // $ MISSING: regex=regex input=input
-	_ = input.replacingOccurrences(of: ".*", with: "", options: .regularExpression) // $ MISSING: regex=regex input=input
+	_ = input.range(of: ".*", options: .regularExpression, range: nil, locale: nil) // $ MISSING: regex=.* input=input
+	_ = input.replacingOccurrences(of: ".*", with: "", options: .regularExpression) // $ MISSING: regex=.* input=input
 
 	// --- NSRegularExpression ---
 
 	let nsregex = try NSRegularExpression(pattern: ".*")
-	_ = nsregex.numberOfMatches(in: input, options: [], range: NSRange(location: 0, length: input.utf16.count)) // $ regex=nsregex input=input
-	nsregex.enumerateMatches(in: input, range: NSMakeRange(0, input.utf16.count), using: {a, b, c in } ) // $ regex=nsregex input=input
-	_ = nsregex.matches(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=nsregex input=input
-	_ = nsregex.firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=nsregex input=input
-	_ = nsregex.rangeOfFirstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=nsregex input=input
-	_ = nsregex.replaceMatches(in: NSMutableString(string: input), range: NSMakeRange(0, input.utf16.count), withTemplate: "") // $ regex=nsregex input="call to NSString.init(string:)"
-	_ = nsregex.stringByReplacingMatches(in: input, range: NSMakeRange(0, input.utf16.count), withTemplate: "") // $ regex=nsregex input=input
+	_ = nsregex.numberOfMatches(in: input, options: [], range: NSRange(location: 0, length: input.utf16.count)) // $ regex=.* input=input
+	nsregex.enumerateMatches(in: input, range: NSMakeRange(0, input.utf16.count), using: {a, b, c in } ) // $ regex=.* input=input
+	_ = nsregex.matches(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input
+	_ = nsregex.firstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input
+	_ = nsregex.rangeOfFirstMatch(in: input, range: NSMakeRange(0, input.utf16.count)) // $ regex=.* input=input
+	_ = nsregex.replaceMatches(in: NSMutableString(string: input), range: NSMakeRange(0, input.utf16.count), withTemplate: "") // $ regex=.* input="call to NSString.init(string:)"
+	_ = nsregex.stringByReplacingMatches(in: input, range: NSMakeRange(0, input.utf16.count), withTemplate: "") // $ regex=.* input=input
 
 	// --- NSString ---
 
 	let inputNS = NSString(string: "abcdef")
-	_ = inputNS.range(of: "*", options: .regularExpression) // $ MISSING: regex=nsregex input=inputNS
-	_ = inputNS.replacingOccurrences(of: ".*", with: "", options: .regularExpression, range: NSMakeRange(0, inputNS.length)) // $ MISSING: regex=nsregex input=inputNS
+	_ = inputNS.range(of: "*", options: .regularExpression) // $ MISSING: regex=.* input=inputNS
+	_ = inputNS.replacingOccurrences(of: ".*", with: "", options: .regularExpression, range: NSMakeRange(0, inputNS.length)) // $ MISSING: regex=.* input=inputNS
+
+	// --- flow ---
+
+	let either_regex = try Regex(b ? ".*" : ".+")
+	_ = try either_regex.firstMatch(in: input) // $ regex=.* regex=.+ input=input
+
+	let base_str = "a"
+	let append_regex = try Regex(base_str + "b")
+	_ = try append_regex.firstMatch(in: input) // $ input=input MISSING: regex=ab
 }
