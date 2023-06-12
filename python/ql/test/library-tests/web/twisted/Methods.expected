@@ -1,9 +1,0 @@
-WARNING: Predicate getTwistedRequestHandlerMethod has been deprecated and may be removed in future (Methods.ql:6,14-44)
-| myrender | Function MyRequestHandler2.myrender | test.py:24 |
-| render | Function MyRequestHandler1.render | test.py:4 |
-| render | Function MyRequestHandler3.render | test.py:28 |
-| render | Function MyRequestHandler4.render | test.py:39 |
-| render | Function MyRequestHandler5.render | test.py:43 |
-| render_GET | Function MyRequestHandler1.render_GET | test.py:9 |
-| render_POST | Function MyRequestHandler1.render_POST | test.py:16 |
-| render_POST | Function MyRequestHandler3.render_POST | test.py:31 |

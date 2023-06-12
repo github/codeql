@@ -64,9 +64,6 @@ module Tornado {
     }
   }
 
-  /** DEPRECATED: Alias for HttpHeaders */
-  deprecated module HTTPHeaders = HttpHeaders;
-
   // ---------------------------------------------------------------------------
   // tornado
   // ---------------------------------------------------------------------------
