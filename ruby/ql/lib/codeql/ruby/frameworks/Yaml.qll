@@ -38,21 +38,25 @@ private class YamlParseStep extends AdditionalTaintStep {
       )
     )
     or
-    exists(API::Node yamlParserMethod |
+    exists(API::Node parseSuccessors | parseSuccessors = yamlParseChildNodeAccess(_) |
       succ =
         [
-          yamlParserMethod.getASuccessor*().getMethod("to_ruby").getReturn().asSource(),
-          yamlParserMethod
-              .getASuccessor*()
-              .getMethod("to_ruby")
-              .getReturn()
-              .getAnElement()
-              .asSource()
+          parseSuccessors.getMethod("to_ruby").getReturn().asSource(),
+          parseSuccessors.getMethod("to_ruby").getReturn().getAnElement().asSource()
         ] and
-      yamlParserMethod = yamlNode().getMethod(["parse", "parse_stream", "parse_file"]) and
-      pred = yamlParserMethod.getReturn().asSource()
+      pred = parseSuccessors.asSource()
     )
   }
+}
+
+API::Node yamlParseChildNodeAccess(API::Node source) {
+  source = yamlNode().getMethod(["parse", "parse_stream"]).getReturn() and source = result
+  or
+  result = yamlParseChildNodeAccess(source).getMethod(_).getReturn()
+  or
+  result = yamlParseChildNodeAccess(source).getMethod(_).getBlock().getParameter(_)
+  or
+  result = yamlParseChildNodeAccess(source).getAnElement()
 }
 
 private API::Node yamlNode() { result = API::getTopLevelMember(["YAML", "Psych"]) }

@@ -11,6 +11,7 @@ private import codeql.ruby.dataflow.RemoteFlowSources
 private import codeql.ruby.frameworks.ActiveJob
 private import codeql.ruby.frameworks.core.Module
 private import codeql.ruby.frameworks.core.Kernel
+private import codeql.ruby.frameworks.Yaml
 
 module UnsafeDeserialization {
   /**
@@ -103,19 +104,8 @@ module UnsafeDeserialization {
     YamlParseArgument() {
       this =
         [
-          yamlNode()
-              .getMethod(["parse", "parse_stream", "parse_file"])
-              .getASuccessor*()
-              .getMethod("to_ruby")
-              .getReturn()
-              .asSource(),
-          yamlNode()
-              .getMethod(["parse", "parse_stream", "parse_file"])
-              .getASuccessor*()
-              .getMethod("to_ruby")
-              .getReturn()
-              .getAnElement()
-              .asSource()
+          yamlParseChildNodeAccess(_).getMethod("to_ruby").getReturn().asSource(),
+          yamlParseChildNodeAccess(_).getMethod("to_ruby").getReturn().getAnElement().asSource()
         ]
     }
   }
