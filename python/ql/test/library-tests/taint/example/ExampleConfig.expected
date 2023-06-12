@@ -1,29 +1,3 @@
-edges
-| example.py:17:14:17:21 | Dilbert | example.py:18:13:18:18 | Dilbert |
-| example.py:17:14:17:21 | Wally | example.py:18:13:18:18 | Wally |
-| example.py:22:14:22:21 | Dilbert | example.py:23:20:23:25 | Dilbert |
-| example.py:23:14:23:26 | Dilbert | example.py:24:13:24:18 | Dilbert |
-| example.py:23:20:23:25 | Dilbert | example.py:23:14:23:26 | Dilbert |
-| example.py:28:14:28:21 | Dilbert | example.py:29:13:29:18 | Dilbert |
-| example.py:28:14:28:21 | Wally | example.py:29:13:29:18 | Wally |
-| example.py:33:14:33:21 | Dilbert | example.py:34:24:34:29 | Dilbert |
-| example.py:34:12:34:30 | .worker = Dilbert | example.py:37:20:37:23 | .worker = Dilbert |
-| example.py:34:24:34:29 | Dilbert | example.py:34:12:34:30 | .worker = Dilbert |
-| example.py:37:14:37:31 | Dilbert | example.py:39:13:39:18 | Dilbert |
-| example.py:37:20:37:23 | .worker = Dilbert | example.py:37:20:37:30 | Dilbert |
-| example.py:37:20:37:30 | Dilbert | example.py:37:14:37:31 | Dilbert |
-| example.py:57:14:57:21 | Dilbert | example.py:58:22:58:27 | Dilbert |
-| example.py:57:14:57:21 | Wally | example.py:58:22:58:27 | Wally |
-| example.py:58:14:58:28 | Dilbert | example.py:60:13:60:18 | Dilbert |
-| example.py:58:14:58:28 | Wally | example.py:60:13:60:18 | Wally |
-| example.py:58:22:58:27 | Dilbert | example.py:58:14:58:28 | Dilbert |
-| example.py:58:22:58:27 | Wally | example.py:58:14:58:28 | Wally |
-| example.py:64:14:64:21 | Dilbert | example.py:65:20:65:25 | Dilbert |
-| example.py:65:14:65:26 | Dilbert | example.py:66:22:66:27 | Dilbert |
-| example.py:65:20:65:25 | Dilbert | example.py:65:14:65:26 | Dilbert |
-| example.py:66:14:66:28 | Dilbert | example.py:68:13:68:18 | Dilbert |
-| example.py:66:22:66:27 | Dilbert | example.py:66:14:66:28 | Dilbert |
-#select
 | example.py:18:13:18:18 | worker | example.py:17:14:17:21 | Dilbert | example.py:18:13:18:18 | Dilbert | $@ goes to a $@. | example.py:17:14:17:21 | ENGINEER | Dilbert | example.py:18:13:18:18 | worker | meeting |
 | example.py:18:13:18:18 | worker | example.py:17:14:17:21 | Wally | example.py:18:13:18:18 | Wally | $@ goes to a $@. | example.py:17:14:17:21 | ENGINEER | Wally | example.py:18:13:18:18 | worker | meeting |
 | example.py:24:13:24:18 | worker | example.py:22:14:22:21 | Dilbert | example.py:24:13:24:18 | Dilbert | $@ goes to a $@. | example.py:22:14:22:21 | ENGINEER | Dilbert | example.py:24:13:24:18 | worker | meeting |
