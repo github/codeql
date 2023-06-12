@@ -28,7 +28,7 @@ class CloseWriter {
 		try {
 			// OutputStreamWriter may throw an exception, in which case the ...
 			writer = new OutputStreamWriter(
-					// ... FileOutputStream is not closed by the finally block
+					// ... FileOutputStream is notne closed by the finally block
 					new FileOutputStream("C:\\test.txt"), "UTF-8");
 			writer.write("test");
 		}
