@@ -97,12 +97,26 @@ module UnsafeDeserialization {
 
   /**
    * An argument in a call to `YAML.parse*`, considered a sink for unsafe deserialization
-   * if there is a call to `to_ruby` on the returned value.
+   * if there is a call to `to_ruby` on the returned value of any Successor.
    */
   class YamlParseArgument extends Sink {
     YamlParseArgument() {
       this =
-        yamlNode().getAMethodCall(["parse", "parse_stream", "parse_file"]).getAMethodCall("to_ruby")
+        [
+          yamlNode()
+              .getMethod(["parse", "parse_stream", "parse_file"])
+              .getASuccessor*()
+              .getMethod("to_ruby")
+              .getReturn()
+              .asSource(),
+          yamlNode()
+              .getMethod(["parse", "parse_stream", "parse_file"])
+              .getASuccessor*()
+              .getMethod("to_ruby")
+              .getReturn()
+              .getAnElement()
+              .asSource()
+        ]
     }
   }
 

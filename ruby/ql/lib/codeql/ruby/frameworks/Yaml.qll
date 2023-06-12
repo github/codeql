@@ -10,24 +10,47 @@ private import codeql.ruby.ApiGraphs
  * A taint step related to the result of `YAML.parse` calls, or similar.
  * In the following example, this step will propagate taint from
  * `source` to `sink`:
- *
+ * this contains two seperate steps:
  * ```rb
  * x = source
- * result = YAML.parse(x)
- * sink result.to_ruby # Unsafe call
+ * sink = YAML.parse(x)
+ * ```
+ * By second step
+ * source is a Successor of `YAML.parse(x)`
+ * which ends with `to_ruby` or an Element of `to_ruby`
+ * ```ruby
+ * sink source.to_ruby # Unsafe call
  * ```
  */
 private class YamlParseStep extends AdditionalTaintStep {
   override predicate step(DataFlow::Node pred, DataFlow::Node succ) {
-    exists(DataFlow::CallNode yamlParserMethod |
-      succ = yamlParserMethod.getAMethodCall("to_ruby") and
+    exists(API::Node yamlParserMethod |
+      succ = yamlParserMethod.getReturn().asSource() and
       (
-        yamlParserMethod = yamlNode().getAMethodCall(["parse", "parse_stream"]) and
-        pred = [yamlParserMethod.getArgument(0), yamlParserMethod.getKeywordArgument("yaml")]
+        yamlParserMethod = yamlNode().getMethod(["parse", "parse_stream"]) and
+        pred =
+          [yamlParserMethod.getParameter(0), yamlParserMethod.getKeywordParameter("yaml")].asSink()
         or
-        yamlParserMethod = yamlNode().getAMethodCall("parse_file") and
-        pred = [yamlParserMethod.getArgument(0), yamlParserMethod.getKeywordArgument("filename")]
+        yamlParserMethod = yamlNode().getMethod("parse_file") and
+        pred =
+          [yamlParserMethod.getParameter(0), yamlParserMethod.getKeywordParameter("filename")]
+              .asSink()
       )
+    )
+    or
+    exists(API::Node yamlParserMethod |
+      succ =
+        [
+          yamlParserMethod.getASuccessor*().getMethod("to_ruby").getReturn().asSource(),
+          yamlParserMethod
+              .getASuccessor*()
+              .getMethod("to_ruby")
+              .getReturn()
+              .getAnElement()
+              .asSource()
+        ] and
+      yamlParserMethod = yamlNode().getMethod(["parse", "parse_stream", "parse_file"]) and
+      pred = yamlParserMethod.getReturn().asSource()
     )
   }
 }
