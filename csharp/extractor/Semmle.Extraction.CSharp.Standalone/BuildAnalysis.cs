@@ -100,18 +100,6 @@ namespace Semmle.BuildAnalyser
                 dllDirNames.Add(runtimeLocation);
             }
 
-            if (options.UseMscorlib)
-            {
-                // Add mscorlib.dll or System.Private.CoreLib.dll to the list of DLLs to reference.
-                var loc = typeof(object).Assembly.Location;
-                var dir = Path.GetDirectoryName(loc);
-                if (dir != null)
-                {
-                    progressMonitor.Log(Util.Logging.Severity.Debug, $"Adding folder {dir} to DLL search path.");
-                    dllDirNames.Add(dir);
-                }
-            }
-
             // These files can sometimes prevent `dotnet restore` from working correctly.
             using (new FileRenamer(sourceDir.GetFiles("global.json", SearchOption.AllDirectories)))
             using (new FileRenamer(sourceDir.GetFiles("Directory.Build.props", SearchOption.AllDirectories)))
@@ -130,6 +118,11 @@ namespace Semmle.BuildAnalyser
 
                 foreach (var filename in assemblyCache.AllAssemblies.Select(a => a.Filename))
                     UseReference(filename);
+            }
+
+            if (options.UseMscorlib)
+            {
+                UseReference(typeof(object).Assembly.Location);
             }
 
             ResolveConflicts();
