@@ -95,6 +95,8 @@ class NSRegularExpression : NSObject {
 }
 
 // --- tests ---
+//
+// the focus for these tests is different ways of evaluating regexps.
 
 func myRegexpMethodsTests(b: Bool) throws {
 	let input = "abcdef"
