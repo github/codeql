@@ -3,10 +3,10 @@
   <include src="ReDoSIntroduction.inc.qhelp" />
   <example>
     <p>Consider this regular expression:</p>
-    <sample language="ruby">
+    <sample language="swift">
 /^_(__|.)+_$/</sample>
     <p>
-      Its sub-expression <code>"(__|.)+?"</code> can match the string
+      Its sub-expression <code>"(__|.)+"</code> can match the string
       <code>"__"</code> either by the first alternative <code>"__"</code> to the
       left of the <code>"|"</code> operator, or by two repetitions of the second
       alternative <code>"."</code> to the right. Thus, a string consisting of an
@@ -19,7 +19,7 @@
       the ambiguity between the two branches of the alternative inside the
       repetition:
     </p>
-    <sample language="ruby">
+    <sample language="swift">
 /^_(__|[^_])+_$/</sample>
   </example>
   <include src="ReDoSReferences.inc.qhelp"/>
