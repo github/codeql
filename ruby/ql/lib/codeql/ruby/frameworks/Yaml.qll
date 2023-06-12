@@ -27,18 +27,18 @@ private class YamlParseStep extends AdditionalTaintStep {
     exists(API::Node yamlParserMethod |
       succ = yamlParserMethod.getReturn().asSource() and
       (
-        yamlParserMethod = yamlNode().getMethod(["parse", "parse_stream"]) and
+        yamlParserMethod = yamlLibrary().getMethod(["parse", "parse_stream"]) and
         pred =
           [yamlParserMethod.getParameter(0), yamlParserMethod.getKeywordParameter("yaml")].asSink()
         or
-        yamlParserMethod = yamlNode().getMethod("parse_file") and
+        yamlParserMethod = yamlLibrary().getMethod("parse_file") and
         pred =
           [yamlParserMethod.getParameter(0), yamlParserMethod.getKeywordParameter("filename")]
               .asSink()
       )
     )
     or
-    exists(API::Node parseSuccessors | parseSuccessors = yamlParseChildNodeAccess(_) |
+    exists(API::Node parseSuccessors | parseSuccessors = yamlNode() |
       succ =
         [
           parseSuccessors.getMethod("to_ruby").getReturn().asSource(),
@@ -46,17 +46,26 @@ private class YamlParseStep extends AdditionalTaintStep {
         ] and
       pred = parseSuccessors.asSource()
     )
+    or
+    exists(API::Node parseSuccessors | parseSuccessors = yamlNode() |
+      succ =
+        [
+          parseSuccessors.getMethod(_).getBlock().getParameter(_).asSource(),
+          parseSuccessors.getMethod(_).getReturn().asSource()
+        ] and
+      pred = parseSuccessors.asSource()
+    )
   }
 }
 
-API::Node yamlParseChildNodeAccess(API::Node source) {
-  source = yamlNode().getMethod(["parse", "parse_stream"]).getReturn() and source = result
+API::Node yamlNode() {
+  result = yamlLibrary().getMethod(["parse", "parse_stream", "parse_file"]).getReturn()
   or
-  result = yamlParseChildNodeAccess(source).getMethod(_).getReturn()
+  result = yamlNode().getMethod(_).getReturn()
   or
-  result = yamlParseChildNodeAccess(source).getMethod(_).getBlock().getParameter(_)
+  result = yamlNode().getMethod(_).getBlock().getParameter(_)
   or
-  result = yamlParseChildNodeAccess(source).getAnElement()
+  result = yamlNode().getAnElement()
 }
 
-private API::Node yamlNode() { result = API::getTopLevelMember(["YAML", "Psych"]) }
+API::Node yamlLibrary() { result = API::getTopLevelMember(["YAML", "Psych"]) }
