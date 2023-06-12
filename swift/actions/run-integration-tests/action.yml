@@ -4,18 +4,12 @@ runs:
   using: composite
   steps:
     - uses: ./swift/actions/share-extractor-pack
-    - name: Get Swift version
-      id: get_swift_version
-      shell: bash
-      run: |
-        VERSION=$(swift/extractor-pack/tools/*/extractor --version | awk '/version/ { print $3 }')
-        echo "version=$VERSION" | tee -a $GITHUB_OUTPUT
     - uses: actions/setup-python@v4
       with:
         python-version-file: 'swift/.python-version'
     - uses: swift-actions/setup-swift@65540b95f51493d65f5e59e97dcef9629ddf11bf
       with:
-        swift-version: "${{steps.get_swift_version.outputs.version}}"
+        swift-version: "5.8"
     - uses: ./.github/actions/fetch-codeql
     - id: query-cache
       uses: ./.github/actions/cache-query-compilation
