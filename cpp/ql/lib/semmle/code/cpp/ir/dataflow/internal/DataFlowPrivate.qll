@@ -210,8 +210,8 @@ class IndirectOperand extends Node {
     this.(RawIndirectOperand).getOperand() = operand and
     this.(RawIndirectOperand).getIndirectionIndex() = indirectionIndex
     or
-    this.(OperandNode).getOperand() =
-      Ssa::getIRRepresentationOfIndirectOperand(operand, indirectionIndex)
+    nodeHasOperand(this, Ssa::getIRRepresentationOfIndirectOperand(operand, indirectionIndex),
+      indirectionIndex - 1)
   }
 
   /** Gets the underlying operand. */
@@ -250,8 +250,8 @@ class IndirectInstruction extends Node {
     this.(RawIndirectInstruction).getInstruction() = instr and
     this.(RawIndirectInstruction).getIndirectionIndex() = indirectionIndex
     or
-    this.(InstructionNode).getInstruction() =
-      Ssa::getIRRepresentationOfIndirectInstruction(instr, indirectionIndex)
+    nodeHasInstruction(this, Ssa::getIRRepresentationOfIndirectInstruction(instr, indirectionIndex),
+      indirectionIndex - 1)
   }
 
   /** Gets the underlying instruction. */
@@ -752,6 +752,8 @@ predicate clearsContent(Node n, Content c) {
  * at node `n`.
  */
 predicate expectsContent(Node n, ContentSet c) { none() }
+
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
 
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {

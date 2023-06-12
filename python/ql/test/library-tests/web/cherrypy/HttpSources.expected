@@ -1,4 +1,0 @@
-WARNING: Type HttpRequestTaintSource has been deprecated and may be removed in future (HttpSources.ql:5,6-28)
-| ../../../query-tests/Security/lib/cherrypy/__init__.py:10:11:10:38 | _ThreadLocalProxy() | cherrypy.request |
-| test.py:10:17:10:19 | arg | externally controlled string |
-| test.py:16:17:16:19 | arg | externally controlled string |

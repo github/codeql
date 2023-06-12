@@ -39,7 +39,7 @@ class XssAdditionalTaintStep extends Unit {
 /** A default sink representing methods susceptible to XSS attacks. */
 private class DefaultXssSink extends XssSink {
   DefaultXssSink() {
-    sinkNode(this, "xss")
+    sinkNode(this, ["html-injection", "js-injection"])
     or
     exists(MethodAccess ma |
       ma.getMethod() instanceof WritingMethod and

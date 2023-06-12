@@ -10,25 +10,12 @@ module Generated {
 
     /**
      * Gets the declaration of this type alias type.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    TypeAliasDecl getImmediateDecl() {
+    TypeAliasDecl getDecl() {
       result =
         Synth::convertTypeAliasDeclFromRaw(Synth::convertTypeAliasTypeToRaw(this)
               .(Raw::TypeAliasType)
               .getDecl())
-    }
-
-    /**
-     * Gets the declaration of this type alias type.
-     */
-    final TypeAliasDecl getDecl() {
-      exists(TypeAliasDecl immediate |
-        immediate = this.getImmediateDecl() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
   }
 }

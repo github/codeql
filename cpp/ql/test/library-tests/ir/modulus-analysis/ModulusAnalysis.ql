@@ -12,12 +12,10 @@ import TestUtilities.InlineExpectationsTest
 module ModulusAnalysisInstantiated =
   ModulusAnalysis<FloatDelta, ConstantBounds, RangeUtil<FloatDelta, CppLangImplRelative>>;
 
-class ModulusAnalysisTest extends InlineExpectationsTest {
-  ModulusAnalysisTest() { this = "ModulusAnalysisTest" }
+module ModulusAnalysisTest implements TestSig {
+  string getARelevantTag() { result = "mod" }
 
-  override string getARelevantTag() { result = "mod" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(SemExpr e, IR::CallInstruction call |
       getSemanticExpr(call.getArgument(0)) = e and
       call.getStaticCallTarget().hasName("mod") and
@@ -28,6 +26,8 @@ class ModulusAnalysisTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<ModulusAnalysisTest>
 
 private string getAModString(SemExpr e) {
   exists(SemBound b, int delta, int mod |

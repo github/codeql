@@ -29,23 +29,10 @@ module Generated {
 
     /**
      * Gets the member of this lookup expression, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Decl getImmediateMember() {
+    Decl getMember() {
       result =
         Synth::convertDeclFromRaw(Synth::convertLookupExprToRaw(this).(Raw::LookupExpr).getMember())
-    }
-
-    /**
-     * Gets the member of this lookup expression, if it exists.
-     */
-    final Decl getMember() {
-      exists(Decl immediate |
-        immediate = this.getImmediateMember() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

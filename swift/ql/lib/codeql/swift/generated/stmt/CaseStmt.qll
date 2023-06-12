@@ -11,46 +11,20 @@ module Generated {
 
     /**
      * Gets the body of this case statement.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    Stmt getImmediateBody() {
+    Stmt getBody() {
       result =
         Synth::convertStmtFromRaw(Synth::convertCaseStmtToRaw(this).(Raw::CaseStmt).getBody())
     }
 
     /**
-     * Gets the body of this case statement.
-     */
-    final Stmt getBody() {
-      exists(Stmt immediate |
-        immediate = this.getImmediateBody() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
-    }
-
-    /**
      * Gets the `index`th label of this case statement (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    CaseLabelItem getImmediateLabel(int index) {
+    CaseLabelItem getLabel(int index) {
       result =
         Synth::convertCaseLabelItemFromRaw(Synth::convertCaseStmtToRaw(this)
               .(Raw::CaseStmt)
               .getLabel(index))
-    }
-
-    /**
-     * Gets the `index`th label of this case statement (0-based).
-     */
-    final CaseLabelItem getLabel(int index) {
-      exists(CaseLabelItem immediate |
-        immediate = this.getImmediateLabel(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**
@@ -65,25 +39,12 @@ module Generated {
 
     /**
      * Gets the `index`th variable of this case statement (0-based).
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    VarDecl getImmediateVariable(int index) {
+    VarDecl getVariable(int index) {
       result =
         Synth::convertVarDeclFromRaw(Synth::convertCaseStmtToRaw(this)
               .(Raw::CaseStmt)
               .getVariable(index))
-    }
-
-    /**
-     * Gets the `index`th variable of this case statement (0-based).
-     */
-    final VarDecl getVariable(int index) {
-      exists(VarDecl immediate |
-        immediate = this.getImmediateVariable(index) and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**

@@ -308,3 +308,78 @@ void test21() {
     xs[i+1] = test21_get(i+1); // GOOD [FALSE POSITIVE]
   }
 }
+
+void test22(unsigned size, int val) {
+  char *xs = new char[size];
+  char *end = xs + size; // GOOD
+  char **current = &end;
+  do {
+    if (*current - xs < 1) // GOOD
+      return;
+    *--(*current) = 0; // GOOD
+      val >>= 8;
+  } while (val > 0);
+}
+
+void test23(unsigned size, int val) {
+  char *xs = new char[size];
+  char *end = xs + size;
+  char **current = &end;
+
+  if (val < 1) {
+    if(*current - xs < 1)
+      return;
+
+    *--(*current) = 0; // GOOD
+    return;
+  }
+
+  if (val < 2) {
+    if(*current - xs < 2)
+      return;
+
+    *--(*current) = 0; // GOOD
+    *--(*current) = 0; // GOOD
+  }
+}
+
+void test24(unsigned size) {
+  char *xs = new char[size];
+  char *end = xs + size;
+  if (xs < end) {
+    int val = *xs++; // GOOD
+  }
+}
+
+void test25(unsigned size) {
+  char *xs = new char[size];
+  char *end = xs + size;
+  char *end_plus_one = end + 1;
+  int val1 = *end_plus_one; // BAD
+  int val2 = *(end_plus_one + 1); // BAD
+}
+
+void test26(unsigned size) {
+  char *xs = new char[size];
+  char *p = xs;
+  char *end = p + size;
+
+  if (p + 4 <= end) {
+    p += 4;
+  }
+
+  if (p < end) {
+    int val = *p; // GOOD [FALSE POSITIVE]
+  }
+}
+
+void test27(unsigned size, bool b) {
+  char *xs = new char[size];
+  char *end = xs + size;
+
+  if (b) {
+    end++;
+  }
+
+  int val = *end; // BAD
+}

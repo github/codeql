@@ -52,12 +52,8 @@ private class TypePropertiesRequestForgeryAdditionalTaintStep extends RequestFor
 /** A data flow sink for server-side request forgery (SSRF) vulnerabilities. */
 abstract class RequestForgerySink extends DataFlow::Node { }
 
-private class UrlOpenSinkAsRequestForgerySink extends RequestForgerySink {
-  UrlOpenSinkAsRequestForgerySink() { sinkNode(this, "open-url") }
-}
-
-private class JdbcUrlSinkAsRequestForgerySink extends RequestForgerySink {
-  JdbcUrlSinkAsRequestForgerySink() { sinkNode(this, "jdbc-url") }
+private class DefaultRequestForgerySink extends RequestForgerySink {
+  DefaultRequestForgerySink() { sinkNode(this, "request-forgery") }
 }
 
 /** A sanitizer for request forgery vulnerabilities. */
@@ -79,10 +75,7 @@ private class HostnameSanitizingPrefix extends InterestingPrefix {
     // the host or entity addressed: for example, anything containing `?` or `#`, or a slash that
     // doesn't appear to be a protocol specifier (e.g. `http://` is not sanitizing), or specifically
     // the string "/".
-    exists(
-      this.getStringValue()
-          .regexpFind(".*([?#]|[^?#:/\\\\][/\\\\]).*|[/\\\\][^/\\\\].*|^/$", 0, offset)
-    )
+    exists(this.getStringValue().regexpFind("([?#]|[^?#:/\\\\][/\\\\])|^/$", 0, offset))
   }
 
   override int getOffset() { result = offset }

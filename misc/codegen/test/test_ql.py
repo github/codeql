@@ -169,9 +169,9 @@ def test_class_without_description():
     assert prop.has_description is False
 
 
-def test_ipa_accessor_has_first_constructor_param_marked():
+def test_synth_accessor_has_first_constructor_param_marked():
     params = ["a", "b", "c"]
-    x = ql.IpaUnderlyingAccessor("foo", "bar", params)
+    x = ql.SynthUnderlyingAccessor("foo", "bar", params)
     assert x.constructorparams[0].first
     assert [p.param for p in x.constructorparams] == params
 

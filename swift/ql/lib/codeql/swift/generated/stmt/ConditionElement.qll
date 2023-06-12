@@ -29,7 +29,7 @@ module Generated {
     final Expr getBoolean() {
       exists(Expr immediate |
         immediate = this.getImmediateBoolean() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 
@@ -57,7 +57,7 @@ module Generated {
     final Pattern getPattern() {
       exists(Pattern immediate |
         immediate = this.getImmediatePattern() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 
@@ -85,7 +85,7 @@ module Generated {
     final Expr getInitializer() {
       exists(Expr immediate |
         immediate = this.getImmediateInitializer() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
+        result = immediate.resolve()
       )
     }
 
@@ -96,25 +96,12 @@ module Generated {
 
     /**
      * Gets the availability of this condition element, if it exists.
-     *
-     * This includes nodes from the "hidden" AST. It can be overridden in subclasses to change the
-     * behavior of both the `Immediate` and non-`Immediate` versions.
      */
-    AvailabilityInfo getImmediateAvailability() {
+    AvailabilityInfo getAvailability() {
       result =
         Synth::convertAvailabilityInfoFromRaw(Synth::convertConditionElementToRaw(this)
               .(Raw::ConditionElement)
               .getAvailability())
-    }
-
-    /**
-     * Gets the availability of this condition element, if it exists.
-     */
-    final AvailabilityInfo getAvailability() {
-      exists(AvailabilityInfo immediate |
-        immediate = this.getImmediateAvailability() and
-        if exists(this.getResolveStep()) then result = immediate else result = immediate.resolve()
-      )
     }
 
     /**
