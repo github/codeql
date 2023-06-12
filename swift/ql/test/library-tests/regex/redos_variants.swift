@@ -46,5 +46,9 @@ func myRegexpVariantsTests(myUrl: URL) throws {
 	_ = try Regex("(a|aa?)b").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted
 	_ = try Regex("(a|aa?)*b").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted redos-vulnerable=
 
+	// from the qhelp:
+	_ = try Regex("^_(__|.)+_$").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted redos-vulnerable=
+	_ = try Regex("^_(__|[^_])+_$").firstMatch(in: tainted) // $ regex="call to Regex<AnyRegexOutput>.init(_:)" input=tainted
+
 	// TODO: test more variant expressions.
 }
