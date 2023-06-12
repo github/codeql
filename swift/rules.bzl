@@ -10,11 +10,13 @@ def _wrap_cc(rule, kwargs):
         # temporary, before we do universal merging
         "-universal_binaries",
     ])
-    _add_args(kwargs, "target_compatible_with", select({
-        "@platforms//os:linux": [],
-        "@platforms//os:macos": [],
-        "//conditions:default": ["@platforms//:incompatible"],
-    }))
+    if "target_compatible_with" not in kwargs:
+        # Restrict to Linux or macOS by default, but allow overriding
+        _add_args(kwargs, "target_compatible_with", select({
+            "@platforms//os:linux": [],
+            "@platforms//os:macos": [],
+            "//conditions:default": ["@platforms//:incompatible"],
+        }))
     rule(**kwargs)
 
 def swift_cc_binary(**kwargs):

@@ -77,11 +77,11 @@ pkg_filegroup(
         ":extractor",
         ":swift-test-sdk-arch",
     ] + select({
-        "@platforms//os:linux": [
-            ":incompatible-os",
-        ],
         "@platforms//os:macos": [
             ":xcode-autobuilder",
+        ],
+        "//conditions:default": [
+            ":incompatible-os",
         ],
     }),
     visibility = ["//visibility:public"],
