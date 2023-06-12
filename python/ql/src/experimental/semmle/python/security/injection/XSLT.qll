@@ -8,7 +8,6 @@
 
 import python
 import semmle.python.dataflow.TaintTracking
-import semmle.python.web.HttpRequest
 
 /** Models XSLT Injection related classes and functions */
 module XsltInjection {
@@ -22,51 +21,10 @@ module XsltInjection {
   deprecated class XSLTInjectionSink = XsltInjectionSink;
 
   /**
-   * A kind of "taint", representing an untrusted XML string
-   */
-  deprecated private class ExternalXmlStringKind extends ExternalStringKind {
-    ExternalXmlStringKind() { this = "etree.XML string" }
-
-    override TaintKind getTaintForFlowStep(ControlFlowNode fromnode, ControlFlowNode tonode) {
-      etreeXml(fromnode, tonode) and result instanceof ExternalXmlKind
-      or
-      etreeFromStringList(fromnode, tonode) and result instanceof ExternalXmlKind
-      or
-      etreeFromString(fromnode, tonode) and result instanceof ExternalXmlKind
-    }
-  }
-
-  /**
    * A kind of "taint", representing a XML encoded  string
    */
   class ExternalXmlKind extends TaintKind {
     ExternalXmlKind() { this = "lxml etree xml" }
-  }
-
-  private predicate etreeXml(ControlFlowNode fromnode, CallNode tonode) {
-    // etree.XML("<xmlContent>")
-    exists(CallNode call | call.getFunction().(AttrNode).getObject("XML").pointsTo(etree()) |
-      call.getArg(0) = fromnode and
-      call = tonode
-    )
-  }
-
-  private predicate etreeFromString(ControlFlowNode fromnode, CallNode tonode) {
-    // etree.fromstring(text, parser=None)
-    exists(CallNode call | call.getFunction().(AttrNode).getObject("fromstring").pointsTo(etree()) |
-      call.getArg(0) = fromnode and
-      call = tonode
-    )
-  }
-
-  private predicate etreeFromStringList(ControlFlowNode fromnode, CallNode tonode) {
-    // etree.fromstringlist(strings, parser=None)
-    exists(CallNode call |
-      call.getFunction().(AttrNode).getObject("fromstringlist").pointsTo(etree())
-    |
-      call.getArg(0) = fromnode and
-      call = tonode
-    )
   }
 
   /**

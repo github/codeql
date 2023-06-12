@@ -7,7 +7,6 @@
 
 import python
 import DilbertConfig
-import semmle.python.security.Paths
 
 from DilbertConfig config, TaintedPathSource src, TaintedPathSink sink
 where config.hasFlowPath(src, sink)
