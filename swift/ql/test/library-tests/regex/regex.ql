@@ -1,5 +1,6 @@
 import swift
 import codeql.swift.regex.Regex
+private import codeql.swift.regex.internal.ParseRegex
 private import codeql.swift.regex.RegexTreeView::RegexTreeView as TreeView
 import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView>
 import TestUtilities.InlineExpectationsTest
@@ -8,7 +9,7 @@ bindingset[s]
 string quote(string s) { if s.matches("% %") then result = "\"" + s + "\"" else result = s }
 
 module RegexTest implements TestSig {
-  string getARelevantTag() { result = ["regex", "input", "redos-vulnerable"] }
+  string getARelevantTag() { result = ["regex", "input", "redos-vulnerable", "hasParseFailure"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
     exists(TreeView::RegExpTerm t, string pump, State s, string prefixMsg |
@@ -16,6 +17,15 @@ module RegexTest implements TestSig {
       location = t.getLocation() and
       element = t.toString() and
       tag = "redos-vulnerable" and
+      value = ""
+    )
+    or
+    exists(RegexEval eval, RegExp regex |
+      eval.getARegex() = regex and
+      regex.failedToParse(_) and
+      location = eval.getLocation() and
+      element = eval.toString() and
+      tag = "hasParseFailure" and
       value = ""
     )
   }
@@ -29,7 +39,7 @@ module RegexTest implements TestSig {
       value = quote(input.toString())
     )
     or
-    exists(RegexEval eval, Expr regex |
+    exists(RegexEval eval, RegExp regex |
       eval.getARegex() = regex and
       location = eval.getLocation() and
       element = eval.toString() and

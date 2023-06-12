@@ -130,7 +130,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     _ = try Regex("(.|\\n)*!").firstMatch(in: tainted)
 
     // NOT GOOD; attack: "\n".repeat(100) + "." TODO: investigate, we should be getting this one.
-    _ = try Regex("(?s)(.|\\n)*!").firstMatch(in: tainted) // $ MISSING: redos-vulnerable=
+    _ = try Regex("(?s)(.|\\n)*!").firstMatch(in: tainted) // $ hasParseFailure MISSING: redos-vulnerable=
 
     // GOOD
     _ = try Regex("([\\w.]+)*").firstMatch(in: tainted)
@@ -410,10 +410,10 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     _ = try Regex("X(\\x61|b)+Y").firstMatch(in: tainted)
 
     // NOT GOOD TODO: we should get this one
-    _ = try Regex("X(\\x{061}|a)*Y").firstMatch(in: tainted) // $ MISSING: redos-vulnerable=
+    _ = try Regex("X(\\x{061}|a)*Y").firstMatch(in: tainted) // $ hasParseFailure= MISSING: redos-vulnerable=
 
     // GOOD
-    _ = try Regex("X(\\x{061}|b)+Y").firstMatch(in: tainted)
+    _ = try Regex("X(\\x{061}|b)+Y").firstMatch(in: tainted) // $ hasParseFailure
 
     // NOT GOOD
     _ = try Regex("X(\\p{Digit}|7)*Y").firstMatch(in: tainted) // $ redos-vulnerable=
@@ -452,13 +452,13 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     _ = try Regex("\\b(\\d|0)*x").firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD - possessive quantifiers don't backtrack
-    _ = try Regex("(a*+)*+b").firstMatch(in: tainted)
-    _ = try Regex("(a*)*+b").firstMatch(in: tainted)
-    _ = try Regex("(a*+)*b").firstMatch(in: tainted)
+    _ = try Regex("(a*+)*+b").firstMatch(in: tainted) // $ hasParseFailure
+    _ = try Regex("(a*)*+b").firstMatch(in: tainted) // $ hasParseFailure
+    _ = try Regex("(a*+)*b").firstMatch(in: tainted) // $ hasParseFailure
 
     // BAD
     _ = try Regex("(a*)*b").firstMatch(in: tainted) // $ redos-vulnerable=
 
     // BAD - but not detected due to the way possessive quantifiers are approximated
-    _ = try Regex("((aa|a*+)b)*c").firstMatch(in: tainted) // $ MISSING: redos-vulnerable=
+    _ = try Regex("((aa|a*+)b)*c").firstMatch(in: tainted) // $ hasParseFailure MISSING: redos-vulnerable=
 }
