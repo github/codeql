@@ -130,9 +130,6 @@ module Stdlib {
     }
   }
 
-  /** DEPRECATED: Alias for HttpMessage */
-  deprecated module HTTPMessage = HttpMessage;
-
   /**
    * Provides models for the `http.cookies.Morsel` class
    *
@@ -1821,9 +1818,6 @@ private module StdlibPrivate {
   /** Gets a reference to the `BaseHttpServer` module. */
   API::Node baseHttpServer() { result = API::moduleImport("BaseHTTPServer") }
 
-  /** DEPRECATED: Alias for baseHttpServer */
-  deprecated API::Node baseHTTPServer() { result = baseHttpServer() }
-
   /** Provides models for the `BaseHttpServer` module. */
   module BaseHttpServer {
     /**
@@ -1833,22 +1827,13 @@ private module StdlibPrivate {
       /** Gets a reference to the `BaseHttpServer.BaseHttpRequestHandler` class. */
       API::Node classRef() { result = baseHttpServer().getMember("BaseHTTPRequestHandler") }
     }
-
-    /** DEPRECATED: Alias for BaseHttpRequestHandler */
-    deprecated module BaseHTTPRequestHandler = BaseHttpRequestHandler;
   }
-
-  /** DEPRECATED: Alias for BaseHttpServer */
-  deprecated module BaseHTTPServer = BaseHttpServer;
 
   // ---------------------------------------------------------------------------
   // SimpleHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `SimpleHttpServer` module. */
   API::Node simpleHttpServer() { result = API::moduleImport("SimpleHTTPServer") }
-
-  /** DEPRECATED: Alias for simpleHttpServer */
-  deprecated API::Node simpleHTTPServer() { result = simpleHttpServer() }
 
   /** Provides models for the `SimpleHttpServer` module. */
   module SimpleHttpServer {
@@ -1859,22 +1844,13 @@ private module StdlibPrivate {
       /** Gets a reference to the `SimpleHttpServer.SimpleHttpRequestHandler` class. */
       API::Node classRef() { result = simpleHttpServer().getMember("SimpleHTTPRequestHandler") }
     }
-
-    /** DEPRECATED: Alias for SimpleHttpRequestHandler */
-    deprecated module SimpleHTTPRequestHandler = SimpleHttpRequestHandler;
   }
-
-  /** DEPRECATED: Alias for SimpleHttpServer */
-  deprecated module SimpleHTTPServer = SimpleHttpServer;
 
   // ---------------------------------------------------------------------------
   // CGIHTTPServer (Python 2 only)
   // ---------------------------------------------------------------------------
   /** Gets a reference to the `CGIHTTPServer` module. */
   API::Node cgiHttpServer() { result = API::moduleImport("CGIHTTPServer") }
-
-  /** DEPRECATED: Alias for cgiHttpServer */
-  deprecated API::Node cgiHTTPServer() { result = cgiHttpServer() }
 
   /** Provides models for the `CGIHTTPServer` module. */
   module CgiHttpServer {
@@ -1919,9 +1895,6 @@ private module StdlibPrivate {
         API::Node classRef() { result = server().getMember("BaseHTTPRequestHandler") }
       }
 
-      /** DEPRECATED: Alias for BaseHttpRequestHandler */
-      deprecated module BaseHTTPRequestHandler = BaseHttpRequestHandler;
-
       /**
        * Provides models for the `http.server.SimpleHTTPRequestHandler` class (Python 3 only).
        *
@@ -1931,9 +1904,6 @@ private module StdlibPrivate {
         /** Gets a reference to the `http.server.SimpleHttpRequestHandler` class. */
         API::Node classRef() { result = server().getMember("SimpleHTTPRequestHandler") }
       }
-
-      /** DEPRECATED: Alias for SimpleHttpRequestHandler */
-      deprecated module SimpleHTTPRequestHandler = SimpleHttpRequestHandler;
 
       /**
        * Provides models for the `http.server.CGIHTTPRequestHandler` class (Python 3 only).
@@ -1977,9 +1947,6 @@ private module StdlibPrivate {
     class HttpRequestHandlerClassDef extends Class {
       HttpRequestHandlerClassDef() { this.getParent() = subclassRef().asSource().asExpr() }
     }
-
-    /** DEPRECATED: Alias for HttpRequestHandlerClassDef */
-    deprecated class HTTPRequestHandlerClassDef = HttpRequestHandlerClassDef;
 
     /**
      * A source of instances of the `BaseHTTPRequestHandler` class or any subclass, extend this class to model new instances.
@@ -2352,9 +2319,6 @@ private module StdlibPrivate {
     }
   }
 
-  /** DEPRECATED: Alias for HttpConnection */
-  deprecated module HTTPConnection = HttpConnection;
-
   /**
    * Provides models for the `http.client.HTTPResponse` class
    *
@@ -2423,9 +2387,6 @@ private module StdlibPrivate {
       }
     }
   }
-
-  /** DEPRECATED: Alias for HttpResponse */
-  deprecated module HTTPResponse = HttpResponse;
 
   // ---------------------------------------------------------------------------
   // sqlite3

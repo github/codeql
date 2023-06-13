@@ -235,7 +235,8 @@ class ParamDecl(VarDecl):
     """)
 
 class Callable(Element):
-    name: optional[string] | doc("name of this callable")
+    name: optional[string] | doc("name of this callable") | desc("The name includes argument "
+        "labels of the callable, for example `myFunction(arg:)`.")
     self_param: optional[ParamDecl] | child
     params: list[ParamDecl] | child
     body: optional["BraceStmt"] | child | desc("The body is absent within protocol declarations.")

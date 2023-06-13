@@ -2814,7 +2814,10 @@
 | file://:0:0:0:0 | parameter position 0 of File.realdirpath | file://:0:0:0:0 | [summary] to write: return (return) in File.realdirpath |
 | file://:0:0:0:0 | parameter position 0 of File.realpath | file://:0:0:0:0 | [summary] to write: return (return) in File.realpath |
 | file://:0:0:0:0 | parameter position 0 of Hash[] | file://:0:0:0:0 | [summary] read: argument position 0.any element in Hash[] |
+| file://:0:0:0:0 | parameter position 0 of Mysql2::Client.escape() | file://:0:0:0:0 | [summary] to write: return (return) in Mysql2::Client.escape() |
+| file://:0:0:0:0 | parameter position 0 of Mysql2::Client.new() | file://:0:0:0:0 | [summary] to write: return (return) in Mysql2::Client.new() |
 | file://:0:0:0:0 | parameter position 0 of PG.new() | file://:0:0:0:0 | [summary] to write: return (return) in PG.new() |
+| file://:0:0:0:0 | parameter position 0 of SQLite3::Database.quote() | file://:0:0:0:0 | [summary] to write: return (return) in SQLite3::Database.quote() |
 | file://:0:0:0:0 | parameter position 0 of Sequel.connect | file://:0:0:0:0 | [summary] to write: return (return) in Sequel.connect |
 | file://:0:0:0:0 | parameter position 0 of String.try_convert | file://:0:0:0:0 | [summary] to write: return (return) in String.try_convert |
 | file://:0:0:0:0 | parameter position 0 of \| | file://:0:0:0:0 | [summary] read: argument position 0.any element in \| |

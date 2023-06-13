@@ -330,7 +330,7 @@ void test23(unsigned size, int val) {
     if(*current - xs < 1)
       return;
 
-    *--(*current) = 0; // GOOD [FALSE POSITIVE]
+    *--(*current) = 0; // GOOD
     return;
   }
 
@@ -338,7 +338,7 @@ void test23(unsigned size, int val) {
     if(*current - xs < 2)
       return;
 
-    *--(*current) = 0; // GOOD [FALSE POSITIVE]
+    *--(*current) = 0; // GOOD
     *--(*current) = 0; // GOOD
   }
 }
@@ -347,7 +347,7 @@ void test24(unsigned size) {
   char *xs = new char[size];
   char *end = xs + size;
   if (xs < end) {
-    int val = *xs++; // GOOD [FALSE POSITIVE]
+    int val = *xs++; // GOOD
   }
 }
 
@@ -371,4 +371,15 @@ void test26(unsigned size) {
   if (p < end) {
     int val = *p; // GOOD [FALSE POSITIVE]
   }
+}
+
+void test27(unsigned size, bool b) {
+  char *xs = new char[size];
+  char *end = xs + size;
+
+  if (b) {
+    end++;
+  }
+
+  int val = *end; // BAD
 }

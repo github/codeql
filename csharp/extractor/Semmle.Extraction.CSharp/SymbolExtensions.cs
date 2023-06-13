@@ -25,7 +25,7 @@ namespace Semmle.Extraction.CSharp
             Nullability = nullability;
         }
 
-        public static AnnotatedTypeSymbol? CreateNotAnnotated(ITypeSymbol symbol) =>
+        public static AnnotatedTypeSymbol? CreateNotAnnotated(ITypeSymbol? symbol) =>
             symbol is null ? (AnnotatedTypeSymbol?)null : new AnnotatedTypeSymbol(symbol, NullableAnnotation.None);
     }
 

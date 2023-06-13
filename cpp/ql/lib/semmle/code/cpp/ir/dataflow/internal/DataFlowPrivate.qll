@@ -753,6 +753,8 @@ predicate clearsContent(Node n, Content c) {
  */
 predicate expectsContent(Node n, ContentSet c) { none() }
 
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
 /** Gets the type of `n` used for type pruning. */
 DataFlowType getNodeType(Node n) {
   suppressUnusedNode(n) and

@@ -35,9 +35,6 @@ class EjbJarXmlFile extends XmlFile {
   }
 }
 
-/** DEPRECATED: Alias for EjbJarXmlFile */
-deprecated class EjbJarXMLFile = EjbJarXmlFile;
-
 /** The root `ejb-jar` XML element in an `ejb-jar.xml` file. */
 class EjbJarRootElement extends XmlElement {
   EjbJarRootElement() {

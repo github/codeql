@@ -37,6 +37,12 @@ float taintReach() { result = (taintedNodesCount() * 1000000.0) / count(DataFlow
 predicate statistic(string what, string value) {
   what = "Files" and value = count(File f).toString()
   or
+  what = "Lines of code" and value = sum(File f | | f.getNumberOfLinesOfCode()).toString()
+  or
+  what = "Compiler errors" and value = count(CompilerError d).toString()
+  or
+  what = "Compiler warnings" and value = count(CompilerWarning d).toString()
+  or
   what = "Expressions" and value = count(Expr e | not e.getFile() instanceof UnknownFile).toString()
   or
   what = "Local flow sources" and value = count(LocalFlowSource s).toString()
