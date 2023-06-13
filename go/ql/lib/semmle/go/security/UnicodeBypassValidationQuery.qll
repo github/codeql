@@ -70,10 +70,7 @@ class Configuration extends TaintTracking::Configuration {
   }
 
   override predicate isSanitizer(DataFlow::Node sanitizer, DataFlow::FlowState state) {
-    (
-      sanitizer instanceof UntrustedUnicodeCharChecks or
-      sanitizer instanceof Sanitizer
-    ) and
+    sanitizer instanceof Sanitizer and
     state instanceof PostValidation
   }
 
@@ -143,6 +140,10 @@ class Configuration extends TaintTracking::Configuration {
       or
       sink instanceof Sink
     ) and
-    state instanceof PostValidation
+    (
+      state instanceof PostValidation
+      or
+      sink instanceof UntrustedUnicodeCharChecks and state instanceof PreValidation
+    )
   }
 }

@@ -20,31 +20,31 @@ func bad() {
 		fmt.Println(w, "Results: %q", unicode_norm)
 	})
 
-	http.HandleFunc("/good1_for_lt", func(w http.ResponseWriter, req *http.Request) {
-
-		unicode_input := req.URL.Query().Get("unicode_input")
-		if strings.IndexAny(unicode_input, "<﹤＜") == -1 {
-			unicode_norm := norm.NFKC.String(unicode_input) // $result=OK
-			fmt.Println(w, "Results: %q", unicode_norm)
-		}
-
-	})
-
-	http.HandleFunc("/good2_for_lt", func(w http.ResponseWriter, req *http.Request) {
-
-		unicode_input := req.URL.Query().Get("unicode_input")
-		if !strings.ContainsAny(unicode_input, "<﹤＜") {
-			unicode_norm := norm.NFKC.String(unicode_input) // $result=OK
-			fmt.Println(w, "Results: %q", unicode_norm)
-		}
-
-	})
-
 	http.HandleFunc("/bad2", func(w http.ResponseWriter, req *http.Request) {
 
 		unicode_input := req.URL.Query().Get("unicode_input")
+		if strings.IndexAny(unicode_input, "<﹤＜") == -1 {
+			unicode_norm := norm.NFKC.String(unicode_input) // $result=BAD
+			fmt.Println(w, "Results: %q", unicode_norm)
+		}
+
+	})
+
+	http.HandleFunc("/bad3", func(w http.ResponseWriter, req *http.Request) {
+
+		unicode_input := req.URL.Query().Get("unicode_input")
+		if !strings.ContainsAny(unicode_input, "<﹤＜") {
+			unicode_norm := norm.NFKC.String(unicode_input) // $result=BAD
+			fmt.Println(w, "Results: %q", unicode_norm)
+		}
+
+	})
+
+	http.HandleFunc("/bad4", func(w http.ResponseWriter, req *http.Request) {
+
+		unicode_input := req.URL.Query().Get("unicode_input")
 		if !strings.Contains(unicode_input, "<") {
-			unicode_norm := norm.NFKC.String(unicode_input) // $Missing:result=BAD
+			unicode_norm := norm.NFKC.String(unicode_input) // $result=BAD
 			fmt.Println(w, "Results: %q", unicode_norm)
 		}
 
