@@ -4,8 +4,10 @@ rackApps
 | rack.rb:24:1:37:3 | Logger | rack.rb:30:12:30:14 | env |
 | rack.rb:39:1:45:3 | Redirector | rack.rb:40:12:40:14 | env |
 | rack.rb:59:1:75:3 | Baz | rack.rb:60:12:60:14 | env |
+| rack.rb:77:1:95:3 | Qux | rack.rb:79:17:79:19 | env |
 rackResponseContentTypes
 | rack.rb:8:5:8:38 | call to [] | rack.rb:7:34:7:45 | "text/plain" |
 | rack.rb:20:5:20:27 | call to [] | rack.rb:19:28:19:38 | "text/html" |
 redirectResponses
 | rack.rb:43:5:43:45 | call to [] | rack.rb:42:30:42:40 | "/foo.html" |
+| rack.rb:93:5:93:78 | call to finish | rack.rb:93:60:93:70 | redirect_to |
