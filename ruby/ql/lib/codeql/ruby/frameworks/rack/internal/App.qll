@@ -14,7 +14,7 @@ private class CallMethodNode extends DataFlow::MethodNode {
 
 private DataFlow::LocalSourceNode trackRackResponse(TypeBackTracker t, CallMethodNode call) {
   t.start() and
-  result = call.getAReturnNode()
+  result = call.getAReturnNode().getALocalSource()
   or
   exists(TypeBackTracker t2 | result = trackRackResponse(t2, call).backtrack(t2, t))
 }
