@@ -1,6 +1,6 @@
 /**
  * @name Bypass Logical Validation Using Unicode Characters
- * @description A Unicode transformation is using a remote user-controlled data. The transformation is a Unicode normalization using the algorithms "NFC" or "NFKC". In all cases, the security measures implemented or the logical validation performed to escape any injection characters, to validate using regex patterns or to perform string-based checks, before the Unicode transformation are **bypassable** by special Unicode characters.
+ * @description A Unicode transformation is using a remote user-controlled data. The transformation is a Unicode normalization using the algorithms "NFC" or "NFKC". In all cases, the security measures implemented or the logical validation performed to escape any injection characters, to validate using regex patterns or to perform string-based checks, before the Unicode transformation are bypassable by special Unicode characters.
  * @kind path-problem
  * @id java/unicode-bypass-validation
  * @precision high
