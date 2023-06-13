@@ -134,6 +134,13 @@ signature module Output<Input I> {
  */
 module SummaryFlow<Input I> implements Output<I> {
   pragma[nomagic]
+  private predicate isNonLocal(I::SummaryComponent component) {
+    component = I::content(_)
+    or
+    component = I::withContent(_)
+  }
+
+  pragma[nomagic]
   private predicate hasLoadSummary(
     I::SummarizedCallable callable, I::TypeTrackerContent contents, I::SummaryComponentStack input,
     I::SummaryComponentStack output
@@ -210,15 +217,8 @@ module SummaryFlow<Input I> implements Output<I> {
     )
   }
 
-  pragma[nomagic]
-  private predicate isNonLocal(I::SummaryComponent component) {
-    component = I::content(_)
-    or
-    component = I::withContent(_)
-  }
-
   /**
-   * Gets a data flow I::Node corresponding an argument or return value of `call`,
+   * Gets a data flow `I::Node` corresponding an argument or return value of `call`,
    * as specified by `component`.
    */
   bindingset[call, component]
