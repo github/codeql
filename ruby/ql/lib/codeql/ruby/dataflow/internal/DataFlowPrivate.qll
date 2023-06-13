@@ -751,18 +751,16 @@ private module ParameterNodes {
 
   /** A parameter for a library callable with a flow summary. */
   class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
-    SummaryParameterNode() {
-      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
-    }
+    private ParameterPosition pos_;
 
-    private ParameterPosition getPosition() {
-      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
+    SummaryParameterNode() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), pos_)
     }
 
     override Parameter getParameter() { none() }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      this.getSummarizedCallable() = c.asLibraryCallable() and pos = this.getPosition()
+      this.getSummarizedCallable() = c.asLibraryCallable() and pos = pos_
     }
   }
 }
@@ -847,8 +845,11 @@ private module ArgumentNodes {
   }
 
   private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNode {
+    private DataFlowCall call_;
+    private ArgumentPosition pos_;
+
     SummaryArgumentNode() {
-      FlowSummaryImpl::Private::summaryArgumentNode(_, this.getSummaryNode(), _)
+      FlowSummaryImpl::Private::summaryArgumentNode(call_, this.getSummaryNode(), pos_)
     }
 
     override predicate sourceArgumentOf(CfgNodes::ExprNodes::CallCfgNode call, ArgumentPosition pos) {
@@ -856,7 +857,7 @@ private module ArgumentNodes {
     }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), pos)
+      call = call_ and pos = pos_
     }
   }
 
@@ -1063,11 +1064,14 @@ private module OutNodes {
   }
 
   private class SummaryOutNode extends FlowSummaryNode, OutNode {
-    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this.getSummaryNode(), _) }
+    private DataFlowCall call;
+    private ReturnKind kind_;
 
-    override DataFlowCall getCall(ReturnKind kind) {
-      FlowSummaryImpl::Private::summaryOutNode(result, this.getSummaryNode(), kind)
+    SummaryOutNode() {
+      FlowSummaryImpl::Private::summaryOutNode(call, this.getSummaryNode(), kind_)
     }
+
+    override DataFlowCall getCall(ReturnKind kind) { result = call and kind = kind_ }
   }
 }
 

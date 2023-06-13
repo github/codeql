@@ -570,7 +570,7 @@ module Private {
       summaryParameterNodeRange(c, pos)
     }
 
-  class SummaryNode extends TSummaryNode {
+  abstract class SummaryNode extends TSummaryNode {
     abstract string toString();
 
     abstract SummarizedCallable getSummarizedCallable();

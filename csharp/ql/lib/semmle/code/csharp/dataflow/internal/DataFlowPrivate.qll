@@ -1125,16 +1125,14 @@ private module ParameterNodes {
 
   /** A parameter for a library callable with a flow summary. */
   class SummaryParameterNode extends ParameterNodeImpl, FlowSummaryNode {
-    SummaryParameterNode() {
-      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
-    }
+    private ParameterPosition pos_;
 
-    private ParameterPosition getPosition() {
-      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
+    SummaryParameterNode() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), pos_)
     }
 
     override predicate isParameterOf(DataFlowCallable c, ParameterPosition pos) {
-      this.getSummarizedCallable() = c.asSummarizedCallable() and pos = this.getPosition()
+      this.getSummarizedCallable() = c.asSummarizedCallable() and pos = pos_
     }
   }
 }
@@ -1305,12 +1303,15 @@ private module ArgumentNodes {
   }
 
   private class SummaryArgumentNode extends FlowSummaryNode, ArgumentNodeImpl {
+    private DataFlowCall call_;
+    private ArgumentPosition pos_;
+
     SummaryArgumentNode() {
-      FlowSummaryImpl::Private::summaryArgumentNode(_, this.getSummaryNode(), _)
+      FlowSummaryImpl::Private::summaryArgumentNode(call_, this.getSummaryNode(), pos_)
     }
 
     override predicate argumentOf(DataFlowCall call, ArgumentPosition pos) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), pos)
+      call = call_ and pos = pos_
     }
   }
 }
@@ -1593,11 +1594,14 @@ private module OutNodes {
   }
 
   private class SummaryOutNode extends FlowSummaryNode, OutNode {
-    SummaryOutNode() { FlowSummaryImpl::Private::summaryOutNode(_, this.getSummaryNode(), _) }
+    private DataFlowCall call;
+    private ReturnKind kind_;
 
-    override DataFlowCall getCall(ReturnKind kind) {
-      FlowSummaryImpl::Private::summaryOutNode(result, this.getSummaryNode(), kind)
+    SummaryOutNode() {
+      FlowSummaryImpl::Private::summaryOutNode(call, this.getSummaryNode(), kind_)
     }
+
+    override DataFlowCall getCall(ReturnKind kind) { result = call and kind = kind_ }
   }
 }
 
@@ -2120,15 +2124,14 @@ private module PostUpdateNodes {
   }
 
   private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
+    private FlowSummaryImpl::Private::SummaryNode preUpdateNode;
+
     SummaryPostUpdateNode() {
-      FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), _) and
+      FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), preUpdateNode) and
       not summaryPostUpdateNodeIsOutOrRef(this, _)
     }
 
-    override Node getPreUpdateNode() {
-      FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(),
-        result.(FlowSummaryNode).getSummaryNode())
-    }
+    override Node getPreUpdateNode() { result.(FlowSummaryNode).getSummaryNode() = preUpdateNode }
   }
 }
 
