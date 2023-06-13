@@ -4134,7 +4134,7 @@ private module StdlibPrivate {
   }
 
   /**
-   * A flow summary for `dict.setdefault` at specifi key.
+   * A flow summary for `dict.setdefault` at specific content.
    * See https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
    * This summary handles read and store steps. See `DictSetdefaultSummary`
    * for the dataflow steps.
