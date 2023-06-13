@@ -59,8 +59,8 @@ pkg_runfiles(
 )
 
 pkg_runfiles(
-    name = "incompatible-os",
-    srcs = ["//swift/tools/autobuilder-diagnostics:incompatible-os"],
+    name = "diagnostics",
+    srcs = ["//swift/tools/diagnostics:autobuilder-incompatible-os"],
     prefix = "tools/" + codeql_platform,
 )
 
@@ -81,7 +81,7 @@ pkg_filegroup(
             ":xcode-autobuilder",
         ],
         "//conditions:default": [
-            ":incompatible-os",
+            ":diagnostics",
         ],
     }),
     visibility = ["//visibility:public"],
@@ -114,7 +114,7 @@ generate_cmake(
         "//swift/extractor:extractor.real",
         "//swift/logging/tests/assertion-diagnostics:assert-false",
     ] + select({
-        "@platforms//os:linux": ["//swift/tools/autobuilder-diagnostics:incompatible-os"],
+        "@platforms//os:linux": ["//swift/tools/diagnostics:autobuilder-incompatible-os"],
         "@platforms//os:macos": ["//swift/xcode-autobuilder"],
     }),
     visibility = ["//visibility:public"],
