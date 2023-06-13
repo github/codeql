@@ -166,11 +166,12 @@ predicate hasAuthViaXml(ActionMethod m) {
   )
 }
 
-/** Holds if the given action has an `Authorize` attribute. */
+/** Holds if the given action has an attribute that indications authorization. */
 predicate hasAuthViaAttribute(ActionMethod m) {
-  [m.getAnAttribute(), m.getDeclaringType().getAnAttribute()]
-      .getType()
-      .hasQualifiedName("Microsoft.AspNetCore.Authorization", "AuthorizeAttribute")
+  exists(Attribute attr | attr.getType().getName().toLowerCase().matches("%auth%") |
+    attr = m.getAnAttribute() or
+    attr = m.getDeclaringType().getABaseType*().getAnAttribute()
+  )
 }
 
 /** Holds if `m` is a method that should have an auth check, but is missing it. */
