@@ -147,6 +147,9 @@ class SummarizedCallableBase extends TSummarizedCallableBase {
     or
     pos = -1 and result = this.asCallable().getDeclaringType()
     or
+    hasOverloadWithParameter(this.asCallable(), pos) and
+    result instanceof TypeObject
+    or
     result = this.asSyntheticCallable().getParameterType(pos)
     or
     exists(SyntheticCallable sc | sc = this.asSyntheticCallable() |
@@ -167,6 +170,23 @@ class SummarizedCallableBase extends TSummarizedCallableBase {
       result instanceof TypeObject
     )
   }
+}
+
+private predicate hasOverload(string package, string type, string name) {
+  2 <= strictcount(Callable c | c.hasQualifiedName(package, type, name))
+}
+
+private predicate maxOverloadArity(string package, string type, string name, int arity) {
+  hasOverload(package, type, name) and
+  arity = max(int p | exists(Callable c | c.hasQualifiedName(package, type, name) and p = c.getNumberOfParameters()))
+}
+
+private predicate hasOverloadWithParameter(Callable c, int pos) {
+  exists(string package, string type, string name, int arity |
+    c.hasQualifiedName(package, type, name) and
+    maxOverloadArity(package, type, name, arity) and
+    pos = [c.getNumberOfParameters().. arity - 1]
+  )
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
