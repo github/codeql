@@ -1,5 +1,3 @@
-// semmle-extractor-options: ${testdir}/../../resources/stubs/System.Web.cs /r:System.Threading.Tasks.dll /r:System.Collections.Specialized.dll /r:System.Runtime.dll /r:System.Private.Uri.dll
-
 using System;
 using System.Threading.Tasks;
 using System.Web.Mvc;
