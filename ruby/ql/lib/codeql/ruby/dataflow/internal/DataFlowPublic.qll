@@ -1011,6 +1011,23 @@ class ModuleNode instanceof Module {
   MethodNode getAnInstanceMethod() { result = this.getInstanceMethod(_) }
 
   /**
+   * Gets the singleton method named `name` available in this module, including methods inherited from ancestors.
+   *
+   * Overridden methods are not included.
+   */
+  MethodNode getSingletonMethod(string name) {
+    result.asCallableAstNode() = super.getAnOwnSingletonMethod() and
+    result.getMethodName() = name
+  }
+
+  /**
+   * Gets a singleton method available in this module, including methods inherited from ancestors.
+   *
+   * Overridden methods are not included.
+   */
+  MethodNode getASingletonMethod() { result = this.getSingletonMethod(_) }
+
+  /**
    * Gets the enclosing module, as it appears in the qualified name of this module.
    *
    * For example, the parent module of `A::B` is `A`, and `A` itself has no parent module.
