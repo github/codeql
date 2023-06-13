@@ -13,15 +13,39 @@ private import App as A
 /** Contains implementation details for modeling `Rack::Response`. */
 module Private {
   /** A `DataFlow::Node` that may be a rack response. This is detected heuristically, if something "looks like" a rack response syntactically then we consider it to be a potential response node. */
-  class PotentialResponseNode extends DataFlow::ArrayLiteralNode {
-    // [status, headers, body]
-    PotentialResponseNode() { this.getNumberOfArguments() = 3 }
-
+  abstract class PotentialResponseNode extends DataFlow::Node {
     /** Gets the headers returned with this response. */
-    DataFlow::Node getHeaders() { result = this.getElement(1) }
+    abstract DataFlow::Node getHeaders();
 
     /** Gets the body of this response. */
-    DataFlow::Node getBody() { result = this.getElement(2) }
+    abstract DataFlow::Node getBody();
+  }
+
+  /** A rack response constructed directly using an array literal. */
+  private class PotentialArrayResponse extends PotentialResponseNode, DataFlow::ArrayLiteralNode {
+    // [status, headers, body]
+    PotentialArrayResponse() { this.getNumberOfArguments() = 3 }
+
+    override DataFlow::Node getHeaders() { result = this.getElement(1) }
+
+    override DataFlow::Node getBody() { result = this.getElement(2) }
+  }
+
+  /** A rack response constructed by calling `finish` on an instance of `Rack::Response`. */
+  private class RackResponseConstruction extends PotentialResponseNode, DataFlow::CallNode {
+    private DataFlow::CallNode responseConstruction;
+
+    // (body, status, headers)
+    RackResponseConstruction() {
+      responseConstruction =
+        API::getTopLevelMember("Rack").getMember("Response").getAnInstantiation() and
+      this = responseConstruction.getAMethodCall() and
+      this.getMethodName() = "finish"
+    }
+
+    override DataFlow::Node getHeaders() { result = responseConstruction.getArgument(2) }
+
+    override DataFlow::Node getBody() { result = responseConstruction.getArgument(0) }
   }
 }
 
@@ -54,19 +78,28 @@ module Public {
                   v.getStringlikeValue().toLowerCase() = headerName.toLowerCase()
                 ))
       )
+      or
+      // pair in a `Rack::Response.new` constructor
+      exists(DataFlow::PairNode headerPair | headerPair = headers |
+        headerPair.getKey().getConstantValue().getStringlikeValue().toLowerCase() =
+          headerName.toLowerCase() and
+        result = headerPair.getValue()
+      )
     )
   }
 
   /** A `DataFlow::Node` returned from a rack request. */
-  class ResponseNode extends Private::PotentialResponseNode, Http::Server::HttpResponse::Range
+  class ResponseNode extends Http::Server::HttpResponse::Range instanceof Private::PotentialResponseNode
   {
     ResponseNode() { this = any(A::App::App app).getResponse() }
 
-    override DataFlow::Node getBody() { result = this.getElement(2) }
+    override DataFlow::Node getBody() { result = this.(Private::PotentialResponseNode).getBody() }
 
     override DataFlow::Node getMimetypeOrContentTypeArg() {
       result = getHeaderValue(this, "content-type")
     }
+
+    DataFlow::Node getHeaders() { result = this.(Private::PotentialResponseNode).getHeaders() }
 
     // TODO: is there a sensible value for this?
     override string getMimetypeDefault() { none() }
