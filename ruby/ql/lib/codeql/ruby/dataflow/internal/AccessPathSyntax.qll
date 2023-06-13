@@ -116,7 +116,7 @@ private string getRawToken(AccessPath path, int n) {
   // Avoid splitting by '.' since tokens may contain dots, e.g. `Field[foo.Bar.x]`.
   // Instead use regexpFind to match valid tokens, and supplement with a final length
   // check (in `AccessPath.hasSyntaxError`) to ensure all characters were included in a token.
-  result = path.regexpFind("\\w+(?:\\[[^\\]]*\\])?(?=\\.|$)", n, _)
+  result = path.regexpFind("\\w+(?:\\[(?:[^'\\]]*|'(?:[^']|'')*')\\])?(?=\\.|$)", n, _)
 }
 
 /**
@@ -152,7 +152,7 @@ class AccessPathToken extends string {
   AccessPathToken() { this = getRawToken(_, _) }
 
   private string getPart(int part) {
-    result = this.regexpCapture("([^\\[]+)(?:\\[([^\\]]*)\\])?", part)
+    result = this.regexpCapture("([^\\[]+)(?:\\[(?:([^'\\]]*)|'((?:[^']|'')*)')\\])?", part)
   }
 
   /** Gets the name of the token, such as `Member` from `Member[x]` */
@@ -162,10 +162,20 @@ class AccessPathToken extends string {
    * Gets the argument list, such as `1,2` from `Member[1,2]`,
    * or has no result if there are no arguments.
    */
-  string getArgumentList() { result = this.getPart(2) }
+  string getArgumentList() {
+    result = this.getPart(2) or result = this.getPart(3).regexpReplaceAll("''", "'")
+  }
 
-  /** Gets the `n`th argument to this token, such as `x` or `y` from `Member[x,y]`. */
-  string getArgument(int n) { result = this.getArgumentList().splitAt(",", n).trim() }
+  /**
+   * Gets the `n`th argument to this token, such as `x` or `y` from `Member[x,y]`, or
+   * `foo,bar` from `Member['foo,bar']`.
+   */
+  pragma[nomagic]
+  string getArgument(int n) {
+    result = this.getPart(2).splitAt(",", n).trim()
+    or
+    result = this.getPart(3).replaceAll("''", "'") and n = 0
+  }
 
   /** Gets the `n`th argument to this `name` token, such as `x` or `y` from `Member[x,y]`. */
   pragma[nomagic]
