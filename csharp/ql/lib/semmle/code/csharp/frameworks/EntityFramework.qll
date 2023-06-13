@@ -370,16 +370,45 @@ module EntityFramework {
       )
     }
 
-    pragma[nomagic]
-    string getSyntheticNames(
-      SummaryComponentStack input, SummaryComponentStack output, DbContextClassSetProperty dbSet
-    ) {
-      exists(Property mapped |
-        this = dbSet.getDbContextClass() and
-        input(this, input, mapped) and
-        output(this, output, mapped, dbSet) and
-        result = dbSet.getSyntheticName() + "#" + SummaryComponentStack::getComponentStack(output)
+    /**
+     * Holds if `input` is a valid summary component stack for property `mapped` for this.
+     */
+    pragma[noinline]
+    predicate input(SummaryComponentStack input, Property mapped) {
+      exists(PropertyContent head, SummaryComponentStack tail |
+        this.requiresComponentStackIn(head, _, tail, _) and
+        head.getProperty() = mapped and
+        mapped = this.getAColumnProperty(_) and
+        input = SummaryComponentStack::push(SummaryComponent::content(head), tail)
       )
+    }
+
+    /**
+     * Holds if `output` is a valid summary component stack for the getter of `dbSet`
+     * for property `mapped` for this.
+     */
+    pragma[noinline]
+    predicate output(SummaryComponentStack output, Property mapped, DbContextClassSetProperty dbSet) {
+      exists(PropertyContent head, SummaryComponentStack tail |
+        this.requiresComponentStackOut(head, _, tail, _, dbSet) and
+        head.getProperty() = mapped and
+        mapped = this.getAColumnProperty(_) and
+        output = SummaryComponentStack::push(SummaryComponent::content(head), tail)
+      )
+    }
+
+    /**
+     * Gets the synthetic name for the getter of `dbSet` for property `mapped` for this,
+     * where `output` is a valid summary component stack for the getter of `dbSet`
+     * for the property `mapped`.
+     */
+    pragma[nomagic]
+    string getSyntheticName(
+      SummaryComponentStack output, Property mapped, DbContextClassSetProperty dbSet
+    ) {
+      this = dbSet.getDbContextClass() and
+      this.output(output, mapped, dbSet) and
+      result = dbSet.getFullName() + "#" + SummaryComponentStack::getComponentStack(output)
     }
   }
 
@@ -389,9 +418,9 @@ module EntityFramework {
     DbContextClassSetProperty() { this = c.getADbSetProperty(_) }
 
     /**
-     * Gets the string representation for a synthetic identifier for this.
+     * Gets the fully qualified name for this.
      */
-    string getSyntheticName() {
+    string getFullName() {
       exists(string qualifier, string type, string name |
         this.hasQualifiedName(qualifier, type, name)
       |
@@ -400,39 +429,9 @@ module EntityFramework {
     }
 
     /**
-     * Gets the context class where this is a Db set property.
+     * Gets the context class where this is a DbSet property.
      */
     DbContextClass getDbContextClass() { result = c }
-  }
-
-  /**
-   * Holds if `input` is a valid summary component stack for property `mapped`
-   * for the context class `c`.
-   */
-  pragma[noinline]
-  predicate input(DbContextClass c, SummaryComponentStack input, Property mapped) {
-    exists(PropertyContent head, SummaryComponentStack tail |
-      c.requiresComponentStackIn(head, _, tail, _) and
-      head.getProperty() = mapped and
-      mapped = c.getAColumnProperty(_) and
-      input = SummaryComponentStack::push(SummaryComponent::content(head), tail)
-    )
-  }
-
-  /**
-   * Holds if `output` is a valid summary component stack for the getter of `dbSet`
-   * for property `mapped` for the context class `c`.
-   */
-  pragma[noinline]
-  predicate output(
-    DbContextClass c, SummaryComponentStack output, Property mapped, DbContextClassSetProperty dbSet
-  ) {
-    exists(PropertyContent head, SummaryComponentStack tail |
-      c.requiresComponentStackOut(head, _, tail, _, dbSet) and
-      head.getProperty() = mapped and
-      mapped = c.getAColumnProperty(_) and
-      output = SummaryComponentStack::push(SummaryComponent::content(head), tail)
-    )
   }
 
   private class DbContextClassSetPropertySynthetic extends EFSummarizedCallable {
@@ -445,7 +444,7 @@ module EntityFramework {
     ) {
       exists(string name, DbContextClass c |
         preservesValue = true and
-        name = c.getSyntheticNames(_, output, p) and
+        name = c.getSyntheticName(output, _, p) and
         input = SummaryComponentStack::syntheticGlobal(name)
       )
     }
@@ -459,21 +458,20 @@ module EntityFramework {
     override predicate propagatesFlow(
       SummaryComponentStack input, SummaryComponentStack output, boolean preservesValue
     ) {
-      exists(string name |
+      exists(string name, Property mapped |
         preservesValue = true and
-        name = c.getSyntheticNames(input, _, _) and
+        c.input(input, mapped) and
+        name = c.getSyntheticName(_, mapped, _) and
         output = SummaryComponentStack::syntheticGlobal(name)
       )
     }
   }
 
   /**
-   * Add all `DbContext` property names as potential synthetic globals.
+   * Add all possible synthetic global names.
    */
   private class EFSummarizedCallableSyntheticGlobal extends SummaryComponent::SyntheticGlobal {
-    EFSummarizedCallableSyntheticGlobal() {
-      this = any(DbContextClass c).getSyntheticNames(_, _, _)
-    }
+    EFSummarizedCallableSyntheticGlobal() { this = any(DbContextClass c).getSyntheticName(_, _, _) }
   }
 
   private class DbContextSaveChangesRequiredSummaryComponentStack extends RequiredSummaryComponentStack
