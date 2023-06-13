@@ -57,7 +57,7 @@ def test_list_from_set():
     s = {SOURCE}
     l = list(s)
     SINK(l[0]) #$ flow="SOURCE, l:-2 -> l[0]"
-    
+
 @expects(2)
 def test_list_from_dict():
     d = {SOURCE: 'v', NONSOURCE: 'v2'}
@@ -224,7 +224,7 @@ def test_dict_pop():
     v2 = d.pop("non-existing", SOURCE)
     SINK(v2) #$ flow="SOURCE, l:-1 -> v2"
 
-@expects(2)
+@expects(3)
 def test_dict_get():
     d = {'k': SOURCE}
     v = d.get("k")
