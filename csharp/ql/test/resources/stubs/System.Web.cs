@@ -156,6 +156,7 @@ namespace System.Web
     public class HttpResponse
     {
         public void Write(object o) { }
+        public void Write(string s) { }
         public void WriteFile(string s) { }
         public HttpCookieCollection Cookies => null;
         public void AddHeader(string name, string value) { }
