@@ -350,7 +350,7 @@ predicate isNonLocal(SummaryComponent component) {
 private import SummaryTypeTracker as SummaryTypeTracker
 private import codeql.ruby.dataflow.FlowSummary as FlowSummary
 
-module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
+private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   // Dataflow nodes
   class Node = DataFlow::Node;
 
@@ -448,4 +448,4 @@ module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   Node callTo(SummarizedCallable callable) { result.asExpr().getExpr() = callable.getACallSimple() }
 }
 
-module TypeTrackerSummaryFlow = SummaryTypeTracker::SummaryFlow<SummaryTypeTrackerInput>;
+private module TypeTrackerSummaryFlow = SummaryTypeTracker::SummaryFlow<SummaryTypeTrackerInput>;

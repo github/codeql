@@ -179,7 +179,7 @@ private predicate argumentPositionMatch(
   )
 }
 
-module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
+private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   // Dataflow nodes
   class Node = DataFlowPublic::Node;
 
@@ -258,4 +258,4 @@ module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   Node callTo(SummarizedCallable callable) { result = callable.getACallSimple() }
 }
 
-module TypeTrackerSummaryFlow = SummaryTypeTracker::SummaryFlow<SummaryTypeTrackerInput>;
+private module TypeTrackerSummaryFlow = SummaryTypeTracker::SummaryFlow<SummaryTypeTrackerInput>;
