@@ -18,6 +18,8 @@ struct Regex<Output> : RegexComponent {
 	init(_ pattern: String) throws where Output == AnyRegexOutput { }
 
 	func firstMatch(in string: String) throws -> Regex<Output>.Match? { return nil}
+	func prefixMatch(in string: String) throws -> Regex<Output>.Match? { return nil}
+	func wholeMatch(in string: String) throws -> Regex<Output>.Match? { return nil}
 
 	typealias RegexOutput = Output
 }
@@ -36,7 +38,8 @@ extension String {
 func myRegexpVariantsTests(myUrl: URL) throws {
 	let tainted = String(contentsOf: myUrl) // tainted
 
-	// basic cases:
+    // basic cases:
+    // attack string: "a" x lots + "!"
 
 	_ = try Regex(".*").firstMatch(in: tainted) // $ regex=.* input=tainted
 
@@ -49,64 +52,74 @@ func myRegexpVariantsTests(myUrl: URL) throws {
 	_ = try Regex("(a|aa?)b").firstMatch(in: tainted) // $ regex=(a|aa?)b input=tainted
 	_ = try Regex("(a|aa?)*b").firstMatch(in: tainted) // $ regex=(a|aa?)*b input=tainted redos-vulnerable=
 
-	// from the qhelp:
+    // from the qhelp:
+	// attack string: "_" x lots + "!"
 
 	_ = try Regex("^_(__|.)+_$").firstMatch(in: tainted) // $ regex=^_(__|.)+_$ input=tainted redos-vulnerable=
 	_ = try Regex("^_(__|[^_])+_$").firstMatch(in: tainted) // $ regex=^_(__|[^_])+_$ input=tainted
 
-	// real world cases:
+    // real world cases:
 
-	// NOT GOOD; attack: "_" + "__".repeat(100)
-	// Adapted from marked (https://github.com/markedjs/marked), which is licensed
-	// under the MIT license; see file licenses/marked-LICENSE.
-	_ = try Regex(#"^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)"#).firstMatch(in: tainted) // $ redos-vulnerable=
+    // Adapted from marked (https://github.com/markedjs/marked), which is licensed
+    // under the MIT license; see file licenses/marked-LICENSE.
+    // GOOD
+	_ = try Regex(#"^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)"#).firstMatch(in: tainted) // $ SPURIOUS: redos-vulnerable=
+	// BAD
+    // attack string: "_" + "__".repeat(100)
+	_ = try Regex(#"^\b_((?:__|[\s\S])+?)_\b|^\*((?:\*\*|[\s\S])+?)\*(?!\*)"#).wholeMatch(in: tainted) // $ redos-vulnerable=
 
-	// GOOD
-	// Adapted from marked (https://github.com/markedjs/marked), which is licensed
-	// under the MIT license; see file licenses/marked-LICENSE.
+    // GOOD
+    // Adapted from marked (https://github.com/markedjs/marked), which is licensed
+    // under the MIT license; see file licenses/marked-LICENSE.
 	_ = try Regex(#"^\b_((?:__|[^_])+?)_\b|^\*((?:\*\*|[^*])+?)\*(?!\*)"#).firstMatch(in: tainted)
 
-	// GOOD - there is no witness in the end that could cause the regexp to not match
-	// Adapted from brace-expansion (https://github.com/juliangruber/brace-expansion),
-	// which is licensed under the MIT license; see file licenses/brace-expansion-LICENSE.
+    // GOOD - there is no witness in the end that could cause the regexp to not match
+    // Adapted from brace-expansion (https://github.com/juliangruber/brace-expansion),
+    // which is licensed under the MIT license; see file licenses/brace-expansion-LICENSE.
 	_ = try Regex("(.*,)+.+").firstMatch(in: tainted)
 
-	// NOT GOOD; attack: " '" + "\\\\".repeat(100)
-	// Adapted from CodeMirror (https://github.com/codemirror/codemirror),
-	// which is licensed under the MIT license; see file licenses/CodeMirror-LICENSE.
+    // BAD
+    // attack string: " '" + "\\\\".repeat(100)
+    // Adapted from CodeMirror (https://github.com/codemirror/codemirror),
+    // which is licensed under the MIT license; see file licenses/CodeMirror-LICENSE.
 	_ = try Regex(#"^(?:\s+(?:"(?:[^"\\]|\\\\|\\.)+"|'(?:[^'\\]|\\\\|\\.)+'|\((?:[^)\\]|\\\\|\\.)+\)))?"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-	// GOOD
-	// Adapted from jest (https://github.com/facebook/jest), which is licensed
-	// under the MIT license; see file licenses/jest-LICENSE.
+    // GOOD
+    // Adapted from jest (https://github.com/facebook/jest), which is licensed
+    // under the MIT license; see file licenses/jest-LICENSE.
 	_ = try Regex(#"^ *(\S.*\|.*)\n *([-:]+ *\|[-| :]*)\n((?:.*\|.*(?:\n|$))*)\n*"#).firstMatch(in: tainted)
 
-	// NOT GOOD; attack: "/" + "\\/a".repeat(100)
-	// Adapted from ANodeBlog (https://github.com/gefangshuai/ANodeBlog),
-	// which is licensed under the Apache License 2.0; see file licenses/ANodeBlog-LICENSE.
+    // BAD
+    // attack string: "/" + "\\/a".repeat(100)
+    // Adapted from ANodeBlog (https://github.com/gefangshuai/ANodeBlog),
+    // which is licensed under the Apache License 2.0; see file licenses/ANodeBlog-LICENSE.
 	_ = try Regex(#"\/(?![ *])(\\\/|.)*?\/[gim]*(?=\W|$)"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-	// NOT GOOD; attack: "##".repeat(100) + "\na"
-	// Adapted from CodeMirror (https://github.com/codemirror/codemirror),
-	// which is licensed under the MIT license; see file licenses/CodeMirror-LICENSE.
+    // BAD
+    // attack string: "##".repeat(100) + "\na"
+    // Adapted from CodeMirror (https://github.com/codemirror/codemirror),
+    // which is licensed under the MIT license; see file licenses/CodeMirror-LICENSE.
 	_ = try Regex(#"^([\s\[\{\(]|#.*)*$"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-	// NOT GOOD; attack: "a" + "[]".repeat(100) + ".b\n"
-	// Adapted from Knockout (https://github.com/knockout/knockout), which is
-	// licensed under the MIT license; see file licenses/knockout-LICENSE
+    // BAD
+    // attack string: "a" + "[]".repeat(100) + ".b\n"
+    // Adapted from Knockout (https://github.com/knockout/knockout), which is
+    // licensed under the MIT license; see file licenses/knockout-LICENSE
 	_ = try Regex(#"^[\_$a-z][\_$a-z0-9]*(\[.*?\])*(\.[\_$a-z][\_$a-z0-9]*(\[.*?\])*)*$"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-	// NOT GOOD; attack: "[" + "][".repeat(100) + "]!"
-	// Adapted from Prototype.js (https://github.com/prototypejs/prototype), which
-	// is licensed under the MIT license; see file licenses/Prototype.js-LICENSE.
+    // BAD
+    // attack string: "[" + "][".repeat(100) + "]!"
+    // Adapted from Prototype.js (https://github.com/prototypejs/prototype), which
+    // is licensed under the MIT license; see file licenses/Prototype.js-LICENSE.
 	_ = try Regex(#"(([\w#:.~>+()\s-]+|\*|\[.*?\])+)\s*(,|$)"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-	// NOT GOOD; attack: "'" + "\\a".repeat(100) + '"'
-	// Adapted from Prism (https://github.com/PrismJS/prism), which is licensed
-	// under the MIT license; see file licenses/Prism-LICENSE.
+    // BAD
+    // attack string: "'" + "\\a".repeat(100) + '"'
+    // Adapted from Prism (https://github.com/PrismJS/prism), which is licensed
+    // under the MIT license; see file licenses/Prism-LICENSE.
 	_ = try Regex(#"("|')(\\?.)*?\1"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-	// more cases:
+    // more cases:
 
     // GOOD
     _ = try Regex(#"(\r\n|\r|\n)+"#).firstMatch(in: tainted)
@@ -114,181 +127,250 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     // GOOD
     _ = try Regex("(a|.)*").firstMatch(in: tainted)
 
-    // Testing the NFA - only some of the below are detected.
+    // BAD - testing the NFA
+    // attack string: "a" x lots + "!"
     _ = try Regex("^([a-z]+)+$").firstMatch(in: tainted) // $ redos-vulnerable=
     _ = try Regex("^([a-z]*)*$").firstMatch(in: tainted) // $ redos-vulnerable=
-    _ = try Regex(#"^([a-zA-Z0-9])(([\\-.]|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$"#).firstMatch(in: tainted) // $ redos-vulnerable=
+    _ = try Regex(#"^([a-zA-Z0-9])(([\\.-]|[_]+)?([a-zA-Z0-9]+))*(@){1}[a-z0-9]+[.]{1}(([a-z]{2,3})|([a-z]{2,3}[.]{1}[a-z]{2,3}))$"#).firstMatch(in: tainted) // $ redos-vulnerable=
     _ = try Regex("^(([a-z])+.)+[A-Z]([a-z])+$").firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "b" x lots + "!"
     _ = try Regex("(b|a?b)*c").firstMatch(in: tainted) // $ redos-vulnerable=
-
-    // NOT GOOD
-    _ = try Regex("(a|aa?)*b").firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"(.|\n)*!"#).firstMatch(in: tainted)
 
-    // NOT GOOD; attack: "\n".repeat(100) + "." TODO: investigate, we should be getting this one.
+    // BAD
+    // attack string: "\n".repeat(100) + "."
+    // TODO: investigate, we should be getting this one.
     _ = try Regex(#"(?s)(.|\n)*!"#).firstMatch(in: tainted) // $ hasParseFailure MISSING: redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"([\w.]+)*"#).firstMatch(in: tainted)
+	// BAD
+    // attack string: "a" x lots + "!"
+    _ = try Regex(#"([\w.]+)*"#).wholeMatch(in: tainted)
 
-    // NOT GOOD
-    _ = try Regex("(a|aa?)*b").firstMatch(in: tainted) // $ redos-vulnerable=
-
-    // NOT GOOD
+    // BAD
+    // attack string: "b" x lots + "!"
     _ = try Regex(#"(([\s\S]|[^a])*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD - there is no witness in the end that could cause the regexp to not match
     _ = try Regex(#"([^"']+)*"#).firstMatch(in: tainted)
 
-    // NOT GOOD
+    // BAD
+    // attack string: "b" x lots + "!"
     _ = try Regex(#"((.|[^a])*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"((a|[^a])*)""#).firstMatch(in: tainted)
 
-    // NOT GOOD
+    // BAD
+    // attack string: "b" x lots + "!"
     _ = try Regex(#"((b|[^a])*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "G" x lots + "!"
     _ = try Regex(#"((G|[^a])*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "0" x lots + "!"
     _ = try Regex(#"(([0-9]|[^a])*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD (missing)
+    // BAD [NOT DETECTED]
+    // (no confirmed attack string)
     _ = try Regex(#"(?:=(?:([!#\$%&'\*\+\-\.\^_`\|~0-9A-Za-z]+)|"((?:\\[\x00-\x7f]|[^\x00-\x08\x0a-\x1f\x7f"])*)"))?"#).firstMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
-    // NOT GOOD (missing)
+    // BAD [NOT DETECTED]
+    // (no confirmed attack string)
     _ = try Regex(#""((?:\\[\x00-\x7f]|[^\x00-\x08\x0a-\x1f\x7f"])*)""#).firstMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // GOOD
     _ = try Regex(#""((?:\\[\x00-\x7f]|[^\x00-\x08\x0a-\x1f\x7f"\\])*)""#).firstMatch(in: tainted)
 
-    // NOT GOOD
+    // BAD
+    // attack string: "d" x lots + "!"
     _ = try Regex(#"(([a-z]|[d-h])*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "_" x lots
     _ = try Regex(#"(([^a-z]|[^0-9])*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "0" x lots + "!"
     _ = try Regex(#"((\d|[0-9])*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "\n" x lots + "."
     _ = try Regex(#"((\s|\s)*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "G" x lots + "!"
     _ = try Regex(#"((\w|G)*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"((\s|\d)*)""#).firstMatch(in: tainted)
 
-    // NOT GOOD
+    // BAD
+    // attack string: "5" x lots + "!"
+	_ = try Regex(#"((\d|\d)*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
+
+    // BAD
+    // attack string: "0" x lots + "!"
     _ = try Regex(#"((\d|\w)*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "5" x lots + "!"
     _ = try Regex(#"((\d|5)*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "\u{000C}" x lots + "!",
     _ = try Regex(#"((\s|[\f])*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD - but not detected (likely because \v is a character class in Java rather than a specific character in other langs)
+    // BAD
+    // attack string: "\n" x lots + "."
     _ = try Regex(#"((\s|[\v]|\\v)*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "\u{000C}" x lots + "!",
     _ = try Regex(#"((\f|[\f])*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "\n" x lots + "."
     _ = try Regex(#"((\W|\D)*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "a" x lots + "!"
     _ = try Regex(#"((\S|\w)*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "a" x lots + "!"
     _ = try Regex(#"((\S|[\w])*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "1s" x lots + "!"
     _ = try Regex(#"((1s|[\da-z])*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "0" x lots + "!"
     _ = try Regex(#"((0|[\d])*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "0" x lots + "!"
     _ = try Regex(#"(([\d]+)*)""#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD - there is no witness in the end that could cause the regexp to not match
     _ = try Regex(#"(\d+(X\d+)?)+"#).firstMatch(in: tainted)
+	// BAD
+    // attack string: "0" x lots + "!"
+    _ = try Regex(#"(\d+(X\d+)?)+"#).wholeMatch(in: tainted)
 
     // GOOD - there is no witness in the end that could cause the regexp to not match
     _ = try Regex("([0-9]+(X[0-9]*)?)*").firstMatch(in: tainted)
+    // BAD
+    // attack string: "0" x lots + "!"
+    _ = try Regex("([0-9]+(X[0-9]*)?)*").wholeMatch(in: tainted)
 
     // GOOD
     _ = try Regex("^([^>]+)*(>|$)").firstMatch(in: tainted)
 
-    // NOT GOOD
+    // BAD
+    // attack string: "##".repeat(100) + "\na"
     _ = try Regex("^([^>a]+)*(>|$)").firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "\n" x lots + "."
     _ = try Regex(#"(\n\s*)+$"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "\n" x lots + "."
     _ = try Regex(#"^(?:\s+|#.*|\(\?#[^)]*\))*(?:[?*+]|\{\d+(?:,\d*)?})"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // (no confirmed attack string)
     _ = try Regex(#"\{\[\s*([a-zA-Z]+)\(([a-zA-Z]+)\)((\s*([a-zA-Z]+)\: ?([ a-zA-Z{}]+),?)+)*\s*\]\}"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "a" x lots + "!"
     _ = try Regex("(a+|b+|c+)*c").firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "a" x lots + "!"
     _ = try Regex("(((a+a?)*)+b+)").firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "a" x lots + "!"
     _ = try Regex("(a+)+bbbb").firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex("(a+)+aaaaa*a+").firstMatch(in: tainted)
+	// BAD
+    // attack string: "a" x lots + "!"
+    _ = try Regex("(a+)+aaaaa*a+").wholeMatch(in: tainted)
 
-    // NOT GOOD
+    // BAD
+    // attack string: "a" x lots + "!"
     _ = try Regex("(a+)+aaaaa$").firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"(\n+)+\n\n"#).firstMatch(in: tainted)
+    // BAD
+    // attack string: "\n" x lots + "."
+    _ = try Regex(#"(\n+)+\n\n"#).wholeMatch(in: tainted)
 
-    // NOT GOOD
+    // BAD
+    // attack string: "\n" x lots + "."
     _ = try Regex(#"(\n+)+\n\n$"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: " " x lots + "X"
     _ = try Regex("([^X]+)*$").firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "b" x lots + "!"
     _ = try Regex("(([^X]b)+)*$").firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex("(([^X]b)+)*($|[^X]b)").firstMatch(in: tainted)
+	// BAD
+    // attack string: "b" x lots + "!"
+    _ = try Regex("(([^X]b)+)*($|[^X]b)").wholeMatch(in: tainted)
 
-    // NOT GOOD
+    // BAD
+    // attack string: "b" x lots + "!"
     _ = try Regex("(([^X]b)+)*($|[^X]c)").firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex("((ab)+)*ababab").firstMatch(in: tainted)
+    // BAD
+    // attack string: "ab" x lots + "!"
+    _ = try Regex("((ab)+)*ababab").wholeMatch(in: tainted)
 
     // GOOD
     _ = try Regex("((ab)+)*abab(ab)*(ab)+").firstMatch(in: tainted)
+    // BAD
+    // attack string: "ab" x lots + "!"
+    _ = try Regex("((ab)+)*abab(ab)*(ab)+").wholeMatch(in: tainted)
 
     // GOOD
     _ = try Regex("((ab)+)*").firstMatch(in: tainted)
+    // BAD
+    // attack string: "ab" x lots + "!"
+    _ = try Regex("((ab)+)*").wholeMatch(in: tainted)
 
-    // NOT GOOD
+    // BAD
+    // attack string: "ab" x lots + "!"
     _ = try Regex("((ab)+)*$").firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex("((ab)+)*[a1][b1][a2][b2][a3][b3]").firstMatch(in: tainted)
+    // BAD
+    // attack string: "ab" x lots + "!"
+    _ = try Regex("((ab)+)*[a1][b1][a2][b2][a3][b3]").wholeMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // (no confirmed attack string)
     _ = try Regex(#"([\n\s]+)*(.)"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD - any witness passes through the accept state.
@@ -297,13 +379,16 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     // GOOD
     _ = try Regex(#"([^\\\]]+)*"#).firstMatch(in: tainted)
 
-    // NOT GOOD TODO: QL evaluation times out (for test, at 5 minutes)
+    // BAD
+    // TODO: QL evaluation times out (for test, at 5 minutes)
 //    _ = try Regex(#"(\w*foobarbaz\w*foobarbaz\w*foobarbaz\w*foobarbaz\s*foobarbaz\d*foobarbaz\w*)+-"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD (but cannot currently construct a prefix)
+    // BAD (but cannot currently construct a prefix)
+    // attack string: "aa" + "b" x lots + "!"
     _ = try Regex("a{2,3}(b+)+X").firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD (and a good prefix test)
+    // BAD (and a good prefix test)
+    // (no confirmed attack string)
     _ = try Regex(#"^<(\w+)((?:\s+\w+(?:\s*=\s*(?:(?:"[^"]*")|(?:'[^']*')|[^>\s]+))?)*)\s*(\/?)>"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
@@ -318,7 +403,8 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     // GOOD
     _ = try Regex(#"(a+)*([\s\S]*|X)$"#).firstMatch(in: tainted)
 
-    // NOT GOOD
+    // BAD
+    // attack string: "a" x lots + "!"
     _ = try Regex(#"((a+)*$|[\s\S]+)"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD - but still flagged. The only change compared to the above is the order of alternatives, which we don't model.
@@ -327,13 +413,16 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     // GOOD
     _ = try Regex("((;|^)a+)+$").firstMatch(in: tainted)
 
-    // NOT GOOD (a good prefix test)
+    // BAD (a good prefix test)
+    // attack string: "00000000000000" + "e" x lots + "!"
     _ = try Regex("(^|;)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(0|1)(e+)+f").firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
-    _ = try Regex("^ab(c+)+$").firstMatch(in: tainted) // $ redos-vulnerable=
+    // BAD
+    // atack string: "ab" + "c" x lots + "!"
+     _ = try Regex("^ab(c+)+$").firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // (no confirmed attack string)
     _ = try Regex(#"(\d(\s+)*){20}"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD - but we spuriously conclude that a rejecting suffix exists.
@@ -342,43 +431,47 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     // GOOD - but we spuriously conclude that a rejecting suffix exists.
     _ = try Regex("^((x([^Y]+)?)*(Y|$))").firstMatch(in: tainted) // $ SPURIOUS: redos-vulnerable=
 
-    // NOT GOOD
-    _ = try Regex("(a*)+b").firstMatch(in: tainted) // $ redos-vulnerable=
-
-    // NOT GOOD
+    // BAD
+    // (no confirmed attack string)
     _ = try Regex(#"foo([\w-]*)+bar"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "ab" x lots + "!"
     _ = try Regex("((ab)*)+c").firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "a" x lots + "!"
     _ = try Regex("(a?a?)*b").firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex("(a?)*b").firstMatch(in: tainted)
 
-    // NOT GOOD - but not detected
+    // BAD - but not detected
+    // (no confirmed attack string)
     _ = try Regex("(c?a?)*b").firstMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "a" x lots + "!"
     _ = try Regex("(?:a|a?)+b").firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD - but not detected.
+    // BAD - but not detected.
+    // attack string: "ab" x lots + "!"
     _ = try Regex("(a?b?)*$").firstMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // (no confirmed attack string)
     _ = try Regex("PRE(([a-c]|[c-d])T(e?e?e?e?|X))+(cTcT|cTXcTX$)").firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "a" x lots + "!"
     _ = try Regex(#"^((a)+\w)+$"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // NOT GOOD
+    // BAD
+    // attack string: "bbbbbbbbbb." x lots + "!"
     _ = try Regex("^(b+.)+$").firstMatch(in: tainted) // $ redos-vulnerable=
 
-    // GOOD
-    _ = try Regex("a*b").firstMatch(in: tainted)
-
-    // All 4 bad combinations of nested * and +
+    // BAD - all 4 bad combinations of nested * and +
+    // attack string: "a" x lots + "!"
     _ = try Regex("(a*)*b").firstMatch(in: tainted) // $ redos-vulnerable=
     _ = try Regex("(a+)*b").firstMatch(in: tainted) // $ redos-vulnerable=
     _ = try Regex("(a*)+b").firstMatch(in: tainted) // $ redos-vulnerable=
@@ -386,9 +479,14 @@ func myRegexpVariantsTests(myUrl: URL) throws {
 
     // GOOD
     _ = try Regex("(a|b)+").firstMatch(in: tainted)
-    _ = try Regex(#"(?:[\s;,"'<>(){}|\[\]@=+*]|:(?![/\\]))+"#).firstMatch(in: tainted)
 
-	// TODO: investigate; these were marked `hasParseFailure`
+    // BAD
+    _ = try Regex(#"(?:[\s;,"'<>(){}|\[\]@=+*]|:(?![/\\]))+"#).firstMatch(in: tainted)
+	// BAD
+	// attack string: ???
+    _ = try Regex(#"(?:[\s;,"'<>(){}|\[\]@=+*]|:(?![/\\]))+"#).wholeMatch(in: tainted)
+
+    // TODO: investigate; these were marked `hasParseFailure`
     _ = try Regex(#"^((?:a{|-)|\w\{)+X$"#).firstMatch(in: tainted) // $ SPURIOUS: redos-vulnerable=
     _ = try Regex(#"^((?:a{0|-)|\w\{\d)+X$"#).firstMatch(in: tainted) // $ SPURIOUS: redos-vulnerable=
     _ = try Regex(#"^((?:a{0,|-)|\w\{\d,)+X$"#).firstMatch(in: tainted) // $ SPURIOUS: redos-vulnerable=
@@ -397,43 +495,50 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     // GOOD
     _ = try Regex(#"^((?:a{0,2}|-)|\w\{\d,\d\})+X$"#).firstMatch(in: tainted)
 
-    // NOT GOOD
+    // BAD
+    // attack string: "X" + "a" x lots
     _ = try Regex(#"X(\u0061|a)*Y"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"X(\u0061|b)+Y"#).firstMatch(in: tainted)
 
-    // NOT GOOD TODO: we should get this one
+    // BAD TODO: we should get this one
+    // attack string: "X" + "a" x lots
     _ = try Regex(#"X(\x61|a)*Y"#).firstMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"X(\x61|b)+Y"#).firstMatch(in: tainted)
 
-    // NOT GOOD TODO: we should get this one
+    // BAD TODO: we should get this one
+    // attack string: "X" + "a" x lots
     _ = try Regex(#"X(\x{061}|a)*Y"#).firstMatch(in: tainted) // $ hasParseFailure= MISSING: redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"X(\x{061}|b)+Y"#).firstMatch(in: tainted) // $ hasParseFailure
 
-    // NOT GOOD
+    // BAD
+    // attack string: "X" + "7" x lots
     _ = try Regex(#"X(\p{Digit}|7)*Y"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"X(\p{Digit}|b)+Y"#).firstMatch(in: tainted)
 
-    // NOT GOOD
+    // BAD
+    // attack string: "X" + "b" x lots
     _ = try Regex(#"X(\P{Digit}|b)*Y"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"X(\P{Digit}|7)+Y"#).firstMatch(in: tainted)
 
-    // NOT GOOD TODO: we should get this one
+    // BAD TODO: we should get this one
+    // attack string: "X" + "7" x lots
     _ = try Regex(#"X(\p{IsDigit}|7)*Y"#).firstMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"X(\p{IsDigit}|b)+Y"#).firstMatch(in: tainted)
 
-    // NOT GOOD - but not detected
+    // BAD - but not detected
+    // attack string: "X" + "a" x lots
     _ = try Regex(#"X(\p{Alpha}|a)*Y"#).firstMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // GOOD
@@ -441,12 +546,17 @@ func myRegexpVariantsTests(myUrl: URL) throws {
 
     // GOOD
     _ = try Regex(#"("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)"#).firstMatch(in: tainted)
+	// BAD
+    // attack string: "##" x lots + "\na"
+    _ = try Regex(#"("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)"#).wholeMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // BAD
+    // attack string: "/" + "\\/a" x lots
     _ = try Regex(#"/("[^"]*?"|[^"\s]+)+(?=\s*|\s*$)X"#).firstMatch(in: tainted) // $ redos-vulnerable=
     _ = try Regex(#"/("[^"]*?"|[^"\s]+)+(?=X)"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // BAD
+    // attack string: "0" x lots + "!"
     _ = try Regex(#"\A(\d|0)*x"#).firstMatch(in: tainted) // $ redos-vulnerable=
     _ = try Regex(#"(\d|0)*\Z"#).firstMatch(in: tainted) // $ redos-vulnerable=
     _ = try Regex(#"\b(\d|0)*x"#).firstMatch(in: tainted) // $ redos-vulnerable=
@@ -456,9 +566,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     _ = try Regex("(a*)*+b").firstMatch(in: tainted) // $ hasParseFailure
     _ = try Regex("(a*+)*b").firstMatch(in: tainted) // $ hasParseFailure
 
-    // BAD
-    _ = try Regex("(a*)*b").firstMatch(in: tainted) // $ redos-vulnerable=
-
     // BAD - but not detected due to the way possessive quantifiers are approximated
+    // attack string: "aab" x lots + "!"
     _ = try Regex("((aa|a*+)b)*c").firstMatch(in: tainted) // $ hasParseFailure MISSING: redos-vulnerable=
 }

@@ -145,4 +145,10 @@ func myRegexpMethodsTests(b: Bool) throws {
 	let base_str = "a"
 	let append_regex = try Regex(base_str + "b")
 	_ = try append_regex.firstMatch(in: input) // $ input=input MISSING: regex=ab
+
+	// --- escape sequences ---
+
+	_ = try Regex("\n").firstMatch(in: input) // $ regex=NEWLINE input=input
+	_ = try Regex("\\n").firstMatch(in: input) // $ regex=\n input=input
+	_ = try Regex(#"\n"#).firstMatch(in: input) // $ regex=\n input=input
 }

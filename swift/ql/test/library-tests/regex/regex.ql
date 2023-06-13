@@ -44,9 +44,9 @@ module RegexTest implements TestSig {
       location = eval.getLocation() and
       element = eval.toString() and
       tag = "regex" and
-      value = quote(regex.toString())
+      value = quote(regex.toString().replaceAll("\n", "NEWLINE"))
     )
-    }
+  }
 }
 
 import MakeTest<RegexTest>
