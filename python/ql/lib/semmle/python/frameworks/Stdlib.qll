@@ -3973,7 +3973,7 @@ private module StdlibPrivate {
       or
       input = "Argument[self]" and
       output = "ReturnValue" and
-      preservesValue = false
+      preservesValue = true
     }
   }
 
