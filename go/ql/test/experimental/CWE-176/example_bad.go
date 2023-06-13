@@ -40,4 +40,14 @@ func bad() {
 
 	})
 
+	http.HandleFunc("/bad2", func(w http.ResponseWriter, req *http.Request) {
+
+		unicode_input := req.URL.Query().Get("unicode_input")
+		if !strings.Contains(unicode_input, "<") {
+			unicode_norm := norm.NFKC.String(unicode_input) // $Missing:result=BAD
+			fmt.Println(w, "Results: %q", unicode_norm)
+		}
+
+	})
+
 }
