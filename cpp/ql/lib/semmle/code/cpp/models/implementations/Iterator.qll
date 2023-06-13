@@ -24,6 +24,14 @@ private class IteratorTraits extends Class {
   }
 
   Type getIteratorType() { result = this.getTemplateArgument(0) }
+
+  Type getValueType() {
+    exists(TypedefType t |
+      this.getAMember() = t and
+      t.getName() = "value_type" and
+      result = t.getUnderlyingType()
+    )
+  }
 }
 
 /**
@@ -33,15 +41,12 @@ private class IteratorTraits extends Class {
 private class IteratorByTraits extends Iterator {
   IteratorTraits trait;
 
-  IteratorByTraits() { trait.getIteratorType() = this }
-
-  override Type getValueType() {
-    exists(TypedefType t |
-      trait.getAMember() = t and
-      t.getName() = "value_type" and
-      result = t.getUnderlyingType()
-    )
+  IteratorByTraits() {
+    trait.getIteratorType() = this and
+    not trait.getValueType() = this
   }
+
+  override Type getValueType() { result = trait.getValueType() }
 }
 
 /**

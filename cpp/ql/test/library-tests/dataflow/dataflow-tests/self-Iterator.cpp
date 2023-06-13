@@ -17,5 +17,5 @@ template<> struct std::iterator_traits<unsigned long>
 
 int test() {
     unsigned long x = source();
-    sink(x); // $ ast MISSING: ir
+    sink(x); // $ ast,ir
 }
