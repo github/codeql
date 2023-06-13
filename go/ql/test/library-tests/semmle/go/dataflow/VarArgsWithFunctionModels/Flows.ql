@@ -84,9 +84,3 @@ module TaintFlowTest implements TestSig {
 }
 
 import MakeTest<MergeTests<DataFlowTest, TaintFlowTest>>
-// from TaintConfiguration cfg, DataFlow::PartialPathNode source, DataFlow::PartialPathNode sink
-// where
-//   cfg.hasPartialFlow(source, sink, _)
-//   and
-//   source.getNode().hasLocationInfo(_, 22, _, _, _)
-// select sink, source, sink, "Partial flow from unsanitized user data"
