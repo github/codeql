@@ -7,3 +7,5 @@ extensions:
       - ["org.apache.commons.exec", "CommandLine", True, "parse", "(String,Map)", "", "Argument[0]", "command-injection", "manual"]
       - ["org.apache.commons.exec", "CommandLine", True, "addArguments", "(String)", "", "Argument[0]", "command-injection", "manual"]
       - ["org.apache.commons.exec", "CommandLine", True, "addArguments", "(String,boolean)", "", "Argument[0]", "command-injection", "manual"]
+      - ["org.apache.commons.exec", "CommandLine", True, "addArguments", "(String[])", "", "Argument[0]", "command-injection", "manual"]
+      - ["org.apache.commons.exec", "CommandLine", True, "addArguments", "(String[],boolean)", "", "Argument[0]", "command-injection", "manual"]
