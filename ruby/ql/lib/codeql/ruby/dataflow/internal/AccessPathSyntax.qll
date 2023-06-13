@@ -4,6 +4,12 @@
  *
  * This file is used by the shared data flow library and by the JavaScript libraries
  * (which does not use the shared data flow libraries).
+ *
+ * An access path consists of a `.`-separated list of components, which each consist
+ * of an identifier optionally followed by a `[]`-enclosed argument.
+ *
+ * The argument can be be enclosed in single quotes. In this case, any character is allowed in-between
+ * the single quotes, and two consecutive single quotes will be interpreted as an individual single quote.
  */
 
 /**
