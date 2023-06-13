@@ -4,6 +4,15 @@ edges
 | example_bad.go:17:20:17:55 | call to Get | example_bad.go:18:32:18:44 | unicode_input |
 | example_bad.go:18:14:18:45 | call to EscapeString | example_bad.go:19:36:19:42 | escaped |
 | example_bad.go:18:32:18:44 | unicode_input | example_bad.go:18:14:18:45 | call to EscapeString |
+| example_bad.go:25:20:25:26 | selection of URL | example_bad.go:25:20:25:34 | call to Query |
+| example_bad.go:25:20:25:34 | call to Query | example_bad.go:25:20:25:55 | call to Get |
+| example_bad.go:25:20:25:55 | call to Get | example_bad.go:27:37:27:49 | unicode_input |
+| example_bad.go:35:20:35:26 | selection of URL | example_bad.go:35:20:35:34 | call to Query |
+| example_bad.go:35:20:35:34 | call to Query | example_bad.go:35:20:35:55 | call to Get |
+| example_bad.go:35:20:35:55 | call to Get | example_bad.go:37:37:37:49 | unicode_input |
+| example_bad.go:45:20:45:26 | selection of URL | example_bad.go:45:20:45:34 | call to Query |
+| example_bad.go:45:20:45:34 | call to Query | example_bad.go:45:20:45:55 | call to Get |
+| example_bad.go:45:20:45:55 | call to Get | example_bad.go:47:37:47:49 | unicode_input |
 nodes
 | example_bad.go:17:20:17:26 | selection of URL | semmle.label | selection of URL |
 | example_bad.go:17:20:17:34 | call to Query | semmle.label | call to Query |
@@ -11,6 +20,21 @@ nodes
 | example_bad.go:18:14:18:45 | call to EscapeString | semmle.label | call to EscapeString |
 | example_bad.go:18:32:18:44 | unicode_input | semmle.label | unicode_input |
 | example_bad.go:19:36:19:42 | escaped | semmle.label | escaped |
+| example_bad.go:25:20:25:26 | selection of URL | semmle.label | selection of URL |
+| example_bad.go:25:20:25:34 | call to Query | semmle.label | call to Query |
+| example_bad.go:25:20:25:55 | call to Get | semmle.label | call to Get |
+| example_bad.go:27:37:27:49 | unicode_input | semmle.label | unicode_input |
+| example_bad.go:35:20:35:26 | selection of URL | semmle.label | selection of URL |
+| example_bad.go:35:20:35:34 | call to Query | semmle.label | call to Query |
+| example_bad.go:35:20:35:55 | call to Get | semmle.label | call to Get |
+| example_bad.go:37:37:37:49 | unicode_input | semmle.label | unicode_input |
+| example_bad.go:45:20:45:26 | selection of URL | semmle.label | selection of URL |
+| example_bad.go:45:20:45:34 | call to Query | semmle.label | call to Query |
+| example_bad.go:45:20:45:55 | call to Get | semmle.label | call to Get |
+| example_bad.go:47:37:47:49 | unicode_input | semmle.label | unicode_input |
 subpaths
 #select
 | example_bad.go:19:36:19:42 | escaped | example_bad.go:17:20:17:26 | selection of URL | example_bad.go:19:36:19:42 | escaped | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | example_bad.go:19:36:19:42 | escaped | Unicode transformation (Unicode normalization) | example_bad.go:17:20:17:26 | selection of URL | remote user-controlled data |
+| example_bad.go:27:37:27:49 | unicode_input | example_bad.go:25:20:25:26 | selection of URL | example_bad.go:27:37:27:49 | unicode_input | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | example_bad.go:27:37:27:49 | unicode_input | Unicode transformation (Unicode normalization) | example_bad.go:25:20:25:26 | selection of URL | remote user-controlled data |
+| example_bad.go:37:37:37:49 | unicode_input | example_bad.go:35:20:35:26 | selection of URL | example_bad.go:37:37:37:49 | unicode_input | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | example_bad.go:37:37:37:49 | unicode_input | Unicode transformation (Unicode normalization) | example_bad.go:35:20:35:26 | selection of URL | remote user-controlled data |
+| example_bad.go:47:37:47:49 | unicode_input | example_bad.go:45:20:45:26 | selection of URL | example_bad.go:47:37:47:49 | unicode_input | This $@ processes unsafely $@ and any logical validation in-between could be bypassed using special Unicode characters. | example_bad.go:47:37:47:49 | unicode_input | Unicode transformation (Unicode normalization) | example_bad.go:45:20:45:26 | selection of URL | remote user-controlled data |
