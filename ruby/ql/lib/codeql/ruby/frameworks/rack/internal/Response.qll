@@ -58,8 +58,9 @@ module Public {
   }
 
   /** A `DataFlow::Node` returned from a rack request. */
-  class ResponseNode extends Private::PotentialResponseNode, Http::Server::HttpResponse::Range {
-    ResponseNode() { this = any(A::App::AppCandidate app).getResponse() }
+  class ResponseNode extends Private::PotentialResponseNode, Http::Server::HttpResponse::Range
+  {
+    ResponseNode() { this = any(A::App::App app).getResponse() }
 
     override DataFlow::Node getBody() { result = this.getElement(2) }
 
