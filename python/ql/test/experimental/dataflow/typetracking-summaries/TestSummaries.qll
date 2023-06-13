@@ -4,7 +4,7 @@ private import semmle.python.ApiGraphs
 
 /**
  * This module ensures that the `callStep` predicate in
- * our type tracker implelemtation does not refer to the
+ * our type tracker implementation does not refer to the
  * `getACall` predicate on `SummarizedCallable`.
  */
 module RecursionGuard {
