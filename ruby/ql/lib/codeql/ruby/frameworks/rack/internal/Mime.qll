@@ -5,7 +5,7 @@
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
 
-private predicate mimeTypeMatches(string ext, string mimeType) {
+private predicate mimetypeMatches(string ext, string mimeType) {
   ext = ".123" and mimeType = "application/vnd.lotus-1-2-3"
   or
   ext = ".3dml" and mimeType = "text/vnd.in3d.3dml"
@@ -1306,6 +1306,6 @@ module Mime {
     }
 
     /** Gets the canonical MIME type string returned by this call. */
-    string getMimeType() { mimeTypeMatches(this.getExtension(), result) }
+    string getMimetype() { mimetypeMatches(this.getExtension(), result) }
   }
 }
