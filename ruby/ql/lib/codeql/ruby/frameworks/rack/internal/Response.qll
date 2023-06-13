@@ -12,24 +12,10 @@ private import App as A
 
 /** Contains implementation details for modeling `Rack::Response`. */
 module Private {
-  private DataFlow::LocalSourceNode trackInt(TypeTracker t, int i) {
-    t.start() and
-    result.getConstantValue().isInt(i)
-    or
-    exists(TypeTracker t2 | result = trackInt(t2, i).track(t2, t))
-  }
-
-  private DataFlow::Node trackInt(int i) { trackInt(TypeTracker::end(), i).flowsTo(result) }
-
   /** A `DataFlow::Node` that may be a rack response. This is detected heuristically, if something "looks like" a rack response syntactically then we consider it to be a potential response node. */
   class PotentialResponseNode extends DataFlow::ArrayLiteralNode {
     // [status, headers, body]
     PotentialResponseNode() { this.getNumberOfArguments() = 3 }
-
-    /**
-     * Gets an HTTP status code that may be returned in this response.
-     */
-    int getAStatusCode() { this.getElement(0) = trackInt(result) }
 
     /** Gets the headers returned with this response. */
     DataFlow::Node getHeaders() { result = this.getElement(1) }
@@ -87,8 +73,10 @@ module Public {
 
   /** A `DataFlow::Node` returned from a rack request that has a redirect HTTP status code. */
   class RedirectResponse extends ResponseNode, Http::Server::HttpRedirectResponse::Range {
-    RedirectResponse() { this.getAStatusCode() = [300, 301, 302, 303, 307, 308] }
+    private DataFlow::Node redirectLocation;
 
-    override DataFlow::Node getRedirectLocation() { result = getHeaderValue(this, "location") }
+    RedirectResponse() { redirectLocation = getHeaderValue(this, "location") }
+
+    override DataFlow::Node getRedirectLocation() { result = redirectLocation }
   }
 }
