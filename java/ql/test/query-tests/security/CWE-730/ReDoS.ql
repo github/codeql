@@ -4,12 +4,10 @@ private import semmle.code.java.regex.RegexTreeView::RegexTreeView as TreeView
 import codeql.regex.nfa.ExponentialBackTracking::Make<TreeView> as ExponentialBackTracking
 import semmle.code.java.regex.regex
 
-class HasExpRedos extends InlineExpectationsTest {
-  HasExpRedos() { this = "HasExpRedos" }
+module HasExpRedos implements TestSig {
+  string getARelevantTag() { result = ["hasExpRedos", "hasParseFailure"] }
 
-  override string getARelevantTag() { result = ["hasExpRedos", "hasParseFailure"] }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasExpRedos" and
     exists(TreeView::RegExpTerm t |
       ExponentialBackTracking::hasReDoSResult(t, _, _, _) and
@@ -28,3 +26,5 @@ class HasExpRedos extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HasExpRedos>

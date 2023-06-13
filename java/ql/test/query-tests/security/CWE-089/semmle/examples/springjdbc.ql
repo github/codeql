@@ -9,12 +9,10 @@ private class SourceMethodSource extends RemoteFlowSource {
   override string getSourceType() { result = "source" }
 }
 
-class HasFlowTest extends InlineExpectationsTest {
-  HasFlowTest() { this = "HasFlowTest" }
+module HasFlowTest implements TestSig {
+  string getARelevantTag() { result = "sqlInjection" }
 
-  override string getARelevantTag() { result = "sqlInjection" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "sqlInjection" and
     exists(DataFlow::Node sink | QueryInjectionFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -23,3 +21,5 @@ class HasFlowTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HasFlowTest>

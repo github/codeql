@@ -12,12 +12,10 @@ module Config implements DataFlow::ConfigSig {
 
 module Flow = DataFlow::Global<Config>;
 
-class HasFlowTest extends InlineExpectationsTest {
-  HasFlowTest() { this = "HasFlowTest" }
+module HasFlowTest implements TestSig {
+  string getARelevantTag() { result = "flow" }
 
-  override string getARelevantTag() { result = "flow" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "flow" and
     exists(DataFlow::Node src, DataFlow::Node sink | Flow::flow(src, sink) |
       sink.getLocation() = location and
@@ -26,3 +24,5 @@ class HasFlowTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HasFlowTest>

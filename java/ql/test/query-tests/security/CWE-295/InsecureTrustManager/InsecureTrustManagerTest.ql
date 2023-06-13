@@ -2,12 +2,10 @@ import java
 import semmle.code.java.security.InsecureTrustManagerQuery
 import TestUtilities.InlineExpectationsTest
 
-class InsecureTrustManagerTest extends InlineExpectationsTest {
-  InsecureTrustManagerTest() { this = "InsecureTrustManagerTest" }
+module InsecureTrustManagerTest implements TestSig {
+  string getARelevantTag() { result = "hasValueFlow" }
 
-  override string getARelevantTag() { result = "hasValueFlow" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "hasValueFlow" and
     exists(DataFlow::Node sink | InsecureTrustManagerFlow::flowTo(sink) |
       sink.getLocation() = location and
@@ -16,3 +14,5 @@ class InsecureTrustManagerTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<InsecureTrustManagerTest>
