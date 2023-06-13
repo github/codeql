@@ -340,7 +340,7 @@ QL is a typed language. This section specifies the kinds of types available, the
 Kinds of types
 ~~~~~~~~~~~~~~
 
-Types in QL are either *primitive* types, *database* types, *class* types, *character* types or *class domain* types.
+Types in QL are either *primitive* types, *database* types, *class* types, *character* types, *class domain* types, type *parameters*, or *instantiation-nested* types.
 
 The primitive types are ``boolean``, ``date``, ``float``, ``int``, and ``string``.
 
