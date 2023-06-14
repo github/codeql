@@ -110,8 +110,12 @@ module SummaryComponentStack {
     result = singleton(SummaryComponent::syntheticGlobal(synthetic))
   }
 
-  /** Gets a textual representation of this stack used for flow summaries. */
-  string getComponentStack(SummaryComponentStack s) { result = Impl::Public::getComponentStack(s) }
+  /**
+   * DEPRECATED: Use the member predicate `getAccessPath` instead.
+   *
+   * Gets a textual representation of this stack used for flow summaries.
+   */
+  deprecated string getComponentStack(SummaryComponentStack s) { result = s.getAccessPath() }
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;
