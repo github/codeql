@@ -10,12 +10,4 @@ module PathSanitizerConfig implements DataFlow::ConfigSig {
   predicate isBarrier(DataFlow::Node sanitizer) { sanitizer instanceof PathInjectionSanitizer }
 }
 
-module PathSanitizerFlow = TaintTracking::Global<PathSanitizerConfig>;
-
-class Test extends InlineFlowTest {
-  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { none() }
-
-  override predicate hasTaintFlow(DataFlow::Node src, DataFlow::Node sink) {
-    PathSanitizerFlow::flow(src, sink)
-  }
-}
+import TaintFlowTest<PathSanitizerConfig>

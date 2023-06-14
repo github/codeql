@@ -10,10 +10,4 @@ module OkHttpFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module OkHttpFlow = DataFlow::Global<OkHttpFlowConfig>;
-
-class OkHttpTest extends InlineFlowTest {
-  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) {
-    OkHttpFlow::flow(src, sink)
-  }
-}
+import FlowTest<OkHttpFlowConfig, DefaultFlowConfig>

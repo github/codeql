@@ -10,10 +10,4 @@ module ValueFlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module ValueFlow = DataFlow::Global<ValueFlowConfig>;
-
-class Test extends InlineFlowTest {
-  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) {
-    ValueFlow::flow(src, sink)
-  }
-}
+import FlowTest<ValueFlowConfig, DefaultFlowConfig>
