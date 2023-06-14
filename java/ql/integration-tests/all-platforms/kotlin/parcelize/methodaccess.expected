@@ -24,6 +24,7 @@
 | app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | "templateModel=" |
 | app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | "x=" |
 | app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | "y=" |
+| app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | (no string representation) |
 | app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | Greeting(...) |
 | app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | GreetingPreview(...) |
 | app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | changed(...) |
@@ -336,7 +337,6 @@
 | app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | name(...) |
 | app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | readInt(...) |
 | app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | readInt(...) |
-| app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | readParcelable(...) |
 | app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | readString(...) |
 | app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | readString(...) |
 | app/src/main/java/com/example/myapplication/MainActivity.kt:0:0:0:0 | readString(...) |
