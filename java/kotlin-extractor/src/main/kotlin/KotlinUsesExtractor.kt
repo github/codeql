@@ -316,8 +316,11 @@ open class KotlinUsesExtractor(
         // obvious signature is that they lack any supertype information even though they are not root classes.
         // If possible, replace them by a real version of the same class.
         if (c.superTypes.isNotEmpty() ||
-            c.hasEqualFqName(FqName("java.lang.Object")))
+            c.hasEqualFqName(FqName("kotlin.Any")) ||
+            c.hasEqualFqName(FqName("java.lang.Object")) ||
+            c.hasEqualFqName(FqName("kotlinx.serialization.internal.PluginExceptionsKt"))) {
             return c
+        }
         return globalExtensionState.syntheticToRealClassMap.getOrPut(c) {
             val qualifiedName = c.fqNameWhenAvailable
             if (qualifiedName == null) {
