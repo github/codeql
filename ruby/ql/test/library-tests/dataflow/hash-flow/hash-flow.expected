@@ -1,4 +1,5 @@
 failures
+testFailures
 edges
 | hash_flow.rb:10:5:10:8 | hash [element 0] | hash_flow.rb:30:10:30:13 | hash [element 0] |
 | hash_flow.rb:10:5:10:8 | hash [element :a] | hash_flow.rb:22:10:22:13 | hash [element :a] |

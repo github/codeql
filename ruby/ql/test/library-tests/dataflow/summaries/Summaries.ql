@@ -10,7 +10,7 @@ import codeql.ruby.dataflow.internal.FlowSummaryImpl
 import codeql.ruby.dataflow.internal.AccessPathSyntax
 import codeql.ruby.frameworks.data.ModelsAsData
 import TestUtilities.InlineFlowTest
-import DataFlow::PathGraph
+import PathGraph
 
 query predicate invalidSpecComponent(SummarizedCallable sc, string s, string c) {
   (sc.propagatesFlowExt(s, _, _) or sc.propagatesFlowExt(_, s, _)) and
@@ -149,22 +149,18 @@ private class SinkFromModel extends ModelInput::SinkModelCsv {
   }
 }
 
-class CustomValueSink extends DefaultValueFlowConf {
-  override predicate isSink(DataFlow::Node sink) {
-    super.isSink(sink)
+module CustomConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { DefaultFlowConfig::isSource(source) }
+
+  predicate isSink(DataFlow::Node sink) {
+    DefaultFlowConfig::isSink(sink)
     or
     sink = ModelOutput::getASinkNode("test-sink").asSink()
   }
 }
 
-class CustomTaintSink extends DefaultTaintFlowConf {
-  override predicate isSink(DataFlow::Node sink) {
-    super.isSink(sink)
-    or
-    sink = ModelOutput::getASinkNode("test-sink").asSink()
-  }
-}
+import FlowTest<CustomConfig, CustomConfig>
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, DataFlow::Configuration conf
-where conf.hasFlowPath(source, sink)
+from PathNode source, PathNode sink
+where flowPath(source, sink)
 select sink, source, sink, "$@", source, source.toString()

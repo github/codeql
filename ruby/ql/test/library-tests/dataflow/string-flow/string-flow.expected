@@ -1,4 +1,5 @@
 failures
+testFailures
 | string_flow.rb:85:10:85:10 | a | Unexpected result: hasValueFlow=a |
 | string_flow.rb:227:10:227:10 | a | Unexpected result: hasValueFlow=a |
 edges

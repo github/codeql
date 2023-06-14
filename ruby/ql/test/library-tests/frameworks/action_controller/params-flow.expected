@@ -1,4 +1,5 @@
 failures
+testFailures
 | filter_flow.rb:21:10:21:13 | @foo | Unexpected result: hasTaintFlow= |
 | filter_flow.rb:38:10:38:13 | @foo | Unexpected result: hasTaintFlow= |
 | filter_flow.rb:55:10:55:13 | @foo | Unexpected result: hasTaintFlow= |

@@ -1,4 +1,5 @@
 failures
+testFailures
 | views/index.erb:2:10:2:12 | call to foo | Unexpected result: hasTaintFlow= |
 edges
 | app.rb:75:5:75:8 | [post] self [@foo] | app.rb:76:32:76:35 | self [@foo] |

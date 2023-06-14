@@ -1,4 +1,5 @@
 failures
+testFailures
 edges
 | ssa_flow.rb:12:9:12:9 | [post] a [element 0] | ssa_flow.rb:16:10:16:10 | a [element 0] |
 | ssa_flow.rb:12:9:12:9 | [post] a [element 0] | ssa_flow.rb:16:10:16:10 | a [element 0] |

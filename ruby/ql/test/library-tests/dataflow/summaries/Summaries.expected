@@ -1,4 +1,5 @@
 failures
+testFailures
 edges
 | summaries.rb:1:1:1:7 | tainted | summaries.rb:2:6:2:12 | tainted |
 | summaries.rb:1:1:1:7 | tainted | summaries.rb:2:6:2:12 | tainted |

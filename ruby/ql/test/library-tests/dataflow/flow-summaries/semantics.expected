@@ -1,4 +1,5 @@
 failures
+testFailures
 edges
 | semantics.rb:2:5:2:5 | a | semantics.rb:3:9:3:9 | a |
 | semantics.rb:2:5:2:5 | a | semantics.rb:3:9:3:9 | a |
