@@ -10,12 +10,12 @@ import SqlInjectionCustomizations::SqlInjection
 /**
  * A taint-tracking configuration for detecting SQL injection vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "SqlInjectionConfiguration" }
+module ConfigurationInst = TaintTracking::Global<ConfigurationImpl>;
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+private module ConfigurationImpl implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSink(DataFlow::Node source) { source instanceof Sink }
+  predicate isSink(DataFlow::Node source) { source instanceof Sink }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 }

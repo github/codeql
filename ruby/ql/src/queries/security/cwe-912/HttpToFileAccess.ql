@@ -13,10 +13,10 @@
 
 import codeql.ruby.AST
 import codeql.ruby.DataFlow
-import codeql.ruby.DataFlow::DataFlow::PathGraph
+import ConfigurationInst::PathGraph
 import codeql.ruby.security.HttpToFileAccessQuery
 
-from Configuration cfg, DataFlow::PathNode source, DataFlow::PathNode sink
-where cfg.hasFlowPath(source, sink)
+from ConfigurationInst::PathNode source, ConfigurationInst::PathNode sink
+where ConfigurationInst::flowPath(source, sink)
 select sink.getNode(), source, sink, "Write to file system depends on $@.", source.getNode(),
   "untrusted data"

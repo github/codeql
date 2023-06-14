@@ -19,20 +19,20 @@ module ReflectedXss {
   /**
    * A taint-tracking configuration for detecting "reflected server-side cross-site scripting" vulnerabilities.
    */
-  class Configuration extends TaintTracking::Configuration {
-    Configuration() { this = "ReflectedXSS" }
+  module ConfigurationInst = TaintTracking::Global<ConfigurationImpl>;
 
-    override predicate isSource(DataFlow::Node source) { source instanceof Source }
+  private module ConfigurationImpl implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-    override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-    override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
 
-    deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+    additional deprecated predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
       guard instanceof SanitizerGuard
     }
 
-    override predicate isAdditionalTaintStep(DataFlow::Node node1, DataFlow::Node node2) {
+    predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       isAdditionalXssTaintStep(node1, node2)
     }
   }

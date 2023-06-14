@@ -12,10 +12,10 @@
  */
 
 import codeql.ruby.security.regexp.MissingFullAnchorQuery
-import DataFlow::PathGraph
+import ConfigurationInst::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink, Sink sinkNode
-where config.hasFlowPath(source, sink) and sink.getNode() = sinkNode
+from ConfigurationInst::PathNode source, ConfigurationInst::PathNode sink, Sink sinkNode
+where ConfigurationInst::flowPath(source, sink) and sink.getNode() = sinkNode
 select sink, source, sink, "This value depends on $@, and is $@ against a $@.", source.getNode(),
   source.getNode().(Source).describe(), sinkNode.getCallNode(), "checked", sinkNode.getRegex(),
   "badly anchored regular expression"

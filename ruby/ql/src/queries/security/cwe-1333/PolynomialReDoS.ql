@@ -13,15 +13,15 @@
  *       external/cwe/cwe-400
  */
 
-import DataFlow::PathGraph
+import ConfigurationInst::PathGraph
 import codeql.ruby.DataFlow
 import codeql.ruby.security.regexp.PolynomialReDoSQuery
 
 from
-  PolynomialReDoS::Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink,
+  ConfigurationInst::PathNode source, ConfigurationInst::PathNode sink,
   PolynomialReDoS::Sink sinkNode, PolynomialReDoS::PolynomialBackTrackingTerm regexp
 where
-  config.hasFlowPath(source, sink) and
+  ConfigurationInst::flowPath(source, sink) and
   sinkNode = sink.getNode() and
   regexp = sinkNode.getRegExp()
 select sinkNode.getHighlight(), source, sink,

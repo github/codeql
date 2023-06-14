@@ -15,20 +15,20 @@ import codeql.ruby.dataflow.BarrierGuards
  * A taint-tracking configuration for detecting
  * "Server side request forgery" vulnerabilities.
  */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "ServerSideRequestForgery" }
+module ConfigurationInst = TaintTracking::Global<ConfigurationImpl>;
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+private module ConfigurationImpl implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+  predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSanitizer(DataFlow::Node node) {
+  predicate isBarrier(DataFlow::Node node) {
     node instanceof Sanitizer or
     node instanceof StringConstCompareBarrier or
     node instanceof StringConstArrayInclusionCallBarrier
   }
 
-  deprecated override predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
+  additional deprecated predicate isSanitizerGuard(DataFlow::BarrierGuard guard) {
     guard instanceof SanitizerGuard
   }
 }
