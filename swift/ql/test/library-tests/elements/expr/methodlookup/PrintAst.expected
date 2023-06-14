@@ -99,6 +99,8 @@ methodlookup.swift:
 #   22|   getBody(): [BraceStmt] { ... }
 #   22|     getElement(0): [DoStmt] do { ... }
 #   22|       getBody(): [BraceStmt] { ... }
+#   23|         getVariable(0): [ConcreteVarDecl] foo
+#   23|             Type = Foo
 #   23|         getElement(0): [PatternBindingDecl] var ... = ...
 #   23|           getInit(0): [CallExpr] call to Foo.init()
 #   23|             getFunction(): [MethodLookupExpr] Foo.init()
@@ -106,20 +108,18 @@ methodlookup.swift:
 #   23|                 getTypeRepr(): [TypeRepr] Foo
 #   23|               getMethodRef(): [DeclRefExpr] Foo.init()
 #   23|           getPattern(0): [NamedPattern] foo
-#   23|         getElement(1): [ConcreteVarDecl] foo
-#   23|             Type = Foo
-#   24|         getElement(2): [AssignExpr]  ... = ...
+#   24|         getElement(1): [AssignExpr]  ... = ...
 #   24|           getDest(): [DiscardAssignmentExpr] _
 #   24|           getSource(): [CallExpr] call to Foo.init()
 #   24|             getFunction(): [MethodLookupExpr] Foo.init()
 #   24|               getBase(): [TypeExpr] Foo.Type
 #   24|                 getTypeRepr(): [TypeRepr] Foo
 #   24|               getMethodRef(): [DeclRefExpr] Foo.init()
-#   26|         getElement(3): [CallExpr] call to instanceMethod()
+#   26|         getElement(2): [CallExpr] call to instanceMethod()
 #   26|           getFunction(): [MethodLookupExpr] .instanceMethod()
 #   26|             getBase(): [DeclRefExpr] foo
 #   26|             getMethodRef(): [DeclRefExpr] instanceMethod()
-#   27|         getElement(4): [CallExpr] call to { ... }
+#   27|         getElement(3): [CallExpr] call to { ... }
 #   27|           getFunction(): [CallExpr] call to Foo.instanceMethod()
 #   27|             getFunction(): [DotSyntaxBaseIgnoredExpr] Foo.instanceMethod()
 #   27|               getQualifier(): [TypeExpr] Foo.Type
@@ -139,12 +139,12 @@ methodlookup.swift:
 #-----|                       getCapture(0): [CapturedDecl] self
 #   27|             getArgument(0): [Argument] : foo
 #   27|               getExpr(): [DeclRefExpr] foo
-#   29|         getElement(5): [CallExpr] call to classMethod()
+#   29|         getElement(4): [CallExpr] call to classMethod()
 #   29|           getFunction(): [MethodLookupExpr] .classMethod()
 #   29|             getBase(): [TypeExpr] Foo.Type
 #   29|               getTypeRepr(): [TypeRepr] Foo
 #   29|             getMethodRef(): [DeclRefExpr] classMethod()
-#   30|         getElement(6): [CallExpr] call to staticMethod()
+#   30|         getElement(5): [CallExpr] call to staticMethod()
 #   30|           getFunction(): [MethodLookupExpr] .staticMethod()
 #   30|             getBase(): [TypeExpr] Foo.Type
 #   30|               getTypeRepr(): [TypeRepr] Foo
@@ -161,6 +161,8 @@ methodlookup.swift:
 #   33|       getArgument(1): [Argument] operation: { ... }
 #   33|         getExpr(): [ExplicitClosureExpr] { ... }
 #   33|           getBody(): [BraceStmt] { ... }
+#   34|             getVariable(0): [ConcreteVarDecl] bar
+#   34|                 Type = Bar
 #   34|             getElement(0): [PatternBindingDecl] var ... = ...
 #   34|               getInit(0): [CallExpr] call to Bar.init()
 #   34|                 getFunction(): [MethodLookupExpr] Bar.init()
@@ -168,21 +170,19 @@ methodlookup.swift:
 #   34|                     getTypeRepr(): [TypeRepr] Bar
 #   34|                   getMethodRef(): [DeclRefExpr] Bar.init()
 #   34|               getPattern(0): [NamedPattern] bar
-#   34|             getElement(1): [ConcreteVarDecl] bar
-#   34|                 Type = Bar
-#   35|             getElement(2): [AssignExpr]  ... = ...
+#   35|             getElement(1): [AssignExpr]  ... = ...
 #   35|               getDest(): [DiscardAssignmentExpr] _
 #   35|               getSource(): [CallExpr] call to Bar.init()
 #   35|                 getFunction(): [MethodLookupExpr] Bar.init()
 #   35|                   getBase(): [TypeExpr] Bar.Type
 #   35|                     getTypeRepr(): [TypeRepr] Bar
 #   35|                   getMethodRef(): [DeclRefExpr] Bar.init()
-#   37|             getElement(3): [CallExpr] call to instanceMethod()
+#   37|             getElement(2): [CallExpr] call to instanceMethod()
 #   37|               getFunction(): [MethodLookupExpr] .instanceMethod()
 #   37|                 getBase(): [DeclRefExpr] bar
 #   37|                 getMethodRef(): [DeclRefExpr] instanceMethod()
-#   37|             getElement(3).getFullyConverted(): [AwaitExpr] await ...
-#   40|             getElement(4): [CallExpr] call to staticMethod()
+#   37|             getElement(2).getFullyConverted(): [AwaitExpr] await ...
+#   40|             getElement(3): [CallExpr] call to staticMethod()
 #   40|               getFunction(): [MethodLookupExpr] .staticMethod()
 #   40|                 getBase(): [TypeExpr] Bar.Type
 #   40|                   getTypeRepr(): [TypeRepr] Bar
@@ -202,6 +202,8 @@ methodlookup.swift:
 #   43|       getArgument(1): [Argument] operation: { ... }
 #   43|         getExpr(): [ExplicitClosureExpr] { ... }
 #   43|           getBody(): [BraceStmt] { ... }
+#   44|             getVariable(0): [ConcreteVarDecl] baz
+#   44|                 Type = Baz
 #   44|             getElement(0): [PatternBindingDecl] var ... = ...
 #   44|               getInit(0): [CallExpr] call to Baz.init()
 #   44|                 getFunction(): [MethodLookupExpr] Baz.init()
@@ -211,9 +213,7 @@ methodlookup.swift:
 #   44|                   getMethodRef().getFullyConverted(): [FunctionConversionExpr] ((Baz.Type) -> @MainActor () -> Baz) ...
 #   44|               getInit(0).getFullyConverted(): [AwaitExpr] await ...
 #   44|               getPattern(0): [NamedPattern] baz
-#   44|             getElement(1): [ConcreteVarDecl] baz
-#   44|                 Type = Baz
-#   45|             getElement(2): [AssignExpr]  ... = ...
+#   45|             getElement(1): [AssignExpr]  ... = ...
 #   45|               getDest(): [DiscardAssignmentExpr] _
 #   45|               getSource(): [CallExpr] call to Baz.init()
 #   45|                 getFunction(): [MethodLookupExpr] Baz.init()
@@ -222,13 +222,13 @@ methodlookup.swift:
 #   45|                   getMethodRef(): [DeclRefExpr] Baz.init()
 #   45|                   getMethodRef().getFullyConverted(): [FunctionConversionExpr] ((Baz.Type) -> @MainActor () -> Baz) ...
 #   45|               getSource().getFullyConverted(): [AwaitExpr] await ...
-#   47|             getElement(3): [CallExpr] call to instanceMethod()
+#   47|             getElement(2): [CallExpr] call to instanceMethod()
 #   47|               getFunction(): [MethodLookupExpr] .instanceMethod()
 #   47|                 getBase(): [DeclRefExpr] baz
 #   47|                 getMethodRef(): [DeclRefExpr] instanceMethod()
 #   47|                 getMethodRef().getFullyConverted(): [FunctionConversionExpr] ((Baz) -> @MainActor () -> ()) ...
-#   47|             getElement(3).getFullyConverted(): [AwaitExpr] await ...
-#   48|             getElement(4): [CallExpr] call to { ... }
+#   47|             getElement(2).getFullyConverted(): [AwaitExpr] await ...
+#   48|             getElement(3): [CallExpr] call to { ... }
 #   48|               getFunction(): [CallExpr] call to Baz.instanceMethod()
 #   48|                 getFunction(): [DotSyntaxBaseIgnoredExpr] Baz.instanceMethod()
 #   48|                   getQualifier(): [TypeExpr] Baz.Type
@@ -248,21 +248,21 @@ methodlookup.swift:
 #-----|                           getCapture(0): [CapturedDecl] self
 #   48|                 getArgument(0): [Argument] : baz
 #   48|                   getExpr(): [DeclRefExpr] baz
-#   48|             getElement(4).getFullyConverted(): [AwaitExpr] await ...
-#   50|             getElement(5): [CallExpr] call to classMethod()
+#   48|             getElement(3).getFullyConverted(): [AwaitExpr] await ...
+#   50|             getElement(4): [CallExpr] call to classMethod()
 #   50|               getFunction(): [MethodLookupExpr] .classMethod()
 #   50|                 getBase(): [TypeExpr] Baz.Type
 #   50|                   getTypeRepr(): [TypeRepr] Baz
 #   50|                 getMethodRef(): [DeclRefExpr] classMethod()
 #   50|                 getMethodRef().getFullyConverted(): [FunctionConversionExpr] ((Baz.Type) -> @MainActor () -> ()) ...
-#   50|             getElement(5).getFullyConverted(): [AwaitExpr] await ...
-#   51|             getElement(6): [CallExpr] call to staticMethod()
+#   50|             getElement(4).getFullyConverted(): [AwaitExpr] await ...
+#   51|             getElement(5): [CallExpr] call to staticMethod()
 #   51|               getFunction(): [MethodLookupExpr] .staticMethod()
 #   51|                 getBase(): [TypeExpr] Baz.Type
 #   51|                   getTypeRepr(): [TypeRepr] Baz
 #   51|                 getMethodRef(): [DeclRefExpr] staticMethod()
 #   51|                 getMethodRef().getFullyConverted(): [FunctionConversionExpr] ((Baz.Type) -> @MainActor () -> ()) ...
-#   51|             getElement(6).getFullyConverted(): [AwaitExpr] await ...
+#   51|             getElement(5).getFullyConverted(): [AwaitExpr] await ...
 #   43| [NilLiteralExpr] nil
 #   47| [Comment] // DotSyntaxCallExpr
 #   47| 

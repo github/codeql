@@ -11,4 +11,23 @@ class BraceStmt extends Generated::BraceStmt {
   }
 
   override string toString() { result = "{ ... }" }
+
+  override AstNode getImmediateElement(int index) {
+    result =
+      rank[index + 1](AstNode element, int i |
+        element = super.getImmediateElement(i) and
+        not element instanceof VarDecl
+      |
+        element order by i
+      )
+  }
+
+  override VarDecl getVariable(int index) {
+    result =
+      rank[index + 1](VarDecl variable, int i |
+        variable = super.getImmediateElement(i)
+      |
+        variable order by i
+      )
+  }
 }
