@@ -849,6 +849,11 @@ class CastNode extends Node {
   CastNode() { none() }
 }
 
+/**
+ * Holds if `n` should be a FlowCheckNode, which will appear in path summaries.
+ */
+predicate flowCheckNodeSpecific(Node n) { none() }
+
 class DataFlowExpr = Expr;
 
 class DataFlowParameter = ParamDecl;

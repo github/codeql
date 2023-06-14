@@ -1296,6 +1296,11 @@ class CastNode extends Node {
   }
 }
 
+/**
+ * Holds if `n` should be a FlowCheckNode, which will appear in path summaries.
+ */
+predicate flowCheckNodeSpecific(Node n) { none() }
+
 class DataFlowExpr = CfgNodes::ExprCfgNode;
 
 int accessPathLimit() { result = 5 }

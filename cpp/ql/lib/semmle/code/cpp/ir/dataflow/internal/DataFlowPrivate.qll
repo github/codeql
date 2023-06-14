@@ -784,6 +784,11 @@ class CastNode extends Node {
 }
 
 /**
+ * Holds if `n` should be a FlowCheckNode, which will appear in path summaries.
+ */
+predicate flowCheckNodeSpecific(Node n) { none() }
+
+/**
  * A function that may contain code or a variable that may contain itself. When
  * flow crosses from one _enclosing callable_ to another, the interprocedural
  * data-flow library discards call contexts and inserts a node in the big-step

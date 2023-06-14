@@ -2147,6 +2147,11 @@ class CastNode extends Node {
   }
 }
 
+/**
+ * Holds if `n` should be a FlowCheckNode, which will appear in path summaries.
+ */
+predicate flowCheckNodeSpecific(Node n) { none() }
+
 class DataFlowExpr = DotNet::Expr;
 
 /** Holds if `e` is an expression that always has the same Boolean value `val`. */

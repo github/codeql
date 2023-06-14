@@ -228,6 +228,11 @@ class CastNode extends ExprNode {
   override ConversionExpr expr;
 }
 
+/**
+ * Holds if `n` should be a FlowCheckNode, which will appear in path summaries.
+ */
+predicate flowCheckNodeSpecific(Node n) { none() }
+
 class DataFlowExpr = Expr;
 
 private newtype TDataFlowType =

@@ -242,6 +242,11 @@ class CastNode extends ExprNode {
   CastNode() { this.getExpr() instanceof CastingExpr }
 }
 
+/**
+ * Holds if `n` should be a FlowCheckNode, which will appear in path summaries.
+ */
+predicate flowCheckNodeSpecific(Node n) { none() }
+
 private newtype TDataFlowCallable =
   TSrcCallable(Callable c) or
   TSummarizedCallable(SummarizedCallable c) or
