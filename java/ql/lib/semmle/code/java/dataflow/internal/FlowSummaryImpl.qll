@@ -1333,6 +1333,9 @@ module Private {
       /** Gets the string representation of this callable used by `neutral/1`. */
       abstract string getCallableCsv();
 
+      /**
+       * Gets the kind of the neutral.
+       */
       string getKind() { result = super.getKind() }
 
       string toString() { result = super.toString() }
