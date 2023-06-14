@@ -207,9 +207,9 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
   // Relating content to summaries
   predicate content = FlowSummary::SummaryComponent::content/1;
 
-  predicate withoutContent = FlowSummary::SummaryComponent::withoutContent/1;
+  SummaryComponent withoutContent(TypeTrackerContent contents) { none() }
 
-  predicate withContent = FlowSummary::SummaryComponent::withContent/1;
+  SummaryComponent withContent(TypeTrackerContent contents) { none() }
 
   predicate return = FlowSummary::SummaryComponent::return/0;
 
