@@ -9,12 +9,12 @@ private import codeql.ruby.Concepts
 /**
  * Provides modeling for `libxml`, an XML library for Ruby.
  */
-module Libxml {
+module LibXml {
   /**
    * Flow summary for `libxml`. Wraps a string, parsing it as an XML document.
    */
-  private class XMLSummary extends SummarizedCallable {
-    XMLSummary() { this = "LibXML::XML" }
+  private class XmlSummary extends SummarizedCallable {
+    XmlSummary() { this = "LibXML::XML" }
 
     override MethodCall getACall() { result = any(LibXmlRubyXmlParserCall c).asExpr().getExpr() }
 
@@ -24,15 +24,35 @@ module Libxml {
   }
 
   /** A call that parses XML. */
-  private class LibXmlRubyXmlParserCall extends DataFlow::CallNode {
-    LibXmlRubyXmlParserCall() {
+  abstract private class LibXmlRubyXmlParserCall extends XmlParserCall::Range, DataFlow::CallNode {
+  }
+
+  private class LibXmlRubyXmlParserCallString extends LibXmlRubyXmlParserCall {
+    LibXmlRubyXmlParserCallString() {
       this =
         [API::getTopLevelMember("LibXML").getMember("XML"), API::getTopLevelMember("XML")]
             .getMember(["Document", "Parser"])
-            .getAMethodCall(["file", "io", "string"])
+            .getAMethodCall(["string"])
     }
 
-    DataFlow::Node getInput() { result = this.getArgument(0) }
+    override DataFlow::Node getInput() { result = this.getArgument(0) }
+
+    /** No option for parsing */
+    override predicate externalEntitiesEnabled() { none() }
+  }
+
+  private class LibXmlRubyXmlParserCallIoFile extends LibXmlRubyXmlParserCall {
+    LibXmlRubyXmlParserCallIoFile() {
+      this =
+        [API::getTopLevelMember("LibXML").getMember("XML"), API::getTopLevelMember("XML")]
+            .getMember(["Document", "Parser"])
+            .getAMethodCall(["file", "io"])
+    }
+
+    override DataFlow::Node getInput() { result = this.getArgument(0) }
+
+    /** No option for parsing */
+    override predicate externalEntitiesEnabled() { none() }
   }
 
   /** Execution of a XPath statement. */

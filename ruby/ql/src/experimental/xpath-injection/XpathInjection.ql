@@ -1,7 +1,7 @@
 /**
  * @name XPath query built from user-controlled sources
  * @description Building a XPath query from user-controlled sources is vulnerable to insertion of
- *              malicious Xpath code by the user.
+ *              malicious XPath code by the user.
  * @kind path-problem
  * @problem.severity error
  * @security-severity 9.8
@@ -13,9 +13,9 @@
 
 import codeql.ruby.DataFlow
 import codeql.ruby.security.XpathInjectionQuery
-import DataFlow::PathGraph
+import XPathInjection::PathGraph
 
-from Configuration config, DataFlow::PathNode source, DataFlow::PathNode sink
-where config.hasFlowPath(source, sink)
+from XPathInjection::PathNode source, XPathInjection::PathNode sink
+where XPathInjection::hasFlowPath(source, sink)
 select sink.getNode(), source, sink, "XPath expression depends on a $@.", source.getNode(),
   "user-provided value"

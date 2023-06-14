@@ -13,8 +13,8 @@ module Rexml {
   /**
    * Flow summary for `REXML::Document.new()`. This method wraps a string, parsing it as an XML document.
    */
-  private class XMLSummary extends SummarizedCallable {
-    XMLSummary() { this = "REXML::Document.new()" }
+  private class XmlSummary extends SummarizedCallable {
+    XmlSummary() { this = "REXML::Document.new()" }
 
     override MethodCall getACall() { result = any(RexmlParserCall c).asExpr().getExpr() }
 

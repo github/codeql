@@ -13,8 +13,8 @@ module Nokogiri {
   /**
    * Flow summary for `nokogiri`. Wraps a string, parsing it as an XML document.
    */
-  private class XMLSummary extends SummarizedCallable {
-    XMLSummary() { this = "Nokogiri::XML.parse" }
+  private class XmlSummary extends SummarizedCallable {
+    XmlSummary() { this = "Nokogiri::XML.parse" }
 
     override MethodCall getACall() { result = any(NokogiriXmlParserCall p).asExpr().getExpr() }
 

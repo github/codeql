@@ -10,15 +10,18 @@ private import codeql.ruby.DataFlow
 private import codeql.ruby.TaintTracking
 import XpathInjectionCustomizations::XpathInjection
 
-/**
- * A taint-tracking configuration for detecting "Xpath Injection" vulnerabilities.
- */
-class Configuration extends TaintTracking::Configuration {
-  Configuration() { this = "Xpath Injection" }
+/** Provides a taint-tracking configuration for detecting "Xpath Injection" vulnerabilities. */
+module XPathInjection {
+  /**
+   * A taint-tracking configuration for detecting "Xpath Injection" vulnerabilities.
+   */
+  private module Config implements DataFlow::ConfigSig {
+    predicate isSource(DataFlow::Node source) { source instanceof Source }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof Source }
+    predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
 
-  override predicate isSink(DataFlow::Node sink) { sink instanceof Sink }
+    predicate isBarrier(DataFlow::Node node) { node instanceof Sanitizer }
+  }
 
-  override predicate isSanitizer(DataFlow::Node node) { node instanceof Sanitizer }
+  import TaintTracking::Make<Config>
 }
