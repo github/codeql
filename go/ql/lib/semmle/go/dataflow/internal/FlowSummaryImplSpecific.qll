@@ -17,7 +17,7 @@ private module FlowSummaries {
 
 class SummarizedCallableBase = Callable;
 
-DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
+DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c or none() }
 
 /** Gets the parameter position of the instance parameter. */
 ArgumentPosition callbackSelfParameterPosition() { result = -1 }
@@ -28,16 +28,17 @@ string getParameterPosition(ParameterPosition pos) { result = pos.toString() }
 /** Gets the textual representation of an argument position in the format used for flow summaries. */
 string getArgumentPosition(ArgumentPosition pos) { result = pos.toString() }
 
-Node summaryNode(SummarizedCallable c, SummaryNodeState state) { result = getSummaryNode(c, state) }
-
 /** Gets the synthesized data-flow call for `receiver`. */
-DataFlowCall summaryDataFlowCall(Node receiver) {
+DataFlowCall summaryDataFlowCall(SummaryNode receiver) {
   // We do not currently have support for callback-based library models.
   none()
 }
 
 /** Gets the type of content `c`. */
 DataFlowType getContentType(Content c) { result = c.getType() }
+
+/** Gets the type of the parameter at the given position. */
+DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) { any() }
 
 /** Gets the return type of kind `rk` for callable `c`. */
 DataFlowType getReturnType(SummarizedCallable c, ReturnKind rk) { any() }

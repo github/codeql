@@ -96,7 +96,8 @@ private module Cached {
         )
     )
     or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+      nodeTo.(FlowSummaryNode).getSummaryNode(), false)
     or
     any(FlowSteps::AdditionalTaintStep s).step(nodeFrom, nodeTo)
     or

@@ -153,12 +153,12 @@ class DataFlowCall extends TDataFlowCall {
  */
 class SummaryCall extends DataFlowCall, TSummaryCall {
   private FlowSummaryImpl::Public::SummarizedCallable c;
-  private DataFlow::Node receiver;
+  private FlowSummaryImpl::Private::SummaryNode receiver;
 
   SummaryCall() { this = TSummaryCall(c, receiver) }
 
   /** Gets the data flow node that this call targets. */
-  DataFlow::Node getReceiver() { result = receiver }
+  FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
   override DataFlowCallable getEnclosingCallable() { result.asLibraryCallable() = c }
 
@@ -377,7 +377,9 @@ private module Cached {
   cached
   newtype TDataFlowCall =
     TNormalCall(CfgNodes::ExprNodes::CallCfgNode c) or
-    TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, DataFlow::Node receiver) {
+    TSummaryCall(
+      FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
+    ) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
     }
 

@@ -135,21 +135,3 @@ namespace Test
         }
     }
 }
-
-namespace System.Net
-{
-    public class HttpListenerResponse
-    {
-        public System.IO.Stream OutputStream => null;
-    }
-
-    class HttpListenerContext
-    {
-        public HttpListenerResponse Response => null;
-    }
-
-    class HttpListener
-    {
-        public HttpListenerContext GetContext() => null;
-    }
-}

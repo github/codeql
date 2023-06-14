@@ -5,6 +5,7 @@
 private import go
 private import FlowSummaryImpl as FlowSummaryImpl
 private import codeql.util.Unit
+private import DataFlowPrivate as DataFlowPrivate
 
 /**
  * Holds if taint can flow from `src` to `sink` in zero or more
@@ -95,7 +96,8 @@ predicate localAdditionalTaintStep(DataFlow::Node pred, DataFlow::Node succ) {
   sliceStep(pred, succ) or
   any(FunctionModel fm).taintStep(pred, succ) or
   any(AdditionalTaintStep a).step(pred, succ) or
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(pred, succ, false)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(pred.(DataFlowPrivate::FlowSummaryNode)
+        .getSummaryNode(), succ.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false)
 }
 
 /**
