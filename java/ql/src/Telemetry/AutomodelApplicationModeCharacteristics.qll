@@ -15,25 +15,30 @@ private import semmle.code.java.security.QueryInjection
 private import semmle.code.java.security.RequestForgery
 private import semmle.code.java.dataflow.internal.ModelExclusions as ModelExclusions
 private import AutomodelJavaUtil as AutomodelJavaUtil
+private import semmle.code.java.security.PathSanitizer as PathSanitizer
 private import AutomodelSharedGetCallable as AutomodelSharedGetCallable
 import AutomodelSharedCharacteristics as SharedCharacteristics
 import AutomodelEndpointTypes as AutomodelEndpointTypes
 
-newtype JavaRelatedLocationType =
-  MethodDoc() or
-  ClassDoc()
+newtype JavaRelatedLocationType = CallContext()
 
 /**
- * A candidates implementation for framework mode.
+ * A class representing nodes that are arguments to calls.
+ */
+private class ArgumentNode extends DataFlow::Node {
+  ArgumentNode() { this.asExpr() = [any(Call c).getAnArgument(), any(Call c).getQualifier()] }
+}
+
+/**
+ * A candidates implementation.
  *
  * Some important notes:
- *  - This mode is using parameters as endpoints.
- *  - Sink- and neutral-information is being used from MaD models.
- *  - When available, we use method- and class-java-docs as related locations.
+ *  - This mode is using arguments as endpoints.
+ *  - We use the `CallContext` (the surrounding call expression) as related location.
  */
-module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
+module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig {
   // for documentation of the implementations here, see the QLDoc in the CandidateSig signature module.
-  class Endpoint = DataFlow::ParameterNode;
+  class Endpoint = ArgumentNode;
 
   class EndpointType = AutomodelEndpointTypes::EndpointType;
 
@@ -44,9 +49,21 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   class RelatedLocationType = JavaRelatedLocationType;
 
   // Sanitizers are currently not modeled in MaD. TODO: check if this has large negative impact.
-  predicate isSanitizer(Endpoint e, EndpointType t) { none() }
+  predicate isSanitizer(Endpoint e, EndpointType t) {
+    exists(t) and
+    (
+      e.getType() instanceof BoxedType
+      or
+      e.getType() instanceof PrimitiveType
+      or
+      e.getType() instanceof NumberType
+    )
+    or
+    t instanceof AutomodelEndpointTypes::TaintedPathSinkType and
+    e instanceof PathSanitizer::PathInjectionSanitizer
+  }
 
-  RelatedLocation asLocation(Endpoint e) { result = e.asParameter() }
+  RelatedLocation asLocation(Endpoint e) { result = e.asExpr() }
 
   predicate isKnownKind = AutomodelJavaUtil::isKnownKind/3;
 
@@ -55,6 +72,8 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
       sinkSpec(e, package, type, name, signature, ext, input) and
       ExternalFlow::sinkModel(package, type, _, name, [signature, ""], ext, input, kind, _)
     )
+    or
+    isCustomSink(e, kind)
   }
 
   predicate isNeutral(Endpoint e) {
@@ -67,71 +86,98 @@ module FrameworkCandidatesImpl implements SharedCharacteristics::CandidateSig {
   additional predicate sinkSpec(
     Endpoint e, string package, string type, string name, string signature, string ext, string input
   ) {
-    FrameworkModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
-    signature = ExternalFlow::paramsString(FrameworkModeGetCallable::getCallable(e)) and
+    ApplicationModeGetCallable::getCallable(e).hasQualifiedName(package, type, name) and
+    signature = ExternalFlow::paramsString(ApplicationModeGetCallable::getCallable(e)) and
     ext = "" and
-    exists(int paramIdx | e.isParameterOf(_, paramIdx) |
-      input = AutomodelJavaUtil::getArgumentForIndex(paramIdx)
+    (
+      exists(Call c, int argIdx |
+        e.asExpr() = c.getArgument(argIdx) and
+        input = AutomodelJavaUtil::getArgumentForIndex(argIdx)
+      )
+      or
+      exists(Call c |
+        e.asExpr() = c.getQualifier() and input = AutomodelJavaUtil::getArgumentForIndex(-1)
+      )
     )
   }
 
   /**
    * Gets the related location for the given endpoint.
    *
-   * Related locations can be JavaDoc comments of the class or the method.
+   * The only related location we model is the the call expression surrounding to
+   * which the endpoint is either argument or qualifier (known as the call context).
    */
   RelatedLocation getRelatedLocation(Endpoint e, RelatedLocationType type) {
-    type = MethodDoc() and
-    result = FrameworkModeGetCallable::getCallable(e).(Documentable).getJavadoc()
-    or
-    type = ClassDoc() and
-    result = FrameworkModeGetCallable::getCallable(e).getDeclaringType().(Documentable).getJavadoc()
+    type = CallContext() and
+    result = any(Call c | e.asExpr() = [c.getAnArgument(), c.getQualifier()])
   }
 }
 
 private class JavaCallable = Callable;
 
-private module FrameworkModeGetCallable implements AutomodelSharedGetCallable::GetCallableSig {
+private module ApplicationModeGetCallable implements AutomodelSharedGetCallable::GetCallableSig {
   class Callable = JavaCallable;
 
-  class Endpoint = FrameworkCandidatesImpl::Endpoint;
+  class Endpoint = ApplicationCandidatesImpl::Endpoint;
 
   /**
-   * Returns the callable that contains the given endpoint.
-   *
-   * Each Java mode should implement this predicate.
+   * Returns the API callable being modeled.
    */
-  Callable getCallable(Endpoint e) { result = e.getEnclosingCallable() }
+  Callable getCallable(Endpoint e) {
+    exists(Call c |
+      e.asExpr() = [c.getAnArgument(), c.getQualifier()] and
+      result = c.getCallee()
+    )
+  }
 }
 
-module CharacteristicsImpl = SharedCharacteristics::SharedCharacteristics<FrameworkCandidatesImpl>;
+/**
+ * Contains endpoints that are defined in QL code rather than as a MaD model. Ideally this predicate
+ * should be empty.
+ */
+private predicate isCustomSink(Endpoint e, string kind) {
+  e.asExpr() instanceof ArgumentToExec and kind = "command injection"
+  or
+  e instanceof RequestForgerySink and kind = "request forgery"
+  or
+  e instanceof QueryInjectionSink and kind = "sql"
+}
+
+module CharacteristicsImpl =
+  SharedCharacteristics::SharedCharacteristics<ApplicationCandidatesImpl>;
 
 class EndpointCharacteristic = CharacteristicsImpl::EndpointCharacteristic;
 
-class Endpoint = FrameworkCandidatesImpl::Endpoint;
+class Endpoint = ApplicationCandidatesImpl::Endpoint;
 
 /*
  * Predicates that are used to surface prompt examples and candidates for classification with an ML model.
  */
 
 /**
- * A MetadataExtractor that extracts metadata for framework mode.
+ * A MetadataExtractor that extracts metadata for application mode.
  */
-class FrameworkModeMetadataExtractor extends string {
-  FrameworkModeMetadataExtractor() { this = "FrameworkModeMetadataExtractor" }
+class ApplicationModeMetadataExtractor extends string {
+  ApplicationModeMetadataExtractor() { this = "ApplicationModeMetadataExtractor" }
 
   predicate hasMetadata(
     Endpoint e, string package, string type, string subtypes, string name, string signature,
-    string input, string parameterName
+    string input
   ) {
-    exists(Callable callable, int paramIdx |
-      e.asParameter() = callable.getParameter(paramIdx) and
-      input = AutomodelJavaUtil::getArgumentForIndex(paramIdx) and
+    exists(Call call, Callable callable, int argIdx |
+      call.getCallee() = callable and
+      (
+        e.asExpr() = call.getArgument(argIdx)
+        or
+        e.asExpr() = call.getQualifier() and argIdx = -1
+      ) and
+      input = AutomodelJavaUtil::getArgumentForIndex(argIdx) and
       package = callable.getDeclaringType().getPackage().getName() and
+      // we're using the erased types because the MaD convention is to not specify type parameters.
+      // Whether something is or isn't a sink doesn't usually depend on the type parameters.
       type = callable.getDeclaringType().getErasure().(RefType).nestedName() and
       subtypes = AutomodelJavaUtil::considerSubtypes(callable).toString() and
       name = callable.getName() and
-      parameterName = e.asParameter().getName() and
       signature = ExternalFlow::paramsString(callable)
     )
   }
@@ -154,9 +200,9 @@ private class UnexploitableIsCharacteristic extends CharacteristicsImpl::NotASin
   UnexploitableIsCharacteristic() { this = "unexploitable (is-style boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _) and
-    FrameworkModeGetCallable::getCallable(e).getName().matches("is%") and
-    FrameworkModeGetCallable::getCallable(e).getReturnType() instanceof BooleanType
+    not ApplicationCandidatesImpl::isSink(e, _) and
+    ApplicationModeGetCallable::getCallable(e).getName().matches("is%") and
+    ApplicationModeGetCallable::getCallable(e).getReturnType() instanceof BooleanType
   }
 }
 
@@ -172,9 +218,9 @@ private class UnexploitableExistsCharacteristic extends CharacteristicsImpl::Not
   UnexploitableExistsCharacteristic() { this = "unexploitable (existence-checking boolean method)" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkCandidatesImpl::isSink(e, _) and
+    not ApplicationCandidatesImpl::isSink(e, _) and
     exists(Callable callable |
-      callable = FrameworkModeGetCallable::getCallable(e) and
+      callable = ApplicationModeGetCallable::getCallable(e) and
       callable.getName().toLowerCase() = ["exists", "notexists"] and
       callable.getReturnType() instanceof BooleanType
     )
@@ -188,20 +234,67 @@ private class ExceptionCharacteristic extends CharacteristicsImpl::NotASinkChara
   ExceptionCharacteristic() { this = "exception" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    FrameworkModeGetCallable::getCallable(e).getDeclaringType().getASupertype*() instanceof
+    ApplicationModeGetCallable::getCallable(e).getDeclaringType().getASupertype*() instanceof
       TypeThrowable
   }
 }
 
 /**
- * A characteristic that limits candidates to parameters of methods that are recognized as `ModelApi`, iow., APIs that
- * are considered worth modeling.
+ * A negative characteristic that indicates that an endpoint is a MaD taint step. MaD modeled taint steps are global,
+ * so they are not sinks for any query. Non-MaD taint steps might be specific to a particular query, so we don't
+ * filter those out.
  */
-private class NotAModelApiParameter extends CharacteristicsImpl::UninterestingToModelCharacteristic {
-  NotAModelApiParameter() { this = "not a model API parameter" }
+private class IsMaDTaintStepCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
+  IsMaDTaintStepCharacteristic() { this = "taint step" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not exists(ModelExclusions::ModelApi api | api.getAParameter() = e.asParameter())
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(e, _, _) or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(e, _, _) or
+    FlowSummaryImpl::Private::Steps::summaryGetterStep(e, _, _, _) or
+    FlowSummaryImpl::Private::Steps::summarySetterStep(e, _, _, _)
+  }
+}
+
+/**
+ * A negative characteristic that filters out qualifiers that are classes (i.e. static calls). These
+ * are unlikely to have any non-trivial flow going into them.
+ *
+ * Technically, an accessed type _could_ come from outside of the source code, but there's not
+ * much likelihood of that being user-controlled.
+ */
+private class ClassQualifierCharacteristic extends CharacteristicsImpl::NotASinkCharacteristic {
+  ClassQualifierCharacteristic() { this = "class qualifier" }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    exists(Call c |
+      e.asExpr() = c.getQualifier() and
+      c.getQualifier() instanceof TypeAccess
+    )
+  }
+}
+
+/**
+ * A call to a method that's known locally will not be considered as a candidate to model.
+ *
+ * The reason is that we would expect data/taint flow into the method implementation to uncover
+ * any sinks that are present there.
+ */
+private class ArgumentToLocalCall extends CharacteristicsImpl::UninterestingToModelCharacteristic {
+  ArgumentToLocalCall() { this = "argument to local call" }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    ApplicationModeGetCallable::getCallable(e).fromSource()
+  }
+}
+
+/**
+ * A Characteristic that marks endpoints as uninteresting to model, according to the Java ModelExclusions module.
+ */
+private class ExcludedFromModeling extends CharacteristicsImpl::UninterestingToModelCharacteristic {
+  ExcludedFromModeling() { this = "excluded from modeling" }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    ModelExclusions::isUninterestingForModels(ApplicationModeGetCallable::getCallable(e))
   }
 }
 
@@ -214,7 +307,70 @@ private class NonPublicMethodCharacteristic extends CharacteristicsImpl::Uninter
   NonPublicMethodCharacteristic() { this = "non-public method" }
 
   override predicate appliesToEndpoint(Endpoint e) {
-    not FrameworkModeGetCallable::getCallable(e).isPublic()
+    not ApplicationModeGetCallable::getCallable(e).isPublic()
+  }
+}
+
+/**
+ * A negative characteristic that indicates that an endpoint is a non-sink argument to a method whose sinks have already
+ * been modeled.
+ *
+ * WARNING: These endpoints should not be used as negative samples for training, because some sinks may have been missed
+ * when the method was modeled. Specifically, as we start using ATM to merge in new declarations, we can be less sure
+ * that a method with one argument modeled as a MaD sink has also had its remaining arguments manually reviewed. The
+ * ML model might have predicted argument 0 of some method to be a sink but not argument 1, when in fact argument 1 is
+ * also a sink.
+ */
+private class OtherArgumentToModeledMethodCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic
+{
+  OtherArgumentToModeledMethodCharacteristic() {
+    this = "other argument to a method that has already been modeled"
+  }
+
+  override predicate appliesToEndpoint(Endpoint e) {
+    not ApplicationCandidatesImpl::isSink(e, _) and
+    exists(DataFlow::Node otherSink |
+      ApplicationCandidatesImpl::isSink(otherSink, _) and
+      e.asExpr() = otherSink.asExpr().(Argument).getCall().getAnArgument() and
+      e != otherSink
+    )
+  }
+}
+
+/**
+ * A characteristic that marks functional expression as likely not sinks.
+ *
+ * These expressions may well _contain_ sinks, but rarely are sinks themselves.
+ */
+private class FunctionValueCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic {
+  FunctionValueCharacteristic() { this = "function value" }
+
+  override predicate appliesToEndpoint(Endpoint e) { e.asExpr() instanceof FunctionalExpr }
+}
+
+/**
+ * A negative characteristic that indicates that an endpoint is not a `to` node for any known taint step. Such a node
+ * cannot be tainted, because taint can't flow into it.
+ *
+ * WARNING: These endpoints should not be used as negative samples for training, because they may include sinks for
+ * which our taint tracking modeling is incomplete.
+ */
+private class CannotBeTaintedCharacteristic extends CharacteristicsImpl::LikelyNotASinkCharacteristic
+{
+  CannotBeTaintedCharacteristic() { this = "cannot be tainted" }
+
+  override predicate appliesToEndpoint(Endpoint e) { not this.isKnownOutNodeForStep(e) }
+
+  /**
+   * Holds if the node `n` is known as the predecessor in a modeled flow step.
+   */
+  private predicate isKnownOutNodeForStep(Endpoint e) {
+    e.asExpr() instanceof Call or // we just assume flow in that case
+    TaintTracking::localTaintStep(_, e) or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepValue(_, e, _) or
+    FlowSummaryImpl::Private::Steps::summaryThroughStepTaint(_, e, _) or
+    FlowSummaryImpl::Private::Steps::summaryGetterStep(_, _, e, _) or
+    FlowSummaryImpl::Private::Steps::summarySetterStep(_, _, e, _)
   }
 }
 
