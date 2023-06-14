@@ -59,13 +59,13 @@ module ApplicationCandidatesImpl implements SharedCharacteristics::CandidateSig 
       e.getType() instanceof NumberType
     )
     or
-    t instanceof AutomodelEndpointTypes::TaintedPathSinkType and
+    t instanceof AutomodelEndpointTypes::PathInjectionSinkType and
     e instanceof PathSanitizer::PathInjectionSanitizer
   }
 
   RelatedLocation asLocation(Endpoint e) { result = e.asExpr() }
 
-  predicate isKnownKind = AutomodelJavaUtil::isKnownKind/3;
+  predicate isKnownKind = AutomodelJavaUtil::isKnownKind/2;
 
   predicate isSink(Endpoint e, string kind) {
     exists(string package, string type, string name, string signature, string ext, string input |
