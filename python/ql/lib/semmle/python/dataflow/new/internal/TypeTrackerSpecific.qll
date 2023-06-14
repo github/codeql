@@ -200,24 +200,18 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
 
   class SummaryComponentStack = FlowSummary::SummaryComponentStack;
 
-  SummaryComponentStack singleton(SummaryComponent component) {
-    result = FlowSummary::SummaryComponentStack::singleton(component)
-  }
+  predicate singleton = FlowSummary::SummaryComponentStack::singleton/1;
 
-  SummaryComponentStack push(SummaryComponent component, SummaryComponentStack stack) {
-    result = FlowSummary::SummaryComponentStack::push(component, stack)
-  }
+  predicate push = FlowSummary::SummaryComponentStack::push/2;
 
   // Relating content to summaries
-  SummaryComponent content(TypeTrackerContent contents) {
-    result = FlowSummary::SummaryComponent::content(contents)
-  }
+  predicate content = FlowSummary::SummaryComponent::content/1;
 
-  SummaryComponent withoutContent(TypeTrackerContent contents) { none() }
+  predicate withoutContent = FlowSummary::SummaryComponent::withoutContent/1;
 
-  SummaryComponent withContent(TypeTrackerContent contents) { none() }
+  predicate withContent = FlowSummary::SummaryComponent::withContent/1;
 
-  SummaryComponent return() { result = FlowSummary::SummaryComponent::return() }
+  predicate return = FlowSummary::SummaryComponent::return/0;
 
   // Relating nodes to summaries
   Node argumentOf(Node call, SummaryComponent arg) {
