@@ -342,6 +342,8 @@ predicate parseContent(string component, DataFlow::Content content) {
   component = "MapKey" and content instanceof DataFlow::MapKeyContent
   or
   component = "MapValue" and content instanceof DataFlow::MapValueContent
+  or
+  component = "Dereference" and content instanceof DataFlow::PointerContent
 }
 
 cached

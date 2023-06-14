@@ -143,10 +143,10 @@ func simpleflow() {
 
 	cp1 := &test.C{""}
 	cp1.SetThroughPointer(a.Src1().(string))
-	b.Sink1(cp1.F) // $ MISSING: hasTaintFlow="selection of F"
+	b.Sink1(cp1.F) // $ hasTaintFlow="selection of F"
 
 	cp2 := &test.C{a.Src1().(string)}
-	b.Sink1(cp2.GetThroughPointer()) // $ MISSING: hasTaintFlow="call to GetThroughPointer"
+	b.Sink1(cp2.GetThroughPointer()) // $ hasTaintFlow="call to GetThroughPointer"
 
 	cp3 := &test.C{""}
 	cp3.SetThroughPointer(a.Src1().(string))
