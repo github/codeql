@@ -2,25 +2,25 @@ import sys
 import os
 
 # Simple summary
-tainted = identity(tracked)  # $ tracked
+tainted = TTS_identity(tracked)  # $ tracked
 tainted  # $ tracked
 
 # Lambda summary
 # I think the missing result is expected because type tracking
 # is not allowed to flow back out of a call.
-tainted_lambda = apply_lambda(lambda x: x, tracked)  # $ tracked
+tainted_lambda = TTS_apply_lambda(lambda x: x, tracked)  # $ tracked
 tainted_lambda  # $ MISSING: tracked
 
 # A lambda that directly introduces taint
-bad_lambda = apply_lambda(lambda x: tracked, 1)  # $ tracked
+bad_lambda = TTS_apply_lambda(lambda x: tracked, 1)  # $ tracked
 bad_lambda  # $ tracked
 
 # A lambda that breaks the flow
-untainted_lambda = apply_lambda(lambda x: 1, tracked)  # $ tracked
+untainted_lambda = TTS_apply_lambda(lambda x: 1, tracked)  # $ tracked
 untainted_lambda
 
 # Collection summaries
-tainted_list = reversed([tracked])  # $ tracked
+tainted_list = TTS_reversed([tracked])  # $ tracked
 tl = tainted_list[0]
 tl  # $ MISSING: tracked
 
@@ -28,21 +28,21 @@ tl  # $ MISSING: tracked
 def add_colon(x):
     return x + ":"
 
-tainted_mapped = list_map(add_colon, [tracked])  # $ tracked
+tainted_mapped = TTS_list_map(add_colon, [tracked])  # $ tracked
 tm = tainted_mapped[0]
 tm  # $ MISSING: tracked
 
 def explicit_identity(x):
     return x
 
-tainted_mapped_explicit = list_map(explicit_identity, [tracked])  # $ tracked
+tainted_mapped_explicit = TTS_list_map(explicit_identity, [tracked])  # $ tracked
 tainted_mapped_explicit[0]  # $ MISSING: tracked
 
-tainted_mapped_summary = list_map(identity, [tracked])  # $ tracked
+tainted_mapped_summary = TTS_list_map(identity, [tracked])  # $ tracked
 tms = tainted_mapped_summary[0]
 tms  # $ MISSING: tracked
 
-another_tainted_list = append_to_list([], tracked)  # $ tracked
+another_tainted_list = TTS_append_to_list([], tracked)  # $ tracked
 atl = another_tainted_list[0]
 atl  # $ MISSING: tracked
 
@@ -53,9 +53,9 @@ tr = tainted_resultlist[0]
 tr  # $ MISSING: tracked
 
 x.secret = tracked # $ tracked=secret tracked
-r = read_secret(x) # $ tracked=secret tracked
+r = TTS_read_secret(x) # $ tracked=secret tracked
 r  # $ tracked
 
 y # $ tracked=secret
-set_secret(y, tracked) # $ tracked tracked=secret
+TTS_set_secret(y, tracked) # $ tracked tracked=secret
 y.secret  # $ tracked tracked=secret
