@@ -26,6 +26,10 @@ invalidModelRow
 | test.go:133:10:133:17 | call to Get | qltest |
 | test.go:137:10:137:17 | call to Get | qltest |
 | test.go:142:10:142:17 | call to Get | qltest |
-| test.go:148:17:148:20 | arg1 | qltest |
-| test.go:148:23:148:26 | arg2 | qltest |
-| test.go:148:29:148:32 | arg3 | qltest |
+| test.go:146:10:146:14 | selection of F | qltest |
+| test.go:149:10:149:32 | call to GetThroughPointer | qltest |
+| test.go:153:10:153:32 | call to GetThroughPointer | qltest |
+| test.go:158:10:158:32 | call to GetThroughPointer | qltest |
+| test.go:164:17:164:20 | arg1 | qltest |
+| test.go:164:23:164:26 | arg2 | qltest |
+| test.go:164:29:164:32 | arg3 | qltest |
