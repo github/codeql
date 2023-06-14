@@ -4339,11 +4339,6 @@ private module StdlibPrivate {
       output = "ReturnValue.ListElement" and
       preservesValue = true
       or
-      // newly added element returned
-      input = "Argument[0]" and
-      output = "ReturnValue.ListElement" and
-      preservesValue = true
-      or
       // newly added element added to this
       input = "Argument[0]" and
       output = "Argument[self].ListElement" and
@@ -4352,11 +4347,6 @@ private module StdlibPrivate {
       // transfer taint from new element to this (TODO: remove in future when taint-handling is more in line with other languages)
       input = "Argument[0]" and
       output = "Argument[self]" and
-      preservesValue = false
-      or
-      // transfer taint from new element to return value
-      input = "Argument[0]" and
-      output = "ReturnValue" and
       preservesValue = false
     }
   }
@@ -4381,11 +4371,6 @@ private module StdlibPrivate {
       output = "ReturnValue.SetElement" and
       preservesValue = true
       or
-      // newly added element returned
-      input = "Argument[0]" and
-      output = "ReturnValue.SetElement" and
-      preservesValue = true
-      or
       // newly added element added to this
       input = "Argument[0]" and
       output = "Argument[self].SetElement" and
@@ -4394,11 +4379,6 @@ private module StdlibPrivate {
       // transfer taint from new element to this (TODO: remove in future when taint-handling is more in line with other languages)
       input = "Argument[0]" and
       output = "Argument[self]" and
-      preservesValue = false
-      or
-      // transfer taint from new element to return value
-      input = "Argument[0]" and
-      output = "ReturnValue" and
       preservesValue = false
     }
   }
