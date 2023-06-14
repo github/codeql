@@ -4334,11 +4334,6 @@ private module StdlibPrivate {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      // existing elements
-      input = "Argument[self].ListElement" and
-      output = "ReturnValue.ListElement" and
-      preservesValue = true
-      or
       // newly added element added to this
       input = "Argument[0]" and
       output = "Argument[self].ListElement" and
@@ -4366,11 +4361,6 @@ private module StdlibPrivate {
     }
 
     override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
-      // existing elements
-      input = "Argument[self].SetElement" and
-      output = "ReturnValue.SetElement" and
-      preservesValue = true
-      or
       // newly added element added to this
       input = "Argument[0]" and
       output = "Argument[self].SetElement" and
