@@ -16,7 +16,8 @@ signature module Input {
 
   // Relating content and filters
   /**
-   * Gets a content filter to use for a `WithoutContent[content]` step, or has no result if
+   * Gets a content filter to use for a `WithoutContent[content]` step, (data is not allowed to be stored in `content`)
+   * or has no result if
    * the step should be treated as ordinary flow.
    *
    * `WithoutContent` is often used to perform strong updates on individual collection elements, but for
@@ -26,7 +27,8 @@ signature module Input {
   TypeTrackerContentFilter getFilterFromWithoutContentStep(TypeTrackerContent content);
 
   /**
-   * Gets a content filter to use for a `WithContent[content]` step, or has no result if
+   * Gets a content filter to use for a `WithContent[content]` step, (data must be stored in `content`)
+   * or has no result if
    * the step cannot be handled by type-tracking.
    *
    * `WithContent` is often used to perform strong updates on individual collection elements (or rather
@@ -48,7 +50,7 @@ signature module Input {
   /**
    * Gets the stack obtained by pushing `head` onto `tail`.
    */
-  SummaryComponentStack push(SummaryComponent component, SummaryComponentStack stack);
+  SummaryComponentStack push(SummaryComponent head, SummaryComponentStack tail);
 
   /** Gets a singleton stack representing a return. */
   SummaryComponent return();
@@ -57,10 +59,10 @@ signature module Input {
   /** Gets a summary component for content `c`. */
   SummaryComponent content(TypeTrackerContent contents);
 
-  /** Gets a summary component where data is not allowed to be stored in `c`. */
+  /** Gets a summary component where data is not allowed to be stored in `contents`. */
   SummaryComponent withoutContent(TypeTrackerContent contents);
 
-  /** Gets a summary component where data must be stored in `c`. */
+  /** Gets a summary component where data must be stored in `contents`. */
   SummaryComponent withContent(TypeTrackerContent contents);
 
   // Callables

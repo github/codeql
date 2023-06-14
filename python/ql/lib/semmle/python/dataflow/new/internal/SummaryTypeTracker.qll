@@ -50,7 +50,7 @@ signature module Input {
   /**
    * Gets the stack obtained by pushing `head` onto `tail`.
    */
-  SummaryComponentStack push(SummaryComponent component, SummaryComponentStack stack);
+  SummaryComponentStack push(SummaryComponent head, SummaryComponentStack tail);
 
   /** Gets a singleton stack representing a return. */
   SummaryComponent return();
