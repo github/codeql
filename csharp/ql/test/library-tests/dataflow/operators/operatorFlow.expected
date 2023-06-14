@@ -1,4 +1,5 @@
 failures
+testFailures
 edges
 | Operator.cs:9:39:9:39 | x : C | Operator.cs:9:50:9:50 | access to parameter x : C |
 | Operator.cs:16:38:16:38 | x : C | Operator.cs:16:49:16:49 | access to parameter x : C |

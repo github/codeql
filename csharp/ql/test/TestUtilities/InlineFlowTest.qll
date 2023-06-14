@@ -4,11 +4,12 @@
  * Example for a test.ql:
  * ```ql
  * import csharp
- * import DefaultValueFlow::PathGraph
  * import TestUtilities.InlineFlowTest
+ * import DefaultFlowTest
+ * import ValueFlow::PathGraph
  *
- * from DefaultValueFlow::PathNode source, DefaultValueFlow::PathNode sink
- * where DefaultValueFlow::flowPath(source, sink)
+ * from ValueFlow::PathNode source, ValueFlow::PathNode sink
+ * where ValueFlow::flowPath(source, sink)
  * select sink, source, sink, "$@", source, source.toString()
  *
  * ```
@@ -32,14 +33,10 @@
  * }
  * ```
  *
- * If you're not interested in a specific flow type, you can disable either value or taint flow expectations as follows:
- * ```ql
- * class HasFlowTest extends InlineFlowTest {
- *   override DataFlow::Configuration getTaintFlowConfig() { none() }
- *
- *   override DataFlow::Configuration getValueFlowConfig() { none() }
- * }
- * ```
+ * If you are only interested in value flow, then instead of importing `DefaultFlowTest`, you can import
+ * `ValueFlowTest<DefaultFlowConfig>`. Similarly, if you are only interested in taint flow, then instead of
+ * importing `DefaultFlowTest`, you can import `TaintFlowTest<DefaultFlowConfig>`. In both cases
+ * `DefaultFlowConfig` can be replaced by another implementation of `DataFlow::ConfigSig`.
  *
  * If you need more fine-grained tuning, consider implementing a test using `InlineExpectationsTest`.
  */
@@ -47,8 +44,8 @@
 import csharp
 import TestUtilities.InlineExpectationsTest
 
-private predicate defaultSource(DataFlow::Node src) {
-  src.asExpr().(MethodCall).getTarget().getUndecoratedName() = ["Source", "Taint"]
+private predicate defaultSource(DataFlow::Node source) {
+  source.asExpr().(MethodCall).getTarget().getUndecoratedName() = ["Source", "Taint"]
 }
 
 private predicate defaultSink(DataFlow::Node sink) {
@@ -58,42 +55,60 @@ private predicate defaultSink(DataFlow::Node sink) {
 }
 
 module DefaultFlowConfig implements DataFlow::ConfigSig {
-  predicate isSource(DataFlow::Node n) { defaultSource(n) }
+  predicate isSource(DataFlow::Node source) { defaultSource(source) }
 
-  predicate isSink(DataFlow::Node n) { defaultSink(n) }
+  predicate isSink(DataFlow::Node sink) { defaultSink(sink) }
 
   int fieldFlowBranchLimit() { result = 1000 }
 }
 
-module DefaultValueFlow = DataFlow::Global<DefaultFlowConfig>;
+private module NoFlowConfig implements DataFlow::ConfigSig {
+  predicate isSource(DataFlow::Node source) { none() }
 
-module DefaultTaintFlow = TaintTracking::Global<DefaultFlowConfig>;
+  predicate isSink(DataFlow::Node sink) { none() }
+}
 
 private string getSourceArgString(DataFlow::Node src) {
   defaultSource(src) and
   src.asExpr().(MethodCall).getAnArgument().getValue() = result
 }
 
-class InlineFlowTest extends InlineExpectationsTest {
-  InlineFlowTest() { this = "HasFlowTest" }
+module FlowTest<DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFlowConfig> {
+  module ValueFlow = DataFlow::Global<ValueFlowConfig>;
 
-  override string getARelevantTag() { result = ["hasValueFlow", "hasTaintFlow"] }
+  module TaintFlow = TaintTracking::Global<TaintFlowConfig>;
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
-    tag = "hasValueFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink | DefaultValueFlow::flow(src, sink) |
-      sink.getLocation() = location and
-      element = sink.toString() and
-      if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
-    )
-    or
-    tag = "hasTaintFlow" and
-    exists(DataFlow::Node src, DataFlow::Node sink |
-      DefaultTaintFlow::flow(src, sink) and not DefaultValueFlow::flow(src, sink)
-    |
-      sink.getLocation() = location and
-      element = sink.toString() and
-      if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
-    )
+  private module InlineTest implements TestSig {
+    string getARelevantTag() { result = ["hasValueFlow", "hasTaintFlow"] }
+
+    predicate hasActualResult(Location location, string element, string tag, string value) {
+      tag = "hasValueFlow" and
+      exists(DataFlow::Node src, DataFlow::Node sink | ValueFlow::flow(src, sink) |
+        sink.getLocation() = location and
+        element = sink.toString() and
+        if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
+      )
+      or
+      tag = "hasTaintFlow" and
+      exists(DataFlow::Node src, DataFlow::Node sink |
+        TaintFlow::flow(src, sink) and not ValueFlow::flow(src, sink)
+      |
+        sink.getLocation() = location and
+        element = sink.toString() and
+        if exists(getSourceArgString(src)) then value = getSourceArgString(src) else value = ""
+      )
+    }
   }
+
+  import MakeTest<InlineTest>
+}
+
+module DefaultFlowTest = FlowTest<DefaultFlowConfig, DefaultFlowConfig>;
+
+module ValueFlowTest<DataFlow::ConfigSig ValueFlowConfig> {
+  import FlowTest<ValueFlowConfig, NoFlowConfig>
+}
+
+module TaintFlowTest<DataFlow::ConfigSig TaintFlowConfig> {
+  import FlowTest<NoFlowConfig, TaintFlowConfig>
 }

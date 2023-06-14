@@ -1,4 +1,5 @@
 failures
+testFailures
 edges
 | A.cs:5:17:5:28 | call to method Source<C> : C | A.cs:6:24:6:24 | access to local variable c : C |
 | A.cs:6:17:6:25 | call to method Make : B [field c] : C | A.cs:7:14:7:14 | access to local variable b : B [field c] : C |
