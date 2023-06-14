@@ -2021,7 +2021,8 @@ module Impl<FullStateConfigSig Config> {
       FlowCheckNode() {
         castNode(this.asNode()) or
         clearsContentCached(this.asNode(), _) or
-        expectsContentCached(this.asNode(), _)
+        expectsContentCached(this.asNode(), _) or
+        flowCheckNodeSpecific(this.asNode())
       }
     }
 
