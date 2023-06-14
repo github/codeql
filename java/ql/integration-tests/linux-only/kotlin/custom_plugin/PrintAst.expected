@@ -63,8 +63,8 @@ e.kt:
 #    0|       5: [BlockStmt] { ... }
 #    0|         0: [ReturnStmt] return ...
 #    0|           0: [MethodAccess] add(...)
-#    0|             -1: [ClassInstanceExpr] new ArrayList(...)
-#    0|               -3: [TypeAccess] ArrayList
+#    0|             -1: [ClassInstanceExpr] new ArrayList<Object>(...)
+#    0|               -3: [TypeAccess] ArrayList<Object>
 #    0|               0: [IntegerLiteral] 1
 #    0|             0: [NullLiteral] null
 #    0|     2: [Method] <fn_LinkedHashMap>
@@ -72,8 +72,8 @@ e.kt:
 #    0|       5: [BlockStmt] { ... }
 #    0|         0: [ReturnStmt] return ...
 #    0|           0: [MethodAccess] put(...)
-#    0|             -1: [ClassInstanceExpr] new LinkedHashMap(...)
-#    0|               -3: [TypeAccess] LinkedHashMap
+#    0|             -1: [ClassInstanceExpr] new LinkedHashMap<Object,Object>(...)
+#    0|               -3: [TypeAccess] LinkedHashMap<Object,Object>
 #    0|               0: [IntegerLiteral] 1
 #    0|             0: [NullLiteral] null
 #    0|             1: [NullLiteral] null
