@@ -104,7 +104,7 @@ class SwiftLocationExtractor {
  private:
   TrapLabel<FileTag> fetchFileLabel(const std::filesystem::path& file);
   TrapDomain& trap;
-  std::unordered_map<std::filesystem::path, TrapLabel<FileTag>> store;
+  std::unordered_map<std::filesystem::path, TrapLabel<FileTag>, codeql::PathHash> store;
 };
 
 template <typename Locatable>
