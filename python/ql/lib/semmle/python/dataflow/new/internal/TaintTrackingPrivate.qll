@@ -185,25 +185,6 @@ predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
   // longer -- but there needs to be a matching read-step for the store-step, and we
   // don't provide that right now.
   DataFlowPrivate::comprehensionStoreStep(nodeFrom, _, nodeTo)
-  or
-  // functions operating on collections
-  exists(DataFlow::CallCfgNode call | call = nodeTo |
-    call = API::builtin(["sorted", "reversed", "iter", "next"]).getACall() and
-    call.getArg(0) = nodeFrom
-  )
-  or
-  // dict methods
-  exists(DataFlow::MethodCallNode call, string methodName | call = nodeTo |
-    methodName in ["values", "items"] and
-    call.calls(nodeFrom, methodName)
-  )
-  or
-  // list.append, set.add
-  exists(DataFlow::MethodCallNode call, DataFlow::Node obj |
-    call.calls(obj, ["append", "add"]) and
-    obj = nodeTo.(DataFlow::PostUpdateNode).getPreUpdateNode() and
-    call.getArg(0) = nodeFrom
-  )
 }
 
 /**

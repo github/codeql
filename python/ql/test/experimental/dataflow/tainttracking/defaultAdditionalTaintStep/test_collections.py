@@ -59,7 +59,7 @@ def test_access(x, y, z):
         sorted(tainted_list), # $ tainted
         reversed(tainted_list), # $ tainted
         iter(tainted_list), # $ tainted
-        next(iter(tainted_list)), # $ tainted
+        next(iter(tainted_list)), # $ MISSING: tainted
         [i for i in tainted_list], # $ tainted
         [tainted_list for _i in [1,2,3]], # $ MISSING: tainted
     )

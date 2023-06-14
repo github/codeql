@@ -192,7 +192,7 @@ def test_nested_comprehension_deep_with_local_flow():
 def test_nested_comprehension_dict():
     d = {"s": [SOURCE]}
     x = [y for k, v in d.items() for y in v]
-    SINK(x[0]) #$ MISSING:flow="SOURCE, l:-2 -> x[0]"
+    SINK(x[0]) #$ flow="SOURCE, l:-2 -> x[0]"
 
 
 def test_nested_comprehension_paren():
