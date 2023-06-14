@@ -3,7 +3,7 @@ extensions:
       pack: codeql/java-all
       extensible: summaryModel
     data:
-      - ["org.apache.http.client.utils", "URIBuilder", True, "setPort", "(int)", "", "Argument[undefined]", "ReturnValue", "taint", "ai-manual"] # actually a value step
+      - ["org.apache.http.client.utils", "URIBuilder", True, "setPort", "(int)", "", "Argument[this]", "ReturnValue", "taint", "ai-manual"] # actually a value step
       - ["org.apache.http.client.utils", "URIBuilder", True, "URIBuilder", "(String)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
       - ["org.apache.http.client.utils", "URIBuilder", True, "URIBuilder", "(URI)", "", "Argument[0]", "Argument[this]", "taint", "ai-manual"]
       - ["org.apache.http.client.utils", "URIBuilder", True, "URIBuilder", "(URI,Charset)", "", "Argument[0]", "Argument[this]", "taint", "hq-manual"]
