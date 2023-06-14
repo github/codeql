@@ -490,9 +490,10 @@ class CastNode extends Node {
 }
 
 /**
- * Holds if `n` should be a FlowCheckNode, which will appear in path summaries.
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
  */
-predicate flowCheckNodeSpecific(Node n) {
+predicate neverSkipInPathGraph(Node n) {
   // We include read- and store steps here to force them to be
   // shown in path explanations.
   // This hack is necessary, because we have included some of these

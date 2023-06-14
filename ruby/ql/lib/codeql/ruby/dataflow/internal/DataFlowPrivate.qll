@@ -1294,9 +1294,10 @@ class CastNode extends Node {
 }
 
 /**
- * Holds if `n` should be a FlowCheckNode, which will appear in path summaries.
+ * Holds if `n` should never be skipped over in the `PathGraph` and in path
+ * explanations.
  */
-predicate flowCheckNodeSpecific(Node n) {
+predicate neverSkipInPathGraph(Node n) {
   // ensure that all variable assignments are included in the path graph
   n.(SsaDefinitionExtNode).getDefinitionExt() instanceof Ssa::WriteDefinition
 }
