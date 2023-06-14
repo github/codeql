@@ -19,6 +19,13 @@ class SummarizedCallableBase extends Callable {
   SummarizedCallableBase() { this.isUnboundDeclaration() }
 }
 
+/**
+ * A module for importing frameworks that define synthetic globals.
+ */
+private module SyntheticGlobals {
+  private import semmle.code.csharp.frameworks.EntityFramework
+}
+
 DataFlowCallable inject(SummarizedCallable c) { result.asSummarizedCallable() = c }
 
 /** Gets the parameter position of the instance parameter. */
