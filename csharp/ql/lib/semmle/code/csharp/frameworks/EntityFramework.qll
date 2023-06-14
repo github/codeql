@@ -388,7 +388,9 @@ module EntityFramework {
      * for property `mapped` for this.
      */
     pragma[noinline]
-    predicate output(SummaryComponentStack output, Property mapped, DbContextClassSetProperty dbSet) {
+    private predicate output(
+      SummaryComponentStack output, Property mapped, DbContextClassSetProperty dbSet
+    ) {
       exists(PropertyContent head, SummaryComponentStack tail |
         this.requiresComponentStackOut(head, _, tail, _, dbSet) and
         head.getProperty() = mapped and
