@@ -20,8 +20,7 @@ class NamedPattern extends Generated::NamedPattern {
    */
   VarDecl getVarDecl() {
     this.getImmediateEnclosingPattern*() = result.getImmediateParentPattern() and
-    pragma[only_bind_out](pragma[only_bind_into](result).getName()) =
-      pragma[only_bind_out](pragma[only_bind_into](this).getName())
+    pragma[only_bind_out](result.getName()) = pragma[only_bind_out](this.getName())
   }
 
   override string toString() { result = this.getName() }
