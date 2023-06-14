@@ -353,10 +353,6 @@ extensions:
       pack: codeql/java-all
       extensible: neutralModel
     data:
-      - ["java.util", "Collection<Object>", "isEmpty", "()", "summary", "df-generated"]
-      - ["java.util", "Collection<Object>", "size", "()", "summary", "df-generated"]
-      - ["java.util", "Map<String,Object>", "isEmpty", "()", "summary", "df-generated"]
-      - ["java.util", "Map<String,Object>", "size", "()", "summary", "df-generated"]
       - ["net.sf.json.filters", "CompositePropertyFilter", "removePropertyFilter", "(PropertyFilter)", "summary", "df-generated"]
       - ["net.sf.json.filters", "MappingPropertyFilter", "removePropertyFilter", "(Object)", "summary", "df-generated"]
       - ["net.sf.json.groovy", "JsonSlurper", "parse", "(File)", "summary", "df-generated"]
