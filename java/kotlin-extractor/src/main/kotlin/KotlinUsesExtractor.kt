@@ -316,7 +316,6 @@ open class KotlinUsesExtractor(
         // obvious signature is that they lack any supertype information even though they are not root classes.
         // If possible, replace them by a real version of the same class.
         if (c.superTypes.isNotEmpty() ||
-            c.origin != IrDeclarationOrigin.IR_EXTERNAL_JAVA_DECLARATION_STUB ||
             c.hasEqualFqName(FqName("java.lang.Object")))
             return c
         return globalExtensionState.syntheticToRealClassMap.getOrPut(c) {
@@ -347,6 +346,22 @@ open class KotlinUsesExtractor(
         } ?: c
     }
 
+    // TODO: This ought to look at fully-qualified names, and recurse
+    // through .arguments.
+    private fun equivalentTypes(t1: IrType, t2: IrType): Boolean {
+        val s1 = erase(t1) as? IrSimpleType
+        val s2 = erase(t2) as? IrSimpleType
+        if (s1 == null || s2 == null) {
+            return false
+        }
+        val o1 = s1.classifier.owner as? IrClass
+        val o2 = s2.classifier.owner as? IrClass
+        if (o1 == null || o2 == null) {
+            return false
+        }
+        return o1.name == o2.name
+    }
+
     private fun tryReplaceFunctionInSyntheticClass(f: IrFunction, getClassReplacement: (IrClass) -> IrClass): IrFunction {
         val parentClass = f.parent as? IrClass ?: return f
         val replacementClass = getClassReplacement(parentClass)
@@ -355,7 +370,7 @@ open class KotlinUsesExtractor(
         return globalExtensionState.syntheticToRealFunctionMap.getOrPut(f) {
             val result = replacementClass.declarations.findSubType<IrSimpleFunction> { replacementDecl ->
                 replacementDecl.name == f.name && replacementDecl.valueParameters.size == f.valueParameters.size && replacementDecl.valueParameters.zip(f.valueParameters).all {
-                    erase(it.first.type) == erase(it.second.type)
+                    equivalentTypes(it.first.type, it.second.type)
                 }
             }
             if (result == null) {
