@@ -72,6 +72,10 @@ module SummaryComponent {
           jrk.getTargetReturnKind() instanceof DataFlowDispatch::NormalReturnKind
         ))
   }
+
+  predicate syntheticGlobal = SummaryComponentInternal::syntheticGlobal/1;
+
+  class SyntheticGlobal = SummaryComponentInternal::SyntheticGlobal;
 }
 
 class SummaryComponentStack = Impl::Public::SummaryComponentStack;
@@ -112,6 +116,14 @@ module SummaryComponentStack {
 
   /** Gets a singleton stack representing a jump to `c`. */
   SummaryComponentStack jump(Callable c) { result = singleton(SummaryComponent::jump(c)) }
+
+  /** Gets a singleton stack representing a synthetic global with name `name`. */
+  SummaryComponentStack syntheticGlobal(string synthetic) {
+    result = singleton(SummaryComponent::syntheticGlobal(synthetic))
+  }
+
+  /** Gets a textual representation of this stack used for flow summaries. */
+  string getComponentStack(SummaryComponentStack s) { result = Impl::Public::getComponentStack(s) }
 }
 
 class SummarizedCallable = Impl::Public::SummarizedCallable;

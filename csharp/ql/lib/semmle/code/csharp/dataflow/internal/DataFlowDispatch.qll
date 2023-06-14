@@ -128,7 +128,9 @@ private module Cached {
       // No need to include calls that are compiled from source
       not call.getImplementation().getMethod().compiledFromSource()
     } or
-    TSummaryCall(FlowSummaryImpl::Public::SummarizedCallable c, Node receiver) {
+    TSummaryCall(
+      FlowSummaryImpl::Public::SummarizedCallable c, FlowSummaryImpl::Private::SummaryNode receiver
+    ) {
       FlowSummaryImpl::Private::summaryCallbackRange(c, receiver)
     }
 
@@ -472,12 +474,12 @@ class CilDataFlowCall extends DataFlowCall, TCilCall {
  */
 class SummaryCall extends DelegateDataFlowCall, TSummaryCall {
   private FlowSummaryImpl::Public::SummarizedCallable c;
-  private Node receiver;
+  private FlowSummaryImpl::Private::SummaryNode receiver;
 
   SummaryCall() { this = TSummaryCall(c, receiver) }
 
   /** Gets the data flow node that this call targets. */
-  Node getReceiver() { result = receiver }
+  FlowSummaryImpl::Private::SummaryNode getReceiver() { result = receiver }
 
   override DataFlowCallable getARuntimeTarget() {
     none() // handled by the shared library

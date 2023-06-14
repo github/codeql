@@ -1,12 +1,10 @@
 import go
 import TestUtilities.InlineExpectationsTest
 
-class HttpHandler extends InlineExpectationsTest {
-  HttpHandler() { this = "httphandler" }
+module HttpHandler implements TestSig {
+  string getARelevantTag() { result = "handler" }
 
-  override string getARelevantTag() { result = "handler" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "handler" and
     exists(Http::RequestHandler h, DataFlow::Node check |
       element = h.toString() and value = check.toString()
@@ -17,3 +15,5 @@ class HttpHandler extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HttpHandler>

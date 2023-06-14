@@ -987,6 +987,17 @@ private string getAPublicObjectMethodSignature() {
   )
 }
 
+pragma[nomagic]
+private predicate interfaceInheritsOverridingNonAbstractMethod(Interface interface, Method m) {
+  interface.inherits(m) and
+  not m.isAbstract() and
+  m.overrides(_)
+}
+
+bindingset[m]
+pragma[inline_late]
+private Method getAnOverridden(Method m) { m.overrides(result) }
+
 private Method getAnAbstractMethod(Interface interface) {
   interface.inherits(result) and
   result.isAbstract() and
@@ -995,9 +1006,8 @@ private Method getAnAbstractMethod(Interface interface) {
   // Make sure that there is no other non-abstract method
   // (e.g. `default`) which overrides the abstract one
   not exists(Method m |
-    interface.inherits(m) and
-    not m.isAbstract() and
-    m.overrides(result)
+    interfaceInheritsOverridingNonAbstractMethod(interface, m) and
+    result = getAnOverridden(m)
   )
 }
 

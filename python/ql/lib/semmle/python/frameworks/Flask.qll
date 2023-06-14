@@ -13,6 +13,7 @@ private import semmle.python.frameworks.Stdlib
 private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.security.dataflow.PathInjectionCustomizations
+private import semmle.python.dataflow.new.FlowSummary
 
 /**
  * Provides models for the `flask` PyPI package.
@@ -586,5 +587,58 @@ module Flask {
    */
   private class FlaskLogger extends Stdlib::Logger::InstanceSource {
     FlaskLogger() { this = FlaskApp::instance().getMember("logger").asSource() }
+  }
+
+  /**
+   * A flow summary for `flask.render_template_string`.
+   *
+   * see https://flask.palletsprojects.com/en/2.3.x/api/#flask.render_template_string
+   */
+  private class RenderTemplateStringSummary extends SummarizedCallable {
+    RenderTemplateStringSummary() { this = "flask.render_template_string" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("flask").getMember("render_template_string").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result =
+        API::moduleImport("flask")
+            .getMember("render_template_string")
+            .getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and
+      output = "ReturnValue" and
+      preservesValue = false
+    }
+  }
+
+  /**
+   * A flow summary for `flask.stream_template_string`.
+   *
+   * see https://flask.palletsprojects.com/en/2.3.x/api/#flask.stream_template_string
+   */
+  private class StreamTemplateStringSummary extends SummarizedCallable {
+    StreamTemplateStringSummary() { this = "flask.stream_template_string" }
+
+    override DataFlow::CallCfgNode getACall() {
+      result = API::moduleImport("flask").getMember("stream_template_string").getACall()
+    }
+
+    override DataFlow::ArgumentNode getACallback() {
+      result =
+        API::moduleImport("flask")
+            .getMember("stream_template_string")
+            .getAValueReachableFromSource()
+    }
+
+    override predicate propagatesFlowExt(string input, string output, boolean preservesValue) {
+      input = "Argument[0]" and
+      // Technically it's `Iterator[str]`, but list will do :)
+      output = "ReturnValue.ListElement" and
+      preservesValue = false
+    }
   }
 }

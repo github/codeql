@@ -17,10 +17,8 @@ class CustomEntryPointUse extends API::EntryPoint {
   }
 }
 
-class ApiUseTest extends InlineExpectationsTest {
-  ApiUseTest() { this = "ApiUseTest" }
-
-  override string getARelevantTag() { result = ["use", "def", "call"] }
+module ApiUseTest implements TestSig {
+  string getARelevantTag() { result = ["use", "def", "call"] }
 
   private predicate relevantNode(API::Node a, DataFlow::Node n, Location l, string tag) {
     l = n.getLocation() and
@@ -36,13 +34,13 @@ class ApiUseTest extends InlineExpectationsTest {
     )
   }
 
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "use" and // def tags are always optional
-    exists(DataFlow::Node n | this.relevantNode(_, n, location, tag) |
+    exists(DataFlow::Node n | relevantNode(_, n, location, tag) |
       // Only report the longest path on this line:
       value =
         max(API::Node a2, Location l2, DataFlow::Node n2 |
-          this.relevantNode(a2, n2, l2, tag) and
+          relevantNode(a2, n2, l2, tag) and
           l2.getFile() = location.getFile() and
           l2.getEndLine() = location.getEndLine()
         |
@@ -56,13 +54,15 @@ class ApiUseTest extends InlineExpectationsTest {
 
   // We also permit optional annotations for any other path on the line.
   // This is used to test subclass paths, which typically have a shorter canonical path.
-  override predicate hasOptionalResult(Location location, string element, string tag, string value) {
-    exists(API::Node a, DataFlow::Node n | this.relevantNode(a, n, location, tag) |
+  predicate hasOptionalResult(Location location, string element, string tag, string value) {
+    exists(API::Node a, DataFlow::Node n | relevantNode(a, n, location, tag) |
       element = n.toString() and
       value = getAPath(a, _)
     )
   }
 }
+
+import MakeTest<ApiUseTest>
 
 private int size(AstNode n) { not n instanceof StmtSequence and result = count(n.getAChild*()) }
 

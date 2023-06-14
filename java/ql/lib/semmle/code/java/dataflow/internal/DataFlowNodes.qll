@@ -54,12 +54,7 @@ private module Cached {
         fa.getField() instanceof InstanceField and ia.isImplicitFieldQualifier(fa)
       )
     } or
-    TSummaryInternalNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
-      FlowSummaryImpl::Private::summaryNodeRange(c, state)
-    } or
-    TSummaryParameterNode(SummarizedCallable c, int pos) {
-      FlowSummaryImpl::Private::summaryParameterNodeRange(c, pos)
-    } or
+    TFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
     TFieldValueNode(Field f)
 
   cached
@@ -131,8 +126,6 @@ module Public {
       result = this.(MallocNode).getClassInstanceExpr().getType()
       or
       result = this.(ImplicitPostUpdateNode).getPreUpdateNode().getType()
-      or
-      result = this.(SummaryParameterNode).getTypeImpl()
       or
       result = this.(FieldValueNode).getField().getType()
     }
@@ -378,8 +371,7 @@ module Private {
     result.asCallable() = n.(ImplicitInstanceAccess).getInstanceAccess().getEnclosingCallable() or
     result.asCallable() = n.(MallocNode).getClassInstanceExpr().getEnclosingCallable() or
     result = nodeGetEnclosingCallable(n.(ImplicitPostUpdateNode).getPreUpdateNode()) or
-    n = TSummaryInternalNode(result.asSummarizedCallable(), _) or
-    n = TSummaryParameterNode(result.asSummarizedCallable(), _) or
+    result.asSummarizedCallable() = n.(FlowSummaryNode).getSummarizedCallable() or
     result.asFieldScope() = n.(FieldValueNode).getField()
   }
 
@@ -407,7 +399,7 @@ module Private {
       or
       this = getInstanceArgument(_)
       or
-      this.(SummaryNode).isArgumentOf(_, _)
+      this.(FlowSummaryNode).isArgumentOf(_, _)
     }
 
     /**
@@ -424,7 +416,7 @@ module Private {
       or
       pos = -1 and this = getInstanceArgument(call.asCall())
       or
-      this.(SummaryNode).isArgumentOf(call, pos)
+      this.(FlowSummaryNode).isArgumentOf(call, pos)
     }
 
     /** Gets the call in which this node is an argument. */
@@ -435,7 +427,7 @@ module Private {
   class ReturnNode extends Node {
     ReturnNode() {
       exists(ReturnStmt ret | this.asExpr() = ret.getResult()) or
-      this.(SummaryNode).isReturn()
+      this.(FlowSummaryNode).isReturn()
     }
 
     /** Gets the kind of this returned value. */
@@ -447,61 +439,57 @@ module Private {
     OutNode() {
       this.asExpr() instanceof MethodAccess
       or
-      this.(SummaryNode).isOut(_)
+      this.(FlowSummaryNode).isOut(_)
     }
 
     /** Gets the underlying call. */
     DataFlowCall getCall() {
       result.asCall() = this.asExpr()
       or
-      this.(SummaryNode).isOut(result)
+      this.(FlowSummaryNode).isOut(result)
     }
   }
 
   /**
    * A data-flow node used to model flow summaries.
    */
-  class SummaryNode extends Node, TSummaryInternalNode {
-    private SummarizedCallable c;
-    private FlowSummaryImpl::Private::SummaryNodeState state;
+  class FlowSummaryNode extends Node, TFlowSummaryNode {
+    FlowSummaryImpl::Private::SummaryNode getSummaryNode() { this = TFlowSummaryNode(result) }
 
-    SummaryNode() { this = TSummaryInternalNode(c, state) }
+    SummarizedCallable getSummarizedCallable() {
+      result = this.getSummaryNode().getSummarizedCallable()
+    }
 
-    override Location getLocation() { result = c.getLocation() }
+    override Location getLocation() { result = this.getSummarizedCallable().getLocation() }
 
-    override string toString() { result = "[summary] " + state + " in " + c }
+    override string toString() { result = this.getSummaryNode().toString() }
 
     /** Holds if this summary node is the `i`th argument of `call`. */
     predicate isArgumentOf(DataFlowCall call, int i) {
-      FlowSummaryImpl::Private::summaryArgumentNode(call, this, i)
+      FlowSummaryImpl::Private::summaryArgumentNode(call, this.getSummaryNode(), i)
     }
 
     /** Holds if this summary node is a return node. */
-    predicate isReturn() { FlowSummaryImpl::Private::summaryReturnNode(this, _) }
+    predicate isReturn() { FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), _) }
 
     /** Holds if this summary node is an out node for `call`. */
-    predicate isOut(DataFlowCall call) { FlowSummaryImpl::Private::summaryOutNode(call, this, _) }
+    predicate isOut(DataFlowCall call) {
+      FlowSummaryImpl::Private::summaryOutNode(call, this.getSummaryNode(), _)
+    }
   }
 
-  SummaryNode getSummaryNode(SummarizedCallable c, FlowSummaryImpl::Private::SummaryNodeState state) {
-    result = TSummaryInternalNode(c, state)
-  }
-
-  class SummaryParameterNode extends ParameterNode, TSummaryParameterNode {
-    private SummarizedCallable sc;
-    private int pos_;
-
-    SummaryParameterNode() { this = TSummaryParameterNode(sc, pos_) }
-
-    override Location getLocation() { result = sc.getLocation() }
-
-    override string toString() { result = "[summary param] " + pos_ + " in " + sc }
-
-    override predicate isParameterOf(DataFlowCallable c, int pos) {
-      c.asSummarizedCallable() = sc and pos = pos_
+  class SummaryParameterNode extends ParameterNode, FlowSummaryNode {
+    SummaryParameterNode() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), _)
     }
 
-    Type getTypeImpl() { result = sc.getParameterType(pos_) }
+    private int getPosition() {
+      FlowSummaryImpl::Private::summaryParameterNode(this.getSummaryNode(), result)
+    }
+
+    override predicate isParameterOf(DataFlowCallable c, int pos) {
+      c.asSummarizedCallable() = this.getSummarizedCallable() and pos = this.getPosition()
+    }
   }
 }
 
@@ -523,10 +511,12 @@ private class MallocNode extends Node, TMallocNode {
   ClassInstanceExpr getClassInstanceExpr() { result = cie }
 }
 
-private class SummaryPostUpdateNode extends SummaryNode, PostUpdateNode {
-  private Node pre;
+private class SummaryPostUpdateNode extends FlowSummaryNode, PostUpdateNode {
+  private FlowSummaryNode pre;
 
-  SummaryPostUpdateNode() { FlowSummaryImpl::Private::summaryPostUpdateNode(this, pre) }
+  SummaryPostUpdateNode() {
+    FlowSummaryImpl::Private::summaryPostUpdateNode(this.getSummaryNode(), pre.getSummaryNode())
+  }
 
   override Node getPreUpdateNode() { result = pre }
 }

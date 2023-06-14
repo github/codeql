@@ -285,7 +285,13 @@ private module OrmTracking {
    * A data flow configuration to track flow from finder calls to field accesses.
    */
   private module Config implements DataFlow::ConfigSig {
-    predicate isSource(DataFlow::Node source) { source instanceof OrmInstantiation }
+    predicate isSource(DataFlow::Node source) {
+      // We currently only use ORM instances that come from a call site, so restrict the sources
+      // to calls. This works around a performance issue that would arise from using 'self' as a source
+      // in ActiveRecord models. Over time, library models should stop relying on OrmInstantiation and instead
+      // use API graphs or type-tracking the same way we track other types.
+      source instanceof OrmInstantiation and source instanceof DataFlow::CallNode
+    }
 
     // Select any call receiver and narrow down later
     predicate isSink(DataFlow::Node sink) { sink = any(DataFlow::CallNode c).getReceiver() }
@@ -293,6 +299,8 @@ private module OrmTracking {
     predicate isAdditionalFlowStep(DataFlow::Node node1, DataFlow::Node node2) {
       Shared::isAdditionalXssFlowStep(node1, node2)
     }
+
+    predicate isBarrierIn(DataFlow::Node node) { node instanceof DataFlow::SelfParameterNode }
   }
 
   import DataFlow::Global<Config>

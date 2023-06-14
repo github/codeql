@@ -22,7 +22,7 @@ edges
 | file://:0:0:0:0 | [post] self [encryptionKey] | file://:0:0:0:0 | [post] self |
 | file://:0:0:0:0 | [post] self [encryptionKey] | file://:0:0:0:0 | [post] self |
 | file://:0:0:0:0 | value | file://:0:0:0:0 | [post] self [encryptionKey] |
-| misc.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) |
+| misc.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | misc.swift:5:5:5:29 | [summary] to write: return (return) in Data.init(_:) |
 | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | value |
 | misc.swift:46:19:46:38 | call to Data.init(_:) | misc.swift:49:41:49:41 | myConstKey |
 | misc.swift:46:19:46:38 | call to Data.init(_:) | misc.swift:53:25:53:25 | myConstKey |
@@ -37,7 +37,7 @@ edges
 | misc.swift:57:41:57:41 | myConstKey | misc.swift:30:7:30:7 | value |
 | misc.swift:57:41:57:41 | myConstKey | misc.swift:57:2:57:18 | [post] getter for .config |
 | misc.swift:57:41:57:41 | myConstKey | misc.swift:57:2:57:18 | [post] getter for .config [encryptionKey] |
-| rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) |
+| rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | rncryptor.swift:5:5:5:29 | [summary] to write: return (return) in Data.init(_:) |
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:65:73:65:73 | myConstKey |
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:66:73:66:73 | myConstKey |
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) | rncryptor.swift:67:73:67:73 | myConstKey |
@@ -81,10 +81,9 @@ nodes
 | file://:0:0:0:0 | [post] self | semmle.label | [post] self |
 | file://:0:0:0:0 | [post] self | semmle.label | [post] self |
 | file://:0:0:0:0 | [post] self [encryptionKey] | semmle.label | [post] self [encryptionKey] |
-| file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | semmle.label | [summary] to write: return (return) in Data.init(_:) |
-| file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | semmle.label | [summary] to write: return (return) in Data.init(_:) |
 | file://:0:0:0:0 | value | semmle.label | value |
 | misc.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | semmle.label | [summary param] 0 in Data.init(_:) |
+| misc.swift:5:5:5:29 | [summary] to write: return (return) in Data.init(_:) | semmle.label | [summary] to write: return (return) in Data.init(_:) |
 | misc.swift:30:7:30:7 | value | semmle.label | value |
 | misc.swift:46:19:46:38 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
 | misc.swift:46:24:46:24 | abcdef123456 | semmle.label | abcdef123456 |
@@ -96,6 +95,7 @@ nodes
 | misc.swift:57:2:57:18 | [post] getter for .config [encryptionKey] | semmle.label | [post] getter for .config [encryptionKey] |
 | misc.swift:57:41:57:41 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | semmle.label | [summary param] 0 in Data.init(_:) |
+| rncryptor.swift:5:5:5:29 | [summary] to write: return (return) in Data.init(_:) | semmle.label | [summary] to write: return (return) in Data.init(_:) |
 | rncryptor.swift:60:19:60:38 | call to Data.init(_:) | semmle.label | call to Data.init(_:) |
 | rncryptor.swift:60:24:60:24 | abcdef123456 | semmle.label | abcdef123456 |
 | rncryptor.swift:65:73:65:73 | myConstKey | semmle.label | myConstKey |
@@ -114,12 +114,12 @@ nodes
 | rncryptor.swift:81:102:81:102 | myConstKey | semmle.label | myConstKey |
 | rncryptor.swift:83:92:83:92 | myConstKey | semmle.label | myConstKey |
 subpaths
-| misc.swift:46:24:46:24 | abcdef123456 | misc.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | misc.swift:46:19:46:38 | call to Data.init(_:) |
+| misc.swift:46:24:46:24 | abcdef123456 | misc.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | misc.swift:5:5:5:29 | [summary] to write: return (return) in Data.init(_:) | misc.swift:46:19:46:38 | call to Data.init(_:) |
 | misc.swift:53:25:53:25 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self | misc.swift:53:2:53:2 | [post] config |
 | misc.swift:53:25:53:25 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self [encryptionKey] | misc.swift:53:2:53:2 | [post] config [encryptionKey] |
 | misc.swift:57:41:57:41 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self | misc.swift:57:2:57:18 | [post] getter for .config |
 | misc.swift:57:41:57:41 | myConstKey | misc.swift:30:7:30:7 | value | file://:0:0:0:0 | [post] self [encryptionKey] | misc.swift:57:2:57:18 | [post] getter for .config [encryptionKey] |
-| rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | rncryptor.swift:60:19:60:38 | call to Data.init(_:) |
+| rncryptor.swift:60:24:60:24 | abcdef123456 | rncryptor.swift:5:5:5:29 | [summary param] 0 in Data.init(_:) | rncryptor.swift:5:5:5:29 | [summary] to write: return (return) in Data.init(_:) | rncryptor.swift:60:19:60:38 | call to Data.init(_:) |
 #select
 | cryptoswift.swift:108:21:108:21 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:108:21:108:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |
 | cryptoswift.swift:109:21:109:21 | keyString | cryptoswift.swift:76:3:76:3 | this string is constant | cryptoswift.swift:109:21:109:21 | keyString | The key 'keyString' has been initialized with hard-coded values from $@. | cryptoswift.swift:76:3:76:3 | this string is constant | this string is constant |

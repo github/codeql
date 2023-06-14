@@ -24,12 +24,10 @@ module ValueFlowConfig implements DataFlow::ConfigSig {
 
 module ValueFlow = DataFlow::Global<ValueFlowConfig>;
 
-class HasFlowTest extends InlineExpectationsTest {
-  HasFlowTest() { this = "HasFlowTest" }
+module HasFlowTest implements TestSig {
+  string getARelevantTag() { result = ["numTaintFlow", "numValueFlow"] }
 
-  override string getARelevantTag() { result = ["numTaintFlow", "numValueFlow"] }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "numTaintFlow" and
     exists(DataFlow::Node src, DataFlow::Node sink, int num | TaintFlow::flow(src, sink) |
       not ValueFlow::flow(src, sink) and
@@ -48,3 +46,5 @@ class HasFlowTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HasFlowTest>

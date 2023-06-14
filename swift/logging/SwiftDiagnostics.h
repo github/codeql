@@ -62,17 +62,6 @@ struct SwiftDiagnostic {
 
   std::optional<SwiftDiagnosticsLocation> location{};
 
-  // optional arguments can be either Severity or Visibility to set the corresponding field.
-  // TODO(C++20) this constructor won't really be necessary anymore with designated initializers
-  template <typename... OptionalArgs>
-  constexpr SwiftDiagnostic(std::string_view id,
-                            std::string_view name,
-                            std::string_view action,
-                            OptionalArgs... optionalArgs)
-      : id{id}, name{name}, action{action} {
-    (setOptionalArg(optionalArgs), ...);
-  }
-
   // create a JSON diagnostics for this source with the given `timestamp` and Markdown `message`
   // A markdownMessage is emitted that includes both the message and the action to take. The id is
   // used to construct the source id in the form `swift/<prog name>/<id>`
@@ -94,13 +83,6 @@ struct SwiftDiagnostic {
 
  private:
   bool has(Visibility v) const;
-
-  constexpr void setOptionalArg(Visibility v) { visibility = v; }
-  constexpr void setOptionalArg(Severity s) { severity = s; }
-
-  // intentionally left undefined
-  template <typename T>
-  constexpr void setOptionalArg(T);
 };
 
 inline constexpr SwiftDiagnostic::Visibility operator|(SwiftDiagnostic::Visibility lhs,
@@ -116,14 +98,15 @@ inline constexpr SwiftDiagnostic::Visibility operator&(SwiftDiagnostic::Visibili
 }
 
 constexpr SwiftDiagnostic internalError{
-    "internal-error",
-    "Internal error",
-    "Some or all of the Swift analysis may have failed.\n"
-    "\n"
-    "If the error persists, contact support, quoting the error message and describing what "
-    "happened, or [open an issue in our open source repository][1].\n"
-    "\n"
-    "[1]: https://github.com/github/codeql/issues/new?labels=bug&template=ql---general.md",
-    SwiftDiagnostic::Severity::warning,
+    .id = "internal-error",
+    .name = "Internal error",
+    .action =
+        "Some or all of the Swift analysis may have failed.\n"
+        "\n"
+        "If the error persists, contact support, quoting the error message and describing what "
+        "happened, or [open an issue in our open source repository][1].\n"
+        "\n"
+        "[1]: https://github.com/github/codeql/issues/new?labels=bug&template=ql---general.md",
+    .severity = SwiftDiagnostic::Severity::warning,
 };
 }  // namespace codeql
