@@ -6,5 +6,5 @@ extensions:
       - [
           "global",
           "Member[addEventListener].WithStringArgument[0=message].Argument[1].Parameter[0].Member[data]",
-          "remote-flow",
+          "remote",
         ]
