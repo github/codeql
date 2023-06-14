@@ -46,6 +46,7 @@ another_tainted_list = append_to_list([], tracked)  # $ tracked
 atl = another_tainted_list[0]
 atl  # $ MISSING: tracked
 
+# This will not work, as the call is not found by `getACallSimple`.
 from json import loads as json_loads
 tainted_resultlist = json_loads(tracked)  # $ tracked
 tr = tainted_resultlist[0]
