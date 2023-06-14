@@ -243,7 +243,7 @@ private module SummaryTypeTrackerInput implements SummaryTypeTracker::Input {
 
   Node returnOf(Node callable, SummaryComponent return) {
     return = FlowSummary::SummaryComponent::return() and
-    // result should be return value of callable which should be a lambda
+    // `result` should be the return value of a callable expresion (lambda or function) referenced by `callable`
     result.asCfgNode() =
       callable.getALocalSource().asExpr().(CallableExpr).getInnerScope().getAReturnValueFlowNode()
   }
