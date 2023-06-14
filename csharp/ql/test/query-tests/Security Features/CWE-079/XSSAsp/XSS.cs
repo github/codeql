@@ -1,4 +1,4 @@
-
+// semmle-extractor-options: /r:${testdir}/../../../../resources/assemblies/System.Web.dll /r:${testdir}/../../../../resources/assemblies/System.Web.Mvc.dll /r:System.Collections.Specialized.dll /r:${testdir}/../../../../resources/assemblies/System.Net.Http.dll
 using System;
 using System.Net;
 using System.Net.Http;
@@ -102,7 +102,8 @@ namespace Test
             new StringContent(HttpUtility.HtmlEncode(name));
         }
 
-        public void UrlEncoded(HttpContextBase context) {
+        public void UrlEncoded(HttpContextBase context)
+        {
             // GOOD: URL encoding
             string name = context.Request.QueryString["name"];
             new StringContent(HttpUtility.UrlEncode(name));
