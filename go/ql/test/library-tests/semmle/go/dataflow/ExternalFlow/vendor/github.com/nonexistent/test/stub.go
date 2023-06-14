@@ -67,3 +67,6 @@ type C struct {
 
 func (c C) Set(f string) {}
 func (c C) Get() string  { return "" }
+
+func (c *C) SetThroughPointer(f string) {}
+func (c *C) GetThroughPointer() string  { return "" }
