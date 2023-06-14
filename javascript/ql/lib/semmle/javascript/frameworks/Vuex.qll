@@ -289,7 +289,8 @@ module Vuex {
     or
     exists(string base, string prop |
       result = stateRefByAccessPath(base).getMember(prop) and
-      path = appendToNamespace(base, prop)
+      path = appendToNamespace(base, prop) and
+      path.length() < 100
     )
   }
 
