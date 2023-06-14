@@ -120,12 +120,12 @@ namespace Semmle.BuildAnalyser
                     UseReference(filename);
             }
 
-            ResolveConflicts();
-
             if (options.UseMscorlib)
             {
                 UseReference(typeof(object).Assembly.Location);
             }
+
+            ResolveConflicts();
 
             // Output the findings
             foreach (var r in usedReferences.Keys)

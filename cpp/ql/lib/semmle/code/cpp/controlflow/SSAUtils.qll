@@ -312,6 +312,3 @@ library class SsaHelper extends int {
     ssa_use(v, result, _, _)
   }
 }
-
-/** DEPRECATED: Alias for SsaHelper */
-deprecated class SSAHelper = SsaHelper;

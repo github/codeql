@@ -57,7 +57,9 @@ private module Cached {
     or
     asyncWithStep(nodeFrom, nodeTo)
     or
-    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, false)
+    FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom
+          .(DataFlowPrivate::FlowSummaryNode)
+          .getSummaryNode(), nodeTo.(DataFlowPrivate::FlowSummaryNode).getSummaryNode(), false)
   }
 }
 
@@ -190,14 +192,9 @@ predicate containerStep(DataFlow::Node nodeFrom, DataFlow::Node nodeTo) {
     call.getArg(0) = nodeFrom
   )
   or
-  // methods
+  // dict methods
   exists(DataFlow::MethodCallNode call, string methodName | call = nodeTo |
-    methodName in [
-        // general
-        "copy", "pop",
-        // dict
-        "values", "items", "get", "popitem"
-      ] and
+    methodName in ["values", "items"] and
     call.calls(nodeFrom, methodName)
   )
   or

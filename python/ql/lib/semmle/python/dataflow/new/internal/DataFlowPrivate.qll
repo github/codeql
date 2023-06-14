@@ -441,14 +441,16 @@ predicate importTimeSummaryFlowStep(Node nodeFrom, Node nodeTo) {
   // This will miss statements inside functions called from the top level.
   isTopLevel(nodeFrom) and
   isTopLevel(nodeTo) and
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
 }
 
 predicate runtimeSummaryFlowStep(Node nodeFrom, Node nodeTo) {
   // Anything not at the top level can be executed at runtime.
   not isTopLevel(nodeFrom) and
   not isTopLevel(nodeTo) and
-  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom, nodeTo, true)
+  FlowSummaryImpl::Private::Steps::summaryLocalStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+    nodeTo.(FlowSummaryNode).getSummaryNode(), true)
 }
 
 /** `ModuleVariable`s are accessed via jump steps at runtime. */
@@ -502,6 +504,8 @@ class CastNode extends Node {
 pragma[inline]
 predicate compatibleTypes(DataFlowType t1, DataFlowType t2) { any() }
 
+predicate typeStrongerThan(DataFlowType t1, DataFlowType t2) { none() }
+
 /**
  * Gets the type of `node`.
  */
@@ -527,7 +531,8 @@ predicate jumpStep(Node nodeFrom, Node nodeTo) {
   or
   jumpStepNotSharedWithTypeTracker(nodeFrom, nodeTo)
   or
-  FlowSummaryImpl::Private::Steps::summaryJumpStep(nodeFrom, nodeTo)
+  FlowSummaryImpl::Private::Steps::summaryJumpStep(nodeFrom.(FlowSummaryNode).getSummaryNode(),
+    nodeTo.(FlowSummaryNode).getSummaryNode())
 }
 
 /**
@@ -600,7 +605,8 @@ predicate storeStep(Node nodeFrom, Content c, Node nodeTo) {
   or
   any(Orm::AdditionalOrmSteps es).storeStep(nodeFrom, c, nodeTo)
   or
-  FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom, c, nodeTo)
+  FlowSummaryImpl::Private::Steps::summaryStoreStep(nodeFrom.(FlowSummaryNode).getSummaryNode(), c,
+    nodeTo.(FlowSummaryNode).getSummaryNode())
   or
   synthStarArgsElementParameterNodeStoreStep(nodeFrom, c, nodeTo)
   or
@@ -792,19 +798,16 @@ predicate defaultValueFlowStep(CfgNode nodeFrom, CfgNode nodeTo) {
 predicate readStep(Node nodeFrom, Content c, Node nodeTo) {
   subscriptReadStep(nodeFrom, c, nodeTo)
   or
-  dictReadStep(nodeFrom, c, nodeTo)
-  or
   iterableUnpackingReadStep(nodeFrom, c, nodeTo)
   or
   matchReadStep(nodeFrom, c, nodeTo)
-  or
-  popReadStep(nodeFrom, c, nodeTo)
   or
   forReadStep(nodeFrom, c, nodeTo)
   or
   attributeReadStep(nodeFrom, c, nodeTo)
   or
-  FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom, c, nodeTo)
+  FlowSummaryImpl::Private::Steps::summaryReadStep(nodeFrom.(FlowSummaryNode).getSummaryNode(), c,
+    nodeTo.(FlowSummaryNode).getSummaryNode())
   or
   synthDictSplatParameterNodeReadStep(nodeFrom, c, nodeTo)
 }
@@ -829,51 +832,6 @@ predicate subscriptReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
     or
     c.(DictionaryElementContent).getKey() =
       nodeTo.getNode().(SubscriptNode).getIndex().getNode().(StrConst).getS()
-  )
-}
-
-predicate dictReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
-  // see
-  // - https://docs.python.org/3.10/library/stdtypes.html#dict.get
-  // - https://docs.python.org/3.10/library/stdtypes.html#dict.setdefault
-  exists(MethodCallNode call |
-    call.calls(nodeFrom, ["get", "setdefault"]) and
-    call.getArg(0).asExpr().(StrConst).getText() = c.(DictionaryElementContent).getKey() and
-    nodeTo = call
-  )
-}
-
-/** Data flows from a sequence to a call to `pop` on the sequence. */
-predicate popReadStep(CfgNode nodeFrom, Content c, CfgNode nodeTo) {
-  // set.pop or list.pop
-  //   `s.pop()`
-  //   nodeFrom is `s`, cfg node
-  //   nodeTo is `s.pop()`, cfg node
-  //   c denotes element of list or set
-  exists(CallNode call, AttrNode a |
-    call.getFunction() = a and
-    a.getName() = "pop" and // Should match appropriate call since we tracked a sequence here.
-    not exists(call.getAnArg()) and
-    nodeFrom.getNode() = a.getObject() and
-    nodeTo.getNode() = call and
-    (
-      c instanceof ListElementContent
-      or
-      c instanceof SetElementContent
-    )
-  )
-  or
-  // dict.pop
-  //   `d.pop("key")`
-  //   nodeFrom is `d`, cfg node
-  //   nodeTo is `d.pop("key")`, cfg node
-  //   c denotes the key `"key"`
-  exists(CallNode call, AttrNode a |
-    call.getFunction() = a and
-    a.getName() = "pop" and // Should match appropriate call since we tracked a dictionary here.
-    nodeFrom.getNode() = a.getObject() and
-    nodeTo.getNode() = call and
-    c.(DictionaryElementContent).getKey() = call.getArg(0).getNode().(StrConst).getS()
   )
 }
 
@@ -919,7 +877,7 @@ predicate clearsContent(Node n, Content c) {
   or
   dictClearStep(n, c)
   or
-  FlowSummaryImpl::Private::Steps::summaryClearsContent(n, c)
+  FlowSummaryImpl::Private::Steps::summaryClearsContent(n.(FlowSummaryNode).getSummaryNode(), c)
   or
   dictSplatParameterNodeClearStep(n, c)
 }
@@ -976,9 +934,7 @@ predicate forceHighPrecision(Content c) { none() }
 predicate nodeIsHidden(Node n) {
   n instanceof ModuleVariableNode
   or
-  n instanceof SummaryNode
-  or
-  n instanceof SummaryParameterNode
+  n instanceof FlowSummaryNode
   or
   n instanceof SynthStarArgsElementParameterNode
   or
@@ -1005,7 +961,7 @@ predicate lambdaCreation(Node creation, LambdaCallKind kind, DataFlowCallable c)
 
 /** Holds if `call` is a lambda call of kind `kind` where `receiver` is the lambda expression. */
 predicate lambdaCall(DataFlowCall call, LambdaCallKind kind, Node receiver) {
-  receiver = call.(SummaryCall).getReceiver() and
+  receiver.(FlowSummaryNode).getSummaryNode() = call.(SummaryCall).getReceiver() and
   exists(kind)
 }
 

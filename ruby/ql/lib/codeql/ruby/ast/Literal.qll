@@ -165,14 +165,6 @@ class FileLiteral extends Literal instanceof FileLiteralImpl {
  * `StringEscapeSequenceComponent`, or `StringInterpolationComponent`.
  */
 class StringComponent extends AstNode instanceof StringComponentImpl {
-  /**
-   * DEPRECATED: Use `getConstantValue` instead.
-   *
-   * Gets the source text for this string component. Has no result if this is
-   * a `StringInterpolationComponent`.
-   */
-  deprecated string getValueText() { result = this.getConstantValue().toString() }
-
   /** Gets the constant value of this string component, if any. */
   ConstantValue::ConstantStringValue getConstantValue() { result = TString(super.getValue()) }
 }
@@ -217,8 +209,6 @@ class StringInterpolationComponent extends StringComponent, StmtSequence instanc
   StringInterpolationComponent() { this = TStringInterpolationComponentNonRegexp(g) }
 
   final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
-
-  deprecated final override string getValueText() { none() }
 
   final override ConstantValue::ConstantStringValue getConstantValue() {
     result = StmtSequence.super.getConstantValue()
@@ -266,8 +256,6 @@ class RegExpInterpolationComponent extends RegExpComponent, StmtSequence instanc
   RegExpInterpolationComponent() { this = TStringInterpolationComponentRegexp(g) }
 
   final override Stmt getStmt(int n) { toGenerated(result) = g.getChild(n) }
-
-  deprecated final override string getValueText() { none() }
 
   final override ConstantValue::ConstantStringValue getConstantValue() {
     result = StmtSequence.super.getConstantValue()

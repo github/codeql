@@ -166,6 +166,3 @@ abstract class AtmConfig extends JS::TaintTracking::Configuration {
     )
   }
 }
-
-/** DEPRECATED: Alias for AtmConfig */
-deprecated class ATMConfig = AtmConfig;

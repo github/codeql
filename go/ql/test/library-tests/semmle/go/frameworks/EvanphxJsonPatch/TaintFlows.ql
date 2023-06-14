@@ -16,12 +16,10 @@ class Configuration extends TaintTracking::Configuration {
   }
 }
 
-class TaintFlowTest extends InlineExpectationsTest {
-  TaintFlowTest() { this = "TaintFlowTest" }
+module TaintFlowTest implements TestSig {
+  string getARelevantTag() { result = "taintflow" }
 
-  override string getARelevantTag() { result = "taintflow" }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     tag = "taintflow" and
     exists(DataFlow::Node sink | any(Configuration c).hasFlow(_, sink) |
       element = sink.toString() and
@@ -31,3 +29,5 @@ class TaintFlowTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<TaintFlowTest>

@@ -241,9 +241,6 @@ module NextJS {
     }
   }
 
-  /** DEPRECATED: Alias for NextApiRouteHandler */
-  deprecated class NextAPIRouteHandler = NextApiRouteHandler;
-
   /**
    * Gets a reference to a [Next.js router](https://nextjs.org/docs/api-reference/next/router).
    */

@@ -14,12 +14,10 @@ module Config implements DataFlow::ConfigSig {
 
 module Flow = TaintTracking::Global<Config>;
 
-class SinkTest extends InlineExpectationsTest {
-  SinkTest() { this = "SinkTest" }
+module SinkTest implements TestSig {
+  string getARelevantTag() { result = "taintReachesSink" }
 
-  override string getARelevantTag() { result = "taintReachesSink" }
-
-  override predicate hasActualResult(Location l, string element, string tag, string value) {
+  predicate hasActualResult(Location l, string element, string tag, string value) {
     tag = "taintReachesSink" and
     value = "" and
     exists(DataFlow::Node source | Flow::flow(source, _) |
@@ -28,3 +26,5 @@ class SinkTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<SinkTest>

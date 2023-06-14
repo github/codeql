@@ -31,14 +31,12 @@ nodes
 | RegExpInjection.js:41:26:41:30 | input |
 | RegExpInjection.js:42:25:42:29 | input |
 | RegExpInjection.js:42:25:42:29 | input |
-| RegExpInjection.js:45:20:45:24 | input |
-| RegExpInjection.js:45:20:45:24 | input |
-| RegExpInjection.js:46:23:46:27 | input |
-| RegExpInjection.js:46:23:46:27 | input |
-| RegExpInjection.js:47:22:47:26 | input |
-| RegExpInjection.js:47:22:47:26 | input |
-| RegExpInjection.js:50:46:50:50 | input |
-| RegExpInjection.js:50:46:50:50 | input |
+| RegExpInjection.js:45:24:45:28 | input |
+| RegExpInjection.js:45:24:45:28 | input |
+| RegExpInjection.js:46:27:46:31 | input |
+| RegExpInjection.js:46:27:46:31 | input |
+| RegExpInjection.js:47:26:47:30 | input |
+| RegExpInjection.js:47:26:47:30 | input |
 | RegExpInjection.js:54:14:54:16 | key |
 | RegExpInjection.js:54:14:54:27 | key.split(".") |
 | RegExpInjection.js:54:14:54:42 | key.spl ... x => x) |
@@ -89,14 +87,12 @@ edges
 | RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:41:26:41:30 | input |
 | RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:42:25:42:29 | input |
 | RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:42:25:42:29 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:45:20:45:24 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:45:20:45:24 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:46:23:46:27 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:46:23:46:27 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:47:22:47:26 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:47:22:47:26 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:50:46:50:50 | input |
-| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:50:46:50:50 | input |
+| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:45:24:45:28 | input |
+| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:45:24:45:28 | input |
+| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:46:27:46:31 | input |
+| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:46:27:46:31 | input |
+| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:47:26:47:30 | input |
+| RegExpInjection.js:5:31:5:56 | input | RegExpInjection.js:47:26:47:30 | input |
 | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:5:31:5:56 | input |
 | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:5:31:5:56 | input |
 | RegExpInjection.js:8:31:8:33 | key | RegExpInjection.js:8:23:8:45 | "\\\\b" + ... (.*)\\n" |
@@ -157,10 +153,9 @@ edges
 | RegExpInjection.js:40:23:40:27 | input | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:40:23:40:27 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
 | RegExpInjection.js:41:26:41:30 | input | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:41:26:41:30 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
 | RegExpInjection.js:42:25:42:29 | input | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:42:25:42:29 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
-| RegExpInjection.js:45:20:45:24 | input | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:45:20:45:24 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
-| RegExpInjection.js:46:23:46:27 | input | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:46:23:46:27 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
-| RegExpInjection.js:47:22:47:26 | input | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:47:22:47:26 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
-| RegExpInjection.js:50:46:50:50 | input | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:50:46:50:50 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
+| RegExpInjection.js:45:24:45:28 | input | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:45:24:45:28 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
+| RegExpInjection.js:46:27:46:31 | input | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:46:27:46:31 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
+| RegExpInjection.js:47:26:47:30 | input | RegExpInjection.js:5:39:5:56 | req.param("input") | RegExpInjection.js:47:26:47:30 | input | This regular expression is constructed from a $@. | RegExpInjection.js:5:39:5:56 | req.param("input") | user-provided value |
 | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") | RegExpInjection.js:5:13:5:28 | req.param("key") | RegExpInjection.js:54:14:54:52 | key.spl ... in("-") | This regular expression is constructed from a $@. | RegExpInjection.js:5:13:5:28 | req.param("key") | user-provided value |
 | RegExpInjection.js:64:14:64:18 | input | RegExpInjection.js:60:39:60:56 | req.param("input") | RegExpInjection.js:64:14:64:18 | input | This regular expression is constructed from a $@. | RegExpInjection.js:60:39:60:56 | req.param("input") | user-provided value |
 | RegExpInjection.js:87:14:87:55 | "^.*\\.( ...  + ")$" | RegExpInjection.js:82:15:82:32 | req.param("input") | RegExpInjection.js:87:14:87:55 | "^.*\\.( ...  + ")$" | This regular expression is constructed from a $@. | RegExpInjection.js:82:15:82:32 | req.param("input") | user-provided value |

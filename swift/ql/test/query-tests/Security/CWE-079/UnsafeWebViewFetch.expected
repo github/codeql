@@ -1,7 +1,7 @@
 edges
-| UnsafeWebViewFetch.swift:10:2:10:25 | [summary param] 0 in URL.init(string:) | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:) |
-| UnsafeWebViewFetch.swift:11:2:11:43 | [summary param] 1 in URL.init(string:relativeTo:) | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:relativeTo:) |
-| UnsafeWebViewFetch.swift:43:5:43:29 | [summary param] 0 in Data.init(_:) | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) |
+| UnsafeWebViewFetch.swift:10:2:10:25 | [summary param] 0 in URL.init(string:) | UnsafeWebViewFetch.swift:10:2:10:25 | [summary] to write: return (return) in URL.init(string:) |
+| UnsafeWebViewFetch.swift:11:2:11:43 | [summary param] 1 in URL.init(string:relativeTo:) | UnsafeWebViewFetch.swift:11:2:11:43 | [summary] to write: return (return) in URL.init(string:relativeTo:) |
+| UnsafeWebViewFetch.swift:43:5:43:29 | [summary param] 0 in Data.init(_:) | UnsafeWebViewFetch.swift:43:5:43:29 | [summary] to write: return (return) in Data.init(_:) |
 | UnsafeWebViewFetch.swift:94:10:94:37 | try ... | UnsafeWebViewFetch.swift:117:21:117:35 | call to getRemoteData() |
 | UnsafeWebViewFetch.swift:94:10:94:37 | try ... | UnsafeWebViewFetch.swift:120:25:120:39 | call to getRemoteData() |
 | UnsafeWebViewFetch.swift:94:10:94:37 | try ... | UnsafeWebViewFetch.swift:164:21:164:35 | call to getRemoteData() |
@@ -63,8 +63,11 @@ edges
 | UnsafeWebViewFetch.swift:206:17:206:31 | call to getRemoteData() | UnsafeWebViewFetch.swift:211:25:211:25 | htmlData |
 nodes
 | UnsafeWebViewFetch.swift:10:2:10:25 | [summary param] 0 in URL.init(string:) | semmle.label | [summary param] 0 in URL.init(string:) |
+| UnsafeWebViewFetch.swift:10:2:10:25 | [summary] to write: return (return) in URL.init(string:) | semmle.label | [summary] to write: return (return) in URL.init(string:) |
 | UnsafeWebViewFetch.swift:11:2:11:43 | [summary param] 1 in URL.init(string:relativeTo:) | semmle.label | [summary param] 1 in URL.init(string:relativeTo:) |
+| UnsafeWebViewFetch.swift:11:2:11:43 | [summary] to write: return (return) in URL.init(string:relativeTo:) | semmle.label | [summary] to write: return (return) in URL.init(string:relativeTo:) |
 | UnsafeWebViewFetch.swift:43:5:43:29 | [summary param] 0 in Data.init(_:) | semmle.label | [summary param] 0 in Data.init(_:) |
+| UnsafeWebViewFetch.swift:43:5:43:29 | [summary] to write: return (return) in Data.init(_:) | semmle.label | [summary] to write: return (return) in Data.init(_:) |
 | UnsafeWebViewFetch.swift:94:10:94:37 | try ... | semmle.label | try ... |
 | UnsafeWebViewFetch.swift:94:14:94:37 | call to String.init(contentsOf:) | semmle.label | call to String.init(contentsOf:) |
 | UnsafeWebViewFetch.swift:103:25:103:84 | try! ... | semmle.label | try! ... |
@@ -122,16 +125,13 @@ nodes
 | UnsafeWebViewFetch.swift:206:17:206:31 | call to getRemoteData() | semmle.label | call to getRemoteData() |
 | UnsafeWebViewFetch.swift:210:25:210:25 | htmlData | semmle.label | htmlData |
 | UnsafeWebViewFetch.swift:211:25:211:25 | htmlData | semmle.label | htmlData |
-| file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | semmle.label | [summary] to write: return (return) in Data.init(_:) |
-| file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:) | semmle.label | [summary] to write: return (return) in URL.init(string:) |
-| file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:relativeTo:) | semmle.label | [summary] to write: return (return) in URL.init(string:relativeTo:) |
 subpaths
-| UnsafeWebViewFetch.swift:131:30:131:30 | remoteString | UnsafeWebViewFetch.swift:10:2:10:25 | [summary param] 0 in URL.init(string:) | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:) | UnsafeWebViewFetch.swift:131:18:131:42 | call to URL.init(string:) |
-| UnsafeWebViewFetch.swift:132:52:132:52 | remoteURL | UnsafeWebViewFetch.swift:11:2:11:43 | [summary param] 1 in URL.init(string:relativeTo:) | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:relativeTo:) | UnsafeWebViewFetch.swift:132:19:132:61 | call to URL.init(string:relativeTo:) |
-| UnsafeWebViewFetch.swift:150:24:150:37 | .utf8 | UnsafeWebViewFetch.swift:43:5:43:29 | [summary param] 0 in Data.init(_:) | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | UnsafeWebViewFetch.swift:150:19:150:41 | call to Data.init(_:) |
-| UnsafeWebViewFetch.swift:178:30:178:30 | remoteString | UnsafeWebViewFetch.swift:10:2:10:25 | [summary param] 0 in URL.init(string:) | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:) | UnsafeWebViewFetch.swift:178:18:178:42 | call to URL.init(string:) |
-| UnsafeWebViewFetch.swift:179:52:179:52 | remoteURL | UnsafeWebViewFetch.swift:11:2:11:43 | [summary param] 1 in URL.init(string:relativeTo:) | file://:0:0:0:0 | [summary] to write: return (return) in URL.init(string:relativeTo:) | UnsafeWebViewFetch.swift:179:19:179:61 | call to URL.init(string:relativeTo:) |
-| UnsafeWebViewFetch.swift:197:24:197:37 | .utf8 | UnsafeWebViewFetch.swift:43:5:43:29 | [summary param] 0 in Data.init(_:) | file://:0:0:0:0 | [summary] to write: return (return) in Data.init(_:) | UnsafeWebViewFetch.swift:197:19:197:41 | call to Data.init(_:) |
+| UnsafeWebViewFetch.swift:131:30:131:30 | remoteString | UnsafeWebViewFetch.swift:10:2:10:25 | [summary param] 0 in URL.init(string:) | UnsafeWebViewFetch.swift:10:2:10:25 | [summary] to write: return (return) in URL.init(string:) | UnsafeWebViewFetch.swift:131:18:131:42 | call to URL.init(string:) |
+| UnsafeWebViewFetch.swift:132:52:132:52 | remoteURL | UnsafeWebViewFetch.swift:11:2:11:43 | [summary param] 1 in URL.init(string:relativeTo:) | UnsafeWebViewFetch.swift:11:2:11:43 | [summary] to write: return (return) in URL.init(string:relativeTo:) | UnsafeWebViewFetch.swift:132:19:132:61 | call to URL.init(string:relativeTo:) |
+| UnsafeWebViewFetch.swift:150:24:150:37 | .utf8 | UnsafeWebViewFetch.swift:43:5:43:29 | [summary param] 0 in Data.init(_:) | UnsafeWebViewFetch.swift:43:5:43:29 | [summary] to write: return (return) in Data.init(_:) | UnsafeWebViewFetch.swift:150:19:150:41 | call to Data.init(_:) |
+| UnsafeWebViewFetch.swift:178:30:178:30 | remoteString | UnsafeWebViewFetch.swift:10:2:10:25 | [summary param] 0 in URL.init(string:) | UnsafeWebViewFetch.swift:10:2:10:25 | [summary] to write: return (return) in URL.init(string:) | UnsafeWebViewFetch.swift:178:18:178:42 | call to URL.init(string:) |
+| UnsafeWebViewFetch.swift:179:52:179:52 | remoteURL | UnsafeWebViewFetch.swift:11:2:11:43 | [summary param] 1 in URL.init(string:relativeTo:) | UnsafeWebViewFetch.swift:11:2:11:43 | [summary] to write: return (return) in URL.init(string:relativeTo:) | UnsafeWebViewFetch.swift:179:19:179:61 | call to URL.init(string:relativeTo:) |
+| UnsafeWebViewFetch.swift:197:24:197:37 | .utf8 | UnsafeWebViewFetch.swift:43:5:43:29 | [summary param] 0 in Data.init(_:) | UnsafeWebViewFetch.swift:43:5:43:29 | [summary] to write: return (return) in Data.init(_:) | UnsafeWebViewFetch.swift:197:19:197:41 | call to Data.init(_:) |
 #select
 | UnsafeWebViewFetch.swift:103:25:103:84 | try! ... | UnsafeWebViewFetch.swift:103:30:103:84 | call to String.init(contentsOf:) | UnsafeWebViewFetch.swift:103:25:103:84 | try! ... | Tainted data is used in a WebView fetch without restricting the base URL. |
 | UnsafeWebViewFetch.swift:106:25:106:25 | data | UnsafeWebViewFetch.swift:105:18:105:72 | call to String.init(contentsOf:) | UnsafeWebViewFetch.swift:106:25:106:25 | data | Tainted data is used in a WebView fetch without restricting the base URL. |

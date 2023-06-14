@@ -2,14 +2,10 @@ import go
 import TestUtilities.InlineExpectationsTest
 import experimental.frameworks.CleverGo
 
-class HttpHeaderWriteTest extends InlineExpectationsTest {
-  HttpHeaderWriteTest() { this = "HttpHeaderWriteTest" }
+module HttpHeaderWriteTest implements TestSig {
+  string getARelevantTag() { result = ["headerKeyNode", "headerValNode", "headerKey", "headerVal"] }
 
-  override string getARelevantTag() {
-    result = ["headerKeyNode", "headerValNode", "headerKey", "headerVal"]
-  }
-
-  override predicate hasActualResult(Location location, string element, string tag, string value) {
+  predicate hasActualResult(Location location, string element, string tag, string value) {
     // Dynamic key-value header:
     exists(Http::HeaderWrite hw |
       hw.hasLocationInfo(location.getFile().getAbsolutePath(), location.getStartLine(),
@@ -56,3 +52,5 @@ class HttpHeaderWriteTest extends InlineExpectationsTest {
     )
   }
 }
+
+import MakeTest<HttpHeaderWriteTest>

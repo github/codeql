@@ -2,11 +2,12 @@ edges
 | test.py:2:26:2:32 | ControlFlowNode for ImportMember | test.py:2:26:2:32 | GSSA Variable request |
 | test.py:2:26:2:32 | GSSA Variable request | test.py:7:12:7:18 | ControlFlowNode for request |
 | test.py:7:12:7:18 | ControlFlowNode for request | test.py:7:12:7:23 | ControlFlowNode for Attribute |
-| test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:8:30:8:33 | ControlFlowNode for text |
-| test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:9:32:9:35 | ControlFlowNode for text |
-| test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:12:17:12:20 | ControlFlowNode for text |
-| test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:18:28:18:31 | ControlFlowNode for text |
-| test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:21:18:21:21 | ControlFlowNode for text |
+| test.py:7:12:7:23 | ControlFlowNode for Attribute | test.py:7:12:7:35 | ControlFlowNode for Attribute() |
+| test.py:7:12:7:35 | ControlFlowNode for Attribute() | test.py:8:30:8:33 | ControlFlowNode for text |
+| test.py:7:12:7:35 | ControlFlowNode for Attribute() | test.py:9:32:9:35 | ControlFlowNode for text |
+| test.py:7:12:7:35 | ControlFlowNode for Attribute() | test.py:12:17:12:20 | ControlFlowNode for text |
+| test.py:7:12:7:35 | ControlFlowNode for Attribute() | test.py:18:28:18:31 | ControlFlowNode for text |
+| test.py:7:12:7:35 | ControlFlowNode for Attribute() | test.py:21:18:21:21 | ControlFlowNode for text |
 | test.py:14:33:14:39 | ControlFlowNode for my_text | test.py:16:24:16:30 | ControlFlowNode for my_text |
 | test.py:18:28:18:31 | ControlFlowNode for text | test.py:14:33:14:39 | ControlFlowNode for my_text |
 nodes
@@ -14,6 +15,7 @@ nodes
 | test.py:2:26:2:32 | GSSA Variable request | semmle.label | GSSA Variable request |
 | test.py:7:12:7:18 | ControlFlowNode for request | semmle.label | ControlFlowNode for request |
 | test.py:7:12:7:23 | ControlFlowNode for Attribute | semmle.label | ControlFlowNode for Attribute |
+| test.py:7:12:7:35 | ControlFlowNode for Attribute() | semmle.label | ControlFlowNode for Attribute() |
 | test.py:8:30:8:33 | ControlFlowNode for text | semmle.label | ControlFlowNode for text |
 | test.py:9:32:9:35 | ControlFlowNode for text | semmle.label | ControlFlowNode for text |
 | test.py:12:17:12:20 | ControlFlowNode for text | semmle.label | ControlFlowNode for text |
