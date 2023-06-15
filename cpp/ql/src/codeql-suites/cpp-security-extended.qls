@@ -3,3 +3,6 @@
 - apply: security-extended-selectors.yml
   from: codeql/suite-helpers
 - apply: codeql-suites/exclude-slow-queries.yml
+- exclude:
+    id: cpp/overrun-write
+
