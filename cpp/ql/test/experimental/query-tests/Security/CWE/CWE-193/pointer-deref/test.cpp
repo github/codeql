@@ -383,3 +383,14 @@ void test27(unsigned size, bool b) {
 
   int val = *end; // BAD
 }
+
+void test28(unsigned size) {
+  char *xs = new char[size];
+  char *end = &xs[size];
+    if (xs >= end)
+      return;
+    xs++;
+    if (xs >= end)
+      return;
+    xs[0] = 0;  // GOOD [FALSE POSITIVE]
+}
