@@ -1457,8 +1457,7 @@ private module ReturnNodes {
     private ReturnKind rk;
 
     SummaryReturnNode() {
-      FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), rk) and
-      not rk instanceof JumpReturnKind
+      FlowSummaryImpl::Private::summaryReturnNode(this.getSummaryNode(), rk)
       or
       exists(Parameter p, int pos |
         summaryPostUpdateNodeIsOutOrRef(this, p) and
@@ -1706,12 +1705,6 @@ predicate jumpStep(Node pred, Node succ) {
     fl.getAnAccess() = flr and
     flr = succ.asExpr() and
     flr.hasNonlocalValue()
-  )
-  or
-  exists(JumpReturnKind jrk, NonDelegateDataFlowCall call |
-    FlowSummaryImpl::Private::summaryReturnNode(pred.(FlowSummaryNode).getSummaryNode(), jrk) and
-    jrk.getTarget() = call.getATarget(_) and
-    succ = getAnOutNode(call, jrk.getTargetReturnKind())
   )
   or
   FlowSummaryImpl::Private::Steps::summaryJumpStep(pred.(FlowSummaryNode).getSummaryNode(),

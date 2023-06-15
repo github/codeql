@@ -74,18 +74,6 @@ newtype TReturnKind =
     exists(Ssa::ExplicitDefinition def | def.isCapturedVariableDefinitionFlowOut(_, _) |
       v = def.getSourceVariable().getAssignable()
     )
-  } or
-  TJumpReturnKind(Callable target, ReturnKind rk) {
-    target.isUnboundDeclaration() and
-    (
-      rk instanceof NormalReturnKind and
-      (
-        target instanceof Constructor or
-        not target.getReturnType() instanceof VoidType
-      )
-      or
-      exists(target.getParameter(rk.(OutRefReturnKind).getPosition()))
-    )
   }
 
 /**
@@ -255,27 +243,6 @@ class ImplicitCapturedReturnKind extends ReturnKind, TImplicitCapturedReturnKind
   LocalScopeVariable getVariable() { result = v }
 
   override string toString() { result = "captured " + v }
-}
-
-/**
- * A value returned through the output of another callable.
- *
- * This is currently only used to model flow summaries where data may flow into
- * one API entry point and out of another.
- */
-class JumpReturnKind extends ReturnKind, TJumpReturnKind {
-  private Callable target;
-  private ReturnKind rk;
-
-  JumpReturnKind() { this = TJumpReturnKind(target, rk) }
-
-  /** Gets the target of the jump. */
-  Callable getTarget() { result = target }
-
-  /** Gets the return kind of the target. */
-  ReturnKind getTargetReturnKind() { result = rk }
-
-  override string toString() { result = "jump to " + target }
 }
 
 /** A callable used for data flow. */
