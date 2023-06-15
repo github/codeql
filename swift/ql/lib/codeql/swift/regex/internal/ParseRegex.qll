@@ -320,7 +320,8 @@ abstract class RegExp extends Expr {
    * Matches named character properties. For example:
    * - `\p{Space}`
    * - `\P{Digit}` upper-case P means inverted
-   * - `\p{^Word}` caret also means inverted
+   * - `\p{^Word}` caret also means inverted (not supported in Swift `Regex` but it may be in
+   *   other regex parsers or in future versions of Swift).
    *
    * These can occur both inside and outside of character classes.
    */
@@ -343,7 +344,8 @@ abstract class RegExp extends Expr {
   /**
    * Holds if the named character property is inverted. Examples for which it holds:
    * - `\P{Digit}` upper-case P means inverted
-   * - `\p{^Word}` caret also means inverted
+   * - `\p{^Word}` caret also means inverted (not supported in Swift `Regex` but it may be in
+   *   other regex parsers or in future versions of Swift).
    * - `[[:^digit:]]`
    *
    * Examples for which it doesn't hold:
@@ -381,8 +383,11 @@ abstract class RegExp extends Expr {
       // wide hex char \uhhhh
       this.getChar(start + 1) = "u" and end = start + 6
       or
+      // wide hex char \Uhhhhhhhh
+      this.getChar(start + 1) = "U" and end = start + 10
+      or
       // escape not handled above; update when adding a new case
-      not this.getChar(start + 1) in ["x", "u"] and
+      not this.getChar(start + 1) in ["x", "u", "U"] and
       not exists(this.getChar(start + 1).toInt()) and
       end = start + 2
     )
