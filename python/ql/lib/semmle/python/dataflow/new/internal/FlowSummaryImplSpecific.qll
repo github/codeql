@@ -129,7 +129,7 @@ SummaryComponent interpretComponentSpecific(AccessPathToken c) {
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
+string getAccessStepSpecific(SummaryComponent sc) {
   sc = TContentSummaryComponent(any(ListElementContent c)) and
   result = "ListElement"
 }

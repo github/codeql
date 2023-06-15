@@ -112,7 +112,7 @@ private string getContentSpecific(ContentSet cs) {
 }
 
 /** Gets the textual representation of a summary component in the format used for flow summaries. */
-string getComponentSpecific(SummaryComponent sc) {
+string getAccessStepSpecific(SummaryComponent sc) {
   exists(ContentSet c | sc = TContentSummaryComponent(c) and result = getContentSpecific(c))
   or
   exists(ReturnKind rk |
