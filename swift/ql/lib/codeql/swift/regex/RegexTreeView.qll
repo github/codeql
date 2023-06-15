@@ -610,15 +610,22 @@ private module Impl implements RegexTreeViewSig {
     /**
      * Holds if this is a unicode escape.
      */
-    private predicate isUnicode() { this.getText().prefix(2) = ["\\u", "\\U"] }
+    private predicate isUnicode() { this.getText().prefix(2) = ["\\u", "\\U", "\\x"] }
 
     /**
      * Gets the unicode char for this escape.
      * E.g. for `\u0061` this returns "a".
      */
-    private string getUnicode() {
+    private string getUnicode() { result = parseHexInt(this.getHexString()).toUnicode() }
+
+    /**
+     * Gets the part of this escape that is a hexidecimal string.
+     */
+    private string getHexString() {
       this.isUnicode() and
-      result = parseHexInt(this.getText().suffix(2)).toUnicode()
+      if this.getText().matches(["\\x{%", "\\u{%"]) // \x{hh...} or \u{hh...}
+      then result = this.getText().substring(3, this.getText().length() - 1)
+      else result = this.getText().suffix(2) // \xhh or \uhhhh or \Uhhhhhhhh
     }
   }
 
