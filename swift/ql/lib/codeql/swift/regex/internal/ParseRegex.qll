@@ -255,9 +255,7 @@ abstract class RegExp extends Expr {
   /**
    * Gets the text of this regex.
    */
-  string getText() {
-    result = this.(StringLiteralExpr).getValue()
-  }
+  string getText() { result = this.(StringLiteralExpr).getValue() }
 
   /** Gets the `i`th character of this regex */
   string getChar(int i) { result = this.getText().charAt(i) }

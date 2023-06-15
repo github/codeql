@@ -207,25 +207,30 @@ private module Impl implements RegexTreeViewSig {
      */
     Location getLocation() { result = re.getLocation() }
 
-    /*pragma[noinline]
-    private predicate componentHasLocationInfo(
-      int i, string filepath, int startline, int startcolumn, int endline, int endcolumn
-    ) {
-      re.getComponent(i)
-          .getLocation()
-          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
-    }*/
+    /*
+     * pragma[noinline]
+     *    private predicate componentHasLocationInfo(
+     *      int i, string filepath, int startline, int startcolumn, int endline, int endcolumn
+     *    ) {
+     *      re.getComponent(i)
+     *          .getLocation()
+     *          .hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+     *    }
+     */
 
     /** Holds if this term is found at the specified location offsets. */
     predicate hasLocationInfo(
       string filepath, int startline, int startcolumn, int endline, int endcolumn
     ) {
-      /*exists(int re_start |
-        this.componentHasLocationInfo(0, filepath, startline, re_start, _, _) and
-        this.componentHasLocationInfo(re.getNumberOfComponents() - 1, filepath, _, _, endline, _) and
-        startcolumn = re_start + start and
-        endcolumn = re_start + end - 1
-      )*/
+      /*
+       * exists(int re_start |
+       *        this.componentHasLocationInfo(0, filepath, startline, re_start, _, _) and
+       *        this.componentHasLocationInfo(re.getNumberOfComponents() - 1, filepath, _, _, endline, _) and
+       *        startcolumn = re_start + start and
+       *        endcolumn = re_start + end - 1
+       *      )
+       */
+
       filepath = re.getFile().getAbsolutePath() and
       startline = re.getLocation().getStartLine() and
       startcolumn = re.getLocation().getStartColumn() and
@@ -1197,7 +1202,7 @@ private module Impl implements RegexTreeViewSig {
    * Holds if the regular expression should not be considered.
    */
   predicate isExcluded(RegExpParent parent) {
-    none()//parent.(RegExpTerm).getRegExp().(Ast::RegExpLiteral).hasFreeSpacingFlag() // exclude free-spacing mode regexes
+    none() //parent.(RegExpTerm).getRegExp().(Ast::RegExpLiteral).hasFreeSpacingFlag() // exclude free-spacing mode regexes
   }
 
   /**
