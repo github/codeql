@@ -535,9 +535,9 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     // GOOD
     _ = try Regex(#"X(\P{Digit}|7)+Y"#).firstMatch(in: tainted)
 
-    // BAD TODO: we should get this one
+    // BAD
     // attack string: "X" + "7" x lots
-    _ = try Regex(#"X(\p{IsDigit}|7)*Y"#).firstMatch(in: tainted) // $ MISSING: redos-vulnerable=
+    _ = try Regex(#"X(\p{IsDigit}|7)*Y"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"X(\p{IsDigit}|b)+Y"#).firstMatch(in: tainted)

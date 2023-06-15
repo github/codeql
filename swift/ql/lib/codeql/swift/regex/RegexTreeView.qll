@@ -1187,13 +1187,13 @@ private module Impl implements RegexTreeViewSig {
     or
     // TODO: expand to cover more properties
     exists(RegExpNamedCharacterProperty escape | term = escape |
-      escape.getName().toLowerCase() = "digit" and
+      escape.getName().toLowerCase() = ["digit", "isdigit"] and
       if escape.isInverted() then clazz = "D" else clazz = "d"
       or
-      escape.getName().toLowerCase() = "space" and
+      escape.getName().toLowerCase() = ["space", "isspace"] and
       if escape.isInverted() then clazz = "S" else clazz = "s"
       or
-      escape.getName().toLowerCase() = "word" and
+      escape.getName().toLowerCase() = ["word", "isword"] and
       if escape.isInverted() then clazz = "W" else clazz = "w"
     )
   }
