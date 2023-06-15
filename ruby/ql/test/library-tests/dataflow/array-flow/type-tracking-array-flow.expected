@@ -1,3 +1,5 @@
+failures
+testFailures
 | array_flow.rb:107:10:107:13 | ...[...] | Unexpected result: hasValueFlow=11.2 |
 | array_flow.rb:179:28:179:46 | # $ hasValueFlow=19 | Missing result:hasValueFlow=19 |
 | array_flow.rb:180:28:180:46 | # $ hasValueFlow=19 | Missing result:hasValueFlow=19 |
