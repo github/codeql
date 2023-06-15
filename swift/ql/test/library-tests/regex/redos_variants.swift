@@ -500,6 +500,13 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     // GOOD
     _ = try Regex(#"X(\u0061|b)+Y"#).firstMatch(in: tainted)
 
+    // BAD
+    // attack string: "X" + "a" x lots
+    _ = try Regex(#"X(\U00000061|a)*Y"#).firstMatch(in: tainted) // $ MISSING: redos-vulnerable=
+
+    // GOOD
+    _ = try Regex(#"X(\U00000061|b)+Y"#).firstMatch(in: tainted)
+
     // BAD TODO: we should get this one
     // attack string: "X" + "a" x lots
     _ = try Regex(#"X(\x61|a)*Y"#).firstMatch(in: tainted) // $ MISSING: redos-vulnerable=
