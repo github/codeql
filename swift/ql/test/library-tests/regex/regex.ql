@@ -12,8 +12,8 @@ module RegexTest implements TestSig {
   string getARelevantTag() { result = ["regex", "input", "redos-vulnerable", "hasParseFailure"] }
 
   predicate hasActualResult(Location location, string element, string tag, string value) {
-    exists(TreeView::RegExpTerm t, string pump, State s, string prefixMsg |
-      hasReDoSResult(t, pump, s, prefixMsg) and
+    exists(TreeView::RegExpTerm t |
+      hasReDoSResult(t, _, _, _) and
       location = t.getLocation() and
       element = t.toString() and
       tag = "redos-vulnerable" and
