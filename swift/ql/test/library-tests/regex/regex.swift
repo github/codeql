@@ -143,8 +143,13 @@ func myRegexpMethodsTests(b: Bool) throws {
 	_ = try either_regex.firstMatch(in: input) // $ regex=.* regex=.+ input=input
 
 	let base_str = "a"
-	let append_regex = try Regex(base_str + "b")
-	_ = try append_regex.firstMatch(in: input) // $ input=input MISSING: regex=ab
+	let appended_regex = try Regex(base_str + "b")
+	_ = try appended_regex.firstMatch(in: input) // $ input=input MISSING: regex=ab
+
+	let multiple_evaluated_regex = try Regex(#"([\w.]+)*"#)
+	try _ = multiple_evaluated_regex.firstMatch(in: input) // $ input=input regex=([\w.]+)*
+	try _ = multiple_evaluated_regex.prefixMatch(in: input) // $ input=input regex=([\w.]+)*
+	try _ = multiple_evaluated_regex.wholeMatch(in: input) // $ input=input regex=([\w.]+)* MISSING: redos-vulnerable=
 
 	// --- escape sequences ---
 
