@@ -27,7 +27,6 @@ import java.nio.file.CopyOption;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.security.AccessControlException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -280,47 +279,6 @@ public class FileUtil
 	}
 
 	/**
-	 * Copies a file
-	 *
-	 * @return false if failed to copy.
-	 */
-	public static boolean copy (File from, File to)
-	{
-		boolean targetFileExisted = to.exists();
-		try {
-			copyFile(from, to, false);
-			return true;
-		}
-		catch (IOException e) {
-			// If the target did not exist before, make sure
-			// we delete it if there was any error
-			if (!targetFileExisted)
-				to.delete();
-
-			logger.error("Cannot copy " + from + " to " + to, e);
-			return false;
-		}
-	}
-
-	/**
-	 * Append all of <code>sourceFile</code> to the end of <code>targetFile</code> - like
-	 * <code>copy</code>, but just adds to the end of the file.
-	 *
-	 * @return <code>true</code> iff the append succeeded
-	 */
-	public static boolean append (File sourceFile, File targetFile)
-	{
-		try {
-			copyFile(sourceFile, targetFile, true);
-			return true;
-		}
-		catch (IOException e) {
-			logger.error("Cannot append contents of " + sourceFile + " to " + targetFile, e);
-			return false;
-		}
-	}
-
-	/**
 	 * Write the contents of the given string to the file, creating it if it does not exist and overwriting it if it does.
 	 *
 	 * @param file the target file
@@ -444,82 +402,6 @@ public class FileUtil
 	}
 
 	/**
-	 * Copies a folder recursively, by overwriting files if necessary. Copies all folders but filters
-	 * files.
-	 * <p>
-	 * <b>IMPORTANT:</b>The contents of <code>from</code> are copied to <code>to</code>, but a
-	 * subdirectory is not created for them. This behaves like <code>rsync -a from/ to</code>.
-	 * <p>
-	 * If {@code from} is a file rather than a directory, it is copied (assuming the filter matches
-	 * it) to the file named by {@code to} -- this must not already exist as a directory.
-	 *
-	 * @deprecated Use <code>FileUtil8.recursiveCopy</code> instead.
-	 * @param from Directory whose contents should be copied, or a file.
-	 * @param to Directory to which files and subdirectories of <code>from</code> should be copied, or
-	 *          a file path (if {@code from} is a file).
-	 * @param filter the filter to use for selecting which files to copy, or <code>null</code>
-	 * @return false if failed to copy.
-	 */
-	@Deprecated
-	public static boolean recursiveCopy (File from, File to, final FileFilter filter)
-	{
-		// Make sure we include all subfolders
-		FileFilter realFilter = new FileFilter() {
-			@Override
-			public boolean accept (File pathname)
-			{
-				if (filter == null || pathname.isDirectory())
-					return true;
-				else
-					return filter == null || filter.accept(pathname);
-			}
-		};
-		return strictRecursiveCopy(from, to, realFilter);
-	}
-
-	/**
-	 * Copies a folder recursively, by overwriting files if necessary. Unlike
-	 * {@link #recursiveCopy(File, File, FileFilter)}, this version applies the filter to directories
-	 * as well, and only recurses into directories that are accepted by the filter.
-	 * <p>
-	 * <b>IMPORTANT:</b>The contents of <code>from</code> are copied to <code>to</code>, but a
-	 * subdirectory is not created for them. This behaves like <code>rsync -a from/ to</code>.
-	 * <p>
-	 * If {@code from} is a file rather than a directory, it is copied (assuming the filter matches
-	 * it) to the file named by {@code to} -- this must not already exist as a directory.
-	 *
-	 * @deprecated Use <code>FileUtil8.recursiveCopy</code> instead.
-	 * @param from Directory whose contents should be copied, or a file.
-	 * @param to Directory to which files and subdirectories of <code>from</code> should be copied, or
-	 *          a file path (if {@code from} is a file).
-	 * @param filter the filter to use for selecting which files to copy, or <code>null</code>
-	 * @return false if failed to copy.
-	 */
-	@Deprecated
-	public static boolean strictRecursiveCopy (File from, File to, FileFilter filter)
-	{
-		if (!from.exists()) {
-			return false;
-		}
-		if (from.isFile()) {
-			return copy(from, to);
-		}
-		else {
-			if (!to.exists()) {
-				if (!to.mkdir()) {
-					return false;
-				}
-			}
-			boolean success = true;
-			for (File childFrom : list(from, filter)) {
-				File childTo = new File(to, childFrom.getName());
-				success &= strictRecursiveCopy(childFrom, childTo, filter);
-			}
-			return success;
-		}
-	}
-
-	/**
 	 * Writes the entire contents of a stream to a file. Closes input stream when writing is done
 	 *
 	 * @return true on success, false otherwise
@@ -588,62 +470,6 @@ public class FileUtil
 			return null;
 		}
 	}
-
-	private static void copyFile (File from, File to, boolean append) throws IOException
-	{
-		// Try to exclude the case where the files are the same. If that happens,
-		// succeed except in 'append' mode since that is probably not the intention
-		// The logic below works if from and to both exist - and if one of them
-		// doesn't they can't be the same file!
-		from = tryMakeCanonical(from);
-		to = tryMakeCanonical(to);
-		if (from.equals(to)) {
-			if (append)
-				throw new IOException("Trying to append the contents of file " + from + " onto itself");
-			else
-				return; // Nothing to do.
-		}
-
-		try (FileInputStream fis = new FileInputStream(from);
-				InputStream in = new BufferedInputStream(fis))
-		{
-			if (!to.exists())
-				to.createNewFile();
-			try (FileOutputStream fos = new FileOutputStream(to, append);
-				OutputStream out = new BufferedOutputStream(fos))
-			{
-				byte[] buf = new byte[16 * 1024];
-				int count;
-				while ((count = in.read(buf)) > 0)
-					out.write(buf, 0, count);
-			}
-		}
-		to.setExecutable(canExecute(from));
-	}
-
-	/**
-	 * In the current Java security model, calling {@link File#canExecute()} requires the same
-	 * permission as calling {@link Runtime#exec(String)}. This makes it impossible to run under a
-	 * restrictive security manager if we blindly check for a file's execute bit.
-	 * <p>
-	 * To work around, if an {@link AccessControlException} arises, and it seems to refer to a lack of
-	 * {@link SecurityConstants#FILE_EXECUTE_ACTION} permission, we suppress the exception and return
-	 * <code>false</code>. Other {@link AccessControlException}s are re-thrown, and otherwise the
-	 * return value coincides with {@link File#canExecute()} on the argument.
-	 */
-	private static boolean canExecute (File file)
-	{
-		try {
-			return file.canExecute();
-		}
-		catch (AccessControlException e) {
-			if (e.getPermission() instanceof FilePermission
-			    && ((FilePermission) e.getPermission()).getActions().contains("execute"))
-				return false; // deliberately ignoring security failure
-			throw e;
-		}
-	}
-
 
 	private static final BitSet allowedCharacters = new BitSet(256);
 	static {
@@ -1634,22 +1460,6 @@ public class FileUtil
 	}
 
 	/**
-	 * Copy the source properties file to the target, appending the given variable definitions as
-	 * properties (with proper escaping). An optional marker string is printed as a comment before the
-	 * extra variables, if any.
-	 */
-	public static void copyPropertiesFile (
-	  File source,
-	  File target,
-	  Set<Pair<String, String>> extraVariables,
-	  String extraComment)
-	{
-		if (source.isFile())
-			copy(source, target);
-		appendProperties(target, extraVariables, extraComment);
-	}
-
-	/**
 	 * Append the given set of properties to a specified file, taking care of proper escaping of
 	 * special characters.
 	 *
@@ -1901,31 +1711,6 @@ public class FileUtil
 			throw new ResourceError(errorPrefix + "Couldn't overwrite destination file '" + dest.toString() + "'.");
 		if (!src.renameTo(dest))
 			throw new ResourceError(errorPrefix + "Couldn't rename file '" + src.toString() + "' to '" + dest.toString()
-			                        + "'.");
-	}
-
-	/**
-	 * Copy a file, creating any directories as needed. If the destination file (or directory)
-	 * exists, it is overwritten.
-	 *
-	 * @param src The file to be renamed. Must be non-null and must exist.
-	 * @param dest The path to copy the file to. Must be non-null. Will be overwritten if it already exists.
-	 */
-	public static void forceCopy(File src, File dest)
-	{
-		final String errorPrefix = "FileUtil.forceCopy: ";
-		if (src == null)
-			throw new CatastrophicError(errorPrefix + "source File is null.");
-		if (dest == null)
-			throw new CatastrophicError(errorPrefix + "destination File is null.");
-		if (!src.exists())
-			throw new ResourceError(errorPrefix + "source File '" + src.toString() + "' does not exist.", new FileNotFoundException(src.toString()));
-
-		mkdirs(dest.getAbsoluteFile().getParentFile());
-		if (dest.exists() && !recursiveDelete(dest))
-			throw new ResourceError(errorPrefix + "Couldn't overwrite destination file '" + dest.toString() + "'.");
-		if (!copy(src, dest))
-			throw new ResourceError(errorPrefix + "Couldn't copy file '" + src.toString() + "' to '" + dest.toString()
 			                        + "'.");
 	}
 
