@@ -3,8 +3,8 @@
  */
 
 import swift
-import codeql.swift.dataflow.DataFlow
-import codeql.swift.regex.RegexTreeView // re-export
+import codeql.swift.regex.RegexTreeView
+private import codeql.swift.dataflow.DataFlow
 private import internal.ParseRegex
 
 /**
@@ -54,7 +54,7 @@ private class ParsedStringRegex extends RegExp, StringLiteralExpr {
 }
 
 /**
- * A call that evaluates a regular expression. For example:
+ * A call that evaluates a regular expression. For example, the call to `firstMatch` in:
  * ```
  * Regex("(a|b).*").firstMatch(in: myString)
  * ```
@@ -64,7 +64,7 @@ abstract class RegexEval extends CallExpr {
   Expr stringInput;
 
   /**
-   * Gets the input to this call that is the regular expression.
+   * Gets the input to this call that is the regular expression being evaluated.
    */
   Expr getRegexInput() { result = regexInput }
 
@@ -76,7 +76,7 @@ abstract class RegexEval extends CallExpr {
   /**
    * Gets a regular expression value that is evaluated here (if any can be identified).
    */
-  RegExp getARegex() { exists(ParsedStringRegex regex | regex.getEval() = this and result = regex) }
+  RegExp getARegex() { result.(ParsedStringRegex).getEval() = this }
 }
 
 /**

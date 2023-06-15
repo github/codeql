@@ -1,10 +1,11 @@
-// This program tests the regular expressions from the tests to (hopefully) figure out which ones
-// are really vulnerable to various attack strings in Swift.  And confirm they are valid Swift
-// regular expressions in the first place.
+// This program tests the regular expressions from the tests to figure out which ones are really
+// vulnerable to various attack strings with the Swift `Regex` implementation.  We also confirm
+// all really are valid Swift regular expressions.
 //
-// It works by searching the source file for regular expressions in a particular form
-// (roughly `Regex("...")`).  A slight catch is that it doesn't process escape characters in the
-// way Swift does, so it's best not to use them (use Swift #""# strings to avoid needing them).
+// The program works by searching the test source file (or part of it) for regular expressions in
+// the form `Regex("...")` or `Regex(#"..."#)`.  A drawback of this approach is that it doesn't
+// process escape characters in the way Swift does, so it's best not to use them in non-trivial
+// test cases (use Swift #""# strings to avoid needing escape sequences).
 
 import Foundation
 
@@ -85,19 +86,19 @@ print()
 
 var tests: [TestCase] = []
 
-let lineRegex = try Regex(".*Regex\\(#*\"(.*)\"#*\\).*") // only matches `Regex("...")`
+let lineRegex = try Regex(".*Regex\\(#*\"(.*)\"#*\\).*") // matches `Regex("...")`, `Regex(#"..."#)` etc.
 
 // read source file, process it line by line...
 let wholeFile = try String(contentsOfFile: "redos_variants.swift")
 var lines = wholeFile.components(separatedBy: .newlines)
 
-// filter lines (the whole thing is a lot)
+// filter lines (running more than a few thousand test cases at once is not recommended)
 lines = Array(lines[1 ..< 120])
 
 var regexpCount = 0
 for line in lines {
 
-	// check if the line matches regex...
+	// check if the line matches the line regex...
 	if let match = try lineRegex.wholeMatch(in: line) {
 		if let regexSubstr = match.output[1].substring {
 			let regexStr = String(regexSubstr)
@@ -118,7 +119,9 @@ for line in lines {
 	}
 }
 
-// run the tests (in parallel)...
+// run the tests...
+// (in parallel, because each test doesn't necessarily terminate and we have no easy way to force
+//  them to terminate short of ending the process as a whole)
 print("\(regexpCount) regular expression(s)")
 print("\(tests.count) test case(s)")
 for test in tests {
@@ -128,7 +131,7 @@ for test in tests {
 // wait...
 Thread.sleep(forTimeInterval: 20.0)
 
-// report those still running
+// report those cases that are still running
 print("incomplete after 20 seconds:")
 for test in tests {
 	if test.done == false {

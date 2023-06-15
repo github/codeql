@@ -150,7 +150,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     _ = try Regex(#"([\w.]+)*"#).firstMatch(in: tainted)
 	// BAD
     // attack string: "a" x lots + "!"
-    _ = try Regex(#"([\w.]+)*"#).wholeMatch(in: tainted)
+    _ = try Regex(#"([\w.]+)*"#).wholeMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // BAD
     // attack string: "b" x lots + "!"
@@ -264,13 +264,13 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     _ = try Regex(#"(\d+(X\d+)?)+"#).firstMatch(in: tainted)
 	// BAD
     // attack string: "0" x lots + "!"
-    _ = try Regex(#"(\d+(X\d+)?)+"#).wholeMatch(in: tainted)
+    _ = try Regex(#"(\d+(X\d+)?)+"#).wholeMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // GOOD - there is no witness in the end that could cause the regexp to not match
     _ = try Regex("([0-9]+(X[0-9]*)?)*").firstMatch(in: tainted)
     // BAD
     // attack string: "0" x lots + "!"
-    _ = try Regex("([0-9]+(X[0-9]*)?)*").wholeMatch(in: tainted)
+    _ = try Regex("([0-9]+(X[0-9]*)?)*").wholeMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // GOOD
     _ = try Regex("^([^>]+)*(>|$)").firstMatch(in: tainted)
@@ -307,7 +307,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     _ = try Regex("(a+)+aaaaa*a+").firstMatch(in: tainted)
 	// BAD
     // attack string: "a" x lots + "!"
-    _ = try Regex("(a+)+aaaaa*a+").wholeMatch(in: tainted)
+    _ = try Regex("(a+)+aaaaa*a+").wholeMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // BAD
     // attack string: "a" x lots + "!"
@@ -317,7 +317,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     _ = try Regex(#"(\n+)+\n\n"#).firstMatch(in: tainted)
     // BAD
     // attack string: "\n" x lots + "."
-    _ = try Regex(#"(\n+)+\n\n"#).wholeMatch(in: tainted)
+    _ = try Regex(#"(\n+)+\n\n"#).wholeMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // BAD
     // attack string: "\n" x lots + "."
@@ -335,7 +335,7 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     _ = try Regex("(([^X]b)+)*($|[^X]b)").firstMatch(in: tainted)
 	// BAD
     // attack string: "b" x lots + "!"
-    _ = try Regex("(([^X]b)+)*($|[^X]b)").wholeMatch(in: tainted)
+    _ = try Regex("(([^X]b)+)*($|[^X]b)").wholeMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // BAD
     // attack string: "b" x lots + "!"
@@ -345,19 +345,19 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     _ = try Regex("((ab)+)*ababab").firstMatch(in: tainted)
     // BAD
     // attack string: "ab" x lots + "!"
-    _ = try Regex("((ab)+)*ababab").wholeMatch(in: tainted)
+    _ = try Regex("((ab)+)*ababab").wholeMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // GOOD
     _ = try Regex("((ab)+)*abab(ab)*(ab)+").firstMatch(in: tainted)
     // BAD
     // attack string: "ab" x lots + "!"
-    _ = try Regex("((ab)+)*abab(ab)*(ab)+").wholeMatch(in: tainted)
+    _ = try Regex("((ab)+)*abab(ab)*(ab)+").wholeMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // GOOD
     _ = try Regex("((ab)+)*").firstMatch(in: tainted)
     // BAD
     // attack string: "ab" x lots + "!"
-    _ = try Regex("((ab)+)*").wholeMatch(in: tainted)
+    _ = try Regex("((ab)+)*").wholeMatch(in: tainted) // $ MISSING: redos-vulnerable=
 
     // BAD
     // attack string: "ab" x lots + "!"
@@ -480,17 +480,15 @@ func myRegexpVariantsTests(myUrl: URL) throws {
     // GOOD
     _ = try Regex("(a|b)+").firstMatch(in: tainted)
 
-    // BAD
+    // GOOD
     _ = try Regex(#"(?:[\s;,"'<>(){}|\[\]@=+*]|:(?![/\\]))+"#).firstMatch(in: tainted)
-	// BAD
-	// attack string: ???
-    _ = try Regex(#"(?:[\s;,"'<>(){}|\[\]@=+*]|:(?![/\\]))+"#).wholeMatch(in: tainted)
 
-    // TODO: investigate; these were marked `hasParseFailure`
-    _ = try Regex(#"^((?:a{|-)|\w\{)+X$"#).firstMatch(in: tainted) // $ SPURIOUS: redos-vulnerable=
-    _ = try Regex(#"^((?:a{0|-)|\w\{\d)+X$"#).firstMatch(in: tainted) // $ SPURIOUS: redos-vulnerable=
-    _ = try Regex(#"^((?:a{0,|-)|\w\{\d,)+X$"#).firstMatch(in: tainted) // $ SPURIOUS: redos-vulnerable=
-    _ = try Regex(#"^((?:a{0,2|-)|\w\{\d,\d)+X$"#).firstMatch(in: tainted) // $ SPURIOUS: redos-vulnerable=
+    // BAD?
+    // (no confirmed attack string)
+    _ = try Regex(#"^((?:a{|-)|\w\{)+X$"#).firstMatch(in: tainted) // $ redos-vulnerable=
+    _ = try Regex(#"^((?:a{0|-)|\w\{\d)+X$"#).firstMatch(in: tainted) // $ redos-vulnerable=
+    _ = try Regex(#"^((?:a{0,|-)|\w\{\d,)+X$"#).firstMatch(in: tainted) // $ redos-vulnerable=
+    _ = try Regex(#"^((?:a{0,2|-)|\w\{\d,\d)+X$"#).firstMatch(in: tainted) // $ redos-vulnerable=
 
     // GOOD
     _ = try Regex(#"^((?:a{0,2}|-)|\w\{\d,\d\})+X$"#).firstMatch(in: tainted)
