@@ -8,7 +8,6 @@ category: minorAnalysis
   * java.net
   * java.nio.channels
   * java.nio.file
-  * java.util.jar
   * java.util.zip
   * okhttp3
   * org.gradle.api.file
