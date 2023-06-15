@@ -455,7 +455,7 @@ module Make<RegexTreeViewSig TreeImpl> {
         not hasChildThatMatches(cc, char) and
         (
           // detect unsupported char classes that doesn't match anything (e.g. `\p{L}` in ruby), and don't report any matches
-          exists(string c | hasChildThatMatches(cc, c))
+          hasChildThatMatches(cc, _)
           or
           not exists(cc.getAChild()) // [^] still matches everything
         )
@@ -546,7 +546,7 @@ module Make<RegexTreeViewSig TreeImpl> {
       override predicate matches(string char) {
         not classEscapeMatches(charClass.toLowerCase(), char) and
         // detect unsupported char classes (e.g. `\p{L}` in ruby), and don't report any matches
-        exists(string c | classEscapeMatches(charClass.toLowerCase(), c))
+        classEscapeMatches(charClass.toLowerCase(), _)
       }
     }
 
