@@ -386,6 +386,14 @@ abstract class RegExp extends Expr {
       // wide hex char \Uhhhhhhhh
       this.getChar(start + 1) = "U" and end = start + 10
       or
+      // variable width hex char \x{hh...} or \u{hh...} (1-6 digits)
+      this.getChar(start + 1) = ["x", "u"] and
+      this.getChar(start + 2) = "{" and
+      this.getChar(end - 1) = "}" and
+      end > start and
+      end <= start + 10 and
+      not exists(int i | start + 2 < i and i < end - 1 | this.getChar(i) = "}")
+      or
       // escape not handled above; update when adding a new case
       not this.getChar(start + 1) in ["x", "u", "U"] and
       not exists(this.getChar(start + 1).toInt()) and
