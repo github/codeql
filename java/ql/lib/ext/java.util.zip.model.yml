@@ -10,5 +10,4 @@ extensions:
       pack: codeql/java-all
       extensible: sinkModel
     data:
-      - ["java.util.zip", "ZipFile", True, "getEntry", "(String)", "", "Argument[0]", "path-injection", "ai-manual"]
-      - ["java.util.zip", "ZipOutputStream", True, "putNextEntry", "(ZipEntry)", "", "Argument[0]", "path-injection", "ai-manual"] # may also be file-content-store?
+      - ["java.util.zip", "ZipOutputStream", True, "putNextEntry", "(ZipEntry)", "", "Argument[0]", "file-content-store", "ai-manual"]
