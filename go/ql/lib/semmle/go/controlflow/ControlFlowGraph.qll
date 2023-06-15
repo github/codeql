@@ -135,7 +135,7 @@ module ControlFlow {
       exists(IR::FieldTarget trg | trg = super.getLhs() |
         (
           trg.getBase() = base.asInstruction() or
-          trg.getBase() = MkImplicitDeref(base.asExpr())
+          trg.getBase() = IR::implicitDerefInstruction(base.asExpr())
         ) and
         trg.getField() = f and
         super.getRhs() = rhs.asInstruction()
@@ -155,7 +155,7 @@ module ControlFlow {
       exists(IR::ElementTarget trg | trg = super.getLhs() |
         (
           trg.getBase() = base.asInstruction() or
-          trg.getBase() = MkImplicitDeref(base.asExpr())
+          trg.getBase() = IR::implicitDerefInstruction(base.asExpr())
         ) and
         trg.getIndex() = index.asInstruction() and
         super.getRhs() = rhs.asInstruction()

@@ -11,7 +11,54 @@ private newtype TNode =
   MkSsaNode(SsaDefinition ssa) or
   MkGlobalFunctionNode(Function f) or
   MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
-  MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn)
+  MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
+  MkPostUpdateNode(IR::Instruction insn) { insn = updatedInstruction() }
+
+private IR::Instruction getADirectlyWrittenInstruction() {
+  exists(IR::WriteTarget target, IR::Instruction base |
+    target = any(IR::WriteInstruction w).getLhs() and
+    (base = result or base = IR::implicitDerefInstruction(result.(IR::EvalInstruction).getExpr()))
+  |
+    target.(IR::FieldTarget).getBase() = base or
+    target.(IR::ElementTarget).getBase() = base
+  )
+  or
+  result = IR::evalExprInstruction(any(SendStmt s).getChannel())
+}
+
+private IR::Instruction getAccessPathPredecessor2(IR::Instruction insn) {
+  exists(Expr e | result = IR::evalExprInstruction(e) |
+    e = insn.(IR::EvalInstruction).getExpr().(UnaryExpr).getOperand()
+    or
+    e = insn.(IR::EvalInstruction).getExpr().(StarExpr).getBase()
+    or
+    e = insn.(IR::EvalImplicitDerefInstruction).getOperand()
+  )
+  or
+  result = insn.(IR::ComponentReadInstruction).getBase()
+}
+
+private IR::Instruction getAWrittenInstruction() {
+  result = getAccessPathPredecessor2*(getADirectlyWrittenInstruction())
+}
+
+private IR::Instruction updatedInstruction() {
+  result = IR::evalExprInstruction(updatedExpr()) or
+  result instanceof IR::EvalImplicitDerefInstruction or
+  result = getAWrittenInstruction()
+}
+
+private Expr updatedExpr() {
+  result instanceof AddressExpr
+  or
+  result = any(AddressExpr e).getOperand()
+  or
+  result instanceof StarExpr
+  or
+  result instanceof DerefExpr
+  or
+  result = any(CallExpr ce).getAnArgument() and mutableType(result.getType())
+}
 
 /** Nodes intended for only use inside the data-flow libraries. */
 module Private {
@@ -706,19 +753,6 @@ module Public {
     predicate isReceiverOf(MethodDecl m) { parm.isReceiverOf(m) }
   }
 
-  private Node getADirectlyWrittenNode() {
-    exists(Write w | w.writesComponent(result, _)) or
-    result = DataFlow::exprNode(any(SendStmt s).getChannel())
-  }
-
-  private DataFlow::Node getAccessPathPredecessor(DataFlow::Node node) {
-    result = node.(PointerDereferenceNode).getOperand()
-    or
-    result = node.(ComponentReadNode).getBase()
-  }
-
-  private Node getAWrittenNode() { result = getAccessPathPredecessor*(getADirectlyWrittenNode()) }
-
   /**
    * Holds if `tp` is a type that may (directly or indirectly) reference a memory location.
    *
@@ -732,6 +766,10 @@ module Public {
       not underlying instanceof StringType and
       not underlying instanceof LiteralType
     )
+  }
+
+  private class UpdateNode extends InstructionNode {
+    UpdateNode() { insn = updatedInstruction() }
   }
 
   /**
@@ -753,35 +791,37 @@ module Public {
     abstract Node getPreUpdateNode();
   }
 
-  private class DefaultPostUpdateNode extends PostUpdateNode {
-    Node preupd;
+  /** A post-update node for an instruction that updates a value. */
+  class DefaultPostUpdateNode extends PostUpdateNode {
+    UpdateNode preupd;
 
-    DefaultPostUpdateNode() {
-      (
-        preupd instanceof AddressOperationNode
-        or
-        preupd = any(AddressOperationNode addr).getOperand()
-        or
-        preupd = any(PointerDereferenceNode deref).getOperand()
-        or
-        preupd = getAWrittenNode()
-        or
-        (
-          preupd instanceof ArgumentNode and not preupd instanceof ImplicitVarargsSlice
-          or
-          preupd = any(CallNode c).getAnImplicitVarargsArgument()
-        ) and
-        mutableType(preupd.getType())
-      ) and
-      (
-        preupd = this.(SsaNode).getAUse()
-        or
-        preupd = this and
-        not basicLocalFlowStep(_, this)
-      )
-    }
+    DefaultPostUpdateNode() { this = MkPostUpdateNode(preupd.asInstruction()) }
 
     override Node getPreUpdateNode() { result = preupd }
+
+    /** Gets the node that data will flow to from this node. */
+    Node getSuccessor() {
+      preupd = result.(SsaNode).getAUse()
+      or
+      preupd = result and
+      not basicLocalFlowStep0(_, preupd)
+    }
+
+    override ControlFlow::Root getRoot() { result = preupd.asInstruction().getRoot() }
+
+    override Type getType() { result = preupd.asInstruction().getResultType() }
+
+    override string getNodeKind() { result = "post-update node" }
+
+    override string toString() {
+      result = "post-update node for " + preupd.asInstruction().toString()
+    }
+
+    override predicate hasLocationInfo(
+      string filepath, int startline, int startcolumn, int endline, int endcolumn
+    ) {
+      preupd.asInstruction().hasLocationInfo(filepath, startline, startcolumn, endline, endcolumn)
+    }
   }
 
   /**
