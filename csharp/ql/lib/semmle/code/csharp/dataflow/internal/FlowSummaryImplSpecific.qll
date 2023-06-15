@@ -61,6 +61,7 @@ DataFlowType getParameterType(SummarizedCallable c, ParameterPosition pos) {
   )
 }
 
+/** Gets the return type of kind `rk` for callable `c`. */
 DataFlowType getReturnType(DotNet::Callable c, ReturnKind rk) {
   exists(Type t | result = Gvn::getGlobalValueNumber(t) |
     rk instanceof NormalReturnKind and
