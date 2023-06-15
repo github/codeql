@@ -99,7 +99,7 @@ private class GenerateResponseMethod extends Method {
   }
 }
 
-/** Gets the static type of `e`, or an upper bound of the runtime type of `e`. */
+/** Holds if `t` is the static type of `e`, or an upper bound of the runtime type of `e`. */
 private predicate boundOrStaticType(Expr e, RefType t) {
   exprTypeFlow(e, t, false)
   or
