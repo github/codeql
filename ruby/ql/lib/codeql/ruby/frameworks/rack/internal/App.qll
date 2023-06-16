@@ -2,6 +2,7 @@
  * Provides modeling for Rack applications.
  */
 
+private import codeql.ruby.AST
 private import codeql.ruby.ApiGraphs
 private import codeql.ruby.DataFlow
 private import codeql.ruby.typetracking.TypeTracker
@@ -15,8 +16,18 @@ private class PotentialCallNode extends DataFlow::CallableNode {
   PotentialCallNode() {
     this.getNumberOfParameters() = 1 and
     (
-      this.(DataFlow::MethodNode).getMethodName() = "call" or
-      not this instanceof DataFlow::MethodNode
+      this.(DataFlow::MethodNode).getMethodName() = "call"
+      or
+      not this instanceof DataFlow::MethodNode and
+      exists(DataFlow::CallNode cn | cn.getMethodName() = "run" |
+        this.(DataFlow::LocalSourceNode).flowsTo(cn.getArgument(0))
+        or
+        // TODO: `Proc.new` should automatically propagate flow from its block argument
+        any(DataFlow::CallNode proc |
+          proc = API::getTopLevelMember("Proc").getAnInstantiation() and
+          proc.getBlock() = this
+        ).(DataFlow::LocalSourceNode).flowsTo(cn.getArgument(0))
+      )
     )
   }
 }
@@ -33,14 +44,14 @@ private class CallNode extends PotentialCallNode {
   RP::PotentialResponseNode getResponse() { result = resp }
 }
 
-private DataFlow::LocalSourceNode trackRackResponse(TypeBackTracker t, DataFlow::CallableNode call) {
+private DataFlow::LocalSourceNode trackRackResponse(TypeBackTracker t, PotentialCallNode call) {
   t.start() and
   result = call.getAReturnNode().getALocalSource()
   or
   exists(TypeBackTracker t2 | result = trackRackResponse(t2, call).backtrack(t2, t))
 }
 
-private RP::PotentialResponseNode trackRackResponse(DataFlow::CallableNode call) {
+private RP::PotentialResponseNode trackRackResponse(PotentialCallNode call) {
   result = trackRackResponse(TypeBackTracker::end(), call)
 }
 
