@@ -219,15 +219,17 @@ A query module must contain one or more queries.
 Import directives
 ~~~~~~~~~~~~~~~~~
 
-An import directive refers to a module identifier:
+An import directive refers to a module expression:
 
 ::
 
    import ::= annotations "import" importModuleExpr ("as" modulename)?
 
-   qualId ::= simpleId | qualId "." simpleId
+   importModuleExpr ::= importModuleId arguments?
 
-   importModuleExpr ::= qualId | importModuleExpr "::" modulename arguments?
+   importModuleId ::= qualId | importModuleExpr "::" modulename
+
+   qualId ::= simpleId | qualId "." simpleId
 
    arguments ::= "<" argument ("," argument)* ">"
 
@@ -259,6 +261,10 @@ For qualified identifiers (``a.b``):
 -  The resolved module is the module defined by the selected candidate search path.
 
 A qualified module identifier is only valid within an import.
+
+Module expressions contain a module identifier and optional arguments. If arguments are present, the module expression instantiates the module that the identifier resolves to (see :ref:`Parameterized modules`).
+
+Module expressions cannot refer to :ref:`Parameterized modules`. Instead, parameterized modules must always be fully instantiated when they are referenced.
 
 .. _Parameterized modules:
 
@@ -361,7 +367,9 @@ With the exception of class domain types and character types (which cannot be re
 
    type ::= (moduleExpr "::")? classname | dbasetype | "boolean" | "date" | "float" | "int" | "string"
 
-   moduleExpr ::= modulename arguments? | moduleExpr "::" modulename arguments?
+   moduleExpr ::= moduleId arguments?
+
+   moduleId ::= modulename | moduleExpr "::" modulename
 
 A type reference is resolved to a type as follows:
 
