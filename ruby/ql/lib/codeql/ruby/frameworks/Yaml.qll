@@ -41,8 +41,8 @@ private class YamlParseStep extends AdditionalTaintStep {
     exists(API::Node parseSuccessors | parseSuccessors = yamlNode() |
       succ =
         [
-          parseSuccessors.getMethod("to_ruby").getReturn().asSource(),
-          parseSuccessors.getMethod("to_ruby").getReturn().getAnElement().asSource()
+          parseSuccessors.getMethod(["to_ruby", "transform"]).getReturn().asSource(),
+          parseSuccessors.getMethod(["to_ruby", "transform"]).getReturn().getAnElement().asSource()
         ] and
       pred = parseSuccessors.asSource()
     )

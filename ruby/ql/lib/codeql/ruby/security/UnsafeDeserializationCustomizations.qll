@@ -105,7 +105,7 @@ module UnsafeDeserialization {
       exists(API::Node toRubyReceiver |
         toRubyReceiver = yamlNode() and this = toRubyReceiver.asSource()
       |
-        exists(toRubyReceiver.getMethod("to_ruby"))
+        exists(toRubyReceiver.getMethod(["to_ruby", "transform"]))
       )
     }
   }
