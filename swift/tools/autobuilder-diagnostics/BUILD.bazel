@@ -7,4 +7,6 @@ swift_cc_binary(
     deps = [
         "//swift/logging",
     ],
+    # No restrictions (Windows allowed)
+    target_compatible_with = [],
 )
