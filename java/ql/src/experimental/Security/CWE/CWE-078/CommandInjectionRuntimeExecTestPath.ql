@@ -8,6 +8,7 @@
  * @id java/command-line-injection-extra-test-path
  * @tags testing
  *       test
+ *       experimental
  *       security
  *       external/cwe/cwe-078
  */

@@ -7,6 +7,7 @@
  * @precision high
  * @id java/command-line-injection-extra-local
  * @tags security
+ *       experimental
  *       local
  *       external/cwe/cwe-078
  */
