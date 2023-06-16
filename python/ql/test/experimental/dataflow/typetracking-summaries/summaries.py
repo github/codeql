@@ -59,3 +59,20 @@ r  # $ tracked
 y # $ tracked=secret
 TTS_set_secret(y, tracked) # $ tracked tracked=secret
 y.secret  # $ tracked tracked=secret
+
+# Class methods are not handled right now
+
+class MyClass:
+    @staticmethod
+    def foo(x):
+        return x
+
+    def bar(self, x):
+        return x
+
+through_staticmethod = TTS_apply_lambda(MyClass.foo, tracked)  # $ tracked
+through_staticmethod  # $ MISSING: tracked
+
+mc = MyClass()
+through_method = TTS_apply_lambda(mc.bar, tracked)  # $ tracked
+through_method  # $ MISSING: tracked
