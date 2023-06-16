@@ -403,7 +403,7 @@ codeql::ForceValueExpr ExprTranslator::translateForceValueExpr(const swift::Forc
   return entry;
 }
 
-codeql::IfExpr ExprTranslator::translateIfExpr(const swift::IfExpr& expr) {
+codeql::IfExpr ExprTranslator::translateTernaryExpr(const swift::TernaryExpr& expr) {
   auto entry = createExprEntry(expr);
   entry.condition = dispatcher.fetchLabel(expr.getCondExpr());
   entry.then_expr = dispatcher.fetchLabel(expr.getThenExpr());
