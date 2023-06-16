@@ -394,3 +394,30 @@ void test28(unsigned size) {
       return;
     xs[0] = 0;  // GOOD [FALSE POSITIVE]
 }
+
+struct test29_struct {
+  char* xs;
+};
+
+void test29(unsigned size) {
+  test29_struct val;
+  val.xs = new char[size];
+  size++;
+  val.xs = new char[size];
+  val.xs[size - 1] = 0; // GOOD [FALSE POSITIVE]
+}
+
+void test30(int *size)
+{
+  int new_size = 0, tmp_size = 0;
+
+  test30(&tmp_size);
+  if (tmp_size + 1 > new_size) {
+    new_size = tmp_size + 1;
+    char *xs = new char[new_size];
+    for (int i = 0; i < new_size; i++) {
+      xs[i] = 0;  // GOOD [FALSE POSITIVE]
+    }
+  }
+  *size = new_size;
+}
