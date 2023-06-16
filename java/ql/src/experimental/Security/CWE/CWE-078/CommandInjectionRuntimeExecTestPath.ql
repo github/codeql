@@ -16,20 +16,26 @@
 import DataFlow::PathGraph
 import CommandInjectionRuntimeExec
 
-class DataSource extends Source { DataSource() { this instanceof RemoteFlowSource or this instanceof LocalUserInput } }
+class DataSource extends Source {
+  DataSource() { this instanceof RemoteFlowSource or this instanceof LocalUserInput }
+}
 
-from DataFlow::PathNode source, DataFlow::PathNode sink, ExecTaintConfiguration2 conf, MethodAccess call, DataFlow::Node sourceCmd, DataFlow::Node sinkCmd, ExecTaintConfiguration confCmd
-where call.getMethod() instanceof RuntimeExecMethod
-// this is a command-accepting call to exec, e.g. rt.exec(new String[]{"/bin/sh", ...})
-and (
-    confCmd.hasFlow(sourceCmd, sinkCmd)
-    and sinkCmd.asExpr() = call.getArgument(0)
-)
-// it is tainted by untrusted user input
-and (
-    conf.hasFlow(source.getNode(), sink.getNode())
-    and sink.getNode().asExpr() = call.getArgument(0)
-)
-select sink, source, sink, "Call to dangerous java.lang.Runtime.exec() with command '$@' with arg from untrusted input '$@'",
-    sourceCmd, sourceCmd.toString(),
-    source.getNode(), source.toString()
+from
+  DataFlow::PathNode source, DataFlow::PathNode sink, ExecTaintConfiguration2 conf,
+  MethodAccess call, DataFlow::Node sourceCmd, DataFlow::Node sinkCmd,
+  ExecTaintConfiguration confCmd
+where
+  call.getMethod() instanceof RuntimeExecMethod and
+  // this is a command-accepting call to exec, e.g. rt.exec(new String[]{"/bin/sh", ...})
+  (
+    confCmd.hasFlow(sourceCmd, sinkCmd) and
+    sinkCmd.asExpr() = call.getArgument(0)
+  ) and
+  // it is tainted by untrusted user input
+  (
+    conf.hasFlow(source.getNode(), sink.getNode()) and
+    sink.getNode().asExpr() = call.getArgument(0)
+  )
+select sink, source, sink,
+  "Call to dangerous java.lang.Runtime.exec() with command '$@' with arg from untrusted input '$@'",
+  sourceCmd, sourceCmd.toString(), source.getNode(), source.toString()
