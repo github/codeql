@@ -1,8 +1,8 @@
 /**
- * @name Arbitrary file write during zipfile/tarfile extraction
- * @description Extracting files from a malicious tar archive without validating that the
- *              destination file path is within the destination directory can cause files outside
- *              the destination directory to be overwritten.
+ * @name Arbitrary file access during archive extraction ("Zip Slip")
+ * @description Accessing filesystem paths built from the name of an archive entry without
+ *              validating that the destination file path is within the destination directory
+ *              can allow an attacker to access unexpected resources.
  * @kind path-problem
  * @id rb/zip-slip
  * @problem.severity error
