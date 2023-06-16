@@ -12,7 +12,7 @@ private newtype TNode =
   MkGlobalFunctionNode(Function f) or
   MkImplicitVarargsSlice(CallExpr c) { c.hasImplicitVarargs() } or
   MkFlowSummaryNode(FlowSummaryImpl::Private::SummaryNode sn) or
-  MkPostUpdateNode(IR::Instruction insn) { insn = updatedInstruction() }
+  MkPostUpdateNode(IR::Instruction insn) { insn = getAnUpdatedInstruction() }
 
 private IR::Instruction getADirectlyWrittenInstruction() {
   exists(IR::WriteTarget target, IR::Instruction base |
@@ -26,7 +26,7 @@ private IR::Instruction getADirectlyWrittenInstruction() {
   result = IR::evalExprInstruction(any(SendStmt s).getChannel())
 }
 
-private IR::Instruction getAccessPathPredecessor2(IR::Instruction insn) {
+private IR::Instruction getAccessPathPredecessor(IR::Instruction insn) {
   exists(Expr e | result = IR::evalExprInstruction(e) |
     e = insn.(IR::EvalInstruction).getExpr().(UnaryExpr).getOperand()
     or
@@ -39,16 +39,16 @@ private IR::Instruction getAccessPathPredecessor2(IR::Instruction insn) {
 }
 
 private IR::Instruction getAWrittenInstruction() {
-  result = getAccessPathPredecessor2*(getADirectlyWrittenInstruction())
+  result = getAccessPathPredecessor*(getADirectlyWrittenInstruction())
 }
 
-private IR::Instruction updatedInstruction() {
-  result = IR::evalExprInstruction(updatedExpr()) or
+private IR::Instruction getAnUpdatedInstruction() {
+  result = IR::evalExprInstruction(getAnUpdatedExpr()) or
   result instanceof IR::EvalImplicitDerefInstruction or
   result = getAWrittenInstruction()
 }
 
-private Expr updatedExpr() {
+private Expr getAnUpdatedExpr() {
   result instanceof AddressExpr
   or
   result = any(AddressExpr e).getOperand()
@@ -769,7 +769,7 @@ module Public {
   }
 
   private class UpdateNode extends InstructionNode {
-    UpdateNode() { insn = updatedInstruction() }
+    UpdateNode() { insn = getAnUpdatedInstruction() }
   }
 
   /**
