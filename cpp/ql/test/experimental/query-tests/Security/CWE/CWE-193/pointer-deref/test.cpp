@@ -421,3 +421,15 @@ void test30(int *size)
   }
   *size = new_size;
 }
+
+void test31(unsigned size, unsigned src_pos)
+{
+  char *xs = new char[size];
+  if (src_pos > size) {
+    src_pos = size;
+  }
+  unsigned dst_pos = src_pos;
+  if(dst_pos < size - 3) {
+    xs[dst_pos++] = 0; // GOOD [FALSE POSITIVE]
+  }
+}
