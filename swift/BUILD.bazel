@@ -38,11 +38,15 @@ pkg_files(
 pkg_filegroup(
     name = "extractor-pack-generic",
     srcs = [
-        ":dbscheme_files",
         ":manifest",
-        "//swift/downgrades",
         "//swift/tools",
-    ],
+    ] + select({
+        "@platforms//os:windows": [],
+        "//conditions:default": [
+            ":dbscheme_files",
+            "//swift/downgrades",
+        ],
+    }),
     visibility = ["//visibility:public"],
 )
 
@@ -80,11 +84,14 @@ pkg_files(
 
 pkg_filegroup(
     name = "extractor-pack-arch",
-    srcs = [
-        ":extractor",
-        ":swift-test-sdk-arch",
-        ":resource-dir-arch",
-    ] + select({
+    srcs = select({
+        "@platforms//os:windows": [],
+        "//conditions:default": [
+            ":extractor",
+            ":resource-dir-arch",
+            ":swift-test-sdk-arch",
+        ],
+    }) + select({
         "@platforms//os:macos": [
             ":xcode-autobuilder",
         ],
