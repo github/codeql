@@ -82,8 +82,10 @@ module Make<RegexTreeViewSig TreeImpl> {
   bindingset[char]
   int toCodePoint(string char) { result.toUnicode() = char }
 
+  final private class FinalRegExpCharacterRange = RegExpCharacterRange;
+
   /** A character range that appears to be overly wide. */
-  class OverlyWideRange instanceof RegExpCharacterRange {
+  class OverlyWideRange extends FinalRegExpCharacterRange {
     OverlyWideRange() {
       exists(int low, int high, int numChars |
         isRange(this, low, high) and
@@ -111,12 +113,6 @@ module Make<RegexTreeViewSig TreeImpl> {
 
     /** Gets a string representation of a character class that matches the same chars as this range. */
     string printEquivalent() { result = RangePrinter::printEquivalentCharClass(this) }
-
-    /** Gets a string representation of this range. */
-    string toString() { result = super.toString() }
-
-    /** Holds if `lo` is the lower bound of this character range and `hi` the upper bound. */
-    predicate isRange(string lo, string hi) { super.isRange(lo, hi) }
   }
 
   /** Gets a range that should not be reported as an overly wide range. */
