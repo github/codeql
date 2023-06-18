@@ -69,8 +69,31 @@ func good2(w http.ResponseWriter, req *http.Request) (interface{}, error) {
 	}
 }
 
+func bad2(req *http.Request) {
+	// LDAP server details
+	ldapServer := "ldap.example.com"
+	ldapPort := 389
+	bindDN := "cn=admin,dc=example,dc=com"
+	// BAD : empty password
+	bindPassword := ""
+
+	// Connect to the LDAP server
+	l, err := ldap.Dial("tcp", fmt.Sprintf("%s:%d", ldapServer, ldapPort))
+	if err != nil {
+		log.Fatalf("Failed to connect to LDAP server: %v", err)
+	}
+	defer l.Close()
+
+	// BAD : bindPassword is empty
+	err = l.Bind(bindDN, bindPassword)
+	if err != nil {
+		log.Fatalf("LDAP bind failed: %v", err)
+	}
+}
+
 func main() {
 	bad(nil, nil)
 	good1(nil, nil)
 	good2(nil, nil)
+	bad2(nil, nil)
 }

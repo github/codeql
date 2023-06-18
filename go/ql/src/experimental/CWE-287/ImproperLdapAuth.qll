@@ -67,13 +67,21 @@ class EqualityAsSanitizerGuard extends LdapSanitizer {
 }
 
 /**
+ */
+class EmptyString extends DataFlow::Node {
+  EmptyString() { this.asExpr().getStringValue() = "" }
+}
+
+/**
  * A taint-tracking configuration for reasoning about when an `UntrustedFlowSource`
  * flows into an argument or field that is vulnerable to Improper LDAP Authentication.
  */
 class ImproperLdapAuthConfiguration extends TaintTracking::Configuration {
   ImproperLdapAuthConfiguration() { this = "Improper LDAP Auth" }
 
-  override predicate isSource(DataFlow::Node source) { source instanceof UntrustedFlowSource }
+  override predicate isSource(DataFlow::Node source) {
+    source instanceof UntrustedFlowSource or source instanceof EmptyString
+  }
 
   override predicate isSink(DataFlow::Node sink) { sink instanceof LdapAuthSink }
 
