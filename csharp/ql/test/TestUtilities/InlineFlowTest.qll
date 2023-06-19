@@ -6,10 +6,10 @@
  * import csharp
  * import TestUtilities.InlineFlowTest
  * import DefaultFlowTest
- * import ValueFlow::PathGraph
+ * import PathGraph
  *
- * from ValueFlow::PathNode source, ValueFlow::PathNode sink
- * where ValueFlow::flowPath(source, sink)
+ * from PathNode source, PathNode sink
+ * where flowPath(source, sink)
  * select sink, source, sink, "$@", source, source.toString()
  *
  * ```
@@ -101,6 +101,12 @@ module FlowTest<DataFlow::ConfigSig ValueFlowConfig, DataFlow::ConfigSig TaintFl
   }
 
   import MakeTest<InlineTest>
+  import DataFlow::MergePathGraph<ValueFlow::PathNode, TaintFlow::PathNode, ValueFlow::PathGraph, TaintFlow::PathGraph>
+
+  predicate flowPath(PathNode source, PathNode sink) {
+    ValueFlow::flowPath(source.asPathNode1(), sink.asPathNode1()) or
+    TaintFlow::flowPath(source.asPathNode2(), sink.asPathNode2())
+  }
 }
 
 module DefaultFlowTest = FlowTest<DefaultFlowConfig, DefaultFlowConfig>;
