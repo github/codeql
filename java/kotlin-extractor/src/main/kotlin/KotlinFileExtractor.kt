@@ -5317,7 +5317,10 @@ open class KotlinFileExtractor(
     private fun extractTypeAccessRecursive(t: IrType, location: Label<out DbLocation>, parent: Label<out DbExprparent>, idx: Int, typeContext: TypeContext = TypeContext.OTHER): Label<out DbExpr> {
         val typeAccessId = extractTypeAccess(useType(t, typeContext), location, parent, idx)
         if (t is IrSimpleType) {
-            t.arguments.forEachIndexed { argIdx, arg ->
+            // From 1.9, the list might change when we call erase,
+            // so we make a copy that it is safe to iterate over.
+            val argumentsCopy = t.arguments.toList()
+            argumentsCopy.forEachIndexed { argIdx, arg ->
                 extractWildcardTypeAccessRecursive(arg, location, typeAccessId, argIdx)
             }
         }
