@@ -10,8 +10,4 @@ module FlowConfig implements DataFlow::ConfigSig {
   }
 }
 
-module Flow = DataFlow::Global<FlowConfig>;
-
-class RetrofitFlowTest extends InlineFlowTest {
-  override predicate hasValueFlow(DataFlow::Node src, DataFlow::Node sink) { Flow::flow(src, sink) }
-}
+import FlowTest<FlowConfig, DefaultFlowConfig>
