@@ -12,6 +12,7 @@ private import NsData
 private import NsObject
 private import NsString
 private import NsUrl
+private import PointerTypes
 private import Sequence
 private import String
 private import Url
