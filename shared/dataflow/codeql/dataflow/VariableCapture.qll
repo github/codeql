@@ -166,7 +166,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
     exists(Call call | c1 = call.getEnclosingCallable() and c2 = getACallTarget(call))
   }
 
-  private predicate noCallGraph() { not exists(Call call, Callable c | c = getACallTarget(call)) }
+  private predicate noCallGraph() { not exists(getACallTarget(_)) }
 
   private predicate readOrWrite(BasicBlock bb, int i) {
     variableRead(bb, i, _, _) or variableWrite(bb, i, _, _)
@@ -219,7 +219,7 @@ module Flow<InputSig Input> implements OutputSig<Input> {
   private predicate hasHeapArg(Call call) {
     capturedVarsAreLive(call.getEnclosingCallable()) and capturedVarsAreLive(getACallTarget(call))
     or
-    noCallGraph()
+    noCallGraph() and exists(call)
   }
 
   /**
