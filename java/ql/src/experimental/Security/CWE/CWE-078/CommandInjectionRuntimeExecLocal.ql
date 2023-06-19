@@ -15,9 +15,7 @@
 import DataFlow::PathGraph
 import CommandInjectionRuntimeExec
 
-class LocalSource extends Source {
-  LocalSource() { this instanceof LocalUserInput }
-}
+class LocalSource extends Source instanceof LocalUserInput {}
 
 from
   DataFlow::PathNode source, DataFlow::PathNode sink, ExecTaintConfiguration2 conf,

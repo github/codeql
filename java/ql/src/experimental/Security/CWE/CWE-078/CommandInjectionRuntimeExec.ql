@@ -14,9 +14,7 @@
 import DataFlow::PathGraph
 import CommandInjectionRuntimeExec
 
-class RemoteSource extends Source {
-  RemoteSource() { this instanceof RemoteFlowSource }
-}
+class RemoteSource extends Source instanceof RemoteFlowSource {}
 
 from
   DataFlow::PathNode source, DataFlow::PathNode sink, ExecTaintConfiguration2 conf,
