@@ -4,9 +4,9 @@
 <qhelp>
 
 <overview>
-<p>Accessing filesystem paths built from the name of an archive entry without validating that the
-destination file path is within the destination directory can allow an attacker to access 
-unexpected resources, due to the possible presence of directory traversal elements (<code>..</code>) in
+<p>Extracting files from a malicious zip file, or similar type of archive,
+is at risk of directory traversal attacks if filenames from the archive are
+not properly validated.
 archive paths.</p>
 
 <p>Zip archives contain archive entries representing each file in the archive. These entries
