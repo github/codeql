@@ -23,7 +23,12 @@ extensions:
   - addsTo:
       pack: codeql/python-all
       extensible: typeModel
-    data: []
+    data:
+      - ["flask.MethodView~Subclass","flask_restplus","Member[api].Member[SwaggerView]"]
+      - ["flask.MethodView~Subclass","flask_restplus","Member[resource].Member[Resource]"]
+      - ["flask.MethodView~Subclass","flask_restplus","Member[api].Member[Resource]"]
+      - ["flask.MethodView~Subclass","flask_restplus","Member[resource].Member[MethodView]"]
+      - ["flask.MethodView~Subclass","flask_restplus","Member[Resource]"]
 
   - addsTo:
       pack: codeql/python-all
