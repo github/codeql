@@ -11,7 +11,6 @@
  * from PathNode source, PathNode sink
  * where flowPath(source, sink)
  * select sink, source, sink, "$@", source, source.toString()
-
  * ```
  *
  * To declare expectations, you can use the $hasTaintFlow or $hasValueFlow comments within the test source files.
