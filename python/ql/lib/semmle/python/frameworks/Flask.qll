@@ -14,6 +14,7 @@ private import semmle.python.ApiGraphs
 private import semmle.python.frameworks.internal.InstanceTaintStepsHelper
 private import semmle.python.security.dataflow.PathInjectionCustomizations
 private import semmle.python.dataflow.new.FlowSummary
+private import semmle.python.frameworks.data.ModelsAsData
 
 /**
  * Provides models for the `flask` PyPI package.
@@ -39,6 +40,10 @@ module Flask {
                   "MethodView"
                 ])
               .getASubclass*()
+        or
+        result = ModelOutput::getATypeNode("flask.View~Subclass").getASubclass*()
+        or
+        result = ModelOutput::getATypeNode("flask.MethodView~Subclass").getASubclass*()
       }
     }
 
@@ -52,6 +57,8 @@ module Flask {
       API::Node subclassRef() {
         result =
           API::moduleImport("flask").getMember("views").getMember("MethodView").getASubclass*()
+        or
+        result = ModelOutput::getATypeNode("flask.MethodView~Subclass").getASubclass*()
       }
     }
   }
